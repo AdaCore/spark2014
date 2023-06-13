@@ -16,10 +16,10 @@ main3.adb:7:31: info: initialization of "Lights.State" proved
 main3.adb:8:04: info: flow dependencies proved
 main3.adb:13:06: info: data dependencies proved
 main3.adb:15:06: info: flow dependencies proved
-main3.adb:21:07: info: initialization of "V" proved
+main3.adb:22:07: info: initialization of "V" proved
 main4.adb:6:04: info: data dependencies proved
 main4.adb:7:31: info: initialization of "Lights.State" proved
 main4.adb:8:04: info: flow dependencies proved
 main4.adb:13:06: info: data dependencies proved
 main4.adb:15:06: info: flow dependencies proved
-main4.adb:21:07: info: initialization of "V" proved
+main4.adb:22:07: info: initialization of "V" proved

@@ -1,12 +1,12 @@
 database.adb:16:04: error: "Item" is not writable
-database.adb:16:04: error: instantiation error at spark-containers-formal-doubly_linked_lists.ads:120
-database.adb:16:04: error: instantiation error at spark-containers-functional-vectors.ads:317
-database.adb:16:04: error: object was declared as not writable at spark-containers-functional-vectors.ads:317, instance at spark-containers-formal-doubly_linked_lists.ads:120, instance at line 16
+database.adb:16:04: error: instantiation error at spark-containers-formal-doubly_linked_lists.ads:98
+database.adb:16:04: error: instantiation error at spark-containers-functional-vectors.ads:295
+database.adb:16:04: error: object was declared as not writable at spark-containers-functional-vectors.ads:295, instance at spark-containers-formal-doubly_linked_lists.ads:98, instance at line 16
 database.adb:21:04: info: initialization of "Database" proved
 database.adb:22:04: info: initialization of "DB_Model" proved
 database.adb:28:13: info: implicit terminating annotation on "Contains" has been proved, subprogram will terminate
 database.ads:18:13: info: implicit terminating annotation on overriding operator "=" has been proved, subprogram will terminate
 database.ads:23:04: error: "Item" is not writable
-database.ads:23:04: error: instantiation error at spark-containers-functional-sets.ads:365
-database.ads:23:04: error: object was declared as not writable at spark-containers-functional-sets.ads:365, instance at line 23
+database.ads:23:04: error: instantiation error at spark-containers-functional-sets.ads:343
+database.ads:23:04: error: object was declared as not writable at spark-containers-functional-sets.ads:343, instance at line 23
 gnatprove: error during flow analysis and proof

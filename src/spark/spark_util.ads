@@ -133,9 +133,12 @@ package SPARK_Util is
    package Continuation_Vectors is new Ada.Containers.Vectors
      (Positive, Continuation_Type);
 
+   type Bound_Info_Type is (No_Bound, Low_Bound, High_Bound);
+
    type Fix_Info_Type is record
       Range_Check_Ty : Opt_Type_Kind_Id;
       Divisor        : Node_Or_Entity_Id;
+      Bound_Info     : Bound_Info_Type;
    end record;
    --  Extra information to get better possible fix messages
 
@@ -381,6 +384,11 @@ package SPARK_Util is
    --  @param E is the entity of a component, discriminant or Part of
    --     concurrent type
    --  @return concurrent type
+
+   function Has_Address_Or_Name (O : Object_Kind_Id) return Boolean;
+   --  Return True if O either has an address clause or has an external or
+   --  link name. Such objects are recognized so warnings can be issued to let
+   --  users know that they might require specific reviews to detect aliases.
 
    function Has_Volatile (E : N_Entity_Id) return Boolean
    with Pre  => Ekind (E) in E_Abstract_State
@@ -882,6 +890,12 @@ package SPARK_Util is
    --  Store the link between a call to a function annotated with
    --  At_End_Borrow and the entity whose scope the at end refers to.
 
+   function Path_Contains_Qualified_Expr (Expr : N_Subexpr_Id) return Boolean
+   with
+     Pre => Is_Path_Expression (Expr)
+       and then Present (Get_Root_Object (Expr));
+   --  Return True if the path from Expr contains a qualified expression
+
    function Path_Contains_Traversal_Calls (Expr : N_Subexpr_Id) return Boolean
    with
      Pre => Is_Path_Expression (Expr);
@@ -1158,7 +1172,7 @@ package SPARK_Util is
      Pre  => Nkind (Stmt) in N_Procedure_Call_Statement
                            | N_Entry_Call_Statement
                            | N_Raise_Statement;
-   --  Retrieve all exceptions raise by Stmt. If Only_Hanled is True, only
+   --  Retrieve all exceptions raised by Stmt. If Only_Handled is True, only
    --  consider exception which are handled above Stmt.
 
    function Might_Raise_Handled_Exceptions (Stmt : Node_Id) return Boolean is

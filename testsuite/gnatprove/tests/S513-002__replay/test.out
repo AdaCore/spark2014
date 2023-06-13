@@ -28,30 +28,30 @@ tree_model.ads:33:22: info: predicate check proved (Trivial: 1 VC)
 tree_model.ads:33:46: info: predicate check proved (Trivial: 1 VC)
 --------------------------------------
 binary_trees.adb:22:13: info: implicit terminating annotation on "All_Indexes" has been proved, subprogram will terminate
-binary_trees.adb:29:08: info: postcondition proved (CVC5: 2 VC)
-binary_trees.adb:30:20: info: predicate check proved (Trivial: 1 VC)
+binary_trees.adb:29:08: info: postcondition proved
+binary_trees.adb:30:20: info: predicate check proved
 binary_trees.adb:33:07: info: initialization of "S" proved
-binary_trees.adb:36:33: info: loop invariant initialization proved (CVC5: 1 VC)
-binary_trees.adb:36:33: info: loop invariant preservation proved (CVC5: 1 VC)
-binary_trees.adb:36:33: info: predicate check proved (Trivial: 2 VC)
-binary_trees.adb:38:13: info: loop invariant initialization proved (CVC5: 1 VC)
-binary_trees.adb:38:13: info: loop invariant preservation proved (CVC5: 1 VC)
-binary_trees.adb:38:53: info: range check proved (CVC5: 4 VC)
-binary_trees.adb:39:33: info: loop invariant initialization proved (CVC5: 1 VC)
-binary_trees.adb:39:33: info: loop invariant preservation proved (CVC5: 1 VC)
-binary_trees.adb:40:15: info: precondition proved (CVC5: 1 VC)
-binary_trees.adb:53:55: info: index check proved (CVC5: 2 VC)
-binary_trees.adb:71:33: info: index check proved (CVC5: 2 VC)
-binary_trees.adb:72:42: info: index check proved (CVC5: 2 VC)
-binary_trees.adb:79:32: info: index check proved (CVC5: 2 VC)
-binary_trees.adb:80:41: info: index check proved (CVC5: 2 VC)
-binary_trees.adb:87:36: info: index check proved (CVC5: 2 VC)
-binary_trees.adb:90:36: info: index check proved (CVC5: 2 VC)
-binary_trees.ads:14:09: info: default initial condition proved (CVC5: 1 VC)
-binary_trees.ads:14:61: info: invariant check proved (Z3: 1 VC)
+binary_trees.adb:36:33: info: loop invariant initialization proved
+binary_trees.adb:36:33: info: loop invariant preservation proved
+binary_trees.adb:36:33: info: predicate check proved
+binary_trees.adb:38:13: info: loop invariant initialization proved
+binary_trees.adb:38:13: info: loop invariant preservation proved
+binary_trees.adb:38:53: info: range check proved
+binary_trees.adb:39:33: info: loop invariant initialization proved
+binary_trees.adb:39:33: info: loop invariant preservation proved
+binary_trees.adb:40:15: info: precondition proved
+binary_trees.adb:53:55: info: index check proved
+binary_trees.adb:71:33: info: index check proved
+binary_trees.adb:72:42: info: index check proved
+binary_trees.adb:79:32: info: index check proved
+binary_trees.adb:80:41: info: index check proved
+binary_trees.adb:87:36: info: index check proved
+binary_trees.adb:90:36: info: index check proved
+binary_trees.ads:14:09: info: default initial condition proved
+binary_trees.ads:14:61: info: invariant check proved
 binary_trees.ads:17:13: info: implicit terminating annotation on "Size" has been proved, subprogram will terminate
-binary_trees.ads:28:09: info: invariant check proved on default value (Z3: 1 VC)
+binary_trees.ads:28:09: info: invariant check proved on default value
 binary_trees.ads:36:13: info: implicit terminating annotation on "Tree_Structure" has been proved, subprogram will terminate
 binary_trees.ads:37:06: info: data dependencies proved
-tree_model.ads:33:22: info: predicate check proved (Trivial: 1 VC)
-tree_model.ads:33:46: info: predicate check proved (Trivial: 1 VC)
+tree_model.ads:33:22: info: predicate check proved
+tree_model.ads:33:46: info: predicate check proved

@@ -37,5 +37,5 @@ insrc.ads:55:04: error: violation of aspect SPARK_Mode at line 25
 insrc.ads:55:04: error: violation of aspect SPARK_Mode at line 25
 insrc.ads:55:04: error: violation of aspect SPARK_Mode at line 25
 insrc.ads:55:04: error: violation of aspect SPARK_Mode at line 25
-outsrc.adb:116:18: error: implicit conversion between access types with different designated types is not yet supported
+outsrc.adb:116:18: error: conversion between access types with different designated types is not yet supported
 gnatprove: error during flow analysis and proof

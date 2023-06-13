@@ -1,339 +1,335 @@
-ghc_sort.adb:6:07: info: range check proved (CVC5: 1 VC; altergo: 1 VC)
-ghc_sort.adb:6:31: info: range check proved (altergo: 2 VC)
-ghc_sort.adb:6:39: info: overflow check proved (CVC5: 1 VC; altergo: 1 VC)
-ghc_sort.adb:6:47: info: length check proved (Trivial: 1 VC; altergo: 3 VC)
-ghc_sort.adb:8:26: info: range check proved (altergo: 2 VC)
-ghc_sort.adb:9:33: info: overflow check proved (CVC5: 1 VC; altergo: 1 VC)
-ghc_sort.adb:9:33: info: range check proved (CVC5: 1 VC; altergo: 1 VC)
+ghc_sort.adb:6:07: info: range check proved
+ghc_sort.adb:6:31: info: range check proved
+ghc_sort.adb:6:39: info: overflow check proved
+ghc_sort.adb:6:47: info: length check proved
+ghc_sort.adb:8:26: info: range check proved
+ghc_sort.adb:9:33: info: overflow check proved
+ghc_sort.adb:9:33: info: range check proved
 ghc_sort.adb:10:07: info: initialization of "Inc" proved
-ghc_sort.adb:13:26: medium: implicit terminating annotation on "Cut" could be incorrect, loop might be nonterminating
-ghc_sort.adb:14:33: info: loop invariant initialization proved (altergo: 2 VC)
-ghc_sort.adb:14:33: info: loop invariant preservation proved (CVC5: 1 VC; altergo: 1 VC)
-ghc_sort.adb:15:33: info: loop invariant initialization proved (altergo: 1 VC)
-ghc_sort.adb:15:33: info: loop invariant preservation proved (altergo: 1 VC)
-ghc_sort.adb:16:33: info: loop invariant initialization proved (altergo: 2 VC)
-ghc_sort.adb:16:33: info: loop invariant preservation proved (altergo: 2 VC)
-ghc_sort.adb:17:33: info: loop invariant initialization proved (altergo: 1 VC)
-ghc_sort.adb:17:33: info: loop invariant preservation proved (CVC5: 1 VC)
-ghc_sort.adb:17:38: info: index check proved (altergo: 4 VC)
-ghc_sort.adb:18:33: info: loop invariant initialization proved (altergo: 1 VC)
-ghc_sort.adb:18:33: info: loop invariant preservation proved (altergo: 1 VC)
-ghc_sort.adb:18:42: info: index check proved (CVC5: 1 VC; altergo: 3 VC)
-ghc_sort.adb:20:13: info: loop invariant initialization proved (altergo: 2 VC)
-ghc_sort.adb:20:13: info: loop invariant preservation proved (CVC5: 1 VC; Z3: 1 VC)
-ghc_sort.adb:20:43: info: index check proved (CVC5: 1 VC; altergo: 3 VC)
-ghc_sort.adb:22:13: info: loop invariant initialization proved (altergo: 1 VC)
-ghc_sort.adb:22:13: info: loop invariant preservation proved (CVC5: 1 VC)
-ghc_sort.adb:22:49: info: index check proved (CVC5: 1 VC; altergo: 3 VC)
-ghc_sort.adb:22:49: info: overflow check proved (CVC5: 2 VC; altergo: 2 VC)
-ghc_sort.adb:22:61: info: index check proved (CVC5: 3 VC; altergo: 1 VC)
-ghc_sort.adb:24:13: info: loop invariant initialization proved (altergo: 1 VC)
-ghc_sort.adb:24:13: info: loop invariant preservation proved (Z3: 1 VC)
-ghc_sort.adb:25:35: info: index check proved (altergo: 4 VC)
-ghc_sort.adb:25:38: info: overflow check proved (CVC5: 2 VC; Z3: 1 VC; altergo: 1 VC)
-ghc_sort.adb:25:52: info: index check proved (CVC5: 1 VC; altergo: 3 VC)
-ghc_sort.adb:25:52: info: overflow check proved (CVC5: 1 VC; altergo: 3 VC)
-ghc_sort.adb:25:69: info: index check proved (CVC5: 1 VC; altergo: 3 VC)
-ghc_sort.adb:25:69: info: overflow check proved (CVC5: 2 VC; altergo: 2 VC)
-ghc_sort.adb:25:79: info: index check proved (CVC5: 2 VC; Z3: 1 VC; altergo: 1 VC)
-ghc_sort.adb:26:28: info: index check proved (Z3: 1 VC; altergo: 3 VC)
-ghc_sort.adb:26:35: info: index check proved (altergo: 4 VC)
-ghc_sort.adb:26:35: info: overflow check proved (CVC5: 2 VC; altergo: 2 VC)
-ghc_sort.adb:26:54: info: index check proved (CVC5: 1 VC; altergo: 3 VC)
-ghc_sort.adb:26:54: info: overflow check proved (CVC5: 1 VC; altergo: 3 VC)
-ghc_sort.adb:26:59: info: index check proved (CVC5: 2 VC; Z3: 2 VC)
-ghc_sort.adb:28:35: info: index check proved (CVC5: 3 VC; altergo: 1 VC)
-ghc_sort.adb:28:38: info: overflow check proved (CVC5: 2 VC; altergo: 2 VC)
-ghc_sort.adb:28:52: info: index check proved (CVC5: 1 VC; altergo: 3 VC)
-ghc_sort.adb:28:52: info: overflow check proved (altergo: 4 VC)
-ghc_sort.adb:28:69: info: index check proved (CVC5: 2 VC; altergo: 2 VC)
-ghc_sort.adb:28:69: info: overflow check proved (CVC5: 2 VC; altergo: 2 VC)
-ghc_sort.adb:28:80: info: index check proved (CVC5: 2 VC; altergo: 2 VC)
-ghc_sort.adb:29:28: info: index check proved (CVC5: 2 VC; altergo: 2 VC)
-ghc_sort.adb:29:35: info: index check proved (CVC5: 1 VC; altergo: 3 VC)
-ghc_sort.adb:29:35: info: overflow check proved (altergo: 4 VC)
-ghc_sort.adb:29:53: info: index check proved (CVC5: 1 VC; altergo: 3 VC)
-ghc_sort.adb:29:53: info: overflow check proved (altergo: 4 VC)
-ghc_sort.adb:29:58: info: index check proved (CVC5: 2 VC; altergo: 2 VC)
-ghc_sort.adb:31:20: info: index check proved (altergo: 2 VC)
-ghc_sort.adb:31:28: info: index check proved (altergo: 2 VC)
-ghc_sort.adb:32:44: info: index check proved (CVC5: 1 VC; altergo: 3 VC)
-ghc_sort.adb:32:54: info: index check proved (CVC5: 1 VC; altergo: 3 VC)
-ghc_sort.adb:33:34: info: loop variant proved (altergo: 1 VC)
-ghc_sort.adb:34:36: info: loop invariant initialization proved (altergo: 1 VC)
-ghc_sort.adb:34:36: info: loop invariant preservation proved (CVC5: 1 VC)
-ghc_sort.adb:36:16: info: loop invariant initialization proved (altergo: 2 VC)
-ghc_sort.adb:36:16: info: loop invariant preservation proved (CVC5: 2 VC)
-ghc_sort.adb:36:56: info: index check proved (CVC5: 2 VC; altergo: 2 VC)
-ghc_sort.adb:36:56: info: overflow check proved (altergo: 4 VC)
-ghc_sort.adb:36:66: info: index check proved (CVC5: 1 VC; altergo: 3 VC)
-ghc_sort.adb:37:20: info: overflow check proved (CVC5: 1 VC; altergo: 1 VC)
-ghc_sort.adb:39:21: info: overflow check proved (CVC5: 1 VC; altergo: 1 VC)
-ghc_sort.adb:40:15: info: index check proved (CVC5: 1 VC; altergo: 1 VC)
-ghc_sort.adb:42:17: info: overflow check proved (CVC5: 2 VC)
-ghc_sort.adb:45:13: info: assertion proved (Trivial: 1 VC; Z3: 1 VC)
-ghc_sort.adb:46:40: info: index check proved (altergo: 2 VC)
-ghc_sort.adb:46:45: info: overflow check proved (altergo: 2 VC)
-ghc_sort.adb:46:57: info: index check proved (altergo: 2 VC)
-ghc_sort.adb:46:74: info: index check proved (altergo: 2 VC)
-ghc_sort.adb:46:74: info: overflow check proved (altergo: 2 VC)
-ghc_sort.adb:46:84: info: index check proved (CVC5: 1 VC; Z3: 1 VC)
-ghc_sort.adb:47:28: info: index check proved (CVC5: 1 VC; altergo: 1 VC)
-ghc_sort.adb:47:33: info: index check proved (CVC5: 1 VC; altergo: 1 VC)
-ghc_sort.adb:47:50: info: index check proved (altergo: 2 VC)
-ghc_sort.adb:47:55: info: index check proved (CVC5: 1 VC; altergo: 1 VC)
-ghc_sort.adb:49:39: info: index check proved (CVC5: 1 VC; altergo: 1 VC)
-ghc_sort.adb:49:44: info: overflow check proved (altergo: 2 VC)
-ghc_sort.adb:49:56: info: index check proved (altergo: 2 VC)
-ghc_sort.adb:49:73: info: index check proved (CVC5: 1 VC; altergo: 1 VC)
-ghc_sort.adb:49:73: info: overflow check proved (altergo: 2 VC)
-ghc_sort.adb:49:84: info: index check proved (CVC5: 1 VC; altergo: 1 VC)
-ghc_sort.adb:50:28: info: index check proved (CVC5: 1 VC; altergo: 1 VC)
-ghc_sort.adb:50:33: info: index check proved (CVC5: 1 VC; altergo: 1 VC)
-ghc_sort.adb:50:49: info: index check proved (CVC5: 2 VC)
-ghc_sort.adb:50:54: info: index check proved (CVC5: 1 VC; altergo: 1 VC)
-ghc_sort.adb:54:21: info: overflow check proved (altergo: 2 VC)
-ghc_sort.adb:55:15: info: index check proved (altergo: 2 VC)
-ghc_sort.adb:55:24: info: range check proved (altergo: 2 VC)
-ghc_sort.adb:55:32: info: overflow check proved (CVC5: 1 VC; altergo: 1 VC)
-ghc_sort.adb:58:14: info: range check proved (CVC5: 3 VC; altergo: 1 VC)
+ghc_sort.adb:13:26: medium: implicit terminating annotation on "Cut" could be incorrect, loop might be nonterminating [possible fix: add loop variant in the loop body]
+ghc_sort.adb:14:33: info: loop invariant initialization proved
+ghc_sort.adb:14:33: info: loop invariant preservation proved
+ghc_sort.adb:15:33: info: loop invariant initialization proved
+ghc_sort.adb:15:33: info: loop invariant preservation proved
+ghc_sort.adb:16:33: info: loop invariant initialization proved
+ghc_sort.adb:16:33: info: loop invariant preservation proved
+ghc_sort.adb:17:33: info: loop invariant initialization proved
+ghc_sort.adb:17:33: info: loop invariant preservation proved
+ghc_sort.adb:17:38: info: index check proved
+ghc_sort.adb:18:33: info: loop invariant initialization proved
+ghc_sort.adb:18:33: info: loop invariant preservation proved
+ghc_sort.adb:18:42: info: index check proved
+ghc_sort.adb:20:13: info: loop invariant initialization proved
+ghc_sort.adb:20:13: info: loop invariant preservation proved
+ghc_sort.adb:20:43: info: index check proved
+ghc_sort.adb:22:13: info: loop invariant initialization proved
+ghc_sort.adb:22:13: info: loop invariant preservation proved
+ghc_sort.adb:22:49: info: index check proved
+ghc_sort.adb:22:49: info: overflow check proved
+ghc_sort.adb:22:61: info: index check proved
+ghc_sort.adb:24:13: info: loop invariant initialization proved
+ghc_sort.adb:24:13: info: loop invariant preservation proved
+ghc_sort.adb:25:35: info: index check proved
+ghc_sort.adb:25:38: info: overflow check proved
+ghc_sort.adb:25:52: info: index check proved
+ghc_sort.adb:25:52: info: overflow check proved
+ghc_sort.adb:25:69: info: index check proved
+ghc_sort.adb:25:69: info: overflow check proved
+ghc_sort.adb:25:79: info: index check proved
+ghc_sort.adb:26:28: info: index check proved
+ghc_sort.adb:26:35: info: index check proved
+ghc_sort.adb:26:35: info: overflow check proved
+ghc_sort.adb:26:54: info: index check proved
+ghc_sort.adb:26:54: info: overflow check proved
+ghc_sort.adb:26:59: info: index check proved
+ghc_sort.adb:28:35: info: index check proved
+ghc_sort.adb:28:38: info: overflow check proved
+ghc_sort.adb:28:52: info: index check proved
+ghc_sort.adb:28:52: info: overflow check proved
+ghc_sort.adb:28:69: info: index check proved
+ghc_sort.adb:28:69: info: overflow check proved
+ghc_sort.adb:28:80: info: index check proved
+ghc_sort.adb:29:28: info: index check proved
+ghc_sort.adb:29:35: info: index check proved
+ghc_sort.adb:29:35: info: overflow check proved
+ghc_sort.adb:29:53: info: index check proved
+ghc_sort.adb:29:53: info: overflow check proved
+ghc_sort.adb:29:58: info: index check proved
+ghc_sort.adb:31:20: info: index check proved
+ghc_sort.adb:31:28: info: index check proved
+ghc_sort.adb:32:44: info: index check proved
+ghc_sort.adb:32:54: info: index check proved
+ghc_sort.adb:33:34: info: loop variant proved
+ghc_sort.adb:34:36: info: loop invariant initialization proved
+ghc_sort.adb:34:36: info: loop invariant preservation proved
+ghc_sort.adb:36:16: info: loop invariant initialization proved
+ghc_sort.adb:36:16: info: loop invariant preservation proved
+ghc_sort.adb:36:56: info: index check proved
+ghc_sort.adb:36:56: info: overflow check proved
+ghc_sort.adb:36:66: info: index check proved
+ghc_sort.adb:37:20: info: overflow check proved
+ghc_sort.adb:39:21: info: overflow check proved
+ghc_sort.adb:40:15: info: index check proved
+ghc_sort.adb:42:17: info: overflow check proved
+ghc_sort.adb:45:13: info: assertion proved
+ghc_sort.adb:46:40: info: index check proved
+ghc_sort.adb:46:45: info: overflow check proved
+ghc_sort.adb:46:57: info: index check proved
+ghc_sort.adb:46:74: info: index check proved
+ghc_sort.adb:46:74: info: overflow check proved
+ghc_sort.adb:46:84: info: index check proved
+ghc_sort.adb:47:28: info: index check proved
+ghc_sort.adb:47:33: info: index check proved
+ghc_sort.adb:47:50: info: index check proved
+ghc_sort.adb:47:55: info: index check proved
+ghc_sort.adb:49:39: info: index check proved
+ghc_sort.adb:49:44: info: overflow check proved
+ghc_sort.adb:49:56: info: index check proved
+ghc_sort.adb:49:73: info: index check proved
+ghc_sort.adb:49:73: info: overflow check proved
+ghc_sort.adb:49:84: info: index check proved
+ghc_sort.adb:50:28: info: index check proved
+ghc_sort.adb:50:33: info: index check proved
+ghc_sort.adb:50:49: info: index check proved
+ghc_sort.adb:50:54: info: index check proved
+ghc_sort.adb:54:21: info: overflow check proved
+ghc_sort.adb:55:15: info: index check proved
+ghc_sort.adb:55:24: info: range check proved
+ghc_sort.adb:55:32: info: overflow check proved
+ghc_sort.adb:58:14: info: range check proved
 ghc_sort.adb:64:14: info: initialization of "R" proved
-ghc_sort.adb:64:14: info: range check proved (CVC5: 2 VC)
-ghc_sort.adb:64:36: info: range check proved (CVC5: 1 VC; altergo: 1 VC)
-ghc_sort.adb:64:44: info: overflow check proved (CVC5: 1 VC; altergo: 1 VC)
-ghc_sort.adb:64:48: info: range check proved (CVC5: 1 VC; altergo: 1 VC)
-ghc_sort.adb:65:12: info: length check proved (CVC5: 2 VC; Trivial: 1 VC; altergo: 1 VC)
-ghc_sort.adb:65:15: info: length check proved (Trivial: 1 VC; altergo: 3 VC)
-ghc_sort.adb:65:15: info: predicate check proved (altergo: 1 VC)
-ghc_sort.adb:67:34: info: loop variant proved (CVC5: 1 VC)
-ghc_sort.adb:68:36: info: loop invariant initialization proved (CVC5: 1 VC)
-ghc_sort.adb:68:36: info: loop invariant preservation proved (altergo: 1 VC)
-ghc_sort.adb:68:43: info: overflow check proved (CVC5: 4 VC)
-ghc_sort.adb:69:36: info: loop invariant initialization proved (CVC5: 1 VC; Trivial: 1 VC)
-ghc_sort.adb:69:36: info: loop invariant preservation proved (Trivial: 1 VC; altergo: 1 VC)
-ghc_sort.adb:69:55: info: index check proved (CVC5: 2 VC; altergo: 2 VC)
-ghc_sort.adb:69:67: info: index check proved (CVC5: 2 VC; altergo: 2 VC)
-ghc_sort.adb:70:36: info: loop invariant initialization proved (CVC5: 1 VC; Trivial: 1 VC)
-ghc_sort.adb:70:36: info: loop invariant preservation proved (CVC5: 1 VC; Trivial: 1 VC)
-ghc_sort.adb:70:55: info: index check proved (CVC5: 1 VC; Z3: 1 VC; altergo: 2 VC)
-ghc_sort.adb:70:67: info: index check proved (CVC5: 1 VC; altergo: 3 VC)
-ghc_sort.adb:72:16: info: loop invariant initialization proved (altergo: 1 VC)
-ghc_sort.adb:72:16: info: loop invariant preservation proved (Z3: 1 VC)
-ghc_sort.adb:72:48: info: index check proved (CVC5: 3 VC; altergo: 1 VC)
-ghc_sort.adb:72:59: info: index check proved (CVC5: 3 VC; altergo: 1 VC)
-ghc_sort.adb:73:20: info: index check proved (CVC5: 1 VC; altergo: 1 VC)
-ghc_sort.adb:73:30: info: index check proved (altergo: 2 VC)
-ghc_sort.adb:74:16: info: predicate check proved (CVC5: 1 VC)
-ghc_sort.adb:74:19: info: index check proved (CVC5: 1 VC; altergo: 1 VC)
-ghc_sort.adb:74:29: info: index check proved (CVC5: 2 VC)
-ghc_sort.adb:75:25: info: overflow check proved (CVC5: 2 VC)
-ghc_sort.adb:77:16: info: predicate check proved (altergo: 1 VC)
-ghc_sort.adb:77:19: info: index check proved (CVC5: 2 VC)
-ghc_sort.adb:77:29: info: index check proved (CVC5: 2 VC)
-ghc_sort.adb:78:25: info: overflow check proved (CVC5: 1 VC; altergo: 1 VC)
-ghc_sort.adb:80:20: info: overflow check proved (CVC5: 1 VC; altergo: 1 VC)
-ghc_sort.adb:84:34: info: loop variant proved (CVC5: 1 VC)
-ghc_sort.adb:85:36: info: loop invariant initialization proved (CVC5: 1 VC)
-ghc_sort.adb:85:36: info: loop invariant preservation proved (CVC5: 1 VC)
-ghc_sort.adb:85:43: info: overflow check proved (CVC5: 3 VC; altergo: 1 VC)
-ghc_sort.adb:87:16: info: loop invariant initialization proved (CVC5: 1 VC)
-ghc_sort.adb:87:16: info: loop invariant preservation proved (altergo: 1 VC)
-ghc_sort.adb:87:48: info: index check proved (CVC5: 3 VC; altergo: 1 VC)
-ghc_sort.adb:87:59: info: index check proved (CVC5: 4 VC)
-ghc_sort.adb:88:36: info: loop invariant initialization proved (Trivial: 1 VC; altergo: 1 VC)
-ghc_sort.adb:88:36: info: loop invariant preservation proved (CVC5: 1 VC; Trivial: 1 VC)
-ghc_sort.adb:88:55: info: index check proved (CVC5: 1 VC; altergo: 3 VC)
-ghc_sort.adb:88:67: info: index check proved (CVC5: 3 VC; altergo: 1 VC)
-ghc_sort.adb:89:13: info: predicate check proved (CVC5: 1 VC)
-ghc_sort.adb:89:16: info: index check proved (CVC5: 1 VC; altergo: 1 VC)
-ghc_sort.adb:89:26: info: index check proved (CVC5: 1 VC; altergo: 1 VC)
-ghc_sort.adb:90:20: info: overflow check proved (CVC5: 1 VC; altergo: 1 VC)
-ghc_sort.adb:91:22: info: overflow check proved (CVC5: 2 VC)
-ghc_sort.adb:94:34: info: loop variant proved (CVC5: 1 VC)
-ghc_sort.adb:95:36: info: loop invariant initialization proved (CVC5: 1 VC)
-ghc_sort.adb:95:36: info: loop invariant preservation proved (altergo: 1 VC)
-ghc_sort.adb:95:43: info: overflow check proved (CVC5: 1 VC; Z3: 1 VC; altergo: 2 VC)
-ghc_sort.adb:97:16: info: loop invariant initialization proved (CVC5: 1 VC)
-ghc_sort.adb:97:16: info: loop invariant preservation proved (CVC5: 1 VC)
-ghc_sort.adb:97:48: info: index check proved (CVC5: 2 VC; altergo: 2 VC)
-ghc_sort.adb:97:59: info: index check proved (CVC5: 2 VC; Z3: 1 VC; altergo: 1 VC)
-ghc_sort.adb:98:36: info: loop invariant initialization proved (CVC5: 1 VC; Trivial: 1 VC)
-ghc_sort.adb:98:36: info: loop invariant preservation proved (CVC5: 1 VC; Trivial: 1 VC)
-ghc_sort.adb:98:55: info: index check proved (CVC5: 3 VC; altergo: 1 VC)
-ghc_sort.adb:98:67: info: index check proved (CVC5: 3 VC; Z3: 1 VC)
-ghc_sort.adb:99:13: info: predicate check proved (CVC5: 1 VC)
-ghc_sort.adb:99:16: info: index check proved (CVC5: 2 VC)
-ghc_sort.adb:99:26: info: index check proved (CVC5: 2 VC)
-ghc_sort.adb:100:20: info: overflow check proved (CVC5: 2 VC)
-ghc_sort.adb:101:22: info: overflow check proved (CVC5: 1 VC; altergo: 1 VC)
+ghc_sort.adb:64:14: info: range check proved
+ghc_sort.adb:64:36: info: range check proved
+ghc_sort.adb:64:44: info: overflow check proved
+ghc_sort.adb:64:48: info: range check proved
+ghc_sort.adb:65:12: info: length check proved
+ghc_sort.adb:65:15: info: length check proved
+ghc_sort.adb:65:15: info: predicate check proved
+ghc_sort.adb:67:34: info: loop variant proved
+ghc_sort.adb:68:36: info: loop invariant initialization proved
+ghc_sort.adb:68:36: info: loop invariant preservation proved
+ghc_sort.adb:68:43: info: overflow check proved
+ghc_sort.adb:69:36: info: loop invariant initialization proved
+ghc_sort.adb:69:36: info: loop invariant preservation proved
+ghc_sort.adb:69:55: info: index check proved
+ghc_sort.adb:69:67: info: index check proved
+ghc_sort.adb:70:36: info: loop invariant initialization proved
+ghc_sort.adb:70:36: info: loop invariant preservation proved
+ghc_sort.adb:70:55: info: index check proved
+ghc_sort.adb:70:67: info: index check proved
+ghc_sort.adb:72:16: info: loop invariant initialization proved
+ghc_sort.adb:72:16: info: loop invariant preservation proved
+ghc_sort.adb:72:48: info: index check proved
+ghc_sort.adb:72:59: info: index check proved
+ghc_sort.adb:73:20: info: index check proved
+ghc_sort.adb:73:30: info: index check proved
+ghc_sort.adb:74:16: info: predicate check proved
+ghc_sort.adb:74:19: info: index check proved
+ghc_sort.adb:74:29: info: index check proved
+ghc_sort.adb:75:25: info: overflow check proved
+ghc_sort.adb:77:16: info: predicate check proved
+ghc_sort.adb:77:19: info: index check proved
+ghc_sort.adb:77:29: info: index check proved
+ghc_sort.adb:78:25: info: overflow check proved
+ghc_sort.adb:80:20: info: overflow check proved
+ghc_sort.adb:84:34: info: loop variant proved
+ghc_sort.adb:85:36: info: loop invariant initialization proved
+ghc_sort.adb:85:36: info: loop invariant preservation proved
+ghc_sort.adb:85:43: info: overflow check proved
+ghc_sort.adb:87:16: info: loop invariant initialization proved
+ghc_sort.adb:87:16: info: loop invariant preservation proved
+ghc_sort.adb:87:48: info: index check proved
+ghc_sort.adb:87:59: info: index check proved
+ghc_sort.adb:88:36: info: loop invariant initialization proved
+ghc_sort.adb:88:36: info: loop invariant preservation proved
+ghc_sort.adb:88:55: info: index check proved
+ghc_sort.adb:88:67: info: index check proved
+ghc_sort.adb:89:13: info: predicate check proved
+ghc_sort.adb:89:16: info: index check proved
+ghc_sort.adb:89:26: info: index check proved
+ghc_sort.adb:90:20: info: overflow check proved
+ghc_sort.adb:91:22: info: overflow check proved
+ghc_sort.adb:94:34: info: loop variant proved
+ghc_sort.adb:95:36: info: loop invariant initialization proved
+ghc_sort.adb:95:36: info: loop invariant preservation proved
+ghc_sort.adb:95:43: info: overflow check proved
+ghc_sort.adb:97:16: info: loop invariant initialization proved
+ghc_sort.adb:97:16: info: loop invariant preservation proved
+ghc_sort.adb:97:48: info: index check proved
+ghc_sort.adb:97:59: info: index check proved
+ghc_sort.adb:98:36: info: loop invariant initialization proved
+ghc_sort.adb:98:36: info: loop invariant preservation proved
+ghc_sort.adb:98:55: info: index check proved
+ghc_sort.adb:98:67: info: index check proved
+ghc_sort.adb:99:13: info: predicate check proved
+ghc_sort.adb:99:16: info: index check proved
+ghc_sort.adb:99:26: info: index check proved
+ghc_sort.adb:100:20: info: overflow check proved
+ghc_sort.adb:101:22: info: overflow check proved
 ghc_sort.adb:107:07: info: initialization of "R" proved
-ghc_sort.adb:107:07: info: range check proved (altergo: 2 VC)
-ghc_sort.adb:110:09: info: length check proved (CVC5: 1 VC; Trivial: 1 VC; altergo: 2 VC)
-ghc_sort.adb:110:12: info: length check proved (CVC5: 2 VC; Trivial: 1 VC; altergo: 1 VC)
-ghc_sort.adb:110:12: info: predicate check proved (altergo: 1 VC)
-ghc_sort.adb:112:33: info: loop invariant initialization proved (altergo: 1 VC)
-ghc_sort.adb:112:33: info: loop invariant preservation proved (CVC5: 1 VC)
-ghc_sort.adb:112:38: info: range check proved (CVC5: 2 VC; altergo: 2 VC)
-ghc_sort.adb:112:46: info: overflow check proved (CVC5: 3 VC; altergo: 1 VC)
-ghc_sort.adb:114:13: info: loop invariant initialization proved (altergo: 1 VC)
-ghc_sort.adb:114:13: info: loop invariant preservation proved (altergo: 1 VC)
-ghc_sort.adb:114:28: info: overflow check proved (CVC5: 2 VC; Z3: 1 VC; altergo: 1 VC)
-ghc_sort.adb:114:48: info: index check proved (CVC5: 2 VC; altergo: 2 VC)
-ghc_sort.adb:114:57: info: range check proved (CVC5: 3 VC; altergo: 1 VC)
-ghc_sort.adb:114:65: info: overflow check proved (CVC5: 2 VC; altergo: 2 VC)
-ghc_sort.adb:114:69: info: index check proved (CVC5: 4 VC)
-ghc_sort.adb:114:69: info: overflow check proved (CVC5: 2 VC; altergo: 2 VC)
-ghc_sort.adb:115:17: info: overflow check proved (altergo: 2 VC)
-ghc_sort.adb:116:10: info: predicate check proved (CVC5: 1 VC)
-ghc_sort.adb:116:22: info: index check proved (CVC5: 1 VC; altergo: 1 VC)
-ghc_sort.adb:126:07: info: range check proved (CVC5: 2 VC)
+ghc_sort.adb:107:07: info: range check proved
+ghc_sort.adb:110:09: info: length check proved
+ghc_sort.adb:110:12: info: length check proved
+ghc_sort.adb:110:12: info: predicate check proved
+ghc_sort.adb:112:33: info: loop invariant initialization proved
+ghc_sort.adb:112:33: info: loop invariant preservation proved
+ghc_sort.adb:112:38: info: range check proved
+ghc_sort.adb:112:46: info: overflow check proved
+ghc_sort.adb:114:13: info: loop invariant initialization proved
+ghc_sort.adb:114:13: info: loop invariant preservation proved
+ghc_sort.adb:114:28: info: overflow check proved
+ghc_sort.adb:114:48: info: index check proved
+ghc_sort.adb:114:57: info: range check proved
+ghc_sort.adb:114:65: info: overflow check proved
+ghc_sort.adb:114:69: info: index check proved
+ghc_sort.adb:114:69: info: overflow check proved
+ghc_sort.adb:115:17: info: overflow check proved
+ghc_sort.adb:116:10: info: predicate check proved
+ghc_sort.adb:116:22: info: index check proved
+ghc_sort.adb:126:07: info: range check proved
 ghc_sort.adb:134:13: info: implicit terminating annotation on "All_Sorted" has been proved, subprogram will terminate
-ghc_sort.adb:136:32: info: pointer dereference check proved (CVC5: 1 VC)
-ghc_sort.adb:136:39: info: pointer dereference check proved (altergo: 1 VC)
-ghc_sort.adb:136:49: info: index check proved (CVC5: 2 VC)
-ghc_sort.adb:136:58: info: pointer dereference check proved (CVC5: 1 VC)
-ghc_sort.adb:136:66: info: index check proved (CVC5: 1 VC; altergo: 1 VC)
-ghc_sort.adb:137:18: info: subprogram variant proved (Trivial)
-ghc_sort.adb:137:31: info: pointer dereference check proved (altergo: 1 VC)
+ghc_sort.adb:136:32: info: pointer dereference check proved
+ghc_sort.adb:136:39: info: pointer dereference check proved
+ghc_sort.adb:136:49: info: index check proved
+ghc_sort.adb:136:58: info: pointer dereference check proved
+ghc_sort.adb:136:66: info: index check proved
+ghc_sort.adb:137:18: info: subprogram variant proved
+ghc_sort.adb:137:31: info: pointer dereference check proved
 ghc_sort.adb:143:13: info: implicit function contract might not be available on recursive calls
 ghc_sort.adb:143:13: info: implicit terminating annotation on "Sum_Length_Aux" has been proved, subprogram will terminate
-ghc_sort.adb:145:14: info: pointer dereference check proved (altergo: 1 VC)
-ghc_sort.adb:145:33: info: overflow check proved (CVC5: 2 VC)
-ghc_sort.adb:145:35: info: subprogram variant proved (Trivial)
-ghc_sort.adb:145:52: info: pointer dereference check proved (CVC5: 1 VC)
-ghc_sort.adb:146:13: info: pointer dereference check proved (CVC5: 1 VC)
-ghc_sort.adb:146:16: info: overflow check proved (altergo: 2 VC)
-ghc_sort.adb:146:18: info: subprogram variant proved (Trivial)
-ghc_sort.adb:146:35: info: pointer dereference check proved (altergo: 1 VC)
+ghc_sort.adb:145:14: info: pointer dereference check proved
+ghc_sort.adb:145:33: info: overflow check proved
+ghc_sort.adb:145:35: info: subprogram variant proved
+ghc_sort.adb:145:52: info: pointer dereference check proved
+ghc_sort.adb:146:13: info: pointer dereference check proved
+ghc_sort.adb:146:16: info: overflow check proved
+ghc_sort.adb:146:18: info: subprogram variant proved
+ghc_sort.adb:146:35: info: pointer dereference check proved
 ghc_sort.adb:150:13: info: implicit terminating annotation on "Sum_Length" has been proved, subprogram will terminate
-ghc_sort.adb:158:14: info: postcondition proved (CVC5: 2 VC; Trivial: 1 VC; Z3: 1 VC)
-ghc_sort.adb:163:28: info: pointer dereference check proved (CVC5: 1 VC)
-ghc_sort.adb:167:13: info: absence of resource or memory leak at end of scope proved (CVC5: 1 VC)
-ghc_sort.adb:169:19: info: pointer dereference check proved (CVC5: 1 VC)
-ghc_sort.adb:169:22: info: overflow check proved (CVC5: 2 VC)
-ghc_sort.adb:169:25: info: pointer dereference check proved (CVC5: 1 VC)
-ghc_sort.adb:169:25: info: pointer dereference check proved (altergo: 1 VC)
-ghc_sort.adb:169:30: info: pointer dereference check proved (CVC5: 1 VC)
-ghc_sort.adb:169:30: info: pointer dereference check proved (altergo: 1 VC)
-ghc_sort.adb:169:34: info: length check proved (CVC5: 3 VC; Trivial: 1 VC)
-ghc_sort.adb:169:34: info: precondition proved (CVC5: 3 VC)
-ghc_sort.adb:169:34: info: predicate check proved (altergo: 1 VC)
-ghc_sort.adb:169:42: info: pointer dereference check proved (CVC5: 1 VC)
-ghc_sort.adb:169:42: info: pointer dereference check proved (altergo: 1 VC)
-ghc_sort.adb:169:51: info: pointer dereference check proved (CVC5: 1 VC)
-ghc_sort.adb:169:51: info: pointer dereference check proved (altergo: 1 VC)
-ghc_sort.adb:169:56: info: pointer dereference check proved (CVC5: 1 VC)
-ghc_sort.adb:169:66: info: pointer dereference check proved (CVC5: 1 VC)
-ghc_sort.adb:169:71: info: pointer dereference check proved (CVC5: 1 VC)
-ghc_sort.adb:171:13: info: absence of resource or memory leak proved (CVC5: 1 VC; Trivial: 1 VC)
-ghc_sort.adb:171:20: info: pointer dereference check proved (altergo: 1 VC)
-ghc_sort.adb:172:13: info: absence of resource or memory leak proved (CVC5: 1 VC; Trivial: 1 VC)
-ghc_sort.adb:173:15: info: absence of resource or memory leak proved (CVC5: 1 VC)
-ghc_sort.adb:173:15: info: discriminant check proved (Trivial: 1 VC)
-ghc_sort.adb:174:13: info: precondition proved (Trivial: 1 VC; Z3: 3 VC)
-ghc_sort.adb:174:28: info: pointer dereference check proved (CVC5: 1 VC)
-ghc_sort.adb:183:28: info: precondition proved (CVC5: 1 VC)
-ghc_sort.adb:184:07: info: absence of resource or memory leak at end of scope proved (CVC5: 1 VC)
+ghc_sort.adb:158:14: info: postcondition proved
+ghc_sort.adb:163:28: info: pointer dereference check proved
+ghc_sort.adb:167:13: info: absence of resource or memory leak at end of scope proved
+ghc_sort.adb:169:19: info: pointer dereference check proved
+ghc_sort.adb:169:22: info: overflow check proved
+ghc_sort.adb:169:25: info: pointer dereference check proved
+ghc_sort.adb:169:30: info: pointer dereference check proved
+ghc_sort.adb:169:34: info: length check proved
+ghc_sort.adb:169:34: info: precondition proved
+ghc_sort.adb:169:34: info: predicate check proved
+ghc_sort.adb:169:42: info: pointer dereference check proved
+ghc_sort.adb:169:51: info: pointer dereference check proved
+ghc_sort.adb:169:56: info: pointer dereference check proved
+ghc_sort.adb:169:66: info: pointer dereference check proved
+ghc_sort.adb:169:71: info: pointer dereference check proved
+ghc_sort.adb:171:13: info: absence of resource or memory leak proved
+ghc_sort.adb:171:20: info: pointer dereference check proved
+ghc_sort.adb:172:13: info: absence of resource or memory leak proved
+ghc_sort.adb:173:15: info: absence of resource or memory leak proved
+ghc_sort.adb:173:15: info: discriminant check proved
+ghc_sort.adb:174:13: info: precondition proved
+ghc_sort.adb:174:28: info: pointer dereference check proved
+ghc_sort.adb:183:28: info: precondition proved
+ghc_sort.adb:184:07: info: absence of resource or memory leak at end of scope proved
 ghc_sort.adb:184:07: info: initialization of "L" proved
-ghc_sort.adb:190:31: info: overflow check proved (CVC5: 2 VC)
-ghc_sort.adb:191:33: info: loop invariant initialization proved (CVC5: 2 VC; Trivial: 1 VC)
-ghc_sort.adb:191:33: info: loop invariant preservation proved (CVC5: 1 VC; Trivial: 1 VC; Z3: 1 VC)
-ghc_sort.adb:192:33: info: loop invariant initialization proved (CVC5: 1 VC)
-ghc_sort.adb:192:33: info: loop invariant preservation proved (CVC5: 1 VC)
-ghc_sort.adb:192:56: info: index check proved (CVC5: 4 VC)
-ghc_sort.adb:194:31: info: range check proved (CVC5: 2 VC; Z3: 1 VC; altergo: 1 VC)
-ghc_sort.adb:194:40: info: index check proved (CVC5: 2 VC)
-ghc_sort.adb:194:54: info: index check proved (CVC5: 1 VC; altergo: 1 VC)
-ghc_sort.adb:194:54: info: overflow check proved (CVC5: 2 VC)
-ghc_sort.adb:196:43: info: index check proved (CVC5: 2 VC)
-ghc_sort.adb:196:53: info: index check proved (altergo: 2 VC)
-ghc_sort.adb:197:19: info: length check proved (CVC5: 2 VC; Trivial: 1 VC; altergo: 1 VC)
-ghc_sort.adb:197:22: info: precondition proved (altergo: 1 VC)
-ghc_sort.adb:199:15: info: absence of resource or memory leak proved (CVC5: 1 VC)
-ghc_sort.adb:199:15: info: discriminant check proved (Trivial: 1 VC)
-ghc_sort.adb:199:46: info: range check proved (CVC5: 1 VC; altergo: 1 VC)
-ghc_sort.adb:199:55: info: length check proved (CVC5: 2 VC; Trivial: 1 VC; altergo: 1 VC)
-ghc_sort.adb:199:55: info: predicate check proved (altergo: 1 VC)
-ghc_sort.adb:205:33: info: pointer dereference check proved (CVC5: 2 VC)
-ghc_sort.adb:206:33: info: loop invariant initialization proved (CVC5: 1 VC; Trivial: 1 VC; Z3: 1 VC)
-ghc_sort.adb:206:33: info: loop invariant preservation proved (CVC5: 1 VC; Trivial: 1 VC; altergo: 1 VC)
-ghc_sort.adb:207:33: info: loop invariant initialization proved (CVC5: 1 VC)
-ghc_sort.adb:207:33: info: loop invariant preservation proved (altergo: 1 VC)
-ghc_sort.adb:207:51: info: range check proved (CVC5: 2 VC; altergo: 2 VC)
-ghc_sort.adb:208:10: info: precondition proved (Trivial: 1 VC; altergo: 3 VC)
-ghc_sort.adb:212:17: info: length check proved (CVC5: 1 VC; Trivial: 1 VC; altergo: 2 VC)
-ghc_sort.adb:214:17: info: length check proved (CVC5: 3 VC; Trivial: 1 VC)
-ghc_sort.adb:214:21: info: pointer dereference check proved (altergo: 1 VC)
-ghc_sort.adb:215:10: info: absence of resource or memory leak proved (CVC5: 1 VC; Trivial: 1 VC)
-ghc_sort.ads:8:14: info: postcondition proved (CVC5: 8 VC; Z3: 1 VC)
-ghc_sort.ads:8:69: info: range check proved (CVC5: 1 VC; altergo: 1 VC)
-ghc_sort.ads:8:77: info: overflow check proved (Z3: 1 VC; altergo: 1 VC)
-ghc_sort.ads:12:54: info: range check proved (altergo: 2 VC)
-ghc_sort.ads:12:62: info: overflow check proved (Z3: 1 VC; altergo: 1 VC)
-ghc_sort.ads:16:27: info: index check proved (CVC5: 1 VC; altergo: 1 VC)
-ghc_sort.ads:17:37: info: index check proved (Z3: 1 VC; altergo: 1 VC)
-ghc_sort.ads:17:47: info: range check proved (CVC5: 1 VC; altergo: 1 VC)
-ghc_sort.ads:17:55: info: overflow check proved (CVC5: 1 VC; altergo: 1 VC)
-ghc_sort.ads:22:43: info: overflow check proved (CVC5: 2 VC)
-ghc_sort.ads:22:64: info: index check proved (CVC5: 1 VC; altergo: 1 VC)
-ghc_sort.ads:22:64: info: overflow check proved (Z3: 1 VC; altergo: 1 VC)
-ghc_sort.ads:22:83: info: index check proved (CVC5: 1 VC; altergo: 1 VC)
-ghc_sort.ads:27:43: info: overflow check proved (CVC5: 1 VC; altergo: 1 VC)
-ghc_sort.ads:28:38: info: index check proved (altergo: 2 VC)
-ghc_sort.ads:28:41: info: overflow check proved (Z3: 1 VC; altergo: 1 VC)
-ghc_sort.ads:28:62: info: index check proved (altergo: 2 VC)
-ghc_sort.ads:28:62: info: overflow check proved (altergo: 2 VC)
-ghc_sort.ads:28:79: info: index check proved (Z3: 1 VC; altergo: 1 VC)
-ghc_sort.ads:28:79: info: overflow check proved (altergo: 2 VC)
-ghc_sort.ads:28:89: info: index check proved (CVC5: 1 VC; altergo: 1 VC)
-ghc_sort.ads:29:36: info: index check proved (altergo: 2 VC)
-ghc_sort.ads:29:36: info: overflow check proved (altergo: 2 VC)
-ghc_sort.ads:29:44: info: range check proved (altergo: 2 VC)
-ghc_sort.ads:29:52: info: overflow check proved (altergo: 2 VC)
-ghc_sort.ads:30:36: info: index check proved (altergo: 2 VC)
-ghc_sort.ads:30:47: info: index check proved (CVC5: 1 VC; altergo: 1 VC)
-ghc_sort.ads:30:47: info: overflow check proved (CVC5: 1 VC; altergo: 1 VC)
-ghc_sort.ads:30:73: info: index check proved (CVC5: 1 VC; altergo: 1 VC)
-ghc_sort.ads:30:73: info: overflow check proved (Z3: 1 VC; altergo: 1 VC)
-ghc_sort.ads:30:78: info: index check proved (CVC5: 1 VC; altergo: 1 VC)
-ghc_sort.ads:32:38: info: index check proved (altergo: 2 VC)
-ghc_sort.ads:32:41: info: overflow check proved (altergo: 2 VC)
-ghc_sort.ads:32:62: info: index check proved (CVC5: 2 VC)
-ghc_sort.ads:32:62: info: overflow check proved (CVC5: 1 VC; altergo: 1 VC)
-ghc_sort.ads:32:79: info: index check proved (Z3: 1 VC; altergo: 1 VC)
-ghc_sort.ads:32:79: info: overflow check proved (altergo: 2 VC)
-ghc_sort.ads:32:90: info: index check proved (CVC5: 1 VC; altergo: 1 VC)
-ghc_sort.ads:33:36: info: index check proved (CVC5: 1 VC; altergo: 1 VC)
-ghc_sort.ads:33:36: info: overflow check proved (altergo: 2 VC)
-ghc_sort.ads:33:44: info: range check proved (altergo: 2 VC)
-ghc_sort.ads:33:52: info: overflow check proved (CVC5: 1 VC; altergo: 1 VC)
-ghc_sort.ads:34:36: info: index check proved (CVC5: 1 VC; altergo: 1 VC)
-ghc_sort.ads:34:47: info: index check proved (altergo: 2 VC)
-ghc_sort.ads:34:47: info: overflow check proved (Z3: 1 VC; altergo: 1 VC)
-ghc_sort.ads:34:72: info: index check proved (Z3: 1 VC; altergo: 1 VC)
-ghc_sort.ads:34:72: info: overflow check proved (altergo: 2 VC)
-ghc_sort.ads:34:77: info: index check proved (Z3: 1 VC; altergo: 1 VC)
+ghc_sort.adb:190:31: info: overflow check proved
+ghc_sort.adb:191:33: info: loop invariant initialization proved
+ghc_sort.adb:191:33: info: loop invariant preservation proved
+ghc_sort.adb:192:33: info: loop invariant initialization proved
+ghc_sort.adb:192:33: info: loop invariant preservation proved
+ghc_sort.adb:192:56: info: index check proved
+ghc_sort.adb:194:31: info: range check proved
+ghc_sort.adb:194:40: info: index check proved
+ghc_sort.adb:194:54: info: index check proved
+ghc_sort.adb:194:54: info: overflow check proved
+ghc_sort.adb:196:43: info: index check proved
+ghc_sort.adb:196:53: info: index check proved
+ghc_sort.adb:197:19: info: length check proved
+ghc_sort.adb:197:22: info: precondition proved
+ghc_sort.adb:199:15: info: absence of resource or memory leak proved
+ghc_sort.adb:199:15: info: discriminant check proved
+ghc_sort.adb:199:46: info: range check proved
+ghc_sort.adb:199:55: info: length check proved
+ghc_sort.adb:199:55: info: predicate check proved
+ghc_sort.adb:205:33: info: pointer dereference check proved
+ghc_sort.adb:206:33: info: loop invariant initialization proved
+ghc_sort.adb:206:33: info: loop invariant preservation proved
+ghc_sort.adb:207:33: info: loop invariant initialization proved
+ghc_sort.adb:207:33: info: loop invariant preservation proved
+ghc_sort.adb:207:51: info: range check proved
+ghc_sort.adb:208:10: info: precondition proved
+ghc_sort.adb:212:17: info: length check proved
+ghc_sort.adb:214:17: info: length check proved
+ghc_sort.adb:214:21: info: pointer dereference check proved
+ghc_sort.adb:215:10: info: absence of resource or memory leak proved
+ghc_sort.ads:8:14: info: postcondition proved
+ghc_sort.ads:8:69: info: range check proved
+ghc_sort.ads:8:77: info: overflow check proved
+ghc_sort.ads:12:54: info: range check proved
+ghc_sort.ads:12:62: info: overflow check proved
+ghc_sort.ads:16:27: info: index check proved
+ghc_sort.ads:17:37: info: index check proved
+ghc_sort.ads:17:47: info: range check proved
+ghc_sort.ads:17:55: info: overflow check proved
+ghc_sort.ads:22:43: info: overflow check proved
+ghc_sort.ads:22:64: info: index check proved
+ghc_sort.ads:22:64: info: overflow check proved
+ghc_sort.ads:22:83: info: index check proved
+ghc_sort.ads:27:43: info: overflow check proved
+ghc_sort.ads:28:38: info: index check proved
+ghc_sort.ads:28:41: info: overflow check proved
+ghc_sort.ads:28:62: info: index check proved
+ghc_sort.ads:28:62: info: overflow check proved
+ghc_sort.ads:28:79: info: index check proved
+ghc_sort.ads:28:79: info: overflow check proved
+ghc_sort.ads:28:89: info: index check proved
+ghc_sort.ads:29:36: info: index check proved
+ghc_sort.ads:29:36: info: overflow check proved
+ghc_sort.ads:29:44: info: range check proved
+ghc_sort.ads:29:52: info: overflow check proved
+ghc_sort.ads:30:36: info: index check proved
+ghc_sort.ads:30:47: info: index check proved
+ghc_sort.ads:30:47: info: overflow check proved
+ghc_sort.ads:30:73: info: index check proved
+ghc_sort.ads:30:73: info: overflow check proved
+ghc_sort.ads:30:78: info: index check proved
+ghc_sort.ads:32:38: info: index check proved
+ghc_sort.ads:32:41: info: overflow check proved
+ghc_sort.ads:32:62: info: index check proved
+ghc_sort.ads:32:62: info: overflow check proved
+ghc_sort.ads:32:79: info: index check proved
+ghc_sort.ads:32:79: info: overflow check proved
+ghc_sort.ads:32:90: info: index check proved
+ghc_sort.ads:33:36: info: index check proved
+ghc_sort.ads:33:36: info: overflow check proved
+ghc_sort.ads:33:44: info: range check proved
+ghc_sort.ads:33:52: info: overflow check proved
+ghc_sort.ads:34:36: info: index check proved
+ghc_sort.ads:34:47: info: index check proved
+ghc_sort.ads:34:47: info: overflow check proved
+ghc_sort.ads:34:72: info: index check proved
+ghc_sort.ads:34:72: info: overflow check proved
+ghc_sort.ads:34:77: info: index check proved
 ghc_sort.ads:36:13: info: implicit terminating annotation on "Merge" has been proved, subprogram will terminate
-ghc_sort.ads:37:16: info: range check proved (CVC5: 1 VC; altergo: 1 VC)
-ghc_sort.ads:37:39: info: overflow check proved (CVC5: 2 VC)
-ghc_sort.ads:37:43: info: range check proved (altergo: 2 VC)
-ghc_sort.ads:38:51: info: index check proved (CVC5: 1 VC; altergo: 1 VC)
-ghc_sort.ads:38:63: info: index check proved (altergo: 2 VC)
-ghc_sort.ads:39:51: info: index check proved (CVC5: 1 VC; altergo: 1 VC)
-ghc_sort.ads:39:63: info: index check proved (altergo: 2 VC)
-ghc_sort.ads:40:14: info: postcondition proved (CVC5: 1 VC; Z3: 1 VC)
-ghc_sort.ads:41:71: info: index check proved (CVC5: 2 VC)
-ghc_sort.ads:41:93: info: index check proved (CVC5: 2 VC)
+ghc_sort.ads:37:16: info: range check proved
+ghc_sort.ads:37:39: info: overflow check proved
+ghc_sort.ads:37:43: info: range check proved
+ghc_sort.ads:38:51: info: index check proved
+ghc_sort.ads:38:63: info: index check proved
+ghc_sort.ads:39:51: info: index check proved
+ghc_sort.ads:39:63: info: index check proved
+ghc_sort.ads:40:14: info: postcondition proved
+ghc_sort.ads:41:71: info: index check proved
+ghc_sort.ads:41:93: info: index check proved
 ghc_sort.ads:46:13: info: implicit terminating annotation on "S_Reverse" has been proved, subprogram will terminate
-ghc_sort.ads:47:15: info: range check proved (CVC5: 1 VC; altergo: 1 VC)
-ghc_sort.ads:48:14: info: postcondition proved (CVC5: 2 VC)
-ghc_sort.ads:49:58: info: index check proved (CVC5: 1 VC; altergo: 1 VC)
-ghc_sort.ads:49:67: info: range check proved (CVC5: 1 VC; altergo: 1 VC)
-ghc_sort.ads:49:75: info: overflow check proved (CVC5: 2 VC)
-ghc_sort.ads:49:79: info: index check proved (CVC5: 1 VC; altergo: 1 VC)
-ghc_sort.ads:49:79: info: overflow check proved (CVC5: 1 VC; altergo: 1 VC)
+ghc_sort.ads:47:15: info: range check proved
+ghc_sort.ads:48:14: info: postcondition proved
+ghc_sort.ads:49:58: info: index check proved
+ghc_sort.ads:49:67: info: range check proved
+ghc_sort.ads:49:75: info: overflow check proved
+ghc_sort.ads:49:79: info: index check proved
+ghc_sort.ads:49:79: info: overflow check proved
 ghc_sort.ads:52:35: info: initialization of "Result" proved
-ghc_sort.ads:53:15: info: range check proved (CVC5: 2 VC)
-ghc_sort.ads:54:14: info: postcondition proved (Z3: 1 VC)
-ghc_sort.ads:54:58: info: index check proved (CVC5: 1 VC; altergo: 1 VC)
-ghc_sort.ads:54:74: info: index check proved (CVC5: 2 VC)
+ghc_sort.ads:53:15: info: range check proved
+ghc_sort.ads:54:14: info: postcondition proved
+ghc_sort.ads:54:58: info: index check proved
+ghc_sort.ads:54:74: info: index check proved

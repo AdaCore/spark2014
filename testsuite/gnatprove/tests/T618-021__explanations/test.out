@@ -4,29 +4,29 @@ inline.adb:14:14: info: local subprogram "B" only analyzed in the context of cal
 inline.adb:14:14: info: terminating annotation on "B" has been proved, subprogram will terminate
 inline.adb:14:14: warning: subprogram "B" has no effect
 inline.adb:16:20: info: no contextual analysis of "A" (body not seen yet)
-inline.adb:16:20: medium: terminating annotation on "A" could be incorrect, subprogram is recursive, in call inlined at inline.adb:21
+inline.adb:16:20: medium: terminating annotation on "A" could be incorrect, subprogram is recursive, in call inlined at inline.adb:21 [possible fix: annotate "A" with a Subprogram_Variant aspect]
 inline.adb:21:20: info: analyzing call to "B" in context
 mutually_recursive_nested_package.adb:1:10: info: implicit function contract might not be available on recursive calls
 mutually_recursive_nested_package.adb:2:03: warning: Always_Return annotation is useless
 mutually_recursive_nested_package.adb:2:03: warning: function "Mutually_Recursive_Nested_Package" has implicit Always_Return annotation
-mutually_recursive_nested_package.adb:3:17: medium: implicit terminating annotation on "Mutually_Recursive_Nested_Package" could be incorrect, "P" and "Mutually_Recursive_Nested_Package" are mutually recursive
+mutually_recursive_nested_package.adb:3:17: medium: implicit terminating annotation on "Mutually_Recursive_Nested_Package" could be incorrect, "P" and "Mutually_Recursive_Nested_Package" are mutually recursive [possible fix: annotate "P" and "Mutually_Recursive_Nested_Package" with Subprogram_Variant aspects]
 mutually_recursive_nested_package.adb:3:17: warning: initialization of "X" has no effect
 nonterminating.adb:1:11: warning: subprogram "Nonterminating" has no effect
 nonterminating.adb:4:14: info: add a contract to analyze it separately from calling contexts
 nonterminating.adb:4:14: info: local subprogram "Infinite_Loop" only analyzed in the context of calls
 nonterminating.adb:4:14: warning: subprogram "Infinite_Loop" has no effect
-nonterminating.adb:7:20: medium: terminating annotation on "Nonterminating" could be incorrect, loop might be nonterminating, in call inlined at nonterminating.adb:21
+nonterminating.adb:7:20: medium: terminating annotation on "Nonterminating" could be incorrect, loop might be nonterminating, in call inlined at nonterminating.adb:21 [possible fix: add loop variant in the loop body]
 nonterminating.adb:8:15: medium: overflow check might fail, cannot prove upper bound for -X, in call inlined at nonterminating.adb:21 (e.g. when X = Integer'First) [reason for check: result of negation must fit in a 32-bits machine integer]
 nonterminating.adb:12:33: warning: unused variable "I"
-nonterminating.adb:14:07: medium: implicit terminating annotation on "Infinite_Recursion" could be incorrect, subprogram is recursive
+nonterminating.adb:14:07: medium: implicit terminating annotation on "Infinite_Recursion" could be incorrect, subprogram is recursive [possible fix: annotate "Infinite_Recursion" with a Subprogram_Variant aspect]
 nonterminating.adb:14:14: info: analyzing call to "Infinite_Recursion" in context
 nonterminating.adb:14:14: info: no contextual analysis of call to recursive subprogram
-nonterminating.adb:18:33: medium: terminating annotation on "Nonterminating" could be incorrect, loop might be nonterminating
+nonterminating.adb:18:33: medium: terminating annotation on "Nonterminating" could be incorrect, loop might be nonterminating [possible fix: add loop variant in the loop body]
 nonterminating.adb:18:33: warning: loop condition is stable
 nonterminating.adb:21:04: info: analyzing call to "Infinite_Loop" in context
-nonterminating.adb:25:07: medium: terminating annotation on "Nonterminating" could be incorrect, subprogram is recursive
+nonterminating.adb:25:07: medium: terminating annotation on "Nonterminating" could be incorrect, subprogram is recursive [possible fix: annotate "Nonterminating" with a Subprogram_Variant aspect]
 nonterminating.adb:25:25: info: range check proved (CVC5: 2 VC)
 p.adb:3:11: high: all paths in "P" raise exceptions or do not terminate normally
-p.adb:5:04: medium: call to nonreturning subprogram might be executed
+p.adb:5:04: medium: unexpected exception might be raised [possible explanation: No_Return procedures have an implicit exceptional contract]
 p.adb:5:04: warning: assuming "Crash" has no effect on global items
 p.adb:5:04: warning: no Global contract available for "Crash"

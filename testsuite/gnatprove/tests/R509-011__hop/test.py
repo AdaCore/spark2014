@@ -56,7 +56,7 @@ if __name__ == "__main__":
     for line in f:
         if "medium" in line:
             count += 1
-        print(line)
+        print(line.strip())
 
     if not (count == 15):
         print("FAILED There should be exactly 15 axioms in this tests")

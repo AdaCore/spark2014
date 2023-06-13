@@ -23,9 +23,18 @@ def parse_options():
         dest="gaia_id",
         help="Specify the GAIA event id to read outputs from",
     )
+    parser.add_argument(
+        "--from-gitlab",
+        dest="gitlab_id",
+        help="Specify the Gitlab pipeline id to read outputs from",
+    )
     args = parser.parse_args()
-    if args.outputdir and args.gaia_id:
-        print("please provide only one of --output-dir and --from-gaia")
+    if (
+        (args.outputdir and args.gitlab_id)
+        or (args.outputdir and args.gaia_id)
+        or (args.gitlab_id and args.gaia_id)
+    ):
+        print("please provide only one of (--output-dir, --from-gaia, --from-gitlab)")
         exit(1)
     return args
 
@@ -43,6 +52,8 @@ class BaselineRewriter(BaseBaselineRewriter):
         if not os.path.exists(testdir):
             testdir = os.path.join("internal", test_name)
         if not os.path.exists(testdir):
+            testdir = os.path.join("sparklib", test_name)
+        if not os.path.exists(testdir):
             raise RewritingError(f"cannot find test {test_name!r}")
         return os.path.join(testdir, "test.out")
 
@@ -56,19 +67,29 @@ def main():
             print(missing_package_msg)
             exit(1)
         g = Gaia()
-        outputdir = g.download_test_results(args.gaia_id)
+        outputdirs = [g.download_test_results(args.gaia_id)]
+    elif args.gitlab_id:
+        try:
+            from remote_artifacts import Gitlab, GitLabProjectDescription
+        except ImportError:
+            print(missing_package_msg)
+            exit(1)
+        p = GitLabProjectDescription("168", ["spark2014"])
+        gl = Gitlab()
+        outputdirs = gl.download_test_results(p, args.gitlab_id)
     elif args.outputdir:
-        outputdir = args.outputdir
+        outputdirs = [args.outputdir]
     else:
-        outputdir = os.path.join("out", "new")
+        outputdirs = [os.path.join("out", "new")]
     BR = BaselineRewriter(ColorConfig())
-    summary = BR.rewrite(outputdir)
-    for elt in summary.new_baselines:
-        print(f"updated baseline for {elt}")
-    for elt in summary.deleted_baselines:
-        print(f"deleted empty baseline for {elt}")
-    for elt in summary.errors:
-        print(f"error updating baseline for {elt}")
+    for d in outputdirs:
+        summary = BR.rewrite(d)
+        for elt in summary.new_baselines:
+            print(f"updated baseline for {elt}")
+        for elt in summary.deleted_baselines:
+            print(f"deleted empty baseline for {elt}")
+        for elt in summary.errors:
+            print(f"error updating baseline for {elt}")
 
 
 main()

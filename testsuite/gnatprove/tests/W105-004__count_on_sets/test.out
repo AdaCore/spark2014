@@ -1,4 +1,4 @@
-ho_sets.adb:8:07: medium: implicit terminating annotation on "Count" could be incorrect, call via access-to-subprogram might be nonterminating
+ho_sets.adb:8:07: medium: implicit terminating annotation on "Count" could be incorrect, call via access-to-subprogram might be nonterminating [possible explanation: call could hide recursive calls]
 ho_sets.adb:9:16: info: pointer dereference check proved (CVC5: 1 VC)
 ho_sets.adb:9:22: info: precondition proved (CVC5: 1 VC)
 ho_sets.adb:9:58: info: predicate check proved (Trivial: 1 VC)
@@ -58,7 +58,7 @@ ho_sets.ads:37:63: info: predicate check proved (Trivial: 1 VC)
 ho_sets.ads:39:14: info: postcondition proved (CVC5: 1 VC)
 ho_sets.ads:39:14: info: predicate check proved (Trivial: 1 VC)
 ho_sets.ads:39:32: info: null exclusion check proved (CVC5: 1 VC)
-ho_sets.ads:39:38: medium: implicit terminating annotation on "Lemma_Count_Remove" could be incorrect, call via access-to-subprogram might be nonterminating
+ho_sets.ads:39:38: medium: implicit terminating annotation on "Lemma_Count_Remove" could be incorrect, call via access-to-subprogram might be nonterminating [possible explanation: call could hide recursive calls]
 ho_sets.ads:40:10: info: predicate check proved (Trivial: 1 VC)
 ho_sets.ads:40:17: info: precondition proved (CVC5: 1 VC)
 ho_sets.ads:40:43: info: null exclusion check proved (CVC5: 1 VC)

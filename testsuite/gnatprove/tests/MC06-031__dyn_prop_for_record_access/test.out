@@ -10,7 +10,7 @@ dynamic_types.adb:29:47: info: range check proved (CVC5: 2 VC)
 dynamic_types.adb:33:28: info: range check proved (CVC5: 2 VC)
 dynamic_types.adb:34:07: info: initialization of "Result" proved
 dynamic_types.adb:35:07: info: initialization of "Tmp" proved
-dynamic_types.adb:37:07: medium: implicit terminating annotation on "Search" could be incorrect, loop might be nonterminating
+dynamic_types.adb:37:07: medium: implicit terminating annotation on "Search" could be incorrect, loop might be nonterminating [possible fix: add loop variant in the loop body]
 dynamic_types.adb:39:13: info: loop invariant initialization proved (CVC5: 1 VC)
 dynamic_types.adb:39:13: info: loop invariant preservation proved (CVC5: 1 VC)
 dynamic_types.adb:39:42: info: overflow check proved (CVC5: 4 VC)

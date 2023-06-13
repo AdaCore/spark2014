@@ -2437,78 +2437,88 @@ package body Gnat2Why.Subprograms is
       Exc_Id : W_Identifier_Id)
       return W_Pred_Id
    is
-      Prag                 : constant Node_Id :=
+      Prag : constant Node_Id :=
         Get_Pragma (E, Pragma_Exceptional_Cases);
-      Aggr                 : constant Node_Id :=
-        Expression (First (Pragma_Argument_Associations (Prag)));
-      Assocs               : constant List_Id := Component_Associations (Aggr);
-      Others_Present       : constant Boolean :=
-        Nkind (First (Choice_List (Last (Assocs)))) = N_Others_Choice;
-      Nb_Cases             : constant Integer :=
-        Natural (List_Length (Assocs));
-      Elsif_Parts          : W_Expr_Array
-        (2 .. Nb_Cases - (if Others_Present then 1 else 0));
-      Else_Part            : W_Pred_Id;
-      Exceptional_Case     : Node_Id := First (Assocs);
-      Dynamic_Prop_Effects : constant W_Pred_Id :=
-        New_And_Pred
-          ((1 => Compute_Dynamic_Property_For_Effects
-              (E, Params, Exceptional => True),
-            2 => Compute_Type_Invariants_For_Subprogram
-              (E, Params, False, Exceptional => True),
-            3 => Preservation_Of_Access_Parameters (E, Params)));
-            --  Dynamic invariant and type invariant for outputs of the
-            --  procedure, as well as preservation of discriminants and
-            --  bounds of access parameters.
-
    begin
-      pragma Assert (Present (Prag));
+      if No (Prag) then
+         pragma Assert (No_Return (E));
+         return True_Pred;
+      end if;
 
-      --  Get the case where there is only the others choice out of the way
+      declare
+         Aggr                 : constant Node_Id :=
+           Expression (First (Pragma_Argument_Associations (Prag)));
+         Assocs               : constant List_Id :=
+           Component_Associations (Aggr);
+         Others_Present       : constant Boolean :=
+           Nkind (First (Choice_List (Last (Assocs)))) = N_Others_Choice;
+         Nb_Cases             : constant Integer :=
+           Natural (List_Length (Assocs));
+         Elsif_Parts          : W_Expr_Array
+           (2 .. Nb_Cases - (if Others_Present then 1 else 0));
+         Else_Part            : W_Pred_Id;
+         Exceptional_Case     : Node_Id := First (Assocs);
+         Dynamic_Prop_Effects : constant W_Pred_Id :=
+           New_And_Pred
+             ((1 => Compute_Dynamic_Property_For_Effects
+               (E, Params, Exceptional => True),
+               2 => Compute_Type_Invariants_For_Subprogram
+                 (E, Params, False, Exceptional => True),
+               3 => Preservation_Of_Access_Parameters (E, Params)));
+         --  Dynamic invariant and type invariant for outputs of the
+         --  procedure, as well as preservation of discriminants and
+         --  bounds of access parameters.
 
-      if Nb_Cases = 1 and then Others_Present then
+      begin
+
+         --  Get the case where there is only the others choice out of the way
+
+         if Nb_Cases = 1 and then Others_Present then
+            return New_And_Pred
+              (Left  => Dynamic_Prop_Effects,
+               Right => Transform_Pred
+                 (Expression (Exceptional_Case), Params));
+         end if;
+
+         --  Fill the Elsif_Parts if any
+
+         Next (Exceptional_Case);
+         if Elsif_Parts'Length > 0 then
+            for Num in Elsif_Parts'Range loop
+               Elsif_Parts (Num) := New_Elsif
+                 (Condition => Compute_Guard_For_Exceptions
+                    (Choice_List (Exceptional_Case), Exc_Id, EW_Pred),
+                  Then_Part => +Transform_Pred
+                    (Expression (Exceptional_Case), Params),
+                  Domain    => EW_Pred);
+               Next (Exceptional_Case);
+            end loop;
+         end if;
+
+         --  Fill the Else_Part if any
+
+         if Others_Present then
+            Else_Part := Transform_Pred
+              (Expression (Exceptional_Case), Params);
+         else
+            Else_Part := False_Pred;
+         end if;
+
+         --  Reconstruct the conditional
+
+         Exceptional_Case := First (Assocs);
+
          return New_And_Pred
            (Left  => Dynamic_Prop_Effects,
-            Right => Transform_Pred (Expression (Exceptional_Case), Params));
-      end if;
-
-      --  Fill the Elsif_Parts if any
-
-      Next (Exceptional_Case);
-      if Elsif_Parts'Length > 0 then
-         for Num in Elsif_Parts'Range loop
-            Elsif_Parts (Num) := New_Elsif
-              (Condition => Compute_Guard_For_Exceptions
+            Right => New_Conditional
+              (Ada_Node    => Prag,
+               Condition   => +Compute_Guard_For_Exceptions
                  (Choice_List (Exceptional_Case), Exc_Id, EW_Pred),
-               Then_Part => +Transform_Pred
+               Then_Part   => Transform_Pred
                  (Expression (Exceptional_Case), Params),
-               Domain    => EW_Pred);
-            Next (Exceptional_Case);
-         end loop;
-      end if;
-
-      --  Fill the Else_Part if any
-
-      if Others_Present then
-         Else_Part := Transform_Pred (Expression (Exceptional_Case), Params);
-      else
-         Else_Part := False_Pred;
-      end if;
-
-      --  Reconstruct the conditional
-
-      Exceptional_Case := First (Assocs);
-
-      return New_And_Pred
-        (Left  => Dynamic_Prop_Effects,
-         Right => New_Conditional
-           (Ada_Node    => Prag,
-            Condition   => +Compute_Guard_For_Exceptions
-              (Choice_List (Exceptional_Case), Exc_Id, EW_Pred),
-            Then_Part   => Transform_Pred
-              (Expression (Exceptional_Case), Params),
-            Elsif_Parts => Elsif_Parts,
-            Else_Part   => Else_Part));
+               Elsif_Parts => Elsif_Parts,
+               Else_Part   => Else_Part));
+      end;
    end Compute_Exceptional_Cases_Postcondition;
 
    --------------------------
@@ -4042,65 +4052,76 @@ package body Gnat2Why.Subprograms is
                     Assert_Kind => EW_Assert));
          end Check_Post_For_Case;
 
-         Params           : constant Transformation_Params := Contract_Params;
-         Prag             : constant Node_Id :=
-           Get_Pragma (E, Pragma_Exceptional_Cases);
-         Aggr             : constant Node_Id :=
-           Expression (First (Pragma_Argument_Associations (Prag)));
-         Assocs           : constant List_Id := Component_Associations (Aggr);
-         Others_Present   : constant Boolean :=
-           Nkind (First (Choice_List (Last (Assocs)))) = N_Others_Choice;
-         Nb_Cases         : constant Integer := Natural (List_Length (Assocs));
-         Elsif_Parts      : W_Expr_Array
-           (2 .. Nb_Cases - (if Others_Present then 1 else 0));
-         Else_Part        : W_Prog_Id;
-         Exceptional_Case : Node_Id := First (Assocs);
-
-      --  Start of processing for Check_Exceptional_Cases
-
+         Params : constant Transformation_Params := Contract_Params;
+         Prag   : constant Node_Id := Get_Pragma (E, Pragma_Exceptional_Cases);
       begin
-         --  Get the case where there is only one choice out of the way
-
-         if Nb_Cases = 1 then
-            return Check_Post_For_Case (Exceptional_Case, Params);
+         if No (Prag) then
+            pragma Assert (No_Return (E));
+            return +Void;
          end if;
 
-         --  Fill the Elsif_Parts if any
+         declare
+            Aggr             : constant Node_Id :=
+              Expression (First (Pragma_Argument_Associations (Prag)));
+            Assocs           : constant List_Id :=
+              Component_Associations (Aggr);
+            Others_Present   : constant Boolean :=
+              Nkind (First (Choice_List (Last (Assocs)))) = N_Others_Choice;
+            Nb_Cases         : constant Integer :=
+              Natural (List_Length (Assocs));
+            Elsif_Parts      : W_Expr_Array
+              (2 .. Nb_Cases - (if Others_Present then 1 else 0));
+            Else_Part        : W_Prog_Id;
+            Exceptional_Case : Node_Id := First (Assocs);
 
-         Next (Exceptional_Case);
-         if Elsif_Parts'Length > 0 then
-            for Num in Elsif_Parts'Range loop
-               Elsif_Parts (Num) := New_Elsif
-                 (Condition => Compute_Guard_For_Exceptions
-                    (Choice_List (Exceptional_Case), Exc_Id, EW_Prog),
-                  Then_Part => +Check_Post_For_Case (Exceptional_Case, Params),
-                  Domain    => EW_Prog);
-               Next (Exceptional_Case);
-            end loop;
-         end if;
+            --  Start of processing for Check_Exceptional_Cases
 
-         --  Fill the Else_Part if any
+         begin
+            --  Get the case where there is only one choice out of the way
 
-         if Others_Present then
-            Else_Part := Check_Post_For_Case (Exceptional_Case, Params);
+            if Nb_Cases = 1 then
+               return Check_Post_For_Case (Exceptional_Case, Params);
+            end if;
 
-         --  Checks that no unexpected exceptions are raised are done on raises
+            --  Fill the Elsif_Parts if any
 
-         else
-            Else_Part := Why_Empty;
-         end if;
+            Next (Exceptional_Case);
+            if Elsif_Parts'Length > 0 then
+               for Num in Elsif_Parts'Range loop
+                  Elsif_Parts (Num) := New_Elsif
+                    (Condition => Compute_Guard_For_Exceptions
+                       (Choice_List (Exceptional_Case), Exc_Id, EW_Prog),
+                     Then_Part => +Check_Post_For_Case
+                       (Exceptional_Case, Params),
+                     Domain    => EW_Prog);
+                  Next (Exceptional_Case);
+               end loop;
+            end if;
 
-         --  Reconstruct the conditional
+            --  Fill the Else_Part if any
 
-         Exceptional_Case := First (Assocs);
+            if Others_Present then
+               Else_Part := Check_Post_For_Case (Exceptional_Case, Params);
 
-         return New_Conditional
-           (Ada_Node    => Prag,
-            Condition   => +Compute_Guard_For_Exceptions
-              (Choice_List (Exceptional_Case), Exc_Id, EW_Prog),
-            Then_Part   => Check_Post_For_Case (Exceptional_Case, Params),
-            Elsif_Parts => Elsif_Parts,
-            Else_Part   => Else_Part);
+            --  Checks that no unexpected exceptions are raised are done on
+            --  raises.
+
+            else
+               Else_Part := Why_Empty;
+            end if;
+
+            --  Reconstruct the conditional
+
+            Exceptional_Case := First (Assocs);
+
+            return New_Conditional
+              (Ada_Node    => Prag,
+               Condition   => +Compute_Guard_For_Exceptions
+                 (Choice_List (Exceptional_Case), Exc_Id, EW_Prog),
+               Then_Part   => Check_Post_For_Case (Exceptional_Case, Params),
+               Elsif_Parts => Elsif_Parts,
+               Else_Part   => Else_Part);
+         end;
       end Check_Exceptional_Cases;
 
       -----------------------
@@ -5444,19 +5465,12 @@ package body Gnat2Why.Subprograms is
             end case;
          end Is_Statically_False;
 
-         Pre_List : constant Node_Lists.List :=
-           Find_Contracts (E, Pragma_Precondition);
-
       begin
          --  Loop over the list of preconditions of E to see if one is
          --  statically false.
 
-         for Pre_N of Pre_List loop
-            if Is_Statically_False (Pre_N) then
-               return True;
-            end if;
-         end loop;
-         return False;
+         return (for some Pre_N of Find_Contracts (E, Pragma_Precondition) =>
+                   Is_Statically_False (Pre_N));
       end Is_Disabled;
 
    begin
@@ -6973,31 +6987,6 @@ package body Gnat2Why.Subprograms is
                                 2 => Dynamic_Prop_Effects,
                                 3 => Spec_Post_Call))));
                end;
-            end if;
-
-            --  For error-signaling procedures, define a variant of the
-            --  program function with a precondition of False inside the
-            --  namespace No_Return. This variant is used when calling the
-            --  error-signaling procedure outside another error-signaling
-            --  procedure. This ensures that a check is issued for each
-            --  such call, to detect when they are reachable.
-
-            if Is_Error_Signaling_Procedure (E) then
-               Emit
-                 (Th,
-                  New_Namespace_Declaration
-                    (Name         => NID (To_String (WNE_No_Return_Module)),
-                     Declarations =>
-                       (1 => New_Function_Decl
-                            (Domain      => EW_Prog,
-                             Name        => Prog_Id,
-                             Binders     => Spec_Binders & Func_Why_Binders,
-                             Location    => No_Location,
-                             Labels      => Symbol_Sets.Empty_Set,
-                             Return_Type => EW_Unit_Type,
-                             Effects     => Effects,
-                             Pre         => False_Pred,
-                             Post        => False_Pred))));
             end if;
 
             --  For higher order specializations, we do not take into account

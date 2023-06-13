@@ -2684,6 +2684,17 @@ package body Flow.Control_Flow_Graph is
       --  This means the loop body may not be executed, so any initializations
       --  in the loop which subsequent code depends on will be flagged up.
 
+      function Termination_Proved
+        (I_Scheme    : Node_Id;
+         Loop_Writes : Flow_Id_Sets.Set)
+         return Boolean
+      with
+        Pre => (if Present (I_Scheme)
+                then Nkind (I_Scheme) = N_Iteration_Scheme);
+      --  Analyzes the iteration scheme, if present, to determine whether
+      --  termination of the loop is guaranteed either by its syntax or by
+      --  the semantics of its iteration scheme.
+
       function Variables_Initialized_By_Loop (Loop_N : Node_Id)
                                               return Flow_Id_Sets.Set
       with Pre => Nkind (N) = N_Loop_Statement;
@@ -3050,6 +3061,66 @@ package body Flow.Control_Flow_Graph is
       begin
          return Do_Search (Loop_N) = Abandon;
       end Loop_Might_Exit_Early;
+
+      ------------------------
+      -- Termination_Proved --
+      ------------------------
+
+      function Termination_Proved
+        (I_Scheme    : Node_Id;
+         Loop_Writes : Flow_Id_Sets.Set)
+         return Boolean
+      is
+      begin
+
+         --  Termination of plain or while loops is not automatically proved
+         if No (I_Scheme) or else Present (Condition (I_Scheme)) then
+            return False;
+
+         --  Termination of loops over a type or range is proved
+         elsif Present (Loop_Parameter_Specification (I_Scheme)) then
+            return True;
+
+         elsif Present (Iterator_Specification (I_Scheme)) then
+            declare
+               I_Name : constant Node_Id :=
+                 Name (Iterator_Specification (I_Scheme));
+            begin
+               --  Loops over array always terminate
+               if Is_Iterator_Over_Array (Iterator_Specification (I_Scheme))
+
+                 --  If the name is not a path, then we iterate over something
+                 --  constant.
+                 or else not Is_Path_Expression (I_Name)
+
+                 --  If we have no root object, then we iterate over an
+                 --  object created by an allocator, which we cannot modify
+                 --  during the loop.
+                 or else No (Get_Root_Object (I_Name))
+
+                 --  If the root object is a constant, it cannot be modified
+                 --  during the loop.
+                 or else Is_Constant_In_SPARK (Get_Root_Object (I_Name))
+
+                 --  Otherwise, if we are in phase 2 (i.e. we know exactly all
+                 --  loop writes), we check that the root object is not
+                 --  modified during the loop. Get_Root_Object will always
+                 --  return entire variables.
+                 or else
+                   (not FA.Generating_Globals
+                      and then
+                    not Loop_Writes.Contains
+                      (Direct_Mapping_Id (Get_Root_Object (I_Name))))
+               then
+                  return True;
+               end if;
+            end;
+         else
+            raise Program_Error;
+         end if;
+
+         return False;
+      end Termination_Proved;
 
       -----------------------------------
       -- Variables_Initialized_By_Loop --
@@ -3591,6 +3662,7 @@ package body Flow.Control_Flow_Graph is
       I_Scheme          : constant Node_Id   := Iteration_Scheme (N);
       Loop_Id           : constant Entity_Id := Entity (Identifier (N));
       Fully_Initialized : Flow_Id_Sets.Set   := Flow_Id_Sets.Empty_Set;
+      Loop_Writes       : Flow_Id_Sets.Set   := Flow_Id_Sets.Empty_Set;
       Outer_Termination : constant Boolean   := Ctx.Termination_Proved;
 
    --  Start of processing for Do_Loop_Statement
@@ -3620,6 +3692,37 @@ package body Flow.Control_Flow_Graph is
          Ctx.Active_Loop := Outer_Loop;
       end;
 
+      --  Collect loop writes, this is needed to determine if the root object
+      --  of a path expression in the iteration scheme is modified during the
+      --  loop.
+
+      if not FA.Generating_Globals then
+         for V of FA.CFG.Get_Collection (Flow_Graphs.All_Vertices) loop
+            declare
+               Atr : V_Attributes renames FA.Atr (V);
+
+            begin
+               if Atr.Loops.Contains (Loop_Id)
+                 and then not Atr.In_Nested_Package
+               then
+                  for Var of
+                    Atr.Variables_Defined.Union (Atr.Volatiles_Read)
+                  loop
+                     if not Synthetic (Var) then
+                        Loop_Writes.Include
+                          (Change_Variant (Entire_Variable (Var),
+                           Normal_Use));
+                     end if;
+                  end loop;
+               end if;
+            end;
+         end loop;
+      end if;
+
+      Ctx.Termination_Proved :=
+        Ctx.Termination_Proved
+          or else Termination_Proved (I_Scheme, Loop_Writes);
+
       if No (I_Scheme) then
          --  We have a general (possibly infinite) loop
          Do_Loop;
@@ -3630,15 +3733,31 @@ package body Flow.Control_Flow_Graph is
 
       elsif Present (Loop_Parameter_Specification (I_Scheme)) then
          --  This is a normal for loop over a type or range
-         Ctx.Termination_Proved := True;
          Do_For_Loop (Fully_Initialized);
+
+         if not FA.Generating_Globals then
+            Loop_Writes.Insert
+              (Direct_Mapping_Id
+                 (Defining_Identifier
+                    (Loop_Parameter_Specification (I_Scheme))));
+
+            --  Sanity checking: Fully_Initialized variables are a subset of
+            --  all loop writes. This is not checked in phase 1 as Loop_Writes
+            --  is empty.
+            pragma Assert
+              (To_Entire_Variables (Fully_Initialized).Is_Subset
+                 (Of_Set => Loop_Writes));
+         end if;
 
       elsif Present (Iterator_Specification (I_Scheme)) then
          --  This is a `in' or `of' loop over some container
-         if Is_Iterator_Over_Array (Iterator_Specification (I_Scheme)) then
-            Ctx.Termination_Proved := True;
-         end if;
          Do_Iterator_Loop;
+
+         if not FA.Generating_Globals then
+            Loop_Writes.Insert
+              (Direct_Mapping_Id
+                 (Defining_Identifier (Iterator_Specification (I_Scheme))));
+         end if;
 
       else
          raise Program_Error;
@@ -3654,9 +3773,7 @@ package body Flow.Control_Flow_Graph is
         and then not Ctx.Termination_Proved
       then
          FA.Has_Only_Terminating_Constructs := False;
-         FA.Atr
-           (Potentially_Neverending_Vertex).Is_Neverending := True;
-
+         FA.Atr (Potentially_Neverending_Vertex).Is_Neverending := True;
       end if;
 
       --  If we need an init vertex, we add it before the loop itself
@@ -3726,36 +3843,9 @@ package body Flow.Control_Flow_Graph is
       --  Finally, we can update the loop information in Flow_Utility for proof
 
       if not FA.Generating_Globals then
-         declare
-            Loop_Writes : Flow_Id_Sets.Set;
-
-         begin
-            for V of FA.CFG.Get_Collection (Flow_Graphs.All_Vertices) loop
-               declare
-                  Atr : V_Attributes renames FA.Atr (V);
-
-               begin
-                  if Atr.Loops.Contains (Loop_Id)
-                    and then not Atr.In_Nested_Package
-                  then
-                     for Var of
-                       Atr.Variables_Defined.Union (Atr.Volatiles_Read)
-                     loop
-                        if not Synthetic (Var) then
-                           Loop_Writes.Include
-                             (Change_Variant (Entire_Variable (Var),
-                                              Normal_Use));
-                        end if;
-                     end loop;
-                  end if;
-               end;
-            end loop;
-
-            Add_Loop_Writes
-              (Loop_Id, Expand_Abstract_States (Loop_Writes));
-         end;
+         Add_Loop_Writes
+           (Loop_Id, Expand_Abstract_States (Loop_Writes));
       end if;
-
    end Do_Loop_Statement;
 
    --------------------------------
@@ -5490,20 +5580,17 @@ package body Flow.Control_Flow_Graph is
            (FA,
             Direct_Mapping_Id (N),
             Make_Basic_Attributes
-              (Var_Def       => Flatten_Variable (FA.Spec_Entity,
-                                                  FA.B_Scope),
-               Var_Ex_Use    => Get_Variables
+              (Var_Def    => Flatten_Variable (FA.Spec_Entity,
+                                               FA.B_Scope),
+               Var_Ex_Use => Get_Variables
                  (Expr,
                   Scope                => FA.B_Scope,
                   Target_Name          => Null_Flow_Id,
                   Fold_Functions       => Inputs,
                   Use_Computed_Globals => not FA.Generating_Globals),
-               Subp_Calls    => Funcalls,
-               Vertex_Ctx    =>
-                 (No_Vertex_Context with delta
-                    Current_Loops => Ctx.Vertex_Ctx.Current_Loops,
-                    Warnings_Off  => Ctx.Vertex_Ctx.Warnings_Off),
-               E_Loc         => N),
+               Subp_Calls => Funcalls,
+               Vertex_Ctx => Ctx.Vertex_Ctx,
+               E_Loc      => N),
             V);
          Ctx.Folded_Function_Checks.Append (Expr);
       end if;
@@ -5615,18 +5702,15 @@ package body Flow.Control_Flow_Graph is
               (FA,
                Direct_Mapping_Id (Cond),
                Make_Basic_Attributes
-                 (Var_Ex_Use    => Get_All_Variables
+                 (Var_Ex_Use => Get_All_Variables
                     (Cond,
                      Scope                => FA.B_Scope,
                      Target_Name          => Null_Flow_Id,
                      Use_Computed_Globals => not FA.Generating_Globals),
-                  Subp_Calls    => Funcalls,
-                  Vertex_Ctx    =>
-                    (No_Vertex_Context with delta
-                       Current_Loops => Ctx.Vertex_Ctx.Current_Loops,
-                       Warnings_Off  => Ctx.Vertex_Ctx.Warnings_Off),
-                  E_Loc         => Cond,
-                  Print_Hint    => Pretty_Print_Entry_Barrier),
+                  Subp_Calls => Funcalls,
+                  Vertex_Ctx => Ctx.Vertex_Ctx,
+                  E_Loc      => Cond,
+                  Print_Hint => Pretty_Print_Entry_Barrier),
                V_C);
             --  Ctx.Folded_Function_Checks.Append (Cond);
             --  ??? O429-046 stitch actions?
@@ -5685,11 +5769,8 @@ package body Flow.Control_Flow_Graph is
                Direct_Mapping_Id (N),
                Make_Sink_Vertex_Attributes
                  (Vars_Read,
-                  Is_Type_Decl  => True,
-                  Vertex_Ctx    =>
-                 (No_Vertex_Context with delta
-                    In_Nested_Package => True,
-                    Warnings_Off      => Ctx.Vertex_Ctx.Warnings_Off)),
+                  Is_Type_Decl => True,
+                  Vertex_Ctx   => Ctx.Vertex_Ctx),
                V);
             CM.Insert (Union_Id (N), Trivial_Connection (V));
          end;
@@ -6248,11 +6329,11 @@ package body Flow.Control_Flow_Graph is
       Add_Vertex
         (FA,
          Make_Basic_Attributes
-           (Var_Def       => Flatten_Variable (Borrowed, FA.B_Scope),
-            Var_Ex_Use    => Flow_Id_Sets.To_Set (Borrower),
-            Vertex_Ctx    => No_Vertex_Context, --  ??? not sure about this
-            Print_Hint    => Pretty_Print_Borrow,
-            E_Loc         => Decl),
+           (Var_Def    => Flatten_Variable (Borrowed, FA.B_Scope),
+            Var_Ex_Use => Flow_Id_Sets.To_Set (Borrower),
+            Vertex_Ctx => No_Vertex_Context, --  ??? not sure about this
+            Print_Hint => Pretty_Print_Borrow,
+            E_Loc      => Decl),
          V);
       FA.Atr (V).Is_Program_Node := False;
 
@@ -7385,9 +7466,9 @@ package body Flow.Control_Flow_Graph is
 
                   A :=
                     Make_Basic_Attributes
-                      (Var_Def       => Split_Out,
-                       Var_Ex_Use    => Split_Ins,
-                       Vertex_Ctx    => No_Vertex_Context);
+                      (Var_Def    => Split_Out,
+                       Var_Ex_Use => Split_Ins,
+                       Vertex_Ctx => No_Vertex_Context);
 
                   Add_Vertex (FA, A, Curr);
                   FA.Atr (Curr).Is_Package_Initialization := True;

@@ -1,5 +1,5 @@
 dcltg.adb:2:13: info: implicit terminating annotation on "Never" has been proved, subprogram will terminate
-dcltg.adb:11:14: medium: implicit terminating annotation on "FakeUse" could be incorrect, subprogram is recursive
+dcltg.adb:11:14: medium: implicit terminating annotation on "FakeUse" could be incorrect, subprogram is recursive [possible fix: annotate "FakeUse" with a Subprogram_Variant aspect]
 dcltg.adb:12:13: info: implicit terminating annotation on "TestExpanded" has been proved, subprogram will terminate
 dcltg.adb:13:22: info: tag check proved (CVC5: 1 VC)
 dcltg.adb:15:13: info: implicit terminating annotation on "Test" has been proved, subprogram will terminate

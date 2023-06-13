@@ -105,7 +105,7 @@ install:
 	$(CP) share/spark/runtimes/README $(RUNTIMESDIR)
 	@echo "Generate Coq files by preprocessing context files:"
 	$(MAKE) -C include generate
-	$(CP) include/*.ad? $(INCLUDEDIR)
+	$(CP) include/src/*.ad? $(INCLUDEDIR)
 	$(CP) include/*.gpr $(LIBDIR)
 	$(CP) include/proof $(LIBDIR)
 

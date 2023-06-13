@@ -32,6 +32,8 @@ def replaytest(testname):
     testdir = os.path.join("tests", testname)
     if not os.path.exists(testdir):
         testdir = os.path.join("internal", testname)
+    if not os.path.exists(testdir):
+        testdir = os.path.join("sparklib", testname)
     try:
         print("switching to", testdir)
         os.chdir(testdir)

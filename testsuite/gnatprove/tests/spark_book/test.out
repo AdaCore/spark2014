@@ -25,7 +25,7 @@ aggregates.adb:13:19: info: division check proved (CVC5: 1 VC), in call inlined 
 aggregates.adb:13:19: info: float overflow check proved (Trivial), in call inlined at aggregates.adb:29
 aggregates.adb:14:20: medium: float overflow check might fail, in call inlined at aggregates.adb:29 [reason for check: result of floating-point subtraction must be bounded]
 aggregates.adb:14:29: medium: float overflow check might fail, in call inlined at aggregates.adb:29 [reason for check: result of floating-point exponentiation must be bounded]
-aggregates.adb:14:47: medium: implicit terminating annotation on "Sqrt" could be incorrect, loop might be nonterminating
+aggregates.adb:14:47: medium: implicit terminating annotation on "Sqrt" could be incorrect, loop might be nonterminating [possible fix: add loop variant in the loop body]
 aggregates.adb:15:24: info: float overflow check proved (Trivial), in call inlined at aggregates.adb:29
 aggregates.adb:15:34: medium: float overflow check might fail, in call inlined at aggregates.adb:29 [reason for check: result of floating-point addition must be bounded]
 aggregates.adb:15:38: medium: divide by zero might fail, in call inlined at aggregates.adb:29
@@ -270,9 +270,9 @@ control_structures.adb:25:14: info: local subprogram "Calculate_Valve" only anal
 control_structures.adb:26:31: info: initialization of "New_Setting" proved
 control_structures.adb:28:24: medium: overflow check might fail, cannot prove lower bound for 2 * Current_Temp, in call inlined at control_structures.adb:186 [reason for check: result of multiplication must fit in a 32-bits machine integer]
 control_structures.adb:31:13: info: implicit terminating annotation on "Double" has been proved, subprogram will terminate
-control_structures.adb:33:08: high: overflow check might fail, cannot prove upper bound for abs Second (e.g. when Second = Integer'First) [reason for check: result of absolute value must fit in a 32-bits machine integer] [possible fix: add precondition (abs Second in Integer) to subprogram at line 31]
-control_structures.adb:33:23: high: overflow check might fail, cannot prove upper bound for 2 * abs First (e.g. when First = 1073741824) [reason for check: result of multiplication must fit in a 32-bits machine integer] [possible fix: add precondition (2 * abs First in Integer) to subprogram at line 31]
-control_structures.adb:33:25: high: overflow check might fail, cannot prove upper bound for abs First (e.g. when First = Integer'First) [reason for check: result of absolute value must fit in a 32-bits machine integer] [possible fix: add precondition (abs First in Integer) to subprogram at line 31]
+control_structures.adb:33:08: high: overflow check might fail, cannot prove upper bound for abs Second (e.g. when Second = Integer'First) [reason for check: result of absolute value must fit in a 32-bits machine integer] [possible fix: add precondition (abs Second <= Integer'Last) to subprogram at line 31]
+control_structures.adb:33:23: high: overflow check might fail, cannot prove upper bound for 2 * abs First (e.g. when First = 1073741824) [reason for check: result of multiplication must fit in a 32-bits machine integer] [possible fix: add precondition (2 * abs First <= Integer'Last) to subprogram at line 31]
+control_structures.adb:33:25: high: overflow check might fail, cannot prove upper bound for abs First (e.g. when First = Integer'First) [reason for check: result of absolute value must fit in a 32-bits machine integer] [possible fix: add precondition (abs First <= Integer'Last) to subprogram at line 31]
 control_structures.adb:37:06: warning: unused assignment
 control_structures.adb:38:06: warning: unused assignment
 control_structures.adb:39:06: warning: unused assignment
@@ -513,21 +513,21 @@ dates.ads:67:13: info: implicit terminating annotation on "Maximum_Datetime" has
 dates.ads:71:13: info: implicit terminating annotation on "Minimum_Datetime" has been proved, subprogram will terminate
 dates.ads:76:13: info: implicit terminating annotation on "Is_Before" has been proved, subprogram will terminate
 dates.ads:78:14: info: postcondition proved (CVC5: 2 VC; Trivial: 1 VC)
-density_altitude-humidity_unit.adb:9:11: warning: assuming correct volatile properties for "Humid_Sensor"
-density_altitude-humidity_unit.adb:9:11: warning: assuming no concurrent accesses to non-atomic object "Humid_Sensor"
-density_altitude-humidity_unit.adb:9:53: warning: assuming valid reads from object "Humid_Sensor"
+density_altitude-humidity_unit.adb:6:04: warning: assuming correct volatile properties for "Humid_Sensor"
+density_altitude-humidity_unit.adb:6:04: warning: assuming no concurrent accesses to non-atomic object "Humid_Sensor"
+density_altitude-humidity_unit.adb:6:04: warning: assuming valid reads from object "Humid_Sensor"
 density_altitude-humidity_unit.ads:9:20: info: initialization of "Value" proved
 density_altitude-humidity_unit.ads:10:11: info: data dependencies proved
 density_altitude-humidity_unit.ads:11:11: info: flow dependencies proved
-density_altitude-pressure_unit.adb:9:11: warning: assuming correct volatile properties for "Press_Sensor"
-density_altitude-pressure_unit.adb:9:11: warning: assuming no concurrent accesses to non-atomic object "Press_Sensor"
-density_altitude-pressure_unit.adb:9:53: warning: assuming valid reads from object "Press_Sensor"
+density_altitude-pressure_unit.adb:6:04: warning: assuming correct volatile properties for "Press_Sensor"
+density_altitude-pressure_unit.adb:6:04: warning: assuming no concurrent accesses to non-atomic object "Press_Sensor"
+density_altitude-pressure_unit.adb:6:04: warning: assuming valid reads from object "Press_Sensor"
 density_altitude-pressure_unit.ads:9:20: info: initialization of "Value" proved
 density_altitude-pressure_unit.ads:10:11: info: data dependencies proved
 density_altitude-pressure_unit.ads:11:11: info: flow dependencies proved
-density_altitude-temperature_unit.adb:9:11: warning: assuming correct volatile properties for "Temp_Sensor"
-density_altitude-temperature_unit.adb:9:11: warning: assuming no concurrent accesses to non-atomic object "Temp_Sensor"
-density_altitude-temperature_unit.adb:9:53: warning: assuming valid reads from object "Temp_Sensor"
+density_altitude-temperature_unit.adb:6:04: warning: assuming correct volatile properties for "Temp_Sensor"
+density_altitude-temperature_unit.adb:6:04: warning: assuming no concurrent accesses to non-atomic object "Temp_Sensor"
+density_altitude-temperature_unit.adb:6:04: warning: assuming valid reads from object "Temp_Sensor"
 density_altitude-temperature_unit.ads:9:20: info: initialization of "Value" proved
 density_altitude-temperature_unit.ads:10:11: info: data dependencies proved
 density_altitude-temperature_unit.ads:11:11: info: flow dependencies proved
@@ -585,10 +585,10 @@ example.adb:16:27: info: overflow check proved (CVC5: 2 VC), in call inlined at 
 example.adb:23:04: info: initialization of "Value" proved
 example.adb:24:04: info: initialization of "Modified" proved
 example.adb:29:04: info: analyzing call to "Bounded_Increment" in context
-external_test.adb:11:08: warning: assuming correct volatile properties for "Value"
-external_test.adb:11:08: warning: assuming no concurrent accesses to non-atomic object "Value"
-external_test.adb:11:08: warning: make sure that all overlapping objects have Async_Writers set to True
-external_test.adb:11:08: warning: writing to "Value" is assumed to have no effects on other non-volatile objects
+external_test.adb:6:04: warning: assuming correct volatile properties for "Value"
+external_test.adb:6:04: warning: assuming no concurrent accesses to non-atomic object "Value"
+external_test.adb:6:04: warning: make sure that all overlapping objects have Async_Writers set to True
+external_test.adb:6:04: warning: writing to "Value" is assumed to have no effects on other non-volatile objects
 external_test.adb:16:12: warning: unused assignment
 external_test.ads:6:20: info: initialization of "Item" proved
 generic_examples.adb:7:13: info: implicit function contract might not be available on calls from enclosing unit
@@ -718,10 +718,10 @@ interval.ads:9:09: info: invariant check proved on default value (CVC5: 1 VC)
 interval.ads:17:13: info: implicit terminating annotation on "Has_Valid_Order" has been proved, subprogram will terminate
 interval_tree.ads:5:05: info: flow dependencies proved
 interval_tree_wrapper.ads:6:07: info: flow dependencies proved
-led_display.adb:14:10: warning: assuming correct volatile properties for "Value"
-led_display.adb:14:10: warning: assuming no concurrent accesses to non-atomic object "Value"
-led_display.adb:14:10: warning: make sure that all overlapping objects have Async_Writers set to True
-led_display.adb:14:10: warning: writing to "Value" is assumed to have no effects on other non-volatile objects
+led_display.adb:8:04: warning: assuming correct volatile properties for "Value"
+led_display.adb:8:04: warning: assuming no concurrent accesses to non-atomic object "Value"
+led_display.adb:8:04: warning: make sure that all overlapping objects have Async_Writers set to True
+led_display.adb:8:04: warning: writing to "Value" is assumed to have no effects on other non-volatile objects
 led_display.adb:24:41: info: initialization of "Value" constituent of "LED_State" proved
 led_display.ads:11:09: info: data dependencies proved
 lights.adb:5:07: info: initialization of "Result" proved
@@ -749,10 +749,10 @@ no_overflow.adb:7:14: info: range check proved (CVC5: 2 VC)
 no_overflow.adb:7:19: info: overflow check proved (CVC5: 2 VC)
 no_overflow.adb:7:24: info: division check proved (CVC5: 1 VC)
 no_overflow.ads:5:19: info: initialization of "C" proved
-numeric_display.ads:13:08: warning: assuming correct volatile properties for "Value"
-numeric_display.ads:13:08: warning: assuming no concurrent accesses to non-atomic object "Value"
-numeric_display.ads:13:08: warning: make sure that all overlapping objects have Async_Writers set to True
-numeric_display.ads:13:08: warning: writing to "Value" is assumed to have no effects on other non-volatile objects
+numeric_display.ads:7:04: warning: assuming correct volatile properties for "Value"
+numeric_display.ads:7:04: warning: assuming no concurrent accesses to non-atomic object "Value"
+numeric_display.ads:7:04: warning: make sure that all overlapping objects have Async_Writers set to True
+numeric_display.ads:7:04: warning: writing to "Value" is assumed to have no effects on other non-volatile objects
 operator_overload.adb:10:13: info: add a contract to analyze it separately from calling contexts
 operator_overload.adb:10:13: info: implicit terminating annotation on "<=" has been proved, subprogram will terminate
 operator_overload.adb:10:13: info: local subprogram "<=" only analyzed in the context of calls
@@ -1048,7 +1048,7 @@ sqrt.adb:4:16: info: division check proved (CVC5: 1 VC)
 sqrt.adb:4:16: info: float overflow check proved (Trivial)
 sqrt.adb:5:17: medium: float overflow check might fail [reason for check: result of floating-point subtraction must be bounded] [possible fix: subprogram at line 1 should mention X in a precondition]
 sqrt.adb:5:26: medium: float overflow check might fail [reason for check: result of floating-point exponentiation must be bounded]
-sqrt.adb:5:44: medium: implicit terminating annotation on "Sqrt" could be incorrect, loop might be nonterminating
+sqrt.adb:5:44: medium: implicit terminating annotation on "Sqrt" could be incorrect, loop might be nonterminating [possible fix: add loop variant in the loop body]
 sqrt.adb:6:21: info: float overflow check proved (Trivial)
 sqrt.adb:6:31: medium: float overflow check might fail [reason for check: result of floating-point addition must be bounded]
 sqrt.adb:6:35: medium: divide by zero might fail

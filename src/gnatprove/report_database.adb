@@ -99,6 +99,8 @@ package body Report_Database is
    --  Add_SPARK_Status procedure.
 
    Skipped_Proof : Ordered_Subp_Sets.Set := Ordered_Subp_Sets.Empty_Set;
+   Skipped_Flow_And_Proof : Ordered_Subp_Sets.Set :=
+     Ordered_Subp_Sets.Empty_Set;
 
    procedure Update_Subp_Entry
      (Unit    : Unit_Type;
@@ -257,6 +259,11 @@ package body Report_Database is
       Skipped_Proof.Include (S);
    end Add_Skip_Proof;
 
+   procedure Add_Skip_Flow_And_Proof (S : Subp_Type) is
+   begin
+      Skipped_Flow_And_Proof.Include (S);
+   end Add_Skip_Flow_And_Proof;
+
    ----------------------
    -- Add_SPARK_Status --
    ----------------------
@@ -325,6 +332,15 @@ package body Report_Database is
    begin
       Update_Subp_Entry (Unit, Subp, Process'Access);
    end Add_Suppressed_Check;
+
+   -----------------------------
+   -- Has_Skip_Flow_And_Proof --
+   -----------------------------
+
+   function Has_Skip_Flow_And_Proof (S : Subp_Type) return Boolean is
+   begin
+      return Skipped_Flow_And_Proof.Contains (S);
+   end Has_Skip_Flow_And_Proof;
 
    --------------------
    -- Has_Skip_Proof --

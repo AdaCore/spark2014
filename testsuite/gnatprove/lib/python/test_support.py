@@ -22,6 +22,7 @@ default_provers = ["cvc5", "altergo", "z3", "colibri"]
 provers_output_regex = re.compile(
     r"\((Trivial|Interval|CVC4|CVC5|Z3|altergo|colibri).*\)"
 )
+sparklib_regex = re.compile(r"spark-.*\.ad[bs]:(\d*):\d*: info: .*")
 default_ada = 2022
 
 #  Change directory
@@ -463,7 +464,7 @@ def check_marks(strlist):
             return "DEFAULT_INITIAL_CONDITION"
         elif "initial condition" in text:
             return "INITIAL_CONDITION"
-        elif "precondition" in text or "nonreturning" in text:
+        elif "precondition" in text:
             if "of main program" in text:
                 return "PRECONDITION_MAIN"
             elif "True" in text:
@@ -511,7 +512,7 @@ def check_marks(strlist):
             return "ASSERT_STEP"
         elif "assertion" in text:
             return "ASSERT"
-        elif "raise statement" in text or "exception" in text:
+        elif "raise statement" in text or "expected exception" in text:
             return "RAISE"
         elif "aliasing via address clause" in text or "unchecked conversion" in text:
             if "size" in text:
@@ -543,7 +544,7 @@ def check_marks(strlist):
           is_flow_tag: True for flow messages, False for proof messages
         """
         if qualifier == "info":
-            if "proved" in text or "nonreturning" in text or "justified" in text:
+            if "proved" in text or "only expected" in text or "justified" in text:
                 return "PASS"
             else:
                 return None
@@ -763,7 +764,7 @@ def gnatprove(
         failure = False
 
     if filter_sparklib:
-        strlist = [line for line in strlist if not line.startswith("spark-")]
+        strlist = [line for line in strlist if sparklib_regex.match(line) is None]
 
     if filter_output is not None:
         strlist = grep(filter_output, strlist, invert=True)
@@ -787,7 +788,7 @@ def prove_all(
     check_counterexamples=True,
     prover=default_provers,
     cache_allowed=True,
-    report="provers",
+    report=None,
     project=default_project,
     level=None,
     no_fail=False,
@@ -813,6 +814,8 @@ def prove_all(
     fullopt = ["--output=oneline"]
     if warnings is not None:
         fullopt += ["--warnings=%s" % (warnings)]
+    if report is None:
+        report = "all" if replay else "provers"
     fullopt += ["--report=%s" % (report)]
     fullopt += ["--assumptions"]
     fullopt += ["-P", project, "--quiet"]

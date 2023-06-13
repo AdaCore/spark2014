@@ -108,6 +108,7 @@ sb.ads:2:01: info: implicit function contract might not be available on calls fr
 sb.ads:2:01: info: in instantiation at a-strbou.ads:86
 sb.ads:2:01: warning: in instantiation at a-strbou.ads:2569
 sb.ads:2:01: warning: pragma "STREAM_CONVERT" ignored (not yet supported)
+spark-containers-parameter_checks.ads:242:19: medium: postcondition might fail, in instantiation at spark-containers-formal-hashed_maps.ads:154, in instantiation at test.ads:14 [possible fix: you should consider adding a postcondition to function SBHash or turning it into an expression function]
 test.ads:9:09: info: Initial_Condition of package "SB" is ignored
 test.ads:9:09: info: the elaboration of "SB" is not known to precede the elaboration of the current unit
 test.ads:9:09: info: use pragma Elaborate_Body in "SB" or pragma Elaborate in the current unit

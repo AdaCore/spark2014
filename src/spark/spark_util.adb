@@ -26,6 +26,7 @@
 with Ada.Characters.Latin_1;      use Ada.Characters.Latin_1;
 with Ada.Containers.Hashed_Maps;
 with Ada.Text_IO;
+with Aspects;                     use Aspects;
 with Common_Iterators;            use Common_Iterators;
 with Errout;                      use Errout;
 with Flow_Dependency_Maps;        use Flow_Dependency_Maps;
@@ -1962,7 +1963,15 @@ package body SPARK_Util is
       Result : Exception_Sets.Set := Exception_Sets.Empty_Set;
    begin
       if No (Prag) then
-         return Result;
+
+         --  By default, No_Return procedures are assumed to potentially raise
+         --  exceptions.
+
+         if No_Return (Subp) then
+            return Exception_Sets.All_Exceptions;
+         else
+            return Result;
+         end if;
       end if;
 
       declare
@@ -1992,7 +2001,7 @@ package body SPARK_Util is
 
                      when N_Identifier
                         | N_Expanded_Name
-                        =>
+                     =>
                         if False_Post then
                            Result.Exclude (Entity (Exc));
                         else
@@ -2274,7 +2283,7 @@ package body SPARK_Util is
    function Get_Raised_Exceptions
      (Stmt         : Node_Id;
       Only_Handled : Boolean)
-      return  Exception_Sets.Set
+      return Exception_Sets.Set
    is
 
       function Is_Handler (N : Node_Id) return Boolean is
@@ -2329,7 +2338,7 @@ package body SPARK_Util is
       end case;
 
       if Only_Handled then
-            Result.Intersection (Get_Handled_Exceptions (Stmt));
+         Result.Intersection (Get_Handled_Exceptions (Stmt));
       end if;
 
       return Result;
@@ -2538,6 +2547,15 @@ package body SPARK_Util is
 
       return Params;
    end Get_Specialized_Parameters;
+
+   -------------------------
+   -- Has_Address_Or_Name --
+   -------------------------
+
+   function Has_Address_Or_Name (O : Object_Kind_Id) return Boolean is
+     (Present (Address_Clause (O))
+      or else Has_Aspect (O, Aspect_External_Name)
+      or else Has_Aspect (O, Aspect_Link_Name));
 
    ------------------------------
    -- Has_Exceptional_Contract --
@@ -2903,28 +2921,6 @@ package body SPARK_Util is
                begin
                   return Compile_Time_Known_Value (Expr)
                     and then Expr_Value (Expr) = Uint_0;
-               end;
-            else
-               return False;
-            end if;
-
-         when N_Procedure_Call_Statement
-            | N_Entry_Call_Statement
-         =>
-            if Is_Error_Signaling_Procedure (Get_Called_Entity (N)) then
-               declare
-                  Caller : constant Entity_Id :=
-                    Unique_Entity
-                      (Lib.Xref.SPARK_Specific.
-                         Enclosing_Subprogram_Or_Library_Package (N));
-               begin
-                  --  A call to an error-signaling procedure is used to signal
-                  --  an error, and should be proved unreachable, unless the
-                  --  caller is a possibly nonreturning procedure.
-
-                  return not (Ekind (Caller) = E_Procedure
-                                and then
-                              Is_Possibly_Nonreturning_Procedure (Caller));
                end;
             else
                return False;
@@ -4556,6 +4552,47 @@ package body SPARK_Util is
       Result := True;
       Explanation := Null_Unbounded_String;
    end Objects_Have_Compatible_Alignments;
+
+   ----------------------------------
+   -- Path_Contains_Qualified_Expr --
+   ----------------------------------
+
+   function Path_Contains_Qualified_Expr (Expr : N_Subexpr_Id) return Boolean
+   is
+   begin
+      case Nkind (Expr) is
+         when N_Expanded_Name
+            | N_Identifier
+         =>
+            return False;
+
+         when N_Explicit_Dereference
+            | N_Indexed_Component
+            | N_Selected_Component
+            | N_Slice
+         =>
+            return Path_Contains_Qualified_Expr (Prefix (Expr));
+
+         when N_Function_Call =>
+            pragma Assert (Is_Traversal_Function_Call (Expr));
+            return Path_Contains_Qualified_Expr (First_Actual (Expr));
+
+         when N_Type_Conversion
+            | N_Unchecked_Type_Conversion
+         =>
+            return Path_Contains_Qualified_Expr (Expression (Expr));
+
+         when N_Qualified_Expression =>
+            return True;
+
+         when N_Attribute_Reference =>
+            pragma Assert (Attribute_Name (Expr) = Name_Access);
+            return Path_Contains_Qualified_Expr (Prefix (Expr));
+
+         when others =>
+            raise Program_Error;
+      end case;
+   end Path_Contains_Qualified_Expr;
 
    -----------------------------------
    -- Path_Contains_Traversal_Calls --

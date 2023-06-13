@@ -611,14 +611,7 @@ package body Gnat2Why.Error_Messages is
          when VC_Default_Initial_Condition =>
             return "default initial condition might fail";
          when VC_Precondition              =>
-            if Nkind (Node) in N_Procedure_Call_Statement
-                             | N_Entry_Call_Statement
-              and then Is_Error_Signaling_Statement (Node)
-            then
-               return "call to nonreturning subprogram might be executed";
-            else
-               return "precondition might fail";
-            end if;
+            return "precondition might fail";
          when VC_Precondition_Main         =>
             return "precondition of main program might fail";
          when VC_Postcondition             =>
@@ -780,8 +773,6 @@ package body Gnat2Why.Error_Messages is
       use GNATCOLL.JSON;
 
       Subp : Entity_Id;
-
-      type Bound_Info_Type is (No_Bound, Low_Bound, High_Bound);
 
       type Inline_Info (Inline : Boolean := False) is record
          case Inline is
@@ -1267,6 +1258,11 @@ package body Gnat2Why.Error_Messages is
             end;
          end if;
 
+         --  Update the information to get better fix messages with the bound
+         --  information retrieved from the proof attempt.
+
+         Check_Info.Fix_Info.Bound_Info := Rec.EI.Bound_Info;
+
          declare
             --  If the fuzzer found a counterexample for a VC associated to an
             --  overflow check, the message saying if the overflow was on the
@@ -1619,14 +1615,7 @@ package body Gnat2Why.Error_Messages is
          when VC_Default_Initial_Condition =>
             return "default initial condition " & Verb;
          when VC_Precondition              =>
-            if Nkind (Node) in N_Procedure_Call_Statement
-                             | N_Entry_Call_Statement
-              and then Is_Error_Signaling_Statement (Node)
-            then
-               return Prefix & "call to nonreturning procedure never executed";
-            else
-               return "precondition " & Verb;
-            end if;
+            return "precondition " & Verb;
          when VC_Precondition_Main         =>
             return "precondition of main program " & Verb;
          when VC_Postcondition             => return "postcondition " & Verb;

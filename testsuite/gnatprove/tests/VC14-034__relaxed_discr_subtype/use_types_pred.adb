@@ -2,7 +2,7 @@ with Types; use Types;
 
 procedure Use_Types_Pred with SPARK_Mode is
 
-   subtype PP is T with Predicate => (if PP.B then PP.X'Initialized);
+   subtype PP is T with Ghost_Predicate => (if PP.B then PP.X'Initialized);
 
    subtype PP_True is PP (True);
 

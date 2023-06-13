@@ -130,17 +130,18 @@ package body Flow_Error_Messages is
    --  "--limit-region" argument.
 
    function Compute_Message
-     (Msg  : String;
-      N    : Node_Id;
-      F1   : Flow_Id := Null_Flow_Id;
-      F2   : Flow_Id := Null_Flow_Id;
-      F3   : Flow_Id := Null_Flow_Id)
+     (Msg           : String;
+      N             : Node_Id;
+      F1            : Flow_Id := Null_Flow_Id;
+      F2            : Flow_Id := Null_Flow_Id;
+      F3            : Flow_Id := Null_Flow_Id;
+      With_Location : Boolean := True)
       return String with
       Pre => (if Present (F2) then Present (F1)) and then
              (if Present (F3) then Present (F2));
-   --  This function:
-   --    * adds more precise location for generics and inlining
-   --    * substitutes flow nodes
+   --  Substitute flow nodes
+   --  @param With_Location by default, add more precise location for
+   --                       instantiated and inlined code
 
    function Compute_Sloc
      (N           : Node_Id;
@@ -197,7 +198,8 @@ package body Flow_Error_Messages is
       Span         : Source_Span;
       Severity     : Msg_Severity;
       Continuation : Boolean := False)
-      return Message_Id;
+      return Message_Id
+   with Post => Print_Regular_Msg'Result /= No_Message_Id;
    --  Print a regular error, warning or info message using the frontend
    --  mechanism. Return an Id which can be used to identify this message.
 
@@ -245,11 +247,12 @@ package body Flow_Error_Messages is
    ---------------------
 
    function Compute_Message
-     (Msg  : String;
-      N    : Node_Id;
-      F1   : Flow_Id := Null_Flow_Id;
-      F2   : Flow_Id := Null_Flow_Id;
-      F3   : Flow_Id := Null_Flow_Id)
+     (Msg           : String;
+      N             : Node_Id;
+      F1            : Flow_Id := Null_Flow_Id;
+      F2            : Flow_Id := Null_Flow_Id;
+      F3            : Flow_Id := Null_Flow_Id;
+      With_Location : Boolean := True)
       return String
    is
       M : Unbounded_String := To_Unbounded_String (Msg);
@@ -264,7 +267,9 @@ package body Flow_Error_Messages is
          end if;
       end if;
 
-      if Instantiation_Location (Sloc (N)) /= No_Location then
+      if With_Location
+        and then Instantiation_Location (Sloc (N)) /= No_Location
+      then
 
          --  If we are dealing with an instantiation of a generic we change the
          --  message to point at the implementation of the generic and we
@@ -377,6 +382,7 @@ package body Flow_Error_Messages is
      (E            : Entity_Id;
       Msg          : String;
       Details      : String        := "";
+      Explanation  : String        := "";
       Fix          : String        := "";
       Severity     : Msg_Severity;
       N            : Node_Id;
@@ -430,6 +436,12 @@ package body Flow_Error_Messages is
       Dummy    : String_Sets.Cursor;
       Inserted : Boolean;
 
+      Check_All_Mode : constant Boolean :=
+        Gnat2Why_Args.Mode = GPM_Check_All
+          or else Has_Skip_Flow_And_Proof_Annotation (E);
+      --  True when we are only reporting legiality errors that require flow
+      --  analysis.
+
       Suppression : Suppressed_Message := No_Suppressed_Message;
 
    --  Start of processing for Error_Msg_Flow
@@ -456,7 +468,7 @@ package body Flow_Error_Messages is
          --  to marking (filtered by Error_Kind severity) and that is why we
          --  suppress all the others.
 
-         if Gnat2Why_Args.Mode = GPM_Check_All then
+         if Check_All_Mode then
             case Severity is
                when Error_Kind =>
                   Suppressed := False;
@@ -513,8 +525,8 @@ package body Flow_Error_Messages is
          --  Print the message except when it's suppressed. If command line
          --  argument "--limit-line" was given, only issue the warning if it is
          --  to be emitted on the specified line (errors are emitted anyway).
-         --  Additionally, if Details and/or Fix are not empty, print them,
-         --  either on the same line or as continuation messages.
+         --  Additionally, if Details, Explanation and/or Fix are not empty,
+         --  print them, either on the same line or as continuation messages.
 
          if not Suppressed and then Is_Specified_Line (Slc) then
 
@@ -540,14 +552,19 @@ package body Flow_Error_Messages is
                        (if Details /= ""
                         then " [reason for check: " & Details & "]"
                         else "");
+                     Explanation_Msg : constant String :=
+                       (if Explanation /= ""
+                        then " [possible explanation: " & Explanation & "]"
+                        else "");
                      Fix_Msg     : constant String :=
                        (if Fix /= ""
                         then " [possible fix: "
-                               & Compute_Message (Fix, Attach_Node, FF1, FF2)
+                               & Compute_Message (Fix, Attach_Node, FF1, FF2,
+                                                  With_Location => False)
                                & "]"
                         else "");
                      Msg4        : constant String :=
-                       Msg3 & Details_Msg & Fix_Msg;
+                       Msg3 & Details_Msg & Explanation_Msg & Fix_Msg;
                   begin
                      Msg_Id :=
                        Print_Regular_Msg (Msg4, Span, Severity, Continuation);
@@ -571,14 +588,22 @@ package body Flow_Error_Messages is
                         Span, Severity, Continuation => True);
                   end if;
 
+                  if Explanation /= "" then
+                     Ignore_Id := Print_Regular_Msg
+                       (SGR_Note & "possible explanation: " & SGR_Reset
+                        & Explanation,
+                        Span, Severity, Continuation => True);
+                  end if;
+
                   declare
                      Fix_Str : constant String :=
-                       Compute_Message (Fix, Attach_Node, FF1, FF2);
+                       Compute_Message (Fix, Attach_Node, FF1, FF2,
+                                        With_Location => False);
                   begin
                      if Fix /= "" then
                         Ignore_Id := Print_Regular_Msg
                           (SGR_Note & "possible fix: " & SGR_Reset
-                              & Fix_Str,
+                           & Fix_Str,
                            Span, Severity, Continuation => True);
                      end if;
                   end;
@@ -588,12 +613,11 @@ package body Flow_Error_Messages is
             Msg_Id := No_Message_Id;
          end if;
 
-         --  In check_all mode, we don't want any messages to appear even in
-         --  the JSON output, unless they are error messages.
+         --  In general, we want suppressed messages to still appear in
+         --  statistics; in check_all mode suppressed messages will behave
+         --  as if they were never emitted.
 
-         if Gnat2Why_Args.Mode /= GPM_Check_All
-           or else Severity = Error_Kind
-         then
+         if not (Check_All_Mode and Suppressed) then
             Add_Json_Msg
               (Suppr      => Suppression,
                Tag        => Flow_Tag_Kind'Image (Tag),
@@ -622,6 +646,7 @@ package body Flow_Error_Messages is
      (FA           : in out Flow_Analysis_Graphs;
       Msg          : String;
       Details      : String                := "";
+      Explanation  : String                := "";
       Fix          : String                := "";
       Severity     : Msg_Severity;
       N            : Node_Id;
@@ -690,6 +715,7 @@ package body Flow_Error_Messages is
       Error_Msg_Flow (E            => FA.Spec_Entity,
                       Msg          => Debug_Msg,
                       Details      => Details,
+                      Explanation  => Explanation,
                       Fix          => Fix,
                       Severity     => Severity,
                       N            => N,
@@ -1488,6 +1514,15 @@ package body Flow_Error_Messages is
       then
          return "empty aggregates cannot be used if there is no element before"
            & " the first element of their index type";
+
+      elsif Tag = VC_Raise
+        and then Nkind (N) = N_Procedure_Call_Statement
+        and then Ekind (Get_Called_Entity (N)) = E_Procedure
+        and then No_Return (Get_Called_Entity (N))
+        and then No
+          (Get_Pragma (Get_Called_Entity (N), Pragma_Exceptional_Cases))
+      then
+         return "No_Return procedures have an implicit exceptional contract";
 
       --  If a run-time check fails inside the prefix of a an attribute
       --  reference with 'Old or 'Loop_Entry attribute, and this attribute
@@ -2475,6 +2510,25 @@ package body Flow_Error_Messages is
             --  Return the corresponding formal parameter for an actual
             --  parameter N, or Empty otherwise.
 
+            type Larger_Type_Kind is
+              (Larger_Source, Larger_Target, Larger_None);
+
+            type Larger_Type (Kind : Larger_Type_Kind := Larger_None) is record
+               case Kind is
+                  when Larger_Source | Larger_Target =>
+                     Typ : Type_Kind_Id;
+                  when others =>
+                     null;
+               end case;
+            end record;
+
+            function Get_Larger_Type
+              (Source, Target : Type_Kind_Id;
+               Target_Value   : Uint) return Larger_Type;
+            --  Return a type larger than Source and Target for performing
+            --  the comparison of a value in type Source with Target_Value,
+            --  if possible.
+
             procedure Get_Subprogram_Inputs
               (Subp     : Runnable_Kind_Id;
                In_Vars  : out Flow_Id_Sets.Set;
@@ -2488,6 +2542,85 @@ package body Flow_Error_Messages is
             function Sign_Is_Known (Arg : N_Subexpr_Id) return Sign;
             --  Determine whether the sign of Arg is known from its value (for
             --  a literal) or type.
+
+            ---------------------
+            -- Get_Larger_Type --
+            ---------------------
+
+            function Get_Larger_Type
+              (Source, Target : Type_Kind_Id;
+               Target_Value   : Uint) return Larger_Type
+            is
+               --  Consider first subtypes as candidate larger types, instead
+               --  of base types which may be compiler-generated types. But
+               --  use base types to compute lower/upper bounds, as the first
+               --  subtype might be a private type instead of a scalar one.
+
+               Base_Source : constant Type_Kind_Id := First_Subtype (Source);
+               Base_Target : constant Type_Kind_Id := First_Subtype (Target);
+
+               Lo_Src : constant N_Subexpr_Id :=
+                 Type_Low_Bound (Etype (Source));
+               Hi_Src : constant N_Subexpr_Id :=
+                 Type_High_Bound (Etype (Source));
+
+               Lo_Src_Value : constant Uint :=
+                 (if Nkind (Lo_Src) = N_Integer_Literal then
+                    SPARK_Atree.Expr_Value (Lo_Src)
+                  else No_Uint);
+               Hi_Src_Value : constant Uint :=
+                 (if Nkind (Hi_Src) = N_Integer_Literal then
+                    SPARK_Atree.Expr_Value (Hi_Src)
+                  else No_Uint);
+
+               Lo_Tgt : constant N_Subexpr_Id :=
+                 Type_Low_Bound (Etype (Target));
+               Hi_Tgt : constant N_Subexpr_Id :=
+                 Type_High_Bound (Etype (Target));
+
+               Lo_Tgt_Value : constant Uint :=
+                 (if Nkind (Lo_Tgt) = N_Integer_Literal then
+                    SPARK_Atree.Expr_Value (Lo_Tgt)
+                  else No_Uint);
+               Hi_Tgt_Value : constant Uint :=
+                 (if Nkind (Hi_Tgt) = N_Integer_Literal then
+                    SPARK_Atree.Expr_Value (Hi_Tgt)
+                  else No_Uint);
+
+               Large : Larger_Type;
+
+            begin
+               if Base_Source /= Base_Target
+                 and then Present (Lo_Src_Value)
+                 and then Present (Hi_Src_Value)
+                 and then Present (Lo_Tgt_Value)
+                 and then Present (Hi_Tgt_Value)
+               then
+                  --  Detect the case where Base_Source type is larger, so that
+                  --  Target_Value could be converted to Base_Source.
+
+                  if Target_Value >= Lo_Src_Value
+                    and then Target_Value <= Hi_Src_Value
+                    and then not Is_Universal_Numeric_Type (Base_Source)
+                  then
+                     Large := Larger_Type'(Kind => Larger_Source,
+                                           Typ  => Base_Source);
+
+                  --  Detect the case where Base_Target type is larger, so
+                  --  that the value in type Source could be converted to
+                  --  Base_Target.
+
+                  elsif Lo_Tgt_Value <= Lo_Src_Value
+                    and then Lo_Tgt_Value >= Hi_Src_Value
+                    and then not Is_Universal_Numeric_Type (Base_Target)
+                  then
+                     Large := Larger_Type'(Kind => Larger_Target,
+                                           Typ  => Base_Target);
+                  end if;
+               end if;
+
+               return Large;
+            end Get_Larger_Type;
 
             ------------------------------
             -- Get_Corresponding_Formal --
@@ -2785,30 +2918,65 @@ package body Flow_Error_Messages is
                         Lo  : constant N_Subexpr_Id := Type_Low_Bound (Typ);
                         Hi  : constant N_Subexpr_Id := Type_High_Bound (Typ);
 
+                        Lo_Value : constant Uint :=
+                          (if Nkind (Lo) = N_Integer_Literal then
+                             SPARK_Atree.Expr_Value (Lo)
+                           else No_Uint);
+                        Hi_Value : constant Uint :=
+                          (if Nkind (Hi) = N_Integer_Literal then
+                             SPARK_Atree.Expr_Value (Hi)
+                           else No_Uint);
+
+                        Larger_Typ : constant Larger_Type :=
+                          (if Info.Bound_Info = Low_Bound
+                             and then Present (Lo_Value)
+                           then
+                              Get_Larger_Type (Source => Etype (N),
+                                               Target => Typ,
+                                               Target_Value => Lo_Value)
+                           elsif Info.Bound_Info = High_Bound
+                             and then Present (Hi_Value)
+                           then
+                              Get_Larger_Type (Source => Etype (N),
+                                               Target => Typ,
+                                               Target_Value => Hi_Value)
+                           else
+                              Larger_Type'(Kind => Larger_None));
+
                         Use_Typ    : constant Boolean :=
                           Comes_From_Source (Typ)
                             or else Is_Standard_Type (Typ);
                         Lo_Image   : constant String :=
                           (if Use_Typ then
                              Source_Name (Typ) & "'First"
-                           elsif Nkind (Lo) = N_Integer_Literal then
-                             UI_Image (SPARK_Atree.Expr_Value (Lo), Decimal)
+                           elsif Present (Lo_Value) then
+                              UI_Image (Lo_Value, Decimal)
                            else
                              String_Of_Node (Lo));
                         Hi_Image   : constant String :=
                           (if Use_Typ then
                              Source_Name (Typ) & "'Last"
-                           elsif Nkind (Hi) = N_Integer_Literal then
-                             UI_Image (SPARK_Atree.Expr_Value (Hi), Decimal)
+                           elsif Present (Hi_Value) then
+                              UI_Image (Hi_Value, Decimal)
                            else
                              String_Of_Node (Hi));
                         Constraint : constant String :=
-                          (if Comes_From_Source (Typ)
-                             or else Is_Standard_Type (Typ)
-                           then
-                             Source_Name (Typ)
+                          (if Info.Bound_Info = Low_Bound then
+                              " >= " &
+                              (if Larger_Typ.Kind = Larger_Source then
+                                 Source_Name (Larger_Typ.Typ)
+                                 & "(" & Lo_Image & ")"
+                               else Lo_Image)
+                           elsif Info.Bound_Info = High_Bound then
+                              " <= " &
+                              (if Larger_Typ.Kind = Larger_Source then
+                                 Source_Name (Larger_Typ.Typ)
+                                 & "(" & Hi_Image & ")"
+                               else Hi_Image)
+                           elsif Use_Typ then
+                              " in " & Source_Name (Typ)
                            else
-                             Lo_Image & " .. " & Hi_Image);
+                              " in " & Lo_Image & " .. " & Hi_Image);
 
                         --  When possible, put the suggested precondition in
                         --  a form that will avoid overflows. So we prefer
@@ -2875,8 +3043,12 @@ package body Flow_Error_Messages is
                                           "if " & Right_Str & " >= 0 then "
                                           & Pos_Right & " else " & Neg_Right)))
 
+                           elsif Larger_Typ.Kind = Larger_Target then
+                              Source_Name (Larger_Typ.Typ)
+                              & "(" & String_Of_Node (N) & ")"
+                              & Constraint
                            else
-                             String_Of_Node (N) & " in " & Constraint);
+                              String_Of_Node (N) & Constraint);
                      begin
                         return "add precondition (" & Pre
                           & ") to subprogram "

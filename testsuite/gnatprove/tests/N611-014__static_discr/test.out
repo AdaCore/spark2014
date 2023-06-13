@@ -5,7 +5,7 @@ static_discr.adb:12:57: info: index check proved (CVC5: 2 VC)
 static_discr.adb:14:63: info: index check proved (CVC5: 2 VC)
 static_discr.adb:19:45: info: index check proved (CVC5: 2 VC)
 static_discr.adb:24:43: info: range check proved (CVC5: 2 VC)
-static_discr.adb:30:52: medium: implicit terminating annotation on "Search_Max" could be incorrect, loop might be nonterminating
+static_discr.adb:30:52: medium: implicit terminating annotation on "Search_Max" could be incorrect, loop might be nonterminating [possible fix: add loop variant in the loop body]
 static_discr.adb:32:13: info: loop invariant initialization proved (CVC5: 4 VC)
 static_discr.adb:32:13: info: loop invariant preservation proved (CVC5: 4 VC)
 static_discr.adb:34:51: info: overflow check proved (CVC5: 4 VC)
@@ -31,7 +31,7 @@ static_discr.adb:70:50: info: range check proved (CVC5: 2 VC)
 static_discr.adb:70:58: info: range check proved (CVC5: 2 VC)
 static_discr.adb:70:65: info: length check proved (CVC5: 3 VC; Trivial: 1 VC)
 static_discr.adb:70:70: info: range check proved (CVC5: 2 VC)
-static_discr.adb:73:52: medium: implicit terminating annotation on "Search_Array" could be incorrect, loop might be nonterminating
+static_discr.adb:73:52: medium: implicit terminating annotation on "Search_Array" could be incorrect, loop might be nonterminating [possible fix: add loop variant in the loop body]
 static_discr.adb:75:13: info: loop invariant initialization proved (CVC5: 4 VC)
 static_discr.adb:75:13: info: loop invariant preservation proved (CVC5: 4 VC)
 static_discr.adb:77:51: info: overflow check proved (CVC5: 4 VC)
@@ -48,7 +48,7 @@ static_discr.adb:98:63: info: index check proved (CVC5: 2 VC)
 static_discr.adb:103:20: info: range check proved (CVC5: 2 VC)
 static_discr.adb:103:45: info: index check proved (CVC5: 2 VC)
 static_discr.adb:108:43: info: range check proved (CVC5: 2 VC)
-static_discr.adb:114:52: medium: implicit terminating annotation on "Search" could be incorrect, loop might be nonterminating
+static_discr.adb:114:52: medium: implicit terminating annotation on "Search" could be incorrect, loop might be nonterminating [possible fix: add loop variant in the loop body]
 static_discr.adb:116:13: info: loop invariant initialization proved (CVC5: 4 VC)
 static_discr.adb:116:13: info: loop invariant preservation proved (CVC5: 4 VC)
 static_discr.adb:118:51: info: overflow check proved (CVC5: 4 VC)

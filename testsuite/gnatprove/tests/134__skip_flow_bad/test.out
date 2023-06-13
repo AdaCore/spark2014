@@ -1,0 +1,2 @@
+bad.adb:4:29: error: aspect Skip_Proof cannot occur in the scope of a Skip_Flow_And_Proof aspect or pragma
+gnatprove: error during generation of Global contracts

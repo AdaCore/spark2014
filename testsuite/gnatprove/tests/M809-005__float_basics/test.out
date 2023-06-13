@@ -66,8 +66,8 @@ generic_float_tests.adb:36:22: medium: assertion might fail, in instantiation at
 generic_float_tests.adb:36:22: medium: assertion might fail, in instantiation at foo.ads:15 [possible fix: subprogram at line 26 should mention A and B in a precondition]
 generic_float_tests.adb:45:14: warning: subprogram "Add_Monotonic" has no effect, in instantiation at foo.ads:10
 generic_float_tests.adb:45:14: warning: subprogram "Add_Monotonic" has no effect, in instantiation at foo.ads:15
-generic_float_tests.adb:49:22: info: assertion proved (CVC5: 1 VC), in instantiation at foo.ads:10
-generic_float_tests.adb:49:22: info: assertion proved (CVC5: 1 VC), in instantiation at foo.ads:15
+generic_float_tests.adb:49:22: info: assertion proved, in instantiation at foo.ads:10
+generic_float_tests.adb:49:22: info: assertion proved, in instantiation at foo.ads:15
 generic_float_tests.adb:49:24: medium: float overflow check might fail, in instantiation at foo.ads:10 [reason for check: result of floating-point addition must be bounded]
 generic_float_tests.adb:49:24: medium: float overflow check might fail, in instantiation at foo.ads:15 [reason for check: result of floating-point addition must be bounded]
 generic_float_tests.adb:54:14: warning: subprogram "Add_Strictly_Monotonic" has no effect, in instantiation at foo.ads:10
@@ -80,34 +80,34 @@ generic_float_tests.adb:63:14: high: all paths in "Smooth" raise exceptions or d
 generic_float_tests.adb:63:14: high: all paths in "Smooth" raise exceptions or do not terminate normally, in instantiation at foo.ads:15
 generic_float_tests.adb:63:14: warning: subprogram "Smooth" has no effect, in instantiation at foo.ads:10
 generic_float_tests.adb:63:14: warning: subprogram "Smooth" has no effect, in instantiation at foo.ads:15
-generic_float_tests.adb:67:07: info: assertion proved (CVC5: 1 VC), in instantiation at foo.ads:10
-generic_float_tests.adb:67:07: info: assertion proved (CVC5: 1 VC), in instantiation at foo.ads:15
+generic_float_tests.adb:67:07: info: assertion proved, in instantiation at foo.ads:10
+generic_float_tests.adb:67:07: info: assertion proved, in instantiation at foo.ads:15
 generic_float_tests.adb:72:13: info: implicit terminating annotation on "Negate_Wrong" has been proved, subprogram will terminate, in instantiation at foo.ads:10
 generic_float_tests.adb:72:13: info: implicit terminating annotation on "Negate_Wrong" has been proved, subprogram will terminate, in instantiation at foo.ads:15
-generic_float_tests.adb:73:19: info: postcondition proved (CVC5: 1 VC), in instantiation at foo.ads:10
-generic_float_tests.adb:73:19: info: postcondition proved (CVC5: 1 VC), in instantiation at foo.ads:15
-generic_float_tests.adb:76:18: info: float overflow check proved (CVC5: 1 VC), in instantiation at foo.ads:10
-generic_float_tests.adb:76:18: info: float overflow check proved (CVC5: 1 VC), in instantiation at foo.ads:15
+generic_float_tests.adb:73:19: info: postcondition proved, in instantiation at foo.ads:10
+generic_float_tests.adb:73:19: info: postcondition proved, in instantiation at foo.ads:15
+generic_float_tests.adb:76:18: info: float overflow check proved, in instantiation at foo.ads:10
+generic_float_tests.adb:76:18: info: float overflow check proved, in instantiation at foo.ads:15
 generic_float_tests.adb:79:13: info: implicit terminating annotation on "Underflow_1" has been proved, subprogram will terminate, in instantiation at foo.ads:10
 generic_float_tests.adb:79:13: info: implicit terminating annotation on "Underflow_1" has been proved, subprogram will terminate, in instantiation at foo.ads:15
 generic_float_tests.adb:81:19: medium: postcondition might fail, in instantiation at foo.ads:10
 generic_float_tests.adb:81:19: medium: postcondition might fail, in instantiation at foo.ads:15
-generic_float_tests.adb:84:16: info: division check proved (CVC5: 1 VC), in instantiation at foo.ads:10
-generic_float_tests.adb:84:16: info: division check proved (altergo: 1 VC), in instantiation at foo.ads:15
+generic_float_tests.adb:84:16: info: division check proved, in instantiation at foo.ads:10
+generic_float_tests.adb:84:16: info: division check proved, in instantiation at foo.ads:15
 generic_float_tests.adb:84:16: medium: float overflow check might fail, in instantiation at foo.ads:10 [reason for check: result of floating-point division must be bounded]
 generic_float_tests.adb:84:16: medium: float overflow check might fail, in instantiation at foo.ads:15 [reason for check: result of floating-point division must be bounded]
 generic_float_tests.adb:89:13: info: implicit terminating annotation on "Inverse_Reciprocal" has been proved, subprogram will terminate, in instantiation at foo.ads:10
 generic_float_tests.adb:89:13: info: implicit terminating annotation on "Inverse_Reciprocal" has been proved, subprogram will terminate, in instantiation at foo.ads:15
 generic_float_tests.adb:91:19: medium: postcondition might fail, in instantiation at foo.ads:10
 generic_float_tests.adb:91:19: medium: postcondition might fail, in instantiation at foo.ads:15
-generic_float_tests.adb:94:18: info: division check proved (altergo: 1 VC), in instantiation at foo.ads:10
-generic_float_tests.adb:94:18: info: division check proved (altergo: 1 VC), in instantiation at foo.ads:15
+generic_float_tests.adb:94:18: info: division check proved, in instantiation at foo.ads:10
+generic_float_tests.adb:94:18: info: division check proved, in instantiation at foo.ads:15
 generic_float_tests.adb:94:18: medium: float overflow check might fail, in instantiation at foo.ads:10 [reason for check: result of floating-point division must be bounded]
 generic_float_tests.adb:94:18: medium: float overflow check might fail, in instantiation at foo.ads:15 [reason for check: result of floating-point division must be bounded]
-generic_float_tests.adb:94:25: info: division check proved (CVC5: 1 VC), in instantiation at foo.ads:10
-generic_float_tests.adb:94:25: info: division check proved (CVC5: 1 VC), in instantiation at foo.ads:15
-generic_float_tests.adb:94:25: info: float overflow check proved (CVC5: 1 VC), in instantiation at foo.ads:10
-generic_float_tests.adb:94:25: info: float overflow check proved (altergo: 1 VC), in instantiation at foo.ads:15
+generic_float_tests.adb:94:25: info: division check proved, in instantiation at foo.ads:10
+generic_float_tests.adb:94:25: info: division check proved, in instantiation at foo.ads:15
+generic_float_tests.adb:94:25: info: float overflow check proved, in instantiation at foo.ads:10
+generic_float_tests.adb:94:25: info: float overflow check proved, in instantiation at foo.ads:15
 generic_float_tests.adb:97:13: info: implicit terminating annotation on "Underflow_2" has been proved, subprogram will terminate, in instantiation at foo.ads:10
 generic_float_tests.adb:97:13: info: implicit terminating annotation on "Underflow_2" has been proved, subprogram will terminate, in instantiation at foo.ads:15
 generic_float_tests.adb:98:20: medium: float overflow check might fail, in instantiation at foo.ads:10 [reason for check: result of floating-point multiplication must be bounded]
@@ -132,36 +132,36 @@ generic_float_tests.adb:121:13: info: implicit terminating annotation on "Bad_Op
 generic_float_tests.adb:121:13: info: implicit terminating annotation on "Bad_Optimisation_1" has been proved, subprogram will terminate, in instantiation at foo.ads:15
 generic_float_tests.adb:123:19: medium: postcondition might fail, in instantiation at foo.ads:10
 generic_float_tests.adb:123:19: medium: postcondition might fail, in instantiation at foo.ads:15
-generic_float_tests.adb:123:49: info: division check proved (CVC5: 1 VC), in instantiation at foo.ads:10
-generic_float_tests.adb:123:49: info: division check proved (CVC5: 1 VC), in instantiation at foo.ads:15
+generic_float_tests.adb:123:49: info: division check proved, in instantiation at foo.ads:10
+generic_float_tests.adb:123:49: info: division check proved, in instantiation at foo.ads:15
 generic_float_tests.adb:123:49: medium: float overflow check might fail, in instantiation at foo.ads:10 [reason for check: result of floating-point division must be bounded] [possible fix: precondition of subprogram at line 121 should mention A]
 generic_float_tests.adb:123:49: medium: float overflow check might fail, in instantiation at foo.ads:15 [reason for check: result of floating-point division must be bounded] [possible fix: precondition of subprogram at line 121 should mention A]
 generic_float_tests.adb:126:16: medium: float overflow check might fail, in instantiation at foo.ads:10 [reason for check: result of floating-point multiplication must be bounded] [possible fix: precondition of subprogram at line 121 should mention A]
 generic_float_tests.adb:126:16: medium: float overflow check might fail, in instantiation at foo.ads:15 [reason for check: result of floating-point multiplication must be bounded] [possible fix: precondition of subprogram at line 121 should mention A]
-generic_float_tests.adb:126:23: info: division check proved (CVC5: 1 VC), in instantiation at foo.ads:10
-generic_float_tests.adb:126:23: info: division check proved (CVC5: 1 VC), in instantiation at foo.ads:15
+generic_float_tests.adb:126:23: info: division check proved, in instantiation at foo.ads:10
+generic_float_tests.adb:126:23: info: division check proved, in instantiation at foo.ads:15
 generic_float_tests.adb:126:23: medium: float overflow check might fail, in instantiation at foo.ads:10 [reason for check: result of floating-point division must be bounded]
 generic_float_tests.adb:126:23: medium: float overflow check might fail, in instantiation at foo.ads:15 [reason for check: result of floating-point division must be bounded]
 generic_float_tests.adb:129:14: warning: subprogram "Inverse_Addition" has no effect, in instantiation at foo.ads:10
 generic_float_tests.adb:129:14: warning: subprogram "Inverse_Addition" has no effect, in instantiation at foo.ads:15
-generic_float_tests.adb:132:22: info: assertion proved (CVC5: 1 VC), in instantiation at foo.ads:10
-generic_float_tests.adb:132:22: info: assertion proved (CVC5: 1 VC), in instantiation at foo.ads:15
-generic_float_tests.adb:132:24: info: float overflow check proved (CVC5: 1 VC), in instantiation at foo.ads:10
-generic_float_tests.adb:132:24: info: float overflow check proved (CVC5: 1 VC), in instantiation at foo.ads:15
+generic_float_tests.adb:132:22: info: assertion proved, in instantiation at foo.ads:10
+generic_float_tests.adb:132:22: info: assertion proved, in instantiation at foo.ads:15
+generic_float_tests.adb:132:24: info: float overflow check proved, in instantiation at foo.ads:10
+generic_float_tests.adb:132:24: info: float overflow check proved, in instantiation at foo.ads:15
 generic_float_tests.adb:132:32: medium: float overflow check might fail, in instantiation at foo.ads:10 [reason for check: result of floating-point subtraction must be bounded] [possible fix: subprogram at line 129 should mention X in a precondition]
 generic_float_tests.adb:132:32: medium: float overflow check might fail, in instantiation at foo.ads:15 [reason for check: result of floating-point subtraction must be bounded] [possible fix: subprogram at line 129 should mention X in a precondition]
 generic_float_tests.adb:135:14: warning: subprogram "Substract_Identity_1" has no effect, in instantiation at foo.ads:10
 generic_float_tests.adb:135:14: warning: subprogram "Substract_Identity_1" has no effect, in instantiation at foo.ads:15
-generic_float_tests.adb:139:23: info: assertion proved (CVC5: 2 VC), in instantiation at foo.ads:10
-generic_float_tests.adb:139:23: info: assertion proved (CVC5: 2 VC), in instantiation at foo.ads:15
-generic_float_tests.adb:139:25: info: float overflow check proved (CVC5: 1 VC), in instantiation at foo.ads:10
-generic_float_tests.adb:139:25: info: float overflow check proved (CVC5: 1 VC), in instantiation at foo.ads:15
+generic_float_tests.adb:139:23: info: assertion proved, in instantiation at foo.ads:10
+generic_float_tests.adb:139:23: info: assertion proved, in instantiation at foo.ads:15
+generic_float_tests.adb:139:25: info: float overflow check proved, in instantiation at foo.ads:10
+generic_float_tests.adb:139:25: info: float overflow check proved, in instantiation at foo.ads:15
 generic_float_tests.adb:142:14: warning: subprogram "Substract_Identity_2" has no effect, in instantiation at foo.ads:10
 generic_float_tests.adb:142:14: warning: subprogram "Substract_Identity_2" has no effect, in instantiation at foo.ads:15
 generic_float_tests.adb:146:23: medium: assertion might fail, in instantiation at foo.ads:10
 generic_float_tests.adb:146:23: medium: assertion might fail, in instantiation at foo.ads:15
-generic_float_tests.adb:146:25: info: float overflow check proved (CVC5: 1 VC), in instantiation at foo.ads:10
-generic_float_tests.adb:146:25: info: float overflow check proved (CVC5: 1 VC), in instantiation at foo.ads:15
+generic_float_tests.adb:146:25: info: float overflow check proved, in instantiation at foo.ads:10
+generic_float_tests.adb:146:25: info: float overflow check proved, in instantiation at foo.ads:15
 generic_float_tests.adb:146:30: medium: float overflow check might fail, in instantiation at foo.ads:10 [reason for check: result of floating-point addition must be bounded]
 generic_float_tests.adb:146:30: medium: float overflow check might fail, in instantiation at foo.ads:15 [reason for check: result of floating-point addition must be bounded]
 generic_float_tests.adb:149:14: warning: subprogram "Substract_Identity_3" has no effect, in instantiation at foo.ads:10
@@ -170,14 +170,14 @@ generic_float_tests.adb:153:23: medium: assertion might fail, in instantiation a
 generic_float_tests.adb:153:23: medium: assertion might fail, in instantiation at foo.ads:15
 generic_float_tests.adb:153:25: medium: float overflow check might fail, in instantiation at foo.ads:10 [reason for check: result of floating-point addition must be bounded]
 generic_float_tests.adb:153:25: medium: float overflow check might fail, in instantiation at foo.ads:15 [reason for check: result of floating-point addition must be bounded]
-generic_float_tests.adb:153:30: info: float overflow check proved (CVC5: 1 VC), in instantiation at foo.ads:10
-generic_float_tests.adb:153:30: info: float overflow check proved (CVC5: 1 VC), in instantiation at foo.ads:15
+generic_float_tests.adb:153:30: info: float overflow check proved, in instantiation at foo.ads:10
+generic_float_tests.adb:153:30: info: float overflow check proved, in instantiation at foo.ads:15
 generic_float_tests.adb:156:14: warning: subprogram "Underflow_4" has no effect, in instantiation at foo.ads:10
 generic_float_tests.adb:156:14: warning: subprogram "Underflow_4" has no effect, in instantiation at foo.ads:15
-generic_float_tests.adb:160:22: info: assertion proved (CVC5: 1 VC), in instantiation at foo.ads:10
-generic_float_tests.adb:160:22: info: assertion proved (colibri: 1 VC), in instantiation at foo.ads:15
-generic_float_tests.adb:160:26: info: division check proved (CVC5: 1 VC), in instantiation at foo.ads:10
-generic_float_tests.adb:160:26: info: division check proved (CVC5: 1 VC), in instantiation at foo.ads:15
+generic_float_tests.adb:160:22: info: assertion proved, in instantiation at foo.ads:10
+generic_float_tests.adb:160:22: info: assertion proved, in instantiation at foo.ads:15
+generic_float_tests.adb:160:26: info: division check proved, in instantiation at foo.ads:10
+generic_float_tests.adb:160:26: info: division check proved, in instantiation at foo.ads:15
 generic_float_tests.adb:160:26: medium: float overflow check might fail, in instantiation at foo.ads:10 [reason for check: result of floating-point division must be bounded]
 generic_float_tests.adb:160:26: medium: float overflow check might fail, in instantiation at foo.ads:15 [reason for check: result of floating-point division must be bounded]
 generic_float_tests.adb:163:14: warning: subprogram "Not_So_Associative" has no effect, in instantiation at foo.ads:10
@@ -194,10 +194,10 @@ generic_float_tests.adb:166:43: medium: float overflow check might fail, in inst
 generic_float_tests.adb:166:43: medium: float overflow check might fail, in instantiation at foo.ads:15 [reason for check: result of floating-point addition must be bounded] [possible fix: subprogram at line 163 should mention B and C in a precondition]
 generic_float_tests.adb:169:14: warning: subprogram "I_Like_To_Commute_To_Work" has no effect, in instantiation at foo.ads:10
 generic_float_tests.adb:169:14: warning: subprogram "I_Like_To_Commute_To_Work" has no effect, in instantiation at foo.ads:15
-generic_float_tests.adb:172:23: info: assertion proved (CVC5: 1 VC), in instantiation at foo.ads:10
-generic_float_tests.adb:172:23: info: assertion proved (CVC5: 1 VC), in instantiation at foo.ads:15
-generic_float_tests.adb:172:25: info: float overflow check proved (CVC5: 1 VC), in instantiation at foo.ads:10
-generic_float_tests.adb:172:25: info: float overflow check proved (CVC5: 1 VC), in instantiation at foo.ads:15
+generic_float_tests.adb:172:23: info: assertion proved, in instantiation at foo.ads:10
+generic_float_tests.adb:172:23: info: assertion proved, in instantiation at foo.ads:15
+generic_float_tests.adb:172:25: info: float overflow check proved, in instantiation at foo.ads:10
+generic_float_tests.adb:172:25: info: float overflow check proved, in instantiation at foo.ads:15
 generic_float_tests.adb:172:35: medium: float overflow check might fail, in instantiation at foo.ads:10 [reason for check: result of floating-point addition must be bounded] [possible fix: subprogram at line 169 should mention A and B in a precondition]
 generic_float_tests.adb:172:35: medium: float overflow check might fail, in instantiation at foo.ads:15 [reason for check: result of floating-point addition must be bounded] [possible fix: subprogram at line 169 should mention A and B in a precondition]
 generic_float_tests.adb:175:14: warning: subprogram "Distributed_Fun" has no effect, in instantiation at foo.ads:10
@@ -216,8 +216,8 @@ generic_float_tests.adb:178:49: medium: float overflow check might fail, in inst
 generic_float_tests.adb:178:49: medium: float overflow check might fail, in instantiation at foo.ads:15 [reason for check: result of floating-point multiplication must be bounded] [possible fix: subprogram at line 175 should mention A and C in a precondition]
 generic_float_tests.adb:188:14: warning: subprogram "Equality" has no effect, in instantiation at foo.ads:10
 generic_float_tests.adb:188:14: warning: subprogram "Equality" has no effect, in instantiation at foo.ads:15
-generic_float_tests.adb:191:22: info: assertion proved (CVC5: 1 VC), in instantiation at foo.ads:10
-generic_float_tests.adb:191:22: info: assertion proved (CVC5: 1 VC), in instantiation at foo.ads:15
+generic_float_tests.adb:191:22: info: assertion proved, in instantiation at foo.ads:10
+generic_float_tests.adb:191:22: info: assertion proved, in instantiation at foo.ads:15
 generic_float_tests.adb:195:42: info: initialization of "Z" proved, in instantiation at foo.ads:10
 generic_float_tests.adb:195:42: info: initialization of "Z" proved, in instantiation at foo.ads:15
 generic_float_tests.adb:199:14: medium: divide by zero might fail, in instantiation at foo.ads:10 [possible fix: add precondition (Y /= 0) to subprogram at line 195]
@@ -228,48 +228,48 @@ generic_float_tests.adb:205:14: warning: subprogram "Introduce_NaN_2" has no eff
 generic_float_tests.adb:205:14: warning: subprogram "Introduce_NaN_2" has no effect, in instantiation at foo.ads:15
 generic_float_tests.adb:209:22: medium: assertion might fail, in instantiation at foo.ads:10
 generic_float_tests.adb:209:22: medium: assertion might fail, in instantiation at foo.ads:15
-generic_float_tests.adb:209:24: info: division check proved (CVC5: 1 VC), in instantiation at foo.ads:10
-generic_float_tests.adb:209:24: info: division check proved (Z3: 1 VC), in instantiation at foo.ads:15
-generic_float_tests.adb:209:24: info: float overflow check proved (CVC5: 1 VC), in instantiation at foo.ads:10
-generic_float_tests.adb:209:24: info: float overflow check proved (CVC5: 1 VC), in instantiation at foo.ads:15
+generic_float_tests.adb:209:24: info: division check proved, in instantiation at foo.ads:10
+generic_float_tests.adb:209:24: info: division check proved, in instantiation at foo.ads:15
+generic_float_tests.adb:209:24: info: float overflow check proved, in instantiation at foo.ads:10
+generic_float_tests.adb:209:24: info: float overflow check proved, in instantiation at foo.ads:15
 generic_float_tests.adb:209:32: medium: divide by zero might fail, in instantiation at foo.ads:10 [possible fix: add precondition (Y /= 0) to subprogram at line 205]
 generic_float_tests.adb:209:32: medium: divide by zero might fail, in instantiation at foo.ads:15 [possible fix: add precondition (Y /= 0) to subprogram at line 205]
 generic_float_tests.adb:209:32: medium: float overflow check might fail, in instantiation at foo.ads:10 [reason for check: result of floating-point division must be bounded]
 generic_float_tests.adb:209:32: medium: float overflow check might fail, in instantiation at foo.ads:15 [reason for check: result of floating-point division must be bounded]
 generic_float_tests.adb:213:13: info: implicit terminating annotation on "Introduce_NaN_3" has been proved, subprogram will terminate, in instantiation at foo.ads:10
 generic_float_tests.adb:213:13: info: implicit terminating annotation on "Introduce_NaN_3" has been proved, subprogram will terminate, in instantiation at foo.ads:15
-generic_float_tests.adb:217:18: info: division check proved (altergo: 1 VC), in instantiation at foo.ads:10
-generic_float_tests.adb:217:18: info: division check proved (altergo: 1 VC), in instantiation at foo.ads:15
-generic_float_tests.adb:217:18: info: float overflow check proved (altergo: 1 VC), in instantiation at foo.ads:10
-generic_float_tests.adb:217:18: info: float overflow check proved (altergo: 1 VC), in instantiation at foo.ads:15
+generic_float_tests.adb:217:18: info: division check proved, in instantiation at foo.ads:10
+generic_float_tests.adb:217:18: info: division check proved, in instantiation at foo.ads:15
+generic_float_tests.adb:217:18: info: float overflow check proved, in instantiation at foo.ads:10
+generic_float_tests.adb:217:18: info: float overflow check proved, in instantiation at foo.ads:15
 generic_float_tests.adb:217:28: medium: divide by zero might fail, in instantiation at foo.ads:10 [possible fix: add precondition (Y /= 0) to subprogram at line 213]
 generic_float_tests.adb:217:28: medium: divide by zero might fail, in instantiation at foo.ads:15 [possible fix: add precondition (Y /= 0) to subprogram at line 213]
 generic_float_tests.adb:217:28: medium: float overflow check might fail, in instantiation at foo.ads:10 [reason for check: result of floating-point division must be bounded]
 generic_float_tests.adb:217:28: medium: float overflow check might fail, in instantiation at foo.ads:15 [reason for check: result of floating-point division must be bounded]
 generic_float_tests.adb:222:14: warning: subprogram "Transitive" has no effect, in instantiation at foo.ads:10
 generic_float_tests.adb:222:14: warning: subprogram "Transitive" has no effect, in instantiation at foo.ads:15
-generic_float_tests.adb:226:22: info: assertion proved (CVC5: 1 VC), in instantiation at foo.ads:15
-generic_float_tests.adb:226:22: info: assertion proved (Z3: 1 VC), in instantiation at foo.ads:10
+generic_float_tests.adb:226:22: info: assertion proved, in instantiation at foo.ads:10
+generic_float_tests.adb:226:22: info: assertion proved, in instantiation at foo.ads:15
 generic_float_tests.adb:229:13: info: implicit terminating annotation on "Exhaustive" has been proved, subprogram will terminate, in instantiation at foo.ads:10
 generic_float_tests.adb:229:13: info: implicit terminating annotation on "Exhaustive" has been proved, subprogram will terminate, in instantiation at foo.ads:15
-generic_float_tests.adb:237:25: info: assertion proved (CVC5: 1 VC), in instantiation at foo.ads:10
-generic_float_tests.adb:237:25: info: assertion proved (CVC5: 1 VC), in instantiation at foo.ads:15
+generic_float_tests.adb:237:25: info: assertion proved, in instantiation at foo.ads:10
+generic_float_tests.adb:237:25: info: assertion proved, in instantiation at foo.ads:15
 generic_float_tests.adb:242:14: warning: subprogram "Negation_1" has no effect, in instantiation at foo.ads:10
 generic_float_tests.adb:242:14: warning: subprogram "Negation_1" has no effect, in instantiation at foo.ads:15
-generic_float_tests.adb:246:22: info: assertion proved (CVC5: 1 VC), in instantiation at foo.ads:10
-generic_float_tests.adb:246:22: info: assertion proved (CVC5: 1 VC), in instantiation at foo.ads:15
-generic_float_tests.adb:250:19: info: postcondition proved (CVC5: 1 VC), in instantiation at foo.ads:10
-generic_float_tests.adb:250:19: info: postcondition proved (Z3: 1 VC), in instantiation at foo.ads:15
-generic_float_tests.adb:253:14: info: float overflow check proved (Z3: 1 VC), in instantiation at foo.ads:10
-generic_float_tests.adb:253:14: info: float overflow check proved (Z3: 1 VC), in instantiation at foo.ads:15
+generic_float_tests.adb:246:22: info: assertion proved, in instantiation at foo.ads:10
+generic_float_tests.adb:246:22: info: assertion proved, in instantiation at foo.ads:15
+generic_float_tests.adb:250:19: info: postcondition proved, in instantiation at foo.ads:10
+generic_float_tests.adb:250:19: info: postcondition proved, in instantiation at foo.ads:15
+generic_float_tests.adb:253:14: info: float overflow check proved, in instantiation at foo.ads:10
+generic_float_tests.adb:253:14: info: float overflow check proved, in instantiation at foo.ads:15
 generic_float_tests.adb:256:14: warning: subprogram "Identity_2" has no effect, in instantiation at foo.ads:10
 generic_float_tests.adb:256:14: warning: subprogram "Identity_2" has no effect, in instantiation at foo.ads:15
-generic_float_tests.adb:260:22: info: assertion proved (altergo: 1 VC), in instantiation at foo.ads:10
-generic_float_tests.adb:260:22: info: assertion proved (altergo: 1 VC), in instantiation at foo.ads:15
-generic_float_tests.adb:260:24: info: division check proved (CVC5: 1 VC), in instantiation at foo.ads:10
-generic_float_tests.adb:260:24: info: division check proved (CVC5: 1 VC), in instantiation at foo.ads:15
-generic_float_tests.adb:260:24: info: float overflow check proved (altergo: 1 VC), in instantiation at foo.ads:10
-generic_float_tests.adb:260:24: info: float overflow check proved (altergo: 1 VC), in instantiation at foo.ads:15
+generic_float_tests.adb:260:22: info: assertion proved, in instantiation at foo.ads:10
+generic_float_tests.adb:260:22: info: assertion proved, in instantiation at foo.ads:15
+generic_float_tests.adb:260:24: info: division check proved, in instantiation at foo.ads:10
+generic_float_tests.adb:260:24: info: division check proved, in instantiation at foo.ads:15
+generic_float_tests.adb:260:24: info: float overflow check proved, in instantiation at foo.ads:10
+generic_float_tests.adb:260:24: info: float overflow check proved, in instantiation at foo.ads:15
 generic_float_tests.adb:269:37: info: initialization of "A" proved, in instantiation at foo.ads:10
 generic_float_tests.adb:269:37: info: initialization of "A" proved, in instantiation at foo.ads:15
 generic_float_tests.adb:269:40: info: initialization of "B" proved, in instantiation at foo.ads:10
@@ -280,14 +280,14 @@ generic_float_tests.adb:272:16: medium: divide by zero might fail, in instantiat
 generic_float_tests.adb:272:16: medium: divide by zero might fail, in instantiation at foo.ads:15 [possible fix: add precondition (X /= 0) to subprogram at line 268]
 generic_float_tests.adb:272:16: medium: float overflow check might fail, in instantiation at foo.ads:10 [reason for check: result of floating-point division must be bounded] [possible fix: subprogram at line 268 should mention X in a precondition]
 generic_float_tests.adb:272:16: medium: float overflow check might fail, in instantiation at foo.ads:15 [reason for check: result of floating-point division must be bounded] [possible fix: subprogram at line 268 should mention X in a precondition]
-generic_float_tests.adb:273:16: info: division check proved (altergo: 1 VC), in instantiation at foo.ads:10
-generic_float_tests.adb:273:16: info: division check proved (altergo: 1 VC), in instantiation at foo.ads:15
+generic_float_tests.adb:273:16: info: division check proved, in instantiation at foo.ads:10
+generic_float_tests.adb:273:16: info: division check proved, in instantiation at foo.ads:15
 generic_float_tests.adb:273:16: medium: float overflow check might fail, in instantiation at foo.ads:10 [reason for check: result of floating-point division must be bounded]
 generic_float_tests.adb:273:16: medium: float overflow check might fail, in instantiation at foo.ads:15 [reason for check: result of floating-point division must be bounded]
-generic_float_tests.adb:274:16: info: division check proved (altergo: 1 VC), in instantiation at foo.ads:10
-generic_float_tests.adb:274:16: info: division check proved (altergo: 1 VC), in instantiation at foo.ads:15
-generic_float_tests.adb:274:16: info: float overflow check proved (colibri: 1 VC), in instantiation at foo.ads:10
-generic_float_tests.adb:274:16: info: float overflow check proved (colibri: 1 VC), in instantiation at foo.ads:15
+generic_float_tests.adb:274:16: info: division check proved, in instantiation at foo.ads:10
+generic_float_tests.adb:274:16: info: division check proved, in instantiation at foo.ads:15
+generic_float_tests.adb:274:16: info: float overflow check proved, in instantiation at foo.ads:10
+generic_float_tests.adb:274:16: info: float overflow check proved, in instantiation at foo.ads:15
 generic_float_tests.adb:275:22: medium: assertion might fail, in instantiation at foo.ads:10
 generic_float_tests.adb:275:22: medium: assertion might fail, in instantiation at foo.ads:15
 generic_float_tests.adb:279:37: info: initialization of "A" proved, in instantiation at foo.ads:10
@@ -300,156 +300,156 @@ generic_float_tests.adb:282:16: medium: divide by zero might fail, in instantiat
 generic_float_tests.adb:282:16: medium: divide by zero might fail, in instantiation at foo.ads:15 [possible fix: add precondition (X /= 0) to subprogram at line 278]
 generic_float_tests.adb:282:16: medium: float overflow check might fail, in instantiation at foo.ads:10 [reason for check: result of floating-point division must be bounded] [possible fix: subprogram at line 278 should mention X in a precondition]
 generic_float_tests.adb:282:16: medium: float overflow check might fail, in instantiation at foo.ads:15 [reason for check: result of floating-point division must be bounded] [possible fix: subprogram at line 278 should mention X in a precondition]
-generic_float_tests.adb:283:16: info: division check proved (altergo: 1 VC), in instantiation at foo.ads:10
-generic_float_tests.adb:283:16: info: division check proved (altergo: 1 VC), in instantiation at foo.ads:15
+generic_float_tests.adb:283:16: info: division check proved, in instantiation at foo.ads:10
+generic_float_tests.adb:283:16: info: division check proved, in instantiation at foo.ads:15
 generic_float_tests.adb:283:16: medium: float overflow check might fail, in instantiation at foo.ads:10 [reason for check: result of floating-point division must be bounded]
 generic_float_tests.adb:283:16: medium: float overflow check might fail, in instantiation at foo.ads:15 [reason for check: result of floating-point division must be bounded]
-generic_float_tests.adb:284:16: info: division check proved (altergo: 1 VC), in instantiation at foo.ads:10
-generic_float_tests.adb:284:16: info: division check proved (altergo: 1 VC), in instantiation at foo.ads:15
-generic_float_tests.adb:284:16: info: float overflow check proved (colibri: 1 VC), in instantiation at foo.ads:10
-generic_float_tests.adb:284:16: info: float overflow check proved (colibri: 1 VC), in instantiation at foo.ads:15
+generic_float_tests.adb:284:16: info: division check proved, in instantiation at foo.ads:10
+generic_float_tests.adb:284:16: info: division check proved, in instantiation at foo.ads:15
+generic_float_tests.adb:284:16: info: float overflow check proved, in instantiation at foo.ads:10
+generic_float_tests.adb:284:16: info: float overflow check proved, in instantiation at foo.ads:15
 generic_float_tests.adb:285:22: medium: assertion might fail, in instantiation at foo.ads:10 [possible fix: subprogram at line 278 should mention X in a precondition]
 generic_float_tests.adb:285:22: medium: assertion might fail, in instantiation at foo.ads:15 [possible fix: subprogram at line 278 should mention X in a precondition]
 generic_float_tests.adb:294:14: warning: subprogram "Unary_Ops" has no effect, in instantiation at foo.ads:10
 generic_float_tests.adb:294:14: warning: subprogram "Unary_Ops" has no effect, in instantiation at foo.ads:15
-generic_float_tests.adb:297:22: info: assertion proved (CVC5: 1 VC), in instantiation at foo.ads:10
-generic_float_tests.adb:297:22: info: assertion proved (CVC5: 1 VC), in instantiation at foo.ads:15
+generic_float_tests.adb:297:22: info: assertion proved, in instantiation at foo.ads:10
+generic_float_tests.adb:297:22: info: assertion proved, in instantiation at foo.ads:15
 generic_float_tests.adb:301:24: info: initialization of "M" proved, in instantiation at foo.ads:10
 generic_float_tests.adb:301:24: info: initialization of "M" proved, in instantiation at foo.ads:15
-generic_float_tests.adb:302:19: info: postcondition proved (CVC5: 2 VC; Z3: 1 VC), in instantiation at foo.ads:15
-generic_float_tests.adb:302:19: info: postcondition proved (CVC5: 3 VC), in instantiation at foo.ads:10
+generic_float_tests.adb:302:19: info: postcondition proved, in instantiation at foo.ads:10
+generic_float_tests.adb:302:19: info: postcondition proved, in instantiation at foo.ads:15
 generic_float_tests.adb:309:24: info: initialization of "M" proved, in instantiation at foo.ads:10
 generic_float_tests.adb:309:24: info: initialization of "M" proved, in instantiation at foo.ads:15
-generic_float_tests.adb:310:19: info: postcondition proved (CVC5: 2 VC; Z3: 1 VC), in instantiation at foo.ads:10
-generic_float_tests.adb:310:19: info: postcondition proved (CVC5: 3 VC), in instantiation at foo.ads:15
+generic_float_tests.adb:310:19: info: postcondition proved, in instantiation at foo.ads:10
+generic_float_tests.adb:310:19: info: postcondition proved, in instantiation at foo.ads:15
 generic_float_tests.adb:317:28: info: initialization of "Y" proved, in instantiation at foo.ads:10
 generic_float_tests.adb:317:28: info: initialization of "Y" proved, in instantiation at foo.ads:15
-generic_float_tests.adb:319:19: info: postcondition proved (CVC5: 1 VC), in instantiation at foo.ads:10
-generic_float_tests.adb:319:19: info: postcondition proved (CVC5: 1 VC), in instantiation at foo.ads:15
+generic_float_tests.adb:319:19: info: postcondition proved, in instantiation at foo.ads:10
+generic_float_tests.adb:319:19: info: postcondition proved, in instantiation at foo.ads:15
 generic_float_tests.adb:325:14: warning: subprogram "Test_Floor_2" has no effect, in instantiation at foo.ads:10
 generic_float_tests.adb:325:14: warning: subprogram "Test_Floor_2" has no effect, in instantiation at foo.ads:15
-generic_float_tests.adb:329:22: info: assertion proved (CVC5: 1 VC), in instantiation at foo.ads:10
-generic_float_tests.adb:329:22: info: assertion proved (CVC5: 1 VC), in instantiation at foo.ads:15
-generic_float_tests.adb:329:50: info: float overflow check proved (CVC5: 1 VC), in instantiation at foo.ads:10
-generic_float_tests.adb:329:50: info: float overflow check proved (CVC5: 1 VC), in instantiation at foo.ads:15
+generic_float_tests.adb:329:22: info: assertion proved, in instantiation at foo.ads:10
+generic_float_tests.adb:329:22: info: assertion proved, in instantiation at foo.ads:15
+generic_float_tests.adb:329:50: info: float overflow check proved, in instantiation at foo.ads:10
+generic_float_tests.adb:329:50: info: float overflow check proved, in instantiation at foo.ads:15
 generic_float_tests.adb:332:14: warning: subprogram "Test_Floor_3" has no effect, in instantiation at foo.ads:10
 generic_float_tests.adb:332:14: warning: subprogram "Test_Floor_3" has no effect, in instantiation at foo.ads:15
-generic_float_tests.adb:336:22: info: assertion proved (CVC5: 1 VC), in instantiation at foo.ads:10
-generic_float_tests.adb:336:22: info: assertion proved (CVC5: 1 VC), in instantiation at foo.ads:15
-generic_float_tests.adb:336:38: info: float overflow check proved (CVC5: 1 VC), in instantiation at foo.ads:10
-generic_float_tests.adb:336:38: info: float overflow check proved (CVC5: 1 VC), in instantiation at foo.ads:15
+generic_float_tests.adb:336:22: info: assertion proved, in instantiation at foo.ads:10
+generic_float_tests.adb:336:22: info: assertion proved, in instantiation at foo.ads:15
+generic_float_tests.adb:336:38: info: float overflow check proved, in instantiation at foo.ads:10
+generic_float_tests.adb:336:38: info: float overflow check proved, in instantiation at foo.ads:15
 generic_float_tests.adb:339:14: warning: subprogram "Test_Floor_4" has no effect, in instantiation at foo.ads:10
 generic_float_tests.adb:339:14: warning: subprogram "Test_Floor_4" has no effect, in instantiation at foo.ads:15
 generic_float_tests.adb:343:22: medium: assertion might fail, in instantiation at foo.ads:10
 generic_float_tests.adb:343:22: medium: assertion might fail, in instantiation at foo.ads:15
-generic_float_tests.adb:343:38: info: float overflow check proved (CVC5: 1 VC), in instantiation at foo.ads:10
-generic_float_tests.adb:343:38: info: float overflow check proved (CVC5: 1 VC), in instantiation at foo.ads:15
+generic_float_tests.adb:343:38: info: float overflow check proved, in instantiation at foo.ads:10
+generic_float_tests.adb:343:38: info: float overflow check proved, in instantiation at foo.ads:15
 generic_float_tests.adb:346:14: warning: subprogram "Test_Floor_5" has no effect, in instantiation at foo.ads:10
 generic_float_tests.adb:346:14: warning: subprogram "Test_Floor_5" has no effect, in instantiation at foo.ads:15
-generic_float_tests.adb:349:22: info: assertion proved (CVC5: 1 VC), in instantiation at foo.ads:10
-generic_float_tests.adb:349:22: info: assertion proved (CVC5: 1 VC), in instantiation at foo.ads:15
+generic_float_tests.adb:349:22: info: assertion proved, in instantiation at foo.ads:10
+generic_float_tests.adb:349:22: info: assertion proved, in instantiation at foo.ads:15
 generic_float_tests.adb:352:14: warning: subprogram "Test_Floor_6" has no effect, in instantiation at foo.ads:10
 generic_float_tests.adb:352:14: warning: subprogram "Test_Floor_6" has no effect, in instantiation at foo.ads:15
-generic_float_tests.adb:358:25: info: assertion proved (CVC5: 1 VC), in instantiation at foo.ads:10
-generic_float_tests.adb:358:25: info: assertion proved (CVC5: 1 VC), in instantiation at foo.ads:15
-generic_float_tests.adb:359:25: info: assertion proved (CVC5: 1 VC), in instantiation at foo.ads:10
-generic_float_tests.adb:359:25: info: assertion proved (CVC5: 1 VC), in instantiation at foo.ads:15
-generic_float_tests.adb:362:25: info: assertion proved (CVC5: 1 VC), in instantiation at foo.ads:10
-generic_float_tests.adb:362:25: info: assertion proved (CVC5: 1 VC), in instantiation at foo.ads:15
-generic_float_tests.adb:363:25: info: assertion proved (CVC5: 1 VC), in instantiation at foo.ads:10
-generic_float_tests.adb:363:25: info: assertion proved (CVC5: 1 VC), in instantiation at foo.ads:15
-generic_float_tests.adb:366:25: info: assertion proved (CVC5: 1 VC), in instantiation at foo.ads:10
-generic_float_tests.adb:366:25: info: assertion proved (CVC5: 1 VC), in instantiation at foo.ads:15
-generic_float_tests.adb:367:25: info: assertion proved (CVC5: 1 VC), in instantiation at foo.ads:10
-generic_float_tests.adb:367:25: info: assertion proved (CVC5: 1 VC), in instantiation at foo.ads:15
-generic_float_tests.adb:370:25: info: assertion proved (CVC5: 1 VC), in instantiation at foo.ads:10
-generic_float_tests.adb:370:25: info: assertion proved (CVC5: 1 VC), in instantiation at foo.ads:15
-generic_float_tests.adb:371:25: info: assertion proved (CVC5: 1 VC), in instantiation at foo.ads:10
-generic_float_tests.adb:371:25: info: assertion proved (CVC5: 1 VC), in instantiation at foo.ads:15
-generic_float_tests.adb:374:25: info: assertion proved (CVC5: 1 VC), in instantiation at foo.ads:10
-generic_float_tests.adb:374:25: info: assertion proved (CVC5: 1 VC), in instantiation at foo.ads:15
-generic_float_tests.adb:375:25: info: assertion proved (CVC5: 1 VC), in instantiation at foo.ads:10
-generic_float_tests.adb:375:25: info: assertion proved (CVC5: 1 VC), in instantiation at foo.ads:15
+generic_float_tests.adb:358:25: info: assertion proved, in instantiation at foo.ads:10
+generic_float_tests.adb:358:25: info: assertion proved, in instantiation at foo.ads:15
+generic_float_tests.adb:359:25: info: assertion proved, in instantiation at foo.ads:10
+generic_float_tests.adb:359:25: info: assertion proved, in instantiation at foo.ads:15
+generic_float_tests.adb:362:25: info: assertion proved, in instantiation at foo.ads:10
+generic_float_tests.adb:362:25: info: assertion proved, in instantiation at foo.ads:15
+generic_float_tests.adb:363:25: info: assertion proved, in instantiation at foo.ads:10
+generic_float_tests.adb:363:25: info: assertion proved, in instantiation at foo.ads:15
+generic_float_tests.adb:366:25: info: assertion proved, in instantiation at foo.ads:10
+generic_float_tests.adb:366:25: info: assertion proved, in instantiation at foo.ads:15
+generic_float_tests.adb:367:25: info: assertion proved, in instantiation at foo.ads:10
+generic_float_tests.adb:367:25: info: assertion proved, in instantiation at foo.ads:15
+generic_float_tests.adb:370:25: info: assertion proved, in instantiation at foo.ads:10
+generic_float_tests.adb:370:25: info: assertion proved, in instantiation at foo.ads:15
+generic_float_tests.adb:371:25: info: assertion proved, in instantiation at foo.ads:10
+generic_float_tests.adb:371:25: info: assertion proved, in instantiation at foo.ads:15
+generic_float_tests.adb:374:25: info: assertion proved, in instantiation at foo.ads:10
+generic_float_tests.adb:374:25: info: assertion proved, in instantiation at foo.ads:15
+generic_float_tests.adb:375:25: info: assertion proved, in instantiation at foo.ads:10
+generic_float_tests.adb:375:25: info: assertion proved, in instantiation at foo.ads:15
 generic_float_tests.adb:380:28: info: initialization of "I" proved, in instantiation at foo.ads:10
 generic_float_tests.adb:380:28: info: initialization of "I" proved, in instantiation at foo.ads:15
-generic_float_tests.adb:382:06: info: disjoint contract cases proved (CVC5: 1 VC), in instantiation at foo.ads:10
-generic_float_tests.adb:382:06: info: disjoint contract cases proved (CVC5: 1 VC), in instantiation at foo.ads:15
+generic_float_tests.adb:382:06: info: disjoint contract cases proved, in instantiation at foo.ads:10
+generic_float_tests.adb:382:06: info: disjoint contract cases proved, in instantiation at foo.ads:15
 generic_float_tests.adb:382:06: medium: contract cases might not be complete, in instantiation at foo.ads:10
 generic_float_tests.adb:382:06: medium: contract cases might not be complete, in instantiation at foo.ads:15
-generic_float_tests.adb:382:34: info: contract case proved (CVC5: 1 VC; Trivial: 1 VC), in instantiation at foo.ads:10
-generic_float_tests.adb:382:34: info: contract case proved (CVC5: 1 VC; Trivial: 1 VC), in instantiation at foo.ads:15
-generic_float_tests.adb:383:34: info: contract case proved (CVC5: 1 VC; Trivial: 1 VC), in instantiation at foo.ads:10
-generic_float_tests.adb:383:34: info: contract case proved (CVC5: 1 VC; Trivial: 1 VC), in instantiation at foo.ads:15
-generic_float_tests.adb:384:34: info: contract case proved (CVC5: 1 VC; Trivial: 1 VC), in instantiation at foo.ads:10
-generic_float_tests.adb:384:34: info: contract case proved (CVC5: 1 VC; Trivial: 1 VC), in instantiation at foo.ads:15
-generic_float_tests.adb:385:34: info: contract case proved (CVC5: 1 VC; Trivial: 1 VC), in instantiation at foo.ads:10
-generic_float_tests.adb:385:34: info: contract case proved (CVC5: 1 VC; Trivial: 1 VC), in instantiation at foo.ads:15
-generic_float_tests.adb:386:34: info: contract case proved (CVC5: 1 VC; Trivial: 1 VC), in instantiation at foo.ads:10
-generic_float_tests.adb:386:34: info: contract case proved (CVC5: 1 VC; Trivial: 1 VC), in instantiation at foo.ads:15
-generic_float_tests.adb:387:34: info: contract case proved (CVC5: 1 VC; Trivial: 1 VC), in instantiation at foo.ads:10
-generic_float_tests.adb:387:34: info: contract case proved (CVC5: 1 VC; Trivial: 1 VC), in instantiation at foo.ads:15
-generic_float_tests.adb:388:34: info: contract case proved (CVC5: 1 VC; Trivial: 1 VC), in instantiation at foo.ads:10
-generic_float_tests.adb:388:34: info: contract case proved (CVC5: 1 VC; Trivial: 1 VC), in instantiation at foo.ads:15
-generic_float_tests.adb:389:34: info: contract case proved (CVC5: 1 VC; Trivial: 1 VC), in instantiation at foo.ads:10
-generic_float_tests.adb:389:34: info: contract case proved (CVC5: 1 VC; Trivial: 1 VC), in instantiation at foo.ads:15
-generic_float_tests.adb:390:34: info: contract case proved (CVC5: 1 VC; Trivial: 1 VC), in instantiation at foo.ads:10
-generic_float_tests.adb:390:34: info: contract case proved (CVC5: 1 VC; Trivial: 1 VC), in instantiation at foo.ads:15
-generic_float_tests.adb:393:21: info: range check proved (CVC5: 2 VC), in instantiation at foo.ads:10
-generic_float_tests.adb:393:21: info: range check proved (CVC5: 2 VC), in instantiation at foo.ads:15
+generic_float_tests.adb:382:34: info: contract case proved, in instantiation at foo.ads:10
+generic_float_tests.adb:382:34: info: contract case proved, in instantiation at foo.ads:15
+generic_float_tests.adb:383:34: info: contract case proved, in instantiation at foo.ads:10
+generic_float_tests.adb:383:34: info: contract case proved, in instantiation at foo.ads:15
+generic_float_tests.adb:384:34: info: contract case proved, in instantiation at foo.ads:10
+generic_float_tests.adb:384:34: info: contract case proved, in instantiation at foo.ads:15
+generic_float_tests.adb:385:34: info: contract case proved, in instantiation at foo.ads:10
+generic_float_tests.adb:385:34: info: contract case proved, in instantiation at foo.ads:15
+generic_float_tests.adb:386:34: info: contract case proved, in instantiation at foo.ads:10
+generic_float_tests.adb:386:34: info: contract case proved, in instantiation at foo.ads:15
+generic_float_tests.adb:387:34: info: contract case proved, in instantiation at foo.ads:10
+generic_float_tests.adb:387:34: info: contract case proved, in instantiation at foo.ads:15
+generic_float_tests.adb:388:34: info: contract case proved, in instantiation at foo.ads:10
+generic_float_tests.adb:388:34: info: contract case proved, in instantiation at foo.ads:15
+generic_float_tests.adb:389:34: info: contract case proved, in instantiation at foo.ads:10
+generic_float_tests.adb:389:34: info: contract case proved, in instantiation at foo.ads:15
+generic_float_tests.adb:390:34: info: contract case proved, in instantiation at foo.ads:10
+generic_float_tests.adb:390:34: info: contract case proved, in instantiation at foo.ads:15
+generic_float_tests.adb:393:21: info: range check proved, in instantiation at foo.ads:10
+generic_float_tests.adb:393:21: info: range check proved, in instantiation at foo.ads:15
 generic_float_tests.adb:397:28: info: initialization of "Y" proved, in instantiation at foo.ads:10
 generic_float_tests.adb:397:28: info: initialization of "Y" proved, in instantiation at foo.ads:15
-generic_float_tests.adb:399:19: info: postcondition proved (CVC5: 2 VC), in instantiation at foo.ads:10
-generic_float_tests.adb:399:19: info: postcondition proved (CVC5: 2 VC), in instantiation at foo.ads:15
-generic_float_tests.adb:399:26: info: float overflow check proved (CVC5: 1 VC), in instantiation at foo.ads:10
-generic_float_tests.adb:399:26: info: float overflow check proved (CVC5: 1 VC), in instantiation at foo.ads:15
-generic_float_tests.adb:399:37: info: float overflow check proved (CVC5: 1 VC), in instantiation at foo.ads:10
-generic_float_tests.adb:399:37: info: float overflow check proved (CVC5: 1 VC), in instantiation at foo.ads:15
+generic_float_tests.adb:399:19: info: postcondition proved, in instantiation at foo.ads:10
+generic_float_tests.adb:399:19: info: postcondition proved, in instantiation at foo.ads:15
+generic_float_tests.adb:399:26: info: float overflow check proved, in instantiation at foo.ads:10
+generic_float_tests.adb:399:26: info: float overflow check proved, in instantiation at foo.ads:15
+generic_float_tests.adb:399:37: info: float overflow check proved, in instantiation at foo.ads:10
+generic_float_tests.adb:399:37: info: float overflow check proved, in instantiation at foo.ads:15
 generic_float_tests.adb:406:29: info: initialization of "Y" proved, in instantiation at foo.ads:10
 generic_float_tests.adb:406:29: info: initialization of "Y" proved, in instantiation at foo.ads:15
-generic_float_tests.adb:407:19: info: postcondition proved (CVC5: 1 VC), in instantiation at foo.ads:10
-generic_float_tests.adb:407:19: info: postcondition proved (CVC5: 1 VC), in instantiation at foo.ads:15
+generic_float_tests.adb:407:19: info: postcondition proved, in instantiation at foo.ads:10
+generic_float_tests.adb:407:19: info: postcondition proved, in instantiation at foo.ads:15
 generic_float_tests.adb:413:07: info: initialization of "R" proved, in instantiation at foo.ads:10
 generic_float_tests.adb:413:07: info: initialization of "R" proved, in instantiation at foo.ads:15
 generic_float_tests.adb:421:28: info: initialization of "Y" proved, in instantiation at foo.ads:10
 generic_float_tests.adb:421:28: info: initialization of "Y" proved, in instantiation at foo.ads:15
-generic_float_tests.adb:422:19: info: postcondition proved (CVC5: 1 VC), in instantiation at foo.ads:10
-generic_float_tests.adb:422:19: info: postcondition proved (CVC5: 1 VC), in instantiation at foo.ads:15
+generic_float_tests.adb:422:19: info: postcondition proved, in instantiation at foo.ads:10
+generic_float_tests.adb:422:19: info: postcondition proved, in instantiation at foo.ads:15
 generic_float_tests.adb:435:33: info: initialization of "Y" proved, in instantiation at foo.ads:10
 generic_float_tests.adb:435:33: info: initialization of "Y" proved, in instantiation at foo.ads:15
-generic_float_tests.adb:437:06: info: disjoint contract cases proved (CVC5: 1 VC), in instantiation at foo.ads:10
-generic_float_tests.adb:437:06: info: disjoint contract cases proved (CVC5: 1 VC), in instantiation at foo.ads:15
+generic_float_tests.adb:437:06: info: disjoint contract cases proved, in instantiation at foo.ads:10
+generic_float_tests.adb:437:06: info: disjoint contract cases proved, in instantiation at foo.ads:15
 generic_float_tests.adb:437:06: medium: contract cases might not be complete, in instantiation at foo.ads:10
 generic_float_tests.adb:437:06: medium: contract cases might not be complete, in instantiation at foo.ads:15
-generic_float_tests.adb:437:34: info: contract case proved (CVC5: 1 VC; Trivial: 1 VC), in instantiation at foo.ads:10
-generic_float_tests.adb:437:34: info: contract case proved (CVC5: 1 VC; Trivial: 1 VC), in instantiation at foo.ads:15
-generic_float_tests.adb:438:34: info: contract case proved (CVC5: 1 VC; Trivial: 1 VC), in instantiation at foo.ads:10
-generic_float_tests.adb:438:34: info: contract case proved (CVC5: 1 VC; Trivial: 1 VC), in instantiation at foo.ads:15
-generic_float_tests.adb:439:34: info: contract case proved (CVC5: 1 VC; Trivial: 1 VC), in instantiation at foo.ads:10
-generic_float_tests.adb:439:34: info: contract case proved (CVC5: 1 VC; Trivial: 1 VC), in instantiation at foo.ads:15
-generic_float_tests.adb:440:34: info: contract case proved (CVC5: 1 VC; Trivial: 1 VC), in instantiation at foo.ads:10
-generic_float_tests.adb:440:34: info: contract case proved (CVC5: 1 VC; Trivial: 1 VC), in instantiation at foo.ads:15
-generic_float_tests.adb:441:34: info: contract case proved (CVC5: 1 VC; Trivial: 1 VC), in instantiation at foo.ads:10
-generic_float_tests.adb:441:34: info: contract case proved (Trivial: 1 VC; Z3: 1 VC), in instantiation at foo.ads:15
-generic_float_tests.adb:442:34: info: contract case proved (CVC5: 1 VC; Trivial: 1 VC), in instantiation at foo.ads:10
-generic_float_tests.adb:442:34: info: contract case proved (CVC5: 1 VC; Trivial: 1 VC), in instantiation at foo.ads:15
-generic_float_tests.adb:443:34: info: contract case proved (CVC5: 1 VC; Trivial: 1 VC), in instantiation at foo.ads:10
-generic_float_tests.adb:443:34: info: contract case proved (CVC5: 1 VC; Trivial: 1 VC), in instantiation at foo.ads:15
-generic_float_tests.adb:444:34: info: contract case proved (CVC5: 1 VC; Trivial: 1 VC), in instantiation at foo.ads:10
-generic_float_tests.adb:444:34: info: contract case proved (CVC5: 1 VC; Trivial: 1 VC), in instantiation at foo.ads:15
-generic_float_tests.adb:445:34: info: contract case proved (CVC5: 1 VC; Trivial: 1 VC), in instantiation at foo.ads:10
-generic_float_tests.adb:445:34: info: contract case proved (CVC5: 1 VC; Trivial: 1 VC), in instantiation at foo.ads:15
+generic_float_tests.adb:437:34: info: contract case proved, in instantiation at foo.ads:10
+generic_float_tests.adb:437:34: info: contract case proved, in instantiation at foo.ads:15
+generic_float_tests.adb:438:34: info: contract case proved, in instantiation at foo.ads:10
+generic_float_tests.adb:438:34: info: contract case proved, in instantiation at foo.ads:15
+generic_float_tests.adb:439:34: info: contract case proved, in instantiation at foo.ads:10
+generic_float_tests.adb:439:34: info: contract case proved, in instantiation at foo.ads:15
+generic_float_tests.adb:440:34: info: contract case proved, in instantiation at foo.ads:10
+generic_float_tests.adb:440:34: info: contract case proved, in instantiation at foo.ads:15
+generic_float_tests.adb:441:34: info: contract case proved, in instantiation at foo.ads:10
+generic_float_tests.adb:441:34: info: contract case proved, in instantiation at foo.ads:15
+generic_float_tests.adb:442:34: info: contract case proved, in instantiation at foo.ads:10
+generic_float_tests.adb:442:34: info: contract case proved, in instantiation at foo.ads:15
+generic_float_tests.adb:443:34: info: contract case proved, in instantiation at foo.ads:10
+generic_float_tests.adb:443:34: info: contract case proved, in instantiation at foo.ads:15
+generic_float_tests.adb:444:34: info: contract case proved, in instantiation at foo.ads:10
+generic_float_tests.adb:444:34: info: contract case proved, in instantiation at foo.ads:15
+generic_float_tests.adb:445:34: info: contract case proved, in instantiation at foo.ads:10
+generic_float_tests.adb:445:34: info: contract case proved, in instantiation at foo.ads:15
 generic_interval_tests.adb:5:23: info: initialization of "Z" proved, in instantiation at bar.ads:12
 generic_interval_tests.adb:5:23: info: initialization of "Z" proved, in instantiation at bar.ads:8
-generic_interval_tests.adb:8:19: info: postcondition proved (CVC5: 1 VC; altergo: 1 VC), in instantiation at bar.ads:8
-generic_interval_tests.adb:8:19: info: postcondition proved (CVC5: 2 VC), in instantiation at bar.ads:12
-generic_interval_tests.adb:11:14: info: float overflow check proved (CVC5: 1 VC), in instantiation at bar.ads:8
-generic_interval_tests.adb:11:14: info: float overflow check proved (Z3: 1 VC), in instantiation at bar.ads:12
+generic_interval_tests.adb:8:19: info: postcondition proved, in instantiation at bar.ads:12
+generic_interval_tests.adb:8:19: info: postcondition proved, in instantiation at bar.ads:8
+generic_interval_tests.adb:11:14: info: float overflow check proved, in instantiation at bar.ads:12
+generic_interval_tests.adb:11:14: info: float overflow check proved, in instantiation at bar.ads:8
 generic_interval_tests.adb:15:23: info: initialization of "Z" proved, in instantiation at bar.ads:12
 generic_interval_tests.adb:15:23: info: initialization of "Z" proved, in instantiation at bar.ads:8
 generic_interval_tests.adb:18:19: medium: postcondition might fail, in instantiation at bar.ads:12
 generic_interval_tests.adb:18:19: medium: postcondition might fail, in instantiation at bar.ads:8
-generic_interval_tests.adb:21:14: info: float overflow check proved (CVC5: 1 VC), in instantiation at bar.ads:12
-generic_interval_tests.adb:21:14: info: float overflow check proved (altergo: 1 VC), in instantiation at bar.ads:8
+generic_interval_tests.adb:21:14: info: float overflow check proved, in instantiation at bar.ads:12
+generic_interval_tests.adb:21:14: info: float overflow check proved, in instantiation at bar.ads:8
 generic_interval_tests.adb:24:14: warning: subprogram "Test_03" has no effect, in instantiation at bar.ads:12
 generic_interval_tests.adb:24:14: warning: subprogram "Test_03" has no effect, in instantiation at bar.ads:8
 generic_interval_tests.adb:25:21: medium: float overflow check might fail, in instantiation at bar.ads:12 [reason for check: result of floating-point multiplication must be bounded]
@@ -460,10 +460,10 @@ generic_interval_tests.adb:26:19: medium: postcondition might fail, in instantia
 generic_interval_tests.adb:32:14: warning: subprogram "Test_04" has no effect, in instantiation at bar.ads:12
 generic_interval_tests.adb:32:14: warning: subprogram "Test_04" has no effect, in instantiation at bar.ads:8
 generic_interval_tests.adb:34:11: warning: postcondition does not check the outcome of calling "Test_04"
-generic_interval_tests.adb:34:19: info: postcondition proved (CVC5: 2 VC), in instantiation at bar.ads:12
-generic_interval_tests.adb:34:19: info: postcondition proved (CVC5: 2 VC), in instantiation at bar.ads:8
-generic_interval_tests.adb:34:21: info: float overflow check proved (CVC5: 1 VC), in instantiation at bar.ads:12
-generic_interval_tests.adb:34:21: info: float overflow check proved (CVC5: 1 VC), in instantiation at bar.ads:8
+generic_interval_tests.adb:34:19: info: postcondition proved, in instantiation at bar.ads:12
+generic_interval_tests.adb:34:19: info: postcondition proved, in instantiation at bar.ads:8
+generic_interval_tests.adb:34:21: info: float overflow check proved, in instantiation at bar.ads:12
+generic_interval_tests.adb:34:21: info: float overflow check proved, in instantiation at bar.ads:8
 generic_interval_tests.adb:40:14: warning: subprogram "Test_05" has no effect, in instantiation at bar.ads:12
 generic_interval_tests.adb:40:14: warning: subprogram "Test_05" has no effect, in instantiation at bar.ads:8
 generic_interval_tests.adb:41:21: medium: float overflow check might fail, in instantiation at bar.ads:12 [reason for check: result of floating-point multiplication must be bounded]
@@ -488,94 +488,94 @@ generic_interval_tests.adb:58:21: medium: float overflow check might fail, in in
 generic_interval_tests.adb:64:14: warning: subprogram "Test_08" has no effect, in instantiation at bar.ads:12
 generic_interval_tests.adb:64:14: warning: subprogram "Test_08" has no effect, in instantiation at bar.ads:8
 generic_interval_tests.adb:66:11: warning: postcondition does not check the outcome of calling "Test_08"
-generic_interval_tests.adb:66:19: info: postcondition proved (colibri: 1 VC), in instantiation at bar.ads:12
-generic_interval_tests.adb:66:19: info: postcondition proved (colibri: 1 VC), in instantiation at bar.ads:8
-generic_interval_tests.adb:66:21: info: division check proved (CVC5: 1 VC), in instantiation at bar.ads:12
-generic_interval_tests.adb:66:21: info: division check proved (altergo: 1 VC), in instantiation at bar.ads:8
-generic_interval_tests.adb:66:21: info: float overflow check proved (CVC5: 1 VC), in instantiation at bar.ads:8
-generic_interval_tests.adb:66:21: info: float overflow check proved (colibri: 1 VC), in instantiation at bar.ads:12
+generic_interval_tests.adb:66:19: info: postcondition proved, in instantiation at bar.ads:12
+generic_interval_tests.adb:66:19: info: postcondition proved, in instantiation at bar.ads:8
+generic_interval_tests.adb:66:21: info: division check proved, in instantiation at bar.ads:12
+generic_interval_tests.adb:66:21: info: division check proved, in instantiation at bar.ads:8
+generic_interval_tests.adb:66:21: info: float overflow check proved, in instantiation at bar.ads:12
+generic_interval_tests.adb:66:21: info: float overflow check proved, in instantiation at bar.ads:8
 generic_interval_tests.adb:72:14: warning: subprogram "Test_09" has no effect, in instantiation at bar.ads:12
 generic_interval_tests.adb:72:14: warning: subprogram "Test_09" has no effect, in instantiation at bar.ads:8
-generic_interval_tests.adb:77:12: info: float overflow check proved (CVC5: 1 VC), in instantiation at bar.ads:12
-generic_interval_tests.adb:77:12: info: float overflow check proved (CVC5: 1 VC), in instantiation at bar.ads:8
-generic_interval_tests.adb:78:25: info: assertion proved (CVC5: 1 VC), in instantiation at bar.ads:8
-generic_interval_tests.adb:78:25: info: assertion proved (altergo: 1 VC), in instantiation at bar.ads:12
+generic_interval_tests.adb:77:12: info: float overflow check proved, in instantiation at bar.ads:12
+generic_interval_tests.adb:77:12: info: float overflow check proved, in instantiation at bar.ads:8
+generic_interval_tests.adb:78:25: info: assertion proved, in instantiation at bar.ads:12
+generic_interval_tests.adb:78:25: info: assertion proved, in instantiation at bar.ads:8
 generic_interval_tests.adb:82:14: warning: subprogram "Test_10" has no effect, in instantiation at bar.ads:12
 generic_interval_tests.adb:82:14: warning: subprogram "Test_10" has no effect, in instantiation at bar.ads:8
-generic_interval_tests.adb:87:12: info: float overflow check proved (CVC5: 1 VC), in instantiation at bar.ads:12
-generic_interval_tests.adb:87:12: info: float overflow check proved (CVC5: 1 VC), in instantiation at bar.ads:8
+generic_interval_tests.adb:87:12: info: float overflow check proved, in instantiation at bar.ads:12
+generic_interval_tests.adb:87:12: info: float overflow check proved, in instantiation at bar.ads:8
 generic_interval_tests.adb:88:25: medium: assertion might fail, in instantiation at bar.ads:12
 generic_interval_tests.adb:88:25: medium: assertion might fail, in instantiation at bar.ads:8
 generic_interval_tests.adb:92:14: warning: subprogram "Test_11" has no effect, in instantiation at bar.ads:12
 generic_interval_tests.adb:92:14: warning: subprogram "Test_11" has no effect, in instantiation at bar.ads:8
-generic_interval_tests.adb:97:12: info: float overflow check proved (CVC5: 1 VC), in instantiation at bar.ads:12
-generic_interval_tests.adb:97:12: info: float overflow check proved (CVC5: 1 VC), in instantiation at bar.ads:8
-generic_interval_tests.adb:98:25: info: assertion proved (CVC5: 1 VC), in instantiation at bar.ads:8
-generic_interval_tests.adb:98:25: info: assertion proved (altergo: 1 VC), in instantiation at bar.ads:12
+generic_interval_tests.adb:97:12: info: float overflow check proved, in instantiation at bar.ads:12
+generic_interval_tests.adb:97:12: info: float overflow check proved, in instantiation at bar.ads:8
+generic_interval_tests.adb:98:25: info: assertion proved, in instantiation at bar.ads:12
+generic_interval_tests.adb:98:25: info: assertion proved, in instantiation at bar.ads:8
 generic_interval_tests.adb:127:23: info: initialization of "Z" proved, in instantiation at bar.ads:12
 generic_interval_tests.adb:127:23: info: initialization of "Z" proved, in instantiation at bar.ads:8
-generic_interval_tests.adb:129:20: info: postcondition proved (CVC5: 1 VC), in instantiation at bar.ads:8
-generic_interval_tests.adb:129:20: info: postcondition proved (Z3: 1 VC), in instantiation at bar.ads:12
-generic_interval_tests.adb:132:14: info: float overflow check proved (CVC5: 1 VC), in instantiation at bar.ads:12
-generic_interval_tests.adb:132:14: info: float overflow check proved (CVC5: 1 VC), in instantiation at bar.ads:8
+generic_interval_tests.adb:129:20: info: postcondition proved, in instantiation at bar.ads:12
+generic_interval_tests.adb:129:20: info: postcondition proved, in instantiation at bar.ads:8
+generic_interval_tests.adb:132:14: info: float overflow check proved, in instantiation at bar.ads:12
+generic_interval_tests.adb:132:14: info: float overflow check proved, in instantiation at bar.ads:8
 generic_interval_tests.adb:136:23: info: initialization of "Z" proved, in instantiation at bar.ads:12
 generic_interval_tests.adb:136:23: info: initialization of "Z" proved, in instantiation at bar.ads:8
-generic_interval_tests.adb:138:19: info: postcondition proved (CVC5: 1 VC; Z3: 1 VC), in instantiation at bar.ads:12
-generic_interval_tests.adb:138:19: info: postcondition proved (CVC5: 2 VC), in instantiation at bar.ads:8
-generic_interval_tests.adb:141:14: info: float overflow check proved (CVC5: 1 VC), in instantiation at bar.ads:12
-generic_interval_tests.adb:141:14: info: float overflow check proved (CVC5: 1 VC), in instantiation at bar.ads:8
+generic_interval_tests.adb:138:19: info: postcondition proved, in instantiation at bar.ads:12
+generic_interval_tests.adb:138:19: info: postcondition proved, in instantiation at bar.ads:8
+generic_interval_tests.adb:141:14: info: float overflow check proved, in instantiation at bar.ads:12
+generic_interval_tests.adb:141:14: info: float overflow check proved, in instantiation at bar.ads:8
 generic_interval_tests.adb:145:23: info: initialization of "Z" proved, in instantiation at bar.ads:12
 generic_interval_tests.adb:145:23: info: initialization of "Z" proved, in instantiation at bar.ads:8
-generic_interval_tests.adb:147:19: info: postcondition proved (CVC5: 1 VC), in instantiation at bar.ads:12
-generic_interval_tests.adb:147:19: info: postcondition proved (CVC5: 1 VC), in instantiation at bar.ads:8
-generic_interval_tests.adb:150:14: info: float overflow check proved (CVC5: 1 VC), in instantiation at bar.ads:12
-generic_interval_tests.adb:150:14: info: float overflow check proved (CVC5: 1 VC), in instantiation at bar.ads:8
+generic_interval_tests.adb:147:19: info: postcondition proved, in instantiation at bar.ads:12
+generic_interval_tests.adb:147:19: info: postcondition proved, in instantiation at bar.ads:8
+generic_interval_tests.adb:150:14: info: float overflow check proved, in instantiation at bar.ads:12
+generic_interval_tests.adb:150:14: info: float overflow check proved, in instantiation at bar.ads:8
 generic_interval_tests.adb:154:23: info: initialization of "Z" proved, in instantiation at bar.ads:12
 generic_interval_tests.adb:154:23: info: initialization of "Z" proved, in instantiation at bar.ads:8
 generic_interval_tests.adb:156:19: medium: postcondition might fail, in instantiation at bar.ads:12
 generic_interval_tests.adb:156:19: medium: postcondition might fail, in instantiation at bar.ads:8
-generic_interval_tests.adb:159:15: info: float overflow check proved (CVC5: 1 VC), in instantiation at bar.ads:12
-generic_interval_tests.adb:159:15: info: float overflow check proved (CVC5: 1 VC), in instantiation at bar.ads:8
-generic_interval_tests.adb:159:22: info: float overflow check proved (CVC5: 1 VC), in instantiation at bar.ads:12
-generic_interval_tests.adb:159:22: info: float overflow check proved (CVC5: 1 VC), in instantiation at bar.ads:8
+generic_interval_tests.adb:159:15: info: float overflow check proved, in instantiation at bar.ads:12
+generic_interval_tests.adb:159:15: info: float overflow check proved, in instantiation at bar.ads:8
+generic_interval_tests.adb:159:22: info: float overflow check proved, in instantiation at bar.ads:12
+generic_interval_tests.adb:159:22: info: float overflow check proved, in instantiation at bar.ads:8
 generic_interval_tests.adb:163:23: info: initialization of "Z" proved, in instantiation at bar.ads:12
 generic_interval_tests.adb:163:23: info: initialization of "Z" proved, in instantiation at bar.ads:8
-generic_interval_tests.adb:165:19: info: postcondition proved (CVC5: 1 VC), in instantiation at bar.ads:12
-generic_interval_tests.adb:165:19: info: postcondition proved (CVC5: 1 VC), in instantiation at bar.ads:8
-generic_interval_tests.adb:168:15: info: float overflow check proved (CVC5: 1 VC), in instantiation at bar.ads:12
-generic_interval_tests.adb:168:15: info: float overflow check proved (CVC5: 1 VC), in instantiation at bar.ads:8
-generic_interval_tests.adb:168:22: info: float overflow check proved (CVC5: 1 VC), in instantiation at bar.ads:12
-generic_interval_tests.adb:168:22: info: float overflow check proved (CVC5: 1 VC), in instantiation at bar.ads:8
+generic_interval_tests.adb:165:19: info: postcondition proved, in instantiation at bar.ads:12
+generic_interval_tests.adb:165:19: info: postcondition proved, in instantiation at bar.ads:8
+generic_interval_tests.adb:168:15: info: float overflow check proved, in instantiation at bar.ads:12
+generic_interval_tests.adb:168:15: info: float overflow check proved, in instantiation at bar.ads:8
+generic_interval_tests.adb:168:22: info: float overflow check proved, in instantiation at bar.ads:12
+generic_interval_tests.adb:168:22: info: float overflow check proved, in instantiation at bar.ads:8
 generic_interval_tests.adb:172:23: info: initialization of "Z" proved, in instantiation at bar.ads:12
 generic_interval_tests.adb:172:23: info: initialization of "Z" proved, in instantiation at bar.ads:8
-generic_interval_tests.adb:178:19: info: postcondition proved (CVC5: 1 VC), in instantiation at bar.ads:8
-generic_interval_tests.adb:178:19: info: postcondition proved (altergo: 1 VC), in instantiation at bar.ads:12
-generic_interval_tests.adb:181:22: info: assertion proved (CVC5: 1 VC), in instantiation at bar.ads:12
-generic_interval_tests.adb:181:22: info: assertion proved (CVC5: 1 VC), in instantiation at bar.ads:8
-generic_interval_tests.adb:182:22: info: assertion proved (CVC5: 1 VC), in instantiation at bar.ads:12
-generic_interval_tests.adb:182:22: info: assertion proved (CVC5: 1 VC), in instantiation at bar.ads:8
-generic_interval_tests.adb:183:22: info: assertion proved (CVC5: 1 VC; altergo: 1 VC), in instantiation at bar.ads:12
-generic_interval_tests.adb:183:22: info: assertion proved (CVC5: 2 VC), in instantiation at bar.ads:8
-generic_interval_tests.adb:184:14: info: float overflow check proved (CVC5: 1 VC), in instantiation at bar.ads:8
-generic_interval_tests.adb:184:14: info: float overflow check proved (altergo: 1 VC), in instantiation at bar.ads:12
-generic_interval_tests.adb:184:18: info: float overflow check proved (CVC5: 1 VC), in instantiation at bar.ads:12
-generic_interval_tests.adb:184:18: info: float overflow check proved (altergo: 1 VC), in instantiation at bar.ads:8
-generic_interval_tests.adb:184:22: info: float overflow check proved (CVC5: 1 VC), in instantiation at bar.ads:8
-generic_interval_tests.adb:184:22: info: float overflow check proved (altergo: 1 VC), in instantiation at bar.ads:12
+generic_interval_tests.adb:178:19: info: postcondition proved, in instantiation at bar.ads:12
+generic_interval_tests.adb:178:19: info: postcondition proved, in instantiation at bar.ads:8
+generic_interval_tests.adb:181:22: info: assertion proved, in instantiation at bar.ads:12
+generic_interval_tests.adb:181:22: info: assertion proved, in instantiation at bar.ads:8
+generic_interval_tests.adb:182:22: info: assertion proved, in instantiation at bar.ads:12
+generic_interval_tests.adb:182:22: info: assertion proved, in instantiation at bar.ads:8
+generic_interval_tests.adb:183:22: info: assertion proved, in instantiation at bar.ads:12
+generic_interval_tests.adb:183:22: info: assertion proved, in instantiation at bar.ads:8
+generic_interval_tests.adb:184:14: info: float overflow check proved, in instantiation at bar.ads:12
+generic_interval_tests.adb:184:14: info: float overflow check proved, in instantiation at bar.ads:8
+generic_interval_tests.adb:184:18: info: float overflow check proved, in instantiation at bar.ads:12
+generic_interval_tests.adb:184:18: info: float overflow check proved, in instantiation at bar.ads:8
+generic_interval_tests.adb:184:22: info: float overflow check proved, in instantiation at bar.ads:12
+generic_interval_tests.adb:184:22: info: float overflow check proved, in instantiation at bar.ads:8
 homothetical.adb:6:13: info: implicit terminating annotation on "adjust2triangle" has been proved, subprogram will terminate
 homothetical.adb:8:14: medium: postcondition might fail, cannot prove adjust2triangle'Result > 0.0
 homothetical.adb:12:21: medium: float overflow check might fail [reason for check: result of floating-point multiplication must be bounded]
-homothetical.adb:12:24: info: division check proved (CVC5: 1 VC)
+homothetical.adb:12:24: info: division check proved
 homothetical.adb:12:24: medium: float overflow check might fail [reason for check: result of floating-point division must be bounded]
-homothetical.adb:13:17: info: precondition proved (CVC5: 1 VC)
-homothetical.adb:13:28: info: float overflow check proved (colibri: 1 VC)
-homothetical.adb:41:33: info: loop invariant initialization proved (CVC5: 1 VC)
-homothetical.adb:41:33: info: loop invariant preservation proved (altergo: 1 VC)
-homothetical.adb:42:40: info: index check proved (CVC5: 4 VC)
-homothetical.adb:44:20: info: precondition proved (CVC5: 2 VC; altergo: 1 VC)
+homothetical.adb:13:17: info: precondition proved
+homothetical.adb:13:28: info: float overflow check proved
+homothetical.adb:41:33: info: loop invariant initialization proved
+homothetical.adb:41:33: info: loop invariant preservation proved
+homothetical.adb:42:40: info: index check proved
+homothetical.adb:44:20: info: precondition proved
 homothetical.adb:47:13: warning: unused assignment
 homothetical.adb:48:13: warning: unused assignment
-homothetical.adb:50:29: info: assertion proved (CVC5: 1 VC; altergo: 2 VC)
+homothetical.adb:50:29: info: assertion proved
 homothetical.adb:54:35: info: unrolling loop
 homothetical.adb:57:38: info: unrolling loop
 homothetical.adb:59:58: medium: float overflow check might fail [reason for check: result of floating-point multiplication must be bounded]
@@ -593,4 +593,4 @@ homothetical.ads:18:17: info: initialization of "kamax" proved
 homothetical.ads:25:17: medium: postcondition might fail, cannot prove kvmax(j) > 0.0
 reduced_01.ads:6:13: info: implicit terminating annotation on "Foo" has been proved, subprogram will terminate
 reduced_02.ads:8:13: info: implicit terminating annotation on "Double_To_Single" has been proved, subprogram will terminate
-reduced_02.ads:9:15: info: range check proved (CVC5: 1 VC)
+reduced_02.ads:9:15: info: range check proved

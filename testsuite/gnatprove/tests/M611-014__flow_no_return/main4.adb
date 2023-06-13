@@ -13,7 +13,8 @@ is
      Global => (Input  => Sensor.State,
                 In_Out => Lights.State),
      Depends => (Lights.State =>+ Sensor.State),
-     No_Return;
+     No_Return,
+     Exceptional_Cases => (others => False);
 
    procedure Control
    is

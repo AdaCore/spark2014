@@ -212,7 +212,7 @@ test_accessibility_2.adb:206:04: info: absence of resource or memory leak at end
 test_accessibility_2.adb:207:04: medium: resource or memory leak might occur at end of scope
 test_accessibility_2.adb:209:04: info: precondition proved (CVC5: 2 VC)
 test_accessibility_list.adb:12:13: info: implicit function contract might not be available on recursive calls
-test_accessibility_list.adb:13:07: medium: implicit terminating annotation on "Length" could be incorrect, subprogram is recursive
+test_accessibility_list.adb:13:07: medium: implicit terminating annotation on "Length" could be incorrect, subprogram is recursive [possible fix: annotate "Length" with a Subprogram_Variant aspect]
 test_accessibility_list.adb:13:40: info: predicate check proved (CVC5: 1 VC; Trivial: 1 VC)
 test_accessibility_list.adb:13:48: info: predicate check proved (Trivial: 1 VC)
 test_accessibility_list.adb:13:60: info: pointer dereference check proved (CVC5: 1 VC)
@@ -221,7 +221,7 @@ test_accessibility_list.adb:13:67: info: predicate check proved (Trivial: 1 VC)
 test_accessibility_list.adb:15:08: warning: Always_Return annotation is useless
 test_accessibility_list.adb:15:08: warning: function "Length" has implicit Always_Return annotation
 test_accessibility_list.adb:17:13: info: implicit function contract might not be available on recursive calls
-test_accessibility_list.adb:18:07: medium: implicit terminating annotation on "Nth_Int" could be incorrect, subprogram is recursive
+test_accessibility_list.adb:18:07: medium: implicit terminating annotation on "Nth_Int" could be incorrect, subprogram is recursive [possible fix: annotate "Nth_Int" with a Subprogram_Variant aspect]
 test_accessibility_list.adb:18:10: info: predicate check proved (Trivial: 1 VC)
 test_accessibility_list.adb:18:14: info: predicate check proved (Trivial: 1 VC)
 test_accessibility_list.adb:18:30: info: precondition proved (CVC5: 1 VC)
@@ -246,7 +246,7 @@ test_accessibility_list.adb:34:32: info: predicate check proved (CVC5: 1 VC; Tri
 test_accessibility_list.adb:34:34: info: predicate check proved (Trivial: 1 VC)
 test_accessibility_list.adb:36:16: info: predicate check proved (Trivial: 2 VC)
 test_accessibility_list.adb:36:20: info: predicate check proved (Trivial: 2 VC)
-test_accessibility_list.adb:36:22: medium: implicit terminating annotation on "Nth" could be incorrect, loop might be nonterminating
+test_accessibility_list.adb:36:22: medium: implicit terminating annotation on "Nth" could be incorrect, loop might be nonterminating [possible fix: add loop variant in the loop body]
 test_accessibility_list.adb:37:36: info: loop invariant initialization proved (CVC5: 1 VC)
 test_accessibility_list.adb:37:36: info: loop invariant preservation proved (CVC5: 1 VC)
 test_accessibility_list.adb:37:36: info: predicate check proved (Trivial: 2 VC)
@@ -271,7 +271,7 @@ test_accessibility_list.adb:52:29: info: pointer dereference check proved (CVC5:
 test_accessibility_list.adb:52:35: info: precondition proved (CVC5: 1 VC)
 test_accessibility_list.adb:57:13: info: predicate check proved (Trivial: 2 VC)
 test_accessibility_list.adb:57:17: info: predicate check proved (Trivial: 2 VC)
-test_accessibility_list.adb:57:19: medium: implicit terminating annotation on "Nth_Bad" could be incorrect, loop might be nonterminating
+test_accessibility_list.adb:57:19: medium: implicit terminating annotation on "Nth_Bad" could be incorrect, loop might be nonterminating [possible fix: add loop variant in the loop body]
 test_accessibility_list.adb:58:33: info: loop invariant initialization proved (CVC5: 1 VC)
 test_accessibility_list.adb:58:33: info: loop invariant preservation proved (CVC5: 1 VC)
 test_accessibility_list.adb:58:33: info: predicate check proved (Trivial: 2 VC)

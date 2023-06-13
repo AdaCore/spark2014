@@ -2,7 +2,7 @@ com_map.ads:27:13: info: implicit terminating annotation on "RBC_RIU_ID_Hash" ha
 com_map.ads:37:13: info: implicit terminating annotation on "Contains" has been proved, subprogram will terminate
 com_map.ads:39:22: info: precondition proved (CVC5: 1 VC)
 deceleration_curve.adb:33:07: info: initialization of "delta_speed" proved
-deceleration_curve.adb:36:65: medium: implicit terminating annotation on "Distance_To_Speed" could be incorrect, loop might be nonterminating
+deceleration_curve.adb:36:65: medium: implicit terminating annotation on "Distance_To_Speed" could be incorrect, loop might be nonterminating [possible fix: add loop variant in the loop body]
 deceleration_curve.adb:37:25: info: assertion proved (CVC5: 4 VC)
 deceleration_curve.adb:40:13: info: loop invariant initialization proved (CVC5: 2 VC)
 deceleration_curve.adb:40:45: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove speed <= Initial_Speed
@@ -248,7 +248,7 @@ step_function.ads:48:13: info: implicit terminating annotation on "Has_Same_Deli
 step_function.ads:52:23: info: index check proved (CVC5: 2 VC)
 step_function.ads:52:49: info: index check proved (CVC5: 2 VC)
 step_function.ads:54:13: info: implicit terminating annotation on "Get_Value" has been proved, subprogram will terminate
-step_function.ads:56:12: info: postcondition proved (Z3: 1 VC)
+step_function.ads:56:12: info: postcondition proved (CVC5: 1 VC)
 step_function.ads:58:27: info: index check proved (CVC5: 2 VC)
 step_function.ads:59:36: info: index check proved (CVC5: 2 VC)
 step_function.ads:60:50: info: index check proved (CVC5: 2 VC)

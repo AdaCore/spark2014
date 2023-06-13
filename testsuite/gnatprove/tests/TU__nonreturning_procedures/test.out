@@ -1,6 +1,6 @@
-nr.adb:16:10: info: call to nonreturning procedure never executed (CVC5: 1 VC)
+nr.adb:16:10: info: only expected exception raised (CVC5: 1 VC)
 nr.adb:18:14: high: overflow check might fail, cannot prove upper bound for X + 1 (e.g. when X = Integer'Last) [reason for check: result of addition must fit in a 32-bits machine integer]
-nr.adb:25:10: medium: call to nonreturning subprogram might be executed
+nr.adb:25:10: medium: unexpected exception might be raised [possible explanation: No_Return procedures have an implicit exceptional contract]
 nr.adb:27:14: high: overflow check might fail, cannot prove upper bound for X + 1 (e.g. when X = Integer'Last) [reason for check: result of addition must fit in a 32-bits machine integer]
 nr.ads:8:11: info: data dependencies proved
 nr.ads:10:19: info: postcondition proved (CVC5: 1 VC)

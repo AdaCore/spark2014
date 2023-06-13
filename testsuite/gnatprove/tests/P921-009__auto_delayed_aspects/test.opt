@@ -1,1 +1,1 @@
-ALL XFAIL unused type entities in auto mode should not be marked (P805-023)
+ALL XFAIL unused type entities in auto mode should not be marked (eng/spark/spark2014#198)

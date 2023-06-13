@@ -18,10 +18,11 @@ weird.ads:5:06: error: procedure with aspect Annotate Might_Not_Return must not 
 weird.ads:10:06: error: procedure with aspect Annotate Always_Return must not also be marked with Might_Not_Return
 weird.ads:14:06: error: procedure with aspect Annotate Always_Return must not also be marked with No_Return
 gnatprove: error during generation of Global contracts
-pack.adb:5:07: medium: unexpected exception might be raised
 pack.adb:11:10: high: precondition might fail
+pack.adb:11:10: medium: unexpected exception might be raised [possible explanation: No_Return procedures have an implicit exceptional contract]
 pack.adb:20:22: info: assertion proved (CVC5: 1 VC)
 pack.adb:29:10: high: precondition might fail
+pack.adb:29:10: medium: unexpected exception might be raised [possible explanation: No_Return procedures have an implicit exceptional contract]
 pack.ads:7:06: info: data dependencies proved
 pack.ads:8:06: warning: postcondition does not check the outcome of calling "Call_Jump"
 pack.ads:8:14: info: postcondition proved (CVC5: 1 VC)

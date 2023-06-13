@@ -13,7 +13,7 @@ procedure Access_To_Relaxed with SPARK_Mode is
       Content : Pair_Array (1 .. Max);
       Top     : Natural := 0;
    end record with
-     Predicate => Top in 0 .. Max
+     Ghost_Predicate => Top in 0 .. Max
      and (for all I in Content'Range =>
             (if I <= Top then Content (I).Key'Initialized
              else Content (I).Val = null));

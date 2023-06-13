@@ -27,7 +27,7 @@ is
       Pre => Global_A_Init;
    --  Same as: "with Global => Global_Var;"
 
-   function Global_A_Init return Boolean;
+   function Global_A_Init return Boolean with Ghost;
 
 private
 

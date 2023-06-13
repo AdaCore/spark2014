@@ -52,9 +52,9 @@ an *entire object*.
    values are written during an execution leading to a successful call, is also
    an output even if the final state is the same as the initial state. (see
    :ref:`External State`). [On the contrary, a global item or parameter is not
-   an output of the subprogram if it is updated only on paths that lead to an
-   explicit ``raise_statement`` or to a ``pragma Assert (statically_False)`` or
-   to a call to a subprogram marked ``No_Return``.]
+   an output of the subprogram if it is updated only on paths that lead to a
+   statement raising an unexpected exception or to a
+   ``pragma Assert (statically_False)``.]
 
 .. index:: subprogram input
 
@@ -1713,21 +1713,10 @@ No extensions or restrictions.
 Nonreturning Procedures
 ~~~~~~~~~~~~~~~~~~~~~~~
 
-.. container:: heading
-
-   Verification Rules
-
-
-1. A call to a nonreturning procedure introduces an obligation to prove that
-   the statement will not be executed, much like the verification condition
-   associated with
-
-       ``pragma Assert (False);``
-
-   [In other words, the verification conditions introduced for a call to a
-   nonreturning procedure are the same as those introduced for a runtime check
-   which fails unconditionally. See also section :ref:`Exceptions`, where a
-   similar verification rule is imposed on ``raise_statements``.]
+Procedures annotated with ``No_Return`` but without an explicit
+``Exceptional_Cases`` aspect are considered to have an implicit exceptional
+contract ``Exceptional_Cases => (others => True)``; see
+:ref:`Exceptional Cases`.
 
 
 Overloading of Operators
@@ -1920,6 +1909,8 @@ body (see Ada RM 7.2(4))].
     * within an actual parameter in a generic instantiation when the
       corresponding generic formal parameter is ghost.
 
+    A ghost attribute like ``Initialized`` shall only be referenced where a
+    ghost entity would be allowed.
 
 11. A ghost entity shall not be referenced within an aspect specification
     [(including an aspect-specifying pragma)]
@@ -1927,7 +1918,8 @@ body (see Ada RM 7.2(4))].
     following cases:
 
     * the reference occurs within an assertion expression which is
-      not a predicate expression; or
+      not a predicate expression, unless the predicate is introduced
+      by aspect Ghost_Predicate; or
 
     * the specified aspect is either Global, Depends,
       Refined_Global, Refined_Depends, Initializes, or Refined_State.
@@ -2093,7 +2085,7 @@ Relaxed Initialization
 ----------------------
 
 |SPARK| defines the Boolean-valued aspect Relaxed_Initialization and the related
-Boolean-valued attribute, Initialized.
+Boolean-valued ghost attribute, Initialized.
 
 Without the Relaxed_Initialization aspect, the rules that statically prevent
 reading an uninitialized scalar object are defined with "whole object"
@@ -2250,11 +2242,15 @@ The prefix of an Initialized attribute reference shall denote an object.
     initialization; the result of a dispatching function shall not have
     relaxed initialization.
 
+11. [Ghost attribute ``Initialized`` shall only be referenced where a
+    ghost entity would be allowed;
+    see :ref:`Ghost Entities` for the statement of this rule.]
+
 .. container:: heading
 
    Verification Rules
 
-11. At the point of a read of a scalar object X that has relaxed initialization,
+12. At the point of a read of a scalar object X that has relaxed initialization,
     a verification condition is introduced to ensure that X is initialized.
     This includes the case where X is a subcomponent of a composite object
     that is passed as an argument in a call to a predefined relational
@@ -2292,7 +2288,7 @@ The prefix of an Initialized attribute reference shall denote an object.
     whole-object-granularity rules that govern that case will ensure that X is
     initialized whenever it is read.]
 
-12. For any object X, evaluation of X'Initialized includes the evaluation
+13. For any object X, evaluation of X'Initialized includes the evaluation
     of Y'Initialized for every scalar reachable part
     (see :ref:`Access Types`) Y of X (excluding
     "hidden" components of tagged objects - see :ref:`Type Invariants`).

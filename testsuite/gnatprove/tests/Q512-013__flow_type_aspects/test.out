@@ -1,4 +1,4 @@
-a.adb:6:18: medium: implicit terminating annotation on "R" could be incorrect, loop might be nonterminating
+a.adb:6:18: medium: implicit terminating annotation on "R" could be incorrect, loop might be nonterminating [possible fix: add loop variant in the loop body]
 a.adb:6:18: warning: statement has no effect
 a.adb:9:07: warning: unreachable code (CVC5: 1 VC)
 types.ads:5:13: info: implicit terminating annotation on "Func" has been proved, subprogram will terminate

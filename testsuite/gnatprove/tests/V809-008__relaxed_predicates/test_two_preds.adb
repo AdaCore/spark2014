@@ -7,7 +7,7 @@ procedure Test_Two_Preds with SPARK_Mode is
       F, G : Integer;
    end record with
      Relaxed_Initialization,
-     Predicate => F'Initialized or G'Initialized;
+     Ghost_Predicate => F'Initialized or G'Initialized;
 
    procedure P (X : T1) is
       C : Integer;

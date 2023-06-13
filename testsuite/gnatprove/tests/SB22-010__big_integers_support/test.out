@@ -163,7 +163,7 @@ big_integers_test.adb:142:19: info: predicate check proved (Trivial: 1 VC)
 big_integers_test.adb:142:44: info: predicate check proved (Trivial: 1 VC)
 big_integers_test.adb:142:47: info: predicate check proved (Trivial: 1 VC)
 big_integers_test.adb:144:11: info: precondition proved (Z3: 4 VC)
-conversion.ads:15:07: medium: implicit terminating annotation on "Partial_Conversion_Rec" could be incorrect, subprogram is recursive
+conversion.ads:15:07: medium: implicit terminating annotation on "Partial_Conversion_Rec" could be incorrect, subprogram is recursive [possible fix: annotate "Partial_Conversion_Rec" with a Subprogram_Variant aspect]
 conversion.ads:15:26: info: index check proved (CVC5: 2 VC)
 conversion.ads:15:32: info: predicate check proved (Trivial: 1 VC)
 conversion.ads:17:10: info: precondition proved (CVC5: 4 VC)

@@ -546,7 +546,7 @@ parser_utilities.ads:144:13: info: implicit function contract might not be avail
 parser_utilities.ads:144:13: info: implicit terminating annotation on "ConvertIPV4" has been proved, subprogram will terminate
 parser_utilities.ads:150:13: info: implicit terminating annotation on "ConvertIPV6" has been proved, subprogram will terminate
 parser_utilities.ads:156:13: info: implicit terminating annotation on "GetRecordType" has been proved, subprogram will terminate
-process_dns_request.ads:130:50: medium: range check might fail, cannot prove lower bound for DNSKey_Record.KeyLength [reason for check: value must be convertible to the target type of the conversion] [possible fix: add precondition (DNSKey_Record.KeyLength in Packet_Bytes_Range) to subprogram at line 121]
+process_dns_request.ads:130:50: medium: range check might fail, cannot prove lower bound for DNSKey_Record.KeyLength [reason for check: value must be convertible to the target type of the conversion] [possible fix: add precondition (DNSKey_Record.KeyLength >= Integer(Packet_Bytes_Range'First)) to subprogram at line 121]
 process_dns_request.ads:223:50: info: range check proved (CVC5: 2 VC)
 process_first_line_of_record.adb:64:07: info: initialization of "CurrentIPV4" proved
 process_first_line_of_record.adb:65:07: info: initialization of "CurrentIPV6" proved
@@ -641,6 +641,65 @@ rr_type.ads:109:17: info: range check proved (CVC5: 2 VC)
 rr_type.ads:111:13: info: implicit terminating annotation on "ConvertStringToWire" has been proved, subprogram will terminate
 rr_type.ads:112:17: info: range check proved (CVC5: 2 VC)
 socket_timeout_linux.adb:27:14: warning: file name does not match unit name, should be "socket_timeout.adb"
+spark-text_io.ads:232:46: medium: precondition might fail
+spark-text_io.ads:233:46: medium: precondition might fail
+spark-text_io.ads:235:24: medium: in inlined expression function body at spark-text_io.ads:138
+spark-text_io.ads:235:24: medium: precondition might fail, cannot prove Is_Open (File)
+spark-text_io.ads:237:24: medium: in inlined expression function body at spark-text_io.ads:138
+spark-text_io.ads:237:24: medium: precondition might fail, cannot prove Is_Open (File)
+spark-text_io.ads:260:46: medium: precondition might fail
+spark-text_io.ads:261:46: medium: precondition might fail
+spark-text_io.ads:263:21: medium: in inlined expression function body at spark-text_io.ads:138
+spark-text_io.ads:263:21: medium: precondition might fail, cannot prove Is_Open (File)
+spark-text_io.ads:283:46: medium: precondition might fail
+spark-text_io.ads:284:46: medium: precondition might fail
+spark-text_io.ads:286:24: medium: in inlined expression function body at spark-text_io.ads:138
+spark-text_io.ads:286:24: medium: precondition might fail, cannot prove Is_Open (File)
+spark-text_io.ads:320:46: medium: precondition might fail
+spark-text_io.ads:321:46: medium: precondition might fail
+spark-text_io.ads:323:24: medium: in inlined expression function body at spark-text_io.ads:138
+spark-text_io.ads:323:24: medium: precondition might fail, cannot prove Is_Open (File)
+spark-text_io.ads:325:24: medium: in inlined expression function body at spark-text_io.ads:138
+spark-text_io.ads:325:24: medium: precondition might fail, cannot prove Is_Open (File)
+spark-text_io.ads:368:24: medium: precondition might fail
+spark-text_io.ads:370:24: medium: precondition might fail
+spark-text_io.ads:372:24: medium: in inlined expression function body at spark-text_io.ads:138
+spark-text_io.ads:372:24: medium: precondition might fail, cannot prove Is_Open (File)
+spark-text_io.ads:374:24: medium: in inlined expression function body at spark-text_io.ads:138
+spark-text_io.ads:374:24: medium: precondition might fail, cannot prove Is_Open (File)
+spark-text_io.ads:416:54: medium: precondition might fail
+spark-text_io.ads:418:35: medium: precondition might fail
+spark-text_io.ads:419:35: medium: precondition might fail
+spark-text_io.ads:420:42: medium: in inlined expression function body at spark-text_io.ads:138
+spark-text_io.ads:420:42: medium: precondition might fail, cannot prove Is_Open (File)
+spark-text_io.ads:421:42: medium: in inlined expression function body at spark-text_io.ads:138
+spark-text_io.ads:421:42: medium: precondition might fail, cannot prove Is_Open (File)
+spark-text_io.ads:511:45: medium: precondition might fail
+spark-text_io.ads:512:45: medium: precondition might fail
+spark-text_io.ads:536:23: medium: precondition might fail
+spark-text_io.ads:538:23: medium: precondition might fail
+spark-text_io.ads:540:24: medium: in inlined expression function body at spark-text_io.ads:138
+spark-text_io.ads:540:24: medium: precondition might fail, cannot prove Is_Open (File)
+spark-text_io.ads:542:24: medium: in inlined expression function body at spark-text_io.ads:138
+spark-text_io.ads:542:24: medium: precondition might fail, cannot prove Is_Open (File)
+spark-text_io.ads:559:45: medium: precondition might fail
+spark-text_io.ads:560:45: medium: precondition might fail
+spark-text_io.ads:618:45: medium: precondition might fail
+spark-text_io.ads:619:45: medium: precondition might fail
+spark-text_io.ads:641:46: medium: precondition might fail
+spark-text_io.ads:642:46: medium: precondition might fail
+spark-text_io.ads:644:23: medium: in inlined expression function body at spark-text_io.ads:138
+spark-text_io.ads:644:23: medium: precondition might fail, cannot prove Is_Open (File)
+spark-text_io.ads:646:23: medium: in inlined expression function body at spark-text_io.ads:138
+spark-text_io.ads:646:23: medium: precondition might fail, cannot prove Is_Open (File)
+spark-text_io.ads:671:45: medium: precondition might fail
+spark-text_io.ads:672:45: medium: precondition might fail
+spark-text_io.ads:696:46: medium: precondition might fail
+spark-text_io.ads:697:46: medium: precondition might fail
+spark-text_io.ads:699:24: medium: in inlined expression function body at spark-text_io.ads:138
+spark-text_io.ads:699:24: medium: precondition might fail, cannot prove Is_Open (File)
+spark-text_io.ads:701:24: medium: in inlined expression function body at spark-text_io.ads:138
+spark-text_io.ads:701:24: medium: precondition might fail, cannot prove Is_Open (File)
 spark_ada_command_line.ads:61:09: info: Initial_Condition of package "Text_IO" is ignored
 spark_ada_command_line.ads:61:09: info: the elaboration of "Text_IO" is not known to precede the elaboration of the current unit
 spark_ada_command_line.ads:61:09: info: use pragma Elaborate_Body in "Text_IO" or pragma Elaborate in the current unit

@@ -1,6 +1,0 @@
-project Test extends "sparklib_light" is
-
-   for Main use ("main.adb");
-   for Runtime ("ada") use "light";
-
-end Test;

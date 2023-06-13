@@ -7,4 +7,4 @@ inline_in_expr.adb:12:19: info: analyzing call to "Dummy" in context
 inline_in_expr.adb:12:19: info: cannot unroll loop (too many loop iterations)
 inline_in_expr.adb:12:19: info: in inlined body at line 6
 inline_in_expr.adb:15:18: warning: unused variable "Y"
-inline_in_expr.adb:15:28: info: no contextual analysis of "Dummy" (in quantified expression)
+inline_in_expr.adb:15:41: info: no contextual analysis of "Dummy" (in potentially unevaluated context)

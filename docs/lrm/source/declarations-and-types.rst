@@ -99,8 +99,20 @@ No restrictions or extensions.
 Subtype Predicates
 ~~~~~~~~~~~~~~~~~~
 
-Static predicates and dynamic predicates are both in
-|SPARK|, but subject to some restrictions.
+Static predicates and dynamic predicates are both in |SPARK|, but subject to
+some restrictions. A predicate might be introduced by the Ada aspects
+Static_Predicate and Dynamic_Predicate, or by the |SPARK| aspects Predicate and
+Ghost_Predicate.
+
+A predicate introduced by aspects Predicate or Ghost_Predicate is regarded as
+static if it has an allowed form for Static_Predicate and is otherwise treated
+as a Dynamic_Predicate.
+
+A predicate introduced by aspect Ghost_Predicate can reference a ghost entity
+(see section :ref:`Ghost Entities`), even if the subtype is not ghost
+itself. But the subtype cannot appear as a subtype_mark in a membership test.
+[As predicates participate in membership tests, a membership test may
+implicitly reference ghost entities in that case.]
 
 .. container:: heading
 

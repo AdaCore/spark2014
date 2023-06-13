@@ -827,8 +827,7 @@ package body Gnat2Why.Expr is
    function Why_Subp_Has_Precondition
      (E        : Callable_Kind_Id;
       Selector : Selection_Kind := Why.Inter.Standard)
-      return Boolean
-   with Pre => (if Selector = No_Return then Is_Error_Signaling_Procedure (E));
+      return Boolean;
    --  Return true whenever the Why declaration that corresponds to the given
    --  subprogram has a precondition.
 
@@ -1023,8 +1022,15 @@ package body Gnat2Why.Expr is
    function Transform_Unhandled_Raise
      (Stat : N_Raise_Kind_Id) return W_Prog_Id
    is
-     (New_Absurd_Statement (Ada_Node => Stat,
-                            Reason   => VC_Raise));
+     (Sequence
+        (Left  =>
+             (if Nkind (Stat) in N_Raise_xxx_Error
+              or else No (Expression (Stat))
+              then +Void
+              else New_Ignore
+                (Stat, Transform_Prog (Expression (Stat), Body_Params))),
+         Right => New_Absurd_Statement (Ada_Node => Stat,
+                                        Reason   => VC_Raise)));
    --  Returns the Why program for raise statement Stat if the exception is not
    --  handled.
 
@@ -17426,6 +17432,125 @@ package body Gnat2Why.Expr is
                      end if;
                   end;
                end if;
+
+               --  In the case of a precisely supported address specificatiom,
+               --  we emit a static check that the type of the object is OK
+               --  for address clauses, and we havoc any potential aliases.
+               --  Otherwise, we emit a warning when the value read might not
+               --  be valid. This addresses assumption SPARK_EXTERNAL_VALID.
+
+               if Has_Address_Or_Name (Obj) then
+                  declare
+                     Address         : constant Node_Id :=
+                       Get_Address_Expr (Decl);
+                     Aliased_Object  : constant Entity_Id :=
+                       Supported_Alias (Address);
+                     Supported_Alias : constant Boolean :=
+                       Present (Aliased_Object);
+
+                     Valid       : Boolean;
+                     Explanation : Unbounded_String;
+                  begin
+
+                     Suitable_For_UC_Target
+                       (Retysp (Etype (Obj)), True, Valid, Explanation);
+
+                     --  A warning is emitted on imprecisely supported address
+                     --  specifications and external names.
+
+                     if not Supported_Alias then
+                        if not Valid then
+                           Error_Msg_NE
+                             (Warning_Message (Warn_Address_Valid), Obj, Obj);
+                        end if;
+
+                     --  The check is needed only for overlays between two
+                     --  SPARK objects.
+
+                     else
+                        Emit_Static_Proof_Result
+                          (Decl, VC_UC_Target, Valid, Current_Subp,
+                           Explanation => To_String (Explanation));
+
+                        if not Is_Imported (Obj) then
+                           Append (R, Havoc_Overlay_Aliases
+                                   (Overlay_Alias (Obj)));
+                        end if;
+
+                        --  If the address clause has a root object which is
+                        --  a variable, check that we can account for indirect
+                        --  effects to the declared object. Either Expr is a
+                        --  reference to another object, or the defined object
+                        --  should have async writers. If no Root_Object can
+                        --  be found, a warning has already been emitted in
+                        --  marking.
+
+                        if not Is_Constant_In_SPARK (Aliased_Object)
+                          and then Nkind (Prefix (Address)) not in
+                            N_Identifier | N_Expanded_Name
+                        then
+                           Emit_Static_Proof_Result
+                             (Decl,
+                              VC_UC_Volatile,
+                              Has_Async_Writers (Direct_Mapping_Id (Obj))
+                              and Has_Async_Writers
+                                (Direct_Mapping_Id (Aliased_Object)),
+                              Current_Subp);
+                        end if;
+
+                        --  We now emit static checks to make sure the two
+                        --  aliased objects are compatible.
+
+                        declare
+                           Valid       : Boolean;
+                           Explanation : Unbounded_String;
+
+                        begin
+                           --  If Aliased_Object is constant, it is OK if if
+                           --  its type permits invalid values as the alias
+                           --  cannot be used to modify it.
+
+                           if Is_Constant_In_SPARK (Aliased_Object) then
+                              Suitable_For_UC
+                                (Retysp (Etype (Prefix (Address))),
+                                 True, Valid, Explanation);
+                           else
+                              Suitable_For_UC_Target
+                                (Retysp (Etype (Prefix (Address))),
+                                 True, Valid, Explanation);
+                           end if;
+
+                           Emit_Static_Proof_Result
+                             (Address, VC_UC_Target, Valid, Current_Subp,
+                              Explanation => To_String (Explanation));
+
+                           Have_Same_Known_Esize
+                             (Retysp (Etype (Obj)),
+                              Retysp (Etype (Prefix (Address))),
+                              Valid, Explanation);
+                           Emit_Static_Proof_Result
+                             (Address, VC_UC_Same_Size, Valid, Current_Subp,
+                              Explanation => To_String (Explanation));
+
+                           if Nkind (Prefix (Address)) in N_Has_Entity then
+                              Objects_Have_Compatible_Alignments
+                                (Obj,
+                                 Entity (Prefix (Address)),
+                                 Valid, Explanation);
+                           else
+                              Valid := False;
+                              Explanation :=
+                                To_Unbounded_String
+                                  ("unknown alignment for object");
+                           end if;
+                           Emit_Static_Proof_Result
+                             (Decl, VC_UC_Alignment, Valid, Current_Subp,
+                              Explanation => To_String (Explanation));
+                        end;
+
+                     end if;
+                  end;
+               end if;
             end;
 
          --  Uses of object renamings are rewritten by expansion, but the name
@@ -17818,141 +17943,22 @@ package body Gnat2Why.Expr is
       --  Aspect or representation clause Address may involve computations
       --  that could lead to a RTE. Thus we need to check absence of RTE in
       --  the corresponding expression.
-      --  We also check for compatibility of the involved types.
 
       if Nkind (Decl) in N_Object_Declaration
                        | N_Subprogram_Declaration
       then
          declare
-            Expr            : constant Node_Id := Get_Address_Expr (Decl);
-            Is_Object_Decl  : constant Boolean :=
-              Nkind (Decl) = N_Object_Declaration;
-            Aliased_Object  : constant Entity_Id := Supported_Alias (Expr);
-            Supported_Alias : constant Boolean := Present (Aliased_Object);
+            Expr : constant Node_Id := Get_Address_Expr (Decl);
          begin
+            --  We generate the expression of the address for runtime checks
+
             if Present (Expr) then
-
-               --  We generate the expression of the address for runtime checks
-
                declare
                   Why_Expr : constant W_Expr_Id :=
                     Transform_Expr (Expr, EW_Prog, Body_Params);
                begin
                   R := +Sequence (New_Ignore (Prog => +Why_Expr), R);
                end;
-
-               --  In the case of a precisely supported address specificatiom,
-               --  we emit a static check that the type of the object is OK
-               --  for address clauses, and we havoc any potential aliases.
-               --  Otherwise, we emit a warning when the value read might not
-               --  be valid. This addresses assumption SPARK_EXTERNAL_VALID.
-
-               if Is_Object_Decl then
-                  declare
-                     E : constant Entity_Id := Defining_Identifier (Decl);
-
-                     Valid       : Boolean;
-                     Explanation : Unbounded_String;
-                  begin
-
-                     if not Is_Imported (E) then
-                        Append (R, Havoc_Overlay_Aliases (Overlay_Alias (E)));
-                     end if;
-
-                     Suitable_For_UC_Target
-                       (Retysp (Etype (E)), True, Valid, Explanation);
-
-                     --  A warning is emitted on imprecisely supported address
-                     --  specifications.
-
-                     if not Supported_Alias then
-                        if not Valid then
-                           Error_Msg_NE
-                             (Warning_Message (Warn_Address_Valid), Expr, E);
-                        end if;
-
-                     --  The check is needed only for overlays between two
-                     --  SPARK objects.
-
-                     else
-                        Emit_Static_Proof_Result
-                          (Decl, VC_UC_Target, Valid, Current_Subp,
-                           Explanation => To_String (Explanation));
-
-                        --  If the address clause has a root object which is
-                        --  a variable, check that we can account for indirect
-                        --  effects to the declared object. Either Expr is a
-                        --  reference to another object, or the defined object
-                        --  should have async writers. If no Root_Object can
-                        --  be found, a warning has already been emitted in
-                        --  marking.
-
-                        if not Is_Constant_In_SPARK (Aliased_Object)
-                          and then Nkind (Prefix (Expr)) not in
-                            N_Identifier | N_Expanded_Name
-                        then
-                           Emit_Static_Proof_Result
-                             (Decl,
-                              VC_UC_Volatile,
-                              Has_Async_Writers (Direct_Mapping_Id (E))
-                              and Has_Async_Writers
-                                (Direct_Mapping_Id (Aliased_Object)),
-                              Current_Subp);
-                        end if;
-
-                        --  We now emit static checks to make sure the two
-                        --  aliased objects are compatible.
-
-                        declare
-                           Valid       : Boolean;
-                           Explanation : Unbounded_String;
-
-                        begin
-                           --  If Aliased_Object is constant, it is OK if if
-                           --  its type permits invalid values as the alias
-                           --  cannot be used to modify it.
-
-                           if Is_Constant_In_SPARK (Aliased_Object) then
-                              Suitable_For_UC
-                                (Retysp (Etype (Prefix (Expr))),
-                                 True, Valid, Explanation);
-                           else
-                              Suitable_For_UC_Target
-                                (Retysp (Etype (Prefix (Expr))),
-                                 True, Valid, Explanation);
-                           end if;
-
-                           Emit_Static_Proof_Result
-                             (Expr, VC_UC_Target, Valid, Current_Subp,
-                              Explanation => To_String (Explanation));
-
-                           Have_Same_Known_Esize
-                             (Retysp (Etype (E)),
-                              Retysp (Etype (Prefix (Expr))),
-                              Valid, Explanation);
-                           Emit_Static_Proof_Result
-                             (Expr, VC_UC_Same_Size, Valid, Current_Subp,
-                              Explanation => To_String (Explanation));
-
-                           if Nkind (Prefix (Expr)) in N_Has_Entity then
-                              Objects_Have_Compatible_Alignments
-                                (E,
-                                 Entity (Prefix (Expr)),
-                                 Valid, Explanation);
-                           else
-                              Valid := False;
-                              Explanation :=
-                                To_Unbounded_String
-                                  ("unknown alignment for object");
-                           end if;
-                           Emit_Static_Proof_Result
-                             (Decl, VC_UC_Alignment, Valid, Current_Subp,
-                              Explanation => To_String (Explanation));
-                        end;
-
-                     end if;
-                  end;
-               end if;
             end if;
          end;
       end if;
@@ -23207,7 +23213,7 @@ package body Gnat2Why.Expr is
    function Transform_Simple_Return_Expression
      (Expr        : N_Subexpr_Id;
       Subp        : Entity_Id;
-      Return_Type : W_Type_Id) return  W_Prog_Id
+      Return_Type : W_Type_Id) return W_Prog_Id
    is
       Result_Stmt : W_Prog_Id;
    begin
@@ -23661,19 +23667,10 @@ package body Gnat2Why.Expr is
                --  duplicating checks.
 
                Selector    : constant Selection_Kind :=
-                  --  When calling an error-signaling procedure from an
-                  --  ordinary program unit, use the No_Return variant of the
-                  --  program function, which has a precondition of False. This
-                  --  ensures that a check is issued for each such call, to
-                  --  detect when they are reachable.
+               --  When the call is dispatching, use the Dispatch variant of
+               --  the program function, which has the appropriate contract.
 
-                 (if Is_Error_Signaling_Statement (Stmt_Or_Decl) then
-                     No_Return
-
-                  --  When the call is dispatching, use the Dispatch variant of
-                  --  the program function, which has the appropriate contract.
-
-                  elsif Nkind (Stmt_Or_Decl) = N_Procedure_Call_Statement
+                 (if Nkind (Stmt_Or_Decl) = N_Procedure_Call_Statement
                     and then Present (Controlling_Argument (Stmt_Or_Decl))
                   then
                      Dispatch
@@ -24088,7 +24085,9 @@ package body Gnat2Why.Expr is
          when N_Raise_Statement =>
 
             --  For handled exceptions, raise the Why3 exception Ada_Exc.
-            --  Otherwise, check that the path is dead.
+            --  Otherwise, check that the path is dead. Also transform the
+            --  expression in the program domain if there is one to generate
+            --  checks.
 
             if Present (Name (Stmt_Or_Decl)) then
                if Might_Raise_Handled_Exceptions (Stmt_Or_Decl) then
@@ -24097,12 +24096,19 @@ package body Gnat2Why.Expr is
                   --  scopes traversed by the raise statement.
 
                   return Sequence
-                    (Havoc_Borrowed_And_Check_No_Leaks_On_Raise (Stmt_Or_Decl),
-                     New_Raise
-                       (Ada_Node => Stmt_Or_Decl,
-                        Name     => M_Main.Ada_Exc,
-                        Arg      =>
-                          +To_Why_Id (Entity (Name (Stmt_Or_Decl)))));
+                    ((1 =>
+                          (if No (Expression (Stmt_Or_Decl)) then +Void
+                           else New_Ignore
+                             (Stmt_Or_Decl,
+                              Transform_Prog
+                                (Expression (Stmt_Or_Decl), Body_Params))),
+                      2 => Havoc_Borrowed_And_Check_No_Leaks_On_Raise
+                        (Stmt_Or_Decl),
+                      3 => New_Raise
+                        (Ada_Node => Stmt_Or_Decl,
+                         Name     => M_Main.Ada_Exc,
+                         Arg      =>
+                           +To_Why_Id (Entity (Name (Stmt_Or_Decl))))));
                else
                   return Transform_Unhandled_Raise (Stmt_Or_Decl);
                end if;
@@ -25036,13 +25042,7 @@ package body Gnat2Why.Expr is
                        Inherited => True);
    begin
       return (Selector /= Dispatch and then Has_Precondition)
-        or else Has_Classwide_Or_Inherited_Precondition
-
-        --  E is an error-signaling procedure called outside another
-        --  error-signaling procedure (this is what the No_Return variant
-        --  means) for which an implicit precondition of False is used.
-
-        or else Selector = No_Return;
+        or else Has_Classwide_Or_Inherited_Precondition;
    end Why_Subp_Has_Precondition;
 
 end Gnat2Why.Expr;

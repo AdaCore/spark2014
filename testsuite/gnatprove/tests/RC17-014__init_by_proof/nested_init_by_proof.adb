@@ -20,7 +20,7 @@ procedure Nested_Init_By_Proof with SPARK_Mode is
       (if X.D then X.F1'Initialized = Y.F1'Initialized
          and then (if X.F1'Initialized then X.F1 = Y.F1)
        else X.F3'Initialized = Y.F3'Initialized
-         and then (if X.F3'Initialized then X.F3 = Y.F3)));
+         and then (if X.F3'Initialized then X.F3 = Y.F3))) with Ghost;
 
    type My_Arr is array (My_Nat range <>) of Rec;
 

@@ -365,7 +365,16 @@ package SPARK_Definition.Annotate is
 
    function Has_Skip_Proof_Annotation (E : Entity_Id) return Boolean;
    --  True if E or an enclosing entity has pragma Annotate(GNATProve,
-   --  Skip_Proof).
+   --  Skip_Proof) or pragma Annotate (GNATProve, Skip_Flow_And_Proof).
+
+   function Has_Skip_Flow_And_Proof_Annotation (E : Entity_Id) return Boolean;
+   --  True if E or an enclosing entity has pragma Annotate (GNATprove,
+   --  Skip_Flow_And_Proof).
+
+   Skipped_Flow_And_Proof : Node_Sets.Set;
+   Skipped_Proof          : Node_Sets.Set;
+   --  These sets contain all entities for which flow or proof (or both) was
+   --  actually skipped.
 
    function Needs_Reclamation (E : Entity_Id) return Boolean
      with Pre => Is_Type (E) and then Has_Ownership_Annotation (E);

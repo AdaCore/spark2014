@@ -1,3 +1,4 @@
+test_might_not_return.adb:21:13: medium: unexpected exception might be raised [possible explanation: No_Return procedures have an implicit exceptional contract]
 test_might_not_return.ads:10:17: info: postcondition proved (CVC5: 1 VC)
 test_might_not_return.ads:14:17: info: postcondition proved (CVC5: 1 VC)
 test_might_not_return.ads:19:17: info: postcondition proved (CVC5: 1 VC)

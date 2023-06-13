@@ -122,12 +122,6 @@ package Why.Inter is
       Dispatch,   --  Variant of the program function used when the call is
                   --  dispatching. It has the appropriate contract.
 
-      No_Return,  --  Variant of the program function used when calling
-                  --  an error-signaling procedure outside another
-                  --  error-signaling procedure. It has a precondition of
-                  --  False. This ensures that a check is issued for each
-                  --  such call, to detect when they are reachable.
-
       Refine);    --  Variant of the program function used when the call
                   --  has visibility over the refined postcondition of the
                   --  subprogram. It has the appropriate refined contract.
