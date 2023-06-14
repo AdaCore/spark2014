@@ -6139,6 +6139,9 @@ package body Flow_Utility is
                The_Tg : constant Flow_Id :=
                  (Map_Root with delta Facet => The_Tag);
 
+               Position : Flow_Id_Maps.Cursor;
+               Unused   : Boolean;
+
             begin
                pragma Annotate (Xcov, Exempt_On, "Debugging code");
                if Debug_Trace_Untangle_Record then
@@ -6163,26 +6166,24 @@ package body Flow_Utility is
                   declare
                      Output : Flow_Id          renames Flow_Id_Maps.Key (C);
                      Inputs : Flow_Id_Sets.Set renames Tmp (C);
+                     Target : Flow_Id_Sets.Cursor :=
+                       Valid_To_Fields.Find (Output);
 
                   begin
-                     if Valid_To_Fields.Contains (Output) then
-                        M.Include (Output, Inputs);
-                        Valid_To_Fields.Delete (Output);
+                     if Flow_Id_Sets.Has_Element (Target) then
+                        M.Insert (Output, Inputs);
+                        Valid_To_Fields.Delete (Target);
                      end if;
                   end;
                end loop;
 
                if Valid_To_Fields.Contains (The_Tg) then
-                  if not M.Contains (The_Tg) then
-                     M.Include (The_Tg, Flow_Id_Sets.Empty_Set);
-                  end if;
+                  M.Insert (The_Tg, Position, Unused);
                   Valid_To_Fields.Delete (The_Tg);
                end if;
 
                if Valid_To_Fields.Contains (The_Ext) then
-                  if not M.Contains (The_Ext) then
-                     M.Include (The_Ext, Flow_Id_Sets.Empty_Set);
-                  end if;
+                  M.Insert (The_Ext, Position, Unused);
                   Valid_To_Fields.Delete (The_Ext);
                   M (The_Ext).Union (Valid_To_Fields);
                end if;
