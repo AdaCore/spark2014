@@ -1,9 +1,10 @@
+with System.Storage_Elements;
 with My_Data_Protected_By_Lock;
 package Use_Data with SPARK_Mode is
 
    --  Create a package giving a shared access to an integer protected by a lock.
    --  Each thread should use its own instance of the package.
-   package Int_Data is new My_Data_Protected_By_Lock (Integer, 42);
+   package Int_Data is new My_Data_Protected_By_Lock (Integer, System.Storage_Elements.To_Address (42));
    use Int_Data;
 
    procedure Write_To_Data (I : Integer) with
