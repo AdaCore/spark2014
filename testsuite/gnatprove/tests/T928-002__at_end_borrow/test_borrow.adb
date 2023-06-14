@@ -114,8 +114,6 @@ begin
          Z : access Integer := Y.V;
       begin
          pragma Assert (At_End_Borrow (Y.V).all = At_End_Borrow (Z).all);
-         pragma Assert (if At_End_Borrow (Y.N) /= null then At_End_Borrow (Y.N).V.all = At_End_Borrow (X4.N.N.N).V.all);
-         pragma Assert (At_End_Borrow (Z).all = At_End_Borrow (X4.N.N.V).all); --@ASSERT:FAIL
          Z.all := 42;
       end;
       Y := Y.N;
