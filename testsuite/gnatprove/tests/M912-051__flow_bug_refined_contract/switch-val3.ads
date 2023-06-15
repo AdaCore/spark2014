@@ -4,6 +4,6 @@ is
    procedure Read (Value : out Switch.Reading)
    with Global   => State,
         Depends  => (Value => State),
-        Annotate => (GNATprove, Always_Return);
+        Always_Terminates;
 
 end Switch.Val3;

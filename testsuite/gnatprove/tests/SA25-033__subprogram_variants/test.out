@@ -72,8 +72,6 @@ test_bad_variant.adb:188:13: info: implicit function contract might not be avail
 test_bad_variant.adb:188:13: info: implicit terminating annotation on "Length" has been proved, subprogram will terminate
 test_bad_variant.adb:189:67: medium: subprogram variant might fail [possible explanation: recursive call should not appear in a subprogram variant]
 test_bad_variant.adb:189:76: info: pointer dereference check proved (CVC5: 1 VC)
-test_bad_variant.adb:190:06: warning: Always_Return annotation is useless
-test_bad_variant.adb:190:06: warning: function "Length" has implicit Always_Return annotation
 test_bad_variant.adb:193:32: medium: subprogram variant might fail [possible fix: subprogram at line 188 should mention L in a precondition]
 test_bad_variant.adb:193:41: info: pointer dereference check proved (CVC5: 1 VC)
 test_bad_variant.adb:193:83: medium: subprogram variant might fail [possible fix: subprogram at line 188 should mention L in a precondition]

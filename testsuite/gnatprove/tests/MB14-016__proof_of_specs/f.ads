@@ -5,7 +5,6 @@ is
    A : Integer := 1;
 
    function Dyn return Integer
-     with Global   => A,
-          Annotate => (GNATprove, Always_Return);
+     with Global => A;
 
 end F;

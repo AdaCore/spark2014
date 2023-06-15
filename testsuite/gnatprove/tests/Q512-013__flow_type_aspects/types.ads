@@ -1,6 +1,6 @@
 with A; use A;
 package Types
-  with Elaborate_Body, Annotate => (GNATprove, Always_Return)
+  with Elaborate_Body, Always_Terminates
 is
    function Func return Boolean is (R);
 

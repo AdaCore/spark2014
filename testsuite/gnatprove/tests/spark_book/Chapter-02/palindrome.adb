@@ -1,6 +1,6 @@
 with Ada.Text_IO;
 procedure Palindrome with
-  Annotate => (GNATprove, Might_Not_Return)
+  Always_Terminates => False
 is
 
    function Is_Palindrome (Item : in String) return Boolean is

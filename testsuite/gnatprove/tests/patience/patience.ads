@@ -123,7 +123,7 @@ is
    with
      Pre      => Inv(S) and S.NumElts < MaxNumCards,
      Post     => Inv(S) and S.Values(S.NumElts'Old) = C and S.NumElts = S.NumElts'Old + 1,
-     Annotate => (GNATprove, Always_Return);
+     Always_Terminates;
 
    function PlayGame (Cards: CardStack) return State
    with

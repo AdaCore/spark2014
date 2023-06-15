@@ -3820,7 +3820,10 @@ package body Why.Gen.Records is
    -- Get_Discriminants_Of_Subtype --
    ----------------------------------
 
-   function Get_Discriminants_Of_Subtype (Ty : Entity_Id) return W_Expr_Array
+   function Get_Discriminants_Of_Subtype
+     (Ty     : Entity_Id;
+      Domain : EW_Terms)
+      return W_Expr_Array
    is
       Num_Discr : constant Natural := Count_Discriminants (Ty);
       Args      : W_Expr_Array (1 .. Num_Discr);
@@ -3832,7 +3835,7 @@ package body Why.Gen.Records is
       while Present (Discr) loop
          Args (Count) :=
            Transform_Expr
-             (Domain        => EW_Term,
+             (Domain        => Domain,
               Params        => Logic_Params,
               Expr          => Node (Elmt),
               Expected_Type => Base_Why_Type (Etype (Discr)));
@@ -3929,7 +3932,7 @@ package body Why.Gen.Records is
               (Ada_Node => Ada_Node,
                Name     => Range_Check_Name (Root, RCK_Range),
                Progs    => Prepare_Args_For_Subtype_Check
-                 (Check_Ty, Tmp_Expr),
+                 (Check_Ty, Tmp_Expr, EW_Prog),
                Reason   => VC_Discriminant_Check,
                Typ      => EW_Unit_Type),
             Right    => +Tmp_Expr));
@@ -4578,10 +4581,11 @@ package body Why.Gen.Records is
 
    function Prepare_Args_For_Subtype_Check
      (Check_Ty : Entity_Id;
-      Expr     : W_Expr_Id)
+      Expr     : W_Expr_Id;
+      Domain   : EW_Domain)
       return W_Expr_Array
    is
-     (Get_Discriminants_Of_Subtype (Check_Ty)
+     (Get_Discriminants_Of_Subtype (Check_Ty, Term_Domain (Domain))
       & New_Discriminants_Access
         (Name => Expr,
          Ty   => Get_Ada_Node (+Get_Type (Expr))));

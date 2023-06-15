@@ -5,7 +5,7 @@ is
 
    function Rand (I : Integer) return Boolean with
      Global => null,
-     Annotate => (GNATprove, Always_Return),
+
      Import;
 
    type Holder is record

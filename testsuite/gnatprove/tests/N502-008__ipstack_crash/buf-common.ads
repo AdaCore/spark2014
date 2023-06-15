@@ -7,5 +7,5 @@ is
    Buf_List : Integer;
    procedure Do_Some with
      Global   => (In_Out => (State, No_Data.State)),
-     Annotate => (GNATprove, Always_Return);
+     Always_Terminates;
 end Buf.Common;

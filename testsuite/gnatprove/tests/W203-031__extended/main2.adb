@@ -2,12 +2,12 @@ procedure Main2 is
    type T is access function (X : Integer) return Integer;
 
    function F1 (X : Integer) return Integer with
-     Post => False, --@ POSTCONDITION:FAIL
-     Annotate => (GNATprove, Always_Return);
+     Post => False; --@ POSTCONDITION:FAIL
+
 
    function F2 (X : Integer) return Integer with
-     Post => False, --@ POSTCONDITION:FAIL
-     Annotate => (GNATprove, Always_Return);
+     Post => False; --@ POSTCONDITION:FAIL
+
 
    function F1 (X : Integer) return Integer is
       C : T := F2'Access;

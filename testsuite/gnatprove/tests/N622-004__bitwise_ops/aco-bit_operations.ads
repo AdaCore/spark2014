@@ -23,25 +23,24 @@ package ACO.Bit_Operations is
    procedure Split32_To_Word8(Value : in ACO.Quadruple_Octet; Most, Middle_High, Middle_Low, Least : out ACO.Octet)
      with
        Inline,
-       Global   => null,
-       Depends  => ((Most, Middle_High, Middle_Low, Least) => Value),
-       Annotate => (GNATprove, Always_Return);
+       Global  => null,
+       Depends => ((Most, Middle_High, Middle_Low, Least) => Value),
+       Always_Terminates;
 
 
    -- Breaks out the 32 bit words from a 64 bit value.
    procedure Split64_To_Word32(Value : in ACO.Octuple_Octet; Most, Least : out ACO.Quadruple_Octet)
      with
        Inline,
-       Global   => null,
-       Depends  => ((Most, Least) => Value),
-       Annotate => (GNATprove, Always_Return);
+       Global  => null,
+       Depends => ((Most, Least) => Value),
+       Always_Terminates;
 
 
    -- Returns the least significant byte in a 16 bit value.
    function TakeLSB_From16(Value : in ACO.Double_Octet) return ACO.Octet
      with
        Inline,
-       Global   => null,
-       Annotate => (GNATprove, Always_Return);
+       Global => null;
 
 end ACO.Bit_Operations;

@@ -10,7 +10,7 @@ is
    --  should not be available on recursive calls even if they are specialized.
 
    function Bad (C : Natural; F : not null access function return Integer) return Integer with
-     Annotate => (GNATprove, Always_Return),
+
      Annotate => (GNATprove, Higher_Order_Specialization),
      Post => False;  --@POSTCONDITION:FAIL
 

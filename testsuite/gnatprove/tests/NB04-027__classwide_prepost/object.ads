@@ -12,6 +12,6 @@ package Object is
    procedure Do_Stuff (X : in out T) with
      Pre'Class => Is_Valid (X),
      Global    => null,
-     Annotate  => (GNATprove, Always_Return);
+     Always_Terminates;
 
 end Object;

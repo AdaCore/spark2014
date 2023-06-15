@@ -119,6 +119,8 @@ package VC_Kinds is
                                      --  Logical_Equal annotation provided for
                                      --  a function is correct.
 
+      VC_Termination_Check,          --  Check conditional termination
+
       VC_UC_Source,                  --  Check that this type is suitable as a
                                     --  source for an Unchecked_Conversion
       VC_UC_Target,                  --  Check that this type is suitable as a

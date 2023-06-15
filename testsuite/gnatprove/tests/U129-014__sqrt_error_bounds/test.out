@@ -141,7 +141,7 @@ norm-reals-errors.adb:207:07: medium: precondition might fail, cannot prove abs 
 norm-reals-errors.adb:210:15: info: predicate check proved (Trivial: 1 VC)
 norm-reals-errors.adb:211:15: info: predicate check proved (Trivial: 1 VC)
 norm-reals-errors.adb:212:07: info: precondition proved (CVC5: 1 VC)
-norm-reals-errors.adb:212:07: warning: assuming "Bound_Error_Sqrt" always returns
+norm-reals-errors.adb:212:07: warning: assuming "Bound_Error_Sqrt" always terminates
 norm-reals-errors.adb:212:07: warning: assuming "Bound_Error_Sqrt" has no effect on global items
 norm-reals-errors.adb:212:07: warning: no Global contract available for "Bound_Error_Sqrt"
 norm-reals-errors.adb:212:07: warning: no returning annotation available for "Bound_Error_Sqrt"
@@ -234,12 +234,12 @@ norm.adb:64:62: info: index check proved (CVC5: 4 VC)
 norm.adb:64:65: info: float overflow check proved (colibri: 1 VC)
 norm.adb:69:34: info: precondition proved (CVC5: 1 VC)
 norm.adb:71:16: info: precondition proved (CVC5: 2 VC)
-norm.adb:71:16: warning: assuming "Sqrt_Is_Monotonic" always returns
+norm.adb:71:16: warning: assuming "Sqrt_Is_Monotonic" always terminates
 norm.adb:71:16: warning: assuming "Sqrt_Is_Monotonic" has no effect on global items
 norm.adb:71:16: warning: no Global contract available for "Sqrt_Is_Monotonic"
 norm.adb:71:16: warning: no returning annotation available for "Sqrt_Is_Monotonic"
 norm.adb:74:16: info: precondition proved (CVC5: 2 VC)
-norm.adb:74:16: warning: assuming "Sqrt_Exact_Integer" always returns
+norm.adb:74:16: warning: assuming "Sqrt_Exact_Integer" always terminates
 norm.adb:74:16: warning: assuming "Sqrt_Exact_Integer" has no effect on global items
 norm.adb:74:16: warning: no Global contract available for "Sqrt_Exact_Integer"
 norm.adb:74:16: warning: no returning annotation available for "Sqrt_Exact_Integer"

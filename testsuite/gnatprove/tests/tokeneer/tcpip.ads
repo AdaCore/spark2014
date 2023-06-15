@@ -98,7 +98,7 @@ package TcpIp is
                              Incoming :    out MessageT;
                              Success  :    out Boolean)
      with Global   => null,
-          Annotate => (GNATprove, Always_Return);
+          Always_Terminates;
 
    --------------------------------------------------------------------
    -- Init

@@ -1,10 +1,10 @@
 call_proc_no_body.adb:4:07: medium: precondition might fail
-call_proc_no_body.adb:4:07: warning: assuming "P_02" always returns
+call_proc_no_body.adb:4:07: warning: assuming "P_02" always terminates
 call_proc_no_body.adb:4:07: warning: assuming "P_02" has no effect on global items
 call_proc_no_body.adb:4:07: warning: no Global contract available for "P_02"
 call_proc_no_body.adb:4:07: warning: no returning annotation available for "P_02"
 call_proc_no_body.adb:9:07: info: precondition proved (CVC5: 1 VC)
-call_proc_no_body.adb:9:07: warning: assuming "P_03" always returns
+call_proc_no_body.adb:9:07: warning: assuming "P_03" always terminates
 call_proc_no_body.adb:9:07: warning: assuming "P_03" has no effect on global items
 call_proc_no_body.adb:9:07: warning: no Global contract available for "P_03"
 call_proc_no_body.adb:9:07: warning: no returning annotation available for "P_03"
@@ -98,12 +98,12 @@ functions.ads:4:19: info: postcondition proved (CVC5: 1 VC; Trivial: 1 VC)
 functions.ads:6:13: info: implicit terminating annotation on "Expr_Func" has been proved, subprogram will terminate
 functions.ads:9:17: high: all paths in "Nested_Proc" raise exceptions or do not terminate normally
 functions.ads:9:17: warning: subprogram "Nested_Proc" has no effect
-imported.adb:5:07: warning: assuming "P_01" always returns
+imported.adb:5:07: warning: assuming "P_01" always terminates
 imported.adb:5:07: warning: assuming "P_01" has no effect on global items
 imported.adb:5:07: warning: no Global contract available for "P_01"
 imported.adb:5:07: warning: no returning annotation available for "P_01"
 imported.adb:10:07: medium: precondition might fail
-imported.adb:10:07: warning: assuming "P_02" always returns
+imported.adb:10:07: warning: assuming "P_02" always terminates
 imported.adb:10:07: warning: assuming "P_02" has no effect on global items
 imported.adb:10:07: warning: no Global contract available for "P_02"
 imported.adb:10:07: warning: no returning annotation available for "P_02"
@@ -111,10 +111,9 @@ imported.ads:9:14: info: terminating annotation on "Q_01" has been proved, subpr
 imported.ads:9:14: warning: subprogram "Q_01" has no effect
 imported.ads:16:14: info: terminating annotation on "Q_02" has been proved, subprogram will terminate
 imported.ads:16:14: warning: subprogram "Q_02" has no effect
-modular_analysis.adb:5:04: warning: analyzing unreferenced procedure "Test_01"
 modular_analysis.adb:5:23: info: initialization of "F" proved
 modular_analysis.adb:8:14: medium: terminating annotation on "Test_01" could be incorrect, call to "Open_Read" might be nonterminating [possible fix: annotate "Open_Read" with Always_Return]
-modular_analysis.adb:8:14: warning: assuming "Open_Read" always returns
+modular_analysis.adb:8:14: warning: assuming "Open_Read" always terminates
 modular_analysis.adb:8:14: warning: assuming "Open_Read" has no effect on global items
 modular_analysis.adb:8:14: warning: no Global contract available for "Open_Read"
 modular_analysis.adb:8:14: warning: no returning annotation available for "Open_Read"
@@ -123,8 +122,8 @@ nest_in_proc.adb:5:17: warning: subprogram "Nothing" has no effect
 nest_in_proc.adb:7:20: warning: subprogram "Nothing2" has no effect
 nest_in_proc.adb:20:21: medium: terminating annotation on "Nest_In_Proc" could be incorrect, loop might be nonterminating [possible fix: add loop variant in the loop body]
 nest_in_proc.adb:20:21: warning: statement has no effect
+nest_in_proc.ads:1:11: info: terminating annotation on "Nest_In_Proc" has been proved, subprogram will terminate
 nested_blocks.adb:10:37: warning: statement has no effect
-nested_loops.adb:3:04: warning: analyzing unreferenced procedure "Proc"
 nested_loops.adb:3:14: info: terminating annotation on "Proc" has been proved, subprogram will terminate
 nested_loops.adb:3:14: warning: subprogram "Proc" has no effect
 nested_loops.adb:5:07: info: initialization of "X" proved
@@ -133,13 +132,11 @@ nested_loops.adb:9:31: info: loop variant proved (CVC5: 1 VC)
 nested_loops.adb:11:34: info: loop variant proved (CVC5: 1 VC)
 nested_loops.adb:13:25: warning: loop condition is stable
 nested_loops.adb:14:37: medium: loop variant might fail
-nested_loops.adb:22:04: warning: analyzing unreferenced procedure "Proc2"
 nested_loops.adb:22:14: warning: subprogram "Proc2" has no effect
 nested_loops.adb:26:17: info: overflow check proved (CVC5: 4 VC)
 nested_loops.adb:27:31: info: loop variant proved (CVC5: 1 VC)
 nested_loops.adb:29:34: info: loop variant proved (CVC5: 1 VC)
 nested_loops.adb:30:24: medium: terminating annotation on "Proc2" could be incorrect, loop might be nonterminating [possible fix: add loop variant in the loop body]
-nested_loops.adb:38:04: warning: analyzing unreferenced procedure "Proc3"
 nested_loops.adb:38:14: warning: subprogram "Proc3" has no effect
 nested_loops.adb:41:19: medium: terminating annotation on "Proc3" could be incorrect, loop might be nonterminating [possible fix: add loop variant in the loop body]
 nested_loops.adb:42:17: info: overflow check proved (CVC5: 2 VC)
@@ -151,6 +148,7 @@ nested_packages.adb:26:24: medium: terminating annotation on "Contains_Packages"
 nested_packages.adb:26:24: warning: statement has no effect
 nested_packages.adb:55:21: warning: statement has no effect
 nested_packages.adb:61:18: warning: statement has no effect
+nested_packages.ads:3:14: info: terminating annotation on "Contains_Packages" has been proved, subprogram will terminate
 nested_packages.ads:3:14: warning: subprogram "Contains_Packages" has no effect
 nested_packages.ads:6:17: info: terminating annotation on "Do_Nothing" has been proved, subprogram will terminate
 nested_packages.ads:6:17: warning: subprogram "Do_Nothing" has no effect
@@ -158,29 +156,19 @@ nested_packages.ads:8:20: info: terminating annotation on "Do_Nothing2" has been
 nested_packages.ads:8:20: warning: subprogram "Do_Nothing2" has no effect
 p.adb:6:14: warning: subprogram "Proc2" has no effect
 p.adb:7:14: warning: subprogram "Proc3" has no effect
-p.adb:9:14: info: add a contract to analyze it separately from calling contexts
-p.adb:9:14: info: local subprogram "Proc" only analyzed in the context of calls
 p.adb:9:14: warning: subprogram "Proc" has no effect
 p.adb:11:07: info: no contextual analysis of "Proc2" (body not seen yet)
 p.adb:11:07: medium: terminating annotation on "Proc" could be incorrect, call to "Proc2" might be nonterminating [possible fix: annotate "Proc2" with Always_Return]
 p.adb:16:07: info: no contextual analysis of "Proc3" (body not seen yet)
-p.adb:26:04: warning: analyzing unreferenced procedure "Proc4"
 p.adb:26:14: info: terminating annotation on "Proc4" has been proved, subprogram will terminate
 p.adb:26:14: warning: subprogram "Proc4" has no effect
 p.adb:32:14: warning: subprogram "Proc5" has no effect
-p.adb:35:10: info: analyzing call to "Proc5" in context
-p.adb:35:10: info: no contextual analysis of call to recursive subprogram
 p.adb:35:10: medium: terminating annotation on "Proc5" could be incorrect, subprogram is recursive [possible fix: annotate "Proc5" with a Subprogram_Variant aspect]
 p.adb:39:14: warning: subprogram "Proc7" has no effect
-p.adb:41:14: info: add a contract to analyze it separately from calling contexts
-p.adb:41:14: info: local subprogram "Proc6" only analyzed in the context of calls
-p.adb:41:14: info: terminating annotation on "Proc6" has been proved, subprogram will terminate
 p.adb:41:14: warning: subprogram "Proc6" has no effect
-p.adb:44:10: info: no contextual analysis of "Proc7" (body not seen yet)
-p.adb:44:10: medium: terminating annotation on "Proc7" could be incorrect, subprogram is recursive, in call inlined at p.adb:51 [possible fix: annotate "Proc7" with a Subprogram_Variant aspect]
-p.adb:51:10: info: analyzing call to "Proc6" in context
+p.adb:44:10: medium: terminating annotation on "Proc6" could be incorrect, "Proc6" and "Proc7" are mutually recursive [possible fix: annotate "Proc6" and "Proc7" with Subprogram_Variant aspects]
+p.adb:51:10: medium: terminating annotation on "Proc7" could be incorrect, "Proc7" and "Proc6" are mutually recursive [possible fix: annotate "Proc7" and "Proc6" with Subprogram_Variant aspects]
 p.adb:55:04: info: initialization of "B" proved
-p.adb:59:04: info: analyzing call to "Proc" in context
 preconditions.adb:6:18: medium: implicit terminating annotation on "Nonreturning_Precondition" could be incorrect, loop might be nonterminating [possible fix: add loop variant in the loop body]
 preconditions.adb:9:14: warning: unreachable code (CVC5: 1 VC)
 preconditions.ads:2:13: info: implicit terminating annotation on "Returning_Precondition" has been proved, subprogram will terminate
@@ -207,6 +195,6 @@ r.adb:58:04: warning: assuming "OS_Exit" has no effect on global items
 r.adb:58:04: warning: no Global contract available for "OS_Exit"
 r.adb:59:04: info: only expected exception raised (CVC5: 1 VC)
 r.adb:59:04: warning: unreachable code
-spark-containers-parameter_checks.ads:32:19: medium: postcondition might fail, in instantiation at spark-containers-functional-sets.ads:350, in instantiation at formal_cont.ads:12 [possible fix: you should consider adding a postcondition to function My_Equal_01 or turning it into an expression function]
-spark-containers-parameter_checks.ads:37:19: medium: postcondition might fail, in instantiation at spark-containers-functional-sets.ads:350, in instantiation at formal_cont.ads:12 [possible fix: you should consider adding a postcondition to function My_Equal_01 or turning it into an expression function]
-spark-containers-parameter_checks.ads:42:19: medium: postcondition might fail, in instantiation at spark-containers-functional-sets.ads:350, in instantiation at formal_cont.ads:12 [possible fix: you should consider adding a postcondition to function My_Equal_01 or turning it into an expression function]
+spark-containers-parameter_checks.ads:32:19: medium: postcondition might fail, in instantiation at spark-containers-functional-sets.ads:367, in instantiation at formal_cont.ads:12 [possible fix: you should consider adding a postcondition to function My_Equal_01 or turning it into an expression function]
+spark-containers-parameter_checks.ads:37:19: medium: postcondition might fail, in instantiation at spark-containers-functional-sets.ads:367, in instantiation at formal_cont.ads:12 [possible fix: you should consider adding a postcondition to function My_Equal_01 or turning it into an expression function]
+spark-containers-parameter_checks.ads:42:19: medium: postcondition might fail, in instantiation at spark-containers-functional-sets.ads:367, in instantiation at formal_cont.ads:12 [possible fix: you should consider adding a postcondition to function My_Equal_01 or turning it into an expression function]

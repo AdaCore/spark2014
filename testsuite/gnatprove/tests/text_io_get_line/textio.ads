@@ -4,7 +4,7 @@ with Interfaces.C_Streams;    use Interfaces.C_Streams;
 package TextIO with
   SPARK_Mode,
   Abstract_State => Current_Input_File,
-  Annotate       => (GNATprove, Always_Return)
+  Always_Terminates
 is
 
    type File_Type is private;

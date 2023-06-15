@@ -4,13 +4,13 @@ is
 
    function Perm_Transitive (A, B, C : Array_Type) return Boolean
      with
-     Global   => null,
-     Annotate => (GNATprove, Always_Return),
+       Global => null,
+       Ghost,
        Post   =>
          (if Perm_Transitive'Result
           and then Perm (A, B) and then Perm (B, C) then
              Perm (A, C)),
-       Ghost, Import;
+       Import;
 
    -----------------------------------------------------------------------------
    procedure Swap (Values : in out Array_Type;

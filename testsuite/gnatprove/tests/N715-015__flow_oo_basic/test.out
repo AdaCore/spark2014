@@ -1,5 +1,3 @@
-foo.ads:8:06: warning: Always_Return annotation is useless
-foo.ads:8:06: warning: function "Hash" has implicit Always_Return annotation
 tests.adb:14:13: info: implicit terminating annotation on "F_Get_Item" has been proved, subprogram will terminate
 tests.adb:16:13: info: implicit terminating annotation on "F_Get_Item_E" has been proved, subprogram will terminate
 tests.adb:19:28: info: initialization of "B" proved
@@ -61,7 +59,7 @@ tests.adb:196:23: info: initialization of "N" proved
 tests.adb:197:09: info: data dependencies proved
 tests.adb:198:09: info: flow dependencies proved
 tests.adb:202:07: warning: initialization of "Obj" has no effect
-tests.adb:208:07: warning: assuming "Zero_Widget" always returns
+tests.adb:208:07: warning: assuming "Zero_Widget" always terminates
 tests.adb:208:07: warning: assuming "Zero_Widget" has no effect on global items
 tests.adb:208:07: warning: no Global contract available for "Zero_Widget"
 tests.adb:208:07: warning: no returning annotation available for "Zero_Widget"
@@ -123,7 +121,7 @@ tests.adb:362:09: info: data dependencies proved
 tests.adb:363:09: info: flow dependencies proved
 tests.adb:370:07: info: initialization of "Tmp" proved
 tests.adb:371:07: info: initialization of "Tmp2" proved
-tests.adb:373:07: warning: assuming "Zero_Widget" always returns
+tests.adb:373:07: warning: assuming "Zero_Widget" always terminates
 tests.adb:373:07: warning: assuming "Zero_Widget" has no effect on global items
 tests.adb:373:07: warning: no Global contract available for "Zero_Widget"
 tests.adb:373:07: warning: no returning annotation available for "Zero_Widget"

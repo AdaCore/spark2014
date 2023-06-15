@@ -6,12 +6,9 @@ procedure B with SPARK_Mode is
       Next : List_Ptr;
    end record;
 
-   function Eq (X, Y : access constant List) return Boolean with
-     Annotate => (GNATprove, Always_Return);
+   function Eq (X, Y : access constant List) return Boolean;
    function "=" (X, Y : List) return Boolean is
-     (X.Val = Y.Val and then Eq (X.Next, Y.Next))
-   with
-     Annotate => (GNATprove, Always_Return);
+     (X.Val = Y.Val and then Eq (X.Next, Y.Next));
    function Eq (X, Y : access constant List) return Boolean is
      ((X = null) = (Y = null)
       and then (if X /= null then X.all = Y.all));
@@ -24,12 +21,10 @@ procedure B with SPARK_Mode is
      (if X = null then 0
       elsif Length (X.Next) = Natural'Last then Natural'Last
       else 1 + Length (X.Next));
-   pragma Annotate (GNATprove, Always_Return, Length);
 
    function Get_Next (X : List_Ptr; I : Natural) return access constant List is
      (case I is when 0 => X, when others => Get_Next (X.Next, I - 1))
    with Pre => I <= Length (X) and I /= Natural'Last;
-   pragma Annotate (GNATprove, Always_Return, Get_Next);
 
 begin
    declare

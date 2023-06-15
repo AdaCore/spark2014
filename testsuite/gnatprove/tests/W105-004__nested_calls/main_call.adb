@@ -5,7 +5,7 @@ is
 
    function Call (F : not null access function return Integer) return Integer with
      Annotate => (GNATprove, Higher_Order_Specialization),
-     Annotate => (GNATprove, Always_Return),
+
      Depends => (Call'Result => F),
      Post => Call'Result = F.all;
 

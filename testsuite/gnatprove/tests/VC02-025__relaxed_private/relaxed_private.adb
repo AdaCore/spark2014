@@ -9,12 +9,12 @@ procedure Relaxed_Private (R : Integer) with SPARK_Mode is
          procedure In_Out_Relaxed (X : in out Priv_Scalar) with
            Relaxed_Initialization => X,
            Global => null,
-           Annotate => (GNATProve, Always_Return),
+           Always_Terminates,
            Import;
          procedure Out_Relaxed (X : out Priv_Scalar) with
            Relaxed_Initialization => X,
            Global => null,
-           Annotate => (GNATProve, Always_Return),
+           Always_Terminates,
            Import;
 
       private
@@ -50,21 +50,21 @@ procedure Relaxed_Private (R : Integer) with SPARK_Mode is
       end record;
       procedure In_Out_Rec (X : in out My_Rec) with
         Global => null,
-        Annotate => (GNATProve, Always_Return),
+        Always_Terminates,
         Import;
       procedure Out_Rec (X : out My_Rec) with
         Global => null,
-        Annotate => (GNATProve, Always_Return),
+        Always_Terminates,
         Import;
       procedure In_Out_Rec_Relaxed (X : in out My_Rec) with
         Relaxed_Initialization => X,
         Global => null,
-        Annotate => (GNATProve, Always_Return),
+        Always_Terminates,
         Import;
       procedure Out_Rec_Relaxed (X : out My_Rec) with
         Relaxed_Initialization => X,
         Global => null,
-        Annotate => (GNATProve, Always_Return),
+        Always_Terminates,
         Import;
 
       Default : Priv_Scalar with Relaxed_Initialization;
@@ -144,7 +144,7 @@ procedure Relaxed_Private (R : Integer) with SPARK_Mode is
          procedure In_Out_Relaxed (X : in out Priv_Scalar) with
            Relaxed_Initialization => X,
            Global => null,
-           Annotate => (GNATProve, Always_Return),
+           Always_Terminates,
            Import;
 
       private
@@ -172,17 +172,17 @@ procedure Relaxed_Private (R : Integer) with SPARK_Mode is
            Annotate => (GNATprove, Ownership);
          function C return Priv_Scalar with
            Global => null,
-           Annotate => (GNATProve, Always_Return),
+
            Import;
          procedure In_Out_Relaxed (X : in out Priv_Scalar) with
            Relaxed_Initialization => X,
            Global => null,
-           Annotate => (GNATProve, Always_Return),
+           Always_Terminates,
            Import;
          procedure Out_Relaxed (X : out Priv_Scalar) with
            Relaxed_Initialization => X,
            Global => null,
-           Annotate => (GNATProve, Always_Return),
+           Always_Terminates,
            Import;
 
       private
@@ -217,21 +217,21 @@ procedure Relaxed_Private (R : Integer) with SPARK_Mode is
       end record;
       procedure In_Out_Rec (X : in out My_Rec) with
         Global => null,
-        Annotate => (GNATProve, Always_Return),
+        Always_Terminates,
         Import;
       procedure Out_Rec (X : out My_Rec) with
         Global => null,
-        Annotate => (GNATProve, Always_Return),
+        Always_Terminates,
         Import;
       procedure In_Out_Rec_Relaxed (X : in out My_Rec) with
         Relaxed_Initialization => X,
         Global => null,
-        Annotate => (GNATProve, Always_Return),
+        Always_Terminates,
         Import;
       procedure Out_Rec_Relaxed (X : out My_Rec) with
         Relaxed_Initialization => X,
         Global => null,
-        Annotate => (GNATProve, Always_Return),
+        Always_Terminates,
         Import;
 
       Default : Priv_Scalar with Relaxed_Initialization;
@@ -310,7 +310,7 @@ procedure Relaxed_Private (R : Integer) with SPARK_Mode is
          procedure In_Out_Relaxed (X : in out Priv_Scalar) with
            Relaxed_Initialization => X,
            Global => null,
-           Annotate => (GNATProve, Always_Return),
+           Always_Terminates,
            Import;
 
       private
@@ -339,12 +339,12 @@ procedure Relaxed_Private (R : Integer) with SPARK_Mode is
          procedure In_Out_Relaxed (X : in out Priv_With_Pred) with
            Relaxed_Initialization => X,
            Global => null,
-           Annotate => (GNATProve, Always_Return),
+           Always_Terminates,
            Import;
          procedure Out_Relaxed (X : out Priv_With_Pred) with
            Relaxed_Initialization => X,
            Global => null,
-           Annotate => (GNATProve, Always_Return),
+           Always_Terminates,
            Import;
 
       private
@@ -383,21 +383,21 @@ procedure Relaxed_Private (R : Integer) with SPARK_Mode is
       end record;
       procedure In_Out_Rec (X : in out My_Rec) with
         Global => null,
-        Annotate => (GNATProve, Always_Return),
+        Always_Terminates,
         Import;
       procedure Out_Rec (X : out My_Rec) with
         Global => null,
-        Annotate => (GNATProve, Always_Return),
+        Always_Terminates,
         Import;
       procedure In_Out_Rec_Relaxed (X : in out My_Rec) with
         Relaxed_Initialization => X,
         Global => null,
-        Annotate => (GNATProve, Always_Return),
+        Always_Terminates,
         Import;
       procedure Out_Rec_Relaxed (X : out My_Rec) with
         Relaxed_Initialization => X,
         Global => null,
-        Annotate => (GNATProve, Always_Return),
+        Always_Terminates,
         Import;
 
       Default : Priv_With_Pred with Relaxed_Initialization;
@@ -475,7 +475,7 @@ procedure Relaxed_Private (R : Integer) with SPARK_Mode is
          procedure In_Out_Relaxed (X : in out Priv_With_Pred) with
            Relaxed_Initialization => X,
            Global => null,
-           Annotate => (GNATProve, Always_Return),
+           Always_Terminates,
            Import;
 
       private
@@ -504,12 +504,12 @@ procedure Relaxed_Private (R : Integer) with SPARK_Mode is
          procedure In_Out_Relaxed (X : in out Priv_Rec) with
            Relaxed_Initialization => X,
            Global => null,
-           Annotate => (GNATProve, Always_Return),
+           Always_Terminates,
            Import;
          procedure Out_Relaxed (X : out Priv_Rec) with
            Relaxed_Initialization => X,
            Global => null,
-           Annotate => (GNATProve, Always_Return),
+           Always_Terminates,
            Import;
 
       private
@@ -543,21 +543,21 @@ procedure Relaxed_Private (R : Integer) with SPARK_Mode is
       end record;
       procedure In_Out_Rec (X : in out My_Rec) with
         Global => null,
-        Annotate => (GNATProve, Always_Return),
+        Always_Terminates,
         Import;
       procedure Out_Rec (X : out My_Rec) with
         Global => null,
-        Annotate => (GNATProve, Always_Return),
+        Always_Terminates,
         Import;
       procedure In_Out_Rec_Relaxed (X : in out My_Rec) with
         Relaxed_Initialization => X,
         Global => null,
-        Annotate => (GNATProve, Always_Return),
+        Always_Terminates,
         Import;
       procedure Out_Rec_Relaxed (X : out My_Rec) with
         Relaxed_Initialization => X,
         Global => null,
-        Annotate => (GNATProve, Always_Return),
+        Always_Terminates,
         Import;
 
       Default : Priv_Rec with Relaxed_Initialization;

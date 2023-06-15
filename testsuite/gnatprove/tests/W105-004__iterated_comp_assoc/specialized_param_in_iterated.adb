@@ -10,7 +10,7 @@ is
 
    function Init_Array (Last : Integer; Init : not null access function (I : Positive) return Natural) return Nat_Array with
      Annotate => (GNATprove, Higher_Order_Specialization),
-     Annotate => (GNATprove, Always_Return),
+
      Post => Init_Array'Result = (for I in 1 .. Last => Init (I));
 
    function Init_Array (Last : Integer; Init : not null access function (I : Positive) return Natural) return Nat_Array is

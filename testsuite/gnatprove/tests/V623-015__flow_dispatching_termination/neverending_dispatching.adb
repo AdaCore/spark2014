@@ -1,5 +1,5 @@
 procedure Neverending_Dispatching with SPARK_Mode,
-  Annotate => (GNATprove, Always_Return) is
+  Always_Terminates is
 
    package ParentDecl is
       type T is tagged null record;

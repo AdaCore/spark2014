@@ -53,8 +53,8 @@ is
        (N = 0  => S1 = S1'Old,
         N /= 0 => (for all Idx in S1'Range =>
                      (if Idx in From1 .. From1 + N - 1 then S1 (Idx) = S2 (Idx - From1 + From2)
-                      else S1 (Idx) = S1'Old (Idx))));
-   pragma Annotate (GNATprove, Always_Return, Memcpy);
+                      else S1 (Idx) = S1'Old (Idx)))),
+     Always_Terminates;
    procedure Memcpy
      (S1 : in out String;
       S2 : String;
@@ -104,8 +104,8 @@ is
    with
      Pre  => N <= B'Length,
      Post => (for all Idx in B'Range =>
-                (if Idx < B'First + N then B (Idx) = Ch else B (Idx) = B'Old (Idx)));
-   pragma Annotate (GNATprove, Always_Return, Memset);
+                (if Idx < B'First + N then B (Idx) = Ch else B (Idx) = B'Old (Idx))),
+     Always_Terminates;
    procedure Memset
      (B  : in out String;
       Ch : Character;

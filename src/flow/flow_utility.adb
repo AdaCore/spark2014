@@ -5495,6 +5495,67 @@ package body Flow_Utility is
 
    end Search_Initializes_Contract;
 
+   ------------------------
+   -- Termination_Proved --
+   ------------------------
+
+   function Termination_Proved
+     (I_Scheme           : Opt_N_Iteration_Scheme_Id;
+      Loop_Writes        : Flow_Id_Sets.Set;
+      Generating_Globals : Boolean := False)
+      return Boolean
+   is
+   begin
+
+      --  Termination of plain or while loops is not automatically proved
+      if No (I_Scheme) or else Present (Condition (I_Scheme)) then
+         return False;
+
+         --  Termination of loops over a type or range is proved
+      elsif Present (Loop_Parameter_Specification (I_Scheme)) then
+         return True;
+
+      elsif Present (Iterator_Specification (I_Scheme)) then
+         declare
+            I_Name : constant Node_Id :=
+              Name (Iterator_Specification (I_Scheme));
+         begin
+            --  Loops over array always terminate
+            if Is_Iterator_Over_Array (Iterator_Specification (I_Scheme))
+
+              --  If the name is not a path, then we iterate over something
+              --  constant.
+              or else not Is_Path_Expression (I_Name)
+
+              --  If we have no root object, then we iterate over an
+              --  object created by an allocator, which we cannot modify
+              --  during the loop.
+              or else No (Get_Root_Object (I_Name))
+
+              --  If the root object is a constant, it cannot be modified
+              --  during the loop.
+              or else Is_Constant_In_SPARK (Get_Root_Object (I_Name))
+
+              --  Otherwise, if we are in phase 2 (i.e. we know exactly all
+              --  loop writes), we check that the root object is not
+              --  modified during the loop. Get_Root_Object will always
+              --  return entire variables.
+              or else
+                (not Generating_Globals
+                 and then
+                   not Loop_Writes.Contains
+                     (Direct_Mapping_Id (Get_Root_Object (I_Name))))
+            then
+               return True;
+            end if;
+         end;
+      else
+         raise Program_Error;
+      end if;
+
+      return False;
+   end Termination_Proved;
+
    --------------------
    -- To_Flow_Id_Set --
    --------------------

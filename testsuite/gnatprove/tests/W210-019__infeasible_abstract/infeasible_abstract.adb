@@ -4,13 +4,13 @@ procedure Infeasible_Abstract with SPARK_Mode is
       type Root is abstract tagged null record;
 
       function Bad (X : Root; I : Integer) return Integer is abstract with --@FEASIBLE_POST:FAIL
-        Annotate => (GNATprove, Always_Return),
+
         Post'Class => False;
    end N1;
    use N1;
 
    function F (X : Root'Class; I : Integer) return Integer with
-     Annotate => (GNATprove, Always_Return),
+
      Post => False;
 
    function F (X : Root'Class; I : Integer) return Integer is

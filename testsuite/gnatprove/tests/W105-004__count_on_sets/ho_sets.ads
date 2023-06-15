@@ -12,7 +12,7 @@ package HO_Sets with SPARK_Mode is
    with
      Annotate => (GNATprove, Higher_Order_Specialization),
      Subprogram_Variant => (Decreases => Length (Container)),
-     Annotate => (GNATprove, Always_Return),
+
      Post => Count'Result <= Length (Container);
 
    procedure Lemma_Count_Eq
@@ -21,7 +21,7 @@ package HO_Sets with SPARK_Mode is
    with Ghost,
      Annotate => (GNATprove, Higher_Order_Specialization),
      Annotate => (GNATprove, Automatic_Instantiation),
-     Annotate => (GNATprove, Always_Return),
+     Always_Terminates,
      Subprogram_Variant => (Decreases => Length (Left)),
      Pre  => Left = Right,
      Post => Count (Left, Test) = Count (Right, Test);
@@ -33,7 +33,7 @@ package HO_Sets with SPARK_Mode is
    with Ghost,
      Annotate => (GNATprove, Higher_Order_Specialization),
      Annotate => (GNATprove, Automatic_Instantiation),
-     Annotate => (GNATprove, Always_Return),
+     Always_Terminates,
      Subprogram_Variant => (Decreases => Length (Container) - 1),
      Pre  => Contains (Container, Item),
      Post => Count (Container, Test) =

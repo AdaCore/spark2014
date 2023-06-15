@@ -15,7 +15,7 @@ is
    use New_Set_01;
 
    -- Test procedure for nonreturning instantiation
-   procedure Test_01 with Annotate => (GNATprove, Always_Return);
+   procedure Test_01 with Always_Terminates;
 
    -- RETURNING CASE
 
@@ -25,10 +25,10 @@ is
    -- Package instantiation with returning subprogram
    package New_Set_02 is new SPARK.Containers.Functional.Sets
      (Element_Type        => Integer,
-      Equivalent_Elements => My_Equal_02) with Annotate => (GNATprove, Always_Return);
+      Equivalent_Elements => My_Equal_02);
    use New_Set_02;
 
    -- Test procedure for returning instantiation
-   procedure Test_02 with Annotate => (GNATprove, Always_Return);
+   procedure Test_02 with Always_Terminates;
 
 end Formal_Cont;

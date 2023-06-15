@@ -3,9 +3,9 @@ use  Ada.Numerics.Big_Numbers.Big_Integers;
 with Types; use Types;
 
 package Conversion with
-  SPARK_Mode
+  SPARK_Mode,
+  Always_Terminates
 is
-   pragma Annotate (GNATprove, Always_Return, Conversion);
 
    function Partial_Conversion_Rec
      (X    : Integer_Curve25519;

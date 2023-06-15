@@ -24,7 +24,7 @@ is
                    Stop      : in  Stop_Type;
                    Status    : out Status_Type)
        with
-         Annotate => (GNATprove, Always_Return),
+         Always_Terminates,
          Global   => (In_Out => Port_State),
          Depends  => ((Port_State, Status) =>
                        (Port_State, Baud, Parity, Data_Size, Stop));
@@ -33,7 +33,7 @@ is
    procedure Read (Item   : out Byte;
                    Status : out Status_Type)
       with
-         Annotate => (GNATprove, Always_Return),
+         Always_Terminates,
          Global   => (Input => (Port_State, Data_State)),
          Depends  => (Item  => (Port_State, Data_State), Status => Port_State);
 
@@ -41,14 +41,14 @@ is
    procedure Write (Item   : in  Byte;
                     Status : out Status_Type)
       with
-         Annotate => (GNATprove, Always_Return),
+         Always_Terminates,
          Global   => (Input => Port_State, Output => Data_State),
          Depends  => (Data_State => (Port_State, Item), Status => Port_State);
 
    -- Has no effect if port is not open. Returns no failure indication.
    procedure Close
       with
-         Annotate => (GNATprove, Always_Return),
+         Always_Terminates,
          Global   => (In_Out => Port_State),
          Depends  => (Port_State => Port_State);
 end Serial_Port;

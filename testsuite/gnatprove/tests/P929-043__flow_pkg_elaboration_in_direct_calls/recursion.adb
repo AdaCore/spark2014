@@ -1,6 +1,6 @@
-procedure Recursion with Annotate => (GNATprove, Always_Return) is
+procedure Recursion with Always_Terminates is
    package Pack is
-      procedure P with Annotate => (GNATprove, Always_Return);
+      procedure P with Always_Terminates;
    end Pack;
 
    package body Pack is

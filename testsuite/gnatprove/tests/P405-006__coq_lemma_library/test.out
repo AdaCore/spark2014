@@ -1,4 +1,3 @@
-/tmp/tmpt6bzd1oc/P405-006__coq_lemma_library/src
 spark-big_intervals.ads:22:13: info: during checks for quantification at spark-big_intervals.ads:14
 spark-big_intervals.ads:22:13: info: implicit terminating annotation on "First" has been proved, subprogram will terminate
 spark-big_intervals.ads:22:13: info: precondition proved
@@ -120,236 +119,236 @@ spark-lemmas-arithmetic.ads:139:14: info: postcondition proved, in instantiation
 spark-lemmas-float_arithmetic.ads:22:22: info: predicate check proved
 spark-lemmas-float_arithmetic.ads:23:22: info: predicate check proved
 spark-lemmas-float_arithmetic.ads:24:22: info: predicate check proved
-spark-lemmas-floating_point_arithmetic.ads:53:14: info: terminating annotation on "Lemma_Add_Is_Monotonic" has been proved, subprogram will terminate, in instantiation at spark-lemmas-float_arithmetic.ads:17
-spark-lemmas-floating_point_arithmetic.ads:53:14: info: terminating annotation on "Lemma_Add_Is_Monotonic" has been proved, subprogram will terminate, in instantiation at spark-lemmas-long_float_arithmetic.ads:17
-spark-lemmas-floating_point_arithmetic.ads:58:08: info: data dependencies proved, in instantiation at spark-lemmas-float_arithmetic.ads:17
-spark-lemmas-floating_point_arithmetic.ads:58:08: info: data dependencies proved, in instantiation at spark-lemmas-long_float_arithmetic.ads:17
-spark-lemmas-floating_point_arithmetic.ads:64:16: info: postcondition proved, in instantiation at spark-lemmas-float_arithmetic.ads:17
-spark-lemmas-floating_point_arithmetic.ads:64:16: info: postcondition proved, in instantiation at spark-lemmas-long_float_arithmetic.ads:17
-spark-lemmas-floating_point_arithmetic.ads:64:21: info: float overflow check proved, in instantiation at spark-lemmas-float_arithmetic.ads:17
-spark-lemmas-floating_point_arithmetic.ads:64:21: info: float overflow check proved, in instantiation at spark-lemmas-long_float_arithmetic.ads:17
-spark-lemmas-floating_point_arithmetic.ads:64:36: info: float overflow check proved, in instantiation at spark-lemmas-float_arithmetic.ads:17
-spark-lemmas-floating_point_arithmetic.ads:64:36: info: float overflow check proved, in instantiation at spark-lemmas-long_float_arithmetic.ads:17
-spark-lemmas-floating_point_arithmetic.ads:66:14: info: terminating annotation on "Lemma_Sub_Is_Monotonic" has been proved, subprogram will terminate, in instantiation at spark-lemmas-float_arithmetic.ads:17
-spark-lemmas-floating_point_arithmetic.ads:66:14: info: terminating annotation on "Lemma_Sub_Is_Monotonic" has been proved, subprogram will terminate, in instantiation at spark-lemmas-long_float_arithmetic.ads:17
-spark-lemmas-floating_point_arithmetic.ads:71:08: info: data dependencies proved, in instantiation at spark-lemmas-float_arithmetic.ads:17
-spark-lemmas-floating_point_arithmetic.ads:71:08: info: data dependencies proved, in instantiation at spark-lemmas-long_float_arithmetic.ads:17
-spark-lemmas-floating_point_arithmetic.ads:77:16: info: postcondition proved, in instantiation at spark-lemmas-float_arithmetic.ads:17
-spark-lemmas-floating_point_arithmetic.ads:77:16: info: postcondition proved, in instantiation at spark-lemmas-long_float_arithmetic.ads:17
-spark-lemmas-floating_point_arithmetic.ads:77:21: info: float overflow check proved, in instantiation at spark-lemmas-float_arithmetic.ads:17
-spark-lemmas-floating_point_arithmetic.ads:77:21: info: float overflow check proved, in instantiation at spark-lemmas-long_float_arithmetic.ads:17
-spark-lemmas-floating_point_arithmetic.ads:77:36: info: float overflow check proved, in instantiation at spark-lemmas-float_arithmetic.ads:17
-spark-lemmas-floating_point_arithmetic.ads:77:36: info: float overflow check proved, in instantiation at spark-lemmas-long_float_arithmetic.ads:17
-spark-lemmas-floating_point_arithmetic.ads:79:14: info: terminating annotation on "Lemma_Mult_Is_Monotonic" has been proved, subprogram will terminate, in instantiation at spark-lemmas-float_arithmetic.ads:17
-spark-lemmas-floating_point_arithmetic.ads:79:14: info: terminating annotation on "Lemma_Mult_Is_Monotonic" has been proved, subprogram will terminate, in instantiation at spark-lemmas-long_float_arithmetic.ads:17
-spark-lemmas-floating_point_arithmetic.ads:84:08: info: data dependencies proved, in instantiation at spark-lemmas-float_arithmetic.ads:17
-spark-lemmas-floating_point_arithmetic.ads:84:08: info: data dependencies proved, in instantiation at spark-lemmas-long_float_arithmetic.ads:17
-spark-lemmas-floating_point_arithmetic.ads:90:16: info: postcondition proved, in instantiation at spark-lemmas-float_arithmetic.ads:17
-spark-lemmas-floating_point_arithmetic.ads:90:16: info: postcondition proved, in instantiation at spark-lemmas-long_float_arithmetic.ads:17
-spark-lemmas-floating_point_arithmetic.ads:90:21: info: float overflow check proved, in instantiation at spark-lemmas-float_arithmetic.ads:17
-spark-lemmas-floating_point_arithmetic.ads:90:21: info: float overflow check proved, in instantiation at spark-lemmas-long_float_arithmetic.ads:17
-spark-lemmas-floating_point_arithmetic.ads:90:36: info: float overflow check proved, in instantiation at spark-lemmas-float_arithmetic.ads:17
-spark-lemmas-floating_point_arithmetic.ads:90:36: info: float overflow check proved, in instantiation at spark-lemmas-long_float_arithmetic.ads:17
-spark-lemmas-floating_point_arithmetic.ads:92:14: info: terminating annotation on "Lemma_Mult_Right_Negative_Is_Monotonic" has been proved, subprogram will terminate, in instantiation at spark-lemmas-float_arithmetic.ads:17
-spark-lemmas-floating_point_arithmetic.ads:92:14: info: terminating annotation on "Lemma_Mult_Right_Negative_Is_Monotonic" has been proved, subprogram will terminate, in instantiation at spark-lemmas-long_float_arithmetic.ads:17
-spark-lemmas-floating_point_arithmetic.ads:97:08: info: data dependencies proved, in instantiation at spark-lemmas-float_arithmetic.ads:17
-spark-lemmas-floating_point_arithmetic.ads:97:08: info: data dependencies proved, in instantiation at spark-lemmas-long_float_arithmetic.ads:17
-spark-lemmas-floating_point_arithmetic.ads:103:16: info: postcondition proved, in instantiation at spark-lemmas-float_arithmetic.ads:17
-spark-lemmas-floating_point_arithmetic.ads:103:16: info: postcondition proved, in instantiation at spark-lemmas-long_float_arithmetic.ads:17
-spark-lemmas-floating_point_arithmetic.ads:103:21: info: float overflow check proved, in instantiation at spark-lemmas-float_arithmetic.ads:17
-spark-lemmas-floating_point_arithmetic.ads:103:21: info: float overflow check proved, in instantiation at spark-lemmas-long_float_arithmetic.ads:17
-spark-lemmas-floating_point_arithmetic.ads:103:36: info: float overflow check proved, in instantiation at spark-lemmas-float_arithmetic.ads:17
-spark-lemmas-floating_point_arithmetic.ads:103:36: info: float overflow check proved, in instantiation at spark-lemmas-long_float_arithmetic.ads:17
-spark-lemmas-floating_point_arithmetic.ads:105:14: info: terminating annotation on "Lemma_Mult_By_Less_Than_One" has been proved, subprogram will terminate, in instantiation at spark-lemmas-float_arithmetic.ads:17
-spark-lemmas-floating_point_arithmetic.ads:105:14: info: terminating annotation on "Lemma_Mult_By_Less_Than_One" has been proved, subprogram will terminate, in instantiation at spark-lemmas-long_float_arithmetic.ads:17
-spark-lemmas-floating_point_arithmetic.ads:109:08: info: data dependencies proved, in instantiation at spark-lemmas-float_arithmetic.ads:17
-spark-lemmas-floating_point_arithmetic.ads:109:08: info: data dependencies proved, in instantiation at spark-lemmas-long_float_arithmetic.ads:17
-spark-lemmas-floating_point_arithmetic.ads:111:16: info: postcondition proved, in instantiation at spark-lemmas-float_arithmetic.ads:17
-spark-lemmas-floating_point_arithmetic.ads:111:16: info: postcondition proved, in instantiation at spark-lemmas-long_float_arithmetic.ads:17
-spark-lemmas-floating_point_arithmetic.ads:111:21: info: float overflow check proved, in instantiation at spark-lemmas-float_arithmetic.ads:17
-spark-lemmas-floating_point_arithmetic.ads:111:21: info: float overflow check proved, in instantiation at spark-lemmas-long_float_arithmetic.ads:17
-spark-lemmas-floating_point_arithmetic.ads:113:14: info: terminating annotation on "Lemma_Div_Is_Monotonic" has been proved, subprogram will terminate, in instantiation at spark-lemmas-float_arithmetic.ads:17
-spark-lemmas-floating_point_arithmetic.ads:113:14: info: terminating annotation on "Lemma_Div_Is_Monotonic" has been proved, subprogram will terminate, in instantiation at spark-lemmas-long_float_arithmetic.ads:17
-spark-lemmas-floating_point_arithmetic.ads:118:08: info: data dependencies proved, in instantiation at spark-lemmas-float_arithmetic.ads:17
-spark-lemmas-floating_point_arithmetic.ads:118:08: info: data dependencies proved, in instantiation at spark-lemmas-long_float_arithmetic.ads:17
-spark-lemmas-floating_point_arithmetic.ads:124:16: info: postcondition proved, in instantiation at spark-lemmas-float_arithmetic.ads:17
-spark-lemmas-floating_point_arithmetic.ads:124:16: info: postcondition proved, in instantiation at spark-lemmas-long_float_arithmetic.ads:17
-spark-lemmas-floating_point_arithmetic.ads:124:21: info: division check proved, in instantiation at spark-lemmas-float_arithmetic.ads:17
-spark-lemmas-floating_point_arithmetic.ads:124:21: info: division check proved, in instantiation at spark-lemmas-long_float_arithmetic.ads:17
-spark-lemmas-floating_point_arithmetic.ads:124:21: info: float overflow check proved, in instantiation at spark-lemmas-float_arithmetic.ads:17
-spark-lemmas-floating_point_arithmetic.ads:124:21: info: float overflow check proved, in instantiation at spark-lemmas-long_float_arithmetic.ads:17
-spark-lemmas-floating_point_arithmetic.ads:124:36: info: division check proved, in instantiation at spark-lemmas-float_arithmetic.ads:17
-spark-lemmas-floating_point_arithmetic.ads:124:36: info: division check proved, in instantiation at spark-lemmas-long_float_arithmetic.ads:17
-spark-lemmas-floating_point_arithmetic.ads:124:36: info: float overflow check proved, in instantiation at spark-lemmas-float_arithmetic.ads:17
-spark-lemmas-floating_point_arithmetic.ads:124:36: info: float overflow check proved, in instantiation at spark-lemmas-long_float_arithmetic.ads:17
-spark-lemmas-floating_point_arithmetic.ads:126:14: info: terminating annotation on "Lemma_Div_Right_Negative_Is_Monotonic" has been proved, subprogram will terminate, in instantiation at spark-lemmas-float_arithmetic.ads:17
-spark-lemmas-floating_point_arithmetic.ads:126:14: info: terminating annotation on "Lemma_Div_Right_Negative_Is_Monotonic" has been proved, subprogram will terminate, in instantiation at spark-lemmas-long_float_arithmetic.ads:17
-spark-lemmas-floating_point_arithmetic.ads:131:08: info: data dependencies proved, in instantiation at spark-lemmas-float_arithmetic.ads:17
-spark-lemmas-floating_point_arithmetic.ads:131:08: info: data dependencies proved, in instantiation at spark-lemmas-long_float_arithmetic.ads:17
-spark-lemmas-floating_point_arithmetic.ads:137:16: info: postcondition proved, in instantiation at spark-lemmas-float_arithmetic.ads:17
-spark-lemmas-floating_point_arithmetic.ads:137:16: info: postcondition proved, in instantiation at spark-lemmas-long_float_arithmetic.ads:17
-spark-lemmas-floating_point_arithmetic.ads:137:21: info: division check proved, in instantiation at spark-lemmas-float_arithmetic.ads:17
-spark-lemmas-floating_point_arithmetic.ads:137:21: info: division check proved, in instantiation at spark-lemmas-long_float_arithmetic.ads:17
-spark-lemmas-floating_point_arithmetic.ads:137:21: info: float overflow check proved, in instantiation at spark-lemmas-float_arithmetic.ads:17
-spark-lemmas-floating_point_arithmetic.ads:137:21: info: float overflow check proved, in instantiation at spark-lemmas-long_float_arithmetic.ads:17
-spark-lemmas-floating_point_arithmetic.ads:137:36: info: division check proved, in instantiation at spark-lemmas-float_arithmetic.ads:17
-spark-lemmas-floating_point_arithmetic.ads:137:36: info: division check proved, in instantiation at spark-lemmas-long_float_arithmetic.ads:17
-spark-lemmas-floating_point_arithmetic.ads:137:36: info: float overflow check proved, in instantiation at spark-lemmas-float_arithmetic.ads:17
-spark-lemmas-floating_point_arithmetic.ads:137:36: info: float overflow check proved, in instantiation at spark-lemmas-long_float_arithmetic.ads:17
-spark-lemmas-floating_point_arithmetic.ads:139:14: info: terminating annotation on "Lemma_Div_Left_Is_Monotonic" has been proved, subprogram will terminate, in instantiation at spark-lemmas-float_arithmetic.ads:17
-spark-lemmas-floating_point_arithmetic.ads:139:14: info: terminating annotation on "Lemma_Div_Left_Is_Monotonic" has been proved, subprogram will terminate, in instantiation at spark-lemmas-long_float_arithmetic.ads:17
-spark-lemmas-floating_point_arithmetic.ads:144:08: info: data dependencies proved, in instantiation at spark-lemmas-float_arithmetic.ads:17
-spark-lemmas-floating_point_arithmetic.ads:144:08: info: data dependencies proved, in instantiation at spark-lemmas-long_float_arithmetic.ads:17
-spark-lemmas-floating_point_arithmetic.ads:152:16: info: postcondition proved, in instantiation at spark-lemmas-float_arithmetic.ads:17
-spark-lemmas-floating_point_arithmetic.ads:152:16: info: postcondition proved, in instantiation at spark-lemmas-long_float_arithmetic.ads:17
-spark-lemmas-floating_point_arithmetic.ads:152:21: info: division check proved, in instantiation at spark-lemmas-float_arithmetic.ads:17
-spark-lemmas-floating_point_arithmetic.ads:152:21: info: division check proved, in instantiation at spark-lemmas-long_float_arithmetic.ads:17
-spark-lemmas-floating_point_arithmetic.ads:152:21: info: float overflow check proved, in instantiation at spark-lemmas-float_arithmetic.ads:17
-spark-lemmas-floating_point_arithmetic.ads:152:21: info: float overflow check proved, in instantiation at spark-lemmas-long_float_arithmetic.ads:17
-spark-lemmas-floating_point_arithmetic.ads:152:36: info: division check proved, in instantiation at spark-lemmas-float_arithmetic.ads:17
-spark-lemmas-floating_point_arithmetic.ads:152:36: info: division check proved, in instantiation at spark-lemmas-long_float_arithmetic.ads:17
-spark-lemmas-floating_point_arithmetic.ads:152:36: info: float overflow check proved, in instantiation at spark-lemmas-float_arithmetic.ads:17
-spark-lemmas-floating_point_arithmetic.ads:152:36: info: float overflow check proved, in instantiation at spark-lemmas-long_float_arithmetic.ads:17
-spark-lemmas-floating_point_arithmetic.ads:205:13: info: implicit terminating annotation on "Is_Integer_64" has been proved, subprogram will terminate, in instantiation at spark-lemmas-float_arithmetic.ads:17
-spark-lemmas-floating_point_arithmetic.ads:205:13: info: implicit terminating annotation on "Is_Integer_64" has been proved, subprogram will terminate, in instantiation at spark-lemmas-long_float_arithmetic.ads:17
-spark-lemmas-floating_point_arithmetic.ads:209:21: info: range check proved, in instantiation at spark-lemmas-float_arithmetic.ads:17
-spark-lemmas-floating_point_arithmetic.ads:209:21: info: range check proved, in instantiation at spark-lemmas-long_float_arithmetic.ads:17
-spark-lemmas-floating_point_arithmetic.ads:209:33: info: range check proved, in instantiation at spark-lemmas-float_arithmetic.ads:17
-spark-lemmas-floating_point_arithmetic.ads:209:33: info: range check proved, in instantiation at spark-lemmas-long_float_arithmetic.ads:17
-spark-lemmas-floating_point_arithmetic.ads:213:13: info: implicit terminating annotation on "Is_Integer_32" has been proved, subprogram will terminate, in instantiation at spark-lemmas-float_arithmetic.ads:17
-spark-lemmas-floating_point_arithmetic.ads:213:13: info: implicit terminating annotation on "Is_Integer_32" has been proved, subprogram will terminate, in instantiation at spark-lemmas-long_float_arithmetic.ads:17
-spark-lemmas-floating_point_arithmetic.ads:217:21: info: range check proved, in instantiation at spark-lemmas-float_arithmetic.ads:17
-spark-lemmas-floating_point_arithmetic.ads:217:21: info: range check proved, in instantiation at spark-lemmas-long_float_arithmetic.ads:17
-spark-lemmas-floating_point_arithmetic.ads:217:33: info: range check proved, in instantiation at spark-lemmas-float_arithmetic.ads:17
-spark-lemmas-floating_point_arithmetic.ads:217:33: info: range check proved, in instantiation at spark-lemmas-long_float_arithmetic.ads:17
-spark-lemmas-floating_point_arithmetic.ads:222:13: info: implicit terminating annotation on "Is_Float" has been proved, subprogram will terminate, in instantiation at spark-lemmas-float_arithmetic.ads:17
-spark-lemmas-floating_point_arithmetic.ads:222:13: info: implicit terminating annotation on "Is_Float" has been proved, subprogram will terminate, in instantiation at spark-lemmas-long_float_arithmetic.ads:17
-spark-lemmas-floating_point_arithmetic.ads:224:38: info: overflow check proved, in instantiation at spark-lemmas-float_arithmetic.ads:17
-spark-lemmas-floating_point_arithmetic.ads:224:38: info: overflow check proved, in instantiation at spark-lemmas-long_float_arithmetic.ads:17
-spark-lemmas-floating_point_arithmetic.ads:226:29: info: range check proved, in instantiation at spark-lemmas-float_arithmetic.ads:17
-spark-lemmas-floating_point_arithmetic.ads:226:29: info: range check proved, in instantiation at spark-lemmas-long_float_arithmetic.ads:17
-spark-lemmas-floating_point_arithmetic.ads:226:33: info: range check proved, in instantiation at spark-lemmas-float_arithmetic.ads:17
-spark-lemmas-floating_point_arithmetic.ads:226:33: info: range check proved, in instantiation at spark-lemmas-long_float_arithmetic.ads:17
-spark-lemmas-floating_point_arithmetic.ads:231:13: info: implicit terminating annotation on "Is_Float" has been proved, subprogram will terminate, in instantiation at spark-lemmas-float_arithmetic.ads:17
-spark-lemmas-floating_point_arithmetic.ads:231:13: info: implicit terminating annotation on "Is_Float" has been proved, subprogram will terminate, in instantiation at spark-lemmas-long_float_arithmetic.ads:17
-spark-lemmas-floating_point_arithmetic.ads:233:38: info: overflow check proved, in instantiation at spark-lemmas-float_arithmetic.ads:17
-spark-lemmas-floating_point_arithmetic.ads:233:38: info: overflow check proved, in instantiation at spark-lemmas-long_float_arithmetic.ads:17
-spark-lemmas-floating_point_arithmetic.ads:235:29: info: range check proved, in instantiation at spark-lemmas-float_arithmetic.ads:17
-spark-lemmas-floating_point_arithmetic.ads:235:29: info: range check proved, in instantiation at spark-lemmas-long_float_arithmetic.ads:17
-spark-lemmas-floating_point_arithmetic.ads:235:33: info: range check proved, in instantiation at spark-lemmas-float_arithmetic.ads:17
-spark-lemmas-floating_point_arithmetic.ads:235:33: info: range check proved, in instantiation at spark-lemmas-long_float_arithmetic.ads:17
-spark-lemmas-floating_point_arithmetic.ads:239:13: info: implicit terminating annotation on "Is_Integer" has been proved, subprogram will terminate, in instantiation at spark-lemmas-float_arithmetic.ads:17
-spark-lemmas-floating_point_arithmetic.ads:239:13: info: implicit terminating annotation on "Is_Integer" has been proved, subprogram will terminate, in instantiation at spark-lemmas-long_float_arithmetic.ads:17
-spark-lemmas-floating_point_arithmetic.ads:246:19: info: range check proved, in instantiation at spark-lemmas-float_arithmetic.ads:17
-spark-lemmas-floating_point_arithmetic.ads:246:19: info: range check proved, in instantiation at spark-lemmas-long_float_arithmetic.ads:17
-spark-lemmas-floating_point_arithmetic.ads:246:31: info: range check proved, in instantiation at spark-lemmas-float_arithmetic.ads:17
-spark-lemmas-floating_point_arithmetic.ads:246:31: info: range check proved, in instantiation at spark-lemmas-long_float_arithmetic.ads:17
-spark-lemmas-floating_point_arithmetic.ads:261:14: info: terminating annotation on "Lemma_Integer_Add_Exact" has been proved, subprogram will terminate, in instantiation at spark-lemmas-float_arithmetic.ads:17
-spark-lemmas-floating_point_arithmetic.ads:261:14: info: terminating annotation on "Lemma_Integer_Add_Exact" has been proved, subprogram will terminate, in instantiation at spark-lemmas-long_float_arithmetic.ads:17
-spark-lemmas-floating_point_arithmetic.ads:265:19: info: range check proved, in instantiation at spark-lemmas-float_arithmetic.ads:17
-spark-lemmas-floating_point_arithmetic.ads:265:19: info: range check proved, in instantiation at spark-lemmas-long_float_arithmetic.ads:17
-spark-lemmas-floating_point_arithmetic.ads:266:31: info: predicate check proved, in instantiation at spark-lemmas-float_arithmetic.ads:17
-spark-lemmas-floating_point_arithmetic.ads:266:31: info: predicate check proved, in instantiation at spark-lemmas-long_float_arithmetic.ads:17
-spark-lemmas-floating_point_arithmetic.ads:267:19: info: range check proved, in instantiation at spark-lemmas-float_arithmetic.ads:17
-spark-lemmas-floating_point_arithmetic.ads:267:19: info: range check proved, in instantiation at spark-lemmas-long_float_arithmetic.ads:17
-spark-lemmas-floating_point_arithmetic.ads:268:31: info: predicate check proved, in instantiation at spark-lemmas-float_arithmetic.ads:17
-spark-lemmas-floating_point_arithmetic.ads:268:31: info: predicate check proved, in instantiation at spark-lemmas-long_float_arithmetic.ads:17
-spark-lemmas-floating_point_arithmetic.ads:269:44: info: predicate check proved, in instantiation at spark-lemmas-float_arithmetic.ads:17
-spark-lemmas-floating_point_arithmetic.ads:269:44: info: predicate check proved, in instantiation at spark-lemmas-long_float_arithmetic.ads:17
-spark-lemmas-floating_point_arithmetic.ads:270:14: info: postcondition proved, in instantiation at spark-lemmas-float_arithmetic.ads:17
-spark-lemmas-floating_point_arithmetic.ads:270:14: info: postcondition proved, in instantiation at spark-lemmas-long_float_arithmetic.ads:17
-spark-lemmas-floating_point_arithmetic.ads:270:19: info: float overflow check proved, in instantiation at spark-lemmas-float_arithmetic.ads:17
-spark-lemmas-floating_point_arithmetic.ads:270:19: info: float overflow check proved, in instantiation at spark-lemmas-long_float_arithmetic.ads:17
-spark-lemmas-floating_point_arithmetic.ads:270:37: info: overflow check proved, in instantiation at spark-lemmas-float_arithmetic.ads:17
-spark-lemmas-floating_point_arithmetic.ads:270:37: info: overflow check proved, in instantiation at spark-lemmas-long_float_arithmetic.ads:17
-spark-lemmas-floating_point_arithmetic.ads:270:37: info: range check proved, in instantiation at spark-lemmas-float_arithmetic.ads:17
-spark-lemmas-floating_point_arithmetic.ads:270:37: info: range check proved, in instantiation at spark-lemmas-long_float_arithmetic.ads:17
-spark-lemmas-floating_point_arithmetic.ads:272:14: info: terminating annotation on "Lemma_Integer_Sub_Exact" has been proved, subprogram will terminate, in instantiation at spark-lemmas-float_arithmetic.ads:17
-spark-lemmas-floating_point_arithmetic.ads:272:14: info: terminating annotation on "Lemma_Integer_Sub_Exact" has been proved, subprogram will terminate, in instantiation at spark-lemmas-long_float_arithmetic.ads:17
-spark-lemmas-floating_point_arithmetic.ads:276:19: info: range check proved, in instantiation at spark-lemmas-float_arithmetic.ads:17
-spark-lemmas-floating_point_arithmetic.ads:276:19: info: range check proved, in instantiation at spark-lemmas-long_float_arithmetic.ads:17
-spark-lemmas-floating_point_arithmetic.ads:277:31: info: predicate check proved, in instantiation at spark-lemmas-float_arithmetic.ads:17
-spark-lemmas-floating_point_arithmetic.ads:277:31: info: predicate check proved, in instantiation at spark-lemmas-long_float_arithmetic.ads:17
-spark-lemmas-floating_point_arithmetic.ads:278:19: info: range check proved, in instantiation at spark-lemmas-float_arithmetic.ads:17
-spark-lemmas-floating_point_arithmetic.ads:278:19: info: range check proved, in instantiation at spark-lemmas-long_float_arithmetic.ads:17
-spark-lemmas-floating_point_arithmetic.ads:279:31: info: predicate check proved, in instantiation at spark-lemmas-float_arithmetic.ads:17
-spark-lemmas-floating_point_arithmetic.ads:279:31: info: predicate check proved, in instantiation at spark-lemmas-long_float_arithmetic.ads:17
-spark-lemmas-floating_point_arithmetic.ads:280:44: info: predicate check proved, in instantiation at spark-lemmas-float_arithmetic.ads:17
-spark-lemmas-floating_point_arithmetic.ads:280:44: info: predicate check proved, in instantiation at spark-lemmas-long_float_arithmetic.ads:17
-spark-lemmas-floating_point_arithmetic.ads:281:14: info: postcondition proved, in instantiation at spark-lemmas-float_arithmetic.ads:17
-spark-lemmas-floating_point_arithmetic.ads:281:14: info: postcondition proved, in instantiation at spark-lemmas-long_float_arithmetic.ads:17
-spark-lemmas-floating_point_arithmetic.ads:281:19: info: float overflow check proved, in instantiation at spark-lemmas-float_arithmetic.ads:17
-spark-lemmas-floating_point_arithmetic.ads:281:19: info: float overflow check proved, in instantiation at spark-lemmas-long_float_arithmetic.ads:17
-spark-lemmas-floating_point_arithmetic.ads:281:37: info: overflow check proved, in instantiation at spark-lemmas-float_arithmetic.ads:17
-spark-lemmas-floating_point_arithmetic.ads:281:37: info: overflow check proved, in instantiation at spark-lemmas-long_float_arithmetic.ads:17
-spark-lemmas-floating_point_arithmetic.ads:281:37: info: range check proved, in instantiation at spark-lemmas-float_arithmetic.ads:17
-spark-lemmas-floating_point_arithmetic.ads:281:37: info: range check proved, in instantiation at spark-lemmas-long_float_arithmetic.ads:17
-spark-lemmas-floating_point_arithmetic.ads:283:14: info: terminating annotation on "Lemma_Integer_Mul_Exact" has been proved, subprogram will terminate, in instantiation at spark-lemmas-float_arithmetic.ads:17
-spark-lemmas-floating_point_arithmetic.ads:283:14: info: terminating annotation on "Lemma_Integer_Mul_Exact" has been proved, subprogram will terminate, in instantiation at spark-lemmas-long_float_arithmetic.ads:17
-spark-lemmas-floating_point_arithmetic.ads:287:19: info: range check proved, in instantiation at spark-lemmas-float_arithmetic.ads:17
-spark-lemmas-floating_point_arithmetic.ads:287:19: info: range check proved, in instantiation at spark-lemmas-long_float_arithmetic.ads:17
-spark-lemmas-floating_point_arithmetic.ads:288:31: info: predicate check proved, in instantiation at spark-lemmas-float_arithmetic.ads:17
-spark-lemmas-floating_point_arithmetic.ads:288:31: info: predicate check proved, in instantiation at spark-lemmas-long_float_arithmetic.ads:17
-spark-lemmas-floating_point_arithmetic.ads:289:19: info: range check proved, in instantiation at spark-lemmas-float_arithmetic.ads:17
-spark-lemmas-floating_point_arithmetic.ads:289:19: info: range check proved, in instantiation at spark-lemmas-long_float_arithmetic.ads:17
-spark-lemmas-floating_point_arithmetic.ads:290:31: info: predicate check proved, in instantiation at spark-lemmas-float_arithmetic.ads:17
-spark-lemmas-floating_point_arithmetic.ads:290:31: info: predicate check proved, in instantiation at spark-lemmas-long_float_arithmetic.ads:17
-spark-lemmas-floating_point_arithmetic.ads:291:44: info: predicate check proved, in instantiation at spark-lemmas-float_arithmetic.ads:17
-spark-lemmas-floating_point_arithmetic.ads:291:44: info: predicate check proved, in instantiation at spark-lemmas-long_float_arithmetic.ads:17
-spark-lemmas-floating_point_arithmetic.ads:292:14: info: postcondition proved, in instantiation at spark-lemmas-float_arithmetic.ads:17
-spark-lemmas-floating_point_arithmetic.ads:292:14: info: postcondition proved, in instantiation at spark-lemmas-long_float_arithmetic.ads:17
-spark-lemmas-floating_point_arithmetic.ads:292:19: info: float overflow check proved, in instantiation at spark-lemmas-float_arithmetic.ads:17
-spark-lemmas-floating_point_arithmetic.ads:292:19: info: float overflow check proved, in instantiation at spark-lemmas-long_float_arithmetic.ads:17
-spark-lemmas-floating_point_arithmetic.ads:292:37: info: overflow check proved, in instantiation at spark-lemmas-float_arithmetic.ads:17
-spark-lemmas-floating_point_arithmetic.ads:292:37: info: overflow check proved, in instantiation at spark-lemmas-long_float_arithmetic.ads:17
-spark-lemmas-floating_point_arithmetic.ads:292:37: info: range check proved, in instantiation at spark-lemmas-float_arithmetic.ads:17
-spark-lemmas-floating_point_arithmetic.ads:292:37: info: range check proved, in instantiation at spark-lemmas-long_float_arithmetic.ads:17
-spark-lemmas-floating_point_arithmetic.ads:301:14: info: terminating annotation on "Lemma_Rounding_Error_Add" has been proved, subprogram will terminate, in instantiation at spark-lemmas-float_arithmetic.ads:17
-spark-lemmas-floating_point_arithmetic.ads:301:14: info: terminating annotation on "Lemma_Rounding_Error_Add" has been proved, subprogram will terminate, in instantiation at spark-lemmas-long_float_arithmetic.ads:17
-spark-lemmas-floating_point_arithmetic.ads:305:14: info: postcondition proved, in instantiation at spark-lemmas-float_arithmetic.ads:17
-spark-lemmas-floating_point_arithmetic.ads:305:14: info: postcondition proved, in instantiation at spark-lemmas-long_float_arithmetic.ads:17
-spark-lemmas-floating_point_arithmetic.ads:305:30: info: float overflow check proved, in instantiation at spark-lemmas-float_arithmetic.ads:17
-spark-lemmas-floating_point_arithmetic.ads:305:30: info: float overflow check proved, in instantiation at spark-lemmas-long_float_arithmetic.ads:17
-spark-lemmas-floating_point_arithmetic.ads:306:10: info: predicate check proved, in instantiation at spark-lemmas-float_arithmetic.ads:17
-spark-lemmas-floating_point_arithmetic.ads:306:10: info: predicate check proved, in instantiation at spark-lemmas-long_float_arithmetic.ads:17
-spark-lemmas-floating_point_arithmetic.ads:306:54: info: predicate check proved, in instantiation at spark-lemmas-float_arithmetic.ads:17
-spark-lemmas-floating_point_arithmetic.ads:306:54: info: predicate check proved, in instantiation at spark-lemmas-long_float_arithmetic.ads:17
-spark-lemmas-floating_point_arithmetic.ads:308:14: info: terminating annotation on "Lemma_Rounding_Error_Sub" has been proved, subprogram will terminate, in instantiation at spark-lemmas-float_arithmetic.ads:17
-spark-lemmas-floating_point_arithmetic.ads:308:14: info: terminating annotation on "Lemma_Rounding_Error_Sub" has been proved, subprogram will terminate, in instantiation at spark-lemmas-long_float_arithmetic.ads:17
-spark-lemmas-floating_point_arithmetic.ads:312:14: info: postcondition proved, in instantiation at spark-lemmas-float_arithmetic.ads:17
-spark-lemmas-floating_point_arithmetic.ads:312:14: info: postcondition proved, in instantiation at spark-lemmas-long_float_arithmetic.ads:17
-spark-lemmas-floating_point_arithmetic.ads:312:30: info: float overflow check proved, in instantiation at spark-lemmas-float_arithmetic.ads:17
-spark-lemmas-floating_point_arithmetic.ads:312:30: info: float overflow check proved, in instantiation at spark-lemmas-long_float_arithmetic.ads:17
-spark-lemmas-floating_point_arithmetic.ads:313:10: info: predicate check proved, in instantiation at spark-lemmas-float_arithmetic.ads:17
-spark-lemmas-floating_point_arithmetic.ads:313:10: info: predicate check proved, in instantiation at spark-lemmas-long_float_arithmetic.ads:17
-spark-lemmas-floating_point_arithmetic.ads:313:54: info: predicate check proved, in instantiation at spark-lemmas-float_arithmetic.ads:17
-spark-lemmas-floating_point_arithmetic.ads:313:54: info: predicate check proved, in instantiation at spark-lemmas-long_float_arithmetic.ads:17
-spark-lemmas-floating_point_arithmetic.ads:315:14: info: terminating annotation on "Lemma_Rounding_Error_Mul" has been proved, subprogram will terminate, in instantiation at spark-lemmas-float_arithmetic.ads:17
-spark-lemmas-floating_point_arithmetic.ads:315:14: info: terminating annotation on "Lemma_Rounding_Error_Mul" has been proved, subprogram will terminate, in instantiation at spark-lemmas-long_float_arithmetic.ads:17
-spark-lemmas-floating_point_arithmetic.ads:319:14: info: postcondition proved, in instantiation at spark-lemmas-float_arithmetic.ads:17
-spark-lemmas-floating_point_arithmetic.ads:319:14: info: postcondition proved, in instantiation at spark-lemmas-long_float_arithmetic.ads:17
-spark-lemmas-floating_point_arithmetic.ads:319:30: info: float overflow check proved, in instantiation at spark-lemmas-float_arithmetic.ads:17
-spark-lemmas-floating_point_arithmetic.ads:319:30: info: float overflow check proved, in instantiation at spark-lemmas-long_float_arithmetic.ads:17
-spark-lemmas-floating_point_arithmetic.ads:320:10: info: predicate check proved, in instantiation at spark-lemmas-float_arithmetic.ads:17
-spark-lemmas-floating_point_arithmetic.ads:320:10: info: predicate check proved, in instantiation at spark-lemmas-long_float_arithmetic.ads:17
-spark-lemmas-floating_point_arithmetic.ads:320:54: info: predicate check proved, in instantiation at spark-lemmas-float_arithmetic.ads:17
-spark-lemmas-floating_point_arithmetic.ads:320:54: info: predicate check proved, in instantiation at spark-lemmas-long_float_arithmetic.ads:17
-spark-lemmas-floating_point_arithmetic.ads:322:14: info: terminating annotation on "Lemma_Rounding_Error_Div" has been proved, subprogram will terminate, in instantiation at spark-lemmas-float_arithmetic.ads:17
-spark-lemmas-floating_point_arithmetic.ads:322:14: info: terminating annotation on "Lemma_Rounding_Error_Div" has been proved, subprogram will terminate, in instantiation at spark-lemmas-long_float_arithmetic.ads:17
-spark-lemmas-floating_point_arithmetic.ads:327:14: info: postcondition proved, in instantiation at spark-lemmas-float_arithmetic.ads:17
-spark-lemmas-floating_point_arithmetic.ads:327:14: info: postcondition proved, in instantiation at spark-lemmas-long_float_arithmetic.ads:17
-spark-lemmas-floating_point_arithmetic.ads:327:30: info: division check proved, in instantiation at spark-lemmas-float_arithmetic.ads:17
-spark-lemmas-floating_point_arithmetic.ads:327:30: info: division check proved, in instantiation at spark-lemmas-long_float_arithmetic.ads:17
-spark-lemmas-floating_point_arithmetic.ads:327:30: info: float overflow check proved, in instantiation at spark-lemmas-float_arithmetic.ads:17
-spark-lemmas-floating_point_arithmetic.ads:327:30: info: float overflow check proved, in instantiation at spark-lemmas-long_float_arithmetic.ads:17
-spark-lemmas-floating_point_arithmetic.ads:327:53: info: division check proved, in instantiation at spark-lemmas-float_arithmetic.ads:17
-spark-lemmas-floating_point_arithmetic.ads:327:53: info: division check proved, in instantiation at spark-lemmas-long_float_arithmetic.ads:17
-spark-lemmas-floating_point_arithmetic.ads:328:10: info: predicate check proved, in instantiation at spark-lemmas-float_arithmetic.ads:17
-spark-lemmas-floating_point_arithmetic.ads:328:10: info: predicate check proved, in instantiation at spark-lemmas-long_float_arithmetic.ads:17
-spark-lemmas-floating_point_arithmetic.ads:328:37: info: division check proved, in instantiation at spark-lemmas-float_arithmetic.ads:17
-spark-lemmas-floating_point_arithmetic.ads:328:37: info: division check proved, in instantiation at spark-lemmas-long_float_arithmetic.ads:17
-spark-lemmas-floating_point_arithmetic.ads:328:54: info: predicate check proved, in instantiation at spark-lemmas-float_arithmetic.ads:17
-spark-lemmas-floating_point_arithmetic.ads:328:54: info: predicate check proved, in instantiation at spark-lemmas-long_float_arithmetic.ads:17
+spark-lemmas-floating_point_arithmetic.ads:52:14: info: terminating annotation on "Lemma_Add_Is_Monotonic" has been proved, subprogram will terminate, in instantiation at spark-lemmas-float_arithmetic.ads:17
+spark-lemmas-floating_point_arithmetic.ads:52:14: info: terminating annotation on "Lemma_Add_Is_Monotonic" has been proved, subprogram will terminate, in instantiation at spark-lemmas-long_float_arithmetic.ads:17
+spark-lemmas-floating_point_arithmetic.ads:57:08: info: data dependencies proved, in instantiation at spark-lemmas-float_arithmetic.ads:17
+spark-lemmas-floating_point_arithmetic.ads:57:08: info: data dependencies proved, in instantiation at spark-lemmas-long_float_arithmetic.ads:17
+spark-lemmas-floating_point_arithmetic.ads:63:16: info: postcondition proved, in instantiation at spark-lemmas-float_arithmetic.ads:17
+spark-lemmas-floating_point_arithmetic.ads:63:16: info: postcondition proved, in instantiation at spark-lemmas-long_float_arithmetic.ads:17
+spark-lemmas-floating_point_arithmetic.ads:63:21: info: float overflow check proved, in instantiation at spark-lemmas-float_arithmetic.ads:17
+spark-lemmas-floating_point_arithmetic.ads:63:21: info: float overflow check proved, in instantiation at spark-lemmas-long_float_arithmetic.ads:17
+spark-lemmas-floating_point_arithmetic.ads:63:36: info: float overflow check proved, in instantiation at spark-lemmas-float_arithmetic.ads:17
+spark-lemmas-floating_point_arithmetic.ads:63:36: info: float overflow check proved, in instantiation at spark-lemmas-long_float_arithmetic.ads:17
+spark-lemmas-floating_point_arithmetic.ads:65:14: info: terminating annotation on "Lemma_Sub_Is_Monotonic" has been proved, subprogram will terminate, in instantiation at spark-lemmas-float_arithmetic.ads:17
+spark-lemmas-floating_point_arithmetic.ads:65:14: info: terminating annotation on "Lemma_Sub_Is_Monotonic" has been proved, subprogram will terminate, in instantiation at spark-lemmas-long_float_arithmetic.ads:17
+spark-lemmas-floating_point_arithmetic.ads:70:08: info: data dependencies proved, in instantiation at spark-lemmas-float_arithmetic.ads:17
+spark-lemmas-floating_point_arithmetic.ads:70:08: info: data dependencies proved, in instantiation at spark-lemmas-long_float_arithmetic.ads:17
+spark-lemmas-floating_point_arithmetic.ads:76:16: info: postcondition proved, in instantiation at spark-lemmas-float_arithmetic.ads:17
+spark-lemmas-floating_point_arithmetic.ads:76:16: info: postcondition proved, in instantiation at spark-lemmas-long_float_arithmetic.ads:17
+spark-lemmas-floating_point_arithmetic.ads:76:21: info: float overflow check proved, in instantiation at spark-lemmas-float_arithmetic.ads:17
+spark-lemmas-floating_point_arithmetic.ads:76:21: info: float overflow check proved, in instantiation at spark-lemmas-long_float_arithmetic.ads:17
+spark-lemmas-floating_point_arithmetic.ads:76:36: info: float overflow check proved, in instantiation at spark-lemmas-float_arithmetic.ads:17
+spark-lemmas-floating_point_arithmetic.ads:76:36: info: float overflow check proved, in instantiation at spark-lemmas-long_float_arithmetic.ads:17
+spark-lemmas-floating_point_arithmetic.ads:78:14: info: terminating annotation on "Lemma_Mult_Is_Monotonic" has been proved, subprogram will terminate, in instantiation at spark-lemmas-float_arithmetic.ads:17
+spark-lemmas-floating_point_arithmetic.ads:78:14: info: terminating annotation on "Lemma_Mult_Is_Monotonic" has been proved, subprogram will terminate, in instantiation at spark-lemmas-long_float_arithmetic.ads:17
+spark-lemmas-floating_point_arithmetic.ads:83:08: info: data dependencies proved, in instantiation at spark-lemmas-float_arithmetic.ads:17
+spark-lemmas-floating_point_arithmetic.ads:83:08: info: data dependencies proved, in instantiation at spark-lemmas-long_float_arithmetic.ads:17
+spark-lemmas-floating_point_arithmetic.ads:89:16: info: postcondition proved, in instantiation at spark-lemmas-float_arithmetic.ads:17
+spark-lemmas-floating_point_arithmetic.ads:89:16: info: postcondition proved, in instantiation at spark-lemmas-long_float_arithmetic.ads:17
+spark-lemmas-floating_point_arithmetic.ads:89:21: info: float overflow check proved, in instantiation at spark-lemmas-float_arithmetic.ads:17
+spark-lemmas-floating_point_arithmetic.ads:89:21: info: float overflow check proved, in instantiation at spark-lemmas-long_float_arithmetic.ads:17
+spark-lemmas-floating_point_arithmetic.ads:89:36: info: float overflow check proved, in instantiation at spark-lemmas-float_arithmetic.ads:17
+spark-lemmas-floating_point_arithmetic.ads:89:36: info: float overflow check proved, in instantiation at spark-lemmas-long_float_arithmetic.ads:17
+spark-lemmas-floating_point_arithmetic.ads:91:14: info: terminating annotation on "Lemma_Mult_Right_Negative_Is_Monotonic" has been proved, subprogram will terminate, in instantiation at spark-lemmas-float_arithmetic.ads:17
+spark-lemmas-floating_point_arithmetic.ads:91:14: info: terminating annotation on "Lemma_Mult_Right_Negative_Is_Monotonic" has been proved, subprogram will terminate, in instantiation at spark-lemmas-long_float_arithmetic.ads:17
+spark-lemmas-floating_point_arithmetic.ads:96:08: info: data dependencies proved, in instantiation at spark-lemmas-float_arithmetic.ads:17
+spark-lemmas-floating_point_arithmetic.ads:96:08: info: data dependencies proved, in instantiation at spark-lemmas-long_float_arithmetic.ads:17
+spark-lemmas-floating_point_arithmetic.ads:102:16: info: postcondition proved, in instantiation at spark-lemmas-float_arithmetic.ads:17
+spark-lemmas-floating_point_arithmetic.ads:102:16: info: postcondition proved, in instantiation at spark-lemmas-long_float_arithmetic.ads:17
+spark-lemmas-floating_point_arithmetic.ads:102:21: info: float overflow check proved, in instantiation at spark-lemmas-float_arithmetic.ads:17
+spark-lemmas-floating_point_arithmetic.ads:102:21: info: float overflow check proved, in instantiation at spark-lemmas-long_float_arithmetic.ads:17
+spark-lemmas-floating_point_arithmetic.ads:102:36: info: float overflow check proved, in instantiation at spark-lemmas-float_arithmetic.ads:17
+spark-lemmas-floating_point_arithmetic.ads:102:36: info: float overflow check proved, in instantiation at spark-lemmas-long_float_arithmetic.ads:17
+spark-lemmas-floating_point_arithmetic.ads:104:14: info: terminating annotation on "Lemma_Mult_By_Less_Than_One" has been proved, subprogram will terminate, in instantiation at spark-lemmas-float_arithmetic.ads:17
+spark-lemmas-floating_point_arithmetic.ads:104:14: info: terminating annotation on "Lemma_Mult_By_Less_Than_One" has been proved, subprogram will terminate, in instantiation at spark-lemmas-long_float_arithmetic.ads:17
+spark-lemmas-floating_point_arithmetic.ads:108:08: info: data dependencies proved, in instantiation at spark-lemmas-float_arithmetic.ads:17
+spark-lemmas-floating_point_arithmetic.ads:108:08: info: data dependencies proved, in instantiation at spark-lemmas-long_float_arithmetic.ads:17
+spark-lemmas-floating_point_arithmetic.ads:110:16: info: postcondition proved, in instantiation at spark-lemmas-float_arithmetic.ads:17
+spark-lemmas-floating_point_arithmetic.ads:110:16: info: postcondition proved, in instantiation at spark-lemmas-long_float_arithmetic.ads:17
+spark-lemmas-floating_point_arithmetic.ads:110:21: info: float overflow check proved, in instantiation at spark-lemmas-float_arithmetic.ads:17
+spark-lemmas-floating_point_arithmetic.ads:110:21: info: float overflow check proved, in instantiation at spark-lemmas-long_float_arithmetic.ads:17
+spark-lemmas-floating_point_arithmetic.ads:112:14: info: terminating annotation on "Lemma_Div_Is_Monotonic" has been proved, subprogram will terminate, in instantiation at spark-lemmas-float_arithmetic.ads:17
+spark-lemmas-floating_point_arithmetic.ads:112:14: info: terminating annotation on "Lemma_Div_Is_Monotonic" has been proved, subprogram will terminate, in instantiation at spark-lemmas-long_float_arithmetic.ads:17
+spark-lemmas-floating_point_arithmetic.ads:117:08: info: data dependencies proved, in instantiation at spark-lemmas-float_arithmetic.ads:17
+spark-lemmas-floating_point_arithmetic.ads:117:08: info: data dependencies proved, in instantiation at spark-lemmas-long_float_arithmetic.ads:17
+spark-lemmas-floating_point_arithmetic.ads:123:16: info: postcondition proved, in instantiation at spark-lemmas-float_arithmetic.ads:17
+spark-lemmas-floating_point_arithmetic.ads:123:16: info: postcondition proved, in instantiation at spark-lemmas-long_float_arithmetic.ads:17
+spark-lemmas-floating_point_arithmetic.ads:123:21: info: division check proved, in instantiation at spark-lemmas-float_arithmetic.ads:17
+spark-lemmas-floating_point_arithmetic.ads:123:21: info: division check proved, in instantiation at spark-lemmas-long_float_arithmetic.ads:17
+spark-lemmas-floating_point_arithmetic.ads:123:21: info: float overflow check proved, in instantiation at spark-lemmas-float_arithmetic.ads:17
+spark-lemmas-floating_point_arithmetic.ads:123:21: info: float overflow check proved, in instantiation at spark-lemmas-long_float_arithmetic.ads:17
+spark-lemmas-floating_point_arithmetic.ads:123:36: info: division check proved, in instantiation at spark-lemmas-float_arithmetic.ads:17
+spark-lemmas-floating_point_arithmetic.ads:123:36: info: division check proved, in instantiation at spark-lemmas-long_float_arithmetic.ads:17
+spark-lemmas-floating_point_arithmetic.ads:123:36: info: float overflow check proved, in instantiation at spark-lemmas-float_arithmetic.ads:17
+spark-lemmas-floating_point_arithmetic.ads:123:36: info: float overflow check proved, in instantiation at spark-lemmas-long_float_arithmetic.ads:17
+spark-lemmas-floating_point_arithmetic.ads:125:14: info: terminating annotation on "Lemma_Div_Right_Negative_Is_Monotonic" has been proved, subprogram will terminate, in instantiation at spark-lemmas-float_arithmetic.ads:17
+spark-lemmas-floating_point_arithmetic.ads:125:14: info: terminating annotation on "Lemma_Div_Right_Negative_Is_Monotonic" has been proved, subprogram will terminate, in instantiation at spark-lemmas-long_float_arithmetic.ads:17
+spark-lemmas-floating_point_arithmetic.ads:130:08: info: data dependencies proved, in instantiation at spark-lemmas-float_arithmetic.ads:17
+spark-lemmas-floating_point_arithmetic.ads:130:08: info: data dependencies proved, in instantiation at spark-lemmas-long_float_arithmetic.ads:17
+spark-lemmas-floating_point_arithmetic.ads:136:16: info: postcondition proved, in instantiation at spark-lemmas-float_arithmetic.ads:17
+spark-lemmas-floating_point_arithmetic.ads:136:16: info: postcondition proved, in instantiation at spark-lemmas-long_float_arithmetic.ads:17
+spark-lemmas-floating_point_arithmetic.ads:136:21: info: division check proved, in instantiation at spark-lemmas-float_arithmetic.ads:17
+spark-lemmas-floating_point_arithmetic.ads:136:21: info: division check proved, in instantiation at spark-lemmas-long_float_arithmetic.ads:17
+spark-lemmas-floating_point_arithmetic.ads:136:21: info: float overflow check proved, in instantiation at spark-lemmas-float_arithmetic.ads:17
+spark-lemmas-floating_point_arithmetic.ads:136:21: info: float overflow check proved, in instantiation at spark-lemmas-long_float_arithmetic.ads:17
+spark-lemmas-floating_point_arithmetic.ads:136:36: info: division check proved, in instantiation at spark-lemmas-float_arithmetic.ads:17
+spark-lemmas-floating_point_arithmetic.ads:136:36: info: division check proved, in instantiation at spark-lemmas-long_float_arithmetic.ads:17
+spark-lemmas-floating_point_arithmetic.ads:136:36: info: float overflow check proved, in instantiation at spark-lemmas-float_arithmetic.ads:17
+spark-lemmas-floating_point_arithmetic.ads:136:36: info: float overflow check proved, in instantiation at spark-lemmas-long_float_arithmetic.ads:17
+spark-lemmas-floating_point_arithmetic.ads:138:14: info: terminating annotation on "Lemma_Div_Left_Is_Monotonic" has been proved, subprogram will terminate, in instantiation at spark-lemmas-float_arithmetic.ads:17
+spark-lemmas-floating_point_arithmetic.ads:138:14: info: terminating annotation on "Lemma_Div_Left_Is_Monotonic" has been proved, subprogram will terminate, in instantiation at spark-lemmas-long_float_arithmetic.ads:17
+spark-lemmas-floating_point_arithmetic.ads:143:08: info: data dependencies proved, in instantiation at spark-lemmas-float_arithmetic.ads:17
+spark-lemmas-floating_point_arithmetic.ads:143:08: info: data dependencies proved, in instantiation at spark-lemmas-long_float_arithmetic.ads:17
+spark-lemmas-floating_point_arithmetic.ads:151:16: info: postcondition proved, in instantiation at spark-lemmas-float_arithmetic.ads:17
+spark-lemmas-floating_point_arithmetic.ads:151:16: info: postcondition proved, in instantiation at spark-lemmas-long_float_arithmetic.ads:17
+spark-lemmas-floating_point_arithmetic.ads:151:21: info: division check proved, in instantiation at spark-lemmas-float_arithmetic.ads:17
+spark-lemmas-floating_point_arithmetic.ads:151:21: info: division check proved, in instantiation at spark-lemmas-long_float_arithmetic.ads:17
+spark-lemmas-floating_point_arithmetic.ads:151:21: info: float overflow check proved, in instantiation at spark-lemmas-float_arithmetic.ads:17
+spark-lemmas-floating_point_arithmetic.ads:151:21: info: float overflow check proved, in instantiation at spark-lemmas-long_float_arithmetic.ads:17
+spark-lemmas-floating_point_arithmetic.ads:151:36: info: division check proved, in instantiation at spark-lemmas-float_arithmetic.ads:17
+spark-lemmas-floating_point_arithmetic.ads:151:36: info: division check proved, in instantiation at spark-lemmas-long_float_arithmetic.ads:17
+spark-lemmas-floating_point_arithmetic.ads:151:36: info: float overflow check proved, in instantiation at spark-lemmas-float_arithmetic.ads:17
+spark-lemmas-floating_point_arithmetic.ads:151:36: info: float overflow check proved, in instantiation at spark-lemmas-long_float_arithmetic.ads:17
+spark-lemmas-floating_point_arithmetic.ads:204:13: info: implicit terminating annotation on "Is_Integer_64" has been proved, subprogram will terminate, in instantiation at spark-lemmas-float_arithmetic.ads:17
+spark-lemmas-floating_point_arithmetic.ads:204:13: info: implicit terminating annotation on "Is_Integer_64" has been proved, subprogram will terminate, in instantiation at spark-lemmas-long_float_arithmetic.ads:17
+spark-lemmas-floating_point_arithmetic.ads:208:21: info: range check proved, in instantiation at spark-lemmas-float_arithmetic.ads:17
+spark-lemmas-floating_point_arithmetic.ads:208:21: info: range check proved, in instantiation at spark-lemmas-long_float_arithmetic.ads:17
+spark-lemmas-floating_point_arithmetic.ads:208:33: info: range check proved, in instantiation at spark-lemmas-float_arithmetic.ads:17
+spark-lemmas-floating_point_arithmetic.ads:208:33: info: range check proved, in instantiation at spark-lemmas-long_float_arithmetic.ads:17
+spark-lemmas-floating_point_arithmetic.ads:212:13: info: implicit terminating annotation on "Is_Integer_32" has been proved, subprogram will terminate, in instantiation at spark-lemmas-float_arithmetic.ads:17
+spark-lemmas-floating_point_arithmetic.ads:212:13: info: implicit terminating annotation on "Is_Integer_32" has been proved, subprogram will terminate, in instantiation at spark-lemmas-long_float_arithmetic.ads:17
+spark-lemmas-floating_point_arithmetic.ads:216:21: info: range check proved, in instantiation at spark-lemmas-float_arithmetic.ads:17
+spark-lemmas-floating_point_arithmetic.ads:216:21: info: range check proved, in instantiation at spark-lemmas-long_float_arithmetic.ads:17
+spark-lemmas-floating_point_arithmetic.ads:216:33: info: range check proved, in instantiation at spark-lemmas-float_arithmetic.ads:17
+spark-lemmas-floating_point_arithmetic.ads:216:33: info: range check proved, in instantiation at spark-lemmas-long_float_arithmetic.ads:17
+spark-lemmas-floating_point_arithmetic.ads:221:13: info: implicit terminating annotation on "Is_Float" has been proved, subprogram will terminate, in instantiation at spark-lemmas-float_arithmetic.ads:17
+spark-lemmas-floating_point_arithmetic.ads:221:13: info: implicit terminating annotation on "Is_Float" has been proved, subprogram will terminate, in instantiation at spark-lemmas-long_float_arithmetic.ads:17
+spark-lemmas-floating_point_arithmetic.ads:223:38: info: overflow check proved, in instantiation at spark-lemmas-float_arithmetic.ads:17
+spark-lemmas-floating_point_arithmetic.ads:223:38: info: overflow check proved, in instantiation at spark-lemmas-long_float_arithmetic.ads:17
+spark-lemmas-floating_point_arithmetic.ads:225:29: info: range check proved, in instantiation at spark-lemmas-float_arithmetic.ads:17
+spark-lemmas-floating_point_arithmetic.ads:225:29: info: range check proved, in instantiation at spark-lemmas-long_float_arithmetic.ads:17
+spark-lemmas-floating_point_arithmetic.ads:225:33: info: range check proved, in instantiation at spark-lemmas-float_arithmetic.ads:17
+spark-lemmas-floating_point_arithmetic.ads:225:33: info: range check proved, in instantiation at spark-lemmas-long_float_arithmetic.ads:17
+spark-lemmas-floating_point_arithmetic.ads:230:13: info: implicit terminating annotation on "Is_Float" has been proved, subprogram will terminate, in instantiation at spark-lemmas-float_arithmetic.ads:17
+spark-lemmas-floating_point_arithmetic.ads:230:13: info: implicit terminating annotation on "Is_Float" has been proved, subprogram will terminate, in instantiation at spark-lemmas-long_float_arithmetic.ads:17
+spark-lemmas-floating_point_arithmetic.ads:232:38: info: overflow check proved, in instantiation at spark-lemmas-float_arithmetic.ads:17
+spark-lemmas-floating_point_arithmetic.ads:232:38: info: overflow check proved, in instantiation at spark-lemmas-long_float_arithmetic.ads:17
+spark-lemmas-floating_point_arithmetic.ads:234:29: info: range check proved, in instantiation at spark-lemmas-float_arithmetic.ads:17
+spark-lemmas-floating_point_arithmetic.ads:234:29: info: range check proved, in instantiation at spark-lemmas-long_float_arithmetic.ads:17
+spark-lemmas-floating_point_arithmetic.ads:234:33: info: range check proved, in instantiation at spark-lemmas-float_arithmetic.ads:17
+spark-lemmas-floating_point_arithmetic.ads:234:33: info: range check proved, in instantiation at spark-lemmas-long_float_arithmetic.ads:17
+spark-lemmas-floating_point_arithmetic.ads:238:13: info: implicit terminating annotation on "Is_Integer" has been proved, subprogram will terminate, in instantiation at spark-lemmas-float_arithmetic.ads:17
+spark-lemmas-floating_point_arithmetic.ads:238:13: info: implicit terminating annotation on "Is_Integer" has been proved, subprogram will terminate, in instantiation at spark-lemmas-long_float_arithmetic.ads:17
+spark-lemmas-floating_point_arithmetic.ads:245:19: info: range check proved, in instantiation at spark-lemmas-float_arithmetic.ads:17
+spark-lemmas-floating_point_arithmetic.ads:245:19: info: range check proved, in instantiation at spark-lemmas-long_float_arithmetic.ads:17
+spark-lemmas-floating_point_arithmetic.ads:245:31: info: range check proved, in instantiation at spark-lemmas-float_arithmetic.ads:17
+spark-lemmas-floating_point_arithmetic.ads:245:31: info: range check proved, in instantiation at spark-lemmas-long_float_arithmetic.ads:17
+spark-lemmas-floating_point_arithmetic.ads:260:14: info: terminating annotation on "Lemma_Integer_Add_Exact" has been proved, subprogram will terminate, in instantiation at spark-lemmas-float_arithmetic.ads:17
+spark-lemmas-floating_point_arithmetic.ads:260:14: info: terminating annotation on "Lemma_Integer_Add_Exact" has been proved, subprogram will terminate, in instantiation at spark-lemmas-long_float_arithmetic.ads:17
+spark-lemmas-floating_point_arithmetic.ads:264:19: info: range check proved, in instantiation at spark-lemmas-float_arithmetic.ads:17
+spark-lemmas-floating_point_arithmetic.ads:264:19: info: range check proved, in instantiation at spark-lemmas-long_float_arithmetic.ads:17
+spark-lemmas-floating_point_arithmetic.ads:265:31: info: predicate check proved, in instantiation at spark-lemmas-float_arithmetic.ads:17
+spark-lemmas-floating_point_arithmetic.ads:265:31: info: predicate check proved, in instantiation at spark-lemmas-long_float_arithmetic.ads:17
+spark-lemmas-floating_point_arithmetic.ads:266:19: info: range check proved, in instantiation at spark-lemmas-float_arithmetic.ads:17
+spark-lemmas-floating_point_arithmetic.ads:266:19: info: range check proved, in instantiation at spark-lemmas-long_float_arithmetic.ads:17
+spark-lemmas-floating_point_arithmetic.ads:267:31: info: predicate check proved, in instantiation at spark-lemmas-float_arithmetic.ads:17
+spark-lemmas-floating_point_arithmetic.ads:267:31: info: predicate check proved, in instantiation at spark-lemmas-long_float_arithmetic.ads:17
+spark-lemmas-floating_point_arithmetic.ads:268:44: info: predicate check proved, in instantiation at spark-lemmas-float_arithmetic.ads:17
+spark-lemmas-floating_point_arithmetic.ads:268:44: info: predicate check proved, in instantiation at spark-lemmas-long_float_arithmetic.ads:17
+spark-lemmas-floating_point_arithmetic.ads:269:14: info: postcondition proved, in instantiation at spark-lemmas-float_arithmetic.ads:17
+spark-lemmas-floating_point_arithmetic.ads:269:14: info: postcondition proved, in instantiation at spark-lemmas-long_float_arithmetic.ads:17
+spark-lemmas-floating_point_arithmetic.ads:269:19: info: float overflow check proved, in instantiation at spark-lemmas-float_arithmetic.ads:17
+spark-lemmas-floating_point_arithmetic.ads:269:19: info: float overflow check proved, in instantiation at spark-lemmas-long_float_arithmetic.ads:17
+spark-lemmas-floating_point_arithmetic.ads:269:37: info: overflow check proved, in instantiation at spark-lemmas-float_arithmetic.ads:17
+spark-lemmas-floating_point_arithmetic.ads:269:37: info: overflow check proved, in instantiation at spark-lemmas-long_float_arithmetic.ads:17
+spark-lemmas-floating_point_arithmetic.ads:269:37: info: range check proved, in instantiation at spark-lemmas-float_arithmetic.ads:17
+spark-lemmas-floating_point_arithmetic.ads:269:37: info: range check proved, in instantiation at spark-lemmas-long_float_arithmetic.ads:17
+spark-lemmas-floating_point_arithmetic.ads:271:14: info: terminating annotation on "Lemma_Integer_Sub_Exact" has been proved, subprogram will terminate, in instantiation at spark-lemmas-float_arithmetic.ads:17
+spark-lemmas-floating_point_arithmetic.ads:271:14: info: terminating annotation on "Lemma_Integer_Sub_Exact" has been proved, subprogram will terminate, in instantiation at spark-lemmas-long_float_arithmetic.ads:17
+spark-lemmas-floating_point_arithmetic.ads:275:19: info: range check proved, in instantiation at spark-lemmas-float_arithmetic.ads:17
+spark-lemmas-floating_point_arithmetic.ads:275:19: info: range check proved, in instantiation at spark-lemmas-long_float_arithmetic.ads:17
+spark-lemmas-floating_point_arithmetic.ads:276:31: info: predicate check proved, in instantiation at spark-lemmas-float_arithmetic.ads:17
+spark-lemmas-floating_point_arithmetic.ads:276:31: info: predicate check proved, in instantiation at spark-lemmas-long_float_arithmetic.ads:17
+spark-lemmas-floating_point_arithmetic.ads:277:19: info: range check proved, in instantiation at spark-lemmas-float_arithmetic.ads:17
+spark-lemmas-floating_point_arithmetic.ads:277:19: info: range check proved, in instantiation at spark-lemmas-long_float_arithmetic.ads:17
+spark-lemmas-floating_point_arithmetic.ads:278:31: info: predicate check proved, in instantiation at spark-lemmas-float_arithmetic.ads:17
+spark-lemmas-floating_point_arithmetic.ads:278:31: info: predicate check proved, in instantiation at spark-lemmas-long_float_arithmetic.ads:17
+spark-lemmas-floating_point_arithmetic.ads:279:44: info: predicate check proved, in instantiation at spark-lemmas-float_arithmetic.ads:17
+spark-lemmas-floating_point_arithmetic.ads:279:44: info: predicate check proved, in instantiation at spark-lemmas-long_float_arithmetic.ads:17
+spark-lemmas-floating_point_arithmetic.ads:280:14: info: postcondition proved, in instantiation at spark-lemmas-float_arithmetic.ads:17
+spark-lemmas-floating_point_arithmetic.ads:280:14: info: postcondition proved, in instantiation at spark-lemmas-long_float_arithmetic.ads:17
+spark-lemmas-floating_point_arithmetic.ads:280:19: info: float overflow check proved, in instantiation at spark-lemmas-float_arithmetic.ads:17
+spark-lemmas-floating_point_arithmetic.ads:280:19: info: float overflow check proved, in instantiation at spark-lemmas-long_float_arithmetic.ads:17
+spark-lemmas-floating_point_arithmetic.ads:280:37: info: overflow check proved, in instantiation at spark-lemmas-float_arithmetic.ads:17
+spark-lemmas-floating_point_arithmetic.ads:280:37: info: overflow check proved, in instantiation at spark-lemmas-long_float_arithmetic.ads:17
+spark-lemmas-floating_point_arithmetic.ads:280:37: info: range check proved, in instantiation at spark-lemmas-float_arithmetic.ads:17
+spark-lemmas-floating_point_arithmetic.ads:280:37: info: range check proved, in instantiation at spark-lemmas-long_float_arithmetic.ads:17
+spark-lemmas-floating_point_arithmetic.ads:282:14: info: terminating annotation on "Lemma_Integer_Mul_Exact" has been proved, subprogram will terminate, in instantiation at spark-lemmas-float_arithmetic.ads:17
+spark-lemmas-floating_point_arithmetic.ads:282:14: info: terminating annotation on "Lemma_Integer_Mul_Exact" has been proved, subprogram will terminate, in instantiation at spark-lemmas-long_float_arithmetic.ads:17
+spark-lemmas-floating_point_arithmetic.ads:286:19: info: range check proved, in instantiation at spark-lemmas-float_arithmetic.ads:17
+spark-lemmas-floating_point_arithmetic.ads:286:19: info: range check proved, in instantiation at spark-lemmas-long_float_arithmetic.ads:17
+spark-lemmas-floating_point_arithmetic.ads:287:31: info: predicate check proved, in instantiation at spark-lemmas-float_arithmetic.ads:17
+spark-lemmas-floating_point_arithmetic.ads:287:31: info: predicate check proved, in instantiation at spark-lemmas-long_float_arithmetic.ads:17
+spark-lemmas-floating_point_arithmetic.ads:288:19: info: range check proved, in instantiation at spark-lemmas-float_arithmetic.ads:17
+spark-lemmas-floating_point_arithmetic.ads:288:19: info: range check proved, in instantiation at spark-lemmas-long_float_arithmetic.ads:17
+spark-lemmas-floating_point_arithmetic.ads:289:31: info: predicate check proved, in instantiation at spark-lemmas-float_arithmetic.ads:17
+spark-lemmas-floating_point_arithmetic.ads:289:31: info: predicate check proved, in instantiation at spark-lemmas-long_float_arithmetic.ads:17
+spark-lemmas-floating_point_arithmetic.ads:290:44: info: predicate check proved, in instantiation at spark-lemmas-float_arithmetic.ads:17
+spark-lemmas-floating_point_arithmetic.ads:290:44: info: predicate check proved, in instantiation at spark-lemmas-long_float_arithmetic.ads:17
+spark-lemmas-floating_point_arithmetic.ads:291:14: info: postcondition proved, in instantiation at spark-lemmas-float_arithmetic.ads:17
+spark-lemmas-floating_point_arithmetic.ads:291:14: info: postcondition proved, in instantiation at spark-lemmas-long_float_arithmetic.ads:17
+spark-lemmas-floating_point_arithmetic.ads:291:19: info: float overflow check proved, in instantiation at spark-lemmas-float_arithmetic.ads:17
+spark-lemmas-floating_point_arithmetic.ads:291:19: info: float overflow check proved, in instantiation at spark-lemmas-long_float_arithmetic.ads:17
+spark-lemmas-floating_point_arithmetic.ads:291:37: info: overflow check proved, in instantiation at spark-lemmas-float_arithmetic.ads:17
+spark-lemmas-floating_point_arithmetic.ads:291:37: info: overflow check proved, in instantiation at spark-lemmas-long_float_arithmetic.ads:17
+spark-lemmas-floating_point_arithmetic.ads:291:37: info: range check proved, in instantiation at spark-lemmas-float_arithmetic.ads:17
+spark-lemmas-floating_point_arithmetic.ads:291:37: info: range check proved, in instantiation at spark-lemmas-long_float_arithmetic.ads:17
+spark-lemmas-floating_point_arithmetic.ads:300:14: info: terminating annotation on "Lemma_Rounding_Error_Add" has been proved, subprogram will terminate, in instantiation at spark-lemmas-float_arithmetic.ads:17
+spark-lemmas-floating_point_arithmetic.ads:300:14: info: terminating annotation on "Lemma_Rounding_Error_Add" has been proved, subprogram will terminate, in instantiation at spark-lemmas-long_float_arithmetic.ads:17
+spark-lemmas-floating_point_arithmetic.ads:304:14: info: postcondition proved, in instantiation at spark-lemmas-float_arithmetic.ads:17
+spark-lemmas-floating_point_arithmetic.ads:304:14: info: postcondition proved, in instantiation at spark-lemmas-long_float_arithmetic.ads:17
+spark-lemmas-floating_point_arithmetic.ads:304:30: info: float overflow check proved, in instantiation at spark-lemmas-float_arithmetic.ads:17
+spark-lemmas-floating_point_arithmetic.ads:304:30: info: float overflow check proved, in instantiation at spark-lemmas-long_float_arithmetic.ads:17
+spark-lemmas-floating_point_arithmetic.ads:305:10: info: predicate check proved, in instantiation at spark-lemmas-float_arithmetic.ads:17
+spark-lemmas-floating_point_arithmetic.ads:305:10: info: predicate check proved, in instantiation at spark-lemmas-long_float_arithmetic.ads:17
+spark-lemmas-floating_point_arithmetic.ads:305:54: info: predicate check proved, in instantiation at spark-lemmas-float_arithmetic.ads:17
+spark-lemmas-floating_point_arithmetic.ads:305:54: info: predicate check proved, in instantiation at spark-lemmas-long_float_arithmetic.ads:17
+spark-lemmas-floating_point_arithmetic.ads:307:14: info: terminating annotation on "Lemma_Rounding_Error_Sub" has been proved, subprogram will terminate, in instantiation at spark-lemmas-float_arithmetic.ads:17
+spark-lemmas-floating_point_arithmetic.ads:307:14: info: terminating annotation on "Lemma_Rounding_Error_Sub" has been proved, subprogram will terminate, in instantiation at spark-lemmas-long_float_arithmetic.ads:17
+spark-lemmas-floating_point_arithmetic.ads:311:14: info: postcondition proved, in instantiation at spark-lemmas-float_arithmetic.ads:17
+spark-lemmas-floating_point_arithmetic.ads:311:14: info: postcondition proved, in instantiation at spark-lemmas-long_float_arithmetic.ads:17
+spark-lemmas-floating_point_arithmetic.ads:311:30: info: float overflow check proved, in instantiation at spark-lemmas-float_arithmetic.ads:17
+spark-lemmas-floating_point_arithmetic.ads:311:30: info: float overflow check proved, in instantiation at spark-lemmas-long_float_arithmetic.ads:17
+spark-lemmas-floating_point_arithmetic.ads:312:10: info: predicate check proved, in instantiation at spark-lemmas-float_arithmetic.ads:17
+spark-lemmas-floating_point_arithmetic.ads:312:10: info: predicate check proved, in instantiation at spark-lemmas-long_float_arithmetic.ads:17
+spark-lemmas-floating_point_arithmetic.ads:312:54: info: predicate check proved, in instantiation at spark-lemmas-float_arithmetic.ads:17
+spark-lemmas-floating_point_arithmetic.ads:312:54: info: predicate check proved, in instantiation at spark-lemmas-long_float_arithmetic.ads:17
+spark-lemmas-floating_point_arithmetic.ads:314:14: info: terminating annotation on "Lemma_Rounding_Error_Mul" has been proved, subprogram will terminate, in instantiation at spark-lemmas-float_arithmetic.ads:17
+spark-lemmas-floating_point_arithmetic.ads:314:14: info: terminating annotation on "Lemma_Rounding_Error_Mul" has been proved, subprogram will terminate, in instantiation at spark-lemmas-long_float_arithmetic.ads:17
+spark-lemmas-floating_point_arithmetic.ads:318:14: info: postcondition proved, in instantiation at spark-lemmas-float_arithmetic.ads:17
+spark-lemmas-floating_point_arithmetic.ads:318:14: info: postcondition proved, in instantiation at spark-lemmas-long_float_arithmetic.ads:17
+spark-lemmas-floating_point_arithmetic.ads:318:30: info: float overflow check proved, in instantiation at spark-lemmas-float_arithmetic.ads:17
+spark-lemmas-floating_point_arithmetic.ads:318:30: info: float overflow check proved, in instantiation at spark-lemmas-long_float_arithmetic.ads:17
+spark-lemmas-floating_point_arithmetic.ads:319:10: info: predicate check proved, in instantiation at spark-lemmas-float_arithmetic.ads:17
+spark-lemmas-floating_point_arithmetic.ads:319:10: info: predicate check proved, in instantiation at spark-lemmas-long_float_arithmetic.ads:17
+spark-lemmas-floating_point_arithmetic.ads:319:54: info: predicate check proved, in instantiation at spark-lemmas-float_arithmetic.ads:17
+spark-lemmas-floating_point_arithmetic.ads:319:54: info: predicate check proved, in instantiation at spark-lemmas-long_float_arithmetic.ads:17
+spark-lemmas-floating_point_arithmetic.ads:321:14: info: terminating annotation on "Lemma_Rounding_Error_Div" has been proved, subprogram will terminate, in instantiation at spark-lemmas-float_arithmetic.ads:17
+spark-lemmas-floating_point_arithmetic.ads:321:14: info: terminating annotation on "Lemma_Rounding_Error_Div" has been proved, subprogram will terminate, in instantiation at spark-lemmas-long_float_arithmetic.ads:17
+spark-lemmas-floating_point_arithmetic.ads:326:14: info: postcondition proved, in instantiation at spark-lemmas-float_arithmetic.ads:17
+spark-lemmas-floating_point_arithmetic.ads:326:14: info: postcondition proved, in instantiation at spark-lemmas-long_float_arithmetic.ads:17
+spark-lemmas-floating_point_arithmetic.ads:326:30: info: division check proved, in instantiation at spark-lemmas-float_arithmetic.ads:17
+spark-lemmas-floating_point_arithmetic.ads:326:30: info: division check proved, in instantiation at spark-lemmas-long_float_arithmetic.ads:17
+spark-lemmas-floating_point_arithmetic.ads:326:30: info: float overflow check proved, in instantiation at spark-lemmas-float_arithmetic.ads:17
+spark-lemmas-floating_point_arithmetic.ads:326:30: info: float overflow check proved, in instantiation at spark-lemmas-long_float_arithmetic.ads:17
+spark-lemmas-floating_point_arithmetic.ads:326:53: info: division check proved, in instantiation at spark-lemmas-float_arithmetic.ads:17
+spark-lemmas-floating_point_arithmetic.ads:326:53: info: division check proved, in instantiation at spark-lemmas-long_float_arithmetic.ads:17
+spark-lemmas-floating_point_arithmetic.ads:327:10: info: predicate check proved, in instantiation at spark-lemmas-float_arithmetic.ads:17
+spark-lemmas-floating_point_arithmetic.ads:327:10: info: predicate check proved, in instantiation at spark-lemmas-long_float_arithmetic.ads:17
+spark-lemmas-floating_point_arithmetic.ads:327:37: info: division check proved, in instantiation at spark-lemmas-float_arithmetic.ads:17
+spark-lemmas-floating_point_arithmetic.ads:327:37: info: division check proved, in instantiation at spark-lemmas-long_float_arithmetic.ads:17
+spark-lemmas-floating_point_arithmetic.ads:327:54: info: predicate check proved, in instantiation at spark-lemmas-float_arithmetic.ads:17
+spark-lemmas-floating_point_arithmetic.ads:327:54: info: predicate check proved, in instantiation at spark-lemmas-long_float_arithmetic.ads:17
 spark-lemmas-long_float_arithmetic.ads:22:22: info: predicate check proved
 spark-lemmas-long_float_arithmetic.ads:23:22: info: predicate check proved
 spark-lemmas-long_float_arithmetic.ads:24:22: info: predicate check proved

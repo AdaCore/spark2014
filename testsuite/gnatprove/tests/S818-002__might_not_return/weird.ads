@@ -1,19 +1,14 @@
 package Weird is
 
    procedure P (B : Boolean) with
-     Annotate => (GNATprove, Always_Return),
-     Annotate => (GNATprove, Might_Not_Return);
-   --  Having both Terminating and Might_Not_Return doesn't make sense
+     Always_Terminates => False;
 
    procedure Q (B : Boolean) with
-     Annotate => (GNATprove, Might_Not_Return),
-     Annotate => (GNATprove, Always_Return);
-   --  Just like above, but in different order
+     Always_Terminates => False;
 
    procedure R (B : Boolean) with
-     Annotate => (GNATprove, Always_Return),
+     Always_Terminates,
      No_Return;
-   --  Terminating and No_Return is incompatible as well (just like
-   --  Might_Not_Return and No_Return, but we already have a test for this).
+   --  Terminating and No_Return is are not incompatible
 
 end Weird;

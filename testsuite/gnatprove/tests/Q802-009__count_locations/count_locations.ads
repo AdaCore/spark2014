@@ -13,7 +13,6 @@ is
       ((if Sel(From) then 1 else 0) + (if From < Index_Type'Last then Partial_Count_Selected_Locations (Sel, From + 1) else 0))
    with Ghost,
         Post => Partial_Count_Selected_Locations'Result <= Index_Type'Last - From + 1;
-   pragma Annotate (GNATprove, Always_Return, Partial_Count_Selected_Locations);
 
    function Count_Selected_Locations (Sel : Selected_Locations) return Sum_Type is
       (Partial_Count_Selected_Locations (Sel, Index_Type'First))

@@ -1,4 +1,4 @@
-procedure Main with SPARK_Mode, Annotate => (GNATprove, Always_Return) is
+procedure Main with SPARK_Mode, Always_Terminates is
    package Par is
       type T is tagged null record;
       function Init return T is (null record);

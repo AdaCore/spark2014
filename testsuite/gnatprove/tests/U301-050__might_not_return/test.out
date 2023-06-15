@@ -1,3 +1,4 @@
-test_might_not_return.adb:7:07: error: call to possibly nonreturning procedure outside a (possibly) nonreturning procedure
-test_might_not_return.adb:7:07: error: consider annotating caller "Caller" with pragma Annotate (GNATprove, Might_Not_Return)
-gnatprove: error during generation of Global contracts
+test_might_not_return.adb:5:04: warning: analyzing unreferenced procedure "Caller"
+test_might_not_return.adb:5:14: warning: subprogram "Caller" has no effect
+test_might_not_return.adb:7:07: warning: assuming "P" has no effect on global items
+test_might_not_return.adb:7:07: warning: no Global contract available for "P"

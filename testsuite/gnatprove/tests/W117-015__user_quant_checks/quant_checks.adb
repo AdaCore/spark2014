@@ -16,7 +16,7 @@ procedure Quant_checks with SPARK_Mode is
         (I /= 0)
         with Pre => Has_Element (C, I);
    end Fine;
-   
+
    package With_Contains is
       type Container is null record
         with Iterable => (First       => First,
@@ -85,9 +85,9 @@ procedure Quant_checks with SPARK_Mode is
                           Element     => Element);
       type Cursor is range 0 .. 2;
       function Unknown (I : Integer) return Boolean
-        with Import, Global => null, Annotate => (GNATprove, Always_Return);
+        with Import, Global => null;
       function Has_Element (X : Container; I : Cursor) return Boolean
-        with Import, Global => null, Annotate => (GNATprove, Always_Return);
+        with Import, Global => null;
       function First (X : Container) return Cursor is (0) --@PRECONDITION:FAIL
         with Pre =>
           Has_Element (X, 0)

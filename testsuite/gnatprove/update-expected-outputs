@@ -1,9 +1,12 @@
 #!/usr/bin/env python3
 
 import argparse
+from e3.gaia.api import GAIA
 from e3.testsuite.report.rewriting import BaseBaselineRewriter, RewritingError
 from e3.testsuite.utils import ColorConfig
 import os.path
+import tarfile
+import tempfile
 
 descr = """This script updates the outputs from a previous run of the
 testsuite."""
@@ -58,16 +61,29 @@ class BaselineRewriter(BaseBaselineRewriter):
         return os.path.join(testdir, "test.out")
 
 
+def get_single_subdir(d):
+    entry = os.listdir(d)[0]
+    return os.path.join(d, entry)
+
+
+def download_from_gaia(gaia_id):
+    g = GAIA()
+    r = g.request("GET", f"event/attachment/{gaia_id}/tests_log")
+    with tempfile.NamedTemporaryFile("wb", suffix=".tgz", delete=False) as f:
+        for chunk in r:
+            f.write(chunk)
+        name = f.name
+    tmpdir = tempfile.mkdtemp()
+    with tarfile.open(name, mode="r:gz") as tar:
+        tar.extractall(tmpdir)
+    return get_single_subdir(tmpdir)
+
+
 def main():
     args = parse_options()
     if args.gaia_id:
-        try:
-            from remote_artifacts import Gaia
-        except ImportError:
-            print(missing_package_msg)
-            exit(1)
-        g = Gaia()
-        outputdirs = [g.download_test_results(args.gaia_id)]
+        tmpdir = download_from_gaia(args.gaia_id)
+        outputdirs = [tmpdir]
     elif args.gitlab_id:
         try:
             from remote_artifacts import Gitlab, GitLabProjectDescription

@@ -982,7 +982,7 @@ These settings will speed up |GNATprove|:
 On Linux and Mac-OS, |GNATprove| needs to create a Unix domain socket file.
 This might be a problem if |GNATprove| attempts to create such a file in a
 directory that is a shared folder or on a network file system like NFS, which
-does not support such folders. To minimize changes for this to occur,
+does not support such folders. To minimize chances for this to occur,
 |GNATprove| determines the folder to create that special file as follows:
 
 * if the environment variable ``TMPDIR`` is set, and the corresponding directory

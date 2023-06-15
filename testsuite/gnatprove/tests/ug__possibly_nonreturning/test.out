@@ -1,6 +1,12 @@
 
-possibly_nonreturning.adb:14:07: error: call to possibly nonreturning procedure outside a (possibly) nonreturning procedure
+possibly_nonreturning.adb:8:10: warning: no Global contract available for "Always_Exit"
+    8 |         Always_Exit;
+      |         ^~~~~~~~~~~
+  assuming "Always_Exit" has no effect on global items
+possibly_nonreturning.adb:8:10: info: conditional call termination proved
+
+possibly_nonreturning.adb:14:07: medium: call might not terminate
    14 |      Conditional_Exit (True);
       |      ^~~~~~~~~~~~~~~~~~~~~~
-  consider annotating caller "Regular" with pragma Annotate (GNATprove, Might_Not_Return)
-gnatprove: error during generation of Global contracts
+  reason for check: procedure "Regular" has an Always_Terminates aspect
+possibly_nonreturning.ads:14:14: info: terminating annotation on "Regular" has been proved, subprogram will terminate

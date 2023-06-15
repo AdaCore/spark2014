@@ -4,23 +4,23 @@ is
    type Stack is private;
 
    function Is_Empty(S : Stack) return Boolean with
-     Global   => null,
-     Annotate => (GNATprove, Always_Return);
+     Global => null;
+
    function Is_Full(S : Stack) return Boolean with
-     Global   => null,
-     Annotate => (GNATprove, Always_Return);
+     Global => null;
+
 
    procedure Clear(S : out Stack)
      with Depends  => (S => null),
-          Annotate => (GNATprove, Always_Return);
+          Always_Terminates;
 
    procedure Push(S : in out Stack; X : in Integer)
      with Depends  => (S =>+ X),
-          Annotate => (GNATprove, Always_Return);
+          Always_Terminates;
 
    procedure Pop(S : in out Stack; X : out Integer)
      with Depends  => ((S, X) => S),
-          Annotate => (GNATprove, Always_Return);
+          Always_Terminates;
 
 private
    Stack_Size : constant := 100;

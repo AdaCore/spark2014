@@ -1,5 +1,5 @@
 package Ext with SPARK_Mode,
-  Annotate => (GNATprove, Always_Return)
+  Always_Terminates
 is
 
    function Equivalent (X, Y : Integer) return Boolean with

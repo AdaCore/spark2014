@@ -5,12 +5,12 @@ is
    procedure Init
      with Global   => (Output => State),
           Depends  => (State => null),
-          Annotate => (GNATprove, Always_Return);
+          Always_Terminates;
 
    procedure Toggle
      with Global   => (In_Out => State),
           Depends  => (State => State),
-          Annotate => (GNATprove, Always_Return);
+          Always_Terminates;
 
    procedure Explode
      with Global => (Output => State),

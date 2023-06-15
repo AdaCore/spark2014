@@ -460,6 +460,14 @@ package body SPARK_Definition.Annotate is
             & " Always_Return shall not raise exceptions",
             E);
          return;
+      elsif Get_Termination_Condition (E) not in
+        (Kind => Unspecified) | (Static, True)
+      then
+         Error_Msg_N
+           ("subprogram annotated with the " & Aspect_Or_Pragma
+            & " Always_Return shall have an Always_Terminates aspect of True",
+            E);
+         return;
       else
          Check_Annotate_Placement (E, Prag, "Always_Return", Ok);
          if not Ok then
@@ -1306,6 +1314,21 @@ package body SPARK_Definition.Annotate is
                & " Higher_Order_Specialization shall be ghost",
                E);
             return;
+         elsif Has_Exceptional_Contract (E) then
+            Error_Msg_N
+              ("procedure annotated with the " & Aspect_Or_Pragma
+               & " Higher_Order_Specialization shall not raise exceptions",
+               E);
+            return;
+         elsif Get_Termination_Condition (E) not in
+           (Kind => Unspecified) | (Static, True)
+         then
+            Error_Msg_N
+              ("procedure annotated with the " & Aspect_Or_Pragma
+               & " Higher_Order_Specialization shall have an Always_Terminates"
+               & " aspect of True",
+               E);
+            return;
          end if;
 
          --  It shall not have mutable parameters
@@ -1641,11 +1664,12 @@ package body SPARK_Definition.Annotate is
          then
             Value := Right_Opnd (Value);
 
-         --  Or the equality operator has been rewritten into a function call
+         --  Or a call to a user defined equality function
 
          elsif Nkind (Value) = N_Function_Call
-           and then Nkind (Original_Node (Value)) = N_Op_Eq
-           and then Is_Attribute_Result (Left_Opnd (Original_Node (Value)))
+           and then (Is_User_Defined_Equality (Get_Called_Entity (Value))
+                     or else Nkind (Original_Node (Value)) = N_Op_Eq)
+           and then Is_Attribute_Result (First_Actual (Value))
          then
             Value := Next_Actual (First_Actual (Value));
 
@@ -2766,7 +2790,14 @@ package body SPARK_Definition.Annotate is
                  and then Ekind (Unit) = E_Package
                  and then Has_Always_Return_Annotation (Unit))
         or else (Present (Gen_Unit)
-                 and then Has_Always_Return_Annotation (Gen_Unit));
+                 and then Has_Always_Return_Annotation (Gen_Unit))
+
+        --  Simulate Always_Return annotation for flow analysis
+
+        or else (Ekind (E) = E_Package
+                 and then Present (Get_Pragma (E, Pragma_Always_Terminates)))
+        or else (Ekind (E) in E_Entry | E_Procedure
+                 and then Get_Termination_Condition (E) = (Static, True));
    end Has_Always_Return_Annotation;
 
    ----------------------------------
@@ -2801,7 +2832,7 @@ package body SPARK_Definition.Annotate is
    function Has_Implicit_Always_Return_Annotation
      (E : Entity_Id) return Boolean
    is
-     (Ekind (E) = E_Function
+     (Ekind (E) in E_Function | E_Package
         or else Has_Automatic_Instantiation_Annotation (E));
 
    -------------------------------
@@ -2818,7 +2849,16 @@ package body SPARK_Definition.Annotate is
 
    function Has_Might_Not_Return_Annotation (E : Entity_Id) return Boolean is
      (Ekind (E) in E_Procedure | E_Generic_Procedure
-      and then Might_Not_Return_Annotations.Contains (E));
+      and then (Might_Not_Return_Annotations.Contains (E)
+
+      --  Simulate Might_Not_Return annotation for flow analysis
+
+      or else
+        (declare
+           Term : constant Termination_Condition :=
+              Get_Termination_Condition (E);
+         begin
+           Term.Kind /= Unspecified and then Term /= (Static, True))));
 
    -----------------------------------
    -- Has_No_Wrap_Around_Annotation --

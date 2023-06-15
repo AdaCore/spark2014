@@ -1,7 +1,7 @@
 with SPARK.Containers.Formal.Hashed_Sets;
 with Ada.Containers; use Ada.Containers;
 
-package Term with Annotate => (GNATprove, Always_Return) is
+package Term with Always_Terminates is
 
    type T is new Integer;
 

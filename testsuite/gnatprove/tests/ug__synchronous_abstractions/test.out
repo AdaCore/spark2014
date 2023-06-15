@@ -5,7 +5,7 @@ synchronous_abstractions.adb:8:16: info: implicit terminating annotation on "Rea
 synchronous_abstractions.adb:22:07: warning: no returning annotation available for "Suspend_Until_True"
    22 |      Suspend_Until_True (S);
       |      ^~~~~~~~~~~~~~~~~~~~~
-  assuming "Suspend_Until_True" always returns
+  assuming "Suspend_Until_True" always terminates
 
 synchronous_abstractions.adb:27:07: warning: initialization of "VV" has no effect
    27 |      VV : Natural := V;

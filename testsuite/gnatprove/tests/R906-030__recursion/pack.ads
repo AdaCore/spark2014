@@ -7,7 +7,6 @@ package Pack is
      (if M'Length = 0 then 0
       else Sum (M (M'First .. M'Last - 1)) + M (M'Last))
        with Post => Sum'Result <= 100 * M'Length;
-   pragma Annotate (GNATprove, Always_Return, Sum);
 
    procedure truncate (M : in out My_Arr; S : Natural) with
      Post => Sum (M) <= S;

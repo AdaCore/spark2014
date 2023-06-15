@@ -16,7 +16,7 @@ is
      (if X = null then 0
       elsif Length (X.Next) = Natural'Last then Natural'Last
       else Length (X.Next) + 1)
-   with Annotate => (GNATprove, Always_Return);
+   with Subprogram_Variant => (Structural => X);
 
    procedure Wrong (X : in out List) with
      Pre => Length (X) = 3

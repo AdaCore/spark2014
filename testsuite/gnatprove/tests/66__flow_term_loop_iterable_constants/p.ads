@@ -1,4 +1,4 @@
-package P with SPARK_Mode, Annotate => (GNATprove, Always_Return) is
+package P with SPARK_Mode, Always_Terminates is
    procedure Formal_Maps;
 
    procedure Functional_Sets;

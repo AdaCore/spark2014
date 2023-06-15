@@ -1,0 +1,6 @@
+project binary_search_no_loopinv is
+
+   package Prove is
+      for Proof_Switches ("Ada") use ("--counterexamples=off");
+   end Prove;
+end binary_search_no_loopinv;

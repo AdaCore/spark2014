@@ -26,7 +26,6 @@
 with Ada.Characters.Latin_1;      use Ada.Characters.Latin_1;
 with Ada.Containers.Hashed_Maps;
 with Ada.Text_IO;
-with Aspects;                     use Aspects;
 with Common_Iterators;            use Common_Iterators;
 with Errout;                      use Errout;
 with Flow_Dependency_Maps;        use Flow_Dependency_Maps;
@@ -2547,15 +2546,6 @@ package body SPARK_Util is
 
       return Params;
    end Get_Specialized_Parameters;
-
-   -------------------------
-   -- Has_Address_Or_Name --
-   -------------------------
-
-   function Has_Address_Or_Name (O : Object_Kind_Id) return Boolean is
-     (Present (Address_Clause (O))
-      or else Has_Aspect (O, Aspect_External_Name)
-      or else Has_Aspect (O, Aspect_Link_Name));
 
    ------------------------------
    -- Has_Exceptional_Contract --

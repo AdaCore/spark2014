@@ -122,19 +122,19 @@ procedure Illegal_Errors with SPARK_Mode is
          is (C /= 2);
 
          function C12 (X : Boolean_Container) return Boolean_Container2
-           with Import, Global => null, Annotate => (GNATprove, Always_Return);
+           with Import, Global => null;
          function Element (X : Boolean_Container; C : Boolean_Cursor)
                            return Boolean
          is (C /= 0);
          pragma Annotate (GNATprove, Iterable_For_Proof, "model", C12);
          function C23 (X : Boolean_Container2) return Boolean_Container3
-           with Import, Global => null, Annotate => (GNATprove, Always_Return);
+           with Import, Global => null;
          function Element (X : Boolean_Container2; C : Boolean_Cursor)
                            return Boolean
          is (C /= 0);
          pragma Annotate (GNATprove, Iterable_For_Proof, "model", C23);
          function C31 (X : Boolean_Container3) return Boolean_Container
-           with Import, Global => null, Annotate => (GNATprove, Always_Return);
+           with Import, Global => null;
          function Element (X : Boolean_Container3; C : Boolean_Cursor)
                            return Boolean
          is (C /= 0);

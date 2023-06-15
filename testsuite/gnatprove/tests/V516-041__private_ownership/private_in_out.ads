@@ -1,6 +1,6 @@
 package Private_In_Out with
   SPARK_Mode,
-  Annotate => (GNATprove, Always_Return)
+  Always_Terminates
 is
    type File_Descriptor is private with
      Default_Initial_Condition => not Is_Open (File_Descriptor),

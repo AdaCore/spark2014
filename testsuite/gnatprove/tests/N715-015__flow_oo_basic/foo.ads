@@ -4,8 +4,8 @@ is
    type Root_T is tagged null record;
 
    function Hash (Obj : Root_T) return Natural with
-     Global   => null,
-     Annotate => (GNATprove, Always_Return);
+     Global => null;
+
 
    --------------------------
 
@@ -15,8 +15,8 @@ is
 
    overriding function Hash (Obj : Widget_T) return Natural;
    procedure Zero_Widget (Obj : out Widget_T) with
-     Global   => null,
-     Annotate => (GNATprove, Always_Return);
+     Global => null,
+     Always_Terminates;
 
    --------------------------
 
@@ -45,8 +45,8 @@ is
    procedure Modify_It (X : in out Misc_Private_T;
                         N : in     Integer)
    with
-     Global   => null,
-     Annotate => (GNATprove, Always_Return);
+     Global => null,
+     Always_Terminates;
 
 private
 

@@ -6,7 +6,3 @@ stacks_14-monitored_14.ads:9:31: medium: incorrect dependency "null => S"
 stacks_14-monitored_14.ads:13:11: info: flow dependencies proved
 stacks_14-monitored_14.ads:15:13: info: implicit terminating annotation on "Top_Identity" has been proved, subprogram will terminate
 stacks_14-monitored_14.ads:16:13: info: implicit terminating annotation on "Next_Identity" has been proved, subprogram will terminate
-stacks_14.ads:8:06: warning: Always_Return annotation is useless
-stacks_14.ads:8:06: warning: function "Is_Empty" has implicit Always_Return annotation
-stacks_14.ads:11:06: warning: Always_Return annotation is useless
-stacks_14.ads:11:06: warning: function "Is_Full" has implicit Always_Return annotation

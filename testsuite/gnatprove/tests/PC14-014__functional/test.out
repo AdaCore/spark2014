@@ -996,8 +996,6 @@ use_vectors.adb:98:07: medium: precondition might fail, cannot prove Length (Con
 use_vectors.adb:98:18: info: range check proved
 use_vectors.adb:99:07: medium: precondition might fail, cannot prove Length (Container) < Last_Count
 use_vectors.adb:99:18: info: range check proved
-use_vectors.ads:9:07: warning: Always_Return annotation is useless
-use_vectors.ads:9:07: warning: function "Id" has implicit Always_Return annotation
 use_vectors.ads:16:36: info: range check proved
 use_vectors.ads:17:12: info: range check proved
 use_vectors.ads:18:35: info: range check proved

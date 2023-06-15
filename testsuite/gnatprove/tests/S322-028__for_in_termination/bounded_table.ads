@@ -3,9 +3,9 @@ generic
    Null_Elem : Elem_Type;
    Max       : Positive;
 package Bounded_Table
-with Abstract_State => null
+  with Abstract_State => null,
+  Always_Terminates
 is
-   pragma Annotate (GNATprove, Always_Return, Bounded_Table);
 
    type Cursor_Type is private;
 

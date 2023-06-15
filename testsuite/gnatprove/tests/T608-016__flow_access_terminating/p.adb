@@ -1,5 +1,5 @@
 procedure Test (CB : not null access procedure)
-  with Annotate => (GNATprove, Always_Return)
+  with Always_Terminates
 is
 begin
    CB.all;

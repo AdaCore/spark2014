@@ -1,7 +1,6 @@
-bad_spec.ads:9:04: error: aspect Annotate Might_Not_Return must apply to a procedure
+bad_spec.ads:7:06: error: aspect "Always_Terminates" cannot apply to generic function
+bad_spec.ads:9:04: error: aspect "Always_Terminates" cannot apply to function
 bad_spec.ads:9:04: error: instantiation error at line 7
-bad_spec.ads:18:04: error: instantiation error at line 14
-bad_spec.ads:18:04: error: procedure with aspect Annotate Might_Not_Return must not also be marked with No_Return
 gnatprove: error during generation of Global contracts
 bad_spec_prag.ads:5:04: error: wrong number of arguments in pragma Annotate (GNATprove, Might_Not_Return, ...), expected 3
 bad_spec_prag.ads:9:04: error: pragma Annotate Might_Not_Return must be in aspect form for generic subprogram
@@ -19,16 +18,7 @@ bad.ads:5:13: high: all paths in "Call_Jump_Fun" raise exceptions or do not term
 bad.ads:9:38: medium: exceptional case might fail, in instantiation at bad.adb:22 [possible fix: subprogram at line 8 should mention B in a precondition]
 bad.ads:10:06: info: data dependencies proved, in instantiation at bad.adb:22
 bad.ads:11:06: warning: postcondition does not check the outcome of calling "Call_Jump_Gen"
-weird_inst.adb:4:04: error: call to possibly nonreturning procedure outside a (possibly) nonreturning procedure
-weird_inst.adb:4:04: error: consider annotating caller "PG_Inst" with pragma Annotate (GNATprove, Might_Not_Return)
-weird_inst.adb:4:04: error: instantiation error at weird.adb:10
-weird_inst.adb:4:04: error: instantiation error at weird.ads:6
-weird_inst.adb:4:04: error: procedure with aspect Annotate Might_Not_Return must not also be marked with Always_Return
-weird_inst.adb:5:04: error: instantiation error at weird.ads:12
-weird_inst.adb:5:04: error: procedure with aspect Annotate Always_Return must not also be marked with Might_Not_Return
-weird_inst.adb:6:04: error: instantiation error at weird.ads:17
-weird_inst.adb:6:04: error: procedure with aspect Annotate Always_Return must not also be marked with No_Return
-gnatprove: error during generation of Global contracts
+weird_inst.adb:6:14: info: terminating annotation on "RG_Inst" has been proved, subprogram will terminate
 pack.adb:11:10: high: precondition might fail, in instantiation at pack.adb:15
 pack.adb:11:10: medium: unexpected exception might be raised, in instantiation at pack.adb:15 [possible explanation: No_Return procedures have an implicit exceptional contract]
 pack.adb:27:22: info: assertion proved (CVC5: 1 VC)

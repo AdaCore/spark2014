@@ -1,11 +1,10 @@
 traversal_funcs.adb:11:13: info: implicit terminating annotation on "At_End_Borrow" has been proved, subprogram will terminate
 traversal_funcs.adb:11:86: info: dynamic accessibility check proved (Trivial)
 traversal_funcs.adb:15:13: info: implicit function contract might not be available on recursive calls
-traversal_funcs.adb:16:07: medium: implicit terminating annotation on "Length" could be incorrect, subprogram is recursive [possible fix: annotate "Length" with a Subprogram_Variant aspect]
+traversal_funcs.adb:15:13: info: implicit terminating annotation on "Length" has been proved, subprogram will terminate
+traversal_funcs.adb:17:43: info: subprogram variant proved (Trivial)
 traversal_funcs.adb:17:52: info: pointer dereference check proved (CVC5: 1 VC)
 traversal_funcs.adb:17:57: info: overflow check proved (CVC5: 2 VC)
-traversal_funcs.adb:19:06: warning: Always_Return annotation is useless
-traversal_funcs.adb:19:06: warning: function "Length" has implicit Always_Return annotation
 traversal_funcs.adb:21:13: info: implicit terminating annotation on "Next" has been proved, subprogram will terminate
 traversal_funcs.adb:24:18: info: contract case proved (CVC5: 2 VC; Trivial: 1 VC)
 traversal_funcs.adb:25:18: info: contract case proved (CVC5: 2 VC; Trivial: 2 VC)

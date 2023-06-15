@@ -15,7 +15,7 @@ is
      Ghost,
      Import,
      Global => null,
-     Annotate => (GNATprove, Always_Return),
+
      Annotate => (GNATprove, Ownership, "Is_Reclaimed");
 
    procedure Invalid_Connection_Id_Is_Detached (Coid : Connection_Id_T)

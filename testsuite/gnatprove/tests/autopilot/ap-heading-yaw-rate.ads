@@ -3,7 +3,7 @@ with Degrees, Instruments;
 private package AP.Heading.Yaw.Rate
   with Abstract_State => (Yaw_History with Part_Of => AP.Heading.Yaw.State),
        Initializes    => Yaw_History,
-       Annotate       => (GNATprove, Always_Return)
+       Always_Terminates
 is
    procedure Calc_Yawrate(Yaw             : in  Instruments.Slipangle;
    			  Present_Yawrate : out Degrees.Degreespersec)

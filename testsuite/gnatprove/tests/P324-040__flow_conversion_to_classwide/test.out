@@ -1,4 +1,4 @@
-dummy.adb:5:04: warning: assuming "Foo" always returns
+dummy.adb:5:04: warning: assuming "Foo" always terminates
 dummy.adb:5:04: warning: no returning annotation available for "Foo"
-q.adb:5:04: warning: assuming "Foo" always returns
+q.adb:5:04: warning: assuming "Foo" always terminates
 q.adb:5:04: warning: no returning annotation available for "Foo"

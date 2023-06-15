@@ -34,15 +34,11 @@ ho_sets.adb:37:30: info: precondition proved (CVC5: 1 VC)
 ho_sets.ads:8:13: info: function contract might not be available on recursive calls
 ho_sets.ads:10:28: info: function contract feasibility proved (Trivial: 1 VC)
 ho_sets.ads:14:42: info: range check proved (CVC5: 1 VC)
-ho_sets.ads:15:06: warning: Always_Return annotation is useless
-ho_sets.ads:15:06: warning: function "Count" has implicit Always_Return annotation
 ho_sets.ads:16:14: info: postcondition proved (CVC5: 1 VC)
 ho_sets.ads:16:19: info: predicate check proved (Trivial: 1 VC)
 ho_sets.ads:16:30: info: predicate check proved (Trivial: 1 VC)
 ho_sets.ads:18:14: info: implicit terminating annotation on "Lemma_Count_Eq" has been proved, subprogram will terminate
 ho_sets.ads:20:30: info: function contract feasibility proved (Trivial: 1 VC)
-ho_sets.ads:24:06: warning: Always_Return annotation is useless
-ho_sets.ads:24:06: warning: automatically instantiated lemma "Lemma_Count_Eq" has implicit Always_Return annotation
 ho_sets.ads:25:42: info: range check proved (CVC5: 1 VC)
 ho_sets.ads:27:14: info: postcondition proved (CVC5: 1 VC)
 ho_sets.ads:27:14: info: predicate check proved (Trivial: 1 VC)
@@ -50,8 +46,6 @@ ho_sets.ads:27:27: info: null exclusion check proved (CVC5: 1 VC)
 ho_sets.ads:27:35: info: predicate check proved (Trivial: 1 VC)
 ho_sets.ads:27:49: info: null exclusion check proved (CVC5: 1 VC)
 ho_sets.ads:32:28: info: function contract feasibility proved (Trivial: 1 VC)
-ho_sets.ads:36:06: warning: Always_Return annotation is useless
-ho_sets.ads:36:06: warning: automatically instantiated lemma "Lemma_Count_Remove" has implicit Always_Return annotation
 ho_sets.ads:37:42: info: predicate check proved (Trivial: 1 VC)
 ho_sets.ads:37:61: medium: range check might fail [reason for check: expression of type Big_Integer must be non-negative]
 ho_sets.ads:37:63: info: predicate check proved (Trivial: 1 VC)

@@ -1,7 +1,7 @@
 with Ada.Text_IO;
 with Bounded_Table;
 
-procedure Repro_Main with Annotate => (GNATprove, Always_Return)
+procedure Repro_Main with Always_Terminates
 is
 
 

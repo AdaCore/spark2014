@@ -19,15 +19,15 @@ perm.ads:6:13: info: implicit terminating annotation on "Remove_Last" has been p
 perm.ads:7:07: info: range check proved (CVC5: 4 VC)
 perm.ads:7:28: info: overflow check proved (CVC5: 2 VC)
 perm.ads:10:13: info: function contract might not be available on recursive calls
-perm.ads:11:07: info: justified that implicit terminating annotation on "Occ_Def" could be incorrect, subprogram is recursive
+perm.ads:10:13: info: implicit terminating annotation on "Occ_Def" has been proved, subprogram will terminate
 perm.ads:12:17: info: index check proved (CVC5: 2 VC)
+perm.ads:12:33: info: subprogram variant proved (CVC5: 1 VC)
 perm.ads:12:42: info: precondition proved (CVC5: 1 VC)
 perm.ads:12:62: info: range check proved (CVC5: 2 VC)
+perm.ads:13:12: info: subprogram variant proved (CVC5: 1 VC)
 perm.ads:13:21: info: precondition proved (CVC5: 1 VC)
 perm.ads:14:17: info: postcondition proved (CVC5: 1 VC)
 perm.ads:14:36: info: range check proved (CVC5: 2 VC)
-perm.ads:15:04: warning: Always_Return annotation is useless
-perm.ads:15:04: warning: function "Occ_Def" has implicit Always_Return annotation
 perm.ads:18:13: info: implicit terminating annotation on "Occ" has been proved, subprogram will terminate
 perm.ads:20:14: info: postcondition proved (CVC5: 1 VC)
 perm.ads:20:29: info: range check proved (CVC5: 2 VC)

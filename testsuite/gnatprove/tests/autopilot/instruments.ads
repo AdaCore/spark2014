@@ -7,7 +7,7 @@ package Instruments
                           (Pitch with External => Async_Writers),
                           (Rate_Of_Climb with External => Async_Writers),
                           (Slip with External => Async_Writers)),
-       Annotate       => (GNATprove, Always_Return)
+       Always_Terminates
 is
    type Feet is new Integer range 0 .. 50_000;
    type Bankangle is new Short_Short_Integer range -45 .. 45;

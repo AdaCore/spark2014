@@ -38,20 +38,20 @@ is
 
    procedure Push (X : in Integer)
      with Global   => (In_Out => State),
-          Annotate => (GNATprove, Always_Return),
+          Always_Terminates,
           Pre      => not Is_Full,
           Post     => Count = Count'Old + 1 and Count <= Max_Stack_Size and
                       Stack_Entry (Count) = X;
 
    procedure Pop (X : out Integer)
      with Global   => (In_Out => State),
-          Annotate => (GNATprove, Always_Return),
+          Always_Terminates,
           Pre      => not Is_Empty,
           Post     => Count = Count'Old - 1;
 
    procedure Swap2
      with Global   => (In_Out => State),
-          Annotate => (GNATprove, Always_Return),
+          Always_Terminates,
           Pre      => Count >= 2,
           Post     => Count = Count'Old and
                     Stack_Entry (Count) = Stack_Entry (Count - 1)'Old and

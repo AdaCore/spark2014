@@ -1,7 +1,7 @@
 package Stack with
   SPARK_Mode,
   Pure,
-  Annotate => (GNATprove, Always_Return)
+  Always_Terminates
 is
 
    type Length_T is range 0..100;

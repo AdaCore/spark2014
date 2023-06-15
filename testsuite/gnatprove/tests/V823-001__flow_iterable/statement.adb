@@ -9,8 +9,8 @@ procedure Statement with SPARK_Mode is
                Next        => Next,
                Has_Element => Has_Index);
 
-      function Length (M : Vector) return Big_Natural
-      with Annotate => (GNATprove, Always_Return);
+      function Length (M : Vector) return Big_Natural;
+
 
       function First (M : Vector) return Big_Natural;
       function Next (M : Vector; I : Big_Natural) return Big_Natural;

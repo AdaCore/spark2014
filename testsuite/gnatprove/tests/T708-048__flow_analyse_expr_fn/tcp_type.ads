@@ -22,6 +22,6 @@ is
       (Queue : access constant Tcp_Syn_Queue_Item) return Boolean is
       (Queue = null or else
          (Tcp_Syn_Queue_Item_Model (Queue.Next)))
-        with Ghost, Annotate => (GNATprove, Always_Return),
+        with Ghost,
         Subprogram_Variant => (Structural => Queue);
 end Tcp_Type;

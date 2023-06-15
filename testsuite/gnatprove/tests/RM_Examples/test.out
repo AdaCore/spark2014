@@ -104,8 +104,6 @@ initialization_and_elaboration-private_child.ads:1:48: info: use pragma Elaborat
 initialization_and_elaboration-private_child.ads:4:08: info: flow dependencies proved
 initialization_and_elaboration-private_child.ads:5:08: medium: initial condition might fail
 initialization_and_elaboration-private_child.ads:11:13: info: implicit function contract might not be available on calls from enclosing unit
-initialization_and_elaboration-private_child.ads:13:11: warning: Always_Return annotation is useless
-initialization_and_elaboration-private_child.ads:13:11: warning: function "Get_Something" has implicit Always_Return annotation
 initialization_and_elaboration.ads:6:08: info: flow dependencies proved
 initialization_and_elaboration.ads:8:08: medium: initial condition might fail
 initialization_and_elaboration.ads:13:11: info: data dependencies proved
@@ -232,8 +230,6 @@ reverse_ord.adb:20:30: info: index check proved (CVC5: 4 VC)
 reverse_ord.adb:20:51: info: index check proved (CVC5: 4 VC)
 reverse_ord.adb:24:21: info: index check proved (CVC5: 4 VC)
 reverse_ord.adb:24:40: info: index check proved (CVC5: 4 VC)
-simple_abstract_state.ads:7:11: warning: Always_Return annotation is useless
-simple_abstract_state.ads:7:11: warning: function "Is_Ready" has implicit Always_Return annotation
 stacks_1.adb:16:27: info: refined post proved (CVC5: 2 VC)
 stacks_1.adb:17:48: info: index check proved (CVC5: 2 VC)
 stacks_1.adb:17:48: info: range check proved (CVC5: 2 VC)

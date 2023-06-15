@@ -2852,10 +2852,10 @@ package body SPARK_Definition is
          Mark (Address_Expr);
       end if;
 
-      --  For objects, address clauses and external names can introduce
-      --  aliases. We need additional treatment here.
+      --  For objects, address clauses can introduce aliases. We need
+      --  additional treatment here.
 
-      if not Is_Object (E) or else not Has_Address_Or_Name (E) then
+      if not Is_Object (E) or else not Present (Address) then
          return;
       end if;
 
@@ -2865,10 +2865,9 @@ package body SPARK_Definition is
          Supported_Alias : constant Boolean := Present (Aliased_Object);
          E_Is_Constant   : constant Boolean := Is_Constant_In_SPARK (E);
       begin
-         --  If E has an external name or we cannot determine which object the
-         --  address of E references, the address clause will basically be
-         --  ignored. We emit some warnings to help users locate the cases
-         --  where review is needed.
+         --  If we cannot determine which object the address of E references,
+         --  the address clause will basically be ignored. We emit some
+         --  warnings to help users locate the cases where review is needed.
 
          if not Supported_Alias then
 
@@ -4187,13 +4186,11 @@ package body SPARK_Definition is
                     ("\\assuming & has no effect on global items", N, E);
                end if;
 
-               if not Has_Any_Returning_Annotation (E)
-                 and then not Has_Implicit_Always_Return_Annotation (E)
-               then
+               if not Has_Any_Returning_Annotation (E) then
                   Error_Msg_NE
                     (Warning_Message (Warn_Assumed_Always_Return), N, E);
                   Error_Msg_NE
-                    ("\\assuming & always returns", N, E);
+                    ("\\assuming & always terminates", N, E);
                end if;
             end if;
          end;
@@ -4219,27 +4216,6 @@ package body SPARK_Definition is
               ("\\the value returned by a call to & is assumed to "
                & "have no aliases", N, E);
          end if;
-      end if;
-
-      --  A possibly nonreturning procedure should only be called from
-      --  another (possibly) nonreturning procedure.
-
-      if Has_Might_Not_Return_Annotation (E) then
-         declare
-            Caller : constant Unit_Kind_Id :=
-              Unique_Defining_Entity (Enclosing_Declaration (N));
-         begin
-            if not Is_Possibly_Nonreturning_Procedure (Caller) then
-               Error_Msg_N ("call to possibly nonreturning procedure outside "
-                            & "a (possibly) nonreturning procedure", N);
-               if Ekind (Caller) = E_Procedure then
-                  Error_Msg_NE
-                    ("\consider annotating caller & with pragma Annotate "
-                     & "('G'N'A'Tprove, Might_Not_Return)",
-                     N, Caller);
-               end if;
-            end if;
-         end;
       end if;
 
       --  Check that the parameter of a function annotated with At_End_Borrow
@@ -4964,7 +4940,6 @@ package body SPARK_Definition is
                              | Formal_Kind;
       --  E is a subprogram or a loop parameter, or a discriminant
 
-      procedure Mark_Number_Entity     (E : Named_Kind_Id);
       procedure Mark_Object_Entity     (E : Constant_Or_Variable_Kind_Id);
 
       procedure Mark_Subprogram_Entity (E : Callable_Kind_Id)
@@ -4988,24 +4963,6 @@ package body SPARK_Definition is
       --  Concurrent types must be inserted into Entity_List before operations
       --  defined in their scope, because these operations take the type as an
       --  implicit argument.
-
-      ------------------------
-      -- Mark_Number_Entity --
-      ------------------------
-
-      procedure Mark_Number_Entity (E : Named_Kind_Id) is
-         N    : constant N_Number_Declaration_Id := Parent (E);
-         Expr : constant N_Subexpr_Id            := Expression (N);
-         T    : constant Type_Kind_Id            := Etype (E);
-      begin
-         if not Retysp_In_SPARK (T) then
-            Mark_Violation (N, From => T);
-         end if;
-
-         if Present (Expr) then
-            Mark (Expr);
-         end if;
-      end Mark_Number_Entity;
 
       ------------------------
       -- Mark_Object_Entity --
@@ -5614,6 +5571,22 @@ package body SPARK_Definition is
 
                      Next (Variant);
                   end loop;
+               end;
+            end if;
+
+            Prag := Get_Pragma (E, Pragma_Always_Terminates);
+            if Present (Prag) then
+               declare
+                  Assoc : constant List_Id :=
+                    Pragma_Argument_Associations (Prag);
+                  pragma Assert (No (Assoc) or else List_Length (Assoc) = 1);
+                  Cond  : constant Node_Id :=
+                    (if No (Assoc) then Empty
+                     else Expression (First (Assoc)));
+               begin
+                  if Present (Cond) then
+                     Mark (Cond);
+                  end if;
                end;
             end if;
          end Mark_Subprogram_Contracts;
@@ -7662,7 +7635,7 @@ package body SPARK_Definition is
               E_Loop_Parameter |
               Formal_Kind      => Mark_Parameter_Entity (E);
 
-         when Named_Kind       => Mark_Number_Entity (E);
+         when Named_Kind       => null;
 
          --  The identifier of a loop is used to generate the needed
          --  exception declarations in the translation phase.
@@ -8784,6 +8757,7 @@ package body SPARK_Definition is
             | Pragma_Ada_2005
             | Pragma_Ada_2012
             | Pragma_Ada_2022
+            | Pragma_Always_Terminates
             | Pragma_Annotate
             | Pragma_Assume_No_Invalid_Values
             --  Pragma_Check is handled specially above

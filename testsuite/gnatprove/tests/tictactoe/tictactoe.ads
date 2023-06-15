@@ -38,7 +38,7 @@ is
    procedure Player_Play
      with Pre => not Is_Full and Won = Empty,
      Post => Num_Free_Slots = Num_Free_Slots'Old - 1,
-     Annotate => (GNATprove, Might_Not_Return);
+     Always_Terminates => False;
 
    procedure Computer_Play
      with Pre => not Is_Full and Won = Empty,

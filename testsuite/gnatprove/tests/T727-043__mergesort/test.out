@@ -222,8 +222,6 @@ recursive_mergesort.ads:80:27: info: subprogram variant proved
 recursive_mergesort.ads:80:27: warning: call to "Occurrences" within its postcondition will lead to infinite recursion
 recursive_mergesort.ads:80:48: info: range check proved
 recursive_mergesort.ads:80:57: info: index check proved
-recursive_mergesort.ads:82:06: warning: Always_Return annotation is useless
-recursive_mergesort.ads:82:06: warning: function "Occurrences" has implicit Always_Return annotation
 recursive_mergesort.ads:85:13: info: implicit terminating annotation on "Is_Sorted" has been proved, subprogram will terminate
 recursive_mergesort.ads:88:32: info: index check proved
 recursive_mergesort.ads:88:40: info: index check proved

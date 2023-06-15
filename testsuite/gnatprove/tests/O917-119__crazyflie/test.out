@@ -2,7 +2,7 @@ crtp_pack.adb:15:07: info: initialization of "Packet" proved
 crtp_pack.adb:23:25: warning: assuming "Link_Send_Packet" has no effect on global items
 crtp_pack.adb:23:25: warning: no Global contract available for "Link_Send_Packet"
 crtp_pack.adb:28:07: info: initialization of "Packet" proved
-crtp_pack.adb:32:10: warning: assuming "Link_Receive_Packet_Blocking" always returns
+crtp_pack.adb:32:10: warning: assuming "Link_Receive_Packet_Blocking" always terminates
 crtp_pack.adb:32:10: warning: assuming "Link_Receive_Packet_Blocking" has no effect on global items
 crtp_pack.adb:32:10: warning: no Global contract available for "Link_Receive_Packet_Blocking"
 crtp_pack.adb:32:10: warning: no returning annotation available for "Link_Receive_Packet_Blocking"

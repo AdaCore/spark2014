@@ -1,4 +1,2 @@
 unsound.adb:8:07: medium: implicit terminating annotation on "Find_False" could be incorrect, loop might be nonterminating [possible fix: add loop variant in the loop body]
 unsound.adb:9:33: info: unrolling loop
-unsound.ads:10:07: warning: Always_Return annotation is useless
-unsound.ads:10:07: warning: function "Find_False" has implicit Always_Return annotation

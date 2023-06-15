@@ -64,14 +64,14 @@ rflx-tlv-message.ads:5:01: info: in instantiation at rflx-tlv-generic_message.ad
 rflx-tlv-message.ads:5:01: info: in instantiation at rflx-tlv-generic_message.adb:423
 rflx-tlv-message.ads:5:01: info: in instantiation at rflx-tlv-generic_message.adb:423
 rflx-tlv-message.ads:5:01: info: in instantiation at rflx-tlv-generic_message.adb:423
-rflx-tlv-message.ads:5:01: warning: assuming "Left_Shift_Limit" always returns
-rflx-tlv-message.ads:5:01: warning: assuming "Left_Shift_Limit" always returns
-rflx-tlv-message.ads:5:01: warning: assuming "Left_Shift_Limit" always returns
-rflx-tlv-message.ads:5:01: warning: assuming "Left_Shift_Limit" always returns
-rflx-tlv-message.ads:5:01: warning: assuming "Left_Shift_Limit" always returns
-rflx-tlv-message.ads:5:01: warning: assuming "Left_Shift_Limit" always returns
-rflx-tlv-message.ads:5:01: warning: assuming "Left_Shift_Limit" always returns
-rflx-tlv-message.ads:5:01: warning: assuming "Left_Shift_Limit" always returns
+rflx-tlv-message.ads:5:01: warning: assuming "Left_Shift_Limit" always terminates
+rflx-tlv-message.ads:5:01: warning: assuming "Left_Shift_Limit" always terminates
+rflx-tlv-message.ads:5:01: warning: assuming "Left_Shift_Limit" always terminates
+rflx-tlv-message.ads:5:01: warning: assuming "Left_Shift_Limit" always terminates
+rflx-tlv-message.ads:5:01: warning: assuming "Left_Shift_Limit" always terminates
+rflx-tlv-message.ads:5:01: warning: assuming "Left_Shift_Limit" always terminates
+rflx-tlv-message.ads:5:01: warning: assuming "Left_Shift_Limit" always terminates
+rflx-tlv-message.ads:5:01: warning: assuming "Left_Shift_Limit" always terminates
 rflx-tlv-message.ads:5:01: warning: assuming "Left_Shift_Limit" has no effect on global items
 rflx-tlv-message.ads:5:01: warning: assuming "Left_Shift_Limit" has no effect on global items
 rflx-tlv-message.ads:5:01: warning: assuming "Left_Shift_Limit" has no effect on global items
@@ -80,34 +80,34 @@ rflx-tlv-message.ads:5:01: warning: assuming "Left_Shift_Limit" has no effect on
 rflx-tlv-message.ads:5:01: warning: assuming "Left_Shift_Limit" has no effect on global items
 rflx-tlv-message.ads:5:01: warning: assuming "Left_Shift_Limit" has no effect on global items
 rflx-tlv-message.ads:5:01: warning: assuming "Left_Shift_Limit" has no effect on global items
-rflx-tlv-message.ads:5:01: warning: assuming "Mult_Ge_0" always returns
-rflx-tlv-message.ads:5:01: warning: assuming "Mult_Ge_0" always returns
-rflx-tlv-message.ads:5:01: warning: assuming "Mult_Ge_0" always returns
-rflx-tlv-message.ads:5:01: warning: assuming "Mult_Ge_0" always returns
-rflx-tlv-message.ads:5:01: warning: assuming "Mult_Ge_0" always returns
-rflx-tlv-message.ads:5:01: warning: assuming "Mult_Ge_0" always returns
+rflx-tlv-message.ads:5:01: warning: assuming "Mult_Ge_0" always terminates
+rflx-tlv-message.ads:5:01: warning: assuming "Mult_Ge_0" always terminates
+rflx-tlv-message.ads:5:01: warning: assuming "Mult_Ge_0" always terminates
+rflx-tlv-message.ads:5:01: warning: assuming "Mult_Ge_0" always terminates
+rflx-tlv-message.ads:5:01: warning: assuming "Mult_Ge_0" always terminates
+rflx-tlv-message.ads:5:01: warning: assuming "Mult_Ge_0" always terminates
 rflx-tlv-message.ads:5:01: warning: assuming "Mult_Ge_0" has no effect on global items
 rflx-tlv-message.ads:5:01: warning: assuming "Mult_Ge_0" has no effect on global items
 rflx-tlv-message.ads:5:01: warning: assuming "Mult_Ge_0" has no effect on global items
 rflx-tlv-message.ads:5:01: warning: assuming "Mult_Ge_0" has no effect on global items
 rflx-tlv-message.ads:5:01: warning: assuming "Mult_Ge_0" has no effect on global items
 rflx-tlv-message.ads:5:01: warning: assuming "Mult_Ge_0" has no effect on global items
-rflx-tlv-message.ads:5:01: warning: assuming "Mult_Limit" always returns
-rflx-tlv-message.ads:5:01: warning: assuming "Mult_Limit" always returns
-rflx-tlv-message.ads:5:01: warning: assuming "Mult_Limit" always returns
-rflx-tlv-message.ads:5:01: warning: assuming "Mult_Limit" always returns
-rflx-tlv-message.ads:5:01: warning: assuming "Mult_Limit" always returns
-rflx-tlv-message.ads:5:01: warning: assuming "Mult_Limit" always returns
+rflx-tlv-message.ads:5:01: warning: assuming "Mult_Limit" always terminates
+rflx-tlv-message.ads:5:01: warning: assuming "Mult_Limit" always terminates
+rflx-tlv-message.ads:5:01: warning: assuming "Mult_Limit" always terminates
+rflx-tlv-message.ads:5:01: warning: assuming "Mult_Limit" always terminates
+rflx-tlv-message.ads:5:01: warning: assuming "Mult_Limit" always terminates
+rflx-tlv-message.ads:5:01: warning: assuming "Mult_Limit" always terminates
 rflx-tlv-message.ads:5:01: warning: assuming "Mult_Limit" has no effect on global items
 rflx-tlv-message.ads:5:01: warning: assuming "Mult_Limit" has no effect on global items
 rflx-tlv-message.ads:5:01: warning: assuming "Mult_Limit" has no effect on global items
 rflx-tlv-message.ads:5:01: warning: assuming "Mult_Limit" has no effect on global items
 rflx-tlv-message.ads:5:01: warning: assuming "Mult_Limit" has no effect on global items
 rflx-tlv-message.ads:5:01: warning: assuming "Mult_Limit" has no effect on global items
-rflx-tlv-message.ads:5:01: warning: assuming "Right_Shift_Limit" always returns
-rflx-tlv-message.ads:5:01: warning: assuming "Right_Shift_Limit" always returns
-rflx-tlv-message.ads:5:01: warning: assuming "Right_Shift_Limit" always returns
-rflx-tlv-message.ads:5:01: warning: assuming "Right_Shift_Limit" always returns
+rflx-tlv-message.ads:5:01: warning: assuming "Right_Shift_Limit" always terminates
+rflx-tlv-message.ads:5:01: warning: assuming "Right_Shift_Limit" always terminates
+rflx-tlv-message.ads:5:01: warning: assuming "Right_Shift_Limit" always terminates
+rflx-tlv-message.ads:5:01: warning: assuming "Right_Shift_Limit" always terminates
 rflx-tlv-message.ads:5:01: warning: assuming "Right_Shift_Limit" has no effect on global items
 rflx-tlv-message.ads:5:01: warning: assuming "Right_Shift_Limit" has no effect on global items
 rflx-tlv-message.ads:5:01: warning: assuming "Right_Shift_Limit" has no effect on global items

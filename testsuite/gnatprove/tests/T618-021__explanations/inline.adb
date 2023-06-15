@@ -9,9 +9,9 @@ procedure Inline with SPARK_Mode is
    --  while B is reported as terminating, because there the annotation on A
    --  is trusted.
 
-   procedure A with Annotate => (GNATprove, Always_Return);
+   procedure A with Always_Terminates;
 
-   procedure B with Annotate => (GNATprove, Always_Return) is
+   procedure B with Always_Terminates is
    begin
       if True then A; end if;
    end B;

@@ -2887,6 +2887,16 @@ package body Why.Atree.Modules is
                   Domain => EW_Prog,
                   Typ    => EW_Unit_Type));
          end if;
+
+         if Get_Termination_Condition (E).Kind = Dynamic then
+            Insert_Symbol
+              (E, WNE_Check_Termination_Condition,
+               New_Identifier
+                 (Symb   => NID (Name & "__check_termination_condition"),
+                  Module => M_Ax,
+                  Domain => EW_Prog,
+                  Typ    => EW_Unit_Type));
+         end if;
       end Insert_Subprogram_Symbols;
 
       -------------------------

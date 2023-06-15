@@ -1509,6 +1509,70 @@ Exceptional_Cases aspects are ignored for execution.
    the verification conditions introduced when raising unexpected exceptions,
    there is always an exceptional case covering the propagated exception.]
 
+Always_Terminates Aspects
+~~~~~~~~~~~~~~~~~~~~~~~~~
+
+The aspect Always_Terminates may be specified for procedures and protected
+entries; it can be used to provide a condition under which the procedure or
+protected entry shall necessarily complete (either return normally or raise an
+exception). This aspect may also be specified on packages to provide a default
+for all procedures declared in the package or in one of its nested packages. The
+Always_Terminates aspect is specified with an aspect_specification where the
+aspect_mark is Always_Terminates and the optional aspect_definition is a
+boolean expression. An Always_Terminates aspect with no aspect_definition is
+equivalent to an Always_Terminates aspect with an aspect_definition of True.
+[An execution which does not complete can for exemple run forever, exit the
+whole program using GNAT.OS_Lib.OS_Exit, or transfer the control to another
+execution in a non-standard way.]
+
+.. container:: heading
+
+   Name Resolution Rules
+
+The boolean expression in the aspect_definition should be resolved as a
+precondition.
+
+.. container:: heading
+
+   Static Semantics
+
+1. If the aspect Always_Terminates is specified for a package, it shall not have
+   an aspect definition.
+
+2. If the aspect Always_Terminates for a package specification or a procedure P
+   is not otherwise specified and P is declared directly inside a package
+   (explicitly or implicitly) annotated with an aspect Always_Terminates then
+   an Always_Terminates aspect of True is implicitly specified for P.
+
+
+.. container:: heading
+
+   Dynamic Semantics
+
+Always_Terminates aspects are ignored for execution.
+
+.. container:: heading
+
+   Legality Rules
+
+3. The Always_Terminates aspect may only be specified for the initial
+   declaration of a procedure (which may be a declaration, a body or a body
+   stub), of a protected entry, or of a package specification.
+
+.. container:: heading
+
+   Verification Rules
+
+4. A verification condition is introduced on loops and calls
+   occuring inside functions or package elaborations to make sure that they
+   necessarily complete.
+
+5. A verification condition is introduced on loops and calls occuring inside
+   protected entries and procedures annotated with an Always_Terminates
+   aspect to make sure that they necessarily complete in cases where the
+   boolean condition mentioned in the Always_Terminates aspect evaluates to
+   True on entry of the protected entry or procedure.
+
 Formal Parameter Modes
 ----------------------
 

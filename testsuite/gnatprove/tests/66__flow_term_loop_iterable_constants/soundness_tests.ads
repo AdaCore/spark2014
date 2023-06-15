@@ -1,4 +1,4 @@
-package Soundness_Tests with SPARK_Mode, Annotate => (GNATprove, Always_Return) is
+package Soundness_Tests with SPARK_Mode, Always_Terminates is
 
    procedure Selected_Component;
 
