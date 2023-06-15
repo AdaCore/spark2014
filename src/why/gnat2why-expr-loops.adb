@@ -501,19 +501,18 @@ package body Gnat2Why.Expr.Loops is
          function Enclosing_Block_Stmt is new
            First_Parent_With_Property (Is_Loop_Or_Block);
 
-         Scop : Node_Id := Stmt;
-         Res  : W_Statement_Sequence_Id := Void_Sequence;
+         Scop   : Node_Id := Stmt;
+         Scopes : Node_Lists.List;
 
       begin
          loop
             Scop := Enclosing_Block_Stmt (Scop);
             exit when Nkind (Scop) = N_Loop_Statement;
-            Append (Res, Havoc_Borrowed_From_Block (Scop));
-            Append (Res, Check_No_Memory_Leaks_At_End_Of_Scope
-                    (Declarations (Scop)));
+            Scopes.Append (Scop);
          end loop;
 
-         return +Res;
+         return +Havoc_Borrowed_And_Check_No_Leaks_From_Scopes
+           (Scopes, Local_CFG.Starting_Vertex (Stmt));
       end Havoc_Borrowed_And_Check_No_Leaks_On_Exit;
 
       Exc_Name   : constant W_Name_Id :=
