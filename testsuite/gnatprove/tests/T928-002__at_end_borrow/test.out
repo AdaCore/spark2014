@@ -229,12 +229,8 @@ test_borrow.adb:189:38: info: pointer dereference check proved (CVC5: 1 VC)
 test_borrow.adb:190:29: info: pointer dereference check proved (CVC5: 1 VC)
 test_borrow.adb:190:33: info: index check proved (CVC5: 2 VC)
 test_borrow.adb:190:38: info: pointer dereference check proved (CVC5: 1 VC)
-test_borrow.adb:191:33: info: in reconstructed value at the end of the borrow at test_borrow.adb:191
 test_borrow.adb:191:33: info: pointer dereference check proved (CVC5: 1 VC)
-test_borrow.adb:191:37: info: in reconstructed value at the end of the borrow at test_borrow.adb:191
 test_borrow.adb:191:37: info: index check proved (CVC5: 2 VC)
-test_borrow.adb:191:39: info: in reconstructed value at the end of the borrow at test_borrow.adb:191
-test_borrow.adb:191:39: info: null exclusion check proved (CVC5: 1 VC)
 test_borrow.adb:193:25: info: assertion proved (CVC5: 2 VC)
 test_borrow.adb:193:26: info: pointer dereference check proved (CVC5: 1 VC)
 test_borrow.adb:193:44: info: pointer dereference check proved (CVC5: 1 VC)
