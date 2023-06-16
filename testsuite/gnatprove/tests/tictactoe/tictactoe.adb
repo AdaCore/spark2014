@@ -22,12 +22,12 @@ is
    begin
       loop
          declare
-            S : String(1..1);
-            Last : Natural;
+            S     : String(1..1) with Relaxed_Initialization;
+            Last  : Natural;
             Found : Boolean := True;
          begin
-         Get_Line (S, Last);
-         Skip_Line;
+            Get_Line (S, Last);
+            Skip_Line;
             if Last >= 1 then
                declare
                   C : Character := S (S'First);

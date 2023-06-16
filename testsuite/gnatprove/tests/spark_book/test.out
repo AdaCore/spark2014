@@ -809,23 +809,27 @@ palindrome.adb:6:13: info: add a contract to analyze it separately from calling 
 palindrome.adb:6:13: info: implicit terminating annotation on "Is_Palindrome" has been proved, subprogram will terminate
 palindrome.adb:6:13: info: local subprogram "Is_Palindrome" only analyzed in the context of calls
 palindrome.adb:7:07: info: initialization of "Left_Index" proved
-palindrome.adb:7:07: info: initialization of "Left_Index" proved, in call inlined at palindrome.adb:35
+palindrome.adb:7:07: info: initialization of "Left_Index" proved, in call inlined at palindrome.adb:36
 palindrome.adb:8:07: info: initialization of "Right_Index" proved
-palindrome.adb:8:07: info: initialization of "Right_Index" proved, in call inlined at palindrome.adb:35
-palindrome.adb:11:22: info: range check proved (CVC5: 4 VC), in call inlined at palindrome.adb:35
-palindrome.adb:11:26: info: range check proved (CVC5: 2 VC), in call inlined at palindrome.adb:35
-palindrome.adb:13:31: info: loop variant proved (CVC5: 1 VC), in call inlined at palindrome.adb:35
-palindrome.adb:15:20: info: range check proved (CVC5: 4 VC), in call inlined at palindrome.adb:35
-palindrome.adb:15:26: medium: array index check might fail, in call inlined at palindrome.adb:35 [reason for check: value must be a valid index into the array]
-palindrome.adb:15:42: info: range check proved (CVC5: 4 VC), in call inlined at palindrome.adb:35
-palindrome.adb:15:48: medium: array index check might fail, in call inlined at palindrome.adb:35 [reason for check: value must be a valid index into the array]
-palindrome.adb:16:36: info: overflow check proved (CVC5: 2 VC), in call inlined at palindrome.adb:35
-palindrome.adb:17:37: info: range check proved (CVC5: 2 VC), in call inlined at palindrome.adb:35
+palindrome.adb:8:07: info: initialization of "Right_Index" proved, in call inlined at palindrome.adb:36
+palindrome.adb:11:22: info: range check proved (CVC5: 4 VC), in call inlined at palindrome.adb:36
+palindrome.adb:11:26: info: range check proved (CVC5: 2 VC), in call inlined at palindrome.adb:36
+palindrome.adb:13:31: info: loop variant proved (CVC5: 1 VC), in call inlined at palindrome.adb:36
+palindrome.adb:15:20: info: initialization check proved (CVC5: 1 VC), in call inlined at palindrome.adb:36
+palindrome.adb:15:20: info: range check proved (CVC5: 4 VC), in call inlined at palindrome.adb:36
+palindrome.adb:15:26: medium: array index check might fail, in call inlined at palindrome.adb:36 [reason for check: value must be a valid index into the array]
+palindrome.adb:15:42: info: initialization check proved (CVC5: 1 VC), in call inlined at palindrome.adb:36
+palindrome.adb:15:42: info: range check proved (CVC5: 4 VC), in call inlined at palindrome.adb:36
+palindrome.adb:15:48: medium: array index check might fail, in call inlined at palindrome.adb:36 [reason for check: value must be a valid index into the array]
+palindrome.adb:16:36: info: overflow check proved (CVC5: 2 VC), in call inlined at palindrome.adb:36
+palindrome.adb:17:37: info: range check proved (CVC5: 2 VC), in call inlined at palindrome.adb:36
 palindrome.adb:25:04: info: initialization of "Line" proved
-palindrome.adb:26:04: info: initialization of "Count" proved
-palindrome.adb:32:15: info: only expected exception raised (CVC5: 1 VC)
-palindrome.adb:35:07: info: analyzing call to "Is_Palindrome" in context
-palindrome.adb:35:07: info: range check proved (CVC5: 4 VC)
+palindrome.adb:27:04: info: initialization of "Count" proved
+palindrome.adb:33:15: info: only expected exception raised (CVC5: 1 VC)
+palindrome.adb:36:07: info: analyzing call to "Is_Palindrome" in context
+palindrome.adb:36:07: info: initialization check proved (CVC5: 1 VC; Trivial: 1 VC)
+palindrome.adb:36:07: info: length check proved (CVC5: 3 VC; Trivial: 1 VC)
+palindrome.adb:36:07: info: range check proved (CVC5: 4 VC)
 parent-private1.ads:6:13: info: implicit terminating annotation on "Convert" has been proved, subprogram will terminate
 parent-public1.adb:7:07: info: initialization of "Temp" proved
 parent.adb:6:22: high: overflow check might fail, cannot prove bounds for Value ** 2 (e.g. when Value = 2147483647) [reason for check: result of exponentiation must fit in a 32-bits machine integer] [possible fix: subprogram at parent.ads:3 should mention Value in a precondition]

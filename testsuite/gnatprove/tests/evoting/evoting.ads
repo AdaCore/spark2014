@@ -80,7 +80,8 @@ package eVoting is
       last_candidate :     Candidate_Number_t;
       chosen_vote    : out Candidate_Number_t)
    with Pre =>  program_phase = Voting_Phase,
-        Post => chosen_vote <= last_candidate;
+        Post => chosen_vote <= last_candidate,
+        Exceptional_Cases => (others => True);
 
    function Counters_Sum(counters : in Counters_t) return Natural;
 

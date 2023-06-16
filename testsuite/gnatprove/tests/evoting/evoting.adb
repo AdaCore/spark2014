@@ -41,7 +41,7 @@ package body eVoting is
       file : File_Type;
       current_candidate : Candidate_Number_t := Candidate_Number_t'First;
       last : Natural;
-      item : Candidate_Name_t;
+      item : Candidate_Name_t with Relaxed_Initialization;
    begin
       Assert(program_phase = Setup_Phase);
 
@@ -117,8 +117,7 @@ package body eVoting is
       last_candidate :     Candidate_Number_t;
       chosen_vote    : out Candidate_Number_t)
    is
-      pragma SPARK_Mode (Off); -- exception handler
-      buf : String(1..10);
+      buf : String(1..10) with Relaxed_Initialization;
       last : Natural;
       choice : Candidate_Number_t;
    begin
@@ -134,13 +133,14 @@ package body eVoting is
 
             Get_Line(buf, last);
             choice := Candidate_Number_t'Value(buf(1..last));
+            --  We assume that the read line is a candidate number
             if choice <= last_candidate then
                Put("Are you sure your vote ");
                Print_A_Candidate(candidates, choice);
                Put_Line(" is correct (y/n)?");
 
                Get_Line(buf, last);
-               if buf(1) = 'y' or buf(1) = 'Y' then
+               if last >= 1 and then (buf(1) = 'y' or buf(1) = 'Y') then
                   chosen_vote := choice;
                   return;
                else
@@ -175,7 +175,7 @@ package body eVoting is
       counters        : in out Counters_t;
       number_of_votes : in out Natural)
    is
-      buf : String(1..255);
+      buf : String(1..255) with Relaxed_Initialization;
       last : Natural;
       chosen_vote : Candidate_Number_t;
    begin
@@ -189,7 +189,7 @@ package body eVoting is
 
          Put_Line("Do you want to vote or stop the vote (v/'end of vote')?");
          Get_Line(Item => buf, Last => last);
-         if buf(1) = 'v' then
+         if Last >= 1 and then buf(1) = 'v' then
             Get_Vote(program_phase, candidates, last_candidate, chosen_vote);
 
             if counters(chosen_vote) < Counter_Range_t'Last then
@@ -202,7 +202,7 @@ package body eVoting is
                return;
             end if;
 
-         elsif buf(1..11) = "end of vote" then
+         elsif Last >= 11 and then buf(1..11) = "end of vote" then
             return;
          end if;
       end loop;
