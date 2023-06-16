@@ -1506,7 +1506,6 @@ package body SPARK_Util.Subprograms is
       --  Check that E is a unary procedure
 
       if Ekind (E) /= E_Procedure
-        or else No (First_Formal (E))
         or else Number_Formals (E) /= 1
       then
          return False;
