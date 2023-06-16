@@ -1513,13 +1513,13 @@ package body SPARK_Util.Subprograms is
 
       --  Check that E is called Put_Line
 
-      if Get_Name_String (Chars (E)) /= "put_line" then
+      if Chars (E) /= Name_Put_Line then
          return False;
       end if;
 
       --  Then check that we are in the Text_IO unit of the standard library
 
-      if Get_Name_String (Chars (S_Ptr)) /= "text_io" then
+      if Chars (S_Ptr) /= Name_Text_IO then
          return False;
       end if;
 
