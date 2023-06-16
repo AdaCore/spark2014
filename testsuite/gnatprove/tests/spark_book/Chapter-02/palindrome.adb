@@ -22,7 +22,8 @@ is
    Max_Length : constant Positive := 100;
    subtype Line_Type is String (1 .. Max_Length);
 
-   Line  : Line_Type;  -- Characters entered by user
+   Line  : Line_Type with Relaxed_Initialization;
+   -- Characters entered by user
    Count : Natural;    -- Number of characters entered
 
 begin

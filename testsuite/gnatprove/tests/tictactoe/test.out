@@ -6,8 +6,9 @@ tictactoe.adb:13:14: info: postcondition proved (Z3: 1 VC)
 tictactoe.adb:21:07: info: initialization of "P" proved
 tictactoe.adb:25:13: info: initialization of "S" proved
 tictactoe.adb:26:13: info: initialization of "Last" proved
-tictactoe.adb:29:10: info: only expected exception raised (CVC5: 1 VC)
-tictactoe.adb:30:10: info: only expected exception raised (CVC5: 1 VC)
+tictactoe.adb:29:13: info: only expected exception raised (CVC5: 1 VC)
+tictactoe.adb:30:13: info: only expected exception raised (CVC5: 1 VC)
+tictactoe.adb:33:36: info: initialization check proved (CVC5: 1 VC)
 tictactoe.adb:67:07: info: precondition proved (CVC5: 2 VC)
 tictactoe.adb:86:13: info: implicit terminating annotation on "Result" has been proved, subprogram will terminate
 tictactoe.adb:95:07: info: initialization of "Score" proved
