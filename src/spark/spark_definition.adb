@@ -4280,7 +4280,7 @@ package body SPARK_Definition is
                  and then not No_Return (E)
                then
                   Error_Msg_NE
-                    (Warning_Message (Warn_Assumed_Always_Return), N, E);
+                    (Warning_Message (Warn_Assumed_Always_Terminates), N, E);
                   Error_Msg_NE
                     ("\\assuming & always terminates", N, E);
                end if;

@@ -197,7 +197,8 @@ package Flow.Analysis is
 
    procedure Check_Always_Terminates (FA : in out Flow_Analysis_Graphs)
    with Pre => FA.Kind in Kind_Subprogram | Kind_Package;
-   --  Checks the implicit or explicit aspect Always_Terminiates
+   --  Checks if the implicit or explicit aspect Always_Terminiates is
+   --  consistent with with the results from flow analysis.
 
    procedure Check_Constant_Global_Contracts (E : Entity_Id)
    with Pre => Ekind (E) in E_Function

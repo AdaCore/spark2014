@@ -383,7 +383,7 @@ package VC_Kinds is
       Warn_Variant_Not_Recursive,
 
       --  Warnings guaranteed to be issued
-      Warn_Assumed_Always_Return,
+      Warn_Assumed_Always_Terminates,
       Warn_Assumed_Global_Null,
       Warn_Imprecisely_Supported_Address,
 
@@ -485,7 +485,7 @@ package VC_Kinds is
      Warn_Address_To_Access .. Warn_Variant_Not_Recursive;
 
    subtype Guaranteed_Warning_Kind is Misc_Warning_Kind range
-     Warn_Assumed_Always_Return .. Warn_Imprecisely_Supported_Address;
+     Warn_Assumed_Always_Terminates .. Warn_Imprecisely_Supported_Address;
 
    subtype Pedantic_Warning_Kind is Misc_Warning_Kind range
      Warn_Image_Attribute_Length .. Warn_Representation_Attribute_Value;
@@ -540,7 +540,7 @@ package VC_Kinds is
           "?no recursive call visible",
 
         --  Warnings guaranteed to be issued
-        when Warn_Assumed_Always_Return =>
+        when Warn_Assumed_Always_Terminates =>
           "?no Always_Terminates aspect available for &",
         when Warn_Assumed_Global_Null =>
           "?no Global contract available for &",
