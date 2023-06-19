@@ -1426,6 +1426,12 @@ package body Flow.Control_Flow_Graph is
       --  phase 1 the initialization status of such constituents doesn't
       --  matter.
 
+      Reclamation_Functions : constant Node_Sets.Set :=
+        (if Ekind (E) in E_Constant | E_Variable
+           and then not Is_Library_Level_Entity (E)
+         then Get_Reclamation_Functions (Etype (E))
+         else Node_Sets.Empty_Set);
+
       procedure Process (F : Flow_Id)
       with Pre => F.Kind in Direct_Mapping | Record_Field
                   and then F.Variant = Normal_Use;
@@ -1449,9 +1455,10 @@ package body Flow.Control_Flow_Graph is
 
          Final_Atr : constant V_Attributes :=
            Make_Variable_Attributes
-             (F_Ent => F_Final,
-              Mode  => M,
-              E_Loc => E);
+             (F_Ent      => F_Final,
+              Mode       => M,
+              Proof_Deps => Reclamation_Functions,
+              E_Loc      => E);
 
       begin
          --  Setup the n'initial vertex. Note that initialization for
@@ -1606,6 +1613,8 @@ package body Flow.Control_Flow_Graph is
          Proof_Dependencies => Proofdeps,
          Tasking            => FA.Tasking,
          Generating_Globals => FA.Generating_Globals);
+
+      Proofdeps.Union (Get_Reclamation_Functions (LHS_Type));
 
       --  First we need to determine the root name where we assign to, and
       --  whether this is a partial or full assignment. This mirror the
@@ -6411,6 +6420,8 @@ package body Flow.Control_Flow_Graph is
          if Ekind (Formal) in E_In_Out_Parameter | E_Out_Parameter
            or else Is_Writable_Parameter (Formal)
          then
+            Proofdeps.Union (Get_Reclamation_Functions (Etype (Formal)));
+
             Add_Vertex
               (FA,
                Direct_Mapping_Id (Actual, Out_View),
@@ -6421,6 +6432,7 @@ package body Flow.Control_Flow_Graph is
                   Formal                       => Formal,
                   In_Vertex                    => False,
                   Discriminants_Or_Bounds_Only => False,
+                  Proof_Deps                   => Proofdeps,
                   Vertex_Ctx                   => Ctx.Vertex_Ctx,
                   E_Loc                        => Actual),
                V);

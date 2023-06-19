@@ -1,0 +1,27 @@
+local_variable_pkg.adb:7:10: medium: resource or memory leak might occur at end of scope
+local_variable_pkg.adb:7:10: warning: unused variable "V"
+local_variable_pkg.ads:3:13: info: function contract might not be available on implicit recursive calls
+local_variable_pkg.ads:3:13: info: implicit terminating annotation on "Func" has been proved, subprogram will terminate
+local_variable_pkg.ads:3:38: warning: postcondition does not mention function result
+local_variable_pkg.ads:3:46: medium: postcondition might fail [possible fix: you should consider adding a postcondition to function Aux or turning it into an expression function in its unit spec]
+local_variable_pkg.ads:3:46: warning: assuming "Aux" has no effect on global items
+local_variable_pkg.ads:3:46: warning: no Global contract available for "Aux"
+local_variable_subp.adb:6:07: medium: resource or memory leak might occur at end of scope
+local_variable_subp.adb:6:07: warning: unused variable "V"
+local_variable_subp.ads:3:13: info: function contract might not be available on implicit recursive calls
+local_variable_subp.ads:3:13: info: implicit terminating annotation on "Func" has been proved, subprogram will terminate
+local_variable_subp.ads:3:38: warning: postcondition does not mention function result
+local_variable_subp.ads:3:46: medium: postcondition might fail [possible fix: you should consider adding a postcondition to function Aux or turning it into an expression function in its unit spec]
+local_variable_subp.ads:3:46: warning: assuming "Aux" has no effect on global items
+local_variable_subp.ads:3:46: warning: no Global contract available for "Aux"
+other_tests.adb:10:09: info: absence of resource or memory leak proved (CVC5: 1 VC)
+other_tests.adb:18:20: info: initialization of "Value" proved
+other_tests.adb:18:40: info: data dependencies proved
+other_tests.adb:22:16: info: absence of resource or memory leak proved (CVC5: 1 VC)
+other_tests.adb:25:20: warning: unused variable "Value"
+other_tests.adb:25:39: info: data dependencies proved
+other_tests.adb:33:10: info: absence of resource or memory leak proved (CVC5: 1 VC)
+p1.ads:8:13: info: implicit terminating annotation on "Is_Null" has been proved, subprogram will terminate
+p1.ads:8:22: warning: unused variable "V"
+p2.ads:8:13: info: implicit terminating annotation on "Is_Null" has been proved, subprogram will terminate
+p2.ads:8:22: warning: unused variable "V"

@@ -221,10 +221,11 @@ package Flow.Control_Flow_Graph.Utility is
    --  Creates the attributes for the synthetic null export.
 
    function Make_Variable_Attributes
-     (F_Ent : Flow_Id;
-      Mode  : Param_Mode;
-      E_Loc : Node_Or_Entity_Id := Empty;
-      S     : Flow_Scope := Null_Flow_Scope)
+     (F_Ent      : Flow_Id;
+      Mode       : Param_Mode;
+      Proof_Deps : Node_Sets.Set     := Node_Sets.Empty_Set;
+      E_Loc      : Node_Or_Entity_Id := Empty;
+      S          : Flow_Scope        := Null_Flow_Scope)
       return V_Attributes
    with Pre  => F_Ent.Kind in Direct_Mapping | Record_Field and
                 F_Ent.Variant in Initial_Or_Final_Variant and
@@ -292,5 +293,15 @@ package Flow.Control_Flow_Graph.Utility is
    --  initialization expression. This function reassembles this intermediate
    --  representation into the defined variable's discriminant to correctly
    --  identify "variables used".
+
+   function Get_Reclamation_Functions
+     (Typ : Type_Kind_Id)
+      return Node_Sets.Set
+   with Post =>
+          (for all E of Get_Reclamation_Functions'Result =>
+             Ekind (E) = E_Function);
+   --  Returns the reclamation functions associated to all components of Typ.
+   --  This function is used to add proof dependencies only, it should not
+   --  affect flow analysis output.
 
 end Flow.Control_Flow_Graph.Utility;

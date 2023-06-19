@@ -943,6 +943,41 @@ package body SPARK_Util.Types is
    end Get_Constraint_For_Discr;
 
    -------------------------
+   -- Get_Reclaimed_Parts --
+   -------------------------
+
+   function Get_Reclaimed_Parts (Typ : Type_Kind_Id) return Entity_Sets.Set is
+      Result : Entity_Sets.Set;
+
+      function Include_If_Reclaimed (Typ : Type_Kind_Id) return Test_Result;
+      --  Include Typ in Result if it has an Ownership annotation and needs
+      --  reclamation.
+
+      --------------------------
+      -- Include_If_Reclaimed --
+      --------------------------
+
+      function Include_If_Reclaimed (Typ : Type_Kind_Id) return Test_Result is
+      begin
+
+         if Has_Ownership_Annotation (Typ)
+           and then Needs_Reclamation (Typ)
+         then
+            Result.Include (Typ);
+         end if;
+
+         return Fail;
+      end Include_If_Reclaimed;
+
+      function Get_Reclaimed_Parts is new
+        Traverse_Access_Parts (Include_If_Reclaimed);
+
+      Dummy : constant Boolean := Get_Reclaimed_Parts (Typ);
+   begin
+      return Result;
+   end Get_Reclaimed_Parts;
+
+   -------------------------
    -- Get_User_Defined_Eq --
    -------------------------
 
