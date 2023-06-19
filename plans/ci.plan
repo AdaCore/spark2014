@@ -11,6 +11,7 @@ def build():
     anod_install("xmlada", query_range=20)
     anod_install("libgpr", query_range=20)
     anod_install("gnatcoll-core", query_range=20)
+    anod_install("opam", query_range=20)
     anod_build("why3")
     anod_build("spark2014", qualifier="assertions,coverage")
 
