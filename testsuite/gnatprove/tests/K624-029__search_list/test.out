@@ -1,4 +1,4 @@
-linked_list.adb:6:30: medium: implicit terminating annotation on "Search" could be incorrect, loop might be nonterminating [possible fix: add loop variant in the loop body]
+linked_list.adb:6:30: medium: implicit aspect Always_Terminates on "Search" could be incorrect, loop might be nonterminating [possible fix: add loop variant in the loop body]
 linked_list.adb:8:13: info: loop invariant initialization proved (CVC5: 2 VC)
 linked_list.adb:8:13: info: loop invariant preservation proved (CVC5: 2 VC)
 linked_list.adb:9:37: info: precondition proved (CVC5: 2 VC)

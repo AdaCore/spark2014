@@ -27,19 +27,19 @@ spark-containers-functional-vectors-higher_order.ads:243:24: info: function cont
 spark-containers-functional-vectors-higher_order.ads:256:25: info: function contract feasibility proved (CVC5: 1 VC), in instantiation at use_sequence_ho.adb:14
 spark-containers-functional-vectors-higher_order.ads:265:17: info: precondition proved (CVC5: 2 VC), in instantiation at use_sequence_ho.adb:14
 spark-containers-functional-vectors-higher_order.ads:271:24: info: function contract feasibility proved (CVC5: 1 VC), in instantiation at use_sequence_ho.adb:14
-spark-containers-functional-vectors.ads:28:19: info: terminating annotation on "Eq_Reflexive" has been proved, subprogram will terminate, in instantiation at use_sequence_ho.adb:10
-spark-containers-functional-vectors.ads:30:19: info: terminating annotation on "Eq_Symmetric" has been proved, subprogram will terminate, in instantiation at use_sequence_ho.adb:10
-spark-containers-functional-vectors.ads:32:19: info: terminating annotation on "Eq_Transitive" has been proved, subprogram will terminate, in instantiation at use_sequence_ho.adb:10
-spark-containers-functional-vectors.ads:38:19: info: terminating annotation on "Equivalent_Elements_Reflexive" has been proved, subprogram will terminate, in instantiation at use_sequence_ho.adb:10
-spark-containers-functional-vectors.ads:40:19: info: terminating annotation on "Equivalent_Elements_Symmetric" has been proved, subprogram will terminate, in instantiation at use_sequence_ho.adb:10
-spark-containers-functional-vectors.ads:42:19: info: terminating annotation on "Equivalent_Elements_Transitive" has been proved, subprogram will terminate, in instantiation at use_sequence_ho.adb:10
+spark-containers-functional-vectors.ads:28:19: info: aspect Always_Terminates on "Eq_Reflexive" has been proved, subprogram will terminate, in instantiation at use_sequence_ho.adb:10
+spark-containers-functional-vectors.ads:30:19: info: aspect Always_Terminates on "Eq_Symmetric" has been proved, subprogram will terminate, in instantiation at use_sequence_ho.adb:10
+spark-containers-functional-vectors.ads:32:19: info: aspect Always_Terminates on "Eq_Transitive" has been proved, subprogram will terminate, in instantiation at use_sequence_ho.adb:10
+spark-containers-functional-vectors.ads:38:19: info: aspect Always_Terminates on "Equivalent_Elements_Reflexive" has been proved, subprogram will terminate, in instantiation at use_sequence_ho.adb:10
+spark-containers-functional-vectors.ads:40:19: info: aspect Always_Terminates on "Equivalent_Elements_Symmetric" has been proved, subprogram will terminate, in instantiation at use_sequence_ho.adb:10
+spark-containers-functional-vectors.ads:42:19: info: aspect Always_Terminates on "Equivalent_Elements_Transitive" has been proved, subprogram will terminate, in instantiation at use_sequence_ho.adb:10
 spark-containers-functional-vectors.ads:96:13: info: during checks for quantification at spark-containers-functional-vectors.ads:70, in instantiation at use_sequence_ho.adb:10
 spark-containers-functional-vectors.ads:96:13: info: precondition proved (CVC5: 2 VC), in instantiation at use_sequence_ho.adb:10
-spark-containers-functional-vectors.ads:113:13: info: implicit terminating annotation on "First" has been proved, subprogram will terminate, in instantiation at use_sequence_ho.adb:10
+spark-containers-functional-vectors.ads:113:13: info: implicit aspect Always_Terminates on "First" has been proved, subprogram will terminate, in instantiation at use_sequence_ho.adb:10
 spark-containers-functional-vectors.ads:114:06: info: data dependencies proved, in instantiation at use_sequence_ho.adb:10
 spark-containers-functional-vectors.ads:196:39: info: precondition proved (CVC5: 2 VC), in instantiation at use_sequence_ho.adb:10
 spark-containers-functional-vectors.ads:255:52: info: overflow check proved (CVC5: 1 VC), in instantiation at use_sequence_ho.adb:10
-spark-containers-functional-vectors.ads:301:13: info: implicit terminating annotation on "Copy_Element" has been proved, subprogram will terminate, in instantiation at use_sequence_ho.adb:10
+spark-containers-functional-vectors.ads:301:13: info: implicit aspect Always_Terminates on "Copy_Element" has been proved, subprogram will terminate, in instantiation at use_sequence_ho.adb:10
 spark-containers-functional-vectors.ads:338:13: info: during checks for quantification at spark-containers-functional-vectors.ads:70, in instantiation at use_sequence_ho.adb:10
 spark-containers-functional-vectors.ads:338:13: info: precondition proved (Trivial: 1 VC), in instantiation at use_sequence_ho.adb:10
 spark-containers-functional-vectors.ads:341:13: info: during checks for quantification at spark-containers-functional-vectors.ads:70, in instantiation at use_sequence_ho.adb:10
@@ -49,73 +49,73 @@ spark-containers-functional-vectors.ads:351:13: info: precondition proved (CVC5:
 spark-containers-functional-vectors.ads:477:57: info: predicate check proved (Trivial: 1 VC), in instantiation at use_sequence_ho.adb:10
 spark-containers-functional-vectors.ads:478:31: info: predicate check proved (Trivial: 1 VC), in instantiation at use_sequence_ho.adb:10
 spark-containers-parameter_checks.adb:58:10: info: precondition proved (CVC5: 1 VC), in instantiation at spark-containers-functional-vectors.ads:322, in instantiation at use_sequence_ho.adb:10
-spark-containers-parameter_checks.ads:30:17: info: terminating annotation on "Eq_Reflexive" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-vectors.ads:313, in instantiation at use_sequence_ho.adb:10
+spark-containers-parameter_checks.ads:30:17: info: aspect Always_Terminates on "Eq_Reflexive" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-vectors.ads:313, in instantiation at use_sequence_ho.adb:10
 spark-containers-parameter_checks.ads:31:09: info: data dependencies proved, in instantiation at spark-containers-functional-vectors.ads:313, in instantiation at use_sequence_ho.adb:10
 spark-containers-parameter_checks.ads:32:19: info: postcondition proved (CVC5: 1 VC), in instantiation at spark-containers-functional-vectors.ads:313, in instantiation at use_sequence_ho.adb:10
-spark-containers-parameter_checks.ads:34:17: info: terminating annotation on "Eq_Symmetric" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-vectors.ads:313, in instantiation at use_sequence_ho.adb:10
+spark-containers-parameter_checks.ads:34:17: info: aspect Always_Terminates on "Eq_Symmetric" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-vectors.ads:313, in instantiation at use_sequence_ho.adb:10
 spark-containers-parameter_checks.ads:35:09: info: data dependencies proved, in instantiation at spark-containers-functional-vectors.ads:313, in instantiation at use_sequence_ho.adb:10
 spark-containers-parameter_checks.ads:37:19: info: postcondition proved (CVC5: 1 VC), in instantiation at spark-containers-functional-vectors.ads:313, in instantiation at use_sequence_ho.adb:10
-spark-containers-parameter_checks.ads:39:17: info: terminating annotation on "Eq_Transitive" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-vectors.ads:313, in instantiation at use_sequence_ho.adb:10
+spark-containers-parameter_checks.ads:39:17: info: aspect Always_Terminates on "Eq_Transitive" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-vectors.ads:313, in instantiation at use_sequence_ho.adb:10
 spark-containers-parameter_checks.ads:40:09: info: data dependencies proved, in instantiation at spark-containers-functional-vectors.ads:313, in instantiation at use_sequence_ho.adb:10
 spark-containers-parameter_checks.ads:42:19: info: postcondition proved (CVC5: 1 VC), in instantiation at spark-containers-functional-vectors.ads:313, in instantiation at use_sequence_ho.adb:10
-spark-containers-parameter_checks.ads:62:17: info: terminating annotation on "Eq_Reflexive" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-vectors.ads:322, in instantiation at use_sequence_ho.adb:10
+spark-containers-parameter_checks.ads:62:17: info: aspect Always_Terminates on "Eq_Reflexive" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-vectors.ads:322, in instantiation at use_sequence_ho.adb:10
 spark-containers-parameter_checks.ads:63:09: info: data dependencies proved, in instantiation at spark-containers-functional-vectors.ads:322, in instantiation at use_sequence_ho.adb:10
 spark-containers-parameter_checks.ads:65:19: info: postcondition proved (CVC5: 1 VC), in instantiation at spark-containers-functional-vectors.ads:322, in instantiation at use_sequence_ho.adb:10
-spark-containers-parameter_checks.ads:70:17: info: terminating annotation on "Eq_Reflexive" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-vectors.ads:322, in instantiation at use_sequence_ho.adb:10
+spark-containers-parameter_checks.ads:70:17: info: aspect Always_Terminates on "Eq_Reflexive" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-vectors.ads:322, in instantiation at use_sequence_ho.adb:10
 spark-containers-parameter_checks.ads:71:09: info: data dependencies proved, in instantiation at spark-containers-functional-vectors.ads:322, in instantiation at use_sequence_ho.adb:10
 spark-containers-parameter_checks.ads:72:19: info: postcondition proved (CVC5: 1 VC), in instantiation at spark-containers-functional-vectors.ads:322, in instantiation at use_sequence_ho.adb:10
-spark-containers-parameter_checks.ads:74:17: info: terminating annotation on "Eq_Symmetric" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-vectors.ads:322, in instantiation at use_sequence_ho.adb:10
+spark-containers-parameter_checks.ads:74:17: info: aspect Always_Terminates on "Eq_Symmetric" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-vectors.ads:322, in instantiation at use_sequence_ho.adb:10
 spark-containers-parameter_checks.ads:75:09: info: data dependencies proved, in instantiation at spark-containers-functional-vectors.ads:322, in instantiation at use_sequence_ho.adb:10
 spark-containers-parameter_checks.ads:77:19: info: postcondition proved (CVC5: 1 VC), in instantiation at spark-containers-functional-vectors.ads:322, in instantiation at use_sequence_ho.adb:10
-spark-containers-parameter_checks.ads:79:17: info: terminating annotation on "Eq_Transitive" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-vectors.ads:322, in instantiation at use_sequence_ho.adb:10
+spark-containers-parameter_checks.ads:79:17: info: aspect Always_Terminates on "Eq_Transitive" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-vectors.ads:322, in instantiation at use_sequence_ho.adb:10
 spark-containers-parameter_checks.ads:80:09: info: data dependencies proved, in instantiation at spark-containers-functional-vectors.ads:322, in instantiation at use_sequence_ho.adb:10
 spark-containers-parameter_checks.ads:82:19: info: postcondition proved (CVC5: 1 VC), in instantiation at spark-containers-functional-vectors.ads:322, in instantiation at use_sequence_ho.adb:10
-use_sequence_ho.adb:18:16: info: implicit terminating annotation on "Starts_With_Z" has been proved, subprogram will terminate
+use_sequence_ho.adb:18:16: info: implicit aspect Always_Terminates on "Starts_With_Z" has been proved, subprogram will terminate
 use_sequence_ho.adb:19:36: info: index check proved (CVC5: 2 VC)
-use_sequence_ho.adb:21:16: info: implicit terminating annotation on "Add_Zero" has been proved, subprogram will terminate
+use_sequence_ho.adb:21:16: info: implicit aspect Always_Terminates on "Add_Zero" has been proved, subprogram will terminate
 use_sequence_ho.adb:22:10: info: precondition proved (CVC5: 1 VC)
 use_sequence_ho.adb:25:19: info: postcondition proved (CVC5: 1 VC)
 use_sequence_ho.adb:25:19: info: predicate check proved (Trivial: 1 VC)
 use_sequence_ho.adb:26:13: info: predicate check proved (Trivial: 1 VC)
 use_sequence_ho.adb:26:47: info: predicate check proved (Trivial: 1 VC)
-use_sequence_ho.adb:28:16: info: implicit terminating annotation on "Add_One" has been proved, subprogram will terminate
+use_sequence_ho.adb:28:16: info: implicit aspect Always_Terminates on "Add_One" has been proved, subprogram will terminate
 use_sequence_ho.adb:29:10: info: precondition proved (CVC5: 1 VC)
 use_sequence_ho.adb:32:19: info: postcondition proved (CVC5: 1 VC)
 use_sequence_ho.adb:32:19: info: predicate check proved (Trivial: 1 VC)
 use_sequence_ho.adb:33:13: info: predicate check proved (Trivial: 1 VC)
-use_sequence_ho.adb:37:16: info: implicit terminating annotation on "Starts_With_Z" has been proved, subprogram will terminate
+use_sequence_ho.adb:37:16: info: implicit aspect Always_Terminates on "Starts_With_Z" has been proved, subprogram will terminate
 use_sequence_ho.adb:38:36: info: index check proved (CVC5: 2 VC)
-use_sequence_ho.adb:40:16: info: implicit terminating annotation on "Add_Zero" has been proved, subprogram will terminate
+use_sequence_ho.adb:40:16: info: implicit aspect Always_Terminates on "Add_Zero" has been proved, subprogram will terminate
 use_sequence_ho.adb:42:19: medium: postcondition might fail
 use_sequence_ho.adb:43:13: info: precondition proved (CVC5: 1 VC)
-use_sequence_ho.adb:45:16: info: implicit terminating annotation on "Add_One" has been proved, subprogram will terminate
+use_sequence_ho.adb:45:16: info: implicit aspect Always_Terminates on "Add_One" has been proved, subprogram will terminate
 use_sequence_ho.adb:46:10: info: precondition proved (CVC5: 1 VC)
 use_sequence_ho.adb:49:19: medium: postcondition might fail
 use_sequence_ho.adb:56:37: info: precondition proved (CVC5: 1 VC)
 use_sequence_ho.adb:58:25: medium: assertion might fail
 use_sequence_ho.adb:58:60: info: precondition proved (CVC5: 1 VC)
-use_sequence_ho.adb:64:16: info: implicit terminating annotation on "Value" has been proved, subprogram will terminate
+use_sequence_ho.adb:64:16: info: implicit aspect Always_Terminates on "Value" has been proved, subprogram will terminate
 use_sequence_ho.adb:65:36: info: range check proved (CVC5: 2 VC)
-use_sequence_ho.adb:67:16: info: implicit terminating annotation on "Add_Zero" has been proved, subprogram will terminate
+use_sequence_ho.adb:67:16: info: implicit aspect Always_Terminates on "Add_Zero" has been proved, subprogram will terminate
 use_sequence_ho.adb:68:10: info: precondition proved (CVC5: 1 VC)
 use_sequence_ho.adb:71:19: info: postcondition proved (CVC5: 1 VC)
 use_sequence_ho.adb:71:19: info: predicate check proved (Trivial: 1 VC)
 use_sequence_ho.adb:72:13: info: predicate check proved (Trivial: 1 VC)
 use_sequence_ho.adb:72:37: info: predicate check proved (Trivial: 1 VC)
-use_sequence_ho.adb:74:16: info: implicit terminating annotation on "Add_One" has been proved, subprogram will terminate
+use_sequence_ho.adb:74:16: info: implicit aspect Always_Terminates on "Add_One" has been proved, subprogram will terminate
 use_sequence_ho.adb:75:10: info: precondition proved (CVC5: 1 VC)
 use_sequence_ho.adb:78:19: info: postcondition proved (CVC5: 1 VC)
 use_sequence_ho.adb:78:19: info: predicate check proved (Trivial: 1 VC)
 use_sequence_ho.adb:79:13: info: predicate check proved (Trivial: 1 VC)
 use_sequence_ho.adb:79:37: info: predicate check proved (Trivial: 1 VC)
-use_sequence_ho.adb:83:16: info: implicit terminating annotation on "F" has been proved, subprogram will terminate
+use_sequence_ho.adb:83:16: info: implicit aspect Always_Terminates on "F" has been proved, subprogram will terminate
 use_sequence_ho.adb:84:17: info: range check proved (CVC5: 2 VC)
 use_sequence_ho.adb:84:19: info: range check proved (CVC5: 4 VC)
-use_sequence_ho.adb:86:16: info: implicit terminating annotation on "Add_Zero" has been proved, subprogram will terminate
+use_sequence_ho.adb:86:16: info: implicit aspect Always_Terminates on "Add_Zero" has been proved, subprogram will terminate
 use_sequence_ho.adb:87:10: info: precondition proved (CVC5: 1 VC)
 use_sequence_ho.adb:90:19: info: postcondition proved (Z3: 1 VC)
 use_sequence_ho.adb:90:59: info: precondition proved (CVC5: 1 VC)
-use_sequence_ho.adb:94:16: info: implicit terminating annotation on "F" has been proved, subprogram will terminate
+use_sequence_ho.adb:94:16: info: implicit aspect Always_Terminates on "F" has been proved, subprogram will terminate
 use_sequence_ho.adb:94:19: warning: unused variable "I"
 use_sequence_ho.adb:99:17: info: postcondition proved (CVC5: 1 VC)
 use_sequence_ho.adb:99:40: info: precondition proved (CVC5: 1 VC)

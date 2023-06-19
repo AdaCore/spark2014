@@ -1,11 +1,11 @@
-automation_request_validation-spark.ads:9:13: info: implicit terminating annotation on "All_Elements_In" has been proved, subprogram will terminate
+automation_request_validation-spark.ads:9:13: info: implicit aspect Always_Terminates on "All_Elements_In" has been proved, subprogram will terminate
 automation_request_validation-spark.ads:11:45: info: precondition proved (CVC5: 2 VC)
 automation_request_validation-spark.ads:11:58: info: range check proved (CVC5: 2 VC)
-automation_request_validation-spark.ads:14:13: info: implicit terminating annotation on "Check_For_Required_Operating_Region_And_Keepin_Keepout_Zones" has been proved, subprogram will terminate
+automation_request_validation-spark.ads:14:13: info: implicit aspect Always_Terminates on "Check_For_Required_Operating_Region_And_Keepin_Keepout_Zones" has been proved, subprogram will terminate
 automation_request_validation-spark.ads:25:38: info: precondition proved (CVC5: 1 VC)
 automation_request_validation-spark.ads:29:38: info: precondition proved (CVC5: 1 VC)
 automation_request_validation.ads:16:07: info: range check proved (CVC5: 2 VC)
 automation_request_validation.ads:17:34: info: range check proved (CVC5: 1 VC)
 common_formal_containers.ads:15:46: info: range check proved (CVC5: 2 VC)
-common_formal_containers.ads:17:13: info: implicit terminating annotation on "Int64_Hash" has been proved, subprogram will terminate
+common_formal_containers.ads:17:13: info: implicit aspect Always_Terminates on "Int64_Hash" has been proved, subprogram will terminate
 common_formal_containers.ads:33:07: info: range check proved (CVC5: 2 VC)

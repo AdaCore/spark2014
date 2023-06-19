@@ -43,7 +43,7 @@ lsc-bignum.adb:94:58: info: overflow check proved (Z3: 2 VC)
 lsc-bignum.adb:94:68: info: overflow check proved (Z3: 2 VC)
 lsc-bignum.adb:95:22: info: index check proved (Z3: 2 VC)
 lsc-bignum.adb:95:41: info: index check proved (Z3: 2 VC)
-lsc-bignum.adb:101:13: info: implicit terminating annotation on "Word_Of_Boolean" has been proved, subprogram will terminate
+lsc-bignum.adb:101:13: info: implicit aspect Always_Terminates on "Word_Of_Boolean" has been proved, subprogram will terminate
 lsc-bignum.adb:103:08: medium: postcondition might fail
 lsc-bignum.adb:105:07: info: initialization of "Result" proved
 lsc-bignum.adb:126:07: info: initialization of "J" proved
@@ -283,7 +283,7 @@ lsc-bignum.adb:376:58: info: range check proved (Z3: 2 VC)
 lsc-bignum.adb:381:13: info: precondition proved (Z3: 9 VC)
 lsc-bignum.adb:384:10: info: precondition proved (Z3: 9 VC)
 lsc-bignum.adb:384:55: warning: "Carry" is set by "Sub_Inplace" but not used after the call
-lsc-bignum.adb:391:13: info: implicit terminating annotation on "Bit_Set" has been proved, subprogram will terminate
+lsc-bignum.adb:391:13: info: implicit aspect Always_Terminates on "Bit_Set" has been proved, subprogram will terminate
 lsc-bignum.adb:399:12: info: division check proved (Z3: 1 VC)
 lsc-bignum.adb:399:41: info: overflow check proved (Z3: 2 VC)
 lsc-bignum.adb:399:41: info: range check proved (Z3: 1 VC)
@@ -571,7 +571,7 @@ lsc-bignum.adb:712:47: info: overflow check proved (Z3: 2 VC)
 lsc-bignum.adb:715:39: info: overflow check proved (Z3: 2 VC)
 lsc-bignum.adb:715:39: info: range check proved (Z3: 1 VC)
 lsc-bignum.adb:722:07: medium: precondition might fail, cannot prove Num_Of_Big_Int (C, C_First, A_Last - A_First + 1) < Num_Of_Big_Int (M, M_First, A_Last - A_First + 1)
-lsc-bignum.ads:45:13: info: implicit terminating annotation on "Base" has been proved, subprogram will terminate
+lsc-bignum.ads:45:13: info: implicit aspect Always_Terminates on "Base" has been proved, subprogram will terminate
 lsc-bignum.ads:63:07: info: justified that "A" might not be initialized in "Initialize"
 lsc-bignum.ads:67:08: info: flow dependencies proved
 lsc-bignum.ads:74:10: info: postcondition proved (Z3: 1 VC)
@@ -610,7 +610,7 @@ lsc-bignum.ads:117:55: info: range check proved (Z3: 2 VC)
 lsc-bignum.ads:118:26: info: overflow check proved (Z3: 2 VC)
 lsc-bignum.ads:118:36: info: overflow check proved (Z3: 2 VC)
 lsc-bignum.ads:118:36: info: range check proved (Z3: 2 VC)
-lsc-bignum.ads:120:13: info: implicit terminating annotation on "Less" has been proved, subprogram will terminate
+lsc-bignum.ads:120:13: info: implicit aspect Always_Terminates on "Less" has been proved, subprogram will terminate
 lsc-bignum.ads:132:18: medium: overflow check might fail, cannot prove upper bound for B_First + (A_Last - A_First) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: use "and then" instead of "and" in precondition]
 lsc-bignum.ads:132:28: info: overflow check proved (Z3: 2 VC)
 lsc-bignum.ads:135:10: medium: postcondition might fail

@@ -19,7 +19,7 @@ simple_private_type.ads:17:17: warning: assuming "Is_Zero" has no effect on glob
 simple_private_type.ads:17:17: warning: no Global contract available for "Is_Zero"
 use_simple_private_type.adb:4:10: warning: assuming "Is_Zero" has no effect on global items
 use_simple_private_type.adb:4:10: warning: no Global contract available for "Is_Zero"
-use_simple_private_type.adb:7:07: info: justified that implicit terminating annotation on "Add" could be incorrect, subprogram is recursive
+use_simple_private_type.adb:7:07: info: justified that implicit aspect Always_Terminates on "Add" could be incorrect, subprogram is recursive
 use_simple_private_type.adb:7:14: warning: assuming "N" has no effect on global items
 use_simple_private_type.adb:7:14: warning: no Global contract available for "N"
 use_simple_private_type.adb:7:22: info: precondition proved (CVC5: 1 VC)
@@ -34,7 +34,7 @@ use_simple_private_type.adb:21:15: warning: assuming "P" has no effect on global
 use_simple_private_type.adb:21:15: warning: no Global contract available for "P"
 use_simple_private_type.adb:26:10: warning: assuming "Is_Zero" has no effect on global items
 use_simple_private_type.adb:26:10: warning: no Global contract available for "Is_Zero"
-use_simple_private_type.adb:29:07: info: justified that implicit terminating annotation on "Mul" could be incorrect, subprogram is recursive
+use_simple_private_type.adb:29:07: info: justified that implicit aspect Always_Terminates on "Mul" could be incorrect, subprogram is recursive
 use_simple_private_type.adb:29:27: info: precondition proved (CVC5: 1 VC)
 use_simple_private_type.adb:29:27: warning: assuming "P" has no effect on global items
 use_simple_private_type.adb:29:27: warning: no Global contract available for "P"

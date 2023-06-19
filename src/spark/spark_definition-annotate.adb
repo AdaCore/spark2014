@@ -2646,20 +2646,6 @@ package body SPARK_Definition.Annotate is
    end Get_Reclamation_Check_Function;
 
    ----------------------------------
-   -- Has_Always_Return_Annotation --
-   ----------------------------------
-
-   function Has_Always_Return_Annotation (E : Entity_Id) return Boolean is
-   begin
-      --  Simulate Always_Return annotation for flow analysis
-
-      return (Ekind (E) = E_Package
-              and then Present (Get_Pragma (E, Pragma_Always_Terminates)))
-        or else (Ekind (E) in E_Entry | E_Procedure
-                 and then Get_Termination_Condition (E) = (Static, True));
-   end Has_Always_Return_Annotation;
-
-   ----------------------------------
    -- Has_At_End_Borrow_Annotation --
    ----------------------------------
 
@@ -2684,16 +2670,6 @@ package body SPARK_Definition.Annotate is
    is
      (Higher_Order_Spec_Annotations.Contains (E));
 
-   -------------------------------------------
-   -- Has_Implicit_Always_Return_Annotation --
-   -------------------------------------------
-
-   function Has_Implicit_Always_Return_Annotation
-     (E : Entity_Id) return Boolean
-   is
-     (Ekind (E) in E_Function | E_Package
-        or else Has_Automatic_Instantiation_Annotation (E));
-
    -------------------------------
    -- Has_Logical_Eq_Annotation --
    -------------------------------
@@ -2701,22 +2677,6 @@ package body SPARK_Definition.Annotate is
    function Has_Logical_Eq_Annotation (E : Entity_Id) return Boolean is
      (Ekind (E) = E_Function
       and then Logical_Eq_Annotations.Contains (E));
-
-   -------------------------------------
-   -- Has_Might_Not_Return_Annotation --
-   -------------------------------------
-
-   function Has_Might_Not_Return_Annotation (E : Entity_Id) return Boolean is
-     (Ekind (E) in E_Procedure | E_Generic_Procedure
-      and then
-
-      --  Simulate Might_Not_Return annotation for flow analysis
-
-        (declare
-           Term : constant Termination_Condition :=
-              Get_Termination_Condition (E);
-         begin
-           Term.Kind /= Unspecified and then Term /= (Static, True)));
 
    -----------------------------------
    -- Has_No_Wrap_Around_Annotation --

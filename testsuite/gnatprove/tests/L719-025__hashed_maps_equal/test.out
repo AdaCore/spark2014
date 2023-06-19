@@ -5,8 +5,8 @@ p.adb:12:07: info: precondition proved (CVC5: 1 VC)
 p.adb:13:07: info: precondition proved (CVC5: 2 VC)
 p.adb:19:10: info: precondition proved (CVC5: 1 VC)
 p.adb:21:10: info: precondition proved (CVC5: 2 VC)
-p.ads:8:13: info: implicit terminating annotation on "My_Eq" has been proved, subprogram will terminate
-p.ads:11:13: info: implicit terminating annotation on "Hash" has been proved, subprogram will terminate
+p.ads:8:13: info: implicit aspect Always_Terminates on "My_Eq" has been proved, subprogram will terminate
+p.ads:11:13: info: implicit aspect Always_Terminates on "Hash" has been proved, subprogram will terminate
 p.ads:19:14: info: postcondition proved (CVC5: 2 VC)
 p.ads:19:34: info: precondition proved (CVC5: 1 VC)
 p.ads:23:14: info: postcondition proved (CVC5: 4 VC)

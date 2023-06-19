@@ -31,7 +31,7 @@ list.adb:43:10: info: precondition proved (Z3: 1 VC)
 list.adb:43:23: info: precondition proved (Z3: 1 VC)
 list.adb:44:10: info: precondition proved (Z3: 1 VC)
 list.ads:9:38: info: range check proved (Z3: 2 VC)
-list.ads:11:13: info: implicit terminating annotation on "Reverse_List" has been proved, subprogram will terminate
+list.ads:11:13: info: implicit aspect Always_Terminates on "Reverse_List" has been proved, subprogram will terminate
 list.ads:12:14: info: postcondition proved (Z3: 1 VC)
 list.ads:13:19: info: precondition proved (Z3: 2 VC)
 list.ads:13:31: info: range check proved (Z3: 2 VC)
@@ -45,13 +45,13 @@ stack.adb:17:22: info: range check proved (Z3: 2 VC)
 stack.adb:18:19: info: index check proved (Z3: 2 VC)
 stack.adb:29:22: info: range check proved (Z3: 2 VC)
 stack.adb:34:07: info: initialization of "E" proved
-stack.ads:11:16: info: implicit terminating annotation on "To" has been proved, subprogram will terminate
+stack.ads:11:16: info: implicit aspect Always_Terminates on "To" has been proved, subprogram will terminate
 stack.ads:12:17: info: postcondition proved (Z3: 2 VC)
-stack.ads:17:13: info: implicit terminating annotation on "Is_Full" has been proved, subprogram will terminate
-stack.ads:19:13: info: implicit terminating annotation on "Is_Empty" has been proved, subprogram will terminate
-stack.ads:22:13: info: implicit terminating annotation on "Empty_Stack" has been proved, subprogram will terminate
+stack.ads:17:13: info: implicit aspect Always_Terminates on "Is_Full" has been proved, subprogram will terminate
+stack.ads:19:13: info: implicit aspect Always_Terminates on "Is_Empty" has been proved, subprogram will terminate
+stack.ads:22:13: info: implicit aspect Always_Terminates on "Empty_Stack" has been proved, subprogram will terminate
 stack.ads:23:14: info: postcondition proved (Z3: 1 VC)
-stack.ads:25:13: info: implicit terminating annotation on "Top" has been proved, subprogram will terminate
+stack.ads:25:13: info: implicit aspect Always_Terminates on "Top" has been proved, subprogram will terminate
 stack.ads:27:14: info: postcondition proved (Z3: 1 VC)
 stack.ads:27:41: info: index check proved (Z3: 2 VC)
 stack.ads:31:14: info: postcondition proved (Z3: 1 VC)

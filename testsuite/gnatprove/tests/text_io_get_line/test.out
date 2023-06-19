@@ -1,15 +1,15 @@
 helpers.ads:15:54: info: division check proved (CVC5: 1 VC)
-helpers.ads:17:13: info: implicit terminating annotation on "fpeek" has been proved, subprogram will terminate
+helpers.ads:17:13: info: implicit aspect Always_Terminates on "fpeek" has been proved, subprogram will terminate
 helpers.ads:17:20: warning: unused variable "stream"
-helpers.ads:25:13: info: implicit terminating annotation on "No_Char_In_Slice" has been proved, subprogram will terminate
+helpers.ads:25:13: info: implicit aspect Always_Terminates on "No_Char_In_Slice" has been proved, subprogram will terminate
 helpers.ads:26:47: info: index check proved (CVC5: 2 VC)
-helpers.ads:33:13: info: implicit terminating annotation on "Has_Char_In_Slice" has been proved, subprogram will terminate
+helpers.ads:33:13: info: implicit aspect Always_Terminates on "Has_Char_In_Slice" has been proved, subprogram will terminate
 helpers.ads:34:48: info: index check proved (CVC5: 2 VC)
-helpers.ads:48:13: info: implicit terminating annotation on "No_Char_In_String" has been proved, subprogram will terminate
+helpers.ads:48:13: info: implicit aspect Always_Terminates on "No_Char_In_String" has been proved, subprogram will terminate
 helpers.ads:49:42: info: overflow check proved (CVC5: 2 VC)
 helpers.ads:49:46: info: overflow check proved (CVC5: 2 VC)
 helpers.ads:49:56: info: index check proved (CVC5: 2 VC)
-helpers.ads:53:13: info: implicit terminating annotation on "Has_Char_In_String" has been proved, subprogram will terminate
+helpers.ads:53:13: info: implicit aspect Always_Terminates on "Has_Char_In_String" has been proved, subprogram will terminate
 helpers.ads:54:43: info: overflow check proved (CVC5: 2 VC)
 helpers.ads:54:47: info: overflow check proved (CVC5: 2 VC)
 helpers.ads:54:57: info: index check proved (CVC5: 2 VC)
@@ -43,7 +43,7 @@ textio-get_line.adb:109:13: warning: no Global contract available for "ferror"
 textio-get_line.adb:152:35: warning: assuming "Find_Char_In_Slice" has no effect on global items
 textio-get_line.adb:152:35: warning: no Global contract available for "Find_Char_In_Slice"
 textio-get_line.adb:173:04: info: initialization of "Rest" proved
-textio.adb:10:14: info: terminating annotation on "Getc" has been proved, subprogram will terminate
+textio.adb:10:14: info: aspect Always_Terminates on "Getc" has been proved, subprogram will terminate
 textio.adb:10:38: info: initialization of "Ch" proved
 textio.adb:11:40: medium: "The_File" must be a Proof_In as it is only used in assertions (SPARK RM 6.1.4(19))
 textio.adb:32:07: warning: assuming "fgetc" always terminates
@@ -58,14 +58,14 @@ textio.adb:145:09: info: data dependencies proved
 textio.adb:154:17: medium: "Result" might not be initialized
 textio.adb:173:10: info: initialization of "Buffer" proved
 textio.adb:174:10: info: initialization of "Last" proved
-textio.adb:210:07: medium: terminating annotation on "Get_Line_Function" could be incorrect, call to "Get_Rest" might be nonterminating [possible fix: annotate "Get_Rest" with Always_Return]
+textio.adb:210:07: medium: aspect Always_Terminates on "Get_Line_Function" could be incorrect, call to "Get_Rest" might be nonterminating [possible fix: annotate "Get_Rest" with aspect Always_Terminates]
 textio.ads:6:21: warning: no procedure exists that can initialize abstract state "TextIO.Current_Input_File"
-textio.ads:12:14: info: terminating annotation on "Get_Line" has been proved, subprogram will terminate
+textio.ads:12:14: info: aspect Always_Terminates on "Get_Line" has been proved, subprogram will terminate
 textio.ads:13:07: warning: "File" is not modified, could be IN
 textio.ads:14:07: info: initialization of "Item" proved
 textio.ads:15:07: info: initialization of "Last" proved
 textio.ads:17:06: info: data dependencies proved
-textio.ads:42:14: info: terminating annotation on "Get_Line" has been proved, subprogram will terminate
+textio.ads:42:14: info: aspect Always_Terminates on "Get_Line" has been proved, subprogram will terminate
 textio.ads:43:07: info: initialization of "Item" proved
 textio.ads:44:07: info: initialization of "Last" proved
 textio.ads:46:06: info: data dependencies proved
@@ -75,6 +75,6 @@ textio.ads:113:06: error: "Cur_Position" is referenced in Post but missing from 
 textio.ads:113:06: error: "The_File" is referenced in Post but missing from the Global
 textio.ads:113:06: error: constant with variable input "EOF" is referenced in Post but missing from the Global
 textio.ads:113:06: error: constant with variable input "EOF_Ch" is referenced in Post but missing from the Global
-textio.ads:120:13: info: implicit terminating annotation on "Fpeek" has been proved, subprogram will terminate
-textio.ads:127:13: info: implicit terminating annotation on "Current_File" has been proved, subprogram will terminate
+textio.ads:120:13: info: implicit aspect Always_Terminates on "Fpeek" has been proved, subprogram will terminate
+textio.ads:127:13: info: implicit aspect Always_Terminates on "Current_File" has been proved, subprogram will terminate
 gnatprove: error during flow analysis and proof

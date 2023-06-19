@@ -1,5 +1,5 @@
 spark-containers-formal-unbounded_vectors.ads:668:57: medium: overflow check might fail, cannot prove upper bound for Index - Index_Type'First, in instantiation at use_vectors.ads:23 [reason for check: result of subtraction must fit in a 32-bits machine integer] [possible fix: use pragma Overflow_Mode or switch -gnato13 or unit SPARK.Big_Integers]
-use_lists.adb:8:33: medium: implicit terminating annotation on "My_Find" could be incorrect, loop might be nonterminating [possible fix: add loop variant in the loop body]
+use_lists.adb:8:33: medium: implicit aspect Always_Terminates on "My_Find" could be incorrect, loop might be nonterminating [possible fix: add loop variant in the loop body]
 use_lists.adb:10:13: info: loop invariant initialization proved
 use_lists.adb:10:13: info: loop invariant preservation proved
 use_lists.adb:10:32: info: precondition proved
@@ -154,7 +154,7 @@ use_lists.ads:17:21: info: precondition proved
 use_lists.ads:19:19: info: precondition proved
 use_lists.ads:19:40: info: precondition proved
 use_lists.ads:20:21: info: precondition proved
-use_lists.ads:23:13: info: implicit terminating annotation on "Is_Incr" has been proved, subprogram will terminate
+use_lists.ads:23:13: info: implicit aspect Always_Terminates on "Is_Incr" has been proved, subprogram will terminate
 use_lists.ads:24:75: info: overflow check proved
 use_lists.ads:28:14: info: postcondition proved
 use_lists.ads:30:24: info: precondition proved
@@ -210,7 +210,7 @@ use_lists.ads:106:39: info: range check proved
 use_lists.ads:108:11: info: precondition proved
 use_lists.ads:109:09: info: precondition proved
 use_lists.ads:109:38: info: overflow check proved
-use_lists.ads:114:13: info: implicit terminating annotation on "Prop" has been proved, subprogram will terminate
+use_lists.ads:114:13: info: implicit aspect Always_Terminates on "Prop" has been proved, subprogram will terminate
 use_lists.ads:119:06: info: data dependencies proved
 use_lists.ads:121:16: info: postcondition proved
 use_lists.ads:121:42: info: precondition proved
@@ -320,7 +320,7 @@ use_maps.adb:99:10: info: precondition proved
 use_maps.adb:99:22: info: precondition proved
 use_maps.adb:99:38: info: precondition proved
 use_maps.adb:100:16: info: precondition proved
-use_maps.adb:107:34: medium: implicit terminating annotation on "Are_Disjoint" could be incorrect, loop might be nonterminating [possible fix: add loop variant in the loop body]
+use_maps.adb:107:34: medium: implicit aspect Always_Terminates on "Are_Disjoint" could be incorrect, loop might be nonterminating [possible fix: add loop variant in the loop body]
 use_maps.adb:109:13: info: loop invariant initialization proved
 use_maps.adb:109:13: info: loop invariant preservation proved
 use_maps.adb:109:32: info: precondition proved
@@ -343,13 +343,13 @@ use_maps.adb:135:07: info: precondition proved
 use_maps.adb:136:07: info: precondition proved
 use_maps.adb:137:07: info: precondition proved
 use_maps.adb:138:07: info: precondition proved
-use_maps.ads:7:13: info: implicit terminating annotation on "Hash" has been proved, subprogram will terminate
-use_maps.ads:20:13: info: implicit terminating annotation on "My_Find" has been proved, subprogram will terminate
+use_maps.ads:7:13: info: implicit aspect Always_Terminates on "Hash" has been proved, subprogram will terminate
+use_maps.ads:20:13: info: implicit aspect Always_Terminates on "My_Find" has been proved, subprogram will terminate
 use_maps.ads:22:16: info: postcondition proved
 use_maps.ads:24:28: info: precondition proved
-use_maps.ads:28:13: info: implicit terminating annotation on "My_Contains" has been proved, subprogram will terminate
+use_maps.ads:28:13: info: implicit aspect Always_Terminates on "My_Contains" has been proved, subprogram will terminate
 use_maps.ads:30:12: info: postcondition proved
-use_maps.ads:33:13: info: implicit terminating annotation on "F" has been proved, subprogram will terminate
+use_maps.ads:33:13: info: implicit aspect Always_Terminates on "F" has been proved, subprogram will terminate
 use_maps.ads:34:35: info: overflow check proved
 use_maps.ads:38:14: info: postcondition proved
 use_maps.ads:40:35: info: precondition proved
@@ -368,7 +368,7 @@ use_maps.ads:64:14: info: postcondition proved
 use_maps.ads:67:15: info: precondition proved
 use_maps.ads:67:36: info: precondition proved
 use_maps.ads:71:14: info: postcondition proved
-use_maps.ads:75:13: info: implicit terminating annotation on "Prop" has been proved, subprogram will terminate
+use_maps.ads:75:13: info: implicit aspect Always_Terminates on "Prop" has been proved, subprogram will terminate
 use_maps.ads:79:40: info: precondition proved
 use_maps.ads:80:36: info: precondition proved
 use_maps.ads:81:22: info: overflow check proved
@@ -379,7 +379,7 @@ use_maps.ads:93:43: info: overflow check proved
 use_maps.ads:96:23: info: precondition proved
 use_maps.ads:96:40: info: precondition proved
 use_maps.ads:98:20: info: precondition proved
-use_maps.ads:103:13: info: implicit terminating annotation on "Q" has been proved, subprogram will terminate
+use_maps.ads:103:13: info: implicit aspect Always_Terminates on "Q" has been proved, subprogram will terminate
 use_maps.ads:108:06: info: data dependencies proved
 use_maps.ads:110:24: info: precondition proved
 use_maps.ads:110:37: info: precondition proved
@@ -507,7 +507,7 @@ use_ordered_maps.adb:97:10: info: precondition proved
 use_ordered_maps.adb:97:22: info: precondition proved
 use_ordered_maps.adb:97:38: info: precondition proved
 use_ordered_maps.adb:98:16: info: precondition proved
-use_ordered_maps.adb:105:34: medium: implicit terminating annotation on "Are_Disjoint" could be incorrect, loop might be nonterminating [possible fix: add loop variant in the loop body]
+use_ordered_maps.adb:105:34: medium: implicit aspect Always_Terminates on "Are_Disjoint" could be incorrect, loop might be nonterminating [possible fix: add loop variant in the loop body]
 use_ordered_maps.adb:107:13: info: loop invariant initialization proved
 use_ordered_maps.adb:107:13: info: loop invariant preservation proved
 use_ordered_maps.adb:107:32: info: precondition proved
@@ -529,13 +529,13 @@ use_ordered_maps.adb:132:07: info: precondition proved
 use_ordered_maps.adb:133:07: info: precondition proved
 use_ordered_maps.adb:134:07: info: precondition proved
 use_ordered_maps.adb:135:07: info: precondition proved
-use_ordered_maps.ads:7:13: info: implicit terminating annotation on "Hash" has been proved, subprogram will terminate
-use_ordered_maps.ads:18:13: info: implicit terminating annotation on "My_Find" has been proved, subprogram will terminate
+use_ordered_maps.ads:7:13: info: implicit aspect Always_Terminates on "Hash" has been proved, subprogram will terminate
+use_ordered_maps.ads:18:13: info: implicit aspect Always_Terminates on "My_Find" has been proved, subprogram will terminate
 use_ordered_maps.ads:20:16: info: postcondition proved
 use_ordered_maps.ads:22:28: info: precondition proved
-use_ordered_maps.ads:26:13: info: implicit terminating annotation on "My_Contains" has been proved, subprogram will terminate
+use_ordered_maps.ads:26:13: info: implicit aspect Always_Terminates on "My_Contains" has been proved, subprogram will terminate
 use_ordered_maps.ads:28:12: info: postcondition proved
-use_ordered_maps.ads:31:13: info: implicit terminating annotation on "F" has been proved, subprogram will terminate
+use_ordered_maps.ads:31:13: info: implicit aspect Always_Terminates on "F" has been proved, subprogram will terminate
 use_ordered_maps.ads:32:35: info: overflow check proved
 use_ordered_maps.ads:36:14: info: postcondition proved
 use_ordered_maps.ads:38:35: info: precondition proved
@@ -554,7 +554,7 @@ use_ordered_maps.ads:62:14: info: postcondition proved
 use_ordered_maps.ads:65:15: info: precondition proved
 use_ordered_maps.ads:65:36: info: precondition proved
 use_ordered_maps.ads:69:14: info: postcondition proved
-use_ordered_maps.ads:73:13: info: implicit terminating annotation on "Prop" has been proved, subprogram will terminate
+use_ordered_maps.ads:73:13: info: implicit aspect Always_Terminates on "Prop" has been proved, subprogram will terminate
 use_ordered_maps.ads:77:40: info: precondition proved
 use_ordered_maps.ads:78:36: info: precondition proved
 use_ordered_maps.ads:79:22: info: overflow check proved
@@ -566,7 +566,7 @@ use_ordered_maps.ads:91:43: info: overflow check proved
 use_ordered_maps.ads:94:23: info: precondition proved
 use_ordered_maps.ads:94:40: info: precondition proved
 use_ordered_maps.ads:96:20: info: precondition proved
-use_ordered_maps.ads:101:13: info: implicit terminating annotation on "Q" has been proved, subprogram will terminate
+use_ordered_maps.ads:101:13: info: implicit aspect Always_Terminates on "Q" has been proved, subprogram will terminate
 use_ordered_maps.ads:106:06: info: data dependencies proved
 use_ordered_maps.ads:108:24: info: precondition proved
 use_ordered_maps.ads:108:37: info: precondition proved
@@ -595,7 +595,7 @@ use_ordered_maps.ads:151:06: info: data dependencies proved
 use_ordered_maps.ads:152:39: info: precondition proved
 use_ordered_maps.ads:153:16: info: postcondition proved
 use_ordered_maps.ads:153:38: info: precondition proved
-use_ordered_sets.adb:7:33: medium: implicit terminating annotation on "My_Find" could be incorrect, loop might be nonterminating [possible fix: add loop variant in the loop body]
+use_ordered_sets.adb:7:33: medium: implicit aspect Always_Terminates on "My_Find" could be incorrect, loop might be nonterminating [possible fix: add loop variant in the loop body]
 use_ordered_sets.adb:9:13: info: loop invariant initialization proved
 use_ordered_sets.adb:9:13: info: loop invariant preservation proved
 use_ordered_sets.adb:9:32: info: precondition proved
@@ -616,14 +616,14 @@ use_ordered_sets.adb:31:28: info: precondition proved
 use_ordered_sets.adb:32:10: info: precondition proved
 use_ordered_sets.adb:32:25: info: precondition proved
 use_ordered_sets.adb:33:16: info: precondition proved
-use_ordered_sets.adb:40:34: medium: implicit terminating annotation on "Are_Disjoint" could be incorrect, loop might be nonterminating [possible fix: add loop variant in the loop body]
+use_ordered_sets.adb:40:34: medium: implicit aspect Always_Terminates on "Are_Disjoint" could be incorrect, loop might be nonterminating [possible fix: add loop variant in the loop body]
 use_ordered_sets.adb:42:13: info: loop invariant initialization proved
 use_ordered_sets.adb:42:13: info: loop invariant preservation proved
 use_ordered_sets.adb:42:32: info: precondition proved
 use_ordered_sets.adb:43:34: info: precondition proved
 use_ordered_sets.adb:44:27: info: precondition proved
 use_ordered_sets.adb:47:16: info: precondition proved
-use_ordered_sets.adb:55:34: medium: implicit terminating annotation on "Are_Disjoint_2" could be incorrect, loop might be nonterminating [possible fix: add loop variant in the loop body]
+use_ordered_sets.adb:55:34: medium: implicit aspect Always_Terminates on "Are_Disjoint_2" could be incorrect, loop might be nonterminating [possible fix: add loop variant in the loop body]
 use_ordered_sets.adb:57:13: info: loop invariant initialization proved
 use_ordered_sets.adb:57:13: info: loop invariant preservation proved
 use_ordered_sets.adb:57:32: info: precondition proved
@@ -735,15 +735,15 @@ use_ordered_sets.adb:177:07: info: precondition proved
 use_ordered_sets.adb:178:07: info: precondition proved
 use_ordered_sets.adb:179:07: info: precondition proved
 use_ordered_sets.adb:180:07: info: precondition proved
-use_ordered_sets.ads:13:13: info: implicit terminating annotation on "My_Contains" has been proved, subprogram will terminate
+use_ordered_sets.ads:13:13: info: implicit aspect Always_Terminates on "My_Contains" has been proved, subprogram will terminate
 use_ordered_sets.ads:15:12: info: postcondition proved
 use_ordered_sets.ads:18:14: info: postcondition proved
-use_ordered_sets.ads:21:13: info: implicit terminating annotation on "F" has been proved, subprogram will terminate
+use_ordered_sets.ads:21:13: info: implicit aspect Always_Terminates on "F" has been proved, subprogram will terminate
 use_ordered_sets.ads:22:35: info: overflow check proved
 use_ordered_sets.ads:26:14: info: postcondition proved
 use_ordered_sets.ads:33:14: info: postcondition proved
 use_ordered_sets.ads:38:14: info: postcondition proved
-use_ordered_sets.ads:43:13: info: implicit terminating annotation on "Prop" has been proved, subprogram will terminate
+use_ordered_sets.ads:43:13: info: implicit aspect Always_Terminates on "Prop" has been proved, subprogram will terminate
 use_ordered_sets.ads:49:22: info: overflow check proved
 use_ordered_sets.ads:50:14: info: postcondition proved
 use_ordered_sets.ads:55:14: info: postcondition proved
@@ -763,7 +763,7 @@ use_ordered_sets.ads:89:13: info: precondition proved
 use_ordered_sets.ads:89:40: info: overflow check proved
 use_ordered_sets.ads:98:14: info: postcondition proved
 use_ordered_sets.ads:98:43: info: overflow check proved
-use_ordered_sets.ads:106:13: info: implicit terminating annotation on "Q" has been proved, subprogram will terminate
+use_ordered_sets.ads:106:13: info: implicit aspect Always_Terminates on "Q" has been proved, subprogram will terminate
 use_ordered_sets.ads:111:06: info: data dependencies proved
 use_ordered_sets.ads:113:25: info: precondition proved
 use_ordered_sets.ads:114:16: info: postcondition proved
@@ -784,7 +784,7 @@ use_ordered_sets.ads:150:39: info: precondition proved
 use_ordered_sets.ads:156:06: info: data dependencies proved
 use_ordered_sets.ads:157:39: info: precondition proved
 use_ordered_sets.ads:158:16: info: postcondition proved
-use_sets.adb:7:33: medium: implicit terminating annotation on "My_Find" could be incorrect, loop might be nonterminating [possible fix: add loop variant in the loop body]
+use_sets.adb:7:33: medium: implicit aspect Always_Terminates on "My_Find" could be incorrect, loop might be nonterminating [possible fix: add loop variant in the loop body]
 use_sets.adb:9:13: info: loop invariant initialization proved
 use_sets.adb:9:13: info: loop invariant preservation proved
 use_sets.adb:9:32: info: precondition proved
@@ -805,14 +805,14 @@ use_sets.adb:31:28: info: precondition proved
 use_sets.adb:32:10: info: precondition proved
 use_sets.adb:32:25: info: precondition proved
 use_sets.adb:33:16: info: precondition proved
-use_sets.adb:40:34: medium: implicit terminating annotation on "Are_Disjoint" could be incorrect, loop might be nonterminating [possible fix: add loop variant in the loop body]
+use_sets.adb:40:34: medium: implicit aspect Always_Terminates on "Are_Disjoint" could be incorrect, loop might be nonterminating [possible fix: add loop variant in the loop body]
 use_sets.adb:42:13: info: loop invariant initialization proved
 use_sets.adb:42:13: info: loop invariant preservation proved
 use_sets.adb:42:32: info: precondition proved
 use_sets.adb:43:34: info: precondition proved
 use_sets.adb:44:27: info: precondition proved
 use_sets.adb:47:16: info: precondition proved
-use_sets.adb:55:34: medium: implicit terminating annotation on "Are_Disjoint_2" could be incorrect, loop might be nonterminating [possible fix: add loop variant in the loop body]
+use_sets.adb:55:34: medium: implicit aspect Always_Terminates on "Are_Disjoint_2" could be incorrect, loop might be nonterminating [possible fix: add loop variant in the loop body]
 use_sets.adb:57:13: info: loop invariant initialization proved
 use_sets.adb:57:13: info: loop invariant preservation proved
 use_sets.adb:57:32: info: precondition proved
@@ -855,23 +855,23 @@ use_sets.adb:117:07: info: precondition proved
 use_sets.adb:118:07: info: precondition proved
 use_sets.adb:119:07: info: precondition proved
 use_sets.adb:120:07: info: precondition proved
-use_sets.ads:8:13: info: implicit terminating annotation on "Hash" has been proved, subprogram will terminate
-use_sets.ads:15:13: info: implicit terminating annotation on "My_Contains" has been proved, subprogram will terminate
+use_sets.ads:8:13: info: implicit aspect Always_Terminates on "Hash" has been proved, subprogram will terminate
+use_sets.ads:15:13: info: implicit aspect Always_Terminates on "My_Contains" has been proved, subprogram will terminate
 use_sets.ads:17:12: info: postcondition proved
 use_sets.ads:20:14: info: postcondition proved
-use_sets.ads:23:13: info: implicit terminating annotation on "F" has been proved, subprogram will terminate
+use_sets.ads:23:13: info: implicit aspect Always_Terminates on "F" has been proved, subprogram will terminate
 use_sets.ads:24:35: info: overflow check proved
 use_sets.ads:28:14: info: postcondition proved
 use_sets.ads:34:14: info: postcondition proved
 use_sets.ads:39:14: info: postcondition proved
-use_sets.ads:44:13: info: implicit terminating annotation on "Prop" has been proved, subprogram will terminate
+use_sets.ads:44:13: info: implicit aspect Always_Terminates on "Prop" has been proved, subprogram will terminate
 use_sets.ads:50:24: info: overflow check proved
 use_sets.ads:51:14: info: postcondition proved
 use_sets.ads:56:14: info: postcondition proved
 use_sets.ads:62:14: info: postcondition proved
 use_sets.ads:72:14: info: postcondition proved
 use_sets.ads:72:43: info: overflow check proved
-use_sets.ads:80:13: info: implicit terminating annotation on "Q" has been proved, subprogram will terminate
+use_sets.ads:80:13: info: implicit aspect Always_Terminates on "Q" has been proved, subprogram will terminate
 use_sets.ads:85:06: info: data dependencies proved
 use_sets.ads:87:25: info: precondition proved
 use_sets.ads:88:16: info: postcondition proved
@@ -1000,7 +1000,7 @@ use_vectors.ads:16:36: info: range check proved
 use_vectors.ads:17:12: info: range check proved
 use_vectors.ads:18:35: info: range check proved
 use_vectors.ads:20:12: info: range check proved
-use_vectors.ads:32:13: info: implicit terminating annotation on "Is_Incr" has been proved, subprogram will terminate
+use_vectors.ads:32:13: info: implicit aspect Always_Terminates on "Is_Incr" has been proved, subprogram will terminate
 use_vectors.ads:33:75: info: overflow check proved
 use_vectors.ads:36:14: info: postcondition proved
 use_vectors.ads:38:24: info: precondition proved
@@ -1023,7 +1023,7 @@ use_vectors.ads:54:26: info: overflow check proved
 use_vectors.ads:54:26: info: range check proved
 use_vectors.ads:55:12: info: precondition proved
 use_vectors.ads:55:36: info: range check proved
-use_vectors.ads:59:13: info: implicit terminating annotation on "My_Find" has been proved, subprogram will terminate
+use_vectors.ads:59:13: info: implicit aspect Always_Terminates on "My_Find" has been proved, subprogram will terminate
 use_vectors.ads:65:11: info: precondition proved
 use_vectors.ads:65:23: info: range check proved
 use_vectors.ads:65:32: info: contract case proved

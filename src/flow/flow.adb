@@ -1673,7 +1673,7 @@ package body Flow is
                      Analysis.Check_CAE_In_Preconditions (FA);
                      --  We exclude tasks from this check since it is only
                      --  relevant for subprograms.
-                     Analysis.Check_Terminating_Annotation (FA);
+                     Analysis.Check_Always_Terminates (FA);
                      Analysis.Check_Ghost_Procedure_Outputs (FA);
                   end if;
                   Analysis.Find_Input_Only_Used_In_Assertions (FA);
@@ -1718,7 +1718,7 @@ package body Flow is
                              (FA.Spec_Entity))
                      then
                         Analysis.Check_Potentially_Blocking (FA);
-                        Analysis.Check_Terminating_Annotation (FA);
+                        Analysis.Check_Always_Terminates (FA);
                      end if;
                      if Have_Full_Package_Code then
                         Analysis.Find_Use_Of_Uninitialized_Variables (FA);

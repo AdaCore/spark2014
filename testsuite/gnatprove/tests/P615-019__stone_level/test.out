@@ -15,4 +15,4 @@ all_violations.ads:9:13: error: function "Increment_And_Log" with output global 
 all_violations.ads:9:13: error: launch "gnatprove --explain=E0005" for more information
 all_violations.ads:9:13: error: violation of pragma SPARK_Mode at test.adc:1
 gnatprove: error during analysis of data and information flow
-correct.adb:106:07: medium: implicit terminating annotation on "Increment_And_Log" could be incorrect, call to "Log" might be nonterminating [possible fix: annotate "Log" with Always_Return]
+correct.adb:106:07: medium: implicit aspect Always_Terminates on "Increment_And_Log" could be incorrect, call to "Log" might be nonterminating [possible fix: annotate "Log" with aspect Always_Terminates]

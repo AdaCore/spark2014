@@ -2,21 +2,21 @@
 test_01.adb:9:09: info: ceiling priority protocol is respected (CVC5: 1 VC)
 test_01.adb:9:09: info: initialization of "Updater" constituent of "State" proved
 test_01.adb:9:09: info: nontermination of task proved (CVC5: 1 VC)
-test_01.adb:13:16: info: implicit terminating annotation on "Get_Cache" has been proved, subprogram will terminate
+test_01.adb:13:16: info: implicit aspect Always_Terminates on "Get_Cache" has been proved, subprogram will terminate
 test_01.adb:18:04: warning: address specification on "Sensor" is imprecisely supported: assuming no concurrent accesses to non-atomic object, correct volatile properties, and no writes to a potential alias
 test_01.adb:18:04: warning: make sure that all overlapping objects have Async_Writers set to True
 test_01.ads:5:04: info: flow dependencies proved
-test_01.ads:8:13: info: implicit terminating annotation on "Get_Reading" has been proved, subprogram will terminate
+test_01.ads:8:13: info: implicit aspect Always_Terminates on "Get_Reading" has been proved, subprogram will terminate
 test_01.ads:10:09: info: data dependencies proved
 === test_02.adb ===
 test_02.adb:9:09: info: ceiling priority protocol is respected (CVC5: 1 VC)
 test_02.adb:9:09: info: initialization of "Updater" constituent of "State" proved
 test_02.adb:9:09: info: nontermination of task proved (CVC5: 1 VC)
-test_02.adb:13:16: info: implicit terminating annotation on "Get_Cache" has been proved, subprogram will terminate
+test_02.adb:13:16: info: implicit aspect Always_Terminates on "Get_Cache" has been proved, subprogram will terminate
 test_02.adb:18:04: warning: address specification on "Sensor" is imprecisely supported: assuming no concurrent accesses to non-atomic object, correct volatile properties, and no writes to a potential alias
 test_02.adb:18:04: warning: make sure that all overlapping objects have Async_Writers set to True
 test_02.ads:5:04: info: flow dependencies proved
-test_02.ads:8:13: info: implicit terminating annotation on "Get_Reading" has been proved, subprogram will terminate
+test_02.ads:8:13: info: implicit aspect Always_Terminates on "Get_Reading" has been proved, subprogram will terminate
 test_02.ads:10:09: info: data dependencies proved
 === test_03.adb ===
 test_03.adb:21:04: warning: address specification on "V_AR" is imprecisely supported: assuming no concurrent accesses to non-atomic object, correct volatile properties, and no writes to a potential alias

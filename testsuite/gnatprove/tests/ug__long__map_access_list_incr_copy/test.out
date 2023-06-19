@@ -16,9 +16,9 @@ p.adb:20:16: info: pointer dereference check proved
 p.adb:21:24: info: pointer dereference check proved
 p.adb:24:10: info: assertion proved
 p.adb:24:50: info: null exclusion check proved
-p.ads:6:13: info: implicit terminating annotation on "Small_Enough" has been proved, subprogram will terminate
-p.ads:9:13: info: implicit terminating annotation on "Equal" has been proved, subprogram will terminate
-p.ads:11:13: info: implicit terminating annotation on "Is_Incr" has been proved, subprogram will terminate
+p.ads:6:13: info: implicit aspect Always_Terminates on "Small_Enough" has been proved, subprogram will terminate
+p.ads:9:13: info: implicit aspect Always_Terminates on "Equal" has been proved, subprogram will terminate
+p.ads:11:13: info: implicit aspect Always_Terminates on "Is_Incr" has been proved, subprogram will terminate
 p.ads:12:28: info: overflow check proved
 p.ads:21:43: info: null exclusion check proved
 p.ads:22:14: info: postcondition proved

@@ -12,13 +12,13 @@ dns_network_receive.ads:50:07: info: initialization of "Failure" proved
 dns_network_receive.ads:51:09: info: data dependencies proved
 dns_network_receive.ads:52:09: info: flow dependencies proved
 dns_network_receive.ads:58:11: info: postcondition proved (CVC5: 2 VC; Trivial: 1 VC)
-dns_table_pkg.adb:29:16: info: implicit terminating annotation on "To_Lower" has been proved, subprogram will terminate
+dns_table_pkg.adb:29:16: info: implicit aspect Always_Terminates on "To_Lower" has been proved, subprogram will terminate
 dns_table_pkg.adb:34:10: info: initialization of "Length" proved
 dns_table_pkg.adb:37:14: info: range check proved (CVC5: 2 VC)
-dns_table_pkg.adb:44:16: info: implicit terminating annotation on "Same" has been proved, subprogram will terminate
+dns_table_pkg.adb:44:16: info: implicit aspect Always_Terminates on "Same" has been proved, subprogram will terminate
 dns_table_pkg.adb:45:62: info: index check proved (CVC5: 2 VC)
 dns_table_pkg.adb:45:70: info: index check proved (CVC5: 2 VC)
-dns_table_pkg.adb:47:16: info: implicit terminating annotation on "Hash" has been proved, subprogram will terminate
+dns_table_pkg.adb:47:16: info: implicit aspect Always_Terminates on "Hash" has been proved, subprogram will terminate
 dns_table_pkg.adb:57:16: info: loop invariant initialization proved (CVC5: 3 VC)
 dns_table_pkg.adb:57:16: info: loop invariant preservation proved (CVC5: 3 VC)
 dns_table_pkg.adb:61:24: info: overflow check proved (CVC5: 2 VC)
@@ -277,9 +277,9 @@ driver.adb:231:17: medium: precondition might fail
 driver.adb:234:54: low: range check might fail, cannot prove lower bound for Integer'Image (NumFound) & " SOA records returned" [reason for check: input value must fit in parameter type]
 driver.adb:236:11: info: range check proved (CVC5: 2 VC)
 driver.adb:238:47: medium: array index check might fail [reason for check: value must be a valid index into the array]
-parser_utilities.adb:50:13: info: implicit terminating annotation on "IsClass" has been proved, subprogram will terminate
+parser_utilities.adb:50:13: info: implicit aspect Always_Terminates on "IsClass" has been proved, subprogram will terminate
 parser_utilities.adb:56:07: info: initialization of "Retval" proved
-parser_utilities.adb:78:13: info: implicit terminating annotation on "IsRecord" has been proved, subprogram will terminate
+parser_utilities.adb:78:13: info: implicit aspect Always_Terminates on "IsRecord" has been proved, subprogram will terminate
 parser_utilities.adb:85:07: info: initialization of "FirstChar" proved
 parser_utilities.adb:86:07: info: initialization of "LastChar" proved
 parser_utilities.adb:87:07: info: initialization of "LengthToken" proved
@@ -376,7 +376,7 @@ parser_utilities.adb:673:25: info: range check proved (CVC5: 4 VC)
 parser_utilities.adb:674:22: info: index check proved (CVC5: 4 VC)
 parser_utilities.adb:674:39: info: index check proved (CVC5: 4 VC)
 parser_utilities.adb:723:37: info: precondition proved (CVC5: 1 VC)
-parser_utilities.adb:735:13: info: implicit terminating annotation on "IsMult" has been proved, subprogram will terminate
+parser_utilities.adb:735:13: info: implicit aspect Always_Terminates on "IsMult" has been proved, subprogram will terminate
 parser_utilities.adb:736:07: info: initialization of "C" proved
 parser_utilities.adb:737:07: info: initialization of "Retval" proved
 parser_utilities.adb:755:07: info: initialization of "DigitVal" proved
@@ -407,7 +407,7 @@ parser_utilities.adb:824:30: info: overflow check proved (CVC5: 2 VC)
 parser_utilities.adb:831:46: info: range check proved (CVC5: 1 VC)
 parser_utilities.adb:851:07: info: initialization of "CurrentChar" proved
 parser_utilities.adb:853:16: info: function contract might not be available on calls from enclosing unit
-parser_utilities.adb:853:16: info: implicit terminating annotation on "MultValue" has been proved, subprogram will terminate
+parser_utilities.adb:853:16: info: implicit aspect Always_Terminates on "MultValue" has been proved, subprogram will terminate
 parser_utilities.adb:855:22: info: postcondition proved (CVC5: 2 VC)
 parser_utilities.adb:858:10: info: initialization of "C" proved
 parser_utilities.adb:859:10: info: initialization of "RetVal" proved
@@ -476,7 +476,7 @@ parser_utilities.adb:1135:07: info: initialization of "Ctr" proved
 parser_utilities.adb:1136:07: info: initialization of "NumSeparators" proved
 parser_utilities.adb:1137:07: info: initialization of "FieldTotal" proved
 parser_utilities.adb:1138:07: info: initialization of "NumDigitsInField" proved
-parser_utilities.adb:1143:16: info: implicit terminating annotation on "SeparatorsOK" has been proved, subprogram will terminate
+parser_utilities.adb:1143:16: info: implicit aspect Always_Terminates on "SeparatorsOK" has been proved, subprogram will terminate
 parser_utilities.adb:1171:31: info: loop variant proved (CVC5: 1 VC)
 parser_utilities.adb:1173:13: info: loop invariant initialization proved (CVC5: 3 VC)
 parser_utilities.adb:1173:13: info: loop invariant preservation proved (CVC5: 3 VC)
@@ -498,7 +498,7 @@ parser_utilities.adb:1249:07: info: initialization of "ByteTotal" proved
 parser_utilities.adb:1250:07: info: initialization of "NumDigitsInByte" proved
 parser_utilities.adb:1251:07: info: initialization of "GrandTotal" proved
 parser_utilities.adb:1252:07: info: initialization of "RetVal" proved
-parser_utilities.adb:1254:16: info: implicit terminating annotation on "SeparatorsOK" has been proved, subprogram will terminate
+parser_utilities.adb:1254:16: info: implicit aspect Always_Terminates on "SeparatorsOK" has been proved, subprogram will terminate
 parser_utilities.adb:1259:10: info: initialization of "RetVal" proved
 parser_utilities.adb:1285:31: info: loop variant proved (CVC5: 1 VC)
 parser_utilities.adb:1287:13: info: loop invariant initialization proved (CVC5: 3 VC)
@@ -543,9 +543,9 @@ parser_utilities.ads:132:07: info: initialization of "AllDone" proved
 parser_utilities.ads:134:09: info: flow dependencies proved
 parser_utilities.ads:142:09: info: flow dependencies proved
 parser_utilities.ads:144:13: info: implicit function contract might not be available on implicit recursive calls
-parser_utilities.ads:144:13: info: implicit terminating annotation on "ConvertIPV4" has been proved, subprogram will terminate
-parser_utilities.ads:150:13: info: implicit terminating annotation on "ConvertIPV6" has been proved, subprogram will terminate
-parser_utilities.ads:156:13: info: implicit terminating annotation on "GetRecordType" has been proved, subprogram will terminate
+parser_utilities.ads:144:13: info: implicit aspect Always_Terminates on "ConvertIPV4" has been proved, subprogram will terminate
+parser_utilities.ads:150:13: info: implicit aspect Always_Terminates on "ConvertIPV6" has been proved, subprogram will terminate
+parser_utilities.ads:156:13: info: implicit aspect Always_Terminates on "GetRecordType" has been proved, subprogram will terminate
 process_dns_request.ads:130:50: medium: range check might fail, cannot prove lower bound for DNSKey_Record.KeyLength [reason for check: value must be convertible to the target type of the conversion] [possible fix: add precondition (DNSKey_Record.KeyLength >= Integer(Packet_Bytes_Range'First)) to subprogram at line 121]
 process_dns_request.ads:223:50: info: range check proved (CVC5: 2 VC)
 process_first_line_of_record.adb:64:07: info: initialization of "CurrentIPV4" proved
@@ -605,7 +605,7 @@ rr_type.adb:114:34: medium: array index check might fail [reason for check: valu
 rr_type.adb:128:07: info: initialization of "LengthOfDomainName" proved
 rr_type.adb:129:07: info: initialization of "WireVersion" proved
 rr_type.adb:131:16: info: implicit function contract might not be available on calls from enclosing unit
-rr_type.adb:131:16: info: implicit terminating annotation on "FindPeriod" has been proved, subprogram will terminate
+rr_type.adb:131:16: info: implicit aspect Always_Terminates on "FindPeriod" has been proved, subprogram will terminate
 rr_type.adb:136:10: info: initialization of "Result" proved
 rr_type.adb:140:27: info: index check proved (CVC5: 4 VC)
 rr_type.adb:142:34: info: loop variant proved (CVC5: 1 VC)
@@ -624,21 +624,21 @@ rr_type.adb:163:28: info: index check proved (CVC5: 2 VC)
 rr_type.adb:163:28: info: overflow check proved (CVC5: 2 VC)
 rr_type.adb:175:39: info: precondition proved (CVC5: 1 VC)
 rr_type.ads:77:09: info: flow dependencies proved
-rr_type.ads:79:13: info: implicit terminating annotation on "WireNameLength" has been proved, subprogram will terminate
+rr_type.ads:79:13: info: implicit aspect Always_Terminates on "WireNameLength" has been proved, subprogram will terminate
 rr_type.ads:81:06: info: postcondition proved (CVC5: 1 VC)
 rr_type.ads:83:18: info: range check proved (CVC5: 2 VC)
 rr_type.ads:85:18: info: index check proved (CVC5: 2 VC)
-rr_type.ads:87:13: info: implicit terminating annotation on "DomainNameLength" has been proved, subprogram will terminate
+rr_type.ads:87:13: info: implicit aspect Always_Terminates on "DomainNameLength" has been proved, subprogram will terminate
 rr_type.ads:91:06: info: postcondition proved (CVC5: 1 VC)
 rr_type.ads:93:37: medium: array index check might fail [reason for check: result of addition must be a valid index into the array]
 rr_type.ads:94:18: info: range check proved (CVC5: 2 VC)
 rr_type.ads:96:18: info: index check proved (CVC5: 2 VC)
 rr_type.ads:98:13: info: function contract might not be available on implicit recursive calls
-rr_type.ads:98:13: info: implicit terminating annotation on "ConvertDomainNameToWire" has been proved, subprogram will terminate
+rr_type.ads:98:13: info: implicit aspect Always_Terminates on "ConvertDomainNameToWire" has been proved, subprogram will terminate
 rr_type.ads:102:06: info: postcondition proved (CVC5: 2 VC)
-rr_type.ads:106:13: info: implicit terminating annotation on "ConvertStringToDomainName" has been proved, subprogram will terminate
+rr_type.ads:106:13: info: implicit aspect Always_Terminates on "ConvertStringToDomainName" has been proved, subprogram will terminate
 rr_type.ads:109:17: info: range check proved (CVC5: 2 VC)
-rr_type.ads:111:13: info: implicit terminating annotation on "ConvertStringToWire" has been proved, subprogram will terminate
+rr_type.ads:111:13: info: implicit aspect Always_Terminates on "ConvertStringToWire" has been proved, subprogram will terminate
 rr_type.ads:112:17: info: range check proved (CVC5: 2 VC)
 socket_timeout_linux.adb:27:14: warning: file name does not match unit name, should be "socket_timeout.adb"
 spark-text_io.ads:232:46: medium: precondition might fail

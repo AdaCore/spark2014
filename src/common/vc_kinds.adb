@@ -511,7 +511,7 @@ package body VC_Kinds is
          when Stable                                      =>
             "A loop with stable statement.",
          when Subprogram_Termination                      =>
-            "A subprogram with Terminating annotation may not terminate.",
+            "A subprogram with aspect Always_Terminates may not terminate.",
          when Uninitialized                               =>
             "Flow analysis has detected the use of an uninitialized variable.",
          when Unused_Global                               =>
@@ -569,7 +569,7 @@ package body VC_Kinds is
           "no recursive call visible on subprogram with Subprogram_Variant",
 
         --  Warnings guaranteed to be issued
-        when Warn_Assumed_Always_Return =>
+        when Warn_Assumed_Always_Terminates =>
           "no Always_Terminates aspect available for subprogram, "
           & "subprogram is assumed to always terminate",
         when Warn_Assumed_Global_Null =>
@@ -1393,7 +1393,7 @@ package body VC_Kinds is
          when Stable                                      =>
             "loop with stable statement",
          when Subprogram_Termination                      =>
-            "subprogram marked Terminating may not terminate",
+            "subprogram with aspect Always_Terminates may not terminate",
          when Uninitialized                               =>
             "use of an uninitialized variable",
          when Unused_Global                               =>
@@ -1447,7 +1447,7 @@ package body VC_Kinds is
         --  Warnings guaranteed to be issued
         when Warn_Imprecisely_Supported_Address =>
           "imprecisely supported address specification",
-        when Warn_Assumed_Always_Return =>
+        when Warn_Assumed_Always_Terminates =>
           "assumed Always_Terminates",
         when Warn_Assumed_Global_Null =>
           "assumed Global null",

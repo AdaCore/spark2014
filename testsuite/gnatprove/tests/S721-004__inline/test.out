@@ -1,5 +1,5 @@
-sem_cat.adb:3:13: info: implicit terminating annotation on "Simply_False" has been proved, subprogram will terminate
-sem_cat.adb:11:16: info: implicit terminating annotation on "Stream_Attributes_Available" has been proved, subprogram will terminate
+sem_cat.adb:3:13: info: implicit aspect Always_Terminates on "Simply_False" has been proved, subprogram will terminate
+sem_cat.adb:11:16: info: implicit aspect Always_Terminates on "Stream_Attributes_Available" has been proved, subprogram will terminate
 sem_cat.adb:11:45: warning: unused variable "Typ"
 sem_cat.adb:13:17: warning: assuming "Stream_Attribute_Available" has no effect on global items
 sem_cat.adb:13:17: warning: no Global contract available for "Stream_Attribute_Available"

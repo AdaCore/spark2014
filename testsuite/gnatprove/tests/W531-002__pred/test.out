@@ -1,2 +1,2 @@
-bad_array.ads:5:13: info: implicit terminating annotation on "Foo" has been proved, subprogram will terminate
+bad_array.ads:5:13: info: implicit aspect Always_Terminates on "Foo" has been proved, subprogram will terminate
 missing check

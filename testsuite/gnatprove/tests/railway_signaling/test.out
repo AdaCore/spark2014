@@ -54,10 +54,10 @@ trains.adb:167:31: info: assertion proved
 trains.adb:168:31: medium: assertion might fail, cannot prove Track_Signals (Get_Other_Previous_Track (Trains (Train), Id)) in Orange | Red
 trains.adb:168:31: medium: in inlined expression function body at trains.ads:152
 trains.adb:169:31: info: assertion proved
-trains.ads:55:13: info: implicit terminating annotation on "No_Track_Precedes_Itself" has been proved, subprogram will terminate
-trains.ads:80:13: info: implicit terminating annotation on "Entering_A_Track" has been proved, subprogram will terminate
-trains.ads:85:13: info: implicit terminating annotation on "Inside_A_Track" has been proved, subprogram will terminate
-trains.ads:91:13: info: implicit terminating annotation on "One_Train_At_Most_Per_Track" has been proved, subprogram will terminate
+trains.ads:55:13: info: implicit aspect Always_Terminates on "No_Track_Precedes_Itself" has been proved, subprogram will terminate
+trains.ads:80:13: info: implicit aspect Always_Terminates on "Entering_A_Track" has been proved, subprogram will terminate
+trains.ads:85:13: info: implicit aspect Always_Terminates on "Inside_A_Track" has been proved, subprogram will terminate
+trains.ads:91:13: info: implicit aspect Always_Terminates on "One_Train_At_Most_Per_Track" has been proved, subprogram will terminate
 trains.ads:92:16: info: range check proved
 trains.ads:93:19: info: range check proved
 trains.ads:95:25: info: index check proved
@@ -68,14 +68,14 @@ trains.ads:97:25: info: index check proved
 trains.ads:97:55: info: index check proved
 trains.ads:98:25: info: index check proved
 trains.ads:98:55: info: index check proved
-trains.ads:110:13: info: implicit terminating annotation on "Occupied_Tracks_On_Red" has been proved, subprogram will terminate
+trains.ads:110:13: info: implicit aspect Always_Terminates on "Occupied_Tracks_On_Red" has been proved, subprogram will terminate
 trains.ads:111:16: info: range check proved
 trains.ads:112:33: info: index check proved
 trains.ads:113:33: info: index check proved
-trains.ads:116:13: info: implicit terminating annotation on "Get_Previous_Track" has been proved, subprogram will terminate
-trains.ads:124:13: info: implicit terminating annotation on "Get_Other_Previous_Track" has been proved, subprogram will terminate
-trains.ads:135:13: info: implicit terminating annotation on "Is_Previous_Track" has been proved, subprogram will terminate
-trains.ads:144:13: info: implicit terminating annotation on "Previous_Tracks_On_Orange_Or_Red" has been proved, subprogram will terminate
+trains.ads:116:13: info: implicit aspect Always_Terminates on "Get_Previous_Track" has been proved, subprogram will terminate
+trains.ads:124:13: info: implicit aspect Always_Terminates on "Get_Other_Previous_Track" has been proved, subprogram will terminate
+trains.ads:135:13: info: implicit aspect Always_Terminates on "Is_Previous_Track" has been proved, subprogram will terminate
+trains.ads:144:13: info: implicit aspect Always_Terminates on "Previous_Tracks_On_Orange_Or_Red" has been proved, subprogram will terminate
 trains.ads:145:16: info: range check proved
 trains.ads:147:45: info: index check proved
 trains.ads:148:31: info: index check proved
@@ -83,11 +83,11 @@ trains.ads:148:59: info: index check proved
 trains.ads:151:51: info: index check proved
 trains.ads:152:31: info: index check proved
 trains.ads:152:65: info: index check proved
-trains.ads:155:13: info: implicit terminating annotation on "Safe_Signaling" has been proved, subprogram will terminate
-trains.ads:168:13: info: implicit terminating annotation on "Moving_Inside_Current_Tracks" has been proved, subprogram will terminate
-trains.ads:175:13: info: implicit terminating annotation on "Moving_To_A_New_Track" has been proved, subprogram will terminate
-trains.ads:183:13: info: implicit terminating annotation on "Moving_Away_From_Current_Track" has been proved, subprogram will terminate
-trains.ads:191:13: info: implicit terminating annotation on "Valid_Move" has been proved, subprogram will terminate
+trains.ads:155:13: info: implicit aspect Always_Terminates on "Safe_Signaling" has been proved, subprogram will terminate
+trains.ads:168:13: info: implicit aspect Always_Terminates on "Moving_Inside_Current_Tracks" has been proved, subprogram will terminate
+trains.ads:175:13: info: implicit aspect Always_Terminates on "Moving_To_A_New_Track" has been proved, subprogram will terminate
+trains.ads:183:13: info: implicit aspect Always_Terminates on "Moving_Away_From_Current_Track" has been proved, subprogram will terminate
+trains.ads:191:13: info: implicit aspect Always_Terminates on "Valid_Move" has been proved, subprogram will terminate
 trains.ads:220:07: info: initialization of "Result" proved
 trains.ads:222:06: info: data dependencies proved
 trains.ads:228:14: info: postcondition proved

@@ -296,18 +296,6 @@ package SPARK_Definition.Annotate is
    function Has_Logical_Eq_Annotation (E : Entity_Id) return Boolean;
    --  Return True if a pragma Annotate Logical_Equal applies to entity E
 
-   function Has_Might_Not_Return_Annotation (E : Entity_Id) return Boolean
-   with Pre => Ekind (E) in Entry_Kind
-                          | E_Function
-                          | E_Package
-                          | E_Procedure
-                          | E_Generic_Procedure
-                          | E_Task_Type
-                          | E_Subprogram_Type,
-        Post => (if Has_Might_Not_Return_Annotation'Result
-                 then Ekind (E) in E_Procedure | E_Generic_Procedure);
-   --  Return True if a pragma Annotate Might_Not_Return applies to entity E
-
    function Has_No_Wrap_Around_Annotation (E : Entity_Id) return Boolean
    with Pre => Is_Type (E);
    --  Return True if a pragma Annotate No_Wrap_Around applies to the type E
@@ -321,18 +309,6 @@ package SPARK_Definition.Annotate is
          when False_Positive => "false positive",
          when Intentional    => "intentional");
    --  Return the string representation of the supplied annotation
-
-   function Has_Always_Return_Annotation (E : Entity_Id) return Boolean;
-   --  Return True if a pragma Annotate Always_Return applies to the subprogram
-   --  E.
-
-   function Has_Implicit_Always_Return_Annotation
-     (E : Entity_Id) return Boolean;
-   --  Return True if E has an implicit Always_Return annotation. The three
-   --  cases currently are:
-   --  - E is a function.
-   --  - E is a package.
-   --  - E is an automatically instantiated lemma.
 
    function Has_At_End_Borrow_Annotation (E : Entity_Id) return Boolean;
    --  Return True if the function E is a function annotated with at_end_borrow

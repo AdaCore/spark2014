@@ -1,7 +1,7 @@
-test_deep_element_type.adb:18:13: info: implicit terminating annotation on overriding operator "=" has been proved, subprogram will terminate
-test_deep_element_type.adb:26:13: info: implicit terminating annotation on overriding operator "<" has been proved, subprogram will terminate
-test_deep_element_type.adb:30:13: info: implicit terminating annotation on "Hash" has been proved, subprogram will terminate
-test_deep_element_type.adb:32:13: info: implicit terminating annotation on "Hash" has been proved, subprogram will terminate
+test_deep_element_type.adb:18:13: info: implicit aspect Always_Terminates on overriding operator "=" has been proved, subprogram will terminate
+test_deep_element_type.adb:26:13: info: implicit aspect Always_Terminates on overriding operator "<" has been proved, subprogram will terminate
+test_deep_element_type.adb:30:13: info: implicit aspect Always_Terminates on "Hash" has been proved, subprogram will terminate
+test_deep_element_type.adb:32:13: info: implicit aspect Always_Terminates on "Hash" has been proved, subprogram will terminate
 test_deep_element_type.adb:35:04: error: "Item" is not writable
 test_deep_element_type.adb:35:04: error: instantiation error at spark-containers-formal-doubly_linked_lists.ads:105
 test_deep_element_type.adb:35:04: error: instantiation error at spark-containers-functional-vectors.ads:301

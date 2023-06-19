@@ -24,7 +24,7 @@ NOT_CONSTANT_AFTER_ELABORATION - illegal write of an object declared as constant
 POTENTIALLY_BLOCKING_IN_PROTECTED - protected operation blocks - A protected operation may block. - EASY
 REFERENCE_TO_NON_CAE_VARIABLE - illegal reference to a global object in precondition of a protected operation - An illegal reference to global in precondition of a protected operation. - EASY
 REFINED_STATE_WRONG - constant with no variable inputs as an abstract state's constituent - Constant with no variable inputs as an abstract state's constituent. - EASY
-SUBPROGRAM_TERMINATION - subprogram marked Terminating may not terminate - A subprogram with Terminating annotation may not terminate. - EASY
+SUBPROGRAM_TERMINATION - subprogram with aspect Always_Terminates may not terminate - A subprogram with aspect Always_Terminates may not terminate. - EASY
 UNINITIALIZED - use of an uninitialized variable - Flow analysis has detected the use of an uninitialized variable. - EASY
 UNUSED_GLOBAL - global object is not used - A global object is never used. - EASY
 [Flow analysis warnings categories]

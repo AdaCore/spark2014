@@ -398,6 +398,14 @@ package SPARK_Util.Subprograms is
    --  lemma procedures), or computed by flow analysis if Compute is True. In
    --  the last two cases, the condition is necessarily static.
 
+   function Has_Implicit_Always_Terminates
+     (E : Entity_Id) return Boolean;
+   --  Return True if E has an implicit aspect Always_Terminates. The three
+   --  cases currently are:
+   --  - E is a function.
+   --  - E is a package.
+   --  - E is an automatically instantiated lemma.
+
    function Has_Contracts
      (E         : Entity_Id;
       Name      : Pragma_Id;
@@ -417,12 +425,6 @@ package SPARK_Util.Subprograms is
    --  @param Classwide True when asking for the classwide version of contract
    --  @param Inherited True when asking only for inherited contracts
    --  @return True iff there is at least one contract Name for E
-
-   function Has_Any_Returning_Annotation (E : Entity_Id) return Boolean
-   with Pre => Ekind (E) in E_Function | E_Procedure | Entry_Kind;
-   --  @param E called entity
-   --  @return True iff E is annotated with Always_Return, Might_Not_Return
-   --  or has aspect No_Return.
 
    function Has_Extensions_Visible (E : Entity_Id) return Boolean
    with Pre =>

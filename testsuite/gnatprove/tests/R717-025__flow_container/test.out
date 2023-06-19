@@ -1,4 +1,4 @@
-p.adb:6:13: info: implicit terminating annotation on "Less_Than" has been proved, subprogram will terminate
+p.adb:6:13: info: implicit aspect Always_Terminates on "Less_Than" has been proved, subprogram will terminate
 p.adb:7:09: info: data dependencies proved
 p.adb:9:04: info: function contract might not be available on implicit recursive calls
 p.adb:9:04: info: function contract might not be available on implicit recursive calls

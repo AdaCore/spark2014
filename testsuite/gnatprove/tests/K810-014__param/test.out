@@ -1,1 +1,1 @@
-pa.ads:5:13: info: implicit terminating annotation on "F" has been proved, subprogram will terminate
+pa.ads:5:13: info: implicit aspect Always_Terminates on "F" has been proved, subprogram will terminate

@@ -377,10 +377,6 @@ package body Flow_Generated_Globals.Phase_2 is
    --  subprograms and package elaboration whose contract will be pulled by
    --  proof to verify Caller.
 
-   function Is_Potentially_Nonreturning_Internal (EN : Entity_Name)
-                                                  return Boolean;
-   --  See comment for Is_Potentially_Nonreturning with Entity_Id as an input
-
    function Is_Recursive (EN : Entity_Name) return Boolean;
    --  Returns True iff there is an edge in the subprogram call graph that
    --  connects a subprogram to itself.
@@ -1414,7 +1410,7 @@ package body Flow_Generated_Globals.Phase_2 is
                then
                   --  ??? use Is_Proper_Callee here
                   if V.Kind /= E_Task_Type then
-                     Serialize (V.Has_Terminate);
+                     Serialize (V.Always_Terminates);
                      Serialize (V.Has_Subp_Variant);
                      Serialize (V.No_Body);
                      Serialize (V.Nonreturning);
@@ -3335,7 +3331,7 @@ package body Flow_Generated_Globals.Phase_2 is
       --  of EN. It maintains a stack of entities to analyze. For each entity
       --  in the stack, the different called entity, named callees, are
       --  analyzed.
-      --  If the callee is a predefined unit or has the Terminating annotation,
+      --  If the callee is a predefined unit or has aspect Always_Terminates,
       --  it is not further analyzed.
       --  Otherwise,
       --  * If the callee is directly nonreturning or is recursive
@@ -3368,12 +3364,13 @@ package body Flow_Generated_Globals.Phase_2 is
 
             for Callee of Generated_Calls (Caller) loop
 
-               --  If the callee is predefined or has a Terminating annotation,
-               --  do not analyze it.
+               --  If the callee is predefined or has explicit or implicit
+               --  Always_Terminates aspect, do not analyze it.
 
                if not Is_Predefined (Callee)
-                 and then (Phase_1_Info.Contains (Callee)
-                           and then not Phase_1_Info (Callee).Has_Terminate)
+                 and then
+                   (Phase_1_Info.Contains (Callee)
+                    and then not Phase_1_Info (Callee).Always_Terminates)
                then
 
                   --  Two first cases of Is_Potentially_Nonreturning_Internal
@@ -3420,21 +3417,18 @@ package body Flow_Generated_Globals.Phase_2 is
    -- Is_Potentially_Nonreturning_Internal --
    ------------------------------------------
 
-   function Is_Potentially_Nonreturning_Internal (EN : Entity_Name)
+   function Is_Potentially_Nonreturning_Internal (E : Entity_Id)
                                                   return Boolean
    is
+      EN : constant Entity_Name := To_Entity_Name (E);
    begin
       --  Returns True if it has been registered as nonreturning in phase 1
       --  (see usage of GG_Register_Nonreturning in flow.adb), is recursive
       --  without a Subprogram_Variant or calls a potentially nonreturning
       --  subprogram. The latter is checked by exploring the call graph of
-      --  the callee, and trusting Terminating annotations.
+      --  the callee, and trusting aspects Always_Terminates.
       --  In flow, package entities inherit the Subprogram_Variant aspect
       --  from their enclosing subprograms.
-      --
-      --  Always returns False if the subprogram has been annotated with the
-      --  Terminating annotation, which is also detected in phase 1 (see
-      --  GG_Register_Terminating).
       return
         Is_Directly_Nonreturning (EN)
           or else
@@ -3443,20 +3437,6 @@ package body Flow_Generated_Globals.Phase_2 is
           or else
         Calls_Potentially_Nonreturning_Subprogram (EN);
    end Is_Potentially_Nonreturning_Internal;
-
-   function Is_Potentially_Nonreturning_Internal (E : Entity_Id)
-                                                  return Boolean
-   is
-     (Is_Potentially_Nonreturning_Internal (To_Entity_Name (E)));
-
-   ---------------------------------
-   -- Is_Potentially_Nonreturning --
-   ---------------------------------
-
-   function Is_Potentially_Nonreturning (E : Entity_Id) return Boolean is
-     (not Has_Always_Return_Annotation (E)
-      and then not Has_Implicit_Always_Return_Annotation (E)
-      and then Is_Potentially_Nonreturning_Internal (E));
 
    ------------------
    -- Is_Recursive --

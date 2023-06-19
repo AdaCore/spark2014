@@ -3,12 +3,12 @@ queue.adb:8:07: info: precondition proved (CVC5: 1 VC)
 queue.adb:13:19: info: precondition proved (CVC5: 1 VC)
 queue.adb:15:07: info: precondition proved (CVC5: 1 VC)
 queue.adb:21:14: info: precondition proved (CVC5: 1 VC)
-queue.ads:22:13: info: implicit terminating annotation on "Front" has been proved, subprogram will terminate
+queue.ads:22:13: info: implicit aspect Always_Terminates on "Front" has been proved, subprogram will terminate
 queue.ads:24:19: info: postcondition proved (CVC5: 1 VC)
 queue.ads:24:19: info: precondition proved (CVC5: 1 VC)
-queue.ads:26:13: info: implicit terminating annotation on "Tail" has been proved, subprogram will terminate
+queue.ads:26:13: info: implicit aspect Always_Terminates on "Tail" has been proved, subprogram will terminate
 queue.ads:28:14: info: postcondition proved (CVC5: 2 VC)
-queue.ads:31:13: info: implicit terminating annotation on "Enqueue" has been proved, subprogram will terminate
+queue.ads:31:13: info: implicit aspect Always_Terminates on "Enqueue" has been proved, subprogram will terminate
 queue.ads:33:14: info: postcondition proved (CVC5: 3 VC)
 queue.ads:33:51: info: overflow check proved (CVC5: 2 VC)
 queue.ads:34:10: info: precondition proved (CVC5: 1 VC)

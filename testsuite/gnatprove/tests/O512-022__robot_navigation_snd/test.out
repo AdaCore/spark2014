@@ -117,7 +117,7 @@ algorithm.adb:363:27: info: precondition proved (Z3: 1 VC)
 algorithm.adb:383:15: info: range check proved (CVC5: 2 VC)
 algorithm.adb:383:71: medium: range check might fail, cannot prove lower bound for Length (This.gapVec) [reason for check: value must be convertible to the target type of the conversion] [possible fix: add precondition (Length (This.gapVec) >= Count_Type(Gap_ID'First)) to subprogram at algorithm.ads:91]
 algorithm.adb:397:22: info: assertion proved (CVC5: 1 VC)
-algorithm.adb:399:43: medium: implicit terminating annotation on "findBestValley" could be incorrect, loop might be nonterminating [possible fix: add loop variant in the loop body]
+algorithm.adb:399:43: medium: implicit aspect Always_Terminates on "findBestValley" could be incorrect, loop might be nonterminating [possible fix: add loop variant in the loop body]
 algorithm.adb:400:33: info: loop invariant initialization proved (CVC5: 2 VC)
 algorithm.adb:400:33: info: loop invariant preservation proved (CVC5: 2 VC)
 algorithm.adb:405:73: info: precondition proved (CVC5: 1 VC)
@@ -392,12 +392,12 @@ algorithm.adb:880:10: warning: this statement is never reached
 algorithm.adb:881:10: warning: this statement is never reached
 algorithm.adb:882:10: warning: this statement is never reached
 algorithm.ads:43:38: info: range check proved (CVC5: 2 VC)
-algorithm.ads:68:13: info: implicit terminating annotation on "isFilterClear" has been proved, subprogram will terminate
-algorithm.ads:76:13: info: implicit terminating annotation on "isRisingGapSafe" has been proved, subprogram will terminate
+algorithm.ads:68:13: info: implicit aspect Always_Terminates on "isFilterClear" has been proved, subprogram will terminate
+algorithm.ads:76:13: info: implicit aspect Always_Terminates on "isRisingGapSafe" has been proved, subprogram will terminate
 algorithm.ads:89:14: info: postcondition proved (CVC5: 1 VC)
-algorithm.ads:98:13: info: implicit terminating annotation on "ObsAvoidDelta" has been proved, subprogram will terminate
+algorithm.ads:98:13: info: implicit aspect Always_Terminates on "ObsAvoidDelta" has been proved, subprogram will terminate
 formal-numerics-elementary_functions.ads:91:22: info: division check proved (CVC5: 1 VC)
 formal-numerics-elementary_functions.ads:91:52: info: float overflow check proved (Trivial)
 formal-numerics-elementary_functions.ads:100:23: info: division check proved (CVC5: 1 VC)
 formal-numerics-elementary_functions.ads:100:51: info: float overflow check proved (Trivial)
-formal-numerics.ads:17:13: info: implicit terminating annotation on "e" has been proved, subprogram will terminate
+formal-numerics.ads:17:13: info: implicit aspect Always_Terminates on "e" has been proved, subprogram will terminate

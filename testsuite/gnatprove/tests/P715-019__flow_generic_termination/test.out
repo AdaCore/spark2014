@@ -26,7 +26,7 @@ spark-containers-parameter_checks.ads:80:09: error: "S" is referenced in Pre but
 spark-containers-parameter_checks.ads:81:19: high: "S" must be listed in the Global aspect of "Eq_Transitive" (SPARK RM 6.1.4(15)), in instantiation at spark-containers-formal-hashed_sets.ads:140, in instantiation at term.ads:16
 spark-containers-parameter_checks.ads:240:09: error: "S" is referenced in Pre but missing from the Global, in instantiation at spark-containers-formal-hashed_sets.ads:152, in instantiation at term.ads:16
 spark-containers-parameter_checks.ads:241:21: high: "S" must be listed in the Global aspect of "Hash_Equivalent" (SPARK RM 6.1.4(15)), in instantiation at spark-containers-formal-hashed_sets.ads:152, in instantiation at term.ads:16
-term.adb:5:07: medium: implicit terminating annotation on "Eq" could be incorrect, "Eq" and "Contains" are mutually recursive [possible fix: annotate "Eq" and "Contains" with Subprogram_Variant aspects]
-term.ads:14:13: info: implicit terminating annotation on "Hash" has been proved, subprogram will terminate
+term.adb:5:07: medium: implicit aspect Always_Terminates on "Eq" could be incorrect, "Eq" and "Contains" are mutually recursive [possible fix: annotate "Eq" and "Contains" with Subprogram_Variant aspects]
+term.ads:14:13: info: implicit aspect Always_Terminates on "Hash" has been proved, subprogram will terminate
 term.ads:14:19: warning: unused variable "X"
 gnatprove: error during flow analysis and proof

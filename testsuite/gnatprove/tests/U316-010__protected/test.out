@@ -5,4 +5,4 @@ p.adb:6:19: high: "A" is not initialized
 p.adb:9:10: warning: address specification on "A" is imprecisely supported: assuming no concurrent accesses to non-atomic object, no writes to or through a potential alias, and valid reads
 p.adb:9:10: warning: make sure that all overlapping objects have Async_Writers set to True
 p.adb:11:19: high: "A" is not initialized
-p.ads:4:16: info: implicit terminating annotation on "F" has been proved, subprogram will terminate
+p.ads:4:16: info: implicit aspect Always_Terminates on "F" has been proved, subprogram will terminate

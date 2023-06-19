@@ -18,14 +18,14 @@ allocator.adb:71:44: info: index check proved (CVC5: 2 VC)
 allocator.adb:72:16: info: index check proved (CVC5: 2 VC)
 allocator.ads:8:03: info: flow dependencies proved
 allocator.ads:9:03: info: initial condition proved (CVC5: 1 VC)
-allocator.ads:18:13: info: implicit terminating annotation on "Is_Available" has been proved, subprogram will terminate
-allocator.ads:19:13: info: implicit terminating annotation on "Is_Allocated" has been proved, subprogram will terminate
-allocator.ads:21:13: info: implicit terminating annotation on "All_Available" has been proved, subprogram will terminate
-allocator.ads:34:16: info: implicit terminating annotation on overriding operator "=" has been proved, subprogram will terminate
-allocator.ads:39:16: info: implicit terminating annotation on "Is_Valid" has been proved, subprogram will terminate
-allocator.ads:41:16: info: implicit terminating annotation on "Model" has been proved, subprogram will terminate
+allocator.ads:18:13: info: implicit aspect Always_Terminates on "Is_Available" has been proved, subprogram will terminate
+allocator.ads:19:13: info: implicit aspect Always_Terminates on "Is_Allocated" has been proved, subprogram will terminate
+allocator.ads:21:13: info: implicit aspect Always_Terminates on "All_Available" has been proved, subprogram will terminate
+allocator.ads:34:16: info: implicit aspect Always_Terminates on overriding operator "=" has been proved, subprogram will terminate
+allocator.ads:39:16: info: implicit aspect Always_Terminates on "Is_Valid" has been proved, subprogram will terminate
+allocator.ads:41:16: info: implicit aspect Always_Terminates on "Model" has been proved, subprogram will terminate
 allocator.ads:41:44: info: postcondition proved (CVC5: 6 VC)
-allocator.ads:47:13: info: implicit terminating annotation on "Is_Valid" has been proved, subprogram will terminate
+allocator.ads:47:13: info: implicit aspect Always_Terminates on "Is_Valid" has been proved, subprogram will terminate
 allocator.ads:49:21: info: initialization of "Res" proved
 allocator.ads:55:36: info: contract case proved (CVC5: 3 VC; Trivial: 1 VC)
 allocator.ads:62:16: info: contract case proved (CVC5: 2 VC; Trivial: 1 VC)

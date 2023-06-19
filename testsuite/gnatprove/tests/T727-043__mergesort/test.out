@@ -190,11 +190,11 @@ recursive_mergesort.adb:168:111: info: precondition proved
 recursive_mergesort.adb:168:134: info: overflow check proved
 recursive_mergesort.adb:168:143: info: precondition proved
 recursive_mergesort.adb:168:166: info: precondition proved
-recursive_mergesort.ads:23:16: info: implicit terminating annotation on "Is_Add" has been proved, subprogram will terminate
+recursive_mergesort.ads:23:16: info: implicit aspect Always_Terminates on "Is_Add" has been proved, subprogram will terminate
 recursive_mergesort.ads:26:19: info: precondition proved
 recursive_mergesort.ads:26:38: info: precondition proved
 recursive_mergesort.ads:29:19: info: precondition proved
-recursive_mergesort.ads:34:16: info: implicit terminating annotation on "Is_Merge" has been proved, subprogram will terminate
+recursive_mergesort.ads:34:16: info: implicit aspect Always_Terminates on "Is_Merge" has been proved, subprogram will terminate
 recursive_mergesort.ads:39:32: info: precondition proved
 recursive_mergesort.ads:39:50: info: precondition proved
 recursive_mergesort.ads:39:67: info: precondition proved
@@ -207,7 +207,7 @@ recursive_mergesort.ads:60:17: info: postcondition proved
 recursive_mergesort.ads:64:17: info: postcondition proved
 recursive_mergesort.ads:68:17: info: postcondition proved
 recursive_mergesort.ads:72:13: info: function contract might not be available on recursive calls
-recursive_mergesort.ads:72:13: info: implicit terminating annotation on "Occurrences" has been proved, subprogram will terminate
+recursive_mergesort.ads:72:13: info: implicit aspect Always_Terminates on "Occurrences" has been proved, subprogram will terminate
 recursive_mergesort.ads:75:14: info: postcondition proved
 recursive_mergesort.ads:76:07: info: predicate check proved
 recursive_mergesort.ads:76:60: info: overflow check proved
@@ -222,7 +222,7 @@ recursive_mergesort.ads:80:27: info: subprogram variant proved
 recursive_mergesort.ads:80:27: warning: call to "Occurrences" within its postcondition will lead to infinite recursion
 recursive_mergesort.ads:80:48: info: range check proved
 recursive_mergesort.ads:80:57: info: index check proved
-recursive_mergesort.ads:85:13: info: implicit terminating annotation on "Is_Sorted" has been proved, subprogram will terminate
+recursive_mergesort.ads:85:13: info: implicit aspect Always_Terminates on "Is_Sorted" has been proved, subprogram will terminate
 recursive_mergesort.ads:88:32: info: index check proved
 recursive_mergesort.ads:88:40: info: index check proved
 recursive_mergesort.ads:96:28: info: range check proved

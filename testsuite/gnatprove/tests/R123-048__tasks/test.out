@@ -41,19 +41,19 @@ psu_monitoring.adb:197:22: medium: assertion might fail
 psu_monitoring.adb:198:22: medium: assertion might fail
 psu_monitoring.adb:199:22: medium: assertion might fail
 psu_monitoring.adb:200:22: medium: assertion might fail
-psu_monitoring.ads:43:16: info: implicit terminating annotation on "is_all_config_set" has been proved, subprogram will terminate
-psu_monitoring.ads:46:16: info: implicit terminating annotation on "get_monitor_pfc_voltage_config" has been proved, subprogram will terminate
-psu_monitoring.ads:49:16: info: implicit terminating annotation on "get_monitor_pfc_current_config" has been proved, subprogram will terminate
-psu_monitoring.ads:52:16: info: implicit terminating annotation on "get_monitor_output_voltage_config" has been proved, subprogram will terminate
-psu_monitoring.ads:55:16: info: implicit terminating annotation on "get_monitor_output_current_config" has been proved, subprogram will terminate
+psu_monitoring.ads:43:16: info: implicit aspect Always_Terminates on "is_all_config_set" has been proved, subprogram will terminate
+psu_monitoring.ads:46:16: info: implicit aspect Always_Terminates on "get_monitor_pfc_voltage_config" has been proved, subprogram will terminate
+psu_monitoring.ads:49:16: info: implicit aspect Always_Terminates on "get_monitor_pfc_current_config" has been proved, subprogram will terminate
+psu_monitoring.ads:52:16: info: implicit aspect Always_Terminates on "get_monitor_output_voltage_config" has been proved, subprogram will terminate
+psu_monitoring.ads:55:16: info: implicit aspect Always_Terminates on "get_monitor_output_current_config" has been proved, subprogram will terminate
 psu_monitoring.ads:74:09: info: ceiling priority protocol is respected (CVC5: 1 VC)
 psu_monitoring.ads:74:09: info: nontermination of task proved (CVC5: 1 VC)
 psu_monitoring.ads:75:39: info: range check proved (CVC5: 2 VC)
 psu_monitoring.ads:89:15: medium: postcondition might fail, cannot prove monitor.next_state /= reset
-psu_monitoring.ads:90:13: info: implicit terminating annotation on "is_within_limits" has been proved, subprogram will terminate
+psu_monitoring.ads:90:13: info: implicit aspect Always_Terminates on "is_within_limits" has been proved, subprogram will terminate
 psu_monitoring.ads:92:07: info: complete contract cases proved (Z3: 1 VC)
 psu_monitoring.ads:92:07: info: disjoint contract cases proved (CVC5: 1 VC)
 psu_monitoring.ads:92:70: info: contract case proved (CVC5: 1 VC; Trivial: 2 VC)
 psu_monitoring.ads:92:132: info: float overflow check proved (CVC5: 1 VC)
 psu_monitoring.ads:93:75: medium: contract case might fail
-psu_monitoring.ads:94:13: info: implicit terminating annotation on "is_within_expanded_limits" has been proved, subprogram will terminate
+psu_monitoring.ads:94:13: info: implicit aspect Always_Terminates on "is_within_expanded_limits" has been proved, subprogram will terminate

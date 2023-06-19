@@ -159,15 +159,15 @@ spark-text_io.ads:80:04: info: initialization of "Standard_Input" proved
 spark-text_io.ads:81:04: info: initialization of "Standard_Output" proved
 spark-text_io.ads:82:04: info: initialization of "Standard_Error" proved
 spark-text_io.ads:86:13: info: implicit function contract might not be available on calls from enclosing unit
-spark-text_io.ads:104:13: info: implicit terminating annotation on "Is_Standard_Writable" has been proved, subprogram will terminate
+spark-text_io.ads:104:13: info: implicit aspect Always_Terminates on "Is_Standard_Writable" has been proved, subprogram will terminate
 spark-text_io.ads:106:09: info: data dependencies proved
-spark-text_io.ads:109:13: info: implicit terminating annotation on "Is_Standard_File" has been proved, subprogram will terminate
+spark-text_io.ads:109:13: info: implicit aspect Always_Terminates on "Is_Standard_File" has been proved, subprogram will terminate
 spark-text_io.ads:112:11: info: data dependencies proved
 spark-text_io.ads:118:13: info: implicit function contract might not be available on calls from enclosing unit
-spark-text_io.ads:133:13: info: implicit terminating annotation on "Is_Readable" has been proved, subprogram will terminate
+spark-text_io.ads:133:13: info: implicit aspect Always_Terminates on "Is_Readable" has been proved, subprogram will terminate
 spark-text_io.ads:134:31: info: precondition proved (CVC5: 1 VC)
 spark-text_io.ads:135:11: info: data dependencies proved
-spark-text_io.ads:137:13: info: implicit terminating annotation on "Is_Writable" has been proved, subprogram will terminate
+spark-text_io.ads:137:13: info: implicit aspect Always_Terminates on "Is_Writable" has been proved, subprogram will terminate
 spark-text_io.ads:139:12: info: precondition proved (CVC5: 1 VC)
 spark-text_io.ads:139:43: info: precondition proved (CVC5: 1 VC)
 spark-text_io.ads:140:11: info: data dependencies proved

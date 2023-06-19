@@ -1,2 +1,2 @@
-terminating_annotations.adb:14:08: medium: implicit terminating annotation on "F_Call" could be incorrect, call to "Not_SPARK" might be nonterminating [possible fix: annotate "Not_SPARK" with Always_Return]
+terminating_annotations.adb:14:08: medium: implicit aspect Always_Terminates on "F_Call" could be incorrect, call to "Not_SPARK" might be nonterminating [possible fix: annotate "Not_SPARK" with aspect Always_Terminates]
 terminating_annotations.ads:5:22: warning: unused variable "X"

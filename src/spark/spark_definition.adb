@@ -4276,9 +4276,11 @@ package body SPARK_Definition is
                     ("\\assuming & has no effect on global items", N, E);
                end if;
 
-               if not Has_Any_Returning_Annotation (E) then
+               if Get_Termination_Condition (E).Kind = Unspecified
+                 and then not No_Return (E)
+               then
                   Error_Msg_NE
-                    (Warning_Message (Warn_Assumed_Always_Return), N, E);
+                    (Warning_Message (Warn_Assumed_Always_Terminates), N, E);
                   Error_Msg_NE
                     ("\\assuming & always terminates", N, E);
                end if;
@@ -5346,7 +5348,7 @@ package body SPARK_Definition is
             --  If the need arise, we could handle them as raise expressions,
             --  using a precondition of False to ensure that they are never
             --  called. We should take care of potential interactions with
-            --  Might_Not_Return annotations. We might also want a special
+            --  Always_Terminates annotations. We might also want a special
             --  handling for such function calls inside preconditions (see
             --  handling of raise expressions).
 

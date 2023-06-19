@@ -7,7 +7,7 @@ package body Use_Simple_Private_Type with SPARK_Mode is
       return N (Add (P (X), Y));
       pragma Annotate (GNATprove,
                     False_Positive,
-                    "terminating annotation on ""Add"" could be incorrect",
+                    "implicit aspect Always_Terminates on ""Add"" could be incorrect",
                     "function P is missing a postcondition to prove " &
                     "termination of Add and Mul");
    end Add;
@@ -29,7 +29,7 @@ package body Use_Simple_Private_Type with SPARK_Mode is
       return Add (Y, Mul (P (X), Y));
       pragma Annotate (GNATprove,
                        False_Positive,
-                       "terminating annotation on ""Mul"" could be incorrect",
+                       "implicit aspect Always_Terminates on ""Mul"" could be incorrect",
                        "function P is missing a postcondition to prove " &
                        "termination of Add and Mul");
    end Mul;

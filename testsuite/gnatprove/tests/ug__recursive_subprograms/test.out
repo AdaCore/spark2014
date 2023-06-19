@@ -1,4 +1,4 @@
-recursive_subprograms.ads:5:13: info: implicit terminating annotation on "Fibonacci" has been proved, subprogram will terminate
+recursive_subprograms.ads:5:13: info: implicit aspect Always_Terminates on "Fibonacci" has been proved, subprogram will terminate
 recursive_subprograms.ads:6:10: info: predicate check proved
 recursive_subprograms.ads:6:14: info: predicate check proved
 recursive_subprograms.ads:6:21: info: predicate check proved
