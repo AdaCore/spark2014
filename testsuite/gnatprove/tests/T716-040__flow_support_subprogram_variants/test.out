@@ -34,21 +34,21 @@ foo.adb:105:06: info: data dependencies proved
 foo.adb:112:10: medium: subprogram variant might fail [possible explanation: mutually recursive subprograms should have compatible variants]
 foo.adb:112:24: info: range check proved (CVC5: 2 VC)
 foo.adb:122:10: medium: subprogram variant might fail [possible explanation: mutually recursive subprograms should have compatible variants]
-foo.adb:122:10: medium: aspect Always_Terminates on "Mutually_H" could be incorrect, call to "Mutually_G" might be nonterminating [possible fix: annotate "Mutually_G" with Always_Return]
+foo.adb:122:10: medium: aspect Always_Terminates on "Mutually_H" could be incorrect, call to "Mutually_G" might be nonterminating [possible fix: annotate "Mutually_G" with aspect Always_Terminates]
 foo.adb:122:24: info: range check proved (CVC5: 2 VC)
 foo.adb:128:06: info: data dependencies proved
 foo.adb:131:06: info: data dependencies proved
 foo.adb:138:10: info: subprogram variant proved (CVC5: 1 VC)
 foo.adb:138:24: info: range check proved (CVC5: 2 VC)
 foo.adb:148:10: info: subprogram variant proved (CVC5: 1 VC)
-foo.adb:148:10: medium: aspect Always_Terminates on "Mutually_J" could be incorrect, call to "Mutually_I" might be nonterminating [possible fix: annotate "Mutually_I" with Always_Return]
+foo.adb:148:10: medium: aspect Always_Terminates on "Mutually_J" could be incorrect, call to "Mutually_I" might be nonterminating [possible fix: annotate "Mutually_I" with aspect Always_Terminates]
 foo.adb:148:24: info: range check proved (CVC5: 2 VC)
 foo.adb:152:14: info: aspect Always_Terminates on "Invisible_Call_To_Nonterminating" has been proved, subprogram will terminate
 foo.adb:152:14: warning: subprogram "Invisible_Call_To_Nonterminating" has no effect
 foo.adb:153:24: info: data dependencies proved
 foo.adb:154:43: info: data dependencies proved
 foo.adb:155:24: info: data dependencies proved
-foo.adb:158:28: medium: aspect Always_Terminates on "B" could be incorrect, call to "C" might be nonterminating [possible fix: annotate "C" with Always_Return]
+foo.adb:158:28: medium: aspect Always_Terminates on "B" could be incorrect, call to "C" might be nonterminating [possible fix: annotate "C" with aspect Always_Terminates]
 foo.adb:170:13: info: implicit function contract might not be available on recursive calls
 foo.adb:170:13: info: implicit aspect Always_Terminates on "Subnested_Package" has been proved, subprogram will terminate
 foo.adb:174:16: info: implicit function contract might not be available on recursive calls or calls from enclosing unit

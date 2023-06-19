@@ -80,7 +80,7 @@ soundness_tests.adb:114:10: medium: precondition might fail [possible fix: loop 
 soundness_tests.adb:121:11: info: precondition proved (Trivial: 1 VC)
 soundness_tests.adb:121:11: medium: precondition might fail
 soundness_tests.adb:121:20: medium: aspect Always_Terminates on "Withed_Object" could be incorrect, loop might be nonterminating [possible fix: add loop variant in the loop body]
-soundness_tests.adb:128:06: medium: aspect Always_Terminates on "Callee" could be incorrect, call to "Neverending_Loop" might be nonterminating [possible fix: annotate "Neverending_Loop" with Always_Return]
+soundness_tests.adb:128:06: medium: aspect Always_Terminates on "Callee" could be incorrect, call to "Neverending_Loop" might be nonterminating [possible fix: annotate "Neverending_Loop" with aspect Always_Terminates]
 soundness_tests.ads:3:14: warning: subprogram "Selected_Component" has no effect
 soundness_tests.ads:5:14: warning: subprogram "Identifier_Expanded_Name" has no effect
 soundness_tests.ads:7:14: warning: subprogram "Explicit_Dereference" has no effect

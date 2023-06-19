@@ -12,4 +12,4 @@ terminating_annotations.adb:15:19: medium: aspect Always_Terminates on "P_While"
 terminating_annotations.adb:35:07: medium: aspect Always_Terminates on "P_Call" could be incorrect, call to "Not_SPARK" might be nonterminating
    35 |      Not_SPARK (X);
       |      ^~~~~~~~~~~~
-  possible fix: annotate "Not_SPARK" with Always_Return
+  possible fix: annotate "Not_SPARK" with aspect Always_Terminates

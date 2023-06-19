@@ -158,7 +158,7 @@ p.adb:6:14: warning: subprogram "Proc2" has no effect
 p.adb:7:14: warning: subprogram "Proc3" has no effect
 p.adb:9:14: warning: subprogram "Proc" has no effect
 p.adb:11:07: info: no contextual analysis of "Proc2" (body not seen yet)
-p.adb:11:07: medium: aspect Always_Terminates on "Proc" could be incorrect, call to "Proc2" might be nonterminating [possible fix: annotate "Proc2" with Always_Return]
+p.adb:11:07: medium: aspect Always_Terminates on "Proc" could be incorrect, call to "Proc2" might be nonterminating [possible fix: annotate "Proc2" with aspect Always_Terminates]
 p.adb:16:07: info: no contextual analysis of "Proc3" (body not seen yet)
 p.adb:26:14: info: aspect Always_Terminates on "Proc4" has been proved, subprogram will terminate
 p.adb:26:14: warning: subprogram "Proc4" has no effect
