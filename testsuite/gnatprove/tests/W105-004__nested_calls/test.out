@@ -30,8 +30,8 @@ two_calls.adb:15:19: info: pointer dereference check proved (CVC5: 1 VC)
 two_calls.adb:17:10: medium: implicit aspect Always_Terminates on "Call_2" could be incorrect, call via access-to-subprogram might be nonterminating [possible explanation: call could hide recursive calls]
 two_calls.adb:17:19: info: pointer dereference check proved (CVC5: 1 VC)
 two_calls.adb:21:13: info: implicit aspect Always_Terminates on "Cst_1" has been proved, subprogram will terminate
-two_calls.adb:24:13: info: implicit function contract might not be available on calls from enclosing unit
 two_calls.adb:24:13: info: implicit aspect Always_Terminates on "Read_V" has been proved, subprogram will terminate
+two_calls.adb:24:13: info: implicit function contract might not be available on calls from enclosing unit
 two_calls.adb:26:13: info: function contract might not be available on calls from enclosing unit
 two_calls.adb:26:43: info: function contract feasibility proved (CVC5: 1 VC)
 two_calls.adb:28:14: medium: postcondition might fail

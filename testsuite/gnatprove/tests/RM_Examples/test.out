@@ -95,8 +95,8 @@ initialization_and_elaboration-private_child.ads:11:13: info: implicit function 
 initialization_and_elaboration.ads:6:08: info: flow dependencies proved
 initialization_and_elaboration.ads:8:08: medium: initial condition might fail
 initialization_and_elaboration.ads:13:11: info: data dependencies proved
-initialization_and_elaboration.ads:15:13: info: implicit function contract might not be available on calls from enclosing unit
 initialization_and_elaboration.ads:15:13: info: implicit aspect Always_Terminates on "Get_It" has been proved, subprogram will terminate
+initialization_and_elaboration.ads:15:13: info: implicit function contract might not be available on calls from enclosing unit
 initialization_and_elaboration.ads:16:11: info: data dependencies proved
 input_port.ads:6:04: warning: address specification on "Sensor" is imprecisely supported: assuming no concurrent accesses to non-atomic object and correct volatile properties
 inter_1.ads:2:13: info: implicit aspect Always_Terminates on "F" has been proved, subprogram will terminate

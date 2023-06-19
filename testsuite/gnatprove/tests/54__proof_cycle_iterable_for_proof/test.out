@@ -72,8 +72,8 @@ element_through_model.ads:18:16: info: implicit aspect Always_Terminates on "Has
 element_through_model.ads:18:16: info: precondition proved (Trivial: 1 VC)
 element_through_model.ads:19:16: error: iteration primitive shall not be recursive, (including implicitly so)
 element_through_model.ads:19:16: info: during checks for quantification at element_through_model.ads:26
-element_through_model.ads:19:16: info: implicit function contract might not be available on implicit recursive calls
 element_through_model.ads:19:16: info: implicit aspect Always_Terminates on "Element" has been proved, subprogram will terminate
+element_through_model.ads:19:16: info: implicit function contract might not be available on implicit recursive calls
 element_through_model.ads:19:16: info: precondition proved (CVC5: 1 VC)
 element_through_model.ads:21:16: info: implicit aspect Always_Terminates on "From_Array" has been proved, subprogram will terminate
 element_through_model.ads:27:10: info: range check proved (CVC5: 2 VC)
@@ -175,8 +175,8 @@ has_element_through_model.ads:18:16: info: implicit aspect Always_Terminates on 
 has_element_through_model.ads:18:16: info: precondition proved (Trivial: 1 VC)
 has_element_through_model.ads:19:16: error: iteration primitive shall not be recursive, (including implicitly so)
 has_element_through_model.ads:19:16: info: during checks for quantification at has_element_through_model.ads:26
-has_element_through_model.ads:19:16: info: implicit function contract might not be available on implicit recursive calls
 has_element_through_model.ads:19:16: info: implicit aspect Always_Terminates on "Element" has been proved, subprogram will terminate
+has_element_through_model.ads:19:16: info: implicit function contract might not be available on implicit recursive calls
 has_element_through_model.ads:19:16: info: precondition proved (CVC5: 1 VC)
 has_element_through_model.ads:21:16: info: implicit aspect Always_Terminates on "From_Array" has been proved, subprogram will terminate
 has_element_through_model.ads:27:10: info: range check proved (CVC5: 2 VC)
@@ -365,8 +365,8 @@ p.ads:18:16: info: implicit aspect Always_Terminates on "Has_Element" has been p
 p.ads:18:16: info: precondition proved (Trivial: 1 VC)
 p.ads:19:16: error: iteration primitive shall not be recursive, (including implicitly so)
 p.ads:19:16: info: during checks for quantification at p.ads:26
-p.ads:19:16: info: implicit function contract might not be available on implicit recursive calls
 p.ads:19:16: info: implicit aspect Always_Terminates on "Element" has been proved, subprogram will terminate
+p.ads:19:16: info: implicit function contract might not be available on implicit recursive calls
 p.ads:19:16: info: precondition proved (CVC5: 1 VC)
 p.ads:21:16: info: implicit aspect Always_Terminates on "From_Array" has been proved, subprogram will terminate
 p.ads:27:10: info: range check proved (CVC5: 2 VC)
@@ -405,12 +405,12 @@ rec_ids.adb:25:35: high: "C" is not initialized
 rec_ids.adb:32:22: info: assertion proved (Trivial: 1 VC)
 rec_ids.adb:32:30: warning: unused variable "F"
 rec_ids.adb:32:35: high: "C" is not initialized
-rec_ids.ads:3:13: info: implicit function contract might not be available on implicit recursive calls
 rec_ids.ads:3:13: info: implicit aspect Always_Terminates on "P_Rec_Id" has been proved, subprogram will terminate
-rec_ids.ads:4:13: info: implicit function contract might not be available on implicit recursive calls
+rec_ids.ads:3:13: info: implicit function contract might not be available on implicit recursive calls
 rec_ids.ads:4:13: info: implicit aspect Always_Terminates on "Contains_Through_Model_Id" has been proved, subprogram will terminate
-rec_ids.ads:5:13: info: implicit function contract might not be available on implicit recursive calls
+rec_ids.ads:4:13: info: implicit function contract might not be available on implicit recursive calls
 rec_ids.ads:5:13: info: implicit aspect Always_Terminates on "Element_Through_Model_Id" has been proved, subprogram will terminate
-rec_ids.ads:6:13: info: implicit function contract might not be available on implicit recursive calls
+rec_ids.ads:5:13: info: implicit function contract might not be available on implicit recursive calls
 rec_ids.ads:6:13: info: implicit aspect Always_Terminates on "Has_Element_Through_Model_Id" has been proved, subprogram will terminate
+rec_ids.ads:6:13: info: implicit function contract might not be available on implicit recursive calls
 gnatprove: error during flow analysis and proof

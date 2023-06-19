@@ -1,7 +1,7 @@
 main.adb:12:13: info: implicit aspect Always_Terminates on "At_End" has been proved, subprogram will terminate
 main.adb:12:83: info: dynamic accessibility check proved (Trivial)
-main.adb:15:13: info: implicit function contract might not be available on recursive calls
 main.adb:15:13: info: implicit aspect Always_Terminates on "Length" has been proved, subprogram will terminate
+main.adb:15:13: info: implicit function contract might not be available on recursive calls
 main.adb:16:37: info: predicate check proved (CVC5: 1 VC; Trivial: 1 VC)
 main.adb:16:45: info: predicate check proved (Trivial: 1 VC)
 main.adb:16:45: info: subprogram variant proved (Trivial)

@@ -1,6 +1,6 @@
 inherited_discr.adb:1:11: info: aspect Always_Terminates on "Inherited_Discr" has been proved, subprogram will terminate
-inherited_discr.adb:3:13: info: implicit function contract might not be available on calls from enclosing unit
 inherited_discr.adb:3:13: info: implicit aspect Always_Terminates on "Id" has been proved, subprogram will terminate
+inherited_discr.adb:3:13: info: implicit function contract might not be available on calls from enclosing unit
 inherited_discr.adb:10:16: info: implicit aspect Always_Terminates on "F" has been proved, subprogram will terminate
 inherited_discr.adb:11:47: info: range check proved (CVC5: 2 VC)
 inherited_discr.adb:15:53: info: division check proved (CVC5: 1 VC)

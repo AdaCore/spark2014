@@ -3,8 +3,8 @@ factorial.adb:12:30: info: overflow check proved (CVC5: 3 VC; Z3: 1 VC)
 factorial.adb:13:36: info: loop invariant initialization proved (CVC5: 1 VC)
 factorial.adb:13:36: info: loop invariant preservation proved (CVC5: 1 VC)
 factorial.adb:13:45: info: precondition proved (CVC5: 4 VC)
-factorial.ads:7:13: info: implicit function contract might not be available on recursive calls
 factorial.ads:7:13: info: implicit aspect Always_Terminates on "Mathematical_Factorial" has been proved, subprogram will terminate
+factorial.ads:7:13: info: implicit function contract might not be available on recursive calls
 factorial.ads:9:27: info: overflow check proved (CVC5: 2 VC)
 factorial.ads:9:29: info: precondition proved (CVC5: 2 VC)
 factorial.ads:9:29: info: subprogram variant proved (CVC5: 1 VC)
