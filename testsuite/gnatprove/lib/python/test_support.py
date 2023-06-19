@@ -64,6 +64,13 @@ def benchmark_mode():
 def cache_mode():
     return "cache" in os.environ and os.environ["cache"] == "true"
 
+def cache_option():
+    if "GNATPROVE_CACHE" in os.environ:
+        cache = os.environ["GNATPROVE_CACHE"]
+    else:
+        cache = "localhost:11211"
+    return f"--memcached-server={cache}"
+
 
 def why3server_mode():
     if "why3server" in os.environ:
@@ -738,7 +745,7 @@ def gnatprove(
     if benchmark_mode() is not None:
         cmd += ["--benchmark", "--debug-save-vcs", "--why3-debug", "gnat_ast"]
     if cache_allowed and cache_mode():
-        cmd += ["--memcached-server=localhost:11211"]
+        cmd += [cache_option()]
     cmd += to_list(opt)
     # When not interested in output, force --output=brief to get simpler diffs
     if no_output:
