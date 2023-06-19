@@ -13,7 +13,7 @@ my_lists.adb:23:22: info: assertion proved (CVC5: 1 VC)
 my_lists.adb:24:22: info: assertion proved (CVC5: 1 VC)
 my_lists.adb:25:22: info: assertion proved (CVC5: 1 VC)
 my_lists.adb:26:22: info: assertion proved (CVC5: 1 VC)
-my_lists.ads:8:13: info: implicit terminating annotation on "My_Eq" has been proved, subprogram will terminate
+my_lists.ads:8:13: info: implicit aspect Always_Terminates on "My_Eq" has been proved, subprogram will terminate
 my_lists.ads:16:29: info: range check proved (CVC5: 2 VC)
 my_lists.ads:18:30: info: range check proved (CVC5: 2 VC)
 my_lists.ads:24:31: info: range check proved (CVC5: 2 VC)

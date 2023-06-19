@@ -8,10 +8,10 @@ depends_exercise.ads:10:41: info: initialization of "Stack_Pointer" proved
 depends_exercise.ads:11:11: info: flow dependencies proved
 depends_exercise.ads:14:11: info: data dependencies proved
 depends_exercise.ads:15:11: info: flow dependencies proved
-depends_exercise.ads:18:13: info: implicit terminating annotation on "Is_Full" has been proved, subprogram will terminate
+depends_exercise.ads:18:13: info: implicit aspect Always_Terminates on "Is_Full" has been proved, subprogram will terminate
 depends_exercise.ads:19:11: info: data dependencies proved
 depends_exercise.ads:20:11: info: flow dependencies proved
-depends_exercise.ads:22:13: info: implicit terminating annotation on "Wait_X_Return_True" has been proved, subprogram will terminate
+depends_exercise.ads:22:13: info: implicit aspect Always_Terminates on "Wait_X_Return_True" has been proved, subprogram will terminate
 depends_exercise.ads:23:11: info: flow dependencies proved
 Summary of SPARK analysis
 =========================

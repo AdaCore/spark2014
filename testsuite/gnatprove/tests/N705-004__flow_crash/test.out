@@ -149,7 +149,7 @@ very_longs.adb:321:07: info: initialization of "J" proved
 very_longs.adb:322:07: info: initialization of "Q_Hat" proved
 very_longs.adb:323:07: info: initialization of "Current_Borrow" proved
 very_longs.adb:326:16: info: function contract might not be available on calls from enclosing unit
-very_longs.adb:326:16: info: implicit terminating annotation on "Get_MSD" has been proved, subprogram will terminate
+very_longs.adb:326:16: info: implicit aspect Always_Terminates on "Get_MSD" has been proved, subprogram will terminate
 very_longs.adb:329:19: info: postcondition proved (CVC5: 2 VC)
 very_longs.adb:329:45: medium: array index check might fail [reason for check: value must be a valid index into the array]
 very_longs.adb:330:47: medium: overflow check might fail, cannot prove upper bound for Get_MSD'Result + 1 [reason for check: result of addition must fit in a 32-bits machine integer]
@@ -165,7 +165,7 @@ very_longs.adb:340:35: info: loop invariant preservation proved (CVC5: 1 VC; Tri
 very_longs.adb:340:85: info: overflow check proved (CVC5: 4 VC)
 very_longs.adb:340:116: info: index check proved (CVC5: 4 VC)
 very_longs.adb:346:16: info: implicit function contract might not be available on calls from enclosing unit
-very_longs.adb:346:16: info: implicit terminating annotation on "Get_Shift_Distance" has been proved, subprogram will terminate
+very_longs.adb:346:16: info: implicit aspect Always_Terminates on "Get_Shift_Distance" has been proved, subprogram will terminate
 very_longs.adb:353:30: info: unrolling loop
 very_longs.adb:362:56: info: initialization of "Result" proved
 very_longs.adb:364:11: info: flow dependencies proved
@@ -294,30 +294,30 @@ very_longs.adb:577:55: info: division check proved (CVC5: 1 VC)
 very_longs.adb:578:34: info: division check proved (CVC5: 1 VC)
 very_longs.adb:579:42: medium: array index check might fail [reason for check: value must be a valid index into the array]
 very_longs.adb:586:26: info: index check proved (CVC5: 2 VC)
-very_longs.ads:11:13: info: implicit terminating annotation on "Make_From_Natural" has been proved, subprogram will terminate
+very_longs.ads:11:13: info: implicit aspect Always_Terminates on "Make_From_Natural" has been proved, subprogram will terminate
 very_longs.ads:13:16: info: postcondition proved (CVC5: 1 VC)
 very_longs.ads:15:55: info: initialization of "Result" proved
 very_longs.ads:15:79: info: initialization of "Valid" proved
 very_longs.ads:18:21: info: range check proved (CVC5: 2 VC)
 very_longs.ads:18:32: medium: overflow check might fail, cannot prove upper bound for 2*Result.Octet_Length [reason for check: result of multiplication must fit in a 32-bits machine integer] [possible fix: use pragma Overflow_Mode or switch -gnato13 or unit SPARK.Big_Integers]
-very_longs.ads:21:13: info: implicit terminating annotation on overriding operator "<" has been proved, subprogram will terminate
-very_longs.ads:25:13: info: implicit terminating annotation on overriding operator "<=" has been proved, subprogram will terminate
-very_longs.ads:29:13: info: implicit terminating annotation on overriding operator ">" has been proved, subprogram will terminate
-very_longs.ads:33:13: info: implicit terminating annotation on overriding operator ">=" has been proved, subprogram will terminate
-very_longs.ads:38:13: info: implicit terminating annotation on "Is_Zero" has been proved, subprogram will terminate
-very_longs.ads:41:13: info: implicit terminating annotation on "ModAdd" has been proved, subprogram will terminate
+very_longs.ads:21:13: info: implicit aspect Always_Terminates on overriding operator "<" has been proved, subprogram will terminate
+very_longs.ads:25:13: info: implicit aspect Always_Terminates on overriding operator "<=" has been proved, subprogram will terminate
+very_longs.ads:29:13: info: implicit aspect Always_Terminates on overriding operator ">" has been proved, subprogram will terminate
+very_longs.ads:33:13: info: implicit aspect Always_Terminates on overriding operator ">=" has been proved, subprogram will terminate
+very_longs.ads:38:13: info: implicit aspect Always_Terminates on "Is_Zero" has been proved, subprogram will terminate
+very_longs.ads:41:13: info: implicit aspect Always_Terminates on "ModAdd" has been proved, subprogram will terminate
 very_longs.ads:44:16: info: postcondition proved (CVC5: 1 VC)
-very_longs.ads:47:13: info: implicit terminating annotation on "ModSubtract" has been proved, subprogram will terminate
+very_longs.ads:47:13: info: implicit aspect Always_Terminates on "ModSubtract" has been proved, subprogram will terminate
 very_longs.ads:50:16: info: postcondition proved (CVC5: 1 VC)
-very_longs.ads:53:13: info: implicit terminating annotation on "ModMultiply" has been proved, subprogram will terminate
+very_longs.ads:53:13: info: implicit aspect Always_Terminates on "ModMultiply" has been proved, subprogram will terminate
 very_longs.ads:56:16: info: postcondition proved (CVC5: 1 VC)
-very_longs.ads:59:13: info: implicit terminating annotation on overriding operator "*" has been proved, subprogram will terminate
+very_longs.ads:59:13: info: implicit aspect Always_Terminates on overriding operator "*" has been proved, subprogram will terminate
 very_longs.ads:61:16: info: postcondition proved (CVC5: 1 VC)
 very_longs.ads:61:57: info: overflow check proved (CVC5: 2 VC)
 very_longs.ads:64:70: info: initialization of "Quotient" proved
 very_longs.ads:64:96: info: initialization of "Remainder" proved
 very_longs.ads:70:45: medium: overflow check might fail, cannot prove upper bound for 2*Divisor.Octet_Length [reason for check: result of multiplication must fit in a 32-bits machine integer] [possible fix: use "and then" instead of "and" in precondition]
-very_longs.ads:73:14: info: implicit terminating annotation on "Get_Bit" has been proved, subprogram will terminate
+very_longs.ads:73:14: info: implicit aspect Always_Terminates on "Get_Bit" has been proved, subprogram will terminate
 very_longs.ads:76:08: info: flow dependencies proved
 very_longs.ads:87:10: info: range check proved (CVC5: 2 VC)
 very_longs.ads:91:67: info: index check proved (CVC5: 2 VC)

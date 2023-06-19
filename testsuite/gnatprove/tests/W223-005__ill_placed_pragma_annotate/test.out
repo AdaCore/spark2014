@@ -1,2 +1,2 @@
-force_termination.adb:6:04: medium: terminating annotation on "Force_Termination" could be incorrect, call to "Loop_Indefinitely" might be nonterminating [possible fix: annotate "Loop_Indefinitely" with Always_Return]
+force_termination.adb:6:04: medium: aspect Always_Terminates on "Force_Termination" could be incorrect, call to "Loop_Indefinitely" might be nonterminating [possible fix: annotate "Loop_Indefinitely" with Always_Return]
 infinite_loop.ads:3:14: warning: subprogram "Loop_Indefinitely" has no effect

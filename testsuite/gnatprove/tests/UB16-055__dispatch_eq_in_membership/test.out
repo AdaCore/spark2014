@@ -1,6 +1,6 @@
-repr.adb:9:16: info: implicit terminating annotation on overriding operator "=" has been proved, subprogram will terminate
-repr.adb:10:16: info: implicit terminating annotation on "F" has been proved, subprogram will terminate
-repr.adb:13:16: info: implicit terminating annotation on overriding operator "=" has been proved, subprogram will terminate
+repr.adb:9:16: info: implicit aspect Always_Terminates on overriding operator "=" has been proved, subprogram will terminate
+repr.adb:10:16: info: implicit aspect Always_Terminates on "F" has been proved, subprogram will terminate
+repr.adb:13:16: info: implicit aspect Always_Terminates on overriding operator "=" has been proved, subprogram will terminate
 repr.adb:29:07: info: no contextual analysis of "Rand" (body not seen yet)
 repr.adb:29:07: warning: assuming "Rand" has no effect on global items
 repr.adb:29:07: warning: no Global contract available for "Rand"

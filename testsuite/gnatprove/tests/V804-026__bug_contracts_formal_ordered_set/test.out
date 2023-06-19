@@ -1,4 +1,4 @@
-keys.ads:3:13: info: implicit terminating annotation on "Key" has been proved, subprogram will terminate
+keys.ads:3:13: info: implicit aspect Always_Terminates on "Key" has been proved, subprogram will terminate
 test.adb:9:04: info: initialization of "S" proved
 test.adb:9:13: info: range check proved (CVC5: 2 VC)
 test.adb:11:04: info: precondition proved (CVC5: 2 VC)

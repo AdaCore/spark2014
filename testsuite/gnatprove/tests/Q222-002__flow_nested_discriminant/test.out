@@ -1,9 +1,9 @@
 p.adb:1:18: info: data dependencies proved
-p.adb:10:16: info: implicit terminating annotation on "Proxy1" has been proved, subprogram will terminate
+p.adb:10:16: info: implicit aspect Always_Terminates on "Proxy1" has been proved, subprogram will terminate
 p.adb:13:26: error: default initialization cannot depend on variable input "X" [E0007]
 p.adb:13:26: error: launch "gnatprove --explain=E0007" for more information
 p.adb:13:26: error: use instead a constant initialized to the expression with variable input
-p.adb:20:16: info: implicit terminating annotation on "Proxy2" has been proved, subprogram will terminate
+p.adb:20:16: info: implicit aspect Always_Terminates on "Proxy2" has been proved, subprogram will terminate
 p.adb:23:26: error: default initialization cannot depend on variable input "X" [E0007]
 p.adb:23:26: error: launch "gnatprove --explain=E0007" for more information
 p.adb:23:26: error: use instead a constant initialized to the expression with variable input

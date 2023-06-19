@@ -27,7 +27,7 @@ list.adb:37:61: info: overflow check proved (CVC5: 4 VC)
 list.adb:37:65: info: overflow check proved (CVC5: 4 VC)
 list.adb:37:65: info: range check proved (CVC5: 4 VC)
 list.ads:10:37: info: range check proved (CVC5: 2 VC)
-list.ads:13:13: info: implicit terminating annotation on "Reverse_List" has been proved, subprogram will terminate
+list.ads:13:13: info: implicit aspect Always_Terminates on "Reverse_List" has been proved, subprogram will terminate
 list.ads:14:14: info: postcondition proved (CVC5: 1 VC)
 list.ads:15:17: info: precondition proved (CVC5: 2 VC)
 list.ads:15:29: info: range check proved (CVC5: 2 VC)
@@ -47,11 +47,11 @@ stack.adb:5:55: info: range check proved (CVC5: 4 VC)
 stack.adb:20:22: info: range check proved (CVC5: 2 VC)
 stack.adb:21:19: info: index check proved (CVC5: 2 VC)
 stack.adb:32:22: info: range check proved (CVC5: 2 VC)
-stack.ads:6:16: info: implicit terminating annotation on "To" has been proved, subprogram will terminate
-stack.ads:7:16: info: implicit terminating annotation on "To_But_Top" has been proved, subprogram will terminate
-stack.ads:9:16: info: implicit terminating annotation on "Is_Full" has been proved, subprogram will terminate
-stack.ads:10:16: info: implicit terminating annotation on "Is_Empty" has been proved, subprogram will terminate
-stack.ads:14:13: info: implicit terminating annotation on "Top" has been proved, subprogram will terminate
+stack.ads:6:16: info: implicit aspect Always_Terminates on "To" has been proved, subprogram will terminate
+stack.ads:7:16: info: implicit aspect Always_Terminates on "To_But_Top" has been proved, subprogram will terminate
+stack.ads:9:16: info: implicit aspect Always_Terminates on "Is_Full" has been proved, subprogram will terminate
+stack.ads:10:16: info: implicit aspect Always_Terminates on "Is_Empty" has been proved, subprogram will terminate
+stack.ads:14:13: info: implicit aspect Always_Terminates on "Top" has been proved, subprogram will terminate
 stack.ads:19:14: high: postcondition might fail, cannot prove Top (S) = X (e.g. when S = (Top => 1, Content => (others => 0)) and X = 0)
 stack.ads:19:14: info: precondition proved (CVC5: 1 VC)
 stack.ads:23:14: info: postcondition proved (CVC5: 1 VC)

@@ -33,7 +33,7 @@ spark-higher_order-fold.adb:83:44: info: index check proved, in instantiation at
 spark-higher_order-fold.adb:84:27: info: precondition proved, in instantiation at test_higher_order3.ads:22
 spark-higher_order-fold.adb:84:44: info: index check proved, in instantiation at test_higher_order3.ads:22
 spark-higher_order-fold.adb:84:51: info: overflow check proved, in instantiation at test_higher_order3.ads:22
-spark-higher_order-fold.adb:107:19: info: implicit terminating annotation on "Count_Length" has been proved, subprogram will terminate, in instantiation at test_higher_order3.ads:89
+spark-higher_order-fold.adb:107:19: info: implicit aspect Always_Terminates on "Count_Length" has been proved, subprogram will terminate, in instantiation at test_higher_order3.ads:89
 spark-higher_order-fold.adb:110:26: info: precondition proved, in instantiation at test_higher_order3.ads:89
 spark-higher_order-fold.adb:110:40: info: index check proved, in instantiation at test_higher_order3.ads:89
 spark-higher_order-fold.adb:110:43: info: index check proved, in instantiation at test_higher_order3.ads:89
@@ -51,7 +51,7 @@ spark-higher_order-fold.adb:119:36: info: index check proved, in instantiation a
 spark-higher_order-fold.adb:119:39: info: index check proved, in instantiation at test_higher_order3.ads:89
 spark-higher_order-fold.adb:121:21: info: postcondition proved, in instantiation at test_higher_order3.ads:89
 spark-higher_order-fold.adb:122:47: info: precondition proved, in instantiation at test_higher_order3.ads:89
-spark-higher_order-fold.adb:124:19: info: implicit terminating annotation on "Count_Length" has been proved, subprogram will terminate, in instantiation at test_higher_order3.ads:89
+spark-higher_order-fold.adb:124:19: info: implicit aspect Always_Terminates on "Count_Length" has been proved, subprogram will terminate, in instantiation at test_higher_order3.ads:89
 spark-higher_order-fold.adb:127:26: info: precondition proved, in instantiation at test_higher_order3.ads:89
 spark-higher_order-fold.adb:127:40: info: index check proved, in instantiation at test_higher_order3.ads:89
 spark-higher_order-fold.adb:127:44: info: index check proved, in instantiation at test_higher_order3.ads:89
@@ -111,7 +111,7 @@ spark-higher_order-fold.adb:219:49: info: index check proved, in instantiation a
 spark-higher_order-fold.adb:219:52: info: index check proved, in instantiation at test_higher_order3.ads:89
 spark-higher_order-fold.adb:220:32: info: index check proved, in instantiation at test_higher_order3.ads:89
 spark-higher_order-fold.adb:220:35: info: index check proved, in instantiation at test_higher_order3.ads:89
-spark-higher_order-fold.adb:223:19: info: implicit terminating annotation on "Update_Count" has been proved, subprogram will terminate, in instantiation at test_higher_order3.ads:89
+spark-higher_order-fold.adb:223:19: info: implicit aspect Always_Terminates on "Update_Count" has been proved, subprogram will terminate, in instantiation at test_higher_order3.ads:89
 spark-higher_order-fold.adb:227:32: info: precondition proved, in instantiation at test_higher_order3.ads:89
 spark-higher_order-fold.adb:227:47: info: index check proved, in instantiation at test_higher_order3.ads:89
 spark-higher_order-fold.adb:227:50: info: index check proved, in instantiation at test_higher_order3.ads:89
@@ -1143,8 +1143,8 @@ spark-higher_order-fold.adb:813:13: info: precondition proved, in instantiation 
 spark-higher_order-fold.adb:813:13: info: precondition proved, in instantiation at test_higher_order2.ads:86
 spark-higher_order-fold.adb:814:20: info: precondition proved, in instantiation at test_higher_order2.ads:43
 spark-higher_order-fold.adb:814:20: info: precondition proved, in instantiation at test_higher_order2.ads:86
-spark-higher_order-fold.adb:844:22: info: implicit terminating annotation on "Sum_Cst" has been proved, subprogram will terminate, in instantiation at test_higher_order3.ads:33
-spark-higher_order-fold.adb:844:22: info: implicit terminating annotation on "Sum_Cst" has been proved, subprogram will terminate, in instantiation at test_higher_order3.ads:77
+spark-higher_order-fold.adb:844:22: info: implicit aspect Always_Terminates on "Sum_Cst" has been proved, subprogram will terminate, in instantiation at test_higher_order3.ads:33
+spark-higher_order-fold.adb:844:22: info: implicit aspect Always_Terminates on "Sum_Cst" has been proved, subprogram will terminate, in instantiation at test_higher_order3.ads:77
 spark-higher_order-fold.adb:845:28: info: precondition proved, in instantiation at test_higher_order3.ads:33
 spark-higher_order-fold.adb:845:28: info: precondition proved, in instantiation at test_higher_order3.ads:77
 spark-higher_order-fold.adb:845:28: info: predicate check proved, in instantiation at test_higher_order3.ads:33
@@ -1398,10 +1398,10 @@ spark-higher_order-fold.adb:971:16: info: precondition proved, in instantiation 
 spark-higher_order-fold.adb:971:16: info: precondition proved, in instantiation at test_higher_order3.ads:77
 spark-higher_order-fold.adb:972:23: info: precondition proved, in instantiation at test_higher_order3.ads:33
 spark-higher_order-fold.adb:972:23: info: precondition proved, in instantiation at test_higher_order3.ads:77
-spark-higher_order-fold.ads:35:17: info: terminating annotation on "Prove_Ind" has been proved, subprogram will terminate, in instantiation at spark-higher_order-fold.ads:87, in instantiation at spark-higher_order-fold.ads:352, in instantiation at test_higher_order2.ads:43
-spark-higher_order-fold.ads:35:17: info: terminating annotation on "Prove_Ind" has been proved, subprogram will terminate, in instantiation at spark-higher_order-fold.ads:87, in instantiation at spark-higher_order-fold.ads:352, in instantiation at test_higher_order2.ads:86
-spark-higher_order-fold.ads:35:17: info: terminating annotation on "Prove_Ind" has been proved, subprogram will terminate, in instantiation at spark-higher_order-fold.ads:87, in instantiation at spark-higher_order-fold.ads:433, in instantiation at test_higher_order3.ads:22
-spark-higher_order-fold.ads:35:17: info: terminating annotation on "Prove_Ind" has been proved, subprogram will terminate, in instantiation at spark-higher_order-fold.ads:87, in instantiation at test_higher_order.ads:43
+spark-higher_order-fold.ads:35:17: info: aspect Always_Terminates on "Prove_Ind" has been proved, subprogram will terminate, in instantiation at spark-higher_order-fold.ads:87, in instantiation at spark-higher_order-fold.ads:352, in instantiation at test_higher_order2.ads:43
+spark-higher_order-fold.ads:35:17: info: aspect Always_Terminates on "Prove_Ind" has been proved, subprogram will terminate, in instantiation at spark-higher_order-fold.ads:87, in instantiation at spark-higher_order-fold.ads:352, in instantiation at test_higher_order2.ads:86
+spark-higher_order-fold.ads:35:17: info: aspect Always_Terminates on "Prove_Ind" has been proved, subprogram will terminate, in instantiation at spark-higher_order-fold.ads:87, in instantiation at spark-higher_order-fold.ads:433, in instantiation at test_higher_order3.ads:22
+spark-higher_order-fold.ads:35:17: info: aspect Always_Terminates on "Prove_Ind" has been proved, subprogram will terminate, in instantiation at spark-higher_order-fold.ads:87, in instantiation at test_higher_order.ads:43
 spark-higher_order-fold.ads:38:39: info: precondition proved, in instantiation at spark-higher_order-fold.ads:87, in instantiation at spark-higher_order-fold.ads:433, in instantiation at test_higher_order3.ads:22
 spark-higher_order-fold.ads:38:39: info: precondition proved, in instantiation at spark-higher_order-fold.ads:87, in instantiation at test_higher_order.ads:43
 spark-higher_order-fold.ads:39:17: info: postcondition proved, in instantiation at spark-higher_order-fold.ads:87, in instantiation at spark-higher_order-fold.ads:352, in instantiation at test_higher_order2.ads:43
@@ -1420,10 +1420,10 @@ spark-higher_order-fold.ads:39:46: info: range check proved, in instantiation at
 spark-higher_order-fold.ads:39:46: info: range check proved, in instantiation at spark-higher_order-fold.ads:87, in instantiation at spark-higher_order-fold.ads:352, in instantiation at test_higher_order2.ads:86
 spark-higher_order-fold.ads:39:46: info: range check proved, in instantiation at spark-higher_order-fold.ads:87, in instantiation at spark-higher_order-fold.ads:433, in instantiation at test_higher_order3.ads:22
 spark-higher_order-fold.ads:39:46: info: range check proved, in instantiation at spark-higher_order-fold.ads:87, in instantiation at test_higher_order.ads:43
-spark-higher_order-fold.ads:42:17: info: terminating annotation on "Prove_Last" has been proved, subprogram will terminate, in instantiation at spark-higher_order-fold.ads:87, in instantiation at spark-higher_order-fold.ads:352, in instantiation at test_higher_order2.ads:43
-spark-higher_order-fold.ads:42:17: info: terminating annotation on "Prove_Last" has been proved, subprogram will terminate, in instantiation at spark-higher_order-fold.ads:87, in instantiation at spark-higher_order-fold.ads:352, in instantiation at test_higher_order2.ads:86
-spark-higher_order-fold.ads:42:17: info: terminating annotation on "Prove_Last" has been proved, subprogram will terminate, in instantiation at spark-higher_order-fold.ads:87, in instantiation at spark-higher_order-fold.ads:433, in instantiation at test_higher_order3.ads:22
-spark-higher_order-fold.ads:42:17: info: terminating annotation on "Prove_Last" has been proved, subprogram will terminate, in instantiation at spark-higher_order-fold.ads:87, in instantiation at test_higher_order.ads:43
+spark-higher_order-fold.ads:42:17: info: aspect Always_Terminates on "Prove_Last" has been proved, subprogram will terminate, in instantiation at spark-higher_order-fold.ads:87, in instantiation at spark-higher_order-fold.ads:352, in instantiation at test_higher_order2.ads:43
+spark-higher_order-fold.ads:42:17: info: aspect Always_Terminates on "Prove_Last" has been proved, subprogram will terminate, in instantiation at spark-higher_order-fold.ads:87, in instantiation at spark-higher_order-fold.ads:352, in instantiation at test_higher_order2.ads:86
+spark-higher_order-fold.ads:42:17: info: aspect Always_Terminates on "Prove_Last" has been proved, subprogram will terminate, in instantiation at spark-higher_order-fold.ads:87, in instantiation at spark-higher_order-fold.ads:433, in instantiation at test_higher_order3.ads:22
+spark-higher_order-fold.ads:42:17: info: aspect Always_Terminates on "Prove_Last" has been proved, subprogram will terminate, in instantiation at spark-higher_order-fold.ads:87, in instantiation at test_higher_order.ads:43
 spark-higher_order-fold.ads:44:39: info: precondition proved, in instantiation at spark-higher_order-fold.ads:87, in instantiation at spark-higher_order-fold.ads:433, in instantiation at test_higher_order3.ads:22
 spark-higher_order-fold.ads:44:39: info: precondition proved, in instantiation at spark-higher_order-fold.ads:87, in instantiation at test_higher_order.ads:43
 spark-higher_order-fold.ads:44:56: info: range check proved, in instantiation at spark-higher_order-fold.ads:87, in instantiation at spark-higher_order-fold.ads:352, in instantiation at test_higher_order2.ads:43
@@ -1440,10 +1440,10 @@ spark-higher_order-fold.ads:45:39: info: index check proved, in instantiation at
 spark-higher_order-fold.ads:45:39: info: index check proved, in instantiation at spark-higher_order-fold.ads:87, in instantiation at spark-higher_order-fold.ads:352, in instantiation at test_higher_order2.ads:86
 spark-higher_order-fold.ads:45:39: info: index check proved, in instantiation at spark-higher_order-fold.ads:87, in instantiation at spark-higher_order-fold.ads:433, in instantiation at test_higher_order3.ads:22
 spark-higher_order-fold.ads:45:39: info: index check proved, in instantiation at spark-higher_order-fold.ads:87, in instantiation at test_higher_order.ads:43
-spark-higher_order-fold.ads:51:16: info: implicit terminating annotation on "Fold" has been proved, subprogram will terminate, in instantiation at spark-higher_order-fold.ads:87, in instantiation at spark-higher_order-fold.ads:352, in instantiation at test_higher_order2.ads:43
-spark-higher_order-fold.ads:51:16: info: implicit terminating annotation on "Fold" has been proved, subprogram will terminate, in instantiation at spark-higher_order-fold.ads:87, in instantiation at spark-higher_order-fold.ads:352, in instantiation at test_higher_order2.ads:86
-spark-higher_order-fold.ads:51:16: info: implicit terminating annotation on "Fold" has been proved, subprogram will terminate, in instantiation at spark-higher_order-fold.ads:87, in instantiation at spark-higher_order-fold.ads:433, in instantiation at test_higher_order3.ads:22
-spark-higher_order-fold.ads:51:16: info: implicit terminating annotation on "Fold" has been proved, subprogram will terminate, in instantiation at spark-higher_order-fold.ads:87, in instantiation at test_higher_order.ads:43
+spark-higher_order-fold.ads:51:16: info: implicit aspect Always_Terminates on "Fold" has been proved, subprogram will terminate, in instantiation at spark-higher_order-fold.ads:87, in instantiation at spark-higher_order-fold.ads:352, in instantiation at test_higher_order2.ads:43
+spark-higher_order-fold.ads:51:16: info: implicit aspect Always_Terminates on "Fold" has been proved, subprogram will terminate, in instantiation at spark-higher_order-fold.ads:87, in instantiation at spark-higher_order-fold.ads:352, in instantiation at test_higher_order2.ads:86
+spark-higher_order-fold.ads:51:16: info: implicit aspect Always_Terminates on "Fold" has been proved, subprogram will terminate, in instantiation at spark-higher_order-fold.ads:87, in instantiation at spark-higher_order-fold.ads:433, in instantiation at test_higher_order3.ads:22
+spark-higher_order-fold.ads:51:16: info: implicit aspect Always_Terminates on "Fold" has been proved, subprogram will terminate, in instantiation at spark-higher_order-fold.ads:87, in instantiation at test_higher_order.ads:43
 spark-higher_order-fold.ads:52:39: info: precondition proved, in instantiation at spark-higher_order-fold.ads:87, in instantiation at spark-higher_order-fold.ads:433, in instantiation at test_higher_order3.ads:22
 spark-higher_order-fold.ads:52:39: info: precondition proved, in instantiation at spark-higher_order-fold.ads:87, in instantiation at test_higher_order.ads:43
 spark-higher_order-fold.ads:52:59: info: range check proved, in instantiation at spark-higher_order-fold.ads:87, in instantiation at spark-higher_order-fold.ads:352, in instantiation at test_higher_order2.ads:43
@@ -1513,10 +1513,10 @@ spark-higher_order-fold.ads:61:47: info: index check proved, in instantiation at
 spark-higher_order-fold.ads:61:47: info: index check proved, in instantiation at spark-higher_order-fold.ads:87, in instantiation at spark-higher_order-fold.ads:352, in instantiation at test_higher_order2.ads:86
 spark-higher_order-fold.ads:61:47: info: index check proved, in instantiation at spark-higher_order-fold.ads:87, in instantiation at spark-higher_order-fold.ads:433, in instantiation at test_higher_order3.ads:22
 spark-higher_order-fold.ads:61:47: info: index check proved, in instantiation at spark-higher_order-fold.ads:87, in instantiation at test_higher_order.ads:43
-spark-higher_order-fold.ads:96:16: info: implicit terminating annotation on "Fold" has been proved, subprogram will terminate, in instantiation at spark-higher_order-fold.ads:352, in instantiation at test_higher_order2.ads:43
-spark-higher_order-fold.ads:96:16: info: implicit terminating annotation on "Fold" has been proved, subprogram will terminate, in instantiation at spark-higher_order-fold.ads:352, in instantiation at test_higher_order2.ads:86
-spark-higher_order-fold.ads:96:16: info: implicit terminating annotation on "Fold" has been proved, subprogram will terminate, in instantiation at spark-higher_order-fold.ads:433, in instantiation at test_higher_order3.ads:22
-spark-higher_order-fold.ads:96:16: info: implicit terminating annotation on "Fold" has been proved, subprogram will terminate, in instantiation at test_higher_order.ads:43
+spark-higher_order-fold.ads:96:16: info: implicit aspect Always_Terminates on "Fold" has been proved, subprogram will terminate, in instantiation at spark-higher_order-fold.ads:352, in instantiation at test_higher_order2.ads:43
+spark-higher_order-fold.ads:96:16: info: implicit aspect Always_Terminates on "Fold" has been proved, subprogram will terminate, in instantiation at spark-higher_order-fold.ads:352, in instantiation at test_higher_order2.ads:86
+spark-higher_order-fold.ads:96:16: info: implicit aspect Always_Terminates on "Fold" has been proved, subprogram will terminate, in instantiation at spark-higher_order-fold.ads:433, in instantiation at test_higher_order3.ads:22
+spark-higher_order-fold.ads:96:16: info: implicit aspect Always_Terminates on "Fold" has been proved, subprogram will terminate, in instantiation at test_higher_order.ads:43
 spark-higher_order-fold.ads:98:38: info: precondition proved, in instantiation at spark-higher_order-fold.ads:433, in instantiation at test_higher_order3.ads:22
 spark-higher_order-fold.ads:98:38: info: precondition proved, in instantiation at test_higher_order.ads:43
 spark-higher_order-fold.ads:98:58: info: range check proved, in instantiation at spark-higher_order-fold.ads:352, in instantiation at test_higher_order2.ads:43
@@ -1541,21 +1541,21 @@ spark-higher_order-fold.ads:101:38: info: index check proved, in instantiation a
 spark-higher_order-fold.ads:101:38: info: index check proved, in instantiation at spark-higher_order-fold.ads:352, in instantiation at test_higher_order2.ads:86
 spark-higher_order-fold.ads:101:38: info: index check proved, in instantiation at spark-higher_order-fold.ads:433, in instantiation at test_higher_order3.ads:22
 spark-higher_order-fold.ads:101:38: info: index check proved, in instantiation at test_higher_order.ads:43
-spark-higher_order-fold.ads:130:17: info: terminating annotation on "Prove_Ind" has been proved, subprogram will terminate, in instantiation at spark-higher_order-fold.ads:185, in instantiation at test_higher_order2.ads:104
+spark-higher_order-fold.ads:130:17: info: aspect Always_Terminates on "Prove_Ind" has been proved, subprogram will terminate, in instantiation at spark-higher_order-fold.ads:185, in instantiation at test_higher_order2.ads:104
 spark-higher_order-fold.ads:133:39: info: precondition proved, in instantiation at spark-higher_order-fold.ads:185, in instantiation at test_higher_order2.ads:104
 spark-higher_order-fold.ads:134:17: info: precondition proved, in instantiation at spark-higher_order-fold.ads:185, in instantiation at test_higher_order2.ads:104
 spark-higher_order-fold.ads:134:17: medium: postcondition might fail, in instantiation at spark-higher_order-fold.ads:185, in instantiation at test_higher_order2.ads:104 [possible fix: you should consider adding a postcondition to function Ind_Prop and function F or turning them into expression functions in their unit spec]
 spark-higher_order-fold.ads:134:36: info: index check proved, in instantiation at spark-higher_order-fold.ads:185, in instantiation at test_higher_order2.ads:104
 spark-higher_order-fold.ads:134:49: info: overflow check proved, in instantiation at spark-higher_order-fold.ads:185, in instantiation at test_higher_order2.ads:104
 spark-higher_order-fold.ads:134:49: info: range check proved, in instantiation at spark-higher_order-fold.ads:185, in instantiation at test_higher_order2.ads:104
-spark-higher_order-fold.ads:137:17: info: terminating annotation on "Prove_Last" has been proved, subprogram will terminate, in instantiation at spark-higher_order-fold.ads:185, in instantiation at test_higher_order2.ads:104
+spark-higher_order-fold.ads:137:17: info: aspect Always_Terminates on "Prove_Last" has been proved, subprogram will terminate, in instantiation at spark-higher_order-fold.ads:185, in instantiation at test_higher_order2.ads:104
 spark-higher_order-fold.ads:139:39: info: precondition proved, in instantiation at spark-higher_order-fold.ads:185, in instantiation at test_higher_order2.ads:104
 spark-higher_order-fold.ads:139:56: info: range check proved, in instantiation at spark-higher_order-fold.ads:185, in instantiation at test_higher_order2.ads:104
 spark-higher_order-fold.ads:140:17: info: precondition proved, in instantiation at spark-higher_order-fold.ads:185, in instantiation at test_higher_order2.ads:104
 spark-higher_order-fold.ads:140:17: medium: postcondition might fail, in instantiation at spark-higher_order-fold.ads:185, in instantiation at test_higher_order2.ads:104 [possible fix: you should consider adding a postcondition to function Final_Prop and function F or turning them into expression functions in their unit spec]
 spark-higher_order-fold.ads:140:39: info: index check proved, in instantiation at spark-higher_order-fold.ads:185, in instantiation at test_higher_order2.ads:104
 spark-higher_order-fold.ads:140:48: info: range check proved, in instantiation at spark-higher_order-fold.ads:185, in instantiation at test_higher_order2.ads:104
-spark-higher_order-fold.ads:146:16: info: implicit terminating annotation on "Fold" has been proved, subprogram will terminate, in instantiation at spark-higher_order-fold.ads:185, in instantiation at test_higher_order2.ads:104
+spark-higher_order-fold.ads:146:16: info: implicit aspect Always_Terminates on "Fold" has been proved, subprogram will terminate, in instantiation at spark-higher_order-fold.ads:185, in instantiation at test_higher_order2.ads:104
 spark-higher_order-fold.ads:147:39: info: precondition proved, in instantiation at spark-higher_order-fold.ads:185, in instantiation at test_higher_order2.ads:104
 spark-higher_order-fold.ads:147:59: info: range check proved, in instantiation at spark-higher_order-fold.ads:185, in instantiation at test_higher_order2.ads:104
 spark-higher_order-fold.ads:148:17: info: postcondition proved, in instantiation at spark-higher_order-fold.ads:185, in instantiation at test_higher_order2.ads:104
@@ -1575,26 +1575,26 @@ spark-higher_order-fold.ads:155:54: info: index check proved, in instantiation a
 spark-higher_order-fold.ads:155:54: info: overflow check proved, in instantiation at spark-higher_order-fold.ads:185, in instantiation at test_higher_order2.ads:104
 spark-higher_order-fold.ads:156:18: info: precondition proved, in instantiation at spark-higher_order-fold.ads:185, in instantiation at test_higher_order2.ads:104
 spark-higher_order-fold.ads:156:47: info: index check proved, in instantiation at spark-higher_order-fold.ads:185, in instantiation at test_higher_order2.ads:104
-spark-higher_order-fold.ads:194:16: info: implicit terminating annotation on "Fold" has been proved, subprogram will terminate, in instantiation at test_higher_order2.ads:104
+spark-higher_order-fold.ads:194:16: info: implicit aspect Always_Terminates on "Fold" has been proved, subprogram will terminate, in instantiation at test_higher_order2.ads:104
 spark-higher_order-fold.ads:196:38: info: precondition proved, in instantiation at test_higher_order2.ads:104
 spark-higher_order-fold.ads:196:58: info: range check proved, in instantiation at test_higher_order2.ads:104
 spark-higher_order-fold.ads:197:17: info: postcondition proved, in instantiation at test_higher_order2.ads:104
 spark-higher_order-fold.ads:199:20: info: precondition proved, in instantiation at test_higher_order2.ads:104
 spark-higher_order-fold.ads:199:38: info: index check proved, in instantiation at test_higher_order2.ads:104
-spark-higher_order-fold.ads:225:17: info: terminating annotation on "Prove_Ind" has been proved, subprogram will terminate, in instantiation at spark-higher_order-fold.ads:277, in instantiation at test_higher_order.ads:34
+spark-higher_order-fold.ads:225:17: info: aspect Always_Terminates on "Prove_Ind" has been proved, subprogram will terminate, in instantiation at spark-higher_order-fold.ads:277, in instantiation at test_higher_order.ads:34
 spark-higher_order-fold.ads:228:61: info: precondition proved, in instantiation at spark-higher_order-fold.ads:277, in instantiation at test_higher_order.ads:34
 spark-higher_order-fold.ads:229:17: info: precondition proved, in instantiation at spark-higher_order-fold.ads:277, in instantiation at test_higher_order.ads:34
 spark-higher_order-fold.ads:229:17: medium: postcondition might fail, in instantiation at spark-higher_order-fold.ads:277, in instantiation at test_higher_order.ads:34 [possible fix: you should consider adding a postcondition to function Ind_Prop and function F or turning them into expression functions in their unit spec]
 spark-higher_order-fold.ads:229:36: info: index check proved, in instantiation at spark-higher_order-fold.ads:277, in instantiation at test_higher_order.ads:34
 spark-higher_order-fold.ads:229:46: info: overflow check proved, in instantiation at spark-higher_order-fold.ads:277, in instantiation at test_higher_order.ads:34
 spark-higher_order-fold.ads:229:46: info: range check proved, in instantiation at spark-higher_order-fold.ads:277, in instantiation at test_higher_order.ads:34
-spark-higher_order-fold.ads:232:17: info: terminating annotation on "Prove_Last" has been proved, subprogram will terminate, in instantiation at spark-higher_order-fold.ads:277, in instantiation at test_higher_order.ads:34
+spark-higher_order-fold.ads:232:17: info: aspect Always_Terminates on "Prove_Last" has been proved, subprogram will terminate, in instantiation at spark-higher_order-fold.ads:277, in instantiation at test_higher_order.ads:34
 spark-higher_order-fold.ads:234:39: info: precondition proved, in instantiation at spark-higher_order-fold.ads:277, in instantiation at test_higher_order.ads:34
 spark-higher_order-fold.ads:234:56: info: range check proved, in instantiation at spark-higher_order-fold.ads:277, in instantiation at test_higher_order.ads:34
 spark-higher_order-fold.ads:235:17: info: precondition proved, in instantiation at spark-higher_order-fold.ads:277, in instantiation at test_higher_order.ads:34
 spark-higher_order-fold.ads:235:17: medium: postcondition might fail, in instantiation at spark-higher_order-fold.ads:277, in instantiation at test_higher_order.ads:34 [possible fix: you should consider adding a postcondition to function Final_Prop and function F or turning them into expression functions in their unit spec]
 spark-higher_order-fold.ads:235:39: info: index check proved, in instantiation at spark-higher_order-fold.ads:277, in instantiation at test_higher_order.ads:34
-spark-higher_order-fold.ads:241:16: info: implicit terminating annotation on "Fold" has been proved, subprogram will terminate, in instantiation at spark-higher_order-fold.ads:277, in instantiation at test_higher_order.ads:34
+spark-higher_order-fold.ads:241:16: info: implicit aspect Always_Terminates on "Fold" has been proved, subprogram will terminate, in instantiation at spark-higher_order-fold.ads:277, in instantiation at test_higher_order.ads:34
 spark-higher_order-fold.ads:242:39: info: precondition proved, in instantiation at spark-higher_order-fold.ads:277, in instantiation at test_higher_order.ads:34
 spark-higher_order-fold.ads:242:59: info: range check proved, in instantiation at spark-higher_order-fold.ads:277, in instantiation at test_higher_order.ads:34
 spark-higher_order-fold.ads:243:17: info: postcondition proved, in instantiation at spark-higher_order-fold.ads:277, in instantiation at test_higher_order.ads:34
@@ -1612,20 +1612,20 @@ spark-higher_order-fold.ads:250:51: info: index check proved, in instantiation a
 spark-higher_order-fold.ads:250:51: info: overflow check proved, in instantiation at spark-higher_order-fold.ads:277, in instantiation at test_higher_order.ads:34
 spark-higher_order-fold.ads:251:18: info: precondition proved, in instantiation at spark-higher_order-fold.ads:277, in instantiation at test_higher_order.ads:34
 spark-higher_order-fold.ads:251:47: info: index check proved, in instantiation at spark-higher_order-fold.ads:277, in instantiation at test_higher_order.ads:34
-spark-higher_order-fold.ads:286:16: info: implicit terminating annotation on "Fold" has been proved, subprogram will terminate, in instantiation at test_higher_order.ads:34
+spark-higher_order-fold.ads:286:16: info: implicit aspect Always_Terminates on "Fold" has been proved, subprogram will terminate, in instantiation at test_higher_order.ads:34
 spark-higher_order-fold.ads:288:38: info: precondition proved, in instantiation at test_higher_order.ads:34
 spark-higher_order-fold.ads:288:58: info: range check proved, in instantiation at test_higher_order.ads:34
 spark-higher_order-fold.ads:289:17: info: postcondition proved, in instantiation at test_higher_order.ads:34
 spark-higher_order-fold.ads:291:20: info: precondition proved, in instantiation at test_higher_order.ads:34
 spark-higher_order-fold.ads:291:38: info: index check proved, in instantiation at test_higher_order.ads:34
-spark-higher_order-fold.ads:310:16: info: implicit terminating annotation on overriding operator "+" has been proved, subprogram will terminate, in instantiation at test_higher_order2.ads:43
-spark-higher_order-fold.ads:310:16: info: implicit terminating annotation on overriding operator "+" has been proved, subprogram will terminate, in instantiation at test_higher_order2.ads:86
+spark-higher_order-fold.ads:310:16: info: implicit aspect Always_Terminates on overriding operator "+" has been proved, subprogram will terminate, in instantiation at test_higher_order2.ads:43
+spark-higher_order-fold.ads:310:16: info: implicit aspect Always_Terminates on overriding operator "+" has been proved, subprogram will terminate, in instantiation at test_higher_order2.ads:86
 spark-higher_order-fold.ads:311:11: info: overflow check proved, in instantiation at test_higher_order2.ads:43
 spark-higher_order-fold.ads:311:11: medium: precondition might fail, in instantiation at test_higher_order2.ads:86
 spark-higher_order-fold.ads:313:26: info: predicate check proved, in instantiation at test_higher_order2.ads:86
 spark-higher_order-fold.ads:313:42: info: predicate check proved, in instantiation at test_higher_order2.ads:86
-spark-higher_order-fold.ads:318:17: info: terminating annotation on "Prove_Add" has been proved, subprogram will terminate, in instantiation at test_higher_order2.ads:43
-spark-higher_order-fold.ads:318:17: info: terminating annotation on "Prove_Add" has been proved, subprogram will terminate, in instantiation at test_higher_order2.ads:86
+spark-higher_order-fold.ads:318:17: info: aspect Always_Terminates on "Prove_Add" has been proved, subprogram will terminate, in instantiation at test_higher_order2.ads:43
+spark-higher_order-fold.ads:318:17: info: aspect Always_Terminates on "Prove_Add" has been proved, subprogram will terminate, in instantiation at test_higher_order2.ads:86
 spark-higher_order-fold.ads:321:27: info: predicate check proved, in instantiation at test_higher_order2.ads:86
 spark-higher_order-fold.ads:321:43: info: predicate check proved, in instantiation at test_higher_order2.ads:86
 spark-higher_order-fold.ads:322:17: info: postcondition proved, in instantiation at test_higher_order2.ads:43
@@ -1635,28 +1635,28 @@ spark-higher_order-fold.ads:322:33: info: predicate check proved, in instantiati
 spark-higher_order-fold.ads:322:50: info: predicate check proved, in instantiation at test_higher_order2.ads:86
 spark-higher_order-fold.ads:322:63: info: precondition proved, in instantiation at test_higher_order2.ads:43
 spark-higher_order-fold.ads:322:63: info: precondition proved, in instantiation at test_higher_order2.ads:86
-spark-higher_order-fold.ads:325:17: info: terminating annotation on "Prove_Zero" has been proved, subprogram will terminate, in instantiation at test_higher_order2.ads:43
-spark-higher_order-fold.ads:325:17: info: terminating annotation on "Prove_Zero" has been proved, subprogram will terminate, in instantiation at test_higher_order2.ads:86
+spark-higher_order-fold.ads:325:17: info: aspect Always_Terminates on "Prove_Zero" has been proved, subprogram will terminate, in instantiation at test_higher_order2.ads:43
+spark-higher_order-fold.ads:325:17: info: aspect Always_Terminates on "Prove_Zero" has been proved, subprogram will terminate, in instantiation at test_higher_order2.ads:86
 spark-higher_order-fold.ads:327:17: info: postcondition proved, in instantiation at test_higher_order2.ads:43
 spark-higher_order-fold.ads:327:17: info: predicate check proved, in instantiation at test_higher_order2.ads:86
 spark-higher_order-fold.ads:327:17: medium: postcondition might fail, in instantiation at test_higher_order2.ads:86 [possible fix: you should consider adding a postcondition to function To_Big or turning it into an expression function in its unit spec]
 spark-higher_order-fold.ads:327:33: info: predicate check proved, in instantiation at test_higher_order2.ads:43
 spark-higher_order-fold.ads:327:33: info: predicate check proved, in instantiation at test_higher_order2.ads:86
-spark-higher_order-fold.ads:337:19: info: implicit terminating annotation on "Always_True" has been proved, subprogram will terminate, in instantiation at test_higher_order2.ads:43
-spark-higher_order-fold.ads:337:19: info: implicit terminating annotation on "Always_True" has been proved, subprogram will terminate, in instantiation at test_higher_order2.ads:86
-spark-higher_order-fold.ads:343:19: info: implicit terminating annotation on "Always_True" has been proved, subprogram will terminate, in instantiation at test_higher_order2.ads:43
-spark-higher_order-fold.ads:343:19: info: implicit terminating annotation on "Always_True" has been proved, subprogram will terminate, in instantiation at test_higher_order2.ads:86
-spark-higher_order-fold.ads:347:19: info: implicit terminating annotation on "Add_Value" has been proved, subprogram will terminate, in instantiation at test_higher_order2.ads:43
-spark-higher_order-fold.ads:347:19: info: implicit terminating annotation on "Add_Value" has been proved, subprogram will terminate, in instantiation at test_higher_order2.ads:86
+spark-higher_order-fold.ads:337:19: info: implicit aspect Always_Terminates on "Always_True" has been proved, subprogram will terminate, in instantiation at test_higher_order2.ads:43
+spark-higher_order-fold.ads:337:19: info: implicit aspect Always_Terminates on "Always_True" has been proved, subprogram will terminate, in instantiation at test_higher_order2.ads:86
+spark-higher_order-fold.ads:343:19: info: implicit aspect Always_Terminates on "Always_True" has been proved, subprogram will terminate, in instantiation at test_higher_order2.ads:43
+spark-higher_order-fold.ads:343:19: info: implicit aspect Always_Terminates on "Always_True" has been proved, subprogram will terminate, in instantiation at test_higher_order2.ads:86
+spark-higher_order-fold.ads:347:19: info: implicit aspect Always_Terminates on "Add_Value" has been proved, subprogram will terminate, in instantiation at test_higher_order2.ads:43
+spark-higher_order-fold.ads:347:19: info: implicit aspect Always_Terminates on "Add_Value" has been proved, subprogram will terminate, in instantiation at test_higher_order2.ads:86
 spark-higher_order-fold.ads:349:14: info: predicate check proved, in instantiation at test_higher_order2.ads:86
 spark-higher_order-fold.ads:349:35: info: predicate check proved, in instantiation at test_higher_order2.ads:43
 spark-higher_order-fold.ads:349:35: info: predicate check proved, in instantiation at test_higher_order2.ads:86
-spark-higher_order-fold.ads:361:19: info: implicit terminating annotation on "Sum" has been proved, subprogram will terminate, in instantiation at test_higher_order2.ads:43
-spark-higher_order-fold.ads:361:19: info: implicit terminating annotation on "Sum" has been proved, subprogram will terminate, in instantiation at test_higher_order2.ads:86
+spark-higher_order-fold.ads:361:19: info: implicit aspect Always_Terminates on "Sum" has been proved, subprogram will terminate, in instantiation at test_higher_order2.ads:43
+spark-higher_order-fold.ads:361:19: info: implicit aspect Always_Terminates on "Sum" has been proved, subprogram will terminate, in instantiation at test_higher_order2.ads:86
 spark-higher_order-fold.ads:362:21: info: precondition proved, in instantiation at test_higher_order2.ads:43
 spark-higher_order-fold.ads:362:21: info: precondition proved, in instantiation at test_higher_order2.ads:86
-spark-higher_order-fold.ads:364:20: info: terminating annotation on "Update_Sum" has been proved, subprogram will terminate, in instantiation at test_higher_order2.ads:43
-spark-higher_order-fold.ads:364:20: info: terminating annotation on "Update_Sum" has been proved, subprogram will terminate, in instantiation at test_higher_order2.ads:86
+spark-higher_order-fold.ads:364:20: info: aspect Always_Terminates on "Update_Sum" has been proved, subprogram will terminate, in instantiation at test_higher_order2.ads:43
+spark-higher_order-fold.ads:364:20: info: aspect Always_Terminates on "Update_Sum" has been proved, subprogram will terminate, in instantiation at test_higher_order2.ads:86
 spark-higher_order-fold.ads:367:58: info: index check proved, in instantiation at test_higher_order2.ads:43
 spark-higher_order-fold.ads:367:58: info: index check proved, in instantiation at test_higher_order2.ads:86
 spark-higher_order-fold.ads:367:67: info: index check proved, in instantiation at test_higher_order2.ads:43
@@ -1673,16 +1673,16 @@ spark-higher_order-fold.ads:369:14: info: predicate check proved, in instantiati
 spark-higher_order-fold.ads:369:25: info: predicate check proved, in instantiation at test_higher_order2.ads:86
 spark-higher_order-fold.ads:369:44: info: index check proved, in instantiation at test_higher_order2.ads:43
 spark-higher_order-fold.ads:369:44: info: index check proved, in instantiation at test_higher_order2.ads:86
-spark-higher_order-fold.ads:372:19: info: implicit terminating annotation on "Length" has been proved, subprogram will terminate, in instantiation at test_higher_order2.ads:43
-spark-higher_order-fold.ads:372:19: info: implicit terminating annotation on "Length" has been proved, subprogram will terminate, in instantiation at test_higher_order2.ads:86
+spark-higher_order-fold.ads:372:19: info: implicit aspect Always_Terminates on "Length" has been proved, subprogram will terminate, in instantiation at test_higher_order2.ads:43
+spark-higher_order-fold.ads:372:19: info: implicit aspect Always_Terminates on "Length" has been proved, subprogram will terminate, in instantiation at test_higher_order2.ads:86
 spark-higher_order-fold.ads:374:30: info: range check proved, in instantiation at test_higher_order2.ads:43
 spark-higher_order-fold.ads:374:30: info: range check proved, in instantiation at test_higher_order2.ads:86
 spark-higher_order-fold.ads:374:50: info: range check proved, in instantiation at test_higher_order2.ads:43
 spark-higher_order-fold.ads:374:50: info: range check proved, in instantiation at test_higher_order2.ads:86
 spark-higher_order-fold.ads:374:60: info: predicate check proved, in instantiation at test_higher_order2.ads:43
 spark-higher_order-fold.ads:374:60: info: predicate check proved, in instantiation at test_higher_order2.ads:86
-spark-higher_order-fold.ads:376:20: info: terminating annotation on "Sum_Cst" has been proved, subprogram will terminate, in instantiation at test_higher_order2.ads:43
-spark-higher_order-fold.ads:376:20: info: terminating annotation on "Sum_Cst" has been proved, subprogram will terminate, in instantiation at test_higher_order2.ads:86
+spark-higher_order-fold.ads:376:20: info: aspect Always_Terminates on "Sum_Cst" has been proved, subprogram will terminate, in instantiation at test_higher_order2.ads:43
+spark-higher_order-fold.ads:376:20: info: aspect Always_Terminates on "Sum_Cst" has been proved, subprogram will terminate, in instantiation at test_higher_order2.ads:86
 spark-higher_order-fold.ads:377:21: info: postcondition proved, in instantiation at test_higher_order2.ads:43
 spark-higher_order-fold.ads:377:21: info: postcondition proved, in instantiation at test_higher_order2.ads:86
 spark-higher_order-fold.ads:377:59: info: index check proved, in instantiation at test_higher_order2.ads:43
@@ -1692,8 +1692,8 @@ spark-higher_order-fold.ads:378:23: info: predicate check proved, in instantiati
 spark-higher_order-fold.ads:378:33: info: predicate check proved, in instantiation at test_higher_order2.ads:86
 spark-higher_order-fold.ads:378:46: info: predicate check proved, in instantiation at test_higher_order2.ads:43
 spark-higher_order-fold.ads:378:46: info: predicate check proved, in instantiation at test_higher_order2.ads:86
-spark-higher_order-fold.ads:383:16: info: implicit terminating annotation on "No_Overflows" has been proved, subprogram will terminate, in instantiation at test_higher_order2.ads:43
-spark-higher_order-fold.ads:383:16: info: implicit terminating annotation on "No_Overflows" has been proved, subprogram will terminate, in instantiation at test_higher_order2.ads:86
+spark-higher_order-fold.ads:383:16: info: implicit aspect Always_Terminates on "No_Overflows" has been proved, subprogram will terminate, in instantiation at test_higher_order2.ads:43
+spark-higher_order-fold.ads:383:16: info: implicit aspect Always_Terminates on "No_Overflows" has been proved, subprogram will terminate, in instantiation at test_higher_order2.ads:86
 spark-higher_order-fold.ads:395:21: info: predicate check proved, in instantiation at test_higher_order2.ads:86
 spark-higher_order-fold.ads:395:34: info: predicate check proved, in instantiation at test_higher_order2.ads:86
 spark-higher_order-fold.ads:395:52: info: index check proved, in instantiation at test_higher_order2.ads:43
@@ -1708,29 +1708,29 @@ spark-higher_order-fold.ads:397:64: info: index check proved, in instantiation a
 spark-higher_order-fold.ads:397:64: info: index check proved, in instantiation at test_higher_order2.ads:86
 spark-higher_order-fold.ads:397:71: info: range check proved, in instantiation at test_higher_order2.ads:43
 spark-higher_order-fold.ads:397:71: info: range check proved, in instantiation at test_higher_order2.ads:86
-spark-higher_order-fold.ads:399:16: info: implicit terminating annotation on "No_Overflows" has been proved, subprogram will terminate, in instantiation at test_higher_order2.ads:43
-spark-higher_order-fold.ads:399:16: info: implicit terminating annotation on "No_Overflows" has been proved, subprogram will terminate, in instantiation at test_higher_order2.ads:86
+spark-higher_order-fold.ads:399:16: info: implicit aspect Always_Terminates on "No_Overflows" has been proved, subprogram will terminate, in instantiation at test_higher_order2.ads:43
+spark-higher_order-fold.ads:399:16: info: implicit aspect Always_Terminates on "No_Overflows" has been proved, subprogram will terminate, in instantiation at test_higher_order2.ads:86
 spark-higher_order-fold.ads:400:31: info: precondition proved, in instantiation at test_higher_order2.ads:43
 spark-higher_order-fold.ads:400:31: info: precondition proved, in instantiation at test_higher_order2.ads:86
 spark-higher_order-fold.ads:400:55: info: range check proved, in instantiation at test_higher_order2.ads:43
 spark-higher_order-fold.ads:400:55: info: range check proved, in instantiation at test_higher_order2.ads:86
-spark-higher_order-fold.ads:403:16: info: implicit terminating annotation on "Sum" has been proved, subprogram will terminate, in instantiation at test_higher_order2.ads:43
-spark-higher_order-fold.ads:403:16: info: implicit terminating annotation on "Sum" has been proved, subprogram will terminate, in instantiation at test_higher_order2.ads:86
+spark-higher_order-fold.ads:403:16: info: implicit aspect Always_Terminates on "Sum" has been proved, subprogram will terminate, in instantiation at test_higher_order2.ads:43
+spark-higher_order-fold.ads:403:16: info: implicit aspect Always_Terminates on "Sum" has been proved, subprogram will terminate, in instantiation at test_higher_order2.ads:86
 spark-higher_order-fold.ads:405:17: info: postcondition proved, in instantiation at test_higher_order2.ads:43
 spark-higher_order-fold.ads:405:17: info: postcondition proved, in instantiation at test_higher_order2.ads:86
 spark-higher_order-fold.ads:405:17: info: predicate check proved, in instantiation at test_higher_order2.ads:86
 spark-higher_order-fold.ads:405:54: info: predicate check proved, in instantiation at test_higher_order2.ads:43
 spark-higher_order-fold.ads:405:54: info: predicate check proved, in instantiation at test_higher_order2.ads:86
-spark-higher_order-fold.ads:417:16: info: implicit terminating annotation on "In_Range" has been proved, subprogram will terminate, in instantiation at test_higher_order3.ads:22
+spark-higher_order-fold.ads:417:16: info: implicit aspect Always_Terminates on "In_Range" has been proved, subprogram will terminate, in instantiation at test_higher_order3.ads:22
 spark-higher_order-fold.ads:419:27: info: overflow check proved, in instantiation at test_higher_order3.ads:22
 spark-higher_order-fold.ads:419:27: info: range check proved, in instantiation at test_higher_order3.ads:22
-spark-higher_order-fold.ads:423:16: info: implicit terminating annotation on "In_Range_Last" has been proved, subprogram will terminate, in instantiation at test_higher_order3.ads:22
+spark-higher_order-fold.ads:423:16: info: implicit aspect Always_Terminates on "In_Range_Last" has been proved, subprogram will terminate, in instantiation at test_higher_order3.ads:22
 spark-higher_order-fold.ads:425:17: info: range check proved, in instantiation at test_higher_order3.ads:22
-spark-higher_order-fold.ads:428:16: info: implicit terminating annotation on "Add_One" has been proved, subprogram will terminate, in instantiation at test_higher_order3.ads:22
+spark-higher_order-fold.ads:428:16: info: implicit aspect Always_Terminates on "Add_One" has been proved, subprogram will terminate, in instantiation at test_higher_order3.ads:22
 spark-higher_order-fold.ads:429:32: info: overflow check proved, in instantiation at test_higher_order3.ads:22
-spark-higher_order-fold.ads:442:16: info: implicit terminating annotation on "Count" has been proved, subprogram will terminate, in instantiation at test_higher_order3.ads:22
+spark-higher_order-fold.ads:442:16: info: implicit aspect Always_Terminates on "Count" has been proved, subprogram will terminate, in instantiation at test_higher_order3.ads:22
 spark-higher_order-fold.ads:443:20: info: precondition proved, in instantiation at test_higher_order3.ads:22
-spark-higher_order-fold.ads:445:17: info: terminating annotation on "Update_Count" has been proved, subprogram will terminate, in instantiation at test_higher_order3.ads:22
+spark-higher_order-fold.ads:445:17: info: aspect Always_Terminates on "Update_Count" has been proved, subprogram will terminate, in instantiation at test_higher_order3.ads:22
 spark-higher_order-fold.ads:449:55: info: index check proved, in instantiation at test_higher_order3.ads:22
 spark-higher_order-fold.ads:449:64: info: index check proved, in instantiation at test_higher_order3.ads:22
 spark-higher_order-fold.ads:450:09: info: complete contract cases proved, in instantiation at test_higher_order3.ads:22
@@ -1746,17 +1746,17 @@ spark-higher_order-fold.ads:457:28: info: index check proved, in instantiation a
 spark-higher_order-fold.ads:457:48: info: index check proved, in instantiation at test_higher_order3.ads:22
 spark-higher_order-fold.ads:458:12: info: contract case proved, in instantiation at test_higher_order3.ads:22
 spark-higher_order-fold.ads:459:25: info: overflow check proved, in instantiation at test_higher_order3.ads:22
-spark-higher_order-fold.ads:462:17: info: terminating annotation on "Count_Zero" has been proved, subprogram will terminate, in instantiation at test_higher_order3.ads:22
+spark-higher_order-fold.ads:462:17: info: aspect Always_Terminates on "Count_Zero" has been proved, subprogram will terminate, in instantiation at test_higher_order3.ads:22
 spark-higher_order-fold.ads:463:18: info: postcondition proved, in instantiation at test_higher_order3.ads:22
 spark-higher_order-fold.ads:464:51: info: index check proved, in instantiation at test_higher_order3.ads:22
-spark-higher_order-fold.ads:467:17: info: terminating annotation on "Count_Length" has been proved, subprogram will terminate, in instantiation at test_higher_order3.ads:22
+spark-higher_order-fold.ads:467:17: info: aspect Always_Terminates on "Count_Length" has been proved, subprogram will terminate, in instantiation at test_higher_order3.ads:22
 spark-higher_order-fold.ads:468:18: info: postcondition proved, in instantiation at test_higher_order3.ads:22
 spark-higher_order-fold.ads:468:31: info: range check proved, in instantiation at test_higher_order3.ads:22
 spark-higher_order-fold.ads:469:47: info: index check proved, in instantiation at test_higher_order3.ads:22
-spark-higher_order-fold.ads:499:17: info: terminating annotation on "Prove_Ind_Col" has been proved, subprogram will terminate, in instantiation at spark-higher_order-fold.ads:579, in instantiation at spark-higher_order-fold.ads:663, in instantiation at test_higher_order3.ads:33
-spark-higher_order-fold.ads:499:17: info: terminating annotation on "Prove_Ind_Col" has been proved, subprogram will terminate, in instantiation at spark-higher_order-fold.ads:579, in instantiation at spark-higher_order-fold.ads:663, in instantiation at test_higher_order3.ads:77
-spark-higher_order-fold.ads:499:17: info: terminating annotation on "Prove_Ind_Col" has been proved, subprogram will terminate, in instantiation at spark-higher_order-fold.ads:579, in instantiation at spark-higher_order-fold.ads:768, in instantiation at test_higher_order3.ads:89
-spark-higher_order-fold.ads:499:17: info: terminating annotation on "Prove_Ind_Col" has been proved, subprogram will terminate, in instantiation at spark-higher_order-fold.ads:579, in instantiation at test_higher_order1.ads:28
+spark-higher_order-fold.ads:499:17: info: aspect Always_Terminates on "Prove_Ind_Col" has been proved, subprogram will terminate, in instantiation at spark-higher_order-fold.ads:579, in instantiation at spark-higher_order-fold.ads:663, in instantiation at test_higher_order3.ads:33
+spark-higher_order-fold.ads:499:17: info: aspect Always_Terminates on "Prove_Ind_Col" has been proved, subprogram will terminate, in instantiation at spark-higher_order-fold.ads:579, in instantiation at spark-higher_order-fold.ads:663, in instantiation at test_higher_order3.ads:77
+spark-higher_order-fold.ads:499:17: info: aspect Always_Terminates on "Prove_Ind_Col" has been proved, subprogram will terminate, in instantiation at spark-higher_order-fold.ads:579, in instantiation at spark-higher_order-fold.ads:768, in instantiation at test_higher_order3.ads:89
+spark-higher_order-fold.ads:499:17: info: aspect Always_Terminates on "Prove_Ind_Col" has been proved, subprogram will terminate, in instantiation at spark-higher_order-fold.ads:579, in instantiation at test_higher_order1.ads:28
 spark-higher_order-fold.ads:504:43: info: precondition proved, in instantiation at spark-higher_order-fold.ads:579, in instantiation at spark-higher_order-fold.ads:768, in instantiation at test_higher_order3.ads:89
 spark-higher_order-fold.ads:504:43: info: precondition proved, in instantiation at spark-higher_order-fold.ads:579, in instantiation at test_higher_order1.ads:28
 spark-higher_order-fold.ads:505:17: info: postcondition proved, in instantiation at spark-higher_order-fold.ads:579, in instantiation at spark-higher_order-fold.ads:663, in instantiation at test_higher_order3.ads:33
@@ -1779,10 +1779,10 @@ spark-higher_order-fold.ads:505:52: info: range check proved, in instantiation a
 spark-higher_order-fold.ads:505:52: info: range check proved, in instantiation at spark-higher_order-fold.ads:579, in instantiation at spark-higher_order-fold.ads:663, in instantiation at test_higher_order3.ads:77
 spark-higher_order-fold.ads:505:52: info: range check proved, in instantiation at spark-higher_order-fold.ads:579, in instantiation at spark-higher_order-fold.ads:768, in instantiation at test_higher_order3.ads:89
 spark-higher_order-fold.ads:505:52: info: range check proved, in instantiation at spark-higher_order-fold.ads:579, in instantiation at test_higher_order1.ads:28
-spark-higher_order-fold.ads:508:17: info: terminating annotation on "Prove_Ind_Row" has been proved, subprogram will terminate, in instantiation at spark-higher_order-fold.ads:579, in instantiation at spark-higher_order-fold.ads:663, in instantiation at test_higher_order3.ads:33
-spark-higher_order-fold.ads:508:17: info: terminating annotation on "Prove_Ind_Row" has been proved, subprogram will terminate, in instantiation at spark-higher_order-fold.ads:579, in instantiation at spark-higher_order-fold.ads:663, in instantiation at test_higher_order3.ads:77
-spark-higher_order-fold.ads:508:17: info: terminating annotation on "Prove_Ind_Row" has been proved, subprogram will terminate, in instantiation at spark-higher_order-fold.ads:579, in instantiation at spark-higher_order-fold.ads:768, in instantiation at test_higher_order3.ads:89
-spark-higher_order-fold.ads:508:17: info: terminating annotation on "Prove_Ind_Row" has been proved, subprogram will terminate, in instantiation at spark-higher_order-fold.ads:579, in instantiation at test_higher_order1.ads:28
+spark-higher_order-fold.ads:508:17: info: aspect Always_Terminates on "Prove_Ind_Row" has been proved, subprogram will terminate, in instantiation at spark-higher_order-fold.ads:579, in instantiation at spark-higher_order-fold.ads:663, in instantiation at test_higher_order3.ads:33
+spark-higher_order-fold.ads:508:17: info: aspect Always_Terminates on "Prove_Ind_Row" has been proved, subprogram will terminate, in instantiation at spark-higher_order-fold.ads:579, in instantiation at spark-higher_order-fold.ads:663, in instantiation at test_higher_order3.ads:77
+spark-higher_order-fold.ads:508:17: info: aspect Always_Terminates on "Prove_Ind_Row" has been proved, subprogram will terminate, in instantiation at spark-higher_order-fold.ads:579, in instantiation at spark-higher_order-fold.ads:768, in instantiation at test_higher_order3.ads:89
+spark-higher_order-fold.ads:508:17: info: aspect Always_Terminates on "Prove_Ind_Row" has been proved, subprogram will terminate, in instantiation at spark-higher_order-fold.ads:579, in instantiation at test_higher_order1.ads:28
 spark-higher_order-fold.ads:512:43: info: precondition proved, in instantiation at spark-higher_order-fold.ads:579, in instantiation at spark-higher_order-fold.ads:768, in instantiation at test_higher_order3.ads:89
 spark-higher_order-fold.ads:512:43: info: precondition proved, in instantiation at spark-higher_order-fold.ads:579, in instantiation at test_higher_order1.ads:28
 spark-higher_order-fold.ads:512:63: info: range check proved, in instantiation at spark-higher_order-fold.ads:579, in instantiation at spark-higher_order-fold.ads:663, in instantiation at test_higher_order3.ads:33
@@ -1813,10 +1813,10 @@ spark-higher_order-fold.ads:513:64: info: range check proved, in instantiation a
 spark-higher_order-fold.ads:513:64: info: range check proved, in instantiation at spark-higher_order-fold.ads:579, in instantiation at spark-higher_order-fold.ads:663, in instantiation at test_higher_order3.ads:77
 spark-higher_order-fold.ads:513:64: info: range check proved, in instantiation at spark-higher_order-fold.ads:579, in instantiation at spark-higher_order-fold.ads:768, in instantiation at test_higher_order3.ads:89
 spark-higher_order-fold.ads:513:64: info: range check proved, in instantiation at spark-higher_order-fold.ads:579, in instantiation at test_higher_order1.ads:28
-spark-higher_order-fold.ads:516:17: info: terminating annotation on "Prove_Last" has been proved, subprogram will terminate, in instantiation at spark-higher_order-fold.ads:579, in instantiation at spark-higher_order-fold.ads:663, in instantiation at test_higher_order3.ads:33
-spark-higher_order-fold.ads:516:17: info: terminating annotation on "Prove_Last" has been proved, subprogram will terminate, in instantiation at spark-higher_order-fold.ads:579, in instantiation at spark-higher_order-fold.ads:663, in instantiation at test_higher_order3.ads:77
-spark-higher_order-fold.ads:516:17: info: terminating annotation on "Prove_Last" has been proved, subprogram will terminate, in instantiation at spark-higher_order-fold.ads:579, in instantiation at spark-higher_order-fold.ads:768, in instantiation at test_higher_order3.ads:89
-spark-higher_order-fold.ads:516:17: info: terminating annotation on "Prove_Last" has been proved, subprogram will terminate, in instantiation at spark-higher_order-fold.ads:579, in instantiation at test_higher_order1.ads:28
+spark-higher_order-fold.ads:516:17: info: aspect Always_Terminates on "Prove_Last" has been proved, subprogram will terminate, in instantiation at spark-higher_order-fold.ads:579, in instantiation at spark-higher_order-fold.ads:663, in instantiation at test_higher_order3.ads:33
+spark-higher_order-fold.ads:516:17: info: aspect Always_Terminates on "Prove_Last" has been proved, subprogram will terminate, in instantiation at spark-higher_order-fold.ads:579, in instantiation at spark-higher_order-fold.ads:663, in instantiation at test_higher_order3.ads:77
+spark-higher_order-fold.ads:516:17: info: aspect Always_Terminates on "Prove_Last" has been proved, subprogram will terminate, in instantiation at spark-higher_order-fold.ads:579, in instantiation at spark-higher_order-fold.ads:768, in instantiation at test_higher_order3.ads:89
+spark-higher_order-fold.ads:516:17: info: aspect Always_Terminates on "Prove_Last" has been proved, subprogram will terminate, in instantiation at spark-higher_order-fold.ads:579, in instantiation at test_higher_order1.ads:28
 spark-higher_order-fold.ads:519:18: info: precondition proved, in instantiation at spark-higher_order-fold.ads:579, in instantiation at spark-higher_order-fold.ads:768, in instantiation at test_higher_order3.ads:89
 spark-higher_order-fold.ads:519:18: info: precondition proved, in instantiation at spark-higher_order-fold.ads:579, in instantiation at test_higher_order1.ads:28
 spark-higher_order-fold.ads:519:35: info: range check proved, in instantiation at spark-higher_order-fold.ads:579, in instantiation at spark-higher_order-fold.ads:663, in instantiation at test_higher_order3.ads:33
@@ -1841,10 +1841,10 @@ spark-higher_order-fold.ads:520:51: info: index check proved, in instantiation a
 spark-higher_order-fold.ads:520:51: info: index check proved, in instantiation at spark-higher_order-fold.ads:579, in instantiation at spark-higher_order-fold.ads:663, in instantiation at test_higher_order3.ads:77
 spark-higher_order-fold.ads:520:51: info: index check proved, in instantiation at spark-higher_order-fold.ads:579, in instantiation at spark-higher_order-fold.ads:768, in instantiation at test_higher_order3.ads:89
 spark-higher_order-fold.ads:520:51: info: index check proved, in instantiation at spark-higher_order-fold.ads:579, in instantiation at test_higher_order1.ads:28
-spark-higher_order-fold.ads:527:16: info: implicit terminating annotation on "Fold" has been proved, subprogram will terminate, in instantiation at spark-higher_order-fold.ads:579, in instantiation at spark-higher_order-fold.ads:663, in instantiation at test_higher_order3.ads:33
-spark-higher_order-fold.ads:527:16: info: implicit terminating annotation on "Fold" has been proved, subprogram will terminate, in instantiation at spark-higher_order-fold.ads:579, in instantiation at spark-higher_order-fold.ads:663, in instantiation at test_higher_order3.ads:77
-spark-higher_order-fold.ads:527:16: info: implicit terminating annotation on "Fold" has been proved, subprogram will terminate, in instantiation at spark-higher_order-fold.ads:579, in instantiation at spark-higher_order-fold.ads:768, in instantiation at test_higher_order3.ads:89
-spark-higher_order-fold.ads:527:16: info: implicit terminating annotation on "Fold" has been proved, subprogram will terminate, in instantiation at spark-higher_order-fold.ads:579, in instantiation at test_higher_order1.ads:28
+spark-higher_order-fold.ads:527:16: info: implicit aspect Always_Terminates on "Fold" has been proved, subprogram will terminate, in instantiation at spark-higher_order-fold.ads:579, in instantiation at spark-higher_order-fold.ads:663, in instantiation at test_higher_order3.ads:33
+spark-higher_order-fold.ads:527:16: info: implicit aspect Always_Terminates on "Fold" has been proved, subprogram will terminate, in instantiation at spark-higher_order-fold.ads:579, in instantiation at spark-higher_order-fold.ads:663, in instantiation at test_higher_order3.ads:77
+spark-higher_order-fold.ads:527:16: info: implicit aspect Always_Terminates on "Fold" has been proved, subprogram will terminate, in instantiation at spark-higher_order-fold.ads:579, in instantiation at spark-higher_order-fold.ads:768, in instantiation at test_higher_order3.ads:89
+spark-higher_order-fold.ads:527:16: info: implicit aspect Always_Terminates on "Fold" has been proved, subprogram will terminate, in instantiation at spark-higher_order-fold.ads:579, in instantiation at test_higher_order1.ads:28
 spark-higher_order-fold.ads:529:18: info: precondition proved, in instantiation at spark-higher_order-fold.ads:579, in instantiation at spark-higher_order-fold.ads:768, in instantiation at test_higher_order3.ads:89
 spark-higher_order-fold.ads:529:18: info: precondition proved, in instantiation at spark-higher_order-fold.ads:579, in instantiation at test_higher_order1.ads:28
 spark-higher_order-fold.ads:529:38: info: range check proved, in instantiation at spark-higher_order-fold.ads:579, in instantiation at spark-higher_order-fold.ads:663, in instantiation at test_higher_order3.ads:33
@@ -2009,10 +2009,10 @@ spark-higher_order-fold.ads:550:59: info: index check proved, in instantiation a
 spark-higher_order-fold.ads:550:59: info: index check proved, in instantiation at spark-higher_order-fold.ads:579, in instantiation at spark-higher_order-fold.ads:663, in instantiation at test_higher_order3.ads:77
 spark-higher_order-fold.ads:550:59: info: index check proved, in instantiation at spark-higher_order-fold.ads:579, in instantiation at spark-higher_order-fold.ads:768, in instantiation at test_higher_order3.ads:89
 spark-higher_order-fold.ads:550:59: info: index check proved, in instantiation at spark-higher_order-fold.ads:579, in instantiation at test_higher_order1.ads:28
-spark-higher_order-fold.ads:589:16: info: implicit terminating annotation on "Fold" has been proved, subprogram will terminate, in instantiation at spark-higher_order-fold.ads:663, in instantiation at test_higher_order3.ads:33
-spark-higher_order-fold.ads:589:16: info: implicit terminating annotation on "Fold" has been proved, subprogram will terminate, in instantiation at spark-higher_order-fold.ads:663, in instantiation at test_higher_order3.ads:77
-spark-higher_order-fold.ads:589:16: info: implicit terminating annotation on "Fold" has been proved, subprogram will terminate, in instantiation at spark-higher_order-fold.ads:768, in instantiation at test_higher_order3.ads:89
-spark-higher_order-fold.ads:589:16: info: implicit terminating annotation on "Fold" has been proved, subprogram will terminate, in instantiation at test_higher_order1.ads:28
+spark-higher_order-fold.ads:589:16: info: implicit aspect Always_Terminates on "Fold" has been proved, subprogram will terminate, in instantiation at spark-higher_order-fold.ads:663, in instantiation at test_higher_order3.ads:33
+spark-higher_order-fold.ads:589:16: info: implicit aspect Always_Terminates on "Fold" has been proved, subprogram will terminate, in instantiation at spark-higher_order-fold.ads:663, in instantiation at test_higher_order3.ads:77
+spark-higher_order-fold.ads:589:16: info: implicit aspect Always_Terminates on "Fold" has been proved, subprogram will terminate, in instantiation at spark-higher_order-fold.ads:768, in instantiation at test_higher_order3.ads:89
+spark-higher_order-fold.ads:589:16: info: implicit aspect Always_Terminates on "Fold" has been proved, subprogram will terminate, in instantiation at test_higher_order1.ads:28
 spark-higher_order-fold.ads:592:17: info: precondition proved, in instantiation at spark-higher_order-fold.ads:768, in instantiation at test_higher_order3.ads:89
 spark-higher_order-fold.ads:592:17: info: precondition proved, in instantiation at test_higher_order1.ads:28
 spark-higher_order-fold.ads:592:37: info: range check proved, in instantiation at spark-higher_order-fold.ads:663, in instantiation at test_higher_order3.ads:33
@@ -2048,14 +2048,14 @@ spark-higher_order-fold.ads:595:64: info: index check proved, in instantiation a
 spark-higher_order-fold.ads:595:64: info: index check proved, in instantiation at spark-higher_order-fold.ads:768, in instantiation at test_higher_order3.ads:89
 spark-higher_order-fold.ads:595:64: info: index check proved, in instantiation at test_higher_order1.ads:28
 spark-higher_order-fold.ads:596:21: info: precondition proved, in instantiation at test_higher_order1.ads:28
-spark-higher_order-fold.ads:617:16: info: implicit terminating annotation on overriding operator "+" has been proved, subprogram will terminate, in instantiation at test_higher_order3.ads:33
-spark-higher_order-fold.ads:617:16: info: implicit terminating annotation on overriding operator "+" has been proved, subprogram will terminate, in instantiation at test_higher_order3.ads:77
+spark-higher_order-fold.ads:617:16: info: implicit aspect Always_Terminates on overriding operator "+" has been proved, subprogram will terminate, in instantiation at test_higher_order3.ads:33
+spark-higher_order-fold.ads:617:16: info: implicit aspect Always_Terminates on overriding operator "+" has been proved, subprogram will terminate, in instantiation at test_higher_order3.ads:77
 spark-higher_order-fold.ads:618:11: info: overflow check proved, in instantiation at test_higher_order3.ads:33
 spark-higher_order-fold.ads:618:11: medium: precondition might fail, in instantiation at test_higher_order3.ads:77
 spark-higher_order-fold.ads:620:26: info: predicate check proved, in instantiation at test_higher_order3.ads:77
 spark-higher_order-fold.ads:620:42: info: predicate check proved, in instantiation at test_higher_order3.ads:77
-spark-higher_order-fold.ads:625:17: info: terminating annotation on "Prove_Add" has been proved, subprogram will terminate, in instantiation at test_higher_order3.ads:33
-spark-higher_order-fold.ads:625:17: info: terminating annotation on "Prove_Add" has been proved, subprogram will terminate, in instantiation at test_higher_order3.ads:77
+spark-higher_order-fold.ads:625:17: info: aspect Always_Terminates on "Prove_Add" has been proved, subprogram will terminate, in instantiation at test_higher_order3.ads:33
+spark-higher_order-fold.ads:625:17: info: aspect Always_Terminates on "Prove_Add" has been proved, subprogram will terminate, in instantiation at test_higher_order3.ads:77
 spark-higher_order-fold.ads:628:27: info: predicate check proved, in instantiation at test_higher_order3.ads:77
 spark-higher_order-fold.ads:628:43: info: predicate check proved, in instantiation at test_higher_order3.ads:77
 spark-higher_order-fold.ads:629:17: info: postcondition proved, in instantiation at test_higher_order3.ads:33
@@ -2065,28 +2065,28 @@ spark-higher_order-fold.ads:629:33: info: predicate check proved, in instantiati
 spark-higher_order-fold.ads:629:50: info: predicate check proved, in instantiation at test_higher_order3.ads:77
 spark-higher_order-fold.ads:629:63: info: precondition proved, in instantiation at test_higher_order3.ads:33
 spark-higher_order-fold.ads:629:63: info: precondition proved, in instantiation at test_higher_order3.ads:77
-spark-higher_order-fold.ads:632:17: info: terminating annotation on "Prove_Zero" has been proved, subprogram will terminate, in instantiation at test_higher_order3.ads:33
-spark-higher_order-fold.ads:632:17: info: terminating annotation on "Prove_Zero" has been proved, subprogram will terminate, in instantiation at test_higher_order3.ads:77
+spark-higher_order-fold.ads:632:17: info: aspect Always_Terminates on "Prove_Zero" has been proved, subprogram will terminate, in instantiation at test_higher_order3.ads:33
+spark-higher_order-fold.ads:632:17: info: aspect Always_Terminates on "Prove_Zero" has been proved, subprogram will terminate, in instantiation at test_higher_order3.ads:77
 spark-higher_order-fold.ads:634:17: info: postcondition proved, in instantiation at test_higher_order3.ads:33
 spark-higher_order-fold.ads:634:17: info: predicate check proved, in instantiation at test_higher_order3.ads:77
 spark-higher_order-fold.ads:634:17: medium: postcondition might fail, in instantiation at test_higher_order3.ads:77 [possible fix: you should consider adding a postcondition to function To_Big or turning it into an expression function in its unit spec]
 spark-higher_order-fold.ads:634:33: info: predicate check proved, in instantiation at test_higher_order3.ads:33
 spark-higher_order-fold.ads:634:33: info: predicate check proved, in instantiation at test_higher_order3.ads:77
-spark-higher_order-fold.ads:647:19: info: implicit terminating annotation on "Always_True" has been proved, subprogram will terminate, in instantiation at test_higher_order3.ads:33
-spark-higher_order-fold.ads:647:19: info: implicit terminating annotation on "Always_True" has been proved, subprogram will terminate, in instantiation at test_higher_order3.ads:77
-spark-higher_order-fold.ads:654:19: info: implicit terminating annotation on "Always_True" has been proved, subprogram will terminate, in instantiation at test_higher_order3.ads:33
-spark-higher_order-fold.ads:654:19: info: implicit terminating annotation on "Always_True" has been proved, subprogram will terminate, in instantiation at test_higher_order3.ads:77
-spark-higher_order-fold.ads:658:19: info: implicit terminating annotation on "Add_Value" has been proved, subprogram will terminate, in instantiation at test_higher_order3.ads:33
-spark-higher_order-fold.ads:658:19: info: implicit terminating annotation on "Add_Value" has been proved, subprogram will terminate, in instantiation at test_higher_order3.ads:77
+spark-higher_order-fold.ads:647:19: info: implicit aspect Always_Terminates on "Always_True" has been proved, subprogram will terminate, in instantiation at test_higher_order3.ads:33
+spark-higher_order-fold.ads:647:19: info: implicit aspect Always_Terminates on "Always_True" has been proved, subprogram will terminate, in instantiation at test_higher_order3.ads:77
+spark-higher_order-fold.ads:654:19: info: implicit aspect Always_Terminates on "Always_True" has been proved, subprogram will terminate, in instantiation at test_higher_order3.ads:33
+spark-higher_order-fold.ads:654:19: info: implicit aspect Always_Terminates on "Always_True" has been proved, subprogram will terminate, in instantiation at test_higher_order3.ads:77
+spark-higher_order-fold.ads:658:19: info: implicit aspect Always_Terminates on "Add_Value" has been proved, subprogram will terminate, in instantiation at test_higher_order3.ads:33
+spark-higher_order-fold.ads:658:19: info: implicit aspect Always_Terminates on "Add_Value" has been proved, subprogram will terminate, in instantiation at test_higher_order3.ads:77
 spark-higher_order-fold.ads:660:14: info: predicate check proved, in instantiation at test_higher_order3.ads:77
 spark-higher_order-fold.ads:660:35: info: predicate check proved, in instantiation at test_higher_order3.ads:33
 spark-higher_order-fold.ads:660:35: info: predicate check proved, in instantiation at test_higher_order3.ads:77
-spark-higher_order-fold.ads:673:19: info: implicit terminating annotation on "Sum" has been proved, subprogram will terminate, in instantiation at test_higher_order3.ads:33
-spark-higher_order-fold.ads:673:19: info: implicit terminating annotation on "Sum" has been proved, subprogram will terminate, in instantiation at test_higher_order3.ads:77
+spark-higher_order-fold.ads:673:19: info: implicit aspect Always_Terminates on "Sum" has been proved, subprogram will terminate, in instantiation at test_higher_order3.ads:33
+spark-higher_order-fold.ads:673:19: info: implicit aspect Always_Terminates on "Sum" has been proved, subprogram will terminate, in instantiation at test_higher_order3.ads:77
 spark-higher_order-fold.ads:674:21: info: precondition proved, in instantiation at test_higher_order3.ads:33
 spark-higher_order-fold.ads:674:21: info: precondition proved, in instantiation at test_higher_order3.ads:77
-spark-higher_order-fold.ads:676:20: info: terminating annotation on "Update_Sum" has been proved, subprogram will terminate, in instantiation at test_higher_order3.ads:33
-spark-higher_order-fold.ads:676:20: info: terminating annotation on "Update_Sum" has been proved, subprogram will terminate, in instantiation at test_higher_order3.ads:77
+spark-higher_order-fold.ads:676:20: info: aspect Always_Terminates on "Update_Sum" has been proved, subprogram will terminate, in instantiation at test_higher_order3.ads:33
+spark-higher_order-fold.ads:676:20: info: aspect Always_Terminates on "Update_Sum" has been proved, subprogram will terminate, in instantiation at test_higher_order3.ads:77
 spark-higher_order-fold.ads:685:55: info: index check proved, in instantiation at test_higher_order3.ads:33
 spark-higher_order-fold.ads:685:55: info: index check proved, in instantiation at test_higher_order3.ads:77
 spark-higher_order-fold.ads:685:58: info: index check proved, in instantiation at test_higher_order3.ads:33
@@ -2111,24 +2111,24 @@ spark-higher_order-fold.ads:687:44: info: index check proved, in instantiation a
 spark-higher_order-fold.ads:687:44: info: index check proved, in instantiation at test_higher_order3.ads:77
 spark-higher_order-fold.ads:687:47: info: index check proved, in instantiation at test_higher_order3.ads:33
 spark-higher_order-fold.ads:687:47: info: index check proved, in instantiation at test_higher_order3.ads:77
-spark-higher_order-fold.ads:690:19: info: implicit terminating annotation on "Length_1" has been proved, subprogram will terminate, in instantiation at test_higher_order3.ads:33
-spark-higher_order-fold.ads:690:19: info: implicit terminating annotation on "Length_1" has been proved, subprogram will terminate, in instantiation at test_higher_order3.ads:77
+spark-higher_order-fold.ads:690:19: info: implicit aspect Always_Terminates on "Length_1" has been proved, subprogram will terminate, in instantiation at test_higher_order3.ads:33
+spark-higher_order-fold.ads:690:19: info: implicit aspect Always_Terminates on "Length_1" has been proved, subprogram will terminate, in instantiation at test_higher_order3.ads:77
 spark-higher_order-fold.ads:692:30: info: range check proved, in instantiation at test_higher_order3.ads:33
 spark-higher_order-fold.ads:692:30: info: range check proved, in instantiation at test_higher_order3.ads:77
 spark-higher_order-fold.ads:692:54: info: range check proved, in instantiation at test_higher_order3.ads:33
 spark-higher_order-fold.ads:692:54: info: range check proved, in instantiation at test_higher_order3.ads:77
 spark-higher_order-fold.ads:692:68: info: predicate check proved, in instantiation at test_higher_order3.ads:33
 spark-higher_order-fold.ads:692:68: info: predicate check proved, in instantiation at test_higher_order3.ads:77
-spark-higher_order-fold.ads:694:19: info: implicit terminating annotation on "Length_2" has been proved, subprogram will terminate, in instantiation at test_higher_order3.ads:33
-spark-higher_order-fold.ads:694:19: info: implicit terminating annotation on "Length_2" has been proved, subprogram will terminate, in instantiation at test_higher_order3.ads:77
+spark-higher_order-fold.ads:694:19: info: implicit aspect Always_Terminates on "Length_2" has been proved, subprogram will terminate, in instantiation at test_higher_order3.ads:33
+spark-higher_order-fold.ads:694:19: info: implicit aspect Always_Terminates on "Length_2" has been proved, subprogram will terminate, in instantiation at test_higher_order3.ads:77
 spark-higher_order-fold.ads:696:30: info: range check proved, in instantiation at test_higher_order3.ads:33
 spark-higher_order-fold.ads:696:30: info: range check proved, in instantiation at test_higher_order3.ads:77
 spark-higher_order-fold.ads:696:54: info: range check proved, in instantiation at test_higher_order3.ads:33
 spark-higher_order-fold.ads:696:54: info: range check proved, in instantiation at test_higher_order3.ads:77
 spark-higher_order-fold.ads:696:68: info: predicate check proved, in instantiation at test_higher_order3.ads:33
 spark-higher_order-fold.ads:696:68: info: predicate check proved, in instantiation at test_higher_order3.ads:77
-spark-higher_order-fold.ads:698:20: info: terminating annotation on "Sum_Cst" has been proved, subprogram will terminate, in instantiation at test_higher_order3.ads:33
-spark-higher_order-fold.ads:698:20: info: terminating annotation on "Sum_Cst" has been proved, subprogram will terminate, in instantiation at test_higher_order3.ads:77
+spark-higher_order-fold.ads:698:20: info: aspect Always_Terminates on "Sum_Cst" has been proved, subprogram will terminate, in instantiation at test_higher_order3.ads:33
+spark-higher_order-fold.ads:698:20: info: aspect Always_Terminates on "Sum_Cst" has been proved, subprogram will terminate, in instantiation at test_higher_order3.ads:77
 spark-higher_order-fold.ads:699:21: info: postcondition proved, in instantiation at test_higher_order3.ads:33
 spark-higher_order-fold.ads:699:21: info: postcondition proved, in instantiation at test_higher_order3.ads:77
 spark-higher_order-fold.ads:700:64: info: index check proved, in instantiation at test_higher_order3.ads:33
@@ -2142,8 +2142,8 @@ spark-higher_order-fold.ads:701:49: info: predicate check proved, in instantiati
 spark-higher_order-fold.ads:701:49: info: predicate check proved, in instantiation at test_higher_order3.ads:77
 spark-higher_order-fold.ads:701:64: info: predicate check proved, in instantiation at test_higher_order3.ads:33
 spark-higher_order-fold.ads:701:64: info: predicate check proved, in instantiation at test_higher_order3.ads:77
-spark-higher_order-fold.ads:706:16: info: implicit terminating annotation on "No_Overflows" has been proved, subprogram will terminate, in instantiation at test_higher_order3.ads:33
-spark-higher_order-fold.ads:706:16: info: implicit terminating annotation on "No_Overflows" has been proved, subprogram will terminate, in instantiation at test_higher_order3.ads:77
+spark-higher_order-fold.ads:706:16: info: implicit aspect Always_Terminates on "No_Overflows" has been proved, subprogram will terminate, in instantiation at test_higher_order3.ads:33
+spark-higher_order-fold.ads:706:16: info: implicit aspect Always_Terminates on "No_Overflows" has been proved, subprogram will terminate, in instantiation at test_higher_order3.ads:77
 spark-higher_order-fold.ads:720:21: info: predicate check proved, in instantiation at test_higher_order3.ads:77
 spark-higher_order-fold.ads:720:34: info: predicate check proved, in instantiation at test_higher_order3.ads:77
 spark-higher_order-fold.ads:720:52: info: index check proved, in instantiation at test_higher_order3.ads:33
@@ -2176,22 +2176,22 @@ spark-higher_order-fold.ads:725:60: info: range check proved, in instantiation a
 spark-higher_order-fold.ads:725:60: info: range check proved, in instantiation at test_higher_order3.ads:77
 spark-higher_order-fold.ads:725:66: info: range check proved, in instantiation at test_higher_order3.ads:33
 spark-higher_order-fold.ads:725:66: info: range check proved, in instantiation at test_higher_order3.ads:77
-spark-higher_order-fold.ads:727:16: info: implicit terminating annotation on "No_Overflows" has been proved, subprogram will terminate, in instantiation at test_higher_order3.ads:33
-spark-higher_order-fold.ads:727:16: info: implicit terminating annotation on "No_Overflows" has been proved, subprogram will terminate, in instantiation at test_higher_order3.ads:77
+spark-higher_order-fold.ads:727:16: info: implicit aspect Always_Terminates on "No_Overflows" has been proved, subprogram will terminate, in instantiation at test_higher_order3.ads:33
+spark-higher_order-fold.ads:727:16: info: implicit aspect Always_Terminates on "No_Overflows" has been proved, subprogram will terminate, in instantiation at test_higher_order3.ads:77
 spark-higher_order-fold.ads:729:15: info: precondition proved, in instantiation at test_higher_order3.ads:33
 spark-higher_order-fold.ads:729:15: info: precondition proved, in instantiation at test_higher_order3.ads:77
 spark-higher_order-fold.ads:729:39: info: range check proved, in instantiation at test_higher_order3.ads:33
 spark-higher_order-fold.ads:729:39: info: range check proved, in instantiation at test_higher_order3.ads:77
 spark-higher_order-fold.ads:729:52: info: range check proved, in instantiation at test_higher_order3.ads:33
 spark-higher_order-fold.ads:729:52: info: range check proved, in instantiation at test_higher_order3.ads:77
-spark-higher_order-fold.ads:732:16: info: implicit terminating annotation on "Sum" has been proved, subprogram will terminate, in instantiation at test_higher_order3.ads:33
-spark-higher_order-fold.ads:732:16: info: implicit terminating annotation on "Sum" has been proved, subprogram will terminate, in instantiation at test_higher_order3.ads:77
+spark-higher_order-fold.ads:732:16: info: implicit aspect Always_Terminates on "Sum" has been proved, subprogram will terminate, in instantiation at test_higher_order3.ads:33
+spark-higher_order-fold.ads:732:16: info: implicit aspect Always_Terminates on "Sum" has been proved, subprogram will terminate, in instantiation at test_higher_order3.ads:77
 spark-higher_order-fold.ads:734:17: info: postcondition proved, in instantiation at test_higher_order3.ads:33
 spark-higher_order-fold.ads:734:17: info: postcondition proved, in instantiation at test_higher_order3.ads:77
 spark-higher_order-fold.ads:734:17: info: predicate check proved, in instantiation at test_higher_order3.ads:77
 spark-higher_order-fold.ads:734:54: info: predicate check proved, in instantiation at test_higher_order3.ads:33
 spark-higher_order-fold.ads:734:54: info: predicate check proved, in instantiation at test_higher_order3.ads:77
-spark-higher_order-fold.ads:749:16: info: implicit terminating annotation on "In_Range" has been proved, subprogram will terminate, in instantiation at test_higher_order3.ads:89
+spark-higher_order-fold.ads:749:16: info: implicit aspect Always_Terminates on "In_Range" has been proved, subprogram will terminate, in instantiation at test_higher_order3.ads:89
 spark-higher_order-fold.ads:752:26: info: overflow check proved, in instantiation at test_higher_order3.ads:89
 spark-higher_order-fold.ads:752:26: info: range check proved, in instantiation at test_higher_order3.ads:89
 spark-higher_order-fold.ads:752:41: info: overflow check proved, in instantiation at test_higher_order3.ads:89
@@ -2200,16 +2200,16 @@ spark-higher_order-fold.ads:753:10: info: overflow check proved, in instantiatio
 spark-higher_order-fold.ads:753:23: info: overflow check proved, in instantiation at test_higher_order3.ads:89
 spark-higher_order-fold.ads:753:23: info: range check proved, in instantiation at test_higher_order3.ads:89
 spark-higher_order-fold.ads:756:18: info: postcondition proved, in instantiation at test_higher_order3.ads:89
-spark-higher_order-fold.ads:758:16: info: implicit terminating annotation on "Add_One" has been proved, subprogram will terminate, in instantiation at test_higher_order3.ads:89
+spark-higher_order-fold.ads:758:16: info: implicit aspect Always_Terminates on "Add_One" has been proved, subprogram will terminate, in instantiation at test_higher_order3.ads:89
 spark-higher_order-fold.ads:759:32: info: overflow check proved, in instantiation at test_higher_order3.ads:89
 spark-higher_order-fold.ads:761:17: info: postcondition proved, in instantiation at test_higher_order3.ads:89
 spark-higher_order-fold.ads:761:56: info: overflow check proved, in instantiation at test_higher_order3.ads:89
-spark-higher_order-fold.ads:764:16: info: implicit terminating annotation on "Result_In_Range" has been proved, subprogram will terminate, in instantiation at test_higher_order3.ads:89
+spark-higher_order-fold.ads:764:16: info: implicit aspect Always_Terminates on "Result_In_Range" has been proved, subprogram will terminate, in instantiation at test_higher_order3.ads:89
 spark-higher_order-fold.ads:766:17: info: range check proved, in instantiation at test_higher_order3.ads:89
 spark-higher_order-fold.ads:766:32: info: range check proved, in instantiation at test_higher_order3.ads:89
-spark-higher_order-fold.ads:778:16: info: implicit terminating annotation on "Count" has been proved, subprogram will terminate, in instantiation at test_higher_order3.ads:89
+spark-higher_order-fold.ads:778:16: info: implicit aspect Always_Terminates on "Count" has been proved, subprogram will terminate, in instantiation at test_higher_order3.ads:89
 spark-higher_order-fold.ads:779:20: info: precondition proved, in instantiation at test_higher_order3.ads:89
-spark-higher_order-fold.ads:781:17: info: terminating annotation on "Update_Count" has been proved, subprogram will terminate, in instantiation at test_higher_order3.ads:89
+spark-higher_order-fold.ads:781:17: info: aspect Always_Terminates on "Update_Count" has been proved, subprogram will terminate, in instantiation at test_higher_order3.ads:89
 spark-higher_order-fold.ads:788:50: info: index check proved, in instantiation at test_higher_order3.ads:89
 spark-higher_order-fold.ads:788:53: info: index check proved, in instantiation at test_higher_order3.ads:89
 spark-higher_order-fold.ads:788:62: info: index check proved, in instantiation at test_higher_order3.ads:89
@@ -2233,11 +2233,11 @@ spark-higher_order-fold.ads:796:51: info: index check proved, in instantiation a
 spark-higher_order-fold.ads:796:54: info: index check proved, in instantiation at test_higher_order3.ads:89
 spark-higher_order-fold.ads:797:12: info: contract case proved, in instantiation at test_higher_order3.ads:89
 spark-higher_order-fold.ads:798:25: info: overflow check proved, in instantiation at test_higher_order3.ads:89
-spark-higher_order-fold.ads:801:17: info: terminating annotation on "Count_Zero" has been proved, subprogram will terminate, in instantiation at test_higher_order3.ads:89
+spark-higher_order-fold.ads:801:17: info: aspect Always_Terminates on "Count_Zero" has been proved, subprogram will terminate, in instantiation at test_higher_order3.ads:89
 spark-higher_order-fold.ads:802:18: info: postcondition proved, in instantiation at test_higher_order3.ads:89
 spark-higher_order-fold.ads:804:58: info: index check proved, in instantiation at test_higher_order3.ads:89
 spark-higher_order-fold.ads:804:61: info: index check proved, in instantiation at test_higher_order3.ads:89
-spark-higher_order-fold.ads:807:17: info: terminating annotation on "Count_Length" has been proved, subprogram will terminate, in instantiation at test_higher_order3.ads:89
+spark-higher_order-fold.ads:807:17: info: aspect Always_Terminates on "Count_Length" has been proved, subprogram will terminate, in instantiation at test_higher_order3.ads:89
 spark-higher_order-fold.ads:808:18: info: postcondition proved, in instantiation at test_higher_order3.ads:89
 spark-higher_order-fold.ads:808:31: info: range check proved, in instantiation at test_higher_order3.ads:89
 spark-higher_order-fold.ads:808:46: info: range check proved, in instantiation at test_higher_order3.ads:89
@@ -2257,11 +2257,11 @@ test_higher_order2.adb:12:21: info: overflow check proved
 test_higher_order2.adb:12:32: info: overflow check proved
 test_higher_order2.adb:13:17: info: overflow check proved
 test_higher_order2.adb:20:24: info: precondition proved
-test_higher_order2.ads:38:13: info: implicit terminating annotation on "Valid_Integer" has been proved, subprogram will terminate
+test_higher_order2.ads:38:13: info: implicit aspect Always_Terminates on "Valid_Integer" has been proved, subprogram will terminate
 test_higher_order2.ads:39:17: info: predicate check proved
 test_higher_order2.ads:56:06: info: data dependencies proved
 test_higher_order2.ads:57:14: info: postcondition proved
-test_higher_order2.ads:59:13: info: implicit terminating annotation on "Sum_Int" has been proved, subprogram will terminate
+test_higher_order2.ads:59:13: info: implicit aspect Always_Terminates on "Sum_Int" has been proved, subprogram will terminate
 test_higher_order2.ads:60:14: info: postcondition proved
 test_higher_order2.ads:61:34: info: predicate check proved
 test_higher_order3.adb:11:13: info: loop invariant initialization proved
@@ -2306,11 +2306,11 @@ test_higher_order3.adb:23:55: info: overflow check proved
 test_higher_order3.adb:24:19: info: overflow check proved
 test_higher_order3.adb:25:20: info: overflow check proved
 test_higher_order3.adb:33:24: info: precondition proved
-test_higher_order3.ads:28:13: info: implicit terminating annotation on "Valid_Integer" has been proved, subprogram will terminate
+test_higher_order3.ads:28:13: info: implicit aspect Always_Terminates on "Valid_Integer" has been proved, subprogram will terminate
 test_higher_order3.ads:29:17: info: predicate check proved
 test_higher_order3.ads:47:06: info: data dependencies proved
 test_higher_order3.ads:48:14: info: postcondition proved
-test_higher_order3.ads:50:13: info: implicit terminating annotation on "Sum_Int" has been proved, subprogram will terminate
+test_higher_order3.ads:50:13: info: implicit aspect Always_Terminates on "Sum_Int" has been proved, subprogram will terminate
 test_higher_order3.ads:51:14: info: postcondition proved
 test_higher_order3.ads:52:34: info: predicate check proved
 test_higher_order3.ads:89:04: info: function contract might not be available on calls from enclosing unit

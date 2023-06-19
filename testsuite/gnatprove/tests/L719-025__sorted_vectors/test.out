@@ -4,7 +4,7 @@ sorted_vectors.adb:12:13: info: loop invariant preservation proved (CVC5: 1 VC)
 sorted_vectors.adb:13:13: info: precondition proved (CVC5: 4 VC)
 sorted_vectors.adb:14:31: info: range check proved (CVC5: 2 VC)
 sorted_vectors.adb:17:07: info: precondition proved (CVC5: 3 VC)
-sorted_vectors.ads:9:13: info: implicit terminating annotation on "My_Lt" has been proved, subprogram will terminate
+sorted_vectors.ads:9:13: info: implicit aspect Always_Terminates on "My_Lt" has been proved, subprogram will terminate
 sorted_vectors.ads:22:25: info: initialization of "Position" proved
 sorted_vectors.ads:25:08: info: postcondition proved (CVC5: 6 VC; Trivial: 1 VC; Z3: 1 VC)
 sorted_vectors.ads:27:06: info: precondition proved (CVC5: 2 VC)

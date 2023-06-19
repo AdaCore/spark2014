@@ -7,48 +7,48 @@ x.adb:34:13: info: implicit function contract might not be available on calls fr
 x.adb:36:13: info: implicit function contract might not be available on calls from enclosing unit
 x.adb:38:13: info: implicit function contract might not be available on calls from enclosing unit
 x.adb:40:13: info: implicit function contract might not be available on calls from enclosing unit
-x.adb:44:18: medium: implicit terminating annotation on overriding operator "=" could be incorrect, loop might be nonterminating [possible fix: add loop variant in the loop body]
+x.adb:44:18: medium: implicit aspect Always_Terminates on overriding operator "=" could be incorrect, loop might be nonterminating [possible fix: add loop variant in the loop body]
 x.adb:44:18: warning: statement has no effect
-x.adb:52:19: medium: implicit terminating annotation on overriding operator "<" could be incorrect, loop might be nonterminating [possible fix: add loop variant in the loop body]
+x.adb:52:19: medium: implicit aspect Always_Terminates on overriding operator "<" could be incorrect, loop might be nonterminating [possible fix: add loop variant in the loop body]
 x.adb:52:19: warning: statement has no effect
-x.adb:60:19: medium: implicit terminating annotation on overriding operator "<=" could be incorrect, loop might be nonterminating [possible fix: add loop variant in the loop body]
+x.adb:60:19: medium: implicit aspect Always_Terminates on overriding operator "<=" could be incorrect, loop might be nonterminating [possible fix: add loop variant in the loop body]
 x.adb:60:19: warning: statement has no effect
-x.adb:68:19: medium: implicit terminating annotation on overriding operator ">" could be incorrect, loop might be nonterminating [possible fix: add loop variant in the loop body]
+x.adb:68:19: medium: implicit aspect Always_Terminates on overriding operator ">" could be incorrect, loop might be nonterminating [possible fix: add loop variant in the loop body]
 x.adb:68:19: warning: statement has no effect
-x.adb:76:19: medium: implicit terminating annotation on overriding operator ">=" could be incorrect, loop might be nonterminating [possible fix: add loop variant in the loop body]
+x.adb:76:19: medium: implicit aspect Always_Terminates on overriding operator ">=" could be incorrect, loop might be nonterminating [possible fix: add loop variant in the loop body]
 x.adb:76:19: warning: statement has no effect
-x.adb:84:19: medium: implicit terminating annotation on overriding operator "abs" could be incorrect, loop might be nonterminating [possible fix: add loop variant in the loop body]
+x.adb:84:19: medium: implicit aspect Always_Terminates on overriding operator "abs" could be incorrect, loop might be nonterminating [possible fix: add loop variant in the loop body]
 x.adb:84:19: warning: statement has no effect
-x.adb:92:19: medium: implicit terminating annotation on overriding operator "and" could be incorrect, loop might be nonterminating [possible fix: add loop variant in the loop body]
+x.adb:92:19: medium: implicit aspect Always_Terminates on overriding operator "and" could be incorrect, loop might be nonterminating [possible fix: add loop variant in the loop body]
 x.adb:92:19: warning: statement has no effect
-x.adb:100:19: medium: implicit terminating annotation on overriding operator "mod" could be incorrect, loop might be nonterminating [possible fix: add loop variant in the loop body]
+x.adb:100:19: medium: implicit aspect Always_Terminates on overriding operator "mod" could be incorrect, loop might be nonterminating [possible fix: add loop variant in the loop body]
 x.adb:100:19: warning: statement has no effect
 x.adb:103:29: info: overflow check proved (CVC5: 2 VC)
-x.adb:108:19: medium: implicit terminating annotation on overriding operator "not" could be incorrect, loop might be nonterminating [possible fix: add loop variant in the loop body]
+x.adb:108:19: medium: implicit aspect Always_Terminates on overriding operator "not" could be incorrect, loop might be nonterminating [possible fix: add loop variant in the loop body]
 x.adb:108:19: warning: statement has no effect
-x.adb:116:19: medium: implicit terminating annotation on overriding operator "or" could be incorrect, loop might be nonterminating [possible fix: add loop variant in the loop body]
+x.adb:116:19: medium: implicit aspect Always_Terminates on overriding operator "or" could be incorrect, loop might be nonterminating [possible fix: add loop variant in the loop body]
 x.adb:116:19: warning: statement has no effect
-x.adb:124:19: medium: implicit terminating annotation on overriding operator "rem" could be incorrect, loop might be nonterminating [possible fix: add loop variant in the loop body]
+x.adb:124:19: medium: implicit aspect Always_Terminates on overriding operator "rem" could be incorrect, loop might be nonterminating [possible fix: add loop variant in the loop body]
 x.adb:124:19: warning: statement has no effect
 x.adb:127:29: info: overflow check proved (CVC5: 2 VC)
-x.adb:132:19: medium: implicit terminating annotation on overriding operator "xor" could be incorrect, loop might be nonterminating [possible fix: add loop variant in the loop body]
+x.adb:132:19: medium: implicit aspect Always_Terminates on overriding operator "xor" could be incorrect, loop might be nonterminating [possible fix: add loop variant in the loop body]
 x.adb:132:19: warning: statement has no effect
-x.adb:140:19: medium: implicit terminating annotation on overriding operator "+" could be incorrect, loop might be nonterminating [possible fix: add loop variant in the loop body]
+x.adb:140:19: medium: implicit aspect Always_Terminates on overriding operator "+" could be incorrect, loop might be nonterminating [possible fix: add loop variant in the loop body]
 x.adb:140:19: warning: statement has no effect
 x.adb:143:29: info: overflow check proved (CVC5: 2 VC)
-x.adb:148:19: medium: implicit terminating annotation on overriding operator "-" could be incorrect, loop might be nonterminating [possible fix: add loop variant in the loop body]
+x.adb:148:19: medium: implicit aspect Always_Terminates on overriding operator "-" could be incorrect, loop might be nonterminating [possible fix: add loop variant in the loop body]
 x.adb:148:19: warning: statement has no effect
 x.adb:151:29: info: overflow check proved (CVC5: 2 VC)
-x.adb:156:19: medium: implicit terminating annotation on overriding operator "&" could be incorrect, loop might be nonterminating [possible fix: add loop variant in the loop body]
+x.adb:156:19: medium: implicit aspect Always_Terminates on overriding operator "&" could be incorrect, loop might be nonterminating [possible fix: add loop variant in the loop body]
 x.adb:156:19: warning: statement has no effect
 x.adb:159:29: info: overflow check proved (CVC5: 2 VC)
-x.adb:164:19: medium: implicit terminating annotation on overriding operator "*" could be incorrect, loop might be nonterminating [possible fix: add loop variant in the loop body]
+x.adb:164:19: medium: implicit aspect Always_Terminates on overriding operator "*" could be incorrect, loop might be nonterminating [possible fix: add loop variant in the loop body]
 x.adb:164:19: warning: statement has no effect
 x.adb:167:29: info: overflow check proved (CVC5: 2 VC)
-x.adb:172:19: medium: implicit terminating annotation on overriding operator "/" could be incorrect, loop might be nonterminating [possible fix: add loop variant in the loop body]
+x.adb:172:19: medium: implicit aspect Always_Terminates on overriding operator "/" could be incorrect, loop might be nonterminating [possible fix: add loop variant in the loop body]
 x.adb:172:19: warning: statement has no effect
 x.adb:175:29: info: overflow check proved (CVC5: 2 VC)
-x.adb:180:19: medium: implicit terminating annotation on overriding operator "**" could be incorrect, loop might be nonterminating [possible fix: add loop variant in the loop body]
+x.adb:180:19: medium: implicit aspect Always_Terminates on overriding operator "**" could be incorrect, loop might be nonterminating [possible fix: add loop variant in the loop body]
 x.adb:180:19: warning: statement has no effect
 x.adb:183:29: info: overflow check proved (CVC5: 2 VC)
 x.adb:189:19: medium: assertion might fail [possible fix: you should consider adding a postcondition to operator "=" or turning it into an expression function]

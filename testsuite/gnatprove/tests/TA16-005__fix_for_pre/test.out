@@ -1,4 +1,4 @@
-precond.adb:13:13: info: implicit terminating annotation on "Blob" has been proved, subprogram will terminate
+precond.adb:13:13: info: implicit aspect Always_Terminates on "Blob" has been proved, subprogram will terminate
 precond.adb:14:13: info: no contextual analysis of "Valid" (in assertion expression)
 precond.adb:16:14: warning: subprogram "P" has no effect
 precond.adb:16:56: medium: precondition might fail [possible fix: use "and then" instead of "and" in precondition]

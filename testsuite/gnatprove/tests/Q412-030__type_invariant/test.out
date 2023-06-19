@@ -15,9 +15,9 @@ package_instance.ads:2:47: error: use instead a constant initialized to the expr
 varinput.adb:13:40: error: actual for formal object with mode in cannot depend on variable input "G2" [E0007]
 varinput.adb:13:40: error: launch "gnatprove --explain=E0007" for more information
 varinput.adb:13:40: error: use instead a constant initialized to the expression with variable input
-varinput.ads:9:13: info: implicit terminating annotation on "F3" has been proved, subprogram will terminate
-varinput.ads:24:13: info: implicit terminating annotation on "F" has been proved, subprogram will terminate
-varinput.ads:25:13: info: implicit terminating annotation on "F2" has been proved, subprogram will terminate
+varinput.ads:9:13: info: implicit aspect Always_Terminates on "F3" has been proved, subprogram will terminate
+varinput.ads:24:13: info: implicit aspect Always_Terminates on "F" has been proved, subprogram will terminate
+varinput.ads:25:13: info: implicit aspect Always_Terminates on "F2" has been proved, subprogram will terminate
 varinput.ads:28:24: error: invariant cannot depend on variable input "G" [E0007]
 varinput.ads:28:24: error: launch "gnatprove --explain=E0007" for more information
 varinput.ads:28:24: error: use instead a constant initialized to the expression with variable input

@@ -1,2 +1,2 @@
 example.adb:7:20: info: range check proved (CVC5: 2 VC)
-example.ads:15:13: info: implicit terminating annotation on "High_Octet" has been proved, subprogram will terminate
+example.ads:15:13: info: implicit aspect Always_Terminates on "High_Octet" has been proved, subprogram will terminate

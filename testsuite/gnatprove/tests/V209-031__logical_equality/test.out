@@ -1,5 +1,5 @@
 logical_eq.adb:14:07: info: range check proved (CVC5: 2 VC)
-logical_eq.adb:22:13: info: implicit terminating annotation on "My_Eq_3" has been proved, subprogram will terminate
+logical_eq.adb:22:13: info: implicit aspect Always_Terminates on "My_Eq_3" has been proved, subprogram will terminate
 logical_eq.adb:22:60: warning: assuming "My_Eq" has no effect on global items
 logical_eq.adb:22:60: warning: no Global contract available for "My_Eq"
 logical_eq.adb:25:06: info: data dependencies proved

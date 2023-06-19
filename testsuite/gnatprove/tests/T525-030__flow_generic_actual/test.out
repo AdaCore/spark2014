@@ -1,2 +1,2 @@
-m.adb:7:13: info: implicit terminating annotation on "Extract_U64" has been proved, subprogram will terminate
-test.adb:7:13: info: implicit terminating annotation on "Extract_U64" has been proved, subprogram will terminate
+m.adb:7:13: info: implicit aspect Always_Terminates on "Extract_U64" has been proved, subprogram will terminate
+test.adb:7:13: info: implicit aspect Always_Terminates on "Extract_U64" has been proved, subprogram will terminate

@@ -1,5 +1,5 @@
 spark-containers-functional-sets-higher_order.adb:25:29: info: function contract feasibility proved, in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.adb:29:07: medium: implicit terminating annotation on "All_Distinct" could be incorrect, call via access-to-subprogram might be nonterminating, in instantiation at test_set_ho.adb:49 [possible explanation: call could hide recursive calls]
+spark-containers-functional-sets-higher_order.adb:29:07: medium: implicit aspect Always_Terminates on "All_Distinct" could be incorrect, call via access-to-subprogram might be nonterminating, in instantiation at test_set_ho.adb:49 [possible explanation: call could hide recursive calls]
 spark-containers-functional-sets-higher_order.adb:31:37: info: pointer dereference check proved, in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.adb:31:47: info: predicate check proved, in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.adb:31:52: info: pointer dereference check proved, in instantiation at test_set_ho.adb:49
@@ -7,7 +7,7 @@ spark-containers-functional-sets-higher_order.adb:31:62: info: predicate check p
 spark-containers-functional-sets-higher_order.adb:32:18: info: predicate check proved, in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.adb:32:23: info: predicate check proved, in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.adb:38:33: info: function contract feasibility proved, in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.adb:42:07: medium: implicit terminating annotation on "All_Distinct" could be incorrect, call via access-to-subprogram might be nonterminating, in instantiation at test_set_ho.adb:49 [possible explanation: call could hide recursive calls]
+spark-containers-functional-sets-higher_order.adb:42:07: medium: implicit aspect Always_Terminates on "All_Distinct" could be incorrect, call via access-to-subprogram might be nonterminating, in instantiation at test_set_ho.adb:49 [possible explanation: call could hide recursive calls]
 spark-containers-functional-sets-higher_order.adb:44:37: info: pointer dereference check proved, in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.adb:44:58: info: pointer dereference check proved, in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.adb:51:23: info: function contract feasibility proved, in instantiation at test_set_ho.adb:49
@@ -15,7 +15,7 @@ spark-containers-functional-sets-higher_order.adb:56:42: info: range check prove
 spark-containers-functional-sets-higher_order.adb:57:28: info: postcondition proved, in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.adb:57:37: info: predicate check proved, in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.adb:57:48: info: predicate check proved, in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.adb:59:14: info: terminating annotation on "Lemma_Count_Rec_Eq" has been proved, subprogram will terminate, in instantiation at test_set_ho.adb:49
+spark-containers-functional-sets-higher_order.adb:59:14: info: aspect Always_Terminates on "Lemma_Count_Rec_Eq" has been proved, subprogram will terminate, in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.adb:61:25: info: function contract feasibility proved, in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.adb:66:64: info: null exclusion check proved, in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.adb:67:28: info: postcondition proved, in instantiation at test_set_ho.adb:49
@@ -30,7 +30,7 @@ spark-containers-functional-sets-higher_order.adb:79:71: info: null exclusion ch
 spark-containers-functional-sets-higher_order.adb:81:08: info: postcondition proved, in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.adb:81:08: info: predicate check proved, in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.adb:81:22: info: null exclusion check proved, in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.adb:81:28: medium: terminating annotation on "Lemma_Count_Rec_Remove" could be incorrect, call via access-to-subprogram might be nonterminating, in instantiation at test_set_ho.adb:49 [possible explanation: call could hide recursive calls]
+spark-containers-functional-sets-higher_order.adb:81:28: medium: aspect Always_Terminates on "Lemma_Count_Rec_Remove" could be incorrect, call via access-to-subprogram might be nonterminating, in instantiation at test_set_ho.adb:49 [possible explanation: call could hide recursive calls]
 spark-containers-functional-sets-higher_order.adb:81:30: info: predicate check proved, in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.adb:81:41: info: precondition proved, in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.adb:81:56: info: null exclusion check proved, in instantiation at test_set_ho.adb:49
@@ -40,7 +40,7 @@ spark-containers-functional-sets-higher_order.adb:82:47: info: predicate check p
 spark-containers-functional-sets-higher_order.adb:82:49: info: predicate check proved, in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.adb:86:24: info: function contract feasibility proved, in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.adb:91:42: info: range check proved, in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.adb:93:14: info: terminating annotation on "Lemma_Sum_Rec_Eq" has been proved, subprogram will terminate, in instantiation at test_set_ho.adb:49
+spark-containers-functional-sets-higher_order.adb:93:14: info: aspect Always_Terminates on "Lemma_Sum_Rec_Eq" has been proved, subprogram will terminate, in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.adb:95:25: info: function contract feasibility proved, in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.adb:100:64: info: null exclusion check proved, in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.adb:101:28: info: postcondition proved, in instantiation at test_set_ho.adb:49
@@ -57,7 +57,7 @@ spark-containers-functional-sets-higher_order.adb:113:71: info: null exclusion c
 spark-containers-functional-sets-higher_order.adb:115:08: info: postcondition proved, in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.adb:115:08: info: predicate check proved, in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.adb:115:20: info: null exclusion check proved, in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.adb:115:27: medium: terminating annotation on "Lemma_Sum_Rec_Remove" could be incorrect, call via access-to-subprogram might be nonterminating, in instantiation at test_set_ho.adb:49 [possible explanation: call could hide recursive calls]
+spark-containers-functional-sets-higher_order.adb:115:27: medium: aspect Always_Terminates on "Lemma_Sum_Rec_Remove" could be incorrect, call via access-to-subprogram might be nonterminating, in instantiation at test_set_ho.adb:49 [possible explanation: call could hide recursive calls]
 spark-containers-functional-sets-higher_order.adb:115:29: info: predicate check proved, in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.adb:115:38: info: precondition proved, in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.adb:115:53: info: null exclusion check proved, in instantiation at test_set_ho.adb:49
@@ -76,13 +76,13 @@ spark-containers-functional-sets-higher_order.adb:131:30: info: null exclusion c
 spark-containers-functional-sets-higher_order.adb:131:38: info: predicate check proved, in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.adb:131:44: info: predicate check proved, in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.adb:131:63: info: null exclusion check proved, in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.adb:132:13: medium: implicit terminating annotation on "Count" could be incorrect, call via access-to-subprogram might be nonterminating, in instantiation at test_set_ho.adb:49 [possible explanation: call could hide recursive calls]
+spark-containers-functional-sets-higher_order.adb:132:13: medium: implicit aspect Always_Terminates on "Count" could be incorrect, call via access-to-subprogram might be nonterminating, in instantiation at test_set_ho.adb:49 [possible explanation: call could hide recursive calls]
 spark-containers-functional-sets-higher_order.adb:132:16: info: pointer dereference check proved, in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.adb:132:22: info: precondition proved, in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.adb:133:23: info: predicate check proved, in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.adb:133:27: info: predicate check proved, in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.adb:133:29: info: predicate check proved, in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.adb:148:07: medium: implicit terminating annotation on "Count_Rec" could be incorrect, call via access-to-subprogram might be nonterminating, in instantiation at test_set_ho.adb:49 [possible explanation: call could hide recursive calls]
+spark-containers-functional-sets-higher_order.adb:148:07: medium: implicit aspect Always_Terminates on "Count_Rec" could be incorrect, call via access-to-subprogram might be nonterminating, in instantiation at test_set_ho.adb:49 [possible explanation: call could hide recursive calls]
 spark-containers-functional-sets-higher_order.adb:148:28: info: predicate check proved, in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.adb:149:12: info: predicate check proved, in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.adb:149:12: info: subprogram variant proved, in instantiation at test_set_ho.adb:49
@@ -102,7 +102,7 @@ spark-containers-functional-sets-higher_order.adb:164:16: info: predicate check 
 spark-containers-functional-sets-higher_order.adb:164:41: info: predicate check proved, in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.adb:167:38: info: pointer dereference check proved, in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.adb:167:48: info: predicate check proved, in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.adb:168:08: medium: implicit terminating annotation on "Create" could be incorrect, call via access-to-subprogram might be nonterminating, in instantiation at test_set_ho.adb:49 [possible explanation: call could hide recursive calls]
+spark-containers-functional-sets-higher_order.adb:168:08: medium: implicit aspect Always_Terminates on "Create" could be incorrect, call via access-to-subprogram might be nonterminating, in instantiation at test_set_ho.adb:49 [possible explanation: call could hide recursive calls]
 spark-containers-functional-sets-higher_order.adb:171:40: info: pointer dereference check proved, in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.adb:171:50: info: predicate check proved, in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.adb:173:26: info: predicate check proved, in instantiation at test_set_ho.adb:49
@@ -126,12 +126,12 @@ spark-containers-functional-sets-higher_order.adb:181:16: info: loop invariant p
 spark-containers-functional-sets-higher_order.adb:181:45: info: null exclusion check proved, in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.adb:181:60: info: predicate check proved, in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.adb:181:75: info: predicate check proved, in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.adb:182:13: medium: implicit terminating annotation on "Create" could be incorrect, call via access-to-subprogram might be nonterminating, in instantiation at test_set_ho.adb:49 [possible explanation: call could hide recursive calls]
+spark-containers-functional-sets-higher_order.adb:182:13: medium: implicit aspect Always_Terminates on "Create" could be incorrect, call via access-to-subprogram might be nonterminating, in instantiation at test_set_ho.adb:49 [possible explanation: call could hide recursive calls]
 spark-containers-functional-sets-higher_order.adb:183:16: info: loop invariant initialization proved, in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.adb:183:16: info: loop invariant preservation proved, in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.adb:183:63: info: pointer dereference check proved, in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.adb:183:73: info: predicate check proved, in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.adb:184:13: medium: implicit terminating annotation on "Create" could be incorrect, call via access-to-subprogram might be nonterminating, in instantiation at test_set_ho.adb:49 [possible explanation: call could hide recursive calls]
+spark-containers-functional-sets-higher_order.adb:184:13: medium: implicit aspect Always_Terminates on "Create" could be incorrect, call via access-to-subprogram might be nonterminating, in instantiation at test_set_ho.adb:49 [possible explanation: call could hide recursive calls]
 spark-containers-functional-sets-higher_order.adb:185:16: info: loop invariant initialization proved, in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.adb:185:16: info: loop invariant preservation proved, in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.adb:187:47: info: pointer dereference check proved, in instantiation at test_set_ho.adb:49
@@ -139,13 +139,13 @@ spark-containers-functional-sets-higher_order.adb:187:57: info: predicate check 
 spark-containers-functional-sets-higher_order.adb:188:18: info: predicate check proved, in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.adb:188:20: info: predicate check proved, in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.adb:188:22: info: predicate check proved, in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.adb:190:16: medium: implicit terminating annotation on "Create" could be incorrect, call via access-to-subprogram might be nonterminating, in instantiation at test_set_ho.adb:49 [possible explanation: call could hide recursive calls]
+spark-containers-functional-sets-higher_order.adb:190:16: medium: implicit aspect Always_Terminates on "Create" could be incorrect, call via access-to-subprogram might be nonterminating, in instantiation at test_set_ho.adb:49 [possible explanation: call could hide recursive calls]
 spark-containers-functional-sets-higher_order.adb:190:41: info: pointer dereference check proved, in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.adb:190:51: info: predicate check proved, in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.adb:192:16: medium: implicit terminating annotation on "Create" could be incorrect, call via access-to-subprogram might be nonterminating, in instantiation at test_set_ho.adb:49 [possible explanation: call could hide recursive calls]
+spark-containers-functional-sets-higher_order.adb:192:16: medium: implicit aspect Always_Terminates on "Create" could be incorrect, call via access-to-subprogram might be nonterminating, in instantiation at test_set_ho.adb:49 [possible explanation: call could hide recursive calls]
 spark-containers-functional-sets-higher_order.adb:192:38: info: pointer dereference check proved, in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.adb:192:48: info: predicate check proved, in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.adb:193:23: medium: implicit terminating annotation on "Create" could be incorrect, call via access-to-subprogram might be nonterminating, in instantiation at test_set_ho.adb:49 [possible explanation: call could hide recursive calls]
+spark-containers-functional-sets-higher_order.adb:193:23: medium: implicit aspect Always_Terminates on "Create" could be incorrect, call via access-to-subprogram might be nonterminating, in instantiation at test_set_ho.adb:49 [possible explanation: call could hide recursive calls]
 spark-containers-functional-sets-higher_order.adb:193:26: info: precondition proved, in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.adb:193:36: info: pointer dereference check proved, in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.adb:193:46: info: predicate check proved, in instantiation at test_set_ho.adb:49
@@ -153,7 +153,7 @@ spark-containers-functional-sets-higher_order.adb:210:27: info: predicate check 
 spark-containers-functional-sets-higher_order.adb:212:14: info: initialization of "Res" proved, in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.adb:213:16: info: predicate check proved, in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.adb:213:21: info: predicate check proved, in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.adb:214:17: medium: implicit terminating annotation on "Create_Distinct" could be incorrect, call via access-to-subprogram might be nonterminating, in instantiation at test_set_ho.adb:49 [possible explanation: call could hide recursive calls]
+spark-containers-functional-sets-higher_order.adb:214:17: medium: implicit aspect Always_Terminates on "Create_Distinct" could be incorrect, call via access-to-subprogram might be nonterminating, in instantiation at test_set_ho.adb:49 [possible explanation: call could hide recursive calls]
 spark-containers-functional-sets-higher_order.adb:214:20: info: precondition proved, in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.adb:214:30: info: pointer dereference check proved, in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.adb:216:34: info: loop variant proved, in instantiation at test_set_ho.adb:49
@@ -169,12 +169,12 @@ spark-containers-functional-sets-higher_order.adb:218:36: info: loop invariant i
 spark-containers-functional-sets-higher_order.adb:218:36: info: loop invariant preservation proved, in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.adb:218:36: info: predicate check proved, in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.adb:218:51: info: predicate check proved, in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.adb:219:13: medium: implicit terminating annotation on "Create_Distinct" could be incorrect, call via access-to-subprogram might be nonterminating, in instantiation at test_set_ho.adb:49 [possible explanation: call could hide recursive calls]
+spark-containers-functional-sets-higher_order.adb:219:13: medium: implicit aspect Always_Terminates on "Create_Distinct" could be incorrect, call via access-to-subprogram might be nonterminating, in instantiation at test_set_ho.adb:49 [possible explanation: call could hide recursive calls]
 spark-containers-functional-sets-higher_order.adb:220:16: info: loop invariant initialization proved, in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.adb:220:16: info: loop invariant preservation proved, in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.adb:220:63: info: pointer dereference check proved, in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.adb:220:73: info: predicate check proved, in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.adb:221:13: medium: implicit terminating annotation on "Create_Distinct" could be incorrect, call via access-to-subprogram might be nonterminating, in instantiation at test_set_ho.adb:49 [possible explanation: call could hide recursive calls]
+spark-containers-functional-sets-higher_order.adb:221:13: medium: implicit aspect Always_Terminates on "Create_Distinct" could be incorrect, call via access-to-subprogram might be nonterminating, in instantiation at test_set_ho.adb:49 [possible explanation: call could hide recursive calls]
 spark-containers-functional-sets-higher_order.adb:222:16: info: loop invariant initialization proved, in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.adb:222:16: info: loop invariant preservation proved, in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.adb:224:47: info: pointer dereference check proved, in instantiation at test_set_ho.adb:49
@@ -182,10 +182,10 @@ spark-containers-functional-sets-higher_order.adb:224:57: info: predicate check 
 spark-containers-functional-sets-higher_order.adb:225:18: info: predicate check proved, in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.adb:225:20: info: predicate check proved, in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.adb:225:22: info: predicate check proved, in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.adb:239:07: medium: implicit terminating annotation on "Eq_Compatible" could be incorrect, call via access-to-subprogram might be nonterminating, in instantiation at test_set_ho.adb:49 [possible explanation: call could hide recursive calls]
+spark-containers-functional-sets-higher_order.adb:239:07: medium: implicit aspect Always_Terminates on "Eq_Compatible" could be incorrect, call via access-to-subprogram might be nonterminating, in instantiation at test_set_ho.adb:49 [possible explanation: call could hide recursive calls]
 spark-containers-functional-sets-higher_order.adb:241:52: info: pointer dereference check proved, in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.adb:241:64: info: pointer dereference check proved, in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.adb:248:07: medium: implicit terminating annotation on "Eq_Compatible" could be incorrect, call via access-to-subprogram might be nonterminating, in instantiation at test_set_ho.adb:49 [possible explanation: call could hide recursive calls]
+spark-containers-functional-sets-higher_order.adb:248:07: medium: implicit aspect Always_Terminates on "Eq_Compatible" could be incorrect, call via access-to-subprogram might be nonterminating, in instantiation at test_set_ho.adb:49 [possible explanation: call could hide recursive calls]
 spark-containers-functional-sets-higher_order.adb:251:20: info: pointer dereference check proved, in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.adb:251:20: info: predicate check proved, in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.adb:251:33: info: pointer dereference check proved, in instantiation at test_set_ho.adb:49
@@ -205,16 +205,16 @@ spark-containers-functional-sets-higher_order.adb:267:36: info: loop invariant i
 spark-containers-functional-sets-higher_order.adb:267:36: info: loop invariant preservation proved, in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.adb:269:16: info: loop invariant initialization proved, in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.adb:269:16: info: loop invariant preservation proved, in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.adb:270:13: medium: implicit terminating annotation on "Filter" could be incorrect, call via access-to-subprogram might be nonterminating, in instantiation at test_set_ho.adb:49 [possible explanation: call could hide recursive calls]
+spark-containers-functional-sets-higher_order.adb:270:13: medium: implicit aspect Always_Terminates on "Filter" could be incorrect, call via access-to-subprogram might be nonterminating, in instantiation at test_set_ho.adb:49 [possible explanation: call could hide recursive calls]
 spark-containers-functional-sets-higher_order.adb:271:16: info: loop invariant initialization proved, in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.adb:271:16: info: loop invariant preservation proved, in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.adb:272:51: info: pointer dereference check proved, in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.adb:274:13: medium: implicit terminating annotation on "Filter" could be incorrect, call via access-to-subprogram might be nonterminating, in instantiation at test_set_ho.adb:49 [possible explanation: call could hide recursive calls]
+spark-containers-functional-sets-higher_order.adb:274:13: medium: implicit aspect Always_Terminates on "Filter" could be incorrect, call via access-to-subprogram might be nonterminating, in instantiation at test_set_ho.adb:49 [possible explanation: call could hide recursive calls]
 spark-containers-functional-sets-higher_order.adb:274:36: info: loop invariant initialization proved, in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.adb:274:36: info: loop invariant preservation proved, in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.adb:274:56: info: pointer dereference check proved, in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.adb:277:41: info: precondition proved, in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.adb:279:16: medium: implicit terminating annotation on "Filter" could be incorrect, call via access-to-subprogram might be nonterminating, in instantiation at test_set_ho.adb:49 [possible explanation: call could hide recursive calls]
+spark-containers-functional-sets-higher_order.adb:279:16: medium: implicit aspect Always_Terminates on "Filter" could be incorrect, call via access-to-subprogram might be nonterminating, in instantiation at test_set_ho.adb:49 [possible explanation: call could hide recursive calls]
 spark-containers-functional-sets-higher_order.adb:279:19: info: pointer dereference check proved, in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.adb:280:26: info: precondition proved, in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.adb:296:11: info: precondition proved, in instantiation at test_set_ho.adb:49
@@ -313,12 +313,12 @@ spark-containers-functional-sets-higher_order.adb:482:28: info: null exclusion c
 spark-containers-functional-sets-higher_order.adb:482:37: info: predicate check proved, in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.adb:482:43: info: predicate check proved, in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.adb:482:60: info: null exclusion check proved, in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.adb:483:17: medium: implicit terminating annotation on "Sum" could be incorrect, call via access-to-subprogram might be nonterminating, in instantiation at test_set_ho.adb:49 [possible explanation: call could hide recursive calls]
+spark-containers-functional-sets-higher_order.adb:483:17: medium: implicit aspect Always_Terminates on "Sum" could be incorrect, call via access-to-subprogram might be nonterminating, in instantiation at test_set_ho.adb:49 [possible explanation: call could hide recursive calls]
 spark-containers-functional-sets-higher_order.adb:483:20: info: predicate check proved, in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.adb:483:26: info: pointer dereference check proved, in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.adb:483:26: info: predicate check proved, in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.adb:483:33: info: precondition proved, in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.adb:497:07: medium: implicit terminating annotation on "Sum_Rec" could be incorrect, call via access-to-subprogram might be nonterminating, in instantiation at test_set_ho.adb:49 [possible explanation: call could hide recursive calls]
+spark-containers-functional-sets-higher_order.adb:497:07: medium: implicit aspect Always_Terminates on "Sum_Rec" could be incorrect, call via access-to-subprogram might be nonterminating, in instantiation at test_set_ho.adb:49 [possible explanation: call could hide recursive calls]
 spark-containers-functional-sets-higher_order.adb:498:12: info: predicate check proved, in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.adb:498:12: info: subprogram variant proved, in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.adb:498:21: info: precondition proved, in instantiation at test_set_ho.adb:49
@@ -333,7 +333,7 @@ spark-containers-functional-sets-higher_order.adb:511:38: info: null exclusion c
 spark-containers-functional-sets-higher_order.adb:512:23: info: predicate check proved, in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.adb:512:51: info: predicate check proved, in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.adb:514:48: info: pointer dereference check proved, in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.adb:515:08: medium: implicit terminating annotation on "Transform" could be incorrect, call via access-to-subprogram might be nonterminating, in instantiation at test_set_ho.adb:49 [possible explanation: call could hide recursive calls]
+spark-containers-functional-sets-higher_order.adb:515:08: medium: implicit aspect Always_Terminates on "Transform" could be incorrect, call via access-to-subprogram might be nonterminating, in instantiation at test_set_ho.adb:49 [possible explanation: call could hide recursive calls]
 spark-containers-functional-sets-higher_order.adb:518:42: info: pointer dereference check proved, in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.adb:521:14: info: initialization of "Res" proved, in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.adb:522:14: info: precondition proved, in instantiation at test_set_ho.adb:49
@@ -348,15 +348,15 @@ spark-containers-functional-sets-higher_order.adb:526:36: info: null exclusion c
 spark-containers-functional-sets-higher_order.adb:527:21: info: predicate check proved, in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.adb:527:36: info: predicate check proved, in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.adb:527:54: info: predicate check proved, in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.adb:528:13: medium: implicit terminating annotation on "Transform" could be incorrect, call via access-to-subprogram might be nonterminating, in instantiation at test_set_ho.adb:49 [possible explanation: call could hide recursive calls]
+spark-containers-functional-sets-higher_order.adb:528:13: medium: implicit aspect Always_Terminates on "Transform" could be incorrect, call via access-to-subprogram might be nonterminating, in instantiation at test_set_ho.adb:49 [possible explanation: call could hide recursive calls]
 spark-containers-functional-sets-higher_order.adb:529:16: info: loop invariant initialization proved, in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.adb:529:16: info: loop invariant preservation proved, in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.adb:531:41: info: pointer dereference check proved, in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.adb:532:13: medium: implicit terminating annotation on "Transform" could be incorrect, call via access-to-subprogram might be nonterminating, in instantiation at test_set_ho.adb:49 [possible explanation: call could hide recursive calls]
+spark-containers-functional-sets-higher_order.adb:532:13: medium: implicit aspect Always_Terminates on "Transform" could be incorrect, call via access-to-subprogram might be nonterminating, in instantiation at test_set_ho.adb:49 [possible explanation: call could hide recursive calls]
 spark-containers-functional-sets-higher_order.adb:533:16: info: loop invariant initialization proved, in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.adb:533:16: info: loop invariant preservation proved, in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.adb:535:54: info: pointer dereference check proved, in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.adb:538:16: medium: implicit terminating annotation on "Transform" could be incorrect, call via access-to-subprogram might be nonterminating, in instantiation at test_set_ho.adb:49 [possible explanation: call could hide recursive calls]
+spark-containers-functional-sets-higher_order.adb:538:16: medium: implicit aspect Always_Terminates on "Transform" could be incorrect, call via access-to-subprogram might be nonterminating, in instantiation at test_set_ho.adb:49 [possible explanation: call could hide recursive calls]
 spark-containers-functional-sets-higher_order.adb:538:45: info: pointer dereference check proved, in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.adb:538:61: info: precondition proved, in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.adb:541:26: info: precondition proved, in instantiation at test_set_ho.adb:49
@@ -367,35 +367,35 @@ spark-containers-functional-sets-higher_order.adb:562:16: info: loop invariant p
 spark-containers-functional-sets-higher_order.adb:562:16: info: predicate check proved, in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.adb:562:31: info: predicate check proved, in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.adb:562:49: info: predicate check proved, in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.adb:563:13: medium: implicit terminating annotation on "Transform_Distinct" could be incorrect, call via access-to-subprogram might be nonterminating, in instantiation at test_set_ho.adb:49 [possible explanation: call could hide recursive calls]
+spark-containers-functional-sets-higher_order.adb:563:13: medium: implicit aspect Always_Terminates on "Transform_Distinct" could be incorrect, call via access-to-subprogram might be nonterminating, in instantiation at test_set_ho.adb:49 [possible explanation: call could hide recursive calls]
 spark-containers-functional-sets-higher_order.adb:564:16: info: loop invariant initialization proved, in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.adb:564:16: info: loop invariant preservation proved, in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.adb:566:41: info: pointer dereference check proved, in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.adb:567:13: medium: implicit terminating annotation on "Transform_Distinct" could be incorrect, call via access-to-subprogram might be nonterminating, in instantiation at test_set_ho.adb:49 [possible explanation: call could hide recursive calls]
+spark-containers-functional-sets-higher_order.adb:567:13: medium: implicit aspect Always_Terminates on "Transform_Distinct" could be incorrect, call via access-to-subprogram might be nonterminating, in instantiation at test_set_ho.adb:49 [possible explanation: call could hide recursive calls]
 spark-containers-functional-sets-higher_order.adb:568:16: info: loop invariant initialization proved, in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.adb:568:16: info: loop invariant preservation proved, in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.adb:570:54: info: pointer dereference check proved, in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.adb:572:17: medium: implicit terminating annotation on "Transform_Distinct" could be incorrect, call via access-to-subprogram might be nonterminating, in instantiation at test_set_ho.adb:49 [possible explanation: call could hide recursive calls]
+spark-containers-functional-sets-higher_order.adb:572:17: medium: implicit aspect Always_Terminates on "Transform_Distinct" could be incorrect, call via access-to-subprogram might be nonterminating, in instantiation at test_set_ho.adb:49 [possible explanation: call could hide recursive calls]
 spark-containers-functional-sets-higher_order.adb:572:20: info: precondition proved, in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.adb:572:30: info: pointer dereference check proved, in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.adb:572:46: info: precondition proved, in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.ads:19:23: info: function contract feasibility proved, in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.ads:24:08: info: data dependencies proved, in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.ads:25:20: info: postcondition proved, in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.ads:25:41: medium: implicit terminating annotation on "Eq_Compatible" could be incorrect, call via access-to-subprogram might be nonterminating, in instantiation at test_set_ho.adb:49 [possible explanation: call could hide recursive calls]
+spark-containers-functional-sets-higher_order.ads:25:41: medium: implicit aspect Always_Terminates on "Eq_Compatible" could be incorrect, call via access-to-subprogram might be nonterminating, in instantiation at test_set_ho.adb:49 [possible explanation: call could hide recursive calls]
 spark-containers-functional-sets-higher_order.ads:28:54: info: pointer dereference check proved, in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.ads:28:66: info: pointer dereference check proved, in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.ads:34:24: info: function contract feasibility proved, in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.ads:39:08: info: data dependencies proved, in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.ads:40:20: info: postcondition proved, in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.ads:40:41: medium: implicit terminating annotation on "Eq_Compatible" could be incorrect, call via access-to-subprogram might be nonterminating, in instantiation at test_set_ho.adb:49 [possible explanation: call could hide recursive calls]
+spark-containers-functional-sets-higher_order.ads:40:41: medium: implicit aspect Always_Terminates on "Eq_Compatible" could be incorrect, call via access-to-subprogram might be nonterminating, in instantiation at test_set_ho.adb:49 [possible explanation: call could hide recursive calls]
 spark-containers-functional-sets-higher_order.ads:44:22: info: pointer dereference check proved, in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.ads:44:22: info: predicate check proved, in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.ads:44:35: info: pointer dereference check proved, in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.ads:44:35: info: predicate check proved, in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.ads:50:29: info: function contract feasibility proved, in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.ads:59:06: info: data dependencies proved, in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.ads:62:09: medium: implicit terminating annotation on "Create_Distinct" could be incorrect, call via access-to-subprogram might be nonterminating, in instantiation at test_set_ho.adb:49 [possible explanation: call could hide recursive calls]
+spark-containers-functional-sets-higher_order.ads:62:09: medium: implicit aspect Always_Terminates on "Create_Distinct" could be incorrect, call via access-to-subprogram might be nonterminating, in instantiation at test_set_ho.adb:49 [possible explanation: call could hide recursive calls]
 spark-containers-functional-sets-higher_order.ads:63:36: info: predicate check proved, in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.ads:63:41: info: predicate check proved, in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.ads:64:39: info: pointer dereference check proved, in instantiation at test_set_ho.adb:49
@@ -407,7 +407,7 @@ spark-containers-functional-sets-higher_order.ads:65:18: info: predicate check p
 spark-containers-functional-sets-higher_order.ads:65:52: info: predicate check proved, in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.ads:68:48: info: pointer dereference check proved, in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.ads:68:58: info: predicate check proved, in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.ads:69:08: medium: implicit terminating annotation on "Create_Distinct" could be incorrect, call via access-to-subprogram might be nonterminating, in instantiation at test_set_ho.adb:49 [possible explanation: call could hide recursive calls]
+spark-containers-functional-sets-higher_order.ads:69:08: medium: implicit aspect Always_Terminates on "Create_Distinct" could be incorrect, call via access-to-subprogram might be nonterminating, in instantiation at test_set_ho.adb:49 [possible explanation: call could hide recursive calls]
 spark-containers-functional-sets-higher_order.ads:72:43: info: pointer dereference check proved, in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.ads:72:53: info: predicate check proved, in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.ads:76:29: info: function contract feasibility proved, in instantiation at test_set_ho.adb:49
@@ -417,12 +417,12 @@ spark-containers-functional-sets-higher_order.ads:86:18: info: predicate check p
 spark-containers-functional-sets-higher_order.ads:86:44: info: predicate check proved, in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.ads:89:39: info: pointer dereference check proved, in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.ads:89:49: info: predicate check proved, in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.ads:90:08: medium: implicit terminating annotation on "Create" could be incorrect, call via access-to-subprogram might be nonterminating, in instantiation at test_set_ho.adb:49 [possible explanation: call could hide recursive calls]
+spark-containers-functional-sets-higher_order.ads:90:08: medium: implicit aspect Always_Terminates on "Create" could be incorrect, call via access-to-subprogram might be nonterminating, in instantiation at test_set_ho.adb:49 [possible explanation: call could hide recursive calls]
 spark-containers-functional-sets-higher_order.ads:93:43: info: pointer dereference check proved, in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.ads:93:53: info: predicate check proved, in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.ads:97:29: info: function contract feasibility proved, in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.ads:104:06: info: data dependencies proved, in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.ads:107:09: medium: terminating annotation on "Lemma_Create_Distinct" could be incorrect, call via access-to-subprogram might be nonterminating, in instantiation at test_set_ho.adb:49 [possible explanation: call could hide recursive calls]
+spark-containers-functional-sets-higher_order.ads:107:09: medium: aspect Always_Terminates on "Lemma_Create_Distinct" could be incorrect, call via access-to-subprogram might be nonterminating, in instantiation at test_set_ho.adb:49 [possible explanation: call could hide recursive calls]
 spark-containers-functional-sets-higher_order.ads:108:36: info: predicate check proved, in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.ads:108:41: info: predicate check proved, in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.ads:109:39: info: pointer dereference check proved, in instantiation at test_set_ho.adb:49
@@ -435,29 +435,29 @@ spark-containers-functional-sets-higher_order.ads:110:46: info: null exclusion c
 spark-containers-functional-sets-higher_order.ads:110:59: info: predicate check proved, in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.ads:114:33: info: function contract feasibility proved, in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.ads:123:06: info: data dependencies proved, in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.ads:126:09: medium: implicit terminating annotation on "Transform_Distinct" could be incorrect, call via access-to-subprogram might be nonterminating, in instantiation at test_set_ho.adb:49 [possible explanation: call could hide recursive calls]
+spark-containers-functional-sets-higher_order.ads:126:09: medium: implicit aspect Always_Terminates on "Transform_Distinct" could be incorrect, call via access-to-subprogram might be nonterminating, in instantiation at test_set_ho.adb:49 [possible explanation: call could hide recursive calls]
 spark-containers-functional-sets-higher_order.ads:128:35: info: pointer dereference check proved, in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.ads:128:56: info: pointer dereference check proved, in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.ads:130:18: info: postcondition proved, in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.ads:130:18: info: predicate check proved, in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.ads:130:55: info: predicate check proved, in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.ads:132:57: info: pointer dereference check proved, in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.ads:133:08: medium: implicit terminating annotation on "Transform_Distinct" could be incorrect, call via access-to-subprogram might be nonterminating, in instantiation at test_set_ho.adb:49 [possible explanation: call could hide recursive calls]
+spark-containers-functional-sets-higher_order.ads:133:08: medium: implicit aspect Always_Terminates on "Transform_Distinct" could be incorrect, call via access-to-subprogram might be nonterminating, in instantiation at test_set_ho.adb:49 [possible explanation: call could hide recursive calls]
 spark-containers-functional-sets-higher_order.ads:136:42: info: pointer dereference check proved, in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.ads:140:33: info: function contract feasibility proved, in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.ads:150:06: info: data dependencies proved, in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.ads:153:09: medium: implicit terminating annotation on "Transform" could be incorrect, call via access-to-subprogram might be nonterminating, in instantiation at test_set_ho.adb:49 [possible explanation: call could hide recursive calls]
+spark-containers-functional-sets-higher_order.ads:153:09: medium: implicit aspect Always_Terminates on "Transform" could be incorrect, call via access-to-subprogram might be nonterminating, in instantiation at test_set_ho.adb:49 [possible explanation: call could hide recursive calls]
 spark-containers-functional-sets-higher_order.ads:157:18: info: pointer dereference check proved, in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.ads:157:39: info: pointer dereference check proved, in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.ads:158:18: info: postcondition proved, in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.ads:158:18: info: predicate check proved, in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.ads:158:47: info: predicate check proved, in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.ads:160:48: info: pointer dereference check proved, in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.ads:161:08: medium: implicit terminating annotation on "Transform" could be incorrect, call via access-to-subprogram might be nonterminating, in instantiation at test_set_ho.adb:49 [possible explanation: call could hide recursive calls]
+spark-containers-functional-sets-higher_order.ads:161:08: medium: implicit aspect Always_Terminates on "Transform" could be incorrect, call via access-to-subprogram might be nonterminating, in instantiation at test_set_ho.adb:49 [possible explanation: call could hide recursive calls]
 spark-containers-functional-sets-higher_order.ads:164:42: info: pointer dereference check proved, in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.ads:168:33: info: function contract feasibility proved, in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.ads:175:06: info: data dependencies proved, in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.ads:178:09: medium: terminating annotation on "Lemma_Transform_Distinct" could be incorrect, call via access-to-subprogram might be nonterminating, in instantiation at test_set_ho.adb:49 [possible explanation: call could hide recursive calls]
+spark-containers-functional-sets-higher_order.ads:178:09: medium: aspect Always_Terminates on "Lemma_Transform_Distinct" could be incorrect, call via access-to-subprogram might be nonterminating, in instantiation at test_set_ho.adb:49 [possible explanation: call could hide recursive calls]
 spark-containers-functional-sets-higher_order.ads:180:35: info: pointer dereference check proved, in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.ads:180:56: info: pointer dereference check proved, in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.ads:182:18: info: postcondition proved, in instantiation at test_set_ho.adb:49
@@ -471,7 +471,7 @@ spark-containers-functional-sets-higher_order.ads:195:36: info: null exclusion c
 spark-containers-functional-sets-higher_order.ads:196:18: info: postcondition proved, in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.ads:196:23: info: predicate check proved, in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.ads:196:34: info: predicate check proved, in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.ads:198:14: info: implicit terminating annotation on "Lemma_Count_Eq" has been proved, subprogram will terminate, in instantiation at test_set_ho.adb:49
+spark-containers-functional-sets-higher_order.ads:198:14: info: implicit aspect Always_Terminates on "Lemma_Count_Eq" has been proved, subprogram will terminate, in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.ads:200:25: info: function contract feasibility proved, in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.ads:205:06: info: data dependencies proved, in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.ads:208:37: info: null exclusion check proved, in instantiation at test_set_ho.adb:49
@@ -489,7 +489,7 @@ spark-containers-functional-sets-higher_order.ads:223:18: info: postcondition pr
 spark-containers-functional-sets-higher_order.ads:223:18: info: precondition proved, in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.ads:223:18: info: predicate check proved, in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.ads:223:28: info: null exclusion check proved, in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.ads:223:34: medium: implicit terminating annotation on "Lemma_Count_Remove" could be incorrect, call via access-to-subprogram might be nonterminating, in instantiation at test_set_ho.adb:49 [possible explanation: call could hide recursive calls]
+spark-containers-functional-sets-higher_order.ads:223:34: medium: implicit aspect Always_Terminates on "Lemma_Count_Remove" could be incorrect, call via access-to-subprogram might be nonterminating, in instantiation at test_set_ho.adb:49 [possible explanation: call could hide recursive calls]
 spark-containers-functional-sets-higher_order.ads:224:10: info: precondition proved, in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.ads:224:10: info: predicate check proved, in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.ads:224:17: info: precondition proved, in instantiation at test_set_ho.adb:49
@@ -500,7 +500,7 @@ spark-containers-functional-sets-higher_order.ads:225:45: info: predicate check 
 spark-containers-functional-sets-higher_order.ads:225:53: info: predicate check proved, in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.ads:229:23: info: function contract feasibility proved, in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.ads:234:06: info: data dependencies proved, in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.ads:236:19: medium: terminating annotation on "Lemma_Count_All" could be incorrect, call via access-to-subprogram might be nonterminating, in instantiation at test_set_ho.adb:49 [possible explanation: call could hide recursive calls]
+spark-containers-functional-sets-higher_order.ads:236:19: medium: aspect Always_Terminates on "Lemma_Count_All" could be incorrect, call via access-to-subprogram might be nonterminating, in instantiation at test_set_ho.adb:49 [possible explanation: call could hide recursive calls]
 spark-containers-functional-sets-higher_order.ads:236:37: info: pointer dereference check proved, in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.ads:237:18: info: postcondition proved, in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.ads:237:18: info: precondition proved, in instantiation at test_set_ho.adb:49
@@ -509,7 +509,7 @@ spark-containers-functional-sets-higher_order.ads:237:28: info: null exclusion c
 spark-containers-functional-sets-higher_order.ads:237:36: info: predicate check proved, in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.ads:241:23: info: function contract feasibility proved, in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.ads:246:06: info: data dependencies proved, in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.ads:248:19: medium: terminating annotation on "Lemma_Count_None" could be incorrect, call via access-to-subprogram might be nonterminating, in instantiation at test_set_ho.adb:49 [possible explanation: call could hide recursive calls]
+spark-containers-functional-sets-higher_order.ads:248:19: medium: aspect Always_Terminates on "Lemma_Count_None" could be incorrect, call via access-to-subprogram might be nonterminating, in instantiation at test_set_ho.adb:49 [possible explanation: call could hide recursive calls]
 spark-containers-functional-sets-higher_order.ads:248:41: info: pointer dereference check proved, in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.ads:249:18: info: postcondition proved, in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.ads:249:18: info: precondition proved, in instantiation at test_set_ho.adb:49
@@ -525,12 +525,12 @@ spark-containers-functional-sets-higher_order.ads:263:43: info: precondition pro
 spark-containers-functional-sets-higher_order.ads:263:43: info: predicate check proved, in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.ads:263:53: info: null exclusion check proved, in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.ads:265:48: info: pointer dereference check proved, in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.ads:266:08: medium: implicit terminating annotation on "Filter" could be incorrect, call via access-to-subprogram might be nonterminating, in instantiation at test_set_ho.adb:49 [possible explanation: call could hide recursive calls]
+spark-containers-functional-sets-higher_order.ads:266:08: medium: implicit aspect Always_Terminates on "Filter" could be incorrect, call via access-to-subprogram might be nonterminating, in instantiation at test_set_ho.adb:49 [possible explanation: call could hide recursive calls]
 spark-containers-functional-sets-higher_order.ads:267:33: info: pointer dereference check proved, in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.ads:271:24: info: function contract feasibility proved, in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.ads:278:06: info: data dependencies proved, in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.ads:280:36: info: null exclusion check proved, in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.ads:282:14: info: implicit terminating annotation on "Lemma_Sum_Eq" has been proved, subprogram will terminate, in instantiation at test_set_ho.adb:49
+spark-containers-functional-sets-higher_order.ads:282:14: info: implicit aspect Always_Terminates on "Lemma_Sum_Eq" has been proved, subprogram will terminate, in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.ads:284:25: info: function contract feasibility proved, in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.ads:289:06: info: data dependencies proved, in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.ads:292:37: info: null exclusion check proved, in instantiation at test_set_ho.adb:49
@@ -548,17 +548,17 @@ spark-containers-functional-sets-higher_order.ads:307:18: info: postcondition pr
 spark-containers-functional-sets-higher_order.ads:307:18: info: precondition proved, in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.ads:307:18: info: predicate check proved, in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.ads:307:26: info: null exclusion check proved, in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.ads:307:33: medium: implicit terminating annotation on "Lemma_Sum_Remove" could be incorrect, call via access-to-subprogram might be nonterminating, in instantiation at test_set_ho.adb:49 [possible explanation: call could hide recursive calls]
+spark-containers-functional-sets-higher_order.ads:307:33: medium: implicit aspect Always_Terminates on "Lemma_Sum_Remove" could be incorrect, call via access-to-subprogram might be nonterminating, in instantiation at test_set_ho.adb:49 [possible explanation: call could hide recursive calls]
 spark-containers-functional-sets-higher_order.ads:307:35: info: precondition proved, in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.ads:307:35: info: predicate check proved, in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.ads:307:40: info: precondition proved, in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.ads:307:55: info: null exclusion check proved, in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.ads:307:64: info: pointer dereference check proved, in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.ads:307:64: info: predicate check proved, in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets.ads:30:19: info: terminating annotation on "Equivalent_Elements_Reflexive" has been proved, subprogram will terminate, in instantiation at test_set_ho.adb:46
-spark-containers-functional-sets.ads:32:19: info: terminating annotation on "Equivalent_Elements_Symmetric" has been proved, subprogram will terminate, in instantiation at test_set_ho.adb:46
-spark-containers-functional-sets.ads:34:19: info: terminating annotation on "Equivalent_Elements_Transitive" has been proved, subprogram will terminate, in instantiation at test_set_ho.adb:46
-spark-containers-functional-sets.ads:48:16: info: implicit terminating annotation on overriding operator "=" has been proved, subprogram will terminate, in instantiation at test_set_ho.adb:46
+spark-containers-functional-sets.ads:30:19: info: aspect Always_Terminates on "Equivalent_Elements_Reflexive" has been proved, subprogram will terminate, in instantiation at test_set_ho.adb:46
+spark-containers-functional-sets.ads:32:19: info: aspect Always_Terminates on "Equivalent_Elements_Symmetric" has been proved, subprogram will terminate, in instantiation at test_set_ho.adb:46
+spark-containers-functional-sets.ads:34:19: info: aspect Always_Terminates on "Equivalent_Elements_Transitive" has been proved, subprogram will terminate, in instantiation at test_set_ho.adb:46
+spark-containers-functional-sets.ads:48:16: info: implicit aspect Always_Terminates on overriding operator "=" has been proved, subprogram will terminate, in instantiation at test_set_ho.adb:46
 spark-containers-functional-sets.ads:90:13: info: during checks for quantification at spark-containers-functional-sets.ads:64, in instantiation at test_set_ho.adb:46
 spark-containers-functional-sets.ads:90:13: info: precondition proved, in instantiation at test_set_ho.adb:46
 spark-containers-functional-sets.ads:334:13: info: during checks for quantification at spark-containers-functional-sets.ads:302, in instantiation at test_set_ho.adb:46
@@ -569,7 +569,7 @@ spark-containers-functional-sets.ads:349:13: info: during checks for quantificat
 spark-containers-functional-sets.ads:349:13: info: precondition proved, in instantiation at test_set_ho.adb:46
 spark-containers-functional-sets.ads:357:13: info: during checks for quantification at spark-containers-functional-sets.ads:302, in instantiation at test_set_ho.adb:46
 spark-containers-functional-sets.ads:357:13: info: precondition proved, in instantiation at test_set_ho.adb:46
-spark-containers-functional-sets.ads:373:13: info: implicit terminating annotation on "Copy_Element" has been proved, subprogram will terminate, in instantiation at test_set_ho.adb:46
+spark-containers-functional-sets.ads:373:13: info: implicit aspect Always_Terminates on "Copy_Element" has been proved, subprogram will terminate, in instantiation at test_set_ho.adb:46
 spark-containers-functional-sets.ads:396:13: info: during checks for quantification at spark-containers-functional-sets.ads:64, in instantiation at test_set_ho.adb:46
 spark-containers-functional-sets.ads:396:13: info: precondition proved, in instantiation at test_set_ho.adb:46
 spark-containers-functional-sets.ads:399:13: info: during checks for quantification at spark-containers-functional-sets.ads:64, in instantiation at test_set_ho.adb:46
@@ -578,13 +578,13 @@ spark-containers-functional-sets.ads:405:13: info: during checks for quantificat
 spark-containers-functional-sets.ads:405:13: info: precondition proved, in instantiation at test_set_ho.adb:46
 spark-containers-functional-sets.ads:412:13: info: during checks for quantification at spark-containers-functional-sets.ads:64, in instantiation at test_set_ho.adb:46
 spark-containers-functional-sets.ads:412:13: info: precondition proved, in instantiation at test_set_ho.adb:46
-spark-containers-parameter_checks.ads:30:17: info: terminating annotation on "Eq_Reflexive" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-sets.ads:380, in instantiation at test_set_ho.adb:46
+spark-containers-parameter_checks.ads:30:17: info: aspect Always_Terminates on "Eq_Reflexive" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-sets.ads:380, in instantiation at test_set_ho.adb:46
 spark-containers-parameter_checks.ads:31:09: info: data dependencies proved, in instantiation at spark-containers-functional-sets.ads:380, in instantiation at test_set_ho.adb:46
 spark-containers-parameter_checks.ads:32:19: info: postcondition proved, in instantiation at spark-containers-functional-sets.ads:380, in instantiation at test_set_ho.adb:46
-spark-containers-parameter_checks.ads:34:17: info: terminating annotation on "Eq_Symmetric" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-sets.ads:380, in instantiation at test_set_ho.adb:46
+spark-containers-parameter_checks.ads:34:17: info: aspect Always_Terminates on "Eq_Symmetric" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-sets.ads:380, in instantiation at test_set_ho.adb:46
 spark-containers-parameter_checks.ads:35:09: info: data dependencies proved, in instantiation at spark-containers-functional-sets.ads:380, in instantiation at test_set_ho.adb:46
 spark-containers-parameter_checks.ads:37:19: info: postcondition proved, in instantiation at spark-containers-functional-sets.ads:380, in instantiation at test_set_ho.adb:46
-spark-containers-parameter_checks.ads:39:17: info: terminating annotation on "Eq_Transitive" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-sets.ads:380, in instantiation at test_set_ho.adb:46
+spark-containers-parameter_checks.ads:39:17: info: aspect Always_Terminates on "Eq_Transitive" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-sets.ads:380, in instantiation at test_set_ho.adb:46
 spark-containers-parameter_checks.ads:40:09: info: data dependencies proved, in instantiation at spark-containers-functional-sets.ads:380, in instantiation at test_set_ho.adb:46
 spark-containers-parameter_checks.ads:42:19: info: postcondition proved, in instantiation at spark-containers-functional-sets.ads:380, in instantiation at test_set_ho.adb:46
 test_set_ho.adb:49:04: info: function contract might not be available on recursive calls

@@ -1,16 +1,16 @@
 in_out_pledge.adb:11:14: info: implicit function contract might not be available on recursive calls
-in_out_pledge.adb:12:08: medium: implicit terminating annotation on "Length_Aux" could be incorrect, subprogram is recursive [possible fix: annotate "Length_Aux" with a Subprogram_Variant aspect]
+in_out_pledge.adb:12:08: medium: implicit aspect Always_Terminates on "Length_Aux" could be incorrect, subprogram is recursive [possible fix: annotate "Length_Aux" with a Subprogram_Variant aspect]
 in_out_pledge.adb:13:27: info: pointer dereference check proved (CVC5: 1 VC)
 in_out_pledge.adb:15:15: info: overflow check proved (CVC5: 2 VC)
 in_out_pledge.adb:15:30: info: pointer dereference check proved (CVC5: 1 VC)
-in_out_pledge.adb:17:14: info: implicit terminating annotation on "Length" has been proved, subprogram will terminate
+in_out_pledge.adb:17:14: info: implicit aspect Always_Terminates on "Length" has been proved, subprogram will terminate
 in_out_pledge.adb:19:14: info: implicit function contract might not be available on recursive calls
-in_out_pledge.adb:20:08: medium: implicit terminating annotation on "Get_Nth_Val" could be incorrect, subprogram is recursive [possible fix: annotate "Get_Nth_Val" with a Subprogram_Variant aspect]
+in_out_pledge.adb:20:08: medium: implicit aspect Always_Terminates on "Get_Nth_Val" could be incorrect, subprogram is recursive [possible fix: annotate "Get_Nth_Val" with a Subprogram_Variant aspect]
 in_out_pledge.adb:20:23: info: pointer dereference check proved (CVC5: 1 VC)
 in_out_pledge.adb:20:35: info: precondition proved (CVC5: 1 VC)
 in_out_pledge.adb:20:49: info: pointer dereference check proved (CVC5: 1 VC)
 in_out_pledge.adb:20:58: info: range check proved (CVC5: 2 VC)
-in_out_pledge.adb:24:13: info: implicit terminating annotation on "Model" has been proved, subprogram will terminate
+in_out_pledge.adb:24:13: info: implicit aspect Always_Terminates on "Model" has been proved, subprogram will terminate
 in_out_pledge.adb:26:14: info: postcondition proved (CVC5: 3 VC)
 in_out_pledge.adb:27:57: info: index check proved (CVC5: 2 VC)
 in_out_pledge.adb:27:62: info: precondition proved (CVC5: 1 VC)
@@ -27,7 +27,7 @@ in_out_pledge.adb:36:41: info: index check proved (CVC5: 4 VC)
 in_out_pledge.adb:36:46: info: precondition proved (CVC5: 2 VC)
 in_out_pledge.adb:38:14: info: initialization check proved (CVC5: 1 VC; Trivial: 1 VC)
 in_out_pledge.adb:38:14: info: range check proved (CVC5: 1 VC)
-in_out_pledge.adb:41:13: info: implicit terminating annotation on "At_End_Borrow" has been proved, subprogram will terminate
+in_out_pledge.adb:41:13: info: implicit aspect Always_Terminates on "At_End_Borrow" has been proved, subprogram will terminate
 in_out_pledge.adb:41:96: info: dynamic accessibility check proved (Trivial)
 in_out_pledge.adb:51:07: info: absence of resource or memory leak at end of scope proved (CVC5: 1 VC)
 in_out_pledge.adb:52:07: info: absence of resource or memory leak at end of scope proved (CVC5: 1 VC)
@@ -66,10 +66,10 @@ in_out_pledge.adb:85:30: info: pointer dereference check proved (CVC5: 1 VC)
 in_out_pledge.adb:85:35: info: pointer dereference check proved (CVC5: 1 VC)
 in_out_pledge.adb:85:40: info: pointer dereference check proved (CVC5: 1 VC)
 in_out_pledge.ads:3:14: warning: subprogram "Main" has no effect
-pledge_constraints.adb:15:13: info: implicit terminating annotation on "At_End_Borrow" has been proved, subprogram will terminate
-pledge_constraints.adb:18:13: info: implicit terminating annotation on "At_End_Borrow" has been proved, subprogram will terminate
+pledge_constraints.adb:15:13: info: implicit aspect Always_Terminates on "At_End_Borrow" has been proved, subprogram will terminate
+pledge_constraints.adb:18:13: info: implicit aspect Always_Terminates on "At_End_Borrow" has been proved, subprogram will terminate
 pledge_constraints.adb:31:45: error: actual for a call to a function annotated with At_End_Borrow should not depend on a variable
-pledge_constraints_2.adb:15:13: info: implicit terminating annotation on "At_End_Borrow" has been proved, subprogram will terminate
-pledge_constraints_2.adb:18:13: info: implicit terminating annotation on "At_End_Borrow" has been proved, subprogram will terminate
+pledge_constraints_2.adb:15:13: info: implicit aspect Always_Terminates on "At_End_Borrow" has been proved, subprogram will terminate
+pledge_constraints_2.adb:18:13: info: implicit aspect Always_Terminates on "At_End_Borrow" has been proved, subprogram will terminate
 pledge_constraints_2.adb:30:42: error: actual for a call to a function annotated with At_End_Borrow should be rooted at a borrower or a borrowed expression
 gnatprove: error during flow analysis and proof

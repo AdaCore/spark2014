@@ -13,4 +13,4 @@ main.adb:23:22: info: index check proved (CVC5: 2 VC)
 main.adb:23:22: warning: assuming "Rand" has no effect on global items
 main.adb:23:22: warning: no Global contract available for "Rand"
 main.adb:23:32: info: pointer dereference check proved (CVC5: 1 VC)
-other.ads:6:13: info: implicit terminating annotation on overriding operator "=" has been proved, subprogram will terminate
+other.ads:6:13: info: implicit aspect Always_Terminates on overriding operator "=" has been proved, subprogram will terminate

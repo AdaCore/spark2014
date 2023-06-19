@@ -76,22 +76,22 @@ generic_float_tests.adb:63:14: warning: subprogram "Smooth" has no effect, in in
 generic_float_tests.adb:63:14: warning: subprogram "Smooth" has no effect, in instantiation at foo.ads:15
 generic_float_tests.adb:67:07: info: assertion proved, in instantiation at foo.ads:10
 generic_float_tests.adb:67:07: info: assertion proved, in instantiation at foo.ads:15
-generic_float_tests.adb:72:13: info: implicit terminating annotation on "Negate_Wrong" has been proved, subprogram will terminate, in instantiation at foo.ads:10
-generic_float_tests.adb:72:13: info: implicit terminating annotation on "Negate_Wrong" has been proved, subprogram will terminate, in instantiation at foo.ads:15
+generic_float_tests.adb:72:13: info: implicit aspect Always_Terminates on "Negate_Wrong" has been proved, subprogram will terminate, in instantiation at foo.ads:10
+generic_float_tests.adb:72:13: info: implicit aspect Always_Terminates on "Negate_Wrong" has been proved, subprogram will terminate, in instantiation at foo.ads:15
 generic_float_tests.adb:73:19: info: postcondition proved, in instantiation at foo.ads:10
 generic_float_tests.adb:73:19: info: postcondition proved, in instantiation at foo.ads:15
 generic_float_tests.adb:76:18: info: float overflow check proved, in instantiation at foo.ads:10
 generic_float_tests.adb:76:18: info: float overflow check proved, in instantiation at foo.ads:15
-generic_float_tests.adb:79:13: info: implicit terminating annotation on "Underflow_1" has been proved, subprogram will terminate, in instantiation at foo.ads:10
-generic_float_tests.adb:79:13: info: implicit terminating annotation on "Underflow_1" has been proved, subprogram will terminate, in instantiation at foo.ads:15
+generic_float_tests.adb:79:13: info: implicit aspect Always_Terminates on "Underflow_1" has been proved, subprogram will terminate, in instantiation at foo.ads:10
+generic_float_tests.adb:79:13: info: implicit aspect Always_Terminates on "Underflow_1" has been proved, subprogram will terminate, in instantiation at foo.ads:15
 generic_float_tests.adb:81:19: medium: postcondition might fail, in instantiation at foo.ads:10
 generic_float_tests.adb:81:19: medium: postcondition might fail, in instantiation at foo.ads:15
 generic_float_tests.adb:84:16: info: division check proved, in instantiation at foo.ads:10
 generic_float_tests.adb:84:16: info: division check proved, in instantiation at foo.ads:15
 generic_float_tests.adb:84:16: medium: float overflow check might fail, in instantiation at foo.ads:10 [reason for check: result of floating-point division must be bounded]
 generic_float_tests.adb:84:16: medium: float overflow check might fail, in instantiation at foo.ads:15 [reason for check: result of floating-point division must be bounded]
-generic_float_tests.adb:89:13: info: implicit terminating annotation on "Inverse_Reciprocal" has been proved, subprogram will terminate, in instantiation at foo.ads:10
-generic_float_tests.adb:89:13: info: implicit terminating annotation on "Inverse_Reciprocal" has been proved, subprogram will terminate, in instantiation at foo.ads:15
+generic_float_tests.adb:89:13: info: implicit aspect Always_Terminates on "Inverse_Reciprocal" has been proved, subprogram will terminate, in instantiation at foo.ads:10
+generic_float_tests.adb:89:13: info: implicit aspect Always_Terminates on "Inverse_Reciprocal" has been proved, subprogram will terminate, in instantiation at foo.ads:15
 generic_float_tests.adb:91:19: medium: postcondition might fail, in instantiation at foo.ads:10
 generic_float_tests.adb:91:19: medium: postcondition might fail, in instantiation at foo.ads:15
 generic_float_tests.adb:94:18: info: division check proved, in instantiation at foo.ads:10
@@ -102,28 +102,28 @@ generic_float_tests.adb:94:25: info: division check proved, in instantiation at 
 generic_float_tests.adb:94:25: info: division check proved, in instantiation at foo.ads:15
 generic_float_tests.adb:94:25: info: float overflow check proved, in instantiation at foo.ads:10
 generic_float_tests.adb:94:25: info: float overflow check proved, in instantiation at foo.ads:15
-generic_float_tests.adb:97:13: info: implicit terminating annotation on "Underflow_2" has been proved, subprogram will terminate, in instantiation at foo.ads:10
-generic_float_tests.adb:97:13: info: implicit terminating annotation on "Underflow_2" has been proved, subprogram will terminate, in instantiation at foo.ads:15
+generic_float_tests.adb:97:13: info: implicit aspect Always_Terminates on "Underflow_2" has been proved, subprogram will terminate, in instantiation at foo.ads:10
+generic_float_tests.adb:97:13: info: implicit aspect Always_Terminates on "Underflow_2" has been proved, subprogram will terminate, in instantiation at foo.ads:15
 generic_float_tests.adb:98:20: medium: float overflow check might fail, in instantiation at foo.ads:10 [reason for check: result of floating-point multiplication must be bounded]
 generic_float_tests.adb:98:20: medium: float overflow check might fail, in instantiation at foo.ads:15 [reason for check: result of floating-point multiplication must be bounded]
 generic_float_tests.adb:99:19: medium: postcondition might fail, in instantiation at foo.ads:10
 generic_float_tests.adb:99:19: medium: postcondition might fail, in instantiation at foo.ads:15
-generic_float_tests.adb:105:13: info: implicit terminating annotation on "Underflow_3" has been proved, subprogram will terminate, in instantiation at foo.ads:10
-generic_float_tests.adb:105:13: info: implicit terminating annotation on "Underflow_3" has been proved, subprogram will terminate, in instantiation at foo.ads:15
+generic_float_tests.adb:105:13: info: implicit aspect Always_Terminates on "Underflow_3" has been proved, subprogram will terminate, in instantiation at foo.ads:10
+generic_float_tests.adb:105:13: info: implicit aspect Always_Terminates on "Underflow_3" has been proved, subprogram will terminate, in instantiation at foo.ads:15
 generic_float_tests.adb:107:19: medium: postcondition might fail, in instantiation at foo.ads:10
 generic_float_tests.adb:107:19: medium: postcondition might fail, in instantiation at foo.ads:15
 generic_float_tests.adb:110:16: medium: float overflow check might fail, in instantiation at foo.ads:10 [reason for check: result of floating-point multiplication must be bounded]
 generic_float_tests.adb:110:16: medium: float overflow check might fail, in instantiation at foo.ads:15 [reason for check: result of floating-point multiplication must be bounded]
-generic_float_tests.adb:113:13: info: implicit terminating annotation on "Sqrt_Comedy_1" has been proved, subprogram will terminate, in instantiation at foo.ads:10
-generic_float_tests.adb:113:13: info: implicit terminating annotation on "Sqrt_Comedy_1" has been proved, subprogram will terminate, in instantiation at foo.ads:15
+generic_float_tests.adb:113:13: info: implicit aspect Always_Terminates on "Sqrt_Comedy_1" has been proved, subprogram will terminate, in instantiation at foo.ads:10
+generic_float_tests.adb:113:13: info: implicit aspect Always_Terminates on "Sqrt_Comedy_1" has been proved, subprogram will terminate, in instantiation at foo.ads:15
 generic_float_tests.adb:114:20: medium: float overflow check might fail, in instantiation at foo.ads:10 [reason for check: result of floating-point multiplication must be bounded]
 generic_float_tests.adb:114:20: medium: float overflow check might fail, in instantiation at foo.ads:15 [reason for check: result of floating-point multiplication must be bounded]
 generic_float_tests.adb:114:34: medium: float overflow check might fail, in instantiation at foo.ads:10 [reason for check: result of floating-point multiplication must be bounded]
 generic_float_tests.adb:114:34: medium: float overflow check might fail, in instantiation at foo.ads:15 [reason for check: result of floating-point multiplication must be bounded]
 generic_float_tests.adb:115:19: medium: postcondition might fail, in instantiation at foo.ads:10
 generic_float_tests.adb:115:19: medium: postcondition might fail, in instantiation at foo.ads:15
-generic_float_tests.adb:121:13: info: implicit terminating annotation on "Bad_Optimisation_1" has been proved, subprogram will terminate, in instantiation at foo.ads:10
-generic_float_tests.adb:121:13: info: implicit terminating annotation on "Bad_Optimisation_1" has been proved, subprogram will terminate, in instantiation at foo.ads:15
+generic_float_tests.adb:121:13: info: implicit aspect Always_Terminates on "Bad_Optimisation_1" has been proved, subprogram will terminate, in instantiation at foo.ads:10
+generic_float_tests.adb:121:13: info: implicit aspect Always_Terminates on "Bad_Optimisation_1" has been proved, subprogram will terminate, in instantiation at foo.ads:15
 generic_float_tests.adb:123:19: medium: postcondition might fail, in instantiation at foo.ads:10
 generic_float_tests.adb:123:19: medium: postcondition might fail, in instantiation at foo.ads:15
 generic_float_tests.adb:123:49: info: division check proved, in instantiation at foo.ads:10
@@ -230,8 +230,8 @@ generic_float_tests.adb:209:32: medium: divide by zero might fail, in instantiat
 generic_float_tests.adb:209:32: medium: divide by zero might fail, in instantiation at foo.ads:15 [possible fix: add precondition (Y /= 0) to subprogram at line 205]
 generic_float_tests.adb:209:32: medium: float overflow check might fail, in instantiation at foo.ads:10 [reason for check: result of floating-point division must be bounded]
 generic_float_tests.adb:209:32: medium: float overflow check might fail, in instantiation at foo.ads:15 [reason for check: result of floating-point division must be bounded]
-generic_float_tests.adb:213:13: info: implicit terminating annotation on "Introduce_NaN_3" has been proved, subprogram will terminate, in instantiation at foo.ads:10
-generic_float_tests.adb:213:13: info: implicit terminating annotation on "Introduce_NaN_3" has been proved, subprogram will terminate, in instantiation at foo.ads:15
+generic_float_tests.adb:213:13: info: implicit aspect Always_Terminates on "Introduce_NaN_3" has been proved, subprogram will terminate, in instantiation at foo.ads:10
+generic_float_tests.adb:213:13: info: implicit aspect Always_Terminates on "Introduce_NaN_3" has been proved, subprogram will terminate, in instantiation at foo.ads:15
 generic_float_tests.adb:217:18: info: division check proved, in instantiation at foo.ads:10
 generic_float_tests.adb:217:18: info: division check proved, in instantiation at foo.ads:15
 generic_float_tests.adb:217:18: info: float overflow check proved, in instantiation at foo.ads:10
@@ -244,8 +244,8 @@ generic_float_tests.adb:222:14: warning: subprogram "Transitive" has no effect, 
 generic_float_tests.adb:222:14: warning: subprogram "Transitive" has no effect, in instantiation at foo.ads:15
 generic_float_tests.adb:226:22: info: assertion proved, in instantiation at foo.ads:10
 generic_float_tests.adb:226:22: info: assertion proved, in instantiation at foo.ads:15
-generic_float_tests.adb:229:13: info: implicit terminating annotation on "Exhaustive" has been proved, subprogram will terminate, in instantiation at foo.ads:10
-generic_float_tests.adb:229:13: info: implicit terminating annotation on "Exhaustive" has been proved, subprogram will terminate, in instantiation at foo.ads:15
+generic_float_tests.adb:229:13: info: implicit aspect Always_Terminates on "Exhaustive" has been proved, subprogram will terminate, in instantiation at foo.ads:10
+generic_float_tests.adb:229:13: info: implicit aspect Always_Terminates on "Exhaustive" has been proved, subprogram will terminate, in instantiation at foo.ads:15
 generic_float_tests.adb:237:25: info: assertion proved, in instantiation at foo.ads:10
 generic_float_tests.adb:237:25: info: assertion proved, in instantiation at foo.ads:15
 generic_float_tests.adb:242:14: warning: subprogram "Negation_1" has no effect, in instantiation at foo.ads:10
@@ -556,7 +556,7 @@ generic_interval_tests.adb:184:18: info: float overflow check proved, in instant
 generic_interval_tests.adb:184:18: info: float overflow check proved, in instantiation at bar.ads:8
 generic_interval_tests.adb:184:22: info: float overflow check proved, in instantiation at bar.ads:12
 generic_interval_tests.adb:184:22: info: float overflow check proved, in instantiation at bar.ads:8
-homothetical.adb:6:13: info: implicit terminating annotation on "adjust2triangle" has been proved, subprogram will terminate
+homothetical.adb:6:13: info: implicit aspect Always_Terminates on "adjust2triangle" has been proved, subprogram will terminate
 homothetical.adb:8:14: medium: postcondition might fail, cannot prove adjust2triangle'Result > 0.0
 homothetical.adb:12:21: medium: float overflow check might fail [reason for check: result of floating-point multiplication must be bounded]
 homothetical.adb:12:24: info: division check proved
@@ -585,6 +585,6 @@ homothetical.adb:65:33: medium: float overflow check might fail [reason for chec
 homothetical.ads:17:17: info: initialization of "kvmax" proved
 homothetical.ads:18:17: info: initialization of "kamax" proved
 homothetical.ads:25:17: medium: postcondition might fail, cannot prove kvmax(j) > 0.0
-reduced_01.ads:6:13: info: implicit terminating annotation on "Foo" has been proved, subprogram will terminate
-reduced_02.ads:8:13: info: implicit terminating annotation on "Double_To_Single" has been proved, subprogram will terminate
+reduced_01.ads:6:13: info: implicit aspect Always_Terminates on "Foo" has been proved, subprogram will terminate
+reduced_02.ads:8:13: info: implicit aspect Always_Terminates on "Double_To_Single" has been proved, subprogram will terminate
 reduced_02.ads:9:15: info: range check proved

@@ -27,10 +27,10 @@ p.adb:33:37: info: loop variant proved
 p.adb:33:50: info: range check proved
 p.adb:36:23: info: dynamic accessibility check proved
 p.adb:36:23: info: null exclusion check proved
-p.ads:6:13: info: implicit terminating annotation on "All_Smaller_Than_Max" has been proved, subprogram will terminate
+p.ads:6:13: info: implicit aspect Always_Terminates on "All_Smaller_Than_Max" has been proved, subprogram will terminate
 p.ads:9:12: info: pointer dereference check proved
 p.ads:9:35: info: subprogram variant proved
 p.ads:9:58: info: pointer dereference check proved
-p.ads:13:13: info: implicit terminating annotation on "Search_List_Max" has been proved, subprogram will terminate
+p.ads:13:13: info: implicit aspect Always_Terminates on "Search_List_Max" has been proved, subprogram will terminate
 p.ads:16:14: info: postcondition proved
 p.ads:16:61: info: pointer dereference check proved

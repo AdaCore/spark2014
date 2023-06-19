@@ -112,7 +112,7 @@ amortized_queue.adb:107:55: info: precondition proved (CVC5: 1 VC)
 amortized_queue.adb:107:86: info: discriminant check proved (CVC5: 1 VC)
 amortized_queue.adb:107:86: info: precondition proved (CVC5: 1 VC)
 amortized_queue.adb:114:14: info: precondition proved (CVC5: 1 VC)
-amortized_queue.ads:14:13: info: implicit terminating annotation on overriding operator "&" has been proved, subprogram will terminate
+amortized_queue.ads:14:13: info: implicit aspect Always_Terminates on overriding operator "&" has been proved, subprogram will terminate
 amortized_queue.ads:16:14: info: postcondition proved (CVC5: 3 VC)
 amortized_queue.ads:18:20: info: precondition proved (CVC5: 2 VC)
 amortized_queue.ads:18:41: info: range check proved (CVC5: 2 VC)
@@ -123,7 +123,7 @@ amortized_queue.ads:20:59: info: overflow check proved (CVC5: 2 VC)
 amortized_queue.ads:20:59: info: range check proved (CVC5: 2 VC)
 amortized_queue.ads:20:66: info: precondition proved (CVC5: 2 VC)
 amortized_queue.ads:20:82: info: range check proved (CVC5: 2 VC)
-amortized_queue.ads:21:13: info: implicit terminating annotation on overriding operator "&" has been proved, subprogram will terminate
+amortized_queue.ads:21:13: info: implicit aspect Always_Terminates on overriding operator "&" has been proved, subprogram will terminate
 amortized_queue.ads:23:14: info: postcondition proved (CVC5: 3 VC)
 amortized_queue.ads:24:15: info: precondition proved (CVC5: 2 VC)
 amortized_queue.ads:26:20: info: precondition proved (CVC5: 2 VC)
@@ -131,7 +131,7 @@ amortized_queue.ads:26:43: info: overflow check proved (CVC5: 2 VC)
 amortized_queue.ads:26:43: info: range check proved (CVC5: 2 VC)
 amortized_queue.ads:26:50: info: precondition proved (CVC5: 2 VC)
 amortized_queue.ads:26:66: info: range check proved (CVC5: 2 VC)
-amortized_queue.ads:27:13: info: implicit terminating annotation on overriding operator "&" has been proved, subprogram will terminate
+amortized_queue.ads:27:13: info: implicit aspect Always_Terminates on overriding operator "&" has been proved, subprogram will terminate
 amortized_queue.ads:29:14: info: postcondition proved (CVC5: 3 VC)
 amortized_queue.ads:31:20: info: precondition proved (CVC5: 2 VC)
 amortized_queue.ads:31:41: info: range check proved (CVC5: 2 VC)
@@ -140,8 +140,8 @@ amortized_queue.ads:31:61: info: range check proved (CVC5: 2 VC)
 amortized_queue.ads:32:15: info: precondition proved (CVC5: 2 VC)
 amortized_queue.ads:32:54: info: range check proved (CVC5: 2 VC)
 amortized_queue.ads:39:42: info: range check proved (CVC5: 2 VC)
-amortized_queue.ads:46:13: info: implicit terminating annotation on "Inv" has been proved, subprogram will terminate
-amortized_queue.ads:51:13: info: implicit terminating annotation on "Is_Model" has been proved, subprogram will terminate
+amortized_queue.ads:46:13: info: implicit aspect Always_Terminates on "Inv" has been proved, subprogram will terminate
+amortized_queue.ads:51:13: info: implicit aspect Always_Terminates on "Is_Model" has been proved, subprogram will terminate
 amortized_queue.ads:54:20: info: range check proved (CVC5: 2 VC)
 amortized_queue.ads:55:17: info: precondition proved (CVC5: 2 VC)
 amortized_queue.ads:55:29: info: range check proved (CVC5: 2 VC)
@@ -153,20 +153,20 @@ amortized_queue.ads:58:29: info: overflow check proved (CVC5: 2 VC)
 amortized_queue.ads:58:29: info: range check proved (CVC5: 2 VC)
 amortized_queue.ads:59:14: info: precondition proved (CVC5: 2 VC)
 amortized_queue.ads:59:32: info: range check proved (CVC5: 2 VC)
-amortized_queue.ads:61:13: info: implicit terminating annotation on "Model" has been proved, subprogram will terminate
+amortized_queue.ads:61:13: info: implicit aspect Always_Terminates on "Model" has been proved, subprogram will terminate
 amortized_queue.ads:63:14: info: postcondition proved (CVC5: 4 VC)
-amortized_queue.ads:65:13: info: implicit terminating annotation on "Front" has been proved, subprogram will terminate
+amortized_queue.ads:65:13: info: implicit aspect Always_Terminates on "Front" has been proved, subprogram will terminate
 amortized_queue.ads:67:14: info: postcondition proved (CVC5: 1 VC)
 amortized_queue.ads:67:14: info: precondition proved (CVC5: 1 VC)
 amortized_queue.ads:67:28: info: precondition proved (CVC5: 3 VC)
-amortized_queue.ads:69:13: info: implicit terminating annotation on "Tail" has been proved, subprogram will terminate
+amortized_queue.ads:69:13: info: implicit aspect Always_Terminates on "Tail" has been proved, subprogram will terminate
 amortized_queue.ads:72:06: info: precondition proved (CVC5: 1 VC; Z3: 2 VC)
 amortized_queue.ads:72:06: medium: postcondition might fail, cannot prove Model (Q) = Model (Tail'Result) & Last_Element (Model (Q))
 amortized_queue.ads:72:18: info: precondition proved (CVC5: 3 VC)
 amortized_queue.ads:72:38: info: precondition proved (Z3: 1 VC)
 amortized_queue.ads:72:40: info: precondition proved (CVC5: 1 VC)
 amortized_queue.ads:72:54: info: precondition proved (CVC5: 3 VC)
-amortized_queue.ads:74:13: info: implicit terminating annotation on "Enqueue" has been proved, subprogram will terminate
+amortized_queue.ads:74:13: info: implicit aspect Always_Terminates on "Enqueue" has been proved, subprogram will terminate
 amortized_queue.ads:78:06: medium: postcondition might fail, cannot prove V & Model (Q) = Model (Enqueue'Result)
 amortized_queue.ads:78:08: info: precondition proved (CVC5: 1 VC)
 amortized_queue.ads:78:10: info: precondition proved (CVC5: 3 VC)

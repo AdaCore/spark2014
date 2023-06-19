@@ -398,9 +398,9 @@ sensfusion6_pack.adb:314:41: info: float overflow check proved (Trivial)
 sensfusion6_pack.adb:314:46: info: float overflow check proved (Trivial)
 sensfusion6_pack.adb:314:56: info: float overflow check proved (Trivial)
 sensfusion6_pack.ads:8:03: info: flow dependencies proved
-sensfusion6_pack.ads:15:13: info: implicit terminating annotation on "SensFusion6_Test" has been proved, subprogram will terminate
+sensfusion6_pack.ads:15:13: info: implicit aspect Always_Terminates on "SensFusion6_Test" has been proved, subprogram will terminate
 sensfusion6_pack.ads:27:07: info: initialization of "Euler_Roll_Actual" proved
 sensfusion6_pack.ads:28:07: info: initialization of "Euler_Pitch_Actual" proved
 sensfusion6_pack.ads:29:07: info: initialization of "Euler_Yaw_Actual" proved
-sensfusion6_pack.ads:32:13: info: implicit terminating annotation on "SensFusion6_Get_AccZ_Without_Gravity" has been proved, subprogram will terminate
+sensfusion6_pack.ads:32:13: info: implicit aspect Always_Terminates on "SensFusion6_Get_AccZ_Without_Gravity" has been proved, subprogram will terminate
 sensfusion6_pack.ads:86:30: info: range check proved (Trivial)

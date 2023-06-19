@@ -10,7 +10,7 @@ very_longs-divide.adb:30:39: info: range check proved (CVC5: 2 VC)
 very_longs-divide.adb:31:04: info: initialization of "Q_Hat" proved
 very_longs-divide.adb:32:04: info: initialization of "Current_Borrow" proved
 very_longs-divide.adb:36:13: info: implicit function contract might not be available on calls from enclosing unit
-very_longs-divide.adb:36:13: info: implicit terminating annotation on "Get_Shift_Distance" has been proved, subprogram will terminate
+very_longs-divide.adb:36:13: info: implicit aspect Always_Terminates on "Get_Shift_Distance" has been proved, subprogram will terminate
 very_longs-divide.adb:42:27: info: unrolling loop
 very_longs-divide.adb:52:30: info: initialization of "Result" proved
 very_longs-divide.adb:54:08: info: flow dependencies proved
@@ -265,25 +265,25 @@ very_longs.adb:321:34: info: overflow check proved (CVC5: 2 VC)
 very_longs.adb:321:38: info: index check proved (CVC5: 2 VC)
 very_longs.adb:324:38: info: index check proved (CVC5: 2 VC)
 very_longs.adb:324:38: info: overflow check proved (CVC5: 2 VC)
-very_longs.ads:12:13: info: implicit terminating annotation on "Make_From_Natural" has been proved, subprogram will terminate
+very_longs.ads:12:13: info: implicit aspect Always_Terminates on "Make_From_Natural" has been proved, subprogram will terminate
 very_longs.ads:14:20: info: postcondition proved (CVC5: 1 VC)
 very_longs.ads:17:36: info: initialization of "Result" proved
 very_longs.ads:18:36: info: initialization of "Valid" proved
 very_longs.ads:20:10: info: flow dependencies proved
 very_longs.ads:21:23: info: range check proved (CVC5: 2 VC)
-very_longs.ads:24:13: info: implicit terminating annotation on overriding operator "<" has been proved, subprogram will terminate
-very_longs.ads:27:13: info: implicit terminating annotation on overriding operator "<=" has been proved, subprogram will terminate
-very_longs.ads:30:13: info: implicit terminating annotation on overriding operator ">" has been proved, subprogram will terminate
-very_longs.ads:33:13: info: implicit terminating annotation on overriding operator ">=" has been proved, subprogram will terminate
-very_longs.ads:37:13: info: implicit terminating annotation on "Is_Zero" has been proved, subprogram will terminate
-very_longs.ads:40:13: info: implicit terminating annotation on "Number_Of_Digits" has been proved, subprogram will terminate
-very_longs.ads:43:13: info: implicit terminating annotation on "ModAdd" has been proved, subprogram will terminate
+very_longs.ads:24:13: info: implicit aspect Always_Terminates on overriding operator "<" has been proved, subprogram will terminate
+very_longs.ads:27:13: info: implicit aspect Always_Terminates on overriding operator "<=" has been proved, subprogram will terminate
+very_longs.ads:30:13: info: implicit aspect Always_Terminates on overriding operator ">" has been proved, subprogram will terminate
+very_longs.ads:33:13: info: implicit aspect Always_Terminates on overriding operator ">=" has been proved, subprogram will terminate
+very_longs.ads:37:13: info: implicit aspect Always_Terminates on "Is_Zero" has been proved, subprogram will terminate
+very_longs.ads:40:13: info: implicit aspect Always_Terminates on "Number_Of_Digits" has been proved, subprogram will terminate
+very_longs.ads:43:13: info: implicit aspect Always_Terminates on "ModAdd" has been proved, subprogram will terminate
 very_longs.ads:46:18: info: postcondition proved (CVC5: 1 VC)
-very_longs.ads:49:13: info: implicit terminating annotation on "ModSubtract" has been proved, subprogram will terminate
+very_longs.ads:49:13: info: implicit aspect Always_Terminates on "ModSubtract" has been proved, subprogram will terminate
 very_longs.ads:52:18: info: postcondition proved (CVC5: 1 VC)
-very_longs.ads:55:13: info: implicit terminating annotation on "ModMultiply" has been proved, subprogram will terminate
+very_longs.ads:55:13: info: implicit aspect Always_Terminates on "ModMultiply" has been proved, subprogram will terminate
 very_longs.ads:58:18: info: postcondition proved (CVC5: 1 VC)
-very_longs.ads:61:13: info: implicit terminating annotation on overriding operator "*" has been proved, subprogram will terminate
+very_longs.ads:61:13: info: implicit aspect Always_Terminates on overriding operator "*" has been proved, subprogram will terminate
 very_longs.ads:62:19: info: postcondition proved (CVC5: 1 VC)
 very_longs.ads:67:22: info: initialization of "Quotient" proved
 very_longs.ads:68:22: info: initialization of "Remainder" proved

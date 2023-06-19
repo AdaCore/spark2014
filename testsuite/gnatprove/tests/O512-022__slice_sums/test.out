@@ -75,7 +75,7 @@ slice_sums.adb:94:27: info: range check proved (CVC5: 2 VC)
 slice_sums.adb:96:29: info: range check proved (CVC5: 2 VC)
 slice_sums.adb:99:44: info: overflow check proved (CVC5: 2 VC)
 slice_sums.adb:99:44: info: range check proved (CVC5: 2 VC)
-slice_sums.ads:5:13: info: implicit terminating annotation on "Maximal_Sum_Slice_Bounds" has been proved, subprogram will terminate
+slice_sums.ads:5:13: info: implicit aspect Always_Terminates on "Maximal_Sum_Slice_Bounds" has been proved, subprogram will terminate
 slice_sums.ads:10:31: info: range check proved (CVC5: 2 VC)
 slice_sums.ads:11:34: info: range check proved (CVC5: 2 VC)
 slice_sums.ads:12:30: medium: postcondition might fail, cannot prove (Sum (X, Maximal_Sum_Slice_Bounds'Result) >= Sum (X, Slice_Bounds'(Lo, Hi)))
@@ -84,7 +84,7 @@ slice_sums.ads:13:37: info: precondition proved (CVC5: 1 VC)
 slice_sums.ads:13:59: info: range check proved (CVC5: 2 VC)
 slice_sums.ads:13:63: info: range check proved (CVC5: 2 VC)
 slice_sums.ads:14:23: info: precondition proved (CVC5: 1 VC)
-slice_sums.ads:16:14: info: implicit terminating annotation on "Maximal_Sum_Slice_Bounds_2" has been proved, subprogram will terminate
+slice_sums.ads:16:14: info: implicit aspect Always_Terminates on "Maximal_Sum_Slice_Bounds_2" has been proved, subprogram will terminate
 slice_sums.ads:21:31: info: range check proved (CVC5: 2 VC)
 slice_sums.ads:22:34: info: range check proved (CVC5: 2 VC)
 slice_sums.ads:23:30: medium: postcondition might fail, cannot prove (Sum (X, Maximal_Sum_Slice_Bounds_2'Result) >= Sum (X, Slice_Bounds'(Lo, Hi)))

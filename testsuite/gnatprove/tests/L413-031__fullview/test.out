@@ -19,7 +19,7 @@ int_list.adb:20:10: info: precondition proved (CVC5: 1 VC)
 int_list.adb:20:33: info: precondition proved (CVC5: 1 VC)
 int_list.adb:20:48: info: range check proved (CVC5: 2 VC)
 int_list.adb:21:10: info: precondition proved (CVC5: 1 VC)
-int_list.ads:9:13: info: implicit terminating annotation on "My_Eq" has been proved, subprogram will terminate
+int_list.ads:9:13: info: implicit aspect Always_Terminates on "My_Eq" has been proved, subprogram will terminate
 int_list.ads:18:08: info: postcondition proved (CVC5: 3 VC)
 int_list.ads:18:08: info: precondition proved (CVC5: 1 VC)
 int_list.ads:20:38: info: overflow check proved (CVC5: 2 VC)

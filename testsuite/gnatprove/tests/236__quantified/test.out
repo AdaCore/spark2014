@@ -1,4 +1,4 @@
-main.adb:4:13: info: implicit terminating annotation on "F" has been proved, subprogram will terminate
-main.adb:9:13: info: implicit terminating annotation on "G" has been proved, subprogram will terminate
+main.adb:4:13: info: implicit aspect Always_Terminates on "F" has been proved, subprogram will terminate
+main.adb:9:13: info: implicit aspect Always_Terminates on "G" has been proved, subprogram will terminate
 main.adb:10:20: info: no contextual analysis of "F" (in quantified expression)
 main.adb:14:37: medium: assertion might fail, cannot prove E = 0

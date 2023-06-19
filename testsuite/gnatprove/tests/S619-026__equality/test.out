@@ -1,5 +1,5 @@
 prim_eq_vect.adb:9:52: info: range check proved (CVC5: 2 VC)
-prim_eq_vect.adb:15:13: info: implicit terminating annotation on "My_Hash" has been proved, subprogram will terminate
+prim_eq_vect.adb:15:13: info: implicit aspect Always_Terminates on "My_Hash" has been proved, subprogram will terminate
 prim_eq_vect.adb:28:14: info: postcondition proved (Z3: 1 VC)
 prim_eq_vect.adb:28:26: info: precondition proved (CVC5: 1 VC)
 prim_eq_vect.adb:28:59: info: precondition proved (CVC5: 1 VC)

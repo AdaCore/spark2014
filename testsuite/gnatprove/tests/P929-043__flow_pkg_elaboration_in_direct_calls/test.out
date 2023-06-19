@@ -1,25 +1,25 @@
-nest_in_proc.adb:3:11: info: terminating annotation on "Nest_In_Proc" has been proved, subprogram will terminate
+nest_in_proc.adb:3:11: info: aspect Always_Terminates on "Nest_In_Proc" has been proved, subprogram will terminate
 nest_in_proc.adb:5:14: high: all paths in "Proxy" raise exceptions or do not terminate normally
 nest_in_proc.adb:5:14: warning: subprogram "Proxy" has no effect
 nest_in_proc.adb:9:07: medium: unexpected exception might be raised [possible explanation: No_Return procedures have an implicit exceptional contract]
 nest_in_proc.adb:9:07: warning: assuming "OS_Exit" has no effect on global items
 nest_in_proc.adb:9:07: warning: no Global contract available for "OS_Exit"
-nest_in_proc.adb:13:17: info: terminating annotation on "Nothing" has been proved, subprogram will terminate
+nest_in_proc.adb:13:17: info: aspect Always_Terminates on "Nothing" has been proved, subprogram will terminate
 nest_in_proc.adb:13:17: warning: subprogram "Nothing" has no effect
 nest_in_proc.adb:22:07: info: precondition proved (Trivial: 1 VC)
-nest_in_proc.adb:22:07: medium: implicit terminating annotation on "Pkg" could be incorrect, call to "Proxy" might be nonterminating [possible fix: annotate "Proxy" with Always_Return]
-nest_in_task.adb:18:20: info: terminating annotation on "P" has been proved, subprogram will terminate
+nest_in_proc.adb:22:07: medium: implicit aspect Always_Terminates on "Pkg" could be incorrect, call to "Proxy" might be nonterminating [possible fix: annotate "Proxy" with Always_Return]
+nest_in_task.adb:18:20: info: aspect Always_Terminates on "P" has been proved, subprogram will terminate
 nest_in_task.adb:18:20: warning: subprogram "P" has no effect
 nest_in_task.adb:24:11: high: cannot write "A" during elaboration of "Pkg" [E0008]
 nest_in_task.adb:24:11: high: launch "gnatprove --explain=E0008" for more information
 nest_in_task.adb:32:04: high: more tasks than allowed might queue on protected entry "nest_in_task.a.e" (restriction No_Entry_Queue active) (SPARK RM 9(11))
 nest_in_task.adb:32:04: high: task "nest_in_task.b" is queueing
 nest_in_task.adb:32:04: high: task "nest_in_task.c" is queueing
-nest_in_task.ads:4:17: info: terminating annotation on "Proc" has been proved, subprogram will terminate
+nest_in_task.ads:4:17: info: aspect Always_Terminates on "Proc" has been proved, subprogram will terminate
 nest_in_task.ads:9:14: info: ceiling priority protocol is respected (CVC5: 1 VC)
 nest_in_task.ads:9:14: info: nontermination of task proved (CVC5: 1 VC)
-recursion.adb:1:11: info: terminating annotation on "Recursion" has been proved, subprogram will terminate
+recursion.adb:1:11: info: aspect Always_Terminates on "Recursion" has been proved, subprogram will terminate
 recursion.adb:3:17: warning: subprogram "P" has no effect
 recursion.adb:10:26: info: unrolling loop
-recursion.adb:11:13: medium: terminating annotation on "P" could be incorrect, "P" and "Recursion" are mutually recursive [possible fix: annotate "P" and "Recursion" with Subprogram_Variant aspects]
-recursion.adb:16:07: medium: implicit terminating annotation on "Pack" could be incorrect, "Pack" and "P" are mutually recursive [possible fix: annotate "Pack" and "P" with Subprogram_Variant aspects]
+recursion.adb:11:13: medium: aspect Always_Terminates on "P" could be incorrect, "P" and "Recursion" are mutually recursive [possible fix: annotate "P" and "Recursion" with Subprogram_Variant aspects]
+recursion.adb:16:07: medium: implicit aspect Always_Terminates on "Pack" could be incorrect, "Pack" and "P" are mutually recursive [possible fix: annotate "Pack" and "P" with Subprogram_Variant aspects]

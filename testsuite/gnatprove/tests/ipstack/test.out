@@ -1,16 +1,16 @@
-aip-arp.adb:30:10: medium: implicit terminating annotation on "Get_MAC_Address" could be incorrect, call to "Get_LL_Address" might be nonterminating
+aip-arp.adb:30:10: medium: implicit aspect Always_Terminates on "Get_MAC_Address" could be incorrect, call to "Get_LL_Address" might be nonterminating
 aip-arp.adb:324:10: warning: address specification on "Result" is imprecisely supported: assuming no concurrent accesses to non-atomic object, no writes to or through a potential alias, and valid reads
 aip-arp.adb:324:10: warning: make sure that all overlapping objects have Async_Writers set to True
 aip-arp.adb:396:25: warning: statement has no effect
 aip-arp.adb:61:13: warning: statement has no effect
-aip-buffers-common.adb:19:14: medium: implicit terminating annotation on "Is_Data_Buffer" could be incorrect, call to "Verify" might be nonterminating
+aip-buffers-common.adb:19:14: medium: implicit aspect Always_Terminates on "Is_Data_Buffer" could be incorrect, call to "Verify" might be nonterminating
 aip-buffers.adb:477:25: warning: "N_Deallocs" is set by "Buffer_Free" but not used after the call
 aip-ip.adb:187:10: warning: statement has no effect
 aip-ip.adb:188:19: warning: this statement is never reached
 aip-nif.ads:100:06: warning: Terminating, Always_Return, and Might_Not_Return annotations are deprecated, ignored
 aip-nif.ads:100:06: warning: use Always_Terminates instead
-aip-pcbs.adb:51:20: medium: implicit terminating annotation on "Available_Port" could be incorrect, loop might be nonterminating
-aip-pcbs.adb:52:10: medium: implicit terminating annotation on "Available_Port" could be incorrect, call to "Find_PCB" might be nonterminating
+aip-pcbs.adb:51:20: medium: implicit aspect Always_Terminates on "Available_Port" could be incorrect, loop might be nonterminating
+aip-pcbs.adb:52:10: medium: implicit aspect Always_Terminates on "Available_Port" could be incorrect, call to "Find_PCB" might be nonterminating
 aip-pcbs.ads:116:06: warning: Terminating, Always_Return, and Might_Not_Return annotations are deprecated, ignored
 aip-pcbs.ads:116:06: warning: use Always_Terminates instead
 aip-pcbs.ads:131:06: warning: Terminating, Always_Return, and Might_Not_Return annotations are deprecated, ignored

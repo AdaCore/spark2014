@@ -1,4 +1,4 @@
-list_borrow.adb:9:07: medium: implicit terminating annotation on "All_Pos" could be incorrect, subprogram is recursive [possible fix: annotate "All_Pos" with a Subprogram_Variant aspect]
+list_borrow.adb:9:07: medium: implicit aspect Always_Terminates on "All_Pos" could be incorrect, subprogram is recursive [possible fix: annotate "All_Pos" with a Subprogram_Variant aspect]
 list_borrow.adb:9:26: info: pointer dereference check proved (CVC5: 1 VC)
 list_borrow.adb:10:26: info: pointer dereference check proved (CVC5: 1 VC)
 list_borrow.adb:15:04: info: absence of resource or memory leak at end of scope proved (CVC5: 1 VC)

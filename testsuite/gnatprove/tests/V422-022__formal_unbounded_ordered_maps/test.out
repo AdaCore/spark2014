@@ -201,7 +201,7 @@ test_map.adb:312:25: info: assertion proved (CVC5: 1 VC)
 test_map.adb:312:25: info: precondition proved (CVC5: 1 VC)
 test_map.adb:312:36: info: pointer dereference check proved (CVC5: 1 VC)
 test_map.adb:316:07: medium: assertion might fail
-test_map.ads:16:13: info: implicit terminating annotation on "My_Lt" has been proved, subprogram will terminate
+test_map.ads:16:13: info: implicit aspect Always_Terminates on "My_Lt" has been proved, subprogram will terminate
 test_map.ads:17:12: info: postcondition proved (CVC5: 2 VC)
 test_map.ads:25:14: warning: subprogram "Test_Ordered_Map" has no effect
 test_map.ads:27:14: warning: subprogram "Large_Test" has no effect

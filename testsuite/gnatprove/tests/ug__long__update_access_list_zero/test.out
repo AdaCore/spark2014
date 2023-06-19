@@ -9,8 +9,8 @@ p.adb:19:14: info: pointer dereference check proved
 p.adb:21:16: info: pointer dereference check proved
 p.adb:22:24: info: pointer dereference check proved
 p.adb:25:10: info: assertion proved
-p.ads:6:13: info: implicit terminating annotation on "Equal" has been proved, subprogram will terminate
-p.ads:14:13: info: implicit terminating annotation on "Updated_If_Less_Than_Threshold" has been proved, subprogram will terminate
+p.ads:6:13: info: implicit aspect Always_Terminates on "Equal" has been proved, subprogram will terminate
+p.ads:14:13: info: implicit aspect Always_Terminates on "Updated_If_Less_Than_Threshold" has been proved, subprogram will terminate
 p.ads:21:20: info: pointer dereference check proved
 p.ads:21:47: info: pointer dereference check proved
 p.ads:22:22: info: pointer dereference check proved

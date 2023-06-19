@@ -7,6 +7,6 @@ ghost_legal.adb:17:33: info: loop invariant initialization proved (CVC5: 1 VC)
 ghost_legal.adb:17:33: info: loop invariant preservation proved (CVC5: 1 VC)
 ghost_legal.adb:19:16: info: division check proved (CVC5: 1 VC)
 ghost_legal.adb:23:23: info: overflow check proved (CVC5: 2 VC)
-ghost_legal.ads:4:13: info: implicit terminating annotation on "Is_Even" has been proved, subprogram will terminate
-ghost_legal.ads:7:13: info: implicit terminating annotation on "Is_Prime" has been proved, subprogram will terminate
+ghost_legal.ads:4:13: info: implicit aspect Always_Terminates on "Is_Even" has been proved, subprogram will terminate
+ghost_legal.ads:7:13: info: implicit aspect Always_Terminates on "Is_Prime" has been proved, subprogram will terminate
 ghost_legal.ads:8:19: info: postcondition proved (CVC5: 1 VC; Trivial: 1 VC)

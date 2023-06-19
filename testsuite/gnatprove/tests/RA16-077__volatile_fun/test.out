@@ -1,4 +1,4 @@
 foo.adb:4:28: warning: assuming "E" has no effect on global items
 foo.adb:4:28: warning: no Global contract available for "E"
-foo.adb:5:13: info: implicit terminating annotation on "C" has been proved, subprogram will terminate
+foo.adb:5:13: info: implicit aspect Always_Terminates on "C" has been proved, subprogram will terminate
 foo.adb:8:19: info: assertion proved (Trivial)

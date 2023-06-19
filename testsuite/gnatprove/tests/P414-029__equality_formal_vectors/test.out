@@ -28,5 +28,5 @@ names.adb:122:48: medium: overflow check might fail, cannot prove upper bound fo
 names.adb:122:48: medium: range check might fail, cannot prove upper bound for E.Table_Index + Char_Table_Index (I - 1) [reason for check: input value must fit in parameter type] [possible fix: precondition of subprogram at names.ads:15 should mention Entry_Table and N]
 names.ads:10:22: info: initialization of "N" proved
 names.ads:13:19: info: postcondition proved (CVC5: 1 VC)
-names.ads:15:13: info: implicit terminating annotation on "To_String" has been proved, subprogram will terminate
-names.ads:19:13: info: implicit terminating annotation on "Invariant" has been proved, subprogram will terminate
+names.ads:15:13: info: implicit aspect Always_Terminates on "To_String" has been proved, subprogram will terminate
+names.ads:19:13: info: implicit aspect Always_Terminates on "Invariant" has been proved, subprogram will terminate

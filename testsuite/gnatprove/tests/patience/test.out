@@ -115,7 +115,7 @@ patience.adb:147:47: info: overflow check proved (CVC5: 4 VC)
 patience.adb:148:33: info: loop invariant initialization proved (CVC5: 1 VC)
 patience.adb:148:33: info: loop invariant preservation proved (CVC5: 1 VC)
 patience.adb:149:10: info: precondition proved (CVC5: 2 VC)
-patience.ads:53:13: info: implicit terminating annotation on "Inv" has been proved, subprogram will terminate
+patience.ads:53:13: info: implicit aspect Always_Terminates on "Inv" has been proved, subprogram will terminate
 patience.ads:63:26: info: index check proved (CVC5: 2 VC)
 patience.ads:66:26: info: index check proved (CVC5: 2 VC)
 patience.ads:69:45: info: index check proved (CVC5: 2 VC)
@@ -165,10 +165,10 @@ patience.ads:113:31: info: index check proved (CVC5: 2 VC)
 patience.ads:115:32: info: index check proved (CVC5: 2 VC)
 patience.ads:115:39: info: index check proved (CVC5: 2 VC)
 patience.ads:115:56: info: index check proved (CVC5: 2 VC)
-patience.ads:122:14: info: terminating annotation on "PlayCard" has been proved, subprogram will terminate
+patience.ads:122:14: info: aspect Always_Terminates on "PlayCard" has been proved, subprogram will terminate
 patience.ads:125:18: info: postcondition proved (CVC5: 3 VC)
 patience.ads:125:47: info: index check proved (CVC5: 2 VC)
-patience.ads:128:13: info: implicit terminating annotation on "PlayGame" has been proved, subprogram will terminate
+patience.ads:128:13: info: implicit aspect Always_Terminates on "PlayGame" has been proved, subprogram will terminate
 patience.ads:131:14: info: postcondition proved (CVC5: 1 VC)
 test_patience.adb:7:14: info: add a contract to analyze it separately from calling contexts
 test_patience.adb:7:14: info: local subprogram "PrintCardStack" only analyzed in the context of calls

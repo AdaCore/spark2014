@@ -1,4 +1,4 @@
-bad.adb:5:34: medium: implicit terminating annotation on "A" could be incorrect, "A" and "B" are mutually recursive [possible fix: annotate "A" and "B" with Subprogram_Variant aspects]
-bad.adb:6:34: medium: implicit terminating annotation on "B" could be incorrect, "B" and "A" are mutually recursive [possible fix: annotate "B" and "A" with Subprogram_Variant aspects]
-bad.adb:12:13: info: implicit terminating annotation on "In_T" has been proved, subprogram will terminate
+bad.adb:5:34: medium: implicit aspect Always_Terminates on "A" could be incorrect, "A" and "B" are mutually recursive [possible fix: annotate "A" and "B" with Subprogram_Variant aspects]
+bad.adb:6:34: medium: implicit aspect Always_Terminates on "B" could be incorrect, "B" and "A" are mutually recursive [possible fix: annotate "B" and "A" with Subprogram_Variant aspects]
+bad.adb:12:13: info: implicit aspect Always_Terminates on "In_T" has been proved, subprogram will terminate
 bad.adb:15:04: warning: analyzing unreferenced function "In_T"

@@ -44,7 +44,7 @@ call_dispatch.adb:26:19: info: assertion proved (CVC5: 1 VC)
 call_dispatch.adb:26:26: info: tag check proved (CVC5: 1 VC)
 dispatch.ads:2:03: info: flow dependencies proved
 dispatch.ads:13:13: info: implicit function contract might not be available on calls from enclosing unit
-dispatch.ads:13:13: info: implicit terminating annotation on "Id" has been proved, subprogram will terminate
+dispatch.ads:13:13: info: implicit aspect Always_Terminates on "Id" has been proved, subprogram will terminate
 dispatch.ads:19:04: info: range check proved (CVC5: 2 VC)
 dispatch.ads:20:04: info: range check proved (CVC5: 2 VC)
 dispatch.ads:21:04: info: range check proved (CVC5: 2 VC)

@@ -1,30 +1,30 @@
 main.adb:23:12: info: default initial condition proved (CVC5: 1 VC)
 main.adb:23:12: medium: predicate check might fail on default value
-main.adb:26:16: info: implicit terminating annotation on "Get" has been proved, subprogram will terminate
+main.adb:26:16: info: implicit aspect Always_Terminates on "Get" has been proved, subprogram will terminate
 main.adb:45:12: medium: default initial condition might fail
-main.adb:48:16: info: implicit terminating annotation on "Get" has been proved, subprogram will terminate
+main.adb:48:16: info: implicit aspect Always_Terminates on "Get" has been proved, subprogram will terminate
 main.adb:50:12: info: predicate check proved on default value (CVC5: 1 VC)
 main.adb:69:12: info: default initial condition proved (CVC5: 1 VC)
 main.adb:69:12: medium: predicate check might fail on default value
-main.adb:72:16: info: implicit terminating annotation on "Get" has been proved, subprogram will terminate
+main.adb:72:16: info: implicit aspect Always_Terminates on "Get" has been proved, subprogram will terminate
 main.adb:89:12: medium: default initial condition might fail
-main.adb:92:16: info: implicit terminating annotation on "Get" has been proved, subprogram will terminate
+main.adb:92:16: info: implicit aspect Always_Terminates on "Get" has been proved, subprogram will terminate
 main.adb:94:12: info: default initial condition proved (CVC5: 1 VC)
 main.adb:94:12: medium: in inlined predicate at main.adb:108
 main.adb:94:12: medium: predicate check might fail on default value, cannot prove Q (F)
-main.adb:97:16: info: implicit terminating annotation on "Get" has been proved, subprogram will terminate
+main.adb:97:16: info: implicit aspect Always_Terminates on "Get" has been proved, subprogram will terminate
 main.adb:119:12: medium: default initial condition might fail
-main.adb:122:16: info: implicit terminating annotation on "Get" has been proved, subprogram will terminate
+main.adb:122:16: info: implicit aspect Always_Terminates on "Get" has been proved, subprogram will terminate
 main.adb:124:12: info: default initial condition proved (CVC5: 1 VC)
 main.adb:124:12: medium: in inlined predicate at main.adb:143
 main.adb:124:12: medium: predicate check might fail on default value, cannot prove Q (F)
-main.adb:127:16: info: implicit terminating annotation on "Get" has been proved, subprogram will terminate
+main.adb:127:16: info: implicit aspect Always_Terminates on "Get" has been proved, subprogram will terminate
 main.adb:129:12: info: default initial condition proved (CVC5: 1 VC)
 main.adb:129:12: info: for inherited predicate at main.adb:143
 main.adb:129:12: info: predicate check proved on default value (CVC5: 2 VC)
 main.adb:129:12: medium: in inlined predicate at main.adb:148
 main.adb:129:12: medium: predicate check might fail on default value, cannot prove R (F)
-main.adb:132:16: info: implicit terminating annotation on "Get" has been proved, subprogram will terminate
+main.adb:132:16: info: implicit aspect Always_Terminates on "Get" has been proved, subprogram will terminate
 main.adb:158:12: info: predicate check proved on default value (CVC5: 1 VC)
 main.adb:168:07: info: initialization of "X" proved
 main.adb:168:07: info: predicate check proved on default value (CVC5: 1 VC)
@@ -44,7 +44,7 @@ main.adb:221:12: info: default initial condition proved (CVC5: 1 VC)
 main.adb:221:12: medium: in inlined predicate at main.adb:233
 main.adb:221:12: medium: predicate check might fail on default value, cannot prove Q (F)
 main.adb:224:16: info: implicit function contract might not be available on calls from enclosing unit
-main.adb:224:16: info: implicit terminating annotation on "Get" has been proved, subprogram will terminate
+main.adb:224:16: info: implicit aspect Always_Terminates on "Get" has been proved, subprogram will terminate
 main.adb:237:07: info: initialization of "X" proved
 main.adb:237:07: info: predicate check proved on default value (CVC5: 2 VC)
 main.adb:237:07: medium: default initial condition might fail
@@ -52,7 +52,7 @@ main.adb:237:07: medium: for inherited default initial condition at main.adb:219
 main.adb:237:20: info: range check proved (CVC5: 2 VC)
 main.adb:246:12: medium: default initial condition might fail
 main.adb:249:16: info: implicit function contract might not be available on calls from enclosing unit
-main.adb:249:16: info: implicit terminating annotation on "Get" has been proved, subprogram will terminate
+main.adb:249:16: info: implicit aspect Always_Terminates on "Get" has been proved, subprogram will terminate
 main.adb:251:12: info: predicate check proved on default value (CVC5: 2 VC)
 main.adb:265:07: info: initialization of "X" proved
 main.adb:265:07: info: predicate check proved on default value (CVC5: 2 VC)
@@ -86,4 +86,4 @@ q.ads:18:41: info: range check proved (CVC5: 2 VC)
 q.ads:18:46: info: precondition proved (CVC5: 2 VC)
 q.ads:18:68: info: overflow check proved (CVC5: 2 VC)
 q.ads:18:68: info: range check proved (CVC5: 2 VC)
-q.ads:21:14: info: implicit terminating annotation on "Model" has been proved, subprogram will terminate
+q.ads:21:14: info: implicit aspect Always_Terminates on "Model" has been proved, subprogram will terminate

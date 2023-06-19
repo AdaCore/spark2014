@@ -1,1 +1,1 @@
-p.ads:3:13: info: implicit terminating annotation on "Dummy" has been proved, subprogram will terminate
+p.ads:3:13: info: implicit aspect Always_Terminates on "Dummy" has been proved, subprogram will terminate

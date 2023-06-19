@@ -1,1 +1,1 @@
-greater.adb:1:10: info: implicit terminating annotation on "Greater" has been proved, subprogram will terminate
+greater.adb:1:10: info: implicit aspect Always_Terminates on "Greater" has been proved, subprogram will terminate

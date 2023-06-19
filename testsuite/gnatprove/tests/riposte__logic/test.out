@@ -37,7 +37,7 @@ logic.adb:79:22: medium: assertion might fail [possible fix: subprogram at line 
 logic.adb:82:04: warning: analyzing unreferenced procedure "Contraposition"
 logic.adb:85:30: info: assertion proved (Trivial: 1 VC)
 logic.adb:86:22: info: assertion proved (CVC5: 1 VC; Trivial: 2 VC)
-logic.adb:90:13: info: implicit terminating annotation on "XOR_Test_A" has been proved, subprogram will terminate
+logic.adb:90:13: info: implicit aspect Always_Terminates on "XOR_Test_A" has been proved, subprogram will terminate
 logic.adb:91:19: info: postcondition proved (CVC5: 1 VC)
 logic.adb:93:07: info: initialization of "R" proved
 logic.adb:107:04: warning: analyzing unreferenced procedure "XOR_Test_B"
@@ -47,7 +47,7 @@ logic.adb:113:30: info: assertion proved (Trivial: 1 VC)
 logic.adb:114:22: info: assertion proved (CVC5: 2 VC)
 logic.adb:118:11: info: flow dependencies proved
 logic.adb:120:22: info: postcondition proved (CVC5: 2 VC)
-logic.adb:126:13: info: implicit terminating annotation on "Equivalence_Test_3" has been proved, subprogram will terminate
+logic.adb:126:13: info: implicit aspect Always_Terminates on "Equivalence_Test_3" has been proved, subprogram will terminate
 logic.adb:127:19: info: postcondition proved (CVC5: 4 VC)
 logic.adb:134:04: warning: analyzing unreferenced procedure "Implies_Test_1"
 logic.adb:137:22: high: assertion might fail (e.g. when C = False) [possible fix: subprogram at line 134 should mention A and B and C in a precondition]

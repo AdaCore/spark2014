@@ -1,4 +1,4 @@
-func.adb:1:10: info: implicit terminating annotation on "Func" has been proved, subprogram will terminate
+func.adb:1:10: info: implicit aspect Always_Terminates on "Func" has been proved, subprogram will terminate
 func.adb:5:32: high: "C" is not initialized
 func.adb:5:38: medium: unexpected exception might be raised
 func.adb:5:63: high: "S" is not initialized

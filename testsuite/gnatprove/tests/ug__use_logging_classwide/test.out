@@ -1,4 +1,4 @@
-logging.ads:12:13: info: implicit terminating annotation on "Log_Size" has been proved, subprogram will terminate
+logging.ads:12:13: info: implicit aspect Always_Terminates on "Log_Size" has been proved, subprogram will terminate
 
 use_logging_classwide.adb:8:04: high: extension of "Log" is not initialized
     8 |   Log.Append_To_Log (2);

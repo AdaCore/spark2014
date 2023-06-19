@@ -2,6 +2,6 @@ p.adb:23:08: info: initialization of "C" proved
 p.adb:27:22: medium: overflow check might fail, cannot prove lower bound for Sum + My_Lists.Element(X, C) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: loop at line 26 should mention Sum in a loop invariant]
 p.adb:27:32: medium: precondition might fail
 p.adb:28:19: medium: precondition might fail
-p.ads:13:13: info: implicit terminating annotation on "My_Eq" has been proved, subprogram will terminate
+p.ads:13:13: info: implicit aspect Always_Terminates on "My_Eq" has been proved, subprogram will terminate
 p.ads:18:14: warning: subprogram "Iter_Over_Lists" has no effect
 p.ads:20:14: warning: subprogram "Quant_Over_Lists" has no effect

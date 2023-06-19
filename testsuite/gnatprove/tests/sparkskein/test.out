@@ -8,7 +8,7 @@ skein.adb:181:20: info: type is suitable for unchecked conversion
 skein.adb:183:13: info: types in unchecked conversion have the same size
 skein.adb:184:32: info: type is suitable as source for unchecked conversion
 skein.adb:184:55: info: type is suitable for unchecked conversion
-skein.adb:190:13: info: implicit terminating annotation on "To_LittleEndian" has been proved, subprogram will terminate
+skein.adb:190:13: info: implicit aspect Always_Terminates on "To_LittleEndian" has been proved, subprogram will terminate
 skein.adb:191:11: info: data dependencies proved
 skein.adb:198:07: warning: statement has no effect
 skein.adb:205:14: info: add a contract to analyze it separately from calling contexts
@@ -201,10 +201,10 @@ skein.adb:883:07: info: precondition proved
 skein.adb:886:07: info: precondition proved
 skein.adb:887:32: info: range check proved
 skein.adb:909:12: info: precondition proved
-skein.ads:164:13: info: implicit terminating annotation on "Sub_In_Range" has been proved, subprogram will terminate
-skein.ads:167:13: info: implicit terminating annotation on "Add_In_Range" has been proved, subprogram will terminate
-skein.ads:170:13: info: implicit terminating annotation on "Hash_Bit_Len_Of" has been proved, subprogram will terminate
-skein.ads:173:13: info: implicit terminating annotation on "Byte_Count_Of" has been proved, subprogram will terminate
+skein.ads:164:13: info: implicit aspect Always_Terminates on "Sub_In_Range" has been proved, subprogram will terminate
+skein.ads:167:13: info: implicit aspect Always_Terminates on "Add_In_Range" has been proved, subprogram will terminate
+skein.ads:170:13: info: implicit aspect Always_Terminates on "Hash_Bit_Len_Of" has been proved, subprogram will terminate
+skein.ads:173:13: info: implicit aspect Always_Terminates on "Byte_Count_Of" has been proved, subprogram will terminate
 skein.ads:176:30: info: initialization of "Ctx" proved
 skein.ads:178:11: info: data dependencies proved
 skein.ads:179:19: info: postcondition proved
@@ -213,7 +213,7 @@ skein.ads:193:19: info: postcondition proved
 skein.ads:198:31: info: initialization of "Hash" proved
 skein.ads:199:11: info: data dependencies proved
 skein.ads:204:46: info: division check proved
-skein.ads:207:13: info: implicit terminating annotation on "Skein_512_Hash" has been proved, subprogram will terminate
+skein.ads:207:13: info: implicit aspect Always_Terminates on "Skein_512_Hash" has been proved, subprogram will terminate
 skein.ads:208:11: info: data dependencies proved
 skein.ads:219:11: info: data dependencies proved
 skein.ads:220:11: info: flow dependencies proved

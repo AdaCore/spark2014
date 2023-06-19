@@ -15,7 +15,7 @@ test.adb:20:22: info: assertion proved (Z3: 1 VC)
 test.adb:20:29: info: precondition proved (CVC5: 2 VC)
 test.adb:21:22: info: assertion proved (Z3: 1 VC)
 test.adb:22:22: info: assertion proved (Z3: 1 VC)
-test.adb:25:13: info: implicit terminating annotation on "My_Eq" has been proved, subprogram will terminate
+test.adb:25:13: info: implicit aspect Always_Terminates on "My_Eq" has been proved, subprogram will terminate
 test.adb:29:06: info: data dependencies proved
 test.adb:33:07: info: initialization of "S" proved
 test.adb:35:19: info: precondition proved (CVC5: 1 VC)

@@ -1,2 +1,2 @@
-usecont.ads:12:13: info: implicit terminating annotation on "Hash" has been proved, subprogram will terminate
+usecont.ads:12:13: info: implicit aspect Always_Terminates on "Hash" has been proved, subprogram will terminate
 usecont.ads:12:64: medium: range check might fail (e.g. when X = -1) [reason for check: value must be convertible to the target type of the conversion] [possible fix: add precondition (X in Hash_Type) to subprogram at line 12]

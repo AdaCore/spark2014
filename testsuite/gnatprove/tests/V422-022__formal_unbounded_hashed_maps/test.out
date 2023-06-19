@@ -151,9 +151,9 @@ test_map.adb:258:35: medium: loop invariant might not be preserved by an arbitra
 test_map.adb:258:52: info: range check proved (Z3: 4 VC)
 test_map.adb:261:07: info: precondition proved (Z3: 2 VC)
 test_map.adb:262:07: medium: assertion might fail
-test_map.ads:6:13: info: implicit terminating annotation on "Hash" has been proved, subprogram will terminate
-test_map.ads:19:13: info: implicit terminating annotation on "My_Eq" has been proved, subprogram will terminate
+test_map.ads:6:13: info: implicit aspect Always_Terminates on "Hash" has been proved, subprogram will terminate
+test_map.ads:19:13: info: implicit aspect Always_Terminates on "My_Eq" has been proved, subprogram will terminate
 test_map.ads:20:17: info: postcondition proved (CVC5: 2 VC)
-test_map.ads:23:13: info: implicit terminating annotation on "Hash" has been proved, subprogram will terminate
+test_map.ads:23:13: info: implicit aspect Always_Terminates on "Hash" has been proved, subprogram will terminate
 test_map.ads:31:14: warning: subprogram "Run_Test" has no effect
 test_map.ads:33:14: warning: subprogram "Large_Test" has no effect
