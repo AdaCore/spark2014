@@ -164,8 +164,8 @@ aco-math-very_longs.adb:337:35: info: loop invariant initialization proved (CVC5
 aco-math-very_longs.adb:337:35: info: loop invariant preservation proved (CVC5: 1 VC; Trivial: 1 VC)
 aco-math-very_longs.adb:337:85: info: overflow check proved (CVC5: 4 VC)
 aco-math-very_longs.adb:337:116: info: index check proved (CVC5: 4 VC)
-aco-math-very_longs.adb:343:16: info: implicit function contract might not be available on calls from enclosing unit
 aco-math-very_longs.adb:343:16: info: implicit aspect Always_Terminates on "Get_Shift_Distance" has been proved, subprogram will terminate
+aco-math-very_longs.adb:343:16: info: implicit function contract might not be available on calls from enclosing unit
 aco-math-very_longs.adb:350:30: info: unrolling loop
 aco-math-very_longs.adb:359:56: info: initialization of "Result" proved
 aco-math-very_longs.adb:361:11: info: flow dependencies proved

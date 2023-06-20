@@ -223,16 +223,16 @@ linear_search.adb:80:28: info: predicate check proved
 linear_search.adb:80:32: info: predicate check proved
 linear_search.adb:82:21: info: pointer dereference check proved
 linear_search.adb:85:16: info: pointer dereference check proved
-linear_search.ads:17:12: info: implicit function contract might not be available on recursive calls
 linear_search.ads:17:12: info: implicit aspect Always_Terminates on "Length" has been proved, subprogram will terminate
+linear_search.ads:17:12: info: implicit function contract might not be available on recursive calls
 linear_search.ads:18:22: info: predicate check proved
 linear_search.ads:18:29: info: predicate check proved
 linear_search.ads:18:29: info: subprogram variant proved
 linear_search.ads:18:38: info: pointer dereference check proved
 linear_search.ads:18:45: info: predicate check proved
 linear_search.ads:18:47: info: predicate check proved
-linear_search.ads:23:12: info: implicit function contract might not be available on recursive calls
 linear_search.ads:23:12: info: implicit aspect Always_Terminates on "Nth" has been proved, subprogram will terminate
+linear_search.ads:23:12: info: implicit function contract might not be available on recursive calls
 linear_search.ads:24:08: info: predicate check proved
 linear_search.ads:24:12: info: predicate check proved
 linear_search.ads:24:20: info: pointer dereference check proved
@@ -327,8 +327,8 @@ my_map.adb:95:21: info: pointer dereference check proved
 my_map.adb:97:16: info: pointer dereference check proved
 my_map.adb:99:07: info: only expected exception raised
 my_map.ads:7:13: info: implicit aspect Always_Terminates on "Model_Contains" has been proved, subprogram will terminate
-my_map.ads:14:13: info: implicit function contract might not be available on recursive calls
 my_map.ads:14:13: info: implicit aspect Always_Terminates on "Model_Value" has been proved, subprogram will terminate
+my_map.ads:14:13: info: implicit function contract might not be available on recursive calls
 my_map.ads:22:13: info: implicit aspect Always_Terminates on "At_End" has been proved, subprogram will terminate
 my_map.ads:25:07: info: dynamic accessibility check proved
 my_map.ads:30:13: info: implicit aspect Always_Terminates on "At_End" has been proved, subprogram will terminate
@@ -386,16 +386,16 @@ test_list.adb:23:16: info: pointer dereference check proved
 test_list.adb:24:15: info: predicate check proved
 test_list.adb:24:17: info: predicate check proved
 test_list.adb:24:19: info: predicate check proved
-test_list.ads:14:13: info: implicit function contract might not be available on recursive calls
 test_list.ads:14:13: info: implicit aspect Always_Terminates on "Length" has been proved, subprogram will terminate
+test_list.ads:14:13: info: implicit function contract might not be available on recursive calls
 test_list.ads:15:24: info: predicate check proved
 test_list.ads:15:31: info: predicate check proved
 test_list.ads:15:31: info: subprogram variant proved
 test_list.ads:15:40: info: pointer dereference check proved
 test_list.ads:15:47: info: predicate check proved
 test_list.ads:15:49: info: predicate check proved
-test_list.ads:21:13: info: implicit function contract might not be available on recursive calls
 test_list.ads:21:13: info: implicit aspect Always_Terminates on "Nth" has been proved, subprogram will terminate
+test_list.ads:21:13: info: implicit function contract might not be available on recursive calls
 test_list.ads:22:10: info: predicate check proved
 test_list.ads:22:14: info: predicate check proved
 test_list.ads:22:22: info: pointer dereference check proved
@@ -473,16 +473,16 @@ test_route.ads:30:21: info: pointer dereference check proved
 test_route.ads:30:28: info: overflow check proved
 test_route.ads:30:37: info: pointer dereference check proved
 test_route.ads:30:43: info: pointer dereference check proved
-test_route.ads:41:13: info: implicit function contract might not be available on recursive calls
 test_route.ads:41:13: info: implicit aspect Always_Terminates on "Length" has been proved, subprogram will terminate
+test_route.ads:41:13: info: implicit function contract might not be available on recursive calls
 test_route.ads:42:24: info: predicate check proved
 test_route.ads:43:12: info: predicate check proved
 test_route.ads:43:12: info: subprogram variant proved
 test_route.ads:43:21: info: pointer dereference check proved
 test_route.ads:43:28: info: predicate check proved
 test_route.ads:43:30: info: predicate check proved
-test_route.ads:47:13: info: implicit function contract might not be available on recursive calls
 test_route.ads:47:13: info: implicit aspect Always_Terminates on "Nth_X" has been proved, subprogram will terminate
+test_route.ads:47:13: info: implicit function contract might not be available on recursive calls
 test_route.ads:48:10: info: predicate check proved
 test_route.ads:48:14: info: predicate check proved
 test_route.ads:48:22: info: pointer dereference check proved
