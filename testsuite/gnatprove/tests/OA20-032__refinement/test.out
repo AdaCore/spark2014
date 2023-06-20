@@ -85,8 +85,8 @@ patris.ads:79:13: info: implicit aspect Always_Terminates on "Get_Piece" has bee
 patris.ads:80:11: info: data dependencies proved
 patris.ads:82:13: info: implicit aspect Always_Terminates on "Get_Next_Piece" has been proved, subprogram will terminate
 patris.ads:83:11: info: data dependencies proved
-patris.ads:96:13: info: implicit function contract might not be available on calls from enclosing unit
 patris.ads:96:13: info: implicit aspect Always_Terminates on "Get_State" has been proved, subprogram will terminate
+patris.ads:96:13: info: implicit function contract might not be available on calls from enclosing unit
 patris.ads:97:11: info: data dependencies proved
 patris.ads:157:13: info: function contract might not be available on calls from enclosing unit
 patris.ads:157:13: info: implicit aspect Always_Terminates on "Is_Empty" has been proved, subprogram will terminate

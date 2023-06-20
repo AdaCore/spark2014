@@ -581,8 +581,8 @@ elaboration_demo.adb:5:74: info: division check proved (CVC5: 1 VC)
 elaboration_demo.adb:5:74: info: float overflow check proved (Trivial)
 enum_example.adb:4:35: info: exceptional case proved (Trivial: 1 VC)
 enum_example.adb:15:04: info: no contextual analysis of "Next_Day" (multiple returns)
-enum_example.adb:15:13: info: implicit function contract might not be available on calls from enclosing unit
 enum_example.adb:15:13: info: implicit aspect Always_Terminates on "Next_Day" has been proved, subprogram will terminate
+enum_example.adb:15:13: info: implicit function contract might not be available on calls from enclosing unit
 enum_example.adb:20:32: info: range check proved (CVC5: 1 VC)
 enum_example.adb:24:04: info: initialization of "Today" proved
 enum_example.adb:25:04: info: initialization of "Tomorrow" proved
@@ -610,8 +610,8 @@ external_test.adb:6:04: warning: make sure that all overlapping objects have Asy
 external_test.adb:16:12: warning: unused assignment
 external_test.ads:6:20: info: initialization of "Item" proved
 generic_examples.adb:4:35: info: exceptional case proved (Trivial: 1 VC)
-generic_examples.adb:7:13: info: implicit function contract might not be available on calls from enclosing unit
 generic_examples.adb:7:13: info: implicit aspect Always_Terminates on "Count" has been proved, subprogram will terminate
+generic_examples.adb:7:13: info: implicit function contract might not be available on calls from enclosing unit
 generic_examples.adb:8:64: info: data dependencies proved
 generic_examples.adb:12:33: info: cannot unroll loop (too many loop iterations)
 generic_examples.adb:14:30: medium: overflow check might fail, cannot prove upper bound for Result + 1 (e.g. when Result = Natural'Last) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: loop at line 12 should mention Result in a loop invariant]
@@ -619,12 +619,12 @@ generic_examples.adb:35:30: medium: overflow check might fail, cannot prove uppe
 generic_examples.adb:35:30: medium: overflow check might fail, cannot prove upper bound for Result + 1, in instantiation at generic_examples.adb:48 (e.g. when Result = Natural'Last) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: loop at line 33 should mention Result in a loop invariant]
 generic_examples.adb:41:04: info: cannot unroll loop (too many loop iterations)
 generic_examples.adb:41:04: info: in instantiation at line 33
-generic_examples.adb:41:13: info: implicit function contract might not be available on calls from enclosing unit
 generic_examples.adb:41:13: info: implicit aspect Always_Terminates on "Char_Count" has been proved, subprogram will terminate
+generic_examples.adb:41:13: info: implicit function contract might not be available on calls from enclosing unit
 generic_examples.adb:48:04: info: cannot unroll loop (too many loop iterations)
 generic_examples.adb:48:04: info: in instantiation at line 33
-generic_examples.adb:48:13: info: implicit function contract might not be available on calls from enclosing unit
 generic_examples.adb:48:13: info: implicit aspect Always_Terminates on "Percent_Count" has been proved, subprogram will terminate
+generic_examples.adb:48:13: info: implicit function contract might not be available on calls from enclosing unit
 generic_examples.adb:61:21: info: initialization of "Result" proved, in instantiation at generic_examples.adb:79
 generic_examples.adb:72:30: medium: overflow check might fail, cannot prove upper bound for Result + 1, in instantiation at generic_examples.adb:79 (e.g. when Result = Natural'Last) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: loop at line 70 should mention Result in a loop invariant]
 generic_examples.adb:79:04: info: cannot unroll loop (too many loop iterations)
@@ -1295,8 +1295,8 @@ very_longs-divide.adb:30:04: info: initialization of "V" proved
 very_longs-divide.adb:30:39: info: range check proved (CVC5: 2 VC)
 very_longs-divide.adb:31:04: info: initialization of "Q_Hat" proved
 very_longs-divide.adb:32:04: info: initialization of "Current_Borrow" proved
-very_longs-divide.adb:36:13: info: implicit function contract might not be available on calls from enclosing unit
 very_longs-divide.adb:36:13: info: implicit aspect Always_Terminates on "Get_Shift_Distance" has been proved, subprogram will terminate
+very_longs-divide.adb:36:13: info: implicit function contract might not be available on calls from enclosing unit
 very_longs-divide.adb:42:27: info: unrolling loop
 very_longs-divide.adb:52:30: info: initialization of "Result" proved
 very_longs-divide.adb:54:08: info: flow dependencies proved

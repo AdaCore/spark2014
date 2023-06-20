@@ -15,8 +15,8 @@ call_proc_no_body.ads:6:14: warning: subprogram "Nonreturning" has no effect
 container.adb:19:67: info: overflow check proved (CVC5: 2 VC)
 container.adb:23:14: info: index check proved (CVC5: 2 VC)
 container.adb:26:14: info: add a contract to analyze it separately from calling contexts
-container.adb:26:14: info: local subprogram "Test3" only analyzed in the context of calls
 container.adb:26:14: info: aspect Always_Terminates on "Test3" has been proved, subprogram will terminate
+container.adb:26:14: info: local subprogram "Test3" only analyzed in the context of calls
 container.adb:30:11: info: precondition proved (CVC5: 1 VC), in call inlined at container.adb:45
 container.adb:30:11: info: precondition proved (Trivial: 1 VC), in call inlined at container.adb:45
 container.adb:33:20: medium: range check might fail, cannot prove upper bound for X + 1, in call inlined at container.adb:45 [reason for check: result of addition must fit in the target type of the assignment] [possible fix: loop at line 32 should mention Int in a loop invariant]
@@ -120,7 +120,7 @@ modular_analysis.adb:8:14: warning: no Global contract available for "Open_Read"
 nest_in_proc.adb:5:17: info: aspect Always_Terminates on "Nothing" has been proved, subprogram will terminate
 nest_in_proc.adb:5:17: warning: subprogram "Nothing" has no effect
 nest_in_proc.adb:7:20: warning: subprogram "Nothing2" has no effect
-nest_in_proc.adb:20:21: medium: aspect Always_Terminates on "Nest_In_Proc" could be incorrect, loop might be nonterminating [possible fix: add loop variant in the loop body]
+nest_in_proc.adb:20:21: medium: implicit aspect Always_Terminates on "Pkg2" could be incorrect, loop might be nonterminating [possible fix: add loop variant in the loop body]
 nest_in_proc.adb:20:21: warning: statement has no effect
 nest_in_proc.ads:1:11: info: aspect Always_Terminates on "Nest_In_Proc" has been proved, subprogram will terminate
 nested_blocks.adb:10:37: warning: statement has no effect
@@ -144,7 +144,7 @@ nested_loops.adb:43:26: info: unrolling loop
 nested_loops.adb:44:24: medium: aspect Always_Terminates on "Proc3" could be incorrect, loop might be nonterminating [possible fix: add loop variant in the loop body]
 nested_packages.adb:7:20: warning: subprogram "Null_Pck" has no effect
 nested_packages.adb:10:23: warning: subprogram "Null_Pck2" has no effect
-nested_packages.adb:26:24: medium: aspect Always_Terminates on "Contains_Packages" could be incorrect, loop might be nonterminating [possible fix: add loop variant in the loop body]
+nested_packages.adb:26:24: medium: implicit aspect Always_Terminates on "Pck2" could be incorrect, loop might be nonterminating [possible fix: add loop variant in the loop body]
 nested_packages.adb:26:24: warning: statement has no effect
 nested_packages.adb:55:21: warning: statement has no effect
 nested_packages.adb:61:18: warning: statement has no effect

@@ -542,8 +542,8 @@ parser_utilities.ads:122:09: info: flow dependencies proved
 parser_utilities.ads:132:07: info: initialization of "AllDone" proved
 parser_utilities.ads:134:09: info: flow dependencies proved
 parser_utilities.ads:142:09: info: flow dependencies proved
-parser_utilities.ads:144:13: info: implicit function contract might not be available on implicit recursive calls
 parser_utilities.ads:144:13: info: implicit aspect Always_Terminates on "ConvertIPV4" has been proved, subprogram will terminate
+parser_utilities.ads:144:13: info: implicit function contract might not be available on implicit recursive calls
 parser_utilities.ads:150:13: info: implicit aspect Always_Terminates on "ConvertIPV6" has been proved, subprogram will terminate
 parser_utilities.ads:156:13: info: implicit aspect Always_Terminates on "GetRecordType" has been proved, subprogram will terminate
 process_dns_request.ads:130:50: medium: range check might fail, cannot prove lower bound for DNSKey_Record.KeyLength [reason for check: value must be convertible to the target type of the conversion] [possible fix: add precondition (DNSKey_Record.KeyLength >= Integer(Packet_Bytes_Range'First)) to subprogram at line 121]
@@ -604,8 +604,8 @@ rr_type.adb:114:25: info: index check proved (CVC5: 2 VC)
 rr_type.adb:114:34: medium: array index check might fail [reason for check: value must be a valid index into the array]
 rr_type.adb:128:07: info: initialization of "LengthOfDomainName" proved
 rr_type.adb:129:07: info: initialization of "WireVersion" proved
-rr_type.adb:131:16: info: implicit function contract might not be available on calls from enclosing unit
 rr_type.adb:131:16: info: implicit aspect Always_Terminates on "FindPeriod" has been proved, subprogram will terminate
+rr_type.adb:131:16: info: implicit function contract might not be available on calls from enclosing unit
 rr_type.adb:136:10: info: initialization of "Result" proved
 rr_type.adb:140:27: info: index check proved (CVC5: 4 VC)
 rr_type.adb:142:34: info: loop variant proved (CVC5: 1 VC)
