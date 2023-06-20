@@ -41,6 +41,8 @@
 	install-all why3 all setup all-nightly doc-nightly run-benchmark \
         create-benchmark
 
+ROOT_DIR:=/it/wave/x86_64-linux/spark2014-core-cov/src/
+
 INSTALLDIR=$(CURDIR)/install
 SHAREDIR=$(INSTALLDIR)/share
 SIDDIR=$(SHAREDIR)/gnat2why-sids
@@ -50,6 +52,7 @@ EXAMPLESDIR=$(SHAREDIR)/examples/spark
 DOCDIR=$(SHAREDIR)/doc/spark
 GNATPROVEDIR=$(SHAREDIR)/spark
 CONFIGDIR=$(GNATPROVEDIR)/config
+EXPLAINCODESDIR=$(GNATPROVEDIR)/explain_codes
 THEORIESDIR=$(GNATPROVEDIR)/theories
 RUNTIMESDIR=$(GNATPROVEDIR)/runtimes
 DOC=ug lrm
@@ -95,11 +98,12 @@ install-all:
 
 install:
 	mkdir -p $(INSTALLDIR)/bin $(CONFIGDIR) $(THEORIESDIR) \
-	  $(RUNTIMESDIR) $(INCLUDEDIR) $(LIBDIR)
+	  $(EXPLAINCODESDIR) $(RUNTIMESDIR) $(INCLUDEDIR) $(LIBDIR)
 	@echo "Generate default target.atp in $(INSTALLDIR)/bin:"
 	gcc -c -gnats spark2014vsn.ads -gnatet=$(INSTALLDIR)/bin/target.atp
 	$(CP) share/spark/help.txt $(GNATPROVEDIR)
 	$(CP) share/spark/config/* $(CONFIGDIR)
+	$(CP) share/spark/explain_codes/* $(EXPLAINCODESDIR)
 	$(CP) share/spark/theories/*why $(THEORIESDIR)
 	$(CP) share/spark/theories/*mlw $(THEORIESDIR)
 	$(CP) share/spark/runtimes/README $(RUNTIMESDIR)
@@ -159,7 +163,7 @@ coverage-report:
 		fi; \
 	done
 
-	gnatcov coverage --level=stmt --annotate=dhtml --sid @sidfiles --output-dir=dhtml-report @tracefiles
+	gnatcov coverage --level=stmt --annotate=dhtml --annotate=cobertura --sid @sidfiles --source-root $(ROOT_DIR) --output-dir=dhtml-report @tracefiles
 
 codepeer-run:
 	$(MAKE) --no-print-directory -C gnat2why codepeer-run

@@ -1,11 +1,6 @@
-actuator.adb:7:04: warning: assuming correct volatile properties for "Output_Ext"
-actuator.adb:7:04: warning: assuming no concurrent accesses to non-atomic object "Output_Ext"
-actuator.adb:7:04: warning: assuming valid reads from object "Output_Ext"
+actuator.adb:7:04: warning: address specification on "Output_Ext" is imprecisely supported: assuming no concurrent accesses to non-atomic object, correct volatile properties, no writes to a potential alias, and valid reads
 actuator.adb:7:04: warning: make sure that all overlapping objects have Async_Writers set to True
-actuator.adb:7:04: warning: writing to "Output_Ext" is assumed to have no effects on other non-volatile objects
-advancebutton-raw.adb:7:04: warning: assuming correct volatile properties for "Input_Ext"
-advancebutton-raw.adb:7:04: warning: assuming no concurrent accesses to non-atomic object "Input_Ext"
-advancebutton-raw.adb:7:04: warning: assuming valid reads from object "Input_Ext"
+advancebutton-raw.adb:7:04: warning: address specification on "Input_Ext" is imprecisely supported: assuming no concurrent accesses to non-atomic object, correct volatile properties, and valid reads
 advancebutton-raw.ads:5:20: info: initialization of "Pressed" proved
 advancebutton.adb:26:07: info: initialization of "PressedBefore" proved
 advancebutton.adb:27:07: info: initialization of "PressedNow" proved
@@ -18,15 +13,10 @@ advancebutton.ads:23:13: info: implicit terminating annotation on "CurrentMode" 
 advancebutton.ads:29:27: info: initialization of "Result" proved
 advancebutton.ads:33:26: info: initialization of "Result" proved
 advancebutton.ads:37:26: info: initialization of "Result" proved
-clock.adb:6:04: warning: assuming correct volatile properties for "Tick_Ext"
-clock.adb:6:04: warning: assuming no concurrent accesses to non-atomic object "Tick_Ext"
-clock.adb:6:04: warning: assuming valid reads from object "Tick_Ext"
+clock.adb:6:04: warning: address specification on "Tick_Ext" is imprecisely supported: assuming no concurrent accesses to non-atomic object, correct volatile properties, and valid reads
 clock.ads:6:19: info: initialization of "Time" proved
-display.adb:6:04: warning: assuming correct volatile properties for "Output_Ext"
-display.adb:6:04: warning: assuming no concurrent accesses to non-atomic object "Output_Ext"
-display.adb:6:04: warning: assuming valid reads from object "Output_Ext"
+display.adb:6:04: warning: address specification on "Output_Ext" is imprecisely supported: assuming no concurrent accesses to non-atomic object, correct volatile properties, no writes to a potential alias, and valid reads
 display.adb:6:04: warning: make sure that all overlapping objects have Async_Writers set to True
-display.adb:6:04: warning: writing to "Output_Ext" is assumed to have no effects on other non-volatile objects
 heatingsystem_dfa.adb:22:04: info: initialization of "OnOffTime" proved
 heatingsystem_dfa.adb:23:04: info: initialization of "ClockOffset" proved
 heatingsystem_dfa.adb:24:04: info: initialization of "HeatingIsOn" proved
@@ -120,20 +110,11 @@ heatingsystem_dfa.adb:162:13: info: analyzing call to "TurnOff" in context
 heatingsystem_dfa.adb:169:07: info: analyzing call to "AddOffset" in context
 heatingsystem_dfa.adb:185:07: info: analyzing call to "OperateIfNeeded" in context
 heatingsystem_dfa.adb:200:07: info: analyzing call to "CheckProgramSwitch" in context
-indicator.adb:7:04: warning: assuming correct volatile properties for "Output_Ext"
-indicator.adb:7:04: warning: assuming no concurrent accesses to non-atomic object "Output_Ext"
-indicator.adb:7:04: warning: assuming valid reads from object "Output_Ext"
+indicator.adb:7:04: warning: address specification on "Output_Ext" is imprecisely supported: assuming no concurrent accesses to non-atomic object, correct volatile properties, no writes to a potential alias, and valid reads
 indicator.adb:7:04: warning: make sure that all overlapping objects have Async_Writers set to True
-indicator.adb:7:04: warning: writing to "Output_Ext" is assumed to have no effects on other non-volatile objects
-modeswitch.adb:5:04: warning: assuming correct volatile properties for "Input_Ext"
-modeswitch.adb:5:04: warning: assuming no concurrent accesses to non-atomic object "Input_Ext"
-modeswitch.adb:5:04: warning: assuming valid reads from object "Input_Ext"
+modeswitch.adb:5:04: warning: address specification on "Input_Ext" is imprecisely supported: assuming no concurrent accesses to non-atomic object, correct volatile properties, and valid reads
 modeswitch.ads:5:20: info: initialization of "Value" proved
-programswitch.adb:5:04: warning: assuming correct volatile properties for "Input_Ext"
-programswitch.adb:5:04: warning: assuming no concurrent accesses to non-atomic object "Input_Ext"
-programswitch.adb:5:04: warning: assuming valid reads from object "Input_Ext"
+programswitch.adb:5:04: warning: address specification on "Input_Ext" is imprecisely supported: assuming no concurrent accesses to non-atomic object, correct volatile properties, and valid reads
 programswitch.ads:5:20: info: initialization of "Value" proved
-thermostat.adb:17:04: warning: assuming correct volatile properties for "Input_Ext"
-thermostat.adb:17:04: warning: assuming no concurrent accesses to non-atomic object "Input_Ext"
-thermostat.adb:17:04: warning: assuming valid reads from object "Input_Ext"
+thermostat.adb:17:04: warning: address specification on "Input_Ext" is imprecisely supported: assuming no concurrent accesses to non-atomic object, correct volatile properties, and valid reads
 thermostat.ads:15:25: info: initialization of "Result" proved

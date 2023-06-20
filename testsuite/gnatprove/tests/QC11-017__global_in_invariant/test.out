@@ -1,3 +1,4 @@
-a.ads:17:31: error: invariant cannot depend on variable input "Next_Account" (SPARK RM 4.4(2))
+a.ads:17:31: error: invariant cannot depend on variable input "Next_Account" [E0007]
+a.ads:17:31: error: launch "gnatprove --explain=E0007" for more information
 a.ads:17:31: error: use instead a constant initialized to the expression with variable input
 gnatprove: error during flow analysis and proof

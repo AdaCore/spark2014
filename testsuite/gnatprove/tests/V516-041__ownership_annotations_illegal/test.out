@@ -1,4 +1,6 @@
-test_ownership_flow.adb:14:13: error: ownership function shall be declared in same declaration list as input type
+test_ownership_flow.adb:4:12: info: checks for ressource or memory reclamation will be unprovable
+test_ownership_flow.adb:4:12: info: no reclamation function found for type with ownership "T1"
+test_ownership_flow.adb:14:13: error: a function annotated with Ownership shall not access any global data
 test_ownership_illegal.adb:2:04: error: wrong number of arguments in pragma Annotate (GNATprove, Ownership, ...), expected 3
 test_ownership_illegal.adb:3:04: error: wrong number of arguments in pragma Annotate (GNATprove, Ownership, ...), expected 4
 test_ownership_illegal.adb:4:48: error: last argument of pragma Annotate Ownership must be an entity
@@ -6,6 +8,8 @@ test_ownership_illegal.adb:8:41: error: third argument of aspect Annotate Owners
 test_ownership_illegal.adb:10:14: error: the entity of a pragma Annotate Ownership shall be either a type or a function
 test_ownership_illegal.adb:14:09: error: a type annotated with Ownership must be a private type whose full view is not in SPARK
 test_ownership_illegal.adb:18:12: error: a type annotated with Ownership must be a private type whose full view is not in SPARK
+test_ownership_illegal.adb:25:12: info: checks for ressource or memory reclamation will be unprovable
+test_ownership_illegal.adb:25:12: info: no reclamation function found for type with ownership "T1"
 test_ownership_illegal.adb:29:16: error: function annotated with Ownership on a tagged type expects a classwide type
 test_ownership_illegal.adb:46:15: error: a type annotated with Ownership must be a private type whose full view is not in SPARK
 test_ownership_illegal.adb:49:44: error: third argument of aspect Annotate Ownership on a type must be "Needs_Reclamation"
@@ -25,4 +29,4 @@ test_ownership_illegal.adb:105:16: error: the type of the first parameter of a f
 test_ownership_illegal.adb:109:16: error: consider annotating it with a pragma Annotate (GNATprove, Ownership, "Needs_Reclamation", ...)
 test_ownership_illegal.adb:109:16: error: the type of the first parameter of a function annotated with Ownership shall need reclamation
 test_ownership_illegal.adb:115:16: error: a function annotated with Ownership shall not access any global data
-gnatprove: error during generation of Global contracts
+gnatprove: error during flow analysis and proof

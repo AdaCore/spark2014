@@ -39,8 +39,6 @@ with SPARK_Frame_Conditions;  use SPARK_Frame_Conditions;
 with SPARK_Util.Subprograms;  use SPARK_Util.Subprograms;
 with SPARK2014VSN;            use SPARK2014VSN;
 
-with Flow_Generated_Globals.ALI_Serialization;
-use Flow_Generated_Globals.ALI_Serialization;
 with Flow_Generated_Globals.Phase_1.Write;
 use Flow_Generated_Globals.Phase_1.Write;
 
@@ -136,9 +134,12 @@ package body Flow_Generated_Globals.Phase_1 is
    -- GG_Register_Direct_Calls --
    ------------------------------
 
-   procedure GG_Register_Direct_Calls (E : Entity_Id; Calls : Node_Sets.Set) is
+   procedure GG_Register_Calls
+     (E     : Entity_Id;
+      Calls : Node_Sets.Set;
+      Kind  : ALI_Entry_Kind) is
    begin
-      New_GG_Line (EK_Direct_Calls);
+      New_GG_Line (Kind);
       Serialize (E);
       Serialize (Calls);
       Terminate_GG_Line;
@@ -159,18 +160,18 @@ package body Flow_Generated_Globals.Phase_1 is
             then
               (case Ekind (Call) is
                   when E_Procedure =>
-                     Null_Present (Subprogram_Specification (Call))
-                       or else
-                     Has_Aspects (Subprogram_Spec (Call))
-                       or else
-                     Nkind (Original_Node (Subprogram_Spec (Call))) =
-                       N_Subprogram_Renaming_Declaration,
+                    Null_Present (Subprogram_Specification (Call))
+                      or else
+                    Has_Aspects (Subprogram_Spec (Call))
+                      or else
+                    Nkind (Original_Node (Subprogram_Spec (Call))) =
+                      N_Subprogram_Renaming_Declaration,
                   when E_Function =>
-                     True,
+                    True,
                   when others =>
-                     raise Program_Error));
+                    raise Program_Error));
       end loop;
-   end GG_Register_Direct_Calls;
+   end GG_Register_Calls;
 
    -----------------------------
    -- GG_Register_Global_Info --

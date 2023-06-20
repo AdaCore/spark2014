@@ -465,13 +465,11 @@ package body Flow_Generated_Globals.Traversal is
          if Present (N) then
             Traverse_Declarations_Or_Statements (Statements (N));
 
-            if Present (Exception_Handlers (N)) then
-               Handler := First (Exception_Handlers (N));
-               while Present (Handler) loop
-                  Traverse_Declarations_Or_Statements (Statements (Handler));
-                  Next (Handler);
-               end loop;
-            end if;
+            Handler := First_Non_Pragma (Exception_Handlers (N));
+            while Present (Handler) loop
+               Traverse_Declarations_Or_Statements (Statements (Handler));
+               Next_Non_Pragma (Handler);
+            end loop;
          end if;
       end Traverse_Handled_Statement_Sequence;
 

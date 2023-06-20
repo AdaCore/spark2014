@@ -1,18 +1,24 @@
-p.adb:7:30: error: default initialization cannot depend on variable input "PO" (SPARK RM 4.4(2))
+p.adb:7:30: error: default initialization cannot depend on variable input "PO" [E0007]
+p.adb:7:30: error: launch "gnatprove --explain=E0007" for more information
 p.adb:7:30: error: use instead a constant initialized to the expression with variable input
-p.adb:18:33: error: default initialization cannot depend on variable input "PO" (SPARK RM 4.4(2))
+p.adb:18:33: error: default initialization cannot depend on variable input "PO" [E0007]
+p.adb:18:33: error: launch "gnatprove --explain=E0007" for more information
 p.adb:18:33: error: use instead a constant initialized to the expression with variable input
 p.adb:37:20: warning: subprogram "Nested_Proc" has no effect
-p.adb:60:25: error: default initialization cannot depend on variable input "X" (SPARK RM 4.4(2))
+p.adb:60:25: error: default initialization cannot depend on variable input "X" [E0007]
+p.adb:60:25: error: launch "gnatprove --explain=E0007" for more information
 p.adb:60:25: error: use instead a constant initialized to the expression with variable input
-p.adb:72:30: error: default initialization cannot depend on variable input "PT" (SPARK RM 4.4(2))
+p.adb:72:30: error: default initialization cannot depend on variable input "PT" [E0007]
+p.adb:72:30: error: launch "gnatprove --explain=E0007" for more information
 p.adb:72:30: error: use instead a constant initialized to the expression with variable input
 p.ads:5:16: info: implicit terminating annotation on "Fun" has been proved, subprogram will terminate
 p.ads:12:16: info: implicit terminating annotation on "Fun" has been proved, subprogram will terminate
 p.ads:17:14: info: implicit terminating annotation on "Fun" has been proved, subprogram will terminate
-part_of.adb:6:28: error: default initialization cannot depend on variable input "PO" (SPARK RM 4.4(2))
+part_of.adb:6:28: error: default initialization cannot depend on variable input "PO" [E0007]
+part_of.adb:6:28: error: launch "gnatprove --explain=E0007" for more information
 part_of.adb:6:28: error: use instead a constant initialized to the expression with variable input
-part_of.adb:24:25: error: default initialization cannot depend on variable input "TO" (SPARK RM 4.4(2))
+part_of.adb:24:25: error: default initialization cannot depend on variable input "TO" [E0007]
+part_of.adb:24:25: error: launch "gnatprove --explain=E0007" for more information
 part_of.adb:24:25: error: use instead a constant initialized to the expression with variable input
 part_of.ads:4:16: info: implicit terminating annotation on "Func" has been proved, subprogram will terminate
 gnatprove: error during flow analysis and proof

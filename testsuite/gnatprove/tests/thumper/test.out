@@ -282,7 +282,7 @@ hermes-oid.adb:160:43: info: range check proved (CVC5: 2 VC)
 hermes-oid.adb:164:17: info: range check proved (CVC5: 2 VC)
 hermes-oid.adb:164:72: info: cannot unroll loop (too many loop iterations)
 hermes-oid.adb:165:23: info: index check proved (CVC5: 2 VC)
-hermes-oid.adb:165:40: info: index check proved (CVC5: 2 VC)
+hermes-oid.adb:165:40: info: index check proved (Z3: 2 VC)
 hermes-oid.ads:26:39: info: initialization of "Result" proved
 hermes-oid.ads:26:71: info: initialization of "Status" proved
 hermes-oid.ads:27:11: info: flow dependencies proved
@@ -356,7 +356,7 @@ serial_generator.adb:37:07: info: initialization of "Month" proved
 serial_generator.adb:38:07: info: initialization of "Day" proved
 serial_generator.adb:39:07: info: initialization of "Seconds" proved
 serial_generator.adb:45:07: warning: assuming "Split" always terminates
-serial_generator.adb:45:07: warning: no returning annotation available for "Split"
+serial_generator.adb:45:07: warning: no Always_Terminates aspect available for "Split"
 serial_generator.adb:48:33: info: range check proved (CVC5: 1 VC)
 serial_generator.adb:51:28: info: range check proved (CVC5: 1 VC)
 serial_generator.ads:19:06: info: flow dependencies proved

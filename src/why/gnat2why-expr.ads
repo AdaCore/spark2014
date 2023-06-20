@@ -476,9 +476,9 @@ package Gnat2Why.Expr is
       Expr1, Expr2 : W_Term_Id)
       return W_Pred_Id;
    --  Return a predicate stating that the (immutable) discriminants,
-   --  array bounds, and is_null field of unconstrained types are equal in
-   --  Expr1 and Expr2. If Ty is an anonymous access type, also assume the
-   --  bounds and discriminants of the designated type.
+   --  array bounds, and is_null and is_moved fields of unconstrained types are
+   --  equal in Expr1 and Expr2. If Ty is an anonymous access type, also assume
+   --  the bounds and discriminants of the designated type.
    --  This is used to assume that these parts are preserved by the borrow
    --  both in the borrower and in the borrowed expression.
 

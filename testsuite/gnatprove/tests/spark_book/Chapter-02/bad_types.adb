@@ -1,6 +1,6 @@
 with Ada.Float_Text_IO;
 procedure Bad_Types with
-  Always_Terminates => False
+  Exceptional_Cases => (others => True)
 is
    Room_Length    : Float;   -- length of room in feet
    Wall_Thickness : Float;   -- thickness of wall in inches

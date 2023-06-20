@@ -1,3 +1,4 @@
-main.adb:8:16: error: default initialization cannot depend on variable input "no_of_cpus" (SPARK RM 4.4(2))
+main.adb:8:16: error: default initialization cannot depend on variable input "no_of_cpus" [E0007]
+main.adb:8:16: error: launch "gnatprove --explain=E0007" for more information
 main.adb:8:16: error: use instead a constant initialized to the expression with variable input
 gnatprove: error during flow analysis and proof

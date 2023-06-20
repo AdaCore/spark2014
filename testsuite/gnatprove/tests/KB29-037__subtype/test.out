@@ -13,7 +13,8 @@ p.adb:11:08: medium: predicate check might fail, in call inlined at p.adb:17 (e.
 p.adb:14:04: info: initialization of "Var" proved
 p.adb:14:04: info: predicate check proved on default value (CVC5: 2 VC)
 p.adb:17:04: info: analyzing call to "Bad" in context
-sub.ads:12:49: error: predicate cannot depend on variable input "Global" (SPARK RM 4.4(2))
+sub.ads:12:49: error: launch "gnatprove --explain=E0007" for more information
+sub.ads:12:49: error: predicate cannot depend on variable input "Global" [E0007]
 sub.ads:12:49: error: use instead a constant initialized to the expression with variable input
 sub.ads:18:13: info: implicit terminating annotation on "Incorrect" has been proved, subprogram will terminate
 sub.ads:20:13: info: implicit terminating annotation on "F" has been proved, subprogram will terminate

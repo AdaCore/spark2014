@@ -28,6 +28,7 @@ with Aspects;                use Aspects;
 with Atree;                  use Atree;
 with Einfo.Entities;         use Einfo.Entities;
 with Einfo.Utils;            use Einfo.Utils;
+with Exp_Attr;               use Exp_Attr;
 with Flow_Error_Messages;
 with Gnat2Why_Args;
 with Namet;                  use Namet;
@@ -38,6 +39,7 @@ with Sem_Util;               use Sem_Util;
 with Sinfo.Nodes;            use Sinfo.Nodes;
 with Sinfo.Utils;            use Sinfo.Utils;
 with Sinput;                 use Sinput;
+with Snames;                 use Snames;
 with SPARK_Util.Subprograms; use SPARK_Util.Subprograms;
 with Stand;                  use Stand;
 with Tbuild;                 use Tbuild;
@@ -228,6 +230,7 @@ package body SPARK_Rewrite is
 
       procedure Rewrite_Aspect (E : Entity_Id; A : Aspect_Id);
       --  Apply expansion operations on the expression of aspect A of E if any
+      --  and to its corresponding representation item, if any.
 
       function Rewrite_Node (N : Node_Id) return Traverse_Result;
       --  Apply expansion operations on a node
@@ -241,9 +244,14 @@ package body SPARK_Rewrite is
 
       procedure Rewrite_Aspect (E : Entity_Id; A : Aspect_Id) is
          Aspect_Node : constant Node_Id := Find_Aspect (E, A);
+         Rep_Item    : Node_Id;
       begin
          if Present (Aspect_Node) then
             Rewrite_Nodes (Expression (Aspect_Node));
+            Rep_Item := Aspect_Rep_Item (Aspect_Node);
+            if Nkind (Rep_Item) = N_Attribute_Definition_Clause then
+               Rewrite_Nodes (Expression (Rep_Item));
+            end if;
          end if;
       end Rewrite_Aspect;
 
@@ -306,6 +314,27 @@ package body SPARK_Rewrite is
          end if;
 
          case Nkind (N) is
+            --  In some cases, SPARK expansion is performed before the value
+            --  of size attributes is known. Reapply it here on analyzed nodes
+            --  (other nodes might not have the needed semantic information).
+
+            when N_Attribute_Reference =>
+               if Analyzed (N) then
+                  declare
+                     Aname   : constant Name_Id      := Attribute_Name (N);
+                     Attr_Id : constant Attribute_Id :=
+                       Get_Attribute_Id (Aname);
+                  begin
+                     if Attr_Id in Attribute_Object_Size
+                                 | Attribute_Size
+                                 | Attribute_VADS_Size
+                                 | Attribute_Value_Size
+                     then
+                        Expand_Size_Attribute (N);
+                     end if;
+                  end;
+               end if;
+
             when N_Real_Literal =>
                Rewrite_Real_Literal (N);
 

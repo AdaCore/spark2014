@@ -2,7 +2,8 @@ aliasing.adb:21:14: info: non-aliasing of formal parameters "X" and "Y" proved
 aliasing.adb:26:13: medium: formal parameters "X" and "Y" might be aliased (SPARK RM 6.4.2)
 aliasing.adb:26:16: medium: array index check might fail [reason for check: value must be a valid index into the array] [possible fix: add precondition (I in A'First .. A'Last) to subprogram at aliasing.ads:17]
 aliasing.adb:26:23: medium: array index check might fail [reason for check: value must be a valid index into the array] [possible fix: add precondition (J in A'First .. A'Last) to subprogram at aliasing.ads:17]
-global_stack.ads:4:12: error: function "Pop" with output global "Top" is not allowed in SPARK
+global_stack.ads:4:12: error: function "Pop" with output global "Top" is not allowed in SPARK [E0005]
+global_stack.ads:4:12: error: launch "gnatprove --explain=E0005" for more information
 global_stack.ads:4:12: error: violation of aspect SPARK_Mode at line 1
 search_array.adb:7:24: info: cannot unroll loop (too many loop iterations)
 search_array.adb:9:20: info: range check proved (CVC5: 2 VC)
@@ -409,39 +410,32 @@ diff_pair.ads:15:13: info: implicit terminating annotation on "Max2" has been pr
 diff_pair.ads:17:14: info: postcondition proved (CVC5: 1 VC)
 external_abstract_state.adb:9:04: high: "AR" constituent of "AR_State" is not written in "External_Abstract_State" [reason for check: variable is mentioned in the generated Initializes contract] [possible fix: initialize "AR" constituent of "AR_State" at declaration or in the package body statements]
 external_abstract_state.adb:11:04: high: "EW" constituent of "AR_State" is not written in "External_Abstract_State" [reason for check: variable is mentioned in the generated Initializes contract] [possible fix: initialize "EW" constituent of "AR_State" at declaration or in the package body statements]
-trivial.ads:10:04: warning: assuming no concurrent accesses to non-atomic object "X"
+trivial.ads:10:04: warning: address specification on "X" is imprecisely supported: assuming no concurrent accesses to non-atomic object and no writes to a potential alias
 trivial.ads:10:04: warning: make sure that all overlapping objects have Async_Writers set to True
-trivial.ads:10:04: warning: writing to "X" is assumed to have no effects on other non-volatile objects
 trivial.ads:12:19: info: initialization of "Val" proved
 trivial.ads:13:06: info: data dependencies proved
 trivial.ads:14:06: info: flow dependencies proved
 trivial_async_properties.adb:7:22: medium: assertion might fail
-trivial_async_properties.ads:10:04: warning: assuming correct volatile properties for "X"
-trivial_async_properties.ads:10:04: warning: assuming no concurrent accesses to non-atomic object "X"
+trivial_async_properties.ads:10:04: warning: address specification on "X" is imprecisely supported: assuming no concurrent accesses to non-atomic object, correct volatile properties, and no writes to a potential alias
 trivial_async_properties.ads:10:04: warning: make sure that all overlapping objects have Async_Writers set to True
-trivial_async_properties.ads:10:04: warning: writing to "X" is assumed to have no effects on other non-volatile objects
-trivial_async_properties.ads:11:04: warning: assuming correct volatile properties for "Y"
-trivial_async_properties.ads:11:04: warning: assuming no concurrent accesses to non-atomic object "Y"
+trivial_async_properties.ads:11:04: warning: address specification on "Y" is imprecisely supported: assuming no concurrent accesses to non-atomic object and correct volatile properties
 trivial_async_properties.ads:13:14: info: initialization of "X" proved
 trivial_async_properties.ads:14:06: info: flow dependencies proved
-trivial_effective_properties.ads:10:04: warning: assuming correct volatile properties for "X"
-trivial_effective_properties.ads:10:04: warning: assuming no concurrent accesses to non-atomic object "X"
+trivial_effective_properties.ads:10:04: warning: address specification on "X" is imprecisely supported: assuming no concurrent accesses to non-atomic object, correct volatile properties, and no writes to a potential alias
 trivial_effective_properties.ads:10:04: warning: make sure that all overlapping objects have Async_Writers set to True
-trivial_effective_properties.ads:10:04: warning: writing to "X" is assumed to have no effects on other non-volatile objects
-trivial_effective_properties.ads:12:04: warning: assuming correct volatile properties for "Y"
-trivial_effective_properties.ads:12:04: warning: assuming no concurrent accesses to non-atomic object "Y"
+trivial_effective_properties.ads:12:04: warning: address specification on "Y" is imprecisely supported: assuming no concurrent accesses to non-atomic object and correct volatile properties
 trivial_effective_properties.ads:15:14: info: initialization of "X" proved
 trivial_effective_properties.ads:16:06: info: flow dependencies proved
-trivial_no_output.ads:10:04: warning: assuming correct volatile properties for "X"
-trivial_no_output.ads:10:04: warning: assuming no concurrent accesses to non-atomic object "X"
+trivial_no_output.ads:10:04: warning: address specification on "X" is imprecisely supported: assuming no concurrent accesses to non-atomic object, correct volatile properties, and no writes to a potential alias
 trivial_no_output.ads:10:04: warning: make sure that all overlapping objects have Async_Writers set to True
-trivial_no_output.ads:10:04: warning: writing to "X" is assumed to have no effects on other non-volatile objects
 trivial_no_output.ads:13:19: info: initialization of "Val" proved
 trivial_no_output.ads:14:06: info: data dependencies proved
 trivial_no_output.ads:15:06: info: flow dependencies proved
-volatile_functions.ads:12:13: error: nonvolatile function "Read_Non_Volatile" with volatile input global "AW" is not allowed in SPARK
+volatile_functions.ads:12:13: error: launch "gnatprove --explain=E0006" for more information
+volatile_functions.ads:12:13: error: nonvolatile function "Read_Non_Volatile" with volatile input global "AW" is not allowed in SPARK [E0006]
 volatile_functions.ads:12:13: error: violation of aspect SPARK_Mode at line 4
-volatile_functions.ads:16:13: error: function "Read_ER" with output global "ER" is not allowed in SPARK
+volatile_functions.ads:16:13: error: function "Read_ER" with output global "ER" is not allowed in SPARK [E0005]
+volatile_functions.ads:16:13: error: launch "gnatprove --explain=E0005" for more information
 volatile_functions.ads:16:13: error: violation of aspect SPARK_Mode at line 4
 volatile_placement.ads:9:13: info: implicit terminating annotation on "Reg" has been proved, subprogram will terminate
 volatile_placement.ads:12:13: info: implicit terminating annotation on "Reg2" has been proved, subprogram will terminate
@@ -452,7 +446,8 @@ volatile_variable_values.adb:16:04: warning: analyzing unreferenced procedure "R
 volatile_variable_values.adb:19:22: info: assertion proved (CVC5: 1 VC)
 volatile_variable_values.ads:13:14: warning: subprogram "Check" has no effect
 volatile_variables.adb:17:07: info: analyzing call to "Set" in context
-volatile_variables.ads:14:13: error: function "Read_ER" with output global "ER" is not allowed in SPARK
+volatile_variables.ads:14:13: error: function "Read_ER" with output global "ER" is not allowed in SPARK [E0005]
+volatile_variables.ads:14:13: error: launch "gnatprove --explain=E0005" for more information
 volatile_variables.ads:14:13: error: violation of aspect SPARK_Mode at line 4
 gnatprove: error during flow analysis and proof
 protected_complex.adb:7:24: error: from profile "Jorvik" at Concurrency/spark.adc:1

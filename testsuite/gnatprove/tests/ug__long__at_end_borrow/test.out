@@ -1,0 +1,83 @@
+list_borrows.adb:7:13: info: implicit terminating annotation on "Length" has been proved, subprogram will terminate
+list_borrows.adb:8:24: info: predicate check proved
+list_borrows.adb:8:31: info: subprogram variant proved
+list_borrows.adb:8:31: info: predicate check proved
+list_borrows.adb:8:40: info: pointer dereference check proved
+list_borrows.adb:8:47: info: predicate check proved
+list_borrows.adb:8:49: info: predicate check proved
+list_borrows.adb:11:13: info: implicit terminating annotation on "Get" has been proved, subprogram will terminate
+list_borrows.adb:12:10: info: predicate check proved
+list_borrows.adb:12:14: info: predicate check proved
+list_borrows.adb:12:31: info: pointer dereference check proved
+list_borrows.adb:12:41: info: subprogram variant proved
+list_borrows.adb:12:41: info: precondition proved
+list_borrows.adb:12:47: info: pointer dereference check proved
+list_borrows.adb:14:13: info: predicate check proved
+list_borrows.adb:14:18: info: predicate check proved
+list_borrows.adb:16:13: info: implicit terminating annotation on "Eq" has been proved, subprogram will terminate
+list_borrows.adb:17:07: info: predicate check proved
+list_borrows.adb:17:20: info: predicate check proved
+list_borrows.adb:18:58: info: precondition proved
+list_borrows.adb:18:66: info: predicate check proved
+list_borrows.adb:18:71: info: precondition proved
+list_borrows.adb:18:79: info: predicate check proved
+list_borrows.adb:21:13: info: implicit terminating annotation on "Tail" has been proved, subprogram will terminate
+list_borrows.adb:23:18: info: contract case proved
+list_borrows.adb:25:18: info: contract case proved
+list_borrows.adb:25:38: info: pointer dereference check proved
+list_borrows.adb:25:46: info: pointer dereference check proved
+list_borrows.adb:26:20: info: pointer dereference check proved
+list_borrows.adb:27:36: info: pointer dereference check proved
+list_borrows.adb:37:18: info: pointer dereference check proved
+list_borrows.adb:42:14: info: predicate check proved
+list_borrows.adb:42:14: info: postcondition proved
+list_borrows.adb:42:37: info: predicate check proved
+list_borrows.adb:43:57: info: precondition proved
+list_borrows.adb:43:65: info: predicate check proved
+list_borrows.adb:47:26: info: predicate check proved
+list_borrows.adb:52:33: info: predicate check proved
+list_borrows.adb:52:33: info: loop invariant preservation proved
+list_borrows.adb:52:33: info: loop invariant initialization proved
+list_borrows.adb:52:47: info: predicate check proved
+list_borrows.adb:52:61: info: predicate check proved
+list_borrows.adb:55:13: info: predicate check proved
+list_borrows.adb:55:13: info: loop invariant initialization proved
+list_borrows.adb:55:13: info: loop invariant preservation proved
+list_borrows.adb:55:42: info: predicate check proved
+list_borrows.adb:55:46: info: predicate check proved
+list_borrows.adb:58:13: info: loop invariant initialization proved
+list_borrows.adb:58:13: info: loop invariant preservation proved
+list_borrows.adb:59:21: info: predicate check proved
+list_borrows.adb:59:26: info: predicate check proved
+list_borrows.adb:60:23: info: precondition proved
+list_borrows.adb:60:47: info: predicate check proved
+list_borrows.adb:60:52: info: precondition proved
+list_borrows.adb:60:76: info: predicate check proved
+list_borrows.adb:61:23: info: precondition proved
+list_borrows.adb:61:47: info: predicate check proved
+list_borrows.adb:65:11: info: pointer dereference check proved
+list_borrows.adb:66:16: info: pointer dereference check proved
+list_borrows.adb:67:15: info: predicate check proved
+list_borrows.adb:67:17: info: predicate check proved
+list_borrows.adb:67:19: info: predicate check proved
+
+list_borrows.adb:71:04: medium: resource or memory leak might occur at end of scope
+   71>|   X : List_Acc :=
+   72 |     new List'(1, new List'(2, new List'(3, new List'(4, new List'(5, null)))));
+list_borrows.adb:75:33: info: pointer dereference check proved
+  in reconstructed value at the end of the borrow at list_borrows.adb:75
+list_borrows.adb:77:08: info: pointer dereference check proved
+list_borrows.adb:80:19: info: assertion proved
+list_borrows.adb:80:20: info: pointer dereference check proved
+list_borrows.adb:81:19: info: assertion proved
+list_borrows.adb:81:20: info: pointer dereference check proved
+list_borrows.adb:81:25: info: pointer dereference check proved
+list_borrows.adb:82:19: info: assertion proved
+list_borrows.adb:82:20: info: pointer dereference check proved
+list_borrows.adb:82:25: info: pointer dereference check proved
+list_borrows.adb:82:30: info: pointer dereference check proved
+list_borrows.adb:83:19: info: assertion proved
+list_borrows.adb:83:20: info: pointer dereference check proved
+list_borrows.adb:83:25: info: pointer dereference check proved
+list_borrows.adb:83:30: info: pointer dereference check proved
+list_borrows.adb:83:35: info: pointer dereference check proved

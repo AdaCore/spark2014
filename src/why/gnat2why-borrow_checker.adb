@@ -30,6 +30,7 @@ with Common_Containers;           use Common_Containers;
 with Einfo.Entities;              use Einfo.Entities;
 with Einfo.Utils;                 use Einfo.Utils;
 with Errout;                      use Errout;
+with Flow_Error_Messages;         use Flow_Error_Messages;
 with Flow_Types;                  use Flow_Types;
 with Flow_Utility;                use Flow_Utility;
 with GNAT.Dynamic_HTables;        use GNAT.Dynamic_HTables;
@@ -3173,9 +3174,6 @@ package body Gnat2Why.Borrow_Checker is
    ----------------
 
    procedure Check_Node (N : Node_Id) is
-
-   --  Start of processing for Check_Node
-
    begin
       case Nkind (N) is
          when N_Declaration =>
@@ -3240,25 +3238,22 @@ package body Gnat2Why.Borrow_Checker is
                Handler  : Node_Id;
                Save_Env : Perm_Env := Current_Perm_Env;
             begin
-               if Present (Handlers) then
-                  Handler := First (Handlers);
-                  loop
-                     declare
-                        Handler_Env : constant Perm_Env_Access :=
-                          Get (Current_Exc_Accumulators, Handler);
-                     begin
-                        if Handler_Env /= null then
-                           Remove (Current_Exc_Accumulators, Handler);
-                           Current_Perm_Env := Handler_Env.all;
-                           Check_List (Statements (Handler));
-                           Merge_Env (Current_Perm_Env, Save_Env);
-                        end if;
-                     end;
-                     Next (Handler);
-                     exit when No (Handler);
-                  end loop;
-                  Current_Perm_Env := Save_Env;
-               end if;
+               Handler := First_Non_Pragma (Handlers);
+               while Present (Handler) loop
+                  declare
+                     Handler_Env : constant Perm_Env_Access :=
+                       Get (Current_Exc_Accumulators, Handler);
+                  begin
+                     if Handler_Env /= null then
+                        Remove (Current_Exc_Accumulators, Handler);
+                        Current_Perm_Env := Handler_Env.all;
+                        Check_List (Statements (Handler));
+                        Merge_Env (Current_Perm_Env, Save_Env);
+                     end if;
+                  end;
+                  Next_Non_Pragma (Handler);
+               end loop;
+               Current_Perm_Env := Save_Env;
             end;
 
          when N_Pragma =>
@@ -3388,11 +3383,13 @@ package body Gnat2Why.Borrow_Checker is
              (if Expr.Is_Ent then Get_Root_Object (Moved) = Expr.Ent
               else Is_Prefix_Or_Almost (Expr.Expr, +Moved))
          then
+            Error_Msg_Code :=
+              Explain_Code'Enum_Rep (EC_Ownership_Moved_Object);
             Error_Msg_Sloc := Sloc (Moved);
             if Expr.Is_Ent then
-               Error_Msg_NE ("& was moved #", Expr.Loc, Expr.Ent);
+               Error_Msg_NE ("& was moved # '[[]']", Expr.Loc, Expr.Ent);
             else
-               Error_Msg_N ("object was moved #", Expr.Expr);
+               Error_Msg_N ("object was moved # '[[]']", Expr.Expr);
             end if;
             Permission_Error := True;
             return;
@@ -3438,36 +3435,8 @@ package body Gnat2Why.Borrow_Checker is
       Key      : Variable_Maps.Key_Option := Get_First_Key (Current_Borrowers);
       Var      : Entity_Id;
       Borrowed : Node_Id;
-      B_Pledge : Entity_Id := Empty;
 
    begin
-      if not Expr.Is_Ent then
-
-         --  Search for a call to a function annotated with At_End_Borrow
-         --  either in the parents of Expr or inside Expr (as the function is
-         --  a traversal function, it can be part of a path).
-
-         declare
-            Call : Node_Id := Get_Observed_Or_Borrowed_Expr (Expr.Expr);
-         begin
-            while Present (Call)
-              and then
-                (Nkind (Call) /= N_Function_Call
-                 or else
-                   not Has_At_End_Borrow_Annotation (Get_Called_Entity (Call)))
-            loop
-               Call := Parent (Call);
-            end loop;
-
-            --  If we have found such a call, it is allowed to refer to the
-            --  expression borrowed by the associated borrower in the call.
-
-            if Present (Call) then
-               B_Pledge := Borrower_For_At_End_Borrow_Call (Call);
-            end if;
-         end;
-      end if;
-
       --  For every borrowed object, check that:
       --    * the borrowed expression is not a prefix of Expr
       --    * Expr is not a prefix of the borrowed expression.
@@ -3476,12 +3445,11 @@ package body Gnat2Why.Borrow_Checker is
          Var := Key.K;
          Borrowed := Get (Current_Borrowers, Var);
 
-         if (Is_Prefix_Or_Almost (Pref => Borrowed, Expr => Expr)
-             or else
-               (if Expr.Is_Ent then Get_Root_Object (Borrowed) = Expr.Ent
-                else Is_Prefix_Or_Almost
-                  (Get_Observed_Or_Borrowed_Expr (Expr.Expr), +Borrowed)))
-           and then Var /= B_Pledge
+         if Is_Prefix_Or_Almost (Pref => Borrowed, Expr => Expr)
+           or else
+             (if Expr.Is_Ent then Get_Root_Object (Borrowed) = Expr.Ent
+              else Is_Prefix_Or_Almost
+                (Get_Observed_Or_Borrowed_Expr (Expr.Expr), +Borrowed))
          then
             return Borrowed;
          end if;
@@ -5354,16 +5322,17 @@ package body Gnat2Why.Borrow_Checker is
       Borrowed : constant Node_Id := Check_On_Borrowed (N);
       Observed : constant Node_Id := Check_On_Observed (N);
       Reason   : constant String :=
-        (if Present (Observed) then "observed"
-         elsif Present (Borrowed) then "borrowed"
-         else "moved");
+        (if Present (Observed) then "observed #"
+         elsif Present (Borrowed) then "borrowed #"
+         else "moved # '[[]']");
 
    begin
+      Error_Msg_Code := Explain_Code'Enum_Rep (EC_Ownership_Moved_Object);
       Error_Msg_Sloc := Sloc (Expl);
 
       if Forbidden_Perm then
          if Exp_Perm = No_Access then
-            Error_Msg_N ("\object was " & Reason & " #", Loc);
+            Error_Msg_N ("\object was " & Reason, Loc);
          else
             raise Program_Error;
          end if;
@@ -5374,11 +5343,11 @@ package body Gnat2Why.Borrow_Checker is
                   Error_Msg_N
                     ("\object was declared as not writable #", Loc);
                else
-                  Error_Msg_N ("\object was " & Reason & " #", Loc);
+                  Error_Msg_N ("\object was " & Reason, Loc);
                end if;
 
             when Read_Only =>
-               Error_Msg_N ("\object was " & Reason & " #", Loc);
+               Error_Msg_N ("\object was " & Reason, Loc);
 
             when No_Access =>
                raise Program_Error;
@@ -5412,6 +5381,43 @@ package body Gnat2Why.Borrow_Checker is
       --  Identify the root type for the path
 
       Root := Unique_Entity_In_SPARK (Root);
+
+      --  Search for a call to a function annotated with At_End_Borrow
+      --  either in the parents of Expr or inside Expr (as the function is
+      --  a traversal function, it can be part of a path).
+
+      if not Expr.Is_Ent then
+         declare
+            Call   : Node_Id := Get_Observed_Or_Borrowed_Expr (Expr.Expr);
+            Brower : Entity_Id;
+         begin
+            loop
+               Call := Parent (Call);
+
+               if No (Call) or else Nkind (Call) not in N_Subexpr then
+                  exit;
+
+               --  If we have found such a call, do the permission checking on
+               --  the borrower instead. There might be no borrower if the call
+               --  is ill-formed.
+
+               elsif Nkind (Call) = N_Function_Call
+                 and then Has_At_End_Borrow_Annotation
+                   (Get_Called_Entity (Call))
+               then
+                  Brower := Borrower_For_At_End_Borrow_Call (Call);
+                  if Present (Brower) then
+                     Process_Path
+                       ((Is_Ent => True,
+                         Ent    => Borrower_For_At_End_Borrow_Call (Call),
+                         Loc    => Expr.Expr),
+                        Mode);
+                  end if;
+                  return;
+               end if;
+            end loop;
+         end;
+      end if;
 
       --  Check path was not borrowed
 

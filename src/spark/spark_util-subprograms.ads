@@ -376,7 +376,7 @@ package SPARK_Util.Subprograms is
          when Static =>
             Value     : Boolean;
          when Dynamic =>
-            Condition : Node_Id;
+            Condition : N_Subexpr_Id;
       end case;
    end record;
    --  The condition under which a subprogram shall terminate. It can be either
@@ -394,7 +394,7 @@ package SPARK_Util.Subprograms is
          (if Compute
           then Get_Termination_Condition'Result.Kind /= Unspecified);
    --  Return the termination condition for a subprogram / entry. It is either
-   --  retrieved form an Always_Terminates aspect, implicit (for functions and
+   --  retrieved from an Always_Terminates aspect, implicit (for functions and
    --  lemma procedures), or computed by flow analysis if Compute is True. In
    --  the last two cases, the condition is necessarily static.
 

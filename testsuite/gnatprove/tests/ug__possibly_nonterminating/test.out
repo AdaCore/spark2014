@@ -1,0 +1,17 @@
+possibly_nonterminating.adb:14:10: info: conditional call termination proved
+
+possibly_nonterminating.adb:20:07: medium: terminating annotation on "OK_Terminating" could be incorrect, call to "Conditionally_Loop" might be nonterminating
+   20 |      Conditionally_Loop (False);
+      |      ^~~~~~~~~~~~~~~~~~~~~~~~~
+  possible fix: annotate "Conditionally_Loop" with Always_Return
+possibly_nonterminating.adb:20:07: info: conditional call termination proved
+
+possibly_nonterminating.adb:25:07: medium: terminating annotation on "Bad_Terminating" could be incorrect, call to "Conditionally_Loop" might be nonterminating
+   25 |      Conditionally_Loop (True);
+      |      ^~~~~~~~~~~~~~~~~~~~~~~~
+  possible fix: annotate "Conditionally_Loop" with Always_Return
+
+possibly_nonterminating.adb:25:07: medium: call might not terminate
+   25 |      Conditionally_Loop (True);
+      |      ^~~~~~~~~~~~~~~~~~~~~~~~
+  reason for check: procedure "Bad_Terminating" has an Always_Terminates aspect

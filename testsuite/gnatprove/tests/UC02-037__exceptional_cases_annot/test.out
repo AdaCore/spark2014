@@ -1,2 +1,2 @@
 exc_cases_and_annotations.adb:13:21: error: procedure annotated with the aspect Automatic_Instantiation shall not have "in out" parameters
-gnatprove: error during generation of Global contracts
+gnatprove: error during flow analysis and proof

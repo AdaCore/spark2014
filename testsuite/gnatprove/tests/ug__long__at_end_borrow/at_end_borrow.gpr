@@ -1,0 +1,13 @@
+with "sparklib";
+
+project At_End_Borrow is
+
+   package Compiler is
+      for Switches ("Ada") use ("-gnat2020");
+   end Compiler;
+
+   package Prove is
+      for Proof_Switches ("Ada") use ("--report=all", "--function-sandboxing=off", "-u", "list_borrows.adb");
+   end Prove;
+
+end At_End_Borrow;

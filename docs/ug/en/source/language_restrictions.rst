@@ -45,23 +45,13 @@ simplifications to Ada. The most notable simplifications are:
   calls makes it harder for users to interact with formal verification tools,
   as there is no source code on which information can be reported.
 
-.. index:: exceptions; excluded feature
-
-* Handling of exceptions is not permitted. Exception handling gives raise to
-  numerous interprocedural control-flow paths. Formal verification of programs
-  with exception handlers requires tracking properties along all those paths,
-  which is not doable precisely without a lot of manual work. But raising
-  exceptions is allowed (see :ref:`Raising Exceptions and Other Error Signaling
-  Mechanisms`).
-
 .. index:: termination; excluded feature
 
-* Unless explicitly specified as (possibly) nonreturning, subprograms should
-  always terminate when called on inputs satisfying the subprogram
-  precondition.  While care is taken in |GNATprove| to reduce possibilities of
-  unsoundness resulting from nonreturning subprograms, it is possible that
-  axioms generated for nonreturning subprograms not specified as such may lead
-  to unsoundness. See :ref:`Nonreturning Procedures`.
+* Functions should always terminate when called on inputs satisfying the
+  precondition.  While care is taken in |GNATprove| to detect possibilities of
+  unsoundness resulting from nonterminating functions, it is possible that
+  axioms generated for infeasible contracts may lead to unsoundness.
+  See :ref:`Infeasible Subprogram Contracts`.
 
 .. index:: generics; excluded feature
 
@@ -433,119 +423,6 @@ messages:
 
 Note that |SPARK| currently does not detect aliasing between objects that
 arises due to the use of Address clauses or aspects.
-
-.. index:: exceptions; raising exception
-           No_Return; error signaling
-
-Raising Exceptions and Other Error Signaling Mechanisms
--------------------------------------------------------
-
-Raising an exception is allowed in |SPARK| to signal an error, but handling the
-exception raised to perform recovery or mitigation actions is outside of the
-|SPARK| subset. Typically, such exception handling code should be added to
-top-level subprograms in full Ada, or to a last chance handler called by the
-runtime when an exception is raised, none of which is analyzed by |GNATprove|.
-
-|GNATprove| treats raising an exception specially:
-
- * in flow analysis, the program paths that lead to a ``raise_statement`` are
-   not considered when checking the contract of the subprogram, which is only
-   concerned with executions that terminate normally; and
- * in proof, a check is generated for each ``raise_statement``, to prove that
-   no such program point is reachable.
-
-Multiple error signaling mechanisms are treated the same way:
-
- * raising an exception
- * ``pragma Assert (X)`` where ``X`` is an expression statically equivalent to
-   ``False``
- * calling a procedure with an aspect or pragma ``No_Return`` that has no
-   outputs (unless the call is itself inside a (possibly) nonreturning
-   procedure, see :ref:`Nonreturning Procedures`, in which case the check
-   is only generated on the call to the enclosing error-signaling procedure
-   if any)
-
-For example, consider the artificial subprogram ``Check_OK`` which raises an
-exception when parameter ``OK`` is ``False``:
-
-.. literalinclude:: /examples/ug__abnormal_terminations/abnormal_terminations.ads
-   :language: ada
-   :linenos:
-
-.. literalinclude:: /examples/ug__abnormal_terminations/abnormal_terminations.adb
-   :language: ada
-   :linenos:
-
-Note that, although ``G2`` is assigned in ``Check_OK``, its assignment
-is directly followed by a ``raise_statement``, so ``G2`` is never
-assigned on an execution of ``Check_OK`` that terminates normally. As
-a result, ``G2`` is not mentioned in the data dependencies of
-``Check_OK``. During flow analysis, |GNATprove| verifies that the body of
-``Check_OK`` implements its declared data dependencies.
-
-During proof, |GNATprove| generates a check that the
-``raise_statement`` on line 11 is never reached. Here, it is proved
-thanks to the precondition of ``Check_OK`` which states that parameter
-``OK`` should always be ``True`` on entry:
-
-.. literalinclude:: /examples/ug__abnormal_terminations/test.out
-   :language: none
-
-|GNATprove| also checks that procedures that are marked with aspect or pragma
-``No_Return`` do not return: they should either raise an exception or loop
-forever on any input.
-
-.. index:: No_Return; nonreturning procedures
-           Might_Not_Return
-
-Nonreturning Procedures
------------------------
-
-|GNATprove| assumes that, unless explicitly specified as (possibly)
-nonreturning, subprograms should always terminate when called on inputs
-satisfying the subprogram precondition. In particular, functions should
-always terminate. Procedures might not terminate, in which case they
-should be annotated with a suitable pragma or aspect:
-
-* ``No_Return`` to specify that the procedure never returns. This is a
-  nonreturning procedure.
-
-* ``Annotate Might_Not_Return`` to specify that the procedure might not
-  return in some cases. This is a possibly nonreturning procedure.
-
-Nonreturning and possibly nonreturning procedures are handled differently.
-It is an error to call a possibly nonreturning procedure from a function
-or from a procedure that is not itself (possibly) nonreturning.
-Calling a nonreturning procedure from a procedure that is not
-itself (possibly) nonreturning leads to a check that the call is unreachable.
-Such a call is in effect interpreted as an error signaling mechanism
-(see :ref:`Raising Exceptions and Other Error Signaling Mechanisms`).
-
-For example, consider the procedure ``Conditional_Exit`` which conditionally
-calls the nonterminating ``Always_Exit`` procedure:
-
-.. literalinclude:: /examples/ug__possibly_nonreturning/possibly_nonreturning.ads
-   :language: ada
-   :linenos:
-
-.. literalinclude:: /examples/ug__possibly_nonreturning/possibly_nonreturning.adb
-   :language: ada
-   :linenos:
-
-|GNATprove| issues an error here on the call to the possibly nonreturning
-procedure ``Conditional_Exit`` in procedure ``Regular``:
-
-.. literalinclude:: /examples/ug__possibly_nonreturning/test.out
-   :language: none
-
-It would be legal to call the nonreturning procedure ``Always_Exit`` from
-procedure ``Regular`` though, in which case it will be interpreted as
-an error signaling mechanism, and |GNATprove| will attempt to prove that
-the call is unreachable.
-
-Note that it is also possible to specify explicitly that a subprogram
-terminates, in which case |GNATprove| will verify that it indeed terminates.
-See :ref:`Subprogram Termination`.
 
 .. index:: generics; analysis of instances
 

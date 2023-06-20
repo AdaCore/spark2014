@@ -17,6 +17,12 @@ is made up of various optional parts:
   data read and written by the subprogram.
 * The `flow dependencies` introduced by aspect ``Depends`` specify how
   subprogram outputs depend on subprogram inputs.
+* The `exceptional contract` introduced by aspect ``Exceptional_Cases``
+  specifies the exceptions that might be propagated by a procedure, along with
+  exceptional postconditions.
+* The `termination contract` introduced by aspect ``Always_Terminates``
+  requires procedures and entries to terminate, possibly under a particular
+  condition.
 * The `subprogram variant` introduced by aspect ``Subprogram_Variant`` is
   used to ensure termination of recursive subprograms.
 
@@ -24,14 +30,19 @@ Which contracts to write for a given verification objective, and how
 |GNATprove| generates default contracts, is detailed in :ref:`How to Write
 Subprogram Contracts`.
 
-The contract on a subprogram describes the behavior of successful
-calls. Executions that end up by signalling an error, as described in
-:ref:`Raising Exceptions and Other Error Signaling Mechanisms`, are not covered
-by the subprogram's contract. A call to a subprogram is successful if execution
-terminates normally, or if execution loops without errors for a subprogram
-marked with aspect ``No_Return`` that has some outputs (this is typically the
-case of a non-terminating subprogram implementing the main loop of a
-controller).
+|GNATprove| formally verifies that each execution of each |SPARK| subprogram it
+analyzes will either:
+
+* return normally in a state that respects the subprogram’s postcondition,
+* raise an exception in a state that respects the subprogram's exceptional
+  contract,
+* terminate abnormally as a result of a primary stack, secondary stack, or heap
+  memory allocation failure, or
+* not terminate at all when it is allowed by its termination contract.
+
+|GNATprove| also checks that procedures that are marked with aspect or pragma
+``No_Return`` do not return: they should either raise an exception, call a
+non-returning subprogram, or loop forever on any input.
 
 .. index:: precondition
            see: Pre; precondition
@@ -654,6 +665,207 @@ postcondition of ``True`` is used implicitly on the subprogram declaration.
 precise refined contract (precondition and refined postcondition) of
 ``Add_To_Total`` when analyzing calls inside package ``Account``.
 
+.. index:: exceptions; Exceptional_Cases
+
+Exceptional Contracts
+---------------------
+
+[|SPARK|]
+
+In SPARK, every procedure which might propagate an exception should be annotated
+with an exceptional contract. This contract, introduced by the
+``Exceptional_Cases`` aspect, lists all the exceptions which might be propagated
+by a procedure, and associates them to an exceptional postcondition. This
+postcondition describes the effect of the procedure when the exception is
+raised. As an example, consider the procedure ``Incr_All`` below. It goes over
+an array to increment its elements. If an overflow would occur, the exception
+``Overflow`` is raised and the traversal is stopped. The global variable
+``Index`` is used to store the current index at this point. The exceptional
+contract of ``Incr_All`` states both that it might propagate ``Overflow``, and
+that it will only do so if it finds an offending index, using the global
+variable ``Index``. The fact that ``Overflow`` is necessarily raised
+when such an index exists follows from the regular postcondition of
+``Incr_All``:
+
+.. literalinclude:: /examples/ug__exceptions/exceptions.adb
+   :language: ada
+   :linenos:
+
+|GNATprove| can successfully verify both ``Incr_All`` above and its two callers:
+the exception is handled inside ``Incr_All_Cond`` and the
+call to ``Incr_All`` never raises ``Overflow`` in ``Incr_All_With_Pre``.
+
+.. literalinclude:: /examples/ug__exceptions/test.out
+   :language: none
+
+The :ref:`Data Initialization Policy` of SPARK is mostly enforced on exceptional
+exit of subprograms. All global outputs shall be initialized when an exception
+is propagated, like ``Index`` in the example above. It is the case too for
+parameters which are necessarily passed by reference (tagged types, aliased
+parameters...). Other parameters, either necessarily passed by copy or for
+which the parameter passing mode is unspecified by the language, do not need
+to be initialized. As a result, after a call which has propagated an exception:
+
+* output parameters necessarily passed by reference are considered to have been
+  initialized or updated by the call as on a normal return,
+* output parameters necessarily passed by copy are preserved, and
+* output parameters for which the parameter passing mode is unspecified by the
+  language are considered to not be initialized anymore; they should not be
+  read after the call.
+
+As an example, the parameter ``A`` of ``Incr_All`` is a composite type
+containing only subcomponents of a by-copy type (a scalar). As per the Ada
+reference manual, its parameter passing mode is unspecified. It means that
+its value will be unspecified if the call to ``Incr_All`` raises an exception,
+as can be seen on ``Incr_All_Bad_Init``:
+
+.. literalinclude:: /examples/ug__exceptions_bad_init/exceptions_bad_init.adb
+   :language: ada
+   :linenos:
+
+.. literalinclude:: /examples/ug__exceptions_bad_init/test.out
+   :language: none
+
+Note that, even though access types are passed by copy, ``in`` parameters of an
+access-to-variable part can be safely used after an exceptional exit as only
+the designated value can be modified.
+
+To make it easier for the user, it is not allowed to mention parameters which
+are not necessarily passed by reference in an exceptional postcondition.
+An error is emitted if the exceptional postcondition of ``Incr_All`` is
+modified to mention ``A``:
+
+.. literalinclude:: /examples/ug__exceptions_bad/exceptions_bad.adb
+   :language: ada
+   :linenos:
+
+.. literalinclude:: /examples/ug__exceptions_bad/test.out
+   :language: none
+
+The exceptional contract is allowed if the parameter ``A`` is marked as
+``aliased`` however, as it is then necessarily passed by reference:
+
+.. literalinclude:: /examples/ug__exceptions_post/exceptions_post.adb
+   :language: ada
+   :linenos:
+
+.. literalinclude:: /examples/ug__exceptions_post/test.out
+   :language: none
+
+Note that only exceptions which are raised explicitly in the code
+can be handled or propagated. For example, it would not be possible to remove
+the defensive code raising the exception in the loop and instead propagate
+``Constraint_Error`` directly as in ``Incr_All_CE``. Indeed, |GNATprove|
+always attempts to prove that runtime checks never fail. It complains
+on ``Incr_All_CE`` that the range check might fail, and flags the exceptional
+case as unreachable if proof warnings are enabled:
+
+.. literalinclude:: /examples/ug__exceptions_rte/exceptions_rte.adb
+   :language: ada
+   :linenos:
+
+.. literalinclude:: /examples/ug__exceptions_rte/test.out
+   :language: none
+
+If the exception raised by a raise statement or procedure call is neither
+handled nor allowed by its exceptional contract (that is, it has no associated
+exceptional postcondition or this postcondition is statically False), then it
+is unexpected and
+|GNATprove| will make sure that it never occurs. More precisely,
+|GNATprove| treats raising an unexpected exception in the following way:
+
+ * in flow analysis, the program paths that lead to a statement raising an
+   unexpected exception are not considered when checking the contract of the
+   subprogram; and
+ * in proof, a check is generated for these statements, to prove that
+   no such program point is reachable.
+
+Occurences of  ``pragma Assert (X)`` where ``X`` is an expression statically
+equivalent to ``False`` are treated in the same way.
+
+As an example, consider the artificial subprogram ``Check_OK`` which raises an
+exception when parameter ``OK`` is ``False``. The ``Check_OK`` procedure does
+not have an exceptional contract so the exception is unexpected:
+
+.. literalinclude:: /examples/ug__abnormal_terminations/abnormal_terminations.ads
+   :language: ada
+   :linenos:
+
+.. literalinclude:: /examples/ug__abnormal_terminations/abnormal_terminations.adb
+   :language: ada
+   :linenos:
+
+Note that, although ``G2`` is assigned in ``Check_OK``, its assignment
+is directly followed by a ``raise_statement``, so ``G2`` is never
+assigned on an execution of ``Check_OK`` that terminates normally. As
+a result, ``G2`` is not mentioned in the data dependencies of
+``Check_OK``. During flow analysis, |GNATprove| verifies that the body of
+``Check_OK`` implements its declared data dependencies.
+
+During proof, |GNATprove| generates a check that the
+``raise_statement`` on line 11 is never reached. Here, it is proved
+thanks to the precondition of ``Check_OK`` which states that parameter
+``OK`` should always be ``True`` on entry:
+
+.. literalinclude:: /examples/ug__abnormal_terminations/test.out
+   :language: none
+
+.. note::
+
+   Raising an exception is a side-effect. As a consequence, the aspect
+   ``Exceptional_Cases`` is not allowed on functions and exceptions raised
+   by ``raise_expressions`` cannot be handled or propagated. |GNATprove|
+   makes sure that they never occur.
+
+.. index:: termination; Always_Terminates
+
+Contracts for Termination
+-------------------------
+
+[|SPARK|]
+
+By default, |GNATprove| verifies termination of all functions
+and automatically instantiated lemmas (procedures annotated with
+``Automatic_Instantiation``). For procedures or entries, |GNATprove| does not
+attempt to verify termination and is only concerned with their partial
+correctness. This means that |GNATprove| only verifies that the contract of
+each procedure or entry holds whenever it terminates (i.e., returns or raises
+an exception). It is still possible that the subprogram does not terminate
+in some or all cases (it can for example loop forever or exit the whole program
+using ``GNAT.OS_Lib.OS_Exit``).
+
+The ``Always_Terminates`` GNAT specific aspect allows users to request that
+|GNATprove| also verifies that a procedure or entry terminates. It is the case
+for example of the procedures ``Ok_Terminating`` and ``Bad_Terminating``
+below. The aspect can also be used to provide a boolean condition like for the
+``Conditionally_Loop`` procedure. If this condition is present, then the proof
+of termination is only attempted when the condition evaluates to True on
+subprogram entry. As an example, the procedure ``Conditionally_Loop`` might not
+terminate if its ``Cond`` parameter evaluates to True, and ``Loop_Forever``
+never needs to terminate (but it might):
+
+.. literalinclude:: /examples/ug__possibly_nonterminating/possibly_nonterminating.ads
+   :language: ada
+   :linenos:
+
+.. literalinclude:: /examples/ug__possibly_nonterminating/possibly_nonterminating.adb
+   :language: ada
+   :linenos:
+
+|GNATprove| verifies the termination of ``OK_Terminating`` and the conditional
+termination of ``Conditionally_Loop`` but a failed check is emitted for
+``Bad_Terminating`` as it does not terminate.
+
+.. literalinclude:: /examples/ug__possibly_nonterminating/test.out
+   :language: none
+
+
+A package can also be annotated with the ``Always_Terminates`` aspect. It does
+not apply to the elaboration of the package, which should always terminate in
+|SPARK|, but serves as a default for all the procedures located inside: unless
+specified otherwise, a procedure declared inside a package annotated with
+``Always_Terminates`` should always terminate.
+
 .. index:: termination; subprogram variant
            recursion; subprogram variant
            Subprogram_Variant
@@ -723,8 +935,7 @@ actual parameter denoted by the variant designates a strict subcomponent of the
 formal parameter denoted the variant at the beggining of the call. Since,
 due to the :ref:`Memory Ownership Policy` of |SPARK|, the data-structures cannot
 contain cycles, it is enough to ensure that there will be no infinite
-chain of recursive calls. A structural variant cannot be combined with other
-variants.
+chain of recursive calls.
 
 In the following example, we can verify that the ``Length`` function on
 singly-linked lists terminates stating that the structure designated by its
@@ -740,6 +951,14 @@ be verified by |GNATprove|:
 
 .. literalinclude:: /examples/ug__recursive_subprograms-structural/test.out
    :language: none
+
+Structural variants are subjects to a number of restrictions.
+They cannot be combined with other variants, and are checked according to
+a mostly syntactic criterion. When these restrictions cannot be followed,
+structural variants can be systematically replaced by a decreasing numeric
+variant providing the depth (or size) of the data structure, like function
+``Length`` above. Strictly speaking, structural variants are only required
+to define the function returning that metric.
 
 To verify the termination of mutually recursive subprograms, all subprograms
 should be annotated with `compatible` variants. We say that two variants are

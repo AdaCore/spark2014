@@ -27,6 +27,7 @@
 with Ada.Containers.Indefinite_Hashed_Maps;
 with Ada.Strings.Fixed;               use Ada.Strings.Fixed;
 with Atree;                           use Atree;
+with Flow_Error_Messages;             use Flow_Error_Messages;
 with Opt;                             use Opt;
 with VC_Kinds;                        use VC_Kinds;
 
@@ -113,6 +114,7 @@ private package SPARK_Definition.Violations is
    procedure Mark_Violation
      (Msg            : String;
       N              : Node_Id;
+      Code           : Explain_Code := EC_None;
       SRM_Reference  : String := "";
       Cont_Msg       : String := "";
       Root_Cause_Msg : String := "")
@@ -125,11 +127,12 @@ private package SPARK_Definition.Violations is
         and then Head (SRM_Reference, 9) = "SPARK RM ");
    --  Mark node N as a violation of SPARK. An error message pointing to the
    --  current SPARK_Mode pragma/aspect is issued if current SPARK_Mode is On.
-   --  If SRM_Reference is set, the reference to the SRM is appended to the
-   --  error message. If Cont_Msg is set, a continuation message is issued. If
-   --  Root_Cause_Msg is set, the corresponding message is used as root cause
-   --  message for cascading violations (typically used if Msg has character
-   --  insertions).
+   --  If Explain_Code is set to a positive number, this is taken as an error
+   --  code to be displayed using the mechanism in Errout. If SRM_Reference
+   --  is set, the reference to the SRM is appended to the error message. If
+   --  Cont_Msg is set, a continuation message is issued. If Root_Cause_Msg
+   --  is set, the corresponding message is used as root cause message for
+   --  cascading violations (typically used if Msg has character insertions).
 
    procedure Mark_Violation
      (N        : Node_Id;

@@ -76,8 +76,8 @@ stages:
 
     # Tell anod that the package has already been built
     - mkdir -p fingerprints
-    - touch fingerprints/x86_64-linux.spark2014.download_bin.json.assume-unchanged
-    - touch fingerprints/x86_64-linux.spark2014.install.json.assume-unchanged
+    - touch fingerprints/x86_64-linux.spark2014-cov.build.json.assume-unchanged
+    - touch fingerprints/x86_64-linux.spark2014-cov.install.json.assume-unchanged
 
     # Test using anod
     - anod run $ANOD_ENTRY_POINT
@@ -88,6 +88,7 @@ stages:
        --xunit-output $CI_PROJECT_DIR/xunit_output.xml
        x86_64-linux/$ANOD_BUILDSPACE/results/new/ || FAILED=true
     - cp -r /it/wave/x86_64-linux/$ANOD_BUILDSPACE/results/new/ $CI_PROJECT_DIR/testsuite-results
+    - cp -r /it/wave/x86_64-linux/$ANOD_BUILDSPACE/src/dhtml-report/ $CI_PROJECT_DIR/coverage
 
     - if [ ! -z ${FAILED+x} ]; then echo "There was at least one testcase failure" && exit 1; fi
 
@@ -96,8 +97,12 @@ stages:
      paths:
         - xunit_output.xml
         - testsuite-results
+        - coverage/cobertura/cobertura.xml
      reports:
        junit: xunit_output.xml
+       coverage_report:
+          coverage_format: cobertura
+          path: coverage/cobertura/cobertura.xml
 
 #########
 # Build #
@@ -120,7 +125,7 @@ build:
 
     # Create the package
     - tar czf $PACKAGE_ABSOLUTE_NAME -C /
-        it/wave/x86_64-linux/spark2014/install
+        it/wave/x86_64-linux/spark2014-cov/install
 
   artifacts:
     paths:
@@ -135,14 +140,14 @@ spark2014:
   when: always
   variables:
     ANOD_ENTRY_POINT: test
-    ANOD_BUILDSPACE: spark2014-test
+    ANOD_BUILDSPACE: spark2014-test-cov
 
 spark2014_large:
   extends: .spark2014_test
   when: manual
   variables:
     ANOD_ENTRY_POINT: test_large
-    ANOD_BUILDSPACE: spark2014-test-large
+    ANOD_BUILDSPACE: spark2014-test-cov-large
 
 #################
 # Test of ACATS #

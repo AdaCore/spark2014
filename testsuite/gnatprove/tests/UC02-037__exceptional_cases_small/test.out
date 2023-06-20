@@ -1,9 +1,7 @@
 test_borrow_and_leaks.adb:16:06: info: disjoint contract cases proved (CVC5: 1 VC)
 test_borrow_and_leaks.adb:17:42: info: contract case proved (CVC5: 1 VC; Trivial: 1 VC)
-test_borrow_and_leaks.adb:17:47: warning: contract case does not check the outcome of calling "Test_Borrow"
 test_borrow_and_leaks.adb:18:29: info: pointer dereference check proved (CVC5: 1 VC)
 test_borrow_and_leaks.adb:18:42: info: contract case proved (CVC5: 3 VC; Trivial: 1 VC)
-test_borrow_and_leaks.adb:19:13: warning: conjunct in contract case does not check the outcome of calling "Test_Borrow"
 test_borrow_and_leaks.adb:19:26: info: pointer dereference check proved (CVC5: 1 VC)
 test_borrow_and_leaks.adb:19:44: info: pointer dereference check proved (CVC5: 1 VC)
 test_borrow_and_leaks.adb:19:53: info: pointer dereference check proved (CVC5: 1 VC)
@@ -11,7 +9,6 @@ test_borrow_and_leaks.adb:20:29: info: pointer dereference check proved (CVC5: 1
 test_borrow_and_leaks.adb:20:53: info: pointer dereference check proved (CVC5: 1 VC)
 test_borrow_and_leaks.adb:20:58: info: pointer dereference check proved (CVC5: 1 VC)
 test_borrow_and_leaks.adb:20:71: info: contract case proved (CVC5: 5 VC; Trivial: 1 VC)
-test_borrow_and_leaks.adb:21:13: warning: conjunct in contract case does not check the outcome of calling "Test_Borrow"
 test_borrow_and_leaks.adb:21:26: info: pointer dereference check proved (CVC5: 1 VC)
 test_borrow_and_leaks.adb:21:45: info: pointer dereference check proved (CVC5: 1 VC)
 test_borrow_and_leaks.adb:21:54: info: pointer dereference check proved (CVC5: 1 VC)
@@ -67,15 +64,12 @@ test_borrow_and_leaks.adb:69:23: info: absence of resource or memory leak proved
 test_borrow_and_leaks.adb:69:27: info: pointer dereference check proved (CVC5: 1 VC)
 test_borrow_and_leaks.adb:70:17: info: pointer dereference check proved (CVC5: 1 VC)
 test_borrow_and_leaks.adb:70:23: info: absence of resource or memory leak proved (CVC5: 1 VC)
-test_borrow_and_leaks.adb:76:14: high: all paths in "Raise_E" raise exceptions or do not terminate normally
 test_borrow_and_leaks.adb:76:14: warning: subprogram "Raise_E" has no effect
 test_borrow_and_leaks.adb:78:33: info: exceptional case proved (Trivial: 1 VC)
 test_borrow_and_leaks.adb:85:06: info: disjoint contract cases proved (CVC5: 1 VC)
 test_borrow_and_leaks.adb:86:42: info: contract case proved (CVC5: 1 VC; Trivial: 1 VC)
-test_borrow_and_leaks.adb:86:47: warning: contract case does not check the outcome of calling "Test_Borrow_Call"
 test_borrow_and_leaks.adb:87:29: info: pointer dereference check proved (CVC5: 1 VC)
 test_borrow_and_leaks.adb:87:42: info: contract case proved (CVC5: 3 VC; Trivial: 1 VC)
-test_borrow_and_leaks.adb:88:13: warning: conjunct in contract case does not check the outcome of calling "Test_Borrow_Call"
 test_borrow_and_leaks.adb:88:26: info: pointer dereference check proved (CVC5: 1 VC)
 test_borrow_and_leaks.adb:88:44: info: pointer dereference check proved (CVC5: 1 VC)
 test_borrow_and_leaks.adb:88:53: info: pointer dereference check proved (CVC5: 1 VC)
@@ -83,7 +77,6 @@ test_borrow_and_leaks.adb:89:29: info: pointer dereference check proved (CVC5: 1
 test_borrow_and_leaks.adb:89:53: info: pointer dereference check proved (CVC5: 1 VC)
 test_borrow_and_leaks.adb:89:58: info: pointer dereference check proved (CVC5: 1 VC)
 test_borrow_and_leaks.adb:89:71: info: contract case proved (CVC5: 5 VC; Trivial: 1 VC)
-test_borrow_and_leaks.adb:90:13: warning: conjunct in contract case does not check the outcome of calling "Test_Borrow_Call"
 test_borrow_and_leaks.adb:90:26: info: pointer dereference check proved (CVC5: 1 VC)
 test_borrow_and_leaks.adb:90:45: info: pointer dereference check proved (CVC5: 1 VC)
 test_borrow_and_leaks.adb:90:54: info: pointer dereference check proved (CVC5: 1 VC)
@@ -194,20 +187,21 @@ test_parameter_passing.adb:10:28: info: initialization of "X" proved
 test_parameter_passing.adb:11:33: info: exceptional case proved (CVC5: 1 VC)
 test_parameter_passing.adb:16:07: info: only expected exception raised (CVC5: 1 VC)
 test_parameter_passing.adb:16:07: warning: assuming "P" always terminates
-test_parameter_passing.adb:16:07: warning: no returning annotation available for "P"
+test_parameter_passing.adb:16:07: warning: no Always_Terminates aspect available for "P"
 test_parameter_passing.adb:31:33: info: initialization of "X" proved
 test_parameter_passing.adb:31:58: info: initialization of "Y" proved
 test_parameter_passing.adb:32:33: info: exceptional case proved (CVC5: 3 VC)
 test_parameter_passing.adb:32:67: info: pointer dereference check proved (CVC5: 1 VC)
 test_parameter_passing.adb:36:07: info: only expected exception raised (CVC5: 1 VC)
 test_parameter_passing.adb:36:07: warning: assuming "P" always terminates
-test_parameter_passing.adb:36:07: warning: no returning annotation available for "P"
+test_parameter_passing.adb:36:07: warning: no Always_Terminates aspect available for "P"
 test_parameter_passing.adb:36:16: info: null exclusion check proved (CVC5: 1 VC)
-test_parameter_passing.adb:48:28: info: initialization of "X" proved
+test_parameter_passing.adb:48:28: medium: "X.F" might not be initialized in "Test_Unknown" [reason for check: OUT parameter should be fully initialized on return] [possible fix: initialize "X.F" on all paths, make "X" an IN OUT parameter or annotate it with aspect Relaxed_Initialization]
+test_parameter_passing.adb:49:33: high: "X.F" is not initialized
 test_parameter_passing.adb:49:33: medium: exceptional case might fail
 test_parameter_passing.adb:54:07: info: only expected exception raised (CVC5: 1 VC)
 test_parameter_passing.adb:54:07: warning: assuming "P" always terminates
-test_parameter_passing.adb:54:07: warning: no returning annotation available for "P"
+test_parameter_passing.adb:54:07: warning: no Always_Terminates aspect available for "P"
 test_relaxed_parameters.adb:13:17: warning: unused variable "X"
 test_relaxed_parameters.adb:16:33: info: exceptional case proved (Trivial: 1 VC)
 test_relaxed_parameters.adb:23:22: info: initialization of "X" proved
@@ -216,7 +210,6 @@ test_relaxed_parameters.adb:29:07: info: only expected exception raised (CVC5: 1
 test_relaxed_parameters.adb:29:10: info: initialization check proved (CVC5: 3 VC; Trivial: 3 VC)
 test_relaxed_parameters.adb:29:10: info: predicate check proved (CVC5: 1 VC)
 test_relaxed_parameters.adb:29:10: medium: initialization check might fail [possible fix: call at line 29 should mention X'Initialized (for argument X) in a postcondition]
-test_relaxed_parameters.adb:32:17: warning: unused variable "X"
 test_relaxed_parameters.adb:35:33: info: exceptional case proved (CVC5: 3 VC; Trivial: 3 VC)
 test_relaxed_parameters.adb:39:12: info: predicate check proved (CVC5: 1 VC)
 test_relaxed_parameters.adb:43:22: info: initialization of "X" proved

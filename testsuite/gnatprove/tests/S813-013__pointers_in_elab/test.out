@@ -1,8 +1,8 @@
 invalid_read_in_elab.adb:8:17: warning: subprogram "P" has no effect
 invalid_read_in_elab.adb:16:25: error: dereference from "X" is not readable
-invalid_read_in_elab.adb:16:25: error: object was moved at line 11
+invalid_read_in_elab.adb:16:25: error: object was moved at line 11 [E0010]
 invalid_read_in_elab.adb:20:25: error: dereference from "X" is not readable
-invalid_read_in_elab.adb:20:25: error: object was moved at line 11
+invalid_read_in_elab.adb:20:25: error: object was moved at line 11 [E0010]
 invalid_read_in_elab.adb:27:17: warning: subprogram "P" has no effect
 invalid_read_in_elab.adb:35:25: error: object was borrowed at line 30
 invalid_read_in_elab.adb:39:25: error: object was borrowed at line 30

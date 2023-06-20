@@ -4,6 +4,6 @@ hw-gfx-gma-dp_aux_ch.ads:4:09: warning: assuming "Do_Aux_Request" always termina
 hw-gfx-gma-dp_aux_ch.ads:4:09: warning: assuming "Do_Aux_Request" has no effect on global items
 hw-gfx-gma-dp_aux_ch.ads:4:09: warning: in instantiation at hw-gfx-dp_aux_ch.adb:4
 hw-gfx-gma-dp_aux_ch.ads:4:09: warning: in instantiation at hw-gfx-dp_aux_ch.adb:4
+hw-gfx-gma-dp_aux_ch.ads:4:09: warning: no Always_Terminates aspect available for "Do_Aux_Request"
 hw-gfx-gma-dp_aux_ch.ads:4:09: warning: no Global contract available for "Do_Aux_Request"
-hw-gfx-gma-dp_aux_ch.ads:4:09: warning: no returning annotation available for "Do_Aux_Request"
 hw-gfx-gma-pch-dp.ads:4:22: info: data dependencies proved

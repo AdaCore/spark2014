@@ -17,20 +17,20 @@ moth-mailbox.adb:269:13: info: implicit terminating annotation on "is_waiting_mb
 moth-mailbox.adb:354:07: info: initialization of "mbx_index" proved
 moth-scheduler.adb:304:24: info: initialization of "task_id" proved
 moth-scheduler.adb:324:17: warning: assuming "idle" always terminates
-moth-scheduler.adb:324:17: warning: no returning annotation available for "idle"
+moth-scheduler.adb:324:17: warning: no Always_Terminates aspect available for "idle"
 moth-scheduler.adb:368:07: info: initialization of "tmp_mask" proved
 moth-scheduler.adb:442:14: warning: assuming "space_init" always terminates
-moth-scheduler.adb:442:14: warning: no returning annotation available for "space_init"
+moth-scheduler.adb:442:14: warning: no Always_Terminates aspect available for "space_init"
 moth-scheduler.adb:456:17: warning: assuming "space_switch" always terminates
-moth-scheduler.adb:456:17: warning: no returning annotation available for "space_switch"
+moth-scheduler.adb:456:17: warning: no Always_Terminates aspect available for "space_switch"
 moth-scheduler.adb:459:17: warning: assuming "context_create" always terminates
-moth-scheduler.adb:459:17: warning: no returning annotation available for "context_create"
+moth-scheduler.adb:459:17: warning: no Always_Terminates aspect available for "context_create"
 moth-scheduler.adb:471:14: warning: assuming "context_set" always terminates
-moth-scheduler.adb:471:14: warning: no returning annotation available for "context_set"
+moth-scheduler.adb:471:14: warning: no Always_Terminates aspect available for "context_set"
 moth-scheduler.adb:474:14: warning: assuming "space_switch" always terminates
-moth-scheduler.adb:474:14: warning: no returning annotation available for "space_switch"
+moth-scheduler.adb:474:14: warning: no Always_Terminates aspect available for "space_switch"
 moth.adb:54:14: warning: assuming "cons_init" always terminates
-moth.adb:54:14: warning: no returning annotation available for "cons_init"
+moth.adb:54:14: warning: no Always_Terminates aspect available for "cons_init"
 moth.ads:87:13: info: implicit terminating annotation on "os_ghost_mbx_are_well_formed" has been proved, subprogram will terminate
 moth.ads:91:13: info: implicit terminating annotation on "os_ghost_task_list_is_well_formed" has been proved, subprogram will terminate
 moth.ads:95:13: info: implicit terminating annotation on "os_ghost_current_task_is_ready" has been proved, subprogram will terminate
@@ -56,31 +56,31 @@ moth.ads:296:26: info: initialization of "mbx_entry" proved
 moth.ads:306:23: info: initialization of "status" proved
 moth.ads:326:20: info: initialization of "task_id" proved
 spark-containers-formal-ordered_sets.ads:75:06: error: "moth.config.read_only_conf" is referenced in Post but missing from the Global, in instantiation at moth.ads:127
-spark-containers-formal-ordered_sets.ads:194:09: error: "moth.config.read_only_conf" is referenced in Post but missing from the Global, in instantiation at moth.ads:127
-spark-containers-formal-ordered_sets.ads:207:09: error: "moth.config.read_only_conf" is referenced in Post but missing from the Global, in instantiation at moth.ads:127
-spark-containers-formal-ordered_sets.ads:1540:06: error: "moth.config.read_only_conf" is referenced in Post but missing from the Global, in instantiation at moth.ads:127
-spark-containers-formal-ordered_sets.ads:1540:06: error: "moth.config.read_only_conf" is referenced in Pre but missing from the Global, in instantiation at moth.ads:127
-spark-containers-formal-ordered_sets.ads:1555:06: error: "moth.config.read_only_conf" is referenced in Post but missing from the Global, in instantiation at moth.ads:127
-spark-containers-formal-ordered_sets.ads:1555:06: error: "moth.config.read_only_conf" is referenced in Pre but missing from the Global, in instantiation at moth.ads:127
-spark-containers-parameter_checks.ads:182:09: error: "moth.config.read_only_conf" is referenced in Post but missing from the Global, in instantiation at spark-containers-formal-ordered_sets.ads:132, in instantiation at moth.ads:127
-spark-containers-parameter_checks.ads:184:26: high: "Config.State" must be listed in the Global aspect of "Lt_Irreflexive" (SPARK RM 6.1.4(15)), in instantiation at spark-containers-formal-ordered_sets.ads:132, in instantiation at moth.ads:127
-spark-containers-parameter_checks.ads:187:09: error: "moth.config.read_only_conf" is referenced in Post but missing from the Global, in instantiation at spark-containers-formal-ordered_sets.ads:132, in instantiation at moth.ads:127
-spark-containers-parameter_checks.ads:187:09: error: "moth.config.read_only_conf" is referenced in Pre but missing from the Global, in instantiation at spark-containers-formal-ordered_sets.ads:132, in instantiation at moth.ads:127
-spark-containers-parameter_checks.ads:188:21: high: "Config.State" must be listed in the Global aspect of "Lt_Asymmetric" (SPARK RM 6.1.4(15)), in instantiation at spark-containers-formal-ordered_sets.ads:132, in instantiation at moth.ads:127
-spark-containers-parameter_checks.ads:192:09: error: "moth.config.read_only_conf" is referenced in Post but missing from the Global, in instantiation at spark-containers-formal-ordered_sets.ads:132, in instantiation at moth.ads:127
-spark-containers-parameter_checks.ads:192:09: error: "moth.config.read_only_conf" is referenced in Pre but missing from the Global, in instantiation at spark-containers-formal-ordered_sets.ads:132, in instantiation at moth.ads:127
-spark-containers-parameter_checks.ads:193:21: high: "Config.State" must be listed in the Global aspect of "Lt_Transitive" (SPARK RM 6.1.4(15)), in instantiation at spark-containers-formal-ordered_sets.ads:132, in instantiation at moth.ads:127
-spark-containers-parameter_checks.ads:197:09: error: "moth.config.read_only_conf" is referenced in Post but missing from the Global, in instantiation at spark-containers-formal-ordered_sets.ads:132, in instantiation at moth.ads:127
-spark-containers-parameter_checks.ads:197:09: error: "moth.config.read_only_conf" is referenced in Pre but missing from the Global, in instantiation at spark-containers-formal-ordered_sets.ads:132, in instantiation at moth.ads:127
-spark-containers-parameter_checks.ads:198:21: high: "Config.State" must be listed in the Global aspect of "Lt_Order" (SPARK RM 6.1.4(15)), in instantiation at spark-containers-formal-ordered_sets.ads:132, in instantiation at moth.ads:127
-spark-containers-parameter_checks.ads:208:09: error: "moth.config.read_only_conf" is referenced in Post but missing from the Global, in instantiation at spark-containers-formal-ordered_sets.ads:132, in instantiation at moth.ads:127
-spark-containers-parameter_checks.ads:209:19: high: "Config.State" must be listed in the Global aspect of "Eq_Reflexive" (SPARK RM 6.1.4(15)), in instantiation at spark-containers-formal-ordered_sets.ads:132, in instantiation at moth.ads:127
-spark-containers-parameter_checks.ads:212:09: error: "moth.config.read_only_conf" is referenced in Post but missing from the Global, in instantiation at spark-containers-formal-ordered_sets.ads:132, in instantiation at moth.ads:127
-spark-containers-parameter_checks.ads:214:19: high: "Config.State" must be listed in the Global aspect of "Eq_Reflexive" (SPARK RM 6.1.4(15)), in instantiation at spark-containers-formal-ordered_sets.ads:132, in instantiation at moth.ads:127
-spark-containers-parameter_checks.ads:217:09: error: "moth.config.read_only_conf" is referenced in Post but missing from the Global, in instantiation at spark-containers-formal-ordered_sets.ads:132, in instantiation at moth.ads:127
-spark-containers-parameter_checks.ads:217:09: error: "moth.config.read_only_conf" is referenced in Pre but missing from the Global, in instantiation at spark-containers-formal-ordered_sets.ads:132, in instantiation at moth.ads:127
-spark-containers-parameter_checks.ads:218:19: high: "Config.State" must be listed in the Global aspect of "Eq_Symmetric" (SPARK RM 6.1.4(15)), in instantiation at spark-containers-formal-ordered_sets.ads:132, in instantiation at moth.ads:127
-spark-containers-parameter_checks.ads:222:09: error: "moth.config.read_only_conf" is referenced in Post but missing from the Global, in instantiation at spark-containers-formal-ordered_sets.ads:132, in instantiation at moth.ads:127
-spark-containers-parameter_checks.ads:222:09: error: "moth.config.read_only_conf" is referenced in Pre but missing from the Global, in instantiation at spark-containers-formal-ordered_sets.ads:132, in instantiation at moth.ads:127
-spark-containers-parameter_checks.ads:223:19: high: "Config.State" must be listed in the Global aspect of "Eq_Transitive" (SPARK RM 6.1.4(15)), in instantiation at spark-containers-formal-ordered_sets.ads:132, in instantiation at moth.ads:127
+spark-containers-formal-ordered_sets.ads:201:09: error: "moth.config.read_only_conf" is referenced in Post but missing from the Global, in instantiation at moth.ads:127
+spark-containers-formal-ordered_sets.ads:214:09: error: "moth.config.read_only_conf" is referenced in Post but missing from the Global, in instantiation at moth.ads:127
+spark-containers-formal-ordered_sets.ads:1547:06: error: "moth.config.read_only_conf" is referenced in Post but missing from the Global, in instantiation at moth.ads:127
+spark-containers-formal-ordered_sets.ads:1547:06: error: "moth.config.read_only_conf" is referenced in Pre but missing from the Global, in instantiation at moth.ads:127
+spark-containers-formal-ordered_sets.ads:1562:06: error: "moth.config.read_only_conf" is referenced in Post but missing from the Global, in instantiation at moth.ads:127
+spark-containers-formal-ordered_sets.ads:1562:06: error: "moth.config.read_only_conf" is referenced in Pre but missing from the Global, in instantiation at moth.ads:127
+spark-containers-parameter_checks.ads:182:09: error: "moth.config.read_only_conf" is referenced in Post but missing from the Global, in instantiation at spark-containers-formal-ordered_sets.ads:139, in instantiation at moth.ads:127
+spark-containers-parameter_checks.ads:184:26: high: "Config.State" must be listed in the Global aspect of "Lt_Irreflexive" (SPARK RM 6.1.4(15)), in instantiation at spark-containers-formal-ordered_sets.ads:139, in instantiation at moth.ads:127
+spark-containers-parameter_checks.ads:187:09: error: "moth.config.read_only_conf" is referenced in Post but missing from the Global, in instantiation at spark-containers-formal-ordered_sets.ads:139, in instantiation at moth.ads:127
+spark-containers-parameter_checks.ads:187:09: error: "moth.config.read_only_conf" is referenced in Pre but missing from the Global, in instantiation at spark-containers-formal-ordered_sets.ads:139, in instantiation at moth.ads:127
+spark-containers-parameter_checks.ads:188:21: high: "Config.State" must be listed in the Global aspect of "Lt_Asymmetric" (SPARK RM 6.1.4(15)), in instantiation at spark-containers-formal-ordered_sets.ads:139, in instantiation at moth.ads:127
+spark-containers-parameter_checks.ads:192:09: error: "moth.config.read_only_conf" is referenced in Post but missing from the Global, in instantiation at spark-containers-formal-ordered_sets.ads:139, in instantiation at moth.ads:127
+spark-containers-parameter_checks.ads:192:09: error: "moth.config.read_only_conf" is referenced in Pre but missing from the Global, in instantiation at spark-containers-formal-ordered_sets.ads:139, in instantiation at moth.ads:127
+spark-containers-parameter_checks.ads:193:21: high: "Config.State" must be listed in the Global aspect of "Lt_Transitive" (SPARK RM 6.1.4(15)), in instantiation at spark-containers-formal-ordered_sets.ads:139, in instantiation at moth.ads:127
+spark-containers-parameter_checks.ads:197:09: error: "moth.config.read_only_conf" is referenced in Post but missing from the Global, in instantiation at spark-containers-formal-ordered_sets.ads:139, in instantiation at moth.ads:127
+spark-containers-parameter_checks.ads:197:09: error: "moth.config.read_only_conf" is referenced in Pre but missing from the Global, in instantiation at spark-containers-formal-ordered_sets.ads:139, in instantiation at moth.ads:127
+spark-containers-parameter_checks.ads:198:21: high: "Config.State" must be listed in the Global aspect of "Lt_Order" (SPARK RM 6.1.4(15)), in instantiation at spark-containers-formal-ordered_sets.ads:139, in instantiation at moth.ads:127
+spark-containers-parameter_checks.ads:208:09: error: "moth.config.read_only_conf" is referenced in Post but missing from the Global, in instantiation at spark-containers-formal-ordered_sets.ads:139, in instantiation at moth.ads:127
+spark-containers-parameter_checks.ads:209:19: high: "Config.State" must be listed in the Global aspect of "Eq_Reflexive" (SPARK RM 6.1.4(15)), in instantiation at spark-containers-formal-ordered_sets.ads:139, in instantiation at moth.ads:127
+spark-containers-parameter_checks.ads:212:09: error: "moth.config.read_only_conf" is referenced in Post but missing from the Global, in instantiation at spark-containers-formal-ordered_sets.ads:139, in instantiation at moth.ads:127
+spark-containers-parameter_checks.ads:214:19: high: "Config.State" must be listed in the Global aspect of "Eq_Reflexive" (SPARK RM 6.1.4(15)), in instantiation at spark-containers-formal-ordered_sets.ads:139, in instantiation at moth.ads:127
+spark-containers-parameter_checks.ads:217:09: error: "moth.config.read_only_conf" is referenced in Post but missing from the Global, in instantiation at spark-containers-formal-ordered_sets.ads:139, in instantiation at moth.ads:127
+spark-containers-parameter_checks.ads:217:09: error: "moth.config.read_only_conf" is referenced in Pre but missing from the Global, in instantiation at spark-containers-formal-ordered_sets.ads:139, in instantiation at moth.ads:127
+spark-containers-parameter_checks.ads:218:19: high: "Config.State" must be listed in the Global aspect of "Eq_Symmetric" (SPARK RM 6.1.4(15)), in instantiation at spark-containers-formal-ordered_sets.ads:139, in instantiation at moth.ads:127
+spark-containers-parameter_checks.ads:222:09: error: "moth.config.read_only_conf" is referenced in Post but missing from the Global, in instantiation at spark-containers-formal-ordered_sets.ads:139, in instantiation at moth.ads:127
+spark-containers-parameter_checks.ads:222:09: error: "moth.config.read_only_conf" is referenced in Pre but missing from the Global, in instantiation at spark-containers-formal-ordered_sets.ads:139, in instantiation at moth.ads:127
+spark-containers-parameter_checks.ads:223:19: high: "Config.State" must be listed in the Global aspect of "Eq_Transitive" (SPARK RM 6.1.4(15)), in instantiation at spark-containers-formal-ordered_sets.ads:139, in instantiation at moth.ads:127
 gnatprove: error during flow analysis and proof

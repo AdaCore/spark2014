@@ -569,7 +569,10 @@ package Flow_Types is
                                 Pretty_Print_Loop_Init,
                                 Pretty_Print_Record_Field,
                                 Pretty_Print_Entry_Barrier,
-                                Pretty_Print_Borrow);
+                                Pretty_Print_Reclaim,
+                                Pretty_Print_Call_Exception,
+                                Pretty_Print_Param_Havoc,
+                                Pretty_Print_Param_Scrub);
 
    type Subprogram_Call is record
       N : Node_Id;    --  node of the subprogram call
@@ -650,9 +653,6 @@ package Flow_Types is
       --  True if an initial value is either imported (in or in out) or
       --  otherwise initialized.
 
-      Is_Function_Return           : Boolean;
-      --  True if this vertex models the returned value of a function
-
       Is_Global                    : Boolean;
       --  True if the imported or exported variable is a global
 
@@ -686,6 +686,16 @@ package Flow_Types is
       Is_Implicit_Parameter        : Boolean;
       --  True if this vertex models an implicit formal parameter of a
       --  subprogram.
+
+      Is_Call_Exception            : Boolean;
+      --  True if this vertex represents an exception raised within a called
+      --  subprogram.
+
+      Is_Param_Havoc               : Boolean;
+      --  True if this vertex represents havocing parameters of a call to
+      --  subprogram with Exceptional_Cases which are passed neither by-copy
+      --  nor by-reference and thus their value becomes unspecified when the
+      --  call raises an exception.
 
       Is_Neverending               : Boolean;
       --  True if this vertex models a loop that is detected as potentially
@@ -735,6 +745,10 @@ package Flow_Types is
       --  The set of all subprograms (functions and procedures) called; think
       --  of this as Variables_Used, but for subprogram calls.
 
+      Proof_Dependencies           : Node_Sets.Set;
+      --  Subprograms and package elaborations whose contract is pulled by
+      --  proof to verify the analyzed entity.
+
       Loops                        : Node_Sets.Set;
       --  Which loops are we a member of (identified by loop name/label). For
       --  loop stability analysis.
@@ -773,7 +787,6 @@ package Flow_Types is
                    Is_Default_Init                 => False,
                    Is_Loop_Entry                   => False,
                    Is_Initialized                  => False,
-                   Is_Function_Return              => False,
                    Is_Global                       => False,
                    Is_Import                       => False,
                    Is_Export                       => False,
@@ -784,6 +797,8 @@ package Flow_Types is
                    Is_Discr_Or_Bounds_Parameter    => False,
                    Is_Global_Parameter             => False,
                    Is_Implicit_Parameter           => False,
+                   Is_Call_Exception               => False,
+                   Is_Param_Havoc                  => False,
                    Is_Neverending                  => False,
                    Is_Declaration_Node             => False,
                    Execution                       => Normal_Execution,
@@ -800,6 +815,7 @@ package Flow_Types is
                    Volatiles_Read                  => Flow_Id_Sets.Empty_Set,
                    Volatiles_Written               => Flow_Id_Sets.Empty_Set,
                    Subprogram_Calls                => Call_Sets.Empty_Set,
+                   Proof_Dependencies              => Node_Sets.Empty_Set,
                    Loops                           => Node_Sets.Empty_Set,
                    Record_RHS                      => Flow_Graphs.Null_Vertex,
                    Error_Location                  => Empty,

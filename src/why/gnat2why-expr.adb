@@ -45,7 +45,6 @@ with GNATCOLL.Symbols;               use GNATCOLL.Symbols;
 with Gnat2Why_Args;
 with Gnat2Why.Error_Messages;        use Gnat2Why.Error_Messages;
 with Gnat2Why.Expr.Loops;            use Gnat2Why.Expr.Loops;
-with Gnat2Why.Expr.Loops.Exits;
 with Gnat2Why.Subprograms;           use Gnat2Why.Subprograms;
 with Gnat2Why.Subprograms.Pointers;  use Gnat2Why.Subprograms.Pointers;
 with Gnat2Why.Tables;                use Gnat2Why.Tables;
@@ -10214,10 +10213,15 @@ package body Gnat2Why.Expr is
             Right_Arr => Expr2,
             Dim       => Positive (Number_Dimensions (Ty)));
       elsif Is_Access_Type (Ty) then
-         Result := New_Comparison
-           (Symbol => Why_Eq,
-            Left   => New_Pointer_Is_Null_Access (Ty, Expr1),
-            Right  => New_Pointer_Is_Null_Access (Ty, Expr2));
+         Result := New_And_Pred
+           (Left  => New_Comparison
+              (Symbol => Why_Eq,
+               Left   => New_Pointer_Is_Null_Access (Ty, Expr1),
+               Right  => New_Pointer_Is_Null_Access (Ty, Expr2)),
+            Right => New_Comparison
+              (Symbol => Why_Eq,
+               Left   => New_Pointer_Is_Moved_Access (Ty, Expr1),
+               Right  => New_Pointer_Is_Moved_Access (Ty, Expr2)));
 
          if Is_Anonymous_Access_Type (Ty) then
             Result := New_And_Pred
@@ -17467,8 +17471,6 @@ package body Gnat2Why.Expr is
                --  In the case of a precisely supported address specificatiom,
                --  we emit a static check that the type of the object is OK
                --  for address clauses, and we havoc any potential aliases.
-               --  Otherwise, we emit a warning when the value read might not
-               --  be valid. This addresses assumption SPARK_EXTERNAL_VALID.
 
                if Present (Get_Address_Expr (Decl)) then
                   declare
@@ -17481,24 +17483,14 @@ package body Gnat2Why.Expr is
 
                      Valid       : Boolean;
                      Explanation : Unbounded_String;
+
                   begin
-
-                     Suitable_For_UC_Target
-                       (Retysp (Etype (Obj)), True, Valid, Explanation);
-
-                     --  A warning is emitted on imprecisely supported address
-                     --  specifications and external names.
-
-                     if not Supported_Alias then
-                        if not Valid then
-                           Error_Msg_NE
-                             (Warning_Message (Warn_Address_Valid), Obj, Obj);
-                        end if;
-
                      --  The check is needed only for overlays between two
                      --  SPARK objects.
 
-                     else
+                     if Supported_Alias then
+                        Suitable_For_UC_Target
+                          (Retysp (Etype (Obj)), True, Valid, Explanation);
                         Emit_Static_Proof_Result
                           (Decl, VC_UC_Target, Valid, Current_Subp,
                            Explanation => To_String (Explanation));
@@ -21170,22 +21162,30 @@ package body Gnat2Why.Expr is
 
          --  Insert termination check if the enclosing subprogram has a dynamic
          --  termination condition.
+         --  As in general functions always terminate, this is only needed
+         --  for calls which cannot terminate (because they might hide
+         --  recursivity).
+         --  If the callee is ghost and not the caller, the check was done in
+         --  flow analysis. Do not duplicate it here.
 
-         if Present (Current_Subp)
-           and then Ekind (Current_Subp) in E_Procedure | E_Entry
+         if Ekind (Current_Subp) in E_Procedure | E_Entry
            and then Get_Termination_Condition (Current_Subp).Kind = Dynamic
            and then Call_Never_Terminates (Expr, Current_Subp)
+           and then not
+             (Is_Ghost_Entity (Subp)
+              and then not Is_Ghost_Entity (Current_Subp))
          then
             pragma Assert
               (Termination_Condition_Name /= Why_Empty);
 
             Prepend
-              (New_Located_Assert
-                 (Ada_Node   => Expr,
-                  Pred       => New_Not
-                    (Right => +Termination_Condition_Name),
-                  Reason     => VC_Termination_Check,
-                  Kind       => EW_Assert),
+              (New_Ignore
+                 (Prog => New_Located_Assert
+                      (Ada_Node => Expr,
+                       Pred     => New_Not
+                         (Right => +Termination_Condition_Name),
+                       Reason   => VC_Termination_Check,
+                       Kind     => EW_Assert)),
                T);
          end if;
       end if;
@@ -21225,9 +21225,31 @@ package body Gnat2Why.Expr is
               (Statements (Handler)),
             Body_Params.Phase));
 
-      Handlers       : constant List_Id := Exception_Handlers (N);
-      Core           : constant W_Prog_Id :=
+      function List_Length_Non_Pragma (L : List_Id) return Nat;
+      --  Similar to List_Length, but excluding pragma items
+      --  ??? this routine could be moved to the frontend
+
+      ----------------------------
+      -- List_Length_Non_Pragma --
+      ----------------------------
+
+      function List_Length_Non_Pragma (L : List_Id) return Nat is
+         Length : Nat := 0;
+         Item   : Node_Id := First_Non_Pragma (L);
+      begin
+         while Present (Item) loop
+            Length := Length + 1;
+            Next_Non_Pragma (Item);
+         end loop;
+         return Length;
+      end List_Length_Non_Pragma;
+
+      Handlers : constant List_Id := Exception_Handlers (N);
+      Core     : constant W_Prog_Id :=
         Transform_Statements_And_Declarations (Statements (N));
+
+   --  Start of processing for Transform_Handled_Statements
+
    begin
       if Present (Handlers) then
          declare
@@ -21236,14 +21258,14 @@ package body Gnat2Why.Expr is
             Exc_Id              : constant W_Identifier_Id :=
               New_Temp_Identifier (Base_Name => "exc", Typ => EW_Int_Type);
             Others_Present      : constant Boolean :=
-              Nkind (First (Exception_Choices (Last (Handlers)))) =
+              Nkind (First (Exception_Choices (Last_Non_Pragma (Handlers)))) =
                 N_Others_Choice;
-            Nb_Cases            : constant Integer :=
-              Natural (List_Length (Handlers));
+            Nb_Cases            : constant Positive :=
+              Natural (List_Length_Non_Pragma (Handlers));
             Elsif_Parts         : W_Expr_Array
               (2 .. Nb_Cases - (if Others_Present then 1 else 0));
             Else_Part           : W_Prog_Id;
-            Handler             : Node_Id := First (Handlers);
+            Handler             : Node_Id := First_Non_Pragma (Handlers);
             W_Handler           : W_Prog_Id;
             Handled_Exc         : constant Exception_Sets.Set :=
               Get_Exceptions_From_Handlers (N);
@@ -21261,7 +21283,7 @@ package body Gnat2Why.Expr is
             else
                --  Fill the Elsif_Parts if any
 
-               Next (Handler);
+               Next_Non_Pragma (Handler);
                if Elsif_Parts'Length > 0 then
                   for Num in Elsif_Parts'Range loop
                      Elsif_Parts (Num) := New_Elsif
@@ -21269,7 +21291,7 @@ package body Gnat2Why.Expr is
                           (Exception_Choices (Handler), Exc_Id, EW_Prog),
                         Then_Part => +Transform_Handler (Handler),
                         Domain    => EW_Prog);
-                     Next (Handler);
+                     Next_Non_Pragma (Handler);
                   end loop;
                end if;
 
@@ -21296,7 +21318,7 @@ package body Gnat2Why.Expr is
 
                --  Reconstruct the conditional
 
-               Handler := First (Handlers);
+               Handler := First_Non_Pragma (Handlers);
 
                W_Handler := New_Conditional
                     (Ada_Node    => N,
@@ -23610,6 +23632,11 @@ package body Gnat2Why.Expr is
                  (Return_Statement_Entity (Stmt_Or_Decl));
                Ret_Type   : constant W_Type_Id :=
                  Type_Of_Node (Subp);
+
+               --  Based on Ada RM 6.5, the type of the return object and the
+               --  result type of the function must be statically compatible,
+               --  so no check should be needed.
+
                Obj_Deref  : constant W_Prog_Id :=
                  +Insert_Simple_Conversion
                    (Domain => EW_Prog,
@@ -23814,25 +23841,6 @@ package body Gnat2Why.Expr is
                   end;
                end if;
 
-               --  If a procedure might not return, ignore the case where it
-               --  does not return after the call:
-               --
-               --    proc;
-               --    assume (no__return = False);
-
-               if Has_Might_Not_Return_Annotation (Subp) then
-                  Append
-                    (Call,
-                     New_Assume_Statement
-                       (Ada_Node => Stmt_Or_Decl,
-                        Pred     =>
-                          New_Comparison
-                            (Symbol => M_Integer.Bool_Eq,
-                             Left   => New_Deref (Right => +M_Main.No_Return,
-                                                  Typ   => EW_Bool_Type),
-                             Right  => False_Term)));
-               end if;
-
                --  Insert invariant check if needed
 
                if Subp_Needs_Invariant_Checks (Subp) then
@@ -23866,42 +23874,49 @@ package body Gnat2Why.Expr is
                --  Generate termination checks if necessary
 
                declare
-                  Encl_Cond : constant Termination_Condition :=
+                  Encl_Cond  : constant Termination_Condition :=
                     Get_Termination_Condition (Current_Subp, Compute => True);
-                  Subp_Cond : constant Termination_Condition :=
+                  Subp_Cond  : constant Termination_Condition :=
                     Get_Termination_Condition (Subp, Compute => True);
+                  Ghost_Call : constant Boolean :=
+                    Is_Ghost_Entity (Subp)
+                    and then not Is_Ghost_Entity (Current_Subp);
 
                begin
                   --  If the enclosing subprogram has a dynamic termination
                   --  condition, termination checks are entirely done by
-                  --  proof. Of the call might unconditionally not terminate,
+                  --  proof. If the call might unconditionally not terminate,
                   --  check that the termination condition of the enclosing
                   --  subprogram evaluates to False.
+                  --  If the callee is ghost and not the caller, the check was
+                  --  done in flow analysis. Do not duplicate it here.
 
                   if Encl_Cond.Kind = Dynamic
                     and then
                       (Subp_Cond = (Static, False)
                        or else
                          Call_Never_Terminates (Stmt_Or_Decl, Current_Subp))
+                    and then not Ghost_Call
                   then
                      pragma Assert
                        (Termination_Condition_Name /= Why_Empty);
 
                      Prepend
-                       (New_Located_Assert
-                          (Ada_Node   => Stmt_Or_Decl,
-                           Pred       => New_Not
-                             (Right => +Termination_Condition_Name),
-                           Reason     => VC_Termination_Check,
-                           Kind       => EW_Assert),
+                       (New_Ignore
+                          (Prog => New_Located_Assert
+                               (Ada_Node   => Stmt_Or_Decl,
+                                Pred       => New_Not
+                                  (Right => +Termination_Condition_Name),
+                                Reason     => VC_Termination_Check,
+                                Kind       => EW_Assert)),
                         Call);
 
                   --  Check calls to subprograms with a dynamic termination
                   --  conditions. This shall also be done in subprograms which
-                  --  always terminate. Other checks are deferred to flow
-                  --  analysis.
+                  --  always terminate and when the callee is ghost and not the
+                  --  caller. Other checks are deferred to flow analysis.
 
-                  elsif Encl_Cond /= (Static, False)
+                  elsif (Encl_Cond /= (Static, False) or else Ghost_Call)
                     and then Subp_Cond.Kind = Dynamic
                   then
                      declare
@@ -23914,8 +23929,15 @@ package body Gnat2Why.Expr is
                              Progs    => Args,
                              Reason   => VC_Termination_Check,
                              Typ      => EW_Unit_Type);
+
                      begin
-                        if Encl_Cond.Kind = Dynamic  then
+                        --  Termination of ghost calls needs to be checked
+                        --  independently of the termination condition of the
+                        --  caller.
+
+                        if Encl_Cond.Kind = Dynamic
+                          and then not Ghost_Call
+                        then
                            Term_Check := New_Conditional
                              (Condition => +Termination_Condition_Name,
                               Then_Part => Term_Check);
@@ -24414,17 +24436,7 @@ package body Gnat2Why.Expr is
          Nlists.Next (Cur_Stmt_Or_Decl);
       end loop;
 
-      --  If inside a loop, with the last instruction being an unconditional
-      --  exit or return statement, and provided the loop is not unrolled,
-      --  we store the Why3 expression in a map, and return instead the raise
-      --  expression that will be linked to that treatment.
-
-      declare
-         Expr : W_Prog_Id := +Result;
-      begin
-         Loops.Exits.Record_And_Replace (Stmts_And_Decls, Expr);
-         return Expr;
-      end;
+      return +Result;
    end Transform_Statements_And_Declarations;
 
    ------------------------------

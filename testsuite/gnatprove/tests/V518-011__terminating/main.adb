@@ -2,7 +2,7 @@ procedure Main with SPARK_Mode is
 
    procedure P with
      Import,
-     Annotate => (GNATprove, Terminating);
+     Always_Terminates;
 
 begin
    P;

@@ -135,19 +135,6 @@ package SPARK_Definition.Annotate is
    --  When such an annotation is provided for a function E, is is assumed to
    --  be an application of the logical "=" operator of Why3.
 
-   --  A pragma Annotate for termination has the following form:
-   --    pragma Annotate (GNATprove, Always_Return, Entity => E);
-
-   --  where
-   --    GNATprove           is a fixed identifier
-   --    Always_Return       is a fixed identifier
-   --    E                   is a subprogram or a package entity
-
-   --  When such an annotation is provided for a subprogram E, it is assumed to
-   --  terminate as far as proof is concerned. If it is provided for a package,
-   --  then all the subprograms declared in this package are assumed to
-   --  terminate.
-
    --  A pragma Annotate for ownership can be applied either on a type or a
    --  function. On a type, it has the following form:
    --    pragma Annotate
@@ -389,6 +376,20 @@ package SPARK_Definition.Annotate is
      and then Has_Ownership_Annotation (E)
      and then Needs_Reclamation (E);
    --  Retrieve the check function for a type which needs reclamation if any
+
+   function Get_Reclamation_Check_Function (E : Entity_Id) return Entity_Id
+   with Pre => Is_Type (E)
+     and then Has_Ownership_Annotation (E)
+     and then Needs_Reclamation (E);
+   --  Same as above but only returns the check function
+
+   function Get_Ownership_Function_From_Pragma
+     (N  : Node_Id;
+      Ty : Entity_Id) return Entity_Id
+   with Pre => Is_Pragma_Annotate_GNATprove (N);
+   --  Return the function F such that N is a pragma Annotate
+   --  (GNATprove,  Ownership, ..., F) and F and Ty have the same root type if
+   --  any.
 
    function Has_Automatic_Instantiation_Annotation
      (E : Entity_Id) return Boolean;

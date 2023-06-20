@@ -28,7 +28,7 @@ counter_example_loop_index.adb:74:33: high: loop invariant might not be preserve
 counter_example_loop_index.adb:74:33: info: loop invariant initialization proved (CVC5: 1 VC)
 counter_example_loop_index.ads:8:14: warning: subprogram "P" has no effect
 counterexample expected for check at counter_example_loop_index.adb:14
-  trace at counter_example_loop_index.adb:12 --> I = 2
+  trace at counter_example_loop_index.adb:12 --> I = 2 and J = 0
   trace at counter_example_loop_index.adb:13 --> K = 1
   trace at counter_example_loop_index.adb:14 --> J = 1
 [PREVIOUS]  trace at counter_example_loop_index.adb:14 --> I = 1 and J = 1 and K = 0
@@ -41,7 +41,7 @@ counterexample expected for check at counter_example_loop_index.adb:25
   trace at counter_example_loop_index.adb:28 --> I = 51 and J = 51
 counterexample expected for check at counter_example_loop_index.adb:61
   trace at counter_example_loop_index.adb:55 --> X = 0
-  trace at counter_example_loop_index.adb:59 --> I = 52
+  trace at counter_example_loop_index.adb:59 --> I = 52 and J = 0
   trace at counter_example_loop_index.adb:60 --> K = 1
   trace at counter_example_loop_index.adb:61 --> J = 51
 [PREVIOUS]  trace at counter_example_loop_index.adb:61 --> I = 51 and J = 51 and K = 0

@@ -1,3 +1,4 @@
-tasks.ads:8:37: error: default initialization cannot depend on variable input "X" (SPARK RM 4.4(2))
+tasks.ads:8:37: error: default initialization cannot depend on variable input "X" [E0007]
+tasks.ads:8:37: error: launch "gnatprove --explain=E0007" for more information
 tasks.ads:8:37: error: use instead a constant initialized to the expression with variable input
 gnatprove: error during flow analysis and proof

@@ -230,33 +230,19 @@ package body SPARK_Util is
    -----------------------
 
    function No_Deep_Updates
-     (Stmts       : List_Id;
-      Variable    : Entity_Id;
-      Explanation : out Unbounded_String;
-      Decls       : List_Id := No_List;
-      End_Stmt    : Node_Id := Empty) return Boolean;
-   --  Return True if Decls & Stmts contains no updates to a deep part of
-   --  Variable. Stop before the statement End_Stmt if any. If an update is
-   --  found, check that it is not followed by a return statement in the
-   --  sequence of statement. If it is, the update is in a path which does not
-   --  lead to the next iteration or the next recursive call, so it can be
-   --  ignored. If a deep update is found, Explanation is set.
+     (Stmts       :     Local_CFG.Vertex_Sets.Set;
+      Variable    :     Entity_Id;
+      Explanation : out Unbounded_String)
+      return Boolean;
+   --  Return True if Stmts contains no assignment to a deep part of Variable,
+   --  either directly or through a borrower.
+   --  If a deep update is found, Explanation is set.
 
-   Goto_Found : exception;
-
-   function Is_Reborrowed_On_All_Paths
-     (Stmts       : List_Id;
-      Brower      : Entity_Id;
-      Explanation : out Unbounded_String;
-      Decls       : List_Id := No_List;
-      End_Stmt    : Node_Id := Empty) return Boolean;
-   --  Traverse recursively the list of statements Decls & Stmts and check that
-   --  there is at least an update of Brower with a strict subpath of itself
-   --  on all program paths which do not exit the loop.
-   --  Raise Goto_Found if a goto statement is encountered before any
-   --  reborrows on a particular path. They are not handled precisely.
-   --  Stop before the statement End_Stmt if any. If Brower is not reborrowed
-   --  on all paths, Explanation is set.
+   function Is_Strict_Reborrow_Of (N : Node_Id; Variable : Entity_Id)
+                                   return Boolean
+     with Pre => Is_Anonymous_Access_Object_Type (Etype (Variable));
+   --  Checks whether N is an assignment statement that performs a strict
+   --  re-borrow of Variable.
 
    ------------------------------
    -- Extra tables on entities --
@@ -1051,12 +1037,36 @@ package body SPARK_Util is
    --------------------------------
 
    procedure Collect_Reachable_Handlers (Stmt : Node_Id) is
+
+      function Is_Body (N : Node_Id) return Boolean is
+        (Nkind (N) in N_Entity_Body);
+
+      function Enclosing_Body is
+        new First_Parent_With_Property (Is_Body);
+
       Scop     : Node_Id := Stmt;
       Exc_Set  : Exception_Sets.Set := Get_Raised_Exceptions
         (Stmt, Only_Handled => False);
       Handlers : Node_Lists.List;
 
    begin
+      --  Ghost procedure calls shall never propagate exceptions to non-ghost
+      --  code.
+
+      if Nkind (Stmt) = N_Procedure_Call_Statement then
+         declare
+            Callee : constant Entity_Id := Get_Called_Entity (Stmt);
+            Caller : constant Entity_Id := Unique_Defining_Entity
+              (Enclosing_Body (Stmt));
+         begin
+            if Is_Ghost_Entity (Callee) and then not Is_Ghost_Entity (Caller)
+            then
+               Raise_To_Handlers_Map.Insert (Stmt, Handlers);
+               return;
+            end if;
+         end;
+      end if;
+
       --  Go up the parent chain to collect all the potentially reachable
       --  handlers. Stop when Exc_Set is empty or the enclosing body is
       --  reached.
@@ -1094,62 +1104,57 @@ package body SPARK_Util is
 
                when N_Handled_Sequence_Of_Statements =>
                   declare
-                     L_Handlers : constant List_Id :=
-                       Exception_Handlers (Scop);
-                     Handler    : Node_Id;
+                     Handler : Node_Id;
                   begin
-                     if Present (L_Handlers) then
-                        Handler := First (L_Handlers);
-                        loop
-                           declare
-                              Handler_Exc_Set : Exception_Sets.Set :=
-                                Get_Exceptions_From_Handler (Handler);
-                           begin
-                              Handler_Exc_Set.Intersection (Exc_Set);
+                     Handler := First_Non_Pragma (Exception_Handlers (Scop));
+                     while Present (Handler) loop
+                        declare
+                           Handler_Exc_Set : Exception_Sets.Set :=
+                             Get_Exceptions_From_Handler (Handler);
+                        begin
+                           Handler_Exc_Set.Intersection (Exc_Set);
 
-                              --  Handler can be reached from exceptions of
-                              --  Exc_Set. Append it to the list of reachable
-                              --  handlers. Also store the set of reachable
-                              --  exceptions in the Raised_Exceptions map.
+                           --  Handler can be reached from exceptions of
+                           --  Exc_Set. Append it to the list of reachable
+                           --  handlers. Also store the set of reachable
+                           --  exceptions in the Raised_Exceptions map.
 
-                              if not Handler_Exc_Set.Is_Empty then
-                                 Handlers.Append (Handler);
-                                 Exc_Set.Difference (Handler_Exc_Set);
+                           if not Handler_Exc_Set.Is_Empty then
+                              Handlers.Append (Handler);
+                              Exc_Set.Difference (Handler_Exc_Set);
 
-                                 declare
-                                    Position : Node_To_Exceptions.Cursor;
-                                    Inserted : Boolean;
-                                 begin
-                                    Raised_Exceptions.Insert
-                                      (Handler,
-                                       (Handler_Exc_Set,
-                                        Is_Blocked => False),
-                                       Position, Inserted);
+                              declare
+                                 Position : Node_To_Exceptions.Cursor;
+                                 Inserted : Boolean;
+                              begin
+                                 Raised_Exceptions.Insert
+                                   (Handler,
+                                    (Handler_Exc_Set,
+                                     Is_Blocked => False),
+                                    Position, Inserted);
 
-                                    if not Inserted then
+                                 if not Inserted then
 
-                                       --  Sanity checking, the exception
-                                       --  set should not have been used
-                                       --  yet.
+                                    --  Sanity checking, the exception
+                                    --  set should not have been used
+                                    --  yet.
 
-                                       if Raised_Exceptions
-                                         (Position).Is_Blocked
-                                       then
-                                          raise Program_Error;
-                                       end if;
-
-                                       Raised_Exceptions (Position).Exceptions.
-                                         Union (Handler_Exc_Set);
+                                    if Raised_Exceptions
+                                      (Position).Is_Blocked
+                                    then
+                                       raise Program_Error;
                                     end if;
-                                 end;
 
-                                 exit when Exc_Set.Is_Empty;
-                              end if;
-                           end;
-                           Next (Handler);
-                           exit when No (Handler);
-                        end loop;
-                     end if;
+                                    Raised_Exceptions (Position).Exceptions.
+                                      Union (Handler_Exc_Set);
+                                 end if;
+                              end;
+
+                              exit when Exc_Set.Is_Empty;
+                           end if;
+                        end;
+                        Next_Non_Pragma (Handler);
+                     end loop;
                   end;
                when others =>
                   null;
@@ -2067,10 +2072,10 @@ package body SPARK_Util is
 
       --  Traverse the handlers in reverse order to find the others case first
 
-      Handler := Last (Handlers);
+      Handler := Last_Non_Pragma (Handlers);
       loop
          Result.Union (Get_Exceptions_From_Handler (Handler));
-         Prev (Handler);
+         Prev_Non_Pragma (Handler);
          exit when No (Handler);
       end loop;
 
@@ -2098,6 +2103,13 @@ package body SPARK_Util is
 
    function Get_Handled_Exceptions (Stmt : Node_Id) return Exception_Sets.Set
    is
+
+      function Is_Body (N : Node_Id) return Boolean is
+        (Nkind (N) in N_Entity_Body);
+
+      function Enclosing_Body is
+        new First_Parent_With_Property (Is_Body);
+
       function Is_Body_Or_Handler (N : Node_Id) return Boolean is
         (Nkind (N) in N_Entity_Body
                     | N_Handled_Sequence_Of_Statements
@@ -2110,6 +2122,22 @@ package body SPARK_Util is
       Result : Exception_Sets.Set := Exception_Sets.Empty_Set;
 
    begin
+      --  Ghost procedure calls shall never propagate exceptions to non-ghost
+      --  code.
+
+      if Nkind (Stmt) = N_Procedure_Call_Statement then
+         declare
+            Callee : constant Entity_Id := Get_Called_Entity (Stmt);
+            Caller : constant Entity_Id := Unique_Defining_Entity
+              (Enclosing_Body (Stmt));
+         begin
+            if Is_Ghost_Entity (Callee) and then not Is_Ghost_Entity (Caller)
+            then
+               return Result;
+            end if;
+         end;
+      end if;
+
       --  Traverse all the enclosing handlers and collect the handled
       --  exceptions.
 
@@ -3441,189 +3469,6 @@ package body SPARK_Util is
         and then Ekind (Scope (E)) = E_Protected_Type;
    end Is_Protected_Component_Or_Discr;
 
-   --------------------------------
-   -- Is_Reborrowed_On_All_Paths --
-   --------------------------------
-
-   function Is_Reborrowed_On_All_Paths
-     (Stmts       : List_Id;
-      Brower      : Entity_Id;
-      Explanation : out Unbounded_String;
-      Decls       : List_Id := No_List;
-      End_Stmt    : Node_Id := Empty) return Boolean
-   is
-      N             : Node_Id := First (Decls);
-      In_Decls      : Boolean := True;
-      End_Reached   : Boolean := False with Ghost;
-      --  Flag to check that if provided, the End_Stmt has been encountered
-
-   begin
-      loop
-         if No (N) and then In_Decls then
-            N := First (Stmts);
-            In_Decls := False;
-         end if;
-
-         exit when No (N);
-
-         if N = End_Stmt then
-            End_Reached := True;
-            exit;
-         end if;
-
-         case Nkind (N) is
-
-            --  If the borrower is assigned, check that the path contains
-            --  a dereference.
-
-            when N_Assignment_Statement =>
-               declare
-                  Lvalue : constant Node_Id := Name (N);
-               begin
-                  if Nkind (Lvalue) in N_Identifier | N_Expanded_Name
-                    and then Entity (Lvalue) = Brower
-                    and then Is_Strict_Subpath (Expression (N))
-                  then
-                     return True;
-                  end if;
-               end;
-
-            --  Early exits, we do not consider the path
-
-            when N_Extended_Return_Statement
-               | N_Simple_Return_Statement
-               | N_Exit_Statement
-               | N_Raise_xxx_Error
-            =>
-               return True;
-
-            --  A Goto statement could make us skip later updates on
-            --  this path, return False.
-
-            when N_Goto_Statement
-               | N_Raise_Statement
-            =>
-               raise Goto_Found;
-
-            when N_Case_Statement =>
-               declare
-                  OK_On_All   : Boolean := True;
-                  Alternative : Opt_N_Case_Statement_Alternative_Id :=
-                    First_Non_Pragma (Alternatives (N));
-               begin
-                  loop
-                     if not Is_Reborrowed_On_All_Paths
-                       (Statements (Alternative), Brower, Explanation)
-                     then
-                        OK_On_All := False;
-                        exit;
-                     end if;
-                     Next_Non_Pragma (Alternative);
-                     exit when No (Alternative);
-                  end loop;
-
-                  if OK_On_All then
-                     return True;
-                  end if;
-               end;
-
-            when N_If_Statement =>
-               declare
-                  OK_On_All  : Boolean :=
-                    Is_Reborrowed_On_All_Paths
-                      (Then_Statements (N), Brower, Explanation)
-                      and then Is_Reborrowed_On_All_Paths
-                        (Else_Statements (N), Brower, Explanation);
-                  Elsif_Part : Opt_N_Elsif_Part_Id :=
-                    First (Elsif_Parts (N));
-               begin
-                  if OK_On_All then
-                     while Present (Elsif_Part) loop
-                        if not Is_Reborrowed_On_All_Paths
-                          (Then_Statements (Elsif_Part), Brower, Explanation)
-                        then
-                           OK_On_All := False;
-                           exit;
-                        end if;
-                        Next (Elsif_Part);
-                     end loop;
-
-                     if OK_On_All then
-                        return True;
-                     end if;
-                  end if;
-               end;
-
-            when N_Handled_Sequence_Of_Statements =>
-               if Is_Reborrowed_On_All_Paths
-                 (Statements (N), Brower, Explanation)
-               then
-                  return True;
-               end if;
-
-            --  Do not consider nested loop as we do not know if their
-            --  body will be executed at least once. Still check them
-            --  for absence of Gotos.
-
-            when N_Loop_Statement =>
-               declare
-                  Unused : constant Boolean :=
-                    Is_Reborrowed_On_All_Paths
-                      (Statements (N), Brower, Explanation);
-               begin
-                  null;
-               end;
-
-            when N_Block_Statement =>
-               if Is_Reborrowed_On_All_Paths
-                 (Statements (Handled_Statement_Sequence (N)),
-                  Brower, Explanation,
-                  Decls => Declarations (N))
-               then
-                  return True;
-               end if;
-
-            --  Calls could update the borrower, but we cannot be sure.
-            --  Ignore them.
-
-            when N_Entry_Call_Statement
-               | N_Procedure_Call_Statement
-            =>
-               null;
-
-            when N_Ignored_In_SPARK
-               | N_Itype_Reference
-               | N_Object_Renaming_Declaration
-               | N_Subtype_Declaration
-               | N_Full_Type_Declaration
-               | N_Object_Declaration
-               | N_Package_Body
-               | N_Package_Declaration
-               | N_Pragma
-               | N_Subprogram_Body
-               | N_Subprogram_Declaration
-               | N_Delay_Statement
-            =>
-               null;
-
-            when others =>
-               pragma Annotate (Xcov, Exempt_On, "Debugging code");
-               Ada.Text_IO.Put_Line
-                 ("[SPARK_Util.Is_Reborrowed_On_All_Paths] kind ="
-                  & Node_Kind'Image (Nkind (N)));
-               raise Program_Error;
-               pragma Annotate (Xcov, Exempt_Off);
-         end case;
-         Next (N);
-      end loop;
-
-      pragma Assert (No (End_Stmt) or else End_Reached);
-      Explanation := To_Unbounded_String
-        ('"' & Source_Name (Brower))
-        & """ might not be updated on all paths";
-      return False;
-   end Is_Reborrowed_On_All_Paths;
-
    ---------------------------
    -- Is_Rooted_In_Constant --
    ---------------------------
@@ -3780,6 +3625,21 @@ package body SPARK_Util is
           Get_Specialized_Parameters (Call, Specialized_Entities).Is_Empty;
    end Is_Specialized_Call;
 
+   ---------------------------
+   -- Is_Strict_Reborrow_Of --
+   ---------------------------
+
+   function Is_Strict_Reborrow_Of (N : Node_Id; Variable : Entity_Id)
+                                   return Boolean
+   is (Nkind (N) = N_Assignment_Statement
+       and then
+         (declare
+             Nm : constant Node_Id := Name (N);
+          begin
+             Nkind (Nm) in N_Identifier | N_Expanded_Name
+             and then Entity (Nm) = Variable
+             and then Is_Strict_Subpath (Expression (N))));
+
    -----------------------
    -- Is_Strict_Subpath --
    -----------------------
@@ -3900,6 +3760,601 @@ package body SPARK_Util is
         and then Is_Traversal_Function (Get_Called_Entity (Expr));
    end Is_Traversal_Function_Call;
 
+   ---------------
+   -- Local_CFG --
+   ---------------
+
+   package body Local_CFG is
+
+      ------------------------------
+      -- Internal Graph Structure --
+      ------------------------------
+
+      type Neighborhood is record
+         Depth_In_Enclosing : Natural;
+         Ctrl_Predecessors  : Vertex_Sets.Set;
+      end record;
+      --  Vertices in statements' CFG carry their depth within the
+      --  enclosing body, so that we can detect which neighbors remain inside
+      --  the local CFG. For a vertex of a local CFG, neighbors within
+      --  the wider enclosing-body's CFG are always either decendants or
+      --  siblings-of-ancestors of the Graph_Id's start vertex,
+      --  so we can efficiently filter those that remains in S's graph by
+      --  comparing depth, and at equal depth directly test equality with S.
+      --
+      --  The notion of 'depth' for the graph is purely intended for
+      --  internal use, nothing else should depend on it.
+
+      package Vertex_To_Neighborhood is new Ada.Containers.Hashed_Maps
+        (Key_Type        => Vertex,
+         Element_Type    => Neighborhood,
+         Hash            => Vertex_Hash,
+         Equivalent_Keys => "=");
+
+      All_Graphs : Vertex_To_Neighborhood.Map;
+      --  Caches the union of local CFGs, with local CFGs being
+      --  build on demand per-body.
+
+      package Node_To_Vertex is new Ada.Containers.Hashed_Maps
+        (Key_Type        => Node_Id,
+         Element_Type    => Vertex,
+         Hash            => Node_Hash,
+         Equivalent_Keys => "=");
+      --  For transfer-of-control tracking.
+
+      --------------------------------------------
+      -- Local subprograms of package Local_CFG --
+      --------------------------------------------
+
+      procedure Cache_Graph_If_Needed (G : Graph_Id);
+      --  Make sure control-flow graph of enclosing body is cached
+      --  in Local_CFGs, by building it if needed.
+
+      procedure Cache_Graph_Of_Body (Enclosing_Body : Node_Id);
+      --  Cache graph of body
+
+      function Predecessors (G : Graph_Id; V : Vertex) return Vertex_Sets.Set;
+      --  Return predecessors of V in G's control-flow graph.
+
+      ---------------------------------
+      -- Collect_Vertices_Leading_To --
+      ---------------------------------
+
+      procedure Collect_Vertices_Leading_To
+        (Graph       : Graph_Id;
+         Targets     : in out Vertex_Sets.Set;
+         Pred        : not null access function (V : Vertex) return Boolean
+                       := True_On_Every_Vertex'Access;
+         Empty_Paths : Boolean := True)
+      is
+         Exploration_Set : Vertex_Sets.Set := Vertex_Sets.Empty_Set;
+         --  Stores vertices that remain to be explored
+
+         Initial_Set     : constant Vertex_Sets.Set := Targets;
+         --  Copy Targets input value so that we can immediately use Targets
+         --  as accumulator (needed when Empty_Paths = False).
+
+         procedure Add_Predecessors (V : Vertex);
+         --  Add Pred-satisfying predecessors of N to exploration set,
+         --  excluding those already in Targets.
+
+         ----------------------
+         -- Add_Predecessors --
+         ----------------------
+
+         procedure Add_Predecessors (V : Vertex) is
+         begin
+            for V_Pred of Predecessors (Graph, V) loop
+               if not Targets.Contains (V_Pred) and then Pred (V_Pred)
+               then
+                  Exploration_Set.Include (V_Pred);
+               end if;
+            end loop;
+         end Add_Predecessors;
+
+      --  Start of processing for Collect_Vertices_Leading_To
+
+      begin
+         if not Empty_Paths then
+            Targets.Clear;
+         end if;
+         for T of Initial_Set loop
+            Add_Predecessors (T);
+         end loop;
+         while not Exploration_Set.Is_Empty loop
+            declare
+               V_Pos : Vertex_Sets.Cursor := Exploration_Set.First;
+               V_Top : constant Vertex := Exploration_Set.Element (V_Pos);
+            begin
+               Exploration_Set.Delete (V_Pos);
+               Targets.Insert (V_Top);
+               Add_Predecessors (V_Top);
+            end;
+         end loop;
+      end Collect_Vertices_Leading_To;
+
+      ---------------------------
+      -- Cache_Graph_If_Needed --
+      ---------------------------
+
+      procedure Cache_Graph_If_Needed (G : Graph_Id) is
+         function Is_Body (N : Node_Id) return Boolean is
+           (Nkind (N) in N_Entity_Body);
+         function Find_Enclosing_Body is
+           new First_Parent_With_Property (Is_Body);
+         Start : constant Vertex := Starting_Vertex (G);
+      begin
+         if not All_Graphs.Contains (Start) then
+            declare
+               Enclosing_Body : constant Node_Id :=
+                 (if G in N_Entity_Id
+                  then Get_Body (G)
+                  else Find_Enclosing_Body (G));
+            begin
+               Cache_Graph_Of_Body (Enclosing_Body);
+            end;
+            pragma Assert (All_Graphs.Contains (Start));
+         end if;
+      end Cache_Graph_If_Needed;
+
+      -------------------------
+      -- Cache_Graph_Of_Body --
+      -------------------------
+
+      procedure Cache_Graph_Of_Body (Enclosing_Body : Node_Id) is
+
+         --  Store targets for transfer-of-control statements.
+         --  Handlers are already managed globally by Reachable_Handlers.
+
+         Loop_Exit_Nodes  : Node_To_Vertex.Map;
+         --  Track exit vertices for loops keyed from loop entity,
+         --  to connect exit statements.
+
+         Goto_Targets     : Node_To_Vertex.Map;
+         --  Track label vertices keyed from label entity,
+         --  to connect goto statements.
+
+         Body_Entity      : constant Node_Id :=
+           Unique_Defining_Entity (Enclosing_Body);
+         Body_Exit_Vertex : constant Vertex :=
+           Vertex'(Kind => Body_Exit, Node => Body_Entity);
+         --  Target of return/exiting raises.
+
+         procedure Add_Edge (Src : Vertex; Tgt : Vertex);
+         --  Add control edge from Src to Tgt.
+
+         procedure Cache_For_Statement
+           (Stmt        :        Node_Id;
+            Depth       :        Natural;
+            Exit_Vertex : in out Vertex);
+         --  Cache vertex information, outgoing control edges,
+         --  and transfer-of-control information for
+         --  statements/declarative items.
+         --
+         --  Adds the following information to tables:
+         --  * Insert new neighborhoods (initializes depth) for every
+         --    vertex of Stmt's local CFG in All_Graphs.
+         --  * Add edges for all outgoing control of inserted vertices.
+         --  * Stores key-to-vertex relation for every transfer-of-control
+         --    target internal to Stmt (especially labels, other targets
+         --    do not need to persist after the call).
+         --  Additional requirements at entry
+         --  * Any key-to-vertex relation for externally reachable
+         --    transfer-of-control target must have been inserted in table
+         --    already. This includes normal exit.
+         --  * Neighborhoods for all transfer-of-control target must already
+         --    been inserted. This again includes normal exit.
+         --  * There is no pre-existing neighborhood for Stmt's vertices.
+         --  * Exit_Vertex must contain the target of the outgoing edge
+         --    for Stmt's normal return.
+         --  Additionally, at exit
+         --  * Exit_Vertex is set to Stmt's entry vertex
+         --  @param Stmt input statement.
+         --  @param Depth depth of Stmt relative to enclosing body.
+         --  @param Exit_Vertex target of outgoing control edge for completion
+         --         (normal end of execution) of Stmt's, set to entry vertex
+         --         of Stmt at output.
+
+         procedure Cache_For_Statement_List
+           (Stmts       :        List_Id;
+            Depth       :        Natural;
+            Exit_Vertex : in out Vertex);
+         --  Cache vertex information, outgoing control edges, and
+         --  transfer-of-control statements for Stmts. Same behavior
+         --  as Cache_For_Statement, but for a list. If the list is
+         --  empty, Exit_Vertex is left unchanged.
+         --  @param Stmts input statement list.
+         --         Can be No_List, treated as empty.
+         --  @param Depth depth of statements of Stmts relative to
+         --         enclosing body.
+         --  @param Exit_Vertex input value is target of outgoing control edge
+         --         for execution of the sequence, output value is the vertex
+         --         at the start of the sequence.
+
+         procedure Insert_Neighborhood (V : Vertex; Depth : Natural);
+         --  Insert new neighborhood for vertex V in All_Graphs,
+         --  at given depth.
+
+         ---------------
+         --  Add_Edge --
+         ---------------
+
+         procedure Add_Edge (Src : Vertex; Tgt : Vertex) is
+         begin
+            All_Graphs.Reference
+              (All_Graphs.Find (Tgt)).Ctrl_Predecessors.Include (Src);
+         end Add_Edge;
+
+         -------------------------
+         -- Cache_For_Statement --
+         -------------------------
+
+         procedure Cache_For_Statement
+           (Stmt        :        Node_Id;
+            Depth       :        Natural;
+            Exit_Vertex : in out Vertex)
+         is
+            Exit_Temp : Vertex;
+            --  Accumulator for sub-sequence processing.
+            --  It is possible to use Exit_Vertex when there is a unique
+            --  path, but for consistency we always use Exit_Temp.
+            --  We never mutate Exit_Vertex before the end of the procedure.
+
+            Start     : constant Vertex := Starting_Vertex (Stmt);
+            --  Starting/Entry vertex for Stmt.
+
+         begin
+            --  Add neighborhood of start vertex to the table
+
+            Insert_Neighborhood (Start, Depth);
+
+            if Is_Error_Signaling_Statement (Stmt) then
+               --  If the statement is an error signaling one,
+               --  then we will never reach any meaningful exit path
+               --  from it, so no edge needs to be added to the graph.
+
+               pragma Assert (Start.Kind = Plain);
+               goto Finish;
+            end if;
+
+            case Nkind (Stmt) is
+               when N_Block_Statement =>
+                  Exit_Temp := Exit_Vertex;
+                  Cache_For_Statement
+                    (Handled_Statement_Sequence (Stmt),
+                     Depth + 1, Exit_Temp);
+                  Cache_For_Statement_List
+                    (Declarations (Stmt), Depth + 1, Exit_Temp);
+                  Add_Edge (Start, Exit_Temp);
+
+               when N_Case_Statement =>
+                  declare
+                     Alternative : Opt_N_Case_Statement_Alternative_Id :=
+                       First_Non_Pragma (Alternatives (Stmt));
+                  begin
+                     --  Create a path per alternative.
+
+                     while Present (Alternative) loop
+                        Exit_Temp := Exit_Vertex;
+                        Cache_For_Statement_List
+                          (Statements (Alternative), Depth + 1, Exit_Temp);
+                        Add_Edge (Start, Exit_Temp);
+                        Next_Non_Pragma (Alternative);
+                     end loop;
+                  end;
+
+               when N_Entry_Call_Statement
+                  | N_Procedure_Call_Statement
+                  | N_Raise_Statement
+               =>
+                  if Nkind (Stmt) /= N_Entry_Call_Statement then
+                     --  Connect exceptional exits
+
+                     for Handler in Reachable_Handlers (Stmt).Iterate loop
+                        declare
+                           H_Node  : constant Node_Id :=
+                             Node_Lists.Element (Handler);
+                        begin
+                           Add_Edge (Start,
+                                     (if Nkind (H_Node) = N_Subprogram_Body
+                                      then Body_Exit_Vertex
+                                      else Starting_Vertex
+                                        (First (Statements (H_Node)))));
+                        end;
+                     end loop;
+                  end if;
+                  if Nkind (Stmt) /= N_Raise_Statement
+                    and then not No_Return (Get_Called_Entity (Stmt))
+                  then
+                     --  Connect normal return
+
+                     Add_Edge (Start, Exit_Vertex);
+                  end if;
+
+               when N_Exit_Statement =>
+                  Add_Edge (Start,
+                            Loop_Exit_Nodes.Element
+                              (Loop_Entity_Of_Exit_Statement (Stmt)));
+                  if Present (Condition (Stmt)) then
+                     Add_Edge (Start, Exit_Vertex);
+                  end if;
+
+               when N_Extended_Return_Statement =>
+                  --  Return transfers to body's exit,
+                  --  ignore Exit_Vertex and use Body_Exit instead
+
+                  Exit_Temp := Body_Exit_Vertex;
+                  Cache_For_Statement
+                    (Handled_Statement_Sequence (Stmt), Depth + 1, Exit_Temp);
+                  Cache_For_Statement_List
+                    (Return_Object_Declarations (Stmt),
+                     Depth + 1, Exit_Temp);
+                  Add_Edge (Start, Exit_Temp);
+
+               when N_Goto_Statement =>
+                  Add_Edge
+                    (Start, Goto_Targets.Element (Entity (Name (Stmt))));
+
+               when N_Handled_Sequence_Of_Statements =>
+                  declare
+                     Handler : Node_Id :=
+                       First_Non_Pragma (Exception_Handlers (Stmt));
+                  begin
+                     --  Must process handlers first, so that
+                     --  vertices are inserted.
+
+                     while Present (Handler) loop
+                        Exit_Temp := Exit_Vertex;
+                        Cache_For_Statement_List
+                          (Statements (Handler), Depth + 1, Exit_Temp);
+                        Next_Non_Pragma (Handler);
+                     end loop;
+
+                     Exit_Temp := Exit_Vertex;
+                     Cache_For_Statement_List
+                       (Statements (Stmt), Depth + 1, Exit_Temp);
+                     Add_Edge (Start, Exit_Temp);
+                  end;
+
+               when N_If_Statement =>
+
+                  declare
+                     Elsif_Iter : Node_Id := First (Elsif_Parts (Stmt));
+                  begin
+                     --  Like case statements, create one path per alternative.
+
+                     Exit_Temp := Exit_Vertex;
+                     Cache_For_Statement_List
+                       (Then_Statements (Stmt), Depth + 1, Exit_Temp);
+                     Add_Edge (Start, Exit_Temp);
+                     Exit_Temp := Exit_Vertex;
+                     Cache_For_Statement_List
+                       (Else_Statements (Stmt), Depth + 1, Exit_Temp);
+                     Add_Edge (Start, Exit_Temp);
+                     while Present (Elsif_Iter) loop
+                        Exit_Temp := Exit_Vertex;
+                        Cache_For_Statement_List
+                          (Then_Statements (Elsif_Iter), Depth + 1, Exit_Temp);
+                        Add_Edge (Start, Exit_Temp);
+                        Next (Elsif_Iter);
+                     end loop;
+                  end;
+
+               when N_Loop_Statement =>
+                  declare
+                     Loop_Entity : constant Node_Id :=
+                       Entity (Identifier (Stmt));
+                     Vertex_Cond : constant Vertex :=
+                       Vertex'(Kind => Loop_Cond, Node => Stmt);
+                     Vertex_Iter : constant Vertex :=
+                       Vertex'(Kind => Loop_Iter, Node => Stmt);
+                  begin
+
+                     --  Register target for inner exit statements.
+
+                     Loop_Exit_Nodes.Insert (Loop_Entity, Exit_Vertex);
+
+                     --  Insert extra vertices.
+
+                     Insert_Neighborhood (Vertex_Cond, Depth + 1);
+                     Insert_Neighborhood (Vertex_Iter, Depth + 1);
+                     Add_Edge (Start, Vertex_Cond);
+                     Add_Edge (Vertex_Iter, Vertex_Cond);
+
+                     if Present (Iteration_Scheme (Stmt)) then
+                        --  Normal loop exit.
+                        --  Cannot directly exit simple loops.
+
+                        Add_Edge (Vertex_Cond, Exit_Vertex);
+                     end if;
+
+                     --  End of the loop performs the iteration and goes back
+                     --  to condition.
+
+                     Exit_Temp := Vertex_Iter;
+                     Cache_For_Statement_List
+                       (Statements (Stmt), Depth + 1, Exit_Temp);
+
+                     --  Condition may enter the loop
+
+                     Add_Edge (Vertex_Cond, Exit_Temp);
+                  end;
+
+               when N_Simple_Return_Statement =>
+                  --  Return directly connects to body exit
+
+                  Add_Edge (Start, Body_Exit_Vertex);
+
+               when N_Assignment_Statement
+                  | N_Object_Declaration
+                  | N_Ignored_In_SPARK
+                  | N_Itype_Reference
+                  | N_Object_Renaming_Declaration
+                  | N_Subtype_Declaration
+                  | N_Full_Type_Declaration
+                  | N_Pragma
+                  | N_Package_Body
+                  | N_Package_Declaration
+                  | N_Subprogram_Body
+                  | N_Subprogram_Declaration
+                  | N_Delay_Statement
+               =>
+                  --  Statements treated as plain instructions/no-ops
+
+                  Add_Edge (Start, Exit_Vertex);
+
+                  --  Key goto target for label nodes
+
+                  if Nkind (Stmt) = N_Label then
+                     Goto_Targets.Insert (Entity (Identifier (Stmt)), Start);
+                  end if;
+
+               when others =>
+                  Ada.Text_IO.Put_Line
+                    ("[Spark_Util.Local_CFG.Cache_Graph_Of_Body] kind ="
+                     & Node_Kind'Image (Nkind (Stmt)));
+               raise Program_Error;
+            end case;
+            <<Finish>>
+            Exit_Vertex := Start;
+         end Cache_For_Statement;
+
+         ------------------------------
+         -- Cache_For_Statement_List --
+         ------------------------------
+
+         procedure Cache_For_Statement_List
+           (Stmts       :        List_Id;
+            Depth       :        Natural;
+            Exit_Vertex : in out Vertex)
+         is
+            --  Process Stmts in reverse, as it is necessary both to register
+            --  targets for transfer of control, both normal return and
+            --  label exits (only forward gotos are allowed in SPARK).
+
+            Stmt : Node_Id := (if No (Stmts) then Empty else Last (Stmts));
+         begin
+            while Present (Stmt) loop
+               Cache_For_Statement (Stmt, Depth, Exit_Vertex);
+               Prev (Stmt);
+            end loop;
+         end Cache_For_Statement_List;
+
+         -------------------------
+         -- Insert_Neighborhood --
+         -------------------------
+
+         procedure Insert_Neighborhood (V : Vertex; Depth : Natural)
+         is
+         begin
+            All_Graphs.Insert
+              (V, Neighborhood'(Depth_In_Enclosing => Depth,
+                                Ctrl_Predecessors => Vertex_Sets.Empty_Set));
+         end Insert_Neighborhood;
+
+      --  Start of processing for Cache_Graph_Of_Body
+
+      begin
+         declare
+            Body_Stmt  : constant Node_Id :=
+              Handled_Statement_Sequence (Enclosing_Body);
+            Body_Start : constant Vertex := Vertex'(Kind => Body_Entry,
+                                                    Node => Body_Entity);
+            Exit_Temp  : Vertex := Body_Exit_Vertex;
+         begin
+            Insert_Neighborhood (Body_Exit_Vertex, 1);
+            Insert_Neighborhood (Body_Start, 0);
+
+            --  Package bodies might not have Body_Stmt
+
+            if Present (Body_Stmt) then
+               Cache_For_Statement (Body_Stmt, 1, Exit_Temp);
+            end if;
+
+            Cache_For_Statement_List
+              (Declarations (Enclosing_Body), 1, Exit_Temp);
+            Add_Edge (Body_Start, Exit_Temp);
+         end;
+      end Cache_Graph_Of_Body;
+
+      ------------------
+      -- Predecessors --
+      ------------------
+
+      function Predecessors (G : Graph_Id; V : Vertex)
+                             return Vertex_Sets.Set
+      is
+         function Depth (Neighbor : Vertex) return Natural is
+           (All_Graphs.Constant_Reference (Neighbor).Depth_In_Enclosing);
+         --  Short-hand to fetch vertex depth.
+
+      begin
+         Cache_Graph_If_Needed (G);
+         return Preds : Vertex_Sets.Set := Vertex_Sets.Empty_Set do
+            declare
+               Graph_Start : constant Vertex := Starting_Vertex (G);
+               Depth_Limit : constant Natural := Depth (Graph_Start);
+
+               function In_Local_CFG (Neighbor : Vertex) return Boolean
+               is (declare
+                     Neigh_Depth : constant Natural := Depth (Neighbor);
+                   begin
+                     Neigh_Depth > Depth_Limit
+                     or else (Neigh_Depth = Depth_Limit
+                       and then Neighbor = Graph_Start));
+               --  Test if vertex Neighbor is within G's CFG.
+               --  This only works correctly for vertices of G's CFG
+               --  and their neighbors, for other vertices in the graph,
+               --  there can be false positives.
+
+            begin
+               --  Must hold if V is in G's CFG.
+
+               pragma Assert (In_Local_CFG (V));
+
+               for Neighbor of
+                 All_Graphs.Constant_Reference (V).Ctrl_Predecessors
+               loop
+                  if In_Local_CFG (Neighbor) then
+                     Preds.Insert (Neighbor);
+                  end if;
+               end loop;
+            end;
+         end return;
+
+      end Predecessors;
+
+      ---------------------
+      -- Starting_Vertex --
+      ---------------------
+
+      function Starting_Vertex (N : Node_Id) return Vertex is
+        (Vertex'(Kind => (case Nkind (N) is
+                             when N_Entity         => Body_Entry,
+                             when N_Loop_Statement => Loop_Init,
+                             when others           => Plain),
+                 Node => N));
+
+      -----------------
+      -- Vertex_Hash --
+      -----------------
+
+      function Vertex_Hash (X : Vertex) return Ada.Containers.Hash_Type is
+         use type Ada.Containers.Hash_Type;
+         Hash : Ada.Containers.Hash_Type := 7 * Node_Hash (X.Node);
+      begin
+         Hash := Hash + (case X.Kind is
+                            when Plain      => 0,
+                            when Loop_Init  => 1,
+                            when Loop_Cond  => 2,
+                            when Loop_Iter  => 3,
+                            when Body_Entry => 4,
+                            when Body_Exit  => 5);
+         return Hash;
+      end Vertex_Hash;
+
+   end Local_CFG;
+
    ---------------------
    -- Location_String --
    ---------------------
@@ -4010,33 +4465,27 @@ package body SPARK_Util is
    ---------------------
 
    function No_Deep_Updates
-     (Stmts       : List_Id;
-      Variable    : Entity_Id;
-      Explanation : out Unbounded_String;
-      Decls       : List_Id := No_List;
-      End_Stmt    : Node_Id := Empty) return Boolean
+     (Stmts       :     Local_CFG.Vertex_Sets.Set;
+      Variable    :     Entity_Id;
+      Explanation : out Unbounded_String)
+      return Boolean
    is
-      function Call_Update_Variables
-        (Call      : N_Subprogram_Call_Id;
-         Variables : Entity_Sets.Set) return Boolean;
+      Is_Borrower : Node_To_Bool_Maps.Map;
+      --  Cache Is_Borrower_Of_Variable result
+
+      function Call_Updates_Deep (Call : N_Subprogram_Call_Id) return Boolean;
       --  Return True if Call might modify a deep part of an element of
-      --  Variables.
+      --  Variable, including through borrower.
 
-      function No_Deep_Updates
-        (Stmts     : List_Id;
-         Variables : Entity_Sets.Set;
-         Decls     : List_Id := No_List;
-         End_Stmt  : Node_Id := Empty) return Boolean;
-      --  Return True if Decls & Stmts contains no updates to a deep part of an
-      --  element of Variables. Stop before the statement End_Stmt is any.
+      function Is_Borrower_Of_Variable (V : Entity_Id) return Boolean;
+      --  Check if V is a borrower of Variable through which deep updates
+      --  are possible, use Is_Borrower cache to memoize results.
 
-      ---------------------------
-      -- Call_Update_Variables --
-      ---------------------------
+      -----------------------
+      -- Call_Updates_Deep --
+      -----------------------
 
-      function Call_Update_Variables
-        (Call      : N_Subprogram_Call_Id;
-         Variables : Entity_Sets.Set) return Boolean
+      function Call_Updates_Deep (Call : N_Subprogram_Call_Id) return Boolean
       is
          Update_Found : exception;
 
@@ -4059,7 +4508,7 @@ package body SPARK_Util is
                          (Retysp (Etype (Formal))))
             then
                if Is_Deep (Etype (Actual))
-                 and then Variables.Contains (Get_Root_Object (Actual))
+                 and then Is_Borrower_Of_Variable (Get_Root_Object (Actual))
                then
                   raise Update_Found;
                end if;
@@ -4071,11 +4520,11 @@ package body SPARK_Util is
 
          Subp : constant Callable_Kind_Id := Get_Called_Entity (Call);
 
-      --  Start of processing for Call_Update_Variables
+      --  Start of processing for Call_Updates_Deep
 
       begin
          --  Search parameters for updates to a deep part of an element of
-         --  Browers.
+         --  Variable, including through borrower.
 
          Check_Parameters (Call);
 
@@ -4095,7 +4544,7 @@ package body SPARK_Util is
 
             for F of Write_Ids loop
                if F.Kind = Direct_Mapping
-                 and then Variables.Contains (Get_Direct_Mapping_Id (F))
+                 and then Is_Borrower_Of_Variable (Get_Direct_Mapping_Id (F))
                then
                   return True;
                end if;
@@ -4107,235 +4556,87 @@ package body SPARK_Util is
       exception
          when Update_Found =>
             return True;
-      end Call_Update_Variables;
+      end Call_Updates_Deep;
 
-      ---------------------
-      -- No_Deep_Updates --
-      ---------------------
+      -----------------------------
+      -- Is_Borrower_Of_Variable --
+      -----------------------------
 
-      function No_Deep_Updates
-        (Stmts     : List_Id;
-         Variables : Entity_Sets.Set;
-         Decls     : List_Id := No_List;
-         End_Stmt  : Node_Id := Empty) return Boolean
-      is
-         N             : Node_Id := First (Decls);
-         In_Decls      : Boolean := True;
-         Cur_Variables : Entity_Sets.Set := Variables;
-         End_Reached   : Boolean := False with Ghost;
-         --  Flag to check that if provided, the End_Stmt has been encountered
-
+      function Is_Borrower_Of_Variable (V : Entity_Id) return Boolean is
       begin
-         loop
-            if No (N) and then In_Decls then
-               N := First (Stmts);
-               In_Decls := False;
+         declare
+            C : constant Node_To_Bool_Maps.Cursor := Is_Borrower.Find (V);
+         begin
+            if Node_To_Bool_Maps.Has_Element (C) then
+               return Node_To_Bool_Maps.Element (C);
             end if;
-
-            exit when No (N);
-
-            if N = End_Stmt then
-               End_Reached := True;
-               exit;
-            end if;
-
-            case Nkind (N) is
-
-               --  Check that the value referenced by an element of
-               --  Variables is never assigned a value of a deep type
-               --  outside of reborrows.
-
-               when N_Assignment_Statement =>
-                  declare
-                     Lvalue : constant Node_Id := Name (N);
-                     Root   : constant Entity_Id :=
-                       Get_Root_Object (Lvalue);
-                  begin
-                     if (Nkind (Lvalue) not in N_Identifier
-                                             | N_Expanded_Name
-                         or else
-                           not Is_Anonymous_Access_Type (Etype (Lvalue)))
-                       and then Cur_Variables.Contains (Root)
-                       and then Is_Deep (Etype (Lvalue))
-                     then
-
-                        --  Search for return statements in the sequence of
-                        --  statements following N. If one is found, we do
-                        --  not care about the update.
-                        --  We could consider doing this optimization for
-                        --  exit statements of the corresponding loop when
-                        --  checking loop variants, and for statements
-                        --  following the current block, if statement, or
-                        --  case statement too.
-
-                        declare
-                           Following : Node_Id := N;
-                        begin
-                           loop
-                              Next (Following);
-                              if No (Following) then
-                                 declare
-                                    Through_Borrow : constant String :=
-                                      (if Get_Root_Object (Lvalue) = Variable
-                                       then ""
-                                       else " through local borrower """
-                                       & Source_Name (Root) & '"');
-                                 begin
-                                    Explanation := To_Unbounded_String
-                                      ("the value designated by """)
-                                      & Source_Name (Variable)
-                                      & """ might be updated" & Through_Borrow;
-                                    return False;
-                                 end;
-                              end if;
-                              exit when Nkind (Following) in
-                                    N_Simple_Return_Statement
-                                  | N_Extended_Return_Statement
-                                  or else Is_Error_Signaling_Statement
-                                    (Following);
-                           end loop;
-                        end;
-                     end if;
-                  end;
-
-               --  If an element of Variables is borrowed, the borrower
-               --  should not be updated. Add it to Cur_Variables.
-
-               when N_Object_Declaration =>
-                  declare
-                     Def_Id : constant Entity_Id := Defining_Identifier (N);
-                  begin
-                     if Is_Local_Borrower (Def_Id)
-                       and then Is_Deep
-                         (Directly_Designated_Type (Etype (Def_Id)))
-                       and then Cur_Variables.Contains
-                         (Get_Root_Object (Expression (N)))
-                     then
-                        Cur_Variables.Insert (Def_Id);
-                     end if;
-                  end;
-
-               when N_Case_Statement =>
-                  declare
-                     Alternative : Opt_N_Case_Statement_Alternative_Id :=
-                       First_Non_Pragma (Alternatives (N));
-                  begin
-                     loop
-                        if not No_Deep_Updates
-                          (Statements (Alternative), Cur_Variables)
-                        then
-                           return False;
-                        end if;
-                        Next_Non_Pragma (Alternative);
-                        exit when No (Alternative);
-                     end loop;
-                  end;
-
-               when N_If_Statement =>
-                  if No_Deep_Updates (Then_Statements (N), Cur_Variables)
-                    and then
-                      No_Deep_Updates (Else_Statements (N), Cur_Variables)
-                  then
-                     declare
-                        Elsif_Part : Opt_N_Elsif_Part_Id :=
-                          First (Elsif_Parts (N));
-                     begin
-                        while Present (Elsif_Part) loop
-                           if not No_Deep_Updates
-                             (Then_Statements (Elsif_Part), Cur_Variables)
-                           then
-                              return False;
-                           end if;
-                           Next (Elsif_Part);
-                        end loop;
-                     end;
-                  else
-                     return False;
-                  end if;
-
-               when N_Handled_Sequence_Of_Statements
-                  | N_Loop_Statement
-               =>
-                  if not No_Deep_Updates (Statements (N), Cur_Variables)
-                  then
-                     return False;
-                  end if;
-
-               when N_Block_Statement =>
-                  if not No_Deep_Updates
-                    (Statements (Handled_Statement_Sequence (N)),
-                     Cur_Variables, Decls => Declarations (N))
-                  then
-                     return False;
-                  end if;
-
-               --  Check that procedure/entry calls do not update elements
-               --  of Cur_Variables.
-
-               when N_Entry_Call_Statement
-                  | N_Procedure_Call_Statement
-               =>
-                  if Call_Update_Variables (N, Cur_Variables) then
-                     Explanation := To_Unbounded_String
-                       ("the call to """)
-                       & Source_Name (Get_Called_Entity (N))
-                       & """ might update the value designated by """
-                       & Source_Name (Variable) & '"';
-                     return False;
-                  end if;
-
-               when N_Ignored_In_SPARK
-                  | N_Itype_Reference
-                  | N_Object_Renaming_Declaration
-                  | N_Subtype_Declaration
-                  | N_Full_Type_Declaration
-                  | N_Package_Body
-                  | N_Package_Declaration
-                  | N_Pragma
-                  | N_Subprogram_Body
-                  | N_Subprogram_Declaration
-                  | N_Delay_Statement
-                  | N_Simple_Return_Statement
-                  | N_Extended_Return_Statement
-               =>
-                  null;
-
-               when others =>
-                  pragma Annotate (Xcov, Exempt_On, "Debugging code");
-                  Ada.Text_IO.Put_Line
-                    ("[SPARK_Util.No_Deep_Updates] kind ="
-                     & Node_Kind'Image (Nkind (N)));
-                  raise Program_Error;
-                  pragma Annotate (Xcov, Exempt_Off);
-            end case;
-            Next (N);
-         end loop;
-
-         pragma Assert (No (End_Stmt) or End_Reached);
-         return True;
-      end No_Deep_Updates;
+         end;
+         declare
+            T : constant Entity_Id := Retysp (Etype (V));
+         begin
+            return Result : constant Boolean :=
+              Is_Deep (T)
+              and then Is_Anonymous_Access_Object_Type (T)
+              and then not Is_Access_Constant (T)
+              and then not Is_Constant_In_SPARK (V)
+              and then
+                (V = Variable
+                 or else (Ekind (V) in E_Variable | E_Constant
+                          and then Is_Borrower_Of_Variable
+                            (Get_Root_Object (Expression (Parent (V))))))
+            do
+               Is_Borrower.Insert (V, Result);
+            end return;
+         end;
+      end Is_Borrower_Of_Variable;
 
    --  Start of processing for No_Deep_Updates
 
    begin
-      if Is_Constant_In_SPARK (Variable)
-        or else not Is_Deep (Etype (Variable))
-        or else
-          (Is_Anonymous_Access_Type (Etype (Variable))
-           and then
-             (Is_Access_Constant (Etype (Variable))
-              or else not
-                Is_Deep (Directly_Designated_Type (Etype (Variable)))))
-      then
-         return True;
-      else
-         declare
-            Variables : Entity_Sets.Set;
-         begin
-            Variables.Insert (Variable);
-            return No_Deep_Updates (Stmts, Variables, Decls, End_Stmt);
-         end;
-      end if;
+      for V of Stmts loop
+         case Nkind (V.Node) is
+            when N_Assignment_Statement =>
+               declare
+                  Lvalue : constant Node_Id := Name (V.Node);
+                  Root   : constant Entity_Id :=
+                    Get_Root_Object (Lvalue);
+               begin
+                  if (Nkind (Lvalue) not in N_Identifier | N_Expanded_Name
+                      or else
+                        not Is_Anonymous_Access_Object_Type (Etype (Lvalue)))
+                    and then Is_Borrower_Of_Variable (Root)
+                    and then Is_Deep (Etype (Lvalue))
+                  then
+                     declare
+                        Through_Borrow : constant String :=
+                          (if Get_Root_Object (Lvalue) = Variable
+                           then ""
+                           else " through local borrower """
+                           & Source_Name (Root) & '"');
+                     begin
+                        Explanation := To_Unbounded_String
+                          ("the value designated by """)
+                          & Source_Name (Variable)
+                          & """ might be updated" & Through_Borrow;
+                        return False;
+                     end;
+                  end if;
+               end;
+            when N_Entry_Call_Statement
+               | N_Procedure_Call_Statement =>
+               if Call_Updates_Deep (V.Node) then
+                  Explanation := To_Unbounded_String
+                    ("the call to """)
+                    & Source_Name (Get_Called_Entity (V.Node))
+                    & """ might update the value designated by """
+                    & Source_Name (Variable) & '"';
+                  return False;
+               end if;
+            when others =>
+               null;
+         end case;
+      end loop;
+      return True;
    end No_Deep_Updates;
 
    ------------------------------------
@@ -5196,252 +5497,13 @@ package body SPARK_Util is
         Expression (First (Pragma_Argument_Associations (Variants)));
       Variant     : constant Node_Id :=
         First (Component_Associations (Aggr));
+      Caller      : constant Entity_Id := Scope (Param);
       Call_Formal : constant Formal_Kind_Id := Entity (Expression (Variant));
       Call_Actual : Node_Id := Empty;
       Decreases   : Boolean := False;
 
-      procedure Go_To_Enclosing_Statement
-        (Variable  : in out Entity_Id;
-         Statement : in out Node_Id;
-         Stmt_List : out List_Id;
-         Decl_List : out List_Id);
-      --  Variable shall be either Param or a local observer/borrower
-      --  ultimately borrowing Param which is defined in a scope enclosing
-      --  Statement.
-      --  Set Statement to the control statement or block enclosing the
-      --  initial value of Statement, Stmt_List to the corresponding list of
-      --  statements and Decl_List to the list of declarations if any. Set
-      --  Variable to the last local observer/borrower ultimately borrowing
-      --  Param defined in a scope enclosing Statement if any, and Param
-      --  otherwise.
-
-      function Is_Reborrowed_On_All_Path_To_Stmt
-        (Variable  : Entity_Id;
-         Statement : Node_Id) return Boolean
-        with Pre => Is_List_Member (Statement);
-      --  Go up the path leading to Statement and check if one of the
-      --  borrowers/observers involved in the path to Variable is reborrowed
-      --  on all paths leading to Statement.
-
-      function No_Deep_Updates_Up_To_Stmt
-        (Variable  : Entity_Id;
-         Statement : Node_Id) return Boolean
-        with Pre => Is_List_Member (Statement);
-      --  Go up the path leading to Statement and check if none of the
-      --  borrowers/observers involved in the path to Variable is updated
-      --  on any path leading to Statement.
-
       procedure Search_Param (Formal : Entity_Id; Actual : Node_Id);
       --  If Formal is Call_Formal set Call_Actual to Actual
-
-      -------------------------------
-      -- Go_To_Enclosing_Statement --
-      -------------------------------
-
-      procedure Go_To_Enclosing_Statement
-        (Variable  : in out Entity_Id;
-         Statement : in out Node_Id;
-         Stmt_List : out List_Id;
-         Decl_List : out List_Id)
-      is
-      begin
-         Stmt_List := List_Containing (Statement);
-         Decl_List := No_List;
-
-         Statement := Parent (Stmt_List);
-         if Nkind (Statement) in N_Handled_Sequence_Of_Statements
-                               | N_Case_Statement_Alternative
-                               | N_Elsif_Part
-         then
-            Statement := Parent (Statement);
-         end if;
-         pragma Assert
-           (Is_List_Member (Statement)
-            or else Nkind (Statement) in N_Subprogram_Body
-                                       | N_Entry_Body);
-
-         --  If Statement is a body or a block, set Decl_List appropriately.
-         --  Because of inlining, it can also occur that the input value
-         --  of Statement was in fact in the declarations. Also reset
-         --  Stmt_List.
-
-         if Nkind (Statement) in N_Block_Statement
-                               | N_Subprogram_Body
-                               | N_Entry_Body
-         then
-            Stmt_List := Statements (Handled_Statement_Sequence (Statement));
-            Decl_List := Declarations (Statement);
-         end if;
-
-         --  If we are in the block statement where Variable is defined, go up
-         --  the chain of borrowers to find one which is not defined in the
-         --  current block.
-
-         if Nkind (Statement) = N_Block_Statement
-           and then Defining_Entity (Statement) = Scope (Variable)
-         then
-            loop
-               Variable := Get_Root_Object
-                 (Expression (Parent (Variable)));
-               exit when Variable = Param
-                 or else Defining_Entity (Statement) /= Scope (Variable);
-            end loop;
-
-         --  If we have reached the enclosing body, Variable is set to Param
-
-         elsif Nkind (Statement) in N_Subprogram_Body | N_Entry_Body then
-            Variable := Param;
-         end if;
-      end Go_To_Enclosing_Statement;
-
-      ---------------------------------------
-      -- Is_Reborrowed_On_All_Path_To_Stmt --
-      ---------------------------------------
-
-      function Is_Reborrowed_On_All_Path_To_Stmt
-        (Variable  : Entity_Id;
-         Statement : Node_Id) return Boolean
-      is
-         Var  : Entity_Id := Variable;
-         Stmt : Node_Id := Statement;
-      begin
-         loop
-
-            --  If we have reached Param without decreasing, stop the
-            --  search. We do not search for assignments to substructures
-            --  for Param. It is unlikely to occur in practice as it
-            --  would result in a resource leak.
-
-            if Var = Param then
-               Explanation := To_Unbounded_String
-                 ("structural variant of """ & Source_Name (Subp)
-                  & """ might not be a strict subcomponent of """
-                  & Source_Name (Param) & '"');
-               return False;
-            end if;
-
-            pragma Assert (Is_Anonymous_Access_Type (Etype (Var)));
-
-            --  Go to the enclosing control statement if any
-
-            declare
-               Brower    : constant Entity_Id := Var;
-               End_Stmt  : constant Node_Id := Stmt;
-               Stmt_List : List_Id;
-               Decl_List : List_Id;
-               Dummy     : Unbounded_String;
-            begin
-               Go_To_Enclosing_Statement
-                 (Variable  => Var,
-                  Statement => Stmt,
-                  Stmt_List => Stmt_List,
-                  Decl_List => Decl_List);
-
-               --  If the borrower or observer Brower is reborrowed on all
-               --  paths in this statement, the search is over.
-
-               exit when Is_Reborrowed_On_All_Paths
-                 (Stmts       => Stmt_List,
-                  Decls       => Decl_List,
-                  Brower      => Brower,
-                  Explanation => Dummy,
-                  End_Stmt    => End_Stmt);
-            end;
-         end loop;
-
-         return True;
-      end Is_Reborrowed_On_All_Path_To_Stmt;
-
-      --------------------------------
-      -- No_Deep_Updates_Up_To_Stmt --
-      --------------------------------
-
-      function No_Deep_Updates_Up_To_Stmt
-        (Variable  : Entity_Id;
-         Statement : Node_Id) return Boolean
-      is
-         Search_Is_Over : exception;
-         Search_Result  : Boolean;
-
-         procedure No_Deep_Updates_Up_To_Stmt_Rec
-           (Variable  : Entity_Id;
-            Statement : Node_Id);
-         --  Set Search_Result to true if no deep updates of Variable and what
-         --  it ultimately borrows/observes were found on the path up to
-         --  Statement, otherwise set it to False.
-         --  Raise Search_Is_Over if either a deep update was found or
-         --  Statement occurs inside a loop so every nested statement in
-         --  Statement has already been checked for updates.
-
-         ------------------------------------
-         -- No_Deep_Updates_Up_To_Stmt_Rec --
-         ------------------------------------
-
-         procedure No_Deep_Updates_Up_To_Stmt_Rec
-           (Variable  : Entity_Id;
-            Statement : Node_Id)
-         is
-            Next_Stmt : Node_Id := Statement;
-            Next_Var  : Entity_Id := Variable;
-            Stmt_List : List_Id;
-            Decl_List : List_Id;
-
-         begin
-            --  Search for the enclosing control statement or body
-
-            Go_To_Enclosing_Statement
-              (Variable  => Next_Var,
-               Statement => Next_Stmt,
-               Stmt_List => Stmt_List,
-               Decl_List => Decl_List);
-
-            --  Check first the enclosing statements up to the enclosing
-            --  control statement if any, so that the current statements will
-            --  be skipped if they are part of a loop.
-
-            if Nkind (Next_Stmt) not in N_Subprogram_Body | N_Entry_Body then
-               No_Deep_Updates_Up_To_Stmt_Rec (Next_Var, Next_Stmt);
-            end if;
-
-            --  Search for updates to Next_Var in Stmt_List. If Next_Stmt is a
-            --  loop, the recursive call could be encountered several times. As
-            --  Param is not constant, it is a deep update.
-
-            if Nkind (Next_Stmt) = N_Loop_Statement then
-               pragma Assert (not Is_Constant_In_SPARK (Param));
-
-               Explanation := To_Unbounded_String
-                 ('"' & Source_Name (Param) & """ might be updated in previous"
-                  & " iterations of the loop");
-
-               Search_Result := False;
-               raise Search_Is_Over;
-
-            --  Otherwise, stop the search before Statement
-
-            else
-               Search_Result := No_Deep_Updates
-                 (Stmts       => Stmt_List,
-                  Decls       => Decl_List,
-                  Variable    => Next_Var,
-                  Explanation => Explanation,
-                  End_Stmt    => Statement);
-
-               if not Search_Result then
-                  raise Search_Is_Over;
-               end if;
-            end if;
-         end No_Deep_Updates_Up_To_Stmt_Rec;
-      begin
-         No_Deep_Updates_Up_To_Stmt_Rec (Variable, Statement);
-         raise Search_Is_Over;
-      exception
-         when Search_Is_Over =>
-            return Search_Result;
-            pragma Annotate
-              (CodePeer, False_Positive, "validity check",
-               "Search_Result is initialized before raising Search_Is_Over");
-      end No_Deep_Updates_Up_To_Stmt;
 
       ------------------
       -- Search_Param --
@@ -5502,7 +5564,7 @@ package body SPARK_Util is
                Result := True;
                exit;
 
-            --  The root is a local observer or borrower, continue the searched
+            --  The root is a local observer or borrower, continue the search
             --  in the borrowed expression.
 
             elsif Ekind (Root) in E_Variable | E_Constant
@@ -5519,11 +5581,30 @@ package body SPARK_Util is
          end loop;
       end;
 
+      --  The variant was not found as the root, exits immediately.
+
       if not Result then
          Explanation := To_Unbounded_String
            ("structural variant of """ & Source_Name (Subp)
             & """ might not be a part of """ & Source_Name (Param) & '"');
          return;
+      end if;
+
+      if Is_Expression_Function_Or_Completion (Caller) then
+         --  We cannot use later statement-based analysis for expression
+         --  functions, as it contains no internal statements. Conversely,
+         --  this case is much simpler since no re-borrowing neither
+         --  deep updates can happen, so the analysis so far suffices.
+
+         if not Decreases then
+            Explanation := To_Unbounded_String
+              ("structural variant of """ & Source_Name (Subp)
+               & """ might not be a strict subcomponent of """
+               & Source_Name (Param) & '"');
+            Result := False;
+         end if;
+         return;
+
       end if;
 
       declare
@@ -5572,8 +5653,9 @@ package body SPARK_Util is
          --  subcomponent of the caller's variant and the caller's variant
          --  is not modified in a deep way along the way.
 
-         --  If we are in a post condition, we must consider the whole body of
-         --  the caller.
+         --  If we are in a post condition, decrease must be visible
+         --  directly from the expression, and we must look at all paths
+         --  reaching the end of the subprogram for absence of deep updates.
 
          if Nkind (Statement) = N_Pragma
            and then Get_Pragma_Id (Pragma_Name (Statement)) in
@@ -5581,12 +5663,13 @@ package body SPARK_Util is
               | Pragma_Post_Class
               | Pragma_Contract_Cases
               | Pragma_Refined_Post
+              | Pragma_Exceptional_Cases
          then
             pragma Assert (Variable = Param);
 
             --  Expr is necessarily rooted at Param itself. We do not
-            --  consider the case of reborrowed parameters as they are unlikely
-            --  (as is done in Is_Reborrowed_On_All_Path_To_Stmt).
+            --  consider the case of reborrowed parameters as they are
+            --  unlikely.
 
             if not Decreases then
                Explanation := To_Unbounded_String
@@ -5595,31 +5678,35 @@ package body SPARK_Util is
                   & Source_Name (Param) & '"');
                Result := False;
 
-            elsif Is_Constant_In_SPARK (Param)
-              or else not Is_Deep (Etype (Param))
-            then
-               Result := True;
-
             --  We check that the parameter is not updated in a deep way by
             --  the subprogram.
 
-            else
-               declare
-                  Caller : constant Entity_Id := Scope (Param);
-                  pragma Assert
-                    (not Is_Expression_Function_Or_Completion (Caller)
-                     and then Entity_Body_In_SPARK (Caller));
+            elsif Is_Constant_In_SPARK (Param)
+              or else not Is_Deep (Etype (Param))
+            then
+               Result := True; --  Trivial case
 
-                  Body_N : constant Node_Id := Get_Body (Caller);
-                  Stmts  : constant List_Id :=
-                    Statements (Handled_Statement_Sequence (Body_N));
-                  Decls  : constant List_Id := Declarations (Body_N);
+            else
+               pragma Assert
+                 (not Is_Expression_Function_Or_Completion (Caller)
+                  and then Entity_Body_In_SPARK (Caller));
+
+               --  Only take into account writes on paths that can lead to
+               --  body exit. The filtering is not really important in that
+               --  case since all exits are currently merged (we cannot
+               --  distinguish between normal/exceptional return, so all writes
+               --  of the body should almost always be on a path to exit),
+               --  but even so this provides a conveniently short
+               --  implementation.
+
+               declare
+                  use Local_CFG;
+                  Vertices : Vertex_Sets.Set := Vertex_Sets.Empty;
                begin
-                  Result := No_Deep_Updates
-                      (Stmts       => Stmts,
-                       Variable    => Variable,
-                       Explanation => Explanation,
-                       Decls       => Decls);
+                  Vertices.Insert (Vertex'(Kind => Body_Exit,
+                                           Node => Caller));
+                  Collect_Vertices_Leading_To (Caller, Vertices);
+                  Result := No_Deep_Updates (Vertices, Param, Explanation);
                end;
             end if;
 
@@ -5627,13 +5714,102 @@ package body SPARK_Util is
          --  enclosing the call.
 
          else
-            Result :=
-              (Decreases
-               or else Is_Reborrowed_On_All_Path_To_Stmt (Variable, Statement))
-              and then
-                (Is_Constant_In_SPARK (Param)
-                 or else not Is_Deep (Etype (Param))
-                 or else No_Deep_Updates_Up_To_Stmt (Variable, Statement));
+
+            if not Decreases then
+
+               --  We cannot deduce structural decrease from the
+               --  borrowing/observing expressions alone. Checks
+               --  that one of the intermediate borrowers is always
+               --  reborrowed on some path before the next one
+               --  (or the call for the last one).
+
+               declare
+                  use Local_CFG;
+                  Vertices : Vertex_Sets.Set;
+                  Target   : Node_Id := Statement;
+                  Borrower : Entity_Id := Variable;
+               begin
+                  loop
+                     --  Reborrow can only occur for anonymous
+                     --  access objects.
+
+                     if Is_Anonymous_Access_Object_Type
+                       (Retysp (Etype (Borrower)))
+                     then
+                        Vertices.Clear;
+                        Vertices.Insert (Starting_Vertex (Target));
+                        declare
+                           Graph : constant Graph_Id :=
+                             (if Borrower = Param
+                              then Caller
+                              else
+                                (declare
+                                    Enclosing : constant Node_Id :=
+                                      Parent (Parent (Borrower));
+                                 begin
+                                   (if Enclosing in N_Subprogram_Body_Id
+                                    then Caller
+                                    else Enclosing)));
+
+                           function Not_Reborrow (V : Vertex) return Boolean is
+                             (not Is_Strict_Reborrow_Of (V.Node, Borrower));
+                           --  Filter out reborrowing assignments from paths
+
+                        begin
+                           Collect_Vertices_Leading_To
+                             (Graph, Vertices, Not_Reborrow'Access);
+
+                           --  If start of declaration block/subprogram body
+                           --  does not reach the target, all control paths
+                           --  from the declaration to the statement have a
+                           --  (strict) reborrow on them, so strict decrease
+                           --  is verified between both.
+
+                           exit when not Vertices.Contains
+                             (Starting_Vertex (Graph));
+                        end;
+                     end if;
+
+                     --  Move to next variable, if there is one. Otherwise,
+                     --  fail since strict decrease cannot be guaranteed.
+
+                     if Borrower = Param then
+                        Explanation := To_Unbounded_String
+                          ("structural variant of """ & Source_Name (Subp)
+                           & """ might not be a strict subcomponent of """
+                           & Source_Name (Param) & '"');
+                        Result := False;
+                        return;
+                     end if;
+
+                     Target := Parent (Borrower);
+                     Borrower := Get_Root_Object (Expression (Target));
+
+                  end loop;
+               end;
+            end if;
+
+            --  Check absence of deep updates.
+
+            if Is_Constant_In_SPARK (Param)
+              or else not Is_Deep (Etype (Param))
+            then
+               Result := True;
+            else
+               declare
+                  use Local_CFG;
+                  Vertices : Vertex_Sets.Set := Vertex_Sets.Empty;
+               begin
+                  Vertices.Insert (Starting_Vertex (Statement));
+
+                  --  The effect of the current call should not be taken
+                  --  into account, so forbids empty paths.
+
+                  Collect_Vertices_Leading_To
+                    (Caller, Vertices, Empty_Paths => False);
+                  Result := No_Deep_Updates (Vertices, Param, Explanation);
+               end;
+            end if;
          end if;
       end;
    end Structurally_Decreases_In_Call;
@@ -5648,18 +5824,59 @@ package body SPARK_Util is
       Result      : out Boolean;
       Explanation : out Unbounded_String)
    is
+      use Local_CFG;
+      Loop_Vertex : constant Vertex :=
+        Vertex'(Kind => Loop_Cond, Node => Loop_Stmt);
+      --  The variant should decrease on paths leading from the
+      --  loop (in)variants back to themselves, and no deep updates should
+      --  occur on such paths. However, those nodes are slightly inconvenient
+      --  to fetch here. Since the paths should be equivalent,
+      --  we use paths from the loop condition vertex back to itself.
+      --  In details, invariant positioning constraint from SPARK's language
+      --  restrictions means there is a rotation equivalence between cycles:
+      --  (condition) --p-> (invariant) --q-> (condition) ~ pq and
+      --  (invariant) --q-> (condition) --p-> (invariant) ~ qp
+      --  So we can equivalently check the decrease/no-deep updates
+      --  on condition-to-condition cycles.
+      --
+      --  In practice, we test absence on deep updates on the possibly
+      --  wider set of in-loop vertices that can reach the condition,
+      --  something that can differ both from the set of nodes on cyclic path
+      --  and from the set of nodes that can reach the invariant/variant,
+      --  but differences can only exists in presence of degenerate patterns
+      --  with unreachable code or loops that are statically known to exit
+      --  before completing their first iteration.
 
-   --  Start of processing for Structurally_Decreases
+      Vertices    : Vertex_Sets.Set := Vertex_Sets.Empty;
+
+      function Not_Reborrow (V : Vertex) return Boolean is
+        (not Is_Strict_Reborrow_Of (V.Node, Brower));
 
    begin
-      Result := Is_Reborrowed_On_All_Paths
-        (Statements (Loop_Stmt), Brower, Explanation)
-        and then No_Deep_Updates (Statements (Loop_Stmt), Brower, Explanation);
-   exception
-      when Goto_Found =>
+      Vertices.Insert (Loop_Vertex);
+
+      --  Variant decreases when we perform a reborrow, and cannot increase
+      --  without deep updates. Hence variant decreasing on all non-empty
+      --  cycles is equivalent to having no non-empty cycles without
+      --  reborrow. We check that no such cycle exists.
+
+      Collect_Vertices_Leading_To
+        (Loop_Stmt, Vertices, Not_Reborrow'Access, Empty_Paths => False);
+      if Vertices.Contains (Loop_Vertex) then
          Explanation := To_Unbounded_String
-           ("a goto or raise statement was found in the loop");
+           ('"' & Source_Name (Brower)
+           & """ might not be updated on all paths");
          Result := False;
+         return;
+      end if;
+
+      --  Absence of deep updates on paths leading to loop vertex.
+
+      Vertices.Clear;
+      Vertices.Insert (Loop_Vertex);
+      Collect_Vertices_Leading_To
+        (Loop_Stmt, Vertices, Empty_Paths => False);
+      Result := No_Deep_Updates (Vertices, Brower, Explanation);
    end Structurally_Decreases_In_Loop;
 
    ---------------------------------

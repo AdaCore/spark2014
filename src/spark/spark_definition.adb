@@ -37,6 +37,7 @@ with Elists;                          use Elists;
 with Errout;                          use Errout;
 with Exp_Util;                        use Exp_Util;
 with Flow_Dependency_Maps;            use Flow_Dependency_Maps;
+with Flow_Error_Messages;             use Flow_Error_Messages;
 with Flow_Generated_Globals.Phase_2;  use Flow_Generated_Globals.Phase_2;
 with Flow_Utility;                    use Flow_Utility;
 with Flow_Utility.Initialization;     use Flow_Utility.Initialization;
@@ -418,7 +419,7 @@ package body SPARK_Definition is
    procedure Mark_Call                        (N : Node_Id) with
      Pre => Nkind (N) in N_Subprogram_Call | N_Entry_Call_Statement;
 
-   procedure Mark_Address_Or_Name             (E : Entity_Id)
+   procedure Mark_Address                     (E : Entity_Id)
      with Pre => Ekind (E) in Object_Kind | E_Function | E_Procedure;
 
    procedure Mark_Component_Association       (N : N_Component_Association_Id);
@@ -452,6 +453,10 @@ package body SPARK_Definition is
 
    procedure Mark_Exception_Handler (N : N_Exception_Handler_Id);
    --  Mark an exception handler
+
+   procedure Mark_Iterable_Aspect
+     (Iterable_Aspect : N_Aspect_Specification_Id);
+   --  Mark functions mentioned in the Iterable aspect of a type
 
    procedure Mark_List (L : List_Id);
    --  Call Mark on all nodes in list L
@@ -2842,7 +2847,7 @@ package body SPARK_Definition is
    -- Mark_Address --
    ------------------
 
-   procedure Mark_Address_Or_Name (E : Entity_Id) is
+   procedure Mark_Address (E : Entity_Id) is
       Address      : constant Node_Id := Address_Clause (E);
       Address_Expr : constant Node_Id :=
         (if Present (Address) then Expression (Address) else Empty);
@@ -2868,76 +2873,158 @@ package body SPARK_Definition is
          --  If we cannot determine which object the address of E references,
          --  the address clause will basically be ignored. We emit some
          --  warnings to help users locate the cases where review is needed.
+         --  The warning message is generated here instead of relying on
+         --  Warning_Message so that we generate a different message depending
+         --  of what needs to be checked during review.
 
          if not Supported_Alias then
 
-            --  Check whether E is annotated with some Volatile properties.
-            --  If it is not the case, issue a warning that we cannot
-            --  account for indirect writes. Otherwise, issue a warning that
-            --  we assume the stated volatile properties, if not all
-            --  properties are set. This partly addresses assumptions
-            --  SPARK_EXTERNAL and SPARK_ALIASING_ADDRESS.
+            declare
+               Indirect_To      : Boolean := False;
+               Indirect_Through : Boolean := False;
+               --  We generate a single warning message for indirect writes
+               --  through / to aliases. Use booleans to track what needs to be
+               --  generated.
 
-            if not Has_Volatile (E) then
-               if not No_Caching_Enabled (E) then
-                  Error_Msg_NE
-                    (Warning_Message (Warn_Indirect_Writes_Through_Alias),
-                     E, E);
+               Warnings         : array (1 .. 4) of Unbounded_String;
+               Nb_Warn          : Natural := 0;
+               --  Parts of the warning message. There can be up to 4 parts:
+               --    * Missing atomic
+               --    * Volatile flavors
+               --    * Indirect writes
+               --    * Valid reads
+
+               Continuations    : array (1 .. 2) of Unbounded_String;
+               Nb_Cont          : Natural := 0;
+               --  Same as above but storing continuations
+
+            begin
+               --  We assume no concurrent accesses in case the object is not
+               --  atomic. This partly addresses assumptions SPARK_EXTERNAL.
+
+               if not Is_Atomic (E) then
+                  Nb_Warn := Nb_Warn + 1;
+                  Warnings (Nb_Warn) := To_Unbounded_String
+                    ("no concurrent accesses to non-atomic object");
+               end if;
+
+               --  Check whether E is annotated with some Volatile properties.
+               --  If it is not the case, issue a warning that we cannot
+               --  account for indirect writes. Otherwise, issue a warning that
+               --  we assume the stated volatile properties, if not all
+               --  properties are set. This partly addresses assumptions
+               --  SPARK_EXTERNAL and SPARK_ALIASING_ADDRESS.
+
+               if not Has_Volatile (E) and then not No_Caching_Enabled (E) then
+                  Indirect_Through := True;
                   if Is_Library_Level_Entity (E) then
-                     Error_Msg_NE
-                       ("\consider making & volatile and"
-                        & " annotating it with Async_Writers",
-                        E, E);
+                     Nb_Cont := Nb_Cont + 1;
+                     Continuations (Nb_Cont) := To_Unbounded_String
+                       ("consider making & volatile and"
+                        & " annotating it with Async_Writers");
                   end if;
-               else
-                  Error_Msg_NE
-                    (Warning_Message (Warn_Assumed_Volatile_Properties),
-                     E, E);
-               end if;
-
-            elsif not Has_Volatile_Property (E, Pragma_Async_Readers)
-              or else not Has_Volatile_Property (E, Pragma_Async_Writers)
-              or else not Has_Volatile_Property (E, Pragma_Effective_Reads)
-              or else not Has_Volatile_Property (E, Pragma_Effective_Writes)
-            then
-               Error_Msg_NE
-                 (Warning_Message (Warn_Assumed_Volatile_Properties),
-                  E, E);
-            end if;
-
-            --  If E is variable in SPARK, emit a warning stating that
-            --  effects to other objects induced by writing to E are
-            --  ignored. This partly addresses assumptions
-            --  SPARK_ALIASING_ADDRESS.
-
-            if not E_Is_Constant then
-
-               --  If E has a volatile annotation with Async_Readers set to
-               --  False, writing to E cannot have any effects on other
-               --  variables. Do not emit the warning.
-
-               if (if Has_Volatile (E)
-                   then Has_Volatile_Property (E, Pragma_Async_Readers)
-                   else not No_Caching_Enabled (E))
+               elsif (not Has_Volatile (E) and then No_Caching_Enabled (E))
+                 or else not Has_Volatile_Property (E, Pragma_Async_Readers)
+                 or else not Has_Volatile_Property (E, Pragma_Async_Writers)
+                 or else not Has_Volatile_Property (E, Pragma_Effective_Reads)
+                 or else not Has_Volatile_Property (E, Pragma_Effective_Writes)
                then
-                  Error_Msg_NE
-                    (Warning_Message (Warn_Indirect_Writes_To_Alias),
-                     E, E);
-                  Error_Msg_NE
-                    ("\make sure that all overlapping objects have"
-                     & " Async_Writers set to True",
-                     E, E);
+                  Nb_Warn := Nb_Warn + 1;
+                  Warnings (Nb_Warn) := To_Unbounded_String
+                    ("correct volatile properties");
                end if;
-            end if;
 
-            --  We assume no concurrent accesses in case the object is not
-            --  atomic. This partly addresses assumptions SPARK_EXTERNAL.
+               --  If E is variable in SPARK, emit a warning stating that
+               --  effects to other objects induced by writing to E are
+               --  ignored. This partly addresses assumptions
+               --  SPARK_ALIASING_ADDRESS.
 
-            if not Is_Atomic (E) then
-               Error_Msg_NE
-                 (Warning_Message (Warn_Address_Atomic),
-                  E, E);
-            end if;
+               if not E_Is_Constant then
+
+                  --  If E has a volatile annotation with Async_Readers set to
+                  --  False, writing to E cannot have any effects on other
+                  --  variables. Do not emit the warning.
+
+                  if (if Has_Volatile (E)
+                      then Has_Volatile_Property (E, Pragma_Async_Readers)
+                      else not No_Caching_Enabled (E))
+                  then
+                     Indirect_To := True;
+                     Nb_Cont := Nb_Cont + 1;
+                     Continuations (Nb_Cont) := To_Unbounded_String
+                       ("make sure that all overlapping objects have"
+                        & " Async_Writers set to True");
+                  end if;
+               end if;
+
+               --  Reconstruct the warning about indirect writes
+
+               if Indirect_To or else Indirect_Through then
+                  declare
+                     Mode_Str : constant String :=
+                       (if Indirect_To and then Indirect_Through
+                        then "to or through"
+                        elsif Indirect_To then "to" else "through");
+                  begin
+                     Nb_Warn := Nb_Warn + 1;
+                     Warnings (Nb_Warn) := To_Unbounded_String
+                       ("no writes " & Mode_Str & " a potential alias");
+                  end;
+               end if;
+
+               --  We emit a warning when the value read might not be valid.
+               --  This addresses assumption SPARK_EXTERNAL_VALID.
+
+               declare
+                  Valid       : Boolean;
+                  Explanation : Unbounded_String;
+               begin
+                  Suitable_For_UC_Target
+                    (Retysp (Etype (E)), True, Valid, Explanation);
+
+                  if not Valid then
+                     Nb_Warn := Nb_Warn + 1;
+                     Warnings (Nb_Warn) := To_Unbounded_String ("valid reads");
+                  end if;
+               end;
+
+               --  Emit composite warning
+
+               if Nb_Warn > 0 then
+                  declare
+                     Msg : Unbounded_String;
+                  begin
+                     if Nb_Warn = 1 then
+                        Msg := Warnings (1);
+                     else
+                        if Nb_Warn = 2 then
+                           Msg := Msg & Warnings (1) & " ";
+                        else
+                           for I in 1 .. Nb_Warn - 1 loop
+                              Msg := Msg & Warnings (I) & ", ";
+                           end loop;
+                        end if;
+
+                        Msg := Msg & "and " & Warnings (Nb_Warn);
+                     end if;
+
+                     Error_Msg_NE
+                       ("?address specification on & is imprecisely supported:"
+                        & " assuming " & To_String (Msg), E, E);
+                  end;
+
+                  if Nb_Cont > 0 then
+                     declare
+                        Msg : constant String :=
+                          (if Nb_Cont = 1 then To_String (Continuations (1))
+                           else To_String (Continuations (1)) & " and " &
+                             To_String (Continuations (2)));
+                     begin
+                        Error_Msg_NE ('\' & Msg, E, E);
+                     end;
+                  end if;
+               end if;
+            end;
 
          --  The alias is supported by havocing aliased objects for each
          --  update. Check that we only accept cases we can handle that way.
@@ -3129,7 +3216,7 @@ package body SPARK_Definition is
             end if;
          end if;
       end;
-   end Mark_Address_Or_Name;
+   end Mark_Address;
 
    ---------------------------------------------
    -- Mark_Aspect_Clauses_And_Pragmas_In_List --
@@ -3378,7 +3465,8 @@ package body SPARK_Definition is
                   else
                      Mark_Violation
                        ("attribute ""Address"" outside an attribute definition"
-                        & " clause", N);
+                        & " clause", N,
+                        Code => EC_Address_In_Expression);
                      exit;
                   end if;
                   M := Parent (M);
@@ -4163,17 +4251,19 @@ package body SPARK_Definition is
          Mark_Violation
            ("dispatching call on primitive of untagged private", N);
 
-      --  Warn about calls to predefined and imported subprograms with no
-      --  manually-written Global or Depends contracts. Exempt calls to pure
-      --  subprograms (because Pure acts as "Global => null").
+      --  Warn about assumptions, but only when the SPARK_Mode is On
 
       elsif Emit_Warning_Info_Messages and then SPARK_Pragma_Is (Opt.On) then
+
+         --  Warn about calls to predefined and imported subprograms with no
+         --  manually-written Global or Depends contracts. Exempt calls to
+         --  pure subprograms (because Pure acts as "Global => null").
 
          declare
             Might_Have_Flow_Assumptions : constant Boolean :=
               (Has_No_Body (E)
-                 or else (Is_Ignored_Internal (E)
-                            and then not Is_Ignored_Internal (N)))
+               or else (Is_Ignored_Internal (E)
+                 and then not Is_Ignored_Internal (N)))
               and then not Is_Unchecked_Conversion_Instance (E)
               and then not Is_Unchecked_Deallocation_Instance (E);
 
@@ -4195,26 +4285,27 @@ package body SPARK_Definition is
             end if;
          end;
 
-      --  On supported unchecked conversions to access types, emit warnings
-      --  stating that we assume the returned value to be valid and with no
-      --  harmful aliases. The warnings are also emitted on calls to
-      --  To_Pointer function from an instance of
-      --  System.Address_To_Access_Conversions, which performs the same
-      --  operation.
+         --  On supported unchecked conversions to access types, emit warnings
+         --  stating that we assume the returned value to be valid and with no
+         --  harmful aliases. The warnings are also emitted on calls to
+         --  To_Pointer function from an instance of
+         --  System.Address_To_Access_Conversions, which performs the same
+         --  operation.
 
-      elsif Is_System_Address_To_Access_Conversion (E)
-        or else (Is_Unchecked_Conversion_Instance (E)
-                 and then Has_Access_Type (Etype (E)))
-      then
-         Error_Msg_NE (Warning_Message (Warn_Address_To_Access), N, E);
-         if Is_Access_Constant (Etype (E)) then
-            Error_Msg_NE
-              ("\\potential aliases of the value returned by a call"
-               & " to & are assumed to be constant", N, E);
-         else
-            Error_Msg_NE
-              ("\\the value returned by a call to & is assumed to "
-               & "have no aliases", N, E);
+         if Is_System_Address_To_Access_Conversion (E)
+           or else (Is_Unchecked_Conversion_Instance (E)
+                    and then Has_Access_Type (Etype (E)))
+         then
+            Error_Msg_NE (Warning_Message (Warn_Address_To_Access), N, E);
+            if Is_Access_Constant (Etype (E)) then
+               Error_Msg_NE
+                 ("\\potential aliases of the value returned by a call"
+                  & " to & are assumed to be constant", N, E);
+            else
+               Error_Msg_NE
+                 ("\\the value returned by a call to & is assumed to "
+                  & "have no aliases", N, E);
+            end if;
          end if;
       end if;
 
@@ -4318,6 +4409,14 @@ package body SPARK_Definition is
                           or else Is_Attribute_Old (P)
                         then
                            In_Old_Attribute := True;
+                           return False;
+                        end if;
+                     when N_Object_Declaration =>
+                        --  Declarations of declare expressions are valid
+                        --  contexts.
+
+                        P := Parent (P);
+                        if Nkind (P) /= N_Expression_With_Actions then
                            return False;
                         end if;
                      when others =>
@@ -5115,9 +5214,9 @@ package body SPARK_Definition is
             end if;
          end if;
 
-         --  Also mark the Address clause or external name if any
+         --  Also mark the Address clause if any
 
-         Mark_Address_Or_Name (E);
+         Mark_Address (E);
       end Mark_Object_Entity;
 
       ---------------------------
@@ -5354,6 +5453,7 @@ package body SPARK_Definition is
                            Mark_Violation
                              ("function & with output global " & G_Name,
                               Id,
+                              Code => EC_Function_Output_Global,
                               Root_Cause_Msg =>
                                 "function with global outputs");
                         end;
@@ -5407,6 +5507,7 @@ package body SPARK_Definition is
                                 ("nonvolatile function & with volatile input "
                                  & "global " & G_Name,
                                  Id,
+                                 Code => EC_Function_Volatile_Input_Global,
                                  Root_Cause_Msg => "nonvolatile function with "
                                  & " volatile global inputs");
                            end;
@@ -7860,6 +7961,49 @@ package body SPARK_Definition is
             end loop;
          end if;
 
+         --  If E is a private type with ownership which needs reclamation, go
+         --  over the following declarations to try and find its reclamation
+         --  function.
+
+         if Is_Type (E)
+           and then Is_Nouveau_Type (E)
+           and then Has_Ownership_Annotation (E)
+           and then Needs_Reclamation (E)
+           and then No (Get_Reclamation_Check_Function (E))
+         then
+            declare
+               Decl_Node : constant Node_Id := Declaration_Node (E);
+               Cur       : Node_Id;
+               Fun       : Entity_Id := Empty;
+            begin
+               if Is_List_Member (Decl_Node) then
+                  Cur := Next (Decl_Node);
+                  while Present (Cur) loop
+                     if Is_Pragma_Annotate_GNATprove (Cur) then
+                        Fun := Get_Ownership_Function_From_Pragma (Cur, E);
+                        if Present (Fun) then
+                           Queue_For_Marking (Fun);
+                           exit;
+                        end if;
+                     end if;
+                     Next (Cur);
+                  end loop;
+               end if;
+
+               if No (Fun)
+                 and then Emit_Warning_Info_Messages
+                 and then Debug.Debug_Flag_Underscore_F
+               then
+                  Error_Msg_NE
+                    ("info: ?no reclamation function found for type with "
+                     & "ownership &", E, E);
+                  Error_Msg_N
+                    ("\checks for ressource or memory reclamation will be"
+                     & " unprovable", E);
+               end if;
+            end;
+         end if;
+
          --  If E is a lemma procedure annotated with Automatic_Instantiation,
          --  also mark its associated function.
 
@@ -8038,7 +8182,11 @@ package body SPARK_Definition is
 
       Handler := First (Exception_Handlers (N));
       while Present (Handler) loop
-         Mark_Exception_Handler (Handler);
+         if Nkind (Handler) = N_Pragma then
+            Mark_Pragma (Handler);
+         else
+            Mark_Exception_Handler (Handler);
+         end if;
          Next (Handler);
       end loop;
    end Mark_Handled_Statements;
@@ -8196,9 +8344,8 @@ package body SPARK_Definition is
    procedure Mark_Iterable_Aspect
      (Iterable_Aspect : N_Aspect_Specification_Id)
    is
-
       procedure Mark_Iterable_Aspect_Function (N : Node_Id);
-      --  Mark individual association of iterable aspect.
+      --  Mark individual association of iterable aspect
 
       -----------------------------------
       -- Mark_Iterable_Aspect_Function --
@@ -8209,8 +8356,7 @@ package body SPARK_Definition is
            Ultimate_Alias (Entity (Expression (N)));
          Globals : Global_Flow_Ids;
       begin
-         if not In_SPARK (Ent)
-         then
+         if not In_SPARK (Ent) then
             Mark_Violation (N, From => Ent);
             return;
          end if;
@@ -8244,14 +8390,16 @@ package body SPARK_Definition is
 
       Iterable_Component_Assoc : constant List_Id :=
         Component_Associations (Expression (Iterable_Aspect));
-      Iterable_Field           : Node_Id := First (Iterable_Component_Assoc);
 
-      --  Start of processing for Mark_Iterable_Aspect
+      Iterable_Component : Node_Id;
+
+   --  Start of processing for Mark_Iterable_Aspect
 
    begin
-      while Present (Iterable_Field) loop
-         Mark_Iterable_Aspect_Function (Iterable_Field);
-         Next (Iterable_Field);
+      Iterable_Component := First (Iterable_Component_Assoc);
+      while Present (Iterable_Component) loop
+         Mark_Iterable_Aspect_Function (Iterable_Component);
+         Next (Iterable_Component);
       end loop;
    end Mark_Iterable_Aspect;
 
@@ -9557,7 +9705,7 @@ package body SPARK_Definition is
          end;
 
          if Ekind (E) in E_Procedure | E_Function then
-            Mark_Address_Or_Name (E);
+            Mark_Address (E);
          end if;
       end if;
    end Mark_Subprogram_Declaration;

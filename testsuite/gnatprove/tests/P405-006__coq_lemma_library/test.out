@@ -1,15 +1,15 @@
-spark-big_intervals.ads:22:13: info: during checks for quantification at spark-big_intervals.ads:14
-spark-big_intervals.ads:22:13: info: implicit terminating annotation on "First" has been proved, subprogram will terminate
-spark-big_intervals.ads:22:13: info: precondition proved
-spark-big_intervals.ads:25:13: info: during checks for quantification at spark-big_intervals.ads:14
-spark-big_intervals.ads:25:13: info: implicit terminating annotation on "Next" has been proved, subprogram will terminate
-spark-big_intervals.ads:25:13: info: precondition proved
-spark-big_intervals.ads:26:07: info: predicate check proved
-spark-big_intervals.ads:26:11: info: predicate check proved
-spark-big_intervals.ads:28:13: info: during checks for quantification at spark-big_intervals.ads:14
-spark-big_intervals.ads:28:13: info: implicit terminating annotation on "In_Range" has been proved, subprogram will terminate
-spark-big_intervals.ads:28:13: info: precondition proved
-spark-big_intervals.ads:29:17: info: predicate check proved
+spark-big_intervals.ads:29:13: info: during checks for quantification at spark-big_intervals.ads:19
+spark-big_intervals.ads:29:13: info: implicit terminating annotation on "First" has been proved, subprogram will terminate
+spark-big_intervals.ads:29:13: info: precondition proved
+spark-big_intervals.ads:32:13: info: during checks for quantification at spark-big_intervals.ads:19
+spark-big_intervals.ads:32:13: info: implicit terminating annotation on "Next" has been proved, subprogram will terminate
+spark-big_intervals.ads:32:13: info: precondition proved
+spark-big_intervals.ads:33:07: info: predicate check proved
+spark-big_intervals.ads:33:11: info: predicate check proved
+spark-big_intervals.ads:35:13: info: during checks for quantification at spark-big_intervals.ads:19
+spark-big_intervals.ads:35:13: info: implicit terminating annotation on "In_Range" has been proved, subprogram will terminate
+spark-big_intervals.ads:35:13: info: precondition proved
+spark-big_intervals.ads:36:17: info: predicate check proved
 spark-conversions-float_conversions.ads:11:01: info: analyzing call to "Log2_Estimate" in context
 spark-conversions-float_conversions.ads:11:01: info: analyzing call to "Minus_Log2_Estimate" in context
 spark-conversions-float_conversions.ads:11:01: info: in instantiation at a-nbnbre.adb:256

@@ -1,6 +1,6 @@
 split_pointers.adb:6:04: info: initialization of "Z" proved
 split_pointers.adb:16:07: info: initialization of "Tmp" proved
-split_pointers.adb:25:14: error: object was moved at line 31
+split_pointers.adb:25:14: error: object was moved at line 31 [E0010]
 split_pointers.adb:25:14: error: return from "Test_In_Out" with moved value for "X"
 split_pointers.adb:38:06: info: data dependencies proved
 split_pointers.adb:40:27: info: initialization of "Z" proved

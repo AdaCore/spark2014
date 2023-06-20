@@ -1,8 +1,5 @@
 main.adb:7:07: info: initialization of "Variable_To_Set" proved
 main.adb:8:43: info: flow dependencies proved
 main.adb:10:07: info: initialization of "Value_In_Spark" proved
-main.adb:10:07: warning: assuming no concurrent accesses to non-atomic object "Value_In_Spark"
-main.adb:10:07: warning: assuming valid reads from object "Value_In_Spark"
-main.adb:10:07: warning: indirect writes to "Value_In_Spark" through a potential alias are ignored
+main.adb:10:07: warning: address specification on "Value_In_Spark" is imprecisely supported: assuming no concurrent accesses to non-atomic object, no writes to or through a potential alias, and valid reads
 main.adb:10:07: warning: make sure that all overlapping objects have Async_Writers set to True
-main.adb:10:07: warning: writing to "Value_In_Spark" is assumed to have no effects on other non-volatile objects

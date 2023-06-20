@@ -7,6 +7,8 @@ All main units in proj are analyzed by default. Switches to change this:
  -u [files]            Analyze only the given files
     [files]            Analyze given files and all dependencies
  -U                    Analyze all files (including unused) of all projects
+                       (can also be used with "--limit-*" switches to analyze
+                       all instances of a generic)
 
 gnatprove basic switches:
  -aP=p                 Add path p to project path
@@ -77,6 +79,10 @@ gnatprove advanced switches:
  --memcached-server=host:portnumber
                       Specify a memcached instance that will be used for
                       caching of proof results.
+ --memcached-server=file:directory
+                      Use the fixed string "file" for part before the colon.
+                      The cache will be stored in the directory after the
+                      colon. Best for CI integration.
  --memlimit=nnn       Set the prover memory limit in MB. Use value 0 for
                       no limit (default when no level set)
  --no-global-generation

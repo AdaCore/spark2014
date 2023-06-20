@@ -8,9 +8,11 @@ gnatprove: error during fast partial checking of SPARK legality rules
 all_violations.adb:24:04: warning: analyzing unreferenced procedure "Call_Increment_And_Log"
 all_violations.adb:27:12: error: "Increment_And_Log" is not allowed in SPARK (due to function with global outputs)
 all_violations.adb:27:12: error: violation of pragma SPARK_Mode at test.adc:1
-all_violations.ads:5:13: error: function "Increment" with output global "Count" is not allowed in SPARK
+all_violations.ads:5:13: error: function "Increment" with output global "Count" is not allowed in SPARK [E0005]
+all_violations.ads:5:13: error: launch "gnatprove --explain=E0005" for more information
 all_violations.ads:5:13: error: violation of pragma SPARK_Mode at test.adc:1
-all_violations.ads:9:13: error: function "Increment_And_Log" with output global "Last" is not allowed in SPARK
+all_violations.ads:9:13: error: function "Increment_And_Log" with output global "Last" is not allowed in SPARK [E0005]
+all_violations.ads:9:13: error: launch "gnatprove --explain=E0005" for more information
 all_violations.ads:9:13: error: violation of pragma SPARK_Mode at test.adc:1
 gnatprove: error during analysis of data and information flow
 correct.adb:106:07: medium: implicit terminating annotation on "Increment_And_Log" could be incorrect, call to "Log" might be nonterminating [possible fix: annotate "Log" with Always_Return]

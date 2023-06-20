@@ -1,9 +1,10 @@
 p.adb:7:22: warning: assuming "Yield" always terminates
-p.adb:7:22: warning: no returning annotation available for "Yield"
+p.adb:7:22: warning: no Always_Terminates aspect available for "Yield"
 p.adb:13:10: error: "T" is not allowed in SPARK
 p.adb:13:10: error: violation of pragma SPARK_Mode at test.adc:1
 p.ads:3:44: error: "Blocking" is not allowed in SPARK (due to function with global outputs)
 p.ads:3:44: error: violation of pragma SPARK_Mode at test.adc:1
-p.ads:5:13: error: function "Blocking" with output global "Tasking_State" is not allowed in SPARK
+p.ads:5:13: error: function "Blocking" with output global "Tasking_State" is not allowed in SPARK [E0005]
+p.ads:5:13: error: launch "gnatprove --explain=E0005" for more information
 p.ads:5:13: error: violation of pragma SPARK_Mode at test.adc:1
 gnatprove: error during flow analysis and proof

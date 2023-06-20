@@ -24,12 +24,13 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with Errout;   use Errout;
-with Namet;    use Namet;
-with Restrict; use Restrict;
-with Rident;   use Rident;
-with Sem_Prag; use Sem_Prag;
-with Tbuild;   use Tbuild;
+with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
+with Errout;                use Errout;
+with Namet;                 use Namet;
+with Restrict;              use Restrict;
+with Rident;                use Rident;
+with Sem_Prag;              use Sem_Prag;
+with Tbuild;                use Tbuild;
 
 package body SPARK_Definition.Violations is
 
@@ -297,9 +298,12 @@ package body SPARK_Definition.Violations is
    procedure Mark_Violation
      (Msg            : String;
       N              : Node_Id;
+      Code           : Explain_Code := EC_None;
       SRM_Reference  : String := "";
       Cont_Msg       : String := "";
-      Root_Cause_Msg : String := "") is
+      Root_Cause_Msg : String := "")
+   is
+      Full_Msg : Unbounded_String;
    begin
       --  Flag the violation, so that the current entity is marked
       --  accordingly.
@@ -316,13 +320,18 @@ package body SPARK_Definition.Violations is
       --  If SPARK_Mode is On, raise an error
 
       if Emit_Messages and then SPARK_Pragma_Is (Opt.On) then
+         Full_Msg := To_Unbounded_String (Msg & " is not allowed in SPARK");
 
          if SRM_Reference /= "" then
-            Error_Msg_F
-              (Msg & " is not allowed in SPARK (" & SRM_Reference & ")", N);
-         else
-            Error_Msg_F (Msg & " is not allowed in SPARK", N);
+            Full_Msg := Full_Msg & " (" & SRM_Reference & ")";
          end if;
+
+         if Code /= EC_None then
+            Error_Msg_Code := Explain_Code'Enum_Rep (Code);
+            Full_Msg := Full_Msg & " '[[]']";
+         end if;
+
+         Error_Msg_F (To_String (Full_Msg), N);
 
          if Cont_Msg /= "" then
             Error_Msg_F ('\' & Cont_Msg, N);

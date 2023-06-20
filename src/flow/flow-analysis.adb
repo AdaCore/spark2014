@@ -2043,14 +2043,16 @@ package body Flow.Analysis is
 
       procedure Emit_Check_Message
         (Var   : Flow_Id;
+         V_Def : Flow_Graphs.Vertex_Id;
          V_Use : Flow_Graphs.Vertex_Id;
          Kind  : Msg_Kind;
          OK    : in out Boolean)
       with Pre  => not Is_Internal (Var)
+                   and then V_Def /= Flow_Graphs.Null_Vertex
                    and then V_Use /= Flow_Graphs.Null_Vertex,
            Post => not OK;
       --  Produces an appropriately worded low/high message for variable Var
-      --  when used at Vertex.
+      --  defined/havoced and used at vertices V_Def and V_Use, respectively.
 
       procedure Emit_Info_Message_Global (Var : Flow_Id)
       with Pre => Var.Kind in Direct_Mapping | Magic_String;
@@ -2134,6 +2136,7 @@ package body Flow.Analysis is
 
       procedure Emit_Check_Message
         (Var   : Flow_Id;
+         V_Def : Flow_Graphs.Vertex_Id;
          V_Use : Flow_Graphs.Vertex_Id;
          Kind  : Msg_Kind;
          OK    : in out Boolean)
@@ -2216,10 +2219,18 @@ package body Flow.Analysis is
                end if;
             end Add_Loc;
 
+            Start : constant Flow_Graphs.Vertex_Id :=
+              (if FA.Atr (V_Def).Is_Param_Havoc
+               then V_Def
+               else FA.Start_Vertex);
+            --  If we scan children of a havoc vertex, then search from the
+            --  havoc vertex itself; otherwise, skip the 'Initial vertex and
+            --  begin from the start of the subprogram.
+
          --  Start of processing for Mark_Definition_Free_Path
 
          begin
-            FA.CFG.Shortest_Path (Start         => FA.Start_Vertex,
+            FA.CFG.Shortest_Path (Start         => Start,
                                   Allow_Trivial => False,
                                   Search        => Are_We_There_Yet'Access,
                                   Step          => Add_Loc'Access);
@@ -2735,7 +2746,9 @@ package body Flow.Analysis is
                if V_Def = V_Initial then
                   --  We're using the initial value
                   pragma Assert
-                    (not Is_Initialized
+                    (Def_Atr.Is_Param_Havoc
+                       or else
+                     not Is_Initialized
                        (Change_Variant (Var, Initial_Value), Def_Atr));
                   Is_Uninitialized := True;
 
@@ -2833,6 +2846,7 @@ package body Flow.Analysis is
                      then
                         Emit_Check_Message
                           (Var   => Var,
+                           V_Def => Start,
                            V_Use => Child,
                            Kind  =>
                              (if Possibly_Initialized
@@ -2863,6 +2877,7 @@ package body Flow.Analysis is
                      if Child_Atr.Variables_Used.Contains (Var) then
                         Emit_Check_Message
                           (Var   => Var,
+                           V_Def => Start,
                            V_Use => Child,
                            Kind  =>
                              (if Might_Be_Initialized (Var       => Var,
@@ -2918,7 +2933,7 @@ package body Flow.Analysis is
 
             Visited : Vertex_Sets.Set;
 
-            OK : Boolean;
+            OK : Boolean := True;
             --  This flag will be initially True, but will become False if
             --  any check is emitted when scanning the flow graph. If no such
             --  checks are emitted, then all uses of the considered object are
@@ -2932,8 +2947,6 @@ package body Flow.Analysis is
               and then not Has_Relaxed_Initialization (Parent_Key)
               and then not Is_Initialized (Parent_Key, Parent_Atr)
             then
-               OK := True;
-
                Scan_Children
                  (Var     => Change_Variant (Parent_Key, Normal_Use),
                   Start   => Parent,
@@ -2964,6 +2977,37 @@ package body Flow.Analysis is
                      end if;
                   end if;
                end;
+
+            --  Do the same for variables that become havoced after a call that
+            --  raised an exception.
+
+            elsif Parent_Atr.Is_Param_Havoc then
+               for Havoc_Var of Parent_Atr.Variables_Defined loop
+                  Scan_Children
+                    (Var     => Havoc_Var,
+                     Start   => Parent,
+                     Possibly_Initialized => False,
+                     Visited => Visited,
+                     OK      => OK);
+
+                  declare
+                     Obj : constant Flow_Id := Entire_Variable (Havoc_Var);
+                  begin
+                     if Parent_Atr.Is_Global then
+                        if OK then
+                           Global_OK.Include (Obj);
+                        else
+                           Global_NOK.Include (Obj);
+                        end if;
+                     else
+                        if OK then
+                           Local_OK.Include (Obj);
+                        else
+                           Local_NOK.Include (Obj);
+                        end if;
+                     end if;
+                  end;
+               end loop;
             end if;
 
             --  While scanning the graph and emitting checks, we also pick

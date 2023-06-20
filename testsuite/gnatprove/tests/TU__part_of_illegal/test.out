@@ -8,6 +8,8 @@ part_of_illegal-pr_child.ads:12:60: error: limited withed package can only be us
 part_of_illegal-pr_child.ads:12:60: error: limited withed package can only be used to access incomplete types
 part_of_illegal-pr_child.ads:15:04: error: "Pr_Child_Vis_2" is declared in the private part of package "Part_Of_Illegal"
 part_of_illegal-pr_child.ads:15:04: error: "Pr_Child_Vis_2" is declared in the private part of package "Part_Of_Illegal"
-part_of_illegal-pr_child.ads:15:04: error: indicator Part_Of is required in this context (SPARK RM 7.2.6(2))
-part_of_illegal-pr_child.ads:15:04: error: indicator Part_Of is required in this context (SPARK RM 7.2.6(2))
+part_of_illegal-pr_child.ads:15:04: error: indicator Part_Of is required in this context [E0009]
+part_of_illegal-pr_child.ads:15:04: error: indicator Part_Of is required in this context [E0009]
+part_of_illegal-pr_child.ads:15:04: error: launch "gnatprove --explain=E0009" for more information
+part_of_illegal-pr_child.ads:15:04: error: launch "gnatprove --explain=E0009" for more information
 gnatprove: error during generation of Global contracts

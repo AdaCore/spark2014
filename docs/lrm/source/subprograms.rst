@@ -1495,7 +1495,7 @@ Exceptional_Cases aspects are ignored for execution.
 
    * directly or indirectly in the prefix of a reference to the Old
      attribute, or
-   * directly as a prefix of the Constrained, Length, First, or Last
+   * directly as a prefix of the Constrained, First, Last, Length, or Range
      attributes.
 
 .. container:: heading

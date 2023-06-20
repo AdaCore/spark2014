@@ -1,7 +1,7 @@
 with Ada.Text_IO;          use Ada.Text_IO;
 with Ada.Integer_Text_IO;  use Ada.Integer_Text_IO;
 procedure Enum_Example with
-  Always_Terminates => False
+  Exceptional_Cases => (others => True)
 is
    --Declaration of three enumeration types
    type Day_Type is (Monday, Tuesday, Wednesday, Thursday,

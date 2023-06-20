@@ -332,6 +332,9 @@ package SPARK_Atree.Entities is
    function Is_Generic_Unit (E : Entity_Id) return Boolean renames
      Einfo.Utils.Is_Generic_Unit;
 
+   function Is_Ghost_Entity (E : Entity_Id) return Boolean renames
+     Einfo.Utils.Is_Ghost_Entity;
+
    function Is_Integer_Type (E : Entity_Id) return Boolean renames
      Einfo.Utils.Is_Integer_Type;
 

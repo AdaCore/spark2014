@@ -400,14 +400,33 @@ package body Flow_Error_Messages is
       FF1          : Flow_Id       := Null_Flow_Id;
       FF2          : Flow_Id       := Null_Flow_Id;
       Tag          : Flow_Tag_Kind := Empty_Tag;
+      Explain_Code : Natural       := 0;
       SRM_Ref      : String        := "";
       Tracefile    : String        := "";
       Continuation : Boolean       := False)
    is
+      function Get_Explain_Code return String
+        with Pre => Explain_Code /= 0;
+      --  If Explain_Code is not zero, return the error code to include in the
+      --  message, in the same format used by Errout procedures.
+
+      function Get_Explain_Code return String is
+         Code : String := "0000";
+         Rest : Natural := Explain_Code;
+      begin
+         for J in reverse Code'Range loop
+            Code (J) := Character'Val (Character'Pos ('0') + Rest mod 10);
+            Rest := Rest / 10;
+         end loop;
+
+         return "E" & Code;
+      end Get_Explain_Code;
+
       Msg2 : constant String :=
         Msg &
         (if CWE and Severity /= Info_Kind then CWE_Message (Tag) else "") &
-        (if SRM_Ref'Length > 0 then " (SPARK RM " & SRM_Ref & ")" else "");
+        (if SRM_Ref'Length > 0 then " (SPARK RM " & SRM_Ref & ")" else "") &
+        (if Explain_Code /= 0 then " [" & Get_Explain_Code & "]" else "");
 
       Attach_Node : constant Node_Id :=
         (if Instantiation_Location (Sloc (Original_Node (N))) = No_Location
@@ -616,6 +635,26 @@ package body Flow_Error_Messages is
                   end;
             end case;
 
+            --  If an explain code was used in the message, output a
+            --  continuation message to indicate how to get more
+            --  information, using the same message as in Errout.
+
+            declare
+               Dummy : Boolean;
+            begin
+               if Explain_Code /= 0 then
+                  Error_Msg_Flow
+                    (E            => E,
+                     Msg          =>
+                       "launch ""gnatprove --explain="
+                     & Get_Explain_Code & """ for more information",
+                     Severity     => Severity,
+                     N            => N,
+                     Suppressed   => Dummy,
+                     Tag          => Tag,
+                     Continuation => True);
+               end if;
+            end;
          else
             Msg_Id := No_Message_Id;
          end if;
@@ -663,6 +702,7 @@ package body Flow_Error_Messages is
       FF1          : Flow_Id               := Null_Flow_Id;
       FF2          : Flow_Id               := Null_Flow_Id;
       Tag          : Flow_Tag_Kind         := Empty_Tag;
+      Explain_Code : Natural               := 0;
       SRM_Ref      : String                := "";
       Path         : Vertex_Sets.Set       := Vertex_Sets.Empty_Set;
       Vertex       : Flow_Graphs.Vertex_Id := Flow_Graphs.Null_Vertex;
@@ -734,6 +774,7 @@ package body Flow_Error_Messages is
                       FF2          => FF2,
                       Tag          => Tag,
                       SRM_Ref      => SRM_Ref,
+                      Explain_Code => Explain_Code,
                       Tracefile    => Tracefile,
                       Continuation => Continuation);
 
@@ -1262,7 +1303,15 @@ package body Flow_Error_Messages is
 
       case Tag is
          when VC_Termination_Check =>
-            if Has_Implicit_Always_Return_Annotation (E) then
+            if Nkind (N) in N_Function_Call
+                          | N_Procedure_Call_Statement
+                          | N_Entry_Call_Statement
+              and then Is_Ghost_Entity (Get_Called_Entity (N))
+              and then not Is_Ghost_Entity (E)
+            then
+               return "ghost calls occurring inside non-ghost code "
+                 & "should always terminate";
+            elsif Has_Implicit_Always_Return_Annotation (E) then
                declare
                   E_Name : constant String :=
                     (if Ekind (E) = E_Package then "package elaboration"
@@ -1297,6 +1346,18 @@ package body Flow_Error_Messages is
                   end loop;
                end;
 
+               return "";
+            end if;
+
+         when VC_Raise =>
+            if Nkind (N) = N_Procedure_Call_Statement
+              and then Ekind (Get_Called_Entity (N)) = E_Procedure
+              and then Is_Ghost_Entity (Get_Called_Entity (N))
+              and then not Is_Ghost_Entity (E)
+            then
+               return "ghost procedure calls should not propagate exceptions"
+                 & " to non-ghost code";
+            else
                return "";
             end if;
 

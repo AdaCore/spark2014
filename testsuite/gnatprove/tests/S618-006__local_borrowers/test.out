@@ -1,3 +1,4 @@
-borrow_with_variables.adb:29:35: error: borrowed expression cannot depend on variable input "I" (SPARK RM 4.4(2))
+borrow_with_variables.adb:29:35: error: borrowed expression cannot depend on variable input "I" [E0007]
+borrow_with_variables.adb:29:35: error: launch "gnatprove --explain=E0007" for more information
 borrow_with_variables.adb:29:35: error: use instead a constant initialized to the expression with variable input
 gnatprove: error during flow analysis and proof

@@ -35,6 +35,18 @@ objective:
   the expression function is used to generate a matching postcondition. See
   :ref:`Expression Functions`.
 
+* exceptional contract (``Exceptional_Cases``)
+
+  As a default, standard procedures are not considered to raise any exceptions
+  (``Exceptional_Cases => (others => False)``) and No_Return procedures
+  might raise any exception (``Exceptional_Cases => (others => True)``).
+
+* termination contract (``Always_Terminates``)
+
+  The contract is generated from a body in SPARK and a default contract of
+  ``False`` is used if the body is in full Ada. If there is no body, a
+  default contract of ``True`` (or ``False`` for No_Return procedures) is used.
+
 Knowing which contracts to write depends on the specific verification
 objectives to achieve.
 
@@ -633,9 +645,8 @@ subprograms, which cannot be analyzed by |GNATprove|. It is compulsory to
 specify in data dependencies the global variables these imported subprograms
 may read and/or write, otherwise |GNATprove| assumes ``null`` data dependencies
 (no global variable read or written). It is also compulsory to specify procedures
-which never terminate with aspect or pragma ``No_Return`` and procedures
-which may not terminate with annotation ``Might_Not_Return`` (see
-:ref:`Nonreturning Procedures`), otherwise |GNATprove| assumes that imported
+which may not terminate with aspect ``Always_Terminates`` (see
+:ref:`Contracts for Termination`), otherwise |GNATprove| assumes that imported
 subprograms always terminate. Note that a function is in general expected to
 terminate in SPARK, so functions that do otherwise should be replaced by
 procedures with a suitable annotation.
@@ -806,89 +817,42 @@ more time and memory.
 
 .. index:: termination; proving termination
            Annotate; for subprogram termination
-           Always_Return
+           Always_Terminates
 
 Subprogram Termination
 ----------------------
 
-By default, |GNATprove| verifies termination of all functions
-and automatically instantiated lemmas (procedures annotated with
-``Automatic_Instantiation``). For procedures or entries, |GNATprove| does not
-attempt to verify termination and is only concerned with their partial
-correctness. This means that |GNATprove| only verifies that the contract of
-each procedure or entry holds whenever it terminates normally (i.e., returns),
-and it is still possible that the subprogram does not terminate in some or
-all cases.
-
-What is more, |GNATprove| enforces that no exception will be raised at runtime,
-except for storage errors possibly caused by primary stack allocation failures,
-secondary stack allocation failures, or heap memory allocation failures.
-
-The previous two paragraphs imply that |GNATprove| formally verifies that each
-execution of each |SPARK| subprogram it analyzes will either:
-
-* return normally in a state that respects the subprogram’s postcondition,
-* terminate abnormally as a result of a primary stack, secondary stack, or heap
-  memory allocation failure, or
-* not terminate at all.
-
-A user can request from |GNATprove| that it also proves that a procedure
-terminates by using a specific ``Annotate`` pragma. |GNATprove| formally
-verifies that each |SPARK| procedure it analyzes with this annotation will
-always terminate, i.e., that each execution of each such subprogram will either:
-
-* return normally in a state that respects the subprogram’s postcondition, or
-* terminate abnormally as a result of a primary stack, secondary stack, or heap
-  memory allocation failure.
-
-Functions and procedures annotated with ``Automatic_Instantiation`` are considered
-to have an implicit ``Always_Return`` annotation, so |GNATprove| will attempt to
-prove the annotation if their body is visible.
-
-In the following example, we specify that the five ``P`` procedures
-should terminate, which |GNATprove| will attempt proving:
+|GNATprove| can be used to verify the termination of subprograms. It will do it
+unconditionnally for functions and package elaboration (which shall have no
+side-effects in |SPARK|), and on demand for procedures and entries.
+In the following example, we specify that the five procedures
+should terminate using the ``Always_Terminates`` aspect (see
+:ref:`Contracts for Termination`):
 
 .. literalinclude:: /examples/ug__terminating_annotations/terminating_annotations.ads
    :language: ada
    :linenos:
 
-If every subprogram in a package always returns, the package itself can be
-annotated with the ``Always_Return`` annotation. If the annotation is located
-on a generic package, then it should be valid for every instance of the package.
-
-An aspect can be used instead of a pragma for both packages and subprograms:
-
-.. code-block:: ada
-
-   package Pack with
-      Annotate => (GNATprove, Always_Return)
-   is
-      procedure Proc with
-        Annotate => (GNATprove, Always_Return);
-   ...
-
-If a subprogram in |SPARK| is explicitly annotated with ``Always_Return``,
-flow analysis will attempt to make sure that all the paths through the subprogram
-effectively return. In effect, it will look for while loops with no loop variants,
-recursive calls and calls to subprograms which are not known to always return. If
-|GNATprove| cannot make sure that the annotated subprogram will always
-return, it will then emit a failed check. As an example, let us consider
-the following implementation of the five ``P`` procedures:
+To verify these annotations, |GNATprove| will look for while loops with no loop
+variants, recursive calls, and calls to procedures or entries which are not
+known to terminate. If it cannot make sure that the annotated subprogram will
+always terminate, it will then emit a failed check. As an example, let us
+consider the following implementation of the five procedures:
 
 .. literalinclude:: /examples/ug__terminating_annotations/terminating_annotations.adb
    :language: ada
    :linenos:
 
-As can be easily verified by review, all these functions terminate, and all
-return 0. As can be seen below, |GNATprove| will fail to verify that ``P_Rec``,
-``P_While``, and ``P_Call`` always return.
+As can be easily verified by review, all these procedures terminate.
+However, |GNATprove| will fail to verify that ``P_Rec``,
+``P_While``, and ``P_Call`` always terminate:
 
 .. literalinclude:: /examples/ug__terminating_annotations/test.out
    :language: none
    :linenos:
 
-Let us look at each procedure to understand what happens. The procedure ``P_Rec``
-is recursive, and the procedure ``P_While`` contains a while loop. Both cases
+Let us look at each procedure to understand what happens. The procedure
+``P_Rec`` is recursive, and ``P_While`` contains a while loop. Both cases
 can theoretically lead to an infinite path in the subprogram, which is why
 |GNATprove| cannot verify that they terminate. |GNATprove| does not complain
 about not being able to verify the termination of ``P_Not_SPARK``. Clearly, it
@@ -901,22 +865,10 @@ returns, as it does not do anything. But, as the body of ``No_SPARK`` has
 been hidden from analysis using ``SPARK_Mode => Off``, |GNATprove| cannot
 deduce that it terminates. As a result, it stays in the safe side, and assumes
 that ``Not_SPARK`` could loop, which causes the verification of ``P_Call`` to
-fail. Finally, |GNATprove| is able to verify that ``P_Term`` always returns,
+fail. Finally, |GNATprove| is able to verify that ``P_Term`` terminates,
 though it contains both a while loop and  a recursive call.  Indeed, we have
 bounded both the number of possible iterations of the loop and the number of
 recursive calls using a ``Loop_Variant`` (for the loop iterations) and a
 ``Subprogram_Variant`` (for the recursive calls). Also note that, though it was
 not able to prove termination of ``P_Rec``, ``P_While``, and ``P_Call``,
-|GNATprove| will still trust the annotation and consider them as always
-returning when verifying ``P_Term``.
-
-.. note::
-
-   Possibly non-returning subprograms may influence |GNATprove| proof
-   capabilities. Indeed, to avoid soundness issues due to nontermination in
-   logical formulas, GNATprove will not be able to see the contract of
-   nonterminating functions if they are called from definitions of constants,
-   from contracts, or from assertions. In such a case, an information message
-   will be emitted, stating that (implicit) contracts of the function are not
-   available for proof. This message won't appear if an ``Always_Return``
-   annotation is supplied for the function as explained above.
+|GNATprove| will still trust the annotation when verifying ``P_Term``.

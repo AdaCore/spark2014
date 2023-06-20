@@ -552,17 +552,17 @@ of a program:
   * They should be `effectively volatile` in SPARK (see SPARK RM 7.1.2), so
     that GNATprove takes into account possible concurrent changes in the
     object's value. The warning
-    `imprecise Address and indirect writes through alias` is
+    `imprecisely supported address specification` is
     guaranteed to be issued in cases where review is required.
 
   * They should be `synchronized` in SPARK (see SPARK RM 9) to prevent race
     conditions which could lead to reading invalid values. The warning
-    `imprecise Address without Atomic` is guaranteed to be
+    `imprecisely supported address specification` is guaranteed to be
     issued in cases where review is required.
 
   * They should have specified all necessary :ref:`Properties of Volatile
     Variables` corresponding to their usage. The warning
-    `imprecise Address and volatile properties` is guaranteed
+    `imprecisely supported address specification` is guaranteed
     to be issued in cases where review is required.
 
 * [SPARK_ALIASING_ADDRESS]
@@ -571,26 +571,20 @@ of a program:
 
   * The objects themselves are annotated with the ``Asynchronous_Writers``
     volatile property if they can be affected by the modification of another
-    object. The warnings
-    `imprecise Address and indirect writes through alias` or
-    `imprecise Address and volatile properties` are guaranteed
+    object. The warning
+    `imprecisely supported address specification` is guaranteed
     to be issued in cases where review is required.
 
   * Other objects visible from SPARK code which might be affected by a
     modification of such a variable have the ``Asynchronous_Writers`` volatile
-    property set to True. A warning is guaranteed to be issued in cases where
-    review is needed: the warning
-    `imprecise Address and volatile properties`
-    if the object has ``Asynchronous_Readers`` set to False, the warning
-    `imprecise Address and indirect writes to alias` otherwise.
+    property set to True. The warning
+    `imprecisely supported address specification` is guaranteed to be issued
+    in cases where review is needed.
 
   * Other objects visible from SPARK code which might be affected by a
     modification of such a variable have valid values for their type when read.
-    A warning is guaranteed to be issued in cases where
-    review is needed: the warning
-    `imprecise Address and volatile properties`
-    if the object has ``Asynchronous_Readers`` set to False, the warning
-    `imprecise Address and indirect writes to alias` otherwise.
+    The warning `imprecisely supported address specification` is guaranteed to
+    be issued in cases where review is needed.
 
 .. index:: Valid; limitation
 
@@ -611,7 +605,7 @@ of a program:
   otherwise). Currently there is no model of invalidity or undefinedness. The
   onus is on the user to ensure that all values read from an external source
   are valid. The use of an invalid value invalidates any proofs associated with
-  the value. The warning `imprecise Address and validity` is
+  the value. The warning `imprecisely supported address specification` is
   guaranteed to be issued in cases where review is required.
 
 * [SPARK_STORAGE_ERROR]
@@ -817,9 +811,9 @@ only part of a program:
 
   * :ref:`Subprogram Termination` (only explicit except for functions which
     should always return in SPARK) - subprograms annotated with
-    ``Always_Return`` should always return normally assuming that primary
-    stack, secondary stack, and heap memory allocations never fail, other
-    subprograms are not restricted
+    ``Always_Terminates`` should terminate (return normally or raise an
+    exception) whenever the associated boolean condition evaluates to True
+    on entry of the subprogram. Other subprograms are not restricted
 
   * the aliasing constraints of |SPARK| (implicit - the subprogram shall not
     introduce any visible aliases between its parameters, accessed global
@@ -860,6 +854,10 @@ only part of a program:
   When the body of a function is not analyzed by GNATprove, its result should
   not depend on the address of parts of its parameters or global inputs unless
   it is annotated with ``Volatile_Function``.
+  When the body of a procedure is not analyzed by GNATprove, none of its
+  outputs should depend on the address of parts of its parameters or global
+  inputs unless the output is volatile for reading, or its value depends on an
+  input which is volatile for reading as stated in a Depends contract.
 
 * [ADA_STATE_ABSTRACTION]
   Units whose body is not analyzed, yet are used from SPARK code, need to
@@ -888,8 +886,13 @@ only part of a program:
 * [ADA_INLINE_FOR_PROOF]
   If the aspect or pragma ``Inline_For_Proof`` is used on a function with a
   postcondition whose implementation is not analyzed, yet called from SPARK
-  code, the equality used in the postcondition of the function should be equal
-  to the logical equality.
+  code, and the function has a postcondition whose expression is syntactically
+  a relation using the ‘=’ relational_operator (or an expression that
+  parenthesizes such a relation), where one side of the relation is
+  syntactically an attribute_reference to the Result attribute of the function,
+  then |GNATprove| assumes that the value of the postcondition expression is
+  true if and only if the function return value is logically equal to an Ada
+  copy of the value of the other side of the relation.
 
 In addition, the following assumptions need to be addressed when calling
 GNATprove on only part of a SPARK program at a time (either on an individual
@@ -906,13 +909,13 @@ being available:
   review is required.
 
 * [PARTIAL_TERMINATION]
-  Subprograms which are called across the boundary of those units analyzed
-  together should be annotated to specify that they will always return (with
-  annotation Always_Return), might not return (with annotation
-  Might_Not_Return) or never return (with aspect or pragma No_Return),
-  otherwise they will be assumed to always return. The warning
-  `assumed Always_Return` is guaranteed to be issued in cases where review is
-  required.
+  Procedures and entries which are called across the boundary of those units
+  analyzed together should be annotated to specify under which condition they
+  shall terminate using the ``Always_Terminates`` aspect. Otherwise, these
+  subprograms will be assumed to never terminate (if they are annotated with
+  ``No_Return``) or always terminate (otherwise). The warning
+  `assumed Always_Terminates` is guaranteed to be issued in cases where review
+  is required.
 
 * [PARTIAL_TASKING]
   If no single run of GNATprove analyzes all units that define tasks, then for
