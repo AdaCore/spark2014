@@ -6096,9 +6096,11 @@ package body SPARK_Definition is
          if Is_Dispatching_Operation (E) then
             declare
                Inherit_Subp_No_Intf : constant Subprogram_List :=
-                 Sem_Disp.Inherited_Subprograms (E, No_Interfaces => True);
+                 Sem_Disp.Inherited_Subprograms
+                   (E, No_Interfaces => True, Skip_Overridden => True);
                Inherit_Subp_Intf : constant Subprogram_List :=
-                 Sem_Disp.Inherited_Subprograms (E, Interfaces_Only => True);
+                 Sem_Disp.Inherited_Subprograms
+                   (E, Interfaces_Only => True, Skip_Overridden => True);
             begin
                --  Ok to inherit a subprogram only from non-interfaces
 
