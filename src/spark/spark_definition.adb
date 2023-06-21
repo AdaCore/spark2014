@@ -1447,16 +1447,21 @@ package body SPARK_Definition is
 
          when N_Aggregate =>
 
-            --  Reject 'Update on unconstrained multidimensional array
-
-            if Is_Update_Aggregate (N)
-              and then Is_Update_Unconstr_Multidim_Aggr (N)
-            then
-               Mark_Unsupported (Lim_Multidim_Update, N);
-
             --  Special aggregates for indexes of updates of multidim arrays do
             --  not have a type, see comment on
             --  Is_Special_Multidim_Update_Aggr.
+
+            if not Is_Special_Multidim_Update_Aggr (N)
+              and then Has_Aspect (Base_Type (Etype (N)), Aspect_Aggregate)
+            then
+               Mark_Violation ("container aggregate", N);
+
+            --  Reject 'Update on unconstrained multidimensional array
+
+            elsif Is_Update_Aggregate (N)
+              and then Is_Update_Unconstr_Multidim_Aggr (N)
+            then
+               Mark_Unsupported (Lim_Multidim_Update, N);
 
             elsif not Is_Special_Multidim_Update_Aggr (N)
               and then not Most_Underlying_Type_In_SPARK (Etype (N))
