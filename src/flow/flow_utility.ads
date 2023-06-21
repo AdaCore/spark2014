@@ -41,7 +41,7 @@ with Types;                use Types;
 
 package Flow_Utility is
 
-   procedure Collect_Functions_And_Read_Locked_POs
+   procedure Pick_Generated_Info
      (N                  : Node_Id;
       Scop               : Flow_Scope;
       Function_Calls     : in out Call_Sets.Set;
@@ -49,9 +49,12 @@ package Flow_Utility is
       Tasking            : in out Tasking_Info;
       Generating_Globals : Boolean)
    with Pre  => Present (N),
-        Post => Function_Calls'Old.Is_Subset (Of_Set => Function_Calls);
-   --  For an expression N collect its called functions and update the set of
-   --  protected objects that are read-locked when evaluating these functions.
+        Post => Function_Calls'Old.Is_Subset (Of_Set => Function_Calls)
+          and then Proof_Dependencies'Old.Is_Subset
+                     (Of_Set => Proof_Dependencies);
+   --  For an expression N collect its called functions, proof dependencies and
+   --  update the set of protected objects that are read-locked when evaluating
+   --  these functions.
    --
    --  When Generating_Globals is set, then the implicit calls to predicate
    --  functions appear in the set of subprograms called. This is what we
