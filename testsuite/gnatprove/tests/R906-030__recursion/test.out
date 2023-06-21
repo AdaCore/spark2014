@@ -9,6 +9,7 @@ pack.adb:21:24: info: overflow check proved (CVC5: 4 VC)
 pack.adb:21:24: info: range check proved (CVC5: 4 VC)
 pack.adb:23:19: info: overflow check proved (CVC5: 4 VC)
 pack.adb:24:10: info: precondition proved (CVC5: 2 VC)
+pack.adb:24:10: medium: call to ghost subprogram "Prove_Sum_Eq" might be nonterminating [possible fix: annotate "Prove_Sum_Eq" with aspect Always_Terminates]
 pack.adb:24:24: info: range check proved (CVC5: 8 VC)
 pack.adb:24:40: info: overflow check proved (CVC5: 4 VC)
 pack.adb:24:46: info: range check proved (CVC5: 8 VC)
