@@ -6114,9 +6114,14 @@ package body Flow.Analysis is
 
    procedure Check_Ghost_Terminates (FA : in out Flow_Analysis_Graphs) is
    begin
-      --  We are only interested in calls originating from non-ghost entities
+      --  We are only interested in calls originating from non-ghost entities.
+      --  Also, if the termination condition of the caller is statically true,
+      --  then we check the termination conditon of its callees anyway, so
+      --  messages emitted here would be duplicates.
 
-      if Is_Ghost_Entity (FA.Spec_Entity) then
+      if Is_Ghost_Entity (FA.Spec_Entity)
+        or else Get_Termination_Condition (FA.Spec_Entity) = (Static, True)
+      then
          return;
       end if;
 

@@ -1,3 +1,2 @@
 p.adb:9:04: info: precondition proved (Trivial: 1 VC)
 p.adb:9:04: medium: aspect Always_Terminates on "P" could be incorrect, call to "Neverend" might be nonterminating [possible fix: annotate "Neverend" with aspect Always_Terminates]
-p.adb:9:04: medium: call to ghost subprogram "Neverend" might be nonterminating [possible fix: annotate "Neverend" with aspect Always_Terminates]
