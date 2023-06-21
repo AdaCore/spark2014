@@ -1676,6 +1676,7 @@ package body Flow is
                      Analysis.Check_Always_Terminates (FA);
                      Analysis.Check_Ghost_Procedure_Outputs (FA);
                   end if;
+                  Analysis.Check_Ghost_Terminates (FA);
                   Analysis.Find_Input_Only_Used_In_Assertions (FA);
                   Analysis.Find_Illegal_Reads_Of_Proof_Ins (FA);
                   Analysis.Check_Function_For_Volatile_Effects (FA);
@@ -1720,6 +1721,7 @@ package body Flow is
                         Analysis.Check_Potentially_Blocking (FA);
                         Analysis.Check_Always_Terminates (FA);
                      end if;
+                     Analysis.Check_Ghost_Terminates (FA);
                      if Have_Full_Package_Code then
                         Analysis.Find_Use_Of_Uninitialized_Variables (FA);
                         Analysis.Check_Initializes_Contract (FA);

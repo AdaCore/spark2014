@@ -2,7 +2,8 @@ package body Perm with SPARK_Mode is
 
    procedure Occ_Eq (A, B : Nat_Array; E : Natural) with
      Pre  => A = B,
-     Post => Occ (A, E) = Occ (B, E);
+     Post => Occ (A, E) = Occ (B, E),
+     Subprogram_Variant => (Decreases => A'Length);
 
    procedure Occ_Eq (A, B : Nat_Array; E : Natural) is
       begin
