@@ -219,6 +219,7 @@ red_black_trees.adb:176:50: info: precondition proved (CVC5: 2 VC)
 red_black_trees.adb:177:17: info: precondition proved (CVC5: 2 VC)
 red_black_trees.adb:178:17: info: precondition proved (CVC5: 2 VC)
 red_black_trees.adb:178:40: info: precondition proved (CVC5: 2 VC)
+red_black_trees.adb:186:14: info: aspect Always_Terminates on "Prove_Model_Eq" has been proved, subprogram will terminate
 red_black_trees.adb:188:06: info: data dependencies proved
 red_black_trees.adb:190:08: info: predicate check proved (Trivial: 1 VC)
 red_black_trees.adb:190:08: medium: postcondition might fail, cannot prove Last (Model (T, Pos1)) - First (Model (T, Pos1)) = Last (Model (T, Pos2)) - First (Model (T, Pos2)) [possible fix: you should consider adding a postcondition to function First or turning it into an expression function in its unit spec]
@@ -260,7 +261,9 @@ red_black_trees.adb:206:65: info: predicate check proved (Trivial: 1 VC)
 red_black_trees.adb:206:72: info: pointer dereference check proved (CVC5: 1 VC)
 red_black_trees.adb:206:79: info: predicate check proved (CVC5: 1 VC; Trivial: 1 VC)
 red_black_trees.adb:206:81: info: predicate check proved (Trivial: 1 VC)
+red_black_trees.adb:215:10: info: subprogram variant proved (Trivial)
 red_black_trees.adb:215:27: info: pointer dereference check proved (CVC5: 1 VC)
+red_black_trees.adb:216:10: info: subprogram variant proved (Trivial)
 red_black_trees.adb:216:27: info: pointer dereference check proved (CVC5: 1 VC)
 red_black_trees.adb:216:35: info: predicate check proved (Trivial: 1 VC)
 red_black_trees.adb:216:42: info: predicate check proved (Trivial: 1 VC)

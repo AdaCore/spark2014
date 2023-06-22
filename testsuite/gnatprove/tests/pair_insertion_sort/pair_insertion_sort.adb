@@ -27,7 +27,7 @@ is
           and then Y in Values'Range
           and then Is_Set (Init, X, Init (Y), Interm)
           and then Is_Set (Interm, Y, Init (X), Values),
-        Post => Is_Perm (Init, Values)
+        Post => Is_Perm (Init, Values), Always_Terminates => True
       is
       begin
          for E in Integer loop

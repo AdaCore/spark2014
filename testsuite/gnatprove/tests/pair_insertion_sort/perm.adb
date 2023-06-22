@@ -4,7 +4,7 @@ package body Perm with SPARK_Mode is
    with
      Global => null,
      Pre  => A = B,
-     Post => Occ (A, E) = Occ (B, E);
+     Post => Occ (A, E) = Occ (B, E), Always_Terminates => True, Subprogram_Variant => (Decreases => A'Length);
 
    procedure Occ_Eq (A, B : Arr; E : Integer) is
    begin
