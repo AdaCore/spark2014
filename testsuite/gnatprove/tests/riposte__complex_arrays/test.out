@@ -9,7 +9,7 @@ complex_arrays.adb:46:22: high: postcondition might fail (e.g. when A = (others 
 complex_arrays.adb:54:11: info: flow dependencies proved
 complex_arrays.adb:55:22: medium: postcondition might fail
 complex_arrays.adb:64:11: info: flow dependencies proved
-complex_arrays.adb:65:22: high: postcondition might fail (e.g. when A(0)(1) = -1 and A(0)(2) = -1 and A(2)(0) = 0 and I = 0 and J = 2)
+complex_arrays.adb:65:22: high: postcondition might fail (e.g. when A(0)(1) = 1 and A(0)(2) = 1 and A(2)(0) = 0 and I = 0 and J = 2)
 complex_arrays.adb:74:11: info: flow dependencies proved
 complex_arrays.adb:75:22: medium: postcondition might fail
 complex_arrays.adb:85:11: info: flow dependencies proved

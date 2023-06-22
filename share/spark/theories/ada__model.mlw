@@ -56,6 +56,8 @@ module Discrete_Base
   val function user_eq (x : t) (y : t) : bool
 
   val constant dummy : t
+  meta "remove_unused:remove_constant" constant dummy
+
 end
 
 module Static_Discrete_Base
@@ -701,6 +703,7 @@ module Fixed_Point_Base
   type t
 
   val constant dummy : t
+  meta "remove_unused:remove_constant" constant dummy
 
   val constant attr__ATTRIBUTE_IMAGE __fixed : __image
 
@@ -961,6 +964,7 @@ module Floating_Point_Base
     ensures { result = attr__ATTRIBUTE_VALUE x }
 
   val constant dummy : t
+  meta "remove_unused:remove_constant" constant dummy
 end
 
 module Static_Floating_Point
@@ -1552,6 +1556,7 @@ module Unconstr_Array
   val function user_eq (x : __t) (y : __t) : bool
 
   val constant dummy : __t
+  meta "remove_unused:remove_constant" constant dummy
 end
 
 module Unconstr_Array_2
@@ -1687,6 +1692,7 @@ module Unconstr_Array_2
   val function user_eq (x : __t) (y : __t) : bool
 
   val constant dummy : __t
+  meta "remove_unused:remove_constant" constant dummy
 end
 
 module Unconstr_Array_3
@@ -1864,6 +1870,7 @@ module Unconstr_Array_3
   val function user_eq (x : __t) (y : __t) : bool
 
   val constant dummy : __t
+  meta "remove_unused:remove_constant" constant dummy
 end
 
 module Unconstr_Array_4
@@ -2084,6 +2091,7 @@ module Unconstr_Array_4
   val function user_eq (x : __t) (y : __t) : bool
 
   val constant dummy : __t
+  meta "remove_unused:remove_constant" constant dummy
 end
 
 module Constr_Array
@@ -2098,6 +2106,7 @@ module Constr_Array
   type __t = map
 
   val constant dummy : __t
+  meta "remove_unused:remove_constant" constant dummy
 
   val constant value__size : int
 
@@ -2151,6 +2160,7 @@ module Constr_Array_2
   type __t = map
 
   val constant dummy : __t
+  meta "remove_unused:remove_constant" constant dummy
 
   val constant value__size : int
 
@@ -2208,6 +2218,7 @@ module Constr_Array_3
   type __t = map
 
   val constant dummy : __t
+  meta "remove_unused:remove_constant" constant dummy
 
   val constant value__size : int
 
@@ -2269,6 +2280,7 @@ module Constr_Array_4
   type __t = map
 
   val constant dummy : __t
+  meta "remove_unused:remove_constant" constant dummy
 
   val constant value__size : int
 
