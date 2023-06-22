@@ -1702,8 +1702,8 @@ package body Flow is
                              (FA.Spec_Entity))
                      then
                         Analysis.Check_Potentially_Blocking (FA);
-                        Analysis.Check_Always_Terminates (FA);
                      end if;
+                     Analysis.Check_Always_Terminates (FA);
                      Analysis.Check_Ghost_Terminates (FA);
                      if Have_Full_Package_Code then
                         Analysis.Find_Use_Of_Uninitialized_Variables (FA);

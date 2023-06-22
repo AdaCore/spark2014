@@ -42,6 +42,7 @@ container.adb:75:31: info: loop variant proved (CVC5: 1 VC)
 container.adb:78:20: medium: range check might fail, cannot prove upper bound for X + 1 [reason for check: result of addition must fit in the target type of the assignment] [possible fix: loop at line 77 should mention X in a loop invariant]
 container.adb:79:34: info: loop variant proved (CVC5: 1 VC)
 container.adb:80:34: info: loop variant proved (CVC5: 1 VC)
+container.adb:88:16: medium: implicit aspect Always_Terminates on "Container" could be incorrect, loop might be nonterminating [possible fix: add loop variant in the loop body]
 container.adb:91:17: info: range check proved (CVC5: 2 VC)
 container.adb:96:17: warning: unreachable code (CVC5: 1 VC)
 container.adb:97:07: warning: unreachable code (CVC5: 1 VC)
@@ -50,6 +51,7 @@ container.adb:97:30: info: loop invariant preservation proved (CVC5: 1 VC)
 container.adb:98:28: info: loop variant proved (CVC5: 1 VC)
 container.adb:100:14: info: range check proved (CVC5: 2 VC)
 container.adb:101:14: info: range check proved (CVC5: 2 VC)
+container.adb:105:04: medium: implicit aspect Always_Terminates on "Container" could be incorrect, loop might be nonterminating [possible fix: add loop variant in the loop body]
 container.adb:105:04: warning: unreachable code (CVC5: 1 VC)
 container.adb:106:07: warning: unreachable code (CVC5: 1 VC)
 container.adb:106:14: info: range check proved (CVC5: 2 VC)
@@ -123,6 +125,7 @@ nest_in_proc.adb:7:20: warning: subprogram "Nothing2" has no effect
 nest_in_proc.adb:20:21: medium: implicit aspect Always_Terminates on "Pkg2" could be incorrect, loop might be nonterminating [possible fix: add loop variant in the loop body]
 nest_in_proc.adb:20:21: warning: statement has no effect
 nest_in_proc.ads:1:11: info: aspect Always_Terminates on "Nest_In_Proc" has been proved, subprogram will terminate
+nested_blocks.adb:10:37: medium: implicit aspect Always_Terminates on "Nested_Blocks" could be incorrect, loop might be nonterminating [possible fix: add loop variant in the loop body]
 nested_blocks.adb:10:37: warning: statement has no effect
 nested_loops.adb:3:14: info: aspect Always_Terminates on "Proc" has been proved, subprogram will terminate
 nested_loops.adb:3:14: warning: subprogram "Proc" has no effect
@@ -146,7 +149,9 @@ nested_packages.adb:7:20: warning: subprogram "Null_Pck" has no effect
 nested_packages.adb:10:23: warning: subprogram "Null_Pck2" has no effect
 nested_packages.adb:26:24: medium: implicit aspect Always_Terminates on "Pck2" could be incorrect, loop might be nonterminating [possible fix: add loop variant in the loop body]
 nested_packages.adb:26:24: warning: statement has no effect
+nested_packages.adb:55:21: medium: implicit aspect Always_Terminates on "Nested2" could be incorrect, loop might be nonterminating [possible fix: add loop variant in the loop body]
 nested_packages.adb:55:21: warning: statement has no effect
+nested_packages.adb:61:18: medium: implicit aspect Always_Terminates on "Nested" could be incorrect, loop might be nonterminating [possible fix: add loop variant in the loop body]
 nested_packages.adb:61:18: warning: statement has no effect
 nested_packages.ads:3:14: info: aspect Always_Terminates on "Contains_Packages" has been proved, subprogram will terminate
 nested_packages.ads:3:14: warning: subprogram "Contains_Packages" has no effect
@@ -169,6 +174,7 @@ p.adb:41:14: warning: subprogram "Proc6" has no effect
 p.adb:44:10: medium: aspect Always_Terminates on "Proc6" could be incorrect, "Proc6" and "Proc7" are mutually recursive [possible fix: annotate "Proc6" and "Proc7" with Subprogram_Variant aspects]
 p.adb:51:10: medium: aspect Always_Terminates on "Proc7" could be incorrect, "Proc7" and "Proc6" are mutually recursive [possible fix: annotate "Proc7" and "Proc6" with Subprogram_Variant aspects]
 p.adb:55:04: info: initialization of "B" proved
+p.adb:60:15: medium: implicit aspect Always_Terminates on "P" could be incorrect, loop might be nonterminating [possible fix: add loop variant in the loop body]
 preconditions.adb:6:18: medium: implicit aspect Always_Terminates on "Nonreturning_Precondition" could be incorrect, loop might be nonterminating [possible fix: add loop variant in the loop body]
 preconditions.adb:9:14: warning: unreachable code (CVC5: 1 VC)
 preconditions.ads:2:13: info: implicit aspect Always_Terminates on "Returning_Precondition" has been proved, subprogram will terminate
@@ -194,6 +200,7 @@ r.adb:58:04: medium: unexpected exception might be raised [possible explanation:
 r.adb:58:04: warning: assuming "OS_Exit" has no effect on global items
 r.adb:58:04: warning: no Global contract available for "OS_Exit"
 r.adb:59:04: info: only expected exception raised (CVC5: 1 VC)
+r.adb:59:04: medium: implicit aspect Always_Terminates on "R" could be incorrect, call to "Proc2" might be nonterminating [possible fix: annotate "Proc2" with aspect Always_Terminates]
 r.adb:59:04: warning: unreachable code
 spark-containers-parameter_checks.ads:32:19: medium: postcondition might fail, in instantiation at spark-containers-functional-sets.ads:380, in instantiation at formal_cont.ads:12 [possible fix: you should consider adding a postcondition to function My_Equal_01 or turning it into an expression function]
 spark-containers-parameter_checks.ads:37:19: medium: postcondition might fail, in instantiation at spark-containers-functional-sets.ads:380, in instantiation at formal_cont.ads:12 [possible fix: you should consider adding a postcondition to function My_Equal_01 or turning it into an expression function]
