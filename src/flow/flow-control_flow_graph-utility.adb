@@ -190,7 +190,6 @@ package body Flow.Control_Flow_Graph.Utility is
       Var_Ex_Use : Flow_Id_Sets.Set    := Flow_Id_Sets.Empty_Set;
       Var_Im_Use : Flow_Id_Sets.Set    := Flow_Id_Sets.Empty_Set;
       Subp_Calls : Call_Sets.Set       := Call_Sets.Empty_Set;
-      Proof_Deps : Node_Sets.Set       := Node_Sets.Empty_Set;
       Vertex_Ctx : Vertex_Context;
       E_Loc      : Node_Or_Entity_Id   := Empty;
       Print_Hint : Pretty_Print_Kind_T := Pretty_Print_Null)
@@ -203,7 +202,6 @@ package body Flow.Control_Flow_Graph.Utility is
       A.Variables_Used            := Var_Ex_Use or Var_Im_Use;
       A.Variables_Explicitly_Used := Var_Ex_Use;
       A.Subprogram_Calls          := Subp_Calls;
-      A.Proof_Dependencies        := Proof_Deps;
       A.Loops                     := Vertex_Ctx.Current_Loops;
       A.In_Nested_Package         := Vertex_Ctx.In_Nested_Package;
       A.Warnings_Off              := Vertex_Ctx.Warnings_Off;
@@ -248,7 +246,6 @@ package body Flow.Control_Flow_Graph.Utility is
    function Make_Sink_Vertex_Attributes
      (Var_Use       : Flow_Id_Sets.Set  := Flow_Id_Sets.Empty_Set;
       Subp_Calls    : Call_Sets.Set     := Call_Sets.Empty_Set;
-      Proof_Deps    : Node_Sets.Set     := Node_Sets.Empty_Set;
       Aspect        : Type_Aspect       := No_Aspect;
       Is_Assertion  : Boolean           := False;
       Is_Loop_Entry : Boolean           := False;
@@ -268,14 +265,13 @@ package body Flow.Control_Flow_Graph.Utility is
          A.Variables_Explicitly_Used := Var_Use;
       end if;
 
-      A.Subprogram_Calls   := Subp_Calls;
-      A.Proof_Dependencies := Proof_Deps;
-      A.Is_Assertion       := Is_Assertion;
-      A.Is_Loop_Entry      := Is_Loop_Entry;
-      A.In_Nested_Package  := Vertex_Ctx.In_Nested_Package;
-      A.Warnings_Off       := Vertex_Ctx.Warnings_Off;
-      A.Error_Location     := E_Loc;
-      A.Execution          := Execution;
+      A.Subprogram_Calls  := Subp_Calls;
+      A.Is_Assertion      := Is_Assertion;
+      A.Is_Loop_Entry     := Is_Loop_Entry;
+      A.In_Nested_Package := Vertex_Ctx.In_Nested_Package;
+      A.Warnings_Off      := Vertex_Ctx.Warnings_Off;
+      A.Error_Location    := E_Loc;
+      A.Execution         := Execution;
 
       if Is_Fold_Check then
          A.Pretty_Print_Kind := Pretty_Print_Folded_Function_Check;
@@ -333,7 +329,6 @@ package body Flow.Control_Flow_Graph.Utility is
      (Callsite   : Node_Id;
       Var_Use    : Flow_Id_Sets.Set  := Flow_Id_Sets.Empty_Set;
       Subp_Calls : Call_Sets.Set     := Call_Sets.Empty_Set;
-      Proof_Deps : Node_Sets.Set     := Node_Sets.Empty_Set;
       Vertex_Ctx : Vertex_Context;
       E_Loc      : Node_Or_Entity_Id := Empty)
       return V_Attributes
@@ -344,7 +339,6 @@ package body Flow.Control_Flow_Graph.Utility is
       A.Variables_Explicitly_Used := Var_Use;
       A.Variables_Used            := Var_Use;
       A.Subprogram_Calls          := Subp_Calls;
-      A.Proof_Dependencies        := Proof_Deps;
       A.Is_Program_Node           := True;
       A.Loops                     := Vertex_Ctx.Current_Loops;
       A.In_Nested_Package         := Vertex_Ctx.In_Nested_Package;
@@ -386,7 +380,6 @@ package body Flow.Control_Flow_Graph.Utility is
       In_Vertex                    : Boolean;
       Discriminants_Or_Bounds_Only : Boolean;
       Subp_Calls                   : Call_Sets.Set   := Call_Sets.Empty_Set;
-      Proof_Deps                   : Node_Sets.Set   := Node_Sets.Empty_Set;
       Vertex_Ctx                   : Vertex_Context;
       E_Loc                        : Node_Or_Entity_Id)
       return V_Attributes
@@ -404,7 +397,6 @@ package body Flow.Control_Flow_Graph.Utility is
       A.Is_Parameter                 := True;
       A.Is_Discr_Or_Bounds_Parameter := Discriminants_Or_Bounds_Only;
       A.Subprogram_Calls             := Subp_Calls;
-      A.Proof_Dependencies           := Proof_Deps;
       A.Call_Vertex                  := Direct_Mapping_Id (Call_Vertex);
       A.Parameter_Actual             := Direct_Mapping_Id (Actual);
       A.Parameter_Formal             := Direct_Mapping_Id (Formal);
@@ -571,7 +563,6 @@ package body Flow.Control_Flow_Graph.Utility is
       In_Vertex   : Boolean;
       Scope       : Flow_Scope;
       Subp_Calls  : Call_Sets.Set   := Call_Sets.Empty_Set;
-      Proof_Deps  : Node_Sets.Set   := Node_Sets.Empty_Set;
       Vertex_Ctx  : Vertex_Context;
       E_Loc       : Node_Or_Entity_Id)
       return V_Attributes
@@ -595,17 +586,16 @@ package body Flow.Control_Flow_Graph.Utility is
       --  flooded with assertions that check for ordinary formal parameters.
 
       if Is_External_Call (Call_Vertex) then
-         A.Is_Parameter       := True;
-         A.Subprogram_Calls   := Subp_Calls;
-         A.Proof_Dependencies := Proof_Deps;
-         A.Call_Vertex        := Direct_Mapping_Id (Call_Vertex);
-         A.Parameter_Actual   :=
+         A.Is_Parameter     := True;
+         A.Subprogram_Calls := Subp_Calls;
+         A.Call_Vertex      := Direct_Mapping_Id (Call_Vertex);
+         A.Parameter_Actual :=
            Direct_Mapping_Id (Prefix (Name (Call_Vertex)));
-         A.Parameter_Formal   :=
+         A.Parameter_Formal :=
            Direct_Mapping_Id (Sinfo.Nodes.Scope (Subprogram));
-         A.Loops              := Vertex_Ctx.Current_Loops;
-         A.Warnings_Off       := Vertex_Ctx.Warnings_Off;
-         A.Error_Location     := E_Loc;
+         A.Loops            := Vertex_Ctx.Current_Loops;
+         A.Warnings_Off     := Vertex_Ctx.Warnings_Off;
+         A.Error_Location   := E_Loc;
 
          if In_Vertex then
             declare
@@ -729,7 +719,6 @@ package body Flow.Control_Flow_Graph.Utility is
    function Make_Variable_Attributes
      (F_Ent      : Flow_Id;
       Mode       : Param_Mode;
-      Proof_Deps : Node_Sets.Set     := Node_Sets.Empty_Set;
       E_Loc      : Node_Or_Entity_Id := Empty;
       S          : Flow_Scope        := Null_Flow_Scope)
       return V_Attributes
@@ -739,11 +728,10 @@ package body Flow.Control_Flow_Graph.Utility is
         Get_Direct_Mapping_Id (Entire_Variable (F_Ent));
 
    begin
-      A.Error_Location     := E_Loc;
-      A.Is_Constant        :=
+      A.Error_Location := E_Loc;
+      A.Is_Constant    :=
         Ekind (Entire_Var) in E_In_Parameter | E_Loop_Parameter;
-      A.Mode               := Mode;
-      A.Proof_Dependencies := Proof_Deps;
+      A.Mode           := Mode;
 
       case F_Ent.Variant is
          when Initial_Value =>

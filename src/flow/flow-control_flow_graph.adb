@@ -1426,12 +1426,6 @@ package body Flow.Control_Flow_Graph is
       --  phase 1 the initialization status of such constituents doesn't
       --  matter.
 
-      Reclamation_Functions : constant Node_Sets.Set :=
-        (if Ekind (E) in E_Constant | E_Variable
-           and then not Is_Library_Level_Entity (E)
-         then Get_Reclamation_Functions (Etype (E))
-         else Node_Sets.Empty_Set);
-
       procedure Process (F : Flow_Id)
       with Pre => F.Kind in Direct_Mapping | Record_Field
                   and then F.Variant = Normal_Use;
@@ -1457,10 +1451,19 @@ package body Flow.Control_Flow_Graph is
            Make_Variable_Attributes
              (F_Ent      => F_Final,
               Mode       => M,
-              Proof_Deps => Reclamation_Functions,
               E_Loc      => E);
 
       begin
+
+         --  Proof will pull reclamation functions at the end of the scope of
+         --  E if its type needs reclamation.
+         if Ekind (E) in E_Constant | E_Variable
+           and then not Is_Library_Level_Entity (E)
+         then
+            FA.Proof_Dependencies.Union
+              (Get_Reclamation_Functions (Etype (E)));
+         end if;
+
          --  Setup the n'initial vertex. Note that initialization for
          --  variables is detected (and set) when building the flow graph
          --  for declarative parts.
@@ -1588,7 +1591,6 @@ package body Flow.Control_Flow_Graph is
       Ctx : in out Context)
    is
       Funcalls  : Call_Sets.Set;
-      Proofdeps : Node_Sets.Set;
 
       V : Flow_Graphs.Vertex_Id;
 
@@ -1606,15 +1608,15 @@ package body Flow.Control_Flow_Graph is
    begin
       --  Collect function calls appearing in the assignment statement: both
       --  its LHS and RHS.
-      Collect_Functions_And_Read_Locked_POs
+      Pick_Generated_Info
         (N,
          FA.B_Scope,
          Function_Calls     => Funcalls,
-         Proof_Dependencies => Proofdeps,
+         Proof_Dependencies => FA.Proof_Dependencies,
          Tasking            => FA.Tasking,
          Generating_Globals => FA.Generating_Globals);
 
-      Proofdeps.Union (Get_Reclamation_Functions (LHS_Type));
+      FA.Proof_Dependencies.Union (Get_Reclamation_Functions (LHS_Type));
 
       --  First we need to determine the root name where we assign to, and
       --  whether this is a partial or full assignment. This mirror the
@@ -1726,7 +1728,6 @@ package body Flow.Control_Flow_Graph is
                      Make_Basic_Attributes
                        (Var_Ex_Use    => Inputs,
                         Subp_Calls    => Funcalls,
-                        Proof_Deps    => Proofdeps,
                         Vertex_Ctx    => Ctx.Vertex_Ctx,
                         E_Loc         => N,
                         Print_Hint    => Pretty_Print_Record_Field),
@@ -1740,7 +1741,6 @@ package body Flow.Control_Flow_Graph is
                      Make_Basic_Attributes
                        (Var_Def       => Flow_Id_Sets.To_Set (Output),
                         Subp_Calls    => Funcalls,
-                        Proof_Deps    => Proofdeps,
                         Vertex_Ctx    => Ctx.Vertex_Ctx,
                         E_Loc         => N,
                         Print_Hint    => Pretty_Print_Record_Field),
@@ -1874,7 +1874,6 @@ package body Flow.Control_Flow_Graph is
                                     then Vars_Defined
                                     else Flow_Id_Sets.Empty_Set),
                   Subp_Calls    => Funcalls,
-                  Proof_Deps    => Proofdeps,
                   Vertex_Ctx    => Ctx.Vertex_Ctx,
                   E_Loc         => N),
                V);
@@ -1897,7 +1896,6 @@ package body Flow.Control_Flow_Graph is
       V_Case            : Flow_Graphs.Vertex_Id;
       Alternative       : Node_Id;
       Funcalls          : Call_Sets.Set;
-      Proofdeps         : Node_Sets.Set;
       Known_Expression  : constant Boolean :=
         Compile_Time_Known_Value (Expression (N));
       Known_Alternative : constant Node_Id :=
@@ -1905,11 +1903,11 @@ package body Flow.Control_Flow_Graph is
          then Find_Static_Alternative (N)
          else Types.Empty);
    begin
-      Collect_Functions_And_Read_Locked_POs
+      Pick_Generated_Info
         (Expression (N),
          FA.B_Scope,
          Function_Calls     => Funcalls,
-         Proof_Dependencies => Proofdeps,
+         Proof_Dependencies => FA.Proof_Dependencies,
          Tasking            => FA.Tasking,
          Generating_Globals => FA.Generating_Globals);
 
@@ -1925,7 +1923,6 @@ package body Flow.Control_Flow_Graph is
                Fold_Functions       => Inputs,
                Use_Computed_Globals => not FA.Generating_Globals),
             Subp_Calls    => Funcalls,
-            Proof_Deps    => Proofdeps,
             Vertex_Ctx    => Ctx.Vertex_Ctx,
             E_Loc         => N),
          V_Case);
@@ -2020,7 +2017,6 @@ package body Flow.Control_Flow_Graph is
       V         : Flow_Graphs.Vertex_Id;
       Vars_Used : Flow_Id_Sets.Set;
       Funcalls  : Call_Sets.Set;
-      Proofdeps : Node_Sets.Set;
 
    begin
       --  Here we flag a delay statement as potentially blocking
@@ -2055,11 +2051,11 @@ package body Flow.Control_Flow_Graph is
                when others =>
                   raise Program_Error)));
 
-      Collect_Functions_And_Read_Locked_POs
+      Pick_Generated_Info
         (Expression (N),
          FA.B_Scope,
          Function_Calls     => Funcalls,
-         Proof_Dependencies => Proofdeps,
+         Proof_Dependencies => FA.Proof_Dependencies,
          Tasking            => FA.Tasking,
          Generating_Globals => FA.Generating_Globals);
 
@@ -2070,7 +2066,6 @@ package body Flow.Control_Flow_Graph is
            (Var_Def       => Flow_Id_Sets.To_Set (Null_Export_Flow_Id),
             Var_Ex_Use    => Vars_Used,
             Subp_Calls    => Funcalls,
-            Proof_Deps    => Proofdeps,
             Vertex_Ctx    => Ctx.Vertex_Ctx,
             E_Loc         => N),
          V);
@@ -2091,7 +2086,6 @@ package body Flow.Control_Flow_Graph is
       V         : Flow_Graphs.Vertex_Id;
       L         : Node_Id := N;
       Funcalls  : Call_Sets.Set;
-      Proofdeps : Node_Sets.Set;
       Cond      : constant Node_Id := Condition (N);
 
       Mark : Borrowers_Markers.Cursor := Ctx.Borrow_Numbers.Last;
@@ -2134,11 +2128,11 @@ package body Flow.Control_Flow_Graph is
                        Standard_Exits => Vertex_Sets.Empty_Set));
 
       else
-         Collect_Functions_And_Read_Locked_POs
+         Pick_Generated_Info
            (Cond,
             FA.B_Scope,
             Function_Calls     => Funcalls,
-            Proof_Dependencies => Proofdeps,
+            Proof_Dependencies => FA.Proof_Dependencies,
             Tasking            => FA.Tasking,
             Generating_Globals => FA.Generating_Globals);
 
@@ -2153,7 +2147,6 @@ package body Flow.Control_Flow_Graph is
                   Fold_Functions       => Inputs,
                   Use_Computed_Globals => not FA.Generating_Globals),
                Subp_Calls    => Funcalls,
-               Proof_Deps    => Proofdeps,
                Vertex_Ctx    => Ctx.Vertex_Ctx,
                E_Loc         => N),
             V);
@@ -2422,7 +2415,6 @@ package body Flow.Control_Flow_Graph is
       Elsif_Part          : constant List_Id := Elsif_Parts (N);
       Elsif_Statement     : Node_Id;
       Funcalls            : Call_Sets.Set;
-      Proofdeps           : Node_Sets.Set;
       Seen_True_Condition : Boolean := False;
       Known_Condition     : Boolean :=
         Compile_Time_Known_Value (Condition (N));
@@ -2432,11 +2424,11 @@ package body Flow.Control_Flow_Graph is
    begin
 
       --  We have a vertex for the if statement itself
-      Collect_Functions_And_Read_Locked_POs
+      Pick_Generated_Info
         (Condition (N),
          FA.B_Scope,
          Function_Calls     => Funcalls,
-         Proof_Dependencies => Proofdeps,
+         Proof_Dependencies => FA.Proof_Dependencies,
          Tasking            => FA.Tasking,
          Generating_Globals => FA.Generating_Globals);
 
@@ -2451,7 +2443,6 @@ package body Flow.Control_Flow_Graph is
                Fold_Functions       => Inputs,
                Use_Computed_Globals => not FA.Generating_Globals),
             Subp_Calls    => Funcalls,
-            Proof_Deps    => Proofdeps,
             Vertex_Ctx    => Ctx.Vertex_Ctx,
             E_Loc         => N),
          V);
@@ -2537,7 +2528,6 @@ package body Flow.Control_Flow_Graph is
                Elsif_Body  : constant List_Id :=
                  Then_Statements (Elsif_Statement);
                Funcalls    : Call_Sets.Set;
-               Proofdeps   : Node_Sets.Set;
                Dead_Branch : constant Boolean :=
                  Seen_True_Condition
                  or else (Known_Condition
@@ -2546,11 +2536,11 @@ package body Flow.Control_Flow_Graph is
             begin
 
                --  We have a vertex V for each elsif statement
-               Collect_Functions_And_Read_Locked_POs
+               Pick_Generated_Info
                  (Condition (Elsif_Statement),
                   FA.B_Scope,
                   Function_Calls     => Funcalls,
-                  Proof_Dependencies => Proofdeps,
+                  Proof_Dependencies => FA.Proof_Dependencies,
                   Tasking            => FA.Tasking,
                   Generating_Globals => FA.Generating_Globals);
 
@@ -2565,7 +2555,6 @@ package body Flow.Control_Flow_Graph is
                         Fold_Functions       => Inputs,
                         Use_Computed_Globals => not FA.Generating_Globals),
                      Subp_Calls    => Funcalls,
-                     Proof_Deps    => Proofdeps,
                      Vertex_Ctx    => Ctx.Vertex_Ctx,
                      E_Loc         => Elsif_Statement),
                   V);
@@ -2990,13 +2979,12 @@ package body Flow.Control_Flow_Graph is
       procedure Do_While_Loop is
          V         : Flow_Graphs.Vertex_Id;
          Funcalls  : Call_Sets.Set;
-         Proofdeps : Node_Sets.Set;
       begin
-         Collect_Functions_And_Read_Locked_POs
+         Pick_Generated_Info
            (Condition (Iteration_Scheme (N)),
             FA.B_Scope,
             Function_Calls     => Funcalls,
-            Proof_Dependencies => Proofdeps,
+            Proof_Dependencies => FA.Proof_Dependencies,
             Tasking            => FA.Tasking,
             Generating_Globals => FA.Generating_Globals);
 
@@ -3011,7 +2999,6 @@ package body Flow.Control_Flow_Graph is
                   Fold_Functions       => Inputs,
                   Use_Computed_Globals => not FA.Generating_Globals),
                Subp_Calls    => Funcalls,
-               Proof_Deps    => Proofdeps,
                Vertex_Ctx    => Ctx.Vertex_Ctx,
                E_Loc         => N),
             V);
@@ -3064,17 +3051,16 @@ package body Flow.Control_Flow_Graph is
 
          V         : Flow_Graphs.Vertex_Id;
          Funcalls  : Call_Sets.Set;
-         Proofdeps : Node_Sets.Set;
       begin
          --  We have a new variable here which we have not picked up
          --  in Create, so we should set it up.
          Create_Initial_And_Final_Vertices (LP, FA);
 
-         Collect_Functions_And_Read_Locked_POs
+         Pick_Generated_Info
            (DSD,
             FA.B_Scope,
             Function_Calls     => Funcalls,
-            Proof_Dependencies => Proofdeps,
+            Proof_Dependencies => FA.Proof_Dependencies,
             Tasking            => FA.Tasking,
             Generating_Globals => FA.Generating_Globals);
 
@@ -3085,7 +3071,6 @@ package body Flow.Control_Flow_Graph is
               (Var_Def    => Flatten_Variable (LP, FA.B_Scope),
                Var_Ex_Use => Vars,
                Subp_Calls => Funcalls,
-               Proof_Deps => Proofdeps,
                Vertex_Ctx => Ctx.Vertex_Ctx,
                E_Loc      => N),
             V);
@@ -3704,18 +3689,17 @@ package body Flow.Control_Flow_Graph is
 
          V         : Flow_Graphs.Vertex_Id;
          Funcalls  : Call_Sets.Set;
-         Proofdeps : Node_Sets.Set;
       begin
          --  Set up parameter variable
          Create_Initial_And_Final_Vertices (Param, FA);
 
          --  Create vertex for the container expression. We also define the
          --  loop parameter here.
-         Collect_Functions_And_Read_Locked_POs
+         Pick_Generated_Info
            (I_Spec,
             FA.B_Scope,
             Function_Calls     => Funcalls,
-            Proof_Dependencies => Proofdeps,
+            Proof_Dependencies => FA.Proof_Dependencies,
             Tasking            => FA.Tasking,
             Generating_Globals => FA.Generating_Globals);
 
@@ -3734,7 +3718,6 @@ package body Flow.Control_Flow_Graph is
                    or
                  Get_Filter_Variables (Filter),
                Subp_Calls    => Funcalls,
-               Proof_Deps    => Proofdeps,
                Vertex_Ctx    => Ctx.Vertex_Ctx,
                E_Loc         => Cont),
             V);
@@ -4235,7 +4218,6 @@ package body Flow.Control_Flow_Graph is
          Default_Init_Expr  : Node_Id)
       is
          Funcalls       : Call_Sets.Set;
-         Proofdeps      : Node_Sets.Set;
          Variables_Used : Flow_Id_Sets.Set;
 
          DIC_Param_Components : Flow_Id_Sets.Set :=
@@ -4311,11 +4293,11 @@ package body Flow.Control_Flow_Graph is
             Variables_Used.Union (Flatten_Variable (E, FA.B_Scope));
          end if;
 
-         Collect_Functions_And_Read_Locked_POs
+         Pick_Generated_Info
            (Default_Init_Expr,
             FA.B_Scope,
             Function_Calls     => Funcalls,
-            Proof_Dependencies => Proofdeps,
+            Proof_Dependencies => FA.Proof_Dependencies,
             Tasking            => FA.Tasking,
             Generating_Globals => FA.Generating_Globals);
 
@@ -4324,7 +4306,6 @@ package body Flow.Control_Flow_Graph is
             Make_Sink_Vertex_Attributes
               (Var_Use       => Variables_Used,
                Subp_Calls    => Funcalls,
-               Proof_Deps    => Proofdeps,
                Is_Assertion  => True,
                Vertex_Ctx    => Ctx.Vertex_Ctx,
                Aspect        => DIC,
@@ -4445,7 +4426,6 @@ package body Flow.Control_Flow_Graph is
          declare
             Var_Def   : Flow_Id_Sets.Set;
             Funcalls  : Call_Sets.Set;
-            Proofdeps : Node_Sets.Set;
 
             To_CW : constant Boolean :=
               Is_Class_Wide_Type (Get_Type (E, FA.B_Scope))
@@ -4467,11 +4447,11 @@ package body Flow.Control_Flow_Graph is
                end if;
             end loop;
 
-            Collect_Functions_And_Read_Locked_POs
+            Pick_Generated_Info
               (Expr,
                FA.B_Scope,
                Function_Calls     => Funcalls,
-               Proof_Dependencies => Proofdeps,
+               Proof_Dependencies => FA.Proof_Dependencies,
                Tasking            => FA.Tasking,
                Generating_Globals => FA.Generating_Globals);
 
@@ -4509,7 +4489,6 @@ package body Flow.Control_Flow_Graph is
                              (Var_Def       => Flow_Id_Sets.To_Set (Output),
                               Var_Ex_Use    => Inputs,
                               Subp_Calls    => Funcalls,
-                              Proof_Deps    => Proofdeps,
                               Vertex_Ctx    => Ctx.Vertex_Ctx,
                               E_Loc         => N,
                               Print_Hint    => Pretty_Print_Record_Field)
@@ -4590,7 +4569,6 @@ package body Flow.Control_Flow_Graph is
                         Use_Computed_Globals => not FA.Generating_Globals,
                         Consider_Extensions  => To_CW),
                      Subp_Calls    => Funcalls,
-                     Proof_Deps    => Proofdeps,
                      Vertex_Ctx    => Ctx.Vertex_Ctx,
                      E_Loc         => N)
                    with delta Is_Declaration_Node => True),
@@ -4632,14 +4610,13 @@ package body Flow.Control_Flow_Graph is
                  Fold_Functions       => Inputs,
                  Use_Computed_Globals => not FA.Generating_Globals);
             Funcalls   : Call_Sets.Set;
-            Proofdeps  : Node_Sets.Set;
 
          begin
-            Collect_Functions_And_Read_Locked_POs
+            Pick_Generated_Info
               (Addr_Expr,
                Scop               => FA.B_Scope,
                Function_Calls     => Funcalls,
-               Proof_Dependencies => Proofdeps,
+               Proof_Dependencies => FA.Proof_Dependencies,
                Tasking            => FA.Tasking,
                Generating_Globals => FA.Generating_Globals);
 
@@ -4650,7 +4627,6 @@ package body Flow.Control_Flow_Graph is
                     (Var_Def       => Flow_Id_Sets.To_Set (F),
                      Var_Ex_Use    => Addr_Deps,
                      Subp_Calls    => Funcalls,
-                     Proof_Deps    => Proofdeps,
                      Vertex_Ctx    => Ctx.Vertex_Ctx,
                      Print_Hint    => Pretty_Print_Record_Field,
                      E_Loc         => Addr_Expr),
@@ -4699,14 +4675,13 @@ package body Flow.Control_Flow_Graph is
                        Use_Computed_Globals => not FA.Generating_Globals);
 
                   Funcalls  : Call_Sets.Set;
-                  Proofdeps : Node_Sets.Set;
 
                begin
-                  Collect_Functions_And_Read_Locked_POs
+                  Pick_Generated_Info
                     (Constraint_Expr,
                      Scop               => FA.B_Scope,
                      Function_Calls     => Funcalls,
-                     Proof_Dependencies => Proofdeps,
+                     Proof_Dependencies => FA.Proof_Dependencies,
                      Tasking            => FA.Tasking,
                      Generating_Globals => FA.Generating_Globals);
 
@@ -4719,7 +4694,6 @@ package body Flow.Control_Flow_Graph is
                             (Intermediate_Vars_Used => Constraint_Vars,
                              Var_Defined            => F),
                         Subp_Calls    => Funcalls,
-                        Proof_Deps    => Proofdeps,
                         Vertex_Ctx    => Ctx.Vertex_Ctx,
                         E_Loc         => N,
                         Print_Hint    => Pretty_Print_Record_Field),
@@ -5235,7 +5209,6 @@ package body Flow.Control_Flow_Graph is
 
       V         : Flow_Graphs.Vertex_Id;
       Funcalls  : Call_Sets.Set;
-      Proofdeps : Node_Sets.Set;
 
    --  Start of processing for Do_Pragma
 
@@ -5246,11 +5219,11 @@ package body Flow.Control_Flow_Graph is
          --  and we are not dealing with either pragma unmodified or
          --  pragma unreferenced then we create a sink vertex to check
          --  for uninitialized variables.
-         Collect_Functions_And_Read_Locked_POs
+         Pick_Generated_Info
            (N,
             FA.B_Scope,
             Function_Calls     => Funcalls,
-            Proof_Dependencies => Proofdeps,
+            Proof_Dependencies => FA.Proof_Dependencies,
             Tasking            => FA.Tasking,
             Generating_Globals => FA.Generating_Globals);
 
@@ -5282,7 +5255,6 @@ package body Flow.Control_Flow_Graph is
                   Target_Name          => Null_Flow_Id,
                   Use_Computed_Globals => not FA.Generating_Globals),
                Subp_Calls    => Funcalls,
-               Proof_Deps    => Proofdeps,
                Is_Assertion  => True,
                Vertex_Ctx    => Ctx.Vertex_Ctx,
                E_Loc         => N,
@@ -5347,7 +5319,6 @@ package body Flow.Control_Flow_Graph is
       Local_Handlers : constant Node_Lists.List := Reachable_Handlers (N);
 
       Funcalls  : Call_Sets.Set;
-      Proofdeps : Node_Sets.Set;
 
    begin
       --  If there are no local handlers, it is an abnormal execution. We don't
@@ -5364,11 +5335,11 @@ package body Flow.Control_Flow_Graph is
       --  Otherwise, RAISE behaves like a GOTO statement
 
       else
-         Collect_Functions_And_Read_Locked_POs
+         Pick_Generated_Info
            (N,
             FA.B_Scope,
             Function_Calls     => Funcalls,
-            Proof_Dependencies => Proofdeps,
+            Proof_Dependencies => FA.Proof_Dependencies,
             Tasking            => FA.Tasking,
             Generating_Globals => FA.Generating_Globals);
 
@@ -5386,7 +5357,6 @@ package body Flow.Control_Flow_Graph is
                   else
                     Flow_Id_Sets.Empty_Set),
                Subp_Calls => Funcalls,
-               Proof_Deps => Proofdeps,
                Vertex_Ctx => Ctx.Vertex_Ctx,
                E_Loc      => N),
             V_Raise);
@@ -5620,7 +5590,6 @@ package body Flow.Control_Flow_Graph is
 
       Vars_Used  : Flow_Id_Sets.Set;
       Funcalls   : Call_Sets.Set;
-      Proofdeps  : Node_Sets.Set;
 
    begin
       --  Visibility checks don't make much sense for access-to-subprograms
@@ -5647,11 +5616,11 @@ package body Flow.Control_Flow_Graph is
                  Fold_Functions       => Inputs,
                  Use_Computed_Globals => not FA.Generating_Globals);
 
-            Collect_Functions_And_Read_Locked_POs
+            Pick_Generated_Info
               (Pref,
                FA.B_Scope,
                Function_Calls     => Funcalls,
-               Proof_Dependencies => Proofdeps,
+               Proof_Dependencies => FA.Proof_Dependencies,
                Tasking            => FA.Tasking,
                Generating_Globals => FA.Generating_Globals);
 
@@ -5669,7 +5638,6 @@ package body Flow.Control_Flow_Graph is
             Subp_Calls    =>
               Call_Sets.To_Set
                 (Subprogram_Call'(N => N, E => Called_Thing)).Union (Funcalls),
-            Proof_Deps    => Proofdeps,
             Vertex_Ctx    => Ctx.Vertex_Ctx,
             E_Loc         => N),
          V);
@@ -5927,14 +5895,13 @@ package body Flow.Control_Flow_Graph is
 
       V         : Flow_Graphs.Vertex_Id;
       Funcalls  : Call_Sets.Set;
-      Proofdeps : Node_Sets.Set;
    begin
       --  We just need to check for uninitialized variables
-      Collect_Functions_And_Read_Locked_POs
+      Pick_Generated_Info
         (N,
          FA.B_Scope,
          Function_Calls     => Funcalls,
-         Proof_Dependencies => Proofdeps,
+         Proof_Dependencies => FA.Proof_Dependencies,
          Tasking            => FA.Tasking,
          Generating_Globals => FA.Generating_Globals);
 
@@ -5948,7 +5915,6 @@ package body Flow.Control_Flow_Graph is
                Target_Name          => Null_Flow_Id,
                Use_Computed_Globals => not FA.Generating_Globals),
             Subp_Calls    => Funcalls,
-            Proof_Deps    => Proofdeps,
             Is_Assertion  => True,
             Vertex_Ctx    => Ctx.Vertex_Ctx,
             E_Loc         => N),
@@ -5969,7 +5935,6 @@ package body Flow.Control_Flow_Graph is
    is
       V          : Flow_Graphs.Vertex_Id;
       Funcalls   : Call_Sets.Set;
-      Proofdeps  : Node_Sets.Set;
       Ret_Object : Entity_Id;
 
       Expr : constant Node_Id := Expression (N);
@@ -6010,11 +5975,11 @@ package body Flow.Control_Flow_Graph is
          end if;
       else
          --  We have a function return
-         Collect_Functions_And_Read_Locked_POs
+         Pick_Generated_Info
            (Expr,
             FA.B_Scope,
             Function_Calls     => Funcalls,
-            Proof_Dependencies => Proofdeps,
+            Proof_Dependencies => FA.Proof_Dependencies,
             Tasking            => FA.Tasking,
             Generating_Globals => FA.Generating_Globals);
 
@@ -6031,7 +5996,6 @@ package body Flow.Control_Flow_Graph is
                   Fold_Functions       => Inputs,
                   Use_Computed_Globals => not FA.Generating_Globals),
                Subp_Calls => Funcalls,
-               Proof_Deps => Proofdeps,
                Vertex_Ctx => Ctx.Vertex_Ctx,
                E_Loc      => N),
             V);
@@ -6132,14 +6096,13 @@ package body Flow.Control_Flow_Graph is
             V_C       : Flow_Graphs.Vertex_Id;
             V         : Flow_Graphs.Vertex_Id;
             Funcalls  : Call_Sets.Set;
-            Proofdeps : Node_Sets.Set;
 
          begin
-            Collect_Functions_And_Read_Locked_POs
+            Pick_Generated_Info
               (Cond,
                FA.B_Scope,
                Function_Calls     => Funcalls,
-               Proof_Dependencies => Proofdeps,
+               Proof_Dependencies => FA.Proof_Dependencies,
                Tasking            => FA.Tasking,
                Generating_Globals => FA.Generating_Globals);
 
@@ -6153,7 +6116,6 @@ package body Flow.Control_Flow_Graph is
                      Target_Name          => Null_Flow_Id,
                      Use_Computed_Globals => not FA.Generating_Globals),
                   Subp_Calls => Funcalls,
-                  Proof_Deps => Proofdeps,
                   Vertex_Ctx => Ctx.Vertex_Ctx,
                   E_Loc      => Cond,
                   Print_Hint => Pretty_Print_Entry_Barrier),
@@ -6384,16 +6346,15 @@ package body Flow.Control_Flow_Graph is
 
       procedure Handle_Parameter (Formal : Entity_Id; Actual : Node_Id) is
          Funcalls  : Call_Sets.Set;
-         Proofdeps : Node_Sets.Set;
          V         : Flow_Graphs.Vertex_Id;
 
       begin
          --  Build an in vertex
-         Collect_Functions_And_Read_Locked_POs
+         Pick_Generated_Info
            (Actual,
             FA.B_Scope,
             Function_Calls     => Funcalls,
-            Proof_Dependencies => Proofdeps,
+            Proof_Dependencies => FA.Proof_Dependencies,
             Tasking            => FA.Tasking,
             Generating_Globals => FA.Generating_Globals);
 
@@ -6409,7 +6370,6 @@ package body Flow.Control_Flow_Graph is
                Discriminants_Or_Bounds_Only =>
                  Ekind (Formal) = E_Out_Parameter,
                Subp_Calls                   => Funcalls,
-               Proof_Deps                   => Proofdeps,
                Vertex_Ctx                   => Ctx.Vertex_Ctx,
                E_Loc                        => Actual),
             V);
@@ -6420,7 +6380,8 @@ package body Flow.Control_Flow_Graph is
          if Ekind (Formal) in E_In_Out_Parameter | E_Out_Parameter
            or else Is_Writable_Parameter (Formal)
          then
-            Proofdeps.Union (Get_Reclamation_Functions (Etype (Formal)));
+            FA.Proof_Dependencies.Union
+              (Get_Reclamation_Functions (Etype (Formal)));
 
             Add_Vertex
               (FA,
@@ -6432,7 +6393,6 @@ package body Flow.Control_Flow_Graph is
                   Formal                       => Formal,
                   In_Vertex                    => False,
                   Discriminants_Or_Bounds_Only => False,
-                  Proof_Deps                   => Proofdeps,
                   Vertex_Ctx                   => Ctx.Vertex_Ctx,
                   E_Loc                        => Actual),
                V);
@@ -6467,15 +6427,14 @@ package body Flow.Control_Flow_Graph is
 
                Actual    : constant Node_Id := Prefix (Name (Callsite));
                Funcalls  : Call_Sets.Set;
-               Proofdeps : Node_Sets.Set;
 
             begin
                --  Reading
-               Collect_Functions_And_Read_Locked_POs
+               Pick_Generated_Info
                  (Actual,
                   FA.B_Scope,
                   Function_Calls     => Funcalls,
-                  Proof_Dependencies => Proofdeps,
+                  Proof_Dependencies => FA.Proof_Dependencies,
                   Tasking            => FA.Tasking,
                   Generating_Globals => FA.Generating_Globals);
 
@@ -6488,7 +6447,6 @@ package body Flow.Control_Flow_Graph is
                      In_Vertex   => True,
                      Scope       => FA.B_Scope,
                      Subp_Calls  => Funcalls,
-                     Proof_Deps  => Proofdeps,
                      Vertex_Ctx  => Ctx.Vertex_Ctx,
                      E_Loc       => Callsite),
                   V);
@@ -8293,13 +8251,11 @@ package body Flow.Control_Flow_Graph is
                   FA.Direct_Calls.Union
                     (To_Subprograms (Atr.Subprogram_Calls));
 
-                  FA.Proof_Dependencies.Union (Atr.Proof_Dependencies);
-
                   --  Calls to entries and to predefined potentially blocking
                   --  subprograms make this entity potentially blocking.
                   --  We do this here, because otherwise we would
                   --  have to do it in both Do_Call_Statement and
-                  --  Collect_Functions_And_Read_Locked_POs.
+                  --  Pick_Generated_Info.
 
                   if FA.Has_Only_Nonblocking_Statements then
                      for SC of Atr.Subprogram_Calls loop
