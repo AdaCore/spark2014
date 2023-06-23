@@ -1351,6 +1351,17 @@ package body Gnat2Why.Borrow_Checker is
 
          pragma Assert (Present (Target_Root));
 
+         --  If the destination root is a prophecy save, then marking
+         --  forces the assignment to be the initialization of a
+         --  constant declaration with highly specific shape.
+         --  We only need to check that the initialization expression
+         --  can be read, as it does not create any alias from the point of
+         --  view of the borrow checker.
+
+         if Is_Prophecy_Save (Target_Root) then
+            pragma Assert (Is_Decl);
+            Check_Expression (Expr, Read);
+
          --  If the type of the target is an anonymous access-to-constant type
          --  (an observing access type), the source shall be an owning access
          --  object denoted by a name that is not in the Moved state, and whose
@@ -1361,7 +1372,7 @@ package body Gnat2Why.Borrow_Checker is
          --  a borrowing traversal function is also considered to be an
          --  observe.
 
-         if Is_Access_Constant (Target_Typ)
+         elsif Is_Access_Constant (Target_Typ)
            or else Is_Constant_Borrower (Target_Root)
          then
             declare
@@ -5408,13 +5419,47 @@ package body Gnat2Why.Borrow_Checker is
                   Brower := Borrower_For_At_End_Borrow_Call (Call);
                   if Present (Brower) then
                      Process_Path
-                       ((Is_Ent => True,
-                         Ent    => Borrower_For_At_End_Borrow_Call (Call),
-                         Loc    => Expr.Expr),
-                        Mode);
+                       ((Is_Ent => True, Ent => Brower, Loc => Loc), Mode);
                   end if;
                   return;
                end if;
+            end loop;
+         end;
+      end if;
+
+      --  If root is saving a prophecy variable, walk back declaration chain
+      --  to find initial At_End_Borrow call, and do the permission checking
+      --  on the borrower instead.
+
+      if Is_Prophecy_Save (Root) then
+         declare
+            N      : Node_Id := Expression (Parent (Root));
+            Brower : Entity_Id;
+         begin
+            loop
+               case Nkind (N) is
+                  when N_Function_Call =>
+                     pragma Assert
+                       (Has_At_End_Borrow_Annotation (Get_Called_Entity (N)));
+                     Brower := Borrower_For_At_End_Borrow_Call (N);
+                     if Present (Brower) then
+                        Process_Path
+                          ((Is_Ent => True, Ent => Brower, Loc => Loc), Mode);
+                     end if;
+                     return;
+                  when N_Selected_Component
+                     | N_Indexed_Component
+                     | N_Attribute_Reference
+                     | N_Explicit_Dereference
+                  =>
+                     N := Prefix (N);
+                  when N_Identifier | N_Expanded_Name =>
+                     N := Expression (Parent (Entity (N)));
+                  when others =>
+                     --  Should be ruled out by marking.
+
+                     raise Program_Error;
+               end case;
             end loop;
          end;
       end if;
