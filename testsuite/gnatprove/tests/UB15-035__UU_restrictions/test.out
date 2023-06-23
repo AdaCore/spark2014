@@ -3,6 +3,7 @@ uu.ads:21:16: info: implicit aspect Always_Terminates on "Id" has been proved, s
 uu.ads:21:16: info: implicit function contract might not be available on calls from enclosing unit
 uu.ads:29:16: info: implicit aspect Always_Terminates on "F" has been proved, subprogram will terminate
 uu.ads:30:12: info: operation on unchecked union type proved (Trivial)
+uu.ads:32:07: medium: implicit aspect Always_Terminates on "OK" could be incorrect, dispatching call to overriding operator "=" might be nonterminating [possible explanation: call could hide recursive calls]
 uu.ads:41:16: info: implicit aspect Always_Terminates on "Id" has been proved, subprogram will terminate
 uu.ads:41:16: info: implicit function contract might not be available on calls from enclosing unit
 uu.ads:49:16: info: implicit aspect Always_Terminates on "F" has been proved, subprogram will terminate
