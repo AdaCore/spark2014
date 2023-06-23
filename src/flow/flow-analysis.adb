@@ -5993,8 +5993,8 @@ package body Flow.Analysis is
                         Error_Msg_Flow
                           (FA          => FA,
                            Msg         => Check_Msg
-                                            ("dispatching call might be " &
-                                             "nonterminating"),
+                                            ("dispatching call to & " &
+                                             "might be nonterminating"),
                            Explanation => (if Nkind (SC.N) = N_Function_Call
                                            then "call could hide recursive " &
                                                 "calls"
@@ -6002,6 +6002,7 @@ package body Flow.Analysis is
                            Severity    => Medium_Check_Kind,
                            N           => Atr.Error_Location,
                            F1          => Spec_Entity_Id,
+                           F2          => Direct_Mapping_Id (SC.E),
                            Tag         => Subprogram_Termination,
                            Vertex      => V);
 
