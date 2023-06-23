@@ -11,7 +11,7 @@ bad_pledge_calls.adb:47:53: error: actual parameter of a function annotated with
 bad_pledge_calls.adb:47:53: error: violation of aspect SPARK_Mode at line 1
 bad_pledge_calls.adb:59:25: error: actual parameter of a function annotated with At_End_Borrow which is not a path is not allowed in SPARK
 bad_pledge_calls.adb:59:25: error: violation of aspect SPARK_Mode at line 1
-bad_pledge_calls.adb:60:36: error: call to a function annotated with At_End_Borrow occurring outside of a postcondition, contract cases, or assertion is not allowed in SPARK
+bad_pledge_calls.adb:60:36: error: call to a function annotated with At_End_Borrow occurring inside the initialization expression of an object other than of a constant of anonymous access-to-constant type is not allowed in SPARK
 bad_pledge_calls.adb:60:36: error: violation of aspect SPARK_Mode at line 1
 bad_pledge_calls_2.adb:2:13: info: implicit aspect Always_Terminates on "Good" has been proved, subprogram will terminate
 bad_pledge_calls_2.adb:11:04: info: initialization of "Y" proved

@@ -312,6 +312,22 @@ package body SPARK_Definition is
    --  that it does not have a precondition. If a precondition is found, raise
    --  a violation on E using the string Msg to refer to E.
 
+   procedure Check_Context_Of_Prophecy
+     (Proph        :     Node_Id;
+      In_Contracts : out Opt_Subprogram_Kind_Id);
+   --  If Proph is a call to a function with At_End_Borrow annotation,
+   --  or a local constant of anonymous access type saving
+   --  a prophecy value, check that N occurs in a context where reference
+   --  to a prophecy value is allowed, marking violations in case of failure.
+   --  For now, only allow postconditions, lemma parameters, assertions,
+   --  and initialization expressions of prophecy saves.
+   --  We can extend later if we see a need.
+   --  If the context is found to be a post-condition, the corresponding
+   --  subprogram is set in In_Contracts, otherwise In_Contracts is set to
+   --  Empty.
+   --  If the context is found to be a prophecy save declaration, the
+   --  prophecy save is registered.
+
    ------------------------------
    -- Body_Statements_In_SPARK --
    ------------------------------
@@ -548,6 +564,191 @@ package body SPARK_Definition is
          end if;
       end if;
    end Check_Compatible_Access_Types;
+
+   procedure Check_Context_Of_Prophecy
+     (Proph        :     Node_Id;
+      In_Contracts : out Opt_Subprogram_Kind_Id) is
+
+      N          : Node_Id := Proph;
+      --  Iteration variable
+
+      Msg_Prefix : constant String :=
+        (if Nkind (Proph) in N_Function_Call
+         then "call to a function annotated with At_End_Borrow"
+         else "reference to a variable saving a At_End_Borrow call");
+      --  Prefix of violation message in case of failed checks.
+
+   begin
+      In_Contracts := Empty;
+
+      loop
+         N := Parent (N);
+
+         case Nkind (N) is
+            when N_Pragma_Argument_Association =>
+               declare
+                  Prag_Id : constant Pragma_Id :=
+                    Get_Pragma_Id (Pragma_Name (Parent (N)));
+               begin
+                  case Prag_Id is
+                     when Pragma_Postcondition
+                        | Pragma_Post_Class
+                        | Pragma_Contract_Cases
+                        | Pragma_Refined_Post
+                     =>
+                        In_Contracts := Unique_Defining_Entity
+                          (Find_Related_Declaration_Or_Body
+                             (Parent (N)));
+                        return;
+                     when Pragma_Check =>
+                        return;
+                     when others =>
+                        exit;
+                  end case;
+               end;
+            when N_Subexpr
+               | N_Loop_Parameter_Specification
+               | N_Iterated_Component_Association
+               | N_Iterator_Specification
+               | N_Component_Association
+               | N_Parameter_Association
+            =>
+               --  We allow procedure calls if they correspond to
+               --  lemmas.
+
+               if Nkind (N) = N_Procedure_Call_Statement then
+
+                  declare
+                     Proc     : constant E_Procedure_Id :=
+                       Get_Called_Entity (N);
+                     Contract : constant Opt_N_Pragma_Id :=
+                       Find_Contract (Proc, Pragma_Global);
+                     Formal   : Opt_Formal_Kind_Id :=
+                       First_Formal (Proc);
+
+                  begin
+                     --  Proc is necessarily Ghost. It is a lemma if
+                     --  it has no outputs.
+
+                     pragma Assert (Is_Ghost_Entity (Proc));
+
+                     while Present (Formal) loop
+                        if not Is_Constant_In_SPARK (Formal) then
+                           goto Not_Lemma;
+                        end if;
+                        Next_Formal (Formal);
+                     end loop;
+
+                     if Present (Contract)
+                       and then Parse_Global_Contract
+                         (Proc, Contract).Outputs.Is_Empty
+                     then
+                        return;
+                     end if;
+
+                     <<Not_Lemma>>
+                     Mark_Violation
+                       (Msg_Prefix
+                        & " occurring inside a procedure call which is not"
+                        & " known to be free of side-effects",
+                        Proph);
+                     return;
+                  end;
+               elsif Is_Attribute_Loop_Entry (N)
+                 or else Is_Attribute_Old (N)
+               then
+                  Mark_Violation
+                    (Msg_Prefix
+                     & " occurring inside a reference to the 'Old or"
+                     & " 'Loop_Entry attributes",
+                     Proph);
+                  return;
+               end if;
+            when N_Object_Declaration =>
+               if Nkind (Parent (N)) = N_Expression_With_Actions then
+                  --  Skip over declare expressions
+
+                  N := Parent (N);
+               else
+                  declare
+                     Var : constant Entity_Id := Defining_Identifier (N);
+                     Typ : constant Entity_Id := Etype (Var);
+
+                  begin
+                     pragma Assert (Is_Ghost_Entity (Var));
+
+                     if not Is_Anonymous_Access_Object_Type (Typ)
+                       or else not Is_Access_Constant (Typ)
+                       or else not Is_Constant_Object (Var)
+                     then
+                        Mark_Violation
+                          (Msg_Prefix
+                           & " occurring inside the initialization expression"
+                           & " of an object other than of a constant of"
+                           & " anonymous access-to-constant type",
+                           Proph);
+                        return;
+                     end if;
+
+                     N := Expression (N);
+
+                     if N = Proph then
+                        Register_Prophecy_Save (Var);
+                        return;
+                     end if;
+
+                     if Nkind (N) /= N_Attribute_Reference
+                       or else Get_Attribute_Id (Attribute_Name (N))
+                         /= Attribute_Access
+                     then
+                        goto Bad_Prophecy_Save;
+                     end if;
+
+                     N := Prefix (N);
+
+                     loop
+                        case Nkind (N) is
+                           when N_Selected_Component | N_Indexed_Component =>
+                              N := Prefix (N);
+                           when N_Explicit_Dereference =>
+                              --  Do not allow dereferences other than the root
+                              --  one, they can make pledges fail at run-time.
+
+                              if Prefix (N) /= Proph then
+                                 goto Bad_Prophecy_Save;
+                              end if;
+                              Register_Prophecy_Save (Var);
+                              return;
+                           when others =>
+                              goto Bad_Prophecy_Save;
+                        end case;
+                     end loop;
+
+                     <<Bad_Prophecy_Save>>
+                     Mark_Violation
+                       (Msg_Prefix
+                        & " occurring inside the initialization expression of"
+                        & " an object at a position other than the top or as"
+                        & " the root of a subcomponent 'Access reference",
+                        Proph);
+                     return;
+                  end;
+               end if;
+            when others =>
+               exit;
+         end case;
+      end loop;
+
+      Mark_Violation
+        (Msg_Prefix
+         & " occurring outside of a postcondition, contract cases,"
+         & " assertion",
+         Proph);
+
+      --  Lemma calls/prophecy saves declaration are omitted for default
+      --  error message to keep it reasonably short.
+
+   end Check_Context_Of_Prophecy;
 
    ---------------------------------------
    -- Check_Source_Of_Borrow_Or_Observe --
@@ -4328,110 +4529,7 @@ package body SPARK_Definition is
 
       if Has_At_End_Borrow_Annotation (E) then
          declare
-            In_Proc_Call     : Boolean := False;
-            In_Old_Attribute : Boolean := False;
-            In_Contracts     : Opt_Subprogram_Kind_Id := Empty;
-
-            function Check_Call_Context (Call : Node_Id) return Boolean;
-            --  Check whether Call occurs in a context where it can be handled.
-            --  If this context is the contract of a subprogram, set
-            --  In_Contracts to the entity of the related subprogram.
-            --  If the context is a procedure call, set In_Proc_Call to True.
-            --  For now, only allow postconditions, lemmas, and assertions. We
-            --  can extend later if we see a need. Set In_Old_Attribute to True
-            --  if Call occurs inside a 'Loop_Entry or 'Old attribute.
-
-            ------------------------
-            -- Check_Call_Context --
-            ------------------------
-
-            function Check_Call_Context (Call : Node_Id) return Boolean is
-               N : Node_Id := Call;
-               P : Node_Id;
-            begin
-               loop
-                  P := Parent (N);
-
-                  case Nkind (P) is
-                     when N_Pragma_Argument_Association =>
-                        declare
-                           Prag_Id : constant Pragma_Id :=
-                             Get_Pragma_Id (Pragma_Name (Parent (P)));
-                        begin
-                           case Prag_Id is
-                              when Pragma_Postcondition
-                                 | Pragma_Post_Class
-                                 | Pragma_Contract_Cases
-                                 | Pragma_Refined_Post
-                              =>
-                                 In_Contracts := Unique_Defining_Entity
-                                   (Find_Related_Declaration_Or_Body
-                                      (Parent (P)));
-                                 return True;
-                              when Pragma_Check =>
-                                 return True;
-                              when others =>
-                                 return False;
-                           end case;
-                        end;
-                     when N_Subexpr
-                        | N_Loop_Parameter_Specification
-                        | N_Iterated_Component_Association
-                        | N_Iterator_Specification
-                        | N_Component_Association
-                        | N_Parameter_Association
-                     =>
-                        --  We allow procedure calls if they correspond to
-                        --  lemmas.
-
-                        if Nkind (P) = N_Procedure_Call_Statement then
-                           In_Proc_Call := True;
-
-                           declare
-                              Proc     : constant E_Procedure_Id :=
-                                Get_Called_Entity (P);
-                              Contract : constant Opt_N_Pragma_Id :=
-                                Find_Contract (Proc, Pragma_Global);
-                              Formal   : Opt_Formal_Kind_Id :=
-                                First_Formal (Proc);
-
-                           begin
-                              --  Proc is necessarily Ghost. It is a lemma if
-                              --  it has no outputs.
-
-                              pragma Assert (Is_Ghost_Entity (Proc));
-
-                              while Present (Formal) loop
-                                 if not Is_Constant_In_SPARK (Formal) then
-                                    return False;
-                                 end if;
-                                 Next_Formal (Formal);
-                              end loop;
-
-                              return Present (Contract)
-                                and then Parse_Global_Contract
-                                  (Proc, Contract).Outputs.Is_Empty;
-                           end;
-                        elsif Is_Attribute_Loop_Entry (P)
-                          or else Is_Attribute_Old (P)
-                        then
-                           In_Old_Attribute := True;
-                           return False;
-                        end if;
-                     when N_Object_Declaration =>
-                        --  Declarations of declare expressions are valid
-                        --  contexts.
-
-                        P := Parent (P);
-                        if Nkind (P) /= N_Expression_With_Actions then
-                           return False;
-                        end if;
-                     when others =>
-                        return False;
-                  end case;
-                  N := P;
-               end loop;
-            end Check_Call_Context;
+            In_Contracts           : Opt_Subprogram_Kind_Id := Empty;
 
             Fst_Actual             : constant Node_Id := First_Actual (N);
             Is_Result_Of_Traversal : constant Boolean :=
@@ -4460,32 +4558,13 @@ package body SPARK_Definition is
             --  Check that the call occurs in a supported context. Normally,
             --  we should allow all calls inside postconditions and assertions.
 
-            if not Check_Call_Context (N) then
-               if In_Old_Attribute then
-                  Mark_Violation
-                    ("call to a function annotated with At_End_Borrow"
-                     & " occurring inside a reference to the 'Old or"
-                     & " 'Loop_Entry attributes",
-                     N);
-               elsif In_Proc_Call then
-                  Mark_Violation
-                    ("call to a function annotated with At_End_Borrow"
-                     & " occurring inside a procedure call which is not known"
-                     & " to be free of side-effects",
-                     N);
-               else
-                  Mark_Violation
-                    ("call to a function annotated with At_End_Borrow"
-                     & " occurring outside of a postcondition, contract cases,"
-                     & " or assertion",
-                     N);
-               end if;
+            Check_Context_Of_Prophecy (N, In_Contracts);
 
             --  We are inside a contract. Check the root of the actual and
             --  store the mapping here as the expression will not be traversed
             --  in the borrow checker.
 
-            elsif In_Contracts /= Empty then
+            if In_Contracts /= Empty then
 
                --  In postconditions of traversal functions, we expect a
                --  reference to the 'Result attribute or the borrowed
@@ -5173,14 +5252,18 @@ package body SPARK_Definition is
             Mark (Expr);
 
             --  If the type of the object is an anonymous access type, then the
-            --  declaration is an observe or a borrow. Check that it follows
-            --  the rules.
+            --  declaration is an observe or a borrow, or saving a prophecy
+            --  value. In the latest case, the variable was registered by
+            --  the context-checking within the above call.
+            --  Check that the object follows the rules.
 
             if Nkind (N) = N_Object_Declaration
               and then Is_Anonymous_Access_Object_Type (T)
             then
-               Check_Source_Of_Borrow_Or_Observe
-                 (Expr, Is_Access_Constant (T));
+               if not Is_Prophecy_Save (E) then
+                  Check_Source_Of_Borrow_Or_Observe
+                    (Expr, Is_Access_Constant (T));
+               end if;
 
             --  If we are performing a move operation, check that we are
             --  moving a path.
@@ -8224,6 +8307,17 @@ package body SPARK_Definition is
                   Mark_Violation
                     ("volatile object in interfering context", N,
                      SRM_Reference => "SPARK RM 7.1.3(10)");
+               end if;
+
+               if Is_Prophecy_Save (E) then
+                  --  If E saves a prophecy variable, checks the context is one
+                  --  that allows reference to E.
+
+                  declare
+                     In_Contracts : Opt_Subprogram_Kind_Id;
+                  begin
+                     Check_Context_Of_Prophecy (N, In_Contracts);
+                  end;
                end if;
 
             --  Record components and discriminants are in SPARK if they are
