@@ -25,12 +25,7 @@ stages:
     - anod vcs --add-repo spark2014 $CI_PROJECT_DIR
 
     # Figure out if we're on a sync branch
-    - BRANCH=master
-    - if [[ $CI_COMMIT_BRANCH =~ ^sync/ ]]; then
-         BRANCH=$CI_COMMIT_BRANCH;
-      elif [[ $CI_MERGE_REQUEST_SOURCE_BRANCH_NAME =~ ^sync/ ]]; then
-         BRANCH=$CI_MERGE_REQUEST_SOURCE_BRANCH_NAME;
-      fi
+    - BRANCH=$CI_MERGE_REQUEST_SOURCE_BRANCH_NAME;
 
     # Setup the 'anod vcs' for the other repos.
     # Get them from the default branch, or from the same
@@ -76,6 +71,13 @@ stages:
     - mkdir -p fingerprints
     - touch fingerprints/x86_64-linux.spark2014-cov.build.json.assume-unchanged
     - touch fingerprints/x86_64-linux.spark2014-cov.install.json.assume-unchanged
+    # Attempt to avoid downloading all the deps of the spark2014-cov build
+    - touch fingerprints/x86_64-linux.spark2014-core-cov.build.json.assume-unchanged
+    - touch fingerprints/x86_64-linux.spark2014-core-cov.install.json.assume-unchanged
+    - for pack in colibri why3 stable-gnat cvc4 cvc5 alt-ergo gnsa libgpr-current gnatcoll-core-current xmlada-current ; do
+        touch fingerprints/x86_64-linux.$pack.download_bin.json.assume-unchanged;
+        touch fingerprints/x86_64-linux.$pack.install.json.assume-unchanged;
+      done ;
 
     # set caching location
     - mkdir -p $CI_PROJECT_DIR/gnatprove_cache
