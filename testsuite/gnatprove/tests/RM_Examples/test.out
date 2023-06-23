@@ -105,6 +105,7 @@ inter_unit_elaboration_examples.adb:8:14: high: overflow check might fail, canno
 intra_unit_elaboration_order_examples.adb:3:50: high: overflow check might fail, cannot prove upper bound for I + 1 (e.g. when I = Integer'Last) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: add precondition (I <= Integer'Last - 1) to subprogram at intra_unit_elaboration_order_examples.ads:26]
 intra_unit_elaboration_order_examples.adb:20:17: info: overflow check proved (CVC5: 2 VC)
 intra_unit_elaboration_order_examples.adb:35:14: high: overflow check might fail, cannot prove lower bound for A + Y (e.g. when A = -1 and Y = Integer'First) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at intra_unit_elaboration_order_examples.ads:23 should mention A and Y in a precondition]
+intra_unit_elaboration_order_examples.adb:42:04: medium: implicit aspect Always_Terminates on "Intra_Unit_Elaboration_Order_Examples" could be incorrect, call to "P" might be nonterminating [possible fix: annotate "P" with aspect Always_Terminates]
 intra_unit_elaboration_order_examples.ads:4:08: info: flow dependencies proved
 intra_unit_elaboration_order_examples.ads:17:04: info: initialization of "Y" proved
 intra_unit_elaboration_order_examples.ads:20:19: info: postcondition proved (CVC5: 1 VC)
