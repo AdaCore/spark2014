@@ -25,12 +25,7 @@ stages:
     - anod vcs --add-repo spark2014 $CI_PROJECT_DIR
 
     # Figure out if we're on a sync branch
-    - BRANCH=master
-    - if [[ $CI_COMMIT_BRANCH =~ ^sync/ ]]; then
-         BRANCH=$CI_COMMIT_BRANCH;
-      elif [[ $CI_MERGE_REQUEST_SOURCE_BRANCH_NAME =~ ^sync/ ]]; then
-         BRANCH=$CI_MERGE_REQUEST_SOURCE_BRANCH_NAME;
-      fi
+    - BRANCH=$CI_MERGE_REQUEST_SOURCE_BRANCH_NAME;
 
     # Setup the 'anod vcs' for the other repos.
     # Get them from the default branch, or from the same
