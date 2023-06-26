@@ -691,6 +691,7 @@ package SPARK_Util.Subprograms is
      (S               : Entity_Id;
       No_Interfaces   : Boolean := False;
       Interfaces_Only : Boolean := False;
+      Skip_Overridden : Boolean := False;
       One_Only        : Boolean := False) return Subprogram_List renames
      Inheritance_Utilities_Inst.Inherited_Subprograms;
 
