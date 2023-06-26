@@ -6069,7 +6069,7 @@ package body Flow.Analysis is
                         --  Always_Terminates aspect is trusted.
 
                         if Get_Termination_Condition (SC.E, Compute => True)
-                             /= (Static, True)
+                             = (Static, False)
                           and then
                             (Calls_Potentially_Nonreturning_Subprogram (SC.E)
                              or else Is_Directly_Nonreturning (SC.E))
