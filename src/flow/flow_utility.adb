@@ -3640,6 +3640,13 @@ package body Flow_Utility is
                          (Etype (Encapsulating_State (Root_Entity))),
                        Root_Entity);
 
+               elsif Ekind (Root_Entity) in E_Constant | E_Variable
+                 and then Present (Ultimate_Overlaid_Entity (Root_Entity))
+               then
+                  return
+                    Flatten_Variable
+                      (Ultimate_Overlaid_Entity (Root_Entity), Scope);
+
                else
                   Comp_Id       := 1;
                   Current_Field :=
