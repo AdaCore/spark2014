@@ -20,3 +20,5 @@
 - E0009: `indicator Part_Of is required in this context`
 
 - E0010: `dereference from <object> is not <readable/writable>; object was moved`
+
+- E0011: `incorrect placement of aspect/pragma "SPARK_Mode" with value "On"`
