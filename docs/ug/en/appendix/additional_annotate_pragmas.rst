@@ -547,8 +547,9 @@ Note that the name of the function could be something other than
 |GNATprove| will check that a function associated with the ``At_End_Borrow``
 annotation is a ghost expression function which takes a single parameter of an
 access-to-constant type and returns it. ``At_End_Borrow`` functions can only be
-called inside regular assertions or contracts, or within a parameter of a call
-to a lemma subprogram.
+called inside regular assertions or contracts, within a parameter of a call
+to a lemma subprogram, or within the initialization of a (ghost) constant
+of anonymous access-to-constant type.
 
 When |GNATprove| encounters a call to such a function, it checks that the
 actual parameter of the call is either a local borrower or an
@@ -679,6 +680,32 @@ could be modified later in the borrow:
 
       Y.Val := 42;
       Y.Next := null;
+
+During sequences of re-borrows, it is additionally possible to
+use constants of anonymous access-to-constant type in order to save
+prophecy variables for intermediate values of an access variable, as
+in the following example:
+
+.. code-block:: ada
+
+   declare
+      Y : access List := X;
+   begin
+      Y := Y.Next; --  first reborrow
+      declare
+         Z : constant access constant List := At_End_Borrow (Y) with Ghost;
+         --  At_End_Borrow is Ghost, so Z too.
+      begin
+         Y := Y.Next; -- second reborrow
+         pragma Assert (At_End_Borrow (X).Next.Val = Z.Val);
+         --  Z match prophecy of first reborrow of Y
+         pragma Assert (Z.Next.Val = At_End_Borrow (Y).Val);
+      end
+   end
+
+As ``Z`` serves to save a prophecy variable, it is subject to the same
+usage restrictions as the corresponding ``At_End_Borrow (Y)`` call, in place
+of the usual rules for local observers.
 
 As said earlier, in general, |GNATprove| can handle local borrows without
 any additional user written annotations. Therefore, ``At_End_Borrow`` functions
