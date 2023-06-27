@@ -1,0 +1,31 @@
+borrow_checking.adb:10:13: info: implicit aspect Always_Terminates on "At_End" has been proved, subprogram will terminate
+borrow_checking.adb:12:18: info: data dependencies proved
+borrow_checking.adb:13:13: info: implicit aspect Always_Terminates on "At_End" has been proved, subprogram will terminate
+borrow_checking.adb:15:18: info: data dependencies proved
+borrow_checking.adb:16:13: info: implicit aspect Always_Terminates on "At_End" has been proved, subprogram will terminate
+borrow_checking.adb:18:18: info: data dependencies proved
+borrow_checking.adb:25:28: error: "Y" was borrowed at line 23
+borrow_checking.adb:33:28: error: "Y" was borrowed at line 31
+borrow_checking.adb:40:07: warning: initialization of "V" has no effect
+borrow_checking.adb:42:28: error: "Y" is not readable
+borrow_checking.adb:42:28: error: object was moved at line 40 [E0010]
+borrow_checking.adb:50:07: warning: initialization of "V" has no effect
+marking.adb:24:35: error: call to a function annotated with At_End_Borrow occurring inside the initialization expression of an object other than of a constant of anonymous access-to-constant type is not allowed in SPARK
+marking.adb:24:35: error: violation of aspect SPARK_Mode at line 1
+marking.adb:25:29: error: call to a function annotated with At_End_Borrow occurring inside the initialization expression of an object other than of a constant of anonymous access-to-constant type is not allowed in SPARK
+marking.adb:25:29: error: violation of aspect SPARK_Mode at line 1
+marking.adb:26:26: error: call to a function annotated with At_End_Borrow occurring inside the initialization expression of an object other than of a constant of anonymous access-to-constant type is not allowed in SPARK
+marking.adb:26:26: error: violation of aspect SPARK_Mode at line 1
+marking.adb:27:35: error: reference to a variable saving a At_End_Borrow call occurring inside the initialization expression of an object other than of a constant of anonymous access-to-constant type is not allowed in SPARK
+marking.adb:27:35: error: violation of aspect SPARK_Mode at line 1
+marking.adb:47:12: error: call to a function annotated with At_End_Borrow occurring inside the initialization expression of an object at a position other than the top or as the root of a subcomponent Access reference is not allowed in SPARK
+marking.adb:47:12: error: violation of aspect SPARK_Mode at line 1
+marking.adb:49:15: error: call to a function annotated with At_End_Borrow occurring inside the initialization expression of an object at a position other than the top or as the root of a subcomponent Access reference is not allowed in SPARK
+marking.adb:49:15: error: violation of aspect SPARK_Mode at line 1
+marking.adb:52:20: error: call to a function annotated with At_End_Borrow occurring inside the initialization expression of an object at a position other than the top or as the root of a subcomponent Access reference is not allowed in SPARK
+marking.adb:52:20: error: violation of aspect SPARK_Mode at line 1
+marking.adb:53:44: error: call to a function annotated with At_End_Borrow occurring inside the initialization expression of an object at a position other than the top or as the root of a subcomponent Access reference is not allowed in SPARK
+marking.adb:53:44: error: violation of aspect SPARK_Mode at line 1
+marking.adb:57:12: error: reference to a variable saving a At_End_Borrow call occurring inside the initialization expression of an object at a position other than the top or as the root of a subcomponent Access reference is not allowed in SPARK
+marking.adb:57:12: error: violation of aspect SPARK_Mode at line 1
+gnatprove: error during flow analysis and proof
