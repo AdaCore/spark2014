@@ -4,23 +4,23 @@ admin.adb:94:33: info: loop invariant initialization proved
 admin.adb:94:33: info: loop invariant preservation proved
 admin.adb:100:36: info: index check proved
 admin.adb:171:64: info: range check proved
-admin.ads:42:13: info: implicit terminating annotation on "RolePresent" has been proved, subprogram will terminate
+admin.ads:42:13: info: implicit aspect Always_Terminates on "RolePresent" has been proved, subprogram will terminate
 admin.ads:43:11: info: data dependencies proved
-admin.ads:55:13: info: implicit terminating annotation on "IsDoingOp" has been proved, subprogram will terminate
+admin.ads:55:13: info: implicit aspect Always_Terminates on "IsDoingOp" has been proved, subprogram will terminate
 admin.ads:56:11: info: data dependencies proved
-admin.ads:67:13: info: implicit terminating annotation on "TheCurrentOp" has been proved, subprogram will terminate
+admin.ads:67:13: info: implicit aspect Always_Terminates on "TheCurrentOp" has been proved, subprogram will terminate
 admin.ads:68:11: info: data dependencies proved
-admin.ads:77:13: info: implicit terminating annotation on "Str_Comp" has been proved, subprogram will terminate
+admin.ads:77:13: info: implicit aspect Always_Terminates on "Str_Comp" has been proved, subprogram will terminate
 admin.ads:80:11: info: data dependencies proved
-admin.ads:88:13: info: implicit terminating annotation on "AllowedOp" has been proved, subprogram will terminate
+admin.ads:88:13: info: implicit aspect Always_Terminates on "AllowedOp" has been proved, subprogram will terminate
 admin.ads:91:11: info: data dependencies proved
-admin.ads:103:13: info: implicit terminating annotation on "IsPresent" has been proved, subprogram will terminate
+admin.ads:103:13: info: implicit aspect Always_Terminates on "IsPresent" has been proved, subprogram will terminate
 admin.ads:104:11: info: data dependencies proved
 admin.ads:115:20: info: initialization of "TheAdmin" proved
 admin.ads:116:11: info: data dependencies proved
 admin.ads:117:11: info: flow dependencies proved
 admin.ads:118:22: info: postcondition proved
-admin.ads:132:13: info: implicit terminating annotation on "OpIsAvailable" has been proved, subprogram will terminate
+admin.ads:132:13: info: implicit aspect Always_Terminates on "OpIsAvailable" has been proved, subprogram will terminate
 admin.ads:135:11: info: data dependencies proved
 admin.ads:137:21: info: postcondition proved
 admin.ads:138:28: info: precondition proved
@@ -38,7 +38,7 @@ admin.ads:191:28: info: precondition proved
 admin.ads:203:11: info: data dependencies proved
 admin.ads:204:11: info: flow dependencies proved
 admin.ads:206:22: info: postcondition proved
-admin.ads:219:13: info: implicit terminating annotation on "SecurityOfficerIsPresent" has been proved, subprogram will terminate
+admin.ads:219:13: info: implicit aspect Always_Terminates on "SecurityOfficerIsPresent" has been proved, subprogram will terminate
 admin.ads:220:11: info: data dependencies proved
 admin.ads:274:27: info: index check proved
 admintoken-interfac.ads:28:08: info: flow dependencies proved
@@ -58,7 +58,7 @@ admintoken.adb:156:18: info: initialization of "IDValid" proved
 admintoken.adb:156:27: info: initialization of "RoleOK" proved
 admintoken.adb:158:07: info: initialization of "AuthCertContents" proved
 admintoken.adb:159:07: info: initialization of "IDCertContents" proved
-admintoken.adb:169:16: info: implicit terminating annotation on "MakeDescription" has been proved, subprogram will terminate
+admintoken.adb:169:16: info: implicit aspect Always_Terminates on "MakeDescription" has been proved, subprogram will terminate
 admintoken.adb:176:13: info: range check proved
 admintoken.adb:176:21: info: index check proved
 admintoken.adb:176:30: info: index check proved
@@ -92,11 +92,11 @@ admintoken.adb:503:42: info: initialization of "TokenTry" constituent of "State"
 admintoken.adb:510:07: info: initialization of "AuthCertContents" proved
 admintoken.adb:511:07: info: initialization of "IDCertContents" proved
 admintoken.ads:41:08: info: flow dependencies proved
-admintoken.ads:50:13: info: implicit terminating annotation on "TheAuthCertRole" has been proved, subprogram will terminate
+admintoken.ads:50:13: info: implicit aspect Always_Terminates on "TheAuthCertRole" has been proved, subprogram will terminate
 admintoken.ads:51:11: info: data dependencies proved
-admintoken.ads:54:13: info: implicit terminating annotation on "IsGood" has been proved, subprogram will terminate
+admintoken.ads:54:13: info: implicit aspect Always_Terminates on "IsGood" has been proved, subprogram will terminate
 admintoken.ads:55:11: info: data dependencies proved
-admintoken.ads:58:13: info: implicit terminating annotation on "AuthCertValid" has been proved, subprogram will terminate
+admintoken.ads:58:13: info: implicit aspect Always_Terminates on "AuthCertValid" has been proved, subprogram will terminate
 admintoken.ads:59:11: info: data dependencies proved
 admintoken.ads:72:11: info: data dependencies proved
 admintoken.ads:74:11: info: flow dependencies proved
@@ -109,13 +109,13 @@ admintoken.ads:129:07: info: initialization of "TokenOK" proved
 admintoken.ads:130:11: info: data dependencies proved
 admintoken.ads:140:11: info: flow dependencies proved
 admintoken.ads:158:22: info: postcondition proved
-admintoken.ads:171:13: info: implicit terminating annotation on "IsPresent" has been proved, subprogram will terminate
+admintoken.ads:171:13: info: implicit aspect Always_Terminates on "IsPresent" has been proved, subprogram will terminate
 admintoken.ads:172:11: info: data dependencies proved
-admintoken.ads:183:13: info: implicit terminating annotation on "IsCurrent" has been proved, subprogram will terminate
+admintoken.ads:183:13: info: implicit aspect Always_Terminates on "IsCurrent" has been proved, subprogram will terminate
 admintoken.ads:184:11: info: data dependencies proved
-admintoken.ads:196:13: info: implicit terminating annotation on "ExtractUser" has been proved, subprogram will terminate
+admintoken.ads:196:13: info: implicit aspect Always_Terminates on "ExtractUser" has been proved, subprogram will terminate
 admintoken.ads:197:11: info: data dependencies proved
-admintoken.ads:209:13: info: implicit terminating annotation on "GetRole" has been proved, subprogram will terminate
+admintoken.ads:209:13: info: implicit aspect Always_Terminates on "GetRole" has been proved, subprogram will terminate
 admintoken.ads:210:11: info: data dependencies proved
 admintoken.ads:225:11: info: data dependencies proved
 admintoken.ads:226:11: info: flow dependencies proved
@@ -124,7 +124,7 @@ admintoken.ads:279:21: info: range check proved
 alarm.adb:42:49: info: initialization of "Interfac.Output" constituent of "Alarm.Output" proved
 alarm.adb:45:30: info: refined post proved
 alarm.ads:26:08: info: flow dependencies proved
-alarm.ads:42:13: info: implicit terminating annotation on "IsAlarming" has been proved, subprogram will terminate
+alarm.ads:42:13: info: implicit aspect Always_Terminates on "IsAlarming" has been proved, subprogram will terminate
 alarm.ads:43:11: info: data dependencies proved
 alarm.ads:57:11: info: data dependencies proved
 alarm.ads:60:11: info: flow dependencies proved
@@ -135,12 +135,12 @@ alarmapi.adb:65:29: info: length check proved
 alarmapi.adb:65:29: info: precondition proved
 alarmapi.ads:29:28: info: data dependencies proved
 alarmapi.ads:38:30: info: data dependencies proved
-auditlog.adb:70:13: info: implicit terminating annotation on "AgeLessThan" has been proved, subprogram will terminate
-auditlog.adb:83:13: info: implicit terminating annotation on "NextListIndex" has been proved, subprogram will terminate
+auditlog.adb:70:13: info: implicit aspect Always_Terminates on "AgeLessThan" has been proved, subprogram will terminate
+auditlog.adb:83:13: info: implicit aspect Always_Terminates on "NextListIndex" has been proved, subprogram will terminate
 auditlog.adb:85:18: info: range check proved
 auditlog.adb:98:11: info: data dependencies proved
 auditlog.adb:100:11: info: flow dependencies proved
-auditlog.adb:120:13: info: implicit terminating annotation on "ConvertToAuditDescription" has been proved, subprogram will terminate
+auditlog.adb:120:13: info: implicit aspect Always_Terminates on "ConvertToAuditDescription" has been proved, subprogram will terminate
 auditlog.adb:127:35: info: range check proved
 auditlog.adb:127:47: info: cannot unroll loop (too many loop iterations)
 auditlog.adb:128:40: info: index check proved
@@ -157,7 +157,7 @@ auditlog.adb:160:07: info: initialization of "OK" proved
 auditlog.adb:161:07: info: initialization of "FirstTime" proved
 auditlog.adb:162:07: info: initialization of "LastTime" proved
 auditlog.adb:163:07: info: initialization of "TimeCount" proved
-auditlog.adb:177:16: info: implicit terminating annotation on "ConvertTimesToText" has been proved, subprogram will terminate
+auditlog.adb:177:16: info: implicit aspect Always_Terminates on "ConvertTimesToText" has been proved, subprogram will terminate
 auditlog.adb:179:13: info: precondition proved
 auditlog.adb:180:24: info: range check proved
 auditlog.adb:180:36: info: range check proved
@@ -172,7 +172,7 @@ auditlog.adb:253:11: info: flow dependencies proved
 auditlog.adb:257:07: info: initialization of "OK" proved
 auditlog.adb:258:07: info: initialization of "LastTime" proved
 auditlog.adb:259:07: info: initialization of "TimeCount" proved
-auditlog.adb:273:16: info: implicit terminating annotation on "OverwriteTimeInText" has been proved, subprogram will terminate
+auditlog.adb:273:16: info: implicit aspect Always_Terminates on "OverwriteTimeInText" has been proved, subprogram will terminate
 auditlog.adb:275:14: info: data dependencies proved
 auditlog.adb:277:10: info: initialization of "Descr" proved
 auditlog.adb:278:10: info: initialization of "FirstTime" proved
@@ -204,7 +204,7 @@ auditlog.adb:433:11: info: data dependencies proved
 auditlog.adb:435:11: info: flow dependencies proved
 auditlog.adb:443:07: info: initialization of "OK" proved
 auditlog.adb:444:07: info: initialization of "Now" proved
-auditlog.adb:456:16: info: implicit terminating annotation on "NameOfType" has been proved, subprogram will terminate
+auditlog.adb:456:16: info: implicit aspect Always_Terminates on "NameOfType" has been proved, subprogram will terminate
 auditlog.adb:463:10: info: range check proved
 auditlog.adb:463:22: info: index check proved
 auditlog.adb:463:61: info: index check proved
@@ -355,30 +355,30 @@ auditlog.ads:122:11: info: data dependencies proved
 auditlog.ads:126:11: info: flow dependencies proved
 auditlog.ads:143:11: info: data dependencies proved
 auditlog.ads:144:11: info: flow dependencies proved
-auditlog.ads:155:13: info: implicit terminating annotation on "TheAuditAlarm" has been proved, subprogram will terminate
+auditlog.ads:155:13: info: implicit aspect Always_Terminates on "TheAuditAlarm" has been proved, subprogram will terminate
 auditlog.ads:156:11: info: data dependencies proved
-auditlog.ads:167:13: info: implicit terminating annotation on "SystemFaultOccurred" has been proved, subprogram will terminate
+auditlog.ads:167:13: info: implicit aspect Always_Terminates on "SystemFaultOccurred" has been proved, subprogram will terminate
 auditlog.ads:168:11: info: data dependencies proved
-auditlog.ads:270:13: info: implicit terminating annotation on "Valid_NumberLogEntries" has been proved, subprogram will terminate
+auditlog.ads:270:13: info: implicit aspect Always_Terminates on "Valid_NumberLogEntries" has been proved, subprogram will terminate
 auditlog.ads:277:46: info: range check proved
 auditlog.ads:281:09: info: invariant check proved on default value
-auditlog.ads:295:13: info: implicit terminating annotation on "Valid_NumberLogEntries" has been proved, subprogram will terminate
-audittypes.ads:77:13: info: implicit terminating annotation on "ElementT_Image" has been proved, subprogram will terminate
+auditlog.ads:295:13: info: implicit aspect Always_Terminates on "Valid_NumberLogEntries" has been proved, subprogram will terminate
+audittypes.ads:77:13: info: implicit aspect Always_Terminates on "ElementT_Image" has been proved, subprogram will terminate
 audittypes.ads:78:16: info: medium: for inherited predicate at commontypes.ads:60
 audittypes.ads:78:16: info: medium: in inlined predicate at commontypes.ads:60
 audittypes.ads:78:16: info: predicate check justified
 audittypes.ads:78:16: info: range check proved
-bio.adb:83:13: info: implicit terminating annotation on "ReturnT_Image" has been proved, subprogram will terminate
+bio.adb:83:13: info: implicit aspect Always_Terminates on "ReturnT_Image" has been proved, subprogram will terminate
 bio.adb:84:15: info: medium: for inherited predicate at commontypes.ads:60
 bio.adb:84:15: info: medium: in inlined predicate at commontypes.ads:60
 bio.adb:84:15: info: predicate check justified
 bio.adb:84:15: info: range check proved
 bio.adb:123:13: info: add a contract to analyze it separately from calling contexts
-bio.adb:123:13: info: implicit terminating annotation on "GetReturnCode" has been proved, subprogram will terminate
+bio.adb:123:13: info: implicit aspect Always_Terminates on "GetReturnCode" has been proved, subprogram will terminate
 bio.adb:123:13: info: local subprogram "GetReturnCode" only analyzed in the context of calls
 bio.adb:129:55: info: loop invariant initialization proved, in call inlined at bio.adb:193
 bio.adb:129:55: info: loop invariant preservation proved, in call inlined at bio.adb:193
-bio.adb:150:13: info: implicit terminating annotation on "MakeDescription" has been proved, subprogram will terminate
+bio.adb:150:13: info: implicit aspect Always_Terminates on "MakeDescription" has been proved, subprogram will terminate
 bio.adb:154:11: info: data dependencies proved
 bio.adb:163:07: info: initialization of "TheCodeName" proved
 bio.adb:175:17: info: postcondition proved
@@ -421,9 +421,9 @@ cert-attr-auth.adb:102:10: info: initialization of "TheMonth" proved
 cert-attr-auth.adb:103:10: info: initialization of "TheDay" proved
 cert-attr-auth.adb:104:10: info: initialization of "TheHour" proved
 cert-attr-auth.adb:105:10: info: initialization of "TheMinute" proved
-cert-attr-auth.ads:56:13: info: implicit terminating annotation on "TheRole" has been proved, subprogram will terminate
+cert-attr-auth.ads:56:13: info: implicit aspect Always_Terminates on "TheRole" has been proved, subprogram will terminate
 cert-attr-auth.ads:57:11: info: data dependencies proved
-cert-attr-auth.ads:68:13: info: implicit terminating annotation on "TheClearance" has been proved, subprogram will terminate
+cert-attr-auth.ads:68:13: info: implicit aspect Always_Terminates on "TheClearance" has been proved, subprogram will terminate
 cert-attr-auth.ads:69:11: info: data dependencies proved
 cert-attr-auth.ads:81:23: info: initialization of "Contents" proved
 cert-attr-auth.ads:82:23: info: initialization of "Success" proved
@@ -441,13 +441,13 @@ cert-attr-auth.ads:168:21: info: initialization of "Contents" proved
 cert-attr-auth.ads:169:11: info: data dependencies proved
 cert-attr-auth.ads:170:11: info: flow dependencies proved
 cert-attr-auth.ads:171:22: info: postcondition proved
-cert-attr-auth.ads:174:13: info: implicit terminating annotation on "Cert_Attr_Auth_To_Cert" has been proved, subprogram will terminate
-cert-attr-auth.ads:178:13: info: implicit terminating annotation on "Cert_Attr_Auth_To_Cert_Attr" has been proved, subprogram will terminate
+cert-attr-auth.ads:174:13: info: implicit aspect Always_Terminates on "Cert_Attr_Auth_To_Cert" has been proved, subprogram will terminate
+cert-attr-auth.ads:178:13: info: implicit aspect Always_Terminates on "Cert_Attr_Auth_To_Cert_Attr" has been proved, subprogram will terminate
 cert-attr-ianda.adb:44:07: info: initialization of "LocalContents" proved
 cert-attr-ianda.adb:45:07: info: initialization of "Extracted" proved
 cert-attr-ianda.adb:46:07: info: initialization of "NotBeforeOk" proved
 cert-attr-ianda.adb:47:07: info: initialization of "NotAfterOk" proved
-cert-attr-ianda.ads:54:13: info: implicit terminating annotation on "TheTemplate" has been proved, subprogram will terminate
+cert-attr-ianda.ads:54:13: info: implicit aspect Always_Terminates on "TheTemplate" has been proved, subprogram will terminate
 cert-attr-ianda.ads:66:23: info: initialization of "Contents" proved
 cert-attr-ianda.ads:67:23: info: initialization of "Success" proved
 cert-attr-ianda.ads:68:11: info: data dependencies proved
@@ -455,14 +455,14 @@ cert-attr-ianda.ads:69:11: info: flow dependencies proved
 cert-attr-ianda.ads:80:21: info: initialization of "Contents" proved
 cert-attr-ianda.ads:81:11: info: data dependencies proved
 cert-attr-ianda.ads:82:11: info: flow dependencies proved
-cert-attr-ianda.ads:85:13: info: implicit terminating annotation on "Cert_Attr_Ianda_To_Cert" has been proved, subprogram will terminate
-cert-attr-ianda.ads:89:13: info: implicit terminating annotation on "Cert_Attr_Ianda_To_Cert_Attr" has been proved, subprogram will terminate
+cert-attr-ianda.ads:85:13: info: implicit aspect Always_Terminates on "Cert_Attr_Ianda_To_Cert" has been proved, subprogram will terminate
+cert-attr-ianda.ads:89:13: info: implicit aspect Always_Terminates on "Cert_Attr_Ianda_To_Cert_Attr" has been proved, subprogram will terminate
 cert-attr-priv.adb:51:07: info: initialization of "LocalContents" proved
 cert-attr-priv.adb:52:07: info: initialization of "Extracted" proved
 cert-attr-priv.adb:53:07: info: initialization of "NotBeforeOk" proved
 cert-attr-priv.adb:54:07: info: initialization of "NotAfterOk" proved
-cert-attr-priv.ads:53:13: info: implicit terminating annotation on "TheRole" has been proved, subprogram will terminate
-cert-attr-priv.ads:64:13: info: implicit terminating annotation on "TheClearance" has been proved, subprogram will terminate
+cert-attr-priv.ads:53:13: info: implicit aspect Always_Terminates on "TheRole" has been proved, subprogram will terminate
+cert-attr-priv.ads:64:13: info: implicit aspect Always_Terminates on "TheClearance" has been proved, subprogram will terminate
 cert-attr-priv.ads:76:23: info: initialization of "Contents" proved
 cert-attr-priv.ads:77:23: info: initialization of "Success" proved
 cert-attr-priv.ads:78:11: info: data dependencies proved
@@ -470,8 +470,8 @@ cert-attr-priv.ads:79:11: info: flow dependencies proved
 cert-attr-priv.ads:91:21: info: initialization of "Contents" proved
 cert-attr-priv.ads:92:11: info: data dependencies proved
 cert-attr-priv.ads:93:11: info: flow dependencies proved
-cert-attr-priv.ads:96:13: info: implicit terminating annotation on "Cert_Attr_Priv_To_Cert" has been proved, subprogram will terminate
-cert-attr-priv.ads:99:13: info: implicit terminating annotation on "Cert_Attr_Priv_To_Cert_Attr" has been proved, subprogram will terminate
+cert-attr-priv.ads:96:13: info: implicit aspect Always_Terminates on "Cert_Attr_Priv_To_Cert" has been proved, subprogram will terminate
+cert-attr-priv.ads:99:13: info: implicit aspect Always_Terminates on "Cert_Attr_Priv_To_Cert_Attr" has been proved, subprogram will terminate
 cert-attr.adb:36:09: info: range check proved
 cert-attr.adb:37:09: info: range check proved
 cert-attr.adb:38:09: info: range check proved
@@ -480,16 +480,16 @@ cert-attr.adb:42:18: info: index check proved
 cert-attr.adb:42:33: info: index check proved
 cert-attr.adb:42:40: info: length check proved
 cert-attr.adb:42:43: info: length check proved
-cert-attr.ads:55:13: info: implicit terminating annotation on "ExtractUser" has been proved, subprogram will terminate
-cert-attr.ads:66:13: info: implicit terminating annotation on "TheBaseCert" has been proved, subprogram will terminate
+cert-attr.ads:55:13: info: implicit aspect Always_Terminates on "ExtractUser" has been proved, subprogram will terminate
+cert-attr.ads:66:13: info: implicit aspect Always_Terminates on "TheBaseCert" has been proved, subprogram will terminate
 cert-id.adb:61:07: info: initialization of "LocalContents" proved
 cert-id.adb:62:07: info: initialization of "Extracted" proved
 cert-id.adb:63:07: info: initialization of "KeyLengthOK" proved
 cert-id.adb:64:07: info: initialization of "NotBeforeOk" proved
 cert-id.adb:65:07: info: initialization of "NotAfterOk" proved
 cert-id.adb:87:47: info: range check proved
-cert-id.ads:54:13: info: implicit terminating annotation on "TheSubject" has been proved, subprogram will terminate
-cert-id.ads:65:13: info: implicit terminating annotation on "ThePublicKey" has been proved, subprogram will terminate
+cert-id.ads:54:13: info: implicit aspect Always_Terminates on "TheSubject" has been proved, subprogram will terminate
+cert-id.ads:65:13: info: implicit aspect Always_Terminates on "ThePublicKey" has been proved, subprogram will terminate
 cert-id.ads:77:23: info: initialization of "Contents" proved
 cert-id.ads:78:23: info: initialization of "Success" proved
 cert-id.ads:79:11: info: data dependencies proved
@@ -497,7 +497,7 @@ cert-id.ads:80:11: info: flow dependencies proved
 cert-id.ads:92:21: info: initialization of "Contents" proved
 cert-id.ads:93:11: info: data dependencies proved
 cert-id.ads:94:11: info: flow dependencies proved
-cert-id.ads:97:13: info: implicit terminating annotation on "Cert_Id_To_Cert" has been proved, subprogram will terminate
+cert-id.ads:97:13: info: implicit aspect Always_Terminates on "Cert_Id_To_Cert" has been proved, subprogram will terminate
 cert.adb:61:09: info: range check proved
 cert.adb:62:09: info: range check proved
 cert.adb:63:09: info: range check proved
@@ -509,15 +509,15 @@ cert.adb:66:43: info: length check proved
 cert.adb:100:07: info: initialization of "LocalRawData" proved
 cert.adb:120:07: info: initialization of "LocalSig" proved
 cert.adb:156:07: info: initialization of "IsKnown" proved
-cert.ads:58:13: info: implicit terminating annotation on "TheIssuer" has been proved, subprogram will terminate
-cert.ads:69:13: info: implicit terminating annotation on "TheID" has been proved, subprogram will terminate
-cert.ads:80:13: info: implicit terminating annotation on "ExtractUser" has been proved, subprogram will terminate
-cert.ads:91:13: info: implicit terminating annotation on "TheMechanism" has been proved, subprogram will terminate
-cert.ads:102:13: info: implicit terminating annotation on "IsCurrent" has been proved, subprogram will terminate
+cert.ads:58:13: info: implicit aspect Always_Terminates on "TheIssuer" has been proved, subprogram will terminate
+cert.ads:69:13: info: implicit aspect Always_Terminates on "TheID" has been proved, subprogram will terminate
+cert.ads:80:13: info: implicit aspect Always_Terminates on "ExtractUser" has been proved, subprogram will terminate
+cert.ads:91:13: info: implicit aspect Always_Terminates on "TheMechanism" has been proved, subprogram will terminate
+cert.ads:102:13: info: implicit aspect Always_Terminates on "IsCurrent" has been proved, subprogram will terminate
 cert.ads:103:11: info: data dependencies proved
-cert.ads:114:13: info: implicit terminating annotation on "GetData" has been proved, subprogram will terminate
+cert.ads:114:13: info: implicit aspect Always_Terminates on "GetData" has been proved, subprogram will terminate
 cert.ads:116:11: info: data dependencies proved
-cert.ads:127:13: info: implicit terminating annotation on "GetSignature" has been proved, subprogram will terminate
+cert.ads:127:13: info: implicit aspect Always_Terminates on "GetSignature" has been proved, subprogram will terminate
 cert.ads:141:26: info: initialization of "IsKnown" proved
 cert.ads:142:11: info: data dependencies proved
 cert.ads:147:11: info: flow dependencies proved
@@ -561,9 +561,9 @@ certificatestore.ads:45:11: info: data dependencies proved
 certificatestore.ads:51:11: info: flow dependencies proved
 certificatestore.ads:72:11: info: data dependencies proved
 certificatestore.ads:78:11: info: flow dependencies proved
-certificatestore.ads:95:13: info: implicit terminating annotation on "SerialNumberHasOverflowed" has been proved, subprogram will terminate
+certificatestore.ads:95:13: info: implicit aspect Always_Terminates on "SerialNumberHasOverflowed" has been proved, subprogram will terminate
 certificatestore.ads:96:11: info: data dependencies proved
-certificatestore.ads:108:13: info: implicit terminating annotation on "SerialNumber" has been proved, subprogram will terminate
+certificatestore.ads:108:13: info: implicit aspect Always_Terminates on "SerialNumber" has been proved, subprogram will terminate
 certificatestore.ads:109:11: info: data dependencies proved
 certprocessing.adb:37:07: info: initialization of "LocalData" proved
 certprocessing.adb:78:07: info: initialization of "LocalData" proved
@@ -599,7 +599,7 @@ certprocessing.ads:225:11: info: flow dependencies proved
 certprocessing.ads:240:07: info: initialization of "SignedRawAuthCert" proved
 certprocessing.ads:241:11: info: data dependencies proved
 certprocessing.ads:242:11: info: flow dependencies proved
-certtypes.ads:62:13: info: implicit terminating annotation on "SerialNumberT_Image" has been proved, subprogram will terminate
+certtypes.ads:62:13: info: implicit aspect Always_Terminates on "SerialNumberT_Image" has been proved, subprogram will terminate
 certtypes.ads:63:21: info: for inherited predicate at commontypes.ads:66
 certtypes.ads:63:21: info: medium: for inherited predicate at commontypes.ads:60
 certtypes.ads:63:21: info: medium: in inlined predicate at commontypes.ads:60
@@ -654,14 +654,14 @@ clock.adb:297:50: info: division check proved
 clock.adb:298:32: info: division check proved
 clock.ads:97:11: info: data dependencies proved
 clock.ads:99:11: info: flow dependencies proved
-clock.ads:110:13: info: implicit terminating annotation on "TheCurrentTime" has been proved, subprogram will terminate
+clock.ads:110:13: info: implicit aspect Always_Terminates on "TheCurrentTime" has been proved, subprogram will terminate
 clock.ads:111:11: info: data dependencies proved
-clock.ads:122:13: info: implicit terminating annotation on "GetNow" has been proved, subprogram will terminate
+clock.ads:122:13: info: implicit aspect Always_Terminates on "GetNow" has been proved, subprogram will terminate
 clock.ads:124:11: info: data dependencies proved
-clock.ads:135:13: info: implicit terminating annotation on "GreaterThan" has been proved, subprogram will terminate
-clock.ads:146:13: info: implicit terminating annotation on "LessThan" has been proved, subprogram will terminate
-clock.ads:157:13: info: implicit terminating annotation on "GreaterThanOrEqual" has been proved, subprogram will terminate
-clock.ads:168:13: info: implicit terminating annotation on "LessThanOrEqual" has been proved, subprogram will terminate
+clock.ads:135:13: info: implicit aspect Always_Terminates on "GreaterThan" has been proved, subprogram will terminate
+clock.ads:146:13: info: implicit aspect Always_Terminates on "LessThan" has been proved, subprogram will terminate
+clock.ads:157:13: info: implicit aspect Always_Terminates on "GreaterThanOrEqual" has been proved, subprogram will terminate
+clock.ads:168:13: info: implicit aspect Always_Terminates on "LessThanOrEqual" has been proved, subprogram will terminate
 clock.ads:186:07: info: initialization of "TheTime" proved
 clock.ads:187:07: info: initialization of "Success" proved
 clock.ads:188:11: info: flow dependencies proved
@@ -671,10 +671,10 @@ clock.ads:208:07: info: initialization of "Day" proved
 clock.ads:209:07: info: initialization of "Hour" proved
 clock.ads:210:07: info: initialization of "Min" proved
 clock.ads:211:11: info: flow dependencies proved
-clock.ads:226:13: info: implicit terminating annotation on "StartOfDay" has been proved, subprogram will terminate
-clock.ads:237:13: info: implicit terminating annotation on "PrintDuration" has been proved, subprogram will terminate
-clock.ads:248:13: info: implicit terminating annotation on "PrintTime" has been proved, subprogram will terminate
-clock.ads:259:13: info: implicit terminating annotation on "AddDuration" has been proved, subprogram will terminate
+clock.ads:226:13: info: implicit aspect Always_Terminates on "StartOfDay" has been proved, subprogram will terminate
+clock.ads:237:13: info: implicit aspect Always_Terminates on "PrintDuration" has been proved, subprogram will terminate
+clock.ads:248:13: info: implicit aspect Always_Terminates on "PrintTime" has been proved, subprogram will terminate
+clock.ads:259:13: info: implicit aspect Always_Terminates on "AddDuration" has been proved, subprogram will terminate
 configdata.adb:195:07: info: initialization of "OK" proved
 configdata.adb:207:30: info: initialization of "Value" proved
 configdata.adb:208:14: info: data dependencies proved
@@ -806,7 +806,7 @@ configdata.adb:843:10: info: initialization of "TheTitle" proved
 configdata.adb:844:10: info: initialization of "Stop" proved
 configdata.adb:996:07: info: initialization of "CloseOK" proved
 configdata.adb:1010:16: info: add a contract to analyze it separately from calling contexts
-configdata.adb:1010:16: info: implicit terminating annotation on "WorkingHoursText" has been proved, subprogram will terminate
+configdata.adb:1010:16: info: implicit aspect Always_Terminates on "WorkingHoursText" has been proved, subprogram will terminate
 configdata.adb:1010:16: info: local subprogram "WorkingHoursText" only analyzed in the context of calls
 configdata.adb:1013:10: info: initialization of "LocalValue" proved
 configdata.adb:1013:10: info: initialization of "LocalValue" proved, in call inlined at configdata.adb:1098
@@ -913,14 +913,14 @@ configdata.adb:1571:07: info: initialization of "DayStart" proved
 configdata.adb:1685:13: info: division check proved
 configdata.adb:1685:13: info: range check proved
 configdata.ads:30:08: info: flow dependencies proved
-configdata.ads:39:13: info: implicit terminating annotation on "DurationT_Image" has been proved, subprogram will terminate
+configdata.ads:39:13: info: implicit aspect Always_Terminates on "DurationT_Image" has been proved, subprogram will terminate
 configdata.ads:40:17: info: for inherited predicate at commontypes.ads:66
 configdata.ads:40:17: info: medium: for inherited predicate at commontypes.ads:60
 configdata.ads:40:17: info: medium: in inlined predicate at commontypes.ads:60
 configdata.ads:40:17: info: predicate check justified
 configdata.ads:40:17: info: predicate check proved
 configdata.ads:40:17: info: range check proved
-configdata.ads:48:13: info: implicit terminating annotation on "AccessPolicyT_Image" has been proved, subprogram will terminate
+configdata.ads:48:13: info: implicit aspect Always_Terminates on "AccessPolicyT_Image" has been proved, subprogram will terminate
 configdata.ads:49:21: info: medium: for inherited predicate at commontypes.ads:60
 configdata.ads:49:21: info: medium: in inlined predicate at commontypes.ads:60
 configdata.ads:49:21: info: predicate check justified
@@ -963,27 +963,27 @@ configdata.ads:217:07: info: initialization of "TheAlarmThresholdSize" proved
 configdata.ads:218:07: info: initialization of "TheSystemMaxFar" proved
 configdata.ads:220:11: info: data dependencies proved
 configdata.ads:221:11: info: flow dependencies proved
-configdata.ads:246:13: info: implicit terminating annotation on "AuthPeriodIsEmpty" has been proved, subprogram will terminate
+configdata.ads:246:13: info: implicit aspect Always_Terminates on "AuthPeriodIsEmpty" has been proved, subprogram will terminate
 configdata.ads:247:11: info: data dependencies proved
 configdata.ads:260:08: info: initialization of "NotBefore" proved
 configdata.ads:261:08: info: initialization of "NotAfter" proved
 configdata.ads:262:11: info: data dependencies proved
 configdata.ads:263:11: info: flow dependencies proved
-configdata.ads:277:13: info: implicit terminating annotation on "IsInEntryPeriod" has been proved, subprogram will terminate
+configdata.ads:277:13: info: implicit aspect Always_Terminates on "IsInEntryPeriod" has been proved, subprogram will terminate
 configdata.ads:280:11: info: data dependencies proved
-configdata.ads:291:13: info: implicit terminating annotation on "TheLatchUnlockDuration" has been proved, subprogram will terminate
+configdata.ads:291:13: info: implicit aspect Always_Terminates on "TheLatchUnlockDuration" has been proved, subprogram will terminate
 configdata.ads:292:11: info: data dependencies proved
-configdata.ads:303:13: info: implicit terminating annotation on "TheAlarmSilentDuration" has been proved, subprogram will terminate
+configdata.ads:303:13: info: implicit aspect Always_Terminates on "TheAlarmSilentDuration" has been proved, subprogram will terminate
 configdata.ads:304:11: info: data dependencies proved
-configdata.ads:315:13: info: implicit terminating annotation on "TheFingerWaitDuration" has been proved, subprogram will terminate
+configdata.ads:315:13: info: implicit aspect Always_Terminates on "TheFingerWaitDuration" has been proved, subprogram will terminate
 configdata.ads:316:11: info: data dependencies proved
-configdata.ads:327:13: info: implicit terminating annotation on "TheTokenRemovalDuration" has been proved, subprogram will terminate
+configdata.ads:327:13: info: implicit aspect Always_Terminates on "TheTokenRemovalDuration" has been proved, subprogram will terminate
 configdata.ads:328:11: info: data dependencies proved
-configdata.ads:339:13: info: implicit terminating annotation on "TheEnclaveClearance" has been proved, subprogram will terminate
+configdata.ads:339:13: info: implicit aspect Always_Terminates on "TheEnclaveClearance" has been proved, subprogram will terminate
 configdata.ads:340:11: info: data dependencies proved
-configdata.ads:351:13: info: implicit terminating annotation on "TheSystemMaxFar" has been proved, subprogram will terminate
+configdata.ads:351:13: info: implicit aspect Always_Terminates on "TheSystemMaxFar" has been proved, subprogram will terminate
 configdata.ads:352:11: info: data dependencies proved
-configdata.ads:363:13: info: implicit terminating annotation on "TheAlarmThresholdEntries" has been proved, subprogram will terminate
+configdata.ads:363:13: info: implicit aspect Always_Terminates on "TheAlarmThresholdEntries" has been proved, subprogram will terminate
 configdata.ads:364:11: info: data dependencies proved
 configuration.adb:56:07: info: initialization of "TheLatchUnlockDuration" proved
 configuration.adb:57:07: info: initialization of "TheAlarmSilentDuration" proved
@@ -999,7 +999,7 @@ configuration.adb:66:07: info: initialization of "TheMinPreservedLogSize" proved
 configuration.adb:67:07: info: initialization of "TheAlarmThresholdSize" proved
 configuration.adb:68:07: info: initialization of "TheSystemMaxFar" proved
 configuration.adb:69:07: info: initialization of "Success" proved
-configuration.adb:81:16: info: implicit terminating annotation on "MakeDescription" has been proved, subprogram will terminate
+configuration.adb:81:16: info: implicit aspect Always_Terminates on "MakeDescription" has been proved, subprogram will terminate
 configuration.adb:82:14: info: data dependencies proved
 configuration.adb:99:57: info: division check proved
 configuration.adb:99:63: info: range check proved
@@ -1051,7 +1051,7 @@ configuration.ads:68:11: info: data dependencies proved
 configuration.ads:74:11: info: flow dependencies proved
 display-interfac.ads:24:08: info: flow dependencies proved
 display.adb:120:13: info: add a contract to analyze it separately from calling contexts
-display.adb:120:13: info: implicit terminating annotation on "CombineLines" has been proved, subprogram will terminate
+display.adb:120:13: info: implicit aspect Always_Terminates on "CombineLines" has been proved, subprogram will terminate
 display.adb:120:13: info: local subprogram "CombineLines" only analyzed in the context of calls
 display.adb:128:11: info: range check proved, in call inlined at display.adb:191
 display.adb:128:11: info: range check proved, in call inlined at display.adb:287
@@ -1124,11 +1124,11 @@ door.adb:405:42: info: initialization of "AlarmTimeout" constituent of "State" p
 door.adb:406:42: info: initialization of "CurrentDoor" constituent of "State" proved
 door.adb:407:42: info: initialization of "DoorAlarm" constituent of "State" proved
 door.adb:408:47: info: initialization of "Latch.State" proved
-door.ads:47:13: info: implicit terminating annotation on "Alarm_Timeout" has been proved, subprogram will terminate
+door.ads:47:13: info: implicit aspect Always_Terminates on "Alarm_Timeout" has been proved, subprogram will terminate
 door.ads:48:11: info: data dependencies proved
-door.ads:60:13: info: implicit terminating annotation on "TheCurrentDoor" has been proved, subprogram will terminate
+door.ads:60:13: info: implicit aspect Always_Terminates on "TheCurrentDoor" has been proved, subprogram will terminate
 door.ads:61:11: info: data dependencies proved
-door.ads:72:13: info: implicit terminating annotation on "TheDoorAlarm" has been proved, subprogram will terminate
+door.ads:72:13: info: implicit aspect Always_Terminates on "TheDoorAlarm" has been proved, subprogram will terminate
 door.ads:73:11: info: data dependencies proved
 door.ads:87:20: info: initialization of "SystemFault" proved
 door.ads:88:11: info: data dependencies proved
@@ -1144,7 +1144,7 @@ door.ads:227:11: info: data dependencies proved
 door.ads:228:11: info: flow dependencies proved
 door.ads:241:11: info: data dependencies proved
 door.ads:243:11: info: flow dependencies proved
-doorapi.adb:25:13: info: implicit terminating annotation on "GetDoorStateRaw" has been proved, subprogram will terminate
+doorapi.adb:25:13: info: implicit aspect Always_Terminates on "GetDoorStateRaw" has been proved, subprogram will terminate
 doorapi.adb:26:11: info: data dependencies proved
 doorapi.adb:30:07: info: initialization of "InMsg" proved
 doorapi.adb:33:29: info: length check proved
@@ -1156,13 +1156,13 @@ doorapi.adb:57:28: info: precondition justified
 doorapi.adb:57:28: info: references to the "Value" attribute are handled in an imprecise way, so the precondition might be impossible to prove.
 doorapi.adb:63:32: info: precondition justified
 doorapi.adb:63:32: info: references to the "Value" attribute are handled in an imprecise way, so the precondition might be impossible to prove.
-enclave.adb:55:13: info: implicit terminating annotation on "PresentAdminHasDeparted" has been proved, subprogram will terminate
+enclave.adb:55:13: info: implicit aspect Always_Terminates on "PresentAdminHasDeparted" has been proved, subprogram will terminate
 enclave.adb:56:11: info: data dependencies proved
 enclave.adb:58:07: info: initialization of "Result" proved
 enclave.adb:62:18: info: precondition proved
-enclave.adb:85:13: info: implicit terminating annotation on "AdminTokenHasExpired" has been proved, subprogram will terminate
+enclave.adb:85:13: info: implicit aspect Always_Terminates on "AdminTokenHasExpired" has been proved, subprogram will terminate
 enclave.adb:90:11: info: data dependencies proved
-enclave.adb:104:13: info: implicit terminating annotation on "AdminHasDeparted" has been proved, subprogram will terminate
+enclave.adb:104:13: info: implicit aspect Always_Terminates on "AdminHasDeparted" has been proved, subprogram will terminate
 enclave.adb:107:11: info: data dependencies proved
 enclave.adb:124:11: info: data dependencies proved
 enclave.adb:133:11: info: flow dependencies proved
@@ -1294,7 +1294,7 @@ enclave.adb:1436:13: info: precondition proved
 enclave.adb:1452:41: info: initialization of "Status" constituent of "State" proved
 enclave.adb:1454:30: info: refined post proved
 enclave.adb:1489:27: info: refined post proved
-enclave.adb:1503:16: info: implicit terminating annotation on "AdminActivityInProgress" has been proved, subprogram will terminate
+enclave.adb:1503:16: info: implicit aspect Always_Terminates on "AdminActivityInProgress" has been proved, subprogram will terminate
 enclave.adb:1505:14: info: data dependencies proved
 enclave.adb:1565:31: info: refined post proved
 enclave.adb:1570:07: info: initialization of "LocalStatus" proved
@@ -1318,9 +1318,9 @@ enclave.adb:1991:06: info: refined post proved
 enclave.adb:2019:18: info: precondition proved
 enclave.adb:2029:18: info: precondition proved
 enclave.adb:2035:19: info: precondition proved
-enclave.adb:2052:16: info: implicit terminating annotation on "AdminLogonCanStart" has been proved, subprogram will terminate
+enclave.adb:2052:16: info: implicit aspect Always_Terminates on "AdminLogonCanStart" has been proved, subprogram will terminate
 enclave.adb:2056:14: info: data dependencies proved
-enclave.adb:2073:16: info: implicit terminating annotation on "AdminOpCanStart" has been proved, subprogram will terminate
+enclave.adb:2073:16: info: implicit aspect Always_Terminates on "AdminOpCanStart" has been proved, subprogram will terminate
 enclave.adb:2077:14: info: data dependencies proved
 enclave.adb:2095:14: info: data dependencies proved
 enclave.adb:2104:14: info: flow dependencies proved
@@ -1340,30 +1340,30 @@ enclave.adb:2197:42: info: range check proved
 enclave.adb:2199:24: info: precondition proved
 enclave.adb:2209:24: info: precondition proved
 enclave.adb:2226:10: info: precondition proved
-enclave.ads:61:13: info: implicit terminating annotation on "GetStatus" has been proved, subprogram will terminate
+enclave.ads:61:13: info: implicit aspect Always_Terminates on "GetStatus" has been proved, subprogram will terminate
 enclave.ads:62:11: info: data dependencies proved
-enclave.ads:65:13: info: implicit terminating annotation on "statusIsGotAdminToken" has been proved, subprogram will terminate
+enclave.ads:65:13: info: implicit aspect Always_Terminates on "statusIsGotAdminToken" has been proved, subprogram will terminate
 enclave.ads:66:11: info: data dependencies proved
-enclave.ads:69:13: info: implicit terminating annotation on "statusIsWaitingRemoveAdminTokenFail" has been proved, subprogram will terminate
+enclave.ads:69:13: info: implicit aspect Always_Terminates on "statusIsWaitingRemoveAdminTokenFail" has been proved, subprogram will terminate
 enclave.ads:70:11: info: data dependencies proved
-enclave.ads:73:13: info: implicit terminating annotation on "statusIsWaitingStartAdminOp" has been proved, subprogram will terminate
+enclave.ads:73:13: info: implicit aspect Always_Terminates on "statusIsWaitingStartAdminOp" has been proved, subprogram will terminate
 enclave.ads:74:11: info: data dependencies proved
-enclave.ads:77:13: info: implicit terminating annotation on "statusIsWaitingFinishAdminOp" has been proved, subprogram will terminate
+enclave.ads:77:13: info: implicit aspect Always_Terminates on "statusIsWaitingFinishAdminOp" has been proved, subprogram will terminate
 enclave.ads:78:11: info: data dependencies proved
-enclave.ads:81:13: info: implicit terminating annotation on "statusIsEnclaveQuiescent" has been proved, subprogram will terminate
+enclave.ads:81:13: info: implicit aspect Always_Terminates on "statusIsEnclaveQuiescent" has been proved, subprogram will terminate
 enclave.ads:82:11: info: data dependencies proved
-enclave.ads:85:13: info: implicit terminating annotation on "statusIsShutdown" has been proved, subprogram will terminate
+enclave.ads:85:13: info: implicit aspect Always_Terminates on "statusIsShutdown" has been proved, subprogram will terminate
 enclave.ads:86:11: info: data dependencies proved
-enclave.ads:99:13: info: implicit terminating annotation on "EnrolmentIsInProgress" has been proved, subprogram will terminate
+enclave.ads:99:13: info: implicit aspect Always_Terminates on "EnrolmentIsInProgress" has been proved, subprogram will terminate
 enclave.ads:100:11: info: data dependencies proved
 enclave.ads:113:11: info: data dependencies proved
 enclave.ads:115:11: info: flow dependencies proved
 enclave.ads:116:22: info: postcondition proved
-enclave.ads:130:13: info: implicit terminating annotation on "AdminMustLogout" has been proved, subprogram will terminate
+enclave.ads:130:13: info: implicit aspect Always_Terminates on "AdminMustLogout" has been proved, subprogram will terminate
 enclave.ads:131:11: info: data dependencies proved
-enclave.ads:145:13: info: implicit terminating annotation on "CurrentAdminActivityPossible" has been proved, subprogram will terminate
+enclave.ads:145:13: info: implicit aspect Always_Terminates on "CurrentAdminActivityPossible" has been proved, subprogram will terminate
 enclave.ads:146:11: info: data dependencies proved
-enclave.ads:158:13: info: implicit terminating annotation on "HasShutdown" has been proved, subprogram will terminate
+enclave.ads:158:13: info: implicit aspect Always_Terminates on "HasShutdown" has been proved, subprogram will terminate
 enclave.ads:159:11: info: data dependencies proved
 enclave.ads:177:11: info: data dependencies proved
 enclave.ads:188:11: info: flow dependencies proved
@@ -1393,7 +1393,7 @@ enclave.ads:647:35: info: precondition proved
 enclave.ads:662:11: info: data dependencies proved
 enclave.ads:668:11: info: flow dependencies proved
 enrolment.adb:49:07: info: initialization of "ClosedOK" proved
-enrolment.adb:61:16: info: implicit terminating annotation on "MakeDescription" has been proved, subprogram will terminate
+enrolment.adb:61:16: info: implicit aspect Always_Terminates on "MakeDescription" has been proved, subprogram will terminate
 enrolment.adb:63:14: info: data dependencies proved
 enrolment.adb:67:66: info: range check proved
 enrolment.adb:68:54: info: range check proved
@@ -1441,7 +1441,7 @@ enrolment.ads:57:11: info: data dependencies proved
 enrolment.ads:63:11: info: flow dependencies proved
 enrolment.ads:78:22: info: postcondition proved
 floppy.ads:26:08: info: flow dependencies proved
-iandatypes.ads:35:13: info: implicit terminating annotation on "FarT_Image" has been proved, subprogram will terminate
+iandatypes.ads:35:13: info: implicit aspect Always_Terminates on "FarT_Image" has been proved, subprogram will terminate
 iandatypes.ads:36:12: info: medium: for inherited predicate at commontypes.ads:60
 iandatypes.ads:36:12: info: medium: in inlined predicate at commontypes.ads:60
 iandatypes.ads:36:12: info: predicate check justified
@@ -1460,12 +1460,12 @@ keyboard.ads:79:11: info: flow dependencies proved
 keyboard.ads:91:11: info: data dependencies proved
 keyboard.ads:92:11: info: flow dependencies proved
 keystore-interfac.ads:24:08: info: flow dependencies proved
-keystore-interfac.ads:95:13: info: implicit terminating annotation on "ReturnValueT_Image" has been proved, subprogram will terminate
+keystore-interfac.ads:95:13: info: implicit aspect Always_Terminates on "ReturnValueT_Image" has been proved, subprogram will terminate
 keystore-interfac.ads:96:20: info: medium: for inherited predicate at commontypes.ads:60
 keystore-interfac.ads:96:20: info: medium: in inlined predicate at commontypes.ads:60
 keystore-interfac.ads:96:20: info: predicate check justified
 keystore-interfac.ads:96:20: info: range check proved
-keystore.adb:90:13: info: implicit terminating annotation on "ConvertRetValToText" has been proved, subprogram will terminate
+keystore.adb:90:13: info: implicit aspect Always_Terminates on "ConvertRetValToText" has been proved, subprogram will terminate
 keystore.adb:97:35: info: range check proved
 keystore.adb:97:39: info: range check proved
 keystore.adb:98:09: info: range check proved
@@ -1485,7 +1485,7 @@ keystore.adb:142:07: info: initialization of "RetValIni" proved
 keystore.adb:148:07: info: initialization of "LoopMax" proved
 keystore.adb:149:07: info: initialization of "BytesLeft" proved
 keystore.adb:151:07: info: initialization of "Block" proved
-keystore.adb:165:16: info: implicit terminating annotation on "GetBlock" has been proved, subprogram will terminate
+keystore.adb:165:16: info: implicit aspect Always_Terminates on "GetBlock" has been proved, subprogram will terminate
 keystore.adb:172:42: info: range check proved
 keystore.adb:172:53: info: overflow check proved
 keystore.adb:172:69: info: overflow check proved
@@ -1578,11 +1578,11 @@ keystore.ads:55:11: info: flow dependencies proved
 keystore.ads:76:40: info: initialization of "IsPresent" proved
 keystore.ads:77:11: info: data dependencies proved
 keystore.ads:82:11: info: flow dependencies proved
-keystore.ads:102:13: info: implicit terminating annotation on "PrivateKeyPresent" has been proved, subprogram will terminate
+keystore.ads:102:13: info: implicit aspect Always_Terminates on "PrivateKeyPresent" has been proved, subprogram will terminate
 keystore.ads:103:11: info: data dependencies proved
-keystore.ads:114:13: info: implicit terminating annotation on "IssuerIsThisTIS" has been proved, subprogram will terminate
+keystore.ads:114:13: info: implicit aspect Always_Terminates on "IssuerIsThisTIS" has been proved, subprogram will terminate
 keystore.ads:115:11: info: data dependencies proved
-keystore.ads:126:13: info: implicit terminating annotation on "ThisTIS" has been proved, subprogram will terminate
+keystore.ads:126:13: info: implicit aspect Always_Terminates on "ThisTIS" has been proved, subprogram will terminate
 keystore.ads:127:11: info: data dependencies proved
 keystore.ads:142:28: info: initialization of "Verified" proved
 keystore.ads:143:11: info: data dependencies proved
@@ -1612,15 +1612,15 @@ latch.adb:155:30: info: refined post proved
 latch.adb:169:42: info: initialization of "CurrentLatch" constituent of "State" proved
 latch.adb:170:42: info: initialization of "LatchTimeout" constituent of "State" proved
 latch.ads:29:08: info: flow dependencies proved
-latch.ads:39:13: info: implicit terminating annotation on "Current_Latch" has been proved, subprogram will terminate
+latch.ads:39:13: info: implicit aspect Always_Terminates on "Current_Latch" has been proved, subprogram will terminate
 latch.ads:40:11: info: data dependencies proved
-latch.ads:43:13: info: implicit terminating annotation on "Latch_Timeout" has been proved, subprogram will terminate
+latch.ads:43:13: info: implicit aspect Always_Terminates on "Latch_Timeout" has been proved, subprogram will terminate
 latch.ads:44:11: info: data dependencies proved
-latch.ads:47:13: info: implicit terminating annotation on "LatchIsLocked" has been proved, subprogram will terminate
+latch.ads:47:13: info: implicit aspect Always_Terminates on "LatchIsLocked" has been proved, subprogram will terminate
 latch.ads:48:11: info: data dependencies proved
 latch.ads:61:11: info: data dependencies proved
 latch.ads:62:11: info: flow dependencies proved
-latch.ads:74:13: info: implicit terminating annotation on "IsLocked" has been proved, subprogram will terminate
+latch.ads:74:13: info: implicit aspect Always_Terminates on "IsLocked" has been proved, subprogram will terminate
 latch.ads:75:11: info: data dependencies proved
 latch.ads:88:11: info: data dependencies proved
 latch.ads:94:11: info: flow dependencies proved
@@ -1651,7 +1651,7 @@ poll.ads:50:11: info: data dependencies proved
 poll.ads:57:38: info: initialization of "Clock.CurrentTime" proved
 poll.ads:67:11: info: flow dependencies proved
 poll.ads:113:13: info: postcondition proved
-privtypes.ads:43:13: info: implicit terminating annotation on "ClassT_Image" has been proved, subprogram will terminate
+privtypes.ads:43:13: info: implicit aspect Always_Terminates on "ClassT_Image" has been proved, subprogram will terminate
 privtypes.ads:44:14: info: medium: for inherited predicate at commontypes.ads:60
 privtypes.ads:44:14: info: medium: in inlined predicate at commontypes.ads:60
 privtypes.ads:44:14: info: predicate check justified
@@ -1690,7 +1690,7 @@ screen.adb:409:07: info: initialization of "MinEntry" proved
 screen.adb:409:17: info: initialization of "Clearance" proved
 screen.adb:410:07: info: initialization of "MaxFAR" proved
 screen.adb:412:07: info: initialization of "NewConfig" proved
-screen.adb:436:16: info: implicit terminating annotation on "SecondsString" has been proved, subprogram will terminate
+screen.adb:436:16: info: implicit aspect Always_Terminates on "SecondsString" has been proved, subprogram will terminate
 screen.adb:442:37: info: index check proved
 screen.adb:446:13: info: range check proved
 screen.adb:446:19: info: index check proved
@@ -1701,13 +1701,13 @@ screen.adb:446:44: info: length check proved
 screen.adb:446:44: info: range check proved
 screen.adb:446:72: info: overflow check proved
 screen.adb:462:16: info: add a contract to analyze it separately from calling contexts
-screen.adb:462:16: info: implicit terminating annotation on "HrsMinsString" has been proved, subprogram will terminate
+screen.adb:462:16: info: implicit aspect Always_Terminates on "HrsMinsString" has been proved, subprogram will terminate
 screen.adb:462:16: info: local subprogram "HrsMinsString" only analyzed in the context of calls
 screen.adb:465:22: info: range check proved, in call inlined at screen.adb:629
 screen.adb:465:22: info: range check proved, in call inlined at screen.adb:635
 screen.adb:465:22: info: range check proved, in call inlined at screen.adb:641
 screen.adb:478:16: info: add a contract to analyze it separately from calling contexts
-screen.adb:478:16: info: implicit terminating annotation on "FileSizeString" has been proved, subprogram will terminate
+screen.adb:478:16: info: implicit aspect Always_Terminates on "FileSizeString" has been proved, subprogram will terminate
 screen.adb:478:16: info: local subprogram "FileSizeString" only analyzed in the context of calls
 screen.adb:481:59: info: division check proved, in call inlined at screen.adb:659
 screen.adb:481:59: info: division check proved, in call inlined at screen.adb:665
@@ -1727,19 +1727,19 @@ screen.adb:485:40: info: length check proved, in call inlined at screen.adb:659
 screen.adb:485:40: info: length check proved, in call inlined at screen.adb:665
 screen.adb:485:40: info: range check proved, in call inlined at screen.adb:659
 screen.adb:485:40: info: range check proved, in call inlined at screen.adb:665
-screen.adb:499:16: info: implicit terminating annotation on "AccessPolicyString" has been proved, subprogram will terminate
+screen.adb:499:16: info: implicit aspect Always_Terminates on "AccessPolicyString" has been proved, subprogram will terminate
 screen.adb:505:10: info: range check proved
 screen.adb:505:17: info: index check proved
 screen.adb:505:26: info: index check proved
 screen.adb:505:33: info: length check proved
 screen.adb:505:36: info: length check proved
-screen.adb:519:16: info: implicit terminating annotation on "ClassString" has been proved, subprogram will terminate
+screen.adb:519:16: info: implicit aspect Always_Terminates on "ClassString" has been proved, subprogram will terminate
 screen.adb:524:10: info: range check proved
 screen.adb:524:17: info: index check proved
 screen.adb:524:26: info: index check proved
 screen.adb:524:33: info: length check proved
 screen.adb:524:36: info: length check proved
-screen.adb:538:16: info: implicit terminating annotation on "FARString" has been proved, subprogram will terminate
+screen.adb:538:16: info: implicit aspect Always_Terminates on "FARString" has been proved, subprogram will terminate
 screen.adb:545:10: info: range check proved
 screen.adb:545:17: info: index check proved
 screen.adb:545:32: info: index check proved
@@ -1773,7 +1773,7 @@ screen.adb:772:07: info: initialization of "SuccessEntry" proved
 screen.adb:773:09: info: initialization of "FailEntry" proved
 screen.adb:774:09: info: initialization of "SuccessBio" proved
 screen.adb:775:09: info: initialization of "FailBio" proved
-screen.adb:787:16: info: implicit terminating annotation on "StatsCountString" has been proved, subprogram will terminate
+screen.adb:787:16: info: implicit aspect Always_Terminates on "StatsCountString" has been proved, subprogram will terminate
 screen.adb:794:10: info: range check proved
 screen.adb:794:17: info: index check proved
 screen.adb:794:32: info: index check proved
@@ -1815,7 +1815,7 @@ stats.adb:49:57: info: overflow check proved
 stats.adb:64:51: info: overflow check proved
 stats.adb:79:53: info: overflow check proved
 stats.adb:94:47: info: overflow check proved
-stats.ads:29:13: info: implicit terminating annotation on "StatsCount_Image" has been proved, subprogram will terminate
+stats.ads:29:13: info: implicit aspect Always_Terminates on "StatsCount_Image" has been proved, subprogram will terminate
 stats.ads:30:18: info: medium: for inherited predicate at commontypes.ads:60
 stats.ads:30:18: info: medium: in inlined predicate at commontypes.ads:60
 stats.ads:30:18: info: predicate check justified
@@ -1930,18 +1930,18 @@ tismain.adb:1546:10: info: assertion proved
 tismain.adb:1585:22: info: precondition proved
 tismain.adb:1591:23: info: precondition proved
 tismain.adb:1598:22: info: precondition proved
-tokenreader-interfac.ads:83:13: info: implicit terminating annotation on "ResponseCodeT_Image" has been proved, subprogram will terminate
+tokenreader-interfac.ads:83:13: info: implicit aspect Always_Terminates on "ResponseCodeT_Image" has been proved, subprogram will terminate
 tokenreader-interfac.ads:84:21: info: medium: for inherited predicate at commontypes.ads:60
 tokenreader-interfac.ads:84:21: info: medium: in inlined predicate at commontypes.ads:60
 tokenreader-interfac.ads:84:21: info: predicate check justified
 tokenreader-interfac.ads:84:21: info: range check proved
-tokenreader.adb:91:13: info: implicit terminating annotation on "GetResponseCode" has been proved, subprogram will terminate
+tokenreader.adb:91:13: info: implicit aspect Always_Terminates on "GetResponseCode" has been proved, subprogram will terminate
 tokenreader.adb:97:40: info: range check proved
-tokenreader.adb:110:13: info: implicit terminating annotation on "GetReaderState" has been proved, subprogram will terminate
+tokenreader.adb:110:13: info: implicit aspect Always_Terminates on "GetReaderState" has been proved, subprogram will terminate
 tokenreader.adb:116:39: info: range check proved
-tokenreader.adb:129:13: info: implicit terminating annotation on "GetCardState" has been proved, subprogram will terminate
+tokenreader.adb:129:13: info: implicit aspect Always_Terminates on "GetCardState" has been proved, subprogram will terminate
 tokenreader.adb:135:37: info: range check proved
-tokenreader.adb:148:13: info: implicit terminating annotation on "MakeDescription" has been proved, subprogram will terminate
+tokenreader.adb:148:13: info: implicit aspect Always_Terminates on "MakeDescription" has been proved, subprogram will terminate
 tokenreader.adb:154:07: info: initialization of "TheCodeName" proved
 tokenreader.adb:166:14: info: data dependencies proved
 tokenreader.adb:170:14: info: flow dependencies proved
@@ -2024,11 +2024,11 @@ tokenreader.ads:52:11: info: data dependencies proved
 tokenreader.ads:58:11: info: flow dependencies proved
 tokenreader.ads:78:11: info: data dependencies proved
 tokenreader.ads:85:11: info: flow dependencies proved
-tokenreader.ads:105:13: info: implicit terminating annotation on "TheTokenPresence" has been proved, subprogram will terminate
+tokenreader.ads:105:13: info: implicit aspect Always_Terminates on "TheTokenPresence" has been proved, subprogram will terminate
 tokenreader.ads:106:11: info: data dependencies proved
-tokenreader.ads:116:13: info: implicit terminating annotation on "TheTokenID" has been proved, subprogram will terminate
+tokenreader.ads:116:13: info: implicit aspect Always_Terminates on "TheTokenID" has been proved, subprogram will terminate
 tokenreader.ads:117:11: info: data dependencies proved
-tokenreader.ads:127:13: info: implicit terminating annotation on "TheTokenTry" has been proved, subprogram will terminate
+tokenreader.ads:127:13: info: implicit aspect Always_Terminates on "TheTokenTry" has been proved, subprogram will terminate
 tokenreader.ads:128:11: info: data dependencies proved
 tokenreader.ads:142:30: info: initialization of "RawCert" proved
 tokenreader.ads:143:30: info: initialization of "Found" proved
@@ -2050,7 +2050,7 @@ updates.ads:101:39: info: initialization of "Latch.Output" proved
 updates.ads:102:40: info: initialization of "Screen.Output" proved
 updates.ads:108:11: info: flow dependencies proved
 updates.ads:143:22: info: postcondition proved
-userentry.adb:77:13: info: implicit terminating annotation on "UserHasDeparted" has been proved, subprogram will terminate
+userentry.adb:77:13: info: implicit aspect Always_Terminates on "UserHasDeparted" has been proved, subprogram will terminate
 userentry.adb:79:11: info: data dependencies proved
 userentry.adb:95:11: info: data dependencies proved
 userentry.adb:97:33: info: initialization of "Status" constituent of "State" proved
@@ -2080,7 +2080,7 @@ userentry.adb:441:07: info: initialization of "TheTemplate" proved
 userentry.adb:442:07: info: initialization of "MatchResult" proved
 userentry.adb:443:07: info: initialization of "AchievedFAR" proved
 userentry.adb:444:07: info: initialization of "MaxFAR" proved
-userentry.adb:456:16: info: implicit terminating annotation on "AchievedFARDescription" has been proved, subprogram will terminate
+userentry.adb:456:16: info: implicit aspect Always_Terminates on "AchievedFARDescription" has been proved, subprogram will terminate
 userentry.adb:457:14: info: data dependencies proved
 userentry.adb:471:17: info: data dependencies proved
 userentry.adb:473:17: info: flow dependencies proved
@@ -2121,11 +2121,11 @@ userentry.adb:1201:13: info: precondition proved
 userentry.adb:1205:13: info: precondition proved
 userentry.adb:1222:41: info: initialization of "Status" constituent of "State" proved
 userentry.ads:39:08: info: flow dependencies proved
-userentry.ads:74:13: info: implicit terminating annotation on "CurrentActivityPossible" has been proved, subprogram will terminate
+userentry.ads:74:13: info: implicit aspect Always_Terminates on "CurrentActivityPossible" has been proved, subprogram will terminate
 userentry.ads:75:11: info: data dependencies proved
-userentry.ads:88:13: info: implicit terminating annotation on "CanStart" has been proved, subprogram will terminate
+userentry.ads:88:13: info: implicit aspect Always_Terminates on "CanStart" has been proved, subprogram will terminate
 userentry.ads:89:11: info: data dependencies proved
-userentry.ads:101:13: info: implicit terminating annotation on "InProgress" has been proved, subprogram will terminate
+userentry.ads:101:13: info: implicit aspect Always_Terminates on "InProgress" has been proved, subprogram will terminate
 userentry.ads:102:12: info: data dependencies proved
 userentry.ads:114:11: info: data dependencies proved
 userentry.ads:121:11: info: flow dependencies proved
@@ -2188,7 +2188,7 @@ usertoken.adb:677:07: info: initialization of "PrivCertContents" proved
 usertoken.adb:678:07: info: initialization of "PrivValid" proved
 usertoken.adb:678:18: info: initialization of "IandAValid" proved
 usertoken.adb:690:16: info: add a contract to analyze it separately from calling contexts
-usertoken.adb:690:16: info: implicit terminating annotation on "MakeDescription" has been proved, subprogram will terminate
+usertoken.adb:690:16: info: implicit aspect Always_Terminates on "MakeDescription" has been proved, subprogram will terminate
 usertoken.adb:690:16: info: local subprogram "MakeDescription" only analyzed in the context of calls
 usertoken.adb:695:10: warning: statement has no effect, in call inlined at usertoken.adb:740
 usertoken.adb:695:10: warning: statement has no effect, in call inlined at usertoken.adb:743
@@ -2254,9 +2254,9 @@ usertoken.ads:98:11: info: flow dependencies proved
 usertoken.ads:121:30: info: initialization of "Success" proved
 usertoken.ads:122:11: info: data dependencies proved
 usertoken.ads:130:11: info: flow dependencies proved
-usertoken.ads:154:13: info: implicit terminating annotation on "ExtractUser" has been proved, subprogram will terminate
+usertoken.ads:154:13: info: implicit aspect Always_Terminates on "ExtractUser" has been proved, subprogram will terminate
 usertoken.ads:155:11: info: data dependencies proved
-usertoken.ads:166:13: info: implicit terminating annotation on "IsPresent" has been proved, subprogram will terminate
+usertoken.ads:166:13: info: implicit aspect Always_Terminates on "IsPresent" has been proved, subprogram will terminate
 usertoken.ads:167:11: info: data dependencies proved
 usertoken.ads:181:36: info: initialization of "AuthCertOK" proved
 usertoken.ads:182:11: info: data dependencies proved
@@ -2268,9 +2268,9 @@ usertoken.ads:236:11: info: flow dependencies proved
 usertoken.ads:265:27: info: initialization of "Success" proved
 usertoken.ads:266:11: info: data dependencies proved
 usertoken.ads:274:11: info: flow dependencies proved
-usertoken.ads:297:13: info: implicit terminating annotation on "GetIandATemplate" has been proved, subprogram will terminate
+usertoken.ads:297:13: info: implicit aspect Always_Terminates on "GetIandATemplate" has been proved, subprogram will terminate
 usertoken.ads:298:11: info: data dependencies proved
-usertoken.ads:309:13: info: implicit terminating annotation on "GetClass" has been proved, subprogram will terminate
+usertoken.ads:309:13: info: implicit aspect Always_Terminates on "GetClass" has been proved, subprogram will terminate
 usertoken.ads:310:11: info: data dependencies proved
 usertoken.ads:322:11: info: data dependencies proved
 usertoken.ads:323:11: info: flow dependencies proved

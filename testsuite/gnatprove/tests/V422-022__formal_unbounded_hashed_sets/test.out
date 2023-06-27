@@ -220,11 +220,11 @@ test_set.adb:386:10: info: precondition proved (CVC5: 1 VC)
 test_set.adb:387:25: info: assertion proved (CVC5: 1 VC)
 test_set.adb:388:25: info: assertion proved (CVC5: 1 VC)
 test_set.adb:393:07: medium: assertion might fail
-test_set.ads:6:13: info: implicit terminating annotation on "Hash" has been proved, subprogram will terminate
-test_set.ads:18:13: info: implicit terminating annotation on "My_Eq" has been proved, subprogram will terminate
+test_set.ads:6:13: info: implicit aspect Always_Terminates on "Hash" has been proved, subprogram will terminate
+test_set.ads:18:13: info: implicit aspect Always_Terminates on "My_Eq" has been proved, subprogram will terminate
 test_set.ads:19:17: info: postcondition proved (CVC5: 2 VC)
-test_set.ads:22:13: info: implicit terminating annotation on "Hash" has been proved, subprogram will terminate
-test_set.ads:29:13: info: implicit terminating annotation on "Get_F" has been proved, subprogram will terminate
+test_set.ads:22:13: info: implicit aspect Always_Terminates on "Hash" has been proved, subprogram will terminate
+test_set.ads:29:13: info: implicit aspect Always_Terminates on "Get_F" has been proved, subprogram will terminate
 test_set.ads:30:17: info: postcondition proved (CVC5: 1 VC)
 test_set.ads:39:14: warning: subprogram "Run_Test" has no effect
 test_set.ads:41:14: warning: subprogram "Large_Test" has no effect

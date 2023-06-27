@@ -1,1 +1,1 @@
-flow.ads:10:13: info: implicit terminating annotation on "Is_Valid" has been proved, subprogram will terminate
+flow.ads:10:13: info: implicit aspect Always_Terminates on "Is_Valid" has been proved, subprogram will terminate

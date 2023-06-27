@@ -1,16 +1,16 @@
 large_control_flow_frame_condition.adb:6:04: info: no contextual analysis of "Nested" (multiple returns)
 large_control_flow_frame_condition.adb:13:16: info: implicit function contract might not be available on calls from enclosing unit
-large_control_flow_frame_condition.adb:56:27: medium: implicit terminating annotation on "Nested" could be incorrect, loop might be nonterminating [possible fix: add loop variant in the loop body]
+large_control_flow_frame_condition.adb:56:27: medium: implicit aspect Always_Terminates on "Nested" could be incorrect, loop might be nonterminating [possible fix: add loop variant in the loop body]
 large_control_flow_frame_condition.adb:59:21: medium: overflow check might fail, cannot prove upper bound for MD9 + 1 (e.g. when MD9 = Integer'Last) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: loop invariant at line 72 should mention MD9]
-large_control_flow_frame_condition.adb:61:23: medium: implicit terminating annotation on "Nested" could be incorrect, loop might be nonterminating [possible fix: add loop variant in the loop body]
+large_control_flow_frame_condition.adb:61:23: medium: implicit aspect Always_Terminates on "Nested" could be incorrect, loop might be nonterminating [possible fix: add loop variant in the loop body]
 large_control_flow_frame_condition.adb:63:26: info: overflow check proved (CVC5: 4 VC)
 large_control_flow_frame_condition.adb:65:13: warning: this statement is never reached
 large_control_flow_frame_condition.adb:65:13: warning: unreachable code
 large_control_flow_frame_condition.adb:69:23: medium: overflow check might fail, cannot prove upper bound for MD10 + 1 [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: loop invariant at line 72 should mention MD10]
 large_control_flow_frame_condition.adb:72:36: info: loop invariant initialization proved (Trivial: 1 VC)
 large_control_flow_frame_condition.adb:72:36: info: loop invariant preservation proved (Trivial: 1 VC)
-large_control_flow_frame_condition.adb:75:31: medium: implicit terminating annotation on "Nested" could be incorrect, loop might be nonterminating [possible fix: add loop variant in the loop body]
-large_control_flow_frame_condition.adb:77:37: medium: implicit terminating annotation on "Nested" could be incorrect, loop might be nonterminating [possible fix: add loop variant in the loop body]
+large_control_flow_frame_condition.adb:75:31: medium: implicit aspect Always_Terminates on "Nested" could be incorrect, loop might be nonterminating [possible fix: add loop variant in the loop body]
+large_control_flow_frame_condition.adb:77:37: medium: implicit aspect Always_Terminates on "Nested" could be incorrect, loop might be nonterminating [possible fix: add loop variant in the loop body]
 large_control_flow_frame_condition.adb:79:30: medium: overflow check might fail, cannot prove upper bound for MD6 + 1 (e.g. when MD6 = Integer'Last) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: loop at line 77 should mention MD6 in a loop invariant]
 large_control_flow_frame_condition.adb:82:33: medium: overflow check might fail, cannot prove upper bound for MD5 + 1 (e.g. when MD5 = Integer'Last) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: loop at line 77 should mention MD5 in a loop invariant]
 large_control_flow_frame_condition.adb:84:22: warning: this statement is never reached
@@ -171,7 +171,7 @@ struct_decrease_transfer_of_control.adb:29:20: info: pointer dereference check p
 struct_decrease_transfer_of_control.adb:29:26: medium: resource or memory leak might occur
 struct_decrease_transfer_of_control.adb:38:10: info: loop variant proved (Trivial)
 struct_decrease_transfer_of_control.adb:42:29: info: pointer dereference check proved (CVC5: 1 VC)
-struct_decrease_transfer_of_control.adb:46:13: info: implicit terminating annotation on "Test_Extended_Return" has been proved, subprogram will terminate
+struct_decrease_transfer_of_control.adb:46:13: info: implicit aspect Always_Terminates on "Test_Extended_Return" has been proved, subprogram will terminate
 struct_decrease_transfer_of_control.adb:49:23: warning: loop condition is stable
 struct_decrease_transfer_of_control.adb:50:10: medium: loop variant might fail [possible explanation: "Y" might not be updated on all paths]
 struct_decrease_transfer_of_control.adb:53:16: info: only expected exception raised (CVC5: 1 VC)

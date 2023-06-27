@@ -37,7 +37,6 @@ with Snames;                      use Snames;
 with Stand;                       use Stand;
 
 with Common_Iterators;            use Common_Iterators;
-with SPARK_Definition.Annotate;   use SPARK_Definition.Annotate;
 with SPARK_Frame_Conditions;      use SPARK_Frame_Conditions;
 with SPARK_Util.Subprograms;      use SPARK_Util.Subprograms;
 with SPARK_Util.Types;            use SPARK_Util.Types;
@@ -5904,33 +5903,31 @@ package body Flow.Analysis is
       end loop;
    end Check_CAE_In_Preconditions;
 
-   ----------------------------------
-   -- Check_Terminating_Annotation --
-   ----------------------------------
+   -----------------------------
+   -- Check_Always_Terminates --
+   -----------------------------
 
-   procedure Check_Terminating_Annotation (FA : in out Flow_Analysis_Graphs) is
+   procedure Check_Always_Terminates (FA : in out Flow_Analysis_Graphs) is
 
       Enclosing_Subp : constant Entity_Id :=
         Subprograms.Enclosing_Subprogram (FA.Spec_Entity);
 
       Spec_Entity_Id : constant Flow_Id :=
-        Direct_Mapping_Id (Enclosing_Subp);
+        Direct_Mapping_Id (FA.Spec_Entity);
 
-      Implicit_Annotation : constant Boolean :=
-        Has_Implicit_Always_Return_Annotation (Enclosing_Subp);
+      Aspect : constant String :=
+        (if Has_Implicit_Always_Terminates (FA.Spec_Entity)
+         then "implicit "
+         else "")
+        & "aspect Always_Terminates";
 
       Proved : Boolean := True;
 
       function Check_Msg (Reason : String) return String is
-        ((if Implicit_Annotation
-          then "implicit "
-          else "") &
-         "terminating annotation on & could be incorrect, " & Reason);
+        (Aspect & " on & could be incorrect, " & Reason);
 
    begin
-      if Has_Always_Return_Annotation (Enclosing_Subp)
-        or else Implicit_Annotation
-      then
+      if Get_Termination_Condition (FA.Spec_Entity) = (Static, True) then
 
          --  If all paths in subprogram raise exceptions or, more importantly,
          --  call procedures with No_Return, then the CFG will be pruned. We
@@ -5963,16 +5960,12 @@ package body Flow.Analysis is
 
                   for SC of Atr.Subprogram_Calls loop
 
-                     --  If elaboration of the nested package is nonterminating
-                     --  then the current unit is nonterminating as well.
-                     --  We will complain when analysing the nested package
-                     --  itself.
+                     --  Elaboration of nested packages always terminates; deal
+                     --  with it early, because some of the routines used later
+                     --  rightly do not expect to be called with packages.
 
                      if Ekind (SC.E) = E_Package then
-
-                        if Is_Potentially_Nonreturning (SC.E) then
-                           Proved := False;
-                        end if;
+                        null;
 
                      elsif Ekind (SC.E) = E_Subprogram_Type then
 
@@ -6012,8 +6005,8 @@ package body Flow.Analysis is
                            Tag         => Subprogram_Termination,
                            Vertex      => V);
 
-                     --  If the analyzed subprogram, its terminating annotation
-                     --  cannot be trusted. A message is emitted if the
+                     --  If the analyzed subprogram, its Always_Terminates
+                     --  aspect cannot be trusted. A message is emitted if the
                      --  subprogram has no Subprogram_Variant aspect.
 
                      elsif SC.E = FA.Spec_Entity then
@@ -6028,8 +6021,8 @@ package body Flow.Analysis is
                                           "Subprogram_Variant aspect",
                               Severity => Medium_Check_Kind,
                               N        => Atr.Error_Location,
-                              F1       => Direct_Mapping_Id (SC.E),
-                              FF1      => Direct_Mapping_Id (SC.E),
+                              F1       => Spec_Entity_Id,
+                              FF1      => Spec_Entity_Id,
                               Tag      => Subprogram_Termination,
                               Vertex   => V);
                         end if;
@@ -6037,13 +6030,12 @@ package body Flow.Analysis is
                      else
 
                         --  If the analyzed subprogram and the called
-                        --  subprogram are mutually recursive, both Terminating
-                        --  annotations cannot be trusted. A message is
-                        --  emitted if both subprograms have no
+                        --  subprogram are mutually recursive, both
+                        --  Always_Terminates aspects cannot be trusted. A
+                        --  message is emitted if both subprograms have no
                         --  Subprogram_Variant aspect. In case where
-                        --  FA.Spec_Entity is a nested package, we check
-                        --  the Subprogram_Variant of its enclosing
-                        --  subprogram.
+                        --  FA.Spec_Entity is a nested package, we check the
+                        --  Subprogram_Variant of its enclosing subprogram.
 
                         if Mutually_Recursive (FA.Spec_Entity, SC.E)
                           and then
@@ -6073,11 +6065,10 @@ package body Flow.Analysis is
                         --  If the called subprogram is potentially
                         --  nonreturning for a reason that is not recursion,
                         --  a message is emitted. In this case, the
-                        --  Terminating annotation is trusted. This is why
-                        --  Is_Potentially_Nonreturning is called in the first
-                        --  place.
+                        --  Always_Terminates aspect is trusted.
 
-                        if Is_Potentially_Nonreturning (SC.E)
+                        if Get_Termination_Condition (SC.E, Compute => True)
+                             /= (Static, True)
                           and then
                             (Calls_Potentially_Nonreturning_Subprogram (SC.E)
                              or else Is_Directly_Nonreturning (SC.E))
@@ -6087,8 +6078,8 @@ package body Flow.Analysis is
                              (FA       => FA,
                               Msg      => Check_Msg ("call to & might be " &
                                                      "nonterminating"),
-                              Fix      => "annotate & with " &
-                                          "Always_Return",
+                              Fix      =>
+                                "annotate & with aspect Always_Terminates",
                               Severity => Medium_Check_Kind,
                               N        => Atr.Error_Location,
                               F1       => Spec_Entity_Id,
@@ -6107,18 +6098,15 @@ package body Flow.Analysis is
          then
             Error_Msg_Flow (FA       => FA,
                             Msg      =>
-                              (if Implicit_Annotation
-                               then "implicit "
-                               else "") &
-                              "terminating annotation on & has been proved, " &
-                              "subprogram will terminate",
+                              Aspect & " on & has been proved, "
+                              & "subprogram will terminate",
                             Severity => Info_Kind,
                             N        => FA.Spec_Entity,
                             F1       => Spec_Entity_Id,
                             Tag      => Subprogram_Termination);
          end if;
       end if;
-   end Check_Terminating_Annotation;
+   end Check_Always_Terminates;
 
    ----------------------------------------
    -- Check_Constant_Global_Contracts --

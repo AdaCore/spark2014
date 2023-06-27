@@ -1,2 +1,2 @@
-unsound.adb:8:07: medium: implicit terminating annotation on "Find_False" could be incorrect, loop might be nonterminating [possible fix: add loop variant in the loop body]
+unsound.adb:8:07: medium: implicit aspect Always_Terminates on "Find_False" could be incorrect, loop might be nonterminating [possible fix: add loop variant in the loop body]
 unsound.adb:9:33: info: unrolling loop

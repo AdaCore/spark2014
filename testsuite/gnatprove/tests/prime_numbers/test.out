@@ -1,6 +1,6 @@
 prime_and_coprime_numbers.adb:12:07: info: initialization of "Set.Is_Prime" constituent of "P.Prime_Data" proved, in instantiation at test_prime_and_coprime_numbers.adb:6
 prime_and_coprime_numbers.adb:19:46: info: range check proved, in instantiation at test_prime_and_coprime_numbers.adb:6
-prime_and_coprime_numbers.adb:29:16: info: implicit terminating annotation on "Euclid" has been proved, subprogram will terminate, in instantiation at test_prime_and_coprime_numbers.adb:6
+prime_and_coprime_numbers.adb:29:16: info: implicit aspect Always_Terminates on "Euclid" has been proved, subprogram will terminate, in instantiation at test_prime_and_coprime_numbers.adb:6
 prime_and_coprime_numbers.adb:36:38: info: contract case proved, in instantiation at test_prime_and_coprime_numbers.adb:6
 prime_and_coprime_numbers.adb:37:38: info: contract case proved, in instantiation at test_prime_and_coprime_numbers.adb:6
 prime_and_coprime_numbers.adb:39:10: info: initialization of "A" proved, in instantiation at test_prime_and_coprime_numbers.adb:6
@@ -61,7 +61,7 @@ prime_and_coprime_numbers.adb:202:30: info: initialization of "Set.Is_Prime" con
 prime_and_coprime_numbers.adb:203:16: info: postcondition proved, in instantiation at test_prime_and_coprime_numbers.adb:6
 prime_and_coprime_numbers.adb:205:07: info: initialization of "Index_1" proved, in instantiation at test_prime_and_coprime_numbers.adb:6
 prime_and_coprime_numbers.adb:206:07: info: initialization of "Index_3" proved, in instantiation at test_prime_and_coprime_numbers.adb:6
-prime_and_coprime_numbers.adb:209:16: info: implicit terminating annotation on "Smallest_Divisor" has been proved, subprogram will terminate, in instantiation at test_prime_and_coprime_numbers.adb:6
+prime_and_coprime_numbers.adb:209:16: info: implicit aspect Always_Terminates on "Smallest_Divisor" has been proved, subprogram will terminate, in instantiation at test_prime_and_coprime_numbers.adb:6
 prime_and_coprime_numbers.adb:214:11: info: postcondition proved, in instantiation at test_prime_and_coprime_numbers.adb:6
 prime_and_coprime_numbers.adb:215:48: info: overflow check proved, in instantiation at test_prime_and_coprime_numbers.adb:6
 prime_and_coprime_numbers.adb:215:53: info: division check proved, in instantiation at test_prime_and_coprime_numbers.adb:6
@@ -164,18 +164,18 @@ prime_and_coprime_numbers.adb:327:23: info: division check proved, in instantiat
 prime_and_coprime_numbers.ads:8:24: info: initialization of "P.Prime_Data" proved, in instantiation at test_prime_and_coprime_numbers.adb:6
 prime_and_coprime_numbers.ads:9:03: info: flow dependencies proved, in instantiation at test_prime_and_coprime_numbers.adb:6
 prime_and_coprime_numbers.ads:10:03: info: initial condition proved, in instantiation at test_prime_and_coprime_numbers.adb:6
-prime_and_coprime_numbers.ads:24:13: info: implicit terminating annotation on "Is_Prime" has been proved, subprogram will terminate, in instantiation at test_prime_and_coprime_numbers.adb:6
+prime_and_coprime_numbers.ads:24:13: info: implicit aspect Always_Terminates on "Is_Prime" has been proved, subprogram will terminate, in instantiation at test_prime_and_coprime_numbers.adb:6
 prime_and_coprime_numbers.ads:25:65: info: division check proved, in instantiation at test_prime_and_coprime_numbers.adb:6
-prime_and_coprime_numbers.ads:28:13: info: implicit terminating annotation on "Valid_Prime_Data" has been proved, subprogram will terminate, in instantiation at test_prime_and_coprime_numbers.adb:6
-prime_and_coprime_numbers.ads:30:13: info: implicit terminating annotation on "Are_Coprime" has been proved, subprogram will terminate, in instantiation at test_prime_and_coprime_numbers.adb:6
+prime_and_coprime_numbers.ads:28:13: info: implicit aspect Always_Terminates on "Valid_Prime_Data" has been proved, subprogram will terminate, in instantiation at test_prime_and_coprime_numbers.adb:6
+prime_and_coprime_numbers.ads:30:13: info: implicit aspect Always_Terminates on "Are_Coprime" has been proved, subprogram will terminate, in instantiation at test_prime_and_coprime_numbers.adb:6
 prime_and_coprime_numbers.ads:34:18: info: division check proved, in instantiation at test_prime_and_coprime_numbers.adb:6
 prime_and_coprime_numbers.ads:34:35: info: division check proved, in instantiation at test_prime_and_coprime_numbers.adb:6
-prime_and_coprime_numbers.ads:37:13: info: implicit terminating annotation on "Has_True" has been proved, subprogram will terminate, in instantiation at test_prime_and_coprime_numbers.adb:6
+prime_and_coprime_numbers.ads:37:13: info: implicit aspect Always_Terminates on "Has_True" has been proved, subprogram will terminate, in instantiation at test_prime_and_coprime_numbers.adb:6
 prime_and_coprime_numbers.ads:40:50: info: index check proved, in instantiation at test_prime_and_coprime_numbers.adb:6
-prime_and_coprime_numbers.ads:45:13: info: implicit terminating annotation on "Has_Prime" has been proved, subprogram will terminate, in instantiation at test_prime_and_coprime_numbers.adb:6
-prime_and_coprime_numbers.ads:51:13: info: implicit terminating annotation on "Initialize_Coprime_List" has been proved, subprogram will terminate, in instantiation at test_prime_and_coprime_numbers.adb:6
+prime_and_coprime_numbers.ads:45:13: info: implicit aspect Always_Terminates on "Has_Prime" has been proved, subprogram will terminate, in instantiation at test_prime_and_coprime_numbers.adb:6
+prime_and_coprime_numbers.ads:51:13: info: implicit aspect Always_Terminates on "Initialize_Coprime_List" has been proved, subprogram will terminate, in instantiation at test_prime_and_coprime_numbers.adb:6
 prime_and_coprime_numbers.ads:57:09: info: postcondition proved, in instantiation at test_prime_and_coprime_numbers.adb:6
-prime_and_coprime_numbers.ads:60:13: info: implicit terminating annotation on "Nearest_Number" has been proved, subprogram will terminate, in instantiation at test_prime_and_coprime_numbers.adb:6
+prime_and_coprime_numbers.ads:60:13: info: implicit aspect Always_Terminates on "Nearest_Number" has been proved, subprogram will terminate, in instantiation at test_prime_and_coprime_numbers.adb:6
 prime_and_coprime_numbers.ads:68:37: info: precondition proved, in instantiation at test_prime_and_coprime_numbers.adb:6
 prime_and_coprime_numbers.ads:69:37: info: precondition proved, in instantiation at test_prime_and_coprime_numbers.adb:6
 prime_and_coprime_numbers.ads:70:37: info: precondition proved, in instantiation at test_prime_and_coprime_numbers.adb:6
@@ -201,7 +201,7 @@ prime_and_coprime_numbers.ads:100:27: info: index check proved, in instantiation
 prime_and_coprime_numbers.ads:102:74: info: overflow check proved, in instantiation at test_prime_and_coprime_numbers.adb:6
 prime_and_coprime_numbers.ads:102:87: info: overflow check proved, in instantiation at test_prime_and_coprime_numbers.adb:6
 prime_and_coprime_numbers.ads:103:27: info: index check proved, in instantiation at test_prime_and_coprime_numbers.adb:6
-prime_and_coprime_numbers.ads:105:13: info: implicit terminating annotation on "Nearest_Prime_Number" has been proved, subprogram will terminate, in instantiation at test_prime_and_coprime_numbers.adb:6
+prime_and_coprime_numbers.ads:105:13: info: implicit aspect Always_Terminates on "Nearest_Prime_Number" has been proved, subprogram will terminate, in instantiation at test_prime_and_coprime_numbers.adb:6
 prime_and_coprime_numbers.ads:110:06: info: data dependencies proved, in instantiation at test_prime_and_coprime_numbers.adb:6
 prime_and_coprime_numbers.ads:117:16: info: postcondition proved, in instantiation at test_prime_and_coprime_numbers.adb:6
 prime_and_coprime_numbers.ads:119:06: info: complete contract cases proved, in instantiation at test_prime_and_coprime_numbers.adb:6

@@ -453,6 +453,10 @@ package SPARK_Util.Types is
    --  @param Discr a discriminant of Ty
    --  @return the constraint for Discr in Ty
 
+   function Get_Reclaimed_Parts (Typ : Type_Kind_Id) return Entity_Sets.Set;
+   --  @param Typ any type
+   --  @return the subcomponents of Typ that need reclamation
+
    function Get_User_Defined_Eq (Typ : Type_Kind_Id) return Opt_E_Function_Id;
    --  Same as Sem_Util.Get_User_Defined_Eq except that it goes through
    --  renamings and ignores predefined equality of tagged types.

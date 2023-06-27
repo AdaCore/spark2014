@@ -52,10 +52,8 @@ test_borrow_and_leaks.adb:61:11: info: pointer dereference check proved (CVC5: 1
 test_borrow_and_leaks.adb:61:17: info: absence of resource or memory leak proved (CVC5: 1 VC)
 test_borrow_and_leaks.adb:63:38: info: in reconstructed value at the end of the borrow at test_borrow_and_leaks.adb:63
 test_borrow_and_leaks.adb:63:38: info: pointer dereference check proved (CVC5: 1 VC)
-test_borrow_and_leaks.adb:63:38: info: when an exception is raised at test_borrow_and_leaks.adb:67
 test_borrow_and_leaks.adb:63:43: info: in reconstructed value at the end of the borrow at test_borrow_and_leaks.adb:63
 test_borrow_and_leaks.adb:63:43: info: pointer dereference check proved (CVC5: 1 VC)
-test_borrow_and_leaks.adb:63:43: info: when an exception is raised at test_borrow_and_leaks.adb:67
 test_borrow_and_leaks.adb:64:13: info: absence of resource or memory leak at end of scope proved (CVC5: 1 VC)
 test_borrow_and_leaks.adb:64:13: medium: resource or memory leak might occur at end of scope
 test_borrow_and_leaks.adb:64:13: medium: when an exception is raised at test_borrow_and_leaks.adb:67
@@ -121,10 +119,8 @@ test_borrow_and_leaks.adb:130:11: info: pointer dereference check proved (CVC5: 
 test_borrow_and_leaks.adb:130:17: info: absence of resource or memory leak proved (CVC5: 1 VC)
 test_borrow_and_leaks.adb:132:38: info: in reconstructed value at the end of the borrow at test_borrow_and_leaks.adb:132
 test_borrow_and_leaks.adb:132:38: info: pointer dereference check proved (CVC5: 1 VC)
-test_borrow_and_leaks.adb:132:38: info: when an exception is raised at test_borrow_and_leaks.adb:136
 test_borrow_and_leaks.adb:132:43: info: in reconstructed value at the end of the borrow at test_borrow_and_leaks.adb:132
 test_borrow_and_leaks.adb:132:43: info: pointer dereference check proved (CVC5: 1 VC)
-test_borrow_and_leaks.adb:132:43: info: when an exception is raised at test_borrow_and_leaks.adb:136
 test_borrow_and_leaks.adb:133:13: info: absence of resource or memory leak at end of scope proved (CVC5: 1 VC)
 test_borrow_and_leaks.adb:133:13: medium: resource or memory leak might occur at end of scope
 test_borrow_and_leaks.adb:133:13: medium: when an exception is raised at test_borrow_and_leaks.adb:136

@@ -3867,9 +3867,6 @@ package body Gnat2Why.Subprograms is
 
       function Wrap_Decls_For_CC_Guards (P : W_Prog_Id) return W_Prog_Id;
 
-      function Havoc_Borrowed_Expressions
-        (Borrows : Node_Lists.List) return W_Prog_Id;
-
       ----------------------
       -- Assume_For_Input --
       ----------------------
@@ -4516,29 +4513,6 @@ package body Gnat2Why.Subprograms is
          end loop;
       end Get_Pre_Post_Pragmas;
 
-      --------------------------------
-      -- Havoc_Borrowed_Expressions --
-      --------------------------------
-
-      function Havoc_Borrowed_Expressions
-        (Borrows : Node_Lists.List) return W_Prog_Id
-      is
-         Result : W_Statement_Sequence_Id := Void_Sequence;
-
-      begin
-         --  Don't havoc local borrowers in functions. They cannot have
-         --  modified anything visible from outside of the subprogram.
-
-         if Ekind (E) /= E_Function then
-            for E of Borrows loop
-               Append
-                 (Result,
-                  Havoc_Borrowed_Expression (E));
-            end loop;
-         end if;
-         return +Result;
-      end Havoc_Borrowed_Expressions;
-
       ------------------
       -- Post_As_Pred --
       ------------------
@@ -4781,8 +4755,6 @@ package body Gnat2Why.Subprograms is
       Precondition_Is_Statically_False  : Boolean := False;
       Postcondition_Is_Statically_False : Boolean := False;
 
-      Borrowers : Node_Lists.List;
-
    --  Start of processing for Generate_VCs_For_Subprogram
 
    begin
@@ -5001,8 +4973,6 @@ package body Gnat2Why.Subprograms is
          begin
             Get_Pre_Post_Pragmas (Declarations (Body_N));
 
-            Get_Borrows_From_Decls (Declarations (Body_N), Borrowers);
-
             Why_Body :=
               Sequence
                 ((1 => Transform_All_Pragmas
@@ -5023,10 +4993,10 @@ package body Gnat2Why.Subprograms is
 
             Why_Body := Sequence
               ((1 => Why_Body,
-                2 => Havoc_Borrowed_Expressions (Borrowers),
-                3 => Check_No_Memory_Leaks_At_End_Of_Scope
-                  (Declarations (Body_N)),
-                4 => Transform_All_Pragmas
+                2 => +Havoc_Borrowed_And_Check_No_Leaks_From_Scope
+                  (E, Local_CFG.Vertex'(Kind => Local_CFG.Body_Exit,
+                                        Node => E)),
+                3 => Transform_All_Pragmas
                   (Post_Prags, "checking of pragma postcondition")));
 
             Why_Body := Checking_Of_Refined_Post (Why_Body);
@@ -5079,10 +5049,10 @@ package body Gnat2Why.Subprograms is
                        To_Unbounded_String ("on exceptional exit")));
 
                Handler := Sequence
-                 ((1 => Havoc_Borrowed_Expressions (Borrowers),
-                   2 => Check_No_Memory_Leaks_At_End_Of_Scope
-                     (Declarations (Body_N)),
-                   3 => Check_Invariants_Of_Outputs (Exceptional => True)));
+                 ((1 => +Havoc_Borrowed_And_Check_No_Leaks_From_Scope
+                   (E, Local_CFG.Vertex'(Kind => Local_CFG.Body_Exit,
+                                         Node => E)),
+                   2 => Check_Invariants_Of_Outputs (Exceptional => True)));
 
                Continuation_Stack.Delete_Last;
 

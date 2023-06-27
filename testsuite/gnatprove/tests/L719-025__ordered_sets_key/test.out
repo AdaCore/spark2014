@@ -1,6 +1,6 @@
 p.adb:4:27: info: precondition proved (CVC5: 1 VC)
 p.adb:6:07: info: precondition proved (CVC5: 1 VC)
-p.ads:7:13: info: implicit terminating annotation on "My_Eq" has been proved, subprogram will terminate
-p.ads:10:13: info: implicit terminating annotation on "My_Inf" has been proved, subprogram will terminate
-p.ads:19:13: info: implicit terminating annotation on "Key" has been proved, subprogram will terminate
+p.ads:7:13: info: implicit aspect Always_Terminates on "My_Eq" has been proved, subprogram will terminate
+p.ads:10:13: info: implicit aspect Always_Terminates on "My_Inf" has been proved, subprogram will terminate
+p.ads:19:13: info: implicit aspect Always_Terminates on "Key" has been proved, subprogram will terminate
 p.ads:27:28: medium: postcondition might fail, cannot prove Positions (L) = Positions (L'Old)

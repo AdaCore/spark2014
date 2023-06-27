@@ -4019,7 +4019,9 @@ package body SPARK_Util is
 
             case Nkind (Stmt) is
                when N_Block_Statement =>
-                  Exit_Temp := Exit_Vertex;
+                  Exit_Temp := Vertex'(Kind => Block_Exit, Node => Stmt);
+                  Insert_Neighborhood (Exit_Temp, Depth + 1);
+                  Add_Edge (Exit_Temp, Exit_Vertex);
                   Cache_For_Statement
                     (Handled_Statement_Sequence (Stmt),
                      Depth + 1, Exit_Temp);
@@ -4345,11 +4347,12 @@ package body SPARK_Util is
       begin
          Hash := Hash + (case X.Kind is
                             when Plain      => 0,
-                            when Loop_Init  => 1,
-                            when Loop_Cond  => 2,
-                            when Loop_Iter  => 3,
-                            when Body_Entry => 4,
-                            when Body_Exit  => 5);
+                            when Block_Exit => 1,
+                            when Loop_Init  => 2,
+                            when Loop_Cond  => 3,
+                            when Loop_Iter  => 4,
+                            when Body_Entry => 5,
+                            when Body_Exit  => 6);
          return Hash;
       end Vertex_Hash;
 

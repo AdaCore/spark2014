@@ -1,14 +1,14 @@
 names-data.ads:27:23: info: Initial_Condition of package "Names" is ignored
 names-data.ads:27:23: info: the elaboration of "Names" is not known to precede the elaboration of the current unit
 names-data.ads:27:23: info: use pragma Elaborate_Body in "Names" or pragma Elaborate in the current unit
-names-data.ads:52:13: info: implicit terminating annotation on "Eq" has been proved, subprogram will terminate
-names-data.ads:70:13: info: implicit terminating annotation on "Eq" has been proved, subprogram will terminate
+names-data.ads:52:13: info: implicit aspect Always_Terminates on "Eq" has been proved, subprogram will terminate
+names-data.ads:70:13: info: implicit aspect Always_Terminates on "Eq" has been proved, subprogram will terminate
 names.adb:40:04: info: initialization of "Char_Table" constituent of "Name_Table" proved
 names.adb:41:04: info: initialization of "Entry_Table" constituent of "Name_Table" proved
-names.adb:47:13: info: implicit terminating annotation on "Valid_Tables" has been proved, subprogram will terminate
-names.adb:52:13: info: implicit terminating annotation on "Valid_Hashes" has been proved, subprogram will terminate
-names.adb:57:13: info: implicit terminating annotation on "Valid_Entry" has been proved, subprogram will terminate
-names.adb:64:13: info: implicit terminating annotation on "Valid_Name_Table" has been proved, subprogram will terminate
+names.adb:47:13: info: implicit aspect Always_Terminates on "Valid_Tables" has been proved, subprogram will terminate
+names.adb:52:13: info: implicit aspect Always_Terminates on "Valid_Hashes" has been proved, subprogram will terminate
+names.adb:57:13: info: implicit aspect Always_Terminates on "Valid_Entry" has been proved, subprogram will terminate
+names.adb:64:13: info: implicit aspect Always_Terminates on "Valid_Name_Table" has been proved, subprogram will terminate
 names.adb:65:16: info: range check proved (CVC5: 2 VC)
 names.adb:67:10: info: precondition proved (CVC5: 2 VC)
 names.adb:67:23: info: precondition proved (CVC5: 2 VC)
@@ -55,10 +55,10 @@ names.adb:180:39: info: loop invariant preservation proved (CVC5: 3 VC)
 names.adb:194:31: info: precondition proved (CVC5: 2 VC)
 names.ads:30:04: info: flow dependencies proved
 names.ads:31:04: info: initial condition proved (CVC5: 3 VC)
-names.ads:39:13: info: implicit terminating annotation on "Invariant" has been proved, subprogram will terminate
+names.ads:39:13: info: implicit aspect Always_Terminates on "Invariant" has been proved, subprogram will terminate
 names.ads:41:09: info: data dependencies proved
 names.ads:45:22: info: initialization of "N" proved
 names.ads:46:09: info: data dependencies proved
 names.ads:48:19: info: postcondition proved (CVC5: 3 VC)
-names.ads:51:13: info: implicit terminating annotation on "To_String" has been proved, subprogram will terminate
+names.ads:51:13: info: implicit aspect Always_Terminates on "To_String" has been proved, subprogram will terminate
 names.ads:52:09: info: data dependencies proved

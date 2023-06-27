@@ -173,6 +173,14 @@ package body Gnat2Why.Expr is
    --    Ada.Unchecked_Deallocation
    --  @return program checking the absence of resource leak
 
+   function Check_No_Memory_Leaks_At_End_Of_Scope
+     (Decls : List_Id)
+      return W_Prog_Id;
+   --  Go through the list of declarations Decls and generate checks that no
+   --  variable leads to a resource leak at the end of its scope. This function
+   --  follows the same traversal structure as Check_No_Owning_Decl in
+   --  SPARK_Definition.
+
    procedure Check_Or_Assume_All_DICs_At_Use
      (Ada_Node : Node_Id;
       E        : Type_Kind_Id;
@@ -1097,6 +1105,19 @@ package body Gnat2Why.Expr is
    --  declared in blocks traversed by a raise statement. Stop at the first
    --  exception handler or entity body. Exceptions which might not be handled
    --  at this point are propagated using an implicit reraise.
+
+   function Havoc_Borrowed_Expression
+     (Brower        : Constant_Or_Variable_Kind_Id;
+      Already_Equal : Boolean := False)
+      return W_Prog_Id;
+   --  Construct a program which havocs a borrowed expression. After the havoc,
+   --  we get information about potential updates from the borrower by
+   --  assuming that its pledge (relation between the borrower and the borrowed
+   --  expression) holds. We also check here that we have not broken any
+   --  constraints on the borrowed object during the borrow.
+   --
+   --  If Already_Equal is set to true, only assumes the pledge without
+   --  havocking.
 
    function Havoc_Overlay_Aliases (Aliases : Node_Sets.Set) return W_Prog_Id;
    --  For each variable in the parameter set, havoc its contents and assume
@@ -5350,6 +5371,19 @@ package body Gnat2Why.Expr is
             New_Incompl_Acc  => New_Incompl_Acc,
             Expand_Incompl   => Expand_Incompl);
 
+         --  Components necessarily have the tag of their type
+
+         if Is_Tagged_Type (Retysp (C_Ty)) then
+            pragma Assert (not Is_Class_Wide_Type (Retysp (C_Ty)));
+            T_Comp := New_And_Pred
+              (T_Comp,
+               New_Comparison
+                 (Symbol => Why_Eq,
+                  Left   => +New_Tag_Access
+                    (Domain => EW_Term, Name => +C_Expr, Ty => Retysp (C_Ty)),
+                  Right  => +E_Symb (E => C_Ty, S => WNE_Tag)));
+         end if;
+
          return T_Comp;
       end Invariant_For_Comp;
 
@@ -8969,19 +9003,18 @@ package body Gnat2Why.Expr is
       function Enclosing_Block_Stmt is new
         First_Parent_With_Property (Is_Scop_Or_Block);
 
-      Scop : Node_Id := Stmt_Or_Decl;
-      Res  : W_Statement_Sequence_Id := Void_Sequence;
+      Scop   : Node_Id := Stmt_Or_Decl;
+      Scopes : Node_Lists.List;
 
    begin
       loop
          Scop := Enclosing_Block_Stmt (Scop);
          exit when Scop = Enclosing_Stmt;
-         Append (Res, Havoc_Borrowed_From_Block (Scop));
-         Append (Res, Check_No_Memory_Leaks_At_End_Of_Scope
-                 (Declarations (Scop)));
+         Scopes.Append (Scop);
       end loop;
 
-      return +Res;
+      return +Havoc_Borrowed_And_Check_No_Leaks_From_Scopes
+        (Scopes, Local_CFG.Starting_Vertex (Stmt_Or_Decl));
    end Havoc_Borrowed_And_Check_No_Leaks_On_Goto;
 
    ------------------------------------------------
@@ -8991,6 +9024,8 @@ package body Gnat2Why.Expr is
    function Havoc_Borrowed_And_Check_No_Leaks_On_Raise
      (Stmt_Or_Decl : Node_Id) return W_Prog_Id
    is
+      use Local_CFG;
+
       function Is_Block_Or_Handler (N : Node_Id) return Boolean is
         (Nkind (N) in N_Block_Statement
                     | N_Handled_Sequence_Of_Statements
@@ -9000,8 +9035,9 @@ package body Gnat2Why.Expr is
       function Enclosing_Block_Or_Handler is new
         First_Parent_With_Property (Is_Block_Or_Handler);
 
-      Scop : Node_Id := Stmt_Or_Decl;
-      Res  : W_Statement_Sequence_Id := Void_Sequence;
+      Scop   : Node_Id := Stmt_Or_Decl;
+      Scopes : Node_Lists.List;
+      Res    : W_Prog_Id;
 
    begin
       --  Add a continuation locating the potential checks on exceptional exits
@@ -9020,7 +9056,8 @@ package body Gnat2Why.Expr is
 
          Scop := Enclosing_Block_Or_Handler (Scop);
 
-         --  Stop at the first enclosing exception handler
+         --  Stop at the first enclosing exception handler, or when
+         --  escaping enclosing body.
 
          exit when Nkind (Scop) in N_Entity_Body
            or else (Nkind (Scop) = N_Handled_Sequence_Of_Statements
@@ -9029,11 +9066,25 @@ package body Gnat2Why.Expr is
          --  Produce a havoc on traversed block statements
 
          if Nkind (Scop) = N_Block_Statement then
-            Append (Res, Havoc_Borrowed_From_Block (Scop));
-            Append (Res, Check_No_Memory_Leaks_At_End_Of_Scope
-                    (Declarations (Scop)));
+            Scopes.Append (Scop);
          end if;
       end loop;
+
+      case Nkind (Stmt_Or_Decl) is
+         when N_Procedure_Call_Statement | N_Raise_Statement =>
+            Res := +Havoc_Borrowed_And_Check_No_Leaks_From_Scopes
+              (Scopes, Starting_Vertex (Stmt_Or_Decl));
+         when N_Handled_Sequence_Of_Statements =>
+            --  This happens because exceptions not handled by sequence of
+            --  statements are treated as if handled and re-raised.
+            --  Could do something by tracking the original exception sources
+            --  (possibly several ones). Disconnect precise analysis for now.
+
+            Res := +Havoc_Borrowed_And_Check_No_Leaks_From_Scopes
+              (Scopes, Vertex_Sets.Empty_Set);
+         when others =>
+            pragma Assert (False);
+      end case;
 
       Continuation_Stack.Delete_Last;
 
@@ -9053,19 +9104,18 @@ package body Gnat2Why.Expr is
       function Enclosing_Block_Stmt is new
         First_Parent_With_Property (Is_Body_Or_Block);
 
-      Scop : Node_Id := Stmt_Or_Decl;
-      Res  : W_Statement_Sequence_Id := Void_Sequence;
+      Scop   : Node_Id := Stmt_Or_Decl;
+      Scopes : Node_Lists.List;
 
    begin
       loop
          Scop := Enclosing_Block_Stmt (Scop);
          exit when Nkind (Scop) /= N_Block_Statement;
-         Append (Res, Havoc_Borrowed_From_Block (Scop));
-         Append (Res, Check_No_Memory_Leaks_At_End_Of_Scope
-                 (Declarations (Scop)));
+         Scopes.Append (Scop);
       end loop;
 
-      return +Res;
+      return +Havoc_Borrowed_And_Check_No_Leaks_From_Scopes
+        (Scopes, Local_CFG.Starting_Vertex (Stmt_Or_Decl));
    end Havoc_Borrowed_And_Check_No_Leaks_On_Return;
 
    -------------------------------
@@ -9073,7 +9123,8 @@ package body Gnat2Why.Expr is
    -------------------------------
 
    function Havoc_Borrowed_Expression
-     (Brower : Constant_Or_Variable_Kind_Id)
+     (Brower        : Constant_Or_Variable_Kind_Id;
+      Already_Equal : Boolean := False)
       return W_Prog_Id
    is
       Expr            : constant Node_Id := Get_Borrowed_Expr (Brower);
@@ -9096,14 +9147,26 @@ package body Gnat2Why.Expr is
             Message  => To_Unbounded_String
               ("in reconstructed value at the end of the borrow")));
 
-      Assignment := New_Assignment
-        (Lvalue => Expr,
-         Expr   => +Insert_Checked_Conversion
-           (Ada_Node => Expr,
-            Domain   => EW_Prog,
-            Expr     => Borrowed_At_End,
-            To       => Type_Of_Node (Expr),
-            Lvalue   => True));
+      if Already_Equal then
+         Assignment := New_Assume_Statement
+           (Pred => New_Comparison
+              (Symbol => Why_Eq,
+               Left   => +Transform_Expr (Expr, EW_Term, Body_Params),
+               Right  => +Insert_Simple_Conversion
+                 (Ada_Node => Expr,
+                  Domain   => EW_Term,
+                  Expr     => Borrowed_At_End,
+                  To       => Type_Of_Node (Expr))));
+      else
+         Assignment := New_Assignment
+           (Lvalue => Expr,
+            Expr   => +Insert_Checked_Conversion
+              (Ada_Node => Expr,
+               Domain   => EW_Prog,
+               Expr     => Borrowed_At_End,
+               To       => Type_Of_Node (Expr),
+               Lvalue   => True));
+      end if;
 
       Continuation_Stack.Delete_Last;
 
@@ -9111,6 +9174,9 @@ package body Gnat2Why.Expr is
       --
       --    assume { brower_at_end = brower };
       --    expr := borrowed_at_end;
+      --
+      --  Assignment is replaced by assume { expr = borrowed_at_end }
+      --  if Already_Equal is set.
 
       return Sequence
         (Left => New_Assume_Statement
@@ -9127,30 +9193,217 @@ package body Gnat2Why.Expr is
           Right => Assignment);
    end Havoc_Borrowed_Expression;
 
-   -------------------------------
-   -- Havoc_Borrowed_From_Block --
-   -------------------------------
+   --------------------------------------------------
+   -- Havoc_Borrowed_And_Check_No_Leaks_From_Scope --
+   --------------------------------------------------
 
-   function Havoc_Borrowed_From_Block
-     (N : N_Block_Statement_Id)
+   function Havoc_Borrowed_And_Check_No_Leaks_From_Scope
+     (Scope  : Node_Id;
+      Exiting : Local_CFG.Vertex_Sets.Set)
       return W_Statement_Sequence_Id
    is
+      Scopes : Node_Lists.List;
+   begin
+      Scopes.Append (Scope);
+      return Havoc_Borrowed_And_Check_No_Leaks_From_Scopes (Scopes, Exiting);
+   end Havoc_Borrowed_And_Check_No_Leaks_From_Scope;
+
+   function Havoc_Borrowed_And_Check_No_Leaks_From_Scope
+     (Scope  : Node_Id;
+      Exiting : Local_CFG.Vertex)
+      return W_Statement_Sequence_Id
+   is
+      Scopes : Node_Lists.List;
+   begin
+      Scopes.Append (Scope);
+      return Havoc_Borrowed_And_Check_No_Leaks_From_Scopes (Scopes, Exiting);
+   end Havoc_Borrowed_And_Check_No_Leaks_From_Scope;
+
+   ---------------------------------------------------
+   -- Havoc_Borrowed_And_Check_No_Leaks_From_Scopes --
+   ---------------------------------------------------
+
+   function Havoc_Borrowed_And_Check_No_Leaks_From_Scopes
+     (Scopes  : Node_Lists.List;
+      Exiting : Local_CFG.Vertex_Sets.Set)
+      return W_Statement_Sequence_Id
+   is
+      use Local_CFG;
+
+      Updated_Borrowers  : Node_Sets.Set;
+      --  Stores which borrowers have been found to be updated.
+
+      Leading_To_Exiting : Vertex_Sets.Set := Exiting;
+      --  Stores which local CFG vertices lead to Exiting vertices.
+
+      procedure Update_Variable (X : Entity_Id);
+      --  For X a variable, if it is a borrower, mark it updated,
+      --  as well as all borrowers that it reborrows.
+      --  Empty node is allowed and ignored.
+
+      procedure Update_Call_Variables (Call : Node_Id);
+      --  For N an entry/procedure call, call Update_Variable on every
+      --  variable it modifies.
+
+      ---------------------------
+      -- Update_Call_Variables --
+      ---------------------------
+
+      procedure Update_Call_Variables (Call : Node_Id)
+      is
+         procedure Do_Param (Formal : Formal_Kind_Id; Actual : N_Subexpr_Id);
+         --  Deal with a parameter, updating root object if (in-)out or
+         --  access.
+
+         --------------
+         -- Do_Param --
+         --------------
+
+         procedure Do_Param (Formal : Formal_Kind_Id; Actual : N_Subexpr_Id)
+         is
+         begin
+            if Ekind (Formal) in E_Out_Parameter | E_In_Out_Parameter
+              or else (Has_Access_Type (Etype (Formal))
+                       and then not Is_Access_Constant
+                         (Retysp (Etype (Formal))))
+            then
+               Update_Variable (Get_Root_Object (Actual));
+            end if;
+         end Do_Param;
+
+         procedure Do_Parameters is new Iterate_Call_Parameters (Do_Param);
+
+         Subp : constant Callable_Kind_Id := Get_Called_Entity (Call);
+
+      --  Start of processing for Update_Call_Variables
+
+      begin
+         Do_Parameters (Call);
+
+         --  Check the global OUT and IN OUT of Subp
+
+         declare
+            Unused_Ids : Flow_Types.Flow_Id_Sets.Set;
+            Write_Ids  : Flow_Types.Flow_Id_Sets.Set;
+
+         begin
+            Flow_Utility.Get_Proof_Globals (Subprogram      => Subp,
+                                            Reads           => Unused_Ids,
+                                            Writes          => Write_Ids,
+                                            Erase_Constants => True,
+                                            Scop            =>
+                                              Get_Flow_Scope (Call));
+
+            for F of Write_Ids loop
+               if F.Kind = Direct_Mapping then
+                  Update_Variable (Get_Direct_Mapping_Id (F));
+               end if;
+            end loop;
+         end;
+
+      end Update_Call_Variables;
+
+      ---------------------
+      -- Update_Variable --
+      ---------------------
+
+      procedure Update_Variable (X : Entity_Id) is
+         Inserted : Boolean;
+         Position : Node_Sets.Cursor;
+      begin
+         if Present (X) and then Is_Local_Borrower (X) then
+            Updated_Borrowers.Insert (X, Position, Inserted);
+            if Inserted then
+               Update_Variable
+                 (Get_Root_Object (Expression (Enclosing_Declaration (X))));
+            end if;
+         end if;
+      end Update_Variable;
+
+   --  Start of processing for Havoc_Borrowed_And_Check_No_Leaks_From_Scopes
+
    begin
       return Result : W_Statement_Sequence_Id := Void_Sequence do
-         if Present (Declarations (N)) then
+         for S of Scopes loop
             declare
+               Decls   : constant List_Id := Declarations
+                 (if S in N_Block_Statement_Id then S else Get_Body (S));
                Borrows : Node_Lists.List;
             begin
-               Get_Borrows_From_Decls (Declarations (N), Borrows);
-               for E of Borrows loop
+               if Present (Decls) then
+                  Get_Borrows_From_Decls (Decls, Borrows);
+                  if not Borrows.Is_Empty then
+                     if Exiting.Is_Empty then
+                        --  Having Exiting empty means no analysis should be
+                        --  performed, we havoc all borrows.
+
+                        for E of Borrows loop
+                           Append (Result, Havoc_Borrowed_Expression (E));
+                        end loop;
+
+                     else
+                        --  Scan local CFG of S for updates.
+
+                        Collect_Vertices_Leading_To (S, Leading_To_Exiting);
+                        for U of Leading_To_Exiting loop
+                           case Nkind (U.Node) is
+                              when N_Assignment_Statement =>
+                                 declare
+                                    Nm : constant Node_Id := Name (U.Node);
+                                 begin
+                                    --  Direct assignments to borrowers must
+                                    --  be re-borrows, which do not update
+                                    --  borrowed object.
+
+                                    if Nkind (Nm) /= N_Identifier then
+                                       Update_Variable (Get_Root_Object (Nm));
+                                    end if;
+                                 end;
+                              when N_Entry_Call_Statement
+                                 | N_Procedure_Call_Statement
+                               =>
+                                 Update_Call_Variables (U.Node);
+                              when others =>
+                                 null;
+                           end case;
+                        end loop;
+
+                        --  Havoc borrows that are found to have been possibly
+                        --  updated.
+
+                        for E of Borrows loop
+                           Append (Result,
+                                   Havoc_Borrowed_Expression
+                                     (E,
+                                      Already_Equal =>
+                                         not Updated_Borrowers.Contains (E)));
+                        end loop;
+
+                     end if;
+
+                     --  We do not need to clear Updated_Borrows neither
+                     --  reset Leading_To_Exiting, as inner scopes paths
+                     --  remain in outer scopes.
+
+                  end if;
                   Append
-                    (Result,
-                     Havoc_Borrowed_Expression (E));
-               end loop;
+                    (Result, Check_No_Memory_Leaks_At_End_Of_Scope (Decls));
+               end if;
             end;
-         end if;
+         end loop;
       end return;
-   end Havoc_Borrowed_From_Block;
+   end Havoc_Borrowed_And_Check_No_Leaks_From_Scopes;
+
+   function Havoc_Borrowed_And_Check_No_Leaks_From_Scopes
+     (Scopes  : Node_Lists.List;
+      Exiting : Local_CFG.Vertex)
+      return W_Statement_Sequence_Id
+   is
+      Exitings : Local_CFG.Vertex_Sets.Set;
+   begin
+      Exitings.Insert (Exiting);
+      return Havoc_Borrowed_And_Check_No_Leaks_From_Scopes (Scopes, Exitings);
+   end Havoc_Borrowed_And_Check_No_Leaks_From_Scopes;
 
    ---------------------------
    -- Havoc_Overlay_Aliases --
@@ -16269,6 +16522,7 @@ package body Gnat2Why.Expr is
      (N : N_Block_Statement_Id)
       return W_Prog_Id
    is
+      use Local_CFG;
       Core : W_Prog_Id :=
         Transform_Handled_Statements (Handled_Statement_Sequence (N));
    begin
@@ -16278,8 +16532,8 @@ package body Gnat2Why.Expr is
 
          Append
            (Core,
-            +Havoc_Borrowed_From_Block (N),
-            Check_No_Memory_Leaks_At_End_Of_Scope (Declarations (N)));
+            +Havoc_Borrowed_And_Check_No_Leaks_From_Scope
+              (N, Vertex'(Kind => Block_Exit, Node => N)));
 
          return Transform_Declarations_Block (Declarations (N), Core);
       else

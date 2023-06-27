@@ -1,5 +1,5 @@
-geometry.ads:9:13: info: implicit terminating annotation on "Valid" has been proved, subprogram will terminate
-geometry.ads:31:13: info: implicit terminating annotation on "Valid" has been proved, subprogram will terminate
+geometry.ads:9:13: info: implicit aspect Always_Terminates on "Valid" has been proved, subprogram will terminate
+geometry.ads:31:13: info: implicit aspect Always_Terminates on "Valid" has been proved, subprogram will terminate
 geometry.ads:44:20: info: class-wide postcondition is stronger than overridden one
 geometry.ads:49:20: info: class-wide postcondition is stronger than overridden one
 use_geometry.adb:8:05: info: precondition proved

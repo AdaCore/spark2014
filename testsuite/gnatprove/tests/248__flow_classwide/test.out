@@ -1,0 +1,5 @@
+reproducer.adb:7:22: medium: assertion might fail [possible fix: subprogram at reproducer.ads:22 should mention Ctx in a precondition]
+reproducer.ads:9:13: info: function contract feasibility proved (Trivial: 1 VC)
+reproducer.ads:14:13: info: implicit aspect Always_Terminates on "Is_Set" has been proved, subprogram will terminate
+reproducer.ads:20:13: info: implicit aspect Always_Terminates on "Is_Set" has been proved, subprogram will terminate
+reproducer.ads:22:19: warning: "Ctx" is not modified, could be IN

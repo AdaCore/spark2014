@@ -19,7 +19,7 @@ find_map.adb:22:21: info: precondition proved (CVC5: 2 VC)
 find_map.adb:23:36: info: index check proved (CVC5: 4 VC)
 find_map.adb:23:36: info: precondition proved (CVC5: 2 VC)
 find_map.adb:36:16: info: function contract might not be available on calls from enclosing unit
-find_map.adb:36:16: info: implicit terminating annotation on "Find_Map_Bad" has been proved, subprogram will terminate
+find_map.adb:36:16: info: implicit aspect Always_Terminates on "Find_Map_Bad" has been proved, subprogram will terminate
 find_map.adb:37:13: info: precondition proved (CVC5: 1 VC)
 find_map.adb:37:41: info: precondition proved (CVC5: 1 VC)
 find_map.adb:40:34: info: precondition proved (CVC5: 1 VC)
@@ -30,11 +30,11 @@ find_map.adb:43:17: info: postcondition proved (CVC5: 1 VC; Trivial: 1 VC)
 find_map.adb:44:29: info: range check proved (CVC5: 2 VC)
 find_map.adb:44:68: info: index check proved (CVC5: 2 VC)
 find_map.adb:49:17: info: precondition proved (CVC5: 5 VC; Trivial: 1 VC)
-find_map.ads:8:13: info: implicit terminating annotation on "Hash" has been proved, subprogram will terminate
-find_map.ads:13:13: info: implicit terminating annotation on "Equivalent_Keys" has been proved, subprogram will terminate
+find_map.ads:8:13: info: implicit aspect Always_Terminates on "Hash" has been proved, subprogram will terminate
+find_map.ads:13:13: info: implicit aspect Always_Terminates on "Equivalent_Keys" has been proved, subprogram will terminate
 find_map.ads:23:30: info: range check proved (CVC5: 2 VC)
 find_map.ads:24:30: info: range check proved (CVC5: 1 VC)
-find_map.ads:26:13: info: implicit terminating annotation on "Find_All" has been proved, subprogram will terminate
+find_map.ads:26:13: info: implicit aspect Always_Terminates on "Find_All" has been proved, subprogram will terminate
 find_map.ads:27:14: info: postcondition proved (CVC5: 7 VC; Trivial: 1 VC)
 find_map.ads:28:47: info: index check proved (CVC5: 2 VC)
 find_map.ads:29:17: info: precondition proved (CVC5: 1 VC)
@@ -47,7 +47,7 @@ find_map.ads:33:14: info: precondition proved (CVC5: 1 VC)
 find_map.ads:34:17: info: index check proved (CVC5: 2 VC)
 find_map.ads:34:17: info: precondition proved (CVC5: 1 VC)
 find_map.ads:36:13: info: function contract might not be available on implicit recursive calls
-find_map.ads:36:13: info: implicit terminating annotation on "Find_Upto" has been proved, subprogram will terminate
+find_map.ads:36:13: info: implicit aspect Always_Terminates on "Find_Upto" has been proved, subprogram will terminate
 find_map.ads:39:14: info: postcondition proved (CVC5: 4 VC)
 find_map.ads:41:25: info: index check proved (CVC5: 2 VC)
 find_map.ads:43:30: info: index check proved (CVC5: 2 VC)

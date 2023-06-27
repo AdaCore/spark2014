@@ -423,7 +423,7 @@ def check_marks(strlist):
             return "INITIALIZED"
         elif "initializes" in text:
             return "INITIALIZES"
-        elif "terminating annotation" in text:
+        elif "aspect Always_Terminates" in text:
             return "TERMINATION"
 
         # proof tags

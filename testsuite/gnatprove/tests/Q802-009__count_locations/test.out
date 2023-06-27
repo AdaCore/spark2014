@@ -17,9 +17,9 @@ count_locations.adb:32:22: info: assertion proved (CVC5: 1 VC; Trivial: 1 VC)
 count_locations.ads:12:13: info: function contract might not be available on recursive calls
 count_locations.ads:13:37: info: overflow check proved (CVC5: 2 VC)
 count_locations.ads:13:37: info: range check proved (CVC5: 2 VC)
-count_locations.ads:13:37: medium: implicit terminating annotation on "Partial_Count_Selected_Locations" could be incorrect, subprogram is recursive [possible fix: annotate "Partial_Count_Selected_Locations" with a Subprogram_Variant aspect]
+count_locations.ads:13:37: medium: implicit aspect Always_Terminates on "Partial_Count_Selected_Locations" could be incorrect, subprogram is recursive [possible fix: annotate "Partial_Count_Selected_Locations" with a Subprogram_Variant aspect]
 count_locations.ads:13:115: info: range check proved (CVC5: 2 VC)
 count_locations.ads:15:17: info: postcondition proved (CVC5: 1 VC)
-count_locations.ads:17:13: info: implicit terminating annotation on "Count_Selected_Locations" has been proved, subprogram will terminate
-count_locations.ads:21:13: info: implicit terminating annotation on "Check_Selected_Locations" has been proved, subprogram will terminate
+count_locations.ads:17:13: info: implicit aspect Always_Terminates on "Count_Selected_Locations" has been proved, subprogram will terminate
+count_locations.ads:21:13: info: implicit aspect Always_Terminates on "Check_Selected_Locations" has been proved, subprogram will terminate
 count_locations.ads:25:06: info: postcondition proved (CVC5: 2 VC; Trivial: 1 VC)

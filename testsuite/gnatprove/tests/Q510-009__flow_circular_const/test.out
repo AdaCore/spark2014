@@ -15,4 +15,4 @@ info:      use the dynamic elaboration model (compiler switch -gnatE)
 info:      use detailed invocation information (compiler switch -gnatd_F)
 info:
 gnatmake: *** bind failed.
-q.ads:3:13: info: implicit terminating annotation on "Fun" has been proved, subprogram will terminate
+q.ads:3:13: info: implicit aspect Always_Terminates on "Fun" has been proved, subprogram will terminate

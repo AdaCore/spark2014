@@ -810,7 +810,7 @@ package body SPARK_Util.Subprograms is
       --  The Always_Terminates annotation is implicit on packages, functions,
       --  and lemmas.
 
-      elsif Has_Implicit_Always_Return_Annotation (E) then
+      elsif Has_Implicit_Always_Terminates (E) then
          return (Static, True);
 
       --  If E is directly in a package specification, get the annotation from
@@ -835,7 +835,7 @@ package body SPARK_Util.Subprograms is
             declare
                Value : constant Boolean :=
                  (if Ekind (E) in E_Subprogram_Type | E_Task_Type then False
-                  else not Is_Potentially_Nonreturning (E));
+                  else not Is_Potentially_Nonreturning_Internal (E));
             begin
                return (Static, Value);
             end;
@@ -845,22 +845,22 @@ package body SPARK_Util.Subprograms is
       end if;
    end Get_Termination_Condition;
 
+   ------------------------------------
+   -- Has_Implicit_Always_Terminates --
+   ------------------------------------
+
+   function Has_Implicit_Always_Terminates
+     (E : Entity_Id) return Boolean
+   is
+     (Ekind (E) in E_Function | E_Package
+        or else Has_Automatic_Instantiation_Annotation (E));
+
    ---------------------------
    -- Includes_Current_Task --
    ---------------------------
 
    function Includes_Current_Task (Calls : Node_Sets.Set) return Boolean is
       (for some Call of Calls => Is_RTE (Call, RE_Current_Task));
-
-   ----------------------------------
-   -- Has_Any_Returning_Annotation --
-   ----------------------------------
-
-   function Has_Any_Returning_Annotation (E : Entity_Id) return Boolean is
-     (Has_Always_Return_Annotation (E)
-      or else Has_Might_Not_Return_Annotation (E)
-      or else No_Return (E)
-      or else Get_Termination_Condition (E).Kind /= Unspecified);
 
    -------------------
    -- Has_Contracts --
@@ -944,7 +944,6 @@ package body SPARK_Util.Subprograms is
    function Is_Possibly_Nonreturning_Procedure (E : Entity_Id) return Boolean
    is
      (No_Return (E)
-      or else Has_Might_Not_Return_Annotation (E)
       or else Get_Termination_Condition (E) not in
           (Kind => Unspecified) | (Static, True));
 

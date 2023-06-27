@@ -163,9 +163,9 @@ test_map.adb:252:33: info: loop invariant preservation proved
 test_map.adb:253:52: info: range check proved
 test_map.adb:256:07: info: precondition proved
 test_map.adb:257:07: medium: assertion might fail
-test_map.ads:6:13: info: implicit terminating annotation on "Hash" has been proved, subprogram will terminate
-test_map.ads:19:13: info: implicit terminating annotation on "My_Eq" has been proved, subprogram will terminate
+test_map.ads:6:13: info: implicit aspect Always_Terminates on "Hash" has been proved, subprogram will terminate
+test_map.ads:19:13: info: implicit aspect Always_Terminates on "My_Eq" has been proved, subprogram will terminate
 test_map.ads:20:17: info: postcondition proved
-test_map.ads:23:13: info: implicit terminating annotation on "Hash" has been proved, subprogram will terminate
+test_map.ads:23:13: info: implicit aspect Always_Terminates on "Hash" has been proved, subprogram will terminate
 test_map.ads:31:14: warning: subprogram "Run_Test" has no effect
 test_map.ads:33:14: warning: subprogram "Large_Test" has no effect

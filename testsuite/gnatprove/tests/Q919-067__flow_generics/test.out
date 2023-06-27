@@ -145,7 +145,7 @@ generic_matrix_thing.ads:15:05: info: in instantiation at a-ngrear.adb:745
 generic_matrix_thing.ads:15:05: info: in instantiation at a-ngrear.adb:745
 generic_matrix_thing.ads:15:05: info: in instantiation at a-ngrear.adb:745
 generic_matrix_thing.ads:15:05: info: in instantiation at a-ngrear.adb:750
-generic_matrix_thing.ads:27:14: info: implicit terminating annotation on "Manipulate" has been proved, subprogram will terminate, in instantiation at main_test.adb:10
+generic_matrix_thing.ads:27:14: info: implicit aspect Always_Terminates on "Manipulate" has been proved, subprogram will terminate, in instantiation at main_test.adb:10
 main_test.adb:10:05: info: analyzing call to "Lt" in context
 main_test.adb:10:05: info: analyzing call to "Lt" in context
 main_test.adb:10:05: info: analyzing call to "Lt" in context
@@ -480,4 +480,4 @@ specific_matrix_other.ads:11:05: info: in instantiation at a-ngrear.adb:745
 specific_matrix_other.ads:11:05: info: in instantiation at a-ngrear.adb:745
 specific_matrix_other.ads:11:05: info: in instantiation at a-ngrear.adb:745
 specific_matrix_other.ads:11:05: info: in instantiation at a-ngrear.adb:750
-specific_matrix_other.ads:23:14: info: implicit terminating annotation on "Manipulate" has been proved, subprogram will terminate
+specific_matrix_other.ads:23:14: info: implicit aspect Always_Terminates on "Manipulate" has been proved, subprogram will terminate

@@ -2,7 +2,7 @@ main.adb:12:13: info: implicit function contract might not be available on impli
 main.adb:15:45: info: data dependencies proved
 main.adb:17:16: info: pointer dereference check proved (CVC5: 1 VC)
 main.adb:20:33: info: predicate check proved (CVC5: 1 VC; Trivial: 1 VC)
-main.adb:21:26: medium: implicit terminating annotation on "Length_5" could be incorrect, loop might be nonterminating [possible fix: add loop variant in the loop body]
+main.adb:21:26: medium: implicit aspect Always_Terminates on "Length_5" could be incorrect, loop might be nonterminating [possible fix: add loop variant in the loop body]
 main.adb:22:18: info: predicate check proved (Trivial: 1 VC)
 main.adb:22:20: info: predicate check proved (CVC5: 1 VC; Trivial: 1 VC)
 main.adb:22:22: info: predicate check proved (Trivial: 1 VC)

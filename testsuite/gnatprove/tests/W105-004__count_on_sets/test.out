@@ -1,4 +1,4 @@
-ho_sets.adb:8:07: medium: implicit terminating annotation on "Count" could be incorrect, call via access-to-subprogram might be nonterminating [possible explanation: call could hide recursive calls]
+ho_sets.adb:8:07: medium: implicit aspect Always_Terminates on "Count" could be incorrect, call via access-to-subprogram might be nonterminating [possible explanation: call could hide recursive calls]
 ho_sets.adb:9:16: info: pointer dereference check proved (CVC5: 1 VC)
 ho_sets.adb:9:22: info: precondition proved (CVC5: 1 VC)
 ho_sets.adb:9:58: info: predicate check proved (Trivial: 1 VC)
@@ -37,7 +37,7 @@ ho_sets.ads:14:42: info: range check proved (CVC5: 1 VC)
 ho_sets.ads:16:14: info: postcondition proved (CVC5: 1 VC)
 ho_sets.ads:16:19: info: predicate check proved (Trivial: 1 VC)
 ho_sets.ads:16:30: info: predicate check proved (Trivial: 1 VC)
-ho_sets.ads:18:14: info: implicit terminating annotation on "Lemma_Count_Eq" has been proved, subprogram will terminate
+ho_sets.ads:18:14: info: implicit aspect Always_Terminates on "Lemma_Count_Eq" has been proved, subprogram will terminate
 ho_sets.ads:20:30: info: function contract feasibility proved (Trivial: 1 VC)
 ho_sets.ads:25:42: info: range check proved (CVC5: 1 VC)
 ho_sets.ads:27:14: info: postcondition proved (CVC5: 1 VC)
@@ -52,7 +52,7 @@ ho_sets.ads:37:63: info: predicate check proved (Trivial: 1 VC)
 ho_sets.ads:39:14: info: postcondition proved (CVC5: 1 VC)
 ho_sets.ads:39:14: info: predicate check proved (Trivial: 1 VC)
 ho_sets.ads:39:32: info: null exclusion check proved (CVC5: 1 VC)
-ho_sets.ads:39:38: medium: implicit terminating annotation on "Lemma_Count_Remove" could be incorrect, call via access-to-subprogram might be nonterminating [possible explanation: call could hide recursive calls]
+ho_sets.ads:39:38: medium: implicit aspect Always_Terminates on "Lemma_Count_Remove" could be incorrect, call via access-to-subprogram might be nonterminating [possible explanation: call could hide recursive calls]
 ho_sets.ads:40:10: info: predicate check proved (Trivial: 1 VC)
 ho_sets.ads:40:17: info: precondition proved (CVC5: 1 VC)
 ho_sets.ads:40:43: info: null exclusion check proved (CVC5: 1 VC)
@@ -80,14 +80,14 @@ use_sets.adb:21:60: info: pointer dereference check proved (CVC5: 1 VC)
 use_sets.adb:21:82: info: predicate check proved (Trivial: 1 VC)
 use_sets.adb:21:92: info: predicate check proved (Trivial: 1 VC)
 use_sets.adb:27:13: info: function contract might not be available on implicit recursive calls
-use_sets.adb:27:13: info: implicit terminating annotation on "Count_Values_In_Range" has been proved, subprogram will terminate
+use_sets.adb:27:13: info: implicit aspect Always_Terminates on "Count_Values_In_Range" has been proved, subprogram will terminate
 use_sets.adb:27:45: warning: unused variable "A"
 use_sets.adb:27:48: warning: unused variable "B"
 use_sets.adb:28:14: info: postcondition proved (CVC5: 1 VC)
 use_sets.adb:28:35: info: predicate check proved (Trivial: 1 VC)
 use_sets.adb:28:46: info: predicate check proved (Trivial: 1 VC)
-use_sets.adb:31:16: info: implicit terminating annotation on "In_Range" has been proved, subprogram will terminate
-use_sets.adb:33:16: info: implicit terminating annotation on "Count_In_Range" has been proved, subprogram will terminate
+use_sets.adb:31:16: info: implicit aspect Always_Terminates on "In_Range" has been proved, subprogram will terminate
+use_sets.adb:33:16: info: implicit aspect Always_Terminates on "Count_In_Range" has been proved, subprogram will terminate
 use_sets.adb:41:17: info: postcondition proved (CVC5: 1 VC)
 use_sets.adb:41:17: info: predicate check proved (Trivial: 1 VC)
 use_sets.adb:41:33: info: precondition proved (CVC5: 1 VC)

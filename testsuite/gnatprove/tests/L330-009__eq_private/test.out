@@ -1,1 +1,1 @@
-pkg.ads:5:13: info: implicit terminating annotation on "Equal" has been proved, subprogram will terminate
+pkg.ads:5:13: info: implicit aspect Always_Terminates on "Equal" has been proved, subprogram will terminate

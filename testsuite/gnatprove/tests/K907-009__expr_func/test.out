@@ -1,15 +1,15 @@
-p.adb:8:13: info: implicit terminating annotation on "CF1" has been proved, subprogram will terminate
-p.adb:9:13: info: implicit terminating annotation on "CF2" has been proved, subprogram will terminate
-p.adb:10:13: info: implicit terminating annotation on "CF3" has been proved, subprogram will terminate
-p.adb:11:13: info: implicit terminating annotation on "CF4" has been proved, subprogram will terminate
+p.adb:8:13: info: implicit aspect Always_Terminates on "CF1" has been proved, subprogram will terminate
+p.adb:9:13: info: implicit aspect Always_Terminates on "CF2" has been proved, subprogram will terminate
+p.adb:10:13: info: implicit aspect Always_Terminates on "CF3" has been proved, subprogram will terminate
+p.adb:11:13: info: implicit aspect Always_Terminates on "CF4" has been proved, subprogram will terminate
 p.adb:13:14: warning: subprogram "P1" has no effect
 p.adb:21:14: warning: subprogram "P2" has no effect
 p.adb:29:14: warning: subprogram "P3" has no effect
 p.adb:37:14: warning: subprogram "P4" has no effect
-p.ads:2:13: info: implicit terminating annotation on "F1" has been proved, subprogram will terminate
-p.ads:3:13: info: implicit terminating annotation on "F2" has been proved, subprogram will terminate
-p.ads:4:13: info: implicit terminating annotation on "F3" has been proved, subprogram will terminate
-p.ads:5:13: info: implicit terminating annotation on "F4" has been proved, subprogram will terminate
+p.ads:2:13: info: implicit aspect Always_Terminates on "F1" has been proved, subprogram will terminate
+p.ads:3:13: info: implicit aspect Always_Terminates on "F2" has been proved, subprogram will terminate
+p.ads:4:13: info: implicit aspect Always_Terminates on "F3" has been proved, subprogram will terminate
+p.ads:5:13: info: implicit aspect Always_Terminates on "F4" has been proved, subprogram will terminate
 Summary of SPARK analysis
 =========================
 

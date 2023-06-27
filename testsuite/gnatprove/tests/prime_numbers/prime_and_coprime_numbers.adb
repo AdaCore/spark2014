@@ -314,7 +314,7 @@ is
                          (if V in Index_2 + 1 .. Index_3 then V mod Index_2 /= 0)));
                pragma Loop_Invariant (Index_3 in Index_2 .. Max_Value);
                pragma Loop_Invariant (Index_3 mod Index_2 = 0);
-
+               pragma Loop_Variant (Increases => Index_3);
                Index_3 := Index_3 + Index_1;
                pragma Assert (Index_3 mod Index_2 = (Index_3 - Index_1) mod Index_2);
             end loop;

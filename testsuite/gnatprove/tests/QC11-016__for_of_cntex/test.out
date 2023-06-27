@@ -1,13 +1,13 @@
 linear_search.adb:13:44: medium: postcondition might fail, cannot prove E /= N
 linear_search.adb:15:35: info: index check proved (CVC5: 2 VC)
-linear_search.adb:19:21: medium: implicit terminating annotation on "Search" could be incorrect, loop might be nonterminating [possible fix: add loop variant in the loop body]
+linear_search.adb:19:21: medium: implicit aspect Always_Terminates on "Search" could be incorrect, loop might be nonterminating [possible fix: add loop variant in the loop body]
 linear_search.adb:20:34: info: loop invariant initialization proved (CVC5: 1 VC)
 linear_search.adb:20:34: info: loop invariant preservation proved (CVC5: 1 VC)
 linear_search.adb:21:42: info: index check proved (CVC5: 4 VC)
 linear_search.adb:25:18: info: range check proved (CVC5: 2 VC)
 linear_search.adb:36:38: medium: postcondition might fail, cannot prove E /= N
 linear_search.adb:38:18: info: precondition proved (CVC5: 2 VC)
-linear_search.adb:42:21: medium: implicit terminating annotation on "Search" could be incorrect, loop might be nonterminating [possible fix: add loop variant in the loop body]
+linear_search.adb:42:21: medium: implicit aspect Always_Terminates on "Search" could be incorrect, loop might be nonterminating [possible fix: add loop variant in the loop body]
 linear_search.adb:43:34: info: loop invariant initialization proved (CVC5: 1 VC)
 linear_search.adb:43:34: info: loop invariant preservation proved (CVC5: 1 VC)
 linear_search.adb:44:37: info: precondition proved (CVC5: 4 VC)
@@ -15,7 +15,7 @@ linear_search.adb:45:14: info: precondition proved (CVC5: 2 VC)
 linear_search.adb:48:18: info: range check proved (CVC5: 2 VC)
 linear_search.adb:59:38: medium: postcondition might fail, cannot prove E /= N
 linear_search.adb:61:18: info: precondition proved (CVC5: 1 VC)
-linear_search.adb:66:20: medium: implicit terminating annotation on "Search" could be incorrect, loop might be nonterminating [possible fix: add loop variant in the loop body]
+linear_search.adb:66:20: medium: implicit aspect Always_Terminates on "Search" could be incorrect, loop might be nonterminating [possible fix: add loop variant in the loop body]
 linear_search.adb:67:33: info: loop invariant initialization proved (CVC5: 1 VC)
 linear_search.adb:67:33: info: loop invariant preservation proved (CVC5: 1 VC)
 linear_search.adb:68:33: info: loop invariant initialization proved (CVC5: 1 VC)

@@ -192,13 +192,13 @@ indefinite_unbounded_tagged.adb:103:07: info: precondition proved (CVC5: 2 VC)
 indefinite_unbounded_tagged.adb:103:30: info: precondition proved (CVC5: 2 VC)
 indefinite_unbounded_tagged.adb:105:07: medium: assertion might fail
 indefinite_unbounded_tagged.ads:20:14: warning: subprogram "Test" has no effect
-spark-containers-formal-unbounded_vectors.ads:36:18: info: subprogram "OEQR" will terminate, terminating annotation has been proved, in instantiation at indefinite_unbounded_tagged.ads:15
-spark-containers-formal-unbounded_vectors.ads:263:13: info: subprogram "At_End" will terminate, terminating annotation has been proved, in instantiation at indefinite_unbounded.ads:9
-spark-containers-formal-unbounded_vectors.ads:263:13: info: subprogram "At_End" will terminate, terminating annotation has been proved, in instantiation at indefinite_unbounded_tagged.ads:15
+spark-containers-formal-unbounded_vectors.ads:36:18: info: subprogram "OEQR" will terminate, aspect Always_Terminates has been proved, in instantiation at indefinite_unbounded_tagged.ads:15
+spark-containers-formal-unbounded_vectors.ads:263:13: info: subprogram "At_End" will terminate, aspect Always_Terminates has been proved, in instantiation at indefinite_unbounded.ads:9
+spark-containers-formal-unbounded_vectors.ads:263:13: info: subprogram "At_End" will terminate, aspect Always_Terminates has been proved, in instantiation at indefinite_unbounded_tagged.ads:15
 spark-containers-formal-unbounded_vectors.ads:264:08: info: dynamic accessibility check proved (Trivial), in instantiation at indefinite_unbounded.ads:9
 spark-containers-formal-unbounded_vectors.ads:264:08: info: dynamic accessibility check proved (Trivial), in instantiation at indefinite_unbounded_tagged.ads:15
-spark-containers-formal-unbounded_vectors.ads:268:13: info: subprogram "At_End" will terminate, terminating annotation has been proved, in instantiation at indefinite_unbounded.ads:9
-spark-containers-formal-unbounded_vectors.ads:268:13: info: subprogram "At_End" will terminate, terminating annotation has been proved, in instantiation at indefinite_unbounded_tagged.ads:15
+spark-containers-formal-unbounded_vectors.ads:268:13: info: subprogram "At_End" will terminate, aspect Always_Terminates has been proved, in instantiation at indefinite_unbounded.ads:9
+spark-containers-formal-unbounded_vectors.ads:268:13: info: subprogram "At_End" will terminate, aspect Always_Terminates has been proved, in instantiation at indefinite_unbounded_tagged.ads:15
 spark-containers-formal-unbounded_vectors.ads:270:08: info: dynamic accessibility check proved (Trivial), in instantiation at indefinite_unbounded.ads:9
 spark-containers-formal-unbounded_vectors.ads:270:08: info: dynamic accessibility check proved (Trivial), in instantiation at indefinite_unbounded_tagged.ads:15
 spark-containers-formal-unbounded_vectors.ads:289:39: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at indefinite_unbounded.ads:9
@@ -229,8 +229,8 @@ spark-containers-formal-unbounded_vectors.ads:761:14: info: precondition proved 
 spark-containers-formal-unbounded_vectors.ads:761:14: info: precondition proved (CVC5: 1 VC), in instantiation at indefinite_unbounded_tagged.ads:15
 spark-containers-formal-unbounded_vectors.ads:858:49: info: overflow check proved (CVC5: 2 VC), in instantiation at indefinite_unbounded.adb:8
 spark-containers-formal-unbounded_vectors.ads:858:49: info: overflow check proved (CVC5: 2 VC), in instantiation at indefinite_unbounded_tagged.adb:9
-spark-containers-functional-vectors.ads:96:13: info: subprogram "First" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-unbounded_vectors.ads:86, in instantiation at indefinite_unbounded.ads:9
-spark-containers-functional-vectors.ads:96:13: info: subprogram "First" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-unbounded_vectors.ads:86, in instantiation at indefinite_unbounded_tagged.ads:15
+spark-containers-functional-vectors.ads:96:13: info: subprogram "First" will terminate, aspect Always_Terminates has been proved, in instantiation at spark-containers-formal-unbounded_vectors.ads:86, in instantiation at indefinite_unbounded.ads:9
+spark-containers-functional-vectors.ads:96:13: info: subprogram "First" will terminate, aspect Always_Terminates has been proved, in instantiation at spark-containers-formal-unbounded_vectors.ads:86, in instantiation at indefinite_unbounded_tagged.ads:15
 spark-containers-functional-vectors.ads:97:06: info: data dependencies proved, in instantiation at spark-containers-formal-unbounded_vectors.ads:86, in instantiation at indefinite_unbounded.ads:9
 spark-containers-functional-vectors.ads:97:06: info: data dependencies proved, in instantiation at spark-containers-formal-unbounded_vectors.ads:86, in instantiation at indefinite_unbounded_tagged.ads:15
 spark-containers-functional-vectors.ads:233:54: info: overflow check proved (CVC5: 2 VC), in instantiation at spark-containers-formal-unbounded_vectors.ads:86, in instantiation at indefinite_unbounded.ads:9
@@ -245,5 +245,5 @@ spark-containers-functional-vectors.ads:240:30: info: range check proved (CVC5: 
 spark-containers-functional-vectors.ads:240:30: info: range check proved (CVC5: 2 VC), in instantiation at spark-containers-formal-unbounded_vectors.ads:86, in instantiation at indefinite_unbounded_tagged.ads:15
 spark-containers-functional-vectors.ads:301:52: info: overflow check proved (CVC5: 1 VC), in instantiation at spark-containers-formal-unbounded_vectors.ads:86, in instantiation at indefinite_unbounded.ads:9
 spark-containers-functional-vectors.ads:301:52: info: overflow check proved (CVC5: 1 VC), in instantiation at spark-containers-formal-unbounded_vectors.ads:86, in instantiation at indefinite_unbounded_tagged.ads:15
-spark-containers-functional-vectors.ads:340:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-unbounded_vectors.ads:86, in instantiation at indefinite_unbounded.ads:9
-spark-containers-functional-vectors.ads:340:13: info: subprogram "Copy_Element" will terminate, terminating annotation has been proved, in instantiation at spark-containers-formal-unbounded_vectors.ads:86, in instantiation at indefinite_unbounded_tagged.ads:15
+spark-containers-functional-vectors.ads:340:13: info: subprogram "Copy_Element" will terminate, aspect Always_Terminates has been proved, in instantiation at spark-containers-formal-unbounded_vectors.ads:86, in instantiation at indefinite_unbounded.ads:9
+spark-containers-functional-vectors.ads:340:13: info: subprogram "Copy_Element" will terminate, aspect Always_Terminates has been proved, in instantiation at spark-containers-formal-unbounded_vectors.ads:86, in instantiation at indefinite_unbounded_tagged.ads:15

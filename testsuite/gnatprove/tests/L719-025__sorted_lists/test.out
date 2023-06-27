@@ -5,8 +5,8 @@ sorted_lists.adb:13:13: info: precondition proved (CVC5: 2 VC)
 sorted_lists.adb:13:33: info: precondition proved (CVC5: 2 VC)
 sorted_lists.adb:14:10: info: precondition proved (CVC5: 1 VC)
 sorted_lists.adb:17:07: info: precondition proved (CVC5: 2 VC)
-sorted_lists.ads:8:13: info: implicit terminating annotation on "My_Eq" has been proved, subprogram will terminate
-sorted_lists.ads:11:13: info: implicit terminating annotation on "My_Lt" has been proved, subprogram will terminate
+sorted_lists.ads:8:13: info: implicit aspect Always_Terminates on "My_Eq" has been proved, subprogram will terminate
+sorted_lists.ads:11:13: info: implicit aspect Always_Terminates on "My_Lt" has been proved, subprogram will terminate
 sorted_lists.ads:22:25: info: initialization of "Position" proved
 sorted_lists.ads:25:08: info: postcondition proved (CVC5: 4 VC; Trivial: 1 VC; Z3: 1 VC)
 sorted_lists.ads:26:06: info: precondition proved (CVC5: 1 VC)

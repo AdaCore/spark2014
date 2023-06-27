@@ -1,3 +1,3 @@
-p.adb:4:18: medium: implicit terminating annotation on "Fun" could be incorrect, loop might be nonterminating [possible fix: add loop variant in the loop body]
+p.adb:4:18: medium: implicit aspect Always_Terminates on "Fun" could be incorrect, loop might be nonterminating [possible fix: add loop variant in the loop body]
 p.adb:4:18: warning: statement has no effect
-q.adb:2:11: info: terminating annotation on "Q" has been proved, subprogram will terminate
+q.adb:2:11: info: aspect Always_Terminates on "Q" has been proved, subprogram will terminate

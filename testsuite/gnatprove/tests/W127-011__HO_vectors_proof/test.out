@@ -8,7 +8,7 @@ spark-containers-functional-vectors-higher_order.adb:42:08: info: predicate chec
 spark-containers-functional-vectors-higher_order.adb:42:37: info: precondition proved, in instantiation at test_sequence_ho.adb:61
 spark-containers-functional-vectors-higher_order.adb:42:37: info: predicate check proved, in instantiation at test_sequence_ho.adb:61
 spark-containers-functional-vectors-higher_order.adb:42:57: info: null exclusion check proved, in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.adb:43:08: medium: implicit terminating annotation on "Filter_Rec" could be incorrect, call via access-to-subprogram might be nonterminating, in instantiation at test_sequence_ho.adb:61 [possible explanation: call could hide recursive calls]
+spark-containers-functional-vectors-higher_order.adb:43:08: medium: implicit aspect Always_Terminates on "Filter_Rec" could be incorrect, call via access-to-subprogram might be nonterminating, in instantiation at test_sequence_ho.adb:61 [possible explanation: call could hide recursive calls]
 spark-containers-functional-vectors-higher_order.adb:43:52: info: pointer dereference check proved, in instantiation at test_sequence_ho.adb:61
 spark-containers-functional-vectors-higher_order.adb:48:24: info: function contract feasibility proved, in instantiation at test_sequence_ho.adb:61
 spark-containers-functional-vectors-higher_order.adb:66:07: info: precondition proved, in instantiation at test_sequence_ho.adb:61
@@ -19,7 +19,7 @@ spark-containers-functional-vectors-higher_order.adb:73:40: info: precondition p
 spark-containers-functional-vectors-higher_order.adb:73:40: info: predicate check proved, in instantiation at test_sequence_ho.adb:61
 spark-containers-functional-vectors-higher_order.adb:73:60: info: null exclusion check proved, in instantiation at test_sequence_ho.adb:61
 spark-containers-functional-vectors-higher_order.adb:76:35: info: predicate check proved, in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.adb:78:13: medium: implicit terminating annotation on "Count" could be incorrect, call via access-to-subprogram might be nonterminating, in instantiation at test_sequence_ho.adb:61 [possible explanation: call could hide recursive calls]
+spark-containers-functional-vectors-higher_order.adb:78:13: medium: implicit aspect Always_Terminates on "Count" could be incorrect, call via access-to-subprogram might be nonterminating, in instantiation at test_sequence_ho.adb:61 [possible explanation: call could hide recursive calls]
 spark-containers-functional-vectors-higher_order.adb:78:16: info: pointer dereference check proved, in instantiation at test_sequence_ho.adb:61
 spark-containers-functional-vectors-higher_order.adb:78:22: info: precondition proved, in instantiation at test_sequence_ho.adb:61
 spark-containers-functional-vectors-higher_order.adb:78:30: info: range check proved, in instantiation at test_sequence_ho.adb:61
@@ -35,7 +35,7 @@ spark-containers-functional-vectors-higher_order.adb:82:42: info: precondition p
 spark-containers-functional-vectors-higher_order.adb:82:42: info: predicate check proved, in instantiation at test_sequence_ho.adb:61
 spark-containers-functional-vectors-higher_order.adb:82:56: info: range check proved, in instantiation at test_sequence_ho.adb:61
 spark-containers-functional-vectors-higher_order.adb:82:59: info: null exclusion check proved, in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.adb:97:07: medium: implicit terminating annotation on "Count_Rec" could be incorrect, call via access-to-subprogram might be nonterminating, in instantiation at test_sequence_ho.adb:61 [possible explanation: call could hide recursive calls]
+spark-containers-functional-vectors-higher_order.adb:97:07: medium: implicit aspect Always_Terminates on "Count_Rec" could be incorrect, call via access-to-subprogram might be nonterminating, in instantiation at test_sequence_ho.adb:61 [possible explanation: call could hide recursive calls]
 spark-containers-functional-vectors-higher_order.adb:97:43: info: predicate check proved, in instantiation at test_sequence_ho.adb:61
 spark-containers-functional-vectors-higher_order.adb:98:12: info: precondition proved, in instantiation at test_sequence_ho.adb:61
 spark-containers-functional-vectors-higher_order.adb:98:12: info: predicate check proved, in instantiation at test_sequence_ho.adb:61
@@ -48,13 +48,13 @@ spark-containers-functional-vectors-higher_order.adb:99:19: info: precondition p
 spark-containers-functional-vectors-higher_order.adb:99:50: info: predicate check proved, in instantiation at test_sequence_ho.adb:61
 spark-containers-functional-vectors-higher_order.adb:99:71: info: predicate check proved, in instantiation at test_sequence_ho.adb:61
 spark-containers-functional-vectors-higher_order.adb:112:14: info: initialization of "Res" proved, in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.adb:114:17: medium: implicit terminating annotation on "Create" could be incorrect, call via access-to-subprogram might be nonterminating, in instantiation at test_sequence_ho.adb:61 [possible explanation: call could hide recursive calls]
+spark-containers-functional-vectors-higher_order.adb:114:17: medium: implicit aspect Always_Terminates on "Create" could be incorrect, call via access-to-subprogram might be nonterminating, in instantiation at test_sequence_ho.adb:61 [possible explanation: call could hide recursive calls]
 spark-containers-functional-vectors-higher_order.adb:114:20: info: precondition proved, in instantiation at test_sequence_ho.adb:61
 spark-containers-functional-vectors-higher_order.adb:114:30: info: pointer dereference check proved, in instantiation at test_sequence_ho.adb:61
 spark-containers-functional-vectors-higher_order.adb:114:40: info: range check proved, in instantiation at test_sequence_ho.adb:61
 spark-containers-functional-vectors-higher_order.adb:116:36: info: loop invariant initialization proved, in instantiation at test_sequence_ho.adb:61
 spark-containers-functional-vectors-higher_order.adb:116:36: info: loop invariant preservation proved, in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.adb:117:13: medium: implicit terminating annotation on "Create" could be incorrect, call via access-to-subprogram might be nonterminating, in instantiation at test_sequence_ho.adb:61 [possible explanation: call could hide recursive calls]
+spark-containers-functional-vectors-higher_order.adb:117:13: medium: implicit aspect Always_Terminates on "Create" could be incorrect, call via access-to-subprogram might be nonterminating, in instantiation at test_sequence_ho.adb:61 [possible explanation: call could hide recursive calls]
 spark-containers-functional-vectors-higher_order.adb:118:16: info: loop invariant initialization proved, in instantiation at test_sequence_ho.adb:61
 spark-containers-functional-vectors-higher_order.adb:118:16: info: loop invariant preservation proved, in instantiation at test_sequence_ho.adb:61
 spark-containers-functional-vectors-higher_order.adb:119:41: info: precondition proved, in instantiation at test_sequence_ho.adb:61
@@ -71,7 +71,7 @@ spark-containers-functional-vectors-higher_order.adb:140:60: info: null exclusio
 spark-containers-functional-vectors-higher_order.adb:141:44: info: precondition proved, in instantiation at test_sequence_ho.adb:61
 spark-containers-functional-vectors-higher_order.adb:141:65: info: null exclusion check proved, in instantiation at test_sequence_ho.adb:61
 spark-containers-functional-vectors-higher_order.adb:144:14: info: initialization of "Res" proved, in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.adb:146:13: medium: implicit terminating annotation on "Filter" could be incorrect, call via access-to-subprogram might be nonterminating, in instantiation at test_sequence_ho.adb:61 [possible explanation: call could hide recursive calls]
+spark-containers-functional-vectors-higher_order.adb:146:13: medium: implicit aspect Always_Terminates on "Filter" could be incorrect, call via access-to-subprogram might be nonterminating, in instantiation at test_sequence_ho.adb:61 [possible explanation: call could hide recursive calls]
 spark-containers-functional-vectors-higher_order.adb:146:16: info: pointer dereference check proved, in instantiation at test_sequence_ho.adb:61
 spark-containers-functional-vectors-higher_order.adb:146:22: info: precondition proved, in instantiation at test_sequence_ho.adb:61
 spark-containers-functional-vectors-higher_order.adb:146:30: info: range check proved, in instantiation at test_sequence_ho.adb:61
@@ -90,7 +90,7 @@ spark-containers-functional-vectors-higher_order.adb:152:16: info: loop invarian
 spark-containers-functional-vectors-higher_order.adb:152:35: info: precondition proved, in instantiation at test_sequence_ho.adb:61
 spark-containers-functional-vectors-higher_order.adb:152:50: info: range check proved, in instantiation at test_sequence_ho.adb:61
 spark-containers-functional-vectors-higher_order.adb:152:53: info: null exclusion check proved, in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.adb:167:07: medium: implicit terminating annotation on "Filter_Rec" could be incorrect, call via access-to-subprogram might be nonterminating, in instantiation at test_sequence_ho.adb:61 [possible explanation: call could hide recursive calls]
+spark-containers-functional-vectors-higher_order.adb:167:07: medium: implicit aspect Always_Terminates on "Filter_Rec" could be incorrect, call via access-to-subprogram might be nonterminating, in instantiation at test_sequence_ho.adb:61 [possible explanation: call could hide recursive calls]
 spark-containers-functional-vectors-higher_order.adb:168:13: info: pointer dereference check proved, in instantiation at test_sequence_ho.adb:61
 spark-containers-functional-vectors-higher_order.adb:168:19: info: precondition proved, in instantiation at test_sequence_ho.adb:61
 spark-containers-functional-vectors-higher_order.adb:169:12: info: precondition proved, in instantiation at test_sequence_ho.adb:61
@@ -173,7 +173,7 @@ spark-containers-functional-vectors-higher_order.adb:316:28: info: predicate che
 spark-containers-functional-vectors-higher_order.adb:316:38: info: precondition proved, in instantiation at test_sequence_ho.adb:61
 spark-containers-functional-vectors-higher_order.adb:316:38: info: predicate check proved, in instantiation at test_sequence_ho.adb:61
 spark-containers-functional-vectors-higher_order.adb:316:56: info: null exclusion check proved, in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.adb:321:17: medium: implicit terminating annotation on "Sum" could be incorrect, call via access-to-subprogram might be nonterminating, in instantiation at test_sequence_ho.adb:61 [possible explanation: call could hide recursive calls]
+spark-containers-functional-vectors-higher_order.adb:321:17: medium: implicit aspect Always_Terminates on "Sum" could be incorrect, call via access-to-subprogram might be nonterminating, in instantiation at test_sequence_ho.adb:61 [possible explanation: call could hide recursive calls]
 spark-containers-functional-vectors-higher_order.adb:321:20: info: predicate check proved, in instantiation at test_sequence_ho.adb:61
 spark-containers-functional-vectors-higher_order.adb:321:26: info: pointer dereference check proved, in instantiation at test_sequence_ho.adb:61
 spark-containers-functional-vectors-higher_order.adb:321:26: info: predicate check proved, in instantiation at test_sequence_ho.adb:61
@@ -186,7 +186,7 @@ spark-containers-functional-vectors-higher_order.adb:322:42: info: precondition 
 spark-containers-functional-vectors-higher_order.adb:322:42: info: predicate check proved, in instantiation at test_sequence_ho.adb:61
 spark-containers-functional-vectors-higher_order.adb:322:54: info: range check proved, in instantiation at test_sequence_ho.adb:61
 spark-containers-functional-vectors-higher_order.adb:322:57: info: null exclusion check proved, in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.adb:337:07: medium: implicit terminating annotation on "Sum_Rec" could be incorrect, call via access-to-subprogram might be nonterminating, in instantiation at test_sequence_ho.adb:61 [possible explanation: call could hide recursive calls]
+spark-containers-functional-vectors-higher_order.adb:337:07: medium: implicit aspect Always_Terminates on "Sum_Rec" could be incorrect, call via access-to-subprogram might be nonterminating, in instantiation at test_sequence_ho.adb:61 [possible explanation: call could hide recursive calls]
 spark-containers-functional-vectors-higher_order.adb:338:12: info: precondition proved, in instantiation at test_sequence_ho.adb:61
 spark-containers-functional-vectors-higher_order.adb:338:12: info: predicate check proved, in instantiation at test_sequence_ho.adb:61
 spark-containers-functional-vectors-higher_order.adb:338:12: info: subprogram variant proved, in instantiation at test_sequence_ho.adb:61
@@ -196,14 +196,14 @@ spark-containers-functional-vectors-higher_order.adb:339:50: info: pointer deref
 spark-containers-functional-vectors-higher_order.adb:339:50: info: predicate check proved, in instantiation at test_sequence_ho.adb:61
 spark-containers-functional-vectors-higher_order.adb:339:57: info: precondition proved, in instantiation at test_sequence_ho.adb:61
 spark-containers-functional-vectors-higher_order.adb:352:14: info: initialization of "Res" proved, in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.adb:354:17: medium: implicit terminating annotation on "Transform" could be incorrect, call via access-to-subprogram might be nonterminating, in instantiation at test_sequence_ho.adb:61 [possible explanation: call could hide recursive calls]
+spark-containers-functional-vectors-higher_order.adb:354:17: medium: implicit aspect Always_Terminates on "Transform" could be incorrect, call via access-to-subprogram might be nonterminating, in instantiation at test_sequence_ho.adb:61 [possible explanation: call could hide recursive calls]
 spark-containers-functional-vectors-higher_order.adb:354:20: info: precondition proved, in instantiation at test_sequence_ho.adb:61
 spark-containers-functional-vectors-higher_order.adb:354:30: info: pointer dereference check proved, in instantiation at test_sequence_ho.adb:61
 spark-containers-functional-vectors-higher_order.adb:354:46: info: precondition proved, in instantiation at test_sequence_ho.adb:61
 spark-containers-functional-vectors-higher_order.adb:354:54: info: range check proved, in instantiation at test_sequence_ho.adb:61
 spark-containers-functional-vectors-higher_order.adb:355:36: info: loop invariant initialization proved, in instantiation at test_sequence_ho.adb:61
 spark-containers-functional-vectors-higher_order.adb:355:36: info: loop invariant preservation proved, in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.adb:356:13: medium: implicit terminating annotation on "Transform" could be incorrect, call via access-to-subprogram might be nonterminating, in instantiation at test_sequence_ho.adb:61 [possible explanation: call could hide recursive calls]
+spark-containers-functional-vectors-higher_order.adb:356:13: medium: implicit aspect Always_Terminates on "Transform" could be incorrect, call via access-to-subprogram might be nonterminating, in instantiation at test_sequence_ho.adb:61 [possible explanation: call could hide recursive calls]
 spark-containers-functional-vectors-higher_order.adb:357:16: info: loop invariant initialization proved, in instantiation at test_sequence_ho.adb:61
 spark-containers-functional-vectors-higher_order.adb:357:16: info: loop invariant preservation proved, in instantiation at test_sequence_ho.adb:61
 spark-containers-functional-vectors-higher_order.adb:359:22: info: precondition proved, in instantiation at test_sequence_ho.adb:61
@@ -214,7 +214,7 @@ spark-containers-functional-vectors-higher_order.adb:359:60: info: range check p
 spark-containers-functional-vectors-higher_order.ads:18:27: info: function contract feasibility proved, in instantiation at test_sequence_ho.adb:61
 spark-containers-functional-vectors-higher_order.ads:25:06: info: data dependencies proved, in instantiation at test_sequence_ho.adb:61
 spark-containers-functional-vectors-higher_order.ads:27:18: info: postcondition proved, in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.ads:28:08: medium: implicit terminating annotation on "Create" could be incorrect, call via access-to-subprogram might be nonterminating, in instantiation at test_sequence_ho.adb:61 [possible explanation: call could hide recursive calls]
+spark-containers-functional-vectors-higher_order.ads:28:08: medium: implicit aspect Always_Terminates on "Create" could be incorrect, call via access-to-subprogram might be nonterminating, in instantiation at test_sequence_ho.adb:61 [possible explanation: call could hide recursive calls]
 spark-containers-functional-vectors-higher_order.ads:30:35: info: precondition proved, in instantiation at test_sequence_ho.adb:61
 spark-containers-functional-vectors-higher_order.ads:30:55: info: range check proved, in instantiation at test_sequence_ho.adb:61
 spark-containers-functional-vectors-higher_order.ads:30:59: info: pointer dereference check proved, in instantiation at test_sequence_ho.adb:61
@@ -224,13 +224,13 @@ spark-containers-functional-vectors-higher_order.ads:41:06: info: data dependenc
 spark-containers-functional-vectors-higher_order.ads:43:18: info: postcondition proved, in instantiation at test_sequence_ho.adb:61
 spark-containers-functional-vectors-higher_order.ads:43:18: info: predicate check proved, in instantiation at test_sequence_ho.adb:61
 spark-containers-functional-vectors-higher_order.ads:43:46: info: predicate check proved, in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.ads:44:08: medium: implicit terminating annotation on "Transform" could be incorrect, call via access-to-subprogram might be nonterminating, in instantiation at test_sequence_ho.adb:61 [possible explanation: call could hide recursive calls]
+spark-containers-functional-vectors-higher_order.ads:44:08: medium: implicit aspect Always_Terminates on "Transform" could be incorrect, call via access-to-subprogram might be nonterminating, in instantiation at test_sequence_ho.adb:61 [possible explanation: call could hide recursive calls]
 spark-containers-functional-vectors-higher_order.ads:47:17: info: precondition proved, in instantiation at test_sequence_ho.adb:61
 spark-containers-functional-vectors-higher_order.ads:47:40: info: range check proved, in instantiation at test_sequence_ho.adb:61
 spark-containers-functional-vectors-higher_order.ads:47:44: info: pointer dereference check proved, in instantiation at test_sequence_ho.adb:61
 spark-containers-functional-vectors-higher_order.ads:47:60: info: precondition proved, in instantiation at test_sequence_ho.adb:61
 spark-containers-functional-vectors-higher_order.ads:47:68: info: range check proved, in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.ads:49:13: info: implicit terminating annotation on "Count" has been proved, subprogram will terminate, in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.ads:49:13: info: implicit aspect Always_Terminates on "Count" has been proved, subprogram will terminate, in instantiation at test_sequence_ho.adb:61
 spark-containers-functional-vectors-higher_order.ads:51:23: info: function contract feasibility proved, in instantiation at test_sequence_ho.adb:61
 spark-containers-functional-vectors-higher_order.ads:57:06: info: data dependencies proved, in instantiation at test_sequence_ho.adb:61
 spark-containers-functional-vectors-higher_order.ads:60:18: info: postcondition proved, in instantiation at test_sequence_ho.adb:61
@@ -243,7 +243,7 @@ spark-containers-functional-vectors-higher_order.ads:71:06: info: data dependenc
 spark-containers-functional-vectors-higher_order.ads:74:18: info: postcondition proved, in instantiation at test_sequence_ho.adb:61
 spark-containers-functional-vectors-higher_order.ads:74:23: info: predicate check proved, in instantiation at test_sequence_ho.adb:61
 spark-containers-functional-vectors-higher_order.ads:74:66: info: range check proved, in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.ads:76:14: info: implicit terminating annotation on "Lemma_Count_Eq" has been proved, subprogram will terminate, in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.ads:76:14: info: implicit aspect Always_Terminates on "Lemma_Count_Eq" has been proved, subprogram will terminate, in instantiation at test_sequence_ho.adb:61
 spark-containers-functional-vectors-higher_order.ads:79:25: info: function contract feasibility proved, in instantiation at test_sequence_ho.adb:61
 spark-containers-functional-vectors-higher_order.ads:84:06: info: data dependencies proved, in instantiation at test_sequence_ho.adb:61
 spark-containers-functional-vectors-higher_order.ads:88:17: info: precondition proved, in instantiation at test_sequence_ho.adb:61
@@ -262,7 +262,7 @@ spark-containers-functional-vectors-higher_order.ads:104:08: info: precondition 
 spark-containers-functional-vectors-higher_order.ads:104:08: info: predicate check proved, in instantiation at test_sequence_ho.adb:61
 spark-containers-functional-vectors-higher_order.ads:104:18: info: range check proved, in instantiation at test_sequence_ho.adb:61
 spark-containers-functional-vectors-higher_order.ads:104:24: info: null exclusion check proved, in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.ads:104:30: medium: implicit terminating annotation on "Lemma_Count_Last" could be incorrect, call via access-to-subprogram might be nonterminating, in instantiation at test_sequence_ho.adb:61 [possible explanation: call could hide recursive calls]
+spark-containers-functional-vectors-higher_order.ads:104:30: medium: implicit aspect Always_Terminates on "Lemma_Count_Last" could be incorrect, call via access-to-subprogram might be nonterminating, in instantiation at test_sequence_ho.adb:61 [possible explanation: call could hide recursive calls]
 spark-containers-functional-vectors-higher_order.ads:104:32: info: precondition proved, in instantiation at test_sequence_ho.adb:61
 spark-containers-functional-vectors-higher_order.ads:104:32: info: predicate check proved, in instantiation at test_sequence_ho.adb:61
 spark-containers-functional-vectors-higher_order.ads:104:56: info: range check proved, in instantiation at test_sequence_ho.adb:61
@@ -275,7 +275,7 @@ spark-containers-functional-vectors-higher_order.ads:105:52: info: predicate che
 spark-containers-functional-vectors-higher_order.ads:105:73: info: predicate check proved, in instantiation at test_sequence_ho.adb:61
 spark-containers-functional-vectors-higher_order.ads:110:23: info: function contract feasibility proved, in instantiation at test_sequence_ho.adb:61
 spark-containers-functional-vectors-higher_order.ads:115:06: info: data dependencies proved, in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.ads:118:08: medium: terminating annotation on "Lemma_Count_All" could be incorrect, call via access-to-subprogram might be nonterminating, in instantiation at test_sequence_ho.adb:61 [possible explanation: call could hide recursive calls]
+spark-containers-functional-vectors-higher_order.ads:118:08: medium: aspect Always_Terminates on "Lemma_Count_All" could be incorrect, call via access-to-subprogram might be nonterminating, in instantiation at test_sequence_ho.adb:61 [possible explanation: call could hide recursive calls]
 spark-containers-functional-vectors-higher_order.ads:118:59: info: pointer dereference check proved, in instantiation at test_sequence_ho.adb:61
 spark-containers-functional-vectors-higher_order.ads:118:65: info: precondition proved, in instantiation at test_sequence_ho.adb:61
 spark-containers-functional-vectors-higher_order.ads:118:73: info: range check proved, in instantiation at test_sequence_ho.adb:61
@@ -286,7 +286,7 @@ spark-containers-functional-vectors-higher_order.ads:119:34: info: null exclusio
 spark-containers-functional-vectors-higher_order.ads:120:40: info: range check proved, in instantiation at test_sequence_ho.adb:61
 spark-containers-functional-vectors-higher_order.ads:125:23: info: function contract feasibility proved, in instantiation at test_sequence_ho.adb:61
 spark-containers-functional-vectors-higher_order.ads:130:06: info: data dependencies proved, in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.ads:133:08: medium: terminating annotation on "Lemma_Count_None" could be incorrect, call via access-to-subprogram might be nonterminating, in instantiation at test_sequence_ho.adb:61 [possible explanation: call could hide recursive calls]
+spark-containers-functional-vectors-higher_order.ads:133:08: medium: aspect Always_Terminates on "Lemma_Count_None" could be incorrect, call via access-to-subprogram might be nonterminating, in instantiation at test_sequence_ho.adb:61 [possible explanation: call could hide recursive calls]
 spark-containers-functional-vectors-higher_order.ads:134:56: info: pointer dereference check proved, in instantiation at test_sequence_ho.adb:61
 spark-containers-functional-vectors-higher_order.ads:134:62: info: precondition proved, in instantiation at test_sequence_ho.adb:61
 spark-containers-functional-vectors-higher_order.ads:134:70: info: range check proved, in instantiation at test_sequence_ho.adb:61
@@ -295,7 +295,7 @@ spark-containers-functional-vectors-higher_order.ads:135:18: info: precondition 
 spark-containers-functional-vectors-higher_order.ads:135:18: info: predicate check proved, in instantiation at test_sequence_ho.adb:61
 spark-containers-functional-vectors-higher_order.ads:135:34: info: null exclusion check proved, in instantiation at test_sequence_ho.adb:61
 spark-containers-functional-vectors-higher_order.ads:135:42: info: predicate check proved, in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.ads:137:13: info: implicit terminating annotation on "Filter" has been proved, subprogram will terminate, in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.ads:137:13: info: implicit aspect Always_Terminates on "Filter" has been proved, subprogram will terminate, in instantiation at test_sequence_ho.adb:61
 spark-containers-functional-vectors-higher_order.ads:139:23: info: function contract feasibility proved, in instantiation at test_sequence_ho.adb:61
 spark-containers-functional-vectors-higher_order.ads:145:06: info: data dependencies proved, in instantiation at test_sequence_ho.adb:61
 spark-containers-functional-vectors-higher_order.ads:148:18: info: postcondition proved, in instantiation at test_sequence_ho.adb:61
@@ -308,9 +308,9 @@ spark-containers-functional-vectors-higher_order.ads:162:18: info: predicate che
 spark-containers-functional-vectors-higher_order.ads:162:43: info: precondition proved, in instantiation at test_sequence_ho.adb:61
 spark-containers-functional-vectors-higher_order.ads:162:43: info: predicate check proved, in instantiation at test_sequence_ho.adb:61
 spark-containers-functional-vectors-higher_order.ads:162:59: info: null exclusion check proved, in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.ads:163:08: medium: implicit terminating annotation on "Filter" could be incorrect, call via access-to-subprogram might be nonterminating, in instantiation at test_sequence_ho.adb:61 [possible explanation: call could hide recursive calls]
+spark-containers-functional-vectors-higher_order.ads:163:08: medium: implicit aspect Always_Terminates on "Filter" could be incorrect, call via access-to-subprogram might be nonterminating, in instantiation at test_sequence_ho.adb:61 [possible explanation: call could hide recursive calls]
 spark-containers-functional-vectors-higher_order.ads:163:48: info: pointer dereference check proved, in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.ads:165:14: info: implicit terminating annotation on "Lemma_Filter_Eq" has been proved, subprogram will terminate, in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.ads:165:14: info: implicit aspect Always_Terminates on "Lemma_Filter_Eq" has been proved, subprogram will terminate, in instantiation at test_sequence_ho.adb:61
 spark-containers-functional-vectors-higher_order.ads:168:25: info: function contract feasibility proved, in instantiation at test_sequence_ho.adb:61
 spark-containers-functional-vectors-higher_order.ads:173:06: info: data dependencies proved, in instantiation at test_sequence_ho.adb:61
 spark-containers-functional-vectors-higher_order.ads:178:41: info: precondition proved, in instantiation at test_sequence_ho.adb:61
@@ -339,7 +339,7 @@ spark-containers-functional-vectors-higher_order.ads:199:11: info: precondition 
 spark-containers-functional-vectors-higher_order.ads:199:22: info: range check proved, in instantiation at test_sequence_ho.adb:61
 spark-containers-functional-vectors-higher_order.ads:199:28: info: null exclusion check proved, in instantiation at test_sequence_ho.adb:61
 spark-containers-functional-vectors-higher_order.ads:201:09: info: pointer dereference check proved, in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.ads:201:09: medium: implicit terminating annotation on "Lemma_Filter_Last" could be incorrect, call via access-to-subprogram might be nonterminating, in instantiation at test_sequence_ho.adb:61 [possible explanation: call could hide recursive calls]
+spark-containers-functional-vectors-higher_order.ads:201:09: medium: implicit aspect Always_Terminates on "Lemma_Filter_Last" could be incorrect, call via access-to-subprogram might be nonterminating, in instantiation at test_sequence_ho.adb:61 [possible explanation: call could hide recursive calls]
 spark-containers-functional-vectors-higher_order.ads:201:15: info: precondition proved, in instantiation at test_sequence_ho.adb:61
 spark-containers-functional-vectors-higher_order.ads:201:23: info: range check proved, in instantiation at test_sequence_ho.adb:61
 spark-containers-functional-vectors-higher_order.ads:201:30: info: contract case proved, in instantiation at test_sequence_ho.adb:61
@@ -374,7 +374,7 @@ spark-containers-functional-vectors-higher_order.ads:210:53: info: overflow chec
 spark-containers-functional-vectors-higher_order.ads:210:60: info: null exclusion check proved, in instantiation at test_sequence_ho.adb:61
 spark-containers-functional-vectors-higher_order.ads:215:23: info: function contract feasibility proved, in instantiation at test_sequence_ho.adb:61
 spark-containers-functional-vectors-higher_order.ads:221:06: info: data dependencies proved, in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.ads:224:08: medium: terminating annotation on "Lemma_Filter_All" could be incorrect, call via access-to-subprogram might be nonterminating, in instantiation at test_sequence_ho.adb:61 [possible explanation: call could hide recursive calls]
+spark-containers-functional-vectors-higher_order.ads:224:08: medium: aspect Always_Terminates on "Lemma_Filter_All" could be incorrect, call via access-to-subprogram might be nonterminating, in instantiation at test_sequence_ho.adb:61 [possible explanation: call could hide recursive calls]
 spark-containers-functional-vectors-higher_order.ads:224:59: info: pointer dereference check proved, in instantiation at test_sequence_ho.adb:61
 spark-containers-functional-vectors-higher_order.ads:224:65: info: precondition proved, in instantiation at test_sequence_ho.adb:61
 spark-containers-functional-vectors-higher_order.ads:224:73: info: range check proved, in instantiation at test_sequence_ho.adb:61
@@ -383,7 +383,7 @@ spark-containers-functional-vectors-higher_order.ads:225:32: info: precondition 
 spark-containers-functional-vectors-higher_order.ads:225:49: info: null exclusion check proved, in instantiation at test_sequence_ho.adb:61
 spark-containers-functional-vectors-higher_order.ads:226:31: info: precondition proved, in instantiation at test_sequence_ho.adb:61
 spark-containers-functional-vectors-higher_order.ads:226:48: info: null exclusion check proved, in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.ads:228:13: info: implicit terminating annotation on "Sum" has been proved, subprogram will terminate, in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.ads:228:13: info: implicit aspect Always_Terminates on "Sum" has been proved, subprogram will terminate, in instantiation at test_sequence_ho.adb:61
 spark-containers-functional-vectors-higher_order.ads:230:24: info: function contract feasibility proved, in instantiation at test_sequence_ho.adb:61
 spark-containers-functional-vectors-higher_order.ads:235:06: info: data dependencies proved, in instantiation at test_sequence_ho.adb:61
 spark-containers-functional-vectors-higher_order.ads:238:18: info: postcondition proved, in instantiation at test_sequence_ho.adb:61
@@ -396,7 +396,7 @@ spark-containers-functional-vectors-higher_order.ads:248:06: info: data dependen
 spark-containers-functional-vectors-higher_order.ads:251:19: info: postcondition proved, in instantiation at test_sequence_ho.adb:61
 spark-containers-functional-vectors-higher_order.ads:251:58: info: predicate check proved, in instantiation at test_sequence_ho.adb:61
 spark-containers-functional-vectors-higher_order.ads:251:68: info: predicate check proved, in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.ads:253:14: info: implicit terminating annotation on "Lemma_Sum_Eq" has been proved, subprogram will terminate, in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.ads:253:14: info: implicit aspect Always_Terminates on "Lemma_Sum_Eq" has been proved, subprogram will terminate, in instantiation at test_sequence_ho.adb:61
 spark-containers-functional-vectors-higher_order.ads:256:25: info: function contract feasibility proved, in instantiation at test_sequence_ho.adb:61
 spark-containers-functional-vectors-higher_order.ads:261:06: info: data dependencies proved, in instantiation at test_sequence_ho.adb:61
 spark-containers-functional-vectors-higher_order.ads:265:17: info: precondition proved, in instantiation at test_sequence_ho.adb:61
@@ -415,7 +415,7 @@ spark-containers-functional-vectors-higher_order.ads:280:18: info: precondition 
 spark-containers-functional-vectors-higher_order.ads:280:18: info: predicate check proved, in instantiation at test_sequence_ho.adb:61
 spark-containers-functional-vectors-higher_order.ads:280:26: info: range check proved, in instantiation at test_sequence_ho.adb:61
 spark-containers-functional-vectors-higher_order.ads:280:32: info: null exclusion check proved, in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.ads:280:39: medium: implicit terminating annotation on "Lemma_Sum_Last" could be incorrect, call via access-to-subprogram might be nonterminating, in instantiation at test_sequence_ho.adb:61 [possible explanation: call could hide recursive calls]
+spark-containers-functional-vectors-higher_order.ads:280:39: medium: implicit aspect Always_Terminates on "Lemma_Sum_Last" could be incorrect, call via access-to-subprogram might be nonterminating, in instantiation at test_sequence_ho.adb:61 [possible explanation: call could hide recursive calls]
 spark-containers-functional-vectors-higher_order.ads:281:08: info: precondition proved, in instantiation at test_sequence_ho.adb:61
 spark-containers-functional-vectors-higher_order.ads:281:08: info: predicate check proved, in instantiation at test_sequence_ho.adb:61
 spark-containers-functional-vectors-higher_order.ads:281:30: info: range check proved, in instantiation at test_sequence_ho.adb:61
@@ -425,22 +425,22 @@ spark-containers-functional-vectors-higher_order.ads:281:53: info: pointer deref
 spark-containers-functional-vectors-higher_order.ads:281:53: info: predicate check proved, in instantiation at test_sequence_ho.adb:61
 spark-containers-functional-vectors-higher_order.ads:281:60: info: precondition proved, in instantiation at test_sequence_ho.adb:61
 spark-containers-functional-vectors-higher_order.ads:281:68: info: range check proved, in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors.ads:28:19: info: terminating annotation on "Eq_Reflexive" has been proved, subprogram will terminate, in instantiation at test_sequence_ho.adb:58
-spark-containers-functional-vectors.ads:30:19: info: terminating annotation on "Eq_Symmetric" has been proved, subprogram will terminate, in instantiation at test_sequence_ho.adb:58
-spark-containers-functional-vectors.ads:32:19: info: terminating annotation on "Eq_Transitive" has been proved, subprogram will terminate, in instantiation at test_sequence_ho.adb:58
-spark-containers-functional-vectors.ads:38:19: info: terminating annotation on "Equivalent_Elements_Reflexive" has been proved, subprogram will terminate, in instantiation at test_sequence_ho.adb:58
-spark-containers-functional-vectors.ads:40:19: info: terminating annotation on "Equivalent_Elements_Symmetric" has been proved, subprogram will terminate, in instantiation at test_sequence_ho.adb:58
-spark-containers-functional-vectors.ads:42:19: info: terminating annotation on "Equivalent_Elements_Transitive" has been proved, subprogram will terminate, in instantiation at test_sequence_ho.adb:58
+spark-containers-functional-vectors.ads:28:19: info: aspect Always_Terminates on "Eq_Reflexive" has been proved, subprogram will terminate, in instantiation at test_sequence_ho.adb:58
+spark-containers-functional-vectors.ads:30:19: info: aspect Always_Terminates on "Eq_Symmetric" has been proved, subprogram will terminate, in instantiation at test_sequence_ho.adb:58
+spark-containers-functional-vectors.ads:32:19: info: aspect Always_Terminates on "Eq_Transitive" has been proved, subprogram will terminate, in instantiation at test_sequence_ho.adb:58
+spark-containers-functional-vectors.ads:38:19: info: aspect Always_Terminates on "Equivalent_Elements_Reflexive" has been proved, subprogram will terminate, in instantiation at test_sequence_ho.adb:58
+spark-containers-functional-vectors.ads:40:19: info: aspect Always_Terminates on "Equivalent_Elements_Symmetric" has been proved, subprogram will terminate, in instantiation at test_sequence_ho.adb:58
+spark-containers-functional-vectors.ads:42:19: info: aspect Always_Terminates on "Equivalent_Elements_Transitive" has been proved, subprogram will terminate, in instantiation at test_sequence_ho.adb:58
 spark-containers-functional-vectors.ads:51:12: info: range check proved, in instantiation at test_sequence_ho.adb:58
 spark-containers-functional-vectors.ads:52:33: info: overflow check proved, in instantiation at test_sequence_ho.adb:58
 spark-containers-functional-vectors.ads:96:13: info: during checks for quantification at spark-containers-functional-vectors.ads:70, in instantiation at test_sequence_ho.adb:58
 spark-containers-functional-vectors.ads:96:13: info: precondition proved, in instantiation at test_sequence_ho.adb:58
-spark-containers-functional-vectors.ads:113:13: info: implicit terminating annotation on "First" has been proved, subprogram will terminate, in instantiation at test_sequence_ho.adb:58
+spark-containers-functional-vectors.ads:113:13: info: implicit aspect Always_Terminates on "First" has been proved, subprogram will terminate, in instantiation at test_sequence_ho.adb:58
 spark-containers-functional-vectors.ads:113:55: info: range check proved, in instantiation at test_sequence_ho.adb:58
 spark-containers-functional-vectors.ads:114:06: info: data dependencies proved, in instantiation at test_sequence_ho.adb:58
 spark-containers-functional-vectors.ads:196:39: info: precondition proved, in instantiation at test_sequence_ho.adb:58
 spark-containers-functional-vectors.ads:255:52: info: overflow check proved, in instantiation at test_sequence_ho.adb:58
-spark-containers-functional-vectors.ads:301:13: info: implicit terminating annotation on "Copy_Element" has been proved, subprogram will terminate, in instantiation at test_sequence_ho.adb:58
+spark-containers-functional-vectors.ads:301:13: info: implicit aspect Always_Terminates on "Copy_Element" has been proved, subprogram will terminate, in instantiation at test_sequence_ho.adb:58
 spark-containers-functional-vectors.ads:338:13: info: during checks for quantification at spark-containers-functional-vectors.ads:70, in instantiation at test_sequence_ho.adb:58
 spark-containers-functional-vectors.ads:338:13: info: precondition proved, in instantiation at test_sequence_ho.adb:58
 spark-containers-functional-vectors.ads:341:13: info: during checks for quantification at spark-containers-functional-vectors.ads:70, in instantiation at test_sequence_ho.adb:58
@@ -452,25 +452,25 @@ spark-containers-functional-vectors.ads:477:50: info: range check proved, in ins
 spark-containers-functional-vectors.ads:477:57: info: predicate check proved, in instantiation at test_sequence_ho.adb:58
 spark-containers-functional-vectors.ads:478:31: info: predicate check proved, in instantiation at test_sequence_ho.adb:58
 spark-containers-parameter_checks.adb:58:10: info: precondition proved, in instantiation at spark-containers-functional-vectors.ads:322, in instantiation at test_sequence_ho.adb:58
-spark-containers-parameter_checks.ads:30:17: info: terminating annotation on "Eq_Reflexive" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-vectors.ads:313, in instantiation at test_sequence_ho.adb:58
+spark-containers-parameter_checks.ads:30:17: info: aspect Always_Terminates on "Eq_Reflexive" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-vectors.ads:313, in instantiation at test_sequence_ho.adb:58
 spark-containers-parameter_checks.ads:31:09: info: data dependencies proved, in instantiation at spark-containers-functional-vectors.ads:313, in instantiation at test_sequence_ho.adb:58
 spark-containers-parameter_checks.ads:32:19: info: postcondition proved, in instantiation at spark-containers-functional-vectors.ads:313, in instantiation at test_sequence_ho.adb:58
-spark-containers-parameter_checks.ads:34:17: info: terminating annotation on "Eq_Symmetric" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-vectors.ads:313, in instantiation at test_sequence_ho.adb:58
+spark-containers-parameter_checks.ads:34:17: info: aspect Always_Terminates on "Eq_Symmetric" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-vectors.ads:313, in instantiation at test_sequence_ho.adb:58
 spark-containers-parameter_checks.ads:35:09: info: data dependencies proved, in instantiation at spark-containers-functional-vectors.ads:313, in instantiation at test_sequence_ho.adb:58
 spark-containers-parameter_checks.ads:37:19: info: postcondition proved, in instantiation at spark-containers-functional-vectors.ads:313, in instantiation at test_sequence_ho.adb:58
-spark-containers-parameter_checks.ads:39:17: info: terminating annotation on "Eq_Transitive" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-vectors.ads:313, in instantiation at test_sequence_ho.adb:58
+spark-containers-parameter_checks.ads:39:17: info: aspect Always_Terminates on "Eq_Transitive" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-vectors.ads:313, in instantiation at test_sequence_ho.adb:58
 spark-containers-parameter_checks.ads:40:09: info: data dependencies proved, in instantiation at spark-containers-functional-vectors.ads:313, in instantiation at test_sequence_ho.adb:58
 spark-containers-parameter_checks.ads:42:19: info: postcondition proved, in instantiation at spark-containers-functional-vectors.ads:313, in instantiation at test_sequence_ho.adb:58
-spark-containers-parameter_checks.ads:62:17: info: terminating annotation on "Eq_Reflexive" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-vectors.ads:322, in instantiation at test_sequence_ho.adb:58
+spark-containers-parameter_checks.ads:62:17: info: aspect Always_Terminates on "Eq_Reflexive" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-vectors.ads:322, in instantiation at test_sequence_ho.adb:58
 spark-containers-parameter_checks.ads:63:09: info: data dependencies proved, in instantiation at spark-containers-functional-vectors.ads:322, in instantiation at test_sequence_ho.adb:58
 spark-containers-parameter_checks.ads:65:19: info: postcondition proved, in instantiation at spark-containers-functional-vectors.ads:322, in instantiation at test_sequence_ho.adb:58
-spark-containers-parameter_checks.ads:70:17: info: terminating annotation on "Eq_Reflexive" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-vectors.ads:322, in instantiation at test_sequence_ho.adb:58
+spark-containers-parameter_checks.ads:70:17: info: aspect Always_Terminates on "Eq_Reflexive" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-vectors.ads:322, in instantiation at test_sequence_ho.adb:58
 spark-containers-parameter_checks.ads:71:09: info: data dependencies proved, in instantiation at spark-containers-functional-vectors.ads:322, in instantiation at test_sequence_ho.adb:58
 spark-containers-parameter_checks.ads:72:19: info: postcondition proved, in instantiation at spark-containers-functional-vectors.ads:322, in instantiation at test_sequence_ho.adb:58
-spark-containers-parameter_checks.ads:74:17: info: terminating annotation on "Eq_Symmetric" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-vectors.ads:322, in instantiation at test_sequence_ho.adb:58
+spark-containers-parameter_checks.ads:74:17: info: aspect Always_Terminates on "Eq_Symmetric" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-vectors.ads:322, in instantiation at test_sequence_ho.adb:58
 spark-containers-parameter_checks.ads:75:09: info: data dependencies proved, in instantiation at spark-containers-functional-vectors.ads:322, in instantiation at test_sequence_ho.adb:58
 spark-containers-parameter_checks.ads:77:19: info: postcondition proved, in instantiation at spark-containers-functional-vectors.ads:322, in instantiation at test_sequence_ho.adb:58
-spark-containers-parameter_checks.ads:79:17: info: terminating annotation on "Eq_Transitive" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-vectors.ads:322, in instantiation at test_sequence_ho.adb:58
+spark-containers-parameter_checks.ads:79:17: info: aspect Always_Terminates on "Eq_Transitive" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-vectors.ads:322, in instantiation at test_sequence_ho.adb:58
 spark-containers-parameter_checks.ads:80:09: info: data dependencies proved, in instantiation at spark-containers-functional-vectors.ads:322, in instantiation at test_sequence_ho.adb:58
 spark-containers-parameter_checks.ads:82:19: info: postcondition proved, in instantiation at spark-containers-functional-vectors.ads:322, in instantiation at test_sequence_ho.adb:58
 test_sequence_ho.adb:57:09: info: range check proved

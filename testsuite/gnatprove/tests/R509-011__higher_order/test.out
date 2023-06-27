@@ -1,12 +1,12 @@
 spark-higher_order-fold.ads:505:17: medium: postcondition might fail, in instantiation at spark-higher_order-fold.ads:579, in instantiation at spark-higher_order-fold.ads:768, in instantiation at test_higher_order.ads:124
 spark-higher_order-fold.ads:513:17: medium: postcondition might fail, in instantiation at spark-higher_order-fold.ads:579, in instantiation at spark-higher_order-fold.ads:768, in instantiation at test_higher_order.ads:124
 spark-higher_order-fold.ads:520:17: medium: postcondition might fail, in instantiation at spark-higher_order-fold.ads:579, in instantiation at spark-higher_order-fold.ads:768, in instantiation at test_higher_order.ads:124
-test_higher_order.ads:9:13: info: implicit terminating annotation on "Small_Enough" has been proved, subprogram will terminate
-test_higher_order.ads:12:13: info: implicit terminating annotation on "Add_One" has been proved, subprogram will terminate
+test_higher_order.ads:9:13: info: implicit aspect Always_Terminates on "Small_Enough" has been proved, subprogram will terminate
+test_higher_order.ads:12:13: info: implicit aspect Always_Terminates on "Add_One" has been proved, subprogram will terminate
 test_higher_order.ads:12:56: info: overflow check proved (CVC5: 2 VC)
-test_higher_order.ads:15:13: info: implicit terminating annotation on "Add_All" has been proved, subprogram will terminate
-test_higher_order.ads:24:13: info: implicit terminating annotation on "A_Small_Enough" has been proved, subprogram will terminate
-test_higher_order.ads:40:13: info: implicit terminating annotation on "In_Range" has been proved, subprogram will terminate
+test_higher_order.ads:15:13: info: implicit aspect Always_Terminates on "Add_All" has been proved, subprogram will terminate
+test_higher_order.ads:24:13: info: implicit aspect Always_Terminates on "A_Small_Enough" has been proved, subprogram will terminate
+test_higher_order.ads:40:13: info: implicit aspect Always_Terminates on "In_Range" has been proved, subprogram will terminate
 test_higher_order.ads:42:27: info: overflow check proved (CVC5: 2 VC)
 test_higher_order.ads:42:33: info: overflow check proved (CVC5: 2 VC)
 test_higher_order.ads:42:38: info: overflow check proved (CVC5: 2 VC)
@@ -15,10 +15,10 @@ test_higher_order.ads:42:69: info: overflow check proved (CVC5: 2 VC)
 test_higher_order.ads:42:75: info: overflow check proved (CVC5: 2 VC)
 test_higher_order.ads:42:80: info: overflow check proved (CVC5: 2 VC)
 test_higher_order.ads:42:90: info: overflow check proved (CVC5: 2 VC)
-test_higher_order.ads:45:13: info: implicit terminating annotation on "Result_In_Range" has been proved, subprogram will terminate
+test_higher_order.ads:45:13: info: implicit aspect Always_Terminates on "Result_In_Range" has been proved, subprogram will terminate
 test_higher_order.ads:45:30: warning: unused variable "A"
 test_higher_order.ads:45:51: warning: unused variable "X"
-test_higher_order.ads:58:13: info: implicit terminating annotation on "In_Range" has been proved, subprogram will terminate
+test_higher_order.ads:58:13: info: implicit aspect Always_Terminates on "In_Range" has been proved, subprogram will terminate
 test_higher_order.ads:60:26: info: overflow check proved (CVC5: 2 VC)
 test_higher_order.ads:60:32: info: overflow check proved (CVC5: 2 VC)
 test_higher_order.ads:60:47: info: overflow check proved (CVC5: 2 VC)
@@ -36,12 +36,12 @@ test_higher_order.ads:61:72: info: overflow check proved (CVC5: 2 VC)
 test_higher_order.ads:61:85: info: overflow check proved (CVC5: 2 VC)
 test_higher_order.ads:61:89: info: overflow check proved (CVC5: 2 VC)
 test_higher_order.ads:63:14: info: postcondition proved (CVC5: 2 VC; Trivial: 1 VC)
-test_higher_order.ads:65:13: info: implicit terminating annotation on "Result_In_Range" has been proved, subprogram will terminate
+test_higher_order.ads:65:13: info: implicit aspect Always_Terminates on "Result_In_Range" has been proved, subprogram will terminate
 test_higher_order.ads:65:30: warning: unused variable "A"
 test_higher_order.ads:65:42: warning: unused variable "X"
+test_higher_order.ads:77:13: info: implicit aspect Always_Terminates on "Id" has been proved, subprogram will terminate
 test_higher_order.ads:77:13: info: implicit function contract might not be available on calls from enclosing unit
-test_higher_order.ads:77:13: info: implicit terminating annotation on "Id" has been proved, subprogram will terminate
-test_higher_order.ads:79:13: info: implicit terminating annotation on "In_Range" has been proved, subprogram will terminate
+test_higher_order.ads:79:13: info: implicit aspect Always_Terminates on "In_Range" has been proved, subprogram will terminate
 test_higher_order.ads:81:10: info: predicate check proved (Trivial: 1 VC)
 test_higher_order.ads:83:04: info: function contract might not be available on implicit recursive calls
 test_higher_order.ads:83:04: info: function contract might not be available on implicit recursive calls
@@ -56,7 +56,7 @@ test_higher_order.ads:83:04: info: in instantiation at spark-higher_order-fold.a
 test_higher_order.ads:83:04: info: in instantiation at spark-higher_order-fold.ads:96
 test_higher_order.ads:94:19: medium: assertion might fail
 test_higher_order.ads:94:24: info: precondition proved (CVC5: 1 VC; Trivial: 1 VC)
-test_higher_order.ads:96:13: info: implicit terminating annotation on "Is_Pos" has been proved, subprogram will terminate
+test_higher_order.ads:96:13: info: implicit aspect Always_Terminates on "Is_Pos" has been proved, subprogram will terminate
 test_higher_order.ads:98:04: info: function contract might not be available on implicit recursive calls
 test_higher_order.ads:98:04: info: function contract might not be available on implicit recursive calls
 test_higher_order.ads:98:04: info: implicit function contract might not be available on implicit recursive calls

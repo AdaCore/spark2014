@@ -1,4 +1,4 @@
-main.adb:9:13: info: implicit terminating annotation on "F" has been proved, subprogram will terminate
+main.adb:9:13: info: implicit aspect Always_Terminates on "F" has been proved, subprogram will terminate
 main.adb:9:35: info: data dependencies proved
 main.adb:10:07: info: initialization of "V1" proved
 main.adb:10:07: medium: resource or memory leak might occur at end of scope

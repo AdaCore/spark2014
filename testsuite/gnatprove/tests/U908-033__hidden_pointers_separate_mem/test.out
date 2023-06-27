@@ -1,6 +1,6 @@
-example_recursive.adb:21:13: info: implicit terminating annotation on "Valid_Memory" has been proved, subprogram will terminate
+example_recursive.adb:21:13: info: implicit aspect Always_Terminates on "Valid_Memory" has been proved, subprogram will terminate
 example_recursive.adb:22:25: info: precondition proved (CVC5: 1 VC)
-example_recursive.adb:33:13: info: implicit terminating annotation on "Valid_List" has been proved, subprogram will terminate
+example_recursive.adb:33:13: info: implicit aspect Always_Terminates on "Valid_List" has been proved, subprogram will terminate
 example_recursive.adb:35:41: info: precondition proved (CVC5: 1 VC)
 example_recursive.adb:35:41: info: tag check proved (CVC5: 1 VC)
 example_recursive.adb:36:32: info: precondition proved (CVC5: 1 VC)
@@ -11,10 +11,10 @@ example_recursive.adb:37:51: info: precondition proved (CVC5: 1 VC)
 example_recursive.adb:37:51: info: tag check proved (CVC5: 1 VC)
 example_recursive.adb:37:69: info: range check proved (CVC5: 2 VC)
 example_recursive.adb:39:06: info: data dependencies proved
-example_recursive.adb:43:13: info: implicit terminating annotation on "Valid_List" has been proved, subprogram will terminate
+example_recursive.adb:43:13: info: implicit aspect Always_Terminates on "Valid_List" has been proved, subprogram will terminate
 example_recursive.adb:45:16: info: precondition proved (CVC5: 1 VC)
 example_recursive.adb:49:13: info: function contract might not be available on recursive calls
-example_recursive.adb:49:13: info: implicit terminating annotation on "Reachable" has been proved, subprogram will terminate
+example_recursive.adb:49:13: info: implicit aspect Always_Terminates on "Reachable" has been proved, subprogram will terminate
 example_recursive.adb:51:31: info: precondition proved (CVC5: 8 VC)
 example_recursive.adb:51:31: info: subprogram variant proved (CVC5: 1 VC)
 example_recursive.adb:51:62: info: precondition proved (CVC5: 1 VC)
@@ -23,7 +23,7 @@ example_recursive.adb:51:81: info: range check proved (CVC5: 2 VC)
 example_recursive.adb:53:06: info: data dependencies proved
 example_recursive.adb:55:40: info: precondition proved (CVC5: 1 VC)
 example_recursive.adb:56:14: info: postcondition proved (CVC5: 1 VC; Trivial: 1 VC)
-example_recursive.adb:59:13: info: implicit terminating annotation on "Valid_List_No_Leak" has been proved, subprogram will terminate
+example_recursive.adb:59:13: info: implicit aspect Always_Terminates on "Valid_List_No_Leak" has been proved, subprogram will terminate
 example_recursive.adb:62:22: info: precondition proved (CVC5: 8 VC)
 example_recursive.adb:71:06: info: data dependencies proved
 example_recursive.adb:72:67: info: precondition proved (CVC5: 1 VC)
@@ -94,8 +94,8 @@ example_recursive.adb:166:10: info: precondition proved (CVC5: 22 VC)
 example_recursive.adb:166:51: info: precondition proved (CVC5: 1 VC)
 example_recursive.adb:166:51: info: tag check proved (CVC5: 1 VC)
 example_recursive.adb:166:71: info: range check proved (CVC5: 2 VC)
+example_recursive.adb:170:13: info: implicit aspect Always_Terminates on "Get" has been proved, subprogram will terminate
 example_recursive.adb:170:13: info: implicit function contract might not be available on recursive calls
-example_recursive.adb:170:13: info: implicit terminating annotation on "Get" has been proved, subprogram will terminate
 example_recursive.adb:171:29: info: precondition proved (CVC5: 1 VC)
 example_recursive.adb:171:29: info: tag check proved (CVC5: 1 VC)
 example_recursive.adb:172:12: info: precondition proved (CVC5: 10 VC)
@@ -106,10 +106,10 @@ example_recursive.adb:172:55: info: range check proved (CVC5: 2 VC)
 example_recursive.adb:172:62: info: range check proved (CVC5: 2 VC)
 example_recursive.adb:174:06: info: data dependencies proved
 example_recursive.adb:176:15: info: precondition proved (CVC5: 1 VC)
-example_recursive.adb:179:13: info: implicit terminating annotation on "Get" has been proved, subprogram will terminate
+example_recursive.adb:179:13: info: implicit aspect Always_Terminates on "Get" has been proved, subprogram will terminate
 example_recursive.adb:180:07: info: precondition proved (CVC5: 10 VC)
 example_recursive.adb:182:06: info: data dependencies proved
-example_recursive.adb:187:13: info: implicit terminating annotation on "Create" has been proved, subprogram will terminate
+example_recursive.adb:187:13: info: implicit aspect Always_Terminates on "Create" has been proved, subprogram will terminate
 example_recursive.adb:188:14: info: postcondition proved (CVC5: 4 VC)
 example_recursive.adb:190:15: info: precondition proved (CVC5: 3 VC)
 example_recursive.adb:193:07: info: absence of resource or memory leak at end of scope proved (CVC5: 1 VC)
@@ -150,7 +150,7 @@ example_recursive.adb:249:18: info: overflow check proved (CVC5: 2 VC)
 example_recursive.adb:256:14: medium: in inlined expression function body at example_recursive.adb:62
 example_recursive.adb:256:14: medium: postcondition might fail, cannot prove Reachable (Address (L.F), Address (L.F), L.L, A, +L.M)
 example_recursive.adb:257:31: info: overflow check proved (CVC5: 2 VC)
-example_recursive.adb:260:16: info: implicit terminating annotation on "Valid_In_L2" has been proved, subprogram will terminate
+example_recursive.adb:260:16: info: implicit aspect Always_Terminates on "Valid_In_L2" has been proved, subprogram will terminate
 example_recursive.adb:263:07: info: initialization of "F1_Next" proved
 example_recursive.adb:264:07: info: initialization of "F2_Next" proved
 example_recursive.adb:267:07: info: initialization of "M_Old" proved

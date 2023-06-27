@@ -84,10 +84,10 @@ binary_search.adb:236:53: info: pointer dereference check proved
 binary_search.adb:236:62: info: pointer dereference check proved
 binary_search.adb:240:25: info: pointer dereference check proved
 binary_search.adb:245:22: info: assertion proved
-binary_search.ads:16:13: info: implicit terminating annotation on "At_End" has been proved, subprogram will terminate
+binary_search.ads:16:13: info: implicit aspect Always_Terminates on "At_End" has been proved, subprogram will terminate
 binary_search.ads:19:07: info: dynamic accessibility check proved
 binary_search.ads:24:13: info: function contract might not be available on recursive calls
-binary_search.ads:24:13: info: implicit terminating annotation on "M_Contains" has been proved, subprogram will terminate
+binary_search.ads:24:13: info: implicit aspect Always_Terminates on "M_Contains" has been proved, subprogram will terminate
 binary_search.ads:26:18: info: pointer dereference check proved
 binary_search.ads:26:32: info: subprogram variant proved
 binary_search.ads:26:45: info: pointer dereference check proved
@@ -95,7 +95,7 @@ binary_search.ads:26:63: info: subprogram variant proved
 binary_search.ads:26:76: info: pointer dereference check proved
 binary_search.ads:28:14: info: postcondition proved
 binary_search.ads:32:13: info: function contract might not be available on recursive calls
-binary_search.ads:32:13: info: implicit terminating annotation on overriding operator "<" has been proved, subprogram will terminate
+binary_search.ads:32:13: info: implicit aspect Always_Terminates on overriding operator "<" has been proved, subprogram will terminate
 binary_search.ads:35:14: info: postcondition proved
 binary_search.ads:38:32: info: pointer dereference check proved
 binary_search.ads:38:42: info: subprogram variant proved
@@ -103,7 +103,7 @@ binary_search.ads:38:47: info: pointer dereference check proved
 binary_search.ads:38:57: info: subprogram variant proved
 binary_search.ads:38:62: info: pointer dereference check proved
 binary_search.ads:42:13: info: function contract might not be available on recursive calls
-binary_search.ads:42:13: info: implicit terminating annotation on overriding operator "<" has been proved, subprogram will terminate
+binary_search.ads:42:13: info: implicit aspect Always_Terminates on overriding operator "<" has been proved, subprogram will terminate
 binary_search.ads:45:14: info: postcondition proved
 binary_search.ads:48:28: info: pointer dereference check proved
 binary_search.ads:48:42: info: subprogram variant proved
@@ -111,7 +111,7 @@ binary_search.ads:48:43: info: pointer dereference check proved
 binary_search.ads:48:57: info: subprogram variant proved
 binary_search.ads:48:58: info: pointer dereference check proved
 binary_search.ads:52:13: info: function contract might not be available on recursive calls
-binary_search.ads:52:13: info: implicit terminating annotation on "Sorted" has been proved, subprogram will terminate
+binary_search.ads:52:13: info: implicit aspect Always_Terminates on "Sorted" has been proved, subprogram will terminate
 binary_search.ads:54:13: info: pointer dereference check proved
 binary_search.ads:54:22: info: pointer dereference check proved
 binary_search.ads:54:38: info: pointer dereference check proved
@@ -121,18 +121,18 @@ binary_search.ads:55:27: info: pointer dereference check proved
 binary_search.ads:55:43: info: subprogram variant proved
 binary_search.ads:55:52: info: pointer dereference check proved
 binary_search.ads:57:14: info: postcondition proved
-binary_search.ads:62:13: info: implicit terminating annotation on "Contains" has been proved, subprogram will terminate
+binary_search.ads:62:13: info: implicit aspect Always_Terminates on "Contains" has been proved, subprogram will terminate
 binary_search.ads:64:14: info: postcondition proved
-binary_search.ads:75:13: info: implicit terminating annotation on overriding operator "<" has been proved, subprogram will terminate
+binary_search.ads:75:13: info: implicit aspect Always_Terminates on overriding operator "<" has been proved, subprogram will terminate
 binary_search.ads:76:26: info: discriminant check proved
-binary_search.ads:79:13: info: implicit terminating annotation on overriding operator "<" has been proved, subprogram will terminate
+binary_search.ads:79:13: info: implicit aspect Always_Terminates on overriding operator "<" has been proved, subprogram will terminate
 binary_search.ads:80:30: info: discriminant check proved
-binary_search.ads:83:13: info: implicit terminating annotation on overriding operator "<" has been proved, subprogram will terminate
+binary_search.ads:83:13: info: implicit aspect Always_Terminates on overriding operator "<" has been proved, subprogram will terminate
 binary_search.ads:84:26: info: discriminant check proved
-binary_search.ads:87:13: info: implicit terminating annotation on overriding operator "<" has been proved, subprogram will terminate
+binary_search.ads:87:13: info: implicit aspect Always_Terminates on overriding operator "<" has been proved, subprogram will terminate
 binary_search.ads:88:30: info: discriminant check proved
 binary_search.ads:95:13: info: function contract might not be available on recursive calls
-binary_search.ads:95:13: info: implicit terminating annotation on "All_V" has been proved, subprogram will terminate
+binary_search.ads:95:13: info: implicit aspect Always_Terminates on "All_V" has been proved, subprogram will terminate
 binary_search.ads:98:14: info: postcondition proved
 binary_search.ads:103:14: info: postcondition proved
 linear_search.adb:5:27: info: predicate check proved
@@ -223,16 +223,16 @@ linear_search.adb:80:28: info: predicate check proved
 linear_search.adb:80:32: info: predicate check proved
 linear_search.adb:82:21: info: pointer dereference check proved
 linear_search.adb:85:16: info: pointer dereference check proved
+linear_search.ads:17:12: info: implicit aspect Always_Terminates on "Length" has been proved, subprogram will terminate
 linear_search.ads:17:12: info: implicit function contract might not be available on recursive calls
-linear_search.ads:17:12: info: implicit terminating annotation on "Length" has been proved, subprogram will terminate
 linear_search.ads:18:22: info: predicate check proved
 linear_search.ads:18:29: info: predicate check proved
 linear_search.ads:18:29: info: subprogram variant proved
 linear_search.ads:18:38: info: pointer dereference check proved
 linear_search.ads:18:45: info: predicate check proved
 linear_search.ads:18:47: info: predicate check proved
+linear_search.ads:23:12: info: implicit aspect Always_Terminates on "Nth" has been proved, subprogram will terminate
 linear_search.ads:23:12: info: implicit function contract might not be available on recursive calls
-linear_search.ads:23:12: info: implicit terminating annotation on "Nth" has been proved, subprogram will terminate
 linear_search.ads:24:08: info: predicate check proved
 linear_search.ads:24:12: info: predicate check proved
 linear_search.ads:24:20: info: pointer dereference check proved
@@ -245,11 +245,11 @@ linear_search.ads:24:50: info: predicate check proved
 linear_search.ads:24:52: info: predicate check proved
 linear_search.ads:27:12: info: predicate check proved
 linear_search.ads:27:17: info: predicate check proved
-linear_search.ads:30:13: info: implicit terminating annotation on "At_End" has been proved, subprogram will terminate
+linear_search.ads:30:13: info: implicit aspect Always_Terminates on "At_End" has been proved, subprogram will terminate
 linear_search.ads:33:07: info: dynamic accessibility check proved
-linear_search.ads:38:13: info: implicit terminating annotation on "At_End" has been proved, subprogram will terminate
+linear_search.ads:38:13: info: implicit aspect Always_Terminates on "At_End" has been proved, subprogram will terminate
 linear_search.ads:41:07: info: dynamic accessibility check proved
-linear_search.ads:46:13: info: implicit terminating annotation on "Linear_Search" has been proved, subprogram will terminate
+linear_search.ads:46:13: info: implicit aspect Always_Terminates on "Linear_Search" has been proved, subprogram will terminate
 linear_search.ads:53:51: info: precondition proved
 linear_search.ads:53:59: info: predicate check proved
 linear_search.ads:53:68: info: contract case proved
@@ -263,7 +263,7 @@ linear_search.ads:62:51: info: predicate check proved
 linear_search.ads:62:61: info: predicate check proved
 linear_search.ads:62:67: info: precondition proved
 linear_search.ads:62:75: info: predicate check proved
-linear_search.ads:64:13: info: implicit terminating annotation on "Linear_Search" has been proved, subprogram will terminate
+linear_search.ads:64:13: info: implicit aspect Always_Terminates on "Linear_Search" has been proved, subprogram will terminate
 linear_search.ads:71:51: info: precondition proved
 linear_search.ads:71:59: info: predicate check proved
 linear_search.ads:71:68: info: contract case proved
@@ -326,22 +326,22 @@ my_map.adb:95:21: info: null exclusion check proved
 my_map.adb:95:21: info: pointer dereference check proved
 my_map.adb:97:16: info: pointer dereference check proved
 my_map.adb:99:07: info: only expected exception raised
-my_map.ads:7:13: info: implicit terminating annotation on "Model_Contains" has been proved, subprogram will terminate
+my_map.ads:7:13: info: implicit aspect Always_Terminates on "Model_Contains" has been proved, subprogram will terminate
+my_map.ads:14:13: info: implicit aspect Always_Terminates on "Model_Value" has been proved, subprogram will terminate
 my_map.ads:14:13: info: implicit function contract might not be available on recursive calls
-my_map.ads:14:13: info: implicit terminating annotation on "Model_Value" has been proved, subprogram will terminate
-my_map.ads:22:13: info: implicit terminating annotation on "At_End" has been proved, subprogram will terminate
+my_map.ads:22:13: info: implicit aspect Always_Terminates on "At_End" has been proved, subprogram will terminate
 my_map.ads:25:07: info: dynamic accessibility check proved
-my_map.ads:30:13: info: implicit terminating annotation on "At_End" has been proved, subprogram will terminate
+my_map.ads:30:13: info: implicit aspect Always_Terminates on "At_End" has been proved, subprogram will terminate
 my_map.ads:33:07: info: dynamic accessibility check proved
-my_map.ads:38:13: info: implicit terminating annotation on "Contains" has been proved, subprogram will terminate
+my_map.ads:38:13: info: implicit aspect Always_Terminates on "Contains" has been proved, subprogram will terminate
 my_map.ads:39:14: info: postcondition proved
 my_map.ads:44:14: info: postcondition proved
 my_map.ads:44:45: info: precondition proved
-my_map.ads:49:13: info: implicit terminating annotation on "Constant_Access" has been proved, subprogram will terminate
+my_map.ads:49:13: info: implicit aspect Always_Terminates on "Constant_Access" has been proved, subprogram will terminate
 my_map.ads:51:14: info: postcondition proved
 my_map.ads:51:14: info: precondition proved
 my_map.ads:51:58: info: pointer dereference check proved
-my_map.ads:54:13: info: implicit terminating annotation on "Reference" has been proved, subprogram will terminate
+my_map.ads:54:13: info: implicit aspect Always_Terminates on "Reference" has been proved, subprogram will terminate
 my_map.ads:56:14: info: postcondition proved
 my_map.ads:56:14: info: precondition proved
 my_map.ads:56:52: info: pointer dereference check proved
@@ -386,16 +386,16 @@ test_list.adb:23:16: info: pointer dereference check proved
 test_list.adb:24:15: info: predicate check proved
 test_list.adb:24:17: info: predicate check proved
 test_list.adb:24:19: info: predicate check proved
+test_list.ads:14:13: info: implicit aspect Always_Terminates on "Length" has been proved, subprogram will terminate
 test_list.ads:14:13: info: implicit function contract might not be available on recursive calls
-test_list.ads:14:13: info: implicit terminating annotation on "Length" has been proved, subprogram will terminate
 test_list.ads:15:24: info: predicate check proved
 test_list.ads:15:31: info: predicate check proved
 test_list.ads:15:31: info: subprogram variant proved
 test_list.ads:15:40: info: pointer dereference check proved
 test_list.ads:15:47: info: predicate check proved
 test_list.ads:15:49: info: predicate check proved
+test_list.ads:21:13: info: implicit aspect Always_Terminates on "Nth" has been proved, subprogram will terminate
 test_list.ads:21:13: info: implicit function contract might not be available on recursive calls
-test_list.ads:21:13: info: implicit terminating annotation on "Nth" has been proved, subprogram will terminate
 test_list.ads:22:10: info: predicate check proved
 test_list.ads:22:14: info: predicate check proved
 test_list.ads:22:22: info: pointer dereference check proved
@@ -407,7 +407,7 @@ test_list.ads:22:48: info: predicate check proved
 test_list.ads:22:50: info: predicate check proved
 test_list.ads:25:16: info: predicate check proved
 test_list.ads:25:21: info: predicate check proved
-test_list.ads:28:13: info: implicit terminating annotation on "At_End" has been proved, subprogram will terminate
+test_list.ads:28:13: info: implicit aspect Always_Terminates on "At_End" has been proved, subprogram will terminate
 test_list.ads:31:07: info: dynamic accessibility check proved
 test_list.ads:37:14: info: postcondition proved
 test_list.ads:37:14: info: predicate check proved
@@ -473,16 +473,16 @@ test_route.ads:30:21: info: pointer dereference check proved
 test_route.ads:30:28: info: overflow check proved
 test_route.ads:30:37: info: pointer dereference check proved
 test_route.ads:30:43: info: pointer dereference check proved
+test_route.ads:41:13: info: implicit aspect Always_Terminates on "Length" has been proved, subprogram will terminate
 test_route.ads:41:13: info: implicit function contract might not be available on recursive calls
-test_route.ads:41:13: info: implicit terminating annotation on "Length" has been proved, subprogram will terminate
 test_route.ads:42:24: info: predicate check proved
 test_route.ads:43:12: info: predicate check proved
 test_route.ads:43:12: info: subprogram variant proved
 test_route.ads:43:21: info: pointer dereference check proved
 test_route.ads:43:28: info: predicate check proved
 test_route.ads:43:30: info: predicate check proved
+test_route.ads:47:13: info: implicit aspect Always_Terminates on "Nth_X" has been proved, subprogram will terminate
 test_route.ads:47:13: info: implicit function contract might not be available on recursive calls
-test_route.ads:47:13: info: implicit terminating annotation on "Nth_X" has been proved, subprogram will terminate
 test_route.ads:48:10: info: predicate check proved
 test_route.ads:48:14: info: predicate check proved
 test_route.ads:48:22: info: pointer dereference check proved
@@ -495,19 +495,19 @@ test_route.ads:48:55: info: predicate check proved
 test_route.ads:48:57: info: predicate check proved
 test_route.ads:50:13: info: predicate check proved
 test_route.ads:50:18: info: predicate check proved
-test_route.ads:59:13: info: implicit terminating annotation on "All_X" has been proved, subprogram will terminate
+test_route.ads:59:13: info: implicit aspect Always_Terminates on "All_X" has been proved, subprogram will terminate
 test_route.ads:60:14: info: postcondition proved
 test_route.ads:60:14: info: predicate check proved
 test_route.ads:60:36: info: predicate check proved
 test_route.ads:62:15: info: precondition proved
 test_route.ads:62:39: info: precondition proved
 test_route.ads:62:49: info: predicate check proved
-test_route.ads:65:13: info: implicit terminating annotation on "At_End" has been proved, subprogram will terminate
+test_route.ads:65:13: info: implicit aspect Always_Terminates on "At_End" has been proved, subprogram will terminate
 test_route.ads:68:07: info: dynamic accessibility check proved
-test_route.ads:73:13: info: implicit terminating annotation on "At_End" has been proved, subprogram will terminate
+test_route.ads:73:13: info: implicit aspect Always_Terminates on "At_End" has been proved, subprogram will terminate
 test_route.ads:76:07: info: dynamic accessibility check proved
 test_route.ads:81:13: info: function contract might not be available on recursive calls
-test_route.ads:81:13: info: implicit terminating annotation on "Nth_Point" has been proved, subprogram will terminate
+test_route.ads:81:13: info: implicit aspect Always_Terminates on "Nth_Point" has been proved, subprogram will terminate
 test_route.ads:85:28: info: predicate check proved
 test_route.ads:85:33: info: predicate check proved
 test_route.ads:93:08: info: postcondition proved

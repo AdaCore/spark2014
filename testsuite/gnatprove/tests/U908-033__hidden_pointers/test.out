@@ -1,6 +1,6 @@
-example_recursive.adb:20:13: info: implicit terminating annotation on "Valid_Memory" has been proved, subprogram will terminate
+example_recursive.adb:20:13: info: implicit aspect Always_Terminates on "Valid_Memory" has been proved, subprogram will terminate
 example_recursive.adb:21:25: info: precondition proved (CVC5: 1 VC)
-example_recursive.adb:31:13: info: implicit terminating annotation on "Valid_List" has been proved, subprogram will terminate
+example_recursive.adb:31:13: info: implicit aspect Always_Terminates on "Valid_List" has been proved, subprogram will terminate
 example_recursive.adb:35:18: info: precondition proved (CVC5: 1 VC)
 example_recursive.adb:35:18: info: subprogram variant proved (CVC5: 1 VC)
 example_recursive.adb:35:47: info: precondition proved (CVC5: 1 VC)
@@ -17,10 +17,10 @@ example_recursive.adb:55:53: info: precondition proved (CVC5: 1 VC)
 example_recursive.adb:55:53: info: tag check proved (CVC5: 1 VC)
 example_recursive.adb:55:72: info: range check proved (CVC5: 2 VC)
 example_recursive.adb:55:80: info: range check proved (CVC5: 2 VC)
-example_recursive.adb:59:13: info: implicit terminating annotation on "Valid_List" has been proved, subprogram will terminate
+example_recursive.adb:59:13: info: implicit aspect Always_Terminates on "Valid_List" has been proved, subprogram will terminate
 example_recursive.adb:60:07: info: precondition proved (CVC5: 1 VC)
 example_recursive.adb:61:09: info: data dependencies proved
-example_recursive.adb:65:13: info: implicit terminating annotation on "Reachable" has been proved, subprogram will terminate
+example_recursive.adb:65:13: info: implicit aspect Always_Terminates on "Reachable" has been proved, subprogram will terminate
 example_recursive.adb:68:18: info: precondition proved (CVC5: 5 VC)
 example_recursive.adb:68:18: info: subprogram variant proved (CVC5: 1 VC)
 example_recursive.adb:68:46: info: precondition proved (CVC5: 1 VC)
@@ -111,16 +111,16 @@ example_recursive.adb:189:47: info: precondition proved (CVC5: 1 VC)
 example_recursive.adb:189:47: info: tag check proved (CVC5: 1 VC)
 example_recursive.adb:189:75: info: range check proved (CVC5: 2 VC)
 example_recursive.adb:191:07: info: precondition proved (CVC5: 27 VC; Trivial: 5 VC)
-example_recursive.adb:194:13: info: implicit terminating annotation on "Disjoint" has been proved, subprogram will terminate
+example_recursive.adb:194:13: info: implicit aspect Always_Terminates on "Disjoint" has been proved, subprogram will terminate
 example_recursive.adb:196:13: info: precondition proved (CVC5: 5 VC)
 example_recursive.adb:197:19: info: precondition proved (CVC5: 5 VC)
 example_recursive.adb:198:09: info: data dependencies proved
 example_recursive.adb:200:44: info: precondition proved (CVC5: 1 VC)
 example_recursive.adb:200:69: info: precondition proved (CVC5: 1 VC)
-example_recursive.adb:202:13: info: implicit terminating annotation on "Reachable_Locations" has been proved, subprogram will terminate
+example_recursive.adb:202:13: info: implicit aspect Always_Terminates on "Reachable_Locations" has been proved, subprogram will terminate
 example_recursive.adb:203:33: info: precondition proved (CVC5: 5 VC)
 example_recursive.adb:205:39: info: precondition proved (CVC5: 1 VC)
-example_recursive.adb:209:13: info: implicit terminating annotation on "Reachable_Locations" has been proved, subprogram will terminate
+example_recursive.adb:209:13: info: implicit aspect Always_Terminates on "Reachable_Locations" has been proved, subprogram will terminate
 example_recursive.adb:210:07: info: precondition proved (CVC5: 5 VC)
 example_recursive.adb:212:44: info: precondition proved (CVC5: 1 VC)
 example_recursive.adb:219:06: info: data dependencies proved
@@ -242,15 +242,15 @@ example_recursive.adb:352:10: warning: assuming "Rand" has no effect on global i
 example_recursive.adb:352:10: warning: no Global contract available for "Rand"
 example_recursive.adb:353:07: medium: in inlined expression function body at example_recursive.adb:197
 example_recursive.adb:353:07: medium: precondition might fail, cannot prove not Reachable (Address (L2.Values), L2.Length, A, Memory)
-example_tagged_obj.adb:11:16: info: implicit terminating annotation on "Witness" has been proved, subprogram will terminate
-example_tagged_obj.adb:12:16: info: implicit terminating annotation on overriding operator "=" has been proved, subprogram will terminate
+example_tagged_obj.adb:11:16: info: implicit aspect Always_Terminates on "Witness" has been proved, subprogram will terminate
+example_tagged_obj.adb:12:16: info: implicit aspect Always_Terminates on overriding operator "=" has been proved, subprogram will terminate
 example_tagged_obj.adb:14:26: info: postcondition proved (CVC5: 2 VC)
 example_tagged_obj.adb:14:26: info: postcondition proved (CVC5: 2 VC), in inherited contract at example_tagged_obj.adb:32
 example_tagged_obj.adb:14:40: info: predicate check proved (Trivial: 1 VC)
 example_tagged_obj.adb:14:55: info: predicate check proved (Trivial: 1 VC)
-example_tagged_obj.adb:30:16: info: implicit terminating annotation on "Witness" has been proved, subprogram will terminate
+example_tagged_obj.adb:30:16: info: implicit aspect Always_Terminates on "Witness" has been proved, subprogram will terminate
 example_tagged_obj.adb:31:33: info: predicate check proved (Trivial: 1 VC)
-example_tagged_obj.adb:32:16: info: implicit terminating annotation on overriding operator "=" has been proved, subprogram will terminate
+example_tagged_obj.adb:32:16: info: implicit aspect Always_Terminates on overriding operator "=" has been proved, subprogram will terminate
 example_tagged_obj.adb:37:04: info: initialization of "X1" proved
 example_tagged_obj.adb:38:04: info: initialization of "X2" proved
 example_tagged_obj.adb:39:04: info: initialization of "X3" proved

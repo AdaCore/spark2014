@@ -105,14 +105,6 @@ package Gnat2Why.Expr is
    --      point numbers and should not be needed anymore once floating point
    --      numbers are properly handled by solvers.
 
-   function Check_No_Memory_Leaks_At_End_Of_Scope
-     (Decls : List_Id)
-      return W_Prog_Id;
-   --  Go through the list of declarations Decls and generate checks that no
-   --  variable leads to a resource leak at the end of its scope. This function
-   --  follows the same traversal structure as Check_No_Owning_Decl in
-   --  SPARK_Definition.
-
    function Check_Scalar_Range
      (Params : Transformation_Params;
       N      : Entity_Id;
@@ -432,19 +424,51 @@ package Gnat2Why.Expr is
    --  use the type W_Expr_Array to be able to share the handling whether we
    --  use ids or the expressions directly.
 
-   function Havoc_Borrowed_Expression
-     (Brower : Constant_Or_Variable_Kind_Id)
-      return W_Prog_Id;
-   --  Construct a program which havocs a borrowed expression. After the havoc,
-   --  we get information about potential updates from the borrower by
-   --  assuming that its pledge (relation between the borrower and the borrowed
-   --  expression) holds. We also check here that we have not broken any
-   --  constraints on the borrowed object during the borrow.
-
-   function Havoc_Borrowed_From_Block
-     (N : N_Block_Statement_Id)
+   function Havoc_Borrowed_And_Check_No_Leaks_From_Scope
+     (Scope   : Node_Id;
+      Exiting : Local_CFG.Vertex_Sets.Set)
       return W_Statement_Sequence_Id;
-   --  Havoc all entities borrowed in the block
+   --  Specialization of Havoc_Borrowed_And_Check_No_Leaks_From_Scopes
+   --  for a single scope.
+
+   function Havoc_Borrowed_And_Check_No_Leaks_From_Scope
+     (Scope   : Node_Id;
+      Exiting : Local_CFG.Vertex)
+      return W_Statement_Sequence_Id;
+   --  Specialization of Havoc_Borrowed_And_Check_No_Leaks_From_Scopes
+   --  for a single scope/vertex.
+
+   function Havoc_Borrowed_And_Check_No_Leaks_From_Scopes
+     (Scopes  : Node_Lists.List;
+      Exiting : Local_CFG.Vertex_Sets.Set)
+      return W_Statement_Sequence_Id;
+   --  From a list of exited scopes, either block statements
+   --  or unique entity of escaped body (matching association of
+   --  Local_CFG.Graph_Id), construct a program which for each scope in order
+   --  * Havocs all borrowed expressions. After each individual havoc,
+   --    we get information about potential updates from the borrower by
+   --    assuming that its pledge (relation between the borrower and the
+   --    borrowed expression) holds. We also check here that we have not broken
+   --    any constraints on the borrowed object during the borrow.
+   --  * Generate checks that no variable whose scope is exited leads to a
+   --    resource leak at the end of its scope. This part
+   --    follows the same traversal structure as Check_No_Owning_Decl in
+   --    SPARK_Definition.
+   --
+   --  Scopes must be listed in order of exit (innermost scopes first),
+   --  without skipping any intermediate scope. They are considered to
+   --  be exited from one of vertices in Exiting, to filter out borrowers
+   --  not updated on any local control path to Exiting from the havoced
+   --  borrows.
+   --
+   --  If Exiting is empty, then analysis of updated borrowers is not performed
+   --  and all borrows are havoc'd.
+
+   function Havoc_Borrowed_And_Check_No_Leaks_From_Scopes
+     (Scopes  : Node_Lists.List;
+      Exiting : Local_CFG.Vertex)
+      return W_Statement_Sequence_Id;
+   --  Specialization when Exiting is a singleton.
 
    function Insert_Predicate_Check
      (Ada_Node      : Node_Id;

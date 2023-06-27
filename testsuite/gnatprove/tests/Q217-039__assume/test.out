@@ -3,7 +3,7 @@ assume_call.adb:7:14: warning: subprogram "Wrong_Pre" has no effect
 assume_call.adb:14:04: warning: analyzing unreferenced procedure "Caller"
 assume_call.adb:14:14: warning: subprogram "Caller" has no effect
 assume_call.adb:17:07: info: precondition proved (CVC5: 1 VC)
-assume_call.ads:3:13: info: implicit terminating annotation on "f1" has been proved, subprogram will terminate
+assume_call.ads:3:13: info: implicit aspect Always_Terminates on "f1" has been proved, subprogram will terminate
 assume_call.ads:4:19: info: postcondition proved (CVC5: 1 VC)
 assume_call.ads:4:33: info: overflow check proved (CVC5: 2 VC)
 max steps used for successful proof: 1

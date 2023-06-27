@@ -8,12 +8,12 @@ aida-strings-generic_immutable_unbounded_string.adb:23:83: info: cannot unroll l
 aida-strings-generic_immutable_unbounded_string.adb:24:19: info: index check proved (CVC5: 2 VC)
 aida-strings-generic_immutable_unbounded_string.adb:24:37: info: precondition proved (CVC5: 2 VC)
 aida-strings-generic_immutable_unbounded_string.adb:30:10: info: only expected exception raised (CVC5: 1 VC)
-aida-strings-generic_immutable_unbounded_string.ads:10:13: info: implicit terminating annotation on "Length" has been proved, subprogram will terminate
+aida-strings-generic_immutable_unbounded_string.ads:10:13: info: implicit aspect Always_Terminates on "Length" has been proved, subprogram will terminate
 aida-strings-generic_immutable_unbounded_string.ads:11:06: info: data dependencies proved
-aida-strings-generic_immutable_unbounded_string.ads:13:13: info: implicit terminating annotation on "Char_At" has been proved, subprogram will terminate
+aida-strings-generic_immutable_unbounded_string.ads:13:13: info: implicit aspect Always_Terminates on "Char_At" has been proved, subprogram will terminate
 aida-strings-generic_immutable_unbounded_string.ads:15:06: info: data dependencies proved
 aida-strings-generic_immutable_unbounded_string.ads:16:59: info: range check proved (CVC5: 2 VC)
-aida-strings-generic_immutable_unbounded_string.ads:18:13: info: implicit terminating annotation on "To_String" has been proved, subprogram will terminate
+aida-strings-generic_immutable_unbounded_string.ads:18:13: info: implicit aspect Always_Terminates on "To_String" has been proved, subprogram will terminate
 aida-strings-generic_immutable_unbounded_string.ads:20:06: info: data dependencies proved
 aida-strings-generic_immutable_unbounded_string_shared_ptr-mutable.ads:9:26: info: range check proved (CVC5: 2 VC), in instantiation at extension.ads:9
 aida-strings-generic_immutable_unbounded_string_shared_ptr-mutable.ads:9:26: info: range check proved (CVC5: 2 VC), in instantiation at vk.ads:23
@@ -23,4 +23,4 @@ aida-strings-generic_immutable_unbounded_string_shared_ptr.ads:20:65: info: rang
 main.adb:8:04: info: initialization of "Tag_V" proved
 main.adb:14:04: info: initialization of "N" proved
 main.adb:27:30: info: precondition proved (CVC5: 1 VC)
-vk.ads:16:16: info: implicit terminating annotation on "Name" has been proved, subprogram will terminate
+vk.ads:16:16: info: implicit aspect Always_Terminates on "Name" has been proved, subprogram will terminate
