@@ -57,6 +57,8 @@ depends5.adb:10:11: info: flow dependencies proved
 depends5.adb:22:04: info: only expected exception raised (CVC5: 1 VC)
 depends5.adb:25:22: high: "Z.C" is not initialized
 depends5.adb:25:22: medium: assertion might fail
+effect.adb:4:14: warning: subprogram "Check" has no effect
+effect.adb:5:45: info: exceptional case proved (CVC5: 1 VC)
 effect1.adb:1:33: info: initialization of "Y" proved
 effect1.adb:2:08: info: flow dependencies proved
 effect1.adb:4:20: info: initialization of "A" proved
