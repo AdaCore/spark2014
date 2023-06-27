@@ -1610,12 +1610,33 @@ package body Flow.Analysis.Sanity is
                           and then FA.Is_Generative
                         then
                            Current_Error_Node := A.Error_Location;
-                           raise Program_Error with
-                             Full_Source_Name (FA.Spec_Entity) & " @" &
-                             V'Img & " : " &
-                             Flow_Id_To_String (Var);
-                        end if;
 
+                           --  If the unknown variable is declared within the
+                           --  analysed subprogram, then most likely something
+                           --  went wrong with Get_Variables and it is best to
+                           --  crash; otherwise, the problem is rather in the
+                           --  GG machinery and the users are likely to
+                           --  workaround the problem by adding explicit Global
+                           --  aspect, as suggested by the error message.
+
+                           if Var.Kind in Direct_Mapping | Record_Field
+                             and then
+                               Scope_Within
+                                 (Inner => Get_Direct_Mapping_Id (Var),
+                                  Outer => FA.Spec_Entity)
+                           then
+                              raise Program_Error with
+                                Full_Source_Name (FA.Spec_Entity) & " @" &
+                                V'Img & " : " &
+                                Flow_Id_To_String (Var);
+                           else
+                              pragma Assert
+                                (False,
+                                 Full_Source_Name (FA.Spec_Entity) & " @" &
+                                   V'Img & " : " &
+                                   Flow_Id_To_String (Var));
+                           end if;
+                        end if;
                      end if;
 
                   when Null_Value =>
