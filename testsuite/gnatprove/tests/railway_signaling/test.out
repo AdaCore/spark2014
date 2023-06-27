@@ -44,10 +44,10 @@ trains.adb:152:42: info: index check proved
 trains.adb:152:82: info: range check proved
 trains.adb:155:22: info: loop invariant initialization proved
 trains.adb:155:22: info: loop invariant preservation proved
-trains.adb:160:22: info: loop invariant initialization proved
 trains.adb:160:22: info: loop invariant preservation proved
 trains.adb:160:30: info: range check proved
 trains.adb:162:61: info: index check proved
+trains.adb:163:35: medium: loop invariant might fail in first iteration, cannot prove Track_Signals (Get_Previous_Track (Trains (Train), Id)) in Orange | Red
 trains.adb:163:50: info: index check proved
 trains.adb:163:78: info: index check proved
 trains.adb:167:31: info: assertion proved
