@@ -62,7 +62,6 @@ test_borrow_and_leaks.adb:69:23: info: absence of resource or memory leak proved
 test_borrow_and_leaks.adb:69:27: info: pointer dereference check proved (CVC5: 1 VC)
 test_borrow_and_leaks.adb:70:17: info: pointer dereference check proved (CVC5: 1 VC)
 test_borrow_and_leaks.adb:70:23: info: absence of resource or memory leak proved (CVC5: 1 VC)
-test_borrow_and_leaks.adb:76:14: warning: subprogram "Raise_E" has no effect
 test_borrow_and_leaks.adb:78:33: info: exceptional case proved (Trivial: 1 VC)
 test_borrow_and_leaks.adb:85:06: info: disjoint contract cases proved (CVC5: 1 VC)
 test_borrow_and_leaks.adb:86:42: info: contract case proved (CVC5: 1 VC; Trivial: 1 VC)

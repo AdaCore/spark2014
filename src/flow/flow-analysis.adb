@@ -130,11 +130,7 @@ package body Flow.Analysis is
      (FA : in out Flow_Analysis_Graphs)
    with Pre => Ekind (FA.Spec_Entity) = E_Procedure
                and then not Has_Effects (FA);
-   --  Issue a warning if the subprogram has no effects. The message is
-   --  suppressed if the subprogram is:
-   --  * a ghost entity
-   --  * is marked No_Return and is considered to always terminate abnormally
-   --  * is annotated with globals by the user.
+   --  Issue a warning if the subprogram is considered to have no effects
 
    -----------------
    -- Has_Effects --
@@ -346,8 +342,16 @@ package body Flow.Analysis is
      (FA : in out Flow_Analysis_Graphs)
    is
    begin
+      --  Suppress the warning for subprograms that are:
+      --  * main, because they often have no data flow effects
+      --  * do not return, because that is a kind of effect
+      --  * raise exception, because that is a kind of effect as well
+      --  * have explicit Global => null, because the lack of effects is clear
+      --  * are ghost, because they often only check assertions
+
       if not FA.Is_Main
         and then not Is_Possibly_Nonreturning_Procedure (FA.Spec_Entity)
+        and then not Has_Exceptional_Contract (FA.Spec_Entity)
         and then not Has_User_Supplied_Globals (FA.Spec_Entity)
         and then not Is_Ghost_Entity (FA.Spec_Entity)
       then
