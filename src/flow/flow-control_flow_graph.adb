@@ -1296,11 +1296,11 @@ package body Flow.Control_Flow_Graph is
 
          when Initial_Value | Final_Value =>
             case F.Kind is
-               when Null_Value | Synthetic_Null_Export =>
-                  raise Program_Error;
+               --  This routine is only called for variables represented by
+               --  Entity_Id.
 
-               when Magic_String =>
-                  null;
+               when Magic_String | Null_Value | Synthetic_Null_Export =>
+                  raise Program_Error;
 
                when Direct_Mapping | Record_Field =>
                   if F.Kind = Record_Field
