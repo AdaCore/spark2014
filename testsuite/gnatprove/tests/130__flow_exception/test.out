@@ -82,7 +82,6 @@ global_havoc.adb:1:11: warning: subprogram "Global_Havoc" has no effect
 global_havoc.adb:12:21: info: initialization of "X" proved
 global_havoc.adb:13:39: info: exceptional case proved (Trivial: 1 VC)
 global_havoc.adb:25:12: info: data dependencies proved
-global_havoc.adb:25:45: info: initialization of "G" proved
 global_havoc.adb:25:45: medium: "G.C" might not be initialized
 global_havoc.adb:28:07: info: only expected exception raised (CVC5: 1 VC)
 global_havoc.adb:31:25: high: "G.C" is not an input in the Global contract of subprogram "Test" at line 23
