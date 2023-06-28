@@ -2994,9 +2994,14 @@ package body Flow.Analysis is
                      OK      => OK);
 
                   declare
+                     Havoc_Atr : V_Attributes renames
+                       FA.Atr (Get_Initial_Vertex (FA.DDG, Havoc_Var));
+                     --  Attributes of the initial vertex of the havoced
+                     --  variable.
+
                      Obj : constant Flow_Id := Entire_Variable (Havoc_Var);
                   begin
-                     if Parent_Atr.Is_Global then
+                     if Havoc_Atr.Is_Global then
                         if OK then
                            Global_OK.Include (Obj);
                         else
