@@ -78,6 +78,18 @@ global1.adb:1:33: info: initialization of "Z" proved
 global1.adb:2:08: info: flow dependencies proved
 global1.adb:4:04: info: initialization of "Proxy" proved
 global1.adb:16:04: info: only expected exception raised (CVC5: 1 VC)
+global_havoc.adb:1:11: warning: subprogram "Global_Havoc" has no effect
+global_havoc.adb:12:21: info: initialization of "X" proved
+global_havoc.adb:13:39: info: exceptional case proved (Trivial: 1 VC)
+global_havoc.adb:25:12: info: data dependencies proved
+global_havoc.adb:25:45: info: initialization of "G" proved
+global_havoc.adb:25:45: medium: "G.C" might not be initialized
+global_havoc.adb:28:07: info: only expected exception raised (CVC5: 1 VC)
+global_havoc.adb:31:25: high: "G.C" is not an input in the Global contract of subprogram "Test" at line 23
+global_havoc.adb:31:25: high: "G.C" is not initialized
+global_havoc.adb:31:25: high: either make "G.C" an input in the Global contract or initialize it before use
+global_havoc.adb:31:25: medium: assertion might fail
+global_havoc.adb:34:04: info: precondition proved (Trivial: 1 VC)
 inout1.adb:1:32: info: initialization of "Z" proved
 inout1.adb:2:03: info: flow dependencies proved
 inout1.adb:15:20: medium: "Proxy.C" might not be initialized in "Test" [reason for check: OUT parameter should be fully initialized on return] [possible fix: initialize "Proxy.C" on all paths, make "Proxy" an IN OUT parameter or annotate it with aspect Relaxed_Initialization]
