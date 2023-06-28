@@ -20,11 +20,11 @@ bad_array_conv.adb:7:19: error: conversion between array types with modular and 
 bad_array_conv.adb:9:32: error: "Y" is not allowed in SPARK (due to conversion between array types with modular and non-modular index types)
 bad_array_conv.adb:9:32: error: violation of aspect SPARK_Mode at line 2
 bad_at_end_borrow.adb:19:13: error: borrowing traversal functions whose first parameter does not have an anonymous access-to-variable type is not yet supported
-bad_at_end_borrow.adb:27:16: error: call to a function annotated with At_End_Borrow occurring outside of a postcondition, contract cases, or assertion is not allowed in SPARK
+bad_at_end_borrow.adb:27:16: error: call to a function annotated with At_End_Borrow occurring outside of a postcondition, contract cases, assertion is not allowed in SPARK
 bad_at_end_borrow.adb:27:16: error: violation of aspect SPARK_Mode at line 1
-bad_at_end_borrow.adb:27:52: error: call to a function annotated with At_End_Borrow occurring outside of a postcondition, contract cases, or assertion is not allowed in SPARK
+bad_at_end_borrow.adb:27:52: error: call to a function annotated with At_End_Borrow occurring outside of a postcondition, contract cases, assertion is not allowed in SPARK
 bad_at_end_borrow.adb:27:52: error: violation of aspect SPARK_Mode at line 1
-bad_at_end_borrow.adb:29:07: error: "Bad" is not allowed in SPARK (due to call to a function annotated with At_End_Borrow occurring outside of a postcondition, contract cases, or assertion)
+bad_at_end_borrow.adb:29:07: error: "Bad" is not allowed in SPARK (due to call to a function annotated with At_End_Borrow occurring outside of a postcondition, contract cases, assertion)
 bad_at_end_borrow.adb:29:07: error: violation of aspect SPARK_Mode at line 1
 bad_inheritance.ads:17:13: error: subprogram inherited from root and interface is not yet supported
 bad_inheritance.ads:27:13: error: subprogram inherited from root and interface is not yet supported
