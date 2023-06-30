@@ -117,7 +117,22 @@ package body Flow.Control_Dependence_Graph is
                   FA.CDG.Add_Edge (CV, V, EC_Default);
                end;
 
-            elsif A.Is_Call_Exception then
+            --  For subprogram calls that might raise some exception, we add
+            --  dependency edges to the in-parameters (because the exact
+            --  exception being raised depends on the input parameters) and to
+            --  the call vertex (because when there are no input parameters
+            --  then the exact exception depends on the call itself).
+
+            --  We do this both for the vertex, where the control flow branches
+            --  into exceptional execution, and for the havoc vertex, where the
+            --  control flow branches into a particular exception. Note: we
+            --  could have single vertex where either normal or any of the
+            --  exceptional executions is selected, but there we would need a
+            --  havoc vertex on every exceptional execution paths.
+
+            elsif A.Is_Call_Exception
+              or else A.Is_Param_Havoc
+            then
                declare
                   Prev    : Flow_Graphs.Vertex_Id := V;
                   In_Deps : Vertex_Sets.Set;
@@ -133,12 +148,6 @@ package body Flow.Control_Dependence_Graph is
                   for In_Dep of In_Deps loop
                      FA.CDG.Remove_Edge (In_Dep, V);
                   end loop;
-
-                  --  Add edges to the in-parameters (because the exact
-                  --  exception being raised depends on the input parameters)
-                  --  and to the call vertex (because when there are no input
-                  --  parameters then the exact exception depends on the call
-                  --  itself).
 
                   loop
                      Prev := FA.CFG.Parent (Prev);
@@ -168,6 +177,8 @@ package body Flow.Control_Dependence_Graph is
                                  FA.CDG.Add_Edge (Prev, V, EC_Default);
                               end if;
                            end if;
+                        elsif Prev_Atr.Is_Call_Exception then
+                           null;
                         else
                            raise Program_Error;
                         end if;
