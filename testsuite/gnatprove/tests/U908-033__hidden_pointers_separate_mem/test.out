@@ -122,8 +122,8 @@ example_recursive.adb:211:22: info: assertion proved (CVC5: 1 VC)
 example_recursive.adb:212:22: info: assertion proved (CVC5: 1 VC)
 example_recursive.adb:212:30: info: precondition proved (CVC5: 1 VC)
 example_recursive.adb:212:30: info: tag check proved (CVC5: 1 VC)
-example_recursive.adb:220:14: medium: in inlined expression function body at example_recursive.adb:60
-example_recursive.adb:220:14: medium: postcondition might fail, cannot prove Valid_List (L)
+example_recursive.adb:220:14: medium: in inlined expression function body at example_recursive.adb:62
+example_recursive.adb:220:14: medium: postcondition might fail, cannot prove Reachable (Address (L.F), Address (L.F), L.L, A, +L.M)
 example_recursive.adb:220:60: info: overflow check proved (CVC5: 2 VC)
 example_recursive.adb:223:35: info: precondition proved (CVC5: 1 VC)
 example_recursive.adb:223:35: info: tag check proved (CVC5: 1 VC)
@@ -136,15 +136,15 @@ example_recursive.adb:237:24: info: pointer dereference check proved (CVC5: 1 VC
 example_recursive.adb:240:22: medium: assertion might fail, cannot prove Get (M, A) in L_Cell
 example_recursive.adb:240:22: medium: in inlined expression function body at example_recursive.adb:22
 example_recursive.adb:241:22: info: assertion proved (CVC5: 1 VC)
-example_recursive.adb:241:30: info: precondition proved (Z3: 1 VC)
 example_recursive.adb:241:30: info: tag check proved (CVC5: 1 VC)
+example_recursive.adb:241:30: medium: precondition might fail
 example_recursive.adb:242:22: info: assertion proved (CVC5: 1 VC)
 example_recursive.adb:242:30: info: precondition proved (CVC5: 1 VC)
 example_recursive.adb:242:30: info: tag check proved (CVC5: 1 VC)
 example_recursive.adb:245:10: medium: precondition might fail, cannot prove ( Get (M1, A2) = Get (M2, A2))
 example_recursive.adb:245:70: info: range check proved (CVC5: 2 VC)
-example_recursive.adb:246:10: medium: in inlined expression function body at example_recursive.adb:34
-example_recursive.adb:246:10: medium: precondition might fail, cannot prove Valid (M, A)
+example_recursive.adb:246:10: medium: in inlined expression function body at example_recursive.adb:36
+example_recursive.adb:246:10: medium: precondition might fail, cannot prove Address (L_Cell (Get (M, A)).N) /= F
 example_recursive.adb:246:70: info: range check proved (CVC5: 2 VC)
 example_recursive.adb:249:18: info: overflow check proved (CVC5: 2 VC)
 example_recursive.adb:256:14: medium: in inlined expression function body at example_recursive.adb:62
@@ -175,49 +175,40 @@ example_recursive.adb:301:45: info: precondition proved (CVC5: 1 VC)
 example_recursive.adb:301:56: info: null exclusion check proved (CVC5: 1 VC)
 example_recursive.adb:303:10: info: tag check proved (CVC5: 1 VC)
 example_recursive.adb:303:25: info: pointer dereference check proved (CVC5: 1 VC)
-example_recursive.adb:305:22: medium: assertion might fail, cannot prove Get (M, A) in L_Cell
-example_recursive.adb:305:22: medium: in inlined expression function body at example_recursive.adb:22
+example_recursive.adb:305:22: info: assertion proved (CVC5: 1 VC)
 example_recursive.adb:306:22: info: assertion proved (CVC5: 1 VC)
+example_recursive.adb:306:30: info: precondition proved (CVC5: 1 VC)
 example_recursive.adb:306:30: info: tag check proved (CVC5: 1 VC)
-example_recursive.adb:306:30: medium: precondition might fail
-example_recursive.adb:311:10: medium: in inlined expression function body at example_recursive.adb:37
-example_recursive.adb:311:10: medium: precondition might fail, cannot prove Valid_List (F, Address (L_Cell (Get (M, A)).N), L - 1, M)
+example_recursive.adb:311:10: info: precondition proved (CVC5: 12 VC; Trivial: 1 VC)
 example_recursive.adb:311:73: info: range check proved (CVC5: 2 VC)
-example_recursive.adb:312:10: medium: in inlined expression function body at example_recursive.adb:35
-example_recursive.adb:312:10: medium: precondition might fail, cannot prove Address (L_Cell (Get (M, A)).N) = F
+example_recursive.adb:312:10: info: precondition proved (CVC5: 12 VC; Trivial: 1 VC)
 example_recursive.adb:312:73: info: range check proved (CVC5: 2 VC)
-example_recursive.adb:315:10: medium: in inlined expression function body at example_recursive.adb:34
-example_recursive.adb:315:10: medium: precondition might fail, cannot prove A /= 0
+example_recursive.adb:315:10: info: precondition proved (CVC5: 12 VC; Trivial: 1 VC)
 example_recursive.adb:315:73: info: range check proved (CVC5: 2 VC)
-example_recursive.adb:316:10: medium: in inlined expression function body at example_recursive.adb:34
-example_recursive.adb:316:10: medium: precondition might fail, cannot prove Valid (M, A)
+example_recursive.adb:316:10: info: precondition proved (CVC5: 12 VC; Trivial: 1 VC)
 example_recursive.adb:316:73: info: range check proved (CVC5: 2 VC)
-example_recursive.adb:322:10: info: precondition proved (CVC5: 19 VC; Z3: 3 VC)
+example_recursive.adb:322:10: info: precondition proved (CVC5: 22 VC)
 example_recursive.adb:322:70: info: range check proved (CVC5: 2 VC)
-example_recursive.adb:323:10: info: precondition proved (CVC5: 20 VC; Z3: 2 VC)
+example_recursive.adb:323:10: info: precondition proved (CVC5: 22 VC)
 example_recursive.adb:323:70: info: range check proved (CVC5: 2 VC)
+example_recursive.adb:330:12: info: precondition proved (CVC5: 8 VC)
 example_recursive.adb:330:12: medium: assertion might fail, cannot prove Reachable (Address (L1.F), Address (F2_Next), L1.L + L2.L - 1, A, +L1.M) or A = Address (L1.F)
-example_recursive.adb:330:12: medium: in inlined expression function body at example_recursive.adb:34
-example_recursive.adb:330:12: medium: precondition might fail, cannot prove Valid (M, F)
 example_recursive.adb:330:63: info: overflow check proved (CVC5: 2 VC)
-example_recursive.adb:341:45: medium: precondition might fail
+example_recursive.adb:341:45: info: precondition proved (CVC5: 1 VC)
 example_recursive.adb:341:56: info: null exclusion check proved (CVC5: 1 VC)
-example_recursive.adb:343:10: info: tag check proved (Z3: 1 VC)
+example_recursive.adb:343:10: info: tag check proved (CVC5: 1 VC)
 example_recursive.adb:343:25: info: pointer dereference check proved (CVC5: 1 VC)
 example_recursive.adb:345:22: medium: assertion might fail, cannot prove Get (M, A) in L_Cell
 example_recursive.adb:345:22: medium: in inlined expression function body at example_recursive.adb:22
-example_recursive.adb:346:22: info: assertion proved (Z3: 1 VC)
-example_recursive.adb:346:30: info: tag check proved (Z3: 1 VC)
-example_recursive.adb:346:30: medium: precondition might fail
-example_recursive.adb:348:07: medium: in inlined expression function body at example_recursive.adb:34
-example_recursive.adb:348:07: medium: precondition might fail, cannot prove F /= 0
-example_recursive.adb:348:70: info: overflow check proved (CVC5: 1 VC; Z3: 1 VC)
-example_recursive.adb:349:07: medium: in inlined expression function body at example_recursive.adb:34
-example_recursive.adb:349:07: medium: precondition might fail, cannot prove A /= 0
+example_recursive.adb:346:22: info: assertion proved (CVC5: 1 VC)
+example_recursive.adb:346:30: info: precondition proved (CVC5: 1 VC)
+example_recursive.adb:346:30: info: tag check proved (CVC5: 1 VC)
+example_recursive.adb:348:07: medium: precondition might fail, cannot prove ( Get (M1, A2) = Get (M2, A2))
+example_recursive.adb:348:70: info: overflow check proved (CVC5: 2 VC)
+example_recursive.adb:349:07: medium: precondition might fail, cannot prove Valid (M2, A2)
 example_recursive.adb:349:70: info: overflow check proved (CVC5: 2 VC)
+example_recursive.adb:351:22: info: assertion proved (CVC5: 7 VC)
 example_recursive.adb:351:22: info: precondition proved (CVC5: 1 VC)
-example_recursive.adb:351:22: medium: assertion might fail, cannot prove F /= 0
-example_recursive.adb:351:22: medium: in inlined expression function body at example_recursive.adb:34
 example_recursive.adb:351:71: info: overflow check proved (CVC5: 2 VC)
 example_recursive.adb:353:20: info: overflow check proved (CVC5: 2 VC)
 example_recursive.adb:356:04: warning: analyzing unreferenced procedure "Do_Test"
