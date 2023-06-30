@@ -1,7 +1,8 @@
 main.adb:8:04: info: data dependencies proved
 main.adb:8:37: info: initialization of "The_Sink" proved
 main.adb:9:04: info: flow dependencies proved
-sink.ads:6:09: warning: address specification on "The_Sink" is imprecisely supported: assuming no concurrent accesses to non-atomic object, correct volatile properties, and no writes to a potential alias
+sink.ads:6:09: warning: address specification on "The_Sink" is imprecisely supported: assuming no concurrent accesses to non-atomic object, correct volatile properties, and no writes to a potential alias [E0012]
+sink.ads:6:09: warning: launch "gnatprove --explain=E0012" for more information
 sink.ads:6:09: warning: make sure that all overlapping objects have Async_Writers set to True
 skp-subjects.adb:400:09: info: assertion proved (Z3: 1 VC)
 skp-subjects.adb:413:23: info: refined post proved (Z3: 1 VC)

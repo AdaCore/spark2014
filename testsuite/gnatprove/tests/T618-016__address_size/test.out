@@ -1,2 +1,3 @@
-problem_types.ads:8:04: warning: address specification on "Problem_Var" is imprecisely supported: assuming no concurrent accesses to non-atomic object, no writes to or through a potential alias, and valid reads
+problem_types.ads:8:04: warning: address specification on "Problem_Var" is imprecisely supported: assuming no concurrent accesses to non-atomic object, no writes to or through a potential alias, and valid reads [E0012]
 problem_types.ads:8:04: warning: consider making "Problem_Var" volatile and annotating it with Async_Writers and make sure that all overlapping objects have Async_Writers set to True
+problem_types.ads:8:04: warning: launch "gnatprove --explain=E0012" for more information

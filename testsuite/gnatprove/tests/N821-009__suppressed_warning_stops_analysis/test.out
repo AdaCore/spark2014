@@ -1,4 +1,5 @@
-water_high.adb:11:04: warning: address specification on "High_Sensor_Port" is imprecisely supported: assuming no concurrent accesses to non-atomic object, correct volatile properties, and valid reads
+water_high.adb:11:04: warning: address specification on "High_Sensor_Port" is imprecisely supported: assuming no concurrent accesses to non-atomic object, correct volatile properties, and valid reads [E0012]
+water_high.adb:11:04: warning: launch "gnatprove --explain=E0012" for more information
 water_high.adb:19:07: info: initialization of "Raw_Value" proved
 water_high.adb:29:22: info: assertion proved (Trivial)
 water_high.ads:5:25: info: initialization of "Active" proved

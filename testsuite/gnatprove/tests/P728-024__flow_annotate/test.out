@@ -1,4 +1,5 @@
-foo.adb:8:07: warning: address specification on "Result" is imprecisely supported: assuming no concurrent accesses to non-atomic object and no writes to or through a potential alias
+foo.adb:8:07: warning: address specification on "Result" is imprecisely supported: assuming no concurrent accesses to non-atomic object and no writes to or through a potential alias [E0012]
+foo.adb:8:07: warning: launch "gnatprove --explain=E0012" for more information
 foo.adb:8:07: warning: make sure that all overlapping objects have Async_Writers set to True
 foo.adb:11:07: warning: no check message justified by this pragma
 foo.adb:13:12: high: "Result" is not initialized
