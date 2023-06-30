@@ -22,6 +22,14 @@ cases1.adb:19:25: info: assertion proved (CVC5: 1 VC)
 cases1.adb:24:04: high: "A" is not initialized
 cases1.adb:24:04: high: "B" is not initialized
 cases1.adb:24:04: info: only expected exception raised (CVC5: 1 VC)
+choice1.adb:1:33: info: initialization of "Y" proved
+choice1.adb:2:16: info: postcondition proved (CVC5: 2 VC)
+choice1.adb:3:08: medium: missing dependency "null => X"
+choice1.adb:3:25: medium: incorrect dependency "Y => X"
+choice1.adb:9:40: info: exceptional case proved (CVC5: 1 VC)
+choice1.adb:9:52: info: exceptional case proved (CVC5: 1 VC)
+choice1.adb:20:04: info: only expected exception raised (CVC5: 1 VC)
+choice1.adb:21:04: medium: unexpected exception might be raised
 copy1.adb:1:34: info: initialization of "Z" proved
 copy1.adb:2:08: info: flow dependencies proved
 copy1.adb:13:04: info: only expected exception raised (CVC5: 1 VC)
