@@ -2192,12 +2192,18 @@ package body Flow.Analysis is
 
          V_Goal       : Flow_Graphs.Vertex_Id;
 
-         Is_Final_Use : constant Boolean := V_Key.Variant = Final_Value;
-         Is_Global    : constant Boolean := V_Initial_Atr.Is_Global;
-         Default_Init : constant Boolean :=
+         Is_Final_Use          : constant Boolean :=
+           V_Key.Variant = Final_Value;
+         Is_Global             : constant Boolean := V_Initial_Atr.Is_Global;
+         Default_Init          : constant Boolean :=
            Var.Kind in Direct_Mapping | Record_Field
            and then Is_Default_Initialized (Var);
-         Is_Function  : constant Boolean := Is_Function_Entity (Var);
+         Is_Function           : constant Boolean := Is_Function_Entity (Var);
+         Is_Read_Global_Output : constant Boolean :=
+           Kind = Err
+           and then not Default_Init
+           and then Is_Global
+           and then not Is_Final_Use;
 
          function Mark_Definition_Free_Path
            (To  : Flow_Graphs.Vertex_Id;
@@ -2278,134 +2284,6 @@ package body Flow.Analysis is
       --  Start of processing for Emit_Check_Message
 
       begin
-         --  Assemble appropriate message for failed initialization. We deal
-         --  with a bunch of special cases first, but if they don't trigger we
-         --  create the standard message.
-
-         if Is_Function then
-            Msg := To_Unbounded_String ("function & does not return on ");
---              if Has_Only_Infinite_Execution (Vertex) then
---                 Append (Msg, "any path");
---              else
---                 Append (Msg, "some paths");
---              end if;
-            Append (Msg, "some paths");
-         else
-            Msg := To_Unbounded_String ("&");
-            if Kind = Err then
-               Append (Msg, " is not");
-            else
-               Append (Msg, " might not be");
-            end if;
-            if Default_Init then
-               Append (Msg, " set");
-            elsif Has_Async_Readers (Var) then
-               Append (Msg, " written");
-            else
-               Append (Msg, " initialized");
-            end if;
-            if Is_Final_Use and not Is_Global then
-               Append (Msg, " in &");
-
-               --  Here we build the Details and Fix messages. In the first
-               --  branch of the if statement, we deal with a variable that
-               --  isn't initialized after elaboration of a package, but is
-               --  mentioned in the (generated or not) Initializes aspect of
-               --  said package, either directly or through an abstract state.
-
-               if FA.Kind = Kind_Package then
-                  if FA.Is_Generative then
-                     Append (Details, "variable is mentioned in the generated "
-                                        & "Initializes contract");
-                  else
-                     pragma Assert (Var.Kind in Direct_Mapping | Record_Field);
-                     declare
-                        E          : constant Entity_Id :=
-                          Get_Direct_Mapping_Id (Var);
-                        Is_Visible : constant Boolean   :=
-                          (if Ekind (E) = E_Abstract_State
-                           then Scope (E) = FA.Spec_Entity
-                           else List_Containing
-                                  (Enclosing_Declaration (E)) =
-                                Visible_Declarations
-                                  (Package_Specification (FA.Spec_Entity)));
-
-                     begin
-                        if Is_Visible then
-                           Append (Details, "variable ");
-                        else
-                           Append (Details, "encapsulating state ");
-                        end if;
-
-                        Append (Details, "is mentioned in the Initializes "
-                                           & "contract of the package "
-                                           & "declaration");
-                     end;
-                  end if;
-
-                  Append (Fix, "initialize & at declaration");
-                  if Entity_Body_In_SPARK (FA.Spec_Entity) then
-                     Append (Fix, " or in the package body statements");
-                  end if;
-                  Fix_F1 := Var;
-
-               --  We are dealing with an OUT parameter that is not initialized
-               --  on return. We suggest two fixes by default and add a third
-               --  one if the variable is a record part or an array.
-
-               else
-                  declare
-                     Is_Record_Part_Or_Array : constant Boolean :=
-                       Var.Kind = Record_Field
-                       or else Is_Array (Var)
-                       or else (Var.Kind = Direct_Mapping
-                                and then Var.Facet = Normal_Part
-                                  and then
-                                Is_Record_Type (Get_Type (Var, FA.B_Scope)));
-
-                  begin
-                     --  Construction of the Details message
-                     Append (Details, "OUT parameter should be ");
-                     if Is_Record_Part_Or_Array then
-                        Append (Details, "fully ");
-                     end if;
-                     Append (Details, "initialized on return");
-
-                     --  First possible fix
-                     Append (Fix, "initialize & on all paths");
-                     Fix_F1 := Var;
-
-                     --  Second possible fix
-                     if Is_Record_Part_Or_Array then
-                        Append (Fix, ", ");
-                     else
-                        Append (Fix, " or ");
-                     end if;
-                     Append (Fix, "make & an IN OUT parameter");
-                     Fix_F2 := Entire_Variable
-                                 (Change_Variant (Var, Normal_Use));
-
-                     --  Third possible fix
-                     if Is_Record_Part_Or_Array then
-                        Append (Fix, " or annotate it with aspect "
-                                & "Relaxed_Initialization");
-                     end if;
-                  end;
-               end if;
-            end if;
-            if Is_Main_Global_Input (V_Initial_Atr) then
-               Append (Msg,
-                       (case FA.Kind is
-                           when Kind_Subprogram =>
-                             " after elaboration of main program &",
-                           when Kind_Task =>
-                             " before start of tasks of type &",
-                           when others =>
-                              raise Program_Error));
-               --  ??? this message should be tuned for interrupt handlers
-            end if;
-         end if;
-
          if not Is_Final_Use then
             V_Goal := V_Use;
 
@@ -2424,77 +2302,23 @@ package body Flow.Analysis is
             N      := FA.Atr (V_Use).Error_Location;
          end if;
 
-         declare
-            Path : constant Vertex_Sets.Set :=
-              Mark_Definition_Free_Path (To  => V_Goal,
-                                         Var => Var);
+         --  Assemble appropriate message for failed initialization. We deal
+         --  with a bunch of special cases first, but if they don't trigger we
+         --  create the standard message.
 
-         begin
-            Error_Msg_Flow
-              (FA       => FA,
-               Path     => Path,
-               Msg      => To_String (Msg),
-               Details  => To_String (Details),
-               Fix      => To_String (Fix),
-               N        => N,
-               F1       => Var,
-               F2       => Direct_Mapping_Id (FA.Spec_Entity),
-               FF1      => Fix_F1,
-               FF2      => Fix_F2,
-               Tag      => Uninitialized,
-               Severity => (case Kind is
-                            when Unknown => (if Default_Init
-                                             then Low_Check_Kind
-                                             else Medium_Check_Kind),
-                            when Err     => (if Default_Init
-                                             then Medium_Check_Kind
-                                             else High_Check_Kind)),
-               Vertex   => V_Use);
+         if Is_Read_Global_Output then
 
-            --  ??? only when Is_Final_Use ?
-            if Is_Constituent (Var)
-              and then FA.Kind = Kind_Package
-              and then Present (FA.Initializes_N)
-            then
-               Error_Msg_Flow
-                 (FA           => FA,
-                  Msg          => "initialization of & is specified @",
-                  N            => N,
-                  F1           => Direct_Mapping_Id
-                                    (Encapsulating_State
-                                       (Get_Direct_Mapping_Id (Var))),
-                  F2           =>
-                    Direct_Mapping_Id
-                      (if From_Aspect_Specification (FA.Initializes_N)
-                       then Corresponding_Aspect (FA.Initializes_N)
-                       else FA.Initializes_N),
-                  Tag          => Uninitialized,
-                  Severity     => (case Kind is
-                                      when Unknown => Medium_Check_Kind,
-                                      when Err     => High_Check_Kind),
-                  Vertex       => V_Use,
-                  Continuation => True);
-            end if;
-         end;
+            --  In case of a subprogram with an output global which is actually
+            --  used as an input in its body, we emit dedicated messages.
 
-         --  In case of a subprogram with an output global which is actually
-         --  used as an input in its body, we add more information to the error
-         --  message.
-         if Kind = Err
-           and then not Default_Init
-           and then Is_Global
-           and then not Is_Final_Use
-         then
-            Error_Msg_Flow (FA           => FA,
-                            Msg          => "& is not an input " &
-                              "in the Global contract of subprogram #",
-                            Severity     => High_Check_Kind,
-                            N            => N,
-                            F1           => Var,
-                            F2           =>
-                              Direct_Mapping_Id (FA.Spec_Entity),
-                            Tag          => Uninitialized,
-                            Continuation => True);
+            Error_Msg_Flow (FA       => FA,
+                            Msg      => "& is not an input in the " &
+                                        "Global contract of subprogram #",
+                            Severity => High_Check_Kind,
+                            N        => N,
+                            F1       => Var,
+                            F2       => Direct_Mapping_Id (FA.Spec_Entity),
+                            Tag      => Uninitialized);
 
             declare
                Msg : constant String :=
@@ -2511,6 +2335,187 @@ package body Flow.Analysis is
                                F1           => Var,
                                Tag          => Uninitialized,
                                Continuation => True);
+            end;
+         else
+            if Is_Function then
+               Msg := To_Unbounded_String ("function & does not return on ");
+--             if Has_Only_Infinite_Execution (Vertex) then
+--                Append (Msg, "any path");
+--             else
+--                Append (Msg, "some paths");
+--             end if;
+               Append (Msg, "some paths");
+            else
+               Msg := To_Unbounded_String ("&");
+               if Kind = Err then
+                  Append (Msg, " is not");
+               else
+                  Append (Msg, " might not be");
+               end if;
+               if Default_Init then
+                  Append (Msg, " set");
+               elsif Has_Async_Readers (Var) then
+                  Append (Msg, " written");
+               else
+                  Append (Msg, " initialized");
+               end if;
+               if Is_Final_Use and not Is_Global then
+                  Append (Msg, " in &");
+
+                  --  Here we build the Details and Fix messages. In the first
+                  --  branch of the if statement, we deal with a variable that
+                  --  isn't initialized after elaboration of a package, but is
+                  --  mentioned in the (generated or not) Initializes aspect of
+                  --  said package, either directly or through an abstract
+                  --  state.
+
+                  if FA.Kind = Kind_Package then
+                     if FA.Is_Generative then
+                        Append (Details, "variable is mentioned in the " &
+                                         "generated Initializes contract");
+                     else
+                        pragma Assert
+                          (Var.Kind in Direct_Mapping | Record_Field);
+                        declare
+                           E          : constant Entity_Id :=
+                             Get_Direct_Mapping_Id (Var);
+                           Is_Visible : constant Boolean   :=
+                             (if Ekind (E) = E_Abstract_State
+                              then Scope (E) = FA.Spec_Entity
+                              else List_Containing
+                                     (Enclosing_Declaration (E)) =
+                                   Visible_Declarations
+                                     (Package_Specification (FA.Spec_Entity)));
+
+                        begin
+                           if Is_Visible then
+                              Append (Details, "variable ");
+                           else
+                              Append (Details, "encapsulating state ");
+                           end if;
+
+                           Append (Details, "is mentioned in the Initializes "
+                                   & "contract of the package "
+                                   & "declaration");
+                        end;
+                     end if;
+
+                     Append (Fix, "initialize & at declaration");
+                     if Entity_Body_In_SPARK (FA.Spec_Entity) then
+                        Append (Fix, " or in the package body statements");
+                     end if;
+                     Fix_F1 := Var;
+
+                     --  We are dealing with an OUT parameter that is not
+                     --  initialized on return. We suggest two fixes by default
+                     --  and add a third one if the variable is a record part
+                     --  or an array.
+
+                  else
+                     declare
+                        Is_Record_Part_Or_Array : constant Boolean :=
+                          Var.Kind = Record_Field
+                          or else Is_Array (Var)
+                          or else (Var.Kind = Direct_Mapping
+                                   and then Var.Facet = Normal_Part
+                                   and then
+                                   Is_Record_Type
+                                     (Get_Type (Var, FA.B_Scope)));
+
+                     begin
+                        --  Construction of the Details message
+                        Append (Details, "OUT parameter should be ");
+                        if Is_Record_Part_Or_Array then
+                           Append (Details, "fully ");
+                        end if;
+                        Append (Details, "initialized on return");
+
+                        --  First possible fix
+                        Append (Fix, "initialize & on all paths");
+                        Fix_F1 := Var;
+
+                        --  Second possible fix
+                        if Is_Record_Part_Or_Array then
+                           Append (Fix, ", ");
+                        else
+                           Append (Fix, " or ");
+                        end if;
+                        Append (Fix, "make & an IN OUT parameter");
+                        Fix_F2 := Entire_Variable
+                          (Change_Variant (Var, Normal_Use));
+
+                        --  Third possible fix
+                        if Is_Record_Part_Or_Array then
+                           Append (Fix, " or annotate it with aspect "
+                                   & "Relaxed_Initialization");
+                        end if;
+                     end;
+                  end if;
+               end if;
+               if Is_Main_Global_Input (V_Initial_Atr) then
+                  Append (Msg,
+                          (case FA.Kind is
+                              when Kind_Subprogram =>
+                                " after elaboration of main program &",
+                              when Kind_Task =>
+                                " before start of tasks of type &",
+                              when others =>
+                                 raise Program_Error));
+                  --  ??? this message should be tuned for interrupt handlers
+               end if;
+            end if;
+
+            declare
+               Path : constant Vertex_Sets.Set :=
+                 Mark_Definition_Free_Path (To  => V_Goal,
+                                            Var => Var);
+
+            begin
+               Error_Msg_Flow
+                 (FA       => FA,
+                  Path     => Path,
+                  Msg      => To_String (Msg),
+                  Details  => To_String (Details),
+                  Fix      => To_String (Fix),
+                  N        => N,
+                  F1       => Var,
+                  F2       => Direct_Mapping_Id (FA.Spec_Entity),
+                  FF1      => Fix_F1,
+                  FF2      => Fix_F2,
+                  Tag      => Uninitialized,
+                  Severity => (case Kind is
+                                  when Unknown => (if Default_Init
+                                                   then Low_Check_Kind
+                                                   else Medium_Check_Kind),
+                                  when Err     => (if Default_Init
+                                                   then Medium_Check_Kind
+                                                   else High_Check_Kind)),
+                  Vertex   => V_Use);
+
+               --  ??? only when Is_Final_Use ?
+               if Is_Constituent (Var)
+                 and then FA.Kind = Kind_Package
+                 and then Present (FA.Initializes_N)
+               then
+                  Error_Msg_Flow
+                    (FA           => FA,
+                     Msg          => "initialization of & is specified @",
+                     N            => N,
+                     F1           => Direct_Mapping_Id
+                       (Encapsulating_State
+                            (Get_Direct_Mapping_Id (Var))),
+                     F2           =>
+                       Direct_Mapping_Id
+                         (if From_Aspect_Specification (FA.Initializes_N)
+                          then Corresponding_Aspect (FA.Initializes_N)
+                          else FA.Initializes_N),
+                     Tag          => Uninitialized,
+                     Severity     => (case Kind is
+                                         when Unknown => Medium_Check_Kind,
+                                         when Err     => High_Check_Kind),
+                     Vertex       => V_Use,
+                     Continuation => True);
+               end if;
             end;
          end if;
       end Emit_Check_Message;

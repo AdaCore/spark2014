@@ -92,7 +92,6 @@ global_havoc.adb:25:12: info: data dependencies proved
 global_havoc.adb:25:45: medium: "G" might not be initialized
 global_havoc.adb:28:07: info: only expected exception raised (CVC5: 1 VC)
 global_havoc.adb:31:10: high: "G" is not an input in the Global contract of subprogram "Test" at line 23
-global_havoc.adb:31:10: high: "G" is not initialized
 global_havoc.adb:31:10: high: either make "G" an input in the Global contract or initialize it before use
 global_havoc.adb:31:25: medium: assertion might fail
 global_havoc.adb:34:04: info: precondition proved (Trivial: 1 VC)
