@@ -5555,8 +5555,7 @@ package body Flow.Control_Flow_Graph is
                     To   => CM (Union_Id (Handler)).Standard_Entry);
 
          --  For exception that is only listed in Exceptional_Cases we reclaim
-         --  the borrowers and jump to the helper end vertex, just like for a
-         --  return statement.
+         --  the borrowers and jump out of the subprogram.
 
          else
             for Decl of reverse Ctx.Borrowers loop
