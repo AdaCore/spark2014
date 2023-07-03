@@ -26,6 +26,7 @@
 
 with Atree;                          use Atree;
 with Checked_Types;                  use Checked_Types;
+with Flow_Classwide;
 with Flow_Error_Messages;            use Flow_Error_Messages;
 with Flow_Utility;                   use Flow_Utility;
 with Flow_Refinement;                use Flow_Refinement;
@@ -518,14 +519,66 @@ package body Flow.Analysis.Sanity is
          Find_Predicate_Item (Typ, Rep);
 
          if Present (Rep) then
+            declare
+               Expr : constant Node_Id :=
+                 Get_Expr_From_Return_Only_Func (Predicate_Function (Typ));
 
-            --  Check that the type predicate expression does not have
-            --  variable inputs.
+               Funcalls  : Call_Sets.Set;
+               Proofdeps : Node_Sets.Set;
+               Unused    : Tasking_Info;
 
-            Detect_Variable_Inputs
-              (N        => Get_Expr_From_Return_Only_Func
-                             (Predicate_Function (Typ)),
-               Err_Desc => "predicate");
+            begin
+
+               --  Check that the type predicate expression does not have
+               --  variable inputs.
+
+               Detect_Variable_Inputs
+                 (N        => Expr,
+                  Err_Desc => "predicate");
+
+               Pick_Generated_Info
+                 (Expr,
+                  Scop               => Get_Flow_Scope (Expr),
+                  Function_Calls     => Funcalls,
+                  Proof_Dependencies => Proofdeps,
+                  Tasking            => Unused,
+                  Generating_Globals => False);
+
+               --  Check that the type predicate expression has no calls via
+               --  access-to-subprogram or dispatching calls. If the type
+               --  is an access-to-subprogram that references itself in its
+               --  predicate, a check message is also emitted.
+
+               for SC of Funcalls loop
+                  if Ekind (SC.E) = E_Subprogram_Type then
+                     Error_Msg_Flow
+                        (FA       => FA,
+                         Msg      =>
+                           "call via access-to-subprogram " &
+                           "in the predicate of & might not terminate",
+                         Severity => High_Check_Kind,
+                         Tag      => Subprogram_Termination,
+                         N        => Expr,
+                         F1       => Direct_Mapping_Id (Typ),
+                         SRM_Ref  => "3.2.4(4)");
+
+                  elsif Nkind (SC.N) in N_Subprogram_Call
+                    and then Flow_Classwide.Is_Dispatching_Call (SC.N)
+                  then
+                     Error_Msg_Flow
+                        (FA          => FA,
+                         Msg         =>
+                           "dispatching call " &
+                           "in the predicate of & might not terminate",
+                         Explanation => "call could hide recursive calls",
+                         Severity    => High_Check_Kind,
+                         Tag         => Subprogram_Termination,
+                         N           => Expr,
+                         F1          => Direct_Mapping_Id (Typ),
+                         SRM_Ref     => "3.2.4(4)");
+                  end if;
+               end loop;
+            end;
          end if;
 
          --  Check that the type invariant expression, if present, does not
@@ -542,8 +595,9 @@ package body Flow.Analysis.Sanity is
                Expr : constant Node_Id :=
                  Get_Expr_From_Check_Only_Proc (Invariant_Procedure (Typ));
 
-               Funs : constant Node_Sets.Set :=
-                 Get_Functions (Expr, Include_Predicates => False);
+               Funcalls  : Call_Sets.Set;
+               Proofdeps : Node_Sets.Set;
+               Unused    : Tasking_Info;
 
             begin
                --  Check 7.3.2(3) [which is really 4.4(2)] (no variable inputs)
@@ -552,11 +606,50 @@ package body Flow.Analysis.Sanity is
                  (N        => Expr,
                   Err_Desc => "invariant");
 
-               for F of Funs loop
+               Pick_Generated_Info
+                 (Expr,
+                  Scop               => Get_Flow_Scope (Expr),
+                  Function_Calls     => Funcalls,
+                  Proof_Dependencies => Proofdeps,
+                  Tasking            => Unused,
+                  Generating_Globals => False);
+
+               for SC of Funcalls loop
+
+                  --  Check 7.3.2(11) (no calls via access-to-subprogram)
+
+                  if Ekind (SC.E) = E_Subprogram_Type then
+                     Error_Msg_Flow
+                        (FA       => FA,
+                           Msg      =>
+                              "call via access-to-subprogram " &
+                              "in the invariant of & might not terminate",
+                         Severity => High_Check_Kind,
+                         Tag      => Subprogram_Termination,
+                         N        => Expr,
+                         F1       => Direct_Mapping_Id (Typ),
+                         SRM_Ref  => "7.3.2(11)");
+
+                  --  Check 7.3.2(11) (no dispatching calls)
+
+                  elsif Nkind (SC.N) in N_Subprogram_Call
+                    and then Flow_Classwide.Is_Dispatching_Call (SC.N)
+                  then
+                     Error_Msg_Flow
+                        (FA          => FA,
+                         Msg         =>
+                           "dispatching call " &
+                           "in the invariant of & might not terminate",
+                         Explanation => "call could hide recursive calls",
+                         Severity    => High_Check_Kind,
+                         Tag         => Subprogram_Termination,
+                         N           => Expr,
+                         F1          => Direct_Mapping_Id (Typ),
+                         SRM_Ref     => "7.3.2(11)");
 
                   --  Check 7.3.2(5) (no calls to boundary subprograms)
 
-                  if Is_Boundary_Subprogram_For_Type (F, Typ) then
+                  elsif Is_Boundary_Subprogram_For_Type (SC.E, Typ) then
                      Error_Msg_Flow
                        (FA       => FA,
                         Msg      =>
@@ -565,7 +658,7 @@ package body Flow.Analysis.Sanity is
                         Severity => High_Check_Kind,
                         Tag      => Call_In_Type_Invariant,
                         N        => Expr,
-                        F1       => Direct_Mapping_Id (F),
+                        F1       => Direct_Mapping_Id (SC.E),
                         F2       => Direct_Mapping_Id (Typ),
                         SRM_Ref  => "7.3.2(5)");
                   end if;
