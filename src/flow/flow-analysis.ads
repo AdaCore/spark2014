@@ -200,6 +200,11 @@ package Flow.Analysis is
    --  Checks if the implicit or explicit aspect Always_Terminiates is
    --  consistent with with the results from flow analysis.
 
+   procedure Check_Ghost_Terminates (FA : in out Flow_Analysis_Graphs);
+   --  Checks if calls to ghost subprograms terminate if the callee has a
+   --  static or no termination condition, no matter the termination condition
+   --  of the caller.
+
    procedure Check_Constant_Global_Contracts (E : Entity_Id)
    with Pre => Ekind (E) in E_Function
                           | E_Procedure

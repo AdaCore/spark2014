@@ -184,7 +184,7 @@ package body Red_Black_Trees with SPARK_Mode is
    -----------------------------
 
    procedure Prove_Model_Eq (T : access constant Tree_Cell; Pos1, Pos2 : Big_Positive)
-   with Ghost,
+   with Ghost, Always_Terminates => True, Subprogram_Variant => (Structural => T),
      Global => null,
      Post =>
        Last (Model (T, Pos1)) - First (Model (T, Pos1)) = Last (Model (T, Pos2)) - First (Model (T, Pos2))

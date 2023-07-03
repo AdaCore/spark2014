@@ -1080,23 +1080,6 @@ package body Flow is
             Write_Str ("}");
          end if;
 
-         if not A.Proof_Dependencies.Is_Empty then
-            Write_Str ("\nPD: {");
-            declare
-               First : Boolean := True;
-            begin
-               for E of A.Proof_Dependencies loop
-                  if First then
-                     First := False;
-                  else
-                     Write_Str (", ");
-                  end if;
-                  Sprint_Flow_Id (Direct_Mapping_Id (E));
-               end loop;
-            end;
-            Write_Str ("}");
-         end if;
-
          if not A.Variables_Defined.Is_Empty then
             Write_Str ("\nVD: {");
             declare
@@ -1676,6 +1659,7 @@ package body Flow is
                      Analysis.Check_Always_Terminates (FA);
                      Analysis.Check_Ghost_Procedure_Outputs (FA);
                   end if;
+                  Analysis.Check_Ghost_Terminates (FA);
                   Analysis.Find_Input_Only_Used_In_Assertions (FA);
                   Analysis.Find_Illegal_Reads_Of_Proof_Ins (FA);
                   Analysis.Check_Function_For_Volatile_Effects (FA);
@@ -1718,8 +1702,9 @@ package body Flow is
                              (FA.Spec_Entity))
                      then
                         Analysis.Check_Potentially_Blocking (FA);
-                        Analysis.Check_Always_Terminates (FA);
                      end if;
+                     Analysis.Check_Always_Terminates (FA);
+                     Analysis.Check_Ghost_Terminates (FA);
                      if Have_Full_Package_Code then
                         Analysis.Find_Use_Of_Uninitialized_Variables (FA);
                         Analysis.Check_Initializes_Contract (FA);

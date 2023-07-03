@@ -5993,8 +5993,8 @@ package body Flow.Analysis is
                         Error_Msg_Flow
                           (FA          => FA,
                            Msg         => Check_Msg
-                                            ("dispatching call might be " &
-                                             "nonterminating"),
+                                            ("dispatching call to & " &
+                                             "might be nonterminating"),
                            Explanation => (if Nkind (SC.N) = N_Function_Call
                                            then "call could hide recursive " &
                                                 "calls"
@@ -6002,6 +6002,7 @@ package body Flow.Analysis is
                            Severity    => Medium_Check_Kind,
                            N           => Atr.Error_Location,
                            F1          => Spec_Entity_Id,
+                           F2          => Direct_Mapping_Id (SC.E),
                            Tag         => Subprogram_Termination,
                            Vertex      => V);
 
@@ -6107,6 +6108,92 @@ package body Flow.Analysis is
          end if;
       end if;
    end Check_Always_Terminates;
+
+   ----------------------------
+   -- Check_Ghost_Terminates --
+   ----------------------------
+
+   procedure Check_Ghost_Terminates (FA : in out Flow_Analysis_Graphs) is
+   begin
+      --  We are only interested in calls originating from non-ghost entities.
+      --  Also, if the termination condition of the caller is statically true,
+      --  then we check the termination conditon of its callees anyway, so
+      --  messages emitted here would be duplicates.
+
+      if Is_Ghost_Entity (FA.Spec_Entity)
+        or else Get_Termination_Condition (FA.Spec_Entity) = (Static, True)
+      then
+         return;
+      end if;
+
+      for V of FA.CFG.Get_Collection (Flow_Graphs.All_Vertices) loop
+         declare
+            Atr : V_Attributes renames FA.Atr (V);
+         begin
+            --  Ignore vertices coming from elaboration of nested packages
+
+            if not Atr.In_Nested_Package then
+               for SC of Atr.Subprogram_Calls loop
+                  if Is_Ghost_Entity (SC.E) then
+                     if Get_Termination_Condition (SC.E, Compute => True) =
+                          (Static, False)
+                     then
+                        --  For calls via access-to-subprogram don't mention
+                        --  the subprogram name (both because it wouldn't be
+                        --  terribly useful and because it could be an itype).
+                        --  Also, don't emit a possible fix, because
+                        --  access-to-subprograms types cannot be annotated
+                        --  with Always_Terminates anyway.
+
+                        if Ekind (SC.E) = E_Subprogram_Type then
+                           Error_Msg_Flow
+                             (FA       => FA,
+                              Msg      =>
+                                "call to ghost access-to-subprogram " &
+                                "might be nonterminating",
+                              Severity => Medium_Check_Kind,
+                              N        => Atr.Error_Location,
+                              Tag      => Subprogram_Termination,
+                              Vertex   => V);
+
+                        --  For calls to ordinary subprograms with statically
+                        --  false termination the check is certain and clear,
+                        --  so no need to offer a fix.
+
+                        elsif Get_Termination_Condition (SC.E) =
+                                (Static, False)
+                        then
+                           Error_Msg_Flow
+                             (FA       => FA,
+                              Msg      =>
+                                "call to ghost subprogram & is nonterminating",
+                              Severity => Medium_Check_Kind,
+                              N        => Atr.Error_Location,
+                              F1       => Direct_Mapping_Id (SC.E),
+                              Tag      => Subprogram_Termination,
+                              Vertex   => V);
+                        else
+                           Error_Msg_Flow
+                             (FA       => FA,
+                              Msg      =>
+                                "call to ghost subprogram & " &
+                                "might be nonterminating",
+                              Fix      =>
+                                "annotate & with aspect Always_Terminates",
+                              Severity => Medium_Check_Kind,
+                              N        => Atr.Error_Location,
+                              F1       => Direct_Mapping_Id (SC.E),
+                              FF1      => Direct_Mapping_Id (SC.E),
+                              Tag      => Subprogram_Termination,
+                              Vertex   => V);
+                        end if;
+                     end if;
+                  end if;
+               end loop;
+            end if;
+         end;
+      end loop;
+   end Check_Ghost_Terminates;
 
    ----------------------------------------
    -- Check_Constant_Global_Contracts --

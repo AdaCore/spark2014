@@ -745,10 +745,6 @@ package Flow_Types is
       --  The set of all subprograms (functions and procedures) called; think
       --  of this as Variables_Used, but for subprogram calls.
 
-      Proof_Dependencies           : Node_Sets.Set;
-      --  Subprograms and package elaborations whose contract is pulled by
-      --  proof to verify the analyzed entity.
-
       Loops                        : Node_Sets.Set;
       --  Which loops are we a member of (identified by loop name/label). For
       --  loop stability analysis.
@@ -815,7 +811,6 @@ package Flow_Types is
                    Volatiles_Read                  => Flow_Id_Sets.Empty_Set,
                    Volatiles_Written               => Flow_Id_Sets.Empty_Set,
                    Subprogram_Calls                => Call_Sets.Empty_Set,
-                   Proof_Dependencies              => Node_Sets.Empty_Set,
                    Loops                           => Node_Sets.Empty_Set,
                    Record_RHS                      => Flow_Graphs.Null_Vertex,
                    Error_Location                  => Empty,

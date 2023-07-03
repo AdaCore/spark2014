@@ -1,2 +1,3 @@
 data_package.adb:6:07: info: initialization of "Data" proved
+data_package.adb:8:07: medium: implicit aspect Always_Terminates on "Data_Package" could be incorrect, call to "Read_Data_From_File" might be nonterminating [possible fix: annotate "Read_Data_From_File" with aspect Always_Terminates]
 external_interface.ads:2:49: info: flow dependencies proved

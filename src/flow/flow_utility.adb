@@ -199,11 +199,11 @@ package body Flow_Utility is
       end if;
    end Ancestor;
 
-   -------------------------------------------
-   -- Collect_Functions_And_Read_Locked_POs --
-   -------------------------------------------
+   -------------------------
+   -- Pick_Generated_Info --
+   -------------------------
 
-   procedure Collect_Functions_And_Read_Locked_POs
+   procedure Pick_Generated_Info
      (N                  : Node_Id;
       Scop               : Flow_Scope;
       Function_Calls     : in out Call_Sets.Set;
@@ -227,7 +227,7 @@ package body Flow_Utility is
          P : constant Entity_Id := Predicate_Function (E);
       begin
          if Present (P) then
-            Collect_Functions_And_Read_Locked_POs
+            Pick_Generated_Info
               (N                  => Get_Expr_From_Return_Only_Func (P),
                Scop               => Scop,
                Function_Calls     => Function_Calls,
@@ -428,11 +428,11 @@ package body Flow_Utility is
       procedure Traverse is new Traverse_More_Proc (Process => Proc);
       --  AST traversal procedure
 
-   --  Start of processing for Collect_Functions_And_Read_Locked_POs
+   --  Start of processing for Pick_Generated_Info
 
    begin
       Traverse (N);
-   end Collect_Functions_And_Read_Locked_POs;
+   end Pick_Generated_Info;
 
    -----------------------
    -- Unique_Components --
@@ -1188,7 +1188,7 @@ package body Flow_Utility is
       Proofdeps : Node_Sets.Set;
       Unused    : Tasking_Info;
    begin
-      Collect_Functions_And_Read_Locked_POs
+      Pick_Generated_Info
         (N,
          Scop               => Get_Flow_Scope (N), --  ??? could be parameter
          Function_Calls     => Funcalls,

@@ -153,6 +153,7 @@ counting.ads:20:14: info: initialization of "Black_Counter" constituent of "Stat
 counting.ads:20:14: info: initialization of "Red_Counter" constituent of "State" proved
 counting.ads:21:06: info: data dependencies proved
 data_package.adb:6:07: info: initialization of "Data" proved
+data_package.adb:8:07: medium: implicit aspect Always_Terminates on "Data_Package" could be incorrect, call to "Read_Data_From_File" might be nonterminating [possible fix: annotate "Read_Data_From_File" with aspect Always_Terminates]
 data_package.ads:3:01: info: flow dependencies proved
 data_package.ads:6:04: info: initialization of "Data_1" proved
 data_package.ads:7:04: info: initialization of "Data_2" proved

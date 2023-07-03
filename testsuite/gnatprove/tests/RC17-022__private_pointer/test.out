@@ -9,7 +9,7 @@ private_pointer.adb:15:29: info: precondition proved (CVC5: 1 VC)
 private_pointer.ads:5:16: info: implicit aspect Always_Terminates on "Is_Null" has been proved, subprogram will terminate
 private_pointer.ads:6:16: info: implicit aspect Always_Terminates on "Get" has been proved, subprogram will terminate
 private_pointer.ads:8:16: info: implicit aspect Always_Terminates on "Uninit_Alloc" has been proved, subprogram will terminate
-private_pointer.ads:9:17: info: postcondition proved (altergo: 1 VC)
+private_pointer.ads:9:17: info: postcondition proved (CVC5: 1 VC)
 private_pointer.ads:10:16: info: implicit aspect Always_Terminates on "Init_Alloc" has been proved, subprogram will terminate
 private_pointer.ads:11:17: info: postcondition proved (CVC5: 2 VC)
 private_pointer.ads:11:53: info: precondition proved (CVC5: 1 VC)

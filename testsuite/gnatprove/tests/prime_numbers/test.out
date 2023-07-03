@@ -152,6 +152,7 @@ prime_and_coprime_numbers.adb:315:39: info: loop invariant preservation proved, 
 prime_and_coprime_numbers.adb:316:39: info: loop invariant initialization proved, in instantiation at test_prime_and_coprime_numbers.adb:6
 prime_and_coprime_numbers.adb:316:39: info: loop invariant preservation proved, in instantiation at test_prime_and_coprime_numbers.adb:6
 prime_and_coprime_numbers.adb:316:47: info: division check proved, in instantiation at test_prime_and_coprime_numbers.adb:6
+prime_and_coprime_numbers.adb:317:37: info: loop variant proved, in instantiation at test_prime_and_coprime_numbers.adb:6
 prime_and_coprime_numbers.adb:318:35: info: overflow check proved, in instantiation at test_prime_and_coprime_numbers.adb:6
 prime_and_coprime_numbers.adb:319:31: info: assertion proved, in instantiation at test_prime_and_coprime_numbers.adb:6
 prime_and_coprime_numbers.adb:319:39: info: division check proved, in instantiation at test_prime_and_coprime_numbers.adb:6

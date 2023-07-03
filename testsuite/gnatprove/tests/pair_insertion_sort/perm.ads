@@ -38,7 +38,7 @@ is
        (if V = A (I) then Occ (R, E) = Occ (A, E)
         elsif V = E then Occ (R, E) = Occ (A, E) + 1
         elsif A (I) = E then Occ (R, E) = Occ (A, E) - 1
-        else Occ (R, E) = Occ (A, E));
+        else Occ (R, E) = Occ (A, E)), Always_Terminates => True, Subprogram_Variant => (Decreases => A'Length);
 
    function Is_Perm (A, B : Arr) return Boolean is
      (for all E in Integer => Occ (A, E) = Occ (B, E));
