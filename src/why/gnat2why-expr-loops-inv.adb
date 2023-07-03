@@ -50,55 +50,65 @@ with Why.Gen.Terms;          use Why.Gen.Terms;
 
 package body Gnat2Why.Expr.Loops.Inv is
 
-   type Write_Kind is
-     (Entire_Object,
-      Record_Components,
-      Array_Components,
-      Access_Value,
-      Not_Written,
-      Discard);
-   --  The status of a variable or a part of a variable.
-   --   * Entire_Object (E_O) the object is entirely written.
-   --   * Record_Components (R_C) some fields (maybe all) of the record object
-   --                   are written.
-   --   * Array_Components (A_C) some indexes (maybe all) of the array object
-   --                   are written.
-   --   * Access_Value  (A_V) the value referenced by the access object is
-   --                   written.
-   --   * Not_Written   (N_W) the object looks like it is written in the loop,
-   --                   but not on any path abstracted by the loop invariant.
-   --   * Discard       (D) we don't care about the variable and won't output
-   --                   any invariant for it (typically for local variables).
-   --
-   --  Status gives an abstraction of writes, and have an implicit lattice
-   --  ordering between them. Using status initials
-   --  N_W < R_C, A_C, A_V < E_O < D
-   --  with R_C, A_C, A_V being incomparable.
-   --  Only one status among R_C/A_C/A_V can apply to a given (part of a)
-   --  variable (because of its type).
-   --
-   --  Not_Written status is only explicitly used for variables.
-   --  It is redundant for non-variables, as non-written components
-   --  are equivalently tracked by absence of status.
+   --  Package defining trees used to store information abouth variables
+   --  written by the loop.
 
-   type Write_Status;
-   type Write_Status_Access is access Write_Status;
+   package Write_Trees is
 
-   package Write_Status_Maps is new Ada.Containers.Hashed_Maps
-     (Key_Type        => Node_Id,
-      Element_Type    => Write_Status_Access,
-      Hash            => Common_Containers.Node_Hash,
-      Equivalent_Keys => "=");
-   use Write_Status_Maps;
+      type Write_Kind is
+        (Entire_Object,
+         Record_Components,
+         Array_Components,
+         Access_Value,
+         Not_Written,
+         Discard);
+      --  The status of a variable or a part of a variable.
+      --   * Entire_Object (E_O) the object is entirely written.
+      --   * Record_Components (R_C) some fields (maybe all) of the record
+      --                   object are written.
+      --   * Array_Components (A_C) some indexes (maybe all) of the array
+      --                   object are written.
+      --   * Access_Value  (A_V) the value referenced by the access object is
+      --                   written.
+      --   * Not_Written   (N_W) the object looks like it is written in the
+      --                   loop, but not on any path abstracted by the loop
+      --                   invariant.
+      --   * Discard       (D) we don't care about the variable and won't
+      --                   output any invariant for it (typically for local
+      --                   variables).
+      --
+      --  Status gives an abstraction of writes, and have an implicit lattice
+      --  ordering between them. Using status initials
+      --  N_W < R_C, A_C, A_V < E_O < D
+      --  with R_C, A_C, A_V being incomparable.
+      --  Only one status among R_C/A_C/A_V can apply to a given (part of a)
+      --  variable (because of its type).
+      --
+      --  Not_Written status is only explicitly used for variables.
+      --  It is redundant for non-variables, as non-written components
+      --  are equivalently tracked by absence of status.
 
-   package Array_Constraints_Maps is new Ada.Containers.Hashed_Maps
-     (Key_Type        => Node_Id,
-      Element_Type    => Boolean,
-      Hash            => Common_Containers.Node_Hash,
-      Equivalent_Keys => "=");
+      type Write_Status;
+      type Write_Status_Access is access Write_Status;
 
-   type Write_Status (Kind : Write_Kind) is limited record
-      case Kind is
+      package Write_Status_Maps is new Ada.Containers.Hashed_Maps
+        (Key_Type        => Node_Id,
+         Element_Type    => Write_Status_Access,
+         Hash            => Common_Containers.Node_Hash,
+         Equivalent_Keys => "=");
+
+      subtype Array_Constraint_Data is Boolean;
+      --  Each array constraint is associated a data. For now, we only need a
+      --  single boolean.
+
+      package Array_Constraints_Maps is new Ada.Containers.Hashed_Maps
+        (Key_Type        => Node_Id,
+         Element_Type    => Array_Constraint_Data,
+         Hash            => Common_Containers.Node_Hash,
+         Equivalent_Keys => "=");
+
+      type Write_Status (Kind : Write_Kind) is limited record
+         case Kind is
          when Entire_Object | Not_Written | Discard => null;
          when Record_Components =>
             Component_Status  : Write_Status_Maps.Map;
@@ -107,13 +117,65 @@ package body Gnat2Why.Expr.Loops.Inv is
             Content_Status    : Write_Status_Access;
          when Access_Value  =>
             Value_Status      : Write_Status_Access;
-      end case;
-   end record;
-   --  If only some parts of the object are written, we store their write
-   --  status in Write_Status additional fields. To keep track of which array
-   --  indexes are written, we store array writes in the Write_Constraints
-   --  field. We map them to a boolean which is True if the loop invariant has
-   --  already been encountered when the update occurs and False otherwise.
+         end case;
+      end record;
+      --  If only some parts of the object are written, we store their write
+      --  status in Write_Status additional fields. To keep track of which
+      --  array indexes are written, we store array writes in the
+      --  Write_Constraints field. We map them to a boolean which is True if
+      --  the loop invariant has already been encountered when the update
+      --  occurs and False otherwise.
+
+      procedure Finalize (Status : in out Write_Status_Access) with
+        Pre  => Status /= null,
+        Post => Status = null;
+      --  Free the memory for Status and set it to null.
+      --  @param Status the write status to be freed.
+
+      procedure Discard_Entity
+        (New_Write :        Object_Kind_Id;
+         Writes    : in out Write_Status_Maps.Map);
+      --  Update a write status map so New_Write is discarded
+
+      procedure Touch_Entity
+        (New_Write :        Object_Kind_Id;
+         Writes    : in out Write_Status_Maps.Map);
+      --  Update a write status map so it mentions New_Write but do not write
+      --  it.
+
+      procedure Touch_Expr
+        (New_Write :        N_Subexpr_Id;
+         Writes    : in out Write_Status_Maps.Map);
+      --  Update a write status map so it mentions the root of New_Write but do
+      --  not write it.
+
+      procedure Write_Entity
+        (New_Write  :        Object_Kind_Id;
+         Writes     : in out Write_Status_Maps.Map);
+      --  Update a write status map to account for a new write.
+      --  @param New_Write variable name which has been written.
+      --  @param Writes map between entities and their write status.
+
+      procedure Write_Expr
+        (New_Write   :        N_Subexpr_Id;
+         Writes      : in out Write_Status_Maps.Map;
+         Array_Data  :        Array_Constraint_Data;
+         Deref_Only  :        Boolean := False)
+        with Pre => (if Deref_Only then Has_Access_Type (Etype (New_Write)));
+      --  Update a write status map to account for a new write.
+      --  @param New_Write a path which has been written.
+      --  @param Writes map between entities and their write status.
+      --  @param Array_Data additional information to be stored in array
+      --         constraints if any.
+      --  @param Deref_Only true if New_Write is an access object and only its
+      --         value is updated.
+
+   end Write_Trees;
+   use Write_Trees;
+
+   ------------------------
+   --  Local Subprograms --
+   ------------------------
 
    function Equality_Of_Preserved_Components
      (Loop_Idx  : Opt_E_Loop_Parameter_Id;
@@ -149,121 +211,15 @@ package body Gnat2Why.Expr.Loops.Inv is
    -- Construction of the Write_Status_Maps --
    -------------------------------------------
 
-   procedure Finalize (Status : in out Write_Status_Access) with
-     Pre  => Status /= null,
-     Post => Status = null;
-   --  Free the memory for Status and set it to null.
-   --  @param Status the write status to be freed.
-
-   function New_Status
-     (New_Write      : Node_Or_Entity_Id;
-      Discard_Writes : Boolean;
-      Expected_Kind  : Write_Kind)
-      return Write_Status_Access
-   with
-     Pre => Expected_Kind /= Discard;
-   --  Create a Write_Status for New_Write.
-   --  @param New_Write variable or record field to which we are writing.
-   --  @param Discard_Writes True if the writes to the variable should be
-   --         discarded.
-   --  @param Expected_Kind expected kind of the updated status.
-   --  @result an access to a fresh status for New_Write.
-
-   procedure One_Level_Update
-     (New_Write      :        Object_Kind_Id;
-      Loop_Writes    : in out Write_Status_Maps.Map;
-      Discard_Writes :        Boolean;
-      Expected_Kind  :        Write_Kind;
-      Updated_Status :    out Write_Status_Access)
-   --  Update New_Write's write status in Loop_Writes,
-   --  changing the status kind stored for the object if
-   --  Expected_Kind allows more writes than the stored status.
-   --  The status is updated to Discard instead if the object can
-   --  be updated asynchronously.
-   --  @param New_Write variable or record field to be added to Loop_Writes.
-   --  @param Loop_Writes map between entities and their write status.
-   --  @param Discard_Writes True if the writes to the variable should be
-   --         discarded.
-   --  @param Expected_Kind expected kind of the updated status.
-   --  @param Updated_Status access to New_Write's write status.
-
-   with
-     Pre  => Expected_Kind /= Discard,
-     Post => Updated_Status /= null
-       and then Loop_Writes.Contains (New_Write)
-       and then Updated_Status = Loop_Writes.Element (New_Write)
-       and then (if Discard_Writes then
-                   Loop_Writes.Element (New_Write).Kind = Discard
-                 elsif Expected_Kind = Entire_Object then
-                   Loop_Writes.Element (New_Write).Kind in
-                     Discard | Entire_Object
-                 elsif Expected_Kind /= Not_Written then
-                    Loop_Writes.Element (New_Write).Kind /= Not_Written),
-     Contract_Cases =>
-       --  When marked as discarded, a variable or record field stays
-       --  discarded, as its write status does not matter.
-       (Loop_Writes.Contains (New_Write)
-          and then Loop_Writes.Element (New_Write).Kind = Discard
-        =>
-          Loop_Writes.Element (New_Write).Kind = Discard,
-        --  Entire variables of record fields should still be considered wholly
-        --  after the assignment.
-        Loop_Writes.Contains (New_Write)
-          and then Loop_Writes.Element (New_Write).Kind = Entire_Object
-        =>
-          Loop_Writes.Element (New_Write).Kind in Discard | Entire_Object,
-        others => True);
-
-   procedure One_Level_Update
-     (New_Write      :        Object_Kind_Id;
-      Loop_Writes    : in out Write_Status_Maps.Map;
-      Discard_Writes :        Boolean;
-      Relevant_Path  :        Boolean);
-   --  Same as before, except that Updated_Status is discarded,
-   --  and expected kind is set to Entire_Object or Not_Written depending
-   --  on whether the write is on a path that can lead to the invariant.
-   --  This latest information should be provided by the caller through the
-   --  Relevant_Path argument.
-
-   procedure Update_Alias_Status
-     (New_Write     : Object_Kind_Id;
-      Loop_Writes   : in out Write_Status_Maps.Map;
-      Relevant_Path : Boolean);
-   --  Update write status maps for all overlay alias of an objects,
-   --  by calling One_Level_Update on all said aliases.
-   --  Those writes are not (a priori) discarded.
-
-   procedure Update_Status
-     (New_Write      :        N_Subexpr_Id;
-      Loop_Writes    : in out Write_Status_Maps.Map;
-      After_Inv      :        Boolean;
-      Expected_Kind  :        Write_Kind;
-      Ignore_Slices  :        Boolean;
-      Expected_Type  :    out Opt_Type_Kind_Id;
-      Updated_Status :    out Write_Status_Access)
-   with
-     Pre  => Expected_Kind not in Not_Written | Discard,
-     Post => Updated_Status /= null;
-   --  Update a write status map to account for a new write. It may require
-   --  several updates if New_Write is a complex variable name.
-   --  @param New_Write variable name which has been written.
-   --  @param Loop_Writes map between entities and their write status.
-   --  @param After_Inv True if the current update occurs after the loop
-   --         invariant in the top level loop.
-   --  @param Expected_Kind expected kind of the updated status.
-   --  @param Ignore_Slices True if slices should be ignored in New_Write. This
-   --         is used for prefixes of selected components and slices.
-   --  @param Expected_Type type of the actual updated object part.
-   --  @param Updated_Status access to New_Write's write status.
-
-   procedure Update_Status
+   procedure Write_Expr
      (New_Write     :        N_Subexpr_Id;
       Loop_Writes   : in out Write_Status_Maps.Map;
       After_Inv     :        Boolean;
       Relevant_Path :        Boolean;
       Deref_Only    :        Boolean := False)
    with Pre => (if Deref_Only then Has_Access_Type (Etype (New_Write)));
-   --  Update a write status map to account for a new write.
+   --  Write to an expression New_Write. The expression is discarded if its
+   --  root object can be updated asynchronously.
    --  @param New_Write variable name which has been written.
    --  @param Loop_Writes map between entities and their write status.
    --  @param After_Inv True if the current update occurs after the loop
@@ -272,6 +228,27 @@ package body Gnat2Why.Expr.Loops.Inv is
    --         occur on a path that always exits.
    --  @param Deref_Only true if New_Write is an access object and only its
    --         value is updated.
+
+   procedure Write_Entity
+     (New_Write      :        Object_Kind_Id;
+      Loop_Writes    : in out Write_Status_Maps.Map;
+      Discard_Writes :        Boolean;
+      Relevant_Path  :        Boolean);
+   --  Write to an entire entity New_Write. The entity is discarded if the
+   --  object can be updated asynchronously or Discard_Writes is True.
+   --  @param New_Write variable to be added to Loop_Writes.
+   --  @param Loop_Writes map between entities and their write status.
+   --  @param Discard_Writes True if the writes to the variable should be
+   --         discarded.
+   --  @param Relevant_Path False if the update is not relevant and the object
+   --         is not actually written.
+
+   procedure Write_Aliases
+     (New_Write     : Object_Kind_Id;
+      Loop_Writes   : in out Write_Status_Maps.Map;
+      Relevant_Path : Boolean);
+   --  Write all overlay alias of an objects, by calling Write_Entity on all
+   --  said aliases. Those writes are not (a priori) discarded.
 
    --------------------
    -- Tree Traversal --
@@ -1004,33 +981,6 @@ package body Gnat2Why.Expr.Loops.Inv is
       return Preserved_Components;
    end Equality_Of_Preserved_Components;
 
-   --------------
-   -- Finalize --
-   --------------
-
-   procedure Finalize (Status : in out Write_Status_Access) is
-      procedure Free is
-        new Ada.Unchecked_Deallocation (Write_Status, Write_Status_Access);
-   begin
-      case Status.Kind is
-         when Entire_Object
-            | Not_Written
-            | Discard
-         =>
-            null;
-         when Record_Components =>
-            for E of Status.Component_Status loop
-               Finalize (E);
-            end loop;
-         when Array_Components  =>
-            Finalize (Status.Content_Status);
-         when Access_Value      =>
-            Finalize (Status.Value_Status);
-      end case;
-
-      Free (Status);
-   end Finalize;
-
    ------------------------------
    -- Generate_Frame_Condition --
    ------------------------------
@@ -1041,6 +991,7 @@ package body Gnat2Why.Expr.Loops.Inv is
       High_Id            : W_Expr_Id)
       return W_Pred_Id
    is
+      use Write_Status_Maps;
       Loop_Id       : constant E_Loop_Id := Entity (Identifier (Loop_Stmt));
       Param_Spec    : constant Opt_N_Loop_Parameter_Specification_Id :=
         (if Present (Iteration_Scheme (Loop_Stmt))
@@ -1298,10 +1249,10 @@ package body Gnat2Why.Expr.Loops.Inv is
             --  stating the dynamic property of the loop index in the frame
             --  condition.
 
-            One_Level_Update (New_Write      => Loop_Param_Ent,
-                              Loop_Writes    => Loop_Writes,
-                              Discard_Writes => After_Inv,
-                              Relevant_Path  => True);
+            Write_Entity (New_Write      => Loop_Param_Ent,
+                          Loop_Writes    => Loop_Writes,
+                          Discard_Writes => After_Inv,
+                          Relevant_Path  => True);
 
          end;
       end if;
@@ -1377,173 +1328,6 @@ package body Gnat2Why.Expr.Loops.Inv is
       end loop;
    end Get_Loop_Writes;
 
-   ----------------
-   -- New_Status --
-   ----------------
-
-   function New_Status
-     (New_Write      : Node_Or_Entity_Id;
-      Discard_Writes : Boolean;
-      Expected_Kind  : Write_Kind)
-      return Write_Status_Access
-   is
-   begin
-      --  If Discard_Writes is True, then discard the variable
-
-      if Discard_Writes then
-
-         return new Write_Status'(Kind => Discard);
-
-      --  Otherwise, return a new status with the expected Write_Kind
-
-      else
-         case Expected_Kind is
-            when Discard =>
-               raise Program_Error;
-            when Not_Written =>
-               return new Write_Status'(Kind => Not_Written);
-            when Entire_Object =>
-               return new Write_Status'(Kind => Entire_Object);
-            when Record_Components =>
-               if Retysp_Kind (Etype (New_Write)) in
-                 Record_Kind | Incomplete_Or_Private_Kind
-               then
-                  return new
-                    Write_Status'(Kind             => Record_Components,
-                                  Component_Status => Empty_Map);
-               else
-
-                  --  We only handle separately parts of arrays and records.
-                  --  Other objects can only be modified as a whole.
-
-                  return new Write_Status'(Kind => Entire_Object);
-               end if;
-            when Array_Components =>
-               return
-               new Write_Status'(Kind              => Array_Components,
-                                 Write_Constraints =>
-                                    Array_Constraints_Maps.Empty_Map,
-                                 Content_Status    => null);
-            when Access_Value =>
-               return new Write_Status'(Kind         => Access_Value,
-                                        Value_Status => null);
-         end case;
-      end if;
-   end New_Status;
-
-   ----------------------
-   -- One_Level_Update --
-   ----------------------
-
-   procedure One_Level_Update
-     (New_Write      :        Object_Kind_Id;
-      Loop_Writes    : in out Write_Status_Maps.Map;
-      Discard_Writes :        Boolean;
-      Expected_Kind  :        Write_Kind;
-      Updated_Status :    out Write_Status_Access)
-   is
-      Inserted : Boolean;
-      C        : Cursor := Loop_Writes.Find (New_Write);
-
-   begin
-      if C = No_Element then
-
-         --  New_Write does not exist in Loop_Writes; create it.
-         --  If New_Write has asynchronous writers, it is discarded so that
-         --  none of its parts can be considered preserved. This test is
-         --  done at the insertion only, as Discard status never change.
-
-         Loop_Writes.Insert
-           (Key      => New_Write,
-            New_Item => New_Status
-              (New_Write,
-               Discard_Writes =>
-                 Discard_Writes
-                 or else Has_Volatile (New_Write)
-                 or else
-                   Is_Protected_Component_Or_Discr_Or_Part_Of (New_Write),
-
-                 --  Protected components are not handled.
-                 --  Discriminants are allowed by the available test function
-                 --  as well, but cannot occur here as they cannot be written
-                 --  at all, so that does not impact the result.
-
-               Expected_Kind => Expected_Kind),
-            Inserted => Inserted,
-            Position => C);
-
-         pragma Assert (Inserted);
-
-      elsif Discard_Writes then
-
-         --  If Discard_Writes is set, New_Write's write status should stay
-         --  as Discard.
-
-         if Element (C).Kind /= Discard then
-
-            --  If Discard_Writes is set, update New_Write's status to
-            --  Discard if necessary.
-
-            declare
-               Old_Status : Write_Status_Access renames Loop_Writes (C);
-            begin
-               Finalize (Old_Status);
-            end;
-
-            Loop_Writes.Replace_Element
-              (Position => C,
-               New_Item => new Write_Status'(Kind => Discard));
-         end if;
-
-      elsif (Expected_Kind = Entire_Object
-             and then Element (C).Kind not in Entire_Object | Discard)
-        or else (Element (C).Kind = Not_Written
-                 and then Expected_Kind /= Not_Written)
-      then
-
-         --  Update status if strictly larger for implicit ordering.
-
-         declare
-            Old_Status : Write_Status_Access renames Loop_Writes (C);
-         begin
-            Finalize (Old_Status);
-         end;
-
-         Loop_Writes.Replace_Element
-           (Position => C,
-            New_Item => New_Status (New_Write, Discard_Writes => False,
-                                    Expected_Kind => Expected_Kind));
-
-         --  Sanity check: the kind of a variable cannot change between
-         --  type-specific kinds (equivalent to being incomparable for
-         --  implicit ordering).
-
-      elsif Expected_Kind not in Entire_Object | Not_Written
-        and then Element (C).Kind not in Not_Written | Entire_Object | Discard
-      then
-         pragma Assert (Element (C).Kind = Expected_Kind);
-      end if;
-
-      Updated_Status := Element (C);
-   end One_Level_Update;
-
-   procedure One_Level_Update
-     (New_Write      :        Object_Kind_Id;
-      Loop_Writes    : in out Write_Status_Maps.Map;
-      Discard_Writes :        Boolean;
-      Relevant_Path  :        Boolean)
-   is
-      Updated_Status : Write_Status_Access;
-   begin
-      One_Level_Update
-        (New_Write      => New_Write,
-         Loop_Writes    => Loop_Writes,
-         Expected_Kind  =>
-           (if Relevant_Path then Entire_Object else Not_Written),
-         Discard_Writes => Discard_Writes,
-         Updated_Status => Updated_Status);
-   end One_Level_Update;
-
    ----------------------------
    -- Process_Call_Statement --
    ----------------------------
@@ -1573,13 +1357,13 @@ package body Gnat2Why.Expr.Loops.Inv is
             --  designated value only can be updated by the call, not the
             --  access itself.
 
-            Update_Status
+            Write_Expr
                (Actual, Loop_Writes, After_Inv, Relevant_Path,
                 Deref_Only => Ekind (Formal) = E_In_Parameter);
 
             --  Aliases of the root of the actual are entirely written
 
-            Update_Alias_Status
+            Write_Aliases
               (Get_Root_Object (Actual), Loop_Writes, Relevant_Path);
          end if;
       end Process_Param;
@@ -1625,9 +1409,9 @@ package body Gnat2Why.Expr.Loops.Inv is
                   if Is_Object (Entity)
                     and then Is_Mutable_In_Why (Entity)
                   then
-                     One_Level_Update (Entity, Loop_Writes,
-                                       Discard_Writes => False,
-                                       Relevant_Path  => Relevant_Path);
+                     Write_Entity (Entity, Loop_Writes,
+                                   Discard_Writes => False,
+                                   Relevant_Path  => Relevant_Path);
                   end if;
                end;
             end if;
@@ -1639,8 +1423,11 @@ package body Gnat2Why.Expr.Loops.Inv is
       if Is_Protected_Operation (Subp)
         and then Is_External_Call (Call)
       then
-         Update_Status (Prefix (SPARK_Atree.Name (Call)), Loop_Writes,
-                        After_Inv, Relevant_Path);
+         Write_Expr
+           (New_Write     => SPARK_Atree.Name (Call),
+            Loop_Writes   => Loop_Writes,
+            After_Inv     => After_Inv,
+            Relevant_Path => Relevant_Path);
 
          --  ??? for internal calls we currently do not handle the implicit
          --  self reference.
@@ -1666,11 +1453,15 @@ package body Gnat2Why.Expr.Loops.Inv is
                Relevant : constant Boolean :=
                  Relevant_Vertices.Contains (Local_CFG.Starting_Vertex (N));
             begin
-               Update_Status (Lvalue, Loop_Writes, After_Inv, Relevant);
+               Write_Expr
+                 (New_Write     => Lvalue,
+                  Loop_Writes   => Loop_Writes,
+                  After_Inv     => After_Inv,
+                  Relevant_Path => Relevant);
 
                --  Aliases of the left-hand side are entirely written
 
-               Update_Alias_Status
+               Write_Aliases
                  (Get_Root_Object (Lvalue), Loop_Writes, Relevant);
             end;
 
@@ -1734,22 +1525,24 @@ package body Gnat2Why.Expr.Loops.Inv is
                --  the borrowed expression to be updated.
 
                if Is_Local_Borrower (E) then
-                  Update_Status
-                    (Get_Borrowed_Expr (E), Loop_Writes, After_Inv, Relevant);
+                  Write_Expr
+                    (New_Write     => Get_Borrowed_Expr (E),
+                     Loop_Writes   => Loop_Writes,
+                     After_Inv     => After_Inv,
+                     Relevant_Path => Relevant);
                end if;
 
                if Is_Mutable_In_Why (E) then
-                  One_Level_Update (E, Loop_Writes,
-                                    Discard_Writes =>
-                                      In_Nested
-                                      or else After_Inv,
-                                    Relevant_Path  => Relevant);
+                  Write_Entity (E, Loop_Writes,
+                                Discard_Writes =>
+                                  In_Nested or else After_Inv,
+                                Relevant_Path  => Relevant);
 
                   --  If E has an initial value, its aliases are entirely
                   --  written.
 
                   if not Is_Imported (E) then
-                     Update_Alias_Status (E, Loop_Writes, Relevant);
+                     Write_Aliases (E, Loop_Writes, Relevant);
                   end if;
                end if;
             end;
@@ -1828,11 +1621,11 @@ package body Gnat2Why.Expr.Loops.Inv is
 
             begin
                if Present (Spec) then
-                  One_Level_Update
+                  Write_Entity
                     (New_Write      => Defining_Identifier (Spec),
                      Loop_Writes    => Loop_Writes,
                      Discard_Writes => True,
-                     Relevant_Path => True); --  Do not care since we discard.
+                     Relevant_Path  => True); --  Do not care since we discard
                end if;
             end;
 
@@ -1900,59 +1693,394 @@ package body Gnat2Why.Expr.Loops.Inv is
       end loop;
    end Process_Statement_List;
 
-   -------------------------
-   -- Update_Alias_Status --
-   -------------------------
+   -------------------
+   -- Write_Aliases --
+   -------------------
 
-   procedure Update_Alias_Status
+   procedure Write_Aliases
      (New_Write     : Object_Kind_Id;
       Loop_Writes   : in out Write_Status_Maps.Map;
       Relevant_Path : Boolean)
    is
    begin
       for Alias of Overlay_Alias (New_Write) loop
-         One_Level_Update (Alias, Loop_Writes,
-                           Discard_Writes => False,
-                           Relevant_Path  => Relevant_Path);
+         Write_Entity (Alias, Loop_Writes,
+                       Discard_Writes => False,
+                       Relevant_Path  => Relevant_Path);
       end loop;
-   end Update_Alias_Status;
+   end Write_Aliases;
 
-   -------------------
-   -- Update_Status --
-   -------------------
+   ------------------
+   -- Write_Entity --
+   ------------------
 
-   procedure Update_Status
-     (New_Write      :        N_Subexpr_Id;
+   procedure Write_Entity
+     (New_Write      :        Object_Kind_Id;
       Loop_Writes    : in out Write_Status_Maps.Map;
-      After_Inv      :        Boolean;
-      Expected_Kind  :        Write_Kind;
-      Ignore_Slices  :        Boolean;
-      Expected_Type  :    out Opt_Type_Kind_Id;
-      Updated_Status :    out Write_Status_Access)
+      Discard_Writes :        Boolean;
+      Relevant_Path  :        Boolean)
    is
    begin
-      case Nkind (New_Write) is
+      --  If New_Write has asynchronous writers, it is discarded so that
+      --  none of its parts can be considered preserved. Protected components
+      --  and Part_Of variables are not supported.
+
+      if Discard_Writes
+        or else Has_Volatile (New_Write)
+        or else Is_Protected_Component_Or_Discr_Or_Part_Of (New_Write)
+      then
+         Discard_Entity (New_Write, Loop_Writes);
+      elsif Relevant_Path then
+         Write_Entity (New_Write, Loop_Writes);
+      else
+         Touch_Entity (New_Write, Loop_Writes);
+      end if;
+   end Write_Entity;
+
+   ----------------
+   -- Write_Expr --
+   ----------------
+
+   procedure Write_Expr
+     (New_Write     :        N_Subexpr_Id;
+      Loop_Writes   : in out Write_Status_Maps.Map;
+      After_Inv     :        Boolean;
+      Relevant_Path :        Boolean;
+      Deref_Only    :        Boolean := False)
+   is
+      Root : constant Entity_Id := Get_Root_Object (New_Write);
+
+   begin
+      --  If New_Write has asynchronous writers, it is discarded so that
+      --  none of its parts can be considered preserved. Protected components
+      --  and Part_Of variables are not supported.
+
+      if Has_Volatile (Root)
+        or else Is_Protected_Component_Or_Discr_Or_Part_Of (Root)
+      then
+         Discard_Entity (Root, Loop_Writes);
+         return;
+      end if;
+
+      --  If the write is not on a path relevant to the frame condition,
+      --  we only need to ensures that the root object is in the table,
+      --  so that we remember that the object is written within the
+      --  loop body.
+
+      if not Relevant_Path then
+         Touch_Expr (New_Write, Loop_Writes);
+         return;
+      end if;
+
+      Write_Expr
+        (New_Write  => New_Write,
+         Writes     => Loop_Writes,
+         Array_Data => After_Inv,
+         Deref_Only => Deref_Only);
+   end Write_Expr;
+
+   -----------------
+   -- Write_Trees --
+   -----------------
+
+   package body Write_Trees is
+      use Write_Status_Maps;
+
+      -------------------------------------------
+      -- Construction of the Write_Status_Maps --
+      -------------------------------------------
+
+      function New_Status
+        (New_Write     : Node_Or_Entity_Id;
+         Expected_Kind : Write_Kind)
+      return Write_Status_Access;
+      --  Create a Write_Status for New_Write.
+      --  @param New_Write variable or record field to which we are writing.
+      --  @param Expected_Kind expected kind of the updated status.
+      --  @result an access to a fresh status for New_Write.
+
+      procedure One_Level_Update
+        (New_Write      :        Object_Kind_Id;
+         Writes         : in out Write_Status_Maps.Map;
+         Expected_Kind  :        Write_Kind;
+         Updated_Status :    out Write_Status_Access)
+        --  Update New_Write's write status in Writes, changing the status kind
+        --  stored for the object if Expected_Kind allows more writes than the
+        --  stored status.
+        --  @param New_Write variable or record field to be added to Writes.
+        --  @param Writes map between entities and their write status.
+        --  @param Expected_Kind expected kind of the updated status.
+        --  @param Updated_Status access to New_Write's write status.
+
+        with
+          Post => Updated_Status /= null
+          and then Writes.Contains (New_Write)
+          and then Updated_Status = Writes.Element (New_Write)
+          and then (if Expected_Kind = Discard then
+                      Writes.Element (New_Write).Kind = Discard
+                        elsif Expected_Kind = Entire_Object then
+                          Writes.Element (New_Write).Kind in
+                      Discard | Entire_Object
+                        elsif Expected_Kind /= Not_Written then
+                          Writes.Element (New_Write).Kind /= Not_Written),
+          Contract_Cases =>
+            --  When marked as discarded, a variable or record field stays
+            --  discarded, as its write status does not matter.
+            (Writes.Contains (New_Write)
+               and then Writes.Element (New_Write).Kind = Discard
+             =>
+               Writes.Element (New_Write).Kind = Discard,
+
+             --  Entire variables of record fields should still be considered
+             --  wholly after the assignment.
+             Writes.Contains (New_Write)
+               and then Writes.Element (New_Write).Kind = Entire_Object
+             =>
+               Writes.Element (New_Write).Kind in Discard | Entire_Object,
+
+             others => True);
+
+      procedure Update_Status
+        (New_Write      :        N_Subexpr_Id;
+         Writes         : in out Write_Status_Maps.Map;
+         Array_Data     :        Array_Constraint_Data;
+         Expected_Kind  :        Write_Kind;
+         Ignore_Slices  :        Boolean;
+         Expected_Type  :    out Opt_Type_Kind_Id;
+         Updated_Status :    out Write_Status_Access)
+        with
+          Pre  => Expected_Kind not in Not_Written | Discard,
+          Post => Updated_Status /= null;
+      --  Update a write status map to account for a new write. It may require
+      --  several updates if New_Write is a complex variable name.
+      --  @param New_Write variable name which has been written.
+      --  @param Writes map between entities and their write status.
+      --  @param Array_Data additional information to be stored in array
+      --         constraints if any.
+      --  @param Expected_Kind expected kind of the updated status.
+      --  @param Ignore_Slices True if slices should be ignored in New_Write.
+      --         This is used for prefixes of selected components and slices.
+      --  @param Expected_Type type of the actual updated object part.
+      --  @param Updated_Status access to New_Write's write status.
+
+      --------------------
+      -- Discard_Entity --
+      --------------------
+
+      procedure Discard_Entity
+        (New_Write :        Object_Kind_Id;
+         Writes    : in out Write_Status_Maps.Map)
+      is
+         Updated_Status : Write_Status_Access;
+      begin
+         One_Level_Update
+           (New_Write,
+            Writes,
+            Expected_Kind  => Discard,
+            Updated_Status => Updated_Status);
+      end Discard_Entity;
+
+      --------------
+      -- Finalize --
+      --------------
+
+      procedure Finalize (Status : in out Write_Status_Access) is
+         procedure Free is
+           new Ada.Unchecked_Deallocation (Write_Status, Write_Status_Access);
+      begin
+         case Status.Kind is
+         when Entire_Object
+            | Not_Written
+            | Discard
+            =>
+            null;
+         when Record_Components =>
+            for E of Status.Component_Status loop
+               Finalize (E);
+            end loop;
+         when Array_Components  =>
+            Finalize (Status.Content_Status);
+         when Access_Value      =>
+            Finalize (Status.Value_Status);
+         end case;
+
+         Free (Status);
+      end Finalize;
+
+      ----------------
+      -- New_Status --
+      ----------------
+
+      function New_Status
+        (New_Write     : Node_Or_Entity_Id;
+         Expected_Kind : Write_Kind)
+      return Write_Status_Access
+      is
+      begin
+         case Expected_Kind is
+         when Discard =>
+            return new Write_Status'(Kind => Discard);
+         when Not_Written =>
+            return new Write_Status'(Kind => Not_Written);
+         when Entire_Object =>
+            return new Write_Status'(Kind => Entire_Object);
+         when Record_Components =>
+            if Retysp_Kind (Etype (New_Write)) in
+              Record_Kind | Incomplete_Or_Private_Kind
+            then
+               return new
+                 Write_Status'(Kind             => Record_Components,
+                               Component_Status => Empty_Map);
+            else
+
+               --  We only handle separately parts of arrays and records.
+               --  Other objects can only be modified as a whole.
+
+               return new Write_Status'(Kind => Entire_Object);
+            end if;
+         when Array_Components =>
+            return new
+              Write_Status'(Kind              => Array_Components,
+                            Write_Constraints =>
+                               Array_Constraints_Maps.Empty_Map,
+                            Content_Status    => null);
+         when Access_Value =>
+            return new Write_Status'(Kind         => Access_Value,
+                                     Value_Status => null);
+         end case;
+      end New_Status;
+
+      ----------------------
+      -- One_Level_Update --
+      ----------------------
+
+      procedure One_Level_Update
+        (New_Write      :        Object_Kind_Id;
+         Writes         : in out Write_Status_Maps.Map;
+         Expected_Kind  :        Write_Kind;
+         Updated_Status :    out Write_Status_Access)
+      is
+         Inserted : Boolean;
+         C        : Cursor := Writes.Find (New_Write);
+      begin
+         if C = No_Element then
+
+            --  New_Write does not exist in Writes; create it.
+
+            Writes.Insert
+              (Key      => New_Write,
+               New_Item => New_Status (New_Write, Expected_Kind),
+               Inserted => Inserted,
+               Position => C);
+
+            pragma Assert (Inserted);
+
+         --  Old status if larger for implicit ordering, nothing to do
+
+         elsif Expected_Kind = Not_Written
+           or else Element (C).Kind = Discard
+           or else
+             (Expected_Kind /= Discard and Element (C).Kind = Entire_Object)
+           or else Expected_Kind = Element (C).Kind
+         then
+            null;
+
+         --  New status if strictly larger for implicit ordering, update it
+
+         elsif Expected_Kind in Entire_Object | Discard
+           or else Element (C).Kind = Not_Written
+         then
+
+            declare
+               Old_Status : Write_Status_Access renames Writes (C);
+            begin
+               Finalize (Old_Status);
+            end;
+
+            Writes.Replace_Element
+              (Position => C,
+               New_Item => New_Status (New_Write, Expected_Kind));
+
+         --  Sanity check: the kind of a variable cannot change between
+         --  type-specific kinds (equivalent to being incomparable for implicit
+         --  ordering).
+
+         else
+            pragma Assert (Element (C).Kind = Expected_Kind);
+         end if;
+
+         Updated_Status := Element (C);
+      end One_Level_Update;
+
+      ------------------
+      -- Touch_Entity --
+      ------------------
+
+      procedure Touch_Entity
+        (New_Write :        Object_Kind_Id;
+         Writes    : in out Write_Status_Maps.Map)
+      is
+         Updated_Status : Write_Status_Access;
+      begin
+         One_Level_Update
+           (New_Write,
+            Writes,
+            Expected_Kind  => Not_Written,
+            Updated_Status => Updated_Status);
+      end Touch_Entity;
+
+      ----------------
+      -- Touch_Expr --
+      ----------------
+
+      procedure Touch_Expr
+        (New_Write :        N_Subexpr_Id;
+         Writes    : in out Write_Status_Maps.Map)
+      is
+         Updated_Status : Write_Status_Access;
+      begin
+         One_Level_Update
+           (Get_Root_Object (New_Write),
+            Writes,
+            Expected_Kind  => Not_Written,
+            Updated_Status => Updated_Status);
+      end Touch_Expr;
+
+      -------------------
+      -- Update_Status --
+      -------------------
+
+      procedure Update_Status
+        (New_Write      :        N_Subexpr_Id;
+         Writes         : in out Write_Status_Maps.Map;
+         Array_Data     :        Array_Constraint_Data;
+         Expected_Kind  :        Write_Kind;
+         Ignore_Slices  :        Boolean;
+         Expected_Type  :    out Opt_Type_Kind_Id;
+         Updated_Status :    out Write_Status_Access)
+      is
+      begin
+         case Nkind (New_Write) is
 
          --  For identifiers, update the corresponding status.
 
          when N_Identifier
             | N_Expanded_Name
-         =>
+            =>
             One_Level_Update
               (New_Write      => Entity (New_Write),
-               Loop_Writes    => Loop_Writes,
+               Writes         => Writes,
                Expected_Kind  => Expected_Kind,
-               Discard_Writes => False,
                Updated_Status => Updated_Status);
 
             Expected_Type := Retysp (Etype (New_Write));
 
          when N_Type_Conversion
             | N_Unchecked_Type_Conversion
-         =>
+            =>
             Update_Status (New_Write      => Expression (New_Write),
-                           Loop_Writes    => Loop_Writes,
-                           After_Inv      => After_Inv,
+                           Writes         => Writes,
+                           Array_Data     => Array_Data,
                            Ignore_Slices  => Ignore_Slices,
                            Expected_Kind  => Expected_Kind,
                            Expected_Type  => Expected_Type,
@@ -1964,8 +2092,8 @@ package body Gnat2Why.Expr.Loops.Inv is
             --  to Record_Components to create a status for it.
 
             Update_Status (New_Write      => Prefix (New_Write),
-                           Loop_Writes    => Loop_Writes,
-                           After_Inv      => After_Inv,
+                           Writes         => Writes,
+                           Array_Data     => Array_Data,
                            Ignore_Slices  => False,
                            Expected_Kind  => Record_Components,
                            Expected_Type  => Expected_Type,
@@ -2004,14 +2132,13 @@ package body Gnat2Why.Expr.Loops.Inv is
                           (if Updated_Status.Component_Status.Contains
                              (Discarded_Component)
                            then
-                             Updated_Status.Component_Status.Element
-                               (Discarded_Component).Kind = Discard);
+                              Updated_Status.Component_Status.Element
+                             (Discarded_Component).Kind = Discard);
 
                         One_Level_Update
                           (New_Write      => Discarded_Component,
-                           Loop_Writes    => Updated_Status.Component_Status,
-                           Expected_Kind  => Expected_Kind,
-                           Discard_Writes => True,
+                           Writes         => Updated_Status.Component_Status,
+                           Expected_Kind  => Discard,
                            Updated_Status => Updated_Status);
 
                         --  This type should never be used.
@@ -2024,9 +2151,8 @@ package body Gnat2Why.Expr.Loops.Inv is
                   else
                      One_Level_Update
                        (New_Write      => Expected_Component,
-                        Loop_Writes    => Updated_Status.Component_Status,
+                        Writes         => Updated_Status.Component_Status,
                         Expected_Kind  => Expected_Kind,
-                        Discard_Writes => False,
                         Updated_Status => Updated_Status);
 
                      Expected_Type := Retysp (Etype (Expected_Component));
@@ -2036,13 +2162,13 @@ package body Gnat2Why.Expr.Loops.Inv is
 
          when N_Indexed_Component
             | N_Slice
-         =>
+            =>
             --  Call Update_Status on Prefix (New_Write) with Expected_Kind set
             --  to Array_Components to create a status for it.
 
             Update_Status (New_Write      => Prefix (New_Write),
-                           Loop_Writes    => Loop_Writes,
-                           After_Inv      => After_Inv,
+                           Writes         => Writes,
+                           Array_Data     => Array_Data,
                            Expected_Kind  => Array_Components,
                            Ignore_Slices  => True,
                            Expected_Type  => Expected_Type,
@@ -2064,7 +2190,7 @@ package body Gnat2Why.Expr.Loops.Inv is
                   if Updated_Status.Content_Status = null then
                      Updated_Status.Content_Status :=
                        New_Status
-                         (New_Write, Discard_Writes => False,
+                         (New_Write,
                           Expected_Kind             => Expected_Kind);
 
                   --  If Expected_Kind is Entire_Object, update New_Write's
@@ -2098,7 +2224,7 @@ package body Gnat2Why.Expr.Loops.Inv is
                   --  Store the new write in Updated_Status.Write_Constraints
 
                   Updated_Status.Write_Constraints.Insert
-                    (New_Write, After_Inv);
+                    (New_Write, Array_Data);
 
                   --  If we are updating a slice of an array, it is exactly as
                   --  if we were updating the array as a whole.
@@ -2118,8 +2244,8 @@ package body Gnat2Why.Expr.Loops.Inv is
             --  to Access_Value to create a status for it.
 
             Update_Status (New_Write      => Prefix (New_Write),
-                           Loop_Writes    => Loop_Writes,
-                           After_Inv      => After_Inv,
+                           Writes         => Writes,
+                           Array_Data     => Array_Data,
                            Expected_Kind  => Access_Value,
                            Ignore_Slices  => True,
                            Expected_Type  => Expected_Type,
@@ -2139,7 +2265,7 @@ package body Gnat2Why.Expr.Loops.Inv is
                if Updated_Status.Value_Status = null then
                   Updated_Status.Value_Status :=
                     New_Status
-                      (New_Write, Discard_Writes => False,
+                      (New_Write,
                        Expected_Kind             => Expected_Kind);
 
                --  If Expected_Kind is Entire_Object, update New_Write's
@@ -2179,54 +2305,63 @@ package body Gnat2Why.Expr.Loops.Inv is
             Ada.Text_IO.Put_Line ("[Update_Status] kind ="
                                   & Node_Kind'Image (Nkind (New_Write)));
             raise Program_Error;
-      end case;
-   end Update_Status;
+         end case;
+      end Update_Status;
 
-   procedure Update_Status
-     (New_Write     :        N_Subexpr_Id;
-      Loop_Writes   : in out Write_Status_Maps.Map;
-      After_Inv     :        Boolean;
-      Relevant_Path :        Boolean;
-      Deref_Only    :        Boolean := False)
-   is
-      Updated_Status : Write_Status_Access;
-      Expected_Type  : Opt_Type_Kind_Id;
+      ------------------
+      -- Write_Entity --
+      ------------------
 
-      --  If the write is not on a path relevant to the frame condition,
-      --  we only need to ensures that the root object is in the table,
-      --  so that we remember that the object is written within the
-      --  loop body.
+      procedure Write_Entity
+        (New_Write  :        Object_Kind_Id;
+         Writes     : in out Write_Status_Maps.Map)
+      is
+         Updated_Status : Write_Status_Access;
+      begin
+         One_Level_Update
+           (New_Write,
+            Writes,
+            Expected_Kind  => Entire_Object,
+            Updated_Status => Updated_Status);
+      end Write_Entity;
 
-   begin
-      if not Relevant_Path then
+      ----------------
+      -- Write_Expr --
+      ----------------
 
-         One_Level_Update (Get_Root_Object (New_Write), Loop_Writes,
-                           Discard_Writes => False, Relevant_Path => False);
-         return;
-      end if;
+      procedure Write_Expr
+        (New_Write   :        N_Subexpr_Id;
+         Writes      : in out Write_Status_Maps.Map;
+         Array_Data  :        Array_Constraint_Data;
+         Deref_Only  :        Boolean := False)
+      is
+         Updated_Status : Write_Status_Access;
+         Expected_Type  : Opt_Type_Kind_Id;
+      begin
+         Update_Status
+           (New_Write      => New_Write,
+            Writes         => Writes,
+            Array_Data     => Array_Data,
+            Expected_Kind  =>
+              (if Deref_Only then Access_Value else Entire_Object),
+            Ignore_Slices  => False,
+            Expected_Type  => Expected_Type,
+            Updated_Status => Updated_Status);
 
-      Update_Status
-        (New_Write      => New_Write,
-         Loop_Writes    => Loop_Writes,
-         After_Inv      => After_Inv,
-         Expected_Kind  =>
-           (if Deref_Only then Access_Value else Entire_Object),
-         Ignore_Slices  => False,
-         Expected_Type  => Expected_Type,
-         Updated_Status => Updated_Status);
+         --  If we have created status of an access_value kind for New_Write,
+         --  we might need to initialize its Value_Status field.
 
-      --  If we have created status of an access_value kind for New_Write, we
-      --  might need to initialize its Value_Status field.
+         if Deref_Only
+           and then Updated_Status.Kind = Access_Value
+           and then Updated_Status.Value_Status = null
+         then
+            Updated_Status.Value_Status :=
+              New_Status
+                (New_Write,
+                 Expected_Kind => Entire_Object);
+         end if;
+      end Write_Expr;
 
-      if Deref_Only
-        and then Updated_Status.Kind = Access_Value
-        and then Updated_Status.Value_Status = null
-      then
-         Updated_Status.Value_Status :=
-           New_Status
-             (New_Write, Discard_Writes => False,
-              Expected_Kind             => Entire_Object);
-      end if;
-   end Update_Status;
+   end Write_Trees;
 
 end Gnat2Why.Expr.Loops.Inv;
