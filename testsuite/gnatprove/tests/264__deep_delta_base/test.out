@@ -1,0 +1,67 @@
+test_deep_delta.adb:5:31: info: data dependencies proved
+test_deep_delta.adb:20:22: info: assertion proved
+test_deep_delta.adb:21:22: medium: assertion might fail
+test_deep_delta.adb:27:06: info: data dependencies proved
+test_deep_delta.adb:37:07: info: range check proved
+test_deep_delta.adb:43:24: info: length check proved
+test_deep_delta.adb:45:24: info: index check proved
+test_deep_delta.adb:46:24: info: index check proved
+test_deep_delta.adb:50:13: info: index check proved
+test_deep_delta.adb:51:13: info: index check proved
+test_deep_delta.adb:53:22: info: assertion proved
+test_deep_delta.adb:54:22: medium: assertion might fail
+test_deep_delta.adb:59:33: warning: unused variable "C"
+test_deep_delta.adb:60:06: info: data dependencies proved
+test_deep_delta.adb:70:07: info: range check proved
+test_deep_delta.adb:79:09: info: data dependencies proved
+test_deep_delta.adb:84:19: info: length check proved
+test_deep_delta.adb:87:27: info: index check proved
+test_deep_delta.adb:88:27: info: index check proved
+test_deep_delta.adb:88:34: info: index check proved
+test_deep_delta.adb:89:27: info: index check proved
+test_deep_delta.adb:89:34: info: index check proved
+test_deep_delta.adb:90:27: info: index check proved
+test_deep_delta.adb:90:34: info: index check proved
+test_deep_delta.adb:91:27: info: index check proved
+test_deep_delta.adb:95:16: info: index check proved
+test_deep_delta.adb:96:16: info: index check proved
+test_deep_delta.adb:96:23: info: index check proved
+test_deep_delta.adb:97:16: info: index check proved
+test_deep_delta.adb:97:23: info: index check proved
+test_deep_delta.adb:98:16: info: index check proved
+test_deep_delta.adb:98:23: info: index check proved
+test_deep_delta.adb:99:16: info: index check proved
+test_deep_delta.adb:101:25: info: assertion proved
+test_deep_delta.adb:101:54: info: index check proved
+test_deep_delta.adb:101:68: info: index check proved
+test_deep_delta.adb:102:25: info: assertion proved
+test_deep_delta.adb:102:54: info: index check proved
+test_deep_delta.adb:102:65: info: index check proved
+test_deep_delta.adb:103:25: info: assertion proved
+test_deep_delta.adb:104:25: medium: assertion might fail
+test_deep_delta.adb:110:09: info: data dependencies proved
+test_deep_delta.adb:115:19: info: length check proved
+test_deep_delta.adb:118:27: info: index check proved
+test_deep_delta.adb:119:27: info: index check proved
+test_deep_delta.adb:119:34: info: index check proved
+test_deep_delta.adb:120:27: info: index check proved
+test_deep_delta.adb:120:34: info: index check proved
+test_deep_delta.adb:121:27: info: index check proved
+test_deep_delta.adb:121:34: info: index check proved
+test_deep_delta.adb:122:27: info: index check proved
+test_deep_delta.adb:126:16: info: index check proved
+test_deep_delta.adb:127:16: info: index check proved
+test_deep_delta.adb:127:23: info: index check proved
+test_deep_delta.adb:128:16: info: index check proved
+test_deep_delta.adb:128:23: info: index check proved
+test_deep_delta.adb:129:16: info: index check proved
+test_deep_delta.adb:129:23: info: index check proved
+test_deep_delta.adb:130:16: info: index check proved
+test_deep_delta.adb:132:25: info: assertion proved
+test_deep_delta.adb:132:54: info: index check proved
+test_deep_delta.adb:132:68: info: index check proved
+test_deep_delta.adb:133:25: info: assertion proved
+test_deep_delta.adb:133:54: info: index check proved
+test_deep_delta.adb:133:65: info: index check proved
+test_deep_delta.adb:134:25: info: assertion proved
+test_deep_delta.adb:135:25: medium: assertion might fail

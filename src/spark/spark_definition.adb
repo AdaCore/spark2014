@@ -2925,7 +2925,99 @@ package body SPARK_Definition is
             --  one-dimensional, so extra aggregate node cannot be observed.
 
             Mark (Expression (N));
-            Mark_List (Component_Associations (N));
+
+            --  Roots of choices of deep delta aggregates are ill-typed.
+            --  Traverse them specifically.
+
+            if Is_Deep_Delta_Aggregate (N) then
+               declare
+                  procedure Mark_Deep_Choice (Choice : Node_Id);
+                  --  Traverse choices of deep delta aggregates to mark them
+
+                  ----------------------
+                  -- Mark_Deep_Choice --
+                  ----------------------
+
+                  procedure Mark_Deep_Choice (Choice : Node_Id) is
+                     Pref_Ty : Type_Kind_Id;
+
+                  begin
+                     --  We have reached the root. The prefix type is
+                     --  necessarily in SPARK. Just mark the choice.
+
+                     if Sem_Aggr.Is_Root_Prefix_Of_Deep_Choice (Choice) then
+                        Mark (Choice);
+
+                     --  Otherwise, make sure that the component is visible in
+                     --  SPARK, mark the choice and the prefix.
+
+                     else
+                        Pref_Ty :=
+                          (if Sem_Aggr.Is_Root_Prefix_Of_Deep_Choice
+                             (Prefix (Choice))
+                           then
+                             (if Is_Array_Type (Etype (N))
+                              then Component_Type (Etype (N))
+                              else Etype (Entity (Prefix (Choice))))
+                           else Etype (Prefix (Choice)));
+
+                        if not Retysp_In_SPARK (Pref_Ty) then
+                           Mark_Violation (Choice, From => Pref_Ty);
+                           return;
+                        end if;
+
+                        if Nkind (Choice) = N_Indexed_Component then
+                           if not Most_Underlying_Type_In_SPARK (Pref_Ty)
+                           then
+                              Mark_Violation (N, From => Pref_Ty);
+                              return;
+                           end if;
+                           Mark (First (Expressions (Choice)));
+                           pragma Assert (No (Next
+                                          (First (Expressions (Choice)))));
+                        else
+                           if No
+                             (Search_Component_By_Name
+                                (Unique_Entity (Pref_Ty),
+                                 Entity (Selector_Name (Choice))))
+                           then
+                              if SPARK_Pragma_Is (Opt.On) then
+                                 Error_Msg_NE
+                                   ("component not present in }",
+                                    Choice, Pref_Ty);
+                                 Error_Msg_N
+                                   ("\static expression fails "
+                                    & "Constraint_Check", Choice);
+                              end if;
+
+                              return;
+                           end if;
+                           Mark (Selector_Name (Choice));
+                        end if;
+
+                        Mark_Deep_Choice (Prefix (Choice));
+                     end if;
+                  end Mark_Deep_Choice;
+
+                  Assoc : Node_Id := First (Component_Associations (N));
+               begin
+                  while Present (Assoc) loop
+                     declare
+                        Choice : Node_Id := First (Choices (Assoc));
+                     begin
+                        while Present (Choice) loop
+                           Mark_Deep_Choice (Choice);
+                           Next (Choice);
+                        end loop;
+                     end;
+                     Mark_Component_Of_Component_Association (Assoc);
+                     Next (Assoc);
+                  end loop;
+               end;
+            else
+               Mark_List (Component_Associations (N));
+            end if;
+
             Check_No_Deep_Duplicates_In_Assoc (N);
             Check_No_Deep_Aliasing_In_Assoc (N);
 
