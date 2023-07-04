@@ -110,7 +110,9 @@ package body Flow.Interprocedural is
 
                end case;
 
-            elsif A.Is_Call_Exception then
+            elsif A.Is_Call_Exception
+              or else A.Is_Param_Havoc
+            then
                null;
 
             else
