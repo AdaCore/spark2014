@@ -1599,14 +1599,20 @@ package body Flow.Analysis.Sanity is
 
                         --  Sanity check: if the Global contract is generated,
                         --  then all variables should be known. When fails,
-                        --  print "Subprogram_Name @ Vertex_Id : Flow_Id.
+                        --  print an offending source location (for the users)
+                        --  and "Subprogram_Name @ Vertex_Id : Flow_Id (for the
+                        --  developers).
 
-                        pragma Assert
-                          ((if Gnat2Why_Args.Flow_Generate_Contracts
-                            then not FA.Is_Generative),
-                           Full_Source_Name (FA.Spec_Entity) & " @" &
-                           V'Img & " : " &
-                           Flow_Id_To_String (Var));
+                        if Gnat2Why_Args.Flow_Generate_Contracts
+                          and then FA.Is_Generative
+                        then
+                           Current_Error_Node := A.Error_Location;
+                           raise Program_Error with
+                             Full_Source_Name (FA.Spec_Entity) & " @" &
+                             V'Img & " : " &
+                             Flow_Id_To_String (Var);
+                        end if;
+
                      end if;
 
                   when Null_Value =>
