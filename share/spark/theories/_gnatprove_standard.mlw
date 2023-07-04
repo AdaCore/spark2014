@@ -349,7 +349,7 @@ module Int_Shift
        rest of the division is not null in that case
      Note: argument 'size' is not used.
    *)
-  let function shift_right_arithmetic (x n size : int) : int =
+  let function shift_right_arithmetic (x n _ : int) : int =
     if x < 0 then
       ComputerDivision.div (x + 1) (Power.power 2 n) - 1
     else
