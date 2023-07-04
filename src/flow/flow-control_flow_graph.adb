@@ -1296,11 +1296,11 @@ package body Flow.Control_Flow_Graph is
 
          when Initial_Value | Final_Value =>
             case F.Kind is
-               --  This routine is only called for variables represented by
-               --  Entity_Id.
-
-               when Magic_String | Null_Value | Synthetic_Null_Export =>
+               when Null_Value | Synthetic_Null_Export =>
                   raise Program_Error;
+
+               when Magic_String =>
+                  null;
 
                when Direct_Mapping | Record_Field =>
                   if F.Kind = Record_Field
@@ -1333,11 +1333,11 @@ package body Flow.Control_Flow_Graph is
 
          when Initial_Grouping | Final_Grouping =>
             case F.Kind is
-               when Null_Value | Synthetic_Null_Export =>
-                  raise Program_Error;
+               --  Initial_Grouping and Final_Grouping only appear for
+               --  variables represented by Entity_Id.
 
-               when Magic_String =>
-                  null;
+               when Null_Value | Synthetic_Null_Export | Magic_String =>
+                  raise Program_Error;
 
                when Direct_Mapping | Record_Field =>
                   --  Only proceed if we don't have this vertex yet
