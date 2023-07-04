@@ -4,11 +4,13 @@ pixel.adb:10:43: medium: divide by zero might fail
 pixel.adb:10:43: medium: precondition might fail
 pixel.adb:14:44: medium: divide by zero might fail
 pixel.adb:14:44: medium: precondition might fail
-pixel.adb:16:04: warning: address specification on "Asp" is imprecisely supported: assuming no concurrent accesses to non-atomic object and no writes to or through a potential alias
+pixel.adb:16:04: warning: address specification on "Asp" is imprecisely supported: assuming no concurrent accesses to non-atomic object and no writes to or through a potential alias [E0012]
+pixel.adb:16:04: warning: launch "gnatprove --explain=E0012" for more information
 pixel.adb:16:04: warning: make sure that all overlapping objects have Async_Writers set to True
 pixel.adb:17:43: medium: divide by zero might fail
 pixel.adb:17:43: medium: precondition might fail
-pixel.adb:19:04: warning: address specification on "Cla" is imprecisely supported: assuming no concurrent accesses to non-atomic object and no writes to or through a potential alias
+pixel.adb:19:04: warning: address specification on "Cla" is imprecisely supported: assuming no concurrent accesses to non-atomic object and no writes to or through a potential alias [E0012]
+pixel.adb:19:04: warning: launch "gnatprove --explain=E0012" for more information
 pixel.adb:19:04: warning: make sure that all overlapping objects have Async_Writers set to True
 pixel.adb:21:41: medium: divide by zero might fail
 pixel.adb:21:41: medium: precondition might fail

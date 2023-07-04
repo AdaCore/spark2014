@@ -22,3 +22,5 @@
 - E0010: `dereference from <object> is not <readable/writable>; object was moved`
 
 - E0011: `incorrect placement of aspect/pragma "SPARK_Mode" with value "On"`
+
+- E0012: `address specification on <variable> is imprecisely supported`

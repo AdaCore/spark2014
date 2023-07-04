@@ -1,5 +1,6 @@
 aip-arp.adb:30:10: medium: implicit aspect Always_Terminates on "Get_MAC_Address" could be incorrect, call to "Get_LL_Address" might be nonterminating
-aip-arp.adb:324:10: warning: address specification on "Result" is imprecisely supported: assuming no concurrent accesses to non-atomic object, no writes to or through a potential alias, and valid reads
+aip-arp.adb:324:10: warning: address specification on "Result" is imprecisely supported: assuming no concurrent accesses to non-atomic object, no writes to or through a potential alias, and valid reads [E0012]
+aip-arp.adb:324:10: warning: launch "gnatprove --explain=E0012" for more information
 aip-arp.adb:324:10: warning: make sure that all overlapping objects have Async_Writers set to True
 aip-arp.adb:396:25: warning: statement has no effect
 aip-arp.adb:61:13: warning: statement has no effect
@@ -31,7 +32,8 @@ aip-tcp.adb:2409:22: warning: assuming "TCP_Event" always terminates
 aip-tcp.adb:2409:22: warning: no Always_Terminates aspect available for "TCP_Event"
 aip-tcp.adb:2637:25: warning: assuming "TCP_Event" always terminates
 aip-tcp.adb:2637:25: warning: no Always_Terminates aspect available for "TCP_Event"
-aip-tcp.adb:2739:10: warning: address specification on "Result" is imprecisely supported: assuming no concurrent accesses to non-atomic object and no writes to or through a potential alias
+aip-tcp.adb:2739:10: warning: address specification on "Result" is imprecisely supported: assuming no concurrent accesses to non-atomic object and no writes to or through a potential alias [E0012]
+aip-tcp.adb:2739:10: warning: launch "gnatprove --explain=E0012" for more information
 aip-tcp.adb:2739:10: warning: make sure that all overlapping objects have Async_Writers set to True
 aip-tcp.adb:3195:13: warning: assuming "TCP_Event" always terminates
 aip-tcp.adb:3195:13: warning: no Always_Terminates aspect available for "TCP_Event"
