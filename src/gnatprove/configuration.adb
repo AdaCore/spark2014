@@ -25,18 +25,31 @@
 
 with Ada.Characters.Handling;
 with Ada.Command_Line;
-with Ada.Containers;            use Ada.Containers;
-with Ada.Strings.Fixed;         use Ada.Strings.Fixed;
+with Ada.Containers;    use Ada.Containers;
+with Ada.Strings.Fixed; use Ada.Strings.Fixed;
 with Ada.Strings.Unbounded;
-with Ada.Text_IO;               use Ada.Text_IO;
+with Ada.Text_IO;       use Ada.Text_IO;
 with Ada.Unchecked_Deallocation;
+with GNATCOLL.Tribooleans;
 with Gnat2Why_Opts.Writing;
-with GNAT.Command_Line;         use GNAT.Command_Line;
+with GNAT.Command_Line; use GNAT.Command_Line;
 with GNAT.Directory_Operations;
 with GNAT.OS_Lib;
-with GNAT.Strings;              use GNAT.Strings;
-with Platform;                  use Platform;
-with SPARK2014VSN;              use SPARK2014VSN;
+with GNAT.Strings;      use GNAT.Strings;
+with GPR2.Build.Compilation_Unit;
+with GPR2.Build.Source;
+with GPR2.Build.View_Db;
+with GPR2.KB;
+with GPR2.Log;
+with GPR2.Options;
+with GPR2.Path_Name;
+with GPR2.Project.Attribute;
+with GPR2.Project.Attribute_Index;
+with GPR2.Project.Registry.Attribute;
+with GPR2.Project.Registry.Pack;
+with GPR2.Project.View;
+with Platform;          use Platform;
+with SPARK2014VSN;      use SPARK2014VSN;
 with System.Multiprocessors;
 with VC_Kinds;
 
@@ -53,7 +66,7 @@ package body Configuration is
    --  Set to True when --clean was given. Triggers cleanup of GNATprove
    --  intermediate files.
 
-   Proj_Env : Project_Environment_Access;
+   Proj_Opt : Options.Object;
    --  This is the project environment used to load the project. It may be
    --  modified before loading it, e.g. -X switches
 
@@ -63,11 +76,11 @@ package body Configuration is
    --  Stop the program, output the message and the help message when
    --  requested, then exit.
 
-   procedure Clean_Up (Tree : Project_Tree);
+   procedure Clean_Up (Tree : Project.Tree.Object);
    --  Deletes generated "gnatprove" sub-directories in all object directories
    --  of the project.
 
-   function Compute_Socket_Dir (Root_Project : Project_Type) return String;
+   function Compute_Socket_Dir (Tree : Project.Tree.Object) return String;
    --  Returns the directory where the socket file will be created. On
    --  Windows, this is irrelevant, so the function returns the empty string.
    --  On Unix, the following rules are applied:
@@ -102,18 +115,18 @@ package body Configuration is
    --  Copies needed sources into gnatprove and builds the library.
    --  For the moment, only Coq is handled.
 
-   procedure Sanitize_File_List (Tree : Project_Tree);
-   --  Apply the following rules to each file in [File_List]:
+   procedure Sanitize_File_List (Tree : Project.Tree.Object);
+   --  Apply the following rules to each name in [File_List]:
+   --    if the name refers to a valid unit, replace with the file name of the
+   --      body (or spec if there is no body)
    --    if the file is a body, do nothing;
    --    if the file is a spec, and a body exists, replace by filename of body
    --    if the file is a separate, replace with filename of body
    --  This is required to avoid calling gnat2why on a separate body (will
    --  crash) or on a spec when there is a body (gnat2why will incorrectly
    --  assume that there is no body).
-
-   procedure Print_Errors (S : String);
-   --  The String in argument is an error message from gnatcoll. Print it on
-   --  stderr with a prefix.
+   --  At the same time we check if the unit/file name is unique in the case of
+   --  an aggregate project. If it is not, an error is issued.
 
    procedure Produce_Version_Output;
    --  Print the version of gnatprove, why3 and shipped provers
@@ -124,16 +137,14 @@ package body Configuration is
    procedure Produce_Explain_Output;
    --  Print the explanation for the requested error/warning code
 
-   function Check_gnateT_Switch (Tree : Project_Tree) return String;
+   function Check_gnateT_Switch (View : Project.View.Object) return String;
    --  Try to compute the gnateT switch to be used for gnat2why. If there is
    --  a target and runtime set, but we can't compute the switch, a warning
    --  is issued.
 
-   procedure Check_File_Part_Of_Project (Tree : Project_Tree;
+   procedure Check_File_Part_Of_Project (View : Project.View.Object;
                                          Fn   : String);
    --  raise an error if the file FN is not part of the project
-   --  @param Tree the project tree
-   --  @param FN a file name
 
    function Is_Coq_Prover (FS : File_Specific) return Boolean;
    --  @return True iff one alternate prover is "coq"
@@ -182,29 +193,6 @@ package body Configuration is
 
    procedure Display_Help;
 
-   package body Prj_Attr is
-
-      package body Prove is
-
-         --------------------
-         -- Proof_Switches --
-         --------------------
-
-         function Proof_Switches (Proj : Project_Type; Index : String)
-                                  return GNAT.Strings.String_List_Access
-         is
-            Attr_Proof_Switches : constant Attribute_Pkg_List :=
-              Build ("Prove", "Proof_Switches");
-         begin
-            if Index in "Ada" | "ada" then
-               return Prj_Attr.Prove.Proof_Switches_Ada;
-            end if;
-            return Attribute_Value (Proj, Attr_Proof_Switches, Index);
-         end Proof_Switches;
-      end Prove;
-
-   end Prj_Attr;
-
    ---------------
    -- Abort_Msg --
    ---------------
@@ -224,18 +212,31 @@ package body Configuration is
       Fail ("");
    end Abort_Msg;
 
+   ------------------
+   -- Artifact_Dir --
+   ------------------
+
+   function Artifact_Dir (Tree : GPR2.Project.Tree.Object) return Virtual_File
+   is
+   begin
+      if Tree.Root_Project.Kind in GPR2.With_Object_Dir_Kind then
+         --  we don't need to add "gnatprove" here as we configured the project
+         --  with the correct subdir option.
+         return Tree.Root_Project.Object_Directory.Virtual_File;
+      else
+         return Tree.Root_Project.Dir_Name.Virtual_File / "gnatprove";
+      end if;
+   end Artifact_Dir;
+
    --------------------------------
    -- Check_File_Part_Of_Project --
    --------------------------------
 
-   procedure Check_File_Part_Of_Project (Tree : Project_Tree;
+   procedure Check_File_Part_Of_Project (View : Project.View.Object;
                                          Fn   : String)
    is
-      File_VF : constant Virtual_File :=
-        Tree.Create (Filesystem_String (Fn));
-      Info    : constant File_Info := Tree.Info (File_VF);
    begin
-      if Project (Info) = No_Project then
+      if not View.Has_Source (GPR2.Simple_Name (Fn)) then
          Abort_Msg
            ("file " & Fn & " of attribute Proof_Switches " &
               "is not part of the project",
@@ -247,41 +248,43 @@ package body Configuration is
    -- Check_gnateT_Switch --
    -------------------------
 
-   function Check_gnateT_Switch (Tree : Project_Tree) return String is
+   function Check_gnateT_Switch (View : Project.View.Object) return String is
    begin
-      if not Tree.Root_Project.Target_Same_As_Host
-        and then
-          (Prj_Attr.Target.all /= "" or else CL_Switches.Target.all /= "")
+      if View.Tree.Target /=
+        View.Tree.Get_KB.Normalized_Target (Project.Tree.Target_Name)
       then
 
          --  User has already set the attribute, don't try anything smart
 
-         if Prj_Attr.Builder.Global_Compilation_Switches_Ada /= null
-           and then
-             (for some Switch of
-                Prj_Attr.Builder.Global_Compilation_Switches_Ada.all =>
-                  GNATCOLL.Utils.Starts_With (Switch.all, "-gnateT="))
-         then
-            return "";
-         end if;
-
          declare
-            Att    : constant Attribute_Pkg_String :=
-              Build ("", "runtime_dir");
-            RT_Dir : constant String :=
-              Tree.Root_Project.Attribute_Value (Att, "ada");
+            Attr : GPR2.Project.Attribute.Object;
          begin
-            if RT_Dir /= "" then
-               declare
-                  Targ_Prop_File : constant String :=
-                    Compose (RT_Dir, "ada_target_properties");
-               begin
-                  if Exists (Targ_Prop_File) then
-                     return "-gnateT=" & Targ_Prop_File;
-                  end if;
-               end;
+            if View.Check_Attribute
+              (Project.Registry.Attribute.Builder.Global_Compilation_Switches,
+               Result => Attr)
+            then
+               if (for some Switch of Attr.Values =>
+                     GNATCOLL.Utils.Starts_With
+                       (String (Switch.Text), "-gnateT="))
+               then
+                  return "";
+               end if;
             end if;
          end;
+
+         if View.Tree.Runtime (Ada_Language) /= "" then
+            declare
+               RT_Dir : constant String :=
+                 View.Attribute
+                   (Project.Registry.Attribute.Runtime_Dir).Value.Text;
+               Targ_Prop_File : constant String :=
+                 Compose (RT_Dir, "ada_target_properties");
+            begin
+               if Exists (Targ_Prop_File) then
+                  return "-gnateT=" & Targ_Prop_File;
+               end if;
+            end;
+         end if;
 
          --  If we reached here, there *should* be a target properties
          --  file, but we can't find it and the user didn't add one. Print
@@ -303,13 +306,10 @@ package body Configuration is
    -- Clean_Up --
    --------------
 
-   procedure Clean_Up (Tree : Project_Tree) is
+   procedure Clean_Up (Tree : Project.Tree.Object) is
 
       procedure Clean_Up_One_Directory (Dir : Virtual_File);
       --  Remove a generated "gnatprove" sub-directory
-
-      function Is_Externally_Built (Project : Project_Type) return Boolean;
-      --  Returns True if the project is externally built
 
       ----------------------------
       -- Clean_Up_One_Directory --
@@ -345,40 +345,32 @@ package body Configuration is
             end if;
       end Clean_Up_One_Directory;
 
-      -------------------------
-      -- Is_Externally_Built --
-      -------------------------
-
-      function Is_Externally_Built (Project : Project_Type) return Boolean is
-         Val : constant String :=
-           Ada.Characters.Handling.To_Lower
-             (Project.Attribute_Value (Build ("", "Externally_Built")));
-      begin
-         return Val = "true";
-      end Is_Externally_Built;
-
-      --  Local variables
-
-      Proj_Type : constant Project_Type := Root_Project (Tree);
-      Iter      : Project_Iterator := Proj_Type.Start;
-      Project   : Project_Type;
-
    --  Start of processing for Clean_Up
 
    begin
+      for Cursor in Tree.Iterate
+        (Kind  =>
+           [Project.I_Project       => True,
+            Project.I_Runtime       => False,
+            Project.I_Configuration => False,
+            Project.I_Recursive     => True,
+            others                  => False],
+         Status =>
+           [GPR2.Project.S_Externally_Built => GNATCOLL.Tribooleans.False])
       loop
-         Project := Current (Iter);
-         exit when Project = No_Project;
-
-         --  Externally built projects should never be cleaned up
-
-         if not Is_Externally_Built (Project) then
-            Clean_Up_One_Directory (Project.Artifacts_Dir);
-            Clean_Up_One_Directory (Project.Library_Directory);
-            Clean_Up_One_Directory (Project.Library_Ali_Directory);
-         end if;
-
-         Next (Iter);
+         declare
+            View : constant Project.View.Object :=
+              Project.Tree.Element (Cursor);
+         begin
+            if View.Kind in With_Object_Dir_Kind then
+               Clean_Up_One_Directory (View.Object_Directory.Virtual_File);
+            end if;
+            if View.Is_Library then
+               Clean_Up_One_Directory (View.Library_Directory.Virtual_File);
+               Clean_Up_One_Directory
+                 (View.Library_Ali_Directory.Virtual_File);
+            end if;
+         end;
       end loop;
    end Clean_Up;
 
@@ -386,7 +378,7 @@ package body Configuration is
    -- Compute_Socket_Dir --
    ------------------------
 
-   function Compute_Socket_Dir (Root_Project : Project_Type) return String is
+   function Compute_Socket_Dir (Tree : Project.Tree.Object) return String is
 
       TMPDIR_Envvar : constant String := "TMPDIR";
       --  It's OK to use a forward slash here, this will be used on Unix only
@@ -420,7 +412,7 @@ package body Configuration is
       elsif Exists_And_Is_Writable (TMP_Dir) then
          return TMP_Dir;
       else
-         return Root_Project.Artifacts_Dir.Display_Full_Name;
+         return Artifact_Dir (Tree).Display_Full_Name;
       end if;
    end Compute_Socket_Dir;
 
@@ -453,7 +445,6 @@ package body Configuration is
       Section   : String)
    is
       pragma Unreferenced (Section);
-      Equal : Natural := 0;
    begin
       if Switch'Length > 2
         and then Switch (Switch'First + 1) = 'X'
@@ -464,16 +455,10 @@ package body Configuration is
          --    the project;
          --  * store the switch to add it to calls to gprbuild that we do later
 
-         --  First we add the variable to the environment. For that, we search
-         --  for the "=" sign which separates the variable from the value ..
+         --  First we add the variable to the environment.
 
-         Equal := Ada.Strings.Fixed.Index (Switch, "=");
-
-         --  ... and then set the variable in the environment.
-
-         Proj_Env.Change_Environment
-           (Switch (Switch'First + 2 .. Equal - 1),
-            Switch (Equal + 1 .. Switch'Last));
+         Proj_Opt.Add_Switch (Options.X,
+                              Switch (Switch'First + 2 .. Switch'Last));
 
          --  Second, we add the whole switch to the list of Scenario switches
 
@@ -588,7 +573,7 @@ package body Configuration is
               ("No project file given, and current directory contains more "
                & "than one project file. Please specify a project file.");
          end if;
-         return Simple_Name (D);
+         return Ada.Directories.Simple_Name (D);
       end Find_Project_File_In_CWD;
 
       Result : constant String := Find_Project_File_In_CWD;
@@ -1110,15 +1095,6 @@ package body Configuration is
       end case;
    end To_String;
 
-   ------------------
-   -- Print_Errors --
-   ------------------
-
-   procedure Print_Errors (S : String) is
-   begin
-      Ada.Text_IO.Put_Line (Standard_Error, "gnatprove: " & S);
-   end Print_Errors;
-
    ----------------------------
    -- Produce_Explain_Output --
    ----------------------------
@@ -1329,9 +1305,9 @@ package body Configuration is
    -- Read_Command_Line --
    -----------------------
 
-   procedure Read_Command_Line (Tree : out Project_Tree) is
+   procedure Read_Command_Line (Tree : out Project.Tree.Object) is
 
-      function Init return Project_Tree;
+      procedure Init (Tree : out Project.Tree.Object);
       --  Load the project file; This function requires the project file to be
       --  present.
 
@@ -1343,8 +1319,9 @@ package body Configuration is
       --  Same as Postprocess, but for the switches that can be file-specific.
       --  For example, --level, --timeout are handled here.
 
-      procedure Set_Project_Vars (Proj : Project_Type);
-      --  Set the variables of the Prj_Attr package
+      procedure Check_Obsolete_Prove_Switches (View : Project.View.Object);
+      --  Check for the obsolete Prove.Switches attribute and issue a warning
+      --  if present.
 
       procedure Set_Mode (FS : in out File_Specific);
       procedure Set_Output_Mode;
@@ -1361,7 +1338,7 @@ package body Configuration is
       procedure Set_Provers
         (Prover : GNAT.Strings.String_Access;
          FS     : in out File_Specific);
-      procedure Set_Proof_Dir;
+      procedure Set_Proof_Dir (View : GPR2.Project.View.Object);
       --  If attribute Proof_Dir is set in the project file,
       --  set global variable Proof_Dir to the full path
       --  <path-to-project-file>/<value-of-proof-dir>.
@@ -1374,6 +1351,28 @@ package body Configuration is
 
       procedure Sanity_Checking;
       --  Check the command line flags for conflicting flags
+
+      function List_From_Attr (Attribute : GPR2.Project.Attribute.Object)
+                               return String_List_Access;
+      --  Helper function to convert attribute to list of strings
+
+      -----------------------------------
+      -- Check_Obsolete_Prove_Switches --
+      -----------------------------------
+
+      procedure Check_Obsolete_Prove_Switches (View : Project.View.Object) is
+      begin
+         if View.Attribute ((+"Prove", +"Switches")).Is_Defined then
+            Put_Line
+              (Standard_Error,
+               "warning: attribute ""Switches"" of package ""Prove"" of " &
+                 "your project file is deprecated");
+            Put_Line
+              (Standard_Error,
+               "warning: use ""Proof_Switches (""Ada"")"" instead");
+         end if;
+         null;
+      end Check_Obsolete_Prove_Switches;
 
       -------------------------------
       -- File_Specific_Postprocess --
@@ -1396,9 +1395,7 @@ package body Configuration is
       -- Init --
       ----------
 
-      function Init return Project_Tree is
-         GNAT_Version : GNAT.Strings.String_Access;
-         Tree         : Project_Tree;
+      procedure Init (Tree : out Project.Tree.Object) is
 
       begin
          if not Null_Or_Empty_String (CL_Switches.Subdirs) then
@@ -1407,78 +1404,69 @@ package body Configuration is
 
          end if;
 
-         Set_Path_From_Gnatls (Proj_Env.all, "gnatls", GNAT_Version);
-         Free (GNAT_Version);
-         Set_Object_Subdir (Proj_Env.all,
-                            Filesystem_String
-                              (Phase2_Subdir.Display_Full_Name));
-         Proj_Env.Register_Default_Language_Extension ("C", ".h", ".c");
-         declare
-            Sswitches : constant String :=
-              Register_New_Attribute ("Switches", "Prove",
-                                      Is_List => True);
-         begin
-            if Sswitches /= "" then
-               Abort_Msg (Sswitches, With_Help => False);
-            end if;
-         end;
+         Proj_Opt.Add_Switch
+           (Options.Subdirs, Phase2_Subdir.Display_Full_Name);
+         Project.Registry.Pack.Add
+           (+"Prove", Project.Registry.Pack.Everywhere);
+         Project.Registry.Attribute.Add
+           (Q_Attribute_Id'(+"Prove", +"Switches"),
+            Index_Type           => Project.Registry.Attribute.No_Index,
+            Value                => Project.Registry.Attribute.List,
+            Value_Case_Sensitive => False,
+            Is_Allowed_In        => Project.Registry.Attribute.Everywhere);
+         Project.Registry.Attribute.Add
+           (Q_Attribute_Id'(+"Prove", +"Proof_Switches"),
+            Index_Type           => Project.Registry.Attribute.Unit_Index,
+            Value                => Project.Registry.Attribute.List,
+            Value_Case_Sensitive => False,
+            Is_Allowed_In        => Project.Registry.Attribute.Everywhere);
+         Project.Registry.Attribute.Add
+           (Q_Attribute_Id'(+"Prove", +"Proof_Dir"),
+            Index_Type           => Project.Registry.Attribute.No_Index,
+            Value                => Project.Registry.Attribute.Single,
+            Value_Case_Sensitive => True,
+            Is_Allowed_In        => Project.Registry.Attribute.Everywhere);
 
-         declare
-            Sswitches : constant String :=
-              Register_New_Attribute ("Proof_Switches", "Prove",
-                                      Is_List              => True,
-                                      Indexed              => True,
-                                      Case_Sensitive_Index => True);
-         begin
-            if Sswitches /= "" then
-               Abort_Msg (Sswitches, With_Help => False);
-            end if;
-         end;
+         if CL_Switches.Target /= null and then CL_Switches.Target.all /= ""
+         then
+            Proj_Opt.Add_Switch (Options.Target, CL_Switches.Target.all);
+         end if;
+         if CL_Switches.RTS /= null and then CL_Switches.RTS.all /= "" then
+            Proj_Opt.Add_Switch (Options.RTS, CL_Switches.RTS.all);
+         end if;
 
-         declare
-            Sproof_dir : constant String :=
-              Register_New_Attribute ("Proof_Dir", "Prove");
-         begin
-            if Sproof_dir /= "" then
-               Abort_Msg (Sproof_dir, With_Help => False);
-            end if;
-         end;
-
-         declare
-            Targ : constant String :=
-              (if CL_Switches.Target /= null then CL_Switches.Target.all
-               else "");
-            RTS : constant String :=
-              (if CL_Switches.RTS /= null then CL_Switches.RTS.all else "");
-         begin
-            Set_Target_And_Runtime
-              (Proj_Env.all, Targ, RTS);
-         end;
-         Set_Automatic_Config_File (Proj_Env.all);
-         declare
-            Arr  : constant File_Array := Proj_Env.Predefined_Project_Path;
-            Arr2 : File_Array
-              (1 .. Integer (CL_Switches.GPR_Project_Path.Length));
-            I    : Positive := 1;
-         begin
-            for S of CL_Switches.GPR_Project_Path loop
-               Arr2 (I) := Create (Filesystem_String (S));
-               I := I + 1;
-            end loop;
-            Proj_Env.Set_Predefined_Project_Path (Arr & Arr2);
-         end;
+         for S of CL_Switches.GPR_Project_Path loop
+            Proj_Opt.Add_Switch (Options.AP, S);
+         end loop;
 
          declare
             Project_File : constant String :=
               (if Null_Or_Empty_String (CL_Switches.P) then
                     No_Project_File_Mode
                else CL_Switches.P.all);
+            Status : Boolean;
          begin
-            Tree.Load
-              (GNATCOLL.VFS.Create (Filesystem_String (Project_File)),
-               Proj_Env,
-               Errors => Print_Errors'Access);
-            return Tree;
+            Proj_Opt.Add_Switch (Options.P, Project_File);
+            Proj_Opt.Finalize;
+            Status := Proj_Opt.Load_Project (Tree);
+            if not Status then
+               GPR2.Log.Output_Messages
+                 (Tree.Log_Messages.all, Information => False);
+               Fail ("");
+            end if;
+
+            --  Pending eng/gpr/gpr-issues#39, we only update the sources if
+            --  the root project actually has sources.
+
+            if Tree.Root_Project.Kind in With_Source_Dirs_Kind | Aggregate_Kind
+            then
+               declare
+                  Msgs : GPR2.Log.Object;
+               begin
+                  Tree.Update_Sources (Messages => Msgs);
+                  GPR2.Log.Output_Messages (Msgs, Information => False);
+               end;
+            end if;
          end;
       end Init;
 
@@ -1524,6 +1512,31 @@ package body Configuration is
          end if;
 
       end Limit_Provers;
+
+      --------------------
+      -- List_From_Attr --
+      --------------------
+
+      function List_From_Attr (Attribute : GPR2.Project.Attribute.Object)
+                               return GNAT.Strings.String_List_Access is
+      begin
+         if Attribute.Is_Defined then
+            declare
+               List : constant GNAT.Strings.String_List_Access :=
+                 new GNAT.Strings.String_List
+                   (1 .. Integer (Attribute.Count_Values));
+               I    : Integer := 1;
+            begin
+               for Value of Attribute.Values loop
+                  List (I) := new String'(Value.Text);
+                  I := I + 1;
+               end loop;
+               return List;
+            end;
+         else
+            return null;
+         end if;
+      end List_From_Attr;
 
       -----------------
       -- Postprocess --
@@ -1627,11 +1640,11 @@ package body Configuration is
 
          Process_Limit_Switches;
 
-         GnateT_Switch := new String'(Check_gnateT_Switch (Tree));
+         GnateT_Switch := new String'(Check_gnateT_Switch (Tree.Root_Project));
          Set_Output_Mode;
          Set_Warning_Mode;
          Set_Report_Mode;
-         Set_Proof_Dir;
+         Set_Proof_Dir (Tree.Root_Project);
 
          Use_Semaphores := not Debug and then not CL_Switches.Dbg_No_Sem;
       end Postprocess;
@@ -1978,79 +1991,26 @@ package body Configuration is
          end if;
       end Set_Output_Mode;
 
-      ----------------------
-      -- Set_Project_Vars --
-      ----------------------
-
-      procedure Set_Project_Vars (Proj : Project_Type) is
-         Glob_Comp_Switch_Attr : constant Attribute_Pkg_List :=
-           Build ("Builder", "Global_Compilation_Switches");
-         Proof_Dir_Attr        : constant Attribute_Pkg_String :=
-           Build ("Prove", "Proof_Dir");
-         Switches_Attr         : constant Attribute_Pkg_List :=
-           Build ("Prove", "Switches");
-         Attr_Proof_Switches   : constant Attribute_Pkg_List :=
-           Build ("Prove", "Proof_Switches");
-      begin
-         Prj_Attr.Target := new String'(Proj.Get_Target);
-         Prj_Attr.Runtime := new String'(Proj.Get_Runtime);
-         Prj_Attr.Builder.Global_Compilation_Switches_Ada :=
-           (if Has_Attribute (Proj, Glob_Comp_Switch_Attr, "Ada")
-            then Attribute_Value (Proj,
-                                  Glob_Comp_Switch_Attr, "Ada")
-            else null);
-         Prj_Attr.Prove.Proof_Dir :=
-           (if Has_Attribute (Proj, Proof_Dir_Attr)
-            then new String'(Attribute_Value (Proj,
-                                              Proof_Dir_Attr))
-            else null);
-         Prj_Attr.Prove.Switches :=
-           (if Has_Attribute (Proj, Switches_Attr)
-            then Attribute_Value (Proj, Switches_Attr)
-            else null);
-         Prj_Attr.Prove.Proof_Switches_Ada :=
-           (if Has_Attribute (Proj, Attr_Proof_Switches, "Ada")
-            then Attribute_Value (Proj, Attr_Proof_Switches, "Ada")
-            elsif Has_Attribute (Proj, Attr_Proof_Switches, "ada")
-            then Attribute_Value (Proj, Attr_Proof_Switches, "ada")
-            else null);
-         Prj_Attr.Prove.Proof_Switches_Indices :=
-           new GNAT.Strings.String_List'
-             (Attribute_Indexes (Proj, Attr_Proof_Switches,
-                                 Use_Extended => False));
-
-         if Prj_Attr.Prove.Switches /= null
-           and then Prj_Attr.Prove.Switches.all'Length > 0
-         then
-            Put_Line
-              (Standard_Error,
-               "warning: attribute ""Switches"" of package ""Prove"" of " &
-                 "your project file is deprecated");
-            Put_Line
-              (Standard_Error,
-               "warning: use ""Proof_Switches (""Ada"")"" instead");
-         end if;
-      end Set_Project_Vars;
-
       -------------------
       -- Set_Proof_Dir --
       -------------------
 
-      procedure Set_Proof_Dir is
+      procedure Set_Proof_Dir (View : GPR2.Project.View.Object) is
+         Attr : GPR2.Project.Attribute.Object;
       begin
-         if Prj_Attr.Prove.Proof_Dir /= null
-           and then Prj_Attr.Prove.Proof_Dir.all /= ""
+         if View.Check_Attribute ((+"Prove", +"Proof_Dir"), Result => Attr)
          then
             declare
                My_Proof_Dir : constant Virtual_File :=
-                 Create (+Prj_Attr.Prove.Proof_Dir.all);
+                 Create (Filesystem_String (Attr.Value.Text));
                Proj_Dir     : constant Virtual_File :=
-                 Create (Tree.Root_Project.Project_Path.Dir_Name);
+                 Create
+                   (Filesystem_String (Tree.Root_Project.Path_Name.Dir_Name));
                Full_Name    : constant Virtual_File :=
                  (if Is_Absolute_Path (My_Proof_Dir) then My_Proof_Dir
                   else
                      Create_From_Dir
-                       (Proj_Dir, +Prj_Attr.Prove.Proof_Dir.all));
+                       (Proj_Dir, Filesystem_String (Attr.Value.Text)));
             begin
                Full_Name.Normalize_Path;
                Proof_Dir := new String'(Full_Name.Display_Full_Name);
@@ -2242,6 +2202,7 @@ package body Configuration is
 
       Com_Lin : String_List :=
         [1 .. Ada.Command_Line.Argument_Count => <>];
+      Attr : GPR2.Project.Attribute.Object;
 
       --  Help message read from a static file
 
@@ -2267,8 +2228,6 @@ package body Configuration is
       --   - parsing for error messages is done before the "real" parsing to
       --     get the values of switches.
 
-      Initialize (Proj_Env);
-
       --  This call to Parse_Switches just parses project-relevant switches
       --  (-P, -X etc) and ignores the rest.
 
@@ -2293,30 +2252,42 @@ package body Configuration is
 
       --  Before doing the actual second parsing, we read the project file in
 
-      Tree := Init;
-      Set_Project_Vars (Tree.Root_Project);
+      Init (Tree);
+      Check_Obsolete_Prove_Switches (Tree.Root_Project);
 
       if Clean then
          Clean_Up (Tree);
          Succeed;
       end if;
 
-      if Prj_Attr.Prove.Switches /= null
-        and then Prj_Attr.Prove.Switches.all'Length > 0
+      if Tree.Root_Project.Check_Attribute
+        ((+"Prove", +"Switches"), Result => Attr)
       then
-         --  parse the Switches attribute of the project file; this is to
-         --  detect invalid switches only.
+         declare
+            L : String_List_Access := List_From_Attr (Attr);
+         begin
+            --  parse the Switches attribute of the project file; this is to
+            --  detect invalid switches only.
 
-         Parse_Switches (Global_Switches_Only,
-                         Prj_Attr.Prove.Switches.all);
+            Parse_Switches (Global_Switches_Only, L.all);
+            Free (L);
+         end;
       end if;
 
-      if Prj_Attr.Prove.Proof_Switches_Ada /= null then
+      if Tree.Root_Project.Check_Attribute
+        ((+"Prove", +"Proof_Switches"),
+         Index  => GPR2.Project.Attribute_Index.Create ("Ada"),
+         Result => Attr)
+      then
+         declare
+            L : String_List_Access := List_From_Attr (Attr);
+         begin
          --  parse the Proof_Switches ("Ada") attribute of the project file;
          --  this is to detect invalid switches only.
 
-         Parse_Switches (Global_Switches_Only,
-                         Prj_Attr.Prove.Proof_Switches_Ada.all);
+            Parse_Switches (Global_Switches_Only, L.all);
+            Free (L);
+         end;
       end if;
 
       declare
@@ -2376,15 +2347,23 @@ package body Configuration is
             CL_Switches.Proof_Warn_Timeout := Invalid_Timeout;
          end Reset_File_Specific_Switches;
 
-         Proj_Type : constant Project_Type := Root_Project (Tree);
-
       begin
 
          declare
-            FS             : File_Specific;
-            Parsed_Cmdline : constant String_List :=
-              Concat3 (Prj_Attr.Prove.Switches,
-                       Prj_Attr.Prove.Proof_Switches_Ada, Com_Lin);
+            FS                 : File_Specific;
+            Prove_Switches     : constant String_List_Access :=
+              List_From_Attr
+                (Tree.Root_Project.Attribute ((+"Prove", +"Switches")));
+            Proof_Switches_Ada : constant String_List_Access :=
+              List_From_Attr
+                (Tree.Root_Project.Attribute
+                   ((+"Prove", +"Proof_Switches"),
+                    Index  => GPR2.Project.Attribute_Index.Create ("Ada")));
+            Parsed_Cmdline     : constant String_List :=
+              Concat3
+                (Prove_Switches,
+                 Proof_Switches_Ada,
+                 Com_Lin);
          begin
             --  parse all switches that apply to all files, concatenated in the
             --  right order (most important is last).
@@ -2393,41 +2372,45 @@ package body Configuration is
             Postprocess;
             File_Specific_Postprocess (FS);
             File_Specific_Map.Insert ("Ada", FS);
+
+            for Attr of
+              Tree.Root_Project.Attributes ((+"Prove", +"Proof_Switches"))
+            loop
+               if Attr.Index.Text not in "Ada" | "ada" then
+                  Check_File_Part_Of_Project
+                    (Tree.Root_Project, Attr.Index.Text);
+                  declare
+                     FS             : File_Specific;
+                     FS_Switches    : constant String_List_Access :=
+                       List_From_Attr (Attr);
+                     Parsed_Cmdline : constant String_List :=
+                       Concat4 (Prove_Switches,
+                                Proof_Switches_Ada,
+                                FS_Switches, Com_Lin);
+                  begin
+                     if FS_Switches /= null then
+
+                        --  parse the file switches to check if they contain
+                        --  invalid switches; this is for error reporting only.
+
+                        Parse_Switches (File_Specific_Only,
+                                        FS_Switches.all);
+                     end if;
+
+                     --  parse all switches that apply to a single file,
+                     --  *including* the global switches. File-specific
+                     --  switches are more important than the other switches
+                     --  in the project file, but less so than the command
+                     --  line switches.
+
+                     Reset_File_Specific_Switches;
+                     Parse_Switches (All_Switches, Parsed_Cmdline);
+                     File_Specific_Postprocess (FS);
+                     File_Specific_Map.Insert (Attr.Index.Text, FS);
+                  end;
+               end if;
+            end loop;
          end;
-
-         for FS_Entry of Prj_Attr.Prove.Proof_Switches_Indices.all loop
-            if FS_Entry.all not in "Ada" | "ada" then
-               Check_File_Part_Of_Project (Tree, FS_Entry.all);
-               declare
-                  FS             : File_Specific;
-                  FS_Switches    : constant String_List_Access :=
-                    Prj_Attr.Prove.Proof_Switches (Proj_Type, FS_Entry.all);
-                  Parsed_Cmdline : constant String_List :=
-                    Concat4 (Prj_Attr.Prove.Switches,
-                             Prj_Attr.Prove.Proof_Switches_Ada,
-                             FS_Switches, Com_Lin);
-               begin
-                  if FS_Switches /= null then
-
-                     --  parse the file switches to check if they contain
-                     --  invalid switches; this is for error reporting only.
-
-                     Parse_Switches (File_Specific_Only,
-                                     FS_Switches.all);
-                  end if;
-
-                  --  parse all switches that apply to a single file,
-                  --  *including* the global switches. File-specific switches
-                  --  are more important than the other switches in the project
-                  --  file, but less so than the command line switches.
-
-                  Reset_File_Specific_Switches;
-                  Parse_Switches (All_Switches, Parsed_Cmdline);
-                  File_Specific_Postprocess (FS);
-                  File_Specific_Map.Insert (FS_Entry.all, FS);
-               end;
-            end if;
-         end loop;
 
          --  Release copies of command line arguments; they were already parsed
          --  twice and are no longer needed.
@@ -2447,20 +2430,23 @@ package body Configuration is
          --    gnatprove, gprbuild would rerun gnat2why even when not
          --    necessary.
          --
-         --  What we have come up with until now is a hash of the project dir.
+         --  What we have come up with until now is a hash of the project file
+         --  name (full path).
 
          declare
-            Obj_Dir_Hash : constant Hash_Type :=
-              Full_Name_Hash (Proj_Type.Artifacts_Dir);
-            Socket_Dir   : constant String := Compute_Socket_Dir (Proj_Type);
+            Proj_Name_Hash : constant Hash_Type :=
+              Full_Name_Hash (Tree.Root_Project.Path_Name.Virtual_File);
+            Socket_Dir   : constant String := Compute_Socket_Dir (Tree);
             Socket_Base  : constant String :=
-               "why3server" & Hash_Image (Obj_Dir_Hash) & ".sock";
+               "why3server" & Hash_Image (Proj_Name_Hash) & ".sock";
          begin
             Socket_Name := new String'(
                (if Socket_Dir = "" then Socket_Base
                 else Compose (Socket_Dir, Socket_Base)));
             if Is_Coq_Prover (File_Specific_Map ("Ada")) then
-               Prepare_Prover_Lib (Proj_Type.Artifacts_Dir.Display_Full_Name);
+               Prepare_Prover_Lib
+                 (Tree.Root_Project.Object_Directory.
+                    Virtual_File.Display_Full_Name);
             end if;
          end;
       end;
@@ -2472,91 +2458,66 @@ package body Configuration is
    -- Sanitize_File_List --
    ------------------------
 
-   procedure Sanitize_File_List (Tree : Project_Tree) is
+   procedure Sanitize_File_List (Tree : Project.Tree.Object) is
       use String_Lists;
-
-      function Check_Unique_File (F : Virtual_File) return File_Info;
-
-      -----------------------
-      -- Check_Unique_File --
-      -----------------------
-
-      function Check_Unique_File (F : Virtual_File) return File_Info is
-      begin
-
-         if not Tree.Root_Project.Is_Aggregate_Project then
-            return Tree.Info (F);
-         end if;
-         declare
-            Info_Set : constant File_Info_Set := Tree.Info_Set (F);
-         begin
-            if Info_Set.Length > 1 then
-               Abort_Msg ("filename " & F.Display_Full_Name & " is not unique "
-                          & "in aggregate project",
-                          With_Help => False);
-            end if;
-            return File_Info (Info_Set.First_Element);
-         end;
-      end Check_Unique_File;
-
-   --  Start of processing for Sanitize_File_List
-
+      Found : Boolean;
    begin
+      if CL_Switches.File_List.Is_Empty then
+         return;
+      end if;
+
+      --  We iterate over all names in the file list
+
       for Cursor in CL_Switches.File_List.Iterate loop
-         declare
-            File_VF : constant Virtual_File :=
-              Tree.Create (Filesystem_String (Element (Cursor)));
-            Info    : constant File_Info := Check_Unique_File (File_VF);
-         begin
-            case Unit_Part (Info) is
-               when Unit_Body =>
-                  null;
-               when Unit_Spec =>
-                  declare
-                     Other_VF : constant Virtual_File :=
-                       Tree.Other_File (File_VF);
-                  begin
-                     if Is_Regular_File (Other_VF) then
-                        CL_Switches.File_List.Replace_Element
-                          (Cursor,
-                           String (Base_Name (Other_VF)));
-                     end if;
-                  end;
-               when Unit_Separate =>
+         Found := False;
 
-                  --  Here we try to find the proper unit to which belongs
-                  --  the separate file. The "unit_name" function of
-                  --  gnatcoll.projects sometimes returns the proper unit name,
-                  --  but sometimes returns something like "unit.separate". If
-                  --  there is a dot before the subunit name in what has been
-                  --  returned, we remove the dot and the subunit name, but
-                  --  keep all dots and names that belong to the child package
-                  --  structure.
+         --  We check each project if it contains the name as a unit, then if
+         --  it contains it as a file. If no project contains it, we fail. If
+         --  two projects contain it, we fail. Otherwise, we replace the name
+         --  with the "main part", which is the body or the spec, if no body
+         --  exists.
 
-                  declare
-                     Ptype : constant Project_Type := Tree.Root_Project;
-                     Sep_Name : constant String := Unit_Name (Info);
-                     Find_Dot : constant Natural :=
-                       Index (Source  => Sep_Name,
-                              Pattern => ".",
-                              Going   => Ada.Strings.Backward);
-                     U_Name : constant String :=
-                       (if Find_Dot = 0 then Sep_Name
-                        else Sep_Name (Sep_Name'First .. Find_Dot - 1));
-                     Other_VF : constant Virtual_File :=
-                       Tree.Create (Ptype.File_From_Unit
-                                    (U_Name,
-                                       Unit_Body,
-                                       "Ada"));
-                  begin
-                     if Is_Regular_File (Other_VF) then
-                        CL_Switches.File_List.Replace_Element
-                          (Cursor,
-                           String (Base_Name (Other_VF)));
-                     end if;
-                  end;
-            end case;
-         end;
+         for NRP of Tree.Namespace_Root_Projects loop
+            declare
+               View_DB : constant GPR2.Build.View_Db.Object :=
+                 Tree.Artifacts_Database (NRP);
+               CU : GPR2.Build.Compilation_Unit.Object;
+               VS : GPR2.Build.Source.Object;
+               Elt : constant GPR2.Name_Type := Name_Type (Element (Cursor));
+            begin
+               if View_DB.Source_Option >= Sources_Units
+                 and then View_DB.Has_Compilation_Unit (Elt)
+               then
+                  CU := View_DB.Compilation_Unit (Elt);
+               elsif View_DB.Source_Option > No_Source then
+                  VS := View_DB.Visible_Source (GPR2.Simple_Name (Elt)).Source;
+                  if VS.Is_Defined
+                    and then View_DB.Has_Compilation_Unit (VS.Unit.Name)
+                  then
+                     CU := View_DB.Compilation_Unit (VS.Unit.Name);
+                  end if;
+               end if;
+               if CU.Is_Defined then
+                  if Found then
+                     Abort_Msg
+                       ("file or compilation unit " & Element (Cursor)
+                        & " is not unique in aggregate project",
+                        With_Help => False);
+                  else
+                     CL_Switches.File_List.Replace_Element
+                       (Cursor,
+                        String (CU.Main_Part.Source.Base_Name));
+                     Found := True;
+                  end if;
+               end if;
+            end;
+         end loop;
+         if not Found then
+            Abort_Msg
+              (Element (Cursor) & " is not a file or compilation unit"
+               & " of any project",
+               With_Help => False);
+         end if;
       end loop;
    end Sanitize_File_List;
 

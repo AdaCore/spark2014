@@ -1,2 +1,3 @@
 No parameter given to switch --level
 Try "gnatprove --help" for more information.
+test.gpr: warning: there are no sources of language "Ada" in this project

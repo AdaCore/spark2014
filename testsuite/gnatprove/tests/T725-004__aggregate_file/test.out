@@ -4,4 +4,4 @@ Summary logged in gnatprove/gnatprove.out
 enable analysis of a non-generic body using SPARK_Mode
 warning: no bodies have been analyzed by GNATprove
 Try "gnatprove --help" for more information.
-filename file1.ads is not unique in aggregate project
+file or compilation unit file1 is not unique in aggregate project
