@@ -207,7 +207,7 @@ procedure Test_Bad with SPARK_Mode is
       procedure Lemma_Prove_P (X : Natural) is
       begin
          if not P (X) then
-            loop  --  @TERMINATION:CHECK
+            loop  --  @TERMINATION:FAIL
                null;
             end loop;
          end if;

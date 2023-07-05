@@ -29,7 +29,7 @@ procedure Test_DIC with SPARK_Mode is
 
       --  Neither the predicate nor the DIC hold, but the predicate is checked
       --  first.
-      type T4 is private with --@PREDICATE_CHECK:FAIL
+      type T4 is private with --@PREDICATE_CHECK_ON_DEFAULT_VALUE:FAIL
         Relaxed_Initialization,
         Default_Initial_Condition => F (T4);
 

@@ -16,8 +16,8 @@ procedure Main with SPARK_Mode is
       G : Int_Acc;
    end record;
 
-   X : Holder; --@RESOURCE_LEAK:PASS
-   Y : Holder; --@RESOURCE_LEAK:FAIL
+   X : Holder; --@RESOURCE_LEAK_AT_END_OF_SCOPE:PASS
+   Y : Holder; --@RESOURCE_LEAK_AT_END_OF_SCOPE:FAIL
 begin
    X.G := new Integer'(15);
    Y.F := X.F; --@RESOURCE_LEAK:FAIL

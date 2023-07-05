@@ -8,7 +8,7 @@ is
 
    protected PO is
       pragma Priority (Prio);
-      procedure Dummy;
+      procedure Dummy; --@CEILING_PRIORITY_PROTOCOL:FAIL
    end;
 
    protected body PO is

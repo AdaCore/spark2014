@@ -1,7 +1,7 @@
 package DIC_Pred with SPARK_Mode is
    function Id (X : Integer) return Integer is (X);
    C : constant Integer := Id (0);
-   type T is private with Default_Initial_Condition => Get (T) > 0;
+   type T is private with Default_Initial_Condition => Get (T) > 0; --@PREDICATE_CHECK_ON_DEFAULT_VALUE:FAIL
    type S is private with Default_Initial_Condition => C >= 0;
 
    function Get (X : T) return Integer;

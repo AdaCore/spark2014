@@ -354,7 +354,7 @@ procedure Example_Recursive with SPARK_Mode is
    end Merge;
 
    procedure Do_Test (L1, L2 : in out List) is
-      X : List := Create (1); --@RESOURCE_LEAK:FAIL
+      X : List := Create (1); --@RESOURCE_LEAK_AT_END_OF_SCOPE:FAIL
       Y : List := Create (1);
       --  No attempt is made to deallocate X, we have a memory leak. The cells of
       --  Y are moved to X, so they are not reported as leaked here.

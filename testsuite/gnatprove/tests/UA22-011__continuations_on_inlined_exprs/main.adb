@@ -38,7 +38,7 @@ begin
       pragma Assert (R'(0, -1) in T); --@ASSERT:FAIL
    elsif Rand (6) then
       declare
-         Y : T2; --@PREDICATE_CHECK:FAIL
+         Y : T2; --@PREDICATE_CHECK_ON_DEFAULT_VALUE:FAIL
       begin
          null;
       end;

@@ -7,10 +7,10 @@ package body Pointers is
    end Just_Read;
 
    procedure Test is
-      R : Rec;  -- @RESOURCE_LEAK:FAIL
-      S : Rec;  -- @RESOURCE_LEAK:FAIL
-      T : Rec;  -- @RESOURCE_LEAK:FAIL
-      U : Rec;  -- @RESOURCE_LEAK:FAIL
+      R : Rec;  -- @RESOURCE_LEAK_AT_END_OF_SCOPE:FAIL
+      S : Rec;  -- @RESOURCE_LEAK_AT_END_OF_SCOPE:FAIL
+      T : Rec;  -- @RESOURCE_LEAK_AT_END_OF_SCOPE:FAIL
+      U : Rec;  -- @RESOURCE_LEAK_AT_END_OF_SCOPE:FAIL
       A : Int_Acc;
    begin
       R.X := new Integer'(0);

@@ -22,7 +22,7 @@ is
       with
          Refined_Global => (Output => (Memory, Count, Free_List, Free)),
          Refined_Depends => ((Memory, Count, Free_List, Free) => null),
-         Refined_Post => Count = 0
+         Refined_Post => Count = 0 --@REFINED_POST:PASS
    is
    begin
       -- Make sure the entire array has some appropriate initial value.
@@ -83,7 +83,7 @@ is
    function Size return Natural
      with
        Refined_Global => (Input => Count),
-       Refined_Post => Size'Result = Count
+       Refined_Post => Size'Result = Count --@REFINED_POST:PASS
    is
    begin
       return Count;

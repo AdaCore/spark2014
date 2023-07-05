@@ -19,7 +19,7 @@ is
    procedure Pub_In_Out with Global => (In_Out => State);  --  @INVARIANT_CHECK:PASS
 
 private
-   type T is new Natural with Type_Invariant => T /= 0;  --  @INVARIANT_CHECK:FAIL
+   type T is new Natural with Type_Invariant => T /= 0;  --  @INVARIANT_CHECK_ON_DEFAULT_VALUE:FAIL
 
    X : T := 1 with Part_Of => State; --  @INVARIANT_CHECK:PASS
 

@@ -49,7 +49,7 @@ is
       pragma Assume (Y > 0.0);
       pragma Assume (Y < 1.0);
       pragma Assume (X / Float_32'Last <= Y);
-      Res := X / Y;  --@OVERFLOW_CHECK:FAIL
+      Res := X / Y;  --@FLOAT_OVERFLOW_CHECK:FAIL
    end Guarded_Div_Original;
 
    procedure Guarded_Div_Original_Fixed (X, Y : Float_32; Res : out Float_32) is
@@ -95,7 +95,7 @@ is
    begin
       pragma Assume (X /= 0);
       pragma Assert (Float_32 (X) >= 0.9);  --  @ASSERT:PASS
-      Res := L / Float_32 (X);              --  @OVERFLOW_CHECK:PASS
+      Res := L / Float_32 (X);              --  @FLOAT_OVERFLOW_CHECK:PASS
    end Int_To_Float_Simple;
 
    --  CBMC can trivially show this is true
@@ -246,7 +246,7 @@ is
                           Res     : out Boolean)
    is
    begin
-      pragma Assume (abs A * abs C < 5800.0 * abs B);
+      pragma Assume (abs A * abs C < 5800.0 * abs B); --@FLOAT_OVERFLOW_CHECK:FAIL
       Res := not (B = 0.0);
       pragma Assert (Res);     -- valid
    end User_Rule_8;
@@ -255,7 +255,7 @@ is
                           Res  : out Boolean)
    is
    begin
-      pragma Assume (abs A < 5800.0 * abs B);
+      pragma Assume (abs A < 5800.0 * abs B); --@FLOAT_OVERFLOW_CHECK:FAIL
       Res := A / B <= 5800.0;
       pragma Assert (Res);     -- valid
    end User_Rule_9;
@@ -264,7 +264,7 @@ is
                            Res  : out Boolean)
    is
    begin
-      pragma Assume (abs A < 5800.0 * abs B);
+      pragma Assume (abs A < 5800.0 * abs B); --@FLOAT_OVERFLOW_CHECK:FAIL
       Res := A / B >= -5800.0;
       pragma Assert (Res);     -- valid
    end User_Rule_10;
@@ -277,7 +277,7 @@ is
    begin
       pragma Assume (A >= 0.0);
       pragma Assume (B >= 0.0);
-      Res := (C * C) * A + (D * D) * B >= 0.0; --@OVERFLOW_CHECK:FAIL
+      Res := (C * C) * A + (D * D) * B >= 0.0; --@FLOAT_OVERFLOW_CHECK:FAIL
       pragma Assert (Res);
    end User_Rule_11;
 
@@ -290,7 +290,7 @@ is
       --  ensures C*C and D*D is finite
       pragma Assume (C in Squarable_Float);
       pragma Assume (D in Squarable_Float);
-      Res := (C * C) * A + (D * D) * B >= 0.0;
+      Res := (C * C) * A + (D * D) * B >= 0.0; --@FLOAT_OVERFLOW_CHECK:FAIL
       pragma Assert (Res);     -- valid
    end User_Rule_12;
 
@@ -356,22 +356,22 @@ is
    procedure Float_Different (X, Y : Float_32; Res : out Float_32) is
    begin
       pragma Assume (X /= Y);
-      Res := X - Y;
+      Res := X - Y; --@FLOAT_OVERFLOW_CHECK:FAIL
       pragma Assert (Res /= 0.0);
    end Float_Different;
 
    procedure Float_Greater (X, Y : Float_32; Res : out Float_32) is
    begin
       pragma Assume (X > Y);
-      Res := X - Y;
+      Res := X - Y; --@FLOAT_OVERFLOW_CHECK:FAIL
       pragma Assert (Res > 0.0);
    end Float_Greater;
 
    procedure Diffs (X, Y, Z : Float) is
    begin
-      pragma Assume (X - Y > 0.0);
-      pragma Assume (Y - Z > 0.0);
-      pragma Assert (X - Z > 0.0);
+      pragma Assume (X - Y > 0.0); --@FLOAT_OVERFLOW_CHECK:FAIL
+      pragma Assume (Y - Z > 0.0); --@FLOAT_OVERFLOW_CHECK:FAIL
+      pragma Assert (X - Z > 0.0); --@FLOAT_OVERFLOW_CHECK:FAIL
    end Diffs;
 
    procedure Sub_Then_Add1 (X, Y : Float_32; Res : out Float_32) is

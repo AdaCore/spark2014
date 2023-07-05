@@ -3,7 +3,7 @@ with GNAT.Semaphores;
 package P is
 
    protected Sync is
-      procedure Proc;
+      procedure Proc; --@CEILING_PRIORITY_PROTOCOL:FAIL
    end Sync;
 
    Sem : GNAT.Semaphores.Binary_Semaphore

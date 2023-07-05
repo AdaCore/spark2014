@@ -16,11 +16,11 @@ procedure Test_Leaks with SPARK_Mode is
    begin
       if X >= 1 then
          declare
-            X1 : Int_Acc := new Integer'(1); --@RESOURCE_LEAK:PASS
+            X1 : Int_Acc := new Integer'(1); --@RESOURCE_LEAK_AT_END_OF_SCOPE:PASS
          begin
             if X >= 2 then
                declare
-                  X2 : Int_Acc := new Integer'(42); --@RESOURCE_LEAK:PASS
+                  X2 : Int_Acc := new Integer'(42); --@RESOURCE_LEAK_AT_END_OF_SCOPE:PASS
                begin
                   if X = 3 then
                      Y := 3;
@@ -52,11 +52,11 @@ procedure Test_Leaks with SPARK_Mode is
    begin
       if X >= 1 then
          declare
-            X1 : Int_Acc := new Integer'(1); --@RESOURCE_LEAK:FAIL
+            X1 : Int_Acc := new Integer'(1); --@RESOURCE_LEAK_AT_END_OF_SCOPE:FAIL
          begin
             if X >= 2 then
                declare
-                  X2 : Int_Acc := new Integer'(42); --@RESOURCE_LEAK:PASS
+                  X2 : Int_Acc := new Integer'(42); --@RESOURCE_LEAK_AT_END_OF_SCOPE:PASS
                begin
                   if X = 3 then
                      Y := 3;
@@ -91,11 +91,11 @@ procedure Test_Leaks with SPARK_Mode is
    begin
       if X >= 1 then
          declare
-            X1 : Int_Acc := new Integer'(1); --@RESOURCE_LEAK:FAIL
+            X1 : Int_Acc := new Integer'(1); --@RESOURCE_LEAK_AT_END_OF_SCOPE:FAIL
          begin
             if X >= 2 then
                declare
-                  X2 : Int_Acc := new Integer'(42); --@RESOURCE_LEAK:FAIL
+                  X2 : Int_Acc := new Integer'(42); --@RESOURCE_LEAK_AT_END_OF_SCOPE:FAIL
                begin
                   if X = 3 then
                      Y := 3;

@@ -71,7 +71,7 @@ procedure Main with SPARK_Mode is
 
    V : aliased Integer := 15;
    A1 : access Integer := V'Access;
-   A2 : Int_Acc := new Integer'(15); --@RESOURCE_LEAK:FAIL
+   A2 : Int_Acc := new Integer'(15); --@RESOURCE_LEAK_AT_END_OF_SCOPE:FAIL
 
 begin
    P1 (null);

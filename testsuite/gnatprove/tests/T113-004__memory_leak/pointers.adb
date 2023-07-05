@@ -17,22 +17,22 @@ procedure Pointers is
       end if;
    end Assign;
 
-   X : T;  -- @RESOURCE_LEAK:PASS
-   Y : T;  -- @RESOURCE_LEAK:FAIL
-   Z : T;  -- @RESOURCE_LEAK:PASS
+   X : T;  -- @RESOURCE_LEAK_AT_END_OF_SCOPE:PASS
+   Y : T;  -- @RESOURCE_LEAK_AT_END_OF_SCOPE:FAIL
+   Z : T;  -- @RESOURCE_LEAK_AT_END_OF_SCOPE:PASS
 
    type Arr is array (1 .. 3) of T;
 
-   XX : Arr;  -- @RESOURCE_LEAK:PASS
-   YY : Arr;  -- @RESOURCE_LEAK:FAIL
-   ZZ : Arr;  -- @RESOURCE_LEAK:FAIL
+   XX : Arr;  -- @RESOURCE_LEAK_AT_END_OF_SCOPE:PASS
+   YY : Arr;  -- @RESOURCE_LEAK_AT_END_OF_SCOPE:FAIL
+   ZZ : Arr;  -- @RESOURCE_LEAK_AT_END_OF_SCOPE:FAIL
 
    type Unc_Arr is array (Positive range <>) of T;
 
    procedure Assign (X : in out Unc_Arr)
      with Post => True
    is
-      Loc : Unc_Arr(X'Range);  -- @RESOURCE_LEAK:PASS
+      Loc : Unc_Arr(X'Range);  -- @RESOURCE_LEAK_AT_END_OF_SCOPE:PASS
    begin
       X := Loc;  -- @RESOURCE_LEAK:FAIL
    end Assign;
@@ -53,9 +53,9 @@ begin
    ZZ(2) := new Integer'(1);  -- @RESOURCE_LEAK:PASS
 
    declare
-      X : T;  -- @RESOURCE_LEAK:PASS
-      Y : T;  -- @RESOURCE_LEAK:FAIL
-      Z : T;  -- @RESOURCE_LEAK:PASS
+      X : T;  -- @RESOURCE_LEAK_AT_END_OF_SCOPE:PASS
+      Y : T;  -- @RESOURCE_LEAK_AT_END_OF_SCOPE:FAIL
+      Z : T;  -- @RESOURCE_LEAK_AT_END_OF_SCOPE:PASS
 
    begin
       X := new Integer'(1);  -- @RESOURCE_LEAK:PASS
@@ -97,9 +97,9 @@ begin
          B : Integer;
       end record;
 
-      U : Point;  -- @RESOURCE_LEAK:PASS
-      V : Point;  -- @RESOURCE_LEAK:FAIL
-      W : Point;  -- @RESOURCE_LEAK:FAIL
+      U : Point;  -- @RESOURCE_LEAK_AT_END_OF_SCOPE:PASS
+      V : Point;  -- @RESOURCE_LEAK_AT_END_OF_SCOPE:FAIL
+      W : Point;  -- @RESOURCE_LEAK_AT_END_OF_SCOPE:FAIL
 
       A : Line;
       B : Line;
@@ -110,8 +110,8 @@ begin
       H : Mesh;
       K : Mesh;
 
-      R : Table;  -- @RESOURCE_LEAK:PASS
-      S : Table;  -- @RESOURCE_LEAK:FAIL
+      R : Table;  -- @RESOURCE_LEAK_AT_END_OF_SCOPE:PASS
+      S : Table;  -- @RESOURCE_LEAK_AT_END_OF_SCOPE:FAIL
 
       procedure Assign (U : out Point)
         with Post => True
@@ -123,7 +123,7 @@ begin
       end Assign;
 
       function Alloc return T is
-         Result : T := new Integer'(1);  -- @RESOURCE_LEAK:PASS
+         Result : T := new Integer'(1);  -- @RESOURCE_LEAK_AT_END_OF_SCOPE:PASS
       begin
          return Result;
       end Alloc;

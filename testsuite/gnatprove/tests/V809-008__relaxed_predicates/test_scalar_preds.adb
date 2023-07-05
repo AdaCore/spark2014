@@ -175,7 +175,7 @@ procedure Test_Scalar_Preds with SPARK_Mode is
      Predicate => F (Integer (T3));
 
    type H3 is record
-      C : T3; --@PREDICATE_CHECK:FAIL
+      C : T3; --@PREDICATE_CHECK_ON_DEFAULT_VALUE:FAIL
    end record;
 
    type I3 is record
@@ -345,7 +345,7 @@ procedure Test_Scalar_Preds with SPARK_Mode is
      Predicate => F (Integer (T6));
 
    type H6 is record
-      C : T6; --@PREDICATE_CHECK:FAIL
+      C : T6; --@PREDICATE_CHECK_ON_DEFAULT_VALUE:FAIL
    end record;
 
    type I6 is record
@@ -389,10 +389,10 @@ procedure Test_Scalar_Preds with SPARK_Mode is
    is
       X1 : T1;
       X2 : T2;
-      X3 : T3; --@PREDICATE_CHECK:FAIL
+      X3 : T3; --@PREDICATE_CHECK_ON_DEFAULT_VALUE:FAIL
       X4 : T4 with Relaxed_Initialization;
       X5 : T5 with Relaxed_Initialization;
-      X6 : T6 with Relaxed_Initialization; --@PREDICATE_CHECK:FAIL
+      X6 : T6 with Relaxed_Initialization; --@PREDICATE_CHECK_ON_DEFAULT_VALUE:FAIL
 
    begin
       if Rand (0) then

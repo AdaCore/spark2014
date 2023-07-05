@@ -52,7 +52,7 @@ is
        (E => Boolean'(L = null or else L.Next = null)'Old);
 
    procedure Test_Leak (L : access List_Cell) is
-      X : constant List := new List_Cell'(0, null); --@RESOURCE_LEAK:FAIL
+      X : constant List := new List_Cell'(0, null); --@RESOURCE_LEAK_AT_END_OF_SCOPE:FAIL
    begin
       if L = null then
          raise E;
@@ -61,7 +61,7 @@ is
          L.Next := X;
          declare
             B : access List_Cell := L.Next.Next;
-            Y : constant List := new List_Cell'(0, null); --@RESOURCE_LEAK:FAIL
+            Y : constant List := new List_Cell'(0, null); --@RESOURCE_LEAK_AT_END_OF_SCOPE:FAIL
          begin
             if B = null then
                raise E;
@@ -121,7 +121,7 @@ is
        (E => Boolean'(L = null or else L.Next = null)'Old);
 
    procedure Test_Leak_Call (L : access List_Cell) is
-      X : constant List := new List_Cell'(0, null); --@RESOURCE_LEAK:FAIL
+      X : constant List := new List_Cell'(0, null); --@RESOURCE_LEAK_AT_END_OF_SCOPE:FAIL
    begin
       if L = null then
          raise E;
@@ -130,7 +130,7 @@ is
          L.Next := X;
          declare
             B : access List_Cell := L.Next.Next;
-            Y : constant List := new List_Cell'(0, null); --@RESOURCE_LEAK:FAIL
+            Y : constant List := new List_Cell'(0, null); --@RESOURCE_LEAK_AT_END_OF_SCOPE:FAIL
          begin
             if B = null then
                Raise_E;
