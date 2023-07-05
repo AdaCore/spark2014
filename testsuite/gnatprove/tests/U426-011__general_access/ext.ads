@@ -6,15 +6,15 @@ package Ext with SPARK_Mode is
    function F (X : Gen_Int) return Boolean with Import;
    function F (Dummy : Cst_Int) return Boolean is (True);
 
-   X1 : PS_Int := new Integer'(12);           -- @RESOURCE_LEAK:NONE
+   X1 : PS_Int := new Integer'(12);           -- @RESOURCE_LEAK_AT_END_OF_SCOPE:NONE
    X2 : Gen_Int := new Integer'(12);          -- @RESOURCE_LEAK:FAIL
    X3 : Cst_Int := new Integer'(12);          -- @RESOURCE_LEAK:FAIL
-   Y1 : constant Gen_Int := new Integer'(12); -- @RESOURCE_LEAK:NONE
-   Y2 : constant Cst_Int := new Integer'(12); -- @RESOURCE_LEAK:NONE
+   Y1 : constant Gen_Int := new Integer'(12); -- @RESOURCE_LEAK_AT_END_OF_SCOPE:NONE
+   Y2 : constant Cst_Int := new Integer'(12); -- @RESOURCE_LEAK_AT_END_OF_SCOPE:NONE
 
    function Mk return Gen_Int with Import;
    W : Cst_Int := Cst_Int (Gen_Int'(new Integer'(15)));          -- @RESOURCE_LEAK:FAIL
-   Z : constant Cst_Int := Cst_Int (Gen_Int'(new Integer'(15))); -- @RESOURCE_LEAK:NONE
+   Z : constant Cst_Int := Cst_Int (Gen_Int'(new Integer'(15))); -- @RESOURCE_LEAK_AT_END_OF_SCOPE:NONE
    pragma Assert (F (Cst_Int (Gen_Int'(new Integer'(15)))));     -- @RESOURCE_LEAK:FAIL
 
    type Holder is record
@@ -23,7 +23,7 @@ package Ext with SPARK_Mode is
    type Gen_Holder is access all Holder;
 
    P : Gen_Holder := new Holder'(Content => new Integer'(15));          -- @RESOURCE_LEAK:FAIL
-   Q : constant Gen_Holder := new Holder'(Content => new Integer'(15)); -- @RESOURCE_LEAK:NONE
+   Q : constant Gen_Holder := new Holder'(Content => new Integer'(15)); -- @RESOURCE_LEAK_AT_END_OF_SCOPE:NONE
 
    type Rec_1 is record
       F : Cst_Int;

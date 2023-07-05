@@ -13,7 +13,7 @@ procedure Proves_False with SPARK_Mode is
 
       function Length (M : Vector) return Big_Natural
       with Post =>
-         (for some k in M => k = Length'Result - 1) and then --@POSTCONDITION:FAIL --@TERMINATION:CHECK
+         (for some k in M => k = Length'Result - 1) and then --@POSTCONDITION:FAIL --@TERMINATION:FAIL
          (for all k in M => k < Length'Result);
 
       function Iter_First (M : Vector) return Big_Natural;
@@ -34,7 +34,7 @@ procedure Proves_False with SPARK_Mode is
 
       function Iter_First (M : Vector) return Big_Natural is (0);
       function Iter_Next (M : Vector; I : Big_Natural) return Big_Natural is (I + 1);
-      function Has_Index (M : Vector; I : Big_Natural) return Boolean is (I < Length(M)); --@TERMINATION:CHECK
+      function Has_Index (M : Vector; I : Big_Natural) return Boolean is (I < Length(M)); --@TERMINATION:FAIL
 
       function Empty return Vector is (Vector'( Length => 0 ));
    end AbstractVector2;

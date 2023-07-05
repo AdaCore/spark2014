@@ -25,7 +25,7 @@ is
    end Push;
 
    procedure Pop (S : in out Stack_Type)
-     with Refined_Post => S.Pointer = S.Pointer'Old - 1
+     with Refined_Post => S.Pointer = S.Pointer'Old - 1 --@REFINED_POST:FAIL
      --  Refined_Post in terms of full view of Stack_Type and also
      --  specifies what is required by the implementation.
    is

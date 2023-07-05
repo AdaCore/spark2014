@@ -5,7 +5,7 @@ procedure Main is
    for T'Object_Size use Integer'Size;
 
    X : T := (C => 1) with Alignment => Integer'Alignment;
-   Y : T with Address => X'Address, Import, Alignment => Integer'Alignment;
+   Y : T with Address => X'Address, Import, Alignment => Integer'Alignment; --@UNCHECKED_CONVERSION_ALIGN:PASS
 
    procedure Swap (A, B : out T) with Pre => True is
    begin

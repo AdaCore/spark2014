@@ -1,0 +1,7 @@
+distributed_file_system.ads:9:20: info: class-wide postcondition is stronger than overridden one (CVC5: 1 VC)
+distributed_file_system.ads:14:20: info: class-wide precondition is weaker than overridden one (CVC5: 1 VC)
+distributed_file_system.ads:15:20: info: class-wide postcondition is stronger than overridden one (CVC5: 1 VC)
+distributed_file_system.ads:20:20: info: class-wide precondition is weaker than overridden one (CVC5: 1 VC)
+distributed_file_system.ads:21:20: info: class-wide postcondition is stronger than overridden one (CVC5: 2 VC)
+distributed_file_system.ads:26:20: medium: class-wide precondition might be stronger than overridden one, cannot prove F.Is_Synchronized [possible fix: you should consider adding a postcondition to function Is_Open and function Is_Synchronized or turning them into expression functions in their unit spec]
+distributed_file_system.ads:27:20: info: class-wide postcondition is stronger than overridden one (CVC5: 1 VC)

@@ -45,17 +45,17 @@ private
 
    type T is new Integer with Type_Invariant => T /= 0, Default_Value => 1;
 
-   type R (C : T) is null record; --@INVARIANT_CHECK:FAIL
+   type R (C : T) is null record; --@INVARIANT_CHECK_ON_DEFAULT_VALUE:FAIL
 
    subtype Bad_R is R (0);
 
-   type S is new T with Default_Value => 0; --@INVARIANT_CHECK:FAIL
+   type S is new T with Default_Value => 0; --@INVARIANT_CHECK_ON_DEFAULT_VALUE:FAIL
 
-   type A is array (Positive range 1 .. 100) of Integer with --@INVARIANT_CHECK:PASS
+   type A is array (Positive range 1 .. 100) of Integer with --@INVARIANT_CHECK_ON_DEFAULT_VALUE:PASS
      Type_Invariant          => A (A'First) /= 0 and then (for all I in A'Range => A (I) /= 0),
      Default_Component_Value => 0;
 
-   type U is array (Positive range <>) of Integer with --@INVARIANT_CHECK:FAIL
+   type U is array (Positive range <>) of Integer with --@INVARIANT_CHECK_ON_DEFAULT_VALUE:FAIL
      Type_Invariant          => U (U'First) /= 1 and then (for all I in U'Range => U (I) /= 0), --@INDEX_CHECK:FAIL
      Default_Component_Value => 1;
 

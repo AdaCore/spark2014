@@ -46,7 +46,7 @@ is
      with Pre => (X > 0.0 and Y > 0.0)
    is
    begin
-      pragma Assert (X + Y >= X);  -- Should be true
+      pragma Assert (X + Y >= X); --@FLOAT_OVERFLOW_CHECK:FAIL  -- Should be true
    end Add_Monotonic;
 
    --  For reals this is true
@@ -55,7 +55,7 @@ is
      with Pre => (X > 0.0 and Y > 0.0)
    is
    begin
-      pragma Assert (X + Y > X);  -- Should be false
+      pragma Assert (X + Y > X); --@FLOAT_OVERFLOW_CHECK:FAIL  -- Should be false
    end Add_Strictly_Monotonic;
 
    --  For reals this is false
@@ -81,7 +81,7 @@ is
           Post => Underflow_1'Result > 0.0   -- false for floats!
    is
    begin
-      return A / B;
+      return A / B; --@FLOAT_OVERFLOW_CHECK:FAIL
    end Underflow_1;
 
    --  This is not just due to rounding, this also triggers if 1.0 / a
@@ -91,11 +91,11 @@ is
           Post => Inverse_Reciprocal'Result = A  -- not generally true
    is
    begin
-      return 1.0 / (1.0 / A);
+      return 1.0 / (1.0 / A); --@FLOAT_OVERFLOW_CHECK:FAIL
    end Inverse_Reciprocal;
 
    function Underflow_2 (A, B : FT) return Boolean
-     with Pre => A * B = 0.0,
+     with Pre => A * B = 0.0, --@FLOAT_OVERFLOW_CHECK:FAIL
           Post => Underflow_2'Result
    is
    begin
@@ -107,11 +107,11 @@ is
           Post => Underflow_3'Result > 0.0   -- not true!
    is
    begin
-      return A * B;
+      return A * B; --@FLOAT_OVERFLOW_CHECK:FAIL
    end Underflow_3;
 
    function Sqrt_Comedy_1 (A, B, C : FT) return Boolean
-     with Pre => A * A = C and B * B = C,
+     with Pre => A * A = C and B * B = C, --@FLOAT_OVERFLOW_CHECK:FAIL
           Post => Sqrt_Comedy_1'Result
    is
    begin
@@ -120,16 +120,16 @@ is
 
    function Bad_Optimisation_1 (A, B : FT) return FT
      with Pre => B /= 0.0,
-          Post => Bad_Optimisation_1'Result = A / B
+          Post => Bad_Optimisation_1'Result = A / B --@FLOAT_OVERFLOW_CHECK:FAIL
    is
    begin
-      return A * (1.0 / B);   -- I don't think so
+      return A * (1.0 / B); --@FLOAT_OVERFLOW_CHECK:FAIL   -- I don't think so
    end Bad_Optimisation_1;
 
    procedure Inverse_Addition (X : FT)
    is
    begin
-      pragma Assert (X + X = X - (-X));  -- probably not
+      pragma Assert (X + X = X - (-X)); --@FLOAT_OVERFLOW_CHECK:FAIL  -- probably not
    end Inverse_Addition;
 
    procedure Substract_Identity_1 (X, Y : FT)
@@ -150,32 +150,32 @@ is
      with Pre => (X >= 0.0 and Y >= 0.0)
    is
    begin
-      pragma Assert ((X + Y) - Y = X);  -- haha, false! (I hate you, Martin!)
+      pragma Assert ((X + Y) - Y = X); --@FLOAT_OVERFLOW_CHECK:FAIL  -- haha, false! (I hate you, Martin!)
    end Substract_Identity_3;
 
    procedure Underflow_4 (X : FT)
      with Pre => (X > 0.0)
    is
    begin
-      pragma Assert (1.0 / X > 0.0);  -- no underflow if x is finite
+      pragma Assert (1.0 / X > 0.0); --@FLOAT_OVERFLOW_CHECK:FAIL  -- no underflow if x is finite
    end Underflow_4;
 
    procedure Not_So_Associative (A, B, C : FT)
    is
    begin
-      pragma Assert ((A + B) + C = A + (B + C));  -- disassociative :)
+      pragma Assert ((A + B) + C = A + (B + C)); --@FLOAT_OVERFLOW_CHECK:FAIL  -- disassociative :)
    end Not_So_Associative;
 
    procedure I_Like_To_Commute_To_Work (A, B : FT)
    is
    begin
-      pragma Assert ((A + B) = (B + A));  -- true, as long as we don't have NaN
+      pragma Assert ((A + B) = (B + A)); --@FLOAT_OVERFLOW_CHECK:FAIL  -- true, as long as we don't have NaN
    end I_Like_To_Commute_To_Work;
 
    procedure Distributed_Fun (A, B, C : FT)
    is
    begin
-      pragma Assert (A * (B + C) = (A * B) + (A * C));  -- haha, no
+      pragma Assert (A * (B + C) = (A * B) + (A * C)); --@FLOAT_OVERFLOW_CHECK:FAIL  -- haha, no
    end Distributed_Fun;
 
    ----------------------------------------------------------------------
@@ -214,7 +214,7 @@ is
      with Pre => X = Y
    is
    begin
-      return 1.0 / X = 1.0 / Y;  --  division by zero is prevented in SPARK
+      return 1.0 / X = 1.0 / Y; --@FLOAT_OVERFLOW_CHECK:FAIL  --  division by zero is prevented in SPARK
    end Introduce_NaN_3;
 
    --  For reals this is true
@@ -269,7 +269,7 @@ is
                                     A, B, C : out FT)
    is
    begin
-      A := 1.0 / X;
+      A := 1.0 / X; --@FLOAT_OVERFLOW_CHECK:FAIL
       B := 1.0 / A;
       C := 1.0 / B;
       pragma Assert (A = C);  --  should be true for floats
@@ -279,7 +279,7 @@ is
                                     A, B, C : out FT)
    is
    begin
-      A := 1.0 / X;
+      A := 1.0 / X; --@FLOAT_OVERFLOW_CHECK:FAIL
       B := 1.0 / A;
       C := 1.0 / B;
       pragma Assert (X = B);  --  should be false for floats

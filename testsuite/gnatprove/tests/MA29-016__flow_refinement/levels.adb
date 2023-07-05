@@ -42,7 +42,7 @@ is
 
    procedure Post_Test_02
    with Refined_Global => X0,
-        Refined_Post   => Read_Partial_0 + 1 > X0
+        Refined_Post   => Read_Partial_0 + 1 > X0 --@REFINED_POST:FAIL
    is
    begin
       null;
@@ -124,7 +124,7 @@ is
 
       procedure Test_11 (A : out Integer)
       with Refined_Global => (X0, X1, Nested_2.Abs_2),
-        Refined_Post => A = Read_Partial_0 + Read_Partial_1 + Nested_2.Read_Partial_2
+        Refined_Post => A = Read_Partial_0 + Read_Partial_1 + Nested_2.Read_Partial_2 --@REFINED_POST:FAIL
       is
       begin
          A := X0 + X1 + Nested_2.Read_Partial_2;

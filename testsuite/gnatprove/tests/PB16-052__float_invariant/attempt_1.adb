@@ -11,10 +11,10 @@ package body Attempt_1 is
    subtype Ratio_T is Float64 range -1.0 .. 1.0;
 
    function Low_Bound (N : Frame) return Float64
-   is (Float64 (N) * (-G) * Frame_Length); --@OVERFLOW_CHECK:PASS
+   is (Float64 (N) * (-G) * Frame_Length); --@FLOAT_OVERFLOW_CHECK:PASS
 
    function High_Bound (N : Frame) return Float64
-   is (Float64 (N) * G * Frame_Length); --@OVERFLOW_CHECK:PASS
+   is (Float64 (N) * G * Frame_Length); --@FLOAT_OVERFLOW_CHECK:PASS
 
    function Invariant (N : Frame; Speed : Float64) return Boolean
    is (Speed in Low_Bound (N) .. High_Bound (N));
@@ -30,8 +30,8 @@ package body Attempt_1 is
         Post   => Invariant (N + 1, New_Speed) --@POSTCONDITION:FAIL
    is
    begin
-      New_Speed := Old_Speed + (Factor * G * Frame_Length); --@OVERFLOW_CHECK:PASS
-      Average   := (Old_Speed + New_Speed) / 2.0;           --@OVERFLOW_CHECK:PASS
+      New_Speed := Old_Speed + (Factor * G * Frame_Length); --@FLOAT_OVERFLOW_CHECK:PASS
+      Average   := (Old_Speed + New_Speed) / 2.0;           --@FLOAT_OVERFLOW_CHECK:PASS
    end Faceplant_On_Mars;
 
 end Attempt_1;

@@ -10,7 +10,7 @@ package Inside_Out with SPARK_Mode is
 
 private
 
-   type T is new Integer with
+   type T is new Integer with  --  @INVARIANT_CHECK_ON_DEFAULT_VALUE:PASS
      Default_Value => 42,
      Type_Invariant => T /= 0;
 

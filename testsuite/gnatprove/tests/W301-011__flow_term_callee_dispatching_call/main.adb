@@ -36,5 +36,5 @@ procedure Main with SPARK_Mode, Always_Terminates is
    end Bar;
 
 begin
-   Bar; -- @TERMINATION:CHECK
+   Bar; -- @TERMINATION:FAIL
 end Main;

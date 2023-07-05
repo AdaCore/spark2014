@@ -239,7 +239,7 @@ is
    Receiver    : Receiver_Type;
    Transmitter : Transmitter_Type;
 
-   protected type Driver_Type
+   protected type Driver_Type --@CEILING_INTERRUPT:PASS
      with Interrupt_Priority => DecaDriver_Config.Driver_Priority
    is
 

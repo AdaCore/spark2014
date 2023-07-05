@@ -6,7 +6,7 @@ is
    begin
       pragma Assume (Y <= 0.0);
       pragma Assume (X <= Float'Last + Y);
-      Res := X - Y;  --  @OVERFLOW_CHECK:FAIL
+      Res := X - Y;  --  @FLOAT_OVERFLOW_CHECK:FAIL
    end Float_Last;
 
    procedure Upper_Multiple_Of_64

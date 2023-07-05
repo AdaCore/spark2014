@@ -29,11 +29,11 @@ package body Soundness_Tests with SPARK_Mode is
    begin
       Append (Rec.V, 1);
 
-      for I in Rec.V loop  --@TERMINATION:CHECK
+      for I in Rec.V loop  --@TERMINATION:FAIL
          Append (Rec.V, I);
       end loop;
 
-      for I in Rec.V loop  --@TERMINATION:CHECK
+      for I in Rec.V loop  --@TERMINATION:FAIL
          declare
             Copy : Vector := V;
          begin
@@ -48,7 +48,7 @@ package body Soundness_Tests with SPARK_Mode is
    begin
       Append (V, 1);
 
-      for I in V loop  --@TERMINATION:CHECK
+      for I in V loop  --@TERMINATION:FAIL
          Append (V, I);
       end loop;
    end Identifier_Expanded_Name;
@@ -59,7 +59,7 @@ package body Soundness_Tests with SPARK_Mode is
    begin
       Acc := new Vector'(V);
 
-      for I in Acc.all loop  --@TERMINATION:CHECK
+      for I in Acc.all loop  --@TERMINATION:FAIL
          Append (Acc.all, I);
       end loop;
 
@@ -70,7 +70,7 @@ package body Soundness_Tests with SPARK_Mode is
    begin
       Append (A (1), 1);
 
-      for I in A (1) loop  --@TERMINATION:CHECK
+      for I in A (1) loop  --@TERMINATION:FAIL
          Append (A (1), I);
       end loop;
    end Indexed_Component;
@@ -80,7 +80,7 @@ package body Soundness_Tests with SPARK_Mode is
    begin
       Append (A (1), 1);
 
-      for I in A (1 .. 1) (1) loop  --@TERMINATION:CHECK
+      for I in A (1 .. 1) (1) loop  --@TERMINATION:FAIL
          Append (A (1), I);
       end loop;
    end Slice;
@@ -90,7 +90,7 @@ package body Soundness_Tests with SPARK_Mode is
    begin
       Append (V, 1);
 
-      for I in My_Vector (V) loop  --@TERMINATION:CHECK
+      for I in My_Vector (V) loop  --@TERMINATION:FAIL
          Append (V, I);
       end loop;
    end Type_Conversion;
@@ -100,7 +100,7 @@ package body Soundness_Tests with SPARK_Mode is
    begin
       Append (V, 1);
 
-      for I in Vector'(V) loop  --@TERMINATION:CHECK
+      for I in Vector'(V) loop  --@TERMINATION:FAIL
          Append (V, I);
       end loop;
    end Qualified_Expression;
@@ -110,7 +110,7 @@ package body Soundness_Tests with SPARK_Mode is
    begin
       Append (A (1), 1);
 
-      for I in My_Vector (Vector'(A (1 .. 1) (1))) loop  --@TERMINATION:CHECK
+      for I in My_Vector (Vector'(A (1 .. 1) (1))) loop  --@TERMINATION:FAIL
          Append (A (1), I);
       end loop;
    end Mix;
@@ -118,13 +118,13 @@ package body Soundness_Tests with SPARK_Mode is
    procedure Withed_Object is
       use My_Sets;
    begin
-      for I in Cont.S loop  --@TERMINATION:CHECK
+      for I in Cont.S loop  --@TERMINATION:FAIL
          Cont.Include (1);
       end loop;
    end Withed_Object;
 
    procedure Callee is
    begin
-     Neverending_Loop; --@TERMINATION:CHECK
+     Neverending_Loop; --@TERMINATION:FAIL
    end Callee;
 end Soundness_Tests;

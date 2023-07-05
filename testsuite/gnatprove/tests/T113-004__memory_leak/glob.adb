@@ -29,9 +29,9 @@ package body Glob with SPARK_Mode is
       package Loc with
         Initial_Condition => X = null and Y = null and Z = null
       is
-         X : T;  -- @RESOURCE_LEAK:PASS
-         Y : T;  -- @RESOURCE_LEAK:PASS
-         Z : T;  -- @RESOURCE_LEAK:FAIL
+         X : T;  -- @RESOURCE_LEAK_AT_END_OF_SCOPE:PASS
+         Y : T;  -- @RESOURCE_LEAK_AT_END_OF_SCOPE:PASS
+         Z : T;  -- @RESOURCE_LEAK_AT_END_OF_SCOPE:FAIL
       end;
    begin
       Loc.X := new Integer'(0);  -- @RESOURCE_LEAK:PASS
