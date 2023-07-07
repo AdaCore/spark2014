@@ -1,0 +1,14 @@
+main.adb:11:13: info: implicit aspect Always_Terminates on "At_End" has been proved, subprogram will terminate
+main.adb:11:73: info: dynamic accessibility check proved (Trivial)
+main.adb:12:18: info: data dependencies proved
+main.adb:13:04: warning: analyzing unreferenced procedure "F"
+main.adb:15:51: info: pointer dereference check proved (CVC5: 1 VC)
+main.adb:16:42: info: pointer dereference check proved (CVC5: 1 VC)
+main.adb:17:48: info: pointer dereference check proved (CVC5: 1 VC)
+main.adb:19:22: info: assertion proved (CVC5: 1 VC)
+main.adb:19:23: info: pointer dereference check proved (CVC5: 1 VC)
+main.adb:19:34: info: pointer dereference check proved (CVC5: 1 VC)
+main.adb:20:22: medium: assertion might fail (e.g. when T.all = (V => -1))
+main.adb:20:24: info: pointer dereference check proved (CVC5: 1 VC)
+main.adb:20:31: info: pointer dereference check proved (CVC5: 1 VC)
+main.adb:21:08: info: pointer dereference check proved (CVC5: 1 VC)

@@ -1,0 +1,7 @@
+p.adb:2:25: error: "Local" is not a library-level subprogram
+p.adb:2:25: error: incorrect placement of aspect "SPARK_Mode" with value "On" [E0011]
+p.adb:2:25: error: launch "gnatprove --explain=E0011" for more information
+test.adb:6:32: error: "P" is not a library-level subprogram
+test.adb:6:32: error: incorrect placement of aspect "SPARK_Mode" with value "On" [E0011]
+test.adb:6:32: error: launch "gnatprove --explain=E0011" for more information
+gnatprove: error during generation of Global contracts

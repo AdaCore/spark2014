@@ -148,14 +148,14 @@ package body Gnat2Why.Expr is
      (Call  : Node_Id;
       Scope : Entity_Id)
       return Boolean;
-   --  Return True if Call should be considered potentially not terminate
-   --  indendently of the termination annotations on the called subprogram
-   --  Subp. Scope should be the entity in which Call occurs.
+   --  Return True if Call should be considered to potentially not terminate
+   --  indendently of the termination annotations on the callee. Scope should
+   --  be the entity in which Call occurs.
    --  This might happen for several reasons:
-   --    * Subp is recursive with its enclosing subprogram and has no
-   --      variants,
+   --    * the callee is recursive with its enclosing subprogram Scope and has
+   --      no variants,
    --    * Call is dispatching, or
-   --    * Subp is a subprogram type.
+   --    * the callee is a subprogram type.
 
    function Check_No_Memory_Leaks
      (Ada_Node           : Node_Id;

@@ -41,7 +41,7 @@ iterable_invariant.ads:33:14: warning: subprogram "Forbidden_Quantification" has
 iterable_invariant.ads:34:19: medium: invariant check might fail
 iterable_invariant.ads:34:27: warning: unused variable "X"
 iterable_invariant.ads:35:06: warning: postcondition does not check the outcome of calling "Forbidden_Quantification"
-iterable_invariant.ads:35:14: medium: postcondition might fail (e.g. when C = Correct_Value)
+iterable_invariant.ads:35:14: medium: postcondition might fail
 quant_checks.adb:10:16: info: during checks for quantification at quant_checks.adb:4
 quant_checks.adb:10:16: info: implicit aspect Always_Terminates on "First" has been proved, subprogram will terminate
 quant_checks.adb:10:16: info: precondition proved (Trivial: 1 VC)

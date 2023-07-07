@@ -260,6 +260,9 @@ package body SPARK_Util is
    Exceptions : Node_Sets.Set;
    --  All exceptions visible from analyzed code
 
+   Prophecy_Saves : Node_Sets.Set;
+   --  Local observers used to save prophecy variables
+
    package Node_To_List_Maps is new Ada.Containers.Hashed_Maps
      (Key_Type        => Node_Id,
       Element_Type    => Node_Lists.List,
@@ -427,6 +430,15 @@ package body SPARK_Util is
    begin
       Exceptions.Include (E);
    end Register_Exception;
+
+   ----------------------------
+   -- Register_Prophecy_Save --
+   ----------------------------
+
+   procedure Register_Prophecy_Save (E : Entity_Id) is
+   begin
+      Prophecy_Saves.Include (E);
+   end Register_Prophecy_Save;
 
    --------------------
    -- All_Exceptions --
@@ -3455,6 +3467,13 @@ package body SPARK_Util is
          return False;
       end if;
    end Is_Predefined_Initialized_Entity;
+
+   ----------------------
+   -- Is_Prophecy_Save --
+   ----------------------
+
+   function Is_Prophecy_Save (E : Entity_Id) return Boolean is
+     (Prophecy_Saves.Contains (E));
 
    -------------------------------------
    -- Is_Protected_Component_Or_Discr --
