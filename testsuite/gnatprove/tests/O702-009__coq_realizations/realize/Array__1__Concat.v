@@ -92,22 +92,49 @@ exact (fun x => if Zle_bool x af then a else b ((x - af) + (bf - 1))%Z).
 Defined.
 
 (* Why3 goal *)
-Lemma concat_singleton_left_def :
+Lemma concat_singleton_left_val :
   forall (a:component_type), forall (b:map),
   forall (a_first:t) (b_first:t) (b_last:t),
-  ((get (concat_singleton_left a a_first b b_first b_last) a_first) = a) /\
-  (forall (i:t), gt i a_first ->
-   ((get (concat_singleton_left a a_first b b_first b_last) i) =
-    (get b (add (sub i a_first) (sub b_first one))))).
+  ((get (concat_singleton_left a a_first b b_first b_last) a_first) = a).
+Proof.
 intros a b a_first b_first b_last.
 unfold concat_singleton_left; unfold sub; unfold add;
 unfold one; unfold gt; simpl.
-split; unfold get.
- - rewrite Z.leb_refl; auto.
- - intros i Hi.
-   apply Zgt_not_le in Hi.
-   rewrite <- Z.leb_nle in Hi.
-   rewrite Hi; auto.
+unfold get.
+rewrite Z.leb_refl; auto.
+Qed.
+
+(* Why3 goal *)
+Lemma concat_singleton_left_def_eq :
+  forall (a:component_type), forall (b:map), forall (a_first:t) (b_last:t),
+  forall (i:t), gt i a_first ->
+  ((get (concat_singleton_left a a_first b a_first b_last) i) =
+   (get b (sub i one))).
+Proof.
+intros a b a_first b_last i Hi.
+unfold concat_singleton_left; unfold sub; unfold add;
+unfold one; unfold gt; simpl.
+unfold get.
+apply Zgt_not_le in Hi.
+rewrite <- Z.leb_nle in Hi.
+rewrite Hi; simpl.
+assert (i - a_first + (a_first - 1) = i - 1)%Z by lia.
+rewrite H; auto.
+Qed.
+
+(* Why3 goal *)
+Lemma concat_singleton_left_def :
+  forall (a:component_type), forall (b:map),
+  forall (a_first:t) (b_first:t) (b_last:t), forall (i:t), gt i a_first ->
+  ((get (concat_singleton_left a a_first b b_first b_last) i) =
+   (get b (add (sub i a_first) (sub b_first one)))).
+intros a b a_first b_first b_last i Hi.
+unfold concat_singleton_left; unfold sub; unfold add;
+unfold one; unfold gt; simpl.
+unfold get.
+apply Zgt_not_le in Hi.
+rewrite <- Z.leb_nle in Hi.
+rewrite Hi; auto.
 Qed.
 
 (* Why3 goal *)
