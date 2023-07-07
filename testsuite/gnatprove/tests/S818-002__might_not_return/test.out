@@ -15,10 +15,10 @@ bad.adb:10:07: medium: unexpected exception might be raised [possible explanatio
 bad.adb:11:07: warning: this statement is never reached
 bad.adb:17:10: medium: unexpected exception might be raised [possible explanation: No_Return procedures have an implicit exceptional contract]
 bad.adb:19:07: medium: unexpected exception might be raised
+bad.adb:24:07: medium: implicit aspect Always_Terminates on "Silent_Call_Jump" could be incorrect, call to "Call_Jump" might be nonterminating
 bad.ads:5:13: high: all paths in "Call_Jump" raise exceptions or do not terminate normally
 bad.ads:7:14: high: all paths in "Call_Jump" raise exceptions or do not terminate normally
 bad.ads:9:06: info: data dependencies proved
-bad.ads:12:13: info: implicit aspect Always_Terminates on "Silent_Call_Jump" has been proved, subprogram will terminate
 bad.ads:17:06: info: data dependencies proved
 weird.ads:9:14: info: aspect Always_Terminates on "R" has been proved, subprogram will terminate
 pack.adb:11:10: high: precondition might fail

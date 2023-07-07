@@ -6070,18 +6070,21 @@ package body Flow.Analysis is
                               FF2      => Direct_Mapping_Id (SC.E),
                               Tag      => Subprogram_Termination,
                               Vertex   => V);
-                        end if;
 
                         --  If the called subprogram is potentially
                         --  nonreturning for a reason that is not recursion,
                         --  a message is emitted. In this case, the
                         --  Always_Terminates aspect is trusted.
 
-                        if Get_Termination_Condition (SC.E, Compute => True)
-                             = (Static, False)
-                          and then
-                            (Calls_Potentially_Nonreturning_Subprogram (SC.E)
-                             or else Is_Directly_Nonreturning (SC.E))
+                        elsif
+                          Get_Termination_Condition (SC.E) = (Static, False)
+                             or else
+                             (Get_Termination_Condition (SC.E).Kind
+                                = Unspecified
+                                   and then
+                               (Calls_Potentially_Nonreturning_Subprogram
+                                  (SC.E)
+                                or else Is_Directly_Nonreturning (SC.E)))
                         then
                            Proved := False;
                            Error_Msg_Flow
@@ -6089,7 +6092,11 @@ package body Flow.Analysis is
                               Msg      => Check_Msg ("call to & might be " &
                                                      "nonterminating"),
                               Fix      =>
-                                "annotate & with aspect Always_Terminates",
+                                (if Get_Termination_Condition (SC.E).Kind =
+                                   Unspecified
+                                 then
+                                   "annotate & with aspect Always_Terminates"
+                                 else ""),
                               Severity => Medium_Check_Kind,
                               N        => Atr.Error_Location,
                               F1       => Spec_Entity_Id,
