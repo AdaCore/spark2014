@@ -19,65 +19,63 @@ stages:
 # Common bits #
 ###############
 
-.common_setup_repos: &setup_repos
-    # Setup the 'anod vcs' for this repo
-    - cd /it/wave
-    - anod vcs --add-repo spark2014 $CI_PROJECT_DIR
+.basic-setup: &setup_repos
+    # If the package exists, move it to /tmp so as not to influence "anod vcs"
+    - if [ -f $PACKAGE_ABSOLUTE_NAME ] ; then mv $PACKAGE_ABSOLUTE_NAME /tmp ; fi
 
-    # Figure out if we're on a sync branch
-    - BRANCH=$CI_MERGE_REQUEST_SOURCE_BRANCH_NAME;
+    # Temporary: clone the specific branch of ci-fragments
+    # TODO: remove the next 4 lines when this version of ci-fragments is available in the image
+    - cd /tmp
+    - git clone $GIT_CLONE_BASE/eng/it/ci-fragments -b topic/generic_ci_phase_2 --depth 1
+    - export PATH=/tmp/ci-fragments:$PATH
+    - cd -
+    # Use generic_anod_ci here.
+    - generic_anod_ci $GENERIC_ANOD_CI_OPTIONS
+    - cat /tmp/ci_env.sh
+    - . /tmp/ci_env.sh
 
-    # Setup the 'anod vcs' for the other repos.
-    # Get them from the default branch, or from the same
-    # branch as this if it exists.
-    - for subproject in sparklib spark-internal-testsuite why3 ; do
-         cd /tmp ;
-         git clone $GIT_CLONE_BASE/eng/spark/$subproject ;
-         cd $subproject ;
-         echo "#### for project $subproject..." ;
-         if `git show-ref $BRANCH > /dev/null` ; then
-             echo "### ...using branch $BRANCH" ;
-             git checkout $BRANCH ;
-         else
-             echo "### ...using the default branch" ;
-         fi ;
-         cd /it/wave ;
-
-         anod_name=$subproject ;
-         if [ $subproject = "spark-internal-testsuite" ]; then
-            anod_name=spark2014-internal-testsuite ;
-         fi ;
-
-         anod vcs --add-repo $anod_name /tmp/$subproject ;
-      done ;
     # Tune to use our build & test plan
     - anod tune --plan $CI_PROJECT_DIR/plans/ci.plan
 
-.spark2014_test:
-  services:
-     - image:sandbox
-     - cpu:8
-     - mem:16
-  stage: test
-  script:
-    # Unpack the artifact then delete it
-    - tar zxf $PACKAGE_ABSOLUTE_NAME -C /
-    - rm -f $PACKAGE_ABSOLUTE_NAME
+    # Go to the sandbox dir
+    - cd $ANOD_DEFAULT_SANDBOX_DIR
 
-    # Setup the "anod vcs as appropriate"
-    - *setup_repos
+.deploy_package_and_touch_fingerprints: &deploy_package
+    # Unpack the package
+    - tar zxf /tmp/$PACKAGE_BASE_NAME -C /
 
     # Tell anod that the package has already been built
     - mkdir -p fingerprints
     - touch fingerprints/x86_64-linux.spark2014-cov.build.json.assume-unchanged
     - touch fingerprints/x86_64-linux.spark2014-cov.install.json.assume-unchanged
     # Attempt to avoid downloading all the deps of the spark2014-cov build
+    - touch fingerprints/x86_64-linux.spark2014-doc.build.json.assume-unchanged
+    - touch fingerprints/x86_64-linux.spark2014-doc.install.json.assume-unchanged
     - touch fingerprints/x86_64-linux.spark2014-core-cov.build.json.assume-unchanged
     - touch fingerprints/x86_64-linux.spark2014-core-cov.install.json.assume-unchanged
     - for pack in colibri why3 stable-gnat cvc4 cvc5 alt-ergo gnsa libgpr-current gnatcoll-core-current xmlada-current ; do
         touch fingerprints/x86_64-linux.$pack.download_bin.json.assume-unchanged;
         touch fingerprints/x86_64-linux.$pack.install.json.assume-unchanged;
       done ;
+
+
+.spark2014_test:
+  services:
+     - image:e3
+     - cpu:8
+     - mem:16
+  stage: test
+  script:
+    # Move the package out of the way, so it does not influence "anod vcs"
+    - mv $PACKAGE_ABSOLUTE_NAME /tmp
+
+    # Setup the "anod vcs as appropriate"
+    - *setup_repos
+
+    # Do not rebuild spark2014-doc
+    - anod install spark2014-doc --latest
+
+    - *deploy_package
 
     # set caching location
     - mkdir -p $CI_PROJECT_DIR/gnatprove_cache
@@ -90,8 +88,8 @@ stages:
        --failure-exit-code 1
        --xunit-output $CI_PROJECT_DIR/xunit_output.xml
        x86_64-linux/$ANOD_BUILDSPACE/results/new/ || FAILED=true
-    - cp -r /it/wave/x86_64-linux/$ANOD_BUILDSPACE/results/new/ $CI_PROJECT_DIR/testsuite-results
-    - cp -r /it/wave/x86_64-linux/$ANOD_BUILDSPACE/src/dhtml-report/ $CI_PROJECT_DIR/coverage
+    - cp -r $ANOD_DEFAULT_SANDBOX_DIR/x86_64-linux/$ANOD_BUILDSPACE/results/new/ $CI_PROJECT_DIR/testsuite-results
+    - cp -r $ANOD_DEFAULT_SANDBOX_DIR/x86_64-linux/$ANOD_BUILDSPACE/src/dhtml-report/ $CI_PROJECT_DIR/coverage
 
     - if [ ! -z ${FAILED+x} ]; then echo "There was at least one testcase failure" && exit 1; fi
 
@@ -117,22 +115,23 @@ stages:
 
 build:
   services:
-     - image:sandbox
+     - image:e3
      - cpu:8
      - mem:16
   stage: build
   script:
-    # Setup the "anod vcs as appropriate"
+    - GENERIC_ANOD_CI_OPTIONS="--add-dep eng/spark/sparklib
+                               --add-dep eng/spark/spark-internal-testsuite
+                               --add-dep eng/spark/why3"
     - *setup_repos
 
     # Build using anod
-    - cd /it/wave
-
     - anod run build
 
     # Create the package
+    - SB_WITHOUT_LEADING_SLASH=`echo $ANOD_DEFAULT_SANDBOX_DIR | cut -b2-`
     - tar czf $PACKAGE_ABSOLUTE_NAME -C /
-        it/wave/x86_64-linux/spark2014-cov/install
+        $SB_WITHOUT_LEADING_SLASH/x86_64-linux/spark2014-cov/install
 
   artifacts:
     paths:
@@ -162,28 +161,18 @@ spark2014_large:
 
 acats:
   services:
-     - image:sandbox
+     - image:e3
      - cpu:8
      - mem:16
   stage: test
   script:
-    # Unpack the artifact then delete it
-    - tar zxf $PACKAGE_ABSOLUTE_NAME -C /
-    - rm -f $PACKAGE_ABSOLUTE_NAME
-
-    # Setup the "anod vcs as appropriate"
+    # Setup the sanbox
+    # Add acats explicitly for this build.
+    - GENERIC_ANOD_CI_OPTIONS="--add-dep eng/toolchain/acats"
     - *setup_repos
 
-    # also check out acats repo
-    - cd /tmp
-    - git clone $GIT_CLONE_BASE/eng/toolchain/acats
-    - cd /it/wave
-    - anod vcs --add-repo acats /tmp/acats;
-
-    # Tell anod that the package has already been built
-    - mkdir -p fingerprints
-    - touch fingerprints/x86_64-linux.spark2014.download_bin.json.assume-unchanged
-    - touch fingerprints/x86_64-linux.spark2014.install.json.assume-unchanged
+    # Deploy the installed package
+    - *deploy_package
 
     # Test using anod
     - anod run test_acats
@@ -209,7 +198,7 @@ acats:
 build_docs:
   stage: build
   services:
-     - image:sandbox
+     - image:e3
   rules:
     - changes:
       - docs/**/*
@@ -227,6 +216,5 @@ build_docs:
     - *setup_repos
 
     # Build using anod
-    - cd /it/wave
     - anod build spark2014-doc
-    - cp -r /it/wave/x86_64-linux/spark2014-doc/install/share/doc/spark $CI_PROJECT_DIR
+    - cp -r $ANOD_DEFAULT_SANDBOX_DIR/x86_64-linux/spark2014-doc/install/share/doc/spark $CI_PROJECT_DIR
