@@ -217,6 +217,12 @@ package SPARK_Util.Types is
    --          Ty. It can come from Ty itself, from one of its ancestors, or
    --          from one of its components.
 
+   function Has_Subcomponents_Of_Type
+     (Typ     : Type_Kind_Id;
+      Sub_Typ : Type_Kind_Id) return Boolean;
+   --  Return True if Typ has subcomponents of a type derived from Sub_Typ
+   --  including Sub_Typ itself.
+
    function May_Need_DIC_Checking (E : Type_Kind_Id) return Boolean;
    --  @param E type entity
    --  @return True iff E is the entity for a declaration that may require

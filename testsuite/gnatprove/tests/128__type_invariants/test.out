@@ -1,0 +1,23 @@
+p.ads:11:09: medium: invariant check might fail on default value
+p.ads:14:29: warning: assuming "F" has no effect on global items
+p.ads:14:29: warning: no Global contract available for "F"
+p.ads:14:32: warning: assuming "G" has no effect on global items
+p.ads:14:32: warning: no Global contract available for "G"
+q.ads:6:13: error: "F" might include a recursive call due to a type invariant or subtype predicate, or there might be a cycle in the elaboration of the enclosing unit
+q.ads:6:13: error: unsupported recursive subprogram
+q.ads:11:09: medium: invariant check might fail on default value
+q.ads:14:29: high: cannot call boundary subprogram "F" for type "T" in its own invariant (SPARK RM 7.3.2(5))
+q.ads:14:29: medium: invariant check might fail
+q.ads:14:29: warning: assuming "F" has no effect on global items
+q.ads:14:29: warning: no Global contract available for "F"
+q.ads:14:32: warning: assuming "G" has no effect on global items
+q.ads:14:32: warning: no Global contract available for "G"
+q.ads:16:09: medium: invariant check might fail on default value
+r.ads:4:13: error: "F" might include a recursive call due to a type invariant or subtype predicate, or there might be a cycle in the elaboration of the enclosing unit
+r.ads:4:13: error: unsupported recursive subprogram
+r.ads:7:09: medium: invariant check might fail on default value
+r.ads:10:29: high: cannot call boundary subprogram "F" for type "T" in its own invariant (SPARK RM 7.3.2(5))
+r.ads:10:29: medium: invariant check might fail
+r.ads:10:29: warning: assuming "F" has no effect on global items
+r.ads:10:29: warning: no Global contract available for "F"
+gnatprove: error during flow analysis and proof
