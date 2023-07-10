@@ -1834,7 +1834,9 @@ package body SPARK_Definition is
                --  If we are performing a move operation, check that we are
                --  moving a path.
 
-               elsif Is_Deep (Etype (Var)) then
+               elsif Retysp_In_SPARK (Etype (Var))
+                 and then Is_Deep (Etype (Var))
+               then
                   Check_Source_Of_Move (Expr);
                end if;
             end;
