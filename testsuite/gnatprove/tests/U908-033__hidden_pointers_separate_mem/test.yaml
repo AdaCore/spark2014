@@ -1,4 +1,4 @@
 large: True
 prove_all:
-  steps: 800
+  steps: 2000
   sparklib: True
