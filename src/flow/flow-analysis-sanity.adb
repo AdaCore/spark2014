@@ -650,17 +650,29 @@ package body Flow.Analysis.Sanity is
                   --  Check 7.3.2(5) (no calls to boundary subprograms)
 
                   elsif Is_Boundary_Subprogram_For_Type (SC.E, Typ) then
-                     Error_Msg_Flow
-                       (FA       => FA,
-                        Msg      =>
-                          "cannot call boundary subprogram & " &
-                          "for type & in its own invariant",
-                        Severity => High_Check_Kind,
-                        Tag      => Call_In_Type_Invariant,
-                        N        => Expr,
-                        F1       => Direct_Mapping_Id (SC.E),
-                        F2       => Direct_Mapping_Id (Typ),
-                        SRM_Ref  => "7.3.2(5)");
+
+                     declare
+                        Formal : Opt_Formal_Kind_Id := First_Formal (SC.E);
+                     begin
+                        while Present (Formal) loop
+                           if Has_Subcomponents_Of_Type (Etype (Formal), Typ)
+                           then
+                              Error_Msg_Flow
+                                (FA       => FA,
+                                 Msg      =>
+                                   "cannot call boundary subprogram & " &
+                                   "for type & in its own invariant",
+                                 Severity => High_Check_Kind,
+                                 Tag      => Call_In_Type_Invariant,
+                                 N        => Expr,
+                                 F1       => Direct_Mapping_Id (SC.E),
+                                 F2       => Direct_Mapping_Id (Typ),
+                                 SRM_Ref  => "7.3.2(5)");
+                              exit;
+                           end if;
+                           Next_Formal (Formal);
+                        end loop;
+                     end;
                   end if;
                end loop;
             end;
