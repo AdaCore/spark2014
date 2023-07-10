@@ -274,14 +274,18 @@ package body Configuration is
 
          if View.Tree.Runtime (Ada_Language) /= "" then
             declare
-               RT_Dir : constant String :=
-                 View.Attribute
-                   (Project.Registry.Attribute.Runtime_Dir).Value.Text;
-               Targ_Prop_File : constant String :=
-                 Compose (RT_Dir, "ada_target_properties");
+               RT_Attr : constant Project.Attribute.Object :=
+                 View.Attribute (Project.Registry.Attribute.Runtime_Dir);
             begin
-               if Exists (Targ_Prop_File) then
-                  return "-gnateT=" & Targ_Prop_File;
+               if RT_Attr.Is_Defined then
+                  declare
+                     Targ_Prop_File : constant String :=
+                       Compose (RT_Attr.Value.Text, "ada_target_properties");
+                  begin
+                     if Exists (Targ_Prop_File) then
+                        return "-gnateT=" & Targ_Prop_File;
+                     end if;
+                  end;
                end if;
             end;
          end if;
