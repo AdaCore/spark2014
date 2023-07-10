@@ -1,0 +1,8 @@
+project Nvscisync is
+
+	for Target use "some_target";
+
+	-- Ada Runtime
+	for Runtime ("Ada") use "some_runtime";
+
+end Nvscisync;
