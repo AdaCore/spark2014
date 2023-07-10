@@ -2052,7 +2052,7 @@ package body SPARK_Definition.Annotate is
 
       --  The function shall have the signature of an equality
 
-      if No (First_Formal (E)) or else Number_Formals (E) /= 2 then
+      if Number_Formals (E) /= 2 then
          Error_Msg_N_If
            ("Entity parameter of a pragma Logical_Equal shall have exactly"
             & " two parameters", E);
@@ -2333,9 +2333,7 @@ package body SPARK_Definition.Annotate is
 
             --  Check that the function has only one parameter
 
-            elsif No (First_Formal (Ent))
-              or else Number_Formals (Ent) /= 1
-            then
+            elsif Number_Formals (Ent) /= 1 then
                Error_Msg_N_If
                  ("a function annotated with Ownership must "
                   & "have exactly one formal parameter",

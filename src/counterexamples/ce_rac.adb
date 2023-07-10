@@ -1953,8 +1953,7 @@ package body CE_RAC is
                Default : constant Character :=
                  Value_Character (Val.Array_Others.all);
             begin
-               if Lst - Fst > 10_000
-               then
+               if Lst - Fst > 10_000 then
                   RAC_Incomplete ("String too long");
                --  ??? Next test should not be needed, as counterexample value
                --  should already be valid in its type due to prior filtering.
