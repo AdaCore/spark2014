@@ -710,11 +710,24 @@ package body Flow.Analysis.Sanity is
                                  F3       => Input,
                                  SRM_Ref  => "7.3.2(5)");
 
-                           --  ??? If we don't have the Entity_Id of a global,
-                           --  then we don't have its Etype either.
+                           --  If we don't have the Entity_Id of a global,
+                           --  then we don't have its Etype either. Force the
+                           --  user to provide an explicit Global contract.
 
                            elsif Input.Kind = Magic_String then
-                              null;
+                              Error_Msg_Flow
+                                (FA       => FA,
+                                 Msg      =>
+                                   "cannot call boundary subprogram & " &
+                                   "for type & with implicit global & " &
+                                   "in its own invariant",
+                                 Severity => High_Check_Kind,
+                                 Tag      => Call_In_Type_Invariant,
+                                 N        => Expr,
+                                 F1       => Direct_Mapping_Id (SC.E),
+                                 F2       => Direct_Mapping_Id (Typ),
+                                 F3       => Input,
+                                 SRM_Ref  => "7.3.2(5)");
                            end if;
                         end loop;
                      end;

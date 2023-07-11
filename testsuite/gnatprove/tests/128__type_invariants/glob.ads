@@ -1,4 +1,4 @@
-with Variable;
+with Variable; with Hidden;
 
 package Glob is
    type T is private;
@@ -12,5 +12,5 @@ private
 
    Y : constant T := (B => Variable.Input);
 
-   function F return Boolean is (Y.B = 0);
+   function F return Boolean is (Y.B = 0 and then Hidden.Proxy = 0);
 end;
