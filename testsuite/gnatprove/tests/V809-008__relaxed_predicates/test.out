@@ -27,7 +27,7 @@ test_predicates.adb:42:13: warning: Relaxed_Initialization annotation is useless
 test_predicates.adb:42:13: warning: the result of "Default" cannot be partially initialized
 test_predicates.adb:47:14: info: initialization check proved (CVC5: 3 VC; Trivial: 7 VC)
 test_predicates.adb:47:14: info: predicate check proved (CVC5: 1 VC)
-test_predicates.adb:47:14: medium: initialization check might fail
+test_predicates.adb:47:14: medium: initialization check might fail (e.g. when X.F.C'Initialized = False and X.G.C'Initialized = False)
 test_predicates.adb:47:14: medium: predicate check might fail (e.g. when X.F.C'Initialized = False and X.G.C'Initialized = False)
 test_predicates.adb:55:04: warning: analyzing unreferenced procedure "P"
 test_predicates.adb:57:22: info: assertion proved (CVC5: 1 VC)
@@ -40,7 +40,7 @@ test_predicates.adb:70:04: warning: analyzing unreferenced function "Default"
 test_predicates.adb:70:13: info: implicit aspect Always_Terminates on "Default" has been proved, subprogram will terminate
 test_predicates.adb:73:14: info: initialization check proved (CVC5: 3 VC; Trivial: 7 VC)
 test_predicates.adb:73:14: info: predicate check proved (CVC5: 1 VC)
-test_predicates.adb:73:14: medium: initialization check might fail
+test_predicates.adb:73:14: medium: initialization check might fail (e.g. when X.F.C'Initialized = False and X.G.C'Initialized = False)
 test_predicates.adb:73:14: medium: predicate check might fail (e.g. when X.F.C'Initialized = False and X.G.C'Initialized = False)
 test_predicates.adb:86:14: info: postcondition proved (CVC5: 6 VC; Trivial: 17 VC)
 test_predicates.adb:89:22: info: assertion proved (CVC5: 1 VC)
@@ -129,7 +129,7 @@ test_predicates.adb:206:23: medium: initialization check might fail (e.g. when H
 test_predicates.adb:212:14: medium: predicate check might fail
 test_predicates.adb:212:16: info: initialization check proved (CVC5: 3 VC; Trivial: 7 VC)
 test_predicates.adb:212:16: info: predicate check proved (CVC5: 1 VC)
-test_predicates.adb:212:16: medium: initialization check might fail
+test_predicates.adb:212:16: medium: initialization check might fail (e.g. when X = (H => (F => ?, G => (C => 0)), I => (F => (C => 0), G => (C => 0))) and X.H.F.C'Initialized = False and X.H.G.C'Initialized = True and X.I.F.C'Initialized = True and X.I.G.C'Initialized = True)
 test_predicates.adb:212:16: medium: predicate check might fail
 test_predicates.adb:214:14: info: predicate check proved (CVC5: 1 VC)
 test_predicates.adb:215:14: medium: predicate check might fail
@@ -145,7 +145,7 @@ test_predicates.adb:221:38: medium: initialization check might fail
 test_predicates_2.adb:1:11: warning: subprogram "Test_Predicates_2" has no effect
 test_predicates_2.adb:46:11: info: initialization check proved (CVC5: 2 VC; Trivial: 5 VC)
 test_predicates_2.adb:46:11: info: predicate check proved (CVC5: 1 VC)
-test_predicates_2.adb:51:10: medium: initialization check might fail
+test_predicates_2.adb:51:10: medium: initialization check might fail (e.g. when X.H.F'Initialized = False and X.H.G'Initialized = False)
 test_predicates_2.adb:51:10: medium: predicate check might fail (e.g. when X.H.F'Initialized = False and X.H.G'Initialized = False)
 test_predicates_2.adb:55:12: info: predicate check proved (CVC5: 1 VC)
 test_predicates_2.adb:56:10: info: initialization check proved (CVC5: 2 VC; Trivial: 5 VC)

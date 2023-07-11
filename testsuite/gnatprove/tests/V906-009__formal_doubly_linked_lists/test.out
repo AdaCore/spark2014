@@ -70,7 +70,7 @@ test.adb:147:09: info: precondition proved
 test.adb:153:04: info: precondition proved
 test.adb:159:04: info: precondition proved
 test.adb:160:04: info: precondition proved
-test.adb:162:04: medium: precondition might fail, cannot prove Has_Element (Container, Position) [possible fix: call at line 160 should mention Position (for argument C) in a postcondition]
+test.adb:162:04: info: precondition proved
 test.adb:164:04: info: precondition proved
 test.adb:165:04: info: precondition proved
 test.adb:172:04: info: precondition proved
@@ -133,10 +133,10 @@ test_list.adb:66:10: info: assertion proved
 test_list.adb:66:26: info: precondition proved
 test_list.adb:66:65: info: overflow check proved
 test_list.adb:67:07: info: precondition proved
-test_list.adb:68:12: medium: precondition might fail [possible fix: call at line 51 should mention Position (for argument C) in a postcondition]
+test_list.adb:68:12: info: precondition proved
 test_list.adb:70:10: info: assertion proved
-test_list.adb:70:26: medium: precondition might fail
-test_list.adb:70:65: medium: overflow check might fail, cannot prove upper bound for M.Formal_Model.P.Get (M.Formal_Model.Positions (L), D) + 3 [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: use pragma Overflow_Mode or switch -gnato13 or unit SPARK.Big_Integers]
+test_list.adb:70:26: info: precondition proved
+test_list.adb:70:65: info: overflow check proved
 test_list.adb:71:07: info: precondition proved
 test_list.adb:76:30: info: assertion proved
 test_list.adb:77:07: info: precondition proved
@@ -303,7 +303,7 @@ test_list.adb:383:22: info: assertion proved
 test_list.adb:383:48: info: precondition proved
 test_list.adb:384:22: medium: assertion might fail
 test_list.adb:384:48: info: precondition proved
-test_list.adb:385:22: medium: assertion might fail
+test_list.adb:385:22: info: assertion proved
 test_list.adb:385:48: info: precondition proved
 test_list.adb:386:22: info: assertion proved
 test_list.adb:386:48: info: precondition proved

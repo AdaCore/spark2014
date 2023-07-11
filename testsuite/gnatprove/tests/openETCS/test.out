@@ -111,8 +111,8 @@ sec_3_13_6_deceleration.ads:47:22: medium: range check might fail [reason for ch
 sec_3_13_6_deceleration.ads:47:30: medium: in inlined expression function body at units.ads:42
 sec_3_13_6_deceleration.ads:47:30: medium: precondition might fail, cannot prove Speed >= 0.0 [possible fix: subprogram at line 44 should mention V in a precondition]
 sec_3_13_6_deceleration.ads:51:13: info: implicit aspect Always_Terminates on "A_safe" has been proved, subprogram will terminate
-sec_3_13_6_deceleration.ads:52:26: info: float overflow check proved (Z3: 1 VC)
 sec_3_13_6_deceleration.ads:52:26: info: range check proved (Trivial)
+sec_3_13_6_deceleration.ads:52:26: medium: float overflow check might fail [reason for check: result of floating-point addition must be bounded] [possible fix: subprogram at line 51 should mention d and V in a precondition]
 sec_3_13_8_targets_decel_curves.adb:24:07: medium: precondition might fail
 sec_3_13_8_targets_decel_curves.ads:48:13: info: implicit aspect Always_Terminates on "Is_Valid_Target" has been proved, subprogram will terminate
 sec_3_13_8_targets_decel_curves.ads:70:32: info: initialization of "Braking_Curve" proved
@@ -248,7 +248,7 @@ step_function.ads:48:13: info: implicit aspect Always_Terminates on "Has_Same_De
 step_function.ads:52:23: info: index check proved (CVC5: 2 VC)
 step_function.ads:52:49: info: index check proved (CVC5: 2 VC)
 step_function.ads:54:13: info: implicit aspect Always_Terminates on "Get_Value" has been proved, subprogram will terminate
-step_function.ads:56:12: info: postcondition proved (CVC5: 1 VC)
+step_function.ads:56:12: info: postcondition proved (Z3: 1 VC)
 step_function.ads:58:27: info: index check proved (CVC5: 2 VC)
 step_function.ads:59:36: info: index check proved (CVC5: 2 VC)
 step_function.ads:60:50: info: index check proved (CVC5: 2 VC)
