@@ -651,6 +651,8 @@ package body Flow.Analysis.Sanity is
 
                   elsif Is_Boundary_Subprogram_For_Type (SC.E, Typ) then
 
+                     --  Check formal parameters
+
                      declare
                         Formal : Opt_Formal_Kind_Id := First_Formal (SC.E);
                      begin
@@ -671,6 +673,49 @@ package body Flow.Analysis.Sanity is
                               exit;
                            end if;
                            Next_Formal (Formal);
+                        end loop;
+                     end;
+
+                     --  Check global parameters
+
+                     declare
+                        Inputs, Outputs : Flow_Id_Sets.Set;
+                     begin
+                        Get_Proof_Globals
+                          (Subprogram      => SC.E,
+                           Reads           => Inputs,
+                           Writes          => Outputs,
+                           Erase_Constants => False);
+
+                        --  Functions will be checked for side effects, so here
+                        --  we only examine inputs and ignore outputs.
+
+                        for Input of Inputs loop
+                           if Input.Kind = Direct_Mapping
+                             and then
+                               Has_Subcomponents_Of_Type
+                                 (Etype (Get_Direct_Mapping_Id (Input)), Typ)
+                           then
+                              Error_Msg_Flow
+                                (FA       => FA,
+                                 Msg      =>
+                                   "cannot call boundary subprogram & " &
+                                   "for type & with global & " &
+                                   "in its own invariant",
+                                 Severity => High_Check_Kind,
+                                 Tag      => Call_In_Type_Invariant,
+                                 N        => Expr,
+                                 F1       => Direct_Mapping_Id (SC.E),
+                                 F2       => Direct_Mapping_Id (Typ),
+                                 F3       => Input,
+                                 SRM_Ref  => "7.3.2(5)");
+
+                           --  ??? If we don't have the Entity_Id of a global,
+                           --  then we don't have its Etype either.
+
+                           elsif Input.Kind = Magic_String then
+                              null;
+                           end if;
                         end loop;
                      end;
                   end if;

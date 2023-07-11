@@ -2,6 +2,7 @@ glob.ads:3:09: error: "Glob" might include a recursive call due to a type invari
 glob.ads:3:09: error: unsupported recursive subprogram
 glob.ads:6:13: info: implicit aspect Always_Terminates on "F" has been proved, subprogram will terminate
 glob.ads:8:09: info: invariant check proved on default value (CVC5: 1 VC)
+glob.ads:11:34: high: cannot call boundary subprogram "F" for type "T" with global constant with variable input "Y" in its own invariant (SPARK RM 7.3.2(5))
 glob.ads:13:04: info: at the end of the elaboration of package at glob.ads:3
 glob.ads:13:04: info: invariant check proved (CVC5: 1 VC)
 p.ads:11:09: medium: invariant check might fail on default value
