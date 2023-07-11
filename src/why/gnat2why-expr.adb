@@ -13618,15 +13618,6 @@ package body Gnat2Why.Expr is
                  Params);
          end if;
 
-         --  Attributes of record array elements have default values
-
-         if Is_Record_Type_In_Why (Typ) then
-            Result := New_Tag_Update
-              (Domain   => Domain,
-               Name     => Result,
-               Ty       => Typ);
-         end if;
-
          return Result;
       end Transform_Aggregate_Value;
 
@@ -13766,6 +13757,14 @@ package body Gnat2Why.Expr is
                        Domain => EW_Term,
                        Params => Params);
                end;
+            end if;
+
+            --  Array components have the tag of their types
+
+            if Is_Record_Type_In_Why (C_Typ) then
+               Arg_Val := New_Tag_Update
+                 (Name => Arg_Val,
+                  Ty   => C_Typ);
             end if;
 
             --  Special case for the expression of the delta aggregate. In
