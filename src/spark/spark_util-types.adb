@@ -104,6 +104,15 @@ package body SPARK_Util.Types is
    --  Continue on an access subcomponent, the designated type is also searched
    --  for access subcomponents with the given property.
 
+   generic
+      with function Test (Typ : Type_Kind_Id) return Test_Result;
+   function Traverse_Subcomponents (Typ : Type_Kind_Id) return Boolean;
+   --  Generic function which applies test to all subcomponents of Typ
+   --  until one is found on which Test returns Pass. If Test returns
+   --  Continue on a composite or an access subcomponent, the component types
+   --  or designated type is also searched for subcomponents with the given
+   --  property.
+
    function Ancestor_Declares_Iterable_Aspect
      (E      : Type_Kind_Id;
       Aspect : Node_Id)
@@ -1099,6 +1108,58 @@ package body SPARK_Util.Types is
       return Is_Incomplete_Or_Private_Type (Ty);
    end Has_Private_Fields;
 
+   -------------------------------
+   -- Has_Subcomponents_Of_Type --
+   -------------------------------
+
+   function Has_Subcomponents_Of_Type
+     (Typ     : Type_Kind_Id;
+      Sub_Typ : Type_Kind_Id) return Boolean
+   is
+      Anc : constant Type_Kind_Id := Base_Retysp (Sub_Typ);
+
+      function Has_Type_Or_Derived (Typ : Type_Kind_Id) return Test_Result;
+      --  Return Pass if Typ is Anc or a subtype / a type derived from Anc and
+      --  Continue otherwise.
+
+      -------------------------
+      -- Has_Type_Or_Derived --
+      -------------------------
+
+      function Has_Type_Or_Derived (Typ : Type_Kind_Id) return Test_Result is
+         Base : Opt_Type_Kind_Id;
+      begin
+         if Typ = Anc or else Root_Retysp (Typ) = Anc then
+            return Pass;
+         elsif Root_Retysp (Typ) /= Anc then
+            return Continue;
+         end if;
+
+         --  Loop over the ancestors of Base to look for Anc
+
+         loop
+            Base := Base_Retysp (Typ);
+            if Base = Anc then
+               return Pass;
+            end if;
+
+            Base := Parent_Retysp (Base);
+
+            if No (Base) then
+               return Continue;
+            end if;
+         end loop;
+      end Has_Type_Or_Derived;
+
+      function Search_Sub_Typ is new Traverse_Subcomponents
+        (Has_Type_Or_Derived);
+
+   --  Start of processing for Has_Subcomponents_Of_Type
+
+   begin
+      return Search_Sub_Typ (Typ);
+   end Has_Subcomponents_Of_Type;
+
    ----------------------------
    -- Invariant_Check_Needed --
    ----------------------------
@@ -2066,47 +2127,93 @@ package body SPARK_Util.Types is
    ---------------------------
 
    function Traverse_Access_Parts (Typ : Type_Kind_Id) return Boolean is
+
+      function Test_Access_Part (Typ : Type_Kind_Id) return Test_Result is
+        (if Is_Access_Type (Typ) or else Has_Ownership_Annotation (Typ)
+         then Test (Typ) else Continue);
+      --  Call Test on access types
+
+      function Traverse_Access_Parts_Ann is new Traverse_Subcomponents
+        (Test_Access_Part);
+
+   begin
+      return Traverse_Access_Parts_Ann (Typ);
+   end Traverse_Access_Parts;
+
+   ----------------------------
+   -- Traverse_Subcomponents --
+   ----------------------------
+
+   function Traverse_Subcomponents (Typ : Type_Kind_Id) return Boolean is
+
       Seen : Node_Sets.Set;
       --  Set of access types already traversed. This is used to avoid infinite
       --  recursion on recursive structures.
 
-      function Traverse_Access_Parts_Ann (Typ : Type_Kind_Id) return Boolean;
-      --  Recursive function looking for access subcomponents
+      function Traverse_Type (Typ : Type_Kind_Id) return Boolean;
+      --  Traverse Typ and its subcomponents
 
-      -------------------------------
-      -- Traverse_Access_Parts_Ann --
-      -------------------------------
+      function Traverse_Subcomponents_Only (Typ : Type_Kind_Id) return Boolean;
+      --  Traverse the subcomponents of Typ only
 
-      function Traverse_Access_Parts_Ann (Typ : Type_Kind_Id) return Boolean is
-         Rep_Ty : constant Type_Kind_Id := Retysp (Typ);
+      ---------------------------------
+      -- Traverse_Subcomponents_Only --
+      ---------------------------------
+
+      function Traverse_Subcomponents_Only (Typ : Type_Kind_Id) return Boolean
+      is
+         Base_Ty : constant Type_Kind_Id := Base_Retysp (Typ);
+
       begin
-         if Is_Array_Type (Rep_Ty) then
-            return Traverse_Access_Parts_Ann (Component_Type (Rep_Ty));
+         if Is_Array_Type (Base_Ty) then
+            return Traverse_Type (Component_Type (Base_Ty));
 
-         elsif Is_Record_Type (Rep_Ty)
-           or else Is_Incomplete_Or_Private_Type (Rep_Ty)
+         elsif Is_Record_Type (Base_Ty)
+           or else Is_Concurrent_Type (Base_Ty)
+           or else Is_Incomplete_Or_Private_Type (Base_Ty)
          then
+            --  For tagged records, also look at inherited subcomponents
 
-            --  For tagged records, search only in the root type, extensions
-            --  are not allowed to introduce deep components.
+            if Is_Tagged_Type (Base_Ty)
+              and then Present (Parent_Retysp (Base_Ty))
+              and then Parent_Retysp (Base_Ty) /= Base_Ty
+            then
+               return Traverse_Subcomponents_Only (Parent_Retysp (Base_Ty));
 
-            if Is_Tagged_Type (Typ) and then Root_Retysp (Typ) /= Typ then
-               return Traverse_Access_Parts_Ann (Root_Retysp (Typ));
-            end if;
+            --  Traverse the discriminants of Base_Ty if any
 
-            if Has_Ownership_Annotation (Rep_Ty) then
-               if Test (Rep_Ty) = Pass then
-                  return True;
-               end if;
-            end if;
-
-            if Is_Record_Type (Rep_Ty) then
+            elsif Has_Discriminants (Base_Ty) then
                declare
-                  Comp : Opt_E_Component_Id := First_Component (Rep_Ty);
+                  Discr : Entity_Id := First_Discriminant (Base_Ty);
+               begin
+                  while Present (Discr) loop
+                     if Component_Is_Visible_In_SPARK (Discr)
+                       and then Traverse_Type (Etype (Discr))
+                     then
+                        return True;
+                     end if;
+                     Next_Discriminant (Discr);
+                  end loop;
+               end;
+            end if;
+
+            --  Traverse the visible components of Base_Ty. Do not consider
+            --  inherited subcomponents, they have already been traversed.
+
+            if Is_Record_Type (Base_Ty)
+              or else Is_Protected_Type (Base_Ty)
+            then
+               declare
+                  Comp : Opt_E_Component_Id := First_Component (Base_Ty);
                begin
                   while Present (Comp) loop
                      if Component_Is_Visible_In_SPARK (Comp)
-                       and then Traverse_Access_Parts_Ann (Etype (Comp))
+                       and then
+                         (not Is_Tagged_Type (Base_Ty)
+                          or else Base_Retysp
+                            (Scope (Original_Record_Component (Comp))) =
+                            Base_Ty)
+                       and then Traverse_Type (Etype (Comp))
                      then
                         return True;
                      end if;
@@ -2117,41 +2224,59 @@ package body SPARK_Util.Types is
 
             return False;
 
-         elsif Is_Access_Type (Rep_Ty) then
-            case Test (Rep_Ty) is
-               when Fail =>
-                  return False;
-               when Pass =>
-                  return True;
-               when Continue =>
-                  declare
-                     Inserted : Boolean;
-                     Position : Node_Sets.Cursor;
-                     Des_Ty   : constant Type_Kind_Id :=
-                       Directly_Designated_Type (Rep_Ty);
-                  begin
-                     Seen.Insert (Rep_Ty, Position, Inserted);
+         --  Stop of the access type has already been traversed. Otherwise,
+         --  traverse the designated type.
 
-                     return not Inserted
-                       or else Traverse_Access_Parts_Ann
-                         (if Is_Incomplete_Type (Des_Ty)
-                          then Full_View (Des_Ty)
-                          else Des_Ty);
-                  end;
-            end case;
+         elsif Is_Access_Type (Base_Ty) then
+            declare
+               Inserted : Boolean;
+               Position : Node_Sets.Cursor;
+               Des_Ty   : constant Type_Kind_Id :=
+                 Directly_Designated_Type (Base_Ty);
+            begin
+               Seen.Insert (Base_Ty, Position, Inserted);
+
+               return not Inserted
+                 or else Traverse_Type
+                   (if Is_Incomplete_Type (Des_Ty)
+                      and then Present (Full_View (Des_Ty))
+                    then Full_View (Des_Ty)
+                    else Des_Ty);
+            end;
          else
-            pragma Assert
-              (Is_Scalar_Type (Rep_Ty)
-               or else Is_Concurrent_Type (Rep_Ty));
+            pragma Assert (Is_Scalar_Type (Base_Ty));
             return False;
          end if;
-      end Traverse_Access_Parts_Ann;
+      end Traverse_Subcomponents_Only;
 
-   --  Start of processing for Traverse_Access_Parts
+      -------------------
+      -- Traverse_Type --
+      -------------------
+
+      function Traverse_Type (Typ : Type_Kind_Id) return Boolean is
+         Rep_Ty : constant Type_Kind_Id := Retysp (Typ);
+
+      begin
+         --  Apply Test to the current type
+
+         case Test (Rep_Ty) is
+            when Fail =>
+               return False;
+            when Pass =>
+               return True;
+            when Continue =>
+
+               --  If Test returns Continue, traverse its subcomponents if any
+
+               return Traverse_Subcomponents_Only (Rep_Ty);
+         end case;
+      end Traverse_Type;
+
+   --  Start of processing for Traverse_Subcomponents
 
    begin
-      return Traverse_Access_Parts_Ann (Typ);
-   end Traverse_Access_Parts;
+      return Traverse_Type (Typ);
+   end Traverse_Subcomponents;
 
    ---------------------------
    -- Have_Same_Known_Esize --
