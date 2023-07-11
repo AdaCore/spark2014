@@ -1,3 +1,12 @@
+glob.ads:3:09: error: "Glob" might include a recursive call due to a type invariant or subtype predicate, or there might be a cycle in the elaboration of the enclosing unit
+glob.ads:3:09: error: unsupported recursive subprogram
+glob.ads:6:13: info: implicit aspect Always_Terminates on "F" has been proved, subprogram will terminate
+glob.ads:8:09: info: invariant check proved on default value (CVC5: 1 VC)
+glob.ads:11:34: high: cannot call boundary subprogram "F" for type "T" with global constant with variable input "Y" in its own invariant (SPARK RM 7.3.2(5))
+glob.ads:11:34: high: cannot call boundary subprogram "F" for type "T" with implicit global "hidden.input" in its own invariant (SPARK RM 7.3.2(5))
+glob.ads:13:04: info: at the end of the elaboration of package at glob.ads:3
+glob.ads:13:04: info: invariant check proved (CVC5: 1 VC)
+hidden.ads:2:13: info: implicit aspect Always_Terminates on "Proxy" has been proved, subprogram will terminate
 p.ads:11:09: medium: invariant check might fail on default value
 p.ads:14:29: warning: assuming "F" has no effect on global items
 p.ads:14:29: warning: no Global contract available for "F"
