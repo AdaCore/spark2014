@@ -84,7 +84,7 @@ complex_trajectory.adb:54:66: info: float overflow check proved (Trivial)
 complex_trajectory.adb:54:74: info: float overflow check proved (Trivial)
 complex_trajectory.adb:56:28: info: float overflow check proved (colibri: 1 VC)
 complex_trajectory.adb:56:39: info: float overflow check proved (Trivial)
-complex_trajectory.adb:60:22: medium: assertion might fail
+complex_trajectory.adb:60:22: high: assertion might fail (e.g. when N = 0)
 complex_trajectory.adb:60:31: info: range check proved (Trivial)
 complex_trajectory.adb:60:34: info: float overflow check proved (Trivial)
 complex_trajectory.adb:60:47: info: range check proved (Trivial)

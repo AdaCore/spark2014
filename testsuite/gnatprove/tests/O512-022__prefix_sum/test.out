@@ -176,10 +176,10 @@ prefixsum_general.adb:31:56: info: range check proved
 prefixsum_general.adb:32:31: info: loop variant proved
 prefixsum_general.adb:34:21: info: overflow check proved
 prefixsum_general.adb:36:16: info: loop invariant initialization proved
+prefixsum_general.adb:36:16: info: loop invariant preservation proved
 prefixsum_general.adb:38:25: info: division check proved
 prefixsum_general.adb:44:27: info: division check proved
 prefixsum_general.adb:56:43: info: division check proved
-prefixsum_general.adb:57:20: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove A (K) = Summation (A_Old, K + 1 - Space * 2, K)
 prefixsum_general.adb:57:28: info: precondition proved
 prefixsum_general.adb:57:52: info: range check proved
 prefixsum_general.adb:58:46: info: division check proved
