@@ -227,14 +227,14 @@ use_map_ho.adb:34:38: warning: unused variable "S"
 use_map_ho.adb:35:12: info: division check proved (CVC5: 1 VC)
 use_map_ho.adb:37:16: info: implicit aspect Always_Terminates on "Add_Zero" has been proved, subprogram will terminate
 use_map_ho.adb:38:10: info: precondition proved (CVC5: 1 VC)
+use_map_ho.adb:40:19: info: postcondition proved (Z3: 1 VC)
 use_map_ho.adb:40:19: info: precondition proved (CVC5: 1 VC)
-use_map_ho.adb:40:19: medium: postcondition might fail
 use_map_ho.adb:41:13: info: precondition proved (CVC5: 1 VC)
 use_map_ho.adb:41:18: info: precondition proved (CVC5: 1 VC)
 use_map_ho.adb:43:16: info: implicit aspect Always_Terminates on "Add_One" has been proved, subprogram will terminate
 use_map_ho.adb:44:10: info: precondition proved (CVC5: 1 VC)
+use_map_ho.adb:46:19: info: postcondition proved (Z3: 1 VC)
 use_map_ho.adb:46:19: info: precondition proved (CVC5: 1 VC)
-use_map_ho.adb:46:19: medium: postcondition might fail
 use_map_ho.adb:47:13: info: precondition proved (CVC5: 1 VC)
 use_map_ho.adb:51:16: info: implicit aspect Always_Terminates on "Value" has been proved, subprogram will terminate
 use_map_ho.adb:51:36: warning: unused variable "S"
