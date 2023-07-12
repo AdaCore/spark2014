@@ -100,11 +100,11 @@ floating_point.adb:170:22: medium: assertion might fail
 floating_point.adb:171:22: medium: assertion might fail
 floating_point.adb:183:19: info: float overflow check proved (colibri: 1 VC)
 floating_point.adb:184:22: info: assertion proved (colibri: 1 VC)
+floating_point.adb:193:16: high: float overflow check might fail (e.g. when X = -6.3230376E+37 and Y = 1.6725369E-2) [reason for check: result of floating-point division must be bounded] [possible fix: subprogram at floating_point.ads:66 should mention X and Y in a precondition]
 floating_point.adb:193:16: info: division check proved (colibri: 1 VC)
-floating_point.adb:193:16: medium: float overflow check might fail [reason for check: result of floating-point division must be bounded] [possible fix: subprogram at floating_point.ads:66 should mention X and Y in a precondition]
 floating_point.adb:194:22: info: assertion proved (colibri: 1 VC)
+floating_point.adb:203:16: high: float overflow check might fail (e.g. when X = -6.3230376E+37 and Y = 1.6725369E-2) [reason for check: result of floating-point division must be bounded] [possible fix: subprogram at floating_point.ads:69 should mention X and Y in a precondition]
 floating_point.adb:203:16: info: division check proved (colibri: 1 VC)
-floating_point.adb:203:16: medium: float overflow check might fail [reason for check: result of floating-point division must be bounded] [possible fix: subprogram at floating_point.ads:69 should mention X and Y in a precondition]
 floating_point.adb:204:22: info: assertion proved (colibri: 1 VC)
 floating_point.adb:212:14: info: precondition proved (colibri: 1 VC)
 floating_point.adb:213:22: medium: assertion might fail
@@ -118,28 +118,28 @@ floating_point.adb:241:22: info: division check proved (colibri: 1 VC)
 floating_point.adb:241:22: info: float overflow check proved (colibri: 1 VC)
 floating_point.adb:241:27: info: float overflow check proved (colibri: 1 VC)
 floating_point.adb:242:22: info: assertion proved (colibri: 1 VC)
-floating_point.adb:249:28: medium: float overflow check might fail [reason for check: result of floating-point multiplication must be bounded] [possible fix: subprogram at floating_point.ads:81 should mention A and C in a precondition]
-floating_point.adb:249:45: medium: float overflow check might fail [reason for check: result of floating-point multiplication must be bounded] [possible fix: subprogram at floating_point.ads:81 should mention B in a precondition]
+floating_point.adb:249:28: high: float overflow check might fail (e.g. when A = -5.0781757E+9 and C = -2.7222588E+38) [reason for check: result of floating-point multiplication must be bounded] [possible fix: subprogram at floating_point.ads:81 should mention A and C in a precondition]
+floating_point.adb:249:45: high: float overflow check might fail (e.g. when B = -2.4030972E+38) [reason for check: result of floating-point multiplication must be bounded] [possible fix: subprogram at floating_point.ads:81 should mention B in a precondition]
 floating_point.adb:251:22: info: assertion proved (colibri: 1 VC)
-floating_point.adb:258:37: medium: float overflow check might fail [reason for check: result of floating-point multiplication must be bounded] [possible fix: subprogram at floating_point.ads:84 should mention B in a precondition]
+floating_point.adb:258:37: high: float overflow check might fail (e.g. when B = -2.4030972E+38) [reason for check: result of floating-point multiplication must be bounded] [possible fix: subprogram at floating_point.ads:84 should mention B in a precondition]
 floating_point.adb:259:16: info: division check proved (colibri: 1 VC)
 floating_point.adb:259:16: info: float overflow check proved (colibri: 1 VC)
 floating_point.adb:260:22: info: assertion proved (colibri: 1 VC)
-floating_point.adb:267:37: medium: float overflow check might fail [reason for check: result of floating-point multiplication must be bounded] [possible fix: subprogram at floating_point.ads:87 should mention B in a precondition]
+floating_point.adb:267:37: high: float overflow check might fail (e.g. when B = -2.4030972E+38) [reason for check: result of floating-point multiplication must be bounded] [possible fix: subprogram at floating_point.ads:87 should mention B in a precondition]
 floating_point.adb:268:16: info: division check proved (colibri: 1 VC)
 floating_point.adb:268:16: info: float overflow check proved (colibri: 1 VC)
 floating_point.adb:269:22: medium: assertion might fail
-floating_point.adb:280:17: medium: float overflow check might fail [reason for check: result of floating-point multiplication must be bounded] [possible fix: subprogram at floating_point.ads:90 should mention C in a precondition]
-floating_point.adb:280:22: medium: float overflow check might fail [reason for check: result of floating-point multiplication must be bounded] [possible fix: subprogram at floating_point.ads:90 should mention A and C in a precondition]
+floating_point.adb:280:17: high: float overflow check might fail (e.g. when C = -2.3503510E+38) [reason for check: result of floating-point multiplication must be bounded] [possible fix: subprogram at floating_point.ads:90 should mention C in a precondition]
+floating_point.adb:280:22: high: float overflow check might fail (e.g. when A = 2.3053818E+38 and C = -1.4263189E+1) [reason for check: result of floating-point multiplication must be bounded] [possible fix: subprogram at floating_point.ads:90 should mention A and C in a precondition]
 floating_point.adb:280:26: medium: float overflow check might fail [reason for check: result of floating-point addition must be bounded] [possible fix: subprogram at floating_point.ads:90 should mention A and B and C and D in a precondition]
-floating_point.adb:280:31: medium: float overflow check might fail [reason for check: result of floating-point multiplication must be bounded] [possible fix: subprogram at floating_point.ads:90 should mention D in a precondition]
-floating_point.adb:280:36: medium: float overflow check might fail [reason for check: result of floating-point multiplication must be bounded] [possible fix: subprogram at floating_point.ads:90 should mention B and D in a precondition]
+floating_point.adb:280:31: high: float overflow check might fail (e.g. when D = -2.3503510E+38) [reason for check: result of floating-point multiplication must be bounded] [possible fix: subprogram at floating_point.ads:90 should mention D in a precondition]
+floating_point.adb:280:36: high: float overflow check might fail (e.g. when B = 2.3053818E+38 and D = -1.4263189E+1) [reason for check: result of floating-point multiplication must be bounded] [possible fix: subprogram at floating_point.ads:90 should mention B and D in a precondition]
 floating_point.adb:281:22: info: assertion proved (colibri: 1 VC)
 floating_point.adb:293:17: info: float overflow check proved (colibri: 1 VC)
-floating_point.adb:293:22: medium: float overflow check might fail [reason for check: result of floating-point multiplication must be bounded] [possible fix: subprogram at floating_point.ads:93 should mention A and C in a precondition]
+floating_point.adb:293:22: high: float overflow check might fail (e.g. when A = 2.3053818E+38 and C = 1.4263189E+1) [reason for check: result of floating-point multiplication must be bounded] [possible fix: subprogram at floating_point.ads:93 should mention A and C in a precondition]
 floating_point.adb:293:26: medium: float overflow check might fail [reason for check: result of floating-point addition must be bounded] [possible fix: subprogram at floating_point.ads:93 should mention A and B and C and D in a precondition]
 floating_point.adb:293:31: info: float overflow check proved (colibri: 1 VC)
-floating_point.adb:293:36: medium: float overflow check might fail [reason for check: result of floating-point multiplication must be bounded] [possible fix: subprogram at floating_point.ads:93 should mention B and D in a precondition]
+floating_point.adb:293:36: high: float overflow check might fail (e.g. when B = 2.3053818E+38 and D = 1.4263189E+1) [reason for check: result of floating-point multiplication must be bounded] [possible fix: subprogram at floating_point.ads:93 should mention B and D in a precondition]
 floating_point.adb:294:22: info: assertion proved (colibri: 1 VC)
 floating_point.adb:304:17: info: float overflow check proved (colibri: 1 VC)
 floating_point.adb:304:24: info: float overflow check proved (colibri: 1 VC)
@@ -167,22 +167,22 @@ floating_point.adb:353:38: info: float overflow check proved (colibri: 1 VC)
 floating_point.adb:353:45: info: float overflow check proved (colibri: 1 VC)
 floating_point.adb:353:52: info: float overflow check proved (colibri: 1 VC)
 floating_point.adb:353:56: info: float overflow check proved (colibri: 1 VC)
-floating_point.adb:359:16: medium: float overflow check might fail [reason for check: result of floating-point subtraction must be bounded] [possible fix: subprogram at floating_point.ads:109 should mention X and Y in a precondition]
+floating_point.adb:359:16: high: float overflow check might fail (e.g. when X = -2.5521178E+38 and Y = 2.5521175E+38) [reason for check: result of floating-point subtraction must be bounded] [possible fix: subprogram at floating_point.ads:109 should mention X and Y in a precondition]
 floating_point.adb:360:22: info: assertion proved (colibri: 1 VC)
-floating_point.adb:366:16: medium: float overflow check might fail [reason for check: result of floating-point subtraction must be bounded] [possible fix: subprogram at floating_point.ads:110 should mention X and Y in a precondition]
+floating_point.adb:366:16: high: float overflow check might fail (e.g. when X = 1.7022426E+38 and Y = -1.7005810E+38) [reason for check: result of floating-point subtraction must be bounded] [possible fix: subprogram at floating_point.ads:110 should mention X and Y in a precondition]
 floating_point.adb:367:22: info: assertion proved (colibri: 1 VC)
-floating_point.adb:372:24: medium: float overflow check might fail [reason for check: result of floating-point subtraction must be bounded] [possible fix: subprogram at floating_point.ads:113 should mention X and Y in a precondition]
-floating_point.adb:373:24: medium: float overflow check might fail [reason for check: result of floating-point subtraction must be bounded] [possible fix: subprogram at floating_point.ads:113 should mention Y and Z in a precondition]
+floating_point.adb:372:24: high: float overflow check might fail (e.g. when X = -2.5521178E+38 and Y = 2.5521175E+38) [reason for check: result of floating-point subtraction must be bounded] [possible fix: subprogram at floating_point.ads:113 should mention X and Y in a precondition]
+floating_point.adb:373:24: high: float overflow check might fail (e.g. when Y = -2.5521178E+38 and Z = 2.5521175E+38) [reason for check: result of floating-point subtraction must be bounded] [possible fix: subprogram at floating_point.ads:113 should mention Y and Z in a precondition]
 floating_point.adb:374:22: info: assertion proved (colibri: 1 VC)
 floating_point.adb:374:24: medium: float overflow check might fail [reason for check: result of floating-point subtraction must be bounded] [possible fix: subprogram at floating_point.ads:113 should mention X and Z in a precondition]
-floating_point.adb:382:16: medium: float overflow check might fail [reason for check: result of floating-point addition must be bounded] [possible fix: subprogram at floating_point.ads:116 should mention X and Y in a precondition]
+floating_point.adb:382:16: high: float overflow check might fail (e.g. when X = 8.5070582E+37 and Y = 3.4028235E+38) [reason for check: result of floating-point addition must be bounded] [possible fix: subprogram at floating_point.ads:116 should mention X and Y in a precondition]
 floating_point.adb:382:21: info: float overflow check proved (colibri: 1 VC)
 floating_point.adb:383:22: info: assertion proved (colibri: 1 VC)
-floating_point.adb:384:22: medium: assertion might fail [possible fix: subprogram at floating_point.ads:116 should mention Y in a precondition]
+floating_point.adb:384:22: high: assertion might fail (e.g. when Res = 4.0564819E+31 and Y = 4.0564817E+31) [possible fix: subprogram at floating_point.ads:116 should mention Y in a precondition]
 floating_point.adb:392:16: info: float overflow check proved (colibri: 1 VC)
 floating_point.adb:392:21: info: float overflow check proved (colibri: 1 VC)
 floating_point.adb:393:22: info: assertion proved (colibri: 1 VC)
-floating_point.adb:394:22: medium: assertion might fail [possible fix: subprogram at floating_point.ads:117 should mention Y in a precondition]
+floating_point.adb:394:22: high: assertion might fail (e.g. when Res = 0.0 and Y = 4.9999994E-1) [possible fix: subprogram at floating_point.ads:117 should mention Y in a precondition]
 floating_point.adb:400:26: info: float overflow check proved (Trivial)
 floating_point.adb:401:22: info: assertion proved (colibri: 2 VC)
 floating_point.ads:8:39: info: initialization of "Res" proved
