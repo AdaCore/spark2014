@@ -1,3 +1,4 @@
 comment: deactivate colibri as it is unstable on this test
 prove_all:
   prover: ["cvc5", "z3", "alt-ergo"]
+  steps: 2300
