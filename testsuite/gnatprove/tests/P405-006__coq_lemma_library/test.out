@@ -468,3 +468,4 @@ spark-tests-array_lemmas.ads:51:53: info: index check proved
 spark-tests-array_lemmas.ads:52:14: info: postcondition proved
 spark-tests-array_lemmas.ads:54:42: info: index check proved
 spark-tests-array_lemmas.ads:54:52: info: index check proved
+test.gpr: warning: there are no sources of language "Ada" in this project
