@@ -219,15 +219,15 @@ test_multiset.adb:219:12: info: predicate check proved (Trivial: 1 VC)
 test_multiset.adb:226:23: info: predicate check proved (CVC5: 1 VC; Trivial: 1 VC)
 test_multiset.adb:227:23: info: predicate check proved (CVC5: 1 VC; Trivial: 1 VC)
 test_multiset.adb:229:23: info: predicate check proved (CVC5: 1 VC; Trivial: 1 VC)
-test_multiset.adb:238:22: info: assertion proved (Z3: 1 VC)
-test_multiset.adb:239:22: info: assertion proved (Z3: 1 VC)
+test_multiset.adb:238:22: medium: assertion might fail
 test_multiset.adb:239:22: info: predicate check proved (Trivial: 1 VC)
+test_multiset.adb:239:22: medium: assertion might fail [possible fix: you should consider adding a postcondition to function Nb_Occurence or turning it into an expression function in its unit spec]
 test_multiset.adb:239:44: info: predicate check proved (Trivial: 1 VC)
-test_multiset.adb:240:22: info: assertion proved (Z3: 1 VC)
 test_multiset.adb:240:22: info: predicate check proved (Trivial: 1 VC)
+test_multiset.adb:240:22: medium: assertion might fail [possible fix: you should consider adding a postcondition to function Nb_Occurence or turning it into an expression function in its unit spec]
 test_multiset.adb:240:44: info: predicate check proved (Trivial: 1 VC)
-test_multiset.adb:241:22: info: assertion proved (Z3: 1 VC)
-test_multiset.adb:242:22: info: assertion proved (Z3: 1 VC)
+test_multiset.adb:241:22: medium: assertion might fail
+test_multiset.adb:242:22: medium: assertion might fail
 test_multiset.adb:250:23: info: predicate check proved (CVC5: 1 VC; Trivial: 1 VC)
 test_multiset.adb:251:23: info: predicate check proved (CVC5: 1 VC; Trivial: 1 VC)
 test_multiset.adb:256:22: info: predicate check proved (Trivial: 1 VC)
