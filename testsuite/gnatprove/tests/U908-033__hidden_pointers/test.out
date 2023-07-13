@@ -128,11 +128,11 @@ example_recursive.adb:222:15: info: precondition proved (CVC5: 1 VC)
 example_recursive.adb:222:40: info: precondition proved (CVC5: 1 VC)
 example_recursive.adb:224:15: info: precondition proved (CVC5: 3 VC)
 example_recursive.adb:226:28: info: overflow check proved (CVC5: 2 VC)
-example_recursive.adb:228:14: medium: in inlined expression function body at example_recursive.adb:21
-example_recursive.adb:228:14: medium: postcondition might fail, cannot prove Get (M, A) in L_Cell
 example_recursive.adb:230:15: info: precondition proved (CVC5: 1 VC)
 example_recursive.adb:232:41: info: overflow check proved (CVC5: 2 VC)
 example_recursive.adb:234:45: info: precondition proved (CVC5: 5 VC)
+example_recursive.adb:234:45: medium: in inlined expression function body at example_recursive.adb:67
+example_recursive.adb:234:45: medium: postcondition might fail, cannot prove (L = A or else Reachable (Address (L_Cell (Get (M, L)).N), N - 1, A, M))
 example_recursive.adb:235:19: info: precondition proved (CVC5: 5 VC)
 example_recursive.adb:236:22: medium: in inlined expression function body at example_recursive.adb:32
 example_recursive.adb:236:22: medium: precondition might fail, cannot prove N = 0
@@ -154,8 +154,7 @@ example_recursive.adb:271:22: info: tag check proved (CVC5: 1 VC)
 example_recursive.adb:271:36: info: pointer dereference check proved (CVC5: 1 VC)
 example_recursive.adb:273:19: medium: in inlined expression function body at example_recursive.adb:21
 example_recursive.adb:273:19: medium: precondition might fail, cannot prove Get (M, A) in L_Cell
-example_recursive.adb:274:19: medium: in inlined expression function body at example_recursive.adb:21
-example_recursive.adb:274:19: medium: precondition might fail, cannot prove Get (M, A) in L_Cell
+example_recursive.adb:274:19: info: precondition proved (CVC5: 26 VC; Trivial: 5 VC; Z3: 1 VC)
 example_recursive.adb:275:42: info: overflow check proved (CVC5: 2 VC)
 example_recursive.adb:278:16: info: precondition proved (CVC5: 13 VC)
 example_recursive.adb:278:91: info: precondition proved (CVC5: 1 VC)

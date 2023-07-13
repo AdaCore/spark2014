@@ -17,19 +17,19 @@
   <proof prover="3"><result status="valid" steps="1"/></proof>
   </goal>
   <goal name="def&#39;vc.1">
-  <proof prover="0"><result status="steplimitexceeded" steps="3229"/></proof>
+  <proof prover="0"><result status="steplimitexceeded" steps="2488"/></proof>
   <proof prover="1"><result status="unknown" steps="160874"/></proof>
-  <proof prover="2"><result status="steplimitexceeded" steps="8450147"/></proof>
-  <proof prover="4"><result status="unknown" steps="176"/></proof>
+  <proof prover="2"><result status="unknown" steps="4942445"/></proof>
+  <proof prover="4"><result status="unknown" steps="170"/></proof>
   </goal>
   <goal name="def&#39;vc.2" proved="true">
   <proof prover="3"><result status="valid" steps="1"/></proof>
   </goal>
   <goal name="def&#39;vc.3">
-  <proof prover="0"><result status="steplimitexceeded" steps="4283"/></proof>
+  <proof prover="0"><result status="steplimitexceeded" steps="4010"/></proof>
   <proof prover="1"><result status="unknown" steps="162147"/></proof>
-  <proof prover="2"><result status="unknown" steps="1614634"/></proof>
-  <proof prover="4"><result status="unknown" steps="171"/></proof>
+  <proof prover="2"><result status="unknown" steps="2864864"/></proof>
+  <proof prover="4"><result status="unknown" steps="165"/></proof>
   </goal>
  </transf>
  </goal>
