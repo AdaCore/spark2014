@@ -7,7 +7,7 @@ os.environ["SPARKLIB_OBJECT_DIR"] = TESTDIR
 
 
 def replay():
-    prove_all(level=3, procs=0)
+    prove_all(level=4, procs=0)
 
 
 if __name__ == "__main__":
