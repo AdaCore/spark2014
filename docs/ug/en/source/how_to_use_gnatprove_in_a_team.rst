@@ -851,9 +851,14 @@ only part of a program:
 
   * :ref:`Preconditions` (explicit)
 
-  * the aliasing constraints of |SPARK| (implicit - the context shall not
+  * the aliasing constraints of |SPARK| (implicit) - the context shall not
     alias the callee's parameters and accessed global objects in ways that
-    are not allowed in SPARK)
+    are not allowed in SPARK
+
+  * the initialization of inputs (implicit) - parameters of mode *in* or * in
+    out* and global variables of mode *Input* or "In_Out* which are not
+    subjected to relaxed initialization (see :ref:`Aspect
+    Relaxed_Initialization`) should be entirely initialized
 
 * [ADA_OBJECT_ADDRESSES]
   When the body of a function is not analyzed by GNATprove, its result should
