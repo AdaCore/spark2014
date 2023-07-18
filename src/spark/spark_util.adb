@@ -3649,8 +3649,9 @@ package body SPARK_Util is
    ----------------------------
 
    function Is_Statically_Disabled
-     (N     : Node_Id;
-      Value : Boolean)
+     (N             : Node_Id;
+      Value         : Boolean;
+      Include_Valid : Boolean)
       return Boolean
    is
       function Is_Discrete_Literal (N : Node_Id) return Boolean;
@@ -3684,15 +3685,16 @@ package body SPARK_Util is
 
          when N_Op_And | N_And_Then =>
             return
-              (if Value
-               then
-                 (Is_Statically_Disabled (Left_Opnd (Expr_N), Value)
-                    and then
-                  Is_Statically_Disabled (Right_Opnd (Expr_N), Value))
+              (if Value then
+                 (Is_Statically_Disabled
+                    (Left_Opnd (Expr_N), Value, Include_Valid)
+                  and then Is_Statically_Disabled
+                    (Right_Opnd (Expr_N), Value, Include_Valid))
                else
-                 (Is_Statically_Disabled (Left_Opnd (Expr_N), Value)
-                    or else
-                  Is_Statically_Disabled (Right_Opnd (Expr_N), Value)));
+                 (Is_Statically_Disabled
+                    (Left_Opnd (Expr_N), Value, Include_Valid)
+                  or else Is_Statically_Disabled
+                    (Right_Opnd (Expr_N), Value, Include_Valid)));
 
          --  an or or or else operators when:
          --  - Value is True and at least one operand is a statically disabled
@@ -3702,21 +3704,23 @@ package body SPARK_Util is
 
          when N_Op_Or | N_Or_Else =>
             return
-              (if Value
-               then
-                 (Is_Statically_Disabled (Left_Opnd (Expr_N), Value)
-                    or else
-                  Is_Statically_Disabled (Right_Opnd (Expr_N), Value))
+              (if Value then
+                 (Is_Statically_Disabled
+                    (Left_Opnd (Expr_N), Value, Include_Valid)
+                  or else Is_Statically_Disabled
+                    (Right_Opnd (Expr_N), Value, Include_Valid))
                else
-                 (Is_Statically_Disabled (Left_Opnd (Expr_N), Value)
-                    and then
-                  Is_Statically_Disabled (Right_Opnd (Expr_N), Value)));
+                 (Is_Statically_Disabled
+                    (Left_Opnd (Expr_N), Value, Include_Valid)
+                  and then Is_Statically_Disabled
+                    (Right_Opnd (Expr_N), Value, Include_Valid)));
 
          --  a not operator when the right operand is a statically disabled
          --  condition evaluated to the negation of Value.
 
          when N_Op_Not =>
-            return Is_Statically_Disabled (Right_Opnd (Expr_N), not Value);
+            return Is_Statically_Disabled
+              (Right_Opnd (Expr_N), not Value, Include_Valid);
 
          --  a static constant when it is of a boolean type with aspect
          --  Warnings Off.
@@ -3751,6 +3755,15 @@ package body SPARK_Util is
                          and then Ekind (Entity (Right)) = E_Constant
                          and then Has_Warnings_Off (Entity (Right))));
             end;
+
+         --  a reference to 'Valid or 'Valid_Scalar if Include_Valid is True
+
+         when N_Attribute_Reference =>
+
+            return Include_Valid
+              and then Get_Attribute_Id (Attribute_Name (Expr_N)) in
+                Attribute_Valid | Attribute_Valid_Scalars
+              and then Value;
 
          when others =>
             return False;

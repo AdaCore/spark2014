@@ -2248,13 +2248,15 @@ package body Gnat2Why.Subprograms is
       Aggr          : Node_Id;
       Contract_Case : Node_Id;
       Case_Guard    : Node_Id;
+      Warn_Others   : Boolean := Params.Warn_On_Dead;
 
       function Do_One_Contract_Case
         (Contract_Case : Node_Id;
          Enabled       : W_Expr_Id) return W_Prog_Id;
       --  Returns the Why program checking absence of run-time errors and
       --  function verification of the given Contract_Case. Enabled is a
-      --  boolean term.
+      --  boolean term. Set Warn_Others to False if the current case is
+      --  statically disabled for True.
 
       function Do_One_Contract_Case
         (Contract_Case : Node_Id;
@@ -2272,14 +2274,35 @@ package body Gnat2Why.Subprograms is
                          New_Literal (Domain => EW_Term,
                                       Value  => EW_True)));
 
-         WP_Consequence : W_Prog_Id :=
-           Transform_Prog (Consequence, Params);
+         WP_Consequence : W_Prog_Id;
 
       begin
-         --  Possibly warn on an unreachable case
+         --  Possibly warn on an unreachable case. No warning is emitted if
+         --  the case is statically disabled.
 
-         WP_Consequence :=
-           Warn_On_Dead_Branch (Consequence, WP_Consequence, Params.Phase);
+         declare
+            Case_Guard : constant Node_Id :=
+              First (Choice_List (Contract_Case));
+            Do_Warn    : Boolean;
+
+         begin
+            if Nkind (Case_Guard) = N_Others_Choice then
+               Do_Warn := Warn_Others;
+            else
+               Do_Warn := Params.Warn_On_Dead
+                 and then not Is_Statically_Disabled
+                   (Case_Guard, False, Include_Valid => True);
+               Warn_Others := Warn_Others
+                 and then not Is_Statically_Disabled
+                   (Case_Guard, True, Include_Valid => True);
+            end if;
+
+            WP_Consequence := Transform_Prog
+              (Consequence, (Params with delta Warn_On_Dead => Do_Warn));
+            WP_Consequence :=
+              Warn_On_Dead_Branch
+                (Consequence, WP_Consequence, Params.Phase, Do_Warn);
+         end;
 
          return Sequence
            (New_Ignore
@@ -4032,7 +4055,7 @@ package body Gnat2Why.Subprograms is
                 (New_Ignore
                    (Post,
                     Warn_On_Dead_Branch
-                      (Post, RTE_Post, Params.Phase)),
+                      (Post, RTE_Post, Params.Phase, Params.Warn_On_Dead)),
                  New_Assert
                    (Ada_Node    => Post,
                     Pred        => New_VC_Pred
@@ -4821,7 +4844,13 @@ package body Gnat2Why.Subprograms is
          then
             Precondition_Is_Statically_False := True;
 
-            if Original_Node (Expr) /= Expr then
+            --  Do not warn about statically False preconditions if they are
+            --  disabled.
+
+            if Original_Node (Expr) /= Expr
+              and then not Is_Statically_Disabled
+                (Expr, False, Include_Valid => True)
+            then
                Error_Msg_N
                  (Warning_Message (Warn_Precondition_Statically_False), Expr);
             end if;

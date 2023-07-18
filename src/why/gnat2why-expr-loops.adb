@@ -2164,14 +2164,15 @@ package body Gnat2Why.Expr.Loops is
                                        Def  => +Void)));
 
       --  Possibly warn on dead code, both when entering the loop and after the
-      --  loop.
+      --  loop. Do not try to check whether the loop condition is statically
+      --  disabled if any, it should not happen in practice.
 
-      Loop_Try :=
-        Warn_On_Dead_Code (First_Stmt, Loop_Try, Generate_VCs_For_Body);
+      Loop_Try := Warn_On_Dead_Code
+        (First_Stmt, Loop_Try, Params.Phase, Params.Warn_On_Dead);
 
       if Present (Next_Stmt) then
-         Warn_Dead_Code :=
-           Warn_On_Dead_Code (Next_Stmt, +Void, Generate_VCs_For_Body);
+         Warn_Dead_Code := Warn_On_Dead_Code
+           (Next_Stmt, +Void, Params.Phase, Params.Warn_On_Dead);
       end if;
 
       return
