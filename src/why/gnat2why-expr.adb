@@ -43,6 +43,7 @@ with Flow_Utility.Initialization;    use Flow_Utility.Initialization;
 with GNAT.Source_Info;
 with GNATCOLL.Symbols;               use GNATCOLL.Symbols;
 with Gnat2Why_Args;
+with Gnat2Why.Data_Decomposition;    use Gnat2Why.Data_Decomposition;
 with Gnat2Why.Error_Messages;        use Gnat2Why.Error_Messages;
 with Gnat2Why.Expr.Loops;            use Gnat2Why.Expr.Loops;
 with Gnat2Why.Subprograms;           use Gnat2Why.Subprograms;
@@ -16001,14 +16002,96 @@ package body Gnat2Why.Expr is
                Type_Could_Have_Object_Size : constant Boolean :=
                  not Is_Standard_Type (Var_Type);
 
+               Loc : constant String :=
+                 (if Nkind (Var) in N_Identifier | N_Expanded_Name then
+                   Location_String
+                     (Sloc (Entity (Var)), Mode => Data_Decomposition_Mode)
+                  else "");
+               Data_Entry : Data_Decomposition_Entry;
+
+               Imprecise_Handling : Boolean := False;
+               --  Whether the attribute value is known in analysis or not
+
             --  Start of processing for Size_Attributes
 
             begin
+               if Data_Decomposition_Table.Contains (Loc) then
+                  Data_Entry :=
+                    Data_Decomposition_Table.Element (Loc);
+               end if;
+
+               if Has_Type_Prefix then
+                  case Size_Attributes'(Attr_Id) is
+                     when Attribute_Size
+                        | Attribute_Value_Size
+                     =>
+                        if Data_Entry.Size.Present then
+                           T := New_Integer_Constant
+                             (Value => UI_From_Int
+                                (Int (Data_Entry.Size.Value)));
+
+                        elsif Data_Entry.Value_Size.Present then
+                           T := New_Integer_Constant
+                             (Value => UI_From_Int
+                                (Int (Data_Entry.Value_Size.Value)));
+                        else
+                           Imprecise_Handling := True;
+                           T := New_Attribute_Expr
+                             (Entity (Var), Domain, Attr_Id);
+                        end if;
+
+                     when Attribute_Object_Size =>
+                        if Data_Entry.Object_Size.Present then
+                           T := New_Integer_Constant
+                             (Value => UI_From_Int
+                                (Int (Data_Entry.Object_Size.Value)));
+                        else
+                           Imprecise_Handling := True;
+                           T := Object_Size (Entity (Var));
+                        end if;
+                  end case;
+
+               --  Only attribute Size applies to an object. It is either
+               --  the specified value of Size for the object, or the same
+               --  as Typ'Object_Size for the type of the object.
+
+               else
+                  pragma Assert (Attr_Id = Attribute_Size);
+
+                  if Data_Entry.Object_Size.Present then
+                     T := New_Integer_Constant
+                       (Value => UI_From_Int
+                          (Int (Data_Entry.Object_Size.Value)));
+
+                  elsif Known_Object_Size (Etype (Var)) then
+                     T := New_Integer_Constant (Expr,
+                                                Object_Size (Etype (Var)));
+                  else
+                     Imprecise_Handling := True;
+                     T := Object_Size (Etype (Var));
+                  end if;
+
+                  --  In the program domain, translate the object itself to
+                  --  generate any necessary checks.
+
+                  if Domain = EW_Prog then
+                     T := New_Binding
+                            (Name    =>
+                               New_Temp_Identifier (Typ => Get_Type (+T)),
+                             Domain  => Domain,
+                             Def     =>
+                               Transform_Expr (Var, Domain, Params),
+                             Context => +T,
+                             Typ     => Get_Type (+T));
+                  end if;
+               end if;
+
                --  If --info is given, notify the user that the attribute is
                --  handled in an imprecise way.
 
-               if Debug.Debug_Flag_Underscore_F then
-
+               if Debug.Debug_Flag_Underscore_F
+                 and then Imprecise_Handling
+               then
                   --  The attribute can always be specified on the type
 
                   if Has_Type_Prefix then
@@ -16054,47 +16137,6 @@ package body Gnat2Why.Expr is
                        ("info: ?" & "the value of % attribute is handled in an"
                         & " imprecise way",
                         Expr, Entity (Var));
-                  end if;
-               end if;
-
-               if Has_Type_Prefix then
-                  case Size_Attributes'(Attr_Id) is
-                     when Attribute_Size
-                        | Attribute_Value_Size
-                     =>
-                        T :=
-                          New_Attribute_Expr (Entity (Var), Domain, Attr_Id);
-
-                     when Attribute_Object_Size =>
-                        T := Object_Size (Entity (Var));
-                  end case;
-
-               --  Only attribute Size applies to an object. It is either
-               --  the specified value of Size for the object, or the same
-               --  as Typ'Object_Size for the type of the object.
-
-               else
-                  pragma Assert (Attr_Id = Attribute_Size);
-
-                  if Known_Object_Size (Etype (Var)) then
-                     T := New_Integer_Constant (Expr,
-                                                Object_Size (Etype (Var)));
-                  else
-                     T := Object_Size (Etype (Var));
-                  end if;
-
-                  --  In the program domain, translate the object itself to
-                  --  generate any necessary checks.
-
-                  if Domain = EW_Prog then
-                     T := New_Binding
-                            (Name    =>
-                               New_Temp_Identifier (Typ => Get_Type (+T)),
-                             Domain  => Domain,
-                             Def     =>
-                               Transform_Expr (Var, Domain, Params),
-                             Context => +T,
-                             Typ     => Get_Type (+T));
                   end if;
                end if;
             end Size_Attributes;
@@ -16342,14 +16384,29 @@ package body Gnat2Why.Expr is
                if Has_Type_Prefix then
                   declare
                      Typ : constant Entity_Id := Entity (Var);
+                     Loc : constant String :=
+                       Location_String
+                         (Sloc (Typ), Mode => Data_Decomposition_Mode);
+                     Data_Entry : Data_Decomposition_Entry;
+
                   begin
-                     if Known_Alignment (Typ) then
+                     if Data_Decomposition_Table.Contains (Loc) then
+                        Data_Entry := Data_Decomposition_Table.Element (Loc);
+                     end if;
+
+                     if Data_Entry.Alignment.Present then
+                        T := New_Integer_Constant
+                          (Value => UI_From_Int
+                             (Int (Data_Entry.Alignment.Value)));
+
+                     elsif Known_Alignment (Typ) then
                         pragma Annotate
                           (Xcov, Exempt_On,
                            "'Alignment is expanded by the frontend when"
                            & " statically known");
                         T := New_Integer_Constant (Expr, Alignment (Typ));
                         pragma Annotate (Xcov, Exempt_Off);
+
                      else
                         T := New_Attribute_Expr (Typ, Domain, Attr_Id);
                      end if;

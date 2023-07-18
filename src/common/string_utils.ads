@@ -26,8 +26,6 @@
 with Ada.Strings.Fixed;
 with Ada.Containers;
 with Ada.Containers.Indefinite_Doubly_Linked_Lists;
-with Ada.Containers.Indefinite_Hashed_Sets;
-with Ada.Strings.Hash;
 with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 with GNAT.Strings;          use GNAT.Strings;
 
@@ -37,14 +35,6 @@ package String_Utils is
      Ada.Containers.Indefinite_Doubly_Linked_Lists (String);
 
    use type String_Lists.Cursor;
-
-   package String_Sets is new
-     Ada.Containers.Indefinite_Hashed_Sets
-       (Element_Type        => String,
-        Hash                => Ada.Strings.Hash,
-        Equivalent_Elements => "=",
-        "="                 => "="
-       );
 
    function Capitalize_First (S : String) return String;
    --  Return a string with first character capitalized
