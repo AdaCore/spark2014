@@ -46,7 +46,7 @@ procedure Test_Parameter_Passing with SPARK_Mode is
      Exceptional_Cases => (E => True);
 
    procedure Test_Unknown (X : aliased out R) with
-     Exceptional_Cases => (E => X.F = 0);  --  should not be provable
+     Exceptional_Cases => (E => X.F = 0);  --  should not be provable  @EXCEPTIONAL_CASE:FAIL
 
    procedure Test_Unknown (X : aliased out R) is
    begin

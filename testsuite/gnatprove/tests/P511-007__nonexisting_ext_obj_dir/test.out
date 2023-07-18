@@ -1,3 +1,1 @@
-
-Error while loading project file: test.gpr
-gnatprove: test.gpr:3:22: undefined external reference "NONEXISTING_ENVIRONMENTAL_VARIABLE"
+test.gpr:3:31: error: undefined external reference "NONEXISTING_ENVIRONMENTAL_VARIABLE"

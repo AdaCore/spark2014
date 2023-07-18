@@ -1,5 +1,5 @@
 with "gnatcoll";
-with "gpr";
+with "gpr2";
 
 project GNATprove is
 

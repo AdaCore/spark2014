@@ -3214,9 +3214,11 @@ package body SPARK_Definition is
                         Msg := Msg & "and " & Warnings (Nb_Warn);
                      end if;
 
+                     Error_Msg_Code :=
+                       Explain_Code'Enum_Rep (EC_Address_Spec_Imprecise_Warn);
                      Error_Msg_NE
                        ("?address specification on & is imprecisely supported:"
-                        & " assuming " & To_String (Msg), E, E);
+                        & " assuming " & To_String (Msg) & " '[[]']", E, E);
                   end;
 
                   if Nb_Cont > 0 then

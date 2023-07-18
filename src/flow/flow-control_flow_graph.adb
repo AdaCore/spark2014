@@ -1333,11 +1333,11 @@ package body Flow.Control_Flow_Graph is
 
          when Initial_Grouping | Final_Grouping =>
             case F.Kind is
-               when Null_Value | Synthetic_Null_Export =>
-                  raise Program_Error;
+               --  Initial_Grouping and Final_Grouping only appear for
+               --  variables represented by Entity_Id.
 
-               when Magic_String =>
-                  null;
+               when Null_Value | Synthetic_Null_Export | Magic_String =>
+                  raise Program_Error;
 
                when Direct_Mapping | Record_Field =>
                   --  Only proceed if we don't have this vertex yet
@@ -5555,8 +5555,7 @@ package body Flow.Control_Flow_Graph is
                     To   => CM (Union_Id (Handler)).Standard_Entry);
 
          --  For exception that is only listed in Exceptional_Cases we reclaim
-         --  the borrowers and jump to the helper end vertex, just like for a
-         --  return statement.
+         --  the borrowers and jump out of the subprogram.
 
          else
             for Decl of reverse Ctx.Borrowers loop

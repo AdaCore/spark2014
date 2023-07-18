@@ -64,26 +64,29 @@
 --      not done on these units.
 
 with Ada.Command_Line;
-with Ada.Directories;   use Ada.Directories;
+with Ada.Directories;  use Ada.Directories;
 with Ada.Environment_Variables;
-with Ada.Exceptions;    use Ada.Exceptions;
+with Ada.Exceptions;   use Ada.Exceptions;
 with Ada.IO_Exceptions;
 with Ada.Strings.Unbounded;
-with Ada.Text_IO;       use Ada.Text_IO;
-with Call;              use Call;
-with Configuration;     use Configuration;
-with GNAT.Expect;       use GNAT.Expect;
+with Ada.Text_IO;      use Ada.Text_IO;
+with Call;             use Call;
+with Configuration;    use Configuration;
+with GNAT.Expect;      use GNAT.Expect;
 with GNAT.OS_Lib;
-with GNAT.Strings;      use GNAT.Strings;
-with Gnat2Why_Opts;     use Gnat2Why_Opts;
+with GNAT.Strings;     use GNAT.Strings;
+with Gnat2Why_Opts;    use Gnat2Why_Opts;
 with Gnat2Why_Opts.Writing;
-with GNATCOLL.JSON;     use GNATCOLL.JSON;
-with GNATCOLL.Projects; use GNATCOLL.Projects;
-with GNATCOLL.Projects.Aux;
-with GNATCOLL.VFS;      use GNATCOLL.VFS;
-with GNATCOLL.Utils;    use GNATCOLL.Utils;
-with Named_Semaphores;  use Named_Semaphores;
-with String_Utils;      use String_Utils;
+with GNATCOLL.JSON;    use GNATCOLL.JSON;
+with GNATCOLL.Tribooleans;
+with GNATCOLL.Utils;   use GNATCOLL.Utils;
+with GNATCOLL.VFS;     use GNATCOLL.VFS;
+with GPR2;             use GPR2;
+with GPR2.Project.Attribute;
+with GPR2.Project.Tree;
+with GPR2.Project.View;
+with Named_Semaphores; use Named_Semaphores;
+with String_Utils;     use String_Utils;
 
 procedure Gnatprove with SPARK_Mode is
 
@@ -98,7 +101,7 @@ procedure Gnatprove with SPARK_Mode is
 
    procedure Call_Gprbuild
      (Project_File      : String;
-      Proj              : Project_Tree;
+      Tree              : Project.Tree.Object;
       DB_Dir            : String;
       Translation_Phase : Boolean;
       Args              : in out String_Lists.List;
@@ -113,7 +116,7 @@ procedure Gnatprove with SPARK_Mode is
 
    procedure Compute_ALI_Information
      (Project_File : String;
-      Proj         : Project_Tree;
+      Tree         : Project.Tree.Object;
       Status       : out Integer);
    --  Compute ALI information for all source units, using gprbuild
 
@@ -121,28 +124,24 @@ procedure Gnatprove with SPARK_Mode is
      (Plan         : Plan_Type;
       Step         : Positive;
       Project_File : String;
-      Proj         : Project_Tree);
+      Tree         : Project.Tree.Object);
 
-   procedure Copy_ALI_Files (Proj : Project_Tree);
+   procedure Copy_ALI_Files (Tree : Project.Tree.Object);
    --  To be called between phase 1 and phase2. Copies the ALI files from the
    --  subdir of the first phase to the one for the second phase.
 
-   procedure Generate_SPARK_Report
-     (Proj     : Project_Type;
-      Obj_Dir  : String;
-      Obj_Path : File_Array);
+   procedure Generate_SPARK_Report (Tree : Project.Tree.Object);
    --  Generate the SPARK report
 
    procedure Flow_Analysis_And_Proof
      (Project_File : String;
-      Proj         : Project_Tree;
+      Tree         : Project.Tree.Object;
       Status       : out Integer);
    --  Translate all source units to Why, using gnat2why, driven by gprbuild.
    --  In the process, do flow analysis. Then call gnatwhy3 inside gnat2why to
    --  prove the program.
 
-   function Spawn_VC_Server_And_Semaphore
-     (Proj_Type : Project_Type)
+   function Spawn_VC_Server_And_Semaphore (Tree : Project.Tree.Object)
       return Process_Descriptor;
    --  Spawn the VC server of Why3 and create the semaphore used for gnatwhy3
    --  processes.
@@ -162,7 +161,7 @@ procedure Gnatprove with SPARK_Mode is
    procedure Write_Why3_Conf_File (Obj_Dir : String);
    --  Write the Why3 conf file to process prover configuration
 
-   procedure Cleanup (Proj      : Project_Type;
+   procedure Cleanup (Tree      : Project.Tree.Object;
                       Msg       : String;
                       Exit_Code : Ada.Command_Line.Exit_Status);
    --  Cleanup procedure that is called at the end of every gnatprove
@@ -174,14 +173,14 @@ procedure Gnatprove with SPARK_Mode is
 
    procedure Call_Gprbuild
      (Project_File      : String;
-      Proj              : Project_Tree;
+      Tree              : Project.Tree.Object;
       DB_Dir            : String;
       Translation_Phase : Boolean;
       Args              : in out String_Lists.List;
       Status            : out Integer)
    is
       Obj_Dir  : constant String :=
-         Proj.Root_Project.Artifacts_Dir.Display_Full_Name;
+        Artifact_Dir (Tree).Display_Full_Name;
       Opt_File : constant String :=
          Gnat2Why_Opts.Writing.Pass_Extra_Options_To_Gnat2why
             (Translation_Phase => Translation_Phase,
@@ -287,18 +286,16 @@ procedure Gnatprove with SPARK_Mode is
       end if;
    end Call_Gprbuild;
 
-   ------------------
-   -- Cleanup_Step --
-   ------------------
+   -------------
+   -- Cleanup --
+   -------------
 
-   procedure Cleanup (Proj      : Project_Type;
+   procedure Cleanup (Tree      : Project.Tree.Object;
                       Msg       : String;
                       Exit_Code : Ada.Command_Line.Exit_Status)
    is
+      pragma Unreferenced (Tree);
    begin
-      if Proj /= No_Project then
-         GNATCOLL.Projects.Aux.Delete_All_Temp_Files (Proj);
-      end if;
       if Msg /= "" then
          Ada.Text_IO.Put_Line (Ada.Text_IO.Standard_Error, Msg);
       end if;
@@ -311,7 +308,7 @@ procedure Gnatprove with SPARK_Mode is
 
    procedure Compute_ALI_Information
      (Project_File : String;
-      Proj         : Project_Tree;
+      Tree         : Project.Tree.Object;
       Status       : out Integer)
    is
       Args : String_Lists.List;
@@ -330,7 +327,7 @@ procedure Gnatprove with SPARK_Mode is
       end if;
 
       Call_Gprbuild (Project_File,
-                     Proj,
+                     Tree,
                      SPARK_Install.Gpr_Frames_DB,
                      Translation_Phase => False,
                      Args              => Args,
@@ -341,7 +338,7 @@ procedure Gnatprove with SPARK_Mode is
    -- Copy_ALI_Files --
    --------------------
 
-   procedure Copy_ALI_Files (Proj : Project_Tree) is
+   procedure Copy_ALI_Files (Tree : Project.Tree.Object) is
 
       procedure Copy_Dir (Source_Dir, Target_Dir : Virtual_File);
       --  Copy the ALI files from Source_Dir to Target_Dir
@@ -395,30 +392,37 @@ procedure Gnatprove with SPARK_Mode is
          Copy_Dir (Phase1_Dir, Target_Dir);
       end Copy_Phase1;
 
-      Iter : Project_Iterator := Start (Proj.Root_Project);
-
    --  Start of processing for Copy_ALI_Files
 
    begin
-      while Current (Iter) /= No_Project loop
+      for Cursor in Tree.Iterate
+        (Status =>
+           [GPR2.Project.S_Externally_Built => GNATCOLL.Tribooleans.False])
+      loop
          declare
-            Art_Dir : Virtual_File renames Current (Iter).Artifacts_Dir;
-            Lib_Dir : Virtual_File
-            renames Current (Iter).Library_Ali_Directory;
+            View : constant Project.View.Object :=
+              Project.Tree.Element (Cursor);
          begin
-            if Art_Dir /= No_File then
-               Copy_Phase1 (Art_Dir);
+            if View.Kind in With_Object_Dir_Kind then
+               Copy_Phase1 (View.Object_Directory.Virtual_File);
             end if;
 
             --  In the case of library projects, there is a separate dir where
             --  ALI files are copied at the end. As the first phase was done
             --  with a different subdir, we need to copy those files as well.
 
-            if Lib_Dir /= No_File and then Art_Dir /= Lib_Dir then
-               Copy_Dir (Art_Dir, Lib_Dir);
+            if View.Is_Library then
+               declare
+                  Lib_Dir : Virtual_File renames
+                    View.Library_Ali_Directory.Virtual_File;
+               begin
+                  if View.Kind not in With_Object_Dir_Kind
+                    or else View.Object_Directory.Virtual_File /= Lib_Dir
+                  then
+                     Copy_Dir (View.Object_Directory.Virtual_File, Lib_Dir);
+                  end if;
+               end;
             end if;
-
-            Next (Iter);
          end;
       end loop;
    end Copy_ALI_Files;
@@ -457,7 +461,7 @@ procedure Gnatprove with SPARK_Mode is
      (Plan         : Plan_Type;
       Step         : Positive;
       Project_File : String;
-      Proj         : Project_Tree)
+      Tree         : Project.Tree.Object)
    is
       Status : Integer;
    begin
@@ -469,11 +473,11 @@ procedure Gnatprove with SPARK_Mode is
 
       case Plan (Step) is
          when GS_ALI =>
-            Compute_ALI_Information (Project_File, Proj, Status);
+            Compute_ALI_Information (Project_File, Tree, Status);
 
          when GS_Gnat2Why =>
-            Copy_ALI_Files (Proj);
-            Flow_Analysis_And_Proof (Project_File, Proj, Status);
+            Copy_ALI_Files (Tree);
+            Flow_Analysis_And_Proof (Project_File, Tree, Status);
 
       end case;
 
@@ -498,12 +502,11 @@ procedure Gnatprove with SPARK_Mode is
 
    procedure Flow_Analysis_And_Proof
      (Project_File : String;
-      Proj         : Project_Tree;
+      Tree         : Project.Tree.Object;
       Status       : out Integer)
    is
       Obj_Dir : constant String :=
-        Proj.Root_Project.Artifacts_Dir.Display_Full_Name;
-
+        Artifact_Dir (Tree).Display_Full_Name;
    begin
       Write_Why3_Conf_File (Obj_Dir);
 
@@ -531,11 +534,11 @@ procedure Gnatprove with SPARK_Mode is
                       else "--complete-output");
 
          if Configuration.Mode in GPM_All | GPM_Prove then
-            Id := Spawn_VC_Server_And_Semaphore (Proj.Root_Project);
+            Id := Spawn_VC_Server_And_Semaphore (Tree);
          end if;
 
          Call_Gprbuild (Project_File,
-                        Proj,
+                        Tree,
                         SPARK_Install.Gpr_Translation_DB,
                         Translation_Phase => True,
                         Args              => Args,
@@ -565,11 +568,9 @@ procedure Gnatprove with SPARK_Mode is
    -- Generate_SPARK_Report --
    ---------------------------
 
-   procedure Generate_SPARK_Report
-     (Proj     : Project_Type;
-      Obj_Dir  : String;
-      Obj_Path : File_Array)
+   procedure Generate_SPARK_Report (Tree : Project.Tree.Object)
    is
+      Obj_Dir : constant String := Artifact_Dir (Tree).Display_Full_Name;
       Obj_Dir_Fn : constant String :=
         Ada.Directories.Compose (Obj_Dir, "gnatprove.alfad");
       Success    : Boolean;
@@ -590,16 +591,27 @@ procedure Gnatprove with SPARK_Mode is
 
          Obj_Dirs_JSON  : JSON_Array;
       begin
-         for Obj of Obj_Path loop
+         for Cursor in Tree.Iterate
+           (Status =>
+              [GPR2.Project.S_Externally_Built => GNATCOLL.Tribooleans.False])
+         loop
             declare
-               Full_Name : String renames Obj.Display_Full_Name;
+               View : constant Project.View.Object :=
+                 Project.Tree.Element (Cursor);
             begin
-               Dir_Names_Seen.Insert (New_Item => Full_Name,
-                                      Position => Unused,
-                                      Inserted => Inserted);
-
-               if Inserted then
-                  Append (Obj_Dirs_JSON, Create (Full_Name));
+               if View.Kind in With_Object_Dir_Kind then
+                  declare
+                     Obj_Dir : constant String :=
+                       View.Object_Directory.Virtual_File.Display_Full_Name;
+                  begin
+                     Dir_Names_Seen.Insert
+                       (New_Item => Obj_Dir,
+                        Position => Unused,
+                        Inserted => Inserted);
+                     if Inserted then
+                        Append (Obj_Dirs_JSON, Create (Obj_Dir));
+                     end if;
+                  end;
                end if;
             end;
          end loop;
@@ -610,42 +622,49 @@ procedure Gnatprove with SPARK_Mode is
          use Ada.Command_Line;
          Cmdline_JSON : JSON_Array;
       begin
-         Append (Cmdline_JSON, Create (Simple_Name (Command_Name)));
+         Append (Cmdline_JSON,
+                 Create (Ada.Directories.Simple_Name (Command_Name)));
          for J in 1 .. Argument_Count loop
             Append (Cmdline_JSON, Create (Argument (J)));
          end loop;
          Set_Field (JSON_Rec, "cmdline", Cmdline_JSON);
       end;
 
-      if Prj_Attr.Prove.Switches /= null then
-         declare
-            Switches_JSON : JSON_Array;
-         begin
-            for Switch of Prj_Attr.Prove.Switches.all loop
-               Append (Switches_JSON, Create (Switch.all));
-            end loop;
-            Set_Field (JSON_Rec, "switches", Switches_JSON);
-         end;
-      end if;
+      declare
+         Attr : constant GPR2.Project.Attribute.Object :=
+           Tree.Root_Project.Attribute ((+"Prove", +"Switches"));
+      begin
+         if Attr.Is_Defined then
+            declare
+               Switches_JSON : JSON_Array;
+            begin
+               for Switch of Attr.Values loop
+                  Append (Switches_JSON, Create (String (Switch.Text)));
+               end loop;
+               Set_Field (JSON_Rec, "switches", Switches_JSON);
+            end;
+         end if;
+      end;
 
-      if Prj_Attr.Prove.Proof_Switches_Indices'Length > 0 then
-         declare
-            FS_Switches_JSON : constant JSON_Value := Create_Object;
-         begin
-            for J of Prj_Attr.Prove.Proof_Switches_Indices.all loop
-               declare
-                  Switch_Arr : JSON_Array;
-               begin
-                  for Elt of Prj_Attr.Prove.Proof_Switches (Proj, J.all).all
-                  loop
-                     Append (Switch_Arr, Create (Elt.all));
-                  end loop;
-                  Set_Field (FS_Switches_JSON, J.all, Switch_Arr);
-               end;
-            end loop;
-            Set_Field (JSON_Rec, "proof_switches", FS_Switches_JSON);
-         end;
-      end if;
+      declare
+         FS_Switches_JSON : constant JSON_Value := Create_Object;
+      begin
+         for Attr of Tree.Root_Project.Attributes
+           ((+"Prove", +"Proof_Switches"))
+         loop
+            declare
+               Switch_Arr : JSON_Array;
+            begin
+               for Elt of Attr.Values loop
+                  Append (Switch_Arr, Create (String (Elt.Text)));
+               end loop;
+               Set_Field (FS_Switches_JSON,
+                          String (Attr.Index.Text),
+                          Switch_Arr);
+            end;
+         end loop;
+         Set_Field (JSON_Rec, "proof_switches", FS_Switches_JSON);
+      end;
 
       if CL_Switches.Assumptions then
          Set_Field (JSON_Rec, "assumptions", True);
@@ -788,8 +807,7 @@ procedure Gnatprove with SPARK_Mode is
    -- Spawn_VC_Server --
    ---------------------
 
-   function Spawn_VC_Server_And_Semaphore
-     (Proj_Type : Project_Type)
+   function Spawn_VC_Server_And_Semaphore (Tree : Project.Tree.Object)
       return Process_Descriptor
    is
       Args : String_Lists.List;
@@ -799,8 +817,7 @@ procedure Gnatprove with SPARK_Mode is
       if CL_Switches.Why3_Server = null
         or else CL_Switches.Why3_Server.all = ""
       then
-         Ada.Directories.Set_Directory
-           (Proj_Type.Artifacts_Dir.Display_Full_Name);
+         Ada.Directories.Set_Directory (Artifact_Dir (Tree).Display_Full_Name);
          Args.Append ("-j");
          Args.Append (Image (Parallel, 1));
          Args.Append ("--socket");
@@ -1109,7 +1126,7 @@ procedure Gnatprove with SPARK_Mode is
       Close (File);
    end Write_Why3_Conf_File;
 
-   Tree : Project_Tree;
+   Tree : Project.Tree.Object;
    --  GNAT project tree
 
 --  Start processing for Gnatprove
@@ -1118,78 +1135,57 @@ begin
    Set_Environment;
    Read_Command_Line (Tree);
 
-   if Tree.Root_Project.Artifacts_Dir = GNATCOLL.VFS.No_File then
+   if Artifact_Dir (Tree) = GNATCOLL.VFS.No_File
+   then
       Fail
         ("Error while loading project file: " & CL_Switches.P.all & ": " &
            "could not determine working directory");
    end if;
+   Create_Dir_And_Parents (Artifact_Dir (Tree));
 
-   declare
-      Obj_Path : constant File_Array :=
-        Object_Path (Tree.Root_Project,
-                     Recursive          => True,
-                     Exclude_Externally => True);
-   begin
-      for Dir of Obj_Path loop
-         if Dir /= No_File then
-            Create_Dir_And_Parents (Dir);
+   for Cursor in Tree.Iterate
+     (Kind  =>
+        [Project.I_Project       => True,
+         Project.I_Runtime       => False,
+         Project.I_Configuration => False,
+         Project.I_Recursive     => True,
+         others                  => False],
+      Status =>
+        [GPR2.Project.S_Externally_Built => GNATCOLL.Tribooleans.False])
+   loop
+      declare
+         View : constant Project.View.Object := Project.Tree.Element (Cursor);
+      begin
+         if View.Kind in With_Object_Dir_Kind then
+            Create_Dir_And_Parents (View.Object_Directory.Virtual_File);
          end if;
-      end loop;
-   end;
+      end;
+   end loop;
 
-   Analysis_And_Report : declare
-
-      procedure Generate_SPARK_Report;
-      --  Generate the SPARK report both when there was no error, and when
-      --  there was a recoverable error.
-
-      ---------------------------
-      -- Generate_SPARK_Report --
-      ---------------------------
-
-      procedure Generate_SPARK_Report is
-         Obj_Path : constant File_Array :=
-           Object_Path (Tree.Root_Project,
-                        Recursive          => True,
-                        Exclude_Externally => True);
-      begin
-         Generate_SPARK_Report
-           (Tree.Root_Project,
-            Tree.Root_Project.Artifacts_Dir.Display_Full_Name, Obj_Path);
-      end Generate_SPARK_Report;
-
+   Analysis : declare
+      Plan : constant Plan_Type := [GS_ALI, GS_Gnat2Why];
    begin
-      Analysis : declare
-         Plan : constant Plan_Type := [GS_ALI, GS_Gnat2Why];
-      begin
-         for Step in Plan'Range loop
-            Execute_Step (Plan, Step, CL_Switches.P.all, Tree);
-         end loop;
+      for Step in Plan'Range loop
+         Execute_Step (Plan, Step, CL_Switches.P.all, Tree);
+      end loop;
 
-      exception
-         when E : GNATprove_Recoverable_Failure =>
-            Generate_SPARK_Report;
-            Fail (Ada.Exceptions.Exception_Message (E));
-      end Analysis;
+   exception
+      when E : GNATprove_Recoverable_Failure =>
+         Generate_SPARK_Report (Tree);
+         Fail (Ada.Exceptions.Exception_Message (E));
+   end Analysis;
 
-      Generate_SPARK_Report;
-      Cleanup (Tree.Root_Project, "", Success_Exit_Code);
-
-   end Analysis_And_Report;
+   Generate_SPARK_Report (Tree);
+   Cleanup (Tree, "", Success_Exit_Code);
 
 exception
    when E : GNATprove_Failure =>
-      Cleanup (Tree.Root_Project,
+      Cleanup (Tree,
                Exception_Message (E),
                Exit_Code => 1);
    when E : GNATprove_Success =>
       pragma Assert (Exception_Message (E) = "");
-      Cleanup (Tree.Root_Project,
+      Cleanup (Tree,
                "",
                Exit_Code => Success_Exit_Code);
-
-   when Invalid_Project =>
-      Cleanup (Tree.Root_Project,
-               "Error while loading project file: " & CL_Switches.P.all,
-               Exit_Code => 1);
 end Gnatprove;

@@ -10,7 +10,7 @@ procedure Relaxed with SPARK_Mode is
 
       type P is access R;
 
-      X : P := new R; --@RESOURCE_LEAK:FAIL
+      X : P := new R; --@RESOURCE_LEAK_AT_END_OF_SCOPE:FAIL
    begin
       pragma Assert (X.X'Initialized); --@ASSERT:FAIL
    end;
@@ -24,7 +24,7 @@ procedure Relaxed with SPARK_Mode is
 
       type P is access R;
 
-      X : P := new R; --@RESOURCE_LEAK:FAIL
+      X : P := new R; --@RESOURCE_LEAK_AT_END_OF_SCOPE:FAIL
    begin
       pragma Assert (X.X'Initialized); --@ASSERT:PASS
    end;

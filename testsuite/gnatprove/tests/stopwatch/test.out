@@ -1,5 +1,6 @@
 display.adb:10:34: info: range check proved (CVC5: 2 VC)
-display.adb:20:04: warning: address specification on "Port" is imprecisely supported: assuming no concurrent accesses to non-atomic object, correct volatile properties, and no writes to a potential alias
+display.adb:20:04: warning: address specification on "Port" is imprecisely supported: assuming no concurrent accesses to non-atomic object, correct volatile properties, and no writes to a potential alias [E0012]
+display.adb:20:04: warning: launch "gnatprove --explain=E0012" for more information
 display.adb:20:04: warning: make sure that all overlapping objects have Async_Writers set to True
 display.adb:37:32: info: overflow check proved (CVC5: 2 VC)
 display.adb:48:07: info: justified that "Control" constituent of "LCD" is not set

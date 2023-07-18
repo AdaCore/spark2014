@@ -1,0 +1,5 @@
+p.adb:2:11: warning: subprogram "P" has no effect
+q.adb:3:11: warning: subprogram "Q" has no effect
+q.adb:4:04: warning: address specification on "Y" is imprecisely supported: assuming no concurrent accesses to non-atomic object and no writes to or through a potential alias [E0012]
+q.adb:4:04: warning: launch "gnatprove --explain=E0012" for more information
+q.adb:4:04: warning: make sure that all overlapping objects have Async_Writers set to True

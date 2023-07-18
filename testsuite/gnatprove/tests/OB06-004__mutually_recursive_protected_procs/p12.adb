@@ -4,7 +4,7 @@ package body P12 is
    is
 
       protected PO1 is
-         procedure Dummy1 with
+         procedure Dummy1 with --@CEILING_PRIORITY_PROTOCOL:PASS
            Global => (In_Out => P2.State2);
       end;
 
@@ -27,7 +27,7 @@ package body P12 is
    is
 
       protected PO2 is
-         procedure Dummy2;
+         procedure Dummy2; --@CEILING_PRIORITY_PROTOCOL:PASS
       end;
 
       protected body PO2 is

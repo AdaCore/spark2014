@@ -5,7 +5,7 @@ package R is
    X : Boolean := True;
 
    protected type PT (Irq : Ada.Interrupts.Interrupt_Id) is
-      procedure Foo with Global => (In_Out => X), Attach_Handler => Irq;
+      procedure Foo with Global => (In_Out => X), Attach_Handler => Irq; --@INTERRUPT_RESERVED:FAIL
    end;
 
    subtype Constrained   is PT (2);

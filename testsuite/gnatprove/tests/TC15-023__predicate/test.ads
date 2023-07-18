@@ -1,7 +1,7 @@
 package Test with
   SPARK_Mode
 is
-   type Foo (X : Positive := Positive'First) is private;
+   type Foo (X : Positive := Positive'First) is private; --@PREDICATE_CHECK_ON_DEFAULT_VALUE:FAIL
 
    procedure Initialize (Context : out Foo; X : Positive)
    with Pre => not Context'Constrained;

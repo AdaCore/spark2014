@@ -61,10 +61,10 @@ package P is
       procedure Indirectly_Blocking_Stub_Proc;
    end PO_Stub_3;
 
-   task type Blocking_Task_Type is
+   task type Blocking_Task_Type is --@TASK_TERMINATION:FAIL
    end Blocking_Task_Type;
 
-   task type Nonblocking_Task_Type is
+   task type Nonblocking_Task_Type is --@TASK_TERMINATION:FAIL
    end Nonblocking_Task_Type;
 
    protected PO_4 is

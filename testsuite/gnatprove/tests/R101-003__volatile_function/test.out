@@ -1,4 +1,5 @@
 lb.adb:10:14: info: initialization of "Result" proved
-lb.adb:15:04: warning: address specification on "I" is imprecisely supported: assuming no concurrent accesses to non-atomic object, correct volatile properties, and no writes to a potential alias
+lb.adb:15:04: warning: address specification on "I" is imprecisely supported: assuming no concurrent accesses to non-atomic object, correct volatile properties, and no writes to a potential alias [E0012]
+lb.adb:15:04: warning: launch "gnatprove --explain=E0012" for more information
 lb.adb:15:04: warning: make sure that all overlapping objects have Async_Writers set to True
 lb.ads:7:13: info: implicit aspect Always_Terminates on "Init" has been proved, subprogram will terminate

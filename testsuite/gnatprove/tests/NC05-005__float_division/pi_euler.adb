@@ -10,7 +10,7 @@ begin
       begin
          pragma Loop_Invariant (Index >= 1);
          pragma Assert (Long_Float(Index) >= 1.0);
-         Erreur := 1.0/Long_Float(Index);  --  @OVERFLOW_CHECK:PASS
+         Erreur := 1.0/Long_Float(Index);  --  @FLOAT_OVERFLOW_CHECK:PASS
          Pi := Pi+Erreur;
          Index := Index+1;
       end;

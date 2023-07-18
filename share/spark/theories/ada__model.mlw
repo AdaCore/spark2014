@@ -456,11 +456,11 @@ module Dynamic_Discrete
 
   predicate dynamic_property (first last n : rep_type)
 
-  val check_not_last (first last n : rep_type) : rep_type
+  val check_not_last (_ last n : rep_type) : rep_type
     requires { n <> last }
     ensures { result = n /\ n <> last }
 
-  val check_not_first (first last n : rep_type) : rep_type
+  val check_not_first (first _ n : rep_type) : rep_type
     requires { n <> first }
     ensures { result = n /\ n <> first }
 
@@ -921,11 +921,11 @@ module Dynamic_Fixed_Point
 
   predicate dynamic_property (first last n : __fixed)
 
-  val check_not_last (first last n : __fixed) : __fixed
+  val check_not_last (_ last n : __fixed) : __fixed
     requires { n <> last }
     ensures { result = n }
 
-  val check_not_first (first last n : __fixed) : __fixed
+  val check_not_first (first _ n : __fixed) : __fixed
     requires { n <> first }
     ensures { result = n }
 
@@ -1079,11 +1079,11 @@ module Dynamic_Floating_Point
 
   predicate dynamic_property (first last n : rep_type)
 
-  val check_not_last (first last n : rep_type) : rep_type
+  val check_not_last (_ last n : rep_type) : rep_type
     requires { n <> last }
     ensures { result = n }
 
-  val check_not_first (first last n : rep_type) : rep_type
+  val check_not_first (first _ n : rep_type) : rep_type
     requires { n <> first }
     ensures { result = n }
 

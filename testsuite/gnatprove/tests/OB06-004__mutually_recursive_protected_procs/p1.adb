@@ -8,7 +8,7 @@ is
 
    protected PO is
       pragma Priority (Prio);
-      procedure Dummy with
+      procedure Dummy with --@CEILING_PRIORITY_PROTOCOL:FAIL
         Global => (In_Out => P2.State);
    end;
 

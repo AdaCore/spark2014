@@ -2,7 +2,7 @@ package body PF
 with SPARK_Mode
 is
    function Prf_Public (I : Integer) return Integer
-   with Refined_Post => (Prf_Public'Result = I / 2)
+   with Refined_Post => (Prf_Public'Result = I / 2) --@REFINED_POST:PASS
    is
    begin
       return I / 2;
@@ -10,14 +10,14 @@ is
 
    --  Same implementation as Prf_Public
    function Prf_Hidden (I : Integer) return Integer
-   with Refined_Post => (Prf_Hidden'Result = I / 2)
+   with Refined_Post => (Prf_Hidden'Result = I / 2) --@REFINED_POST:PASS
    is
    begin
       return I / 2;
    end Prf_Hidden;
 
    procedure Test (A : in Integer; B : out Integer)
-   with Refined_Post => (B = Prf_Public (A) and B = Prf_Hidden (A))
+   with Refined_Post => (B = Prf_Public (A) and B = Prf_Hidden (A)) --@REFINED_POST:PASS
    is
    begin
       B := A / 2;

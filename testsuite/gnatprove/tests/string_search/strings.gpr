@@ -1,9 +1,0 @@
-project Strings is
-
-   package Compiler is
-      for Switches ("ada") use ("-gnata");
-   end Compiler;
-
-   for Main use ("test_search.adb");
-
-end Strings;

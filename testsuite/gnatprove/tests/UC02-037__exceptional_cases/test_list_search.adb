@@ -46,7 +46,7 @@ procedure Test_List_Search with SPARK_Mode is
    Normal_Exit : Boolean := False;
 
    procedure Search_And_Swap (L : access List_Cell; V1, V2 : Integer) is
-      L_Old : constant List := Copy (L) with Ghost; --@RESOURCE_LEAK:FAIL
+      L_Old : constant List := Copy (L) with Ghost; --@RESOURCE_LEAK_AT_END_OF_SCOPE:FAIL
       X_Old : access constant List_Cell := L_Old with Ghost;
       X     : access List_Cell := L;
    begin

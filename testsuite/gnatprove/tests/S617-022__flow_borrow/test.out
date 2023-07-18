@@ -9,6 +9,9 @@ array_borrows.adb:23:23: info: assertion proved (CVC5: 1 VC)
 array_borrows.adb:23:25: info: pointer dereference check proved (CVC5: 1 VC)
 array_borrows.adb:25:20: info: assertion proved (CVC5: 1 VC)
 array_borrows.adb:25:29: info: pointer dereference check proved (CVC5: 1 VC)
+extended_borrow.adb:6:13: error: function "Update_X_F" with output global "XF" is not allowed in SPARK [E0005]
+extended_borrow.adb:6:13: error: launch "gnatprove --explain=E0005" for more information
+extended_borrow.adb:6:13: error: violation of aspect SPARK_Mode at line 1
 flow_borrows.adb:7:04: info: absence of resource or memory leak at end of scope proved (CVC5: 1 VC)
 flow_borrows.adb:8:04: info: absence of resource or memory leak at end of scope proved (CVC5: 1 VC)
 flow_borrows.adb:9:04: medium: resource or memory leak might occur at end of scope
@@ -35,3 +38,4 @@ list_borrow.adb:20:30: info: pointer dereference check proved (CVC5: 1 VC)
 list_borrow.adb:21:19: info: assertion proved (CVC5: 1 VC)
 list_borrow.adb:21:20: info: pointer dereference check proved (CVC5: 1 VC)
 list_borrow.adb:21:25: info: pointer dereference check proved (CVC5: 1 VC)
+gnatprove: error during flow analysis and proof
