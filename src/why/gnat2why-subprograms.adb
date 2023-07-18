@@ -3333,12 +3333,13 @@ package body Gnat2Why.Subprograms is
          then
             Prepend
               (Transform_Handled_Statements
-                 (Handled_Statement_Sequence (Body_N)),
+                 (Handled_Statement_Sequence (Body_N), Body_Params),
                Why_Body);
          end if;
 
          Why_Body :=
-           Transform_Declarations_Block (Declarations (Body_N), Why_Body);
+           Transform_Declarations_Block
+             (Declarations (Body_N), Why_Body, Body_Params);
 
          --  Assume initial conditions of withed units from the body
 
@@ -3367,11 +3368,13 @@ package body Gnat2Why.Subprograms is
       if Present (Priv_Decls)
         and then Private_Spec_In_SPARK (E)
       then
-         Why_Body := Transform_Declarations_Block (Priv_Decls, Why_Body);
+         Why_Body :=
+           Transform_Declarations_Block (Priv_Decls, Why_Body, Body_Params);
       end if;
 
       if Present (Vis_Decls) then
-         Why_Body := Transform_Declarations_Block (Vis_Decls, Why_Body);
+         Why_Body :=
+           Transform_Declarations_Block (Vis_Decls, Why_Body, Body_Params);
       end if;
 
       --  Assume initial conditions of withed units.
@@ -3704,11 +3707,13 @@ package body Gnat2Why.Subprograms is
             Append (Why_Body, +Checks);
          end;
 
-         Why_Body := Transform_Declarations_Block (Priv_Decls, Why_Body);
+         Why_Body :=
+           Transform_Declarations_Block (Priv_Decls, Why_Body, Body_Params);
       end if;
 
       if Present (Vis_Decls) then
-         Why_Body := Transform_Declarations_Block (Vis_Decls, Why_Body);
+         Why_Body :=
+           Transform_Declarations_Block (Vis_Decls, Why_Body, Body_Params);
       end if;
 
       Wrap_Discr (Why_Body);
@@ -4609,7 +4614,8 @@ package body Gnat2Why.Subprograms is
                                   else "")));
 
             for Prag of Prags loop
-               Append (Result, Transform_Pragma (Prag, Force => True));
+               Append
+                 (Result, Transform_Pragma (Prag, Body_Params, Force => True));
             end loop;
          end if;
 
@@ -4944,7 +4950,7 @@ package body Gnat2Why.Subprograms is
               Sequence
                 ((1 => Check_Ceiling_Protocol (Body_Params, E),
                   2 => Transform_Simple_Return_Expression
-                    (Expr, E, Type_Of_Node (E))));
+                    (Expr, E, Type_Of_Node (E), Body_Params)));
 
             Why_Body := Checking_Of_Refined_Post (Why_Body);
 
@@ -4978,9 +4984,10 @@ package body Gnat2Why.Subprograms is
                 ((1 => Transform_All_Pragmas
                     (Pre_Prags, "checking of pragma precondition"),
                   2 => Check_Ceiling_Protocol (Body_Params, E),
-                  3 => Transform_Declarations (Declarations (Body_N)),
+                  3 => Transform_Declarations
+                    (Declarations (Body_N), Body_Params),
                   4 => Transform_Handled_Statements
-                    (Handled_Statement_Sequence (Body_N)),
+                    (Handled_Statement_Sequence (Body_N), Body_Params),
                   5 => Raise_Stmt));
 
             --  Enclose the subprogram body in a try-block, so that return
@@ -5302,10 +5309,12 @@ package body Gnat2Why.Subprograms is
 
       if Entity_Body_In_SPARK (E) then
          Why_Body :=
-           Transform_Handled_Statements (Handled_Statement_Sequence (Body_N));
+           Transform_Handled_Statements
+             (Handled_Statement_Sequence (Body_N), Body_Params);
 
          Why_Body :=
-           Transform_Declarations_Block (Declarations (Body_N), Why_Body);
+           Transform_Declarations_Block
+             (Declarations (Body_N), Why_Body, Body_Params);
 
          --  We check that the call graph starting from this task respects the
          --  ceiling priority protocol.
@@ -5325,11 +5334,13 @@ package body Gnat2Why.Subprograms is
       if Present (Priv_Decls)
         and then Private_Spec_In_SPARK (E)
       then
-         Why_Body := Transform_Declarations_Block (Priv_Decls, Why_Body);
+         Why_Body := Transform_Declarations_Block
+           (Priv_Decls, Why_Body, Body_Params);
       end if;
 
       if Present (Vis_Decls) then
-         Why_Body := Transform_Declarations_Block (Vis_Decls, Why_Body);
+         Why_Body := Transform_Declarations_Block
+           (Vis_Decls, Why_Body, Body_Params);
       end if;
 
       --  We assume that objects used in the program are in range, if

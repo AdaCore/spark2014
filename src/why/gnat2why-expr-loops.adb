@@ -89,17 +89,24 @@ package body Gnat2Why.Expr.Loops is
    --     after the last select loop (in)variant, or all the statements of the
    --     loop if there is no loop (in)variant in the loop.
 
-   function Transform_Loop_Variant (Stmt : N_Pragma_Id) return W_Variants_Id;
+   function Transform_Loop_Variant
+     (Stmt   : N_Pragma_Id;
+      Params : Transformation_Params)
+      return W_Variants_Id;
    --  Given a pragma Loop_Variant in Stmt, returns the Variants Why3 node that
    --  contains the same information in Why3 syntax (the variant expression as
    --  a term).
 
-   function Check_Loop_Variant (Stmt : N_Pragma_Id) return W_Prog_Id;
+   function Check_Loop_Variant
+     (Stmt   : N_Pragma_Id;
+      Params : Transformation_Params)
+      return W_Prog_Id;
    --  Given a pragma Loop_Variant in Stmt, returns the Why node for checking
    --  that a loop variant does not raise run-time errors.
 
    function Transform_Loop_Body_Statements
-     (Instrs : Node_Lists.List) return W_Prog_Id;
+     (Instrs : Node_Lists.List;
+      Params : Transformation_Params) return W_Prog_Id;
    --  Returns Why nodes for the transformation of the list of statements and
    --  declaration Instrs from a loop body.
 
@@ -110,7 +117,8 @@ package body Gnat2Why.Expr.Loops is
       Low_Val         : Uint;
       High_Val        : Uint;
       Reversed        : Boolean;
-      Body_Prog       : W_Prog_Id)
+      Body_Prog       : W_Prog_Id;
+      Params          : Transformation_Params)
       return W_Prog_Id;
    --  Returns the unrolled loop expression in Why3
 
@@ -128,7 +136,8 @@ package body Gnat2Why.Expr.Loops is
       Update_Stmt        : W_Prog_Id := Why_Empty;
       First_Stmt         : Node_Id;
       Next_Stmt          : Node_Id := Empty;
-      Last_Inv           : Opt_N_Pragma_Id := Empty)
+      Last_Inv           : Opt_N_Pragma_Id := Empty;
+      Params             : Transformation_Params)
       return W_Prog_Id;
    --  Returns the loop expression in Why
    --
@@ -161,9 +170,15 @@ package body Gnat2Why.Expr.Loops is
    -- Check_Loop_Variant --
    ------------------------
 
-   function Check_Loop_Variant (Stmt : N_Pragma_Id) return W_Prog_Id is
-      Prog    : W_Prog_Id := +Void;
-      Variant : Opt_N_Pragma_Argument_Association_Id;
+   function Check_Loop_Variant
+     (Stmt   : N_Pragma_Id;
+      Params : Transformation_Params)
+      return W_Prog_Id
+   is
+      Prog          : W_Prog_Id := +Void;
+      Variant       : Opt_N_Pragma_Argument_Association_Id;
+      Assert_Params : constant Transformation_Params :=
+        (Params with delta Phase => Generate_VCs_For_Assert);
    begin
       Variant := First (Pragma_Argument_Associations (Stmt));
 
@@ -174,7 +189,7 @@ package body Gnat2Why.Expr.Loops is
               (Expr          => Expr,
                Expected_Type =>
                  Base_Why_Type_No_Bool (Expr),
-               Params        => Body_Params);
+               Params        => Assert_Params);
 
          begin
             --  If Expr is a big integer, insert a check to make sure that the
@@ -479,7 +494,8 @@ package body Gnat2Why.Expr.Loops is
    ------------------------------
 
    function Transform_Exit_Statement
-     (Stmt : N_Exit_Statement_Id)
+     (Stmt   : N_Exit_Statement_Id;
+      Params : Transformation_Params)
       return W_Prog_Id
    is
       function Havoc_Borrowed_And_Check_No_Leaks_On_Exit return W_Prog_Id;
@@ -531,7 +547,7 @@ package body Gnat2Why.Expr.Loops is
              (Ada_Node  => Stmt,
               Condition => Transform_Prog (Condition (Stmt),
                                            EW_Bool_Type,
-                                           Body_Params),
+                                           Params),
               Then_Part => +Raise_Stmt);
       end if;
    end Transform_Exit_Statement;
@@ -541,7 +557,8 @@ package body Gnat2Why.Expr.Loops is
    ------------------------------------
 
    function Transform_Loop_Body_Statements
-     (Instrs : Node_Lists.List) return W_Prog_Id
+     (Instrs : Node_Lists.List;
+      Params : Transformation_Params) return W_Prog_Id
    is
       Body_Prog : W_Statement_Sequence_Id := Void_Sequence;
    begin
@@ -553,6 +570,7 @@ package body Gnat2Why.Expr.Loops is
 
          Transform_Statement_Or_Declaration_In_List
            (Stmt_Or_Decl => Instr,
+            Params       => Params,
             Seq          => Body_Prog);
       end loop;
 
@@ -564,7 +582,8 @@ package body Gnat2Why.Expr.Loops is
    ------------------------------
 
    function Transform_Loop_Statement
-     (Stmt : N_Loop_Statement_Id)
+     (Stmt   : N_Loop_Statement_Id;
+      Params : Transformation_Params)
       return W_Prog_Id
    is
       function Transform_Loop_Variants
@@ -591,7 +610,7 @@ package body Gnat2Why.Expr.Loops is
          end if;
 
          for Variant of List loop
-            Stmts (Counter) := Check_Loop_Variant (Variant);
+            Stmts (Counter) := Check_Loop_Variant (Variant, Params);
             Counter := Counter + 1;
          end loop;
 
@@ -645,7 +664,8 @@ package body Gnat2Why.Expr.Loops is
                end;
             else
                Count := Count + 1;
-               Variants_Ar (Count) := Transform_Loop_Variant (Loop_Variant);
+               Variants_Ar (Count) := Transform_Loop_Variant
+                 (Loop_Variant, Params);
             end if;
          end loop;
          return Variants_Ar (1 .. Count);
@@ -754,9 +774,10 @@ package body Gnat2Why.Expr.Loops is
          --  Transform statements before and after the loop invariants
 
          In_Loop_Initial_Statements := True;
-         Initial_Prog := Transform_Loop_Body_Statements (Initial_Stmts);
+         Initial_Prog := Transform_Loop_Body_Statements
+           (Initial_Stmts, Params);
          In_Loop_Initial_Statements := Save_Loop_Init;
-         Final_Prog   := Transform_Loop_Body_Statements (Final_Stmts);
+         Final_Prog   := Transform_Loop_Body_Statements (Final_Stmts, Params);
 
          --  Generate the implicit invariant for the dynamic properties of
          --  objects modified in the loop.
@@ -792,6 +813,7 @@ package body Gnat2Why.Expr.Loops is
                      Transform_Pragma_Check (Stmt    => Loop_Invariant,
                                              Force   => False,
                                              Expr    => Expr,
+                                             Params  => Params,
                                              Runtime => One_Inv_Check,
                                              Pred    => One_Invariant);
 
@@ -840,7 +862,8 @@ package body Gnat2Why.Expr.Loops is
                               Next_Stmt          => Next_Stmt,
                               Last_Inv           =>
                                 (if Loop_Invariants.Is_Empty then Empty
-                                 else Loop_Invariants.Last_Element));
+                                 else Loop_Invariants.Last_Element),
+                              Params             => Params);
 
          --  Case of a WHILE loop
 
@@ -851,13 +874,13 @@ package body Gnat2Why.Expr.Loops is
                                                Condition_Actions (Scheme),
                                                EW_Bool_Type,
                                                EW_Prog,
-                                               Params => Body_Params);
+                                               Params => Params);
                Cond_Pred : constant W_Pred_Id :=
                  +Transform_Expr_With_Actions (Condition (Scheme),
                                                Condition_Actions (Scheme),
                                                EW_Bool_Type,
                                                EW_Pred,
-                                               Params => Body_Params);
+                                               Params => Params);
 
                --  If the Loop_Assertion pragma comes first in the loop body
                --  (possibly inside nested block statements), then we can use
@@ -895,7 +918,8 @@ package body Gnat2Why.Expr.Loops is
                                  Next_Stmt          => Next_Stmt,
                                  Last_Inv           =>
                                    (if Loop_Invariants.Is_Empty then Empty
-                                    else Loop_Invariants.Last_Element));
+                                    else Loop_Invariants.Last_Element),
+                                 Params             => Params);
             end While_Loop;
 
          --  Case of a FOR loop
@@ -939,7 +963,7 @@ package body Gnat2Why.Expr.Loops is
                     (Insert_Simple_Conversion
                          (Domain => EW_Prog,
                           Expr   => Transform_Expr
-                            (Over_Node, EW_Prog, Body_Params),
+                            (Over_Node, EW_Prog, Params),
                           To     => Typ_For_Cont),
                      Need_Temp =>
                         not SPARK_Atree.Is_Variable (Over_Node)));
@@ -951,7 +975,7 @@ package body Gnat2Why.Expr.Loops is
                        Insert_Simple_Conversion
                          (Domain => EW_Term,
                           Expr   => Transform_Expr
-                            (Over_Node, EW_Term, Body_Params),
+                            (Over_Node, EW_Term, Params),
                           To     => Typ_For_Cont)
                   else W_Container);
                --  Container expression in the term domain
@@ -1025,7 +1049,7 @@ package body Gnat2Why.Expr.Loops is
                       (Etype (Over_Node), Name_Has_Element);
                   W_H_Elmt : constant W_Identifier_Id :=
                     +Transform_Identifier
-                      (Params => Body_Params,
+                      (Params => Params,
                        Expr   => H_Elmt,
                        Ent    => H_Elmt,
                        Domain => Domain);
@@ -1059,7 +1083,7 @@ package body Gnat2Why.Expr.Loops is
                       (Etype (Over_Node), Name_Has_Element);
                   W_H_Elmt : constant W_Identifier_Id :=
                     +Transform_Identifier
-                    (Params => Body_Params,
+                    (Params => Params,
                      Expr   => H_Elmt,
                      Ent    => H_Elmt,
                      Domain => EW_Prog);
@@ -1068,7 +1092,7 @@ package body Gnat2Why.Expr.Loops is
                       (Etype (Over_Node), Name_Next);
                   W_N_Elmt : constant W_Identifier_Id :=
                     +Transform_Identifier
-                    (Params => Body_Params,
+                    (Params => Params,
                      Expr   => N_Elmt,
                      Ent    => N_Elmt,
                      Domain => EW_Prog);
@@ -1116,7 +1140,7 @@ package body Gnat2Why.Expr.Loops is
                      Name     =>
                        W_Identifier_Id
                          (Transform_Identifier
-                              (Params => Body_Params,
+                              (Params => Params,
                                Expr   => First,
                                Ent    => First,
                                Domain => EW_Prog)),
@@ -1143,7 +1167,7 @@ package body Gnat2Why.Expr.Loops is
                        To     => Typ_For_Iter);
                   W_Elmt   : constant W_Identifier_Id :=
                     +Transform_Identifier
-                      (Params => Body_Params,
+                      (Params => Params,
                        Expr   => Elmt,
                        Ent    => Elmt,
                        Domain => Domain);
@@ -1333,7 +1357,7 @@ package body Gnat2Why.Expr.Loops is
                                     New_Deref (Right => Loop_Index,
                                                Typ   => Loop_Index_Type),
                                     EW_Pred,
-                                    Params => Body_Params,
+                                    Params => Params,
                                     T_Type => Loop_Index_Type);
 
                   else
@@ -1346,7 +1370,7 @@ package body Gnat2Why.Expr.Loops is
                                   (Get_Iterable_Type_Primitive
                                        (Typ => Etype (Over_Node),
                                         Nam => Name_First)),
-                                Params => Body_Params),
+                                Params => Params),
                              Right  => +Constraint_For_Iterable (EW_Pred));
                         --  Dynamic_Invariant (Iter_Deref)
                         --  and Has_Element (W_Container, Iter_Deref)
@@ -1436,7 +1460,7 @@ package body Gnat2Why.Expr.Loops is
                            Name     =>
                              W_Identifier_Id
                                (Transform_Identifier
-                                    (Params => Body_Params,
+                                    (Params => Params,
                                      Expr   => Next,
                                      Ent    => Next,
                                      Domain => EW_Prog)),
@@ -1562,13 +1586,13 @@ package body Gnat2Why.Expr.Loops is
                   --  old !i <= tmp < i or old !i >= tmp > i
 
                   Last_Filter  : constant W_Pred_Id :=
-                    Transform_Pred (Filter, Body_Params);
+                    Transform_Pred (Filter, Params);
                   Exit_Stmt    : constant W_Prog_Id := New_Conditional
                     (Condition => New_Not
                        (Right  => Transform_Prog
                           (Filter,
                            EW_Bool_Type,
-                           Body_Params)),
+                           Params)),
                      Then_Part => New_Raise
                        (Name => Loop_Exception_Name (Loop_Id)));
                   --  if not cond then raise loop_exit;
@@ -1599,7 +1623,7 @@ package body Gnat2Why.Expr.Loops is
                        (Condition => Tmp_Range,
                         Then_Part => New_Not
                           (Right  => Transform_Pred
-                             (Filter, Body_Params))));
+                             (Filter, Params))));
 
                   --  Compute:
                   --    ignore { let tmp = any int
@@ -1625,7 +1649,7 @@ package body Gnat2Why.Expr.Loops is
                                  Right  => +Index_Deref,
                                  Domain => EW_Pred),
                               Domain => EW_Pred)),
-                        Context => Transform_Prog (Filter, Body_Params),
+                        Context => Transform_Prog (Filter, Params),
                         Typ     => EW_Bool_Type));
                   Ada_Ent_To_Why.Pop_Scope (Symbol_Table);
 
@@ -1706,7 +1730,7 @@ package body Gnat2Why.Expr.Loops is
                        (Condition => Transform_Prog
                           (Expr          => Iterator_Filter (LParam_Spec),
                            Expected_Type => EW_Bool_Type,
-                           Params        => Body_Params),
+                           Params        => Params),
                         Then_Part => Final_Prog);
                   end if;
 
@@ -1725,7 +1749,8 @@ package body Gnat2Why.Expr.Loops is
                                     High_Val        => High_Val,
                                     Reversed        =>
                                       Reverse_Present (LParam_Spec),
-                                    Body_Prog       => Inlined_Body);
+                                    Body_Prog       => Inlined_Body,
+                                    Params          => Params);
                   end;
 
                --  Regular case of a FOR loop with a loop (in)variant, or no
@@ -1753,7 +1778,7 @@ package body Gnat2Why.Expr.Loops is
                            Right  => +Transform_Expr
                              (Expr   => Iterator_Filter (LParam_Spec),
                               Domain => EW_Pred,
-                              Params => Body_Params),
+                              Params => Params),
                            Domain => EW_Prog);
                      end if;
 
@@ -1778,7 +1803,8 @@ package body Gnat2Why.Expr.Loops is
                                Next_Stmt          => Next_Stmt,
                                Last_Inv           =>
                                  (if Loop_Invariants.Is_Empty then Empty
-                                  else Loop_Invariants.Last_Element));
+                                  else Loop_Invariants.Last_Element),
+                               Params             => Params);
 
                   Prepend (Construct_Init_Prog, Entire_Loop);
                end if;
@@ -1814,11 +1840,11 @@ package body Gnat2Why.Expr.Loops is
                      High_Expr    : constant W_Prog_Id :=
                        Transform_Prog (High_Bound (Actual_Range),
                                        Loop_Index_Type,
-                                       Params => Body_Params);
+                                       Params => Params);
                      Low_Expr     : constant W_Prog_Id :=
                        Transform_Prog (Low_Bound (Actual_Range),
                                        Loop_Index_Type,
-                                       Params => Body_Params);
+                                       Params => Params);
                   begin
                      --  Insert assignment to high bound first, so that
                      --  assignment to low bound is done prior to assignment to
@@ -1841,7 +1867,7 @@ package body Gnat2Why.Expr.Loops is
                if Nkind (Over_Node) = N_Subtype_Indication then
                   Prepend
                     (Check_Subtype_Indication
-                       (Params   => Body_Params,
+                       (Params   => Params,
                         N        => Over_Node,
                         Sub_Type =>
                           Etype (Defining_Identifier (LParam_Spec))),
@@ -1858,9 +1884,15 @@ package body Gnat2Why.Expr.Loops is
    -- Transform_Loop_Variant --
    ----------------------------
 
-   function Transform_Loop_Variant (Stmt : N_Pragma_Id) return W_Variants_Id is
-      Variant : Opt_N_Pragma_Argument_Association_Id;
-      Count   : Natural := 0;
+   function Transform_Loop_Variant
+     (Stmt   : N_Pragma_Id;
+      Params : Transformation_Params)
+      return W_Variants_Id
+   is
+      Variant       : Opt_N_Pragma_Argument_Association_Id;
+      Count         : Natural := 0;
+      Assert_Params : constant Transformation_Params :=
+        (Params with delta Phase => Generate_VCs_For_Assert);
    begin
       --  Count Variant items in the Loop_Variant pragma
 
@@ -1925,7 +1957,8 @@ package body Gnat2Why.Expr.Loops is
       Low_Val         : Uint;
       High_Val        : Uint;
       Reversed        : Boolean;
-      Body_Prog       : W_Prog_Id)
+      Body_Prog       : W_Prog_Id;
+      Params          : Transformation_Params)
       return W_Prog_Id
    is
       function Repeat_Loop return W_Prog_Id;
@@ -1987,7 +2020,7 @@ package body Gnat2Why.Expr.Loops is
 
       Try_Body : W_Prog_Id :=
         Bind_From_Mapping_In_Prog
-          (Params => Body_Params,
+          (Params => Params,
            Map    => Map_For_Loop_Entry (Loop_Id),
            Expr   => Sequence
              (New_Comment
@@ -2057,7 +2090,8 @@ package body Gnat2Why.Expr.Loops is
       Update_Stmt        : W_Prog_Id := Why_Empty;
       First_Stmt         : Node_Id;
       Next_Stmt          : Node_Id := Empty;
-      Last_Inv           : Opt_N_Pragma_Id := Empty)
+      Last_Inv           : Opt_N_Pragma_Id := Empty;
+      Params             : Transformation_Params)
       return W_Prog_Id
    is
       Loop_Ident     : constant W_Name_Id := Loop_Exception_Name (Loop_Id);
@@ -2106,7 +2140,7 @@ package body Gnat2Why.Expr.Loops is
 
       Try_Body       : constant W_Prog_Id :=
         Bind_From_Mapping_In_Prog
-          (Params => Body_Params,
+          (Params => Params,
            Map    => Map_For_Loop_Entry (Loop_Id),
            Expr   => Sequence
              ((1 => New_Comment

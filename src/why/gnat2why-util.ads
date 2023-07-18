@@ -298,9 +298,6 @@ package Gnat2Why.Util is
    function Body_Params return Transformation_Params is
      (Usual_Params (Generate_VCs_For_Body));
 
-   function Assert_Params return Transformation_Params is
-     (Usual_Params (Generate_VCs_For_Assert));
-
    function Contract_Params return Transformation_Params is
      (Usual_Params (Generate_VCs_For_Contract));
 
