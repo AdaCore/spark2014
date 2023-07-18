@@ -919,6 +919,14 @@ package SPARK_Util is
    --  If Expr is of the form "X'Address", return the root object of X.
    --  Otherwise, return Empty. This function accepts empty expressions.
 
+   function Is_Statically_Disabled
+     (N     : Node_Id;
+      Value : Boolean)
+      return Boolean
+   with Pre => Nkind (N) in N_Subexpr and then Is_Boolean_Type (Etype (N));
+   --  Returns True iff N is a "statically disabled" condition as described in
+   --  the SPARK UG (7.3.2).
+
    ---------------------------------
    -- Misc operations and queries --
    ---------------------------------
