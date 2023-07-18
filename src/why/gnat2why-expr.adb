@@ -8876,10 +8876,7 @@ package body Gnat2Why.Expr is
       return W_Term_Id
    is
       Params : constant Transformation_Params :=
-        (Phase       => Generate_Logic,
-         Gen_Marker  => GM_None,
-         Ref_Allowed => True,
-         Old_Policy  => As_Old);
+        (Logic_Params with delta Ref_Allowed => True);
       Result : constant W_Term_Id :=
         Transform_Term (Expr, Expected_Type, Params);
    begin
@@ -12512,10 +12509,7 @@ package body Gnat2Why.Expr is
          --  Predicate used to define the aggregate/updated object
 
          Params_No_Ref : constant Transformation_Params :=
-           (Phase       => Params.Phase,
-            Gen_Marker  => GM_None,
-            Ref_Allowed => False,
-            Old_Policy  => Raise_Error);
+           (Logic_Params with delta Old_Policy => Raise_Error);
 
          --  Arrays of binders and arguments, and mapping of nodes to names
 
@@ -13758,10 +13752,7 @@ package body Gnat2Why.Expr is
             else
                declare
                   Params : constant Transformation_Params :=
-                    Transformation_Params'(Phase       => Generate_Logic,
-                                           Gen_Marker  => GM_None,
-                                           Ref_Allowed => False,
-                                           Old_Policy  => Use_Map);
+                    (Logic_Params with delta Old_Policy  => Use_Map);
                begin
                   Arg_Val :=
                     +Transform_Aggregate_Value
@@ -22819,7 +22810,7 @@ package body Gnat2Why.Expr is
                Cond : W_Pred_Id;
             begin
                Transform_Expr_With_Cutpoints
-                 (Expr, Params, Runtime, Cond, Pred);
+                 (Expr, Assert_Params, Runtime, Cond, Pred);
                Runtime := Sequence
                  (Runtime,
                   New_Located_Assert
