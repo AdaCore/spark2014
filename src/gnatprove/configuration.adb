@@ -1669,7 +1669,12 @@ package body Configuration is
          if not All_Projects then
             declare
                Limit_String : GNAT.Strings.String_Access;
-
+               Msg_String : constant String :=
+                 (if not Null_Or_Empty_String (CL_Switches.Limit_Line)
+                  then "limit-line"
+                  elsif not Null_Or_Empty_String (CL_Switches.Limit_Region)
+                  then "limit-region"
+                  else "limit-subp");
             begin
                --  Limit_Line, Limit_Region, and Limit_Subp all imply -u for
                --  the corresponding file. We take care of that using the
@@ -1697,7 +1702,7 @@ package body Configuration is
                   begin
                      if Colon_Index = 0 then
                         Abort_Msg
-                          ("limit-line: incorrect line specification" &
+                          (Msg_String & ": incorrect line specification" &
                              " - missing ':' followed by operand",
                            With_Help => False);
                      end if;
