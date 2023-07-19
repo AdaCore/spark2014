@@ -2966,9 +2966,6 @@ package body SPARK_Util is
                         and then Entity (Expr) = Standard_False);
             end;
 
-         when N_Call_Marker =>
-            return Is_Error_Signaling_Statement (Next (N));
-
          when others =>
             return False;
       end case;
