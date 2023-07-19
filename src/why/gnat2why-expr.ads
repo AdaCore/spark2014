@@ -543,8 +543,9 @@ package Gnat2Why.Expr is
    --  Translate Expr'Old into Why
 
    function Transform_Declarations_Block
-     (L : List_Id;
-      Core : W_Prog_Id)
+     (L      : List_Id;
+      Core   : W_Prog_Id;
+      Params : Transformation_Params)
       return W_Prog_Id;
    --  Translate the Declarations block of Block statement or subprogram to a
    --  sequence of Why expressions; dynamic type declarations are translated
@@ -553,8 +554,12 @@ package Gnat2Why.Expr is
    --  @param L a list of declarations
    --  @param Core an expression to which the statements resulting from L are
    --    prepended
+   --  @param Params transformation parameters
 
-   function Transform_Declarations (L : List_Id) return W_Prog_Id;
+   function Transform_Declarations
+     (L      : List_Id;
+      Params : Transformation_Params)
+      return W_Prog_Id;
    --  Transform the declarations in the list
 
    function Transform_Discrete_Choices
@@ -684,12 +689,14 @@ package Gnat2Why.Expr is
    --  is suitably havoc'd before being read.
 
    function Transform_Pragma
-     (Prag  : N_Pragma_Id;
-      Force : Boolean)
+     (Prag   : N_Pragma_Id;
+      Params : Transformation_Params;
+      Force  : Boolean)
       return W_Prog_Id
      with Pre => not Is_Pragma_Assert_And_Cut (Prag);
    --  Returns the Why program for pragma.
    --  @param Prag The pragma to translate into Why3.
+   --  @param Params transformation parameters
    --  @param Force True to force the translation of the pragma, for those
    --     pragmas normally translated elsewhere like preconditions and
    --     postconditions.
@@ -697,12 +704,14 @@ package Gnat2Why.Expr is
 
    procedure Transform_Pragma_Check
      (Stmt    :     N_Pragma_Id;
+      Params  :    Transformation_Params;
       Force   :     Boolean;
       Expr    : out N_Subexpr_Id;
       Runtime : out W_Prog_Id;
       Pred    : out W_Pred_Id);
    --  For a pragma Check, produces the components of its translation into Why3
    --  @param Stmt The pragma Check to translate.
+   --  @param Params transformation parameters
    --  @param Force True to force the translation of the pragma, even for those
    --     pragmas normally translated elsewhere like preconditions and
    --     postconditions.
@@ -713,14 +722,16 @@ package Gnat2Why.Expr is
    --  @param Pred On exit, Why3 proposition corresponding to the pragma.
 
    function Transform_Pragma_Check
-     (Prag  : N_Pragma_Id;
-      Force : Boolean)
+     (Prag   : N_Pragma_Id;
+      Params : Transformation_Params;
+      Force  : Boolean)
       return W_Prog_Id
      with Pre => not Is_Pragma_Assert_And_Cut (Prag);
    --  Returns the Why program for pragma Check. As most assertion pragmas
    --  (like Assert or Assume) are internally rewritten by semantic analysis
    --  into pragma Check, this is where these are translated.
    --  @param Prag The pragma Check to translate into Why3.
+   --  @param Params transformation parameters
    --  @param Force True to force the translation of the pragma, even for those
    --     pragmas normally translated elsewhere like preconditions and
    --     postconditions.
@@ -729,15 +740,19 @@ package Gnat2Why.Expr is
    function Transform_Simple_Return_Expression
      (Expr        : N_Subexpr_Id;
       Subp        : Entity_Id;
-      Return_Type : W_Type_Id)
+      Return_Type : W_Type_Id;
+      Params      : Transformation_Params)
       return W_Prog_Id;
    --  Transform a simple return statement returning the expression Expr
 
-   function Transform_Handled_Statements (N : Node_Id) return W_Prog_Id;
+   function Transform_Handled_Statements
+     (N      : Node_Id;
+      Params : Transformation_Params) return W_Prog_Id;
    --  Transforms an handled list of statements into a Why expression
 
    procedure Transform_Statement_Or_Declaration_In_List
      (Stmt_Or_Decl :        Node_Id;
+      Params       : Transformation_Params;
       Seq          : in out W_Statement_Sequence_Id);
    --  Transform the next statement or declaration Stmt_Or_Decl, inside a
    --  list of statements and declarations. Seq is the transformation of the

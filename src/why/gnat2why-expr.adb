@@ -712,12 +712,14 @@ package body Gnat2Why.Expr is
    --  Arr(1) = 10 and Arr(2) = 30 and Arr(3) = 40 and Arr(4) = 30
 
    function Transform_Assignment_Statement
-     (Stmt : N_Assignment_Statement_Id)
+     (Stmt   : N_Assignment_Statement_Id;
+      Params : Transformation_Params)
       return W_Prog_Id;
    --  Translate a single Ada statement into a Why expression
 
    function Transform_Block_Statement
-     (N : N_Block_Statement_Id)
+     (N      : N_Block_Statement_Id;
+      Params : Transformation_Params)
       return W_Prog_Id;
    --  ???
 
@@ -761,7 +763,9 @@ package body Gnat2Why.Expr is
       return W_Expr_Id;
    --  Transform either a delta aggregate or an Update attribute
 
-   function Transform_Declaration (Decl : Node_Id) return W_Prog_Id;
+   function Transform_Declaration
+     (Decl   : Node_Id;
+      Params : Transformation_Params) return W_Prog_Id;
    --  Transform a declaration. Return a program that takes into account the
    --  dynamic semantics of the declaration (checks and assumptions).
 
@@ -783,10 +787,14 @@ package body Gnat2Why.Expr is
       return W_Expr_Id;
    --  @return the Why3 expression for SPARK quantified expression [Expr]
 
-   function Transform_Priority_Pragmas (Prag : N_Pragma_Id) return W_Prog_Id
+   function Transform_Priority_Pragmas
+     (Prag   : N_Pragma_Id;
+      Params : Transformation_Params)
+      return W_Prog_Id
      with Pre => Get_Pragma_Id (Prag) in Pragma_Interrupt_Priority
                                        | Pragma_Priority;
    --  @param Prag either a pragma Priority or a pragma Interrupt_priority
+   --  @param Params transformation parameters
    --  @return an expression that checks that the argument of the pragma is in
    --          the required range for this object type and pragma type
 
@@ -799,10 +807,12 @@ package body Gnat2Why.Expr is
 
    function Transform_Statement_Or_Declaration
      (Stmt_Or_Decl        :     Node_Id;
+      Params              :     Transformation_Params;
       Assert_And_Cut_Expr : out Opt_N_Subexpr_Id;
       Assert_And_Cut      : out W_Pred_Id)
       return W_Prog_Id;
    --  Transform the Ada statement into a Why program expression.
+   --  @param Params transformation parameters
    --  @param Assert_And_Cut_Expr Expression in the pragma Assert_And_Cut, if
    --     Stmt_Or_Decl was such a pragma, Empty otherwise.
    --  @param Assert_And_Cut Why3 predicate equivalent of the assertion
@@ -811,7 +821,8 @@ package body Gnat2Why.Expr is
    --     expression.
 
    function Transform_Statements_And_Declarations
-     (Stmts_And_Decls : List_Id)
+     (Stmts_And_Decls : List_Id;
+      Params          : Transformation_Params)
       return W_Prog_Id;
    --  Transforms a list of statements and declarations into a Why expression.
    --  An empty list is transformed into the void expression.
@@ -902,10 +913,12 @@ package body Gnat2Why.Expr is
 
    procedure Transform_Expr_With_Cutpoints
      (Assertion :     N_Subexpr_Id;
+      Params    :     Transformation_Params;
       Runtime   : out W_Prog_Id;
       Premise   : out W_Pred_Id;
       Result    : out W_Pred_Id)
-   with Pre => Contains_Cut_Operations (Assertion);
+   with Pre => Contains_Cut_Operations (Assertion)
+     and then Params.Phase = Generate_VCs_For_Assert;
    --  Expressions containing occurrences of the cut operations By and So are
    --  translated differently depending on whether they occur as an assumption
    --  or a goal. The fact that the two translations are compatible is checked
@@ -8863,10 +8876,7 @@ package body Gnat2Why.Expr is
       return W_Term_Id
    is
       Params : constant Transformation_Params :=
-        (Phase       => Generate_Logic,
-         Gen_Marker  => GM_None,
-         Ref_Allowed => True,
-         Old_Policy  => As_Old);
+        (Logic_Params with delta Ref_Allowed => True);
       Result : constant W_Term_Id :=
         Transform_Term (Expr, Expected_Type, Params);
    begin
@@ -12059,7 +12069,7 @@ package body Gnat2Why.Expr is
                   begin
                      Prepend
                        (Transform_Statement_Or_Declaration
-                          (N, Cut_Assertion_Expr, Cut_Assertion),
+                          (N, Params, Cut_Assertion_Expr, Cut_Assertion),
                         T);
                   end;
                end if;
@@ -12069,7 +12079,7 @@ package body Gnat2Why.Expr is
 
             when N_Object_Renaming_Declaration =>
                if Domain = EW_Prog then
-                  Prepend (Transform_Declaration (N), T);
+                  Prepend (Transform_Declaration (N, Params), T);
                end if;
 
             --  Introduce a check for assertions in the program domain
@@ -12080,7 +12090,7 @@ package body Gnat2Why.Expr is
                if not Is_Ignored_Pragma_Check (N)
                  and then Domain = EW_Prog
                then
-                  Prepend (Transform_Pragma (N, Force => False), T);
+                  Prepend (Transform_Pragma (N, Params, Force => False), T);
                end if;
 
             when others =>
@@ -12499,10 +12509,7 @@ package body Gnat2Why.Expr is
          --  Predicate used to define the aggregate/updated object
 
          Params_No_Ref : constant Transformation_Params :=
-           (Phase       => Params.Phase,
-            Gen_Marker  => GM_None,
-            Ref_Allowed => False,
-            Old_Policy  => Raise_Error);
+           (Logic_Params with delta Old_Policy => Raise_Error);
 
          --  Arrays of binders and arguments, and mapping of nodes to names
 
@@ -13745,10 +13752,7 @@ package body Gnat2Why.Expr is
             else
                declare
                   Params : constant Transformation_Params :=
-                    Transformation_Params'(Phase       => Generate_Logic,
-                                           Gen_Marker  => GM_None,
-                                           Ref_Allowed => False,
-                                           Old_Policy  => Use_Map);
+                    (Logic_Params with delta Old_Policy  => Use_Map);
                begin
                   Arg_Val :=
                     +Transform_Aggregate_Value
@@ -14995,7 +14999,8 @@ package body Gnat2Why.Expr is
    ------------------------------------
 
    function Transform_Assignment_Statement
-     (Stmt : N_Assignment_Statement_Id)
+     (Stmt   : N_Assignment_Statement_Id;
+      Params : Transformation_Params)
       return W_Prog_Id
    is
       Lvalue     : constant Node_Id := SPARK_Atree.Name (Stmt);
@@ -15010,7 +15015,7 @@ package body Gnat2Why.Expr is
       T          : W_Prog_Id :=
         Transform_Prog (Expression (Stmt),
                         L_Type,
-                        Params => Body_Params);
+                        Params => Params);
       Lgth_Check : constant Boolean :=
         Present (Get_Ada_Node (+L_Type)) and then
 
@@ -15054,7 +15059,7 @@ package body Gnat2Why.Expr is
          declare
             Lval  : constant W_Term_Id :=
               New_Temp_For_Expr
-                (Transform_Expr (Lvalue, EW_Prog, Body_Params));
+                (Transform_Expr (Lvalue, EW_Prog, Params));
             Dim   : constant Positive :=
               Positive (Number_Dimensions (Get_Ada_Node (+L_Type)));
             Check : constant W_Pred_Id := New_Length_Equality
@@ -15084,7 +15089,7 @@ package body Gnat2Why.Expr is
             Check : W_Expr_Id := +True_Pred;
             Lval  : constant W_Expr_Id :=
               New_Temp_For_Expr
-                (Transform_Expr (Lvalue, EW_Pterm, Body_Params), True);
+                (Transform_Expr (Lvalue, EW_Pterm, Params), True);
             Discr : Node_Id := (if Has_Discriminants (Ty)
                                 then First_Discriminant (Ty)
                                 else Empty);
@@ -15141,7 +15146,7 @@ package body Gnat2Why.Expr is
          declare
             Lval  : constant W_Expr_Id :=
               New_Temp_For_Expr
-                (Transform_Expr (Lvalue, EW_Pterm, Body_Params), True);
+                (Transform_Expr (Lvalue, EW_Pterm, Params), True);
             Pred : constant W_Pred_Id :=
               New_Call
                 (Name => Why_Eq,
@@ -15256,7 +15261,7 @@ package body Gnat2Why.Expr is
                           (Right => Get_Brower_At_End (Brower),
                            Typ   => Get_Typ (Get_Brower_At_End (Brower))),
                       Ty     => Etype (Brower),
-                      Params => Body_Params))));
+                      Params => Params))));
          end;
       end if;
 
@@ -16518,12 +16523,13 @@ package body Gnat2Why.Expr is
    -------------------------------
 
    function Transform_Block_Statement
-     (N : N_Block_Statement_Id)
+     (N      : N_Block_Statement_Id;
+      Params : Transformation_Params)
       return W_Prog_Id
    is
       use Local_CFG;
       Core : W_Prog_Id :=
-        Transform_Handled_Statements (Handled_Statement_Sequence (N));
+        Transform_Handled_Statements (Handled_Statement_Sequence (N), Params);
    begin
       if Present (Declarations (N)) then
 
@@ -16534,7 +16540,7 @@ package body Gnat2Why.Expr is
             +Havoc_Borrowed_And_Check_No_Leaks_From_Scope
               (N, Vertex'(Kind => Block_Exit, Node => N)));
 
-         return Transform_Declarations_Block (Declarations (N), Core);
+         return Transform_Declarations_Block (Declarations (N), Core, Params);
       else
          return Core;
       end if;
@@ -17429,7 +17435,10 @@ package body Gnat2Why.Expr is
    -- Transform_Declaration --
    ---------------------------
 
-   function Transform_Declaration (Decl : Node_Id) return W_Prog_Id is
+   function Transform_Declaration
+     (Decl   : Node_Id;
+      Params : Transformation_Params) return W_Prog_Id
+   is
 
       function Check_Discr_Of_Subtype (Base, Ent : Entity_Id) return W_Prog_Id;
       --  @param Ent a type entity
@@ -17544,7 +17553,7 @@ package body Gnat2Why.Expr is
                     (Expr        => +New_Result_Ident (Typ),
                      Ty          => Etype (Discr),
                      Initialized => True_Term,
-                     Params      => Body_Params),
+                     Params      => Params),
                   Return_Type => Typ);
 
                --  Assume that Rec_Id has Vars (I) for discriminant Discr
@@ -17593,7 +17602,7 @@ package body Gnat2Why.Expr is
 
                         while Present (Index) loop
                            Check := Check_Scalar_Range
-                             (Params => Body_Params,
+                             (Params => Params,
                               N      => Etype (Index),
                               Base   => Etype (Index_Base));
 
@@ -17687,7 +17696,7 @@ package body Gnat2Why.Expr is
                        +Transform_Identifier (Expr   => Lvalue,
                                               Ent    => Lvalue,
                                               Domain => EW_Term,
-                                              Params => Body_Params);
+                                              Params => Params);
                      Initialized : constant Boolean :=
                        Present (Expression (Decl))
                        or else Ekind (Obj) = E_Constant
@@ -17838,7 +17847,7 @@ package body Gnat2Why.Expr is
          when N_Object_Renaming_Declaration =>
             R := New_Ignore (Prog =>
                    Transform_Prog (Unqual_Conv (Name (Decl)),
-                                   Body_Params));
+                                   Params));
 
          when N_Subtype_Declaration
             | N_Full_Type_Declaration
@@ -17883,7 +17892,7 @@ package body Gnat2Why.Expr is
                        or else
                          not SPARK_Atree.Is_OK_Static_Range (Get_Range (Ent))
                      then
-                        R := Check_Scalar_Range (Params => Body_Params,
+                        R := Check_Scalar_Range (Params => Params,
                                                  N      => Ent,
                                                  Base   => Base);
                      end if;
@@ -17917,7 +17926,7 @@ package body Gnat2Why.Expr is
                         then
                            Prepend
                              (Check_Subtype_Indication
-                                (Params   => Body_Params,
+                                (Params   => Params,
                                  N        => Typ,
                                  Sub_Type => Component_Type (Ent)),
                               R);
@@ -17937,7 +17946,7 @@ package body Gnat2Why.Expr is
                               then
                                  Prepend
                                    (Check_Subtype_Indication
-                                      (Params   => Body_Params,
+                                      (Params   => Params,
                                        N        => Index,
                                        Sub_Type => Etype (Index)),
                                     R);
@@ -17959,7 +17968,7 @@ package body Gnat2Why.Expr is
                               if Comes_From_Source (Original_Node (Index)) then
                                  Prepend
                                    (Check_Scalar_Range
-                                      (Params => Body_Params,
+                                      (Params => Params,
                                        N      => Etype (Index),
                                        Base   => Etype (Index_Base)),
                                     R);
@@ -17980,12 +17989,12 @@ package body Gnat2Why.Expr is
                                                (Ty     => Etype (Index),
                                                 Domain => EW_Term,
                                                 Attr   => Attribute_First,
-                                                Params => Body_Params),
+                                                Params => Params),
                                              Right  => New_Attribute_Expr
                                                (Ty     => Etype (Index_Base),
                                                 Domain => EW_Term,
                                                 Attr   => Attribute_First,
-                                                Params => Body_Params),
+                                                Params => Params),
                                              Domain => EW_Pred),
                                           Reason   => VC_Range_Check,
                                           Kind     => EW_Assert),
@@ -18032,7 +18041,7 @@ package body Gnat2Why.Expr is
                                  then
                                     Prepend
                                       (Check_Subtype_Indication
-                                         (Params   => Body_Params,
+                                         (Params   => Params,
                                           N        => Typ,
                                           Sub_Type => Etype (Comp)),
                                        R);
@@ -18080,7 +18089,7 @@ package body Gnat2Why.Expr is
                then
                   Append
                     (R,
-                     Check_Type_With_Invariants (Params => Body_Params,
+                     Check_Type_With_Invariants (Params => Params,
                                                  N      => Ent));
                end if;
             end;
@@ -18096,7 +18105,7 @@ package body Gnat2Why.Expr is
             end;
 
          when N_Pragma =>
-            R := Transform_Pragma (Decl, Force => False);
+            R := Transform_Pragma (Decl, Params, Force => False);
 
          when N_Package_Body | N_Package_Declaration =>
 
@@ -18139,7 +18148,7 @@ package body Gnat2Why.Expr is
                         then
                            Assume_Declaration_Of_Entity
                              (E             => Get_Direct_Mapping_Id (Var),
-                              Params        => Body_Params,
+                              Params        => Params,
                               Initialized   =>
                                 Initialized.Contains (Var),
                               Top_Predicate => True,
@@ -18166,7 +18175,7 @@ package body Gnat2Why.Expr is
                               New_Assume_Statement
                                 (Pred => Transform_Pred
                                      (Expr, EW_Bool_Type,
-                                      Body_Params)));
+                                      Params)));
                         end;
                      end if;
                   end;
@@ -18180,7 +18189,7 @@ package body Gnat2Why.Expr is
             begin
                if Nkind (Assoc) in N_Has_Etype then
                   return New_Ignore
-                    (Prog => Transform_Prog (Assoc, Body_Params));
+                    (Prog => Transform_Prog (Assoc, Params));
                else
                   return +Void;
                end if;
@@ -18189,7 +18198,7 @@ package body Gnat2Why.Expr is
          --  Block statements can occur for inlined function calls
 
          when N_Block_Statement =>
-            R := Transform_Block_Statement (Decl);
+            R := Transform_Block_Statement (Decl, Params);
 
          when N_Ignored_In_SPARK
             | N_Task_Type_Declaration
@@ -18231,7 +18240,7 @@ package body Gnat2Why.Expr is
             if Present (Expr) then
                declare
                   Why_Expr : constant W_Expr_Id :=
-                    Transform_Expr (Expr, EW_Prog, Body_Params);
+                    Transform_Expr (Expr, EW_Prog, Params);
                begin
                   R := +Sequence (New_Ignore (Prog => +Why_Expr), R);
                end;
@@ -18247,14 +18256,16 @@ package body Gnat2Why.Expr is
    ----------------------------
 
    function Transform_Declarations
-     (L : List_Id) return W_Prog_Id
+     (L      : List_Id;
+      Params : Transformation_Params)
+      return W_Prog_Id
    is
       Cur_Decl : Node_Id := First (L);
       Result   : W_Statement_Sequence_Id := Void_Sequence;
 
    begin
       while Present (Cur_Decl) loop
-         Append (Result, Transform_Declaration (Cur_Decl));
+         Append (Result, Transform_Declaration (Cur_Decl, Params));
          Next (Cur_Decl);
       end loop;
       return +Result;
@@ -18264,10 +18275,13 @@ package body Gnat2Why.Expr is
    -- Transform_Declarations_Block --
    ----------------------------------
 
-   function Transform_Declarations_Block (L : List_Id; Core : W_Prog_Id)
+   function Transform_Declarations_Block
+     (L      : List_Id;
+      Core   : W_Prog_Id;
+      Params : Transformation_Params)
       return W_Prog_Id
    is
-      Result : W_Statement_Sequence_Id := +Transform_Declarations (L);
+      Result : W_Statement_Sequence_Id := +Transform_Declarations (L, Params);
 
    begin
       Append (Result, Core);
@@ -20577,12 +20591,12 @@ package body Gnat2Why.Expr is
 
    procedure Transform_Expr_With_Cutpoints
      (Assertion :     N_Subexpr_Id;
+      Params    :     Transformation_Params;
       Runtime   : out W_Prog_Id;
       Premise   : out W_Pred_Id;
       Result    : out W_Pred_Id)
    is
       package COpN renames Cut_Operations_Names;
-      Params       : constant Transformation_Params := Assert_Params;
       Split_Params : constant Transformation_Params :=
         (Params with delta Gen_Marker => GM_Label);
 
@@ -21467,7 +21481,10 @@ package body Gnat2Why.Expr is
    -- Transform_Handled_Statements --
    ----------------------------------
 
-   function Transform_Handled_Statements (N : Node_Id) return W_Prog_Id is
+   function Transform_Handled_Statements
+     (N      : Node_Id;
+      Params : Transformation_Params) return W_Prog_Id
+   is
 
       function Transform_Handler (Handler : Node_Id) return W_Prog_Id is
       --  Transform the statements and warn on dead code if necessary
@@ -21475,8 +21492,8 @@ package body Gnat2Why.Expr is
         (+Warn_On_Dead_Code
            (First (Statements (Handler)),
             +Transform_Statements_And_Declarations
-              (Statements (Handler)),
-            Body_Params.Phase));
+              (Statements (Handler), Params),
+            Params.Phase));
 
       function List_Length_Non_Pragma (L : List_Id) return Nat;
       --  Similar to List_Length, but excluding pragma items
@@ -21499,7 +21516,7 @@ package body Gnat2Why.Expr is
 
       Handlers : constant List_Id := Exception_Handlers (N);
       Core     : constant W_Prog_Id :=
-        Transform_Statements_And_Declarations (Statements (N));
+        Transform_Statements_And_Declarations (Statements (N), Params);
 
    --  Start of processing for Transform_Handled_Statements
 
@@ -22369,8 +22386,9 @@ package body Gnat2Why.Expr is
    ----------------------
 
    function Transform_Pragma
-     (Prag  : N_Pragma_Id;
-      Force : Boolean)
+     (Prag   : N_Pragma_Id;
+      Params : Transformation_Params;
+      Force  : Boolean)
       return W_Prog_Id
    is
       Prag_Id : constant Pragma_Id := Get_Pragma_Id (Prag);
@@ -22398,7 +22416,7 @@ package body Gnat2Why.Expr is
          --  Ignore pragma Check for preconditions and postconditions
 
          when Pragma_Check =>
-            return Transform_Pragma_Check (Prag, Force);
+            return Transform_Pragma_Check (Prag, Params, Force);
 
          --  Pragma Overflow_Mode should have an effect on proof, but is
          --  currently ignored (and a corresponding warning is issued
@@ -22416,20 +22434,21 @@ package body Gnat2Why.Expr is
          =>
             if Force then
                declare
-                  Expr   : constant Node_Id :=
+                  Expr          : constant Node_Id :=
                     Expression (First (Pragma_Argument_Associations (Prag)));
-                  Params : Transformation_Params := Assert_Params;
-                  Result : W_Prog_Id;
+                  Assert_Params : Transformation_Params :=
+                    (Params with delta Phase => Generate_VCs_For_Assert);
+                  Result        : W_Prog_Id;
 
                begin
                   Result := New_Ignore
-                    (Prog => Transform_Prog (Expr, Params));
-                  Params.Gen_Marker := GM_Label;
+                    (Prog => Transform_Prog (Expr, Assert_Params));
+                  Assert_Params.Gen_Marker := GM_Label;
                   Append
                     (Result,
                      New_Located_Assert
                        (Ada_Node => Expr,
-                        Pred     => Transform_Pred (Expr, Params),
+                        Pred     => Transform_Pred (Expr, Assert_Params),
                         Reason   => VC_Assert,
                         Kind     => EW_Assert));
                   return Result;
@@ -22441,7 +22460,7 @@ package body Gnat2Why.Expr is
          when Pragma_Interrupt_Priority
             | Pragma_Priority
          =>
-            return Transform_Priority_Pragmas (Prag);
+            return Transform_Priority_Pragmas (Prag, Params);
 
          --  Pragma Inspection_Point is ignored, but we insert a call to a
          --  dummy procedure, to allow to break on it during debugging.
@@ -22761,14 +22780,17 @@ package body Gnat2Why.Expr is
 
    procedure Transform_Pragma_Check
      (Stmt    :     N_Pragma_Id;
+      Params  :     Transformation_Params;
       Force   :     Boolean;
       Expr    : out N_Subexpr_Id;
       Runtime : out W_Prog_Id;
       Pred    : out W_Pred_Id)
    is
-      Arg1   : constant Node_Id := First (Pragma_Argument_Associations (Stmt));
-      Arg2   : constant Node_Id := Next (Arg1);
-      Params : Transformation_Params := Assert_Params;
+      Arg1          : constant Node_Id :=
+        First (Pragma_Argument_Associations (Stmt));
+      Arg2          : constant Node_Id := Next (Arg1);
+      Assert_Params : Transformation_Params :=
+        (Params with delta Phase => Generate_VCs_For_Assert);
 
    begin
       Expr := Expression (Arg2);
@@ -22787,7 +22809,8 @@ package body Gnat2Why.Expr is
             declare
                Cond : W_Pred_Id;
             begin
-               Transform_Expr_With_Cutpoints (Expr, Runtime, Cond, Pred);
+               Transform_Expr_With_Cutpoints
+                 (Expr, Assert_Params, Runtime, Cond, Pred);
                Runtime := Sequence
                  (Runtime,
                   New_Located_Assert
@@ -22795,9 +22818,9 @@ package body Gnat2Why.Expr is
             end;
             return;
          else
-            Runtime := Transform_Prog (Expr, EW_Bool_Type, Params);
-            Params.Gen_Marker := GM_Toplevel;
-            Pred := Transform_Pred (Expr, Params);
+            Runtime := Transform_Prog (Expr, EW_Bool_Type, Assert_Params);
+            Assert_Params.Gen_Marker := GM_Toplevel;
+            Pred := Transform_Pred (Expr, Assert_Params);
             return;
          end if;
       else
@@ -22806,12 +22829,12 @@ package body Gnat2Why.Expr is
    end Transform_Pragma_Check;
 
    function Transform_Pragma_Check
-     (Prag  : N_Pragma_Id;
-      Force : Boolean)
+     (Prag   : N_Pragma_Id;
+      Params : Transformation_Params;
+      Force  : Boolean)
       return W_Prog_Id
    is
-      Reason : constant VC_Kind := VC_Assert;
-
+      Reason     : constant VC_Kind := VC_Assert;
       Expr       : Node_Id;
       Check_Expr : W_Prog_Id;
       Pred       : W_Pred_Id;
@@ -22824,7 +22847,7 @@ package body Gnat2Why.Expr is
          return +Void;
       end if;
 
-      Transform_Pragma_Check (Prag, Force, Expr, Check_Expr, Pred);
+      Transform_Pragma_Check (Prag, Params, Force, Expr, Check_Expr, Pred);
 
       --  Translate Compile_Time_Error as an assumption
 
@@ -22902,7 +22925,11 @@ package body Gnat2Why.Expr is
    -- Transform_Priority_Pragmas --
    --------------------------------
 
-   function Transform_Priority_Pragmas (Prag : N_Pragma_Id) return W_Prog_Id is
+   function Transform_Priority_Pragmas
+     (Prag   : N_Pragma_Id;
+      Params : Transformation_Params)
+      return W_Prog_Id
+   is
       Pragma_Arguments : constant List_Id :=
         Pragma_Argument_Associations (Prag);
 
@@ -22952,7 +22979,7 @@ package body Gnat2Why.Expr is
               Transform_Expr
                 (Expr          => Expr,
                  Domain        => EW_Term,
-                 Params        => Body_Params,
+                 Params        => Params,
                  Expected_Type => EW_Int_Type);
 
          begin
@@ -22967,13 +22994,13 @@ package body Gnat2Why.Expr is
                           (Domain => EW_Term,
                            Ty     => Ty,
                            Attr   => Attribute_First,
-                           Params => Body_Params),
+                           Params => Params),
                       High   =>
                         New_Attribute_Expr
                           (Domain => EW_Term,
                            Ty     => Ty,
                            Attr   => Attribute_Last,
-                           Params => Body_Params),
+                           Params => Params),
                       Expr   => Why_Expr),
                  Reason   => VC_Range_Check,
                  Kind     => EW_Check);
@@ -23526,14 +23553,16 @@ package body Gnat2Why.Expr is
    function Transform_Simple_Return_Expression
      (Expr        : N_Subexpr_Id;
       Subp        : Entity_Id;
-      Return_Type : W_Type_Id) return W_Prog_Id
+      Return_Type : W_Type_Id;
+      Params      : Transformation_Params)
+      return W_Prog_Id
    is
       Result_Stmt : W_Prog_Id;
    begin
       Result_Stmt :=
         Transform_Prog (Expr,
                         Return_Type,
-                        Body_Params);
+                        Params);
 
       --  Returned objects have exactly the expected tag
 
@@ -23585,7 +23614,7 @@ package body Gnat2Why.Expr is
                           Left   => +To_Local
                             (Get_Borrowed_At_End (Subp)),
                           Right  => +Transform_Identifier
-                            (Params   => Body_Params,
+                            (Params   => Params,
                              Expr     => Borrowed,
                              Ent      => Borrowed,
                              Domain   => EW_Term))));
@@ -23763,6 +23792,7 @@ package body Gnat2Why.Expr is
 
    function Transform_Statement_Or_Declaration
      (Stmt_Or_Decl        :     Node_Id;
+      Params              :     Transformation_Params;
       Assert_And_Cut_Expr : out Opt_N_Subexpr_Id;
       Assert_And_Cut      : out W_Pred_Id)
       return W_Prog_Id
@@ -23802,7 +23832,7 @@ package body Gnat2Why.Expr is
                  (Typ       => W_Ty,
                   Base_Name => "target");
 
-               T := Transform_Assignment_Statement (Stmt_Or_Decl);
+               T := Transform_Assignment_Statement (Stmt_Or_Decl, Params);
 
                --  Only introduce a binding for Target_Name if it was actually
                --  used in the assignment.
@@ -23814,7 +23844,7 @@ package body Gnat2Why.Expr is
                      Def      => Transform_Prog
                        (Expr          => Lvalue,
                         Expected_Type => W_Ty,
-                        Params        => Body_Params),
+                        Params        => Params),
                      Context  => T,
                      Typ      => W_Ty);
                end if;
@@ -23856,7 +23886,7 @@ package body Gnat2Why.Expr is
                        Type_Of_Node (Subp);
                   begin
                      Result_Stmt := Transform_Simple_Return_Expression
-                       (Expression (Stmt_Or_Decl), Subp, Return_Type);
+                       (Expression (Stmt_Or_Decl), Subp, Return_Type, Params);
                      return Sequence (Result_Stmt, Raise_Stmt);
                   end;
                else
@@ -23872,7 +23902,7 @@ package body Gnat2Why.Expr is
                     Name     => M_Main.Return_Exc);
                Expr       : W_Prog_Id :=
                  Transform_Statements_And_Declarations
-                   (Return_Object_Declarations (Stmt_Or_Decl));
+                   (Return_Object_Declarations (Stmt_Or_Decl), Params);
                Ret_Obj    : constant Entity_Id :=
                  Get_Return_Object (Stmt_Or_Decl);
                Subp       : constant Entity_Id := Return_Applies_To
@@ -23888,7 +23918,7 @@ package body Gnat2Why.Expr is
                  +Insert_Simple_Conversion
                    (Domain => EW_Prog,
                     Expr   => Transform_Identifier
-                      (Params => Body_Params,
+                      (Params => Params,
                        Expr   => Ret_Obj,
                        Ent    => Ret_Obj,
                        Domain => EW_Prog),
@@ -23899,7 +23929,7 @@ package body Gnat2Why.Expr is
                   Append
                     (Expr,
                      Transform_Handled_Statements
-                       (Handled_Statement_Sequence (Stmt_Or_Decl)));
+                       (Handled_Statement_Sequence (Stmt_Or_Decl), Params));
                end if;
 
                --  Wrap the sequence of statements inside a try block, in case
@@ -23975,7 +24005,7 @@ package body Gnat2Why.Expr is
                    (Stmt_Or_Decl, EW_Prog, Context, Store,
                     Exc_Exit  => not Handled_Exc.Is_Empty,
                     Exc_Store => Exc_Store,
-                    Params    => Body_Params,
+                    Params    => Params,
                     Use_Tmps  => Subp_Needs_Invariant_Checks (Subp)
                       or else Call_Needs_Variant_Check
                       (Stmt_Or_Decl, Current_Subp));
@@ -24030,7 +24060,7 @@ package body Gnat2Why.Expr is
                else
                   Why_Name :=
                     W_Identifier_Id
-                      (Transform_Identifier (Params   => Body_Params,
+                      (Transform_Identifier (Params   => Params,
                                              Expr     => Stmt_Or_Decl,
                                              Ent      => Subp,
                                              Domain   => EW_Prog,
@@ -24106,7 +24136,7 @@ package body Gnat2Why.Expr is
 
                if Nkind (Stmt_Or_Decl) /= N_Entry_Call_Statement then
                   Prepend
-                    (Compute_Tag_Check (Stmt_Or_Decl, Body_Params), Call);
+                    (Compute_Tag_Check (Stmt_Or_Decl, Params), Call);
                end if;
 
                --  Insert variant check if needed
@@ -24114,7 +24144,7 @@ package body Gnat2Why.Expr is
                if Call_Needs_Variant_Check (Stmt_Or_Decl, Current_Subp) then
                   Prepend (Check_Subprogram_Variants (Call   => Stmt_Or_Decl,
                                                       Args   => Args,
-                                                      Params => Body_Params),
+                                                      Params => Params),
                            Call);
                end if;
 
@@ -24261,7 +24291,7 @@ package body Gnat2Why.Expr is
                      Ptr    : constant W_Expr_Id :=
                        Transform_Expr (Expr   => Actual,
                                        Domain => EW_Term,
-                                       Params => Body_Params);
+                                       Params => Params);
                   begin
                      Append
                        (Call,
@@ -24280,10 +24310,10 @@ package body Gnat2Why.Expr is
             declare
                Then_Part : constant List_Id := Then_Statements (Stmt_Or_Decl);
                Then_Stmt : W_Prog_Id :=
-                 Transform_Statements_And_Declarations (Then_Part);
+                 Transform_Statements_And_Declarations (Then_Part, Params);
                Else_Part : constant List_Id := Else_Statements (Stmt_Or_Decl);
                Else_Stmt : W_Prog_Id :=
-                 Transform_Statements_And_Declarations (Else_Part);
+                 Transform_Statements_And_Declarations (Else_Part, Params);
 
                Do_Warn_On_Dead_Branch : Boolean := True;
                --  Whether we should warn on dead branches. This may be set
@@ -24321,7 +24351,7 @@ package body Gnat2Why.Expr is
                      while Present (Cur) loop
                         Cur_Stmt :=
                           Transform_Statements_And_Declarations
-                            (Then_Statements (Cur));
+                            (Then_Statements (Cur), Params);
 
                         --  Possibly warn on an unreachable case branch
 
@@ -24345,7 +24375,7 @@ package body Gnat2Why.Expr is
                                      Condition_Actions (Cur),
                                      EW_Bool_Type,
                                      EW_Prog,
-                                     Params => Body_Params)),
+                                     Params => Params)),
                              Then_Part => Cur_Stmt,
                              Else_Part => Else_Stmt);
                         Prev (Cur);
@@ -24361,7 +24391,7 @@ package body Gnat2Why.Expr is
                       New_Counterexample_Assign (Stmt_Or_Decl,
                         Transform_Prog (Condition (Stmt_Or_Decl),
                                         EW_Bool_Type,
-                                        Params => Body_Params)),
+                                        Params => Params)),
                     Then_Part => Then_Stmt,
                     Else_Part => Else_Stmt);
             end;
@@ -24372,7 +24402,7 @@ package body Gnat2Why.Expr is
             | N_Full_Type_Declaration
             | N_Itype_Reference
          =>
-            return Transform_Declaration (Stmt_Or_Decl);
+            return Transform_Declaration (Stmt_Or_Decl, Params);
 
          when N_Loop_Statement =>
             declare
@@ -24403,11 +24433,11 @@ package body Gnat2Why.Expr is
                return
                  Sequence
                    (Term_Checks,
-                    Transform_Loop_Statement (Stmt_Or_Decl));
+                    Transform_Loop_Statement (Stmt_Or_Decl, Params));
             end;
 
          when N_Exit_Statement =>
-            return Transform_Exit_Statement (Stmt_Or_Decl);
+            return Transform_Exit_Statement (Stmt_Or_Decl, Params);
 
          when N_Case_Statement =>
             declare
@@ -24430,7 +24460,8 @@ package body Gnat2Why.Expr is
                   T : W_Expr_Id;
                begin
                   --  ??? Maybe we should merge the code for statements?
-                  T := +Transform_Statements_And_Declarations (Statements (N));
+                  T := +Transform_Statements_And_Declarations
+                    (Statements (N), Params);
 
                   --  Possibly warn on dead code
 
@@ -24447,11 +24478,11 @@ package body Gnat2Why.Expr is
                return +Transform_Case_Stmt
                  (N      => Stmt_Or_Decl,
                   Domain => EW_Prog,
-                  Params => Body_Params);
+                  Params => Params);
             end;
 
          when N_Block_Statement =>
-            return Transform_Block_Statement (Stmt_Or_Decl);
+            return Transform_Block_Statement (Stmt_Or_Decl, Params);
 
          when N_Pragma =>
             if Is_Pragma_Assert_And_Cut (Stmt_Or_Decl) then
@@ -24460,7 +24491,7 @@ package body Gnat2Why.Expr is
                   Check_Expr : W_Prog_Id;
                   Pred       : W_Pred_Id;
                begin
-                  Transform_Pragma_Check (Stmt_Or_Decl,
+                  Transform_Pragma_Check (Stmt_Or_Decl, Params,
                                           Force   => False,
                                           Expr    => Expr,
                                           Runtime => Check_Expr,
@@ -24475,7 +24506,7 @@ package body Gnat2Why.Expr is
                end;
             else
 
-               return Transform_Pragma (Stmt_Or_Decl, Force => False);
+               return Transform_Pragma (Stmt_Or_Decl, Params, Force => False);
 
             end if;
 
@@ -24506,7 +24537,7 @@ package body Gnat2Why.Expr is
                            else New_Ignore
                              (Stmt_Or_Decl,
                               Transform_Prog
-                                (Expression (Stmt_Or_Decl), Body_Params))),
+                                (Expression (Stmt_Or_Decl), Params))),
                       2 => Havoc_Borrowed_And_Check_No_Leaks_On_Raise
                         (Stmt_Or_Decl),
                       3 => New_Raise
@@ -24546,7 +24577,7 @@ package body Gnat2Why.Expr is
               New_Ignore (Ada_Node => Stmt_Or_Decl,
                           Prog     =>
                             Transform_Prog (Expression (Stmt_Or_Decl),
-                                            Body_Params));
+                                            Params));
 
          when others =>
             Ada.Text_IO.Put_Line ("[Transform_Statement_Or_Declaration] kind ="
@@ -24560,7 +24591,8 @@ package body Gnat2Why.Expr is
    ------------------------------------------------
 
    procedure Transform_Statement_Or_Declaration_In_List
-     (Stmt_Or_Decl : Node_Id;
+     (Stmt_Or_Decl :        Node_Id;
+      Params       : Transformation_Params;
       Seq          : in out W_Statement_Sequence_Id)
    is
       Cut_Assertion_Expr : Node_Id;
@@ -24570,6 +24602,7 @@ package body Gnat2Why.Expr is
         (Stmt_Or_Decl,
          +Transform_Statement_Or_Declaration
            (Stmt_Or_Decl        => Stmt_Or_Decl,
+            Params              => Params,
             Assert_And_Cut_Expr => Cut_Assertion_Expr,
             Assert_And_Cut      => Cut_Assertion));
    begin
@@ -24645,7 +24678,7 @@ package body Gnat2Why.Expr is
                   Append (Seq,
                           Assume_Dynamic_Invariant
                             (Expr          => +Transform_Identifier
-                               (Params   => Body_Params,
+                               (Params   => Params,
                                 Expr     => V,
                                 Ent      => V,
                                 Domain   => EW_Term),
@@ -24665,7 +24698,9 @@ package body Gnat2Why.Expr is
    -------------------------------------------
 
    function Transform_Statements_And_Declarations
-     (Stmts_And_Decls : List_Id) return W_Prog_Id
+     (Stmts_And_Decls : List_Id;
+      Params          : Transformation_Params)
+      return W_Prog_Id
    is
       Cur_Stmt_Or_Decl : Node_Id   := Nlists.First (Stmts_And_Decls);
       Result           : W_Statement_Sequence_Id := Void_Sequence;
@@ -24678,6 +24713,7 @@ package body Gnat2Why.Expr is
       while Present (Cur_Stmt_Or_Decl) loop
          Transform_Statement_Or_Declaration_In_List
            (Stmt_Or_Decl => Cur_Stmt_Or_Decl,
+            Params       => Params,
             Seq          => Result);
 
          Nlists.Next (Cur_Stmt_Or_Decl);
