@@ -1073,7 +1073,7 @@ package body SPARK_Util is
          begin
             if Is_Ghost_Entity (Callee) and then not Is_Ghost_Entity (Caller)
             then
-               Raise_To_Handlers_Map.Insert (Stmt, Handlers);
+               Raise_To_Handlers_Map.Insert (Stmt, Node_Lists.Empty_List);
                return;
             end if;
          end;
