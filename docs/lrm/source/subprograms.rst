@@ -119,7 +119,7 @@ an *entire object*.
    aliased shall be fully initialized when the exception is propagated
    except for those that have relaxed initialization.
 
-10.  A function shall always return normally.
+10. A function shall always return normally.
 
 11. A call to a ghost procedure occurring outside of a ghost context shall
     always return normally.
@@ -1921,29 +1921,28 @@ body (see Ada RM 7.2(4))].
    point of a SPARK program shall be either Check or Ignore.
 
 
-7.  A ghost type or object shall not be effectively volatile.
-    A ghost object shall not be imported or exported.
-    [In other words, no ghost objects for which reading or writing
-    would constitute an external effect (see Ada RM 1.1.3).]
+7. A ghost type or object shall not be effectively volatile.
+   A ghost object shall not be imported or exported.
+   [In other words, no ghost objects for which reading or writing
+   would constitute an external effect (see Ada RM 1.1.3).]
 
 
-8.  A ghost primitive subprogram of a non-ghost type extension shall
-    not override an inherited non-ghost primitive subprogram.
-    A non-ghost primitive subprogram of a type extension shall
-    not override an inherited ghost primitive subprogram.
-    [A ghost subprogram may be a primitive subprogram of a non-ghost tagged
-    type.
-    A ghost type extension may have a non-ghost parent type or progenitor;
-    primitive subprograms of such a type may override inherited (ghost or
-    non-ghost) subprograms.]
+8. A ghost primitive subprogram of a non-ghost type extension shall
+   not override an inherited non-ghost primitive subprogram.
+   A non-ghost primitive subprogram of a type extension shall
+   not override an inherited ghost primitive subprogram.
+   [A ghost subprogram may be a primitive subprogram of a non-ghost tagged
+   type.
+   A ghost type extension may have a non-ghost parent type or progenitor;
+   primitive subprograms of such a type may override inherited (ghost or
+   non-ghost) subprograms.]
 
 
-9.  A Ghost pragma which applies to a declaration occuring
-    in the visible part of a package shall not occur in the
-    private part of that package.
-    [This rule is to ensure that the ghostliness of a visible entity can be
-    determined without having to look into the private part of the
-    enclosing package.]
+9. A Ghost pragma which applies to a declaration occuring in the visible part
+   of a package shall not occur in the private part of that package.
+   [This rule is to ensure that the ghostliness of a visible entity can be
+   determined without having to look into the private part of the enclosing
+   package.]
 
 
 10. A ghost entity shall only be referenced:
@@ -2117,19 +2116,19 @@ body (see Ada RM 7.2(4))].
 
    function A_Ghost_Expr_Function (Lo, Hi : Natural) return Natural is
      (if Lo > Integer'Last - Hi then Lo else ((Lo + Hi) / 2))
-     with Pre        => Lo <= Hi,
-          Post       => A_Ghost_Expr_Function'Result in Lo .. Hi,
+     with Pre  => Lo <= Hi,
+          Post => A_Ghost_Expr_Function'Result in Lo .. Hi,
           Ghost;
 
    function A_Ghost_Function (Lo, Hi : Natural) return Natural
-     with Pre        => Lo <= Hi,
-          Post       => A_Ghost_Function'Result in Lo .. Hi,
+     with Pre  => Lo <= Hi,
+          Post => A_Ghost_Function'Result in Lo .. Hi,
           Ghost;
    -- The body of the function is declared elsewhere.
 
    function A_Nonexecutable_Ghost_Function (Lo, Hi : Natural) return Natural
-     with Pre        => Lo <= Hi,
-          Post       => A_Nonexecutable_Ghost_Function'Result in Lo .. Hi,
+     with Pre  => Lo <= Hi,
+          Post => A_Nonexecutable_Ghost_Function'Result in Lo .. Hi,
           Ghost,
           Import;
    -- The body of the function is not declared elsewhere.
