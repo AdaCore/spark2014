@@ -858,6 +858,72 @@ of this range:
    Saturation : constant Mapping :=
      (1 .. 10 => 10, for J in 11 .. 89 => J, 90 .. 100 => 90);
 
+.. index:: initialization (arrays)
+
+Initialization Using Array Aggregates
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+[Ada 83]
+
+Both flow analysis and proof can be used in GNATprove to verify that data is
+correctly initialized before being read, following the :ref:`Data
+Initialization Policy` of SPARK. The decision to use one or the other is based
+on the presence or not of aspect ``Relaxed_Initialization`` (see :ref:`Aspect
+Relaxed_Initialization`) on types and variables.
+
+When using flow analysis to analyze the initialization of an array object
+(variable or component), false alarms may be emitted by |GNATprove| on code
+that initializes the array cell by cell, or groups of cells by groups of cells,
+even if the array ends up completely initialized. This is because flow analysis
+is not value dependent, so it cannot track the value of assigned array indexes.
+As a result, it cannot separate array cells in its analysis, hence it cannot
+deduce that such a sequence of partial initializations result in the array
+being completely initialized. For example, |GNATprove| issues false alarms on
+the code:
+
+.. code-block:: ada
+
+   type Arr is array (1 .. 5) of Integer;
+   A : Arr;
+   ...
+   A(1) := 1;
+   A(2) := 2;
+   A(3) := 3;
+   A(4) := 4;
+   A(5) := 5;
+
+A better way to initialize an array is to use an aggregate (possibly with
+iterated component associations, if the value of the initialization element for
+a cell depends on the index of the cell). This makes it clear for both the
+human reviewer and for |GNATprove| that the array is completely
+initialized. For example, the code above can be rewritten as follows using an
+aggregate:
+
+.. code-block:: ada
+
+   type Arr is array (1 .. 5) of Integer;
+   A : Arr;
+   ...
+   A := (1, 2, 3, 4, 5);
+
+or using an aggregate with an iterated component association:
+
+.. code-block:: ada
+
+   type Arr is array (1 .. 5) of Integer;
+   A : Arr;
+   ...
+   A := (for I in 1..5 => I);
+
+In cases where initializing the array with an aggregate is not possible, the
+alternative is to mark the array object or its type as having relaxed
+initialization using aspect ``Relaxed_Initialization`` and to use proof to
+verify its correct initialization (see :ref:`Aspect Relaxed_Initialization`).
+This should be reserved for cases where using an aggregate is not possible, as
+it requires more work for the user to express which parts of variables are
+initialized (in contracts and loop invariants typically), and it may be more
+difficult to prove.
+
 .. index:: delta aggregate
 
 Delta Aggregates
