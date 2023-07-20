@@ -520,7 +520,9 @@ package body SPARK_Definition is
    --  Mark. Why aren't these kind of nodes Indexed_Components instead ?
 
    function Emit_Warning_Info_Messages return Boolean is
-     (Emit_Messages and then Gnat2Why_Args.Limit_Subp = Null_Unbounded_String);
+     (Emit_Messages
+      and then Gnat2Why_Args.Limit_Subp = Null_Unbounded_String
+      and then Gnat2Why_Args.Limit_Name = Null_Unbounded_String);
    --  Emit warning/info messages only when messages should be emitted, and
    --  analysis is not restricted to a single subprogram/line (typically during
    --  interactive use in IDEs), to avoid reporting messages on pieces of code
@@ -6239,6 +6241,7 @@ package body SPARK_Definition is
            and then Is_Local_Subprogram_Always_Inlined (E)
          then
             Gnat2Why_Args.Limit_Subp := Null_Unbounded_String;
+            Gnat2Why_Args.Limit_Name := Null_Unbounded_String;
 
             if Gnat2Why_Args.Limit_Region = Null_Unbounded_String
               and then Gnat2Why_Args.Limit_Line = Null_Unbounded_String

@@ -75,8 +75,10 @@ gnatprove advanced switches:
  --limit-line=f:l     Limit analysis to given file and line
  --limit-line=f:l:c:k Limit analysis to given file, line, column and kind of
                       check
+ --limit-name=s       Limit analysis to subprogram with the specified name
  --limit-region=f:l:l Limit analysis to given file and range of lines
- --limit-subp=s       Limit analysis to specified subprogram
+ --limit-subp=f:l     Limit analysis to subprogram declared at the specified
+                      location
  --memcached-server=host:portnumber
                       Specify a memcached instance that will be used for
                       caching of proof results.
