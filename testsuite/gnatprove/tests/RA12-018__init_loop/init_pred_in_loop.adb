@@ -132,7 +132,7 @@ procedure Init_Pred_In_Loop with SPARK_Mode is
       loop
          pragma Loop_Invariant (True);
          declare
-            X : Wrong_Partial_Init; -- @PREDICATE_CHECK:FAIL
+            X : Wrong_Partial_Init; -- @PREDICATE_CHECK_ON_DEFAULT_VALUE:FAIL
          begin
             X := (1, 1);
          end;
@@ -150,7 +150,7 @@ procedure Init_Pred_In_Loop with SPARK_Mode is
       loop
          pragma Loop_Invariant (True);
          declare
-            X : Wrong_Full_Init; -- @PREDICATE_CHECK:FAIL
+            X : Wrong_Full_Init; -- @PREDICATE_CHECK_ON_DEFAULT_VALUE:FAIL
          begin
             X := (1, 1);
          end;
@@ -204,7 +204,7 @@ procedure Init_Pred_In_Loop with SPARK_Mode is
       loop
          pragma Loop_Invariant (True);
          declare
-            X : Wrong_Scalar_Def; -- @PREDICATE_CHECK:FAIL
+            X : Wrong_Scalar_Def; -- @PREDICATE_CHECK_ON_DEFAULT_VALUE:FAIL
          begin
             X := 1;
          end;
@@ -215,7 +215,7 @@ procedure Init_Pred_In_Loop with SPARK_Mode is
    begin
       loop
          declare
-            X : Wrong_Scalar_Def; -- @PREDICATE_CHECK:FAIL
+            X : Wrong_Scalar_Def; -- @PREDICATE_CHECK_ON_DEFAULT_VALUE:FAIL
          begin
             pragma Loop_Invariant (True);
             X := 1;
@@ -227,7 +227,7 @@ procedure Init_Pred_In_Loop with SPARK_Mode is
    begin
       for I in 1 .. 3 loop
          declare
-            X : Wrong_Scalar_Def; -- @PREDICATE_CHECK:FAIL
+            X : Wrong_Scalar_Def; -- @PREDICATE_CHECK_ON_DEFAULT_VALUE:FAIL
          begin
             X := 1;
          end;

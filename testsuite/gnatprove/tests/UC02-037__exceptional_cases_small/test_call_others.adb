@@ -76,7 +76,7 @@ is
 
    procedure No_E1_Bad_3 (A : Boolean) with
      No_Return,
-     Exceptional_Cases => (E1 => not A, others => True);
+     Exceptional_Cases => (E1 => not A, others => True); --@EXCEPTIONAL_CASE:FAIL
 
    procedure No_E1_Bad_3 (A : Boolean) is
    begin

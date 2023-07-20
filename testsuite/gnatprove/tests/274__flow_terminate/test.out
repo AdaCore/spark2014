@@ -1,0 +1,3 @@
+info_msg.adb:11:14: warning: subprogram "Caller" has no effect
+info_msg.adb:16:07: info: precondition proved (Trivial: 1 VC)
+info_msg.adb:16:07: medium: aspect Always_Terminates on "Caller" could be incorrect, call to "Callee" might be nonterminating

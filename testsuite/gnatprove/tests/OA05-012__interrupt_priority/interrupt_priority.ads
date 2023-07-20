@@ -11,7 +11,7 @@ package Interrupt_Priority with SPARK_Mode is
    end No_Interrupt_Needed_1;
    protected type Interrupt_Needed_1 (C : Any_Priority) is
       pragma Priority (C);
-      procedure OK with Attach_Handler => 1;
+      procedure OK with Attach_Handler => 1; --@INTERRUPT_RESERVED:FAIL
    private
      I : Integer := 0;
    end Interrupt_Needed_1;

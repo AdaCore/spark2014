@@ -11,7 +11,7 @@ procedure Test_Ownership_Annotation with SPARK_Mode is
      Global => null
    is
       use Private_No_Reclamation;
-      G : Pool_Specific_Access := Allocate (13); --@RESOURCE_LEAK:NONE
+      G : Pool_Specific_Access := Allocate (13); --@RESOURCE_LEAK_AT_END_OF_SCOPE:NONE
       procedure P1 (X : in out Pool_Specific_Access) with
         Global => null,
         Always_Terminates,
@@ -30,8 +30,8 @@ procedure Test_Ownership_Annotation with SPARK_Mode is
         Import;
       A : Pool_Specific_Access;
       B : Pool_Specific_Access;
-      C : Pool_Specific_Access; --@RESOURCE_LEAK:NONE
-      D : Pool_Specific_Access; --@RESOURCE_LEAK:NONE
+      C : Pool_Specific_Access; --@RESOURCE_LEAK_AT_END_OF_SCOPE:NONE
+      D : Pool_Specific_Access; --@RESOURCE_LEAK_AT_END_OF_SCOPE:NONE
       E : Pool_Specific_Access;
    begin
       A := Allocate (13);
@@ -50,7 +50,7 @@ procedure Test_Ownership_Annotation with SPARK_Mode is
      Global => null
    is
       use Private_No_Is_Null;
-      G : Pool_Specific_Access := Allocate (13); --@RESOURCE_LEAK:FAIL
+      G : Pool_Specific_Access := Allocate (13); --@RESOURCE_LEAK_AT_END_OF_SCOPE:FAIL
       procedure P1 (X : in out Pool_Specific_Access) with
         Global => null,
         Always_Terminates,
@@ -67,11 +67,11 @@ procedure Test_Ownership_Annotation with SPARK_Mode is
         Global => (Output => G),
         Always_Terminates,
         Import;
-      A : Pool_Specific_Access; --@RESOURCE_LEAK:FAIL A is deallocated but we cannot know that
+      A : Pool_Specific_Access; --@RESOURCE_LEAK_AT_END_OF_SCOPE:FAIL A is deallocated but we cannot know that
       B : Pool_Specific_Access;
-      C : Pool_Specific_Access; --@RESOURCE_LEAK:FAIL
-      D : Pool_Specific_Access; --@RESOURCE_LEAK:FAIL
-      E : Pool_Specific_Access; --@RESOURCE_LEAK:FAIL E is null by default but we cannot know that
+      C : Pool_Specific_Access; --@RESOURCE_LEAK_AT_END_OF_SCOPE:FAIL
+      D : Pool_Specific_Access; --@RESOURCE_LEAK_AT_END_OF_SCOPE:FAIL
+      E : Pool_Specific_Access; --@RESOURCE_LEAK_AT_END_OF_SCOPE:FAIL E is null by default but we cannot know that
    begin
       A := Allocate (13); --@RESOURCE_LEAK:FAIL A is null by default but we cannot know that
       B := Allocate (13); --@RESOURCE_LEAK:FAIL B is null by default but we cannot know that
@@ -89,7 +89,7 @@ procedure Test_Ownership_Annotation with SPARK_Mode is
      Global => null
    is
       use Private_Tagged;
-      G : Pool_Specific_Access := Allocate (13); --@RESOURCE_LEAK:FAIL
+      G : Pool_Specific_Access := Allocate (13); --@RESOURCE_LEAK_AT_END_OF_SCOPE:FAIL
       procedure P1 (X : in out Pool_Specific_Access) with
         Global => null,
         Always_Terminates,
@@ -108,8 +108,8 @@ procedure Test_Ownership_Annotation with SPARK_Mode is
         Import;
       A : Pool_Specific_Access;
       B : Pool_Specific_Access;
-      C : Pool_Specific_Access; --@RESOURCE_LEAK:FAIL
-      D : Pool_Specific_Access; --@RESOURCE_LEAK:FAIL
+      C : Pool_Specific_Access; --@RESOURCE_LEAK_AT_END_OF_SCOPE:FAIL
+      D : Pool_Specific_Access; --@RESOURCE_LEAK_AT_END_OF_SCOPE:FAIL
       E : Pool_Specific_Access;
    begin
       A := Allocate (13);
@@ -131,7 +131,7 @@ procedure Test_Ownership_Annotation with SPARK_Mode is
       type Holder is record
          A : V;
       end record;
-      G : Holder := (A => Allocate (13)); --@RESOURCE_LEAK:FAIL
+      G : Holder := (A => Allocate (13)); --@RESOURCE_LEAK_AT_END_OF_SCOPE:FAIL
       procedure P1 (X : in out Holder) with
         Global => null,
         Always_Terminates,
@@ -150,8 +150,8 @@ procedure Test_Ownership_Annotation with SPARK_Mode is
         Import;
       A : Holder;
       B : Holder;
-      C : Holder; --@RESOURCE_LEAK:FAIL
-      D : Holder; --@RESOURCE_LEAK:FAIL
+      C : Holder; --@RESOURCE_LEAK_AT_END_OF_SCOPE:FAIL
+      D : Holder; --@RESOURCE_LEAK_AT_END_OF_SCOPE:FAIL
       E : Holder;
    begin
       A.A := Allocate (13);
@@ -170,7 +170,7 @@ procedure Test_Ownership_Annotation with SPARK_Mode is
      Global => null
    is
       use Private_Discriminants;
-      G : Pool_Specific_Access := Allocate (13); --@RESOURCE_LEAK:FAIL
+      G : Pool_Specific_Access := Allocate (13); --@RESOURCE_LEAK_AT_END_OF_SCOPE:FAIL
       procedure P1 (X : in out Pool_Specific_Access) with
         Global => null,
         Always_Terminates,
@@ -189,8 +189,8 @@ procedure Test_Ownership_Annotation with SPARK_Mode is
         Import;
       A : Pool_Specific_Access;
       B : Pool_Specific_Access;
-      C : Pool_Specific_Access; --@RESOURCE_LEAK:FAIL
-      D : Pool_Specific_Access; --@RESOURCE_LEAK:FAIL
+      C : Pool_Specific_Access; --@RESOURCE_LEAK_AT_END_OF_SCOPE:FAIL
+      D : Pool_Specific_Access; --@RESOURCE_LEAK_AT_END_OF_SCOPE:FAIL
       E : Pool_Specific_Access;
    begin
       A := Allocate (13);
@@ -209,7 +209,7 @@ procedure Test_Ownership_Annotation with SPARK_Mode is
      Global => null
    is
       use Private_Ownership;
-      G : Pool_Specific_Access := Allocate (13); --@RESOURCE_LEAK:FAIL
+      G : Pool_Specific_Access := Allocate (13); --@RESOURCE_LEAK_AT_END_OF_SCOPE:FAIL
       procedure P1 (X : in out Pool_Specific_Access) with
         Global => null,
         Always_Terminates,
@@ -228,8 +228,8 @@ procedure Test_Ownership_Annotation with SPARK_Mode is
         Import;
       A : Pool_Specific_Access;
       B : Pool_Specific_Access;
-      C : Pool_Specific_Access; --@RESOURCE_LEAK:FAIL
-      D : Pool_Specific_Access; --@RESOURCE_LEAK:FAIL
+      C : Pool_Specific_Access; --@RESOURCE_LEAK_AT_END_OF_SCOPE:FAIL
+      D : Pool_Specific_Access; --@RESOURCE_LEAK_AT_END_OF_SCOPE:FAIL
       E : Pool_Specific_Access;
    begin
       A := Allocate (13);
@@ -253,7 +253,7 @@ procedure Test_Ownership_Annotation with SPARK_Mode is
       type Holder is record
          A : V;
       end record;
-      G : Holder := (A => Allocate (13)); --@RESOURCE_LEAK:FAIL
+      G : Holder := (A => Allocate (13)); --@RESOURCE_LEAK_AT_END_OF_SCOPE:FAIL
       procedure P1 (X : in out Holder) with
         Global => null,
         Always_Terminates,
@@ -272,8 +272,8 @@ procedure Test_Ownership_Annotation with SPARK_Mode is
         Import;
       A : Holder;
       B : Holder;
-      C : Holder; --@RESOURCE_LEAK:FAIL
-      D : Holder; --@RESOURCE_LEAK:FAIL
+      C : Holder; --@RESOURCE_LEAK_AT_END_OF_SCOPE:FAIL
+      D : Holder; --@RESOURCE_LEAK_AT_END_OF_SCOPE:FAIL
       E : Holder;
    begin
       A.A := Allocate (13);
@@ -296,8 +296,8 @@ procedure Test_Ownership_Annotation with SPARK_Mode is
       type Holder is record
          A : C_Acc;
       end record;
-      C : aliased constant Pool_Specific_Access := Allocate (13); --@RESOURCE_LEAK:FAIL
-      G : Holder := (A => C'Access); --@RESOURCE_LEAK:NONE
+      C : aliased constant Pool_Specific_Access := Allocate (13); --@RESOURCE_LEAK_AT_END_OF_SCOPE:FAIL
+      G : Holder := (A => C'Access); --@RESOURCE_LEAK_AT_END_OF_SCOPE:NONE
    begin
       G.A := null; --@RESOURCE_LEAK:NONE
    end Test_Private_Pointer_3;
@@ -305,7 +305,7 @@ procedure Test_Ownership_Annotation with SPARK_Mode is
    procedure Test_IO with
      Global => null
    is
-      G : File_Descriptor := Open ("g.txt"); --@RESOURCE_LEAK:FAIL
+      G : File_Descriptor := Open ("g.txt"); --@RESOURCE_LEAK_AT_END_OF_SCOPE:FAIL
       procedure P1 (X : in out File_Descriptor) with
         Global => null,
         Always_Terminates,
@@ -324,8 +324,8 @@ procedure Test_Ownership_Annotation with SPARK_Mode is
         Import;
       A : File_Descriptor;
       B : File_Descriptor;
-      C : File_Descriptor; --@RESOURCE_LEAK:FAIL
-      D : File_Descriptor; --@RESOURCE_LEAK:FAIL
+      C : File_Descriptor; --@RESOURCE_LEAK_AT_END_OF_SCOPE:FAIL
+      D : File_Descriptor; --@RESOURCE_LEAK_AT_END_OF_SCOPE:FAIL
       E : File_Descriptor;
    begin
       A := Open ("a.txt");

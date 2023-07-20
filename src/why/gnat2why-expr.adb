@@ -22810,13 +22810,7 @@ package body Gnat2Why.Expr is
       Force : Boolean)
       return W_Prog_Id
    is
-      --  Mark non-selected loop invariants (those not occurring next to the
-      --  first batch of selected variants and invariants) as loop invariant
-      --  VCs.
-      Reason : constant VC_Kind :=
-        (if Is_Pragma_Check (Prag, Name_Loop_Invariant)
-         then VC_Loop_Invariant
-         else VC_Assert);
+      Reason : constant VC_Kind := VC_Assert;
 
       Expr       : Node_Id;
       Check_Expr : W_Prog_Id;

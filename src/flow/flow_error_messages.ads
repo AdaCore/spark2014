@@ -50,7 +50,8 @@ package Flow_Error_Messages is
       EC_Write_In_Elaboration,
       EC_Required_Part_Of,
       EC_Ownership_Moved_Object,
-      EC_SPARK_Mode_On_Not_Library_Level);
+      EC_SPARK_Mode_On_Not_Library_Level,
+      EC_Address_Spec_Imprecise_Warn);
    for Explain_Code use
      (EC_None                             => 0,
       EC_Volatile_At_Library_Level        => 1,
@@ -63,7 +64,8 @@ package Flow_Error_Messages is
       EC_Write_In_Elaboration             => 8,
       EC_Required_Part_Of                 => 9,
       EC_Ownership_Moved_Object           => 10,
-      EC_SPARK_Mode_On_Not_Library_Level  => 11);
+      EC_SPARK_Mode_On_Not_Library_Level  => 11,
+      EC_Address_Spec_Imprecise_Warn      => 12);
 
    type Msg_Severity is
      (Error_Kind,

@@ -20,7 +20,7 @@ is
     begin
         r.i := 1;
     end p;
-    y : R_2(3);
+    y : R_2(3); --@PREDICATE_CHECK_ON_DEFAULT_VALUE:PASS
 begin
     if y.b then
         pragma Assert(for all x of y.a => x.i = 0);

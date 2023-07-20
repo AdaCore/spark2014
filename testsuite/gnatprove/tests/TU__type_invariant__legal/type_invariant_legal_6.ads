@@ -13,6 +13,6 @@ package Type_Invariant_Legal_6 with SPARK_Mode is
    procedure Pub_In_Out (X : in out T);
 
 private
-   type T is new Natural with Type_Invariant => T /= 0; -- @INVARIANT_CHECK:FAIL
+   type T is new Natural with Type_Invariant => T /= 0; -- @INVARIANT_CHECK_ON_DEFAULT_VALUE:FAIL
 
 end Type_Invariant_Legal_6;

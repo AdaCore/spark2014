@@ -25,7 +25,7 @@ procedure Test_Accessibility with SPARK_Mode is
       declare
          Res : access constant Integer := X.F1'Access;
       begin
-         return Res;
+         return Res; --@ACCESSIBILITY_CHECK:PASS
       end;
    end OK1;
 

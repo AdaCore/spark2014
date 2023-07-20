@@ -12,3 +12,8 @@ r.ads:9:37: medium: this interrupt might be reserved
 r.ads:13:18: info: range check proved (CVC5: 2 VC)
 r.ads:13:26: info: range check proved (CVC5: 2 VC)
 r.ads:13:34: info: range check proved (CVC5: 2 VC)
+s.ads:3:19: medium: ceiling priority might not be in Interrupt_Priority
+s.ads:7:37: medium: this interrupt might be reserved
+s.ads:11:18: info: range check proved (CVC5: 2 VC)
+s.ads:11:26: info: range check proved (CVC5: 2 VC)
+s.ads:11:34: info: range check proved (CVC5: 2 VC)

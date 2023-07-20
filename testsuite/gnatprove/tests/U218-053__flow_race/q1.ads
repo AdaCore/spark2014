@@ -12,9 +12,9 @@ package Q1 with Abstract_State => (Q1_State) is
                                       (B with Part_Of => Q2B),
                                       (C with Part_Of => Q2C)) is
                procedure Flip;
-               task type T1;
-               task type T2;
-               task type T3;
+               task type T1; --@TASK_TERMINATION:FAIL
+               task type T2; --@TASK_TERMINATION:FAIL
+               task type T3; --@TASK_TERMINATION:FAIL
             end Q3;
       end Q2;
 end Q1;

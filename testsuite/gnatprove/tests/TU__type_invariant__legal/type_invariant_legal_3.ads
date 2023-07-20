@@ -12,8 +12,8 @@ package Type_Invariant_Legal_3 is
 private
    function G (X : T2) return Boolean is (F(X));
 
-   type T1 is new Natural with Type_Invariant => F(T1);
-   type T2 is new Natural with Type_Invariant => G(T2);
+   type T1 is new Natural with Type_Invariant => F(T1);  --  @INVARIANT_CHECK_ON_DEFAULT_VALUE:PASS
+   type T2 is new Natural with Type_Invariant => G(T2);  --  @INVARIANT_CHECK_ON_DEFAULT_VALUE:PASS
 
    function F (X : T1) return Boolean is (True);
    function F (X : T2) return Boolean is (True);

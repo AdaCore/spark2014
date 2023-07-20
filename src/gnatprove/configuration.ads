@@ -30,8 +30,9 @@ with Ada.Environment_Variables;
 with Ada.Strings.Hash;
 with Call;              use Call;
 with GNAT.Strings;
+with GPR2.Project.Tree;
+use GPR2;
 with Gnat2Why_Opts;     use Gnat2Why_Opts;
-with GNATCOLL.Projects; use GNATCOLL.Projects;
 with GNATCOLL.Utils;    use GNATCOLL.Utils;
 with GNATCOLL.VFS;      use GNATCOLL.VFS;
 with Named_Semaphores;  use Named_Semaphores;
@@ -159,30 +160,6 @@ package Configuration is
       --  Scenario variables to be passed to gprbuild
       Z3_Counterexample     : aliased Boolean;
    end CL_Switches;
-
-   package Prj_Attr is
-
-      --  The attributes of the project file that are accessed by gnatprove.
-      --  This does not include the "Prove.Switches" attribute, which is
-      --  considered to be part of the command line.
-
-      Runtime : GNAT.Strings.String_Access;
-      Target  : GNAT.Strings.String_Access;
-
-      package Builder is
-         Global_Compilation_Switches_Ada : GNAT.Strings.String_List_Access;
-      end Builder;
-
-      package Prove is
-         Proof_Dir              : GNAT.Strings.String_Access;
-         Switches               : GNAT.Strings.String_List_Access;
-         Proof_Switches_Ada     : GNAT.Strings.String_List_Access;
-         Proof_Switches_Indices : GNAT.Strings.String_List_Access;
-
-         function Proof_Switches (Proj : Project_Type; Index : String)
-                                  return GNAT.Strings.String_List_Access;
-      end Prove;
-   end Prj_Attr;
 
    type Proof_Mode is (Progressive, No_WP, All_Split, Per_Path, Per_Check);
 
@@ -335,7 +312,7 @@ package Configuration is
    --  The name of the file in which the SPARK report is generated:
    --    Out_Dir/gnatprove.out
 
-   procedure Read_Command_Line (Tree : out Project_Tree);
+   procedure Read_Command_Line (Tree : out Project.Tree.Object);
 
    function Is_Manual_Prover (FS : File_Specific) return Boolean;
    --  @return True iff the alternate prover is "coq" or "isabelle"
@@ -345,6 +322,9 @@ package Configuration is
 
    function Prover_List (Source_File : String) return String;
    function Prover_List (FS : File_Specific) return String;
+
+   function Artifact_Dir (Tree : GPR2.Project.Tree.Object) return Virtual_File;
+   --  place to store the gnatprove artifacts.
 
    function Compute_Why3_Args (Obj_Dir : String;
                                FS      : File_Specific)

@@ -64,6 +64,7 @@ def benchmark_mode():
 def cache_mode():
     return "cache" in os.environ and os.environ["cache"] == "true"
 
+
 def cache_option():
     if "GNATPROVE_CACHE" in os.environ:
         cache = os.environ["GNATPROVE_CACHE"]
@@ -284,6 +285,7 @@ def is_rte_tag(tag):
     """Returns True if the given tag corresponds to a RTE proof message"""
     return tag in (
         "DIVISION_CHECK",
+        "FLOAT_OVERFLOW_CHECK",
         "INDEX_CHECK",
         "OVERFLOW_CHECK",
         "RANGE_CHECK",
@@ -293,8 +295,13 @@ def is_rte_tag(tag):
         "NULL_EXCLUSION",
         "ACCESSIBILITY_CHECK",
         "RESOURCE_LEAK",
+        "RESOURCE_LEAK_AT_END_OF_SCOPE",
         "DEREFERENCE_CHECK",
         "UU_RESTRICTION",
+        "CEILING_INTERRUPT",
+        "CEILING_PRIORITY_PROTOCOL",
+        "INTERRUPT_RESERVED",
+        "TASK_TERMINATION",
     )
 
 
@@ -309,7 +316,9 @@ def is_ada_assertion_tag(tag):
     message"""
     return tag in (
         "PREDICATE_CHECK",
+        "PREDICATE_CHECK_ON_DEFAULT_VALUE",
         "INVARIANT_CHECK",
+        "INVARIANT_CHECK_ON_DEFAULT_VALUE",
         "PRECONDITION",
         "PRECONDITION_MAIN",
         "POSTCONDITION",
@@ -323,14 +332,15 @@ def is_spark_assertion_tag(tag):
     return tag in (
         "DEFAULT_INITIAL_CONDITION",
         "CONTRACT_CASE",
-        "DISJOINT_CONTRACT_CASE",
-        "COMPLETE_CONTRACT_CASE",
+        "DISJOINT_CONTRACT_CASES",
+        "COMPLETE_CONTRACT_CASES",
         "LOOP_INVARIANT_INIT",
         "LOOP_INVARIANT_PRESERV",
         "LOOP_INVARIANT",
         "LOOP_VARIANT",
         "REFINED_POST",
         "SUBPROGRAM_VARIANT",
+        "EXCEPTIONAL_CASE",
     )
 
 
@@ -348,6 +358,8 @@ def is_other_proof_tag(tag):
         "STRONGER_POST_ACCESS",
         "UNCHECKED_CONVERSION",
         "UNCHECKED_CONVERSION_SIZE",
+        "UNCHECKED_CONVERSION_ALIGN",
+        "UNCHECKED_CONVERSION_VOLATILE",
         "ASSERT_PREMISE",
         "ASSERT_STEP",
         "INLINE_ANNOTATION",
@@ -361,7 +373,6 @@ def is_flow_tag(tag):
         is_dependency_tag(tag)
         or is_flow_initialization_tag(tag)
         or is_aliasing_tag(tag)
-        or is_termination_tag(tag)
     )
 
 
@@ -372,6 +383,7 @@ def is_proof_tag(tag):
         or is_proof_initialization_tag(tag)
         or is_ada_assertion_tag(tag)
         or is_spark_assertion_tag(tag)
+        or is_termination_tag(tag)
         or is_other_proof_tag(tag)
     )
 
@@ -430,23 +442,38 @@ def check_marks(strlist):
             return "INITIALIZED"
         elif "initializes" in text:
             return "INITIALIZES"
-        elif "aspect Always_Terminates" in text:
-            return "TERMINATION"
 
         # proof tags
 
         # When adding a tag in this section, you need also to update the
         # function is_proof_tag below.
-        if "division check" in text or "divide by zero" in text:
+        elif "aspect Always_Terminates" in text or (
+            (
+                "not terminate" in text
+                or "termination" in text
+                or "nonterminating" in text
+            )
+            and ("call" in text or "loop" in text)
+        ):
+            return "TERMINATION"
+        elif "division check" in text or "divide by zero" in text:
             return "DIVISION_CHECK"
         elif "index check" in text:
             return "INDEX_CHECK"
+        elif "float overflow check" in text:
+            return "FLOAT_OVERFLOW_CHECK"
         elif "overflow check" in text:
             return "OVERFLOW_CHECK"
         elif "predicate check" in text:
-            return "PREDICATE_CHECK"
+            if "on default value" in text:
+                return "PREDICATE_CHECK_ON_DEFAULT_VALUE"
+            else:
+                return "PREDICATE_CHECK"
         elif "invariant check" in text:
-            return "INVARIANT_CHECK"
+            if "on default value" in text:
+                return "INVARIANT_CHECK_ON_DEFAULT_VALUE"
+            else:
+                return "INVARIANT_CHECK"
         elif "range check" in text:
             return "RANGE_CHECK"
         elif "length check" in text:
@@ -462,13 +489,25 @@ def check_marks(strlist):
         elif "accessibility check" in text:
             return "ACCESSIBILITY_CHECK"
         elif "resource or memory leak" in text:
-            return "RESOURCE_LEAK"
+            if "at end of scope" in text:
+                return "RESOURCE_LEAK_AT_END_OF_SCOPE"
+            else:
+                return "RESOURCE_LEAK"
         elif "dereference check" in text:
             return "DEREFERENCE_CHECK"
         elif "operation on unchecked union type" in text:
             return "UU_RESTRICTION"
+        elif "ceiling priority" in text:
+            if "in Interrupt_Priority" in text:
+                return "CEILING_INTERRUPT"
+            else:
+                return "CEILING_PRIORITY_PROTOCOL"
+        elif "interrupt" in text and ("reserved" in text or "availability" in text):
+            return "INTERRUPT_RESERVED"
         elif "default initial condition" in text:
             return "DEFAULT_INITIAL_CONDITION"
+        elif "task" in text and ("nontermination" in text or "terminate" in text):
+            return "TASK_TERMINATION"
         elif "initial condition" in text:
             return "INITIAL_CONDITION"
         elif "precondition" in text:
@@ -484,6 +523,8 @@ def check_marks(strlist):
                 return "WEAKER_PRE_ACCESS"
             else:
                 return "PRECONDITION"
+        elif "refined post" in text:
+            return "REFINED_POST"
         elif "postcondition" in text:
             if "class-wide" in text and "overridden" in text:
                 return "STRONGER_CLASSWIDE_POST"
@@ -493,8 +534,6 @@ def check_marks(strlist):
                 return "STRONGER_POST_ACCESS"
             else:
                 return "POSTCONDITION"
-        elif "refined post" in text:
-            return "REFINED_POST"
         elif "contract case" in text:
             if "disjoint" in text and "contract cases" in text:
                 return "DISJOINT_CONTRACT_CASES"
@@ -526,10 +565,16 @@ def check_marks(strlist):
                 return "UNCHECKED_CONVERSION_SIZE"
             else:
                 return "UNCHECKED_CONVERSION"
+        elif "alignment" in text:
+            return "UNCHECKED_CONVERSION_ALIGN"
+        elif "object with non-trivial address clause" in text:
+            return "UNCHECKED_CONVERSION_VOLATILE"
         elif "Inline_For_Proof or Logical_Equal annotation" in text:
             return "INLINE_ANNOTATION"
         elif "feasible" in text or "feasibility" in text:
             return "FEASIBLE_POST"
+        elif "exceptional case" in text:
+            return "EXCEPTIONAL_CASE"
 
         # no tag recognized
         return None
@@ -551,7 +596,12 @@ def check_marks(strlist):
           is_flow_tag: True for flow messages, False for proof messages
         """
         if qualifier == "info":
-            if "proved" in text or "only expected" in text or "justified" in text:
+            if (
+                "proved" in text
+                or "only expected" in text
+                or "justified"
+                or "respected" in text
+            ):
                 return "PASS"
             else:
                 return None

@@ -5,7 +5,7 @@ is
 
    procedure Test
      with Exceptional_Cases =>
-            (Program_Error    => A,   --  A is initialized in the body
+            (Program_Error    => A,   --  A is initialized in the body @EXCEPTIONAL_CASE:PASS
              Constraint_Error => B),  --  B is not initialized in the body
           Global => (Input => X, In_Out => A, Proof_In => B)
    is

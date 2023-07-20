@@ -10,6 +10,6 @@ package Math is
      Pre  => X >= 0,
      Post => Bad'Result >= 0,
      Contract_Cases => (X + X = 0 => Bad'Result = 0,
-                        X > 0     => Bad'Result > 0);
+                        X > 0     => Bad'Result > 0); --@CONTRACT_CASE:FAIL
 
 end Math;

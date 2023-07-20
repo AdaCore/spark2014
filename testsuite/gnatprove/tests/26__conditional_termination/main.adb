@@ -21,7 +21,7 @@ procedure Main with SPARK_Mode is
       if B then
          return;
       end if;
-      loop
+      loop --@TERMINATION:FAIL
          null;
       end loop;
    end Bad_Do_Loop;
@@ -78,26 +78,26 @@ procedure Main with SPARK_Mode is
       if B then
          return;
       end if;
-      Do_Loop;
+      Do_Loop; --@TERMINATION:FAIL
    end Bad_Call_1;
 
    procedure Bad_Call_2 (B : Boolean) with
      Always_Terminates => not B
    is
    begin
-      Do_Loop (not B);
+      Do_Loop (not B); --@TERMINATION:FAIL
    end Bad_Call_2;
 
    procedure Bad_Call_3 (B : Boolean) with
      Always_Terminates
    is
    begin
-      Do_Loop (B);
+      Do_Loop (B); --@TERMINATION:FAIL
    end Bad_Call_3;
 
    function Bad_Call_4 (B : Boolean) return Boolean is
    begin
-      Do_Loop (B);
+      Do_Loop (B); --@TERMINATION:FAIL
       return True;
    end Bad_Call_4;
 
@@ -118,12 +118,12 @@ procedure Main with SPARK_Mode is
 
       procedure Bad_Call (B : Boolean) is
       begin
-         Do_Loop (B);
+         Do_Loop (B); --@TERMINATION:FAIL
       end Bad_Call;
 
       procedure Bad_Call_2 (B : Boolean) is
       begin
-         Do_Loop (B);
+         Do_Loop (B); --@TERMINATION:FAIL
       end Bad_Call_2;
    end Nested_1;
 
@@ -149,7 +149,7 @@ procedure Main with SPARK_Mode is
    procedure Call_Access (B : Boolean; F : not null access function return Integer) with
      Always_Terminates => not B
    is
-      C : Integer := F.all;
+      C : Integer := F.all; --@TERMINATION:FAIL
    begin
       if B then
          loop
@@ -166,7 +166,7 @@ procedure Main with SPARK_Mode is
    procedure Call_Disp (B : Boolean; X : Nested_2.Root'Class) with
      Always_Terminates => not B
    is
-      C : Integer := X.Disp;
+      C : Integer := X.Disp; --@TERMINATION:FAIL
    begin
       if B then
          loop
@@ -182,12 +182,12 @@ procedure Main with SPARK_Mode is
 
    function Rec return Integer is
    begin
-      Call_Rec (False);
+      Call_Rec (False); --@TERMINATION:FAIL
       return 15;
    end Rec;
 
    procedure Call_Rec (B : Boolean) is
-      C : Integer := Rec;
+      C : Integer := Rec; --@TERMINATION:FAIL
    begin
       if B then
          loop

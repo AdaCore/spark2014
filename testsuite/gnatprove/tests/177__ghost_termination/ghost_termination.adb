@@ -69,7 +69,7 @@ procedure Ghost_Termination with SPARK_Mode is
    procedure Non_Ghost_Caller_Bad is
    begin
       if Rand (1) then
-         Conditional_Non_Term (Rand (2)); -- call might not terminate (proof)
+         Conditional_Non_Term (Rand (2)); -- call might not terminate (proof) @TERMINATION:FAIL
       else
          Non_Term; -- call might not terminate (flow)
       end if;
@@ -81,9 +81,9 @@ procedure Ghost_Termination with SPARK_Mode is
    procedure Non_Ghost_Caller_Bad_2 is
    begin
       if Rand (1) then
-         Conditional_Non_Term (Rand (2)); -- call might not terminate (proof)
+         Conditional_Non_Term (Rand (2)); -- call might not terminate (proof)  @TERMINATION:FAIL
       else
-         Non_Term; -- call might not terminate (flow)
+         Non_Term; -- call might not terminate (flow)  @TERMINATION:FAIL
       end if;
    end Non_Ghost_Caller_Bad_2;
 
@@ -103,7 +103,7 @@ procedure Ghost_Termination with SPARK_Mode is
 
    procedure Non_Ghost_Caller_Fun is
    begin
-      Term (V.all); -- call might not terminate (flow)
+      Term (V.all); -- call might not terminate (flow)  @TERMINATION:FAIL
    end Non_Ghost_Caller_Fun;
 
 begin

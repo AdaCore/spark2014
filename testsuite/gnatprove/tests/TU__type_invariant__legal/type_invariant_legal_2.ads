@@ -17,7 +17,7 @@ package Type_Invariant_Legal_2 with SPARK_Mode is
    procedure Pub_In_Out (X : in out T);  --  @INVARIANT_CHECK:PASS
 
 private
-   type T is new Natural with Type_Invariant => T /= 0;
+   type T is new Natural with Type_Invariant => T /= 0;  --  @INVARIANT_CHECK_ON_DEFAULT_VALUE:FAIL
 
    function Priv (X : T) return Integer with Pre => True;  --  @INVARIANT_CHECK:NONE
    function E_Priv (X : T) return Integer;  --  @INVARIANT_CHECK:NONE

@@ -15,7 +15,7 @@ begin
 
    X := Float'Last;
    if A then
-      X := Float'Succ (X); -- @OVERFLOW_CHECK:FAIL
+      X := Float'Succ (X); -- @FLOAT_OVERFLOW_CHECK:FAIL
    else
       pragma Assert (Float'Pred (X) < Float'Last); -- @ASSERT:PASS
    end if;
@@ -23,9 +23,9 @@ begin
 
    X := Float'First;
    if B then
-      X := Float'Pred (X); -- @OVERFLOW_CHECK:FAIL
+      X := Float'Pred (X); -- @FLOAT_OVERFLOW_CHECK:FAIL
    else
-      pragma Assert (Float'Succ (X) > Float'First); -- @ASSERT:PASS @OVERFLOW_CHECK:PASS
+      pragma Assert (Float'Succ (X) > Float'First); -- @ASSERT:PASS @FLOAT_OVERFLOW_CHECK:PASS
    end if;
    pragma Assert (Float'Succ (X) < 0.0);
 end Succ_Floats;
