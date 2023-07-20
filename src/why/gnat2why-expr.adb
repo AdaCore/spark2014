@@ -839,19 +839,12 @@ package body Gnat2Why.Expr is
    --  @return the translation of the expression contained in the invariant
    --          applied on Expr.
 
-   procedure Warn_On_Dead_Branch_Condition_Update
-     (Cond    :        N_Subexpr_Id;
-      Do_Warn : in out Boolean);
-   --  Set the condition Do_Warn to False if the Boolean expression Cond is
-   --  statically True or False, or it contains a sub-expression X'Valid. As
-   --  validity is assumed to be always True in GNATprove, we don't want to
-   --  report a spurious warning in that case.
-
    function Warn_On_Dead_Branch_Or_Code
-     (N      : Node_Id;
-      W      : W_Prog_Id;
-      Branch : Boolean;
-      Phase  : Transformation_Phase)
+     (N       : Node_Id;
+      W       : W_Prog_Id;
+      Branch  : Boolean;
+      Phase   : Transformation_Phase;
+      Do_Warn : Boolean)
       return W_Prog_Id;
    --  Shared functionality for warning on dead branch or dead code.
 
@@ -19640,12 +19633,25 @@ package body Gnat2Why.Expr is
                   end if;
                end New_Short_Circuit_Expr;
 
-               Left : constant W_Expr_Id :=
-                 Transform_Expr (Left_Opnd (Expr),
+               Left_N        : constant Node_Id := Left_Opnd (Expr);
+               Left          : constant W_Expr_Id :=
+                 Transform_Expr (Left_N,
                                  EW_Bool_Type,
                                  Domain,
                                  Local_Params);
-               Right : W_Expr_Id;
+               Right         : W_Expr_Id;
+
+               Warn_On_Right : constant Boolean := Local_Params.Warn_On_Dead
+                 and then
+                   (if Nkind (Expr) = N_And_Then
+                    then not Is_Statically_Disabled
+                      (Left_N, False, Include_Valid => True)
+                    else not Is_Statically_Disabled
+                      (Left_N, True, Include_Valid => True));
+               Right_Params  : constant Transformation_Params :=
+                 (Local_Params with delta Warn_On_Dead => Warn_On_Right);
+               --  Do not emit dead branch warnings in Right if Left is
+               --  statically disabled.
 
             --  Start of processing for Short_Circuit
 
@@ -19659,14 +19665,15 @@ package body Gnat2Why.Expr is
                Right := Transform_Expr (Right_Opnd (Expr),
                                         EW_Bool_Type,
                                         Domain,
-                                        Local_Params);
+                                        Right_Params);
 
                --  Possibly warn on an unreachable right branch
 
                if Domain = EW_Prog then
                   Right :=
-                    +Warn_On_Dead_Branch (Right_Opnd (Expr), +Right,
-                                          Local_Params.Phase);
+                    +Warn_On_Dead_Branch
+                    (Right_Opnd (Expr), +Right,
+                     Local_Params.Phase, Warn_On_Right);
                end if;
 
                if Present (Actions (Expr)) then
@@ -19713,30 +19720,39 @@ package body Gnat2Why.Expr is
                  (if Domain = EW_Term then EW_Pred else Domain);
                Phase       : constant Transformation_Phase :=
                  Local_Params.Phase;
-               Then_Expr, Else_Expr : W_Expr_Id;
+               Warn_Then   : constant Boolean := Local_Params.Warn_On_Dead
+                 and then not Is_Statically_Disabled
+                   (Cond, False, Include_Valid => True);
+               Warn_Else   : constant Boolean := Local_Params.Warn_On_Dead
+                 and then not Is_Statically_Disabled
+                   (Cond, True, Include_Valid => True);
+               Then_Expr   : W_Expr_Id;
+               Else_Expr   : W_Expr_Id;
                Condition   : W_Expr_Id;
 
             begin
                Then_Expr :=
-                 Transform_Expr_With_Actions (Then_Part,
-                                              Then_Actions (Expr),
-                                              Expected_Type,
-                                              Domain,
-                                              Local_Params);
+                 Transform_Expr_With_Actions
+                   (Then_Part,
+                    Then_Actions (Expr),
+                    Expected_Type,
+                    Domain,
+                    (Local_Params with delta Warn_On_Dead => Warn_Then));
 
                --  Possibly warn on an unreachable then-branch
 
                if Domain = EW_Prog then
-                  Then_Expr :=
-                    +Warn_On_Dead_Branch (Then_Part, +Then_Expr, Phase);
+                  Then_Expr := +Warn_On_Dead_Branch
+                    (Then_Part, +Then_Expr, Phase, Warn_Then);
                end if;
 
                Else_Expr :=
-                 Transform_Expr_With_Actions (Else_Part,
-                                              Else_Actions (Expr),
-                                              Expected_Type,
-                                              Domain,
-                                              Local_Params);
+                 Transform_Expr_With_Actions
+                   (Else_Part,
+                    Else_Actions (Expr),
+                    Expected_Type,
+                    Domain,
+                    (Local_Params with delta Warn_On_Dead => Warn_Else));
 
                --  Do not warn on an unreachable branch "else True" whether it
                --  comes from source or it was generated by the frontend.
@@ -19749,8 +19765,8 @@ package body Gnat2Why.Expr is
                --  Otherwise possibly warn on an unreachable else-branch
 
                elsif Domain = EW_Prog then
-                  Else_Expr :=
-                    +Warn_On_Dead_Branch (Else_Part, +Else_Expr, Phase);
+                  Else_Expr := +Warn_On_Dead_Branch
+                    (Else_Part, +Else_Expr, Phase, Warn_Else);
                end if;
 
                Local_Params.Gen_Marker := GM_None;
@@ -20071,7 +20087,7 @@ package body Gnat2Why.Expr is
 
                   if Domain = EW_Prog then
                      T := +Warn_On_Dead_Branch
-                       (Expression (N), +T, Params.Phase);
+                       (Expression (N), +T, Params.Phase, Params.Warn_On_Dead);
                   end if;
 
                   return T;
@@ -20954,7 +20970,8 @@ package body Gnat2Why.Expr is
             --  Possibly warn on an unreachable branches
 
             if Warn_On_Dead_Branches then
-               return +Warn_On_Dead_Branch (Expr, +Result, Params.Phase);
+               return +Warn_On_Dead_Branch
+                 (Expr, +Result, Params.Phase, Params.Warn_On_Dead);
             else
                return Result;
             end if;
@@ -21043,6 +21060,12 @@ package body Gnat2Why.Expr is
                   Else_Part   : constant Opt_N_Subexpr_Id := Next (Then_Part);
                   Then_Checks : W_Prog_Id;
                   Else_Checks : W_Prog_Id;
+                  Warn_Then   : constant Boolean := Params.Warn_On_Dead
+                    and then not Is_Statically_Disabled
+                      (Cond, False, Include_Valid => True);
+                  Warn_Else   : constant Boolean := Params.Warn_On_Dead
+                    and then not Is_Statically_Disabled
+                      (Cond, True, Include_Valid => True);
 
                begin
                   --  Warn on dead branches inside the then branch
@@ -21050,7 +21073,8 @@ package body Gnat2Why.Expr is
                   Warn_On_Dead_Branches := True;
 
                   Then_Checks := +Compute_Runtime_Checks_For_Expr_With_Actions
-                    (Then_Part, Then_Actions (Expr), EW_Pred, Params);
+                    (Then_Part, Then_Actions (Expr), EW_Pred,
+                     Params => (Params with delta Warn_On_Dead => Warn_Then));
 
                   --  Do not warn on an unreachable branch "else True" whether
                   --  it comes from source or it was generated by the frontend.
@@ -21060,7 +21084,8 @@ package body Gnat2Why.Expr is
                     or else Entity (Else_Part) /= Standard_True;
 
                   Else_Checks := +Compute_Runtime_Checks_For_Expr_With_Actions
-                    (Else_Part, Else_Actions (Expr), EW_Pred, Params);
+                    (Else_Part, Else_Actions (Expr), EW_Pred,
+                     Params => (Params with delta Warn_On_Dead => Warn_Else));
 
                   return New_Conditional
                     (Ada_Node  => Expr,
@@ -21493,7 +21518,7 @@ package body Gnat2Why.Expr is
            (First (Statements (Handler)),
             +Transform_Statements_And_Declarations
               (Statements (Handler), Params),
-            Params.Phase));
+            Params.Phase, Params.Warn_On_Dead));
 
       function List_Length_Non_Pragma (L : List_Id) return Nat;
       --  Similar to List_Length, but excluding pragma items
@@ -22853,7 +22878,7 @@ package body Gnat2Why.Expr is
 
       if Is_Pragma_Check (Prag, Name_Compile_Time_Error) then
          Append (T, New_Assume_Statement (Pred => New_Not (Right => Pred)));
-         Append (T, Warn_On_Inconsistent_Assume (Prag));
+         Append (T, Warn_On_Inconsistent_Assume (Prag, Params.Warn_On_Dead));
 
       else
          --  Get rid of simple cases True and False
@@ -22898,7 +22923,8 @@ package body Gnat2Why.Expr is
 
             elsif Is_Pragma_Check (Prag, Name_Assume) then
                Append (T, New_Assume_Statement (Pred => Pred));
-               Append (T, Warn_On_Inconsistent_Assume (Prag));
+               Append
+                 (T, Warn_On_Inconsistent_Assume (Prag, Params.Warn_On_Dead));
                Register_Pragma_Assume_Statement (Prag);
 
             --  If the assertion contains a cut operation, its premise and
@@ -23044,11 +23070,12 @@ package body Gnat2Why.Expr is
            Transform_Expr (Expr, Domain, Params);
 
       begin
-         --  Possibly warn on an unreachable quantified expression.
+         --  Possibly warn on an unreachable quantified expression
 
          if Domain = EW_Prog then
             return +Warn_On_Dead_Branch
-              (Expr, New_Ignore (Prog => +Result), Params.Phase);
+              (Expr, New_Ignore (Prog => +Result),
+               Params.Phase, Params.Warn_On_Dead);
          else
             return Result;
          end if;
@@ -24308,80 +24335,116 @@ package body Gnat2Why.Expr is
 
          when N_If_Statement =>
             declare
-               Then_Part : constant List_Id := Then_Statements (Stmt_Or_Decl);
-               Then_Stmt : W_Prog_Id :=
-                 Transform_Statements_And_Declarations (Then_Part, Params);
-               Else_Part : constant List_Id := Else_Statements (Stmt_Or_Decl);
-               Else_Stmt : W_Prog_Id :=
-                 Transform_Statements_And_Declarations (Else_Part, Params);
+               Cond        : constant Node_Id := Condition (Stmt_Or_Decl);
+               Then_Part   : constant List_Id :=
+                 Then_Statements (Stmt_Or_Decl);
+               Then_Stmt   : W_Prog_Id;
+               Num_Elsif   : constant Natural :=
+                 Natural (List_Length (Elsif_Parts (Stmt_Or_Decl)));
+               Elsif_Stmts : W_Prog_Array (1 .. Num_Elsif);
+               Elsif_Conds : W_Prog_Array (1 .. Num_Elsif);
+               Else_Part   : constant List_Id :=
+                 Else_Statements (Stmt_Or_Decl);
+               Else_Stmt   : W_Prog_Id;
 
-               Do_Warn_On_Dead_Branch : Boolean := True;
-               --  Whether we should warn on dead branches. This may be set
-               --  to False is we encounter a test for X'Valid.
+               Do_Warn     : Boolean := Params.Warn_On_Dead;
+               --  Whether we should warn on dead branches. This may be set to
+               --  False if we encounter a statically disabled branch.
+
+               Warn_Then   : constant Boolean := Do_Warn
+                 and then not Is_Statically_Disabled
+                   (Cond, False, Include_Valid => True);
 
             begin
                --  Possibly warn on dead code
 
-               Warn_On_Dead_Branch_Condition_Update (Condition (Stmt_Or_Decl),
-                                                     Do_Warn_On_Dead_Branch);
-               if Do_Warn_On_Dead_Branch then
-                  Then_Stmt :=
-                    +Warn_On_Dead_Code (First (Then_Part),
-                                        +Then_Stmt,
-                                        Generate_VCs_For_Body);
+               Then_Stmt := Transform_Statements_And_Declarations
+                 (Then_Part, (Params with delta Warn_On_Dead => Warn_Then));
 
-                  if Is_Non_Empty_List (Else_Part) then
-                     Else_Stmt :=
-                       +Warn_On_Dead_Code (First (Else_Part),
-                                           +Else_Stmt,
-                                           Generate_VCs_For_Body);
-                  end if;
-               end if;
+               Then_Stmt :=
+                 +Warn_On_Dead_Code (First (Then_Part),
+                                     +Then_Stmt,
+                                     Params.Phase,
+                                     Warn_Then);
+
+               Do_Warn := Do_Warn
+                 and then not Is_Statically_Disabled
+                   (Cond, True, Include_Valid => True);
+
+               --  The elsif parts need to be traversed in order to propagate
+               --  the Do_Warn flag. Compute the conditions and statements
+               --  and store then in Elsif_Conds and Elsif_Stmts so the
+               --  conditional can be reconstructed afterward.
 
                if Present (Elsif_Parts (Stmt_Or_Decl)) then
                   declare
-                     Cur      : Node_Id := Last (Elsif_Parts (Stmt_Or_Decl));
-                     Cur_Stmt : W_Prog_Id;
-                  begin
-                     --  Beginning from the tail that consists of the
-                     --  translation of the Else part, possibly a no-op,
-                     --  translate the list of elsif parts into a chain of
-                     --  if-then-else Why expressions.
+                     Cur       : Node_Id := First (Elsif_Parts (Stmt_Or_Decl));
+                     Cond      : Node_Id;
+                     Warn_Then : Boolean;
 
-                     while Present (Cur) loop
-                        Cur_Stmt :=
-                          Transform_Statements_And_Declarations
-                            (Then_Statements (Cur), Params);
+                  begin
+
+                     for I in Elsif_Conds'Range loop
+                        Cond := Condition (Cur);
+                        Elsif_Conds (I) :=
+                          New_Counterexample_Assign
+                            (Cur,
+                             +Transform_Expr_With_Actions
+                               (Cond,
+                                Condition_Actions (Cur),
+                                EW_Bool_Type,
+                                EW_Prog,
+                                Params =>
+                                  (Params with delta
+                                       Warn_On_Dead => Do_Warn)));
 
                         --  Possibly warn on an unreachable case branch
 
-                        Warn_On_Dead_Branch_Condition_Update
-                          (Condition (Cur),
-                           Do_Warn_On_Dead_Branch);
-                        if Do_Warn_On_Dead_Branch then
-                           Cur_Stmt :=
-                             +Warn_On_Dead_Code
-                               (First (Then_Statements (Cur)),
-                                +Cur_Stmt,
-                                Generate_VCs_For_Body);
-                        end if;
+                        Warn_Then := Do_Warn
+                          and then not Is_Statically_Disabled
+                            (Cond, False, Include_Valid => True);
 
-                        Else_Stmt :=
-                          New_Simpl_Conditional
-                            (Condition =>
-                               New_Counterexample_Assign (Cur,
-                                 +Transform_Expr_With_Actions
-                                    (Condition (Cur),
-                                     Condition_Actions (Cur),
-                                     EW_Bool_Type,
-                                     EW_Prog,
-                                     Params => Params)),
-                             Then_Part => Cur_Stmt,
-                             Else_Part => Else_Stmt);
-                        Prev (Cur);
+                        Elsif_Stmts (I) :=
+                          Transform_Statements_And_Declarations
+                            (Then_Statements (Cur),
+                             (Params with delta Warn_On_Dead => Warn_Then));
+
+                        Elsif_Stmts (I) :=
+                          +Warn_On_Dead_Code
+                          (First (Then_Statements (Cur)),
+                           +Elsif_Stmts (I),
+                           Params.Phase,
+                           Warn_Then);
+
+                        Do_Warn := Do_Warn
+                          and then not Is_Statically_Disabled
+                            (Cond, True, Include_Valid => True);
+
+                        Next (Cur);
                      end loop;
                   end;
                end if;
+
+               Else_Stmt := Transform_Statements_And_Declarations
+                 (Else_Part, (Params with delta Warn_On_Dead => Do_Warn));
+
+               if Is_Non_Empty_List (Else_Part) then
+                  Else_Stmt :=
+                    +Warn_On_Dead_Code (First (Else_Part),
+                                        +Else_Stmt,
+                                        Params.Phase,
+                                        Do_Warn);
+               end if;
+
+               --  Go over the elsif branches to reconstruct the conditional
+
+               for I in reverse Elsif_Conds'Range loop
+                  Else_Stmt :=
+                    New_Simpl_Conditional
+                      (Condition => Elsif_Conds (I),
+                       Then_Part => Elsif_Stmts (I),
+                       Else_Part => Else_Stmt);
+               end loop;
 
                --  Finish by putting the main if-then-else on top.
 
@@ -24389,7 +24452,7 @@ package body Gnat2Why.Expr is
                  New_Simpl_Conditional
                    (Condition =>
                       New_Counterexample_Assign (Stmt_Or_Decl,
-                        Transform_Prog (Condition (Stmt_Or_Decl),
+                        Transform_Prog (Cond,
                                         EW_Bool_Type,
                                         Params => Params)),
                     Then_Part => Then_Stmt,
@@ -24466,7 +24529,8 @@ package body Gnat2Why.Expr is
                   --  Possibly warn on dead code
 
                   T := +Warn_On_Dead_Code
-                    (First (Statements (N)), +T, Params.Phase);
+                    (First (Statements (N)), +T,
+                     Params.Phase, Params.Warn_On_Dead);
 
                   return T;
                end Transform_Branch;
@@ -25330,22 +25394,25 @@ package body Gnat2Why.Expr is
    -------------------------
 
    function Warn_On_Dead_Branch
-     (N     : N_Subexpr_Id;
-      W     : W_Prog_Id;
-      Phase : Transformation_Phase)
+     (N       : N_Subexpr_Id;
+      W       : W_Prog_Id;
+      Phase   : Transformation_Phase;
+      Do_Warn : Boolean)
       return W_Prog_Id
    is
-      (Warn_On_Dead_Branch_Or_Code (N, W, Branch => True, Phase => Phase));
+      (Warn_On_Dead_Branch_Or_Code
+         (N, W, Branch => True, Phase => Phase, Do_Warn => Do_Warn));
 
    ---------------------------------
    -- Warn_On_Dead_Branch_Or_Code --
    ---------------------------------
 
    function Warn_On_Dead_Branch_Or_Code
-     (N      : Node_Id;
-      W      : W_Prog_Id;
-      Branch : Boolean;
-      Phase  : Transformation_Phase)
+     (N       : Node_Id;
+      W       : W_Prog_Id;
+      Branch  : Boolean;
+      Phase   : Transformation_Phase;
+      Do_Warn : Boolean)
       return W_Prog_Id
    is
       Stmt : W_Prog_Id;
@@ -25356,6 +25423,8 @@ package body Gnat2Why.Expr is
       if Gnat2Why_Args.Proof_Warnings
         --  and warnings are not suppressed
         and then Opt.Warning_Mode /= Opt.Suppress
+        --  and this specific warning is not suppressed
+        and then Do_Warn
         --  and a warning can be issued on that node
         and then May_Issue_Warning_On_Node (N)
         --  and the phase corresponds to generating VCs
@@ -25391,42 +25460,24 @@ package body Gnat2Why.Expr is
    -----------------------
 
    function Warn_On_Dead_Code
-     (N     : Node_Id;
-      W     : W_Prog_Id;
-      Phase : Transformation_Phase)
+     (N       : Node_Id;
+      W       : W_Prog_Id;
+      Phase   : Transformation_Phase;
+      Do_Warn : Boolean)
       return W_Prog_Id
    is
-      (+Warn_On_Dead_Branch_Or_Code (N, +W, Branch => False, Phase => Phase));
-
-   ------------------------------------------
-   -- Warn_On_Dead_Branch_Condition_Update --
-   ------------------------------------------
-
-   procedure Warn_On_Dead_Branch_Condition_Update
-     (Cond    :        N_Subexpr_Id;
-      Do_Warn : in out Boolean)
-   is
-   begin
-      Do_Warn := Do_Warn
-
-        --  A condition statically True or False means that the branch being
-        --  dead is not a useful warning.
-
-        and then not
-          (Is_Entity_Name (Cond)
-             and then Present (Entity (Cond))
-             and then Entity (Cond) in Standard_True | Standard_False)
-
-        --  Similarly for a condition that contains X'Valid
-
-        and then not Expression_Contains_Valid_Or_Valid_Scalars (Cond);
-   end Warn_On_Dead_Branch_Condition_Update;
+      (+Warn_On_Dead_Branch_Or_Code
+         (N, +W, Branch => False, Phase => Phase, Do_Warn => Do_Warn));
 
    ---------------------------------
    -- Warn_On_Inconsistent_Assume --
    ---------------------------------
 
-   function Warn_On_Inconsistent_Assume (N : Node_Id) return W_Prog_Id is
+   function Warn_On_Inconsistent_Assume
+     (N       : Node_Id;
+      Do_Warn : Boolean)
+      return W_Prog_Id
+   is
       Stmt : W_Prog_Id;
 
    begin
@@ -25435,6 +25486,8 @@ package body Gnat2Why.Expr is
       if Gnat2Why_Args.Proof_Warnings
         --  and warnings are not suppressed
         and then Opt.Warning_Mode /= Opt.Suppress
+        --  and this specific warning is not suppressed
+        and then Do_Warn
         --  and a warning can be issued on that node
         and then May_Issue_Warning_On_Node (N)
       then

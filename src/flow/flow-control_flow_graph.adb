@@ -2419,7 +2419,8 @@ package body Flow.Control_Flow_Graph is
       Known_Condition     : Boolean :=
         Compile_Time_Known_Value (Condition (N));
       Seen_True_Warn_Off  : Boolean :=
-        Is_Statically_Disabled (N => Condition (N), Value => True);
+        Is_Statically_Disabled
+          (N => Condition (N), Value => True, Include_Valid => False);
       Save_Warn_Off       : constant Boolean := Ctx.Vertex_Ctx.Warnings_Off;
    begin
 
@@ -2455,8 +2456,10 @@ package body Flow.Control_Flow_Graph is
       --  statements either when we are already in such a case, or when the if
       --  condition is statically disabled.
       Ctx.Vertex_Ctx.Warnings_Off :=
-        Save_Warn_Off or else Is_Statically_Disabled (N     => Condition (N),
-                                                      Value => False);
+        Save_Warn_Off or else Is_Statically_Disabled
+        (N             => Condition (N),
+         Value         => False,
+         Include_Valid => False);
 
       --  We hang the if part off that
       Process_Statement_List (If_Part, FA, CM, Ctx);
@@ -2521,8 +2524,10 @@ package body Flow.Control_Flow_Graph is
             Seen_True_Warn_Off :=
               Seen_True_Warn_Off
                 or else
-              Is_Statically_Disabled (N     => Condition (Elsif_Statement),
-                                      Value => True);
+              Is_Statically_Disabled
+                  (N             => Condition (Elsif_Statement),
+                   Value         => True,
+                   Include_Valid => False);
 
             declare
                Elsif_Body  : constant List_Id :=
@@ -2572,8 +2577,10 @@ package body Flow.Control_Flow_Graph is
                Ctx.Vertex_Ctx.Warnings_Off :=
                  Ctx.Vertex_Ctx.Warnings_Off
                    or else
-                 Is_Statically_Disabled (N     => Condition (Elsif_Statement),
-                                         Value => False);
+                 Is_Statically_Disabled
+                     (N             => Condition (Elsif_Statement),
+                      Value         => False,
+                      Include_Valid => False);
 
                --  Process statements of elsif
                Process_Statement_List (Elsif_Body, FA, CM, Ctx);

@@ -793,22 +793,27 @@ package Gnat2Why.Expr is
    --  visible calls to New_Statement_Sequence for non sequential statements).
 
    function Warn_On_Dead_Branch
-     (N     : N_Subexpr_Id;
-      W     : W_Prog_Id;
-      Phase : Transformation_Phase)
+     (N       : N_Subexpr_Id;
+      W       : W_Prog_Id;
+      Phase   : Transformation_Phase;
+      Do_Warn : Boolean)
       return W_Prog_Id;
    --  In cases where we want to detect unreachable branches, wrap program
    --  expression W with a warning by proof on reachability. Otherwise simply
    --  return W (which may or not be a program in that case).
 
    function Warn_On_Dead_Code
-     (N     : Node_Id;
-      W     : W_Prog_Id;
-      Phase : Transformation_Phase)
+     (N       : Node_Id;
+      W       : W_Prog_Id;
+      Phase   : Transformation_Phase;
+      Do_Warn : Boolean)
       return W_Prog_Id;
    --  Same as Warn_On_Dead_Branch except for dead code
 
-   function Warn_On_Inconsistent_Assume (N : Node_Id) return W_Prog_Id;
+   function Warn_On_Inconsistent_Assume
+     (N       : Node_Id;
+      Do_Warn : Boolean)
+      return W_Prog_Id;
    --  In cases where we want to detect inconsistent pragma Assume, attempt to
    --  issue a warning if the path is dead at this point.
 

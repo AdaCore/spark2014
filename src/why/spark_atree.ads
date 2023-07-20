@@ -524,12 +524,6 @@ package SPARK_Atree is
    with Pre => Nkind (Expr) in N_Subexpr;
    --  Traverse expression to find references to Old and Loop_Entry attributes
 
-   function Expression_Contains_Valid_Or_Valid_Scalars
-     (Expr : Node_Id) return Boolean
-   with Pre => Nkind (Expr) in N_Subexpr;
-   --  Traverse expression to find references to Valid and Valid_Scalars
-   --  attributes.
-
    function Expression_Contains_Primitives_Calls_Of
      (Expr : Node_Id;
       Typ  : Entity_Id) return Boolean
