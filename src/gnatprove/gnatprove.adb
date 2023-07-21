@@ -90,7 +90,7 @@ with String_Utils;     use String_Utils;
 
 procedure Gnatprove with SPARK_Mode is
 
-   type Gnatprove_Step is (GS_ALI, GS_Gnat2Why);
+   type Gnatprove_Step is (GS_Data_Representation, GS_ALI, GS_Gnat2Why);
 
    type Plan_Type is array (Positive range <>) of Gnatprove_Step;
 
@@ -103,7 +103,7 @@ procedure Gnatprove with SPARK_Mode is
      (Project_File      : String;
       Tree              : Project.Tree.Object;
       DB_Dir            : String;
-      Translation_Phase : Boolean;
+      Translation_Phase : Gnatprove_Step;
       Args              : in out String_Lists.List;
       Status            : out Integer);
    --  Call gprbuild with the given arguments. DB_Dir is the directory
@@ -119,6 +119,12 @@ procedure Gnatprove with SPARK_Mode is
       Tree         : Project.Tree.Object;
       Status       : out Integer);
    --  Compute ALI information for all source units, using gprbuild
+
+   procedure Compute_Data_Representation
+     (Project_File : String;
+      Tree         : Project.Tree.Object;
+      Status       : out Integer);
+   --  Compute data representation for all source units, using gprbuild
 
    procedure Execute_Step
      (Plan         : Plan_Type;
@@ -175,21 +181,33 @@ procedure Gnatprove with SPARK_Mode is
      (Project_File      : String;
       Tree              : Project.Tree.Object;
       DB_Dir            : String;
-      Translation_Phase : Boolean;
+      Translation_Phase : Gnatprove_Step;
       Args              : in out String_Lists.List;
       Status            : out Integer)
    is
-      Obj_Dir  : constant String :=
+      --  In the first step, gprbuild calls gcc to generate data representation
+      --  information. In the second and third steps, it calls gnat2why.
+      Call_Gnat2Why : constant Boolean :=
+        Translation_Phase /= GS_Data_Representation;
+      Obj_Dir       : constant String :=
         Artifact_Dir (Tree).Display_Full_Name;
-      Opt_File : constant String :=
-         Gnat2Why_Opts.Writing.Pass_Extra_Options_To_Gnat2why
-            (Translation_Phase => Translation_Phase,
-             Obj_Dir           => Obj_Dir);
-      Del_Succ : Boolean;
+      Opt_File      : constant String :=
+        Gnat2Why_Opts.Writing.Pass_Extra_Options_To_Gnat2why
+          (Translation_Phase => Translation_Phase = GS_Gnat2Why,
+           Obj_Dir           => Obj_Dir);
+      Output_Name   : constant String :=
+        (if Call_Gnat2Why then ""
+         else Ada.Directories.Compose
+           (Configuration.Artifact_Dir (Tree).Display_Full_Name,
+            "data_representation_generation", "log"));
+      Del_Succ      : Boolean;
 
    begin
       Args.Append ("--restricted-to-languages=ada");
-      Args.Append ("--gnatprove");
+
+      if Call_Gnat2Why then
+         Args.Append ("--gnatprove");  --  Call gnat2why instead of gcc
+      end if;
 
       if Minimal_Compile then
          Args.Append ("-m");
@@ -237,8 +255,10 @@ procedure Gnatprove with SPARK_Mode is
          Args.Append (Project_File);
       end if;
 
-      Args.Append ("--db");
-      Args.Append (DB_Dir);
+      if Call_Gnat2Why then
+         Args.Append ("--db");
+         Args.Append (DB_Dir);
+      end if;
 
       if CL_Switches.RTS /= null
         and then CL_Switches.RTS.all /= ""
@@ -266,9 +286,11 @@ procedure Gnatprove with SPARK_Mode is
          Args.Append (Arg);
       end loop;
 
-      Args.Append ("-gnatc");       --  only generate ALI
+      Args.Append ("-gnatc");  --  Do not generate an object file
 
-      Args.Append ("-gnates=" & Opt_File);
+      if Call_Gnat2Why then
+         Args.Append ("-gnates=" & Opt_File);
+      end if;
 
       if GnateT_Switch /= null
         and then GnateT_Switch.all /= ""
@@ -276,11 +298,18 @@ procedure Gnatprove with SPARK_Mode is
          Args.Append (Configuration.GnateT_Switch.all);
       end if;
 
+      if not Call_Gnat2Why then
+         Args.Append ("-gnatR2js");  --  Generate data representation files
+         Args.Append ("-gnatws");    --  Suppress all info/warnings
+      end if;
+
       Call_With_Status
-        (Command   => "gprbuild",
-         Arguments => Args,
-         Status    => Status,
-         Verbose   => Verbose);
+        (Command     => "gprbuild",
+         Arguments   => Args,
+         Status      => Status,
+         Output_Name => Output_Name,
+         Verbose     => Verbose);
+
       if Status = 0 and then not Debug then
          GNAT.OS_Lib.Delete_File (Opt_File, Del_Succ);
       end if;
@@ -329,10 +358,59 @@ procedure Gnatprove with SPARK_Mode is
       Call_Gprbuild (Project_File,
                      Tree,
                      SPARK_Install.Gpr_Frames_DB,
-                     Translation_Phase => False,
+                     Translation_Phase => GS_ALI,
                      Args              => Args,
                      Status            => Status);
    end Compute_ALI_Information;
+
+   ---------------------------------
+   -- Compute_Data_Representation --
+   ---------------------------------
+
+   procedure Compute_Data_Representation
+     (Project_File : String;
+      Tree         : Project.Tree.Object;
+      Status       : out Integer)
+   is
+      Args : String_Lists.List;
+   begin
+      declare
+         Subd : constant Virtual_File :=
+           Phase2_Subdir / Data_Representation_Subdir;
+      begin
+         Args.Append ("--subdirs=" & Subd.Display_Full_Name);
+      end;
+      Args.Append ("--no-object-check");
+
+      --  Keep going after a compilation error in 'check' mode
+
+      if Configuration.Mode = GPM_Check then
+         Args.Append ("-k");
+      end if;
+
+      Call_Gprbuild (Project_File,
+                     Tree,
+                     DB_Dir            => "",
+                     Translation_Phase => GS_Data_Representation,
+                     Args              => Args,
+                     Status            => Status);
+
+      if Status /= 0 then
+         if not Quiet then
+            Ada.Text_IO.Put_Line
+              ("generation of data representation information failed");
+            Ada.Text_IO.Put_Line
+              ("continuing analysis with partial data representation");
+            Ada.Text_IO.Put_Line
+              ("for details, see log file "
+               & "gnatprove/data_representation_generation.log");
+         end if;
+
+         --  Ignore the status of data representation generation, as this is an
+         --  optional step in GNATprove.
+         Status := 0;
+      end if;
+   end Compute_Data_Representation;
 
    --------------------
    -- Copy_ALI_Files --
@@ -472,13 +550,22 @@ procedure Gnatprove with SPARK_Mode is
       end if;
 
       case Plan (Step) is
+         when GS_Data_Representation =>
+            --  Do not generate data representation if -gnateT is passed
+            --  explicitly, as this prevents the compiler from outputting
+            --  correct data representation information.
+            if Has_gnateT_Switch (Tree.Root_Project) then
+               Status := 0;
+            else
+               Compute_Data_Representation (Project_File, Tree, Status);
+            end if;
+
          when GS_ALI =>
             Compute_ALI_Information (Project_File, Tree, Status);
 
          when GS_Gnat2Why =>
             Copy_ALI_Files (Tree);
             Flow_Analysis_And_Proof (Project_File, Tree, Status);
-
       end case;
 
       if Status /= 0 then
@@ -540,7 +627,7 @@ procedure Gnatprove with SPARK_Mode is
          Call_Gprbuild (Project_File,
                         Tree,
                         SPARK_Install.Gpr_Translation_DB,
-                        Translation_Phase => True,
+                        Translation_Phase => GS_Gnat2Why,
                         Args              => Args,
                         Status            => Status);
 
@@ -848,6 +935,9 @@ procedure Gnatprove with SPARK_Mode is
       --  These strings have to make sense when preceded by
       --  "error during ". See the body of procedure Execute_Step.
       case Step is
+         when GS_Data_Representation =>
+            return "generation of data representation information";
+
          when GS_ALI =>
             if CL_Switches.No_Global_Generation then
                return "generation of program properties";
@@ -1163,7 +1253,8 @@ begin
    end loop;
 
    Analysis : declare
-      Plan : constant Plan_Type := [GS_ALI, GS_Gnat2Why];
+      Plan : constant Plan_Type :=
+        [GS_Data_Representation, GS_ALI, GS_Gnat2Why];
    begin
       for Step in Plan'Range loop
          Execute_Step (Plan, Step, CL_Switches.P.all, Tree);

@@ -1,12 +1,12 @@
-------------------------------------------------------------------------
+------------------------------------------------------------------------------
 --                                                                          --
 --                            GNAT2WHY COMPONENTS                           --
 --                                                                          --
---                     G N A T 2 W H Y - K E Y W O R D S                     --
+--          G N A T 2 W H Y - D A T A _ D E C O M P O S I T I O N           --
 --                                                                          --
 --                                 S p e c                                  --
 --                                                                          --
---                     Copyright (C) 2019-2023, AdaCore                     --
+--                        Copyright (C) 2023, AdaCore                       --
 --                                                                          --
 -- gnat2why is  free  software;  you can redistribute  it and/or  modify it --
 -- under terms of the  GNU General Public License as published  by the Free --
@@ -23,12 +23,39 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with Common_Containers; use Common_Containers;
+with Ada.Containers.Indefinite_Hashed_Maps;
+with Ada.Strings.Hash;
 
-package Why.Keywords is
+package Gnat2Why.Data_Decomposition is
 
-   procedure Update_Keywords (Keywords : out String_Sets.Set);
-   --  The body of this procedure is automatically generated using the file
-   --  defining the lexer of Why3. The script is: scripts/why3keywords.py
+   type Optional_Int (Present : Boolean := False) is record
+      case Present is
+         when True =>
+            Value : Long_Long_Integer;
+         when False =>
+            null;
+      end case;
+   end record;
 
-end Why.Keywords;
+   type Data_Decomposition_Entry is record
+      Size        : Optional_Int;
+      Value_Size  : Optional_Int;
+      Object_Size : Optional_Int;
+      Alignment   : Optional_Int;
+   end record;
+
+   package String_To_Data_Decomposition_Maps is new
+     Ada.Containers.Indefinite_Hashed_Maps
+       (Key_Type        => String,
+        Element_Type    => Data_Decomposition_Entry,
+        Hash            => Ada.Strings.Hash,
+        Equivalent_Keys => "=",
+        "="             => "=");
+
+   Data_Decomposition_Table : String_To_Data_Decomposition_Maps.Map;
+
+   procedure Read_Data_Decomposition_JSON_File;
+   --  Read a data decomposition JSON file and extract relevant information in
+   --  global map Data_Decomposition_Table.
+
+end Gnat2Why.Data_Decomposition;

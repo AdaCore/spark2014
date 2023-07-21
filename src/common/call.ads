@@ -42,10 +42,16 @@ package Call is
    --  Convert a String List into an Argument List
 
    procedure Call_With_Status
-     (Command   : String;
-      Arguments : String_Lists.List;
-      Status    : out Integer;
-      Verbose   : Boolean := False);
+     (Command     : String;
+      Arguments   : String_Lists.List;
+      Status      : out Integer;
+      Output_Name : String := "";
+      Verbose     : Boolean := False);
+   --  Call Command on Arguments, storing the output Status for the caller. If
+   --  Output_Name is set to a non-empty string, both normal and error outputs
+   --  are directed to that file. Otherwise, normal output is directed to
+   --  Standout and error output is directed to Standerr. If Verbose is
+   --  set, the command-line is displayed.
 
    function Read_File_Into_String (Fn : String) return String;
    --  Return a string with the contents of the file in argument

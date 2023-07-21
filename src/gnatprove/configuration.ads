@@ -31,12 +31,14 @@ with Ada.Strings.Hash;
 with Call;              use Call;
 with GNAT.Strings;
 with GPR2.Project.Tree;
+with GPR2.Project.View;
 use GPR2;
 with Gnat2Why_Opts;     use Gnat2Why_Opts;
 with GNATCOLL.Utils;    use GNATCOLL.Utils;
 with GNATCOLL.VFS;      use GNATCOLL.VFS;
 with Named_Semaphores;  use Named_Semaphores;
 with String_Utils;      use String_Utils;
+with VC_Kinds;          use VC_Kinds;
 
 package Configuration is
 
@@ -282,6 +284,8 @@ package Configuration is
 
    Default_Steps : constant Natural := 100;
 
+   Data_Representation_Subdir : constant Virtual_File :=
+     Create (+Data_Representation_Subdir_Name);
    Phase1_Subdir : constant Virtual_File := Create ("phase1");
    Phase2_Subdir : Virtual_File := Create ("gnatprove");
    --  The subdir names for the storage of intermediate files (ALI, why3 files,
@@ -331,5 +335,11 @@ package Configuration is
                                return String_Lists.List;
    --  Compute the list of arguments of gnatwhy3. This list is passed first to
    --  gnat2why, which then passes it to gnatwhy3.
+
+   function Has_gnateT_Switch (View : Project.View.Object) return Boolean;
+   --  Determine if the project has -gnateT switch specified explicitly in
+   --  the Global_Compilation_Switches of the Builder package. This is the
+   --  documented way to pass this switch to GNATprove. Other ways to pass
+   --  -gnateT switch are not considered.
 
 end Configuration;

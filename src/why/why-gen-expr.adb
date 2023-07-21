@@ -3954,7 +3954,7 @@ package body Why.Gen.Expr is
    begin
       return NID (GP_Check_Marker & Image (Integer (Id), 1) & ":"
                   & VC_Kind'Image (Reason) & ":"
-                  & Location_String (Sloc));
+                  & Location_String (Sloc, Mode => Check_Label_Mode));
    end New_Check_Label;
 
    --------------------

@@ -4508,13 +4508,14 @@ package body SPARK_Util is
    -- Location_String --
    ---------------------
 
-   function Location_String (Input         : Source_Ptr;
-                             Columns       : Boolean := True;
-                             Chain_Markers : Boolean := True;
-                             Natural_Order : Boolean := False) return String
+   function Location_String
+     (Input : Source_Ptr;
+      Mode  : Location_String_Mode)
+      return String
    is
       Slc : Source_Ptr := Input;
       Buf : Unbounded_String;
+      Num_Instantiations : Natural := 0;
 
       procedure Combine (A : in out Unbounded_String; B : String);
 
@@ -4524,7 +4525,7 @@ package body SPARK_Util is
 
       procedure Combine (A : in out Unbounded_String; B : String) is
       begin
-         if Natural_Order then
+         if Mode = Limit_Subp_Mode then
             A := B & A;
          else
             Append (A, B);
@@ -4543,19 +4544,28 @@ package body SPARK_Util is
          begin
             Combine (Buf,
                      File & ':' & Image (Positive (Line), 1)
-                     & (if Columns then
-                          ':' & Image (Positive (Column), 1)
-                        else ""));
+                     & (if Mode = Limit_Subp_Mode then ""
+                        else ':' & Image (Positive (Column), 1)));
             exit when Instantiation_Location (Slc) = No_Location;
-            Combine (Buf,
-                     (if Chain_Markers then
-                        (if Comes_From_Inlined_Body (Slc)
-                         then ":inlined:"
-                         else ":instantiated:")
-                      else ":"));
+            Combine
+              (Buf,
+                (case Mode is
+                   when Check_Label_Mode =>
+                     (if Comes_From_Inlined_Body (Slc)
+                      then ":inlined:"
+                      else ":instantiated:"),
+                   when Limit_Subp_Mode => ":",
+                   when Data_Decomposition_Mode => " ["));
             Slc := Instantiation_Location (Slc);
+            Num_Instantiations := Num_Instantiations + 1;
          end;
       end loop;
+
+      --  Close brackets for the location for data decomposition
+      if Mode = Data_Decomposition_Mode then
+         Combine (Buf, (1 .. Num_Instantiations => ']'));
+      end if;
+
       return To_String (Buf);
    end Location_String;
 
