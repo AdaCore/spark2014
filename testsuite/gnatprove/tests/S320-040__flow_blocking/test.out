@@ -1,9 +1,16 @@
-a-tiflio.ads:57:40: info: precondition proved (CVC5: 1 VC), in instantiation at p.adb:28
-a-tiflio.ads:76:40: info: precondition proved (CVC5: 1 VC), in instantiation at p.adb:28
-a-tiflio.ads:78:08: info: precondition proved (CVC5: 2 VC), in instantiation at p.adb:28
-a-tiflio.ads:79:12: info: precondition proved (CVC5: 2 VC), in instantiation at p.adb:28
+a-tiflio.ads:60:51: info: precondition proved (CVC5: 1 VC), in instantiation at p.adb:28
+a-tiflio.ads:81:51: info: precondition proved (CVC5: 1 VC), in instantiation at p.adb:28
+a-tiflio.ads:83:08: info: precondition proved (CVC5: 2 VC), in instantiation at p.adb:28
+a-tiflio.ads:84:12: info: precondition proved (CVC5: 2 VC), in instantiation at p.adb:28
+p.adb:10:13: info: implicit aspect Always_Terminates on "Proxy1" has been proved, subprogram will terminate
+p.adb:15:13: info: implicit aspect Always_Terminates on "Proxy2" has been proved, subprogram will terminate
 p.adb:19:40: warning: assuming "Sin" has no effect on global items
 p.adb:19:40: warning: no Global contract available for "Sin"
+p.adb:22:13: info: implicit aspect Always_Terminates on "Proxy3" has been proved, subprogram will terminate
 p.adb:24:41: warning: assuming "Sin" has no effect on global items
 p.adb:24:41: warning: no Global contract available for "Sin"
+p.adb:30:12: medium: unexpected exception might be raised
 p.adb:51:10: high: call to potentially blocking subprogram "Proxy4" in protected operation "Print"
+p.ads:3:16: info: implicit aspect Always_Terminates on "S1" has been proved, subprogram will terminate
+p.ads:4:16: info: implicit aspect Always_Terminates on "S2" has been proved, subprogram will terminate
+p.ads:5:16: info: implicit aspect Always_Terminates on "S3" has been proved, subprogram will terminate

@@ -1,5 +1,6 @@
-a-tiflio.ads:57:40: info: precondition proved (CVC5: 1 VC), in instantiation at p.adb:9
-a-tiflio.ads:76:40: info: precondition proved (CVC5: 1 VC), in instantiation at p.adb:9
-a-tiflio.ads:78:08: info: precondition proved (CVC5: 2 VC), in instantiation at p.adb:9
-a-tiflio.ads:79:12: info: precondition proved (CVC5: 2 VC), in instantiation at p.adb:9
+a-tiflio.ads:60:51: info: precondition proved (CVC5: 1 VC), in instantiation at p.adb:9
+a-tiflio.ads:81:51: info: precondition proved (CVC5: 1 VC), in instantiation at p.adb:9
+a-tiflio.ads:83:08: info: precondition proved (CVC5: 2 VC), in instantiation at p.adb:9
+a-tiflio.ads:84:12: info: precondition proved (CVC5: 2 VC), in instantiation at p.adb:9
 p.adb:11:26: high: call to potentially blocking predefined subprogram "Put" in protected operation "My_Text_Entry"
+p.adb:11:26: medium: unexpected exception might be raised

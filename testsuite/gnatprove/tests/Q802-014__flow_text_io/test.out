@@ -1,4 +1,5 @@
-a-tiinio.ads:56:40: info: precondition proved (CVC5: 1 VC), in instantiation at main.adb:5
-a-tiinio.ads:74:40: info: precondition proved (CVC5: 1 VC), in instantiation at main.adb:5
-a-tiinio.ads:76:08: info: precondition proved (CVC5: 2 VC), in instantiation at main.adb:5
-a-tiinio.ads:77:12: info: precondition proved (CVC5: 2 VC), in instantiation at main.adb:5
+a-tiinio.ads:58:51: info: precondition proved (CVC5: 1 VC), in instantiation at main.adb:5
+a-tiinio.ads:78:51: info: precondition proved (CVC5: 1 VC), in instantiation at main.adb:5
+a-tiinio.ads:80:08: info: precondition proved (CVC5: 2 VC), in instantiation at main.adb:5
+a-tiinio.ads:81:12: info: precondition proved (CVC5: 2 VC), in instantiation at main.adb:5
+main.adb:11:04: medium: unexpected exception might be raised

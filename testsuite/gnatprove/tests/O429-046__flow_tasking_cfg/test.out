@@ -1,3 +1,4 @@
+foo.adb:9:16: info: implicit aspect Always_Terminates on "P_Func" has been proved, subprogram will terminate
 foo.adb:11:38: info: initialization of "G" proved
 foo.adb:14:28: high: variable "B" cannot be referenced in precondition of protected operation "Ent" (SPARK RM 9(10))
 foo.adb:15:22: info: postcondition proved (CVC5: 1 VC)
@@ -7,12 +8,15 @@ foo.adb:43:14: info: nontermination of task proved (CVC5: 1 VC)
 foo.adb:47:27: warning: "B" is set by "P_Proc" but not used after the call
 foo.adb:50:14: medium: precondition might fail, cannot prove B
 foo.adb:55:14: warning: subprogram "Test_Delay_01" has no effect
+foo.adb:57:07: info: no contextual analysis of "Test_Delay_01" (non-allowed statement)
+p.ads:3:16: info: implicit aspect Always_Terminates on "Get_Content" has been proved, subprogram will terminate
 p.ads:7:17: info: ceiling priority protocol is respected (CVC5: 1 VC)
 p2.adb:5:24: warning: statement has no effect
 p2.adb:6:10: warning: initialization of "X" has no effect
 p2.adb:24:10: info: precondition proved (Trivial: 1 VC)
 p2.adb:29:10: info: precondition proved (Trivial: 1 VC)
 p2.adb:41:23: info: precondition proved (Trivial: 1 VC)
+p2.ads:3:16: info: implicit aspect Always_Terminates on "Foo" has been proved, subprogram will terminate
 p2.ads:16:25: info: initialization of "X" proved
 p2.ads:24:30: info: initialization of "X" proved
 p2.ads:26:27: info: initialization of "Y" proved
@@ -23,8 +27,11 @@ prot.adb:25:33: medium: overflow check might fail, cannot prove lower bound for 
 prot.adb:25:37: medium: overflow check might fail, cannot prove lower bound for X + D - Hidden [reason for check: result of subtraction must fit in a 32-bits machine integer]
 prot.ads:3:08: info: flow dependencies proved
 prot.ads:8:22: info: initialization of "X" proved
+prot.ads:10:16: info: implicit aspect Always_Terminates on "Weird_Get" has been proved, subprogram will terminate
+q.ads:3:16: info: implicit aspect Always_Terminates on "Get_Content" has been proved, subprogram will terminate
 q.ads:7:17: info: ceiling priority protocol is respected (CVC5: 1 VC)
 support.adb:5:29: medium: overflow check might fail, cannot prove upper bound for Summary + X [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: add precondition (Summary <= Integer'Last - X) to subprogram at support.ads:4]
+support.ads:6:16: info: implicit aspect Always_Terminates on "Get" has been proved, subprogram will terminate
 support.ads:11:14: info: ceiling priority protocol is respected (CVC5: 1 VC)
 support.ads:11:14: medium: the task might terminate, which is not allowed in SPARK
 tasks.adb:5:04: info: initialization of "Hidden2" constituent of "State" proved
@@ -38,3 +45,4 @@ test.adb:6:11: info: ceiling priority protocol is respected (CVC5: 1 VC)
 test.adb:8:33: info: range check proved (Trivial)
 test.adb:8:36: info: division check proved (CVC5: 1 VC)
 test.adb:8:36: info: float overflow check proved (Trivial)
+test.adb:12:21: medium: unexpected exception might be raised
