@@ -1,55 +1,64 @@
-a-tiflio.ads:57:40: info: precondition proved (CVC5: 1 VC), in instantiation at p.adb:231
-a-tiflio.ads:76:40: info: precondition proved (CVC5: 1 VC), in instantiation at p.adb:231
-a-tiflio.ads:78:08: info: precondition proved (CVC5: 2 VC), in instantiation at p.adb:231
-a-tiflio.ads:79:12: info: precondition proved (CVC5: 2 VC), in instantiation at p.adb:231
-blocking_contract.adb:5:13: error: function with output global "Task_Identification.Tasking_State" is not allowed in SPARK
-blocking_contract.adb:13:14: warning: "Task_Identification.Tasking_State" is not modified, could be INPUT
-blocking_contract.adb:13:31: error: side effects of function "Blocking" are not modeled in SPARK
+a-tiflio.ads:60:51: info: precondition proved (CVC5: 1 VC), in instantiation at p.adb:231
+a-tiflio.ads:81:51: info: precondition proved (CVC5: 1 VC), in instantiation at p.adb:231
+a-tiflio.ads:83:08: info: precondition proved (CVC5: 2 VC), in instantiation at p.adb:231
+a-tiflio.ads:84:12: info: precondition proved (CVC5: 2 VC), in instantiation at p.adb:231
+blocking_contract.adb:5:13: error: function "Blocking" with output global "Tasking_State" is not allowed in SPARK [E0005]
+blocking_contract.adb:5:13: error: launch "gnatprove --explain=E0005" for more information
+blocking_contract.adb:5:13: error: violation of pragma SPARK_Mode at test.adc:1
+blocking_contract.adb:9:22: warning: assuming "Yield" always terminates
+blocking_contract.adb:9:22: warning: no Always_Terminates aspect available for "Yield"
+blocking_contract.adb:13:31: error: "Blocking" is not allowed in SPARK (due to function with global outputs)
+blocking_contract.adb:13:31: error: violation of pragma SPARK_Mode at test.adc:1
 blocking_contract.adb:13:31: info: no contextual analysis of "Blocking" (in assertion expression)
-blocking_contract.adb:27:10: high: call to potentially blocking subprogram "blocking_contract.blocking" in protected operation "Dummy"
+blocking_contract.adb:27:10: error: "Proc" is not allowed in SPARK (due to function with global outputs)
+blocking_contract.adb:27:10: error: violation of pragma SPARK_Mode at test.adc:1
 external.adb:3:11: info: ceiling priority protocol is respected (CVC5: 1 VC)
 external_separate_calls.ads:4:13: info: ceiling priority protocol is respected (CVC5: 1 VC)
+floatio.adb:7:21: medium: unexpected exception might be raised
 internal_protected_call.adb:7:33: high: call to potentially blocking subprogram "P" in protected operation "E"
 internal_protected_call.adb:8:10: high: call to potentially blocking subprogram "P" in protected operation "E"
 internal_protected_call.adb:13:33: high: potentially blocking entry call in protected operation "P"
-internal_protected_call.adb:13:33: warning: potentially blocking operation in protected operation [enabled by default]
+internal_protected_call.adb:13:33: warning: potentially blocking operation in protected operation
 internal_protected_call.adb:14:10: high: potentially blocking entry call in protected operation "P"
-internal_protected_call.adb:14:10: warning: potentially blocking operation in protected operation [enabled by default]
+internal_protected_call.adb:14:10: warning: potentially blocking operation in protected operation
 internal_protected_call.adb:36:26: high: potentially blocking entry call in protected operation "P1"
-internal_protected_call.adb:36:26: warning: potentially blocking operation in protected operation [enabled by default]
+internal_protected_call.adb:36:26: warning: potentially blocking operation in protected operation
 internal_protected_call.adb:41:10: high: potentially blocking entry call in protected operation "P2"
-internal_protected_call.adb:41:10: warning: potentially blocking operation in protected operation [enabled by default]
+internal_protected_call.adb:41:10: warning: potentially blocking operation in protected operation
 internal_protected_call.adb:44:20: warning: statement has no effect
+library_level_function.adb:3:10: info: implicit aspect Always_Terminates on "Library_Level_Function" has been proved, subprogram will terminate
 library_level_function.adb:5:09: info: data dependencies proved
 library_level_procedure.adb:4:09: info: data dependencies proved
 nested_pb_call.adb:7:10: info: data dependencies proved
 nested_pb_call.adb:7:33: warning: unused initial value of "Real_Time.Clock_Time"
 nested_pb_call.adb:11:24: warning: statement has no effect
 nested_pb_call.adb:19:13: high: potentially blocking delay statement in protected operation "Dummy"
-nested_pb_call.adb:19:13: warning: potentially blocking operation in protected operation [enabled by default]
+nested_pb_call.adb:19:13: warning: potentially blocking operation in protected operation
 p-po_stub_1.adb:3:38: warning: statement has no effect
 p-po_stub_2.adb:5:07: high: potentially blocking delay statement in protected operation "Directly_Blocking_Stub_Entry"
-p-po_stub_2.adb:5:07: warning: potentially blocking operation in protected operation [enabled by default]
+p-po_stub_2.adb:5:07: warning: potentially blocking operation in protected operation
 p-po_stub_2.adb:10:07: high: potentially blocking delay statement in protected operation "Directly_Blocking_Stub_Proc"
-p-po_stub_2.adb:10:07: warning: potentially blocking operation in protected operation [enabled by default]
+p-po_stub_2.adb:10:07: warning: potentially blocking operation in protected operation
 p-po_stub_3.adb:5:07: high: call to potentially blocking subprogram "Blocking_Proc" in protected operation "Indirectly_Blocking_Stub_Entry"
 p-po_stub_3.adb:10:07: high: call to potentially blocking subprogram "Blocking_Proc" in protected operation "Indirectly_Blocking_Stub_Proc"
 p.adb:55:41: warning: statement has no effect
 p.adb:69:10: high: potentially blocking delay statement in protected operation "Directly_Blocking_Type_Entry"
-p.adb:69:10: warning: potentially blocking operation in protected operation [enabled by default]
+p.adb:69:10: warning: potentially blocking operation in protected operation
 p.adb:74:10: high: potentially blocking delay statement in protected operation "Directly_Blocking_Type_Proc"
-p.adb:74:10: warning: potentially blocking operation in protected operation [enabled by default]
+p.adb:74:10: warning: potentially blocking operation in protected operation
 p.adb:81:10: high: call to potentially blocking subprogram "Blocking_Proc" in protected operation "Indirectly_Blocking_Type_Entry"
 p.adb:86:10: high: call to potentially blocking subprogram "Blocking_Proc" in protected operation "Indirectly_Blocking_Type_Proc"
 p.adb:97:43: warning: statement has no effect
 p.adb:111:10: high: potentially blocking delay statement in protected operation "Directly_Blocking_Object_Entry"
-p.adb:111:10: warning: potentially blocking operation in protected operation [enabled by default]
+p.adb:111:10: warning: potentially blocking operation in protected operation
 p.adb:116:10: high: potentially blocking delay statement in protected operation "Directly_Blocking_Object_Proc"
-p.adb:116:10: warning: potentially blocking operation in protected operation [enabled by default]
+p.adb:116:10: warning: potentially blocking operation in protected operation
 p.adb:123:10: high: call to potentially blocking subprogram "Blocking_Proc" in protected operation "Indirectly_Blocking_Object_Entry"
 p.adb:128:10: high: call to potentially blocking subprogram "Blocking_Proc" in protected operation "Indirectly_Blocking_Object_Proc"
 p.adb:156:10: high: call to potentially blocking subprogram "Yielding_Proc" in protected operation "Yielding_Entry"
 p.adb:161:25: high: call to potentially blocking predefined subprogram "Yield" in protected operation "Yielding_Proc"
+p.adb:161:25: warning: assuming "Yield" always terminates
+p.adb:161:25: warning: no Always_Terminates aspect available for "Yield"
 p.adb:174:12: warning: unused assignment
 p.adb:193:10: high: call to potentially blocking subprogram "barrier.wait" in protected operation "Barrier_Entry"
 p.adb:198:17: high: call to potentially blocking subprogram "Wait" in protected operation "Barrier_Proc"
@@ -58,10 +67,12 @@ p.adb:209:10: high: call to potentially blocking predefined subprogram "Is_Open"
 p.adb:209:10: info: initialization of "F" proved
 p.adb:211:21: high: call to potentially blocking predefined subprogram "Open" in protected operation "File_Proc"
 p.adb:211:21: info: precondition proved (CVC5: 1 VC)
+p.adb:211:21: medium: unexpected exception might be raised
 p.adb:211:28: warning: "F" is set by "Open" but not used after the call
 p.adb:218:10: high: call to potentially blocking subprogram "Text_Proc" in protected operation "Text_Entry"
 p.adb:223:21: high: call to potentially blocking predefined subprogram "Put_Line" in protected operation "Text_Proc"
 p.adb:233:26: high: call to potentially blocking predefined subprogram "Put" in protected operation "My_Text_Entry"
+p.adb:233:26: medium: unexpected exception might be raised
 p.adb:249:10: high: call to potentially blocking subprogram "Floatio" in protected operation "Floatio_Print_Entry"
 p.adb:262:10: high: call to potentially blocking subprogram "Library_Level_Procedure" in protected operation "Entry_Call_To_Library_Level_Procedure"
 p.adb:268:10: high: call to potentially blocking subprogram "Library_Level_Procedure" in protected operation "Proc_Call_To_Library_Level_Procedure"
@@ -69,11 +80,17 @@ p.adb:274:10: high: call to potentially blocking subprogram "Library_Level_Funct
 p.ads:5:14: warning: subprogram "Potentially_Blocking_Proc" has no effect
 p.ads:7:14: warning: subprogram "Blocking_Proc" has no effect
 p.ads:9:14: warning: subprogram "Nonblocking_Proc" has no effect
+p.ads:11:13: info: implicit aspect Always_Terminates on "Potentially_Blocking_Func" has been proved, subprogram will terminate
+p.ads:14:13: info: implicit aspect Always_Terminates on "Blocking_Func" has been proved, subprogram will terminate
+p.ads:17:13: info: implicit aspect Always_Terminates on "Nonblocking_Func" has been proved, subprogram will terminate
 p.ads:64:14: medium: the task might terminate, which is not allowed in SPARK
 p.ads:67:14: medium: the task might terminate, which is not allowed in SPARK
+p.ads:115:16: info: implicit aspect Always_Terminates on "Func_Call_To_Library_Level_Function" has been proved, subprogram will terminate
 pack.ads:5:13: info: ceiling priority protocol is respected (CVC5: 1 VC)
+pack.ads:9:16: info: implicit aspect Always_Terminates on "Func" has been proved, subprogram will terminate
 pack.ads:10:13: info: ceiling priority protocol is respected (CVC5: 1 VC)
 pack.ads:14:14: warning: subprogram "External_Call_To_Protected_Func" has no effect
+pack.ads:17:16: info: implicit aspect Always_Terminates on "Func" has been proved, subprogram will terminate
 pack.ads:19:13: info: ceiling priority protocol is respected (CVC5: 1 VC)
 remote.ads:3:04: warning: pragma "Remote_Call_Interface" ignored (not yet supported)
 remote.ads:4:04: warning: pragma "All_Calls_Remote" ignored (not yet supported)

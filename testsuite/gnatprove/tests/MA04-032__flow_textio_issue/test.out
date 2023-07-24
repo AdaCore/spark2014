@@ -1,4 +1,5 @@
 foo.adb:4:08: info: data dependencies proved
 foo.adb:6:04: info: initialization of "F" proved
 foo.adb:8:04: info: precondition proved (CVC5: 1 VC)
+foo.adb:8:04: medium: unexpected exception might be raised
 foo.adb:8:18: warning: "F" is set by "Open" but not used after the call

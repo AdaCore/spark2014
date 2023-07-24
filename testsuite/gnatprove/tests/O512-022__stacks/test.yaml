@@ -1,0 +1,3 @@
+comment: "disable colibri because it is taking too long"
+prove_all:
+  prover: ["cvc5", "altergo", "z3"]
