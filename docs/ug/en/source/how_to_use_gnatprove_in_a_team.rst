@@ -855,8 +855,8 @@ only part of a program:
     alias the callee's parameters and accessed global objects in ways that
     are not allowed in SPARK
 
-  * the initialization of inputs (implicit) - parameters of mode *in* or * in
-    out* and global variables of mode *Input* or "In_Out* which are not
+  * the initialization of inputs (implicit) - parameters of mode *in* or *in
+    out* and global variables of mode *Input* or *In_Out* which are not
     subjected to relaxed initialization (see :ref:`Aspect
     Relaxed_Initialization`) should be entirely initialized
 
