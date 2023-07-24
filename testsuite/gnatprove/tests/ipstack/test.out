@@ -1,28 +1,347 @@
-aip-arp.adb:30:10: medium: implicit aspect Always_Terminates on "Get_MAC_Address" could be incorrect, call to "Get_LL_Address" might be nonterminating
+aip-arp.adb:25:07: info: initialization of "Nid_LL_Address" proved
+aip-arp.adb:26:07: info: initialization of "Nid_LL_Address_Length" proved
+aip-arp.adb:30:10: medium: implicit aspect Always_Terminates on "Get_MAC_Address" could be incorrect, call to "Get_LL_Address" might be nonterminating [possible fix: annotate "Get_LL_Address" with aspect Always_Terminates]
+aip-arp.adb:45:07: info: initialization of "Err" proved
+aip-arp.adb:46:07: info: initialization of "Ehdr" proved
+aip-arp.adb:61:13: warning: statement has no effect
+aip-arp.adb:77:07: info: initialization of "Buf" proved
+aip-arp.adb:79:07: info: initialization of "Ahdr" proved
+aip-arp.adb:130:07: info: initialization of "Prev" proved
+aip-arp.adb:130:13: info: initialization of "Cur" proved
+aip-arp.adb:173:07: info: initialization of "Last_Active_Id" proved
+aip-arp.adb:237:36: info: initialization of "ARP_Active_List" constituent of "State" proved
+aip-arp.adb:237:53: info: initialization of "ARP_Free_List" constituent of "State" proved
+aip-arp.adb:237:68: info: initialization of "ARP_Table" constituent of "State" proved
+aip-arp.adb:272:07: info: initialization of "AEID" proved
+aip-arp.adb:273:07: info: initialization of "Packet_Buf" proved
+aip-arp.adb:312:07: info: initialization of "Err" proved
+aip-arp.adb:313:07: info: initialization of "Ehdr" proved
+aip-arp.adb:313:13: info: initialization of "Ahdr" proved
+aip-arp.adb:314:07: info: initialization of "Ifa" proved
+aip-arp.adb:315:07: info: initialization of "Local" proved
+aip-arp.adb:321:16: info: implicit aspect Always_Terminates on "Netif_MAC" has been proved, subprogram will terminate
+aip-arp.adb:322:09: info: data dependencies proved
+aip-arp.adb:324:10: info: initialization of "Result" proved
 aip-arp.adb:324:10: warning: address specification on "Result" is imprecisely supported: assuming no concurrent accesses to non-atomic object, no writes to or through a potential alias, and valid reads [E0012]
 aip-arp.adb:324:10: warning: launch "gnatprove --explain=E0012" for more information
 aip-arp.adb:324:10: warning: make sure that all overlapping objects have Async_Writers set to True
 aip-arp.adb:396:25: warning: statement has no effect
-aip-arp.adb:61:13: warning: statement has no effect
-aip-buffers-common.adb:19:14: medium: implicit aspect Always_Terminates on "Is_Data_Buffer" could be incorrect, call to "Verify" might be nonterminating
+aip-arp.adb:430:07: info: initialization of "AEID" proved
+aip-arp.adb:481:06: info: data dependencies proved
+aip-arp.adb:486:07: info: initialization of "Now" proved
+aip-arp.adb:487:07: info: initialization of "AEID" proved
+aip-arp.adb:488:07: info: initialization of "Next_AEID" proved
+aip-arp.adb:489:07: info: initialization of "AE_Age" proved
+aip-arp.adb:490:07: info: initialization of "Packet_Buf" proved
+aip-arp.ads:24:06: info: data dependencies proved
+aip-arp.ads:29:06: info: data dependencies proved
+aip-arp.ads:34:06: info: data dependencies proved
+aip-arp.ads:74:06: info: data dependencies proved
+aip-arp.ads:89:06: info: data dependencies proved
+aip-arp.ads:101:07: info: initialization of "Id" proved
+aip-arp.ads:109:06: info: data dependencies proved
+aip-arp.ads:116:07: info: initialization of "Err" proved
+aip-arp.ads:120:06: info: data dependencies proved
+aip-arp.ads:127:06: info: data dependencies proved
+aip-arp.ads:134:06: info: data dependencies proved
+aip-arp.ads:141:06: info: data dependencies proved
+aip-arp.ads:151:06: info: data dependencies proved
+aip-buffers-common.adb:19:14: medium: implicit aspect Always_Terminates on "Is_Data_Buffer" could be incorrect, call to "Verify" might be nonterminating [possible fix: annotate "Verify" with aspect Always_Terminates]
+aip-buffers-data.adb:80:07: info: initialization of "Tmp_Buf" proved
+aip-buffers-data.adb:81:07: info: initialization of "Tmp_Num" proved
+aip-buffers-data.adb:111:07: info: initialization of "Last_Buf" proved
+aip-buffers-data.adb:114:07: info: initialization of "Free_Buf" proved
+aip-buffers-data.adb:117:07: info: initialization of "Insert_Buf" proved
+aip-buffers-data.adb:117:19: info: initialization of "Prev_Insert_Buf" proved
+aip-buffers-data.adb:121:07: info: initialization of "Free_Count" proved
+aip-buffers-data.adb:231:07: info: initialization of "Last_Buf_In_Prev_Block" proved
+aip-buffers-data.adb:234:07: info: initialization of "First_Buf_Not_Removed" proved
+aip-buffers-data.adb:237:07: info: initialization of "First_Buf_In_Next_Block" proved
+aip-buffers-data.adb:241:07: info: initialization of "First_Buf_Not_Removed_Starts_New_Block" proved
+aip-buffers-data.adb:244:07: info: initialization of "Temp_Removed_Buffers" proved
+aip-buffers-data.adb:247:07: info: initialization of "Free_Buf" proved
+aip-buffers-data.adb:355:07: info: initialization of "Last_Buf" proved
+aip-buffers-data.adb:358:07: info: initialization of "Free_Buf" proved
+aip-buffers-data.adb:358:17: info: initialization of "Start_Buf" proved
+aip-buffers-data.adb:358:28: info: initialization of "End_Buf" proved
+aip-buffers-data.adb:361:07: info: initialization of "Free_Count" proved
+aip-buffers-data.adb:364:07: info: initialization of "Prev_Buf" proved
+aip-buffers-data.adb:364:17: info: initialization of "Next_Buf" proved
+aip-buffers-data.adb:368:07: info: initialization of "Prev_Num" proved
+aip-buffers-data.adb:368:17: info: initialization of "Next_Num" proved
+aip-buffers-data.adb:455:07: info: initialization of "Free_Buf" proved
+aip-buffers-data.adb:455:17: info: initialization of "First_Buf" proved
+aip-buffers-data.adb:458:07: info: initialization of "Free_Count" proved
+aip-buffers-data.adb:458:19: info: initialization of "Extracted_Free_Count" proved
+aip-buffers-data.adb:461:07: info: initialization of "Num_To_Insert" proved
+aip-buffers-data.adb:513:36: info: initialization of "Buf_List" constituent of "State" proved
+aip-buffers-data.adb:513:46: info: justified that "Data_Array" constituent of "State" is not initialized
+aip-buffers-data.adb:513:46: info: justified that unused global "Data_Array" constituent of "State"
+aip-buffers-data.adb:513:58: info: initialization of "Data.Free_List" constituent of "Buffers.State" proved
+aip-buffers-data.adb:553:07: info: initialization of "Requested_Size" proved
+aip-buffers-data.adb:554:07: info: initialization of "Requested_Buffers" proved
+aip-buffers-data.adb:556:07: info: initialization of "Remaining_Size" proved
+aip-buffers-data.adb:559:07: info: initialization of "Cur_Buf" proved
+aip-buffers-data.adb:559:16: info: initialization of "Next_Buf" proved
+aip-buffers-data.adb:562:07: info: initialization of "Cur_Cbuf" proved
+aip-buffers-data.adb:696:07: info: initialization of "Num" proved
+aip-buffers-data.ads:53:06: info: data dependencies proved
+aip-buffers-data.ads:63:07: info: initialization of "Buf" proved
+aip-buffers-data.ads:65:06: info: data dependencies proved
+aip-buffers-data.ads:69:07: info: initialization of "Next_Buf" proved
+aip-buffers-data.ads:72:06: info: data dependencies proved
+aip-buffers-data.ads:81:13: info: implicit aspect Always_Terminates on "Buffer_Get_Kind" has been proved, subprogram will terminate
+aip-buffers-data.ads:83:06: info: data dependencies proved
+aip-buffers-data.ads:89:13: info: implicit aspect Always_Terminates on "To_Dbuf_Id" has been proved, subprogram will terminate
+aip-buffers-data.ads:90:13: info: implicit aspect Always_Terminates on "To_Common_Id" has been proved, subprogram will terminate
+aip-buffers-data.ads:108:13: info: implicit aspect Always_Terminates on "Next_Data_Buf" has been proved, subprogram will terminate
+aip-buffers-data.ads:112:06: info: data dependencies proved
+aip-buffers-data.ads:116:07: info: initialization of "Prev_Buf" proved
+aip-buffers-data.ads:117:07: info: initialization of "Num" proved
+aip-buffers-data.ads:122:05: info: data dependencies proved
+aip-buffers-data.ads:132:06: info: data dependencies proved
+aip-buffers-data.ads:141:06: info: data dependencies proved
+aip-buffers-data.ads:154:06: info: data dependencies proved
+aip-buffers-data.ads:161:06: info: data dependencies proved
+aip-buffers-no_data.adb:30:07: info: initialization of "Result" proved
+aip-buffers-no_data.adb:47:07: info: initialization of "Result" proved
+aip-buffers-no_data.adb:62:36: info: initialization of "Buf_List" constituent of "State" proved
+aip-buffers-no_data.adb:62:46: info: initialization of "No_Data.Free_List" constituent of "Buffers.State" proved
+aip-buffers-no_data.adb:85:07: info: initialization of "Cbuf" proved
+aip-buffers-no_data.adb:116:07: info: initialization of "Cbuf" proved
+aip-buffers-no_data.ads:29:06: info: data dependencies proved
+aip-buffers-no_data.ads:39:07: info: initialization of "Buf" proved
+aip-buffers-no_data.ads:41:06: info: data dependencies proved
+aip-buffers-no_data.ads:45:07: info: initialization of "Next_Buf" proved
+aip-buffers-no_data.ads:48:06: info: data dependencies proved
+aip-buffers-no_data.ads:54:13: info: implicit aspect Always_Terminates on "Buffer_Payload" has been proved, subprogram will terminate
+aip-buffers-no_data.ads:55:06: info: data dependencies proved
+aip-buffers-no_data.ads:61:13: info: implicit aspect Always_Terminates on "To_Rbuf_Id" has been proved, subprogram will terminate
+aip-buffers-no_data.ads:62:13: info: implicit aspect Always_Terminates on "To_Common_Id" has been proved, subprogram will terminate
+aip-buffers.adb:86:42: info: initialization of "Common.Buf_List" constituent of "Buffers.State" proved
+aip-buffers.adb:87:40: info: initialization of "Data.Free_List" constituent of "Buffers.State" proved
+aip-buffers.adb:88:40: info: initialization of "Data.State" constituent of "Buffers.State" proved
+aip-buffers.adb:89:43: info: initialization of "No_Data.Free_List" constituent of "Buffers.State" proved
+aip-buffers.adb:90:43: info: initialization of "No_Data.State" constituent of "Buffers.State" proved
+aip-buffers.adb:142:07: info: initialization of "Dbuf" proved
+aip-buffers.adb:168:07: info: initialization of "Rbuf" proved
+aip-buffers.adb:187:07: info: initialization of "Kind" proved
+aip-buffers.adb:237:07: info: initialization of "Result" proved
+aip-buffers.adb:269:07: info: initialization of "Offset" proved
+aip-buffers.adb:327:07: info: initialization of "Pload_Shift" proved
+aip-buffers.adb:348:07: info: initialization of "Kind" proved
+aip-buffers.adb:349:07: info: initialization of "Cur_Buf" proved
+aip-buffers.adb:350:07: info: initialization of "New_Len" proved
+aip-buffers.adb:415:07: info: initialization of "Cur_Buf" proved
+aip-buffers.adb:415:16: info: initialization of "Next_Buf" proved
 aip-buffers.adb:477:25: warning: "N_Deallocs" is set by "Buffer_Free" but not used after the call
+aip-buffers.adb:505:07: info: initialization of "Cur_Buf" proved
+aip-buffers.adb:505:16: info: initialization of "Next_Buf" proved
+aip-buffers.adb:506:07: info: initialization of "Tail_Len" proved
+aip-buffers.ads:84:06: info: data dependencies proved
+aip-buffers.ads:98:07: info: initialization of "Buf" proved
+aip-buffers.ads:103:06: info: data dependencies proved
+aip-buffers.ads:110:07: info: initialization of "Buf" proved
+aip-buffers.ads:115:06: info: data dependencies proved
+aip-buffers.ads:122:13: info: implicit aspect Always_Terminates on "Buffer_Get_Kind" has been proved, subprogram will terminate
+aip-buffers.ads:123:06: info: data dependencies proved
+aip-buffers.ads:129:13: info: implicit aspect Always_Terminates on "Buffer_Len" has been proved, subprogram will terminate
+aip-buffers.ads:135:06: info: data dependencies proved
+aip-buffers.ads:138:13: info: implicit aspect Always_Terminates on "Buffer_Tlen" has been proved, subprogram will terminate
+aip-buffers.ads:145:06: info: data dependencies proved
+aip-buffers.ads:151:07: info: initialization of "Err" proved
+aip-buffers.ads:156:06: info: data dependencies proved
+aip-buffers.ads:159:13: info: implicit aspect Always_Terminates on "Buffer_Next" has been proved, subprogram will terminate
+aip-buffers.ads:163:06: info: data dependencies proved
+aip-buffers.ads:166:13: info: implicit aspect Always_Terminates on "Buffer_Payload" has been proved, subprogram will terminate
+aip-buffers.ads:169:06: info: data dependencies proved
+aip-buffers.ads:172:13: info: implicit aspect Always_Terminates on "Buffer_Poffset" has been proved, subprogram will terminate
+aip-buffers.ads:176:06: info: data dependencies proved
+aip-buffers.ads:181:07: info: initialization of "Err" proved
+aip-buffers.ads:186:06: info: data dependencies proved
+aip-buffers.ads:195:06: info: data dependencies proved
+aip-buffers.ads:198:44: info: initialization of "N_Deallocs" proved
+aip-buffers.ads:209:06: info: data dependencies proved
+aip-buffers.ads:214:06: info: data dependencies proved
+aip-buffers.ads:220:06: info: data dependencies proved
+aip-buffers.ads:230:06: info: data dependencies proved
+aip-buffers.ads:238:06: info: data dependencies proved
+aip-buffers.ads:243:07: info: initialization of "Err" proved
+aip-buffers.ads:252:06: info: data dependencies proved
+aip-buffers.ads:280:13: info: implicit aspect Always_Terminates on "Head_Packet" has been proved, subprogram will terminate
+aip-buffers.ads:283:13: info: implicit aspect Always_Terminates on "Tail_Packet" has been proved, subprogram will terminate
+aip-buffers.ads:292:06: info: data dependencies proved
+aip-buffers.ads:297:07: info: initialization of "Buf" proved
+aip-buffers.ads:300:06: info: data dependencies proved
+aip-buffers.ads:302:13: info: implicit aspect Always_Terminates on "Empty" has been proved, subprogram will terminate
+aip-buffers.ads:305:13: info: implicit aspect Always_Terminates on "Packet_Info" has been proved, subprogram will terminate
+aip-buffers.ads:306:06: info: data dependencies proved
+aip-buffers.ads:308:06: info: data dependencies proved
+aip-conversions.ads:14:13: info: implicit aspect Always_Terminates on "Ofs" has been proved, subprogram will terminate
+aip-conversions.ads:17:13: info: implicit aspect Always_Terminates on "Diff" has been proved, subprogram will terminate
+aip-inet.ads:18:13: info: implicit aspect Always_Terminates on "HLEN_To" has been proved, subprogram will terminate
+aip-ip.adb:35:07: info: initialization of "Ihdr" proved
+aip-ip.adb:38:07: info: initialization of "IPhlen" proved
+aip-ip.adb:88:07: info: initialization of "Ihdr" proved
+aip-ip.adb:90:07: info: initialization of "Dst_Netif" proved
+aip-ip.adb:100:10: info: initialization of "Err" proved
+aip-ip.adb:104:09: info: data dependencies proved
 aip-ip.adb:187:10: warning: statement has no effect
 aip-ip.adb:188:19: warning: this statement is never reached
+aip-ip.adb:232:07: info: initialization of "Ihdr" proved
+aip-ip.adb:301:35: info: initialization of "Default_Router" constituent of "FIB" proved
+aip-ip.ads:15:03: info: flow dependencies proved
+aip-ip.ads:21:06: info: data dependencies proved
+aip-ip.ads:25:07: info: initialization of "Next_Hop" proved
+aip-ip.ads:26:07: info: initialization of "Netif" proved
+aip-ip.ads:29:06: info: data dependencies proved
+aip-ip.ads:32:06: info: data dependencies proved
+aip-ip.ads:45:07: info: initialization of "Err" proved
+aip-ip.ads:48:06: info: data dependencies proved
+aip-ip.ads:53:07: info: initialization of "Nhdr" proved
+aip-ip.ads:54:07: info: initialization of "Err" proved
+aip-ip.ads:60:06: info: data dependencies proved
+aip-ipaddrs.ads:21:13: info: implicit aspect Always_Terminates on "IP4" has been proved, subprogram will terminate
+aip-ipaddrs.ads:24:13: info: implicit aspect Always_Terminates on "Any" has been proved, subprogram will terminate
+aip-ipaddrs.ads:27:13: info: implicit aspect Always_Terminates on "Same" has been proved, subprogram will terminate
+aip-ipaddrs.ads:30:13: info: implicit aspect Always_Terminates on "Match" has been proved, subprogram will terminate
 aip-nif.ads:100:06: warning: Terminating, Always_Return, and Might_Not_Return annotations are deprecated, ignored
 aip-nif.ads:100:06: warning: use Always_Terminates instead
-aip-pcbs.adb:51:20: medium: implicit aspect Always_Terminates on "Available_Port" could be incorrect, loop might be nonterminating
-aip-pcbs.adb:52:10: medium: implicit aspect Always_Terminates on "Available_Port" could be incorrect, call to "Find_PCB" might be nonterminating
+aip-pcbs.adb:39:07: info: initialization of "Candidate" proved
+aip-pcbs.adb:40:07: info: initialization of "Last" proved
+aip-pcbs.adb:41:07: info: initialization of "Pid" proved
+aip-pcbs.adb:51:20: medium: implicit aspect Always_Terminates on "Available_Port" could be incorrect, loop might be nonterminating [possible fix: add loop variant in the loop body]
+aip-pcbs.adb:52:10: medium: implicit aspect Always_Terminates on "Available_Port" could be incorrect, call to "Find_PCB" might be nonterminating [possible fix: annotate "Find_PCB" with aspect Always_Terminates]
+aip-pcbs.adb:89:07: info: initialization of "Other_PCB" proved
+aip-pcbs.adb:160:07: info: initialization of "Try_PCB" proved
+aip-pcbs.adb:161:07: info: initialization of "Try_Wildcard" proved
+aip-pcbs.adb:198:07: info: initialization of "Cid" proved
+aip-pcbs.adb:199:07: info: initialization of "Match_Wildcard" proved
+aip-pcbs.adb:201:16: info: implicit aspect Always_Terminates on "Wildcard_Count" has been proved, subprogram will terminate
+aip-pcbs.adb:214:10: info: initialization of "Count" proved
+aip-pcbs.adb:214:10: info: initialization of "Count" proved, in call inlined at aip-pcbs.adb:258
+aip-pcbs.adb:214:10: info: initialization of "Count" proved, in call inlined at aip-pcbs.adb:261
+aip-pcbs.adb:258:15: info: analyzing call to "Wildcard_Count" in context
+aip-pcbs.adb:261:15: info: analyzing call to "Wildcard_Count" in context
+aip-pcbs.adb:306:07: info: initialization of "Cur" proved
+aip-pcbs.adb:306:12: info: initialization of "Prev" proved
+aip-pcbs.ads:27:13: info: implicit aspect Always_Terminates on "Match" has been proved, subprogram will terminate
+aip-pcbs.ads:83:07: info: initialization of "PCB" proved
+aip-pcbs.ads:99:07: info: initialization of "Err" proved
+aip-pcbs.ads:102:06: info: data dependencies proved
+aip-pcbs.ads:111:07: info: initialization of "PCB" proved
+aip-pcbs.ads:115:06: info: data dependencies proved
 aip-pcbs.ads:116:06: warning: Terminating, Always_Return, and Might_Not_Return annotations are deprecated, ignored
 aip-pcbs.ads:116:06: warning: use Always_Terminates instead
+aip-pcbs.ads:125:07: info: initialization of "PCB" proved
+aip-pcbs.ads:126:07: info: initialization of "Wildcard" proved
+aip-pcbs.ads:130:06: info: data dependencies proved
 aip-pcbs.ads:131:06: warning: Terminating, Always_Return, and Might_Not_Return annotations are deprecated, ignored
 aip-pcbs.ads:131:06: warning: use Always_Terminates instead
+aip-pcbs.ads:154:13: info: implicit aspect Always_Terminates on "Bound_To" has been proved, subprogram will terminate
+aip-pools.ads:9:03: info: flow dependencies proved
 aip-support.ads:11:06: warning: Terminating, Always_Return, and Might_Not_Return annotations are deprecated, ignored
 aip-support.ads:11:06: warning: use Always_Terminates instead
+aip-support.ads:15:07: info: initialization of "Err" proved
+aip-tcp.adb:319:06: info: data dependencies proved
+aip-tcp.adb:324:09: info: data dependencies proved
+aip-tcp.adb:335:07: info: initialization of "Err" proved
+aip-tcp.adb:338:06: info: data dependencies proved
+aip-tcp.adb:345:07: info: initialization of "Err" proved
+aip-tcp.adb:349:06: info: data dependencies proved
+aip-tcp.adb:354:42: info: initialization of "Err" proved
+aip-tcp.adb:355:06: info: data dependencies proved
+aip-tcp.adb:359:13: info: implicit aspect Always_Terminates on "Initial_Sequence_Number" has been proved, subprogram will terminate
+aip-tcp.adb:366:06: info: data dependencies proved
+aip-tcp.adb:370:13: info: implicit aspect Always_Terminates on "Seq_Lt" has been proved, subprogram will terminate
+aip-tcp.adb:374:13: info: implicit aspect Always_Terminates on "Seq_Le" has been proved, subprogram will terminate
+aip-tcp.adb:378:13: info: implicit aspect Always_Terminates on "Seq_Range" has been proved, subprogram will terminate
+aip-tcp.adb:384:07: info: initialization of "Seg_Len" proved
+aip-tcp.adb:390:06: info: data dependencies proved
+aip-tcp.adb:395:07: info: initialization of "Err" proved
+aip-tcp.adb:398:04: info: data dependencies proved
+aip-tcp.adb:410:06: info: data dependencies proved
+aip-tcp.adb:419:06: info: data dependencies proved
+aip-tcp.adb:426:07: info: initialization of "Err" proved
+aip-tcp.adb:430:06: info: data dependencies proved
+aip-tcp.adb:440:06: info: data dependencies proved
+aip-tcp.adb:446:07: info: initialization of "Tbuf" proved
+aip-tcp.adb:455:06: info: data dependencies proved
+aip-tcp.adb:466:07: info: initialization of "Err" proved
+aip-tcp.adb:479:06: info: data dependencies proved
+aip-tcp.adb:484:07: info: initialization of "Err" proved
+aip-tcp.adb:488:06: info: data dependencies proved
+aip-tcp.adb:497:06: info: data dependencies proved
+aip-tcp.adb:503:06: info: data dependencies proved
+aip-tcp.adb:509:06: info: data dependencies proved
+aip-tcp.adb:517:06: info: data dependencies proved
+aip-tcp.adb:522:07: info: initialization of "Tbuf" proved
+aip-tcp.adb:524:06: info: data dependencies proved
+aip-tcp.adb:529:07: info: initialization of "Tbuf" proved
+aip-tcp.adb:531:06: info: data dependencies proved
+aip-tcp.adb:538:07: info: initialization of "Saved_Payload" proved
+aip-tcp.adb:539:07: info: initialization of "Thdr" proved
+aip-tcp.adb:540:07: info: initialization of "Err" proved
+aip-tcp.adb:588:07: info: initialization of "PThdr" proved
+aip-tcp.adb:588:14: info: initialization of "Thdr" proved
+aip-tcp.adb:589:07: info: initialization of "Tlen" proved
+aip-tcp.adb:591:07: info: initialization of "Src_IP" proved
+aip-tcp.adb:591:15: info: initialization of "Dst_IP" proved
+aip-tcp.adb:592:07: info: initialization of "Err" proved
+aip-tcp.adb:705:07: info: initialization of "Seg" proved
+aip-tcp.adb:706:07: info: initialization of "Seg_Len" proved
+aip-tcp.adb:710:07: info: initialization of "This_WND" proved
+aip-tcp.adb:714:07: info: initialization of "Thdr" proved
+aip-tcp.adb:716:07: info: initialization of "N_ACKs_Q" proved
+aip-tcp.adb:824:07: info: initialization of "Saved_Payload" proved
+aip-tcp.adb:825:07: info: initialization of "D_Buf" proved
+aip-tcp.adb:826:07: info: initialization of "D_Len" proved
+aip-tcp.adb:827:07: info: initialization of "Err" proved
+aip-tcp.adb:848:13: warning: assuming "TCP_Event" always terminates
+aip-tcp.adb:848:13: warning: no Always_Terminates aspect available for "TCP_Event"
+aip-tcp.adb:927:07: info: initialization of "M" proved
+aip-tcp.adb:927:07: info: initialization of "M" proved, in call inlined at aip-tcp.adb:1829
+aip-tcp.adb:954:07: info: initialization of "Old_List" proved
+aip-tcp.adb:955:07: info: initialization of "New_List" proved
+aip-tcp.adb:1042:36: info: initialization of "All_PCBs" constituent of "State" proved
+aip-tcp.adb:1043:36: info: initialization of "Boot_Time" constituent of "State" proved
+aip-tcp.adb:1044:36: info: initialization of "IPCBs" constituent of "State" proved
+aip-tcp.adb:1045:36: info: initialization of "TCP_Ticks" constituent of "State" proved
+aip-tcp.adb:1046:36: info: initialization of "TPCBs" constituent of "State" proved
+aip-tcp.adb:1084:07: info: initialization of "Next_Hop_IP" proved
+aip-tcp.adb:1085:07: info: initialization of "Next_Hop_Netif" proved
+aip-tcp.adb:1086:07: info: initialization of "Buf" proved
+aip-tcp.adb:1087:07: info: initialization of "Thdr" proved
+aip-tcp.adb:1336:07: info: initialization of "Listening_PCB" proved
+aip-tcp.adb:1351:07: info: initialization of "Err" proved
+aip-tcp.adb:1390:07: info: initialization of "Hbuf" proved
+aip-tcp.adb:1455:07: info: initialization of "Left" proved
+aip-tcp.adb:1456:07: info: initialization of "Ptr" proved
+aip-tcp.adb:1461:07: info: initialization of "Dlen" proved
+aip-tcp.adb:1464:07: info: initialization of "Toff" proved
+aip-tcp.adb:1468:07: info: initialization of "SegQ" proved
+aip-tcp.adb:1472:07: info: initialization of "NSS" proved
+aip-tcp.adb:1476:07: info: initialization of "Tbuf" proved
+aip-tcp.adb:1477:07: info: initialization of "Thdr" proved
+aip-tcp.adb:1623:07: info: initialization of "Next_Hop_IP" proved
+aip-tcp.adb:1624:07: info: initialization of "Next_Hop_Netif" proved
+aip-tcp.adb:1778:07: info: initialization of "Packet" proved
+aip-tcp.adb:1779:07: info: initialization of "Thdr" proved
+aip-tcp.adb:1780:07: info: initialization of "Len" proved
+aip-tcp.adb:1783:07: info: initialization of "CWND_Increment" proved
+aip-tcp.adb:1829:13: info: analyzing call to "Update_RTT_Estimator" in context
 aip-tcp.adb:1851:13: warning: assuming "TCP_Event" always terminates
 aip-tcp.adb:1851:13: warning: no Always_Terminates aspect available for "TCP_Event"
 aip-tcp.adb:1863:24: warning: "Err" is set by "TCP_Event" but not used after the call
 aip-tcp.adb:1895:32: warning: "Err" is set by "TCP_Send_Control" but not used after the call
 aip-tcp.adb:2153:22: warning: "Err" is set by "TCP_Send_Rst" but not used after the call
+aip-tcp.adb:2183:07: info: initialization of "New_PCB" proved
+aip-tcp.adb:2185:07: info: initialization of "Win_L" proved
+aip-tcp.adb:2185:14: info: initialization of "Win_R" proved
+aip-tcp.adb:2188:07: info: initialization of "New_Data_Len" proved
+aip-tcp.adb:2207:09: info: data dependencies proved
+aip-tcp.adb:2233:09: info: data dependencies proved
+aip-tcp.adb:2234:30: info: initialization of "Discard" proved
 aip-tcp.adb:2241:13: warning: assuming "TCP_Event" always terminates
 aip-tcp.adb:2241:13: warning: no Always_Terminates aspect available for "TCP_Event"
 aip-tcp.adb:2250:24: warning: "Err" is set by "TCP_Event" but not used after the call
@@ -32,13 +351,116 @@ aip-tcp.adb:2409:22: warning: assuming "TCP_Event" always terminates
 aip-tcp.adb:2409:22: warning: no Always_Terminates aspect available for "TCP_Event"
 aip-tcp.adb:2637:25: warning: assuming "TCP_Event" always terminates
 aip-tcp.adb:2637:25: warning: no Always_Terminates aspect available for "TCP_Event"
+aip-tcp.adb:2686:07: info: initialization of "Seg" proved
+aip-tcp.adb:2688:07: info: initialization of "PThdr" proved
+aip-tcp.adb:2690:07: info: initialization of "PTH_Buf" proved
+aip-tcp.adb:2691:07: info: initialization of "Err" proved
+aip-tcp.adb:2693:07: info: initialization of "PCB" proved
+aip-tcp.adb:2696:07: info: initialization of "Tlen" proved
+aip-tcp.adb:2699:07: info: initialization of "Data_Offset" proved
+aip-tcp.adb:2702:07: info: initialization of "Option_Offset" proved
+aip-tcp.adb:2708:07: info: initialization of "Option_Kind" proved
+aip-tcp.adb:2708:20: info: initialization of "Option_Length" proved
+aip-tcp.adb:2708:35: info: initialization of "Option_Val" proved
+aip-tcp.adb:2713:07: info: initialization of "Ack" proved
+aip-tcp.adb:2714:07: info: initialization of "Seq_Num" proved
+aip-tcp.adb:2714:16: info: initialization of "Ack_Num" proved
+aip-tcp.adb:2716:34: info: initialization of "V" proved
+aip-tcp.adb:2720:09: info: data dependencies proved
+aip-tcp.adb:2730:09: info: data dependencies proved
 aip-tcp.adb:2739:10: warning: address specification on "Result" is imprecisely supported: assuming no concurrent accesses to non-atomic object and no writes to or through a potential alias [E0012]
 aip-tcp.adb:2739:10: warning: launch "gnatprove --explain=E0012" for more information
 aip-tcp.adb:2739:10: warning: make sure that all overlapping objects have Async_Writers set to True
+aip-tcp.adb:2744:15: info: justified that "Result" is not initialized
+aip-tcp.adb:2755:10: info: initialization of "Actual_Len" proved
+aip-tcp.adb:2951:07: info: initialization of "PCB" proved
+aip-tcp.adb:3009:07: info: initialization of "QBuf" proved
+aip-tcp.adb:3010:07: info: initialization of "QThdr" proved
+aip-tcp.adb:3011:07: info: initialization of "QLen" proved
+aip-tcp.adb:3015:07: info: initialization of "Buf" proved
+aip-tcp.adb:3016:07: info: initialization of "Thdr" proved
+aip-tcp.adb:3017:07: info: initialization of "Probe_Fin" proved
+aip-tcp.adb:3085:07: info: initialization of "Remove_PCB" proved
+aip-tcp.adb:3086:07: info: initialization of "PCB" proved
+aip-tcp.adb:3087:07: info: initialization of "Next_PCB" proved
 aip-tcp.adb:3195:13: warning: assuming "TCP_Event" always terminates
 aip-tcp.adb:3195:13: warning: no Always_Terminates aspect available for "TCP_Event"
 aip-tcp.adb:3204:24: warning: "Err" is set by "TCP_Event" but not used after the call
-aip-tcp.adb:848:13: warning: assuming "TCP_Event" always terminates
-aip-tcp.adb:848:13: warning: no Always_Terminates aspect available for "TCP_Event"
+aip-tcp.ads:30:09: info: data dependencies proved
 aip-tcp.ads:70:06: warning: Terminating, Always_Return, and Might_Not_Return annotations are deprecated, ignored
 aip-tcp.ads:70:06: warning: use Always_Terminates instead
+aip-tcp.ads:77:06: info: data dependencies proved
+aip-tcp.ads:79:13: info: implicit aspect Always_Terminates on "TCP_Udata" has been proved, subprogram will terminate
+aip-tcp.ads:82:06: info: data dependencies proved
+aip-tcp.ads:88:23: info: initialization of "PCB" proved
+aip-tcp.ads:92:06: info: data dependencies proved
+aip-tcp.ads:98:07: info: initialization of "Err" proved
+aip-tcp.ads:103:06: info: data dependencies proved
+aip-tcp.ads:105:45: info: initialization of "Err" proved
+aip-tcp.ads:110:06: info: data dependencies proved
+aip-tcp.ads:115:07: info: initialization of "Err" proved
+aip-tcp.ads:118:06: info: data dependencies proved
+aip-tcp.ads:135:06: info: data dependencies proved
+aip-tcp.ads:142:06: info: data dependencies proved
+aip-tcp.ads:149:07: info: initialization of "Err" proved
+aip-tcp.ads:159:06: info: data dependencies proved
+aip-tcp.ads:176:07: info: initialization of "Err" proved
+aip-tcp.ads:194:06: info: data dependencies proved
+aip-tcp.ads:196:13: info: implicit aspect Always_Terminates on "TCP_Sndbuf" has been proved, subprogram will terminate
+aip-tcp.ads:199:06: info: data dependencies proved
+aip-tcp.ads:213:06: info: data dependencies proved
+aip-tcp.ads:237:06: info: data dependencies proved
+aip-tcp.ads:245:06: info: data dependencies proved
+aip-tcp.ads:262:06: info: data dependencies proved
+aip-tcp.ads:268:44: info: initialization of "Err" proved
+aip-tcp.ads:272:06: info: data dependencies proved
+aip-tcp.ads:279:06: info: data dependencies proved
+aip-tcp.ads:292:06: info: data dependencies proved
+aip-tcp.ads:302:06: info: data dependencies proved
+aip-tcp.ads:313:06: info: data dependencies proved
+aip-tcp.ads:320:06: info: data dependencies proved
+aip-udp.adb:23:49: info: initialization of "Err" proved
+aip-udp.adb:28:06: info: data dependencies proved
+aip-udp.adb:36:07: info: initialization of "Ubuf" proved
+aip-udp.adb:37:07: info: initialization of "Err" proved
+aip-udp.adb:44:06: info: data dependencies proved
+aip-udp.adb:53:07: info: initialization of "Err" proved
+aip-udp.adb:59:06: info: data dependencies proved
+aip-udp.adb:96:36: info: initialization of "Bound_PCBs" constituent of "State" proved
+aip-udp.adb:96:48: info: initialization of "IPCBs" constituent of "State" proved
+aip-udp.adb:96:55: info: initialization of "UPCBs" constituent of "State" proved
+aip-udp.adb:135:07: info: initialization of "Ihdr" proved
+aip-udp.adb:135:13: info: initialization of "Uhdr" proved
+aip-udp.adb:135:19: info: initialization of "PUhdr" proved
+aip-udp.adb:137:07: info: initialization of "PUH_Buf" proved
+aip-udp.adb:138:07: info: initialization of "Err" proved
+aip-udp.adb:317:07: info: initialization of "HLEN_To_IP" proved
+aip-udp.adb:318:07: info: initialization of "Buf_Room" proved
+aip-udp.adb:360:07: info: initialization of "Ubuf" proved
+aip-udp.adb:361:07: info: initialization of "Ulen" proved
+aip-udp.adb:362:07: info: initialization of "Uhdr" proved
+aip-udp.adb:365:07: info: initialization of "Src_IP" proved
+aip-udp.adb:368:07: info: initialization of "PUhdr" proved
+aip-udp.adb:485:07: info: initialization of "Dst_IP" proved
+aip-udp.adb:486:07: info: initialization of "Dst_Port" proved
+aip-udp.adb:488:07: info: initialization of "Netif" proved
+aip-udp.adb:491:07: info: initialization of "NH_IP" proved
+aip-udp.adb:554:06: info: data dependencies proved
+aip-udp.ads:29:06: info: data dependencies proved
+aip-udp.ads:31:23: info: initialization of "PCB" proved
+aip-udp.ads:34:06: info: data dependencies proved
+aip-udp.ads:40:07: info: initialization of "Err" proved
+aip-udp.ads:51:06: info: data dependencies proved
+aip-udp.ads:57:07: info: initialization of "Err" proved
+aip-udp.ads:66:06: info: data dependencies proved
+aip-udp.ads:71:07: info: initialization of "Err" proved
+aip-udp.ads:85:06: info: data dependencies proved
+aip-udp.ads:92:06: info: data dependencies proved
+aip-udp.ads:97:06: info: data dependencies proved
+aip-udp.ads:129:06: info: data dependencies proved
+aip-udp.ads:135:06: info: data dependencies proved
+aip-udp.ads:137:13: info: implicit aspect Always_Terminates on "UDP_Udata" has been proved, subprogram will terminate
+aip-udp.ads:140:06: info: data dependencies proved
+aip-udp.ads:163:06: info: data dependencies proved
+aip.ads:152:13: info: implicit aspect Always_Terminates on "No" has been proved, subprogram will terminate
+aip.ads:155:13: info: implicit aspect Always_Terminates on "Any" has been proved, subprogram will terminate
