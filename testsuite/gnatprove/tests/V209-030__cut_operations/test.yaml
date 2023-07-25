@@ -1,1 +1,4 @@
 large: True
+prove_all:
+  sparklib: True
+  opt: ["--proof-warnings", "-u", "main.adb"]

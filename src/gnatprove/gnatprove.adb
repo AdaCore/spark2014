@@ -875,12 +875,13 @@ procedure Gnatprove with SPARK_Mode is
            SPARK_Install.GNSA_Dir_Bin & Path_Separator
            & SPARK_Install.Libexec_Spark_Bin & Path_Separator & Path_Val);
 
-      --  Add <prefix>/lib/gnat & <prefix>/share/gpr in GPR_PROJECT_PATH
-      --  so that project files installed with GNAT (not with SPARK)
-      --  are found automatically, if any.
+      --  Add <prefix>/lib/gnat & <prefix>/share/gpr in GPR_PROJECT_PATH so
+      --  that project files installed with GNAT (not with SPARK) are found
+      --  automatically, if any. But note that the value of GPR_PROJECT_PATH
+      --  set by the user should take precedence here, in case of homonyms.
 
       Set ("GPR_PROJECT_PATH",
-           Libgnat & Path_Separator & Sharegpr & Path_Separator & Gpr_Val);
+           Gpr_Val & Path_Separator & Libgnat & Path_Separator & Sharegpr);
 
       --  Set GPR_TOOL unless already set
 

@@ -792,6 +792,18 @@ def gnatprove(
             f_adc.write("pragma Profile (Ravenscar);\n")
             f_adc.write("pragma Partition_Elaboration_Policy (Sequential);\n")
 
+    # Generate sparklib.gpr if the project depends on SPARKlib
+    if sparklib:
+        with open("sparklib.gpr", "w") as f_prj:
+            f_prj.write('project SPARKlib extends "sparklib_external" is\n')
+            f_prj.write('   for Object_Dir use "sparklib_obj";\n')
+            f_prj.write("   for Source_Dirs use SPARKlib_External'Source_Dirs;\n")
+            f_prj.write(
+                "   for Excluded_Source_Files use "
+                + "SPARKlib_External'Excluded_Source_Files;\n"
+            )
+            f_prj.write("end SPARKlib;\n")
+
     cmd = ["gnatprove"]
     # Continue on errors, to get the maximum number of messages for tests
     cmd += ["-k"]
@@ -932,8 +944,6 @@ def prove_all(
     # Add opt last, so that it may include switch -cargs
     if opt is not None:
         fullopt += opt
-    if sparklib:
-        os.environ["SPARKLIB_OBJECT_DIR"] = TESTDIR
     gnatprove(
         fullopt,
         no_fail=no_fail,
@@ -1000,8 +1010,6 @@ def no_crash(sparklib=False):
     if benchmark_mode():
         prove_all(sparklib=sparklib)
     else:
-        if sparklib:
-            os.environ["SPARKLIB_OBJECT_DIR"] = TESTDIR
         gnatprove(no_output=True, exit_status=0, sparklib=sparklib)
 
 

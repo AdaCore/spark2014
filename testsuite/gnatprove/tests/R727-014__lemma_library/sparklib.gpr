@@ -1,0 +1,5 @@
+project SPARKlib extends "sparklib_external" is
+   for Object_Dir use "sparklib_obj";
+   for Source_Dirs use SPARKlib_External'Source_Dirs;
+   for Excluded_Source_Files use SPARKlib_External'Excluded_Source_Files;
+end SPARKlib;
