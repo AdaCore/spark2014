@@ -6254,7 +6254,11 @@ package body Gnat2Why.Expr is
               Pred_Of_Boolean_Term
                 (New_Pointer_Is_Moved_Access (Ty, Expr)));
 
-      elsif Use_Pred then
+      --  No Is_Moved predicates are generated for limited types, as they
+      --  cannot be moved. The Is_Moved property can still be computed for
+      --  them when the object is deallocated.
+
+      elsif Use_Pred and then not Is_Limited_View (Ty) then
          declare
             W_Expr : constant W_Term_Id :=
               Insert_Simple_Conversion
