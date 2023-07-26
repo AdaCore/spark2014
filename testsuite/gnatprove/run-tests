@@ -24,7 +24,8 @@ from typing import AnyStr, List, Optional
 
 # name for the entry in the test_env dict for the subprogram to call
 call_entry = "call_name"
-# name for the entry in the test_env dict for arguments to prove_all/do_flow calls
+# name for the entry in the test_env dict for arguments to
+# prove_all/do_flow/no_crash calls
 args_entry = "call_args"
 
 
@@ -308,14 +309,23 @@ class UGTestDriver(DiffTestDriver):
         return [message]
 
     def run(self):
-        # Some tests require this environment variable to be set
         env = os.environ.copy()
-        env["SPARKLIB_OBJECT_DIR"] = self.test_env["working_dir"]
-
         pattern = os.path.join(self.test_env["working_dir"], "*.gpr")
         gprfiles = glob.glob(pattern)
         assert len(gprfiles) == 1
         cmd = ["gnatprove", "-P", gprfiles[0], "-f", "-q", "--level=2", "--timeout=30"]
+
+        # Generate sparklib.gpr in case the project depends on SPARKlib
+        sparklib_proj = os.path.join(self.test_env["working_dir"], "sparklib.gpr")
+        with open(sparklib_proj, "w") as f_prj:
+            f_prj.write('project SPARKlib extends "sparklib_external" is\n')
+            f_prj.write('   for Object_Dir use "sparklib_obj";\n')
+            f_prj.write("   for Source_Dirs use SPARKlib_External'Source_Dirs;\n")
+            f_prj.write(
+                "   for Excluded_Source_Files use "
+                + "SPARKlib_External'Excluded_Source_Files;\n"
+            )
+            f_prj.write("end SPARKlib;\n")
 
         # Tests withing SPARK libraries need this switch
         cmd += ["--no-subprojects"]
@@ -451,9 +461,11 @@ class SPARKTestFinder(TestFinder):
                 test_env[args_entry] = (
                     test_env["do_flow"] if "do_flow" in test_env else {}
                 )
-            # same for proof
+            # same for proof, either with "no_crash" or "prove_all" entry point
             else:
-                test_env[call_entry] = "prove_all"
+                test_env[call_entry] = (
+                    "no_crash" if "no_crash" in test_env else "prove_all"
+                )
                 if "do_flow" in test_env:
                     logger.warning(
                         '{}: "do_flow" in "test.yaml" ignored for proof test'.format(
@@ -461,7 +473,11 @@ class SPARKTestFinder(TestFinder):
                         )
                     )
                 test_env[args_entry] = (
-                    test_env["prove_all"] if "prove_all" in test_env else {}
+                    test_env["no_crash"]
+                    if "no_crash" in test_env
+                    else test_env["prove_all"]
+                    if "prove_all" in test_env
+                    else {}
                 )
         # This is a valid test, return the ParsedTest object
         return ParsedTest(testname, ProofTestDriver, test_env, dirpath)
