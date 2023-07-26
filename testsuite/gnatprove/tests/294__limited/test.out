@@ -1,0 +1,166 @@
+dhcp_client.adb:10:04: medium: resource or memory leak might occur at end of scope
+dhcp_client.adb:12:36: high: "Ctx.Socket" is not initialized
+rflx-dhcp-message.adb:15:19: info: absence of resource or memory leak proved (CVC5: 1 VC)
+rflx-dhcp-message.adb:15:63: medium: pointer dereference check might fail [possible fix: subprogram at rflx-dhcp-message.ads:30 should mention Buffer in a precondition]
+rflx-dhcp-message.adb:15:69: medium: range check might fail, cannot prove lower bound for Buffer'First [reason for check: input value must fit in parameter type] [possible fix: subprogram at rflx-dhcp-message.ads:30 should mention Buffer in a precondition]
+rflx-dhcp-message.adb:15:108: medium: pointer dereference check might fail [possible fix: subprogram at rflx-dhcp-message.ads:30 should mention Buffer in a precondition]
+rflx-dhcp-message.adb:15:114: medium: range check might fail, cannot prove lower bound for Buffer'Last [reason for check: input value must fit in parameter type] [possible fix: subprogram at rflx-dhcp-message.ads:30 should mention Buffer in a precondition]
+rflx-dhcp-message.adb:19:51: medium: pointer dereference check might fail [possible fix: subprogram at rflx-dhcp-message.ads:32 should mention Buffer in a precondition]
+rflx-dhcp-message.adb:19:57: medium: range check might fail, cannot prove lower bound for Buffer'First [reason for check: default component value must fit in the type] [possible fix: subprogram at rflx-dhcp-message.ads:32 should mention Buffer in a precondition]
+rflx-dhcp-message.adb:20:50: medium: pointer dereference check might fail [possible fix: subprogram at rflx-dhcp-message.ads:32 should mention Buffer in a precondition]
+rflx-dhcp-message.adb:20:56: medium: range check might fail, cannot prove lower bound for Buffer'Last [reason for check: default component value must fit in the type] [possible fix: subprogram at rflx-dhcp-message.ads:32 should mention Buffer in a precondition]
+rflx-dhcp-message.adb:22:11: info: absence of resource or memory leak proved (CVC5: 1 VC)
+rflx-dhcp-message.adb:22:11: medium: discriminant check might fail [possible fix: subprogram at rflx-dhcp-message.ads:32 should mention Ctx'Constrained or Ctx.Buffer_First or Ctx.Buffer_Last or Ctx.First or Ctx.Last in a precondition]
+rflx-dhcp-message.adb:23:14: info: absence of resource or memory leak proved (CVC5: 1 VC)
+rflx-dhcp-message.ads:24:09: info: default initial condition proved (CVC5: 1 VC)
+rflx-dhcp-message.ads:24:09: info: in default initialization of array component at rflx-dhcp-message.ads:20
+rflx-dhcp-message.ads:30:14: info: aspect Always_Terminates on "Initialize" has been proved, subprogram will terminate
+rflx-dhcp-message.ads:30:26: info: initialization of "Ctx" proved
+rflx-dhcp-message.ads:32:14: info: aspect Always_Terminates on "Initialize" has been proved, subprogram will terminate
+rflx-dhcp-message.ads:32:26: info: initialization of "Ctx" proved
+rflx-dhcp-message.ads:32:143: warning: unused variable "Written_Last"
+rflx-dhcp.ads:24:13: info: implicit aspect Always_Terminates on "Valid_Code" has been proved, subprogram will terminate
+rflx-dhcp.ads:27:13: info: implicit aspect Always_Terminates on "To_Base_Integer" has been proved, subprogram will terminate
+rflx-dhcp.ads:70:13: info: implicit aspect Always_Terminates on "To_Actual" has been proved, subprogram will terminate
+rflx-dhcp.ads:122:13: info: implicit aspect Always_Terminates on "Valid_Len" has been proved, subprogram will terminate
+rflx-dhcp.ads:126:13: info: implicit aspect Always_Terminates on "To_Base_Integer" has been proved, subprogram will terminate
+rflx-dhcp.ads:129:13: info: implicit aspect Always_Terminates on "To_Actual" has been proved, subprogram will terminate
+rflx-dhcp.ads:130:22: info: range check proved (CVC5: 2 VC)
+rflx-dhcp.ads:139:13: info: implicit aspect Always_Terminates on "Valid_Subnet_Mask" has been proved, subprogram will terminate
+rflx-dhcp.ads:142:13: info: implicit aspect Always_Terminates on "To_Base_Integer" has been proved, subprogram will terminate
+rflx-dhcp.ads:145:13: info: implicit aspect Always_Terminates on "To_Actual" has been proved, subprogram will terminate
+rflx-dhcp.ads:146:30: info: range check proved (CVC5: 2 VC)
+rflx-dhcp.ads:156:13: info: implicit aspect Always_Terminates on "Valid_Enabled_Disabled" has been proved, subprogram will terminate
+rflx-dhcp.ads:159:13: info: implicit aspect Always_Terminates on "To_Base_Integer" has been proved, subprogram will terminate
+rflx-dhcp.ads:168:13: info: implicit aspect Always_Terminates on "To_Actual" has been proved, subprogram will terminate
+rflx-dhcp.ads:186:13: info: implicit aspect Always_Terminates on "Valid_MTU" has been proved, subprogram will terminate
+rflx-dhcp.ads:190:13: info: implicit aspect Always_Terminates on "To_Base_Integer" has been proved, subprogram will terminate
+rflx-dhcp.ads:193:13: info: implicit aspect Always_Terminates on "To_Actual" has been proved, subprogram will terminate
+rflx-dhcp.ads:194:22: info: range check proved (CVC5: 2 VC)
+rflx-dhcp.ads:203:13: info: implicit aspect Always_Terminates on "Valid_TTL" has been proved, subprogram will terminate
+rflx-dhcp.ads:207:13: info: implicit aspect Always_Terminates on "To_Base_Integer" has been proved, subprogram will terminate
+rflx-dhcp.ads:210:13: info: implicit aspect Always_Terminates on "To_Actual" has been proved, subprogram will terminate
+rflx-dhcp.ads:211:22: info: range check proved (CVC5: 2 VC)
+rflx-dhcp.ads:221:13: info: implicit aspect Always_Terminates on "Valid_NetBIOS_Over_TCP_IP_Node_Type" has been proved, subprogram will terminate
+rflx-dhcp.ads:224:13: info: implicit aspect Always_Terminates on "To_Base_Integer" has been proved, subprogram will terminate
+rflx-dhcp.ads:237:13: info: implicit aspect Always_Terminates on "To_Actual" has been proved, subprogram will terminate
+rflx-dhcp.ads:259:13: info: implicit aspect Always_Terminates on "Valid_Lease_Time" has been proved, subprogram will terminate
+rflx-dhcp.ads:262:13: info: implicit aspect Always_Terminates on "To_Base_Integer" has been proved, subprogram will terminate
+rflx-dhcp.ads:265:13: info: implicit aspect Always_Terminates on "To_Actual" has been proved, subprogram will terminate
+rflx-dhcp.ads:266:29: info: range check proved (CVC5: 2 VC)
+rflx-dhcp.ads:276:13: info: implicit aspect Always_Terminates on "Valid_Option_Overload" has been proved, subprogram will terminate
+rflx-dhcp.ads:279:13: info: implicit aspect Always_Terminates on "To_Base_Integer" has been proved, subprogram will terminate
+rflx-dhcp.ads:290:13: info: implicit aspect Always_Terminates on "To_Actual" has been proved, subprogram will terminate
+rflx-dhcp.ads:311:13: info: implicit aspect Always_Terminates on "Valid_DHCP_Message_Type" has been proved, subprogram will terminate
+rflx-dhcp.ads:314:13: info: implicit aspect Always_Terminates on "To_Base_Integer" has been proved, subprogram will terminate
+rflx-dhcp.ads:333:13: info: implicit aspect Always_Terminates on "To_Actual" has been proved, subprogram will terminate
+rflx-dhcp.ads:361:13: info: implicit aspect Always_Terminates on "Valid_Maximum_DHCP_Message_Size" has been proved, subprogram will terminate
+rflx-dhcp.ads:365:13: info: implicit aspect Always_Terminates on "To_Base_Integer" has been proved, subprogram will terminate
+rflx-dhcp.ads:368:13: info: implicit aspect Always_Terminates on "To_Actual" has been proved, subprogram will terminate
+rflx-dhcp.ads:369:44: info: range check proved (CVC5: 2 VC)
+rflx-dhcp.ads:378:13: info: implicit aspect Always_Terminates on "Valid_Time_Interval" has been proved, subprogram will terminate
+rflx-dhcp.ads:381:13: info: implicit aspect Always_Terminates on "To_Base_Integer" has been proved, subprogram will terminate
+rflx-dhcp.ads:384:13: info: implicit aspect Always_Terminates on "To_Actual" has been proved, subprogram will terminate
+rflx-dhcp.ads:385:32: info: range check proved (CVC5: 2 VC)
+rflx-dhcp.ads:395:13: info: implicit aspect Always_Terminates on "Valid_Message_Op_Code" has been proved, subprogram will terminate
+rflx-dhcp.ads:398:13: info: implicit aspect Always_Terminates on "To_Base_Integer" has been proved, subprogram will terminate
+rflx-dhcp.ads:407:13: info: implicit aspect Always_Terminates on "To_Actual" has been proved, subprogram will terminate
+rflx-dhcp.ads:436:13: info: implicit aspect Always_Terminates on "Valid_Hardware_Address_Type" has been proved, subprogram will terminate
+rflx-dhcp.ads:439:13: info: implicit aspect Always_Terminates on "Valid_Hardware_Address_Type" has been proved, subprogram will terminate
+rflx-dhcp.ads:440:68: info: discriminant check proved (CVC5: 1 VC)
+rflx-dhcp.ads:440:81: info: discriminant check proved (CVC5: 1 VC)
+rflx-dhcp.ads:442:13: info: implicit aspect Always_Terminates on "To_Base_Integer" has been proved, subprogram will terminate
+rflx-dhcp.ads:449:13: info: implicit aspect Always_Terminates on "To_Actual" has been proved, subprogram will terminate
+rflx-dhcp.ads:452:13: info: implicit aspect Always_Terminates on "To_Actual" has been proved, subprogram will terminate
+rflx-dhcp.ads:464:13: info: implicit aspect Always_Terminates on "To_Base_Integer" has been proved, subprogram will terminate
+rflx-dhcp.ads:465:46: info: discriminant check proved (CVC5: 1 VC)
+rflx-dhcp.ads:465:61: info: discriminant check proved (CVC5: 1 VC)
+rflx-dhcp.ads:472:13: info: implicit aspect Always_Terminates on "Valid_Hardware_Address_Length" has been proved, subprogram will terminate
+rflx-dhcp.ads:475:13: info: implicit aspect Always_Terminates on "To_Base_Integer" has been proved, subprogram will terminate
+rflx-dhcp.ads:482:13: info: implicit aspect Always_Terminates on "To_Actual" has been proved, subprogram will terminate
+rflx-dhcp.ads:498:13: info: implicit aspect Always_Terminates on "Valid_Hops" has been proved, subprogram will terminate
+rflx-dhcp.ads:501:13: info: implicit aspect Always_Terminates on "To_Base_Integer" has been proved, subprogram will terminate
+rflx-dhcp.ads:504:13: info: implicit aspect Always_Terminates on "To_Actual" has been proved, subprogram will terminate
+rflx-dhcp.ads:505:23: info: range check proved (CVC5: 2 VC)
+rflx-dhcp.ads:514:13: info: implicit aspect Always_Terminates on "Valid_Transaction_ID" has been proved, subprogram will terminate
+rflx-dhcp.ads:517:13: info: implicit aspect Always_Terminates on "To_Base_Integer" has been proved, subprogram will terminate
+rflx-dhcp.ads:520:13: info: implicit aspect Always_Terminates on "To_Actual" has been proved, subprogram will terminate
+rflx-dhcp.ads:521:33: info: range check proved (CVC5: 2 VC)
+rflx-dhcp.ads:530:13: info: implicit aspect Always_Terminates on "Valid_Secs" has been proved, subprogram will terminate
+rflx-dhcp.ads:533:13: info: implicit aspect Always_Terminates on "To_Base_Integer" has been proved, subprogram will terminate
+rflx-dhcp.ads:536:13: info: implicit aspect Always_Terminates on "To_Actual" has been proved, subprogram will terminate
+rflx-dhcp.ads:537:23: info: range check proved (CVC5: 2 VC)
+rflx-dhcp.ads:546:13: info: implicit aspect Always_Terminates on "Valid_Reserved_Flags" has been proved, subprogram will terminate
+rflx-dhcp.ads:549:13: info: implicit aspect Always_Terminates on "To_Base_Integer" has been proved, subprogram will terminate
+rflx-dhcp.ads:552:13: info: implicit aspect Always_Terminates on "To_Actual" has been proved, subprogram will terminate
+rflx-dhcp.ads:553:33: info: range check proved (CVC5: 2 VC)
+rflx-dhcp.ads:562:13: info: implicit aspect Always_Terminates on "Valid_Magic_Cookie" has been proved, subprogram will terminate
+rflx-dhcp.ads:565:13: info: implicit aspect Always_Terminates on "To_Base_Integer" has been proved, subprogram will terminate
+rflx-dhcp.ads:568:13: info: implicit aspect Always_Terminates on "To_Actual" has been proved, subprogram will terminate
+rflx-dhcp.ads:569:31: info: range check proved (CVC5: 2 VC)
+rflx-dhcp_client-session.adb:17:07: info: initialization of "Discover_Buffer" proved
+rflx-dhcp_client-session.adb:17:07: medium: resource or memory leak might occur at end of scope
+rflx-dhcp_client-session.adb:18:07: info: initialization of "Offer_Buffer" proved
+rflx-dhcp_client-session.adb:18:07: medium: resource or memory leak might occur at end of scope
+rflx-dhcp_client-session.adb:19:07: info: initialization of "Request_Buffer" proved
+rflx-dhcp_client-session.adb:19:07: medium: resource or memory leak might occur at end of scope
+rflx-dhcp_client-session.adb:20:07: info: initialization of "Ack_Buffer" proved
+rflx-dhcp_client-session.adb:20:07: medium: resource or memory leak might occur at end of scope
+rflx-dhcp_client-session.adb:22:54: info: non-aliasing of formal parameters "S" and "M" proved
+rflx-dhcp_client-session.adb:22:54: medium: resource or memory leak might occur [possible fix: subprogram at rflx-dhcp_client-session.ads:30 should mention Ctx in a precondition]
+rflx-dhcp_client-session.adb:23:23: info: absence of resource or memory leak proved (CVC5: 1 VC)
+rflx-dhcp_client-session.adb:25:30: info: absence of resource or memory leak proved (CVC5: 1 VC)
+rflx-dhcp_client-session.adb:27:37: medium: resource or memory leak might occur
+rflx-dhcp_client-session.adb:27:52: warning: "Discover_Buffer" is set by "Initialize" but not used after the call
+rflx-dhcp_client-session.adb:28:20: info: absence of resource or memory leak proved (CVC5: 1 VC)
+rflx-dhcp_client-session.adb:30:30: info: absence of resource or memory leak proved (CVC5: 1 VC)
+rflx-dhcp_client-session.adb:32:37: medium: resource or memory leak might occur [possible fix: call at line 27 should mention Ctx (for argument Ctx) in a postcondition]
+rflx-dhcp_client-session.adb:32:49: warning: "Offer_Buffer" is set by "Initialize" but not used after the call
+rflx-dhcp_client-session.adb:33:22: info: absence of resource or memory leak proved (CVC5: 1 VC)
+rflx-dhcp_client-session.adb:35:30: info: absence of resource or memory leak proved (CVC5: 1 VC)
+rflx-dhcp_client-session.adb:37:37: medium: resource or memory leak might occur [possible fix: call at line 32 should mention Ctx (for argument Ctx) in a postcondition]
+rflx-dhcp_client-session.adb:37:51: warning: "Request_Buffer" is set by "Initialize" but not used after the call
+rflx-dhcp_client-session.adb:38:18: info: absence of resource or memory leak proved (CVC5: 1 VC)
+rflx-dhcp_client-session.adb:40:30: info: absence of resource or memory leak proved (CVC5: 1 VC)
+rflx-dhcp_client-session.adb:42:37: medium: resource or memory leak might occur [possible fix: call at line 37 should mention Ctx (for argument Ctx) in a postcondition]
+rflx-dhcp_client-session.adb:42:47: warning: "Ack_Buffer" is set by "Initialize" but not used after the call
+rflx-dhcp_client-session_allocator.ads:34:17: info: pointer dereference check proved (CVC5: 1 VC)
+rflx-dhcp_client-session_allocator.ads:35:26: info: pointer dereference check proved (CVC5: 1 VC)
+rflx-dhcp_client-session_allocator.ads:39:10: info: in default initialization of component "Slots" at rflx-dhcp_client-session.ads:41
+rflx-dhcp_client-session_allocator.ads:39:10: info: in default value of private type at rflx-dhcp_client-session.ads:23
+rflx-dhcp_client-session_allocator.ads:39:10: info: predicate check proved on default value (CVC5: 1 VC)
+rflx-dhcp_client-session_allocator.ads:40:10: info: in default initialization of component "Slots" at rflx-dhcp_client-session.ads:41
+rflx-dhcp_client-session_allocator.ads:40:10: info: in default value of private type at rflx-dhcp_client-session.ads:23
+rflx-dhcp_client-session_allocator.ads:40:10: info: predicate check proved on default value (CVC5: 1 VC)
+rflx-dhcp_client-session_allocator.ads:41:10: info: in default initialization of component "Slots" at rflx-dhcp_client-session.ads:41
+rflx-dhcp_client-session_allocator.ads:41:10: info: in default value of private type at rflx-dhcp_client-session.ads:23
+rflx-dhcp_client-session_allocator.ads:41:10: info: predicate check proved on default value (CVC5: 1 VC)
+rflx-dhcp_client-session_allocator.ads:42:10: info: in default initialization of component "Slots" at rflx-dhcp_client-session.ads:41
+rflx-dhcp_client-session_allocator.ads:42:10: info: in default value of private type at rflx-dhcp_client-session.ads:23
+rflx-dhcp_client-session_allocator.ads:42:10: info: predicate check proved on default value (CVC5: 1 VC)
+rflx-dhcp_client-session_allocator.ads:43:10: info: in default initialization of component "Slots" at rflx-dhcp_client-session.ads:41
+rflx-dhcp_client-session_allocator.ads:43:10: info: in default value of private type at rflx-dhcp_client-session.ads:23
+rflx-dhcp_client-session_allocator.ads:43:10: info: predicate check proved on default value (CVC5: 1 VC)
+rflx-dhcp_client-session_allocator.ads:44:10: info: in default initialization of component "Slots" at rflx-dhcp_client-session.ads:41
+rflx-dhcp_client-session_allocator.ads:44:10: info: in default value of private type at rflx-dhcp_client-session.ads:23
+rflx-dhcp_client-session_allocator.ads:44:10: info: predicate check proved on default value (CVC5: 1 VC)
+rflx-dhcp_client-session_allocator.ads:45:10: info: in default initialization of component "Slots" at rflx-dhcp_client-session.ads:41
+rflx-dhcp_client-session_allocator.ads:45:10: info: in default value of private type at rflx-dhcp_client-session.ads:23
+rflx-dhcp_client-session_allocator.ads:45:10: info: predicate check proved on default value (CVC5: 1 VC)
+rflx-dhcp_client-session_allocator.ads:48:13: info: implicit aspect Always_Terminates on "Initialized" has been proved, subprogram will terminate
+rflx-dhcp_client-session_allocator.ads:57:13: info: implicit aspect Always_Terminates on "Uninitialized" has been proved, subprogram will terminate
+rflx-dhcp_client-session_allocator.ads:74:13: info: implicit aspect Always_Terminates on "Global_Allocated" has been proved, subprogram will terminate
+rflx-rflx_types.ads:53:13: info: implicit aspect Always_Terminates on "To_Index" has been proved, subprogram will terminate
+rflx-rflx_types.ads:54:36: info: division check proved (CVC5: 1 VC)
+rflx-rflx_types.ads:54:36: info: range check proved (CVC5: 2 VC)
+rflx-rflx_types.ads:54:41: info: overflow check proved (CVC5: 2 VC)
+rflx-rflx_types.ads:56:13: info: implicit aspect Always_Terminates on "To_Length" has been proved, subprogram will terminate
+rflx-rflx_types.ads:57:29: info: division check proved (CVC5: 1 VC)
+rflx-rflx_types.ads:57:29: info: range check proved (CVC5: 2 VC)
+rflx-rflx_types.ads:59:13: info: implicit aspect Always_Terminates on "To_Bit_Length" has been proved, subprogram will terminate
+rflx-rflx_types.ads:62:13: info: implicit aspect Always_Terminates on "To_First_Bit_Index" has been proved, subprogram will terminate
+rflx-rflx_types.ads:65:13: info: implicit aspect Always_Terminates on "To_Last_Bit_Index" has been proved, subprogram will terminate
+rflx-rflx_types.ads:68:13: info: implicit aspect Always_Terminates on "To_Last_Bit_Index" has been proved, subprogram will terminate
+rflx-rflx_types.ads:77:13: info: implicit aspect Always_Terminates on "Unreachable" has been proved, subprogram will terminate
+rflx-rflx_types.ads:79:13: info: implicit aspect Always_Terminates on "Unreachable" has been proved, subprogram will terminate
+rflx-rflx_types.ads:81:13: info: implicit aspect Always_Terminates on "Unreachable" has been proved, subprogram will terminate
