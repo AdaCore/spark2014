@@ -1,4 +1,4 @@
-with "sparklib_internal";
+with "sparklib";
 project Test is
 
    for Main use ("test.adb");
