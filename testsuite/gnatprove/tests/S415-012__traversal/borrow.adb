@@ -11,6 +11,17 @@ procedure Borrow with SPARK_Mode is
       return X.N;
    end Next;
 
+   subtype Non_Null_List_Acc is not null List_Acc;
+
+   function Next_Next (L : access List) return access List with
+     Pre => L /= null and then L.N /= null;
+
+   function Next_Next (L : access List) return access List is
+      Res : access List := Non_Null_List_Acc (L.N).N;
+   begin
+      return Res;
+   end Next_Next;
+
    procedure P (X : access List) is
 
       function Get return Integer with Pre => True is
