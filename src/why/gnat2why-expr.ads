@@ -426,13 +426,6 @@ package Gnat2Why.Expr is
 
    function Havoc_Borrowed_And_Check_No_Leaks_From_Scope
      (Scope   : Node_Id;
-      Exiting : Local_CFG.Vertex_Sets.Set)
-      return W_Statement_Sequence_Id;
-   --  Specialization of Havoc_Borrowed_And_Check_No_Leaks_From_Scopes
-   --  for a single scope.
-
-   function Havoc_Borrowed_And_Check_No_Leaks_From_Scope
-     (Scope   : Node_Id;
       Exiting : Local_CFG.Vertex)
       return W_Statement_Sequence_Id;
    --  Specialization of Havoc_Borrowed_And_Check_No_Leaks_From_Scopes

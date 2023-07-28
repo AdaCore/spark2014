@@ -9183,18 +9183,7 @@ package body Gnat2Why.Expr is
    --------------------------------------------------
 
    function Havoc_Borrowed_And_Check_No_Leaks_From_Scope
-     (Scope  : Node_Id;
-      Exiting : Local_CFG.Vertex_Sets.Set)
-      return W_Statement_Sequence_Id
-   is
-      Scopes : Node_Lists.List;
-   begin
-      Scopes.Append (Scope);
-      return Havoc_Borrowed_And_Check_No_Leaks_From_Scopes (Scopes, Exiting);
-   end Havoc_Borrowed_And_Check_No_Leaks_From_Scope;
-
-   function Havoc_Borrowed_And_Check_No_Leaks_From_Scope
-     (Scope  : Node_Id;
+     (Scope   : Node_Id;
       Exiting : Local_CFG.Vertex)
       return W_Statement_Sequence_Id
    is
