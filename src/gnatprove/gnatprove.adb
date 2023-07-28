@@ -553,8 +553,12 @@ procedure Gnatprove with SPARK_Mode is
          when GS_Data_Representation =>
             --  Do not generate data representation if -gnateT is passed
             --  explicitly, as this prevents the compiler from outputting
-            --  correct data representation information.
-            if Has_gnateT_Switch (Tree.Root_Project) then
+            --  correct data representation information. Also skip this
+            --  phase if proof is not called.
+            if Has_gnateT_Switch (Tree.Root_Project)
+              or else Configuration.Mode in
+                GPM_Check | GPM_Check_All | GPM_Flow
+            then
                Status := 0;
             else
                Compute_Data_Representation (Project_File, Tree, Status);
