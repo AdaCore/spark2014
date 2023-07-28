@@ -15989,6 +15989,11 @@ package body Gnat2Why.Expr is
                      when Attribute_Size
                         | Attribute_Value_Size
                      =>
+                        --  If value of Size is present for a type, it means
+                        --  that Esize (storing the value of Object_Size) and
+                        --  RM_Size (storing the value of Value_Size) for the
+                        --  type are equal. See Repinfo.List_Common_Type_Info
+
                         if Data_Entry.Size.Present then
                            T := New_Integer_Constant
                              (Value => UI_From_Int
@@ -16005,7 +16010,17 @@ package body Gnat2Why.Expr is
                         end if;
 
                      when Attribute_Object_Size =>
-                        if Data_Entry.Object_Size.Present then
+                        --  If value of Size is present for a type, it means
+                        --  that Esize (storing the value of Object_Size) and
+                        --  RM_Size (storing the value of Value_Size) for the
+                        --  type are equal. See Repinfo.List_Common_Type_Info
+
+                        if Data_Entry.Size.Present then
+                           T := New_Integer_Constant
+                             (Value => UI_From_Int
+                                (Int (Data_Entry.Size.Value)));
+
+                        elsif Data_Entry.Object_Size.Present then
                            T := New_Integer_Constant
                              (Value => UI_From_Int
                                 (Int (Data_Entry.Object_Size.Value)));
@@ -16022,10 +16037,10 @@ package body Gnat2Why.Expr is
                else
                   pragma Assert (Attr_Id = Attribute_Size);
 
-                  if Data_Entry.Object_Size.Present then
+                  if Data_Entry.Size.Present then
                      T := New_Integer_Constant
                        (Value => UI_From_Int
-                          (Int (Data_Entry.Object_Size.Value)));
+                          (Int (Data_Entry.Size.Value)));
 
                   elsif Known_Object_Size (Etype (Var)) then
                      T := New_Integer_Constant (Expr,
