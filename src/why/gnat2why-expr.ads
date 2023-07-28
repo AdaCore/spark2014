@@ -467,7 +467,7 @@ package Gnat2Why.Expr is
      (Ada_Node      : Node_Id;
       Check_Ty      : Type_Kind_Id;
       W_Expr        : W_Prog_Id;
-      Top_Predicate : W_Term_Id := True_Term)
+      Top_Predicate : Boolean := True)
       return W_Prog_Id;
    --  @param Ada_Node node to which the check is attached
    --  @param Check_Ty type whose predicate needs to be checked
@@ -504,7 +504,7 @@ package Gnat2Why.Expr is
       Ty               : Type_Kind_Id;
       W_Expr           : W_Expr_Id;
       On_Default_Value : Boolean := False;
-      Top_Predicate    : W_Term_Id := True_Term)
+      Top_Predicate    : Boolean := True)
       return W_Prog_Id;
    --  @param Ada_Node node to which the check is attached
    --  @param Ty type whose predicate needs to be checked

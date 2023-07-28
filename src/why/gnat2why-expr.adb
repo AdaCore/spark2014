@@ -9717,7 +9717,7 @@ package body Gnat2Why.Expr is
      (Ada_Node      : Node_Id;
       Check_Ty      : Type_Kind_Id;
       W_Expr        : W_Prog_Id;
-      Top_Predicate : W_Term_Id := True_Term)
+      Top_Predicate : Boolean := True)
       return W_Prog_Id
    is
       W_Tmp : constant W_Identifier_Id :=
@@ -10477,7 +10477,7 @@ package body Gnat2Why.Expr is
       Ty               : Type_Kind_Id;
       W_Expr           : W_Expr_Id;
       On_Default_Value : Boolean := False;
-      Top_Predicate    : W_Term_Id := True_Term)
+      Top_Predicate    : Boolean := True)
       return W_Prog_Id
    is
       --  Here we recompute the predicate instead of calling
@@ -10548,16 +10548,10 @@ package body Gnat2Why.Expr is
 
          --  Ignore the top-level predicate if needed
 
-         if Is_False_Boolean (+Top_Predicate)
+         if not Top_Predicate
            and then Retysp (Etype (Type_Instance)) = Retysp (Ty)
          then
             return;
-         elsif not Is_True_Boolean (+Top_Predicate)
-           and then Retysp (Etype (Type_Instance)) = Retysp (Ty)
-         then
-            Check := New_Conditional
-              (Condition => Pred_Of_Boolean_Term (Top_Predicate),
-               Then_Part => Check);
          end if;
 
          --  If the predicate was inherited, add a continuation
@@ -21772,10 +21766,7 @@ package body Gnat2Why.Expr is
                                 (Expr, Typ, T, Domain);
                            else
                               T := +Insert_Predicate_Check
-                                (Expr, Typ, +T,
-                                 Top_Predicate =>
-                                   (if Top_Predicate then True_Term
-                                    else False_Term));
+                                (Expr, Typ, +T, Top_Predicate);
                            end if;
                         end;
                      end if;
