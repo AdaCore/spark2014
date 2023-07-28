@@ -5,7 +5,7 @@ import os
 os.environ["SPARKLIB_OBJECT_DIR"] = TESTDIR
 
 if __name__ == "__main__":
-    prove_all(steps=1282)
+    prove_all(steps=1300)
 
     call(["gprbuild", "-q", "-P", "test.gpr"])
     call(["./obj/infinite_sequence"])

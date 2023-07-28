@@ -43,9 +43,6 @@ package body CE_Values is
      (if Value.Present then To_String (Value.Content) else "UNDEFINED");
    --  Convert an optional big integer into a string
 
-   function To_String (V : Float_Value) return String;
-   --  Convert a float value to a string
-
    function To_String (V : Scalar_Value_Type) return String;
    --  Convert a scalar value to a string
 
@@ -278,6 +275,53 @@ package body CE_Values is
          return (Present => False);
       end if;
    end Get_Array_Length;
+
+   --------------
+   -- Is_Valid --
+   --------------
+
+   --  For checking the validity of floating-point values, disable validity
+   --  checks introduced in debug builds by -gnatVa switch.
+
+   pragma Suppress (Validity_Check);
+
+   function Is_Valid (R : Float_Value) return Boolean is
+
+      function Is_NaN (R : Float_Value) return Boolean is
+        (case R.K is
+            when Float_32_K => R.Content_32 /= R.Content_32,
+            when Float_64_K => R.Content_64 /= R.Content_64,
+            when Extended_K => R.Ext_Content /= R.Ext_Content);
+
+      function Is_Infinity (R : Float_Value) return Boolean is
+        (case R.K is
+            when Float_32_K => abs (R.Content_32) > Float'Last,
+            when Float_64_K => abs (R.Content_64) > Long_Float'Last,
+            when Extended_K => abs (R.Ext_Content) > Long_Long_Float'Last);
+
+   begin
+      return not Is_NaN (R) and then not Is_Infinity (R);
+   end Is_Valid;
+
+   pragma Unsuppress (Validity_Check);
+
+   --------------------
+   -- To_Big_Integer --
+   --------------------
+
+   --  Conversion from float to integer rounds to the nearest integer, away
+   --  from zero if exactly halfway between two integers.
+
+   function To_Big_Integer (R : Float_Value) return Big_Integer is
+      Big  : constant Big_Real := From_String (To_String (R));
+      Bpos : constant Big_Real := abs Big;
+      Sign : constant Big_Integer := (if Big < 0.0 then -1 else 1);
+      Pos  : constant Big_Integer := Numerator (Bpos) / Denominator (Bpos);
+      Rpos : constant Big_Real := To_Big_Real (Pos);
+      Rnd  : constant Big_Integer := (if Bpos - Rpos <= 0.5 then 1 else 0);
+   begin
+      return Sign * (Pos + Rnd);
+   end To_Big_Integer;
 
    ---------------
    -- To_String --

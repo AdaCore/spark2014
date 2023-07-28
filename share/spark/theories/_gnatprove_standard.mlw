@@ -1901,13 +1901,27 @@ module Array__1__Concat
   val function concat_singleton_left component_type Index.t map Index.t Index.t : map
   meta "encoding:lskept" function concat_singleton_left
 
-  axiom concat_singleton_left_def :
+  axiom concat_singleton_left_val :
     forall a : component_type.
     forall b : map.
     forall a_first b_first b_last : Index.t
     [concat_singleton_left a a_first b b_first b_last].
     get (concat_singleton_left a a_first b b_first b_last) a_first = a
-  /\
+  meta "remove_unused:dependency" axiom concat_singleton_left_val, function concat_singleton_left
+
+  axiom concat_singleton_left_def_eq :
+    forall a : component_type.
+    forall b : map.
+    forall a_first b_last : Index.t.
+    forall i : Index.t [get (concat_singleton_left a a_first b a_first b_last) i].
+      ((Index.gt i a_first) ->
+        get (concat_singleton_left a a_first b a_first b_last) i = get b (Index.sub i Index.one))
+  meta "remove_unused:dependency" axiom concat_singleton_left_def_eq, function concat_singleton_left
+
+  axiom concat_singleton_left_def :
+    forall a : component_type.
+    forall b : map.
+    forall a_first b_first b_last : Index.t.
     forall i : Index.t [get (concat_singleton_left a a_first b b_first b_last) i].
       ((Index.gt i a_first) ->
         get (concat_singleton_left a a_first b b_first b_last) i = get b (Index.add (Index.sub i a_first) (Index.sub b_first Index.one)))

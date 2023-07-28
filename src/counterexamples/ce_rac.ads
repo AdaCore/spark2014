@@ -28,6 +28,8 @@
 
 with Ada.Numerics.Big_Numbers.Big_Integers;
 use  Ada.Numerics.Big_Numbers.Big_Integers;
+with Ada.Numerics.Big_Numbers.Big_Reals;
+use Ada.Numerics.Big_Numbers.Big_Reals;
 with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 with CE_Values;             use CE_Values;
 with SPARK_Atree.Entities;  use SPARK_Atree.Entities;
@@ -65,6 +67,12 @@ package CE_RAC is
    function Integer_Value (I : Big_Integer; N : Node_Id) return Value_Type;
    --  Construct an integer value after checking against type bounds or
    --  applying modulo for type Etype (N), signaling errors for node N.
+
+   function Real_Value (R : Big_Real; N : Node_Id) return Value_Type;
+   function Real_Value
+     (R : CE_Values.Float_Value;
+      N : Node_Id)
+      return Value_Type;
 
    function RAC_Execute
      (E              : Entity_Id;

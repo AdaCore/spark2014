@@ -235,7 +235,7 @@ use_maps.adb:29:20: info: precondition proved
 use_maps.adb:30:23: info: precondition proved
 use_maps.adb:30:49: info: precondition proved
 use_maps.adb:32:13: info: loop invariant initialization proved
-use_maps.adb:32:13: info: loop invariant preservation proved
+use_maps.adb:32:13: medium: loop invariant might not be preserved by an arbitrary iteration [possible fix: you should consider adding a postcondition to function Get or turning it into an expression function]
 use_maps.adb:33:38: info: precondition proved
 use_maps.adb:34:22: info: precondition proved
 use_maps.adb:35:25: info: precondition proved

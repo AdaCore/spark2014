@@ -1,7 +1,7 @@
 float_example.adb:7:13: info: implicit aspect Always_Terminates on "Minus_I" has been proved, subprogram will terminate
-float_example.adb:8:19: medium: postcondition might fail
+float_example.adb:8:19: high: postcondition might fail (e.g. when A = 5.1455109252E-308 and B = 4.3352587588E-309 and Minus_I'Result = 4.7119850493E-308)
 float_example.adb:8:38: medium: float overflow check might fail [reason for check: result of floating-point addition must be bounded] [possible fix: subprogram at line 7 should mention A and B in a precondition]
-float_example.adb:12:16: medium: float overflow check might fail [reason for check: result of floating-point subtraction must be bounded] [possible fix: subprogram at line 7 should mention A and B in a precondition]
+float_example.adb:12:16: high: float overflow check might fail (e.g. when A = -8.2525762224E+303 and B = 1.7976659325E+308) [reason for check: result of floating-point subtraction must be bounded] [possible fix: subprogram at line 7 should mention A and B in a precondition]
 float_example.adb:15:13: info: implicit aspect Always_Terminates on "Bounded_Add" has been proved, subprogram will terminate
-float_example.adb:17:14: medium: postcondition might fail
-float_example.adb:21:16: medium: float overflow check might fail [reason for check: result of floating-point addition must be bounded]
+float_example.adb:17:14: high: postcondition might fail (e.g. when Bounded_Add'Result = 7.9921271652E+0)
+float_example.adb:21:16: high: float overflow check might fail (e.g. when A = -1.7976794196E+308 and B = -1.3728709752E+303) [reason for check: result of floating-point addition must be bounded]

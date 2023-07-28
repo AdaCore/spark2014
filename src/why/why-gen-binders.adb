@@ -448,11 +448,6 @@ package body Why.Gen.Binders is
                   end if;
 
                when DRecord =>
-                  pragma Assert
-                    ((B.Discrs.Present and then B.Discrs.Binder.Mutable)
-                     or else
-                       (B.Fields.Present
-                        and then B.Fields.Binder.Mutable));
 
                   if B.Discrs.Present
                     and then (Keep_Local (B.Local)

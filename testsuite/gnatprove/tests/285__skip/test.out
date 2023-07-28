@@ -1,0 +1,36 @@
+a.adb:5:17: warning: subprogram "UU" has no effect
+a.adb:6:20: info: add a contract to analyze it separately from calling contexts
+a.adb:6:20: info: local subprogram "UUU" only analyzed in the context of calls
+a.adb:6:20: warning: subprogram "UUU" has no effect
+a.adb:9:10: info: no contextual analysis of "UU" (nested subprogram)
+a.ads:4:14: warning: subprogram "U" has no effect
+Summary of SPARK analysis
+=========================
+
+-
+SPARK Analysis results Total Flow Provers Justified Unproved
+-
+Data Dependencies . . . . .
+Flow Dependencies . . . . .
+Initialization . . . . .
+Non-Aliasing . . . . .
+Run-time Checks . . . . .
+Assertions . . . . .
+Functional Contracts . . . . .
+LSP Verification . . . . .
+Termination . . . . .
+Concurrency . . . . .
+-
+Total . . . . .
+
+
+max steps used for successful proof: 0
+
+Analyzed 1 unit
+in unit a, 4 subprograms and packages out of 5 analyzed
+ A at a.ads:3 flow analyzed (0 errors, 0 checks, 0 warnings and 0 pragma Assume statements) and proved (0 checks)
+ A.U at a.ads:4 flow analyzed (0 errors, 0 checks, 1 warnings and 0 pragma Assume statements) and proved (0 checks)
+ A.U.UU at a.adb:5 flow analyzed (0 errors, 0 checks, 1 warnings and 0 pragma Assume statements) and proved (0 checks)
+ A.U.UU.UUU at a.adb:6 flow analyzed (0 errors, 0 checks, 1 warnings and 0 pragma Assume statements) and proved (0 checks)
+ A.U.UU.UUU.UUUU at a.adb:10 skipped; body is SPARK_Mode => Off
+

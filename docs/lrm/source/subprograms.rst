@@ -121,6 +121,9 @@ an *entire object*.
 
 10.  A function shall always return normally.
 
+11. A call to a ghost procedure occurring outside of a ghost context shall
+    always return normally.
+
 .. index:: precondition, postcondition
 
 Preconditions and Postconditions

@@ -6,7 +6,7 @@ arrays.adb:62:22: high: postcondition might fail (e.g. when C = 'NUL' and Contai
 arrays.adb:68:13: info: implicit aspect Always_Terminates on "Is_Id_1" has been proved, subprogram will terminate
 arrays.adb:71:19: info: postcondition proved (CVC5: 2 VC)
 arrays.adb:77:13: info: implicit aspect Always_Terminates on "Is_Id_2" has been proved, subprogram will terminate
-arrays.adb:80:19: high: postcondition might fail (e.g. when C = 'b' and Is_Id_2'Result = True and M = ('b' => 'a', others => 'a'))
+arrays.adb:80:19: high: postcondition might fail (e.g. when C = 'NUL' and Is_Id_2'Result = True and M = ('NUL' => 'a', others => 'a'))
 arrays.adb:88:11: info: flow dependencies proved
 arrays.adb:94:22: info: assertion proved (CVC5: 1 VC)
 arrays.adb:99:11: info: flow dependencies proved

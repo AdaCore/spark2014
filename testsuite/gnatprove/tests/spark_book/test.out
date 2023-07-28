@@ -1595,3 +1595,4 @@ workspaces.adb:8:21: info: index check proved (CVC5: 2 VC)
 workspaces.adb:9:27: medium: overflow check might fail, cannot prove upper bound for (Size + 1) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: add precondition (Size <= Integer'Last - 1) to subprogram at workspaces.ads:4]
 workspaces.adb:9:32: info: index check proved (CVC5: 2 VC)
 workspaces.ads:4:13: info: implicit aspect Always_Terminates on "Generate_Workspace" has been proved, subprogram will terminate
+test.gpr: warning: there are no sources of language "Ada" in this project

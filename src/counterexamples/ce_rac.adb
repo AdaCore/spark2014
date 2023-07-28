@@ -28,7 +28,6 @@ with Ada.Containers.Hashed_Maps;
 with Ada.Containers.Indefinite_Ordered_Sets;
 with Ada.Containers.Vectors;
 with Ada.Environment_Variables;
-with Ada.Numerics.Big_Numbers.Big_Reals;
 with Ada.Text_IO;             use Ada.Text_IO;
 with CE_Fuzzer;               use CE_Fuzzer;
 with CE_Parsing;              use CE_Parsing;
@@ -60,6 +59,7 @@ with Stand;                   use Stand;
 with Stringt;
 with Treepr;
 with Uintp;                   use Uintp;
+with Urealp;                  use Urealp;
 
 package body CE_RAC is
 
@@ -137,6 +137,9 @@ package body CE_RAC is
    function Value_Integer (V : Value_Type) return Big_Integer;
    --  Get the value of an integer value, fail for other types
 
+   function Value_Real (V : Value_Type) return CE_Values.Float_Value;
+   --  Get the value of a real value, fail for other types
+
    function Value_Character (V : Value_Type) return Character;
    --  Get the value of a enumeration value as a character, fail for other
    --  types.
@@ -157,12 +160,15 @@ package body CE_RAC is
    --  Convert big integer to integer, raise RAC_Incomplete when out of range
 
    procedure Check_Integer (I : Big_Integer; Ty : Entity_Id; N : Node_Id);
-   --  Check an integer I against the range bounds or apply modulo for type Ty,
-   --  signaling errors for node N.
-
    procedure Check_Integer (V : Value_Type; Ty : Entity_Id; N : Node_Id);
    --  Check a value V against the range bounds or apply modulo of the type Ty,
    --  if V is an integer, signaling errors for node N.
+
+   procedure Check_Real
+     (V : CE_Values.Float_Value; Ty : Entity_Id; N : Node_Id);
+   procedure Check_Real (V : Value_Type; Ty : Entity_Id; N : Node_Id);
+   --  Check a value V against the range bounds of the type Ty, if V is a
+   --  float, signaling errors for node N.
 
    function Int_Value (I : Big_Integer; Ty : Entity_Id) return Value_Type is
       (Scalar_Value ((K => Integer_K, Integer_Content => I), Retysp (Ty)));
@@ -175,6 +181,12 @@ package body CE_RAC is
       return Value_Type;
    --  Construct an integer value after checking against type bounds or
    --  applying modulo for type Ty, signaling errors for node N.
+
+   function Real_Value
+     (R  : Big_Real;
+      Ty : Entity_Id;
+      N  : Node_Id)
+      return Value_Type;
 
    function Copy (V : Value_Type) return Value_Type;
    --  Make a copy of a value
@@ -628,8 +640,8 @@ package body CE_RAC is
       if Has_Predicates (Ty) and then not Has_Static_Predicate (Ty) then
          RAC_Unsupported ("Type has dynamic predicate aspect", Ty);
       end if;
-      if Is_Floating_Point_Type (Ty) then
-         RAC_Unsupported ("Floating point type", Ty);
+      if Is_Fixed_Point_Type (Ty) then
+         RAC_Unsupported ("Fixed-point type", Ty);
       end if;
       if Is_Array_Type (Ty)
         and then Number_Dimensions (Ty) > 1
@@ -685,6 +697,36 @@ package body CE_RAC is
          Check_Integer (V.Scalar_Content.Integer_Content, Ty, N);
       end if;
    end Check_Integer;
+
+   ----------------
+   -- Check_Real --
+   ----------------
+
+   procedure Check_Real
+     (V : CE_Values.Float_Value; Ty : Entity_Id; N : Node_Id)
+   is
+      Kind     : VC_Kind;
+      Desc     : constant String :=
+        "Check float of type " & Get_Name_String (Chars (Ty));
+   begin
+      Kind :=
+        (if Is_Base_Type (Ty) then VC_Overflow_Check else VC_Range_Check);
+
+      if not Is_Valid (V) then
+         RAC_Info (Desc, "has failed as " & VC_Kind'Image (Kind), N);
+         RAC_Failure (N, Kind);
+      end if;
+   end Check_Real;
+
+   procedure Check_Real (V : Value_Type; Ty : Entity_Id; N : Node_Id) is
+   begin
+      if V.K = Scalar_K
+        and then V.Scalar_Content /= null
+        and then V.Scalar_Content.K = Float_K
+      then
+         Check_Real (V.Scalar_Content.Float_Content, Ty, N);
+      end if;
+   end Check_Real;
 
    ----------------
    -- Check_List --
@@ -743,11 +785,11 @@ package body CE_RAC is
             then
                RAC_Unsupported ("uninitialized scalar", N);
 
-            --  Real types are not supported yet
+            --  Fixed-point types are not supported yet
 
-            elsif V.Scalar_Content.K not in Integer_K .. Enum_K then
+            elsif V.Scalar_Content.K = Fixed_K then
                RAC_Unsupported
-                 ("value of real type " & Full_Name (V.AST_Ty), N);
+                 ("value of fixed-point type " & Full_Name (V.AST_Ty), N);
             end if;
 
          when Record_K =>
@@ -999,7 +1041,6 @@ package body CE_RAC is
    is
       Rep_Ty : constant Entity_Id := Retysp (Ty);
    begin
-
       if Is_Integer_Type (Rep_Ty) then
          --  0 or Ty'First
          declare
@@ -1016,6 +1057,9 @@ package body CE_RAC is
 
       elsif Is_Enumeration_Type (Rep_Ty) then
          return Enum_Value (First_Literal (Rep_Ty), Rep_Ty);
+
+      elsif Has_Floating_Point_Type (Rep_Ty) then
+         return Real_Value (0.0, Rep_Ty, Empty);
 
       elsif Is_Array_Type (Rep_Ty) then
          declare
@@ -1414,6 +1458,43 @@ package body CE_RAC is
    -- Integer_Value --
    -------------------
 
+   function Real_Value
+     (R  : Big_Real;
+      Ty : Entity_Id;
+      N  : Node_Id)
+      return Value_Type
+   is
+      pragma Unreferenced (N);
+      Res : constant CE_Values.Float_Value :=
+        (if Is_Single_Precision_Floating_Point_Type (Ty) then
+           (K => Float_32_K, Content_32 => Conv_Float32.From_Big_Real (R))
+         elsif Is_Double_Precision_Floating_Point_Type (Ty) then
+           (K => Float_64_K, Content_64 => Conv_Float64.From_Big_Real (R))
+         else
+           (K           => Extended_K,
+            --  Converting to 64bits floats first, as direct conversion to
+            --  80bits floats leads to errors due to too large integers being
+            --  used in range checking.
+            Ext_Content => Long_Long_Float (Conv_Float64.From_Big_Real (R))));
+   begin
+      return Scalar_Value ((K => Float_K, Float_Content => Res), Ty);
+   end Real_Value;
+
+   function Real_Value (R : Big_Real; N : Node_Id) return Value_Type is
+   begin
+      return Real_Value (R, Retysp (Etype (N)), N);
+   end Real_Value;
+
+   function Real_Value
+     (R : CE_Values.Float_Value;
+      N : Node_Id)
+      return Value_Type
+   is
+   begin
+      return
+        Scalar_Value ((K => Float_K, Float_Content => R), Retysp (Etype (N)));
+   end Real_Value;
+
    function Integer_Value
      (I     : Big_Integer;
       Ty    : Entity_Id;
@@ -1551,13 +1632,31 @@ package body CE_RAC is
         (Range_Node : Node_Id;
          Expr       : Value_Type) return Boolean
       is
-         Low        : constant Big_Integer :=
-           Value_Enum_Integer (RAC_Expr (Low_Bound (Range_Node)));
-         High       : constant Big_Integer :=
-           Value_Enum_Integer (RAC_Expr (High_Bound (Range_Node)));
-         Expr_Value : constant Big_Integer := Value_Enum_Integer (Expr);
+         Typ : constant Type_Kind_Id := Etype (Low_Bound (Range_Node));
       begin
-         return In_Range (Expr_Value, Low, High);
+         if Has_Floating_Point_Type (Typ) then
+            declare
+               Low        : constant CE_Values.Float_Value :=
+                 Value_Real (RAC_Expr (Low_Bound (Range_Node)));
+               High       : constant CE_Values.Float_Value :=
+                 Value_Real (RAC_Expr (High_Bound (Range_Node)));
+               Expr_Value : constant CE_Values.Float_Value :=
+                 Value_Real (Expr);
+            begin
+               return Expr_Value >= Low and then Expr_Value <= High;
+            end;
+
+         else
+            declare
+               Low        : constant Big_Integer :=
+                 Value_Enum_Integer (RAC_Expr (Low_Bound (Range_Node)));
+               High       : constant Big_Integer :=
+                 Value_Enum_Integer (RAC_Expr (High_Bound (Range_Node)));
+               Expr_Value : constant Big_Integer := Value_Enum_Integer (Expr);
+            begin
+               return In_Range (Expr_Value, Low, High);
+            end;
+         end if;
       end Check_Range;
 
       -------------------
@@ -1953,8 +2052,7 @@ package body CE_RAC is
                Default : constant Character :=
                  Value_Character (Val.Array_Others.all);
             begin
-               if Lst - Fst > 10_000
-               then
+               if Lst - Fst > 10_000 then
                   RAC_Incomplete ("String too long");
                --  ??? Next test should not be needed, as counterexample value
                --  should already be valid in its type due to prior filtering.
@@ -2026,7 +2124,9 @@ package body CE_RAC is
          when N_Package_Body =>
             if not Is_Generic_Unit (Unique_Defining_Entity (Decl)) then
                RAC_Decls (Declarations (Decl));
-               RAC_Node (Handled_Statement_Sequence (Decl));
+               if Present (Handled_Statement_Sequence (Decl)) then
+                  RAC_Node (Handled_Statement_Sequence (Decl));
+               end if;
             end if;
 
          when N_Defining_Identifier =>
@@ -2038,7 +2138,9 @@ package body CE_RAC is
                when E_Package_Body =>
                   if not Is_Generic_Unit (Decl) then
                      RAC_Decls (Declarations (Decl));
-                     RAC_Node (Handled_Statement_Sequence (Decl));
+                     if Present (Handled_Statement_Sequence (Decl)) then
+                        RAC_Node (Handled_Statement_Sequence (Decl));
+                     end if;
                   end if;
 
                when others =>
@@ -2552,67 +2654,112 @@ package body CE_RAC is
             when Snames.Name_Min
                | Snames.Name_Max
             =>
-               --  T'Min (Ex, Ex2), T'Max (Ex, Ex2)
-               if not (Is_Integer_Type (Etype (N))) then
+               if Has_Floating_Point_Type (Etype (N)) then
+                  declare
+                     Ex   : constant Node_Id := First (Expressions (N));
+                     Val1 : constant CE_Values.Float_Value :=
+                       Value_Real (RAC_Expr (Ex));
+                     Val2 : constant CE_Values.Float_Value :=
+                       Value_Real (RAC_Expr (Next (Ex)));
+                  begin
+                     case Attribute_Name (N) is
+                        when Snames.Name_Min =>
+                           return Real_Value (Min (Val1, Val2), N);
+                        when Snames.Name_Max =>
+                           return Real_Value (Max (Val1, Val2), N);
+                        when others =>
+                           raise Program_Error;
+                     end case;
+                  end;
+
+               elsif Is_Integer_Type (Etype (N)) then
+                  declare
+                     Ex : constant Node_Id := First (Expressions (N));
+                     I1 : constant Big_Integer :=
+                       Value_Enum_Integer (RAC_Expr (Ex));
+                     I2 : constant Big_Integer :=
+                       Value_Enum_Integer (RAC_Expr (Next (Ex)));
+                  begin
+                     case Attribute_Name (N) is
+                        when Snames.Name_Min =>
+                           return Integer_Value (Min (I1, I2), N);
+                        when Snames.Name_Max =>
+                           return Integer_Value (Max (I1, I2), N);
+                        when others =>
+                           raise Program_Error;
+                     end case;
+                  end;
+
+               else
                   RAC_Unsupported
-                    ("RAC_Attribute_Reference min/max not integer", N);
+                    ("RAC_Attribute_Reference min/max on fixed-point", N);
                end if;
 
-               declare
-                  Ex : constant Node_Id := First (Expressions (N));
-                  I1 : constant Big_Integer :=
-                    Value_Enum_Integer (RAC_Expr (Ex));
-                  I2 : constant Big_Integer :=
-                    Value_Enum_Integer (RAC_Expr (Next (Ex)));
-               begin
-                  case Attribute_Name (N) is
-                     when Snames.Name_Min =>
-                        return Integer_Value (Min (I1, I2), N);
-                     when Snames.Name_Max =>
-                        return Integer_Value (Max (I1, I2), N);
-                     when others =>
-                        raise Program_Error;
-                  end case;
-               end;
-
             when Snames.Name_Succ
-               | Snames.Name_Prev
+               | Snames.Name_Pred
             =>
-               --  T'Succ (Ex), T'Prev (Ex)
-               if not (Is_Enumeration_Type (Etype (N))) then
+               if Has_Floating_Point_Type (Etype (N)) then
+                  declare
+                     Ex  : constant Node_Id := First (Expressions (N));
+                     Val : constant CE_Values.Float_Value :=
+                       Value_Real (RAC_Expr (Ex));
+                  begin
+                     case Attribute_Name (N) is
+                        when Snames.Name_Succ =>
+                           if Is_Last (Val) then
+                              RAC_Failure (Ex, VC_Range_Check);
+                           end if;
+
+                           return Real_Value (Succ (Val), N);
+
+                        when Snames.Name_Pred =>
+                           if Is_First (Val) then
+                              RAC_Failure (Ex, VC_Range_Check);
+                           end if;
+
+                           return Real_Value (Pred (Val), N);
+
+                        when others =>
+                           raise Program_Error;
+                     end case;
+                  end;
+
+               elsif Is_Enumeration_Type (Etype (N)) then
+                  declare
+                     Ex  : constant Node_Id := First (Expressions (N));
+                     E   : constant Entity_Id :=
+                       RAC_Expr (Ex).Scalar_Content.Enum_Entity;
+                     Ty  : constant Entity_Id := Etype (N);
+                     Res : Entity_Id := Empty; -- the resulting enum literal
+                  begin
+                     case Attribute_Name (N) is
+                        when Snames.Name_Succ =>
+                           Res := Next_Literal (E);
+                        when Snames.Name_Pred =>
+                           declare
+                              Next : Entity_Id := First_Literal (Ty);
+                           begin
+                              while Next /= E loop
+                                 Res := Next;
+                                 exit when No (Res);
+                                 Next := Next_Literal (Next);
+                              end loop;
+                           end;
+                        when others =>
+                           raise Program_Error;
+                     end case;
+
+                     if No (Res) then
+                        RAC_Failure (Ex, VC_Range_Check);
+                     end if;
+
+                     return Enum_Value (Res, Etype (N));
+                  end;
+
+               else
                   RAC_Unsupported
                     ("RAC_Attribute_Reference succ/prev not enum", N);
                end if;
-
-               declare
-                  Ex  : constant Node_Id := First (Expressions (N));
-                  E   : constant Entity_Id :=
-                    RAC_Expr (Ex).Scalar_Content.Enum_Entity;
-                  Ty  : constant Entity_Id := Etype (N);
-                  Res : Entity_Id := Empty; -- the resulting enum literal
-               begin
-                  case Attribute_Name (N) is
-                     when Snames.Name_Succ =>
-                        Res := Next_Literal (E);
-                     when Snames.Name_Prev =>
-                        declare
-                           Next : Entity_Id := First_Literal (Ty);
-                        begin
-                           while Next /= E loop
-                              Res := Next;
-                              Next := Next_Literal (Next);
-                           end loop;
-                        end;
-                     when others =>
-                        raise Program_Error;
-                  end case;
-
-                  if No (Res) then
-                     RAC_Failure (Ex, VC_Range_Check);
-                  end if;
-
-                  return Enum_Value (Res, Etype (N));
-               end;
 
             when Snames.Name_Update =>
                --  Ex'Update ((Ch | ... => V, ...), ...)
@@ -2716,66 +2863,110 @@ package body CE_RAC is
       -------------------
 
       function RAC_Binary_Op return Value_Type is
-         Left  : constant Value_Type := RAC_Expr (Left_Opnd (N));
-         Right : constant Value_Type := RAC_Expr (Right_Opnd (N));
+         Left      : constant Value_Type := RAC_Expr (Left_Opnd (N));
+         Right     : constant Value_Type := RAC_Expr (Right_Opnd (N));
+         Left_Type : constant Type_Kind_Id := Etype (Left_Opnd (N));
       begin
          case Nkind (N) is
             when N_Op_Add =>
-               return
-                 Integer_Value
-                   (Value_Integer (Left) + Value_Integer (Right), N);
-
-            when N_Op_Expon =>
-               declare
-                  Val_Left  : constant Big_Integer := Value_Integer (Left);
-                  Val_Right : constant Big_Integer := Value_Integer (Right);
-
-                  Real_Left : constant Long_Float :=
-                    To_Long_Float (abs (Val_Left));
-                  Int_Right : constant Integer := To_Integer (abs (Val_Right));
-               begin
-                  --  Protect against very large values which exceed what the
-                  --  Big_Integers library can handle. We limit ourselves to
-                  --  2**256 as GNAT currently supports up to 128-bits integers
-                  --  (even if modular types would support larger values).
-                  if Real_Left ** Int_Right >= 2.0 ** 256 then
-                     RAC_Unsupported
-                       ("RAC_Binary_Op too large exponentiation", N);
-                  end if;
-
-                  return Integer_Value
-                    (Val_Left ** Natural (To_Integer (Val_Right)), N);
-               end;
-
-            when N_Op_Subtract =>
-               return
-                 Integer_Value
-                   (Value_Integer (Left) - Value_Integer (Right), N);
-
-            when N_Op_Divide .. N_Op_Rem =>
-               if Nkind (N) in N_Op_Divide | N_Op_Mod | N_Op_Rem
-                 and then Value_Integer (Right) = 0
-               then
-                  RAC_Failure (N, VC_Division_Check);
+               if Is_Integer_Type (Ty) then
+                  return
+                    Integer_Value
+                      (Value_Integer (Left) + Value_Integer (Right), N);
+               else
+                  return
+                    Real_Value (Value_Real (Left) + Value_Real (Right), N);
                end if;
 
-               return
-                 Integer_Value
-                   ((case Nkind (N) is
-                       when N_Op_Multiply =>
-                          Value_Integer (Left) * Value_Integer (Right),
-                       when N_Op_Divide   =>
-                          Value_Integer (Left) / Value_Integer (Right),
-                       when N_Op_Mod      =>
-                          Value_Integer (Left) mod Value_Integer (Right),
-                       when N_Op_Rem      =>
-                          Value_Integer (Left) rem Value_Integer (Right),
-                       when others        =>
-                          raise Program_Error),
-                    N);
+            when N_Op_Expon =>
+               if Is_Integer_Type (Ty) then
+                  declare
+                     Val_Left  : constant Big_Integer := Value_Integer (Left);
+                     Val_Right : constant Big_Integer := Value_Integer (Right);
 
-            when N_Op_And .. N_Op_Xor =>
-               if Is_Boolean_Type (Etype (N)) then
+                     Real_Left : constant Long_Float :=
+                       To_Long_Float (abs (Val_Left));
+                     Int_Right : constant Integer :=
+                       To_Integer (abs (Val_Right));
+                  begin
+                     --  Protect against very large values which exceed
+                     --  what the Big_Integers library can handle. We limit
+                     --  ourselves to 2**256 as GNAT currently supports up to
+                     --  128-bits integers (even if modular types would support
+                     --  larger values).
+                     if Real_Left ** Int_Right >= 2.0 ** 256 then
+                        RAC_Unsupported
+                          ("RAC_Binary_Op too large exponentiation", N);
+
+                     elsif Val_Right < 0 then
+                        RAC_Stuck
+                          ("integer exponentiation with negative exponent");
+                     end if;
+
+                     return Integer_Value
+                       (Val_Left ** Natural (To_Integer (Val_Right)), N);
+                  end;
+               else
+                  RAC_Unsupported ("RAC_Binary_Op float exponentiation", N);
+               end if;
+
+            when N_Op_Subtract =>
+               if Is_Integer_Type (Ty) then
+                  return
+                    Integer_Value
+                      (Value_Integer (Left) - Value_Integer (Right), N);
+               else
+                  return
+                    Real_Value (Value_Real (Left) - Value_Real (Right), N);
+               end if;
+
+            when N_Op_Divide .. N_Op_Rem =>
+               if Is_Integer_Type (Ty) then
+                  if Nkind (N) in N_Op_Divide | N_Op_Mod | N_Op_Rem
+                    and then Value_Integer (Right) = 0
+                  then
+                     RAC_Failure (N, VC_Division_Check);
+                  end if;
+
+                  return
+                    Integer_Value
+                      ((case Nkind (N) is
+                          when N_Op_Multiply =>
+                             Value_Integer (Left) * Value_Integer (Right),
+                          when N_Op_Divide   =>
+                             Value_Integer (Left) / Value_Integer (Right),
+                          when N_Op_Mod      =>
+                             Value_Integer (Left) mod Value_Integer (Right),
+                          when N_Op_Rem      =>
+                             Value_Integer (Left) rem Value_Integer (Right),
+                          when others        =>
+                             raise Program_Error),
+                       N);
+
+               else
+                  if Nkind (N) = N_Op_Divide
+                    and then Is_Zero (Value_Real (Right))
+                  then
+                     RAC_Failure (N, VC_Division_Check);
+                  end if;
+
+                  return
+                    Real_Value
+                      ((case Nkind (N) is
+                          when N_Op_Multiply =>
+                             Value_Real (Left) * Value_Real (Right),
+                          when N_Op_Divide   =>
+                             Value_Real (Left) / Value_Real (Right),
+                          when others        =>
+                             raise Program_Error),
+                       N);
+               end if;
+
+            when N_Op_Compare =>
+               return Boolean_Value (RAC_Op_Compare (Left, Right), Left_Type);
+
+            when N_Op_And | N_Op_Or | N_Op_Xor =>
+               if Is_Boolean_Type (Left_Type) then
                   return
                     Boolean_Value
                       ((case Nkind (N) is
@@ -2786,10 +2977,10 @@ package body CE_RAC is
                           when N_Op_Xor =>
                             Value_Boolean (Left) xor Value_Boolean (Right),
                           when others   =>
-                            RAC_Op_Compare (Left, Right)),
+                            raise Program_Error),
                        Etype (N));
 
-               elsif Is_Modular_Integer_Type (Etype (N)) then
+               elsif Is_Modular_Integer_Type (Left_Type) then
                   declare
                      L : constant Ulargest :=
                        Ulargest'Value (To_String (Value_Integer (Left)));
@@ -2808,9 +2999,7 @@ package body CE_RAC is
                         when N_Op_Xor =>
                            return Integer_Value (From_Ulargest (L xor R), N);
                         when others   =>
-                           return
-                             Boolean_Value
-                               (RAC_Op_Compare (Left, Right), Etype (N));
+                           raise Program_Error;
                      end case;
                   end;
 
@@ -3088,13 +3277,15 @@ package body CE_RAC is
          --  Local variables
 
          Left_Op  : constant Node_Id := Left_Opnd (N);
+         Typ      : constant Type_Kind_Id := Etype (Left_Op);
          Right_Op :          Node_Id := Right_Opnd (N);
          Left_Val :          Value_Type;
          Match    :          Boolean := False;
-      begin
 
-         --  Discrete types
-         if Is_Discrete_Type (Etype (Left_Op)) then
+      begin
+         if Is_Discrete_Type (Typ)
+           or else Has_Floating_Point_Type (Typ)
+         then
             Left_Val := RAC_Expr (Left_Op);
 
             if Right_Op /= Empty then
@@ -3107,7 +3298,6 @@ package body CE_RAC is
                end loop;
             end if;
 
-         --  Non-discrete types
          else
             if Right_Op /= Empty then
                Match := Match_Alternative_Non_Discrete (Left_Op, Right_Op);
@@ -3140,22 +3330,43 @@ package body CE_RAC is
             when N_Op_Ne =>
                return Left /= Right;
             when others =>
-               if Is_Array_Type (Etype (Left_Opnd (N))) then
-                  RAC_Unsupported ("RAC_Op_Compare on arrays", N);
-               else
-                  declare
-                     L : constant Big_Integer := Value_Enum_Integer (Left);
-                     R : constant Big_Integer := Value_Enum_Integer (Right);
-                  begin
-                     case N_Op_Compare (Nkind (N)) is
-                        when N_Op_Lt => return L < R;
-                        when N_Op_Le => return L <= R;
-                        when N_Op_Ge => return L >= R;
-                        when N_Op_Gt => return L > R;
-                        when others  => raise Program_Error;
-                     end case;
-                  end;
-               end if;
+               declare
+                  Typ : constant Type_Kind_Id := Etype (Left_Opnd (N));
+               begin
+                  if Is_Array_Type (Typ) then
+                     RAC_Unsupported ("RAC_Op_Compare on arrays", N);
+
+                  elsif Has_Floating_Point_Type (Typ) then
+                     declare
+                        L : constant CE_Values.Float_Value :=
+                          Value_Real (Left);
+                        R : constant CE_Values.Float_Value :=
+                          Value_Real (Right);
+                     begin
+                        case N_Op_Compare (Nkind (N)) is
+                           when N_Op_Lt => return L < R;
+                           when N_Op_Le => return L <= R;
+                           when N_Op_Ge => return L >= R;
+                           when N_Op_Gt => return L > R;
+                           when others  => raise Program_Error;
+                        end case;
+                     end;
+
+                  else
+                     declare
+                        L : constant Big_Integer := Value_Enum_Integer (Left);
+                        R : constant Big_Integer := Value_Enum_Integer (Right);
+                     begin
+                        case N_Op_Compare (Nkind (N)) is
+                           when N_Op_Lt => return L < R;
+                           when N_Op_Le => return L <= R;
+                           when N_Op_Ge => return L >= R;
+                           when N_Op_Gt => return L > R;
+                           when others  => raise Program_Error;
+                        end case;
+                     end;
+                  end if;
+               end;
          end case;
       end RAC_Op_Compare;
 
@@ -3168,13 +3379,21 @@ package body CE_RAC is
       begin
          case Nkind (N) is
             when N_Op_Abs   =>
-               return Integer_Value (abs Value_Integer (Right), N);
+               if Is_Integer_Type (Ty) then
+                  return Integer_Value (abs Value_Integer (Right), N);
+               else
+                  return Real_Value (abs Value_Real (Right), N);
+               end if;
 
             when N_Op_Minus =>
-               return Integer_Value (-Value_Integer (Right), N);
+               if Is_Integer_Type (Ty) then
+                  return Integer_Value (-Value_Integer (Right), N);
+               else
+                  return Real_Value (-Value_Real (Right), N);
+               end if;
 
             when N_Op_Plus  =>
-               return Integer_Value (+Value_Integer (Right), N);
+               return Right;
 
             when N_Op_Not   =>
                if Is_Boolean_Type (Etype (N)) then
@@ -3212,6 +3431,18 @@ package body CE_RAC is
 
          when N_String_Literal =>
             Res := String_Value (Stringt.To_String (Strval (N)));
+
+         when N_Real_Literal =>
+            declare
+               Num : constant Big_Integer :=
+                 From_String (UI_Image (Norm_Num (Realval (N))));
+               Den : constant Big_Integer :=
+                 From_String (UI_Image (Norm_Den (Realval (N))));
+               Sign : constant Big_Integer :=
+                 (if UR_Is_Negative (Realval (N)) then -1 else 1);
+            begin
+               Res := Real_Value (Sign * Num / Den, N);
+            end;
 
          when N_Identifier | N_Expanded_Name =>
             declare
@@ -3277,7 +3508,31 @@ package body CE_RAC is
             if Is_Record_Type (Entity (Subtype_Mark (N))) then
                RAC_Unsupported ("Type conversion between record types", N);
             end if;
-            Res := RAC_Expr (Expression (N), Entity (Subtype_Mark (N)));
+
+            declare
+               Expr_Typ : constant Type_Kind_Id := Etype (Expression (N));
+            begin
+               if Has_Floating_Point_Type (Ty)
+                 and then Is_Integer_Type (Expr_Typ)
+               then
+                  Res := RAC_Expr (Expression (N));
+                  Res := Real_Value (To_Big_Real (Value_Integer (Res)), N);
+
+               elsif Is_Integer_Type (Ty)
+                 and then Has_Floating_Point_Type (Expr_Typ)
+               then
+                  Res := RAC_Expr (Expression (N));
+                  Res := Integer_Value (To_Big_Integer (Value_Real (Res)), N);
+
+               --  Unless a conversion between integer and real values is
+               --  needed, perform the range checking on the expression in
+               --  the type conversion, as the VC is associated with the
+               --  expression.
+
+               else
+                  Res := RAC_Expr (Expression (N), Entity (Subtype_Mark (N)));
+               end if;
+            end;
 
          when N_Aggregate | N_Delta_Aggregate =>
             Res := RAC_Aggregate;
@@ -3415,6 +3670,8 @@ package body CE_RAC is
 
       if Is_Integer_Type (Ty) then
          Check_Integer (Res, Ty, N);
+      elsif Has_Floating_Point_Type (Ty) then
+         Check_Real (Res, Ty, N);
       end if;
 
       return Res;
@@ -4252,5 +4509,21 @@ package body CE_RAC is
 
       return V.Scalar_Content.Integer_Content;
    end Value_Integer;
+
+   ----------------
+   -- Value_Real --
+   ----------------
+
+   function Value_Real (V : Value_Type) return CE_Values.Float_Value is
+   begin
+      if V.K /= Scalar_K
+        or else V.Scalar_Content = null
+        or else V.Scalar_Content.K /= Float_K
+      then
+         raise Program_Error with "Value_Real";
+      end if;
+
+      return V.Scalar_Content.Float_Content;
+   end Value_Real;
 
 end CE_RAC;

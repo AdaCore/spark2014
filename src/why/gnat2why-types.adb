@@ -1102,6 +1102,7 @@ package body Gnat2Why.Types is
       if Contains_Allocated_Parts (E)
         and then (not Has_Access_Type (E)
                   or else Is_General_Access_Type (E))
+        and then not Is_Limited_View (E)
       then
          declare
             In_Axiom_Module : constant Boolean :=

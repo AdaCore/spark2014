@@ -2023,41 +2023,25 @@ package body Gnat2Why.Expr.Loops is
    --
    --  if enter_condition then
    --    try
-   --      [try]
-   --        let loop_entry_tmps = saved_values in
-   --        let variant_tmps = ref 0 in
-   --          loop
-   --            code_before {
-   --              loop_start;
-   --              invariant_check;
-   --            }
-   --            invariant { user_invariant }
-   --            variants { user_variants }
-   --            code_after {
-   --              assume { implicit_invariant };
-   --              loop_end;
-   --              if exit_condition then
-   --                raise loop_name;
-   --              [Update_Stmt;]
-   --            }
-   --          end loop
-   --      [with exit_path_1 -> path_1
-   --         | ...
-   --         | exit_path_n -> path_n]
+   --      let loop_entry_tmps = saved_values in
+   --      let variant_tmps = ref 0 in
+   --      loop
+   --        code_before {
+   --          loop_start;
+   --          invariant_check;
+   --        }
+   --        invariant { user_invariant }
+   --        variants { user_variants }
+   --        code_after {
+   --          assume { implicit_invariant };
+   --          loop_end;
+   --          if exit_condition then
+   --            raise loop_name;
+   --          [Update_Stmt;]
+   --        }
+   --      end loop
    --    with loop_name -> void
    --  end if
-   --
-   --  The inner try-catch block is only generated if needed for handling exit
-   --  paths. In that case, the exit path inside the loop has been replaced
-   --  by raising the corresponding exception. The declaration for these
-   --  exceptions is done at subprogram level. Hoisting the exit paths outside
-   --  of the main Why3 loop removes their effects from the frame condition
-   --  automatically generated in Why3 for the inner loop. In cases where some
-   --  variables are only modified in the exit paths, this means that they
-   --  won't be part of the frame condition of the inner loop, so the user
-   --  won't need to mention them in the loop invariant (to state in general
-   --  that their value is preserved). As the code in the exit path may itself
-   --  exit the loop, this try-catch block is nested inside the outer one.
 
    function Wrap_Loop
      (Loop_Id            : E_Loop_Id;
@@ -2137,7 +2121,7 @@ package body Gnat2Why.Expr.Loops is
       Warn_Dead_Code : W_Prog_Id := +Void;
 
    begin
-      --  Now wrap the resulting program in the main try-catch block for the
+      --  Now wrap the resulting program in the try-catch block for the
       --  loop, catching the exception corresponding to exiting the loop.
 
       Loop_Try := New_Try_Block

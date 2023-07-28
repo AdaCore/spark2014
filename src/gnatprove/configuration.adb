@@ -274,14 +274,18 @@ package body Configuration is
 
          if View.Tree.Runtime (Ada_Language) /= "" then
             declare
-               RT_Dir : constant String :=
-                 View.Attribute
-                   (Project.Registry.Attribute.Runtime_Dir).Value.Text;
-               Targ_Prop_File : constant String :=
-                 Compose (RT_Dir, "ada_target_properties");
+               RT_Attr : constant Project.Attribute.Object :=
+                 View.Attribute (Project.Registry.Attribute.Runtime_Dir);
             begin
-               if Exists (Targ_Prop_File) then
-                  return "-gnateT=" & Targ_Prop_File;
+               if RT_Attr.Is_Defined then
+                  declare
+                     Targ_Prop_File : constant String :=
+                       Compose (RT_Attr.Value.Text, "ada_target_properties");
+                  begin
+                     if Exists (Targ_Prop_File) then
+                        return "-gnateT=" & Targ_Prop_File;
+                     end if;
+                  end;
                end if;
             end;
          end if;
@@ -1665,7 +1669,12 @@ package body Configuration is
          if not All_Projects then
             declare
                Limit_String : GNAT.Strings.String_Access;
-
+               Msg_String : constant String :=
+                 (if not Null_Or_Empty_String (CL_Switches.Limit_Line)
+                  then "limit-line"
+                  elsif not Null_Or_Empty_String (CL_Switches.Limit_Region)
+                  then "limit-region"
+                  else "limit-subp");
             begin
                --  Limit_Line, Limit_Region, and Limit_Subp all imply -u for
                --  the corresponding file. We take care of that using the
@@ -1693,7 +1702,7 @@ package body Configuration is
                   begin
                      if Colon_Index = 0 then
                         Abort_Msg
-                          ("limit-line: incorrect line specification" &
+                          (Msg_String & ": incorrect line specification" &
                              " - missing ':' followed by operand",
                            With_Help => False);
                      end if;
@@ -2460,7 +2469,6 @@ package body Configuration is
 
    procedure Sanitize_File_List (Tree : Project.Tree.Object) is
       use String_Lists;
-      Found : Boolean;
    begin
       if CL_Switches.File_List.Is_Empty then
          return;
@@ -2469,55 +2477,74 @@ package body Configuration is
       --  We iterate over all names in the file list
 
       for Cursor in CL_Switches.File_List.Iterate loop
-         Found := False;
 
-         --  We check each project if it contains the name as a unit, then if
-         --  it contains it as a file. If no project contains it, we fail. If
-         --  two projects contain it, we fail. Otherwise, we replace the name
-         --  with the "main part", which is the body or the spec, if no body
-         --  exists.
+         declare
+            File_Entry : String renames CL_Switches.File_List (Cursor);
+            Has_Path : constant Boolean :=
+              Filename_Type (File_Entry) not in GPR2.Simple_Name;
+            Simple_File_Name : constant String :=
+              (if Has_Path then Base_Name (File_Entry) else File_Entry);
+            Found : Boolean := False;
+         begin
+            --  If the provided filename has a path component, we check if the
+            --  file exists.
 
-         for NRP of Tree.Namespace_Root_Projects loop
-            declare
-               View_DB : constant GPR2.Build.View_Db.Object :=
-                 Tree.Artifacts_Database (NRP);
-               CU : GPR2.Build.Compilation_Unit.Object;
-               VS : GPR2.Build.Source.Object;
-               Elt : constant GPR2.Name_Type := Name_Type (Element (Cursor));
-            begin
-               if View_DB.Source_Option >= Sources_Units
-                 and then View_DB.Has_Compilation_Unit (Elt)
-               then
-                  CU := View_DB.Compilation_Unit (Elt);
-               elsif View_DB.Source_Option > No_Source then
-                  VS := View_DB.Visible_Source (GPR2.Simple_Name (Elt)).Source;
-                  if VS.Is_Defined
-                    and then View_DB.Has_Compilation_Unit (VS.Unit.Name)
+            if Has_Path and then not Exists (File_Entry) then
+               Abort_Msg
+                 ("could not locate " & File_Entry,
+                  With_Help => False);
+            end if;
+
+            --  We check each project if it contains the name as a unit, then
+            --  if it contains it as a file. If no project contains it, we
+            --  fail. If two projects contain it, we fail. Otherwise, we
+            --  replace the name with the "main part", which is the body or
+            --  the spec, if no body exists.
+
+            for NRP of Tree.Namespace_Root_Projects loop
+               declare
+                  View_DB : constant GPR2.Build.View_Db.Object :=
+                    Tree.Artifacts_Database (NRP);
+                  CU : GPR2.Build.Compilation_Unit.Object;
+                  VS : GPR2.Build.Source.Object;
+                  Elt : constant GPR2.Name_Type :=
+                    Name_Type (Simple_File_Name);
+               begin
+                  if View_DB.Source_Option >= Sources_Units
+                    and then View_DB.Has_Compilation_Unit (Elt)
                   then
-                     CU := View_DB.Compilation_Unit (VS.Unit.Name);
+                     CU := View_DB.Compilation_Unit (Elt);
+                  elsif View_DB.Source_Option > No_Source then
+                     VS :=
+                       View_DB.Visible_Source (GPR2.Simple_Name (Elt)).Source;
+                     if VS.Is_Defined
+                       and then View_DB.Has_Compilation_Unit (VS.Unit.Name)
+                     then
+                        CU := View_DB.Compilation_Unit (VS.Unit.Name);
+                     end if;
                   end if;
-               end if;
-               if CU.Is_Defined then
-                  if Found then
-                     Abort_Msg
-                       ("file or compilation unit " & Element (Cursor)
-                        & " is not unique in aggregate project",
-                        With_Help => False);
-                  else
-                     CL_Switches.File_List.Replace_Element
-                       (Cursor,
-                        String (CU.Main_Part.Source.Base_Name));
-                     Found := True;
+                  if CU.Is_Defined then
+                     if Found then
+                        Abort_Msg
+                          ("file or compilation unit " & Simple_File_Name
+                           & " is not unique in aggregate project",
+                           With_Help => False);
+                     else
+                        CL_Switches.File_List.Replace_Element
+                          (Cursor,
+                           String (CU.Main_Part.Source.Base_Name));
+                        Found := True;
+                     end if;
                   end if;
-               end if;
-            end;
-         end loop;
-         if not Found then
-            Abort_Msg
-              (Element (Cursor) & " is not a file or compilation unit"
-               & " of any project",
-               With_Help => False);
-         end if;
+               end;
+            end loop;
+            if not Found then
+               Abort_Msg
+                 (File_Entry & " is not a file or compilation unit"
+                  & " of any project",
+                  With_Help => False);
+            end if;
+         end;
       end loop;
    end Sanitize_File_List;
 

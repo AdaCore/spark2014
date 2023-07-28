@@ -1,0 +1,130 @@
+avi_arrays.adb:26:14: info: implicit aspect Always_Terminates on "Empty_Array" has been proved, subprogram will terminate
+avi_arrays.adb:26:48: info: predicate check proved (CVC5: 3 VC)
+avi_arrays.adb:26:48: info: range check proved (CVC5: 1 VC)
+avi_arrays.adb:27:14: info: implicit aspect Always_Terminates on "Prepend" has been proved, subprogram will terminate
+avi_arrays.adb:28:09: info: range check proved (CVC5: 1 VC)
+avi_arrays.adb:28:09: info: range check proved (CVC5: 2 VC)
+avi_arrays.adb:28:09: medium: in inlined predicate at avi_arrays.adb:25
+avi_arrays.adb:28:09: medium: predicate check might fail, cannot prove Array_Type'Last < Positive_Index_Type'Last [possible fix: subprogram at line 27 should mention A and V in a precondition]
+avi_arrays.adb:29:14: info: implicit aspect Always_Terminates on "Last" has been proved, subprogram will terminate
+avi_arrays.adb:29:66: info: range check proved (CVC5: 2 VC)
+avi_arrays.adb:30:14: info: implicit aspect Always_Terminates on "Length" has been proved, subprogram will terminate
+avi_arrays.adb:31:14: info: implicit aspect Always_Terminates on "Get" has been proved, subprogram will terminate
+avi_arrays.adb:31:85: info: index check proved (CVC5: 2 VC)
+avi_arrays.adb:34:14: info: implicit aspect Always_Terminates on "At_End" has been proved, subprogram will terminate
+avi_arrays.adb:34:92: info: dynamic accessibility check proved (Trivial)
+avi_arrays.adb:37:09: info: data dependencies proved
+avi_arrays.adb:40:14: info: implicit aspect Always_Terminates on "Model" has been proved, subprogram will terminate
+avi_arrays.adb:40:14: info: implicit function contract might not be available on recursive calls
+avi_arrays.adb:44:25: info: pointer dereference check proved (CVC5: 1 VC)
+avi_arrays.adb:44:33: info: subprogram variant proved (Trivial)
+avi_arrays.adb:44:43: info: pointer dereference check proved (CVC5: 1 VC)
+avi_arrays.adb:55:22: info: pointer dereference check proved (CVC5: 2 VC)
+avi_arrays.adb:56:35: info: loop invariant initialization proved (CVC5: 2 VC)
+avi_arrays.adb:56:35: info: loop invariant preservation proved (CVC5: 1 VC; Z3: 1 VC)
+avi_arrays.adb:57:35: info: loop invariant initialization proved (CVC5: 1 VC)
+avi_arrays.adb:57:35: info: loop invariant preservation proved (Z3: 1 VC)
+avi_arrays.adb:58:23: info: overflow check proved (CVC5: 3 VC; Z3: 1 VC)
+avi_arrays.adb:58:52: info: pointer dereference check proved (CVC5: 2 VC)
+avi_arrays.adb:59:35: info: loop invariant initialization proved (CVC5: 1 VC)
+avi_arrays.adb:59:35: info: loop invariant preservation proved (Z3: 1 VC)
+avi_arrays.adb:59:62: info: overflow check proved (CVC5: 3 VC; Z3: 1 VC)
+avi_arrays.adb:59:84: info: pointer dereference check proved (CVC5: 2 VC)
+avi_arrays.adb:60:35: info: loop invariant initialization proved (CVC5: 1 VC)
+avi_arrays.adb:60:35: info: loop invariant preservation proved (Z3: 1 VC)
+avi_arrays.adb:61:17: info: precondition proved (CVC5: 1 VC; Z3: 1 VC)
+avi_arrays.adb:61:47: info: precondition proved (CVC5: 1 VC; Z3: 1 VC)
+avi_arrays.adb:62:35: info: loop invariant initialization proved (CVC5: 1 VC)
+avi_arrays.adb:62:35: info: loop invariant preservation proved (Z3: 1 VC)
+avi_arrays.adb:63:23: info: overflow check proved (CVC5: 3 VC; Z3: 1 VC)
+avi_arrays.adb:64:21: info: precondition proved (CVC5: 2 VC)
+avi_arrays.adb:64:46: info: range check proved (CVC5: 4 VC)
+avi_arrays.adb:64:51: info: precondition proved (CVC5: 1 VC; Z3: 1 VC)
+avi_arrays.adb:64:75: info: pointer dereference check proved (CVC5: 2 VC)
+avi_arrays.adb:64:84: info: overflow check proved (CVC5: 4 VC)
+avi_arrays.adb:64:84: info: range check proved (CVC5: 4 VC)
+avi_arrays.adb:65:35: info: loop invariant initialization proved (CVC5: 1 VC)
+avi_arrays.adb:65:35: info: loop invariant preservation proved (Z3: 1 VC)
+avi_arrays.adb:66:23: info: overflow check proved (CVC5: 4 VC)
+avi_arrays.adb:67:21: info: precondition proved (CVC5: 2 VC)
+avi_arrays.adb:67:37: info: range check proved (CVC5: 4 VC)
+avi_arrays.adb:67:42: info: precondition proved (CVC5: 1 VC; Z3: 1 VC)
+avi_arrays.adb:67:59: info: pointer dereference check proved (CVC5: 2 VC)
+avi_arrays.adb:67:67: info: overflow check proved (CVC5: 4 VC)
+avi_arrays.adb:67:67: info: range check proved (CVC5: 4 VC)
+avi_arrays.adb:69:30: info: pointer dereference check proved (CVC5: 1 VC)
+avi_arrays.adb:69:33: info: pointer dereference check proved (CVC5: 1 VC)
+avi_arrays.adb:70:28: info: overflow check proved (CVC5: 2 VC)
+avi_infinite_sequences.adb:27:14: info: implicit aspect Always_Terminates on "Prepend" has been proved, subprogram will terminate
+avi_infinite_sequences.adb:27:81: info: precondition proved (CVC5: 1 VC)
+avi_infinite_sequences.adb:27:89: info: predicate check proved (CVC5: 1 VC; Trivial: 1 VC)
+avi_infinite_sequences.adb:30:14: info: implicit aspect Always_Terminates on "Last" has been proved, subprogram will terminate
+avi_infinite_sequences.adb:30:68: info: predicate check proved (CVC5: 1 VC; Trivial: 1 VC)
+avi_infinite_sequences.adb:31:14: info: implicit aspect Always_Terminates on "Length" has been proved, subprogram will terminate
+avi_infinite_sequences.adb:32:14: info: implicit aspect Always_Terminates on "Get" has been proved, subprogram will terminate
+avi_infinite_sequences.adb:32:86: info: precondition proved (CVC5: 1 VC)
+avi_infinite_sequences.adb:33:17: info: predicate check proved (Trivial: 1 VC)
+avi_infinite_sequences.adb:33:22: info: predicate check proved (Trivial: 1 VC)
+avi_infinite_sequences.adb:35:14: info: implicit aspect Always_Terminates on "At_End" has been proved, subprogram will terminate
+avi_infinite_sequences.adb:35:92: info: dynamic accessibility check proved (Trivial)
+avi_infinite_sequences.adb:38:09: info: data dependencies proved
+avi_infinite_sequences.adb:41:14: info: implicit aspect Always_Terminates on "Model" has been proved, subprogram will terminate
+avi_infinite_sequences.adb:45:25: info: pointer dereference check proved (CVC5: 1 VC)
+avi_infinite_sequences.adb:45:33: info: subprogram variant proved (Trivial)
+avi_infinite_sequences.adb:45:43: info: pointer dereference check proved (CVC5: 1 VC)
+avi_infinite_sequences.adb:54:39: info: predicate check proved (CVC5: 1 VC; Trivial: 1 VC)
+avi_infinite_sequences.adb:56:22: info: pointer dereference check proved (CVC5: 2 VC)
+avi_infinite_sequences.adb:57:35: info: loop invariant initialization proved (CVC5: 2 VC)
+avi_infinite_sequences.adb:57:35: info: predicate check proved (Trivial: 2 VC)
+avi_infinite_sequences.adb:57:40: info: predicate check proved (Trivial: 2 VC)
+avi_infinite_sequences.adb:57:55: info: predicate check proved (Trivial: 2 VC)
+avi_infinite_sequences.adb:57:55: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove Index <= Last(Orig_Model)
+avi_infinite_sequences.adb:57:64: info: predicate check proved (Trivial: 2 VC)
+avi_infinite_sequences.adb:58:35: info: loop invariant initialization proved (CVC5: 1 VC)
+avi_infinite_sequences.adb:58:35: info: predicate check proved (Trivial: 2 VC)
+avi_infinite_sequences.adb:58:35: medium: loop invariant might not be preserved by an arbitrary iteration
+avi_infinite_sequences.adb:59:17: info: predicate check proved (Trivial: 2 VC)
+avi_infinite_sequences.adb:59:25: info: predicate check proved (Trivial: 2 VC)
+avi_infinite_sequences.adb:59:52: info: pointer dereference check proved (CVC5: 2 VC)
+avi_infinite_sequences.adb:60:35: info: loop invariant initialization proved (CVC5: 1 VC)
+avi_infinite_sequences.adb:60:35: info: predicate check proved (Trivial: 2 VC)
+avi_infinite_sequences.adb:60:35: medium: loop invariant might not be preserved by an arbitrary iteration
+avi_infinite_sequences.adb:60:56: info: predicate check proved (Trivial: 2 VC)
+avi_infinite_sequences.adb:60:64: info: predicate check proved (Trivial: 2 VC)
+avi_infinite_sequences.adb:60:84: info: pointer dereference check proved (CVC5: 2 VC)
+avi_infinite_sequences.adb:61:35: info: loop invariant initialization proved (Z3: 1 VC)
+avi_infinite_sequences.adb:62:17: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove Get(Model(At_End(Node)), I) = Get(Orig_Model, I) [possible fix: subprogram at line 51 should mention Node in a precondition]
+avi_infinite_sequences.adb:62:17: medium: precondition might fail
+avi_infinite_sequences.adb:62:42: info: predicate check proved (CVC5: 2 VC; Trivial: 2 VC)
+avi_infinite_sequences.adb:62:47: medium: precondition might fail
+avi_infinite_sequences.adb:62:63: medium: in inlined predicate at a-nbnbin.ads:55
+avi_infinite_sequences.adb:62:63: medium: predicate check might fail, cannot prove Big_Positive > To_Big_Integer (0)
+avi_infinite_sequences.adb:63:35: info: loop invariant initialization proved (CVC5: 1 VC)
+avi_infinite_sequences.adb:64:47: info: predicate check proved (Trivial: 2 VC)
+avi_infinite_sequences.adb:64:55: info: predicate check proved (Trivial: 2 VC)
+avi_infinite_sequences.adb:65:21: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove Get(Model(At_End(Node)), I) = Get(Model(At_End(Cursor.all)), I - Index)
+avi_infinite_sequences.adb:65:21: medium: precondition might fail
+avi_infinite_sequences.adb:65:46: info: predicate check proved (CVC5: 2 VC; Trivial: 2 VC)
+avi_infinite_sequences.adb:65:51: medium: precondition might fail
+avi_infinite_sequences.adb:65:75: info: pointer dereference check proved (CVC5: 2 VC)
+avi_infinite_sequences.adb:65:82: info: predicate check proved (Trivial: 2 VC)
+avi_infinite_sequences.adb:65:84: medium: in inlined predicate at a-nbnbin.ads:55
+avi_infinite_sequences.adb:65:84: medium: predicate check might fail, cannot prove Big_Positive > To_Big_Integer (0)
+avi_infinite_sequences.adb:65:86: info: predicate check proved (Trivial: 2 VC)
+avi_infinite_sequences.adb:66:35: info: loop invariant initialization proved (CVC5: 1 VC)
+avi_infinite_sequences.adb:67:47: info: predicate check proved (Trivial: 2 VC)
+avi_infinite_sequences.adb:67:55: info: predicate check proved (Trivial: 2 VC)
+avi_infinite_sequences.adb:68:21: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove Get(Orig_Model, I) = Get(Model(Cursor.all), I - Index)
+avi_infinite_sequences.adb:68:21: medium: precondition might fail
+avi_infinite_sequences.adb:68:37: info: predicate check proved (CVC5: 2 VC; Trivial: 2 VC)
+avi_infinite_sequences.adb:68:42: medium: precondition might fail
+avi_infinite_sequences.adb:68:59: info: pointer dereference check proved (CVC5: 2 VC)
+avi_infinite_sequences.adb:68:65: info: predicate check proved (Trivial: 2 VC)
+avi_infinite_sequences.adb:68:67: medium: in inlined predicate at a-nbnbin.ads:55
+avi_infinite_sequences.adb:68:67: medium: predicate check might fail, cannot prove Big_Positive > To_Big_Integer (0)
+avi_infinite_sequences.adb:68:69: info: predicate check proved (Trivial: 2 VC)
+avi_infinite_sequences.adb:70:30: info: pointer dereference check proved (CVC5: 1 VC)
+avi_infinite_sequences.adb:70:33: info: pointer dereference check proved (CVC5: 1 VC)
+avi_infinite_sequences.adb:71:22: info: predicate check proved (Trivial: 1 VC)
+avi_infinite_sequences.adb:71:28: info: predicate check proved (CVC5: 1 VC; Trivial: 1 VC)
+avi_infinite_sequences.adb:71:30: info: predicate check proved (Trivial: 1 VC)

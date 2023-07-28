@@ -281,6 +281,11 @@ def is_aliasing_tag(tag):
     return tag in ("ALIASING")
 
 
+def is_other_flow_tag(tag):
+    """Returns True if the given tag corresponds to another flow message"""
+    return tag in ("BOUNDARY_CALL_IN_INVARIANT")
+
+
 def is_rte_tag(tag):
     """Returns True if the given tag corresponds to a RTE proof message"""
     return tag in (
@@ -373,6 +378,7 @@ def is_flow_tag(tag):
         is_dependency_tag(tag)
         or is_flow_initialization_tag(tag)
         or is_aliasing_tag(tag)
+        or is_other_flow_tag(tag)
     )
 
 
@@ -442,6 +448,8 @@ def check_marks(strlist):
             return "INITIALIZED"
         elif "initializes" in text:
             return "INITIALIZES"
+        elif "call boundary subprogram" in text:
+            return "BOUNDARY_CALL_IN_INVARIANT"
 
         # proof tags
 

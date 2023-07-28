@@ -659,15 +659,7 @@ package body SPARK_Atree.Entities is
    --------------------
 
    function Number_Formals (Subp : Callable_Kind_Id) return Natural is
-   begin
-      --  The frontend routine can only be called where there are some formals
-
-      if Present (Einfo.Utils.First_Formal (Subp)) then
-         return Natural (Einfo.Utils.Number_Formals (Subp));
-      else
-         return 0;
-      end if;
-   end Number_Formals;
+     (Natural (Einfo.Utils.Number_Formals (Subp)));
 
    -----------------
    -- Object_Size --

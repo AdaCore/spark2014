@@ -9,7 +9,7 @@ os.environ["SPARKLIB_OBJECT_DIR"] = TESTDIR
 # this test.
 
 if __name__ == "__main__":
-    prove_all(counterexample=False, steps=20000)
+    prove_all(counterexample=False, steps=35000)
 
     call(["gprbuild", "-q", "-P", "test.gpr"])
     call(["./obj/test"])
