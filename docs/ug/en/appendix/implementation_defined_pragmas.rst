@@ -23,6 +23,17 @@ following:
    |GNATprove| will infer whether this construct can be used in other |SPARK|
    parts or not.
 
+As generic units are not directly analyzed by |GNATprove|, but only generic
+instances are, the meaning of the three values is slightly different for
+generic units:
+
+ * a value of On means that instances can be in |SPARK|, depending on the
+   parameters passed for the instantiation.
+ * a value of Off means that instances cannot be in |SPARK|, independent of the
+   parameters passed for the instantiation.
+ * a value of Auto provides no information on whether instances can be in
+   |SPARK| or not.
+
 We now explain in more detail how the SPARK_Mode pragma works.
 
 Some Ada constructs are said to have more than one "section".
@@ -141,6 +152,11 @@ Ada entity or construct is then defined to be the following value
 
 - If SPARK_Mode has been specified for the given section of the
   given entity or construct, then the specified value;
+
+- else for the instance of a generic unit, follow the rules as for a
+  declaration that would not be a generic instantiation; take the resulting
+  value of SPARK_Mode if it is Auto or Off; otherwise, take the value of
+  SPARK_Mode specified for the generic unit if any; otherwise the value is On.
 
 - else for the private part of a public child unit whose parent unit's
   private part has a SPARK_Mode of Off, the SPARK_Mode is Off;
