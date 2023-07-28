@@ -96,8 +96,8 @@ package AIP.NIF is
    --  to the amount of data copied.
    --  LL_Address'First is expected to be 1.
    with
-     Global   => null,
-     Annotate => (GNATprove, Always_Return);
+     Global => null,
+     Always_Terminates;
 
    procedure Output
      (Nid         : Netif_Id;
