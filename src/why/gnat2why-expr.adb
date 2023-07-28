@@ -2555,8 +2555,6 @@ package body Gnat2Why.Expr is
       Check_Info  : Check_Info_Type := New_Check_Info;
       Checks      : W_Prog_Id := +Void;
       Cont_Ty_Spk : constant Entity_Id := Retysp (Ty);
-      Has_Tag_Arg : Boolean := False;
-      Tag_Arg     : W_Expr_Id := Why_Empty;
 
       procedure Add_Check
         (Fn   : Entity_Id;
@@ -2576,18 +2574,10 @@ package body Gnat2Why.Expr is
       --  Emit error if primitive is recursive.
 
       function Fetch_Name
-        (Fn            : Entity_Id;
-         Container_Arg : W_Expr_Id;
-         Domain        : EW_Domain := EW_Prog)
+        (Fn     : Entity_Id;
+         Domain : EW_Domain := EW_Prog)
          return W_Identifier_Id;
-      --  Fetch the name of the Why entity representing Fn,
-      --  using the dispatching version if available.
-      --  Remember whether found in Has_Tag_Arg, and
-      --  if found, stores a correct Tag argument in Tag_Arg.
-
-      function O_Tag_Arg return W_Expr_Array is
-        (if Has_Tag_Arg then (1 => Tag_Arg) else []);
-      --  Get tag argument in argument list if necessary.
+      --  Fetch the name of the Why entity representing Fn
 
       function Prim (Nam : Name_Id) return Entity_Id is
         (Get_Iterable_Type_Primitive (Cont_Ty_Spk, Nam));
@@ -2608,7 +2598,7 @@ package body Gnat2Why.Expr is
          Args : W_Expr_Array;
          Typ  : W_Type_Id)
       is
-         Name    : constant W_Identifier_Id := Fetch_Name (Fn, Args (1));
+         Name    : constant W_Identifier_Id := Fetch_Name (Fn);
 
          --  In some corner-cases, the first argument type
          --  might be a non-trivial ancestor of the container type.
@@ -2626,7 +2616,7 @@ package body Gnat2Why.Expr is
               (Prog => New_VC_Call
                    (Ada_Node   => Fn,
                     Name       => Name,
-                    Progs      => O_Tag_Arg & Args_Cv,
+                    Progs      => Args_Cv,
                     Reason     => VC_Precondition,
                     Typ        => Typ,
                     Check_Info => Check_Info)),
@@ -2682,39 +2672,15 @@ package body Gnat2Why.Expr is
       ----------------
 
       function Fetch_Name
-        (Fn            : Entity_Id;
-         Container_Arg : W_Expr_Id;
-         Domain        : EW_Domain := EW_Prog)
+        (Fn     : Entity_Id;
+         Domain : EW_Domain := EW_Prog)
          return W_Identifier_Id
       is
-         Selector : Selection_Kind;
       begin
-         if Is_Dispatching_Operation (Fn) then
-            Selector := Dispatch;
-            Has_Tag_Arg := True;
-
-            --  Due to restrictions, all iterable primitives
-            --  are necessarily primitives of container.
-            --  Furthermore, due to absence of controlling results,
-            --  cursor and elements cannot be defined as tagged types
-            --  in the same declarative scope as the primitives of the
-            --  container (they occur as results of Next/Element).
-            --  So if dispatching, dispatch occurs on container argument
-            --  alone.
-
-            Tag_Arg := New_Tag_Access
-              (Domain => Term_Domain (Domain),
-               Name   => Container_Arg,
-               Ty     => Get_Ada_Node (+Get_Type (Container_Arg)));
-         else
-            Selector := Why.Inter.Standard;
-            Has_Tag_Arg := False;
-         end if;
-
          return To_Why_Id
-           (E      => Fn,
-            Domain => Domain,
-            Selector => Selector);
+           (E        => Fn,
+            Domain   => Domain,
+            Selector => Why.Inter.Standard);
       end Fetch_Name;
 
    --  Start of processing for Check_Type_With_Iterable
@@ -2803,19 +2769,28 @@ package body Gnat2Why.Expr is
                        To_Why_Ty (Retysp (Etype (Fn_Element))));
          end if;
          Add_Check (Fn_Next, Args_Both, Curs_Ty_Why);
+
          declare
             Name : constant W_Identifier_Id :=
-              Fetch_Name (Fn_Has_Elt, +Cont_Id, EW_Pred);
+              Fetch_Name (Fn_Has_Elt, EW_Pred);
+
          begin
             Checks := Sequence
               (New_Assume_Statement
                  (Pred => New_Call
-                      (Name     => Name,
-                       Args     => O_Tag_Arg & Args_Both)),
+                      (Name => Name,
+                       Args => (Args_Both with delta 1 =>
+                         Insert_Simple_Conversion
+                           (Domain => EW_Pterm,
+                            Expr   => Args_Both (1),
+                            To     =>  To_Why_Ty
+                              (Retysp (Etype (First_Formal (Fn_Has_Elt)))))))),
                Checks);
          end;
+
          Add_Check (Fn_Has_Elt, Args_Both, EW_Bool_Type);
          Add_Unknown_Binding (Curs_Ty_Spk, Curs_Ty_Why, Curs_Id);
+
          if Annot_Present then
             case Annot.Kind is
                when Contains =>
@@ -2847,9 +2822,11 @@ package body Gnat2Why.Expr is
                   end;
             end case;
          end if;
+
          Add_Check (Fn_First, Args_One, Curs_Ty_Why);
          Add_Unknown_Binding (Cont_Ty_Spk, Cont_Ty_Why, Cont_Id);
       end;
+
       Ada_Ent_To_Why.Pop_Scope (Symbol_Table);
       return Checks;
    end Check_Type_With_Iterable;

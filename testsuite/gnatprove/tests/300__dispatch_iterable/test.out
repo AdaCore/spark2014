@@ -1,0 +1,51 @@
+test_dispatch_iterable.adb:15:16: info: during checks for quantification at test_dispatch_iterable.adb:4
+test_dispatch_iterable.adb:15:16: info: implicit aspect Always_Terminates on "First" has been proved, subprogram will terminate
+test_dispatch_iterable.adb:15:16: info: precondition proved (Trivial: 1 VC)
+test_dispatch_iterable.adb:17:16: info: during checks for quantification at test_dispatch_iterable.adb:4
+test_dispatch_iterable.adb:17:16: info: implicit aspect Always_Terminates on "Next" has been proved, subprogram will terminate
+test_dispatch_iterable.adb:17:16: info: precondition proved (Trivial: 1 VC)
+test_dispatch_iterable.adb:17:88: info: overflow check proved (CVC5: 2 VC)
+test_dispatch_iterable.adb:19:16: info: during checks for quantification at test_dispatch_iterable.adb:4
+test_dispatch_iterable.adb:19:16: info: implicit aspect Always_Terminates on "Has_Element" has been proved, subprogram will terminate
+test_dispatch_iterable.adb:19:16: info: precondition proved (Trivial: 1 VC)
+test_dispatch_iterable.adb:21:16: info: during checks for quantification at test_dispatch_iterable.adb:4
+test_dispatch_iterable.adb:21:16: info: implicit aspect Always_Terminates on "Element" has been proved, subprogram will terminate
+test_dispatch_iterable.adb:21:16: info: precondition proved (CVC5: 1 VC)
+test_dispatch_iterable.adb:30:28: info: only expected exception raised (CVC5: 1 VC)
+test_dispatch_iterable.adb:36:16: info: implicit aspect Always_Terminates on "Has_Element" has been proved, subprogram will terminate
+test_dispatch_iterable.adb:38:16: info: implicit aspect Always_Terminates on "Next" has been proved, subprogram will terminate
+test_dispatch_iterable.adb:38:89: info: overflow check proved (CVC5: 2 VC)
+test_dispatch_iterable.adb:40:16: info: implicit aspect Always_Terminates on "Element" has been proved, subprogram will terminate
+test_dispatch_iterable.adb:44:28: info: precondition proved (CVC5: 1 VC)
+test_dispatch_iterable.adb:46:28: info: only expected exception raised (CVC5: 1 VC)
+test_dispatch_iterable.adb:54:19: info: assertion proved (CVC5: 1 VC)
+test_dispatch_iterable.adb:56:19: info: assertion proved (CVC5: 1 VC)
+test_dispatch_iterable_override.adb:15:16: info: during checks for quantification at test_dispatch_iterable_override.adb:32
+test_dispatch_iterable_override.adb:15:16: info: during checks for quantification at test_dispatch_iterable_override.adb:4
+test_dispatch_iterable_override.adb:15:16: info: implicit aspect Always_Terminates on "First" has been proved, subprogram will terminate
+test_dispatch_iterable_override.adb:15:16: info: precondition proved (Trivial: 1 VC)
+test_dispatch_iterable_override.adb:15:16: info: precondition proved (Trivial: 1 VC)
+test_dispatch_iterable_override.adb:17:16: info: during checks for quantification at test_dispatch_iterable_override.adb:4
+test_dispatch_iterable_override.adb:17:16: info: implicit aspect Always_Terminates on "Next" has been proved, subprogram will terminate
+test_dispatch_iterable_override.adb:17:16: info: precondition proved (Trivial: 1 VC)
+test_dispatch_iterable_override.adb:17:88: info: overflow check proved (CVC5: 2 VC)
+test_dispatch_iterable_override.adb:19:16: info: during checks for quantification at test_dispatch_iterable_override.adb:4
+test_dispatch_iterable_override.adb:19:16: info: implicit aspect Always_Terminates on "Has_Element" has been proved, subprogram will terminate
+test_dispatch_iterable_override.adb:19:16: info: precondition proved (Trivial: 1 VC)
+test_dispatch_iterable_override.adb:21:16: info: during checks for quantification at test_dispatch_iterable_override.adb:4
+test_dispatch_iterable_override.adb:21:16: info: implicit aspect Always_Terminates on "Element" has been proved, subprogram will terminate
+test_dispatch_iterable_override.adb:21:16: info: precondition proved (CVC5: 1 VC)
+test_dispatch_iterable_override.adb:30:28: info: only expected exception raised (CVC5: 1 VC)
+test_dispatch_iterable_override.adb:41:16: info: during checks for quantification at test_dispatch_iterable_override.adb:32
+test_dispatch_iterable_override.adb:41:16: info: implicit aspect Always_Terminates on "Has_Element" has been proved, subprogram will terminate
+test_dispatch_iterable_override.adb:41:16: info: precondition proved (Trivial: 1 VC)
+test_dispatch_iterable_override.adb:43:16: info: during checks for quantification at test_dispatch_iterable_override.adb:32
+test_dispatch_iterable_override.adb:43:16: info: implicit aspect Always_Terminates on "Next" has been proved, subprogram will terminate
+test_dispatch_iterable_override.adb:43:16: info: precondition proved (Trivial: 1 VC)
+test_dispatch_iterable_override.adb:43:89: info: overflow check proved (CVC5: 2 VC)
+test_dispatch_iterable_override.adb:45:16: info: during checks for quantification at test_dispatch_iterable_override.adb:32
+test_dispatch_iterable_override.adb:45:16: info: implicit aspect Always_Terminates on "Element" has been proved, subprogram will terminate
+test_dispatch_iterable_override.adb:45:16: info: precondition proved (CVC5: 1 VC)
+test_dispatch_iterable_override.adb:49:28: info: precondition proved (CVC5: 1 VC)
+test_dispatch_iterable_override.adb:51:28: info: only expected exception raised (CVC5: 1 VC)
+test_dispatch_iterable_override.adb:59:19: info: assertion proved (CVC5: 1 VC)
