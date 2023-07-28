@@ -889,7 +889,7 @@ only part of a program:
   If the aspect or pragma ``Logical_Equal`` is used on a function whose
   implementation is not analyzed, yet called from SPARK code, the
   implementation of this function should correspond to the logical equality for
-  the corresponding type as used by |GNATprove|. See :ref:`Accessing the
+  the corresponding type as used by |GNATprove|. See :ref:`Annotation for Accessing the
   Logical Equality for a Type` for information about the logical equality. Note
   that this assumption does not apply to functions without any implementation.
 
