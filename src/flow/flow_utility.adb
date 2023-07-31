@@ -556,11 +556,11 @@ package body Flow_Utility is
       end case;
    end Extensions_Visible;
 
-   ----------------------
-   -- Flatten_Variable --
-   ----------------------
+   --------------------
+   -- Get_Components --
+   --------------------
 
-   function Flatten_Variable
+   function Get_Components
      (F     : Flow_Id;
       Scope : Flow_Scope)
       return Flow_Id_Sets.Set
@@ -571,16 +571,15 @@ package body Flow_Utility is
       then
          pragma Annotate (Xcov, Exempt_On, "Debugging code");
          if Debug_Trace_Flatten then
-            Write_Str ("Flatten: ");
+            Write_Str ("Get components: ");
             Print_Flow_Id (F);
          end if;
          pragma Annotate (Xcov, Exempt_Off);
 
          --  Special-case abstract state, which lack's a type to branch on
+
          if Ekind (Get_Direct_Mapping_Id (F)) = E_Abstract_State then
-
             return Flow_Id_Sets.To_Set (F);
-
          else
             declare
                T : Entity_Id := Get_Type (F, Scope);
@@ -637,6 +636,7 @@ package body Flow_Utility is
                pragma Annotate (Xcov, Exempt_Off);
 
                --  If the type is not in SPARK we return the variable itself
+
                if not Entity_In_SPARK (T) then
                   return Flow_Id_Sets.To_Set (F);
                end if;
@@ -677,10 +677,7 @@ package body Flow_Utility is
                         begin
                            C := First_Component_Or_Discriminant (T);
                            while Present (C) loop
-                              Results.Union
-                                (Flatten_Variable (Add_Component (F, C),
-                                                   Scope));
-
+                              Results.Insert (Add_Component (F, C));
                               Next_Component_Or_Discriminant (C);
                            end loop;
                         end;
@@ -692,9 +689,7 @@ package body Flow_Utility is
                            if Present (Anon_Obj) then
                               for C of Iter (Part_Of_Constituents (Anon_Obj))
                               loop
-                                 Results.Union
-                                   (Flatten_Variable (Add_Component (F, C),
-                                    Scope));
+                                 Results.Insert (Add_Component (F, C));
                               end loop;
                            end if;
                         end;
@@ -713,26 +708,25 @@ package body Flow_Utility is
                   when Record_Kind =>
                      Debug ("processing record type");
 
-                     --  Include classwide types and privates with
-                     --  discriminants.
-                     if Unique_Components (T).Is_Empty then
-                        --  If the record has an empty component list then we
-                        --  add the variable itself...
-                        --  Note that this happens also when the components are
-                        --  hidden behind a SPARK_Mode => Off.
-                        Results.Insert (F);
+                     --  For types which don't have any visible component or
+                     --  non null private part, whether or not they are tagged
+                     --  or classwide, we add the variable itself...
 
+                     if Unique_Components (T).Is_Empty then
+                        --  Note that this condition also holds when the
+                        --  components are hidden behind a SPARK_Mode => Off.
+
+                        Results.Insert (F);
                      else
                         --  ...else we add each visible component
+
                         for C of Unique_Components (T) loop
                            if Is_Visible (C, Scope) then
-                              --  Here we union disjoint sets, so possibly we
-                              --  could optimize this.
-                              Results.Union
-                                (Flatten_Variable
-                                   (Add_Component (F, C), Scope));
-
+                              Results.Insert (Add_Component (F, C));
                            else
+                              --  We set Contains_Non_Visible to True when the
+                              --  type of F has a non null private part.
+
                               Contains_Non_Visible := True;
                            end if;
                         end loop;
@@ -742,6 +736,7 @@ package body Flow_Utility is
                      --  whether it derives from a private type (whose full
                      --  view is potentially not in SPARK, e.g. with private
                      --  extensions for tagged types).
+
                      declare
                         Typ : Entity_Id := T;
                      begin
@@ -751,6 +746,7 @@ package body Flow_Utility is
                            --  visible from Scope. This can happen if we derive
                            --  from a private type in the private part where it
                            --  is fully declared.
+
                            if Is_Private_Type (Typ) then
                               pragma Assert (Present (Full_View (Typ)));
 
@@ -766,15 +762,8 @@ package body Flow_Utility is
                      end;
 
                      if Contains_Non_Visible then
-                        --  We must have some discriminant, so return
-                        --  X'Private_Part and the discriminants. For
-                        --  simple private types we don't do this split.
-                        if Results.Is_Empty then
-                           Results := Flow_Id_Sets.To_Set (F);
-                        else
-                           Results.Insert
-                             ((F with delta Facet => Private_Part));
-                        end if;
+                        Results.Insert
+                          ((F with delta Facet => Private_Part));
                      end if;
 
                      if Classwide then
@@ -811,13 +800,48 @@ package body Flow_Utility is
       else
          pragma Annotate (Xcov, Exempt_On, "Debugging code");
          if Debug_Trace_Flatten then
-            Write_Str ("Flatten: ");
+            Write_Str ("Get components: ");
             Print_Flow_Id (F);
          end if;
          pragma Annotate (Xcov, Exempt_Off);
 
          return Flow_Id_Sets.To_Set (F);
       end if;
+   end Get_Components;
+
+   ----------------------
+   -- Flatten_Variable --
+   ----------------------
+
+   function Flatten_Variable
+     (F     : Flow_Id;
+      Scope : Flow_Scope)
+      return Flow_Id_Sets.Set
+   is
+      Subcomponents : Flow_Id_Sets.Set;
+   begin
+      for C of Get_Components (F, Scope) loop
+         declare
+            C_Components : constant Flow_Id_Sets.Set :=
+              Get_Components (C, Scope);
+         begin
+            --  C is a leaf of the tree representing the type of F iff
+            --  C_Components contains C itself. Checking membership instead of
+            --  set equality is important, for example because C_Components
+            --  could also contain an extension part if C was classwide and
+            --  didn't have any component.
+
+            if C_Components.Contains (C) then
+               Subcomponents.Union (C_Components);
+            else
+               for C_Component of C_Components loop
+                  Subcomponents.Union (Flatten_Variable (C_Component, Scope));
+               end loop;
+            end if;
+         end;
+      end loop;
+
+      return Subcomponents;
    end Flatten_Variable;
 
    ----------------------

@@ -46,14 +46,12 @@ records.adb:150:32: info: justified that "Dst.The_Pair.A" might not be initializ
 records.adb:150:32: info: justified that "Dst.The_Pair.B" might not be initialized in "Optimised_Copy_A"
 records.adb:151:11: info: flow dependencies proved
 records.adb:152:22: info: postcondition proved (CVC5: 3 VC; Trivial: 1 VC)
-records.adb:153:49: info: justified that "Dst.The_Pair.A" might not be initialized
-records.adb:153:49: info: justified that "Dst.The_Pair.B" might not be initialized
+records.adb:153:25: info: justified that "Dst.The_Pair" might not be initialized
 records.adb:164:32: info: justified that "Dst.The_Pair.A" might not be initialized in "Optimised_Copy_B"
 records.adb:164:32: info: justified that "Dst.The_Pair.B" might not be initialized in "Optimised_Copy_B"
 records.adb:165:11: info: flow dependencies proved
-records.adb:166:22: info: justified that "Dst.The_Pair.A" might not be initialized
-records.adb:166:22: info: justified that "Dst.The_Pair.B" might not be initialized
 records.adb:166:22: medium: postcondition might fail
+records.adb:166:26: info: justified that "Dst.The_Pair" might not be initialized
 records.adb:177:11: info: flow dependencies proved
 records.adb:178:22: info: postcondition proved (CVC5: 4 VC; Trivial: 1 VC)
 records.adb:183:07: info: initialization of "Tmp" proved

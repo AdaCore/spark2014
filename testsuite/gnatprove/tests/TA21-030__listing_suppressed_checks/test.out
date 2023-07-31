@@ -49,8 +49,8 @@ the postcondition of P.Add_Or_Subtract fully established
 absence of run-time errors of P.Add_Or_Subtract fully established
   P.Annotate_Intentional at p.ads:12 flow analyzed (0 errors, 0 checks, 1 warnings and 0 pragma Assume statements) and proved (0 checks)
    Justified check messages:
-    p.adb:42:10: justified that "X" might not be initialized (marked as: intentional, reason: "")
     p.adb:43:28: justified that "Z" is not initialized (marked as: intentional, reason: "")
+    p.adb:42:10: justified that "X" might not be initialized (marked as: intentional, reason: "")
 absence of run-time errors of P.Annotate_Intentional depends on
   effects on parameters and Global variables of P.Inner.Do_Nothing
   absence of run-time errors of P.Inner.Do_Nothing
@@ -68,4 +68,3 @@ in unit q2, 0 subprograms and packages out of 1 analyzed
   Q2 at q2.adb:1 skipped; SPARK_Mode => Off
 in unit q3, 0 subprograms and packages out of 1 analyzed
   Q3 at q3.adb:1 skipped; SPARK_Mode => Off
-

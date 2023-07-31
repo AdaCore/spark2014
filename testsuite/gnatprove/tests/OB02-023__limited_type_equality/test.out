@@ -1,7 +1,7 @@
-client.adb:21:19: high: "X.X" is not initialized
+client.adb:21:04: high: "X" is not initialized
 client.adb:21:19: info: assertion proved (CVC5: 1 VC)
+client.adb:23:04: high: "Z" is not initialized
 client.adb:23:19: info: assertion proved (CVC5: 1 VC)
-client.adb:23:23: high: "Z.X" is not initialized
 client.adb:24:19: high: "A" is not initialized
 client.adb:24:19: info: assertion proved (CVC5: 1 VC)
 client.adb:26:19: info: assertion proved (CVC5: 1 VC)

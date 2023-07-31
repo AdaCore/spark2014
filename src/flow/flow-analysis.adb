@@ -327,7 +327,6 @@ package body Flow.Analysis is
    begin
       --  Look for either the Initial_Value or Initial_Grouping variant
       if Initial_Value_Vertex = Flow_Graphs.Null_Vertex then
-         pragma Assert (Is_Entire_Variable (F));
          return G.Get_Vertex (Change_Variant (F, Initial_Grouping));
       else
          return Initial_Value_Vertex;
@@ -2044,18 +2043,52 @@ package body Flow.Analysis is
    is
       type Msg_Kind is (Unknown, Err);
 
+      type Path_Vertices is record
+         Start : Flow_Graphs.Vertex_Id;
+         V_Use : Flow_Graphs.Vertex_Id;
+      end record;
+      --  End vertices of a definition-free path in the graph
+
+      function Hash (Path : Path_Vertices) return Ada.Containers.Hash_Type;
+      --  Hash function for Path_Vertices records
+
+      package Path_To_Variables_Maps is new Ada.Containers.Hashed_Maps
+       (Key_Type        => Path_Vertices,
+        Element_Type    => Flow_Id_Sets.Set,
+        Hash            => Hash,
+        Equivalent_Keys => "=",
+        "="             => "=");
+
+      Err_Checks     : Path_To_Variables_Maps.Map;
+      Unknown_Checks : Path_To_Variables_Maps.Map;
+      --  Map definition-free paths to variables on which we need to emit Err
+      --  (resp. Unknown) checks for uninitialization.
+
       procedure Emit_Check_Message
         (Var   : Flow_Id;
-         V_Def : Flow_Graphs.Vertex_Id;
+         Start : Flow_Graphs.Vertex_Id;
          V_Use : Flow_Graphs.Vertex_Id;
-         Kind  : Msg_Kind;
-         OK    : in out Boolean)
+         Kind  : Msg_Kind)
       with Pre  => not Is_Internal (Var)
-                   and then V_Def /= Flow_Graphs.Null_Vertex
-                   and then V_Use /= Flow_Graphs.Null_Vertex,
-           Post => not OK;
+                   and then Start /= Flow_Graphs.Null_Vertex
+                   and then V_Use /= Flow_Graphs.Null_Vertex;
       --  Produces an appropriately worded low/high message for variable Var
-      --  defined/havoced and used at vertices V_Def and V_Use, respectively.
+      --  and looks for a path without initialization linking Start to V_Use
+      --  for it to be written in a tracefile.
+
+      procedure Emit_Check_Messages
+        (Kind            : Msg_Kind;
+         Kind_Checks     : in out Path_To_Variables_Maps.Map;
+         Non_Kind_Checks : in out Path_To_Variables_Maps.Map);
+      --  Produces the appropriately worded check messages for the uses of
+      --  uninitialized variables corresponding to the specified message Kind.
+      --  Kind_Checks (resp. Non_Kind_Checks) is a shortcut for the map
+      --  associated with Kind (resp. non Kind) checks. Check messages
+      --  associated with individual subcomponents are compressed into one
+      --  message associated with their enclosing object, iff all the
+      --  subcomponents are uninitialized at a given point in the subprogram.
+      --  The parts on which we need to emit checks are added to Kind_Checks
+      --  not to traverse their type again while emitting non Kind checks.
 
       procedure Emit_Info_Message_Global (Var : Flow_Id)
       with Pre => Var.Kind in Direct_Mapping | Magic_String;
@@ -2088,12 +2121,12 @@ package body Flow.Analysis is
 
       procedure Scan_Children
         (Var                  : Flow_Id;
-         Start                : Flow_Graphs.Vertex_Id;
+         V_Initial            : Flow_Graphs.Vertex_Id;
          Possibly_Initialized : Boolean;
          Visited              : in out Vertex_Sets.Set;
          OK                   : in out Boolean)
       with Pre  => Var.Variant = Normal_Use
-                   and then Start /= Flow_Graphs.Null_Vertex
+                   and then V_Initial /= Flow_Graphs.Null_Vertex
                    and then (if not Is_Array (Var)
                              then not Possibly_Initialized
                                and then Visited.Is_Empty),
@@ -2101,12 +2134,15 @@ package body Flow.Analysis is
                                           Of_Set => Visited)
                    and then (if not OK'Old then not OK);
       --  Detect uses of Var, which is a not-yet-initialized object, by
-      --  looking at the PDG vertices originating from Start. For arrays this
-      --  routine might be called recursively and then Possibly_Initialized
-      --  is True iff some elements of the array have been written. Visited
-      --  contains vertices that have been already examined; it is to prevent
-      --  infinite recursive calls. If any message is emitted, then OK will
-      --  become False; otherwise, it will be unmodified.
+      --  looking at the PDG vertices originating from V_Initial. For arrays
+      --  this routine might be called recursively and then
+      --  Possibly_Initialized is True iff some elements of the array have been
+      --  written. Visited contains vertices that have been already examined;
+      --  it is to prevent infinite recursive calls. If we detect a use of Var
+      --  while uninitialized, then OK will become False; otherwise, it will be
+      --  unmodified. If OK becomes False, a pair of end vertices of a
+      --  definition-free path is mapped to Var in Err_Checks (resp.
+      --  Unknown_Checks) if we need to emit an Err (resp. Unknown) check.
 
       function Is_Array (F : Flow_Id) return Boolean;
       --  Returns True iff F represents an array and thus requires special
@@ -2139,15 +2175,14 @@ package body Flow.Analysis is
 
       procedure Emit_Check_Message
         (Var   : Flow_Id;
-         V_Def : Flow_Graphs.Vertex_Id;
+         Start : Flow_Graphs.Vertex_Id;
          V_Use : Flow_Graphs.Vertex_Id;
-         Kind  : Msg_Kind;
-         OK    : in out Boolean)
+         Kind  : Msg_Kind)
       is
          V_Key        : Flow_Id renames FA.PDG.Get_Key (V_Use);
 
          V_Initial    : constant Flow_Graphs.Vertex_Id :=
-           FA.PDG.Get_Vertex (Change_Variant (Var, Initial_Value));
+           Get_Initial_Vertex (FA.PDG, Var);
 
          V_Initial_Atr : V_Attributes renames FA.Atr (V_Initial);
 
@@ -2222,14 +2257,6 @@ package body Flow.Analysis is
                end if;
             end Add_Loc;
 
-            Start : constant Flow_Graphs.Vertex_Id :=
-              (if FA.Atr (V_Def).Is_Param_Havoc
-               then V_Def
-               else FA.Start_Vertex);
-            --  If we scan children of a havoc vertex, then search from the
-            --  havoc vertex itself; otherwise, skip the 'Initial vertex and
-            --  begin from the start of the subprogram.
-
          --  Start of processing for Mark_Definition_Free_Path
 
          begin
@@ -2248,7 +2275,7 @@ package body Flow.Analysis is
                     else Vertex_Sets.Empty_Set);
          end Mark_Definition_Free_Path;
 
-      --  Start of processing for Emit_Message
+      --  Start of processing for Emit_Check_Message
 
       begin
          --  Assemble appropriate message for failed initialization. We deal
@@ -2324,17 +2351,22 @@ package body Flow.Analysis is
 
                --  We are dealing with an OUT parameter that is not initialized
                --  on return. We suggest two fixes by default and add a third
-               --  one if the variable is a record component or an array.
+               --  one if the variable is a record part or an array.
 
                else
                   declare
-                     Is_Record_Component_Or_Array : constant Boolean :=
-                       Var.Kind = Record_Field or else Is_Array (Var);
+                     Is_Record_Part_Or_Array : constant Boolean :=
+                       Var.Kind = Record_Field
+                       or else Is_Array (Var)
+                       or else (Var.Kind = Direct_Mapping
+                                and then Var.Facet = Normal_Part
+                                  and then
+                                Is_Record_Type (Get_Type (Var, FA.B_Scope)));
 
                   begin
                      --  Construction of the Details message
                      Append (Details, "OUT parameter should be ");
-                     if Is_Record_Component_Or_Array then
+                     if Is_Record_Part_Or_Array then
                         Append (Details, "fully ");
                      end if;
                      Append (Details, "initialized on return");
@@ -2344,7 +2376,7 @@ package body Flow.Analysis is
                      Fix_F1 := Var;
 
                      --  Second possible fix
-                     if Is_Record_Component_Or_Array then
+                     if Is_Record_Part_Or_Array then
                         Append (Fix, ", ");
                      else
                         Append (Fix, " or ");
@@ -2354,7 +2386,7 @@ package body Flow.Analysis is
                                  (Change_Variant (Var, Normal_Use));
 
                      --  Third possible fix
-                     if Is_Record_Component_Or_Array then
+                     if Is_Record_Part_Or_Array then
                         Append (Fix, " or annotate it with aspect "
                                 & "Relaxed_Initialization");
                      end if;
@@ -2481,9 +2513,145 @@ package body Flow.Analysis is
                                Continuation => True);
             end;
          end if;
-
-         OK := False;
       end Emit_Check_Message;
+
+      -------------------------
+      -- Emit_Check_Messages --
+      -------------------------
+
+      procedure Emit_Check_Messages
+        (Kind            : Msg_Kind;
+         Kind_Checks     : in out Path_To_Variables_Maps.Map;
+         Non_Kind_Checks : in out Path_To_Variables_Maps.Map)
+      is
+         procedure Compress_Checks
+           (Path  : Path_Vertices;
+            Var   : Flow_Id;
+            Parts : in out Flow_Id_Sets.Set);
+         --  Traverses the type of Var by calling itself recursively and puts
+         --  in Parts either Var, if all its subcomponents are uninitialized at
+         --  V_Use, or the uninitialized subcomponents of Var.
+
+         ----------------------
+         -- Compress_Checks --
+         ----------------------
+
+         procedure Compress_Checks
+           (Path  : Path_Vertices;
+            Var   : Flow_Id;
+            Parts : in out Flow_Id_Sets.Set)
+         is
+            Components : Flow_Id_Sets.Set := Get_Components (Var, FA.B_Scope);
+         begin
+            --  Get_Components returns Var'Extension_Part if Var is classwide
+            --  but not if it is a tagged parameter of a subprogram annotated
+            --  with Extensions_Visible. In this case, we need to include
+            --  Var'Extension_Part in the components of Var because we want to
+            --  compress checks on extension parts as we do it for regular
+            --  components.
+
+            if Is_Entire_Variable (Var)
+              and then Var.Kind = Direct_Mapping
+              and then Var.Variant = Normal_Use
+              and then Extensions_Visible (Var, FA.B_Scope)
+            then
+               Components.Include ((Var with delta Facet => Extension_Part));
+            end if;
+
+            --  If Kind_Checks contains Var, Var is a leaf of the tree
+            --  representing the type of its entire variable. Else, we recurse
+            --  on the components of Var.
+
+            if Kind_Checks (Path).Contains (Var) then
+               Parts.Insert (Var);
+            else
+               --  The sets corresponding to Path in Kind_Checks and
+               --  Non_Kind_Checks are disjoint. This means that if a part is
+               --  in Non_Kind_Checks, then we won't be able to compress the
+               --  checks related to its subcomponents in Kind_Checks.
+
+               declare
+                  Path_Position : constant Path_To_Variables_Maps.Cursor :=
+                    Non_Kind_Checks.Find (Path);
+               begin
+                  if not Path_To_Variables_Maps.Has_Element (Path_Position)
+                    or else
+                      not Non_Kind_Checks (Path_Position).Contains (Var)
+                  then
+                     --  Var is excluded from Components to avoid infinite
+                     --  recursion.
+
+                     Components.Exclude (Var);
+
+                     --  Recursively populate Parts with all the uninitialized
+                     --  subcomponents of Var, by recursing on the (possibly
+                     --  empty) set of components of Var.
+
+                     for C of Components loop
+                        Compress_Checks
+                          (Path  => Path,
+                           Var   => C,
+                           Parts => Parts);
+                     end loop;
+
+                     --  If Var doesn't have any components, then, since Path
+                     --  isn't mapped to Var in either of the maps, it is not
+                     --  uninitialized at V_Use. Else, if Parts contains all
+                     --  the components of Var, then we can emit the check on
+                     --  Var only. Otherwise, we need to emit checks on all the
+                     --  uninitialized subcomponents.
+
+                     if not Components.Is_Empty
+                       and then Components.Is_Subset (Parts)
+                     then
+                        Parts.Difference (Components);
+                        Parts.Insert (Var);
+                     end if;
+                  end if;
+               end;
+            end if;
+         end Compress_Checks;
+
+      --  Start of processing for Emit_Check_Messages
+
+      begin
+         for P in Kind_Checks.Iterate loop
+            declare
+               Path : Path_Vertices renames Path_To_Variables_Maps.Key (P);
+               Variables : Flow_Id_Sets.Set renames Kind_Checks (Path);
+            begin
+               for Var of To_Entire_Variables (Variables) loop
+                  declare
+                     Parts : Flow_Id_Sets.Set;
+                     --  Parts of Var on which we need to emit checks for
+                     --  uninitialization.
+                  begin
+                     Compress_Checks
+                       (Path  => Path,
+                        Var   => Var,
+                        Parts => Parts);
+
+                     --  Emit checks on every uninitialized part of Var
+
+                     for S of Parts loop
+                        Emit_Check_Message
+                          (Var   => S,
+                           Start => Path.Start,
+                           V_Use => Path.V_Use,
+                           Kind  => Kind);
+
+                        --  Path is mapped to the parts on which we need
+                        --  to emit Kind checks to avoid exploring their
+                        --  subcomponents again when emitting checks of
+                        --  another kind.
+
+                        Variables.Include (S);
+                     end loop;
+                  end;
+               end loop;
+            end;
+         end loop;
+      end Emit_Check_Messages;
 
       ------------------------------
       -- Emit_Info_Message_Global --
@@ -2633,6 +2801,18 @@ package body Flow.Analysis is
          (if Is_Main_Global_Input (Atr)
           then Is_Initialized_At_Elaboration (F, FA.B_Scope)
           else Atr.Is_Initialized);
+
+      ----------
+      -- Hash --
+      ----------
+
+      function Hash (Path : Path_Vertices) return Ada.Containers.Hash_Type
+      is
+         use type Ada.Containers.Hash_Type;
+         use Flow_Graphs;
+      begin
+         return 17 * Vertex_Hash (Path.Start) + 13 * Vertex_Hash (Path.V_Use);
+      end Hash;
 
       --------------------------------
       -- Has_Relaxed_Initialization --
@@ -2804,17 +2984,52 @@ package body Flow.Analysis is
       -------------------
 
       procedure Scan_Children
-        (Var     : Flow_Id;
-         Start   : Flow_Graphs.Vertex_Id;
+        (Var                  : Flow_Id;
+         V_Initial            : Flow_Graphs.Vertex_Id;
          Possibly_Initialized : Boolean;
-         Visited : in out Vertex_Sets.Set;
-         OK      : in out Boolean)
+         Visited              : in out Vertex_Sets.Set;
+         OK                   : in out Boolean)
       is
+         procedure Update
+           (Checks : in out Path_To_Variables_Maps.Map;
+            Start  : Flow_Graphs.Vertex_Id;
+            V_Use  : Flow_Graphs.Vertex_Id;
+            Var    : Flow_Id);
+         --  Maps Start and V_Use to Var in Checks
+
+         ------------
+         -- Update --
+         ------------
+
+         procedure Update
+           (Checks : in out Path_To_Variables_Maps.Map;
+            Start  : Flow_Graphs.Vertex_Id;
+            V_Use  : Flow_Graphs.Vertex_Id;
+            Var    : Flow_Id)
+         is
+            Path     : constant Path_Vertices := (Start, V_Use);
+            Position : Path_To_Variables_Maps.Cursor;
+            Unused   : Boolean;
+         begin
+            Checks.Insert (Path, Position, Unused);
+            Checks (Position).Insert (Var);
+         end Update;
+
          Position : Vertex_Sets.Cursor;
          Inserted : Boolean;
+         Kind     : Msg_Kind;
+         Start    : constant Flow_Graphs.Vertex_Id :=
+           (if FA.Atr (V_Initial).Is_Param_Havoc
+            then V_Initial
+            else FA.Start_Vertex);
+         --  When emitting a check message, if we scan children of a havoc
+         --  vertex, then we will search from the havoc vertex itself;
+         --  otherwise, we will skip the 'Initial vertex and begin from the
+         --  start of the subprogram.
 
       begin
-         for Child of FA.PDG.Get_Collection (Start, Flow_Graphs.Out_Neighbours)
+         for Child of
+           FA.PDG.Get_Collection (V_Initial, Flow_Graphs.Out_Neighbours)
          loop
             declare
                Child_Key : Flow_Id      renames FA.DDG.Get_Key (Child);
@@ -2847,19 +3062,29 @@ package body Flow.Analysis is
 
                      elsif Child_Atr.Variables_Explicitly_Used.Contains (Var)
                      then
-                        Emit_Check_Message
-                          (Var   => Var,
-                           V_Def => Start,
-                           V_Use => Child,
-                           Kind  =>
-                             (if Possibly_Initialized
-                                or else
-                                 Might_Be_Initialized (Var       => Var,
-                                                       V_Initial => Start,
-                                                       V_Use     => Child)
-                              then Unknown
-                              else Err),
-                           OK    => OK);
+                        OK   := False;
+                        Kind := (if Possibly_Initialized
+                                   or else
+                                    Might_Be_Initialized
+                                      (Var       => Var,
+                                       V_Initial => V_Initial,
+                                       V_Use     => Child)
+                                 then Unknown
+                                 else Err);
+
+                        if Kind = Err then
+                           Update
+                             (Checks => Err_Checks,
+                              Start  => Start,
+                              V_Use  => Child,
+                              Var    => Var);
+                        else
+                           Update
+                             (Checks => Unknown_Checks,
+                              Start  => Start,
+                              V_Use  => Child,
+                              Var    => Var);
+                        end if;
 
                      --  Otherwise, it is a partial assignment, e.g.
                      --     Arr (X) := Y;
@@ -2870,25 +3095,35 @@ package body Flow.Analysis is
                      else
                         Scan_Children
                           (Var,
-                           Start   => Child,
+                           V_Initial            => Child,
                            Possibly_Initialized => True,
-                           Visited => Visited,
-                           OK      => OK);
+                           Visited              => Visited,
+                           OK                   => OK);
                      end if;
 
                   else
                      if Child_Atr.Variables_Used.Contains (Var) then
-                        Emit_Check_Message
-                          (Var   => Var,
-                           V_Def => Start,
-                           V_Use => Child,
-                           Kind  =>
-                             (if Might_Be_Initialized (Var       => Var,
-                                                       V_Initial => Start,
-                                                       V_Use     => Child)
-                              then Unknown
-                              else Err),
-                           OK    => OK);
+                        OK   := False;
+                        Kind := (if Might_Be_Initialized
+                                      (Var       => Var,
+                                       V_Initial => V_Initial,
+                                       V_Use     => Child)
+                                 then Unknown
+                                 else Err);
+
+                        if Kind = Err then
+                           Update
+                             (Checks => Err_Checks,
+                              Start  => Start,
+                              V_Use  => Child,
+                              Var    => Var);
+                        else
+                           Update
+                             (Checks => Unknown_Checks,
+                              Start  => Start,
+                              V_Use  => Child,
+                              Var    => Var);
+                        end if;
                      end if;
                   end if;
                end if;
@@ -2912,7 +3147,7 @@ package body Flow.Analysis is
       --
       --  The OK/NOK containers are needed because an OK message is emitted
       --  only once for the entire object, while NOK checks are emitted for
-      --  each component on each location where it accessed without being
+      --  each component on each location where it is accessed without being
       --  initialized.
       --
       --  The Global/Local containers are needed, because messages on global
@@ -2951,11 +3186,12 @@ package body Flow.Analysis is
               and then not Is_Initialized (Parent_Key, Parent_Atr)
             then
                Scan_Children
-                 (Var     => Change_Variant (Parent_Key, Normal_Use),
-                  Start   => Parent,
+                 (Var                  => Change_Variant
+                                            (Parent_Key, Normal_Use),
+                  V_Initial            => Parent,
                   Possibly_Initialized => False,
-                  Visited => Visited,
-                  OK      => OK);
+                  Visited              => Visited,
+                  OK                   => OK);
 
                --  If no checks have been emitted for any of the object
                --  components, then want an info message for the entire object.
@@ -2987,11 +3223,11 @@ package body Flow.Analysis is
             elsif Parent_Atr.Is_Param_Havoc then
                for Havoc_Var of Parent_Atr.Variables_Defined loop
                   Scan_Children
-                    (Var     => Havoc_Var,
-                     Start   => Parent,
+                    (Var                  => Havoc_Var,
+                     V_Initial            => Parent,
                      Possibly_Initialized => False,
-                     Visited => Visited,
-                     OK      => OK);
+                     Visited              => Visited,
+                     OK                   => OK);
 
                   declare
                      Havoc_Atr : V_Attributes renames
@@ -3060,6 +3296,15 @@ package body Flow.Analysis is
             end if;
          end;
       end loop;
+
+      Emit_Check_Messages
+        (Kind            => Err,
+         Kind_Checks     => Err_Checks,
+         Non_Kind_Checks => Unknown_Checks);
+      Emit_Check_Messages
+        (Kind            => Unknown,
+         Kind_Checks     => Unknown_Checks,
+         Non_Kind_Checks => Err_Checks);
 
       for Var of Global_OK.Difference (Global_NOK) loop
          Emit_Info_Message_Global (Var);
