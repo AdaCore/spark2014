@@ -1023,6 +1023,11 @@ package body Flow_Error_Messages is
                   --  main message and print it.
 
                   when GPO_Oneline =>
+                     if Check_Info.User_Message /= No_String then
+                        Append (Message, " [user message: "
+                                & To_String (Check_Info.User_Message) & "]");
+                     end if;
+
                      if One_Liner /= "" then
                         Append (Message, " (e.g. when " & One_Liner & ")");
                      end if;
@@ -1066,6 +1071,13 @@ package body Flow_Error_Messages is
                   when GPO_Pretty =>
                      Msg_Id :=
                        Print_Regular_Msg (To_String (Message), Span, Severity);
+
+                     if Check_Info.User_Message /= No_String then
+                        Ignore_Id := Print_Regular_Msg
+                          (SGR_Note & "user message: " & SGR_Reset
+                           & To_String (Check_Info.User_Message),
+                           Span, Severity, Continuation => True);
+                     end if;
 
                      if One_Liner /= "" then
                         Ignore_Id := Print_Regular_Msg

@@ -171,10 +171,11 @@ package Why.Gen.Progs is
       return W_Prog_Id;
 
    function New_Located_Abstract
-     (Ada_Node : Node_Id;
-      Expr     : W_Prog_Id;
-      Post     : W_Pred_Id;
-      Reason   : VC_Kind)
+     (Ada_Node   : Node_Id;
+      Expr       : W_Prog_Id;
+      Post       : W_Pred_Id;
+      Reason     : VC_Kind;
+      Check_Info : Check_Info_Type := New_Check_Info)
       return W_Prog_Id;
    --  build a located abstract Why3 program expression with a postcondition.
 

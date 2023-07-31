@@ -144,6 +144,8 @@ package SPARK_Util is
    --  Extra information to get better possible fix messages
 
    type Check_Info_Type is record
+      User_Message : String_Id;
+      --  Message associated with an assertion/check pragma by the user
       Fix_Info     : Fix_Info_Type;
       Continuation : Continuation_Vectors.Vector;
    end record;

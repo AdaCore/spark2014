@@ -701,7 +701,8 @@ package Gnat2Why.Expr is
       Force   :     Boolean;
       Expr    : out N_Subexpr_Id;
       Runtime : out W_Prog_Id;
-      Pred    : out W_Pred_Id);
+      Pred    : out W_Pred_Id;
+      Msg     : out String_Id);
    --  For a pragma Check, produces the components of its translation into Why3
    --  @param Stmt The pragma Check to translate.
    --  @param Params transformation parameters
@@ -713,6 +714,7 @@ package Gnat2Why.Expr is
    --  @param Runtime On exit, Why3 program for checking absence of run-time
    --     errors in the pragma, and possibly getting a program value.
    --  @param Pred On exit, Why3 proposition corresponding to the pragma.
+   --  @param Msg On exit, user message associated to the pragma, or No_String.
 
    function Transform_Pragma_Check
      (Prag   : N_Pragma_Id;
@@ -745,7 +747,7 @@ package Gnat2Why.Expr is
 
    procedure Transform_Statement_Or_Declaration_In_List
      (Stmt_Or_Decl :        Node_Id;
-      Params       : Transformation_Params;
+      Params       :        Transformation_Params;
       Seq          : in out W_Statement_Sequence_Id);
    --  Transform the next statement or declaration Stmt_Or_Decl, inside a
    --  list of statements and declarations. Seq is the transformation of the
