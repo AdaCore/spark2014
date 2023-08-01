@@ -3349,6 +3349,87 @@ package body Flow_Utility is
                end loop;
                return Variables;
 
+            when Attribute_Alignment
+               | Attribute_Size
+               | Attribute_Object_Size
+               | Attribute_Value_Size
+            =>
+               --  Attribute Size and similar do not read data from their
+               --  prefix (which can be either a type name or an object
+               --  reference), but for arrays and discriminated records
+               --  their value depends on the array bounds and discriminant
+               --  constraints, respectively.
+
+               --  Also, if the object reference is anything but a name (e.g. a
+               --  function call), then the prefix is actually evaluated and
+               --  the attribute value depends on the prefix.
+
+               --  Attribute Alignment doesn't seem to depend on the array
+               --  bounds and discriminant constraints, but otherwise behaves
+               --  just like attribute Size, so for simplicity we handle both
+               --  attributes in the same way.
+
+               declare
+                  procedure Get_Type_Size (T : Type_Kind_Id);
+                  --  Get variables from the bounds and discriminants of type
+                  --  T, because they affect its size.
+
+                  -------------------
+                  -- Get_Type_Size --
+                  -------------------
+
+                  procedure Get_Type_Size (T : Type_Kind_Id) is
+                  begin
+                     if Is_Array_Type (T) then
+                        declare
+                           Index : Node_Id;
+                        begin
+                           Index := First_Index (T);
+                           while Present (Index) loop
+                              Variables.Union
+                                (Recurse (Type_Low_Bound (Etype (Index))));
+                              Variables.Union
+                                (Recurse (Type_High_Bound (Etype (Index))));
+                              Next_Index (Index);
+                           end loop;
+                        end;
+                     elsif Has_Discriminants (T) then
+                        for C of Iter (Discriminant_Constraint (T)) loop
+                           Variables.Union (Recurse (C));
+                        end loop;
+                     end if;
+                  end Get_Type_Size;
+
+                  Pref      : constant Node_Id := Prefix (N);
+                  Pref_Type : constant Entity_Id := Etype (Pref);
+
+               begin
+                  if Is_Object_Reference (Pref) then
+
+                     if Is_Name_Reference (Pref) then
+                        --  Attribute whose prefix is a class-wide object
+                        --  reference is expanded into a dispatching function
+                        --  call whose value depends on the object itself, but
+                        --  currently marking rejects this as unsupported.
+                        --
+                        --  For other objects the attribute values don't depend
+                        --  on the prefix.
+
+                        pragma Assert (not Is_Class_Wide_Type (Pref_Type));
+                     else
+                        Variables.Union (Recurse (Pref));
+                     end if;
+
+                  else
+                     pragma Assert
+                       (Is_Entity_Name (Pref) and then Is_Type (Pref_Type));
+                  end if;
+
+                  Get_Type_Size (Pref_Type);
+               end;
+
+               return Variables;
+
             when Attribute_First
                | Attribute_Last
                | Attribute_Length
@@ -3463,17 +3544,14 @@ package body Flow_Utility is
                                           | Attribute_Max
                                           | Attribute_Min
                                           | Attribute_Mod
-                                          | Attribute_Object_Size
                                           | Attribute_Pos
                                           | Attribute_Pred
                                           | Attribute_Remainder
                                           | Attribute_Rounding
-                                          | Attribute_Size
                                           | Attribute_Succ
                                           | Attribute_Truncation
                                           | Attribute_Val
-                                          | Attribute_Value
-                                          | Attribute_Value_Size);
+                                          | Attribute_Value);
          else
             Variables.Union (Recurse (Prefix (N)));
          end if;
