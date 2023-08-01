@@ -806,6 +806,7 @@ package body Gnat2Why.Expr.Loops is
                      Expr          : N_Subexpr_Id;
                      One_Inv_Check : W_Prog_Id;
                      One_Invariant : W_Pred_Id;
+                     One_Message   : String_Id;
                      One_Inv_Var   : constant W_Identifier_Id :=
                        New_Temp_Identifier (Typ       => EW_Bool_Type,
                                             Base_Name => "inv");
@@ -815,7 +816,8 @@ package body Gnat2Why.Expr.Loops is
                                              Expr    => Expr,
                                              Params  => Params,
                                              Runtime => One_Inv_Check,
-                                             Pred    => One_Invariant);
+                                             Pred    => One_Invariant,
+                                             Msg     => One_Message);
 
                      --  Add checking of RTE in the Nth loop invariant, and use
                      --  it to guard the checking of RTE for (N+1)th and beyond
@@ -829,9 +831,12 @@ package body Gnat2Why.Expr.Loops is
                      --  Add the predicate for the Nth loop invariant
 
                      Why_Invariants (Count) :=
-                       New_VC_Pred (Ada_Node => Expr,
-                                    Expr     => One_Invariant,
-                                    Reason   => VC_Loop_Invariant);
+                       New_VC_Pred
+                         (Ada_Node   => Expr,
+                          Expr       => One_Invariant,
+                          Reason     => VC_Loop_Invariant,
+                          Check_Info =>
+                            New_Check_Info (User_Message => One_Message));
                      Count := Count - 1;
                   end;
                end loop;

@@ -1543,8 +1543,10 @@ package body Gnat2Why.Util is
 
    function New_Check_Info
      (Range_Check_Ty : Opt_Type_Kind_Id := Empty;
-      Divisor        : Node_Or_Entity_Id := Empty) return Check_Info_Type
-   is ((Fix_Info     => (Range_Check_Ty => Range_Check_Ty,
+      Divisor        : Node_Or_Entity_Id := Empty;
+      User_Message   : String_Id := No_String) return Check_Info_Type
+   is ((User_Message => User_Message,
+        Fix_Info     => (Range_Check_Ty => Range_Check_Ty,
                          Divisor        => Divisor,
                          Bound_Info     => No_Bound),
         Continuation => Continuation_Stack));
