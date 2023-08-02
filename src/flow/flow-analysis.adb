@@ -742,8 +742,7 @@ package body Flow.Analysis is
         (Sanity.Check_Function_Side_Effects'Access,
          Sanity.Check_Expressions'Access,
          Sanity.Check_Generated_Refined_Global'Access,
-         Sanity.Check_Illegal_Writes'Access,
-         Sanity.Check_All_Variables_Known'Access,
+         Sanity.Check_Illegal_Writes_And_All_Variables_Known'Access,
          Sanity.Check_Side_Effects_In_Protected_Functions'Access);
    begin
       for C of Sanity_Checks loop
@@ -2406,10 +2405,10 @@ package body Flow.Analysis is
                      end if;
                      Fix_F1 := Var;
 
-                     --  We are dealing with an OUT parameter that is not
-                     --  initialized on return. We suggest two fixes by default
-                     --  and add a third one if the variable is a record part
-                     --  or an array.
+                  --  We are dealing with an OUT parameter that is not
+                  --  initialized on return. We suggest two fixes by default
+                  --  and add a third one if the variable is a record part or
+                  --  an array.
 
                   else
                      declare
