@@ -614,18 +614,20 @@ package SPARK_Util is
    --  Return a string representing the shape of the Ada code surrounding the
    --  input node. This is used to name the VC file for manual proof.
 
-   function Location_String (Input         : Source_Ptr;
-                             Columns       : Boolean := True;
-                             Chain_Markers : Boolean := True;
-                             Natural_Order : Boolean := False) return String;
+   type Location_String_Mode is
+     (Check_Label_Mode,          --  location for a VC
+      Limit_Subp_Mode,           --  location in --limit-subp switch
+      Data_Decomposition_Mode);  --  location in JSON files for data info
+
+   function Location_String
+     (Input : Source_Ptr;
+      Mode  : Location_String_Mode)
+      return String;
    --  Build a string that represents the source location of the source
-   --  pointer. This includes the chain of generic instantiations.
-   --  Columns - If set to False, remove column information from the string to
-   --    keep only line information.
-   --  Chain_Markers - If set to True, add strings to differentiate
-   --    instances/inlining.
-   --  Natural_Order - If set to True, build instantiation chain outermost
-   --    first (e.g. location of instantiation before location of generic)
+   --  pointer, taking into account the intended use of this string, so that
+   --  it includes or not the chain of generic instantiations, and the columns.
+   --  The order in the chain of instantiations also depends on the intended
+   --  use.
 
    ----------------------------------
    -- Queries for particular nodes --
@@ -918,6 +920,19 @@ package SPARK_Util is
    function Supported_Alias (Expr : Node_Id) return Entity_Id;
    --  If Expr is of the form "X'Address", return the root object of X.
    --  Otherwise, return Empty. This function accepts empty expressions.
+
+   function Is_Statically_Disabled
+     (N             : Node_Id;
+      Value         : Boolean;
+      Include_Valid : Boolean)
+      return Boolean
+   with Pre => Nkind (N) in N_Subexpr and then Is_Boolean_Type (Etype (N));
+   --  Returns True iff N is a "statically disabled" condition as described in
+   --  the SPARK UG (7.3.2).
+   --  If Include_Valid is True consider a reference to 'Valid or 'Valid_Scalar
+   --  as disabled for True. In general, Include_Valid is set to True in proof
+   --  as 'Valid is assumed to always evaluate to True but not in flow analysis
+   --  which does not make this assumption.
 
    ---------------------------------
    -- Misc operations and queries --

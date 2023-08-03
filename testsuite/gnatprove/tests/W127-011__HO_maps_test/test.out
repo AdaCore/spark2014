@@ -262,7 +262,8 @@ use_map_ho.adb:77:17: info: range check proved (CVC5: 2 VC)
 use_map_ho.adb:77:19: info: range check proved (CVC5: 4 VC)
 use_map_ho.adb:79:16: info: implicit aspect Always_Terminates on "Add_Zero" has been proved, subprogram will terminate
 use_map_ho.adb:80:10: info: precondition proved (CVC5: 1 VC)
-use_map_ho.adb:82:19: info: postcondition proved (CVC5: 1 VC; Z3: 3 VC)
+use_map_ho.adb:82:19: medium: in inlined expression function body at use_map_ho.adb:69
+use_map_ho.adb:82:19: medium: postcondition might fail, cannot prove Keys_Included_Except (M2, M1, K)
 use_map_ho.adb:82:27: info: precondition proved (CVC5: 2 VC)
 use_map_ho.adb:82:77: info: precondition proved (CVC5: 2 VC)
 use_map_ho.adb:86:16: info: implicit aspect Always_Terminates on "F" has been proved, subprogram will terminate

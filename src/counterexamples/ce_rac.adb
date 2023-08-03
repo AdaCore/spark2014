@@ -3531,6 +3531,24 @@ package body CE_RAC is
 
                else
                   Res := RAC_Expr (Expression (N), Entity (Subtype_Mark (N)));
+
+                  --  Convert to the expected floating-point type
+                  if Has_Floating_Point_Type (Ty)
+                    and then Has_Floating_Point_Type (Expr_Typ)
+                  then
+                     declare
+                        K : constant CE_Values.Float_Kind :=
+                          (if Is_Single_Precision_Floating_Point_Type (Ty) then
+                             Float_32_K
+                           elsif Is_Double_Precision_Floating_Point_Type (Ty)
+                           then
+                             Float_64_K
+                           else
+                             Extended_K);
+                     begin
+                        Res := Real_Value (Conv_Real (Value_Real (Res), K), N);
+                     end;
+                  end if;
                end if;
             end;
 

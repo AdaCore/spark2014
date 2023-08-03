@@ -803,6 +803,9 @@ package VC_Kinds is
       Stop_Reason_Error_Borrow);   --  Error during borrow checking
    --  Indicates why the analysis did not progress to the next phase
 
+   Data_Representation_Subdir_Name : constant String := "data_representation";
+   --  Subdir of "gnatprove" where the data representation files are generated
+
    SPARK_Suffix : constant String := "spark";
    --  Extension of the files where spark_report expects gnat2why results
 

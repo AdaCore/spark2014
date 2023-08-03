@@ -42,7 +42,7 @@ begin
    Open (Source, In_File, "source.txt");
    Set_Col (Source, 1);
    pragma Assert (Mode (Target) = Out_File);
-   Put_Line (Target, Name (Target));
+   --  Put_Line (Target, Name (Target));
    Put_Line (Target, Form (Target));
    pragma Assert (Is_Open (Target));
 
@@ -86,12 +86,12 @@ begin
    Set_Line (Target, 2);
    Set_Line (2);
 
-   Put_Line (Target, Count'Image (Col (Target)));
-   Put_Line (Count'Image (Col));
-   Put_Line (Target, Count'Image (Line (Target)));
-   Put_Line (Count'Image (Line));
-   Put_Line (Target, Count'Image (Page (Target)));
-   Put_Line (Count'Image (Page));
+   --  Put_Line (Target, Count'Image (Col (Target)));
+   --  Put_Line (Count'Image (Col));
+   --  Put_Line (Target, Count'Image (Line (Target)));
+   --  Put_Line (Count'Image (Line));
+   --  Put_Line (Target, Count'Image (Page (Target)));
+   --  Put_Line (Count'Image (Page));
 
    Reset (Source);
    Reset (Target, Out_File);

@@ -34,7 +34,7 @@ with ALI;                             use ALI;
 with Assumption_Types;                use Assumption_Types;
 with Atree;                           use Atree;
 with Binderr;
-with Call;
+with Call;                            use Call;
 with CE_RAC;                          use CE_RAC;
 with Common_Containers;               use Common_Containers;
 with Debug;                           use Debug;
@@ -58,6 +58,7 @@ with GNATCOLL.JSON;                   use GNATCOLL.JSON;
 with GNATCOLL.Utils;
 with Gnat2Why.Assumptions;            use Gnat2Why.Assumptions;
 with Gnat2Why.Borrow_Checker;         use Gnat2Why.Borrow_Checker;
+with Gnat2Why.Data_Decomposition;     use Gnat2Why.Data_Decomposition;
 with Gnat2Why.Decls;                  use Gnat2Why.Decls;
 with Gnat2Why.Error_Messages;         use Gnat2Why.Error_Messages;
 with Gnat2Why_Opts;                   use Gnat2Why_Opts;
@@ -764,6 +765,11 @@ package body Gnat2Why.Driver is
 
          GG_Resolve;
          Timing_Phase_Completed (Timing, Null_Subp, "globals (advanced)");
+
+         --  Read data decomposition info from the JSON file created by calling
+         --  the compiler with -gnatR2js, when the compiler for the selected
+         --  Target and Runtime is available.
+         Read_Data_Decomposition_JSON_File;
 
          --  Mark the current compilation unit as "in SPARK / not in SPARK"
          Mark_Standard_Package;

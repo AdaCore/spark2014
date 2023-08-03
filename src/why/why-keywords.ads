@@ -22,11 +22,12 @@
 -- gnat2why is maintained by AdaCore (http://www.adacore.com)               --
 --                                                                          --
 ------------------------------------------------------------------------------
-with String_Utils;
+
+with Common_Containers; use Common_Containers;
 
 package Why.Keywords is
 
-   procedure Update_Keywords (Keywords : out String_Utils.String_Sets.Set);
+   procedure Update_Keywords (Keywords : out String_Sets.Set);
    --  The body of this procedure is automatically generated using the file
    --  defining the lexer of Why3. The script is: scripts/why3keywords.py
 

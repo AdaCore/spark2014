@@ -787,6 +787,8 @@ Depends, Pre, Post, Contract_Cases), and respect the following conditions:
  * without a parameter or result of deep type (access type or composite type
    containing an access type)
  * not a traversal function
+ * without an annotation to skip part of the analysis (see :ref:`Using
+   Annotations to Request Skipping Parts of the Analysis for an Entity`)
 
 Subprograms that respects all of the above conditions are candidates for
 contextual analysis, and calls to such subprograms are inlined provided the

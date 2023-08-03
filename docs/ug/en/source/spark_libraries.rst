@@ -23,12 +23,27 @@ SPARK Library
 
 As part of the |SPARK| product, several libraries are available through the
 project file :file:`<spark-install>/lib/gnat/sparklib.gpr` (or through the
-project file :file:`<spark-install>/lib/gnat/sparklib_light.gpr` in
-an environment without units ``Ada.Numerics.Big_Numbers.Big_Integers`` and
-``Ada.Numerics.Big_Numbers.Big_Reals``). Header files of the SPARK library are available
-through :menuselection:`Help --> SPARK --> SPARKlib` menu item in GNAT Studio. To
-use this library in a program, you need to add a corresponding dependency in
-your project file, for example:
+project file :file:`<spark-install>/lib/gnat/sparklib_light.gpr` in an
+environment without units ``Ada.Numerics.Big_Numbers.Big_Integers`` and
+``Ada.Numerics.Big_Numbers.Big_Reals``). Header files of the SPARK library are
+available through :menuselection:`Help --> SPARK --> SPARKlib` menu item in
+GNAT Studio. To use this library in a program, you need to copy the project
+template that corresponds to your runtime (either :file:`sparklib.gpr` or
+:file:`sparklib_light.gpr`) and adapt it by providing appropriate values for
+the object directory (attribute ``Object_Dir`` in the project file) and the
+list of excluded source files (attribute ``Excluded_Source_Files`` in the
+project file). The simplest is just to provide a value for ``Object_Dir`` and
+inherit ``Excluded_Source_Files`` from the parent project:
+
+.. code-block:: gpr
+
+   project SPARKlib extends "sparklib_external" is
+      for Object_Dir use "sparklib_obj";
+      for Source_Dirs use SPARKlib_External'Source_Dirs;
+      for Excluded_Source_Files use SPARKlib_External'Excluded_Source_Files;
+   end SPARKlib;
+
+Then, add a corresponding dependency in your project file, for example:
 
 .. code-block:: gpr
 
@@ -42,12 +57,6 @@ your project file, for example:
 You may need to update the environment variable ``GPR_PROJECT_PATH`` for the
 lemma library project to be found by GNAT compiler, as described in
 :ref:`Installation of GNATprove`.
-
-You also need to set the environment variable ``SPARKLIB_OBJECT_DIR`` to
-the absolute path of the object directory where you want compilation and
-verification artefacts for the SPARK library to be created. This should be an
-absolute path (not a relative one) otherwise these artefacts will be created
-inside your |SPARK| install.
 
 Finally, if you instantiate in your code a generic from the SPARK library, you
 also need to pass ``-gnateDSPARK_BODY_MODE=Off`` as a compilation switch for

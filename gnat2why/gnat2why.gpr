@@ -21,16 +21,11 @@ project GNAT2Why is
       for VCS_Kind use "Auto";
    end IDE;
 
-   package CodePeer is
-      for Switches use ("-j0",
-                        "--level", "1",
-                        "--no-default-gnatcheck-rules",
-                        "--be-messages=-suspicious_constant_operation",
-                        "--infer-args", "--disable-issue-type MEMORY_LEAK_ADA",
---                      "--infer-messages=-memory_leak_ada",
--- Switch to activate once issue #434 of CodePeer is fixed, instead of the above
--- use of --infer-args
-                        "-gnatws");
+   package Analyzer is
+
+      for Switches ("analyze") use ("-j0", "--no-gnatcheck");
+      for Switches ("infer") use ("--disable-issue-type", "MEMORY_LEAK_ADA");
+      for Switches ("inspector") use ("--level", "1", "-gnatws");
 
       for Excluded_Source_Dirs use ("gnat_src");
 
@@ -49,7 +44,7 @@ project GNAT2Why is
          "obj/einfo-entities.adb",
          "obj/sinfo-nodes.adb");
 
-   end CodePeer;
+   end Analyzer;
 
    package Coverage is
 

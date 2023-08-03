@@ -31,11 +31,13 @@ package Gnat2Why.Expr.Loops is
    --  Return the list of nodes corresponding to loop invariants if any
 
    function Transform_Exit_Statement
-     (Stmt : N_Exit_Statement_Id)
+     (Stmt   : N_Exit_Statement_Id;
+      Params : Transformation_Params)
       return W_Prog_Id;
 
    function Transform_Loop_Statement
-     (Stmt : N_Loop_Statement_Id)
+     (Stmt   : N_Loop_Statement_Id;
+      Params : Transformation_Params)
       return W_Prog_Id;
 
    function Is_In_Loop_Initial_Statements return Boolean with Ghost;
