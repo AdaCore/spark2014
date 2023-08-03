@@ -213,7 +213,7 @@ can change the maximal time and memory that is allocated to each prover to
 prove each check or assertion.  Using the option ``--steps`` (default: 100),
 one can set the maximum number of reasoning steps that the prover is allowed
 to perform before giving up. The ``steps`` option should be used when
-predictable results are required, because the results with a timeout and
+repeatable results are required, because the results with a timeout and
 memory limit may differ depending on the computing power, current load or
 platform of the machine. The option ``-j`` activates parallel compilation and
 parallel proofs. With ``-jnnn``, at most nnn cores can be used in parallel.
