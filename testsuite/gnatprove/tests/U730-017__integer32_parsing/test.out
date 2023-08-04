@@ -76,7 +76,7 @@ integer32_parsing.adb:105:28: info: division check proved (CVC5: 1 VC)
 integer32_parsing.adb:105:40: info: division check proved (CVC5: 1 VC)
 integer32_parsing.adb:107:13: info: subprogram variant proved (CVC5: 1 VC)
 integer32_parsing.adb:107:13: medium: in inlined expression function body at integer32_parsing.adb:80
-integer32_parsing.adb:107:13: medium: precondition might fail, cannot prove Is_Integer_32 (s, First, Last - 1, V / 10)
+integer32_parsing.adb:107:13: medium: precondition might fail, cannot prove Is_Integer_32 (s, First, Last - 1, V / 10) (e.g. when First = 1 and Last = 3 and V1 = 0 and V2 = 0)
 integer32_parsing.adb:107:54: info: range check proved (CVC5: 2 VC)
 integer32_parsing.adb:107:62: info: division check proved (CVC5: 1 VC)
 integer32_parsing.adb:107:71: info: division check proved (CVC5: 1 VC)
@@ -114,10 +114,10 @@ integer32_parsing.adb:149:47: info: overflow check proved (CVC5: 2 VC)
 integer32_parsing.adb:150:36: info: overflow check proved (CVC5: 2 VC)
 integer32_parsing.adb:152:46: info: overflow check proved (CVC5: 2 VC)
 integer32_parsing.adb:153:24: info: precondition proved (CVC5: 3 VC)
-integer32_parsing.adb:153:24: medium: assertion might fail
+integer32_parsing.adb:153:24: medium: assertion might fail (e.g. when First1 = 2 and Is_Pos = False and s1'First = 1 and s1'Last = 11)
 integer32_parsing.adb:153:54: info: range check proved (CVC5: 2 VC)
 integer32_parsing.adb:154:24: info: precondition proved (CVC5: 3 VC)
-integer32_parsing.adb:154:24: medium: assertion might fail
+integer32_parsing.adb:154:24: medium: assertion might fail (e.g. when First2 = 3 and Is_Pos = False and s2'First = 2 and s2'Last = 1)
 integer32_parsing.adb:154:54: info: range check proved (CVC5: 2 VC)
 integer32_parsing.adb:156:53: info: overflow check proved (CVC5: 2 VC)
 integer32_parsing.adb:156:60: medium: assertion might fail, cannot prove s2 (I) = '0'
@@ -144,14 +144,14 @@ integer32_parsing.adb:176:66: info: range check proved (CVC5: 2 VC), in call inl
 integer32_parsing.adb:176:80: info: overflow check proved (CVC5: 2 VC), in call inlined at integer32_parsing.adb:179
 integer32_parsing.adb:176:80: info: range check proved (CVC5: 2 VC), in call inlined at integer32_parsing.adb:179
 integer32_parsing.adb:179:07: info: analyzing call to "Prove_Is_Integer" in context
-integer32_parsing.adb:182:21: medium: overflow check might fail, cannot prove lower bound for res * 10 [reason for check: result of multiplication must fit in a 32-bits machine integer] [possible fix: loop at line 181 should mention res in a loop invariant]
-integer32_parsing.adb:182:26: medium: overflow check might fail, cannot prove lower bound for res * 10 + (if Is_Pos then 1 else -1) * Char_To_Int (s (I - 1 + First)) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: loop at line 181 should mention res in a loop invariant]
+integer32_parsing.adb:182:21: medium: overflow check might fail, cannot prove lower bound for res * 10 (e.g. when First = 2 and Is_Pos = False and res = -214748365) [reason for check: result of multiplication must fit in a 32-bits machine integer] [possible fix: loop at line 181 should mention res in a loop invariant]
+integer32_parsing.adb:182:26: medium: overflow check might fail, cannot prove lower bound for res * 10 + (if Is_Pos then 1 else -1) * Char_To_Int (s (I - 1 + First)) (e.g. when First = 2 and I = 1 and Is_Pos = False and res = -214748364 and s'First = 1 and s'Last = 2) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: loop at line 181 should mention res in a loop invariant]
 integer32_parsing.adb:182:55: medium: overflow check might fail, cannot prove lower bound for (if Is_Pos then 1 else -1) * Char_To_Int (s (I - 1 + First)) [reason for check: result of multiplication must fit in a 32-bits machine integer]
 integer32_parsing.adb:182:57: medium: precondition might fail
-integer32_parsing.adb:182:79: medium: array index check might fail [reason for check: result of addition must be a valid index into the array]
-integer32_parsing.adb:182:79: medium: overflow check might fail, cannot prove upper bound for I - 1 + First [reason for check: result of addition must fit in a 32-bits machine integer]
-integer32_parsing.adb:183:40: medium: assertion might fail, cannot prove res >= 0 [possible fix: loop at line 181 should mention res in a loop invariant]
-integer32_parsing.adb:184:25: medium: assertion might fail [possible fix: loop at line 181 should mention res in a loop invariant]
+integer32_parsing.adb:182:79: medium: array index check might fail (e.g. when First = 2 and I = 1 and s'First = 1 and s'Last = 1) [reason for check: result of addition must be a valid index into the array]
+integer32_parsing.adb:182:79: medium: overflow check might fail, cannot prove upper bound for I - 1 + First (e.g. when First = 2147483639 and I = 10) [reason for check: result of addition must fit in a 32-bits machine integer]
+integer32_parsing.adb:183:40: medium: assertion might fail, cannot prove res >= 0 (e.g. when Is_Pos = True and res = -10) [possible fix: loop at line 181 should mention res in a loop invariant]
+integer32_parsing.adb:184:25: medium: assertion might fail (e.g. when First = 0 and Is_Pos = True and res = 0 and s'Last = 0) [possible fix: loop at line 181 should mention res in a loop invariant]
 integer32_parsing.adb:184:52: medium: overflow check might fail, cannot prove lower bound for (if Is_Pos then 1 else -1) * Char_To_Int (s (I - 1 + First)) [reason for check: result of multiplication must fit in a 32-bits machine integer] [possible fix: use pragma Overflow_Mode or switch -gnato13 or unit SPARK.Big_Integers]
 integer32_parsing.adb:184:54: medium: precondition might fail
 integer32_parsing.adb:184:76: info: index check proved (CVC5: 2 VC)
@@ -162,7 +162,7 @@ integer32_parsing.adb:185:25: medium: precondition might fail
 integer32_parsing.adb:185:47: info: index check proved (CVC5: 2 VC)
 integer32_parsing.adb:185:47: info: overflow check proved (CVC5: 2 VC)
 integer32_parsing.adb:185:68: info: division check proved (CVC5: 1 VC)
-integer32_parsing.adb:186:25: medium: assertion might fail, cannot prove Is_Integer_32 (s, First, Last - 1, V / 10) [possible fix: loop at line 181 should mention res in a loop invariant]
+integer32_parsing.adb:186:25: medium: assertion might fail, cannot prove Is_Integer_32 (s, First, Last - 1, V / 10) (e.g. when First = 2 and FirstZ = 2 and I = 2 and res = 0 and s'First = 1 and s'Last = 3) [possible fix: loop at line 181 should mention res in a loop invariant]
 integer32_parsing.adb:186:25: medium: in inlined expression function body at integer32_parsing.adb:80
 integer32_parsing.adb:186:25: medium: precondition might fail, cannot prove s (I) in '0' .. '9'
 integer32_parsing.adb:186:43: info: range check proved (CVC5: 2 VC)
@@ -175,12 +175,12 @@ integer32_parsing.adb:188:28: medium: precondition might fail, cannot prove s (I
 integer32_parsing.adb:188:46: info: range check proved (CVC5: 2 VC)
 integer32_parsing.adb:188:55: info: range check proved (CVC5: 2 VC)
 integer32_parsing.adb:191:35: info: overflow check proved (CVC5: 2 VC)
-integer32_parsing.adb:191:52: medium: assertion might fail, cannot prove res in -(Integer_32'Last / Tens (10 - I)) .. Integer_32'Last / Tens (10 - I) [possible fix: loop at line 181 should mention res in a loop invariant]
+integer32_parsing.adb:191:52: medium: assertion might fail, cannot prove res in -(Integer_32'Last / Tens (10 - I)) .. Integer_32'Last / Tens (10 - I) (e.g. when First = 2 and I = 1 and res = 0) [possible fix: loop at line 181 should mention res in a loop invariant]
 integer32_parsing.adb:191:77: medium: divide by zero might fail
 integer32_parsing.adb:191:88: info: index check proved (CVC5: 2 VC)
 integer32_parsing.adb:191:113: medium: divide by zero might fail
 integer32_parsing.adb:191:124: info: index check proved (CVC5: 2 VC)
-integer32_parsing.adb:192:25: medium: assertion might fail [possible fix: loop at line 181 should mention res in a loop invariant]
+integer32_parsing.adb:192:25: medium: assertion might fail (e.g. when I = 1 and res = 0) [possible fix: loop at line 181 should mention res in a loop invariant]
 integer32_parsing.adb:192:32: info: overflow check proved (CVC5: 2 VC)
 integer32_parsing.adb:192:41: info: index check proved (CVC5: 2 VC)
 integer32_parsing.adb:192:46: medium: overflow check might fail, cannot prove upper bound for -Tens (I + 1) + 1 [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: use pragma Overflow_Mode or switch -gnato13 or unit SPARK.Big_Integers]
@@ -206,22 +206,22 @@ integer32_parsing.adb:219:46: info: precondition proved (CVC5: 5 VC)
 integer32_parsing.adb:219:64: info: range check proved (CVC5: 2 VC)
 integer32_parsing.adb:219:78: info: overflow check proved (CVC5: 2 VC)
 integer32_parsing.adb:219:78: info: range check proved (CVC5: 2 VC)
-integer32_parsing.adb:222:22: medium: array index check might fail [reason for check: result of addition must be a valid index into the array]
-integer32_parsing.adb:222:22: medium: overflow check might fail, cannot prove upper bound for I - 1 + First [reason for check: result of addition must fit in a 32-bits machine integer]
-integer32_parsing.adb:226:14: medium: overflow check might fail, cannot prove upper bound for abs (V) [reason for check: result of absolute value must fit in a 32-bits machine integer] [possible fix: loop at line 221 should mention V in a loop invariant]
+integer32_parsing.adb:222:22: medium: array index check might fail (e.g. when First = 2 and I = 2 and s'First = 1 and s'Last = 2) [reason for check: result of addition must be a valid index into the array]
+integer32_parsing.adb:222:22: medium: overflow check might fail, cannot prove upper bound for I - 1 + First (e.g. when First = 2147483639 and I = 10) [reason for check: result of addition must fit in a 32-bits machine integer]
+integer32_parsing.adb:226:14: medium: overflow check might fail, cannot prove upper bound for abs (V) (e.g. when V = Integer_32'First) [reason for check: result of absolute value must fit in a 32-bits machine integer] [possible fix: loop at line 221 should mention V in a loop invariant]
 integer32_parsing.adb:227:23: info: overflow check proved (CVC5: 2 VC)
 integer32_parsing.adb:227:72: info: index check proved (CVC5: 2 VC)
 integer32_parsing.adb:227:72: info: overflow check proved (CVC5: 2 VC)
-integer32_parsing.adb:229:28: medium: assertion might fail [possible fix: precondition of subprogram at integer32_parsing.ads:47 should mention s]
+integer32_parsing.adb:229:28: medium: assertion might fail (e.g. when s'First = 1 and s'Last = 11) [possible fix: precondition of subprogram at integer32_parsing.ads:47 should mention s]
 integer32_parsing.adb:229:32: info: precondition proved (CVC5: 1 VC)
-integer32_parsing.adb:232:17: medium: overflow check might fail, cannot prove lower bound for V * 10 [reason for check: result of multiplication must fit in a 32-bits machine integer] [possible fix: loop at line 221 should mention V in a loop invariant]
-integer32_parsing.adb:232:22: medium: overflow check might fail, cannot prove lower bound for V * 10 + (if Is_Pos then 1 else -1) * Char_To_Int (s (I - 1 + First)) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: loop at line 221 should mention V in a loop invariant]
+integer32_parsing.adb:232:17: medium: overflow check might fail, cannot prove lower bound for V * 10 (e.g. when Is_Pos = False and V = -214748365) [reason for check: result of multiplication must fit in a 32-bits machine integer] [possible fix: loop at line 221 should mention V in a loop invariant]
+integer32_parsing.adb:232:22: medium: overflow check might fail, cannot prove lower bound for V * 10 + (if Is_Pos then 1 else -1) * Char_To_Int (s (I - 1 + First)) (e.g. when First = 2 and I = 1 and Is_Pos = False and V = -214748364 and s'First = 1 and s'Last = 2) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: loop at line 221 should mention V in a loop invariant]
 integer32_parsing.adb:232:51: medium: overflow check might fail, cannot prove lower bound for (if Is_Pos then 1 else -1) * Char_To_Int (s (I - 1 + First)) [reason for check: result of multiplication must fit in a 32-bits machine integer] [possible fix: precondition of subprogram at integer32_parsing.ads:47 should mention s]
 integer32_parsing.adb:232:53: info: precondition proved (CVC5: 2 VC)
 integer32_parsing.adb:232:75: info: index check proved (CVC5: 2 VC)
 integer32_parsing.adb:232:75: info: overflow check proved (CVC5: 2 VC)
-integer32_parsing.adb:233:40: medium: assertion might fail, cannot prove V >= 0 [possible fix: loop at line 221 should mention V in a loop invariant]
-integer32_parsing.adb:234:25: medium: assertion might fail [possible fix: loop at line 221 should mention V in a loop invariant]
+integer32_parsing.adb:233:40: medium: assertion might fail, cannot prove V >= 0 (e.g. when Is_Pos = True and V = -10) [possible fix: loop at line 221 should mention V in a loop invariant]
+integer32_parsing.adb:234:25: medium: assertion might fail (e.g. when First = 0 and Is_Pos = False and V = 0 and s'Last = 0) [possible fix: loop at line 221 should mention V in a loop invariant]
 integer32_parsing.adb:234:52: medium: overflow check might fail, cannot prove lower bound for (if Is_Pos then 1 else -1) * Char_To_Int (s (I - 1 + First)) [reason for check: result of multiplication must fit in a 32-bits machine integer] [possible fix: use pragma Overflow_Mode or switch -gnato13 or unit SPARK.Big_Integers]
 integer32_parsing.adb:234:54: info: precondition proved (CVC5: 2 VC)
 integer32_parsing.adb:234:76: info: index check proved (CVC5: 2 VC)
@@ -232,21 +232,21 @@ integer32_parsing.adb:235:25: medium: assertion might fail [possible fix: loop a
 integer32_parsing.adb:235:47: info: index check proved (CVC5: 2 VC)
 integer32_parsing.adb:235:47: info: overflow check proved (CVC5: 2 VC)
 integer32_parsing.adb:235:66: info: division check proved (CVC5: 1 VC)
-integer32_parsing.adb:236:25: medium: assertion might fail, cannot prove Is_Integer_32 (s, First, Last - 1, V / 10) [possible fix: loop at line 221 should mention V in a loop invariant]
+integer32_parsing.adb:236:25: medium: assertion might fail, cannot prove Is_Integer_32 (s, First, Last - 1, V / 10) (e.g. when First = 1 and FirstZ = 1 and I = 2 and V = 0 and s'First = 1 and s'Last = 2) [possible fix: loop at line 221 should mention V in a loop invariant]
 integer32_parsing.adb:236:25: medium: in inlined expression function body at integer32_parsing.adb:80
-integer32_parsing.adb:236:25: medium: precondition might fail, cannot prove s (I) in '0' .. '9' [possible fix: precondition of subprogram at integer32_parsing.ads:47 should mention s]
+integer32_parsing.adb:236:25: medium: precondition might fail, cannot prove s (I) in '0' .. '9' (e.g. when FirstZ = 1 and I = 1 and s'First = 1 and s'Last = 2) [possible fix: precondition of subprogram at integer32_parsing.ads:47 should mention s]
 integer32_parsing.adb:236:43: info: range check proved (CVC5: 2 VC)
 integer32_parsing.adb:236:57: info: overflow check proved (CVC5: 2 VC)
 integer32_parsing.adb:236:57: info: range check proved (CVC5: 2 VC)
 integer32_parsing.adb:237:19: info: overflow check proved (CVC5: 2 VC)
 integer32_parsing.adb:238:28: info: precondition proved (CVC5: 1 VC)
-integer32_parsing.adb:238:28: medium: assertion might fail [possible fix: precondition of subprogram at integer32_parsing.ads:47 should mention s]
+integer32_parsing.adb:238:28: medium: assertion might fail (e.g. when s'First = 1 and s'Last = 1) [possible fix: precondition of subprogram at integer32_parsing.ads:47 should mention s]
 integer32_parsing.adb:239:28: medium: assertion might fail, cannot prove Is_Integer_32 (s, First, Last - 1, V / 10) [possible fix: loop at line 221 should mention V in a loop invariant]
 integer32_parsing.adb:239:28: medium: in inlined expression function body at integer32_parsing.adb:80
 integer32_parsing.adb:239:28: medium: precondition might fail, cannot prove s (I) in '0' .. '9' [possible fix: precondition of subprogram at integer32_parsing.ads:47 should mention s]
 integer32_parsing.adb:239:46: info: range check proved (CVC5: 2 VC)
 integer32_parsing.adb:239:55: info: range check proved (CVC5: 2 VC)
-integer32_parsing.adb:243:25: medium: assertion might fail [possible fix: loop at line 221 should mention V in a loop invariant]
+integer32_parsing.adb:243:25: medium: assertion might fail (e.g. when I = 1 and V = 0) [possible fix: loop at line 221 should mention V in a loop invariant]
 integer32_parsing.adb:243:30: info: overflow check proved (CVC5: 2 VC)
 integer32_parsing.adb:243:39: info: index check proved (CVC5: 2 VC)
 integer32_parsing.adb:243:44: medium: overflow check might fail, cannot prove upper bound for -Tens (I + 1) + 1 [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: use pragma Overflow_Mode or switch -gnato13 or unit SPARK.Big_Integers]
@@ -255,41 +255,41 @@ integer32_parsing.adb:243:64: medium: overflow check might fail, cannot prove lo
 integer32_parsing.adb:251:07: info: initialization of "First" proved
 integer32_parsing.adb:252:17: info: add a contract to analyze it separately from calling contexts
 integer32_parsing.adb:252:17: info: local subprogram "Prove_Is_Integer" only analyzed in the context of calls
-integer32_parsing.adb:256:28: medium: assertion might fail, in call inlined at integer32_parsing.adb:291 [possible fix: loop at line 267 should mention res in a loop invariant]
-integer32_parsing.adb:256:28: medium: precondition might fail, in call inlined at integer32_parsing.adb:291 [possible fix: loop at line 267 should mention res in a loop invariant]
+integer32_parsing.adb:256:28: medium: assertion might fail, in call inlined at integer32_parsing.adb:291 (e.g. when I = 4 and V = 1 and res = "88808888888") [possible fix: loop at line 267 should mention res in a loop invariant]
+integer32_parsing.adb:256:28: medium: precondition might fail, in call inlined at integer32_parsing.adb:291 (e.g. when I = 4 and V = 1 and res(1) = 'NUL' and res(2) = 'NUL' and res(3) = '8' and res(4) = 'NUL' and res(5) = 'NUL') [possible fix: loop at line 267 should mention res in a loop invariant]
 integer32_parsing.adb:256:59: medium: divide by zero might fail, in call inlined at integer32_parsing.adb:291 [possible fix: add precondition (Tens (12 - I) /= 0) to subprogram at integer32_parsing.ads:65]
-integer32_parsing.adb:256:59: medium: overflow check might fail, cannot prove lower bound for V / Tens (12 - I), in call inlined at integer32_parsing.adb:291 [reason for check: result of division must fit in a 32-bits machine integer] [possible fix: use pragma Overflow_Mode or switch -gnato13 or unit SPARK.Big_Integers]
-integer32_parsing.adb:256:70: medium: array index check might fail, in call inlined at integer32_parsing.adb:291 [reason for check: result of subtraction must be a valid index into the array]
+integer32_parsing.adb:256:59: medium: overflow check might fail, cannot prove lower bound for V / Tens (12 - I), in call inlined at integer32_parsing.adb:291 (e.g. when I = 3 and V = 1) [reason for check: result of division must fit in a 32-bits machine integer] [possible fix: use pragma Overflow_Mode or switch -gnato13 or unit SPARK.Big_Integers]
+integer32_parsing.adb:256:70: medium: array index check might fail, in call inlined at integer32_parsing.adb:291 (e.g. when I = 1) [reason for check: result of subtraction must be a valid index into the array]
 integer32_parsing.adb:256:75: info: division check proved (CVC5: 1 VC), in call inlined at integer32_parsing.adb:291
-integer32_parsing.adb:257:28: medium: assertion might fail, cannot prove Is_Integer_32 (s, First, Last - 1, V / 10), in call inlined at integer32_parsing.adb:291 [possible fix: loop at line 267 should mention res in a loop invariant]
+integer32_parsing.adb:257:28: medium: assertion might fail, cannot prove Is_Integer_32 (s, First, Last - 1, V / 10), in call inlined at integer32_parsing.adb:291 (e.g. when First = 3 and I = 4 and V = 1 and res = "88808888888") [possible fix: loop at line 267 should mention res in a loop invariant]
 integer32_parsing.adb:257:28: medium: in inlined expression function body at integer32_parsing.adb:80
-integer32_parsing.adb:257:28: medium: precondition might fail, cannot prove s (I) in '0' .. '9', in call inlined at integer32_parsing.adb:291 [possible fix: loop at line 267 should mention res in a loop invariant]
+integer32_parsing.adb:257:28: medium: precondition might fail, cannot prove s (I) in '0' .. '9', in call inlined at integer32_parsing.adb:291 (e.g. when First = 3 and I = 4 and V = 1 and res(1) = 'NUL' and res(2) = 'NUL' and res(3) = '8' and res(4) = 'NUL' and res(5) = '0') [possible fix: loop at line 267 should mention res in a loop invariant]
 integer32_parsing.adb:257:48: info: range check proved (CVC5: 2 VC), in call inlined at integer32_parsing.adb:291
 integer32_parsing.adb:257:60: medium: divide by zero might fail, in call inlined at integer32_parsing.adb:291 [possible fix: add precondition (Tens (12 - I) /= 0) to subprogram at integer32_parsing.ads:65]
-integer32_parsing.adb:257:60: medium: overflow check might fail, cannot prove lower bound for V / Tens (12 - I), in call inlined at integer32_parsing.adb:291 [reason for check: result of division must fit in a 32-bits machine integer] [possible fix: use pragma Overflow_Mode or switch -gnato13 or unit SPARK.Big_Integers]
-integer32_parsing.adb:257:71: medium: array index check might fail, in call inlined at integer32_parsing.adb:291 [reason for check: result of subtraction must be a valid index into the array]
-integer32_parsing.adb:260:24: medium: assertion might fail, cannot prove Char_To_Int (s (Last)) = abs (V rem 10), in call inlined at integer32_parsing.adb:291 [possible fix: loop at line 267 should mention res in a loop invariant]
+integer32_parsing.adb:257:60: medium: overflow check might fail, cannot prove lower bound for V / Tens (12 - I), in call inlined at integer32_parsing.adb:291 (e.g. when I = 4 and V = 1) [reason for check: result of division must fit in a 32-bits machine integer] [possible fix: use pragma Overflow_Mode or switch -gnato13 or unit SPARK.Big_Integers]
+integer32_parsing.adb:257:71: medium: array index check might fail, in call inlined at integer32_parsing.adb:291 (e.g. when I = 1) [reason for check: result of subtraction must be a valid index into the array]
+integer32_parsing.adb:260:24: medium: assertion might fail, cannot prove Char_To_Int (s (Last)) = abs (V rem 10), in call inlined at integer32_parsing.adb:291 (e.g. when V = 1 and res = "88888888880") [possible fix: loop at line 267 should mention res in a loop invariant]
 integer32_parsing.adb:260:24: medium: in inlined expression function body at integer32_parsing.adb:79
-integer32_parsing.adb:260:24: medium: precondition might fail, cannot prove s (I) in '0' .. '9', in call inlined at integer32_parsing.adb:291 [possible fix: loop at line 267 should mention res in a loop invariant]
+integer32_parsing.adb:260:24: medium: precondition might fail, cannot prove s (I) in '0' .. '9', in call inlined at integer32_parsing.adb:291 (e.g. when First = 9 and I = 10 and res = (8 => 'NUL', 9 => '8', 10 => 'NUL', 11 => '0', others => 'NUL')) [possible fix: loop at line 267 should mention res in a loop invariant]
 integer32_parsing.adb:260:44: info: range check proved (CVC5: 2 VC), in call inlined at integer32_parsing.adb:291
-integer32_parsing.adb:268:15: medium: array index check might fail [reason for check: value must be a valid index into the array] [possible fix: loop at line 267 should mention top in a loop invariant]
+integer32_parsing.adb:268:15: medium: array index check might fail (e.g. when top = 0) [reason for check: value must be a valid index into the array] [possible fix: loop at line 267 should mention top in a loop invariant]
 integer32_parsing.adb:268:43: info: division check proved (CVC5: 1 VC)
 integer32_parsing.adb:269:21: info: range check proved (CVC5: 2 VC)
 integer32_parsing.adb:270:17: info: division check proved (CVC5: 1 VC)
-integer32_parsing.adb:272:25: medium: assertion might fail [possible fix: loop at line 267 should mention top in a loop invariant]
-integer32_parsing.adb:273:25: medium: assertion might fail [possible fix: loop at line 267 should mention X in a loop invariant]
+integer32_parsing.adb:272:25: medium: assertion might fail (e.g. when I = 1 and top = 0) [possible fix: loop at line 267 should mention top in a loop invariant]
+integer32_parsing.adb:273:25: medium: assertion might fail (e.g. when I = 1 and X = 1) [possible fix: loop at line 267 should mention X in a loop invariant]
 integer32_parsing.adb:273:48: info: division check proved (CVC5: 1 VC)
 integer32_parsing.adb:273:79: info: division check proved (CVC5: 1 VC)
-integer32_parsing.adb:274:25: medium: assertion might fail [possible fix: loop at line 267 should mention X in a loop invariant]
+integer32_parsing.adb:274:25: medium: assertion might fail (e.g. when I = 1 and V = 1 and X = 1) [possible fix: loop at line 267 should mention X in a loop invariant]
 integer32_parsing.adb:274:31: info: division check proved (CVC5: 1 VC)
 integer32_parsing.adb:274:31: medium: overflow check might fail, cannot prove lower bound for V / Tens (I) [reason for check: result of division must fit in a 32-bits machine integer] [possible fix: use pragma Overflow_Mode or switch -gnato13 or unit SPARK.Big_Integers]
 integer32_parsing.adb:274:42: info: division check proved (CVC5: 1 VC)
-integer32_parsing.adb:275:25: medium: assertion might fail [possible fix: loop at line 267 should mention X in a loop invariant]
+integer32_parsing.adb:275:25: medium: assertion might fail (e.g. when I = 1 and V = 1 and X = 1) [possible fix: loop at line 267 should mention X in a loop invariant]
 integer32_parsing.adb:275:31: info: division check proved (CVC5: 1 VC)
 integer32_parsing.adb:275:31: medium: overflow check might fail, cannot prove lower bound for V / Tens (I + 1) [reason for check: result of division must fit in a 32-bits machine integer] [possible fix: use pragma Overflow_Mode or switch -gnato13 or unit SPARK.Big_Integers]
 integer32_parsing.adb:275:41: medium: array index check might fail [reason for check: result of addition must be a valid index into the array]
 integer32_parsing.adb:276:25: info: precondition proved (CVC5: 2 VC)
-integer32_parsing.adb:276:25: medium: assertion might fail [possible fix: loop at line 267 should mention res in a loop invariant]
+integer32_parsing.adb:276:25: medium: assertion might fail (e.g. when I = 1 and V = 1 and res = "88888888888") [possible fix: loop at line 267 should mention res in a loop invariant]
 integer32_parsing.adb:276:61: info: division check proved (CVC5: 1 VC)
 integer32_parsing.adb:276:61: medium: overflow check might fail, cannot prove lower bound for V / Tens (I) [reason for check: result of division must fit in a 32-bits machine integer] [possible fix: use pragma Overflow_Mode or switch -gnato13 or unit SPARK.Big_Integers]
 integer32_parsing.adb:276:72: info: division check proved (CVC5: 1 VC)
@@ -297,28 +297,28 @@ integer32_parsing.adb:277:30: info: overflow check proved (CVC5: 2 VC)
 integer32_parsing.adb:277:30: medium: divide by zero might fail [possible fix: subprogram at integer32_parsing.ads:65 should mention V in a precondition]
 integer32_parsing.adb:277:40: medium: array index check might fail [reason for check: result of addition must be a valid index into the array]
 integer32_parsing.adb:277:63: info: division check proved (CVC5: 1 VC)
-integer32_parsing.adb:277:79: medium: assertion might fail, cannot prove res (12 - I) <= Last32 (11 - I) [possible fix: loop at line 267 should mention res in a loop invariant]
+integer32_parsing.adb:277:79: medium: assertion might fail, cannot prove res (12 - I) <= Last32 (11 - I) (e.g. when I = 1 and V = 1 and res = "88888888888") [possible fix: loop at line 267 should mention res in a loop invariant]
 integer32_parsing.adb:278:30: info: overflow check proved (CVC5: 2 VC)
 integer32_parsing.adb:278:30: medium: divide by zero might fail [possible fix: subprogram at integer32_parsing.ads:65 should mention V in a precondition]
 integer32_parsing.adb:278:40: medium: array index check might fail [reason for check: result of addition must be a valid index into the array]
 integer32_parsing.adb:278:65: medium: divide by zero might fail
-integer32_parsing.adb:279:30: medium: assertion might fail, cannot prove res (12 - I) <= Last32 (11 - I) or (I = 1 and res (12 - I) = Character'Succ (Last32 (11 - I))) [possible fix: loop at line 267 should mention res in a loop invariant]
+integer32_parsing.adb:279:30: medium: assertion might fail, cannot prove res (12 - I) <= Last32 (11 - I) or (I = 1 and res (12 - I) = Character'Succ (Last32 (11 - I))) (e.g. when I = 2 and V = 5 and res = "88888888888") [possible fix: loop at line 267 should mention res in a loop invariant]
 integer32_parsing.adb:280:72: medium: range check might fail [reason for check: value cannot be maximum value of the type]
 integer32_parsing.adb:282:20: info: overflow check proved (CVC5: 2 VC)
-integer32_parsing.adb:285:14: medium: array index check might fail [reason for check: value must be a valid index into the array] [possible fix: loop at line 267 should mention top in a loop invariant]
+integer32_parsing.adb:285:14: medium: array index check might fail (e.g. when top = 0) [reason for check: value must be a valid index into the array] [possible fix: loop at line 267 should mention top in a loop invariant]
 integer32_parsing.adb:286:20: info: range check proved (CVC5: 2 VC)
-integer32_parsing.adb:289:22: medium: assertion might fail [possible fix: loop at line 267 should mention res in a loop invariant]
-integer32_parsing.adb:289:40: medium: precondition might fail, cannot prove s'Last - First = 9
+integer32_parsing.adb:289:22: medium: assertion might fail (e.g. when First = 1 and V = 1 and res = "88888888888") [possible fix: loop at line 267 should mention res in a loop invariant]
+integer32_parsing.adb:289:40: medium: precondition might fail, cannot prove s'Last - First = 9 (e.g. when First = 1 and V = 1)
 integer32_parsing.adb:289:71: info: range check proved (CVC5: 2 VC)
 integer32_parsing.adb:291:07: info: analyzing call to "Prove_Is_Integer" in context
 integer32_parsing.adb:295:09: info: range check proved (CVC5: 2 VC)
 integer32_parsing.adb:295:47: info: length check proved (CVC5: 3 VC; Trivial: 1 VC)
 integer32_parsing.adb:295:47: info: range check proved (CVC5: 4 VC)
 integer32_parsing.adb:295:56: info: overflow check proved (CVC5: 2 VC)
-integer32_parsing.adb:297:09: medium: precondition might fail, cannot prove Valid_Int_32 (s1) [possible fix: loop at line 267 should mention res and top in a loop invariant]
+integer32_parsing.adb:297:09: medium: precondition might fail, cannot prove Valid_Int_32 (s1) (e.g. when res = "88888888888" and top = 10) [possible fix: loop at line 267 should mention res and top in a loop invariant]
 integer32_parsing.adb:297:37: info: range check proved (CVC5: 4 VC)
 integer32_parsing.adb:297:46: info: overflow check proved (CVC5: 2 VC)
-integer32_parsing.adb:298:09: medium: precondition might fail, cannot prove Valid_Int (s1) [possible fix: loop at line 267 should mention res and top in a loop invariant]
+integer32_parsing.adb:298:09: medium: precondition might fail, cannot prove Valid_Int (s1) (e.g. when res = "88888888888" and top = 10) [possible fix: loop at line 267 should mention res and top in a loop invariant]
 integer32_parsing.adb:298:39: info: range check proved (CVC5: 4 VC)
 integer32_parsing.adb:298:48: info: overflow check proved (CVC5: 2 VC)
 integer32_parsing.ads:9:13: info: implicit aspect Always_Terminates on "Valid_Int" has been proved, subprogram will terminate
@@ -356,7 +356,7 @@ integer32_parsing.ads:52:13: info: implicit aspect Always_Terminates on "Length"
 integer32_parsing.ads:53:32: info: overflow check proved (CVC5: 2 VC)
 integer32_parsing.ads:53:32: info: range check proved (CVC5: 2 VC)
 integer32_parsing.ads:65:13: info: implicit aspect Always_Terminates on "Print_Int_32" has been proved, subprogram will terminate
-integer32_parsing.ads:66:14: medium: postcondition might fail, cannot prove Print_Int_32'Result'Length = Length (V)
+integer32_parsing.ads:66:14: medium: postcondition might fail, cannot prove Print_Int_32'Result'Length = Length (V) (e.g. when V = 0)
 integer32_parsing.ads:66:33: medium: range check might fail, cannot prove upper bound for Print_Int_32'Result'Length
 integer32_parsing.ads:68:15: info: precondition proved (CVC5: 1 VC)
 integer32_parsing.ads:69:15: medium: precondition might fail, cannot prove s'Last < Integer'Last

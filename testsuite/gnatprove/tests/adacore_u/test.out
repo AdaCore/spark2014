@@ -542,7 +542,7 @@ use_file_system.adb:11:05: info: precondition proved (CVC5: 1 VC)
 use_file_system.adb:12:05: info: precondition proved (CVC5: 1 VC)
 use_file_system.adb:14:05: info: precondition proved (CVC5: 1 VC)
 use_file_system.adb:15:05: medium: precondition might fail
-fixed_mem.adb:9:55: medium: range check might fail, cannot prove lower bound for Max - Free + 1 [reason for check: returned value must fit in the result type of the function] [possible fix: subprogram at fixed_mem.ads:8 should mention Free in a precondition]
+fixed_mem.adb:9:55: medium: range check might fail, cannot prove lower bound for Max - Free + 1 (e.g. when Free = 1002) [reason for check: returned value must fit in the result type of the function] [possible fix: subprogram at fixed_mem.ads:8 should mention Free in a precondition]
 fixed_mem.adb:12:07: info: initialization of "Free_Init" proved
 fixed_mem.adb:14:17: info: add a contract to analyze it separately from calling contexts
 fixed_mem.adb:14:17: info: local subprogram "Check" only analyzed in the context of calls
@@ -551,7 +551,7 @@ fixed_mem.adb:24:20: info: overflow check proved (CVC5: 2 VC)
 fixed_mem.adb:25:07: info: analyzing call to "Check" in context
 fixed_mem.ads:6:14: info: postcondition proved (CVC5: 1 VC)
 fixed_mem.ads:8:13: info: implicit aspect Always_Terminates on "Free_Memory" has been proved, subprogram will terminate
-mem.adb:11:55: medium: range check might fail, cannot prove lower bound for Max - Free + 1 [reason for check: returned value must fit in the result type of the function] [possible fix: subprogram at mem.ads:9 should mention Free in a precondition]
+mem.adb:11:55: medium: range check might fail, cannot prove lower bound for Max - Free + 1 (e.g. when Free = 1002) [reason for check: returned value must fit in the result type of the function] [possible fix: subprogram at mem.ads:9 should mention Free in a precondition]
 mem.adb:13:14: info: add a contract to analyze it separately from calling contexts
 mem.adb:13:14: info: local subprogram "Assign" only analyzed in the context of calls
 mem.adb:13:41: info: initialization of "To" proved
