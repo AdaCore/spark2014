@@ -1,0 +1,38 @@
+ho_specialization.adb:12:14: warning: automatically instantiated lemma contains calls to "Call" which cannot be arbitrarily specialized
+ho_specialization.adb:12:14: warning: it will not be automatically instantiated on specializations of "Call"
+ho_specialization.adb:29:52: error: subprogram annotated with Higher_Order_Specialization shall only reference its access-to-function parameters in dereferences and as actual parameters in calls to functions annotated with Higher_Order_Specialization
+inline_and_logical_equal.adb:7:47: error: Entity parameter of a pragma Logical_Equal shall not have an Inline_For_Proof annotation
+inline_and_logical_equal.adb:11:50: error: Entity parameter of a pragma Inline_For_Proof shall not have a Logical_Equal annotation
+inline_and_logical_equal.adb:16:16: error: expression function with Inline_For_Proof whose body is not in SPARK is not allowed in SPARK
+inline_and_logical_equal.adb:16:16: error: violation of aspect SPARK_Mode at line 1
+iterable_for_proof_marking.adb:1:11: warning: file name does not match unit name, should be "iterable_marking.adb"
+iterable_for_proof_marking.adb:20:67: error: "Contains" is not allowed in SPARK (due to entity declared with SPARK_Mode Off)
+iterable_for_proof_marking.adb:20:67: error: violation of aspect SPARK_Mode at line 1
+iterable_for_proof_marking.adb:48:34: error: "Element" is not allowed in SPARK (due to entity declared with SPARK_Mode Off)
+iterable_for_proof_marking.adb:48:34: error: violation of aspect SPARK_Mode at line 1
+iterable_for_proof_marking.adb:52:26: error: first parameter of Contains functions must allow for of iteration in SPARK
+iterable_for_proof_marking.adb:67:34: error: "Element" is not allowed in SPARK (due to entity declared with SPARK_Mode Off)
+iterable_for_proof_marking.adb:67:34: error: violation of aspect SPARK_Mode at line 1
+iterable_for_proof_marking.adb:81:23: error: parameter of Model function must allow for of iteration in SPARK
+iterable_for_proof_marking.adb:99:34: error: "Element_2" is not allowed in SPARK (due to entity declared with SPARK_Mode Off)
+iterable_for_proof_marking.adb:99:34: error: violation of aspect SPARK_Mode at line 1
+iterable_for_proof_marking.adb:108:16: error: return type of Model function must allow for of iteration in SPARK
+iterable_for_proof_marking.adb:118:64: error: fourth argument of pragma Annotate Iterable_For_Proof must be an entity
+iterable_for_proof_marking.adb:119:64: error: entity argument of pragma Annotate Iterable_For_Proof shall be a subprogram, a type or a package
+ownership_marking.adb:18:62: error: "Is_Reclaimed" is not allowed in SPARK (due to entity declared with SPARK_Mode Off)
+ownership_marking.adb:18:62: error: violation of aspect SPARK_Mode at line 1
+ownership_marking.adb:26:12: error: type shall not have multiple ownership annotations
+ownership_marking.adb:38:12: info: checks for ressource or memory reclamation will be unprovable
+ownership_marking.adb:38:12: info: no reclamation function found for type with ownership "Owned"
+pragma_placement.ads:12:04: error: pragma Annotate Skip_Proof must be in aspect form for generic subprogram
+pragma_placement.ads:20:04: error: pragma Annotate Skip_Proof must immediately follow the beginning of package specification Foo_P
+pragma_placement.ads:43:04: error: pragma Annotate No_Wrap_Around must immediately follow the full type declaration of T
+pragma_placement.ads:52:07: error: pragma Annotate Ownership must immediately follow the  private declaration of type A
+pragma_placement.ads:59:07: error: pragma Annotate Ownership must immediately follow the specification of subprogram Is_Reclaimed_B
+pragma_placement.ads:78:04: error: pragma Annotate At_End_Borrow must immediately follow the specification of subprogram "aeb"_1
+pragma_placement.ads:89:14: error: procedure annotated with the pragma Automatic_Instantiation shall not be declared after a procedure
+pragma_placement.ads:96:04: error: pragma Annotate Automatic_Instantiation must immediately follow the specification of subprogram F91_Low
+pragma_placement.ads:109:04: error: pragma Annotate Higher_Order_Specialization must immediately follow the specification of subprogram Specialized_1
+pragma_placement.ads:116:04: error: pragma Annotate Inline_For_Proof must immediately follow the specification of subprogram Identity_Again
+pragma_placement.ads:122:04: error: pragma Annotate Logical_Equal must immediately follow the specification of subprogram Strictest_Equal
+gnatprove: error during flow analysis and proof
