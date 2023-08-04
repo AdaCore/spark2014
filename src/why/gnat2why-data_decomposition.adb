@@ -24,8 +24,10 @@
 ------------------------------------------------------------------------------
 
 with Ada.Directories;
+with Ada.Text_IO;
 with Call;                       use Call;
 with Common_Containers;          use Common_Containers;
+with GNAT.OS_Lib;
 with GNATCOLL.JSON;              use GNATCOLL.JSON;
 with Namet;                      use Namet;
 with Sinput;                     use Sinput;
@@ -129,6 +131,25 @@ package body Gnat2Why.Data_Decomposition is
                      File_Names.Insert (Source_File_Name);
                   end;
                end if;
+            exception
+               when others =>
+                  pragma Annotate
+                    (Xcov, Exempt_On, "only triggered by older buggy GNAT");
+                  Ada.Text_IO.Put_Line
+                    (Ada.Text_IO.Standard_Error,
+                     "error: GNAT generated an ill-formed JSON file "
+                     & JSON_File_Name
+                     & " for data representation.");
+                  Ada.Text_IO.Put_Line
+                    (Ada.Text_IO.Standard_Error,
+                     "error: Try installing a more recent version of GNAT.");
+                  Ada.Text_IO.Put_Line
+                    (Ada.Text_IO.Standard_Error,
+                     "error: As possible workarounds, remove GNAT from your "
+                     & "PATH or use the switch -gnateT=<target.atp> to pass "
+                     & "an explicit target parametrization file.");
+                  GNAT.OS_Lib.OS_Exit (1);
+                  pragma Annotate (Xcov, Exempt_Off);
             end;
          end if;
       end loop;
