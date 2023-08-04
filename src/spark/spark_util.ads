@@ -923,19 +923,6 @@ package SPARK_Util is
    --  If Expr is of the form "X'Address", return the root object of X.
    --  Otherwise, return Empty. This function accepts empty expressions.
 
-   function Is_Statically_Disabled
-     (N             : Node_Id;
-      Value         : Boolean;
-      Include_Valid : Boolean)
-      return Boolean
-   with Pre => Nkind (N) in N_Subexpr and then Is_Boolean_Type (Etype (N));
-   --  Returns True iff N is a "statically disabled" condition as described in
-   --  the SPARK UG (7.3.2).
-   --  If Include_Valid is True consider a reference to 'Valid or 'Valid_Scalar
-   --  as disabled for True. In general, Include_Valid is set to True in proof
-   --  as 'Valid is assumed to always evaluate to True but not in flow analysis
-   --  which does not make this assumption.
-
    ---------------------------------
    -- Misc operations and queries --
    ---------------------------------

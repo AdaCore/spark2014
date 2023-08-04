@@ -33,6 +33,7 @@ with Checks;                         use Checks;
 with Debug;
 with Elists;                         use Elists;
 with Errout;                         use Errout;
+with Exp_Util;
 with Flow.Analysis.Antialiasing;     use Flow.Analysis.Antialiasing;
 with Flow.Analysis.Assumptions;      use Flow.Analysis.Assumptions;
 with Flow_Dependency_Maps;           use Flow_Dependency_Maps;
@@ -19642,9 +19643,9 @@ package body Gnat2Why.Expr is
                Warn_On_Right : constant Boolean := Local_Params.Warn_On_Dead
                  and then
                    (if Nkind (Expr) = N_And_Then
-                    then not Is_Statically_Disabled
+                    then not Exp_Util.Is_Statically_Disabled
                       (Left_N, False, Include_Valid => True)
-                    else not Is_Statically_Disabled
+                    else not Exp_Util.Is_Statically_Disabled
                       (Left_N, True, Include_Valid => True));
                Right_Params  : constant Transformation_Params :=
                  (Local_Params with delta Warn_On_Dead => Warn_On_Right);
@@ -19719,10 +19720,10 @@ package body Gnat2Why.Expr is
                Phase       : constant Transformation_Phase :=
                  Local_Params.Phase;
                Warn_Then   : constant Boolean := Local_Params.Warn_On_Dead
-                 and then not Is_Statically_Disabled
+                 and then not Exp_Util.Is_Statically_Disabled
                    (Cond, False, Include_Valid => True);
                Warn_Else   : constant Boolean := Local_Params.Warn_On_Dead
-                 and then not Is_Statically_Disabled
+                 and then not Exp_Util.Is_Statically_Disabled
                    (Cond, True, Include_Valid => True);
                Then_Expr   : W_Expr_Id;
                Else_Expr   : W_Expr_Id;
@@ -21059,10 +21060,10 @@ package body Gnat2Why.Expr is
                   Then_Checks : W_Prog_Id;
                   Else_Checks : W_Prog_Id;
                   Warn_Then   : constant Boolean := Params.Warn_On_Dead
-                    and then not Is_Statically_Disabled
+                    and then not Exp_Util.Is_Statically_Disabled
                       (Cond, False, Include_Valid => True);
                   Warn_Else   : constant Boolean := Params.Warn_On_Dead
-                    and then not Is_Statically_Disabled
+                    and then not Exp_Util.Is_Statically_Disabled
                       (Cond, True, Include_Valid => True);
 
                begin
@@ -24332,7 +24333,7 @@ package body Gnat2Why.Expr is
                --  False if we encounter a statically disabled branch.
 
                Warn_Then   : constant Boolean := Do_Warn
-                 and then not Is_Statically_Disabled
+                 and then not Exp_Util.Is_Statically_Disabled
                    (Cond, False, Include_Valid => True);
 
             begin
@@ -24348,7 +24349,7 @@ package body Gnat2Why.Expr is
                                      Warn_Then);
 
                Do_Warn := Do_Warn
-                 and then not Is_Statically_Disabled
+                 and then not Exp_Util.Is_Statically_Disabled
                    (Cond, True, Include_Valid => True);
 
                --  The elsif parts need to be traversed in order to propagate
@@ -24381,7 +24382,7 @@ package body Gnat2Why.Expr is
                         --  Possibly warn on an unreachable case branch
 
                         Warn_Then := Do_Warn
-                          and then not Is_Statically_Disabled
+                          and then not Exp_Util.Is_Statically_Disabled
                             (Cond, False, Include_Valid => True);
 
                         Elsif_Stmts (I) :=
@@ -24397,7 +24398,7 @@ package body Gnat2Why.Expr is
                            Warn_Then);
 
                         Do_Warn := Do_Warn
-                          and then not Is_Statically_Disabled
+                          and then not Exp_Util.Is_Statically_Disabled
                             (Cond, True, Include_Valid => True);
 
                         Next (Cur);
