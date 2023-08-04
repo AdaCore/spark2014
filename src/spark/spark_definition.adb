@@ -1952,8 +1952,11 @@ package body SPARK_Definition is
             end if;
 
          when N_Iterated_Element_Association =>
-
+            pragma Annotate
+              (Xcov, Exempt_On,
+               "Use of Ada containers gets rejected earlier");
             Mark_Unsupported (Lim_Iterated_Element_Association, N);
+            pragma Annotate (Xcov, Exempt_Off);
 
          when N_Iterator_Specification =>
 
@@ -2118,9 +2121,6 @@ package body SPARK_Definition is
 
          when N_Package_Declaration =>
             Mark_Package_Declaration (N);
-
-         when N_Parameter_Association =>
-            Mark (Explicit_Actual_Parameter (N));
 
          when N_Pragma =>
             Mark_Pragma (N);
@@ -2305,9 +2305,6 @@ package body SPARK_Definition is
          when N_Range =>
             Mark (Low_Bound (N));
             Mark (High_Bound (N));
-
-         when N_Reference =>
-            Mark_Violation ("reference", N);
 
          when N_Short_Circuit =>
             Mark_Actions (N, Actions (N));
@@ -2909,6 +2906,7 @@ package body SPARK_Definition is
             | N_Modular_Type_Definition
             | N_Ordinary_Fixed_Point_Definition
             | N_Package_Specification
+            | N_Parameter_Association
             | N_Parameter_Specification
             | N_Pragma_Argument_Association
             | N_Procedure_Specification
@@ -2917,6 +2915,7 @@ package body SPARK_Definition is
             | N_Range_Constraint
             | N_Real_Range_Specification
             | N_Record_Definition
+            | N_Reference
             | N_SCIL_Dispatch_Table_Tag_Init
             | N_SCIL_Dispatching_Call
             | N_SCIL_Membership_Test
