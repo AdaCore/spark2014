@@ -241,17 +241,20 @@ package Gnat2Why.Util is
    --                  for this node
 
    type Transformation_Params is record
-      Phase       : Transformation_Phase;
+      Phase        : Transformation_Phase;
       --  Current transformation phase, which impacts the way code is
       --  transformed from Ada to Why3.
-      Gen_Marker  : GM_Kind;
+      Gen_Marker   : GM_Kind;
       --  Flag that indicates whether the transformation should include in the
       --  generated Why3 node a special label, to be used to show which part of
       --  a possibly large assertion is not proved.
-      Ref_Allowed : Boolean;
+      Ref_Allowed  : Boolean;
       --  Flag that is True if references are allowed
-      Old_Policy  : Old_Policy_Kind;
+      Old_Policy   : Old_Policy_Kind;
       --  Policy for encoding of 'Old attribute
+      Warn_On_Dead : Boolean;
+      --  Flag that is False if warnings on dead code and branches are
+      --  disabled. It is only relevant if Phase is in Generate_VCs.
    end record;
    --  Set of parameters for the transformation phase
 
@@ -285,10 +288,11 @@ package Gnat2Why.Util is
       return Transformation_Params
    is
      (Transformation_Params'
-        (Phase       => Phase,
-         Gen_Marker  => GM_None,
-         Ref_Allowed => (if Phase = Generate_Logic then False else True),
-         Old_Policy  => (if Phase = Generate_Logic then As_Old else Use_Map)));
+        (Phase        => Phase,
+         Gen_Marker   => GM_None,
+         Ref_Allowed  => (if Phase = Generate_Logic then False else True),
+         Old_Policy   => (if Phase = Generate_Logic then As_Old else Use_Map),
+         Warn_On_Dead => True));
    --  Usual set of transformation parameters for a given phase
 
    ---------------------------------------------
@@ -298,11 +302,11 @@ package Gnat2Why.Util is
    function Body_Params return Transformation_Params is
      (Usual_Params (Generate_VCs_For_Body));
 
-   function Assert_Params return Transformation_Params is
-     (Usual_Params (Generate_VCs_For_Assert));
-
-   function Contract_Params return Transformation_Params is
+   function Contract_VC_Params return Transformation_Params is
      (Usual_Params (Generate_VCs_For_Contract));
+
+   function Contract_Body_Params return Transformation_Params is
+     (Usual_Params (Generate_Contract_For_Body));
 
    function Logic_Params return Transformation_Params is
      (Usual_Params (Generate_Logic));

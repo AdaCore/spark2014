@@ -47,7 +47,7 @@ with Why.Keywords;               use Why.Keywords;
 
 package body Gnat2Why.Util is
 
-   Why3_Keywords : String_Utils.String_Sets.Set;
+   Why3_Keywords : String_Sets.Set;
 
    procedure Make_Empty_Why_Section (Section : out Why_Section);
 

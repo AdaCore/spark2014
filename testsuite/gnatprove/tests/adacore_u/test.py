@@ -1,7 +1,4 @@
-from test_support import prove_all, TESTDIR
-import os
-
-os.environ["SPARKLIB_OBJECT_DIR"] = TESTDIR
+from test_support import prove_all
 
 prove_all(opt=["-U", "-P", "Overview/overview"])
 prove_all(opt=["-U", "-P", "Flow_Analysis/flow_analysis"])
@@ -9,6 +6,7 @@ prove_all(opt=["-U", "-P", "Proof_Integrity/proof_integrity"])
 prove_all(opt=["-U", "-P", "State_Abstraction/state_abstraction"])
 prove_all(
     steps=1000,
+    sparklib=True,
     opt=[
         "-U",
         "-P",
@@ -24,6 +22,7 @@ prove_all(
     check_counterexamples=False,
 )
 prove_all(
+    sparklib=True,
     opt=["-U", "-P", "Ghost_Code/ghost_code", "--no-subprojects"],
     check_counterexamples=False,
 )

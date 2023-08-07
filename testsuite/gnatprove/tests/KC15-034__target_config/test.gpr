@@ -1,5 +1,5 @@
 project Test is
-   package Compiler is
-      for Default_Switches ("Ada") use ("-gnateT=" & Test'Project_Dir & "/target.atp");
-   end Compiler;
+   package Builder is
+      for Global_Compilation_Switches ("Ada") use ("-gnateT=" & Test'Project_Dir & "/target.atp");
+   end Builder;
 end Test;

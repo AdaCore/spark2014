@@ -171,7 +171,7 @@ codepeer-run:
 
 codepeer: codepeer-run
 	mkdir -p out
-	codepeer --version | tee out/version.out
+	gnatsas --version | tee out/version.out
 	@echo "version:XFAIL:always fails" > out/results
 	@$(MAKE) --no-print-directory -C gnat2why codepeer 2>&1 | tee out/codepeer.out
 	@$(MAKE) --no-print-directory -f Makefile.gnatprove codepeer 2>&1 | tee --append out/codepeer.out

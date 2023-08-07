@@ -140,6 +140,27 @@ package CE_Values is
    function ">" is new Generic_Compare (">", ">", ">");
    function ">=" is new Generic_Compare (">=", ">=", ">=");
 
+   function Conv_Real (Val : Float_Value; K : Float_Kind) return Float_Value is
+     (case K is
+        when Float_32_K =>
+          (Float_32_K,
+           (case Val.K is
+              when Float_32_K => Val.Content_32,
+              when Float_64_K => Float (Val.Content_64),
+              when Extended_K => Float (Val.Ext_Content))),
+        when Float_64_K =>
+          (Float_64_K,
+           (case Val.K is
+              when Float_32_K => Long_Float (Val.Content_32),
+              when Float_64_K => Val.Content_64,
+              when Extended_K => Long_Float (Val.Ext_Content))),
+        when Extended_K =>
+          (Extended_K,
+           (case Val.K is
+              when Float_32_K => Long_Long_Float (Val.Content_32),
+              when Float_64_K => Long_Long_Float (Val.Content_64),
+              when Extended_K => Val.Ext_Content)));
+
    package Conv_Float32 is new Float_Conversions (Float);
    package Conv_Float64 is new Float_Conversions (Long_Float);
 

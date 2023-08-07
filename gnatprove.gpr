@@ -66,7 +66,7 @@ project GNATprove is
       end case;
    end Linker;
 
-   package CodePeer is
+   package Analyzer is
 
       --  Exclude source files leading to false positives
       for Excluded_Source_Files use
@@ -76,14 +76,10 @@ project GNATprove is
          "configuration.adb",
          "report_database.ads"); --  spurious codepeer violation U804-011
 
-      for Switches use ("-j0",
-                        "--level", "1",
-                        "--no-default-gnatcheck-rules",
-                        "--infer-args", "--disable-issue-type MEMORY_LEAK_ADA",
---                      "--infer-messages=-memory_leak_ada",
--- Switch to activate once issue #434 of CodePeer is fixed, instead of the above
--- use of --infer-args
-                        "-gnatws");
-   end CodePeer;
+      for Switches ("analyze") use ("-j0", "--no-gnatcheck");
+      for Switches ("infer") use ("--disable-issue-type", "MEMORY_LEAK_ADA");
+      for Switches ("inspector") use ("--level", "1", "-gnatws");
+
+   end Analyzer;
 
 end GNATprove;

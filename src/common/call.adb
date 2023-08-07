@@ -70,15 +70,23 @@ package body Call is
 
    pragma Annotate (Xcov, Exempt_On, "Not called from gnat2why");
    procedure Call_With_Status
-     (Command   : String;
-      Arguments : String_Lists.List;
-      Status    : out Integer;
-      Verbose   : Boolean := False)
+     (Command     : String;
+      Arguments   : String_Lists.List;
+      Status      : out Integer;
+      Output_Name : String := "";
+      Verbose     : Boolean := False)
    is
       Executable : String_Access := Locate_Exec_On_Path (Command);
-      Arg_List : Argument_List :=
+      Arg_List   : Argument_List :=
         Argument_List_Of_String_List (Arguments);
+      Output_FD  : File_Descriptor;
    begin
+      if Output_Name = "" then
+         Output_FD := Standout;
+      else
+         Output_FD := Create_File (Output_Name, Text);
+      end if;
+
       if Executable = null then
          Ada.Text_IO.Put_Line ("Could not find executable " & Command);
          GNAT.OS_Lib.OS_Exit (1);
@@ -89,7 +97,13 @@ package body Call is
          Ada.Text_IO.New_Line;
       end if;
 
-      Spawn (Executable.all, Arg_List, Standout, Status, Err_To_Out => False);
+      Spawn (Executable.all, Arg_List, Output_FD, Status,
+             Err_To_Out => Output_Name /= "");
+
+      if Output_Name /= "" then
+         Close (Output_FD);
+      end if;
+
       GNATCOLL.Utils.Free (Arg_List);
       Free (Executable);
    end Call_With_Status;

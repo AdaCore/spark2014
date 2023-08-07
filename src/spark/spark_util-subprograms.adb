@@ -1842,15 +1842,11 @@ package body SPARK_Util.Subprograms is
            Sloc (Subprogram_Specification (E))
          else Sloc (E));
    begin
-
       --  Compute the location string as a user would provide it with
-      --  --limit-subp. This means dropping columns and chain markers, and
-      --  preserving the order of the locations.
+      --  --limit-subp. This means dropping columns and preserving the order
+      --  of the locations.
 
-      return Location_String (Slc,
-                              Columns       => False,
-                              Chain_Markers => False,
-                              Natural_Order => True);
+      return Location_String (Slc, Mode => Limit_Subp_Mode);
    end Subp_Location;
 
    ---------------------------------

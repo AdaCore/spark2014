@@ -47,11 +47,9 @@ with GPR2.Project.Attribute;
 with GPR2.Project.Attribute_Index;
 with GPR2.Project.Registry.Attribute;
 with GPR2.Project.Registry.Pack;
-with GPR2.Project.View;
 with Platform;          use Platform;
 with SPARK2014VSN;      use SPARK2014VSN;
 with System.Multiprocessors;
-with VC_Kinds;
 
 package body Configuration is
 
@@ -250,27 +248,17 @@ package body Configuration is
 
    function Check_gnateT_Switch (View : Project.View.Object) return String is
    begin
+      --  Check first if the target is not the native one, which is available
+      --  as Project.Tree.Target_Name, that we have to normalize first. There
+      --  is nothing to check for the native target.
+
       if View.Tree.Target /=
         View.Tree.Get_KB.Normalized_Target (Project.Tree.Target_Name)
       then
-
          --  User has already set the attribute, don't try anything smart
-
-         declare
-            Attr : GPR2.Project.Attribute.Object;
-         begin
-            if View.Check_Attribute
-              (Project.Registry.Attribute.Builder.Global_Compilation_Switches,
-               Result => Attr)
-            then
-               if (for some Switch of Attr.Values =>
-                     GNATCOLL.Utils.Starts_With
-                       (String (Switch.Text), "-gnateT="))
-               then
-                  return "";
-               end if;
-            end if;
-         end;
+         if Has_gnateT_Switch (View) then
+            return "";
+         end if;
 
          if View.Tree.Runtime (Ada_Language) /= "" then
             declare
@@ -506,6 +494,26 @@ package body Configuration is
          raise Invalid_Switch;
       end if;
    end Handle_Switch;
+
+   -----------------------
+   -- Has_gnateT_Switch --
+   -----------------------
+
+   function Has_gnateT_Switch (View : Project.View.Object) return Boolean is
+      Attr : GPR2.Project.Attribute.Object;
+   begin
+      if View.Check_Attribute
+        (Project.Registry.Attribute.Builder.Global_Compilation_Switches,
+         Index  => GPR2.Project.Attribute_Index.Create ("Ada"),
+         Result => Attr)
+      then
+         return (for some Switch of Attr.Values =>
+                   GNATCOLL.Utils.Starts_With
+                     (String (Switch.Text), "-gnateT="));
+      else
+         return False;
+      end if;
+   end Has_gnateT_Switch;
 
    ----------------------
    -- Is_Manual_Prover --
@@ -1141,7 +1149,6 @@ package body Configuration is
    ------------------------------------
 
    procedure Produce_List_Categories_Output is
-      use VC_Kinds;
 
       function Category (K : VC_Kind) return String;
       --  Produce a category string for this check kind
