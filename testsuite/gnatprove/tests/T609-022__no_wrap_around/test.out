@@ -63,3 +63,7 @@ exp.adb:142:21: info: overflow check proved (CVC5: 1 VC)
 exp.adb:152:04: info: precondition proved (CVC5: 4 VC)
 exp.adb:154:04: info: precondition proved (CVC5: 4 VC)
 exp.adb:156:04: info: precondition proved (CVC5: 3 VC; Z3: 1 VC)
+non_binary_mod.adb:6:13: info: implicit aspect Always_Terminates on "Power_Bad" has been proved, subprogram will terminate
+non_binary_mod.adb:6:79: medium: overflow check might fail [reason for check: result of exponentiation must fit in a 16-bits machine integer] [possible fix: add precondition (X ** N in Very_Small) to subprogram at line 6]
+non_binary_mod.adb:9:13: info: implicit aspect Always_Terminates on "Power_Ok" has been proved, subprogram will terminate
+non_binary_mod.adb:9:78: medium: overflow check might fail [reason for check: result of exponentiation must fit in a 16-bits machine integer] [possible fix: add precondition (X ** N in Very_Small) to subprogram at line 9]

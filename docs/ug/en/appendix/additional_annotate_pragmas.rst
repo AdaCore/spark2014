@@ -1,10 +1,9 @@
-Aspects or Pragmas Specific to GNATprove
-========================================
+Implementation Defined Annotations
+==================================
 
-This appendix lists all the aspects or pragmas specific to |GNATprove|,
-in particular all the uses of aspect or pragma ``Annotate`` for
+This appendix lists all the uses of aspect or pragma ``Annotate`` for
 |GNATprove|.  Aspect or pragma ``Annotate`` can also be used to control other
-AdaCore tools. The uses of such annotations are explained in the User's guide
+AdaCore tools. The uses of such annotations are explained in the User's Guide
 of each tool.
 
 Annotations in |GNATprove| are useful in two cases:
@@ -40,8 +39,8 @@ In the following, we use the aspect form whenever possible.
 .. index:: Annotate; False_Positive
            Annotate; Intentional
 
-Using Annotations to Justify Check Messages
--------------------------------------------
+Annotation for Justifying Check Messages
+----------------------------------------
 
 You can use annotations of the form
 
@@ -56,8 +55,8 @@ about this use of pragma ``Annotate``.
 
 .. index:: Annotate; No_Wrap_Around
 
-Using Annotations to Request Skipping Parts of the Analysis for an Entity
--------------------------------------------------------------------------
+Annotation for Skipping Parts of the Analysis for an Entity
+-----------------------------------------------------------
 
 Subprograms, packages, tasks, entries and protected subprograms can be
 annotated to skip flow analysis, and to skip generating proof obligations for
@@ -87,8 +86,8 @@ this entity (and enclosed entities).
 Note that the ``Skip_Proof`` annotation cannot be used if an enclosing
 subprogram already has the ``Skip_Flow_And_Proof`` annotation.
 
-Using Annotations to Request Overflow Checking on Modular Types
----------------------------------------------------------------
+Annotation for Overflow Checking on Modular Types
+-------------------------------------------------
 
 The standard semantics of arithmetic on modular types is that operations wrap
 around, hence |GNATprove| issues no overflow checks on such operations.
@@ -114,151 +113,13 @@ cannot lead to overflow. Unary negation is checked for possible non-nullity of
 its argument, which leads to overflow. The predecessor attribute ``'Pred`` and
 successor attribute ``'Succ`` are also checked for possible overflows.
 
-.. index:: Annotate; Iterable; Iterable_For_Proof
-
-Customize Quantification over Types with the Iterable Aspect
-------------------------------------------------------------
-
-In |SPARK|, it is possible to allow quantification over any container type
-using the ``Iterable`` aspect.
-This aspect provides the primitives of a container type that will be used to
-iterate over its content. For example, if we write:
-
-.. code-block:: ada
-
-   type Container is private with
-     Iterable => (First       => First,
-                  Next        => Next,
-                  Has_Element => Has_Element);
-
-where
-
-.. code-block:: ada
-
-   function First (S : Set) return Cursor;
-   function Has_Element (S : Set; C : Cursor) return Boolean;
-   function Next (S : Set; C : Cursor) return Cursor;
-
-then quantification over containers can be done using the type ``Cursor``. For
-example, we could state:
-
-.. code-block:: ada
-
-   (for all C in S => P (Element (S, C)))
-
-to say that ``S`` only contains elements for which a property ``P`` holds. For
-execution, this expression is translated as a loop using the provided ``First``,
-``Has_Element``, and ``Next`` primitives. For proof, it is translated as a logic
-quantification over every element of type ``Cursor``. To restrict the property
-to cursors that are actually valid in the container, the provided function
-``Has_Element`` is used. For example, the property stated above becomes:
-
-.. code-block:: ada
-
-   (for all C : Cursor => (if Has_Element (S, C) then P (Element (S, C))))
-
-Like for the standard Ada iteration mechanism, it is possible to allow
-quantification directly over the elements of the container by providing in
-addition an ``Element`` primitive to the ``Iterable`` aspect. For example, if
-we write:
-
-.. code-block:: ada
-
-   type Container is private with
-     Iterable => (First       => First,
-                  Next        => Next,
-                  Has_Element => Has_Element
-                  Element     => Element);
-
-where
-
-.. code-block:: ada
-
-   function Element (S : Set; C : Cursor) return Element_Type;
-
-then quantification over containers can be done directly on its elements. For
-example, we could rewrite the above property into:
-
-.. code-block:: ada
-
-   (for all E of S => P (E))
-
-For execution, quantification over elements of a container is translated as a
-loop over its cursors. In the same way, for proof, quantification over elements
-of a container is no more than syntactic sugar for quantification over its
-cursors. For example, the above property is translated using quantification
-over cursors :
-
-.. code-block:: ada
-
-   (for all C : Cursor => (if Has_Element (S, C) then P (Element (S, C))))
-
-Depending on the application, this translation may be too low-level and
-introduce an unnecessary burden on the automatic provers. As an example, let
-us consider a package for functional sets:
-
-.. code-block:: ada
-
-  package Sets with SPARK_Mode is
-
-    type Cursor is private;
-    type Set (<>) is private with
-      Iterable => (First       => First,
-                   Next        => Next,
-                   Has_Element => Has_Element,
-                   Element     => Element);
-
-    function Mem (S : Set; E : Element_Type) return Boolean with
-      Post => Mem'Result = (for some F of S => F = E);
-
-    function Intersection (S1, S2 : Set) return Set with
-      Post => (for all E of Intersection'Result => Mem (S1, E) and Mem (S2, E))
-        and (for all E of S1 =>
-	         (if Mem (S2, E) then Mem (Intersection'Result, E)));
-
-Sets contain elements of type ``Element_Type``. The most basic operation on sets
-is membership test, here provided by the ``Mem`` subprogram. Every other
-operation, such as intersection here, is then specified in terms of members.
-Iteration primitives ``First``, ``Next``, ``Has_Element``, and ``Element``, that
-take elements of a private type ``Cursor`` as an argument, are only provided for
-the sake of quantification.
-
-Following the scheme described previously, the postcondition of ``Intersection``
-is translated for proof as:
-
-.. code-block:: ada
-
-  (for all C : Cursor =>
-      (if Has_Element (Intersection'Result, C) then
-             Mem (S1, Element (Intersection'Result, C))
-         and Mem (S2, Element (Intersection'Result, C))))
-  and
-  (for all C1 : Cursor =>
-      (if Has_Element (S1, C1) then
-             (if Mem (S2, Element (S1, C1)) then
-                   Mem (Intersection'Result, Element (S1, C1)))))
-
-Using the postcondition of ``Mem``, this can be refined further into:
-
-.. code-block:: ada
-
-  (for all C : Cursor =>
-      (if Has_Element (Intersection'Result, C) then
-             (for some C1 : Cursor =>
-                 Has_Element (S1, C1) and Element (Intersection'Result, C) = Element (S1, C1))
-         and (for some C2 : Cursor =>
-                 Has_Element (S2, C2) and Element (Intersection'Result, C) = Element (S2, C2))))
-  and
-  (for all C1 : Cursor =>
-      (if Has_Element (S1, C1) then
-             (if (for some C2 : Cursor =>
-                 Has_Element (S2, C2) and Element (S1, C1) = Element (S2, C2)))
-      then (for some C : Cursor => Has_Element (Intersection'Result, C)
-               and Element (Intersection'Result, C) = Element (S1, C1))))
+Annotation for Simplifying Iteration for Proof
+----------------------------------------------
 
 .. index:: Annotate; Iterable_For_Proof
 
-Though perfectly valid, this translation may produce complicated proofs,
+The translation presented in :ref:``Aspect and Pragma Iterable`
+may produce complicated proofs,
 especially when verifying complex properties over sets. The |GNATprove|
 annotation ``Iterable_For_Proof`` can be used to change the way ``for ... of``
 quantification is translated. More precisely, it allows to provide |GNATprove|
@@ -392,8 +253,8 @@ as ``L``.
 
 .. index:: Annotate; Inline_For_Proof
 
-Inlining Functions for Proof
-----------------------------
+Annotation for Inlining Functions for Proof
+-------------------------------------------
 
 Contracts for functions are generally translated by |GNATprove| as axioms on
 otherwise undefined functions. As an example, consider the following function:
@@ -467,8 +328,8 @@ container using the ``Iterable`` aspect.
 
 .. _Referring to a value at the end of a borrow:
 
-Referring to a Value at the End of a Local Borrow
--------------------------------------------------
+Annotation for Referring to a Value at the End of a Local Borrow
+----------------------------------------------------------------
 
 Local borrowers are objects of an anonymous access-to-variable type. At their
 declaration, the ownership of (a part of) an existing data-structure is
@@ -799,8 +660,8 @@ by |GNATprove|:
    :language: none
    :linenos:
 
-Accessing the Logical Equality for a Type
------------------------------------------
+Annotation for Accessing the Logical Equality for a Type
+--------------------------------------------------------
 
 In Ada, the equality is not the logical equality in general. In particular,
 arrays are considered to be equal if they contain the same elements, even with
@@ -915,8 +776,8 @@ proved correct (no assumption is used).
       pragma Assert (not Real_Eq (S1 (1 .. 3), S2 (1 .. 3)));
    end Test;
 
-Annotating a Private Type with Ownership
-----------------------------------------
+Annotation for Enforcing Ownership Checking on a Private Type
+-------------------------------------------------------------
 
 Private types whose full view is not in |SPARK| can be annotated with a
 ``pragma Annotate (GNATprove, Ownership, ...)``. Such a type is handled by
@@ -965,8 +826,8 @@ verify that all file descriptors are closed before being finalized.
    :language: ada
    :linenos:
 
-Instantiating Lemma Procedures Automatically
---------------------------------------------
+Annotation for Instantiating Lemma Procedures Automatically
+-----------------------------------------------------------
 
 As featured in :ref:`Manual Proof Using User Lemmas`, it is possible to write
 lemmas in |SPARK| as ghost procedures. However, actual calls to the procedure
@@ -1008,8 +869,8 @@ Such lemmas should be declared directly after a function declaration, here the
 ``Equivalent`` function. The axiom will only be available when the associated
 function is used in the proof context.
 
-Using Annotations to Request Specialized Handling For Higher Order Functions
-----------------------------------------------------------------------------
+Annotation for Handling Specially Higher Order Functions
+--------------------------------------------------------
 
 Functions for higher order programming can be expressed using parameters of an
 anonymous access-to-function type. As an example, here is a function ``Map``
@@ -1120,7 +981,7 @@ prevent the tool from proving the postcondition of ``Add_All``.
 The ``Higher_Order_Specialization`` annotation can also be supplied on a lemma
 procedure (see :ref:`Manual Proof Using User Lemmas`). If this procedure
 has an ``Automatic_Instantiation`` annotation
-(see :ref:`Instantiating Lemma Procedures Automatically`) and its associated
+(see :ref:`Annotation for Instantiating Lemma Procedures Automatically`) and its associated
 function also has an ``Higher_Order_Specialization`` annotation, the lemma
 will generally be instantiated automatically on specialized calls to the
 function. As an example, the function ``Count`` defined below returns the number

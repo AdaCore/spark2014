@@ -330,7 +330,7 @@ property is provided by its input access-to-function parameter ``Test``:
 
 All the higher order functions are annotated with
 ``Higher_Order_Specialization`` (see
-:ref:`Using Annotations to Request Specialized Handling For Higher Order Functions`)
+:ref:`Annotation for Handling Specially Higher Order Functions`)
 so they can be used even with functions which read global data as parameters.
 
 .. index:: formal containers

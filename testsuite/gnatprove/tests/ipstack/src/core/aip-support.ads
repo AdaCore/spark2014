@@ -7,8 +7,8 @@ package AIP.Support is
    pragma Preelaborate;
 
    procedure Verify (T : Boolean) with
-     Depends  => (null => T),
-     Annotate => (GNATprove, Always_Return);
+     Depends => (null => T),
+     Always_Terminates;
 
    procedure Verify_Or_Err
      (T        : Boolean;

@@ -1,6 +1,5 @@
 aip-arp.adb:25:07: info: initialization of "Nid_LL_Address" proved
 aip-arp.adb:26:07: info: initialization of "Nid_LL_Address_Length" proved
-aip-arp.adb:30:10: medium: implicit aspect Always_Terminates on "Get_MAC_Address" could be incorrect, call to "Get_LL_Address" might be nonterminating [possible fix: annotate "Get_LL_Address" with aspect Always_Terminates]
 aip-arp.adb:45:07: info: initialization of "Err" proved
 aip-arp.adb:46:07: info: initialization of "Ehdr" proved
 aip-arp.adb:61:13: warning: statement has no effect
@@ -46,7 +45,8 @@ aip-arp.ads:127:06: info: data dependencies proved
 aip-arp.ads:134:06: info: data dependencies proved
 aip-arp.ads:141:06: info: data dependencies proved
 aip-arp.ads:151:06: info: data dependencies proved
-aip-buffers-common.adb:19:14: medium: implicit aspect Always_Terminates on "Is_Data_Buffer" could be incorrect, call to "Verify" might be nonterminating [possible fix: annotate "Verify" with aspect Always_Terminates]
+aip-arp.ads:157:13: info: implicit aspect Always_Terminates on "Get_MAC_Address" has been proved, subprogram will terminate
+aip-buffers-common.ads:60:13: info: implicit aspect Always_Terminates on "Is_Data_Buffer" has been proved, subprogram will terminate
 aip-buffers-data.adb:80:07: info: initialization of "Tmp_Buf" proved
 aip-buffers-data.adb:81:07: info: initialization of "Tmp_Num" proved
 aip-buffers-data.adb:111:07: info: initialization of "Last_Buf" proved
@@ -205,13 +205,10 @@ aip-ipaddrs.ads:21:13: info: implicit aspect Always_Terminates on "IP4" has been
 aip-ipaddrs.ads:24:13: info: implicit aspect Always_Terminates on "Any" has been proved, subprogram will terminate
 aip-ipaddrs.ads:27:13: info: implicit aspect Always_Terminates on "Same" has been proved, subprogram will terminate
 aip-ipaddrs.ads:30:13: info: implicit aspect Always_Terminates on "Match" has been proved, subprogram will terminate
-aip-nif.ads:100:06: warning: Terminating, Always_Return, and Might_Not_Return annotations are deprecated, ignored
-aip-nif.ads:100:06: warning: use Always_Terminates instead
 aip-pcbs.adb:39:07: info: initialization of "Candidate" proved
 aip-pcbs.adb:40:07: info: initialization of "Last" proved
 aip-pcbs.adb:41:07: info: initialization of "Pid" proved
 aip-pcbs.adb:51:20: medium: implicit aspect Always_Terminates on "Available_Port" could be incorrect, loop might be nonterminating [possible fix: add loop variant in the loop body]
-aip-pcbs.adb:52:10: medium: implicit aspect Always_Terminates on "Available_Port" could be incorrect, call to "Find_PCB" might be nonterminating [possible fix: annotate "Find_PCB" with aspect Always_Terminates]
 aip-pcbs.adb:89:07: info: initialization of "Other_PCB" proved
 aip-pcbs.adb:160:07: info: initialization of "Try_PCB" proved
 aip-pcbs.adb:161:07: info: initialization of "Try_Wildcard" proved
@@ -221,6 +218,7 @@ aip-pcbs.adb:201:16: info: implicit aspect Always_Terminates on "Wildcard_Count"
 aip-pcbs.adb:214:10: info: initialization of "Count" proved
 aip-pcbs.adb:214:10: info: initialization of "Count" proved, in call inlined at aip-pcbs.adb:258
 aip-pcbs.adb:214:10: info: initialization of "Count" proved, in call inlined at aip-pcbs.adb:261
+aip-pcbs.adb:235:48: medium: aspect Always_Terminates on "Find_PCB_In_List" could be incorrect, loop might be nonterminating [possible fix: add loop variant in the loop body]
 aip-pcbs.adb:258:15: info: analyzing call to "Wildcard_Count" in context
 aip-pcbs.adb:261:15: info: analyzing call to "Wildcard_Count" in context
 aip-pcbs.adb:306:07: info: initialization of "Cur" proved
@@ -229,19 +227,14 @@ aip-pcbs.ads:27:13: info: implicit aspect Always_Terminates on "Match" has been 
 aip-pcbs.ads:83:07: info: initialization of "PCB" proved
 aip-pcbs.ads:99:07: info: initialization of "Err" proved
 aip-pcbs.ads:102:06: info: data dependencies proved
+aip-pcbs.ads:104:14: info: aspect Always_Terminates on "Find_PCB" has been proved, subprogram will terminate
 aip-pcbs.ads:111:07: info: initialization of "PCB" proved
 aip-pcbs.ads:115:06: info: data dependencies proved
-aip-pcbs.ads:116:06: warning: Terminating, Always_Return, and Might_Not_Return annotations are deprecated, ignored
-aip-pcbs.ads:116:06: warning: use Always_Terminates instead
 aip-pcbs.ads:125:07: info: initialization of "PCB" proved
 aip-pcbs.ads:126:07: info: initialization of "Wildcard" proved
 aip-pcbs.ads:130:06: info: data dependencies proved
-aip-pcbs.ads:131:06: warning: Terminating, Always_Return, and Might_Not_Return annotations are deprecated, ignored
-aip-pcbs.ads:131:06: warning: use Always_Terminates instead
 aip-pcbs.ads:154:13: info: implicit aspect Always_Terminates on "Bound_To" has been proved, subprogram will terminate
 aip-pools.ads:9:03: info: flow dependencies proved
-aip-support.ads:11:06: warning: Terminating, Always_Return, and Might_Not_Return annotations are deprecated, ignored
-aip-support.ads:11:06: warning: use Always_Terminates instead
 aip-support.ads:15:07: info: initialization of "Err" proved
 aip-tcp.adb:319:06: info: data dependencies proved
 aip-tcp.adb:324:09: info: data dependencies proved
@@ -297,8 +290,6 @@ aip-tcp.adb:824:07: info: initialization of "Saved_Payload" proved
 aip-tcp.adb:825:07: info: initialization of "D_Buf" proved
 aip-tcp.adb:826:07: info: initialization of "D_Len" proved
 aip-tcp.adb:827:07: info: initialization of "Err" proved
-aip-tcp.adb:848:13: warning: assuming "TCP_Event" always terminates
-aip-tcp.adb:848:13: warning: no Always_Terminates aspect available for "TCP_Event"
 aip-tcp.adb:927:07: info: initialization of "M" proved
 aip-tcp.adb:927:07: info: initialization of "M" proved, in call inlined at aip-tcp.adb:1829
 aip-tcp.adb:954:07: info: initialization of "Old_List" proved
@@ -330,8 +321,6 @@ aip-tcp.adb:1779:07: info: initialization of "Thdr" proved
 aip-tcp.adb:1780:07: info: initialization of "Len" proved
 aip-tcp.adb:1783:07: info: initialization of "CWND_Increment" proved
 aip-tcp.adb:1829:13: info: analyzing call to "Update_RTT_Estimator" in context
-aip-tcp.adb:1851:13: warning: assuming "TCP_Event" always terminates
-aip-tcp.adb:1851:13: warning: no Always_Terminates aspect available for "TCP_Event"
 aip-tcp.adb:1863:24: warning: "Err" is set by "TCP_Event" but not used after the call
 aip-tcp.adb:1895:32: warning: "Err" is set by "TCP_Send_Control" but not used after the call
 aip-tcp.adb:2153:22: warning: "Err" is set by "TCP_Send_Rst" but not used after the call
@@ -342,15 +331,7 @@ aip-tcp.adb:2188:07: info: initialization of "New_Data_Len" proved
 aip-tcp.adb:2207:09: info: data dependencies proved
 aip-tcp.adb:2233:09: info: data dependencies proved
 aip-tcp.adb:2234:30: info: initialization of "Discard" proved
-aip-tcp.adb:2241:13: warning: assuming "TCP_Event" always terminates
-aip-tcp.adb:2241:13: warning: no Always_Terminates aspect available for "TCP_Event"
 aip-tcp.adb:2250:24: warning: "Err" is set by "TCP_Event" but not used after the call
-aip-tcp.adb:2333:22: warning: assuming "TCP_Event" always terminates
-aip-tcp.adb:2333:22: warning: no Always_Terminates aspect available for "TCP_Event"
-aip-tcp.adb:2409:22: warning: assuming "TCP_Event" always terminates
-aip-tcp.adb:2409:22: warning: no Always_Terminates aspect available for "TCP_Event"
-aip-tcp.adb:2637:25: warning: assuming "TCP_Event" always terminates
-aip-tcp.adb:2637:25: warning: no Always_Terminates aspect available for "TCP_Event"
 aip-tcp.adb:2686:07: info: initialization of "Seg" proved
 aip-tcp.adb:2688:07: info: initialization of "PThdr" proved
 aip-tcp.adb:2690:07: info: initialization of "PTH_Buf" proved
@@ -383,12 +364,8 @@ aip-tcp.adb:3017:07: info: initialization of "Probe_Fin" proved
 aip-tcp.adb:3085:07: info: initialization of "Remove_PCB" proved
 aip-tcp.adb:3086:07: info: initialization of "PCB" proved
 aip-tcp.adb:3087:07: info: initialization of "Next_PCB" proved
-aip-tcp.adb:3195:13: warning: assuming "TCP_Event" always terminates
-aip-tcp.adb:3195:13: warning: no Always_Terminates aspect available for "TCP_Event"
 aip-tcp.adb:3204:24: warning: "Err" is set by "TCP_Event" but not used after the call
 aip-tcp.ads:30:09: info: data dependencies proved
-aip-tcp.ads:70:06: warning: Terminating, Always_Return, and Might_Not_Return annotations are deprecated, ignored
-aip-tcp.ads:70:06: warning: use Always_Terminates instead
 aip-tcp.ads:77:06: info: data dependencies proved
 aip-tcp.ads:79:13: info: implicit aspect Always_Terminates on "TCP_Udata" has been proved, subprogram will terminate
 aip-tcp.ads:82:06: info: data dependencies proved
