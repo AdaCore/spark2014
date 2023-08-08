@@ -1075,6 +1075,7 @@ package body SPARK_Util.Types is
    begin
       return Present (Top_Aspect)
         and then not Is_Itype (E)
+        and then not Is_Class_Wide_Type (E)
         and then not Ancestor_Declares_Iterable_Aspect (E, Top_Aspect);
    end Declares_Iterable_Aspect;
 

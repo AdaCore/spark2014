@@ -24,7 +24,6 @@
 ------------------------------------------------------------------------------
 
 with Ada.Strings;                   use Ada.Strings;
-with Ada.Strings.Unbounded;         use Ada.Strings.Unbounded;
 with Ada.Strings.Fixed;
 with Checks;                        use Checks;
 with Common_Containers;             use Common_Containers;
@@ -35,14 +34,12 @@ with Gnat2Why.Expr;                 use Gnat2Why.Expr;
 with Gnat2Why.Subprograms;          use Gnat2Why.Subprograms;
 with Gnat2Why.Subprograms.Pointers; use Gnat2Why.Subprograms.Pointers;
 with GNATCOLL.Utils;                use GNATCOLL.Utils;
-with Sinput;                        use Sinput;
 with SPARK_Definition;              use SPARK_Definition;
 with SPARK_Definition.Annotate;     use SPARK_Definition.Annotate;
 with SPARK_Util.Types;              use SPARK_Util.Types;
 with Stand;                         use Stand;
 with Urealp;                        use Urealp;
 with Why.Atree.Accessors;           use Why.Atree.Accessors;
-with Why.Atree.Modules;             use Why.Atree.Modules;
 with Why.Atree.Tables;              use Why.Atree.Tables;
 with Why.Gen.Arrays;                use Why.Gen.Arrays;
 with Why.Gen.Binders;               use Why.Gen.Binders;
@@ -53,7 +50,6 @@ with Why.Gen.Progs;                 use Why.Gen.Progs;
 with Why.Gen.Records;               use Why.Gen.Records;
 with Why.Gen.Scalars;               use Why.Gen.Scalars;
 with Why.Gen.Terms;                 use Why.Gen.Terms;
-with Why.Images;                    use Why.Images;
 
 package body Why.Gen.Expr is
 
@@ -2391,10 +2387,11 @@ package body Why.Gen.Expr is
                   end;
 
                --  Neither a floating-point nor an integer value, hence
-               --  fixed-point value. This case is not optimized for now.
+               --  fixed-point value. Conversion between fixed point and
+               --  floating point types is not yet supported.
 
                else
-                  OK := False;
+                  raise Program_Error;
                end if;
 
                if OK then
@@ -2433,12 +2430,12 @@ package body Why.Gen.Expr is
                   Domain   => Domain);
             end if;
 
-            if Get_Type_Kind (From) = EW_Split then
-               Result := New_Label (Labels => Symbol_Sets.Empty_Set,
-                                    Def    => Result,
-                                    Domain => Domain,
-                                    Typ    => EW_Split (From_Node));
-            elsif From = M_Boolean_Init_Wrapper.Wrapper_Ty then
+            --  An initialization check should be inserted directly when
+            --  translating a scalar variable - see Transform_Identifier.
+
+            pragma Assert (Get_Type_Kind (From) /= EW_Split);
+
+            if From = M_Boolean_Init_Wrapper.Wrapper_Ty then
                Result := New_Call
                  (Ada_Node => Ada_Node,
                   Domain   => Domain,
@@ -2630,25 +2627,22 @@ package body Why.Gen.Expr is
       --  8. Perform a predicate check if needed, after the final conversion
       --  to the target abstract type if any, if the predicate function takes
       --  an abstract type as input as detected by Use_Split_Form_For_Type.
+      --  This should never occur as all scalar types use a split form but
+      --  standard boolean which cannot have a predicate.
 
       if Domain = EW_Prog
         and then Do_Predicate_Check
         and then not Use_Split_Form_For_Type (Get_Ada_Node (+To))
       then
-         Result := +Insert_Predicate_Check (Ada_Node => Ada_Node,
-                                            Check_Ty => Get_Ada_Node (+To),
-                                            W_Expr   => +Result);
+         raise Program_Error;
       end if;
 
       --  9. Reconstruct the wrapper if necessary
 
       if Is_Init_Wrapper_Type (To) then
-         if Get_Type_Kind (To) = EW_Split then
-            Result := New_Label (Labels => Symbol_Sets.Empty_Set,
-                                 Def    => Result,
-                                 Domain => Domain,
-                                 Typ    => To);
-         elsif To = M_Boolean_Init_Wrapper.Wrapper_Ty then
+         pragma Assert (Get_Type_Kind (To) /= EW_Split);
+
+         if To = M_Boolean_Init_Wrapper.Wrapper_Ty then
             Result := New_Call
               (Ada_Node => Ada_Node,
                Domain   => Domain,
@@ -3185,39 +3179,31 @@ package body Why.Gen.Expr is
                  To   => BT);
 
          begin
-            if Use_Predef then
-               if Why_Type_Is_Float (BT) then
-                  T :=
-                    New_Call
-                      (Name   => MF_Floats (BT).Eq,
-                       Domain => Domain,
-                       Typ    => EW_Bool_Type,
-                       Args   => (Left_Int, Right_Int));
-               elsif Why_Type_Is_BitVector (BT) then
-                  T :=
-                    New_Call
-                      (Name   => (if Domain in EW_Prog | EW_Pterm then
-                                    MF_BVs (BT).Prog_Eq
-                                  else Why_Eq),
-                       Domain => Domain,
-                       Typ    => EW_Bool_Type,
-                       Args   => (Left_Int, Right_Int));
-               else
-                  T :=
-                    New_Call
-                      (Name   => Why_Eq,
-                       Domain => Domain,
-                       Typ    => EW_Bool_Type,
-                       Args   => (Left_Int, Right_Int));
-               end if;
+            pragma Assert (Use_Predef);
 
+            if Why_Type_Is_Float (BT) then
+               T :=
+                 New_Call
+                   (Name   => MF_Floats (BT).Eq,
+                    Domain => Domain,
+                    Typ    => EW_Bool_Type,
+                    Args   => (Left_Int, Right_Int));
+            elsif Why_Type_Is_BitVector (BT) then
+               T :=
+                 New_Call
+                   (Name   => (if Domain in EW_Prog | EW_Pterm then
+                                      MF_BVs (BT).Prog_Eq
+                               else Why_Eq),
+                    Domain => Domain,
+                    Typ    => EW_Bool_Type,
+                    Args   => (Left_Int, Right_Int));
             else
                T :=
                  New_Call
-                   (Name   => Eq_Id,
-                    Domain => EW_Term,
-                    Args   => (1 => Left_Int, 2 => Right_Int),
-                    Typ   => EW_Bool_Type);
+                   (Name   => Why_Eq,
+                    Domain => Domain,
+                    Typ    => EW_Bool_Type,
+                    Args   => (Left_Int, Right_Int));
             end if;
          end;
       else
@@ -3279,22 +3265,7 @@ package body Why.Gen.Expr is
       elsif Base = EW_Bool_Type then
          return New_And_Expr (Left, Right, Domain);
       else
-         declare
-            Left2  : constant W_Expr_Id :=
-              (if Base = EW_Int_Type then
-                  Insert_Simple_Conversion (Domain => Domain,
-                                            Expr   => Left,
-                                            To     => EW_Bool_Type)
-               else Left);
-            Right2  : constant W_Expr_Id :=
-              (if Base = EW_Int_Type then
-                  Insert_Simple_Conversion (Domain => Domain,
-                                            Expr   => Right,
-                                            To     => EW_Bool_Type)
-               else Right);
-         begin
-            return New_And_Expr (Left2, Right2, Domain);
-         end;
+         raise Program_Error;
       end if;
    end New_And_Expr;
 
@@ -3417,7 +3388,7 @@ package body Why.Gen.Expr is
                              Typ      => BT);
          end;
 
-      elsif Attr in Attribute_First | Attribute_Last | Attribute_Length
+      elsif Attr in Attribute_First | Attribute_Last
         and then Ekind (Ty) = E_String_Literal_Subtype
       then
          declare
@@ -3429,10 +3400,6 @@ package body Why.Gen.Expr is
                return New_Discrete_Constant
                  (Value => Expr_Value (String_Literal_Low_Bound (Ty)),
                   Typ   => BT);
-
-            when Attribute_Length =>
-               return New_Integer_Constant
-                 (Value => String_Literal_Length (Ty));
 
             when Attribute_Last =>
                return New_Discrete_Constant
@@ -4213,79 +4180,6 @@ package body Why.Gen.Expr is
       end if;
    end New_Shape_Label;
 
-   -------------------------
-   --  New_Comment_Label  --
-   -------------------------
-
-   function New_Comment_Label
-     (Node   : Node_Id;
-      Loc    : Symbol;
-      Reason : VC_Kind)
-      return Symbol
-   is
-      Prefix  : constant String := "comment:";
-      Str_Loc : constant String := Img (Loc);
-
-      Pointer  : Source_Ptr := Original_Location (Sloc (Node));
-      Src_Buff : constant Source_Buffer_Ptr :=
-        Source_Text (Get_Source_File_Index (Pointer));
-
-      Buf : Unbounded_String := Null_Unbounded_String;
-
-      Line   : Natural;
-      Column : Natural;
-
-      procedure Read_Loc_Label (Line : out Natural; Column : out Natural);
-
-      --------------------
-      -- Read_Loc_Label --
-      --------------------
-
-      procedure Read_Loc_Label (Line : out Natural; Column : out Natural) is
-         Delim_Start : Natural :=
-           Ada.Strings.Fixed.Index (Str_Loc, ":",
-                                    Ada.Strings.Fixed.Index
-                                      (Str_Loc, ":", Str_Loc'First) + 1) + 1;
-         Delim_End : Natural;
-      begin
-         Delim_End := Ada.Strings.Fixed.Index (Str_Loc, ":", Delim_Start);
-
-         Line := Natural'Value (Str_Loc (Delim_Start .. Delim_End - 1));
-
-         Delim_Start := Delim_End + 1;
-         Delim_End := Ada.Strings.Fixed.Index (Str_Loc, ":", Delim_Start);
-         Delim_End := (if Delim_End /= 0 then Delim_End - 1 else Str_Loc'Last);
-
-         Column := Natural'Value (Str_Loc (Delim_Start .. Delim_End));
-      end Read_Loc_Label;
-
-   --  Start of processing for New_Comment_Label
-
-   begin
-      Read_Loc_Label (Line, Column);
-      Pointer := Line_Start (Physical_Line_Number (Line),
-                             Get_Source_File_Index (Pointer));
-
-      while Src_Buff (Pointer) not in ASCII.LF | ASCII.CR
-      loop
-
-         Buf := Buf & (if Src_Buff (Pointer) = ASCII.Back_Slash then
-                          ASCII.Back_Slash & ASCII.Back_Slash
-
-                       --  Do not print ] in comment as it causes the label to
-                       --  end.
-
-                       elsif Src_Buff (Pointer) = ASCII.R_Bracket then ""
-                       else Src_Buff (Pointer) & "");
-         Pointer := Pointer + 1;
-      end loop;
-
-      Buf := Buf & " ";
-      Buf := Buf & (1 .. Column - 1 => ' ') & "^ "
-        & Str_Loc (9 .. Str_Loc'Last) & ':' & VC_Kind'Image (Reason);
-      return NID (Prefix & To_String (Buf));
-   end New_Comment_Label;
-
    -------------------------------
    -- New_Counterexample_Assign --
    -------------------------------
@@ -4375,22 +4269,7 @@ package body Why.Gen.Expr is
          return New_Or_Expr (Left, Right, Domain);
 
       else
-         declare
-            Left2  : constant W_Expr_Id :=
-              (if Base = EW_Int_Type then
-                  Insert_Simple_Conversion (Domain => Domain,
-                                            Expr   => Left,
-                                            To     => EW_Bool_Type)
-               else Left);
-            Right2  : constant W_Expr_Id :=
-              (if Base = EW_Int_Type then
-                  Insert_Simple_Conversion (Domain => Domain,
-                                            Expr   => Right,
-                                            To     => EW_Bool_Type)
-               else Right);
-         begin
-            return New_Or_Expr (Left2, Right2, Domain);
-         end;
+         raise Program_Error;
       end if;
    end New_Or_Expr;
 
@@ -4454,26 +4333,7 @@ package body Why.Gen.Expr is
    -----------------------
 
    function New_Sub_VC_Marker (N : Node_Id) return Symbol is
-      Used_Node : Node_Id := N;
-   begin
-      --  String_Of_Node almost systematically prints the original node of the
-      --  argument node. This is usually what we want, except in one strange
-      --  case: The frontend rewrites N_And_Then Chains to lists of simple
-      --  expressions, but the original node of each points to the N_And_Then,
-      --  instead of the expression itself. We work around this by getting the
-      --  right op of the original node in that case.
-
-      --  ??? fix String_Of_Node instead of this workaround
-
-      if Comes_From_Source (N)
-        and then Is_Rewrite_Substitution (N)
-        and then Nkind (Original_Node (N)) = N_And_Then
-      then
-         Used_Node := Right_Opnd (Original_Node (N));
-      end if;
-
-      return NID (GP_Pretty_Ada_Marker & Image (Integer (Used_Node), 1));
-   end New_Sub_VC_Marker;
+      (NID (GP_Pretty_Ada_Marker & Image (Integer (N), 1)));
 
    --------------------
    -- New_Range_Expr --
@@ -4942,24 +4802,12 @@ package body Why.Gen.Expr is
                      Args   => (1 => +Left, 2 => +Right),
                      Typ    => Base);
 
-      else
+      elsif Base = EW_Bool_Type then
          declare
-            Left2  : constant W_Expr_Id :=
-              (if Base = EW_Int_Type then
-                  Insert_Simple_Conversion (Domain => Domain,
-                                            Expr   => Left,
-                                            To     => EW_Bool_Type)
-               else Left);
-            Right2  : constant W_Expr_Id :=
-              (if Base = EW_Int_Type then
-                  Insert_Simple_Conversion (Domain => Domain,
-                                            Expr   => Right,
-                                            To     => EW_Bool_Type)
-               else Right);
-            Or_Expr : constant W_Expr_Id :=
-              New_Or_Expr (Left2, Right2, Domain);
-            Both_Expr : constant W_Expr_Id :=
-              New_And_Expr (Left2, Right2, Domain);
+            Or_Expr       : constant W_Expr_Id :=
+              New_Or_Expr (Left, Right, Domain);
+            Both_Expr     : constant W_Expr_Id :=
+              New_And_Expr (Left, Right, Domain);
             Not_Both_Expr : constant W_Expr_Id :=
               (if Domain = EW_Pred then
                   New_Not (Domain => Domain, Right => Both_Expr)
@@ -4971,6 +4819,9 @@ package body Why.Gen.Expr is
          begin
             return New_And_Expr (Or_Expr, Not_Both_Expr, Domain);
          end;
+
+      else
+         raise Program_Error;
       end if;
    end New_Xor_Expr;
 

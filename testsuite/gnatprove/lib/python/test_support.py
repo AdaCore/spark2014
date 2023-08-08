@@ -743,6 +743,19 @@ def strip_provers_output_from_testout():
             f.write(content)
 
 
+def create_sparklib():
+    """Create local project file sparklib.gpr as the user would"""
+    with open("sparklib.gpr", "w") as f_prj:
+        f_prj.write('project SPARKlib extends "sparklib_external" is\n')
+        f_prj.write('   for Object_Dir use "sparklib_obj";\n')
+        f_prj.write("   for Source_Dirs use SPARKlib_External'Source_Dirs;\n")
+        f_prj.write(
+            "   for Excluded_Source_Files use "
+            + "SPARKlib_External'Excluded_Source_Files;\n"
+        )
+        f_prj.write("end SPARKlib;\n")
+
+
 def gnatprove(
     opt=None,
     no_fail=False,
@@ -794,15 +807,7 @@ def gnatprove(
 
     # Generate sparklib.gpr if the project depends on SPARKlib
     if sparklib:
-        with open("sparklib.gpr", "w") as f_prj:
-            f_prj.write('project SPARKlib extends "sparklib_external" is\n')
-            f_prj.write('   for Object_Dir use "sparklib_obj";\n')
-            f_prj.write("   for Source_Dirs use SPARKlib_External'Source_Dirs;\n")
-            f_prj.write(
-                "   for Excluded_Source_Files use "
-                + "SPARKlib_External'Excluded_Source_Files;\n"
-            )
-            f_prj.write("end SPARKlib;\n")
+        create_sparklib()
 
     cmd = ["gnatprove"]
     # Continue on errors, to get the maximum number of messages for tests

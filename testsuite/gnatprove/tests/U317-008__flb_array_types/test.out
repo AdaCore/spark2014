@@ -174,3 +174,25 @@ test_first_bound.adb:186:21: info: length check proved (CVC5: 3 VC; Trivial: 1 V
 test_first_bound.adb:186:21: info: range check proved (CVC5: 2 VC)
 test_first_bound.adb:187:29: medium: range check might fail [reason for check: value must be convertible to the target type of the conversion]
 test_first_bound.adb:196:04: info: precondition proved (CVC5: 1 VC)
+test_matrix.adb:1:11: warning: subprogram "Test_Matrix" has no effect
+test_matrix.adb:11:30: info: range check proved (CVC5: 2 VC)
+test_matrix.adb:12:30: info: range check proved (CVC5: 2 VC)
+test_matrix.adb:13:30: info: range check proved (CVC5: 2 VC)
+test_matrix.adb:19:22: medium: assertion might fail
+test_matrix.adb:21:22: medium: assertion might fail
+test_matrix.adb:23:22: medium: assertion might fail
+test_matrix.adb:29:22: medium: assertion might fail
+test_matrix.adb:29:25: info: index check proved (CVC5: 2 VC)
+test_matrix.adb:29:28: info: index check proved (CVC5: 2 VC)
+test_matrix.adb:29:42: info: index check proved (CVC5: 2 VC)
+test_matrix.adb:29:45: info: index check proved (CVC5: 2 VC)
+test_matrix.adb:31:22: medium: assertion might fail
+test_matrix.adb:31:25: info: index check proved (CVC5: 2 VC)
+test_matrix.adb:31:28: info: index check proved (CVC5: 2 VC)
+test_matrix.adb:31:42: info: index check proved (CVC5: 2 VC)
+test_matrix.adb:31:45: info: index check proved (CVC5: 2 VC)
+test_matrix.adb:33:22: medium: assertion might fail
+test_matrix.adb:33:25: info: index check proved (CVC5: 2 VC)
+test_matrix.adb:33:28: info: index check proved (CVC5: 2 VC)
+test_matrix.adb:33:42: info: index check proved (CVC5: 2 VC)
+test_matrix.adb:33:45: info: index check proved (CVC5: 2 VC)

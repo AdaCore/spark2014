@@ -1,4 +1,4 @@
-with "sparklib";
+with "sparklib_external";
 
 project Test is
    for Source_Dirs use ("dummy");

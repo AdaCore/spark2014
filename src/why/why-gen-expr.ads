@@ -28,6 +28,7 @@ with Gnat2Why.Util;             use Gnat2Why.Util;
 with Snames;                    use Snames;
 with SPARK_Atree;               use SPARK_Atree;
 with SPARK_Atree.Entities;      use SPARK_Atree.Entities;
+with Why.Atree.Modules;         use Why.Atree.Modules;
 with SPARK_Util;                use SPARK_Util;
 with Types;                     use Types;
 with Uintp;                     use Uintp;
@@ -105,7 +106,13 @@ package Why.Gen.Expr is
       (Left, Right : W_Expr_Id;
        Domain      : EW_Domain;
        Base        : W_Type_Id)
-       return W_Expr_Id;
+       return W_Expr_Id
+   with Pre => Base in EW_BitVector_8_Type
+                     | EW_BitVector_16_Type
+                     | EW_BitVector_32_Type
+                     | EW_BitVector_64_Type
+                     | EW_BitVector_128_Type
+                     | EW_Bool_Type;
    --  Generate the expression "Left and Right"; choose the right "and"
    --  operation depending on "Base", e.g. for modular or boolean types.
 
@@ -181,7 +188,13 @@ package Why.Gen.Expr is
      (Left, Right : W_Expr_Id;
       Domain      : EW_Domain;
       Base        : W_Type_Id)
-      return W_Expr_Id;
+      return W_Expr_Id
+   with Pre => Base in EW_BitVector_8_Type
+                     | EW_BitVector_16_Type
+                     | EW_BitVector_32_Type
+                     | EW_BitVector_64_Type
+                     | EW_BitVector_128_Type
+                     | EW_Bool_Type;
    --  Generate the expression "Left or Right"; choose the right "or" operation
    --  depending on "Base", e.g. for modular or boolean types.
 
@@ -196,7 +209,13 @@ package Why.Gen.Expr is
       (Left, Right : W_Expr_Id;
        Domain      : EW_Domain;
        Base        : W_Type_Id)
-       return W_Expr_Id;
+       return W_Expr_Id
+   with Pre => Base in EW_BitVector_8_Type
+                     | EW_BitVector_16_Type
+                     | EW_BitVector_32_Type
+                     | EW_BitVector_64_Type
+                     | EW_BitVector_128_Type
+                     | EW_Bool_Type;
    --  Build an expression "Left xor Right", and choose the right xor operation
    --  depending on "Base", which is either EW_Bool_Type or EW_Int_Type.
 
@@ -235,14 +254,6 @@ package Why.Gen.Expr is
    function New_Shape_Label (Node : Node_Id) return Symbol;
    --  Return a label representing the shape of the Ada code surrounding the
    --  input node. This label is used to name the VC file for manual proof.
-
-   function New_Comment_Label
-     (Node   : Node_Id;
-      Loc    : Symbol;
-      Reason : VC_Kind)
-      return Symbol;
-   --  Return a label with the tag "comment" in order to display VC information
-   --  in VC generated files.
 
    function New_Sub_VC_Marker (N : Node_Id) return Symbol;
    --  Return a label that contains the pretty printing for the given node
@@ -642,7 +653,6 @@ package Why.Gen.Expr is
                                                  | Attribute_Constrained
                                                  | Attribute_First
                                                  | Attribute_Last
-                                                 | Attribute_Length
                                                  | Attribute_Modulus
                                                  | Attribute_Image
                                                  | Attribute_Value

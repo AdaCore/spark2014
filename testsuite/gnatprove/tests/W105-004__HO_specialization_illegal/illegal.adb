@@ -131,6 +131,50 @@ is
    begin
       return F.all;
    end Eq_In_Pre;
+
+   --  Annotations with Exceptional_Cases and Always_Terminates
+
+   procedure Exc_Ok (F : not null access function return Integer) with
+     Ghost,
+     Annotate => (GNATprove, Higher_Order_Specialization),
+     Exceptional_Cases =>
+       (others => False);
+
+   procedure Exc_Ok (F : not null access function return Integer) is
+   begin
+     null;
+   end Exc_Ok;
+
+   procedure Term_Ok (F : not null access function return Integer) with
+     Ghost,
+     Annotate => (GNATprove, Higher_Order_Specialization),
+     Always_Terminates => True;
+
+   procedure Term_Ok (F : not null access function return Integer) is
+   begin
+     null;
+   end Term_Ok;
+
+   procedure Exc_Bad (F : not null access function return Integer) with
+     Ghost,
+     Annotate => (GNATprove, Higher_Order_Specialization),
+     Exceptional_Cases =>
+       (others => True);
+
+   procedure Exc_Bad (F : not null access function return Integer) is
+   begin
+     null;
+   end Exc_Bad;
+
+   procedure Term_Bad (F : not null access function return Integer) with
+     Ghost,
+     Annotate => (GNATprove, Higher_Order_Specialization),
+     Always_Terminates => False;
+
+   procedure Term_Bad (F : not null access function return Integer) is
+   begin
+     null;
+   end Term_Bad;
 begin
    null;
 end Illegal;

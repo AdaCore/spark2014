@@ -1978,6 +1978,10 @@ package body SPARK_Definition is
                   Mark (Subtype_Indication (N));
                end if;
 
+               --  The frontend rejects iteration on classwide types
+
+               pragma Assert (not Is_Class_Wide_Type (Etype (Name (N))));
+
             elsif Of_Present (N)
               and then Has_Array_Type (Etype (Name (N)))
             then

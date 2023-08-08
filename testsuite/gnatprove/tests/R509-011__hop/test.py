@@ -1,5 +1,4 @@
-from test_support import prove_all, TESTDIR
-import os
+from test_support import prove_all
 import sys
 
 # This test aims at proving the correctness of Fold when bodies are hidden.
@@ -10,8 +9,8 @@ contains_manual_proof = False
 
 
 def replay():
-    os.environ["SPARKLIB_OBJECT_DIR"] = TESTDIR
     prove_all(
+        sparklib=True,
         procs=16,
         level=3,
         opt=[
@@ -31,8 +30,8 @@ def replay():
 if __name__ == "__main__":
     sys.stdout = open("result", "w")
 
-    os.environ["SPARKLIB_OBJECT_DIR"] = TESTDIR
     prove_all(
+        sparklib=True,
         steps=0,
         replay=True,
         opt=[

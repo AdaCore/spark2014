@@ -3126,7 +3126,31 @@ package body SPARK_Definition.Annotate is
       elsif Name in "always_return" | "terminating" | "might_not_return" then
          Error_Msg_N_If
            (Warning_Message (Warn_Pragma_Annotate_Terminating), Prag);
-         Error_Msg_N_If ("\\use Always_Terminates instead", Prag);
+         if Present (Arg3_Exp)
+           and then Nkind (Arg3_Exp) in N_Has_Entity
+           and then Ekind (Entity (Arg3_Exp)) = E_Function
+         then
+            Error_Msg_N_If
+              ("\\terminating annotation is implicit on functions", Prag);
+         else
+            declare
+               Deprecated : constant String :=
+                 (if From_Aspect
+                  then "`with Annotate '='> (GNATprove, " & Name & ")`"
+                  else "`pragma Annotate (GNATprove, " & Name & ", ...)`");
+               New_Syntax : constant String :=
+                 (if Name in "always_return" | "terminating"
+                  then "`with Always_Terminates`"
+                  else "`with Always_Terminates '='> False` or use an" &
+                    " exceptional contract") &
+                  (if not From_Aspect
+                   then " on the corresponding entity"
+                   else "");
+            begin
+               Error_Msg_N_If
+                 ("\\replace " & Deprecated & " by " & New_Syntax, Prag);
+            end;
+         end if;
          return;
 
       elsif Name = "at_end_borrow"
