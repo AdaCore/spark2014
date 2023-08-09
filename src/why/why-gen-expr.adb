@@ -3168,13 +3168,13 @@ package body Why.Gen.Expr is
             Left_Int : constant W_Expr_Id :=
               Insert_Simple_Conversion
                 (Domain => EW_Term,
-                 Expr => Left,
-                 To   => BT);
+                 Expr   => Left,
+                 To     => BT);
             Right_Int : constant W_Expr_Id :=
               Insert_Simple_Conversion
                 (Domain => EW_Term,
-                 Expr => Right,
-                 To   => BT);
+                 Expr   => Right,
+                 To     => BT);
 
          begin
             pragma Assert (Use_Predef);
@@ -3212,7 +3212,7 @@ package body Why.Gen.Expr is
               Args   =>
                 (1 => Left,
                  2 => Right),
-              Typ   => EW_Bool_Type);
+              Typ    => EW_Bool_Type);
       end if;
 
       return T;
@@ -3327,10 +3327,10 @@ package body Why.Gen.Expr is
    ------------------------
 
    function New_Attribute_Expr
-     (Ty        : Entity_Id;
-      Domain    : EW_Domain;
-      Attr      : Supported_Attribute_Id;
-      Params    : Transformation_Params := Body_Params)
+     (Ty     : Entity_Id;
+      Domain : EW_Domain;
+      Attr   : Supported_Attribute_Id;
+      Params : Transformation_Params := Body_Params)
       return W_Expr_Id
    is
       Subdomain : constant EW_Domain :=
@@ -3390,8 +3390,7 @@ package body Why.Gen.Expr is
         and then Ekind (Ty) = E_String_Literal_Subtype
       then
          declare
-            BT : constant W_Type_Id := Nth_Index_Rep_Type_No_Bool
-              (Ty, 1);
+            BT : constant W_Type_Id := Nth_Index_Rep_Type_No_Bool (Ty, 1);
          begin
             case Attr is
             when Attribute_First =>
@@ -3911,9 +3910,9 @@ package body Why.Gen.Expr is
    ---------------------
 
    function New_Check_Label
-     (Sloc : Source_Ptr;
+     (Sloc   : Source_Ptr;
       Reason : VC_Kind;
-      Id : VC_Id)
+      Id     : VC_Id)
       return Symbol
    is
    begin
