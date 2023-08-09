@@ -1236,14 +1236,11 @@ package body SPARK_Definition is
                     (Exception_Handlers (Handled_Statement_Sequence (N))),
                   Goto_Labels, Inv_Found);
 
-               --  Only check declarations if the invariant has been found.
-               --  Never look into handlers, loop invariants cannot occur
-               --  there.
+               --  Check declarations. Never look into handlers,
+               --  loop invariants cannot occur there.
 
-               if Inv_Found and then Present (Declarations (N)) then
-                  Check_Loop_Invariant_Placement
-                    (Declarations (N), In_Handled, Goto_Labels, Inv_Found);
-               end if;
+               Check_Loop_Invariant_Placement
+                 (Declarations (N), In_Handled, Goto_Labels, Inv_Found);
 
             elsif not Inv_Found then
 
