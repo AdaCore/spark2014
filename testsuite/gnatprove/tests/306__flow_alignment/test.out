@@ -1,0 +1,50 @@
+class.adb:10:13: error: unknown value of object alignment is not yet supported
+full.adb:3:05: info: initialization of "Y1" proved
+full.adb:3:09: info: initialization of "Y2" proved
+full.adb:3:13: info: initialization of "Y3" proved
+full.adb:3:17: info: initialization of "Y4" proved
+full.adb:3:21: info: initialization of "Y5" proved
+full.adb:3:25: info: initialization of "Y6" proved
+full.adb:3:29: info: initialization of "Y7" proved
+full.adb:3:33: info: initialization of "Y8" proved
+full.adb:5:08: info: flow dependencies proved
+full.adb:16:07: medium: range check might fail
+full.adb:17:07: medium: range check might fail
+full.adb:19:11: info: range check proved (CVC5: 2 VC)
+full.adb:19:14: info: range check proved (CVC5: 2 VC)
+full.adb:20:20: info: range check proved (CVC5: 2 VC)
+full.adb:20:23: info: range check proved (CVC5: 2 VC)
+full.adb:21:12: info: range check proved (CVC5: 2 VC)
+full.adb:26:10: info: range check proved (CVC5: 2 VC)
+full.adb:27:10: info: range check proved (CVC5: 2 VC)
+full.adb:28:10: info: range check proved (CVC5: 2 VC)
+full.adb:29:11: info: range check proved (CVC5: 2 VC)
+full.adb:31:11: info: range check proved (CVC5: 2 VC)
+full.adb:32:16: info: range check proved (CVC5: 2 VC)
+full.adb:33:13: info: range check proved (CVC5: 2 VC)
+main.adb:7:14: info: add a contract to analyze it separately from calling contexts
+main.adb:7:14: info: local subprogram "Test" only analyzed in the context of calls
+main.adb:8:07: info: initialization of "Y1" proved
+main.adb:8:07: info: initialization of "Y1" proved, in call inlined at main.adb:43
+main.adb:8:07: info: initialization of "Y1" proved, in call inlined at main.adb:44
+main.adb:8:07: info: initialization of "Y1" proved, in call inlined at main.adb:45
+main.adb:8:11: info: initialization of "Y2" proved
+main.adb:8:11: info: initialization of "Y2" proved, in call inlined at main.adb:43
+main.adb:8:11: info: initialization of "Y2" proved, in call inlined at main.adb:44
+main.adb:8:11: info: initialization of "Y2" proved, in call inlined at main.adb:45
+main.adb:8:15: info: initialization of "Y3" proved
+main.adb:8:15: info: initialization of "Y3" proved, in call inlined at main.adb:43
+main.adb:8:15: info: initialization of "Y3" proved, in call inlined at main.adb:44
+main.adb:8:15: info: initialization of "Y3" proved, in call inlined at main.adb:45
+main.adb:8:19: info: initialization of "Y4" proved
+main.adb:8:19: info: initialization of "Y4" proved, in call inlined at main.adb:43
+main.adb:8:19: info: initialization of "Y4" proved, in call inlined at main.adb:44
+main.adb:8:19: info: initialization of "Y4" proved, in call inlined at main.adb:45
+main.adb:8:23: info: initialization of "Y5" proved
+main.adb:8:23: info: initialization of "Y5" proved, in call inlined at main.adb:43
+main.adb:8:23: info: initialization of "Y5" proved, in call inlined at main.adb:44
+main.adb:8:23: info: initialization of "Y5" proved, in call inlined at main.adb:45
+main.adb:43:04: info: analyzing call to "Test" in context
+main.adb:44:04: info: analyzing call to "Test" in context
+main.adb:45:04: info: analyzing call to "Test" in context
+gnatprove: error during flow analysis and proof
