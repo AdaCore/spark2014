@@ -5828,7 +5828,7 @@ package body SPARK_Definition is
                then
                   Mark_Unsupported (Lim_Access_Sub_Formal_With_Inv, Formal);
 
-               --  Parameters of mode IN OUT or OUT subjected to ownerhsip are
+               --  Parameters of mode IN OUT or OUT subjected to ownership are
                --  not supported on procedures with exceptional contracts
                --  unless they are either aliased or have a "by reference"
                --  type. This is to simplify ownership checking, especially
