@@ -82,7 +82,7 @@ The Package System
 Direct manipulation of addresses is restricted in |SPARK|. In particular, the
 use of address clauses or aspects to define the address of an object in memory
 is restricted in |SPARK|. If the address of an object ``X`` is specified to be
-the address of another object ``Y``, using an adress clause of the form ``with
+the address of another object ``Y``, using an address clause of the form ``with
 Address => Y'Address``, then ``X`` is said to be overlaid on ``Y``. Both ``X``
 and ``Y`` are said to be overlaid objects. The verification rules below impose
 restrictions on overlaid objects in |SPARK|. Other address clauses and aspects

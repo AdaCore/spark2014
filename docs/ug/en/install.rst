@@ -19,7 +19,7 @@ cross compilations, as well as |SPARK| analysis.
 
 If you choose to install |GNATprove| in a different location, you should also
 modify the environment variables ``GPR_PROJECT_PATH`` (if you installed GNAT).
-On Windows, edit the value of ``GPR_PROJECT_PATH`` under the Environnement
+On Windows, edit the value of ``GPR_PROJECT_PATH`` under the Environment
 Variables panel, and add to it the value of ``<GNAT install dir>/lib/gnat`` and
 ``<GNAT install dir>/share/gpr`` (so that |SPARK| can find library projects
 installed with GNAT) and ``<SPARK install dir>/lib/gnat`` (so that GNAT can

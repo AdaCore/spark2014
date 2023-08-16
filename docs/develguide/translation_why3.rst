@@ -2075,7 +2075,7 @@ two fields, one for the value designated by the access, considered to have type
 Representative Theory for Profiles
 """"""""""""""""""""""""""""""""""
 
-A module is generated for every profile of suprograms designated by an access
+A module is generated for every profile of subprograms designated by an access
 type, a profile being an ordered sequence of subtypes for parameters with their
 mode, as well as the return type for functions. It is shared between all
 access-to-subprogram types with the same profile. This module is named using the

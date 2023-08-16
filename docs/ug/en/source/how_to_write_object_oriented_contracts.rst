@@ -52,7 +52,7 @@ subprogram, and it checks that the specific contract is a refinement of the
 class-wide contract, as explained in :ref:`Mixing Class-Wide and Specific
 Subprogram Contracts`.
 
-Let's consider the various cases that may occur when overridding a subprogram:
+Let's consider the various cases that may occur when overriding a subprogram:
 
 .. literalinclude:: /examples/ug__geometry/geometry.ads
    :language: ada
