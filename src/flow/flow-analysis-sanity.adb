@@ -1581,7 +1581,6 @@ package body Flow.Analysis.Sanity is
          declare
             A : V_Attributes renames FA.Atr (V);
 
-            F                    : Flow_Id;
             Corresp_Final_Vertex : Flow_Graphs.Vertex_Id;
             Final_Atr            : V_Attributes;
 
@@ -1591,11 +1590,9 @@ package body Flow.Analysis.Sanity is
             --  We look for illegal updates
 
             for Var of A.Variables_Defined loop
-               F := Change_Variant (Var, Normal_Use);
-
-               if not FA.All_Vars.Contains (F) then
+               if not FA.All_Vars.Contains (Var) then
                   if FA.Kind = Kind_Package
-                    and then not Synthetic (F)
+                    and then not Synthetic (Var)
                   then
                      --  We have a write to a variable a package knows nothing
                      --  about. This is always an illegal update.
