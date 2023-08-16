@@ -676,7 +676,7 @@ package body VC_Kinds is
            "aspect ""Exceptional_Cases"" on dispatching operations",
          when Lim_Exceptional_Cases_Ownership =>
            "procedures with exceptional contracts and parameters of mode"
-          & " ""in out"" or ""out"" subjected to ownerhsip which might not be "
+          & " ""in out"" or ""out"" subjected to ownership which might not be "
           & "passed by reference",
          when Lim_Ext_Aggregate_With_Type_Ancestor =>
            "an extension aggregate whose ancestor part is a subtype mark",
