@@ -35,9 +35,7 @@ foo.adb:123:09: info: data dependencies proved
 foo.adb:126:12: medium: precondition might fail
 foo.adb:127:40: medium: overflow check might fail, cannot prove upper bound for A + 1 [reason for check: result of addition must fit in a 32-bits machine integer]
 foo.adb:128:29: high: "G1" is not an input in the Global contract of subprogram "Test_07_E" at line 120
-foo.adb:128:29: high: "G1" is not initialized
 foo.adb:128:29: high: "G2" is not an input in the Global contract of subprogram "Test_07_E" at line 120
-foo.adb:128:29: high: "G2" is not initialized
 foo.adb:128:29: high: either make "G1" an input in the Global contract or initialize it before use
 foo.adb:128:29: high: either make "G2" an input in the Global contract or initialize it before use
 foo.adb:128:29: medium: precondition might fail

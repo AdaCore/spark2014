@@ -46,18 +46,16 @@ private package Flow.Analysis.Sanity is
    --  Sane is set to true if no *errors* have been emitted, but note this
    --  subprogram may raise checks.
 
-   procedure Check_Illegal_Writes
+   procedure Check_Illegal_Writes_And_All_Variables_Known
      (FA   : in out Flow_Analysis_Graphs;
       Sane :    out Boolean);
-   --  Enforce a number of rules concerning illegal updates:
+   --  First enforces a number of rules concerning illegal updates:
    --     * A package may not update another package's state during elaboration
-   --     * An update of a global in
-
-   procedure Check_All_Variables_Known
-     (FA   : in out Flow_Analysis_Graphs;
-      Sane :    out Boolean);
-   --  Sanity check all vertices if they mention a flow id that we do not know
-   --  about.
+   --     * A global in may not be updated
+   --  Then sanity checks all vertices if they mention a flow id that we do not
+   --  know about, unless we are analysing a package and this flow id is
+   --  another package's state illegaly updated in the elaboration of the
+   --  package.
 
    procedure Check_Generated_Refined_Global
      (FA   : in out Flow_Analysis_Graphs;

@@ -1458,159 +1458,14 @@ package body Flow.Analysis.Sanity is
       end if;
    end Check_Expressions;
 
-   --------------------------
-   -- Check_Illegal_Writes --
-   --------------------------
+   --------------------------------------------------
+   -- Check_Illegal_Writes_And_All_Variables_Known --
+   --------------------------------------------------
 
-   procedure Check_Illegal_Writes
+   procedure Check_Illegal_Writes_And_All_Variables_Known
      (FA   : in out Flow_Analysis_Graphs;
       Sane :    out Boolean)
    is
-   begin
-      Sane := True;
-
-      for V of FA.CFG.Get_Collection (Flow_Graphs.All_Vertices) loop
-         declare
-            A : V_Attributes renames FA.Atr (V);
-
-            F                    : Flow_Id;
-            Corresp_Final_Vertex : Flow_Graphs.Vertex_Id;
-            Final_Atr            : V_Attributes;
-
-         begin
-            for Var of A.Variables_Defined loop
-               F := Change_Variant (Var, Normal_Use);
-
-               if FA.Kind = Kind_Package
-                 and then not Synthetic (F)
-                 and then not FA.All_Vars.Contains (F)
-               then
-
-                  --  We have a write to a variable a package knows
-                  --  nothing about. This is always an illegal update.
-
-                  Error_Msg_Flow
-                    (FA           => FA,
-                     Msg          => "cannot write & during elaboration of &",
-                     Explain_Code =>
-                       Explain_Code'Enum_Rep (EC_Write_In_Elaboration),
-                     N            => Error_Location (FA.PDG, FA.Atr, V),
-                     Severity     => High_Check_Kind,
-                     Tag          => Illegal_Update,
-                     F1           => Entire_Variable (Var),
-                     F2           => Direct_Mapping_Id (FA.Spec_Entity),
-                     Vertex       => V);
-
-                  Sane := False;
-
-               elsif not FA.All_Vars.Contains (F) then
-
-                  --  This case is dealt with in the All_Variables_Known
-                  --  sanity check.
-
-                  null;
-
-               elsif FA.PDG.Get_Key (V).Variant not in
-                 Initial_Value | Final_Value
-               then
-
-                  --  We do know about that particular global. Now we
-                  --  need to check if the update is OK.
-
-                  Corresp_Final_Vertex :=
-                    FA.PDG.Get_Vertex (Change_Variant (Var, Final_Value));
-                  pragma Assert (Corresp_Final_Vertex /=
-                                   Flow_Graphs.Null_Vertex);
-                  Final_Atr := FA.Atr.Element (Corresp_Final_Vertex);
-
-                  if Final_Atr.Is_Global
-                    and then Final_Atr.Is_Constant
-                  then
-                     if FA.Kind = Kind_Package then
-                        Error_Msg_Flow
-                          (FA           => FA,
-                           Msg          => "cannot write & during" &
-                                           " elaboration of &",
-                           Explain_Code =>
-                             Explain_Code'Enum_Rep (EC_Write_In_Elaboration),
-                           N            => Error_Location (FA.PDG, FA.Atr, V),
-                           Severity     => High_Check_Kind,
-                           Tag          => Illegal_Update,
-                           F1           => Var,
-                           F2           => Direct_Mapping_Id (FA.Spec_Entity),
-                           Vertex       => V);
-
-                     else
-                        Error_Msg_Flow
-                          (FA       => FA,
-                           Msg      => "& must be a global output of &",
-                           SRM_Ref  => "6.1.4(18)",
-                           N        => Error_Location (FA.PDG, FA.Atr, V),
-                           Severity => High_Check_Kind,
-                           F1       => Var,
-                           F2       => Direct_Mapping_Id (FA.Spec_Entity),
-                           Tag      => Illegal_Update,
-                           Vertex   => V);
-                     end if;
-
-                     Sane := False;
-                  end if;
-               end if;
-            end loop;
-         end;
-      end loop;
-   end Check_Illegal_Writes;
-
-   -------------------------------
-   -- Check_All_Variables_Known --
-   -------------------------------
-
-   procedure Check_All_Variables_Known
-     (FA   : in out Flow_Analysis_Graphs;
-      Sane :    out Boolean)
-   is
-      Aspect_To_Fix : constant String :=
-        (case FA.Kind is
-            when Kind_Subprogram | Kind_Task =>
-              (if    Present (FA.Refined_Global_N)  then "Refined_Global"
-               elsif Present (FA.Refined_Depends_N) then "Refined_Depends"
-               elsif Present (FA.Global_N)          then "Global"
-               elsif Present (FA.Depends_N)         then "Depends"
-               else                                      "Global"),
-
-            when Kind_Package =>
-               "Initializes");
-      --  A string representation of the aspect that needs to be corrected; the
-      --  preference in choosing a contract matches the preference hardcoded in
-      --  Get_Global routine. If no contract is present, then ask the user to
-      --  add the Global contract, because usually it is the simplest one.
-
-      Next_Aspect_To_Fix : constant String :=
-        (case FA.Kind is
-            when Kind_Subprogram | Kind_Task =>
-               (if Present (FA.Global_N) and then Present (FA.Depends_N)
-                then "Global and Depends"
-                elsif Present (FA.Global_N)
-                then "Global"
-                elsif Present (FA.Depends_N)
-                then "Depends"
-                else ""),
-
-            when Kind_Package => "");
-      --  A string representation of the next aspect that needs to be
-      --  corrected, i.e. this is the Global/Depends aspect if a global has
-      --  been detected to be missing from a Refined_Global/Refined_Depends
-      --  contract but it is not mentioned in the corresponding Global/Depends.
-      --  It is both Global and Depends if the global has been detected as
-      --  missing either in the Refined_Global or Refined_Depends and the
-      --  subprogram is annotated with both Global and Depends contracts.
-
-      SRM_Ref : constant String :=
-        (case FA.Kind is
-            when Kind_Subprogram | Kind_Task => "6.1.4(15)",
-            when Kind_Package                => "7.1.5(11)");
-      --  String representation of the violated SPARK RM rule
-
       function In_Abstract_Contract (FA : Flow_Analysis_Graphs; G : Flow_Id)
                                     return Boolean
       with Pre => FA.Kind in Kind_Subprogram | Kind_Task
@@ -1663,15 +1518,61 @@ package body Flow.Analysis.Sanity is
          end case;
       end In_Abstract_Contract;
 
-      Msg : constant String :=
-          (case FA.Kind is
-             when Kind_Subprogram | Kind_Task =>
-                "must be listed in the " & Aspect_To_Fix & " aspect of",
-             when Kind_Package =>
-                "must be mentioned as an input of the " & Aspect_To_Fix &
-                " aspect of");
+      Aspect_To_Fix : constant String :=
+        (case FA.Kind is
+            when Kind_Subprogram | Kind_Task =>
+              (if    Present (FA.Refined_Global_N)  then "Refined_Global"
+               elsif Present (FA.Refined_Depends_N) then "Refined_Depends"
+               elsif Present (FA.Global_N)          then "Global"
+               elsif Present (FA.Depends_N)         then "Depends"
+               else                                      "Global"),
 
-   --  Start of processing for Check_All_Variables_Known
+            when Kind_Package =>
+               "Initializes");
+      --  A string representation of the aspect that needs to be corrected; the
+      --  preference in choosing a contract matches the preference hardcoded in
+      --  Get_Global routine. If no contract is present, then ask the user to
+      --  add the Global contract, because usually it is the simplest one.
+
+      Next_Aspect_To_Fix : constant String :=
+        (case FA.Kind is
+            when Kind_Subprogram | Kind_Task =>
+               (if Present (FA.Global_N) and then Present (FA.Depends_N)
+                then "Global and Depends"
+                elsif Present (FA.Global_N)
+                then "Global"
+                elsif Present (FA.Depends_N)
+                then "Depends"
+                else ""),
+
+            when Kind_Package => "");
+      --  A string representation of the next aspect that needs to be
+      --  corrected, i.e. this is the Global/Depends aspect if a global has
+      --  been detected to be missing from a Refined_Global/Refined_Depends
+      --  contract but it is not mentioned in the corresponding Global/Depends.
+      --  It is both Global and Depends if the global has been detected as
+      --  missing either in the Refined_Global or Refined_Depends and the
+      --  subprogram is annotated with both Global and Depends contracts.
+
+      Msg : constant String :=
+        (case FA.Kind is
+            when Kind_Subprogram | Kind_Task =>
+              "must be listed in the " & Aspect_To_Fix & " aspect of",
+            when Kind_Package =>
+              "must be mentioned as an input of the " & Aspect_To_Fix &
+              " aspect of");
+
+      SRM_Ref : constant String :=
+        (case FA.Kind is
+            when Kind_Subprogram | Kind_Task => "6.1.4(15)",
+            when Kind_Package                => "7.1.5(11)");
+      --  String representation of the violated SPARK RM rule
+
+      Unknown_Globals_In_Package : Flow_Id_Sets.Set;
+      --  Unknown global variables written in the elaboration of the analysed
+      --  unit if it is a package.
+
+   --  Start of processing for Check_Illegal_Writes_And_All_Variables_Known
 
    begin
       Sane := True;
@@ -1680,10 +1581,88 @@ package body Flow.Analysis.Sanity is
          declare
             A : V_Attributes renames FA.Atr (V);
 
+            Corresp_Final_Vertex : Flow_Graphs.Vertex_Id;
+            Final_Atr            : V_Attributes;
+
             Variables_Referenced : constant Flow_Id_Sets.Set :=
               A.Variables_Used or A.Variables_Defined;
-
          begin
+            --  We look for illegal updates
+
+            for Var of A.Variables_Defined loop
+               if not FA.All_Vars.Contains (Var) then
+                  if FA.Kind = Kind_Package
+                    and then not Synthetic (Var)
+                  then
+                     --  We have a write to a variable a package knows nothing
+                     --  about. This is always an illegal update.
+
+                     Error_Msg_Flow
+                       (FA           => FA,
+                        Msg          => "cannot write & during elaboration" &
+                                        " of &",
+                        Explain_Code =>
+                          Explain_Code'Enum_Rep (EC_Write_In_Elaboration),
+                        N            => Error_Location (FA.PDG, FA.Atr, V),
+                        Severity     => High_Check_Kind,
+                        Tag          => Illegal_Update,
+                        F1           => Entire_Variable (Var),
+                        F2           => Direct_Mapping_Id (FA.Spec_Entity),
+                        Vertex       => V);
+
+                     Unknown_Globals_In_Package.Include
+                       (Entire_Variable (Var));
+                     Sane := False;
+                  end if;
+               elsif FA.PDG.Get_Key (V).Variant not in
+                 Initial_Value | Final_Value
+               then
+                  --  We do know about that particular global. Now we
+                  --  need to check if the update is OK.
+
+                  Corresp_Final_Vertex :=
+                    FA.PDG.Get_Vertex (Change_Variant (Var, Final_Value));
+                  pragma Assert (Corresp_Final_Vertex /=
+                                   Flow_Graphs.Null_Vertex);
+                  Final_Atr := FA.Atr.Element (Corresp_Final_Vertex);
+
+                  if Final_Atr.Is_Global
+                    and then Final_Atr.Is_Constant
+                  then
+                     if FA.Kind = Kind_Package then
+                        Error_Msg_Flow
+                          (FA           => FA,
+                           Msg          => "cannot write & during" &
+                                           " elaboration of &",
+                           Explain_Code =>
+                             Explain_Code'Enum_Rep (EC_Write_In_Elaboration),
+                           N            => Error_Location (FA.PDG, FA.Atr, V),
+                           Severity     => High_Check_Kind,
+                           Tag          => Illegal_Update,
+                           F1           => Var,
+                           F2           => Direct_Mapping_Id (FA.Spec_Entity),
+                           Vertex       => V);
+
+                     else
+                        Error_Msg_Flow
+                          (FA       => FA,
+                           Msg      => "& must be a global output of &",
+                           SRM_Ref  => "6.1.4(18)",
+                           N        => Error_Location (FA.PDG, FA.Atr, V),
+                           Severity => High_Check_Kind,
+                           F1       => Var,
+                           F2       => Direct_Mapping_Id (FA.Spec_Entity),
+                           Tag      => Illegal_Update,
+                           Vertex   => V);
+                     end if;
+
+                     Sane := False;
+                  end if;
+               end if;
+            end loop;
+
+            --  We look for unknown Flow_Ids
+
             for Var of Variables_Referenced loop
                case Var.Kind is
 
@@ -1694,12 +1673,17 @@ package body Flow.Analysis.Sanity is
 
                   --  Here we are dealing with a missing global
 
-                  when Direct_Mapping
-                     | Record_Field
-                     | Magic_String
-                  =>
-                     if not FA.All_Vars.Contains
-                       (Change_Variant (Var, Normal_Use))
+                  when Direct_Mapping | Record_Field | Magic_String =>
+
+                     --  If we are dealing with a global written in the
+                     --  elaboration of a package, we don't suggest to mention
+                     --  it as an input in the Initializes aspect of the
+                     --  package.
+
+                     if not Unknown_Globals_In_Package.Contains
+                       (Entire_Variable (Var))
+                       and then not FA.All_Vars.Contains
+                         (Change_Variant (Var, Normal_Use))
                      then
                         declare
                            First_Var_Use : constant Node_Id :=
@@ -1809,7 +1793,7 @@ package body Flow.Analysis.Sanity is
             end loop;
          end;
       end loop;
-   end Check_All_Variables_Known;
+   end Check_Illegal_Writes_And_All_Variables_Known;
 
    ------------------------------------
    -- Check_Generated_Refined_Global --
