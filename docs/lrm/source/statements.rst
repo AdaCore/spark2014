@@ -155,7 +155,7 @@ Generalized Loop Iteration
    Dynamic Semantics
 
 12. Iteration associated with a generalized iterator or a container element
-    iterator procedes as follows. An object of the iteration cursor subtype
+    iterator proceeds as follows. An object of the iteration cursor subtype
     of T (hereafter called "the cursor") is created
     and is initialized to the result of calling First, passing in the given
     container object. Each iteration begins by calling Has_Element, passing

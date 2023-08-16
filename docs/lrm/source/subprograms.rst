@@ -1085,7 +1085,7 @@ Global and Depends Aspects of Dispatching Subprograms
 
 Additional rules apply to the Global and Depends aspects on a dispatching
 subprogram, in order to ensure that the effects of dynamically calling an
-overridding subprogram are properly captured by the aspects of the statically
+overriding subprogram are properly captured by the aspects of the statically
 denoted callee.
 
 .. container:: heading
@@ -1103,7 +1103,7 @@ denoted callee.
      direct or indirect constituent thereof; and
 
    * each Output-mode item of G2 is an Output-mode or In_Out-mode item of G1
-     or a direct or indirect constituent therof; and
+     or a direct or indirect constituent thereof; and
 
    * each Output-mode item of G1 which is not a state abstraction whose
      refinement is visible at the point of G2 is an Output-mode item of G2; and
@@ -1436,7 +1436,7 @@ Decreases) then the expression value obtained for the call is greater
     formal parameter denoted by the ``expression`` is a path rooted either
     at the formal parameter of the enclosing subprogram denoted by the
     expression of its Subprogram_Variant aspect or at a local object
-    of an anonymous access-to-object type utimately borrowing or observing a
+    of an anonymous access-to-object type ultimately borrowing or observing a
     part of this formal parameter, that this path corresponds to a strict
     subcomponent of the structure denoted by the formal parameter of the
     enclosing subprogram, and that no deep parts of this structure are
@@ -1524,7 +1524,7 @@ Always_Terminates aspect is specified with an aspect_specification where the
 aspect_mark is Always_Terminates and the optional aspect_definition is a
 boolean expression. An Always_Terminates aspect with no aspect_definition is
 equivalent to an Always_Terminates aspect with an aspect_definition of True.
-[An execution which does not complete can for exemple run forever, exit the
+[An execution which does not complete can for example run forever, exit the
 whole program using GNAT.OS_Lib.OS_Exit, or transfer the control to another
 execution in a non-standard way.]
 
@@ -2245,7 +2245,7 @@ The prefix of an Initialized attribute reference shall denote an object.
 
    X'Initialized is True if and only if every scalar reachable part
    (see :ref:`Access Types`) of X
-   has been initialized. [It typicallly follows as a consequence of this
+   has been initialized. [It typically follows as a consequence of this
    definition and the other rules of |SPARK| that if X'Initialized is True,
    then for every reachable part Y of X (scalar or not), Y belongs to its
    subtype. There are pathological counterexamples, such as a componentless

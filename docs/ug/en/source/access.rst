@@ -685,7 +685,7 @@ For example, if we try to use ``Update_One_3`` as a parameter of ``Update_All``,
 Theoretically, a similar notion of approximation should be used for
 :ref:`Data Dependencies` and :ref:`Flow Dependencies` contracts. However, as
 these contracts are not currently allowed on access-to-subprogram types,
-|SPARK| simply disallows taking the Access attribute on a suprogram which has
+|SPARK| simply disallows taking the Access attribute on a subprogram which has
 global inputs or outputs.
 
 .. note::
