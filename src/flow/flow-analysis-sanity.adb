@@ -1682,8 +1682,7 @@ package body Flow.Analysis.Sanity is
 
                      if not Unknown_Globals_In_Package.Contains
                        (Entire_Variable (Var))
-                       and then not FA.All_Vars.Contains
-                         (Change_Variant (Var, Normal_Use))
+                       and then not FA.All_Vars.Contains (Var)
                      then
                         declare
                            First_Var_Use : constant Node_Id :=
