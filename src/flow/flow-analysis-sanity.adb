@@ -1667,7 +1667,7 @@ package body Flow.Analysis.Sanity is
             A : V_Attributes renames FA.Atr (V);
 
             Variables_Referenced : constant Flow_Id_Sets.Set :=
-            A.Variables_Used or A.Variables_Defined;
+              A.Variables_Used or A.Variables_Defined;
          begin
             for Var of Variables_Referenced loop
                case Var.Kind is
