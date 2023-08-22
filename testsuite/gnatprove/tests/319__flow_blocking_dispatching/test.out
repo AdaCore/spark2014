@@ -1,0 +1,6 @@
+s.adb:16:17: warning: subprogram "P" has no effect
+s.adb:32:14: warning: subprogram "Proxy2" has no effect
+s.adb:39:14: warning: subprogram "Proxy1" has no effect
+s.adb:43:07: info: precondition proved (Trivial: 1 VC)
+s.adb:49:10: high: call to potentially blocking subprogram "s.p.p" in protected operation "Proc"
+s.adb:49:10: info: precondition proved (Trivial: 1 VC)

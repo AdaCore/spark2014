@@ -3194,13 +3194,23 @@ package body Flow_Generated_Globals.Phase_2 is
             Callee : constant Entity_Name :=
               Protected_Operation_Call_Graph.Get_Key (V);
 
+            C : constant Phase_1_Info_Maps.Cursor :=
+              Phase_1_Info.Find (Callee);
+
          begin
+            --  All user-defined callers of predefined potentially blocking
+            --  subprograms have been already marked as potentially blocking,
+            --  so here we can safely assume that any call to predefined
+            --  subprogram is nonblocking.
+            --
+            --  Otherwise, assume the callee to be potentially blocking either
+            --  if it is unknown or if it is explicitly known to be potentially
+            --  blocking.
+
             if not Is_Predefined (Callee)
-               --  All user-defined callers of predefined potentially
-               --  blocking subprograms have been already marked as
-               --  potentially blocking, so here we can safely assume
-               --  that any call to predefined subprogram is nonblocking.
-              and then not Phase_1_Info (Callee).Nonblocking
+              and then (not Phase_1_Info_Maps.Has_Element (C)
+                          or else
+                        not Phase_1_Info (C).Nonblocking)
             then
                if First_Callee = Null_Entity_Name then
                   First_Callee := Callee;
