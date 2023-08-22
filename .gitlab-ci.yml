@@ -130,8 +130,9 @@ build:
 
     # Create the package
     - SB_WITHOUT_LEADING_SLASH=`echo $ANOD_DEFAULT_SANDBOX_DIR | cut -b2-`
+    - PACKNAME=`anod info build spark2014 --show build_space --qualifier=assertions,coverage`
     - tar czf $PACKAGE_ABSOLUTE_NAME -C /
-        $SB_WITHOUT_LEADING_SLASH/x86_64-linux/spark2014-cov/install
+        $SB_WITHOUT_LEADING_SLASH/x86_64-linux/$PACKNAME/install
 
   artifacts:
     paths:
