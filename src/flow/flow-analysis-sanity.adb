@@ -1577,18 +1577,15 @@ package body Flow.Analysis.Sanity is
    begin
       Sane := True;
 
+      --  We look for illegal updates
+
       for V of FA.CFG.Get_Collection (Flow_Graphs.All_Vertices) loop
          declare
             A : V_Attributes renames FA.Atr (V);
 
             Corresp_Final_Vertex : Flow_Graphs.Vertex_Id;
             Final_Atr            : V_Attributes;
-
-            Variables_Referenced : constant Flow_Id_Sets.Set :=
-              A.Variables_Used or A.Variables_Defined;
          begin
-            --  We look for illegal updates
-
             for Var of A.Variables_Defined loop
                if not FA.All_Vars.Contains (Var) then
                   if FA.Kind = Kind_Package
@@ -1660,9 +1657,18 @@ package body Flow.Analysis.Sanity is
                   end if;
                end if;
             end loop;
+         end;
+      end loop;
 
-            --  We look for unknown Flow_Ids
+      --  We look for unknown Flow_Ids
 
+      for V of FA.CFG.Get_Collection (Flow_Graphs.All_Vertices) loop
+         declare
+            A : V_Attributes renames FA.Atr (V);
+
+            Variables_Referenced : constant Flow_Id_Sets.Set :=
+              A.Variables_Used or A.Variables_Defined;
+         begin
             for Var of Variables_Referenced loop
                case Var.Kind is
 
