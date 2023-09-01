@@ -1,4 +1,4 @@
-package Priv is
+package Priv_Not_In_SPARK is
    type T is private;
 
 
@@ -9,4 +9,4 @@ private
    end record;
 
    Ob : T := (others => <>);
-end Priv;
+end Priv_Not_In_SPARK;

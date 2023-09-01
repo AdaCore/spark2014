@@ -35,7 +35,6 @@ test_03.adb:41:04: warning: address specification on "V_V" is imprecisely suppor
 test_03.adb:41:04: warning: launch "gnatprove --explain=E0012" for more information
 test_03.adb:41:04: warning: make sure that all overlapping objects have Async_Writers set to True
 === test_04.adb ===
-test_04.adb:3:14: warning: file name does not match unit name, should be "test_03.adb"
 test_04.adb:21:04: warning: address specification on "V_AR" is imprecisely supported: assuming no concurrent accesses to non-atomic object and no writes to a potential alias [E0012]
 test_04.adb:21:04: warning: launch "gnatprove --explain=E0012" for more information
 test_04.adb:21:04: warning: make sure that all overlapping objects have Async_Writers set to True

@@ -1,7 +1,6 @@
-p.adb:1:11: warning: file name does not match unit name, should be "wrapper.adb"
-p.adb:1:20: warning: unused variable "X"
-p.adb:1:23: warning: unused variable "Low"
-p.adb:1:28: warning: unused variable "High"
+p.adb:1:14: warning: unused variable "X"
+p.adb:1:17: warning: unused variable "Low"
+p.adb:1:22: warning: unused variable "High"
 p.adb:2:08: info: data dependencies proved
 p.adb:5:11: info: data dependencies proved
 p.adb:6:35: low: unused global "Low"

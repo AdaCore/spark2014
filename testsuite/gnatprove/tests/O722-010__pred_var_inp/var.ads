@@ -1,4 +1,4 @@
-package const is
+package var is
 
    type My_Int is range 0 .. 1000;
 
