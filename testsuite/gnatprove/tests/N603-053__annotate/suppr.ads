@@ -1,5 +1,5 @@
-package Syntax is
+package Suppr is
 
    procedure P (C : Boolean);
    procedure Q (C : Boolean);
-end Syntax;
+end Suppr;

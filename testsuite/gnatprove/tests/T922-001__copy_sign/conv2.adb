@@ -1,5 +1,5 @@
 with Unchecked_Conversion;
-procedure Conv is
+procedure Conv2 is
 
    type Bytes is mod 255;
 
@@ -19,4 +19,4 @@ procedure Conv is
    Z2_Bytes : constant Float_Bytes := To_Bytes (Z2);
 begin
    pragma Assert (Z1_Bytes = Z2_Bytes); --@ASSERT:FAIL
-end Conv;
+end Conv2;
