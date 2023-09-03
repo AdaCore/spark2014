@@ -89,11 +89,11 @@ stages:
   artifacts:
      when: always
      paths:
-        - xunit_output.xml
+        - xunit-*.xml
         - testsuite-results
         - coverage/cobertura/cobertura.xml
      reports:
-       junit: xunit_output.xml
+       junit: xunit-*.xml
        coverage_report:
           coverage_format: cobertura
           path: coverage/cobertura/cobertura.xml
@@ -176,9 +176,9 @@ acats:
 
   artifacts:
      paths:
-        - xunit_output.xml
+        - xunit-*.xml
      reports:
-       junit: xunit_output.xml
+       junit: xunit-*.xml
 
 ################
 # Build of Doc #
