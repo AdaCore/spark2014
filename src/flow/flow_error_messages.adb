@@ -1639,15 +1639,6 @@ package body Flow_Error_Messages is
          return "empty aggregates cannot be used if there is no element before"
            & " the first element of their index type";
 
-      elsif Tag = VC_Raise
-        and then Nkind (N) = N_Procedure_Call_Statement
-        and then Ekind (Get_Called_Entity (N)) = E_Procedure
-        and then No_Return (Get_Called_Entity (N))
-        and then No
-          (Get_Pragma (Get_Called_Entity (N), Pragma_Exceptional_Cases))
-      then
-         return "No_Return procedures have an implicit exceptional contract";
-
       elsif Tag = VC_Termination_Check
         and then Nkind (N) in N_Function_Call
                             | N_Procedure_Call_Statement

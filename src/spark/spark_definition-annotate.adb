@@ -956,6 +956,18 @@ package body SPARK_Definition.Annotate is
             & " Automatic_Instantiation must be ghost",
             E);
          return;
+      elsif No_Return (E) then
+         Error_Msg_N_If
+           ("No_Return procedure cannot be annotated with the "
+            & Aspect_Or_Pragma & " Automatic_Instantiation",
+            E);
+         return;
+      elsif Has_Exceptional_Contract (E) then
+         Error_Msg_N_If
+           ("procedure annotated with the " & Aspect_Or_Pragma
+            & " Automatic_Instantiation shall not raise exceptions",
+            E);
+         return;
       end if;
 
       --  It shall not have mutable parameters
@@ -1199,6 +1211,12 @@ package body SPARK_Definition.Annotate is
             Error_Msg_N_If
               ("procedure annotated with the " & Aspect_Or_Pragma
                & " Higher_Order_Specialization shall be ghost",
+               E);
+            return;
+         elsif No_Return (E) then
+            Error_Msg_N_If
+              ("No_Return procedure cannot be annotated with the "
+               & Aspect_Or_Pragma & " Higher_Order_Specialization",
                E);
             return;
          elsif Has_Exceptional_Contract (E) then
