@@ -800,8 +800,7 @@ procedure Gnatprove with SPARK_Mode is
       --  as errors, issue a failure message and return from gnatprove with a
       --  non-zero error status.
 
-      if CL_Switches.Checks_As_Errors
-        and then Status = Unproved_Checks_Error_Status
+      if Checks_As_Errors and then Status = Unproved_Checks_Error_Status
       then
          Fail ("gnatprove: unproved check messages considered as errors");
 
