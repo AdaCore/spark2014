@@ -257,7 +257,7 @@ contains3.adb:2:10: info: implicit aspect Always_Terminates on "Contains3" has b
 contains3.adb:7:21: info: postcondition proved (CVC5: 2 VC)
 contains3.adb:7:69: info: index check proved (CVC5: 2 VC)
 contains3.adb:10:04: info: initialization of "Result_Index" proved
-contains3.adb:14:19: info: assertion proved (CVC5: 2 VC; Trivial: 1 VC)
+contains3.adb:14:19: info: assertion proved (CVC5: 2 VC)
 contains3.adb:15:37: info: precondition proved (CVC5: 3 VC; Trivial: 1 VC)
 contains3.adb:17:57: info: range check proved (CVC5: 2 VC)
 contains3.adb:22:37: info: index check proved (CVC5: 2 VC)
