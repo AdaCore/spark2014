@@ -129,6 +129,15 @@ build:
     paths:
       - $PACKAGE_BASE_NAME
 
+issue_present:
+  services:
+     - image:e3
+  rules:
+    - if: $CI_PIPELINE_SOURCE == 'merge_request_event'
+  stage: build
+  script:
+    - python ci/check_issue.py
+
 ########
 # Test #
 ########
