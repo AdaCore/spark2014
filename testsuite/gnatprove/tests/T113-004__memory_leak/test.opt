@@ -1,1 +1,0 @@
-ALL XFAIL spurious memory leak check (eng/spark/spark2014#314)

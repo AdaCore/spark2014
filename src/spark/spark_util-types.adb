@@ -2163,79 +2163,83 @@ package body SPARK_Util.Types is
 
       function Traverse_Subcomponents_Only (Typ : Type_Kind_Id) return Boolean
       is
-         Base_Ty : constant Type_Kind_Id := Base_Retysp (Typ);
+         Rep_Ty : constant Type_Kind_Id := Retysp (Typ);
 
       begin
-         if Is_Array_Type (Base_Ty) then
-            return Traverse_Type (Component_Type (Base_Ty));
+         if Is_Array_Type (Rep_Ty) then
+            return Traverse_Type (Component_Type (Rep_Ty));
 
-         elsif Is_Record_Type (Base_Ty)
-           or else Is_Concurrent_Type (Base_Ty)
-           or else Is_Incomplete_Or_Private_Type (Base_Ty)
+         elsif Is_Record_Type (Rep_Ty)
+           or else Is_Concurrent_Type (Rep_Ty)
+           or else Is_Incomplete_Or_Private_Type (Rep_Ty)
          then
             --  For tagged records, also look at inherited subcomponents
 
-            if Is_Tagged_Type (Base_Ty)
-              and then Present (Parent_Retysp (Base_Ty))
-              and then Parent_Retysp (Base_Ty) /= Base_Ty
-            then
-               return Traverse_Subcomponents_Only (Parent_Retysp (Base_Ty));
+            declare
+               Base_Ty : constant Type_Kind_Id := Base_Retysp (Rep_Ty);
+            begin
+               if Is_Tagged_Type (Base_Ty)
+                 and then Present (Parent_Retysp (Base_Ty))
+                 and then Parent_Retysp (Base_Ty) /= Base_Ty
+               then
+                  return Traverse_Subcomponents_Only (Parent_Retysp (Base_Ty));
 
-            --  Traverse the discriminants of Base_Ty if any
+               --  Traverse the discriminants of Base_Ty if any
 
-            elsif Has_Discriminants (Base_Ty) then
-               declare
-                  Discr : Entity_Id := First_Discriminant (Base_Ty);
-               begin
-                  while Present (Discr) loop
-                     if Component_Is_Visible_In_SPARK (Discr)
-                       and then Traverse_Type (Etype (Discr))
-                     then
-                        return True;
-                     end if;
-                     Next_Discriminant (Discr);
-                  end loop;
-               end;
-            end if;
+               elsif Has_Discriminants (Base_Ty) then
+                  declare
+                     Discr : Entity_Id := First_Discriminant (Base_Ty);
+                  begin
+                     while Present (Discr) loop
+                        if Component_Is_Visible_In_SPARK (Discr)
+                          and then Traverse_Type (Etype (Discr))
+                        then
+                           return True;
+                        end if;
+                        Next_Discriminant (Discr);
+                     end loop;
+                  end;
+               end if;
 
-            --  Traverse the visible components of Base_Ty. Do not consider
-            --  inherited subcomponents, they have already been traversed.
+               --  Traverse the visible components of Rep_Ty. Do not consider
+               --  inherited subcomponents, they have already been traversed.
 
-            if Is_Record_Type (Base_Ty)
-              or else Is_Protected_Type (Base_Ty)
-            then
-               declare
-                  Comp : Opt_E_Component_Id := First_Component (Base_Ty);
-               begin
-                  while Present (Comp) loop
-                     if Component_Is_Visible_In_SPARK (Comp)
-                       and then
-                         (not Is_Tagged_Type (Base_Ty)
-                          or else Base_Retysp
-                            (Scope (Original_Record_Component (Comp))) =
-                            Base_Ty)
-                       and then Traverse_Type (Etype (Comp))
-                     then
-                        return True;
-                     end if;
-                     Next_Component (Comp);
-                  end loop;
-               end;
-            end if;
+               if Is_Record_Type (Rep_Ty)
+                 or else Is_Protected_Type (Rep_Ty)
+               then
+                  declare
+                     Comp : Opt_E_Component_Id := First_Component (Rep_Ty);
+                  begin
+                     while Present (Comp) loop
+                        if Component_Is_Visible_In_SPARK (Comp)
+                          and then
+                            (not Is_Tagged_Type (Rep_Ty)
+                             or else Base_Retysp
+                               (Scope (Original_Record_Component (Comp))) =
+                               Base_Ty)
+                          and then Traverse_Type (Etype (Comp))
+                        then
+                           return True;
+                        end if;
+                        Next_Component (Comp);
+                     end loop;
+                  end;
+               end if;
+            end;
 
             return False;
 
          --  Stop of the access type has already been traversed. Otherwise,
          --  traverse the designated type.
 
-         elsif Is_Access_Type (Base_Ty) then
+         elsif Is_Access_Type (Rep_Ty) then
             declare
                Inserted : Boolean;
                Position : Node_Sets.Cursor;
                Des_Ty   : constant Type_Kind_Id :=
-                 Directly_Designated_Type (Base_Ty);
+                 Directly_Designated_Type (Rep_Ty);
             begin
-               Seen.Insert (Base_Ty, Position, Inserted);
+               Seen.Insert (Rep_Ty, Position, Inserted);
 
                return not Inserted
                  or else Traverse_Type
@@ -2245,7 +2249,7 @@ package body SPARK_Util.Types is
                     else Des_Ty);
             end;
          else
-            pragma Assert (Is_Scalar_Type (Base_Ty));
+            pragma Assert (Is_Scalar_Type (Rep_Ty));
             return False;
          end if;
       end Traverse_Subcomponents_Only;
