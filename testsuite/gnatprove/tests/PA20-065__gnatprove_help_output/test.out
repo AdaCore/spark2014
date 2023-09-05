@@ -62,7 +62,7 @@ gnatprove basic switches:
 gnatprove advanced switches:
  --check-counterexamples=c
                       Enable or disable checking of counterexample (c=on*,off)
- --checks-as-errors   Treat unproved check messages as errors
+ --checks-as-errors=c Treat unproved check messages as errors (c=on,off*)
  --ce-steps=nnn       Set the maximum number of proof steps for counterexamples.
                       This replaces the use of timeout for counterexamples.
  --counterexamples=c  Enable or disable counterexamples (c=on,off*)
@@ -137,3 +137,4 @@ gnatprove advanced switches:
    . cvc5          - Use CVC5
    . z3            - Use Z3
    . ...           - Any other prover configured in your .why3.conf file
+
