@@ -1,0 +1,7 @@
+p.adb:1:11: warning: subprogram "P" has no effect
+p.adb:3:19: high: assertion might fail [user message: X should be positive at this point] (e.g. when X = 0) [possible fix: subprogram at line 1 should mention X in a precondition]
+p.adb:4:27: high: assertion might fail [user message: X should be > 5 at this point] (e.g. when X = 1) [possible fix: subprogram at line 1 should mention X in a precondition]
+p.adb:6:30: high: loop invariant might fail in first iteration [user message: X should be > 10 at this point] (e.g. when X = 6) [possible fix: subprogram at line 1 should mention X in a precondition]
+p.adb:6:30: info: loop invariant preservation proved (CVC5: 1 VC)
+p.adb:7:30: high: loop invariant might fail in first iteration [user message: X should be > 15 at this point] (e.g. when X = 11) [possible fix: subprogram at line 1 should mention X in a precondition]
+p.adb:7:30: info: loop invariant preservation proved (CVC5: 1 VC)

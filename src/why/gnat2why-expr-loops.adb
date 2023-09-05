@@ -252,10 +252,13 @@ package body Gnat2Why.Expr.Loops is
       --  traversed at most twice in Get_Flat_Statement_And_Declaration_List.
 
       function Contains_Loop_Invariant (Block_Stmt : Node_Id) return Boolean is
-         Position : constant Node_To_Bool_Maps.Cursor :=
+         Position     : constant Node_To_Bool_Maps.Cursor :=
            Blocks.Find (Block_Stmt);
-         Cur_Stmt : Node_Id :=
-           First (Statements (Handled_Statement_Sequence (Block_Stmt)));
+         Cur_Stmt     : Node_Id := First (Declarations (Block_Stmt));
+         Decl_Scanned : Boolean := False;
+         --  Track progress to go over main loop twice,
+         --  once for declaration, once for statements.
+         --  Loop invariants are allowed in both (SRM 5.5.{5,6}).
 
       begin
          --  If Block_Stmt as already been traversed, return immediately
@@ -265,12 +268,22 @@ package body Gnat2Why.Expr.Loops is
          end if;
 
          return Found : Boolean := False do
-            while Present (Cur_Stmt) loop
+            Main : loop
+               while not Present (Cur_Stmt) loop
+                  --  Loop to handle potential case of neither declarations
+                  --  nor statements.
+
+                  exit Main when Decl_Scanned;
+                  Decl_Scanned := True;
+                  Cur_Stmt := First
+                    (Statements (Handled_Statement_Sequence (Block_Stmt)));
+               end loop;
+
                case Nkind (Cur_Stmt) is
                   when N_Block_Statement =>
                      if Contains_Loop_Invariant (Cur_Stmt) then
                         Found := True;
-                        exit;
+                        exit Main;
                      end if;
 
                   when N_Pragma =>
@@ -278,14 +291,14 @@ package body Gnat2Why.Expr.Loops is
                        or else Is_Pragma (Cur_Stmt, Pragma_Loop_Variant)
                      then
                         Found := True;
-                        exit;
+                        exit Main;
                      end if;
                   when others =>
                      null;
                end case;
 
                Nlists.Next (Cur_Stmt);
-            end loop;
+            end loop Main;
 
             Blocks.Insert (Block_Stmt, Found);
          end return;
@@ -806,6 +819,7 @@ package body Gnat2Why.Expr.Loops is
                      Expr          : N_Subexpr_Id;
                      One_Inv_Check : W_Prog_Id;
                      One_Invariant : W_Pred_Id;
+                     One_Message   : String_Id;
                      One_Inv_Var   : constant W_Identifier_Id :=
                        New_Temp_Identifier (Typ       => EW_Bool_Type,
                                             Base_Name => "inv");
@@ -815,7 +829,8 @@ package body Gnat2Why.Expr.Loops is
                                              Expr    => Expr,
                                              Params  => Params,
                                              Runtime => One_Inv_Check,
-                                             Pred    => One_Invariant);
+                                             Pred    => One_Invariant,
+                                             Msg     => One_Message);
 
                      --  Add checking of RTE in the Nth loop invariant, and use
                      --  it to guard the checking of RTE for (N+1)th and beyond
@@ -829,9 +844,12 @@ package body Gnat2Why.Expr.Loops is
                      --  Add the predicate for the Nth loop invariant
 
                      Why_Invariants (Count) :=
-                       New_VC_Pred (Ada_Node => Expr,
-                                    Expr     => One_Invariant,
-                                    Reason   => VC_Loop_Invariant);
+                       New_VC_Pred
+                         (Ada_Node   => Expr,
+                          Expr       => One_Invariant,
+                          Reason     => VC_Loop_Invariant,
+                          Check_Info =>
+                            New_Check_Info (User_Message => One_Message));
                      Count := Count - 1;
                   end;
                end loop;

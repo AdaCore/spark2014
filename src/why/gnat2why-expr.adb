@@ -809,11 +809,14 @@ package body Gnat2Why.Expr is
    function Transform_Statement_Or_Declaration
      (Stmt_Or_Decl        :     Node_Id;
       Params              :     Transformation_Params;
+      Assert_And_Cut_Prag : out Opt_N_Pragma_Id;
       Assert_And_Cut_Expr : out Opt_N_Subexpr_Id;
       Assert_And_Cut      : out W_Pred_Id)
       return W_Prog_Id;
    --  Transform the Ada statement into a Why program expression.
    --  @param Params transformation parameters
+   --  @param Assert_And_Cut_Prag pragma Assert_And_Cut, if Stmt_Or_Decl was
+   --     such a pragma, Empty otherwise.
    --  @param Assert_And_Cut_Expr Expression in the pragma Assert_And_Cut, if
    --     Stmt_Or_Decl was such a pragma, Empty otherwise.
    --  @param Assert_And_Cut Why3 predicate equivalent of the assertion
@@ -12022,12 +12025,16 @@ package body Gnat2Why.Expr is
             when N_Itype_Reference =>
                if Domain = EW_Prog then
                   declare
+                     Cut_Assertion_Prag : Node_Id;
                      Cut_Assertion_Expr : Node_Id;
                      Cut_Assertion      : W_Pred_Id;
                   begin
                      Prepend
                        (Transform_Statement_Or_Declaration
-                          (N, Params, Cut_Assertion_Expr, Cut_Assertion),
+                          (N, Params,
+                           Cut_Assertion_Prag,
+                           Cut_Assertion_Expr,
+                           Cut_Assertion),
                         T);
                   end;
                end if;
@@ -22842,16 +22849,20 @@ package body Gnat2Why.Expr is
       Force   :     Boolean;
       Expr    : out N_Subexpr_Id;
       Runtime : out W_Prog_Id;
-      Pred    : out W_Pred_Id)
+      Pred    : out W_Pred_Id;
+      Msg     : out String_Id)
    is
       Arg1          : constant Node_Id :=
         First (Pragma_Argument_Associations (Stmt));
       Arg2          : constant Node_Id := Next (Arg1);
+      Arg3          : constant Node_Id := Next (Arg2);
       Assert_Params : Transformation_Params :=
         (Params with delta Phase => Generate_VCs_For_Assert);
 
    begin
       Expr := Expression (Arg2);
+      Msg :=
+        (if Present (Arg3) then Strval (Expression (Arg3)) else No_String);
 
       if not Force and then Is_Ignored_Pragma_Check (Stmt) then
          Runtime := +Void;
@@ -22896,6 +22907,7 @@ package body Gnat2Why.Expr is
       Expr       : Node_Id;
       Check_Expr : W_Prog_Id;
       Pred       : W_Pred_Id;
+      Msg        : String_Id;
       T          : W_Statement_Sequence_Id := Void_Sequence;
 
    begin
@@ -22905,7 +22917,8 @@ package body Gnat2Why.Expr is
          return +Void;
       end if;
 
-      Transform_Pragma_Check (Prag, Params, Force, Expr, Check_Expr, Pred);
+      Transform_Pragma_Check
+        (Prag, Params, Force, Expr, Check_Expr, Pred, Msg);
 
       --  Translate Compile_Time_Error as an assumption
 
@@ -22968,7 +22981,8 @@ package body Gnat2Why.Expr is
                Append (T, New_Assume_Statement (Pred => Pred));
             else
                Append (T,
-                       New_Located_Assert (Expr, Pred, Reason, EW_Assert));
+                       New_Located_Assert (Expr, Pred, Reason, EW_Assert,
+                         Check_Info => New_Check_Info (User_Message => Msg)));
             end if;
          end;
       end if;
@@ -23853,6 +23867,7 @@ package body Gnat2Why.Expr is
    function Transform_Statement_Or_Declaration
      (Stmt_Or_Decl        :     Node_Id;
       Params              :     Transformation_Params;
+      Assert_And_Cut_Prag : out Opt_N_Pragma_Id;
       Assert_And_Cut_Expr : out Opt_N_Subexpr_Id;
       Assert_And_Cut      : out W_Pred_Id)
       return W_Prog_Id
@@ -23860,6 +23875,7 @@ package body Gnat2Why.Expr is
    begin
       --  Make sure that outputs are initialized
 
+      Assert_And_Cut_Prag := Empty;
       Assert_And_Cut_Expr := Empty;
       Assert_And_Cut := Why_Empty;
 
@@ -24587,12 +24603,15 @@ package body Gnat2Why.Expr is
                   Expr       : Node_Id;
                   Check_Expr : W_Prog_Id;
                   Pred       : W_Pred_Id;
+                  Msg        : String_Id;
                begin
                   Transform_Pragma_Check (Stmt_Or_Decl, Params,
                                           Force   => False,
                                           Expr    => Expr,
                                           Runtime => Check_Expr,
-                                          Pred    => Pred);
+                                          Pred    => Pred,
+                                          Msg     => Msg);
+                  Assert_And_Cut_Prag := Stmt_Or_Decl;
                   Assert_And_Cut_Expr := Expr;
                   Assert_And_Cut := Pred;
                   if Check_Expr /= Why_Empty then
@@ -24689,10 +24708,11 @@ package body Gnat2Why.Expr is
 
    procedure Transform_Statement_Or_Declaration_In_List
      (Stmt_Or_Decl :        Node_Id;
-      Params       : Transformation_Params;
+      Params       :        Transformation_Params;
       Seq          : in out W_Statement_Sequence_Id)
    is
-      Cut_Assertion_Expr : Node_Id;
+      Cut_Assertion_Prag : Opt_N_Pragma_Id;
+      Cut_Assertion_Expr : Opt_N_Subexpr_Id;
       Cut_Assertion      : W_Pred_Id;
       Prog               : constant W_Prog_Id :=
         +Insert_Cnt_Loc_Label
@@ -24700,6 +24720,7 @@ package body Gnat2Why.Expr is
          +Transform_Statement_Or_Declaration
            (Stmt_Or_Decl        => Stmt_Or_Decl,
             Params              => Params,
+            Assert_And_Cut_Prag => Cut_Assertion_Prag,
             Assert_And_Cut_Expr => Cut_Assertion_Expr,
             Assert_And_Cut      => Cut_Assertion));
    begin
@@ -24747,14 +24768,24 @@ package body Gnat2Why.Expr is
                        Prog     => +Seq),
                   2 => New_Assume_Statement (Pred => Cut_Assertion)));
          else
-            Seq :=
-              +Sequence
-              (Progs =>
-                 (1 => New_Located_Abstract
-                      (Ada_Node => Cut_Assertion_Expr,
-                       Expr     => +Seq,
-                       Post     => Cut_Assertion,
-                       Reason   => VC_Assert)));
+            declare
+               Arg1 : constant Node_Id :=
+                 First (Pragma_Argument_Associations (Cut_Assertion_Prag));
+               Arg3 : constant Node_Id := Next (Next (Arg1));
+               Msg : constant String_Id :=
+                 (if Present (Arg3) then Strval (Expression (Arg3))
+                  else No_String);
+            begin
+               Seq :=
+                 +Sequence
+                 (Progs =>
+                    (1 => New_Located_Abstract
+                       (Ada_Node   => Cut_Assertion_Expr,
+                        Expr       => +Seq,
+                        Post       => Cut_Assertion,
+                        Reason     => VC_Assert,
+                        Check_Info => New_Check_Info (User_Message => Msg))));
+            end;
          end if;
 
          --  Assume the dynamic property of variables referenced in

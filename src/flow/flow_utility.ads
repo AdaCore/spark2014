@@ -294,31 +294,40 @@ package Flow_Utility is
    --  Returns variables referenced by N in all modes, i.e. inputs, proof_ins
    --  and null dependencies.
 
+   function Get_Components
+     (F     : Flow_Id;
+      Scope : Flow_Scope)
+      return Flow_Id_Sets.Set
+   with Pre => Present (F);
+   --  Splits F into components.
+   --
+   --  For types other than those mentioned below, we just return F.
+   --
+   --  For record types, we return the visible components (including the
+   --  discriminants) of F (or F itself if there isn't any visible component or
+   --  non null private part) together with F'Extension_Part if F has a
+   --  classwide type or with F'Private_Part if F has a non null private part
+   --  or if its type derives from a private type.
+   --
+   --  For simple private types we return F. For private types with
+   --  discriminant C, we return F.C and F'Private_Part.
+   --
+   --  @param F is the Flow_Id whose components we need to gather
+   --  @param Scope is the scope relative to which we will return the
+   --         components
+   --  @return the components of F that are visible from Scope.
+
    function Flatten_Variable
      (F     : Flow_Id;
       Scope : Flow_Scope)
       return Flow_Id_Sets.Set
-   with Pre => F.Kind in Direct_Mapping        |
-                         Record_Field          |
-                         Magic_String          |
-                         Synthetic_Null_Export;
-   --  Splits F into parts. For example, we might take X.Y and produce X.Y.A
-   --  and X.Y.B, or just X.Y (if we can't see the private part of X.Y's type).
+   with Pre => Present (F);
+   --  Iteratively calls Get_Components to return all the subcomponents of F.
    --
-   --  For magic strings and the null export, we simply return a singleton set
-   --  with just that.
-   --
-   --  For null records we return the variable itself.
-   --
-   --  For private types we just return F. For private types with discriminant
-   --  C we return F.C and F'Private_Part.
-   --
-   --  For tagged types T we just return all components as usual. For classwide
-   --  types we also return T'Extension and T'Tag. ??? not true for T'Tag
-   --
-   --  @param F is the Flow_Id whose parts we need to gather
-   --  @param Scope is the scope relative to which we will return the parts
-   --  @return all parts of F that are visible from Scope.
+   --  @param F is the Flow_Id whose subcomponents we need to gather
+   --  @param Scope is the scope relative to which we will return the
+   --         subcomponents
+   --  @return all subcomponents of F that are visible from Scope.
 
    function Flatten_Variable
      (E     : Entity_Id;

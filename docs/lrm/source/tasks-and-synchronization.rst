@@ -341,7 +341,7 @@ are in |SPARK|.
     attributes introduces no such dependency.]
 
 
-20. Preconditions are added to suprogram specifications as needed in order
+20. Preconditions are added to subprogram specifications as needed in order
     to avoid the failure of language-defined runtime checks for the
     following subprograms:
 

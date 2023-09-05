@@ -7,8 +7,7 @@ main.adb:25:12: info: discriminant check proved (CVC5: 1 VC; Trivial: 1 VC)
 main.adb:29:39: low: "O.B" might not be set in "Call_Store" [reason for check: OUT parameter should be fully initialized on return] [possible fix: initialize "O.B" on all paths, make "O" an IN OUT parameter or annotate it with aspect Relaxed_Initialization]
 main.adb:29:39: medium: "O.V" might not be initialized in "Call_Store" [reason for check: OUT parameter should be fully initialized on return] [possible fix: initialize "O.V" on all paths, make "O" an IN OUT parameter or annotate it with aspect Relaxed_Initialization]
 main.adb:30:14: info: postcondition proved (CVC5: 2 VC; Trivial: 1 VC)
-main.adb:30:41: low: "O.B" might not be set
-main.adb:30:54: medium: "O.V" might not be initialized
+main.adb:30:15: medium: "O" might not be initialized
 main.adb:30:55: info: discriminant check proved (CVC5: 1 VC)
 main.adb:34:07: info: only expected exception raised (CVC5: 1 VC)
 main.adb:37:25: info: assertion proved (CVC5: 1 VC)

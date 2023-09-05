@@ -327,7 +327,6 @@ package body Flow.Analysis is
    begin
       --  Look for either the Initial_Value or Initial_Grouping variant
       if Initial_Value_Vertex = Flow_Graphs.Null_Vertex then
-         pragma Assert (Is_Entire_Variable (F));
          return G.Get_Vertex (Change_Variant (F, Initial_Grouping));
       else
          return Initial_Value_Vertex;
@@ -743,8 +742,7 @@ package body Flow.Analysis is
         (Sanity.Check_Function_Side_Effects'Access,
          Sanity.Check_Expressions'Access,
          Sanity.Check_Generated_Refined_Global'Access,
-         Sanity.Check_Illegal_Writes'Access,
-         Sanity.Check_All_Variables_Known'Access,
+         Sanity.Check_Illegal_Writes_And_All_Variables_Known'Access,
          Sanity.Check_Side_Effects_In_Protected_Functions'Access);
    begin
       for C of Sanity_Checks loop
@@ -2044,18 +2042,52 @@ package body Flow.Analysis is
    is
       type Msg_Kind is (Unknown, Err);
 
+      type Path_Vertices is record
+         Start : Flow_Graphs.Vertex_Id;
+         V_Use : Flow_Graphs.Vertex_Id;
+      end record;
+      --  End vertices of a definition-free path in the graph
+
+      function Hash (Path : Path_Vertices) return Ada.Containers.Hash_Type;
+      --  Hash function for Path_Vertices records
+
+      package Path_To_Variables_Maps is new Ada.Containers.Hashed_Maps
+       (Key_Type        => Path_Vertices,
+        Element_Type    => Flow_Id_Sets.Set,
+        Hash            => Hash,
+        Equivalent_Keys => "=",
+        "="             => "=");
+
+      Err_Checks     : Path_To_Variables_Maps.Map;
+      Unknown_Checks : Path_To_Variables_Maps.Map;
+      --  Map definition-free paths to variables on which we need to emit Err
+      --  (resp. Unknown) checks for uninitialization.
+
       procedure Emit_Check_Message
         (Var   : Flow_Id;
-         V_Def : Flow_Graphs.Vertex_Id;
+         Start : Flow_Graphs.Vertex_Id;
          V_Use : Flow_Graphs.Vertex_Id;
-         Kind  : Msg_Kind;
-         OK    : in out Boolean)
+         Kind  : Msg_Kind)
       with Pre  => not Is_Internal (Var)
-                   and then V_Def /= Flow_Graphs.Null_Vertex
-                   and then V_Use /= Flow_Graphs.Null_Vertex,
-           Post => not OK;
+                   and then Start /= Flow_Graphs.Null_Vertex
+                   and then V_Use /= Flow_Graphs.Null_Vertex;
       --  Produces an appropriately worded low/high message for variable Var
-      --  defined/havoced and used at vertices V_Def and V_Use, respectively.
+      --  and looks for a path without initialization linking Start to V_Use
+      --  for it to be written in a tracefile.
+
+      procedure Emit_Check_Messages
+        (Kind            : Msg_Kind;
+         Kind_Checks     : in out Path_To_Variables_Maps.Map;
+         Non_Kind_Checks : in out Path_To_Variables_Maps.Map);
+      --  Produces the appropriately worded check messages for the uses of
+      --  uninitialized variables corresponding to the specified message Kind.
+      --  Kind_Checks (resp. Non_Kind_Checks) is a shortcut for the map
+      --  associated with Kind (resp. non Kind) checks. Check messages
+      --  associated with individual subcomponents are compressed into one
+      --  message associated with their enclosing object, iff all the
+      --  subcomponents are uninitialized at a given point in the subprogram.
+      --  The parts on which we need to emit checks are added to Kind_Checks
+      --  not to traverse their type again while emitting non Kind checks.
 
       procedure Emit_Info_Message_Global (Var : Flow_Id)
       with Pre => Var.Kind in Direct_Mapping | Magic_String;
@@ -2088,12 +2120,12 @@ package body Flow.Analysis is
 
       procedure Scan_Children
         (Var                  : Flow_Id;
-         Start                : Flow_Graphs.Vertex_Id;
+         V_Initial            : Flow_Graphs.Vertex_Id;
          Possibly_Initialized : Boolean;
          Visited              : in out Vertex_Sets.Set;
          OK                   : in out Boolean)
       with Pre  => Var.Variant = Normal_Use
-                   and then Start /= Flow_Graphs.Null_Vertex
+                   and then V_Initial /= Flow_Graphs.Null_Vertex
                    and then (if not Is_Array (Var)
                              then not Possibly_Initialized
                                and then Visited.Is_Empty),
@@ -2101,12 +2133,15 @@ package body Flow.Analysis is
                                           Of_Set => Visited)
                    and then (if not OK'Old then not OK);
       --  Detect uses of Var, which is a not-yet-initialized object, by
-      --  looking at the PDG vertices originating from Start. For arrays this
-      --  routine might be called recursively and then Possibly_Initialized
-      --  is True iff some elements of the array have been written. Visited
-      --  contains vertices that have been already examined; it is to prevent
-      --  infinite recursive calls. If any message is emitted, then OK will
-      --  become False; otherwise, it will be unmodified.
+      --  looking at the PDG vertices originating from V_Initial. For arrays
+      --  this routine might be called recursively and then
+      --  Possibly_Initialized is True iff some elements of the array have been
+      --  written. Visited contains vertices that have been already examined;
+      --  it is to prevent infinite recursive calls. If we detect a use of Var
+      --  while uninitialized, then OK will become False; otherwise, it will be
+      --  unmodified. If OK becomes False, a pair of end vertices of a
+      --  definition-free path is mapped to Var in Err_Checks (resp.
+      --  Unknown_Checks) if we need to emit an Err (resp. Unknown) check.
 
       function Is_Array (F : Flow_Id) return Boolean;
       --  Returns True iff F represents an array and thus requires special
@@ -2139,15 +2174,14 @@ package body Flow.Analysis is
 
       procedure Emit_Check_Message
         (Var   : Flow_Id;
-         V_Def : Flow_Graphs.Vertex_Id;
+         Start : Flow_Graphs.Vertex_Id;
          V_Use : Flow_Graphs.Vertex_Id;
-         Kind  : Msg_Kind;
-         OK    : in out Boolean)
+         Kind  : Msg_Kind)
       is
          V_Key        : Flow_Id renames FA.PDG.Get_Key (V_Use);
 
          V_Initial    : constant Flow_Graphs.Vertex_Id :=
-           FA.PDG.Get_Vertex (Change_Variant (Var, Initial_Value));
+           Get_Initial_Vertex (FA.PDG, Var);
 
          V_Initial_Atr : V_Attributes renames FA.Atr (V_Initial);
 
@@ -2157,12 +2191,18 @@ package body Flow.Analysis is
 
          V_Goal       : Flow_Graphs.Vertex_Id;
 
-         Is_Final_Use : constant Boolean := V_Key.Variant = Final_Value;
-         Is_Global    : constant Boolean := V_Initial_Atr.Is_Global;
-         Default_Init : constant Boolean :=
+         Is_Final_Use          : constant Boolean :=
+           V_Key.Variant = Final_Value;
+         Is_Global             : constant Boolean := V_Initial_Atr.Is_Global;
+         Default_Init          : constant Boolean :=
            Var.Kind in Direct_Mapping | Record_Field
            and then Is_Default_Initialized (Var);
-         Is_Function  : constant Boolean := Is_Function_Entity (Var);
+         Is_Function           : constant Boolean := Is_Function_Entity (Var);
+         Is_Read_Global_Output : constant Boolean :=
+           Kind = Err
+           and then not Default_Init
+           and then Is_Global
+           and then not Is_Final_Use;
 
          function Mark_Definition_Free_Path
            (To  : Flow_Graphs.Vertex_Id;
@@ -2222,14 +2262,6 @@ package body Flow.Analysis is
                end if;
             end Add_Loc;
 
-            Start : constant Flow_Graphs.Vertex_Id :=
-              (if FA.Atr (V_Def).Is_Param_Havoc
-               then V_Def
-               else FA.Start_Vertex);
-            --  If we scan children of a havoc vertex, then search from the
-            --  havoc vertex itself; otherwise, skip the 'Initial vertex and
-            --  begin from the start of the subprogram.
-
          --  Start of processing for Mark_Definition_Free_Path
 
          begin
@@ -2248,132 +2280,9 @@ package body Flow.Analysis is
                     else Vertex_Sets.Empty_Set);
          end Mark_Definition_Free_Path;
 
-      --  Start of processing for Emit_Message
+      --  Start of processing for Emit_Check_Message
 
       begin
-         --  Assemble appropriate message for failed initialization. We deal
-         --  with a bunch of special cases first, but if they don't trigger we
-         --  create the standard message.
-
-         if Is_Function then
-            Msg := To_Unbounded_String ("function & does not return on ");
---              if Has_Only_Infinite_Execution (Vertex) then
---                 Append (Msg, "any path");
---              else
---                 Append (Msg, "some paths");
---              end if;
-            Append (Msg, "some paths");
-         else
-            Msg := To_Unbounded_String ("&");
-            if Kind = Err then
-               Append (Msg, " is not");
-            else
-               Append (Msg, " might not be");
-            end if;
-            if Default_Init then
-               Append (Msg, " set");
-            elsif Has_Async_Readers (Var) then
-               Append (Msg, " written");
-            else
-               Append (Msg, " initialized");
-            end if;
-            if Is_Final_Use and not Is_Global then
-               Append (Msg, " in &");
-
-               --  Here we build the Details and Fix messages. In the first
-               --  branch of the if statement, we deal with a variable that
-               --  isn't initialized after elaboration of a package, but is
-               --  mentioned in the (generated or not) Initializes aspect of
-               --  said package, either directly or through an abstract state.
-
-               if FA.Kind = Kind_Package then
-                  if FA.Is_Generative then
-                     Append (Details, "variable is mentioned in the generated "
-                                        & "Initializes contract");
-                  else
-                     pragma Assert (Var.Kind in Direct_Mapping | Record_Field);
-                     declare
-                        E          : constant Entity_Id :=
-                          Get_Direct_Mapping_Id (Var);
-                        Is_Visible : constant Boolean   :=
-                          (if Ekind (E) = E_Abstract_State
-                           then Scope (E) = FA.Spec_Entity
-                           else List_Containing
-                                  (Enclosing_Declaration (E)) =
-                                Visible_Declarations
-                                  (Package_Specification (FA.Spec_Entity)));
-
-                     begin
-                        if Is_Visible then
-                           Append (Details, "variable ");
-                        else
-                           Append (Details, "encapsulating state ");
-                        end if;
-
-                        Append (Details, "is mentioned in the Initializes "
-                                           & "contract of the package "
-                                           & "declaration");
-                     end;
-                  end if;
-
-                  Append (Fix, "initialize & at declaration");
-                  if Entity_Body_In_SPARK (FA.Spec_Entity) then
-                     Append (Fix, " or in the package body statements");
-                  end if;
-                  Fix_F1 := Var;
-
-               --  We are dealing with an OUT parameter that is not initialized
-               --  on return. We suggest two fixes by default and add a third
-               --  one if the variable is a record component or an array.
-
-               else
-                  declare
-                     Is_Record_Component_Or_Array : constant Boolean :=
-                       Var.Kind = Record_Field or else Is_Array (Var);
-
-                  begin
-                     --  Construction of the Details message
-                     Append (Details, "OUT parameter should be ");
-                     if Is_Record_Component_Or_Array then
-                        Append (Details, "fully ");
-                     end if;
-                     Append (Details, "initialized on return");
-
-                     --  First possible fix
-                     Append (Fix, "initialize & on all paths");
-                     Fix_F1 := Var;
-
-                     --  Second possible fix
-                     if Is_Record_Component_Or_Array then
-                        Append (Fix, ", ");
-                     else
-                        Append (Fix, " or ");
-                     end if;
-                     Append (Fix, "make & an IN OUT parameter");
-                     Fix_F2 := Entire_Variable
-                                 (Change_Variant (Var, Normal_Use));
-
-                     --  Third possible fix
-                     if Is_Record_Component_Or_Array then
-                        Append (Fix, " or annotate it with aspect "
-                                & "Relaxed_Initialization");
-                     end if;
-                  end;
-               end if;
-            end if;
-            if Is_Main_Global_Input (V_Initial_Atr) then
-               Append (Msg,
-                       (case FA.Kind is
-                           when Kind_Subprogram =>
-                             " after elaboration of main program &",
-                           when Kind_Task =>
-                             " before start of tasks of type &",
-                           when others =>
-                              raise Program_Error));
-               --  ??? this message should be tuned for interrupt handlers
-            end if;
-         end if;
-
          if not Is_Final_Use then
             V_Goal := V_Use;
 
@@ -2392,77 +2301,23 @@ package body Flow.Analysis is
             N      := FA.Atr (V_Use).Error_Location;
          end if;
 
-         declare
-            Path : constant Vertex_Sets.Set :=
-              Mark_Definition_Free_Path (To  => V_Goal,
-                                         Var => Var);
+         --  Assemble appropriate message for failed initialization. We deal
+         --  with a bunch of special cases first, but if they don't trigger we
+         --  create the standard message.
 
-         begin
-            Error_Msg_Flow
-              (FA       => FA,
-               Path     => Path,
-               Msg      => To_String (Msg),
-               Details  => To_String (Details),
-               Fix      => To_String (Fix),
-               N        => N,
-               F1       => Var,
-               F2       => Direct_Mapping_Id (FA.Spec_Entity),
-               FF1      => Fix_F1,
-               FF2      => Fix_F2,
-               Tag      => Uninitialized,
-               Severity => (case Kind is
-                            when Unknown => (if Default_Init
-                                             then Low_Check_Kind
-                                             else Medium_Check_Kind),
-                            when Err     => (if Default_Init
-                                             then Medium_Check_Kind
-                                             else High_Check_Kind)),
-               Vertex   => V_Use);
+         if Is_Read_Global_Output then
 
-            --  ??? only when Is_Final_Use ?
-            if Is_Constituent (Var)
-              and then FA.Kind = Kind_Package
-              and then Present (FA.Initializes_N)
-            then
-               Error_Msg_Flow
-                 (FA           => FA,
-                  Msg          => "initialization of & is specified @",
-                  N            => N,
-                  F1           => Direct_Mapping_Id
-                                    (Encapsulating_State
-                                       (Get_Direct_Mapping_Id (Var))),
-                  F2           =>
-                    Direct_Mapping_Id
-                      (if From_Aspect_Specification (FA.Initializes_N)
-                       then Corresponding_Aspect (FA.Initializes_N)
-                       else FA.Initializes_N),
-                  Tag          => Uninitialized,
-                  Severity     => (case Kind is
-                                      when Unknown => Medium_Check_Kind,
-                                      when Err     => High_Check_Kind),
-                  Vertex       => V_Use,
-                  Continuation => True);
-            end if;
-         end;
+            --  In case of a subprogram with an output global which is actually
+            --  used as an input in its body, we emit dedicated messages.
 
-         --  In case of a subprogram with an output global which is actually
-         --  used as an input in its body, we add more information to the error
-         --  message.
-         if Kind = Err
-           and then not Default_Init
-           and then Is_Global
-           and then not Is_Final_Use
-         then
-            Error_Msg_Flow (FA           => FA,
-                            Msg          => "& is not an input " &
-                              "in the Global contract of subprogram #",
-                            Severity     => High_Check_Kind,
-                            N            => N,
-                            F1           => Var,
-                            F2           =>
-                              Direct_Mapping_Id (FA.Spec_Entity),
-                            Tag          => Uninitialized,
-                            Continuation => True);
+            Error_Msg_Flow (FA       => FA,
+                            Msg      => "& is not an input in the " &
+                                        "Global contract of subprogram #",
+                            Severity => High_Check_Kind,
+                            N        => N,
+                            F1       => Var,
+                            F2       => Direct_Mapping_Id (FA.Spec_Entity),
+                            Tag      => Uninitialized);
 
             declare
                Msg : constant String :=
@@ -2480,10 +2335,327 @@ package body Flow.Analysis is
                                Tag          => Uninitialized,
                                Continuation => True);
             end;
-         end if;
+         else
+            if Is_Function then
+               Msg := To_Unbounded_String ("function & does not return on ");
+--             if Has_Only_Infinite_Execution (Vertex) then
+--                Append (Msg, "any path");
+--             else
+--                Append (Msg, "some paths");
+--             end if;
+               Append (Msg, "some paths");
+            else
+               Msg := To_Unbounded_String ("&");
+               if Kind = Err then
+                  Append (Msg, " is not");
+               else
+                  Append (Msg, " might not be");
+               end if;
+               if Default_Init then
+                  Append (Msg, " set");
+               elsif Has_Async_Readers (Var) then
+                  Append (Msg, " written");
+               else
+                  Append (Msg, " initialized");
+               end if;
+               if Is_Final_Use and not Is_Global then
+                  Append (Msg, " in &");
 
-         OK := False;
+                  --  Here we build the Details and Fix messages. In the first
+                  --  branch of the if statement, we deal with a variable that
+                  --  isn't initialized after elaboration of a package, but is
+                  --  mentioned in the (generated or not) Initializes aspect of
+                  --  said package, either directly or through an abstract
+                  --  state.
+
+                  if FA.Kind = Kind_Package then
+                     if FA.Is_Generative then
+                        Append (Details, "variable is mentioned in the " &
+                                         "generated Initializes contract");
+                     else
+                        pragma Assert
+                          (Var.Kind in Direct_Mapping | Record_Field);
+                        declare
+                           E          : constant Entity_Id :=
+                             Get_Direct_Mapping_Id (Var);
+                           Is_Visible : constant Boolean   :=
+                             (if Ekind (E) = E_Abstract_State
+                              then Scope (E) = FA.Spec_Entity
+                              else List_Containing
+                                     (Enclosing_Declaration (E)) =
+                                   Visible_Declarations
+                                     (Package_Specification (FA.Spec_Entity)));
+
+                        begin
+                           if Is_Visible then
+                              Append (Details, "variable ");
+                           else
+                              Append (Details, "encapsulating state ");
+                           end if;
+
+                           Append (Details, "is mentioned in the Initializes "
+                                   & "contract of the package "
+                                   & "declaration");
+                        end;
+                     end if;
+
+                     Append (Fix, "initialize & at declaration");
+                     if Entity_Body_In_SPARK (FA.Spec_Entity) then
+                        Append (Fix, " or in the package body statements");
+                     end if;
+                     Fix_F1 := Var;
+
+                  --  We are dealing with an OUT parameter that is not
+                  --  initialized on return. We suggest two fixes by default
+                  --  and add a third one if the variable is a record part or
+                  --  an array.
+
+                  else
+                     declare
+                        Is_Record_Part_Or_Array : constant Boolean :=
+                          Var.Kind = Record_Field
+                          or else Is_Array (Var)
+                          or else (Var.Kind = Direct_Mapping
+                                   and then Var.Facet = Normal_Part
+                                   and then
+                                   Is_Record_Type
+                                     (Get_Type (Var, FA.B_Scope)));
+
+                     begin
+                        --  Construction of the Details message
+                        Append (Details, "OUT parameter should be ");
+                        if Is_Record_Part_Or_Array then
+                           Append (Details, "fully ");
+                        end if;
+                        Append (Details, "initialized on return");
+
+                        --  First possible fix
+                        Append (Fix, "initialize & on all paths");
+                        Fix_F1 := Var;
+
+                        --  Second possible fix
+                        if Is_Record_Part_Or_Array then
+                           Append (Fix, ", ");
+                        else
+                           Append (Fix, " or ");
+                        end if;
+                        Append (Fix, "make & an IN OUT parameter");
+                        Fix_F2 := Entire_Variable
+                          (Change_Variant (Var, Normal_Use));
+
+                        --  Third possible fix
+                        if Is_Record_Part_Or_Array then
+                           Append (Fix, " or annotate it with aspect "
+                                   & "Relaxed_Initialization");
+                        end if;
+                     end;
+                  end if;
+               end if;
+               if Is_Main_Global_Input (V_Initial_Atr) then
+                  Append (Msg,
+                          (case FA.Kind is
+                              when Kind_Subprogram =>
+                                " after elaboration of main program &",
+                              when Kind_Task =>
+                                " before start of tasks of type &",
+                              when others =>
+                                 raise Program_Error));
+                  --  ??? this message should be tuned for interrupt handlers
+               end if;
+            end if;
+
+            declare
+               Path : constant Vertex_Sets.Set :=
+                 Mark_Definition_Free_Path (To  => V_Goal,
+                                            Var => Var);
+
+            begin
+               Error_Msg_Flow
+                 (FA       => FA,
+                  Path     => Path,
+                  Msg      => To_String (Msg),
+                  Details  => To_String (Details),
+                  Fix      => To_String (Fix),
+                  N        => N,
+                  F1       => Var,
+                  F2       => Direct_Mapping_Id (FA.Spec_Entity),
+                  FF1      => Fix_F1,
+                  FF2      => Fix_F2,
+                  Tag      => Uninitialized,
+                  Severity => (case Kind is
+                                  when Unknown => (if Default_Init
+                                                   then Low_Check_Kind
+                                                   else Medium_Check_Kind),
+                                  when Err     => (if Default_Init
+                                                   then Medium_Check_Kind
+                                                   else High_Check_Kind)),
+                  Vertex   => V_Use);
+
+               --  ??? only when Is_Final_Use ?
+               if Is_Constituent (Var)
+                 and then FA.Kind = Kind_Package
+                 and then Present (FA.Initializes_N)
+               then
+                  Error_Msg_Flow
+                    (FA           => FA,
+                     Msg          => "initialization of & is specified @",
+                     N            => N,
+                     F1           => Direct_Mapping_Id
+                       (Encapsulating_State
+                            (Get_Direct_Mapping_Id (Var))),
+                     F2           =>
+                       Direct_Mapping_Id
+                         (if From_Aspect_Specification (FA.Initializes_N)
+                          then Corresponding_Aspect (FA.Initializes_N)
+                          else FA.Initializes_N),
+                     Tag          => Uninitialized,
+                     Severity     => (case Kind is
+                                         when Unknown => Medium_Check_Kind,
+                                         when Err     => High_Check_Kind),
+                     Vertex       => V_Use,
+                     Continuation => True);
+               end if;
+            end;
+         end if;
       end Emit_Check_Message;
+
+      -------------------------
+      -- Emit_Check_Messages --
+      -------------------------
+
+      procedure Emit_Check_Messages
+        (Kind            : Msg_Kind;
+         Kind_Checks     : in out Path_To_Variables_Maps.Map;
+         Non_Kind_Checks : in out Path_To_Variables_Maps.Map)
+      is
+         procedure Compress_Checks
+           (Path  : Path_Vertices;
+            Var   : Flow_Id;
+            Parts : in out Flow_Id_Sets.Set);
+         --  Traverses the type of Var by calling itself recursively and puts
+         --  in Parts either Var, if all its subcomponents are uninitialized at
+         --  V_Use, or the uninitialized subcomponents of Var.
+
+         ----------------------
+         -- Compress_Checks --
+         ----------------------
+
+         procedure Compress_Checks
+           (Path  : Path_Vertices;
+            Var   : Flow_Id;
+            Parts : in out Flow_Id_Sets.Set)
+         is
+            Components : Flow_Id_Sets.Set := Get_Components (Var, FA.B_Scope);
+         begin
+            --  Get_Components returns Var'Extension_Part if Var is classwide
+            --  but not if it is a tagged parameter of a subprogram annotated
+            --  with Extensions_Visible. In this case, we need to include
+            --  Var'Extension_Part in the components of Var because we want to
+            --  compress checks on extension parts as we do it for regular
+            --  components.
+
+            if Is_Entire_Variable (Var)
+              and then Var.Kind = Direct_Mapping
+              and then Var.Variant = Normal_Use
+              and then Extensions_Visible (Var, FA.B_Scope)
+            then
+               Components.Include ((Var with delta Facet => Extension_Part));
+            end if;
+
+            --  If Kind_Checks contains Var, Var is a leaf of the tree
+            --  representing the type of its entire variable. Else, we recurse
+            --  on the components of Var.
+
+            if Kind_Checks (Path).Contains (Var) then
+               Parts.Insert (Var);
+            else
+               --  The sets corresponding to Path in Kind_Checks and
+               --  Non_Kind_Checks are disjoint. This means that if a part is
+               --  in Non_Kind_Checks, then we won't be able to compress the
+               --  checks related to its subcomponents in Kind_Checks.
+
+               declare
+                  Path_Position : constant Path_To_Variables_Maps.Cursor :=
+                    Non_Kind_Checks.Find (Path);
+               begin
+                  if not Path_To_Variables_Maps.Has_Element (Path_Position)
+                    or else
+                      not Non_Kind_Checks (Path_Position).Contains (Var)
+                  then
+                     --  Var is excluded from Components to avoid infinite
+                     --  recursion.
+
+                     Components.Exclude (Var);
+
+                     --  Recursively populate Parts with all the uninitialized
+                     --  subcomponents of Var, by recursing on the (possibly
+                     --  empty) set of components of Var.
+
+                     for C of Components loop
+                        Compress_Checks
+                          (Path  => Path,
+                           Var   => C,
+                           Parts => Parts);
+                     end loop;
+
+                     --  If Var doesn't have any components, then, since Path
+                     --  isn't mapped to Var in either of the maps, it is not
+                     --  uninitialized at V_Use. Else, if Parts contains all
+                     --  the components of Var, then we can emit the check on
+                     --  Var only. Otherwise, we need to emit checks on all the
+                     --  uninitialized subcomponents.
+
+                     if not Components.Is_Empty
+                       and then Components.Is_Subset (Parts)
+                     then
+                        Parts.Difference (Components);
+                        Parts.Insert (Var);
+                     end if;
+                  end if;
+               end;
+            end if;
+         end Compress_Checks;
+
+      --  Start of processing for Emit_Check_Messages
+
+      begin
+         for P in Kind_Checks.Iterate loop
+            declare
+               Path : Path_Vertices renames Path_To_Variables_Maps.Key (P);
+               Variables : Flow_Id_Sets.Set renames Kind_Checks (Path);
+            begin
+               for Var of To_Entire_Variables (Variables) loop
+                  declare
+                     Parts : Flow_Id_Sets.Set;
+                     --  Parts of Var on which we need to emit checks for
+                     --  uninitialization.
+                  begin
+                     Compress_Checks
+                       (Path  => Path,
+                        Var   => Var,
+                        Parts => Parts);
+
+                     --  Emit checks on every uninitialized part of Var
+
+                     for S of Parts loop
+                        Emit_Check_Message
+                          (Var   => S,
+                           Start => Path.Start,
+                           V_Use => Path.V_Use,
+                           Kind  => Kind);
+
+                        --  Path is mapped to the parts on which we need
+                        --  to emit Kind checks to avoid exploring their
+                        --  subcomponents again when emitting checks of
+                        --  another kind.
+
+                        Variables.Include (S);
+                     end loop;
+                  end;
+               end loop;
+            end;
+         end loop;
+      end Emit_Check_Messages;
 
       ------------------------------
       -- Emit_Info_Message_Global --
@@ -2633,6 +2805,18 @@ package body Flow.Analysis is
          (if Is_Main_Global_Input (Atr)
           then Is_Initialized_At_Elaboration (F, FA.B_Scope)
           else Atr.Is_Initialized);
+
+      ----------
+      -- Hash --
+      ----------
+
+      function Hash (Path : Path_Vertices) return Ada.Containers.Hash_Type
+      is
+         use type Ada.Containers.Hash_Type;
+         use Flow_Graphs;
+      begin
+         return 17 * Vertex_Hash (Path.Start) + 13 * Vertex_Hash (Path.V_Use);
+      end Hash;
 
       --------------------------------
       -- Has_Relaxed_Initialization --
@@ -2804,17 +2988,52 @@ package body Flow.Analysis is
       -------------------
 
       procedure Scan_Children
-        (Var     : Flow_Id;
-         Start   : Flow_Graphs.Vertex_Id;
+        (Var                  : Flow_Id;
+         V_Initial            : Flow_Graphs.Vertex_Id;
          Possibly_Initialized : Boolean;
-         Visited : in out Vertex_Sets.Set;
-         OK      : in out Boolean)
+         Visited              : in out Vertex_Sets.Set;
+         OK                   : in out Boolean)
       is
+         procedure Update
+           (Checks : in out Path_To_Variables_Maps.Map;
+            Start  : Flow_Graphs.Vertex_Id;
+            V_Use  : Flow_Graphs.Vertex_Id;
+            Var    : Flow_Id);
+         --  Maps Start and V_Use to Var in Checks
+
+         ------------
+         -- Update --
+         ------------
+
+         procedure Update
+           (Checks : in out Path_To_Variables_Maps.Map;
+            Start  : Flow_Graphs.Vertex_Id;
+            V_Use  : Flow_Graphs.Vertex_Id;
+            Var    : Flow_Id)
+         is
+            Path     : constant Path_Vertices := (Start, V_Use);
+            Position : Path_To_Variables_Maps.Cursor;
+            Unused   : Boolean;
+         begin
+            Checks.Insert (Path, Position, Unused);
+            Checks (Position).Insert (Var);
+         end Update;
+
          Position : Vertex_Sets.Cursor;
          Inserted : Boolean;
+         Kind     : Msg_Kind;
+         Start    : constant Flow_Graphs.Vertex_Id :=
+           (if FA.Atr (V_Initial).Is_Param_Havoc
+            then V_Initial
+            else FA.Start_Vertex);
+         --  When emitting a check message, if we scan children of a havoc
+         --  vertex, then we will search from the havoc vertex itself;
+         --  otherwise, we will skip the 'Initial vertex and begin from the
+         --  start of the subprogram.
 
       begin
-         for Child of FA.PDG.Get_Collection (Start, Flow_Graphs.Out_Neighbours)
+         for Child of
+           FA.PDG.Get_Collection (V_Initial, Flow_Graphs.Out_Neighbours)
          loop
             declare
                Child_Key : Flow_Id      renames FA.DDG.Get_Key (Child);
@@ -2847,19 +3066,29 @@ package body Flow.Analysis is
 
                      elsif Child_Atr.Variables_Explicitly_Used.Contains (Var)
                      then
-                        Emit_Check_Message
-                          (Var   => Var,
-                           V_Def => Start,
-                           V_Use => Child,
-                           Kind  =>
-                             (if Possibly_Initialized
-                                or else
-                                 Might_Be_Initialized (Var       => Var,
-                                                       V_Initial => Start,
-                                                       V_Use     => Child)
-                              then Unknown
-                              else Err),
-                           OK    => OK);
+                        OK   := False;
+                        Kind := (if Possibly_Initialized
+                                   or else
+                                    Might_Be_Initialized
+                                      (Var       => Var,
+                                       V_Initial => V_Initial,
+                                       V_Use     => Child)
+                                 then Unknown
+                                 else Err);
+
+                        if Kind = Err then
+                           Update
+                             (Checks => Err_Checks,
+                              Start  => Start,
+                              V_Use  => Child,
+                              Var    => Var);
+                        else
+                           Update
+                             (Checks => Unknown_Checks,
+                              Start  => Start,
+                              V_Use  => Child,
+                              Var    => Var);
+                        end if;
 
                      --  Otherwise, it is a partial assignment, e.g.
                      --     Arr (X) := Y;
@@ -2870,25 +3099,35 @@ package body Flow.Analysis is
                      else
                         Scan_Children
                           (Var,
-                           Start   => Child,
+                           V_Initial            => Child,
                            Possibly_Initialized => True,
-                           Visited => Visited,
-                           OK      => OK);
+                           Visited              => Visited,
+                           OK                   => OK);
                      end if;
 
                   else
                      if Child_Atr.Variables_Used.Contains (Var) then
-                        Emit_Check_Message
-                          (Var   => Var,
-                           V_Def => Start,
-                           V_Use => Child,
-                           Kind  =>
-                             (if Might_Be_Initialized (Var       => Var,
-                                                       V_Initial => Start,
-                                                       V_Use     => Child)
-                              then Unknown
-                              else Err),
-                           OK    => OK);
+                        OK   := False;
+                        Kind := (if Might_Be_Initialized
+                                      (Var       => Var,
+                                       V_Initial => V_Initial,
+                                       V_Use     => Child)
+                                 then Unknown
+                                 else Err);
+
+                        if Kind = Err then
+                           Update
+                             (Checks => Err_Checks,
+                              Start  => Start,
+                              V_Use  => Child,
+                              Var    => Var);
+                        else
+                           Update
+                             (Checks => Unknown_Checks,
+                              Start  => Start,
+                              V_Use  => Child,
+                              Var    => Var);
+                        end if;
                      end if;
                   end if;
                end if;
@@ -2912,7 +3151,7 @@ package body Flow.Analysis is
       --
       --  The OK/NOK containers are needed because an OK message is emitted
       --  only once for the entire object, while NOK checks are emitted for
-      --  each component on each location where it accessed without being
+      --  each component on each location where it is accessed without being
       --  initialized.
       --
       --  The Global/Local containers are needed, because messages on global
@@ -2951,11 +3190,12 @@ package body Flow.Analysis is
               and then not Is_Initialized (Parent_Key, Parent_Atr)
             then
                Scan_Children
-                 (Var     => Change_Variant (Parent_Key, Normal_Use),
-                  Start   => Parent,
+                 (Var                  => Change_Variant
+                                            (Parent_Key, Normal_Use),
+                  V_Initial            => Parent,
                   Possibly_Initialized => False,
-                  Visited => Visited,
-                  OK      => OK);
+                  Visited              => Visited,
+                  OK                   => OK);
 
                --  If no checks have been emitted for any of the object
                --  components, then want an info message for the entire object.
@@ -2987,11 +3227,11 @@ package body Flow.Analysis is
             elsif Parent_Atr.Is_Param_Havoc then
                for Havoc_Var of Parent_Atr.Variables_Defined loop
                   Scan_Children
-                    (Var     => Havoc_Var,
-                     Start   => Parent,
+                    (Var                  => Havoc_Var,
+                     V_Initial            => Parent,
                      Possibly_Initialized => False,
-                     Visited => Visited,
-                     OK      => OK);
+                     Visited              => Visited,
+                     OK                   => OK);
 
                   declare
                      Havoc_Atr : V_Attributes renames
@@ -3060,6 +3300,15 @@ package body Flow.Analysis is
             end if;
          end;
       end loop;
+
+      Emit_Check_Messages
+        (Kind            => Err,
+         Kind_Checks     => Err_Checks,
+         Non_Kind_Checks => Unknown_Checks);
+      Emit_Check_Messages
+        (Kind            => Unknown,
+         Kind_Checks     => Unknown_Checks,
+         Non_Kind_Checks => Err_Checks);
 
       for Var of Global_OK.Difference (Global_NOK) loop
          Emit_Info_Message_Global (Var);

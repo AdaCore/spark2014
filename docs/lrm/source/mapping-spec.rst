@@ -1302,7 +1302,7 @@ SPARK 2014 does not have the inherit annotation and only enforces the
 restriction that a package can only initialize an object declared in
 its declarative region. Hence, in SPARK 2014 two package bodies that
 depend on each other's specification may be legal, as is calling a user
-defined suprogram.
+defined subprogram.
 
 Instead of the elaboration restrictions of SPARK 2005 a set of rules
 is applied in SPARK 2014 which determines when elaboration order control

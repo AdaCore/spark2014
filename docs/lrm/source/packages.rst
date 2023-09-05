@@ -1447,7 +1447,7 @@ shall follow the grammar of ``global_specification`` in :ref:`Global Aspects`.
 
    d. Otherwise, the effective mode is Proof_In.
 
-   [If there is no such consituent (e.g., because a *null* refinement is
+   [If there is no such constituent (e.g., because a *null* refinement is
    visible) then the mode of the state abstraction in the Global aspect
    plays no role in determining the legality of the Refined_Global aspect.]
 
@@ -2037,7 +2037,7 @@ will satisfy the invariant and so, for example, could not fail the runtime
 check associated with passing that object or value as a parameter in call
 to a procedure for which Ada requires runtime checking of the invariant
 (which, in turn, means that the verification condition corresponding
-to that runtime check is trivally satisfied).
+to that runtime check is trivially satisfied).
 In order to accomplish this goal, verification conditions for
 type invariants are introduced in several contexts where Ada does
 not define corresponding runtime checks.]

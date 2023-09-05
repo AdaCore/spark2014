@@ -963,8 +963,8 @@ level of details in non-critical domains, knowledge of data and control
 coupling is important to assess impact of code changes. In particular, it may
 be critical for security that some secret data does not leak publicly, which
 can be rephrased as saying that only the specified data dependencies are
-allowed. |SPARK| is ideally equiped to support such analysis, with its detailed
-:ref:`Subprogram Contracts`:
+allowed. |SPARK| is ideally equipped to support such analysis, with its
+detailed :ref:`Subprogram Contracts`:
 
 * With :ref:`Data Dependencies`, a user can specify exactly the input and
   output data of a subprogram, which identifies the `"data not exclusively
