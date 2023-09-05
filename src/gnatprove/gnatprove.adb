@@ -644,7 +644,6 @@ procedure Gnatprove with SPARK_Mode is
                begin
                   Close (Id);
                   GNAT.OS_Lib.Delete_File (Socket_Name.all, Del_Succ);
-                  pragma Assert (Del_Succ);
                end;
             end if;
             if Use_Semaphores then
