@@ -2245,7 +2245,9 @@ package body SPARK_Util.Types is
          --  Stop of the access type has already been traversed. Otherwise,
          --  traverse the designated type.
 
-         elsif Is_Access_Type (Rep_Ty) then
+         elsif Is_Access_Type (Rep_Ty)
+           and then not Is_Access_Subprogram_Type (Rep_Ty)
+         then
             declare
                Inserted : Boolean;
                Position : Node_Sets.Cursor;
@@ -2262,7 +2264,9 @@ package body SPARK_Util.Types is
                     else Des_Ty);
             end;
          else
-            pragma Assert (Is_Scalar_Type (Rep_Ty));
+            pragma Assert
+              (Is_Scalar_Type (Rep_Ty)
+               or else Is_Access_Subprogram_Type (Rep_Ty));
             return False;
          end if;
       end Traverse_Subcomponents_Only;
