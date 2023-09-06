@@ -106,12 +106,16 @@ package body SPARK_Util.Types is
 
    generic
       with function Test (Typ : Type_Kind_Id) return Test_Result;
-   function Traverse_Subcomponents (Typ : Type_Kind_Id) return Boolean;
+   function Traverse_Subcomponents
+     (Typ        : Type_Kind_Id;
+      Skip_Discr : Boolean := False)
+      return Boolean;
    --  Generic function which applies test to all subcomponents of Typ
    --  until one is found on which Test returns Pass. If Test returns
    --  Continue on a composite or an access subcomponent, the component types
    --  or designated type is also searched for subcomponents with the given
    --  property.
+   --  If Skip_Discr is True, discriminants are not traversed.
 
    function Ancestor_Declares_Iterable_Aspect
      (E      : Type_Kind_Id;
@@ -628,46 +632,46 @@ package body SPARK_Util.Types is
       Ignore_Top : Boolean := False)
       return Boolean
    is
-      Rep_Ty : constant Type_Kind_Id := Retysp (Typ);
-   begin
-      if not Ignore_Top and then Has_Relaxed_Init (Typ) then
-         return True;
+      function Contains_Relaxed_Init (C_Typ : Type_Kind_Id) return Test_Result;
+      --  Function traversing a given subcomponent to check whether it has
+      --  at least a subcomponent with relaxed initialization.
 
-      --  Concurrent or access types with relaxed init parts are not supported
+      ---------------------------
+      -- Contains_Relaxed_Init --
+      ---------------------------
 
-      elsif Ekind (Rep_Ty) in Concurrent_Kind | Access_Kind then
-         return False;
+      function Contains_Relaxed_Init (C_Typ : Type_Kind_Id) return Test_Result
+      is
+      begin
+         if not (C_Typ = Retysp (Typ) and then Ignore_Top)
+           and then Has_Relaxed_Init (C_Typ)
+         then
+            return Pass;
 
-      elsif Is_Array_Type (Rep_Ty) then
-         return Contains_Relaxed_Init_Parts (Component_Type (Rep_Ty));
+         --  Protected components, components of tagged types, and types
+         --  designated by an access type cannot have components with relaxed
+         --  initialization.
 
-      elsif Is_Record_Type (Rep_Ty) then
+         elsif Ekind (C_Typ) in Concurrent_Kind | Access_Kind
+           or else Is_Tagged_Type (C_Typ)
+         then
+            return Fail;
 
-         --  Tagged types with relaxed init parts are not supported
+         elsif Ekind (C_Typ) in Record_Kind | Array_Kind then
+            return Continue;
 
-         if Is_Tagged_Type (Rep_Ty) then
-            return False;
          else
-            declare
-               Comp : Opt_E_Component_Id := First_Component (Rep_Ty);
-            begin
-               while Present (Comp) loop
-                  if Component_Is_Visible_In_SPARK (Comp)
-                    and then Contains_Relaxed_Init_Parts (Etype (Comp))
-                  then
-                     return True;
-                  end if;
-                  Next_Component (Comp);
-               end loop;
-            end;
+            pragma Assert
+              (Is_Incomplete_Or_Private_Type (C_Typ)
+               or else Is_Scalar_Type (C_Typ));
+            return Fail;
          end if;
-         return False;
-      else
-         pragma Assert
-           (Is_Incomplete_Or_Private_Type (Rep_Ty)
-            or else Is_Scalar_Type (Rep_Ty));
-         return False;
-      end if;
+      end Contains_Relaxed_Init;
+
+      function Contains_Relaxed_Init_Subcomps is new Traverse_Subcomponents
+        (Contains_Relaxed_Init);
+   begin
+      return Contains_Relaxed_Init_Subcomps (Typ);
    end Contains_Relaxed_Init_Parts;
 
    --------------------------------
@@ -675,68 +679,72 @@ package body SPARK_Util.Types is
    --------------------------------
 
    function Contains_Only_Relaxed_Init (Typ : Type_Kind_Id) return Boolean is
-      Rep_Ty : constant Type_Kind_Id := Retysp (Typ);
-   begin
-      if Has_Relaxed_Init (Typ) then
-         return True;
 
-      --  Concurrent or access types with relaxed init parts are not supported
+      function Contains_Non_Relaxed (C_Typ : Type_Kind_Id) return Test_Result;
+      --  Function traversing a given subcomponent to check whether it has
+      --  at least a subcomponent without relaxed initialization. A record
+      --  type with no visible subcomponents is not considered to have
+      --  relaxed initialization unless it is annotated.
 
-      elsif Is_Concurrent_Type (Rep_Ty) or else Is_Access_Type (Rep_Ty) then
-         return False;
+      --------------------------
+      -- Contains_Non_Relaxed --
+      --------------------------
 
-      elsif Is_Array_Type (Rep_Ty) then
-         return Contains_Only_Relaxed_Init (Component_Type (Rep_Ty));
+      function Contains_Non_Relaxed (C_Typ : Type_Kind_Id) return Test_Result
+      is
+      begin
+         if Has_Relaxed_Init (C_Typ) then
+            return Fail;
 
-      elsif Is_Record_Type (Rep_Ty) then
+         --  Protected components, components of tagged types, and types
+         --  designated by an access type cannot have components with relaxed
+         --  initialization.
 
-         --  Tagged types with relaxed init parts are not supported
+         elsif Ekind (C_Typ) in Concurrent_Kind | Access_Kind
+           or else Is_Tagged_Type (C_Typ)
+         then
+            return Pass;
 
-         if Is_Tagged_Type (Rep_Ty) then
-            return False;
+         elsif Is_Array_Type (C_Typ) then
+            return Continue;
 
-         --  Return True if Rep_Ty contains at least a subcomponent with
-         --  relaxed initialization and only such components.
+         elsif Is_Record_Type (C_Typ) then
 
-         else
+            --  Return Pass if Rep_Ty contains no visible subcomponents
+
             declare
                Comp             : Opt_E_Component_Id :=
-                 First_Component (Rep_Ty);
+                 First_Component (C_Typ);
                Has_Visible_Comp : Boolean := False;
             begin
                while Present (Comp) loop
                   if Component_Is_Visible_In_SPARK (Comp) then
-
-                     --  We have found at least one component with relaxed
-                     --  init. If we don't find any component without it, then
-                     --  the type contains only relaxed init parts.
-
-                     if Contains_Only_Relaxed_Init (Etype (Comp)) then
-                        Has_Visible_Comp := True;
-
-                     --  We have found at least one component without relaxed
-                     --  init. We return False directly.
-
-                     else
-                        return False;
-                     end if;
+                     Has_Visible_Comp := True;
+                     exit;
                   end if;
+
                   Next_Component (Comp);
                end loop;
 
-               --  The loop exits normally, so all components of Typ have
-               --  relaxed init. We return True if it has at least one
-               --  such components.
-
-               return Has_Visible_Comp;
+               if Has_Visible_Comp then
+                  return Continue;
+               else
+                  return Pass;
+               end if;
             end;
+
+         else
+            pragma Assert
+              (Is_Incomplete_Or_Private_Type (C_Typ)
+               or else Is_Scalar_Type (C_Typ));
+            return Pass;
          end if;
-      else
-         pragma Assert
-           (Is_Incomplete_Or_Private_Type (Rep_Ty)
-            or else Is_Scalar_Type (Rep_Ty));
-         return False;
-      end if;
+      end Contains_Non_Relaxed;
+
+      function Contains_Non_Relaxed_Subcomps is new Traverse_Subcomponents
+        (Contains_Non_Relaxed);
+   begin
+      return not Contains_Non_Relaxed_Subcomps (Typ, Skip_Discr => True);
    end Contains_Only_Relaxed_Init;
 
    ------------------------
@@ -2145,7 +2153,10 @@ package body SPARK_Util.Types is
    -- Traverse_Subcomponents --
    ----------------------------
 
-   function Traverse_Subcomponents (Typ : Type_Kind_Id) return Boolean is
+   function Traverse_Subcomponents
+     (Typ        : Type_Kind_Id;
+      Skip_Discr : Boolean := False) return Boolean
+   is
 
       Seen : Node_Sets.Set;
       --  Set of access types already traversed. This is used to avoid infinite
@@ -2186,7 +2197,9 @@ package body SPARK_Util.Types is
 
                --  Traverse the discriminants of Base_Ty if any
 
-               elsif Has_Discriminants (Base_Ty) then
+               elsif Has_Discriminants (Base_Ty)
+                 and then not Skip_Discr
+               then
                   declare
                      Discr : Entity_Id := First_Discriminant (Base_Ty);
                   begin
