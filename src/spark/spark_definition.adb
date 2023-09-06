@@ -7214,6 +7214,8 @@ package body SPARK_Definition is
                               --  Do not check for relaxed initialization if
                               --  the type is deep as some of the designated
                               --  types might not be marked yet.
+                              --  ??? A crash might still happen if the
+                              --  extension contains access-to-constant types.
 
                               elsif Contains_Relaxed_Init_Parts (Comp_Type)
                               then
@@ -7503,6 +7505,9 @@ package body SPARK_Definition is
 
                            --  Initialization by proof of protected components
                            --  is not supported yet.
+                           --  ??? This call might raise Program_Error if
+                           --  Etype (Comp) has a subcomponent designating an
+                           --  unmarked incomplete or private type.
 
                            if Contains_Relaxed_Init_Parts (Etype (Comp)) then
                               Mark_Unsupported
@@ -7535,6 +7540,9 @@ package body SPARK_Definition is
 
                               --  Initialization by proof of Part_Of variables
                               --  is not supported yet.
+                              --  ??? This call might raise Program_Error if
+                              --  Etype (Part) has a subcomponent designating
+                              --  an unmarked incomplete or private type.
 
                               if Ekind (Part) = E_Variable
                                 and then Retysp_In_SPARK (Etype (Part))
