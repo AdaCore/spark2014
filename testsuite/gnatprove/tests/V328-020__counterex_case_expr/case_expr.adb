@@ -63,8 +63,8 @@ package body Case_Expr is
   begin
     for J in A'Range loop
       A(J) := A(J) + 1;
-      pragma Assert ((case A'Loop_Entry(J) is
-                        when 1 => False,   --  @ASSERT:FAIL @COUNTEREXAMPLE
+      pragma Assert ((case A'Loop_Entry(J) is --  @ASSERT:FAIL @COUNTEREXAMPLE
+                        when 1 => False,
                         when others => False));
     end loop;
   end Loop_Entry_In_Case_Expr;
