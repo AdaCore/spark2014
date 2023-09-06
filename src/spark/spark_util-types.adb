@@ -2256,8 +2256,8 @@ package body SPARK_Util.Types is
             begin
                Seen.Insert (Rep_Ty, Position, Inserted);
 
-               return not Inserted
-                 or else Traverse_Type
+               return Inserted
+                 and then Traverse_Type
                    (if Is_Incomplete_Type (Des_Ty)
                       and then Present (Full_View (Des_Ty))
                     then Full_View (Des_Ty)
