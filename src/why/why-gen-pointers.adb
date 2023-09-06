@@ -870,9 +870,10 @@ package body Why.Gen.Pointers is
    procedure Declare_Rep_Pointer_Type (Th : Theory_UC; E : Entity_Id) is
 
       procedure Declare_Equality_Function;
-      --  Generate the boolean equality function for the pointer type
-      --  Comparing pointer equality is equivalent to comparing their addresses
-      --  Equal pointers have equal values
+      --  Generate the boolean equality function for the pointer type.
+      --  As pointer addresses are not represented in SPARK, this equality
+      --  function should only be used when one of the operand is statically
+      --  null.
 
       procedure Declare_Pointer_Type;
       --  Emit the why record declaration related to the Ada pointer type
@@ -965,8 +966,8 @@ package body Why.Gen.Pointers is
                Typ   => Get_Typ (Value_Id)));
 
       begin
-         --  Compare Pointer_Address field and assume pointer value equality if
-         --  addresses are equal.
+         --  Compare Pointer_Null field and the pointer value if any. The
+         --  second part should never be used.
 
          Sec_Condition := New_Conditional
            (Condition => New_Not (Right  => Pred_Of_Boolean_Term
