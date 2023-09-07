@@ -64,13 +64,3 @@ is allowed to contain the following attributes:
   organization of sub-directories. Each of these package directories contains
   manual proof files. Common proof files to be used across various proofs can
   be stored at the toplevel of the prover-specific directory.
-
-  ..
-     COMMENTED OUT BECAUSE NOT WORKING YET
-     These common
-     files may need to be preprocessed by the proof tool, which can be achieved by
-     setting fields ``configure_build`` and ``build_commands`` of the
-     corresponding prover section in your ``.why3.conf`` file:
-
-     * ``configure_build`` is the name of a configuration command to run prior to the build commands
-     * ``build_commands`` is a list of names of build commands to execute in turn
