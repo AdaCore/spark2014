@@ -182,7 +182,11 @@ package body SPARK_Util.Types is
          Typ := Etype (Typ);
       end if;
 
-      pragma Assert (Entity_Marked (Typ));
+      --  Type should be marked here
+
+      if not Entity_Marked (Typ) then
+         raise Program_Error;
+      end if;
 
       --  Incomplete types are only marked if their full view is not visible
 
