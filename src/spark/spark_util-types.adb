@@ -2193,7 +2193,9 @@ package body SPARK_Util.Types is
                  and then Present (Parent_Retysp (Base_Ty))
                  and then Parent_Retysp (Base_Ty) /= Base_Ty
                then
-                  return Traverse_Subcomponents_Only (Parent_Retysp (Base_Ty));
+                  if Traverse_Subcomponents_Only (Parent_Retysp (Base_Ty)) then
+                     return True;
+                  end if;
 
                --  Traverse the discriminants of Base_Ty if any
 
