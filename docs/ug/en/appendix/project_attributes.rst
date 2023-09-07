@@ -48,7 +48,7 @@ is allowed to contain the following attributes:
 
   Only the following switches are allowed for file-specific switches:
   ``--steps``, ``--timeout``, ``--memlimit``, ``--proof``, ``--prover``,
-  ``--level``, ``--counterexamples``, ``--no-inlining``,
+  ``--level``, ``--mode``, ``--counterexamples``, ``--no-inlining``,
   ``--no-loop-unrolling``.
 
 * ``Switches``. This deprecated attribute is the same as ``Proof_Switches
