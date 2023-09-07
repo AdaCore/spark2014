@@ -1,6 +1,6 @@
 callee1.adb:2:08: info: data dependencies proved
 callee1.adb:15:07: info: initialization of "By_C" proved
-callee1.adb:16:07: high: "By_R.C" is not initialized in "Test" [reason for check: OUT parameter should be fully initialized on return] [possible fix: initialize "By_R.C" on all paths, make "By_R" an IN OUT parameter or annotate it with aspect Relaxed_Initialization]
+callee1.adb:16:07: high: "By_R" is not initialized in "Test" [reason for check: OUT parameter should be fully initialized on return] [possible fix: initialize "By_R" on all paths, make "By_R" an IN OUT parameter or annotate it with aspect Relaxed_Initialization]
 callee1.adb:16:07: warning: unused variable "By_R"
 callee1.adb:17:07: info: initialization of "By_U" proved
 callee1.adb:19:45: info: exceptional case proved (Trivial: 1 VC)
@@ -8,7 +8,7 @@ callee1.adb:30:04: info: only expected exception raised (CVC5: 1 VC)
 callee2.adb:2:08: info: data dependencies proved
 callee2.adb:15:07: info: initialization of "By_C" proved
 callee2.adb:16:07: warning: unused initial value of "By_C2"
-callee2.adb:17:07: high: "By_R.C" is not initialized in "Test" [reason for check: OUT parameter should be fully initialized on return] [possible fix: initialize "By_R.C" on all paths, make "By_R" an IN OUT parameter or annotate it with aspect Relaxed_Initialization]
+callee2.adb:17:07: high: "By_R" is not initialized in "Test" [reason for check: OUT parameter should be fully initialized on return] [possible fix: initialize "By_R" on all paths, make "By_R" an IN OUT parameter or annotate it with aspect Relaxed_Initialization]
 callee2.adb:17:07: warning: unused variable "By_R"
 callee2.adb:18:07: info: initialization of "By_U" proved
 callee2.adb:20:45: info: exceptional case proved (Trivial: 1 VC)
@@ -55,14 +55,14 @@ depends4.adb:2:08: info: data dependencies proved
 depends4.adb:9:50: info: exceptional case proved (Trivial: 1 VC)
 depends4.adb:10:11: info: flow dependencies proved
 depends4.adb:22:04: info: only expected exception raised (CVC5: 1 VC)
-depends4.adb:25:22: high: "Z.C" is not initialized
+depends4.adb:25:07: high: "Z" is not initialized
 depends4.adb:25:22: medium: assertion might fail
 depends5.adb:2:08: info: data dependencies proved
 depends5.adb:8:33: info: initialization of "Y" proved
 depends5.adb:9:50: info: exceptional case proved (Trivial: 1 VC)
 depends5.adb:10:11: info: flow dependencies proved
 depends5.adb:22:04: info: only expected exception raised (CVC5: 1 VC)
-depends5.adb:25:22: high: "Z.C" is not initialized
+depends5.adb:25:07: high: "Z" is not initialized
 depends5.adb:25:22: medium: assertion might fail
 effect.adb:5:45: info: exceptional case proved (CVC5: 1 VC)
 effect1.adb:1:33: info: initialization of "Y" proved
@@ -89,19 +89,18 @@ global_havoc.adb:1:11: warning: subprogram "Global_Havoc" has no effect
 global_havoc.adb:12:21: info: initialization of "X" proved
 global_havoc.adb:13:39: info: exceptional case proved (Trivial: 1 VC)
 global_havoc.adb:25:12: info: data dependencies proved
-global_havoc.adb:25:45: medium: "G.C" might not be initialized
+global_havoc.adb:25:45: medium: "G" might not be initialized
 global_havoc.adb:28:07: info: only expected exception raised (CVC5: 1 VC)
-global_havoc.adb:31:25: high: "G.C" is not an input in the Global contract of subprogram "Test" at line 23
-global_havoc.adb:31:25: high: "G.C" is not initialized
-global_havoc.adb:31:25: high: either make "G.C" an input in the Global contract or initialize it before use
+global_havoc.adb:31:10: high: "G" is not an input in the Global contract of subprogram "Test" at line 23
+global_havoc.adb:31:10: high: either make "G" an input in the Global contract or initialize it before use
 global_havoc.adb:31:25: medium: assertion might fail
 global_havoc.adb:34:04: info: precondition proved (Trivial: 1 VC)
 inout1.adb:1:32: info: initialization of "Z" proved
 inout1.adb:2:03: info: flow dependencies proved
-inout1.adb:15:20: medium: "Proxy.C" might not be initialized in "Test" [reason for check: OUT parameter should be fully initialized on return] [possible fix: initialize "Proxy.C" on all paths, make "Proxy" an IN OUT parameter or annotate it with aspect Relaxed_Initialization]
+inout1.adb:15:20: medium: "Proxy" might not be initialized in "Test" [reason for check: OUT parameter should be fully initialized on return] [possible fix: initialize "Proxy" on all paths, make "Proxy" an IN OUT parameter or annotate it with aspect Relaxed_Initialization]
 inout1.adb:17:07: info: only expected exception raised (CVC5: 1 VC)
 inout1.adb:20:07: info: no contextual analysis of "Test" (exception handler)
-inout1.adb:21:15: high: "Proxy.C" is not initialized
+inout1.adb:21:12: high: "Proxy" is not initialized
 inout1.adb:27:10: warning: "Proxy" is set by "Test" but not used after the call
 main.adb:1:20: warning: unused variable "B"
 main.adb:1:36: info: initialization of "Z" proved
@@ -109,7 +108,7 @@ main.adb:2:08: medium: missing dependency "null => B"
 main.adb:2:29: medium: incorrect dependency "Z => B"
 main.adb:3:34: medium: postcondition might fail, cannot prove Z = 1
 main.adb:19:07: medium: "By_Copy" might not be initialized in "Try" [reason for check: OUT parameter should be initialized on return] [possible fix: initialize "By_Copy" on all paths or make "By_Copy" an IN OUT parameter]
-main.adb:20:07: high: "By_Reference.C" is not initialized in "Try" [reason for check: OUT parameter should be fully initialized on return] [possible fix: initialize "By_Reference.C" on all paths, make "By_Reference" an IN OUT parameter or annotate it with aspect Relaxed_Initialization]
+main.adb:20:07: high: "By_Reference" is not initialized in "Try" [reason for check: OUT parameter should be fully initialized on return] [possible fix: initialize "By_Reference" on all paths, make "By_Reference" an IN OUT parameter or annotate it with aspect Relaxed_Initialization]
 main.adb:20:07: warning: unused variable "By_Reference"
 main.adb:21:07: info: initialization of "Unspecified" proved
 main.adb:23:19: info: postcondition proved (Trivial: 1 VC)
@@ -122,7 +121,7 @@ main.adb:42:04: info: only expected exception raised (CVC5: 1 VC)
 main.adb:42:04: info: precondition proved (Trivial: 1 VC)
 main.adb:45:14: info: overflow check proved (CVC5: 2 VC)
 main.adb:47:12: medium: overflow check might fail, cannot prove upper bound for - Integer (By_C) [reason for check: result of negation must fit in a 32-bits machine integer] [possible fix: postcondition of call at line 42 should mention By_Copy (for argument By_C)]
-main.adb:51:12: high: "By_U.C" is not initialized
+main.adb:51:09: high: "By_U" is not initialized
 main.adb:51:19: medium: overflow check might fail, cannot prove lower bound for By_U.C + By_R.C [reason for check: result of addition must fit in a 32-bits machine integer]
 main.adb:51:28: medium: overflow check might fail, cannot prove lower bound for By_U.C + By_R.C + Integer (By_C) [reason for check: result of addition must fit in a 32-bits machine integer]
 main.adb:51:39: high: "By_C" is not initialized
@@ -187,4 +186,4 @@ ref1.adb:20:04: info: only expected exception raised (CVC5: 1 VC)
 unspecified1.adb:1:38: info: initialization of "Z" proved
 unspecified1.adb:2:08: info: flow dependencies proved
 unspecified1.adb:20:04: info: only expected exception raised (CVC5: 1 VC)
-unspecified1.adb:24:12: high: "Proxy.C" is not initialized
+unspecified1.adb:24:09: high: "Proxy" is not initialized

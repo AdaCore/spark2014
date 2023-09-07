@@ -817,8 +817,9 @@ only part of a program:
   * :ref:`Subprogram Termination` (only explicit except for functions which
     should always return in SPARK) - subprograms annotated with
     ``Always_Terminates`` should terminate (return normally or raise an
-    exception) whenever the associated boolean condition evaluates to True
-    on entry of the subprogram. Other subprograms are not restricted
+    exception) whenever the associated boolean condition evaluates to True on
+    entry of the subprogram, assuming that primary stack, secondary stack, and
+    heap memory allocations never fail. Other subprograms are not restricted
 
   * the aliasing constraints of |SPARK| (implicit - the subprogram shall not
     introduce any visible aliases between its parameters, accessed global

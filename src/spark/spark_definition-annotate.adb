@@ -422,8 +422,8 @@ package body SPARK_Definition.Annotate is
             Continue := False;
          when others =>
             Error_Msg_N_If
-              ("Entity argument of pragma Annotate G'N'A'Tprove "
-               & " shall be a subprogram, a type or a package",
+              ("entity argument of pragma Annotate "
+               & Prag_Name & " shall be a subprogram, a type or a package",
                Arg);
             Continue := False;
       end case;
@@ -560,13 +560,21 @@ package body SPARK_Definition.Annotate is
                Prag_Name,
                "declaration of entry " & Source_Name (E),
                Ok);
-         when E_Package | E_Generic_Package =>
+         when E_Package =>
             Check_Annotate_Placement
               (E,
                Placed_At_Specification,
                Prag,
                Prag_Name,
                "beginning or end of package specification " & Source_Name (E),
+               Ok);
+         when E_Generic_Package =>
+            Check_Annotate_Placement
+              (E,
+               Placed_At_Specification,
+               Prag,
+               Prag_Name,
+               "beginning of package specification " & Source_Name (E),
                Ok);
          when E_Task_Type =>
             Check_Annotate_Placement
@@ -2199,6 +2207,9 @@ package body SPARK_Definition.Annotate is
          "No_Wrap_Around",
          "full type declaration of " & Source_Name (E),
          Ok);
+      if not Ok then
+         return;
+      end if;
 
       Set_Has_No_Wrap_Around_Annotation (Base);
    end Check_No_Wrap_Around_Annotation;

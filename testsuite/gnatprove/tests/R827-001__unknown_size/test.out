@@ -1,6 +1,5 @@
 pack.ads:9:19: info: assertion proved (Trivial: 1 VC)
 pack.ads:10:19: info: assertion proved (Trivial: 1 VC)
 pack.ads:11:19: info: assertion proved (Trivial: 1 VC)
-pack.ads:12:19: high: "X.X" is not initialized
-pack.ads:12:19: high: "X.Y" is not initialized
+pack.ads:12:04: high: "X" is not initialized
 pack.ads:12:19: info: assertion proved (Trivial: 1 VC)

@@ -1236,14 +1236,11 @@ package body SPARK_Definition is
                     (Exception_Handlers (Handled_Statement_Sequence (N))),
                   Goto_Labels, Inv_Found);
 
-               --  Only check declarations if the invariant has been found.
-               --  Never look into handlers, loop invariants cannot occur
-               --  there.
+               --  Check declarations. Never look into handlers,
+               --  loop invariants cannot occur there.
 
-               if Inv_Found and then Present (Declarations (N)) then
-                  Check_Loop_Invariant_Placement
-                    (Declarations (N), In_Handled, Goto_Labels, Inv_Found);
-               end if;
+               Check_Loop_Invariant_Placement
+                 (Declarations (N), In_Handled, Goto_Labels, Inv_Found);
 
             elsif not Inv_Found then
 
@@ -5831,7 +5828,7 @@ package body SPARK_Definition is
                then
                   Mark_Unsupported (Lim_Access_Sub_Formal_With_Inv, Formal);
 
-               --  Parameters of mode IN OUT or OUT subjected to ownerhsip are
+               --  Parameters of mode IN OUT or OUT subjected to ownership are
                --  not supported on procedures with exceptional contracts
                --  unless they are either aliased or have a "by reference"
                --  type. This is to simplify ownership checking, especially

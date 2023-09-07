@@ -358,7 +358,7 @@ timeout:
 
 This is expected, as the automatic prover Alt-Ergo has only a simple support
 for non-linear integer arithmetic. More generally, it is a known difficulty for
-all automatic provers, although, in the case above, using prover CVC5 is enough
+all automatic provers, although, in the case above, using prover cvc5 is enough
 to prove automatically the postcondition of procedure ``Nonlinear``. We will
 use this case to demonstrate the use of a manual prover, as an example of what
 can be done when automatic provers fail to prove a check. We will use Coq here.

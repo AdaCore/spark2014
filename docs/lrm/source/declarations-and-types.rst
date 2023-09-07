@@ -260,7 +260,7 @@ The following rules apply to derived types in |SPARK|.
 
 [The rationale for this rule is that, otherwise, given that visible operations
 on this type cannot have class-wide preconditions and postconditions, it is
-impossible to check the verification rules associated to overridding operations
+impossible to check the verification rules associated to overriding operations
 on the derived type.]
 
 
@@ -545,13 +545,13 @@ defined as follows:
   of the same component on the path extracted from the prefix of the name;
 
 - if the name is an indexed_component, then it is an indexed_component with
-  the literals that each index expression evalutates to, on the path extracted
+  the literals that each index expression evaluates to, on the path extracted
   from the prefix of the name, or, if this path is a slice, the prefix of this
   slice;
 
 - if the name is a slice, then it is a slice whose discrete range is
   constructed with the literals that the discrete range of the name
-  evalutates to, on the path extracted from the prefix of the name, or, if this
+  evaluates to, on the path extracted from the prefix of the name, or, if this
   path is a slice, the prefix of this slice;
 
 - if the name is a qualified_expression or a type conversion, then it is the

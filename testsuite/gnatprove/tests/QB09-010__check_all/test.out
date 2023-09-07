@@ -1,7 +1,4 @@
 Phase 1 of 3: generation of data representation information ...
-generation of data representation information failed
-continuing analysis with partial data representation
-for details, see log file gnatprove/data_representation_generation.log
 Phase 2 of 3: generation of Global contracts ...
 broken.adb:1:14: error: missing body for "Dummy" declared at broken.ads:3
 gnatprove: error during generation of Global contracts

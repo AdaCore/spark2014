@@ -229,11 +229,13 @@ package body Why.Gen.Progs is
    --------------------------
 
    function New_Located_Abstract
-     (Ada_Node  : Node_Id;
-      Expr      : W_Prog_Id;
-      Post      : W_Pred_Id;
-      Reason    : VC_Kind)
-      return W_Prog_Id is
+     (Ada_Node   : Node_Id;
+      Expr       : W_Prog_Id;
+      Post       : W_Pred_Id;
+      Reason     : VC_Kind;
+      Check_Info : Check_Info_Type := New_Check_Info)
+      return W_Prog_Id
+   is
    begin
       return
         New_Abstract_Expr
@@ -241,9 +243,10 @@ package body Why.Gen.Progs is
            Expr     => Expr,
            Post     =>
              New_VC_Pred
-               (Ada_Node => Ada_Node,
-                Expr     => Post,
-                Reason   => Reason),
+               (Ada_Node   => Ada_Node,
+                Expr       => Post,
+                Reason     => Reason,
+                Check_Info => Check_Info),
            Typ      => Get_Type (+Expr));
    end New_Located_Abstract;
 

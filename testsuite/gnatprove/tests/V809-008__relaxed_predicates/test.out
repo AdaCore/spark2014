@@ -236,7 +236,7 @@ test_scalar_preds.adb:275:06: info: data dependencies proved
 test_scalar_preds.adb:279:17: info: predicate check proved (CVC5: 1 VC)
 test_scalar_preds.adb:284:06: info: data dependencies proved
 test_scalar_preds.adb:287:22: info: assertion proved (CVC5: 1 VC)
-test_scalar_preds.adb:290:21: medium: "X.C" might not be initialized in "Write" [reason for check: OUT parameter should be fully initialized on return] [possible fix: initialize "X.C" on all paths, make "X" an IN OUT parameter or annotate it with aspect Relaxed_Initialization]
+test_scalar_preds.adb:290:21: medium: "X" might not be initialized in "Write" [reason for check: OUT parameter should be fully initialized on return] [possible fix: initialize "X" on all paths, make "X" an IN OUT parameter or annotate it with aspect Relaxed_Initialization]
 test_scalar_preds.adb:291:06: info: data dependencies proved
 test_scalar_preds.adb:295:17: info: predicate check proved (CVC5: 1 VC)
 test_scalar_preds.adb:300:23: info: in default initialization of component "C" at test_scalar_preds.adb:304

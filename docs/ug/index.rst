@@ -66,7 +66,7 @@ SPARK User's Guide
    B. Alternative Provers <en/appendix/alternative_provers>
    C. Project Attributes <en/appendix/project_attributes>
    D. Implementation Defined Pragmas <en/appendix/implementation_defined_pragmas>
-   E. Aspects or Pragmas Specific to GNATprove <en/appendix/additional_annotate_pragmas>
+   E. Additional Annotate Pragmas <en/appendix/additional_annotate_pragmas>
    F. GNATprove Limitations <en/appendix/gnatprove_limitations>
    G. Portability Issues <en/appendix/portability_issues>
    H. Semantics of Floating Point Operations <en/appendix/semantics_of_floating_point_operations>
