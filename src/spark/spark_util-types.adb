@@ -648,13 +648,10 @@ package body SPARK_Util.Types is
          then
             return Pass;
 
-         --  Protected components, components of tagged types, and types
-         --  designated by an access type cannot have components with relaxed
-         --  initialization.
+         --  Protected components and types designated by an access type cannot
+         --  have components with relaxed initialization.
 
-         elsif Ekind (C_Typ) in Concurrent_Kind | Access_Kind
-           or else Is_Tagged_Type (C_Typ)
-         then
+         elsif Ekind (C_Typ) in Concurrent_Kind | Access_Kind then
             return Fail;
 
          elsif Ekind (C_Typ) in Record_Kind | Array_Kind then
@@ -696,13 +693,16 @@ package body SPARK_Util.Types is
          if Has_Relaxed_Init (C_Typ) then
             return Fail;
 
-         --  Protected components, components of tagged types, and types
-         --  designated by an access type cannot have components with relaxed
-         --  initialization.
+         --  Protected components and types designated by an access type cannot
+         --  have components with relaxed initialization.
 
-         elsif Ekind (C_Typ) in Concurrent_Kind | Access_Kind
-           or else Is_Tagged_Type (C_Typ)
-         then
+         elsif Ekind (C_Typ) in Concurrent_Kind | Access_Kind then
+            return Pass;
+
+         --  Tagged types always have at least the extension part which cannot
+         --  be relaxed.
+
+         elsif Is_Tagged_Type (C_Typ) then
             return Pass;
 
          elsif Is_Array_Type (C_Typ) then

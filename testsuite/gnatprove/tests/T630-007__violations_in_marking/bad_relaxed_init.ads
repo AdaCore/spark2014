@@ -20,7 +20,11 @@ package Bad_Relaxed_Init with SPARK_Mode is
    type Rel_Prot_Ty is new Prot_Ty with Relaxed_Initialization;
 
    type Root is tagged record
-      F : My_Int;
+      F : My_Int; -- OK in roots of tagged hierarchy
+   end record;
+
+   type Child is new Root with record
+      G : My_Int; -- Relaxed components are not allowed in derived types
    end record;
 
    type Root2 is tagged record
