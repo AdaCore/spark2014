@@ -2942,7 +2942,7 @@ package body SPARK_Util is
                   Expr : constant Node_Id := Expression (Arg2);
                begin
                   return Compile_Time_Known_Value (Expr)
-                    and then Expr_Value (Expr) = Uint_0;
+                    and then Is_False (Expr_Value (Expr));
                end;
             else
                return False;
