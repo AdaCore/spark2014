@@ -79,12 +79,10 @@ stages:
     - anod run $ANOD_ENTRY_POINT
 
     # Process the results
-    - testsuite_reports
     - ANOD_BUILDSPACE=`anod eval spark2014 build_space_name --primitive test --qualifier=$ANOD_QUALIFIERS`
     - cp -r $ANOD_DEFAULT_SANDBOX_DIR/x86_64-linux/$ANOD_BUILDSPACE/results/new/ $CI_PROJECT_DIR/testsuite-results
     - cp -r $ANOD_DEFAULT_SANDBOX_DIR/x86_64-linux/$ANOD_BUILDSPACE/src/dhtml-report/ $CI_PROJECT_DIR/coverage
-
-    - if [ ! -z ${FAILED+x} ]; then echo "There was at least one testcase failure" && exit 1; fi
+    - testsuite_reports
 
   artifacts:
      when: always
