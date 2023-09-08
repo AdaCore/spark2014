@@ -642,6 +642,8 @@ package body VC_Kinds is
            "a borrowing traversal function marked as a volatile function",
          when Lim_Class_Attr_Of_Constrained_Type =>
            "a reference to the ""Class"" attribute on a constrained type",
+         when Lim_Classwide_Representation_Value =>
+           "a representation attribute on an object of classwide type",
          when Lim_Classwide_With_Predicate =>
            "a subtype predicate on a classwide type",
          when Lim_Complex_Raise_Expr_In_Prec =>

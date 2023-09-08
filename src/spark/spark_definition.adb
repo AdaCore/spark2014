@@ -3585,13 +3585,11 @@ package body SPARK_Definition is
             | Attribute_Size
             | Attribute_Value_Size
          =>
-            --  Attribute Alignment is only supported for a type, or an object
-            --  for which its value is specified explicitly. Otherwise, the
-            --  value of the object alignment is not known, as it is defined by
-            --  gigi which might use the value of alignment for its type, or
-            --  promote it in some cases to a larger value.
-
-            if Attr_Id = Attribute_Alignment then
+            if Attr_Id in Attribute_Alignment
+                        | Attribute_Object_Size
+                        | Attribute_Size
+                        | Attribute_Value_Size
+            then
                declare
                   Has_Type_Prefix : constant Boolean :=
                     Nkind (P) in N_Identifier | N_Expanded_Name
@@ -3601,7 +3599,31 @@ package body SPARK_Definition is
                       and then Present (Entity (P))
                       and then Known_Alignment (Entity (P));
                begin
-                  if not (Has_Type_Prefix or else Has_Known_Alignment) then
+                  --  Representation attributes on class-wide value may require
+                  --  a dynamic dispatching call to get the corresponding
+                  --  value. This is not supported currently.
+
+                  if not Has_Type_Prefix
+                    and then Attr_Id in Attribute_Alignment
+                                      | Attribute_Object_Size
+                                      | Attribute_Size
+                                      | Attribute_Value_Size
+                     and then Is_Class_Wide_Type (Etype (P))
+                  then
+                     Mark_Unsupported (Lim_Classwide_Representation_Value, N);
+                     return;
+                  end if;
+
+                  --  Attribute Alignment is only supported for a type, or
+                  --  an object for which its value is specified explicitly.
+                  --  Otherwise, the value of the object alignment is not
+                  --  known, as it is defined by gigi which might use the value
+                  --  of alignment for its type, or promote it in some cases to
+                  --  a larger value.
+
+                  if Attr_Id = Attribute_Alignment
+                    and then not (Has_Type_Prefix or else Has_Known_Alignment)
+                  then
                      Mark_Unsupported (Lim_Unknown_Alignment, N);
                      return;
                   end if;

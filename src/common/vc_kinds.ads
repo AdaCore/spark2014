@@ -417,6 +417,7 @@ package VC_Kinds is
       Lim_Borrow_Traversal_First_Param,
       Lim_Borrow_Traversal_Volatile,
       Lim_Class_Attr_Of_Constrained_Type,
+      Lim_Classwide_Representation_Value,
       Lim_Classwide_With_Predicate,
       Lim_Complex_Raise_Expr_In_Prec,
       Lim_Constrained_Classwide,
@@ -704,6 +705,8 @@ package VC_Kinds is
             "modulus greater than 2 '*'* 128",
          when Lim_Class_Attr_Of_Constrained_Type =>
             "attribute ""Class"" of a constrained type",
+         when Lim_Classwide_Representation_Value =>
+           "representation attribute on class-wide value",
          when Lim_Classwide_With_Predicate =>
            "subtype predicate on a classwide type",
          when Lim_Contract_On_Derived_Private_Type =>
