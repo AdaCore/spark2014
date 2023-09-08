@@ -9,7 +9,7 @@ procedure Misplaced_Around with SPARK_Mode is
          pragma Assert_And_Cut (1 / X = 0);
       end B;
    begin
-      null; 
+      null;
    end Hide;
    function Rand return Boolean with Import, Global => null;
 begin

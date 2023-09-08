@@ -13,7 +13,7 @@ package body Concurrent is
          null;
       end loop;
    end Some_Other_Task;
-   
+
    protected body Some_Protected_Object is
       entry Fake_Entry when True is
       begin
@@ -28,5 +28,5 @@ package body Concurrent is
       end;
       procedure Fake_Init is null;
    end Some_Other_Protected_Object;
-   
+
 end Concurrent;

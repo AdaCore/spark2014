@@ -1,5 +1,5 @@
 procedure Marking with SPARK_Mode is
-   
+
    type Cell;
    type List is access Cell;
    type CList is access constant Cell;
@@ -17,7 +17,7 @@ procedure Marking with SPARK_Mode is
    function At_End (X : access constant Cell)
                     return access constant Cell is (X)
      with Ghost, Global => null, Annotate => (GNATprove, At_End_Borrow);
-   
+
    procedure Bad_Target_Type (Input : List) is
       X : access Cell := Input;
       Y : constant access constant Cell := At_End (X) with Ghost; -- OK
@@ -31,12 +31,12 @@ procedure Marking with SPARK_Mode is
 
    function F (X : access constant Cell)
                return access constant Integer with Ghost;
-   
+
    function F (X : access constant Cell) return access constant Integer is
    begin
       return X.Tail.Tail.Head'Access;
    end F;
-   
+
    procedure Bad_Source_Shape (Input : List) is
       X : access Cell := Input;
       Y : constant access constant Integer

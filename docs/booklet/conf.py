@@ -44,8 +44,8 @@ source_suffix = ".rst"
 master_doc = "index"
 
 # General information about the project.
-project = u"SPARK Booklet"
-copyright = u"2015, AdaCore and Altran UK Ltd"
+project = "SPARK Booklet"
+copyright = "2015, AdaCore and Altran UK Ltd"
 
 # The version info for the project you're documenting, acts as replacement for
 # |version| and |release|, also used in various other places throughout the
@@ -204,8 +204,8 @@ latex_documents = [
     (
         "index",
         "SPARKBooklet.tex",
-        u"SPARK Booklet Documentation",
-        u"AdaCore and Altran UK Ltd",
+        "SPARK Booklet Documentation",
+        "AdaCore and Altran UK Ltd",
         "manual",
     ),
 ]
@@ -239,8 +239,8 @@ man_pages = [
     (
         "index",
         "sparkbooklet",
-        u"SPARK Booklet Documentation",
-        [u"AdaCore and Altran UK Ltd"],
+        "SPARK Booklet Documentation",
+        ["AdaCore and Altran UK Ltd"],
         1,
     )
 ]
@@ -258,8 +258,8 @@ texinfo_documents = [
     (
         "index",
         "SPARKBooklet",
-        u"SPARK Booklet Documentation",
-        u"AdaCore and Altran UK Ltd",
+        "SPARK Booklet Documentation",
+        "AdaCore and Altran UK Ltd",
         "SPARKBooklet",
         "One line description of project.",
         "Miscellaneous",

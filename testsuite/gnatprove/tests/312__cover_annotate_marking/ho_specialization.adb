@@ -1,8 +1,8 @@
 procedure Ho_Specialization with SPARK_Mode is
-   
+
    --  Non-specializable calls in pre-condition prevent automatic
    --  instantation of lemma with higher-order specialization
-   
+
    V : Integer := 0;
    function Read_V return Integer is (V);
    function Call (F : not null access function return Integer;
@@ -22,7 +22,7 @@ procedure Ho_Specialization with SPARK_Mode is
    --  Call through non-anonymous pointers is known to not have higher-order
    --  specialization, so are not allowed in contract of specializable
    --  functions.
-   
+
    type Not_Anonymous is not null access function return Integer;
    function Non_Anon_Call (F : Not_Anonymous) return Integer is (F.all);
    function Bad_Call (F : not null access function return Integer) return Integer
@@ -30,7 +30,7 @@ procedure Ho_Specialization with SPARK_Mode is
        Annotate => (GNATprove, Higher_Order_Specialization);
    function Bad_Call (F : not null access function return Integer) return Integer
      is (Non_Anon_Call (F));
-   
+
 begin
    null;
 end Ho_Specialization;

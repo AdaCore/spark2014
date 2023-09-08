@@ -14,7 +14,7 @@ class EntitynamePrinter:
         self.val = val
 
     def display_hint(self):
-        return 'string'
+        return "string"
 
     def to_string(self):
         # First get the underlying integer and then simulate the
@@ -22,10 +22,11 @@ class EntitynamePrinter:
         # vector object.
 
         id = int(self.val)
-        symb = gdb.parse_and_eval('string_cache.elements.ea[' + str(id) + ']')
+        symb = gdb.parse_and_eval("string_cache.elements.ea[" + str(id) + "]")
         name = str(symb)
         assert name[0] == '"' and name[-1] == '"'
         return str(name).strip('"')
+
 
 # Next, define the lookup function that returns the printer object when it
 # receives an object of a given type. The function takes a GDB value-type.
@@ -38,11 +39,13 @@ class EntitynamePrinter:
 
 def entityname_pp_func(val):
     val_type = str(val.type)
-    if val_type == 'common_containers.entity_name' or \
-       val_type == 'common_containers.name_sets.element_type' or \
-       val_type == \
-       'flow_generated_globals.phase_2.entity_contract_maps.key_typeXn':
+    if (
+        val_type == "common_containers.entity_name"
+        or val_type == "common_containers.name_sets.element_type"
+        or val_type == "flow_generated_globals.phase_2.entity_contract_maps.key_typeXn"
+    ):
         return EntitynamePrinter(val)
+
 
 # Finally, append the pretty-printer as object/function to the list of
 # registered GDB printers.

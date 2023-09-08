@@ -3,9 +3,9 @@ procedure Iterable_Marking with SPARK_Mode is
    package Not_In_SPARK with SPARK_Mode => Off is
       type T is new Integer;
    end Not_In_SPARK;
-   
+
    --  KO when container is in SPARK, but contains is not.
-   
+
    package A is
       type T is (Container) with
         Iterable => (First       => First,
@@ -37,7 +37,7 @@ procedure Iterable_Marking with SPARK_Mode is
       function Contains (X : Not_In_SPARK.T; Y : Not_In_SPARK.T) return Boolean is (False);
       function Model (X : Not_In_SPARK.T) return Not_In_SPARK.T is (X);
    end A_OK;
-   
+
    --  KO if Element primitive not in SPARK for Contains container.
 
    package B is
@@ -58,8 +58,8 @@ procedure Iterable_Marking with SPARK_Mode is
    end B;
 
    --  KO (* 2) if Element primitives not in SPARK for models containers.
-   
-   package C is 
+
+   package C is
       type Concrete is (Conc) with
         Iterable => (First       => First,
                      Next        => Next,
@@ -85,8 +85,8 @@ procedure Iterable_Marking with SPARK_Mode is
       pragma SPARK_Mode (Off);
       function Element (X : Concrete; Y : Integer) return Not_In_SPARK.T is (0);
    end C;
-   
-   package D is 
+
+   package D is
       type Concrete is (Conc) with
         Iterable => (First       => First,
                      Next        => Next,
@@ -112,7 +112,7 @@ procedure Iterable_Marking with SPARK_Mode is
       pragma SPARK_Mode (Off);
       function Element_2 (X : Abstracted; Y : Integer) return Not_In_SPARK.T is (0);
    end D;
-   
+
    --  Iterable_For_Proof with a non-sensical argument
    X : constant Integer := 0;
    pragma Annotate (GNATprove, Iterable_For_Proof, "contains", 0);

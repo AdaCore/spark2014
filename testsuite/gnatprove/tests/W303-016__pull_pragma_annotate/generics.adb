@@ -10,7 +10,7 @@ package body Generics with SPARK_Mode => Off is
          end if;
       end loop;
    end Terminating_Generic;
-   
+
    procedure Terminating_Instance_Builder is
    begin
       while X < -41 loop
