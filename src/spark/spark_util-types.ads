@@ -592,4 +592,23 @@ package SPARK_Util.Types is
    --  @param E a protected type entity
    --  @return the list of visible declarations of the protected type
 
+   ---------------------
+   -- Type traversals --
+   ---------------------
+
+   type Test_Result is (Pass, Fail, Continue);
+
+   generic
+      with function Test (Typ : Type_Kind_Id) return Test_Result;
+   function Traverse_Subcomponents
+     (Typ        : Type_Kind_Id;
+      Skip_Discr : Boolean := False)
+      return Boolean;
+   --  Generic function which applies test to all subcomponents of Typ
+   --  until one is found on which Test returns Pass. If Test returns
+   --  Continue on a composite or an access subcomponent, the component types
+   --  or designated type is also searched for subcomponents with the given
+   --  property.
+   --  If Skip_Discr is True, discriminants are not traversed.
+
 end SPARK_Util.Types;

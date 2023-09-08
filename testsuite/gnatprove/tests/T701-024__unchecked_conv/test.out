@@ -1,3 +1,4 @@
+prover_crash.adb:8:16: info: implicit function contract might not be available on calls from enclosing unit
 prover_crash.adb:8:16: info: types in unchecked conversion have the same size (Trivial)
 prover_crash.adb:8:54: info: type is suitable as source for unchecked conversion (Trivial)
 prover_crash.adb:8:61: high: type is unsuitable as a target for unchecked conversion [possible explanation: floating-point types have invalid bit patterns for SPARK]

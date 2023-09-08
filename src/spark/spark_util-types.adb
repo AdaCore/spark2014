@@ -93,8 +93,6 @@ package body SPARK_Util.Types is
       Explanation : out Unbounded_String);
    --  same as Check_Known_RM_Size, but for Esize
 
-   type Test_Result is (Pass, Fail, Continue);
-
    generic
       with function Test (Typ : Type_Kind_Id) return Test_Result;
    function Traverse_Access_Parts (Typ : Type_Kind_Id) return Boolean;
@@ -103,19 +101,6 @@ package body SPARK_Util.Types is
    --  until one is found on which Test returns Pass. If Test returns
    --  Continue on an access subcomponent, the designated type is also searched
    --  for access subcomponents with the given property.
-
-   generic
-      with function Test (Typ : Type_Kind_Id) return Test_Result;
-   function Traverse_Subcomponents
-     (Typ        : Type_Kind_Id;
-      Skip_Discr : Boolean := False)
-      return Boolean;
-   --  Generic function which applies test to all subcomponents of Typ
-   --  until one is found on which Test returns Pass. If Test returns
-   --  Continue on a composite or an access subcomponent, the component types
-   --  or designated type is also searched for subcomponents with the given
-   --  property.
-   --  If Skip_Discr is True, discriminants are not traversed.
 
    function Ancestor_Declares_Iterable_Aspect
      (E      : Type_Kind_Id;
