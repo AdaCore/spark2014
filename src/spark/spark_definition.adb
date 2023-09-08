@@ -3592,8 +3592,7 @@ package body SPARK_Definition is
             then
                declare
                   Has_Type_Prefix : constant Boolean :=
-                    Nkind (P) in N_Identifier | N_Expanded_Name
-                      and then Is_Type (Entity (P));
+                    Is_Entity_Name (P) and then Is_Type (Entity (P));
                   Has_Known_Alignment : constant Boolean :=
                     Nkind (P) in N_Has_Entity
                       and then Present (Entity (P))
