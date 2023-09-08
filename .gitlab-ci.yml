@@ -48,7 +48,7 @@ stages:
     - touch fingerprints/x86_64-linux.spark2014-core_assertions_coverage.build.json.assume-unchanged
     - touch fingerprints/x86_64-linux.spark2014-core_assertions_coverage.install.json.assume-unchanged
 
-    - for pack in colibri why3 stable-gnat cvc4 cvc5 alt-ergo gnsa libgpr-current gnatcoll-core-current xmlada-current ; do
+    - for pack in colibri why3 stable-gnat cvc4 cvc5 alt-ergo gnsa libgpr-current libgpr2-next gnatcoll-core-current xmlada-current ; do
         touch fingerprints/x86_64-linux.$pack.download_bin.json.assume-unchanged;
         touch fingerprints/x86_64-linux.$pack.install.json.assume-unchanged;
       done ;
