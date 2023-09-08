@@ -1540,9 +1540,7 @@ package body Why.Gen.Expr is
         EW_Abstract
           (Root_Retysp (L),
            Relaxed_Init => Is_Init_Wrapper_Type (From)
-              and Is_Init_Wrapper_Type (To)
-              and not Need_Pred_Check);
-      --  If To has predicate, the check must be done on initialized values
+              and Is_Init_Wrapper_Type (To));
 
    begin
       --  The case where we are converting from an unchecked union type
