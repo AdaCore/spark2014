@@ -1,0 +1,60 @@
+class.adb:6:33: info: initialization of "Y" proved
+class.adb:7:12: info: flow dependencies proved
+class.adb:10:13: info: the value of "Size" attribute is handled in an imprecise way as "Object_Size" is not specified for type "T'Class"
+class.adb:10:13: medium: range check might fail, cannot prove upper bound for X'Size [reason for check: value must fit in the target type of the assignment] [possible fix: add precondition (X'Size <= Natural'Last) to subprogram at line 6]
+full.adb:3:05: info: initialization of "Y1" proved
+full.adb:3:09: info: initialization of "Y2" proved
+full.adb:3:13: info: initialization of "Y3" proved
+full.adb:3:17: info: initialization of "Y4" proved
+full.adb:3:21: info: initialization of "Y5" proved
+full.adb:4:05: info: initialization of "Z1" proved
+full.adb:4:09: info: initialization of "Z2" proved
+full.adb:4:13: info: initialization of "Z3" proved
+full.adb:6:08: info: flow dependencies proved
+full.adb:17:07: medium: range check might fail
+full.adb:18:07: medium: range check might fail
+full.adb:20:11: info: range check proved (CVC5: 2 VC)
+full.adb:20:14: info: range check proved (CVC5: 2 VC)
+full.adb:21:20: info: range check proved (CVC5: 2 VC)
+full.adb:21:23: info: range check proved (CVC5: 2 VC)
+full.adb:22:12: info: range check proved (CVC5: 2 VC)
+full.adb:24:13: info: the value of "Size" attribute is handled in an imprecise way as "Object_Size" is not specified for subtype of "String"
+full.adb:24:13: medium: range check might fail, cannot prove upper bound for X.A'Size [reason for check: value must fit in the target type of the assignment] [possible fix: add precondition (X.A'Size <= Natural'Last) to subprogram at line 1]
+full.adb:25:13: info: the value of "Size" attribute is handled in an imprecise way as "Object_Size" is not specified for subtype of "A2d"
+full.adb:25:13: medium: range check might fail, cannot prove upper bound for X.C'Size [reason for check: value must fit in the target type of the assignment] [possible fix: add precondition (X.C'Size <= Natural'Last) to subprogram at line 1]
+full.adb:26:11: info: range check proved (CVC5: 2 VC)
+full.adb:27:11: info: the value of "Size" attribute is handled in an imprecise way as it is not specified for type "S"
+full.adb:27:11: medium: range check might fail, cannot prove upper bound for S'Size [reason for check: value must fit in the target type of the assignment] [possible fix: add precondition (S'Size <= Natural'Last) to subprogram at line 1]
+full.adb:33:11: info: the value of "Size" attribute is handled in an imprecise way as it is not specified for type "T"
+full.adb:34:16: info: the value of "Size" attribute is handled in an imprecise way as it is not specified for type "String"
+full.adb:35:13: info: the value of "Size" attribute is handled in an imprecise way as it is not specified for type "A2D"
+init.adb:9:19: info: assertion proved (Trivial: 1 VC)
+main.adb:5:14: info: add a contract to analyze it separately from calling contexts
+main.adb:5:14: info: local subprogram "Test" only analyzed in the context of calls
+main.adb:6:07: info: initialization of "Y1" proved
+main.adb:6:07: info: initialization of "Y1" proved, in call inlined at main.adb:20
+main.adb:6:07: info: initialization of "Y1" proved, in call inlined at main.adb:21
+main.adb:6:07: info: initialization of "Y1" proved, in call inlined at main.adb:22
+main.adb:6:11: info: initialization of "Y2" proved
+main.adb:6:11: info: initialization of "Y2" proved, in call inlined at main.adb:20
+main.adb:6:11: info: initialization of "Y2" proved, in call inlined at main.adb:21
+main.adb:6:11: info: initialization of "Y2" proved, in call inlined at main.adb:22
+main.adb:6:15: info: initialization of "Y3" proved
+main.adb:6:15: info: initialization of "Y3" proved, in call inlined at main.adb:20
+main.adb:6:15: info: initialization of "Y3" proved, in call inlined at main.adb:21
+main.adb:6:15: info: initialization of "Y3" proved, in call inlined at main.adb:22
+main.adb:6:19: info: initialization of "Y4" proved
+main.adb:6:19: info: initialization of "Y4" proved, in call inlined at main.adb:20
+main.adb:6:19: info: initialization of "Y4" proved, in call inlined at main.adb:21
+main.adb:6:19: info: initialization of "Y4" proved, in call inlined at main.adb:22
+main.adb:6:23: info: initialization of "Y5" proved
+main.adb:6:23: info: initialization of "Y5" proved, in call inlined at main.adb:20
+main.adb:6:23: info: initialization of "Y5" proved, in call inlined at main.adb:21
+main.adb:6:23: info: initialization of "Y5" proved, in call inlined at main.adb:22
+main.adb:17:13: info: implicit aspect Always_Terminates on "F" has been proved, subprogram will terminate
+main.adb:18:04: warning: initialization of "S" has no effect
+main.adb:20:04: info: analyzing call to "Test" in context
+main.adb:21:04: info: analyzing call to "Test" in context
+main.adb:22:04: info: analyzing call to "Test" in context
+main.adb:42:29: info: range check proved (CVC5: 4 VC)
+main.adb:42:39: info: range check proved (CVC5: 2 VC)
