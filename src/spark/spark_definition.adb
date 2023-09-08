@@ -3789,7 +3789,6 @@ package body SPARK_Definition is
          --  be initialized to avoid confusion as much as possible.
 
          when Attribute_Initialized =>
-
             if not Retysp_In_SPARK (Etype (P)) then
                Mark_Violation (N, From => Etype (P));
             elsif Nkind (P) = N_Selected_Component
@@ -3804,8 +3803,11 @@ package body SPARK_Definition is
                end if;
             elsif not Expr_Has_Relaxed_Init (P, No_Eval => True)
               and then not Has_Relaxed_Init (Etype (P))
-              and then not (Nkind (P) in N_Identifier | N_Expanded_Name
-                            and then Has_Relaxed_Initialization (Entity (P)))
+              and then not
+                (Nkind (P) in N_Identifier | N_Expanded_Name
+                 and then Ekind (Entity (P)) in
+                   Formal_Kind | Constant_Or_Variable_Kind
+                 and then Has_Relaxed_Initialization (Entity (P)))
             then
                Mark_Violation
                  ("prefix of attribute """
@@ -10125,7 +10127,7 @@ package body SPARK_Definition is
          Mark_Unsupported (Lim_Relaxed_Init_Invariant, N);
       elsif Is_Tagged_Type (Rep_Ty) then
          Mark_Unsupported (Lim_Relaxed_Init_Tagged_Type, N);
-      elsif Is_Access_Type (Rep_Ty) then
+      elsif Is_Access_Subprogram_Type (Rep_Ty) then
          Mark_Unsupported (Lim_Relaxed_Init_Access_Type, N);
       elsif Is_Concurrent_Type (Rep_Ty) then
          Mark_Unsupported (Lim_Relaxed_Init_Concurrent_Type, N);
@@ -10147,6 +10149,7 @@ package body SPARK_Definition is
 
       if Is_Array_Type (Rep_Ty) then
          Mark_Type_With_Relaxed_Init (N, Component_Type (Rep_Ty));
+
       elsif Is_Record_Type (Rep_Ty) then
          declare
             Comp      : Opt_E_Component_Id := First_Component (Rep_Ty);
@@ -10176,6 +10179,23 @@ package body SPARK_Definition is
 
                Next_Component (Comp);
             end loop;
+         end;
+
+      elsif Is_Access_Type (Rep_Ty)
+        and then not Is_Access_Subprogram_Type (Rep_Ty)
+      then
+         declare
+            Des_Ty : Entity_Id := Directly_Designated_Type (Rep_Ty);
+         begin
+            if Is_Incomplete_Or_Private_Type (Des_Ty)
+              and then Present (Full_View (Des_Ty))
+            then
+               Des_Ty := Full_View (Des_Ty);
+            end if;
+
+            --  ??? This might crash if the designated type is not marked
+
+            Mark_Type_With_Relaxed_Init (N, Des_Ty);
          end;
       end if;
 

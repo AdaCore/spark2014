@@ -755,7 +755,7 @@ package body Why.Inter is
 
       declare
          Th_Id : constant W_Theory_Declaration_Id := Th.Th;
-         N  : constant Symbol := Get_Name (Th_Id);
+         N     : constant Symbol := Get_Name (Th_Id);
       begin
          Why_Sections (Th.Section).Append (+Th_Id);
          Symbol_To_Theory_Map.Insert (N, Th_Id);

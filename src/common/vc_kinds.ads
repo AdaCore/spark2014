@@ -736,7 +736,7 @@ package VC_Kinds is
            "tagged type used as a subcomponent of a type or"
           & " an object annotated with relaxed initialization",
          when Lim_Relaxed_Init_Access_Type =>
-           "access type used as a subcomponent of a type or"
+           "access-to-subprogram type used as a subcomponent of a type or"
           & " an object annotated with relaxed initialization",
          when Lim_Relaxed_Init_Aliasing =>
            "relaxed initialization on overlaid objects",

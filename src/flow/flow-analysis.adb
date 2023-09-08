@@ -2844,6 +2844,7 @@ package body Flow.Analysis is
 
                      when E_Function
                         | E_Variable
+                        | E_Constant
                         | Formal_Kind
                      =>
                         return
@@ -2874,6 +2875,7 @@ package body Flow.Analysis is
 
                   if Ekind (E) in E_Function
                                 | E_Variable
+                                | E_Constant
                                 | Formal_Kind
                   then
                      return

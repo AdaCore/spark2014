@@ -672,12 +672,9 @@ package body SPARK_Util.Types is
       function Contains_Non_Relaxed (C_Typ : Type_Kind_Id) return Test_Result
       is
       begin
-         if Has_Relaxed_Init (C_Typ) then
-            return Fail;
-
          --  Protected components cannot have relaxed initialization
 
-         elsif Ekind (C_Typ) in Concurrent_Kind then
+         if Ekind (C_Typ) in Concurrent_Kind then
             return Pass;
 
          --  Tagged types always have at least the extension part which cannot
@@ -685,6 +682,9 @@ package body SPARK_Util.Types is
 
          elsif Is_Tagged_Type (C_Typ) then
             return Pass;
+
+         elsif Has_Relaxed_Init (C_Typ) then
+            return Fail;
 
          --  Access types always have at least the Is_Null part which cannot be
          --  relaxed.
@@ -1451,70 +1451,108 @@ package body SPARK_Util.Types is
    --------------------------------
 
    function Might_Contain_Relaxed_Init (Typ : Type_Kind_Id) return Boolean is
-      Rep_Ty : constant Type_Kind_Id := Base_Retysp (Typ);
-   begin
-      if Has_Relaxed_Init (Typ) then
-         return False;
-      elsif In_Relaxed_Init (Typ) then
-         return True;
-      elsif Is_Concurrent_Type (Rep_Ty) then
-         return False;
-      elsif Is_Scalar_Type (Rep_Ty) then
-         return False;
 
-      --  Expressions of tagged types and access types might contain relaxed
-      --  init parts, as expressions partially initialized might be used
-      --  inside aggregates or allocators. However, such expressions cannot be
-      --  stored inside objects (as parts of tagged objects and types
-      --  designated by access are not allowed to have relaxed initialization).
-      --  So we prefer to consider that they should be always initialized, even
-      --  if it can result in unnecessary initialization checks in corner
-      --  cases.
+      Seen : Node_Sets.Set;
+      --  Set of types which were already traversed. They never contain relaxed
+      --  init parts.
 
-      elsif Is_Tagged_Type (Rep_Ty) then
-         return False;
-      elsif Is_Access_Type (Rep_Ty) then
-         return False;
-      end if;
+      function Might_Contain_Relaxed_Rec (Typ : Type_Kind_Id) return Boolean;
+      --  Recursive variant handling. Use Seen to terminate on recursive types
 
-      --  If the type can be converted to a type which might contain
-      --  components with relaxed initialization, we need relaxed
-      --  initialization for it too.
+      -------------------------------
+      -- Might_Contain_Relaxed_Rec --
+      -------------------------------
 
-      if Base_Retysp (Etype (Rep_Ty)) /= Rep_Ty
-        and then Might_Contain_Relaxed_Init (Etype (Rep_Ty))
-      then
-         return True;
+      function Might_Contain_Relaxed_Rec (Typ : Type_Kind_Id) return Boolean is
+         Rep_Ty   : constant Type_Kind_Id := Base_Retysp (Typ);
+         Inserted : Boolean;
+         Position : Node_Sets.Cursor;
+      begin
+         Seen.Insert (Rep_Ty, Position, Inserted);
 
-      --  Go over components composite types to know if they might contain
-      --  relaxed init parts.
+         if not Inserted then
+            return False;
+         elsif Has_Relaxed_Init (Typ) then
+            return False;
+         elsif In_Relaxed_Init (Typ) then
+            return True;
+         elsif Is_Concurrent_Type (Rep_Ty)
+           or else Is_Scalar_Type (Rep_Ty)
+           or else Is_Access_Subprogram_Type (Rep_Ty)
+         then
+            return False;
 
-      elsif Is_Array_Type (Rep_Ty) then
-         return Might_Contain_Relaxed_Init (Component_Type (Rep_Ty));
-      elsif Is_Record_Type (Rep_Ty) then
-         declare
-            Comp : Opt_E_Component_Id := First_Component (Rep_Ty);
-         begin
-            --  If it is a scalar type, a component of a record can only
-            --  contain relaxed initialization if its type is annotated
-            --  with relaxed initialization. Note that the same does not
-            --  hold for arrays and access types which can be converted
-            --  to types which are not of the same hierarchy.
+         --  Expressions of tagged types might contain relaxed init parts, as
+         --  expressions partially initialized might be used inside aggregates.
+         --  However, such expressions cannot be stored inside objects (as
+         --  parts of tagged objects not allowed to have relaxed
+         --  initialization).
+         --  So we prefer to consider that they should be always initialized,
+         --  even if it can result in unnecessary initialization checks in
+         --  corner cases.
 
-            while Present (Comp) loop
-               if Component_Is_Visible_In_SPARK (Comp)
-                 and then not Has_Scalar_Type (Etype (Comp))
-                 and then Might_Contain_Relaxed_Init (Etype (Comp))
+         elsif Is_Tagged_Type (Rep_Ty) then
+            return False;
+         end if;
+
+         --  If the type can be converted to a type which might contain
+         --  components with relaxed initialization, we need relaxed
+         --  initialization for it too.
+
+         if Base_Retysp (Etype (Rep_Ty)) /= Rep_Ty
+           and then Might_Contain_Relaxed_Rec (Etype (Rep_Ty))
+         then
+            return True;
+
+         --  Go over components of composite types to know if they might
+         --  contain relaxed init parts.
+
+         elsif Is_Array_Type (Rep_Ty) then
+            return Might_Contain_Relaxed_Rec (Component_Type (Rep_Ty));
+
+         elsif Is_Record_Type (Rep_Ty) then
+            declare
+               Comp : Opt_E_Component_Id := First_Component (Rep_Ty);
+            begin
+               --  If it is a scalar type, a component of a record can only
+               --  contain relaxed initialization if its type is annotated
+               --  with relaxed initialization. Note that the same does not
+               --  hold for arrays and access types which can be converted
+               --  to types which are not of the same hierarchy.
+
+               while Present (Comp) loop
+                  if Component_Is_Visible_In_SPARK (Comp)
+                    and then not Has_Scalar_Type (Etype (Comp))
+                    and then Might_Contain_Relaxed_Rec (Etype (Comp))
+                  then
+                     return True;
+                  end if;
+                  Next_Component (Comp);
+               end loop;
+            end;
+            return False;
+
+         elsif Is_Access_Type (Rep_Ty)
+           and then not Is_Access_Subprogram_Type (Rep_Ty)
+         then
+            declare
+               Des_Ty : Entity_Id := Directly_Designated_Type (Rep_Ty);
+            begin
+               if Is_Incomplete_Type (Des_Ty)
+                 and then Present (Full_View (Des_Ty))
                then
-                  return True;
+                  Des_Ty := Full_View (Des_Ty);
                end if;
-               Next_Component (Comp);
-            end loop;
-         end;
-         return False;
-      else
-         return False;
-      end if;
+
+               return Might_Contain_Relaxed_Rec (Des_Ty);
+            end;
+         else
+            return False;
+         end if;
+      end Might_Contain_Relaxed_Rec;
+
+   begin
+      return Might_Contain_Relaxed_Rec (Typ);
    end Might_Contain_Relaxed_Init;
 
    --------------------
