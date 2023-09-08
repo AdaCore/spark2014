@@ -118,6 +118,7 @@ package body Why.Atree.Modules is
    Record_Rep_Modules        : Ada_To_Why.Map := Ada_To_Why.Empty_Map;
    Record_Compl_Modules      : Ada_To_Why.Map := Ada_To_Why.Empty_Map;
    Rep_Modules               : Ada_To_Why.Map := Ada_To_Why.Empty_Map;
+   Rep_Pointer_Modules       : Ada_To_Why.Map := Ada_To_Why.Empty_Map;
    DIC_Modules               : Ada_To_Why.Map := Ada_To_Why.Empty_Map;
    Dispatch_Modules          : Ada_To_Why.Map := Ada_To_Why.Empty_Map;
    Dispatch_Axiom_Modules    : Ada_To_Why.Map := Ada_To_Why.Empty_Map;
@@ -309,6 +310,19 @@ package body Why.Atree.Modules is
    begin
       return Hashconsed_Entity_Module (E, Name, Rep_Modules);
    end E_Rep_Module;
+
+   --------------------------
+   -- E_Rep_Pointer_Module --
+   --------------------------
+
+   function E_Rep_Pointer_Module (E : Entity_Id) return W_Module_Id is
+      Ancestor : constant Entity_Id := Repr_Pointer_Type (E);
+      Name     : constant String    :=
+        Full_Name (Ancestor) & To_String (WNE_Rec_Rep);
+
+   begin
+      return Hashconsed_Entity_Module (Ancestor, Name, Rep_Pointer_Modules);
+   end E_Rep_Pointer_Module;
 
    ------------
    -- E_Symb --
