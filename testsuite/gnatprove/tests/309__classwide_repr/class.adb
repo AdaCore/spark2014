@@ -5,6 +5,8 @@ procedure Class with SPARK_Mode is
 
    procedure Test (X : T'Class; Y : out Natural) with Pre => True is
    begin
+      Y := X'Size;
+      Y := X'Alignment;
       Y := T'Class'Size;
       Y := T'Class'Value_Size;
       Y := T'Class'Object_Size;
