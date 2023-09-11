@@ -455,10 +455,10 @@ package Why.Gen.Arrays is
 
    function Get_Array_Theory_Name
      (E            : Entity_Id;
-      Init_Wrapper : Boolean := False) return Symbol
+      Relaxed_Init : Boolean := False) return Symbol
    with Pre => Is_Type (E) and then Has_Array_Type (E);
    --  @param E the entity of an array type
-   --  @param Init_Wrapper True for array modules for wrapper for relaxed
+   --  @param Relaxed_Init True for array modules for wrapper for relaxed
    --         initialization.
    --  @return A name of the form
    --          "Array_(_(Int|BV8|BV16|BV32|BV64|BV128))*__t(__init_wrapper)?"
@@ -476,7 +476,7 @@ package Why.Gen.Arrays is
    procedure Create_Array_Conversion_Theory_If_Needed
      (From         : Entity_Id;
       To           : Entity_Id;
-      Init_Wrapper : Boolean := False);
+      Relaxed_Init : Boolean := False);
    --  Check if the conversion theory for converting from From to To has
    --  already been created. If not create it.
    --  @param File the current file section. Conversion theories are always
@@ -484,22 +484,22 @@ package Why.Gen.Arrays is
    --     opened theory if Current_File = WF_Pure.
    --  @param From the entity of source type of the conversion
    --  @param To the entity of target type of the conversion.
-   --  @param Init_Wrapper True to convert partially initialized expressions.
-   --  ??? Init_Wrapper is always False, is it expected?
+   --  @param Relaxed_Init True to convert partially initialized expressions.
+   --  ??? Relaxed_Init is always False, is it expected?
 
    function Get_Array_Theory
      (E            : Entity_Id;
-      Init_Wrapper : Boolean := False) return M_Array_Type;
+      Relaxed_Init : Boolean := False) return M_Array_Type;
    --  Return the m_array_type containing the theory of the type of E
    --  @param E the entity of type array
-   --  @param Init_Wrapper get the theory for wrappers for initialization
+   --  @param Relaxed_Init get the theory for wrappers for initialization
 
    function Get_Array_Theory_1
      (E            : Entity_Id;
-      Init_Wrapper : Boolean := False) return M_Array_1_Type;
+      Relaxed_Init : Boolean := False) return M_Array_1_Type;
    --  Return the m_array_1_type containing the theory of the type of E
    --  @param E the entity of type array
-   --  @param Init_Wrapper get the theory for wrappers for initialization
+   --  @param Relaxed_Init get the theory for wrappers for initialization
 
    function Get_Array_Theory_1_Comp (E : Entity_Id) return M_Array_1_Comp_Type;
    --  Return the m_array_1_comp_type containing the theory of the type of E
@@ -512,12 +512,12 @@ package Why.Gen.Arrays is
 
    function Get_Array_Conversion_Name
      (From, To     : Entity_Id;
-      Init_Wrapper : Boolean := False) return W_Identifier_Id;
+      Relaxed_Init : Boolean := False) return W_Identifier_Id;
    --  Return the name of the conversion from type From to type To.
    --  @param From the entity of source type of the conversion
    --  @param To the entity of target type of the conversion.
-   --  @param Init_Wrapper True to convert partially initialized expressions.
-   --  ??? Init_Wrapper is always False, is it expected?
+   --  @param Relaxed_Init True to convert partially initialized expressions.
+   --  ??? Relaxed_Init is always False, is it expected?
 
    function Get_Array_Of_Wrapper_Name (E : Entity_Id) return W_Identifier_Id
      with Pre => Has_Init_Wrapper (E);

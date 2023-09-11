@@ -333,17 +333,17 @@ package body Why.Gen.Names is
                         declare
                            From_Base    : constant Node_Id :=
                              Root_Retysp (From_Node);
-                           Init_Wrapper : constant Boolean :=
+                           Relaxed_Init : constant Boolean :=
                              Is_Init_Wrapper_Type (From);
                            pragma Assert
-                             (Init_Wrapper = Is_Init_Wrapper_Type (To));
+                             (Relaxed_Init = Is_Init_Wrapper_Type (To));
                         begin
                            if From_Base = From_Node then
                               return E_Symb
-                                (To_Node, WNE_Of_Base, Init_Wrapper);
+                                (To_Node, WNE_Of_Base, Relaxed_Init);
                            else
                               return E_Symb
-                                (From_Node, WNE_To_Base, Init_Wrapper);
+                                (From_Node, WNE_To_Base, Relaxed_Init);
                            end if;
                         end;
 

@@ -181,7 +181,7 @@ package Why.Gen.Records is
       Discr_Assocs   : W_Field_Association_Array;
       Field_Assocs   : W_Field_Association_Array;
       Ty             : Entity_Id;
-      Init_Wrapper   : Boolean := False;
+      Relaxed_Init   : Boolean := False;
       Missing_Fields : Component_Sets.Set := Component_Sets.Empty_Set)
       return W_Expr_Id;
    --  Generate a record aggregate of Ada type Ty from the association in
@@ -195,7 +195,7 @@ package Why.Gen.Records is
       Discr_Expr     : W_Expr_Id;
       Field_Assocs   : W_Field_Association_Array;
       Ty             : Entity_Id;
-      Init_Wrapper   : Boolean := False;
+      Relaxed_Init   : Boolean := False;
       Missing_Fields : Component_Sets.Set := Component_Sets.Empty_Set)
       return W_Expr_Id;
    --  @param Ada_Node       node for the aggregate if any
@@ -378,7 +378,7 @@ package Why.Gen.Records is
      (Ada_Node     : Node_Id := Empty;
       A            : W_Expr_Array;
       Ty           : Entity_Id;
-      Init_Wrapper : Boolean := False)
+      Relaxed_Init : Boolean := False)
       return W_Term_Id;
    --  Reconstructs a complete record of type Ty from an array of expressions
    --  representing a split form. A should contain first the fields, then the
@@ -390,7 +390,7 @@ package Why.Gen.Records is
 
    function Field_Type_For_Fields
      (E            : Entity_Id;
-      Init_Wrapper : Boolean := False) return W_Type_Id
+      Relaxed_Init : Boolean := False) return W_Type_Id
    with
      Pre => Is_Type (E) and then Count_Why_Regular_Fields (E) > 0;
    --  Type of the top-level Why3 field for fields of E.
