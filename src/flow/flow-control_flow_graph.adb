@@ -1465,13 +1465,16 @@ package body Flow.Control_Flow_Graph is
               (Get_Reclamation_Functions (Etype (E)));
          end if;
 
-         --  Pull proof dependencies from the predicate of the type of E
+         --  Pull proof dependencies from the predicate of the type of E. E
+         --  might not be in SPARK, so we check that it is marked. Otherwise,
+         --  proof will not look at its type nor its predicate.
          if Ekind (E) in E_Constant
                        | E_Variable
                        | E_Function
                        | E_In_Parameter
                        | E_Out_Parameter
                        | E_In_Out_Parameter
+           and then Entity_In_SPARK (E)
          then
             Process_Predicate (E, FA.Proof_Dependencies);
          end if;
