@@ -3598,6 +3598,11 @@ package body SPARK_Definition is
                   --  a dynamic dispatching call to get the corresponding
                   --  value. This is not supported currently.
 
+                  --  Representation attributes on class-wide type, i.e.
+                  --  T'Class'Size, have dubious semantics. They are turned
+                  --  into integer literals by gigi. We leave them as currently
+                  --  unsupported.
+
                   if Attr_Id in Attribute_Alignment
                               | Attribute_Object_Size
                               | Attribute_Size
