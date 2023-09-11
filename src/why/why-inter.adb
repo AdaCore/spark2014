@@ -1519,7 +1519,7 @@ package body Why.Inter is
       else
          declare
             E            : constant Entity_Id := Type_Of_Node (N);
-            Init_Wrapper : constant Boolean :=
+            Relaxed_Init : constant Boolean :=
               (case Nkind (N) is
                   when N_Entity                       =>
                     (if Is_Type (N) then False
@@ -1534,7 +1534,7 @@ package body Why.Inter is
          begin
             --  If N might be partially initialized, use a wrapper type
 
-            if Init_Wrapper then
+            if Relaxed_Init then
                return EW_Abstract (E, Relaxed_Init => True);
 
             --  Handle special cases boolean/real

@@ -1118,7 +1118,7 @@ package body Why.Gen.Pointers is
    ---------------------
 
    function Move_Param_Item (Typ : Entity_Id) return Item_Type is
-      Init_Wrapper : constant Boolean := Has_Init_Wrapper (Typ);
+      Relaxed_Init : constant Boolean := Has_Init_Wrapper (Typ);
       --  Use the init wrapper type for types which have one
 
    begin
@@ -1173,7 +1173,7 @@ package body Why.Gen.Pointers is
                Binder  =>
                  (B_Name   => New_Temp_Identifier
                       (Base_Name => "fields",
-                       Typ       => Field_Type_For_Fields (Typ, Init_Wrapper)),
+                       Typ       => Field_Type_For_Fields (Typ, Relaxed_Init)),
                   Mutable  => True,
                   others   => <>));
             P_Discrs : constant Opt_Binder :=
@@ -1219,7 +1219,7 @@ package body Why.Gen.Pointers is
       elsif Is_Static_Array_Type (Typ) then
          declare
             W_Typ : constant W_Type_Id :=
-              EW_Abstract (Typ, Relaxed_Init => Init_Wrapper);
+              EW_Abstract (Typ, Relaxed_Init => Relaxed_Init);
          begin
             return
               Item_Type'(Kind  => Regular,
@@ -1236,7 +1236,7 @@ package body Why.Gen.Pointers is
          pragma Assert (Is_Array_Type (Typ));
          declare
             W_Typ  : constant W_Type_Id :=
-              EW_Split (Typ, Relaxed_Init => Init_Wrapper);
+              EW_Split (Typ, Relaxed_Init => Relaxed_Init);
             Dim    : constant Positive :=
               Positive (Number_Dimensions (Typ));
             Bounds : Array_Bounds;
