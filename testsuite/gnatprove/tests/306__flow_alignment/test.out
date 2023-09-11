@@ -20,7 +20,7 @@ full.adb:27:10: info: range check proved (CVC5: 2 VC)
 full.adb:28:10: info: range check proved (CVC5: 2 VC)
 full.adb:29:11: info: range check proved (CVC5: 2 VC)
 full.adb:31:11: info: range check proved (CVC5: 2 VC)
-full.adb:32:16: info: range check proved (CVC5: 2 VC)
+full.adb:32:16: medium: range check might fail, cannot prove upper bound for String'Alignment [reason for check: value must fit in the target type of the assignment]
 full.adb:33:13: info: range check proved (CVC5: 2 VC)
 main.adb:7:14: info: add a contract to analyze it separately from calling contexts
 main.adb:7:14: info: local subprogram "Test" only analyzed in the context of calls
