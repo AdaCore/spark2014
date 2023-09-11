@@ -1,4 +1,4 @@
-class.adb:10:13: error: unknown value of object alignment is not yet supported
+class.adb:10:13: error: representation attribute on class-wide value is not yet supported
 full.adb:3:05: info: initialization of "Y1" proved
 full.adb:3:09: info: initialization of "Y2" proved
 full.adb:3:13: info: initialization of "Y3" proved
