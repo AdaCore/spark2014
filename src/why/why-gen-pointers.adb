@@ -602,7 +602,7 @@ package body Why.Gen.Pointers is
 
       Declare_Rep_Pointer_Type (Th, E);
 
-      Close_Theory (Th, Kind => Definition_Theory, Defined_Entity => E);
+      Close_Theory (Th, Kind => Definition_Theory);
    end Create_Rep_Pointer_Theory_If_Needed;
 
    -------------------------
@@ -856,7 +856,7 @@ package body Why.Gen.Pointers is
 
          Complete_Rep_Pointer_Type (Th, E, Separated => True);
 
-         Close_Theory (Th, Kind => Definition_Theory, Defined_Entity => E);
+         Close_Theory (Th, Kind => Definition_Theory);
       end if;
    end Declare_Rep_Pointer_Compl_If_Needed;
 
@@ -1540,14 +1540,18 @@ package body Why.Gen.Pointers is
          else E_Symb (Ty_Ext, WNE_Pointer_Value));
       S_Is_Null  : W_Identifier_Id := E_Symb (Ty_Ext, WNE_Is_Null_Pointer);
       S_Is_Moved : W_Identifier_Id := E_Symb (Ty_Ext, WNE_Is_Moved_Field);
+      W_Ty       : W_Type_Id := EW_Abstract (Ty_Ext);
 
    begin
-      --  If Local use local names for fields of Ty
+      --  If Local use local names for the fields of Ty and for its abstract
+      --  type.
 
       if Local then
          S_Value := To_Local (S_Value);
          S_Is_Null := To_Local (S_Is_Null);
          S_Is_Moved := To_Local (S_Is_Moved);
+         W_Ty := New_Named_Type
+           (New_Name (Symb => Get_Symb (Get_Name (W_Ty))));
       end if;
 
       --  If Ty designates an incomplete type, we need to reconstruct the
@@ -1577,7 +1581,7 @@ package body Why.Gen.Pointers is
                 (Domain => EW_Term,
                  Field  => S_Is_Moved,
                  Value  => Is_Moved)),
-         Typ          => EW_Abstract (Ty_Ext));
+         Typ          => W_Ty);
    end Pointer_From_Split_Form;
 
    -----------------------
