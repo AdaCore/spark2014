@@ -3646,12 +3646,9 @@ package body Why.Gen.Records is
             Id := New_Identifier
               (Domain   => EW_Pred,
                Ada_Node => E,
-               Module   => E_Module (E),
+               Module   =>
+                 (if Relaxed_Init then E_Init_Module (E) else E_Module (E)),
                Name     => Name);
-         end if;
-
-         if Relaxed_Init then
-            Id := To_Init_Module (Id);
          end if;
       end return;
    end Discriminant_Check_Pred_Name;

@@ -109,6 +109,7 @@ package body Why.Atree.Modules is
    --  existing module is returned.
 
    Why_Symb_Map              : Why_Symb_Maps.Map := Why_Symb_Maps.Empty_Map;
+   Why_Relaxed_Symb_Map      : Why_Symb_Maps.Map := Why_Symb_Maps.Empty_Map;
    Entity_Modules            : Ada_To_Why.Map := Ada_To_Why.Empty_Map;
    Axiom_Modules             : Ada_To_Why.Map := Ada_To_Why.Empty_Map;
    Compl_Modules             : Ada_To_Why.Map := Ada_To_Why.Empty_Map;
@@ -336,18 +337,21 @@ package body Why.Atree.Modules is
       use Why_Symb_Maps;
       E2  : constant Entity_Id := (if Is_Type (E) then Retysp (E) else E);
       Key : constant Why_Symb := Why_Symb'(Entity => E2, Symb => S);
-      C   : constant Why_Symb_Maps.Cursor := Why_Symb_Map.Find (Key);
+      C   : constant Why_Symb_Maps.Cursor :=
+        (if Relaxed_Init then Why_Relaxed_Symb_Map.Find (Key)
+         else Why_Symb_Map.Find (Key));
    begin
       return Id : W_Identifier_Id do
          if Has_Element (C) then
             Id := Element (C);
          else
             Insert_Why_Symbols (E2);
-            Id := Why_Symb_Map.Element (Key);
-         end if;
 
-         if Relaxed_Init then
-            Id := To_Init_Module (Id);
+            if Relaxed_Init then
+               Id := Why_Relaxed_Symb_Map.Element (Key);
+            else
+               Id := Why_Symb_Map.Element (Key);
+            end if;
          end if;
       end return;
    end E_Symb;
@@ -2749,18 +2753,32 @@ package body Why.Atree.Modules is
 
    procedure Insert_Why_Symbols (E : Entity_Id) is
 
-      procedure Insert_Symbol (E : Entity_Id;
-                               W : Why_Name_Enum;
-                               I : W_Identifier_Id);
+      procedure Insert_Symbol
+        (E            : Entity_Id;
+         W            : Why_Name_Enum;
+         I            : W_Identifier_Id;
+         Relaxed_Init : Boolean := False);
       --  For the key (E, W), add the symbol I to the symbol map
       --  @param E the entity part of the key
       --  @param W the symbol part of the key
       --  @param I the identifier to be added
+      --  @param Relaxed_Init if True, insert the symbol in the map for
+      --     initialization wrapper symbols.
 
       procedure Insert_Type_Symbols (E : Entity_Id)
         with Pre => Is_Type (E);
       --  Add the symbols for type entity E
       --  @param E a type entity
+
+      procedure Insert_Shared_Type_Symbols
+        (E            : Entity_Id;
+         Relaxed_Init : Boolean := False)
+        with Pre => Is_Type (E);
+      --  Add the symbols that are shared between the regular theory for type
+      --  entity E and its initialization wrapper theory.
+      --  @param E a type entity
+      --  @param Relaxed_Init if True, insert the initialization wrapper
+      --     symbols.
 
       procedure Insert_Object_Symbols (E : Entity_Id)
         with Pre => Is_Object (E);
@@ -2776,11 +2794,18 @@ package body Why.Atree.Modules is
       -- Insert_Symbol --
       -------------------
 
-      procedure Insert_Symbol (E : Entity_Id;
-                               W : Why_Name_Enum;
-                               I : W_Identifier_Id) is
+      procedure Insert_Symbol
+        (E            : Entity_Id;
+         W            : Why_Name_Enum;
+         I            : W_Identifier_Id;
+         Relaxed_Init : Boolean := False)
+      is
       begin
-         Why_Symb_Map.Insert (Why_Symb'(E, W), I);
+         if Relaxed_Init then
+            Why_Relaxed_Symb_Map.Insert (Why_Symb'(E, W), I);
+         else
+            Why_Symb_Map.Insert (Why_Symb'(E, W), I);
+         end if;
       end Insert_Symbol;
 
       ---------------------------
@@ -2907,6 +2932,188 @@ package body Why.Atree.Modules is
          end if;
       end Insert_Subprogram_Symbols;
 
+      --------------------------------
+      -- Insert_Shared_Type_Symbols --
+      --------------------------------
+
+      procedure Insert_Shared_Type_Symbols
+        (E            : Entity_Id;
+         Relaxed_Init : Boolean := False)
+      is
+         M  : constant W_Module_Id :=
+           (if Relaxed_Init then E_Init_Module (E) else E_Module (E));
+         Ty : constant W_Type_Id   := EW_Abstract (E, Relaxed_Init);
+
+      begin
+         --  In wrapper modules for initialization, Dummy is not introduced for
+         --  composite types.
+
+         if not Relaxed_Init
+           or else Is_Scalar_Type (E)
+           or else Is_Simple_Private_Type (E)
+         then
+            Insert_Symbol
+              (E, WNE_Dummy,
+               New_Identifier
+                 (Symb   => NID ("dummy"),
+                  Module => M,
+                  Domain => EW_Term,
+                  Typ    => Ty),
+               Relaxed_Init);
+         end if;
+
+         --  Symbols for record types
+
+         if Is_Record_Type_In_Why (E) then
+            declare
+               Root    : constant Entity_Id :=
+                 Root_Retysp (E);
+               Root_Ty : constant W_Type_Id :=
+                 New_Named_Type (To_Why_Type (Root, Relaxed_Init));
+            begin
+               Insert_Symbol
+                 (E, WNE_To_Base,
+                  New_Identifier
+                    (Symb   => NID ("to_base"),
+                     Module => M,
+                     Domain => EW_Term,
+                     Typ    => Root_Ty),
+                  Relaxed_Init);
+               Insert_Symbol
+                 (E, WNE_Of_Base,
+                  New_Identifier
+                    (Symb   => NID ("of_base"),
+                     Module => M,
+                     Domain => EW_Term,
+                     Typ    => Ty),
+                  Relaxed_Init);
+               Insert_Symbol
+                 (E, WNE_Rec_Split_Discrs,
+                  New_Identifier
+                    (Symb   => NID (To_String (WNE_Rec_Split_Discrs)),
+                     Module => M,
+                     Domain => EW_Term),
+                  Relaxed_Init);
+               Insert_Symbol
+                 (E, WNE_Rec_Split_Fields,
+                  New_Identifier
+                    (Symb   => NID (To_String (WNE_Rec_Split_Fields)),
+                     Module => M,
+                     Domain => EW_Term),
+                  Relaxed_Init);
+
+               --  For types which have their own private part, introduce a
+               --  symbol for the type of the component modelling this part.
+
+               if Has_Private_Part (E)
+                 and then not Is_Simple_Private_Type (E)
+               then
+                  declare
+                     Main_Type : constant W_Identifier_Id :=
+                       New_Identifier
+                         (Symb   => NID ("__main_type"),
+                          Module => M,
+                          Domain => EW_Term);
+                  begin
+                     Insert_Symbol
+                       (E, WNE_Private_Type, Main_Type, Relaxed_Init);
+                     Insert_Symbol
+                       (E, WNE_Private_Dummy,
+                        New_Identifier
+                          (Symb   => NID ("__main_dummy"),
+                           Module => M,
+                           Domain => EW_Term,
+                           Typ    => New_Named_Type
+                             (Name         => Get_Name (Main_Type),
+                              Relaxed_Init => Relaxed_Init)),
+                        Relaxed_Init);
+                  end;
+               end if;
+
+               if Has_Ownership_Annotation (E) then
+                  Insert_Symbol
+                    (E, WNE_Is_Moved_Field,
+                     New_Identifier
+                       (Symb   => NID (To_String (WNE_Is_Moved_Field)),
+                        Module => M,
+                        Domain => EW_Term,
+                        Typ    => EW_Bool_Type),
+                     Relaxed_Init);
+               end if;
+            end;
+
+         --  Symbols for array types
+
+         elsif Has_Array_Type (E) then
+            declare
+               Ar_Dim : constant Positive := Positive (Number_Dimensions (E));
+            begin
+               Insert_Symbol
+                 (E, WNE_To_Array,
+                  New_Identifier
+                    (Symb   => NID ("to_array"),
+                     Module => M,
+                     Domain => EW_Term,
+                     Typ    => Get_Array_Theory (E, Relaxed_Init).Ty),
+                  Relaxed_Init);
+               Insert_Symbol
+                 (E, WNE_Of_Array,
+                  New_Identifier
+                    (Symb   => NID ("of_array"),
+                     Module => M,
+                     Domain => EW_Term,
+                     Typ    => Ty),
+                  Relaxed_Init);
+               Insert_Symbol
+                 (E, WNE_Array_Elts,
+                  New_Identifier
+                    (Symb   => NID ("elts"),
+                     Module => M,
+                     Domain => EW_Term,
+                     Typ    => Get_Array_Theory (E, Relaxed_Init).Ty),
+                  Relaxed_Init);
+
+               for Dim in 1 .. Ar_Dim loop
+                  declare
+                     First_Str : constant String :=
+                       (if Dim = 1 then "first"
+                        else "first_" & Image (Dim, 1));
+                     Last_Str  : constant String :=
+                       (if Dim = 1 then "last" else "last_" & Image (Dim, 1));
+                     Length_Str : constant String :=
+                       (if Dim = 1 then "length"
+                        else "length_" & Image (Dim, 1));
+                  begin
+                     Insert_Symbol
+                       (E, WNE_Attr_First (Dim),
+                        New_Identifier
+                          (Symb   => NID (First_Str),
+                           Module => M,
+                           Domain => EW_Term,
+                           Typ    => EW_Int_Type),
+                        Relaxed_Init);
+                     Insert_Symbol
+                       (E, WNE_Attr_Last (Dim),
+                        New_Identifier
+                          (Symb   => NID (Last_Str),
+                           Module => M,
+                           Domain => EW_Term,
+                           Typ    => EW_Int_Type),
+                        Relaxed_Init);
+                     Insert_Symbol
+                       (E, WNE_Attr_Length (Dim),
+                        New_Identifier
+                          (Symb   => NID (Length_Str),
+                           Module => M,
+                           Domain => EW_Term,
+                           Typ    => EW_Int_Type),
+                        Relaxed_Init);
+                  end;
+               end loop;
+            end;
+         end if;
+      end Insert_Shared_Type_Symbols;
+
       -------------------------
       -- Insert_Type_Symbols --
       -------------------------
@@ -2918,52 +3125,62 @@ package body Why.Atree.Modules is
          Ty   : constant W_Type_Id   := EW_Abstract (E);
 
       begin
-         --  Insert symbols for the initialization wrapper if any. We need
-         --  extra fields to create the wrapper type for scalars and simple
-         --  private types, and conversion functions to and from the wrapper
-         --  types for scalars, private types, and records. For array,
-         --  conversion goes through the base array type, so conversion
-         --  functions are rather stored with other array conversion theories.
+         --  Insert symbols which are defined both in the normal and in the
+         --  Init_Wrapper module of E.
 
-         if Has_Init_Wrapper (E)
-           and then (Is_Scalar_Type (E) or else Is_Record_Type_In_Why (E))
-         then
-            declare
-               WM : constant W_Module_Id := E_Init_Module (E);
-            begin
-               if Has_Scalar_Type (E)
-                 or else Is_Simple_Private_Type (E)
-               then
+         Insert_Shared_Type_Symbols (E);
+
+         --  Insert symbols for the initialization wrapper if any.
+
+         if Has_Init_Wrapper (E) then
+
+            Insert_Shared_Type_Symbols (E, Relaxed_Init => True);
+
+            --  We need extra fields to create the wrapper type for scalars and
+            --  simple private types, and conversion functions to and from the
+            --  wrapper types for scalars, private types, and records. For
+            --  array, conversion goes through the base array type, so
+            --  conversion functions are rather stored with other array
+            --  conversion theories.
+
+            if Is_Scalar_Type (E) or else Is_Record_Type_In_Why (E) then
+               declare
+                  WM : constant W_Module_Id := E_Init_Module (E);
+               begin
+                  if Has_Scalar_Type (E)
+                    or else Is_Simple_Private_Type (E)
+                  then
+                     Insert_Symbol
+                       (E, WNE_Init_Value,
+                        New_Identifier
+                          (Symb   => NID ("rec__value"),
+                           Module => WM,
+                           Domain => EW_Term,
+                           Typ    => Ty));
+                     Insert_Symbol
+                       (E, WNE_Attr_Init,
+                        New_Identifier
+                          (Symb   => NID (To_String (WNE_Attr_Init)),
+                           Module => WM,
+                           Domain => EW_Term,
+                           Typ    => EW_Bool_Type));
+                  end if;
                   Insert_Symbol
-                    (E, WNE_Init_Value,
+                    (E, WNE_To_Wrapper,
                      New_Identifier
-                       (Symb   => NID ("rec__value"),
+                       (Symb   => NID ("to_wrapper"),
                         Module => WM,
                         Domain => EW_Term,
                         Typ    => Ty));
                   Insert_Symbol
-                    (E, WNE_Attr_Init,
+                    (E, WNE_Of_Wrapper,
                      New_Identifier
-                       (Symb   => NID (To_String (WNE_Attr_Init)),
+                       (Symb   => NID ("of_wrapper"),
                         Module => WM,
                         Domain => EW_Term,
-                        Typ    => EW_Bool_Type));
-               end if;
-               Insert_Symbol
-                 (E, WNE_To_Wrapper,
-                  New_Identifier
-                    (Symb   => NID ("to_wrapper"),
-                     Module => WM,
-                     Domain => EW_Term,
-                     Typ    => Ty));
-               Insert_Symbol
-                 (E, WNE_Of_Wrapper,
-                  New_Identifier
-                    (Symb   => NID ("of_wrapper"),
-                     Module => WM,
-                     Domain => EW_Term,
-                     Typ    => EW_Init_Wrapper (Ty)));
-            end;
+                        Typ    => EW_Init_Wrapper (Ty)));
+               end;
+            end if;
          end if;
 
          Insert_Symbol
@@ -2983,14 +3200,6 @@ package body Why.Atree.Modules is
                   Domain => EW_Term,
                   Typ    => EW_Int_Type));
          end if;
-
-         Insert_Symbol
-           (E, WNE_Dummy,
-            New_Identifier
-              (Symb   => NID ("dummy"),
-               Module => M,
-               Domain => EW_Term,
-               Typ    => Ty));
 
          --  Add symbol for the predicate used to assume the dynamic invariant
          --  of a type. This symbol is registered in the axiom module, so that
@@ -3339,36 +3548,9 @@ package body Why.Atree.Modules is
                         Typ    => EW_Bool_Type));
                end if;
 
-               Insert_Symbol
-                 (E, WNE_To_Base,
-                  New_Identifier
-                    (Symb   => NID ("to_base"),
-                     Module => M,
-                     Domain => EW_Term,
-                     Typ    => Root_Ty));
-               Insert_Symbol
-                 (E, WNE_Of_Base,
-                  New_Identifier
-                    (Symb   => NID ("of_base"),
-                     Module => M,
-                     Domain => EW_Term,
-                     Typ    => Ty));
-               Insert_Symbol
-                 (E, WNE_Rec_Split_Discrs,
-                  New_Identifier
-                    (Symb   => NID (To_String (WNE_Rec_Split_Discrs)),
-                     Module => M,
-                     Domain => EW_Term));
-               Insert_Symbol
-                 (E, WNE_Rec_Split_Fields,
-                  New_Identifier
-                    (Symb   => NID (To_String (WNE_Rec_Split_Fields)),
-                     Module => M,
-                     Domain => EW_Term));
-
                --  For types which have their own private part, introduce a
-               --  symbol for the type of the component modelling this part
-               --  and equality on it.
+               --  symbol for the equality on the type of the component
+               --  modelling this part.
 
                if Has_Private_Part (E)
                  and then not Is_Simple_Private_Type (E)
@@ -3382,22 +3564,12 @@ package body Why.Atree.Modules is
                           Domain => EW_Term);
                   begin
                      Insert_Symbol
-                       (E, WNE_Private_Type, Main_Type);
-                     Insert_Symbol
                        (E, WNE_Private_Eq,
                         New_Identifier
                           (Symb   => NID ("__main_eq"),
                            Module => M,
                            Domain => EW_Term,
                            Typ    => EW_Bool_Type));
-                     Insert_Symbol
-                       (E, WNE_Private_Dummy,
-                        New_Identifier
-                          (Symb   => NID ("__main_dummy"),
-                           Module => M,
-                           Domain => EW_Term,
-                           Typ    => New_Named_Type
-                             (Name => Get_Name (Main_Type))));
 
                      --  If the type needs a wrapper for relaxed
                      --  initialization, introduce names for the components of
@@ -3426,8 +3598,9 @@ package body Why.Atree.Modules is
                               Module => M,
                               Domain => EW_Term,
                               Typ    => New_Named_Type
-                                (Name         =>
-                                     Get_Name (To_Init_Module (Main_Type)),
+                                (Name         => New_Name
+                                   (Symb   => NID ("__main_type"),
+                                    Module => WM),
                                  Relaxed_Init => True)));
                         Insert_Symbol
                           (E, WNE_Private_Of_Wrapper,
@@ -3502,16 +3675,6 @@ package body Why.Atree.Modules is
                         Domain => EW_Term,
                         Typ    => EW_Bool_Type));
                end if;
-
-               if Has_Ownership_Annotation (E) then
-                  Insert_Symbol
-                    (E, WNE_Is_Moved_Field,
-                     New_Identifier
-                       (Symb   => NID (To_String (WNE_Is_Moved_Field)),
-                        Module => M,
-                        Domain => EW_Term,
-                        Typ    => EW_Bool_Type));
-               end if;
             end;
 
          --  Symbols for array types
@@ -3555,27 +3718,7 @@ package body Why.Atree.Modules is
                      Module => M,
                      Domain => EW_Term,
                      Typ    => EW_Bool_Type));
-               Insert_Symbol
-                 (E, WNE_To_Array,
-                  New_Identifier
-                    (Symb   => NID ("to_array"),
-                     Module => M,
-                     Domain => EW_Term,
-                     Typ    => Get_Array_Theory (E).Ty));
-               Insert_Symbol
-                 (E, WNE_Of_Array,
-                  New_Identifier
-                    (Symb   => NID ("of_array"),
-                     Module => M,
-                     Domain => EW_Term,
-                     Typ    => Ty));
-               Insert_Symbol
-                 (E, WNE_Array_Elts,
-                  New_Identifier
-                    (Symb   => NID ("elts"),
-                     Module => M,
-                     Domain => EW_Term,
-                     Typ    => Get_Array_Theory (E).Ty));
+
                if Ar_Dim = 1 and then
                  Is_Discrete_Type (Component_Type (E))
                then
@@ -3594,16 +3737,9 @@ package body Why.Atree.Modules is
                            Typ    => EW_Abstract (Component_Type (E))));
                   end;
                end if;
+
                for Dim in 1 .. Ar_Dim loop
                   declare
-                     First_Str : constant String :=
-                       (if Dim = 1 then "first"
-                        else "first_" & Image (Dim, 1));
-                     Last_Str  : constant String :=
-                       (if Dim = 1 then "last" else "last_" & Image (Dim, 1));
-                     Length_Str : constant String :=
-                       (if Dim = 1 then "length"
-                        else "length_" & Image (Dim, 1));
                      Int_Str : constant String :=
                        (if Dim = 1 then "to_int"
                         else "to_int_" & Image (Dim, 1));
@@ -3614,27 +3750,6 @@ package body Why.Atree.Modules is
                        (if Dim = 1 then "index_dynamic_property"
                         else "index_dynamic_property_" & Image (Dim, 1));
                   begin
-                     Insert_Symbol
-                       (E, WNE_Attr_First (Dim),
-                        New_Identifier
-                          (Symb   => NID (First_Str),
-                           Module => M,
-                           Domain => EW_Term,
-                           Typ    => EW_Int_Type));
-                     Insert_Symbol
-                       (E, WNE_Attr_Last (Dim),
-                        New_Identifier
-                          (Symb   => NID (Last_Str),
-                           Module => M,
-                           Domain => EW_Term,
-                           Typ    => EW_Int_Type));
-                     Insert_Symbol
-                       (E, WNE_Attr_Length (Dim),
-                        New_Identifier
-                          (Symb   => NID (Length_Str),
-                           Module => M,
-                           Domain => EW_Term,
-                           Typ    => EW_Int_Type));
                      Insert_Symbol
                        (E, WNE_To_Int (Dim),
                         New_Identifier

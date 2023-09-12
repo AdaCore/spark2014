@@ -123,8 +123,4 @@ package Why.Gen.Init is
       return W_Expr_Id;
    --  If Domain = EW_Prog, insert a check that Name is initialized
 
-   function To_Init_Module (Name : W_Identifier_Id) return W_Identifier_Id;
-   --  For an identifier from the module of an entity (queried from E_Symb
-   --  for example) return the same symbol but in the init wrapper module.
-
 end Why.Gen.Init;
