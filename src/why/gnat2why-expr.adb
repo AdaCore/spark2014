@@ -13033,9 +13033,9 @@ package body Gnat2Why.Expr is
          Variables.Difference (Index_Parameters);
       end Get_Aggregate_Elements;
 
-      -------------------
-      -- Insert_Checks --
-      -------------------
+      ------------------------------
+      -- Insert_Check_For_Choices --
+      ------------------------------
 
       procedure Insert_Check_For_Choices
         (T          : in out W_Expr_Id;
@@ -13045,6 +13045,10 @@ package body Gnat2Why.Expr is
          Comp_Checks       : W_Statement_Sequence_Id := Void_Sequence;
          In_Iterated_Assoc : Boolean := False;
          --  Register whether we have traversed iterated component associations
+
+         Last_Uniq_Dim     : Positive := 1;
+         --  Register the last dimensional index with a single subaggregate.
+         --  Used to eliminate redundant bound checks as much as possible.
 
          procedure Insert_Checks
            (Expr  : Node_Id;
@@ -13319,6 +13323,87 @@ package body Gnat2Why.Expr is
                Next (Association);
             end loop;
 
+            --  If needed, generate checks that bounds of the sub-aggregates
+            --  match that of the type.
+
+            if not In_Delta_Aggregate
+              and then Dim > Last_Uniq_Dim
+              and then (No (Assocs)
+                        or else No (Nlists.Last (Assocs))
+                        or else not Is_Others_Choice
+                          (Choice_List (Nlists.Last (Assocs))))
+            then
+               --  In a regular aggregate without an 'others' choice, we need
+               --  to check that bounds match the ones expected from the
+               --  aggregate Etype. One subaggregate check is redundant per
+               --  dimension, for the subaggregate whose bounds are taken by
+               --  the front-end. We filter out checks at dimensions where
+               --  there is a single subaggregate since they must be redundant.
+
+               pragma Assert (not Is_Null_Aggregate (Expr));
+               --  If an inner sub-aggregate is null, then the
+               --  front-end might not provide properly all bounds
+               --  for the sub-aggregate. Re-computing them is tricky
+               --  as this requires knowing whether there is an
+               --  applicable index constraint from the context.
+               --  As we cannot properly support that case, inner null
+               --  sub-aggregates that are not the only sub-aggregates
+               --  of their dimension are rejected by marking.
+               --  The remaining ones do not need bound checks, so this
+               --  case should not happen here.
+
+               declare
+                  Low_Bnd  : constant W_Term_Id :=
+                    Insert_Simple_Conversion
+                      (Expr => Get_Array_Attr
+                         (EW_Term, Expr_Typ, Attribute_First, Dim, Params),
+                       To   => Index_Base);
+                  High_Bnd : constant W_Term_Id :=
+                    Insert_Simple_Conversion
+                      (Expr => Get_Array_Attr
+                         (EW_Term, Expr_Typ, Attribute_Last, Dim, Params),
+                       To   => Index_Base);
+                  --  Expected bounds
+
+                  Bounds   : constant Node_Id := Aggregate_Bounds (Expr);
+                  pragma Assert (Present (Bounds));
+                  --  Aggregate bounds should always be computed for
+                  --  sub-aggregates supported by SPARK (they should be
+                  --  unknown only for iterator_specification aggregates)
+
+                  Low      : constant W_Expr_Id :=
+                    Transform_Expr
+                      (Low_Bound (Bounds),
+                       Index_Base,
+                       EW_Term,
+                       Params);
+                  High     : constant W_Expr_Id :=
+                    Transform_Expr
+                      (High_Bound (Bounds),
+                       Index_Base,
+                       EW_Term,
+                       Params);
+
+               begin
+                  Append
+                    (Choice_Checks,
+                     New_Located_Assert
+                       (Ada_Node => Expr,
+                        Reason   => VC_Index_Check,
+                        Kind     => EW_Assert,
+                        Pred     =>
+                          New_And_Pred
+                            (Left => New_Comparison
+                              (Symbol => Why_Eq,
+                               Left   => +Low,
+                               Right  => Low_Bnd),
+                             Right => New_Comparison
+                               (Symbol => Why_Eq,
+                                Left   => +High,
+                                Right  => High_Bnd))));
+               end;
+            end if;
+
             --  In regular multidimensional aggregates, we may need to check
             --  choices in upper dimensions.
             --  If we have reached a value which depends on iterated
@@ -13351,6 +13436,43 @@ package body Gnat2Why.Expr is
       --  Start of processing of Insert_Check_For_Choices
 
       begin
+         --  Compute Last_Uniq_Dim.
+
+         if not In_Delta_Aggregate then
+            declare
+               Subexpr : Node_Id := Expr;
+            begin
+               loop
+                  exit when Last_Uniq_Dim = Nb_Dim;
+                  declare
+                     Assocs      : constant List_Id :=
+                       Component_Associations (Subexpr);
+                     Association : constant Node_Id :=
+                       Nlists.First (Assocs);
+                     Exprs       : constant List_Id :=
+                       Expressions (Subexpr);
+                     Num_Assocs  : constant Nat :=
+                       Nlists.List_Length (Assocs);
+                     Num_Exprs   : constant Nat :=
+                       Nlists.List_Length (Exprs);
+                  begin
+                     exit when Num_Assocs >= 2;
+                     exit when Num_Exprs >= 2;
+                     exit when Num_Exprs = Num_Assocs;
+                     if Num_Assocs = 0 then
+                        pragma Assert (Num_Exprs = 1);
+                        Subexpr := Nlists.First (Exprs);
+                     else
+                        pragma Assert (Num_Assocs = 1);
+                        pragma Assert (Num_Exprs = 0);
+                        Subexpr := Expression (Association);
+                     end if;
+                     Last_Uniq_Dim := Last_Uniq_Dim + 1;
+                  end;
+               end loop;
+            end;
+         end if;
+
          --  Empty aggregates [] do not have any explicit choices. They use
          --  the default ranges
          --  Index_Type'First .. Index_Type'Base'Pred (Index_Type'First).
