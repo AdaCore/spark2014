@@ -433,9 +433,15 @@ package body CE_RAC is
    type Ulargest is mod 2 ** 128;
    --  The largest modular type to execute modulo operators
 
-   procedure Iterate_Loop_Param_Spec
-     (Param_Spec : Node_Id; Iteration : not null access procedure);
-   --  Iterate a loop parameter specification by calling Iteration
+   procedure Iterate_Scheme_Spec
+     (Scheme     : Node_Id;
+      Over_Range : Boolean;
+      Iteration  : not null access procedure);
+   --  Iterate an iteration scheme (from a loop or a quantified expression) by
+   --  calling Iteration.
+   --  Over_Range is True in the case of an iteration over a range, and false
+   --  in the case of an iteration over an array. Other cases of iteration are
+   --  not supported yet.
 
    function Match_Alternative
      (V  : Value_Type;
@@ -1522,42 +1528,74 @@ package body CE_RAC is
       return Integer_Value (I, Retysp (Etype (N)), N);
    end Integer_Value;
 
-   -----------------------------
-   -- Iterate_Loop_Param_Spec --
-   -----------------------------
+   -------------------------
+   -- Iterate_Scheme_Spec --
+   -------------------------
 
-   procedure Iterate_Loop_Param_Spec
-     (Param_Spec : Node_Id; Iteration : not null access procedure)
+   procedure Iterate_Scheme_Spec
+     (Scheme     : Node_Id;
+      Over_Range : Boolean;
+      Iteration  : not null access procedure)
    is
-      Def          : constant Node_Id :=
-        Discrete_Subtype_Definition (Param_Spec);
-      Actual_Range : constant Node_Id := Get_Range (Def);
-      Low_Bnd      : constant Node_Id := Low_Bound (Actual_Range);
-      Low          : constant Value_Type := RAC_Expr (Low_Bnd);
-      High         : constant Value_Type :=
-        RAC_Expr (High_Bound (Actual_Range));
-      Id           : constant Entity_Id := Defining_Identifier (Param_Spec);
-      Iter_Typ     : constant Entity_Id := Etype (Low_Bnd);
+      Scheme_Spec  : constant Node_Id :=
+        (if Over_Range then Loop_Parameter_Specification (Scheme)
+         else Iterator_Specification (Scheme));
+      Id           : constant Entity_Id :=
+        Get_Quantified_Variable (Scheme, Over_Range);
+      Low          : Value_Type;
+      High         : Value_Type;
+      Iter_Typ     : Entity_Id;
       Curr, Stop   : Big_Integer;
       Step         : Big_Integer := To_Big_Integer (1);
       Test         : -- Test for Curr and Stop during iteration
         not null access function (L, R : Valid_Big_Integer) return Boolean :=
           "<="'Access;
-      Val          : Value_Type;
+      Reverse_Mode : Boolean;
+      Array_Val  : Value_Type;
+
    begin
-      if Present (Iterator_Filter (Param_Spec)) then
-         RAC_Unsupported
-           ("Iterate_Loop_Param_Spec iterator filter", Param_Spec);
+      if Over_Range then
+         declare
+            Param_Spec   : constant Node_Id :=
+              Loop_Parameter_Specification (Scheme);
+            Def          : constant Node_Id :=
+              Discrete_Subtype_Definition (Param_Spec);
+            Actual_Range : constant Node_Id := Get_Range (Def);
+            Low_Bnd      : constant Node_Id := Low_Bound (Actual_Range);
+         begin
+            Iter_Typ := Etype (Low_Bnd);
+            Reverse_Mode := Reverse_Present (Param_Spec);
+            Low := RAC_Expr (Low_Bnd);
+            High := RAC_Expr (High_Bound (Actual_Range));
+         end;
+      else
+         declare
+            Over_Expr : constant N_Subexpr_Id :=
+              Get_Expr_Quantified_Over (Scheme, Over_Range);
+            Index     : constant Node_Id := First_Index (Etype (Over_Expr));
+         begin
+            Array_Val := RAC_Expr (Over_Expr);  --  Computed only once
+            Iter_Typ := Etype (Index);
+            Reverse_Mode := False;
+            Low := Integer_Value (Array_Val.First_Attr.Content, Index);
+            High := Integer_Value (Array_Val.Last_Attr.Content, Index);
+         end;
       end if;
+
+      if Present (Iterator_Filter (Scheme_Spec)) then
+         RAC_Unsupported
+           ("Iterate_Scheme_Spec iterator filter", Scheme_Spec);
+      end if;
+
       if not Is_Discrete_Type (Iter_Typ) then
          RAC_Unsupported
-           ("Iterate_Lop_Param_Spec not discrete type", Param_Spec);
+           ("Iterate_Scheme_Spec not discrete type", Scheme_Spec);
       end if;
 
       Curr := Value_Enum_Integer (Low);
       Stop := Value_Enum_Integer (High);
 
-      if Reverse_Present (Param_Spec) then
+      if Reverse_Mode then
          --  Reverse the loop direction
          declare
             Tmp : constant Big_Integer := Curr;
@@ -1576,12 +1614,26 @@ package body CE_RAC is
             Check_Fuel_Decrease (Ctx.Fuel);
 
             RAC_Trace ("Iterate : " & To_String (Curr));
-            if Is_Integer_Type (Iter_Typ) then
-               Val := Integer_Value (Curr, Iter_Typ, Empty);
-            elsif Is_Enumeration_Type (Iter_Typ) then
-               Val := Enum_Value (UI_From_String (To_String (Curr)), Iter_Typ);
-            end if;
-            Set_Value (Ctx.Env (Ctx.Env.First), Id, new Value_Type'(Val));
+
+            declare
+               Val : constant Value_Type :=
+                 (if Over_Range then
+                     (if Is_Integer_Type (Iter_Typ) then
+                        Integer_Value (Curr, Iter_Typ, Empty)
+                      elsif Is_Enumeration_Type (Iter_Typ) then
+                        Enum_Value (UI_From_String (To_String (Curr)),
+                          Iter_Typ)
+                      else
+                         raise Program_Error)
+                  else
+                     (if Array_Val.Array_Values.Contains (Curr) then
+                        Array_Val.Array_Values (Curr).all
+                      else
+                        Array_Val.Array_Others.all));
+            begin
+               Set_Value (Ctx.Env (Ctx.Env.First), Id, new Value_Type'(Val));
+            end;
+
             Iteration.all;
             Curr := Curr + Step;
          end loop;
@@ -1602,7 +1654,7 @@ package body CE_RAC is
             Ctx.Env (Ctx.Env.First).Bindings.Exclude (Id);
             raise;
       end;
-   end Iterate_Loop_Param_Spec;
+   end Iterate_Scheme_Spec;
 
    -----------------------
    -- Match_Alternative --
@@ -1805,11 +1857,15 @@ package body CE_RAC is
      (V : in out Value_Type;
       E :        Entity_Id)
    is
-      New_Bounds : constant Node_Id := Get_Range (First_Index (E));
-      New_First  : constant Big_Integer :=
-        Value_Enum_Integer (RAC_Expr (Low_Bound (New_Bounds)));
-      Offset     : constant Big_Integer := New_First - V.First_Attr.Content;
-
+      New_Low_Bound : constant Node_Id :=
+        (if Ekind (E) = E_String_Literal_Subtype then
+           String_Literal_Low_Bound (E)
+         else
+           Low_Bound (Get_Range (First_Index (E))));
+      New_First     : constant Big_Integer :=
+        Value_Enum_Integer (RAC_Expr (New_Low_Bound));
+      Offset        : constant Big_Integer :=
+        New_First - V.First_Attr.Content;
    begin
       if Offset /= 0 then
          declare
@@ -1818,7 +1874,12 @@ package body CE_RAC is
             New_Values :          Map;
             Old_Values : constant Map := V.Array_Values;
             New_Last   : constant Big_Integer :=
-              Value_Enum_Integer (RAC_Expr (High_Bound (New_Bounds)));
+              (if Ekind (E) = E_String_Literal_Subtype then
+                 New_First + From_String (UI_Image (String_Literal_Length (E)))
+                 - 1
+               else
+                 Value_Enum_Integer (RAC_Expr
+                   (High_Bound (Get_Range (First_Index (E))))));
          begin
             for C in Old_Values.Iterate loop
                New_Values.Insert (Key (C) + Offset, Element (C));
@@ -2155,6 +2216,7 @@ package body CE_RAC is
             | N_Subprogram_Declaration
             | N_Subprogram_Body
             | N_Ignored_In_SPARK
+            | N_Object_Renaming_Declaration
          =>
             null;
 
@@ -2827,7 +2889,10 @@ package body CE_RAC is
                if not Is_Empty_List (Expressions (N)) then
                   RAC_Unsupported
                     ("RAC_Attribute_Reference 'Length with argument", N);
-               elsif Etype (Prefix (N)) = Entity (Prefix (N)) then
+
+               elsif Is_Entity_Name (Prefix (N))
+                 and then Is_Type (Entity (Prefix (N)))
+               then
                   RAC_Unsupported
                     ("RAC_Attribute_Reference 'Length on type", N);
                end if;
@@ -3623,11 +3688,29 @@ package body CE_RAC is
                   end if;
                end Iteration;
 
+               --  We distinguish between 4 types of quantified expressions:
+               --  . over a scalar range (for all V in Low .. High)
+               --  . over an array (for all V of Arr)
+               --  . over a container's content (for all V of Cont)
+               --  . over a container's cursors (for all V in Cont)
+               --  The boolean variables below correspond to the first two
+               --  mutually exclusive cases, as the last two are not currently
+               --  handed in RAC.
+
+               Over_Range : constant Boolean :=
+                 Present (Loop_Parameter_Specification (N));
+
+               Over_Array : constant Boolean :=
+                 Present (Iterator_Specification (N))
+                 and then Is_Iterator_Over_Array (Iterator_Specification (N));
+
             begin
-               if Present (Loop_Parameter_Specification (N)) then
+               if Over_Range or Over_Array then
                   begin
-                     Iterate_Loop_Param_Spec
-                       (Loop_Parameter_Specification (N), Iteration'Access);
+                     Iterate_Scheme_Spec
+                       (N,
+                        Over_Range,
+                        Iteration'Access);
                      Res := Boolean_Value (All_Present (N), Etype (N));
                   exception
                      when Break =>
@@ -3938,8 +4021,12 @@ package body CE_RAC is
 
    begin
       case Nkind (N) is
-         when N_Ignored_In_SPARK =>
+         when N_Object_Renaming_Declaration
+            | N_Ignored_In_SPARK
+         =>
             null;
+
+         when N_Object_Declaration => RAC_Decl (N);
 
          when N_Simple_Return_Statement =>
             if Present (Expression (N)) then
@@ -4143,21 +4230,40 @@ package body CE_RAC is
                         null;
                   end;
 
-               elsif Present (Loop_Parameter_Specification (Scheme)) then
+               else
                   declare
                      procedure Iteration;
                      procedure Iteration is
                      begin
                         RAC_List (Statements (N));
                      end Iteration;
+
+                     --  We distinguish between 4 types of FOR loops:
+                     --  . over a scalar range (for V in Low .. High)
+                     --  . over an array (for V of Arr)
+                     --  . over a container's content (for V of Cont)
+                     --  . over a container's cursors (for V in Cont)
+                     --  The boolean variables below correspond to the first
+                     --  two mutually exclusive cases, as the last two are not
+                     --  currently handed in RAC.
+
+                     Over_Range : constant Boolean :=
+                       Present (Loop_Parameter_Specification (Scheme));
+
+                     Over_Array : constant Boolean :=
+                       Present (Iterator_Specification (Scheme))
+                       and then Is_Iterator_Over_Array
+                         (Iterator_Specification (Scheme));
                   begin
-                     Iterate_Loop_Param_Spec
-                       (Loop_Parameter_Specification (Scheme),
-                        Iteration'Access);
+                     if Over_Range or Over_Array then
+                        Iterate_Scheme_Spec
+                          (Scheme,
+                           Over_Range,
+                           Iteration'Access);
+                     else
+                        RAC_Unsupported ("RAC_Statement loop iterator", N);
+                     end if;
                   end;
-               else
-                  pragma Assert (Present (Iterator_Specification (Scheme)));
-                  RAC_Unsupported ("RAC_Statement loop iterator", N);
                end if;
 
                --  Clean the nearest scope by removing 'Loop_Entry values

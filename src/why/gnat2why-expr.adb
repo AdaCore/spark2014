@@ -7532,19 +7532,6 @@ package body Gnat2Why.Expr is
       -- Local Subprograms --
       -----------------------
 
-      function Get_Expr_Quantified_Over
-        (N          : Node_Id;
-         Over_Range : Boolean)
-         return Node_Id;
-      --  @return the expression over which quantification is performed
-
-      function Get_Quantified_Variable
-        (N          : Node_Id;
-         Over_Range : Boolean)
-         return Entity_Id;
-      --  @return the entity representing the quantified variable of the
-      --     quantification.
-
       function Make_Binding_For_Array
         (Ada_Node    : Node_Id;
          W_Arr_Expr  : W_Expr_Id;
@@ -7623,42 +7610,6 @@ package body Gnat2Why.Expr is
       --         should be done
       --  @param Index_Type type of the index variable
       --  @param Need_Tmp_Var do we need a temporary variable
-
-      ------------------------------
-      -- Get_Expr_Quantified_Over --
-      ------------------------------
-
-      function Get_Expr_Quantified_Over
-        (N          : Node_Id;
-         Over_Range : Boolean)
-         return Node_Id
-      is
-      begin
-         if Over_Range then
-            return
-              Discrete_Subtype_Definition (Loop_Parameter_Specification (N));
-         else
-            return Get_Container_In_Iterator_Specification
-              (Iterator_Specification (N));
-         end if;
-      end Get_Expr_Quantified_Over;
-
-      -----------------------------
-      -- Get_Quantified_Variable --
-      -----------------------------
-
-      function Get_Quantified_Variable
-        (N          : Node_Id;
-         Over_Range : Boolean)
-         return Entity_Id
-      is
-      begin
-         if Over_Range then
-            return Defining_Identifier (Loop_Parameter_Specification (N));
-         else
-            return Defining_Identifier (Iterator_Specification (N));
-         end if;
-      end Get_Quantified_Variable;
 
       ----------------------------
       -- Make_Binding_For_Array --
