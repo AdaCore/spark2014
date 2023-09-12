@@ -715,6 +715,7 @@ package body CE_Parsing is
                            Current_Val := Current_Val.Designated_Value;
                            Is_Attribute := False;
                         end if;
+
                      elsif Label = Is_Null_Label then
                         if Current_Val.K /= Access_K then
                            raise Parse_Error;
@@ -791,11 +792,15 @@ package body CE_Parsing is
                              (Elt.Value, Current_Val.Initialized_Attr);
                         end if;
 
+                     --  Some labels are currently parsed as First@result,
+                     --  where the @result part is not expected.
+
+                     elsif Is_Attribute then
+                        raise Parse_Error;
+
                      --  Regular record field
 
                      else
-                        pragma Assert (not Is_Attribute);
-
                         if Current_Val.K /= Record_K
                           or else No
                             (Search_Component_In_Type (Current_Ty, Comp_E))
