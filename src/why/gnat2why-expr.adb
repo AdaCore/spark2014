@@ -22806,7 +22806,7 @@ package body Gnat2Why.Expr is
             then
                declare
                   Proved : constant Boolean :=
-                    (if Is_CT_Known then Expr_Value (Expr) = Uint_1
+                    (if Is_CT_Known then Is_True (Expr_Value (Expr))
                      else Is_True_Boolean (+Pred));
                begin
                   if Proved then
