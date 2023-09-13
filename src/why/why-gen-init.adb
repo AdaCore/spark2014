@@ -478,25 +478,4 @@ package body Why.Gen.Init is
                                 Typ    => EW_Bool_Type);
    end New_Init_Attribute_Access;
 
-   --------------------
-   -- To_Init_Module --
-   --------------------
-
-   function To_Init_Module (Name : W_Identifier_Id) return W_Identifier_Id is
-      W_Name : constant W_Name_Id := Get_Name (Name);
-      Module : constant W_Module_Id := Get_Module (W_Name);
-      pragma Assert
-        (Module /= Why_Empty and then Present (Get_Ada_Node (+Module)));
-   begin
-      return
-        New_Identifier
-          (Ada_Node  => Get_Ada_Node (+W_Name),
-           Symb      => Get_Symb (W_Name),
-           Namespace => Get_Namespace (W_Name),
-           Domain    => Get_Domain (+Name),
-           Module    => E_Init_Module (Get_Ada_Node (+Module)),
-           Typ       => Get_Typ (Name),
-           Attrs     => Get_Labels (Name));
-   end To_Init_Module;
-
 end Why.Gen.Init;
