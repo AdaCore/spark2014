@@ -3171,14 +3171,14 @@ package body Why.Atree.Modules is
                        (Symb   => NID ("to_wrapper"),
                         Module => WM,
                         Domain => EW_Term,
-                        Typ    => Ty));
+                        Typ    => EW_Init_Wrapper (Ty)));
                   Insert_Symbol
                     (E, WNE_Of_Wrapper,
                      New_Identifier
                        (Symb   => NID ("of_wrapper"),
                         Module => WM,
                         Domain => EW_Term,
-                        Typ    => EW_Init_Wrapper (Ty)));
+                        Typ    => Ty));
                end;
             end if;
          end if;
