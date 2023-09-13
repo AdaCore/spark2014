@@ -2,4 +2,4 @@ toy1.adb:3:09: warning: creation of "Data" object may raise Storage_Error
 toy1.adb:4:07: info: range check proved (CVC5: 2 VC)
 toy1.adb:12:14: info: range check proved (CVC5: 2 VC)
 toy1.adb:14:21: info: unrolling loop
-toy1.adb:18:09: info: initialization check proved (Trivial: 7 VC; Z3: 1 VC)
+toy1.adb:18:09: info: initialization check proved (Z3: 1 VC)

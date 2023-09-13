@@ -12,7 +12,7 @@ init_wrapper_simple.adb:34:07: warning: assuming "Init" always terminates
 init_wrapper_simple.adb:34:07: warning: assuming "Init" has no effect on global items
 init_wrapper_simple.adb:34:07: warning: no Always_Terminates aspect available for "Init"
 init_wrapper_simple.adb:34:07: warning: no Global contract available for "Init"
-init_wrapper_simple.adb:35:22: info: assertion proved (CVC5: 2 VC; Trivial: 5 VC)
+init_wrapper_simple.adb:35:22: info: assertion proved (CVC5: 1 VC)
 init_wrapper_simple.adb:36:07: warning: assuming "Init" always terminates
 init_wrapper_simple.adb:36:07: warning: assuming "Init" has no effect on global items
 init_wrapper_simple.adb:36:07: warning: no Always_Terminates aspect available for "Init"
@@ -22,4 +22,4 @@ init_wrapper_simple.adb:38:07: warning: assuming "Init" always terminates
 init_wrapper_simple.adb:38:07: warning: assuming "Init" has no effect on global items
 init_wrapper_simple.adb:38:07: warning: no Always_Terminates aspect available for "Init"
 init_wrapper_simple.adb:38:07: warning: no Global contract available for "Init"
-init_wrapper_simple.adb:39:22: info: assertion proved (CVC5: 1 VC; Trivial: 2 VC)
+init_wrapper_simple.adb:39:22: info: assertion proved (CVC5: 1 VC)

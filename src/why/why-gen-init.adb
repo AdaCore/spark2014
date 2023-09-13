@@ -40,7 +40,6 @@ with Why.Gen.Expr;                use Why.Gen.Expr;
 with Why.Gen.Names;               use Why.Gen.Names;
 with Why.Gen.Progs;               use Why.Gen.Progs;
 with Why.Gen.Records;             use Why.Gen.Records;
-with Why.Gen.Terms;               use Why.Gen.Terms;
 with Why.Images;                  use Why.Images;
 with Why.Inter;                   use Why.Inter;
 with Why.Types;                   use Why.Types;
@@ -52,12 +51,14 @@ package body Why.Gen.Init is
    ----------------------------
 
    function Compute_Is_Initialized
-     (E                      : Entity_Id;
-      Name                   : W_Expr_Id;
-      Params                 : Transformation_Params;
-      Domain                 : EW_Domain;
-      Excluded_Subcomponents : Exclude_Init_Check_Flag := None;
-      No_Predicate_Check     : Boolean := False)
+     (E                  : Entity_Id;
+      Name               : W_Expr_Id;
+      Params             : Transformation_Params;
+      Domain             : EW_Domain;
+      Exclude_Relaxed    : W_Term_Id := False_Term;
+      For_Eq             : Boolean := False;
+      No_Predicate_Check : Boolean := False;
+      Use_Pred           : Boolean := True)
       return W_Expr_Id
    is
 
@@ -66,21 +67,10 @@ package body Why.Gen.Init is
          return W_Pred_Id;
       --  Call Compute_Is_Initialized recursively
 
-      function Is_Subcomponent_Excluded (C_Ty : Entity_Id) return Boolean;
-      --  Test whether initialization condition for a subcomponent of type C_Ty
-      --  should be excluded.
-
       function Is_Initialized_For_Comp
         (C_Expr : W_Term_Id; C_Ty : Entity_Id)
          return W_Pred_Id
-      is (if Is_Subcomponent_Excluded (C_Ty)
-          then True_Pred
-          else +Compute_Is_Initialized
-            (E                      => C_Ty,
-             Name                   => +C_Expr,
-             Params                 => Params,
-             Domain                 => EW_Pred,
-             Excluded_Subcomponents => Excluded_Subcomponents));
+      is (Is_Initialized_For_Comp (C_Expr, C_Ty, Empty));
 
       -----------------------------
       -- Is_Initialized_For_Comp --
@@ -94,36 +84,41 @@ package body Why.Gen.Init is
          --  E may be a type standing for the private part of a type whose
          --  fullview is not in SPARK.
 
-         if Is_Type (E) then
+         if Present (E) and then Is_Type (E) then
             if Get_Relaxed_Init (Get_Type (+C_Expr)) then
                return +Pred_Of_Boolean_Term
                  (+New_Init_Attribute_Access (E, +C_Expr));
             else
                return True_Pred;
             end if;
-         elsif Is_Subcomponent_Excluded (C_Ty)
+         elsif (For_Eq and then not Use_Predefined_Equality_For_Type (C_Ty))
+           or else (Is_True_Boolean (+Exclude_Relaxed)
+                    and then Has_Relaxed_Init (C_Ty))
          then
             return True_Pred;
          else
-            return +Compute_Is_Initialized
-              (E                      => C_Ty,
-               Name                   => +C_Expr,
-               Params                 => Params,
-               Domain                 => EW_Pred,
-               Excluded_Subcomponents => Excluded_Subcomponents);
+            declare
+               P : W_Pred_Id := +Compute_Is_Initialized
+                 (E               => C_Ty,
+                  Name            => +C_Expr,
+                  Params          => Params,
+                  Domain          => EW_Pred,
+                  Exclude_Relaxed => Exclude_Relaxed,
+                  For_Eq          => For_Eq);
+            begin
+               if Has_Relaxed_Init (C_Ty)
+                 and then not Is_False_Boolean (+Exclude_Relaxed)
+               then
+                  P := New_Conditional
+                    (Condition => New_Not
+                       (Right => Pred_Of_Boolean_Term (Exclude_Relaxed)),
+                     Then_Part => P);
+               end if;
+
+               return P;
+            end;
          end if;
       end Is_Initialized_For_Comp;
-
-      ------------------------------
-      -- Is_Subcomponent_Excluded --
-      ------------------------------
-
-      function Is_Subcomponent_Excluded (C_Ty : Entity_Id) return Boolean
-      is (case Excluded_Subcomponents is
-             when None => False,
-             when With_User_Eq => not Use_Predefined_Equality_For_Type (C_Ty),
-             when Relaxed => Has_Relaxed_Init (C_Ty)
-         );
 
       function Is_Initialized_For_Array is new Build_Predicate_For_Array
         (Is_Initialized_For_Comp);
@@ -147,10 +142,11 @@ package body Why.Gen.Init is
       if not Get_Relaxed_Init (Get_Type (+Name))
         and then (Has_Scalar_Type (E)
                   or else Is_Simple_Private_Type (E)
-                  or else Excluded_Subcomponents = Relaxed
+                  or else Is_True_Boolean (+Exclude_Relaxed)
                   or else not Contains_Relaxed_Init_Parts (E))
       then
          return Bool_True (Domain);
+
       else
 
          --  Initialization of types with a top level initialization flag
@@ -166,6 +162,21 @@ package body Why.Gen.Init is
             end if;
 
             return R;
+
+         --  For composite types, use the Is_Initialized predicate symbol if
+         --  possible.
+
+         elsif Use_Pred
+           and then not Is_Itype (E)
+           and then Get_Relaxed_Init (Get_Type (+Name))
+           and then Get_Type_Kind (Get_Type (+Name)) = EW_Abstract
+           and then not No_Predicate_Check
+           and then not For_Eq
+         then
+            P := New_Call (Name => E_Symb (E => E,
+                                           S => WNE_Is_Initialized_Pred),
+                           Args => (1 => +Tmp, 2 => +Exclude_Relaxed),
+                           Typ  => EW_Bool_Type);
 
          --  Initialization of composite types
 
@@ -391,12 +402,13 @@ package body Why.Gen.Init is
    ---------------------------------
 
    function Insert_Initialization_Check
-     (Ada_Node               : Node_Id;
-      E                      : Entity_Id;
-      Name                   : W_Expr_Id;
-      Domain                 : EW_Domain;
-      Excluded_Subcomponents : Exclude_Init_Check_Flag := None;
-      No_Predicate_Check     : Boolean := False)
+     (Ada_Node           : Node_Id;
+      E                  : Entity_Id;
+      Name               : W_Expr_Id;
+      Domain             : EW_Domain;
+      Exclude_Relaxed    : Boolean := False;
+      For_Eq             : Boolean := False;
+      No_Predicate_Check : Boolean := False)
       return W_Expr_Id
    is
       Tmp : constant W_Expr_Id := New_Temp_For_Expr (Name);
@@ -411,7 +423,7 @@ package body Why.Gen.Init is
         and then
           (Is_Init_Wrapper_Type (Get_Type (Name))
            or else
-             (Excluded_Subcomponents /= Relaxed
+             (not Exclude_Relaxed
               and then Contains_Relaxed_Init_Parts (E, Ignore_Top => True)))
       then
          T := +Sequence
@@ -420,10 +432,12 @@ package body Why.Gen.Init is
                  (Ada_Node => Ada_Node,
                   Pred     => +Compute_Is_Initialized
                     (E, +Tmp,
-                     Params                 => Body_Params,
-                     Excluded_Subcomponents => Excluded_Subcomponents,
-                     No_Predicate_Check     => No_Predicate_Check,
-                     Domain                 => EW_Pred),
+                     Params             => Body_Params,
+                     Exclude_Relaxed =>
+                       (if Exclude_Relaxed then True_Term else False_Term),
+                     For_Eq             => For_Eq,
+                     No_Predicate_Check => No_Predicate_Check,
+                     Domain             => EW_Pred),
                   Reason   => VC_Initialization_Check,
                   Kind     => EW_Assert),
                Right    => +Tmp);

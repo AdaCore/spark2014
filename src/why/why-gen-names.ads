@@ -451,6 +451,7 @@ package Why.Gen.Names is
       WNE_Pointer_Call,           --  "__call_"
 
       --  Names related to initialization checks
+      WNE_Is_Initialized_Pred,
       WNE_Init_Value,             --  "rec__value"
       WNE_Init_Wrapper_Suffix,    --  "__init_wrapper"
       WNE_Attr_Init,              --  "attr__init"

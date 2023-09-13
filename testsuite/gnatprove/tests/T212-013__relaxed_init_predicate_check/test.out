@@ -17,7 +17,7 @@ test_pred.adb:53:26: info: data dependencies proved
 test_pred.adb:58:22: info: assertion proved (CVC5: 1 VC)
 test_pred.adb:58:31: medium: in inlined predicate at test_pred.adb:49
 test_pred.adb:58:31: medium: predicate check might fail, cannot prove C.X > 0
-test_pred.adb:58:37: info: initialization check proved (CVC5: 1 VC; Trivial: 2 VC)
+test_pred.adb:58:37: info: initialization check proved (CVC5: 1 VC)
 test_pred.adb:65:40: info: data dependencies proved
 test_pred.adb:71:25: info: assertion proved (CVC5: 1 VC)
 test_pred.adb:71:34: info: predicate check proved (CVC5: 2 VC; Trivial: 1 VC)
@@ -25,7 +25,7 @@ test_pred.adb:71:40: medium: initialization check might fail
 test_pred.adb:71:55: info: initialization check proved (CVC5: 1 VC)
 test_pred.adb:74:25: info: assertion proved (CVC5: 1 VC)
 test_pred.adb:74:34: info: predicate check proved (CVC5: 2 VC; Trivial: 1 VC)
-test_pred.adb:74:40: info: initialization check proved (CVC5: 1 VC; Trivial: 2 VC)
+test_pred.adb:74:40: info: initialization check proved (CVC5: 1 VC)
 test_pred.adb:74:55: info: initialization check proved (CVC5: 1 VC)
 test_pred.adb:87:74: info: initialization check proved (CVC5: 1 VC)
 test_pred.adb:89:26: info: data dependencies proved
