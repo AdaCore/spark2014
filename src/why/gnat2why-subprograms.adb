@@ -4236,12 +4236,12 @@ package body Gnat2Why.Subprograms is
                         New_Located_Assert
                           (Ada_Node => Param,
                            Pred     => +Compute_Is_Initialized
-                             (E                      => Etype (Param),
-                              Name                   => +Reconstruct_Item
+                             (E               => Etype (Param),
+                              Name            => +Reconstruct_Item
                                 (B, Body_Params.Ref_Allowed),
-                              Params                 => Body_Params,
-                              Domain                 => EW_Pred,
-                              Excluded_Subcomponents => Relaxed),
+                              Params          => Body_Params,
+                              Domain          => EW_Pred,
+                              Exclude_Relaxed => True_Term),
                            Reason   => VC_Initialization_Check,
                            Kind     => EW_Assert));
 

@@ -11,7 +11,7 @@ test_init_by_proof.adb:38:26: info: overflow check proved (CVC5: 2 VC)
 test_init_by_proof.adb:39:22: medium: initialization check might fail (e.g. when X = (D => 0, others => ?) and X.Y'Initialized = False and X.X'Initialized = False)
 test_init_by_proof.adb:39:25: info: overflow check proved (CVC5: 2 VC)
 test_init_by_proof.adb:44:14: warning: subprogram "Test_Init_Attr" has no effect
-test_init_by_proof.adb:48:22: info: assertion proved (CVC5: 9 VC; Trivial: 16 VC)
+test_init_by_proof.adb:48:22: info: assertion proved (CVC5: 1 VC)
 test_init_by_proof.adb:51:14: warning: subprogram "Test_Init_Attr_2" has no effect
 test_init_by_proof.adb:55:22: medium: assertion might fail
 test_init_by_proof.adb:58:04: warning: analyzing unreferenced procedure "P1"
@@ -52,7 +52,7 @@ test_init_by_proof.adb:124:14: warning: subprogram "P9" has no effect
 test_init_by_proof.adb:126:19: medium: initialization check might fail (e.g. when X.X'Initialized = False and X.Y'Initialized = False and X.Z'Initialized = False)
 test_init_by_proof.adb:130:04: warning: analyzing unreferenced procedure "P10"
 test_init_by_proof.adb:130:14: warning: subprogram "P10" has no effect
-test_init_by_proof.adb:136:13: info: initialization check proved (CVC5: 2 VC; Trivial: 3 VC)
+test_init_by_proof.adb:136:13: info: initialization check proved (CVC5: 1 VC)
 test_init_by_proof.adb:138:04: warning: analyzing unreferenced procedure "Q"
 test_init_by_proof.adb:138:14: warning: subprogram "Q" has no effect
 test_init_by_proof.adb:139:07: info: initialization of parts of "X" without Relaxed_Initialization proved
@@ -60,7 +60,7 @@ test_init_by_proof.adb:143:14: medium: initialization check might fail (e.g. whe
 test_init_by_proof.adb:145:04: warning: analyzing unreferenced procedure "Q1"
 test_init_by_proof.adb:145:14: warning: subprogram "Q1" has no effect
 test_init_by_proof.adb:146:07: info: initialization of parts of "X" without Relaxed_Initialization proved
-test_init_by_proof.adb:150:14: info: initialization check proved (CVC5: 2 VC; Trivial: 3 VC)
+test_init_by_proof.adb:150:14: info: initialization check proved (CVC5: 1 VC)
 test_init_by_proof_conv.adb:10:27: info: range check proved (CVC5: 1 VC)
 test_init_by_proof_conv.adb:12:27: info: range check proved (CVC5: 1 VC)
 test_init_by_proof_conv.adb:18:35: info: discriminant check proved (CVC5: 1 VC)
@@ -87,17 +87,17 @@ test_init_by_proof_mem.adb:36:10: warning: assuming "Branch" has no effect on gl
 test_init_by_proof_mem.adb:36:10: warning: no Global contract available for "Branch"
 test_init_by_proof_mem.adb:37:22: info: assertion proved (CVC5: 1 VC)
 test_init_by_proof_mem.adb:37:22: medium: initialization check might fail
-test_init_by_proof_mem.adb:37:36: info: initialization check proved (CVC5: 2 VC; Trivial: 3 VC)
+test_init_by_proof_mem.adb:37:36: info: initialization check proved (CVC5: 1 VC)
 test_init_by_proof_mem.adb:38:22: info: assertion proved (CVC5: 1 VC)
 test_init_by_proof_mem.adb:38:22: medium: initialization check might fail
-test_init_by_proof_mem.adb:38:39: info: initialization check proved (CVC5: 1 VC; Trivial: 1 VC)
+test_init_by_proof_mem.adb:38:39: info: initialization check proved (CVC5: 1 VC)
 test_init_by_proof_mem.adb:40:22: info: assertion proved (CVC5: 1 VC)
+test_init_by_proof_mem.adb:40:22: info: initialization check proved (CVC5: 1 VC)
 test_init_by_proof_mem.adb:40:22: info: initialization check proved (CVC5: 1 VC; Trivial: 6 VC)
-test_init_by_proof_mem.adb:40:22: info: initialization check proved (CVC5: 2 VC; Trivial: 3 VC)
-test_init_by_proof_mem.adb:40:36: info: initialization check proved (CVC5: 2 VC; Trivial: 3 VC)
+test_init_by_proof_mem.adb:40:36: info: initialization check proved (CVC5: 1 VC)
 test_init_by_proof_mem.adb:41:22: info: assertion proved (CVC5: 1 VC)
-test_init_by_proof_mem.adb:41:22: info: initialization check proved (CVC5: 1 VC; Trivial: 1 VC)
-test_init_by_proof_mem.adb:41:39: info: initialization check proved (CVC5: 1 VC; Trivial: 1 VC)
+test_init_by_proof_mem.adb:41:22: info: initialization check proved (CVC5: 1 VC)
+test_init_by_proof_mem.adb:41:39: info: initialization check proved (CVC5: 1 VC)
 test_init_by_proof_out_params.adb:25:07: info: range check proved (CVC5: 2 VC)
 test_init_by_proof_out_params.adb:34:17: high: "X.X" is not initialized in "P" [reason for check: OUT parameter should be fully initialized on return] [possible fix: initialize "X.X" on all paths, make "X" an IN OUT parameter or annotate it with aspect Relaxed_Initialization]
 test_init_by_proof_out_params.adb:34:17: high: "X.Z" is not initialized in "P" [reason for check: OUT parameter should be fully initialized on return] [possible fix: initialize "X.Z" on all paths, make "X" an IN OUT parameter or annotate it with aspect Relaxed_Initialization]

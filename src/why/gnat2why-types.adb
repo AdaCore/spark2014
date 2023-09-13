@@ -189,6 +189,12 @@ package body Gnat2Why.Types is
       --  the module in which dynamic invariants for access to incomplete
       --  types will be created if any.
 
+      procedure Create_Initialization_Predicate
+        (Th : Theory_UC;
+         E  : Type_Kind_Id)
+      with Pre => Has_Init_Wrapper (E);
+      --  Create a function to state that objects of type E are initialized
+
       procedure Create_Move_Function
         (Th : Theory_UC;
          E  : Type_Kind_Id)
@@ -632,6 +638,50 @@ package body Gnat2Why.Types is
          end loop;
       end Create_Dynamic_Invariant;
 
+      -------------------------------------
+      -- Create_Initialization_Predicate --
+      -------------------------------------
+
+      procedure Create_Initialization_Predicate
+        (Th : Theory_UC;
+         E  : Type_Kind_Id)
+      is
+         Relaxed_Arg : constant W_Identifier_Id :=
+           New_Temp_Identifier (Typ       => EW_Bool_Type,
+                                Base_Name => "exclude_relaxed");
+         --  Should relaxed subcomponents be excluded
+
+         Main_Arg    : constant W_Identifier_Id :=
+           New_Temp_Identifier
+             (Typ       => EW_Abstract (E, Relaxed_Init => True),
+              Base_Name => "expr");
+         --  Expression on which we want to assume the property
+
+         Binders     : constant Binder_Array := Binder_Array'
+           (1 => Binder_Type'(B_Name => Main_Arg,
+                              others => <>),
+            2 => Binder_Type'(B_Name => Relaxed_Arg,
+                              others => <>));
+
+         Def         : constant W_Pred_Id := +Compute_Is_Initialized
+           (E               => E,
+            Name            => +Main_Arg,
+            Params          => Logic_Params,
+            Domain          => EW_Pred,
+            Exclude_Relaxed => +Relaxed_Arg,
+            Use_Pred        => False);
+
+      begin
+         Emit (Th,
+               New_Function_Decl
+                 (Domain   => EW_Pred,
+                  Name     => To_Local (E_Symb (E, WNE_Is_Initialized_Pred)),
+                  Def      => +Def,
+                  Location => No_Location,
+                  Labels   => Symbol_Sets.Empty_Set,
+                  Binders  => Binders));
+      end Create_Initialization_Predicate;
+
       --------------------------
       -- Create_Move_Function --
       --------------------------
@@ -1056,6 +1106,13 @@ package body Gnat2Why.Types is
 
       if not Is_Itype (E) and then Is_Scalar_Type (E) then
          Create_Axioms_For_Scalar_Bounds (Th, E);
+      end if;
+
+      if Has_Init_Wrapper (E)
+        and then not Is_Scalar_Type (E)
+        and then not Is_Itype (E)
+      then
+         Create_Initialization_Predicate (Th, E);
       end if;
 
       Close_Theory (Th,

@@ -3130,11 +3130,19 @@ package body Why.Atree.Modules is
 
          Insert_Shared_Type_Symbols (E);
 
-         --  Insert symbols for the initialization wrapper if any.
+         --  Insert symbols for the initialization wrapper if any
 
          if Has_Init_Wrapper (E) then
 
             Insert_Shared_Type_Symbols (E, Relaxed_Init => True);
+
+            Insert_Symbol
+              (E, WNE_Is_Initialized_Pred,
+               New_Identifier
+                 (Symb   => NID ("is_initialized"),
+                  Module => AM,
+                  Domain => EW_Term,
+                  Typ    => EW_Bool_Type));
 
             --  We need extra fields to create the wrapper type for scalars and
             --  simple private types, and conversion functions to and from the

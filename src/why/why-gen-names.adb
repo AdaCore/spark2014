@@ -1037,6 +1037,7 @@ package body Why.Gen.Names is
             | WNE_Index_Dynamic_Property_4
             | WNE_Init_Value
             | WNE_Int_Proj
+            | WNE_Is_Initialized_Pred
             | WNE_Null_Extension
             | WNE_Of_Array
             | WNE_Of_Base
