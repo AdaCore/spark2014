@@ -14547,7 +14547,7 @@ package body Gnat2Why.Expr is
       Right_Expr : constant W_Expr_Id := New_Temp_For_Expr
         (Insert_Initialization_Check
            (Right_Opnd (Ada_Node),
-            Left_Type,
+            Etype (Right_Opnd (Ada_Node)),
             Right,
             Domain,
             For_Eq => True));
