@@ -22,6 +22,7 @@ bad.ads:9:38: medium: exceptional case might fail, in instantiation at bad.adb:2
 bad.ads:10:06: info: data dependencies proved, in instantiation at bad.adb:22
 weird.adb:25:07: medium: unexpected exception might be raised, in instantiation at weird_inst.adb:6
 weird_inst.adb:6:14: info: aspect Always_Terminates on "RG_Inst" has been proved, subprogram will terminate
+weird_inst.adb:6:14: warning: procedures which do not return normally nor raise an exception cannot always terminate
 pack.adb:5:07: medium: unexpected exception might be raised
 pack.adb:11:10: high: precondition might fail, in instantiation at pack.adb:15
 pack.adb:27:22: info: assertion proved (CVC5: 1 VC)

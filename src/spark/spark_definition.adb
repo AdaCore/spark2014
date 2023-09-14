@@ -5806,6 +5806,19 @@ package body SPARK_Definition is
                   end if;
                end;
             end if;
+
+            --  Warn on subprograms which have no ways to terminate
+
+            if Ekind (E) = E_Procedure
+              and then No_Return (E)
+              and then not Has_Exceptional_Contract (E)
+              and then Get_Termination_Condition (E) = (Static, True)
+            then
+               if Emit_Warning_Info_Messages then
+                  Error_Msg_N
+                    (Warning_Message (Warn_No_Possible_Termination), E);
+               end if;
+            end if;
          end Mark_Subprogram_Contracts;
 
          -----------------------------------
