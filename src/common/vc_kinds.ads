@@ -369,6 +369,7 @@ package VC_Kinds is
       Warn_Attribute_Valid,
       Warn_Initialization_To_Alias,
       Warn_Function_Is_Valid,
+      Warn_No_Possible_Termination,
       Warn_Pragma_Annotate_No_Check,
       Warn_Pragma_Annotate_Proved_Check,
       Warn_Pragma_Annotate_Terminating,
@@ -514,6 +515,9 @@ package VC_Kinds is
           & " other non-volatile objects",
         when Warn_Function_Is_Valid =>
           "?function Is_Valid is assumed to return True",
+        when Warn_No_Possible_Termination =>
+          "?procedures which do not return normally nor raise an exception"
+          & " cannot always terminate",
         when Warn_Pragma_Annotate_No_Check =>
           "?no check message justified by this pragma",
         when Warn_Pragma_Annotate_Proved_Check =>
