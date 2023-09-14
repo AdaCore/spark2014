@@ -1,4 +1,4 @@
-procedure Main1 is
+procedure Main2 is
 
    procedure Dummy (X : Integer) is
       Tmp : Integer;

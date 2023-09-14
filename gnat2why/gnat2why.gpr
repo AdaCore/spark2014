@@ -25,7 +25,7 @@ project GNAT2Why is
 
       for Switches ("analyze") use ("-j0", "--no-gnatcheck");
       for Switches ("infer") use ("--disable-issue-type", "MEMORY_LEAK_ADA");
-      for Switches ("inspector") use ("--level", "1", "-gnatws");
+      for Switches ("inspector") use ("--legacy-level", "1", "-gnatws");
 
       for Excluded_Source_Dirs use ("gnat_src");
 

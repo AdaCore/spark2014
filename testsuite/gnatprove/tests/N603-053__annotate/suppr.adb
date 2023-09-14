@@ -1,4 +1,4 @@
-package body Syntax is
+package body Suppr is
 
    procedure P (C : Boolean) is
       X : Integer;
@@ -27,4 +27,4 @@ package body Syntax is
          pragma Annotate (Gnatprove, Intentional,"""Z"" is not initialized","");
       end if;
    end Q;
-end Syntax;
+end Suppr;

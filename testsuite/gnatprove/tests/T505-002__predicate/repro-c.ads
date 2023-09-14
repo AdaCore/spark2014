@@ -1,6 +1,6 @@
 with Repro.A;
 
-package Repro.B
+package Repro.C
 is
 
    function F1 (Bar : Repro.A.Foo_Type) return Repro.A.String_Type
@@ -11,4 +11,4 @@ is
    function F2 (Bar : Bar_Type) return Repro.A.String_Type
    is (Bar.X);
 
-end Repro.B;
+end Repro.C;

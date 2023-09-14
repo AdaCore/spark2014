@@ -1,4 +1,4 @@
-procedure Wrapper (X, Low, High : Integer)
+procedure P (X, Low, High : Integer)
   with Global => null
 is
    procedure Test1
@@ -24,4 +24,4 @@ is
    end Test2;
 begin
    null;
-end Wrapper;
+end P;
