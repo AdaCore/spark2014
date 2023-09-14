@@ -1066,20 +1066,6 @@ package body Gnat2Why.Types is
 
          Complete_Access_To_Subprogram_Type (Th, E);
 
-      elsif Is_Access_Type (E) then
-         declare
-            Ancestor   : constant Type_Kind_Id := Repr_Pointer_Type (E);
-            Name       : constant String :=
-              Full_Name (Ancestor) & To_String (WNE_Rec_Rep);
-            Rep_Module : constant W_Module_Id :=
-              New_Module (File => No_Symbol,
-                          Name => Name);
-         begin
-            --  Export the theory containing the pointer record definition
-
-            Add_With_Clause (Th, Rep_Module, EW_Export);
-         end;
-
       elsif Is_Tagged_Type (E) then
 
          --  If E is a root of a tagged hierarchy, generate axioms for the
