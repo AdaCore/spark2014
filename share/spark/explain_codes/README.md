@@ -24,3 +24,5 @@
 - E0011: `incorrect placement of aspect/pragma "SPARK_Mode" with value "On"`
 
 - E0012: `address specification on <variable> is imprecisely supported`
+
+- E0013: `procedure not terminating normally nor abnormally`
