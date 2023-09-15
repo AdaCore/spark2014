@@ -541,7 +541,7 @@ package body VC_Kinds is
         when Warn_Function_Is_Valid =>
           "function Is_Valid is assumed to return True",
         when Warn_No_Possible_Termination =>
-          "?procedures which do not return normally nor raise an exception"
+          "?procedure which does not return normally nor raises an exception"
           & " cannot always terminate",
         when Warn_Pragma_Annotate_No_Check =>
           "no check message justified by this pragma",

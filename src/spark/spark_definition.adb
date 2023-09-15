@@ -5815,8 +5815,12 @@ package body SPARK_Definition is
               and then Get_Termination_Condition (E) = (Static, True)
             then
                if Emit_Warning_Info_Messages then
+                  Error_Msg_Code :=
+                    Explain_Code'Enum_Rep (EC_Always_Terminates_Warn);
                   Error_Msg_N
-                    (Warning_Message (Warn_No_Possible_Termination), E);
+                    (Warning_Message (Warn_No_Possible_Termination)
+                     & " '[[]']",
+                     E);
                end if;
             end if;
          end Mark_Subprogram_Contracts;
