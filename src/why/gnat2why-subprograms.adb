@@ -28,6 +28,7 @@ with Ada.Strings.Unbounded;          use Ada.Strings.Unbounded;
 with Atree;
 with Debug;
 with Errout;                         use Errout;
+with Exp_Util;
 with Flow_Dependency_Maps;           use Flow_Dependency_Maps;
 with Flow_Generated_Globals;         use Flow_Generated_Globals;
 with Flow_Generated_Globals.Phase_2; use Flow_Generated_Globals.Phase_2;
@@ -2290,10 +2291,10 @@ package body Gnat2Why.Subprograms is
                Do_Warn := Warn_Others;
             else
                Do_Warn := Params.Warn_On_Dead
-                 and then not Is_Statically_Disabled
+                 and then not Exp_Util.Is_Statically_Disabled
                    (Case_Guard, False, Include_Valid => True);
                Warn_Others := Warn_Others
-                 and then not Is_Statically_Disabled
+                 and then not Exp_Util.Is_Statically_Disabled
                    (Case_Guard, True, Include_Valid => True);
             end if;
 
@@ -4848,7 +4849,7 @@ package body Gnat2Why.Subprograms is
             --  disabled.
 
             if Original_Node (Expr) /= Expr
-              and then not Is_Statically_Disabled
+              and then not Exp_Util.Is_Statically_Disabled
                 (Expr, False, Include_Valid => True)
             then
                Error_Msg_N

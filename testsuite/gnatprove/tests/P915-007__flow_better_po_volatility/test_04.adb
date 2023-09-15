@@ -1,6 +1,6 @@
 with System;
 
-package body Test_03 with
+package body Test_04 with
    Refined_State => (State_N => null,
                      State_AWER => (PO_AW, PO_AR),
                      State_ER => PO_ER,
@@ -54,4 +54,4 @@ is
    protected body PO_V is
    end PO_V;
 
-end Test_03;
+end Test_04;

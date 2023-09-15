@@ -108,9 +108,8 @@ package Gnat2Why.Expr is
    function Check_Scalar_Range
      (Params : Transformation_Params;
       N      : Entity_Id;
-      Base   : Opt_Type_Kind_Id)
-      return W_Prog_Id
-   with Pre => (if No (Base) then Is_OK_Static_Range (Get_Range (N)));
+      Base   : Type_Kind_Id)
+      return W_Prog_Id;
    --  Generate checks for the bounds of a range as well as a
    --  range check that the range_constraint is compatible with the subtype.
    --  Returns the empty program if both Base and N have a static
@@ -675,8 +674,7 @@ package Gnat2Why.Expr is
       Domain   : EW_Domain;
       Selector : Selection_Kind := Why.Inter.Standard)
       return W_Expr_Id;
-   --  Transform an Ada identifier to a Why item (take care of enumeration
-   --  literals, boolean values etc)
+   --  Transform an Ada identifier to a Why item.
    --
    --  This also deals with volatility, so that an object with a Async_Writers
    --  is suitably havoc'd before being read.
@@ -697,8 +695,7 @@ package Gnat2Why.Expr is
 
    procedure Transform_Pragma_Check
      (Stmt    :     N_Pragma_Id;
-      Params  :    Transformation_Params;
-      Force   :     Boolean;
+      Params  :     Transformation_Params;
       Expr    : out N_Subexpr_Id;
       Runtime : out W_Prog_Id;
       Pred    : out W_Pred_Id;
@@ -706,9 +703,6 @@ package Gnat2Why.Expr is
    --  For a pragma Check, produces the components of its translation into Why3
    --  @param Stmt The pragma Check to translate.
    --  @param Params transformation parameters
-   --  @param Force True to force the translation of the pragma, even for those
-   --     pragmas normally translated elsewhere like preconditions and
-   --     postconditions.
    --  @param Expr Expression on which the check is performed, for locating the
    --     VC in Why3.
    --  @param Runtime On exit, Why3 program for checking absence of run-time

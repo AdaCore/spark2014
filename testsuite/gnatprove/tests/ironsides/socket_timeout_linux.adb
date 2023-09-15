@@ -24,7 +24,7 @@ with Ada.Unchecked_Conversion,
      Gnat.Sockets.Constants,
      Ada.Text_IO;
 
-package body Socket_Timeout
+package body Socket_Timeout_Linux
   with SPARK_Mode => Off
 is
 
@@ -69,4 +69,4 @@ is
          Time'Address, 8);
    end Set_Socket_Timeout;
 
-end Socket_Timeout;
+end Socket_Timeout_Linux;

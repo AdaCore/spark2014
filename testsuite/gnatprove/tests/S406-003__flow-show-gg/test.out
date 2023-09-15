@@ -67,14 +67,14 @@ Generated contracts for Entity_Name
    Initializes =>
       Hidden
 entity_name.ads:2:13: info: implicit aspect Always_Terminates on "Proxy" has been proved, subprogram will terminate
-Generated contracts for Outer.Inner.Get
+Generated contracts for Foo.Inner.Get
    Global =>
       Input =>
          X
    Refined_Global =>
       Input =>
          X
-Generated contracts for Outer.Inner.Get
+Generated contracts for Foo.Inner.Get
    Global =>
       Input =>
          X
@@ -83,12 +83,11 @@ Generated contracts for Outer.Inner.Get
       Input =>
          X
          Y
-Generated contracts for Outer.Inner
-Generated contracts for Outer
-foo.ads:1:09: warning: file name does not match unit name, should be "outer.ads"
+Generated contracts for Foo.Inner
+Generated contracts for Foo
 foo.ads:6:16: info: implicit aspect Always_Terminates on "Get" has been proved, subprogram will terminate
 foo.ads:7:16: info: implicit aspect Always_Terminates on "Get" has been proved, subprogram will terminate
-foo.ads:7:47: medium: overflow check might fail, cannot prove lower bound for Outer.X + Outer.Y [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at line 7 should mention X and Y in a precondition]
+foo.ads:7:45: medium: overflow check might fail, cannot prove lower bound for Foo.X + Foo.Y [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at line 7 should mention X and Y in a precondition]
 Generated contracts for Main
    Global =>
       Input =>
@@ -267,12 +266,12 @@ contents:
       "globals": {
         "Global": {
           "Input": [
-            "Outer.Inner.X"
+            "Foo.Inner.X"
           ]
         },
         "Refined_Global": {
           "Input": [
-            "Outer.Inner.X"
+            "Foo.Inner.X"
           ]
         }
       }
@@ -284,14 +283,14 @@ contents:
       "globals": {
         "Global": {
           "Input": [
-            "Outer.X",
-            "Outer.Y"
+            "Foo.X",
+            "Foo.Y"
           ]
         },
         "Refined_Global": {
           "Input": [
-            "Outer.X",
-            "Outer.Y"
+            "Foo.X",
+            "Foo.Y"
           ]
         }
       }
@@ -365,4 +364,3 @@ contents:
     }
   ]
 }
-

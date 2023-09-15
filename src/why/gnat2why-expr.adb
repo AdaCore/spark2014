@@ -33,6 +33,7 @@ with Checks;                         use Checks;
 with Debug;
 with Elists;                         use Elists;
 with Errout;                         use Errout;
+with Exp_Util;
 with Flow.Analysis.Antialiasing;     use Flow.Analysis.Antialiasing;
 with Flow.Analysis.Assumptions;      use Flow.Analysis.Assumptions;
 with Flow_Dependency_Maps;           use Flow_Dependency_Maps;
@@ -970,13 +971,6 @@ package body Gnat2Why.Expr is
       return W_Expr_Id
    with Pre => Nkind (Expr) in N_Function_Call | N_Op;
    --  Transform a function call
-
-   function Transform_Enum_Literal
-     (Expr   : N_Identifier_Kind_Id;
-      Enum   : E_Enumeration_Literal_Id;
-      Domain : EW_Domain)
-      return W_Expr_Id;
-   --  Translate an Ada enumeration literal to Why
 
    function Transform_Membership_Expression
      (Params : Transformation_Params;
@@ -2841,7 +2835,7 @@ package body Gnat2Why.Expr is
    function Check_Scalar_Range
      (Params : Transformation_Params;
       N      : Entity_Id;
-      Base   : Opt_Type_Kind_Id)
+      Base   : Type_Kind_Id)
       return W_Prog_Id
    is
       Rng  : constant Node_Id := Get_Range (N);
@@ -2849,21 +2843,12 @@ package body Gnat2Why.Expr is
       High : constant Node_Id := High_Bound (Rng);
 
    begin
-      --  If the range is static, raises no run-time errors by itself, and no
-      --  base type is passed, there is nothing to do.
-
-      if Is_OK_Static_Range (Rng)
-        and then No (Base)
-      then
-         return +Void;
-
       --  If the range is static, raises no run-time errors by itself, and a
       --  base type is passed, we need to check that either the range is empty
       --  or the bounds fit in the base type. Do nothing when either of these
       --  conditions can be verified statically.
 
-      elsif Is_OK_Static_Range (Rng)
-        and then Present (Base)
+      if Is_OK_Static_Range (Rng)
         and then Has_OK_Static_Scalar_Subtype (Base)
         and then
           ((if Is_Floating_Point_Type (Base) then
@@ -2880,7 +2865,6 @@ package body Gnat2Why.Expr is
          return +Void;
 
       else
-         pragma Assert (Present (Base));
          declare
             Why_Base         : constant W_Type_Id :=
               Base_Why_Type_No_Bool (Base);
@@ -18666,33 +18650,6 @@ package body Gnat2Why.Expr is
       return C;
    end Transform_Discrete_Choices;
 
-   ----------------------------
-   -- Transform_Enum_Literal --
-   ----------------------------
-
-   function Transform_Enum_Literal
-     (Expr   : N_Identifier_Kind_Id;
-      Enum   : E_Enumeration_Literal_Id;
-      Domain : EW_Domain)
-      return W_Expr_Id is
-   begin
-      --  Deal with special cases: True/False for boolean literals
-
-      if Enum = Standard_True then
-         return Bool_True (Domain);
-
-      elsif Enum = Standard_False then
-         return Bool_False (Domain);
-
-      --  all other enumeration literals are expressed by integers
-
-      else
-         return New_Integer_Constant
-           (Ada_Node => Etype (Expr),
-            Value    => Enumeration_Pos (Enum));
-      end if;
-   end Transform_Enum_Literal;
-
    --------------------
    -- Transform_Expr --
    --------------------
@@ -18738,10 +18695,23 @@ package body Gnat2Why.Expr is
          end case;
       end if;
 
+      --  Special case for Standard.True and Standard.False as predicates
+
+      if Domain = EW_Pred
+        and then Nkind (Expr) in N_Identifier | N_Expanded_Name
+        and then Ekind (Entity (Expr)) = E_Enumeration_Literal
+        and then Entity (Expr) in Standard_True | Standard_False
+      then
+         if Entity (Expr) = Standard_True then
+            return Bool_True (Domain);
+         else
+            return Bool_False (Domain);
+         end if;
+
       --  Expressions that cannot be translated to predicates directly are
       --  translated to (boolean) terms, and compared to "True".
 
-      if Domain = EW_Pred
+      elsif Domain = EW_Pred
 
         --  Boolean connectors, predicate expressions and declare expressions
 
@@ -18762,13 +18732,6 @@ package body Gnat2Why.Expr is
                              | N_Op_And
                              | N_Op_Or
                and then not Is_Private_Intrinsic_Op (Expr))
-
-        --  Boolean literals
-
-        and then
-          not (Nkind (Expr) in N_Identifier | N_Expanded_Name
-              and then Ekind (Entity (Expr)) = E_Enumeration_Literal
-              and then Entity (Expr) in Standard_True | Standard_False)
 
         --  Calls to predicate functions
 
@@ -18976,13 +18939,6 @@ package body Gnat2Why.Expr is
 
          when N_Slice =>
             T := Transform_Slice (Local_Params, Domain, Expr);
-
-         when N_Integer_Literal =>
-
-            T :=
-              New_Integer_Constant
-                (Ada_Node => Expr,
-                 Value    => Intval (Expr));
 
          when N_Real_Literal =>
 
@@ -19687,9 +19643,9 @@ package body Gnat2Why.Expr is
                Warn_On_Right : constant Boolean := Local_Params.Warn_On_Dead
                  and then
                    (if Nkind (Expr) = N_And_Then
-                    then not Is_Statically_Disabled
+                    then not Exp_Util.Is_Statically_Disabled
                       (Left_N, False, Include_Valid => True)
-                    else not Is_Statically_Disabled
+                    else not Exp_Util.Is_Statically_Disabled
                       (Left_N, True, Include_Valid => True));
                Right_Params  : constant Transformation_Params :=
                  (Local_Params with delta Warn_On_Dead => Warn_On_Right);
@@ -19764,10 +19720,10 @@ package body Gnat2Why.Expr is
                Phase       : constant Transformation_Phase :=
                  Local_Params.Phase;
                Warn_Then   : constant Boolean := Local_Params.Warn_On_Dead
-                 and then not Is_Statically_Disabled
+                 and then not Exp_Util.Is_Statically_Disabled
                    (Cond, False, Include_Valid => True);
                Warn_Else   : constant Boolean := Local_Params.Warn_On_Dead
-                 and then not Is_Statically_Disabled
+                 and then not Exp_Util.Is_Statically_Disabled
                    (Cond, True, Include_Valid => True);
                Then_Expr   : W_Expr_Id;
                Else_Expr   : W_Expr_Id;
@@ -21104,10 +21060,10 @@ package body Gnat2Why.Expr is
                   Then_Checks : W_Prog_Id;
                   Else_Checks : W_Prog_Id;
                   Warn_Then   : constant Boolean := Params.Warn_On_Dead
-                    and then not Is_Statically_Disabled
+                    and then not Exp_Util.Is_Statically_Disabled
                       (Cond, False, Include_Valid => True);
                   Warn_Else   : constant Boolean := Params.Warn_On_Dead
-                    and then not Is_Statically_Disabled
+                    and then not Exp_Util.Is_Statically_Disabled
                       (Cond, True, Include_Valid => True);
 
                begin
@@ -21705,8 +21661,6 @@ package body Gnat2Why.Expr is
       --  * parameters, whose names are stored in Params.Name_Map (these can
       --    also be refs)
       --    ??? Params has no Name_Map component
-      --  * enumeration literals (we have a separate function)
-      --  * ids of Standard.ASCII (transform to integer)
       --  * quantified variables (use local name instead of global name)
       --  * fields of protected objects
 
@@ -21910,13 +21864,6 @@ package body Gnat2Why.Expr is
                                     Ent      => Discriminal_Link (Ent),
                                     Domain   => Domain,
                                     Selector => Selector);
-      elsif Ekind (Ent) = E_Enumeration_Literal then
-         T := Transform_Enum_Literal (Expr, Ent, Domain);
-
-      elsif Sloc (Ent) = Standard_ASCII_Location then
-         T :=
-           New_Integer_Constant
-             (Value => Char_Literal_Value (Constant_Value (Ent)));
 
       elsif Is_Protected_Component_Or_Discr_Or_Part_Of (Ent) then
          declare
@@ -22846,7 +22793,6 @@ package body Gnat2Why.Expr is
    procedure Transform_Pragma_Check
      (Stmt    :     N_Pragma_Id;
       Params  :     Transformation_Params;
-      Force   :     Boolean;
       Expr    : out N_Subexpr_Id;
       Runtime : out W_Prog_Id;
       Pred    : out W_Pred_Id;
@@ -22864,36 +22810,23 @@ package body Gnat2Why.Expr is
       Msg :=
         (if Present (Arg3) then Strval (Expression (Arg3)) else No_String);
 
-      if not Force and then Is_Ignored_Pragma_Check (Stmt) then
-         Runtime := +Void;
-         Pred := True_Pred;
-         return;
-      end if;
+      --  Special translation for assertions with cut operations
 
-      if Present (Expr) then
-
-         --  Special translation for assertions with cut operations
-
-         if Contains_Cut_Operations (Expr) then
-            declare
-               Cond : W_Pred_Id;
-            begin
-               Transform_Expr_With_Cutpoints
-                 (Expr, Assert_Params, Runtime, Cond, Pred);
-               Runtime := Sequence
-                 (Runtime,
-                  New_Located_Assert
-                    (Expr, Cond, VC_Assert_Premise, EW_Assert));
-            end;
-            return;
-         else
-            Runtime := Transform_Prog (Expr, EW_Bool_Type, Assert_Params);
-            Assert_Params.Gen_Marker := GM_Toplevel;
-            Pred := Transform_Pred (Expr, Assert_Params);
-            return;
-         end if;
+      if Contains_Cut_Operations (Expr) then
+         declare
+            Cond : W_Pred_Id;
+         begin
+            Transform_Expr_With_Cutpoints
+              (Expr, Assert_Params, Runtime, Cond, Pred);
+            Runtime := Sequence
+              (Runtime,
+               New_Located_Assert
+                 (Expr, Cond, VC_Assert_Premise, EW_Assert));
+         end;
       else
-         raise Program_Error;
+         Runtime := Transform_Prog (Expr, EW_Bool_Type, Assert_Params);
+         Assert_Params.Gen_Marker := GM_Toplevel;
+         Pred := Transform_Pred (Expr, Assert_Params);
       end if;
    end Transform_Pragma_Check;
 
@@ -22917,8 +22850,7 @@ package body Gnat2Why.Expr is
          return +Void;
       end if;
 
-      Transform_Pragma_Check
-        (Prag, Params, Force, Expr, Check_Expr, Pred, Msg);
+      Transform_Pragma_Check (Prag, Params, Expr, Check_Expr, Pred, Msg);
 
       --  Translate Compile_Time_Error as an assumption
 
@@ -24401,7 +24333,7 @@ package body Gnat2Why.Expr is
                --  False if we encounter a statically disabled branch.
 
                Warn_Then   : constant Boolean := Do_Warn
-                 and then not Is_Statically_Disabled
+                 and then not Exp_Util.Is_Statically_Disabled
                    (Cond, False, Include_Valid => True);
 
             begin
@@ -24417,7 +24349,7 @@ package body Gnat2Why.Expr is
                                      Warn_Then);
 
                Do_Warn := Do_Warn
-                 and then not Is_Statically_Disabled
+                 and then not Exp_Util.Is_Statically_Disabled
                    (Cond, True, Include_Valid => True);
 
                --  The elsif parts need to be traversed in order to propagate
@@ -24450,7 +24382,7 @@ package body Gnat2Why.Expr is
                         --  Possibly warn on an unreachable case branch
 
                         Warn_Then := Do_Warn
-                          and then not Is_Statically_Disabled
+                          and then not Exp_Util.Is_Statically_Disabled
                             (Cond, False, Include_Valid => True);
 
                         Elsif_Stmts (I) :=
@@ -24466,7 +24398,7 @@ package body Gnat2Why.Expr is
                            Warn_Then);
 
                         Do_Warn := Do_Warn
-                          and then not Is_Statically_Disabled
+                          and then not Exp_Util.Is_Statically_Disabled
                             (Cond, True, Include_Valid => True);
 
                         Next (Cur);
@@ -24606,7 +24538,6 @@ package body Gnat2Why.Expr is
                   Msg        : String_Id;
                begin
                   Transform_Pragma_Check (Stmt_Or_Decl, Params,
-                                          Force   => False,
                                           Expr    => Expr,
                                           Runtime => Check_Expr,
                                           Pred    => Pred,
@@ -24614,16 +24545,10 @@ package body Gnat2Why.Expr is
                   Assert_And_Cut_Prag := Stmt_Or_Decl;
                   Assert_And_Cut_Expr := Expr;
                   Assert_And_Cut := Pred;
-                  if Check_Expr /= Why_Empty then
-                     return New_Ignore (Prog => Check_Expr);
-                  else
-                     return +Void;
-                  end if;
+                  return New_Ignore (Prog => Check_Expr);
                end;
             else
-
                return Transform_Pragma (Stmt_Or_Decl, Params, Force => False);
-
             end if;
 
          when N_Raise_xxx_Error =>
@@ -24680,7 +24605,6 @@ package body Gnat2Why.Expr is
          --  Subprogram and package declarations are already taken care of
          --  explicitly. They should not be treated as part of a list of
          --  declarations.
-
          when N_Package_Body
             | N_Package_Declaration
             | N_Subprogram_Body
@@ -24818,7 +24742,6 @@ package body Gnat2Why.Expr is
             end loop;
          end;
       end if;
-
    end Transform_Statement_Or_Declaration_In_List;
 
    -------------------------------------------

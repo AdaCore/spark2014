@@ -825,7 +825,6 @@ package body Gnat2Why.Expr.Loops is
                                             Base_Name => "inv");
                   begin
                      Transform_Pragma_Check (Stmt    => Loop_Invariant,
-                                             Force   => False,
                                              Expr    => Expr,
                                              Params  => Params,
                                              Runtime => One_Inv_Check,
