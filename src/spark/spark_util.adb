@@ -1979,15 +1979,7 @@ package body SPARK_Util is
       Result : Exception_Sets.Set := Exception_Sets.Empty_Set;
    begin
       if No (Prag) then
-
-         --  By default, No_Return procedures are assumed to potentially raise
-         --  exceptions.
-
-         if No_Return (Subp) then
-            return Exception_Sets.All_Exceptions;
-         else
-            return Result;
-         end if;
+         return Result;
       end if;
 
       declare

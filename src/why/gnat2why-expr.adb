@@ -20260,7 +20260,8 @@ package body Gnat2Why.Expr is
                        (Ada_Node => New_Expr,
                         Domain   => Domain,
                         Expr     => Tmp_Value,
-                        To       => Type_Of_Node (Des_Ty));
+                        To       => EW_Abstract
+                          (Des_Ty, Has_Relaxed_Init (Des_Ty)));
 
                   begin
                      --  Allocators do not slide the allocated value. If the
@@ -20293,11 +20294,6 @@ package body Gnat2Why.Expr is
                         Domain   => Domain,
                         Tmp      => Tmp_Value,
                         Context  => Value_Expr);
-                     Value_Expr :=
-                       Insert_Simple_Conversion
-                         (Domain => Domain,
-                          Expr   => Value_Expr,
-                          To     => EW_Abstract (Des_Ty));
                      Call := +Pointer_From_Split_Form
                        (A  => (Value_Expr, +False_Term, +False_Term),
                         Ty => Etype (Expr));

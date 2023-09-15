@@ -92,7 +92,7 @@ package Configuration is
       Cargs_List            : String_Lists.List;
       CE_Steps              : aliased Integer;
       Check_Counterexamples : aliased GNAT.Strings.String_Access;
-      Checks_As_Errors      : aliased Boolean;
+      Checks_As_Errors      : aliased GNAT.Strings.String_Access;
       Counterexamples       : aliased GNAT.Strings.String_Access;
       CWE                   : aliased Boolean;
       D                     : aliased Boolean;
@@ -170,16 +170,17 @@ package Configuration is
    --  renamings of the command line switches (for them we still prefer to
    --  use a clearer name, e.g. Continue_On_Error vs K).
 
-   Debug          : Boolean;
-   Debug_Exec_RAC : Boolean;
-   GnateT_Switch  : GNAT.Strings.String_Access;
-   Mode           : GP_Mode := GPM_Check;
-   Use_Semaphores : Boolean;
-   Only_Given     : Boolean;
-   Output         : Output_Mode_Type;
-   Parallel       : Integer;
-   Report         : Report_Mode_Type;
-   Warning_Mode   : Gnat2Why_Opts.SPARK_Warning_Mode_Type;
+   Checks_As_Errors : Boolean;
+   Debug            : Boolean;
+   Debug_Exec_RAC   : Boolean;
+   GnateT_Switch    : GNAT.Strings.String_Access;
+   Mode             : GP_Mode := GPM_Check;
+   Use_Semaphores   : Boolean;
+   Only_Given       : Boolean;
+   Output           : Output_Mode_Type;
+   Parallel         : Integer;
+   Report           : Report_Mode_Type;
+   Warning_Mode     : Gnat2Why_Opts.SPARK_Warning_Mode_Type;
 
    All_Projects      : Boolean renames CL_Switches.UU;
    Continue_On_Error : Boolean renames CL_Switches.K;

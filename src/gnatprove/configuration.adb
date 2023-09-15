@@ -687,7 +687,7 @@ package body Configuration is
          Define_Switch
            (Config,
             CL_Switches.Checks_As_Errors'Access,
-            Long_Switch => "--checks-as-errors");
+            Long_Switch => "--checks-as-errors=");
          Define_Switch
            (Config,
             CL_Switches.CWE'Access,
@@ -1633,6 +1633,20 @@ package body Configuration is
          if CL_Switches.Function_Sandboxing.all not in "" | "on" | "off" then
             Abort_Msg ("error: wrong argument for --function-sandboxing, " &
                          "must be one of (on, off)",
+                       With_Help => False);
+         end if;
+
+         if CL_Switches.Checks_As_Errors.all = ""
+           or else CL_Switches.Checks_As_Errors.all = "off"
+         then
+            Checks_As_Errors := False;
+         elsif CL_Switches.Checks_As_Errors.all = "on" then
+            Checks_As_Errors := True;
+         else
+            Abort_Msg ("error: wrong argument """
+                       & CL_Switches.Checks_As_Errors.all
+                       & """ for --checks-as-errors, "
+                       & "must be one of (on, off)",
                        With_Help => False);
          end if;
 

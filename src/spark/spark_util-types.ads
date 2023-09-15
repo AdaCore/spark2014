@@ -351,6 +351,9 @@ package SPARK_Util.Types is
    --  relaxed initialization.
    --  If Ignore_Top is True, ignore a potential Relaxed_Initialization
    --  aspect on the type itself.
+   --  This function traverses access types. When it is called during marking,
+   --  both Typ and all types its access parts designate should be marked or
+   --  Program_Error might be raised.
 
    function Contains_Only_Relaxed_Init (Typ : Type_Kind_Id) return Boolean
    with
@@ -361,6 +364,8 @@ package SPARK_Util.Types is
    --  annotation.
    --  These types are considered to have relaxed initialization even if they
    --  don't have the aspect.
+   --  This function does not traverse access types, it can be called safely
+   --  during marking as long as Typ itself is marked.
 
    function Might_Contain_Relaxed_Init (Typ : Type_Kind_Id) return Boolean;
    --  Returns True if Typ has subcomponents whose type may be used for

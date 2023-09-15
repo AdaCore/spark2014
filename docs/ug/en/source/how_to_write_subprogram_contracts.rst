@@ -37,9 +37,8 @@ objective:
 
 * exceptional contract (``Exceptional_Cases``)
 
-  As a default, standard procedures are not considered to raise any exceptions
-  (``Exceptional_Cases => (others => False)``) and No_Return procedures
-  might raise any exception (``Exceptional_Cases => (others => True)``).
+  As a default, procedures are not considered to raise any exceptions
+  (``Exceptional_Cases => (others => False)``).
 
 * termination contract (``Always_Terminates``)
 

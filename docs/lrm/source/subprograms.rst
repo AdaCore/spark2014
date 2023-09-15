@@ -1775,16 +1775,6 @@ Return Statements
 
 No extensions or restrictions.
 
-.. index:: No_Return
-
-Nonreturning Procedures
-~~~~~~~~~~~~~~~~~~~~~~~
-
-Procedures annotated with ``No_Return`` but without an explicit
-``Exceptional_Cases`` aspect are considered to have an implicit exceptional
-contract ``Exceptional_Cases => (others => True)``; see
-:ref:`Exceptional Cases`.
-
 
 Overloading of Operators
 ------------------------
