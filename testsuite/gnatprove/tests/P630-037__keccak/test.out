@@ -160,6 +160,16 @@ keccak-keccakf-permutation.ads:37:11: info: flow dependencies proved, in instant
 keccak-keccakf.adb:40:07: info: initialization of "C_L" proved, in instantiation at keccak-keccak_1600.ads:45
 keccak-keccakf.adb:41:07: info: initialization of "C_R" proved, in instantiation at keccak-keccak_1600.ads:45
 keccak-keccakf.adb:42:07: info: initialization of "D" proved, in instantiation at keccak-keccak_1600.ads:45
+keccak-keccakf.adb:84:19: info: index check proved (CVC5: 2 VC), in instantiation at keccak-keccak_1600.ads:45
+keccak-keccakf.adb:90:19: info: index check proved (CVC5: 2 VC), in instantiation at keccak-keccak_1600.ads:45
+keccak-keccakf.adb:96:19: info: index check proved (CVC5: 2 VC), in instantiation at keccak-keccak_1600.ads:45
+keccak-keccakf.adb:102:19: info: index check proved (CVC5: 2 VC), in instantiation at keccak-keccak_1600.ads:45
+keccak-keccakf.adb:108:19: info: index check proved (CVC5: 2 VC), in instantiation at keccak-keccak_1600.ads:45
+keccak-keccakf.adb:127:19: info: index check proved (CVC5: 2 VC), in instantiation at keccak-keccak_1600.ads:45
+keccak-keccakf.adb:133:19: info: index check proved (CVC5: 2 VC), in instantiation at keccak-keccak_1600.ads:45
+keccak-keccakf.adb:139:19: info: index check proved (CVC5: 2 VC), in instantiation at keccak-keccak_1600.ads:45
+keccak-keccakf.adb:145:19: info: index check proved (CVC5: 2 VC), in instantiation at keccak-keccak_1600.ads:45
+keccak-keccakf.adb:151:19: info: index check proved (CVC5: 2 VC), in instantiation at keccak-keccak_1600.ads:45
 keccak-keccakf.ads:73:19: info: initialization of "A" proved, in instantiation at keccak-keccak_1600.ads:45
 keccak-keccakf.ads:74:11: info: flow dependencies proved, in instantiation at keccak-keccak_1600.ads:45
 keccak-keccakf.ads:88:20: medium: "AR" might not be initialized in "Theta", in instantiation at keccak-keccak_1600.ads:45 [reason for check: OUT parameter should be fully initialized on return] [possible fix: initialize "AR" on all paths, make "AR" an IN OUT parameter or annotate it with aspect Relaxed_Initialization]
