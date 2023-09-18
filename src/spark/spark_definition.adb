@@ -328,6 +328,10 @@ package body SPARK_Definition is
    --  If the context is found to be a prophecy save declaration, the
    --  prophecy save is registered.
 
+   procedure Check_No_Deep_Duplicates_In_Assoc (N : N_Aggregate_Kind_Id);
+   --  Search for associations mapping a single deep value to several
+   --  components in the Component_Associations of N.
+
    ------------------------------
    -- Body_Statements_In_SPARK --
    ------------------------------
@@ -438,7 +442,6 @@ package body SPARK_Definition is
    procedure Mark_Address                     (E : Entity_Id)
      with Pre => Ekind (E) in Object_Kind | E_Function | E_Procedure;
 
-   procedure Mark_Component_Association       (N : N_Component_Association_Id);
    procedure Mark_Handled_Statements
      (N : N_Handled_Sequence_Of_Statements_Id);
    procedure Mark_Identifier_Or_Expanded_Name (N : Node_Id);
@@ -491,6 +494,30 @@ package body SPARK_Definition is
    --  @param N node on which violations should be emitted.
    --  @param Ty type which should be compatible with relaxed initialization.
    --  @param Own True if Ty is itself annotated with relaxed initialization.
+
+   procedure Mark_Component_Of_Component_Association
+     (N : N_Component_Association_Id);
+   --  Mark the component of a component association alone, assuming
+   --  the left-hand side is already dealt with.
+
+   procedure Mark_Array_Aggregate (N : N_Aggregate_Kind_Id)
+     with Pre => Is_Array_Type (Etype (N));
+   --  Mark the choices/components of a (possibly multi-dimensional) array
+   --  aggregate, which must not be a subaggregate (as defined by
+   --  Ada RM 4.3.3 (6)) of any multi-dimensional array aggregate. This
+   --  procedure make sure to process multi-dimensional array aggregate as
+   --  a whole, avoiding recursive calls to Mark on subaggregates, so that Mark
+   --  can assume not dealing with the latest.
+   --
+   --  Additionally, for an 'Update of a multidimensional array,
+   --  the indexed components
+   --    (the expressions (1, 1), (2, 2) and (3, 3) in example
+   --     Arr_A2D'Update ((1, 1) => 1,  (2, 2) => 2, (3, 3) => 3,
+   --     where Arr_A2D is a two-dimensional array)
+   --  are modelled in the AST using an aggregate node which does not have a
+   --  a type (unlike other aggregate nodes). Mark_Array_Aggregate also makes
+   --  sure to skip over those to avoid dealing with this abnormal case in
+   --  Mark. Why aren't these kind of nodes Indexed_Components instead ?
 
    function Emit_Warning_Info_Messages return Boolean is
      (Emit_Messages and then Gnat2Why_Args.Limit_Subp = Null_Unbounded_String);
@@ -564,6 +591,10 @@ package body SPARK_Definition is
          end if;
       end if;
    end Check_Compatible_Access_Types;
+
+   -------------------------------
+   -- Check_Context_Of_Prophecy --
+   -------------------------------
 
    procedure Check_Context_Of_Prophecy
      (Proph        :     Node_Id;
@@ -749,6 +780,115 @@ package body SPARK_Definition is
       --  error message to keep it reasonably short.
 
    end Check_Context_Of_Prophecy;
+
+   ---------------------------------------
+   -- Check_No_Deep_Duplicates_In_Assoc --
+   ---------------------------------------
+
+   procedure Check_No_Deep_Duplicates_In_Assoc (N : N_Aggregate_Kind_Id) is
+
+      function Can_Be_Duplicated (N : Node_Id) return Boolean;
+      --  Return True if the value N can be duplicated in an aggregate
+      --  without creating an alias.
+
+      -----------------------
+      -- Can_Be_Duplicated --
+      -----------------------
+
+      function Can_Be_Duplicated (N : Node_Id) return Boolean is
+      begin
+         --  If the type is not deep, then no aliases can occur
+
+         if not Is_Deep (Etype (N)) then
+            return True;
+         end if;
+
+         case Nkind (N) is
+
+            --  Null can always be safely duplicated
+
+            when N_Null =>
+               return True;
+
+            --  Allocators are fine as long as the allocated value itself
+            --  can be duplicated.
+
+            when N_Allocator =>
+               return Nkind (Expression (N)) /= N_Qualified_Expression
+                 or else Can_Be_Duplicated (Expression (N));
+
+            when N_Qualified_Expression =>
+               return Can_Be_Duplicated (Expression (N));
+
+            --  Allocating function calls are fine, they necessarily return
+            --  new data-structures.
+
+            when N_Function_Call =>
+               return Is_Allocating_Function (Get_Called_Entity (N));
+
+            --  Aggregates are safe if all their expressions can be
+            --  duplicated.
+
+            when N_Aggregate =>
+               declare
+                  Assocs : constant List_Id := Component_Associations (N);
+                  Exprs  : constant List_Id := Expressions (N);
+                  Assoc  : Node_Id := Nlists.First (Assocs);
+                  Expr   : Node_Id := Nlists.First (Exprs);
+               begin
+                  while Present (Assoc) loop
+                     if not Box_Present (Assoc)
+                       and then not Can_Be_Duplicated (Expression (Assoc))
+                     then
+                        return False;
+                     end if;
+                     Next (Assoc);
+                  end loop;
+
+                  while Present (Expr) loop
+                     if not Can_Be_Duplicated (Expr) then
+                        return False;
+                     end if;
+                     Next (Expr);
+                  end loop;
+
+                  return True;
+               end;
+
+            --  Other expressions are not handled precisely yet
+
+            when others =>
+               return False;
+         end case;
+      end Can_Be_Duplicated;
+
+      Assocs  : constant List_Id := Component_Associations (N);
+      Assoc   : Node_Id := First (Assocs);
+      Choices : List_Id;
+
+   --  Start of processing for Check_No_Deep_Duplicates_In_Assoc
+
+   begin
+      while Present (Assoc) loop
+         Choices := Choice_List (Assoc);
+
+         --  There can be only one element for a value of deep type
+         --  in order to avoid aliasing.
+
+         if not Box_Present (Assoc)
+           and then not Is_Singleton_Choice (Choices)
+           and then not Can_Be_Duplicated (Expression (Assoc))
+         then
+            Mark_Violation
+              ("duplicate value of a type with ownership",
+               First (Choices),
+               Cont_Msg =>
+                 "singleton choice required to prevent aliasing");
+         end if;
+
+         Next (Assoc);
+      end loop;
+   end Check_No_Deep_Duplicates_In_Assoc;
 
    ---------------------------------------
    -- Check_Source_Of_Borrow_Or_Observe --
@@ -1172,10 +1312,6 @@ package body SPARK_Definition is
       --  declared in the loop so that their translation into Why3 does not
       --  introduce constants.
 
-      procedure Check_No_Deep_Duplicates_In_Assoc (N : N_Aggregate_Kind_Id);
-      --  Search for associations mapping a single deep value to several
-      --  components in the Component_Associations of N.
-
       function Is_Update_Aggregate (Aggr : Node_Id) return Boolean;
       --  Detect whether Aggr is an aggregate node modelling 'Update. Returns
       --  false for a normal aggregate.
@@ -1186,20 +1322,6 @@ package body SPARK_Definition is
       with Pre => Is_Update_Aggregate (N);
       --  Detect whether a 'Update aggregate is an update of an
       --  unconstrained multidimensional array.
-
-      function Is_Special_Multidim_Update_Aggr
-        (Aggr : N_Aggregate_Id)
-         return Boolean;
-      --  Detect special case of AST node.
-      --  For an 'Update of a multidimensional array, the indexed components
-      --    (the expressions (1, 1), (2, 2) and (3, 3) in example
-      --     Arr_A2D'Update ((1, 1) => 1,  (2, 2) => 2, (3, 3) => 3,
-      --     where Arr_A2D is a two-dimensional array)
-      --  are modelled in the AST using an aggregate node which does not have a
-      --  a type. An aggregate node is expected to have a type, but this kind
-      --  of expression (indexed components) is not, so need to detect special
-      --  case here.
-      --  Why aren't these kind of nodes Indexed_Components instead?
 
       ------------------------------------
       -- Check_Loop_Invariant_Placement --
@@ -1374,115 +1496,6 @@ package body SPARK_Definition is
 
       end Check_Loop_Invariant_Placement;
 
-      ---------------------------------------
-      -- Check_No_Deep_Duplicates_In_Assoc --
-      ---------------------------------------
-
-      procedure Check_No_Deep_Duplicates_In_Assoc (N : N_Aggregate_Kind_Id) is
-
-         function Can_Be_Duplicated (N : Node_Id) return Boolean;
-         --  Return True if the value N can be duplicated in an aggregate
-         --  without creating an alias.
-
-         -----------------------
-         -- Can_Be_Duplicated --
-         -----------------------
-
-         function Can_Be_Duplicated (N : Node_Id) return Boolean is
-         begin
-            --  If the type is not deep, then no aliases can occur
-
-            if not Is_Deep (Etype (N)) then
-               return True;
-            end if;
-
-            case Nkind (N) is
-
-               --  Null can always be safely duplicated
-
-               when N_Null =>
-                  return True;
-
-               --  Allocators are fine as long as the allocated value itself
-               --  can be duplicated.
-
-               when N_Allocator =>
-                  return Nkind (Expression (N)) /= N_Qualified_Expression
-                    or else Can_Be_Duplicated (Expression (N));
-
-               when N_Qualified_Expression =>
-                  return Can_Be_Duplicated (Expression (N));
-
-               --  Allocating function calls are fine, they necessarily return
-               --  new data-structures.
-
-               when N_Function_Call =>
-                  return Is_Allocating_Function (Get_Called_Entity (N));
-
-               --  Aggregates are safe if all their expressions can be
-               --  duplicated.
-
-               when N_Aggregate =>
-                  declare
-                     Assocs : constant List_Id := Component_Associations (N);
-                     Exprs  : constant List_Id := Expressions (N);
-                     Assoc  : Node_Id := Nlists.First (Assocs);
-                     Expr   : Node_Id := Nlists.First (Exprs);
-                  begin
-                     while Present (Assoc) loop
-                        if not Box_Present (Assoc)
-                          and then not Can_Be_Duplicated (Expression (Assoc))
-                        then
-                           return False;
-                        end if;
-                        Next (Assoc);
-                     end loop;
-
-                     while Present (Expr) loop
-                        if not Can_Be_Duplicated (Expr) then
-                           return False;
-                        end if;
-                        Next (Expr);
-                     end loop;
-
-                     return True;
-                  end;
-
-               --  Other expressions are not handled precisely yet
-
-               when others =>
-                  return False;
-            end case;
-         end Can_Be_Duplicated;
-
-         Assocs  : constant List_Id := Component_Associations (N);
-         Assoc   : Node_Id := First (Assocs);
-         Choices : List_Id;
-
-      --  Start of processing for Check_No_Deep_Duplicates_In_Assoc
-
-      begin
-         while Present (Assoc) loop
-            Choices := Choice_List (Assoc);
-
-            --  There can be only one element for a value of deep type
-            --  in order to avoid aliasing.
-
-            if not Box_Present (Assoc)
-              and then not Is_Singleton_Choice (Choices)
-              and then not Can_Be_Duplicated (Expression (Assoc))
-            then
-               Mark_Violation
-                 ("duplicate value of a type with ownership",
-                  First (Choices),
-                  Cont_Msg =>
-                    "singleton choice required to prevent aliasing");
-            end if;
-
-            Next (Assoc);
-         end loop;
-      end Check_No_Deep_Duplicates_In_Assoc;
-
       -------------------------
       -- Check_Unrolled_Loop --
       -------------------------
@@ -1543,38 +1556,6 @@ package body SPARK_Definition is
            and then Number_Dimensions (Pref_Type) > 1
            and then not Is_Static_Array_Type (Pref_Type);
       end Is_Update_Unconstr_Multidim_Aggr;
-
-      -------------------------------------
-      -- Is_Special_Multidim_Update_Aggr --
-      -------------------------------------
-
-      function Is_Special_Multidim_Update_Aggr
-        (Aggr : N_Aggregate_Id)
-         return Boolean
-      is
-         Pref, Par, Grand_Par, Grand_Grand_Par : Node_Id;
-      begin
-         Par := Parent (Aggr);
-
-         if Present (Par) then
-            Grand_Par := Parent (Par);
-
-            if Present (Grand_Par)
-              and then Is_Update_Aggregate (Grand_Par)
-            then
-               Grand_Grand_Par := Parent (Grand_Par);
-               Pref := Prefix (Grand_Grand_Par);
-
-               if Is_Array_Type (Etype (Pref))
-                 and then Number_Dimensions (Etype (Pref)) > 1
-               then
-                  return True;
-               end if;
-            end if;
-         end if;
-
-         return False;
-      end Is_Special_Multidim_Update_Aggr;
 
    --  Start of processing for Mark
 
@@ -1645,13 +1626,15 @@ package body SPARK_Definition is
 
          when N_Aggregate =>
 
-            --  Special aggregates for indexes of updates of multidim arrays do
-            --  not have a type, see comment on
-            --  Is_Special_Multidim_Update_Aggr.
+            --  We assume that the node can be neither a subaggregate of
+            --  a multidim array nor an index of update of a multidim array,
+            --  as should be enforced by traversing array aggregates with
+            --  Mark_Array_Aggregate.
 
-            if not Is_Special_Multidim_Update_Aggr (N)
-              and then Has_Aspect (Base_Type (Etype (N)), Aspect_Aggregate)
-            then
+            pragma Assert (Present (Etype (N)));
+            --  In particular, aggregate node must have a type.
+
+            if Has_Aspect (Base_Type (Etype (N)), Aspect_Aggregate) then
                Mark_Violation ("container aggregate", N);
 
             --  Reject 'Update on unconstrained multidimensional array
@@ -1661,14 +1644,16 @@ package body SPARK_Definition is
             then
                Mark_Unsupported (Lim_Multidim_Update, N);
 
-            elsif not Is_Special_Multidim_Update_Aggr (N)
-              and then not Most_Underlying_Type_In_SPARK (Etype (N))
-            then
+            elsif not Most_Underlying_Type_In_SPARK (Etype (N)) then
                Mark_Violation (N, From => Etype (N));
             else
-               Mark_List (Expressions (N));
-               Mark_List (Component_Associations (N));
-               Check_No_Deep_Duplicates_In_Assoc (N);
+               if Is_Array_Type (Etype (N)) then
+                  Mark_Array_Aggregate (N);
+               else
+                  Mark_List (Expressions (N));
+                  Mark_List (Component_Associations (N));
+                  Check_No_Deep_Duplicates_In_Assoc (N);
+               end if;
             end if;
 
          when N_Allocator =>
@@ -1868,7 +1853,8 @@ package body SPARK_Definition is
 
          when N_Component_Association =>
             pragma Assert (No (Loop_Actions (N)));
-            Mark_Component_Association (N);
+            Mark_List (Choices (N));
+            Mark_Component_Of_Component_Association (N);
 
          when N_Iterated_Component_Association =>
             if Present (Iterator_Specification (N)) then
@@ -2805,6 +2791,10 @@ package body SPARK_Definition is
             Mark_Entity (Etype (N));
 
          when N_Delta_Aggregate =>
+            --  We do not use Mark_Array_Aggregate for arrays here. It is
+            --  unnecessary as array delta-aggregates are necessarily
+            --  one-dimensional, so extra aggregate node cannot be observed.
+
             Mark (Expression (N));
             Mark_List (Component_Associations (N));
             Check_No_Deep_Duplicates_In_Assoc (N);
@@ -3427,6 +3417,110 @@ package body SPARK_Definition is
          end if;
       end;
    end Mark_Address;
+
+   --------------------------
+   -- Mark_Array_Aggregate --
+   --------------------------
+
+   procedure Mark_Array_Aggregate (N : N_Aggregate_Kind_Id) is
+      Nb_Dim : constant Positive :=
+        Positive (Number_Dimensions (Etype (N)));
+
+      procedure Mark_Inner_Aggr (Inner : N_Aggregate_Kind_Id; Dim : Positive);
+      --  Mark aggregate or a subaggregate
+
+      ---------------------
+      -- Mark_Inner_Aggr --
+      ---------------------
+
+      procedure Mark_Inner_Aggr (Inner : N_Aggregate_Kind_Id; Dim : Positive)
+      is
+         Exprs  : constant List_Id := Expressions (Inner);
+         Assocs : constant List_Id := Component_Associations (Inner);
+         Expr   : Node_Id := First (Exprs);
+         Assoc  : Node_Id := First (Assocs);
+         Choice : Node_Id;
+         --  Cursors
+
+         Multi  : Boolean := False;
+         --  Track whether we are in a multidimension update. In that
+         --  case, should directly cross over all dimensions at once.
+
+      begin
+         while Present (Expr) loop
+            if Dim = Nb_Dim then
+               Mark (Expr);
+            else
+               Mark_Inner_Aggr (Expr, Dim + 1);
+            end if;
+            Next (Expr);
+         end loop;
+
+         while Present (Assoc) loop
+            if Nkind (Assoc) = N_Iterated_Component_Association then
+               if Present (Iterator_Specification (Assoc)) then
+                  Mark_Unsupported (Lim_Iterator_In_Component_Assoc, Assoc);
+                  goto Continue;
+               else
+                  Mark_Actions (Assoc, Loop_Actions (Assoc));
+                  Mark_Entity (Defining_Identifier (Assoc));
+               end if;
+            end if;
+
+            Choice := First (Choice_List (Assoc));
+            while Present (Choice) loop
+               if Nkind (Choice) = N_Aggregate then
+                  --  Special choice for multidimensional
+                  --  'Update attribute, can only occur there,
+                  --  and must ocurr in that case.
+
+                  pragma Assert (Dim = 1);
+                  pragma Assert (Nb_Dim > 1);
+                  Multi := True;
+                  declare
+                     Multi_Exprs  : constant List_Id :=
+                       Expressions (Choice);
+                     Multi_Assocs : constant List_Id :=
+                       Component_Associations (Choice);
+                     Multi_Expr : Node_Id := First (Multi_Exprs);
+                  begin
+                     pragma Assert (No (Multi_Assocs));
+                     pragma Assert
+                       (Natural (List_Length (Multi_Exprs)) = Nb_Dim);
+                     while Present (Multi_Expr) loop
+                        Mark (Multi_Expr);
+                        Next (Multi_Expr);
+                     end loop;
+                  end;
+               else
+                  Mark (Choice);
+               end if;
+               Next (Choice);
+            end loop;
+
+            if not Multi and then Dim /= Nb_Dim then
+               Mark_Inner_Aggr (Expression (Assoc), Dim + 1);
+            elsif Nkind (Assoc) = N_Component_Association then
+               --  Need to deal properly with marking of potential boxes
+
+               Mark_Component_Of_Component_Association (Assoc);
+            else
+               pragma Assert
+                 (Nkind (Assoc) = N_Iterated_Component_Association);
+               Mark (Expression (Assoc));
+            end if;
+
+            <<Continue>>
+            Next (Assoc);
+         end loop;
+         Check_No_Deep_Duplicates_In_Assoc (Inner);
+      end Mark_Inner_Aggr;
+
+   --  Start of processing for Mark_Array_Aggregate
+
+   begin
+      Mark_Inner_Aggr (N, 1);
+   end Mark_Array_Aggregate;
 
    ---------------------------------------------
    -- Mark_Aspect_Clauses_And_Pragmas_In_List --
@@ -4961,12 +5055,13 @@ package body SPARK_Definition is
       Do_Delayed_Checks_On_Pragma_Annotate;
    end Mark_Compilation_Unit;
 
-   --------------------------------
-   -- Mark_Component_Association --
-   --------------------------------
+   ---------------------------------------------
+   -- Mark_Component_Of_Component_Association --
+   ---------------------------------------------
 
-   procedure Mark_Component_Association (N : N_Component_Association_Id) is
-
+   procedure Mark_Component_Of_Component_Association
+     (N : N_Component_Association_Id)
+   is
       function Component_Inherits_Relaxed_Initialization
         (N : N_Component_Association_Id)
          return Boolean;
@@ -4991,7 +5086,7 @@ package body SPARK_Definition is
          end if;
       end Component_Inherits_Relaxed_Initialization;
 
-   --  Start of processing for Mark_Component_Association
+   --  Start of processing for Mark_Component_Of_Component_Association
 
    begin
       --  We enforce SPARK RM 4.3(1) for which the box symbol, <>, shall not
@@ -4999,9 +5094,9 @@ package body SPARK_Definition is
       --  component(s) define full default initialization, or have relaxed
       --  initialization.
 
-      if Box_Present (N)
-        and then not Component_Inherits_Relaxed_Initialization (N)
-      then
+      if not Box_Present (N) then
+         Mark (Expression (N));
+      elsif not Component_Inherits_Relaxed_Initialization (N) then
          pragma Assert (Nkind (Parent (N)) in N_Aggregate
                                             | N_Extension_Aggregate);
 
@@ -5061,13 +5156,7 @@ package body SPARK_Definition is
             end case;
          end;
       end if;
-
-      Mark_List (Choices (N));
-
-      if not Box_Present (N) then
-         Mark (Expression (N));
-      end if;
-   end Mark_Component_Association;
+   end Mark_Component_Of_Component_Association;
 
    --------------------------------------
    -- Mark_Concurrent_Type_Declaration --
