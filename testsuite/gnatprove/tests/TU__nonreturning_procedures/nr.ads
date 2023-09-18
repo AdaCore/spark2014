@@ -2,7 +2,8 @@ package NR
 is
    X : Integer := 0;
 
-   procedure P with Global => null, No_Return, Import, Convention => C;
+   procedure P with Global => null, No_Return, Import, Convention => C,
+     Exceptional_Cases => (others => True);
 
    procedure Op1
      with Global => (In_Out => X),

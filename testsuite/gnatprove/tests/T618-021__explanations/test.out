@@ -22,6 +22,5 @@ nonterminating.adb:21:04: info: analyzing call to "Infinite_Loop" in context
 nonterminating.adb:25:07: medium: aspect Always_Terminates on "Nonterminating" could be incorrect, subprogram is recursive [possible fix: annotate "Nonterminating" with a Subprogram_Variant aspect]
 nonterminating.adb:25:25: info: range check proved (CVC5: 2 VC)
 p.adb:3:11: high: all paths in "P" raise exceptions or do not terminate normally
-p.adb:5:04: medium: unexpected exception might be raised [possible explanation: No_Return procedures have an implicit exceptional contract]
 p.adb:5:04: warning: assuming "Crash" has no effect on global items
 p.adb:5:04: warning: no Global contract available for "Crash"

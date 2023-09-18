@@ -326,7 +326,7 @@ after the checking phase and does not attempt flow analysis or proof.
 
 |GNATprove| returns with a non-zero exit status when an error is detected.
 This includes cases where |GNATprove| issues unproved check messages when
-switch ``--checks-as-errors`` is used, as well as cases where |GNATprove|
+switch ``--checks-as-errors=on`` is used, as well as cases where |GNATprove|
 issues warnings when switch ``--warnings=error`` is used. In such cases,
 |GNATprove| also issues a message about termination in error. Otherwise,
 |GNATprove| returns with an exit status of zero, even when unproved check

@@ -46,10 +46,10 @@ bad_raise.adb:7:43: error: raise expression in a complex expression in a precond
 bad_relaxed_init.ads:8:07: error: protected component with relaxed initialization is not yet supported
 bad_relaxed_init.ads:12:04: error: variable annotated as Part_Of a concurrent object with relaxed initialization is not yet supported
 bad_relaxed_init.ads:20:09: error: concurrent type used as a subcomponent of a type or an object annotated with relaxed initialization is not yet supported
-bad_relaxed_init.ads:23:07: error: component "F" of tagged type "Root" with relaxed initialization is not allowed in SPARK
-bad_relaxed_init.ads:23:07: error: violation of aspect SPARK_Mode at line 3
-bad_relaxed_init.ads:26:09: error: tagged type used as a subcomponent of a type or an object annotated with relaxed initialization is not yet supported
-bad_relaxed_init.ads:32:09: error: access type used as a subcomponent of a type or an object annotated with relaxed initialization is not yet supported
+bad_relaxed_init.ads:27:07: error: component "G" of tagged extension "Child" with relaxed initialization is not allowed in SPARK
+bad_relaxed_init.ads:27:07: error: violation of aspect SPARK_Mode at line 3
+bad_relaxed_init.ads:30:09: error: tagged type used as a subcomponent of a type or an object annotated with relaxed initialization is not yet supported
+bad_relaxed_init.ads:36:09: error: access type used as a subcomponent of a type or an object annotated with relaxed initialization is not yet supported
 case_prefix.adb:5:04: medium: resource or memory leak might occur at end of scope
 case_prefix.adb:5:29: info: null exclusion check proved (CVC5: 1 VC)
 case_prefix.adb:6:04: medium: resource or memory leak might occur at end of scope

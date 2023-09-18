@@ -7,8 +7,8 @@ t3q5.adb:17:10: info: initialization of "K" proved
 t3q5.adb:20:33: info: assertion proved (CVC5: 2 VC)
 t3q5.adb:21:72: info: index check proved (CVC5: 2 VC)
 t3q5.adb:23:17: info: range check proved (CVC5: 2 VC)
-t3q5.adb:27:38: info: loop invariant initialization proved (CVC5: 6 VC; Trivial: 1 VC)
-t3q5.adb:27:38: info: loop invariant preservation proved (CVC5: 6 VC; Trivial: 1 VC)
+t3q5.adb:27:38: info: loop invariant initialization proved (CVC5: 6 VC)
+t3q5.adb:27:38: info: loop invariant preservation proved (CVC5: 6 VC)
 t3q5.adb:30:78: info: index check proved (CVC5: 4 VC)
 t3q5.adb:39:23: info: postcondition proved (CVC5: 4 VC; Trivial: 1 VC)
 t3q5.adb:47:10: info: initialization of "Temp" proved

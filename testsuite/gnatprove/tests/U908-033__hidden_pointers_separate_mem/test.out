@@ -144,7 +144,7 @@ example_recursive.adb:245:70: info: range check proved (CVC5: 2 VC)
 example_recursive.adb:246:10: medium: precondition might fail, cannot prove ( Get (M1, A2) = Get (M2, A2))
 example_recursive.adb:246:70: info: range check proved (CVC5: 2 VC)
 example_recursive.adb:249:18: info: overflow check proved (CVC5: 2 VC)
-example_recursive.adb:256:14: info: postcondition proved (CVC5: 1 VC; Z3: 2 VC; altergo: 1 VC)
+example_recursive.adb:256:47: medium: postcondition might fail, cannot prove Is_Empty (L2.M)
 example_recursive.adb:257:31: info: overflow check proved (CVC5: 2 VC)
 example_recursive.adb:260:16: info: implicit aspect Always_Terminates on "Valid_In_L2" has been proved, subprogram will terminate
 example_recursive.adb:263:07: info: initialization of "F1_Next" proved

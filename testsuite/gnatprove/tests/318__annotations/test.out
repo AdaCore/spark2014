@@ -1,0 +1,5 @@
+effects.adb:5:14: error: No_Return procedure cannot be annotated with the aspect Automatic_Instantiation
+effects.adb:11:14: error: procedure annotated with the aspect Automatic_Instantiation shall not raise exceptions
+effects.adb:15:14: error: No_Return procedure cannot be annotated with the aspect Higher_Order_Specialization
+effects.adb:19:14: error: procedure annotated with the aspect Higher_Order_Specialization shall not raise exceptions
+gnatprove: error during flow analysis and proof

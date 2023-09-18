@@ -7195,37 +7195,39 @@ package body SPARK_Definition is
                         else
 
                            --  Tagged extensions cannot have owning components
-                           --  in SPARK.
+                           --  in SPARK nor components with relaxed init.
 
                            if Is_Tagged_Ext
-                             and then Is_Deep (Comp_Type)
                              and then Underlying_Type
                                (Scope (Original_Record_Component (Comp)))
                              = Underlying_Type (E)
                            then
-                              Error_Msg_Node_1 := Comp_Type;
-                              Error_Msg_Node_2 := E;
-                              Mark_Violation
-                                ("owning component & of tagged extension &",
-                                 Comp,
-                                 Root_Cause_Msg =>
-                                   "owning component of tagged extension");
-                           end if;
+                              if Is_Deep (Comp_Type) then
+                                 Error_Msg_Node_1 := Comp_Type;
+                                 Error_Msg_Node_2 := E;
+                                 Mark_Violation
+                                   ("owning component & of tagged extension &",
+                                    Comp,
+                                    Root_Cause_Msg =>
+                                      "owning component of tagged extension");
 
-                           --  Tagged types with components with relaxed init
-                           --  are not supported yet.
+                              --  Do not check for relaxed initialization if
+                              --  the type is deep as some of the designated
+                              --  types might not be marked yet.
+                              --  ??? A crash might still happen if the
+                              --  extension contains access-to-constant types.
 
-                           if Is_Tagged_Type (E)
-                             and then Contains_Relaxed_Init_Parts (Comp_Type)
-                           then
-                              Error_Msg_Node_1 := Comp_Type;
-                              Error_Msg_Node_2 := E;
-                              Mark_Violation
-                                ("component & of tagged type & with relaxed"
-                                 & " initialization", Comp,
-                                 Root_Cause_Msg =>
-                                   "component of tagged type with relaxed"
-                                   & " Initialization");
+                              elsif Contains_Relaxed_Init_Parts (Comp_Type)
+                              then
+                                 Error_Msg_Node_1 := Comp_Type;
+                                 Error_Msg_Node_2 := E;
+                                 Mark_Violation
+                                   ("component & of tagged extension & with"
+                                    & " relaxed initialization", Comp,
+                                    Root_Cause_Msg =>
+                                      "component of tagged extension with"
+                                    & " relaxed Initialization");
+                              end if;
                            end if;
 
                            --  Check that the component is not of an anonymous
@@ -7503,6 +7505,9 @@ package body SPARK_Definition is
 
                            --  Initialization by proof of protected components
                            --  is not supported yet.
+                           --  ??? This call might raise Program_Error if
+                           --  Etype (Comp) has a subcomponent designating an
+                           --  unmarked incomplete or private type.
 
                            if Contains_Relaxed_Init_Parts (Etype (Comp)) then
                               Mark_Unsupported
@@ -7535,6 +7540,9 @@ package body SPARK_Definition is
 
                               --  Initialization by proof of Part_Of variables
                               --  is not supported yet.
+                              --  ??? This call might raise Program_Error if
+                              --  Etype (Part) has a subcomponent designating
+                              --  an unmarked incomplete or private type.
 
                               if Ekind (Part) = E_Variable
                                 and then Retysp_In_SPARK (Etype (Part))
