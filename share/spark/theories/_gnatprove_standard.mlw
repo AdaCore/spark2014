@@ -170,6 +170,17 @@ module Builtin_from_image
   val real__attr__ATTRIBUTE_VALUE_ (x : __image) : real
     requires { real__attr__ATTRIBUTE_VALUE__pre_check x }
     ensures {  result = real__attr__ATTRIBUTE_VALUE x }
+
+  (* function reading a real from a quotient image *)
+
+  function real__QUOTIENT_VALUE __image : real
+
+  predicate real__QUOTIENT_VALUE__pre_check (x : __image)
+
+  val real__QUOTIENT_VALUE_ (x : __image) : real
+    requires { real__QUOTIENT_VALUE__pre_check x }
+    ensures  { result = real__QUOTIENT_VALUE x }
+
 end
 
 module Compatible_Tags

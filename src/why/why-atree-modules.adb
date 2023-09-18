@@ -1259,6 +1259,13 @@ package body Why.Atree.Modules is
                         Module => M,
                         Symb   => NID ("real__attr__ATTRIBUTE_VALUE"),
                         Typ    => EW_Real_Type);
+
+      M_Builtin_From_Image.Real_Quotient_Value :=
+        New_Identifier (Domain => EW_Term,
+                        Module => M,
+                        Symb   => NID ("real__QUOTIENT_VALUE"),
+                        Typ    => EW_Real_Type);
+
    end Init_Builtin_From_Image_Module;
 
    --------------------------
