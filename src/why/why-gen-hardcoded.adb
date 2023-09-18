@@ -661,7 +661,7 @@ package body Why.Gen.Hardcoded is
             end if;
 
          --  This block transforms the unary operators, Is_Valid, and
-         --  From_String.
+         --  From_[Quotient_]String.
 
          elsif Args'Length = 1 then
 
@@ -680,17 +680,19 @@ package body Why.Gen.Hardcoded is
                   T := Bool_True (Domain);
                end if;
 
-            --  Imprecise translation of From_String. This is a function taking
-            --  a string representing a real value.
-            --  We translate From_String (Val) as:
-            --    real_value (of_string (val))
+            --  Imprecise translation of From_[Quotient_]String. This is a
+            --  function taking a string representing a real value. We
+            --  translate From_[Quotient_]String (Val) as:
+            --    real_[quotient_]value (of_string (val))
             --  This translation is imprecise as real_value and of_string are
-            --  abstract Why3 functions left mostly uninterpreted.
-            --  In the special case where Val is a string literal, a more
-            --  precise translation is attempted first, see
+            --  abstract Why3 functions left mostly uninterpreted. In the
+            --  special case where Val is a string literal, a more precise
+            --  translation is attempted first, see
             --  Transform_Hardcoded_Literal.
 
-            elsif Name_String = BRN.From_String then
+            elsif Name_String = BRN.From_String
+              or else Name_String = BRN.From_Quotient_String
+            then
                T :=
                  New_Call
                    (Ada_Node => Ada_Node,
@@ -701,7 +703,9 @@ package body Why.Gen.Hardcoded is
                T := New_Operator_Call
                  (Ada_Node => Ada_Node,
                   Domain   => Domain,
-                  Name     => M_Builtin_From_Image.Real_Value,
+                  Name     => (if Name_String = BRN.From_String
+                               then M_Builtin_From_Image.Real_Value
+                               else M_Builtin_From_Image.Real_Quotient_Value),
                   Args     => (1 => T),
                   Reason   => VC_Precondition,
                   Check    => Domain = EW_Prog,
@@ -883,6 +887,83 @@ package body Why.Gen.Hardcoded is
       Root_Type : constant W_Type_Id :=
         Type_Of_Node (Root_Retysp (Etype (Call)));
       Actual    : Node_Id := First_Actual (Call);
+
+      function Transform_Quotient_Of_Strings
+        (Num_String : String;
+         Den_String : String;
+         Num_Node   : Node_Id;
+         Den_Node   : Node_Id)
+         return W_Expr_Id;
+      --  Transform a pair of strings representing integral
+      --  numerator/denominator, or return Why_Empty
+      --  if invalid representation.
+
+      -----------------------------------
+      -- Transform_Quotient_Of_Strings --
+      -----------------------------------
+
+      function Transform_Quotient_Of_Strings
+        (Num_String : String;
+         Den_String : String;
+         Num_Node   : Node_Id;
+         Den_Node   : Node_Id)
+         return W_Expr_Id
+      is
+      begin
+         declare
+            --  Get the values of Strings as a Uint
+
+            Num_Val   : constant Uint := Uint_From_String (Num_String);
+            Den_Val   : constant Uint := Uint_From_String (Den_String);
+
+            --  Return the appropriate real constant. Only emit a division
+            --  check if Den_Val is 0.
+
+            Subdomain : constant EW_Domain :=
+              (if Domain = EW_Prog and then Den_Val /= Uint_0
+               then EW_Pterm else Domain);
+            W_Args    : constant W_Expr_Array :=
+              (1 => New_Real_Constant
+                 (Ada_Node => Num_Node,
+                  Value    => UR_From_Uint (Num_Val)),
+               2 => New_Real_Constant
+                 (Ada_Node => Den_Node,
+                  Value    => UR_From_Uint (Den_Val)));
+            Name      : constant W_Identifier_Id :=
+              (if Subdomain = EW_Prog then Real_Infix_Div else M_Real.Div);
+
+            Result    : constant W_Expr_Id :=
+              New_Operator_Call
+                (Ada_Node   => Call,
+                 Domain     => Subdomain,
+                 Name       => Name,
+                 Fix_Name   => True,
+                 Args       => W_Args,
+                 Reason     => VC_Division_Check,
+                 Check_Info => New_Check_Info (Divisor => Den_Node),
+                 Check      => Subdomain = EW_Prog,
+                 Typ        => EW_Real_Type);
+
+         begin
+            return New_Label
+              (Ada_Node => Call,
+               Domain   => Domain,
+               Labels   => Symbol_Sets.Empty_Set,
+               Def      => Result,
+               Typ      => Root_Type);
+         end;
+
+      exception
+         when Constraint_Error =>
+            --  If the parameter is not a valid real value, or if its
+            --  components exceed Long_Long_Integer, then default to
+            --  imprecise translation.
+
+            return Why_Empty;
+      end Transform_Quotient_Of_Strings;
+
+   --  Start of processing for Transform_Hardcoded_Literal
+
    begin
       --  Go over the actuals to check that their are all string literals
 
@@ -1075,7 +1156,6 @@ package body Why.Gen.Hardcoded is
             end;
 
          elsif Get_Name_String (Chars (Subp)) = BRN.From_Universal_Image then
-
             declare
                Num_Literal : constant Node_Id := First_Actual (Call);
                pragma Assert (Present (Num_Literal));
@@ -1085,73 +1165,55 @@ package body Why.Gen.Hardcoded is
                   and then No (Next_Actual (Den_Literal)));
                Num_Str_Id  : constant String_Id := Strval (Num_Literal);
                Den_Str_Id  : constant String_Id := Strval (Den_Literal);
-               Num_Len     : constant Nat := String_Length (Num_Str_Id);
-               Den_Len     : constant Nat := String_Length (Den_Str_Id);
-               Num_String  : String (1 .. Natural (Num_Len));
-               Den_String  : String (1 .. Natural (Den_Len));
-               Num_Val     : Uint;
-               Den_Val     : Uint;
-               Result      : W_Expr_Id;
-
+               Num_Len     : constant Natural :=
+                 Natural (String_Length (Num_Str_Id));
+               Den_Len     : constant Natural :=
+                 Natural (String_Length (Den_Str_Id));
+               Num_String  : String (1 .. Num_Len);
+               Den_String  : String (1 .. Den_Len);
             begin
                --  Fetch the value of the string literals
 
                String_To_Name_Buffer (Num_Str_Id);
-               Num_String := Name_Buffer (1 .. Natural (Num_Len));
+               Num_String := Name_Buffer (1 .. Num_Len);
                String_To_Name_Buffer (Den_Str_Id);
-               Den_String := Name_Buffer (1 .. Natural (Den_Len));
+               Den_String := Name_Buffer (1 .. Den_Len);
+               return Transform_Quotient_Of_Strings
+                 (Num_String, Den_String, Num_Literal, Den_Literal);
+            end;
+         elsif Get_Name_String (Chars (Subp)) = BRN.From_Quotient_String then
+            declare
+               Quot_Literal : constant Node_Id := First_Actual (Call);
+               pragma Assert (Present (Quot_Literal)
+                              and then No (Next_Actual (Quot_Literal)));
+               Quot_Str_Id  : constant String_Id := Strval (Quot_Literal);
+               Quot_Len     : constant Natural :=
+                 Natural (String_Length (Quot_Str_Id));
+               Quot_String  : String (1 .. Quot_Len);
+               J            : Natural := 1;
+            begin
+               --  Fetch the value of the quotient literal
 
-               --  Get their values as a Uint
+               String_To_Name_Buffer (Quot_Str_Id);
+               Quot_String := Name_Buffer (1 .. Quot_Len);
 
-               Num_Val := Uint_From_String (Num_String);
-               Den_Val := Uint_From_String (Den_String);
+               --  Find the quotient symbol and split the quotient string
 
-               --  Return the appropriate real constant. Only emit a division
-               --  check if Den_Val is 0.
+               loop
+                  if J > Quot_Len then
+                     --  Not present, resort to default imprecise translation
 
-               declare
-                  Subdomain : constant EW_Domain :=
-                    (if Domain = EW_Prog and then Den_Val /= Uint_0
-                     then EW_Pterm else Domain);
-                  W_Args    : constant W_Expr_Array :=
-                    (1 => New_Real_Constant
-                       (Ada_Node => Num_Literal,
-                        Value    => UR_From_Uint (Num_Val)),
-                     2 => New_Real_Constant
-                       (Ada_Node => Den_Literal,
-                        Value    => UR_From_Uint (Den_Val)));
-                  Name      : constant W_Identifier_Id :=
-                    (if Subdomain = EW_Prog then Real_Infix_Div
-                     else M_Real.Div);
+                     return Why_Empty;
+                  end if;
+                  exit when Quot_String (J) = '/';
+                  J := J + 1;
+               end loop;
 
-               begin
-                  Result := New_Operator_Call
-                    (Ada_Node   => Call,
-                     Domain     => Subdomain,
-                     Name       => Name,
-                     Fix_Name   => True,
-                     Args       => W_Args,
-                     Reason     => VC_Division_Check,
-                     Check_Info => New_Check_Info
-                       (Divisor => Den_Literal),
-                     Check      => Subdomain = EW_Prog,
-                     Typ        => EW_Real_Type);
-               end;
-
-               return New_Label
-                 (Ada_Node => Call,
-                  Domain   => Domain,
-                  Labels   => Symbol_Sets.Empty_Set,
-                  Def      => Result,
-                  Typ      => Root_Type);
-
-            exception
-               when Constraint_Error =>
-                  --  If the parameter is not a valid real value, or if its
-                  --  components exceed Long_Long_Integer, then default to
-                  --  imprecise translation.
-
-                  return Why_Empty;
+               return Transform_Quotient_Of_Strings
+                 (Quot_String (1     .. J - 1),
+                  Quot_String (J + 1 .. Quot_Len),
+                  Quot_Literal,
+                  Quot_Literal);
             end;
          else
             raise Program_Error;

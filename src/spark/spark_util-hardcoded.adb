@@ -188,7 +188,8 @@ package body SPARK_Util.Hardcoded is
                                              | BRN.Max
                                              | BRN.Is_Valid
                                              | BRN.From_String
-                                             | BRN.From_Universal_Image;
+                                             | BRN.From_Universal_Image
+                                             | BRN.From_Quotient_String;
 
       elsif Is_From_Hardcoded_Generic_Unit (E, Big_Integers) then
          return Get_Name_String (Chars (E)) in BIN.Generic_To_Big_Integer
@@ -356,7 +357,8 @@ package body SPARK_Util.Hardcoded is
          return Get_Name_String (Chars (E)) = BIN.From_String;
       elsif Is_From_Hardcoded_Unit (E, Big_Reals) then
          return Get_Name_String (Chars (E)) in BRN.From_String
-                                             | BRN.From_Universal_Image;
+                                             | BRN.From_Universal_Image
+                                             | BRN.From_Quotient_String;
       else
          return False;
       end if;
