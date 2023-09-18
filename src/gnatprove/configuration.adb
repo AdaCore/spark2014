@@ -1768,7 +1768,19 @@ package body Configuration is
             when Invalid_Level =>
 
                FS.Provers.Append ("cvc5");
-               FS.Steps := Default_Steps;
+
+               --  Default steps are used only if none of --steps and --timeout
+               --  is used (either explicitly or through --level). Otherwise
+               --  set to zero to indicate steps are not used.
+
+               if CL_Switches.Steps = Invalid_Steps
+                 and then CL_Switches.Timeout.all = ""
+               then
+                  FS.Steps := Default_Steps;
+               else
+                  FS.Steps := 0;
+               end if;
+
                FS.Timeout := 0;
                FS.Memlimit := 0;
                FS.Counterexamples := False;
