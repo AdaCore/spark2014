@@ -1465,20 +1465,6 @@ package body Flow.Control_Flow_Graph is
               (Get_Reclamation_Functions (Etype (E)));
          end if;
 
-         --  Pull proof dependencies from the predicate of the type of E. E
-         --  might not be in SPARK, so we check that it is marked. Otherwise,
-         --  proof will not look at its type nor its predicate.
-         if Ekind (E) in E_Constant
-                       | E_Variable
-                       | E_Function
-                       | E_In_Parameter
-                       | E_Out_Parameter
-                       | E_In_Out_Parameter
-           and then Entity_In_SPARK (E)
-         then
-            Process_Predicate (E, FA.Proof_Dependencies);
-         end if;
-
          --  Setup the n'initial vertex. Note that initialization for
          --  variables is detected (and set) when building the flow graph
          --  for declarative parts.
@@ -4441,6 +4427,15 @@ package body Flow.Control_Flow_Graph is
          when others =>
             raise Program_Error;
       end case;
+
+      --  We pull proof dependencies from the type of the object. Type
+      --  invariants are pulled in the enclosing unit only when the object
+      --  has no initialization, or it is a library-level entity.
+      Process_Predicate_And_Invariant (E,
+                                       FA.B_Scope,
+                                       No (Expr)
+                                         or else Is_Library_Level_Entity (E),
+                                       FA.Proof_Dependencies);
 
       --  We have a declaration with an explicit initialization
 
@@ -7693,11 +7688,18 @@ package body Flow.Control_Flow_Graph is
       end loop;
 
       --  Create initial and final vertices for the parameters of the analyzed
-      --  entity.
+      --  entity, and pull the proof dependencies from their types. Type
+      --  invariants from the enclosing unit are pulled only when the entity
+      --  is a boundary subprogram.
       case FA.Kind is
          when Kind_Subprogram =>
             for Param of Get_Formals (FA.Spec_Entity) loop
                Create_Initial_And_Final_Vertices (Param, FA);
+               Process_Predicate_And_Invariant
+                 (Param,
+                  FA.B_Scope,
+                  Is_Globally_Visible (FA.Spec_Entity),
+                  FA.Proof_Dependencies);
             end loop;
 
          when Kind_Task =>
@@ -7827,9 +7829,16 @@ package body Flow.Control_Flow_Graph is
       end if;
 
       --  If we are dealing with a function, we use its entity as a vertex for
-      --  the returned value.
+      --  the returned value. We pull the proof dependencies from its type.
+      --  Type invariants from the enclosing unit are pulled only when the
+      --  entity is a boundary subprogram.
       if Ekind (FA.Spec_Entity) = E_Function then
          Create_Initial_And_Final_Vertices (FA.Spec_Entity, FA);
+         Process_Predicate_And_Invariant
+           (FA.Spec_Entity,
+            FA.B_Scope,
+            Is_Globally_Visible (FA.Spec_Entity),
+            FA.Proof_Dependencies);
       end if;
 
       --  If you're now wondering where we deal with locally declared objects
