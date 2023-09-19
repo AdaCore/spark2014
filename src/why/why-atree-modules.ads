@@ -821,6 +821,9 @@ package Why.Atree.Modules is
    --  Return the module for the completion of the representative type of a
    --  record type E.
 
+   function E_Rep_Pointer_Module (E : Entity_Id) return W_Module_Id;
+   --  Return the name of a pointer's representative module.
+
    function E_DIC_Module (Ty : Type_Kind_Id) return W_Module_Id with
      Pre => not Is_Itype (Ty) and then Can_Be_Default_Initialized (Ty);
    --  Function returning the extra module for the default assumption of Ty

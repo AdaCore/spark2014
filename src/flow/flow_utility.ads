@@ -61,6 +61,13 @@ package Flow_Utility is
    --  use in phase 1; in phase 2 this should not be set as we add the
    --  global effects directly.
 
+   procedure Process_Predicate
+     (N                  : Node_Or_Entity_Id;
+      Proof_Dependencies : in out Node_Sets.Set)
+   with Pre  => N in N_Has_Etype_Id;
+   --  Fills Proof_Dependencies by analyzing predicate expressions applying
+   --  to the type of N.
+
    procedure Remove_Constants
      (Objects : in out Flow_Id_Sets.Set)
    with Post => Flow_Id_Sets.Is_Subset (Subset => Objects,

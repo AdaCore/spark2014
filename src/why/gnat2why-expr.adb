@@ -16340,9 +16340,7 @@ package body Gnat2Why.Expr is
          when Attribute_Alignment =>
             declare
                Has_Type_Prefix : constant Boolean :=
-                 Nkind (Var) in N_Has_Entity
-                   and then Present (Entity (Var))
-                   and then Is_Type (Entity (Var));
+                 Is_Entity_Name (Var) and then Is_Type (Entity (Var));
             begin
                --  Alignment may be specified explicitly on the type or
                --  object. When specified on the type, the frontend replaces
@@ -16368,15 +16366,6 @@ package body Gnat2Why.Expr is
                         T := New_Integer_Constant
                           (Value => UI_From_Int
                              (Int (Data_Entry.Alignment.Value)));
-
-                     elsif Known_Alignment (Typ) then
-                        pragma Annotate
-                          (Xcov, Exempt_On,
-                           "'Alignment is expanded by the frontend when"
-                           & " statically known");
-                        T := New_Integer_Constant (Expr, Alignment (Typ));
-                        pragma Annotate (Xcov, Exempt_Off);
-
                      else
                         T := New_Attribute_Expr (Typ, Domain, Attr_Id);
                      end if;

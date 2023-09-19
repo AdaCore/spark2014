@@ -64,9 +64,6 @@ package body Why.Gen.Pointers is
    --  are already declared in another module and we only generate axioms for
    --  them here.
 
-   function Get_Rep_Pointer_Module (E : Entity_Id) return W_Module_Id;
-   --  Return the name of a record's representative module.
-
    package Pointer_Typ_To_Roots is new Ada.Containers.Hashed_Maps
      (Key_Type        => Entity_Id,
       Element_Type    => Node_Id,
@@ -594,7 +591,7 @@ package body Why.Gen.Pointers is
 
       Th :=
         Open_Theory
-          (WF_Context, Get_Rep_Pointer_Module (E),
+          (WF_Context, E_Rep_Pointer_Module (E),
            Comment =>
              "Module for axiomatizing the pointer theory associated to type "
            & """" & Get_Name_String (Chars (E)) & """"
@@ -613,7 +610,7 @@ package body Why.Gen.Pointers is
    -------------------------
 
    procedure Declare_Ada_Pointer (Th : Theory_UC; E : Entity_Id) is
-      Rep_Module : constant W_Module_Id := Get_Rep_Pointer_Module (E);
+      Rep_Module : constant W_Module_Id := E_Rep_Pointer_Module (E);
 
    begin
       --  Export the theory containing the pointer record definition.
@@ -834,7 +831,7 @@ package body Why.Gen.Pointers is
               else "")
             & ", created in " & GNAT.Source_Info.Enclosing_Entity);
 
-         Add_With_Clause (Th, Get_Rep_Pointer_Module (E), EW_Import);
+         Add_With_Clause (Th, E_Rep_Pointer_Module (E), EW_Import);
 
          Emit (Th,
                New_Clone_Declaration
@@ -1076,20 +1073,6 @@ package body Why.Gen.Pointers is
 
    function Get_Brower_At_End (E : Entity_Id) return W_Identifier_Id is
      (Borrow_Infos (E).Brower_At_End);
-
-   ----------------------------
-   -- Get_Rep_Pointer_Module --
-   ----------------------------
-
-   function Get_Rep_Pointer_Module (E : Entity_Id) return W_Module_Id is
-      Ancestor : constant Entity_Id := Repr_Pointer_Type (E);
-      Name     : constant String    :=
-        Full_Name (Ancestor) & To_String (WNE_Rec_Rep);
-
-   begin
-      return New_Module (File => No_Symbol,
-                         Name => Name);
-   end Get_Rep_Pointer_Module;
 
    -------------------------------------
    -- Has_Predeclared_Move_Predicates --

@@ -125,6 +125,29 @@ package body Flow_Utility is
    --  Errout.First_Node, but doesn't rely on slocs thus avoids possible
    --  problems with generic instances (as described in Safe_First_Sloc).
 
+   procedure Pick_Generated_Info_Internal
+     (N                  : Node_Id;
+      Scop               : Flow_Scope;
+      Function_Calls     : in out Call_Sets.Set;
+      Proof_Dependencies : in out Node_Sets.Set;
+      Tasking            : in out Tasking_Info;
+      Types_Seen         : in out Node_Sets.Set;
+      Generating_Globals : Boolean)
+   with Post => Proof_Dependencies'Old.Is_Subset (Proof_Dependencies);
+   --  Like Pick_Generated_Info, with an additional parameter Types_Seen that
+   --  allows to track which type predicates we already traversed to pick
+   --  proof dependencies.
+
+   procedure Process_Predicate_Internal
+     (N                  : Node_Or_Entity_Id;
+      Proof_Dependencies : in out Node_Sets.Set;
+      Types_Seen         : in out Node_Sets.Set)
+   with Pre  => N in N_Has_Etype_Id,
+        Post => Proof_Dependencies'Old.Is_Subset (Proof_Dependencies);
+   --  Like Process_Predicate, with an additional parameter Types_Seen that
+   --  allows to track which type predicates we already traversed to pick
+   --  proof dependencies.
+
    ----------------------------------------------------------------------
    -- Constants with variable inputs --
    ----------------------------------------------------------------------
@@ -198,16 +221,17 @@ package body Flow_Utility is
       end if;
    end Ancestor;
 
-   -------------------------
-   -- Pick_Generated_Info --
-   -------------------------
+   ----------------------------------
+   -- Pick_Generated_Info_Internal --
+   ----------------------------------
 
-   procedure Pick_Generated_Info
+   procedure Pick_Generated_Info_Internal
      (N                  : Node_Id;
       Scop               : Flow_Scope;
       Function_Calls     : in out Call_Sets.Set;
       Proof_Dependencies : in out Node_Sets.Set;
       Tasking            : in out Tasking_Info;
+      Types_Seen         : in out Node_Sets.Set;
       Generating_Globals : Boolean)
    is
       function Proc (N : Node_Id) return Traverse_Result;
@@ -251,6 +275,7 @@ package body Flow_Utility is
                     (Ekind (Called_Func) in E_Function | E_Subprogram_Type);
 
                begin
+
                   --  Ignore calls to predicate functions and don't descend
                   --  into their predicate expressions.
 
@@ -269,7 +294,11 @@ package body Flow_Utility is
                   elsif Is_Tagged_Predefined_Eq (Called_Func) then
                      return OK;
 
+                  --  Likewise for calls to unchecked conversion, except we
+                  --  keep track of the call for proof dependencies.
+
                   elsif Is_Unchecked_Conversion_Instance (Called_Func) then
+                     Proof_Dependencies.Include (Called_Func);
                      return OK;
                   end if;
 
@@ -295,6 +324,14 @@ package body Flow_Utility is
                   if Nkind (P) in N_Identifier | N_Expanded_Name
                     and then Is_Type (Entity (P))
                   then
+
+                     --  The predicate is processed separately for proof
+                     --  dependencies because only the predicate on type P
+                     --  is executed, whereas proof pulls the entire set of
+                     --  predicates that apply to P.
+
+                     Process_Predicate_Internal
+                       (P, Proof_Dependencies, Types_Seen);
                      Process_Type (Get_Type (P, Scop));
                   end if;
                else
@@ -304,6 +341,8 @@ package body Flow_Utility is
                      if Nkind (P) in N_Identifier | N_Expanded_Name
                        and then Is_Type (Entity (P))
                      then
+                        Process_Predicate_Internal
+                          (P, Proof_Dependencies, Types_Seen);
                         Process_Type (Get_Type (P, Scop));
                      end if;
                      Next (P);
@@ -417,6 +456,31 @@ package body Flow_Utility is
                   end if;
                end;
 
+            --  Predicates applying to entities referenced in the expression
+            --  are analyzed to fill Proof_Dependencies.
+
+            when N_Identifier | N_Expanded_Name =>
+               declare
+                  E : constant Entity_Id := Entity (N);
+               begin
+                  if Present (E)
+                    and then Ekind (E) in E_Constant | E_Variable
+                  then
+                     Process_Predicate_Internal
+                       (E, Proof_Dependencies, Types_Seen);
+                  end if;
+               end;
+
+            --  Predicates applying to the target type involved in a type
+            --  conversion or qualified expression are analyzed to fill
+            --  Proof_Dependencies.
+
+            when N_Type_Conversion
+               | N_Qualified_Expression
+            =>
+               Process_Predicate_Internal
+                 (N, Proof_Dependencies, Types_Seen);
+
             when others =>
                null;
          end case;
@@ -427,11 +491,145 @@ package body Flow_Utility is
       procedure Traverse is new Traverse_More_Proc (Process => Proc);
       --  AST traversal procedure
 
-   --  Start of processing for Pick_Generated_Info
+   --  Start of processing for Pick_Generated_Info_Internal
 
    begin
       Traverse (N);
+   end Pick_Generated_Info_Internal;
+
+   -------------------------
+   -- Pick_Generated_Info --
+   -------------------------
+
+   procedure Pick_Generated_Info
+     (N                  : Node_Id;
+      Scop               : Flow_Scope;
+      Function_Calls     : in out Call_Sets.Set;
+      Proof_Dependencies : in out Node_Sets.Set;
+      Tasking            : in out Tasking_Info;
+      Generating_Globals : Boolean)
+   is
+      Unused : Node_Sets.Set;
+   begin
+      Pick_Generated_Info_Internal
+        (N,
+         Scop,
+         Function_Calls,
+         Proof_Dependencies,
+         Tasking,
+         Unused,
+         Generating_Globals);
    end Pick_Generated_Info;
+
+   --------------------------------
+   -- Process_Predicate_Internal --
+   --------------------------------
+
+   procedure Process_Predicate_Internal
+     (N                  : Node_Or_Entity_Id;
+      Proof_Dependencies : in out Node_Sets.Set;
+      Types_Seen         : in out Node_Sets.Set)
+   is
+      procedure Add_Predicates_To_Proof_Deps
+        (Type_Instance   : Formal_Kind_Id;
+         Pred_Expression : Node_Id)
+      with Pre => Nkind (Pred_Expression) in N_Subexpr;
+      --  Analyzes the predicate expression to fill Proof_Dependencies
+
+      function Explore_Subcomponents (Typ : Type_Kind_Id)
+                                      return Test_Result;
+      --  Explore subcomponents of a potential composite type to pull
+      --  proof dependencies from their predicates.
+
+      procedure Explore_Parent_Types is new Iterate_Applicable_Predicates
+        (Add_Predicates_To_Proof_Deps);
+      --  Explore the subtype chain of a type to pull proof dependencies
+      --  from the predicates of its parent types.
+
+      function Traverse is new Traverse_Subcomponents
+        (Explore_Subcomponents);
+      --  Traverse a type to pull all proof dependencies related to predicates
+      --  of its subcomponents and their parent types.
+
+      ----------------------------------
+      -- Add_Predicates_To_Proof_Deps --
+      ----------------------------------
+
+      procedure Add_Predicates_To_Proof_Deps
+        (Type_Instance   : Formal_Kind_Id;
+         Pred_Expression : Node_Id)
+      is
+         pragma Unreferenced (Type_Instance);
+         Funcalls : Call_Sets.Set;
+         Unused   : Tasking_Info;
+      begin
+         Pick_Generated_Info_Internal
+           (N                  => Pred_Expression,
+            Scop               => Null_Flow_Scope,
+            Function_Calls     => Funcalls,
+            Proof_Dependencies => Proof_Dependencies,
+            Tasking            => Unused,
+            Generating_Globals => True,
+            Types_Seen         => Types_Seen);
+
+         --  Direct function calls in predicate expressions are also treated
+         --  as proof dependencies.
+
+         for Call of Funcalls loop
+
+            --  This avoids picking references of an access-to-function in the
+            --  case of an access-to-function subtype referencing the result of
+            --  said function in its predicate.
+            --
+            --  ??? Is it possible to create a proof cycle using enclosing
+            --  E_Subprogram_Type entities?
+
+            if Ekind (Call.E) /= E_Subprogram_Type then
+               Proof_Dependencies.Include (Call.E);
+            end if;
+         end loop;
+      end Add_Predicates_To_Proof_Deps;
+
+      ---------------------------
+      -- Explore_Subcomponents --
+      ---------------------------
+
+      function Explore_Subcomponents (Typ : Type_Kind_Id) return Test_Result
+      is
+      begin
+         Explore_Parent_Types (Typ);
+         return Continue;
+      end Explore_Subcomponents;
+
+      Typ      : constant Entity_Id := Etype (N);
+      Discard  : Boolean;
+      Pos      : Node_Sets.Cursor;
+      Inserted : Boolean;
+   begin
+
+      --  If we didn't analyze type of N yet, and N is not an
+      --  access-to-subprogram, then we add the type of N to Types_Seen and
+      --  explore it.
+
+      Types_Seen.Insert (Typ, Pos, Inserted);
+
+      if Inserted then
+         Discard := Traverse (Typ);
+      end if;
+   end Process_Predicate_Internal;
+
+   -----------------------
+   -- Process_Predicate --
+   -----------------------
+
+   procedure Process_Predicate
+     (N                  : Node_Or_Entity_Id;
+      Proof_Dependencies : in out Node_Sets.Set)
+   is
+      Discard : Node_Sets.Set;
+   begin
+      Process_Predicate_Internal (N, Proof_Dependencies, Discard);
+   end Process_Predicate;
 
    -----------------------
    -- Unique_Components --
@@ -3151,6 +3349,87 @@ package body Flow_Utility is
                end loop;
                return Variables;
 
+            when Attribute_Alignment
+               | Attribute_Size
+               | Attribute_Object_Size
+               | Attribute_Value_Size
+            =>
+               --  Attribute Size and similar do not read data from their
+               --  prefix (which can be either a type name or an object
+               --  reference), but for arrays and discriminated records
+               --  their value depends on the array bounds and discriminant
+               --  constraints, respectively.
+
+               --  Also, if the object reference is anything but a name (e.g. a
+               --  function call), then the prefix is actually evaluated and
+               --  the attribute value depends on the prefix.
+
+               --  Attribute Alignment doesn't seem to depend on the array
+               --  bounds and discriminant constraints, but otherwise behaves
+               --  just like attribute Size, so for simplicity we handle both
+               --  attributes in the same way.
+
+               declare
+                  procedure Get_Type_Size (T : Type_Kind_Id);
+                  --  Get variables from the bounds and discriminants of type
+                  --  T, because they affect its size.
+
+                  -------------------
+                  -- Get_Type_Size --
+                  -------------------
+
+                  procedure Get_Type_Size (T : Type_Kind_Id) is
+                  begin
+                     if Is_Array_Type (T) then
+                        declare
+                           Index : Node_Id;
+                        begin
+                           Index := First_Index (T);
+                           while Present (Index) loop
+                              Variables.Union
+                                (Recurse (Type_Low_Bound (Etype (Index))));
+                              Variables.Union
+                                (Recurse (Type_High_Bound (Etype (Index))));
+                              Next_Index (Index);
+                           end loop;
+                        end;
+                     elsif Has_Discriminants (T) then
+                        for C of Iter (Discriminant_Constraint (T)) loop
+                           Variables.Union (Recurse (C));
+                        end loop;
+                     end if;
+                  end Get_Type_Size;
+
+                  Pref      : constant Node_Id := Prefix (N);
+                  Pref_Type : constant Entity_Id := Etype (Pref);
+
+               begin
+                  if Is_Object_Reference (Pref) then
+
+                     if Is_Name_Reference (Pref) then
+                        --  Attribute whose prefix is a class-wide object
+                        --  reference is expanded into a dispatching function
+                        --  call whose value depends on the object itself, but
+                        --  currently marking rejects this as unsupported.
+                        --
+                        --  For other objects the attribute values don't depend
+                        --  on the prefix.
+
+                        pragma Assert (not Is_Class_Wide_Type (Pref_Type));
+                     else
+                        Variables.Union (Recurse (Pref));
+                     end if;
+
+                  else
+                     pragma Assert
+                       (Is_Entity_Name (Pref) and then Is_Type (Pref_Type));
+                  end if;
+
+                  Get_Type_Size (Pref_Type);
+               end;
+
+               return Variables;
+
             when Attribute_First
                | Attribute_Last
                | Attribute_Length
@@ -3265,17 +3544,14 @@ package body Flow_Utility is
                                           | Attribute_Max
                                           | Attribute_Min
                                           | Attribute_Mod
-                                          | Attribute_Object_Size
                                           | Attribute_Pos
                                           | Attribute_Pred
                                           | Attribute_Remainder
                                           | Attribute_Rounding
-                                          | Attribute_Size
                                           | Attribute_Succ
                                           | Attribute_Truncation
                                           | Attribute_Val
-                                          | Attribute_Value
-                                          | Attribute_Value_Size);
+                                          | Attribute_Value);
          else
             Variables.Union (Recurse (Prefix (N)));
          end if;
