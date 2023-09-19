@@ -603,7 +603,7 @@ procedure Gnatprove with SPARK_Mode is
       declare
          use String_Lists;
          Args     : String_Lists.List;
-         Id       : GNAT.OS_Lib.Process_Id;
+         Id       : GNAT.OS_Lib.Process_Id := GNAT.OS_Lib.Invalid_Pid;
       begin
          Args.Append ("--subdirs=" & Phase2_Subdir.Display_Full_Name);
 
@@ -892,7 +892,7 @@ procedure Gnatprove with SPARK_Mode is
    is
       Args : String_Lists.List;
       Cur  : constant String := Ada.Directories.Current_Directory;
-      Id   : GNAT.OS_Lib.Process_Id;
+      Id   : GNAT.OS_Lib.Process_Id := GNAT.OS_Lib.Invalid_Pid;
    begin
       if CL_Switches.Why3_Server = null
         or else CL_Switches.Why3_Server.all = ""
