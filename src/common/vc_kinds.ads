@@ -449,6 +449,7 @@ package VC_Kinds is
       Lim_Multiple_Inheritance_Root,
       Lim_Multidim_Iterator,
       Lim_Multidim_Update,
+      Lim_Null_Aggregate_In_Branching_Array_Aggregate,
       Lim_Object_Before_Inv,
       Lim_Op_Fixed_Float,
       Lim_Op_Incompatible_Fixed,
@@ -608,6 +609,9 @@ package VC_Kinds is
           & " containing a loop invariant",
          when Lim_Multidim_Update =>
            "attribute ""Update"" of unconstrained multidimensional array",
+         when Lim_Null_Aggregate_In_Branching_Array_Aggregate =>
+           "null aggregate as subaggregate of a multidimensional array"
+          & " aggregate with multiple associations",
          when Lim_Uninit_Alloc_In_Expr_Fun =>
            "uninitialized allocator inside expression function",
          when Lim_Iterator_In_Component_Assoc =>

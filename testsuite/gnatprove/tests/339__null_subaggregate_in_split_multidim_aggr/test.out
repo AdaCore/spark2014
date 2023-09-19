@@ -1,0 +1,3 @@
+main.adb:3:50: error: consider combining associations of enclosing multi-dimensional array aggregate into one
+main.adb:3:50: error: null aggregate as subaggregate of a multidimensional array aggregate with multiple associations is not yet supported
+gnatprove: error during flow analysis and proof
