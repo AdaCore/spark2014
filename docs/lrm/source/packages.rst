@@ -319,7 +319,12 @@ False is said to be *nonvolatile for internal calls*.
     Volatile_Function aspect is False. [The reverse is allowed.]
 
 
-16. A protected object has at least the properties Async_Writers => True
+16. A subprogram whose Side_Effects aspect is True shall not override an
+    inherited primitive operation of a tagged type whose Side_Effects aspect is
+    False. [The reverse is allowed.]
+
+
+17. A protected object has at least the properties Async_Writers => True
     and Async_Readers => True. If and only if it has at least one Part_Of
     component with Effective_Writes => True or Effective_Reads => True,
     then the protected object also carries this property. [This is
