@@ -23,6 +23,7 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
+with Ada.Strings.Unbounded;       use Ada.Strings.Unbounded;
 with Common_Containers;           use Common_Containers;
 with Elists;                      use Elists;
 with Flow_Utility.Initialization; use Flow_Utility.Initialization;
@@ -1609,9 +1610,10 @@ package body Why.Gen.Records is
       Num_Discrs      : constant Natural := Count_Discriminants (E);
       Num_E_Fields    : constant Natural := Count_Why_Regular_Fields (E);
       Num_Root_Fields : constant Natural := Count_Why_Regular_Fields (Root);
-      Num_E_All       : constant Natural := Count_Why_Top_Level_Fields (E);
+      Num_E_All       : constant Natural :=
+        Count_Why_Top_Level_Fields (E, Relaxed_Init);
       Num_Root_All    : constant Natural :=
-        Count_Why_Top_Level_Fields (Root);
+        Count_Why_Top_Level_Fields (Root, Relaxed_Init);
       To_Root_Aggr    : W_Field_Association_Array (1 .. Num_Root_All);
       From_Root_Aggr  : W_Field_Association_Array (1 .. Num_E_All);
       From_Index      : Natural := 0;
@@ -1682,6 +1684,41 @@ package body Why.Gen.Records is
                  Field  => Orig_D_Id,
                  Value  => E_Discr_Access);
          end;
+
+         --  Add the init flag for the discriminants if necessary
+
+         if Relaxed_Init and then Has_Defaulted_Discriminants (Root) then
+            pragma Assert (not Is_Constrained (Root));
+
+            if Is_Constrained (E) then
+               To_Index := To_Index + 1;
+               To_Root_Aggr (To_Index) :=
+                 New_Field_Association
+                   (Domain => EW_Term,
+                    Field  => E_Symb (Root, WNE_Attr_Init),
+                    Value  => +True_Term);
+            else
+               From_Index := From_Index + 1;
+               From_Root_Aggr (From_Index) :=
+                 New_Field_Association
+                   (Domain => EW_Term,
+                    Field  => To_Local (E_Symb (E, WNE_Attr_Init)),
+                    Value  => New_Record_Access
+                      (Name  => +R_Ident,
+                       Field => E_Symb (Root, WNE_Attr_Init),
+                       Typ   => EW_Bool_Type));
+
+               To_Index := To_Index + 1;
+               To_Root_Aggr (To_Index) :=
+                 New_Field_Association
+                   (Domain => EW_Term,
+                    Field  => E_Symb (Root, WNE_Attr_Init),
+                    Value  => New_Record_Access
+                      (Name  => +A_Ident,
+                       Field => To_Local (E_Symb (E, WNE_Attr_Init)),
+                       Typ   => EW_Bool_Type));
+            end if;
+         end if;
       end if;
 
       --  Step 2. Convert the __split_fields field for components
@@ -1994,9 +2031,12 @@ package body Why.Gen.Records is
          Num_Fields        : constant Natural := Count_Why_Regular_Fields (E);
          Num_All           : constant Natural :=
            Count_Why_Top_Level_Fields (E);
-         To_Wrapper_Aggr   : W_Field_Association_Array (1 .. Num_All);
+         Num_Wrapper_All   : constant Natural :=
+           Count_Why_Top_Level_Fields (E, Relaxed_Init => True);
+         To_Wrapper_Aggr   : W_Field_Association_Array (1 .. Num_Wrapper_All);
          From_Wrapper_Aggr : W_Field_Association_Array (1 .. Num_All);
          Index             : Natural := 0;
+         Index_Wrapper     : Natural := 0;
 
          X_Ident         : constant W_Identifier_Id :=
            New_Identifier (Name => "x", Typ => EW_Abstract (E));
@@ -2018,18 +2058,31 @@ package body Why.Gen.Records is
                  New_Record_Access (Name  => +X_Ident,
                                     Field => Discrs_Comp);
             begin
-               Index := Index + 1;
-               To_Wrapper_Aggr (Index) :=
+               Index_Wrapper := Index_Wrapper + 1;
+               To_Wrapper_Aggr (Index_Wrapper) :=
                  New_Field_Association
                    (Domain => EW_Term,
                     Field  => To_Ident (WNE_Rec_Split_Discrs),
                     Value  => X_Discr_Access);
+
+               Index := Index + 1;
                From_Wrapper_Aggr (Index) :=
                  New_Field_Association
                    (Domain => EW_Term,
                     Field  => Discrs_Comp,
                     Value  => A_Discr_Access);
             end;
+
+            --  Add the init flag for the discriminants if necessary
+
+            if Has_Mutable_Discriminants (E) then
+               Index_Wrapper := Index_Wrapper + 1;
+               To_Wrapper_Aggr (Index_Wrapper) :=
+                 New_Field_Association
+                   (Domain => EW_Term,
+                    Field  => To_Local (E_Symb (E, WNE_Attr_Init)),
+                    Value  => +True_Term);
+            end if;
          end if;
 
          --  Step 2. For fields, we convert each component to and from the
@@ -2158,7 +2211,9 @@ package body Why.Gen.Records is
                     Field  => Fields_Comp,
                     Value  => New_Record_Aggregate
                       (Associations => From_Wrapper_Field));
-               To_Wrapper_Aggr (Index) :=
+
+               Index_Wrapper := Index_Wrapper + 1;
+               To_Wrapper_Aggr (Index_Wrapper) :=
                  New_Field_Association
                    (Domain => EW_Term,
                     Field  => To_Ident (WNE_Rec_Split_Fields),
@@ -2180,12 +2235,14 @@ package body Why.Gen.Records is
                  New_Record_Access (Name  => +X_Ident,
                                     Field => Moved_Comp);
             begin
-               Index := Index + 1;
-               To_Wrapper_Aggr (Index) :=
+               Index_Wrapper := Index_Wrapper + 1;
+               To_Wrapper_Aggr (Index_Wrapper) :=
                  New_Field_Association
                    (Domain => EW_Term,
                     Field  => To_Ident (WNE_Is_Moved_Field),
                     Value  => X_Moved_Access);
+
+               Index := Index + 1;
                From_Wrapper_Aggr (Index) :=
                  New_Field_Association
                    (Domain => EW_Term,
@@ -2194,7 +2251,8 @@ package body Why.Gen.Records is
             end;
          end if;
 
-         pragma Assert (Index = Num_All);
+         pragma Assert
+           (Index = Num_All and then Index_Wrapper = Num_Wrapper_All);
 
          Emit
            (Th,
@@ -2313,7 +2371,7 @@ package body Why.Gen.Records is
            (Th           => Th,
             W_Nam        => To_Local (E_Symb (E, WNE_Private_Type)),
             Init_Val     => To_Local (E_Symb (E, WNE_Init_Value)),
-            Attr_Init    => To_Local (E_Symb (E, WNE_Attr_Init)),
+            Attr_Init    => To_Local (E_Symb (E, WNE_Private_Attr_Init)),
             Of_Wrapper   => To_Local (E_Symb (E, WNE_Private_Of_Wrapper)),
             To_Wrapper   => To_Local (E_Symb (E, WNE_Private_To_Wrapper)),
             Dummy        => To_Local (E_Symb (E, WNE_Private_Dummy)),
@@ -2637,7 +2695,8 @@ package body Why.Gen.Records is
    is
       Num_Discrs : constant Natural := Count_Discriminants (E);
       Num_Fields : constant Natural := Count_Why_Regular_Fields (E);
-      Num_All    : constant Natural := Count_Why_Top_Level_Fields (E);
+      Num_All    : constant Natural :=
+        Count_Why_Top_Level_Fields (E, Relaxed_Init);
 
       Binders_D  : Binder_Array (1 .. Num_Discrs);
       Binders_F  : Binder_Array (1 .. Num_Fields);
@@ -2725,6 +2784,17 @@ package body Why.Gen.Records is
                   others => <>);
                Index_All := Index_All + 1;
             end;
+
+            if Relaxed_Init and then Has_Mutable_Discriminants (E) then
+               Binders_A (Index_All) :=
+                 (B_Name =>
+                    New_Identifier
+                      (Ada_Node => Empty,
+                       Name     => To_String (WNE_Attr_Init),
+                       Typ      => EW_Bool_Type),
+                  others => <>);
+               Index_All := Index_All + 1;
+            end if;
          end if;
 
          --  Generate a record type for E's normal components. This
@@ -3917,7 +3987,36 @@ package body Why.Gen.Records is
    is
       Root     : constant Entity_Id := Root_Retysp (Check_Ty);
       Tmp_Expr : constant W_Expr_Id := New_Temp_For_Expr (+Expr);
+      Check    : W_Prog_Id := New_VC_Call
+        (Ada_Node => Ada_Node,
+         Name     => Range_Check_Name (Root, RCK_Range),
+         Progs    => Prepare_Args_For_Subtype_Check
+           (Check_Ty, Tmp_Expr, EW_Prog),
+         Reason   => VC_Discriminant_Check,
+         Typ      => EW_Unit_Type);
+
    begin
+      --  For discriminant checks, we need the discriminants to be initialized
+
+      if Is_Init_Wrapper_Type (Get_Type (+Expr))
+        and then Has_Mutable_Discriminants (Get_Ada_Node (+Get_Type (+Expr)))
+      then
+         Continuation_Stack.Append
+           (Continuation_Type'
+              (Ada_Node => Base_Type (Check_Ty),
+               Message  => To_Unbounded_String ("for mutable discriminants")));
+         Check := +Sequence
+           (Left  => New_Located_Assert
+              (Ada_Node => Ada_Node,
+               Reason   => VC_Initialization_Check,
+               Kind     => EW_Assert,
+               Pred     => Pred_Of_Boolean_Term
+                 (New_Init_Attribute_Access
+                      (Get_Ada_Node (+Get_Type (+Expr)), +Tmp_Expr))),
+            Right => Check);
+         Continuation_Stack.Delete_Last;
+      end if;
+
       return
         +Binding_For_Temp
         (Ada_Node => Ada_Node,
@@ -3925,13 +4024,7 @@ package body Why.Gen.Records is
          Tmp      => Tmp_Expr,
          Context  => +Sequence
            (Ada_Node => Ada_Node,
-            Left     => New_VC_Call
-              (Ada_Node => Ada_Node,
-               Name     => Range_Check_Name (Root, RCK_Range),
-               Progs    => Prepare_Args_For_Subtype_Check
-                 (Check_Ty, Tmp_Expr, EW_Prog),
-               Reason   => VC_Discriminant_Check,
-               Typ      => EW_Unit_Type),
+            Left     => Check,
             Right    => +Tmp_Expr));
    end Insert_Subtype_Discriminant_Check;
 
@@ -4060,7 +4153,8 @@ package body Why.Gen.Records is
       Missing_Fields : Component_Sets.Set := Component_Sets.Empty_Set)
       return W_Expr_Id
    is
-      Num_All    : constant Natural := Count_Why_Top_Level_Fields (Ty);
+      Num_All    : constant Natural := Count_Why_Top_Level_Fields
+        (Ty, Relaxed_Init);
       Num_Discr  : constant Natural := Count_Discriminants (Ty);
       Num_Fields : constant Natural := Count_Why_Regular_Fields (Ty);
       Assoc      : W_Field_Association_Id;
@@ -4076,6 +4170,17 @@ package body Why.Gen.Records is
             Value    => Discr_Expr);
          Index := Index + 1;
          Assocs (Index) := Assoc;
+
+         --  Discriminants of record aggregates are necessarily initialized
+
+         if Relaxed_Init and then Has_Mutable_Discriminants (Ty) then
+            Assoc := New_Field_Association
+              (Domain   => Domain,
+               Field    => E_Symb (Ty, WNE_Attr_Init),
+               Value    => New_Literal (Value => EW_True, Domain => Domain));
+            Index := Index + 1;
+            Assocs (Index) := Assoc;
+         end if;
       end if;
 
       if Num_Fields > 0 then
@@ -4146,6 +4251,8 @@ package body Why.Gen.Records is
          Index := Index + 1;
          Assocs (Index) := Assoc;
       end if;
+
+      pragma Assert (Index = Assocs'Last);
 
       Result := New_Record_Aggregate
         (Ada_Node     => Ada_Node,
@@ -4520,6 +4627,17 @@ package body Why.Gen.Records is
          end loop;
       end if;
 
+      --  If E has mutable discriminants and is constrained, then we cannot
+      --  reuse the initialization wrapper module of the parent as it has an
+      --  unnecessary initialization flag.
+
+      if Has_Init_Wrapper (Current)
+        and then Has_Defaulted_Discriminants (Current)
+        and then Is_Constrained (Current)
+      then
+         return Current;
+      end if;
+
       --  If E is not tagged then the root type has the same fields as E
 
       if not Is_Tagged_Type (Current) then
@@ -4620,6 +4738,16 @@ package body Why.Gen.Records is
             Field    => E_Symb (Ty, WNE_Rec_Split_Discrs, Relaxed_Init),
             Value    => A (Index));
          Index := Index + 1;
+
+         --  Add the initialization flag for mutable discriminants
+
+         if Relaxed_Init and then Has_Mutable_Discriminants (Ty) then
+            Associations (Index) := New_Field_Association
+              (Domain   => EW_Term,
+               Field    => E_Symb (Ty, WNE_Attr_Init),
+               Value    => A (Index));
+            Index := Index + 1;
+         end if;
       end if;
 
       --  Store association for the 'Tag attribute
@@ -4644,6 +4772,8 @@ package body Why.Gen.Records is
          Index := Index + 1;
       end if;
 
+      pragma Assert (Index - 1 = Associations'Last);
+
       return New_Record_Aggregate
         (Ada_Node     => Ada_Node,
          Associations => Associations,
@@ -4659,12 +4789,13 @@ package body Why.Gen.Records is
         (if I.Fields.Present then I.Fields.Binder.Ada_Node
          else I.Discrs.Binder.Ada_Node);
       Relaxed_Init : constant Boolean :=
-        (if I.Fields.Present and Has_Init_Wrapper (I.Typ)
-         then Get_Module (Get_Name (Get_Typ (I.Fields.Binder.B_Name)))
-         = E_Init_Module (I.Typ)
-         else False);
+        I.Fields.Present
+        and then Has_Init_Wrapper (I.Typ)
+        and then Get_Module (Get_Name (Get_Typ (I.Fields.Binder.B_Name)))
+          = E_Init_Module (I.Typ);
       Ty           : constant Entity_Id := I.Typ;
-      Values       : W_Expr_Array (1 .. Count_Why_Top_Level_Fields (Ty));
+      Values       : W_Expr_Array
+        (1 .. Count_Why_Top_Level_Fields (Ty, Relaxed_Init));
       Index        : Positive := 1;
 
    begin
@@ -4689,6 +4820,14 @@ package body Why.Gen.Records is
          else
             Values (Index) := +I.Discrs.Binder.B_Name;
          end if;
+         Index := Index + 1;
+      end if;
+
+      --  Add the initialization flag for mutable discriminants. It is always
+      --  True as the discriminants of objects are necessarily initialized.
+
+      if Relaxed_Init and then Has_Mutable_Discriminants (Ty) then
+         Values (Index) := +True_Term;
          Index := Index + 1;
       end if;
 

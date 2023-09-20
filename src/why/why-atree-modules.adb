@@ -3133,46 +3133,60 @@ package body Why.Atree.Modules is
          --  Insert symbols for the initialization wrapper if any
 
          if Has_Init_Wrapper (E) then
+            declare
+               WM : constant W_Module_Id := E_Init_Module (E);
 
-            Insert_Shared_Type_Symbols (E, Relaxed_Init => True);
+            begin
+               Insert_Shared_Type_Symbols (E, Relaxed_Init => True);
 
-            Insert_Symbol
-              (E, WNE_Is_Initialized_Pred,
-               New_Identifier
-                 (Symb   => NID ("is_initialized"),
-                  Module => AM,
-                  Domain => EW_Term,
-                  Typ    => EW_Bool_Type));
+               Insert_Symbol
+                 (E, WNE_Is_Initialized_Pred,
+                  New_Identifier
+                    (Symb   => NID ("is_initialized"),
+                     Module => AM,
+                     Domain => EW_Term,
+                     Typ    => EW_Bool_Type));
 
-            --  We need extra fields to create the wrapper type for scalars and
-            --  simple private types, and conversion functions to and from the
-            --  wrapper types for scalars, private types, and records. For
-            --  array, conversion goes through the base array type, so
-            --  conversion functions are rather stored with other array
-            --  conversion theories.
+               --  We need extra fields to create the wrapper type for scalars
+               --  and simple private types.
 
-            if Is_Scalar_Type (E) or else Is_Record_Type_In_Why (E) then
-               declare
-                  WM : constant W_Module_Id := E_Init_Module (E);
-               begin
-                  if Has_Scalar_Type (E)
-                    or else Is_Simple_Private_Type (E)
-                  then
-                     Insert_Symbol
-                       (E, WNE_Init_Value,
-                        New_Identifier
-                          (Symb   => NID ("rec__value"),
-                           Module => WM,
-                           Domain => EW_Term,
-                           Typ    => Ty));
-                     Insert_Symbol
-                       (E, WNE_Attr_Init,
-                        New_Identifier
-                          (Symb   => NID (To_String (WNE_Attr_Init)),
-                           Module => WM,
-                           Domain => EW_Term,
-                           Typ    => EW_Bool_Type));
-                  end if;
+               if Has_Scalar_Type (E) or else Is_Simple_Private_Type (E) then
+                  Insert_Symbol
+                    (E, WNE_Init_Value,
+                     New_Identifier
+                       (Symb   => NID ("rec__value"),
+                        Module => WM,
+                        Domain => EW_Term,
+                        Typ    => Ty));
+                  Insert_Symbol
+                    (E, WNE_Attr_Init,
+                     New_Identifier
+                       (Symb   => NID (To_String (WNE_Attr_Init)),
+                        Module => WM,
+                        Domain => EW_Term,
+                        Typ    => EW_Bool_Type));
+
+               --  Records with mutable discriminants also have a specific flag
+               --  for their discriminants.
+
+               elsif Has_Defaulted_Discriminants (E)
+                 and then not Is_Constrained (E)
+               then
+                  Insert_Symbol
+                    (E, WNE_Attr_Init,
+                     New_Identifier
+                       (Symb   => NID (To_String (WNE_Attr_Init)),
+                        Module => WM,
+                        Domain => EW_Term,
+                        Typ    => EW_Bool_Type));
+               end if;
+
+               --  We do not need conversion functions to and from the wrapper
+               --  types for arrays. Indeed conversion goes through the base
+               --  array type, so conversion functions are rather stored with
+               --  other array conversion theories.
+
+               if not Is_Array_Type (E) then
                   Insert_Symbol
                     (E, WNE_To_Wrapper,
                      New_Identifier
@@ -3187,8 +3201,8 @@ package body Why.Atree.Modules is
                         Module => WM,
                         Domain => EW_Term,
                         Typ    => Ty));
-               end;
-            end if;
+               end if;
+            end;
          end if;
 
          Insert_Symbol
@@ -3593,9 +3607,9 @@ package body Why.Atree.Modules is
                               Typ    => New_Named_Type
                                 (Name => Get_Name (Main_Type))));
                         Insert_Symbol
-                          (E, WNE_Attr_Init,
+                          (E, WNE_Private_Attr_Init,
                            New_Identifier
-                             (Symb   => NID (To_String (WNE_Attr_Init)),
+                             (Symb   => NID ("__main_attr__init"),
                               Module => WM,
                               Domain => EW_Term,
                               Typ    => EW_Bool_Type));

@@ -23,6 +23,7 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
+with Ada.Strings.Unbounded;       use Ada.Strings.Unbounded;
 with Common_Containers;           use Common_Containers;
 with Flow_Utility.Initialization; use Flow_Utility.Initialization;
 with GNATCOLL.Symbols;            use GNATCOLL.Symbols;
@@ -87,7 +88,10 @@ package body Why.Gen.Init is
          if Present (E) and then Is_Type (E) then
             if Get_Relaxed_Init (Get_Type (+C_Expr)) then
                return +Pred_Of_Boolean_Term
-                 (+New_Init_Attribute_Access (E, +C_Expr));
+                 (New_Record_Access
+                    (Name   => +C_Expr,
+                     Field  => E_Symb (E, WNE_Private_Attr_Init),
+                     Typ    => EW_Bool_Type));
             else
                return True_Pred;
             end if;
@@ -155,7 +159,7 @@ package body Why.Gen.Init is
            or else Has_Scalar_Type (E)
            or else Is_Simple_Private_Type (E)
          then
-            R := New_Init_Attribute_Access (E, +Name);
+            R := +New_Init_Attribute_Access (E, +Name);
 
             if Domain = EW_Pred then
                R := +Pred_Of_Boolean_Term (+R);
@@ -184,6 +188,15 @@ package body Why.Gen.Init is
             P := Is_Initialized_For_Array (+Tmp, Retysp (E));
          elsif Is_Record_Type_In_Why (Retysp (E)) then
             P := Is_Initialized_For_Record (+Tmp, Retysp (E));
+
+            if Has_Defaulted_Discriminants (Retysp (E))
+              and then not Is_Constrained (Retysp (E))
+            then
+               P := New_And_Pred
+                 (Left  => P,
+                  Right => Pred_Of_Boolean_Term
+                    (New_Init_Attribute_Access (Retysp (E), +Tmp)));
+            end if;
          else
             raise Program_Error;
          end if;
@@ -397,6 +410,52 @@ package body Why.Gen.Init is
       return Why_Empty;
    end Get_Init_Id_From_Object;
 
+   -----------------------------------------
+   -- Insert_Init_Check_For_Discriminants --
+   -----------------------------------------
+
+   function Insert_Init_Check_For_Discriminants
+     (Ada_Node : Node_Id;
+      E        : Entity_Id;
+      Name     : W_Expr_Id;
+      Domain   : EW_Domain;
+      Do_Check : Boolean := True)
+      return W_Expr_Id
+   is
+      T : W_Expr_Id;
+   begin
+      if Domain = EW_Prog
+        and then Do_Check
+        and then Has_Mutable_Discriminants (E)
+        and then Is_Init_Wrapper_Type (Get_Type (Name))
+      then
+         declare
+            Tmp : constant W_Expr_Id := New_Temp_For_Expr (Name);
+         begin
+            Continuation_Stack.Append
+              (Continuation_Type'
+                 (Ada_Node => E,
+                  Message  =>
+                    To_Unbounded_String ("for mutable discriminants")));
+            T := +Sequence
+              (Left  => New_Located_Assert
+                 (Ada_Node => Ada_Node,
+                  Reason   => VC_Initialization_Check,
+                  Kind     => EW_Assert,
+                  Pred     => Pred_Of_Boolean_Term
+                    (New_Init_Attribute_Access (E, +Tmp))),
+               Right => +Tmp);
+            Continuation_Stack.Delete_Last;
+
+            T := Binding_For_Temp
+              (Tmp => Tmp, Context => T, Domain => EW_Prog);
+         end;
+      else
+         T := Name;
+      end if;
+      return T;
+   end Insert_Init_Check_For_Discriminants;
+
    ---------------------------------
    -- Insert_Initialization_Check --
    ---------------------------------
@@ -466,28 +525,28 @@ package body Why.Gen.Init is
 
    function New_Init_Attribute_Access
      (E    : Entity_Id;
-      Name : W_Expr_Id) return W_Expr_Id
+      Name : W_Term_Id) return W_Term_Id
    is
       Field : W_Identifier_Id;
 
    begin
-      pragma Assert (Get_Relaxed_Init (Get_Type (Name)));
+      pragma Assert (Get_Relaxed_Init (Get_Type (+Name)));
 
       --  Name is necessarily in abstract form. Query the record component.
       --  In general, the name of the attribute is declared in the type's
       --  module.
 
-      if Get_Type_Kind (Get_Type (Name)) = EW_Abstract then
+      if Get_Type_Kind (Get_Type (+Name)) = EW_Abstract then
          Field := E_Symb (E, WNE_Attr_Init);
 
       --  For standard boolean, it is in the boolean init wrapper module
 
       else
-         pragma Assert (Get_Type (Name) = M_Boolean_Init_Wrapper.Wrapper_Ty);
+         pragma Assert (Get_Type (+Name) = M_Boolean_Init_Wrapper.Wrapper_Ty);
          Field := M_Boolean_Init_Wrapper.Attr_Init;
       end if;
 
-      return New_Record_Access (Name   => +Name,
+      return New_Record_Access (Name   => Name,
                                 Field  => Field,
                                 Typ    => EW_Bool_Type);
    end New_Init_Attribute_Access;
