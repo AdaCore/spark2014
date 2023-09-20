@@ -301,6 +301,8 @@ package body CE_Values is
 
    begin
       return not Is_NaN (R) and then not Is_Infinity (R);
+      pragma Annotate (CodePeer, False_Positive, "condition predetermined",
+                       "Is_NaN will return True on NaN values");
    end Is_Valid;
 
    pragma Unsuppress (Validity_Check);
