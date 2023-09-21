@@ -1109,6 +1109,9 @@ package body SPARK_Definition is
                   then
                     (if Ekind (E) = E_Package and then No (Package_Body (E))
                      then All_In_SPARK
+                     elsif Ekind (E) = E_Procedure
+                       and then Null_Present (Subprogram_Specification (E))
+                     then All_In_SPARK
                      else Spec_Only_In_SPARK)
                   else Not_In_SPARK);
             begin
