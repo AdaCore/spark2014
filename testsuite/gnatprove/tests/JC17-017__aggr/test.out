@@ -1,5 +1,7 @@
+p.adb:30:19: info: range check proved (CVC5: 1 VC)
 p.adb:40:16: info: implicit aspect Always_Terminates on "Zero" has been proved, subprogram will terminate
 p.adb:40:16: info: implicit function contract might not be available on calls from enclosing unit
+p.adb:43:19: info: range check proved (CVC5: 1 VC)
 p.adb:47:16: info: implicit aspect Always_Terminates on "Zero" has been proved, subprogram will terminate
 p.adb:47:16: info: implicit function contract might not be available on calls from enclosing unit
 p.ads:2:14: warning: subprogram "Proc" has no effect

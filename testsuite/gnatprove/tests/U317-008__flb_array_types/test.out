@@ -1,5 +1,6 @@
 test_first_bound.adb:2:26: info: data dependencies proved
 test_first_bound.adb:6:21: info: range check proved (CVC5: 2 VC)
+test_first_bound.adb:6:34: info: range check proved (CVC5: 1 VC)
 test_first_bound.adb:7:21: info: range check proved (CVC5: 2 VC)
 test_first_bound.adb:7:21: info: range check proved (CVC5: 4 VC)
 test_first_bound.adb:9:29: info: range check proved (CVC5: 2 VC)
