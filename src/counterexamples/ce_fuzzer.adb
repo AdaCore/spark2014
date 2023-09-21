@@ -93,6 +93,10 @@ package body CE_Fuzzer is
             type Known_Values is array (1 .. 3) of Big_Integer;
 
             Other_Values : constant Known_Values := (-1, 0, 1);
+            pragma Annotate
+              (CodePeer, False_Positive,
+               "access check",
+               "there is no visible access type here");
             Values       :          Big_Integer_Vector.Vector;
             Fst, Lst     :          Big_Integer;
          begin
