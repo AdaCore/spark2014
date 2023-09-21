@@ -684,9 +684,12 @@ is used purely for static analysis purposes and is not executed.
 
    [For purposes of determining whether an output of a subprogram shall have a
    ``mode_selector`` of Output or In_Out, reads of array bounds, discriminants,
-   or tags of any part of the output are ignored. Similarly, for purposes of
+   or tags of the output are ignored. Reads of array bounds, discriminants, or
+   tag of any reachable part of the output are not considered either if they are
+   constrained by their subtype. Similarly, for purposes of
    determining whether an entity is fully initialized as a result of any
-   successful execution of the call, only nondiscriminant parts are considered.
+   successful execution of the call, the mutable discriminants of the output
+   itself are not considered.
    This implies that given an output of a discriminated type that is not known
    to be constrained ("known to be constrained" is defined in Ada RM 3.3), the
    discriminants of the output might or might not be updated by the call.]
@@ -887,8 +890,7 @@ where
    implied by the subtype of the parameter. More specifically, it includes formal
    parameters of mode **out** and ``global_items`` with a ``mode_selector`` of
    Output which are of an unconstrained array subtype, an unconstrained
-   discriminated subtype, a tagged type (with one exception), or a type having
-   a subcomponent of an unconstrained discriminated subtype. The exception
+   discriminated subtype, or a tagged type (with one exception). The exception
    mentioned in the previous sentence is in the case where the formal
    parameter is of a specific tagged type and the applicable Extensions_Visible
    aspect is False. In that case, the tag of the parameter cannot be read
