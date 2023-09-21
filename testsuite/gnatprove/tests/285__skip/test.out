@@ -1,11 +1,11 @@
-a.adb:5:17: warning: subprogram "UU" has no effect
-a.adb:6:20: warning: subprogram "UUU" has no effect
-a.adb:9:10: info: no contextual analysis of "UU" (nested subprogram)
-a.adb:15:20: warning: subprogram "UUU2" has no effect
-a.adb:24:20: warning: subprogram "UUU3" has no effect
-a.adb:37:17: warning: subprogram "UU2" has no effect
-a.adb:41:10: info: no contextual analysis of "UU2" (nested subprogram)
-a.ads:4:14: warning: subprogram "U" has no effect
+pack.adb:5:17: warning: subprogram "AA" has no effect
+pack.adb:6:20: warning: subprogram "AAA" has no effect
+pack.adb:9:10: info: no contextual analysis of "AA" (nested subprogram)
+pack.adb:15:20: warning: subprogram "AAB" has no effect
+pack.adb:24:20: warning: subprogram "AAC" has no effect
+pack.adb:37:17: warning: subprogram "AB" has no effect
+pack.adb:41:10: info: no contextual analysis of "AB" (nested subprogram)
+pack.ads:4:14: warning: subprogram "A" has no effect
 Summary of SPARK analysis
 =========================
 
@@ -29,20 +29,20 @@ Total . . . . .
 max steps used for successful proof: 0
 
 Analyzed 1 unit
-in unit a, 10 subprograms and packages out of 16 analyzed
- A at a.ads:3 flow analyzed (0 errors, 0 checks, 0 warnings and 0 pragma Assume statements) and proved (0 checks)
- A.U at a.ads:4 flow analyzed (0 errors, 0 checks, 1 warnings and 0 pragma Assume statements) and proved (0 checks)
- A.U.UU at a.adb:5 flow analyzed (0 errors, 0 checks, 1 warnings and 0 pragma Assume statements) and proved (0 checks)
- A.U.UU.UUU at a.adb:6 flow analyzed (0 errors, 0 checks, 1 warnings and 0 pragma Assume statements), proof skipped (pragma Annotate Skip_Proof)
- A.U.UU.UUU.UUUU at a.adb:10 skipped; body is SPARK_Mode => Off
- A.U.UU.UUU2 at a.adb:15 flow analyzed (0 errors, 0 checks, 1 warnings and 0 pragma Assume statements), proof skipped (pragma Annotate Skip_Proof)
- A.U.UU.UUU2.UUUU2 at a.adb:19 skipped; body is SPARK_Mode => Off
- A.U.UU.UUU3 at a.adb:24 flow analyzed (0 errors, 0 checks, 1 warnings and 0 pragma Assume statements), proof skipped (pragma Annotate Skip_Proof)
- A.U.UU.UUU3.UUUU3 at a.adb:27 skipped; body is SPARK_Mode => Off
- A.U.UU2 at a.adb:37 flow analyzed (0 errors, 0 checks, 1 warnings and 0 pragma Assume statements) and proved (0 checks)
- A.U.UU2.UUU at a.adb:38 not analyzed (pragma Annotate Skip_Flow_And_Proof)
- A.U.UU2.UUU.UUUU at a.adb:42 skipped; body is SPARK_Mode => Off
- A.U.UU2.UUU2 at a.adb:47 not analyzed (pragma Annotate Skip_Flow_And_Proof)
- A.U.UU2.UUU2.UUUU2 at a.adb:51 skipped; body is SPARK_Mode => Off
- A.U.UU2.UUU3 at a.adb:56 not analyzed (pragma Annotate Skip_Flow_And_Proof)
- A.U.UU2.UUU3.UUUU3 at a.adb:59 skipped; body is SPARK_Mode => Off
+in unit pack, 16 subprograms and packages out of 16 analyzed
+ Pack at pack.ads:3 flow analyzed (0 errors, 0 checks, 0 warnings and 0 pragma Assume statements) and proved (0 checks)
+ Pack.A at pack.ads:4 flow analyzed (0 errors, 0 checks, 1 warnings and 0 pragma Assume statements) and proved (0 checks)
+ Pack.A.AA at pack.adb:5 flow analyzed (0 errors, 0 checks, 1 warnings and 0 pragma Assume statements) and proved (0 checks)
+ Pack.A.AA.AAA at pack.adb:6 flow analyzed (0 errors, 0 checks, 1 warnings and 0 pragma Assume statements), proof skipped (pragma Annotate Skip_Proof)
+ Pack.A.AA.AAA.AAAA at pack.adb:10 flow analyzed (0 errors, 0 checks, 0 warnings and 0 pragma Assume statements), proof skipped (pragma Annotate Skip_Proof)
+ Pack.A.AA.AAB at pack.adb:15 flow analyzed (0 errors, 0 checks, 1 warnings and 0 pragma Assume statements), proof skipped (pragma Annotate Skip_Proof)
+ Pack.A.AA.AAB.AABA at pack.adb:19 flow analyzed (0 errors, 0 checks, 0 warnings and 0 pragma Assume statements), proof skipped (pragma Annotate Skip_Proof)
+ Pack.A.AA.AAC at pack.adb:24 flow analyzed (0 errors, 0 checks, 1 warnings and 0 pragma Assume statements), proof skipped (pragma Annotate Skip_Proof)
+ Pack.A.AA.AAC.AACA at pack.adb:27 flow analyzed (0 errors, 0 checks, 0 warnings and 0 pragma Assume statements), proof skipped (pragma Annotate Skip_Proof)
+ Pack.A.AB at pack.adb:37 flow analyzed (0 errors, 0 checks, 1 warnings and 0 pragma Assume statements) and proved (0 checks)
+ Pack.A.AB.ABA at pack.adb:38 not analyzed (pragma Annotate Skip_Flow_And_Proof)
+ Pack.A.AB.ABA.ABAA at pack.adb:42 flow analyzed (0 errors, 0 checks, 0 warnings and 0 pragma Assume statements), proof skipped (pragma Annotate Skip_Proof)
+ Pack.A.AB.ABB at pack.adb:47 not analyzed (pragma Annotate Skip_Flow_And_Proof)
+ Pack.A.AB.ABB.ABBA at pack.adb:51 flow analyzed (0 errors, 0 checks, 0 warnings and 0 pragma Assume statements), proof skipped (pragma Annotate Skip_Proof)
+ Pack.A.AB.ABC at pack.adb:56 not analyzed (pragma Annotate Skip_Flow_And_Proof)
+ Pack.A.AB.ABC.ABCA at pack.adb:59 flow analyzed (0 errors, 0 checks, 0 warnings and 0 pragma Assume statements), proof skipped (pragma Annotate Skip_Proof)
