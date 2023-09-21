@@ -6,6 +6,7 @@ test.adb:25:22: info: initialization of "C" proved
 test.adb:29:17: info: overflow check proved (CVC5: 2 VC), in call inlined at test.adb:78
 test.adb:29:17: info: overflow check proved (CVC5: 2 VC), in call inlined at test.adb:94
 test.adb:40:13: high: types used for unchecked conversion do not have the same size [possible explanation: type Outer_T doesn't have a Size representation clause or aspect]
+test.adb:40:13: info: implicit function contract might not be available on calls from enclosing unit
 test.adb:40:52: high: type is unsuitable for unchecked conversion [possible explanation: type Root_T is a tagged type]
 test.adb:40:61: high: type is unsuitable as a target for unchecked conversion [possible explanation: type Root_T is a tagged type]
 test.adb:42:14: info: add a contract to analyze it separately from calling contexts

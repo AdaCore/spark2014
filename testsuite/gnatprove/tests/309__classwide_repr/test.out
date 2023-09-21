@@ -1,0 +1,5 @@
+class.adb:8:19: error: representation attribute on class-wide value is not yet supported
+class.adb:9:19: error: representation attribute on class-wide value is not yet supported
+class.adb:10:19: error: representation attribute on class-wide value is not yet supported
+class.adb:11:19: error: representation attribute on class-wide value is not yet supported
+gnatprove: error during flow analysis and proof

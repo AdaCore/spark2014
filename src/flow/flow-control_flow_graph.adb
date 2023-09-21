@@ -1465,6 +1465,17 @@ package body Flow.Control_Flow_Graph is
               (Get_Reclamation_Functions (Etype (E)));
          end if;
 
+         --  Pull proof dependencies from the predicate of the type of E
+         if Ekind (E) in E_Constant
+                       | E_Variable
+                       | E_Function
+                       | E_In_Parameter
+                       | E_Out_Parameter
+                       | E_In_Out_Parameter
+         then
+            Process_Predicate (E, FA.Proof_Dependencies);
+         end if;
+
          --  Setup the n'initial vertex. Note that initialization for
          --  variables is detected (and set) when building the flow graph
          --  for declarative parts.
