@@ -302,6 +302,7 @@ messages.ads:39:13: info: implicit aspect Always_Terminates on "From_Network" ha
 messages.ads:40:19: info: postcondition proved (CVC5: 3 VC)
 messages.ads:46:13: info: implicit aspect Always_Terminates on "To_Network" has been proved, subprogram will terminate
 messages.ads:47:19: info: postcondition proved (CVC5: 3 VC)
+network-addresses.adb:23:72: info: range check proved (CVC5: 1 VC)
 network-addresses.adb:30:07: info: initialization of "Result_Index" proved
 network-addresses.adb:31:07: info: initialization of "Value" proved
 network-addresses.adb:32:07: info: initialization of "Seen_Value" proved
