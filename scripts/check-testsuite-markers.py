@@ -17,7 +17,7 @@ def check_contains_undesirable(p):
         out = f.read()
     for msg in undesirable_messages:
         if msg in out:
-            print(f"file {p} contains text '{msg}'; remove before committing")
+            print(f"file {p} contains text {msg!r}; remove before committing")
             exit(1)
 
 
