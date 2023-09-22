@@ -599,6 +599,14 @@ package body SPARK_Util.Subprograms is
          Globals : Global_Flow_Ids;
 
       begin
+         --  Procedures declared immediately within protected types, both
+         --  within spec and body, have the type itself as an implicit
+         --  parameter of mode IN OUT.
+
+         if Ekind (Scope (E)) = E_Protected_Type then
+            return True;
+         end if;
+
          --  Consider output parameters
 
          while Present (Formal) loop
