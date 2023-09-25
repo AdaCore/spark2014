@@ -2565,7 +2565,7 @@ package body Configuration is
                      else
                         CL_Switches.File_List.Replace_Element
                           (Cursor,
-                           String (CU.Main_Part.Source.Base_Name));
+                           String (CU.Main_Part.Source.Simple_Name));
                         Found := True;
                      end if;
                   end if;
