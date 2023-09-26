@@ -1,1 +1,1 @@
-ALL XFAIL expansion of abstract states fails on generics P609-046
+ALL XFAIL expansion of abstract states fails on generics (eng/spark/spark2014#355)
