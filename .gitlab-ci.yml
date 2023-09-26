@@ -136,7 +136,7 @@ issue_present:
     - if: $CI_PIPELINE_SOURCE == 'merge_request_event'
   stage: build
   script:
-    - python ci/check_issue.py
+    - require_issue
 
 ########
 # Test #
