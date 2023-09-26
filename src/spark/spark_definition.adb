@@ -3925,9 +3925,16 @@ package body SPARK_Definition is
                      elsif Is_Dispatching_Operation (Subp) then
                         Mark_Unsupported (Lim_Access_To_Dispatch_Op, N);
 
-                     --  Volatile functions and subprograms declared within a
-                     --  protected object have an implicit global parameter. We
-                     --  do not support taking their access.
+                     --  Functions with side-effects, volatile functions and
+                     --  subprograms declared within a protected object have
+                     --  an implicit global parameter. We do not support taking
+                     --  their access.
+
+                     elsif Ekind (Subp) = E_Function
+                       and then Is_Function_With_Side_Effects (Subp)
+                     then
+                        Mark_Violation
+                          ("access to function with side-effects", N);
 
                      elsif Ekind (Subp) = E_Function
                        and then Is_Volatile_Function (Subp)
@@ -4563,6 +4570,19 @@ package body SPARK_Definition is
                return;
             end if;
          end;
+      end if;
+
+      --  A call to a function with side-effects may only occur as the
+      --  [right-hand side] expression of an assignment statement. (SPARK
+      --  RM 6.1.11(4))
+
+      if Ekind (E) = E_Function
+        and then Is_Function_With_Side_Effects (E)
+        and then Nkind (Parent (N)) /= N_Assignment_Statement
+      then
+         Mark_Violation
+           ("call to a function with side-effects outside of assignment", N);
+         return;
       end if;
 
       if Ekind (E) = E_Function
@@ -5600,6 +5620,16 @@ package body SPARK_Definition is
                end if;
             end if;
 
+            --  A function with side-effects shall not be a traversal function
+            --  (SPARK RM 6.1.11(7)).
+
+            if Is_Function_With_Side_Effects (Id)
+              and then Is_Traversal_Function (Id)
+            then
+               Mark_Violation
+                 ("traversal function shall not have side-effects", Id);
+            end if;
+
             --  We currently do not support functions annotated with No_Return.
             --  If the need arise, we could handle them as raise expressions,
             --  using a precondition of False to ensure that they are never
@@ -5630,23 +5660,26 @@ package body SPARK_Definition is
                        "parameter", Id);
                end if;
 
-               --  A function declaration shall not have a
-               --  parameter_specification with a mode of OUT or IN OUT
+               --  The declaration of a function without side-effects shall not
+               --  have a parameter_specification with a mode of OUT or IN OUT
                --  (SPARK RM 6.1(6)).
 
-               case Ekind (Formal) is
-                  when E_Out_Parameter =>
-                     Mark_Violation ("function with OUT parameter", Id);
+               if not Is_Function_With_Side_Effects (Id) then
+                  case Ekind (Formal) is
+                     when E_Out_Parameter =>
+                        Mark_Violation ("function with OUT parameter", Id);
 
-                  when E_In_Out_Parameter =>
-                     Mark_Violation ("function with `IN OUT` parameter", Id);
+                     when E_In_Out_Parameter =>
+                        Mark_Violation
+                          ("function with `IN OUT` parameter", Id);
 
-                  when E_In_Parameter =>
-                     null;
+                     when E_In_Parameter =>
+                        null;
 
-                  when others =>
-                     raise Program_Error;
-               end case;
+                     when others =>
+                        raise Program_Error;
+                  end case;
+               end if;
 
                Next_Formal (Formal);
             end loop;
@@ -5677,10 +5710,10 @@ package body SPARK_Definition is
             end if;
 
             --  Go over the global objects accessed by Id to make sure that
-            --  they are not written and that they are not volatile if Id
-            --  is not a volatile function. This check is done in the frontend
-            --  for explict global contracts, but we need it for the generated
-            --  ones.
+            --  they are not written if Id is not a function with side-effects,
+            --  and that they are not volatile if Id is not a volatile
+            --  function. This check is done in the frontend for explict
+            --  global contracts, but we need it for the generated ones.
 
             if Ekind (Id) = E_Function
               and then not Is_Predicate_Function (Id)
@@ -5698,24 +5731,27 @@ package body SPARK_Definition is
                      Ignore_Depends      => False);
 
                   if not Globals.Outputs.Is_Empty then
-                     for G of Globals.Outputs loop
-                        declare
-                           G_Name : constant String :=
-                             (if G.Kind in Direct_Mapping then "&"
-                              else '"' & Flow_Id_To_String (G, Pretty => True)
-                                & '"');
-                        begin
-                           if G.Kind in Direct_Mapping then
-                              Error_Msg_Node_2 := G.Node;
-                           end if;
-                           Mark_Violation
-                             ("function & with output global " & G_Name,
-                              Id,
-                              Code => EC_Function_Output_Global,
-                              Root_Cause_Msg =>
-                                "function with global outputs");
-                        end;
-                     end loop;
+                     if not Is_Function_With_Side_Effects (Id) then
+                        for G of Globals.Outputs loop
+                           declare
+                              G_Name : constant String :=
+                                (if G.Kind in Direct_Mapping then "&"
+                                 else '"'
+                                 & Flow_Id_To_String (G, Pretty => True)
+                                 & '"');
+                           begin
+                              if G.Kind in Direct_Mapping then
+                                 Error_Msg_Node_2 := G.Node;
+                              end if;
+                              Mark_Violation
+                                ("function & with output global " & G_Name,
+                                 Id,
+                                 Code => EC_Function_Output_Global,
+                                 Root_Cause_Msg =>
+                                   "function with global outputs");
+                           end;
+                        end loop;
+                     end if;
 
                   else
                      for G of Globals.Inputs.Union (Globals.Proof_Ins) loop
@@ -5842,16 +5878,14 @@ package body SPARK_Definition is
             Prag := Get_Pragma (E, Pragma_Exceptional_Cases);
             if Present (Prag) then
 
-               --  Functions shall never raise exceptions
-
-               if Ekind (E) = E_Function then
-                  Mark_Violation
-                    (Msg => "aspect ""Exceptional_Cases"" on function",
-                     N   => Prag);
+               --  The frontend rejects Exceptional_Cases on functions without
+               --  side-effects.
+               pragma Assert (Ekind (E) /= E_Function
+                              or else Is_Function_With_Side_Effects (E));
 
                --  The frontend does not allow Exceptional_Cases on entries
 
-               elsif Ekind (E) = E_Entry then
+               if Ekind (E) = E_Entry then
                   raise Program_Error;
 
                --  Reject dispatching operations for now. Supporting them would
@@ -5935,6 +5969,12 @@ package body SPARK_Definition is
 
             Prag := Get_Pragma (E, Pragma_Always_Terminates);
             if Present (Prag) then
+
+               --  The frontend rejects Always_Terminates on functions without
+               --  side-effects.
+               pragma Assert (Ekind (E) /= E_Function
+                              or else Is_Function_With_Side_Effects (E));
+
                declare
                   Assoc : constant List_Id :=
                     Pragma_Argument_Associations (Prag);
@@ -9187,6 +9227,7 @@ package body SPARK_Definition is
             | Pragma_Refined_Global
             | Pragma_Refined_Post
             | Pragma_Refined_State
+            | Pragma_Side_Effects
             | Pragma_SPARK_Mode
             | Pragma_Unevaluated_Use_Of_Old
             | Pragma_Volatile_Function

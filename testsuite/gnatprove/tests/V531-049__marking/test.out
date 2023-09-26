@@ -1,7 +1,3 @@
-main.adb:3:13: error: function with "in out" parameter is not allowed in SPARK
-main.adb:3:13: error: violation of pragma SPARK_Mode at test.adc:1
-gnatprove: error during flow analysis and proof
-Analyzed 1 unit
-in unit main, 1 subprograms and packages out of 1 analyzed
-flow analysis and proof skipped for this unit (error during checking of SPARK_Mode)
- Main at main.adb:1 not analyzed
+main.adb:3:16: error: function cannot have parameter of mode "out" or "in out" in SPARK [E0015]
+main.adb:3:16: error: launch "gnatprove --explain=E0015" for more information
+gnatprove: error during generation of Global contracts

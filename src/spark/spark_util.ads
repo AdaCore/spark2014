@@ -506,8 +506,11 @@ package SPARK_Util is
    function Is_Writable_Parameter (E : Entity_Id) return Boolean
    with Pre => Ekind (E) = E_In_Parameter
          and then Ekind (Scope (E)) in E_Procedure
+                                     | E_Function
                                      | E_Entry
-                                     | E_Subprogram_Type;
+                                     | E_Subprogram_Type
+           and then (if Ekind (Scope (E)) = E_Function
+                     then Is_Function_With_Side_Effects (Scope (E)));
    --  @param E entity of a procedure or entry formal parameter of mode IN
    --  @return True if E can be written despite being of mode IN
 

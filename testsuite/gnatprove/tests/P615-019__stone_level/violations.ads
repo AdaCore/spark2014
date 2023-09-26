@@ -1,6 +1,6 @@
 package Violations is
 
-   function Increment_And_Add (X, Y : in out Integer) return Integer;
+   function Increment_And_Add return Integer;
 
    procedure Operate;
 
