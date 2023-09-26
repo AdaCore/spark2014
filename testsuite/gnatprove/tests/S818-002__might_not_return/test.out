@@ -21,6 +21,8 @@ bad.ads:9:06: info: data dependencies proved
 bad.ads:17:06: info: data dependencies proved
 weird.adb:18:07: medium: unexpected exception might be raised
 weird.ads:9:14: info: aspect Always_Terminates on "R" has been proved, subprogram will terminate
+weird.ads:9:14: warning: launch "gnatprove --explain=E0013" for more information
+weird.ads:9:14: warning: procedure which does not return normally nor raises an exception cannot always terminate [E0013]
 pack.adb:5:07: medium: unexpected exception might be raised
 pack.adb:11:10: high: precondition might fail
 pack.adb:20:22: info: assertion proved (CVC5: 1 VC)

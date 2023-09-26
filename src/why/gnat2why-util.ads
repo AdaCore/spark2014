@@ -466,6 +466,19 @@ package Gnat2Why.Util is
    --  In the translation to Why, use Count_Discriminants instead of
    --  Has_Discriminant to avoid counting hidden discriminants.
 
+   function Get_Expr_Quantified_Over
+     (N          : Node_Id;
+      Over_Range : Boolean)
+      return Node_Id;
+   --  @return the expression over which quantification is performed
+
+   function Get_Quantified_Variable
+     (N          : Node_Id;
+      Over_Range : Boolean)
+      return Entity_Id;
+   --  @return the entity representing the quantified variable of the
+   --     quantification.
+
    function Is_Initialized_At_Decl (Obj : Object_Kind_Id) return Boolean with
      Pre => Is_Mutable_In_Why (Obj);
    --  Returns True if Obj is always initialized at declaration

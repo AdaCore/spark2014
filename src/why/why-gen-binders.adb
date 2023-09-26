@@ -804,7 +804,7 @@ package body Why.Gen.Binders is
                             Typ      =>
                               Field_Type_For_Fields
                                 (Ty,
-                                 Init_Wrapper => Obj_Has_Relaxed_Init (E))),
+                                 Relaxed_Init => Obj_Has_Relaxed_Init (E))),
                        B_Ent    => Null_Entity_Name,
                        Mutable  => True,
                        Labels   => <>));

@@ -602,7 +602,7 @@ package body Why.Gen.Pointers is
 
       Declare_Rep_Pointer_Type (Th, E);
 
-      Close_Theory (Th, Kind => Definition_Theory, Defined_Entity => E);
+      Close_Theory (Th, Kind => Definition_Theory);
    end Create_Rep_Pointer_Theory_If_Needed;
 
    -------------------------
@@ -856,7 +856,7 @@ package body Why.Gen.Pointers is
 
          Complete_Rep_Pointer_Type (Th, E, Separated => True);
 
-         Close_Theory (Th, Kind => Definition_Theory, Defined_Entity => E);
+         Close_Theory (Th, Kind => Definition_Theory);
       end if;
    end Declare_Rep_Pointer_Compl_If_Needed;
 
@@ -1118,7 +1118,7 @@ package body Why.Gen.Pointers is
    ---------------------
 
    function Move_Param_Item (Typ : Entity_Id) return Item_Type is
-      Init_Wrapper : constant Boolean := Has_Init_Wrapper (Typ);
+      Relaxed_Init : constant Boolean := Has_Init_Wrapper (Typ);
       --  Use the init wrapper type for types which have one
 
    begin
@@ -1173,7 +1173,7 @@ package body Why.Gen.Pointers is
                Binder  =>
                  (B_Name   => New_Temp_Identifier
                       (Base_Name => "fields",
-                       Typ       => Field_Type_For_Fields (Typ, Init_Wrapper)),
+                       Typ       => Field_Type_For_Fields (Typ, Relaxed_Init)),
                   Mutable  => True,
                   others   => <>));
             P_Discrs : constant Opt_Binder :=
@@ -1219,7 +1219,7 @@ package body Why.Gen.Pointers is
       elsif Is_Static_Array_Type (Typ) then
          declare
             W_Typ : constant W_Type_Id :=
-              EW_Abstract (Typ, Relaxed_Init => Init_Wrapper);
+              EW_Abstract (Typ, Relaxed_Init => Relaxed_Init);
          begin
             return
               Item_Type'(Kind  => Regular,
@@ -1236,7 +1236,7 @@ package body Why.Gen.Pointers is
          pragma Assert (Is_Array_Type (Typ));
          declare
             W_Typ  : constant W_Type_Id :=
-              EW_Split (Typ, Relaxed_Init => Init_Wrapper);
+              EW_Split (Typ, Relaxed_Init => Relaxed_Init);
             Dim    : constant Positive :=
               Positive (Number_Dimensions (Typ));
             Bounds : Array_Bounds;
@@ -1540,14 +1540,18 @@ package body Why.Gen.Pointers is
          else E_Symb (Ty_Ext, WNE_Pointer_Value));
       S_Is_Null  : W_Identifier_Id := E_Symb (Ty_Ext, WNE_Is_Null_Pointer);
       S_Is_Moved : W_Identifier_Id := E_Symb (Ty_Ext, WNE_Is_Moved_Field);
+      W_Ty       : W_Type_Id := EW_Abstract (Ty_Ext);
 
    begin
-      --  If Local use local names for fields of Ty
+      --  If Local use local names for the fields of Ty and for its abstract
+      --  type.
 
       if Local then
          S_Value := To_Local (S_Value);
          S_Is_Null := To_Local (S_Is_Null);
          S_Is_Moved := To_Local (S_Is_Moved);
+         W_Ty := New_Named_Type
+           (New_Name (Symb => Get_Symb (Get_Name (W_Ty))));
       end if;
 
       --  If Ty designates an incomplete type, we need to reconstruct the
@@ -1577,7 +1581,7 @@ package body Why.Gen.Pointers is
                 (Domain => EW_Term,
                  Field  => S_Is_Moved,
                  Value  => Is_Moved)),
-         Typ          => EW_Abstract (Ty_Ext));
+         Typ          => W_Ty);
    end Pointer_From_Split_Form;
 
    -----------------------

@@ -540,6 +540,9 @@ package body VC_Kinds is
           & " other non-volatile objects",
         when Warn_Function_Is_Valid =>
           "function Is_Valid is assumed to return True",
+        when Warn_No_Possible_Termination =>
+          "?procedure which does not return normally nor raises an exception"
+          & " cannot always terminate",
         when Warn_Pragma_Annotate_No_Check =>
           "no check message justified by this pragma",
         when Warn_Pragma_Annotate_Proved_Check =>
@@ -1421,6 +1424,8 @@ package body VC_Kinds is
           "initialization of alias",
         when Warn_Function_Is_Valid =>
           "function Is_Valid always return True",
+        when Warn_No_Possible_Termination =>
+          "procedure not terminating normally nor abnormally",
         when Warn_Pragma_Annotate_No_Check =>
           "no check message justified",
         when Warn_Pragma_Annotate_Proved_Check =>

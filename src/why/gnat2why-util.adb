@@ -924,6 +924,25 @@ package body Gnat2Why.Util is
       return +Compute_Spec (Params, Conjuncts_List, EW_Pred);
    end Get_LSP_Contract;
 
+   ------------------------------
+   -- Get_Expr_Quantified_Over --
+   ------------------------------
+
+   function Get_Expr_Quantified_Over
+     (N          : Node_Id;
+      Over_Range : Boolean)
+      return Node_Id
+   is
+   begin
+      if Over_Range then
+         return
+           Discrete_Subtype_Definition (Loop_Parameter_Specification (N));
+      else
+         return Get_Container_In_Iterator_Specification
+           (Iterator_Specification (N));
+      end if;
+   end Get_Expr_Quantified_Over;
+
    -----------------------
    -- Get_Graph_Closure --
    -----------------------
@@ -1004,6 +1023,23 @@ package body Gnat2Why.Util is
 
    function Get_Model_Trace_Label (Name : String) return Symbol_Sets.Set is
      (Symbol_Sets.To_Set (NID (Model_Trace_Label & Name)));
+
+   -----------------------------
+   -- Get_Quantified_Variable --
+   -----------------------------
+
+   function Get_Quantified_Variable
+     (N          : Node_Id;
+      Over_Range : Boolean)
+      return Entity_Id
+   is
+   begin
+      if Over_Range then
+         return Defining_Identifier (Loop_Parameter_Specification (N));
+      else
+         return Defining_Identifier (Iterator_Specification (N));
+      end if;
+   end Get_Quantified_Variable;
 
    ------------------------------
    -- Get_Static_Call_Contract --
