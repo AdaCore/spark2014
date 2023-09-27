@@ -576,6 +576,15 @@ package body Flow.Slice is
             Is_Written : Boolean := False;
             --  Innocent till found guilty
 
+            Only_Discr_Or_Bounds_Used : Boolean := True;
+            --  For distinguishing uses that do not make the global object an
+            --  In_Out, see SPARK RM 6.1.4(18): "For purposes of determining
+            --  whether an output of a subprogram shall have a mode_selector of
+            --  Output or In_Out, reads of array bounds, discriminants, or tags
+            --  of any part of the output are ignored." (We currently ignore
+            --  the tags part of this rule, because tags are not particularly
+            --  well supported in flow anyway.)
+
             FS : constant Flow_Id_Sets.Set :=
               Flatten_Variable (Direct_Mapping_Id (G), FA.B_Scope);
             --  ??? why not Flatten_Variable (G, FA.B_Scope)?
@@ -593,6 +602,17 @@ package body Flow.Slice is
                Is_Used := Is_Used
                  or else FA.PDG.Out_Neighbour_Count (V_Initial) > 0;
 
+               --  Check if this read will render the global an In_Out
+
+               if Only_Discr_Or_Bounds_Used
+                  and then FA.PDG.Out_Neighbour_Count (V_Initial) > 0
+                  and then
+                    not (Is_Discriminant (Comp) or else Is_Bound (Comp))
+               then
+                  pragma Assert (Is_Used);
+                  Only_Discr_Or_Bounds_Used := False;
+               end if;
+
                --  If the corresponding 'Final vertex has a single in neighbour
                --  who is the 'Initial vertex then it must be an input.
 
@@ -605,7 +625,7 @@ package body Flow.Slice is
                         and then FA.PDG.Parent (V_Final) = V_Initial);
 
                --  If everything is already known then exit early
-               if Is_Used and Is_Written then
+               if Is_Written and not Only_Discr_Or_Bounds_Used then
                   exit;
                end if;
             end loop;
@@ -615,7 +635,8 @@ package body Flow.Slice is
             if Is_Written then
                Outputs.Insert (G);
 
-               if Is_Used then
+               if not Only_Discr_Or_Bounds_Used then
+                  pragma Assert (Is_Used);
                   Inputs.Insert (G);
                end if;
             else
