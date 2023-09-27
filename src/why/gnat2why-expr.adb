@@ -7350,8 +7350,21 @@ package body Gnat2Why.Expr is
                  Expected_Type_Of_Prefix (Prefix (N));
                Comp : constant Entity_Id :=
                  Search_Component_In_Type (Pref, Entity (Selector_Name (N)));
+
             begin
-               return Retysp (Etype (Comp));
+               --  There might be no such component in the expected type of
+               --  the prefix if there is a view conversion in the prefix and
+               --  Comp is a component of a tagged extension.
+
+               if No (Comp) then
+                  return Retysp
+                    (Etype
+                       (Search_Component_In_Type
+                            (Etype (Prefix (N)),
+                             Entity (Selector_Name (N)))));
+               else
+                  return Retysp (Etype (Comp));
+               end if;
             end;
 
          when N_Explicit_Dereference =>
@@ -11165,9 +11178,11 @@ package body Gnat2Why.Expr is
         (if not Check_Prefix and then Domain = EW_Prog then EW_Pterm
          else Domain);
       --  Domain for the checks on the prefix which are preserved from the
-      --  previous value (index check, discriminant check...
+      --  previous value (index check, discriminant check...)
+
       Result        : W_Expr_Id;
    begin
+
       case Nkind (N) is
          when N_Selected_Component
             | N_Identifier
@@ -11882,7 +11897,6 @@ package body Gnat2Why.Expr is
       Domain       :        EW_Domain := EW_Prog;
       Check_Prefix : Boolean := True)
    is
-      Typ : Type_Kind_Id;
    begin
       case Nkind (N) is
          when N_Identifier
@@ -11899,53 +11913,72 @@ package body Gnat2Why.Expr is
             | N_Unchecked_Type_Conversion
             | N_Qualified_Expression
          =>
-            --  In view conversions, check that the type of the conversion is
-            --  compatible with the tag of the expression.
 
-            if Domain = EW_Prog
-              and then Is_Tagged_Type (Etype (N))
-              and then Nkind (N) /= N_Qualified_Expression
-              and then not Is_Ancestor (Etype (N), Etype (Expression (N)))
-            then
-               Expr := +Insert_Tag_Check
-                 (Ada_Node => N,
-                  Check_Ty => Etype (N),
-                  Expr     => +Expr);
+            --  Insert a conversion to make sure that the reconstructed
+            --  value fullfils the type constraint.
+
+            if Domain = EW_Prog then
+
+               --  For scalar types, the Do_Range_Check flag is set on the
+               --  expression. Insert a conversion with Lvalue set to True
+               --  to generate the checks.
+
+               if Do_Range_Check (Expression (N)) then
+                  Expr := +Insert_Checked_Conversion
+                    (Ada_Node => Expression (N),
+                     Domain   => EW_Prog,
+                     Expr     => Expr,
+                     To       => EW_Abstract
+                       (Retysp (Etype (Expression (N))),
+                        Is_Init_Wrapper_Type (Get_Type (Expr))),
+                     Lvalue   => True);
+
+               else
+                  declare
+                     Tmp_Expr : W_Expr_Id := New_Temp_For_Expr (Expr);
+                  begin
+                     Expr := +Sequence
+                       (Left  => New_Ignore
+                          (Prog => +Insert_Checked_Conversion
+                               (Ada_Node => N,
+                                Domain   => EW_Prog,
+                                Expr     => Tmp_Expr,
+                                To       => EW_Abstract
+                                  (Etype (N),
+                                   Is_Init_Wrapper_Type (Get_Type (Expr))))),
+                        Right => +Tmp_Expr);
+                     Expr := Binding_For_Temp
+                       (Tmp     => Tmp_Expr,
+                        Context => Expr,
+                        Domain  => Domain);
+                  end;
+
+                  --  If the origin of the conversion has predicates, they
+                  --  might not be checked. Do it here.
+
+                  if Has_Predicates (Etype (Expression (N))) then
+                     Expr := +Insert_Predicate_Check
+                       (Ada_Node => Expression (N),
+                        Check_Ty => Etype (Expression (N)),
+                        W_Expr   => +Expr);
+                  end if;
+               end if;
+
+               --  In view conversions, check that the type of the conversion
+               --  is compatible with the tag of the expression.
+
+               if Is_Tagged_Type (Etype (N))
+                 and then Nkind (N) /= N_Qualified_Expression
+                 and then not Is_Ancestor (Etype (N), Etype (Expression (N)))
+               then
+                  Expr := +Insert_Tag_Check
+                    (Ada_Node => N,
+                     Check_Ty => Etype (N),
+                     Expr     => +Expr);
+               end if;
             end if;
 
             N := Expression (N);
-            Typ := Retysp (Etype (N));
-
-            --  When performing copy back of parameters or due to inlining
-            --  on GNATprove mode, left-hand side of assignment may contain
-            --  a type conversion that must be checked. For non scalar
-            --  types, do not use Insert_Checked_Conversion which introduces
-            --  too many checks (bounds, discriminants).
-
-            if Domain = EW_Prog and then Do_Range_Check (N) then
-               Expr :=
-                 +Insert_Checked_Conversion
-                 (Ada_Node => N,
-                  Domain   => EW_Prog,
-                  Expr     => Expr,
-                  To       => EW_Abstract
-                    (Typ, Is_Init_Wrapper_Type (Get_Type (Expr))),
-                  Lvalue   => True);
-            else
-               Expr :=
-                 +Insert_Simple_Conversion
-                 (Domain => Domain,
-                  Expr   => Expr,
-                  To     => EW_Abstract
-                    (Typ, Is_Init_Wrapper_Type (Get_Type (Expr))));
-
-               if Domain = EW_Prog and then Has_Predicates (Typ) then
-                  Expr := +Insert_Predicate_Check
-                    (Ada_Node => N,
-                     Check_Ty => Typ,
-                     W_Expr   => +Expr);
-               end if;
-            end if;
 
          when N_Selected_Component
             | N_Indexed_Component
@@ -11953,6 +11986,19 @@ package body Gnat2Why.Expr is
             | N_Explicit_Dereference
          =>
             Last_Access := N;
+
+            --  Go to the expected type before performing a record update to
+            --  avoid conversion on component types which could be discriminant
+            --  dependent.
+
+            if Nkind (N) = N_Selected_Component then
+               Expr := +Insert_Simple_Conversion
+                 (Domain => Domain,
+                  Expr   => Expr,
+                  To     => EW_Abstract
+                    (Retysp (Etype (N)),
+                     Is_Init_Wrapper_Type (Get_Type (Expr))));
+            end if;
 
             declare
                Prefix_Type : constant W_Type_Id :=
@@ -15287,29 +15333,26 @@ package body Gnat2Why.Expr is
         Transform_Prog (Expression (Stmt),
                         L_Type,
                         Params => Params);
+
+      --  For length checks and discriminant checks, look through conversions
+      --  to get the object which is actually modified.
+
+      Exp_Ty     : constant Entity_Id := Expected_Type_Of_Prefix (Lvalue);
       Lgth_Check : constant Boolean :=
-        Present (Get_Ada_Node (+L_Type)) and then
-
-        --  Length check needed for assignment into a non-static array type
-
-        (Is_Array_Type (Get_Ada_Node (+L_Type)) and then
-           not Is_Static_Array_Type (Get_Ada_Node (+L_Type)));
-
-         --  Discriminant check needed for assignment into a non-constrained
-         --  record type. Constrained record type are handled by the
-         --  conversion.
+        (Is_Array_Type (Exp_Ty) and then not Is_Static_Array_Type (Exp_Ty));
+      --  Length check needed for assignment into a non-static array type
 
       Disc_Check : constant Boolean :=
-        Present (Get_Ada_Node (+L_Type)) and then
-        (if Is_Access_Type (Get_Ada_Node (+L_Type)) then
-            Has_Discriminants
-              (Directly_Designated_Type (Get_Ada_Node (+L_Type)))
-         and then not Is_Constrained (Directly_Designated_Type
-                                        (Get_Ada_Node (+L_Type)))
+        (if Is_Access_Type (Exp_Ty)
+         then Has_Discriminants (Directly_Designated_Type (Exp_Ty))
+         and then not Is_Constrained (Directly_Designated_Type (Exp_Ty))
+         else Has_Discriminants (Exp_Ty)
+         and then not Is_Constrained (Exp_Ty));
+      --  Discriminant check needed for assignment into a non-constrained
+      --  record type. Constrained record type are handled by the
+      --  conversion.
 
-         else
-            Has_Discriminants (Get_Ada_Node (+L_Type))
-         and then not Is_Constrained (Get_Ada_Node (+L_Type)));
+      --  Tag checks are only necessary if the LHS is classwide
 
       Tag_Check  : constant Boolean :=
         Is_Class_Wide_Type (Etype (Lvalue)) and then
