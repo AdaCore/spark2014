@@ -479,6 +479,9 @@ class SPARKTestFinder(TestFinder):
                     if "prove_all" in test_env
                     else {}
                 )
+        # copy replay info into test_env[args_entry] if not already present:
+        if "replay" in test_env and "replay" not in test_env[args_entry]:
+            test_env[args_entry]["replay"] = test_env["replay"]
         # This is a valid test, return the ParsedTest object
         return ParsedTest(testname, ProofTestDriver, test_env, dirpath)
 

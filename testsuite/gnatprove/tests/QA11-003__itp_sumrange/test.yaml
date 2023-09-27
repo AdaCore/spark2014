@@ -1,8 +1,7 @@
-large: True
 replay: True
+contains_manual_proof: True
 prove_all:
   prover: ["cvc5", "z3"]
   counterexample: False
-  sparklib: True
 session_opt:
-  level: 4
+  steps: 10000

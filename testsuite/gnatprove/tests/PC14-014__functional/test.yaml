@@ -1,2 +1,8 @@
 large: True
 timeout: 2000
+replay: True
+prove_all:
+  opt: ["--function-sandboxing=off", "--counterexamples=off"]
+  sparklib: True
+session_opt:
+  level: 4

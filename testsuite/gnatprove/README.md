@@ -1,17 +1,14 @@
-Contents
-========
+# Contents
 
 This directory contains the testsuite for SPARK 2014.
 
-Requirements
-============
+# Requirements
 
 Python >= 3.7
 e3-testsuite via `pip install` or from
 [github](https://github.com/AdaCore/e3-testsuite).
 
-Running the testsuite
-=====================
+# Running the testsuite
 
 Simply run
 ```
@@ -20,8 +17,7 @@ Simply run
 
 You can add the `--help` switch to see other options.
 
-Test structure
-==============
+# Test structure
 
 Each subdirectory of `tests` is a separate testcase, the directory name is
 equal to the test name.
@@ -68,9 +64,42 @@ Tests with the prefix `ug__` are part of the special SPARK UG testsuite and
 don't interpret test.yaml or test.py files. They run a fixed `gnatprove`
 command. See the `UGTestDriver` in `run-tests` for details.
 
+# Replay tests:
 
-Benchmarking
-============
+Replay tests are tests that store session files and only replay the registered
+proofs during a normal testsuite run. The goal is to make testing faster. The
+script `update-session-test` helps to regenerate a session. There are two ways
+to transform a test into replay test:
+
+## Using yaml
+
+Add `replay:True` at the top-level of the yaml file. The regular `prove_all`
+entry is used to replay the test. A separate top-level entry `session_opt` can
+be used to provide additional options for the session generation. If you do not
+want `update-session-test` to delete the session before starting, set
+`contains_manual_proof` to True at top-level.
+
+## Using test.py
+
+You need to add these things to the test.py:
+- a global variable `contains_manual_proof`, usually set to false (see above
+  for the semantics)
+- a function `replay` which usually calls `prove_all` with appropriate
+  arguments for session generation
+- make it so that the "normal" test code (usually a `prove_all` call with
+  `replay` set to `True`) is only run if the script is the main program, e.g.
+using
+```
+if __name__ == "__main__":
+```
+
+## Common requirements for replay tests
+
+The sessions should be stored in a proof dir mostly called "proof". This also
+usually requires adding a project file (if not already present) with the
+`Proof_Dir` directive. The sessions (xml files) should be committed to git.
+
+# Benchmarking
 
 A separate testsuite called "sparkbench" is run for the tests listed in
 `MANIFEST.bench`. The scripts for this testsuite are in the `bench`
