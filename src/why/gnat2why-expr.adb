@@ -1711,9 +1711,49 @@ package body Gnat2Why.Expr is
          Append (Context, Dyn_Inv);
       end;
 
-      --  Assume value if constant
+      --  Constants of access-to-variable types are not constant. Still assume
+      --  the value of the is_null field if the declaration is null or an
+      --  allocator.
 
       if Ekind (E) = E_Constant
+        and then Is_Access_Variable (Etype (E))
+      then
+         declare
+            FV        : constant Entity_Id :=
+              (if Is_Object (E) and then Is_Partial_View (E)
+               and then Entity_In_SPARK (Full_View (E))
+               then Full_View (E) else E);
+            Decl      : constant Node_Id := Enclosing_Declaration (FV);
+            Init_Expr : constant Node_Id := Expression (Decl);
+         begin
+            if Ekind (FV) /= E_In_Parameter
+              and then Present (Init_Expr)
+            then
+               case Nkind (Init_Expr) is
+                  when N_Null =>
+                     Append
+                       (Context,
+                        New_Assume_Statement
+                          (Pred => Pred_Of_Boolean_Term
+                               (W => +New_Pointer_Is_Null_Access
+                                    (Etype (E), L_Id))));
+                  when N_Allocator =>
+                     Append
+                       (Context,
+                        New_Assume_Statement
+                          (Pred => New_Not
+                               (Right => Pred_Of_Boolean_Term
+                                    (W => +New_Pointer_Is_Null_Access
+                                       (Etype (E), L_Id)))));
+                  when others =>
+                     null;
+               end case;
+            end if;
+         end;
+
+      --  Otherwise, assume value if constant
+
+      elsif Ekind (E) = E_Constant
         or else Is_Named_Number (E)
       then
          declare
