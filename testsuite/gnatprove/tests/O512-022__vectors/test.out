@@ -2,7 +2,7 @@ vectors.adb:5:14: info: add a contract to analyze it separately from calling con
 vectors.adb:5:14: info: local subprogram "Set_Id" only analyzed in the context of calls
 vectors.adb:13:14: info: add a contract to analyze it separately from calling contexts
 vectors.adb:13:14: info: local subprogram "Bump_Sig" only analyzed in the context of calls
-vectors.adb:17:38: medium: overflow check might fail, cannot prove upper bound for Container.Sig + 1, in call inlined at vectors.adb:108 (e.g. when Container = (Id => 0, Sig => Positive'Last, Elements => (others => 0), Last_Index => 1)) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: loop at line 103 should mention Container in a loop invariant]
+vectors.adb:17:38: high: overflow check might fail, cannot prove upper bound for Container.Sig + 1, in call inlined at vectors.adb:108 (e.g. when Container = (Id => 0, Sig => Positive'Last, Elements => (others => 0), Last_Index => 1)) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: loop at line 103 should mention Container in a loop invariant]
 vectors.adb:17:38: medium: overflow check might fail, cannot prove upper bound for Container.Sig + 1, in call inlined at vectors.adb:120 [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: loop at line 116 should mention Container in a loop invariant]
 vectors.adb:23:07: info: analyzing call to "Set_Id" in context
 vectors.adb:32:07: info: initialization of "Position" proved

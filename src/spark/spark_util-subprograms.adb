@@ -608,7 +608,9 @@ package body SPARK_Util.Subprograms is
                =>
                   return True;
                when E_In_Parameter =>
-                  null;
+                  if Is_Writable_Parameter (Formal) then
+                     return True;
+                  end if;
             end case;
             Next_Formal (Formal);
          end loop;

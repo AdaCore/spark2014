@@ -1073,7 +1073,7 @@ package body SPARK_Util is
          begin
             if Is_Ghost_Entity (Callee) and then not Is_Ghost_Entity (Caller)
             then
-               Raise_To_Handlers_Map.Insert (Stmt, Handlers);
+               Raise_To_Handlers_Map.Insert (Stmt, Node_Lists.Empty_List);
                return;
             end if;
          end;
@@ -2942,7 +2942,7 @@ package body SPARK_Util is
                   Expr : constant Node_Id := Expression (Arg2);
                begin
                   return Compile_Time_Known_Value (Expr)
-                    and then Expr_Value (Expr) = Uint_0;
+                    and then Is_False (Expr_Value (Expr));
                end;
             else
                return False;
@@ -2965,9 +2965,6 @@ package body SPARK_Util is
                       Nkind (Expr) in N_Expanded_Name | N_Identifier
                         and then Entity (Expr) = Standard_False);
             end;
-
-         when N_Call_Marker =>
-            return Is_Error_Signaling_Statement (Next (N));
 
          when others =>
             return False;

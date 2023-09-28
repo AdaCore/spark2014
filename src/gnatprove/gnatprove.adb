@@ -72,7 +72,6 @@ with Ada.Strings.Unbounded;
 with Ada.Text_IO;      use Ada.Text_IO;
 with Call;             use Call;
 with Configuration;    use Configuration;
-with GNAT.Expect;      use GNAT.Expect;
 with GNAT.OS_Lib;
 with GNAT.Strings;     use GNAT.Strings;
 with Gnat2Why_Opts;    use Gnat2Why_Opts;
@@ -148,7 +147,7 @@ procedure Gnatprove with SPARK_Mode is
    --  prove the program.
 
    function Spawn_VC_Server_And_Semaphore (Tree : Project.Tree.Object)
-      return Process_Descriptor;
+      return GNAT.OS_Lib.Process_Id;
    --  Spawn the VC server of Why3 and create the semaphore used for gnatwhy3
    --  processes.
 
@@ -161,7 +160,7 @@ procedure Gnatprove with SPARK_Mode is
 
    function Non_Blocking_Spawn
      (Command   : String;
-      Arguments : String_Lists.List) return Process_Descriptor;
+      Arguments : String_Lists.List) return GNAT.OS_Lib.Process_Id;
    --  Spawn a process in a non-blocking way
 
    procedure Write_Why3_Conf_File (Obj_Dir : String);
@@ -604,7 +603,7 @@ procedure Gnatprove with SPARK_Mode is
       declare
          use String_Lists;
          Args     : String_Lists.List;
-         Id       : Process_Descriptor;
+         Id       : GNAT.OS_Lib.Process_Id;
       begin
          Args.Append ("--subdirs=" & Phase2_Subdir.Display_Full_Name);
 
@@ -639,12 +638,7 @@ procedure Gnatprove with SPARK_Mode is
             if CL_Switches.Why3_Server = null
               or else CL_Switches.Why3_Server.all = ""
             then
-               declare
-                  Del_Succ : Boolean;
-               begin
-                  Close (Id);
-                  GNAT.OS_Lib.Delete_File (Socket_Name.all, Del_Succ);
-               end;
+               GNAT.OS_Lib.Kill_Process_Tree (Id, Hard_Kill => False);
             end if;
             if Use_Semaphores then
                Close (Why3_Semaphore);
@@ -816,13 +810,13 @@ procedure Gnatprove with SPARK_Mode is
 
    function Non_Blocking_Spawn
      (Command   : String;
-      Arguments : String_Lists.List) return Process_Descriptor
+      Arguments : String_Lists.List) return GNAT.OS_Lib.Process_Id
    is
-      Executable : String_Access :=
+      Executable : GNAT.OS_Lib.String_Access :=
         GNAT.OS_Lib.Locate_Exec_On_Path (Command);
       Args       : GNAT.OS_Lib.Argument_List :=
         Argument_List_Of_String_List (Arguments);
-      Proc       : Process_Descriptor;
+      Proc       : GNAT.OS_Lib.Process_Id;
    begin
       if Executable = null then
          Ada.Text_IO.Put_Line ("Could not find executable " & Command);
@@ -835,11 +829,7 @@ procedure Gnatprove with SPARK_Mode is
          end loop;
          Ada.Text_IO.New_Line;
       end if;
-      Non_Blocking_Spawn
-        (Proc,
-         Executable.all,
-         Args,
-         Err_To_Out => True);
+      Proc := GNAT.OS_Lib.Non_Blocking_Spawn (Executable.all, Args);
       Free (Args);
       Free (Executable);
       return Proc;
@@ -898,11 +888,11 @@ procedure Gnatprove with SPARK_Mode is
    ---------------------
 
    function Spawn_VC_Server_And_Semaphore (Tree : Project.Tree.Object)
-      return Process_Descriptor
+      return GNAT.OS_Lib.Process_Id
    is
       Args : String_Lists.List;
       Cur  : constant String := Ada.Directories.Current_Directory;
-      Id   : Process_Descriptor;
+      Id   : GNAT.OS_Lib.Process_Id;
    begin
       if CL_Switches.Why3_Server = null
         or else CL_Switches.Why3_Server.all = ""

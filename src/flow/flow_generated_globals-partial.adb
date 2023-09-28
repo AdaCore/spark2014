@@ -2212,7 +2212,15 @@ package body Flow_Generated_Globals.Partial is
             Tasking            => Unused,
             Generating_Globals => True);
 
-         Proofdeps.Union (To_Subprograms (Funcalls));
+         for Call of Funcalls loop
+
+            --  We don't pull calls via access-to-subprograms in proof
+            --  dependencies.
+
+            if Ekind (Call.E) /= E_Subprogram_Type then
+               Proofdeps.Include (Call.E);
+            end if;
+         end loop;
       end Collect_Proof_Dependencies;
 
    --  Start of processing for Contract_Proof_Dependencies

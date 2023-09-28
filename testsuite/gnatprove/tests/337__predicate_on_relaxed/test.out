@@ -1,6 +1,6 @@
 test.adb:1:11: warning: subprogram "Test" has no effect
 test.adb:19:16: info: predicate check proved (CVC5: 1 VC)
-test.adb:20:12: info: initialization check proved (CVC5: 3 VC; Trivial: 3 VC)
+test.adb:20:12: info: initialization check proved (CVC5: 2 VC)
 test.adb:20:12: info: predicate check proved (CVC5: 1 VC)
 test.adb:20:16: info: predicate check proved (CVC5: 1 VC)
 test.adb:20:16: medium: initialization check might fail (e.g. when X = (F => 1, G => ?) and X.F'Initialized = True and X.G'Initialized = False)
