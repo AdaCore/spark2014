@@ -1200,7 +1200,8 @@ package body Gnat2Why.Subprograms is
                           (Right => Func_Why_Binders (I).Init.Id,
                            Typ   => Get_Typ (Func_Why_Binders (I).Init.Id))
                         else True_Term);
-                     Dyn_Prop  : constant W_Pred_Id :=
+
+                     Dyn_Prop   : constant W_Pred_Id :=
                        Compute_Dynamic_Invariant
                          (Expr             =>
                             +Transform_Identifier

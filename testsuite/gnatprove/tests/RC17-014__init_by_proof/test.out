@@ -69,17 +69,35 @@ init_by_proof.adb:82:10: info: precondition proved (CVC5: 1 VC)
 init_by_proof.adb:84:12: info: initialization check proved (CVC5: 1 VC)
 init_by_proof.adb:85:12: medium: initialization check might fail
 nested_init_by_proof.adb:15:13: info: implicit aspect Always_Terminates on "My_Eq" has been proved, subprogram will terminate
+nested_init_by_proof.adb:17:16: info: for mutable discriminants at nested_init_by_proof.adb:4
+nested_init_by_proof.adb:17:16: info: initialization check proved (CVC5: 1 VC)
+nested_init_by_proof.adb:17:35: info: for mutable discriminants at nested_init_by_proof.adb:4
+nested_init_by_proof.adb:17:35: info: initialization check proved (CVC5: 1 VC)
+nested_init_by_proof.adb:18:20: info: for mutable discriminants at nested_init_by_proof.adb:4
+nested_init_by_proof.adb:18:20: info: initialization check proved (CVC5: 1 VC)
 nested_init_by_proof.adb:18:43: info: initialization check proved (CVC5: 1 VC)
 nested_init_by_proof.adb:18:50: info: initialization check proved (CVC5: 1 VC)
+nested_init_by_proof.adb:20:20: info: for mutable discriminants at nested_init_by_proof.adb:4
+nested_init_by_proof.adb:20:20: info: initialization check proved (CVC5: 1 VC)
 nested_init_by_proof.adb:20:21: info: discriminant check proved (CVC5: 1 VC)
+nested_init_by_proof.adb:20:39: info: for mutable discriminants at nested_init_by_proof.adb:4
+nested_init_by_proof.adb:20:39: info: initialization check proved (CVC5: 1 VC)
 nested_init_by_proof.adb:20:40: info: discriminant check proved (CVC5: 1 VC)
+nested_init_by_proof.adb:21:23: info: for mutable discriminants at nested_init_by_proof.adb:4
+nested_init_by_proof.adb:21:23: info: initialization check proved (CVC5: 1 VC)
 nested_init_by_proof.adb:21:24: info: discriminant check proved (CVC5: 1 VC)
 nested_init_by_proof.adb:21:46: info: discriminant check proved (CVC5: 1 VC)
 nested_init_by_proof.adb:21:46: info: initialization check proved (CVC5: 1 VC)
 nested_init_by_proof.adb:21:53: info: discriminant check proved (CVC5: 1 VC)
 nested_init_by_proof.adb:21:53: info: initialization check proved (CVC5: 1 VC)
+nested_init_by_proof.adb:22:13: info: for mutable discriminants at nested_init_by_proof.adb:4
+nested_init_by_proof.adb:22:13: info: initialization check proved (CVC5: 1 VC)
 nested_init_by_proof.adb:22:14: info: discriminant check proved (CVC5: 1 VC)
+nested_init_by_proof.adb:22:32: info: for mutable discriminants at nested_init_by_proof.adb:4
+nested_init_by_proof.adb:22:32: info: initialization check proved (CVC5: 1 VC)
 nested_init_by_proof.adb:22:33: info: discriminant check proved (CVC5: 1 VC)
+nested_init_by_proof.adb:23:23: info: for mutable discriminants at nested_init_by_proof.adb:4
+nested_init_by_proof.adb:23:23: info: initialization check proved (CVC5: 1 VC)
 nested_init_by_proof.adb:23:24: info: discriminant check proved (CVC5: 1 VC)
 nested_init_by_proof.adb:23:46: info: discriminant check proved (CVC5: 1 VC)
 nested_init_by_proof.adb:23:46: info: initialization check proved (CVC5: 1 VC)
@@ -89,7 +107,15 @@ nested_init_by_proof.adb:28:07: info: range check proved (CVC5: 2 VC)
 nested_init_by_proof.adb:31:20: info: initialization of "X" proved
 nested_init_by_proof.adb:36:22: warning: unused initial value of "X"
 nested_init_by_proof.adb:42:14: info: postcondition proved (CVC5: 7 VC; Trivial: 1 VC)
+nested_init_by_proof.adb:44:21: info: for mutable discriminants at nested_init_by_proof.adb:4
+nested_init_by_proof.adb:44:21: info: initialization check proved (Trivial: 1 VC)
 nested_init_by_proof.adb:44:22: info: discriminant check proved (CVC5: 1 VC)
+nested_init_by_proof.adb:45:25: info: for mutable discriminants at nested_init_by_proof.adb:4
+nested_init_by_proof.adb:45:25: info: initialization check proved (Trivial: 1 VC)
+nested_init_by_proof.adb:45:45: info: for mutable discriminants at nested_init_by_proof.adb:4
+nested_init_by_proof.adb:45:45: info: initialization check proved (Trivial: 1 VC)
+nested_init_by_proof.adb:46:29: info: for mutable discriminants at nested_init_by_proof.adb:4
+nested_init_by_proof.adb:46:29: info: initialization check proved (Trivial: 1 VC)
 nested_init_by_proof.adb:47:31: info: initialization check proved (CVC5: 1 VC)
 nested_init_by_proof.adb:47:42: info: initialization check proved (CVC5: 1 VC)
 nested_init_by_proof.adb:51:11: info: discriminant check proved (CVC5: 1 VC)
@@ -99,10 +125,20 @@ nested_init_by_proof.adb:60:19: info: discriminant check proved (CVC5: 1 VC; Tri
 nested_init_by_proof.adb:61:19: info: assertion proved (CVC5: 1 VC)
 nested_init_by_proof.adb:62:18: info: discriminant check proved (CVC5: 1 VC; Trivial: 1 VC)
 nested_init_by_proof.adb:64:19: info: assertion proved (CVC5: 1 VC)
+nested_init_by_proof.adb:65:11: info: for mutable discriminants at nested_init_by_proof.adb:4
+nested_init_by_proof.adb:65:11: info: initialization check proved (CVC5: 1 VC)
+nested_init_by_proof.adb:66:13: info: for mutable discriminants at nested_init_by_proof.adb:4
+nested_init_by_proof.adb:66:13: info: initialization check proved (CVC5: 1 VC)
 nested_init_by_proof.adb:66:25: info: initialization check proved (CVC5: 1 VC)
+nested_init_by_proof.adb:67:14: info: for mutable discriminants at nested_init_by_proof.adb:4
+nested_init_by_proof.adb:67:14: info: initialization check proved (CVC5: 1 VC)
 nested_init_by_proof.adb:68:19: info: assertion proved (CVC5: 1 VC)
+nested_init_by_proof.adb:69:10: info: for mutable discriminants at nested_init_by_proof.adb:4
+nested_init_by_proof.adb:69:10: info: initialization check proved (CVC5: 1 VC)
 nested_init_by_proof.adb:69:23: info: discriminant check proved (CVC5: 1 VC)
 nested_init_by_proof.adb:69:23: info: initialization check proved (CVC5: 1 VC)
+nested_init_by_proof.adb:70:10: info: for mutable discriminants at nested_init_by_proof.adb:4
+nested_init_by_proof.adb:70:10: info: initialization check proved (CVC5: 1 VC)
 nested_init_by_proof.adb:70:23: info: discriminant check proved (CVC5: 1 VC)
 nested_init_by_proof.adb:70:23: medium: initialization check might fail
 output_global.adb:7:22: info: data dependencies proved

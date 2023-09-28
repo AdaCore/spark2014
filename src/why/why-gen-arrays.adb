@@ -768,7 +768,7 @@ package body Why.Gen.Arrays is
          Indexes   : Binder_Array (1 .. Dim);
          Index     : Node_Id := First_Index (Ty_Ext);
          I         : Positive := 1;
-         T_Comp    : W_Expr_Id := +True_Pred;
+         T_Comp    : W_Pred_Id := True_Pred;
          Tmp       : W_Identifier_Id;
          T         : W_Pred_Id := True_Pred;
 
@@ -802,17 +802,15 @@ package body Why.Gen.Arrays is
             --  an unsound axiom. Initialization checks will be inserted
             --  independently.
 
-            A_Comp       : W_Expr_Id := New_Call
-              (Domain  => EW_Term,
-               Name    => From_Symb.Get,
+            A_Comp       : W_Term_Id := New_Call
+              (Name    => From_Symb.Get,
                Binders => A_Binder & Indexes,
                Typ     => EW_Abstract
                  (From_Comp,
                   Relaxed_Init => Has_Relaxed_Init (From_Comp)
                   or else From_Wrapper));
-            B_Comp       : W_Expr_Id := New_Call
-              (Domain  => EW_Term,
-               Name    => To_Symb.Get,
+            B_Comp       : W_Term_Id := New_Call
+              (Name    => To_Symb.Get,
                Binders => B_Binder & Indexes,
                Typ     => EW_Abstract
                  (To_Comp,
@@ -826,9 +824,8 @@ package body Why.Gen.Arrays is
                 or else From_Wrapper) /= Relaxed_Init
             then
                A_Comp := Insert_Simple_Conversion
-                 (Domain => EW_Term,
-                  Expr   => A_Comp,
-                  To     => EW_Abstract
+                 (Expr => A_Comp,
+                  To   => EW_Abstract
                     (From_Comp, Relaxed_Init => Relaxed_Init));
             end if;
 
@@ -842,11 +839,10 @@ package body Why.Gen.Arrays is
                  (Symbol => Why_Eq,
                   Left   => New_Init_Attribute_Access
                     (E    => From_Comp,
-                     Name => A_Comp),
+                     Name => +A_Comp),
                   Right  =>  New_Init_Attribute_Access
                     (E    => To_Comp,
-                     Name => B_Comp),
-                  Domain => EW_Pred);
+                     Name => +B_Comp));
             end if;
 
             --  Do the actual conversion.
@@ -854,11 +850,11 @@ package body Why.Gen.Arrays is
 
             if Is_Array_Type (From_Comp) then
                if not Has_Static_Array_Type (From_Comp) then
-                  A_Comp := Array_Convert_To_Base (EW_Term, A_Comp);
+                  A_Comp := +Array_Convert_To_Base (EW_Term, +A_Comp);
                end if;
 
                if not Has_Static_Array_Type (To_Comp) then
-                  B_Comp := Array_Convert_To_Base (EW_Term, B_Comp);
+                  B_Comp := +Array_Convert_To_Base (EW_Term, +B_Comp);
                end if;
 
             --  Otherwise, use base type
@@ -872,30 +868,25 @@ package body Why.Gen.Arrays is
                      else EW_Init_Wrapper (BT));
                begin
                   A_Comp := Insert_Simple_Conversion
-                   (Domain => EW_Term,
-                    Expr   => A_Comp,
-                    To     => Init_BT);
+                   (Expr => A_Comp,
+                    To   => Init_BT);
                   B_Comp := Insert_Simple_Conversion
-                   (Domain => EW_Term,
-                    Expr   => B_Comp,
-                    To     => Init_BT);
+                   (Expr => B_Comp,
+                    To   => Init_BT);
                end;
             end if;
 
-            T_Comp :=
-                New_And_Then_Expr
-                  (Left   => T_Comp,
-                   Right  => New_Comparison
-                     (Symbol => Why_Eq,
-                      Left   => A_Comp,
-                      Right  => B_Comp,
-                      Domain => EW_Pred),
-                   Domain => EW_Pred);
+            T_Comp := New_And_Pred
+              (Left   => T_Comp,
+               Right  => New_Comparison
+                 (Symbol => Why_Eq,
+                  Left   => A_Comp,
+                  Right  => B_Comp));
          end;
 
          T := New_Universal_Quantif
            (Binders => Indexes,
-            Pred    => +T_Comp);
+            Pred    => T_Comp);
 
          T := +New_Typed_Binding
            (Domain  => EW_Pred,

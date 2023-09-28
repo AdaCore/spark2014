@@ -422,6 +422,12 @@ package Why.Gen.Records is
    --  /\ ..
    --  /\ (check_for_fn <Expr> -> Build_Predicate_For_Field <Expr>.rec__fn)
    --
+   --  The parameters of the subprogram formal parameters are:
+   --    * *_Expr the Why expression for the component/discriminant access
+   --    * *_Ty the Ada type of the component/discriminant
+   --    * E the Ada entity for the component or discriminant. It can be a type
+   --      entity to model the private part of the type.
+   --
    --  If Ignore_Private_State is True, only consider actual components and
    --  Part_Of objects. Otherwise, Build_Predicate_For_Field is also called
    --  on type entities of ancestors of Ty which have private components.
@@ -445,6 +451,12 @@ package Why.Gen.Records is
    --      Build_Predicate_For_Field <Expr1>.rec__fn <Expr2>.rec__fn)
    --  As visible above, this only makes sense if the discriminants for
    --  Expr1 and Expr2 are equal.
+   --
+   --  The parameters of the subprogram formal parameters are:
+   --    * *_Expr the Why expression for the component/discriminant access
+   --    * *_Ty the Ada type of the component/discriminant
+   --    * E the Ada entity for the component or discriminant. It can be a type
+   --      entity to model the private part of the type.
    --
    --  If Ignore_Private_State is True, only consider actual components and
    --  Part_Of objects. Otherwise, Build_Predicate_For_Field is also called
