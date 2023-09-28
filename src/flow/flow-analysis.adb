@@ -5630,7 +5630,11 @@ package body Flow.Analysis is
             or else (for some F of Get_Explicit_Formals (FA.Spec_Entity)
                        => Is_Effectively_Volatile_For_Reading (Etype (F)));
 
-         pragma Assert (Globals.Outputs.Is_Empty);
+         --  HACK: Exempt functions with side-effects from checking until
+         --  support is added in flow.
+         if not Is_Function_With_Side_Effects (FA.Spec_Entity) then
+            pragma Assert (Globals.Outputs.Is_Empty);
+         end if;
       end;
 
       --  Emit messages about nonvolatile functions with volatile effects

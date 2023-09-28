@@ -597,7 +597,7 @@ package body Gnat2Why.Expr is
      (Ada_Node    : Node_Id;
       Ex_Name     : W_Identifier_Id;
       Handled_Exc : Exception_Sets.Set)
-                     return W_Prog_Id;
+      return W_Prog_Id;
    --  Generate conditional raising an exception if Ex_Name is in Handled_Exc
    --  and absurd statement otherwise.
 
@@ -739,6 +739,19 @@ package body Gnat2Why.Expr is
       Params : Transformation_Params)
       return W_Prog_Id;
    --  ???
+
+   function Transform_Call_With_Side_Effects
+     (Params : Transformation_Params;
+      Call   : Node_Id)
+      return W_Prog_Id
+   with
+     Pre => Nkind (Call) in N_Entry_Call_Statement
+                          | N_Function_Call
+                          | N_Procedure_Call_Statement
+           and then
+             (if Nkind (Call) = N_Function_Call
+              then Is_Function_With_Side_Effects (Get_Called_Entity (Call)));
+   --  Transform a call to a subprogram with side-effects
 
    function Transform_Comparison
      (Expr   : Node_Id;
@@ -10059,12 +10072,13 @@ package body Gnat2Why.Expr is
 
       Ref_Context := +Store;
 
-      --  In the case of a function call, there is value to return as the
-      --  final expression. Note that this can only occur for calls to volatile
-      --  functions, when one of the parameters is of a volatile type. Save the
-      --  result of the call at the start of the sequence (Ref_Context consists
-      --  in the sequence of post-call assignments and assumptions at this
-      --  point) and use it as the final value for the sequence.
+      --  In the case of a function call, there is value to return as the final
+      --  expression. Note that this can only occur for calls to functions
+      --  with side-effects or calls to or volatile functions, when one of
+      --  the parameters is of a volatile type. Save the result of the call at
+      --  the start of the sequence (Ref_Context consists in the sequence of
+      --  post-call assignments and assumptions at this point) and use it as
+      --  the final value for the sequence.
 
       if Nkind (Ada_Call) = N_Function_Call then
          declare
@@ -10834,7 +10848,7 @@ package body Gnat2Why.Expr is
      (Ada_Node    : Node_Id;
       Ex_Name     : W_Identifier_Id;
       Handled_Exc : Exception_Sets.Set)
-                     return W_Prog_Id
+      return W_Prog_Id
    is
       Raise_Or_Absurd : W_Prog_Id;
       All_But         : Boolean;
@@ -17228,6 +17242,339 @@ package body Gnat2Why.Expr is
       end if;
    end Transform_Block_Statement;
 
+   --------------------------------------
+   -- Transform_Call_With_Side_Effects --
+   --------------------------------------
+
+   function Transform_Call_With_Side_Effects
+     (Params : Transformation_Params;
+      Call   : Node_Id)
+      return W_Prog_Id
+   is
+      Context     : Ref_Context;
+      Store       : W_Statement_Sequence_Id := Void_Sequence;
+      Handled_Exc : constant Exception_Sets.Set :=
+        Get_Raised_Exceptions (Call, Only_Handled => True);
+      Exc_Store   : W_Statement_Sequence_Id := Void_Sequence;
+      Result      : W_Prog_Id;
+      Subp        : constant Entity_Id := Get_Called_Entity_For_Proof (Call);
+
+      Selector    : constant Selection_Kind :=
+
+        --  When the call is dispatching, use the Dispatch variant of the
+        --  program function, which has the appropriate contract.
+
+        (if Nkind (Call) in N_Procedure_Call_Statement | N_Function_Call
+           and then Present (Controlling_Argument (Call))
+         then
+            Dispatch
+
+         --  When the call has visibility over the refined postcondition of the
+         --  subprogram, use the Refine variant of the program function, which
+         --  has the appropriate refined contract.
+
+         elsif Entity_Body_In_SPARK (Subp)
+           and then Has_Contracts (Subp, Pragma_Refined_Post)
+           and then Has_Visibility_On_Refined (Call, Subp)
+         then
+            Refine
+
+         --  Otherwise use the Standard variant of the program function
+         --  (defined outside any namespace, directly in the module for
+         --  the program function).
+
+         else Why.Inter.Standard);
+
+      Tag_Expr : constant W_Expr_Id :=
+        (if Nkind (Call) = N_Function_Call
+           and then Selector = Dispatch
+         then
+            Transform_Expr
+              (Expr   => Controlling_Argument (Call),
+               Domain => EW_Pterm,
+               Params => Params)
+         else Why_Empty);
+      Tag_Arg  : constant W_Expr_Array :=
+        (if Nkind (Call) = N_Function_Call
+           and then Selector = Dispatch
+         then
+           (1 => New_Tag_Access
+                (Domain => EW_Pterm,
+                 Name   => Tag_Expr,
+                 Ty     => Get_Ada_Node (+Get_Type (Tag_Expr))))
+         else (1 .. 0 => <>));
+      --  Calls to dispatching function need the dispatching tag as an
+      --  additional argument.
+
+      Args        : constant W_Expr_Array :=
+        Tag_Arg &
+        Compute_Call_Args
+          (Call, EW_Prog, Context, Store,
+           Exc_Exit  => not Handled_Exc.Is_Empty,
+           Exc_Store => Exc_Store,
+           Params    => Params,
+           Use_Tmps  => Subp_Needs_Invariant_Checks (Subp)
+             or else Call_Needs_Variant_Check (Call, Current_Subp));
+      --  If we need to perform invariant or variant checks for this call, Args
+      --  will be reused for the call to the checking procedure. Force the use
+      --  of temporary identifiers to avoid duplicating checks.
+
+      Why_Name    :  W_Identifier_Id;
+
+   begin
+      --  For procedures with higher order specialization, generate a
+      --  specialized version if needed and call it instead.
+
+      if Is_Specialized_Call (Call, Specialized_Call_Params) then
+         Create_Theory_For_HO_Specialization_If_Needed (Call);
+
+         declare
+            HO_Specialization : constant M_HO_Specialization_Type :=
+              M_HO_Specializations (Subp)
+                (Get_Specialization_Theory_Name (Call));
+         begin
+            Why_Name := HO_Specialization.Prog_Id;
+         end;
+      else
+         Why_Name :=
+           W_Identifier_Id
+             (Transform_Identifier (Params   => Params,
+                                    Expr     => Call,
+                                    Ent      => Subp,
+                                    Domain   => EW_Prog,
+                                    Selector => Selector));
+      end if;
+
+      if Why_Subp_Has_Precondition (Subp, Selector) then
+         Result :=
+           New_VC_Call
+             (Call,
+              Why_Name,
+              Args,
+              VC_Precondition,
+              Get_Typ (Why_Name));
+      else
+         Result :=
+           New_Call
+             (Call,
+              Why_Name,
+              Args,
+              Get_Typ (Why_Name));
+      end if;
+
+      --  Insert a try block around the call to catch potential Ada exceptions
+      --  and do the appropriate stores. The exceptions are raised again after
+      --  the store, so no post processing should be appended to call if it
+      --  should also be done for exceptions.
+
+      if Has_Exceptional_Contract (Subp) then
+         declare
+            Ex_Name         : constant W_Identifier_Id :=
+              New_Temp_Identifier (Base_Name => "exn", Typ => EW_Int_Type);
+            Raise_Or_Absurd : constant W_Prog_Id :=
+              New_Raise_Or_Absurd (Call, Ex_Name, Handled_Exc);
+         begin
+            --  Put the raise at the end of the handler
+
+            Append (Exc_Store, Raise_Or_Absurd);
+
+            --  Construct the try block
+
+            Result := New_Try_Block
+              (Ada_Node => Call,
+               Prog     => Result,
+               Handler  =>
+                 (1 => New_Handler
+                      (Name   => M_Main.Ada_Exc,
+                       Arg_Id => Ex_Name,
+                       Def    => +Exc_Store)),
+               Typ      => Get_Type (+Result));
+         end;
+      end if;
+
+      --  Insert invariant check if needed
+
+      if Subp_Needs_Invariant_Checks (Subp) then
+         Prepend
+           (New_VC_Call
+              (Ada_Node => Call,
+               Name     =>
+                 E_Symb (Subp, WNE_Check_Invariants_On_Call),
+               Progs    => Args,
+               Reason   => VC_Invariant_Check,
+               Typ      => EW_Unit_Type),
+            Result);
+      end if;
+
+      --  Insert tag check if needed
+
+      if Nkind (Call) /= N_Entry_Call_Statement then
+         Prepend (Compute_Tag_Check (Call, Params), Result);
+      end if;
+
+      --  Insert variant check if needed
+
+      if Call_Needs_Variant_Check (Call, Current_Subp) then
+         Prepend (Check_Subprogram_Variants (Call   => Call,
+                                             Args   => Args,
+                                             Params => Params),
+                  Result);
+      end if;
+
+      --  Generate termination checks if necessary
+
+      declare
+         Encl_Cond  : constant Termination_Condition :=
+           Get_Termination_Condition (Current_Subp, Compute => True);
+         Subp_Cond  : constant Termination_Condition :=
+           Get_Termination_Condition (Subp, Compute => True);
+         Ghost_Call : constant Boolean :=
+           Is_Ghost_Entity (Subp)
+           and then not Is_Ghost_Entity (Current_Subp);
+
+      begin
+         --  If the enclosing subprogram has a dynamic termination condition,
+         --  termination checks are entirely done by proof. If the call
+         --  might unconditionally not terminate, check that the termination
+         --  condition of the enclosing subprogram evaluates to False. If the
+         --  callee is ghost and not the caller, the check was done in flow
+         --  analysis. Do not duplicate it here.
+
+         if Encl_Cond.Kind = Dynamic
+           and then
+             (Subp_Cond = (Static, False)
+              or else
+                Call_Never_Terminates (Call, Current_Subp))
+           and then not Ghost_Call
+         then
+            pragma Assert (Termination_Condition_Name /= Why_Empty);
+
+            Prepend
+              (New_Ignore
+                 (Prog => New_Located_Assert
+                      (Ada_Node   => Call,
+                       Pred       => New_Not
+                         (Right => +Termination_Condition_Name),
+                       Reason     => VC_Termination_Check,
+                       Kind       => EW_Assert)),
+               Result);
+
+         --  Check calls to subprograms with a dynamic termination conditions.
+         --  This shall also be done in subprograms which always terminate
+         --  and when the callee is ghost and not the caller. Other checks
+         --  are deferred to flow analysis.
+
+         elsif (Encl_Cond /= (Static, False) or else Ghost_Call)
+           and then Subp_Cond.Kind = Dynamic
+         then
+            declare
+               Term_Check : W_Prog_Id :=
+                 New_VC_Call
+                   (Ada_Node => Call,
+                    Name     =>
+                      E_Symb
+                        (Subp, WNE_Check_Termination_Condition),
+                    Progs    => Args,
+                    Reason   => VC_Termination_Check,
+                    Typ      => EW_Unit_Type);
+
+            begin
+               --  Termination of ghost calls needs to be checked independently
+               --  of the termination condition of the caller.
+
+               if Encl_Cond.Kind = Dynamic
+                 and then not Ghost_Call
+               then
+                  Term_Check := New_Conditional
+                    (Condition => +Termination_Condition_Name,
+                     Then_Part => Term_Check);
+               end if;
+
+               Prepend (Term_Check, Result);
+            end;
+         end if;
+      end;
+
+      --  Check that the call does not cause a resource leak. Every output
+      --  of the call which is not also an input should be moved prior to the
+      --  call. Otherwise assigning it in the callee will produce a resource
+      --  leak.
+
+      Check_For_Memory_Leak : declare
+
+         Outputs : Entity_Sets.Set :=
+           Compute_Outputs_With_Allocated_Parts (Subp);
+
+         procedure Check_Param
+           (Formal : Entity_Id; Actual : Node_Id);
+
+         procedure Check_Param
+           (Formal : Entity_Id; Actual : Node_Id)
+         is
+            Typ : constant Entity_Id := Retysp (Etype (Formal));
+         begin
+            if Contains_Allocated_Parts (Typ)
+              and then not Is_Anonymous_Access_Type (Typ)
+              and then Ekind (Formal) = E_Out_Parameter
+            then
+               Outputs.Delete (Formal);
+               Prepend (Check_No_Memory_Leaks (Actual, Actual), Result);
+            end if;
+         end Check_Param;
+
+         procedure Iterate_Call is new
+           Iterate_Call_Parameters (Check_Param);
+
+      begin
+         if Is_Unchecked_Deallocation_Instance (Subp) then
+            Prepend
+              (Check_No_Memory_Leaks
+                 (Call,
+                  First_Actual (Call),
+                  Is_Uncheck_Dealloc => True),
+               Result);
+
+         else
+            Iterate_Call (Call);
+
+            for Obj of Outputs loop
+               Prepend
+                 (Check_No_Memory_Leaks (Call, Obj), Result);
+            end loop;
+         end if;
+      end Check_For_Memory_Leak;
+
+      --  Always call Insert_Ref_Context to get the checks on store for
+      --  predicates.
+
+      Result := Insert_Ref_Context (Call, Result, Context, Store);
+
+      --  Handle specially calls to instances of Ada.Unchecked_Deallocation to
+      --  assume that the argument is set to null on return, in the absence of
+      --  a postcondition in the standard.
+
+      if Is_Unchecked_Deallocation_Instance (Subp) then
+         declare
+            Actual : constant Node_Id := First_Actual (Call);
+            Typ    : constant Entity_Id := Retysp (Etype (Actual));
+            Ptr    : constant W_Expr_Id :=
+              Transform_Expr (Expr   => Actual,
+                              Domain => EW_Term,
+                              Params => Params);
+         begin
+            Append
+              (Result,
+               New_Assume_Statement
+                 (Ada_Node => Call,
+                  Pred     =>
+                    Pred_Of_Boolean_Term
+                      (+New_Pointer_Is_Null_Access (Typ, Ptr))));
+         end;
+      end if;
+
+      return Result;
+   end Transform_Call_With_Side_Effects;
+
    --------------------------
    -- Transform_Comparison --
    --------------------------
@@ -20641,6 +20988,11 @@ package body Gnat2Why.Expr is
                         Right  => Right_Expr,
                         Domain => Domain);
                   end;
+
+               elsif Is_Function_With_Side_Effects (Subp) then
+                  pragma Assert (Domain = EW_Prog);
+                  T := +Transform_Call_With_Side_Effects (Local_Params, Expr);
+
                else
                   T := Transform_Function_Call (Expr, Domain, Local_Params);
                end if;
@@ -24633,321 +24985,7 @@ package body Gnat2Why.Expr is
          when N_Procedure_Call_Statement
             | N_Entry_Call_Statement
          =>
-            declare
-               Context     : Ref_Context;
-               Store       : W_Statement_Sequence_Id := Void_Sequence;
-               Handled_Exc : constant Exception_Sets.Set :=
-                 Get_Raised_Exceptions (Stmt_Or_Decl, Only_Handled => True);
-               Exc_Store   : W_Statement_Sequence_Id := Void_Sequence;
-               Call        : W_Prog_Id;
-               Subp        : constant Entity_Id :=
-                 Get_Called_Entity_For_Proof (Stmt_Or_Decl);
-
-               Args        : constant W_Expr_Array :=
-                 Compute_Call_Args
-                   (Stmt_Or_Decl, EW_Prog, Context, Store,
-                    Exc_Exit  => not Handled_Exc.Is_Empty,
-                    Exc_Store => Exc_Store,
-                    Params    => Params,
-                    Use_Tmps  => Subp_Needs_Invariant_Checks (Subp)
-                      or else Call_Needs_Variant_Check
-                      (Stmt_Or_Decl, Current_Subp));
-               --  If we need to perform invariant or variant checks for this
-               --  call, Args will be reused for the call to the checking
-               --  procedure. Force the use of temporary identifiers to avoid
-               --  duplicating checks.
-
-               Selector    : constant Selection_Kind :=
-               --  When the call is dispatching, use the Dispatch variant of
-               --  the program function, which has the appropriate contract.
-
-                 (if Nkind (Stmt_Or_Decl) = N_Procedure_Call_Statement
-                    and then Present (Controlling_Argument (Stmt_Or_Decl))
-                  then
-                     Dispatch
-
-                  --  When the call has visibility over the refined
-                  --  postcondition of the subprogram, use the Refine variant
-                  --  of the program function, which has the appropriate
-                  --  refined contract.
-
-                  elsif Entity_Body_In_SPARK (Subp)
-                    and then Has_Contracts (Subp, Pragma_Refined_Post)
-                    and then Has_Visibility_On_Refined (Stmt_Or_Decl, Subp)
-                  then
-                     Refine
-
-                  --  Otherwise use the Standard variant of the program
-                  --  function (defined outside any namespace, directly in
-                  --  the module for the program function).
-
-                  else Why.Inter.Standard);
-
-               Why_Name    :  W_Identifier_Id;
-
-            begin
-               --  For procedures with higher order specialization, generate a
-               --  specialized version if needed and call it instead.
-
-               if Is_Specialized_Call (Stmt_Or_Decl, Specialized_Call_Params)
-               then
-                  Create_Theory_For_HO_Specialization_If_Needed (Stmt_Or_Decl);
-
-                  declare
-                     HO_Specialization : constant M_HO_Specialization_Type :=
-                       M_HO_Specializations (Subp)
-                         (Get_Specialization_Theory_Name (Stmt_Or_Decl));
-                  begin
-                     Why_Name := HO_Specialization.Prog_Id;
-                  end;
-               else
-                  Why_Name :=
-                    W_Identifier_Id
-                      (Transform_Identifier (Params   => Params,
-                                             Expr     => Stmt_Or_Decl,
-                                             Ent      => Subp,
-                                             Domain   => EW_Prog,
-                                             Selector => Selector));
-               end if;
-
-               if Why_Subp_Has_Precondition (Subp, Selector) then
-                  Call :=
-                    New_VC_Call
-                      (Stmt_Or_Decl,
-                       Why_Name,
-                       Args,
-                       VC_Precondition,
-                       EW_Unit_Type);
-               else
-                  Call :=
-                    New_Call
-                      (Stmt_Or_Decl,
-                       Why_Name,
-                       Args,
-                       EW_Unit_Type);
-               end if;
-
-               --  Insert a try block around the call to catch potential
-               --  Ada exceptions and do the appropriate stores. The exceptions
-               --  Are raised again after the store, so no post processing
-               --  should be appended to call if it should also be done for
-               --  exceptions.
-
-               if Has_Exceptional_Contract (Subp) then
-                  declare
-                     Ex_Name         : constant W_Identifier_Id :=
-                       New_Temp_Identifier
-                         (Base_Name => "exn", Typ => EW_Int_Type);
-                     Raise_Or_Absurd : constant W_Prog_Id :=
-                       New_Raise_Or_Absurd
-                         (Stmt_Or_Decl, Ex_Name, Handled_Exc);
-                  begin
-
-                     --  Put the raise at the end of the handler
-
-                     Append (Exc_Store, Raise_Or_Absurd);
-
-                     --  Construct the try block
-
-                     Call := New_Try_Block
-                       (Ada_Node => Stmt_Or_Decl,
-                        Prog     => Call,
-                        Handler  =>
-                          (1 => New_Handler
-                               (Name   => M_Main.Ada_Exc,
-                                Arg_Id => Ex_Name,
-                                Def    => +Exc_Store)),
-                        Typ      => EW_Unit_Type);
-                  end;
-               end if;
-
-               --  Insert invariant check if needed
-
-               if Subp_Needs_Invariant_Checks (Subp) then
-                  Prepend
-                    (New_VC_Call
-                       (Ada_Node => Stmt_Or_Decl,
-                        Name     =>
-                          E_Symb (Subp, WNE_Check_Invariants_On_Call),
-                        Progs    => Args,
-                        Reason   => VC_Invariant_Check,
-                        Typ      => EW_Unit_Type),
-                     Call);
-               end if;
-
-               --  Insert tag check if needed
-
-               if Nkind (Stmt_Or_Decl) /= N_Entry_Call_Statement then
-                  Prepend
-                    (Compute_Tag_Check (Stmt_Or_Decl, Params), Call);
-               end if;
-
-               --  Insert variant check if needed
-
-               if Call_Needs_Variant_Check (Stmt_Or_Decl, Current_Subp) then
-                  Prepend (Check_Subprogram_Variants (Call   => Stmt_Or_Decl,
-                                                      Args   => Args,
-                                                      Params => Params),
-                           Call);
-               end if;
-
-               --  Generate termination checks if necessary
-
-               declare
-                  Encl_Cond  : constant Termination_Condition :=
-                    Get_Termination_Condition (Current_Subp, Compute => True);
-                  Subp_Cond  : constant Termination_Condition :=
-                    Get_Termination_Condition (Subp, Compute => True);
-                  Ghost_Call : constant Boolean :=
-                    Is_Ghost_Entity (Subp)
-                    and then not Is_Ghost_Entity (Current_Subp);
-
-               begin
-                  --  If the enclosing subprogram has a dynamic termination
-                  --  condition, termination checks are entirely done by
-                  --  proof. If the call might unconditionally not terminate,
-                  --  check that the termination condition of the enclosing
-                  --  subprogram evaluates to False.
-                  --  If the callee is ghost and not the caller, the check was
-                  --  done in flow analysis. Do not duplicate it here.
-
-                  if Encl_Cond.Kind = Dynamic
-                    and then
-                      (Subp_Cond = (Static, False)
-                       or else
-                         Call_Never_Terminates (Stmt_Or_Decl, Current_Subp))
-                    and then not Ghost_Call
-                  then
-                     pragma Assert
-                       (Termination_Condition_Name /= Why_Empty);
-
-                     Prepend
-                       (New_Ignore
-                          (Prog => New_Located_Assert
-                               (Ada_Node   => Stmt_Or_Decl,
-                                Pred       => New_Not
-                                  (Right => +Termination_Condition_Name),
-                                Reason     => VC_Termination_Check,
-                                Kind       => EW_Assert)),
-                        Call);
-
-                  --  Check calls to subprograms with a dynamic termination
-                  --  conditions. This shall also be done in subprograms which
-                  --  always terminate and when the callee is ghost and not the
-                  --  caller. Other checks are deferred to flow analysis.
-
-                  elsif (Encl_Cond /= (Static, False) or else Ghost_Call)
-                    and then Subp_Cond.Kind = Dynamic
-                  then
-                     declare
-                        Term_Check : W_Prog_Id :=
-                          New_VC_Call
-                            (Ada_Node => Stmt_Or_Decl,
-                             Name     =>
-                               E_Symb
-                                 (Subp, WNE_Check_Termination_Condition),
-                             Progs    => Args,
-                             Reason   => VC_Termination_Check,
-                             Typ      => EW_Unit_Type);
-
-                     begin
-                        --  Termination of ghost calls needs to be checked
-                        --  independently of the termination condition of the
-                        --  caller.
-
-                        if Encl_Cond.Kind = Dynamic
-                          and then not Ghost_Call
-                        then
-                           Term_Check := New_Conditional
-                             (Condition => +Termination_Condition_Name,
-                              Then_Part => Term_Check);
-                        end if;
-
-                        Prepend (Term_Check, Call);
-                     end;
-                  end if;
-               end;
-
-               --  Check that the call does not cause a resource leak. Every
-               --  output of the call which is not also an input should be
-               --  moved prior to the call. Otherwise assigning it in the
-               --  callee will produce a resource leak.
-
-               Check_For_Memory_Leak : declare
-
-                  Outputs : Entity_Sets.Set :=
-                    Compute_Outputs_With_Allocated_Parts (Subp);
-
-                  procedure Check_Param
-                    (Formal : Entity_Id; Actual : Node_Id);
-
-                  procedure Check_Param
-                    (Formal : Entity_Id; Actual : Node_Id)
-                  is
-                     Typ : constant Entity_Id := Retysp (Etype (Formal));
-                  begin
-                     if Contains_Allocated_Parts (Typ)
-                       and then not Is_Anonymous_Access_Type (Typ)
-                       and then Ekind (Formal) = E_Out_Parameter
-                     then
-                        Outputs.Delete (Formal);
-                        Prepend (Check_No_Memory_Leaks (Actual, Actual), Call);
-                     end if;
-                  end Check_Param;
-
-                  procedure Iterate_Call is new
-                    Iterate_Call_Parameters (Check_Param);
-
-               begin
-                  if Is_Unchecked_Deallocation_Instance (Subp) then
-                     Prepend
-                       (Check_No_Memory_Leaks
-                          (Stmt_Or_Decl,
-                           First_Actual (Stmt_Or_Decl),
-                           Is_Uncheck_Dealloc => True),
-                        Call);
-
-                  else
-                     Iterate_Call (Stmt_Or_Decl);
-
-                     for Obj of Outputs loop
-                        Prepend
-                          (Check_No_Memory_Leaks (Stmt_Or_Decl, Obj), Call);
-                     end loop;
-                  end if;
-               end Check_For_Memory_Leak;
-
-               --  Always call Insert_Ref_Context to get the checks on store
-               --  for predicates.
-
-               Call := Insert_Ref_Context (Stmt_Or_Decl, Call, Context, Store);
-
-               --  Handle specially calls to instances of
-               --  Ada.Unchecked_Deallocation to assume that the argument is
-               --  set to null on return, in the absence of a postcondition
-               --  in the standard.
-
-               if Is_Unchecked_Deallocation_Instance (Subp) then
-                  declare
-                     Actual : constant Node_Id := First_Actual (Stmt_Or_Decl);
-                     Typ    : constant Entity_Id := Retysp (Etype (Actual));
-                     Ptr    : constant W_Expr_Id :=
-                       Transform_Expr (Expr   => Actual,
-                                       Domain => EW_Term,
-                                       Params => Params);
-                  begin
-                     Append
-                       (Call,
-                        New_Assume_Statement
-                          (Ada_Node => Stmt_Or_Decl,
-                           Pred     =>
-                             Pred_Of_Boolean_Term
-                               (+New_Pointer_Is_Null_Access (Typ, Ptr))));
-                  end;
-               end if;
-
-               return Call;
-            end;
+            return Transform_Call_With_Side_Effects (Params, Stmt_Or_Decl);
 
          when N_If_Statement =>
             declare

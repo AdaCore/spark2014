@@ -2383,7 +2383,6 @@ package body SPARK_Util is
       Only_Handled : Boolean)
       return Exception_Sets.Set
    is
-
       function Is_Handler (N : Node_Id) return Boolean is
         (Nkind (N) = N_Exception_Handler);
 
@@ -2394,7 +2393,9 @@ package body SPARK_Util is
 
    begin
       case Nkind (Stmt) is
-         when N_Procedure_Call_Statement =>
+         when N_Procedure_Call_Statement
+            | N_Function_Call
+         =>
             declare
                Callee : constant Entity_Id := Get_Called_Entity (Stmt);
             begin

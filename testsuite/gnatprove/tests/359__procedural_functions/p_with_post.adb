@@ -1,4 +1,4 @@
-package body P with SPARK_Mode is
+package body P_With_Post with SPARK_Mode is
 
    procedure Error with
      No_Return,
@@ -80,7 +80,8 @@ package body P with SPARK_Mode is
    --  bodies acting as spec
 
    function B1 (X : out Integer) return Integer
-     with Side_Effects
+     with Side_Effects,
+          Post => X = 0 and B1'Result = X
    is
    begin
       X := 0;
@@ -88,7 +89,8 @@ package body P with SPARK_Mode is
    end;
 
    function B2 (X : in out Integer) return Integer
-     with Side_Effects
+     with Side_Effects,
+          Post => X = Integer'Min (0, X'Old) and B2'Result = X
    is
    begin
       X := Integer'Min (0, X);
@@ -97,7 +99,8 @@ package body P with SPARK_Mode is
 
    function B3 (X : Integer) return Integer
      with Side_Effects,
-          Global => (Output => G)
+          Global => (Output => G),
+          Post => G = X and B3'Result = G
    is
    begin
       G := X;
@@ -106,7 +109,8 @@ package body P with SPARK_Mode is
 
    function B4 (X : Integer) return Integer
      with Side_Effects,
-          Global => (In_Out => G)
+          Global => (In_Out => G),
+          Post => G = Integer'Min (X, G'Old) and B4'Result = G
    is
    begin
       G := Integer'Min (X, G);
@@ -115,7 +119,8 @@ package body P with SPARK_Mode is
 
    function B5 (X : Integer) return Integer
      with Side_Effects,
-          Exceptional_Cases => (others => True)
+          Exceptional_Cases => (others => True),
+          Post => X > 0 and B5'Result = X
    is
    begin
       if X <= 0 then
@@ -126,7 +131,8 @@ package body P with SPARK_Mode is
 
    function B6 (X : Integer) return Integer
      with Side_Effects,
-          Exceptional_Cases => (others => False)
+          Exceptional_Cases => (others => False),
+          Post => B6'Result = X
    is
    begin
       return X;
@@ -134,7 +140,8 @@ package body P with SPARK_Mode is
 
    function B7 (X : Integer) return Integer
      with Side_Effects,
-          Always_Terminates => False
+          Always_Terminates => False,
+          Post => False
    is
    begin
       Error;
@@ -143,7 +150,8 @@ package body P with SPARK_Mode is
 
    function B8 (X : Integer) return Integer
      with Side_Effects,
-          Always_Terminates => True
+          Always_Terminates => True,
+          Post => B8'Result = X
    is
    begin
       return X;
@@ -151,7 +159,8 @@ package body P with SPARK_Mode is
 
    function B9 (X : Integer) return Integer
      with Side_Effects,
-          Always_Terminates => X > 0
+          Always_Terminates => X > 0,
+          Post => X > 0 and B9'Result = X
    is
    begin
       if X <= 0 then
@@ -162,7 +171,8 @@ package body P with SPARK_Mode is
 
    function B10 (X : Integer) return Integer
      with Side_Effects,
-          Depends => (G => X, B10'Result => X)
+          Depends => (G => X, B10'Result => X),
+          Post => G = X and B10'Result = X
    is
    begin
       G := X;
@@ -171,11 +181,12 @@ package body P with SPARK_Mode is
 
    function B11 (X : Integer) return Integer
      with Side_Effects,
-          Depends => (G => (X, G), B11'Result => (X, G))
+          Depends => (G => (X, G), B11'Result => (X, G)),
+          Post => G = Integer'Min (X, G'Old) and B11'Result = G
    is
    begin
       G := Integer'Min (X, G);
       return G;
    end;
 
-end P;
+end P_With_Post;

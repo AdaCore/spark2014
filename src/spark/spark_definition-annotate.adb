@@ -1615,6 +1615,37 @@ package body SPARK_Definition.Annotate is
          return;
       end if;
 
+      --  For now reject volatile functions, functions with side-effects,
+      --  dispatching operations, and borrowing traversal functions.
+
+      if Is_Volatile_Function (E) then
+         Error_Msg_N_If
+           ("function annotated with Inline_For_Proof shall not be"
+            & " a volatile function",
+            Arg3_Exp);
+         return;
+      elsif Is_Function_With_Side_Effects (E) then
+         Error_Msg_N_If
+           ("function annotated with Inline_For_Proof shall not be"
+            & " a function with side-effects",
+            Arg3_Exp);
+         return;
+      elsif Einfo.Entities.Is_Dispatching_Operation (E)
+        and then Present (SPARK_Util.Subprograms.Find_Dispatching_Type (E))
+      then
+         Error_Msg_N_If
+           ("subprogram annotated with Inline_For_Proof shall not"
+            & " be a dispatching operation",
+            Arg3_Exp);
+         return;
+      elsif Is_Borrowing_Traversal_Function (E) then
+         Error_Msg_N_If
+           ("function annotated with Inline_For_Proof shall not be"
+            & " a borrowing traversal function",
+            Arg3_Exp);
+         return;
+      end if;
+
       --  The body of expression functions is ignored for higher order
       --  specialization. Require a postcondition.
 

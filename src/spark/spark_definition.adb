@@ -2832,15 +2832,41 @@ package body SPARK_Definition is
          =>
             raise Program_Error;
 
-         --  For now, we don't support the use of target_name inside an
-         --  assignment which is a move or reborrow.
-
          when N_Target_Name =>
+            --  For now, we don't support the use of target_name inside an
+            --  assignment which is a move or reborrow.
+
             if Is_Anonymous_Access_Object_Type (Retysp (Etype (N))) then
                Mark_Unsupported (Lim_Target_Name_In_Borrow, N);
             elsif Is_Deep (Etype (N)) then
                Mark_Unsupported (Lim_Target_Name_In_Move, N);
             end if;
+
+            --  A call to a function with side-effects shall not reference the
+            --  symbol ``@`` to refer to the target name of the assignment
+            --  (SPARK RM 6.11(7)).
+
+            declare
+               function Is_Assignment (N : Node_Id) return Boolean is
+                  (Nkind (N) = N_Assignment_Statement);
+
+               function Enclosing_Assignment is new
+                 First_Parent_With_Property (Is_Assignment);
+
+               Stat : constant N_Assignment_Statement_Id :=
+                 Enclosing_Assignment (N);
+               Expr : constant N_Subexpr_Id := Expression (Stat);
+            begin
+               if Nkind (Expr) = N_Function_Call
+                 and then
+                   Is_Function_With_Side_Effects (Get_Called_Entity (Expr))
+               then
+                  Mark_Violation
+                    ("use of ""'@"" inside a call to a function"
+                     & " with side-effects",
+                     N);
+               end if;
+            end;
 
          when N_Interpolated_String_Literal =>
             Mark_Unsupported (Lim_Interpolated_String_Literal, N);
@@ -4583,7 +4609,8 @@ package body SPARK_Definition is
         and then Nkind (Parent (N)) /= N_Assignment_Statement
       then
          Mark_Violation
-           ("call to a function with side-effects outside of assignment", N);
+           ("call to a function with side-effects outside of assignment", N,
+            Code => EC_Call_To_Function_With_Side_Effects);
          return;
       end if;
 
@@ -8347,6 +8374,7 @@ package body SPARK_Definition is
 
          elsif Ekind (E) = E_Function
            and then not Is_Volatile_Function (E)
+           and then not Is_Function_With_Side_Effects (E)
          then
             declare
                Decl_Node : constant Node_Id := Parent (Declaration_Node (E));
@@ -8706,6 +8734,11 @@ package body SPARK_Definition is
          if Is_Volatile_Function (Ent) then
             Mark_Violation
               ("volatile function associated with aspect Iterable", N);
+         end if;
+         if Is_Function_With_Side_Effects (Ent) then
+            Mark_Violation
+              ("function with side-effects associated with aspect Iterable",
+               N);
          end if;
          Get_Globals
            (Subprogram          => Ent,
