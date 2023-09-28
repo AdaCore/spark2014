@@ -1,8 +1,8 @@
-function Absolute_Value (X : Integer) return Integer
+function Absolute_Values (X : Integer) return Integer
 with
 --  Uncomment the following line to prove
 --    Pre  => X /= Integer'First,
-    Post => Absolute_Value'Result = abs (X)
+    Post => Absolute_Values'Result = abs (X)
 is
 begin
    if X > 0 then
@@ -10,4 +10,4 @@ begin
    else
       return -X; -- @FAIL @COUNTEREXAMPLES
    end if;
-end Absolute_Value;
+end Absolute_Values;

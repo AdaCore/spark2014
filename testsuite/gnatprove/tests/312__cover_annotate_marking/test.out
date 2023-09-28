@@ -5,7 +5,6 @@ inline_and_logical_equal.adb:7:47: error: Entity parameter of a pragma Logical_E
 inline_and_logical_equal.adb:11:50: error: Entity parameter of a pragma Inline_For_Proof shall not have a Logical_Equal annotation
 inline_and_logical_equal.adb:16:16: error: expression function with Inline_For_Proof whose body is not in SPARK is not allowed in SPARK
 inline_and_logical_equal.adb:16:16: error: violation of aspect SPARK_Mode at line 1
-iterable_for_proof_marking.adb:1:11: warning: file name does not match unit name, should be "iterable_marking.adb"
 iterable_for_proof_marking.adb:20:67: error: "Contains" is not allowed in SPARK (due to entity declared with SPARK_Mode Off)
 iterable_for_proof_marking.adb:20:67: error: violation of aspect SPARK_Mode at line 1
 iterable_for_proof_marking.adb:48:34: error: "Element" is not allowed in SPARK (due to entity declared with SPARK_Mode Off)

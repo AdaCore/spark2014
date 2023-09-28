@@ -1,4 +1,4 @@
-package T is
+package Q is
 
    package Q1 is
       X : Integer;
