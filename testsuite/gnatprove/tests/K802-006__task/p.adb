@@ -1,4 +1,4 @@
-procedure CXD4006 is
+procedure P is
    pragma SPARK_Mode (Off);
    task Distributor is
       entry Nb_waiting;
@@ -34,4 +34,4 @@ procedure CXD4006 is
 
 begin
    null;
-end CXD4006;
+end P;

@@ -1,4 +1,4 @@
-procedure p is
+procedure Unsupported is
    type R is array (Natural) of Character;
    type P is access all R;
    for P'Storage_Size use 0;
