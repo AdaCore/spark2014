@@ -3785,15 +3785,27 @@ package body SPARK_Definition is
          --  initialization. It does not mandate the evaluation of its prefix.
          --  Thus it can be called on scalar "names" which are not initialized
          --  without generating a bounded error.
+         --  Only allow 'Initialized on a discriminant if it can actually not
+         --  be initialized to avoid confusion as much as possible.
 
          when Attribute_Initialized =>
 
-            if not Retysp_In_SPARK (Etype (P))
-              or else not
-                (Expr_Has_Relaxed_Init (P, No_Eval => True)
-                 or else Has_Relaxed_Init (Etype (P))
-                 or else (Nkind (P) in N_Identifier | N_Expanded_Name
-                          and then Has_Relaxed_Initialization (Entity (P))))
+            if not Retysp_In_SPARK (Etype (P)) then
+               Mark_Violation (N, From => Etype (P));
+            elsif Nkind (P) = N_Selected_Component
+              and then Ekind (Entity (Selector_Name (P))) = E_Discriminant
+            then
+               if not Expr_Has_Relaxed_Discr (Prefix (P)) then
+                  Mark_Violation
+                    ("attribute """
+                     & Standard_Ada_Case (Get_Name_String (Aname))
+                     & """ on a discriminant which is always initialized",
+                     N);
+               end if;
+            elsif not Expr_Has_Relaxed_Init (P, No_Eval => True)
+              and then not Has_Relaxed_Init (Etype (P))
+              and then not (Nkind (P) in N_Identifier | N_Expanded_Name
+                            and then Has_Relaxed_Initialization (Entity (P)))
             then
                Mark_Violation
                  ("prefix of attribute """

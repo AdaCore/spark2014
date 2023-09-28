@@ -14,15 +14,17 @@ procedure Relaxed_Initialization with SPARK_Mode is
 
      type Vec is array (Positive range <>) of Rec;
 
-     --  Initialize all but the X components of Obj
-     --
-     procedure Partially_Init (Obj : out Vec)
-       with Post => (for all Elem of Obj =>
-                      (if Elem.D
-                       then Elem.Y'Initialized
-                       else Elem.Z'Initialized and Elem.Z = 0.0));
+     --  Initialize all but the X components of Obj. X has to be an in out
+     --  parameter as the discriminants of its components are read.
+     procedure Partially_Init (Obj : in out Vec)
+     with Pre => (for all Elem of Obj => Elem.D'Initialized),
+       Post => (for all Elem of Obj =>
+                  Elem.D'Initialized and then
+                    (if Elem.D
+                     then Elem.Y'Initialized
+                     else Elem.Z'Initialized and Elem.Z = 0.0));
 
-     procedure Partially_Init (Obj : out Vec) is
+     procedure Partially_Init (Obj : in out Vec) is
      begin
         for Idx in Obj'Range loop
          if Obj (Idx).D then
@@ -33,6 +35,7 @@ procedure Relaxed_Initialization with SPARK_Mode is
 
          pragma Loop_Invariant
            ((for all Elem of Obj (Obj'First .. Idx) =>
+              Elem.D'Initialized and then
               (if Elem.D
                then Elem.Y'Initialized
                else Elem.Z'Initialized and Elem.Z = 0.0)));
@@ -44,6 +47,7 @@ procedure Relaxed_Initialization with SPARK_Mode is
                        Obj (Idx)'Initialized and
                        Obj (Idx) = Obj'Old (Idx)'Update (X => 1)),
      Pre => (for all Idx in Obj'Range =>
+               Obj (Idx).D'Initialized and then
                (if Obj (Idx).D then Obj (Idx).Y'Initialized
                 else Obj (Idx).Z'Initialized))
      is

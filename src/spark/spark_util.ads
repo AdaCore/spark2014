@@ -878,6 +878,16 @@ package SPARK_Util is
    function Fun_Has_Relaxed_Init (Subp : E_Function_Id) return Boolean;
    --  Return True if the result of Subp has relaxed initialization
 
+   function Expr_Has_Relaxed_Discr (Expr : N_Subexpr_Id) return Boolean;
+   --  Return True if Expr is an expression with relaxed initialization whose
+   --  discriminants might not be initialized.
+   --  As this fonction is only used to reject 'Initialized on discriminants
+   --  in marking, it only expects objects as inputs.
+
+   function Obj_Has_Relaxed_Discr (Obj : Object_Kind_Id) return Boolean;
+   --  Return True if Obj is an object with relaxed initialization whose
+   --  discriminants might not be initialized.
+
    function Borrower_For_At_End_Borrow_Call
      (Call : N_Function_Call_Id)
       return Entity_Id;

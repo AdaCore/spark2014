@@ -457,6 +457,7 @@ package Why.Gen.Names is
       WNE_Attr_Init,              --  "attr__init"
       WNE_To_Wrapper,             --  "to_wrapper"
       WNE_Of_Wrapper,             --  "of_wrapper"
+      WNE_Private_Attr_Init,      --  "__main_attr__init"
       WNE_Private_To_Wrapper,     --  "__main_to_wrapper"
       WNE_Private_Of_Wrapper      --  "__main_of_wrapper"
      );

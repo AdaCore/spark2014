@@ -808,7 +808,11 @@ package body Gnat2Why.Util is
    -- Count_Why_Top_Level_Fields --
    --------------------------------
 
-   function Count_Why_Top_Level_Fields (E : Type_Kind_Id) return Natural is
+   function Count_Why_Top_Level_Fields
+     (E            : Type_Kind_Id;
+      Relaxed_Init : Boolean := False)
+      return Natural
+   is
       Count : Natural := 0;
 
    begin
@@ -819,6 +823,13 @@ package body Gnat2Why.Util is
 
       if Has_Discriminants (E) then
          Count := Count + 1;
+
+         --  The init wrapper types for types with mutable discriminants need a
+         --  specific initialization flag for the discriminants.
+
+         if Relaxed_Init and then Has_Mutable_Discriminants (E) then
+            Count := Count + 1;
+         end if;
       end if;
 
       --  Store components in a separate sub-record field. This includes:
