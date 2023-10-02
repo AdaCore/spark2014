@@ -4,11 +4,13 @@ formals.adb:26:07: info: predicate check proved (CVC5: 1 VC)
 formals.adb:26:22: info: division check proved (CVC5: 1 VC)
 formals.adb:36:14: info: add a contract to analyze it separately from calling contexts
 formals.adb:36:14: info: local subprogram "P3" only analyzed in the context of calls
+formals.adb:38:07: info: predicate check proved (CVC5: 1 VC), in call inlined at formals.adb:116
 formals.adb:38:16: info: predicate check proved (CVC5: 1 VC), in call inlined at formals.adb:116
 formals.adb:38:22: info: division check proved (CVC5: 1 VC), in call inlined at formals.adb:116
 formals.adb:38:24: medium: predicate check might fail, in call inlined at formals.adb:116 (e.g. when X = (3 => 0, others => ?)) [possible fix: call at line 115 should mention A (for argument X) in a postcondition]
 formals.adb:41:14: info: add a contract to analyze it separately from calling contexts
 formals.adb:41:14: info: local subprogram "P3" only analyzed in the context of calls
+formals.adb:43:07: info: predicate check proved (CVC5: 1 VC), in call inlined at formals.adb:122
 formals.adb:43:16: info: predicate check proved (CVC5: 1 VC), in call inlined at formals.adb:122
 formals.adb:43:22: info: division check proved (CVC5: 1 VC), in call inlined at formals.adb:122
 formals.adb:43:24: medium: predicate check might fail, in call inlined at formals.adb:122 (e.g. when X = (3 => 0, others => 0)) [possible fix: call at line 121 should mention A (for argument X) in a postcondition]
@@ -195,11 +197,13 @@ formals_rec_split.adb:20:11: info: discriminant check proved (CVC5: 1 VC)
 formals_rec_split.adb:24:14: info: add a contract to analyze it separately from calling contexts
 formals_rec_split.adb:24:14: info: local subprogram "P2" only analyzed in the context of calls
 formals_rec_split.adb:24:18: low: "A.F" might not be set in "P2" [reason for check: OUT parameter should be fully initialized on return] [possible fix: initialize "A.F" on all paths, make "A" an IN OUT parameter or annotate it with aspect Relaxed_Initialization]
+formals_rec_split.adb:28:10: medium: discriminant check might fail, in call inlined at formals_rec_split.adb:49 [possible fix: call at line 43 should mention A (for argument V) in a postcondition]
 formals_rec_split.adb:28:11: info: discriminant check proved (CVC5: 1 VC), in call inlined at formals_rec_split.adb:44
 formals_rec_split.adb:28:11: medium: discriminant check might fail, in call inlined at formals_rec_split.adb:49 [possible fix: call at line 43 should mention A (for argument V) in a postcondition]
 formals_rec_split.adb:32:14: info: add a contract to analyze it separately from calling contexts
 formals_rec_split.adb:32:14: info: local subprogram "P3" only analyzed in the context of calls
 formals_rec_split.adb:32:18: low: "A.F" might not be set in "P3" [reason for check: OUT parameter should be fully initialized on return] [possible fix: initialize "A.F" on all paths, make "A" an IN OUT parameter or annotate it with aspect Relaxed_Initialization]
+formals_rec_split.adb:36:10: medium: discriminant check might fail, in call inlined at formals_rec_split.adb:55 [possible fix: call at line 43 should mention A (for argument V) in a postcondition]
 formals_rec_split.adb:36:11: medium: discriminant check might fail, in call inlined at formals_rec_split.adb:55 [possible fix: call at line 43 should mention A (for argument V) in a postcondition]
 formals_rec_split.adb:43:04: info: precondition proved (Trivial: 1 VC)
 formals_rec_split.adb:44:04: info: analyzing call to "P2" in context
@@ -226,6 +230,8 @@ formals_rec_split_pred.adb:30:21: info: discriminant check proved (CVC5: 1 VC)
 formals_rec_split_pred.adb:38:11: info: discriminant check proved (CVC5: 1 VC)
 formals_rec_split_pred.adb:42:14: info: add a contract to analyze it separately from calling contexts
 formals_rec_split_pred.adb:42:14: info: local subprogram "P3" only analyzed in the context of calls
+formals_rec_split_pred.adb:44:07: info: discriminant check proved (CVC5: 1 VC), in call inlined at formals_rec_split_pred.adb:85
+formals_rec_split_pred.adb:44:07: info: predicate check proved (CVC5: 1 VC), in call inlined at formals_rec_split_pred.adb:85
 formals_rec_split_pred.adb:44:08: info: discriminant check proved (CVC5: 1 VC), in call inlined at formals_rec_split_pred.adb:85
 formals_rec_split_pred.adb:44:14: info: discriminant check proved (CVC5: 1 VC), in call inlined at formals_rec_split_pred.adb:85
 formals_rec_split_pred.adb:44:14: info: predicate check proved (CVC5: 1 VC), in call inlined at formals_rec_split_pred.adb:85
@@ -236,6 +242,8 @@ formals_rec_split_pred.adb:44:20: medium: predicate check might fail, in call in
 formals_rec_split_pred.adb:44:21: info: discriminant check proved (CVC5: 1 VC), in call inlined at formals_rec_split_pred.adb:85
 formals_rec_split_pred.adb:47:14: info: add a contract to analyze it separately from calling contexts
 formals_rec_split_pred.adb:47:14: info: local subprogram "P3" only analyzed in the context of calls
+formals_rec_split_pred.adb:49:07: info: discriminant check proved (CVC5: 1 VC), in call inlined at formals_rec_split_pred.adb:89
+formals_rec_split_pred.adb:49:07: info: predicate check proved (CVC5: 1 VC), in call inlined at formals_rec_split_pred.adb:89
 formals_rec_split_pred.adb:49:08: info: discriminant check proved (CVC5: 1 VC), in call inlined at formals_rec_split_pred.adb:89
 formals_rec_split_pred.adb:49:14: info: discriminant check proved (CVC5: 1 VC), in call inlined at formals_rec_split_pred.adb:89
 formals_rec_split_pred.adb:49:14: info: predicate check proved (CVC5: 1 VC), in call inlined at formals_rec_split_pred.adb:89
