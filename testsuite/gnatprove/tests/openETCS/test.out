@@ -74,6 +74,9 @@ sec_3_13_2_monitoring_inputs.adb:32:61: medium: range check might fail, cannot p
 sec_3_13_2_monitoring_inputs.adb:37:27: info: precondition proved (CVC5: 2 VC)
 sec_3_13_2_monitoring_inputs.adb:38:61: medium: range check might fail, cannot prove lower bound for V [reason for check: value must be convertible to the target type of the conversion] [possible fix: precondition of subprogram at sec_3_13_2_monitoring_inputs.ads:196 should mention V]
 sec_3_13_2_monitoring_inputs.ads:56:13: info: implicit aspect Always_Terminates on "Is_Valid_Deceleration_Model" has been proved, subprogram will terminate
+sec_3_13_2_monitoring_inputs.ads:71:16: info: range check proved (CVC5: 1 VC)
+sec_3_13_2_monitoring_inputs.ads:165:16: info: range check proved (CVC5: 1 VC)
+sec_3_13_2_monitoring_inputs.ads:170:16: info: range check proved (CVC5: 1 VC)
 sec_3_13_2_monitoring_inputs.ads:175:13: info: implicit aspect Always_Terminates on "Is_Valid_Kdry_rst" has been proved, subprogram will terminate
 sec_3_13_2_monitoring_inputs.ads:180:13: info: implicit aspect Always_Terminates on "Kdry_rst" has been proved, subprogram will terminate
 sec_3_13_2_monitoring_inputs.ads:184:08: info: postcondition proved (CVC5: 1 VC)
@@ -269,6 +272,10 @@ step_function.ads:114:40: info: precondition proved (CVC5: 1 VC)
 step_function.ads:115:61: info: index check proved (CVC5: 2 VC)
 step_function.ads:116:40: info: precondition proved (CVC5: 1 VC)
 step_function.ads:117:61: info: index check proved (CVC5: 2 VC)
+step_function_test.adb:9:16: info: range check proved (CVC5: 1 VC)
+step_function_test.adb:16:16: info: range check proved (CVC5: 1 VC)
+step_function_test.adb:26:16: info: range check proved (CVC5: 1 VC)
+step_function_test.adb:36:16: info: range check proved (CVC5: 1 VC)
 step_function_test.adb:39:04: info: initialization of "sfun_merge" proved
 step_function_test.adb:41:19: info: assertion proved (CVC5: 2 VC)
 step_function_test.adb:42:19: info: assertion proved (CVC5: 1 VC; Z3: 1 VC)
