@@ -157,8 +157,9 @@ package Why.Atree.Modules is
    end record;
 
    type M_Builtin_From_Image_Type is record
-      Int_Value  : W_Identifier_Id;
-      Real_Value : W_Identifier_Id;
+      Int_Value           : W_Identifier_Id;
+      Real_Value          : W_Identifier_Id;
+      Real_Quotient_Value : W_Identifier_Id;
    end record;
 
    type M_Compat_Tags_Type is record
