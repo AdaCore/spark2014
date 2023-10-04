@@ -134,6 +134,24 @@ package body Gnat2Why.Expr is
    --  @param N the object declaration
    --  @return an assignment of the declared variable to its initial value
 
+   procedure Assume_For_Nested_Package
+     (E        : Entity_Id;
+      Params   : Transformation_Params;
+      Assumes  : in out W_Prog_Id;
+      For_Decl : Boolean;
+      For_Body : Boolean)
+   with Pre => For_Decl or else For_Body;
+   --  Recursively traverse the declaration of a package and its nested
+   --  packages to assume the declaration of objects and potential initial
+   --  conditions.
+   --  If For_Decl is true, include the assumptions that should be made
+   --  when encountering the package declaration (initial values of constants).
+   --  If For_Body is true, include the assumptions that should be made
+   --  when encountering the package body (initialization of variables and
+   --  initial conditions).
+   --  Both can be True at once for packages with no bodies or generic
+   --  instances.
+
    function Bind_From_Mapping_In_Expr
      (Params : Transformation_Params;
       Expr   : W_Expr_Id;
@@ -2008,6 +2026,168 @@ package body Gnat2Why.Expr is
       end loop;
       return Dynamic_Prop_Inputs;
    end Assume_Dynamic_Invariant_For_Variables;
+
+   -------------------------------
+   -- Assume_For_Nested_Package --
+   -------------------------------
+
+   procedure Assume_For_Nested_Package
+     (E        : Entity_Id;
+      Params   : Transformation_Params;
+      Assumes  : in out W_Prog_Id;
+      For_Decl : Boolean;
+      For_Body : Boolean)
+   is
+
+      procedure Assume_For_Nested_Package
+        (Decls       : List_Id;
+         Initialized : Flow_Id_Sets.Set;
+         For_Decl    : Boolean;
+         For_Body    : Boolean);
+      --  Traverse the declaration of a package
+
+      -------------------------------
+      -- Assume_For_Nested_Package --
+      -------------------------------
+
+      procedure Assume_For_Nested_Package
+        (Decls       : List_Id;
+         Initialized : Flow_Id_Sets.Set;
+         For_Decl    : Boolean;
+         For_Body    : Boolean)
+      is
+         Decl : Node_Id := First (Decls);
+      begin
+         while Present (Decl) loop
+            case Nkind (Decl) is
+               when N_Package_Declaration =>
+
+                  --  Traverse package declarations recursively
+
+                  declare
+                     P : constant Entity_Id :=
+                       Unique_Defining_Entity (Decl);
+                  begin
+                     if not Is_Generic_Unit (P)
+                       and then Entity_In_SPARK (P)
+                     then
+                        Assume_For_Nested_Package
+                          (P,
+                           Params,
+                           Assumes,
+                           For_Decl => For_Decl,
+                           For_Body => For_Body);
+                     end if;
+                  end;
+
+               when N_Object_Declaration =>
+                  declare
+                     Obj : constant Entity_Id :=
+                       Defining_Identifier (Decl);
+                  begin
+                     --  Ignore Part_Of concurrent objects
+
+                     if Is_Part_Of_Concurrent_Object (Obj) then
+                        null;
+
+                     --  Assume the value of constants at package declaration
+
+                     elsif Ekind (Obj) = E_Constant
+                       and then
+                         not Is_Access_Variable (Etype (Obj))
+                     then
+                        if For_Decl then
+                           Assume_Declaration_Of_Entity
+                             (E             => Obj,
+                              Params        => Params,
+                              Initialized   => True,
+                              Top_Predicate => True,
+                              Context       => Assumes);
+                        end if;
+
+                     --  Assume the declaration of variables when the body
+                     --  has been elaborated.
+
+                     elsif For_Body then
+                        Assume_Declaration_Of_Entity
+                          (E             => Obj,
+                           Params        => Params,
+                           Initialized   =>
+                             Initialized.Contains
+                               (Direct_Mapping_Id (Obj)),
+                           Top_Predicate => True,
+                           Context       => Assumes);
+                     end if;
+                  end;
+               when others =>
+                  null;
+            end case;
+            Next (Decl);
+         end loop;
+      end Assume_For_Nested_Package;
+
+      Nested_Body : constant Boolean :=
+        (if No (Package_Body (E)) then For_Decl else For_Body);
+      --  Include the initial condition and initialization of variables in E
+      --  if we are traversing its declaration if it has no body or if we are
+      --  traversing its body if there is one.
+
+      Init_Cond   : constant Node_Id :=
+        Get_Pragma (E, Pragma_Initial_Condition);
+      Init_Map    : constant Dependency_Maps.Map :=
+        (if Is_Wrapper_Package (E) then Dependency_Maps.Empty_Map
+         else Parse_Initializes (E, Get_Flow_Scope (E)));
+      Initialized : Flow_Id_Sets.Set;
+
+   --  Start of processing for Assume_For_Nested_Package
+
+   begin
+      if not For_Decl and then not Nested_Body then
+         return;
+      end if;
+
+      --  Parse the Initializes contract to get the set of initialized
+      --  variables.
+
+      for Clause in Init_Map.Iterate loop
+         Initialized.Union
+           (Expand_Abstract_State
+              (Dependency_Maps.Key (Clause)));
+      end loop;
+
+      --  Traverse visisble and private declarations of the package
+
+      Assume_For_Nested_Package
+        (Visible_Declarations_Of_Package (E),
+         Initialized,
+         For_Decl => For_Decl,
+         For_Body => Nested_Body);
+
+      if Present (Private_Declarations_Of_Package (E))
+        and then Private_Spec_In_SPARK (E)
+      then
+         Assume_For_Nested_Package
+           (Private_Declarations_Of_Package (E),
+            Initialized,
+            For_Decl => For_Decl,
+            For_Body => Nested_Body);
+      end if;
+
+      --  Assume initial condition if any when the body has been elaborated
+
+      if Nested_Body and then Present (Init_Cond) then
+         Append
+           (Assumes,
+            New_Assume_Statement
+              (Pred => Transform_Pred
+                   (Expression
+                        (First
+                           (Pragma_Argument_Associations
+                              (Init_Cond))),
+                    EW_Bool_Type,
+                    Params)));
+      end if;
+   end Assume_For_Nested_Package;
 
    -------------------------------
    -- Assume_Value_Of_Constants --
@@ -18507,76 +18687,22 @@ package body Gnat2Why.Expr is
 
          when N_Package_Body | N_Package_Declaration =>
 
-            --  Assume dynamic property of local variables.
-            --  This should only be done when the nested package has been
-            --  elaborated.
-            --  ??? What about local variables of nested packages?
+            --  Assume declaration of objects from the nested package and
+            --  potentially its initial condition.
 
             declare
                E : constant Entity_Id := Unique_Defining_Entity (Decl);
             begin
-
                if not Is_Generic_Unit (E)
-                 and then not Is_Wrapper_Package (E)
-                 and then (Nkind (Decl) = N_Package_Body
-                           or else No (Package_Body (E)))
+                 and then Entity_In_SPARK (E)
                then
-                  declare
-                     Declared : constant Flow_Id_Sets.Set :=
-                       Expand_Abstract_States
-                         (To_Flow_Id_Set
-                            (States_And_Objects (E)));
-
-                     Init_Map : constant Dependency_Maps.Map :=
-                       Parse_Initializes (E, Get_Flow_Scope (E));
-
-                     Initialized : Flow_Id_Sets.Set;
-
-                  begin
-                     for Clause in Init_Map.Iterate loop
-                        Initialized.Union
-                          (Expand_Abstract_State
-                             (Dependency_Maps.Key (Clause)));
-                     end loop;
-
-                     for Var of Declared loop
-                        if Var.Kind = Direct_Mapping
-                          and then Ada_Ent_To_Why.Has_Element
-                            (Symbol_Table, Get_Direct_Mapping_Id (Var))
-                        then
-                           Assume_Declaration_Of_Entity
-                             (E             => Get_Direct_Mapping_Id (Var),
-                              Params        => Params,
-                              Initialized   =>
-                                Initialized.Contains (Var),
-                              Top_Predicate => True,
-                              Context       => R);
-                        end if;
-                     end loop;
-                  end;
-
-                  --  Assume initial condition
-
-                  declare
-                     Init_Cond : constant Node_Id :=
-                       Get_Pragma (E, Pragma_Initial_Condition);
-
-                  begin
-                     if Present (Init_Cond) then
-                        declare
-                           Expr : constant Node_Id :=
-                             Expression (First (Pragma_Argument_Associations
-                                         (Init_Cond)));
-                        begin
-                           Append
-                             (R,
-                              New_Assume_Statement
-                                (Pred => Transform_Pred
-                                     (Expr, EW_Bool_Type,
-                                      Params)));
-                        end;
-                     end if;
-                  end;
+                  Assume_For_Nested_Package
+                    (E        => E,
+                     Params   => Params,
+                     Assumes  => R,
+                     For_Decl => Nkind (Decl) = N_Package_Declaration,
+                     For_Body => Nkind (Decl) = N_Package_Body
+                        or else No (Package_Body (E)));
                end if;
             end;
 

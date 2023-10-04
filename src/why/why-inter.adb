@@ -638,7 +638,7 @@ package body Why.Inter is
                if Present (Node)
                  and then Nkind (Node) in N_Entity
                  and then Is_Constant_Object (Node)
-                 and then Enclosing_Unit (Node) = Defined_Entity
+                 and then Is_Declared_In_Unit (Node, Defined_Entity)
                then
                   null;
                else
