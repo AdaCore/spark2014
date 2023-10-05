@@ -9789,8 +9789,8 @@ package body SPARK_Definition is
          if SPARK_Pragma_Is_On
            or else (Is_Expression_Function_Or_Completion (E)
                     and then not SPARK_Pragma_Is (Opt.Off)
-                    and then not
-                      Is_Declared_In_Unit (E, Scope => Lib.Main_Unit_Entity))
+                    and then not Is_Declared_Directly_In_Unit
+                      (E, Scope => Lib.Main_Unit_Entity))
          then
             declare
                Save_Violation_Detected : constant Boolean :=

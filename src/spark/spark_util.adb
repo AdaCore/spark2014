@@ -2897,6 +2897,22 @@ package body SPARK_Util is
         and then Ekind (Scope (E)) in E_Protected_Type | E_Task_Type;
    end Is_Concurrent_Component_Or_Discr;
 
+   ----------------------------------
+   -- Is_Declared_Directly_In_Unit --
+   ----------------------------------
+
+   --  Parameters of subprograms cannot be local to a unit. Discriminants of
+   --  concurrent objects are not local to the object.
+
+   function Is_Declared_Directly_In_Unit
+     (E     : Entity_Id;
+      Scope : Entity_Id) return Boolean
+   is
+     (Enclosing_Unit (E) = Scope
+      and then not Is_Formal (E)
+      and then (Ekind (E) /= E_Discriminant
+                or else Sinfo.Nodes.Scope (E) /= Scope));
+
    ----------------------------
    -- Is_Declared_In_Private --
    ----------------------------
@@ -2924,17 +2940,17 @@ package body SPARK_Util is
    -- Is_Declared_In_Unit --
    -------------------------
 
-   --  Parameters of subprograms cannot be local to a unit. Discriminants of
-   --  concurrent objects are not local to the object.
-
    function Is_Declared_In_Unit
      (E     : Entity_Id;
       Scope : Entity_Id) return Boolean
    is
-     (Enclosing_Unit (E) = Scope
-      and then not Is_Formal (E)
-      and then (Ekind (E) /= E_Discriminant
-                or else Sinfo.Nodes.Scope (E) /= Scope));
+      Encl : constant Entity_Id := Enclosing_Unit (E);
+   begin
+      return Is_Declared_Directly_In_Unit (E, Scope)
+        or else (Ekind (Encl) = E_Package
+                 and then Present (Sinfo.Nodes.Scope (Encl))
+                 and then Is_Declared_In_Unit (Encl, Scope));
+   end Is_Declared_In_Unit;
 
    ----------------------------------------
    -- Is_Declared_In_Main_Unit_Or_Parent --
