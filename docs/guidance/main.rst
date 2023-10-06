@@ -3443,8 +3443,8 @@ analyzed:
    precise. At the Gold level, we advise starting at level 2, so all provers
    are requested to use reasonable effort (steps). During the interaction with
    GNATprove, while contracts and assertions are added in the program, it is in
-   general a good idea to perform analysis with only CVC4 enabled
-   (``--prover=cvc4``), no step limit (``--steps=0``) and a higher timeout for
+   general a good idea to perform analysis with only CVC5 enabled
+   (``--prover=cvc5``), no step limit (``--steps=0``) and a higher timeout for
    individual proof attempts (``--timeout=30``) to get both faster and more
    precise results. Note that using timeouts instead of steps is not portable
    between machines, so it's better to reserve it for interactive use.  Other
@@ -3501,7 +3501,7 @@ For each unproved property in this subprogram, you should follow the following s
    the editor panel inside GNAT Studio, selecting :menuselection:`SPARK --> Prove Line`
    from the contextual menu, selecting :guilabel:`2` as value for
    :guilabel:`Proof level` (and possibly setting the switches
-   ``--prover=cvc4 --steps=0 --timeout=30`` in the textual box, as described
+   ``--prover=cvc5 --steps=0 --timeout=30`` in the textual box, as described
    above) and checking the :guilabel:`Report checks proved` box, all in the GNAT Studio
    panel, and clicking :guilabel:`Execute`. GNATprove should either output a
    message that confirms that the check is proved or the same message as

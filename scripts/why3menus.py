@@ -18,7 +18,7 @@ list_transforms = []
 # This is an idealized transformation list. Comments explain why groups are
 # made.
 ideal_transf_list = [
-    ["Provers", "altergo", "z3", "cvc4"],  # Semantic -> provers
+    ["Provers", "altergo", "z3", "cvc5"],  # Semantic -> provers
     [
         "abstract",  # Prefix -> abstract
         "abstract__quantifiers",
@@ -158,7 +158,7 @@ for line in sys.stdin:
 # also add fully supported provers
 list_transforms.append("altergo")
 list_transforms.append("z3")
-list_transforms.append("cvc4")
+list_transforms.append("cvc5")
 
 # This makes sure that in ideal_transf_list, there are only existing
 # transformations. If not, an error is returned and people should remove the

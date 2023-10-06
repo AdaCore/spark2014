@@ -1,5 +1,4 @@
 def my_plan():
-    anod_install("cvc4", query_range=20)
     anod_install("cvc5", query_range=20)
     anod_install("alt-ergo", query_range=20)
     anod_install("colibri", query_range=20)
