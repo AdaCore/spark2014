@@ -1,6 +1,8 @@
 package body Bad_Ext_Ax with SPARK_Mode => Off is
 
-   function Bad_Func (X : in out Integer) return Boolean is
+   X : Integer;
+
+   function Bad_Func return Boolean is
    begin
       if X > Integer'Last / 2 then
          return False;

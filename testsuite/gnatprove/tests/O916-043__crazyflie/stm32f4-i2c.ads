@@ -165,9 +165,9 @@ package STM32F4.I2C is
       Address   : Byte;
       Direction : I2C_Direction);
 
-   function Read_Ack (Port : in out I2C_Port) return Byte with Volatile_Function;
+   function Read_Ack (Port : in out I2C_Port) return Byte with Volatile_Function, Side_Effects;
 
-   function Read_Nack (Port : in out I2C_Port) return Byte with Volatile_Function;
+   function Read_Nack (Port : in out I2C_Port) return Byte with Volatile_Function, Side_Effects;
 
    procedure Write (Port : in out I2C_Port; Data : Byte);
 
@@ -196,7 +196,7 @@ package STM32F4.I2C is
    function Enabled
      (Port   : in out I2C_Port;
       Source : I2C_Interrupt)
-     return Boolean with Volatile_Function;
+     return Boolean with Volatile_Function, Side_Effects;
 
 private
 

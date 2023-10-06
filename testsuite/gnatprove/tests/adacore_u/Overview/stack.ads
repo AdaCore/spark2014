@@ -4,7 +4,7 @@ package Stack with SPARK_Mode is
 
    function Empty return Stack;
    procedure Push (S : in out Stack; E : Element);
-   function Pop (S : in out Stack) return Element;
+   function Pop (S : in out Stack) return Element with Side_Effects;
 private
    type Element_Array is array (Positive range <>) of Element;
    Max : constant := 100;

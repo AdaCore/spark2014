@@ -1092,6 +1092,18 @@ package body SPARK_Definition.Annotate is
                         & " after a volatile function", E);
                      return;
 
+                  --  Lemmas cannot be associated to functions with
+                  --  side-effects.
+
+                  elsif Ekind (Prec) = E_Function
+                    and then Is_Function_With_Side_Effects (Prec)
+                  then
+                     Error_Msg_N_If
+                       ("procedure annotated with the " & Aspect_Or_Pragma
+                        & " Automatic_Instantiation shall not be declared"
+                        & " after a function with side-effects", E);
+                     return;
+
                   --  A function has been found, add the association to the
                   --  Automatic_Instantiation_Annotations map and exit the
                   --  loop.
@@ -1177,13 +1189,21 @@ package body SPARK_Definition.Annotate is
             Arg3_Exp);
          return;
 
-      --  For now reject volatile functions, dispatching operations, and
-      --  borrowing traversal functions.
+      --  For now reject volatile functions, functions with side-effects,
+      --  dispatching operations, and borrowing traversal functions.
 
       elsif Ekind (E) = E_Function and then Is_Volatile_Function (E) then
          Error_Msg_N_If
            ("function annotated with Higher_Order_Specialization shall not be"
             & " a volatile function",
+            Arg3_Exp);
+         return;
+      elsif Ekind (E) = E_Function
+        and then Is_Function_With_Side_Effects (E)
+      then
+         Error_Msg_N_If
+           ("function annotated with Higher_Order_Specialization shall not be"
+            & " a function with side-effects",
             Arg3_Exp);
          return;
       elsif Einfo.Entities.Is_Dispatching_Operation (E)
@@ -1758,6 +1778,11 @@ package body SPARK_Definition.Annotate is
          if Is_Volatile_Function (E) then
             Error_Msg_N_If
               (Name_For_Error & " function must not be volatile", E);
+            return;
+         end if;
+         if Is_Function_With_Side_Effects (E) then
+            Error_Msg_N_If
+              (Name_For_Error & " function must not have side-effects", E);
             return;
          end if;
          Get_Globals
