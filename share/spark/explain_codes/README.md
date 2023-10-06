@@ -26,3 +26,11 @@
 - E0012: `address specification on <variable> is imprecisely supported`
 
 - E0013: `procedure not terminating normally nor abnormally`
+
+- E0014: `<global mode/output item> is not applicable to function`
+
+- E0015: `function cannot have parameter of mode "out" or "in out" in SPARK`
+
+- E0016: `aspect "Always_Terminates" cannot apply to function`
+
+- E0017: `aspect "Exceptional_Cases" cannot apply to function`
