@@ -1,7 +1,6 @@
-large: True
-timeout: 1500
 replay: True
+contains_manual_proof: True
 prove_all:
   counterexample: False
 session_opt:
-  level: 4
+  prover: ["cvc5", "z3"]

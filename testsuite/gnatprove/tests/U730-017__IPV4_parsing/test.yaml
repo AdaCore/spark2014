@@ -1,1 +1,8 @@
 large: True
+replay: True
+prove_all:
+  prover: ["z3", "cvc5", "alt-ergo"]
+  no_fail: True
+  counterexample: False
+session_opt:
+  level: 4

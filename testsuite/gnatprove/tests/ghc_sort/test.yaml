@@ -1,1 +1,4 @@
 large: True
+replay: True
+session_opt:
+  level: 4
