@@ -57,10 +57,10 @@ should be documented in the User Guide for the tool.
 
 .. index:: Access
 
-1. The prefix of an Access attribute reference shall be the name of a subprogram
-   or a name denoting an object whose root object is either a standalone object
-   or a subprogram parameter (see section 3.10 for the definition of a
-   the root object of a name denoting an object).
+1. The prefix of an Access attribute reference shall be the name of a
+   subprogram or a name denoting an object whose root object is either a
+   standalone object or a subprogram parameter (see section :ref:`Access Types`
+   for the definition of a the root object of a name denoting an object).
 
 2. A subprogram used as the prefix of an Access attribute reference:
 
@@ -68,21 +68,25 @@ should be documented in the User Guide for the tool.
 
    - shall not be a dispatching operation of a tagged type; and
 
-   - shall not be a declared in the scope of a type with an invariant
-     if this type is mentioned in the subprogram's profile unless it is
-     a boundary subprogram (see section 7.3.2 for the definition of a
+   - shall not be a declared in the scope of a type with an invariant if this
+     type is mentioned in the subprogram's profile unless it is a boundary
+     subprogram (see section :ref:`Type Invariants` for the definition of a
      boundary subprogram).
 
-3. The Volatile_Function aspect of a subprogram used as the prefix of an
-   Access attribute reference, if specified, shall not be True
-   (see section 7.1.2 for the definition of Volatile_Function).
+3. The Volatile_Function aspect of a subprogram used as the prefix of an Access
+   attribute reference, if specified, shall not be True (see section
+   :ref:`External State` for the definition of Volatile_Function).
 
-4. A reference to the Access attribute whose type is an anonymous
+4. The Side_Effects aspect of a subprogram used as the prefix of an Access
+   attribute reference, if specified, shall not be True (see section
+   :ref:`Functions With Side-Effects` for the definition of Side_Effects).
+
+5. A reference to the Access attribute whose type is an anonymous
    access-to-object type or a named access-to-variable type shall occur
    directly inside a stand-alone object declaration, an assignment, or a
    return statement.
 
-5. The prefix of an Access attribute reference whose type is a named
+6. The prefix of an Access attribute reference whose type is a named
    access-to-constant type shall either be a name denoting a part of a
    stand-alone constant whose type is neither a named access-to-variable type
    nor an anonymous access-to-object type, or shall
@@ -92,13 +96,13 @@ should be documented in the User Guide for the tool.
 
    Verification Rules
 
-6. A subprogram used as the prefix of an Access attribute reference shall have
-   no global inputs and outputs (see section 6.1 for inputs and outputs of
-   subprograms).
+7. A subprogram used as the prefix of an Access attribute reference shall have
+   no global inputs and outputs (see section :ref:`Subprogram Declarations` for
+   inputs and outputs of subprograms).
 
 .. index:: verification condition; for Access on subprogram
 
-7. On an Access attribute reference whose prefix is the name of a subprogram, a
+8. On an Access attribute reference whose prefix is the name of a subprogram, a
    verification condition is introduced to ensure that the precondition of the
    prefix of the attribute reference is implied by the precondition of
    its expected type. Similarly, a verification condition is introduced to
@@ -182,10 +186,12 @@ free from side-effects only retrieves or computes a value.
    Legality Rules
 
 
-1. An expression shall be side-effect free.
-   [Strictly speaking, this "rule" is a consequence of other rules,
-   most notably the rule that a function cannot have outputs other
-   than its result.]
+1. An expression shall be side-effect free, unless it is a call to a function
+   with side-effects (see section :ref:`Functions With Side-Effects`).
+   [Strictly speaking, this "rule" is a consequence of other rules, most
+   notably the rule that a function without side-effects cannot have outputs
+   other than its result, and that calls to function with side-effectss are not
+   subexpressions.]
 
 .. index:: expression with a variable input; disallowed contexts
 

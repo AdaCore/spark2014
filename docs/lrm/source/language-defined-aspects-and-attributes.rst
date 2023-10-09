@@ -86,6 +86,7 @@ Write			      No		     No streams
 Aspect                        Allowed in SPARK       Comment
 ============================= ====================== =================================================
 Abstract_State	 	      Yes
+Always_Terminates	      Yes
 Async_Readers		      Yes
 Async_Writers		      Yes
 Constant_After_Elaboration    Yes
@@ -94,16 +95,19 @@ Default_Initial_Condition     Yes
 Depends		 	      Yes
 Effective_Reads		      Yes
 Effective_Writes	      Yes
+Exceptional_Cases             Yes
 Extensions_Visible            Yes
 Ghost                         Yes
 Global		 	      Yes
 Initial_Condition  	      Yes
 Initializes	  	      Yes
+No_Caching	  	      Yes
 Part_Of			      Yes
 Refined_Depends    	      Yes
 Refined_Global	 	      Yes
 Refined_Post		      Yes
 Refined_State 	 	      Yes
+Side_Effects                  Yes
 SPARK_Mode		      Yes		     Language defined but implementation dependent
 Volatile_Function             Yes
 ============================= ====================== =================================================
@@ -115,7 +119,7 @@ Language-Defined Attributes
 ---------------------------
 
 
-1. The following attributes are in |SPARK|.
+1. Ada language attributes are permitted as shown in the following table:
 
 ===================================== ====================== ====================================================
 Attribute                              Allowed in SPARK      Comment
@@ -168,7 +172,6 @@ S'Last_Valid			      Yes
 S'Leading_Part			      Yes                    Only supported with static attribute expressions
 A'Length	    		      Yes
 A'Length(N)	    		      Yes
-X'Loop_Entry        		      Yes
 S'Machine	    		      Yes                    Only supported with static attribute expressions
 S'Machine_Emax			      Yes
 S'Machine_Emin			      Yes
@@ -241,6 +244,15 @@ S'Wide_Width			      Yes
 S'Width				      Yes
 S'Class'Write			      No		     No streams
 S'Write				      No		     No streams
+===================================== ====================== ====================================================
+
+2. |SPARK| defines the following attributes:
+
+===================================== ====================== ====================================================
+Attribute                              Allowed in SPARK      Comment
+===================================== ====================== ====================================================
+X'Initialized        		      Yes                    Only allowed in ghost code
+X'Loop_Entry        		      Yes
 ===================================== ====================== ====================================================
 
 
