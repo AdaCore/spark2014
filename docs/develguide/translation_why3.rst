@@ -2704,10 +2704,11 @@ for the reference type and havoc function, we also introduce conversion
 functions to and from the wrapper type. They both assume that initialization has
 been appropriately checked (by proof or by flow) before the conversion.
 
-The wrapper type of a composite type is not really a wrapper. It is constructed
-similarly to the usual translation of the type, but uses wrapper types for
-its components (except for dicriminants, which can never be partially
-initialized). As an example, let us consider the type ``Int_Array`` above. To
+The wrapper type of a composite type or access-to-object type is not really a
+wrapper. It is constructed similarly to the usual translation of the type, but
+uses wrapper types for its components. Immutable discriminants of records and
+array bounds do not have an initialization flag as they cannot be modified.
+As an example, let us consider the type ``Int_Array`` above. To
 declare its wrapper type, we first need an array theory module containing
 wrappers for integers:
 
@@ -2735,6 +2736,29 @@ translation:
       type map = Array__Int__Standard__integer__init_wrapper.map
 
   end
+
+Mutable discriminants and access addresses can never be uninitialized in Ada
+but reading them might be inconsistent with the rules of SPARK (for parameters
+of mode OUT or global variables of mode Output). This might cause incorrect
+dependencies to be inferred if an incorrect mode is used. To avoid that, we
+need to generate initialization checks for them. An additional top-level
+initialization flag is introduced for types with mutable discriminants and for
+access-to-object types. It is checked whenever (any part of) the object is
+accessed. Note that the flag for the access types is necessary even though the
+pointer address is not modelled. It protects the ``Is_Null`` flag and the
+bounds and discriminants of the designated object. Here is an example of
+a wrapper type introduced for an access to an ``Int_Array``. We see that it has
+its own initialization flag, which will be used when the pointer is
+dereferenced or compared to null. The designated value itself is a wrapper
+type as it could not be initialized even if the pointer itself is:
+
+.. code-block:: whyml
+
+  type __rep =
+    {rec__test__int_acc__is_null_pointer : bool;
+     rec__test__int_acc__is_moved        : bool;
+     rec__test__int_acc__pointer_value   : int_array__init_wrapper;
+     __attr__init                        : bool}
 
 Unlike scalars types (and record types) the conversion functions to and from
 the wrapper type for arrays are not defined in the ``init_wrapper`` module.
