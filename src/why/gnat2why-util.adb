@@ -58,11 +58,20 @@ package body Gnat2Why.Util is
    package body Ada_Ent_To_Why is
 
       function Normalize_Entity (E : Entity_Id) return Entity_Id is
-        (if Nkind (E) in N_Entity and then Ekind (E) = E_Discriminant then
-              Root_Discriminant (E) else E);
+        (if Nkind (E) in N_Entity then
+             (case Ekind (E) is
+                 when E_Discriminant =>
+                    Root_Discriminant (E),
+                 when E_Constant     =>
+                    (if Is_Partial_View (E)
+                     and then Entity_In_SPARK (Full_View (E))
+                     then Full_View (E) else E),
+                 when others         => E)
+         else E);
       --  Entities of discriminants can vary when types are derived. We want to
       --  refer to the same item for every variants of a single discriminant
-      --  entity.
+      --  entity. For constants whose full view is in SPARK, use the full
+      --  view.
       --  ??? Ada_Ent_To_Why is sometimes used to store nodes, see
       --      Transform_Aggregate.
       --  @param E entity to be registered in the map
