@@ -2,4 +2,4 @@
 	path = why3
 	url = ../why3.git
 	ignore = dirty
-        branch = master
+        branch = 24.0
