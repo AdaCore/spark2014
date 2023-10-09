@@ -1123,24 +1123,21 @@ package body SPARK_Util.Types is
       -------------------------
 
       function Has_Type_Or_Derived (Typ : Type_Kind_Id) return Test_Result is
-         Base : Opt_Type_Kind_Id;
+         Base : Opt_Type_Kind_Id := Typ;
       begin
-         if Typ = Anc or else Root_Retysp (Typ) = Anc then
-            return Pass;
-         elsif Root_Retysp (Typ) /= Anc then
+         if Root_Retysp (Typ) /= Root_Retysp (Anc) then
             return Continue;
          end if;
 
          --  Loop over the ancestors of Base to look for Anc
 
          loop
-            Base := Base_Retysp (Typ);
+            Base := Base_Retysp (Base);
             if Base = Anc then
                return Pass;
             end if;
 
             Base := Parent_Retysp (Base);
-
             if No (Base) then
                return Continue;
             end if;
