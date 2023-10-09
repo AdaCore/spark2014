@@ -11,8 +11,10 @@ global_illegal.ads:69:32: error: duplicate global item
 global_illegal.ads:71:32: error: duplicate global item
 global_illegal.ads:86:26: error: cannot mix null and non-null global items
 global_illegal.ads:91:21: error: global item must denote object, state or current instance of concurrent type
-global_illegal.ads:97:22: error: global mode "Output" is not applicable to functions
-global_illegal.ads:98:22: error: global mode "In_Out" is not applicable to functions
+global_illegal.ads:97:22: error: global mode "Output" is not applicable to function [E0014]
+global_illegal.ads:97:22: error: launch "gnatprove --explain=E0014" for more information
+global_illegal.ads:98:22: error: global mode "In_Out" is not applicable to function [E0014]
+global_illegal.ads:98:22: error: launch "gnatprove --explain=E0014" for more information
 global_illegal_2.adb:13:11: error: aspect specification must appear on initial declaration
 global_illegal_2.adb:26:31: error: cannot mention state "A" in global refinement
 global_illegal_2.adb:26:31: error: use its constituents instead
