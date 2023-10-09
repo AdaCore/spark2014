@@ -1114,27 +1114,39 @@ package body Gnat2Why.Expr.Loops.Inv is
                         --  assume the dynamic invariant of its value at the
                         --  end of the borrow and link the values of their
                         --  is_null fields.
+                        --  The address of the borrower is necessarily
+                        --  initialized at the end of the borrow.
 
                         3 => (if Is_Local_Borrower (N)
                                 and then Status.Kind = Entire_Object
                               then New_And_Pred
-                                (Left   =>
-                                   Compute_Dynamic_Inv_And_Initialization
-                                     (Expr        => New_Deref
-                                          (Right => Brower_Id,
-                                           Typ   => Get_Typ (Brower_Id)),
-                                      Ty          => Etype (N),
-                                      Params      => Body_Params,
-                                      Initialized => True_Term),
-                                 Right  => New_Comparison
-                                   (Symbol => Why_Eq,
-                                    Left   => New_Pointer_Is_Null_Access
-                                      (Etype (N),
-                                       New_Deref
-                                         (Right => Brower_Id,
-                                          Typ   => Get_Typ (Brower_Id))),
-                                    Right  => New_Pointer_Is_Null_Access
-                                      (Etype (N), Expr)))
+                                (Conjuncts =>
+                                   (1 => Compute_Dynamic_Inv_And_Initialization
+                                        (Expr        => New_Deref
+                                             (Right => Brower_Id,
+                                              Typ   => Get_Typ (Brower_Id)),
+                                         Ty          => Etype (N),
+                                         Params      => Body_Params,
+                                         Initialized => True_Term),
+                                    2 => New_Comparison
+                                      (Symbol => Why_Eq,
+                                       Left   => New_Pointer_Is_Null_Access
+                                         (Etype (N),
+                                          New_Deref
+                                            (Right => Brower_Id,
+                                             Typ   => Get_Typ (Brower_Id))),
+                                       Right  => New_Pointer_Is_Null_Access
+                                         (Etype (N), Expr)),
+                                    3 =>
+                                      (if Obj_Has_Relaxed_Init (N)
+                                       then Pred_Of_Boolean_Term
+                                         (New_Init_Attribute_Access
+                                              (Name => New_Deref
+                                                   (Right => Brower_Id,
+                                                    Typ   =>
+                                                      Get_Typ (Brower_Id)),
+                                               E    => Etype (N)))
+                                       else True_Pred)))
                               else True_Pred),
 
                         --  Unmodified fields are preserved. Use

@@ -124,14 +124,14 @@ package Why.Gen.Init is
       return W_Expr_Id;
    --  If Domain = EW_Prog, insert a check that Name is initialized
 
-   function Insert_Init_Check_For_Discriminants
+   function Insert_Top_Level_Init_Check
      (Ada_Node : Node_Id;
       E        : Entity_Id;
       Name     : W_Expr_Id;
       Domain   : EW_Domain;
       Do_Check : Boolean := True)
       return W_Expr_Id;
-   --  If Domain = EW_Prog, insert a check that the mutable discriminants of
-   --  Name (if any) are initialized
+   --  If Domain = EW_Prog, insert a check that the mutable discriminants or
+   --  pointer address of Name (if any) are initialized.
 
 end Why.Gen.Init;

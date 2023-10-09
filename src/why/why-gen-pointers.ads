@@ -42,7 +42,7 @@ package Why.Gen.Pointers is
    with
      Pre => Is_Access_Type (E) and then Designates_Incomplete_Type (E);
    --  Declare a new module for completion of access types designating
-   --  incomplete types.
+   --  incomplete types if there isn't one already.
 
    procedure Declare_Ada_Pointer (Th : Theory_UC; E : Entity_Id)
    with Pre => Is_Access_Type (E);
@@ -53,8 +53,13 @@ package Why.Gen.Pointers is
    procedure Create_Rep_Pointer_Theory_If_Needed (E : Entity_Id);
    --  Similar to Create_Rep_Record_Theory_If_Needed but handles objects of
    --  access type. It declares a pointer type as a why record with three
-   --  fields: pointer_address, is_null_pointer, and pointer_address.
+   --  fields: pointer_value, is_null_pointer, and is_moved.
    --  It also defines the needed functions to manipulate this type.
+
+   procedure Declare_Init_Wrapper_For_Pointer
+     (Th : Theory_UC;
+      E  : Entity_Id) with
+     Pre => Is_Access_Type (E) and then Has_Init_Wrapper (E);
 
    function Move_Param_Item
      (Typ : Entity_Id) return Item_Type
@@ -68,6 +73,13 @@ package Why.Gen.Pointers is
    --  Return True if the is_moved and moved_relation predicates need to be
    --  declared separately from their definition to avoid circularity (E is the
    --  completion of an incomplete type designated by a general access type).
+
+   function Has_Predeclared_Init_Predicate (E : Entity_Id) return Boolean with
+     Pre => Is_Type (E) and then Has_Init_Wrapper (E);
+   --  Return True if the is_initialized predicate needs to be declared
+   --  separately from its definition to avoid circularity (E is the completion
+   --  of an incomplete type designated by an access type with an
+   --  initialization wrapper).
 
    function New_Ada_Pointer_Update
      (Ada_Node : Node_Id;
@@ -185,14 +197,15 @@ package Why.Gen.Pointers is
    --  Reconstructs a complete pointer from an item in split form.
 
    function Pointer_From_Split_Form
-     (Ada_Node : Node_Id := Empty;
-      A        : W_Expr_Array;
-      Ty       : Entity_Id;
-      Local    : Boolean := False)
+     (Ada_Node     : Node_Id := Empty;
+      A            : W_Expr_Array;
+      Ty           : Entity_Id;
+      Local        : Boolean := False;
+      Relaxed_Init : Boolean := False)
       return W_Term_Id;
    --  Reconstructs a complete pointer of type Ty from an array of expressions
    --  representing a split form. A should contain first the value, then
-   --  is_null and is_moved.
+   --  is_null, is_moved and the initialization flag if Relaxed_Init is True.
 
    function Prepare_Args_For_Access_Subtype_Check
      (Check_Ty : Entity_Id;

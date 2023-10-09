@@ -4220,6 +4220,13 @@ package body Gnat2Why.Subprograms is
                if Ekind (Param) = E_Out_Parameter
                  and then Obj_Has_Relaxed_Init (Param)
                then
+                  Continuation_Stack.Append
+                    (Continuation_Type'
+                       (E,
+                        To_Unbounded_String
+                          ("for parameter " & Source_Name (Param)
+                           & " at the end of the subprogram")));
+
                   if B.Init.Present then
                      Append
                        (Checks,
@@ -4255,6 +4262,8 @@ package body Gnat2Why.Subprograms is
                              (B, Body_Params.Ref_Allowed),
                            Ty       => Etype (Param)));
                   end if;
+
+                  Continuation_Stack.Delete_Last;
                end if;
             end;
             Next_Formal (Param);
@@ -7787,6 +7796,12 @@ package body Gnat2Why.Subprograms is
       --
       --  The ground call to E.borrowed_at_end is used to allow an instance of
       --  the quantified formula just after the borrow.
+
+      --  No need to assume that the address of the borrower is initialized at
+      --  the end of the borrow as traversal functions cannot have relaxed
+      --  initialization.
+
+      pragma Assert (not Fun_Has_Relaxed_Init (E));
 
       return New_And_Pred
         (Left   => New_Universal_Quantif
