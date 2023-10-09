@@ -2,7 +2,7 @@
 Tool Interaction
 ################
 
-Besides the use of :ref:`manual_proof` and :ref:`counterexamples`, there are
+Besides the use of :ref:`counterexamples`, there are
 other features for tool interaction in GNATprove, which are described here.
 
 Explanations for Unproved Checks
