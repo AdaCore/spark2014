@@ -67,6 +67,10 @@ stages:
     # Setup the "anod vcs as appropriate"
     - *setup_repos
 
+    # remove gnat from vcs if present for testing; this is allowed to fail when
+    # gnat is not present
+    - anod vcs --remove gnat || true
+
     # Do not rebuild spark2014-doc
     - anod install spark2014-doc --latest
 
