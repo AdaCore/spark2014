@@ -5424,7 +5424,7 @@ package body Gnat2Why.Expr is
                pragma Assert (Top_Predicate);
 
                Init_Pred := +Compute_Is_Initialized
-                 (Ty, +Expr, Params, EW_Pred);
+                 (Ty, +Expr, Params, EW_Pred, Exclude_Relaxed => True_Term);
             elsif Has_Predicates (Ty) then
                Init_Pred := Compute_Dynamic_Predicate
                  (Expr => Expr, Ty => Ty,
@@ -5932,7 +5932,9 @@ package body Gnat2Why.Expr is
               Pred_Of_Boolean_Term
                 (if Relaxed_Init
                  then +Compute_Is_Initialized
-                   (Ty_Ext, +Expr, Params, EW_Term, No_Predicate_Check => True)
+                   (Ty_Ext, +Expr, Params, EW_Term,
+                    No_Predicate_Check => True,
+                    Exclude_Relaxed    => True_Term)
                  else Initialized);
             Check_Pred            : constant W_Pred_Id :=
               (if Pred_Check_At_Default and then not Relaxed_Init
@@ -14412,7 +14414,8 @@ package body Gnat2Why.Expr is
                          not Is_Init_Wrapper_Type (Get_Type (+Value)))
                   then
                      Is_Init := +Compute_Is_Initialized
-                       (C_Typ, +Read, Params, EW_Pred);
+                       (C_Typ, +Read, Params, EW_Pred,
+                        Exclude_Relaxed => True_Term);
                   end if;
 
                   Read := Insert_Simple_Conversion
@@ -15137,13 +15140,18 @@ package body Gnat2Why.Expr is
       Left_Type  : constant Entity_Id := Etype (Left_Opnd (Ada_Node));
       Left_Expr  : constant W_Expr_Id := New_Temp_For_Expr
         (Insert_Initialization_Check
-           (Left_Opnd (Ada_Node), Left_Type, Left, Domain));
+           (Left_Opnd (Ada_Node),
+            Left_Type,
+            Left,
+            Domain,
+            Exclude_Relaxed => False));
       Right_Expr : constant W_Expr_Id := New_Temp_For_Expr
         (Insert_Initialization_Check
            (Right_Opnd (Ada_Node),
             Etype (Right_Opnd (Ada_Node)),
             Right,
-            Domain));
+            Domain,
+            Exclude_Relaxed => False));
       Arg_Ind    : Positive := 1;
    begin
       Add_Array_Arg (Subdomain, Args, Left_Expr, Arg_Ind);
@@ -15310,10 +15318,18 @@ package body Gnat2Why.Expr is
 
       Left_Expr : constant W_Term_Id := New_Temp_For_Expr
         (Insert_Initialization_Check
-           (Left_Opnd (Ada_Node), Left_Type, Left, Domain));
+           (Left_Opnd (Ada_Node),
+            Left_Type,
+            Left,
+            Domain,
+            Exclude_Relaxed => False));
       Right_Expr : constant W_Term_Id := New_Temp_For_Expr
         (Insert_Initialization_Check
-           (Right_Opnd (Ada_Node), Left_Type, Right, Domain));
+           (Right_Opnd (Ada_Node),
+            Etype (Right_Opnd (Ada_Node)),
+            Right,
+            Domain,
+            Exclude_Relaxed => False));
       Array_Theory : constant M_Array_1_Bool_Op_Type :=
         Get_Array_Theory_1_Bool_Op (Etype (Left_Opnd (Ada_Node)));
       W_Op      : constant W_Identifier_Id :=
@@ -15486,7 +15502,11 @@ package body Gnat2Why.Expr is
 
       Right_Expr : constant W_Term_Id := New_Temp_For_Expr
         (Insert_Initialization_Check
-           (Right_Opnd (Ada_Node), Right_Type, Right, Domain));
+           (Right_Opnd (Ada_Node),
+            Right_Type,
+            Right,
+            Domain,
+            Exclude_Relaxed => False));
 
       Right_Length : constant W_Expr_Id :=
         Build_Length_Expr (Domain => EW_Term, Expr => +Right_Expr, Dim => 1);
@@ -22888,18 +22908,16 @@ package body Gnat2Why.Expr is
       return W_Expr_Id
    is
 
-      function Initialization_Check_Needed (Alt : Node_Id) return Boolean is
-        (not Is_Entity_Name (Alt)
-         or else not Is_Type (Entity (Alt))
-         or else (Has_Predicates (Entity (Alt))
-           and then Predicate_Requires_Initialization (Entity (Alt))));
-      --  Return True if we need to initialize the lefthand side for a
-      --  membership test wrt Alt. It is not the case if Alt is a type, unless
-      --  this type has predicates.
+      function Initialization_Check_For_Eq return Boolean;
+      --  Return True if we need to initialize the lefthand side so it is safe
+      --  to compute the equality on it.
+      --  The function returns True even if the membership test uses a
+      --  primitive equality with relaxed inputs. Indeed, the translation uses
+      --  _user_eq which never expects wrappers for now.
 
-      function Initialization_Check_Needed return Boolean;
-      --  Return True if we need to initialize the lefthand side for the
-      --  membership test.
+      function Initialization_Check_For_Preds return Boolean;
+      --  Return True if we need to initialize the lefthand side so it is safe
+      --  to check its predicates.
 
       function Transform_Alternative
         (Var       : W_Expr_Id;
@@ -22915,10 +22933,17 @@ package body Gnat2Why.Expr is
          In_Expr : Node_Id) return W_Expr_Id;
 
       ---------------------------------
-      -- Initialization_Check_Needed --
+      -- Initialization_Check_For_Eq --
       ---------------------------------
 
-      function Initialization_Check_Needed return Boolean is
+      function Initialization_Check_For_Eq return Boolean is
+
+         function Contains_Eq (Alt : Node_Id) return Boolean is
+           (not Is_Entity_Name (Alt)
+            or else not Is_Type (Entity (Alt)));
+         --  Return True if the evaluation of a membership test with Alt
+         --  involves an equality relation.
+
       begin
          if Present (Alternatives (Expr)) then
             declare
@@ -22926,17 +22951,51 @@ package body Gnat2Why.Expr is
             begin
                Alt := First (Alternatives (Expr));
                while Present (Alt) loop
-                  if Initialization_Check_Needed (Alt) then
+                  if Contains_Eq (Alt) then
                      return True;
                   end if;
                   Next (Alt);
                end loop;
             end;
-         elsif Initialization_Check_Needed (Right_Opnd (Expr)) then
+         elsif Contains_Eq (Right_Opnd (Expr)) then
             return True;
          end if;
          return False;
-      end Initialization_Check_Needed;
+      end Initialization_Check_For_Eq;
+
+      ------------------------------------
+      -- Initialization_Check_For_Preds --
+      ------------------------------------
+
+      function Initialization_Check_For_Preds return Boolean is
+
+         function Contains_Preds (Alt : Node_Id) return Boolean is
+           (Is_Entity_Name (Alt)
+            and then Is_Type (Entity (Alt))
+            and then Has_Predicates (Entity (Alt))
+            and then Predicate_Requires_Initialization (Entity (Alt)));
+         --  Return True if the evaluation of a membership test with Alt
+         --  involves the evaluation of a predicate which requires
+         --  initialization.
+
+      begin
+         if Present (Alternatives (Expr)) then
+            declare
+               Alt : Node_Id := First (Alternatives (Expr));
+            begin
+               Alt := First (Alternatives (Expr));
+               while Present (Alt) loop
+                  if Contains_Preds (Alt) then
+                     return True;
+                  end if;
+                  Next (Alt);
+               end loop;
+            end;
+         elsif Contains_Preds (Right_Opnd (Expr)) then
+            return True;
+         end if;
+         return False;
+      end Initialization_Check_For_Preds;
 
       ---------------------------
       -- Transform_Alternative --
@@ -23285,8 +23344,14 @@ package body Gnat2Why.Expr is
       Var          : constant Node_Id := Left_Opnd (Expr);
       Result       : W_Expr_Id;
       Relaxed_Init : constant Boolean :=
-        not Initialization_Check_Needed
+        not Initialization_Check_For_Preds
+        and then not Initialization_Check_For_Eq
         and then Expr_Has_Relaxed_Init (Var, No_Eval => False);
+      --  It might be necessary to introduce initialization checks for two
+      --  reasons:
+      --  * because the membership checking involves an equality, or
+      --  * because the membership checking evaluates a subtype predicate.
+
       Base_Type    : W_Type_Id :=
         (if Is_Record_Type_In_Why (Etype (Var))
          then EW_Abstract
@@ -23295,7 +23360,8 @@ package body Gnat2Why.Expr is
       --  For records, checks are done on the root type
 
          elsif Relaxed_Init then Type_Of_Node (Var)
-      --  Do not check initialization on composite types
+      --  Do not check initialization on composite types if Relaxed_Init is
+      --  True.
 
          else Base_Why_Type (Var));
 
@@ -23320,12 +23386,20 @@ package body Gnat2Why.Expr is
       end if;
       Var_Expr := Transform_Expr (Var, Base_Type, Subdomain, Params);
 
-      if Initialization_Check_Needed then
+      --  Initialization checks for predicates are introduced by the conversion
+      --  to the normal version of the type. Predefined equality might require
+      --  initialization of additional subcomponents whose type has relaxed
+      --  initialization.
+
+      if Initialization_Check_For_Eq
+        and then Use_Predefined_Equality_For_Type (Etype (Var))
+      then
          Var_Expr := Insert_Initialization_Check
            (Ada_Node => Var,
             E        => Etype (Var),
             Name     => Var_Expr,
-            Domain   => Subdomain);
+            Domain   => Subdomain,
+            For_Eq   => True);
       end if;
 
       if Present (Alternatives (Expr)) then
