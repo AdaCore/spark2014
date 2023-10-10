@@ -293,6 +293,9 @@ package SPARK_Util.Types is
    --  subcomponents of an access-to-variable type or a private type annotated
    --  with ownership).
 
+   function Has_Mutable_Discriminants (Ty : Type_Kind_Id) return Boolean is
+     (Has_Defaulted_Discriminants (Ty) and then not Is_Constrained (Ty));
+
    procedure Find_Predicate_Item
      (Ty       :        Type_Kind_Id;
       Rep_Item : in out Node_Id);

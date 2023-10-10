@@ -210,12 +210,15 @@ A number of options exist to influence the behavior for proof. Internally, the
 prover(s) specified with option ``--prover`` is/are called repeatedly for each
 check or assertion. Using the options ``--timeout`` and ``--memlimit``, one
 can change the maximal time and memory that is allocated to each prover to
-prove each check or assertion.  Using the option ``--steps`` (default: 100),
+prove each check or assertion.  Using the option ``--steps``,
 one can set the maximum number of reasoning steps that the prover is allowed
-to perform before giving up. The ``steps`` option should be used when
+to perform before giving up. The ``--steps`` option should be used when
 repeatable results are required, because the results with a timeout and
 memory limit may differ depending on the computing power, current load or
-platform of the machine. The option ``-j`` activates parallel compilation and
+platform of the machine. A default value of 100 for ``--steps`` is used
+if none of ``--steps`` or ``--timeout`` is used, either directly or
+indirectly through ``--level``.
+The option ``-j`` activates parallel compilation and
 parallel proofs. With ``-jnnn``, at most nnn cores can be used in parallel.
 With the special value ``-j0``, at most N cores can be used in parallel, when
 N is the number of cores on the machine.

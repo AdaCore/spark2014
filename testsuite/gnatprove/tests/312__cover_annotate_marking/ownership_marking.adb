@@ -3,7 +3,7 @@ procedure Ownership_Marking with SPARK_Mode is
       type T is new Integer;
       function Is_Reclaimed (X : T) return Boolean is (False);
    end Out_Of_Spark;
-   
+
    --  Ownership annotation for out-of-Spark types are essentially ignored.
 
    pragma Annotate (GNATprove, Ownership, Out_Of_Spark.T);
@@ -11,7 +11,7 @@ procedure Ownership_Marking with SPARK_Mode is
      (GNATprove, Ownership, "is_reclaimed", Out_Of_SPARK.Is_Reclaimed);
 
    --  However, if type is in SPARK, function must be as well.
-   
+
    package Bad_Reclamation is
       type T is private;
       function Is_Reclaimed (X : T) return Boolean with SPARK_Mode => Off;
@@ -33,7 +33,7 @@ procedure Ownership_Marking with SPARK_Mode is
 
    --  Covers passing over other 4-arguments
    --  pragmas when looking for reclamation functions
-   
+
    package Find_Other_Pragmas is
       type Owned is private with
         Annotate => (GNATprove, Ownership, "needs_reclamation");
@@ -73,7 +73,7 @@ procedure Ownership_Marking with SPARK_Mode is
       pragma SPARK_Mode (Off);
       type Owned is new Integer;
    end Go_Over_Other_Pragmas;
-   
+
 begin
    null;
 end Ownership_Marking;

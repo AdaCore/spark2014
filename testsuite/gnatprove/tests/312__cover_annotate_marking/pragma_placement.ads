@@ -2,7 +2,7 @@
 --  Covers code checking placement of various annotation pragma.
 
 package Pragma_Placement with SPARK_Mode is
-   
+
    --  Pragma Annotate are not allowed to follow generics. Using a package
    --  wrapper containing the pragma is fine.
 
@@ -18,7 +18,7 @@ package Pragma_Placement with SPARK_Mode is
       function Bar (X : T) return T is (X);
    end Foo_P;
    pragma Annotate (GNATprove, Skip_Proof, Foo_P);
-   
+
    generic
       type T (<>) is private;
    package Wrapper is
@@ -36,7 +36,7 @@ package Pragma_Placement with SPARK_Mode is
    pragma Annotate (GNATprove, Skip_Proof, Overflowing_Instance);
 
    --  Placement of annotation pragma after a type full view
-   
+
    type T is mod 128;
    type U is mod 256;
    pragma Annotate (GNATprove, No_Wrap_Around, U); -- OK, immediately after.
@@ -44,13 +44,13 @@ package Pragma_Placement with SPARK_Mode is
 
    --  Placement of annotation pragma after a type private view,
    --  & placement of annotation pragma Ownership.
-   
+
    package Owned_Types is
       type A is private;
       type B is private;
       pragma Annotate (GNATprove, Ownership, "needs_reclamation", B); -- OK
       pragma Annotate (GNATprove, Ownership, "needs_reclamation", A); -- KO
-      
+
       type C is private;
       pragma Annotate (GNATprove, Ownership, "needs_reclamation", C);
 
@@ -76,9 +76,9 @@ package Pragma_Placement with SPARK_Mode is
      with Ghost;
    pragma Annotate (GNATprove, At_End_Borrow, AEB_2); -- OK
    pragma Annotate (GNATprove, At_End_Borrow, AEB_1); -- KO
-  
+
    --  Placement of annotation pragma Automatic_Instantiation.
-   
+
    function F91 (X : Integer) return Integer;
    procedure F91_Low (X : Integer)
      with
@@ -116,11 +116,11 @@ package Pragma_Placement with SPARK_Mode is
    pragma Annotate (GNATprove, Inline_For_Proof, Identity_Again); -- KO
 
    --  Placement of annotation pragma Logical_Equal
-   
+
    function Strictest_Equal (X, Y : Integer) return Boolean is (X = Y);
    function Just_As_Strict_Equal (X, Y : Integer) return Boolean is (X = Y);
    pragma Annotate (GNATprove, Logical_Equal, Strictest_Equal); -- KO
    pragma Annotate (GNATprove, Logical_Equal, Just_As_Strict_Equal); -- OK
-   
+
 end Pragma_Placement;
 pragma Annotate (GNATprove, Skip_Proof, Pragma_Placement);

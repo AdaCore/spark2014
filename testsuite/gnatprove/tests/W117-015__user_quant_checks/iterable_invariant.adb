@@ -5,7 +5,7 @@ package body Iterable_Invariant with SPARK_Mode is
      (X + 1);
    function Has_Element (C : Container; X : Cursor) return Boolean is (X /= 2);
    function Element (C : Container; X : Cursor) return Boolean is (X /= 0);
-   
+
    procedure Allowed_Quantification (C : Container) is null;
    procedure Forbidden_Quantification (C : Container) is null;
 

@@ -3,7 +3,8 @@ import os
 
 # this test corrupts an ALI file and checks that gnatprove detects the issue.
 
-last_line = ''
+last_line = ""
+
 
 def truncate_four_lines(a):
     global last_line

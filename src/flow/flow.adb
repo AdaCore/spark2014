@@ -1505,6 +1505,17 @@ package body Flow is
                  and then Entity_In_SPARK (E)
                  and then Entity_Body_In_SPARK (E);
 
+               --  The above test will be false for null procedures, but we
+               --  still need to mark them as skipped if they have the pragma
+               --  Skip_Flow_And_Proof.
+
+               if Entity_In_SPARK (E)
+                 and then Is_Null_Procedure (E)
+                 and then Has_Skip_Flow_And_Proof_Annotation (E)
+               then
+                  Skipped_Flow_And_Proof.Insert (E);
+               end if;
+
             when E_Package =>
                --  Build graphs only when requested, the package is in SPARK
                --  and it is annotated with SPARK_Mode => On.

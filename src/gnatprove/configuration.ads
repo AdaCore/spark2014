@@ -310,8 +310,10 @@ package Configuration is
    --  object directory.
 
    Why3_Semaphore : Semaphore;
-   --  Name of the named semaphore used to synchronize spawned gnatwhy3
-   --  processes.
+   --  The semaphore object used to synchronize spawned gnatwhy3 processes
+
+   function Semaphore_Name return String is (Base_Name (Socket_Name.all));
+   --  The name used to create the semaphore object
 
    function SPARK_Report_File (Out_Dir : String) return String;
    --  The name of the file in which the SPARK report is generated:

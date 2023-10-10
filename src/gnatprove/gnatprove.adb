@@ -595,15 +595,15 @@ procedure Gnatprove with SPARK_Mode is
       Tree         : Project.Tree.Object;
       Status       : out Integer)
    is
-      Obj_Dir : constant String :=
-        Artifact_Dir (Tree).Display_Full_Name;
+      use type GNAT.OS_Lib.Process_Id;
+      Obj_Dir : constant String := Artifact_Dir (Tree).Display_Full_Name;
    begin
       Write_Why3_Conf_File (Obj_Dir);
 
       declare
          use String_Lists;
          Args     : String_Lists.List;
-         Id       : GNAT.OS_Lib.Process_Id;
+         Id       : GNAT.OS_Lib.Process_Id := GNAT.OS_Lib.Invalid_Pid;
       begin
          Args.Append ("--subdirs=" & Phase2_Subdir.Display_Full_Name);
 
@@ -635,15 +635,13 @@ procedure Gnatprove with SPARK_Mode is
                         Status            => Status);
 
          if Configuration.Mode in GPM_All | GPM_Prove then
-            if CL_Switches.Why3_Server = null
-              or else CL_Switches.Why3_Server.all = ""
-            then
+            if Id /= GNAT.OS_Lib.Invalid_Pid then
                GNAT.OS_Lib.Kill_Process_Tree (Id, Hard_Kill => False);
             end if;
             if Use_Semaphores then
                Close (Why3_Semaphore);
+               Delete (Semaphore_Name);
             end if;
-            Delete (Base_Name (Socket_Name.all));
          end if;
       end;
    end Flow_Analysis_And_Proof;
@@ -892,7 +890,7 @@ procedure Gnatprove with SPARK_Mode is
    is
       Args : String_Lists.List;
       Cur  : constant String := Ada.Directories.Current_Directory;
-      Id   : GNAT.OS_Lib.Process_Id;
+      Id   : GNAT.OS_Lib.Process_Id := GNAT.OS_Lib.Invalid_Pid;
    begin
       if CL_Switches.Why3_Server = null
         or else CL_Switches.Why3_Server.all = ""
@@ -909,12 +907,8 @@ procedure Gnatprove with SPARK_Mode is
          Ada.Directories.Set_Directory (Cur);
       end if;
       if Use_Semaphores then
-         declare
-            Sem_Name : constant String := Base_Name (Socket_Name.all);
-         begin
-            Delete (Sem_Name);
-            Create (Sem_Name, Parallel, Why3_Semaphore);
-         end;
+         Delete (Semaphore_Name);
+         Create (Semaphore_Name, Parallel, Why3_Semaphore);
       end if;
       return Id;
    end Spawn_VC_Server_And_Semaphore;

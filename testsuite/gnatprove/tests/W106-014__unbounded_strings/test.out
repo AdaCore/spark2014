@@ -1,0 +1,37 @@
+comm.ads:8:16: info: implicit aspect Always_Terminates on "To_Unbounded_String" has been proved, subprogram will terminate
+comm.ads:12:11: info: postcondition proved (CVC5: 2 VC)
+comm.ads:12:55: info: range check proved (CVC5: 2 VC)
+comm.ads:14:36: info: range check proved (CVC5: 2 VC)
+comm.ads:15:36: info: overflow check proved (CVC5: 2 VC)
+comm.ads:15:40: info: index check proved (CVC5: 2 VC)
+comm.ads:15:40: info: overflow check proved (CVC5: 2 VC)
+comm.ads:16:17: info: precondition proved (CVC5: 1 VC)
+comm.ads:17:09: info: data dependencies proved
+comm.ads:19:16: info: implicit aspect Always_Terminates on "Index" has been proved, subprogram will terminate
+comm.ads:26:19: medium: postcondition might fail
+comm.ads:26:56: info: overflow check proved (CVC5: 2 VC)
+comm.ads:26:65: info: range check proved (CVC5: 2 VC)
+comm.ads:26:73: info: overflow check proved (CVC5: 2 VC)
+comm.ads:27:09: info: data dependencies proved
+comm.ads:29:16: info: implicit aspect Always_Terminates on "Index" has been proved, subprogram will terminate
+comm.ads:40:19: medium: postcondition might fail
+comm.ads:41:59: info: overflow check proved (CVC5: 2 VC)
+comm.ads:41:68: info: range check proved (CVC5: 2 VC)
+comm.ads:41:76: info: overflow check proved (CVC5: 2 VC)
+comm.ads:42:09: info: data dependencies proved
+comm.ads:44:16: info: implicit aspect Always_Terminates on "Slice" has been proved, subprogram will terminate
+comm.ads:51:23: info: range check proved (CVC5: 2 VC)
+comm.ads:51:60: info: overflow check proved (CVC5: 2 VC)
+comm.ads:52:22: medium: postcondition might fail, cannot prove Slice'Result'First = 1
+comm.ads:54:26: info: precondition proved (CVC5: 1 VC)
+comm.ads:54:51: info: overflow check proved (CVC5: 2 VC)
+comm.ads:54:51: info: range check proved (CVC5: 2 VC)
+comm.ads:54:72: info: index check proved (CVC5: 2 VC)
+comm.ads:55:09: info: data dependencies proved
+comm.ads:63:16: info: precondition proved (CVC5: 1 VC)
+comm.ads:70:16: info: precondition proved (CVC5: 2 VC; Trivial: 1 VC)
+comm.ads:78:16: info: precondition proved (CVC5: 2 VC)
+rep.adb:3:11: warning: subprogram "Rep" has no effect
+rep.adb:8:29: info: precondition proved (CVC5: 1 VC)
+rep.adb:11:09: info: precondition proved (CVC5: 2 VC; Trivial: 1 VC)
+rep.adb:11:41: info: range check proved (CVC5: 2 VC)

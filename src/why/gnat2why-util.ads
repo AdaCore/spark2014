@@ -438,7 +438,11 @@ package Gnat2Why.Util is
    --       Has_Private_Ancestor_Or_Root)
    --     - One field for each part_of variable, if E is a protected type
 
-   function Count_Why_Top_Level_Fields (E : Type_Kind_Id) return Natural with
+   function Count_Why_Top_Level_Fields
+     (E            : Type_Kind_Id;
+      Relaxed_Init : Boolean := False)
+      return Natural
+   with
      Pre => Is_Record_Type_In_Why (E);
    --  @param E record type or private type whose most underlying type is
    --     a record type. E should be a "Representative Type in SPARK".
@@ -449,6 +453,8 @@ package Gnat2Why.Util is
    --       (use Count_Why_Regular_Fields)
    --     - A field __tag if E is tagged
    --     - A field __is_moved if E needs reclamation
+   --     - A field __init_attr for the init wrapper of types with mutable
+   --       discriminants.
 
    function Is_Simple_Private_Type (E : Type_Kind_Id) return Boolean with
      Post => Is_Simple_Private_Type'Result =

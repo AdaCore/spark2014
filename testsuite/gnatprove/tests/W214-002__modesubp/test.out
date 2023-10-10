@@ -37,4 +37,3 @@ effects on parameters and Global variables of Pack.Incr fully established
  Pack.Incr_Full at pack.ads:8 flow analyzed (0 errors, 0 checks, 0 warnings and 0 pragma Assume statements) and not proved, 0 checks out of 1 proved
 effects on parameters and Global variables of Pack.Incr_Full fully established
  Pack.Incr_Glob at pack.ads:3 flow analyzed (0 errors, 1 checks, 0 warnings and 0 pragma Assume statements), proof skipped (pragma Annotate Skip_Proof)
-

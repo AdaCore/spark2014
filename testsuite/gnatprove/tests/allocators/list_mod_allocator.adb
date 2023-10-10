@@ -7,7 +7,7 @@ package body List_Mod_Allocator with
 is
    package Big_From_Resource is new Signed_Conversions
      (Int => Resource);
-     
+
    function Big (R : Resource) return Big_Integer renames
      Big_From_Resource.To_Big_Integer;
 

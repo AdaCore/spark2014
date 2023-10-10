@@ -2,7 +2,23 @@ finnuc.adb:25:13: info: implicit aspect Always_Terminates on "Boolean_To_Unsigne
 finnuc.adb:51:07: info: initialization of "Demux_out1" proved
 finnuc.adb:53:07: info: initialization of "Demux_out1_1" proved
 finnuc.adb:55:07: info: initialization of "Logical_Operator1_out1" proved
+finnuc.adb:59:14: info: index check proved (CVC5: 2 VC)
+finnuc.adb:60:14: info: index check proved (CVC5: 2 VC)
+finnuc.adb:61:14: info: index check proved (CVC5: 2 VC)
+finnuc.adb:62:14: info: index check proved (CVC5: 2 VC)
+finnuc.adb:63:14: info: index check proved (CVC5: 2 VC)
+finnuc.adb:64:14: info: index check proved (CVC5: 2 VC)
+finnuc.adb:65:14: info: index check proved (CVC5: 2 VC)
+finnuc.adb:66:14: info: index check proved (CVC5: 2 VC)
 finnuc.adb:67:07: info: initialization of "Logic_index" proved
+finnuc.adb:70:12: info: index check proved (CVC5: 2 VC)
+finnuc.adb:71:14: info: index check proved (CVC5: 2 VC)
+finnuc.adb:72:14: info: index check proved (CVC5: 2 VC)
+finnuc.adb:73:14: info: index check proved (CVC5: 2 VC)
+finnuc.adb:74:14: info: index check proved (CVC5: 2 VC)
+finnuc.adb:75:14: info: index check proved (CVC5: 2 VC)
+finnuc.adb:76:14: info: index check proved (CVC5: 2 VC)
+finnuc.adb:77:14: info: index check proved (CVC5: 2 VC)
 finnuc.adb:78:07: info: initialization of "Logic_index_1" proved
 finnuc.adb:109:58: info: index check proved (CVC5: 2 VC)
 finnuc.adb:110:58: info: index check proved (CVC5: 2 VC)
