@@ -5963,7 +5963,10 @@ package body Gnat2Why.Borrow_Checker is
               Unique_Defining_Entity (Proc_Body);
 
          begin
-            pragma Assert (Ekind (Subp) = E_Procedure);
+            pragma Assert
+              (Ekind (Subp) = E_Procedure
+               or else (Ekind (Subp) = E_Function
+                 and then Is_Function_With_Side_Effects (Subp)));
             Return_Parameters (Subp, Exceptional => True);
             Return_Globals (Subp, Exceptional => True);
          end;

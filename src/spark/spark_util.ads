@@ -1200,8 +1200,12 @@ package SPARK_Util is
       return Exception_Sets.Set
    with
      Pre  => Nkind (Stmt) in N_Procedure_Call_Statement
+                           | N_Function_Call
                            | N_Entry_Call_Statement
-                           | N_Raise_Statement;
+                           | N_Raise_Statement
+             and then
+               (if Nkind (Stmt) = N_Function_Call
+                then Is_Function_With_Side_Effects (Get_Called_Entity (Stmt)));
    --  Retrieve all exceptions raised by Stmt. If Only_Handled is True, only
    --  consider exception which are handled above Stmt.
 

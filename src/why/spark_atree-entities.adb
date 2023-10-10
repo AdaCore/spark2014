@@ -405,6 +405,15 @@ package body SPARK_Atree.Entities is
       return Boolean
    is (Sem_Util.Is_Expression_Function_Or_Completion (Subp));
 
+   -----------------------------------
+   -- Is_Function_With_Side_Effects --
+   -----------------------------------
+
+   function Is_Function_With_Side_Effects
+     (Subp : Callable_Kind_Id)
+      return Boolean
+   is (Sem_Util.Is_Function_With_Side_Effects (Subp));
+
    ---------------------
    -- Is_Limited_View --
    ---------------------

@@ -1,0 +1,61 @@
+aspects.ads:4:06: error: function annotated with Inline_For_Proof shall not be a function with side-effects
+aspects.ads:9:06: error: function annotated with Inline_For_Proof shall not be a volatile function
+aspects.ads:15:06: error: subprogram annotated with Inline_For_Proof shall not be a dispatching operation
+aspects.ads:19:06: error: function annotated with Inline_For_Proof shall not be a borrowing traversal function
+bad_call.adb:6:20: error: call to a function with side-effects outside of assignment is not allowed in SPARK [E0018]
+bad_call.adb:6:20: error: launch "gnatprove --explain=E0018" for more information
+bad_call.adb:6:20: error: violation of aspect SPARK_Mode at line 4
+bad_call.adb:7:20: error: call to a function with side-effects outside of assignment is not allowed in SPARK [E0018]
+bad_call.adb:7:20: error: launch "gnatprove --explain=E0018" for more information
+bad_call.adb:7:20: error: violation of aspect SPARK_Mode at line 4
+bad_call.adb:7:30: error: call to a function with side-effects outside of assignment is not allowed in SPARK [E0018]
+bad_call.adb:7:30: error: launch "gnatprove --explain=E0018" for more information
+bad_call.adb:7:30: error: violation of aspect SPARK_Mode at line 4
+bad_call.adb:8:24: error: call to a function with side-effects outside of assignment is not allowed in SPARK [E0018]
+bad_call.adb:8:24: error: launch "gnatprove --explain=E0018" for more information
+bad_call.adb:8:24: error: violation of aspect SPARK_Mode at line 4
+bad_call.adb:8:46: error: call to a function with side-effects outside of assignment is not allowed in SPARK [E0018]
+bad_call.adb:8:46: error: launch "gnatprove --explain=E0018" for more information
+bad_call.adb:8:46: error: violation of aspect SPARK_Mode at line 4
+bad_call.adb:8:71: error: call to a function with side-effects outside of assignment is not allowed in SPARK [E0018]
+bad_call.adb:8:71: error: launch "gnatprove --explain=E0018" for more information
+bad_call.adb:8:71: error: violation of aspect SPARK_Mode at line 4
+bad_call.adb:24:19: error: call to a function with side-effects outside of assignment is not allowed in SPARK [E0018]
+bad_call.adb:24:19: error: launch "gnatprove --explain=E0018" for more information
+bad_call.adb:24:19: error: violation of aspect SPARK_Mode at line 4
+bad_call.adb:25:10: error: call to a function with side-effects outside of assignment is not allowed in SPARK [E0018]
+bad_call.adb:25:10: error: launch "gnatprove --explain=E0018" for more information
+bad_call.adb:25:10: error: violation of aspect SPARK_Mode at line 4
+bad_call.adb:26:14: error: call to a function with side-effects outside of assignment is not allowed in SPARK [E0018]
+bad_call.adb:26:14: error: launch "gnatprove --explain=E0018" for more information
+bad_call.adb:26:14: error: violation of aspect SPARK_Mode at line 4
+bad_call.adb:26:30: error: call to a function with side-effects outside of assignment is not allowed in SPARK [E0018]
+bad_call.adb:26:30: error: launch "gnatprove --explain=E0018" for more information
+bad_call.adb:26:30: error: violation of aspect SPARK_Mode at line 4
+bad_call.adb:26:43: error: call to a function with side-effects outside of assignment is not allowed in SPARK [E0018]
+bad_call.adb:26:43: error: launch "gnatprove --explain=E0018" for more information
+bad_call.adb:26:43: error: violation of aspect SPARK_Mode at line 4
+bad_call.adb:28:14: error: use of "@" inside a call to a function with side-effects is not allowed in SPARK
+bad_call.adb:28:14: error: violation of aspect SPARK_Mode at line 4
+bad_call.adb:29:14: error: use of "@" inside a call to a function with side-effects is not allowed in SPARK
+bad_call.adb:29:14: error: violation of aspect SPARK_Mode at line 4
+bad_call.adb:29:18: error: use of "@" inside a call to a function with side-effects is not allowed in SPARK
+bad_call.adb:29:18: error: violation of aspect SPARK_Mode at line 4
+bad_call.adb:30:18: error: use of "@" inside a call to a function with side-effects is not allowed in SPARK
+bad_call.adb:30:18: error: violation of aspect SPARK_Mode at line 4
+bad_call.adb:31:14: error: @ inside a move assignment is not yet supported
+bad_call.adb:33:10: warning: assuming "F1" has no effect on global items
+bad_call.adb:33:10: warning: no Global contract available for "F1"
+bad_call.adb:34:10: warning: assuming "F2" has no effect on global items
+bad_call.adb:34:10: warning: no Global contract available for "F2"
+bad_call.adb:37:10: warning: assuming "F5" has no effect on global items
+bad_call.adb:37:10: warning: no Global contract available for "F5"
+bad_call.adb:38:10: warning: assuming "F6" has no effect on global items
+bad_call.adb:38:10: warning: no Global contract available for "F6"
+bad_call.adb:39:10: warning: assuming "F7" has no effect on global items
+bad_call.adb:39:10: warning: no Global contract available for "F7"
+bad_call.adb:40:10: warning: assuming "F8" has no effect on global items
+bad_call.adb:40:10: warning: no Global contract available for "F8"
+bad_call.adb:41:10: warning: assuming "F9" has no effect on global items
+bad_call.adb:41:10: warning: no Global contract available for "F9"
+gnatprove: error during flow analysis and proof

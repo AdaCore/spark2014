@@ -69,7 +69,11 @@ package body Flow.Analysis.Sanity is
                       Classwide  => False,
                       Globals    => Globals);
 
-         if not Globals.Outputs.Is_Empty then
+         if not Globals.Outputs.Is_Empty
+           and then not Is_Function_With_Side_Effects (FA.Spec_Entity)
+           --  HACK: Exempt functions with side-effects from checking until
+           --  support is added in flow.
+         then
 
             Sane := False;
 

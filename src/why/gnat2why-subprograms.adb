@@ -4987,8 +4987,7 @@ package body Gnat2Why.Subprograms is
               ((1 => Why_Body,
                 2 => Check_Invariants_Of_Outputs,
                 3 => CC_And_RTE_Post,
-                4 => Check_Inline_Annotation,
-                5 => Result_Var));
+                4 => Check_Inline_Annotation));
          end;
 
       --  Regular subprogram with body in SPARK
@@ -5042,8 +5041,7 @@ package body Gnat2Why.Subprograms is
                 2 => Check_Init_Of_Out_Params,
                 3 => Check_Invariants_Of_Outputs,
                 4 => CC_And_RTE_Post,
-                5 => Check_Inline_Annotation,
-                6 => Result_Var));
+                5 => Check_Inline_Annotation));
          end;
 
          --  Handling of Ada exceptions
@@ -5105,18 +5103,26 @@ package body Gnat2Why.Subprograms is
                Why_Body := New_Try_Block
                  (Prog    =>
                     Sequence
-                      (Why_Body,
-                       New_Conditional
-                         (Condition => False_Prog,
-                          Then_Part => New_Raise
-                            (Name => M_Main.Ada_Exc,
-                             Arg  => New_Integer_Constant (Value => Uint_0)))),
+                      ((1 => Why_Body,
+                        2 => New_Conditional
+                          (Condition => False_Prog,
+                           Then_Part => New_Raise
+                             (Name => M_Main.Ada_Exc,
+                              Arg  => New_Integer_Constant (Value => Uint_0))),
+                        3 => Result_Var)),
                   Handler =>
                     (1 => New_Handler
                          (Name   => M_Main.Ada_Exc,
                           Arg_Id => Exc_Id,
                           Def    => Handler)));
             end;
+
+         --  Otherwise simply append the result of the subprogram to the body
+
+         else
+            Why_Body := Sequence
+              ((1 => Why_Body,
+                2 => Result_Var));
          end if;
 
       --  Body is not in SPARK
@@ -5622,10 +5628,11 @@ package body Gnat2Why.Subprograms is
          Why_Type := Type_Of_Node (E);
       end if;
 
-      --  Do not generate an axiom for the postcondition of volatile functions
-      --  and protected subprograms.
+      --  Do not generate an axiom for the postcondition of volatile functions,
+      --  protected subprograms and functions with side-effects.
 
       if not Is_Function_Or_Function_Type (E)
+        or else Is_Function_With_Side_Effects (E)
         or else Has_Pragma_Volatile_Function (E)
       then
          return;
@@ -6066,12 +6073,14 @@ package body Gnat2Why.Subprograms is
                if Ekind (E) = E_Function then
 
                   --  Do not generate compatibility axioms for volatile
-                  --  functions as they do not have any assoaciated logic
-                  --  function.
+                  --  functions and functions with side-effects as they do
+                  --  not have any associated logic function.
                   --  ??? They could maybe be handled like procedures, using a
                   --  specific_post predicate.
 
-                  if Has_Pragma_Volatile_Function (E) then
+                  if Is_Function_With_Side_Effects (E)
+                    or else Has_Pragma_Volatile_Function (E)
+                  then
                      return;
                   end if;
 
@@ -6647,6 +6656,10 @@ package body Gnat2Why.Subprograms is
                  Logic_Function_Name (E, Selector, Specialization_Module);
                Pred_Id    : constant W_Identifier_Id :=
                  Guard_Predicate_Name (E, Selector, Specialization_Module);
+
+               --  A tag is needed for dispatching calls, to account for the
+               --  fact that the call might be dispatching on its result, which
+               --  is not passed as regular argument to the call.
                Need_Tag   : constant Boolean := Selector = Dispatch;
 
                --  Each function has in its postcondition that its result is
@@ -6679,14 +6692,15 @@ package body Gnat2Why.Subprograms is
                  +Result_Id & Tag_Arg & Logic_Func_Args;
 
             begin
-
-               --  A volatile function has an effect, and should not have the
-               --  special postcondition which says it's result is equal to the
+               --  A volatile function has an effect, as well as a function
+               --  with side-effects, and should not have the special
+               --  postcondition which says its result is equal to the
                --  logic function.
 
-               if not Has_Pragma_Volatile_Function (E) then
+               if not Is_Function_With_Side_Effects (E)
+                 and then not Has_Pragma_Volatile_Function (E)
+               then
                   declare
-
                      --  Add attribute RAC_Assume to the predicate N. This is
                      --  used to assume equality with function results and
                      --  function guards during RAC, because their validity
@@ -7462,10 +7476,12 @@ package body Gnat2Why.Subprograms is
       end if;
 
       --  If the entity's body is not in SPARK, if it is inlined for proof, or
-      --  if it is a volatile function, do not generate axiom.
+      --  if it is a volatile function or a function with side-effects, do not
+      --  generate axiom.
 
       if not Entity_Body_Compatible_With_SPARK (E)
         or else Present (Retrieve_Inline_Annotation (E))
+        or else Is_Function_With_Side_Effects (E)
         or else Has_Pragma_Volatile_Function (E)
       then
          Close_Theory (Th,
@@ -7662,10 +7678,12 @@ package body Gnat2Why.Subprograms is
               & ", created in " & GNAT.Source_Info.Enclosing_Entity);
       end if;
 
-      --  No logic function is created for volatile functions. The function's
-      --  effects are modelled by an effect on the program function.
+      --  No logic function is created for volatile functions and functions
+      --  with side-effects. The function's effects are modelled by an effect
+      --  on the program function.
 
       if Ekind (E) = E_Function
+        and then not Is_Function_With_Side_Effects (E)
         and then not Has_Pragma_Volatile_Function (E)
       then
          Declare_Logic_Functions (Th, Dispatch_Th, E);

@@ -34,3 +34,5 @@
 - E0016: `aspect "Always_Terminates" cannot apply to function`
 
 - E0017: `aspect "Exceptional_Cases" cannot apply to function`
+
+- E0018: `call to a procedural function outside of assignment is not allowed in SPARK`

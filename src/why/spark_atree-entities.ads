@@ -741,6 +741,10 @@ package SPARK_Atree.Entities is
      (Subp : Callable_Kind_Id)
       return Boolean;
 
+   function Is_Function_With_Side_Effects
+     (Subp : Callable_Kind_Id)
+      return Boolean;
+
    function Is_Predicate_Function (Subp : Subprogram_Kind_Id) return Boolean;
 
    function Next_Formal (Formal : Formal_Kind_Id) return Opt_Formal_Kind_Id;
