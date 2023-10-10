@@ -8,7 +8,6 @@ colibri.hash
 cvc5
 gcc
 gnat2why
-gnat_server
 gnatbind
 gnatls
 gnatwhy3
