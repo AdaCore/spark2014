@@ -2570,8 +2570,17 @@ package body SPARK_Util.Types is
      (Typ : Type_Kind_Id)
       return Boolean
    is
-     (not (Is_Record_Type (Unchecked_Full_Type (Typ))
-      or else Is_Inherently_Limited_Type (Typ))
+     (not (
+        --  Exclude the case of a record type with only limited views, as in
+        --  that case the user-defined equality cannot be called implicitly
+        --  from SPARK code: either the full view of the type is limited, of
+        --  it is not in SPARK and its partial view is limited.
+        (Is_Record_Type (Unchecked_Full_Type (Typ))
+           and then not Is_Limited_Type (Retysp (Typ)))
+         --  Types that are inherently limited do not have a predefined
+         --  equality.
+         or else Is_Inherently_Limited_Type (Typ))
+      --  Check for the presence of a user-defined primitive equality
       or else No (Get_User_Defined_Eq (Base_Type (Typ))));
 
    ----------------------------------
