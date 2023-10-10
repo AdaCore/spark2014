@@ -1533,7 +1533,8 @@ package body Why.Gen.Expr is
         Need_Check
           and then not No_Init
           and then Has_Predicates (R)
-          and then not Is_Call_Arg_To_Predicate_Function (Ada_Node);
+          and then (Ada_Node not in Opt_N_Subexpr_Id
+                    or else not Is_Call_Arg_To_Predicate_Function (Ada_Node));
       Check_Entity    : constant Entity_Id := Get_Ada_Node (+To);
 
       Base            : constant W_Type_Id :=

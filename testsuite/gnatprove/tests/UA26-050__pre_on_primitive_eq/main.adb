@@ -3,7 +3,7 @@ procedure Main with SPARK_Mode is
       F : Integer;
       G : Integer;
    end record;
-   function "=" (X, Y : Untagged) return Boolean is (X.G = Y.G) with Pre => False;
+   function "=" (X, Y : Untagged) return Boolean is (X.G = Y.G) with Pre => False; --@PRECONDITION:FAIL
 
    type Holder is record
       C : Untagged;

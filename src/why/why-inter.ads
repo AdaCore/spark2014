@@ -23,6 +23,7 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
+with Checked_Types;        use Checked_Types;
 with Common_Containers;    use Common_Containers;
 with GNATCOLL.Symbols;     use GNATCOLL.Symbols;
 with Gnat2Why.Util;        use Gnat2Why.Util;
@@ -273,6 +274,13 @@ package Why.Inter is
    --  These cycles correspond to post axioms of entities used to prove
    --  properties of the entity itself, possibly via the proof of other
    --  entities.
+
+   function Why_Subp_Has_Precondition
+     (E        : Callable_Kind_Id;
+      Selector : Selection_Kind := Why.Inter.Standard)
+      return Boolean;
+   --  Return true whenever the Why declaration that corresponds to the given
+   --  subprogram has a precondition.
 
 private
    Module_Dependencies : Why_Node_Graphs.Map;

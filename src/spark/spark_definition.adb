@@ -306,11 +306,11 @@ package body SPARK_Definition is
 
    procedure Check_User_Defined_Eq
      (Ty  : Type_Kind_Id;
-      E   : Entity_Id;
+      N   : Node_Id;
       Msg : String);
    --  If Ty is a record type, mark the user-defined equality on it and check
    --  that it does not have a precondition. If a precondition is found, raise
-   --  a violation on E using the string Msg to refer to E.
+   --  a violation on N using the string Msg to refer to N.
 
    procedure Check_Context_Of_Prophecy
      (Proph        :     Node_Id;
@@ -1032,25 +1032,21 @@ package body SPARK_Definition is
 
    procedure Check_User_Defined_Eq
      (Ty  : Type_Kind_Id;
-      E   : Entity_Id;
+      N   : Node_Id;
       Msg : String)
    is
-      Eq : Entity_Id := SPARK_Util.Types.Get_User_Defined_Eq (Base_Type (Ty));
+      Eq : Entity_Id;
    begin
-      if Is_Record_Type (Unchecked_Full_Type (Ty))
-        and then Present (Eq)
-      then
-         Eq := Ultimate_Alias (Eq);
+      if not Use_Predefined_Equality_For_Type (Ty) then
+         Eq := Ultimate_Alias
+           (SPARK_Util.Types.Get_User_Defined_Eq (Base_Type (Ty)));
 
          Mark_Entity (Eq);
          if not Entity_In_SPARK (Eq) then
             Mark_Violation
               (Msg & " whose primitive equality is not in SPARK",
-               E);
-            Mark_Violation (E, From => Eq);
-         elsif not Find_Contracts (Eq, Pragma_Precondition).Is_Empty then
-            Mark_Violation
-              ("precondition on primitive equality of " & Msg, E);
+               N);
+            Mark_Violation (N, From => Eq);
          end if;
       end if;
    end Check_User_Defined_Eq;
@@ -1127,7 +1123,8 @@ package body SPARK_Definition is
              (Needs_Default_Checks_At_Decl (E)
               or else (Is_Access_Subprogram_Type (E)
                        and then No (Parent_Retysp (E)))
-              or else Declares_Iterable_Aspect (E))
+              or else Declares_Iterable_Aspect (E)
+              or else not Use_Predefined_Equality_For_Type (E))
          then
 
             declare
@@ -2049,46 +2046,62 @@ package body SPARK_Definition is
                Mark (Right_Opnd (N));
             end if;
 
-            --  Disallow membership tests if they involved the use of the
-            --  predefined equality on access types (except if one of the
-            --  operands is syntactically null).
+            --  Iterate through the alternatives to see if some involve the
+            --  use of the predefined equality.
 
-            if not Is_Concurrent_Type (Retysp (Etype (Left_Opnd (N))))
-              and then Predefined_Eq_Uses_Pointer_Eq (Etype (Left_Opnd (N)))
-              and then Nkind (Left_Opnd (N)) /= N_Null
-            then
-               --  Iterate through the alternatives to see if some involve the
-               --  use of the predefined equality.
+            declare
+               Eq_On_Access : constant Boolean :=
+                 not Is_Concurrent_Type (Retysp (Etype (Left_Opnd (N))))
+                 and then Predefined_Eq_Uses_Pointer_Eq (Etype (Left_Opnd (N)))
+                 and then Nkind (Left_Opnd (N)) /= N_Null;
+               --  Disallow membership tests if they involved the use of the
+               --  predefined equality on access types (except if one of the
+               --  operands is syntactically null).
 
-               declare
-                  function Alternative_Uses_Eq (Alt : Node_Id) return Boolean
-                  is
-                    ((not Is_Entity_Name (Alt)
-                     or else not Is_Type (Entity (Alt)))
-                     and then Nkind (Alt) /= N_Null);
-                  --  Return True if Alt is not a type inclusion or a
-                  --  comparison to null.
+               function Alternative_Uses_Eq (Alt : Node_Id) return Boolean
+               is
+                 ((not Is_Entity_Name (Alt)
+                  or else not Is_Type (Entity (Alt))));
+               --  Return True if Alt is not a type inclusion
 
-                  Alt : Node_Id;
-               begin
-                  if Present (Alternatives (N)) then
-                     Alt := First (Alternatives (N));
-                     while Present (Alt) loop
-                        if Alternative_Uses_Eq (Alt) then
+               Alt             : Node_Id;
+               User_Eq_Checked : Boolean := False;
+            begin
+               if Present (Alternatives (N)) then
+                  Alt := First (Alternatives (N));
+                  while Present (Alt) loop
+                     if Alternative_Uses_Eq (Alt) then
+                        if not User_Eq_Checked then
+                           Check_User_Defined_Eq
+                             (Etype (Left_Opnd (N)), N,
+                              "membership test on type");
+                           User_Eq_Checked := True;
+                           exit when not Eq_On_Access;
+                        end if;
+
+                        pragma Assert (Eq_On_Access);
+
+                        if Nkind (Alt) /= N_Null then
                            Mark_Violation
                              ("equality on access types", Alt);
                            exit;
                         end if;
-                        Next (Alt);
-                     end loop;
-                  elsif Alternative_Uses_Eq (Right_Opnd (N)) then
-                     pragma Annotate
-                       (Xcov, Exempt_On, "X in Y is expanded into X = Y");
+                     end if;
+                     Next (Alt);
+                  end loop;
+               elsif Alternative_Uses_Eq (Right_Opnd (N)) then
+                  pragma Annotate
+                    (Xcov, Exempt_On, "X in Y is expanded into X = Y");
+                  Check_User_Defined_Eq
+                    (Etype (Left_Opnd (N)), N, "membership test on type");
+
+                  if Eq_On_Access and then Nkind (Right_Opnd (N)) /= N_Null
+                  then
                      Mark_Violation ("equality on access types", N);
-                     pragma Annotate (Xcov, Exempt_Off);
                   end if;
-               end;
-            end if;
+                  pragma Annotate (Xcov, Exempt_Off);
+               end if;
+            end;
 
          --  Check that the type of null is visibly an access type
 
