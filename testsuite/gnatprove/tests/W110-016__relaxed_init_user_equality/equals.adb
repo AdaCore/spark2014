@@ -41,6 +41,12 @@ procedure equals with SPARK_mode is
       --   Y.F to be initialized here.
       function Use_Eq (X, Y : H) return Boolean is (X = Y); --  no initialization check required here
       function Use_Eq (X, Y : A) return Boolean is (X = Y); --  same
+
+      --  But X.I and Y.I still need to be initialized
+      function Use_Eq_Bad (X, Y : H) return Boolean is (X = Y) with --@INIT_BY_PROOF:FAIL
+	Relaxed_Initialization => (X, Y);
+      function Use_Eq_Bad (X, Y : A) return Boolean is (X = Y) with --@INIT_BY_PROOF:FAIL
+	Relaxed_Initialization => (X, Y);
    end P2;
 begin
    null;
