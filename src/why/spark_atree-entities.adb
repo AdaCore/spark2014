@@ -183,6 +183,13 @@ package body SPARK_Atree.Entities is
    function First_Formal (Subp : Callable_Kind_Id) return Opt_Formal_Kind_Id is
      (Einfo.Utils.First_Formal (Subp));
 
+   -------------------
+   -- First_Subtype --
+   -------------------
+
+   function First_Subtype (Typ : Type_Kind_Id) return Opt_Type_Kind_Id is
+     (Sem_Aux.First_Subtype (Typ));
+
    ---------------
    -- Full_View --
    ---------------

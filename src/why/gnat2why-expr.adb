@@ -881,13 +881,6 @@ package body Gnat2Why.Expr is
       return W_Prog_Id;
    --  Shared functionality for warning on dead branch or dead code.
 
-   function Why_Subp_Has_Precondition
-     (E        : Callable_Kind_Id;
-      Selector : Selection_Kind := Why.Inter.Standard)
-      return Boolean;
-   --  Return true whenever the Why declaration that corresponds to the given
-   --  subprogram has a precondition.
-
    ------------------------------------------
    -- Handling of Expressions with Actions --
    ------------------------------------------
@@ -26168,25 +26161,5 @@ package body Gnat2Why.Expr is
          return +Void;
       end if;
    end Warn_On_Inconsistent_Assume;
-
-   -------------------------------
-   -- Why_Subp_Has_Precondition --
-   -------------------------------
-
-   function Why_Subp_Has_Precondition
-     (E        : Callable_Kind_Id;
-      Selector : Selection_Kind := Why.Inter.Standard)
-      return Boolean
-   is
-      Has_Precondition : constant Boolean :=
-        Has_Contracts (E, Pragma_Precondition);
-      Has_Classwide_Or_Inherited_Precondition : constant Boolean :=
-        Has_Contracts (E, Pragma_Precondition,
-                       Classwide => True,
-                       Inherited => True);
-   begin
-      return (Selector /= Dispatch and then Has_Precondition)
-        or else Has_Classwide_Or_Inherited_Precondition;
-   end Why_Subp_Has_Precondition;
 
 end Gnat2Why.Expr;

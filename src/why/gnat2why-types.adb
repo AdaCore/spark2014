@@ -24,6 +24,7 @@
 ------------------------------------------------------------------------------
 
 with Ada.Containers.Doubly_Linked_Lists;
+with Ada.Strings.Unbounded;         use Ada.Strings.Unbounded;
 with Ada.Text_IO;  --  For debugging, to print info before raising an exception
 with Common_Containers;             use Common_Containers;
 with Flow_Types;                    use Flow_Types;
@@ -37,11 +38,13 @@ with Gnat2Why.Tables;               use Gnat2Why.Tables;
 with Gnat2Why.Util;                 use Gnat2Why.Util;
 with Namet;                         use Namet;
 with Sinput;                        use Sinput;
+with Snames;                        use Snames;
 with SPARK_Atree;                   use SPARK_Atree;
 with SPARK_Definition;              use SPARK_Definition;
 with SPARK_Definition.Annotate;     use SPARK_Definition.Annotate;
 with SPARK_Util;                    use SPARK_Util;
 with SPARK_Util.Hardcoded;          use SPARK_Util.Hardcoded;
+with SPARK_Util.Subprograms;        use SPARK_Util.Subprograms;
 with SPARK_Util.Types;              use SPARK_Util.Types;
 with Stand;                         use Stand;
 with Types;                         use Types;
@@ -917,19 +920,24 @@ package body Gnat2Why.Types is
                    else "")
                  & ", created in " & GNAT.Source_Info.Enclosing_Entity);
 
+            --  Go to the expected types without checking, checks are
+            --  introduced separately.
+
             declare
-               Arg_A : constant W_Expr_Id :=
+               Binders : constant Item_Array :=
+                 Compute_Subprogram_Parameters (Eq, EW_Term);
+               pragma Assert (Binders'Length = 2);
+               Arg_A   : constant W_Expr_Id :=
                  Insert_Simple_Conversion
                    (Domain => EW_Term,
                     Expr   => +Var_A,
-                    To     => Type_Of_Node (Etype (First_Formal (Eq))));
-               Arg_B : constant W_Expr_Id :=
+                    To     => Get_Why_Type_From_Item (Binders (1)));
+               Arg_B   : constant W_Expr_Id :=
                  Insert_Simple_Conversion
                    (Domain => EW_Term,
                     Expr   => +Var_B,
-                    To     => Type_Of_Node
-                      (Etype (Next_Formal (First_Formal (Eq)))));
-               Def   : constant W_Expr_Id :=
+                    To     => Get_Why_Type_From_Item (Binders (2)));
+               Def     : constant W_Expr_Id :=
                  (if Is_Hardcoded_Entity (Eq)
 
                   --  If the equality is hardcoded, we define user_eq as its
@@ -1270,8 +1278,10 @@ package body Gnat2Why.Types is
       Check_Subp    : constant Boolean := Is_Access_Subprogram_Type (E)
         and then No (Parent_Retysp (E));
       Check_Iter    : constant Boolean := Declares_Iterable_Aspect (E);
+      Check_Eq      : constant Boolean :=
+        not Use_Predefined_Equality_For_Type (E);
       Need_Check    : constant Boolean :=
-        Check_Default or else Check_Iter or else Check_Subp;
+        Check_Default or else Check_Iter or else Check_Subp or else Check_Eq;
       Name          : constant String := Full_Name (E);
       Params        : constant Transformation_Params := Body_Params;
       Why_Body      : W_Prog_Id := +Void;
@@ -1344,6 +1354,110 @@ package body Gnat2Why.Types is
                         Prog     => Why_Body),
             Check_Type_With_Iterable (Params => Params,
                                       Ty     => E));
+      end if;
+
+      --  If E has a primitive equality which will be used for membersip tests
+      --  and equality on composite types, check that it can be called safely
+      --  in any context.
+      --
+      --  Generate:
+      --
+      --    let x = any <E> { <dynamic_property of E> } in
+      --    let y = any <E> { <dynamic_property of E> } in
+      --      ignore (eq x y)
+
+      if Check_Eq then
+         declare
+            Eq : constant Entity_Id :=
+              Get_User_Defined_Eq (Base_Type (E));
+         begin
+            --  To limit the number of checks on hardcoded entities, assume
+            --  that hardcoded equality functions are correct here.
+
+            if Entity_In_SPARK (Eq)
+              and then not Is_Hardcoded_Entity (Eq)
+            then
+               Continuation_Stack.Append
+                 (Continuation_Type'
+                    (E,
+                     To_Unbounded_String
+                       ("primitive equality should be callable in any context"
+                        & " for type")));
+               declare
+                  Binders : constant Item_Array :=
+                    Compute_Subprogram_Parameters (Eq, EW_Term);
+                  pragma Assert (Binders'Length = 2);
+                  S_Ty    : constant Entity_Id :=
+                    (if Present (First_Subtype (E))
+                     and then Entity_In_SPARK (First_Subtype (E))
+                     then First_Subtype (E)
+                     else E);
+                  --  Use the first subtype if any, as it can be more
+                  --  constrained than the base type introduced by the
+                  --  compiler.
+
+                  W_Ty    : constant W_Type_Id := Type_Of_Node (S_Ty);
+                  Result  : constant W_Identifier_Id :=
+                    New_Result_Ident (W_Ty);
+                  W_Post  : constant W_Pred_Id :=
+                    Compute_Dynamic_Inv_And_Initialization
+                      (Expr        => +Result,
+                       Ty          => Retysp (E),
+                       Initialized => True_Term,
+                       Only_Var    => False_Term,
+                       Params      => Params);
+                  X_Id    : constant W_Identifier_Id :=
+                    New_Temp_Identifier (Typ => W_Ty);
+                  Y_Id    : constant W_Identifier_Id :=
+                    New_Temp_Identifier (Typ => W_Ty);
+                  Arg_X   : constant W_Expr_Id :=
+                    Insert_Checked_Conversion
+                      (Ada_Node => First_Formal (Eq),
+                       Domain   => EW_Prog,
+                       Expr     => +X_Id,
+                       To       => Get_Why_Type_From_Item (Binders (1)));
+                  Arg_Y   : constant W_Expr_Id :=
+                    Insert_Checked_Conversion
+                      (Ada_Node => Next_Formal (First_Formal (Eq)),
+                       Domain   => EW_Prog,
+                       Expr     => +Y_Id,
+                       To       => Get_Why_Type_From_Item (Binders (2)));
+                  Pre_N   : constant Node_Lists.List :=
+                    Find_Contracts (Eq, Pragma_Precondition);
+                  Def     : constant W_Expr_Id :=
+                    New_Function_Call
+                      (Ada_Node =>
+                         (if Pre_N.Is_Empty then Eq else Pre_N.First_Element),
+                       Domain   => EW_Prog,
+                       Name     => To_Why_Id (E      => Eq,
+                                              Domain => EW_Prog,
+                                              Typ    => EW_Bool_Type),
+                       Subp     => Eq,
+                       Args     => (1 => Arg_X, 2 => Arg_Y),
+                       Check    => Why_Subp_Has_Precondition (Eq),
+                       Typ      => EW_Bool_Type);
+                  Check   : W_Prog_Id := New_Ignore (Prog => +Def);
+               begin
+                  Check := New_Typed_Binding
+                    (Name    => X_Id,
+                     Def     =>
+                       New_Any_Expr (Ada_Node    => E,
+                                     Post        => W_Post,
+                                     Labels      => Symbol_Sets.Empty_Set,
+                                     Return_Type => W_Ty),
+                     Context => New_Typed_Binding
+                       (Name    => Y_Id,
+                        Def     =>
+                          New_Any_Expr (Ada_Node    => E,
+                                        Post        => W_Post,
+                                        Labels      => Symbol_Sets.Empty_Set,
+                                        Return_Type => W_Ty),
+                        Context => Check));
+                  Why_Body := Sequence (Why_Body, Check);
+               end;
+               Continuation_Stack.Delete_Last;
+            end if;
+         end;
       end if;
 
       if Why_Body /= +Void then
@@ -1425,17 +1539,17 @@ package body Gnat2Why.Types is
       -----------------------------------------
 
       procedure Create_Additional_Equality_Theories (E : Entity_Id) is
-         W_Type   : constant W_Type_Id := EW_Abstract (E);
-         A_Ident  : constant W_Identifier_Id :=
+         W_Type  : constant W_Type_Id := EW_Abstract (E);
+         A_Ident : constant W_Identifier_Id :=
            New_Identifier (Name => "a", Typ => W_Type);
-         B_Ident  : constant W_Identifier_Id :=
+         B_Ident : constant W_Identifier_Id :=
            New_Identifier (Name => "b", Typ => W_Type);
-         Binders  : constant Binder_Array :=
+         Binders : constant Binder_Array :=
            (1 => (B_Name => A_Ident,
                   others => <>),
             2 => (B_Name => B_Ident,
                   others => <>));
-         Th       : Theory_UC;
+         Th      : Theory_UC;
 
       begin
          --  Declare place-holder for primitive equality function
