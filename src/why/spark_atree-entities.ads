@@ -414,6 +414,8 @@ package SPARK_Atree.Entities is
 
    function Cloned_Subtype (Typ : Type_Kind_Id) return Entity_Id;
 
+   function First_Subtype (Typ : Type_Kind_Id) return Opt_Type_Kind_Id;
+
    function Get_Cursor_Type (Typ : Type_Kind_Id) return Entity_Id
      with Pre =>
        Present (Aspects.Find_Aspect (Typ, A => Aspects.Aspect_Iterable));
