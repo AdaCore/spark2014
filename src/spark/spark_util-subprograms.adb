@@ -1392,7 +1392,6 @@ package body SPARK_Util.Subprograms is
       begin
          if Ekind (E) in Subprogram_Kind
                        | Task_Kind
-                       | E_Task_Body
                        | Entry_Kind
          then
             return
