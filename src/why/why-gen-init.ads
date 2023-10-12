@@ -101,11 +101,11 @@ package Why.Gen.Init is
 
    function New_Init_Attribute_Access
      (E    : Entity_Id;
-      Name : W_Expr_Id) return W_Expr_Id;
+      Name : W_Term_Id) return W_Term_Id;
    --  Access the initialization flag of an expression of a wrapper type.
    --  Name shall be of the init wrapper type of Boolean or E shall be a type
-   --  entity which has a wrapper (simple private type, type with a private
-   --  part or scalar type).
+   --  entity which has a wrapper (simple private type, type with mutable
+   --  discriminants, or scalar type).
 
    function Get_Init_Id_From_Object
      (Obj         : Entity_Id;
@@ -123,5 +123,15 @@ package Why.Gen.Init is
       No_Predicate_Check : Boolean := False)
       return W_Expr_Id;
    --  If Domain = EW_Prog, insert a check that Name is initialized
+
+   function Insert_Init_Check_For_Discriminants
+     (Ada_Node : Node_Id;
+      E        : Entity_Id;
+      Name     : W_Expr_Id;
+      Domain   : EW_Domain;
+      Do_Check : Boolean := True)
+      return W_Expr_Id;
+   --  If Domain = EW_Prog, insert a check that the mutable discriminants of
+   --  Name (if any) are initialized
 
 end Why.Gen.Init;

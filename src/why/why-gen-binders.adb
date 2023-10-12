@@ -788,9 +788,7 @@ package body Why.Gen.Binders is
                Init   => New_Init_Id (Name),
                Typ    => Ty,
                others => <>);
-            Unconstr : constant Boolean :=
-              not Is_Constrained (Ty) and then
-              Has_Defaulted_Discriminants (Ty);
+            Unconstr : constant Boolean := Has_Mutable_Discriminants (Ty);
          begin
             if Count_Why_Regular_Fields (Ty) > 0 then
                Result.Fields :=

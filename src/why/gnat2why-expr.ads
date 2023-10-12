@@ -574,11 +574,11 @@ package Gnat2Why.Expr is
           (Choices, Choice_Type, +Matched_Expr, EW_Pred, Params));
 
    function Transform_Expr
-     (Expr           : N_Subexpr_Id;
-      Expected_Type  : W_Type_Id;
-      Domain         : EW_Domain;
-      Params         : Transformation_Params;
-      No_Pred_Checks : Boolean := False)
+     (Expr          : N_Subexpr_Id;
+      Expected_Type : W_Type_Id;
+      Domain        : EW_Domain;
+      Params        : Transformation_Params;
+      No_Read       : Boolean := False)
       return W_Expr_Id;
    --  Compute an expression in Why having the expected type for the given Ada
    --  expression node. The formal "Domain" decides if we return a predicate,
@@ -586,16 +586,17 @@ package Gnat2Why.Expr is
    --  for example in the context of a program (whether the domain is EW_Prog
    --  for program text or EW_Pred/EW_Term for contract). If Ref_Allowed is
    --  False, then references are not allowed, for example in the context of an
-   --  axiom or a logic function definition. If No_Pred_Checks is False,
-   --  predicate checks will be emitted on expressions annotated with
-   --  Relaxed_Initialization.
+   --  axiom or a logic function definition. If No_Read is True, the expression
+   --  is not considered to be read and predicate checks and initialization
+   --  checks for discriminants will not be emitted on expressions annotated
+   --  with Relaxed_Initialization.
 
    function Transform_Prog
-     (Expr           : N_Subexpr_Id;
-      Expected_Type  : W_Type_Id;
-      Params         : Transformation_Params;
-      Checks         : Boolean := True;
-      No_Pred_Checks : Boolean := False)
+     (Expr          : N_Subexpr_Id;
+      Expected_Type : W_Type_Id;
+      Params        : Transformation_Params;
+      Checks        : Boolean := True;
+      No_Read       : Boolean := False)
       return W_Prog_Id
    is
      (+Transform_Expr
@@ -603,7 +604,7 @@ package Gnat2Why.Expr is
          Expected_Type,
          (if Checks then EW_Prog else EW_Pterm),
          Params,
-         No_Pred_Checks));
+         No_Read));
 
    function Transform_Term
      (Expr          : N_Subexpr_Id;
@@ -622,25 +623,25 @@ package Gnat2Why.Expr is
      (+Transform_Expr (Expr, Expected_Type, EW_Pred, Params));
 
    function Transform_Expr
-     (Expr           : N_Subexpr_Id;
-      Domain         : EW_Domain;
-      Params         : Transformation_Params;
-      No_Pred_Checks : Boolean := False)
+     (Expr    : N_Subexpr_Id;
+      Domain  : EW_Domain;
+      Params  : Transformation_Params;
+      No_Read : Boolean := False)
       return W_Expr_Id;
    --  Same as above, but derive the Expected_Type from the Ada Expr
 
    function Transform_Prog
-     (Expr           : N_Subexpr_Id;
-      Params         : Transformation_Params;
-      Checks         : Boolean := True;
-      No_Pred_Checks : Boolean := False)
+     (Expr    : N_Subexpr_Id;
+      Params  : Transformation_Params;
+      Checks  : Boolean := True;
+      No_Read : Boolean := False)
       return W_Prog_Id
    is
      (+Transform_Expr
         (Expr,
          (if Checks then EW_Prog else EW_Pterm),
          Params,
-         No_Pred_Checks));
+         No_Read));
 
    function Transform_Term
      (Expr   : N_Subexpr_Id;
