@@ -39,8 +39,8 @@ source_suffix = ".rst"
 master_doc = "index"
 
 # General information about the project.
-project = u"case study"
-copyright = u"2013, Altran UK Limited"
+project = "case study"
+copyright = "2013, Altran UK Limited"
 
 # The version info for the project you're documenting, acts as replacement for
 # |version| and |release|, also used in various other places throughout the
@@ -180,8 +180,8 @@ latex_documents = [
     (
         "index",
         "casestudy.tex",
-        u"Application of Hi-Lite to SPARK 2005 Examples and Industrial Case Study",
-        u"SPARK Team, Altran UK",
+        "Application of Hi-Lite to SPARK 2005 Examples and Industrial Case Study",
+        "SPARK Team, Altran UK",
         "manual",
     ),
 ]
@@ -214,4 +214,4 @@ latex_documents = [
 
 # One entry per manual page. List of tuples
 # (source start file, name, description, authors, manual section).
-man_pages = [("index", "casestudy", u"casestudy Documentation", [u"SPARK Team"], 1)]
+man_pages = [("index", "casestudy", "casestudy Documentation", ["SPARK Team"], 1)]

@@ -1,0 +1,14 @@
+data_accessors.ads:11:14: info: implicit aspect Always_Terminates on "To_Bounded_String" has been proved, subprogram will terminate, in instantiation at data_accessors.ads:32, in instantiation at test_transactions.ads:8
+data_accessors.ads:12:18: info: range check proved (CVC5: 2 VC), in instantiation at data_accessors.ads:32, in instantiation at test_transactions.ads:8
+data_accessors.ads:24:21: info: range check proved (CVC5: 2 VC), in instantiation at data_accessors.ads:32, in instantiation at test_transactions.ads:8
+data_accessors.ads:24:40: info: length check proved (CVC5: 3 VC; Trivial: 1 VC), in instantiation at data_accessors.ads:32, in instantiation at test_transactions.ads:8
+data_accessors.ads:24:40: info: range check proved (CVC5: 2 VC), in instantiation at data_accessors.ads:32, in instantiation at test_transactions.ads:8
+data_accessors.ads:24:42: info: range check proved (CVC5: 2 VC), in instantiation at data_accessors.ads:32, in instantiation at test_transactions.ads:8
+data_accessors.ads:24:44: info: range check proved (CVC5: 2 VC), in instantiation at data_accessors.ads:32, in instantiation at test_transactions.ads:8
+data_accessors.ads:24:61: info: range check proved (CVC5: 2 VC), in instantiation at data_accessors.ads:32, in instantiation at test_transactions.ads:8
+data_accessors.ads:40:14: info: implicit aspect Always_Terminates on "Initial_Status" has been proved, subprogram will terminate, in instantiation at test_transactions.ads:8
+data_accessors.ads:46:64: info: in default initialization of component "Component" at data_accessors.ads:51, in instantiation at test_transactions.ads:8
+data_accessors.ads:46:64: info: in default value of box association at data_accessors.ads:54, in instantiation at test_transactions.ads:8
+data_accessors.ads:46:64: info: in default value of private type at data_accessors.ads:36, in instantiation at test_transactions.ads:8
+data_accessors.ads:46:64: info: precondition proved (CVC5: 2 VC), in instantiation at test_transactions.ads:8
+data_accessors.ads:46:64: info: precondition proved (CVC5: 2 VC), in instantiation at test_transactions.ads:8

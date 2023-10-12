@@ -1,0 +1,7 @@
+test_2.adb:32:34: error: object subtype must statically match designated subtype
+test_4.adb:33:12: error: invalid constraint: type has no discriminant
+test_5.adb:30:29: error: invalid constraint: type has no discriminant
+test_5.adb:30:39: error: expected private type "Option" defined at line 26
+test_5.adb:30:39: error: found a composite type
+test_5.adb:35:15: error: invalid constraint: type has no discriminant
+gnatprove: error during generation of Global contracts

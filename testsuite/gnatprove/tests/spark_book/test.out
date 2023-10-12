@@ -32,6 +32,14 @@ aggregates.adb:15:38: medium: divide by zero might fail, in call inlined at aggr
 aggregates.adb:15:38: medium: float overflow check might fail, in call inlined at aggregates.adb:29 [reason for check: result of floating-point division must be bounded]
 aggregates.adb:29:26: medium: float overflow check might fail [reason for check: result of floating-point addition must be bounded]
 aggregates.adb:29:28: info: analyzing call to "Sqrt" in context
+aggregates.adb:32:14: info: index check proved (CVC5: 2 VC)
+aggregates.adb:33:14: info: index check proved (CVC5: 2 VC)
+aggregates.adb:34:14: info: index check proved (CVC5: 2 VC)
+aggregates.adb:36:20: info: index check proved (CVC5: 2 VC)
+aggregates.adb:37:20: info: index check proved (CVC5: 2 VC)
+aggregates.adb:38:20: info: index check proved (CVC5: 2 VC)
+aggregates.adb:40:20: info: index check proved (CVC5: 2 VC)
+aggregates.adb:41:20: info: index check proved (CVC5: 2 VC)
 average.adb:5:35: info: exceptional case proved (Trivial: 1 VC)
 average.adb:8:04: info: initialization of "A" proved
 average.adb:9:04: info: initialization of "B" proved

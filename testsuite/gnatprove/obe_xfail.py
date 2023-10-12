@@ -4,7 +4,7 @@ import glob
 import os.path
 import re
 
-issue_re = re.compile(r"[A-z0-9/]+#[0-9]+")
+issue_re = re.compile(r"[A-z0-9\-/]+#[0-9]+")
 numre = re.compile(r"[0-9]+")
 xfail_re = re.compile(r"XFAIL")
 

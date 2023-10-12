@@ -451,6 +451,3 @@ the program should have exited already when ``X`` is 2.
   loop invariants occurs at top level in the sequence prefix
   preceding pragma ``Assert_And_Cut``, by implicitly assuming that a
   new block starts immediately after the last pragma ``Loop_Invariant``.
-
-
-

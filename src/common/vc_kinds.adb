@@ -728,6 +728,9 @@ package body VC_Kinds is
            "an iterator specification on a multidimensional array",
          when Lim_Multidim_Update =>
            "a delta aggregate on a multidimensional array",
+         when Lim_Null_Aggregate_In_Branching_Array_Aggregate =>
+            "a null aggregate which is a subaggregate of a multidimensional "
+          & " array  aggregate with multiple associations",
          when Lim_Object_Before_Inv =>
            "a non-scalar object declared in a loop before the loop invariant",
          when Lim_Op_Fixed_Float =>

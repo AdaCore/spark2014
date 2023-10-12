@@ -10,5 +10,5 @@ begin
          null;
       end;
    end loop;
-   
+
 end Main;

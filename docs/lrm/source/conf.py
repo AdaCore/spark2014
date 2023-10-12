@@ -70,11 +70,11 @@ master_doc = "index"
 
 
 def get_copyright():
-    return u"2013-%s, AdaCore and Capgemini Engineering" % time.strftime("%Y")
+    return "2013-%s, AdaCore and Capgemini Engineering" % time.strftime("%Y")
 
 
 # General information about the project.
-project = u"SPARK Reference Manual"
+project = "SPARK Reference Manual"
 copyright = get_copyright()
 
 # The version info for the project you're documenting, acts as replacement for
@@ -229,8 +229,8 @@ latex_documents = [
     (
         "index",
         "spark2014_rm.tex",
-        u"SPARK Reference Manual",
-        u"AdaCore and Capgemini Engineering",
+        "SPARK Reference Manual",
+        "AdaCore and Capgemini Engineering",
         "manual",
     ),
 ]
@@ -264,8 +264,8 @@ man_pages = [
     (
         "index",
         "spark2014refman",
-        u"SPARK Reference Manual",
-        [u"AdaCore and Capgemini Engineering"],
+        "SPARK Reference Manual",
+        ["AdaCore and Capgemini Engineering"],
         1,
     )
 ]

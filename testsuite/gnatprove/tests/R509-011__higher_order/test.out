@@ -81,8 +81,12 @@ test_higher_order.ads:106:04: info: in instantiation at spark-higher_order-fold.
 test_higher_order.ads:106:04: info: in instantiation at spark-higher_order-fold.ads:663
 test_higher_order.ads:106:04: info: in instantiation at spark-higher_order-fold.ads:732
 test_higher_order.ads:118:19: info: assertion proved (Trivial: 1 VC; altergo: 1 VC)
+test_higher_order.ads:118:51: info: index check proved (CVC5: 2 VC)
+test_higher_order.ads:119:51: info: index check proved (CVC5: 2 VC)
 test_higher_order.ads:121:19: medium: assertion might fail
 test_higher_order.ads:121:25: info: precondition proved (Trivial: 1 VC; altergo: 1 VC)
+test_higher_order.ads:121:42: info: index check proved (CVC5: 2 VC)
+test_higher_order.ads:122:42: info: index check proved (CVC5: 2 VC)
 test_higher_order.ads:124:04: info: function cannot be inlined for proof
 test_higher_order.ads:124:04: info: function contract might not be available on implicit recursive calls
 test_higher_order.ads:124:04: info: function contract might not be available on implicit recursive calls
@@ -98,3 +102,6 @@ test_higher_order.ads:124:04: info: in instantiation at spark-higher_order-fold.
 test_higher_order.ads:124:04: info: in instantiation at spark-higher_order-fold.ads:778
 test_higher_order.ads:124:04: info: inlining might cause circularity in the verification process
 test_higher_order.ads:131:19: medium: assertion might fail
+test_higher_order.ads:131:42: info: index check proved (CVC5: 2 VC)
+test_higher_order.ads:132:42: info: index check proved (CVC5: 2 VC)
+test_higher_order.ads:133:42: info: index check proved (CVC5: 2 VC)

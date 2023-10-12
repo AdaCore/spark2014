@@ -46,4 +46,3 @@ effects on parameters and Global variables of Pack.P.Should_Provegp66.Should_Pro
 absence of run-time errors of Pack.P.Should_Skipgp122 fully established
  Pack.P.Should_Skipgp122.Should_Skip at pack.adb:6 flow analyzed (0 errors, 0 checks, 0 warnings and 0 pragma Assume statements), proof skipped (pragma Annotate Skip_Proof)
 effects on parameters and Global variables of Pack.P.Should_Skipgp122.Should_Skip fully established
-

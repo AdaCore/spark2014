@@ -1109,6 +1109,9 @@ package body SPARK_Definition is
                   then
                     (if Ekind (E) = E_Package and then No (Package_Body (E))
                      then All_In_SPARK
+                     elsif Ekind (E) = E_Procedure
+                       and then Null_Present (Subprogram_Specification (E))
+                     then All_In_SPARK
                      else Spec_Only_In_SPARK)
                   else Not_In_SPARK);
             begin
@@ -3426,14 +3429,23 @@ package body SPARK_Definition is
       Nb_Dim : constant Positive :=
         Positive (Number_Dimensions (Etype (N)));
 
-      procedure Mark_Inner_Aggr (Inner : N_Aggregate_Kind_Id; Dim : Positive);
-      --  Mark aggregate or a subaggregate
+      procedure Mark_Inner_Aggr
+        (Inner     : N_Aggregate_Kind_Id;
+         Dim       : Positive;
+         Branching : Boolean);
+      --  Mark aggregate or a subaggregate. Branching tracks whether there is
+      --  a branch in the path from the root to the (sub)-aggregate (a choice
+      --  of several position/associations, so the current one is not unique
+      --  at its dimension).
 
       ---------------------
       -- Mark_Inner_Aggr --
       ---------------------
 
-      procedure Mark_Inner_Aggr (Inner : N_Aggregate_Kind_Id; Dim : Positive)
+      procedure Mark_Inner_Aggr
+        (Inner     : N_Aggregate_Kind_Id;
+         Dim       : Positive;
+         Branching : Boolean)
       is
          Exprs  : constant List_Id := Expressions (Inner);
          Assocs : constant List_Id := Component_Associations (Inner);
@@ -3443,15 +3455,43 @@ package body SPARK_Definition is
          --  Cursors
 
          Multi  : Boolean := False;
-         --  Track whether we are in a multidimension update. In that
-         --  case, should directly cross over all dimensions at once.
+         --  Track whether we are in a multidimensional update. In that case,
+         --  should directly cross over all dimensions at once.
+
+         Branch : constant Boolean :=
+           Branching
+           or else
+             Nlists.List_Length (Exprs) + Nlists.List_Length (Assocs) >= 2;
 
       begin
+         if Branch and then No (Expr) and then No (Assoc) then
+            --  Null array subaggregates of a (necessarily multidimensional)
+            --  array aggregate are unsupported if the aggregate contains
+            --  several associations (whether named or positional). This case
+            --  is completely useless in practice (one can always factor the
+            --  cases for each dimension if the aggregate is the null one from
+            --  some dimension on, making a simpler aggregate overall), and
+            --  difficult to handle currently for the aggregate matching bound
+            --  checks due to the front-end not providing  bounds for these
+            --  subaggregate. Which low bounds should be used for a null
+            --  (sub)aggregate, in particular, depends on information about the
+            --  context providing or not a so-called 'applicable index
+            --  constraint', a non-trivial notion that we will not re-compute
+            --  in proof. When all associations are alone, we can bypass the
+            --  issue since there is no need to produce matching bound checks.
+
+            Mark_Unsupported
+              (Lim_Null_Aggregate_In_Branching_Array_Aggregate, Inner,
+               Cont_Msg => "consider combining associations of enclosing"
+               & " multi-dimensional array aggregate into one");
+            return;
+         end if;
+
          while Present (Expr) loop
             if Dim = Nb_Dim then
                Mark (Expr);
             else
-               Mark_Inner_Aggr (Expr, Dim + 1);
+               Mark_Inner_Aggr (Expr, Dim + 1, Branching => Branch);
             end if;
             Next (Expr);
          end loop;
@@ -3499,7 +3539,8 @@ package body SPARK_Definition is
             end loop;
 
             if not Multi and then Dim /= Nb_Dim then
-               Mark_Inner_Aggr (Expression (Assoc), Dim + 1);
+               Mark_Inner_Aggr
+                 (Expression (Assoc), Dim + 1, Branching => Branch);
             elsif Nkind (Assoc) = N_Component_Association then
                --  Need to deal properly with marking of potential boxes
 
@@ -3519,7 +3560,7 @@ package body SPARK_Definition is
    --  Start of processing for Mark_Array_Aggregate
 
    begin
-      Mark_Inner_Aggr (N, 1);
+      Mark_Inner_Aggr (N, 1, Branching => False);
    end Mark_Array_Aggregate;
 
    ---------------------------------------------
@@ -3744,15 +3785,27 @@ package body SPARK_Definition is
          --  initialization. It does not mandate the evaluation of its prefix.
          --  Thus it can be called on scalar "names" which are not initialized
          --  without generating a bounded error.
+         --  Only allow 'Initialized on a discriminant if it can actually not
+         --  be initialized to avoid confusion as much as possible.
 
          when Attribute_Initialized =>
 
-            if not Retysp_In_SPARK (Etype (P))
-              or else not
-                (Expr_Has_Relaxed_Init (P, No_Eval => True)
-                 or else Has_Relaxed_Init (Etype (P))
-                 or else (Nkind (P) in N_Identifier | N_Expanded_Name
-                          and then Has_Relaxed_Initialization (Entity (P))))
+            if not Retysp_In_SPARK (Etype (P)) then
+               Mark_Violation (N, From => Etype (P));
+            elsif Nkind (P) = N_Selected_Component
+              and then Ekind (Entity (Selector_Name (P))) = E_Discriminant
+            then
+               if not Expr_Has_Relaxed_Discr (Prefix (P)) then
+                  Mark_Violation
+                    ("attribute """
+                     & Standard_Ada_Case (Get_Name_String (Aname))
+                     & """ on a discriminant which is always initialized",
+                     N);
+               end if;
+            elsif not Expr_Has_Relaxed_Init (P, No_Eval => True)
+              and then not Has_Relaxed_Init (Etype (P))
+              and then not (Nkind (P) in N_Identifier | N_Expanded_Name
+                            and then Has_Relaxed_Initialization (Entity (P)))
             then
                Mark_Violation
                  ("prefix of attribute """
