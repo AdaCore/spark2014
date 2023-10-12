@@ -4,6 +4,7 @@ p.adb:24:25: info: assertion proved (Trivial: 1 VC)
 p.adb:24:27: info: pointer dereference check proved (CVC5: 1 VC)
 p.adb:25:12: info: pointer dereference check proved (CVC5: 1 VC)
 p.adb:25:12: info: range check proved (CVC5: 1 VC)
+p.adb:25:16: medium: discriminant check might fail (e.g. when X.all = (Present => True, The_Value => 0)) [possible fix: subprogram at line 22 should mention X in a precondition]
 p.adb:25:19: medium: discriminant check might fail (e.g. when X.all = (Present => True, The_Value => 0))
 p.adb:32:27: info: range check proved (CVC5: 1 VC)
 p.adb:32:36: info: discriminant check proved (CVC5: 1 VC)
@@ -19,6 +20,7 @@ p.adb:43:38: info: pointer dereference check proved (CVC5: 1 VC)
 p.adb:43:52: info: pointer dereference check proved (CVC5: 1 VC)
 p.adb:44:14: info: pointer dereference check proved (CVC5: 1 VC)
 p.adb:44:14: info: range check proved (CVC5: 1 VC)
+p.adb:44:18: medium: discriminant check might fail (e.g. when X = (H => new Option'((Present => True, The_Value => 0)))) [possible fix: subprogram at line 39 should mention X in a precondition]
 p.adb:44:21: medium: discriminant check might fail
 p.adb:56:14: warning: subprogram "Test_2" has no effect
 p.adb:57:07: info: no contextual analysis of "Test_2" (nested package declaration)
