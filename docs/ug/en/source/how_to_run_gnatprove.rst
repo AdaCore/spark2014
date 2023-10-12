@@ -179,25 +179,36 @@ and ``gold``, you can choose which analysis is performed:
    single: --limit-line; command-line usage
    single: --limit-region
 
-Using the option ``--limit-line=`` one can limit proofs to a particular file
+Using the option ``--limit-line`` one can limit proofs to a particular file
 and line of an Ada file. For example, if you want to prove only line 12 of
 file ``example.adb``, you can add the option ``--limit-line=example.adb:12`` to
-the call to |GNATprove|. Using ``--limit-region=`` one can limit proofs to a
+the call to |GNATprove|. Using ``--limit-region`` one can limit proofs to a
 range of lines in a particular file. For example,
 ``--limit-region=example.adb:12:14`` will limit analysis to lines 12 to 14 in
 ``example.adb``.
 
 .. index::
     single: --limit-subp
+    single: --limit-name
     single: -U; analyze all instances
 
-Using the ``--limit-subp=`` option, one can limit the analysis to a particular
-subprogram. As an example, the option ``--limit-subp=example.ads:12`` limits
-the analysis to the subprogram declared at line 12 in ``example.ads``. If
-``example.ads`` is a generic unit, SPARK skips analysis of such units by
-default, as only instances of generics are analyzed. You can specify the switch
-``-U`` in this case to analyze all instances of the generic subprogram.  One
-can specify a specific instance to analyze by specifying the place of
+Using the ``--limit-name`` option, users can limit the analysis to subprograms
+that have a specific name. Note that this option doesn't change the set of
+units on which the analysis is run. For example, if a subprogram is outside of
+the closure of the main program, it will not be analyzed even if the
+``--limit-name`` option with the corresponding name is provided.
+
+The ``--limit-name`` option cannot distinguish between multiple subprograms
+that have the same name. Users can use the ``--limit-subp`` option, which
+expects a location.  As an example, the option ``--limit-subp=example.ads:12``
+limits the analysis to the subprogram declared at line 12 in ``example.ads``.
+Note that ``--limit-subp`` implies analysis of the unit (``example.ads`` in the
+example). If ``example.ads`` is a generic unit, SPARK skips analysis of such
+units by default, as only instances of generics are analyzed. You can specify
+the switch ``-U`` in this case to analyze all instances of the generic
+subprogram.
+
+One can specify a specific instance to analyze by specifying the place of
 instantiation: the option ``--limit-subp=inst.adb:10:example.ads:12`` analyzes
 the same subprogram, but only the instance that was created via the
 instantiation at line 10 of ``inst.adb``. One can specify a longer chain if

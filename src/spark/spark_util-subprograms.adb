@@ -23,7 +23,8 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with Ada.Strings.Fixed;             use Ada.Strings.Fixed;
+with Ada.Strings.Fixed;              use Ada.Strings.Fixed;
+with Ada.Strings.Fixed.Equal_Case_Insensitive;
 with Common_Iterators;               use Common_Iterators;
 with Debug;
 with Gnat2Why_Args;
@@ -63,7 +64,9 @@ package body SPARK_Util.Subprograms is
       elsif Is_Requested_Subprogram_Or_Task (E) then
          return Analyzed;
 
-      elsif Gnat2Why_Args.Limit_Subp /= Null_Unbounded_String then
+      elsif Gnat2Why_Args.Limit_Subp /= Null_Unbounded_String
+        or else Gnat2Why_Args.Limit_Name /= Null_Unbounded_String
+      then
          return Not_The_Analyzed_Subprogram;
 
       --  Always analyze if With_Inlined is True. Also, always analyze
@@ -1363,11 +1366,49 @@ package body SPARK_Util.Subprograms is
    -------------------------------------
 
    function Is_Requested_Subprogram_Or_Task (E : Entity_Id) return Boolean is
-      Limit_Str : constant String := To_String (Gnat2Why_Args.Limit_Subp);
+
+      function Check_Limit_Name (Limit_Str : String) return Boolean;
+      function Check_Limit_Subp (Limit_Str : String) return Boolean;
 
       function Contains_Sloc (A, B : String) return Boolean;
       --  Check whether A contains B, and B is either located at the end of A,
       --  or is followed by ':'
+
+      ----------------------
+      -- Check_Limit_Name --
+      ----------------------
+
+      function Check_Limit_Name (Limit_Str : String) return Boolean is
+      begin
+         return Ada.Strings.Fixed.Equal_Case_Insensitive
+           (Limit_Str, Get_Name_String (Chars (E)));
+      end Check_Limit_Name;
+
+      ----------------------
+      -- Check_Limit_Subp --
+      ----------------------
+
+      function Check_Limit_Subp (Limit_Str : String) return Boolean is
+      begin
+         if Ekind (E) in Subprogram_Kind
+                       | Task_Kind
+                       | E_Task_Body
+                       | Entry_Kind
+         then
+            return
+              (Contains_Sloc
+                 (SPARK_Util.Subprograms.Subp_Location (E), Limit_Str)
+               or else
+               Contains_Sloc
+                 (SPARK_Util.Subprograms.Subp_Body_Location (E), Limit_Str));
+         else
+            return False;
+         end if;
+      end Check_Limit_Subp;
+
+      -------------------
+      -- Contains_Sloc --
+      -------------------
 
       function Contains_Sloc (A, B : String) return Boolean is
          Ind : constant Natural := Index (A, B, A'First);
@@ -1378,19 +1419,13 @@ package body SPARK_Util.Subprograms is
             A (Ind + B'Length) = ':');
       end Contains_Sloc;
 
+      Limit_Subp_Str : constant String := To_String (Gnat2Why_Args.Limit_Subp);
+      Limit_Name_Str : constant String := To_String (Gnat2Why_Args.Limit_Name);
    begin
-      if Limit_Str /= ""
-        and then Ekind (E) in Subprogram_Kind
-                            | Task_Kind
-                            | E_Task_Body
-                            | Entry_Kind
-      then
-         return
-           (Contains_Sloc (SPARK_Util.Subprograms.Subp_Location (E), Limit_Str)
-            or else
-            Contains_Sloc (
-              SPARK_Util.Subprograms.Subp_Body_Location (E),
-              Limit_Str));
+      if Limit_Subp_Str /= "" then
+         return Check_Limit_Subp (Limit_Subp_Str);
+      elsif Limit_Name_Str /= "" then
+         return Check_Limit_Name (Limit_Name_Str);
       else
          return False;
       end if;
