@@ -95,32 +95,46 @@ package body Why.Gen.Init is
             else
                return True_Pred;
             end if;
-         elsif (For_Eq and then not Use_Predefined_Equality_For_Type (C_Ty))
-           or else (Is_True_Boolean (+Exclude_Relaxed)
-                    and then Has_Relaxed_Init (C_Ty))
-         then
-            return True_Pred;
          else
-            declare
-               P : W_Pred_Id := +Compute_Is_Initialized
-                 (E               => C_Ty,
-                  Name            => +C_Expr,
-                  Params          => Params,
-                  Domain          => EW_Pred,
-                  Exclude_Relaxed => Exclude_Relaxed,
-                  For_Eq          => For_Eq);
-            begin
-               if Has_Relaxed_Init (C_Ty)
-                 and then not Is_False_Boolean (+Exclude_Relaxed)
-               then
-                  P := New_Conditional
-                    (Condition => New_Not
-                       (Right => Pred_Of_Boolean_Term (Exclude_Relaxed)),
-                     Then_Part => P);
-               end if;
+            --  If For_Eq is True and C_Ty has a user defined primitive
+            --  equality which will be used for equality on composite types,
+            --  do not check the initialization of relaxed subcomponents
+            --  on C_Expr. Remark that the initialization of C_Expr itself
+            --  is still checked even if C_Ty has relaxed initialization.
+            --  Indeed, the comparison will use _user_eq which never
+            --  expects initialization wrappers.
 
-               return P;
-            end;
+            if Is_True_Boolean (+Exclude_Relaxed)
+              and then Has_Relaxed_Init (C_Ty)
+            then
+               return True_Pred;
+            else
+               declare
+                  C_Exclude_Relaxed : constant Boolean := For_Eq
+                    and then not Use_Predefined_Equality_For_Type (C_Ty);
+                  P                 : W_Pred_Id := +Compute_Is_Initialized
+                    (E               => C_Ty,
+                     Name            => +C_Expr,
+                     Params          => Params,
+                     Domain          => EW_Pred,
+                     Exclude_Relaxed =>
+                       (if C_Exclude_Relaxed then True_Term
+                        else Exclude_Relaxed),
+                     For_Eq          =>
+                       For_Eq and then not C_Exclude_Relaxed);
+               begin
+                  if Has_Relaxed_Init (C_Ty)
+                    and then not Is_False_Boolean (+Exclude_Relaxed)
+                  then
+                     P := New_Conditional
+                       (Condition => New_Not
+                          (Right => Pred_Of_Boolean_Term (Exclude_Relaxed)),
+                        Then_Part => P);
+                  end if;
+
+                  return P;
+               end;
+            end if;
          end if;
       end Is_Initialized_For_Comp;
 
