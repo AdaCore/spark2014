@@ -235,9 +235,11 @@ As explained above, the standard data initialization policy does not apply to
 objects annotated with the ``Relaxed_Initialization`` aspect. As a result, it
 becomes necessary to annotate which parts of accessed objects are initialized on
 entry and exit of subprograms in contracts. This can be done using the
-``Initialized`` ghost attribute. This attribute can be applied to (parts of) objects
-annotated with the ``Relaxed_Initialization`` aspect. If the object is
-completely initialized, this attribute evaluates to ``True``.
+``Initialized`` ghost attribute. This attribute can be applied to (parts of)
+objects annotated with the ``Relaxed_Initialization`` aspect. If the object is
+completely initialized, except possibly for subcomponents of the object whose
+type is annotated with the ``Relaxed_Initialization`` aspect, this attribute
+evaluates to ``True``.
 
 .. note::
 
@@ -343,6 +345,11 @@ following way:
    end record
      with Ghost_Predicate => Top in 0 .. 100
        and then (for all I in 1 .. Top => Content (I)'Initialized);
+
+Since ``Content_Type`` is annotated with the ``Relaxed_Initialization`` aspect,
+references to the attribute ``Initialized`` on an object of type ``Stack`` will
+not consider the elements of ``Content``, so ``S'Initialized`` can evaluate to
+True even if the stack ``S`` contains uninitialized elements.
 
 .. note::
 
