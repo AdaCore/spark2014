@@ -24,12 +24,13 @@
 ------------------------------------------------------------------------------
 
 with Gnat2Why.Util;            use Gnat2Why.Util;
+with SPARK_Atree;              use SPARK_Atree;
 with SPARK_Atree.Entities;     use SPARK_Atree.Entities;
+with SPARK_Util.Types;         use SPARK_Util.Types;
 with Types;                    use Types;
 with Why.Atree.Accessors;      use Why.Atree.Accessors;
 with Why.Atree.Modules;        use Why.Atree.Modules;
 with Why.Conversions;          use Why.Conversions;
-with Why.Gen.Terms;            use Why.Gen.Terms;
 with Why.Ids;                  use Why.Ids;
 with Why.Sinfo;                use Why.Sinfo;
 
@@ -62,22 +63,29 @@ package Why.Gen.Init is
               and then Has_Init_Wrapper (Get_Ada_Node (+Ty)));
    --  Return the init wrapper type with the same Ada node and kind as Ty
 
+   type Exclude_Components_Kind is (For_Eq, Relaxed, None);
+
    function Compute_Is_Initialized
      (E                  : Entity_Id;
       Name               : W_Expr_Id;
       Params             : Transformation_Params;
       Domain             : EW_Domain;
-      Exclude_Relaxed    : W_Term_Id := False_Term;
-      For_Eq             : Boolean := False;
+      Exclude_Components : Exclude_Components_Kind;
       No_Predicate_Check : Boolean := False;
       Use_Pred           : Boolean := True)
       return W_Expr_Id
-     with Pre => (if For_Eq then Exclude_Relaxed = False_Term);
+   with Pre =>
+       (if Present (E) and then Contains_Access_Subcomponents (E)
+        then Exclude_Components /= None);
+   --  If Exclude_Components is None, the predicate symbol cannot be
+   --  used and the function will loop on recursive data-structures.
+
    --  Whether Name is initialized. This does not only include the top level
-   --  initialization flag of E but also the flags of nested components for
-   --  composite types.
+   --  initialization flag of Name but also the flags of nested components for
+   --  composite types. E should be the Ada type of Name unless Name is a
+   --  standard boolean.
    --
-   --  If Exclude_Relaxed is True, do not include initialization of
+   --  If Exclude_Components is Relaxed, do not include initialization of
    --  subcomponents whose type is annotated with relaxed initialization. A
    --  part of an expression which has relaxed initialization may not be of a
    --  type with comes from an object which has relaxed initialization, or if
@@ -88,9 +96,9 @@ package Why.Gen.Init is
    --  storing the expression in an object of its type, or when giving it as a
    --  parameter to a function call.
    --
-   --  If For_Eq is True, relaxed (strict) subcomponents of (strict)
-   --  subcomponents of Name whose type has a user-defined equality will be
-   --  excluded.
+   --  If Exclude_Components is For_Eq, relaxed (strict) subcomponents of
+   --  (strict) subcomponents of Name whose type has a user-defined equality
+   --  will be excluded.
    --
    --  For init wrappers of composite types, Is_Initialized will include a
    --  predicate check if any. If No_Predicate_Check is True, then the
@@ -119,8 +127,7 @@ package Why.Gen.Init is
       E                  : Entity_Id;
       Name               : W_Expr_Id;
       Domain             : EW_Domain;
-      Exclude_Relaxed    : Boolean := False;
-      For_Eq             : Boolean := False;
+      Exclude_Components : Exclude_Components_Kind;
       No_Predicate_Check : Boolean := False)
       return W_Expr_Id;
    --  If Domain = EW_Prog, insert a check that Name is initialized

@@ -34,6 +34,11 @@ procedure Test_Relaxed_Reborrow with SPARK_Mode is
      Ghost,
      Annotate => (GNATprove, At_End_Borrow);
 
+   function All_Initialized (L : access constant R_List) return Boolean is
+     (L = null or else (L.all'Initialized and then All_Initialized (L.Next)))
+   with Ghost,
+     Subprogram_Variant => (Structural => L);
+
    procedure Remove_Last (L : in out List_Access) with
      Pre => L /= null;
 
@@ -56,8 +61,8 @@ procedure Test_Relaxed_Reborrow with SPARK_Mode is
    end Remove_Last;
 
    procedure Remove_Last_2 (L : in out R_List_Access) with
-     Pre  => L /= null and then L.all'Initialized,
-     Post => L = null or else L.all'Initialized;
+     Pre  => L /= null and then All_Initialized (L),
+     Post => L = null or else All_Initialized (L);
 
    procedure Remove_Last_2 (L : in out R_List_Access) is
    begin
@@ -69,10 +74,11 @@ procedure Test_Relaxed_Reborrow with SPARK_Mode is
          X : not null access R_List := L with Relaxed_Initialization;
       begin
          loop
-            pragma Loop_Invariant (X.Next /= null);
             pragma Loop_Invariant (X'Initialized);
+            pragma Loop_Invariant (X.Next /= null);
+            pragma Loop_Invariant (All_Initialized (X));
             pragma Loop_Invariant
-              (if At_End (X).all'Initialized then At_End (L).all'Initialized);
+              (if All_Initialized (At_End (X))then All_Initialized (At_End (L)));
             X := X.Next;
             exit when X.Next = null;
          end loop;
@@ -104,8 +110,8 @@ procedure Test_Relaxed_Reborrow with SPARK_Mode is
    end Remove_Last_3;
 
    procedure Remove_Last_4 (L : in out R_List_Access) with
-     Pre  => L /= null and then L.all'Initialized,
-     Post => L = null or else L.all'Initialized; -- @POSTCONDITION:FAIL
+     Pre  => L /= null and then All_Initialized (L),
+     Post => L = null or else All_Initialized (L); -- @POSTCONDITION:FAIL
 
    procedure Remove_Last_4 (L : in out R_List_Access) is
    begin
@@ -118,10 +124,11 @@ procedure Test_Relaxed_Reborrow with SPARK_Mode is
          U : Holder with Relaxed_Initialization;
       begin
          loop
-            pragma Loop_Invariant (X.Next /= null);
             pragma Loop_Invariant (X'Initialized);
+            pragma Loop_Invariant (X.Next /= null);
+            pragma Loop_Invariant (All_Initialized (X));
             pragma Loop_Invariant
-              (if At_End (X).all'Initialized then At_End (L).all'Initialized); -- @LOOP_INVARIANT_PRESERV:FAIL
+              (if All_Initialized (At_End (X)) then All_Initialized (At_End (L))); -- @LOOP_INVARIANT_PRESERV:FAIL
             X.Value := U;
             X := X.Next;
             exit when X.Next = null;

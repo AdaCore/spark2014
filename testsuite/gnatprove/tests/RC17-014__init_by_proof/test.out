@@ -1,8 +1,8 @@
 bool_init_by_proof.adb:11:08: info: postcondition proved (CVC5: 3 VC; Trivial: 1 VC)
 bool_init_by_proof.adb:25:19: info: assertion proved (CVC5: 1 VC)
-bool_init_by_proof.adb:30:09: info: initialization check proved (CVC5: 1 VC)
+bool_init_by_proof.adb:30:09: info: initialization check proved (CVC5: 1 VC; Trivial: 1 VC)
 bool_init_by_proof.adb:30:11: info: length check proved (Trivial: 1 VC)
-bool_init_by_proof.adb:30:15: info: initialization check proved (CVC5: 1 VC)
+bool_init_by_proof.adb:30:15: info: initialization check proved (CVC5: 1 VC; Trivial: 1 VC)
 empty_type.adb:1:11: warning: subprogram "Empty_Type" has no effect
 empty_type.adb:2:09: info: range check proved (CVC5: 2 VC)
 empty_type.adb:16:22: medium: assertion might fail

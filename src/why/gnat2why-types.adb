@@ -103,40 +103,33 @@ package body Gnat2Why.Types is
       E          : Type_Kind_Id;
       Predeclare : Boolean := False)
    is
-      Relaxed_Arg : constant W_Identifier_Id :=
-        New_Temp_Identifier (Typ       => EW_Bool_Type,
-                             Base_Name => "exclude_relaxed");
-      --  Should relaxed subcomponents be excluded
-
-      Abstr_Ty    : constant W_Type_Id :=
+      Abstr_Ty : constant W_Type_Id :=
         EW_Abstract (E, Relaxed_Init => True);
-      Main_Ty     : constant W_Type_Id :=
+      Main_Ty : constant W_Type_Id :=
         (if Predeclare
          then New_Named_Type
            (Name         => To_Local (Get_Name (Abstr_Ty)),
             Relaxed_Init => True)
          else Abstr_Ty);
-      Main_Arg    : constant W_Identifier_Id :=
+      Main_Arg : constant W_Identifier_Id :=
         New_Temp_Identifier
           (Typ       => Main_Ty,
            Base_Name => "expr");
       --  Expression on which we want to assume the property
 
-      Binders     : constant Binder_Array := Binder_Array'
+      Binders  : constant Binder_Array := Binder_Array'
         (1 => Binder_Type'(B_Name => Main_Arg,
-                           others => <>),
-         2 => Binder_Type'(B_Name => Relaxed_Arg,
                            others => <>));
 
-      Def         : constant W_Pred_Id :=
+      Def      : constant W_Pred_Id :=
         (if Predeclare then Why_Empty
          else +Compute_Is_Initialized
-           (E               => E,
-            Name            => +Main_Arg,
-            Params          => Logic_Params,
-            Domain          => EW_Pred,
-            Exclude_Relaxed => +Relaxed_Arg,
-            Use_Pred        => False));
+           (E                  => E,
+            Name               => +Main_Arg,
+            Params             => Logic_Params,
+            Domain             => EW_Pred,
+            Exclude_Components => Relaxed,
+            Use_Pred           => False));
 
    begin
       --  ??? Here we should probably consider variable inputs occurring in
@@ -307,30 +300,23 @@ package body Gnat2Why.Types is
         (Th : Theory_UC;
          E  : Type_Kind_Id)
       is
-         Relaxed_Arg : constant W_Identifier_Id :=
-           New_Temp_Identifier (Typ       => EW_Bool_Type,
-                                Base_Name => "exclude_relaxed");
-         --  Should relaxed subcomponents be excluded
-
-         Main_Arg    : constant W_Identifier_Id :=
+         Main_Arg : constant W_Identifier_Id :=
            New_Temp_Identifier
              (Typ       => EW_Abstract (E, Relaxed_Init => True),
               Base_Name => "expr");
          --  Expression on which we want to assume the property
 
-         Binders     : constant Binder_Array := Binder_Array'
+         Binders  : constant Binder_Array := Binder_Array'
            (1 => Binder_Type'(B_Name => Main_Arg,
-                              others => <>),
-            2 => Binder_Type'(B_Name => Relaxed_Arg,
                               others => <>));
 
-         Def         : constant W_Pred_Id := +Compute_Is_Initialized
-              (E               => E,
-               Name            => +Main_Arg,
-               Params          => Logic_Params,
-               Domain          => EW_Pred,
-               Exclude_Relaxed => +Relaxed_Arg,
-               Use_Pred        => False);
+         Def     : constant W_Pred_Id := +Compute_Is_Initialized
+           (E                  => E,
+            Name               => +Main_Arg,
+            Params             => Logic_Params,
+            Domain             => EW_Pred,
+            Exclude_Components => Relaxed,
+            Use_Pred           => False);
 
       begin
          Emit
