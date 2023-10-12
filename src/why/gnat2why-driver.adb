@@ -1260,6 +1260,9 @@ package body Gnat2Why.Driver is
 
                if Is_Discriminal (E)
                  or else Is_Protected_Component_Or_Discr_Or_Part_Of (E)
+                 or else (Ekind (E) = E_Constant
+                          and then Is_Partial_View (E)
+                          and then Entity_In_SPARK (Full_View (E)))
                then
                   return;
                end if;
