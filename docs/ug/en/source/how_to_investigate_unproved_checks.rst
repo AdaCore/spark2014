@@ -170,8 +170,9 @@ In that case, a user may either:
   with Pragma Assume`), or
 * add a justification in the code (see details in :ref:`Direct Justification
   with Pragma Annotate`), or
-* get a `user view` of the formula passed to the prover, and complete the proof
-  interactively (see details in :ref:`Manual Proof Within GNAT Studio`), or
+* import the formula passed to the automatic prover in the language of an
+  interactive prover, and complete the proof interactively (see details in
+  :ref:`Calling an Interactive Prover From GNAT Studio`), or
 * manually review the unproved checks and record that they can be trusted
   (for example by storing the result of |GNATprove| under version control).
 

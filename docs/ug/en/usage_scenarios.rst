@@ -236,9 +236,9 @@ maintenance:
 * :ref:`Manual Proof Using Ghost Code` is more costly, as it requires expertise
   and interactions with the tool to guide automatic provers.
 
-* :ref:`Manual Proof Using Coq` and :ref:`Manual Proof Using GNAT Studio` are
-  the most costly, as they require expertise in interactive proof (as well as a
-  different syntax in the case of Coq).
+* :ref:`Manual Proof Using Coq` is the most costly, as it require expertise in
+  interactive proof as well as knowledge of the syntax of the Coq interactive
+  prover.
 
 While the use of manual proof allows to prove any provable property in
 principle, a balance needs to be found between the higher cost of manual proof

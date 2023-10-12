@@ -87,7 +87,6 @@ setup:
 
 why3:
 	$(MAKE) -C why3 -j $(nproc)
-	why3/bin/gnatwhy3.opt --list-transforms | python3 scripts/why3menus.py share/spark/config/generated_menus.json
 
 install-all:
 	$(MAKE) install

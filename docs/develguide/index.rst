@@ -28,7 +28,6 @@ Contents:
    translation_why3
    gnatwhy3
    gps_integration
-   manual_proof
    counterexamples
    tool_interaction
    miscellaneous
