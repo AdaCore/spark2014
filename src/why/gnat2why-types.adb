@@ -1265,7 +1265,7 @@ package body Gnat2Why.Types is
         and then No (Parent_Retysp (E));
       Check_Iter    : constant Boolean := Declares_Iterable_Aspect (E);
       Check_Eq      : constant Boolean :=
-        not Use_Predefined_Equality_For_Type (E);
+        Is_Base_Type (E) and then not Use_Predefined_Equality_For_Type (E);
       Need_Check    : constant Boolean :=
         Check_Default or else Check_Iter or else Check_Subp or else Check_Eq;
       Name          : constant String := Full_Name (E);
