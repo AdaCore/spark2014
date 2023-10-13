@@ -314,12 +314,20 @@ package SPARK_Util is
    --  @param E an entity
    --  @return the fully scoped name of E as it appears in the source
 
-   function Is_Declared_In_Unit
+   function Is_Declared_Directly_In_Unit
      (E     : Entity_Id;
       Scope : Entity_Id) return Boolean;
    --  @param E any entity
    --  @param Scope scope
    --  @return True iff E is declared directly in Scope
+
+   function Is_Declared_In_Unit
+     (E     : Entity_Id;
+      Scope : Entity_Id) return Boolean;
+   --  @param E any entity
+   --  @param Scope scope
+   --  @return True iff E is declared in Scope or in one of its (recursively)
+   --    nested packages.
 
    function Is_Declared_In_Main_Unit_Or_Parent (N : Node_Id) return Boolean;
    --  @param N any node which is not in Standard
