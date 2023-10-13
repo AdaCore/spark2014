@@ -88,8 +88,9 @@ package Why.Gen.Init is
    --  storing the expression in an object of its type, or when giving it as a
    --  parameter to a function call.
    --
-   --  If For_Eq is True, components of a type with a user-defined equality
-   --  will be excluded.
+   --  If For_Eq is True, relaxed (strict) subcomponents of (strict)
+   --  subcomponents of Name whose type has a user-defined equality will be
+   --  excluded.
    --
    --  For init wrappers of composite types, Is_Initialized will include a
    --  predicate check if any. If No_Predicate_Check is True, then the
