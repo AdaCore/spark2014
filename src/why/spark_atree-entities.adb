@@ -421,12 +421,12 @@ package body SPARK_Atree.Entities is
       return Boolean
    is (Sem_Util.Is_Function_With_Side_Effects (Subp));
 
-   ---------------------
-   -- Is_Limited_View --
-   ---------------------
+   --------------------------------
+   -- Is_Inherently_Limited_Type --
+   --------------------------------
 
-   function Is_Limited_View (Typ : Type_Kind_Id) return Boolean is
-     (Sem_Aux.Is_Limited_View (Typ));
+   function Is_Inherently_Limited_Type (Typ : Type_Kind_Id) return Boolean is
+     (Sem_Aux.Is_Inherently_Limited_Type (Typ));
 
    ---------------------------
    -- Is_Predicate_Function --

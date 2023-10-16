@@ -463,7 +463,7 @@ package SPARK_Atree.Entities is
       return Boolean
      renames Einfo.Entities.Is_Fixed_Lower_Bound_Index_Subtype;
 
-   function Is_Limited_View (Typ : Type_Kind_Id) return Boolean;
+   function Is_Inherently_Limited_Type (Typ : Type_Kind_Id) return Boolean;
 
    function Is_Tagged_Type (Typ : Type_Kind_Id) return Boolean;
 

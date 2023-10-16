@@ -2571,7 +2571,7 @@ package body SPARK_Util.Types is
       return Boolean
    is
      (not (Is_Record_Type (Unchecked_Full_Type (Typ))
-      or else Is_Limited_View (Typ))
+      or else Is_Inherently_Limited_Type (Typ))
       or else No (Get_User_Defined_Eq (Base_Type (Typ))));
 
    ----------------------------------

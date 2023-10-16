@@ -1698,7 +1698,7 @@ package body Why.Gen.Arrays is
       --  If the type is limited, still declare an abstract placeholder for
       --  the equality function which will be used to clone the array theory.
 
-      if Is_Limited_View (E) then
+      if Is_Inherently_Limited_Type (E) then
 
          Emit
            (Th,

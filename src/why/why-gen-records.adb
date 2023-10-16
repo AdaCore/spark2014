@@ -3147,7 +3147,7 @@ package body Why.Gen.Records is
          --     /\ <ada_eq> a.__split_fields.new_f1 b.__split_fields.new_f1
          --     /\ ...
 
-         if not Is_Limited_View (E) then
+         if not Is_Inherently_Limited_Type (E) then
             declare
                Condition      : W_Pred_Id := True_Pred;
                Parent_With_Eq : constant Opt_Type_Kind_Id :=
