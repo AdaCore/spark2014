@@ -2312,20 +2312,18 @@ The prefix of an Initialized attribute reference shall denote an object.
    and by an inherited subprogram (if the aspect is specified for the
    corresponding primitive subprogram of the ancestor type).
 
-4. For a prefix *X* that denotes an object, the following attribute is defined:
+4. For a prefix *X* that denotes an object which has relaxed initialization,
+   the following attribute is defined:
 
    ::
 
       X'Initialized
 
-   X'Initialized is True if and only if every scalar reachable part
-   (see :ref:`Access Types`) of X
-   has been initialized. [It typically follows as a consequence of this
-   definition and the other rules of |SPARK| that if X'Initialized is True,
-   then for every reachable part Y of X (scalar or not), Y belongs to its
-   subtype. There are pathological counterexamples, such as a componentless
-   record declared with "Dynamic_Predicate => False".] An Initialized attribute
-   reference is never a static expression.
+   [It follows as a consequence of the other rules of |SPARK| that if
+   X'Initialized is True,
+   then for every reachable part Y of X whose type is not
+   annotated with the Relaxed_Initialization aspect, Y belongs to its
+   subtype.] An Initialized attribute reference is never a static expression.
 
 .. container:: heading
 
@@ -2392,7 +2390,8 @@ The prefix of an Initialized attribute reference shall denote an object.
 
    Verification Rules
 
-12. At the point of a read of a scalar object X that has relaxed initialization,
+12. At the point of a read of an elementary object X that has relaxed
+    initialization,
     a verification condition is introduced to ensure that X is initialized.
     This includes the case where X is a subcomponent of a composite object
     that is passed as an argument in a call to a predefined relational
@@ -2430,16 +2429,25 @@ The prefix of an Initialized attribute reference shall denote an object.
     whole-object-granularity rules that govern that case will ensure that X is
     initialized whenever it is read.]
 
-13. For any object X, evaluation of X'Initialized includes the evaluation
-    of Y'Initialized for every scalar reachable part
-    (see :ref:`Access Types`) Y of X (excluding
-    "hidden" components of tagged objects - see :ref:`Type Invariants`).
-    Evaluation of X'Initialized for a scalar object X is considered to be a
-    read of X if and only if X does not have relaxed initialization. If X has
-    relaxed initialization, then an evaluation of X'Initialized is instead
-    treated like an evaluation of X'Valid [, which is not a read
-    of X]. If X does not have relaxed initialization, then this implies
-    that evaluation of X'Initialized introduces the same initialization
-    requirements as would be introduced for any other read of X; as a result
-    of meeting these requirements, X'Initialized will always return
-    True for such an object.
+13. For any object X, evaluation of
+    X'Initialized includes the evaluation of any subtype predicate applying
+    to X. In addition:
+
+    * if X has a composite type, evaluation of X'Initialized includes the
+      evaluation of Y'Initialized for every component Y of X whose type is not
+      annotated with the Relaxed_Initialization aspect,
+
+    * if X has unconstrained discriminants, evaluation of X'Initialized
+      includes the evaluation of Y'Initialized for every discriminant Y of X,
+
+    * if X has an access-to-object type, evaluation of X'Initialized includes
+      the evaluation X.all'Initialized if X is not null and the designated
+      type of the type of X is not annotated with the Relaxed_Initialization
+      aspect,
+
+    * if X has an elementary type, its value must have been written either
+      explicitly or implicitly through default initialization.
+
+   Discriminants of out-mode parameters and Output globals of a subprogram are
+   considered to be initialized at the beginning of the subprogram. Other
+   reachable parts are not.
