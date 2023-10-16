@@ -40,18 +40,8 @@ stages:
 
     # Tell anod that the package has already been built
     - mkdir -p fingerprints
-    - touch fingerprints/x86_64-linux.spark2014_assertions_coverage.build.json.assume-unchanged
-    - touch fingerprints/x86_64-linux.spark2014_assertions_coverage.install.json.assume-unchanged
-    # Attempt to avoid downloading all the deps of the spark2014-cov build
-    - touch fingerprints/x86_64-linux.spark2014-doc.build.json.assume-unchanged
-    - touch fingerprints/x86_64-linux.spark2014-doc.install.json.assume-unchanged
-    - touch fingerprints/x86_64-linux.spark2014-core_assertions_coverage.build.json.assume-unchanged
-    - touch fingerprints/x86_64-linux.spark2014-core_assertions_coverage.install.json.assume-unchanged
-
-    - for pack in colibri why3 stable-gnat cvc5 alt-ergo gnsa libgpr-current libgpr2-next gnatcoll-core-current xmlada-current ; do
-        touch fingerprints/x86_64-linux.$pack.download_bin.json.assume-unchanged;
-        touch fingerprints/x86_64-linux.$pack.install.json.assume-unchanged;
-      done ;
+    - touch fingerprints/x86_64-linux.spark2014_assert_cov.download_bin.json.assume-unchanged
+    - touch fingerprints/x86_64-linux.spark2014_assert_cov.install.json.assume-unchanged
 
 
 .spark2014_test:
