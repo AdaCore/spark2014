@@ -24,7 +24,7 @@ procedure Test_Init_By_Proof with SPARK_Mode is
      Relaxed_Initialization;
 
    procedure Test_Discr (X : Rec_3) with
-     Pre => X'Initialized and then X.D = 0
+     Pre => X'Initialized and then X.D = 0 and then X.Y'Initialized
    is
       Y : Integer := X.X + Integer (X.D); --@INIT_BY_PROOF:PASS
       Z : My_Int := X.Y + X.D; --@INIT_BY_PROOF:PASS

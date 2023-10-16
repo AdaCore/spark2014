@@ -1036,11 +1036,11 @@ package body Why.Gen.Expr is
 
       if Init_Check then
          Arr_Init := Insert_Initialization_Check
-           (Ada_Node        => Ada_Node,
-            E               => From_Ent,
-            Name            => Arr_Init,
-            Domain          => Domain,
-            Exclude_Relaxed => True);
+           (Ada_Node           => Ada_Node,
+            E                  => From_Ent,
+            Name               => Arr_Init,
+            Domain             => Domain,
+            Exclude_Components => Relaxed);
       end if;
 
       Arr_Expr := New_Temp_For_Expr (Arr_Init);
@@ -1560,11 +1560,11 @@ package body Why.Gen.Expr is
       then
          if Domain = EW_Prog and then not No_Init and then Need_Check then
             Result := Insert_Initialization_Check
-              (Ada_Node        => Ada_Node,
-               E               => L,
-               Name            => Result,
-               Domain          => Domain,
-               Exclude_Relaxed => True);
+              (Ada_Node           => Ada_Node,
+               E                  => L,
+               Name               => Result,
+               Domain             => Domain,
+               Exclude_Components => Relaxed);
          end if;
          Result := New_Call
            (Ada_Node => Ada_Node,
@@ -1699,11 +1699,11 @@ package body Why.Gen.Expr is
       if Is_Init_Wrapper_Type (From) and then not Relaxed_Init then
          if Domain = EW_Prog and then not No_Init and then Need_Check then
             Result := Insert_Initialization_Check
-              (Ada_Node        => Ada_Node,
-               E               => L,
-               Name            => Result,
-               Domain          => Domain,
-               Exclude_Relaxed => True);
+              (Ada_Node           => Ada_Node,
+               E                  => L,
+               Name               => Result,
+               Domain             => Domain,
+               Exclude_Components => Relaxed);
          end if;
          Result := New_Call
            (Ada_Node => Ada_Node,
@@ -2445,10 +2445,11 @@ package body Why.Gen.Expr is
          begin
             if Domain = EW_Prog and then not No_Init then
                Result := Insert_Initialization_Check
-                 (Ada_Node => Ada_Node,
-                  E        => From_Node,
-                  Name     => Result,
-                  Domain   => Domain);
+                 (Ada_Node           => Ada_Node,
+                  E                  => From_Node,
+                  Name               => Result,
+                  Domain             => Domain,
+                  Exclude_Components => Relaxed);
             end if;
 
             --  An initialization check should be inserted directly when
