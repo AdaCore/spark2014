@@ -296,7 +296,7 @@ package body Gnat2Why.Expr is
       Domain       : EW_Domain;
       Params       : Transformation_Params := Body_Params) return W_Expr_Id
    with Pre => Can_Be_Default_Initialized (Retysp (E))
-     and then not Is_Limited_View (Retysp (E))
+     and then not Is_Inherently_Limited_Type (Retysp (E))
      and then Ekind (Retysp (E)) /= E_String_Literal_Subtype;
    --  Expression for the default value of an object of type E. In the term
    --  domain, the values of uninitialized components are set arbitrarily,
@@ -6499,7 +6499,7 @@ package body Gnat2Why.Expr is
       --  cannot be moved. The Is_Moved property can still be computed for
       --  them when the object is deallocated.
 
-      elsif Use_Pred and then not Is_Limited_View (Ty) then
+      elsif Use_Pred and then not Is_Inherently_Limited_Type (Ty) then
          declare
             W_Expr : constant W_Term_Id :=
               Insert_Simple_Conversion
