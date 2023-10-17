@@ -73,7 +73,7 @@ The Team Technical Authority:
 * Is the main reference point for knowledge on the technology.
 * Is the software architect on the technology.
 
-Currently these roles are exercised by Yannick Moy (Team Coordinator) and
+Currently these roles are exercised by Claire Dross (Team Coordinator) and
 Johannes Kanig (Team Technical Authority).
 
 # 5. Community
