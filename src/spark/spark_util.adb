@@ -26,6 +26,7 @@
 with Ada.Characters.Latin_1;      use Ada.Characters.Latin_1;
 with Ada.Containers.Hashed_Maps;
 with Ada.Text_IO;
+with Aspects;                     use Aspects;
 with Common_Iterators;            use Common_Iterators;
 with Errout;                      use Errout;
 with Flow_Dependency_Maps;        use Flow_Dependency_Maps;
@@ -2855,6 +2856,55 @@ package body SPARK_Util is
             return False;
       end case;
    end Is_Constant_In_SPARK;
+
+   ----------------------------
+   -- Is_Container_Aggregate --
+   ----------------------------
+
+   function Is_Container_Aggregate (Exp : Node_Id) return Boolean is
+
+      function Is_Record_Aggregate return Boolean;
+      --  Recognize record aggregates. They have record components as choices.
+
+      function Is_Record_Aggregate return Boolean is
+         F_Ty : constant Entity_Id :=
+           (if Present (Full_View (Etype (Exp))) then Full_View (Etype (Exp))
+            else Etype (Exp));
+
+      begin
+         --  Positional record aggregates have been expanded
+
+         if not Is_Record_Type (F_Ty)
+           or else No (Component_Associations (Exp))
+         then
+            return False;
+         end if;
+
+         declare
+            Assoc  : constant Node_Id := First (Component_Associations (Exp));
+            Choice : Node_Id;
+
+         begin
+            --  Record aggregates cannot be empty
+
+            if No (Assoc) then
+               return False;
+            end if;
+
+            --  Check whether the first choice is a record component
+
+            Choice := First (Choices (Assoc));
+            return Nkind (Choice) = N_Identifier
+              and then Ekind (Entity (Choice)) = E_Component
+              and then not Is_Protected_Component (Entity (Choice));
+         end;
+      end Is_Record_Aggregate;
+
+   begin
+      return Nkind (Exp) = N_Aggregate
+        and then Has_Aspect (Etype (Exp), Aspect_Aggregate)
+        and then not Is_Record_Aggregate;
+   end Is_Container_Aggregate;
 
    ------------------------------------------
    -- Is_Converted_Actual_Output_Parameter --

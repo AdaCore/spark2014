@@ -437,6 +437,10 @@ package SPARK_Util is
    --  (it is directly or indirectly rooted at the first parameter of a
    --  borrowing traversal function).
 
+   function Is_Container_Aggregate (Exp : Node_Id) return Boolean;
+   --  Return True on container aggregates. Replace the frontend routine
+   --  which does not work in the backend.
+
    function Is_For_Loop_Parameter (E : Entity_Id) return Boolean;
    --  Returns True iff E is the loop parameter of a for loop with a loop
    --  parameter specification.

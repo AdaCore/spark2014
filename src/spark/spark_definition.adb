@@ -519,15 +519,6 @@ package body SPARK_Definition is
    --  sure to skip over those to avoid dealing with this abnormal case in
    --  Mark. Why aren't these kind of nodes Indexed_Components instead ?
 
-   function Emit_Warning_Info_Messages return Boolean is
-     (Emit_Messages
-      and then Gnat2Why_Args.Limit_Subp = Null_Unbounded_String
-      and then Gnat2Why_Args.Limit_Name = Null_Unbounded_String);
-   --  Emit warning/info messages only when messages should be emitted, and
-   --  analysis is not restricted to a single subprogram/line (typically during
-   --  interactive use in IDEs), to avoid reporting messages on pieces of code
-   --  not belonging to the analyzed subprogram/line.
-
    function Is_Incomplete_Type_From_Limited_With (E : Entity_Id) return Boolean
    is
      ((Is_Incomplete_Type (E) or else Is_Class_Wide_Type (E))
@@ -1637,7 +1628,7 @@ package body SPARK_Definition is
             pragma Assert (Present (Etype (N)));
             --  In particular, aggregate node must have a type.
 
-            if Has_Aspect (Base_Type (Etype (N)), Aspect_Aggregate) then
+            if SPARK_Util.Is_Container_Aggregate (N) then
                Mark_Violation ("container aggregate", N);
 
             --  Reject 'Update on unconstrained multidimensional array
@@ -8376,131 +8367,10 @@ package body SPARK_Definition is
             end loop;
          end if;
 
-         --  If E is a private type with ownership which needs reclamation, go
-         --  over the following declarations to try and find its reclamation
-         --  function.
+         --  If E has an annotate pragma, it might be necessary to mark other
+         --  related entities.
 
-         if Is_Type (E)
-           and then Is_Nouveau_Type (E)
-           and then Has_Ownership_Annotation (E)
-           and then Needs_Reclamation (E)
-           and then No (Get_Reclamation_Check_Function (E))
-         then
-            declare
-               Decl_Node : constant Node_Id := Declaration_Node (E);
-               Cur       : Node_Id;
-               Fun       : Entity_Id := Empty;
-            begin
-               if Is_List_Member (Decl_Node) then
-                  Cur := Next (Decl_Node);
-                  while Present (Cur) loop
-                     if Is_Pragma_Annotate_GNATprove (Cur) then
-                        Fun := Get_Ownership_Function_From_Pragma (Cur, E);
-                        if Present (Fun) then
-                           Queue_For_Marking (Fun);
-                           exit;
-                        end if;
-                     end if;
-                     Next (Cur);
-                  end loop;
-               end if;
-
-               if No (Fun)
-                 and then Emit_Warning_Info_Messages
-                 and then Debug.Debug_Flag_Underscore_F
-               then
-                  Error_Msg_NE
-                    ("info: ?no reclamation function found for type with "
-                     & "ownership &", E, E);
-                  Error_Msg_N
-                    ("\checks for ressource or memory reclamation will be"
-                     & " unprovable", E);
-               end if;
-            end;
-         end if;
-
-         --  If E is a lemma procedure annotated with Automatic_Instantiation,
-         --  also mark its associated function.
-
-         if Has_Automatic_Instantiation_Annotation (E) then
-            Queue_For_Marking
-              (Retrieve_Automatic_Instantiation_Annotation (E));
-
-         --  Go over the ghost procedure declaration directly following E to
-         --  mark them in case they are lemmas with automatic instantiation.
-         --  We assume that lemma procedures associated to E are declared just
-         --  after E, possibly interspaced with compiler generated stuff and
-         --  pragmas and that the pragma Automatic_Instantiation is always
-         --  located directly after the lemma procedure declaration.
-
-         elsif Ekind (E) = E_Function
-           and then not Is_Volatile_Function (E)
-           and then not Is_Function_With_Side_Effects (E)
-         then
-            declare
-               Decl_Node : constant Node_Id := Parent (Declaration_Node (E));
-               Cur       : Node_Id;
-               Proc      : Entity_Id := Empty;
-
-            begin
-               if Is_List_Member (Decl_Node)
-                 and then Decl_Starts_Pragma_Annotate_Range (Decl_Node)
-               then
-                  Cur := Next (Decl_Node);
-                  while Present (Cur) loop
-
-                     --  We have found a pragma Automatic_Instantiation that
-                     --  applies to Proc, add Proc to the queue for marking and
-                     --  continue the search.
-
-                     if Present (Proc)
-                       and then Is_Pragma_Annotate_GNATprove (Cur)
-                       and then Is_Pragma_Annotate_Automatic_Instantiation
-                         (Cur, Proc)
-                     then
-                        Queue_For_Marking (Proc);
-                        Proc := Empty;
-
-                     --  Ignore other pragmas
-
-                     elsif Nkind (Cur) = N_Pragma then
-                        null;
-
-                     --  We have found a declaration. If Cur is not a lemma
-                     --  procedure annotated with Automatic_Instantiation we
-                     --  can stop the search.
-
-                     elsif Decl_Starts_Pragma_Annotate_Range (Cur) then
-
-                        --  Cur is a declaration of a ghost procedure. Store
-                        --  it in Proc and continue the search to see if there
-                        --  is an associated Automatic_Instantiation
-                        --  Annotation. If there is already something in Proc,
-                        --  stop the search as no pragma
-                        --  Automatic_Instantiation has been found directly
-                        --  after the declaration of Proc.
-
-                        if Nkind (Cur) = N_Subprogram_Declaration
-                          and then Ekind (Unique_Defining_Entity (Cur))
-                            = E_Procedure
-                          and then Is_Ghost_Entity
-                            (Unique_Defining_Entity (Cur))
-                          and then No (Proc)
-                        then
-                           Proc := Unique_Defining_Entity (Cur);
-
-                        --  We have found a declaration which is not a lemma
-                        --  procedure, we can stop the search.
-
-                        else
-                           exit;
-                        end if;
-                     end if;
-                     Next (Cur);
-                  end loop;
-               end if;
-            end;
-         end if;
+         Pull_Entities_For_Annotate_Pragma (E, Queue_For_Marking'Access);
       end if;
 
       --  Restore prestate
