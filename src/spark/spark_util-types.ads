@@ -43,7 +43,7 @@ package SPARK_Util.Types is
    --  the type that represents T in the translation into Why3. It is the most
    --  underlying type of T when it is in SPARK, or the first private type on
    --  the chain of Underlying_Type links at the boundary between SPARK and
-   --  non-SPARK. For non-private types, Retysp is the identity.s
+   --  non-SPARK. For non-private types, Retysp is the identity.
 
    function Retysp (T : Type_Kind_Id) return Type_Kind_Id;
    --  @param T any type

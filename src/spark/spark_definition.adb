@@ -5675,6 +5675,50 @@ package body SPARK_Definition is
                  ("traversal function shall not have side-effects", Id);
             end if;
 
+            if Is_User_Defined_Equality (Id)
+              and then Is_Primitive (Id)
+            then
+               declare
+                  Typ : constant Entity_Id := Etype (First_Formal (Id));
+               begin
+                  if Is_Record_Type (Unchecked_Full_Type (Typ))
+                    and then not Is_Limited_Type (Retysp (Typ))
+                  then
+                     --  A user-defined primitive equality operation on a
+                     --  record type shall not be a volatile function, unless
+                     --  the record type has only limited views (SPARK RM
+                     --  7.1.3(11)).
+                     if Is_Volatile_Function (Id) then
+                        Mark_Violation
+                          ("volatile function as"
+                           & " user-defined equality on record type", Id,
+                           SRM_Reference => "SPARK RM 7.1.3(11)");
+
+                     --  A user-defined primitive equality operation on a
+                     --  record type shall not be a function with side-effects,
+                     --  unless the record type has only limited views (SPARK
+                     --  RM 6.11(8)).
+                     elsif Is_Function_With_Side_Effects (Id) then
+                        Mark_Violation
+                          ("function with side-effects as"
+                           & " user-defined equality on record type", Id,
+                           SRM_Reference => "SPARK RM 6.11(8)");
+
+                     --  A user-defined primitive equality operation on a
+                     --  non-ghost record type shall not be ghost, unless the
+                     --  record type has only limited views (SPARK RM 6.9(22)).
+                     elsif Is_Ghost_Entity (Id)
+                       and then not Is_Ghost_Entity (Typ)
+                     then
+                        Mark_Violation
+                          ("ghost function as user-defined equality"
+                           & " on non-ghost record type", Id,
+                           SRM_Reference => "SPARK RM 6.9(22)");
+                     end if;
+                  end if;
+               end;
+            end if;
+
             --  We currently do not support functions annotated with No_Return.
             --  If the need arise, we could handle them as raise expressions,
             --  using a precondition of False to ensure that they are never
@@ -6063,22 +6107,6 @@ package body SPARK_Definition is
             Exceptions  : constant Boolean := Has_Exceptional_Contract (Id);
 
          begin
-            case Ekind (Id) is
-               when E_Subprogram_Type =>
-                  if Is_Function_Type (Id) then
-                     Mark_Function_Specification (Id);
-                  end if;
-
-               when E_Function =>
-                  Mark_Function_Specification (Id);
-
-               when E_Entry_Family =>
-                  Mark_Unsupported (Lim_Entry_Family, Id);
-
-               when others =>
-                  null;
-            end case;
-
             while Present (Formal) loop
                if not In_SPARK (Formal) then
                   Mark_Violation (Formal, From => Etype (Formal));
@@ -6114,6 +6142,22 @@ package body SPARK_Definition is
 
                Next_Formal (Formal);
             end loop;
+
+            case Ekind (Id) is
+               when E_Subprogram_Type =>
+                  if Is_Function_Type (Id) then
+                     Mark_Function_Specification (Id);
+                  end if;
+
+               when E_Function =>
+                  Mark_Function_Specification (Id);
+
+               when E_Entry_Family =>
+                  Mark_Unsupported (Lim_Entry_Family, Id);
+
+               when others =>
+                  null;
+            end case;
 
             --  Parse the user-written Global/Depends, if present
 

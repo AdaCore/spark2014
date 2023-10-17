@@ -595,8 +595,9 @@ and Refined_Depends.]
     Output or In_Out in its Global aspect.
 
 
-11. A user-defined equality operation on a record type shall have a Global
-    aspect of ``null`` (see :ref:`Overloading of Operators`).
+11. A user-defined primitive equality operation on a record type shall have a
+    Global aspect of ``null``, unless the record type has only limited views
+    (see :ref:`Overloading of Operators`).
 
     [This avoids the case where such a record type is a component of another
     composite type, whose predefined equality operation now depends on
@@ -1634,6 +1635,14 @@ section :ref:`External State`).
 7. A function with side-effects shall not be a traversal function (see section
    :ref:`Access Types`).
 
+8. A user-defined primitive equality operation on a record type shall not be a
+   function with side-effects, unless the record type has only limited views
+   (see :ref:`Overloading of Operators`).
+
+   [This avoids the case where such a record type is a component of another
+   composite type, whose predefined equality operation now has side-effects
+   through the primitive equality operation on its component.]
+
 
 Formal Parameter Modes
 ----------------------
@@ -1869,9 +1878,21 @@ Overloading of Operators
    Legality Rules
 
 
-1. [A user-defined equality operation on a record type shall have a Global
-   aspect of ``null``; see :ref:`Global Aspects` for the statement of this
-   rule.]
+1. [A user-defined primitive equality operation on a record type shall have a
+   Global aspect of ``null``, unless the record type has only limited views;
+   see :ref:`Global Aspects` for the statement of this rule.]
+
+2. [A user-defined primitive equality operation on a record type shall not be a
+   volatile function, unless the record type has only limited views; see
+   :ref:`External State - Variables and Types` for the statement of this rule.]
+
+3. [A user-defined primitive equality operation on a record type shall not be a
+   function with side-effects, unless the record type has only limited views;
+   see :ref:`Functions With Side-Effects` for the statement of this rule.]
+
+4. [A user-defined primitive equality operation on a non-ghost record type
+    shall not be ghost, unless the record type has only limited views; see
+    :ref:`Ghost Entities` for the statement of this rule.]
 
 
 Null Procedures
@@ -2161,16 +2182,26 @@ body (see Ada RM 7.2(4))].
     (see :ref:`Abstract_State Aspects`).
 
 
+22. A user-defined primitive equality operation on a non-ghost record type
+    shall not be ghost, unless the record type has only limited views (see
+    :ref:`Overloading of Operators`).
+
+    [This avoids the case where such a record type is a component of another
+    non-ghost composite type, whose predefined non-ghost equality operation now
+    calls a ghost function through the primitive equality operation on its
+    component.]
+
+
 .. container:: heading
 
    Verification Rules
 
 
-22. A ghost subprogram with side-effects shall not have a non-ghost [global]
+23. A ghost subprogram with side-effects shall not have a non-ghost [global]
     output.
 
 
-23. An output of a non-ghost subprogram other than a state abstraction
+24. An output of a non-ghost subprogram other than a state abstraction
     or a ghost global shall not depend on a ghost input. [It is intended
     that this follows as a consequence of other rules. Although a
     non-ghost state abstraction output which depends on a ghost input may
@@ -2178,7 +2209,7 @@ body (see Ada RM 7.2(4))].
     constituent from depending on the ghost input.]
 
 
-24. A global input of a ghost subprogram with side-effects shall not be effectively
+25. A global input of a ghost subprogram with side-effects shall not be effectively
     volatile for reading.  [This rule says, in effect, that ghost procedural
     subprograms are subject to the same restrictions as non-ghost nonvolatile
     functions with respect to reading volatile objects.]  A name occurring
@@ -2187,7 +2218,7 @@ body (see Ada RM 7.2(4))].
     effectively the same restrictions as a ghost subprogram with side-effects.]
 
 
-25. If the Ghost assertion policy in effect at the point of the declaration of
+26. If the Ghost assertion policy in effect at the point of the declaration of
     a ghost variable or ghost state abstraction is Check, then the Ghost
     assertion policy in effect at the point of any call to a procedural
     subprogram for which that variable or state abstraction is a global output

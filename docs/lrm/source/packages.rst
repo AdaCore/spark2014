@@ -546,18 +546,26 @@ be *compatible with respect to volatility* with E2 if
    function is treated like a call to a nonvolatile function if the
    function's Volatile_Function aspect is False.]
 
+11. A user-defined primitive equality operation on a record type shall not be a
+    volatile function, unless the record type has only limited views (see
+    :ref:`Overloading of Operators`).
+
+    [This avoids the case where such a record type is a component of another
+    composite type, whose predefined equality operation now calls a volatile
+    function through the primitive equality operation on its component.]
+
 
 .. container:: heading
 
    Dynamic Semantics
 
-11. There are no dynamic semantics associated with these aspects.
+12. There are no dynamic semantics associated with these aspects.
 
 .. container:: heading
 
    Verification Rules
 
-12. An effectively volatile for reading formal parameter of mode **out** whose
+13. An effectively volatile for reading formal parameter of mode **out** whose
     Async_Writers aspect is True shall not be read, even after it has been
     updated.
 
