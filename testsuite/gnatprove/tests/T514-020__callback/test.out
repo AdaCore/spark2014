@@ -8,7 +8,9 @@ test_callback.adb:12:04: info: function contract feasibility proved (CVC5: 1 VC)
 test_callback.adb:20:04: warning: analyzing unreferenced procedure "Junk"
 test_callback.adb:20:14: warning: subprogram "Junk" has no effect
 test_callback.adb:25:13: info: implicit aspect Always_Terminates on "Increment" has been proved, subprogram will terminate
+test_callback.adb:25:13: info: implicit function contract might not be available on calls from enclosing unit
 test_callback.adb:25:58: info: overflow check proved (CVC5: 2 VC)
+test_callback.adb:28:13: info: implicit function contract might not be available on calls from enclosing unit
 test_callback.adb:34:14: info: postcondition proved (CVC5: 1 VC)
 test_callback.adb:37:07: medium: implicit aspect Always_Terminates on "Call_Incr_Fun" could be incorrect, call via access-to-subprogram might be nonterminating [possible explanation: call could hide recursive calls]
 test_callback.adb:37:48: info: pointer dereference check proved (CVC5: 1 VC)
