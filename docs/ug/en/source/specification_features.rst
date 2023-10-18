@@ -367,6 +367,50 @@ True even if the stack ``S`` contains uninitialized elements.
   ``Initialized`` attribute in a loop invariant might be required for proof to
   verify the program.
 
+.. index:: Side_Effects
+           side-effects; in functions
+
+.. _Aspect Side_Effects:
+
+Aspect ``Side_Effects``
+-----------------------
+
+[|SPARK|]
+
+Unless stated otherwise, functions in |SPARK| cannot have side-effects:
+
+- A function must not have an ``out`` or ``in out`` parameter.
+
+- A function must not write a global variable.
+
+- A function must not raise exceptions.
+
+- A function must always terminate.
+
+The aspect ``Side_Effects`` can be used to indicate that a function may in fact
+have side-effects, among the four possible side-effects listed above. A
+`function with side-effects` can be called only as the right-hand side of an
+assignment, as part of a list of statements where a procedure could be called:
+
+.. code-block:: ada
+
+   function Increment_And_Return (X : in out Integer) return Integer
+     with Side_Effects;
+
+   procedure Call is
+     X : Integer := 5;
+     Y : Integer;
+   begin
+     Y := Increment_And_Return (X);
+     --  The value of X is 6 here
+   end Call;
+
+Note that a function with side-effects could in general be converted into a
+procedure with an additional ``out`` parameter for the function's
+result. However, it can be more convenient to use a function with side-effects
+when binding SPARK code with C code where functions have very often
+side-effects.
+
 .. index:: Loop_Entry
            loop; and Loop_Entry
 

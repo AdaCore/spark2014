@@ -15,13 +15,16 @@ simplifications to Ada. The most notable simplifications are:
   granted to possibly multiple access objects. See :ref:`Memory Ownership
   Policy`.
 
-  .. index:: side effects; excluded feature
+.. index:: side effects; excluded feature
 
-* All expressions (including function calls) are free of
-  side-effects. Functions with side-effects are more complex to treat logically
-  and may lead to non-deterministic evaluation due to conflicting side-effects
-  in sub-expressions of an enclosing expression. Functions with side-effects
-  should be written as procedures in |SPARK|.
+* All expressions (including function calls) are free of side-effects, at the
+  exception of calls to so-called functions with side-effects (see :ref:`Aspect
+  Side_Effects`) which can only appear as the right-hand side of
+  assignments. Allowing functions with side-effects everywhere could lead to
+  non-deterministic evaluation due to conflicting side-effects in
+  sub-expressions of an enclosing expression. Allowing all functions to have
+  side-effects would conflict with the need to treat functions mathematically
+  in specifications.
 
 .. index:: aliasing; excluded feature
 
@@ -48,10 +51,11 @@ simplifications to Ada. The most notable simplifications are:
 .. index:: termination; excluded feature
 
 * Functions should always terminate when called on inputs satisfying the
-  precondition.  While care is taken in |GNATprove| to detect possibilities of
-  unsoundness resulting from nonterminating functions, it is possible that
-  axioms generated for infeasible contracts may lead to unsoundness.
-  See :ref:`Infeasible Subprogram Contracts`.
+  precondition, at the exception of so-called functions with side-effects (see
+  :ref:`Aspect Side_Effects`).  While care is taken in |GNATprove| to detect
+  possibilities of unsoundness resulting from nonterminating functions, it is
+  possible that axioms generated for infeasible contracts may lead to
+  unsoundness.  See :ref:`Infeasible Subprogram Contracts`.
 
 .. index:: generics; excluded feature
 
