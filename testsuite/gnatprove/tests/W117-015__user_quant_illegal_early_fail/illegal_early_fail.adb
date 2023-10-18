@@ -1,4 +1,4 @@
-procedure Illegal_Errors with SPARK_Mode is
+procedure Illegal_Early_Fail with SPARK_Mode is
 
 
    type Boolean_Cursor is new Integer range 0 .. 2;
@@ -462,4 +462,4 @@ procedure Illegal_Errors with SPARK_Mode is
 
 begin
    null;
-end Illegal_Errors;
+end Illegal_Early_Fail;

@@ -1,4 +1,4 @@
-procedure Lemma_Mul_By_Less_Than_One
+procedure Lemma_Mul_Less_By_One
   (Val1 : Float;
    Val2 : Float)
 with

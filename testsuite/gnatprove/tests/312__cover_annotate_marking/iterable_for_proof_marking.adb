@@ -1,4 +1,4 @@
-procedure Iterable_Marking with SPARK_Mode is
+procedure Iterable_For_Proof_Marking with SPARK_Mode is
 
    package Not_In_SPARK with SPARK_Mode => Off is
       type T is new Integer;
@@ -120,4 +120,4 @@ procedure Iterable_Marking with SPARK_Mode is
 
 begin
    null;
-end Iterable_Marking;
+end Iterable_For_Proof_Marking;
