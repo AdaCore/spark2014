@@ -13403,6 +13403,236 @@ package body Gnat2Why.Expr is
                Params => Params);
 
          begin
+
+            --  Deal with the special case of an empty (sub)aggregate []. Those
+            --  do not have any explicit choices. They use the default ranges
+            --  Index_Type'First .. Index_Type'Base'Pred (Index_Type'First),
+            --  under the GNATprove limitation that [] cannot show up in
+            --  aggregates with multiple association. Make sure that the
+            --  computation of the last bound does not overflow.
+            --
+            --  The limitation comes from the fact that the front-end might not
+            --  provide properly all bounds for null subaggregates. Recomputing
+            --  them in general is tricky as this requires knowing whether
+            --  there is an applicable index constraint from the context. For
+            --  that reason, we do not support null subaggregates when there
+            --  should be subject to matching bound checks. Those cases are
+            --  rejected by marking.
+            --
+            --  Return once done, this completely deal with [] case.
+
+            if No (Association) and then No (Expression) then
+               --  Make sure we do not need bound checks
+
+               pragma Assert
+                 (not In_Delta_Aggregate and then Dim <= Last_Uniq_Dim);
+
+               declare
+                  Dim_Cursor : Positive := 1;
+                  Index      : Node_Id := First_Index (Expr_Typ);
+                  Index_Base : Node_Id :=
+                    First_Index (Base_Retysp (Expr_Typ));
+
+               begin
+                  --  Walk through indexes of the aggregate until the current
+                  --  dimension.
+
+                  while Dim_Cursor /= Dim loop
+                     Next_Index (Index);
+                     Next_Index (Index_Base);
+                     Dim_Cursor := Dim_Cursor + 1;
+                  end loop;
+
+                  while Present (Index) loop
+                     --  For multi-dimensional aggregates, add the dimension as
+                     --  a continuation.
+
+                     if Nb_Dim /= 1 then
+                        Continuation_Stack.Append
+                          (Continuation_Type'
+                             (Ada_Node => Index_Base,
+                              Message  => To_Unbounded_String
+                                ("for array dimension" & Dim_Cursor'Image)));
+                     end if;
+
+                     --  For checks that fail statically, the frontend uses a
+                     --  N_Raise_xxx_Error node for the lower bound.
+
+                     if Nkind (High_Bound (Index)) in N_Raise_xxx_Error then
+                        Emit_Static_Proof_Result
+                          (Expr, VC_Range_Check, False, Current_Subp,
+                           Explanation =>
+                             "empty aggregates cannot be used if there is no"
+                           & " element before the first element of their index"
+                           & " type");
+
+                     --  Otherwise, check that Index'First is not the first
+                     --  element of its base type.
+
+                     else
+                        Append
+                          (Choice_Checks,
+                           New_Located_Assert
+                             (Ada_Node => Expr,
+                              Reason   => VC_Range_Check,
+                              Pred     => New_Not
+                                (Right => New_Comparison
+                                     (Symbol => Why_Eq,
+                                      Left   => Transform_Term
+                                        (Expr          => Low_Bound (Index),
+                                         Expected_Type =>
+                                           Base_Why_Type_No_Bool
+                                             (Etype (Index)),
+                                         Params        => Body_Params),
+                                      Right  => +New_Attribute_Expr
+                                        (Base_Type (Etype (Index)),
+                                         EW_Term,
+                                         Attribute_First,
+                                         Body_Params))),
+                              Kind     => EW_Assert));
+                     end if;
+
+                     if Nb_Dim /= 1 then
+                        Continuation_Stack.Delete_Last;
+                     end if;
+
+                     Next_Index (Index);
+                     Next_Index (Index_Base);
+                     Dim_Cursor := Dim_Cursor + 1;
+                  end loop;
+               end;
+
+               --  There is no other check to generate for null subaggregates,
+               --  exit here.
+
+               return;
+            end if;
+
+            --  When aggregate has positional associations, we need additional
+            --  checks that the implicit indexes of the positional associations
+            --  are all between the bounds, when computed as plain position
+            --  numbers (no modular arithmetic should be involved in their
+            --  computation). It is sufficient to make that check for the last
+            --  positional index:
+            --  * All elements are necessarily >= the lower bound chosen for
+            --    the (sub)aggregate by definition, since they are at a >= 0
+            --    offset from it.
+            --  * All elements are necessarily <= the upper bound if the
+            --    last element is.
+            --  This also means that it is sufficient to test the upper
+            --  bound only. But since we have bitvectors in Why3 when the index
+            --  uses modular integers, we have no proof-convenient way to make
+            --  the translation a check on plain mathematical integers. If we
+            --  carry this check in bitvector arithmetic, it could fail due to
+            --  wraparound. We need to add a no-wraparound check in that case.
+            --  Thanks to the front-end already rejecting the situation where
+            --  there is more positional associations that values in the type,
+            --  in case of wraparound, the index computed in modular arithmetic
+            --  ends up being strictly below the lower bound. So we can reject
+            --  wraparound by testing the lower bound as well.
+            --
+            --  The check we generate for this case is an in-range check for
+            --  the last positional index, with:
+            --  * The upper bound check removed if there is no others case. In
+            --    that case, it is redundant with the matching bound check of
+            --    the subaggregate. This is because subagggregate bounds are
+            --    derived from the number of positional elements in that case,
+            --    so the implicit indices (as position numbers) are between
+            --    those bounds by construction. Matching bound checks make sure
+            --    those actually are the index type bounds of the aggregate.
+            --  * The lower bound check removed for signed integer type,
+            --    as wraparound is only a concern for modular types.
+            --  If there are no others case and the type is not modular, there
+            --  is no need to generate anything.
+
+            if Present (Expression)
+              and then (Present (Association)
+                        or else Why_Type_Is_BitVector (Index_Base))
+            then
+               declare
+                  Pred   : W_Pred_Vectors.Vector;
+                  --  Accumulate checks
+
+                  Bounds : constant Node_Id := Aggregate_Bounds (Expr);
+                  pragma Assert (Present (Bounds));
+                  Low    : constant W_Term_Id := New_Temp_For_Expr
+                    (W_Term_Id'(+Transform_Expr
+                       (Low_Bound (Bounds),
+                        Index_Base,
+                        EW_Term,
+                        Params)));
+                  --  Translate lower bound
+
+                  Offset   : constant W_Term_Id :=
+                    New_Discrete_Constant
+                      (Value => UI_From_Int (Nlists.List_Length (Exprs) - 1),
+                       Typ   => Index_Base);
+
+                  Position : constant W_Term_Id :=
+                    (if Why_Type_Is_BitVector (Index_Base)
+                     then +New_Binary_Op_Expr
+                       (Op          => N_Op_Add,
+                        Left        => +Low,
+                        Right       => +Offset,
+                        Left_Type   => Index_Typ,
+                        Right_Type  => Index_Typ,
+                        Return_Type => Index_Typ,
+                        Domain      => EW_Term)
+                     else +New_Discrete_Add
+                       (Domain => EW_Term,
+                        Left   => +Low,
+                        Right  => +Offset));
+                  --  Construct implicit index of last positional association.
+                  --  Note that we must not compute in the base type for the
+                  --  bitvector case, as using the base modulus may miscompute
+                  --  the upper bound.
+
+               begin
+                  if Why_Type_Is_BitVector (Index_Base) then
+                     --  Generate no-wraparound check.
+
+                     W_Pred_Vectors.Append
+                       (V    => Pred,
+                        Pred => New_Comparison
+                          (Symbol => MF_BVs (Index_Base).Ule,
+                           Left   => Low,
+                           Right  => Position));
+                  end if;
+
+                  if Present (Association) then
+                     --  'others' choice. Generate upper bound check.
+
+                     pragma Assert
+                       (Is_Others_Choice (Choice_List (Association)));
+                     W_Pred_Vectors.Append
+                       (V    => Pred,
+                        Pred => New_Comparison
+                          (Symbol => (if Why_Type_Is_BitVector (Index_Base)
+                                      then MF_BVs (Index_Base).Ule
+                                      else Int_Infix_Le),
+                           Left   => Position,
+                           Right  => +Transform_Expr
+                             (High_Bound (Bounds),
+                              Index_Base,
+                              EW_Term,
+                              Params)));
+                  end if;
+
+                  pragma Assert (not W_Pred_Vectors.Is_Empty (Pred));
+
+                  Append
+                    (Choice_Checks,
+                     New_Located_Assert
+                       (Ada_Node => Nlists.Last (Exprs),
+                        Reason   => VC_Range_Check,
+                        Kind     => EW_Assert,
+                        Pred     => Binding_For_Temp
+                          (Tmp => Low,
+                           Context => New_And_Pred
+                             (W_Pred_Vectors.To_Array (Pred)))));
+               end;
+            end if;
+
             --  Go over the list of associations to insert checks
 
             while Present (Association) loop
@@ -13655,18 +13885,6 @@ package body Gnat2Why.Expr is
                --  the front-end. We filter out checks at dimensions where
                --  there is a single subaggregate since they must be redundant.
 
-               pragma Assert (not Is_Null_Aggregate (Expr));
-               --  If an inner sub-aggregate is null, then the
-               --  front-end might not provide properly all bounds
-               --  for the sub-aggregate. Re-computing them is tricky
-               --  as this requires knowing whether there is an
-               --  applicable index constraint from the context.
-               --  As we cannot properly support that case, inner null
-               --  sub-aggregates that are not the only sub-aggregates
-               --  of their dimension are rejected by marking.
-               --  The remaining ones do not need bound checks, so this
-               --  case should not happen here.
-
                declare
                   Low_Bnd  : constant W_Term_Id :=
                     Insert_Simple_Conversion
@@ -13788,86 +14006,18 @@ package body Gnat2Why.Expr is
             end;
          end if;
 
-         --  Empty aggregates [] do not have any explicit choices. They use
-         --  the default ranges
-         --  Index_Type'First .. Index_Type'Base'Pred (Index_Type'First).
-         --  Make sure that the computation of the last bound does not
-         --  overflow.
-
-         if Empty_Aggregate then
-            declare
-               Dim        : Positive := 1;
-               Index      : Node_Id := First_Index (Expr_Typ);
-               Index_Base : Node_Id :=
-                 First_Index (Base_Retysp (Expr_Typ));
-            begin
-               while Present (Index) loop
-
-                  --  For multi-dimensional aggregates, add the dimension as a
-                  --  continuation.
-
-                  if Nb_Dim /= 1 then
-                     Continuation_Stack.Append
-                       (Continuation_Type'
-                          (Ada_Node => Index_Base,
-                           Message  => To_Unbounded_String
-                             ("for array dimension" & Dim'Image)));
-                  end if;
-
-                  --  For checks that fail statically, the frontend uses a
-                  --  N_Raise_xxx_Error node for the lower bound.
-
-                  if Nkind (High_Bound (Index)) in N_Raise_xxx_Error then
-                     Emit_Static_Proof_Result
-                       (Expr, VC_Range_Check, False, Current_Subp,
-                        Explanation =>
-                          "empty aggregates cannot be used if there is no"
-                        & " element before the first element of their index"
-                        & " type");
-
-                  --  Otherwise, check that Index'First is not the first
-                  --  element of its base type.
-
-                  else
-                     Append
-                       (Choice_Checks,
-                        New_Located_Assert
-                          (Ada_Node => Expr,
-                           Reason   => VC_Range_Check,
-                           Pred     => New_Not
-                             (Right => New_Comparison
-                                  (Symbol => Why_Eq,
-                                   Left   => Transform_Term
-                                     (Expr          => Low_Bound (Index),
-                                      Expected_Type =>
-                                        Base_Why_Type_No_Bool (Etype (Index)),
-                                      Params        => Body_Params),
-                                   Right  => +New_Attribute_Expr
-                                     (Base_Type (Etype (Index)),
-                                      EW_Term,
-                                      Attribute_First,
-                                      Body_Params))),
-                           Kind     => EW_Assert));
-                  end if;
-
-                  if Nb_Dim /= 1 then
-                     Continuation_Stack.Delete_Last;
-                  end if;
-
-                  Next_Index (Index);
-                  Next_Index (Index_Base);
-                  Dim := Dim + 1;
-               end loop;
-            end;
-
          --  For regular aggregates, check the scalar ranges of the
          --  aggregate subtype against its Etype. It is not necessary for
          --  delta aggregates where the bounds come from the prefix. In a
          --  similar way, if the aggregate contains an others choice, then the
          --  index type is taken from the context so we do not need to check
-         --  it.
+         --  it. It is also unnecessary for empty aggregates, as each range
+         --  will either be empty, or the computation of predecessor will
+         --  wraparound (for modular types only) and the associated range check
+         --  from Insert_Checks will fail.
 
-         elsif not In_Delta_Aggregate
+         if not Empty_Aggregate
+           and then not In_Delta_Aggregate
            and then
              (Nb_Dim > 1
               or else Is_Empty_List (Component_Associations (Expr))
