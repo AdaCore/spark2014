@@ -41,7 +41,7 @@
 	install-all why3 all setup all-nightly doc-nightly run-benchmark \
         create-benchmark
 
-ROOT_DIR:=/it/wave/x86_64-linux/spark2014-core-cov/src/
+COVERAGE_ROOT_DIR=/it/wave/x86_64-linux/spark2014-core_assertions_coverage/src/
 
 INSTALLDIR=$(CURDIR)/install
 SHAREDIR=$(INSTALLDIR)/share
@@ -162,7 +162,7 @@ coverage-report:
 		fi; \
 	done
 
-	gnatcov coverage --level=stmt --annotate=dhtml --annotate=cobertura --sid @sidfiles --source-root $(ROOT_DIR) --output-dir=dhtml-report @tracefiles
+	gnatcov coverage --level=stmt --annotate=dhtml --annotate=cobertura --sid @sidfiles --source-root $(COVERAGE_ROOT_DIR) --output-dir=dhtml-report @tracefiles
 
 codepeer-run:
 	$(MAKE) --no-print-directory -C gnat2why codepeer-run

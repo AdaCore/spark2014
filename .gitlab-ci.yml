@@ -40,8 +40,9 @@ stages:
 
     # Tell anod that the package has already been built
     - mkdir -p fingerprints
-    - touch fingerprints/x86_64-linux.spark2014_assert_cov.download_bin.json.assume-unchanged
-    - touch fingerprints/x86_64-linux.spark2014_assert_cov.install.json.assume-unchanged
+    - COMPONENT=`anod eval spark2014 build_space_name --primitive build --qualifier=coverage,assertions`
+    - touch fingerprints/x86_64-linux.$COMPONENT.download_bin.json.assume-unchanged
+    - touch fingerprints/x86_64-linux.$COMPONENT.install.json.assume-unchanged
 
 
 .spark2014_test:
@@ -69,6 +70,9 @@ stages:
     # set caching location
     - mkdir -p $CI_PROJECT_DIR/gnatprove_cache
     - export GNATPROVE_CACHE="file:$CI_PROJECT_DIR/gnatprove_cache"
+    # set location of sources for coverage
+    - ANOD_BUILDSPACE_SOURCES=`anod eval spark2014 build_space_name --primitive build --qualifier=coverage,assertions`
+    - export COVERAGE_ROOT_DIR=$ANOD_DEFAULT_SANDBOX_DIR/x86_64-linux/$ANOD_BUILDSPACE_SOURCES/src
     # Test using anod
     - anod run $ANOD_ENTRY_POINT
 
