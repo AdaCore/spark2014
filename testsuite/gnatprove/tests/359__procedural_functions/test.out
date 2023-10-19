@@ -1,0 +1,59 @@
+bad_call.adb:5:20: error: call to a function with side-effects outside of assignment is not allowed in SPARK
+bad_call.adb:5:20: error: violation of aspect SPARK_Mode at line 3
+bad_call.adb:6:20: error: call to a function with side-effects outside of assignment is not allowed in SPARK
+bad_call.adb:6:20: error: violation of aspect SPARK_Mode at line 3
+bad_call.adb:6:30: error: call to a function with side-effects outside of assignment is not allowed in SPARK
+bad_call.adb:6:30: error: violation of aspect SPARK_Mode at line 3
+bad_call.adb:7:24: error: call to a function with side-effects outside of assignment is not allowed in SPARK
+bad_call.adb:7:24: error: violation of aspect SPARK_Mode at line 3
+bad_call.adb:7:46: error: call to a function with side-effects outside of assignment is not allowed in SPARK
+bad_call.adb:7:46: error: violation of aspect SPARK_Mode at line 3
+bad_call.adb:7:71: error: call to a function with side-effects outside of assignment is not allowed in SPARK
+bad_call.adb:7:71: error: violation of aspect SPARK_Mode at line 3
+bad_call.adb:12:19: error: call to a function with side-effects outside of assignment is not allowed in SPARK
+bad_call.adb:12:19: error: violation of aspect SPARK_Mode at line 3
+bad_call.adb:13:10: error: call to a function with side-effects outside of assignment is not allowed in SPARK
+bad_call.adb:13:10: error: violation of aspect SPARK_Mode at line 3
+bad_call.adb:14:14: error: call to a function with side-effects outside of assignment is not allowed in SPARK
+bad_call.adb:14:14: error: violation of aspect SPARK_Mode at line 3
+bad_call.adb:14:30: error: call to a function with side-effects outside of assignment is not allowed in SPARK
+bad_call.adb:14:30: error: violation of aspect SPARK_Mode at line 3
+bad_call.adb:14:43: error: call to a function with side-effects outside of assignment is not allowed in SPARK
+bad_call.adb:14:43: error: violation of aspect SPARK_Mode at line 3
+bad_traversal.ads:3:13: error: traversal function shall not have side-effects is not allowed in SPARK
+bad_traversal.ads:3:13: error: violation of aspect SPARK_Mode at line 1
+p.adb:43:07: warning: this statement is never reached
+p.adb:73:13: info: implicit aspect Always_Terminates on "B1" has been proved, subprogram will terminate
+p.adb:73:17: info: initialization of "X" proved
+p.adb:81:13: info: implicit aspect Always_Terminates on "B2" has been proved, subprogram will terminate
+p.adb:89:13: error: function with output global "G" is not allowed in SPARK
+p.adb:91:11: info: data dependencies proved
+p.adb:98:13: error: function with output global "G" is not allowed in SPARK
+p.adb:100:11: info: data dependencies proved
+p.adb:107:13: info: implicit aspect Always_Terminates on "B5" has been proved, subprogram will terminate
+p.adb:107:13: medium: function "B5" does not return on some paths
+p.adb:118:13: info: implicit aspect Always_Terminates on "B6" has been proved, subprogram will terminate
+p.adb:126:13: high: all paths in "B7" raise exceptions or do not terminate normally
+p.adb:132:07: warning: this statement is never reached
+p.adb:135:13: info: implicit aspect Always_Terminates on "B8" has been proved, subprogram will terminate
+p.adb:154:13: error: function with output global "G" is not allowed in SPARK
+p.adb:156:11: info: flow dependencies proved
+p.adb:163:13: error: function with output global "G" is not allowed in SPARK
+p.adb:165:11: info: flow dependencies proved
+p.ads:5:13: info: implicit aspect Always_Terminates on "F1" has been proved, subprogram will terminate
+p.ads:5:17: info: initialization of "X" proved
+p.ads:8:13: info: implicit aspect Always_Terminates on "F2" has been proved, subprogram will terminate
+p.ads:11:13: error: function with output global "G" is not allowed in SPARK
+p.ads:13:11: info: data dependencies proved
+p.ads:15:13: error: function with output global "G" is not allowed in SPARK
+p.ads:17:11: info: data dependencies proved
+p.ads:19:13: info: implicit aspect Always_Terminates on "F5" has been proved, subprogram will terminate
+p.ads:19:13: medium: function "F5" does not return on some paths
+p.ads:23:13: info: implicit aspect Always_Terminates on "F6" has been proved, subprogram will terminate
+p.ads:27:13: high: all paths in "F7" raise exceptions or do not terminate normally
+p.ads:31:13: info: implicit aspect Always_Terminates on "F8" has been proved, subprogram will terminate
+p.ads:39:13: error: function with output global "G" is not allowed in SPARK
+p.ads:41:11: info: flow dependencies proved
+p.ads:43:13: error: function with output global "G" is not allowed in SPARK
+p.ads:45:11: info: flow dependencies proved
+gnatprove: error during flow analysis and proof

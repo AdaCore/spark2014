@@ -1,0 +1,7 @@
+replay: True
+prove_all:
+  opt: ["--function-sandboxing=off"]
+  check_counterexamples: False
+  sparklib: True
+session_opt:
+  vc_timeout: 20

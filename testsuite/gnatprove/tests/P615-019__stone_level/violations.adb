@@ -1,6 +1,8 @@
 package body Violations is
 
-   function Increment_And_Add (X, Y : in out Integer) return Integer is
+   X, Y : Integer;
+
+   function Increment_And_Add return Integer is
    begin
       X := X + 1;
       Y := Y + 1;

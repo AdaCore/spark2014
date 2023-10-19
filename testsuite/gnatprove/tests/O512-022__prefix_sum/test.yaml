@@ -1,2 +1,15 @@
 large: True
 timeout: 1500
+replay: True
+prove_all:
+  opt:
+    - --function-sandboxing=off
+    - --proof-warnings
+    - -u
+    - prefixsum.adb
+    - prefixsum_expanded.adb
+    - prefixsum_general.adb
+    - --counterexamples=off
+session_opt:
+  vc_timeout: 20
+  steps: 0

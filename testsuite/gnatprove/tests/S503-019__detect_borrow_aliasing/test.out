@@ -1,7 +1,6 @@
-p.adb:1:11: warning: file name does not match unit name, should be "ownership_transfer_at_call.adb"
-p.adb:5:04: info: initialization of "X" proved
-p.adb:8:11: info: data dependencies proved
-p.adb:19:10: high: formal parameter "Y" and global "X" are aliased (SPARK RM 6.4.2)
+ownership_transfer_at_call.adb:5:04: info: initialization of "X" proved
+ownership_transfer_at_call.adb:8:11: info: data dependencies proved
+ownership_transfer_at_call.adb:19:10: high: formal parameter "Y" and global "X" are aliased (SPARK RM 6.4.2)
 q.adb:6:04: info: initialization of "X_Ptr" proved
 q.adb:9:13: info: data dependencies proved
 q.adb:19:16: high: formal parameter "Y" and global "X_Ptr" are aliased (SPARK RM 6.4.2)

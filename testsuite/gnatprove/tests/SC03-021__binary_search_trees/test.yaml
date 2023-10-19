@@ -1,1 +1,9 @@
 large: True
+replay: True
+prove_all:
+  opt: ["--function-sandboxing=off"]
+  sparklib: True
+  check_counterexamples: False
+session_opt:
+  level: 4
+  vc_timeout: 120
