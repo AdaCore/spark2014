@@ -2,6 +2,10 @@ with "sparklib";
 
 project Test is
 
+   package Compiler is
+      for Default_Switches ("Ada") use ("-gnat2022");
+   end Compiler;
+
    for Source_Dirs use ("kernel/core/**", "build/openconf");
 
 end Test;
