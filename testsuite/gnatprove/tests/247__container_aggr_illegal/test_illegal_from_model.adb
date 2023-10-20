@@ -26,6 +26,9 @@ procedure Test_Illegal_From_Model with SPARK_Mode is
       function Last (X : T) return Ext_Index with
         Annotate => (GNATprove, Container_Aggregates, "Last");
 
+      function First return Index_Type is (1) with
+        Annotate => (GNATprove, Container_Aggregates, "First");
+
    private
       type T_Content is array (Index_Type) of Element_Type with
         Relaxed_Initialization;

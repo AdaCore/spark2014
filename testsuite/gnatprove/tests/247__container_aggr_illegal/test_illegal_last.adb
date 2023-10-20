@@ -29,6 +29,9 @@ procedure Test_Illegal_Last with SPARK_Mode is
       function Get (X : T; I : Index_Type) return Element_Type with
         Annotate => (GNATprove, Container_Aggregates, "Get");
 
+      function First return Index_Type is (1) with
+        Annotate => (GNATprove, Container_Aggregates, "First");
+
    private
       type T_Content is array (Index_Type) of Element_Type with
         Relaxed_Initialization;
@@ -71,6 +74,9 @@ procedure Test_Illegal_Last with SPARK_Mode is
 
       function Get (X : T; I : Index_Type) return Element_Type with
         Annotate => (GNATprove, Container_Aggregates, "Get");
+
+      function First return Index_Type is (1) with
+        Annotate => (GNATprove, Container_Aggregates, "First");
 
    private
       type T_Content is array (Index_Type) of Element_Type with
@@ -115,6 +121,9 @@ procedure Test_Illegal_Last with SPARK_Mode is
       function Get (X : T; I : Index_Type) return Element_Type with
         Annotate => (GNATprove, Container_Aggregates, "Get");
 
+      function First return Index_Type is (1) with
+        Annotate => (GNATprove, Container_Aggregates, "First");
+
    private
       type T_Content is array (Index_Type) of Element_Type with
         Relaxed_Initialization;
@@ -158,6 +167,9 @@ procedure Test_Illegal_Last with SPARK_Mode is
       function Get (X : T; I : Index_Type) return Element_Type with
         Annotate => (GNATprove, Container_Aggregates, "Get");
 
+      function First return Index_Type is (1) with
+        Annotate => (GNATprove, Container_Aggregates, "First");
+
    private
       type T_Content is array (Index_Type) of Element_Type with
         Relaxed_Initialization;
@@ -195,6 +207,9 @@ procedure Test_Illegal_Last with SPARK_Mode is
 
       function Get (X : T; I : Index_Type) return Element_Type with
         Annotate => (GNATprove, Container_Aggregates, "Get");
+
+      function First return Index_Type is (1) with
+        Annotate => (GNATprove, Container_Aggregates, "First");
 
       function Last (X : T) return Integer with
         Global => null,
@@ -249,6 +264,9 @@ procedure Test_Illegal_Last with SPARK_Mode is
       function Get (X : T; I : Index_Type) return Element_Type with
         Annotate => (GNATprove, Container_Aggregates, "Get");
 
+      function First return Index_Type is (1) with
+        Annotate => (GNATprove, Container_Aggregates, "First");
+
    private
       type T_Content is array (Index_Type) of Element_Type with
         Relaxed_Initialization;
@@ -294,6 +312,9 @@ procedure Test_Illegal_Last with SPARK_Mode is
       function Get (X : T; I : Index_Type) return Element_Type with
         Annotate => (GNATprove, Container_Aggregates, "Get");
 
+      function First return Index_Type is (1) with
+        Annotate => (GNATprove, Container_Aggregates, "First");
+
    private
       type T_Content is array (Index_Type) of Element_Type with
         Relaxed_Initialization;
@@ -335,6 +356,9 @@ procedure Test_Illegal_Last with SPARK_Mode is
 
       function Get (X : T; I : Index_Type) return Element_Type with
         Annotate => (GNATprove, Container_Aggregates, "Get");
+
+      function First return Index_Type is (1) with
+        Annotate => (GNATprove, Container_Aggregates, "First");
 
      pragma Annotate (GNATprove, Container_Aggregates, "Last", Last);
 
@@ -382,6 +406,9 @@ procedure Test_Illegal_Last with SPARK_Mode is
       function Get (X : T; I : Index_Type) return Element_Type with
         Annotate => (GNATprove, Container_Aggregates, "Get");
 
+      function First return Index_Type is (1) with
+        Annotate => (GNATprove, Container_Aggregates, "First");
+
    private
       type T_Content is array (Index_Type) of Element_Type with
         Relaxed_Initialization;
@@ -425,6 +452,9 @@ procedure Test_Illegal_Last with SPARK_Mode is
 
       function Get (X : T; I : Index_Type) return Element_Type with
         Annotate => (GNATprove, Container_Aggregates, "Get");
+
+      function First return Index_Type is (1) with
+        Annotate => (GNATprove, Container_Aggregates, "First");
 
    private
       type T_Content is array (Index_Type) of Element_Type with
@@ -470,6 +500,9 @@ procedure Test_Illegal_Last with SPARK_Mode is
       function Get (X : T; I : Index_Type) return Element_Type with
         Annotate => (GNATprove, Container_Aggregates, "Get");
 
+      function First return Index_Type is (1) with
+        Annotate => (GNATprove, Container_Aggregates, "First");
+
    private
       type T_Content is array (Index_Type) of Element_Type with
         Relaxed_Initialization;
@@ -510,6 +543,9 @@ procedure Test_Illegal_Last with SPARK_Mode is
 
       function Get (X : T; I : Index_Type) return Element_Type with
         Annotate => (GNATprove, Container_Aggregates, "Get");
+
+      function First return Index_Type is (1) with
+        Annotate => (GNATprove, Container_Aggregates, "First");
 
    private
       type T_Content is array (Index_Type) of Element_Type with

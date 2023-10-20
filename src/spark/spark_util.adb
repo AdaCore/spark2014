@@ -2862,48 +2862,13 @@ package body SPARK_Util is
    ----------------------------
 
    function Is_Container_Aggregate (Exp : Node_Id) return Boolean is
-
-      function Is_Record_Aggregate return Boolean;
-      --  Recognize record aggregates. They have record components as choices.
-
-      function Is_Record_Aggregate return Boolean is
-         F_Ty : constant Entity_Id :=
-           (if Present (Full_View (Etype (Exp))) then Full_View (Etype (Exp))
-            else Etype (Exp));
-
-      begin
-         --  Positional record aggregates have been expanded
-
-         if not Is_Record_Type (F_Ty)
-           or else No (Component_Associations (Exp))
-         then
-            return False;
-         end if;
-
-         declare
-            Assoc  : constant Node_Id := First (Component_Associations (Exp));
-            Choice : Node_Id;
-
-         begin
-            --  Record aggregates cannot be empty
-
-            if No (Assoc) then
-               return False;
-            end if;
-
-            --  Check whether the first choice is a record component
-
-            Choice := First (Choices (Assoc));
-            return Nkind (Choice) = N_Identifier
-              and then Ekind (Entity (Choice)) = E_Component
-              and then not Is_Protected_Component (Entity (Choice));
-         end;
-      end Is_Record_Aggregate;
-
    begin
+      --  As the Aggregate aspect connot be specified on arrays, it is enough
+      --  to check whether the aggregate uses () or [].
+
       return Nkind (Exp) = N_Aggregate
         and then Has_Aspect (Etype (Exp), Aspect_Aggregate)
-        and then not Is_Record_Aggregate;
+        and then not Is_Parenthesis_Aggregate (Exp);
    end Is_Container_Aggregate;
 
    ------------------------------------------
