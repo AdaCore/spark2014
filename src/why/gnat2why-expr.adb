@@ -134,6 +134,24 @@ package body Gnat2Why.Expr is
    --  @param N the object declaration
    --  @return an assignment of the declared variable to its initial value
 
+   procedure Assume_For_Nested_Package
+     (E        : Entity_Id;
+      Params   : Transformation_Params;
+      Assumes  : in out W_Prog_Id;
+      For_Decl : Boolean;
+      For_Body : Boolean)
+   with Pre => For_Decl or else For_Body;
+   --  Recursively traverse the declaration of a package and its nested
+   --  packages to assume the declaration of objects and potential initial
+   --  conditions.
+   --  If For_Decl is true, include the assumptions that should be made
+   --  when encountering the package declaration (initial values of constants).
+   --  If For_Body is true, include the assumptions that should be made
+   --  when encountering the package body (initialization of variables and
+   --  initial conditions).
+   --  Both can be True at once for packages with no bodies or generic
+   --  instances.
+
    function Bind_From_Mapping_In_Expr
      (Params : Transformation_Params;
       Expr   : W_Expr_Id;
@@ -2008,6 +2026,168 @@ package body Gnat2Why.Expr is
       end loop;
       return Dynamic_Prop_Inputs;
    end Assume_Dynamic_Invariant_For_Variables;
+
+   -------------------------------
+   -- Assume_For_Nested_Package --
+   -------------------------------
+
+   procedure Assume_For_Nested_Package
+     (E        : Entity_Id;
+      Params   : Transformation_Params;
+      Assumes  : in out W_Prog_Id;
+      For_Decl : Boolean;
+      For_Body : Boolean)
+   is
+
+      procedure Assume_For_Nested_Package
+        (Decls       : List_Id;
+         Initialized : Flow_Id_Sets.Set;
+         For_Decl    : Boolean;
+         For_Body    : Boolean);
+      --  Traverse the declaration of a package
+
+      -------------------------------
+      -- Assume_For_Nested_Package --
+      -------------------------------
+
+      procedure Assume_For_Nested_Package
+        (Decls       : List_Id;
+         Initialized : Flow_Id_Sets.Set;
+         For_Decl    : Boolean;
+         For_Body    : Boolean)
+      is
+         Decl : Node_Id := First (Decls);
+      begin
+         while Present (Decl) loop
+            case Nkind (Decl) is
+               when N_Package_Declaration =>
+
+                  --  Traverse package declarations recursively
+
+                  declare
+                     P : constant Entity_Id :=
+                       Unique_Defining_Entity (Decl);
+                  begin
+                     if not Is_Generic_Unit (P)
+                       and then Entity_In_SPARK (P)
+                     then
+                        Assume_For_Nested_Package
+                          (P,
+                           Params,
+                           Assumes,
+                           For_Decl => For_Decl,
+                           For_Body => For_Body);
+                     end if;
+                  end;
+
+               when N_Object_Declaration =>
+                  declare
+                     Obj : constant Entity_Id :=
+                       Defining_Identifier (Decl);
+                  begin
+                     --  Ignore Part_Of concurrent objects
+
+                     if Is_Part_Of_Concurrent_Object (Obj) then
+                        null;
+
+                     --  Assume the value of constants at package declaration
+
+                     elsif Ekind (Obj) = E_Constant
+                       and then
+                         not Is_Access_Variable (Etype (Obj))
+                     then
+                        if For_Decl then
+                           Assume_Declaration_Of_Entity
+                             (E             => Obj,
+                              Params        => Params,
+                              Initialized   => True,
+                              Top_Predicate => True,
+                              Context       => Assumes);
+                        end if;
+
+                     --  Assume the declaration of variables when the body
+                     --  has been elaborated.
+
+                     elsif For_Body then
+                        Assume_Declaration_Of_Entity
+                          (E             => Obj,
+                           Params        => Params,
+                           Initialized   =>
+                             Initialized.Contains
+                               (Direct_Mapping_Id (Obj)),
+                           Top_Predicate => True,
+                           Context       => Assumes);
+                     end if;
+                  end;
+               when others =>
+                  null;
+            end case;
+            Next (Decl);
+         end loop;
+      end Assume_For_Nested_Package;
+
+      Nested_Body : constant Boolean :=
+        (if No (Package_Body (E)) then For_Decl else For_Body);
+      --  Include the initial condition and initialization of variables in E
+      --  if we are traversing its declaration if it has no body or if we are
+      --  traversing its body if there is one.
+
+      Init_Cond   : constant Node_Id :=
+        Get_Pragma (E, Pragma_Initial_Condition);
+      Init_Map    : constant Dependency_Maps.Map :=
+        (if Is_Wrapper_Package (E) then Dependency_Maps.Empty_Map
+         else Parse_Initializes (E, Get_Flow_Scope (E)));
+      Initialized : Flow_Id_Sets.Set;
+
+   --  Start of processing for Assume_For_Nested_Package
+
+   begin
+      if not For_Decl and then not Nested_Body then
+         return;
+      end if;
+
+      --  Parse the Initializes contract to get the set of initialized
+      --  variables.
+
+      for Clause in Init_Map.Iterate loop
+         Initialized.Union
+           (Expand_Abstract_State
+              (Dependency_Maps.Key (Clause)));
+      end loop;
+
+      --  Traverse visisble and private declarations of the package
+
+      Assume_For_Nested_Package
+        (Visible_Declarations_Of_Package (E),
+         Initialized,
+         For_Decl => For_Decl,
+         For_Body => Nested_Body);
+
+      if Present (Private_Declarations_Of_Package (E))
+        and then Private_Spec_In_SPARK (E)
+      then
+         Assume_For_Nested_Package
+           (Private_Declarations_Of_Package (E),
+            Initialized,
+            For_Decl => For_Decl,
+            For_Body => Nested_Body);
+      end if;
+
+      --  Assume initial condition if any when the body has been elaborated
+
+      if Nested_Body and then Present (Init_Cond) then
+         Append
+           (Assumes,
+            New_Assume_Statement
+              (Pred => Transform_Pred
+                   (Expression
+                        (First
+                           (Pragma_Argument_Associations
+                              (Init_Cond))),
+                    EW_Bool_Type,
+                    Params)));
+      end if;
+   end Assume_For_Nested_Package;
 
    -------------------------------
    -- Assume_Value_Of_Constants --
@@ -7350,8 +7530,21 @@ package body Gnat2Why.Expr is
                  Expected_Type_Of_Prefix (Prefix (N));
                Comp : constant Entity_Id :=
                  Search_Component_In_Type (Pref, Entity (Selector_Name (N)));
+
             begin
-               return Retysp (Etype (Comp));
+               --  There might be no such component in the expected type of
+               --  the prefix if there is a view conversion in the prefix and
+               --  Comp is a component of a tagged extension.
+
+               if No (Comp) then
+                  return Retysp
+                    (Etype
+                       (Search_Component_In_Type
+                            (Etype (Prefix (N)),
+                             Entity (Selector_Name (N)))));
+               else
+                  return Retysp (Etype (Comp));
+               end if;
             end;
 
          when N_Explicit_Dereference =>
@@ -11165,9 +11358,11 @@ package body Gnat2Why.Expr is
         (if not Check_Prefix and then Domain = EW_Prog then EW_Pterm
          else Domain);
       --  Domain for the checks on the prefix which are preserved from the
-      --  previous value (index check, discriminant check...
+      --  previous value (index check, discriminant check...)
+
       Result        : W_Expr_Id;
    begin
+
       case Nkind (N) is
          when N_Selected_Component
             | N_Identifier
@@ -11882,7 +12077,6 @@ package body Gnat2Why.Expr is
       Domain       :        EW_Domain := EW_Prog;
       Check_Prefix : Boolean := True)
    is
-      Typ : Type_Kind_Id;
    begin
       case Nkind (N) is
          when N_Identifier
@@ -11899,53 +12093,72 @@ package body Gnat2Why.Expr is
             | N_Unchecked_Type_Conversion
             | N_Qualified_Expression
          =>
-            --  In view conversions, check that the type of the conversion is
-            --  compatible with the tag of the expression.
 
-            if Domain = EW_Prog
-              and then Is_Tagged_Type (Etype (N))
-              and then Nkind (N) /= N_Qualified_Expression
-              and then not Is_Ancestor (Etype (N), Etype (Expression (N)))
-            then
-               Expr := +Insert_Tag_Check
-                 (Ada_Node => N,
-                  Check_Ty => Etype (N),
-                  Expr     => +Expr);
+            --  Insert a conversion to make sure that the reconstructed
+            --  value fullfils the type constraint.
+
+            if Domain = EW_Prog then
+
+               --  For scalar types, the Do_Range_Check flag is set on the
+               --  expression. Insert a conversion with Lvalue set to True
+               --  to generate the checks.
+
+               if Do_Range_Check (Expression (N)) then
+                  Expr := +Insert_Checked_Conversion
+                    (Ada_Node => Expression (N),
+                     Domain   => EW_Prog,
+                     Expr     => Expr,
+                     To       => EW_Abstract
+                       (Retysp (Etype (Expression (N))),
+                        Is_Init_Wrapper_Type (Get_Type (Expr))),
+                     Lvalue   => True);
+
+               else
+                  declare
+                     Tmp_Expr : W_Expr_Id := New_Temp_For_Expr (Expr);
+                  begin
+                     Expr := +Sequence
+                       (Left  => New_Ignore
+                          (Prog => +Insert_Checked_Conversion
+                               (Ada_Node => N,
+                                Domain   => EW_Prog,
+                                Expr     => Tmp_Expr,
+                                To       => EW_Abstract
+                                  (Etype (N),
+                                   Is_Init_Wrapper_Type (Get_Type (Expr))))),
+                        Right => +Tmp_Expr);
+                     Expr := Binding_For_Temp
+                       (Tmp     => Tmp_Expr,
+                        Context => Expr,
+                        Domain  => Domain);
+                  end;
+
+                  --  If the origin of the conversion has predicates, they
+                  --  might not be checked. Do it here.
+
+                  if Has_Predicates (Etype (Expression (N))) then
+                     Expr := +Insert_Predicate_Check
+                       (Ada_Node => Expression (N),
+                        Check_Ty => Etype (Expression (N)),
+                        W_Expr   => +Expr);
+                  end if;
+               end if;
+
+               --  In view conversions, check that the type of the conversion
+               --  is compatible with the tag of the expression.
+
+               if Is_Tagged_Type (Etype (N))
+                 and then Nkind (N) /= N_Qualified_Expression
+                 and then not Is_Ancestor (Etype (N), Etype (Expression (N)))
+               then
+                  Expr := +Insert_Tag_Check
+                    (Ada_Node => N,
+                     Check_Ty => Etype (N),
+                     Expr     => +Expr);
+               end if;
             end if;
 
             N := Expression (N);
-            Typ := Retysp (Etype (N));
-
-            --  When performing copy back of parameters or due to inlining
-            --  on GNATprove mode, left-hand side of assignment may contain
-            --  a type conversion that must be checked. For non scalar
-            --  types, do not use Insert_Checked_Conversion which introduces
-            --  too many checks (bounds, discriminants).
-
-            if Domain = EW_Prog and then Do_Range_Check (N) then
-               Expr :=
-                 +Insert_Checked_Conversion
-                 (Ada_Node => N,
-                  Domain   => EW_Prog,
-                  Expr     => Expr,
-                  To       => EW_Abstract
-                    (Typ, Is_Init_Wrapper_Type (Get_Type (Expr))),
-                  Lvalue   => True);
-            else
-               Expr :=
-                 +Insert_Simple_Conversion
-                 (Domain => Domain,
-                  Expr   => Expr,
-                  To     => EW_Abstract
-                    (Typ, Is_Init_Wrapper_Type (Get_Type (Expr))));
-
-               if Domain = EW_Prog and then Has_Predicates (Typ) then
-                  Expr := +Insert_Predicate_Check
-                    (Ada_Node => N,
-                     Check_Ty => Typ,
-                     W_Expr   => +Expr);
-               end if;
-            end if;
 
          when N_Selected_Component
             | N_Indexed_Component
@@ -11953,6 +12166,19 @@ package body Gnat2Why.Expr is
             | N_Explicit_Dereference
          =>
             Last_Access := N;
+
+            --  Go to the expected type before performing a record update to
+            --  avoid conversion on component types which could be discriminant
+            --  dependent.
+
+            if Nkind (N) = N_Selected_Component then
+               Expr := +Insert_Simple_Conversion
+                 (Domain => Domain,
+                  Expr   => Expr,
+                  To     => EW_Abstract
+                    (Retysp (Etype (N)),
+                     Is_Init_Wrapper_Type (Get_Type (Expr))));
+            end if;
 
             declare
                Prefix_Type : constant W_Type_Id :=
@@ -13184,6 +13410,236 @@ package body Gnat2Why.Expr is
                Params => Params);
 
          begin
+
+            --  Deal with the special case of an empty (sub)aggregate []. Those
+            --  do not have any explicit choices. They use the default ranges
+            --  Index_Type'First .. Index_Type'Base'Pred (Index_Type'First),
+            --  under the GNATprove limitation that [] cannot show up in
+            --  aggregates with multiple association. Make sure that the
+            --  computation of the last bound does not overflow.
+            --
+            --  The limitation comes from the fact that the front-end might not
+            --  provide properly all bounds for null subaggregates. Recomputing
+            --  them in general is tricky as this requires knowing whether
+            --  there is an applicable index constraint from the context. For
+            --  that reason, we do not support null subaggregates when there
+            --  should be subject to matching bound checks. Those cases are
+            --  rejected by marking.
+            --
+            --  Return once done, this completely deal with [] case.
+
+            if No (Association) and then No (Expression) then
+               --  Make sure we do not need bound checks
+
+               pragma Assert
+                 (not In_Delta_Aggregate and then Dim <= Last_Uniq_Dim);
+
+               declare
+                  Dim_Cursor : Positive := 1;
+                  Index      : Node_Id := First_Index (Expr_Typ);
+                  Index_Base : Node_Id :=
+                    First_Index (Base_Retysp (Expr_Typ));
+
+               begin
+                  --  Walk through indexes of the aggregate until the current
+                  --  dimension.
+
+                  while Dim_Cursor /= Dim loop
+                     Next_Index (Index);
+                     Next_Index (Index_Base);
+                     Dim_Cursor := Dim_Cursor + 1;
+                  end loop;
+
+                  while Present (Index) loop
+                     --  For multi-dimensional aggregates, add the dimension as
+                     --  a continuation.
+
+                     if Nb_Dim /= 1 then
+                        Continuation_Stack.Append
+                          (Continuation_Type'
+                             (Ada_Node => Index_Base,
+                              Message  => To_Unbounded_String
+                                ("for array dimension" & Dim_Cursor'Image)));
+                     end if;
+
+                     --  For checks that fail statically, the frontend uses a
+                     --  N_Raise_xxx_Error node for the lower bound.
+
+                     if Nkind (High_Bound (Index)) in N_Raise_xxx_Error then
+                        Emit_Static_Proof_Result
+                          (Expr, VC_Range_Check, False, Current_Subp,
+                           Explanation =>
+                             "empty aggregates cannot be used if there is no"
+                           & " element before the first element of their index"
+                           & " type");
+
+                     --  Otherwise, check that Index'First is not the first
+                     --  element of its base type.
+
+                     else
+                        Append
+                          (Choice_Checks,
+                           New_Located_Assert
+                             (Ada_Node => Expr,
+                              Reason   => VC_Range_Check,
+                              Pred     => New_Not
+                                (Right => New_Comparison
+                                     (Symbol => Why_Eq,
+                                      Left   => Transform_Term
+                                        (Expr          => Low_Bound (Index),
+                                         Expected_Type =>
+                                           Base_Why_Type_No_Bool
+                                             (Etype (Index)),
+                                         Params        => Body_Params),
+                                      Right  => +New_Attribute_Expr
+                                        (Base_Type (Etype (Index)),
+                                         EW_Term,
+                                         Attribute_First,
+                                         Body_Params))),
+                              Kind     => EW_Assert));
+                     end if;
+
+                     if Nb_Dim /= 1 then
+                        Continuation_Stack.Delete_Last;
+                     end if;
+
+                     Next_Index (Index);
+                     Next_Index (Index_Base);
+                     Dim_Cursor := Dim_Cursor + 1;
+                  end loop;
+               end;
+
+               --  There is no other check to generate for null subaggregates,
+               --  exit here.
+
+               return;
+            end if;
+
+            --  When aggregate has positional associations, we need additional
+            --  checks that the implicit indexes of the positional associations
+            --  are all between the bounds, when computed as plain position
+            --  numbers (no modular arithmetic should be involved in their
+            --  computation). It is sufficient to make that check for the last
+            --  positional index:
+            --  * All elements are necessarily >= the lower bound chosen for
+            --    the (sub)aggregate by definition, since they are at a >= 0
+            --    offset from it.
+            --  * All elements are necessarily <= the upper bound if the
+            --    last element is.
+            --  This also means that it is sufficient to test the upper
+            --  bound only. But since we have bitvectors in Why3 when the index
+            --  uses modular integers, we have no proof-convenient way to make
+            --  the translation a check on plain mathematical integers. If we
+            --  carry this check in bitvector arithmetic, it could fail due to
+            --  wraparound. We need to add a no-wraparound check in that case.
+            --  Thanks to the front-end already rejecting the situation where
+            --  there is more positional associations that values in the type,
+            --  in case of wraparound, the index computed in modular arithmetic
+            --  ends up being strictly below the lower bound. So we can reject
+            --  wraparound by testing the lower bound as well.
+            --
+            --  The check we generate for this case is an in-range check for
+            --  the last positional index, with:
+            --  * The upper bound check removed if there is no others case. In
+            --    that case, it is redundant with the matching bound check of
+            --    the subaggregate. This is because subagggregate bounds are
+            --    derived from the number of positional elements in that case,
+            --    so the implicit indices (as position numbers) are between
+            --    those bounds by construction. Matching bound checks make sure
+            --    those actually are the index type bounds of the aggregate.
+            --  * The lower bound check removed for signed integer type,
+            --    as wraparound is only a concern for modular types.
+            --  If there are no others case and the type is not modular, there
+            --  is no need to generate anything.
+
+            if Present (Expression)
+              and then (Present (Association)
+                        or else Why_Type_Is_BitVector (Index_Base))
+            then
+               declare
+                  Pred   : W_Pred_Vectors.Vector;
+                  --  Accumulate checks
+
+                  Bounds : constant Node_Id := Aggregate_Bounds (Expr);
+                  pragma Assert (Present (Bounds));
+                  Low    : constant W_Term_Id := New_Temp_For_Expr
+                    (W_Term_Id'(+Transform_Expr
+                       (Low_Bound (Bounds),
+                        Index_Base,
+                        EW_Term,
+                        Params)));
+                  --  Translate lower bound
+
+                  Offset   : constant W_Term_Id :=
+                    New_Discrete_Constant
+                      (Value => UI_From_Int (Nlists.List_Length (Exprs) - 1),
+                       Typ   => Index_Base);
+
+                  Position : constant W_Term_Id :=
+                    (if Why_Type_Is_BitVector (Index_Base)
+                     then +New_Binary_Op_Expr
+                       (Op          => N_Op_Add,
+                        Left        => +Low,
+                        Right       => +Offset,
+                        Left_Type   => Index_Typ,
+                        Right_Type  => Index_Typ,
+                        Return_Type => Index_Typ,
+                        Domain      => EW_Term)
+                     else +New_Discrete_Add
+                       (Domain => EW_Term,
+                        Left   => +Low,
+                        Right  => +Offset));
+                  --  Construct implicit index of last positional association.
+                  --  Note that we must not compute in the base type for the
+                  --  bitvector case, as using the base modulus may miscompute
+                  --  the upper bound.
+
+               begin
+                  if Why_Type_Is_BitVector (Index_Base) then
+                     --  Generate no-wraparound check.
+
+                     W_Pred_Vectors.Append
+                       (V    => Pred,
+                        Pred => New_Comparison
+                          (Symbol => MF_BVs (Index_Base).Ule,
+                           Left   => Low,
+                           Right  => Position));
+                  end if;
+
+                  if Present (Association) then
+                     --  'others' choice. Generate upper bound check.
+
+                     pragma Assert
+                       (Is_Others_Choice (Choice_List (Association)));
+                     W_Pred_Vectors.Append
+                       (V    => Pred,
+                        Pred => New_Comparison
+                          (Symbol => (if Why_Type_Is_BitVector (Index_Base)
+                                      then MF_BVs (Index_Base).Ule
+                                      else Int_Infix_Le),
+                           Left   => Position,
+                           Right  => +Transform_Expr
+                             (High_Bound (Bounds),
+                              Index_Base,
+                              EW_Term,
+                              Params)));
+                  end if;
+
+                  pragma Assert (not W_Pred_Vectors.Is_Empty (Pred));
+
+                  Append
+                    (Choice_Checks,
+                     New_Located_Assert
+                       (Ada_Node => Nlists.Last (Exprs),
+                        Reason   => VC_Range_Check,
+                        Kind     => EW_Assert,
+                        Pred     => Binding_For_Temp
+                          (Tmp => Low,
+                           Context => New_And_Pred
+                             (W_Pred_Vectors.To_Array (Pred)))));
+               end;
+            end if;
+
             --  Go over the list of associations to insert checks
 
             while Present (Association) loop
@@ -13436,18 +13892,6 @@ package body Gnat2Why.Expr is
                --  the front-end. We filter out checks at dimensions where
                --  there is a single subaggregate since they must be redundant.
 
-               pragma Assert (not Is_Null_Aggregate (Expr));
-               --  If an inner sub-aggregate is null, then the
-               --  front-end might not provide properly all bounds
-               --  for the sub-aggregate. Re-computing them is tricky
-               --  as this requires knowing whether there is an
-               --  applicable index constraint from the context.
-               --  As we cannot properly support that case, inner null
-               --  sub-aggregates that are not the only sub-aggregates
-               --  of their dimension are rejected by marking.
-               --  The remaining ones do not need bound checks, so this
-               --  case should not happen here.
-
                declare
                   Low_Bnd  : constant W_Term_Id :=
                     Insert_Simple_Conversion
@@ -13569,86 +14013,18 @@ package body Gnat2Why.Expr is
             end;
          end if;
 
-         --  Empty aggregates [] do not have any explicit choices. They use
-         --  the default ranges
-         --  Index_Type'First .. Index_Type'Base'Pred (Index_Type'First).
-         --  Make sure that the computation of the last bound does not
-         --  overflow.
-
-         if Empty_Aggregate then
-            declare
-               Dim        : Positive := 1;
-               Index      : Node_Id := First_Index (Expr_Typ);
-               Index_Base : Node_Id :=
-                 First_Index (Base_Retysp (Expr_Typ));
-            begin
-               while Present (Index) loop
-
-                  --  For multi-dimensional aggregates, add the dimension as a
-                  --  continuation.
-
-                  if Nb_Dim /= 1 then
-                     Continuation_Stack.Append
-                       (Continuation_Type'
-                          (Ada_Node => Index_Base,
-                           Message  => To_Unbounded_String
-                             ("for array dimension" & Dim'Image)));
-                  end if;
-
-                  --  For checks that fail statically, the frontend uses a
-                  --  N_Raise_xxx_Error node for the lower bound.
-
-                  if Nkind (High_Bound (Index)) in N_Raise_xxx_Error then
-                     Emit_Static_Proof_Result
-                       (Expr, VC_Range_Check, False, Current_Subp,
-                        Explanation =>
-                          "empty aggregates cannot be used if there is no"
-                        & " element before the first element of their index"
-                        & " type");
-
-                  --  Otherwise, check that Index'First is not the first
-                  --  element of its base type.
-
-                  else
-                     Append
-                       (Choice_Checks,
-                        New_Located_Assert
-                          (Ada_Node => Expr,
-                           Reason   => VC_Range_Check,
-                           Pred     => New_Not
-                             (Right => New_Comparison
-                                  (Symbol => Why_Eq,
-                                   Left   => Transform_Term
-                                     (Expr          => Low_Bound (Index),
-                                      Expected_Type =>
-                                        Base_Why_Type_No_Bool (Etype (Index)),
-                                      Params        => Body_Params),
-                                   Right  => +New_Attribute_Expr
-                                     (Base_Type (Etype (Index)),
-                                      EW_Term,
-                                      Attribute_First,
-                                      Body_Params))),
-                           Kind     => EW_Assert));
-                  end if;
-
-                  if Nb_Dim /= 1 then
-                     Continuation_Stack.Delete_Last;
-                  end if;
-
-                  Next_Index (Index);
-                  Next_Index (Index_Base);
-                  Dim := Dim + 1;
-               end loop;
-            end;
-
          --  For regular aggregates, check the scalar ranges of the
          --  aggregate subtype against its Etype. It is not necessary for
          --  delta aggregates where the bounds come from the prefix. In a
          --  similar way, if the aggregate contains an others choice, then the
          --  index type is taken from the context so we do not need to check
-         --  it.
+         --  it. It is also unnecessary for empty aggregates, as each range
+         --  will either be empty, or the computation of predecessor will
+         --  wraparound (for modular types only) and the associated range check
+         --  from Insert_Checks will fail.
 
-         elsif not In_Delta_Aggregate
+         if not Empty_Aggregate
+           and then not In_Delta_Aggregate
            and then
              (Nb_Dim > 1
               or else Is_Empty_List (Component_Associations (Expr))
@@ -15137,29 +15513,26 @@ package body Gnat2Why.Expr is
         Transform_Prog (Expression (Stmt),
                         L_Type,
                         Params => Params);
+
+      --  For length checks and discriminant checks, look through conversions
+      --  to get the object which is actually modified.
+
+      Exp_Ty     : constant Entity_Id := Expected_Type_Of_Prefix (Lvalue);
       Lgth_Check : constant Boolean :=
-        Present (Get_Ada_Node (+L_Type)) and then
-
-        --  Length check needed for assignment into a non-static array type
-
-        (Is_Array_Type (Get_Ada_Node (+L_Type)) and then
-           not Is_Static_Array_Type (Get_Ada_Node (+L_Type)));
-
-         --  Discriminant check needed for assignment into a non-constrained
-         --  record type. Constrained record type are handled by the
-         --  conversion.
+        (Is_Array_Type (Exp_Ty) and then not Is_Static_Array_Type (Exp_Ty));
+      --  Length check needed for assignment into a non-static array type
 
       Disc_Check : constant Boolean :=
-        Present (Get_Ada_Node (+L_Type)) and then
-        (if Is_Access_Type (Get_Ada_Node (+L_Type)) then
-            Has_Discriminants
-              (Directly_Designated_Type (Get_Ada_Node (+L_Type)))
-         and then not Is_Constrained (Directly_Designated_Type
-                                        (Get_Ada_Node (+L_Type)))
+        (if Is_Access_Type (Exp_Ty)
+         then Has_Discriminants (Directly_Designated_Type (Exp_Ty))
+         and then not Is_Constrained (Directly_Designated_Type (Exp_Ty))
+         else Has_Discriminants (Exp_Ty)
+         and then not Is_Constrained (Exp_Ty));
+      --  Discriminant check needed for assignment into a non-constrained
+      --  record type. Constrained record type are handled by the
+      --  conversion.
 
-         else
-            Has_Discriminants (Get_Ada_Node (+L_Type))
-         and then not Is_Constrained (Get_Ada_Node (+L_Type)));
+      --  Tag checks are only necessary if the LHS is classwide
 
       Tag_Check  : constant Boolean :=
         Is_Class_Wide_Type (Etype (Lvalue)) and then
@@ -18314,76 +18687,22 @@ package body Gnat2Why.Expr is
 
          when N_Package_Body | N_Package_Declaration =>
 
-            --  Assume dynamic property of local variables.
-            --  This should only be done when the nested package has been
-            --  elaborated.
-            --  ??? What about local variables of nested packages?
+            --  Assume declaration of objects from the nested package and
+            --  potentially its initial condition.
 
             declare
                E : constant Entity_Id := Unique_Defining_Entity (Decl);
             begin
-
                if not Is_Generic_Unit (E)
-                 and then not Is_Wrapper_Package (E)
-                 and then (Nkind (Decl) = N_Package_Body
-                           or else No (Package_Body (E)))
+                 and then Entity_In_SPARK (E)
                then
-                  declare
-                     Declared : constant Flow_Id_Sets.Set :=
-                       Expand_Abstract_States
-                         (To_Flow_Id_Set
-                            (States_And_Objects (E)));
-
-                     Init_Map : constant Dependency_Maps.Map :=
-                       Parse_Initializes (E, Get_Flow_Scope (E));
-
-                     Initialized : Flow_Id_Sets.Set;
-
-                  begin
-                     for Clause in Init_Map.Iterate loop
-                        Initialized.Union
-                          (Expand_Abstract_State
-                             (Dependency_Maps.Key (Clause)));
-                     end loop;
-
-                     for Var of Declared loop
-                        if Var.Kind = Direct_Mapping
-                          and then Ada_Ent_To_Why.Has_Element
-                            (Symbol_Table, Get_Direct_Mapping_Id (Var))
-                        then
-                           Assume_Declaration_Of_Entity
-                             (E             => Get_Direct_Mapping_Id (Var),
-                              Params        => Params,
-                              Initialized   =>
-                                Initialized.Contains (Var),
-                              Top_Predicate => True,
-                              Context       => R);
-                        end if;
-                     end loop;
-                  end;
-
-                  --  Assume initial condition
-
-                  declare
-                     Init_Cond : constant Node_Id :=
-                       Get_Pragma (E, Pragma_Initial_Condition);
-
-                  begin
-                     if Present (Init_Cond) then
-                        declare
-                           Expr : constant Node_Id :=
-                             Expression (First (Pragma_Argument_Associations
-                                         (Init_Cond)));
-                        begin
-                           Append
-                             (R,
-                              New_Assume_Statement
-                                (Pred => Transform_Pred
-                                     (Expr, EW_Bool_Type,
-                                      Params)));
-                        end;
-                     end if;
-                  end;
+                  Assume_For_Nested_Package
+                    (E        => E,
+                     Params   => Params,
+                     Assumes  => R,
+                     For_Decl => Nkind (Decl) = N_Package_Declaration,
+                     For_Body => Nkind (Decl) = N_Package_Body
+                        or else No (Package_Body (E)));
                end if;
             end;
 

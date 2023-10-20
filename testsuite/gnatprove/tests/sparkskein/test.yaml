@@ -1,2 +1,9 @@
 large: True
 timeout: 2000
+replay: True
+prove_all:
+  prover: ["cvc5", "altergo", "z3"]
+  no_fail: True
+session_opt:
+  vc_timeout: 240
+  steps: 0

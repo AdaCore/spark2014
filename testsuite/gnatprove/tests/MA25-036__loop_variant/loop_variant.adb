@@ -1,5 +1,5 @@
 pragma SPARK_Mode (On);
-procedure Loop_Variant_Example (Result : out Integer) is
+procedure Loop_Variant (Result : out Integer) is
    type Total is range 1 .. 100;
    subtype T is Total range 1 .. 10;
    I : T := 1;
@@ -14,4 +14,4 @@ begin
        end if;
    end loop;
    Result := Integer (I + R); -- produce a result to avoid flow errors
-end Loop_Variant_Example;
+end Loop_Variant;

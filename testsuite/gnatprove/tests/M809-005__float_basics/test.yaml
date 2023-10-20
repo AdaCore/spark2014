@@ -1,1 +1,7 @@
 large: True
+replay: True
+prove_all:
+  check_counterexamples: False
+session_opt:
+  counterexample: False
+  steps: 10000

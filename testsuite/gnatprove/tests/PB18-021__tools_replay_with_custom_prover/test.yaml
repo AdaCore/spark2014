@@ -1,0 +1,6 @@
+replay: True
+prove_all:
+  prover: []
+  opt: ["--why3-conf=why3.conf"]
+session_opt:
+  prover: ["cvc5_alt"]

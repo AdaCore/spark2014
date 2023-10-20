@@ -1,3 +1,5 @@
-ap.ads:19:13: error: function with "in out" parameter is not allowed in SPARK
-ap.ads:19:13: error: violation of aspect SPARK_Mode at line 2
-gnatprove: error during flow analysis and proof
+ap.ads:21:16: error: function cannot have parameter of mode "out" or "in out" in SPARK [E0015]
+ap.ads:21:16: error: launch "gnatprove --explain=E0015" for more information
+ap.ads:22:16: error: function cannot have parameter of mode "out" or "in out" in SPARK [E0015]
+ap.ads:22:16: error: launch "gnatprove --explain=E0015" for more information
+gnatprove: error during generation of Global contracts

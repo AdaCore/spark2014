@@ -1,10 +1,12 @@
 package body Dic_Not_Spark is
 
-   function Add (X : Bad1; Y : in out Natural) return Boolean is
+   Global : Natural;
+
+   function Add (X : Bad1; Y : Natural) return Boolean is
       XX : constant Natural := Natural (X);
    begin
       if Natural'Last - XX >= Y then
-         Y := XX + Y;
+         Global := XX + Y;
          return True;
       else
          return False;
@@ -13,11 +15,11 @@ package body Dic_Not_Spark is
 
    package body With_SPARK_Mode with SPARK_Mode => Off is
 
-      function Add (X : Bad2; Y : in out Natural) return Boolean is
+      function Add (X : Bad2; Y : Natural) return Boolean is
          XX : constant Natural := Natural (X);
       begin
          if Natural'Last - XX >= Y then
-            Y := XX + Y;
+            Global := XX + Y;
             return True;
          else
             return False;

@@ -1,0 +1,4 @@
+main.adb:4:04: medium: aspect Always_Terminates on "Main" could be incorrect, call to "Proxy" might be nonterminating [possible fix: annotate "Proxy" with aspect Always_Terminates]
+proxy.adb:3:11: high: all paths in "Proxy" raise exceptions or do not terminate normally
+proxy.adb:5:04: warning: assuming "Noret" has no effect on global items
+proxy.adb:5:04: warning: no Global contract available for "Noret"

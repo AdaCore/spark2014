@@ -1,7 +1,7 @@
 with GNAT.SHA256;
 
-package My_SHA is
+package MySHA is
 
    procedure P;
 
-end My_SHA;
+end MySHA;

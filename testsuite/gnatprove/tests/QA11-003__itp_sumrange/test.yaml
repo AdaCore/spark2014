@@ -1,0 +1,7 @@
+replay: True
+contains_manual_proof: True
+prove_all:
+  prover: ["cvc5", "z3"]
+  counterexample: False
+session_opt:
+  steps: 10000

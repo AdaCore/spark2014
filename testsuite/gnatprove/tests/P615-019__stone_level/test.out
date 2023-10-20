@@ -1,9 +1,7 @@
-violations.adb:12:04: error: object of anonymous access not declared immediately within a subprogram, entry or block is not allowed in SPARK (SPARK RM 3.10(5))
-violations.adb:12:04: error: violation of pragma SPARK_Mode at test.adc:1
-violations.adb:18:07: error: "Data3" is not allowed in SPARK (due to uninitialized object of anonymous access type)
-violations.adb:18:07: error: violation of pragma SPARK_Mode at test.adc:1
-violations.ads:3:13: error: function with "in out" parameter is not allowed in SPARK
-violations.ads:3:13: error: violation of pragma SPARK_Mode at test.adc:1
+violations.adb:14:04: error: object of anonymous access not declared immediately within a subprogram, entry or block is not allowed in SPARK (SPARK RM 3.10(5))
+violations.adb:14:04: error: violation of pragma SPARK_Mode at test.adc:1
+violations.adb:20:07: error: "Data3" is not allowed in SPARK (due to uninitialized object of anonymous access type)
+violations.adb:20:07: error: violation of pragma SPARK_Mode at test.adc:1
 gnatprove: error during fast partial checking of SPARK legality rules
 all_violations.adb:24:04: warning: analyzing unreferenced procedure "Call_Increment_And_Log"
 all_violations.adb:27:12: error: "Increment_And_Log" is not allowed in SPARK (due to function with global outputs)

@@ -20,8 +20,8 @@ Writing |SPARK| Programs
 As a running example, we consider a naive searching algorithm for an unordered
 collection of elements. The algorithm returns whether the collection contains
 the desired value, and if so, at which index. The collection is implemented
-here as an array. We deliberately start with an incorrect program for package
-``Search``, in order to explain how the |SPARK| toolset can help correct these
+here as an array. We deliberately start with an incorrect program for the
+``Search`` function, in order to explain how the |SPARK| toolset can help correct these
 errors. The final version of the ``linear_search`` example is part of the
 examples in the distribution via the :menuselection:`Help --> SPARK -->
 Examples` menu item.
