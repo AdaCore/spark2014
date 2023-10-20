@@ -24,7 +24,6 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 with Errout;                use Errout;
 with Namet;                 use Namet;
 with Restrict;              use Restrict;

@@ -70,9 +70,7 @@ package SPARK_Definition.Annotate is
    --  to the enclosing entity. If the preceding item is a subprogram body, the
    --  pragma applies both to the body and the spec of the subprogram.
 
-   --  This package also stores uses of pragma Annotate for Iterable_For_Proof
-   --  and Inline_For_Proof. This uses are not documented as they are provided
-   --  for internal use only.
+   --  This package also stores additional uses of pragma Annotate.
 
    --  A pragma Annotate for Iterable_For_Proof has the following form:
    --    pragma Annotate (GNATprove, Iterable_For_Proof, Kind, Entity => E);
@@ -210,6 +208,22 @@ package SPARK_Definition.Annotate is
    --  Higher_Order_Specialization (the actual pointer value shall not be
    --  used).
 
+   --  A pragma Annotate for container aggregates has the following form:
+   --    pragma Annotate (GNATprove, Container_Aggegates, Id, Entity => E);
+
+   --  where
+   --    GNATprove           is a fixed identifier
+   --    Container_Aggegates is a fixed identifier
+   --    Id                  is a string and can have several values to
+   --                        annotate different kinds of container types and
+   --                        functions.
+   --    E                   is either a type with an Aggregate aspect or
+   --                        a function declared in the immediate scope of
+   --                        such a type.
+
+   --  See the Aggregate_Annotation type for additional information of the
+   --  different kinds of container types and their associated functions.
+
    procedure Mark_Pragma_Annotate
      (N             : Node_Id;
       Preceding     : Node_Id;
@@ -225,6 +239,13 @@ package SPARK_Definition.Annotate is
    --  Some checks for Annotate pragmas or aspects might have been delayed
    --  because necessary entities were not marked yet. Finish the checking and
    --  possibly raise some remaining errors.
+
+   procedure Pull_Entities_For_Annotate_Pragma
+     (E                 : Entity_Id;
+      Queue_For_Marking : not null access procedure (E : Entity_Id));
+   --  After an entity E with an Annotate pragma has been marked, it might be
+   --  necessary to pull other entities which are related. Call
+   --  Queue_For_Marking on all such entities.
 
    type Annotate_Kind is (Intentional, False_Positive);
 
@@ -399,5 +420,75 @@ package SPARK_Definition.Annotate is
    --  Return a mapping from the formal parameters of the function associated
    --  to a lemma procedure E to the formals of E. It should be used to
    --  construct a specialization of E from a specialization of the function.
+
+   type Aggr_Annotation_Kind is (Sets, Maps, Seqs, Model);
+   --  Different kinds for aggregate annotations. Sets, Maps, and Seqs are
+   --  for predefined aggregate kinds, respectively for aggregates for:
+   --  * sets: unordered, equivalent elements are merged;
+   --  * maps: unordered mappings from keys to elements, unicity of keys is
+   --    enforced;
+   --  * sequences: ordered, indexed by integer types (big or signed).
+   --  Model can be used to specify aggregates by providing a model function
+   --  to another type with compatible aggregates.
+
+   type Aggregate_Annotation (Kind : Aggr_Annotation_Kind := Sets) is record
+      case Kind is
+         when Sets | Maps | Seqs =>
+            Element_Type : Entity_Id;
+
+            case Kind is
+               when Sets =>
+                  Contains            : Entity_Id;
+                  Equivalent_Elements : Entity_Id;
+                  Sets_Length         : Entity_Id;
+
+               when Maps =>
+                  Key_Type            : Entity_Id;
+                  Has_Key             : Entity_Id;
+                  Default_Item        : Entity_Id;
+                  Equivalent_Keys     : Entity_Id;
+                  Maps_Get            : Entity_Id;
+                  Maps_Length         : Entity_Id;
+
+               when Seqs =>
+                  Index_Type          : Entity_Id;
+                  Seqs_Get            : Entity_Id;
+                  Last                : Entity_Id;
+
+               when others =>
+                  null;
+            end case;
+
+         when Model =>
+            Model_Type : Entity_Id;
+            Model      : Entity_Id;
+      end case;
+   end record;
+   --  Record used to store the functions associated to a type with aggregates.
+   --  Predefined set aggregates are defined by a Contains and an
+   --  Equivalent_Elements functions. An additional Length function can be
+   --  supplied if the cardinality is of interest.
+   --  Predefined map aggregates come in two flavors, either partial maps with
+   --  an Has_Key function or total maps with a default item. In addition, all
+   --  maps need to provide both an Equivalent_Keys and a Get functions, and
+   --  partial maps can provide a Length function if the cardinality is of
+   --  interest.
+   --  Predefined sequence aggregates are defined by a Get and a Last
+   --  function.
+   --  Model aggregates need at least Model function. An additional check
+   --  function will probably be necessary to restrict valid aggregates on the
+   --  model type.
+
+   function Has_Aggregate_Annotation (E : Type_Kind_Id) return Boolean;
+
+   function Get_Aggregate_Annotation
+     (E : Type_Kind_Id)
+      return Aggregate_Annotation
+   with Pre => Has_Aggregate_Annotation (E);
+
+   function Get_Aggregate_Function_From_Pragma (N  : Node_Id) return Entity_Id
+   with Pre => Is_Pragma_Annotate_GNATprove (N);
+   --  Return the function F such that N is a pragma Annotate
+   --  (GNATprove, Container_Aggregates, ..., F).
 
 end SPARK_Definition.Annotate;
