@@ -570,6 +570,8 @@ package body SPARK_Definition.Annotate is
                   New_Indexed_Subp    => New_Indexed_Subp,
                   Assign_Indexed_Subp => Assign_Indexed_Subp);
 
+               Annot.Empty_Function := Entity (Empty_Subp);
+
                case Annot.Kind is
                   when Sets | Seqs =>
                      if No (Add_Unnamed_Subp) then
@@ -581,6 +583,8 @@ package body SPARK_Definition.Annotate is
                            & " procedure",
                            Ent);
                         return;
+                     else
+                        Annot.Add_Procedure := Entity (Add_Unnamed_Subp);
                      end if;
 
                      declare
@@ -599,6 +603,8 @@ package body SPARK_Definition.Annotate is
                            & " specify an Add_Named procedure",
                            Ent);
                         return;
+                     else
+                        Annot.Add_Procedure := Entity (Add_Named_Subp);
                      end if;
 
                      declare
@@ -621,6 +627,10 @@ package body SPARK_Definition.Annotate is
                            & " procedure",
                            Ent);
                         return;
+                     elsif Present (Add_Named_Subp) then
+                        Annot.Add_Procedure := Entity (Add_Named_Subp);
+                     else
+                        Annot.Add_Procedure := Entity (Add_Unnamed_Subp);
                      end if;
                end case;
 

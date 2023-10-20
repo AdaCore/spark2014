@@ -1629,7 +1629,25 @@ package body SPARK_Definition is
             --  In particular, aggregate node must have a type.
 
             if SPARK_Util.Is_Container_Aggregate (N) then
-               Mark_Violation ("container aggregate", N);
+               if not Has_Aggregate_Annotation (Etype (N)) then
+                  Mark_Violation
+                    ("container aggregate whose type does not have a"
+                     & " ""Container_Aggregates"" annotation", N);
+               else
+                  declare
+                     Annot : constant Aggregate_Annotation :=
+                       Get_Aggregate_Annotation (Etype (N));
+
+                  begin
+                     if not In_SPARK (Annot.Empty_Function) then
+                        Mark_Violation (N, From => Annot.Empty_Function);
+                     elsif not In_SPARK (Annot.Add_Procedure) then
+                        Mark_Violation (N, From => Annot.Add_Procedure);
+                     else
+                        Mark_Violation ("container aggregate", N);
+                     end if;
+                  end;
+               end if;
 
             --  Reject 'Update on unconstrained multidimensional array
 

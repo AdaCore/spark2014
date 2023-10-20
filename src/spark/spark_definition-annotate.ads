@@ -432,6 +432,9 @@ package SPARK_Definition.Annotate is
    --  to another type with compatible aggregates.
 
    type Aggregate_Annotation (Kind : Aggr_Annotation_Kind := Sets) is record
+      Empty_Function : Entity_Id;
+      Add_Procedure  : Entity_Id;
+
       case Kind is
          when Sets | Maps | Seqs =>
             Element_Type : Entity_Id;
