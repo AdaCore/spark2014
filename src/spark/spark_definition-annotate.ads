@@ -456,6 +456,7 @@ package SPARK_Definition.Annotate is
                when Seqs =>
                   Index_Type          : Entity_Id;
                   Seqs_Get            : Entity_Id;
+                  First               : Entity_Id;
                   Last                : Entity_Id;
 
                when others =>
@@ -476,7 +477,7 @@ package SPARK_Definition.Annotate is
    --  maps need to provide both an Equivalent_Keys and a Get functions, and
    --  partial maps can provide a Length function if the cardinality is of
    --  interest.
-   --  Predefined sequence aggregates are defined by a Get and a Last
+   --  Predefined sequence aggregates are defined by a Get, a First, and a Last
    --  function.
    --  Model aggregates need at least Model function. An additional check
    --  function will probably be necessary to restrict valid aggregates on the

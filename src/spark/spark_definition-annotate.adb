@@ -137,9 +137,10 @@ package body SPARK_Definition.Annotate is
      (Key_Type     => Delayed_Aggregate_Function_Key,
       Element_Type => Entity_Id);
 
+   Delayed_Default_Item        : Delayed_Aggregate_Function_Maps.Map;
    Delayed_Equivalent_Elements : Delayed_Aggregate_Function_Maps.Map;
    Delayed_Equivalent_Keys     : Delayed_Aggregate_Function_Maps.Map;
-   Delayed_Default_Item        : Delayed_Aggregate_Function_Maps.Map;
+   Delayed_First               : Delayed_Aggregate_Function_Maps.Map;
    --  Delayed function entities for aggregates
 
    Delayed_Checks_For_Lemmas : Common_Containers.Node_Sets.Set :=
@@ -664,6 +665,7 @@ package body SPARK_Definition.Annotate is
                              | "default_item"
                              | "get"
                              | "length"
+                             | "first"
                              | "last"
                              | "model"
             then
@@ -760,6 +762,44 @@ package body SPARK_Definition.Annotate is
                   if not Inserted then
                      Error_Msg_N_If
                        ("duplicated ""Default_Item"" function "
+                        & "returning " & Source_Name (Etype (Ent))
+                        & " in the same scope",
+                        Ent);
+                  end if;
+               end;
+
+            elsif Kind_Str = "first" then
+
+               if not In_SPARK (Ent) then
+                  return;
+
+               elsif Present (First_Formal (Ent)) then
+                  Error_Msg_N_If
+                    ("""First"" function shall have no parameters",
+                     Ent);
+                  return;
+
+               elsif not Is_Signed_Or_Big_Integer_Type (Etype (Ent))
+               then
+                  Error_Msg_N_If
+                    ("""First"" shall return a signed integer type or a "
+                     & "subtype of Big_Integer",
+                     Ent);
+                  return;
+               end if;
+
+               declare
+                  Inserted : Boolean;
+                  Position : Delayed_Aggregate_Function_Maps.Cursor;
+               begin
+                  Delayed_First.Insert
+                    ((Enclosing_List      => List_Containing (Prag),
+                      Base_Component_Type => Base_Type (Etype (Ent))),
+                     Ent, Position, Inserted);
+
+                  if not Inserted then
+                     Error_Msg_N_If
+                       ("duplicated ""First"" function "
                         & "returning " & Source_Name (Etype (Ent))
                         & " in the same scope",
                         Ent);
@@ -1077,11 +1117,10 @@ package body SPARK_Definition.Annotate is
                      when Seqs =>
 
                         --  The index parameter of Get and the return type of
-                        --  Last should have the same base type. Store in
-                        --  Annot.Index_Type the subtype found for the first
-                        --  function encountered. Update it so if both are
-                        --  supplied (which should always be the case), it
-                        --  designates the subtype of the parameter of Get.
+                        --  Last should have the same base type. Store it in
+                        --  Annot.Index_Type. It will be reset to the subtype
+                        --  returned by Last afterward so it can be used to
+                        --  determine a potential last possible index if any.
                         --  The fact that the index type is an integer type is
                         --  checked on the first occurrence.
 
@@ -1112,7 +1151,7 @@ package body SPARK_Definition.Annotate is
                            elsif Present (Annot.Index_Type)
                              and then Base_Type
                                (Etype (Next_Formal (First_Formal (Ent))))
-                             /= Base_Type (Annot.Index_Type)
+                             /= Annot.Index_Type
                            then
                               Error_Msg_N_If
                                 ("second parameter of ""Get"" function"
@@ -1136,8 +1175,8 @@ package body SPARK_Definition.Annotate is
                            --  Store the get function
 
                            Annot.Seqs_Get := Ent;
-                           Annot.Index_Type :=
-                             Etype (Next_Formal (First_Formal (Ent)));
+                           Annot.Index_Type := Base_Type
+                             (Etype (Next_Formal (First_Formal (Ent))));
 
                         elsif Kind_Str = "last" then
                            if Number_Formals (Ent) /= 1 then
@@ -1157,7 +1196,7 @@ package body SPARK_Definition.Annotate is
 
                            elsif Present (Annot.Index_Type)
                              and then Base_Type (Etype (Ent)) /=
-                               Base_Type (Annot.Index_Type)
+                               Annot.Index_Type
                            then
                               Error_Msg_N_If
                                 ("the return type of ""Last"" function shall "
@@ -1180,7 +1219,7 @@ package body SPARK_Definition.Annotate is
 
                            Annot.Last := Ent;
                            if No (Annot.Index_Type) then
-                              Annot.Index_Type := Etype (Ent);
+                              Annot.Index_Type := Base_Type (Etype (Ent));
                            end if;
 
                         else
@@ -3689,12 +3728,38 @@ package body SPARK_Definition.Annotate is
 
          when Seqs =>
 
+            --  Search for an applicable First function. It is mandatory.
+
+            if Present (Annot.Index_Type) then
+               declare
+                  use Delayed_Aggregate_Function_Maps;
+                  Position : constant Delayed_Aggregate_Function_Maps.Cursor :=
+                    Delayed_First.Find
+                      ((Enclosing_List      => Typ_List,
+                        Base_Component_Type => Annot.Index_Type));
+               begin
+                  if Has_Element (Position) then
+                     Annot.First := Element (Position);
+                  else
+                     Error_Msg_NE_If
+                       ("no ""First"" function found for type "
+                        & "with predefined set aggregates &", Typ, Typ);
+                  end if;
+               end;
+            end if;
+
             --  Last and Get functions are mandatory
 
             if No (Annot.Last) then
                Error_Msg_NE_If
                  ("no ""Last"" function found for type "
                   & "with predefined sequence aggregates &", Typ, Typ);
+
+            --  Reset the index type to the return type of Last. It will be
+            --  useful to determine the last possible index if any.
+
+            else
+               Annot.Index_Type := Etype (Annot.Last);
             end if;
 
             if No (Annot.Seqs_Get) then
