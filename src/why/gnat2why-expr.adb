@@ -641,16 +641,23 @@ package body Gnat2Why.Expr is
    --  @return the Why expression which corresponds to the Pref object, but
    --            updated at the point specified by N, with value Value;
 
-   function Reconstruct_Expr_From_Item
+   function Reconstruct_Formal_From_Item
+     (Pattern  : Item_Type;
+      Pre_Expr : W_Expr_Id)
+      return W_Prog_Id;
+   --  From an item Pattern holding the identifiers for the mutable parts of
+   --  a formal parameter and its previous value Pre_Expr, reconstruct an
+   --  expression for the new version of the formal.
+
+   function Reconstruct_Actual_From_Item
      (Pattern   : Item_Type;
       Actual    : N_Subexpr_Id;
       No_Checks : Boolean;
       Pre_Expr  : W_Expr_Id)
       return W_Prog_Id;
-   --  From an item Pattern holding the identifiers for the mutable parts of
-   --  an Ada name Actual and the previous value Pre_Expr of Actual, we
-   --  reconstruct an expression for the new version of the actual, suitable
-   --  for being used in New_Assignment.
+   --  Same as Reconstruct_Formal_From_Item but introduce (possibly checked)
+   --  conversion to compute a new version of the actual, suitable for being
+   --  used in New_Assignment.
 
    procedure Shift_Rvalue
      (N            : in out N_Subexpr_Id;
@@ -6744,7 +6751,7 @@ package body Gnat2Why.Expr is
       if Need_Store then
          declare
             Reconstructed_Arg : constant W_Prog_Id :=
-              Reconstruct_Expr_From_Item
+              Reconstruct_Actual_From_Item
                 (Pattern   => Pattern,
                  Actual    => Actual,
                  No_Checks => False,
@@ -10304,7 +10311,7 @@ package body Gnat2Why.Expr is
             if Need_Store then
                declare
                   Reconstructed_Tmp : constant W_Prog_Id :=
-                    Reconstruct_Expr_From_Item
+                    Reconstruct_Actual_From_Item
                       (Pattern    => Pattern,
                        Actual     => Expr,
                        No_Checks  => True,
@@ -11844,60 +11851,35 @@ package body Gnat2Why.Expr is
       return R;
    end Range_Expr;
 
-   --------------------------------
-   -- Reconstruct_Expr_From_Item --
-   --------------------------------
+   ----------------------------------
+   -- Reconstruct_Actual_From_Item --
+   ----------------------------------
 
-   function Reconstruct_Expr_From_Item
+   function Reconstruct_Actual_From_Item
      (Pattern   : Item_Type;
       Actual    : N_Subexpr_Id;
       No_Checks : Boolean;
       Pre_Expr  : W_Expr_Id)
       return W_Prog_Id
    is
-      T : W_Prog_Id;
+      Reconstructed_Arg : constant W_Prog_Id :=
+        Reconstruct_Formal_From_Item (Pattern, Pre_Expr);
+      T                 : W_Prog_Id;
    begin
       case Pattern.Kind is
          when Concurrent_Self =>
-
-            --  Here, we are necessarily in an external call.
-            --  We need to reconstruct the object if it is mutable.
-
-            pragma Assert (Pattern.Main.Mutable);
-            declare
-               Deref : constant W_Prog_Id :=
-                 New_Deref (Right => Pattern.Main.B_Name,
-                            Typ   => Get_Typ (Pattern.Main.B_Name));
-            begin
-               T := +Insert_Checked_Conversion
-                 (Ada_Node => Actual,
-                  Domain   => (if No_Checks then EW_Pterm else EW_Prog),
-                  Expr     => +Deref,
-                  To       => Type_Of_Node (Actual));
-            end;
+            T := +Insert_Checked_Conversion
+              (Ada_Node => Actual,
+               Domain   => (if No_Checks then EW_Pterm else EW_Prog),
+               Expr     => +Reconstructed_Arg,
+               To       => Type_Of_Node (Actual));
 
          when Regular =>
             declare
                --  Types:
 
-               Formal_T             : constant W_Type_Id :=
-                 Get_Typ (Pattern.Main.B_Name);
-               Actual_T             : constant W_Type_Id :=
+               Actual_T            : constant W_Type_Id :=
                  Type_Of_Node (Actual);
-
-               --  Variables:
-
-               Deref                : constant W_Prog_Id :=
-                 (if Pattern.Init.Present
-                  then New_Label
-                    (Labels => Symbol_Sets.Empty_Set,
-                     Def    => New_Deref (Right => Pattern.Main.B_Name,
-                                          Typ   => Formal_T),
-                     Typ    => EW_Split (Get_Ada_Node (+Formal_T)))
-                  else New_Deref (Right => Pattern.Main.B_Name,
-                                  Typ   => Formal_T));
-               --  The init flag is always true after the call. Go to the
-               --  concrete type to avoid an unnecessary check.
 
                --  On store, checks are not inserted for composite
                --  parameters to avoid duplicate discriminant or length
@@ -11913,19 +11895,19 @@ package body Gnat2Why.Expr is
                   T := +Insert_Checked_Conversion
                     (Ada_Node => Actual,
                      Domain   => EW_Prog,
-                     Expr     => +Deref,
+                     Expr     => +Reconstructed_Arg,
                      Lvalue   => True,
                      To       =>
-                       (if Is_Init_Wrapper_Type (Get_Type (+Deref))
+                       (if Is_Init_Wrapper_Type (Get_Type (+Reconstructed_Arg))
                         then EW_Init_Wrapper (Actual_T)
                         else Actual_T));
                else
                   T := +Insert_Simple_Conversion
                     (Ada_Node => Actual,
                      Domain   => EW_Prog,
-                     Expr     => +Deref,
+                     Expr     => +Reconstructed_Arg,
                      To       =>
-                       (if Is_Init_Wrapper_Type (Get_Type (+Deref))
+                       (if Is_Init_Wrapper_Type (Get_Type (+Reconstructed_Arg))
                         then EW_Init_Wrapper (Actual_T)
                         else Actual_T));
                end if;
@@ -11939,21 +11921,6 @@ package body Gnat2Why.Expr is
                  Get_Typ (Pattern.Content.B_Name);
                Actual_T           : constant W_Type_Id :=
                  Type_Of_Node (Actual);
-               Deref              : constant W_Prog_Id :=
-                 New_Deref (Right => Pattern.Content.B_Name,
-                            Typ   => Formal_T);
-
-               --  If the argument is in split form, we
-               --  need to reconstruct the argument using the actual's
-               --  bounds before applying the conversion.
-
-               Reconstructed_Arg : constant W_Prog_Id :=
-                 (if Is_Static_Array_Type
-                    (Get_Ada_Node (+Get_Why_Type_From_Item (Pattern)))
-                  then +Deref
-                  else +Array_Convert_From_Base
-                    (EW_Prog, Pre_Expr, +Deref));
-
             begin
                --  Generate an expression of the form:
                --
@@ -11977,10 +11944,123 @@ package body Gnat2Why.Expr is
                Relaxed_Init : constant Boolean :=
                  Is_Init_Wrapper_Type (Formal_T);
 
-               Reconstructed_Arg : W_Prog_Id;
-               --  We reconstruct the argument and convert it to the
-               --  actual type (without checks). We store the result in
-               --  Reconstructed_Arg.
+            begin
+               T :=
+                 +Insert_Simple_Conversion
+                 (Domain => EW_Pterm,
+                  Expr   => +Reconstructed_Arg,
+                  To     => EW_Abstract
+                    (Etype (Actual),
+                     Relaxed_Init => Relaxed_Init));
+            end;
+
+         when Pointer =>
+            declare
+               Relaxed_Init : constant Boolean :=
+                 Is_Init_Wrapper_Type (Get_Typ (Pattern.Value.B_Name));
+
+            begin
+               T := +Insert_Simple_Conversion
+                 (Domain => EW_Pterm,
+                  Expr   => +Reconstructed_Arg,
+                  To     => EW_Abstract
+                    (Etype (Actual), Relaxed_Init => Relaxed_Init));
+            end;
+         when Func => raise Program_Error;
+      end case;
+
+      --  T has the relaxed initialization status of the formal. We need to
+      --  check correct initialization if the actual does not have relaxed
+      --  initialization and we want to emit checks.
+
+      if not No_Checks
+        and then not Expr_Has_Relaxed_Init (Actual)
+        and then Is_Init_Wrapper_Type (Get_Type (+T))
+      then
+         T := +Insert_Initialization_Check
+           (Ada_Node           => Actual,
+            E                  => Etype (Actual),
+            Name               => +T,
+            Domain             => EW_Prog,
+            Exclude_Components => Relaxed);
+      end if;
+
+      --  Convert to the expected type. All the necessary checks should have
+      --  been inserted.
+
+      return +Insert_Simple_Conversion
+        (Domain => EW_Pterm,
+         Expr   => +T,
+         To     => Type_Of_Node (Actual));
+   end Reconstruct_Actual_From_Item;
+
+   ----------------------------------
+   -- Reconstruct_Formal_From_Item --
+   ----------------------------------
+
+   function Reconstruct_Formal_From_Item
+     (Pattern  : Item_Type;
+      Pre_Expr : W_Expr_Id)
+      return W_Prog_Id
+   is
+   begin
+      case Pattern.Kind is
+         when Concurrent_Self =>
+
+            --  Here, we are necessarily in an external call.
+            --  We need to reconstruct the object if it is mutable.
+
+            pragma Assert (Pattern.Main.Mutable);
+            return New_Deref (Right => Pattern.Main.B_Name,
+                              Typ   => Get_Typ (Pattern.Main.B_Name));
+
+         when Regular =>
+            declare
+               Formal_T : constant W_Type_Id :=
+                 Get_Typ (Pattern.Main.B_Name);
+            begin
+               return
+                 (if Pattern.Init.Present
+                  then New_Label
+                    (Labels => Symbol_Sets.Empty_Set,
+                     Def    => New_Deref (Right => Pattern.Main.B_Name,
+                                          Typ   => Formal_T),
+                     Typ    => EW_Split (Get_Ada_Node (+Formal_T)))
+                  else New_Deref (Right => Pattern.Main.B_Name,
+                                  Typ   => Formal_T));
+            end;
+
+         when UCArray =>
+            declare
+               --  Types:
+
+               Formal_T           : constant W_Type_Id :=
+                 Get_Typ (Pattern.Content.B_Name);
+               Deref              : constant W_Prog_Id :=
+                 New_Deref (Right => Pattern.Content.B_Name,
+                            Typ   => Formal_T);
+
+               --  If the argument is in split form, we
+               --  need to reconstruct the argument using the actual's
+               --  bounds before applying the conversion.
+
+               Reconstructed_Arg : constant W_Prog_Id :=
+                 (if Is_Static_Array_Type
+                    (Get_Ada_Node (+Get_Why_Type_From_Item (Pattern)))
+                  then +Deref
+                  else +Array_Convert_From_Base
+                    (EW_Prog, Pre_Expr, +Deref));
+
+            begin
+               return Reconstructed_Arg;
+            end;
+
+         when DRecord =>
+            declare
+               Formal_T     : constant W_Type_Id :=
+                 Get_Why_Type_From_Item (Pattern);
+               Relaxed_Init : constant Boolean :=
+                 Is_Init_Wrapper_Type (Formal_T);
 
                Arg_Array         : W_Expr_Array (1 .. 5);
                Index             : Positive := 1;
@@ -12050,21 +12130,10 @@ package body Gnat2Why.Expr is
                   Index := Index + 1;
                end if;
 
-               Reconstructed_Arg :=
-                 +Record_From_Split_Form
+               return +Record_From_Split_Form
                  (A            => Arg_Array (1 .. Index - 1),
                   Ty           => Pattern.Typ,
                   Relaxed_Init => Relaxed_Init);
-
-               Reconstructed_Arg :=
-                 +Insert_Simple_Conversion
-                 (Domain => EW_Pterm,
-                  Expr   => +Reconstructed_Arg,
-                  To     => EW_Abstract
-                    (Etype (Actual),
-                     Relaxed_Init => Relaxed_Init));
-
-               T := Reconstructed_Arg;
             end;
 
          when Pointer =>
@@ -12072,11 +12141,6 @@ package body Gnat2Why.Expr is
                Formal_Typ        : constant Entity_Id := Pattern.P_Typ;
                Relaxed_Init      : constant Boolean :=
                  Is_Init_Wrapper_Type (Get_Typ (Pattern.Value.B_Name));
-
-               Reconstructed_Arg : W_Prog_Id;
-               --  We reconstruct the argument and convert it to the
-               --  actual type (without checks). We store the result
-               --  in Reconstructed_Arg.
 
                Arg_Array         :
                W_Expr_Array (1 .. (if Relaxed_Init then 4 else 3));
@@ -12115,48 +12179,14 @@ package body Gnat2Why.Expr is
                   Arg_Array (4) := +True_Term;
                end if;
 
-               Reconstructed_Arg :=
-                 +Pointer_From_Split_Form
+               return +Pointer_From_Split_Form
                  (A            => Arg_Array,
                   Ty           => Formal_Typ,
                   Relaxed_Init => Relaxed_Init);
-
-               Reconstructed_Arg :=
-                 +Insert_Simple_Conversion
-                 (Domain => EW_Pterm,
-                  Expr   => +Reconstructed_Arg,
-                  To     => EW_Abstract
-                    (Etype (Actual), Relaxed_Init => Relaxed_Init));
-
-               T := Reconstructed_Arg;
             end;
          when Func => raise Program_Error;
       end case;
-
-      --  T has the relaxed initialization status of the formal. We need to
-      --  check correct initialization if the actual does not have relaxed
-      --  initialization and we want to emit checks.
-
-      if not No_Checks
-        and then not Expr_Has_Relaxed_Init (Actual)
-        and then Is_Init_Wrapper_Type (Get_Type (+T))
-      then
-         T := +Insert_Initialization_Check
-           (Ada_Node           => Actual,
-            E                  => Etype (Actual),
-            Name               => +T,
-            Domain             => EW_Prog,
-            Exclude_Components => Relaxed);
-      end if;
-
-      --  Convert to the expected type. All the necessary checks should have
-      --  been inserted.
-
-      return +Insert_Simple_Conversion
-        (Domain => EW_Pterm,
-         Expr   => +T,
-         To     => Type_Of_Node (Actual));
-   end Reconstruct_Expr_From_Item;
+   end Reconstruct_Formal_From_Item;
 
    ------------------
    -- Shift_Rvalue --
