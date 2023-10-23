@@ -434,6 +434,7 @@ package SPARK_Definition.Annotate is
    type Aggregate_Annotation (Kind : Aggr_Annotation_Kind := Sets) is record
       Empty_Function : Entity_Id;
       Add_Procedure  : Entity_Id;
+      Use_Named      : Boolean;
 
       case Kind is
          when Sets | Maps | Seqs =>

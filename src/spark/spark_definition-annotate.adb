@@ -512,13 +512,13 @@ package body SPARK_Definition.Annotate is
                --  Check that the third parameter is an expected container kind
 
                if Kind_Str = "predefined_sets" then
-                  Annot := (Kind => Sets, others => Empty);
+                  Annot := (Kind => Sets, Use_Named => False, others => Empty);
                elsif Kind_Str = "predefined_maps" then
-                  Annot := (Kind => Maps, others => Empty);
+                  Annot := (Kind => Maps, Use_Named => True, others => Empty);
                elsif Kind_Str = "predefined_sequences" then
-                  Annot := (Kind => Seqs, others => Empty);
+                  Annot := (Kind => Seqs, Use_Named => False, others => Empty);
                elsif Kind_Str = "from_model" then
-                  Annot := (Kind => Model, others => Empty);
+                  Annot := (Kind => Model, Use_Named => <>, others => Empty);
                else
                   Error_Msg_N_If
                     ("third parameter of " & Aspect_Or_Pragma
@@ -630,8 +630,10 @@ package body SPARK_Definition.Annotate is
                         return;
                      elsif Present (Add_Named_Subp) then
                         Annot.Add_Procedure := Entity (Add_Named_Subp);
+                        Annot.Use_Named := True;
                      else
                         Annot.Add_Procedure := Entity (Add_Unnamed_Subp);
+                        Annot.Use_Named := False;
                      end if;
                end case;
 

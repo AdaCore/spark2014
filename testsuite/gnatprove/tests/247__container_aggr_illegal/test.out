@@ -7,9 +7,12 @@ test_illegal_aggregates.adb:77:21: error: violation of aspect SPARK_Mode at line
 test_illegal_aggregates.adb:85:07: info: no contextual analysis of "P3" (nested package declaration)
 test_illegal_aggregates.adb:126:21: error: "Insert" is not allowed in SPARK (due to entity declared with SPARK_Mode Off)
 test_illegal_aggregates.adb:126:21: error: violation of aspect SPARK_Mode at line 1
-test_illegal_aggregates.adb:134:07: info: no contextual analysis of "P4" (nested package declaration)
-test_illegal_aggregates.adb:174:21: error: container aggregate is not allowed in SPARK
-test_illegal_aggregates.adb:174:21: error: violation of aspect SPARK_Mode at line 1
+test_illegal_aggregates.adb:136:07: info: no contextual analysis of "P4" (nested package declaration)
+test_illegal_aggregates.adb:212:21: error: indexed container aggregate is not allowed in SPARK
+test_illegal_aggregates.adb:212:21: error: violation of aspect SPARK_Mode at line 1
+test_illegal_aggregates.adb:221:07: info: no contextual analysis of "P5" (nested package declaration)
+test_illegal_aggregates.adb:261:21: error: container aggregate is not allowed in SPARK
+test_illegal_aggregates.adb:261:21: error: violation of aspect SPARK_Mode at line 1
 test_illegal_contains.adb:18:16: error: a function annotated with Container_Aggregates shall have parameters
 test_illegal_contains.adb:35:12: error: no "Contains" function found for type with predefined set aggregates "T"
 test_illegal_contains.adb:58:16: error: type of first parameter shall be annotated with Container_Aggregate

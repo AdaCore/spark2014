@@ -1629,6 +1629,13 @@ package body SPARK_Definition is
             --  In particular, aggregate node must have a type.
 
             if SPARK_Util.Is_Container_Aggregate (N) then
+
+               --  For now we voluntarily do not look at parent types of
+               --  derived types to find the aggregate annotation. Indeed,
+               --  inheriting the Aggregate aspect does not work well in GNAT
+               --  currently nor is it clear how it is supposed to work with
+               --  respect to overridden Empty and Add_* primitives.
+
                if not Has_Aggregate_Annotation (Etype (N)) then
                   Mark_Violation
                     ("container aggregate whose type does not have a"
@@ -1643,6 +1650,15 @@ package body SPARK_Definition is
                         Mark_Violation (N, From => Annot.Empty_Function);
                      elsif not In_SPARK (Annot.Add_Procedure) then
                         Mark_Violation (N, From => Annot.Add_Procedure);
+
+                     --  Indexed aggregates are not supported for now. They
+                     --  could not easily be used on containers as New_Indexed
+                     --  creates a partially initialized value.
+
+                     elsif not Annot.Use_Named
+                       and then Present (Component_Associations (N))
+                     then
+                        Mark_Violation ("indexed container aggregate", N);
                      else
                         Mark_Violation ("container aggregate", N);
                      end if;
