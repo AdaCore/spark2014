@@ -1118,7 +1118,9 @@ package body SPARK_Definition is
                        and then No (Parent_Retysp (E)))
               or else Declares_Iterable_Aspect (E)
               or else (Is_Base_Type (E)
-                       and then not Use_Predefined_Equality_For_Type (E)))
+                       and then not Use_Predefined_Equality_For_Type (E))
+              or else (Is_Base_Type (E)
+                       and then Has_Aggregate_Annotation (E)))
          then
 
             declare

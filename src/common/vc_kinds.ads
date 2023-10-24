@@ -119,6 +119,10 @@ package VC_Kinds is
                                      --  Logical_Equal annotation provided for
                                      --  a function is correct.
 
+      VC_Container_Aggr_Check,       --  Check that the Container_Aggregates
+                                     --  annotation provided for a container
+                                     --  type is correct.
+
       VC_Termination_Check,          --  Check conditional termination
 
       VC_UC_Source,                  --  Check that this type is suitable as a

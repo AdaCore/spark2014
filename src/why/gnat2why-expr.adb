@@ -57,7 +57,6 @@ with Sem;
 with Sinput;                         use Sinput;
 with Snames;                         use Snames;
 with SPARK_Definition;               use SPARK_Definition;
-with SPARK_Definition.Annotate;      use SPARK_Definition.Annotate;
 with SPARK_Util.Hardcoded;           use SPARK_Util.Hardcoded;
 with SPARK_Util.Subprograms;         use SPARK_Util.Subprograms;
 with Stand;                          use Stand;
@@ -8546,6 +8545,1129 @@ package body Gnat2Why.Expr is
 
       return Result;
    end Generate_Quantified_Expression;
+
+   -------------------------------------------
+   -- Generate_VCs_For_Aggregate_Annotation --
+   -------------------------------------------
+
+   function Generate_VCs_For_Aggregate_Annotation
+     (E : Type_Kind_Id)
+     return W_Prog_Id
+   is
+      Annot          : constant Aggregate_Annotation :=
+        Get_Aggregate_Annotation (E);
+      Init_Checks    : W_Prog_Id := +Void;
+      Preserv_Checks : W_Prog_Id := +Void;
+
+      function New_Binding_To_Any
+        (Name    : W_Identifier_Id;
+         Ty      : Type_Kind_Id;
+         Context : W_Prog_Id)
+         return W_Prog_Id;
+      --  Bind Id to any expression with the dynamic property of Ty in Context
+
+      function New_Call_To_Ada_Function
+        (Fun  : Entity_Id;
+         Args : W_Term_Array)
+         return W_Term_Id;
+      --  Call Fun on Args
+
+      procedure Prepend_Assert_To_Init_Checks
+        (Pred           : W_Pred_Id;
+         Associated_Fun : Entity_Id);
+      --  Prepend assert {Pred} to Init_Checks. Associated_Fun should be the
+      --  aggregate function associated to the assertion. It is used to
+      --  give precision in continuation messages.
+
+      procedure Prepend_Assert_To_Preserv_Checks
+        (Pred           : W_Pred_Id;
+         Associated_Fun : Entity_Id);
+      --  Same as above but with Preserv_Checks
+
+      procedure Prepend_Call_To_Add
+        (Preserv_Checks : in out W_Prog_Id;
+         Add_Procedure  : Entity_Id;
+         Params_Ids     : W_Identifier_Array;
+         New_Cont_Id    : W_Identifier_Id);
+      --  Prepend a call to Add to Preserv_Checks to construct the new
+      --  container id.
+      --
+      --  let param_cont_id = ref cont_id in
+      --    add param_cont_id key_id? elt_id;
+      --    let result_id = !param_cont_id in
+      --      <Prev_Checks>
+
+      ------------------------
+      -- New_Binding_To_Any --
+      ------------------------
+
+      function New_Binding_To_Any
+        (Name    : W_Identifier_Id;
+         Ty      : Type_Kind_Id;
+         Context : W_Prog_Id)
+         return W_Prog_Id
+      is
+      begin
+         return New_Typed_Binding
+           (Name    => Name,
+            Def     => New_Any_Expr
+              (Post        => Compute_Dynamic_Inv_And_Initialization
+                   (Expr     => +New_Result_Ident (Get_Typ (Name)),
+                    Ty       => Ty,
+                    Params   => Body_Params,
+                    Only_Var => False_Term),
+               Return_Type => Get_Typ (Name),
+               Labels      => Symbol_Sets.Empty_Set),
+            Context => Context);
+      end New_Binding_To_Any;
+
+      ------------------------------
+      -- New_Call_To_Ada_Function --
+      ------------------------------
+
+      function New_Call_To_Ada_Function
+        (Fun  : Entity_Id;
+         Args : W_Term_Array)
+         return W_Term_Id
+      is
+         Binders : constant Item_Array (Args'Range) :=
+           Compute_Subprogram_Parameters (Fun, EW_Term);
+         Name    : constant W_Identifier_Id :=
+           +Transform_Identifier (Params => Body_Params,
+                                  Expr   => Fun,
+                                  Ent    => Fun,
+                                  Domain => EW_Term);
+         Conv_Args : constant W_Expr_Array :=
+           (if Binders'Length = 0 then (1 => +Void)
+            else (for I in Args'Range => +Insert_Simple_Conversion
+                  (Domain => EW_Term,
+                   Expr   => +Args (I),
+                   To     => Get_Why_Type_From_Item
+                     (Binders (I)))));
+      begin
+         return +New_Function_Call
+           (Domain => EW_Term,
+            Name   => Name,
+            Subp   => Fun,
+            Args   => Conv_Args,
+            Check  => False,
+            Typ    => Get_Typ (Name));
+      end New_Call_To_Ada_Function;
+
+      -----------------------------------
+      -- Prepend_Assert_To_Init_Checks --
+      -----------------------------------
+
+      procedure Prepend_Assert_To_Init_Checks
+        (Pred           : W_Pred_Id;
+         Associated_Fun : Entity_Id)
+      is
+         Init_Check_Info : Check_Info_Type := New_Check_Info;
+      begin
+         Init_Check_Info.Continuation.Append
+           (Continuation_Type'
+              (Annot.Empty_Function,
+               To_Unbounded_String
+                 ("after a call to " & Source_Name (Annot.Empty_Function))));
+         Init_Check_Info.Continuation.Append
+           (Continuation_Type'
+              (Associated_Fun,
+               To_Unbounded_String
+                 ("when establishing invariant on " &
+                    Source_Name (Associated_Fun))));
+         Init_Checks := Sequence
+           (New_Located_Assert
+              (Ada_Node   => Annot.Annotate_Node,
+               Pred       => Pred,
+               Reason     => VC_Container_Aggr_Check,
+               Kind       => EW_Assert,
+               Check_Info => Init_Check_Info),
+            Init_Checks);
+      end Prepend_Assert_To_Init_Checks;
+
+      --------------------------------------
+      -- Prepend_Assert_To_Preserv_Checks --
+      --------------------------------------
+
+      procedure Prepend_Assert_To_Preserv_Checks
+        (Pred           : W_Pred_Id;
+         Associated_Fun : Entity_Id)
+      is
+         Preserv_Check_Info : Check_Info_Type := New_Check_Info;
+      begin
+         Preserv_Check_Info.Continuation.Append
+           (Continuation_Type'
+              (Annot.Add_Procedure,
+               To_Unbounded_String
+                 ("after a call to " & Source_Name (Annot.Add_Procedure))));
+         Preserv_Check_Info.Continuation.Append
+           (Continuation_Type'
+              (Associated_Fun,
+               To_Unbounded_String
+                 ("when reestablishing invariant on " &
+                    Source_Name (Associated_Fun))));
+         Preserv_Checks := Sequence
+           (New_Located_Assert
+              (Ada_Node   => Annot.Annotate_Node,
+               Pred       => Pred,
+               Reason     => VC_Container_Aggr_Check,
+               Kind       => EW_Assert,
+               Check_Info => Preserv_Check_Info),
+            Preserv_Checks);
+      end Prepend_Assert_To_Preserv_Checks;
+
+      -------------------------
+      -- Prepend_Call_To_Add --
+      -------------------------
+
+      procedure Prepend_Call_To_Add
+        (Preserv_Checks : in out W_Prog_Id;
+         Add_Procedure  : Entity_Id;
+         Params_Ids     : W_Identifier_Array;
+         New_Cont_Id    : W_Identifier_Id)
+      is
+
+         Add_Binders      : Item_Array := Compute_Subprogram_Parameters
+           (Add_Procedure, EW_Prog);
+         pragma Assert (Add_Binders'Length = Params_Ids'Length);
+         Is_Named         : constant Boolean := Add_Binders'Length = 3;
+         Add_Name         : constant W_Identifier_Id :=
+           +Transform_Identifier (Params => Body_Params,
+                                  Expr   => Add_Procedure,
+                                  Ent    => Add_Procedure,
+                                  Domain => EW_Prog);
+         Cont_Expr        : constant W_Expr_Id := New_Temp_For_Expr
+           (Insert_Checked_Conversion
+              (Ada_Node => First_Formal (Add_Procedure),
+               Domain   => EW_Prog,
+               Expr     => +Params_Ids (1),
+               To       => Get_Why_Type_From_Item (Add_Binders (1))));
+         Cont_Args        : W_Expr_Array
+           (1 .. Item_Array_Length ((1 => Add_Binders (1))));
+         Snd_Args         : W_Expr_Array
+           (1 .. Item_Array_Length ((1 => Add_Binders (2))));
+         Thd_Args_Bnd     : constant Natural :=
+           (if Is_Named then Item_Array_Length ((1 => Add_Binders (3)))
+            else 0);
+         Thd_Args         : W_Expr_Array (1 .. Thd_Args_Bnd);
+         Cont_Store       : Boolean;
+         Snd_Store        : Boolean;
+         Thd_Store        : Boolean := False;
+         Context          : Ref_Context;
+
+      begin
+         Continuation_Stack.Append
+           (Continuation_Type'
+              (Annot.Annotate_Node,
+               To_Unbounded_String
+                 ("during checks for container aggregates")));
+
+         --  Use Get_Item_From_Expr to get the appropriate
+         --  parameters in case the formal is split.
+
+         Localize_Binders (Add_Binders);
+
+         Get_Item_From_Expr
+           (Pattern    => Add_Binders (1),
+            Expr       => +Cont_Expr,
+            Context    => Context,
+            Args       => Cont_Args,
+            Need_Store => Cont_Store);
+         Get_Item_From_Expr
+           (Pattern    => Add_Binders (2),
+            Expr       => +Params_Ids (2),
+            Context    => Context,
+            Args       => Snd_Args,
+            Need_Store => Snd_Store);
+         if Is_Named then
+            Get_Item_From_Expr
+              (Pattern    => Add_Binders (3),
+               Expr       => +Params_Ids (3),
+               Context    => Context,
+               Args       => Thd_Args,
+               Need_Store => Thd_Store);
+         end if;
+
+         pragma Assert
+           (Cont_Store and then not Snd_Store and then not Thd_Store);
+
+         --  Reconstruct the container parameter
+
+         Preserv_Checks := New_Typed_Binding
+           (Name    => New_Cont_Id,
+            Def     => +Insert_Checked_Conversion
+              (Ada_Node => First_Formal (Add_Procedure),
+               Domain   => EW_Prog,
+               Expr     => +Reconstruct_Formal_From_Item
+                 (Add_Binders (1), +Cont_Expr),
+               To       => Get_Typ (Params_Ids (1))),
+            Context => Preserv_Checks);
+
+         --  Prepend the call to Add
+
+         declare
+            Pre_N : constant Node_Lists.List :=
+              Find_Contracts (Add_Procedure, Pragma_Precondition);
+            Call  : W_Prog_Id := New_Call
+              (Name => Add_Name,
+               Args => Cont_Args & Snd_Args & Thd_Args,
+               Typ  => EW_Unit_Type);
+         begin
+            if Why_Subp_Has_Precondition (Add_Procedure) then
+               Call := +New_VC_Expr
+                 (Ada_Node =>
+                    (if Pre_N.Is_Empty then Add_Procedure
+                     else Pre_N.First_Element),
+                  Reason   => VC_Precondition,
+                  Expr     => +Call,
+                  Domain   => EW_Prog);
+            end if;
+
+            Preserv_Checks := Sequence
+              (Left  => Call,
+               Right => Preserv_Checks);
+         end;
+
+         --  Declare new references
+
+         for J of reverse Context loop
+            pragma Assert (J.Mutable);
+            Preserv_Checks := New_Binding_Ref
+              (Name    => J.Name,
+               Def     => +J.Value,
+               Context => Preserv_Checks,
+               Typ     => EW_Unit_Type);
+         end loop;
+
+         Preserv_Checks := Binding_For_Temp
+           (Tmp => +Cont_Expr, Context => Preserv_Checks);
+         Continuation_Stack.Delete_Last;
+      end Prepend_Call_To_Add;
+
+      Cont_Id     : constant W_Identifier_Id :=
+        New_Temp_Identifier (Typ => EW_Abstract (E), Base_Name => "cont");
+      New_Cont_Id : constant W_Identifier_Id :=
+        New_Temp_Identifier
+          (Typ => EW_Abstract (E), Base_Name => "new_cont");
+
+   --  Start of processing for Generate_VCs_For_Aggregate_Annotation
+
+   begin
+      case Annot.Kind is
+         when Sets =>
+
+            --  For predefined sets, we want to generate the following
+            --  programs to checks the initialization and the preservation
+            --  of the invariant used to model aggregates:
+            --
+            --  let cont_id = empty in
+            --  assert { length cont_id = 0 };
+            --  let elt_id = any elt_ty ensures { dyn_inv } in
+            --    assert { not contains cont_id elt_id }
+            --
+            --  let cont_id = any cont_ty ensures { dyn_inv } in
+            --  let elt_id = any elt_ty ensures { dyn_inv } in
+            --  let param_cont_id = ref cont_id in
+            --    add param_cont_id elt_id;
+            --    let new_cont_id = !param_cont_id in
+            --    assert { length new_cont_id <= length cont_id + 1 };
+            --    let other_id = any elt_ty ensures { dyn_inv } in
+            --    assert
+            --      { contains new_cont_id elt_id /\
+            --        (contains cont_id other_id ->
+            --          contains new_cont_id other_id) /\
+            --        (contains new_cont_id other_id ->
+            --          (contains cont_id other_id \/
+            --           equivalent_elements other_id elt_id) }
+
+            declare
+               Elt_Id : constant W_Identifier_Id :=
+                 New_Temp_Identifier
+                   (Typ       => Type_Of_Node (Annot.Element_Type),
+                    Base_Name => "elt");
+            begin
+               --  Generate in Init_Checks:
+               --
+               --    assert { not contains cont_id elt_id }
+
+               declare
+                  Contains_Call : constant W_Term_Id :=
+                    New_Call_To_Ada_Function
+                      (Fun  => Annot.Contains,
+                       Args => (+Cont_Id, +Elt_Id));
+
+               begin
+                  Prepend_Assert_To_Init_Checks
+                    (Pred           => New_Not
+                       (Right => Pred_Of_Boolean_Term (Contains_Call)),
+                     Associated_Fun => Annot.Contains);
+               end;
+
+               --  Generate in Preserv_Checks:
+               --
+               --  let other_id = any elt_ty ensures { dyn_inv } in
+               --    assert
+               --      { contains new_cont_id elt_id /\
+               --        (contains cont_id other_id ->
+               --          contains new_cont_id other_id) /\
+               --        (contains new_cont_id other_id ->
+               --          (contains cont_id other_id \/
+               --           equivalent_elements other_id elt_id) }
+
+               declare
+                  Other_Id           : constant W_Identifier_Id :=
+                    New_Temp_Identifier
+                      (Typ       => Type_Of_Node (Annot.Element_Type),
+                       Base_Name => "other");
+                  New_Contains_Elt   : constant W_Term_Id :=
+                    New_Call_To_Ada_Function
+                      (Fun  => Annot.Contains,
+                       Args => (+New_Cont_Id, +Elt_Id));
+                  New_Contains_Other : constant W_Term_Id :=
+                    New_Call_To_Ada_Function
+                      (Fun  => Annot.Contains,
+                       Args => (+New_Cont_Id, +Other_Id));
+                  Old_Contains_Other : constant W_Term_Id :=
+                    New_Call_To_Ada_Function
+                      (Fun  => Annot.Contains,
+                       Args => (+Cont_Id, +Other_Id));
+                  Other_Eq_Elt       : constant W_Term_Id :=
+                    New_Call_To_Ada_Function
+                      (Fun  => Annot.Equivalent_Elements,
+                       Args => (+Other_Id, +Elt_Id));
+
+               begin
+                  Prepend_Assert_To_Preserv_Checks
+                    (Pred           => New_And_Pred
+                       ((1 => Pred_Of_Boolean_Term (New_Contains_Elt),
+                         2 => New_Connection
+                           (Op    => EW_Imply,
+                            Left  => Pred_Of_Boolean_Term (New_Contains_Other),
+                            Right => New_Or_Pred
+                              (Left  => Pred_Of_Boolean_Term
+                                   (Old_Contains_Other),
+                               Right => Pred_Of_Boolean_Term (Other_Eq_Elt))),
+                         3 => New_Connection
+                           (Op    => EW_Imply,
+                            Left  => Pred_Of_Boolean_Term (Old_Contains_Other),
+                            Right => Pred_Of_Boolean_Term
+                              (New_Contains_Other)))),
+                     Associated_Fun => Annot.Contains);
+
+                  Preserv_Checks := New_Binding_To_Any
+                    (Name    => Other_Id,
+                     Ty      => Annot.Element_Type,
+                     Context => Preserv_Checks);
+               end;
+
+               --  For Init_Checks, define elt_id:
+               --
+               --  let elt_id = any elt_ty ensures { dyn_inv } in
+               --     <Init_Checks>
+
+               Init_Checks := New_Binding_To_Any
+                 (Name    => Elt_Id,
+                  Ty      => Annot.Element_Type,
+                  Context => Init_Checks);
+
+               --  Prepend checks for length if any.
+               --
+               --  Prepend to Init_Checks:
+               --
+               --    assert { length cont_id = 0 }
+               --
+               --  and to Preserv_Checks:
+               --
+               --    assert { length new_cont_id <= length cont_id + 1 }
+
+               if Present (Annot.Sets_Length) then
+                  declare
+                     Length_Call     : W_Term_Id :=
+                       New_Call_To_Ada_Function
+                         (Fun  => Annot.Sets_Length,
+                          Args => (1 => +Cont_Id));
+                     New_Length_Call : W_Term_Id :=
+                       New_Call_To_Ada_Function
+                         (Fun  => Annot.Sets_Length,
+                          Args => (1 => +New_Cont_Id));
+                     Base_Length_Typ : constant W_Type_Id :=
+                       (if Has_Scalar_Type (Etype (Annot.Sets_Length))
+                        then EW_Int_Type
+                        else EW_Abstract
+                          (Base_Retysp (Etype (Annot.Sets_Length))));
+
+                  begin
+                     Length_Call := +Insert_Simple_Conversion
+                       (Domain => EW_Term,
+                        Expr   => +Length_Call,
+                        To     => Base_Length_Typ);
+                     New_Length_Call := +Insert_Simple_Conversion
+                       (Domain => EW_Term,
+                        Expr   => +New_Length_Call,
+                        To     => Base_Length_Typ);
+
+                     Prepend_Assert_To_Init_Checks
+                       (Pred           => New_Comparison
+                          (Symbol => Why_Eq,
+                           Left   => Length_Call,
+                           Right  =>
+                             New_Integer_Constant (Value => Uint_0)),
+                        Associated_Fun => Annot.Sets_Length);
+
+                     Prepend_Assert_To_Preserv_Checks
+                       (Pred           => New_Comparison
+                          (Symbol => Int_Infix_Le,
+                           Left   => New_Length_Call,
+                           Right  => New_Call
+                             (Name => Int_Infix_Add,
+                              Args =>
+                                (1 => +Length_Call,
+                                 2 => New_Integer_Constant
+                                   (Value => Uint_1)),
+                              Typ  => Base_Length_Typ)),
+                        Associated_Fun => Annot.Sets_Length);
+                  end;
+               end if;
+
+               --  For Preserv_Checks, add a call to Add to construct
+               --  new_cont_id:
+               --
+               --  let elt_id = any elt_ty ensures { dyn_inv } in
+               --  let param_cont_id = ref cont_id in
+               --    add param_cont_id elt_id;
+               --    let new_cont_id = !param_cont_id in
+               --      <Preserv_Checks>
+
+               Prepend_Call_To_Add
+                 (Preserv_Checks => Preserv_Checks,
+                  Add_Procedure  => Annot.Add_Procedure,
+                  Params_Ids     => (Cont_Id, Elt_Id),
+                  New_Cont_Id    => New_Cont_Id);
+
+               Preserv_Checks := New_Binding_To_Any
+                 (Name    => Elt_Id,
+                  Ty      => Annot.Element_Type,
+                  Context => Preserv_Checks);
+            end;
+
+         when Seqs =>
+
+            --  For predefined sequences, we want to generate the following
+            --  programs to checks the initialization and the preservation
+            --  of the invariant used to model aggregates:
+            --
+            --  let cont_id = empty in
+            --    assert { last cont_id + 1 = first };
+            --
+            --  let cont_id = any cont_ty ensures { dyn_inv } in
+            --  assume
+            --    { last cont_id < Index_Type'Last } (* for signed types *)
+            --  let elt_id = any elt_ty ensures { dyn_inv } in
+            --  let param_cont_id = ref cont_id in
+            --    add param_cont_id elt_id;
+            --    let new_cont_id = !param_cont_id in
+            --    assert { last new_cont_id = last cont_id + 1 };
+            --    assert
+            --      { get new_cont_id (last new_cont_id) = <copy elt_id> };
+            --    let index_id = any int ensures
+            --        { first <= result <= last cont_id } in
+            --      assert
+            --        { get new_cont_id index_id = get cont_id index_id }
+
+            declare
+               Elt_Id        : constant W_Identifier_Id :=
+                 New_Temp_Identifier
+                   (Typ       => Type_Of_Node (Annot.Element_Type),
+                    Base_Name => "elt");
+               First_Call    : W_Term_Id := New_Call_To_Ada_Function
+                 (Fun  => Annot.First,
+                  Args => (1 .. 0 => <>));
+               Last_Cont     : W_Term_Id := New_Call_To_Ada_Function
+                 (Fun  => Annot.Last,
+                  Args => (1 => +Cont_Id));
+               Last_New_Cont : W_Term_Id := New_Call_To_Ada_Function
+                 (Fun  => Annot.Last,
+                  Args => (1 => +New_Cont_Id));
+
+               Base_Index_Typ : constant W_Type_Id :=
+                 (if Has_Scalar_Type (Annot.Index_Type) then EW_Int_Type
+                  else EW_Abstract (Base_Retysp (Annot.Index_Type)));
+
+            begin
+               First_Call := +Insert_Simple_Conversion
+                 (Domain => EW_Term,
+                  Expr   => +First_Call,
+                  To     => Base_Index_Typ);
+               Last_Cont := +Insert_Simple_Conversion
+                 (Domain => EW_Term,
+                  Expr   => +Last_Cont,
+                  To     => Base_Index_Typ);
+               Last_New_Cont := +Insert_Simple_Conversion
+                 (Domain => EW_Term,
+                  Expr   => +Last_New_Cont,
+                  To     => Base_Index_Typ);
+
+               --  Generate in Init_Checks:
+               --
+               --    assert { last cont_id + 1 = first }
+
+               Prepend_Assert_To_Init_Checks
+                 (Pred           => New_Comparison
+                    (Symbol => Why_Eq,
+                     Left   => New_Call
+                       (Name => Int_Infix_Add,
+                        Args =>
+                          (1 => +Last_Cont,
+                           2 => New_Integer_Constant (Value => Uint_1)),
+                        Typ  => EW_Int_Type),
+                     Right  => First_Call),
+                  Associated_Fun => Annot.Last);
+
+               --  Generate in Preserv_Checks:
+               --
+               --  assert { last new_cont_id = last cont_id + 1 };
+               --  assert
+               --    { get new_cont_id (last new_cont_id) = <copy elt_id> };
+               --  let index_id = any int ensures
+               --      { first <= result <= last cont_id } in
+               --    assert
+               --      { get new_cont_id index_id = get cont_id index_id }
+
+               declare
+                  Index_Id           : constant W_Identifier_Id :=
+                    New_Temp_Identifier
+                      (Typ       => Base_Index_Typ,
+                       Base_Name => "index");
+                  Get_New_Cont_Last  : constant W_Term_Id :=
+                    New_Call_To_Ada_Function
+                      (Fun  => Annot.Seqs_Get,
+                       Args => (+New_Cont_Id, Last_New_Cont));
+                  Get_New_Cont_Index : constant W_Term_Id :=
+                    New_Call_To_Ada_Function
+                      (Fun  => Annot.Seqs_Get,
+                       Args => (+New_Cont_Id, +Index_Id));
+                  Get_Cont_Index     : constant W_Term_Id :=
+                    New_Call_To_Ada_Function
+                      (Fun  => Annot.Seqs_Get,
+                       Args => (+Cont_Id, +Index_Id));
+                  Elt_Expr           : constant W_Term_Id :=
+                    (if Is_Tagged_Type (Retysp (Annot.Element_Type))
+                     and then not Is_Class_Wide_Type (Annot.Element_Type)
+                     then New_Tag_Update
+                       (Name => +Elt_Id, Ty => Annot.Element_Type)
+                     else +Elt_Id);
+
+               begin
+                  Prepend_Assert_To_Preserv_Checks
+                    (Pred           => New_Comparison
+                       (Symbol => Why_Eq,
+                        Left   => Get_New_Cont_Index,
+                        Right  => Get_Cont_Index),
+                     Associated_Fun => Annot.Seqs_Get);
+
+                  Preserv_Checks := New_Typed_Binding
+                    (Name    => Index_Id,
+                     Def     => New_Any_Expr
+                       (Post        => New_And_Pred
+                            (Left  => New_Comparison
+                                 (Symbol => Int_Infix_Le,
+                                  Left   => First_Call,
+                                  Right  => +New_Result_Ident
+                                    (Typ => Base_Index_Typ)),
+                             Right => New_Comparison
+                               (Symbol => Int_Infix_Le,
+                                Left   => +New_Result_Ident
+                                  (Typ => Base_Index_Typ),
+                                Right  => Last_Cont)),
+                        Return_Type => Get_Typ (Index_Id),
+                        Labels      => Symbol_Sets.Empty_Set),
+                     Context => Preserv_Checks);
+
+                  Prepend_Assert_To_Preserv_Checks
+                    (Pred           => New_Comparison
+                       (Symbol => Why_Eq,
+                        Left   => Get_New_Cont_Last,
+                        Right  => Elt_Expr),
+                     Associated_Fun => Annot.Seqs_Get);
+
+                  Prepend_Assert_To_Preserv_Checks
+                    (Pred           => New_Comparison
+                       (Symbol => Why_Eq,
+                        Left   => New_Call
+                          (Name => Int_Infix_Add,
+                           Args =>
+                             (1 => +Last_Cont,
+                              2 => New_Integer_Constant (Value => Uint_1)),
+                           Typ  => EW_Int_Type),
+                        Right  => Last_New_Cont),
+                     Associated_Fun => Annot.Last);
+               end;
+
+               --  Define the identifiers used for the checks.
+               --  For Init_Checks, there is only elt_id:
+               --
+               --  let elt_id = any elt_ty ensures { dyn_inv } in
+               --     <Init_Checks>
+
+               Init_Checks := New_Binding_To_Any
+                 (Name    => Elt_Id,
+                  Ty      => Annot.Element_Type,
+                  Context => Init_Checks);
+
+               --  For Preserv_Checks, add a call to Add to construct
+               --  new_cont_id:
+               --
+               --  let elt_id = any elt_ty ensures { dyn_inv } in
+               --  let param_cont_id = ref cont_id in
+               --    add param_cont_id elt_id;
+               --    let new_cont_id = !param_cont_id in
+               --      <Preserv_Checks>
+
+               Prepend_Call_To_Add
+                 (Preserv_Checks => Preserv_Checks,
+                  Add_Procedure  => Annot.Add_Procedure,
+                  Params_Ids     => (Cont_Id, Elt_Id),
+                  New_Cont_Id    => New_Cont_Id);
+
+               Preserv_Checks := New_Binding_To_Any
+                 (Name    => Elt_Id,
+                  Ty      => Annot.Element_Type,
+                  Context => Preserv_Checks);
+
+               --  If the index type is a signed integer type, assume that
+               --  last is less than the last index before the call to Add:
+               --
+               --  assume
+               --    { last cont_id < Index_Type'Last } (* for signed types *)
+
+               if Has_Scalar_Type (Annot.Index_Type) then
+                  Preserv_Checks := Sequence
+                    (Left  => New_Assume_Statement
+                       (Pred => New_Comparison
+                          (Symbol => Int_Infix_Lt,
+                           Left   => Last_Cont,
+                           Right  => +New_Attribute_Expr
+                             (Ty     => Annot.Index_Type,
+                              Domain => EW_Term,
+                              Attr   => Attribute_Last,
+                              Params => Body_Params))),
+                     Right => Preserv_Checks);
+               end if;
+            end;
+
+         when Maps =>
+
+            --  For predefined maps, we want to generate the following
+            --  programs to checks the initialization and the preservation
+            --  of the invariant used to model aggregates:
+            --
+            --  let cont_id = empty in
+            --  assert { length cont_id = 0 };
+            --  let key_id = any key_ty ensures { dyn_inv } in
+            --    assert { not has_key cont_id key_id } (* with has_key *)
+            --    assert
+            --      { get cont_id key_id = default_item } (* otherwise *)
+            --
+            --  let cont_id = any cont_ty ensures { dyn_inv } in
+            --  let key_id = any key_ty ensures { dyn_inv } in
+            --  let elt_id = any elt_ty ensures { dyn_inv } in
+            --  assume { not has_key cont_id key_id }; (* with has_key *)
+            --  assume
+            --    { get cont_id key_id = default_item }; (* otherwise *)
+            --  let param_cont_id = ref cont_id in
+            --    add param_cont_id key_id elt_id;
+            --    let new_cont_id = !param_cont_id in
+            --    let other_id = any key_ty ensures { dyn_inv } in
+            --      assert { length new_cont_id = length cont_id + 1 };
+            --      assert (* with has_key *)
+            --        { has_key new_cont_id key_id /\
+            --          (has_key cont_id other_id ->
+            --            has_key new_cont_id other_id) /\
+            --          (has_key new_cont_id other_id ->
+            --            (has_key cont_id other_id \/
+            --             equivalent_keys other_id key_id) };
+            --      assert
+            --        { get new_cont_id key_id = <copy elt_id> }
+            --      assume { has_key cont_id other_id }; (* with has_key *)
+            --      assume
+            --        { not equivalent_keys other_id key_id }; (* otherwise *)
+            --      assert
+            --        { get new_cont_id other_id = get cont_id other_id }
+
+            declare
+               Key_Id      : constant W_Identifier_Id :=
+                 New_Temp_Identifier
+                   (Typ       => Type_Of_Node (Annot.Key_Type),
+                    Base_Name => "key");
+               Elt_Id      : constant W_Identifier_Id :=
+                 New_Temp_Identifier
+                   (Typ       => Type_Of_Node (Annot.Element_Type),
+                    Base_Name => "elt");
+               Other_Id    : constant W_Identifier_Id :=
+                 New_Temp_Identifier
+                   (Typ       => Type_Of_Node (Annot.Key_Type),
+                    Base_Name => "other");
+               No_Key_Pred : W_Pred_Id;
+               --  Predicate stating that key_id has no association/the default
+               --  association in cont_id. It is used both as a postcondition
+               --  for checking Empty and as a pre for Add.
+
+            begin
+               --  Construct No_Key_Pred. It contains:
+               --     not has_key cont_id key_id (* with has_key *)
+               --     get cont_id key_id = default_item (* otherwise *)
+
+               if Present (Annot.Has_Key) then
+                  declare
+                     Has_Key_Call : constant W_Term_Id :=
+                       New_Call_To_Ada_Function
+                         (Fun  => Annot.Has_Key,
+                          Args => (+Cont_Id, +Key_Id));
+                  begin
+                     No_Key_Pred := New_Not
+                       (Right => Pred_Of_Boolean_Term (Has_Key_Call));
+                  end;
+               else
+                  declare
+                     Default_Item_Call : constant W_Term_Id :=
+                       New_Call_To_Ada_Function
+                         (Fun  => Annot.Default_Item,
+                          Args => (1 .. 0 => <>));
+                     Get_Call          : constant W_Term_Id :=
+                       New_Call_To_Ada_Function
+                         (Fun  => Annot.Maps_Get,
+                          Args => (+Cont_Id, +Key_Id));
+                  begin
+                     No_Key_Pred := New_Comparison
+                       (Symbol => Why_Eq,
+                        Left   => Get_Call,
+                        Right  => Default_Item_Call);
+                  end;
+               end if;
+
+               --  Generate in Init_Checks:
+               --
+               --   assert { <No_Key_Pred> }
+
+               Prepend_Assert_To_Init_Checks
+                 (Pred           => No_Key_Pred,
+                  Associated_Fun =>
+                    (if Present (Annot.Has_Key) then Annot.Has_Key
+                     else Annot.Maps_Get));
+
+               --  Add value of elements in Preserv_Checks:
+               --
+               --      assert
+               --        { get new_cont_id key_id = <copy elt_id> }
+               --      assume { has_key cont_id other_id }; (* with has_key *)
+               --      assume
+               --        { not equivalent_keys other_id key_id };
+               --        (* otherwise *)
+               --      assert
+               --        { get new_cont_id other_id = get cont_id other_id }
+
+               declare
+                  Get_Cont_Other     : constant W_Term_Id :=
+                    New_Call_To_Ada_Function
+                      (Fun  => Annot.Maps_Get,
+                       Args => (+Cont_Id, +Other_Id));
+                  Get_New_Cont_Other : constant W_Term_Id :=
+                    New_Call_To_Ada_Function
+                      (Fun  => Annot.Maps_Get,
+                       Args => (+New_Cont_Id, +Other_Id));
+                  Get_New_Cont_Key   : constant W_Term_Id :=
+                    New_Call_To_Ada_Function
+                      (Fun  => Annot.Maps_Get,
+                       Args => (+New_Cont_Id, +Key_Id));
+                  Elt_Expr           : constant W_Term_Id :=
+                    (if Is_Tagged_Type (Retysp (Annot.Element_Type))
+                     and then not Is_Class_Wide_Type (Annot.Element_Type)
+                     then New_Tag_Update
+                       (Name => +Elt_Id, Ty => Annot.Element_Type)
+                     else +Elt_Id);
+
+               begin
+                  Prepend_Assert_To_Preserv_Checks
+                    (Pred           => New_Comparison
+                       (Symbol => Why_Eq,
+                        Left   => Get_New_Cont_Other,
+                        Right  => Get_Cont_Other),
+                     Associated_Fun => Annot.Maps_Get);
+
+                  --  For partial maps generate:
+                  --
+                  --   assume { has_key cont_id other_id }
+
+                  if Present (Annot.Has_Key) then
+                     declare
+                        Has_Key_Cont_Other : constant W_Term_Id :=
+                          New_Call_To_Ada_Function
+                            (Fun  => Annot.Has_Key,
+                             Args => (+Cont_Id, +Other_Id));
+                     begin
+                        Preserv_Checks := Sequence
+                          (Left  => New_Assume_Statement
+                             (Pred => Pred_Of_Boolean_Term
+                                  (Has_Key_Cont_Other)),
+                           Right => Preserv_Checks);
+                     end;
+
+                  --  For total maps generate:
+                  --
+                  --   assume { not equivalent_keys other_id key_id }
+
+                  else
+                     declare
+                        Eq_Other_Key : constant W_Term_Id :=
+                          New_Call_To_Ada_Function
+                            (Fun  => Annot.Equivalent_Keys,
+                             Args => (+Other_Id, +Key_Id));
+
+                     begin
+                        Preserv_Checks := Sequence
+                          (Left  => New_Assume_Statement
+                             (Pred => New_Not
+                                  (Right => Pred_Of_Boolean_Term
+                                       (Eq_Other_Key))),
+                           Right => Preserv_Checks);
+                     end;
+                  end if;
+
+                  Prepend_Assert_To_Preserv_Checks
+                    (Pred           => New_Comparison
+                       (Symbol => Why_Eq,
+                        Left   => Get_New_Cont_Key,
+                        Right  => Elt_Expr),
+                     Associated_Fun => Annot.Maps_Get);
+               end;
+
+               --  For partial maps, generate in Prev_Checks:
+               --
+               --   assert (* with has_key *)
+               --     { has_key new_cont_id key_id /\
+               --       (has_key cont_id other_id ->
+               --         has_key new_cont_id other_id) /\
+               --       (has_key new_cont_id other_id ->
+               --         (has_key cont_id other_id \/
+               --          equivalent_keys other_id key_id) };
+
+               if Present (Annot.Has_Key) then
+                  declare
+                     Has_Key_Cont_Other     : constant W_Term_Id :=
+                       New_Call_To_Ada_Function
+                         (Fun  => Annot.Has_Key,
+                          Args => (+Cont_Id, +Other_Id));
+                     Has_Key_New_Cont_Other : constant W_Term_Id :=
+                       New_Call_To_Ada_Function
+                         (Fun  => Annot.Has_Key,
+                          Args => (+New_Cont_Id, +Other_Id));
+                     Has_Key_New_Cont_Key   : constant W_Term_Id :=
+                       New_Call_To_Ada_Function
+                         (Fun  => Annot.Has_Key,
+                          Args => (+New_Cont_Id, +Key_Id));
+                     Eq_Other_Key           : constant W_Term_Id :=
+                       New_Call_To_Ada_Function
+                         (Fun  => Annot.Equivalent_Keys,
+                          Args => (+Other_Id, +Key_Id));
+                  begin
+                     Prepend_Assert_To_Preserv_Checks
+                       (Pred           => New_And_Pred
+                          ((1 => Pred_Of_Boolean_Term (Has_Key_New_Cont_Key),
+                            2 => New_Connection
+                              (Op    => EW_Imply,
+                               Left  => Pred_Of_Boolean_Term
+                                 (Has_Key_New_Cont_Other),
+                               Right => New_Or_Pred
+                                 (Left  => Pred_Of_Boolean_Term
+                                      (Has_Key_Cont_Other),
+                                  Right => Pred_Of_Boolean_Term
+                                    (Eq_Other_Key))),
+                            3 =>  New_Connection
+                              (Op    => EW_Imply,
+                               Left  => Pred_Of_Boolean_Term
+                                 (Has_Key_Cont_Other),
+                               Right => Pred_Of_Boolean_Term
+                                 (Has_Key_New_Cont_Other)))),
+                        Associated_Fun => Annot.Has_Key);
+                  end;
+               end if;
+
+               Preserv_Checks := New_Typed_Binding
+                 (Name    => Other_Id,
+                  Def     => New_Any_Expr
+                    (Post        =>
+                         Compute_Dynamic_Inv_And_Initialization
+                       (Expr     => +New_Result_Ident
+                            (Get_Typ (Other_Id)),
+                        Ty       => Annot.Key_Type,
+                        Params   => Body_Params,
+                        Only_Var => False_Term),
+                     Return_Type => Get_Typ (Other_Id),
+                     Labels      => Symbol_Sets.Empty_Set),
+                  Context => Preserv_Checks);
+
+               --  For Init_Checks, define key_id:
+               --
+               --  let key_id = any key_ty ensures { dyn_inv } in
+               --     <Init_Checks>
+
+               Init_Checks := New_Binding_To_Any
+                 (Name    => Key_Id,
+                  Ty      => Annot.Key_Type,
+                  Context => Init_Checks);
+
+               --  Prepend checks for length if any.
+               --
+               --  Prepend to Init_Checks:
+               --
+               --    assert { length cont_id = 0 }
+               --
+               --  and to Preserv_Checks:
+               --
+               --    assert { length new_cont_id = length cont_id + 1 }
+
+               if Present (Annot.Maps_Length) then
+                  declare
+                     Length_Call     : W_Term_Id := New_Call_To_Ada_Function
+                       (Fun  => Annot.Maps_Length,
+                        Args => (1 => +Cont_Id));
+                     New_Length_Call : W_Term_Id := New_Call_To_Ada_Function
+                       (Fun  => Annot.Maps_Length,
+                        Args => (1 => +New_Cont_Id));
+                     Base_Length_Typ : constant W_Type_Id :=
+                       (if Has_Scalar_Type (Etype (Annot.Maps_Length))
+                        then EW_Int_Type
+                        else EW_Abstract
+                          (Base_Retysp (Etype (Annot.Maps_Length))));
+
+                  begin
+                     Length_Call := +Insert_Simple_Conversion
+                       (Domain => EW_Term,
+                        Expr   => +Length_Call,
+                        To     => Base_Length_Typ);
+                     New_Length_Call := +Insert_Simple_Conversion
+                       (Domain => EW_Term,
+                        Expr   => +New_Length_Call,
+                        To     => Base_Length_Typ);
+
+                     Prepend_Assert_To_Init_Checks
+                       (Pred           => New_Comparison
+                             (Symbol => Why_Eq,
+                              Left   => Length_Call,
+                              Right  =>
+                                New_Integer_Constant (Value => Uint_0)),
+                        Associated_Fun => Annot.Maps_Length);
+
+                     Prepend_Assert_To_Preserv_Checks
+                       (Pred           => New_Comparison
+                          (Symbol => Why_Eq,
+                           Left   => New_Length_Call,
+                           Right  => New_Call
+                             (Name => Int_Infix_Add,
+                              Args =>
+                                (1 => +Length_Call,
+                                 2 => New_Integer_Constant
+                                   (Value => Uint_1)),
+                              Typ  => Base_Length_Typ)),
+                        Associated_Fun => Annot.Maps_Length);
+                  end;
+               end if;
+
+               --  For Preserv_Checks, add a call to Add to construct
+               --  new_cont_id:
+               --
+               --  let key_id = any key_ty ensures { dyn_inv } in
+               --  let elt_id = any elt_ty ensures { dyn_inv } in
+               --  assume { not has_key cont_id key_id }; (* with has_key *)
+               --  assume
+               --    { get cont_id key_id = default_item }; (* otherwise *)
+               --  let param_cont_id = ref cont_id in
+               --    add param_cont_id key_id elt_id;
+               --    let new_cont_id = !param_cont_id in
+               --      <Prev_Checks>
+
+               Prepend_Call_To_Add
+                 (Preserv_Checks => Preserv_Checks,
+                  Add_Procedure  => Annot.Add_Procedure,
+                  Params_Ids     => (Cont_Id, Key_Id, Elt_Id),
+                  New_Cont_Id    => New_Cont_Id);
+
+               --  Assume that key_id has no association/the default
+               --  association in cont_id.
+
+               Preserv_Checks := Sequence
+                 (Left  => New_Assume_Statement (Pred => No_Key_Pred),
+                  Right => Preserv_Checks);
+
+               Preserv_Checks := New_Binding_To_Any
+                 (Name    => Elt_Id,
+                  Ty      => Annot.Element_Type,
+                  Context => Preserv_Checks);
+
+               Preserv_Checks := New_Binding_To_Any
+                 (Name    => Key_Id,
+                  Ty      => Annot.Key_Type,
+                  Context => Preserv_Checks);
+            end;
+
+         when Model =>
+            raise Why.Not_Implemented;
+      end case;
+
+      --  Bind Cont_Id to a call to Empty in Init_Checks.
+      --  ??? We should support empty function with a capacity parameter
+
+      pragma Assert (Number_Formals (Annot.Empty_Function) = 0);
+
+      Continuation_Stack.Append
+        (Continuation_Type'
+           (Annot.Annotate_Node,
+            To_Unbounded_String
+              ("during checks for container aggregates")));
+
+      declare
+         Pre_Empty  : constant Node_Lists.List :=
+           Find_Contracts (Annot.Empty_Function, Pragma_Precondition);
+
+         Empty_Name : constant W_Identifier_Id :=
+           +Transform_Identifier (Params => Body_Params,
+                                  Expr   => Annot.Empty_Function,
+                                  Ent    => Annot.Empty_Function,
+                                  Domain => EW_Prog);
+         Empty_Call : constant W_Prog_Id := +New_Function_Call
+           (Ada_Node =>
+              (if Pre_Empty.Is_Empty then Annot.Empty_Function
+               else Pre_Empty.First_Element),
+            Domain   => EW_Prog,
+            Name     => Empty_Name,
+            Subp     => Annot.Empty_Function,
+            Args     => (1 => +Void),
+            Check    => Why_Subp_Has_Precondition (Annot.Empty_Function),
+            Typ      => Get_Typ (Empty_Name));
+      begin
+         Init_Checks := New_Typed_Binding
+           (Name    => Cont_Id,
+            Def     => +Insert_Checked_Conversion
+              (Ada_Node => Annot.Empty_Function,
+               Domain   => EW_Prog,
+               Expr     => +Empty_Call,
+               To       => Get_Typ (Cont_Id)),
+            Context => Init_Checks);
+      end;
+
+      Continuation_Stack.Delete_Last;
+
+      --  Bind Cont_Id to a any container in Preserv_Checks
+
+      Preserv_Checks := New_Binding_To_Any
+        (Name    => Cont_Id,
+         Ty      => E,
+         Context => Preserv_Checks);
+
+      return Sequence
+        (Left  => New_Ignore (Prog => Init_Checks),
+         Right => New_Ignore (Prog => Preserv_Checks));
+   end Generate_VCs_For_Aggregate_Annotation;
 
    ------------------------
    -- Get_Item_From_Expr --
