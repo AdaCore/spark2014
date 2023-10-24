@@ -686,9 +686,9 @@ is left unchanged by a procedure, as is done in the example below:
      Ghost,
      Import,
      Annotate => (GNATprove, Logical_Equal);
-   type Dictionnary is array (Positive range <>) of Word;
+   type Dictionary is array (Positive range <>) of Word;
 
-   procedure Set (D : in out Dictionnary; I : Positive; W : String) with
+   procedure Set (D : in out Dictionary; I : Positive; W : String) with
      Pre  => I in D'Range and W'Length <= 100,
      Post => D (I).Value = W
      and then (for all J in D'Range =>
