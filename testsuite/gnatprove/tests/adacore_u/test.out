@@ -170,8 +170,8 @@ stack.adb:42:18: info: index check proved (CVC5: 2 VC)
 stack.adb:45:48: info: index check proved (CVC5: 2 VC)
 stack.adb:54:22: info: range check proved (CVC5: 2 VC)
 stack.adb:55:18: info: index check proved (CVC5: 2 VC)
-stack.ads:1:51: warning: no procedure exists that can initialize abstract state "Stack.The_Stack"
-stack.ads:1:62: warning: no procedure exists that can initialize abstract state "Stack.P_Stack"
+stack.ads:1:51: warning: no subprogram exists that can initialize abstract state "Stack.The_Stack"
+stack.ads:1:62: warning: no subprogram exists that can initialize abstract state "Stack.P_Stack"
 stack.ads:12:20: info: initialization of "E" proved
 stack.ads:13:06: info: data dependencies proved
 stack.ads:15:06: info: flow dependencies proved
@@ -558,7 +558,7 @@ mem.adb:21:17: warning: unused assignment
 mem.adb:22:07: info: analyzing call to "Assign" in context
 mem.adb:24:20: info: overflow check proved (CVC5: 2 VC)
 mem.adb:25:22: info: assertion proved (CVC5: 1 VC)
-mem.ads:3:21: warning: no procedure exists that can initialize abstract state "Mem.State"
+mem.ads:3:21: warning: no subprogram exists that can initialize abstract state "Mem.State"
 mem.ads:7:14: info: postcondition proved (CVC5: 1 VC)
 mem.ads:9:13: info: implicit aspect Always_Terminates on "Free_Memory" has been proved, subprogram will terminate
 resources.adb:6:24: info: unrolling loop

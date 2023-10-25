@@ -57,4 +57,4 @@ uninitialized.adb:138:12: warning: this statement is never reached
 uninitialized.adb:140:09: warning: unused assignment
 uninitialized.adb:140:12: high: "X" is not initialized
 uninitialized.adb:140:14: medium: overflow check might fail, cannot prove upper bound for X + 1 [reason for check: result of addition must fit in a 32-bits machine integer]
-uninitialized.ads:3:26: warning: no procedure exists that can initialize abstract state "Uninitialized.State"
+uninitialized.ads:3:26: warning: no subprogram exists that can initialize abstract state "Uninitialized.State"

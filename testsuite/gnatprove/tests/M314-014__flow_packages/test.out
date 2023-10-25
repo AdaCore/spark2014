@@ -17,13 +17,13 @@ ic.adb:42:07: info: initialization of "Test_04.X" constituent of "IC.State_A" pr
 ic.adb:48:06: info: flow dependencies proved
 ic.adb:49:34: high: "Test_01.X" constituent of "IC.State_A" must be mentioned as an input of the Initializes aspect of "Test_05" (SPARK RM 7.1.5(11))
 ic.adb:49:34: high: "Test_01.Y" constituent of "IC.State_B" must be mentioned as an input of the Initializes aspect of "Test_05" (SPARK RM 7.1.5(11))
-ic.adb:54:24: warning: no procedure exists that can initialize abstract state "Test_06.S" constituent of "IC.State_B"
+ic.adb:54:24: warning: no subprogram exists that can initialize abstract state "Test_06.S" constituent of "IC.State_B"
 ic.adb:91:31: high: "Y" constituent of "S" must be listed in the Refined_Global aspect of "Sanity_Check_5" (SPARK RM 6.1.4(15))
 ic.adb:108:06: error: "Test_02.Y" constituent of "IC.State_B" is referenced in Post but missing from the Global
 ic.adb:109:35: high: "Test_02.Y" constituent of "IC.State_B" must be listed in the Global aspect of "Sanity_Check_1" (SPARK RM 6.1.4(15))
 ic.adb:116:06: error: "Test_01.Y" constituent of "IC.State_B" is referenced in Post but missing from the Global
 ic.adb:118:41: high: "Test_01.Y" constituent of "IC.State_B" must be listed in the Global aspect of "Sanity_Check_2" (SPARK RM 6.1.4(15))
-ic.ads:2:36: warning: no procedure exists that can initialize abstract state "IC.State_B"
+ic.ads:2:36: warning: no subprogram exists that can initialize abstract state "IC.State_B"
 ic.ads:3:08: info: flow dependencies proved
 initialized.adb:5:04: info: initialization of "Var" constituent of "State" proved
 initialized.ads:4:08: info: flow dependencies proved
@@ -32,7 +32,7 @@ initialized.ads:7:11: info: data dependencies proved
 main.adb:6:09: info: data dependencies proved
 main.adb:7:44: info: initialization of "Uninitialized.State" proved
 main.adb:8:09: info: flow dependencies proved
-no_init.ads:3:26: warning: no procedure exists that can initialize abstract state "No_Init.S"
+no_init.ads:3:26: warning: no subprogram exists that can initialize abstract state "No_Init.S"
 no_init.ads:4:08: info: flow dependencies proved
 other.ads:3:08: info: flow dependencies proved
 pkg_a.adb:7:04: high: "A" constituent of "State_A" is not initialized in "Pkg_A" [reason for check: encapsulating state is mentioned in the Initializes contract of the package declaration] [possible fix: initialize "A" constituent of "State_A" at declaration or in the package body statements]
@@ -43,7 +43,7 @@ pkg_a.adb:11:61: info: overflow check proved (CVC5: 2 VC)
 pkg_a.adb:16:09: medium: precondition might fail
 pkg_a.adb:16:23: high: "X" is not initialized
 pkg_a.adb:17:06: warning: unused assignment
-pkg_a.ads:2:36: warning: no procedure exists that can initialize abstract state "Pkg_A.State_B"
+pkg_a.ads:2:36: warning: no subprogram exists that can initialize abstract state "Pkg_A.State_B"
 pkg_a.ads:8:04: high: "X" is not initialized in "Pkg_A" [reason for check: variable is mentioned in the Initializes contract of the package declaration] [possible fix: initialize "X" at declaration or in the package body statements]
 pkg_a.ads:10:04: warning: initialization of "Z" has no effect
 pkg_a.ads:12:04: low: initialization of "W" must be mentioned in the Initializes contract of "Pkg_A" (SPARK RM 7.1.5(9))
@@ -62,7 +62,7 @@ pkg_e.adb:6:03: high: "X" constituent of "Meant_To_Be_Init" is not initialized i
 pkg_e.adb:6:03: high: initialization of "Pkg_E.Meant_To_Be_Init" is specified at pkg_e.ads:4
 pkg_e.adb:7:03: info: initialization of "Y" constituent of "Meant_To_Be_Init" proved
 pkg_e.adb:14:06: warning: unused assignment
-pkg_e.ads:3:27: warning: no procedure exists that can initialize abstract state "Pkg_E.Meant_To_Be_Unint"
+pkg_e.ads:3:27: warning: no subprogram exists that can initialize abstract state "Pkg_E.Meant_To_Be_Unint"
 pkg_e.ads:8:03: high: "Vis_A" is not initialized in "Pkg_E" [reason for check: variable is mentioned in the Initializes contract of the package declaration] [possible fix: initialize "Vis_A" at declaration or in the package body statements]
 pkg_e.ads:11:03: low: initialization of "Vis_D" must be mentioned in the Initializes contract of "Pkg_E" (SPARK RM 7.1.5(9))
 uninitialized.adb:8:40: info: initialization of "Var" constituent of "State" proved

@@ -83,9 +83,9 @@ nested.adb:16:10: info: flow dependencies proved
 nested.adb:18:19: info: implicit aspect Always_Terminates on "Check" has been proved, subprogram will terminate
 nested.adb:37:47: info: initialization of "Helper_2.H_2" proved
 nested.adb:40:19: info: implicit aspect Always_Terminates on "Get" has been proved, subprogram will terminate
-nested.adb:61:47: warning: no procedure exists that can initialize abstract state "Helper_3.H_3"
+nested.adb:61:47: warning: no subprogram exists that can initialize abstract state "Helper_3.H_3"
 nested.adb:65:25: info: initialization of "X" proved
 nested.adb:65:28: info: initialization of "Y" proved
 nested.adb:100:15: high: "Helper_3.H_3" is not initialized
-nested.ads:3:23: warning: no procedure exists that can initialize abstract state "Nested.State_B"
+nested.ads:3:23: warning: no subprogram exists that can initialize abstract state "Nested.State_B"
 nested.ads:6:26: info: initialization of "X" proved

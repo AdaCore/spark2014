@@ -183,7 +183,7 @@ q.ads:7:14: info: flow dependencies proved
 q.ads:10:14: info: data dependencies proved
 q.ads:11:14: info: flow dependencies proved
 r-child.adb:14:11: warning: "Actual_State" constituent of "R2" is set by "Op_1" but not used after the call
-r-child.ads:2:30: warning: no procedure exists that can initialize abstract state "Child.R2" constituent of "R.R1"
+r-child.ads:2:30: warning: no subprogram exists that can initialize abstract state "Child.R2" constituent of "R.R1"
 r-child.ads:12:14: info: data dependencies proved
 r-child.ads:13:14: info: flow dependencies proved
 refined_depends_examples.adb:10:41: info: initialization of "B" constituent of "State" proved

@@ -26,3 +26,6 @@ deps.adb:61:34: info: initialization of "Y" proved
 deps.adb:61:37: info: initialization of "Z" proved
 deps.adb:62:12: info: flow dependencies proved
 deps.adb:68:04: info: initialization of "I" proved
+p.ads:2:13: info: implicit aspect Always_Terminates on "Init" has been proved, subprogram will terminate
+p.ads:2:13: info: initialization of "X" constituent of "State" proved
+p.ads:3:26: info: data dependencies proved
