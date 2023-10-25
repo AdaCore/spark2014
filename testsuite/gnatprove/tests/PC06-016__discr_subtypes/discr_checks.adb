@@ -25,10 +25,8 @@ package body Discr_Checks with SPARK_Mode is
       null;
    end Check_Derived_Priv;
 
-   procedure Check_Subtype_Prot is
+   package Check_Subtype_Prot is
       subtype Fail is Prot (Bad); --@RANGE_CHECK:FAIL
-   begin
-      null;
    end Check_Subtype_Prot;
 
    --  Not handled correctly by the frontend

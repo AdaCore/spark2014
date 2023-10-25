@@ -1,0 +1,18 @@
+variables1.adb:15:31: error: launch "gnatprove --explain=E0004" for more information
+variables1.adb:15:31: error: violation of pragma SPARK_Mode at line 2
+variables1.adb:15:31: error: volatile object as actual is not allowed in SPARK (SPARK RM 7.1.3(9)) [E0004]
+variables1.adb:16:23: error: "Func_2" is not allowed in SPARK (due to nonvolatile function with effectively volatile parameter)
+variables1.adb:16:23: error: violation of pragma SPARK_Mode at line 2
+variables1.adb:19:12: error: launch "gnatprove --explain=E0004" for more information
+variables1.adb:19:12: error: violation of pragma SPARK_Mode at line 2
+variables1.adb:19:12: error: volatile object as actual is not allowed in SPARK (SPARK RM 7.1.3(9)) [E0004]
+variables1.adb:22:07: error: launch "gnatprove --explain=E0004" for more information
+variables1.adb:22:07: error: violation of pragma SPARK_Mode at line 2
+variables1.adb:22:07: error: volatile object in interfering context is not allowed in SPARK (SPARK RM 7.1.3(9)) [E0004]
+variables1.ads:17:13: error: nonvolatile function with effectively volatile parameter is not allowed in SPARK
+variables1.ads:17:13: error: violation of pragma SPARK_Mode at line 4
+variables1.ads:18:13: error: nonvolatile function with effectively volatile parameter is not allowed in SPARK
+variables1.ads:18:13: error: violation of pragma SPARK_Mode at line 4
+variables1.ads:19:13: error: function "Func_3" with volatile input global "OK_2" with effective reads is not allowed in SPARK
+variables1.ads:19:13: error: violation of pragma SPARK_Mode at line 4
+gnatprove: error during flow analysis and proof

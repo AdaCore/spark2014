@@ -31,8 +31,9 @@ po_t3.adb:1:14: error: variable "P_Int" defined at line 42
 po_t3.adb:2:35: error: "HIDDEN" is constituent of single protected type "P_Int"
 po_t3.adb:2:35: error: reference to variable "Hidden" cannot appear in this context
 gnatprove: error during generation of Global contracts
-po_t4.ads:19:07: error: component "PO" of non-synchronized type "MIX" cannot be synchronized
-gnatprove: error during generation of Global contracts
+po_t4.ads:19:07: error: synchronized component "PO" of non-synchronized type "MIX" is not allowed in SPARK
+po_t4.ads:19:07: error: violation of pragma SPARK_Mode at test.adc:1
+gnatprove: error during flow analysis and proof
 po_t5.adb:2:35: error: constituent of synchronized state "State" must be synchronized
 gnatprove: error during generation of Global contracts
 main.adb:8:29: error: "The_Protected_Int" is constituent of single protected type "P_Int"

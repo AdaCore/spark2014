@@ -13,8 +13,6 @@ package Discr_Checks with SPARK_Mode is
 
    procedure Check_Derived_Priv;
 
-   procedure Check_Subtype_Prot;
-
    procedure Check_Derived_Prot;
 
    procedure Check_Subtype_Task;

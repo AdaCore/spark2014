@@ -1,4 +1,4 @@
-volatile_types.adb:13:12: error: effectively volatile type "Local_Volatile_T" must be declared at library level [E0001]
+volatile_types.adb:13:12: error: effectively volatile type not at library level is not allowed in SPARK [E0001]
 volatile_types.adb:13:12: error: launch "gnatprove --explain=E0001" for more information
-volatile_types.ads:15:21: error: volatile object "Vol" with property Effective_Reads must have mode In_Out or Output
-gnatprove: error during generation of Global contracts
+volatile_types.adb:13:12: error: violation of pragma SPARK_Mode at test.adc:1
+gnatprove: error during flow analysis and proof
