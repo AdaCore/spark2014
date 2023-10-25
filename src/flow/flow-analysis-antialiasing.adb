@@ -66,7 +66,8 @@ package body Flow.Analysis.Antialiasing is
    function Aliasing (A,        B        : Node_Id;
                       Formal_A, Formal_B : Entity_Id)
                       return Computed_Aliasing_Result
-   with Pre => Is_Formal (Formal_A)
+   with Pre => (Is_Formal (Formal_A)
+                  or else Is_Function_With_Side_Effects (Formal_A))
                and then (No (Formal_B) or else Is_Formal (Formal_B));
    --  Returns if A and B alias
 
@@ -92,11 +93,13 @@ package body Flow.Analysis.Antialiasing is
       A_Formal : Entity_Id;
       B_Formal : Entity_Id;
       Status   : out Computed_Aliasing_Result)
-   with Pre => Is_Formal (A_Formal)
+   with Pre => (Is_Formal (A_Formal)
+                  or else Is_Function_With_Side_Effects (A_Formal))
                and then (No (B_Formal) or else Is_Formal (B_Formal));
    --  Checks the two nodes for aliasing and issues an error message if
-   --  appropriate. The formal for B can be Empty, in which case we assume it
-   --  is a global.
+   --  appropriate. The formal of A can be a function entity, which represents
+   --  the LHS of assignment that has call with side-effects as the RHS. The
+   --  formal for B can be Empty, which represents a global.
 
    procedure Update_Status (Status         : in out Computed_Aliasing_Result;
                             Current_Status : Computed_Aliasing_Result);
@@ -513,7 +516,7 @@ package body Flow.Analysis.Antialiasing is
       --  SPARK RM 6.4.2(3).
       declare
          A_Is_Immutable : constant Boolean :=
-           Is_Immutable (Formal_A);
+           Is_Formal (Formal_A) and then Is_Immutable (Formal_A);
          A_Is_Anonymous_Access_Constant_In : constant Boolean :=
            Ekind (Formal_A) = E_In_Parameter
            and then Is_Anonymous_Access_To_Constant (Etype (Formal_A));
@@ -533,8 +536,8 @@ package body Flow.Analysis.Antialiasing is
                      or else B_Present_And_Anonymous_Access_Constant_In)
          then
             Trace_Line ("   -> formal parameters A and B are both either " &
-                          "immutable or mode 'in' anonymous " &
-                          "access-to-constant.");
+                          "immutable  " &
+                          "or mode 'in' anonymous access-to-constant");
             return Impossible;
 
          --  Determine if at least one of the corresponding formal
@@ -557,6 +560,24 @@ package body Flow.Analysis.Antialiasing is
          elsif No (Formal_B) and then Ekind (B) = E_Abstract_State then
             Trace_Line ("   -> B is an abstract state");
             return Impossible;
+
+         --  SPARK RM 6.4.2(5): A call to a function with side-effects shall
+         --  only pass an actual parameter which potentially introduces
+         --  aliasing via parameter passing with an object referenced from the
+         --  [left-hand side] name of the enclosing assignment statement, when
+         --  the corresponding formal parameter is either immutable or of mode
+         --  in and of an anonymous access-to-constant type.
+
+         elsif Ekind (Formal_A) = E_Function
+           and then (B_Present_And_Immutable
+                     or else B_Present_And_Anonymous_Access_Constant_In)
+         then
+            Trace_Line
+              ("   -> function with side-effect and formal which is either" &
+                 "immutable " &
+                 "or mode 'in' anonymous access-to-constant");
+            return Impossible;
+
          end if;
       end;
 
@@ -839,15 +860,23 @@ package body Flow.Analysis.Antialiasing is
             Append (Msg, "non-aliasing of ");
       end case;
 
-      Append (Msg, "formal parameter");
-      if Present (B_Formal) then
-         Append (Msg, "s & and &");
-         B_Node := B_Formal;
+      if Is_Formal (A_Formal) then
+         if Present (B_Formal) then
+            Append (Msg, "formal parameters & and &");
+         else
+            Append (Msg, "formal parameter & and global &");
+         end if;
       else
-         --  ??? maybe have a special message for generated globals
-         Append (Msg, " & and global &");
-         B_Node := B;
+         pragma Assert (Is_Function_With_Side_Effects (A_Formal));
+
+         if Present (B_Formal) then
+            Append (Msg, "result of & and formal parameter &");
+         else
+            Append (Msg, "result of & and global &");
+         end if;
       end if;
+
+      B_Node := (if Present (B_Formal) then B_Formal else B);
 
       Append
         (Msg,
@@ -1009,6 +1038,22 @@ package body Flow.Analysis.Antialiasing is
                Update_Status (Status, Current_Status);
             end loop;
          end if;
+
+         --  For a call to function with side-effects, check the parameter
+         --  against the function entity and the LHS of the assignment
+         --  statement.
+
+         if Nkind (N) = N_Function_Call then
+            Check_Node_Against_Node
+              (FA       => FA,
+               A        => Name (Parent (N)),
+               B        => Actual,
+               A_Formal => Get_Called_Entity (N),
+               B_Formal => Formal,
+               Status   => Current_Status);
+
+            Update_Status (Status, Current_Status);
+         end if;
       end Check_Parameter;
 
       ---------------------
@@ -1064,6 +1109,24 @@ package body Flow.Analysis.Antialiasing is
       --  Check formal parameters against other parameters and globals
 
       Check_Aliasing_In_Call (N);
+
+      --  SPARK RM 6.4.2(6): A call to a function with side-effects shall
+      --  not reference a ``global_item`` of mode Output or In_Out which
+      --  potentially introduces aliasing via parameter passing with an object
+      --  referenced from the [left-hand side] name of the enclosing assignment
+      --  statement.
+
+      if Nkind (N) = N_Function_Call then
+         for G of Writes_Or_Reads loop
+            Check_Node_Against_Node
+              (FA,
+               A        => Name (Parent (N)),
+               B        => G,
+               A_Formal => Called_Thing,
+               B_Formal => Empty,
+               Status   => Status);
+         end loop;
+      end if;
 
       Aliasing_Status.Insert (N, Status);
 
