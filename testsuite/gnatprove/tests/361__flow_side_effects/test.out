@@ -29,3 +29,7 @@ deps.adb:68:04: info: initialization of "I" proved
 p.ads:2:13: info: implicit aspect Always_Terminates on "Init" has been proved, subprogram will terminate
 p.ads:2:13: info: initialization of "X" constituent of "State" proved
 p.ads:3:26: info: data dependencies proved
+q.ads:3:13: info: implicit aspect Always_Terminates on "Init" has been proved, subprogram will terminate
+q.ads:3:13: medium: ghost subprogram "Init" cannot have non-ghost global output "X" (SPARK RM 6.9(20))
+q.ads:4:26: info: data dependencies proved
+q.ads:4:47: info: initialization of "X" proved

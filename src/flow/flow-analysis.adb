@@ -4295,15 +4295,16 @@ package body Flow.Analysis is
       end loop;
    end Check_Depends_Contract;
 
-   -----------------------------------
-   -- Check_Ghost_Procedure_Outputs --
-   -----------------------------------
+   ------------------------------------
+   -- Check_Ghost_Subprogram_Outputs --
+   ------------------------------------
 
-   procedure Check_Ghost_Procedure_Outputs (FA : in out Flow_Analysis_Graphs)
+   procedure Check_Ghost_Subprogram_Outputs (FA : in out Flow_Analysis_Graphs)
    is
       Globals : Global_Flow_Ids;
    begin
-      if Ekind (FA.Spec_Entity) = E_Procedure
+      if (Ekind (FA.Spec_Entity) = E_Procedure
+            or else Is_Function_With_Side_Effects (FA.Spec_Entity))
         and then Is_Ghost_Entity (FA.Spec_Entity)
       then
          Get_Globals (Subprogram => FA.Spec_Entity,
@@ -4314,7 +4315,7 @@ package body Flow.Analysis is
          for Output of Globals.Outputs loop
             if not Is_Ghost_Entity (Output) then
                Error_Msg_Flow (FA       => FA,
-                               Msg      => "ghost procedure & cannot have " &
+                               Msg      => "ghost subprogram & cannot have " &
                                            "non-ghost global output &",
                                N        => FA.Spec_Entity,
                                F1       => Direct_Mapping_Id
@@ -4326,7 +4327,7 @@ package body Flow.Analysis is
             end if;
          end loop;
       end if;
-   end Check_Ghost_Procedure_Outputs;
+   end Check_Ghost_Subprogram_Outputs;
 
    ------------------------
    -- Check_Hidden_State --

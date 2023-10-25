@@ -251,7 +251,7 @@ package VC_Kinds is
       --  A Proof_In variable has been used in the computation of an export
 
       Ghost_Wrong,
-      --  A ghost procedure has a non-ghost global output
+      --  A ghost subprogram has a non-ghost global output
 
       Global_Missing,
       --  There is a variable missing from the Globals

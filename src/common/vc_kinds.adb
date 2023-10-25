@@ -478,7 +478,7 @@ package body VC_Kinds is
          when Export_Depends_On_Proof_In                  =>
             "Subprogram output depends on a Proof_In global.",
          when Ghost_Wrong                                 =>
-            "A ghost procedure has a non-ghost global output.",
+            "A ghost subprogram has a non-ghost global output.",
          when Critical_Global_Missing
             | Global_Missing                              =>
             "A Global or Initializes contract fails to mention some objects.",
@@ -1374,7 +1374,7 @@ package body VC_Kinds is
          when Export_Depends_On_Proof_In                  =>
             "subprogram output depends on a Proof_In global",
          when Ghost_Wrong                                 =>
-            "non-ghost output of ghost procedure",
+            "non-ghost output of ghost subprogram",
          when Global_Missing                              =>
             "incomplete Global or Initializes contract",
          when Global_Wrong                                =>
