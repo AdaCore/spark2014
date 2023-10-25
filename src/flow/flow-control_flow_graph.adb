@@ -518,8 +518,7 @@ package body Flow.Control_Flow_Graph is
       FA  : in out Flow_Analysis_Graphs;
       CM  : in out Connection_Maps.Map;
       Ctx : in out Context)
-   with Pre => Nkind (N) in N_Procedure_Call_Statement |
-                            N_Entry_Call_Statement;
+   with Pre => Nkind (N) in N_Subprogram_Call | N_Entry_Call_Statement;
    --  Deal with procedure and entry calls. We follow the ideas of the SDG
    --  paper by Horowitz, Reps and Binkley and have a separate vertex for
    --  each parameter (if a paramater is an in out, we have two vertices
@@ -988,8 +987,7 @@ package body Flow.Control_Flow_Graph is
       FA                  : in out Flow_Analysis_Graphs;
       CM                  : in out Connection_Maps.Map;
       Ctx                 : in out Context)
-   with Pre => Nkind (Callsite) in N_Procedure_Call_Statement |
-                                   N_Entry_Call_Statement;
+   with Pre => Nkind (Callsite) in N_Subprogram_Call | N_Entry_Call_Statement;
    --  Similar to Process_Subprogram_Globals, this deals with the actuals
    --  provided in a subprogram call. The vertices are created but not linked
    --  up; as above, they are appended to Ins and various variants of Outs,
@@ -1025,8 +1023,7 @@ package body Flow.Control_Flow_Graph is
       FA       : in out Flow_Analysis_Graphs;
       CM       : in out Connection_Maps.Map;
       Ctx      : in out Context)
-   with Pre => Nkind (Callsite) in N_Procedure_Call_Statement |
-                                   N_Entry_Call_Statement;
+   with Pre => Nkind (Callsite) in N_Subprogram_Call | N_Entry_Call_Statement;
    --  This procedures creates the in and out vertices for a
    --  subprogram's globals. They are not connected to anything,
    --  instead the vertices are appended to Ins and Outs.
@@ -1618,6 +1615,22 @@ package body Flow.Control_Flow_Graph is
          Generating_Globals => FA.Generating_Globals);
 
       FA.Proof_Dependencies.Union (Get_Reclamation_Functions (LHS_Type));
+
+      --  Assignment with a function that has side-effects is handled like a
+      --  subprogram call: the function entity acts like a formal parameter
+      --  of mode OUT and the LHS acts like the corresponding actual parameter.
+
+      if Nkind (Expression (N)) = N_Function_Call
+        and then
+          Is_Function_With_Side_Effects (Get_Called_Entity (Expression (N)))
+      then
+         Do_Call_Statement (Expression (N), FA, CM, Ctx);
+         Move_Connections
+           (CM,
+            Dst => Union_Id (N),
+            Src => Union_Id (Expression (N)));
+         return;
+      end if;
 
       --  First we need to determine the root name where we assign to, and
       --  whether this is a partial or full assignment. This mirror the
@@ -6354,7 +6367,9 @@ package body Flow.Control_Flow_Graph is
       Called_Thing : constant Entity_Id := Get_Called_Entity (Callsite);
 
       procedure Handle_Parameter (Formal : Entity_Id; Actual : Node_Id)
-      with Pre => Is_Formal (Formal) and then Nkind (Actual) in N_Subexpr;
+        with Pre => (Is_Formal (Formal)
+                       or else Is_Function_With_Side_Effects (Formal))
+                      and then Nkind (Actual) in N_Subexpr;
 
       ----------------------
       -- Handle_Parameter --
@@ -6384,7 +6399,7 @@ package body Flow.Control_Flow_Graph is
                Formal                       => Formal,
                In_Vertex                    => True,
                Discriminants_Or_Bounds_Only =>
-                 Ekind (Formal) = E_Out_Parameter,
+                 Ekind (Formal) in E_Out_Parameter | E_Function,
                Subp_Calls                   => Funcalls,
                Vertex_Ctx                   => Ctx.Vertex_Ctx,
                E_Loc                        => Actual),
@@ -6393,7 +6408,9 @@ package body Flow.Control_Flow_Graph is
          Ins.Append (V);
 
          --  Build an out vertex
-         if Ekind (Formal) in E_In_Out_Parameter | E_Out_Parameter
+         if Ekind (Formal) in E_In_Out_Parameter
+                            | E_Out_Parameter
+                            | E_Function
            or else Is_Writable_Parameter (Formal)
          then
             FA.Proof_Dependencies.Union
@@ -6434,6 +6451,17 @@ package body Flow.Control_Flow_Graph is
 
    begin
       Handle_Parameters (Callsite);
+
+      --  Function call is only processed for assignment where the call
+      --  occurs immediately as the RHS and the function has side effects. The
+      --  function entity acts as a formal parameter and the LHS acts as the
+      --  actual parameter.
+
+      if Nkind (Callsite) = N_Function_Call then
+         Handle_Parameter
+           (Formal => Get_Called_Entity (Callsite),
+            Actual => Name (Parent (Callsite)));
+      end if;
 
       --  Create vertices for the implicit formal parameter
       if Ekind (Scope (Called_Thing)) = E_Protected_Type then

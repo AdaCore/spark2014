@@ -666,8 +666,7 @@ package body Flow.Analysis is
    --  Unreferenced or Unused.
 
    function Is_Dummy_Call (N : Node_Id; Scop : Flow_Scope) return Boolean
-   with Pre => Nkind (N) in N_Procedure_Call_Statement
-                          | N_Entry_Call_Statement;
+   with Pre => Nkind (N) in N_Subprogram_Call | N_Entry_Call_Statement;
    --  Returns True iff N is a call to subprogram with no parameters
    --  whatsoever (i.e. no formal parameters, no implicit parameters and no
    --  globals). Such a subprogram doesn't read or write anything, so from
