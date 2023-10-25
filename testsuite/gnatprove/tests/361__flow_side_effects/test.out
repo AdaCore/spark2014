@@ -33,3 +33,5 @@ q.ads:3:13: info: implicit aspect Always_Terminates on "Init" has been proved, s
 q.ads:3:13: medium: ghost subprogram "Init" cannot have non-ghost global output "X" (SPARK RM 6.9(20))
 q.ads:4:26: info: data dependencies proved
 q.ads:4:47: info: initialization of "X" proved
+r.ads:3:13: high: constant after elaboration "X" must not be an output of subprogram "Init" (SPARK RM 6.1.4(22))
+r.ads:3:13: info: implicit aspect Always_Terminates on "Init" has been proved, subprogram will terminate

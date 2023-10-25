@@ -5388,10 +5388,12 @@ package body Flow.Analysis is
       Globals : Global_Flow_Ids;
 
    begin
-      --  Ignore packages (which have no Global contracts) and functions (which
-      --  have no global outputs).
+      --  Ignore packages (which have no Global contracts) and functions with
+      --  no side-effects (which have no global outputs).
 
-      if Ekind (FA.Spec_Entity) in E_Procedure | E_Entry | E_Task_Type then
+      if Ekind (FA.Spec_Entity) in E_Procedure | E_Entry | E_Task_Type
+        or else Is_Function_With_Side_Effects (FA.Spec_Entity)
+      then
 
          Get_Globals (Subprogram => FA.Spec_Entity,
                       Scope      => FA.B_Scope,
