@@ -1267,7 +1267,7 @@ package body Gnat2Why.Types is
       Check_Eq      : constant Boolean :=
         Is_Base_Type (E) and then not Use_Predefined_Equality_For_Type (E);
       Check_Aggr    : constant Boolean :=
-        Is_Base_Type (E) and then Has_Aggregate_Annotation (E);
+        Needs_Check_For_Aggregate_Annotation (E);
       Need_Check    : constant Boolean :=
         Check_Default or else Check_Iter or else Check_Subp or else Check_Eq
         or else Check_Aggr;
