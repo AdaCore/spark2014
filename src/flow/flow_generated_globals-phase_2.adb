@@ -32,7 +32,6 @@ with ALI;                              use ALI;
 with Namet;                            use Namet;
 with Osint;                            use Osint;
 with Output;                           use Output;
-with Sem_Util;                         use Sem_Util;
 
 with Call;                             use Call;
 with Debug.Timing;                     use Debug.Timing;

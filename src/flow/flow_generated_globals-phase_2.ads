@@ -28,6 +28,7 @@ with Einfo.Utils;                        use Einfo.Utils;
 with Flow_Dependency_Maps;               use Flow_Dependency_Maps;
 with Sinfo.Nodes;                        use Sinfo.Nodes;
 with Snames;                             use Snames;
+with Sem_Util;                           use Sem_Util;
 with SPARK_Definition;                   use SPARK_Definition;
 with SPARK_Util;                         use SPARK_Util;
 with SPARK_Util.Subprograms;             use SPARK_Util.Subprograms;
@@ -334,14 +335,16 @@ package Flow_Generated_Globals.Phase_2 is
                                                        return Boolean
    with Pre => GG_Has_Been_Generated and then
                Entity_In_SPARK (E) and then
-               Ekind (E) in E_Entry | E_Procedure;
+               (Ekind (E) in E_Entry | E_Procedure
+                 or else Is_Function_With_Side_Effects (E));
    --  Returns True iff the E calls potentially nonreturning subprograms,
    --  trusting their Always_Terminates aspects.
 
    function Is_Directly_Nonreturning (E : Entity_Id) return Boolean
    with Pre => GG_Has_Been_Generated and then
                Entity_In_SPARK (E) and then
-               Ekind (E) in E_Entry | E_Procedure;
+               (Ekind (E) in E_Entry | E_Procedure
+                 or else Is_Function_With_Side_Effects (E));
    --  Returns True iff E does not return directly because of a
    --  non-returning statement.
    --
@@ -352,7 +355,8 @@ package Flow_Generated_Globals.Phase_2 is
                                                   return Boolean
    with Pre => GG_Has_Been_Generated and then
                Entity_In_SPARK (E) and then
-               Ekind (E) in E_Entry | E_Procedure;
+               (Ekind (E) in E_Entry | E_Procedure
+                 or else Is_Function_With_Side_Effects (E));
    --  Returns True iff subprogram E is potentially nonreturning, i.e.
    --  * is a procedure annotated with pragma No_Return
    --  * contains possibly nonterminating loops

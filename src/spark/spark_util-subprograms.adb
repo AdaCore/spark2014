@@ -865,7 +865,8 @@ package body SPARK_Util.Subprograms is
    function Has_Implicit_Always_Terminates
      (E : Entity_Id) return Boolean
    is
-     (Ekind (E) in E_Function | E_Package
+     ((Ekind (E) = E_Function and then not Is_Function_With_Side_Effects (E))
+        or else Ekind (E) = E_Package
         or else Has_Automatic_Instantiation_Annotation (E));
 
    ---------------------------
