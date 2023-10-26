@@ -1,0 +1,462 @@
+test_partial_maps.adb:11:09: info: Container_Aggregates annotation proved (CVC5: 1 VC)
+test_partial_maps.adb:11:09: info: Container_Aggregates annotation proved (CVC5: 1 VC)
+test_partial_maps.adb:11:09: info: Container_Aggregates annotation proved (CVC5: 1 VC)
+test_partial_maps.adb:11:09: info: Container_Aggregates annotation proved (CVC5: 1 VC)
+test_partial_maps.adb:11:09: info: Container_Aggregates annotation proved (CVC5: 3 VC)
+test_partial_maps.adb:11:09: info: after a call to Empty at test_partial_maps.adb:13
+test_partial_maps.adb:11:09: info: after a call to Empty at test_partial_maps.adb:13
+test_partial_maps.adb:11:09: info: after a call to Insert at test_partial_maps.adb:18
+test_partial_maps.adb:11:09: info: after a call to Insert at test_partial_maps.adb:18
+test_partial_maps.adb:11:09: info: after a call to Insert at test_partial_maps.adb:18
+test_partial_maps.adb:11:09: info: when establishing invariant on Has_Key at test_partial_maps.adb:33
+test_partial_maps.adb:11:09: info: when establishing invariant on Length at test_partial_maps.adb:49
+test_partial_maps.adb:11:09: info: when reestablishing invariant on Get at test_partial_maps.adb:38
+test_partial_maps.adb:11:09: info: when reestablishing invariant on Has_Key at test_partial_maps.adb:33
+test_partial_maps.adb:11:09: info: when reestablishing invariant on Length at test_partial_maps.adb:49
+test_partial_maps.adb:20:16: info: during checks for container aggregates at test_partial_maps.adb:11
+test_partial_maps.adb:20:16: info: precondition proved (CVC5: 1 VC)
+test_partial_maps.adb:68:09: info: Container_Aggregates annotation proved (CVC5: 1 VC)
+test_partial_maps.adb:68:09: info: Container_Aggregates annotation proved (CVC5: 1 VC)
+test_partial_maps.adb:68:09: info: Container_Aggregates annotation proved (CVC5: 1 VC)
+test_partial_maps.adb:68:09: info: Container_Aggregates annotation proved (CVC5: 3 VC)
+test_partial_maps.adb:68:09: info: after a call to Empty at test_partial_maps.adb:70
+test_partial_maps.adb:68:09: info: after a call to Insert at test_partial_maps.adb:74
+test_partial_maps.adb:68:09: info: after a call to Insert at test_partial_maps.adb:74
+test_partial_maps.adb:68:09: info: after a call to Insert at test_partial_maps.adb:74
+test_partial_maps.adb:68:09: info: when establishing invariant on Has_Key at test_partial_maps.adb:89
+test_partial_maps.adb:68:09: info: when reestablishing invariant on Get at test_partial_maps.adb:94
+test_partial_maps.adb:68:09: info: when reestablishing invariant on Has_Key at test_partial_maps.adb:89
+test_partial_maps.adb:68:09: info: when reestablishing invariant on Length at test_partial_maps.adb:105
+test_partial_maps.adb:68:09: medium: Container_Aggregates annotation might be incorrect
+test_partial_maps.adb:68:09: medium: after a call to Empty at test_partial_maps.adb:70
+test_partial_maps.adb:68:09: medium: when establishing invariant on Length at test_partial_maps.adb:105
+test_partial_maps.adb:76:16: info: during checks for container aggregates at test_partial_maps.adb:68
+test_partial_maps.adb:76:16: info: precondition proved (CVC5: 1 VC)
+test_partial_maps.adb:124:09: info: Container_Aggregates annotation proved (CVC5: 1 VC)
+test_partial_maps.adb:124:09: info: Container_Aggregates annotation proved (CVC5: 1 VC)
+test_partial_maps.adb:124:09: info: Container_Aggregates annotation proved (CVC5: 1 VC)
+test_partial_maps.adb:124:09: info: Container_Aggregates annotation proved (CVC5: 3 VC)
+test_partial_maps.adb:124:09: info: after a call to Empty at test_partial_maps.adb:126
+test_partial_maps.adb:124:09: info: after a call to Insert at test_partial_maps.adb:130
+test_partial_maps.adb:124:09: info: after a call to Insert at test_partial_maps.adb:130
+test_partial_maps.adb:124:09: info: after a call to Insert at test_partial_maps.adb:130
+test_partial_maps.adb:124:09: info: when establishing invariant on Length at test_partial_maps.adb:161
+test_partial_maps.adb:124:09: info: when reestablishing invariant on Get at test_partial_maps.adb:150
+test_partial_maps.adb:124:09: info: when reestablishing invariant on Has_Key at test_partial_maps.adb:145
+test_partial_maps.adb:124:09: info: when reestablishing invariant on Length at test_partial_maps.adb:161
+test_partial_maps.adb:124:09: medium: Container_Aggregates annotation might be incorrect
+test_partial_maps.adb:124:09: medium: after a call to Empty at test_partial_maps.adb:126
+test_partial_maps.adb:124:09: medium: when establishing invariant on Has_Key at test_partial_maps.adb:145
+test_partial_maps.adb:132:16: info: during checks for container aggregates at test_partial_maps.adb:124
+test_partial_maps.adb:132:16: info: precondition proved (CVC5: 1 VC)
+test_partial_maps.adb:180:09: info: Container_Aggregates annotation proved (CVC5: 1 VC)
+test_partial_maps.adb:180:09: info: Container_Aggregates annotation proved (CVC5: 1 VC)
+test_partial_maps.adb:180:09: info: Container_Aggregates annotation proved (CVC5: 1 VC)
+test_partial_maps.adb:180:09: info: Container_Aggregates annotation proved (CVC5: 3 VC)
+test_partial_maps.adb:180:09: info: after a call to Empty at test_partial_maps.adb:182
+test_partial_maps.adb:180:09: info: after a call to Empty at test_partial_maps.adb:182
+test_partial_maps.adb:180:09: info: after a call to Insert at test_partial_maps.adb:187
+test_partial_maps.adb:180:09: info: after a call to Insert at test_partial_maps.adb:187
+test_partial_maps.adb:180:09: info: when establishing invariant on Has_Key at test_partial_maps.adb:201
+test_partial_maps.adb:180:09: info: when establishing invariant on Length at test_partial_maps.adb:217
+test_partial_maps.adb:180:09: info: when reestablishing invariant on Get at test_partial_maps.adb:206
+test_partial_maps.adb:180:09: info: when reestablishing invariant on Has_Key at test_partial_maps.adb:201
+test_partial_maps.adb:180:09: medium: Container_Aggregates annotation might be incorrect
+test_partial_maps.adb:180:09: medium: after a call to Insert at test_partial_maps.adb:187
+test_partial_maps.adb:180:09: medium: when reestablishing invariant on Length at test_partial_maps.adb:217
+test_partial_maps.adb:189:16: info: during checks for container aggregates at test_partial_maps.adb:180
+test_partial_maps.adb:189:16: info: precondition proved (CVC5: 1 VC)
+test_partial_maps.adb:236:09: info: Container_Aggregates annotation proved (CVC5: 1 VC)
+test_partial_maps.adb:236:09: info: Container_Aggregates annotation proved (CVC5: 1 VC)
+test_partial_maps.adb:236:09: info: Container_Aggregates annotation proved (CVC5: 1 VC)
+test_partial_maps.adb:236:09: info: Container_Aggregates annotation proved (CVC5: 1 VC)
+test_partial_maps.adb:236:09: info: after a call to Empty at test_partial_maps.adb:238
+test_partial_maps.adb:236:09: info: after a call to Empty at test_partial_maps.adb:238
+test_partial_maps.adb:236:09: info: after a call to Insert at test_partial_maps.adb:243
+test_partial_maps.adb:236:09: info: after a call to Insert at test_partial_maps.adb:243
+test_partial_maps.adb:236:09: info: when establishing invariant on Has_Key at test_partial_maps.adb:257
+test_partial_maps.adb:236:09: info: when establishing invariant on Length at test_partial_maps.adb:273
+test_partial_maps.adb:236:09: info: when reestablishing invariant on Get at test_partial_maps.adb:262
+test_partial_maps.adb:236:09: info: when reestablishing invariant on Length at test_partial_maps.adb:273
+test_partial_maps.adb:236:09: medium: Container_Aggregates annotation might be incorrect
+test_partial_maps.adb:236:09: medium: after a call to Insert at test_partial_maps.adb:243
+test_partial_maps.adb:236:09: medium: when reestablishing invariant on Has_Key at test_partial_maps.adb:257
+test_partial_maps.adb:245:16: info: during checks for container aggregates at test_partial_maps.adb:236
+test_partial_maps.adb:245:16: info: precondition proved (CVC5: 1 VC)
+test_partial_maps.adb:292:09: info: Container_Aggregates annotation proved (CVC5: 1 VC)
+test_partial_maps.adb:292:09: info: Container_Aggregates annotation proved (CVC5: 1 VC)
+test_partial_maps.adb:292:09: info: Container_Aggregates annotation proved (CVC5: 1 VC)
+test_partial_maps.adb:292:09: info: Container_Aggregates annotation proved (CVC5: 1 VC)
+test_partial_maps.adb:292:09: info: after a call to Empty at test_partial_maps.adb:294
+test_partial_maps.adb:292:09: info: after a call to Empty at test_partial_maps.adb:294
+test_partial_maps.adb:292:09: info: after a call to Insert at test_partial_maps.adb:299
+test_partial_maps.adb:292:09: info: after a call to Insert at test_partial_maps.adb:299
+test_partial_maps.adb:292:09: info: when establishing invariant on Has_Key at test_partial_maps.adb:312
+test_partial_maps.adb:292:09: info: when establishing invariant on Length at test_partial_maps.adb:328
+test_partial_maps.adb:292:09: info: when reestablishing invariant on Get at test_partial_maps.adb:317
+test_partial_maps.adb:292:09: info: when reestablishing invariant on Length at test_partial_maps.adb:328
+test_partial_maps.adb:292:09: medium: Container_Aggregates annotation might be incorrect
+test_partial_maps.adb:292:09: medium: after a call to Insert at test_partial_maps.adb:299
+test_partial_maps.adb:292:09: medium: when reestablishing invariant on Has_Key at test_partial_maps.adb:312
+test_partial_maps.adb:301:16: info: during checks for container aggregates at test_partial_maps.adb:292
+test_partial_maps.adb:301:16: info: precondition proved (CVC5: 1 VC)
+test_partial_maps.adb:347:09: info: Container_Aggregates annotation proved (CVC5: 1 VC)
+test_partial_maps.adb:347:09: info: Container_Aggregates annotation proved (CVC5: 1 VC)
+test_partial_maps.adb:347:09: info: Container_Aggregates annotation proved (CVC5: 1 VC)
+test_partial_maps.adb:347:09: info: Container_Aggregates annotation proved (CVC5: 1 VC)
+test_partial_maps.adb:347:09: info: after a call to Empty at test_partial_maps.adb:349
+test_partial_maps.adb:347:09: info: after a call to Empty at test_partial_maps.adb:349
+test_partial_maps.adb:347:09: info: after a call to Insert at test_partial_maps.adb:354
+test_partial_maps.adb:347:09: info: after a call to Insert at test_partial_maps.adb:354
+test_partial_maps.adb:347:09: info: when establishing invariant on Has_Key at test_partial_maps.adb:367
+test_partial_maps.adb:347:09: info: when establishing invariant on Length at test_partial_maps.adb:383
+test_partial_maps.adb:347:09: info: when reestablishing invariant on Get at test_partial_maps.adb:372
+test_partial_maps.adb:347:09: info: when reestablishing invariant on Length at test_partial_maps.adb:383
+test_partial_maps.adb:347:09: medium: Container_Aggregates annotation might be incorrect
+test_partial_maps.adb:347:09: medium: after a call to Insert at test_partial_maps.adb:354
+test_partial_maps.adb:347:09: medium: when reestablishing invariant on Has_Key at test_partial_maps.adb:367
+test_partial_maps.adb:356:16: info: during checks for container aggregates at test_partial_maps.adb:347
+test_partial_maps.adb:356:16: info: precondition proved (CVC5: 1 VC)
+test_partial_maps.adb:402:09: info: Container_Aggregates annotation proved (CVC5: 1 VC)
+test_partial_maps.adb:402:09: info: Container_Aggregates annotation proved (CVC5: 1 VC)
+test_partial_maps.adb:402:09: info: Container_Aggregates annotation proved (CVC5: 1 VC)
+test_partial_maps.adb:402:09: info: Container_Aggregates annotation proved (CVC5: 1 VC)
+test_partial_maps.adb:402:09: info: Container_Aggregates annotation proved (CVC5: 3 VC)
+test_partial_maps.adb:402:09: info: after a call to Empty at test_partial_maps.adb:404
+test_partial_maps.adb:402:09: info: after a call to Empty at test_partial_maps.adb:404
+test_partial_maps.adb:402:09: info: after a call to Insert at test_partial_maps.adb:409
+test_partial_maps.adb:402:09: info: after a call to Insert at test_partial_maps.adb:409
+test_partial_maps.adb:402:09: info: after a call to Insert at test_partial_maps.adb:409
+test_partial_maps.adb:402:09: info: when establishing invariant on Has_Key at test_partial_maps.adb:423
+test_partial_maps.adb:402:09: info: when establishing invariant on Length at test_partial_maps.adb:439
+test_partial_maps.adb:402:09: info: when reestablishing invariant on Get at test_partial_maps.adb:428
+test_partial_maps.adb:402:09: info: when reestablishing invariant on Has_Key at test_partial_maps.adb:423
+test_partial_maps.adb:402:09: info: when reestablishing invariant on Length at test_partial_maps.adb:439
+test_partial_maps.adb:402:09: medium: Container_Aggregates annotation might be incorrect
+test_partial_maps.adb:402:09: medium: after a call to Insert at test_partial_maps.adb:409
+test_partial_maps.adb:402:09: medium: when reestablishing invariant on Get at test_partial_maps.adb:428
+test_partial_maps.adb:411:16: info: during checks for container aggregates at test_partial_maps.adb:402
+test_partial_maps.adb:411:16: info: precondition proved (CVC5: 1 VC)
+test_partial_maps.adb:458:09: info: Container_Aggregates annotation proved (CVC5: 1 VC)
+test_partial_maps.adb:458:09: info: Container_Aggregates annotation proved (CVC5: 1 VC)
+test_partial_maps.adb:458:09: info: Container_Aggregates annotation proved (CVC5: 1 VC)
+test_partial_maps.adb:458:09: info: Container_Aggregates annotation proved (CVC5: 1 VC)
+test_partial_maps.adb:458:09: info: Container_Aggregates annotation proved (CVC5: 3 VC)
+test_partial_maps.adb:458:09: info: after a call to Empty at test_partial_maps.adb:460
+test_partial_maps.adb:458:09: info: after a call to Empty at test_partial_maps.adb:460
+test_partial_maps.adb:458:09: info: after a call to Insert at test_partial_maps.adb:465
+test_partial_maps.adb:458:09: info: after a call to Insert at test_partial_maps.adb:465
+test_partial_maps.adb:458:09: info: after a call to Insert at test_partial_maps.adb:465
+test_partial_maps.adb:458:09: info: when establishing invariant on Has_Key at test_partial_maps.adb:478
+test_partial_maps.adb:458:09: info: when establishing invariant on Length at test_partial_maps.adb:494
+test_partial_maps.adb:458:09: info: when reestablishing invariant on Get at test_partial_maps.adb:483
+test_partial_maps.adb:458:09: info: when reestablishing invariant on Has_Key at test_partial_maps.adb:478
+test_partial_maps.adb:458:09: info: when reestablishing invariant on Length at test_partial_maps.adb:494
+test_partial_maps.adb:458:09: medium: Container_Aggregates annotation might be incorrect
+test_partial_maps.adb:458:09: medium: after a call to Insert at test_partial_maps.adb:465
+test_partial_maps.adb:458:09: medium: when reestablishing invariant on Get at test_partial_maps.adb:483
+test_partial_maps.adb:467:16: info: during checks for container aggregates at test_partial_maps.adb:458
+test_partial_maps.adb:467:16: info: precondition proved (CVC5: 1 VC)
+test_partial_maps.adb:513:09: info: Container_Aggregates annotation proved (CVC5: 1 VC)
+test_partial_maps.adb:513:09: info: Container_Aggregates annotation proved (CVC5: 1 VC)
+test_partial_maps.adb:513:09: info: Container_Aggregates annotation proved (CVC5: 1 VC)
+test_partial_maps.adb:513:09: info: Container_Aggregates annotation proved (CVC5: 1 VC)
+test_partial_maps.adb:513:09: info: Container_Aggregates annotation proved (CVC5: 3 VC)
+test_partial_maps.adb:513:09: info: after a call to Empty at test_partial_maps.adb:519
+test_partial_maps.adb:513:09: info: after a call to Empty at test_partial_maps.adb:519
+test_partial_maps.adb:513:09: info: after a call to Insert at test_partial_maps.adb:525
+test_partial_maps.adb:513:09: info: after a call to Insert at test_partial_maps.adb:525
+test_partial_maps.adb:513:09: info: after a call to Insert at test_partial_maps.adb:525
+test_partial_maps.adb:513:09: info: when establishing invariant on Has_Key at test_partial_maps.adb:540
+test_partial_maps.adb:513:09: info: when establishing invariant on Length at test_partial_maps.adb:556
+test_partial_maps.adb:513:09: info: when reestablishing invariant on Get at test_partial_maps.adb:545
+test_partial_maps.adb:513:09: info: when reestablishing invariant on Has_Key at test_partial_maps.adb:540
+test_partial_maps.adb:513:09: info: when reestablishing invariant on Length at test_partial_maps.adb:556
+test_partial_maps.adb:522:16: medium: during checks for container aggregates at test_partial_maps.adb:513
+test_partial_maps.adb:522:16: medium: precondition might fail
+test_partial_maps.adb:527:16: info: during checks for container aggregates at test_partial_maps.adb:513
+test_partial_maps.adb:527:16: info: precondition proved (CVC5: 1 VC)
+test_partial_maps.adb:575:09: info: Container_Aggregates annotation proved (CVC5: 1 VC)
+test_partial_maps.adb:575:09: info: Container_Aggregates annotation proved (CVC5: 1 VC)
+test_partial_maps.adb:575:09: info: Container_Aggregates annotation proved (CVC5: 1 VC)
+test_partial_maps.adb:575:09: info: Container_Aggregates annotation proved (CVC5: 1 VC)
+test_partial_maps.adb:575:09: info: Container_Aggregates annotation proved (CVC5: 3 VC)
+test_partial_maps.adb:575:09: info: after a call to Empty at test_partial_maps.adb:581
+test_partial_maps.adb:575:09: info: after a call to Empty at test_partial_maps.adb:581
+test_partial_maps.adb:575:09: info: after a call to Insert at test_partial_maps.adb:586
+test_partial_maps.adb:575:09: info: after a call to Insert at test_partial_maps.adb:586
+test_partial_maps.adb:575:09: info: after a call to Insert at test_partial_maps.adb:586
+test_partial_maps.adb:575:09: info: when establishing invariant on Has_Key at test_partial_maps.adb:601
+test_partial_maps.adb:575:09: info: when establishing invariant on Length at test_partial_maps.adb:617
+test_partial_maps.adb:575:09: info: when reestablishing invariant on Get at test_partial_maps.adb:606
+test_partial_maps.adb:575:09: info: when reestablishing invariant on Has_Key at test_partial_maps.adb:601
+test_partial_maps.adb:575:09: info: when reestablishing invariant on Length at test_partial_maps.adb:617
+test_partial_maps.adb:588:35: medium: during checks for container aggregates at test_partial_maps.adb:575
+test_partial_maps.adb:588:35: medium: precondition might fail, cannot prove Pred (X, K, E)
+test_sequences.adb:15:09: info: Container_Aggregates annotation proved (CVC5: 1 VC)
+test_sequences.adb:15:09: info: Container_Aggregates annotation proved (CVC5: 1 VC)
+test_sequences.adb:15:09: info: Container_Aggregates annotation proved (CVC5: 1 VC)
+test_sequences.adb:15:09: info: after a call to Append at test_sequences.adb:21
+test_sequences.adb:15:09: info: after a call to Append at test_sequences.adb:21
+test_sequences.adb:15:09: info: after a call to Empty at test_sequences.adb:17
+test_sequences.adb:15:09: info: when establishing invariant on Last at test_sequences.adb:37
+test_sequences.adb:15:09: info: when reestablishing invariant on Get at test_sequences.adb:31
+test_sequences.adb:15:09: info: when reestablishing invariant on Last at test_sequences.adb:37
+test_sequences.adb:24:25: info: during checks for container aggregates at test_sequences.adb:15
+test_sequences.adb:24:25: info: precondition proved (CVC5: 1 VC)
+test_sequences.adb:65:09: info: Container_Aggregates annotation proved (CVC5: 1 VC)
+test_sequences.adb:65:09: info: Container_Aggregates annotation proved (CVC5: 1 VC)
+test_sequences.adb:65:09: info: after a call to Append at test_sequences.adb:70
+test_sequences.adb:65:09: info: after a call to Append at test_sequences.adb:70
+test_sequences.adb:65:09: info: when reestablishing invariant on Get at test_sequences.adb:80
+test_sequences.adb:65:09: info: when reestablishing invariant on Last at test_sequences.adb:86
+test_sequences.adb:65:09: medium: Container_Aggregates annotation might be incorrect
+test_sequences.adb:65:09: medium: after a call to Empty at test_sequences.adb:67
+test_sequences.adb:65:09: medium: when establishing invariant on Last at test_sequences.adb:86
+test_sequences.adb:73:25: info: during checks for container aggregates at test_sequences.adb:65
+test_sequences.adb:73:25: info: precondition proved (CVC5: 1 VC)
+test_sequences.adb:114:09: info: Container_Aggregates annotation proved (CVC5: 1 VC)
+test_sequences.adb:114:09: info: Container_Aggregates annotation proved (CVC5: 1 VC)
+test_sequences.adb:114:09: info: after a call to Append at test_sequences.adb:120
+test_sequences.adb:114:09: info: after a call to Empty at test_sequences.adb:116
+test_sequences.adb:114:09: info: when establishing invariant on Last at test_sequences.adb:135
+test_sequences.adb:114:09: info: when reestablishing invariant on Get at test_sequences.adb:129
+test_sequences.adb:114:09: medium: Container_Aggregates annotation might be incorrect
+test_sequences.adb:114:09: medium: after a call to Append at test_sequences.adb:120
+test_sequences.adb:114:09: medium: when reestablishing invariant on Last at test_sequences.adb:135
+test_sequences.adb:123:25: info: during checks for container aggregates at test_sequences.adb:114
+test_sequences.adb:123:25: info: precondition proved (CVC5: 1 VC)
+test_sequences.adb:163:09: info: Container_Aggregates annotation proved (CVC5: 1 VC)
+test_sequences.adb:163:09: info: Container_Aggregates annotation proved (CVC5: 1 VC)
+test_sequences.adb:163:09: info: Container_Aggregates annotation proved (CVC5: 1 VC)
+test_sequences.adb:163:09: info: after a call to Append at test_sequences.adb:169
+test_sequences.adb:163:09: info: after a call to Append at test_sequences.adb:169
+test_sequences.adb:163:09: info: after a call to Empty at test_sequences.adb:165
+test_sequences.adb:163:09: info: when establishing invariant on Last at test_sequences.adb:184
+test_sequences.adb:163:09: info: when reestablishing invariant on Get at test_sequences.adb:178
+test_sequences.adb:163:09: info: when reestablishing invariant on Last at test_sequences.adb:184
+test_sequences.adb:163:09: medium: Container_Aggregates annotation might be incorrect
+test_sequences.adb:163:09: medium: after a call to Append at test_sequences.adb:169
+test_sequences.adb:163:09: medium: when reestablishing invariant on Get at test_sequences.adb:178
+test_sequences.adb:172:25: info: during checks for container aggregates at test_sequences.adb:163
+test_sequences.adb:172:25: info: precondition proved (CVC5: 1 VC)
+test_sequences.adb:212:09: info: Container_Aggregates annotation proved (CVC5: 1 VC)
+test_sequences.adb:212:09: info: Container_Aggregates annotation proved (CVC5: 1 VC)
+test_sequences.adb:212:09: info: Container_Aggregates annotation proved (CVC5: 1 VC)
+test_sequences.adb:212:09: info: after a call to Append at test_sequences.adb:218
+test_sequences.adb:212:09: info: after a call to Append at test_sequences.adb:218
+test_sequences.adb:212:09: info: after a call to Empty at test_sequences.adb:214
+test_sequences.adb:212:09: info: when establishing invariant on Last at test_sequences.adb:232
+test_sequences.adb:212:09: info: when reestablishing invariant on Get at test_sequences.adb:226
+test_sequences.adb:212:09: info: when reestablishing invariant on Last at test_sequences.adb:232
+test_sequences.adb:212:09: medium: Container_Aggregates annotation might be incorrect
+test_sequences.adb:212:09: medium: after a call to Append at test_sequences.adb:218
+test_sequences.adb:212:09: medium: when reestablishing invariant on Get at test_sequences.adb:226
+test_sequences.adb:221:25: info: during checks for container aggregates at test_sequences.adb:212
+test_sequences.adb:221:25: info: precondition proved (CVC5: 1 VC)
+test_sequences.adb:260:09: info: Container_Aggregates annotation proved (CVC5: 1 VC)
+test_sequences.adb:260:09: info: Container_Aggregates annotation proved (CVC5: 1 VC)
+test_sequences.adb:260:09: info: Container_Aggregates annotation proved (CVC5: 1 VC)
+test_sequences.adb:260:09: info: after a call to Append at test_sequences.adb:271
+test_sequences.adb:260:09: info: after a call to Append at test_sequences.adb:271
+test_sequences.adb:260:09: info: after a call to Empty at test_sequences.adb:266
+test_sequences.adb:260:09: info: when establishing invariant on Last at test_sequences.adb:287
+test_sequences.adb:260:09: info: when reestablishing invariant on Get at test_sequences.adb:281
+test_sequences.adb:260:09: info: when reestablishing invariant on Last at test_sequences.adb:287
+test_sequences.adb:269:16: medium: during checks for container aggregates at test_sequences.adb:260
+test_sequences.adb:269:16: medium: precondition might fail
+test_sequences.adb:274:25: info: during checks for container aggregates at test_sequences.adb:260
+test_sequences.adb:274:25: info: precondition proved (CVC5: 1 VC)
+test_sequences.adb:315:09: info: Container_Aggregates annotation proved (CVC5: 1 VC)
+test_sequences.adb:315:09: info: Container_Aggregates annotation proved (CVC5: 1 VC)
+test_sequences.adb:315:09: info: Container_Aggregates annotation proved (CVC5: 1 VC)
+test_sequences.adb:315:09: info: after a call to Append at test_sequences.adb:325
+test_sequences.adb:315:09: info: after a call to Append at test_sequences.adb:325
+test_sequences.adb:315:09: info: after a call to Empty at test_sequences.adb:321
+test_sequences.adb:315:09: info: when establishing invariant on Last at test_sequences.adb:341
+test_sequences.adb:315:09: info: when reestablishing invariant on Get at test_sequences.adb:335
+test_sequences.adb:315:09: info: when reestablishing invariant on Last at test_sequences.adb:341
+test_sequences.adb:328:31: medium: during checks for container aggregates at test_sequences.adb:315
+test_sequences.adb:328:31: medium: precondition might fail, cannot prove Pred (X, E)
+test_sets.adb:10:09: info: Container_Aggregates annotation proved (CVC5: 1 VC)
+test_sets.adb:10:09: info: Container_Aggregates annotation proved (CVC5: 1 VC)
+test_sets.adb:10:09: info: Container_Aggregates annotation proved (CVC5: 1 VC)
+test_sets.adb:10:09: info: Container_Aggregates annotation proved (CVC5: 3 VC)
+test_sets.adb:10:09: info: after a call to Empty at test_sets.adb:12
+test_sets.adb:10:09: info: after a call to Empty at test_sets.adb:12
+test_sets.adb:10:09: info: after a call to Insert at test_sets.adb:17
+test_sets.adb:10:09: info: after a call to Insert at test_sets.adb:17
+test_sets.adb:10:09: info: when establishing invariant on Contains at test_sets.adb:28
+test_sets.adb:10:09: info: when establishing invariant on Length at test_sets.adb:33
+test_sets.adb:10:09: info: when reestablishing invariant on Contains at test_sets.adb:28
+test_sets.adb:10:09: info: when reestablishing invariant on Length at test_sets.adb:33
+test_sets.adb:55:09: info: Container_Aggregates annotation proved (CVC5: 1 VC)
+test_sets.adb:55:09: info: Container_Aggregates annotation proved (CVC5: 1 VC)
+test_sets.adb:55:09: info: Container_Aggregates annotation proved (CVC5: 3 VC)
+test_sets.adb:55:09: info: after a call to Empty at test_sets.adb:57
+test_sets.adb:55:09: info: after a call to Insert at test_sets.adb:61
+test_sets.adb:55:09: info: after a call to Insert at test_sets.adb:61
+test_sets.adb:55:09: info: when establishing invariant on Contains at test_sets.adb:72
+test_sets.adb:55:09: info: when reestablishing invariant on Contains at test_sets.adb:72
+test_sets.adb:55:09: info: when reestablishing invariant on Length at test_sets.adb:77
+test_sets.adb:55:09: medium: Container_Aggregates annotation might be incorrect
+test_sets.adb:55:09: medium: after a call to Empty at test_sets.adb:57
+test_sets.adb:55:09: medium: when establishing invariant on Length at test_sets.adb:77
+test_sets.adb:99:09: info: Container_Aggregates annotation proved (CVC5: 1 VC)
+test_sets.adb:99:09: info: Container_Aggregates annotation proved (CVC5: 1 VC)
+test_sets.adb:99:09: info: Container_Aggregates annotation proved (CVC5: 3 VC)
+test_sets.adb:99:09: info: after a call to Empty at test_sets.adb:101
+test_sets.adb:99:09: info: after a call to Insert at test_sets.adb:105
+test_sets.adb:99:09: info: after a call to Insert at test_sets.adb:105
+test_sets.adb:99:09: info: when establishing invariant on Length at test_sets.adb:121
+test_sets.adb:99:09: info: when reestablishing invariant on Contains at test_sets.adb:116
+test_sets.adb:99:09: info: when reestablishing invariant on Length at test_sets.adb:121
+test_sets.adb:99:09: medium: Container_Aggregates annotation might be incorrect
+test_sets.adb:99:09: medium: after a call to Empty at test_sets.adb:101
+test_sets.adb:99:09: medium: when establishing invariant on Contains at test_sets.adb:116
+test_sets.adb:143:09: info: Container_Aggregates annotation proved (CVC5: 1 VC)
+test_sets.adb:143:09: info: Container_Aggregates annotation proved (CVC5: 1 VC)
+test_sets.adb:143:09: info: Container_Aggregates annotation proved (CVC5: 3 VC)
+test_sets.adb:143:09: info: after a call to Empty at test_sets.adb:145
+test_sets.adb:143:09: info: after a call to Empty at test_sets.adb:145
+test_sets.adb:143:09: info: after a call to Insert at test_sets.adb:150
+test_sets.adb:143:09: info: when establishing invariant on Contains at test_sets.adb:160
+test_sets.adb:143:09: info: when establishing invariant on Length at test_sets.adb:165
+test_sets.adb:143:09: info: when reestablishing invariant on Contains at test_sets.adb:160
+test_sets.adb:143:09: medium: Container_Aggregates annotation might be incorrect
+test_sets.adb:143:09: medium: after a call to Insert at test_sets.adb:150
+test_sets.adb:143:09: medium: when reestablishing invariant on Length at test_sets.adb:165
+test_sets.adb:187:09: info: Container_Aggregates annotation proved (CVC5: 1 VC)
+test_sets.adb:187:09: info: Container_Aggregates annotation proved (CVC5: 1 VC)
+test_sets.adb:187:09: info: Container_Aggregates annotation proved (CVC5: 1 VC)
+test_sets.adb:187:09: info: after a call to Empty at test_sets.adb:189
+test_sets.adb:187:09: info: after a call to Empty at test_sets.adb:189
+test_sets.adb:187:09: info: after a call to Insert at test_sets.adb:194
+test_sets.adb:187:09: info: when establishing invariant on Contains at test_sets.adb:204
+test_sets.adb:187:09: info: when establishing invariant on Length at test_sets.adb:209
+test_sets.adb:187:09: info: when reestablishing invariant on Length at test_sets.adb:209
+test_sets.adb:187:09: medium: Container_Aggregates annotation might be incorrect
+test_sets.adb:187:09: medium: after a call to Insert at test_sets.adb:194
+test_sets.adb:187:09: medium: when reestablishing invariant on Contains at test_sets.adb:204
+test_sets.adb:231:09: info: Container_Aggregates annotation proved (CVC5: 1 VC)
+test_sets.adb:231:09: info: Container_Aggregates annotation proved (CVC5: 1 VC)
+test_sets.adb:231:09: info: Container_Aggregates annotation proved (CVC5: 1 VC)
+test_sets.adb:231:09: info: after a call to Empty at test_sets.adb:233
+test_sets.adb:231:09: info: after a call to Empty at test_sets.adb:233
+test_sets.adb:231:09: info: after a call to Insert at test_sets.adb:238
+test_sets.adb:231:09: info: when establishing invariant on Contains at test_sets.adb:247
+test_sets.adb:231:09: info: when establishing invariant on Length at test_sets.adb:252
+test_sets.adb:231:09: info: when reestablishing invariant on Length at test_sets.adb:252
+test_sets.adb:231:09: medium: Container_Aggregates annotation might be incorrect
+test_sets.adb:231:09: medium: after a call to Insert at test_sets.adb:238
+test_sets.adb:231:09: medium: when reestablishing invariant on Contains at test_sets.adb:247
+test_sets.adb:274:09: info: Container_Aggregates annotation proved (CVC5: 1 VC)
+test_sets.adb:274:09: info: Container_Aggregates annotation proved (CVC5: 1 VC)
+test_sets.adb:274:09: info: Container_Aggregates annotation proved (CVC5: 1 VC)
+test_sets.adb:274:09: info: after a call to Empty at test_sets.adb:276
+test_sets.adb:274:09: info: after a call to Empty at test_sets.adb:276
+test_sets.adb:274:09: info: after a call to Insert at test_sets.adb:281
+test_sets.adb:274:09: info: when establishing invariant on Contains at test_sets.adb:289
+test_sets.adb:274:09: info: when establishing invariant on Length at test_sets.adb:294
+test_sets.adb:274:09: info: when reestablishing invariant on Length at test_sets.adb:294
+test_sets.adb:274:09: medium: Container_Aggregates annotation might be incorrect
+test_sets.adb:274:09: medium: after a call to Insert at test_sets.adb:281
+test_sets.adb:274:09: medium: when reestablishing invariant on Contains at test_sets.adb:289
+test_sets.adb:316:09: info: Container_Aggregates annotation proved (CVC5: 1 VC)
+test_sets.adb:316:09: info: Container_Aggregates annotation proved (CVC5: 1 VC)
+test_sets.adb:316:09: info: Container_Aggregates annotation proved (CVC5: 1 VC)
+test_sets.adb:316:09: info: Container_Aggregates annotation proved (CVC5: 3 VC)
+test_sets.adb:316:09: info: after a call to Empty at test_sets.adb:322
+test_sets.adb:316:09: info: after a call to Empty at test_sets.adb:322
+test_sets.adb:316:09: info: after a call to Insert at test_sets.adb:328
+test_sets.adb:316:09: info: after a call to Insert at test_sets.adb:328
+test_sets.adb:316:09: info: when establishing invariant on Contains at test_sets.adb:339
+test_sets.adb:316:09: info: when establishing invariant on Length at test_sets.adb:344
+test_sets.adb:316:09: info: when reestablishing invariant on Contains at test_sets.adb:339
+test_sets.adb:316:09: info: when reestablishing invariant on Length at test_sets.adb:344
+test_sets.adb:323:16: medium: during checks for container aggregates at test_sets.adb:316
+test_sets.adb:323:16: medium: precondition might fail
+test_sets.adb:366:09: info: Container_Aggregates annotation proved (CVC5: 1 VC)
+test_sets.adb:366:09: info: Container_Aggregates annotation proved (CVC5: 1 VC)
+test_sets.adb:366:09: info: Container_Aggregates annotation proved (CVC5: 1 VC)
+test_sets.adb:366:09: info: Container_Aggregates annotation proved (CVC5: 3 VC)
+test_sets.adb:366:09: info: after a call to Empty at test_sets.adb:372
+test_sets.adb:366:09: info: after a call to Empty at test_sets.adb:372
+test_sets.adb:366:09: info: after a call to Insert at test_sets.adb:377
+test_sets.adb:366:09: info: after a call to Insert at test_sets.adb:377
+test_sets.adb:366:09: info: when establishing invariant on Contains at test_sets.adb:389
+test_sets.adb:366:09: info: when establishing invariant on Length at test_sets.adb:394
+test_sets.adb:366:09: info: when reestablishing invariant on Contains at test_sets.adb:389
+test_sets.adb:366:09: info: when reestablishing invariant on Length at test_sets.adb:394
+test_sets.adb:378:16: medium: during checks for container aggregates at test_sets.adb:366
+test_sets.adb:378:16: medium: precondition might fail
+test_sets.adb:416:09: info: Container_Aggregates annotation proved (CVC5: 1 VC)
+test_sets.adb:416:09: info: Container_Aggregates annotation proved (CVC5: 1 VC)
+test_sets.adb:416:09: info: Container_Aggregates annotation proved (CVC5: 1 VC)
+test_sets.adb:416:09: info: Container_Aggregates annotation proved (CVC5: 3 VC)
+test_sets.adb:416:09: info: after a call to Empty at test_sets.adb:418
+test_sets.adb:416:09: info: after a call to Empty at test_sets.adb:418
+test_sets.adb:416:09: info: after a call to Insert at test_sets.adb:423
+test_sets.adb:416:09: info: after a call to Insert at test_sets.adb:423
+test_sets.adb:416:09: info: when establishing invariant on Contains at test_sets.adb:435
+test_sets.adb:416:09: info: when establishing invariant on Length at test_sets.adb:440
+test_sets.adb:416:09: info: when reestablishing invariant on Contains at test_sets.adb:435
+test_sets.adb:416:09: info: when reestablishing invariant on Length at test_sets.adb:440
+test_sets.adb:424:16: medium: during checks for container aggregates at test_sets.adb:416
+test_sets.adb:424:16: medium: precondition might fail
+test_total_maps.adb:11:09: info: Container_Aggregates annotation proved (CVC5: 1 VC)
+test_total_maps.adb:11:09: info: Container_Aggregates annotation proved (CVC5: 1 VC)
+test_total_maps.adb:11:09: info: after a call to Empty at test_total_maps.adb:13
+test_total_maps.adb:11:09: info: after a call to Insert at test_total_maps.adb:17
+test_total_maps.adb:11:09: info: when establishing invariant on Get at test_total_maps.adb:31
+test_total_maps.adb:11:09: info: when reestablishing invariant on Get at test_total_maps.adb:31
+test_total_maps.adb:21:28: info: during checks for container aggregates at test_total_maps.adb:11
+test_total_maps.adb:21:28: info: precondition proved (CVC5: 1 VC)
+test_total_maps.adb:55:09: info: Container_Aggregates annotation proved (CVC5: 1 VC)
+test_total_maps.adb:55:09: info: after a call to Insert at test_total_maps.adb:60
+test_total_maps.adb:55:09: info: when reestablishing invariant on Get at test_total_maps.adb:74
+test_total_maps.adb:55:09: medium: Container_Aggregates annotation might be incorrect
+test_total_maps.adb:55:09: medium: after a call to Empty at test_total_maps.adb:57
+test_total_maps.adb:55:09: medium: when establishing invariant on Get at test_total_maps.adb:74
+test_total_maps.adb:64:28: info: during checks for container aggregates at test_total_maps.adb:55
+test_total_maps.adb:64:28: info: precondition proved (CVC5: 1 VC)
+test_total_maps.adb:98:09: info: Container_Aggregates annotation proved (CVC5: 1 VC)
+test_total_maps.adb:98:09: info: Container_Aggregates annotation proved (CVC5: 1 VC)
+test_total_maps.adb:98:09: info: after a call to Empty at test_total_maps.adb:100
+test_total_maps.adb:98:09: info: after a call to Insert at test_total_maps.adb:104
+test_total_maps.adb:98:09: info: when establishing invariant on Get at test_total_maps.adb:117
+test_total_maps.adb:98:09: info: when reestablishing invariant on Get at test_total_maps.adb:117
+test_total_maps.adb:98:09: medium: Container_Aggregates annotation might be incorrect
+test_total_maps.adb:98:09: medium: after a call to Insert at test_total_maps.adb:104
+test_total_maps.adb:98:09: medium: when reestablishing invariant on Get at test_total_maps.adb:117
+test_total_maps.adb:108:28: info: during checks for container aggregates at test_total_maps.adb:98
+test_total_maps.adb:108:28: info: precondition proved (CVC5: 1 VC)
+test_total_maps.adb:141:09: info: Container_Aggregates annotation proved (CVC5: 1 VC)
+test_total_maps.adb:141:09: info: Container_Aggregates annotation proved (CVC5: 1 VC)
+test_total_maps.adb:141:09: info: after a call to Empty at test_total_maps.adb:143
+test_total_maps.adb:141:09: info: after a call to Insert at test_total_maps.adb:147
+test_total_maps.adb:141:09: info: when establishing invariant on Get at test_total_maps.adb:159
+test_total_maps.adb:141:09: info: when reestablishing invariant on Get at test_total_maps.adb:159
+test_total_maps.adb:141:09: medium: Container_Aggregates annotation might be incorrect
+test_total_maps.adb:141:09: medium: after a call to Insert at test_total_maps.adb:147
+test_total_maps.adb:141:09: medium: when reestablishing invariant on Get at test_total_maps.adb:159
+test_total_maps.adb:151:28: info: during checks for container aggregates at test_total_maps.adb:141
+test_total_maps.adb:151:28: info: precondition proved (CVC5: 1 VC)
+test_total_maps.adb:183:09: info: Container_Aggregates annotation proved (CVC5: 1 VC)
+test_total_maps.adb:183:09: info: Container_Aggregates annotation proved (CVC5: 1 VC)
+test_total_maps.adb:183:09: info: after a call to Empty at test_total_maps.adb:189
+test_total_maps.adb:183:09: info: after a call to Insert at test_total_maps.adb:194
+test_total_maps.adb:183:09: info: when establishing invariant on Get at test_total_maps.adb:208
+test_total_maps.adb:183:09: info: when reestablishing invariant on Get at test_total_maps.adb:208
+test_total_maps.adb:190:16: medium: during checks for container aggregates at test_total_maps.adb:183
+test_total_maps.adb:190:16: medium: precondition might fail
+test_total_maps.adb:198:28: info: during checks for container aggregates at test_total_maps.adb:183
+test_total_maps.adb:198:28: info: precondition proved (CVC5: 1 VC)
+test_total_maps.adb:232:09: info: Container_Aggregates annotation proved (CVC5: 1 VC)
+test_total_maps.adb:232:09: info: Container_Aggregates annotation proved (CVC5: 1 VC)
+test_total_maps.adb:232:09: info: after a call to Empty at test_total_maps.adb:238
+test_total_maps.adb:232:09: info: after a call to Insert at test_total_maps.adb:242
+test_total_maps.adb:232:09: info: when establishing invariant on Get at test_total_maps.adb:256
+test_total_maps.adb:232:09: info: when reestablishing invariant on Get at test_total_maps.adb:256
+test_total_maps.adb:246:44: medium: during checks for container aggregates at test_total_maps.adb:232
+test_total_maps.adb:246:44: medium: precondition might fail, cannot prove Pred (X, K, E)

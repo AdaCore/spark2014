@@ -684,6 +684,8 @@ package body Gnat2Why.Error_Messages is
          when VC_Inline_Check              =>
             return "Inline_For_Proof or Logical_Equal annotation might be"
               & " incorrect";
+         when VC_Container_Aggr_Check      =>
+            return "Container_Aggregates annotation might be incorrect";
          when VC_Subprogram_Variant        =>
             return "subprogram variant might fail";
          when VC_Termination_Check         =>
@@ -1680,6 +1682,8 @@ package body Gnat2Why.Error_Messages is
             return "function contract feasibility " & Verb;
          when VC_Inline_Check              =>
             return "Inline_For_Proof or Logical_Equal annotation " & Verb;
+         when VC_Container_Aggr_Check      =>
+            return "Container_Aggregates annotation " & Verb;
          when VC_Subprogram_Variant        =>
             return "subprogram variant " & Verb;
          when VC_Termination_Check         =>

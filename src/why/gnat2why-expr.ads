@@ -30,6 +30,7 @@ with Gnat2Why.Util;              use Gnat2Why.Util;
 with Nlists;                     use Nlists;
 with SPARK_Atree;                use SPARK_Atree;
 with SPARK_Atree.Entities;       use SPARK_Atree.Entities;
+with SPARK_Definition.Annotate;  use SPARK_Definition.Annotate;
 with SPARK_Util;                 use SPARK_Util;
 with SPARK_Util.Types;           use SPARK_Util.Types;
 with Types;                      use Types;
@@ -398,6 +399,13 @@ package Gnat2Why.Expr is
 
    function Count_Numerical_Variants (E : Callable_Kind_Id) return Natural;
    --  Compute the number of numerical variants of a subprogram or entry if any
+
+   function Generate_VCs_For_Aggregate_Annotation
+     (E : Type_Kind_Id)
+     return W_Prog_Id
+   with Pre => Has_Aggregate_Annotation (E);
+   --  Generate checks for the initialization and the preservation of the
+   --  invariants used to model aggregates.
 
    function Get_Pure_Logic_Term_If_Possible
      (Expr          : N_Subexpr_Id;

@@ -529,6 +529,8 @@ package body SPARK_Definition.Annotate is
                   return;
                end if;
 
+               Annot.Annotate_Node := Prag;
+
                if Nkind (Parent (Ent)) not in N_Private_Type_Declaration
                                             | N_Private_Extension_Declaration
                then
