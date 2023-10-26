@@ -1119,8 +1119,7 @@ package body SPARK_Definition is
               or else Declares_Iterable_Aspect (E)
               or else (Is_Base_Type (E)
                        and then not Use_Predefined_Equality_For_Type (E))
-              or else (Is_Base_Type (E)
-                       and then Has_Aggregate_Annotation (E)))
+              or else Needs_Check_For_Aggregate_Annotation (E))
          then
 
             declare

@@ -1552,6 +1552,24 @@ package body SPARK_Util.Types is
       return Might_Contain_Relaxed_Rec (Typ);
    end Might_Contain_Relaxed_Init;
 
+   ------------------------------------------
+   -- Needs_Check_For_Aggregate_Annotation --
+   ------------------------------------------
+
+   function Needs_Check_For_Aggregate_Annotation
+     (E : Type_Kind_Id)
+      return Boolean
+   is
+     (Is_Base_Type (E)
+      and then Has_Aggregate_Annotation (E)
+      and then
+        (declare
+           Annot : constant Aggregate_Annotation :=
+             Get_Aggregate_Annotation (E);
+         begin
+           Entity_In_SPARK (Annot.Add_Procedure)
+         and then Entity_In_SPARK (Annot.Empty_Function)));
+
    --------------------
    -- Nth_Index_Type --
    --------------------

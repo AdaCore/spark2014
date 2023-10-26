@@ -288,6 +288,14 @@ package SPARK_Util.Types is
    --  @return True if E needs a specific module to check its default
    --     expression at declaration
 
+   function Needs_Check_For_Aggregate_Annotation
+     (E : Type_Kind_Id)
+      return Boolean;
+   --  Return True if E has a container aggregate annotation and the aggregate
+   --  primitives are marked. It will be the case when analyzing the unit the
+   --  container type is declared in and when analyzing aggregates from pulled
+   --  units.
+
    function Is_Deep (Typ : Type_Kind_Id) return Boolean;
    --  Returns True if the type passed as argument is deep (ie. it has
    --  subcomponents of an access-to-variable type or a private type annotated
