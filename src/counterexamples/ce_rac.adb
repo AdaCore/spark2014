@@ -2467,7 +2467,9 @@ package body CE_RAC is
             Res := RAC_Expr (Expression (N));
             Res.AST_Ty := Etype (N);
          else
-            if Is_Record_Type (Ty) then
+            if Is_Container_Aggregate (N) then
+               RAC_Unsupported ("RAC_Expr aggregate", "container type");
+            elsif Is_Record_Type (Ty) then
                Res := Record_Value (Entity_To_Value_Maps.Empty, Ty);
             else
                pragma Assert (Is_Array_Type (Ty));
