@@ -62,18 +62,16 @@ package body Flow.Analysis.Sanity is
    begin
       Sane := True;
 
-      if Ekind (FA.Spec_Entity) = E_Function then
+      if Ekind (FA.Spec_Entity) = E_Function
+        and then not Is_Function_With_Side_Effects (FA.Spec_Entity)
+      then
 
          Get_Globals (Subprogram => FA.Spec_Entity,
                       Scope      => FA.B_Scope,
                       Classwide  => False,
                       Globals    => Globals);
 
-         if not Globals.Outputs.Is_Empty
-           and then not Is_Function_With_Side_Effects (FA.Spec_Entity)
-           --  HACK: Exempt functions with side-effects from checking until
-           --  support is added in flow.
-         then
+         if not Globals.Outputs.Is_Empty then
 
             Sane := False;
 
