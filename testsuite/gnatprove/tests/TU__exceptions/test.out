@@ -12,7 +12,7 @@ excep.adb:27:09: warning: this statement is never reached
 excep.adb:27:09: warning: unreachable code
 excep.adb:32:09: warning: "raise" statement may result in abnormal return (RM 6.4.1(17))
 excep.adb:32:09: warning: assignment to pass-by-copy formal may have no effect
-excep.adb:32:14: medium: overflow check might fail, cannot prove upper bound for X + 1 [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at excep.ads:13 should mention X in a precondition]
+excep.adb:32:14: high: overflow check might fail, cannot prove upper bound for X + 1 (e.g. when X = Integer'Last) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at excep.ads:13 should mention X in a precondition]
 excep.adb:33:07: medium: unexpected exception might be raised
 excep.adb:39:10: medium: unexpected exception might be raised
 excep.adb:41:14: info: overflow check proved (CVC5: 2 VC)
