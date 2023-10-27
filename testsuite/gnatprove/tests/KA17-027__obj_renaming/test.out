@@ -18,6 +18,6 @@ main.adb:73:19: info: assertion proved (CVC5: 1 VC)
 main.adb:74:19: info: assertion proved (CVC5: 1 VC)
 main.adb:75:19: info: assertion proved (CVC5: 1 VC)
 main.adb:76:19: info: assertion proved (CVC5: 1 VC)
-main.adb:87:25: high: assertion might fail (e.g. when Arr_Obj = (others => (Comp => 0))) [possible fix: call at line 79 should mention Arr_Obj in a postcondition]
-main.adb:89:25: high: assertion might fail (e.g. when Arr_Obj = (others => (Comp => 0))) [possible fix: call at line 79 should mention Arr_Obj in a postcondition]
+main.adb:87:25: high: assertion might fail (e.g. when Arr_Obj = (1 => (Comp => 0), others => (Comp => 5678))) [possible fix: call at line 79 should mention Arr_Obj in a postcondition]
+main.adb:89:25: high: assertion might fail (e.g. when Arr_Obj = (3 => (Comp => 0), others => (Comp => 5678)) and The_Index = 3) [possible fix: call at line 79 should mention Arr_Obj in a postcondition]
 main.adb:91:25: high: assertion might fail (e.g. when Rec_Obj = (Comp => 0)) [possible fix: call at line 80 should mention Rec_Obj in a postcondition]
