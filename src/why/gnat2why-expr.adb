@@ -25,6 +25,7 @@
 
 with Ada.Characters.Handling;        use Ada.Characters.Handling;
 with Ada.Containers;                 use Ada.Containers;
+with Ada.Containers.Hashed_Maps;
 with Ada.Containers.Vectors;
 with Ada.Strings;
 with Ada.Strings.Unbounded;          use Ada.Strings.Unbounded;
@@ -733,6 +734,15 @@ package body Gnat2Why.Expr is
    --  Arr'Update(1 .. 3 => 10, 2 => 20, 2 .. 4 => 30, 3 => 40));
    --  is allowed for an array and should mean
    --  Arr(1) = 10 and Arr(2) = 30 and Arr(3) = 40 and Arr(4) = 30
+
+   function Transform_Container_Aggregate
+     (Expr   : Node_Id;
+      Params : Transformation_Params;
+      Domain : EW_Domain)
+      return W_Expr_Id;
+   --  Generate the translation of a container aggregate. It is done similarly
+   --  to array aggregates. A logic function is generated along with an axiom,
+   --  and the aggregate is translated as a function call.
 
    function Transform_Assignment_Statement
      (Stmt   : N_Assignment_Statement_Id;
@@ -19638,6 +19648,1090 @@ package body Gnat2Why.Expr is
       return T;
    end Transform_Concatenation;
 
+   -----------------------------------
+   -- Transform_Container_Aggregate --
+   -----------------------------------
+
+   function Transform_Container_Aggregate
+     (Expr   : Node_Id;
+      Params : Transformation_Params;
+      Domain : EW_Domain)
+      return W_Expr_Id
+   is
+
+      package Ada_Node_To_Why_Id is new Ada.Containers.Hashed_Maps
+        (Key_Type        => Node_Id,
+         Equivalent_Keys => "=",
+         Hash            => Node_Hash,
+         Element_Type    => W_Identifier_Id);
+      --  ??? Should be shared with other aggregate functions
+
+      function Get_Name_For_Aggregate (Expr : Node_Id) return String;
+      --  Return a suitable name for the aggregate Expr. If Expr is the
+      --  initialization expression in an object declaration, then use the
+      --  name of the object as basis, which ensures stable naming across
+      --  changes in GNATprove. Otherwise, use a temporary name based on a
+      --  counter.
+      --  ??? Should be shared with other aggregate functions
+
+      function Complete_Translation
+        (Annot     : Aggregate_Annotation;
+         Values    : Node_Vectors.Vector;
+         Value_Map : Ada_Node_To_Why_Id.Map;
+         Func      : W_Identifier_Id)
+         return W_Expr_Id;
+      --  Generate a call to the aggregate function
+
+      procedure Compute_Aggregate_Def
+        (Annot     : Aggregate_Annotation;
+         Value_Map : Ada_Node_To_Why_Id.Map;
+         Aggr_Id   : W_Identifier_Id;
+         Pre       : out W_Pred_Id;
+         Def       : out W_Pred_Id);
+      --  Compute a predicate describing the aggregate value. Also compute a
+      --  precondition to be checked for the aggregate if necessary.
+
+      procedure Generate_Aggregate_Function
+        (Cont_Ty   : Type_Kind_Id;
+         Annot     : Aggregate_Annotation;
+         Values    : Node_Vectors.Vector;
+         Value_Map : Ada_Node_To_Why_Id.Map);
+      --  Generate a logic function and possibly a program function for the
+      --  aggregate along with an axiom giving information about its value.
+
+      procedure Get_Aggregates_Elements
+        (Annot     : Aggregate_Annotation;
+         Values    : out Node_Vectors.Vector;
+         Value_Map : out Ada_Node_To_Why_Id.Map);
+      --  Collect the key and element nodes in the aggregate and store them in
+      --  Values. Value_Map associates them to a Why identifier that will be
+      --  used as a parameter for the aggregate function.
+
+      --------------------------
+      -- Complete_Translation --
+      --------------------------
+
+      function Complete_Translation
+        (Annot     : Aggregate_Annotation;
+         Values    : Node_Vectors.Vector;
+         Value_Map : Ada_Node_To_Why_Id.Map;
+         Func      : W_Identifier_Id)
+         return W_Expr_Id
+      is
+         P_Func     : constant W_Identifier_Id :=
+           (if Domain = EW_Prog then To_Program_Space (Func) else Func);
+         Num_Params : constant Natural :=
+           (if Value_Map.Length = 0 then 1 else Natural (Value_Map.Length));
+         Call_Args  : W_Expr_Array (1 .. Num_Params);
+         Top        : Natural := 0;
+         Call       : W_Expr_Id;
+      begin
+         for Value of Values loop
+            declare
+               Why_Id : W_Identifier_Id renames Value_Map.Element (Value);
+            begin
+               Top := Top + 1;
+               Call_Args (Top) := Transform_Expr
+                 (Expr          => Value,
+                  Domain        => Domain,
+                  Params        => Params,
+                  Expected_Type => Get_Typ (Why_Id));
+            end;
+         end loop;
+
+         if Values.Length = 0 then
+            Call_Args (1) := +Void;
+         end if;
+
+         Call := New_Call
+           (Name   => P_Func,
+            Domain => Domain,
+            Args   => Call_Args,
+            Typ    => Get_Typ (Func));
+
+         if Domain = EW_Prog then
+            case Annot.Kind is
+               when Sets =>
+                  null;
+
+               when Seqs =>
+                  declare
+                     Check_Info : Check_Info_Type := New_Check_Info;
+                  begin
+                     Check_Info.Continuation.Append
+                       (Continuation_Type'
+                          (Annot.Annotate_Node,
+                           To_Unbounded_String
+                             ("all of elements shall fit in index type in"
+                              & " predefined sequence aggregates")));
+                     Call := +New_VC_Prog
+                       (Ada_Node   => Expr,
+                        Reason     => VC_Precondition,
+                        Expr       => +Call,
+                        Check_Info => Check_Info);
+                  end;
+
+               when Maps =>
+                  declare
+                     Check_Info : Check_Info_Type := New_Check_Info;
+                  begin
+                     Check_Info.Continuation.Append
+                       (Continuation_Type'
+                          (Annot.Annotate_Node,
+                           To_Unbounded_String
+                             ("keys shall be distinct for predefined maps"
+                              & " aggregates")));
+                     Call := +New_VC_Prog
+                       (Ada_Node   => Expr,
+                        Reason     => VC_Precondition,
+                        Expr       => +Call,
+                        Check_Info => Check_Info);
+                  end;
+
+               when Model =>
+                  raise Program_Error;
+            end case;
+         end if;
+
+         return Call;
+      end Complete_Translation;
+
+      ----------------------------
+      -- Compute_Aggregate_Def --
+      ----------------------------
+
+      procedure Compute_Aggregate_Def
+        (Annot     : Aggregate_Annotation;
+         Value_Map : Ada_Node_To_Why_Id.Map;
+         Aggr_Id   : W_Identifier_Id;
+         Pre       : out W_Pred_Id;
+         Def       : out W_Pred_Id)
+      is
+
+         function New_Call_To_Ada_Function
+           (Fun  : Entity_Id;
+            Args : W_Term_Array)
+         return W_Term_Id;
+         --  Call Fun on Args
+
+         function New_Universal_Quantif
+           (Var_Id  : W_Identifier_Id;
+            Ty      : Type_Kind_Id;
+            Trigger : W_Term_Id;
+            Pred    : W_Pred_Id)
+            return W_Pred_Id;
+         --  Generate:
+         --    forall Var_Id. < dynamic invariant Var_Id Ty > -> Pred
+
+         ------------------------------
+         -- New_Call_To_Ada_Function --
+         ------------------------------
+
+         function New_Call_To_Ada_Function
+           (Fun  : Entity_Id;
+            Args : W_Term_Array)
+            return W_Term_Id
+         is
+            Binders   : constant Item_Array (Args'Range) :=
+              Compute_Subprogram_Parameters (Fun, EW_Term);
+            Name      : constant W_Identifier_Id :=
+              +Transform_Identifier (Params => Body_Params,
+                                     Expr   => Fun,
+                                     Ent    => Fun,
+                                     Domain => EW_Term);
+            Conv_Args : constant W_Expr_Array :=
+              (if Binders'Length = 0 then (1 => +Void)
+               else (for I in Args'Range => +Insert_Simple_Conversion
+                     (Domain => EW_Term,
+                      Expr   => +Args (I),
+                      To     => Get_Why_Type_From_Item
+                        (Binders (I)))));
+         begin
+            return +New_Function_Call
+              (Domain => EW_Term,
+               Name   => Name,
+               Subp   => Fun,
+               Args   => Conv_Args,
+               Check  => False,
+               Typ    => Get_Typ (Name));
+         end New_Call_To_Ada_Function;
+
+         ---------------------------
+         -- New_Universal_Quantif --
+         ---------------------------
+
+         function New_Universal_Quantif
+           (Var_Id  : W_Identifier_Id;
+            Ty      : Type_Kind_Id;
+            Trigger : W_Term_Id;
+            Pred    : W_Pred_Id)
+            return W_Pred_Id
+         is
+           (New_Universal_Quantif
+              (Variables => (1 => Var_Id),
+               Labels    => Symbol_Sets.Empty_Set,
+               Var_Type  => Get_Typ (Var_Id),
+               Triggers  => New_Triggers
+                 (Triggers =>
+                      (1 => New_Trigger
+                           (Terms => (1 => +Trigger)))),
+               Pred      => New_Connection
+                 (Op    => EW_Imply,
+                  Left  => Compute_Dynamic_Inv_And_Initialization
+                    (Expr     => +Var_Id,
+                     Ty       => Ty,
+                     Params   => Logic_Params,
+                     Only_Var => False_Term),
+                  Right => Pred)));
+
+         Assocs   : constant List_Id := Component_Associations (Expr);
+         Exprs    : constant List_Id := Expressions (Expr);
+         Is_Empty : constant Boolean :=
+           Present (Assocs) and then Is_Empty_List (Assocs);
+
+      --  Start of processing for Compute_Aggregate_Def
+
+      begin
+         case Annot.Kind is
+            when Sets =>
+
+               --  No specific precondition for Sets
+
+               Pre := True_Pred;
+
+               --  For the definition of an aggregate (E1, E2, ...), generate:
+               --
+               --  contains aggr_id e1 /\ contains aggr_id e2 /\ ... /\
+               --  (forall elt_id. contains aggr_id elt_id ->
+               --    equivalent_elements elt_id e1 \/
+               --    equivalent_elements elt_id e2 \/ ...)
+
+               if Is_Empty then
+
+                  --  Generate:
+                  --
+                  --  (forall elt_id. not contains aggr_id elt_id)
+
+                  declare
+                     Quant_Id      : constant W_Identifier_Id :=
+                       New_Temp_Identifier
+                         (Typ       => Type_Of_Node (Annot.Element_Type),
+                          Base_Name => "elt");
+                     Contains_Call : constant W_Term_Id :=
+                       New_Call_To_Ada_Function
+                         (Fun  => Annot.Contains,
+                          Args => (+Aggr_Id, +Quant_Id));
+                  begin
+                     Def := New_Universal_Quantif
+                       (Var_Id  => Quant_Id,
+                        Ty      => Annot.Element_Type,
+                        Trigger => Contains_Call,
+                        Pred    => New_Not
+                          (Right => Pred_Of_Boolean_Term (Contains_Call)));
+                  end;
+               else
+
+                  --  Go over the container expressions to generate:
+                  --   * contains aggr_id e1, ... in Contains
+                  --   * equivalent_elements elt_id e1, ... in Eq_Elems
+
+                  declare
+                     Length   : constant Positive :=
+                       Positive (List_Length (Exprs));
+                     Eq_Elems : W_Pred_Array (1 .. Length);
+                     Contains : W_Pred_Array (1 .. Length);
+                     Top      : Natural := 0;
+                     Quant_Id : constant W_Identifier_Id :=
+                       New_Temp_Identifier
+                         (Typ       => Type_Of_Node (Annot.Element_Type),
+                          Base_Name => "elt");
+                     Elt      : Node_Id := First (Exprs);
+                  begin
+                     loop
+                        Top := Top + 1;
+
+                        declare
+                           Elt_Id : constant W_Identifier_Id :=
+                             Value_Map.Element (Elt);
+                        begin
+                           Contains (Top) := Pred_Of_Boolean_Term
+                             (New_Call_To_Ada_Function
+                                (Fun  => Annot.Contains,
+                                 Args => (+Aggr_Id, +Elt_Id)));
+                           Eq_Elems (Top) := Pred_Of_Boolean_Term
+                             (New_Call_To_Ada_Function
+                                (Fun  => Annot.Equivalent_Elements,
+                                 Args => (+Quant_Id, +Elt_Id)));
+                        end;
+
+                        Next (Elt);
+                        exit when No (Elt);
+                     end loop;
+
+                     --  Conjunct all the elements of Contains in Def:
+                     --  contains aggr_id e1 /\ contains aggr_id e2 /\ ...
+
+                     Def := New_And_Pred (Contains);
+
+                     --  Generate:
+                     --
+                     --  (forall elt_id. contains aggr_id elt_id ->
+                     --    equivalent_elements elt_id e1 \/
+                     --    equivalent_elements elt_id e2 \/ ...)
+                     --
+                     --  and add it to Def.
+
+                     declare
+                        Contains_Call : constant W_Term_Id :=
+                          New_Call_To_Ada_Function
+                            (Fun  => Annot.Contains,
+                             Args => (+Aggr_Id, +Quant_Id));
+                        Quant_Pred    : constant W_Pred_Id :=
+                          New_Universal_Quantif
+                            (Var_Id  => Quant_Id,
+                             Ty      => Annot.Element_Type,
+                             Trigger => Contains_Call,
+                             Pred    => New_Connection
+                               (Op    => EW_Imply,
+                                Left  => Pred_Of_Boolean_Term (Contains_Call),
+                                Right => New_Or_Pred (Eq_Elems)));
+
+                     begin
+                        Def := New_And_Pred (Def, Quant_Pred);
+                     end;
+                  end;
+               end if;
+
+               --  If Length is provided, add:
+               --
+               --    length aggr_id <= <List_Length (Exprs)>
+
+               if Present (Annot.Sets_Length) then
+                  declare
+                     Length          : constant Int :=
+                       (if Is_Empty then 0 else List_Length (Exprs));
+                     Length_Call     : W_Term_Id :=
+                       New_Call_To_Ada_Function
+                         (Fun  => Annot.Sets_Length,
+                          Args => (1 => +Aggr_Id));
+                     Base_Length_Typ : constant W_Type_Id :=
+                       (if Has_Scalar_Type (Etype (Annot.Sets_Length))
+                        then EW_Int_Type
+                        else EW_Abstract
+                          (Base_Retysp (Etype (Annot.Sets_Length))));
+                  begin
+                     Length_Call := +Insert_Simple_Conversion
+                       (Domain => EW_Term,
+                        Expr   => +Length_Call,
+                        To     => Base_Length_Typ);
+                     Def := New_And_Pred
+                       (Left  => Def,
+                        Right => New_Comparison
+                          (Symbol => Int_Infix_Le,
+                           Left   => Length_Call,
+                           Right  => New_Integer_Constant
+                             (Value => UI_From_Int (Length))));
+                  end;
+               end if;
+
+            when Maps =>
+
+               --  For the precondition of a map aggregate
+               --  (K1 -> E1, K2 -> E2, ...), generate:
+               --
+               --  not equivalent_keys k2 k1 /\
+               --  not equivalent_keys k3 k1 /\ ...
+
+               --  For the definition of a partial map aggregate
+               --  (K1 -> E1, K2 -> E2, ...), generate:
+               --
+               --  has_key aggr_id k1 /\ has_key aggr_id k2 /\ ... /\
+               --  get aggr_id k1 = copy e1 /\
+               --  get aggr_id k2 = copy e2 /\ ... /\
+               --  (forall key_id. has_key aggr_id key_id ->
+               --    equivalent_keys key_id k1 \/
+               --    equivalent_keys key_id k2 \/ ...)
+               --
+               --  For the definition of a total map aggregate
+               --  (K1 -> E1, K2 -> E2, ...), generate:
+               --
+               --  get aggr_id k1 = copy e1 /\
+               --  get aggr_id k2 = copy e2 /\ ... /\
+               --  (forall key_id.
+               --    not equivalent_keys key_id k1 /\
+               --    not equivalent_keys key_id k2 /\ ... ->
+               --    get aggr_id key_id = default)
+
+               declare
+                  Partial : constant Boolean := Present (Annot.Has_Key);
+                  Length  : Natural;
+                  Keys    : Node_Vectors.Vector;
+                  Assoc   : Node_Id;
+
+               begin
+                  if Is_Empty then
+                     Pre := True_Pred;
+                     Length := 0;
+
+                     --  Generate:
+                     --    (forall key_id. not has_key aggr_id key_id)
+                     --  or
+                     --    (forall key_id. get aggr_id key_id = default_item)
+
+                     declare
+                        Quant_Id            : constant W_Identifier_Id :=
+                          New_Temp_Identifier
+                            (Typ       => Type_Of_Node (Annot.Key_Type),
+                             Base_Name => "key");
+                        Has_Key_Or_Get_Call : constant W_Term_Id :=
+                          New_Call_To_Ada_Function
+                            (Fun  => (if Partial then Annot.Has_Key
+                                      else Annot.Maps_Get),
+                             Args => (+Aggr_Id, +Quant_Id));
+
+                     begin
+                        Def := New_Universal_Quantif
+                          (Var_Id  => Quant_Id,
+                           Ty      => Annot.Key_Type,
+                           Trigger => Has_Key_Or_Get_Call,
+                           Pred    =>
+                             (if Partial
+                              then New_Not
+                                (Right => Pred_Of_Boolean_Term
+                                     (Has_Key_Or_Get_Call))
+                              else New_Comparison
+                                (Symbol => Why_Eq,
+                                 Left   => Has_Key_Or_Get_Call,
+                                 Right  => New_Call_To_Ada_Function
+                                   (Fun  => Annot.Default_Item,
+                                    Args => (1 .. 0 => <>)))));
+                     end;
+                  else
+                     --  First, collect all keys of the aggregate in a vector.
+                     --  ??? Multiple choice associations could be expanded in
+                     --  the frontend like for records.
+
+                     Assoc := First (Assocs);
+                     loop
+                        declare
+                           Choice : Node_Id :=
+                             First (Choice_List (Assoc));
+                        begin
+                           loop
+                              Keys.Append (Choice);
+
+                              Next (Choice);
+                              exit when No (Choice);
+                           end loop;
+                        end;
+                        Next (Assoc);
+                        exit when No (Assoc);
+                     end loop;
+                     Length := Natural (Keys.Length);
+
+                     --  Go over the container expressions to generate:
+                     --   * not equivalent_keys k2 k1, ... in Distinct
+                     --   * equivalent_keys elt_id e1, ... in Eq_Keys
+                     --   * get aggr_id k1 = copy e1, ... in Get
+                     --   * and optionally has_key aggr_id k1, ... in Has_Key
+
+                     declare
+                        Num_Distinct : constant Natural :=
+                          (Length * (Length - 1)) / 2;
+                        Distinct     : W_Pred_Array (1 .. Num_Distinct);
+                        Top_Distinct : Natural := 0;
+                        Eq_Keys      : W_Pred_Array (1 .. Length);
+                        Get          : W_Pred_Array (1 .. Length);
+                        Num_Has_Key  : constant Natural :=
+                          (if Partial then Length else 0);
+                        Has_Key      : W_Pred_Array (1 .. Num_Has_Key);
+                        Top          : Natural := 0;
+                        Quant_Id     : constant W_Identifier_Id :=
+                          New_Temp_Identifier
+                            (Typ       => Type_Of_Node (Annot.Key_Type),
+                             Base_Name => "key");
+                     begin
+                        Assoc := First (Assocs);
+                        loop
+                           declare
+                              Elt_Id      : W_Term_Id :=
+                                +Value_Map.Element (Expression (Assoc));
+                              Choice      : Node_Id :=
+                                First (Choice_List (Assoc));
+                              Key_Id      : W_Identifier_Id;
+                           begin
+                              if Is_Tagged_Type (Retysp (Annot.Element_Type))
+                                and then not Is_Class_Wide_Type
+                                  (Annot.Element_Type)
+                              then
+                                 Elt_Id := New_Tag_Update
+                                   (Name => Elt_Id,
+                                    Ty   => Retysp (Annot.Element_Type));
+                              end if;
+
+                              loop
+                                 Key_Id := Value_Map.Element (Choice);
+                                 Top := Top + 1;
+
+                                 --  Go over all following associations to
+                                 --  fill Distinct.
+
+                                 for I in Top + 1 .. Length loop
+                                    declare
+                                       Other_Key : constant W_Identifier_Id :=
+                                         Value_Map.Element (Keys (I));
+                                    begin
+                                       Top_Distinct := Top_Distinct + 1;
+                                       Distinct (Top_Distinct) :=
+                                         New_Not
+                                           (Right =>
+                                              Pred_Of_Boolean_Term
+                                                (New_Call_To_Ada_Function
+                                                   (Annot.Equivalent_Keys,
+                                                    (+Other_Key, +Key_Id))));
+                                    end;
+                                 end loop;
+
+                                 --  Fill Get, Eq_Keys and possibly Has_Key
+
+                                 Get (Top) := New_Comparison
+                                   (Symbol => Why_Eq,
+                                    Left   => New_Call_To_Ada_Function
+                                      (Fun  => Annot.Maps_Get,
+                                       Args => (+Aggr_Id, +Key_Id)),
+                                    Right  => Elt_Id);
+                                 Eq_Keys (Top) := Pred_Of_Boolean_Term
+                                   (New_Call_To_Ada_Function
+                                      (Fun  => Annot.Equivalent_Keys,
+                                       Args => (+Quant_Id, +Key_Id)));
+
+                                 if Partial then
+                                    Has_Key (Top) := Pred_Of_Boolean_Term
+                                      (New_Call_To_Ada_Function
+                                         (Fun  => Annot.Has_Key,
+                                          Args => (+Aggr_Id, +Key_Id)));
+                                 end if;
+
+                                 Next (Choice);
+                                 exit when No (Choice);
+                              end loop;
+                           end;
+
+                           Next (Assoc);
+                           exit when No (Assoc);
+                        end loop;
+
+                        --  Conjunct all the elements of Distinct in Pre:
+                        --  not equivalent_keys k2 k1 /\ ...
+
+                        pragma Assert (Top_Distinct = Num_Distinct);
+                        Pre := New_And_Pred (Distinct);
+
+                        --  Conjunct all the elements of Has_Key and Get in
+                        --  Def:
+                        --  has_key aggr k1 /\ has_key aggr k2 /\ ... /\
+                        --  get aggr k1 = copy e1 /\ ...
+
+                        Def := New_And_Pred (Has_Key & Get);
+
+                        --  Generate:
+                        --
+                        --  (forall key_id. has_key aggr_id key_id ->
+                        --    equivalent_keys key_id e1 \/
+                        --    equivalent_keys key_id e2 \/ ...)
+                        --
+                        --  or:
+                        --
+                        --  (forall key_id.
+                        --    not equivalent_keys key_id e1 /\
+                        --    not equivalent_keys key_id e2 /\ ... ->
+                        --      get aggr_id key_id = default_item)
+                        --
+                        --  and add it to Def.
+
+                        declare
+                           Has_Key_Or_Get_Call : constant W_Term_Id :=
+                             New_Call_To_Ada_Function
+                               (Fun  => (if Partial then Annot.Has_Key
+                                         else Annot.Maps_Get),
+                                Args => (+Aggr_Id, +Quant_Id));
+                           Quant_Pred          : constant W_Pred_Id :=
+                             New_Universal_Quantif
+                               (Var_Id  => Quant_Id,
+                                Ty      => Annot.Key_Type,
+                                Trigger => Has_Key_Or_Get_Call,
+                                Pred    =>
+                                  (if Partial
+                                   then New_Connection
+                                     (Op    => EW_Imply,
+                                      Left  => Pred_Of_Boolean_Term
+                                        (Has_Key_Or_Get_Call),
+                                      Right => New_Or_Pred (Eq_Keys))
+                                   else New_Connection
+                                     (Op    => EW_Imply,
+                                      Left  => New_Not
+                                        (Right => New_Or_Pred (Eq_Keys)),
+                                      Right => New_Comparison
+                                        (Symbol => Why_Eq,
+                                         Left   => Has_Key_Or_Get_Call,
+                                         Right  => New_Call_To_Ada_Function
+                                           (Fun  => Annot.Default_Item,
+                                            Args => (1 .. 0 => <>))))));
+
+                        begin
+                           Def := New_And_Pred (Def, Quant_Pred);
+                        end;
+                     end;
+                  end if;
+
+                  --  If Length is provided, add:
+                  --
+                  --    length aggr_id = <Length>
+
+                  if Present (Annot.Maps_Length) then
+                     declare
+                        Length_Call     : W_Term_Id :=
+                          New_Call_To_Ada_Function
+                            (Fun  => Annot.Maps_Length,
+                             Args => (1 => +Aggr_Id));
+                        Base_Length_Typ : constant W_Type_Id :=
+                          (if Has_Scalar_Type (Etype (Annot.Maps_Length))
+                           then EW_Int_Type
+                           else EW_Abstract
+                             (Base_Retysp (Etype (Annot.Maps_Length))));
+                     begin
+                        Length_Call := +Insert_Simple_Conversion
+                          (Domain => EW_Term,
+                           Expr   => +Length_Call,
+                           To     => Base_Length_Typ);
+                        Def := New_And_Pred
+                          (Left  => Def,
+                           Right => New_Comparison
+                             (Symbol => Why_Eq,
+                              Left   => Length_Call,
+                              Right  => New_Integer_Constant
+                                (Value => UI_From_Int (Int (Length)))));
+                     end;
+                  end if;
+               end;
+
+            when Seqs =>
+
+               --  For the precondition of (E1, E2, ...), generate:
+               --
+               --  first + <List_Length (Exprs)> - 1 <= Index_Type'Last
+
+               --  For the definition of (E1, E2, ...), generate:
+               --
+               --  last aggr_id = first + <List_Length (Exprs)> - 1 /\
+               --  get aggr_id first = copy e1 /\
+               --  get aggr_id (first + 1) = copy e2 /\ ...
+
+               declare
+                  Length         : constant Int :=
+                    (if Is_Empty then 0 else List_Length (Exprs));
+                  First_Call     : W_Term_Id :=
+                    New_Call_To_Ada_Function
+                      (Fun  => Annot.First,
+                       Args => (1 .. 0 => <>));
+                  Last_Call      : W_Term_Id :=
+                    New_Call_To_Ada_Function
+                      (Fun  => Annot.Last,
+                       Args => (1 => +Aggr_Id));
+                  Base_Index_Typ : constant W_Type_Id :=
+                    (if Has_Scalar_Type (Annot.Index_Type)
+                     then EW_Int_Type
+                     else EW_Abstract (Base_Retysp (Annot.Index_Type)));
+
+                  function Offset (I : Nat) return W_Term_Id is
+                    (if I = 0 then First_Call
+                     else New_Call
+                       (Name => Int_Infix_Add,
+                        Args =>
+                          (+First_Call,
+                           New_Integer_Constant (Value => UI_From_Int (I))),
+                        Typ  => Base_Index_Typ));
+
+               begin
+                  First_Call := +Insert_Simple_Conversion
+                    (Domain => EW_Term,
+                     Expr   => +First_Call,
+                     To     => Base_Index_Typ);
+                  Last_Call := +Insert_Simple_Conversion
+                    (Domain => EW_Term,
+                     Expr   => +Last_Call,
+                     To     => Base_Index_Typ);
+
+                  if Is_Empty then
+                     Pre := True_Pred;
+                     Def := New_Comparison
+                       (Symbol => Why_Eq,
+                        Left   => Last_Call,
+                        Right  => New_Call
+                          (Name => Int_Infix_Subtr,
+                           Args => (+First_Call,
+                                    New_Integer_Constant (Value => Uint_1)),
+                           Typ  => Base_Index_Typ));
+                  else
+                     if Has_Scalar_Type (Annot.Index_Type) then
+                        Pre := New_Comparison
+                          (Symbol => Int_Infix_Le,
+                           Left   => Offset (Length - 1),
+                           Right  => +New_Attribute_Expr
+                             (Ty     => Annot.Index_Type,
+                              Domain => EW_Term,
+                              Attr   => Attribute_Last,
+                              Params => Logic_Params));
+                     else
+                        Pre := True_Pred;
+                     end if;
+
+                     Def := New_Comparison
+                       (Symbol => Why_Eq,
+                        Left   => Last_Call,
+                        Right  => Offset (Length - 1));
+
+                     --  Go over the container expressions to generate
+                     --  get aggr_id first = copy e1, ... in Get
+
+                     declare
+                        Get : W_Pred_Array (1 .. Natural (Length));
+                        Top : Natural := 0;
+                        Elt : Node_Id := First (Exprs);
+                     begin
+                        loop
+                           declare
+                              Elt_Id : W_Term_Id := +Value_Map.Element (Elt);
+                           begin
+                              if Is_Tagged_Type (Retysp (Annot.Element_Type))
+                                and then not Is_Class_Wide_Type
+                                  (Annot.Element_Type)
+                              then
+                                 Elt_Id := New_Tag_Update
+                                   (Name => Elt_Id,
+                                    Ty   => Retysp (Annot.Element_Type));
+                              end if;
+
+                              Top := Top + 1;
+                              Get (Top) := New_Comparison
+                                (Symbol => Why_Eq,
+                                 Left   => New_Call_To_Ada_Function
+                                   (Fun  => Annot.Seqs_Get,
+                                    Args =>
+                                      (+Aggr_Id, Offset (Nat (Top - 1)))),
+                                 Right  => Elt_Id);
+                           end;
+
+                           Next (Elt);
+                           exit when No (Elt);
+                        end loop;
+
+                        --  Conjunct all the elements of Get with Def
+
+                        Def := New_And_Pred (Def & Get);
+                     end;
+                  end if;
+               end;
+
+            when Model =>
+               raise Program_Error;
+         end case;
+      end Compute_Aggregate_Def;
+
+      ---------------------------------
+      -- Generate_Aggregate_Function --
+      ---------------------------------
+
+      procedure Generate_Aggregate_Function
+        (Cont_Ty   : Type_Kind_Id;
+         Annot     : Aggregate_Annotation;
+         Values    : Node_Vectors.Vector;
+         Value_Map : Ada_Node_To_Why_Id.Map)
+      is
+         Name          : constant String :=
+           Lower_Case_First (Get_Name_For_Aggregate (Expr));
+         Module        : constant W_Module_Id :=
+           New_Module
+             (Ada_Node => Expr,
+              File     => No_Symbol,
+              Name     => Name);
+         Func          : constant W_Identifier_Id :=
+           New_Identifier
+             (Ada_Node => Expr,
+              Domain   => EW_Pterm,
+              Module   => Module,
+              Symb     => NID (Name),
+              Typ      => EW_Abstract (Cont_Ty));
+         P_Func        : constant W_Identifier_Id := To_Program_Space (Func);
+
+         --  Arrays of binders and arguments
+
+         Num_Params    : constant Natural :=
+           (if Natural (Values.Length) = 0 then 1
+            else Natural (Values.Length));
+         Call_Params   : Binder_Array (1 .. Num_Params);
+         Call_Args     : W_Expr_Array (1 .. Num_Params);
+         Top           : Natural := 0;
+
+         Guards        : W_Pred_Array (1 .. Natural (Value_Map.Length));
+         Pre           : W_Pred_Id;
+         Def           : W_Pred_Id;
+         Aggr_Temp     : constant W_Identifier_Id :=
+           New_Temp_Identifier
+             (Typ       => Get_Typ (Func),
+              Base_Name => "aggr");
+         Aggr          : W_Term_Id;
+
+         Th            : Theory_UC;
+      begin
+         --  Insert new modules for the logic function in the module map
+
+         Insert_Extra_Module (Expr, Module);
+         Insert_Extra_Module
+           (Expr,
+            New_Module (File => No_Symbol,
+                        Name => Name & To_String (WNE_Axiom_Suffix)),
+            Is_Axiom => True);
+
+         --  Compute the parameters and guards for the axiom
+
+         for Value of Values loop
+            Top := Top + 1;
+            declare
+               Why_Id : constant W_Identifier_Id := Value_Map.Element (Value);
+            begin
+               Call_Params (Top) := Binder_Type'
+                 (Ada_Node => Standard.Types.Empty,
+                  B_Name   => Why_Id,
+                  B_Ent    => Null_Entity_Name,
+                  Mutable  => False,
+                  Labels   => Symbol_Sets.Empty_Set);
+               Guards (Top) := Compute_Dynamic_Inv_And_Initialization
+                 (Expr     => +Why_Id,
+                  Ty       => Get_Ada_Node (+Get_Typ (Why_Id)),
+                  Params   => Params,
+                  Only_Var => False_Term);
+            end;
+         end loop;
+
+         if Values.Length = 0 then
+            Top := Top + 1;
+            Call_Params (Top) := Unit_Param;
+         end if;
+
+         pragma Assert (Top = Num_Params);
+
+         Call_Args := Get_Args_From_Binders
+           (Call_Params, Ref_Allowed => False);
+
+         Aggr := New_Call (Name => Func,
+                           Args => Call_Args,
+                           Typ  => Get_Typ (Func));
+
+         Compute_Aggregate_Def
+           (Annot     => Annot,
+            Value_Map => Value_Map,
+            Aggr_Id   => Aggr_Temp,
+            Pre       => Pre,
+            Def       => Def);
+
+      --  Generate the logic function declaration
+
+         Th :=
+           Open_Theory
+             (WF_Context, Module,
+              Comment =>
+                "Module for declaring an abstract function for the container "
+              & "aggregate at "
+              & (if Sloc (Expr) > 0 then
+                   Build_Location_String (Sloc (Expr))
+                else "<no location>")
+              & ", created in " & GNAT.Source_Info.Enclosing_Entity);
+
+         Emit (Th,
+               New_Function_Decl
+                 (Domain      => EW_Pterm,
+                  Name        => To_Local (Func),
+                  Labels      => Symbol_Sets.Empty_Set,
+                  Location    => No_Location,
+                  Binders     => Call_Params,
+                  Return_Type => Get_Typ (Aggr_Temp)));
+
+         Emit (Th,
+               New_Function_Decl
+                 (Domain      => EW_Prog,
+                  Name        => To_Local (P_Func),
+                  Labels      => Symbol_Sets.Empty_Set,
+                  Location    => No_Location,
+                  Binders     => Call_Params,
+                  Pre         => Pre,
+                  Post        => New_Comparison
+                    (Symbol => Why_Eq,
+                     Left   => +New_Result_Ident (Typ => Get_Typ (Aggr_Temp)),
+                     Right  => New_Call
+                       (Name => To_Local (Func),
+                        Args => Call_Args,
+                        Typ  => Get_Typ (Func))),
+                  Return_Type => Get_Typ (Aggr_Temp)));
+
+         Close_Theory (Th,
+                       Kind           => Definition_Theory,
+                       Defined_Entity => Expr);
+
+         --  Generate the axiom in a completion module
+
+         Th :=
+           Open_Theory
+             (WF_Context, E_Axiom_Module (Expr),
+              Comment =>
+                "Module for defining the value of the container aggregate at "
+              & (if Sloc (Expr) > 0 then
+                   Build_Location_String (Sloc (Expr))
+                else "<no location>")
+              & ", created in " & GNAT.Source_Info.Enclosing_Entity);
+
+         Emit (Th,
+               New_Guarded_Axiom
+                 (Name     => NID (Def_Axiom),
+                  Binders  => Call_Params,
+                  Pre      => New_And_Pred (Guards & Pre),
+                  Def      => New_Typed_Binding
+                    (Name    => Aggr_Temp,
+                     Def     => Aggr,
+                     Context => Def),
+                  Triggers => New_Triggers
+                    (Triggers => (1 => New_Trigger (Terms => (1 => +Aggr)))),
+                  Dep      =>
+                    New_Axiom_Dep (Name => Func,
+                                   Kind => EW_Axdep_Func)));
+
+         Close_Theory (Th,
+                       Kind           => Axiom_Theory,
+                       Defined_Entity => Expr);
+      end Generate_Aggregate_Function;
+
+      ----------------------------
+      -- Get_Name_For_Aggregate --
+      ----------------------------
+
+      function Get_Name_For_Aggregate (Expr : Node_Id) return String is
+         Obj : constant Entity_Id := Get_Initialized_Object (Expr);
+
+      begin
+         --  If Expr is used to initialize an object, reuse the object name
+         --  to get a stable name.
+
+         if Present (Obj) then
+            return Get_Module_Name (E_Module (Obj))
+              & To_String (WNE_Aggregate_Def_Suffix);
+         else
+            return New_Temp_Identifier
+              (To_String (WNE_Aggregate_Def_Suffix));
+         end if;
+      end Get_Name_For_Aggregate;
+
+      -----------------------------
+      -- Get_Aggregates_Elements --
+      -----------------------------
+
+      procedure Get_Aggregates_Elements
+        (Annot     : Aggregate_Annotation;
+         Values    : out Node_Vectors.Vector;
+         Value_Map : out Ada_Node_To_Why_Id.Map)
+      is
+         Assocs : constant List_Id := Component_Associations (Expr);
+         Exprs  : constant List_Id := Expressions (Expr);
+      begin
+         if Present (Assocs) and then List_Length (Assocs) > 0 then
+            pragma Assert (Annot.Kind = Maps);
+            declare
+               Assoc : Node_Id := First (Assocs);
+            begin
+               loop
+                  declare
+                     Elt_Id : constant W_Identifier_Id := New_Temp_Identifier
+                       (Typ       => Type_Of_Node (Annot.Element_Type),
+                        Base_Name => "elt");
+                     Key_Id : W_Identifier_Id;
+                     Choice : Node_Id := First (Choice_List (Assoc));
+                  begin
+                     loop
+                        Values.Append (Choice);
+                        Key_Id := New_Temp_Identifier
+                          (Typ       => Type_Of_Node (Annot.Key_Type),
+                           Base_Name => "key");
+                        Value_Map.Insert (Choice, Key_Id);
+                        Next (Choice);
+                        exit when No (Choice);
+                     end loop;
+
+                     Values.Append (Expression (Assoc));
+                     Value_Map.Insert (Expression (Assoc), Elt_Id);
+                  end;
+                  Next (Assoc);
+                  exit when No (Assoc);
+               end loop;
+            end;
+         elsif Present (Exprs) and then List_Length (Exprs) > 0 then
+            pragma Assert (Annot.Kind in Seqs | Sets);
+            declare
+               Value : Node_Id := First (Exprs);
+            begin
+               loop
+                  declare
+                     Elt_Id : constant W_Identifier_Id := New_Temp_Identifier
+                       (Typ       => Type_Of_Node (Annot.Element_Type),
+                        Base_Name => "elt");
+                  begin
+
+                     Values.Append (Value);
+                     Value_Map.Insert (Value, Elt_Id);
+                  end;
+                  Next (Value);
+                  exit when No (Value);
+               end loop;
+            end;
+         end if;
+      end Get_Aggregates_Elements;
+
+      Cont_Ty   : constant Entity_Id := Base_Retysp (Etype (Expr));
+      Annot     : constant Aggregate_Annotation :=
+        Get_Aggregate_Annotation (Cont_Ty);
+      Values    : Node_Vectors.Vector;
+      Value_Map : Ada_Node_To_Why_Id.Map;
+
+   --  Start of processing for Transform_Container_Aggregate
+
+   begin
+      Get_Aggregates_Elements (Annot, Values, Value_Map);
+
+      --  If not done already, generate the logic function
+
+      declare
+         M : W_Module_Id := E_Module (Expr);
+      begin
+         if M = Why_Empty then
+            Generate_Aggregate_Function
+              (Cont_Ty   => Cont_Ty,
+               Annot     => Annot,
+               Values    => Values,
+               Value_Map => Value_Map);
+            M := E_Module (Expr);
+         end if;
+
+         return Complete_Translation
+           (Annot     => Annot,
+            Value_Map => Value_Map,
+            Values    => Values,
+            Func      => New_Identifier
+              (Ada_Node => Expr,
+               Domain   => Domain,
+               Module   => M,
+               Symb     => NID (Lower_Case_First (Img (Get_Name (M)))),
+               Typ      => EW_Abstract (Cont_Ty)));
+      end;
+   end Transform_Container_Aggregate;
+
    ---------------------------
    -- Transform_Declaration --
    ---------------------------
@@ -20921,7 +22015,10 @@ package body Gnat2Why.Expr is
       else
          case Nkind (Expr) is
          when N_Aggregate =>
-            if Is_Record_Type (Expr_Type) then
+            if Is_Container_Aggregate (Expr) then
+               T := Transform_Container_Aggregate (Expr, Params, Domain);
+
+            elsif Is_Record_Type (Expr_Type) then
                pragma Assert (Is_Empty_List (Expressions (Expr)));
 
                --  If the type is an empty record in Why (no tag, no field, no
