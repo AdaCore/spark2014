@@ -3298,7 +3298,7 @@ package body Why.Gen.Expr is
    function New_And_Pred (Conjuncts : W_Pred_Array) return W_Pred_Id is
    begin
       if Conjuncts'Length = 0 then
-         return False_Pred;
+         return True_Pred;
 
       elsif Conjuncts'Length = 1 then
          return Conjuncts (Conjuncts'First);
@@ -4329,7 +4329,7 @@ package body Why.Gen.Expr is
    function New_Or_Pred (Conjuncts : W_Pred_Array) return W_Pred_Id is
    begin
       if Conjuncts'Length = 0 then
-         return True_Pred;
+         return False_Pred;
 
       elsif Conjuncts'Length = 1 then
          return Conjuncts (Conjuncts'First);
