@@ -28,6 +28,7 @@ with Nlists;                      use Nlists;
 with Output;                      use Output;
 with Restrict;                    use Restrict;
 with Rident;                      use Rident;
+with Sem_Aggr;
 with Sem_Aux;                     use Sem_Aux;
 with Sem_Type;                    use Sem_Type;
 with Sem_Warn;                    use Sem_Warn;
@@ -391,6 +392,16 @@ package body Flow.Analysis is
 
       function Search_Expr (N : Node_Id) return Traverse_Result is
       begin
+         --  HACK: skip deep choices for now until they are supported in flow
+         if Nkind (N) in N_Selected_Component | N_Indexed_Component
+           and then Nkind (Parent (N)) = N_Component_Association
+           and then Is_List_Member (N)
+           and then List_Containing (N) = Choices (Parent (N))
+           and then Sem_Aggr.Is_Deep_Choice (N, Etype (Parent (Parent (N))))
+         then
+            return Skip;
+         end if;
+
          --  Identifier appearing as a choice in a component association is not
          --  really an expression (except when used as an index of an array
          --  component association). We process such identifiers while

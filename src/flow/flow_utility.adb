@@ -31,6 +31,7 @@ with Namet;                           use Namet;
 with Nlists;                          use Nlists;
 with Output;                          use Output;
 with Rtsfind;                         use Rtsfind;
+with Sem_Aggr;
 with Sem_Prag;                        use Sem_Prag;
 with Sem_Type;                        use Sem_Type;
 with Sinfo.Utils;                     use Sinfo.Utils;
@@ -3706,104 +3707,110 @@ package body Flow_Utility is
          begin
             Indent;
             while Present (Component_Association) loop
-               declare
-                  Choice : constant Node_Id :=
-                    First (Choices (Component_Association));
-                  Expr   : constant Node_Id :=
-                    Expression (Component_Association);
+               --  HACK: skip deep choices for now until they are supported in
+               --  flow.
+               if not Sem_Aggr.Is_Deep_Choice
+                 (First (Choices (Component_Association)), Etype (N))
+               then
+                  declare
+                     Choice : constant Node_Id :=
+                       First (Choices (Component_Association));
+                     Expr   : constant Node_Id :=
+                       Expression (Component_Association);
 
-                  Comp : constant Entity_Id :=
-                    Unique_Component (Entity (Choice));
+                     Comp : constant Entity_Id :=
+                       Unique_Component (Entity (Choice));
 
-                  Expr_Vars : Flow_Id_Sets.Set;
-                  FS        : Flow_Id_Sets.Set;
+                     Expr_Vars : Flow_Id_Sets.Set;
+                     FS        : Flow_Id_Sets.Set;
 
-               begin
-                  pragma Annotate (Xcov, Exempt_On, "Debugging code");
-                  if Debug_Trace_Untangle_Fields then
-                     Write_Str ("Updating component ");
-                     Sprint_Node_Inline (Comp);
-                     Write_Eol;
-                  end if;
-                  pragma Annotate (Xcov, Exempt_Off);
-
-                  --  Composite update
-
-                  if Is_Record_Type (Get_Type (Comp, Scope)) then
-
-                     --  We should call Untangle_Record_Aggregate here.
-                     --  For now we us a safe default (all fields depend
-                     --  on everything).
-
-                     case Nkind (Expr) is
-                        --  when N_Aggregate =>
-                        --     null;
-
-                        when others =>
-                           if Fold_Functions = Inputs then
-                              Expr_Vars := Get_Vars_Wrapper (Expr);
-
-                              --  Not sure what to do, so set all
-                              --  sensible fields to the given variables.
-
-                              FS :=
-                                Flatten_Variable
-                                  (Add_Component (Current_Field, Comp),
-                                   Scope);
-
-                              for F of FS loop
-                                 M.Replace (F, Expr_Vars);
-                              end loop;
-
-                           else
-                              All_Vars.Union
-                                (Get_Variables
-                                   (N                       => Expr,
-                                    Scope                   => Scope,
-                                    Target_Name             =>
-                                      Target_Name,
-                                    Fold_Functions          => Inputs,
-                                    Use_Computed_Globals    =>
-                                      Use_Computed_Globals,
-                                    Expand_Internal_Objects =>
-                                      Expand_Internal_Objects));
-                           end if;
-
-                     end case;
-
-                  --  Direct field update of M
-
-                  else
-                     if Fold_Functions = Inputs then
-                        Expr_Vars := Get_Vars_Wrapper (Expr);
-
-                        M.Replace
-                          (Add_Component (Current_Field, Comp), Expr_Vars);
-                     else
-                        All_Vars.Union
-                          (Get_Variables
-                             (N                       => Expr,
-                              Scope                   => Scope,
-                              Target_Name             => Target_Name,
-                              Fold_Functions          =>
-                                (if Fold_Functions = Proof_Ins
-                                 then Proof_Ins
-                                 else Inputs),
-                              Use_Computed_Globals    =>
-                                Use_Computed_Globals,
-                              Expand_Internal_Objects =>
-                                Expand_Internal_Objects));
+                  begin
+                     pragma Annotate (Xcov, Exempt_On, "Debugging code");
+                     if Debug_Trace_Untangle_Fields then
+                        Write_Str ("Updating component ");
+                        Sprint_Node_Inline (Comp);
+                        Write_Eol;
                      end if;
-                  end if;
+                     pragma Annotate (Xcov, Exempt_Off);
 
-                  --  Expansion rewrites multiple choices like "X | Y => A"
-                  --  into separate component associations like
-                  --  "X => A, Y => A", because depending on the type of the
-                  --  component we might (or might not) need checks for the
-                  --  expression.
+                     --  Composite update
 
-                  pragma Assert (No (Next (Choice)));
-               end;
+                     if Is_Record_Type (Get_Type (Comp, Scope)) then
+
+                        --  We should call Untangle_Record_Aggregate here.
+                        --  For now we us a safe default (all fields depend
+                        --  on everything).
+
+                        case Nkind (Expr) is
+                           --  when N_Aggregate =>
+                           --     null;
+
+                           when others =>
+                              if Fold_Functions = Inputs then
+                                 Expr_Vars := Get_Vars_Wrapper (Expr);
+
+                                 --  Not sure what to do, so set all
+                                 --  sensible fields to the given variables.
+
+                                 FS :=
+                                   Flatten_Variable
+                                     (Add_Component (Current_Field, Comp),
+                                      Scope);
+
+                                 for F of FS loop
+                                    M.Replace (F, Expr_Vars);
+                                 end loop;
+
+                              else
+                                 All_Vars.Union
+                                   (Get_Variables
+                                      (N                       => Expr,
+                                       Scope                   => Scope,
+                                       Target_Name             =>
+                                         Target_Name,
+                                       Fold_Functions          => Inputs,
+                                       Use_Computed_Globals    =>
+                                         Use_Computed_Globals,
+                                       Expand_Internal_Objects =>
+                                         Expand_Internal_Objects));
+                              end if;
+
+                        end case;
+
+                     --  Direct field update of M
+
+                     else
+                        if Fold_Functions = Inputs then
+                           Expr_Vars := Get_Vars_Wrapper (Expr);
+
+                           M.Replace
+                             (Add_Component (Current_Field, Comp), Expr_Vars);
+                        else
+                           All_Vars.Union
+                             (Get_Variables
+                                (N                       => Expr,
+                                 Scope                   => Scope,
+                                 Target_Name             => Target_Name,
+                                 Fold_Functions          =>
+                                   (if Fold_Functions = Proof_Ins
+                                    then Proof_Ins
+                                    else Inputs),
+                                 Use_Computed_Globals    =>
+                                   Use_Computed_Globals,
+                                 Expand_Internal_Objects =>
+                                   Expand_Internal_Objects));
+                        end if;
+                     end if;
+
+                     --  Expansion rewrites multiple choices like "X | Y => A"
+                     --  into separate component associations like
+                     --  "X => A, Y => A", because depending on the type of the
+                     --  component we might (or might not) need checks for the
+                     --  expression.
+
+                     pragma Assert (No (Next (Choice)));
+                  end;
+               end if;
 
                Next (Component_Association);
             end loop;
@@ -6207,15 +6214,20 @@ package body Flow_Utility is
             Input  := Expression (Assoc);
             Output := First (Choices (Assoc));
 
-            F := Add_Component (Map_Root, Unique_Component (Entity (Output)));
+            --  HACK: skip deep choices for now until they are supported in
+            --  flow.
+            if not Sem_Aggr.Is_Deep_Choice (Output, Etype (Pref)) then
+               F :=
+                 Add_Component (Map_Root, Unique_Component (Entity (Output)));
 
-            if Is_Record_Type (Get_Type (Entity (Output), Scope)) then
-               for C in Recurse_On (Input, F).Iterate loop
-                  M.Replace (Flow_Id_Maps.Key (C),
-                             Flow_Id_Maps.Element (C));
-               end loop;
-            else
-               M.Replace (F, Get_Vars_Wrapper (Input));
+               if Is_Record_Type (Get_Type (Entity (Output), Scope)) then
+                  for C in Recurse_On (Input, F).Iterate loop
+                     M.Replace (Flow_Id_Maps.Key (C),
+                                Flow_Id_Maps.Element (C));
+                  end loop;
+               else
+                  M.Replace (F, Get_Vars_Wrapper (Input));
+               end if;
             end if;
 
             --  Multiple component choices have been rewritten into individual
