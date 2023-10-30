@@ -16,6 +16,7 @@ procedure Test with SPARK_Mode is
         Post => Last (Empty'Result) = 0;
 
       procedure Append (X : in out T; E : Element_Type) with
+	Always_Terminates,
         Pre => Last (X) < 10,
         Post => Last (X) = Last (X)'Old + 1
         and then Get (X, Last (X)) = E
@@ -74,6 +75,7 @@ procedure Test with SPARK_Mode is
 
       function Empty return T;
       procedure Insert (X : in out T; E : Element_Type) with
+	Always_Terminates,
         Post => Length (X) <= Length (X)'Old + 1
         and then Contains (X, E)
         and then (for all F in Element_Type =>
@@ -194,6 +196,7 @@ procedure Test with SPARK_Mode is
 
       function Empty return T;
       procedure Insert (X : in out T; K : Key_Type; E : Element_Type) with
+	Always_Terminates,
         Pre  => not Has_Key (X, K),
         Post => Length (X) = Length (X)'Old + 1
         and then Has_Key (X, K)
@@ -277,6 +280,7 @@ procedure Test with SPARK_Mode is
 
       function Empty return T;
       procedure Insert (X : in out T; K : Key_Type; E : Element_Type) with
+	Always_Terminates,
         Post => Get (X, K) = E
         and then (for all L in Key_Type =>
                     (if L /= K then

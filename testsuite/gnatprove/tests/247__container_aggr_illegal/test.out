@@ -1,3 +1,15 @@
+test_illegal_add.adb:26:12: error: "Insert" procedure shall always terminate
+test_illegal_add.adb:26:12: info: no "Length" function found for type with predefined set aggregates "T"
+test_illegal_add.adb:26:12: info: the cardinality of aggregates will be unknown
+test_illegal_add.adb:61:12: error: "Insert" procedure shall not raise exceptions
+test_illegal_add.adb:61:12: info: no "Length" function found for type with predefined set aggregates "T"
+test_illegal_add.adb:61:12: info: the cardinality of aggregates will be unknown
+test_illegal_add.adb:97:12: error: "Insert" procedure shall not access global data
+test_illegal_add.adb:97:12: info: no "Length" function found for type with predefined set aggregates "T"
+test_illegal_add.adb:97:12: info: the cardinality of aggregates will be unknown
+test_illegal_add.adb:133:12: error: "Insert" procedure shall not have global effects
+test_illegal_add.adb:133:12: info: no "Length" function found for type with predefined set aggregates "T"
+test_illegal_add.adb:133:12: info: the cardinality of aggregates will be unknown
 test_illegal_aggregates.adb:6:07: info: no contextual analysis of "P1" (nested package declaration)
 test_illegal_aggregates.adb:29:21: error: container aggregate whose type does not have a "Container_Aggregates" annotation is not allowed in SPARK
 test_illegal_aggregates.adb:29:21: error: violation of aspect SPARK_Mode at line 1
@@ -47,6 +59,15 @@ test_illegal_default_item.adb:282:12: error: no "Has_Key" nor "Default_Item" fun
 test_illegal_default_item.adb:332:12: error: no "Has_Key" nor "Default_Item" function found for type with predefined map aggregates "T"
 test_illegal_default_item.adb:363:16: error: a function annotated with Container_Aggregates shall not access global data
 test_illegal_default_item.adb:378:12: error: no "Has_Key" nor "Default_Item" function found for type with predefined map aggregates "T"
+test_illegal_empty.adb:30:12: error: "Empty" function shall not have side effects
+test_illegal_empty.adb:30:12: info: no "Length" function found for type with predefined set aggregates "T"
+test_illegal_empty.adb:30:12: info: the cardinality of aggregates will be unknown
+test_illegal_empty.adb:61:12: error: "Empty" function shall not be voltaile
+test_illegal_empty.adb:61:12: info: no "Length" function found for type with predefined set aggregates "T"
+test_illegal_empty.adb:61:12: info: the cardinality of aggregates will be unknown
+test_illegal_empty.adb:97:12: error: "Empty" function shall not access global data
+test_illegal_empty.adb:97:12: info: no "Length" function found for type with predefined set aggregates "T"
+test_illegal_empty.adb:97:12: info: the cardinality of aggregates will be unknown
 test_illegal_eq_elements.adb:30:16: error: equivalence relations shall have two parameters
 test_illegal_eq_elements.adb:37:12: error: no "Equivalent_Elements" function found for type with predefined set aggregates "T"
 test_illegal_eq_elements.adb:72:16: error: parameters of equivalence relations shall have the same type
