@@ -64,11 +64,11 @@ package body Flow.Analysis.Antialiasing is
    --  Checks two ranges for potential overlap
 
    function Aliasing (A,        B        : Node_Id;
-                      Formal_A, Formal_B : Entity_Id)
+                      A_Formal, B_Formal : Entity_Id)
                       return Computed_Aliasing_Result
-   with Pre => (Is_Formal (Formal_A)
-                  or else Is_Function_With_Side_Effects (Formal_A))
-               and then (No (Formal_B) or else Is_Formal (Formal_B));
+   with Pre => (Is_Formal (A_Formal)
+                  or else Is_Function_With_Side_Effects (A_Formal))
+               and then (No (B_Formal) or else Is_Formal (B_Formal));
    --  Returns if A and B alias
 
    function Is_Immutable (F : Entity_Id) return Boolean
@@ -202,7 +202,7 @@ package body Flow.Analysis.Antialiasing is
    --------------
 
    function Aliasing (A,        B        : Node_Id;
-                      Formal_A, Formal_B : Entity_Id)
+                      A_Formal, B_Formal : Entity_Id)
                       return Computed_Aliasing_Result
    is
       function Is_Interesting (N : Node_Id) return Boolean
@@ -516,17 +516,17 @@ package body Flow.Analysis.Antialiasing is
       --  SPARK RM 6.4.2(3).
       declare
          A_Is_Immutable : constant Boolean :=
-           Is_Formal (Formal_A) and then Is_Immutable (Formal_A);
+           Is_Formal (A_Formal) and then Is_Immutable (A_Formal);
          A_Is_Anonymous_Access_Constant_In : constant Boolean :=
-           Ekind (Formal_A) = E_In_Parameter
-           and then Is_Anonymous_Access_To_Constant (Etype (Formal_A));
+           Ekind (A_Formal) = E_In_Parameter
+           and then Is_Anonymous_Access_To_Constant (Etype (A_Formal));
          B_Present_And_Immutable : constant Boolean :=
-           Present (Formal_B)
-           and then Is_Immutable (Formal_B);
+           Present (B_Formal)
+           and then Is_Immutable (B_Formal);
          B_Present_And_Anonymous_Access_Constant_In : constant Boolean :=
-           Present (Formal_B)
-           and then Ekind (Formal_B) = E_In_Parameter
-           and then Is_Anonymous_Access_To_Constant (Etype (Formal_B));
+           Present (B_Formal)
+           and then Ekind (B_Formal) = E_In_Parameter
+           and then Is_Anonymous_Access_To_Constant (Etype (B_Formal));
       begin
          --  Determine if two actual parameters are both either immutable or
          --  anonymous access-to-constant "in" parameters.
@@ -543,21 +543,21 @@ package body Flow.Analysis.Antialiasing is
          --  Determine if at least one of the corresponding formal
          --  parameters is immutable and a by-copy type.
 
-         elsif A_Is_Immutable and then Present (Formal_B)
-           and then Is_Conservatively_By_Copy_Type (Formal_A)
+         elsif A_Is_Immutable and then Present (B_Formal)
+           and then Is_Conservatively_By_Copy_Type (A_Formal)
          then
             Trace_Line ("   -> A does not require aa checking");
             return Impossible;
 
          elsif B_Present_And_Immutable
-           and then Is_Conservatively_By_Copy_Type (Formal_B)
+           and then Is_Conservatively_By_Copy_Type (B_Formal)
          then
             Trace_Line ("   -> B does not require aa checking");
             return Impossible;
 
          --  We also want to avoid checking abstract state
 
-         elsif No (Formal_B) and then Ekind (B) = E_Abstract_State then
+         elsif No (B_Formal) and then Ekind (B) = E_Abstract_State then
             Trace_Line ("   -> B is an abstract state");
             return Impossible;
 
@@ -568,7 +568,7 @@ package body Flow.Analysis.Antialiasing is
          --  the corresponding formal parameter is either immutable or of mode
          --  in and of an anonymous access-to-constant type.
 
-         elsif Ekind (Formal_A) = E_Function
+         elsif Ekind (A_Formal) = E_Function
            and then (B_Present_And_Immutable
                      or else B_Present_And_Anonymous_Access_Constant_In)
          then
