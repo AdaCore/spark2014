@@ -138,6 +138,10 @@ test.adb:315:67: info: pointer dereference check proved (CVC5: 1 VC)
 test.adb:321:12: info: absence of resource or memory leak proved (CVC5: 1 VC)
 test.adb:325:14: high: all paths in "Test_Sets" raise exceptions or do not terminate normally
 test.adb:326:06: info: data dependencies proved
+test.adb:330:16: info: all elements shall fit in the return type of "Length" for predefined set aggregates at test.adb:74
+test.adb:330:16: info: precondition proved (CVC5: 1 VC)
+test.adb:331:16: info: all elements shall fit in the return type of "Length" for predefined set aggregates at test.adb:74
+test.adb:331:16: info: precondition proved (CVC5: 1 VC)
 test.adb:333:22: info: assertion proved (CVC5: 1 VC)
 test.adb:334:22: info: assertion proved (CVC5: 2 VC)
 test.adb:335:22: info: assertion proved (CVC5: 1 VC)
@@ -145,10 +149,10 @@ test.adb:336:22: info: assertion proved (altergo: 1 VC)
 test.adb:337:07: medium: assertion might fail
 test.adb:340:14: high: all paths in "Test_Partial_Maps" raise exceptions or do not terminate normally
 test.adb:341:06: info: data dependencies proved
-test.adb:345:16: info: keys shall be distinct for predefined maps aggregates at test.adb:183
-test.adb:345:16: info: precondition proved (CVC5: 10 VC)
-test.adb:346:16: info: keys shall be distinct for predefined maps aggregates at test.adb:183
-test.adb:346:16: info: precondition proved (Trivial: 1 VC)
+test.adb:345:16: info: keys shall be distinct and all elements shall fit in the return type of "Length" for predefined maps aggregates at test.adb:183
+test.adb:345:16: info: precondition proved (CVC5: 11 VC)
+test.adb:346:16: info: keys shall be distinct and all elements shall fit in the return type of "Length" for predefined maps aggregates at test.adb:183
+test.adb:346:16: info: precondition proved (CVC5: 1 VC)
 test.adb:348:22: info: assertion proved (CVC5: 1 VC)
 test.adb:349:22: info: assertion proved (CVC5: 2 VC; Z3: 1 VC)
 test.adb:350:38: info: unrolling loop
@@ -159,35 +163,39 @@ test.adb:354:22: info: assertion proved (CVC5: 1 VC)
 test.adb:355:07: medium: assertion might fail
 test.adb:359:06: info: data dependencies proved
 test.adb:363:07: medium: resource or memory leak might occur at end of scope
-test.adb:363:16: medium: keys shall be distinct for predefined maps aggregates at test.adb:183
+test.adb:363:16: medium: keys shall be distinct and all elements shall fit in the return type of "Length" for predefined maps aggregates at test.adb:183
 test.adb:363:16: medium: precondition might fail
-test.adb:368:14: high: all paths in "Test_Total_Maps" raise exceptions or do not terminate normally
 test.adb:369:06: info: data dependencies proved
-test.adb:373:16: info: keys shall be distinct for predefined maps aggregates at test.adb:267
-test.adb:373:16: info: precondition proved (CVC5: 10 VC)
-test.adb:374:16: info: keys shall be distinct for predefined maps aggregates at test.adb:267
-test.adb:374:16: info: precondition proved (Trivial: 1 VC)
-test.adb:376:38: info: unrolling loop
-test.adb:377:25: info: assertion proved (CVC5: 5 VC)
-test.adb:379:22: info: assertion proved (CVC5: 1 VC; Trivial: 1 VC)
-test.adb:380:22: info: assertion proved (CVC5: 1 VC)
-test.adb:381:07: medium: assertion might fail
-test.adb:385:06: info: data dependencies proved
-test.adb:389:07: medium: resource or memory leak might occur at end of scope
-test.adb:389:16: medium: keys shall be distinct for predefined maps aggregates at test.adb:183
-test.adb:389:16: medium: precondition might fail
-test.adb:394:14: high: all paths in "Test_Seqs" raise exceptions or do not terminate normally
+test.adb:373:07: medium: resource or memory leak might occur at end of scope
+test.adb:373:16: medium: keys shall be distinct and all elements shall fit in the return type of "Length" for predefined maps aggregates at test.adb:183
+test.adb:373:16: medium: precondition might fail
+test.adb:378:14: high: all paths in "Test_Total_Maps" raise exceptions or do not terminate normally
+test.adb:379:06: info: data dependencies proved
+test.adb:383:16: info: keys shall be distinct for predefined maps aggregates at test.adb:267
+test.adb:383:16: info: precondition proved (CVC5: 10 VC)
+test.adb:384:16: info: keys shall be distinct for predefined maps aggregates at test.adb:267
+test.adb:384:16: info: precondition proved (Trivial: 1 VC)
+test.adb:386:38: info: unrolling loop
+test.adb:387:25: info: assertion proved (CVC5: 5 VC)
+test.adb:389:22: info: assertion proved (CVC5: 1 VC; Trivial: 1 VC)
+test.adb:390:22: info: assertion proved (CVC5: 1 VC)
+test.adb:391:07: medium: assertion might fail
 test.adb:395:06: info: data dependencies proved
-test.adb:399:16: info: all of elements shall fit in index type in predefined sequence aggregates at test.adb:13
-test.adb:399:16: info: precondition proved (CVC5: 1 VC)
-test.adb:400:16: info: all of elements shall fit in index type in predefined sequence aggregates at test.adb:13
-test.adb:400:16: info: precondition proved (Trivial: 1 VC)
-test.adb:402:22: info: assertion proved (CVC5: 1 VC)
-test.adb:403:40: info: unrolling loop
-test.adb:404:25: info: assertion proved (CVC5: 5 VC)
-test.adb:404:25: info: precondition proved (CVC5: 5 VC)
-test.adb:406:22: info: assertion proved (CVC5: 1 VC)
-test.adb:407:07: medium: assertion might fail
-test.adb:411:06: info: data dependencies proved
-test.adb:415:16: medium: all of elements shall fit in index type in predefined sequence aggregates at test.adb:13
-test.adb:415:16: medium: precondition might fail
+test.adb:399:07: medium: resource or memory leak might occur at end of scope
+test.adb:399:16: medium: keys shall be distinct and all elements shall fit in the return type of "Length" for predefined maps aggregates at test.adb:183
+test.adb:399:16: medium: precondition might fail
+test.adb:404:14: high: all paths in "Test_Seqs" raise exceptions or do not terminate normally
+test.adb:405:06: info: data dependencies proved
+test.adb:409:16: info: all of elements shall fit in index type in predefined sequence aggregates at test.adb:13
+test.adb:409:16: info: precondition proved (CVC5: 1 VC)
+test.adb:410:16: info: all of elements shall fit in index type in predefined sequence aggregates at test.adb:13
+test.adb:410:16: info: precondition proved (Trivial: 1 VC)
+test.adb:412:22: info: assertion proved (CVC5: 1 VC)
+test.adb:413:40: info: unrolling loop
+test.adb:414:25: info: assertion proved (CVC5: 5 VC)
+test.adb:414:25: info: precondition proved (CVC5: 5 VC)
+test.adb:416:22: info: assertion proved (CVC5: 1 VC)
+test.adb:417:07: medium: assertion might fail
+test.adb:421:06: info: data dependencies proved
+test.adb:425:16: medium: all of elements shall fit in index type in predefined sequence aggregates at test.adb:13
+test.adb:425:16: medium: precondition might fail

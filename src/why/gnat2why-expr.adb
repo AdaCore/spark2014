@@ -8876,6 +8876,8 @@ package body Gnat2Why.Expr is
             --    assert { not contains cont_id elt_id }
             --
             --  let cont_id = any cont_ty ensures { dyn_inv } in
+            --  assume
+            --    { length cont_id < Length_Type'Last } (* for signed types *)
             --  let elt_id = any elt_ty ensures { dyn_inv } in
             --  let param_cont_id = ref cont_id in
             --    add param_cont_id elt_id;
@@ -9058,6 +9060,46 @@ package body Gnat2Why.Expr is
                  (Name    => Elt_Id,
                   Ty      => Annot.Element_Type,
                   Context => Preserv_Checks);
+
+               --  If the length type is a signed integer type, assume that
+               --  length is less than the last possible length before the call
+               --  to Add:
+               --
+               --  assume { length cont_id < Length_Type'Last }
+               --    (* for signed types *)
+
+               if Present (Annot.Sets_Length)
+                 and then Has_Scalar_Type (Etype (Annot.Sets_Length))
+               then
+                  declare
+                     Length_Call     : W_Term_Id :=
+                       New_Call_To_Ada_Function
+                         (Fun  => Annot.Sets_Length,
+                          Args => (1 => +Cont_Id));
+                     Base_Length_Typ : constant W_Type_Id :=
+                       (if Has_Scalar_Type (Etype (Annot.Sets_Length))
+                        then EW_Int_Type
+                        else EW_Abstract
+                          (Base_Retysp (Etype (Annot.Sets_Length))));
+
+                  begin
+                     Length_Call := +Insert_Simple_Conversion
+                       (Domain => EW_Term,
+                        Expr   => +Length_Call,
+                        To     => Base_Length_Typ);
+                     Preserv_Checks := Sequence
+                       (Left  => New_Assume_Statement
+                          (Pred => New_Comparison
+                               (Symbol => Int_Infix_Lt,
+                                Left   => Length_Call,
+                                Right  => +New_Attribute_Expr
+                                  (Ty     => Etype (Annot.Sets_Length),
+                                   Domain => EW_Term,
+                                   Attr   => Attribute_Last,
+                                   Params => Body_Params))),
+                        Right => Preserv_Checks);
+                  end;
+               end if;
             end;
 
          when Seqs =>
@@ -9279,6 +9321,8 @@ package body Gnat2Why.Expr is
             --      { get cont_id key_id = default_item } (* otherwise *)
             --
             --  let cont_id = any cont_ty ensures { dyn_inv } in
+            --  assume
+            --    { length cont_id < Length_Type'Last } (* for signed types *)
             --  let key_id = any key_ty ensures { dyn_inv } in
             --  let elt_id = any elt_ty ensures { dyn_inv } in
             --  assume { not has_key cont_id key_id }; (* with has_key *)
@@ -9618,6 +9662,46 @@ package body Gnat2Why.Expr is
                  (Name    => Key_Id,
                   Ty      => Annot.Key_Type,
                   Context => Preserv_Checks);
+
+               --  If the length type is a signed integer type, assume that
+               --  length is less than the last possible length before the call
+               --  to Add:
+               --
+               --  assume { length cont_id < Length_Type'Last }
+               --    (* for signed types *)
+
+               if Present (Annot.Maps_Length)
+                 and then Has_Scalar_Type (Etype (Annot.Maps_Length))
+               then
+                  declare
+                     Length_Call     : W_Term_Id :=
+                       New_Call_To_Ada_Function
+                         (Fun  => Annot.Maps_Length,
+                          Args => (1 => +Cont_Id));
+                     Base_Length_Typ : constant W_Type_Id :=
+                       (if Has_Scalar_Type (Etype (Annot.Maps_Length))
+                        then EW_Int_Type
+                        else EW_Abstract
+                          (Base_Retysp (Etype (Annot.Maps_Length))));
+
+                  begin
+                     Length_Call := +Insert_Simple_Conversion
+                       (Domain => EW_Term,
+                        Expr   => +Length_Call,
+                        To     => Base_Length_Typ);
+                     Preserv_Checks := Sequence
+                       (Left  => New_Assume_Statement
+                          (Pred => New_Comparison
+                               (Symbol => Int_Infix_Lt,
+                                Left   => Length_Call,
+                                Right  => +New_Attribute_Expr
+                                  (Ty     => Etype (Annot.Maps_Length),
+                                   Domain => EW_Term,
+                                   Attr   => Attribute_Last,
+                                   Params => Body_Params))),
+                        Right => Preserv_Checks);
+                  end;
+               end if;
             end;
 
          when Model =>
@@ -19784,7 +19868,24 @@ package body Gnat2Why.Expr is
          if Domain = EW_Prog then
             case Annot.Kind is
                when Sets =>
-                  null;
+                  if Present (Annot.Sets_Length) then
+                     declare
+                        Check_Info : Check_Info_Type := New_Check_Info;
+                     begin
+                        Check_Info.Continuation.Append
+                          (Continuation_Type'
+                             (Annot.Annotate_Node,
+                              To_Unbounded_String
+                                ("all elements shall fit in the return type "
+                                 & "of """ & Source_Name (Annot.Sets_Length)
+                                 & """ for predefined set aggregates")));
+                        Call := +New_VC_Prog
+                          (Ada_Node   => Expr,
+                           Reason     => VC_Precondition,
+                           Expr       => +Call,
+                           Check_Info => Check_Info);
+                     end;
+                  end if;
 
                when Seqs =>
                   declare
@@ -19811,8 +19912,13 @@ package body Gnat2Why.Expr is
                        (Continuation_Type'
                           (Annot.Annotate_Node,
                            To_Unbounded_String
-                             ("keys shall be distinct for predefined maps"
-                              & " aggregates")));
+                             ("keys shall be distinct" &
+                              (if Present (Annot.Maps_Length)
+                               then " and all elements shall fit in the return"
+                                 & " type of """
+                                 & Source_Name (Annot.Maps_Length) & '"'
+                               else "") &
+                                " for predefined maps aggregates")));
                      Call := +New_VC_Prog
                        (Ada_Node   => Expr,
                         Reason     => VC_Precondition,
@@ -19927,16 +20033,19 @@ package body Gnat2Why.Expr is
          case Annot.Kind is
             when Sets =>
 
-               --  No specific precondition for Sets
-
-               Pre := True_Pred;
-
+               --  For the precondition of an aggregate with a length
+               --  specified, generate:
+               --
+               --    <List_Length (Exprs)> <= Length_Type'Last
+               --
                --  For the definition of an aggregate (E1, E2, ...), generate:
                --
                --  contains aggr_id e1 /\ contains aggr_id e2 /\ ... /\
                --  (forall elt_id. contains aggr_id elt_id ->
                --    equivalent_elements elt_id e1 \/
                --    equivalent_elements elt_id e2 \/ ...)
+
+               Pre := True_Pred;
 
                if Is_Empty then
 
@@ -20034,9 +20143,13 @@ package body Gnat2Why.Expr is
                   end;
                end if;
 
-               --  If Length is provided, add:
+               --  If Length is provided, add to Def:
                --
                --    length aggr_id <= <List_Length (Exprs)>
+               --
+               --  and if Length returns a scalar type, add to Pre:
+               --
+               --    <List_Length (Exprs)> <= Length_Type'Last
 
                if Present (Annot.Sets_Length) then
                   declare
@@ -20063,6 +20176,20 @@ package body Gnat2Why.Expr is
                            Left   => Length_Call,
                            Right  => New_Integer_Constant
                              (Value => UI_From_Int (Length))));
+
+                     if Has_Scalar_Type (Etype (Annot.Sets_Length)) then
+                        Pre := New_And_Pred
+                          (Left  => New_Comparison
+                             (Symbol => Int_Infix_Le,
+                              Left   => New_Integer_Constant
+                                (Value => UI_From_Int (Length)),
+                              Right  => +New_Attribute_Expr
+                                (Ty     => Etype (Annot.Sets_Length),
+                                 Domain => EW_Term,
+                                 Attr   => Attribute_Last,
+                                 Params => Logic_Params)),
+                           Right => Pre);
+                     end if;
                   end;
                end if;
 
@@ -20072,7 +20199,9 @@ package body Gnat2Why.Expr is
                --  (K1 -> E1, K2 -> E2, ...), generate:
                --
                --  not equivalent_keys k2 k1 /\
-               --  not equivalent_keys k3 k1 /\ ...
+               --  not equivalent_keys k3 k1 /\ ... /\
+               --  <List_Length (Assocs)> <= Length_Type'Last
+               --  (* if length is specified *)
 
                --  For the definition of a partial map aggregate
                --  (K1 -> E1, K2 -> E2, ...), generate:
@@ -20316,9 +20445,13 @@ package body Gnat2Why.Expr is
                      end;
                   end if;
 
-                  --  If Length is provided, add:
+                  --  If Length is provided, add to Def:
                   --
                   --    length aggr_id = <Length>
+                  --
+                  --  and if Length returns a scalar type, add to Pre:
+                  --
+                  --    <List_Length (Exprs)> <= Length_Type'Last
 
                   if Present (Annot.Maps_Length) then
                      declare
@@ -20343,6 +20476,20 @@ package body Gnat2Why.Expr is
                               Left   => Length_Call,
                               Right  => New_Integer_Constant
                                 (Value => UI_From_Int (Int (Length)))));
+
+                        if Has_Scalar_Type (Etype (Annot.Maps_Length)) then
+                           Pre := New_And_Pred
+                             (Left  => New_Comparison
+                                (Symbol => Int_Infix_Le,
+                                 Left   => New_Integer_Constant
+                                   (Value => UI_From_Int (Int (Length))),
+                                 Right  => +New_Attribute_Expr
+                                   (Ty     => Etype (Annot.Maps_Length),
+                                    Domain => EW_Term,
+                                    Attr   => Attribute_Last,
+                                    Params => Logic_Params)),
+                              Right => Pre);
+                        end if;
                      end;
                   end if;
                end;

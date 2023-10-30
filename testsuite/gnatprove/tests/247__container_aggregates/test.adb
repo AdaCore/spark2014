@@ -175,7 +175,7 @@ procedure Test with SPARK_Mode is
 
    package Partial_Maps is
       Max : constant Natural := 20;
-      type Key_Type is range 1 .. 100;
+      type Key_Type is new Integer;
       type Element_Type is new Integer;
       type T is private with
         Aggregate => (Empty       => Empty,
@@ -219,7 +219,7 @@ procedure Test with SPARK_Mode is
       function Eq_Key (X, Y : Key_Type) return Boolean is (X = Y) with
         Annotate => (GNATprove, Container_Aggregates, "Equivalent_Keys");
 
-      type Length_Type is range 0 .. 100;
+      type Length_Type is range 0 .. 10;
 
       function Length (X : T) return Length_Type with
         Annotate => (GNATprove, Container_Aggregates, "Length"),
@@ -364,6 +364,16 @@ procedure Test with SPARK_Mode is
    begin
       null;
    end Test_Bad_Partial_Maps;
+
+   procedure Test_Bad_Partial_Maps_Length with
+     Global => null;
+
+   procedure Test_Bad_Partial_Maps_Length  is
+      use Partial_Maps;
+      X : T := [1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 => 0]; -- @PRECONDITION:FAIL
+   begin
+      null;
+   end Test_Bad_Partial_Maps_Length;
 
    procedure Test_Total_Maps (K : Total_Maps.Key_Type) with
      Global => null;
