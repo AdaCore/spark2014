@@ -1,0 +1,5 @@
+deep.adb:9:12: error: delta aggregate with possible aliasing of components of an ownership type is not yet supported
+deep.adb:17:12: error: delta aggregate with possible aliasing of components of an ownership type is not yet supported
+deep.adb:18:12: error: delta aggregate with possible aliasing of components of an ownership type is not yet supported
+deep.adb:19:12: error: delta aggregate with possible aliasing of components of an ownership type is not yet supported
+gnatprove: error during flow analysis and proof
