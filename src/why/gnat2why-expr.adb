@@ -13680,6 +13680,13 @@ package body Gnat2Why.Expr is
       package Aggregate_Element_Lists is new Ada.Containers.Vectors
         (Index_Type => Positive, Element_Type => Aggregate_Element);
 
+      package Node_To_Why_Id is new Ada.Containers.Hashed_Maps
+        (Key_Type        => Node_Id,
+         Element_Type    => W_Identifier_Id,
+         Hash            => Node_Hash,
+         Equivalent_Keys => "=");
+      --  To store mapping from aggregate nodes to Why bindings.
+
       -----------------------
       -- Local subprograms --
       -----------------------
@@ -13718,7 +13725,7 @@ package body Gnat2Why.Expr is
       function Transform_Array_Component_Associations
         (Expr   : Node_Id;
          Arr    : W_Term_Id;
-         Args   : Ada_Ent_To_Why.Map;
+         Args   : Node_To_Why_Id.Map;
          Bnds   : W_Expr_Array;
          Params : Transformation_Params)
          return W_Pred_Id;
@@ -13991,7 +13998,7 @@ package body Gnat2Why.Expr is
 
          Call_Params   : Binder_Array (1 .. Natural (Values.Length));
          Call_Args     : W_Expr_Array (1 .. Natural (Values.Length));
-         Args_Map      : Ada_Ent_To_Why.Map;
+         Args_Map      : Node_To_Why_Id.Map;
 
          --  Additional arguments for the array bounds
 
@@ -14074,17 +14081,18 @@ package body Gnat2Why.Expr is
                   B_Ent    => Null_Entity_Name,
                   Mutable  => False,
                   Labels   => Symbol_Sets.Empty_Set);
-
             begin
                Call_Params (Cnt) := B;
+               Cnt := Cnt + 1;
 
                --  Fill in mapping from Ada nodes to Why identifiers for the
                --  generation of the proposition in the defining axiom.
+               --  Guard against duplicate insertions. This could happen if
+               --  someone were to use the same subtype mark as choice twice
+               --  in a delta aggregate (although the point of doing so is
+               --  dubious, this is legal Ada).
 
-               Ada_Ent_To_Why.Insert
-                 (Args_Map, Value.Value,
-                  (Regular, Local => True, Init => <>, Main => B));
-               Cnt := Cnt + 1;
+               Args_Map.Include (Value.Value, Ident);
             end;
          end loop;
 
@@ -14412,10 +14420,28 @@ package body Gnat2Why.Expr is
                         end;
 
                      when others =>
-                        Values.Append
-                          (Aggregate_Element'
-                             (Value  => Choice,
-                              Typ    => Etype (Index)));
+                        if Is_Entity_Name (Choice)
+                          and then Is_Type (Entity (Choice))
+                        then
+                           declare
+                              Rng : constant Node_Id :=
+                                Get_Range (Entity (Choice));
+                           begin
+                              Values.Append
+                                (Aggregate_Element'
+                                   (Value => Low_Bound (Rng),
+                                    Typ   => Etype (Low_Bound (Rng))));
+                              Values.Append
+                                (Aggregate_Element'
+                                   (Value => High_Bound (Rng),
+                                    Typ   => Etype (High_Bound (Rng))));
+                           end;
+                        else
+                           Values.Append
+                             (Aggregate_Element'
+                                (Value  => Choice,
+                                 Typ    => Etype (Index)));
+                        end if;
                   end case;
                   Next (Choice);
                end loop;
@@ -15383,7 +15409,7 @@ package body Gnat2Why.Expr is
       function Transform_Array_Component_Associations
         (Expr   : Node_Id;
          Arr    : W_Term_Id;
-         Args   : Ada_Ent_To_Why.Map;
+         Args   : Node_To_Why_Id.Map;
          Bnds   : W_Expr_Array;
          Params : Transformation_Params)
          return W_Pred_Id
@@ -15447,10 +15473,8 @@ package body Gnat2Why.Expr is
             --  Note that Expr here can be the updated expression in the
             --  default case of the logic function of a delta aggregate.
             C_Typ   : constant Entity_Id := Component_Type (Typ);
-            Curs    : constant Ada_Ent_To_Why.Cursor :=
-              Ada_Ent_To_Why.Find (Args, Expr);
+            Curs    : constant Node_To_Why_Id.Cursor := Args.Find (Expr);
             Read    : W_Term_Id;
-            Binder  : Item_Type;
             Arg_Val : W_Term_Id;
          begin
             --  Whenever possible, take advantage of the why3 construct
@@ -15490,13 +15514,8 @@ package body Gnat2Why.Expr is
             --  of an iterated association component. In this case, we
             --  need to translate the expression on the fly.
 
-            if Ada_Ent_To_Why.Has_Element (Curs) then
-               Binder := Ada_Ent_To_Why.Element (Curs);
-               Arg_Val :=
-                 (case Binder.Kind is
-                     when Regular => +Binder.Main.B_Name,
-                     when UCArray => +Binder.Content.B_Name,
-                     when others  => raise Program_Error);
+            if Node_To_Why_Id.Has_Element (Curs) then
+               Arg_Val := +Node_To_Why_Id.Element (Curs);
             else
                declare
                   Params : constant Transformation_Params :=
@@ -15611,8 +15630,7 @@ package body Gnat2Why.Expr is
          ------------------
 
          function Lookup_Value (Arg : Node_Id) return W_Term_Id is
-            Val : constant W_Term_Id :=
-              +Ada_Ent_To_Why.Element (Args, Arg).Main.B_Name;
+            Val : constant W_Term_Id := +Args.Element (Arg);
          begin
             return Insert_Simple_Conversion
               (Expr => Val,
@@ -15729,10 +15747,24 @@ package body Gnat2Why.Expr is
                         end;
 
                      when others =>
-                        Rng_Expr :=
-                          New_Comparison (Symbol => Why_Eq,
-                                          Left   => +Indexes (Integer (Dim)),
-                                          Right  => Lookup_Value (Choice));
+                        if Is_Entity_Name (Choice)
+                          and then Is_Type (Entity (Choice))
+                        then
+                           declare
+                              Rng : constant Node_Id :=
+                                Get_Range (Entity (Choice));
+                           begin
+                              Rng_Expr := New_Range_Expr
+                                (Low  => Lookup_Value (Low_Bound (Rng)),
+                                 High => Lookup_Value (High_Bound (Rng)),
+                                 Expr => +Indexes (Integer (Dim)));
+                           end;
+                        else
+                           Rng_Expr := New_Comparison
+                             (Symbol => Why_Eq,
+                              Left   => +Indexes (Integer (Dim)),
+                              Right  => Lookup_Value (Choice));
+                        end if;
                   end case;
 
                --  The choices are not arguments, proceed with standard
