@@ -3782,6 +3782,73 @@ package body SPARK_Definition.Annotate is
                   & "with aggregates using models &", Typ, Typ);
             end if;
       end case;
+
+      --  Make sure that the Empty function and the Add procedure used to
+      --  create the aggregate are well behaved (they do not access global data
+      --  and do not have side-effects).
+
+      declare
+         Globals : Global_Flow_Ids;
+      begin
+         Get_Globals
+           (Subprogram          => Annot.Empty_Function,
+            Scope               =>
+              (Ent  => Annot.Empty_Function,
+               Part => Visible_Part),
+            Classwide           => False,
+            Globals             => Globals,
+            Use_Deduced_Globals =>
+               not Gnat2Why_Args.Global_Gen_Mode,
+            Ignore_Depends      => False);
+
+         if Is_Function_With_Side_Effects (Annot.Empty_Function) then
+            Error_Msg_NE_If
+              ("& function shall not have side effects",
+               Typ, Annot.Empty_Function);
+         elsif not Globals.Proof_Ins.Is_Empty
+           or else not Globals.Inputs.Is_Empty
+         then
+            Error_Msg_NE_If
+              ("& function shall not access global data",
+               Typ, Annot.Empty_Function);
+         elsif Is_Volatile_Function (Annot.Empty_Function) then
+            Error_Msg_NE_If
+              ("& function shall not be voltaile", Typ, Annot.Empty_Function);
+         end if;
+
+         Get_Globals
+           (Subprogram          => Annot.Add_Procedure,
+            Scope               =>
+              (Ent  => Annot.Add_Procedure,
+               Part => Visible_Part),
+            Classwide           => False,
+            Globals             => Globals,
+            Use_Deduced_Globals =>
+               not Gnat2Why_Args.Global_Gen_Mode,
+            Ignore_Depends      => False);
+
+         if not Globals.Outputs.Is_Empty then
+            Error_Msg_NE_If
+              ("& procedure shall not have global effects",
+               Typ, Annot.Add_Procedure);
+         elsif not Globals.Proof_Ins.Is_Empty
+           or else not Globals.Inputs.Is_Empty
+         then
+            Error_Msg_NE_If
+              ("& procedure shall not access global data",
+               Typ, Annot.Add_Procedure);
+         elsif Get_Termination_Condition
+           (Annot.Add_Procedure) /= (Static, True)
+         then
+            Error_Msg_NE_If
+              ("& procedure shall always terminate",
+               Typ, Annot.Add_Procedure);
+         elsif Has_Exceptional_Contract (Annot.Add_Procedure) then
+            Error_Msg_NE_If
+              ("& procedure shall not raise exceptions",
+               Typ, Annot.Add_Procedure);
+         end if;
+      end;
    end Do_Delayed_Checks_For_Aggregates;
 
    ------------------------------------------
