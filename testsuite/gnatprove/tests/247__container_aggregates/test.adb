@@ -16,7 +16,7 @@ procedure Test with SPARK_Mode is
         Post => Last (Empty'Result) = 0;
 
       procedure Append (X : in out T; E : Element_Type) with
-	Always_Terminates,
+        Always_Terminates,
         Pre => Last (X) < 10,
         Post => Last (X) = Last (X)'Old + 1
         and then Get (X, Last (X)) = E
@@ -75,8 +75,10 @@ procedure Test with SPARK_Mode is
 
       function Empty return T;
       procedure Insert (X : in out T; E : Element_Type) with
-	Always_Terminates,
-        Post => Length (X) <= Length (X)'Old + 1
+        Always_Terminates,
+        Post =>
+          (if Contains (X, E)'Old then Length (X) = Length (X)'Old
+             else Length (X) = Length (X)'Old + 1)
         and then Contains (X, E)
         and then (for all F in Element_Type =>
                     (if F /= E then Contains (X, F) = Contains (X'Old, F)));
@@ -145,13 +147,11 @@ procedure Test with SPARK_Mode is
          begin
             for I in X.Content'Range loop
                pragma Loop_Invariant
-                 (if I < E
+                 (if I < E or else X_Old.Content (E)
                   then Length_Rec (X, Length_Type (I)) =
-                    Length_Rec (X_Old, Length_Type (I)));
-               pragma Loop_Invariant
-                 (if I >= E
-                  then Length_Rec (X, Length_Type (I))
-                  <= Length_Rec (X_Old, Length_Type (I)) + 1);
+		    Length_Rec (X_Old, Length_Type (I))
+		  else Length_Rec (X, Length_Type (I)) =
+                    Length_Rec (X_Old, Length_Type (I)) + 1);
             end loop;
          end Prove_Length;
       begin
@@ -196,7 +196,7 @@ procedure Test with SPARK_Mode is
 
       function Empty return T;
       procedure Insert (X : in out T; K : Key_Type; E : Element_Type) with
-	Always_Terminates,
+        Always_Terminates,
         Pre  => not Has_Key (X, K),
         Post => Length (X) = Length (X)'Old + 1
         and then Has_Key (X, K)
@@ -280,7 +280,7 @@ procedure Test with SPARK_Mode is
 
       function Empty return T;
       procedure Insert (X : in out T; K : Key_Type; E : Element_Type) with
-	Always_Terminates,
+        Always_Terminates,
         Post => Get (X, K) = E
         and then (for all L in Key_Type =>
                     (if L /= K then
@@ -329,11 +329,14 @@ procedure Test with SPARK_Mode is
       use Sets;
       X : T := [1, 2, 3, 4, 5];
       Y : T := [];
+      Z : T := [1, 2, 3, 2, 5];
    begin
-      pragma Assert (Length (X) <= 5);
+      pragma Assert (Length (X) = 5);
       pragma Assert (Contains (X, E) = (E in 1 | 2 | 3 | 4 | 5));
       pragma Assert (Length (Y) = 0);
       pragma Assert (not Contains (Y, E));
+      pragma Assert (Length (Z) < 5);
+      pragma Assert (Contains (Z, E) = (E in 1 | 2 | 3 | 5));
       pragma Assert (False); --  @ASSERT:FAIL
    end Test_Sets;
 

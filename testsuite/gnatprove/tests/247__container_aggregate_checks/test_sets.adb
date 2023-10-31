@@ -18,7 +18,9 @@ procedure Test_Sets with SPARK_Mode is
         Global => null,
         Always_Terminates,
         Import,
-        Post => Length (X) - 1 <= Length (X)'Old
+        Post =>
+	(if Contains (X, E)'Old then Length (X) = Length (X)'Old
+	 else Length (X) = Length (X)'Old + 1)
         and then Contains (X, E)
         and then (for all F in Element_Type =>
                     (if Contains (X, F) then Contains (X'Old, F) or Eq_Elem (F, E)))
@@ -62,7 +64,9 @@ procedure Test_Sets with SPARK_Mode is
         Global => null,
         Always_Terminates,
         Import,
-        Post => Length (X) - 1 <= Length (X)'Old
+        Post =>
+	(if Contains (X, E)'Old then Length (X) = Length (X)'Old
+	 else Length (X) = Length (X)'Old + 1)
         and then Contains (X, E)
         and then (for all F in Element_Type =>
                     (if Contains (X, F) then Contains (X'Old, F) or Eq_Elem (F, E)))
@@ -106,7 +110,9 @@ procedure Test_Sets with SPARK_Mode is
         Global => null,
         Always_Terminates,
         Import,
-        Post => Length (X) - 1 <= Length (X)'Old
+        Post =>
+	(if Contains (X, E)'Old then Length (X) = Length (X)'Old
+	 else Length (X) = Length (X)'Old + 1)
         and then Contains (X, E)
         and then (for all F in Element_Type =>
                     (if Contains (X, F) then Contains (X'Old, F) or Eq_Elem (F, E)))
@@ -195,7 +201,9 @@ procedure Test_Sets with SPARK_Mode is
         Global => null,
         Always_Terminates,
         Import,
-        Post => Length (X) - 1 <= Length (X)'Old
+        Post =>
+	(if Contains (X, E)'Old then Length (X) = Length (X)'Old
+	 else Length (X) = Length (X)'Old + 1)
         and then (for all F in Element_Type =>
                     (if Contains (X, F) then Contains (X'Old, F) or Eq_Elem (F, E)))
         and then (for all F in Element_Type =>
@@ -239,7 +247,9 @@ procedure Test_Sets with SPARK_Mode is
         Global => null,
         Always_Terminates,
         Import,
-        Post => Length (X) - 1 <= Length (X)'Old
+        Post =>
+	(if Contains (X, E)'Old then Length (X) = Length (X)'Old
+	 else Length (X) = Length (X)'Old + 1)
         and then Contains (X, E)
         and then (for all F in Element_Type =>
                     (if Contains (X, F) then Contains (X'Old, F) or Eq_Elem (F, E)));
@@ -282,7 +292,9 @@ procedure Test_Sets with SPARK_Mode is
         Global => null,
         Always_Terminates,
         Import,
-        Post => Length (X) - 1 <= Length (X)'Old
+        Post =>
+	(if Contains (X, E)'Old then Length (X) = Length (X)'Old
+	 else Length (X) = Length (X)'Old + 1)
         and then (for all F in Element_Type =>
                     (if Contains (X, F) then Contains (X'Old, F) or Eq_Elem (F, E)));
 
@@ -329,7 +341,9 @@ procedure Test_Sets with SPARK_Mode is
         Global => null,
         Always_Terminates,
         Import,
-        Post => Length (X) - 1 <= Length (X)'Old
+        Post =>
+	(if Contains (X, E)'Old then Length (X) = Length (X)'Old
+	 else Length (X) = Length (X)'Old + 1)
         and then Contains (X, E)
         and then (for all F in Element_Type =>
                     (if Contains (X, F) then Contains (X'Old, F) or Eq_Elem (F, E)))
@@ -379,7 +393,9 @@ procedure Test_Sets with SPARK_Mode is
         Global => null,
         Always_Terminates,
         Import,
-        Post => Length (X) - 1 <= Length (X)'Old
+        Post =>
+	(if Contains (X, E)'Old then Length (X) = Length (X)'Old
+	 else Length (X) = Length (X)'Old + 1)
         and then Contains (X, E)
         and then (for all F in Element_Type =>
                     (if Contains (X, F) then Contains (X'Old, F) or Eq_Elem (F, E)))
@@ -425,7 +441,9 @@ procedure Test_Sets with SPARK_Mode is
         Global => null,
         Always_Terminates,
         Import,
-        Post => Length (X) - 1 <= Length (X)'Old
+        Post =>
+	(if Contains (X, E)'Old then Length (X) = Length (X)'Old
+	 else Length (X) = Length (X)'Old + 1)
         and then Contains (X, E)
         and then (for all F in Element_Type =>
                     (if Contains (X, F) then Contains (X'Old, F) or Eq_Elem (F, E)))

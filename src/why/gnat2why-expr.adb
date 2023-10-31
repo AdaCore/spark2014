@@ -8882,7 +8882,10 @@ package body Gnat2Why.Expr is
             --  let param_cont_id = ref cont_id in
             --    add param_cont_id elt_id;
             --    let new_cont_id = !param_cont_id in
-            --    assert { length new_cont_id <= length cont_id + 1 };
+            --    assert
+            --      { if contains cont_id elt_id
+            --        then length new_cont_id = length cont_id
+            --        else length new_cont_id = length cont_id + 1 };
             --    let other_id = any elt_ty ensures { dyn_inv } in
             --    assert
             --      { contains new_cont_id elt_id /\
@@ -8994,6 +8997,10 @@ package body Gnat2Why.Expr is
 
                if Present (Annot.Sets_Length) then
                   declare
+                     Contains_Call   : constant W_Term_Id :=
+                       New_Call_To_Ada_Function
+                         (Fun  => Annot.Contains,
+                          Args => (+Cont_Id, +Elt_Id));
                      Length_Call     : W_Term_Id :=
                        New_Call_To_Ada_Function
                          (Fun  => Annot.Sets_Length,
@@ -9027,16 +9034,23 @@ package body Gnat2Why.Expr is
                         Associated_Fun => Annot.Sets_Length);
 
                      Prepend_Assert_To_Preserv_Checks
-                       (Pred           => New_Comparison
-                          (Symbol => Int_Infix_Le,
-                           Left   => New_Length_Call,
-                           Right  => New_Call
-                             (Name => Int_Infix_Add,
-                              Args =>
-                                (1 => +Length_Call,
-                                 2 => New_Integer_Constant
-                                   (Value => Uint_1)),
-                              Typ  => Base_Length_Typ)),
+                       (Pred           => New_Conditional
+                          (Condition => Pred_Of_Boolean_Term
+                               (Contains_Call),
+                           Then_Part => New_Comparison
+                             (Symbol => Why_Eq,
+                              Left   => New_Length_Call,
+                              Right  => Length_Call),
+                           Else_Part => New_Comparison
+                             (Symbol => Why_Eq,
+                              Left   => New_Length_Call,
+                              Right  => New_Call
+                                (Name => Int_Infix_Add,
+                                 Args =>
+                                   (1 => +Length_Call,
+                                    2 => New_Integer_Constant
+                                      (Value => Uint_1)),
+                                 Typ  => Base_Length_Typ))),
                         Associated_Fun => Annot.Sets_Length);
                   end;
                end if;
@@ -20145,7 +20159,11 @@ package body Gnat2Why.Expr is
 
                --  If Length is provided, add to Def:
                --
-               --    length aggr_id <= <List_Length (Exprs)>
+               --    length aggr_id = 0 (* if Is_Empty *)
+               --    (* otherwise *)
+               --    if equivalent_elements E2 E1 \/ ...
+               --    then length aggr_id < <List_Length (Exprs)>
+               --    else length aggr_id = <List_Length (Exprs)>
                --
                --  and if Length returns a scalar type, add to Pre:
                --
@@ -20169,13 +20187,76 @@ package body Gnat2Why.Expr is
                        (Domain => EW_Term,
                         Expr   => +Length_Call,
                         To     => Base_Length_Typ);
-                     Def := New_And_Pred
-                       (Left  => Def,
-                        Right => New_Comparison
-                          (Symbol => Int_Infix_Le,
-                           Left   => Length_Call,
-                           Right  => New_Integer_Constant
-                             (Value => UI_From_Int (Length))));
+
+                     if Is_Empty then
+                        Def := New_And_Pred
+                          (Left  => Def,
+                           Right => New_Comparison
+                             (Symbol => Why_Eq,
+                              Left   => Length_Call,
+                              Right  => New_Integer_Constant
+                                (Value => Uint_0)));
+                     else
+                        declare
+                           E_Ids    : W_Identifier_Array
+                             (1 .. Natural (List_Length (Exprs)));
+                           Eq_Elems : W_Pred_Vectors.Vector;
+                           Elt      : Node_Id := First (Exprs);
+                           Top      : Natural := 0;
+
+                        begin
+                           --  Fill E_Ids with all the elements of the
+                           --  aggregate in order.
+
+                           loop
+                              Top := Top + 1;
+                              E_Ids (Top) := Value_Map.Element (Elt);
+
+                              Next (Elt);
+                              exit when No (Elt);
+                           end loop;
+
+                           --  For i < j, append:
+                           --
+                           --     equivalent_elements Ej Ei
+                           --
+                           --  to Eq_Elems.
+
+                           for I in 1 .. E_Ids'Last - 1 loop
+                              for J in I + 1 .. E_Ids'Last loop
+                                 W_Pred_Vectors.Append
+                                   (Eq_Elems,
+                                    Pred_Of_Boolean_Term
+                                      (New_Call_To_Ada_Function
+                                           (Fun  => Annot.Equivalent_Elements,
+                                            Args =>
+                                              (+E_Ids (J), +E_Ids (I)))));
+                              end loop;
+                           end loop;
+
+                           --  Add to Def:
+                           --
+                           --    if equivalent_elements E2 E1 \/ ...
+                           --    then length aggr_id < <List_Length (Exprs)>
+                           --    else length aggr_id = <List_Length (Exprs)>
+
+                           Def := New_And_Pred
+                             (Left  => Def,
+                              Right => New_Conditional
+                                (Condition => New_Or_Pred
+                                     (W_Pred_Vectors.To_Array (Eq_Elems)),
+                                 Then_Part => New_Comparison
+                                   (Symbol => Int_Infix_Lt,
+                                    Left   => Length_Call,
+                                    Right  => New_Integer_Constant
+                                      (Value => UI_From_Int (Length))),
+                                 Else_Part => New_Comparison
+                                   (Symbol => Why_Eq,
+                                    Left   => Length_Call,
+                                    Right  => New_Integer_Constant
+                                      (Value => UI_From_Int (Length)))));
+                        end;
+                     end if;
 
                      if Has_Scalar_Type (Etype (Annot.Sets_Length)) then
                         Pre := New_And_Pred
@@ -20297,10 +20378,7 @@ package body Gnat2Why.Expr is
                      --   * and optionally has_key aggr_id k1, ... in Has_Key
 
                      declare
-                        Num_Distinct : constant Natural :=
-                          (Length * (Length - 1)) / 2;
-                        Distinct     : W_Pred_Array (1 .. Num_Distinct);
-                        Top_Distinct : Natural := 0;
+                        Distinct     : W_Pred_Vectors.Vector;
                         Eq_Keys      : W_Pred_Array (1 .. Length);
                         Get          : W_Pred_Array (1 .. Length);
                         Num_Has_Key  : constant Natural :=
@@ -20334,25 +20412,6 @@ package body Gnat2Why.Expr is
                                  Key_Id := Value_Map.Element (Choice);
                                  Top := Top + 1;
 
-                                 --  Go over all following associations to
-                                 --  fill Distinct.
-
-                                 for I in Top + 1 .. Length loop
-                                    declare
-                                       Other_Key : constant W_Identifier_Id :=
-                                         Value_Map.Element (Keys (I));
-                                    begin
-                                       Top_Distinct := Top_Distinct + 1;
-                                       Distinct (Top_Distinct) :=
-                                         New_Not
-                                           (Right =>
-                                              Pred_Of_Boolean_Term
-                                                (New_Call_To_Ada_Function
-                                                   (Annot.Equivalent_Keys,
-                                                    (+Other_Key, +Key_Id))));
-                                    end;
-                                 end loop;
-
                                  --  Fill Get, Eq_Keys and possibly Has_Key
 
                                  Get (Top) := New_Comparison
@@ -20382,11 +20441,31 @@ package body Gnat2Why.Expr is
                            exit when No (Assoc);
                         end loop;
 
+                        --  For i < j, append:
+                        --
+                        --     not equivalent_keys kj ki
+                        --
+                        --  to Distinct.
+
+                        for I in 1 .. Keys.Last_Index - 1 loop
+                           for J in I + 1 .. Keys.Last_Index loop
+                              W_Pred_Vectors.Append
+                                (Distinct,
+                                 New_Not
+                                   (Right => Pred_Of_Boolean_Term
+                                        (New_Call_To_Ada_Function
+                                             (Annot.Equivalent_Keys,
+                                              (+Value_Map.Element (Keys (J)),
+                                               +Value_Map.Element
+                                                 (Keys (I)))))));
+                           end loop;
+                        end loop;
+
                         --  Conjunct all the elements of Distinct in Pre:
                         --  not equivalent_keys k2 k1 /\ ...
 
-                        pragma Assert (Top_Distinct = Num_Distinct);
-                        Pre := New_And_Pred (Distinct);
+                        Pre := New_And_Pred
+                          (W_Pred_Vectors.To_Array (Distinct));
 
                         --  Conjunct all the elements of Has_Key and Get in
                         --  Def:

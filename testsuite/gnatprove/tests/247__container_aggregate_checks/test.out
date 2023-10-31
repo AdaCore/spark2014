@@ -280,130 +280,130 @@ test_sequences.adb:328:31: medium: during checks for container aggregates at tes
 test_sequences.adb:328:31: medium: precondition might fail, cannot prove Pred (X, E)
 test_sets.adb:10:09: info: Container_Aggregates annotation proved (CVC5: 1 VC)
 test_sets.adb:10:09: info: Container_Aggregates annotation proved (CVC5: 1 VC)
-test_sets.adb:10:09: info: Container_Aggregates annotation proved (CVC5: 1 VC)
+test_sets.adb:10:09: info: Container_Aggregates annotation proved (CVC5: 2 VC)
 test_sets.adb:10:09: info: Container_Aggregates annotation proved (CVC5: 3 VC)
 test_sets.adb:10:09: info: after a call to Empty at test_sets.adb:12
 test_sets.adb:10:09: info: after a call to Empty at test_sets.adb:12
 test_sets.adb:10:09: info: after a call to Insert at test_sets.adb:17
 test_sets.adb:10:09: info: after a call to Insert at test_sets.adb:17
-test_sets.adb:10:09: info: when establishing invariant on Contains at test_sets.adb:28
-test_sets.adb:10:09: info: when establishing invariant on Length at test_sets.adb:33
-test_sets.adb:10:09: info: when reestablishing invariant on Contains at test_sets.adb:28
-test_sets.adb:10:09: info: when reestablishing invariant on Length at test_sets.adb:33
-test_sets.adb:55:09: info: Container_Aggregates annotation proved (CVC5: 1 VC)
-test_sets.adb:55:09: info: Container_Aggregates annotation proved (CVC5: 1 VC)
-test_sets.adb:55:09: info: Container_Aggregates annotation proved (CVC5: 3 VC)
-test_sets.adb:55:09: info: after a call to Empty at test_sets.adb:57
-test_sets.adb:55:09: info: after a call to Insert at test_sets.adb:61
-test_sets.adb:55:09: info: after a call to Insert at test_sets.adb:61
-test_sets.adb:55:09: info: when establishing invariant on Contains at test_sets.adb:72
-test_sets.adb:55:09: info: when reestablishing invariant on Contains at test_sets.adb:72
-test_sets.adb:55:09: info: when reestablishing invariant on Length at test_sets.adb:77
-test_sets.adb:55:09: medium: Container_Aggregates annotation might be incorrect
-test_sets.adb:55:09: medium: after a call to Empty at test_sets.adb:57
-test_sets.adb:55:09: medium: when establishing invariant on Length at test_sets.adb:77
-test_sets.adb:99:09: info: Container_Aggregates annotation proved (CVC5: 1 VC)
-test_sets.adb:99:09: info: Container_Aggregates annotation proved (CVC5: 1 VC)
-test_sets.adb:99:09: info: Container_Aggregates annotation proved (CVC5: 3 VC)
-test_sets.adb:99:09: info: after a call to Empty at test_sets.adb:101
-test_sets.adb:99:09: info: after a call to Insert at test_sets.adb:105
-test_sets.adb:99:09: info: after a call to Insert at test_sets.adb:105
-test_sets.adb:99:09: info: when establishing invariant on Length at test_sets.adb:121
-test_sets.adb:99:09: info: when reestablishing invariant on Contains at test_sets.adb:116
-test_sets.adb:99:09: info: when reestablishing invariant on Length at test_sets.adb:121
-test_sets.adb:99:09: medium: Container_Aggregates annotation might be incorrect
-test_sets.adb:99:09: medium: after a call to Empty at test_sets.adb:101
-test_sets.adb:99:09: medium: when establishing invariant on Contains at test_sets.adb:116
-test_sets.adb:143:09: info: Container_Aggregates annotation proved (CVC5: 1 VC)
-test_sets.adb:143:09: info: Container_Aggregates annotation proved (CVC5: 1 VC)
-test_sets.adb:143:09: info: Container_Aggregates annotation proved (CVC5: 3 VC)
-test_sets.adb:143:09: info: after a call to Empty at test_sets.adb:145
-test_sets.adb:143:09: info: after a call to Empty at test_sets.adb:145
-test_sets.adb:143:09: info: after a call to Insert at test_sets.adb:150
-test_sets.adb:143:09: info: when establishing invariant on Contains at test_sets.adb:160
-test_sets.adb:143:09: info: when establishing invariant on Length at test_sets.adb:165
-test_sets.adb:143:09: info: when reestablishing invariant on Contains at test_sets.adb:160
-test_sets.adb:143:09: medium: Container_Aggregates annotation might be incorrect
-test_sets.adb:143:09: medium: after a call to Insert at test_sets.adb:150
-test_sets.adb:143:09: medium: when reestablishing invariant on Length at test_sets.adb:165
-test_sets.adb:187:09: info: Container_Aggregates annotation proved (CVC5: 1 VC)
-test_sets.adb:187:09: info: Container_Aggregates annotation proved (CVC5: 1 VC)
-test_sets.adb:187:09: info: Container_Aggregates annotation proved (CVC5: 1 VC)
-test_sets.adb:187:09: info: after a call to Empty at test_sets.adb:189
-test_sets.adb:187:09: info: after a call to Empty at test_sets.adb:189
-test_sets.adb:187:09: info: after a call to Insert at test_sets.adb:194
-test_sets.adb:187:09: info: when establishing invariant on Contains at test_sets.adb:204
-test_sets.adb:187:09: info: when establishing invariant on Length at test_sets.adb:209
-test_sets.adb:187:09: info: when reestablishing invariant on Length at test_sets.adb:209
-test_sets.adb:187:09: medium: Container_Aggregates annotation might be incorrect
-test_sets.adb:187:09: medium: after a call to Insert at test_sets.adb:194
-test_sets.adb:187:09: medium: when reestablishing invariant on Contains at test_sets.adb:204
-test_sets.adb:231:09: info: Container_Aggregates annotation proved (CVC5: 1 VC)
-test_sets.adb:231:09: info: Container_Aggregates annotation proved (CVC5: 1 VC)
-test_sets.adb:231:09: info: Container_Aggregates annotation proved (CVC5: 1 VC)
-test_sets.adb:231:09: info: after a call to Empty at test_sets.adb:233
-test_sets.adb:231:09: info: after a call to Empty at test_sets.adb:233
-test_sets.adb:231:09: info: after a call to Insert at test_sets.adb:238
-test_sets.adb:231:09: info: when establishing invariant on Contains at test_sets.adb:247
-test_sets.adb:231:09: info: when establishing invariant on Length at test_sets.adb:252
-test_sets.adb:231:09: info: when reestablishing invariant on Length at test_sets.adb:252
-test_sets.adb:231:09: medium: Container_Aggregates annotation might be incorrect
-test_sets.adb:231:09: medium: after a call to Insert at test_sets.adb:238
-test_sets.adb:231:09: medium: when reestablishing invariant on Contains at test_sets.adb:247
-test_sets.adb:274:09: info: Container_Aggregates annotation proved (CVC5: 1 VC)
-test_sets.adb:274:09: info: Container_Aggregates annotation proved (CVC5: 1 VC)
-test_sets.adb:274:09: info: Container_Aggregates annotation proved (CVC5: 1 VC)
-test_sets.adb:274:09: info: after a call to Empty at test_sets.adb:276
-test_sets.adb:274:09: info: after a call to Empty at test_sets.adb:276
-test_sets.adb:274:09: info: after a call to Insert at test_sets.adb:281
-test_sets.adb:274:09: info: when establishing invariant on Contains at test_sets.adb:289
-test_sets.adb:274:09: info: when establishing invariant on Length at test_sets.adb:294
-test_sets.adb:274:09: info: when reestablishing invariant on Length at test_sets.adb:294
-test_sets.adb:274:09: medium: Container_Aggregates annotation might be incorrect
-test_sets.adb:274:09: medium: after a call to Insert at test_sets.adb:281
-test_sets.adb:274:09: medium: when reestablishing invariant on Contains at test_sets.adb:289
-test_sets.adb:316:09: info: Container_Aggregates annotation proved (CVC5: 1 VC)
-test_sets.adb:316:09: info: Container_Aggregates annotation proved (CVC5: 1 VC)
-test_sets.adb:316:09: info: Container_Aggregates annotation proved (CVC5: 1 VC)
-test_sets.adb:316:09: info: Container_Aggregates annotation proved (CVC5: 3 VC)
-test_sets.adb:316:09: info: after a call to Empty at test_sets.adb:322
-test_sets.adb:316:09: info: after a call to Empty at test_sets.adb:322
-test_sets.adb:316:09: info: after a call to Insert at test_sets.adb:328
-test_sets.adb:316:09: info: after a call to Insert at test_sets.adb:328
-test_sets.adb:316:09: info: when establishing invariant on Contains at test_sets.adb:339
-test_sets.adb:316:09: info: when establishing invariant on Length at test_sets.adb:344
-test_sets.adb:316:09: info: when reestablishing invariant on Contains at test_sets.adb:339
-test_sets.adb:316:09: info: when reestablishing invariant on Length at test_sets.adb:344
-test_sets.adb:323:16: medium: during checks for container aggregates at test_sets.adb:316
-test_sets.adb:323:16: medium: precondition might fail
-test_sets.adb:366:09: info: Container_Aggregates annotation proved (CVC5: 1 VC)
-test_sets.adb:366:09: info: Container_Aggregates annotation proved (CVC5: 1 VC)
-test_sets.adb:366:09: info: Container_Aggregates annotation proved (CVC5: 1 VC)
-test_sets.adb:366:09: info: Container_Aggregates annotation proved (CVC5: 3 VC)
-test_sets.adb:366:09: info: after a call to Empty at test_sets.adb:372
-test_sets.adb:366:09: info: after a call to Empty at test_sets.adb:372
-test_sets.adb:366:09: info: after a call to Insert at test_sets.adb:377
-test_sets.adb:366:09: info: after a call to Insert at test_sets.adb:377
-test_sets.adb:366:09: info: when establishing invariant on Contains at test_sets.adb:389
-test_sets.adb:366:09: info: when establishing invariant on Length at test_sets.adb:394
-test_sets.adb:366:09: info: when reestablishing invariant on Contains at test_sets.adb:389
-test_sets.adb:366:09: info: when reestablishing invariant on Length at test_sets.adb:394
-test_sets.adb:378:16: medium: during checks for container aggregates at test_sets.adb:366
-test_sets.adb:378:16: medium: precondition might fail
-test_sets.adb:416:09: info: Container_Aggregates annotation proved (CVC5: 1 VC)
-test_sets.adb:416:09: info: Container_Aggregates annotation proved (CVC5: 1 VC)
-test_sets.adb:416:09: info: Container_Aggregates annotation proved (CVC5: 1 VC)
-test_sets.adb:416:09: info: Container_Aggregates annotation proved (CVC5: 3 VC)
-test_sets.adb:416:09: info: after a call to Empty at test_sets.adb:418
-test_sets.adb:416:09: info: after a call to Empty at test_sets.adb:418
-test_sets.adb:416:09: info: after a call to Insert at test_sets.adb:423
-test_sets.adb:416:09: info: after a call to Insert at test_sets.adb:423
-test_sets.adb:416:09: info: when establishing invariant on Contains at test_sets.adb:435
-test_sets.adb:416:09: info: when establishing invariant on Length at test_sets.adb:440
-test_sets.adb:416:09: info: when reestablishing invariant on Contains at test_sets.adb:435
-test_sets.adb:416:09: info: when reestablishing invariant on Length at test_sets.adb:440
-test_sets.adb:424:16: medium: during checks for container aggregates at test_sets.adb:416
-test_sets.adb:424:16: medium: precondition might fail
+test_sets.adb:10:09: info: when establishing invariant on Contains at test_sets.adb:30
+test_sets.adb:10:09: info: when establishing invariant on Length at test_sets.adb:35
+test_sets.adb:10:09: info: when reestablishing invariant on Contains at test_sets.adb:30
+test_sets.adb:10:09: info: when reestablishing invariant on Length at test_sets.adb:35
+test_sets.adb:57:09: info: Container_Aggregates annotation proved (CVC5: 1 VC)
+test_sets.adb:57:09: info: Container_Aggregates annotation proved (CVC5: 2 VC)
+test_sets.adb:57:09: info: Container_Aggregates annotation proved (CVC5: 3 VC)
+test_sets.adb:57:09: info: after a call to Empty at test_sets.adb:59
+test_sets.adb:57:09: info: after a call to Insert at test_sets.adb:63
+test_sets.adb:57:09: info: after a call to Insert at test_sets.adb:63
+test_sets.adb:57:09: info: when establishing invariant on Contains at test_sets.adb:76
+test_sets.adb:57:09: info: when reestablishing invariant on Contains at test_sets.adb:76
+test_sets.adb:57:09: info: when reestablishing invariant on Length at test_sets.adb:81
+test_sets.adb:57:09: medium: Container_Aggregates annotation might be incorrect
+test_sets.adb:57:09: medium: after a call to Empty at test_sets.adb:59
+test_sets.adb:57:09: medium: when establishing invariant on Length at test_sets.adb:81
+test_sets.adb:103:09: info: Container_Aggregates annotation proved (CVC5: 1 VC)
+test_sets.adb:103:09: info: Container_Aggregates annotation proved (CVC5: 2 VC)
+test_sets.adb:103:09: info: Container_Aggregates annotation proved (CVC5: 3 VC)
+test_sets.adb:103:09: info: after a call to Empty at test_sets.adb:105
+test_sets.adb:103:09: info: after a call to Insert at test_sets.adb:109
+test_sets.adb:103:09: info: after a call to Insert at test_sets.adb:109
+test_sets.adb:103:09: info: when establishing invariant on Length at test_sets.adb:127
+test_sets.adb:103:09: info: when reestablishing invariant on Contains at test_sets.adb:122
+test_sets.adb:103:09: info: when reestablishing invariant on Length at test_sets.adb:127
+test_sets.adb:103:09: medium: Container_Aggregates annotation might be incorrect
+test_sets.adb:103:09: medium: after a call to Empty at test_sets.adb:105
+test_sets.adb:103:09: medium: when establishing invariant on Contains at test_sets.adb:122
+test_sets.adb:149:09: info: Container_Aggregates annotation proved (CVC5: 1 VC)
+test_sets.adb:149:09: info: Container_Aggregates annotation proved (CVC5: 1 VC)
+test_sets.adb:149:09: info: Container_Aggregates annotation proved (CVC5: 3 VC)
+test_sets.adb:149:09: info: after a call to Empty at test_sets.adb:151
+test_sets.adb:149:09: info: after a call to Empty at test_sets.adb:151
+test_sets.adb:149:09: info: after a call to Insert at test_sets.adb:156
+test_sets.adb:149:09: info: when establishing invariant on Contains at test_sets.adb:166
+test_sets.adb:149:09: info: when establishing invariant on Length at test_sets.adb:171
+test_sets.adb:149:09: info: when reestablishing invariant on Contains at test_sets.adb:166
+test_sets.adb:149:09: medium: Container_Aggregates annotation might be incorrect
+test_sets.adb:149:09: medium: after a call to Insert at test_sets.adb:156
+test_sets.adb:149:09: medium: when reestablishing invariant on Length at test_sets.adb:171
+test_sets.adb:193:09: info: Container_Aggregates annotation proved (CVC5: 1 VC)
+test_sets.adb:193:09: info: Container_Aggregates annotation proved (CVC5: 1 VC)
+test_sets.adb:193:09: info: Container_Aggregates annotation proved (CVC5: 2 VC)
+test_sets.adb:193:09: info: after a call to Empty at test_sets.adb:195
+test_sets.adb:193:09: info: after a call to Empty at test_sets.adb:195
+test_sets.adb:193:09: info: after a call to Insert at test_sets.adb:200
+test_sets.adb:193:09: info: when establishing invariant on Contains at test_sets.adb:212
+test_sets.adb:193:09: info: when establishing invariant on Length at test_sets.adb:217
+test_sets.adb:193:09: info: when reestablishing invariant on Length at test_sets.adb:217
+test_sets.adb:193:09: medium: Container_Aggregates annotation might be incorrect
+test_sets.adb:193:09: medium: after a call to Insert at test_sets.adb:200
+test_sets.adb:193:09: medium: when reestablishing invariant on Contains at test_sets.adb:212
+test_sets.adb:239:09: info: Container_Aggregates annotation proved (CVC5: 1 VC)
+test_sets.adb:239:09: info: Container_Aggregates annotation proved (CVC5: 1 VC)
+test_sets.adb:239:09: info: Container_Aggregates annotation proved (CVC5: 2 VC)
+test_sets.adb:239:09: info: after a call to Empty at test_sets.adb:241
+test_sets.adb:239:09: info: after a call to Empty at test_sets.adb:241
+test_sets.adb:239:09: info: after a call to Insert at test_sets.adb:246
+test_sets.adb:239:09: info: when establishing invariant on Contains at test_sets.adb:257
+test_sets.adb:239:09: info: when establishing invariant on Length at test_sets.adb:262
+test_sets.adb:239:09: info: when reestablishing invariant on Length at test_sets.adb:262
+test_sets.adb:239:09: medium: Container_Aggregates annotation might be incorrect
+test_sets.adb:239:09: medium: after a call to Insert at test_sets.adb:246
+test_sets.adb:239:09: medium: when reestablishing invariant on Contains at test_sets.adb:257
+test_sets.adb:284:09: info: Container_Aggregates annotation proved (CVC5: 1 VC)
+test_sets.adb:284:09: info: Container_Aggregates annotation proved (CVC5: 1 VC)
+test_sets.adb:284:09: info: Container_Aggregates annotation proved (CVC5: 2 VC)
+test_sets.adb:284:09: info: after a call to Empty at test_sets.adb:286
+test_sets.adb:284:09: info: after a call to Empty at test_sets.adb:286
+test_sets.adb:284:09: info: after a call to Insert at test_sets.adb:291
+test_sets.adb:284:09: info: when establishing invariant on Contains at test_sets.adb:301
+test_sets.adb:284:09: info: when establishing invariant on Length at test_sets.adb:306
+test_sets.adb:284:09: info: when reestablishing invariant on Length at test_sets.adb:306
+test_sets.adb:284:09: medium: Container_Aggregates annotation might be incorrect
+test_sets.adb:284:09: medium: after a call to Insert at test_sets.adb:291
+test_sets.adb:284:09: medium: when reestablishing invariant on Contains at test_sets.adb:301
+test_sets.adb:328:09: info: Container_Aggregates annotation proved (CVC5: 1 VC)
+test_sets.adb:328:09: info: Container_Aggregates annotation proved (CVC5: 1 VC)
+test_sets.adb:328:09: info: Container_Aggregates annotation proved (CVC5: 2 VC)
+test_sets.adb:328:09: info: Container_Aggregates annotation proved (CVC5: 3 VC)
+test_sets.adb:328:09: info: after a call to Empty at test_sets.adb:334
+test_sets.adb:328:09: info: after a call to Empty at test_sets.adb:334
+test_sets.adb:328:09: info: after a call to Insert at test_sets.adb:340
+test_sets.adb:328:09: info: after a call to Insert at test_sets.adb:340
+test_sets.adb:328:09: info: when establishing invariant on Contains at test_sets.adb:353
+test_sets.adb:328:09: info: when establishing invariant on Length at test_sets.adb:358
+test_sets.adb:328:09: info: when reestablishing invariant on Contains at test_sets.adb:353
+test_sets.adb:328:09: info: when reestablishing invariant on Length at test_sets.adb:358
+test_sets.adb:335:16: medium: during checks for container aggregates at test_sets.adb:328
+test_sets.adb:335:16: medium: precondition might fail
+test_sets.adb:380:09: info: Container_Aggregates annotation proved (CVC5: 1 VC)
+test_sets.adb:380:09: info: Container_Aggregates annotation proved (CVC5: 1 VC)
+test_sets.adb:380:09: info: Container_Aggregates annotation proved (CVC5: 2 VC)
+test_sets.adb:380:09: info: Container_Aggregates annotation proved (CVC5: 3 VC)
+test_sets.adb:380:09: info: after a call to Empty at test_sets.adb:386
+test_sets.adb:380:09: info: after a call to Empty at test_sets.adb:386
+test_sets.adb:380:09: info: after a call to Insert at test_sets.adb:391
+test_sets.adb:380:09: info: after a call to Insert at test_sets.adb:391
+test_sets.adb:380:09: info: when establishing invariant on Contains at test_sets.adb:405
+test_sets.adb:380:09: info: when establishing invariant on Length at test_sets.adb:410
+test_sets.adb:380:09: info: when reestablishing invariant on Contains at test_sets.adb:405
+test_sets.adb:380:09: info: when reestablishing invariant on Length at test_sets.adb:410
+test_sets.adb:392:16: medium: during checks for container aggregates at test_sets.adb:380
+test_sets.adb:392:16: medium: precondition might fail
+test_sets.adb:432:09: info: Container_Aggregates annotation proved (CVC5: 1 VC)
+test_sets.adb:432:09: info: Container_Aggregates annotation proved (CVC5: 1 VC)
+test_sets.adb:432:09: info: Container_Aggregates annotation proved (CVC5: 2 VC)
+test_sets.adb:432:09: info: Container_Aggregates annotation proved (CVC5: 3 VC)
+test_sets.adb:432:09: info: after a call to Empty at test_sets.adb:434
+test_sets.adb:432:09: info: after a call to Empty at test_sets.adb:434
+test_sets.adb:432:09: info: after a call to Insert at test_sets.adb:439
+test_sets.adb:432:09: info: after a call to Insert at test_sets.adb:439
+test_sets.adb:432:09: info: when establishing invariant on Contains at test_sets.adb:453
+test_sets.adb:432:09: info: when establishing invariant on Length at test_sets.adb:458
+test_sets.adb:432:09: info: when reestablishing invariant on Contains at test_sets.adb:453
+test_sets.adb:432:09: info: when reestablishing invariant on Length at test_sets.adb:458
+test_sets.adb:440:16: medium: during checks for container aggregates at test_sets.adb:432
+test_sets.adb:440:16: medium: precondition might fail
 test_total_maps.adb:11:09: info: Container_Aggregates annotation proved (CVC5: 1 VC)
 test_total_maps.adb:11:09: info: Container_Aggregates annotation proved (CVC5: 1 VC)
 test_total_maps.adb:11:09: info: after a call to Empty at test_total_maps.adb:13
