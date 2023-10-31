@@ -1,5 +1,5 @@
 p.ads:5:13: error: launch "gnatprove --explain=E0006" for more information
-p.ads:5:13: error: nonvolatile function "F" with volatile input global "Y" is not allowed in SPARK [E0006]
+p.ads:5:13: error: nonvolatile function "F" with volatile input global "X" is not allowed in SPARK [E0006]
 p.ads:5:13: error: violation of pragma SPARK_Mode at test.adc:1
 p.ads:11:13: error: launch "gnatprove --explain=E0006" for more information
 p.ads:11:13: error: nonvolatile function "Get" with volatile input global "State" is not allowed in SPARK [E0006]
