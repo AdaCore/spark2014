@@ -5873,7 +5873,16 @@ package body SPARK_Definition is
                      end if;
 
                   else
-                     for G of Globals.Inputs.Union (Globals.Proof_Ins) loop
+                     --  Violations will be attached to the function entity, so
+                     --  GNAT will only print the first one, which will depend
+                     --  on the order of hash iteration. Future error message
+                     --  backends might be able to print more, but for now we
+                     --  just want to make the order stable.
+
+                     for G of
+                       To_Ordered_Flow_Id_Set
+                         (Globals.Inputs.Union (Globals.Proof_Ins))
+                     loop
 
                         --  Volatile variable with effective reads are outputs.
                         --  This case can only happen with abstract states
