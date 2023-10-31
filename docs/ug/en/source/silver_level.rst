@@ -29,13 +29,15 @@ GNATprove at each call.
 
 .. rubric:: Benefits
 
-The SPARK code is guaranteed to be free from run-time errors (Absence of
-Run Time Errors - AoRTE) plus all the defects already detected at Bronze
-level: no reads of uninitialized variables, no possible interference
-between parameters and/or global variables, and no unintended access to
-global variables. Thus, the quality of the program can be guaranteed to
-achieve higher levels of integrity than would be possible in other
-programming languages.
+The SPARK code is guaranteed to be free from run-time errors (Absence of Run
+Time Errors - AoRTE) plus all the defects already detected at Bronze level: no
+reads of uninitialized variables, no possible interference between parameters
+and/or global variables, no unintended access to global variables, and no
+infinite loop or recursion in functions. These guarantees extend to code using
+features that require proof for ensuring correct initialization and
+termination, as described in the limitations for :ref:`Bronze Level <Bronze
+Level>`.  Thus, the quality of the program can be guaranteed to achieve higher
+levels of integrity than would be possible in other programming languages.
 
 All the messages about possible run-time errors can be carefully reviewed
 and justified (for example by relying on external system constraints such
@@ -91,6 +93,10 @@ loop contracts, as well as examples of common patterns of loops and their
 corresponding loop invariants.
 
 .. rubric:: Costs and Limitations
+
+The guarantees offered at Silver level and above do not extend to subprograms
+with the annotations ``Skip_Flow_And_Proof`` or ``Skip_Proof``, which are only
+analyzed at Stone or Bronze level respectively.
 
 The initial pass may require a substantial effort to resolve all false
 alarms, depending on the coding style adopted previously. The analysis may
