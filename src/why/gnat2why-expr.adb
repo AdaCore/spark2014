@@ -26,7 +26,6 @@
 with Ada.Characters.Handling;        use Ada.Characters.Handling;
 with Ada.Containers;                 use Ada.Containers;
 with Ada.Containers.Hashed_Maps;
-with Ada.Containers.Vectors;
 with Ada.Strings;
 with Ada.Strings.Unbounded;          use Ada.Strings.Unbounded;
 with Ada.Text_IO;  --  For debugging, to print info before raising an exception
@@ -83,6 +82,7 @@ with Why.Gen.Pointers;               use Why.Gen.Pointers;
 with Why.Gen.Records;                use Why.Gen.Records;
 with Why.Gen.Scalars;                use Why.Gen.Scalars;
 with Why.Images;                     use Why.Images;
+with Gnat2Why.Expr.Aggregates;       use Gnat2Why.Expr.Aggregates;
 
 package body Gnat2Why.Expr is
 
@@ -252,19 +252,6 @@ package body Gnat2Why.Expr is
    --  Check special restrictions for unchecked union types on membership tests
    --  and builtin equality. Emit statically failed proof results for these
    --  checks.
-
-   type Ref_Type is record
-      Mutable : Boolean;
-      Name    : W_Identifier_Id;
-      Value   : W_Expr_Id;
-   end record;
-   --  Represent a mapping from an identifier Name to an expression Value.
-   --  If Mutable is True, the mapping should be a reference.
-
-   package Ref_Type_Vectors is new Ada.Containers.Vectors
-     (Index_Type   => Positive,
-      Element_Type => Ref_Type);
-   subtype Ref_Context is Ref_Type_Vectors.Vector;
 
    function Compute_Call_Args
      (Call      : Node_Id;
@@ -19315,7 +19302,9 @@ package body Gnat2Why.Expr is
          --  (for all Idx in Id'Range =>
          --     Id (Idx) = (if Idx ... then ... else Id'Old (Idx)))
 
-         if Is_Equal_Of_Update (Expr) then
+         if not Is_Deep_Delta_Aggregate (Expr)
+           and then Is_Equal_Of_Update (Expr)
+         then
             T := Transform_Equal_Of_Update (Expr, Domain, Params);
 
          --  Normal translation
@@ -21810,7 +21799,13 @@ package body Gnat2Why.Expr is
       T        : W_Expr_Id;
 
    begin
-      if Is_Record_Type (Pref_Typ) then
+      if Is_Deep_Delta_Aggregate (Ada_Node) then
+         T := Transform_Deep_Delta_Aggregate
+           (Expr   => Ada_Node,
+            Domain => Domain,
+            Params => Params);
+
+      elsif Is_Record_Type (Pref_Typ) then
          W_Pref := Transform_Expr
            (Domain        => Domain,
             Expr          => Pref,

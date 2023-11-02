@@ -23,6 +23,7 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
+with Ada.Containers.Vectors;
 with Checked_Types;              use Checked_Types;
 with Common_Containers;          use Common_Containers;
 with Flow_Types;                 use Flow_Types;
@@ -871,5 +872,18 @@ private
 
    Incompl_Access_Dyn_Inv_Map : Ada_To_Why_Ident.Map;
    --  Map storing predicates for invariants of access to incomplete types
+
+   type Ref_Type is record
+      Mutable : Boolean;
+      Name    : W_Identifier_Id;
+      Value   : W_Expr_Id;
+   end record;
+   --  Represent a mapping from an identifier Name to an expression Value.
+   --  If Mutable is True, the mapping should be a reference.
+
+   package Ref_Type_Vectors is new Ada.Containers.Vectors
+     (Index_Type   => Positive,
+      Element_Type => Ref_Type);
+   subtype Ref_Context is Ref_Type_Vectors.Vector;
 
 end Gnat2Why.Expr;

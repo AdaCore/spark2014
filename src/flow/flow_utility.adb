@@ -4410,6 +4410,13 @@ package body Flow_Utility is
                      end if;
                   else
                      pragma Assert (Is_Array_Type (T));
+
+                     --  ??? Deep delta aggregates are not handled yet, just
+                     --  skip them.
+
+                     if Is_Deep_Delta_Aggregate (N) then
+                        return Skip;
+                     end if;
                   end if;
                end;
 

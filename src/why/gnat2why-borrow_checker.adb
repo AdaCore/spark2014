@@ -38,6 +38,7 @@ with Gnat2Why.Util;               use Gnat2Why.Util;
 with Namet;                       use Namet;
 with Nlists;                      use Nlists;
 with Sem_Util;                    use Sem_Util;
+with Sem_Aggr;                    use Sem_Aggr;
 with Sem_Aux;                     use Sem_Aux;
 with Sinfo.Nodes;                 use Sinfo.Nodes;
 with Sinfo.Utils;                 use Sinfo.Utils;
@@ -1917,6 +1918,27 @@ package body Gnat2Why.Borrow_Checker is
          ------------------------
 
          procedure Check_Associations (Assocs : List_Id) is
+
+            procedure Read_Choice (Choice : Node_Id);
+            --  Read all indexes in a (possibly deep) choice
+
+            procedure Read_Choice (Choice : Node_Id) is
+               Pref : Node_Id := Choice;
+            begin
+               if Is_Deep_Choice (Choice, Etype (Expr)) then
+                  while not Is_Root_Prefix_Of_Deep_Choice (Pref) loop
+                     if Nkind (Pref) = N_Indexed_Component then
+                        Read_Expression_List (Expressions (Pref));
+                     end if;
+                     Pref := Prefix (Pref);
+                  end loop;
+               end if;
+
+               if Is_Array_Type (Etype (Expr)) then
+                  Read_Expression (Pref);
+               end if;
+            end Read_Choice;
+
             CL     : List_Id;
             Assoc  : Node_Id := Nlists.First (Assocs);
             Choice : Node_Id;
@@ -1925,18 +1947,16 @@ package body Gnat2Why.Borrow_Checker is
             while Present (Assoc) loop
                CL := Choice_List (Assoc);
 
-               --  For an array aggregate, we should also check that the
-               --  expressions used in choices are readable.
+               --  We should also check that the expressions used in choices
+               --  of array aggregates are readable.
 
-               if Is_Array_Type (Etype (Expr)) then
-                  Choice := Nlists.First (CL);
-                  while Present (Choice) loop
-                     if Nkind (Choice) /= N_Others_Choice then
-                        Read_Expression (Choice);
-                     end if;
-                     Next (Choice);
-                  end loop;
-               end if;
+               Choice := Nlists.First (CL);
+               while Present (Choice) loop
+                  if Nkind (Choice) /= N_Others_Choice then
+                     Read_Choice (Choice);
+                  end if;
+                  Next (Choice);
+               end loop;
 
                --  The subexpressions of an aggregate are read or moved as part
                --  of the implicit assignments.
