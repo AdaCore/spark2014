@@ -21771,11 +21771,10 @@ package body Gnat2Why.Expr is
          --  that the prefix before any update does not own any memory. We
          --  could improve on that if this is too imprecise for real code.
 
-         --  ??? What about the case of an array delta aggregate with
-         --  components of deep type? Then multiple component associations can
-         --  refer to the same index, making it possible to leak memory even if
-         --  the prefix did not own memory at start. Possibly we could reject
-         --  such cases.
+         --  The case of delta aggregates involving array indexes with aliasing
+         --  between choices has already been rejected during marking, to
+         --  ensure that these cannot lead to a memory leak, even if the
+         --  prefix did not own memory initially.
 
          if Has_Deep_Association (Component_Associations (Aggr))
            and then Aggregate_Is_In_Assignment (Aggr)

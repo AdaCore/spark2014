@@ -544,6 +544,7 @@ package body SPARK_Util is
             --  Reach past an enclosing aggregate
 
             when N_Aggregate
+               | N_Component_Association
                | N_Delta_Aggregate
                | N_Extension_Aggregate
             =>

@@ -69,6 +69,7 @@ with Tbuild;
 with Uintp;                           use Uintp;
 with Urealp;                          use Urealp;
 with VC_Kinds;                        use VC_Kinds;
+with Sem_Aggr;
 
 package body SPARK_Definition is
 
@@ -327,6 +328,11 @@ package body SPARK_Definition is
    --  Empty.
    --  If the context is found to be a prophecy save declaration, the
    --  prophecy save is registered.
+
+   procedure Check_No_Deep_Aliasing_In_Assoc (N : N_Delta_Aggregate_Id);
+   --  Search for associations of a deep type, where one of the associations
+   --  has a choice with at least one array index, as an overapproximation of
+   --  whether the choices in associations could alias.
 
    procedure Check_No_Deep_Duplicates_In_Assoc (N : N_Aggregate_Kind_Id);
    --  Search for associations mapping a single deep value to several
@@ -773,6 +779,80 @@ package body SPARK_Definition is
       --  error message to keep it reasonably short.
 
    end Check_Context_Of_Prophecy;
+
+   -------------------------------------
+   -- Check_No_Deep_Aliasing_In_Assoc --
+   -------------------------------------
+
+   procedure Check_No_Deep_Aliasing_In_Assoc (N : N_Delta_Aggregate_Id) is
+
+      function Choice_Has_Index (Choice : Node_Id) return Boolean;
+      --  Return whether Choice includes an array index
+
+      ----------------------
+      -- Choice_Has_Index --
+      ----------------------
+
+      function Choice_Has_Index (Choice : Node_Id) return Boolean is
+      begin
+         if Is_Array_Type (Etype (N)) then
+            return True;
+
+         elsif Sem_Aggr.Is_Deep_Choice (Choice, Etype (N)) then
+            declare
+               Pref : Node_Id := Choice;
+            begin
+               while not Sem_Aggr.Is_Root_Prefix_Of_Deep_Choice (Pref) loop
+                  if Nkind (Pref) = N_Indexed_Component then
+                     return True;
+                  end if;
+                  Pref := Prefix (Pref);
+               end loop;
+            end;
+         end if;
+
+         return False;
+      end Choice_Has_Index;
+
+      --  Local variables
+
+      Assocs : constant List_Id := Component_Associations (N);
+      Assoc  : Node_Id := First (Assocs);
+
+      Has_Deep_Choice          : Boolean := False;
+      --  Whether a previous choice was of an ownership type
+      Has_Index_In_Deep_Choice : Boolean := False;
+      --  Whether a previous choice of an ownership type contains an index
+   begin
+      while Present (Assoc) loop
+         --  In order to avoid memory leaks from one choice aliasing with
+         --  another, there can be no two values of deep type in delta
+         --  aggregates when at least one of them includes an array index.
+         --  This is a coarse approximation for now, which could be refined
+         --  if needed, by comparing pairs of choices.
+
+         if Is_Deep (Etype (Expression (Assoc))) then
+            declare
+               --  Only consider first choice in list, as absence of duplicate
+               --  choices of deep types is checked separately.
+               Choice : constant Node_Id := First (Choice_List (Assoc));
+            begin
+               Has_Index_In_Deep_Choice :=
+                 Has_Index_In_Deep_Choice or else Choice_Has_Index (Choice);
+
+               if Has_Deep_Choice
+                 and then Has_Index_In_Deep_Choice
+               then
+                  Mark_Unsupported (Lim_Deep_Value_In_Delta_Aggregate, N);
+               end if;
+
+               Has_Deep_Choice := True;
+            end;
+         end if;
+
+         Next (Assoc);
+      end loop;
+   end Check_No_Deep_Aliasing_In_Assoc;
 
    ---------------------------------------
    -- Check_No_Deep_Duplicates_In_Assoc --
@@ -2847,6 +2927,7 @@ package body SPARK_Definition is
             Mark (Expression (N));
             Mark_List (Component_Associations (N));
             Check_No_Deep_Duplicates_In_Assoc (N);
+            Check_No_Deep_Aliasing_In_Assoc (N);
 
          --  Uses of object renamings are rewritten by expansion, but the name
          --  is still being evaluated at the location of the renaming, even if
