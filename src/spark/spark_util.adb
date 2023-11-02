@@ -3037,6 +3037,14 @@ package body SPARK_Util is
       Pref := Expression (Exp);
       Assoc := First (Component_Associations (Exp));
       while Present (Assoc) loop
+
+         --  Iterated component associations are not allowed in deep delta
+         --  aggregates.
+
+         if Nkind (Assoc) = N_Iterated_Component_Association then
+            return False;
+         end if;
+
          declare
             Choice : constant Node_Id := First (Choices (Assoc));
          begin
