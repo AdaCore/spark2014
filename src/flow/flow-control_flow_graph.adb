@@ -6215,6 +6215,49 @@ package body Flow.Control_Flow_Graph is
          Add_Dummy_Vertex (N, FA, CM);
       end if;
 
+      --  Access-to-subprogram types might be annotated with Pre and Post
+      --  contracts. We process their expressions for proof dependencies here.
+
+      if Is_Access_Subprogram_Type (Typ)
+        and then No (Parent_Retysp (Typ))
+      then
+         declare
+
+            procedure Process_Expressions (L : Node_Lists.List);
+            --  Process a list of expressions L to fill FA.Proof_Dependencies
+
+            -------------------------
+            -- Process_Expressions --
+            -------------------------
+
+            procedure Process_Expressions (L : Node_Lists.List) is
+               Funcalls : Call_Sets.Set;
+               Unused   : Tasking_Info;
+            begin
+               for Expr of L loop
+                  Pick_Generated_Info
+                    (Expr,
+                     FA.B_Scope,
+                     Funcalls,
+                     FA.Proof_Dependencies,
+                     Unused,
+                     FA.Generating_Globals);
+               end loop;
+
+               for Call of Funcalls loop
+                  FA.Proof_Dependencies.Include (Call.E);
+               end loop;
+            end Process_Expressions;
+
+            Profile : constant Entity_Id := Directly_Designated_Type (Typ);
+         begin
+            Process_Expressions
+              (Find_Contracts (Profile, Pragma_Precondition));
+            Process_Expressions
+              (Find_Contracts (Profile, Pragma_Postcondition));
+         end;
+      end if;
+
       --  In phase 2 check DIC on type definitions that come from source
 
       --  ??? As a rule, we shouldn't emit any messages while building the CFG.
