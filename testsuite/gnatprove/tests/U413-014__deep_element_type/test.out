@@ -4,66 +4,66 @@ test_deep_element_type.adb:30:13: info: implicit aspect Always_Terminates on "Ha
 test_deep_element_type.adb:32:13: info: implicit aspect Always_Terminates on "Hash" has been proved, subprogram will terminate
 test_deep_element_type.adb:35:04: error: "Item" is not writable
 test_deep_element_type.adb:35:04: error: instantiation error at spark-containers-formal-doubly_linked_lists.ads:105
-test_deep_element_type.adb:35:04: error: instantiation error at spark-containers-functional-vectors.ads:301
-test_deep_element_type.adb:35:04: error: object was declared as not writable at spark-containers-functional-vectors.ads:301, instance at spark-containers-formal-doubly_linked_lists.ads:105, instance at line 35
+test_deep_element_type.adb:35:04: error: instantiation error at spark-containers-functional-vectors.ads:308
+test_deep_element_type.adb:35:04: error: object was declared as not writable at spark-containers-functional-vectors.ads:308, instance at spark-containers-formal-doubly_linked_lists.ads:105, instance at line 35
 test_deep_element_type.adb:36:04: error: "Item" is not writable
-test_deep_element_type.adb:36:04: error: instantiation error at spark-containers-functional-vectors.ads:301
-test_deep_element_type.adb:36:04: error: object was declared as not writable at spark-containers-functional-vectors.ads:301, instance at line 36
+test_deep_element_type.adb:36:04: error: instantiation error at spark-containers-functional-vectors.ads:308
+test_deep_element_type.adb:36:04: error: object was declared as not writable at spark-containers-functional-vectors.ads:308, instance at line 36
 test_deep_element_type.adb:37:04: error: "Item" is not writable
 test_deep_element_type.adb:37:04: error: instantiation error at spark-containers-formal-vectors.ads:138
-test_deep_element_type.adb:37:04: error: instantiation error at spark-containers-functional-vectors.ads:301
-test_deep_element_type.adb:37:04: error: object was declared as not writable at spark-containers-functional-vectors.ads:301, instance at spark-containers-formal-vectors.ads:138, instance at line 37
+test_deep_element_type.adb:37:04: error: instantiation error at spark-containers-functional-vectors.ads:308
+test_deep_element_type.adb:37:04: error: object was declared as not writable at spark-containers-functional-vectors.ads:308, instance at spark-containers-formal-vectors.ads:138, instance at line 37
 test_deep_element_type.adb:38:04: error: "Item" is not writable
 test_deep_element_type.adb:38:04: error: instantiation error at spark-containers-formal-unbounded_vectors.ads:130
-test_deep_element_type.adb:38:04: error: instantiation error at spark-containers-functional-vectors.ads:301
-test_deep_element_type.adb:38:04: error: object was declared as not writable at spark-containers-functional-vectors.ads:301, instance at spark-containers-formal-unbounded_vectors.ads:130, instance at line 38
+test_deep_element_type.adb:38:04: error: instantiation error at spark-containers-functional-vectors.ads:308
+test_deep_element_type.adb:38:04: error: object was declared as not writable at spark-containers-functional-vectors.ads:308, instance at spark-containers-formal-unbounded_vectors.ads:130, instance at line 38
 test_deep_element_type.adb:39:04: error: "Item" is not writable
 test_deep_element_type.adb:39:04: error: "Item" is not writable
 test_deep_element_type.adb:39:04: error: instantiation error at spark-containers-formal-hashed_sets.ads:167
 test_deep_element_type.adb:39:04: error: instantiation error at spark-containers-formal-hashed_sets.ads:182
-test_deep_element_type.adb:39:04: error: instantiation error at spark-containers-functional-sets.ads:373
-test_deep_element_type.adb:39:04: error: instantiation error at spark-containers-functional-vectors.ads:301
-test_deep_element_type.adb:39:04: error: object was declared as not writable at spark-containers-functional-sets.ads:373, instance at spark-containers-formal-hashed_sets.ads:167, instance at line 39
-test_deep_element_type.adb:39:04: error: object was declared as not writable at spark-containers-functional-vectors.ads:301, instance at spark-containers-formal-hashed_sets.ads:182, instance at line 39
+test_deep_element_type.adb:39:04: error: instantiation error at spark-containers-functional-sets.ads:379
+test_deep_element_type.adb:39:04: error: instantiation error at spark-containers-functional-vectors.ads:308
+test_deep_element_type.adb:39:04: error: object was declared as not writable at spark-containers-functional-sets.ads:379, instance at spark-containers-formal-hashed_sets.ads:167, instance at line 39
+test_deep_element_type.adb:39:04: error: object was declared as not writable at spark-containers-functional-vectors.ads:308, instance at spark-containers-formal-hashed_sets.ads:182, instance at line 39
 test_deep_element_type.adb:40:04: error: "Item" is not writable
 test_deep_element_type.adb:40:04: error: "Item" is not writable
 test_deep_element_type.adb:40:04: error: instantiation error at spark-containers-formal-ordered_sets.ads:159
 test_deep_element_type.adb:40:04: error: instantiation error at spark-containers-formal-ordered_sets.ads:174
-test_deep_element_type.adb:40:04: error: instantiation error at spark-containers-functional-sets.ads:373
-test_deep_element_type.adb:40:04: error: instantiation error at spark-containers-functional-vectors.ads:301
-test_deep_element_type.adb:40:04: error: object was declared as not writable at spark-containers-functional-sets.ads:373, instance at spark-containers-formal-ordered_sets.ads:159, instance at line 40
-test_deep_element_type.adb:40:04: error: object was declared as not writable at spark-containers-functional-vectors.ads:301, instance at spark-containers-formal-ordered_sets.ads:174, instance at line 40
+test_deep_element_type.adb:40:04: error: instantiation error at spark-containers-functional-sets.ads:379
+test_deep_element_type.adb:40:04: error: instantiation error at spark-containers-functional-vectors.ads:308
+test_deep_element_type.adb:40:04: error: object was declared as not writable at spark-containers-functional-sets.ads:379, instance at spark-containers-formal-ordered_sets.ads:159, instance at line 40
+test_deep_element_type.adb:40:04: error: object was declared as not writable at spark-containers-functional-vectors.ads:308, instance at spark-containers-formal-ordered_sets.ads:174, instance at line 40
 test_deep_element_type.adb:41:04: error: "Item" is not writable
-test_deep_element_type.adb:41:04: error: instantiation error at spark-containers-functional-sets.ads:373
-test_deep_element_type.adb:41:04: error: object was declared as not writable at spark-containers-functional-sets.ads:373, instance at line 41
+test_deep_element_type.adb:41:04: error: instantiation error at spark-containers-functional-sets.ads:379
+test_deep_element_type.adb:41:04: error: object was declared as not writable at spark-containers-functional-sets.ads:379, instance at line 41
 test_deep_element_type.adb:42:04: error: "Item" is not writable
 test_deep_element_type.adb:42:04: error: instantiation error at spark-containers-formal-hashed_maps.ads:176
-test_deep_element_type.adb:42:04: error: instantiation error at spark-containers-functional-maps.ads:483
-test_deep_element_type.adb:42:04: error: object was declared as not writable at spark-containers-functional-maps.ads:483, instance at spark-containers-formal-hashed_maps.ads:176, instance at line 42
+test_deep_element_type.adb:42:04: error: instantiation error at spark-containers-functional-maps.ads:490
+test_deep_element_type.adb:42:04: error: object was declared as not writable at spark-containers-functional-maps.ads:490, instance at spark-containers-formal-hashed_maps.ads:176, instance at line 42
 test_deep_element_type.adb:43:04: error: "Item" is not writable
 test_deep_element_type.adb:43:04: error: instantiation error at spark-containers-formal-ordered_maps.ads:168
-test_deep_element_type.adb:43:04: error: instantiation error at spark-containers-functional-maps.ads:483
-test_deep_element_type.adb:43:04: error: object was declared as not writable at spark-containers-functional-maps.ads:483, instance at spark-containers-formal-ordered_maps.ads:168, instance at line 43
+test_deep_element_type.adb:43:04: error: instantiation error at spark-containers-functional-maps.ads:490
+test_deep_element_type.adb:43:04: error: object was declared as not writable at spark-containers-functional-maps.ads:490, instance at spark-containers-formal-ordered_maps.ads:168, instance at line 43
 test_deep_element_type.adb:44:04: error: "Item" is not writable
-test_deep_element_type.adb:44:04: error: instantiation error at spark-containers-functional-maps.ads:483
-test_deep_element_type.adb:44:04: error: object was declared as not writable at spark-containers-functional-maps.ads:483, instance at line 44
+test_deep_element_type.adb:44:04: error: instantiation error at spark-containers-functional-maps.ads:490
+test_deep_element_type.adb:44:04: error: object was declared as not writable at spark-containers-functional-maps.ads:490, instance at line 44
 test_deep_element_type.adb:45:04: error: "Item" is not writable
 test_deep_element_type.adb:45:04: error: "Key" is not writable
 test_deep_element_type.adb:45:04: error: instantiation error at spark-containers-formal-hashed_maps.ads:176
 test_deep_element_type.adb:45:04: error: instantiation error at spark-containers-formal-hashed_maps.ads:197
-test_deep_element_type.adb:45:04: error: instantiation error at spark-containers-functional-maps.ads:482
-test_deep_element_type.adb:45:04: error: instantiation error at spark-containers-functional-vectors.ads:301
-test_deep_element_type.adb:45:04: error: object was declared as not writable at spark-containers-functional-maps.ads:482, instance at spark-containers-formal-hashed_maps.ads:176, instance at line 45
-test_deep_element_type.adb:45:04: error: object was declared as not writable at spark-containers-functional-vectors.ads:301, instance at spark-containers-formal-hashed_maps.ads:197, instance at line 45
+test_deep_element_type.adb:45:04: error: instantiation error at spark-containers-functional-maps.ads:489
+test_deep_element_type.adb:45:04: error: instantiation error at spark-containers-functional-vectors.ads:308
+test_deep_element_type.adb:45:04: error: object was declared as not writable at spark-containers-functional-maps.ads:489, instance at spark-containers-formal-hashed_maps.ads:176, instance at line 45
+test_deep_element_type.adb:45:04: error: object was declared as not writable at spark-containers-functional-vectors.ads:308, instance at spark-containers-formal-hashed_maps.ads:197, instance at line 45
 test_deep_element_type.adb:46:04: error: "Item" is not writable
 test_deep_element_type.adb:46:04: error: "Key" is not writable
 test_deep_element_type.adb:46:04: error: instantiation error at spark-containers-formal-ordered_maps.ads:168
 test_deep_element_type.adb:46:04: error: instantiation error at spark-containers-formal-ordered_maps.ads:189
-test_deep_element_type.adb:46:04: error: instantiation error at spark-containers-functional-maps.ads:482
-test_deep_element_type.adb:46:04: error: instantiation error at spark-containers-functional-vectors.ads:301
-test_deep_element_type.adb:46:04: error: object was declared as not writable at spark-containers-functional-maps.ads:482, instance at spark-containers-formal-ordered_maps.ads:168, instance at line 46
-test_deep_element_type.adb:46:04: error: object was declared as not writable at spark-containers-functional-vectors.ads:301, instance at spark-containers-formal-ordered_maps.ads:189, instance at line 46
+test_deep_element_type.adb:46:04: error: instantiation error at spark-containers-functional-maps.ads:489
+test_deep_element_type.adb:46:04: error: instantiation error at spark-containers-functional-vectors.ads:308
+test_deep_element_type.adb:46:04: error: object was declared as not writable at spark-containers-functional-maps.ads:489, instance at spark-containers-formal-ordered_maps.ads:168, instance at line 46
+test_deep_element_type.adb:46:04: error: object was declared as not writable at spark-containers-functional-vectors.ads:308, instance at spark-containers-formal-ordered_maps.ads:189, instance at line 46
 test_deep_element_type.adb:47:04: error: "Key" is not writable
-test_deep_element_type.adb:47:04: error: instantiation error at spark-containers-functional-maps.ads:482
-test_deep_element_type.adb:47:04: error: object was declared as not writable at spark-containers-functional-maps.ads:482, instance at line 47
+test_deep_element_type.adb:47:04: error: instantiation error at spark-containers-functional-maps.ads:489
+test_deep_element_type.adb:47:04: error: object was declared as not writable at spark-containers-functional-maps.ads:489, instance at line 47
 gnatprove: error during flow analysis and proof

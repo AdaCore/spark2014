@@ -433,46 +433,57 @@ spark-containers-functional-vectors.ads:40:19: info: aspect Always_Terminates on
 spark-containers-functional-vectors.ads:42:19: info: aspect Always_Terminates on "Equivalent_Elements_Transitive" has been proved, subprogram will terminate, in instantiation at test_sequence_ho.adb:58
 spark-containers-functional-vectors.ads:51:12: info: range check proved, in instantiation at test_sequence_ho.adb:58
 spark-containers-functional-vectors.ads:52:33: info: overflow check proved, in instantiation at test_sequence_ho.adb:58
-spark-containers-functional-vectors.ads:96:13: info: during checks for quantification at spark-containers-functional-vectors.ads:70, in instantiation at test_sequence_ho.adb:58
-spark-containers-functional-vectors.ads:96:13: info: precondition proved, in instantiation at test_sequence_ho.adb:58
-spark-containers-functional-vectors.ads:113:13: info: implicit aspect Always_Terminates on "First" has been proved, subprogram will terminate, in instantiation at test_sequence_ho.adb:58
-spark-containers-functional-vectors.ads:113:55: info: range check proved, in instantiation at test_sequence_ho.adb:58
-spark-containers-functional-vectors.ads:114:06: info: data dependencies proved, in instantiation at test_sequence_ho.adb:58
-spark-containers-functional-vectors.ads:196:39: info: precondition proved, in instantiation at test_sequence_ho.adb:58
-spark-containers-functional-vectors.ads:255:52: info: overflow check proved, in instantiation at test_sequence_ho.adb:58
-spark-containers-functional-vectors.ads:301:13: info: implicit aspect Always_Terminates on "Copy_Element" has been proved, subprogram will terminate, in instantiation at test_sequence_ho.adb:58
-spark-containers-functional-vectors.ads:338:13: info: during checks for quantification at spark-containers-functional-vectors.ads:70, in instantiation at test_sequence_ho.adb:58
-spark-containers-functional-vectors.ads:338:13: info: precondition proved, in instantiation at test_sequence_ho.adb:58
-spark-containers-functional-vectors.ads:341:13: info: during checks for quantification at spark-containers-functional-vectors.ads:70, in instantiation at test_sequence_ho.adb:58
-spark-containers-functional-vectors.ads:341:13: info: precondition proved, in instantiation at test_sequence_ho.adb:58
-spark-containers-functional-vectors.ads:351:13: info: during checks for quantification at spark-containers-functional-vectors.ads:70, in instantiation at test_sequence_ho.adb:58
-spark-containers-functional-vectors.ads:351:13: info: precondition proved, in instantiation at test_sequence_ho.adb:58
-spark-containers-functional-vectors.ads:477:34: info: range check proved, in instantiation at test_sequence_ho.adb:58
-spark-containers-functional-vectors.ads:477:50: info: range check proved, in instantiation at test_sequence_ho.adb:58
-spark-containers-functional-vectors.ads:477:57: info: predicate check proved, in instantiation at test_sequence_ho.adb:58
-spark-containers-functional-vectors.ads:478:31: info: predicate check proved, in instantiation at test_sequence_ho.adb:58
-spark-containers-parameter_checks.adb:58:10: info: precondition proved, in instantiation at spark-containers-functional-vectors.ads:322, in instantiation at test_sequence_ho.adb:58
-spark-containers-parameter_checks.ads:30:17: info: aspect Always_Terminates on "Eq_Reflexive" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-vectors.ads:313, in instantiation at test_sequence_ho.adb:58
-spark-containers-parameter_checks.ads:31:09: info: data dependencies proved, in instantiation at spark-containers-functional-vectors.ads:313, in instantiation at test_sequence_ho.adb:58
-spark-containers-parameter_checks.ads:32:19: info: postcondition proved, in instantiation at spark-containers-functional-vectors.ads:313, in instantiation at test_sequence_ho.adb:58
-spark-containers-parameter_checks.ads:34:17: info: aspect Always_Terminates on "Eq_Symmetric" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-vectors.ads:313, in instantiation at test_sequence_ho.adb:58
-spark-containers-parameter_checks.ads:35:09: info: data dependencies proved, in instantiation at spark-containers-functional-vectors.ads:313, in instantiation at test_sequence_ho.adb:58
-spark-containers-parameter_checks.ads:37:19: info: postcondition proved, in instantiation at spark-containers-functional-vectors.ads:313, in instantiation at test_sequence_ho.adb:58
-spark-containers-parameter_checks.ads:39:17: info: aspect Always_Terminates on "Eq_Transitive" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-vectors.ads:313, in instantiation at test_sequence_ho.adb:58
-spark-containers-parameter_checks.ads:40:09: info: data dependencies proved, in instantiation at spark-containers-functional-vectors.ads:313, in instantiation at test_sequence_ho.adb:58
-spark-containers-parameter_checks.ads:42:19: info: postcondition proved, in instantiation at spark-containers-functional-vectors.ads:313, in instantiation at test_sequence_ho.adb:58
-spark-containers-parameter_checks.ads:62:17: info: aspect Always_Terminates on "Eq_Reflexive" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-vectors.ads:322, in instantiation at test_sequence_ho.adb:58
-spark-containers-parameter_checks.ads:63:09: info: data dependencies proved, in instantiation at spark-containers-functional-vectors.ads:322, in instantiation at test_sequence_ho.adb:58
-spark-containers-parameter_checks.ads:65:19: info: postcondition proved, in instantiation at spark-containers-functional-vectors.ads:322, in instantiation at test_sequence_ho.adb:58
-spark-containers-parameter_checks.ads:70:17: info: aspect Always_Terminates on "Eq_Reflexive" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-vectors.ads:322, in instantiation at test_sequence_ho.adb:58
-spark-containers-parameter_checks.ads:71:09: info: data dependencies proved, in instantiation at spark-containers-functional-vectors.ads:322, in instantiation at test_sequence_ho.adb:58
-spark-containers-parameter_checks.ads:72:19: info: postcondition proved, in instantiation at spark-containers-functional-vectors.ads:322, in instantiation at test_sequence_ho.adb:58
-spark-containers-parameter_checks.ads:74:17: info: aspect Always_Terminates on "Eq_Symmetric" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-vectors.ads:322, in instantiation at test_sequence_ho.adb:58
-spark-containers-parameter_checks.ads:75:09: info: data dependencies proved, in instantiation at spark-containers-functional-vectors.ads:322, in instantiation at test_sequence_ho.adb:58
-spark-containers-parameter_checks.ads:77:19: info: postcondition proved, in instantiation at spark-containers-functional-vectors.ads:322, in instantiation at test_sequence_ho.adb:58
-spark-containers-parameter_checks.ads:79:17: info: aspect Always_Terminates on "Eq_Transitive" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-vectors.ads:322, in instantiation at test_sequence_ho.adb:58
-spark-containers-parameter_checks.ads:80:09: info: data dependencies proved, in instantiation at spark-containers-functional-vectors.ads:322, in instantiation at test_sequence_ho.adb:58
-spark-containers-parameter_checks.ads:82:19: info: postcondition proved, in instantiation at spark-containers-functional-vectors.ads:322, in instantiation at test_sequence_ho.adb:58
+spark-containers-functional-vectors.ads:78:06: info: Container_Aggregates annotation proved, in instantiation at test_sequence_ho.adb:58
+spark-containers-functional-vectors.ads:78:06: info: Container_Aggregates annotation proved, in instantiation at test_sequence_ho.adb:58
+spark-containers-functional-vectors.ads:78:06: info: Container_Aggregates annotation proved, in instantiation at test_sequence_ho.adb:58
+spark-containers-functional-vectors.ads:78:06: info: after a call to Aggr_Append at spark-containers-functional-vectors.ads:505, in instantiation at test_sequence_ho.adb:58
+spark-containers-functional-vectors.ads:78:06: info: after a call to Aggr_Append at spark-containers-functional-vectors.ads:505, in instantiation at test_sequence_ho.adb:58
+spark-containers-functional-vectors.ads:78:06: info: after a call to Empty_Sequence at spark-containers-functional-vectors.ads:217, in instantiation at test_sequence_ho.adb:58
+spark-containers-functional-vectors.ads:78:06: info: when establishing invariant on Last at spark-containers-functional-vectors.ads:94, in instantiation at test_sequence_ho.adb:58
+spark-containers-functional-vectors.ads:78:06: info: when reestablishing invariant on Get at spark-containers-functional-vectors.ads:101, in instantiation at test_sequence_ho.adb:58
+spark-containers-functional-vectors.ads:78:06: info: when reestablishing invariant on Last at spark-containers-functional-vectors.ads:94, in instantiation at test_sequence_ho.adb:58
+spark-containers-functional-vectors.ads:101:13: info: during checks for quantification at spark-containers-functional-vectors.ads:70, in instantiation at test_sequence_ho.adb:58
+spark-containers-functional-vectors.ads:101:13: info: precondition proved, in instantiation at test_sequence_ho.adb:58
+spark-containers-functional-vectors.ads:119:13: info: implicit aspect Always_Terminates on "First" has been proved, subprogram will terminate, in instantiation at test_sequence_ho.adb:58
+spark-containers-functional-vectors.ads:119:55: info: range check proved, in instantiation at test_sequence_ho.adb:58
+spark-containers-functional-vectors.ads:120:06: info: data dependencies proved, in instantiation at test_sequence_ho.adb:58
+spark-containers-functional-vectors.ads:203:39: info: precondition proved, in instantiation at test_sequence_ho.adb:58
+spark-containers-functional-vectors.ads:262:52: info: overflow check proved, in instantiation at test_sequence_ho.adb:58
+spark-containers-functional-vectors.ads:308:13: info: implicit aspect Always_Terminates on "Copy_Element" has been proved, subprogram will terminate, in instantiation at test_sequence_ho.adb:58
+spark-containers-functional-vectors.ads:345:13: info: during checks for quantification at spark-containers-functional-vectors.ads:70, in instantiation at test_sequence_ho.adb:58
+spark-containers-functional-vectors.ads:345:13: info: precondition proved, in instantiation at test_sequence_ho.adb:58
+spark-containers-functional-vectors.ads:348:13: info: during checks for quantification at spark-containers-functional-vectors.ads:70, in instantiation at test_sequence_ho.adb:58
+spark-containers-functional-vectors.ads:348:13: info: precondition proved, in instantiation at test_sequence_ho.adb:58
+spark-containers-functional-vectors.ads:358:13: info: during checks for quantification at spark-containers-functional-vectors.ads:70, in instantiation at test_sequence_ho.adb:58
+spark-containers-functional-vectors.ads:358:13: info: precondition proved, in instantiation at test_sequence_ho.adb:58
+spark-containers-functional-vectors.ads:484:34: info: range check proved, in instantiation at test_sequence_ho.adb:58
+spark-containers-functional-vectors.ads:484:50: info: range check proved, in instantiation at test_sequence_ho.adb:58
+spark-containers-functional-vectors.ads:484:57: info: predicate check proved, in instantiation at test_sequence_ho.adb:58
+spark-containers-functional-vectors.ads:485:31: info: predicate check proved, in instantiation at test_sequence_ho.adb:58
+spark-containers-functional-vectors.ads:510:33: info: during checks for container aggregates at spark-containers-functional-vectors.ads:78, in instantiation at test_sequence_ho.adb:58
+spark-containers-functional-vectors.ads:510:33: info: precondition proved, in instantiation at test_sequence_ho.adb:58
+spark-containers-parameter_checks.adb:58:10: info: precondition proved, in instantiation at spark-containers-functional-vectors.ads:329, in instantiation at test_sequence_ho.adb:58
+spark-containers-parameter_checks.ads:30:17: info: aspect Always_Terminates on "Eq_Reflexive" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-vectors.ads:320, in instantiation at test_sequence_ho.adb:58
+spark-containers-parameter_checks.ads:31:09: info: data dependencies proved, in instantiation at spark-containers-functional-vectors.ads:320, in instantiation at test_sequence_ho.adb:58
+spark-containers-parameter_checks.ads:32:19: info: postcondition proved, in instantiation at spark-containers-functional-vectors.ads:320, in instantiation at test_sequence_ho.adb:58
+spark-containers-parameter_checks.ads:34:17: info: aspect Always_Terminates on "Eq_Symmetric" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-vectors.ads:320, in instantiation at test_sequence_ho.adb:58
+spark-containers-parameter_checks.ads:35:09: info: data dependencies proved, in instantiation at spark-containers-functional-vectors.ads:320, in instantiation at test_sequence_ho.adb:58
+spark-containers-parameter_checks.ads:37:19: info: postcondition proved, in instantiation at spark-containers-functional-vectors.ads:320, in instantiation at test_sequence_ho.adb:58
+spark-containers-parameter_checks.ads:39:17: info: aspect Always_Terminates on "Eq_Transitive" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-vectors.ads:320, in instantiation at test_sequence_ho.adb:58
+spark-containers-parameter_checks.ads:40:09: info: data dependencies proved, in instantiation at spark-containers-functional-vectors.ads:320, in instantiation at test_sequence_ho.adb:58
+spark-containers-parameter_checks.ads:42:19: info: postcondition proved, in instantiation at spark-containers-functional-vectors.ads:320, in instantiation at test_sequence_ho.adb:58
+spark-containers-parameter_checks.ads:62:17: info: aspect Always_Terminates on "Eq_Reflexive" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-vectors.ads:329, in instantiation at test_sequence_ho.adb:58
+spark-containers-parameter_checks.ads:63:09: info: data dependencies proved, in instantiation at spark-containers-functional-vectors.ads:329, in instantiation at test_sequence_ho.adb:58
+spark-containers-parameter_checks.ads:65:19: info: postcondition proved, in instantiation at spark-containers-functional-vectors.ads:329, in instantiation at test_sequence_ho.adb:58
+spark-containers-parameter_checks.ads:70:17: info: aspect Always_Terminates on "Eq_Reflexive" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-vectors.ads:329, in instantiation at test_sequence_ho.adb:58
+spark-containers-parameter_checks.ads:71:09: info: data dependencies proved, in instantiation at spark-containers-functional-vectors.ads:329, in instantiation at test_sequence_ho.adb:58
+spark-containers-parameter_checks.ads:72:19: info: postcondition proved, in instantiation at spark-containers-functional-vectors.ads:329, in instantiation at test_sequence_ho.adb:58
+spark-containers-parameter_checks.ads:74:17: info: aspect Always_Terminates on "Eq_Symmetric" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-vectors.ads:329, in instantiation at test_sequence_ho.adb:58
+spark-containers-parameter_checks.ads:75:09: info: data dependencies proved, in instantiation at spark-containers-functional-vectors.ads:329, in instantiation at test_sequence_ho.adb:58
+spark-containers-parameter_checks.ads:77:19: info: postcondition proved, in instantiation at spark-containers-functional-vectors.ads:329, in instantiation at test_sequence_ho.adb:58
+spark-containers-parameter_checks.ads:79:17: info: aspect Always_Terminates on "Eq_Transitive" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-vectors.ads:329, in instantiation at test_sequence_ho.adb:58
+spark-containers-parameter_checks.ads:80:09: info: data dependencies proved, in instantiation at spark-containers-functional-vectors.ads:329, in instantiation at test_sequence_ho.adb:58
+spark-containers-parameter_checks.ads:82:19: info: postcondition proved, in instantiation at spark-containers-functional-vectors.ads:329, in instantiation at test_sequence_ho.adb:58
 test_sequence_ho.adb:57:09: info: range check proved
 test_sequence_ho.adb:61:04: info: function contract might not be available on recursive calls
 test_sequence_ho.adb:61:04: info: function contract might not be available on recursive calls
