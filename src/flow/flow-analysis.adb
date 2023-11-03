@@ -666,8 +666,7 @@ package body Flow.Analysis is
    --  Unreferenced or Unused.
 
    function Is_Dummy_Call (N : Node_Id; Scop : Flow_Scope) return Boolean
-   with Pre => Nkind (N) in N_Procedure_Call_Statement
-                          | N_Entry_Call_Statement;
+   with Pre => Nkind (N) in N_Subprogram_Call | N_Entry_Call_Statement;
    --  Returns True iff N is a call to subprogram with no parameters
    --  whatsoever (i.e. no formal parameters, no implicit parameters and no
    --  globals). Such a subprogram doesn't read or write anything, so from
@@ -3657,8 +3656,8 @@ package body Flow.Analysis is
       DM : constant Dependency_Maps.Map :=
         Parse_Initializes (FA.Spec_Entity, FA.S_Scope);
 
-      Outputs_Of_Procs : Flow_Id_Sets.Set;
-      --  Abstracts states that are written by procedures declared in package
+      Subprogram_Outputs : Flow_Id_Sets.Set;
+      --  Abstracts states that are written by subprograms declared in package
       --  specification.
 
       function Initialized_By_Initializes (F : Flow_Id) return Boolean
@@ -3666,9 +3665,9 @@ package body Flow.Analysis is
       --  Returns True iff F is initialized by the Initializess aspect (either
       --  generated or provided by the user).
 
-      procedure Collect_Procedure_Outputs
-      with Global => (Output => Outputs_Of_Procs);
-      --  Populate Outputs_Of_Procs
+      procedure Collect_Subprogram_Outputs
+      with Global => (Output => Subprogram_Outputs);
+      --  Populate Subprogram_Outputs
 
       function Trivially_Initialized (E : Entity_Id) return Boolean
       with Pre => Ekind (E) = E_Abstract_State;
@@ -3681,16 +3680,19 @@ package body Flow.Analysis is
       function Initialized_By_Initializes (F : Flow_Id) return Boolean
         renames DM.Contains;
 
-      -------------------------------
-      -- Collect_Procedure_Outputs --
-      -------------------------------
+      --------------------------------
+      -- Collect_Subprogram_Outputs --
+      --------------------------------
 
-      procedure Collect_Procedure_Outputs is
+      procedure Collect_Subprogram_Outputs is
          E : Entity_Id;
       begin
          E := First_Entity (FA.Spec_Entity);
          while Present (E) loop
-            if Ekind (E) = E_Procedure then
+            if Ekind (E) = E_Procedure
+              or else (Ekind (E) = E_Function
+                       and then Is_Function_With_Side_Effects (E))
+            then
                declare
                   Globals : Global_Flow_Ids;
 
@@ -3711,7 +3713,7 @@ package body Flow.Analysis is
                          Globals.Inputs.Contains
                            (Change_Variant (Write, In_View))
                      then
-                        Outputs_Of_Procs.Include
+                        Subprogram_Outputs.Include
                           (Change_Variant (Write, Normal_Use));
                      end if;
                   end loop;
@@ -3720,7 +3722,7 @@ package body Flow.Analysis is
 
             Next_Entity (E);
          end loop;
-      end Collect_Procedure_Outputs;
+      end Collect_Subprogram_Outputs;
 
       function Trivially_Initialized (E : Entity_Id) return Boolean is
         (Has_Volatile (E)
@@ -3730,7 +3732,7 @@ package body Flow.Analysis is
 
    begin
       if Has_Non_Null_Abstract_State (FA.Spec_Entity) then
-         Collect_Procedure_Outputs;
+         Collect_Subprogram_Outputs;
 
          --  Issue error for every non-null abstract state that does not have
          --  Async_Writers, is not mentioned in an Initializes aspect and is
@@ -3741,11 +3743,11 @@ package body Flow.Analysis is
                 and then
               not Initialized_By_Initializes (Direct_Mapping_Id (State))
                 and then
-              not Outputs_Of_Procs.Contains (Direct_Mapping_Id (State))
+              not Subprogram_Outputs.Contains (Direct_Mapping_Id (State))
             then
                Error_Msg_Flow
                  (FA       => FA,
-                  Msg      => "no procedure exists that can initialize " &
+                  Msg      => "no subprogram exists that can initialize " &
                               "abstract state &",
                   N        => State,
                   F1       => Direct_Mapping_Id (State),
@@ -4293,15 +4295,16 @@ package body Flow.Analysis is
       end loop;
    end Check_Depends_Contract;
 
-   -----------------------------------
-   -- Check_Ghost_Procedure_Outputs --
-   -----------------------------------
+   ------------------------------------
+   -- Check_Ghost_Subprogram_Outputs --
+   ------------------------------------
 
-   procedure Check_Ghost_Procedure_Outputs (FA : in out Flow_Analysis_Graphs)
+   procedure Check_Ghost_Subprogram_Outputs (FA : in out Flow_Analysis_Graphs)
    is
       Globals : Global_Flow_Ids;
    begin
-      if Ekind (FA.Spec_Entity) = E_Procedure
+      if (Ekind (FA.Spec_Entity) = E_Procedure
+            or else Is_Function_With_Side_Effects (FA.Spec_Entity))
         and then Is_Ghost_Entity (FA.Spec_Entity)
       then
          Get_Globals (Subprogram => FA.Spec_Entity,
@@ -4312,7 +4315,7 @@ package body Flow.Analysis is
          for Output of Globals.Outputs loop
             if not Is_Ghost_Entity (Output) then
                Error_Msg_Flow (FA       => FA,
-                               Msg      => "ghost procedure & cannot have " &
+                               Msg      => "ghost subprogram & cannot have " &
                                            "non-ghost global output &",
                                N        => FA.Spec_Entity,
                                F1       => Direct_Mapping_Id
@@ -4324,7 +4327,7 @@ package body Flow.Analysis is
             end if;
          end loop;
       end if;
-   end Check_Ghost_Procedure_Outputs;
+   end Check_Ghost_Subprogram_Outputs;
 
    ------------------------
    -- Check_Hidden_State --
@@ -5385,10 +5388,12 @@ package body Flow.Analysis is
       Globals : Global_Flow_Ids;
 
    begin
-      --  Ignore packages (which have no Global contracts) and functions (which
-      --  have no global outputs).
+      --  Ignore packages (which have no Global contracts) and functions with
+      --  no side-effects (which have no global outputs).
 
-      if Ekind (FA.Spec_Entity) in E_Procedure | E_Entry | E_Task_Type then
+      if Ekind (FA.Spec_Entity) in E_Procedure | E_Entry | E_Task_Type
+        or else Is_Function_With_Side_Effects (FA.Spec_Entity)
+      then
 
          Get_Globals (Subprogram => FA.Spec_Entity,
                       Scope      => FA.B_Scope,

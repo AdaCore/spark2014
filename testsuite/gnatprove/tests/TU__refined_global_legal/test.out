@@ -12,5 +12,5 @@ refined_global_legal.adb:26:20: medium: overflow check might fail, cannot prove 
 refined_global_legal.adb:27:20: medium: overflow check might fail, cannot prove upper bound for 4 - Var4 (e.g. when Var4 = Integer'First+4) [reason for check: result of subtraction must fit in a 32-bits machine integer] [possible fix: subprogram at refined_global_legal.ads:6 should mention Var4 in a precondition]
 refined_global_legal.ads:3:27: low: initialization of "Refined_Global_Legal.State" through "Pr_Child.Pr_State" constituent of "Refined_Global_Legal.State" must be listed in the Initializes contract (SPARK RM 7.1.5(9))
 refined_global_legal.ads:3:27: low: initialization of "Refined_Global_Legal.State" through "Pr_Child.Pr_State2" constituent of "Refined_Global_Legal.State" must be listed in the Initializes contract (SPARK RM 7.1.5(9))
-refined_global_legal.ads:3:27: warning: no procedure exists that can initialize abstract state "Refined_Global_Legal.State"
+refined_global_legal.ads:3:27: warning: no subprogram exists that can initialize abstract state "Refined_Global_Legal.State"
 refined_global_legal.ads:7:11: info: data dependencies proved

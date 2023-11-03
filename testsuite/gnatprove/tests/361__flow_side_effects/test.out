@@ -1,0 +1,32 @@
+alias.adb:3:26: info: flow dependencies proved
+alias.adb:12:52: info: data dependencies proved
+alias.adb:19:04: high: result of "Flip" and formal parameter "A" are aliased (SPARK RM 6.4.2)
+alias.adb:20:04: high: result of "Glop" and global "Y" are aliased (SPARK RM 6.4.2)
+deps.adb:5:30: info: initialization of "B" proved
+deps.adb:6:26: info: flow dependencies proved
+deps.adb:13:30: info: initialization of "B" proved
+deps.adb:14:26: info: flow dependencies proved
+deps.adb:21:30: info: initialization of "B" proved
+deps.adb:22:26: info: flow dependencies proved
+deps.adb:29:30: info: initialization of "B" proved
+deps.adb:30:26: info: flow dependencies proved
+deps.adb:33:22: medium: assertion might fail [possible fix: subprogram at line 29 should mention A in a precondition]
+deps.adb:40:34: info: initialization of "Y" proved
+deps.adb:40:37: info: initialization of "Z" proved
+deps.adb:41:12: info: flow dependencies proved
+deps.adb:47:34: info: initialization of "Y" proved
+deps.adb:47:37: info: initialization of "Z" proved
+deps.adb:48:12: info: flow dependencies proved
+deps.adb:54:34: info: initialization of "Y" proved
+deps.adb:54:37: info: initialization of "Z" proved
+deps.adb:55:12: info: flow dependencies proved
+deps.adb:61:34: info: initialization of "Y" proved
+deps.adb:61:37: info: initialization of "Z" proved
+deps.adb:62:12: info: flow dependencies proved
+deps.adb:68:04: info: initialization of "I" proved
+p.ads:2:13: info: initialization of "X" constituent of "State" proved
+p.ads:3:26: info: data dependencies proved
+q.ads:3:13: medium: ghost subprogram "Init" cannot have non-ghost global output "X" (SPARK RM 6.9(20))
+q.ads:4:26: info: data dependencies proved
+q.ads:4:47: info: initialization of "X" proved
+r.ads:3:13: high: constant after elaboration "X" must not be an output of subprogram "Init" (SPARK RM 6.1.4(22))

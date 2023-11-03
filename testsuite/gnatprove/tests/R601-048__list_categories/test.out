@@ -13,7 +13,7 @@ DEPENDS_MISSING_CLAUSE - output item missing from the dependency clause - An out
 DEPENDS_NULL - input item missing from the null dependency clause - An input item is missing from the null dependency clause. - EASY
 DEPENDS_WRONG - extra input item in the dependency clause - Extra input item in the dependency clause. - EASY
 EXPORT_DEPENDS_ON_PROOF_IN - subprogram output depends on a Proof_In global - Subprogram output depends on a Proof_In global. - EASY
-GHOST_WRONG - non-ghost output of ghost procedure - A ghost procedure has a non-ghost global output. - EASY
+GHOST_WRONG - non-ghost output of ghost subprogram - A ghost subprogram has a non-ghost global output. - EASY
 GLOBAL_MISSING - incomplete Global or Initializes contract - A Global or Initializes contract fails to mention some objects. - EASY
 GLOBAL_WRONG - an extra item in the Global or Initializes contract - A Global or Initializes contract wrongly mentions some objects. - EASY
 HIDDEN_UNEXPOSED_STATE - constants with variable inputs that is not a state constituent - Constants with variable inputs that are not state constituents. - EASY

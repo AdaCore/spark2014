@@ -2989,8 +2989,6 @@ package body Flow_Utility is
          if Nkind (Callsite) = N_Function_Call
            and then not Globals.Outputs.Is_Empty
            and then not Gnat2Why_Args.Global_Gen_Mode
-           --  HACK: Exempt functions with side-effects from checking until
-           --  support is added in flow.
            and then not Is_Function_With_Side_Effects (Subprogram)
          then
             Error_Msg_NE
