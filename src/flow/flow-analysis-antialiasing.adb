@@ -1124,7 +1124,8 @@ package body Flow.Analysis.Antialiasing is
                B        => G,
                A_Formal => Called_Thing,
                B_Formal => Empty,
-               Status   => Status);
+               Status   => Current_Status);
+            Update_Status (Status, Current_Status);
          end loop;
       end if;
 

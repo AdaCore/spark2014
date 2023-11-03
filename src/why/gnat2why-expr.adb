@@ -3591,7 +3591,9 @@ package body Gnat2Why.Expr is
         Compute_Subprogram_Parameters (Subp, Domain, More_Reads);
       Patterns            : Item_Array := Binders;
       Aliasing            : constant Boolean :=
-        Nkind (Call) in N_Procedure_Call_Statement | N_Entry_Call_Statement
+        (Nkind (Call) in N_Procedure_Call_Statement | N_Entry_Call_Statement
+         or else (Ekind (Subp) = E_Function
+                   and then Is_Function_With_Side_Effects (Subp)))
         and then Get_Aliasing_Status_For_Proof (Call) in
         Possible_Aliasing .. Unchecked;
       --  If aliasing can occur for this subprogram call, we should introduce
