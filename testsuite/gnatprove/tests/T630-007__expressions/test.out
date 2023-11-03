@@ -42,6 +42,7 @@ test_membership.adb:12:04: info: function contract feasibility proved (CVC5: 1 V
 test_membership.adb:14:29: high: call via access-to-subprogram in the predicate of "S6" might not terminate (SPARK RM 3.2.4(4))
 test_membership.adb:14:66: info: pointer dereference check proved (CVC5: 1 VC)
 test_membership.adb:15:13: info: implicit aspect Always_Terminates on "Id" has been proved, subprogram will terminate
+test_membership.adb:15:13: info: implicit function contract might not be available on calls from enclosing unit
 test_membership.adb:19:19: info: assertion proved (CVC5: 1 VC)
 test_membership.adb:20:19: info: assertion proved (CVC5: 1 VC)
 test_membership.adb:21:19: info: assertion proved (CVC5: 1 VC)
