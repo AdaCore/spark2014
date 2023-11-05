@@ -72,7 +72,7 @@ setup: setup_precheck
 	mv $(GEN_IL_FILES) ../obj
 
 build: setup force
-	$(GPRBUILD) $(GPRARGS) -Pgnat2why -j$(PROCS) -cargs ${CFLAGS} -largs $(LDFLAGS)
+	$(GPRBUILD) $(GPRARGS) $(COVERAGEARGS) -Pgnat2why -j$(PROCS) -cargs ${CFLAGS} -largs $(LDFLAGS)
 
 # Compilation and linking settings for coverage and profiling; for details see
 # "Code Coverage and Profiling" in GNAT User's Guide.
@@ -85,7 +85,7 @@ coverage-setup: setup force
 	gnatcov instrument --no-subprojects -P gnat2why.gpr --level=stmt --dump-trigger=atexit
 	mkdir -p obj_coverage
 
-coverage: GPRARGS=-XBuild=Coverage --src-subdirs=gnatcov-instr --implicit-with=gnatcov_rts
+coverage: COVERAGEARGS=-XCoverage=yes --src-subdirs=gnatcov-instr --implicit-with=gnatcov_rts
 coverage: coverage-setup build
 
 profile: CFLAGS = -pg
