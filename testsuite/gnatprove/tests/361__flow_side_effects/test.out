@@ -1,7 +1,7 @@
 alias.adb:3:26: info: flow dependencies proved
 alias.adb:12:52: info: data dependencies proved
 alias.adb:19:04: high: result of "Flip" and formal parameter "A" are aliased (SPARK RM 6.4.2)
-alias.adb:20:04: high: result of "Glop" and global "Y" are aliased (SPARK RM 6.4.2)
+alias.adb:20:04: medium: result of "Glop" and global "Y" might be aliased (SPARK RM 6.4.2)
 deps.adb:5:30: info: initialization of "B" proved
 deps.adb:6:26: info: flow dependencies proved
 deps.adb:13:30: info: initialization of "B" proved

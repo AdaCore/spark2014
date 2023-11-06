@@ -12,6 +12,6 @@ procedure Bad (B : in out Integer) is
    type Arr is array (1 .. 3) of Integer;
    A : Arr;
 begin
-   A (B) := Increment_And_Return (B);
+   A (B) := Increment_And_Return (B);  -- @ALIASING:CHECK
    pragma Assert (B = A (B));
 end Bad;

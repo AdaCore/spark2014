@@ -14,6 +14,6 @@ procedure Bad2 is
    type Arr is array (1 .. 3) of Integer;
    A : Arr;
 begin
-   A (Get_X) := Increment_And_Return;
+   A (Get_X) := Increment_And_Return;  --  @ALIASING:CHECK
    pragma Assert (Get_X = A (Get_X));
 end Bad2;
