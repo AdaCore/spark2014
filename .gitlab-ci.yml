@@ -154,6 +154,13 @@ spark2014_large:
     ANOD_ENTRY_POINT: test_large
     ANOD_QUALIFIERS: assertions,only_large,coverage,cleanup-mode=none,cache
 
+spark2014_nocache:
+  extends: .spark2014_test
+  when: manual
+  variables:
+    ANOD_ENTRY_POINT: test_nocache
+    ANOD_QUALIFIERS: assertions,coverage,cleanup-mode=none
+
 #################
 # Test of ACATS #
 #################
