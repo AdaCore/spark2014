@@ -229,12 +229,6 @@ package body Gnat2Why.Expr.Aggregates is
    end Association_Trees;
    use Association_Trees;
 
-   package Ada_Node_To_Why_Id is new Ada.Containers.Hashed_Maps
-     (Key_Type        => Node_Id,
-      Equivalent_Keys => "=",
-      Hash            => Node_Hash,
-      Element_Type    => W_Identifier_Id);
-
    -----------------------
    -- Local Subprograms --
    -----------------------

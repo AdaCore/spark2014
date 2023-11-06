@@ -173,6 +173,12 @@ package Gnat2Why.Util is
 
    end Ada_Ent_To_Why;
 
+   package Ada_Node_To_Why_Id is new Ada.Containers.Hashed_Maps
+     (Key_Type        => Node_Id,
+      Equivalent_Keys => "=",
+      Hash            => Node_Hash,
+      Element_Type    => W_Identifier_Id);
+
    Symbol_Table       : Ada_Ent_To_Why.Map := Ada_Ent_To_Why.Empty_Map;
    Continuation_Stack : Continuation_Vectors.Vector;
    --  Stack of all the continuation messages relevant for the translation of
