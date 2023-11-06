@@ -141,6 +141,7 @@ package body SPARK_Definition.Annotate is
    Delayed_Equivalent_Elements : Delayed_Aggregate_Function_Maps.Map;
    Delayed_Equivalent_Keys     : Delayed_Aggregate_Function_Maps.Map;
    Delayed_First               : Delayed_Aggregate_Function_Maps.Map;
+   Delayed_Capacity            : Delayed_Aggregate_Function_Maps.Map;
    --  Delayed function entities for aggregates
 
    Delayed_Checks_For_Lemmas : Common_Containers.Node_Sets.Set :=
@@ -512,13 +513,20 @@ package body SPARK_Definition.Annotate is
                --  Check that the third parameter is an expected container kind
 
                if Kind_Str = "predefined_sets" then
-                  Annot := (Kind => Sets, Use_Named => False, others => Empty);
+                  Annot := (Kind      => Sets,
+                            Use_Named => False,
+                            others    => <>);
                elsif Kind_Str = "predefined_maps" then
-                  Annot := (Kind => Maps, Use_Named => True, others => Empty);
+                  Annot := (Kind      => Maps,
+                            Use_Named => True,
+                            others    => <>);
                elsif Kind_Str = "predefined_sequences" then
-                  Annot := (Kind => Seqs, Use_Named => False, others => Empty);
+                  Annot := (Kind      => Seqs,
+                            Use_Named => False,
+                            others    => <>);
                elsif Kind_Str = "from_model" then
-                  Annot := (Kind => Model, Use_Named => <>, others => Empty);
+                  Annot := (Kind   => Model,
+                            others => <>);
                else
                   Error_Msg_N_If
                     ("third parameter of " & Aspect_Or_Pragma
@@ -574,6 +582,16 @@ package body SPARK_Definition.Annotate is
                   Assign_Indexed_Subp => Assign_Indexed_Subp);
 
                Annot.Empty_Function := Entity (Empty_Subp);
+
+               if Ekind (Annot.Empty_Function) = E_Function
+                 and then Present (First_Formal (Annot.Empty_Function))
+               then
+                  Annot.Spec_Capacity := Etype
+                    (First_Formal (Annot.Empty_Function));
+                  pragma Assert
+                    (Number_Formals (Annot.Empty_Function) = 1
+                     and then Is_Signed_Integer_Type (Annot.Spec_Capacity));
+               end if;
 
                case Annot.Kind is
                   when Sets | Seqs =>
@@ -664,6 +682,7 @@ package body SPARK_Definition.Annotate is
 
             if Kind_Str not in "equivalent_elements"
                              | "equivalent_keys"
+                             | "capacity"
                              | "contains"
                              | "has_key"
                              | "default_item"
@@ -876,6 +895,103 @@ package body SPARK_Definition.Annotate is
                   end;
                end if;
 
+            --  Capacity may or may not take the container as a first parameter
+            --  depending on whether the capacity of a container is specific to
+            --  a container object. Delay it if it takes no parameters.
+
+            elsif Kind_Str = "capacity" then
+
+               if not Is_Signed_Or_Big_Integer_Type (Etype (Ent)) then
+                  Error_Msg_N_If
+                    ("""Capacity"" shall return a signed integer "
+                     & "type or a subtype of Big_Integer",
+                     Ent);
+                  return;
+
+               elsif No (First_Formal (Ent)) then
+
+                  if not In_SPARK (Ent) then
+                     return;
+                  end if;
+
+                  declare
+                     Inserted : Boolean;
+                     Position : Delayed_Aggregate_Function_Maps.Cursor;
+                  begin
+                     Delayed_Capacity.Insert
+                       ((Enclosing_List      => List_Containing (Prag),
+                         Base_Component_Type => Empty),
+                        Ent, Position, Inserted);
+
+                     if not Inserted then
+                        Error_Msg_N_If
+                          ("duplicated ""Capacity"" function in the same "
+                           & "scope",
+                           Ent);
+                     end if;
+                  end;
+
+               else
+                  Cont_Ty := Etype (First_Formal (Ent));
+
+                  if not In_SPARK (Cont_Ty) then
+                     return;
+                  elsif not In_SPARK (Ent) then
+                     Error_Msg_N_If
+                       ("""Capacity"" function shall be in SPARK", Ent);
+                     return;
+                  elsif not Has_Aggregate_Annotation (Cont_Ty) then
+                     Error_Msg_N_If
+                       ("type of first parameter shall be annotated with"
+                        & " Container_Aggregate",
+                        Ent);
+                     return;
+                  elsif List_Containing (Prag) /=
+                    List_Containing (Parent (Cont_Ty))
+                  then
+                     Error_Msg_NE_If
+                       ("""Capacity"" shall be "
+                        & "declared in the same list of declarations as the "
+                        & "partial view of &", Ent, Cont_Ty);
+                     return;
+                  end if;
+
+                  Cont_Ty := Base_Retysp (Cont_Ty);
+
+                  declare
+                     Annot : Aggregate_Annotation renames
+                       Aggregate_Annotations (Cont_Ty);
+                  begin
+                     if No (Annot.Spec_Capacity) then
+                        Error_Msg_NE_If
+                          ("""Capacity"" function for & shall have no "
+                           & "parameters",
+                           Ent, Cont_Ty);
+                        Error_Msg_N_If
+                          ("\the ""Empty"" function has no parameters",
+                           Ent);
+                        return;
+
+                     elsif Number_Formals (Ent) /= 1 then
+                        Error_Msg_N_If
+                          ("""Capacity"" function shall have one parameter",
+                           Ent);
+                        return;
+
+                     elsif Present (Annot.Capacity) then
+                        Error_Msg_N_If
+                          ("a single ""Capacity"" function shall be"
+                           & " specified for a type with a"
+                           & " Container_Aggregates annotation",
+                           Ent);
+                        return;
+                     end if;
+
+                     --  Store the capacity function
+
+                     Annot.Capacity := Ent;
+                  end;
+               end if;
             else
 
                --  Common checks for other primitives
@@ -3600,7 +3716,32 @@ package body SPARK_Definition.Annotate is
         (if Is_Full_View (Typ) then Partial_View (Typ) else Typ);
       Typ_List : constant List_Id := List_Containing (Parent (P_Typ));
       Annot    : Aggregate_Annotation renames Aggregate_Annotations (Typ);
+
    begin
+      --  Search for an applicable Capacity function. It is optional.
+
+      declare
+         use Delayed_Aggregate_Function_Maps;
+         Position : constant Delayed_Aggregate_Function_Maps.Cursor :=
+           Delayed_Capacity.Find
+             ((Enclosing_List      => Typ_List,
+               Base_Component_Type => Types.Empty));
+      begin
+         if Has_Element (Position) then
+            if Present (Annot.Spec_Capacity) then
+               Error_Msg_NE_If
+                 ("""Capacity"" function for & shall take the container "
+                  & "as a parameter",
+                  Element (Position), Typ);
+               Error_Msg_N_If
+                 ("\the ""Empty"" function takes the capacity as a parameter",
+                  Element (Position));
+            else
+               Annot.Capacity := Element (Position);
+            end if;
+         end if;
+      end;
+
       case Annot.Kind is
          when Sets =>
 
@@ -3789,31 +3930,35 @@ package body SPARK_Definition.Annotate is
 
       declare
          Globals : Global_Flow_Ids;
-      begin
-         Get_Globals
-           (Subprogram          => Annot.Empty_Function,
-            Scope               =>
-              (Ent  => Annot.Empty_Function,
-               Part => Visible_Part),
-            Classwide           => False,
-            Globals             => Globals,
-            Use_Deduced_Globals =>
-               not Gnat2Why_Args.Global_Gen_Mode,
-            Ignore_Depends      => False);
 
-         if Is_Function_With_Side_Effects (Annot.Empty_Function) then
-            Error_Msg_NE_If
-              ("& function shall not have side effects",
-               Typ, Annot.Empty_Function);
-         elsif not Globals.Proof_Ins.Is_Empty
-           or else not Globals.Inputs.Is_Empty
-         then
-            Error_Msg_NE_If
-              ("& function shall not access global data",
-               Typ, Annot.Empty_Function);
-         elsif Is_Volatile_Function (Annot.Empty_Function) then
-            Error_Msg_NE_If
-              ("& function shall not be voltaile", Typ, Annot.Empty_Function);
+      begin
+         if Ekind (Annot.Empty_Function) /= E_Constant then
+            Get_Globals
+              (Subprogram          => Annot.Empty_Function,
+               Scope               =>
+                 (Ent  => Annot.Empty_Function,
+                  Part => Visible_Part),
+               Classwide           => False,
+               Globals             => Globals,
+               Use_Deduced_Globals =>
+                  not Gnat2Why_Args.Global_Gen_Mode,
+               Ignore_Depends      => False);
+
+            if Is_Function_With_Side_Effects (Annot.Empty_Function) then
+               Error_Msg_NE_If
+                 ("& function shall not have side effects",
+                  Typ, Annot.Empty_Function);
+            elsif not Globals.Proof_Ins.Is_Empty
+              or else not Globals.Inputs.Is_Empty
+            then
+               Error_Msg_NE_If
+                 ("& function shall not access global data",
+                  Typ, Annot.Empty_Function);
+            elsif Is_Volatile_Function (Annot.Empty_Function) then
+               Error_Msg_NE_If
+                 ("& function shall not be volatile",
+                  Typ, Annot.Empty_Function);
+            end if;
          end if;
 
          Get_Globals

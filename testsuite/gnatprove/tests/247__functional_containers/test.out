@@ -1,6 +1,4 @@
 main.adb:10:29: info: data dependencies proved
-main.adb:12:26: info: all elements shall fit in the return type of "Length" for predefined set aggregates at spark-containers-functional-sets.ads:72, in instantiation at main.adb:11
-main.adb:12:26: info: precondition proved (Trivial: 1 VC)
 main.adb:15:22: info: assertion proved (Z3: 1 VC)
 main.adb:15:29: info: predicate check proved (Trivial: 1 VC)
 main.adb:15:43: info: predicate check proved (Trivial: 1 VC)
@@ -8,7 +6,7 @@ main.adb:16:22: info: assertion proved (Z3: 1 VC)
 main.adb:17:22: info: assertion proved (CVC5: 1 VC)
 main.adb:18:22: info: assertion proved (Z3: 1 VC)
 main.adb:21:29: info: data dependencies proved
-main.adb:23:26: info: keys shall be distinct and all elements shall fit in the return type of "Length" for predefined maps aggregates at spark-containers-functional-maps.ads:97, in instantiation at main.adb:22
+main.adb:23:26: info: keys shall be distinct for predefined maps aggregates at spark-containers-functional-maps.ads:97, in instantiation at main.adb:22
 main.adb:23:26: info: precondition proved (CVC5: 3 VC)
 main.adb:25:22: info: assertion proved (CVC5: 1 VC)
 main.adb:25:29: info: predicate check proved (Trivial: 1 VC)
@@ -37,7 +35,7 @@ main.adb:39:22: info: assertion proved (CVC5: 1 VC)
 main.adb:39:30: info: predicate check proved (Trivial: 1 VC)
 main.adb:39:53: info: predicate check proved (Trivial: 1 VC)
 main.adb:42:32: info: data dependencies proved
-main.adb:44:34: info: all of elements shall fit in index type in predefined sequence aggregates at spark-containers-functional-vectors.ads:78, in instantiation at main.adb:43
+main.adb:44:34: info: all elements shall fit in index type for predefined sequence aggregates at spark-containers-functional-vectors.ads:78, in instantiation at main.adb:43
 main.adb:44:34: info: precondition proved (CVC5: 1 VC)
 main.adb:46:22: info: assertion proved (CVC5: 1 VC)
 main.adb:47:22: info: assertion proved (CVC5: 1 VC)
@@ -47,7 +45,7 @@ main.adb:48:32: info: precondition proved (CVC5: 2 VC)
 main.adb:49:22: info: assertion proved (Z3: 1 VC)
 main.adb:49:32: info: precondition proved (CVC5: 2 VC)
 main.adb:52:34: info: data dependencies proved
-main.adb:54:31: info: all of elements shall fit in index type in predefined sequence aggregates at spark-containers-functional-infinite_sequences.ads:60, in instantiation at main.adb:53
+main.adb:54:31: info: all elements shall fit in index type for predefined sequence aggregates at spark-containers-functional-infinite_sequences.ads:60, in instantiation at main.adb:53
 main.adb:54:31: info: precondition proved (Trivial: 1 VC)
 main.adb:56:22: info: assertion proved (CVC5: 1 VC)
 main.adb:56:29: info: predicate check proved (Trivial: 1 VC)

@@ -8975,6 +8975,45 @@ package body Gnat2Why.Expr is
    --  Start of processing for Generate_VCs_For_Aggregate_Annotation
 
    begin
+      --  For containers with a container specific capacity and a capacity
+      --  function, add the preservation of the capacity to Preserv_Checks:
+      --
+      --    capacity cont_id <= capacity new_cont_id
+
+      if Present (Annot.Spec_Capacity) and then Present (Annot.Capacity) then
+         declare
+            Capacity_Call     : W_Term_Id :=
+              New_Call_To_Ada_Function
+                (Fun  => Annot.Capacity,
+                 Args => (1 => +Cont_Id));
+            New_Capacity_Call : W_Term_Id :=
+              New_Call_To_Ada_Function
+                (Fun  => Annot.Capacity,
+                 Args => (1 => +New_Cont_Id));
+            Base_Capacity_Typ : constant W_Type_Id :=
+              (if Has_Scalar_Type (Etype (Annot.Capacity))
+               then EW_Int_Type
+               else EW_Abstract
+                 (Base_Retysp (Etype (Annot.Capacity))));
+
+         begin
+            Capacity_Call := +Insert_Simple_Conversion
+              (Domain => EW_Term,
+               Expr   => +Capacity_Call,
+               To     => Base_Capacity_Typ);
+            New_Capacity_Call := +Insert_Simple_Conversion
+              (Domain => EW_Term,
+               Expr   => +New_Capacity_Call,
+               To     => Base_Capacity_Typ);
+            Prepend_Assert_To_Preserv_Checks
+              (Pred           => New_Comparison
+                 (Symbol => Int_Infix_Le,
+                  Left   => Capacity_Call,
+                  Right  => New_Capacity_Call),
+               Associated_Fun => Annot.Capacity);
+         end;
+      end if;
+
       case Annot.Kind is
          when Sets =>
 
@@ -8989,7 +9028,11 @@ package body Gnat2Why.Expr is
             --
             --  let cont_id = any cont_ty ensures { dyn_inv } in
             --  assume
-            --    { length cont_id < Length_Type'Last } (* for signed types *)
+            --    { length cont_id < capacity cont_id? }
+            --    (* if Capacity is supplied *)
+            --  assume
+            --    { length cont_id < length_type'Last }
+            --    (* otherwise, for signed types only *)
             --  let elt_id = any elt_ty ensures { dyn_inv } in
             --  let param_cont_id = ref cont_id in
             --    add param_cont_id elt_id;
@@ -9190,12 +9233,16 @@ package body Gnat2Why.Expr is
                --  If the length type is a signed integer type, assume that
                --  length is less than the last possible length before the call
                --  to Add:
-               --
-               --  assume { length cont_id < Length_Type'Last }
-               --    (* for signed types *)
+               --  assume
+               --    { length cont_id < capacity cont_id? }
+               --    (* if Capacity is supplied *)
+               --  assume
+               --    { length cont_id < length_type'Last }
+               --    (* otherwise, for signed types only *)
 
                if Present (Annot.Sets_Length)
-                 and then Has_Scalar_Type (Etype (Annot.Sets_Length))
+                 and then (Has_Scalar_Type (Etype (Annot.Sets_Length))
+                           or else Present (Annot.Capacity))
                then
                   declare
                      Length_Call     : W_Term_Id :=
@@ -9207,8 +9254,37 @@ package body Gnat2Why.Expr is
                         then EW_Int_Type
                         else EW_Abstract
                           (Base_Retysp (Etype (Annot.Sets_Length))));
+                     Length_Max      : W_Term_Id;
 
                   begin
+                     Length_Call := +Insert_Simple_Conversion
+                       (Domain => EW_Term,
+                        Expr   => +Length_Call,
+                        To     => Base_Length_Typ);
+
+                     if Present (Annot.Capacity) then
+                        Length_Max := New_Call_To_Ada_Function
+                          (Fun  => Annot.Capacity,
+                           Args =>
+                             (if Present (Annot.Spec_Capacity)
+                              then (1 => +Cont_Id)
+                              else (1 .. 0 => <>)));
+                        Length_Max := +Insert_Simple_Conversion
+                          (Domain => EW_Term,
+                           Expr   => +Length_Max,
+                           To     =>
+                             (if Has_Scalar_Type (Etype (Annot.Capacity))
+                              then EW_Int_Type
+                              else EW_Abstract
+                                (Base_Retysp (Etype (Annot.Capacity)))));
+                     else
+                        Length_Max := +New_Attribute_Expr
+                          (Ty     => Etype (Annot.Sets_Length),
+                           Domain => EW_Term,
+                           Attr   => Attribute_Last,
+                           Params => Body_Params);
+                     end if;
+
                      Length_Call := +Insert_Simple_Conversion
                        (Domain => EW_Term,
                         Expr   => +Length_Call,
@@ -9218,11 +9294,7 @@ package body Gnat2Why.Expr is
                           (Pred => New_Comparison
                                (Symbol => Int_Infix_Lt,
                                 Left   => Length_Call,
-                                Right  => +New_Attribute_Expr
-                                  (Ty     => Etype (Annot.Sets_Length),
-                                   Domain => EW_Term,
-                                   Attr   => Attribute_Last,
-                                   Params => Body_Params))),
+                                Right  => Length_Max)),
                         Right => Preserv_Checks);
                   end;
                end if;
@@ -9239,7 +9311,10 @@ package body Gnat2Why.Expr is
             --
             --  let cont_id = any cont_ty ensures { dyn_inv } in
             --  assume
-            --    { last cont_id < Index_Type'Last } (* for signed types *)
+            --    { last cont_id < first + capacity cont_id? - 1 }
+            --    (* if Capacity is supplied *)
+            --  assume
+            --    { last cont_id < index_type'Last } (* for signed types *)
             --  let elt_id = any elt_ty ensures { dyn_inv } in
             --  let param_cont_id = ref cont_id in
             --    add param_cont_id elt_id;
@@ -9416,7 +9491,7 @@ package body Gnat2Why.Expr is
                --  last is less than the last index before the call to Add:
                --
                --  assume
-               --    { last cont_id < Index_Type'Last } (* for signed types *)
+               --    { last cont_id < index_type'Last } (* for signed types *)
 
                if Has_Scalar_Type (Annot.Index_Type) then
                   Preserv_Checks := Sequence
@@ -9430,6 +9505,54 @@ package body Gnat2Why.Expr is
                               Attr   => Attribute_Last,
                               Params => Body_Params))),
                      Right => Preserv_Checks);
+               end if;
+
+               --  If a capacity function is supplied, assume that there are
+               --  less than capacity elements in the sequence before the call
+               --  to Add:
+               --
+               --  assume
+               --    { last cont_id < first + capacity cont_id? - 1 }
+               --    (* if Capacity is supplied *)
+
+               if Present (Annot.Capacity) then
+                  declare
+                     Capacity_Call     : W_Term_Id :=
+                       New_Call_To_Ada_Function
+                         (Fun  => Annot.Capacity,
+                          Args =>
+                            (if Present (Annot.Spec_Capacity)
+                             then (1 => +Cont_Id)
+                             else (1 .. 0 => <>)));
+                     Base_Capacity_Typ : constant W_Type_Id :=
+                       (if Has_Scalar_Type (Etype (Annot.Capacity))
+                        then EW_Int_Type
+                        else EW_Abstract
+                          (Base_Retysp (Etype (Annot.Capacity))));
+
+                  begin
+                     Capacity_Call := +Insert_Simple_Conversion
+                       (Domain => EW_Term,
+                        Expr   => +Capacity_Call,
+                        To     => Base_Capacity_Typ);
+                     Preserv_Checks := Sequence
+                       (Left  => New_Assume_Statement
+                          (Pred => New_Comparison
+                               (Symbol => Int_Infix_Lt,
+                                Left   => Last_Cont,
+                                Right  => New_Call
+                                  (Name => Int_Infix_Add,
+                                   Args =>
+                                     (1 => +First_Call,
+                                      2 => New_Call
+                                        (Name   => Int_Infix_Subtr,
+                                         Domain => EW_Term,
+                                         Args   =>
+                                           (1 => +Capacity_Call,
+                                            2 => New_Integer_Constant
+                                              (Value => Uint_1))))))),
+                        Right => Preserv_Checks);
+                  end;
                end if;
             end;
 
@@ -9448,7 +9571,11 @@ package body Gnat2Why.Expr is
             --
             --  let cont_id = any cont_ty ensures { dyn_inv } in
             --  assume
-            --    { length cont_id < Length_Type'Last } (* for signed types *)
+            --    { length cont_id < capacity cont_id? }
+            --    (* if Capacity is supplied *)
+            --  assume
+            --    { length cont_id < length_type'Last }
+            --    (* otherwise, for signed types only *)
             --  let key_id = any key_ty ensures { dyn_inv } in
             --  let elt_id = any elt_ty ensures { dyn_inv } in
             --  assume { not has_key cont_id key_id }; (* with has_key *)
@@ -9793,11 +9920,16 @@ package body Gnat2Why.Expr is
                --  length is less than the last possible length before the call
                --  to Add:
                --
-               --  assume { length cont_id < Length_Type'Last }
-               --    (* for signed types *)
+               --  assume
+               --    { length cont_id < capacity cont_id? }
+               --    (* if Capacity is supplied *)
+               --  assume
+               --    { length cont_id < length_type'Last }
+               --    (* otherwise, for signed types only *)
 
                if Present (Annot.Maps_Length)
-                 and then Has_Scalar_Type (Etype (Annot.Maps_Length))
+                 and then (Has_Scalar_Type (Etype (Annot.Maps_Length))
+                           or else Present (Annot.Capacity))
                then
                   declare
                      Length_Call     : W_Term_Id :=
@@ -9809,8 +9941,37 @@ package body Gnat2Why.Expr is
                         then EW_Int_Type
                         else EW_Abstract
                           (Base_Retysp (Etype (Annot.Maps_Length))));
+                     Length_Max      : W_Term_Id;
 
                   begin
+                     Length_Call := +Insert_Simple_Conversion
+                       (Domain => EW_Term,
+                        Expr   => +Length_Call,
+                        To     => Base_Length_Typ);
+
+                     if Present (Annot.Capacity) then
+                        Length_Max := New_Call_To_Ada_Function
+                          (Fun  => Annot.Capacity,
+                           Args =>
+                             (if Present (Annot.Spec_Capacity)
+                              then (1 => +Cont_Id)
+                              else (1 .. 0 => <>)));
+                        Length_Max := +Insert_Simple_Conversion
+                          (Domain => EW_Term,
+                           Expr   => +Length_Max,
+                           To     =>
+                             (if Has_Scalar_Type (Etype (Annot.Capacity))
+                              then EW_Int_Type
+                              else EW_Abstract
+                                (Base_Retysp (Etype (Annot.Capacity)))));
+                     else
+                        Length_Max := +New_Attribute_Expr
+                          (Ty     => Etype (Annot.Maps_Length),
+                           Domain => EW_Term,
+                           Attr   => Attribute_Last,
+                           Params => Body_Params);
+                     end if;
+
                      Length_Call := +Insert_Simple_Conversion
                        (Domain => EW_Term,
                         Expr   => +Length_Call,
@@ -9820,11 +9981,7 @@ package body Gnat2Why.Expr is
                           (Pred => New_Comparison
                                (Symbol => Int_Infix_Lt,
                                 Left   => Length_Call,
-                                Right  => +New_Attribute_Expr
-                                  (Ty     => Etype (Annot.Maps_Length),
-                                   Domain => EW_Term,
-                                   Attr   => Attribute_Last,
-                                   Params => Body_Params))),
+                                Right  => Length_Max)),
                         Right => Preserv_Checks);
                   end;
                end if;
@@ -9834,10 +9991,23 @@ package body Gnat2Why.Expr is
             raise Why.Not_Implemented;
       end case;
 
-      --  Bind Cont_Id to a call to Empty in Init_Checks.
-      --  ??? We should support empty function with a capacity parameter
-
-      pragma Assert (Number_Formals (Annot.Empty_Function) = 0);
+      --  Bind Cont_Id to a call to Empty in Init_Checks. If Empty does not
+      --  have a capacity parameter, generate:
+      --
+      --    let cont_id = empty in
+      --      Init_Checks
+      --
+      --  Otherwise, generate:
+      --
+      --    let capacity_id = any int
+      --      ensures
+      --       { 0 <= result <= capacity_type'last
+      --         /\ result <= index_type'last - first + 1 }
+      --      (* for sequences indexed by scalars *)
+      --    in
+      --      let cont_id = empty capacity_id in
+      --         Init_Checks;
+      --         assert { capacity cont_id >= capacity_id }
 
       Continuation_Stack.Append
         (Continuation_Type'
@@ -9846,25 +10016,74 @@ package body Gnat2Why.Expr is
               ("during checks for container aggregates")));
 
       declare
-         Pre_Empty  : constant Node_Lists.List :=
-           Find_Contracts (Annot.Empty_Function, Pragma_Precondition);
+         Opt_Capacity : constant W_Identifier_Id :=
+           (if No (Annot.Spec_Capacity) then Void
+            else New_Temp_Identifier
+              (Typ       =>
+                   (if Has_Scalar_Type (Annot.Spec_Capacity)
+                    then EW_Int_Type
+                    else EW_Abstract
+                      (Base_Retysp (Annot.Spec_Capacity))),
+               Base_Name => "capacity"));
+         --  Optional Capacity parameter for the empty function
 
-         Empty_Name : constant W_Identifier_Id :=
+         Pre_Empty    : constant Node_Lists.List :=
+           (if Ekind (Annot.Empty_Function) = E_Constant
+            then Node_Lists.Empty_List
+            else Find_Contracts (Annot.Empty_Function, Pragma_Precondition));
+         Empty_Name   : constant W_Prog_Id :=
            +Transform_Identifier (Params => Body_Params,
                                   Expr   => Annot.Empty_Function,
                                   Ent    => Annot.Empty_Function,
                                   Domain => EW_Prog);
-         Empty_Call : constant W_Prog_Id := +New_Function_Call
-           (Ada_Node =>
-              (if Pre_Empty.Is_Empty then Annot.Empty_Function
-               else Pre_Empty.First_Element),
-            Domain   => EW_Prog,
-            Name     => Empty_Name,
-            Subp     => Annot.Empty_Function,
-            Args     => (1 => +Void),
-            Check    => Why_Subp_Has_Precondition (Annot.Empty_Function),
-            Typ      => Get_Typ (Empty_Name));
+         Empty_Call   : constant W_Prog_Id :=
+           (if Ekind (Annot.Empty_Function) = E_Constant
+            then Empty_Name
+            else +New_Function_Call
+              (Ada_Node =>
+                   (if Pre_Empty.Is_Empty then Annot.Empty_Function
+                    else Pre_Empty.First_Element),
+               Domain   => EW_Prog,
+               Name     => +Empty_Name,
+               Subp     => Annot.Empty_Function,
+               Args     => (1 => +Opt_Capacity),
+               Check    => Why_Subp_Has_Precondition (Annot.Empty_Function),
+               Typ      => Get_Typ (W_Identifier_Id'(+Empty_Name))));
+
       begin
+         --  If the empty function has a capacity parameter and a capacity
+         --  function is specified for the container, check that Empty returns
+         --  a container of at least its parameter capacity.
+
+         if Present (Annot.Spec_Capacity) and then Present (Annot.Capacity)
+         then
+            declare
+               Capacity_Call     : W_Term_Id :=
+                 New_Call_To_Ada_Function
+                   (Fun  => Annot.Capacity,
+                    Args => (1 => +Cont_Id));
+               Base_Capacity_Typ : constant W_Type_Id :=
+                 (if Has_Scalar_Type (Etype (Annot.Capacity))
+                  then EW_Int_Type
+                  else EW_Abstract
+                    (Base_Retysp (Etype (Annot.Capacity))));
+
+            begin
+               Capacity_Call := +Insert_Simple_Conversion
+                 (Domain => EW_Term,
+                  Expr   => +Capacity_Call,
+                  To     => Base_Capacity_Typ);
+               Prepend_Assert_To_Init_Checks
+                 (Pred           => New_Comparison
+                    (Symbol => Int_Infix_Le,
+                     Left   => +Opt_Capacity,
+                     Right  => Capacity_Call),
+                  Associated_Fun => Annot.Capacity);
+            end;
+         end if;
+
+         --  Introduce a binding for Cont_Id
+
          Init_Checks := New_Typed_Binding
            (Name    => Cont_Id,
             Def     => +Insert_Checked_Conversion
@@ -9873,6 +10092,81 @@ package body Gnat2Why.Expr is
                Expr     => +Empty_Call,
                To       => Get_Typ (Cont_Id)),
             Context => Init_Checks);
+
+         --  Introduce a binding for the capacity if any:
+         --
+         --    let capacity_id = any int
+         --      ensures
+         --       { 0 <= result <= capacity_type'last
+         --         /\ result <= index_type'last - first + 1 }
+         --            (* for sequences indexed by scalars *)
+         --    in Init_Checks
+
+         if Present (Annot.Spec_Capacity) then
+            declare
+               Result_Id : constant W_Identifier_Id := New_Result_Ident
+                 (Typ => Get_Typ (Opt_Capacity));
+               Guard     : W_Pred_Id := New_And_Pred
+                 (Left  => New_Comparison
+                    (Symbol => Int_Infix_Le,
+                     Left   => New_Discrete_Constant
+                       (Value => Uint_0,
+                        Typ   => Get_Typ (Opt_Capacity)),
+                     Right  => +Result_Id),
+                  Right => New_Comparison
+                    (Symbol => Int_Infix_Le,
+                     Left   => +Result_Id,
+                     Right  => +New_Attribute_Expr
+                       (Ty     => Annot.Spec_Capacity,
+                        Domain => EW_Term,
+                        Attr   => Attribute_Last,
+                        Params => Body_Params)));
+            begin
+               if Annot.Kind = Seqs
+                 and then Has_Scalar_Type (Annot.Index_Type)
+               then
+                  declare
+                     First_Call : W_Term_Id := New_Call_To_Ada_Function
+                       (Fun  => Annot.First,
+                        Args => (1 .. 0 => <>));
+
+                  begin
+                     First_Call := +Insert_Simple_Conversion
+                       (Domain => EW_Term,
+                        Expr   => +First_Call,
+                        To     => EW_Int_Type);
+                     Guard := New_And_Pred
+                       (Left  => Guard,
+                        Right => New_Comparison
+                          (Symbol => Int_Infix_Le,
+                           Left   => +Result_Id,
+                           Right  => New_Call
+                             (Name => Int_Infix_Add,
+                              Args =>
+                                (1 => New_Call
+                                   (Name   => Int_Infix_Subtr,
+                                    Args   =>
+                                      (1 => +New_Attribute_Expr
+                                         (Ty     => Annot.Index_Type,
+                                          Domain => EW_Term,
+                                          Attr   => Attribute_Last,
+                                          Params => Body_Params),
+                                       2 => +First_Call),
+                                    Domain => EW_Term),
+                                 2 => New_Integer_Constant
+                                   (Value => Uint_1)))));
+                  end;
+               end if;
+
+               Init_Checks := New_Typed_Binding
+                 (Name    => Opt_Capacity,
+                  Def     => New_Any_Expr
+                    (Post        => Guard,
+                     Return_Type => Get_Typ (Opt_Capacity),
+                     Labels      => Symbol_Sets.Empty_Set),
+                  Context => Init_Checks);
+            end;
+         end if;
       end;
 
       Continuation_Stack.Delete_Last;
@@ -19977,6 +20271,20 @@ package body Gnat2Why.Expr is
          Func      : W_Identifier_Id)
          return W_Expr_Id
       is
+         function Length_Check_Msg
+           (Length_Fun : Entity_Id := Empty)
+            return String
+         is
+           (if No (Annot.Capacity)
+            then "fit in the return type of """
+            & Source_Name (Length_Fun) & '"'
+            elsif Present (Annot.Spec_Capacity)
+            then "fit in """
+            & Source_Name (Annot.Spec_Capacity) & '"'
+            else "be smaller than """
+            & Source_Name (Annot.Capacity) & '"');
+         --  Continuation for checks on the length of the aggregate
+
          P_Func     : constant W_Identifier_Id :=
            (if Domain = EW_Prog then To_Program_Space (Func) else Func);
          Num_Params : constant Natural :=
@@ -20011,7 +20319,11 @@ package body Gnat2Why.Expr is
          if Domain = EW_Prog then
             case Annot.Kind is
                when Sets =>
-                  if Present (Annot.Sets_Length) then
+                  if Present (Annot.Capacity)
+                    or else
+                      (Present (Annot.Sets_Length)
+                       and then Has_Scalar_Type (Etype (Annot.Sets_Length)))
+                  then
                      declare
                         Check_Info : Check_Info_Type := New_Check_Info;
                      begin
@@ -20019,9 +20331,9 @@ package body Gnat2Why.Expr is
                           (Continuation_Type'
                              (Annot.Annotate_Node,
                               To_Unbounded_String
-                                ("all elements shall fit in the return type "
-                                 & "of """ & Source_Name (Annot.Sets_Length)
-                                 & """ for predefined set aggregates")));
+                                ("all elements shall "
+                                 & Length_Check_Msg (Annot.Sets_Length)
+                                 & " for predefined set aggregates")));
                         Call := +New_VC_Prog
                           (Ada_Node   => Expr,
                            Reason     => VC_Precondition,
@@ -20038,8 +20350,10 @@ package body Gnat2Why.Expr is
                        (Continuation_Type'
                           (Annot.Annotate_Node,
                            To_Unbounded_String
-                             ("all of elements shall fit in index type in"
-                              & " predefined sequence aggregates")));
+                             ("all elements shall fit in index type" &
+                              (if Present (Annot.Capacity)
+                               then " and " & Length_Check_Msg else "")
+                              & " for predefined sequence aggregates")));
                      Call := +New_VC_Prog
                        (Ada_Node   => Expr,
                         Reason     => VC_Precondition,
@@ -20056,10 +20370,13 @@ package body Gnat2Why.Expr is
                           (Annot.Annotate_Node,
                            To_Unbounded_String
                              ("keys shall be distinct" &
-                              (if Present (Annot.Maps_Length)
-                               then " and all elements shall fit in the return"
-                                 & " type of """
-                                 & Source_Name (Annot.Maps_Length) & '"'
+                              (if Present (Annot.Capacity)
+                                 or else
+                                   (Present (Annot.Maps_Length)
+                                    and then Has_Scalar_Type
+                                      (Etype (Annot.Maps_Length)))
+                               then " and all elements shall "
+                                 & Length_Check_Msg (Annot.Maps_Length)
                                else "") &
                                 " for predefined maps aggregates")));
                      Call := +New_VC_Prog
@@ -20169,6 +20486,7 @@ package body Gnat2Why.Expr is
          Exprs    : constant List_Id := Expressions (Expr);
          Is_Empty : constant Boolean :=
            Present (Assocs) and then Is_Empty_List (Assocs);
+         Length   : Int := 0;
 
       --  Start of processing for Compute_Aggregate_Def
 
@@ -20179,7 +20497,9 @@ package body Gnat2Why.Expr is
                --  For the precondition of an aggregate with a length
                --  specified, generate:
                --
-               --    <List_Length (Exprs)> <= Length_Type'Last
+               --    <List_Length (Exprs)> <= length_type'Last
+               --  (* if length has a scalar type and no capacity function is
+               --     provided *)
                --
                --  For the definition of an aggregate (E1, E2, ...), generate:
                --
@@ -20214,16 +20534,15 @@ package body Gnat2Why.Expr is
                           (Right => Pred_Of_Boolean_Term (Contains_Call)));
                   end;
                else
+                  Length := List_Length (Exprs);
 
                   --  Go over the container expressions to generate:
                   --   * contains aggr_id e1, ... in Contains
                   --   * equivalent_elements elt_id e1, ... in Eq_Elems
 
                   declare
-                     Length   : constant Positive :=
-                       Positive (List_Length (Exprs));
-                     Eq_Elems : W_Pred_Array (1 .. Length);
-                     Contains : W_Pred_Array (1 .. Length);
+                     Eq_Elems : W_Pred_Array (1 .. Positive (Length));
+                     Contains : W_Pred_Array (1 .. Positive (Length));
                      Top      : Natural := 0;
                      Quant_Id : constant W_Identifier_Id :=
                        New_Temp_Identifier
@@ -20294,14 +20613,13 @@ package body Gnat2Why.Expr is
                --    then length aggr_id < <List_Length (Exprs)>
                --    else length aggr_id = <List_Length (Exprs)>
                --
-               --  and if Length returns a scalar type, add to Pre:
+               --  and if Length returns a scalar type and no capacity function
+               --  is provided, add to Pre:
                --
-               --    <List_Length (Exprs)> <= Length_Type'Last
+               --    <List_Length (Exprs)> <= length_type'Last
 
                if Present (Annot.Sets_Length) then
                   declare
-                     Length          : constant Int :=
-                       (if Is_Empty then 0 else List_Length (Exprs));
                      Length_Call     : W_Term_Id :=
                        New_Call_To_Ada_Function
                          (Fun  => Annot.Sets_Length,
@@ -20387,7 +20705,9 @@ package body Gnat2Why.Expr is
                         end;
                      end if;
 
-                     if Has_Scalar_Type (Etype (Annot.Sets_Length)) then
+                     if No (Annot.Capacity)
+                       and then Has_Scalar_Type (Etype (Annot.Sets_Length))
+                     then
                         Pre := New_And_Pred
                           (Left  => New_Comparison
                              (Symbol => Int_Infix_Le,
@@ -20410,8 +20730,9 @@ package body Gnat2Why.Expr is
                --
                --  not equivalent_keys k2 k1 /\
                --  not equivalent_keys k3 k1 /\ ... /\
-               --  <List_Length (Assocs)> <= Length_Type'Last
-               --  (* if length is specified *)
+               --  <List_Length (Assocs)> <= length_type'Last
+               --  (* if length has a scalar type and no capacity function is
+               --     provided *)
 
                --  For the definition of a partial map aggregate
                --  (K1 -> E1, K2 -> E2, ...), generate:
@@ -20435,14 +20756,12 @@ package body Gnat2Why.Expr is
 
                declare
                   Partial : constant Boolean := Present (Annot.Has_Key);
-                  Length  : Natural;
                   Keys    : Node_Vectors.Vector;
                   Assoc   : Node_Id;
 
                begin
                   if Is_Empty then
                      Pre := True_Pred;
-                     Length := 0;
 
                      --  Generate:
                      --    (forall key_id. not has_key aggr_id key_id)
@@ -20498,7 +20817,7 @@ package body Gnat2Why.Expr is
                         Next (Assoc);
                         exit when No (Assoc);
                      end loop;
-                     Length := Natural (Keys.Length);
+                     Length := Nat (Keys.Length);
 
                      --  Go over the container expressions to generate:
                      --   * not equivalent_keys k2 k1, ... in Distinct
@@ -20508,10 +20827,10 @@ package body Gnat2Why.Expr is
 
                      declare
                         Distinct     : W_Pred_Vectors.Vector;
-                        Eq_Keys      : W_Pred_Array (1 .. Length);
-                        Get          : W_Pred_Array (1 .. Length);
+                        Eq_Keys      : W_Pred_Array (1 .. Natural (Length));
+                        Get          : W_Pred_Array (1 .. Natural (Length));
                         Num_Has_Key  : constant Natural :=
-                          (if Partial then Length else 0);
+                          (if Partial then Natural (Length) else 0);
                         Has_Key      : W_Pred_Array (1 .. Num_Has_Key);
                         Top          : Natural := 0;
                         Quant_Id     : constant W_Identifier_Id :=
@@ -20657,9 +20976,10 @@ package body Gnat2Why.Expr is
                   --
                   --    length aggr_id = <Length>
                   --
-                  --  and if Length returns a scalar type, add to Pre:
+                  --  and if Length returns a scalar type and no capacity
+                  --  function is provided, add to Pre:
                   --
-                  --    <List_Length (Exprs)> <= Length_Type'Last
+                  --    <List_Length (Exprs)> <= length_type'Last
 
                   if Present (Annot.Maps_Length) then
                      declare
@@ -20683,14 +21003,16 @@ package body Gnat2Why.Expr is
                              (Symbol => Why_Eq,
                               Left   => Length_Call,
                               Right  => New_Integer_Constant
-                                (Value => UI_From_Int (Int (Length)))));
+                                (Value => UI_From_Int (Length))));
 
-                        if Has_Scalar_Type (Etype (Annot.Maps_Length)) then
+                        if No (Annot.Capacity)
+                          and then Has_Scalar_Type (Etype (Annot.Maps_Length))
+                        then
                            Pre := New_And_Pred
                              (Left  => New_Comparison
                                 (Symbol => Int_Infix_Le,
                                  Left   => New_Integer_Constant
-                                   (Value => UI_From_Int (Int (Length))),
+                                   (Value => UI_From_Int (Length)),
                                  Right  => +New_Attribute_Expr
                                    (Ty     => Etype (Annot.Maps_Length),
                                     Domain => EW_Term,
@@ -20706,7 +21028,7 @@ package body Gnat2Why.Expr is
 
                --  For the precondition of (E1, E2, ...), generate:
                --
-               --  first + <List_Length (Exprs)> - 1 <= Index_Type'Last
+               --  first + <List_Length (Exprs)> - 1 <= index_type'Last
 
                --  For the definition of (E1, E2, ...), generate:
                --
@@ -20715,8 +21037,6 @@ package body Gnat2Why.Expr is
                --  get aggr_id (first + 1) = copy e2 /\ ...
 
                declare
-                  Length         : constant Int :=
-                    (if Is_Empty then 0 else List_Length (Exprs));
                   First_Call     : W_Term_Id :=
                     New_Call_To_Ada_Function
                       (Fun  => Annot.First,
@@ -20760,6 +21080,8 @@ package body Gnat2Why.Expr is
                                     New_Integer_Constant (Value => Uint_1)),
                            Typ  => Base_Index_Typ));
                   else
+                     Length := List_Length (Exprs);
+
                      if Has_Scalar_Type (Annot.Index_Type) then
                         Pre := New_Comparison
                           (Symbol => Int_Infix_Le,
@@ -20823,6 +21145,51 @@ package body Gnat2Why.Expr is
             when Model =>
                raise Program_Error;
          end case;
+
+         --  If the empty function takes an integer as a parameter, check that
+         --  the length of the aggregate fits in this parameter type.
+
+         if Present (Annot.Spec_Capacity) then
+            Pre := New_And_Pred
+              (Left  => Pre,
+               Right => New_Comparison
+                 (Symbol => Int_Infix_Le,
+                  Left   => New_Integer_Constant
+                    (Value => UI_From_Int (Length)),
+                  Right  => +New_Attribute_Expr
+                    (Ty     => Annot.Spec_Capacity,
+                     Domain => EW_Term,
+                     Attr   => Attribute_Last,
+                     Params => Body_Params)));
+
+         --  If the container has a global capacity, check in Pre that the
+         --  length of the aggregate fits in the capacity.
+
+         elsif Present (Annot.Capacity) then
+            declare
+               Capacity_Call     : W_Term_Id :=
+                 New_Call_To_Ada_Function
+                   (Fun  => Annot.Capacity,
+                    Args => (1 .. 0 => <>));
+               Base_Capacity_Typ : constant W_Type_Id :=
+                 (if Has_Scalar_Type (Etype (Annot.Capacity))
+                  then EW_Int_Type
+                  else EW_Abstract (Base_Retysp (Etype (Annot.Capacity))));
+
+            begin
+               Capacity_Call := +Insert_Simple_Conversion
+                 (Domain => EW_Term,
+                  Expr   => +Capacity_Call,
+                  To     => Base_Capacity_Typ);
+               Pre := New_And_Pred
+                 (Left  => Pre,
+                  Right => New_Comparison
+                    (Symbol => Int_Infix_Le,
+                     Left   => New_Integer_Constant
+                       (Value => UI_From_Int (Length)),
+                     Right  => Capacity_Call));
+            end;
+         end if;
       end Compute_Aggregate_Def;
 
       ---------------------------------

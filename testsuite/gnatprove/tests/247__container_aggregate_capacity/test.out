@@ -1,0 +1,368 @@
+test_capacity.adb:5:13: info: implicit aspect Always_Terminates on "Id" has been proved, subprogram will terminate
+test_capacity.adb:5:13: info: implicit function contract might not be available on calls from enclosing unit
+test_capacity.adb:8:33: info: range check proved (CVC5: 2 VC)
+test_capacity.adb:9:15: info: range check proved (CVC5: 2 VC)
+test_capacity.adb:21:09: info: Container_Aggregates annotation proved (CVC5: 1 VC)
+test_capacity.adb:21:09: info: Container_Aggregates annotation proved (CVC5: 1 VC)
+test_capacity.adb:21:09: info: Container_Aggregates annotation proved (CVC5: 1 VC)
+test_capacity.adb:21:09: info: Container_Aggregates annotation proved (CVC5: 1 VC)
+test_capacity.adb:21:09: info: Container_Aggregates annotation proved (CVC5: 1 VC; altergo: 2 VC)
+test_capacity.adb:21:09: info: Container_Aggregates annotation proved (CVC5: 2 VC)
+test_capacity.adb:21:09: info: after a call to Append at test_capacity.adb:25
+test_capacity.adb:21:09: info: after a call to Append at test_capacity.adb:25
+test_capacity.adb:21:09: info: after a call to Append at test_capacity.adb:25
+test_capacity.adb:21:09: info: after a call to Empty at test_capacity.adb:23
+test_capacity.adb:21:09: info: after a call to Empty at test_capacity.adb:23
+test_capacity.adb:21:09: info: after a call to Empty at test_capacity.adb:23
+test_capacity.adb:21:09: info: when establishing invariant on Capacity at test_capacity.adb:39
+test_capacity.adb:21:09: info: when establishing invariant on Contains at test_capacity.adb:42
+test_capacity.adb:21:09: info: when establishing invariant on Length at test_capacity.adb:35
+test_capacity.adb:21:09: info: when reestablishing invariant on Capacity at test_capacity.adb:39
+test_capacity.adb:21:09: info: when reestablishing invariant on Contains at test_capacity.adb:42
+test_capacity.adb:21:09: info: when reestablishing invariant on Length at test_capacity.adb:35
+test_capacity.adb:23:16: info: implicit aspect Always_Terminates on "Empty" has been proved, subprogram will terminate
+test_capacity.adb:24:09: info: data dependencies proved
+test_capacity.adb:25:17: info: aspect Always_Terminates on "Append" has been proved, subprogram will terminate
+test_capacity.adb:26:09: info: data dependencies proved
+test_capacity.adb:27:28: info: during checks for container aggregates at test_capacity.adb:21
+test_capacity.adb:27:28: info: precondition proved (CVC5: 1 VC)
+test_capacity.adb:28:17: info: postcondition proved (CVC5: 5 VC)
+test_capacity.adb:32:52: info: overflow check proved (CVC5: 2 VC)
+test_capacity.adb:35:16: info: implicit aspect Always_Terminates on "Length" has been proved, subprogram will terminate
+test_capacity.adb:36:09: info: data dependencies proved
+test_capacity.adb:39:16: info: implicit aspect Always_Terminates on "Capacity" has been proved, subprogram will terminate
+test_capacity.adb:42:16: info: implicit aspect Always_Terminates on "Contains" has been proved, subprogram will terminate
+test_capacity.adb:45:16: info: implicit aspect Always_Terminates on "Eq_Element" has been proved, subprogram will terminate
+test_capacity.adb:53:10: info: range check proved (CVC5: 2 VC)
+test_capacity.adb:57:53: info: index check proved (CVC5: 2 VC)
+test_capacity.adb:60:39: info: initialization check proved (CVC5: 1 VC)
+test_capacity.adb:60:49: info: index check proved (CVC5: 2 VC)
+test_capacity.adb:64:10: info: predicate check proved (CVC5: 2 VC)
+test_capacity.adb:64:37: info: length check proved (CVC5: 3 VC; Trivial: 1 VC)
+test_capacity.adb:70:43: info: initialization check proved (CVC5: 1 VC)
+test_capacity.adb:70:53: info: index check proved (CVC5: 2 VC)
+test_capacity.adb:74:11: info: predicate check proved (CVC5: 2 VC)
+test_capacity.adb:74:27: info: index check proved (CVC5: 2 VC)
+test_capacity.adb:74:27: info: overflow check proved (CVC5: 2 VC)
+test_capacity.adb:75:11: info: predicate check proved (CVC5: 2 VC)
+test_capacity.adb:75:25: info: overflow check proved (CVC5: 2 VC)
+test_capacity.adb:85:09: info: Container_Aggregates annotation proved (CVC5: 1 VC)
+test_capacity.adb:85:09: info: Container_Aggregates annotation proved (CVC5: 1 VC)
+test_capacity.adb:85:09: info: Container_Aggregates annotation proved (CVC5: 1 VC; altergo: 2 VC)
+test_capacity.adb:85:09: info: Container_Aggregates annotation proved (CVC5: 2 VC)
+test_capacity.adb:85:09: info: after a call to Append at test_capacity.adb:88
+test_capacity.adb:85:09: info: after a call to Append at test_capacity.adb:88
+test_capacity.adb:85:09: info: after a call to Empty at test_capacity.adb:87
+test_capacity.adb:85:09: info: after a call to Empty at test_capacity.adb:87
+test_capacity.adb:85:09: info: when establishing invariant on Contains at test_capacity.adb:105
+test_capacity.adb:85:09: info: when establishing invariant on Length at test_capacity.adb:98
+test_capacity.adb:85:09: info: when reestablishing invariant on Contains at test_capacity.adb:105
+test_capacity.adb:85:09: info: when reestablishing invariant on Length at test_capacity.adb:98
+test_capacity.adb:88:17: info: aspect Always_Terminates on "Append" has been proved, subprogram will terminate
+test_capacity.adb:89:09: info: data dependencies proved
+test_capacity.adb:90:27: info: during checks for container aggregates at test_capacity.adb:85
+test_capacity.adb:90:27: info: precondition proved (CVC5: 1 VC)
+test_capacity.adb:91:17: info: postcondition proved (CVC5: 5 VC)
+test_capacity.adb:95:52: info: overflow check proved (CVC5: 2 VC)
+test_capacity.adb:98:16: info: implicit aspect Always_Terminates on "Length" has been proved, subprogram will terminate
+test_capacity.adb:99:09: info: data dependencies proved
+test_capacity.adb:102:16: info: implicit aspect Always_Terminates on "Capacity" has been proved, subprogram will terminate
+test_capacity.adb:105:16: info: implicit aspect Always_Terminates on "Contains" has been proved, subprogram will terminate
+test_capacity.adb:108:16: info: implicit aspect Always_Terminates on "Eq_Element" has been proved, subprogram will terminate
+test_capacity.adb:112:07: info: range check proved (CVC5: 2 VC)
+test_capacity.adb:120:53: info: index check proved (CVC5: 2 VC)
+test_capacity.adb:123:39: info: initialization check proved (CVC5: 1 VC)
+test_capacity.adb:123:49: info: index check proved (CVC5: 2 VC)
+test_capacity.adb:127:10: info: predicate check proved (CVC5: 2 VC)
+test_capacity.adb:127:22: info: length check proved (CVC5: 3 VC; Trivial: 1 VC)
+test_capacity.adb:133:43: info: initialization check proved (CVC5: 1 VC)
+test_capacity.adb:133:53: info: index check proved (CVC5: 2 VC)
+test_capacity.adb:137:11: info: predicate check proved (CVC5: 2 VC)
+test_capacity.adb:137:27: info: index check proved (CVC5: 2 VC)
+test_capacity.adb:137:27: info: overflow check proved (CVC5: 2 VC)
+test_capacity.adb:138:11: info: predicate check proved (CVC5: 2 VC)
+test_capacity.adb:138:25: info: overflow check proved (CVC5: 2 VC)
+test_capacity.adb:149:09: info: Container_Aggregates annotation proved (CVC5: 1 VC)
+test_capacity.adb:149:09: info: Container_Aggregates annotation proved (CVC5: 1 VC)
+test_capacity.adb:149:09: info: Container_Aggregates annotation proved (CVC5: 1 VC)
+test_capacity.adb:149:09: info: Container_Aggregates annotation proved (CVC5: 1 VC)
+test_capacity.adb:149:09: info: Container_Aggregates annotation proved (CVC5: 1 VC)
+test_capacity.adb:149:09: info: Container_Aggregates annotation proved (CVC5: 1 VC)
+test_capacity.adb:149:09: info: Container_Aggregates annotation proved (CVC5: 1 VC; altergo: 2 VC)
+test_capacity.adb:149:09: info: after a call to Append at test_capacity.adb:153
+test_capacity.adb:149:09: info: after a call to Append at test_capacity.adb:153
+test_capacity.adb:149:09: info: after a call to Append at test_capacity.adb:153
+test_capacity.adb:149:09: info: after a call to Append at test_capacity.adb:153
+test_capacity.adb:149:09: info: after a call to Empty at test_capacity.adb:151
+test_capacity.adb:149:09: info: after a call to Empty at test_capacity.adb:151
+test_capacity.adb:149:09: info: after a call to Empty at test_capacity.adb:151
+test_capacity.adb:149:09: info: when establishing invariant on Capacity at test_capacity.adb:169
+test_capacity.adb:149:09: info: when establishing invariant on Has_Key at test_capacity.adb:172
+test_capacity.adb:149:09: info: when establishing invariant on Length at test_capacity.adb:165
+test_capacity.adb:149:09: info: when reestablishing invariant on Capacity at test_capacity.adb:169
+test_capacity.adb:149:09: info: when reestablishing invariant on Get at test_capacity.adb:175
+test_capacity.adb:149:09: info: when reestablishing invariant on Has_Key at test_capacity.adb:172
+test_capacity.adb:149:09: info: when reestablishing invariant on Length at test_capacity.adb:165
+test_capacity.adb:151:16: info: implicit aspect Always_Terminates on "Empty" has been proved, subprogram will terminate
+test_capacity.adb:152:09: info: data dependencies proved
+test_capacity.adb:153:17: info: aspect Always_Terminates on "Append" has been proved, subprogram will terminate
+test_capacity.adb:154:09: info: data dependencies proved
+test_capacity.adb:155:41: info: during checks for container aggregates at test_capacity.adb:149
+test_capacity.adb:155:41: info: precondition proved (CVC5: 2 VC)
+test_capacity.adb:156:17: info: postcondition proved (CVC5: 4 VC; Trivial: 1 VC; Z3: 2 VC)
+test_capacity.adb:157:18: info: precondition proved (CVC5: 1 VC)
+test_capacity.adb:161:49: info: precondition proved (Z3: 1 VC)
+test_capacity.adb:161:62: info: precondition proved (CVC5: 1 VC)
+test_capacity.adb:162:46: info: overflow check proved (CVC5: 2 VC)
+test_capacity.adb:165:16: info: implicit aspect Always_Terminates on "Length" has been proved, subprogram will terminate
+test_capacity.adb:166:09: info: data dependencies proved
+test_capacity.adb:169:16: info: implicit aspect Always_Terminates on "Capacity" has been proved, subprogram will terminate
+test_capacity.adb:172:16: info: implicit aspect Always_Terminates on "Has_Key" has been proved, subprogram will terminate
+test_capacity.adb:175:16: info: implicit aspect Always_Terminates on "Get" has been proved, subprogram will terminate
+test_capacity.adb:179:16: info: implicit aspect Always_Terminates on "Eq_Keys" has been proved, subprogram will terminate
+test_capacity.adb:191:10: info: range check proved (CVC5: 2 VC)
+test_capacity.adb:195:53: info: index check proved (CVC5: 2 VC)
+test_capacity.adb:198:49: info: index check proved (CVC5: 2 VC)
+test_capacity.adb:198:51: info: initialization check proved (CVC5: 1 VC)
+test_capacity.adb:201:16: info: implicit aspect Always_Terminates on "Get" has been proved, subprogram will terminate
+test_capacity.adb:201:16: info: implicit function contract might not be available on recursive calls
+test_capacity.adb:203:47: info: index check proved (CVC5: 2 VC)
+test_capacity.adb:204:48: info: index check proved (CVC5: 2 VC)
+test_capacity.adb:204:50: info: initialization check proved (CVC5: 1 VC)
+test_capacity.adb:208:16: info: index check proved (CVC5: 2 VC)
+test_capacity.adb:208:20: info: initialization check proved (CVC5: 1 VC)
+test_capacity.adb:208:35: info: index check proved (CVC5: 2 VC)
+test_capacity.adb:208:39: info: initialization check proved (CVC5: 1 VC)
+test_capacity.adb:208:47: info: precondition proved (CVC5: 5 VC)
+test_capacity.adb:208:47: info: subprogram variant proved (CVC5: 1 VC)
+test_capacity.adb:208:62: info: range check proved (CVC5: 2 VC)
+test_capacity.adb:211:10: info: precondition proved (CVC5: 5 VC)
+test_capacity.adb:214:10: info: predicate check proved (CVC5: 2 VC)
+test_capacity.adb:214:37: info: length check proved (CVC5: 3 VC; Trivial: 1 VC)
+test_capacity.adb:223:47: info: index check proved (CVC5: 2 VC)
+test_capacity.adb:223:69: info: index check proved (CVC5: 2 VC)
+test_capacity.adb:224:44: info: initialization check proved (CVC5: 1 VC)
+test_capacity.adb:224:47: info: index check proved (CVC5: 2 VC)
+test_capacity.adb:224:52: info: initialization check proved (CVC5: 1 VC)
+test_capacity.adb:224:55: info: index check proved (CVC5: 2 VC)
+test_capacity.adb:225:17: info: postcondition proved (CVC5: 1 VC; Trivial: 1 VC)
+test_capacity.adb:226:54: info: index check proved (CVC5: 2 VC)
+test_capacity.adb:226:56: info: initialization check proved (CVC5: 1 VC)
+test_capacity.adb:227:26: info: precondition proved (CVC5: 5 VC)
+test_capacity.adb:227:44: info: precondition proved (CVC5: 5 VC)
+test_capacity.adb:233:13: info: precondition proved (CVC5: 7 VC)
+test_capacity.adb:233:13: info: subprogram variant proved (CVC5: 1 VC)
+test_capacity.adb:233:37: info: range check proved (CVC5: 2 VC)
+test_capacity.adb:240:11: info: predicate check proved (CVC5: 2 VC)
+test_capacity.adb:240:27: info: index check proved (CVC5: 2 VC)
+test_capacity.adb:240:27: info: overflow check proved (CVC5: 2 VC)
+test_capacity.adb:241:11: info: predicate check proved (CVC5: 2 VC)
+test_capacity.adb:241:25: info: overflow check proved (CVC5: 2 VC)
+test_capacity.adb:242:10: info: precondition proved (CVC5: 7 VC)
+test_capacity.adb:242:56: info: range check proved (CVC5: 2 VC)
+test_capacity.adb:253:09: info: Container_Aggregates annotation proved (CVC5: 1 VC)
+test_capacity.adb:253:09: info: Container_Aggregates annotation proved (CVC5: 1 VC)
+test_capacity.adb:253:09: info: Container_Aggregates annotation proved (CVC5: 1 VC)
+test_capacity.adb:253:09: info: Container_Aggregates annotation proved (CVC5: 1 VC)
+test_capacity.adb:253:09: info: Container_Aggregates annotation proved (CVC5: 1 VC; altergo: 2 VC)
+test_capacity.adb:253:09: info: after a call to Append at test_capacity.adb:256
+test_capacity.adb:253:09: info: after a call to Append at test_capacity.adb:256
+test_capacity.adb:253:09: info: after a call to Append at test_capacity.adb:256
+test_capacity.adb:253:09: info: after a call to Empty at test_capacity.adb:255
+test_capacity.adb:253:09: info: after a call to Empty at test_capacity.adb:255
+test_capacity.adb:253:09: info: when establishing invariant on Has_Key at test_capacity.adb:275
+test_capacity.adb:253:09: info: when establishing invariant on Length at test_capacity.adb:268
+test_capacity.adb:253:09: info: when reestablishing invariant on Get at test_capacity.adb:278
+test_capacity.adb:253:09: info: when reestablishing invariant on Has_Key at test_capacity.adb:275
+test_capacity.adb:253:09: info: when reestablishing invariant on Length at test_capacity.adb:268
+test_capacity.adb:256:17: info: aspect Always_Terminates on "Append" has been proved, subprogram will terminate
+test_capacity.adb:257:09: info: data dependencies proved
+test_capacity.adb:258:34: info: during checks for container aggregates at test_capacity.adb:253
+test_capacity.adb:258:34: info: precondition proved (CVC5: 2 VC)
+test_capacity.adb:259:17: info: postcondition proved (CVC5: 4 VC; Trivial: 1 VC; Z3: 2 VC)
+test_capacity.adb:260:18: info: precondition proved (CVC5: 1 VC)
+test_capacity.adb:264:49: info: precondition proved (Z3: 1 VC)
+test_capacity.adb:264:62: info: precondition proved (CVC5: 1 VC)
+test_capacity.adb:265:46: info: overflow check proved (CVC5: 2 VC)
+test_capacity.adb:268:16: info: implicit aspect Always_Terminates on "Length" has been proved, subprogram will terminate
+test_capacity.adb:269:09: info: data dependencies proved
+test_capacity.adb:272:16: info: implicit aspect Always_Terminates on "Capacity" has been proved, subprogram will terminate
+test_capacity.adb:272:16: info: implicit function contract might not be available on calls from enclosing unit
+test_capacity.adb:275:16: info: implicit aspect Always_Terminates on "Has_Key" has been proved, subprogram will terminate
+test_capacity.adb:278:16: info: implicit aspect Always_Terminates on "Get" has been proved, subprogram will terminate
+test_capacity.adb:282:16: info: implicit aspect Always_Terminates on "Eq_Keys" has been proved, subprogram will terminate
+test_capacity.adb:290:07: info: range check proved (CVC5: 2 VC)
+test_capacity.adb:298:53: info: index check proved (CVC5: 2 VC)
+test_capacity.adb:301:49: info: index check proved (CVC5: 2 VC)
+test_capacity.adb:301:51: info: initialization check proved (CVC5: 1 VC)
+test_capacity.adb:304:16: info: implicit aspect Always_Terminates on "Get" has been proved, subprogram will terminate
+test_capacity.adb:304:16: info: implicit function contract might not be available on recursive calls
+test_capacity.adb:306:47: info: index check proved (CVC5: 2 VC)
+test_capacity.adb:307:48: info: index check proved (CVC5: 2 VC)
+test_capacity.adb:307:50: info: initialization check proved (CVC5: 1 VC)
+test_capacity.adb:311:16: info: index check proved (CVC5: 2 VC)
+test_capacity.adb:311:20: info: initialization check proved (CVC5: 1 VC)
+test_capacity.adb:311:35: info: index check proved (CVC5: 2 VC)
+test_capacity.adb:311:39: info: initialization check proved (CVC5: 1 VC)
+test_capacity.adb:311:47: info: precondition proved (CVC5: 4 VC)
+test_capacity.adb:311:47: info: subprogram variant proved (CVC5: 1 VC)
+test_capacity.adb:311:62: info: range check proved (CVC5: 2 VC)
+test_capacity.adb:314:10: info: precondition proved (CVC5: 4 VC)
+test_capacity.adb:317:09: info: predicate check proved (CVC5: 2 VC)
+test_capacity.adb:317:21: info: length check proved (CVC5: 3 VC; Trivial: 1 VC)
+test_capacity.adb:325:47: info: index check proved (CVC5: 2 VC)
+test_capacity.adb:325:69: info: index check proved (CVC5: 2 VC)
+test_capacity.adb:326:44: info: initialization check proved (CVC5: 1 VC)
+test_capacity.adb:326:47: info: index check proved (CVC5: 2 VC)
+test_capacity.adb:326:52: info: initialization check proved (CVC5: 1 VC)
+test_capacity.adb:326:55: info: index check proved (CVC5: 2 VC)
+test_capacity.adb:327:17: info: postcondition proved (CVC5: 1 VC; Trivial: 1 VC)
+test_capacity.adb:328:54: info: index check proved (CVC5: 2 VC)
+test_capacity.adb:328:56: info: initialization check proved (CVC5: 1 VC)
+test_capacity.adb:329:26: info: precondition proved (CVC5: 4 VC)
+test_capacity.adb:329:44: info: precondition proved (CVC5: 4 VC)
+test_capacity.adb:335:13: info: precondition proved (CVC5: 5 VC)
+test_capacity.adb:335:13: info: subprogram variant proved (CVC5: 1 VC)
+test_capacity.adb:335:37: info: range check proved (CVC5: 2 VC)
+test_capacity.adb:342:11: info: predicate check proved (CVC5: 2 VC)
+test_capacity.adb:342:27: info: index check proved (CVC5: 2 VC)
+test_capacity.adb:342:27: info: overflow check proved (CVC5: 2 VC)
+test_capacity.adb:343:11: info: predicate check proved (CVC5: 2 VC)
+test_capacity.adb:343:25: info: overflow check proved (CVC5: 2 VC)
+test_capacity.adb:344:10: info: precondition proved (CVC5: 5 VC)
+test_capacity.adb:344:56: info: range check proved (CVC5: 2 VC)
+test_capacity.adb:349:15: info: range check proved (CVC5: 2 VC)
+test_capacity.adb:350:15: info: range check proved (CVC5: 2 VC)
+test_capacity.adb:356:09: info: Container_Aggregates annotation proved (CVC5: 1 VC)
+test_capacity.adb:356:09: info: Container_Aggregates annotation proved (CVC5: 1 VC)
+test_capacity.adb:356:09: info: Container_Aggregates annotation proved (CVC5: 1 VC)
+test_capacity.adb:356:09: info: Container_Aggregates annotation proved (CVC5: 1 VC)
+test_capacity.adb:356:09: info: Container_Aggregates annotation proved (CVC5: 1 VC)
+test_capacity.adb:356:09: info: after a call to Append at test_capacity.adb:360
+test_capacity.adb:356:09: info: after a call to Append at test_capacity.adb:360
+test_capacity.adb:356:09: info: after a call to Append at test_capacity.adb:360
+test_capacity.adb:356:09: info: after a call to Empty at test_capacity.adb:358
+test_capacity.adb:356:09: info: after a call to Empty at test_capacity.adb:358
+test_capacity.adb:356:09: info: when establishing invariant on Capacity at test_capacity.adb:369
+test_capacity.adb:356:09: info: when establishing invariant on Last at test_capacity.adb:375
+test_capacity.adb:356:09: info: when reestablishing invariant on Capacity at test_capacity.adb:369
+test_capacity.adb:356:09: info: when reestablishing invariant on Get at test_capacity.adb:378
+test_capacity.adb:356:09: info: when reestablishing invariant on Last at test_capacity.adb:375
+test_capacity.adb:358:16: info: implicit aspect Always_Terminates on "Empty" has been proved, subprogram will terminate
+test_capacity.adb:359:09: info: data dependencies proved
+test_capacity.adb:360:17: info: aspect Always_Terminates on "Append" has been proved, subprogram will terminate
+test_capacity.adb:361:09: info: data dependencies proved
+test_capacity.adb:362:49: info: during checks for container aggregates at test_capacity.adb:356
+test_capacity.adb:362:49: info: precondition proved (CVC5: 2 VC)
+test_capacity.adb:363:17: info: postcondition proved (CVC5: 3 VC)
+test_capacity.adb:363:41: info: overflow check proved (CVC5: 2 VC)
+test_capacity.adb:364:18: info: precondition proved (CVC5: 1 VC)
+test_capacity.adb:364:26: info: range check proved (CVC5: 2 VC)
+test_capacity.adb:366:21: info: precondition proved (CVC5: 1 VC)
+test_capacity.adb:366:29: info: range check proved (CVC5: 2 VC)
+test_capacity.adb:366:34: info: precondition proved (CVC5: 1 VC)
+test_capacity.adb:366:46: info: range check proved (CVC5: 2 VC)
+test_capacity.adb:369:16: info: implicit aspect Always_Terminates on "Capacity" has been proved, subprogram will terminate
+test_capacity.adb:372:16: info: implicit aspect Always_Terminates on "First" has been proved, subprogram will terminate
+test_capacity.adb:372:48: info: range check proved (CVC5: 2 VC)
+test_capacity.adb:375:16: info: implicit aspect Always_Terminates on "Last" has been proved, subprogram will terminate
+test_capacity.adb:378:16: info: implicit aspect Always_Terminates on "Get" has been proved, subprogram will terminate
+test_capacity.adb:386:61: info: range check proved (CVC5: 2 VC)
+test_capacity.adb:389:10: info: range check proved (CVC5: 2 VC)
+test_capacity.adb:394:53: info: index check proved (CVC5: 2 VC)
+test_capacity.adb:396:72: info: range check proved (CVC5: 2 VC)
+test_capacity.adb:399:11: info: initialization check proved (CVC5: 1 VC)
+test_capacity.adb:399:21: info: index check proved (CVC5: 2 VC)
+test_capacity.adb:402:10: info: predicate check proved (CVC5: 3 VC)
+test_capacity.adb:402:65: info: length check proved (CVC5: 3 VC; Trivial: 1 VC)
+test_capacity.adb:408:11: info: predicate check proved (CVC5: 3 VC)
+test_capacity.adb:408:27: info: index check proved (CVC5: 2 VC)
+test_capacity.adb:408:27: info: overflow check proved (CVC5: 2 VC)
+test_capacity.adb:409:11: info: predicate check proved (CVC5: 3 VC)
+test_capacity.adb:409:25: info: overflow check proved (CVC5: 2 VC)
+test_capacity.adb:414:15: info: range check proved (CVC5: 2 VC)
+test_capacity.adb:415:15: info: range check proved (CVC5: 2 VC)
+test_capacity.adb:421:09: info: Container_Aggregates annotation proved (CVC5: 1 VC)
+test_capacity.adb:421:09: info: Container_Aggregates annotation proved (CVC5: 1 VC)
+test_capacity.adb:421:09: info: Container_Aggregates annotation proved (CVC5: 1 VC)
+test_capacity.adb:421:09: info: after a call to Append at test_capacity.adb:424
+test_capacity.adb:421:09: info: after a call to Append at test_capacity.adb:424
+test_capacity.adb:421:09: info: after a call to Empty at test_capacity.adb:423
+test_capacity.adb:421:09: info: when establishing invariant on Last at test_capacity.adb:439
+test_capacity.adb:421:09: info: when reestablishing invariant on Get at test_capacity.adb:442
+test_capacity.adb:421:09: info: when reestablishing invariant on Last at test_capacity.adb:439
+test_capacity.adb:424:17: info: aspect Always_Terminates on "Append" has been proved, subprogram will terminate
+test_capacity.adb:425:09: info: data dependencies proved
+test_capacity.adb:426:47: info: during checks for container aggregates at test_capacity.adb:421
+test_capacity.adb:426:47: info: precondition proved (CVC5: 2 VC)
+test_capacity.adb:427:17: info: postcondition proved (CVC5: 3 VC)
+test_capacity.adb:427:41: info: overflow check proved (CVC5: 2 VC)
+test_capacity.adb:428:18: info: precondition proved (CVC5: 1 VC)
+test_capacity.adb:428:26: info: range check proved (CVC5: 2 VC)
+test_capacity.adb:430:21: info: precondition proved (CVC5: 1 VC)
+test_capacity.adb:430:29: info: range check proved (CVC5: 2 VC)
+test_capacity.adb:430:34: info: precondition proved (CVC5: 1 VC)
+test_capacity.adb:430:46: info: range check proved (CVC5: 2 VC)
+test_capacity.adb:433:16: info: implicit aspect Always_Terminates on "Capacity" has been proved, subprogram will terminate
+test_capacity.adb:436:16: info: implicit aspect Always_Terminates on "First" has been proved, subprogram will terminate
+test_capacity.adb:436:48: info: range check proved (CVC5: 2 VC)
+test_capacity.adb:439:16: info: implicit aspect Always_Terminates on "Last" has been proved, subprogram will terminate
+test_capacity.adb:442:16: info: implicit aspect Always_Terminates on "Get" has been proved, subprogram will terminate
+test_capacity.adb:447:07: info: range check proved (CVC5: 2 VC)
+test_capacity.adb:450:61: info: range check proved (CVC5: 2 VC)
+test_capacity.adb:458:53: info: index check proved (CVC5: 2 VC)
+test_capacity.adb:460:72: info: range check proved (CVC5: 2 VC)
+test_capacity.adb:463:11: info: initialization check proved (CVC5: 1 VC)
+test_capacity.adb:463:21: info: index check proved (CVC5: 2 VC)
+test_capacity.adb:465:30: info: predicate check proved (CVC5: 3 VC)
+test_capacity.adb:465:42: info: length check proved (CVC5: 3 VC; Trivial: 1 VC)
+test_capacity.adb:473:11: info: predicate check proved (CVC5: 3 VC)
+test_capacity.adb:473:27: info: index check proved (CVC5: 2 VC)
+test_capacity.adb:473:27: info: overflow check proved (CVC5: 2 VC)
+test_capacity.adb:474:11: info: predicate check proved (CVC5: 3 VC)
+test_capacity.adb:474:25: info: overflow check proved (CVC5: 2 VC)
+test_capacity.adb:478:52: info: data dependencies proved
+test_capacity.adb:482:16: info: all elements shall fit in "Small_Nat" for predefined set aggregates at test_capacity.adb:21
+test_capacity.adb:482:16: info: precondition proved (CVC5: 1 VC)
+test_capacity.adb:484:22: info: assertion proved (CVC5: 1 VC)
+test_capacity.adb:487:56: info: data dependencies proved
+test_capacity.adb:491:16: medium: all elements shall fit in "Small_Nat" for predefined set aggregates at test_capacity.adb:21
+test_capacity.adb:491:16: medium: precondition might fail
+test_capacity.adb:496:50: info: data dependencies proved
+test_capacity.adb:500:16: info: all elements shall be smaller than "Capacity" for predefined set aggregates at test_capacity.adb:85
+test_capacity.adb:500:16: info: precondition proved (CVC5: 1 VC)
+test_capacity.adb:505:54: info: data dependencies proved
+test_capacity.adb:509:16: medium: all elements shall be smaller than "Capacity" for predefined set aggregates at test_capacity.adb:85
+test_capacity.adb:509:16: medium: precondition might fail
+test_capacity.adb:514:52: info: data dependencies proved
+test_capacity.adb:518:16: info: keys shall be distinct and all elements shall fit in "Small_Nat" for predefined maps aggregates at test_capacity.adb:149
+test_capacity.adb:518:16: info: precondition proved (CVC5: 37 VC)
+test_capacity.adb:520:22: info: assertion proved (CVC5: 1 VC)
+test_capacity.adb:523:56: info: data dependencies proved
+test_capacity.adb:527:16: medium: keys shall be distinct and all elements shall fit in "Small_Nat" for predefined maps aggregates at test_capacity.adb:149
+test_capacity.adb:527:16: medium: precondition might fail
+test_capacity.adb:532:50: info: data dependencies proved
+test_capacity.adb:536:16: info: keys shall be distinct and all elements shall be smaller than "Capacity" for predefined maps aggregates at test_capacity.adb:253
+test_capacity.adb:536:16: info: precondition proved (CVC5: 37 VC)
+test_capacity.adb:541:54: info: data dependencies proved
+test_capacity.adb:545:16: medium: keys shall be distinct and all elements shall be smaller than "Capacity" for predefined maps aggregates at test_capacity.adb:253
+test_capacity.adb:545:16: medium: precondition might fail
+test_capacity.adb:551:06: info: data dependencies proved
+test_capacity.adb:556:16: info: all elements shall fit in index type and fit in "Small_Nat" for predefined sequence aggregates at test_capacity.adb:356
+test_capacity.adb:556:16: info: precondition proved (CVC5: 2 VC)
+test_capacity.adb:558:22: info: assertion proved (CVC5: 1 VC)
+test_capacity.adb:562:06: info: data dependencies proved
+test_capacity.adb:567:16: medium: all elements shall fit in index type and fit in "Small_Nat" for predefined sequence aggregates at test_capacity.adb:356
+test_capacity.adb:567:16: medium: precondition might fail
+test_capacity.adb:573:06: info: data dependencies proved
+test_capacity.adb:578:16: medium: all elements shall fit in index type and fit in "Small_Nat" for predefined sequence aggregates at test_capacity.adb:356
+test_capacity.adb:578:16: medium: precondition might fail
+test_capacity.adb:584:06: info: data dependencies proved
+test_capacity.adb:589:16: info: all elements shall fit in index type and be smaller than "Capacity" for predefined sequence aggregates at test_capacity.adb:421
+test_capacity.adb:589:16: info: precondition proved (CVC5: 2 VC)
+test_capacity.adb:595:06: info: data dependencies proved
+test_capacity.adb:600:16: medium: all elements shall fit in index type and be smaller than "Capacity" for predefined sequence aggregates at test_capacity.adb:421
+test_capacity.adb:600:16: medium: precondition might fail
+test_capacity.adb:606:06: info: data dependencies proved
+test_capacity.adb:611:16: medium: all elements shall fit in index type and be smaller than "Capacity" for predefined sequence aggregates at test_capacity.adb:421
+test_capacity.adb:611:16: medium: precondition might fail
