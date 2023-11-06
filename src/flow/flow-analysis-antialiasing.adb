@@ -92,19 +92,15 @@ package body Flow.Analysis.Antialiasing is
       A, B     : Node_Or_Entity_Id;
       A_Formal : Entity_Id;
       B_Formal : Entity_Id;
-      Status   : out Computed_Aliasing_Result)
+      Status   : in out Computed_Aliasing_Result)
    with Pre => (Is_Formal (A_Formal)
                   or else Is_Function_With_Side_Effects (A_Formal))
-               and then (No (B_Formal) or else Is_Formal (B_Formal));
+               and then (No (B_Formal) or else Is_Formal (B_Formal)),
+        Post => Status >= Status'Old;
    --  Checks the two nodes for aliasing and issues an error message if
    --  appropriate. The formal of A can be a function entity, which represents
    --  the LHS of assignment that has call with side-effects as the RHS. The
    --  formal for B can be Empty, which represents a global.
-
-   procedure Update_Status (Status         : in out Computed_Aliasing_Result;
-                            Current_Status : Computed_Aliasing_Result);
-   --  Updates the aliasing Status only if the Current_Status is worse (in
-   --  terms of the ordering given by the type Computed_Aliasing_Result).
 
    procedure Trace_Line (Txt : String);
    procedure Trace_Two_Nodes (Text1     : String;
@@ -840,14 +836,16 @@ package body Flow.Analysis.Antialiasing is
       A, B     : Node_Or_Entity_Id;
       A_Formal : Entity_Id;
       B_Formal : Entity_Id;
-      Status   : out Computed_Aliasing_Result)
+      Status   : in out Computed_Aliasing_Result)
    is
       Msg    : Unbounded_String := Null_Unbounded_String;
       B_Node : Node_Id;
-   begin
-      Status := Aliasing (A, B, A_Formal, B_Formal);
 
-      case Status is
+      Current_Status : constant Computed_Aliasing_Result :=
+        Aliasing (A, B, A_Formal, B_Formal);
+
+   begin
+      case Current_Status is
          when Impossible =>
             return;
 
@@ -901,6 +899,11 @@ package body Flow.Analysis.Antialiasing is
                       SRM_Ref  => (if Status = No_Aliasing
                                    then ""
                                    else "6.4.2"));
+
+      --  Update the aliasing Status only if the Current_Status is worse (in
+      --  terms of the ordering given by the type Computed_Aliasing_Result).
+
+      Status := Computed_Aliasing_Result'Max (Status, Current_Status);
    end Check_Node_Against_Node;
 
    --------------------------
@@ -950,8 +953,7 @@ package body Flow.Analysis.Antialiasing is
       --  regarded as purely mode "in" (unlike the similar case for formal
       --  parameters) so are never members of this set.
 
-      Current_Status : Computed_Aliasing_Result;
-      Status         : Computed_Aliasing_Result := Impossible;
+      Status : Computed_Aliasing_Result := Impossible;
 
       ---------------------
       -- Check_Parameter --
@@ -975,9 +977,7 @@ package body Flow.Analysis.Antialiasing is
                B        => Other_Actual,
                A_Formal => Formal,
                B_Formal => Other_Formal,
-               Status   => Current_Status);
-
-            Update_Status (Status, Current_Status);
+               Status   => Status);
 
             Next_Formal (Other_Formal);
             Next_Actual (Other_Actual);
@@ -1008,9 +1008,7 @@ package body Flow.Analysis.Antialiasing is
                   B        => G,
                   A_Formal => Formal,
                   B_Formal => Empty,
-                  Status   => Current_Status);
-
-               Update_Status (Status, Current_Status);
+                  Status   => Status);
             end loop;
          end if;
 
@@ -1033,9 +1031,7 @@ package body Flow.Analysis.Antialiasing is
                   B        => G,
                   A_Formal => Formal,
                   B_Formal => Empty,
-                  Status   => Current_Status);
-
-               Update_Status (Status, Current_Status);
+                  Status   => Status);
             end loop;
          end if;
 
@@ -1050,9 +1046,7 @@ package body Flow.Analysis.Antialiasing is
                B        => Actual,
                A_Formal => Get_Called_Entity (N),
                B_Formal => Formal,
-               Status   => Current_Status);
-
-            Update_Status (Status, Current_Status);
+               Status   => Status);
          end if;
       end Check_Parameter;
 
@@ -1124,8 +1118,7 @@ package body Flow.Analysis.Antialiasing is
                B        => G,
                A_Formal => Called_Thing,
                B_Formal => Empty,
-               Status   => Current_Status);
-            Update_Status (Status, Current_Status);
+               Status   => Status);
          end loop;
       end if;
 
@@ -1149,19 +1142,6 @@ package body Flow.Analysis.Antialiasing is
               then Aliasing_Status (C)
               else Unchecked);
    end Get_Aliasing_Status_For_Proof;
-
-   -------------------
-   -- Update_Status --
-   -------------------
-
-   procedure Update_Status (Status         : in out Computed_Aliasing_Result;
-                            Current_Status : Computed_Aliasing_Result)
-   is
-   begin
-      if Current_Status > Status then
-         Status := Current_Status;
-      end if;
-   end Update_Status;
 
    --  Debug routines, localised to declutter code coverage analysis
    pragma Annotate (Xcov, Exempt_On, "Compilation-dependent debug code");
