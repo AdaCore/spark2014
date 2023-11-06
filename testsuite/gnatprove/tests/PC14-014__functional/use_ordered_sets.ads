@@ -1,4 +1,4 @@
-pragma Ada_2012;
+pragma Ada_2022;
 with Ada.Containers;       use Ada.Containers;
 with SPARK.Containers.Formal.Ordered_Sets;
 
