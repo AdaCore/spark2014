@@ -878,7 +878,7 @@ package body Flow.Analysis.Antialiasing is
 
       Append
         (Msg,
-         (case Status is
+         (case Current_Status is
              when No_Aliasing       => " proved",
              when Possible_Aliasing => " might be aliased",
              when Definite_Aliasing => " are aliased",
@@ -887,7 +887,7 @@ package body Flow.Analysis.Antialiasing is
       Error_Msg_Flow (FA       => FA,
                       Msg      => To_String (Msg),
                       Severity =>
-                        (case Status is
+                        (case Current_Status is
                          when No_Aliasing       => Info_Kind,
                          when Possible_Aliasing => Medium_Check_Kind,
                          when Definite_Aliasing => High_Check_Kind,
@@ -896,7 +896,7 @@ package body Flow.Analysis.Antialiasing is
                       F1       => Direct_Mapping_Id (A_Formal),
                       F2       => Direct_Mapping_Id (B_Node),
                       Tag      => Aliasing,
-                      SRM_Ref  => (if Status = No_Aliasing
+                      SRM_Ref  => (if Current_Status = No_Aliasing
                                    then ""
                                    else "6.4.2"));
 
