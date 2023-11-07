@@ -31,7 +31,7 @@ package Flow.Analysis.Antialiasing is
                                   Definite_Aliasing,
                                   Unchecked);
    pragma Ordered (Aliasing_Check_Result);
-   --  These statues represent the computed aliasing status but Unchecked,
+   --  These statuses represent the computed aliasing status but Unchecked,
    --  which represents the case where a status has not been computed yet.
 
    procedure Check_Procedure_Call

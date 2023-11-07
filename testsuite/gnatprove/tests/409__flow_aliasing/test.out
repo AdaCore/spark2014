@@ -1,0 +1,16 @@
+bad.adb:4:20: info: data dependencies proved
+bad.adb:8:14: medium: overflow check might fail, cannot prove upper bound for X + 1 [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: precondition of subprogram at line 3 should mention X]
+bad.adb:15:04: high: result of "Increment_And_Return" and formal parameter "X" are aliased (SPARK RM 6.4.2)
+bad.adb:15:07: medium: array index check might fail [reason for check: value must be a valid index into the array] [possible fix: subprogram at line 1 should mention B in a precondition]
+bad.adb:15:13: info: precondition proved (Trivial: 1 VC)
+bad.adb:16:19: medium: assertion might fail [possible fix: subprogram at line 1 should mention B in a precondition]
+bad.adb:16:23: medium: "A" might not be initialized
+bad.adb:16:26: info: index check proved (CVC5: 2 VC)
+bad2.adb:10:20: medium: overflow check might fail, cannot prove upper bound for Get_X + 1 [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: precondition of subprogram at line 5 should mention Hidden.X]
+bad2.adb:17:04: medium: result of "Increment_And_Return" and global "hidden.x" might be aliased (SPARK RM 6.4.2)
+bad2.adb:17:07: medium: array index check might fail [reason for check: value must be a valid index into the array] [possible fix: subprogram at line 3 should mention Hidden.X in a precondition]
+bad2.adb:17:17: info: precondition proved (Trivial: 1 VC)
+bad2.adb:18:19: medium: assertion might fail [possible fix: subprogram at line 3 should mention Hidden.X in a precondition]
+bad2.adb:18:27: medium: "A" might not be initialized
+bad2.adb:18:30: info: index check proved (CVC5: 2 VC)
+hidden.ads:2:13: info: implicit aspect Always_Terminates on "Get_X" has been proved, subprogram will terminate
