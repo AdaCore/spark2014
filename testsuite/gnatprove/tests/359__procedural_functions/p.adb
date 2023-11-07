@@ -1,5 +1,14 @@
 package body P with SPARK_Mode is
 
+   procedure Error with
+     No_Return,
+     Always_Terminates => False,
+     Exceptional_Cases => (others => False)
+   is
+   begin
+      loop null; end loop;
+   end;
+
    function F1 (X : out Integer) return Integer is
    begin
       X := 0;
@@ -39,8 +48,8 @@ package body P with SPARK_Mode is
 
    function F7 (X : Integer) return Integer is
    begin
-      raise Constraint_Error;
-      return 0;
+      Error;
+      return X;
    end;
 
    function F8 (X : Integer) return Integer is
@@ -51,7 +60,7 @@ package body P with SPARK_Mode is
    function F9 (X : Integer) return Integer is
    begin
       if X <= 0 then
-         raise Constraint_Error;
+         Error;
       end if;
       return X;
    end;
@@ -128,8 +137,8 @@ package body P with SPARK_Mode is
           Always_Terminates => False
    is
    begin
-      raise Constraint_Error;
-      return 0;
+      Error;
+      return X;
    end;
 
    function B8 (X : Integer) return Integer
@@ -146,7 +155,7 @@ package body P with SPARK_Mode is
    is
    begin
       if X <= 0 then
-         raise Constraint_Error;
+         Error;
       end if;
       return X;
    end;

@@ -750,6 +750,10 @@ package body Configuration is
             Long_Switch => "--limit-line=");
          Define_Switch
            (Config,
+            CL_Switches.Limit_Name'Access,
+            Long_Switch => "--limit-name=");
+         Define_Switch
+           (Config,
             CL_Switches.Limit_Region'Access,
             Long_Switch => "--limit-region=");
          Define_Switch
@@ -1680,6 +1684,49 @@ package body Configuration is
 
       procedure Process_Limit_Switches is
       begin
+
+         --  We do not allow mixing of --limit-* switches, except for the
+         --  combination of --limit-subp + --limit-line or --limit-region,
+         --  as this is used by the gnatstudio plug-in.
+
+         declare
+            Count : Integer := 0;
+
+            procedure Check_Switch (Arg : GNAT.Strings.String_Access);
+
+            ------------------
+            -- Check_Switch --
+            ------------------
+
+            procedure Check_Switch (Arg : GNAT.Strings.String_Access) is
+            begin
+               if not Null_Or_Empty_String (Arg) then
+                  Count := Count + 1;
+               end if;
+            end Check_Switch;
+
+         begin
+            Check_Switch (CL_Switches.Limit_Name);
+            Check_Switch (CL_Switches.Limit_Subp);
+            Check_Switch (CL_Switches.Limit_Region);
+            Check_Switch (CL_Switches.Limit_Line);
+            if Count > 1 then
+               if Count = 2
+                 and then not Null_Or_Empty_String (CL_Switches.Limit_Subp)
+                 and then
+                   (not Null_Or_Empty_String (CL_Switches.Limit_Region)
+                    or else not Null_Or_Empty_String (CL_Switches.Limit_Line))
+               then
+                  null;
+               else
+                  Abort_Msg
+                    ("Switches --limit-line, --limit-name, --limit-region and "
+                     & "--limit-subp are mutually exclusive",
+                     With_Help => False);
+               end if;
+            end if;
+         end;
+
          --  Unless -U is specified, use of --limit-[line,region,subp] leads
          --  to only the file with the given line or subprogram to be analyzed.
          --  Specifying -U with --limit-[line,region,subp] is useful to
@@ -2162,17 +2209,6 @@ package body Configuration is
                   Abort_Msg ("error: prover " & Prover &
                                " was selected, but it is not installed",
                              With_Help => False);
-               end if;
-            end loop;
-
-            --  Check if cvc4 was explicitly requested, and warn in that case
-            --  that it will soon be removed from the install.
-
-            for Prover of FS.Provers loop
-               if Prover = "cvc4" then
-                  Put_Line
-                    (Standard_Error,
-                     "warning: prover CVC4 is deprecated, please use cvc5");
                end if;
             end loop;
 

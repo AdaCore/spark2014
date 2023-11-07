@@ -56,7 +56,8 @@ package Flow_Error_Messages is
       EC_Output_In_Function_Global_Or_Depends,
       EC_Out_Parameter_In_Function,
       EC_Always_Terminates_On_Function,
-      EC_Exceptional_Cases_On_Function);
+      EC_Exceptional_Cases_On_Function,
+      EC_Call_To_Function_With_Side_Effects);
    for Explain_Code use
      (EC_None                                 => 0,
       EC_Volatile_At_Library_Level            => 1,
@@ -75,7 +76,8 @@ package Flow_Error_Messages is
       EC_Output_In_Function_Global_Or_Depends => 14,
       EC_Out_Parameter_In_Function            => 15,
       EC_Always_Terminates_On_Function        => 16,
-      EC_Exceptional_Cases_On_Function        => 17);
+      EC_Exceptional_Cases_On_Function        => 17,
+      EC_Call_To_Function_With_Side_Effects   => 18);
 
    type Msg_Severity is
      (Error_Kind,

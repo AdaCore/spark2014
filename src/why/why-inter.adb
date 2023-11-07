@@ -31,6 +31,7 @@ with Snames;                         use Snames;
 with SPARK_Definition;               use SPARK_Definition;
 with SPARK_Frame_Conditions;         use SPARK_Frame_Conditions;
 with SPARK_Util;                     use SPARK_Util;
+with SPARK_Util.Subprograms;         use SPARK_Util.Subprograms;
 with SPARK_Xrefs;                    use SPARK_Xrefs;
 with Stand;                          use Stand;
 with String_Utils;                   use String_Utils;
@@ -755,7 +756,7 @@ package body Why.Inter is
 
       declare
          Th_Id : constant W_Theory_Declaration_Id := Th.Th;
-         N  : constant Symbol := Get_Name (Th_Id);
+         N     : constant Symbol := Get_Name (Th_Id);
       begin
          Why_Sections (Th.Section).Append (+Th_Id);
          Symbol_To_Theory_Map.Insert (N, Th_Id);
@@ -1553,5 +1554,25 @@ package body Why.Inter is
          end;
       end if;
    end Type_Of_Node;
+
+   -------------------------------
+   -- Why_Subp_Has_Precondition --
+   -------------------------------
+
+   function Why_Subp_Has_Precondition
+     (E        : Callable_Kind_Id;
+      Selector : Selection_Kind := Why.Inter.Standard)
+      return Boolean
+   is
+      Has_Precondition : constant Boolean :=
+        Has_Contracts (E, Pragma_Precondition);
+      Has_Classwide_Or_Inherited_Precondition : constant Boolean :=
+        Has_Contracts (E, Pragma_Precondition,
+                       Classwide => True,
+                       Inherited => True);
+   begin
+      return (Selector /= Dispatch and then Has_Precondition)
+        or else Has_Classwide_Or_Inherited_Precondition;
+   end Why_Subp_Has_Precondition;
 
 end Why.Inter;

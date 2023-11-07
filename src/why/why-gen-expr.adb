@@ -1036,11 +1036,11 @@ package body Why.Gen.Expr is
 
       if Init_Check then
          Arr_Init := Insert_Initialization_Check
-           (Ada_Node        => Ada_Node,
-            E               => From_Ent,
-            Name            => Arr_Init,
-            Domain          => Domain,
-            Exclude_Relaxed => True);
+           (Ada_Node           => Ada_Node,
+            E                  => From_Ent,
+            Name               => Arr_Init,
+            Domain             => Domain,
+            Exclude_Components => Relaxed);
       end if;
 
       Arr_Expr := New_Temp_For_Expr (Arr_Init);
@@ -1533,7 +1533,8 @@ package body Why.Gen.Expr is
         Need_Check
           and then not No_Init
           and then Has_Predicates (R)
-          and then not Is_Call_Arg_To_Predicate_Function (Ada_Node);
+          and then (Ada_Node not in Opt_N_Subexpr_Id
+                    or else not Is_Call_Arg_To_Predicate_Function (Ada_Node));
       Check_Entity    : constant Entity_Id := Get_Ada_Node (+To);
 
       Base            : constant W_Type_Id :=
@@ -1559,11 +1560,11 @@ package body Why.Gen.Expr is
       then
          if Domain = EW_Prog and then not No_Init and then Need_Check then
             Result := Insert_Initialization_Check
-              (Ada_Node        => Ada_Node,
-               E               => L,
-               Name            => Result,
-               Domain          => Domain,
-               Exclude_Relaxed => True);
+              (Ada_Node           => Ada_Node,
+               E                  => L,
+               Name               => Result,
+               Domain             => Domain,
+               Exclude_Components => Relaxed);
          end if;
          Result := New_Call
            (Ada_Node => Ada_Node,
@@ -1675,6 +1676,10 @@ package body Why.Gen.Expr is
         Repr_Pointer_Type (L) /= Repr_Pointer_Type (R);
       pragma Assert (Root_Pointer_Type (L) = Root_Pointer_Type (R));
 
+      Root         : constant Entity_Id := Root_Pointer_Type (L);
+      Relaxed_Init : constant Boolean := Is_Init_Wrapper_Type (From)
+        and then Is_Init_Wrapper_Type (To);
+
       Need_Not_Null_Check : constant Boolean := Can_Never_Be_Null (R);
 
       --  Do not generate a predicate check for an internal call to a parent
@@ -1688,15 +1693,24 @@ package body Why.Gen.Expr is
                    or else not Is_Call_Arg_To_Predicate_Function (Ada_Node));
 
    begin
-      --  When neither checks nor conversions need to be inserted, return
+      --  If From has relaxed initialization and not To, introduce a
+      --  conversion and possibly a check.
 
-      if not Need_Check and then not Need_Conv then
-         return New_Label
+      if Is_Init_Wrapper_Type (From) and then not Relaxed_Init then
+         if Domain = EW_Prog and then not No_Init and then Need_Check then
+            Result := Insert_Initialization_Check
+              (Ada_Node           => Ada_Node,
+               E                  => L,
+               Name               => Result,
+               Domain             => Domain,
+               Exclude_Components => Relaxed);
+         end if;
+         Result := New_Call
            (Ada_Node => Ada_Node,
             Domain   => Domain,
-            Labels   => Symbol_Sets.Empty_Set,
-            Def      => Result,
-            Typ      => To);
+            Name     => E_Symb (L, WNE_Of_Wrapper),
+            Args     => (1 => Result),
+            Typ      => EW_Abstract (L));
       end if;
 
       --  Conversion goes through the root type
@@ -1704,11 +1718,9 @@ package body Why.Gen.Expr is
       if Need_Conv then
          declare
             To_Base : constant W_Identifier_Id :=
-              E_Symb (L, WNE_To_Base);
+              E_Symb (L, WNE_To_Base, Relaxed_Init);
             Of_Base : constant W_Identifier_Id :=
-              E_Symb (R, WNE_Of_Base);
-            Root    : constant Entity_Id := Root_Pointer_Type (L);
-            pragma Assert (Root = Root_Pointer_Type (R));
+              E_Symb (R, WNE_Of_Base, Relaxed_Init);
 
          begin
             if L /= Root then
@@ -1734,7 +1746,7 @@ package body Why.Gen.Expr is
                   Domain   => Domain,
                   Name     => Of_Base,
                   Args     => (1 => Result),
-                  Typ      => To);
+                  Typ      => Get_Typ (Of_Base));
             end if;
          end;
       else
@@ -1743,7 +1755,7 @@ package body Why.Gen.Expr is
             Domain   => Domain,
             Labels   => Symbol_Sets.Empty_Set,
             Def      => Result,
-            Typ      => To);
+            Typ      => EW_Abstract (R, Relaxed_Init));
       end if;
 
       --  Predicate checks and null exclusion checks are performed after the
@@ -1761,12 +1773,23 @@ package body Why.Gen.Expr is
               +New_VC_Call
               (Ada_Node => Ada_Node,
                Name     => To_Program_Space
-                 (E_Symb (R, WNE_Assign_Null_Check)),
+                 (E_Symb (R, WNE_Assign_Null_Check, Relaxed_Init)),
                Progs    => (1 => +Result),
                Reason   => VC_Null_Exclusion,
                Typ      => Get_Type (Result));
          end if;
+      end if;
 
+      --  If To has relaxed initialization and not From, introduce a
+      --  conversion.
+
+      if Is_Init_Wrapper_Type (To) and then not Relaxed_Init then
+         Result := New_Call
+           (Ada_Node => Ada_Node,
+            Domain   => Domain,
+            Name     => E_Symb (R, WNE_To_Wrapper),
+            Args     => (1 => Result),
+            Typ      => To);
       end if;
 
       return Result;
@@ -2422,10 +2445,11 @@ package body Why.Gen.Expr is
          begin
             if Domain = EW_Prog and then not No_Init then
                Result := Insert_Initialization_Check
-                 (Ada_Node => Ada_Node,
-                  E        => From_Node,
-                  Name     => Result,
-                  Domain   => Domain);
+                 (Ada_Node           => Ada_Node,
+                  E                  => From_Node,
+                  Name               => Result,
+                  Domain             => Domain,
+                  Exclude_Components => Relaxed);
             end if;
 
             --  An initialization check should be inserted directly when

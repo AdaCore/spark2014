@@ -34,6 +34,14 @@ package Bad_Relaxed_Init with SPARK_Mode is
 
    type My_Acc is access My_Int;
    type My_Acc_2 is access Integer with Relaxed_Initialization;
+   type My_Acc_3 is access function return Integer with Relaxed_Initialization;
+   type My_Acc_4 is access Root with Relaxed_Initialization;
+
+   protected type Prot_Ty2 is
+      function Get return Integer;
+   private
+      Data : My_Acc;
+   end;
 
    type Priv is private with Relaxed_Initialization;
 

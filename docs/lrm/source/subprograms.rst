@@ -11,10 +11,18 @@ a ``subprogram_declaration``, the ``subprogram_body`` or
 ``expression_function_declaration`` also introduces a declaration view which
 may be in |SPARK| even if the implementation view is not.
 
-Rules are imposed in |SPARK| to ensure that the execution of a function
-call does not modify any variables declared outside of the function.
-It follows as a consequence of these rules that the evaluation
-of any |SPARK| expression is side-effect free.
+.. index:: subprogram with side-effects
+
+A *subprogram with side-effects* is either a procedure, a protected entry, or a
+function with side-effects (see :ref:`Functions With Side-Effects`). A
+subprogram with side-effects may have output parameters, write global
+variables, raise exceptions and not terminate.
+
+Rules are imposed in |SPARK| to ensure that the execution of a function call
+does not modify any variables declared outside of the function, unless it is a
+function with side-effects.  Outside of this special case, it follows as a
+consequence of these rules that the evaluation of any |SPARK| expression is
+side-effect free.
 
 .. index:: global item
 
@@ -93,16 +101,15 @@ an *entire object*.
    Legality Rules
 
 
-6. A function declaration shall not have a ``parameter_specification``
-   with a mode of **out** or **in out**. This rule also applies to
-   a ``subprogram_body`` for a function for which no explicit declaration
-   is given. A function shall have no outputs other than its result.
-
+6. The declaration of a function without side-effects shall not have a
+   ``parameter_specification`` with a mode of **out** or **in out**. This rule
+   also applies to a ``subprogram_body`` for a function without side-effects
+   for which no explicit declaration is given. A function without side-effects
+   shall have no outputs other than its result.
 
 7. A subprogram parameter of mode **in** shall not be an output of its
-   subprogram unless the type of the parameter is an access type and
-   the subprogram is not a function.
-
+   subprogram unless the type of the parameter is an access type and the
+   subprogram is a subprogram with side-effects.
 
 .. container:: heading
 
@@ -119,7 +126,7 @@ an *entire object*.
    aliased shall be fully initialized when the exception is propagated
    except for those that have relaxed initialization.
 
-10. A function shall always return normally.
+10. A function without side-effects shall always return normally.
 
 11. A call to a ghost procedure occurring outside of a ghost context shall
     always return normally.
@@ -584,12 +591,13 @@ and Refined_Depends.]
    Global aspect.
 
 
-10. A function subprogram shall not have a ``mode_selector`` of
+10. A function without side-effects shall not have a ``mode_selector`` of
     Output or In_Out in its Global aspect.
 
 
-11. A user-defined equality operation on a record type shall have a Global
-    aspect of ``null`` (see :ref:`Overloading of Operators`).
+11. A user-defined primitive equality operation on a record type shall have a
+    Global aspect of ``null``, unless the record type has only limited views
+    (see :ref:`Overloading of Operators`).
 
     [This avoids the case where such a record type is a component of another
     composite type, whose predefined equality operation now depends on
@@ -904,7 +912,7 @@ where
    subprogram of mode **in out** and **out** along with the entities denoted by
    ``global_items`` of the Global aspect of the subprogram with a
    ``mode_selector`` of In_Out and Output and (for a function) the
-   ``function_result`` or (for a procedure or entry) the set of formal
+   ``function_result`` or (for a subprogram with side-effects) the set of formal
    parameters of the subprogram of mode **in** of an access-to-variable type.
 
 
@@ -984,13 +992,14 @@ where
     viewpoint it is a null operation (a no-op).]
 
 
-21. A function without an explicit Depends aspect specification has
-    the default ``dependency_relation`` that its result is dependent
-    on all of its inputs. [Generally an explicit Depends aspect is
+21. A function without side-effects without an explicit Depends aspect
+    specification has the default ``dependency_relation`` that its result is
+    dependent on all of its inputs. [Generally an explicit Depends aspect is
     not required for a function declaration.]
 
 
-22. A procedure without an explicit Depends aspect specification has a
+22. A subprogram with side-effects without an
+    explicit Depends aspect specification has a
     default ``dependency_relation`` that each member of its output set
     is dependent on every member of its input set. [This conservative
     approximation may be improved by analyzing the body of the
@@ -1448,12 +1457,12 @@ Decreases) then the expression value obtained for the call is greater
 Exceptional Cases
 ~~~~~~~~~~~~~~~~~
 
-The aspect Exceptional_Cases may be specified for procedures; it can be used
-to list exceptions that might be raised by the procedure in the context of its
-precondition, and associate them with a specific postcondition. The
-Exceptional_Cases aspect is specified with an aspect_specification where the
-aspect_mark is Exceptional_Cases and the aspect_definition must follow the
-grammar of exceptional_case_list given below.
+The aspect Exceptional_Cases may be specified for procedures and functions with
+side-effects; it can be used to list exceptions that might be raised by the
+subprogram with side-effects in the context of its precondition, and associate
+them with a specific postcondition. The Exceptional_Cases aspect is specified
+with an aspect_specification where the aspect_mark is Exceptional_Cases and the
+aspect_definition must follow the grammar of exceptional_case_list given below.
 
 .. container:: heading
 
@@ -1507,8 +1516,8 @@ Exceptional_Cases aspects are ignored for execution.
 
    Verification Rules
 
-2. If an exception raised in a procedure annotated with Exceptional_Cases
-   is not handled and causes the procedure body to complete, then a verification
+2. If an exception raised in a subprogram annotated with Exceptional_Cases
+   is not handled and causes the subprogram body to complete, then a verification
    condition is introduced to make sure that the consequence associated to
    the exceptional case covering the exception evaluates to True. [Because of
    the verification conditions introduced when raising unexpected exceptions,
@@ -1517,18 +1526,18 @@ Exceptional_Cases aspects are ignored for execution.
 Always_Terminates Aspects
 ~~~~~~~~~~~~~~~~~~~~~~~~~
 
-The aspect Always_Terminates may be specified for procedures and protected
-entries; it can be used to provide a condition under which the procedure or
-protected entry shall necessarily complete (either return normally or raise an
-exception). This aspect may also be specified on packages to provide a default
-for all procedures declared in the package or in one of its nested packages. The
-Always_Terminates aspect is specified with an aspect_specification where the
-aspect_mark is Always_Terminates and the optional aspect_definition is a
-boolean expression. An Always_Terminates aspect with no aspect_definition is
-equivalent to an Always_Terminates aspect with an aspect_definition of True.
-[An execution which does not complete can for example run forever, exit the
-whole program using GNAT.OS_Lib.OS_Exit, or transfer the control to another
-execution in a non-standard way.]
+The aspect Always_Terminates may be specified for subprograms with
+side-effects; it can be used to provide a condition under which the subprogram
+shall necessarily complete (either return normally or raise an exception). This
+aspect may also be specified on packages to provide a default for all
+subprograms with side-effects declared in the package or in one of its nested
+packages. The Always_Terminates aspect is specified with an
+aspect_specification where the aspect_mark is Always_Terminates and the
+optional aspect_definition is a boolean expression. An Always_Terminates aspect
+with no aspect_definition is equivalent to an Always_Terminates aspect with an
+aspect_definition of True.  [An execution which does not complete can for
+example run forever, exit the whole program using GNAT.OS_Lib.OS_Exit, or
+transfer the control to another execution in a non-standard way.]
 
 .. container:: heading
 
@@ -1544,10 +1553,11 @@ precondition.
 1. If the aspect Always_Terminates is specified for a package, it shall not have
    an aspect definition.
 
-2. If the aspect Always_Terminates for a package specification or a procedure P
-   is not otherwise specified and P is declared directly inside a package
-   (explicitly or implicitly) annotated with an aspect Always_Terminates then
-   an Always_Terminates aspect of True is implicitly specified for P.
+2. If the aspect Always_Terminates for a package specification or a subprogram
+   with side-effects P is not otherwise specified and P is declared directly
+   inside a package (explicitly or implicitly) annotated with an aspect
+   Always_Terminates then an Always_Terminates aspect of True is implicitly
+   specified for P.
 
 
 .. container:: heading
@@ -1561,22 +1571,78 @@ Always_Terminates aspects are ignored for execution.
    Legality Rules
 
 3. The Always_Terminates aspect may only be specified for the initial
-   declaration of a procedure (which may be a declaration, a body or a body
-   stub), of a protected entry, or of a package specification.
+   declaration of a subprogram with side-effects (which may be a declaration, a
+   body or a body stub), or of a package specification.
 
 .. container:: heading
 
    Verification Rules
 
-4. A verification condition is introduced on loops and calls
-   occuring inside functions or package elaborations to make sure that they
-   necessarily complete.
+4. A verification condition is introduced on loops and calls occuring inside
+   functions without side-effects or package elaborations to make sure that
+   they necessarily complete.
 
 5. A verification condition is introduced on loops and calls occuring inside
-   protected entries and procedures annotated with an Always_Terminates
-   aspect to make sure that they necessarily complete in cases where the
-   boolean condition mentioned in the Always_Terminates aspect evaluates to
-   True on entry of the protected entry or procedure.
+   subprograms with side-effects annotated with an Always_Terminates aspect to
+   make sure that they necessarily complete in cases where the boolean
+   condition mentioned in the Always_Terminates aspect evaluates to True on
+   entry of the subprogram with side-effects.
+
+
+Functions With Side-Effects
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+The aspect Side_Effects may be specified for functions; it can be used to
+indicate that a function should be handled like a procedure with respect to
+parameter modes, Global contract, exceptional contract and termination: it may
+have output parameters, write global variables, raise exceptions and not
+terminate. Such a function is called a *function with side-effects*.
+
+Note that a function with side-effects may also be a volatile function (see
+section :ref:`External State`).
+
+.. container:: heading
+
+   Static Semantics
+
+1. Side_Effects is a Boolean-valued aspect which may be specified for a
+   noninstance function or a generic function. If directly specified, the
+   aspect_definition shall be a static [Boolean] expression. The aspect is
+   inherited by an inherited primitive function. If the aspect is neither
+   inherited nor directly specified for a function, then the aspect is False.
+
+.. container:: heading
+
+   Legality Rules
+
+2. [Redundant: The declaration of a function with side-effects may have a
+   ``parameter_specification`` with a mode of **out** or **in out**. This rule
+   also applies to a ``subprogram_body`` for a function with side-effects for
+   which no explicit declaration is given.]
+
+3. [Redundant: A function with side-effects may have a ``mode_selector`` of
+   Output or In_Out in its Global aspect.]
+
+4. A call to a function with side-effects may only occur as the [right-hand
+   side] expression of an assignment statement. [Redundant: In particular,
+   functions with side-effects cannot be called inside assertions.]
+
+5. A function with side-effects shall not have a Pure_Function aspect or
+   pragma.
+
+6. A function with side-effects shall not be an expression function.
+
+7. A function with side-effects shall not be a traversal function (see section
+   :ref:`Access Types`).
+
+8. A user-defined primitive equality operation on a record type shall not be a
+   function with side-effects, unless the record type has only limited views
+   (see :ref:`Overloading of Operators`).
+
+   [This avoids the case where such a record type is a component of another
+   composite type, whose predefined equality operation now has side-effects
+   through the primitive equality operation on its component.]
+
 
 Formal Parameter Modes
 ----------------------
@@ -1669,15 +1735,15 @@ object and problems arise when one of the names is used to update the
 object (although object renaming declarations are not problematic in
 |SPARK|).
 
-A common place for aliasing to be introduced is through the actual
-parameters and between actual parameters and global variables in a
-procedure or entry call. Extra verification rules are given that
-avoid the possibility of problematic aliasing through actual
-parameters and global variables.  A function is not allowed to have
-side-effects and cannot update an actual parameter or global
-variable.  Therefore, function calls cannot introduce aliasing and
-are excluded from the anti-aliasing rules given below for procedure
-or entry calls.
+A common place for aliasing to be introduced is through the actual parameters
+and between actual parameters and global variables in a call to a subprogram
+with side-effects. Extra verification rules are given that avoid the
+possibility of problematic aliasing through actual parameters and global
+variables.  Except for functions with side-effects (see :ref:`Functions With
+Side-Effects`), a function is not allowed to have side-effects and cannot
+update an actual parameter or global variable.  Therefore, such function calls
+cannot introduce problematic aliasing and are excluded from the anti-aliasing
+rules given below for calls to subprograms with side-effects.
 
 .. container:: heading
 
@@ -1709,8 +1775,9 @@ or entry calls.
    Verification Rules
 
 
-3. A procedure or entry call shall only pass two actual parameters which potentially
-   introduce aliasing via parameter passing when either
+3. A call to a subprogram with side-effects shall only pass two actual
+   parameters which potentially introduce aliasing via parameter passing when
+   either
 
    * both of the corresponding formal parameters are either
 
@@ -1724,9 +1791,9 @@ or entry calls.
      :ref:`Access Types`.]
 
 
-4. If an actual parameter in a procedure or entry call and a ``global_item`` referenced
-   by the called procedure or entry potentially introduce aliasing via parameter
-   passing, then
+4. If an actual parameter in a call to a subprogram with side-effects and a
+   ``global_item`` referenced by the called subprogram potentially introduce
+   aliasing via parameter passing, then
 
    * the corresponding formal parameter shall be either
 
@@ -1738,7 +1805,32 @@ or entry calls.
      a by-copy type.
 
 
-5. Where one of these rules prohibits the occurrence of an object V or any of
+5. A call to a function with side-effects shall only pass an actual parameter
+   which potentially introduces aliasing via parameter passing with an object
+   referenced from the [left-hand side] name of the enclosing assignment
+   statement, when the corresponding formal parameter is either
+
+   * immutable; or
+   * of mode **in** and of an anonymous access-to-constant type.
+
+   [The rationale for this rule is that, otherwise, the result of the
+   evaluation of the assignment statement would depend on the order of
+   evaluation chosen by the compiler, as the object assigned to might depend on
+   this choice.]
+
+6. A call to a function with side-effects shall not reference a ``global_item``
+   of mode Output or In_Out which potentially introduces aliasing via parameter
+   passing with an object referenced from the [left-hand side] name of the
+   enclosing assignment statement.
+
+   [The rationale for this rule is the same as for the previous rule.]
+
+7. A call to a function with side-effects shall not reference the symbol ``@``
+   to refer to the target name of the assignment.
+
+   [The rationale for this rule is the same as for the previous rule.]
+
+8. Where one of these rules prohibits the occurrence of an object V or any of
    its subcomponents as an actual parameter, the following constructs are also
    prohibited in this context:
 
@@ -1786,9 +1878,21 @@ Overloading of Operators
    Legality Rules
 
 
-1. [A user-defined equality operation on a record type shall have a Global
-   aspect of ``null``; see :ref:`Global Aspects` for the statement of this
-   rule.]
+1. [A user-defined primitive equality operation on a record type shall have a
+   Global aspect of ``null``, unless the record type has only limited views;
+   see :ref:`Global Aspects` for the statement of this rule.]
+
+2. [A user-defined primitive equality operation on a record type shall not be a
+   volatile function, unless the record type has only limited views; see
+   :ref:`External State - Variables and Types` for the statement of this rule.]
+
+3. [A user-defined primitive equality operation on a record type shall not be a
+   function with side-effects, unless the record type has only limited views;
+   see :ref:`Functions With Side-Effects` for the statement of this rule.]
+
+4. [A user-defined primitive equality operation on a non-ghost record type
+    shall not be ghost, unless the record type has only limited views; see
+    :ref:`Ghost Entities` for the statement of this rule.]
 
 
 Null Procedures
@@ -2078,15 +2182,26 @@ body (see Ada RM 7.2(4))].
     (see :ref:`Abstract_State Aspects`).
 
 
+22. A user-defined primitive equality operation on a non-ghost record type
+    shall not be ghost, unless the record type has only limited views (see
+    :ref:`Overloading of Operators`).
+
+    [This avoids the case where such a record type is a component of another
+    non-ghost composite type, whose predefined non-ghost equality operation now
+    calls a ghost function through the primitive equality operation on its
+    component.]
+
+
 .. container:: heading
 
    Verification Rules
 
 
-22. A ghost procedure shall not have a non-ghost [global] output.
+23. A ghost subprogram with side-effects shall not have a non-ghost [global]
+    output.
 
 
-23. An output of a non-ghost subprogram other than a state abstraction
+24. An output of a non-ghost subprogram other than a state abstraction
     or a ghost global shall not depend on a ghost input. [It is intended
     that this follows as a consequence of other rules. Although a
     non-ghost state abstraction output which depends on a ghost input may
@@ -2094,20 +2209,20 @@ body (see Ada RM 7.2(4))].
     constituent from depending on the ghost input.]
 
 
-24. A global input of a ghost procedure shall not be effectively volatile for reading.
-    [This rule says, in effect, that ghost procedures are
-    subject to the same restrictions as non-ghost nonvolatile
-    functions with respect to reading volatile objects.]
-    A name occurring within a ghost statement shall not denote
-    an object that is effectively volatile for reading. [In other words, a ghost statement is
-    subject to effectively the same restrictions as a ghost procedure.]
+25. A global input of a ghost subprogram with side-effects shall not be effectively
+    volatile for reading.  [This rule says, in effect, that ghost procedural
+    subprograms are subject to the same restrictions as non-ghost nonvolatile
+    functions with respect to reading volatile objects.]  A name occurring
+    within a ghost statement shall not denote an object that is effectively
+    volatile for reading. [In other words, a ghost statement is subject to
+    effectively the same restrictions as a ghost subprogram with side-effects.]
 
 
-25. If the Ghost assertion policy in effect at the point of the declaration
-    of a ghost variable or ghost state abstraction is Check, then the Ghost
-    assertion policy in effect at the point of any call to a procedure
-    for which that variable or state abstraction is a global output shall
-    be Check.
+26. If the Ghost assertion policy in effect at the point of the declaration of
+    a ghost variable or ghost state abstraction is Check, then the Ghost
+    assertion policy in effect at the point of any call to a procedural
+    subprogram for which that variable or state abstraction is a global output
+    shall be Check.
 
 
 .. container:: heading
@@ -2228,20 +2343,18 @@ The prefix of an Initialized attribute reference shall denote an object.
    and by an inherited subprogram (if the aspect is specified for the
    corresponding primitive subprogram of the ancestor type).
 
-4. For a prefix *X* that denotes an object, the following attribute is defined:
+4. For a prefix *X* that denotes an object which has relaxed initialization,
+   the following attribute is defined:
 
    ::
 
       X'Initialized
 
-   X'Initialized is True if and only if every scalar reachable part
-   (see :ref:`Access Types`) of X
-   has been initialized. [It typically follows as a consequence of this
-   definition and the other rules of |SPARK| that if X'Initialized is True,
-   then for every reachable part Y of X (scalar or not), Y belongs to its
-   subtype. There are pathological counterexamples, such as a componentless
-   record declared with "Dynamic_Predicate => False".] An Initialized attribute
-   reference is never a static expression.
+   [It follows as a consequence of the other rules of |SPARK| that if
+   X'Initialized is True,
+   then for every reachable part Y of X whose type is not
+   annotated with the Relaxed_Initialization aspect, Y belongs to its
+   subtype.] An Initialized attribute reference is never a static expression.
 
 .. container:: heading
 
@@ -2308,7 +2421,8 @@ The prefix of an Initialized attribute reference shall denote an object.
 
    Verification Rules
 
-12. At the point of a read of a scalar object X that has relaxed initialization,
+12. At the point of a read of an elementary object X that has relaxed
+    initialization,
     a verification condition is introduced to ensure that X is initialized.
     This includes the case where X is a subcomponent of a composite object
     that is passed as an argument in a call to a predefined relational
@@ -2346,16 +2460,25 @@ The prefix of an Initialized attribute reference shall denote an object.
     whole-object-granularity rules that govern that case will ensure that X is
     initialized whenever it is read.]
 
-13. For any object X, evaluation of X'Initialized includes the evaluation
-    of Y'Initialized for every scalar reachable part
-    (see :ref:`Access Types`) Y of X (excluding
-    "hidden" components of tagged objects - see :ref:`Type Invariants`).
-    Evaluation of X'Initialized for a scalar object X is considered to be a
-    read of X if and only if X does not have relaxed initialization. If X has
-    relaxed initialization, then an evaluation of X'Initialized is instead
-    treated like an evaluation of X'Valid [, which is not a read
-    of X]. If X does not have relaxed initialization, then this implies
-    that evaluation of X'Initialized introduces the same initialization
-    requirements as would be introduced for any other read of X; as a result
-    of meeting these requirements, X'Initialized will always return
-    True for such an object.
+13. For any object X, evaluation of
+    X'Initialized includes the evaluation of any subtype predicate applying
+    to X. In addition:
+
+    * if X has a composite type, evaluation of X'Initialized includes the
+      evaluation of Y'Initialized for every component Y of X whose type is not
+      annotated with the Relaxed_Initialization aspect,
+
+    * if X has unconstrained discriminants, evaluation of X'Initialized
+      includes the evaluation of Y'Initialized for every discriminant Y of X,
+
+    * if X has an access-to-object type, evaluation of X'Initialized includes
+      the evaluation X.all'Initialized if X is not null and the designated
+      type of the type of X is not annotated with the Relaxed_Initialization
+      aspect,
+
+    * if X has an elementary type, its value must have been written either
+      explicitly or implicitly through default initialization.
+
+   Discriminants of out-mode parameters and Output globals of a subprogram are
+   considered to be initialized at the beginning of the subprogram. Other
+   reachable parts are not.

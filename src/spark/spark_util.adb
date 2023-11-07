@@ -1583,20 +1583,22 @@ package body SPARK_Util is
             | N_Unchecked_Type_Conversion
             | N_Type_Conversion
          =>
-            return Has_Mutable_Discriminants (Etype (Expr))
-              and then Expr_Has_Relaxed_Discr (Expression (Expr));
+            return Expr_Has_Relaxed_Discr (Expression (Expr));
 
          when N_Identifier
             | N_Expanded_Name
          =>
-            return Obj_Has_Relaxed_Discr (Entity (Expr));
+            --  The toplevel discriminants of objects are always initialized
+            --  except for the parameter of "for of" quantification over
+            --  arrays.
+
+            return Is_Quantified_Param_Over_Array (Entity (Expr));
 
          when N_Indexed_Component
             | N_Selected_Component
             | N_Explicit_Dereference
          =>
-            return Has_Mutable_Discriminants (Etype (Expr))
-              and then Expr_Has_Relaxed_Init (Expr, No_Eval => True);
+            return True;
 
          when N_Attribute_Reference =>
             if Attribute_Name (Expr) in Name_Loop_Entry | Name_Old then
@@ -1781,6 +1783,15 @@ package body SPARK_Util is
                =>
                   return Expr_Has_Relaxed_Init (Prefix (Expr), No_Eval);
 
+               --  Getting a reference to an object does not cause it to be
+               --  evaluated.
+
+               when Attribute_Access =>
+                  return not Has_Relaxed_Init
+                    (Directly_Designated_Type (Retysp (Etype (Expr))))
+                    and then Expr_Has_Relaxed_Init
+                      (Prefix (Expr), No_Eval => True);
+
                when Attribute_Update =>
                   return Expr_Has_Relaxed_Init
                     (Prefix (Expr), No_Eval => False)
@@ -1795,8 +1806,10 @@ package body SPARK_Util is
 
          when N_Allocator =>
             if Nkind (Expression (Expr)) = N_Qualified_Expression then
-               return Expr_Has_Relaxed_Init
-                 (Expression (Expr), No_Eval => False);
+               return not Has_Relaxed_Init
+                   (Directly_Designated_Type (Retysp (Etype (Expr))))
+                 and then Expr_Has_Relaxed_Init
+                   (Expression (Expr), No_Eval => False);
             else
                --  The default value is necessarily entirely initialized
 
@@ -2370,7 +2383,6 @@ package body SPARK_Util is
       Only_Handled : Boolean)
       return Exception_Sets.Set
    is
-
       function Is_Handler (N : Node_Id) return Boolean is
         (Nkind (N) = N_Exception_Handler);
 
@@ -2381,7 +2393,9 @@ package body SPARK_Util is
 
    begin
       case Nkind (Stmt) is
-         when N_Procedure_Call_Statement =>
+         when N_Procedure_Call_Statement
+            | N_Function_Call
+         =>
             declare
                Callee : constant Entity_Id := Get_Called_Entity (Stmt);
             begin
@@ -3583,6 +3597,30 @@ package body SPARK_Util is
    end Is_Quantified_Loop_Param;
 
    ------------------------------------
+   -- Is_Quantified_Param_Over_Array --
+   -------------------------------------
+
+   function Is_Quantified_Param_Over_Array (Obj : Entity_Id) return Boolean is
+   begin
+      if Ekind (Obj) = E_Variable
+        and then Is_Quantified_Loop_Param (Obj)
+      then
+         declare
+            Q_Expr : constant Node_Id :=
+              (if Ekind (Obj) = E_Variable
+               then Original_Node (Parent (Scope (Obj)))
+               else Parent (Parent (Obj)));
+            I_Spec : constant Node_Id := Iterator_Specification (Q_Expr);
+
+         begin
+            return Present (I_Spec) and then Is_Iterator_Over_Array (I_Spec);
+         end;
+      else
+         return False;
+      end if;
+   end Is_Quantified_Param_Over_Array;
+
+   ------------------------------------
    -- Is_Selected_For_Loop_Unrolling --
    ------------------------------------
 
@@ -4762,35 +4800,6 @@ package body SPARK_Util is
       Count_Assoc (N);
       return Count;
    end Number_Of_Assocs_In_Expression;
-
-   ---------------------------
-   -- Obj_Has_Relaxed_Discr --
-   ---------------------------
-
-   function Obj_Has_Relaxed_Discr (Obj : Object_Kind_Id) return Boolean is
-   begin
-      --  The toplevel discriminants of objects are always initialized except
-      --  for the parameter of "for of" quantification over arrays.
-
-      if Has_Mutable_Discriminants (Etype (Obj))
-        and then Obj_Has_Relaxed_Init (Obj)
-        and then Ekind (Obj) = E_Variable
-        and then Is_Quantified_Loop_Param (Obj)
-      then
-         declare
-            Q_Expr : constant Node_Id :=
-              (if Ekind (Obj) = E_Variable
-               then Original_Node (Parent (Scope (Obj)))
-               else Parent (Parent (Obj)));
-            I_Spec : constant Node_Id := Iterator_Specification (Q_Expr);
-
-         begin
-            return Present (I_Spec) and then Is_Iterator_Over_Array (I_Spec);
-         end;
-      else
-         return False;
-      end if;
-   end Obj_Has_Relaxed_Discr;
 
    --------------------------
    -- Obj_Has_Relaxed_Init --

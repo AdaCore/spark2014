@@ -129,6 +129,10 @@ package Gnat2Why_Opts.Reading is
 
    Limit_Line : Unbounded_String;
 
+   --  Limit analysis to entities with this exact name
+
+   Limit_Name : Unbounded_String;
+
    --  The Why3 command will be run in this directory
 
    Why3_Dir : Unbounded_String;

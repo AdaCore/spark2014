@@ -69,7 +69,11 @@ package body Flow.Analysis.Sanity is
                       Classwide  => False,
                       Globals    => Globals);
 
-         if not Globals.Outputs.Is_Empty then
+         if not Globals.Outputs.Is_Empty
+           and then not Is_Function_With_Side_Effects (FA.Spec_Entity)
+           --  HACK: Exempt functions with side-effects from checking until
+           --  support is added in flow.
+         then
 
             Sane := False;
 
@@ -1362,17 +1366,21 @@ package body Flow.Analysis.Sanity is
             begin
                Traverse_Declarations_And_HSS (Subp_Body);
 
-               --  If this is a user defined equality on a record type, then it
-               --  shall have a Global aspect of null, and shall terminate.
+               --  A user-defined primitive equality operation on a record type
+               --  shall have a Global aspect of NULL, unless the record type
+               --  has only limited views (SPARK RM 6.1.4(11)).
 
-               if Is_User_Defined_Equality (FA.Spec_Entity) then
+               if Is_User_Defined_Equality (FA.Spec_Entity)
+                 and then Is_Primitive (FA.Spec_Entity)
+               then
                   declare
                      Typ : constant Entity_Id :=
-                       Unchecked_Full_Type
-                         (Etype (First_Formal (FA.Spec_Entity)));
+                       Etype (First_Formal (FA.Spec_Entity));
                      Globals : Global_Flow_Ids;
                   begin
-                     if Is_Record_Type (Typ) then
+                     if Is_Record_Type (Unchecked_Full_Type (Typ))
+                       and then not Is_Limited_Type (Retysp (Typ))
+                     then
                         Get_Globals (Subprogram => FA.Spec_Entity,
                                      Scope      => FA.S_Scope,
                                      Classwide  => False,

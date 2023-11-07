@@ -387,10 +387,19 @@ package body Why.Gen.Binders is
 
          when Pointer =>
 
-            --  Currently, we do not create wrapper modules for pointers
-
-            return
-              EW_Abstract (B.P_Typ, Relaxed_Init => False);
+            declare
+               Des_Ty       : constant Entity_Id :=
+                 Directly_Designated_Type (B.P_Typ);
+               Relaxed_Init : constant Boolean :=
+                 (if Has_Init_Wrapper (B.P_Typ)
+                     and not Has_Relaxed_Init (Des_Ty)
+                  then Get_Module (Get_Name (Get_Typ (B.Value.B_Name)))
+                     = E_Init_Module (Des_Ty)
+                  else False);
+            begin
+               return
+                 EW_Abstract (B.P_Typ, Relaxed_Init => Relaxed_Init);
+            end;
 
          when Func =>
             return Get_Typ (B.For_Logic.B_Name);
@@ -659,9 +668,11 @@ package body Why.Gen.Binders is
       Needs_Init_Flag : constant Boolean :=
         Is_Object (E)
          and then Is_Mutable_In_Why (E)
-         and then Is_Scalar_Type (Ty)
-         and then Obj_Has_Relaxed_Init (E);
-      --  We only need an initialization flag for mutable scalar objects
+         and then Is_Elementary_Type (Ty)
+         and then Obj_Has_Relaxed_Init (E)
+         and then Ekind (E) in E_Variable | E_Out_Parameter;
+      --  We only need an initialization flag for variables and out parameters
+      --  of elementary types.
 
       function New_Init_Id (Name : W_Identifier_Id) return Opt_Id is
         (if Needs_Init_Flag
@@ -874,7 +885,9 @@ package body Why.Gen.Binders is
 
             Des_Ty   : constant Entity_Id := Directly_Designated_Type (Ty);
             Value_Ty : constant W_Type_Id := EW_Abstract
-              (Des_Ty, Relaxed_Init => Has_Relaxed_Init (Des_Ty));
+              (Des_Ty,
+               Relaxed_Init => Has_Relaxed_Init (Des_Ty)
+                 or else Obj_Has_Relaxed_Init (E));
 
          begin
             return

@@ -114,6 +114,7 @@ package body Gnat2Why_Opts.Reading is
          Limit_Subp   := Get_Opt (V, Limit_Subp_Name);
          Limit_Line   := Get_Opt (V, Limit_Line_Name);
          Limit_Region := Get_Opt (V, Limit_Region_Name);
+         Limit_Name   := Get_Opt (V, Limit_Name_Name);
 
          Report_Mode :=
            Report_Mode_Type'Value (Get (Get (V, Report_Mode_Name)));

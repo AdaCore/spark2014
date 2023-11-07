@@ -763,7 +763,7 @@ package body VC_Kinds is
          when Lim_Refined_Post_On_Entry =>
            "a protected entry annotated with a Refined_Post",
          when Lim_Relaxed_Init_Access_Type =>
-           "an access type used as a subcomponent of a type or"
+           "an access-to-subprogram type used as a subcomponent of a type or"
           & " an object annotated with Relaxed_Initialization",
          when Lim_Relaxed_Init_Aliasing =>
             "an object annotated with Relaxed_Initialization"

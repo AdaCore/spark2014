@@ -3731,7 +3731,10 @@ package body Flow_Error_Messages is
             --  skipped, and in general we don't expect such an explanation to
             --  be relevant).
 
-            if Tag not in VC_Precondition | VC_Precondition_Main then
+            if Tag not in VC_Precondition
+                        | VC_Precondition_Main
+                        | VC_Raise
+            then
                return To_String (Explain_Calls (Get_Calls_From_Node (N)));
 
             else

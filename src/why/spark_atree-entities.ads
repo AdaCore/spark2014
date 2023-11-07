@@ -414,6 +414,8 @@ package SPARK_Atree.Entities is
 
    function Cloned_Subtype (Typ : Type_Kind_Id) return Entity_Id;
 
+   function First_Subtype (Typ : Type_Kind_Id) return Opt_Type_Kind_Id;
+
    function Get_Cursor_Type (Typ : Type_Kind_Id) return Entity_Id
      with Pre =>
        Present (Aspects.Find_Aspect (Typ, A => Aspects.Aspect_Iterable));
@@ -461,7 +463,7 @@ package SPARK_Atree.Entities is
       return Boolean
      renames Einfo.Entities.Is_Fixed_Lower_Bound_Index_Subtype;
 
-   function Is_Limited_View (Typ : Type_Kind_Id) return Boolean;
+   function Is_Inherently_Limited_Type (Typ : Type_Kind_Id) return Boolean;
 
    function Is_Tagged_Type (Typ : Type_Kind_Id) return Boolean;
 
@@ -738,6 +740,10 @@ package SPARK_Atree.Entities is
    --  Same as Einfo.Is_Abstract_Subprogram
 
    function Is_Expression_Function_Or_Completion
+     (Subp : Callable_Kind_Id)
+      return Boolean;
+
+   function Is_Function_With_Side_Effects
      (Subp : Callable_Kind_Id)
       return Boolean;
 

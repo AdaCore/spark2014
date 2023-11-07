@@ -374,7 +374,7 @@ For example:
       let count : Task.task Trans.tran = Trans.store count
 
 After that, you can register your transformation so that it is available in
-drivers (or in manual proof):
+drivers:
 
 .. code-block:: Ocaml
 
@@ -613,9 +613,8 @@ Sessions
 --------
 
 In this section, we will describe the mechanism of session that is used by
-Why3. This is very well tight to the part on interactive proof as sessions are
-the internal representation of the proof tree that one can see in manual proof
-or in ``why3session.xml`` files.
+Why3. Sessions are the internal representation of the proof tree that one can see
+in ``why3session.xml`` files.
 Most of the files that describe sessions are located in ``why3/src/session``.
 This part, by extension, will also describe most of the primitives used by
 GNATWhy3 as the API is based on sessions and primitives given inside sessions.
@@ -832,10 +831,8 @@ have functions like ``schedule_proof_attempt`` (calls a prover) or
 ``schedule_transformation`` (calls a transformation) which are used to launch
 the execution of transformation/proofs.
 
-This controller part is shared between script tools (GNATWhy3) and interactive
-tools (Manual proof). The functions used will be the same for both tools but
-the underlying scheduler will be different. It is also this scheduling part of
-the tool that is supposed to be exchanging informations with why3server (see
+This controller part is used by script tools (GNATWhy3). The scheduling part of
+the tool is supposed to be exchanging informations with why3server (see
 ``why3/src/server``).
 
 Scheduler
@@ -967,27 +964,6 @@ prover did not finish its execution. If it does, it will update the status of
 the corresponding ``objective`` (see gnat_objectives: objective is the pendant
 of an high-level check from SPARK. Contrary to proofNodeid, those can contain
 several goals).
-
-In the context of manual proof, the callback given will be quite different (in
-:download:`itp_server.ml <../../why3/src/session/itp_server.ml>`.
-
-.. code-block:: Ocaml
-
-  let callback_update_tree_proof cont panid pa_status =
-    let ses = cont.controller_session in
-    let node_id = (* corresponding node in the tree [...] *)
-    in
-
-    let pa = get_proof_attempt_node ses panid in
-    let new_status =
-      Proof_status_change (pa_status, pa.proof_obsolete, pa.limit)
-    in
-    P.notify (Node_change (node_id, new_status))
-
-For manual proof, this ``callback`` will mainly be used to update the
-interactive interface. Here, we see that it uses the status given ``pa_status``
-to create a message to the ``ide`` that is notified through ``P.notify``. We
-will get back to this in section :ref:`manual_proof`.
 
 The possible ``proof_attempt_status`` are the following:
 

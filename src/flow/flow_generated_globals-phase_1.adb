@@ -21,6 +21,7 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
+with Aspects;                 use Aspects;
 with Einfo.Utils;             use Einfo.Utils;
 with Elists;                  use Elists;
 with Lib.Util;                use Lib.Util;

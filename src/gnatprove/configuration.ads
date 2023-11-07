@@ -119,6 +119,7 @@ package Configuration is
       K                     : aliased Boolean;
       Level                 : aliased Integer;
       Limit_Line            : aliased GNAT.Strings.String_Access;
+      Limit_Name            : aliased GNAT.Strings.String_Access;
       Limit_Region          : aliased GNAT.Strings.String_Access;
       Limit_Subp            : aliased GNAT.Strings.String_Access;
       List_Categories       : aliased Boolean;

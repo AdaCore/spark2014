@@ -495,6 +495,10 @@ package SPARK_Util is
    --  @param E loop parameter
    --  @return True iff E has been introduced by a quantified expression
 
+   function Is_Quantified_Param_Over_Array (Obj : Entity_Id) return Boolean;
+   --  Return True iff E has been introduced by a quantified expression over
+   --  the elements of an array.
+
    function Is_Synchronized (E : Entity_Id) return Boolean
    with Pre => Ekind (E) in E_Abstract_State |
                             E_Protected_Type |
@@ -895,10 +899,6 @@ package SPARK_Util is
    --  As this fonction is only used to reject 'Initialized on discriminants
    --  in marking, it only expects objects as inputs.
 
-   function Obj_Has_Relaxed_Discr (Obj : Object_Kind_Id) return Boolean;
-   --  Return True if Obj is an object with relaxed initialization whose
-   --  discriminants might not be initialized.
-
    function Borrower_For_At_End_Borrow_Call
      (Call : N_Function_Call_Id)
       return Entity_Id;
@@ -1200,8 +1200,12 @@ package SPARK_Util is
       return Exception_Sets.Set
    with
      Pre  => Nkind (Stmt) in N_Procedure_Call_Statement
+                           | N_Function_Call
                            | N_Entry_Call_Statement
-                           | N_Raise_Statement;
+                           | N_Raise_Statement
+             and then
+               (if Nkind (Stmt) = N_Function_Call
+                then Is_Function_With_Side_Effects (Get_Called_Entity (Stmt)));
    --  Retrieve all exceptions raised by Stmt. If Only_Handled is True, only
    --  consider exception which are handled above Stmt.
 

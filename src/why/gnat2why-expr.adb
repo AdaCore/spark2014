@@ -296,7 +296,7 @@ package body Gnat2Why.Expr is
       Domain       : EW_Domain;
       Params       : Transformation_Params := Body_Params) return W_Expr_Id
    with Pre => Can_Be_Default_Initialized (Retysp (E))
-     and then not Is_Limited_View (Retysp (E))
+     and then not Is_Inherently_Limited_Type (Retysp (E))
      and then Ekind (Retysp (E)) /= E_String_Literal_Subtype;
    --  Expression for the default value of an object of type E. In the term
    --  domain, the values of uninitialized components are set arbitrarily,
@@ -597,7 +597,7 @@ package body Gnat2Why.Expr is
      (Ada_Node    : Node_Id;
       Ex_Name     : W_Identifier_Id;
       Handled_Exc : Exception_Sets.Set)
-                     return W_Prog_Id;
+      return W_Prog_Id;
    --  Generate conditional raising an exception if Ex_Name is in Handled_Exc
    --  and absurd statement otherwise.
 
@@ -740,6 +740,19 @@ package body Gnat2Why.Expr is
       return W_Prog_Id;
    --  ???
 
+   function Transform_Call_With_Side_Effects
+     (Params : Transformation_Params;
+      Call   : Node_Id)
+      return W_Prog_Id
+   with
+     Pre => Nkind (Call) in N_Entry_Call_Statement
+                          | N_Function_Call
+                          | N_Procedure_Call_Statement
+           and then
+             (if Nkind (Call) = N_Function_Call
+              then Is_Function_With_Side_Effects (Get_Called_Entity (Call)));
+   --  Transform a call to a subprogram with side-effects
+
    function Transform_Comparison
      (Expr   : Node_Id;
       Domain : EW_Domain;
@@ -867,13 +880,6 @@ package body Gnat2Why.Expr is
       Do_Warn : Boolean)
       return W_Prog_Id;
    --  Shared functionality for warning on dead branch or dead code.
-
-   function Why_Subp_Has_Precondition
-     (E        : Callable_Kind_Id;
-      Selector : Selection_Kind := Why.Inter.Standard)
-      return Boolean;
-   --  Return true whenever the Why declaration that corresponds to the given
-   --  subprogram has a precondition.
 
    ------------------------------------------
    -- Handling of Expressions with Actions --
@@ -1656,7 +1662,8 @@ package body Gnat2Why.Expr is
               and then
                 (Default_Initialization (Constrained_Ty) /=
                        No_Default_Initialization
-                 or else Has_Mutable_Discriminants (Constrained_Ty))
+                 or else Has_Mutable_Discriminants (Constrained_Ty)
+                 or else Has_Access_Type (Constrained_Ty))
             then
                Append
                  (Default_Checks,
@@ -1887,6 +1894,21 @@ package body Gnat2Why.Expr is
                Initialized   => Initialized,
                Only_Var      => False,
                Top_Predicate => Top_Predicate));
+
+         --  The address of the borrower is necessarily initialized at the end
+         --  of the borrow.
+
+         if Obj_Has_Relaxed_Init (E) then
+            Append
+              (Context,
+               New_Assume_Statement
+                 (Pred => Pred_Of_Boolean_Term
+                      (New_Init_Attribute_Access
+                           (Name => New_Deref
+                              (Right => Get_Brower_At_End (E),
+                               Typ   => Get_Typ (Get_Brower_At_End (E))),
+                            E    => Retysp (Etype (E))))));
+         end if;
       end if;
    end Assume_Declaration_Of_Entity;
 
@@ -3674,7 +3696,7 @@ package body Gnat2Why.Expr is
                then Insert_Checked_Conversion
                  (Ada_Node => Actual,
                   Domain   => Subdomain,
-                  Expr     => Insert_Init_Check_For_Discriminants
+                  Expr     => Insert_Top_Level_Init_Check
                     (Ada_Node => Actual,
                      E        => Etype (Actual),
                      Name     => Transform_Expr
@@ -3682,7 +3704,8 @@ package body Gnat2Why.Expr is
                         Domain  => Domain,
                         Params  => Params,
                         No_Read => True),
-                     Domain   => Domain),
+                     Domain   => Domain,
+                     Do_Check => not Is_Access_Type (Etype (Actual))),
                   To       => Formal_T,
                   No_Init  => True)
 
@@ -4855,6 +4878,13 @@ package body Gnat2Why.Expr is
          Assumption := Pred_Of_Boolean_Term
            (New_Pointer_Is_Null_Access (Ty_Ext, Expr));
 
+         if Is_Init_Wrapper_Type (Get_Type (+Expr)) then
+            Assumption := New_And_Pred
+              (Left   => Pred_Of_Boolean_Term
+                 (New_Init_Attribute_Access (Ty_Ext, Tmp)),
+               Right  => Assumption);
+         end if;
+
       elsif Is_Simple_Private_Type (Ty_Ext) then
 
          --  If Tmp has a wrapper for initialization, set the init flag to True
@@ -5394,7 +5424,7 @@ package body Gnat2Why.Expr is
                pragma Assert (Top_Predicate);
 
                Init_Pred := +Compute_Is_Initialized
-                 (Ty, +Expr, Params, EW_Pred);
+                 (Ty, +Expr, Params, EW_Pred, Exclude_Components => Relaxed);
             elsif Has_Predicates (Ty) then
                Init_Pred := Compute_Dynamic_Predicate
                  (Expr => Expr, Ty => Ty,
@@ -5402,7 +5432,7 @@ package body Gnat2Why.Expr is
                     (if Top_Predicate then True_Term else False_Term));
             end if;
 
-            if Has_Mutable_Discriminants (Ty) then
+            if Has_Mutable_Discriminants (Ty) or else Is_Access_Type (Ty) then
                Init_Pred := New_And_Pred
                  (Left  => Init_Pred,
                   Right => Pred_Of_Boolean_Term
@@ -5902,7 +5932,9 @@ package body Gnat2Why.Expr is
               Pred_Of_Boolean_Term
                 (if Relaxed_Init
                  then +Compute_Is_Initialized
-                   (Ty_Ext, +Expr, Params, EW_Term, No_Predicate_Check => True)
+                   (Ty_Ext, +Expr, Params, EW_Term,
+                    No_Predicate_Check => True,
+                    Exclude_Components => Relaxed)
                  else Initialized);
             Check_Pred            : constant W_Pred_Id :=
               (if Pred_Check_At_Default and then not Relaxed_Init
@@ -6215,7 +6247,7 @@ package body Gnat2Why.Expr is
                Name               => +Expr,
                Params             => Params,
                Domain             => EW_Pred,
-               Exclude_Relaxed    => True_Term,
+               Exclude_Components => Relaxed,
                No_Predicate_Check => True),
             Right => Res);
       end if;
@@ -6467,7 +6499,7 @@ package body Gnat2Why.Expr is
       --  cannot be moved. The Is_Moved property can still be computed for
       --  them when the object is deallocated.
 
-      elsif Use_Pred and then not Is_Limited_View (Ty) then
+      elsif Use_Pred and then not Is_Inherently_Limited_Type (Ty) then
          declare
             W_Expr : constant W_Term_Id :=
               Insert_Simple_Conversion
@@ -8226,7 +8258,7 @@ package body Gnat2Why.Expr is
                        else Type_Of_Node (Quant_Type));
 
       --  In case of a for of quantification, the quantified variable may be
-      --  partially initialized if it is not a scalar type and:
+      --  partially initialized if:
       --  * the quantification is done on an array with relaxed initialization
       --  * the quantification is done on a container and the Element function
       --    returns a partially initialized expression.
@@ -8235,13 +8267,21 @@ package body Gnat2Why.Expr is
 
       if (Over_Array
           and then (Expr_Has_Relaxed_Init (Over_Expr, No_Eval => False)
-                    or else Has_Relaxed_Init (Quant_Type))
-          and then not Has_Scalar_Type (Quant_Type))
+                    or else Has_Relaxed_Init (Quant_Type)))
         or else (Over_Content
                  and then Has_Relaxed_Init (Quant_Type)
                  and then not Has_Scalar_Type (Quant_Type))
       then
-         W_Quant_Type := EW_Init_Wrapper (W_Quant_Type);
+
+         --  Use the abstract form as the initialization flag cannot easily
+         --  be stored on the side.
+
+         if Get_Type_Kind (W_Quant_Type) = EW_Split then
+            W_Quant_Type := EW_Abstract
+              (Get_Ada_Node (+W_Quant_Type), Relaxed_Init => True);
+         else
+            W_Quant_Type := EW_Init_Wrapper (W_Quant_Type);
+         end if;
       end if;
 
       W_Quant_Var := New_Identifier (Name => Short_Name (Quant_Var),
@@ -9989,13 +10029,21 @@ package body Gnat2Why.Expr is
                                     pragma Assert (Binder.Fields.Present);
                                     Effects_Append_To_Writes
                                       (Effects, Binder.Fields.Binder.B_Name);
+
                                  when UCArray =>
                                     Effects_Append_To_Writes
                                       (Effects, Binder.Content.B_Name);
+
+                                 when Pointer =>
+                                    Effects_Append_To_Writes
+                                      (Effects, Binder.Value.B_Name);
+
                                  when Regular =>
                                     Effects_Append_To_Writes
                                       (Effects, Binder.Main.B_Name);
-                                 when others => raise Program_Error;
+
+                                 when others =>
+                                    raise Program_Error;
                               end case;
 
                               if Binder.Init.Present then
@@ -10027,12 +10075,13 @@ package body Gnat2Why.Expr is
 
       Ref_Context := +Store;
 
-      --  In the case of a function call, there is value to return as the
-      --  final expression. Note that this can only occur for calls to volatile
-      --  functions, when one of the parameters is of a volatile type. Save the
-      --  result of the call at the start of the sequence (Ref_Context consists
-      --  in the sequence of post-call assignments and assumptions at this
-      --  point) and use it as the final value for the sequence.
+      --  In the case of a function call, there is value to return as the final
+      --  expression. Note that this can only occur for calls to functions
+      --  with side-effects or calls to or volatile functions, when one of
+      --  the parameters is of a volatile type. Save the result of the call at
+      --  the start of the sequence (Ref_Context consists in the sequence of
+      --  post-call assignments and assumptions at this point) and use it as
+      --  the final value for the sequence.
 
       if Nkind (Ada_Call) = N_Function_Call then
          declare
@@ -10695,7 +10744,7 @@ package body Gnat2Why.Expr is
             E                  => Ty,
             Name               => +W_Expr,
             Domain             => EW_Prog,
-            Exclude_Relaxed    => True,
+            Exclude_Components => Relaxed,
             No_Predicate_Check => True)
          else W_Expr);
       --  Exclude the predicate from the initialization check to avoid
@@ -10802,7 +10851,7 @@ package body Gnat2Why.Expr is
      (Ada_Node    : Node_Id;
       Ex_Name     : W_Identifier_Id;
       Handled_Exc : Exception_Sets.Set)
-                     return W_Prog_Id
+      return W_Prog_Id
    is
       Raise_Or_Absurd : W_Prog_Id;
       All_But         : Boolean;
@@ -10971,20 +11020,35 @@ package body Gnat2Why.Expr is
 
       Result_Id       : constant W_Identifier_Id :=
         New_Result_Ident (Typ => Get_Typ (Brower_At_End));
+      Brower_Relaxed  : constant Boolean :=
+        Ekind (Brower) in Object_Kind  and then Obj_Has_Relaxed_Init (Brower);
+      pragma Assert
+        (if Ekind (Brower) = E_Function
+         then not Fun_Has_Relaxed_Init (Brower));
+      --  Traversal functions with relaxed initialization are rejected by the
+      --  frontend for now.
+
       New_Brower      : constant W_Prog_Id := New_Any_Expr
         (Return_Type => Get_Typ (Brower_At_End),
          Labels      => Symbol_Sets.Empty_Set,
          Post        => New_And_Pred
-           (Left   => (if Reborrow then True_Pred
+           (Conjuncts =>
+                (1 => (if Reborrow then True_Pred
                        else Compute_Dynamic_Inv_And_Initialization
                          (Expr        => +Result_Id,
                           Ty          => Etype (Brower),
                           Params      => Body_Params,
                           Initialized => True_Term)),
-            Right  => New_Equality_Of_Preserved_Parts
-              (Ty    => Retysp (Etype (Brower)),
-               Expr1 => Transform_Term (Path, Body_Params),
-               Expr2 => +Result_Id)));
+                 2 => New_Equality_Of_Preserved_Parts
+                   (Ty    => Retysp (Etype (Brower)),
+                    Expr1 => Transform_Term (Path, Body_Params),
+                    Expr2 => +Result_Id),
+                 3 => (if Brower_Relaxed
+                       then Pred_Of_Boolean_Term
+                         (New_Init_Attribute_Access
+                            (Name => +Result_Id,
+                             E    => Etype (Brower)))
+                       else True_Pred))));
       --  New value of the borrower. Use an any expr and assume the value of
       --  the is_null field since it cannot be modified.
       --  If we are not inside a reborrow we also assume that the value of
@@ -10995,6 +11059,8 @@ package body Gnat2Why.Expr is
       --  For reborrow, we do this update before the assignment, as we need to
       --  refer to the value of the object before the assignment. As a result,
       --  it could be unsound to assume the dynamic invariant here.
+      --  The address of the borrower is necessarily initialized at the end of
+      --  the borrow.
 
       Borrowed_Ty     : constant Entity_Id :=
         (if Reborrow
@@ -11192,7 +11258,7 @@ package body Gnat2Why.Expr is
                --  For private types, functions are declared in the first
                --  ancestor only
 
-               R_Expr : W_Expr_Id :=
+               P_Expr : W_Expr_Id :=
                  Insert_Simple_Conversion
                    (Ada_Node => N,
                     Domain   => EW_Term,
@@ -11206,33 +11272,47 @@ package body Gnat2Why.Expr is
                --  have been enforced for the prefix. We still need it to
                --  access the components.
 
-               R_Expr := Insert_Init_Check_For_Discriminants
+               P_Expr := Insert_Top_Level_Init_Check
                  (Ada_Node => Prefix (N),
                   E        => Ty,
-                  Name     => R_Expr,
+                  Name     => P_Expr,
                   Domain   => Domain,
                   Do_Check => No_Read);
 
                R := New_Ada_Record_Access
                  (Ada_Node => N,
                   Domain   => Domain,
-                  Name     => R_Expr,
+                  Name     => P_Expr,
                   Ty       => Ty,
                   Field    => Sel_Ent);
             end;
 
          when N_Explicit_Dereference =>
             declare
-               Rec_Ty : constant Entity_Id := Retysp (Etype (Prefix (N)));
-               R_Expr : constant W_Expr_Id :=
-                 Insert_Simple_Conversion (Ada_Node => N,
-                                           Domain   => EW_Term,
-                                           Expr     => Expr,
-                                           To       => Type_Of_Node (Rec_Ty));
+               Ty     : constant Entity_Id := Retysp (Etype (Prefix (N)));
+               P_Expr : W_Expr_Id :=
+                 Insert_Simple_Conversion
+                   (Ada_Node => N,
+                    Domain   => EW_Term,
+                    Expr     => Expr,
+                    To       =>  (if Is_Init_Wrapper_Type (Get_Type (Expr))
+                                  then EW_Init_Wrapper (Type_Of_Node (Ty))
+                                  else Type_Of_Node (Ty)));
             begin
+               --  If the access is not a read, no initialization check will
+               --  have been enforced for the prefix. We still need it to
+               --  access the designated value.
+
+               P_Expr := Insert_Top_Level_Init_Check
+                 (Ada_Node => Prefix (N),
+                  E        => Ty,
+                  Name     => P_Expr,
+                  Domain   => Domain,
+                  Do_Check => No_Read);
+
                R := New_Pointer_Value_Access (Ada_Node => N,
-                                              E        => Rec_Ty,
-                                              Name     => R_Expr,
+                                              E        => Ty,
+                                              Name     => P_Expr,
                                               Domain   => Domain);
             end;
 
@@ -11304,9 +11384,10 @@ package body Gnat2Why.Expr is
          end;
       end if;
 
-      --  Check that the discriminants of the component are initialized if any
+      --  Check that the discriminants or address of the component are
+      --  initialized if any.
 
-      R := Insert_Init_Check_For_Discriminants
+      R := Insert_Top_Level_Init_Check
         (Ada_Node => N,
          E        => Etype (N),
          Name     => R,
@@ -11347,12 +11428,12 @@ package body Gnat2Why.Expr is
          and then Is_Init_Wrapper_Type (Get_Type (Value))
          and then not Expr_Has_Relaxed_Init (N)
          then Insert_Initialization_Check
-           (Ada_Node        => N,
-            E               =>
+           (Ada_Node           => N,
+            E                  =>
               Get_Ada_Node (+Get_Type (Value)),
-            Name            => Value,
-            Domain          => EW_Prog,
-            Exclude_Relaxed => True)
+            Name               => Value,
+            Domain             => EW_Prog,
+            Exclude_Components => Relaxed)
          else Value);
       Prefix_Domain : constant EW_Domain :=
         (if not Check_Prefix and then Domain = EW_Prog then EW_Pterm
@@ -11443,11 +11524,15 @@ package body Gnat2Why.Expr is
          when N_Explicit_Dereference =>
 
             declare
-               Des_Ty    : constant Entity_Id :=
+               Des_Ty       : constant Entity_Id :=
                  Directly_Designated_Type (Pref_Ty);
-               To_Type   : constant W_Type_Id := EW_Abstract
-                 (Des_Ty, Relaxed_Init => Expr_Has_Relaxed_Init (N));
-               New_Value : constant W_Expr_Id := Insert_Simple_Conversion
+               Relaxed_Init : constant Boolean :=
+                 (if Is_Init_Wrapper_Type (Get_Type (+Pref))
+                  then Has_Init_Wrapper (Des_Ty)
+                  else Has_Relaxed_Init (Des_Ty));
+               To_Type      : constant W_Type_Id := EW_Abstract
+                 (Des_Ty, Relaxed_Init => Relaxed_Init);
+               New_Value    : constant W_Expr_Id := Insert_Simple_Conversion
                  (Ada_Node => N,
                   Domain   => Domain,
                   Expr     => Init_Val,
@@ -11985,13 +12070,16 @@ package body Gnat2Why.Expr is
          when Pointer =>
             declare
                Formal_Typ        : constant Entity_Id := Pattern.P_Typ;
+               Relaxed_Init      : constant Boolean :=
+                 Is_Init_Wrapper_Type (Get_Typ (Pattern.Value.B_Name));
 
                Reconstructed_Arg : W_Prog_Id;
                --  We reconstruct the argument and convert it to the
                --  actual type (without checks). We store the result
                --  in Reconstructed_Arg.
 
-               Arg_Array         : W_Expr_Array (1 .. 3);
+               Arg_Array         :
+               W_Expr_Array (1 .. (if Relaxed_Init then 4 else 3));
 
             begin
                --  For value, use the temporary variable
@@ -12021,20 +12109,24 @@ package body Gnat2Why.Expr is
                Arg_Array (3) := New_Pointer_Is_Moved_Access
                  (Formal_Typ, Pre_Expr);
 
+               --  The init flag is always true after the call
+
+               if Relaxed_Init then
+                  Arg_Array (4) := +True_Term;
+               end if;
+
                Reconstructed_Arg :=
                  +Pointer_From_Split_Form
-                 (A  => Arg_Array,
-                  Ty => Formal_Typ);
+                 (A            => Arg_Array,
+                  Ty           => Formal_Typ,
+                  Relaxed_Init => Relaxed_Init);
 
                Reconstructed_Arg :=
                  +Insert_Simple_Conversion
                  (Domain => EW_Pterm,
                   Expr   => +Reconstructed_Arg,
                   To     => EW_Abstract
-                    (Etype (Actual),
-                     Relaxed_Init =>
-                       Is_Init_Wrapper_Type
-                         (Get_Type (+Reconstructed_Arg))));
+                    (Etype (Actual), Relaxed_Init => Relaxed_Init));
 
                T := Reconstructed_Arg;
             end;
@@ -12050,11 +12142,11 @@ package body Gnat2Why.Expr is
         and then Is_Init_Wrapper_Type (Get_Type (+T))
       then
          T := +Insert_Initialization_Check
-           (Ada_Node        => Actual,
-            E               => Etype (Actual),
-            Name            => +T,
-            Domain          => EW_Prog,
-            Exclude_Relaxed => True);
+           (Ada_Node           => Actual,
+            E                  => Etype (Actual),
+            Name               => +T,
+            Domain             => EW_Prog,
+            Exclude_Components => Relaxed);
       end if;
 
       --  Convert to the expected type. All the necessary checks should have
@@ -14330,7 +14422,8 @@ package body Gnat2Why.Expr is
                          not Is_Init_Wrapper_Type (Get_Type (+Value)))
                   then
                      Is_Init := +Compute_Is_Initialized
-                       (C_Typ, +Read, Params, EW_Pred);
+                       (C_Typ, +Read, Params, EW_Pred,
+                        Exclude_Components => Relaxed);
                   end if;
 
                   Read := Insert_Simple_Conversion
@@ -15055,13 +15148,18 @@ package body Gnat2Why.Expr is
       Left_Type  : constant Entity_Id := Etype (Left_Opnd (Ada_Node));
       Left_Expr  : constant W_Expr_Id := New_Temp_For_Expr
         (Insert_Initialization_Check
-           (Left_Opnd (Ada_Node), Left_Type, Left, Domain));
+           (Left_Opnd (Ada_Node),
+            Left_Type,
+            Left,
+            Domain,
+            Exclude_Components => None));
       Right_Expr : constant W_Expr_Id := New_Temp_For_Expr
         (Insert_Initialization_Check
            (Right_Opnd (Ada_Node),
             Etype (Right_Opnd (Ada_Node)),
             Right,
-            Domain));
+            Domain,
+            Exclude_Components => None));
       Arg_Ind    : Positive := 1;
    begin
       Add_Array_Arg (Subdomain, Args, Left_Expr, Arg_Ind);
@@ -15137,14 +15235,14 @@ package body Gnat2Why.Expr is
             Left_Type,
             Left,
             Domain,
-            For_Eq => True));
+            Exclude_Components => For_Eq));
       Right_Expr : constant W_Expr_Id := New_Temp_For_Expr
         (Insert_Initialization_Check
            (Right_Opnd (Ada_Node),
             Etype (Right_Opnd (Ada_Node)),
             Right,
             Domain,
-            For_Eq => True));
+            Exclude_Components => For_Eq));
       Arg_Ind    : Positive := 1;
    begin
       Add_Array_Arg (Subdomain, Args, Left_Expr, Arg_Ind);
@@ -15228,10 +15326,18 @@ package body Gnat2Why.Expr is
 
       Left_Expr : constant W_Term_Id := New_Temp_For_Expr
         (Insert_Initialization_Check
-           (Left_Opnd (Ada_Node), Left_Type, Left, Domain));
+           (Left_Opnd (Ada_Node),
+            Left_Type,
+            Left,
+            Domain,
+            Exclude_Components => None));
       Right_Expr : constant W_Term_Id := New_Temp_For_Expr
         (Insert_Initialization_Check
-           (Right_Opnd (Ada_Node), Left_Type, Right, Domain));
+           (Right_Opnd (Ada_Node),
+            Etype (Right_Opnd (Ada_Node)),
+            Right,
+            Domain,
+            Exclude_Components => None));
       Array_Theory : constant M_Array_1_Bool_Op_Type :=
         Get_Array_Theory_1_Bool_Op (Etype (Left_Opnd (Ada_Node)));
       W_Op      : constant W_Identifier_Id :=
@@ -15404,7 +15510,11 @@ package body Gnat2Why.Expr is
 
       Right_Expr : constant W_Term_Id := New_Temp_For_Expr
         (Insert_Initialization_Check
-           (Right_Opnd (Ada_Node), Right_Type, Right, Domain));
+           (Right_Opnd (Ada_Node),
+            Right_Type,
+            Right,
+            Domain,
+            Exclude_Components => None));
 
       Right_Length : constant W_Expr_Id :=
         Build_Length_Expr (Domain => EW_Term, Expr => +Right_Expr, Dim => 1);
@@ -16985,19 +17095,6 @@ package body Gnat2Why.Expr is
 
          when Attribute_Initialized =>
 
-            --  If Var has its own Init flag, use it
-
-            if Nkind (Var) in N_Identifier | N_Expanded_Name then
-               declare
-                  Init_Flag : constant W_Expr_Id :=
-                    Get_Init_Id_From_Object (Entity (Var), Params.Ref_Allowed);
-               begin
-                  if Init_Flag /= Why_Empty then
-                     return Init_Flag;
-                  end if;
-               end;
-            end if;
-
             --  For discriminant, the init flag is stored in the prefix
 
             if Nkind (Var) = N_Selected_Component
@@ -17018,15 +17115,49 @@ package body Gnat2Why.Expr is
                end;
             end if;
 
+            --  If Var is an identifier and has its own Init flag, use it
+
             declare
-               Expr : constant W_Expr_Id :=
-                 Transform_Expr
-                   (Expr    => Var,
-                    Domain  => Domain,
-                    Params  => Params,
-                    No_Read => True);
+               Expr : W_Expr_Id;
             begin
-               T := Compute_Is_Initialized (Etype (Var), Expr, Params, Domain);
+               T := New_Literal (Value => EW_True, Domain => Domain);
+
+               if Nkind (Var) in N_Identifier | N_Expanded_Name then
+                  declare
+                     Init_Id : constant W_Expr_Id := Get_Init_Id_From_Object
+                       (Entity (Var), Params.Ref_Allowed);
+                  begin
+                     if Init_Id /= Why_Empty then
+                        T := Init_Id;
+                     end if;
+                  end;
+
+                  --  Take care of not generating initialization checks for the
+                  --  prefix here.
+
+                  Expr := Transform_Identifier
+                    (Expr    => Var,
+                     Ent     => Entity (Var),
+                     Domain  => (if Domain = EW_Prog then EW_Pterm
+                                 else Domain),
+                     Params  => Params);
+
+               else
+                  Expr := Transform_Expr
+                    (Expr    => Var,
+                     Domain  => Domain,
+                     Params  => Params,
+                     No_Read => True);
+               end if;
+
+               --  Add the initialization of components if any
+
+               T := New_And_Expr
+                 (Left   => T,
+                  Right  => Compute_Is_Initialized
+                    (Etype (Var), Expr, Params, Domain,
+                     Exclude_Components => Relaxed),
+                  Domain => Domain);
             end;
 
          when Attribute_Access =>
@@ -17040,21 +17171,30 @@ package body Gnat2Why.Expr is
 
             else
                declare
+                  Relaxed_Init  : constant Boolean :=
+                    Expr_Has_Relaxed_Init (Expr);
+                  Des_Ty        : constant Entity_Id :=
+                    Directly_Designated_Type (Etype (Expr));
                   Value_Expr    : constant W_Expr_Id := Transform_Expr
                     (Expr          => Var,
                      Domain        => Domain,
                      Params        => Params,
                      Expected_Type => EW_Abstract
-                       (Directly_Designated_Type (Etype (Expr))));
+                       (Des_Ty,
+                        Relaxed_Init => Has_Relaxed_Init (Des_Ty)
+                        or else
+                          (Relaxed_Init and then Has_Init_Wrapper (Des_Ty))));
                   Is_Moved_Expr : constant W_Expr_Id := +False_Term;
                   Is_Null_Expr  : constant W_Expr_Id := +False_Term;
 
                begin
                   T := +Pointer_From_Split_Form
-                    (A  => (Value_Expr,
-                            Is_Null_Expr,
-                            Is_Moved_Expr),
-                     Ty => Etype (Expr));
+                    (A            =>
+                       (Value_Expr, Is_Null_Expr, Is_Moved_Expr)
+                     & (if Relaxed_Init then (1 => +True_Term)
+                        else (1 .. 0 => <>)),
+                     Ty           => Etype (Expr),
+                     Relaxed_Init => Relaxed_Init);
 
                   --  If the access type has a direct or inherited predicate,
                   --  generate a corresponding check.
@@ -17123,6 +17263,339 @@ package body Gnat2Why.Expr is
          return Core;
       end if;
    end Transform_Block_Statement;
+
+   --------------------------------------
+   -- Transform_Call_With_Side_Effects --
+   --------------------------------------
+
+   function Transform_Call_With_Side_Effects
+     (Params : Transformation_Params;
+      Call   : Node_Id)
+      return W_Prog_Id
+   is
+      Context     : Ref_Context;
+      Store       : W_Statement_Sequence_Id := Void_Sequence;
+      Handled_Exc : constant Exception_Sets.Set :=
+        Get_Raised_Exceptions (Call, Only_Handled => True);
+      Exc_Store   : W_Statement_Sequence_Id := Void_Sequence;
+      Result      : W_Prog_Id;
+      Subp        : constant Entity_Id := Get_Called_Entity_For_Proof (Call);
+
+      Selector    : constant Selection_Kind :=
+
+        --  When the call is dispatching, use the Dispatch variant of the
+        --  program function, which has the appropriate contract.
+
+        (if Nkind (Call) in N_Procedure_Call_Statement | N_Function_Call
+           and then Present (Controlling_Argument (Call))
+         then
+            Dispatch
+
+         --  When the call has visibility over the refined postcondition of the
+         --  subprogram, use the Refine variant of the program function, which
+         --  has the appropriate refined contract.
+
+         elsif Entity_Body_In_SPARK (Subp)
+           and then Has_Contracts (Subp, Pragma_Refined_Post)
+           and then Has_Visibility_On_Refined (Call, Subp)
+         then
+            Refine
+
+         --  Otherwise use the Standard variant of the program function
+         --  (defined outside any namespace, directly in the module for
+         --  the program function).
+
+         else Why.Inter.Standard);
+
+      Tag_Expr : constant W_Expr_Id :=
+        (if Nkind (Call) = N_Function_Call
+           and then Selector = Dispatch
+         then
+            Transform_Expr
+              (Expr   => Controlling_Argument (Call),
+               Domain => EW_Pterm,
+               Params => Params)
+         else Why_Empty);
+      Tag_Arg  : constant W_Expr_Array :=
+        (if Nkind (Call) = N_Function_Call
+           and then Selector = Dispatch
+         then
+           (1 => New_Tag_Access
+                (Domain => EW_Pterm,
+                 Name   => Tag_Expr,
+                 Ty     => Get_Ada_Node (+Get_Type (Tag_Expr))))
+         else (1 .. 0 => <>));
+      --  Calls to dispatching function need the dispatching tag as an
+      --  additional argument.
+
+      Args        : constant W_Expr_Array :=
+        Tag_Arg &
+        Compute_Call_Args
+          (Call, EW_Prog, Context, Store,
+           Exc_Exit  => not Handled_Exc.Is_Empty,
+           Exc_Store => Exc_Store,
+           Params    => Params,
+           Use_Tmps  => Subp_Needs_Invariant_Checks (Subp)
+             or else Call_Needs_Variant_Check (Call, Current_Subp));
+      --  If we need to perform invariant or variant checks for this call, Args
+      --  will be reused for the call to the checking procedure. Force the use
+      --  of temporary identifiers to avoid duplicating checks.
+
+      Why_Name    :  W_Identifier_Id;
+
+   begin
+      --  For procedures with higher order specialization, generate a
+      --  specialized version if needed and call it instead.
+
+      if Is_Specialized_Call (Call, Specialized_Call_Params) then
+         Create_Theory_For_HO_Specialization_If_Needed (Call);
+
+         declare
+            HO_Specialization : constant M_HO_Specialization_Type :=
+              M_HO_Specializations (Subp)
+                (Get_Specialization_Theory_Name (Call));
+         begin
+            Why_Name := HO_Specialization.Prog_Id;
+         end;
+      else
+         Why_Name :=
+           W_Identifier_Id
+             (Transform_Identifier (Params   => Params,
+                                    Expr     => Call,
+                                    Ent      => Subp,
+                                    Domain   => EW_Prog,
+                                    Selector => Selector));
+      end if;
+
+      if Why_Subp_Has_Precondition (Subp, Selector) then
+         Result :=
+           New_VC_Call
+             (Call,
+              Why_Name,
+              Args,
+              VC_Precondition,
+              Get_Typ (Why_Name));
+      else
+         Result :=
+           New_Call
+             (Call,
+              Why_Name,
+              Args,
+              Get_Typ (Why_Name));
+      end if;
+
+      --  Insert a try block around the call to catch potential Ada exceptions
+      --  and do the appropriate stores. The exceptions are raised again after
+      --  the store, so no post processing should be appended to call if it
+      --  should also be done for exceptions.
+
+      if Has_Exceptional_Contract (Subp) then
+         declare
+            Ex_Name         : constant W_Identifier_Id :=
+              New_Temp_Identifier (Base_Name => "exn", Typ => EW_Int_Type);
+            Raise_Or_Absurd : constant W_Prog_Id :=
+              New_Raise_Or_Absurd (Call, Ex_Name, Handled_Exc);
+         begin
+            --  Put the raise at the end of the handler
+
+            Append (Exc_Store, Raise_Or_Absurd);
+
+            --  Construct the try block
+
+            Result := New_Try_Block
+              (Ada_Node => Call,
+               Prog     => Result,
+               Handler  =>
+                 (1 => New_Handler
+                      (Name   => M_Main.Ada_Exc,
+                       Arg_Id => Ex_Name,
+                       Def    => +Exc_Store)),
+               Typ      => Get_Type (+Result));
+         end;
+      end if;
+
+      --  Insert invariant check if needed
+
+      if Subp_Needs_Invariant_Checks (Subp) then
+         Prepend
+           (New_VC_Call
+              (Ada_Node => Call,
+               Name     =>
+                 E_Symb (Subp, WNE_Check_Invariants_On_Call),
+               Progs    => Args,
+               Reason   => VC_Invariant_Check,
+               Typ      => EW_Unit_Type),
+            Result);
+      end if;
+
+      --  Insert tag check if needed
+
+      if Nkind (Call) /= N_Entry_Call_Statement then
+         Prepend (Compute_Tag_Check (Call, Params), Result);
+      end if;
+
+      --  Insert variant check if needed
+
+      if Call_Needs_Variant_Check (Call, Current_Subp) then
+         Prepend (Check_Subprogram_Variants (Call   => Call,
+                                             Args   => Args,
+                                             Params => Params),
+                  Result);
+      end if;
+
+      --  Generate termination checks if necessary
+
+      declare
+         Encl_Cond  : constant Termination_Condition :=
+           Get_Termination_Condition (Current_Subp, Compute => True);
+         Subp_Cond  : constant Termination_Condition :=
+           Get_Termination_Condition (Subp, Compute => True);
+         Ghost_Call : constant Boolean :=
+           Is_Ghost_Entity (Subp)
+           and then not Is_Ghost_Entity (Current_Subp);
+
+      begin
+         --  If the enclosing subprogram has a dynamic termination condition,
+         --  termination checks are entirely done by proof. If the call
+         --  might unconditionally not terminate, check that the termination
+         --  condition of the enclosing subprogram evaluates to False. If the
+         --  callee is ghost and not the caller, the check was done in flow
+         --  analysis. Do not duplicate it here.
+
+         if Encl_Cond.Kind = Dynamic
+           and then
+             (Subp_Cond = (Static, False)
+              or else
+                Call_Never_Terminates (Call, Current_Subp))
+           and then not Ghost_Call
+         then
+            pragma Assert (Termination_Condition_Name /= Why_Empty);
+
+            Prepend
+              (New_Ignore
+                 (Prog => New_Located_Assert
+                      (Ada_Node   => Call,
+                       Pred       => New_Not
+                         (Right => +Termination_Condition_Name),
+                       Reason     => VC_Termination_Check,
+                       Kind       => EW_Assert)),
+               Result);
+
+         --  Check calls to subprograms with a dynamic termination conditions.
+         --  This shall also be done in subprograms which always terminate
+         --  and when the callee is ghost and not the caller. Other checks
+         --  are deferred to flow analysis.
+
+         elsif (Encl_Cond /= (Static, False) or else Ghost_Call)
+           and then Subp_Cond.Kind = Dynamic
+         then
+            declare
+               Term_Check : W_Prog_Id :=
+                 New_VC_Call
+                   (Ada_Node => Call,
+                    Name     =>
+                      E_Symb
+                        (Subp, WNE_Check_Termination_Condition),
+                    Progs    => Args,
+                    Reason   => VC_Termination_Check,
+                    Typ      => EW_Unit_Type);
+
+            begin
+               --  Termination of ghost calls needs to be checked independently
+               --  of the termination condition of the caller.
+
+               if Encl_Cond.Kind = Dynamic
+                 and then not Ghost_Call
+               then
+                  Term_Check := New_Conditional
+                    (Condition => +Termination_Condition_Name,
+                     Then_Part => Term_Check);
+               end if;
+
+               Prepend (Term_Check, Result);
+            end;
+         end if;
+      end;
+
+      --  Check that the call does not cause a resource leak. Every output
+      --  of the call which is not also an input should be moved prior to the
+      --  call. Otherwise assigning it in the callee will produce a resource
+      --  leak.
+
+      Check_For_Memory_Leak : declare
+
+         Outputs : Entity_Sets.Set :=
+           Compute_Outputs_With_Allocated_Parts (Subp);
+
+         procedure Check_Param
+           (Formal : Entity_Id; Actual : Node_Id);
+
+         procedure Check_Param
+           (Formal : Entity_Id; Actual : Node_Id)
+         is
+            Typ : constant Entity_Id := Retysp (Etype (Formal));
+         begin
+            if Contains_Allocated_Parts (Typ)
+              and then not Is_Anonymous_Access_Type (Typ)
+              and then Ekind (Formal) = E_Out_Parameter
+            then
+               Outputs.Delete (Formal);
+               Prepend (Check_No_Memory_Leaks (Actual, Actual), Result);
+            end if;
+         end Check_Param;
+
+         procedure Iterate_Call is new
+           Iterate_Call_Parameters (Check_Param);
+
+      begin
+         if Is_Unchecked_Deallocation_Instance (Subp) then
+            Prepend
+              (Check_No_Memory_Leaks
+                 (Call,
+                  First_Actual (Call),
+                  Is_Uncheck_Dealloc => True),
+               Result);
+
+         else
+            Iterate_Call (Call);
+
+            for Obj of Outputs loop
+               Prepend
+                 (Check_No_Memory_Leaks (Call, Obj), Result);
+            end loop;
+         end if;
+      end Check_For_Memory_Leak;
+
+      --  Always call Insert_Ref_Context to get the checks on store for
+      --  predicates.
+
+      Result := Insert_Ref_Context (Call, Result, Context, Store);
+
+      --  Handle specially calls to instances of Ada.Unchecked_Deallocation to
+      --  assume that the argument is set to null on return, in the absence of
+      --  a postcondition in the standard.
+
+      if Is_Unchecked_Deallocation_Instance (Subp) then
+         declare
+            Actual : constant Node_Id := First_Actual (Call);
+            Typ    : constant Entity_Id := Retysp (Etype (Actual));
+            Ptr    : constant W_Expr_Id :=
+              Transform_Expr (Expr   => Actual,
+                              Domain => EW_Term,
+                              Params => Params);
+         begin
+            Append
+              (Result,
+               New_Assume_Statement
+                 (Ada_Node => Call,
+                  Pred     =>
+                    Pred_Of_Boolean_Term
+                      (+New_Pointer_Is_Null_Access (Typ, Ptr))));
+         end;
+      end if;
+
+      return Result;
+   end Transform_Call_With_Side_Effects;
 
    --------------------------
    -- Transform_Comparison --
@@ -17602,10 +18075,15 @@ package body Gnat2Why.Expr is
             Subdomain  : constant EW_Domain :=
               (if Domain = EW_Pred then EW_Term else Domain);
 
+            Relaxed_Init : constant Boolean :=
+              Expr_Has_Relaxed_Init (Left) or Expr_Has_Relaxed_Init (Right);
+            --  An access comparison does not consider the designated value. It
+            --  is OK to compare partially intialized values.
+
             W_Left_Ty  : constant W_Type_Id :=
-              EW_Abstract (Root_Retysp (Left_Type));
+              EW_Abstract (Root_Retysp (Left_Type), Relaxed_Init);
             W_Right_Ty : constant W_Type_Id :=
-              EW_Abstract (Root_Retysp (Right_Type));
+              EW_Abstract (Root_Retysp (Right_Type), Relaxed_Init);
             Left_Expr  : constant W_Expr_Id :=
               Transform_Expr (Left, W_Left_Ty, Subdomain, Params);
             Right_Expr : constant W_Expr_Id :=
@@ -17615,8 +18093,7 @@ package body Gnat2Why.Expr is
               (Ada_Node => Expr,
                Domain   => Subdomain,
                Name     =>
-                 E_Symb (Root_Retysp (Left_Type),
-                   WNE_Bool_Eq),
+                 E_Symb (Root_Retysp (Left_Type), WNE_Bool_Eq, Relaxed_Init),
                Args     => (1 => Left_Expr,
                             2 => Right_Expr),
                Typ      => EW_Bool_Type);
@@ -20291,7 +20768,7 @@ package body Gnat2Why.Expr is
 
          when N_Type_Conversion =>
 
-            --  When converting between elementary types, only require that the
+            --  When converting between scalar types, only require that the
             --  converted expression is translated into a value of the expected
             --  base type. Necessary checks, rounding and conversions will
             --  be introduced at the end of Transform_Expr below. Fixed-point
@@ -20302,7 +20779,7 @@ package body Gnat2Why.Expr is
             --  predicate is explicitly the target of the conversion, to avoid
             --  having it being skipped.
 
-            if Is_Elementary_Type (Expr_Type)
+            if Is_Scalar_Type (Expr_Type)
               and then not Has_Fixed_Point_Type (Expr_Type)
               and then not Has_Predicates (Expr_Type)
             then
@@ -20533,6 +21010,11 @@ package body Gnat2Why.Expr is
                         Right  => Right_Expr,
                         Domain => Domain);
                   end;
+
+               elsif Is_Function_With_Side_Effects (Subp) then
+                  pragma Assert (Domain = EW_Prog);
+                  T := +Transform_Call_With_Side_Effects (Local_Params, Expr);
+
                else
                   T := Transform_Function_Call (Expr, Domain, Local_Params);
                end if;
@@ -20670,6 +21152,13 @@ package body Gnat2Why.Expr is
                   --  generate:
                   --  to_des_ty (<default_value_for_constr_ty>)
 
+                  --  For now, uninitialized allocators are only allowed if the
+                  --  designated type defines full default initialization.
+                  --  Therefore, the allocated object cannot have relaxed
+                  --  initialization.
+
+                  pragma Assert (not Expr_Has_Relaxed_Init (Expr));
+
                   declare
                      Constr_Ty : constant Entity_Id :=
                        Retysp (Entity (New_Expr));
@@ -20760,12 +21249,17 @@ package body Gnat2Why.Expr is
                            Domain => Domain,
                            Params => Local_Params),
                         Need_Temp => Need_Bound_Check);
+                     Relaxed_Init     : constant Boolean :=
+                          Expr_Has_Relaxed_Init (Expr, No_Eval => False);
+                     Des_Relaxed_Init : constant Boolean :=
+                       Has_Relaxed_Init (Des_Ty)
+                       or else
+                         (Has_Init_Wrapper (Des_Ty) and then Relaxed_Init);
                      Value_Expr       : W_Expr_Id := Insert_Checked_Conversion
                        (Ada_Node => New_Expr,
                         Domain   => Domain,
                         Expr     => Tmp_Value,
-                        To       => EW_Abstract
-                          (Des_Ty, Has_Relaxed_Init (Des_Ty)));
+                        To       => EW_Abstract (Des_Ty, Des_Relaxed_Init));
 
                   begin
                      --  Allocators do not slide the allocated value. If the
@@ -20799,8 +21293,12 @@ package body Gnat2Why.Expr is
                         Tmp      => Tmp_Value,
                         Context  => Value_Expr);
                      Call := +Pointer_From_Split_Form
-                       (A  => (Value_Expr, +False_Term, +False_Term),
-                        Ty => Etype (Expr));
+                       (A            =>
+                          (Value_Expr, +False_Term, +False_Term)
+                        & (if Relaxed_Init then (1 => +True_Term)
+                           else (1 .. 0 => <>)),
+                        Ty           => Etype (Expr),
+                        Relaxed_Init => Relaxed_Init);
                   end;
 
                end if;
@@ -22238,17 +22736,20 @@ package body Gnat2Why.Expr is
                               pragma Assert (Top_Predicate);
 
                               T := Insert_Initialization_Check
-                                (Expr, Typ, T, Domain);
+                                (Expr, Typ, T, Domain,
+                                 Exclude_Components => Relaxed);
                            else
                               T := +Insert_Predicate_Check
                                 (Expr, Typ, +T, Top_Predicate);
                            end if;
 
-                           --  Check that the mutable discriminants are
-                           --  initialized.
+                           --  The parameter of a "for of" quantification over
+                           --  arrays is basically an indexed component.
+                           --  Check initialization of access address or
+                           --  mutable discriminants.
 
-                           if Obj_Has_Relaxed_Discr (Ent) then
-                              T := Insert_Init_Check_For_Discriminants
+                           if Is_Quantified_Param_Over_Array (Ent) then
+                              T := Insert_Top_Level_Init_Check
                                 (Expr, Typ, T, Domain);
                            end if;
                         end;
@@ -22417,18 +22918,16 @@ package body Gnat2Why.Expr is
       return W_Expr_Id
    is
 
-      function Initialization_Check_Needed (Alt : Node_Id) return Boolean is
-        (not Is_Entity_Name (Alt)
-         or else not Is_Type (Entity (Alt))
-         or else (Has_Predicates (Entity (Alt))
-           and then Predicate_Requires_Initialization (Entity (Alt))));
-      --  Return True if we need to initialize the lefthand side for a
-      --  membership test wrt Alt. It is not the case if Alt is a type, unless
-      --  this type has predicates.
+      function Initialization_Check_For_Eq return Boolean;
+      --  Return True if we need to initialize the lefthand side so it is safe
+      --  to compute the equality on it.
+      --  The function returns True even if the membership test uses a
+      --  primitive equality with relaxed inputs. Indeed, the translation uses
+      --  _user_eq which never expects wrappers for now.
 
-      function Initialization_Check_Needed return Boolean;
-      --  Return True if we need to initialize the lefthand side for the
-      --  membership test.
+      function Initialization_Check_For_Preds return Boolean;
+      --  Return True if we need to initialize the lefthand side so it is safe
+      --  to check its predicates.
 
       function Transform_Alternative
         (Var       : W_Expr_Id;
@@ -22444,10 +22943,17 @@ package body Gnat2Why.Expr is
          In_Expr : Node_Id) return W_Expr_Id;
 
       ---------------------------------
-      -- Initialization_Check_Needed --
+      -- Initialization_Check_For_Eq --
       ---------------------------------
 
-      function Initialization_Check_Needed return Boolean is
+      function Initialization_Check_For_Eq return Boolean is
+
+         function Contains_Eq (Alt : Node_Id) return Boolean is
+           (not Is_Entity_Name (Alt)
+            or else not Is_Type (Entity (Alt)));
+         --  Return True if the evaluation of a membership test with Alt
+         --  involves an equality relation.
+
       begin
          if Present (Alternatives (Expr)) then
             declare
@@ -22455,17 +22961,51 @@ package body Gnat2Why.Expr is
             begin
                Alt := First (Alternatives (Expr));
                while Present (Alt) loop
-                  if Initialization_Check_Needed (Alt) then
+                  if Contains_Eq (Alt) then
                      return True;
                   end if;
                   Next (Alt);
                end loop;
             end;
-         elsif Initialization_Check_Needed (Right_Opnd (Expr)) then
+         elsif Contains_Eq (Right_Opnd (Expr)) then
             return True;
          end if;
          return False;
-      end Initialization_Check_Needed;
+      end Initialization_Check_For_Eq;
+
+      ------------------------------------
+      -- Initialization_Check_For_Preds --
+      ------------------------------------
+
+      function Initialization_Check_For_Preds return Boolean is
+
+         function Contains_Preds (Alt : Node_Id) return Boolean is
+           (Is_Entity_Name (Alt)
+            and then Is_Type (Entity (Alt))
+            and then Has_Predicates (Entity (Alt))
+            and then Predicate_Requires_Initialization (Entity (Alt)));
+         --  Return True if the evaluation of a membership test with Alt
+         --  involves the evaluation of a predicate which requires
+         --  initialization.
+
+      begin
+         if Present (Alternatives (Expr)) then
+            declare
+               Alt : Node_Id := First (Alternatives (Expr));
+            begin
+               Alt := First (Alternatives (Expr));
+               while Present (Alt) loop
+                  if Contains_Preds (Alt) then
+                     return True;
+                  end if;
+                  Next (Alt);
+               end loop;
+            end;
+         elsif Contains_Preds (Right_Opnd (Expr)) then
+            return True;
+         end if;
+         return False;
+      end Initialization_Check_For_Preds;
 
       ---------------------------
       -- Transform_Alternative --
@@ -22739,7 +23279,10 @@ package body Gnat2Why.Expr is
                   then
                      Result := New_Call
                        (Domain => Domain,
-                        Name   => E_Symb (Ty, WNE_Range_Pred),
+                        Name   => E_Symb
+                          (Ty, WNE_Range_Pred,
+                           Relaxed_Init =>
+                             Get_Relaxed_Init (Get_Type (+Var_Tmp))),
                         Args   =>
                           Prepare_Args_For_Access_Subtype_Check
                             (Ty, +Var_Tmp, Term_Domain (Domain)),
@@ -22811,8 +23354,14 @@ package body Gnat2Why.Expr is
       Var          : constant Node_Id := Left_Opnd (Expr);
       Result       : W_Expr_Id;
       Relaxed_Init : constant Boolean :=
-        not Initialization_Check_Needed
+        not Initialization_Check_For_Preds
+        and then not Initialization_Check_For_Eq
         and then Expr_Has_Relaxed_Init (Var, No_Eval => False);
+      --  It might be necessary to introduce initialization checks for two
+      --  reasons:
+      --  * because the membership checking involves an equality, or
+      --  * because the membership checking evaluates a subtype predicate.
+
       Base_Type    : W_Type_Id :=
         (if Is_Record_Type_In_Why (Etype (Var))
          then EW_Abstract
@@ -22821,7 +23370,8 @@ package body Gnat2Why.Expr is
       --  For records, checks are done on the root type
 
          elsif Relaxed_Init then Type_Of_Node (Var)
-      --  Do not check initialization on composite types
+      --  Do not check initialization on composite types if Relaxed_Init is
+      --  True.
 
          else Base_Why_Type (Var));
 
@@ -22846,12 +23396,20 @@ package body Gnat2Why.Expr is
       end if;
       Var_Expr := Transform_Expr (Var, Base_Type, Subdomain, Params);
 
-      if Initialization_Check_Needed then
+      --  Initialization checks for predicates are introduced by the conversion
+      --  to the normal version of the type. Predefined equality might require
+      --  initialization of additional subcomponents whose type has relaxed
+      --  initialization.
+
+      if Initialization_Check_For_Eq
+        and then Use_Predefined_Equality_For_Type (Etype (Var))
+      then
          Var_Expr := Insert_Initialization_Check
-           (Ada_Node => Var,
-            E        => Etype (Var),
-            Name     => Var_Expr,
-            Domain   => Subdomain);
+           (Ada_Node           => Var,
+            E                  => Etype (Var),
+            Name               => Var_Expr,
+            Domain             => Subdomain,
+            Exclude_Components => For_Eq);
       end if;
 
       if Present (Alternatives (Expr)) then
@@ -23863,14 +24421,14 @@ package body Gnat2Why.Expr is
            Get_Ada_Node (+BT),
            Left_Expr,
            Domain,
-           For_Eq => True);
+           Exclude_Components => For_Eq);
       Right_Expr :=
         Insert_Initialization_Check
           (Right,
            Get_Ada_Node (+BT),
            Right_Expr,
            Domain,
-           For_Eq => True);
+           Exclude_Components => For_Eq);
 
       if Is_Class_Wide_Type (Left_Type) then
          T := New_Ada_Equality
@@ -24504,321 +25062,7 @@ package body Gnat2Why.Expr is
          when N_Procedure_Call_Statement
             | N_Entry_Call_Statement
          =>
-            declare
-               Context     : Ref_Context;
-               Store       : W_Statement_Sequence_Id := Void_Sequence;
-               Handled_Exc : constant Exception_Sets.Set :=
-                 Get_Raised_Exceptions (Stmt_Or_Decl, Only_Handled => True);
-               Exc_Store   : W_Statement_Sequence_Id := Void_Sequence;
-               Call        : W_Prog_Id;
-               Subp        : constant Entity_Id :=
-                 Get_Called_Entity_For_Proof (Stmt_Or_Decl);
-
-               Args        : constant W_Expr_Array :=
-                 Compute_Call_Args
-                   (Stmt_Or_Decl, EW_Prog, Context, Store,
-                    Exc_Exit  => not Handled_Exc.Is_Empty,
-                    Exc_Store => Exc_Store,
-                    Params    => Params,
-                    Use_Tmps  => Subp_Needs_Invariant_Checks (Subp)
-                      or else Call_Needs_Variant_Check
-                      (Stmt_Or_Decl, Current_Subp));
-               --  If we need to perform invariant or variant checks for this
-               --  call, Args will be reused for the call to the checking
-               --  procedure. Force the use of temporary identifiers to avoid
-               --  duplicating checks.
-
-               Selector    : constant Selection_Kind :=
-               --  When the call is dispatching, use the Dispatch variant of
-               --  the program function, which has the appropriate contract.
-
-                 (if Nkind (Stmt_Or_Decl) = N_Procedure_Call_Statement
-                    and then Present (Controlling_Argument (Stmt_Or_Decl))
-                  then
-                     Dispatch
-
-                  --  When the call has visibility over the refined
-                  --  postcondition of the subprogram, use the Refine variant
-                  --  of the program function, which has the appropriate
-                  --  refined contract.
-
-                  elsif Entity_Body_In_SPARK (Subp)
-                    and then Has_Contracts (Subp, Pragma_Refined_Post)
-                    and then Has_Visibility_On_Refined (Stmt_Or_Decl, Subp)
-                  then
-                     Refine
-
-                  --  Otherwise use the Standard variant of the program
-                  --  function (defined outside any namespace, directly in
-                  --  the module for the program function).
-
-                  else Why.Inter.Standard);
-
-               Why_Name    :  W_Identifier_Id;
-
-            begin
-               --  For procedures with higher order specialization, generate a
-               --  specialized version if needed and call it instead.
-
-               if Is_Specialized_Call (Stmt_Or_Decl, Specialized_Call_Params)
-               then
-                  Create_Theory_For_HO_Specialization_If_Needed (Stmt_Or_Decl);
-
-                  declare
-                     HO_Specialization : constant M_HO_Specialization_Type :=
-                       M_HO_Specializations (Subp)
-                         (Get_Specialization_Theory_Name (Stmt_Or_Decl));
-                  begin
-                     Why_Name := HO_Specialization.Prog_Id;
-                  end;
-               else
-                  Why_Name :=
-                    W_Identifier_Id
-                      (Transform_Identifier (Params   => Params,
-                                             Expr     => Stmt_Or_Decl,
-                                             Ent      => Subp,
-                                             Domain   => EW_Prog,
-                                             Selector => Selector));
-               end if;
-
-               if Why_Subp_Has_Precondition (Subp, Selector) then
-                  Call :=
-                    New_VC_Call
-                      (Stmt_Or_Decl,
-                       Why_Name,
-                       Args,
-                       VC_Precondition,
-                       EW_Unit_Type);
-               else
-                  Call :=
-                    New_Call
-                      (Stmt_Or_Decl,
-                       Why_Name,
-                       Args,
-                       EW_Unit_Type);
-               end if;
-
-               --  Insert a try block around the call to catch potential
-               --  Ada exceptions and do the appropriate stores. The exceptions
-               --  Are raised again after the store, so no post processing
-               --  should be appended to call if it should also be done for
-               --  exceptions.
-
-               if Has_Exceptional_Contract (Subp) then
-                  declare
-                     Ex_Name         : constant W_Identifier_Id :=
-                       New_Temp_Identifier
-                         (Base_Name => "exn", Typ => EW_Int_Type);
-                     Raise_Or_Absurd : constant W_Prog_Id :=
-                       New_Raise_Or_Absurd
-                         (Stmt_Or_Decl, Ex_Name, Handled_Exc);
-                  begin
-
-                     --  Put the raise at the end of the handler
-
-                     Append (Exc_Store, Raise_Or_Absurd);
-
-                     --  Construct the try block
-
-                     Call := New_Try_Block
-                       (Ada_Node => Stmt_Or_Decl,
-                        Prog     => Call,
-                        Handler  =>
-                          (1 => New_Handler
-                               (Name   => M_Main.Ada_Exc,
-                                Arg_Id => Ex_Name,
-                                Def    => +Exc_Store)),
-                        Typ      => EW_Unit_Type);
-                  end;
-               end if;
-
-               --  Insert invariant check if needed
-
-               if Subp_Needs_Invariant_Checks (Subp) then
-                  Prepend
-                    (New_VC_Call
-                       (Ada_Node => Stmt_Or_Decl,
-                        Name     =>
-                          E_Symb (Subp, WNE_Check_Invariants_On_Call),
-                        Progs    => Args,
-                        Reason   => VC_Invariant_Check,
-                        Typ      => EW_Unit_Type),
-                     Call);
-               end if;
-
-               --  Insert tag check if needed
-
-               if Nkind (Stmt_Or_Decl) /= N_Entry_Call_Statement then
-                  Prepend
-                    (Compute_Tag_Check (Stmt_Or_Decl, Params), Call);
-               end if;
-
-               --  Insert variant check if needed
-
-               if Call_Needs_Variant_Check (Stmt_Or_Decl, Current_Subp) then
-                  Prepend (Check_Subprogram_Variants (Call   => Stmt_Or_Decl,
-                                                      Args   => Args,
-                                                      Params => Params),
-                           Call);
-               end if;
-
-               --  Generate termination checks if necessary
-
-               declare
-                  Encl_Cond  : constant Termination_Condition :=
-                    Get_Termination_Condition (Current_Subp, Compute => True);
-                  Subp_Cond  : constant Termination_Condition :=
-                    Get_Termination_Condition (Subp, Compute => True);
-                  Ghost_Call : constant Boolean :=
-                    Is_Ghost_Entity (Subp)
-                    and then not Is_Ghost_Entity (Current_Subp);
-
-               begin
-                  --  If the enclosing subprogram has a dynamic termination
-                  --  condition, termination checks are entirely done by
-                  --  proof. If the call might unconditionally not terminate,
-                  --  check that the termination condition of the enclosing
-                  --  subprogram evaluates to False.
-                  --  If the callee is ghost and not the caller, the check was
-                  --  done in flow analysis. Do not duplicate it here.
-
-                  if Encl_Cond.Kind = Dynamic
-                    and then
-                      (Subp_Cond = (Static, False)
-                       or else
-                         Call_Never_Terminates (Stmt_Or_Decl, Current_Subp))
-                    and then not Ghost_Call
-                  then
-                     pragma Assert
-                       (Termination_Condition_Name /= Why_Empty);
-
-                     Prepend
-                       (New_Ignore
-                          (Prog => New_Located_Assert
-                               (Ada_Node   => Stmt_Or_Decl,
-                                Pred       => New_Not
-                                  (Right => +Termination_Condition_Name),
-                                Reason     => VC_Termination_Check,
-                                Kind       => EW_Assert)),
-                        Call);
-
-                  --  Check calls to subprograms with a dynamic termination
-                  --  conditions. This shall also be done in subprograms which
-                  --  always terminate and when the callee is ghost and not the
-                  --  caller. Other checks are deferred to flow analysis.
-
-                  elsif (Encl_Cond /= (Static, False) or else Ghost_Call)
-                    and then Subp_Cond.Kind = Dynamic
-                  then
-                     declare
-                        Term_Check : W_Prog_Id :=
-                          New_VC_Call
-                            (Ada_Node => Stmt_Or_Decl,
-                             Name     =>
-                               E_Symb
-                                 (Subp, WNE_Check_Termination_Condition),
-                             Progs    => Args,
-                             Reason   => VC_Termination_Check,
-                             Typ      => EW_Unit_Type);
-
-                     begin
-                        --  Termination of ghost calls needs to be checked
-                        --  independently of the termination condition of the
-                        --  caller.
-
-                        if Encl_Cond.Kind = Dynamic
-                          and then not Ghost_Call
-                        then
-                           Term_Check := New_Conditional
-                             (Condition => +Termination_Condition_Name,
-                              Then_Part => Term_Check);
-                        end if;
-
-                        Prepend (Term_Check, Call);
-                     end;
-                  end if;
-               end;
-
-               --  Check that the call does not cause a resource leak. Every
-               --  output of the call which is not also an input should be
-               --  moved prior to the call. Otherwise assigning it in the
-               --  callee will produce a resource leak.
-
-               Check_For_Memory_Leak : declare
-
-                  Outputs : Entity_Sets.Set :=
-                    Compute_Outputs_With_Allocated_Parts (Subp);
-
-                  procedure Check_Param
-                    (Formal : Entity_Id; Actual : Node_Id);
-
-                  procedure Check_Param
-                    (Formal : Entity_Id; Actual : Node_Id)
-                  is
-                     Typ : constant Entity_Id := Retysp (Etype (Formal));
-                  begin
-                     if Contains_Allocated_Parts (Typ)
-                       and then not Is_Anonymous_Access_Type (Typ)
-                       and then Ekind (Formal) = E_Out_Parameter
-                     then
-                        Outputs.Delete (Formal);
-                        Prepend (Check_No_Memory_Leaks (Actual, Actual), Call);
-                     end if;
-                  end Check_Param;
-
-                  procedure Iterate_Call is new
-                    Iterate_Call_Parameters (Check_Param);
-
-               begin
-                  if Is_Unchecked_Deallocation_Instance (Subp) then
-                     Prepend
-                       (Check_No_Memory_Leaks
-                          (Stmt_Or_Decl,
-                           First_Actual (Stmt_Or_Decl),
-                           Is_Uncheck_Dealloc => True),
-                        Call);
-
-                  else
-                     Iterate_Call (Stmt_Or_Decl);
-
-                     for Obj of Outputs loop
-                        Prepend
-                          (Check_No_Memory_Leaks (Stmt_Or_Decl, Obj), Call);
-                     end loop;
-                  end if;
-               end Check_For_Memory_Leak;
-
-               --  Always call Insert_Ref_Context to get the checks on store
-               --  for predicates.
-
-               Call := Insert_Ref_Context (Stmt_Or_Decl, Call, Context, Store);
-
-               --  Handle specially calls to instances of
-               --  Ada.Unchecked_Deallocation to assume that the argument is
-               --  set to null on return, in the absence of a postcondition
-               --  in the standard.
-
-               if Is_Unchecked_Deallocation_Instance (Subp) then
-                  declare
-                     Actual : constant Node_Id := First_Actual (Stmt_Or_Decl);
-                     Typ    : constant Entity_Id := Retysp (Etype (Actual));
-                     Ptr    : constant W_Expr_Id :=
-                       Transform_Expr (Expr   => Actual,
-                                       Domain => EW_Term,
-                                       Params => Params);
-                  begin
-                     Append
-                       (Call,
-                        New_Assume_Statement
-                          (Ada_Node => Stmt_Or_Decl,
-                           Pred     =>
-                             Pred_Of_Boolean_Term
-                               (+New_Pointer_Is_Null_Access (Typ, Ptr))));
-                  end;
-               end if;
-
-               return Call;
-            end;
+            return Transform_Call_With_Side_Effects (Params, Stmt_Or_Decl);
 
          when N_If_Statement =>
             declare
@@ -26001,25 +26245,5 @@ package body Gnat2Why.Expr is
          return +Void;
       end if;
    end Warn_On_Inconsistent_Assume;
-
-   -------------------------------
-   -- Why_Subp_Has_Precondition --
-   -------------------------------
-
-   function Why_Subp_Has_Precondition
-     (E        : Callable_Kind_Id;
-      Selector : Selection_Kind := Why.Inter.Standard)
-      return Boolean
-   is
-      Has_Precondition : constant Boolean :=
-        Has_Contracts (E, Pragma_Precondition);
-      Has_Classwide_Or_Inherited_Precondition : constant Boolean :=
-        Has_Contracts (E, Pragma_Precondition,
-                       Classwide => True,
-                       Inherited => True);
-   begin
-      return (Selector /= Dispatch and then Has_Precondition)
-        or else Has_Classwide_Or_Inherited_Precondition;
-   end Why_Subp_Has_Precondition;
 
 end Gnat2Why.Expr;
