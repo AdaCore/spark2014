@@ -1431,7 +1431,8 @@ package body Configuration is
             Is_Allowed_In        => Project.Registry.Attribute.Everywhere);
          Project.Registry.Attribute.Add
            (Q_Attribute_Id'(+"Prove", +"Proof_Switches"),
-            Index_Type           => Project.Registry.Attribute.Unit_Index,
+            Index_Type           =>
+               Project.Registry.Attribute.FileGlob_Or_Language_Index,
             Value                => Project.Registry.Attribute.List,
             Value_Case_Sensitive => False,
             Is_Allowed_In        => Project.Registry.Attribute.Everywhere);
