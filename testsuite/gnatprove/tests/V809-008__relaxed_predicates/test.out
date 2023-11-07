@@ -18,6 +18,8 @@ test_predicates.adb:23:17: warning: Relaxed_Initialization annotation is useless
 test_predicates.adb:27:22: info: assertion proved (CVC5: 1 VC)
 test_predicates.adb:28:12: info: predicate check proved (CVC5: 1 VC)
 test_predicates.adb:32:04: warning: analyzing unreferenced procedure "Q"
+test_predicates.adb:32:17: medium: for parameter X at the end of the subprogram at test_predicates.adb:32
+test_predicates.adb:32:17: medium: for parameter X at the end of the subprogram at test_predicates.adb:32
 test_predicates.adb:32:17: medium: initialization check might fail
 test_predicates.adb:32:17: medium: predicate check might fail
 test_predicates.adb:37:12: info: predicate check proved (CVC5: 1 VC)
@@ -33,6 +35,8 @@ test_predicates.adb:55:04: warning: analyzing unreferenced procedure "P"
 test_predicates.adb:57:22: info: assertion proved (CVC5: 1 VC)
 test_predicates.adb:58:12: info: predicate check proved (CVC5: 1 VC)
 test_predicates.adb:62:04: warning: analyzing unreferenced procedure "Q"
+test_predicates.adb:62:17: medium: for parameter X at the end of the subprogram at test_predicates.adb:62
+test_predicates.adb:62:17: medium: for parameter X at the end of the subprogram at test_predicates.adb:62
 test_predicates.adb:62:17: medium: initialization check might fail
 test_predicates.adb:62:17: medium: predicate check might fail
 test_predicates.adb:65:15: info: predicate check proved (CVC5: 1 VC)
@@ -159,6 +163,7 @@ test_predicates_2.adb:61:11: medium: initialization check might fail
 test_predicates_2.adb:61:11: medium: predicate check might fail
 test_scalar_preds.adb:25:06: info: data dependencies proved
 test_scalar_preds.adb:28:22: info: assertion proved (CVC5: 1 VC)
+test_scalar_preds.adb:34:21: medium: for parameter X at the end of the subprogram at test_scalar_preds.adb:34
 test_scalar_preds.adb:34:21: medium: initialization check might fail
 test_scalar_preds.adb:35:06: info: data dependencies proved
 test_scalar_preds.adb:39:15: info: predicate check proved (CVC5: 1 VC)
@@ -189,6 +194,7 @@ test_scalar_preds.adb:116:17: medium: in default value at test_scalar_preds.adb:
 test_scalar_preds.adb:116:17: medium: predicate check might fail
 test_scalar_preds.adb:123:06: info: data dependencies proved
 test_scalar_preds.adb:126:22: info: assertion proved (CVC5: 1 VC)
+test_scalar_preds.adb:132:21: medium: for parameter X at the end of the subprogram at test_scalar_preds.adb:132
 test_scalar_preds.adb:132:21: medium: initialization check might fail
 test_scalar_preds.adb:133:06: info: data dependencies proved
 test_scalar_preds.adb:137:15: info: predicate check proved (CVC5: 1 VC)
@@ -212,6 +218,7 @@ test_scalar_preds.adb:182:17: info: in default value at test_scalar_preds.adb:43
 test_scalar_preds.adb:182:17: info: predicate check proved (CVC5: 1 VC)
 test_scalar_preds.adb:189:06: info: data dependencies proved
 test_scalar_preds.adb:192:22: info: assertion proved (CVC5: 1 VC)
+test_scalar_preds.adb:198:21: medium: for parameter X at the end of the subprogram at test_scalar_preds.adb:198
 test_scalar_preds.adb:198:21: medium: initialization check might fail
 test_scalar_preds.adb:199:06: info: data dependencies proved
 test_scalar_preds.adb:203:15: info: predicate check proved (CVC5: 1 VC)

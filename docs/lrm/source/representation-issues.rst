@@ -7,7 +7,7 @@ Operational and Representation Aspects
 |SPARK| defines several Boolean-valued aspects. These include the
 Async_Readers, Async_Writers, Constant_After_Elaboration,
 Effective_Reads, Effective_Writes, Extensions_Visible, Ghost,
-and Volatile_Function aspects.
+Side_Effects and Volatile_Function aspects.
 [Note that this list does not include expression-valued aspects,
 such as Default_Initial_Condition or Initial_Condition.]
 

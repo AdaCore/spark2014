@@ -4,7 +4,6 @@ def build():
     anod_install("gnatcov", query_range=20)
     anod_install("gprbuild", target="host", query_range=20)
     anod_install("alt-ergo", query_range=20)
-    anod_install("cvc4", query_range=20)
     anod_install("cvc5", query_range=20)
     anod_install("colibri", query_range=20)
     anod_install("spark2014-doc", query_range=20)
@@ -21,6 +20,7 @@ def test():
     anod_install("e3-for-testing", query_range=20)
     anod_install("gnatcov", query_range=20)
     anod_install("gprbuild", target="host", query_range=20)
+    anod_install("spark2014", qualifier="assertions,coverage")
     anod_test("spark2014", qualifier="assertions,coverage,cleanup-mode=none,cache")
 
 def test_large():
@@ -28,10 +28,12 @@ def test_large():
     anod_install("e3-for-testing", query_range=20)
     anod_install("gnatcov", query_range=20)
     anod_install("gprbuild", target="host", query_range=20)
+    anod_install("spark2014", qualifier="assertions,coverage")
     anod_test("spark2014", qualifier="assertions,only_large,coverage,cleanup-mode=none,cache")
 
 def test_acats():
     anod_install("gcc", query_range=20)
     anod_install("e3-for-testing", query_range=20)
     anod_install("gprbuild", target="host", query_range=20)
+    anod_install("spark2014", qualifier="assertions,coverage")
     anod_test("acats-4-gnatprove-baseline", qualifier="assertions,coverage")

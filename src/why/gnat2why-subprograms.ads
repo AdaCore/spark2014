@@ -75,7 +75,8 @@ package Gnat2Why.Subprograms is
    function Compute_Outputs_With_Allocated_Parts
      (E : Callable_Kind_Id)
       return Entity_Sets.Set
-   with Pre => Ekind (E) /= E_Function;
+   with Pre =>
+     (if Ekind (E) = E_Function then Is_Function_With_Side_Effects (E));
    --  Compute the set of outputs with allocated parts for a procedure or
    --  entry E, which consist in output parameters and globals of mode Output.
 

@@ -785,7 +785,10 @@ package Why.Atree.Modules is
 
    function E_Axiom_Module (E : Entity_Id) return W_Module_Id;
 
-   function E_Compl_Module (E : Entity_Id) return W_Module_Id;
+   function E_Compl_Module
+     (E            : Entity_Id;
+      Relaxed_Init : Boolean := False)
+      return W_Module_Id;
    --  Return the module where File = No_Name and Name = (Full_Name (E) &
    --  "__compl"). Memoization may be used. Returns Empty when it is called
    --  with a node which is not an entity, and no module is known for this
@@ -822,7 +825,10 @@ package Why.Atree.Modules is
    --  Return the module for the completion of the representative type of a
    --  record type E.
 
-   function E_Rep_Pointer_Module (E : Entity_Id) return W_Module_Id;
+   function E_Rep_Pointer_Module
+     (E            : Entity_Id;
+      Relaxed_Init : Boolean := False)
+      return W_Module_Id;
    --  Return the name of a pointer's representative module.
 
    function E_DIC_Module (Ty : Type_Kind_Id) return W_Module_Id with

@@ -179,25 +179,36 @@ and ``gold``, you can choose which analysis is performed:
    single: --limit-line; command-line usage
    single: --limit-region
 
-Using the option ``--limit-line=`` one can limit proofs to a particular file
+Using the option ``--limit-line`` one can limit proofs to a particular file
 and line of an Ada file. For example, if you want to prove only line 12 of
 file ``example.adb``, you can add the option ``--limit-line=example.adb:12`` to
-the call to |GNATprove|. Using ``--limit-region=`` one can limit proofs to a
+the call to |GNATprove|. Using ``--limit-region`` one can limit proofs to a
 range of lines in a particular file. For example,
 ``--limit-region=example.adb:12:14`` will limit analysis to lines 12 to 14 in
 ``example.adb``.
 
 .. index::
     single: --limit-subp
+    single: --limit-name
     single: -U; analyze all instances
 
-Using the ``--limit-subp=`` option, one can limit the analysis to a particular
-subprogram. As an example, the option ``--limit-subp=example.ads:12`` limits
-the analysis to the subprogram declared at line 12 in ``example.ads``. If
-``example.ads`` is a generic unit, SPARK skips analysis of such units by
-default, as only instances of generics are analyzed. You can specify the switch
-``-U`` in this case to analyze all instances of the generic subprogram.  One
-can specify a specific instance to analyze by specifying the place of
+Using the ``--limit-name`` option, users can limit the analysis to subprograms
+that have a specific name. Note that this option doesn't change the set of
+units on which the analysis is run. For example, if a subprogram is outside of
+the closure of the main program, it will not be analyzed even if the
+``--limit-name`` option with the corresponding name is provided.
+
+The ``--limit-name`` option cannot distinguish between multiple subprograms
+that have the same name. Users can use the ``--limit-subp`` option, which
+expects a location.  As an example, the option ``--limit-subp=example.ads:12``
+limits the analysis to the subprogram declared at line 12 in ``example.ads``.
+Note that ``--limit-subp`` implies analysis of the unit (``example.ads`` in the
+example). If ``example.ads`` is a generic unit, SPARK skips analysis of such
+units by default, as only instances of generics are analyzed. You can specify
+the switch ``-U`` in this case to analyze all instances of the generic
+subprogram.
+
+One can specify a specific instance to analyze by specifying the place of
 instantiation: the option ``--limit-subp=inst.adb:10:example.ads:12`` analyzes
 the same subprogram, but only the instance that was created via the
 instantiation at line 10 of ``inst.adb``. One can specify a longer chain if
@@ -760,159 +771,6 @@ Once the editor is closed, GNAT Studio re-executes
 :menuselection:`SPARK --> Prove Check`. The user should verify the same
 alternative prover as before is still specified. After execution, GNAT Studio will
 offer to re-edit the file if the proof fails.
-
-Manual Proof Within GNAT Studio
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-A manual proof system is integrated into GNAT Studio. It allows the user to directly
-visualize the verification condition, apply simple proof steps on it, and call
-provers to discharge it. The proof system is available after running
-|GNATprove| via one of the ``Prove ...`` menus. By right-clicking on a check
-message in the location tab, and selecting the menu :menuselection:`SPARK -->
-Start Manual Proof` the proof system starts. It consists of the Manual Proof
-console, the Proof Tree and the current Verification Condition being dealt
-with.
-
-The user interacts with the system mainly using the manual proof console. Three
-types of commands can be entered:
-
-* Some helper commands such as ``help``, ``list-provers`` and
-  ``list-transforms`` are available.
-* When a prover name (type ``list-provers`` to see a list of the available
-  provers) is entered, the corresponding prover is run on the verification
-  condition that is selected in the proof tree.
-* A transformation (see ``list-transforms`` and the below table for the
-  available transformations) can modify the proof tree. A transformation
-  applies to a verification condition or goal and may produce several new
-  subgoals. For example, the transformation ``assert`` allows the user to
-  assert an auxiliary fact. This transformation will create two subgoals, one
-  to prove the assertion, and the other to prove that the assertion implies the
-  previous goal.
-
-The Manual proof system can be quit by selecting :menuselection:`SPARK --> Exit
-Manual Proof` in the menu. A pop-up window asks if the user wants to save the
-session. It is recommended to close it using the menu because it makes sure to
-close everything related to manual proof. A tutorial to the proof system can be
-found in :ref:`Manual Proof Using GNAT Studio`.
-
-List of Useful Transformations and Commands for Manual Proof
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-
-The transformations all contain a specific documentation through the
-``list-transforms`` command and ``help transform_name`` command. The most
-useful transformations/commands are the following:
-
-* ``apply``: apply an hypothesis to the current goal.
-  For example: ``H : x > 0 -> not x = 0`` can be applied on the goal
-  ``G : not x = 0``. After the application you will be left to prove a new goal
-  ``x > 0``.
-
-* ``assert``: adds a new lemma you can use for proving the current Verification
-  Condition.
-  For example: ``assert x = 0`` will generate two new subgoals. In the first
-  one you have to prove that x is indeed equal to 0. In the second one, you can
-  use this hypothesis.
-
-* ``case``: takes a formula and perform an analysis by case on its boolean
-  value. You will have to prove your Verification Condition once with this
-  formula asserted to true and once asserted to false.
-
-* ``clean``: removes unsuccessful proof attempts below proved goals.
-
-* ``clear_but``: removes all hypotheses except the one provided by the user as
-  argument. Removing unused context helps the provers.
-  For example, ``clear_but H,H2,h`` will remove everything but hypotheses H H2
-  and h.
-
-* ``compute_in_goal``: performs possible computations in goal.
-
-* ``destruct``: destruct the head constructor of a formula ( ``/\`` , ``\/``
-  or ``->``).
-  With ``H: A /\ B``, applying ``destruct H`` make two new hypotheses (``H: A``
-  and ``H1: B``). With ``H: A \/ B``, applying ``destruct H`` duplicates the
-  goal which has to be proved with ``H: A`` and ``H: B`` independently. With
-  ``H: A -> B``, ``destruct H`` creates a new subgoal for ``A`` and simplify to
-  ``H: B`` in the current one.
-
-* ``eliminate_epsilon``: sometimes the goal appears as ``epsilon [...]``. This
-  transforms epsilons into adapted logic.
-
-* ``exists``: allows the user to provide a term that instantiates a goal
-  starting with an existential.
-
-* ``help``: with no arguments, return basic commands that can be used. If a
-  transformation is given as argument, it displays a small description of the
-  transformation.
-
-* ``induction``: performs an induction on the unbounded integer specified.
-
-* ``instantiate``: instantiates a ``forall`` quantification at the head of an
-  hypothesis with a term given by the user (a list of terms can be provided).
-
-* ``intros``: introduces a list of constants/hypotheses. This transformation
-  should not be necessary but it can be used to rename constants/hypotheses.
-
-* ``left``: In a goal, transforms ``A \/ B`` into ``A``.
-
-* ``list-provers``: gives a list of the provers available on your machine. You
-  should have at least ``altergo``.
-
-* ``list-transforms``: list transformations.
-
-* ``pose``: defines a new constant equal to a given term.
-
-* ``print``: prints the definition of a name.
-
-* ``remove``: removes a list of hypotheses.
-
-* ``replace``: replace a term by another and create a subgoal asking the user
-  to show that they are equivalent.
-
-* ``rewrite``: rewrites an equality in a goal or hypothesis. For example, with
-  ``H: x = 0`` and goal ``y = x``, ``rewrite H`` transforms the goal into
-  ``y = 0``.
-
-* ``right``: In a goal, transforms ``A \/ B`` into ``B``.
-
-* ``search``: search all occurrences of a name in the context.
-
-* ``split_*``: a set of transformations that split the goals/hypotheses. For
-  example, ``split_goal_wp`` transforms the goal ``A /\ B`` into two new
-  subgoals ``A`` and ``B``.
-
-* ``subst``: try to find an equality that could be used for a given constant and
-  replace each occurrence of this constant by the other side of the equality. It
-  then removes said constant.
-
-* ``subst_all``: do all possible substitutions.
-
-* ``unfold``: unfolds the definition of a function in an hypothesis or a goal.
-
-Recommendations and Tips for Manual Proof
-"""""""""""""""""""""""""""""""""""""""""
-
-* As for proofs with an external interactive prover, the user should set the
-  attribute ``Proof_Dir`` so that proofs can be saved under version control.
-
-* The ``Proof_Dir`` is recommended to be under a version control system (git or
-  svn for example). The proofs can be tedious to rewrite so it is better not to
-  lose them.
-
-* There is currently no way to adapt proofs made on a given version of the code
-  when the code is changed. The update will have to be done manually but
-  we hope to automate the process in the future.
-
-* This feature is experimental and we currently recommend to keep the proof as
-  short as possible.
-
-* If the goal contains epsilons, they can be removed by using
-  ``eliminate_epsilon``.
-
-* Manual provers can be launched during the edition of the proof like
-  other provers. The user can select a goal node and type ``coq`` for example.
-
-* The command line remembers what is typed. Arrow keys can be used to get the
-  lasts queried commands.
 
 How to Speed Up a Run of |GNATprove|
 ------------------------------------

@@ -306,11 +306,11 @@ package body SPARK_Definition is
 
    procedure Check_User_Defined_Eq
      (Ty  : Type_Kind_Id;
-      E   : Entity_Id;
+      N   : Node_Id;
       Msg : String);
    --  If Ty is a record type, mark the user-defined equality on it and check
    --  that it does not have a precondition. If a precondition is found, raise
-   --  a violation on E using the string Msg to refer to E.
+   --  a violation on N using the string Msg to refer to N.
 
    procedure Check_Context_Of_Prophecy
      (Proph        :     Node_Id;
@@ -520,7 +520,9 @@ package body SPARK_Definition is
    --  Mark. Why aren't these kind of nodes Indexed_Components instead ?
 
    function Emit_Warning_Info_Messages return Boolean is
-     (Emit_Messages and then Gnat2Why_Args.Limit_Subp = Null_Unbounded_String);
+     (Emit_Messages
+      and then Gnat2Why_Args.Limit_Subp = Null_Unbounded_String
+      and then Gnat2Why_Args.Limit_Name = Null_Unbounded_String);
    --  Emit warning/info messages only when messages should be emitted, and
    --  analysis is not restricted to a single subprogram/line (typically during
    --  interactive use in IDEs), to avoid reporting messages on pieces of code
@@ -1032,25 +1034,21 @@ package body SPARK_Definition is
 
    procedure Check_User_Defined_Eq
      (Ty  : Type_Kind_Id;
-      E   : Entity_Id;
+      N   : Node_Id;
       Msg : String)
    is
-      Eq : Entity_Id := SPARK_Util.Types.Get_User_Defined_Eq (Base_Type (Ty));
+      Eq : Entity_Id;
    begin
-      if Is_Record_Type (Unchecked_Full_Type (Ty))
-        and then Present (Eq)
-      then
-         Eq := Ultimate_Alias (Eq);
+      if not Use_Predefined_Equality_For_Type (Ty) then
+         Eq := Ultimate_Alias
+           (SPARK_Util.Types.Get_User_Defined_Eq (Base_Type (Ty)));
 
          Mark_Entity (Eq);
          if not Entity_In_SPARK (Eq) then
             Mark_Violation
               (Msg & " whose primitive equality is not in SPARK",
-               E);
-            Mark_Violation (E, From => Eq);
-         elsif not Find_Contracts (Eq, Pragma_Precondition).Is_Empty then
-            Mark_Violation
-              ("precondition on primitive equality of " & Msg, E);
+               N);
+            Mark_Violation (N, From => Eq);
          end if;
       end if;
    end Check_User_Defined_Eq;
@@ -1127,7 +1125,9 @@ package body SPARK_Definition is
              (Needs_Default_Checks_At_Decl (E)
               or else (Is_Access_Subprogram_Type (E)
                        and then No (Parent_Retysp (E)))
-              or else Declares_Iterable_Aspect (E))
+              or else Declares_Iterable_Aspect (E)
+              or else (Is_Base_Type (E)
+                       and then not Use_Predefined_Equality_For_Type (E)))
          then
 
             declare
@@ -2049,46 +2049,62 @@ package body SPARK_Definition is
                Mark (Right_Opnd (N));
             end if;
 
-            --  Disallow membership tests if they involved the use of the
-            --  predefined equality on access types (except if one of the
-            --  operands is syntactically null).
+            --  Iterate through the alternatives to see if some involve the
+            --  use of the predefined equality.
 
-            if not Is_Concurrent_Type (Retysp (Etype (Left_Opnd (N))))
-              and then Predefined_Eq_Uses_Pointer_Eq (Etype (Left_Opnd (N)))
-              and then Nkind (Left_Opnd (N)) /= N_Null
-            then
-               --  Iterate through the alternatives to see if some involve the
-               --  use of the predefined equality.
+            declare
+               Eq_On_Access : constant Boolean :=
+                 not Is_Concurrent_Type (Retysp (Etype (Left_Opnd (N))))
+                 and then Predefined_Eq_Uses_Pointer_Eq (Etype (Left_Opnd (N)))
+                 and then Nkind (Left_Opnd (N)) /= N_Null;
+               --  Disallow membership tests if they involved the use of the
+               --  predefined equality on access types (except if one of the
+               --  operands is syntactically null).
 
-               declare
-                  function Alternative_Uses_Eq (Alt : Node_Id) return Boolean
-                  is
-                    ((not Is_Entity_Name (Alt)
-                     or else not Is_Type (Entity (Alt)))
-                     and then Nkind (Alt) /= N_Null);
-                  --  Return True if Alt is not a type inclusion or a
-                  --  comparison to null.
+               function Alternative_Uses_Eq (Alt : Node_Id) return Boolean
+               is
+                 ((not Is_Entity_Name (Alt)
+                  or else not Is_Type (Entity (Alt))));
+               --  Return True if Alt is not a type inclusion
 
-                  Alt : Node_Id;
-               begin
-                  if Present (Alternatives (N)) then
-                     Alt := First (Alternatives (N));
-                     while Present (Alt) loop
-                        if Alternative_Uses_Eq (Alt) then
+               Alt             : Node_Id;
+               User_Eq_Checked : Boolean := False;
+            begin
+               if Present (Alternatives (N)) then
+                  Alt := First (Alternatives (N));
+                  while Present (Alt) loop
+                     if Alternative_Uses_Eq (Alt) then
+                        if not User_Eq_Checked then
+                           Check_User_Defined_Eq
+                             (Etype (Left_Opnd (N)), N,
+                              "membership test on type");
+                           User_Eq_Checked := True;
+                           exit when not Eq_On_Access;
+                        end if;
+
+                        pragma Assert (Eq_On_Access);
+
+                        if Nkind (Alt) /= N_Null then
                            Mark_Violation
                              ("equality on access types", Alt);
                            exit;
                         end if;
-                        Next (Alt);
-                     end loop;
-                  elsif Alternative_Uses_Eq (Right_Opnd (N)) then
-                     pragma Annotate
-                       (Xcov, Exempt_On, "X in Y is expanded into X = Y");
+                     end if;
+                     Next (Alt);
+                  end loop;
+               elsif Alternative_Uses_Eq (Right_Opnd (N)) then
+                  pragma Annotate
+                    (Xcov, Exempt_On, "X in Y is expanded into X = Y");
+                  Check_User_Defined_Eq
+                    (Etype (Left_Opnd (N)), N, "membership test on type");
+
+                  if Eq_On_Access and then Nkind (Right_Opnd (N)) /= N_Null
+                  then
                      Mark_Violation ("equality on access types", N);
-                     pragma Annotate (Xcov, Exempt_Off);
                   end if;
-               end;
-            end if;
+                  pragma Annotate (Xcov, Exempt_Off);
+               end if;
+            end;
 
          --  Check that the type of null is visibly an access type
 
@@ -2832,15 +2848,41 @@ package body SPARK_Definition is
          =>
             raise Program_Error;
 
-         --  For now, we don't support the use of target_name inside an
-         --  assignment which is a move or reborrow.
-
          when N_Target_Name =>
+            --  For now, we don't support the use of target_name inside an
+            --  assignment which is a move or reborrow.
+
             if Is_Anonymous_Access_Object_Type (Retysp (Etype (N))) then
                Mark_Unsupported (Lim_Target_Name_In_Borrow, N);
             elsif Is_Deep (Etype (N)) then
                Mark_Unsupported (Lim_Target_Name_In_Move, N);
             end if;
+
+            --  A call to a function with side-effects shall not reference the
+            --  symbol ``@`` to refer to the target name of the assignment
+            --  (SPARK RM 6.11(7)).
+
+            declare
+               function Is_Assignment (N : Node_Id) return Boolean is
+                  (Nkind (N) = N_Assignment_Statement);
+
+               function Enclosing_Assignment is new
+                 First_Parent_With_Property (Is_Assignment);
+
+               Stat : constant N_Assignment_Statement_Id :=
+                 Enclosing_Assignment (N);
+               Expr : constant N_Subexpr_Id := Expression (Stat);
+            begin
+               if Nkind (Expr) = N_Function_Call
+                 and then
+                   Is_Function_With_Side_Effects (Get_Called_Entity (Expr))
+               then
+                  Mark_Violation
+                    ("use of ""'@"" inside a call to a function"
+                     & " with side-effects",
+                     N);
+               end if;
+            end;
 
          when N_Interpolated_String_Literal =>
             Mark_Unsupported (Lim_Interpolated_String_Literal, N);
@@ -3789,7 +3831,6 @@ package body SPARK_Definition is
          --  be initialized to avoid confusion as much as possible.
 
          when Attribute_Initialized =>
-
             if not Retysp_In_SPARK (Etype (P)) then
                Mark_Violation (N, From => Etype (P));
             elsif Nkind (P) = N_Selected_Component
@@ -3804,8 +3845,11 @@ package body SPARK_Definition is
                end if;
             elsif not Expr_Has_Relaxed_Init (P, No_Eval => True)
               and then not Has_Relaxed_Init (Etype (P))
-              and then not (Nkind (P) in N_Identifier | N_Expanded_Name
-                            and then Has_Relaxed_Initialization (Entity (P)))
+              and then not
+                (Nkind (P) in N_Identifier | N_Expanded_Name
+                 and then Ekind (Entity (P)) in
+                   Formal_Kind | Constant_Or_Variable_Kind
+                 and then Has_Relaxed_Initialization (Entity (P)))
             then
                Mark_Violation
                  ("prefix of attribute """
@@ -4581,7 +4625,8 @@ package body SPARK_Definition is
         and then Nkind (Parent (N)) /= N_Assignment_Statement
       then
          Mark_Violation
-           ("call to a function with side-effects outside of assignment", N);
+           ("call to a function with side-effects outside of assignment", N,
+            Code => EC_Call_To_Function_With_Side_Effects);
          return;
       end if;
 
@@ -5630,6 +5675,50 @@ package body SPARK_Definition is
                  ("traversal function shall not have side-effects", Id);
             end if;
 
+            if Is_User_Defined_Equality (Id)
+              and then Is_Primitive (Id)
+            then
+               declare
+                  Typ : constant Entity_Id := Etype (First_Formal (Id));
+               begin
+                  if Is_Record_Type (Unchecked_Full_Type (Typ))
+                    and then not Is_Limited_Type (Retysp (Typ))
+                  then
+                     --  A user-defined primitive equality operation on a
+                     --  record type shall not be a volatile function, unless
+                     --  the record type has only limited views (SPARK RM
+                     --  7.1.3(11)).
+                     if Is_Volatile_Function (Id) then
+                        Mark_Violation
+                          ("volatile function as"
+                           & " user-defined equality on record type", Id,
+                           SRM_Reference => "SPARK RM 7.1.3(11)");
+
+                     --  A user-defined primitive equality operation on a
+                     --  record type shall not be a function with side-effects,
+                     --  unless the record type has only limited views (SPARK
+                     --  RM 6.11(8)).
+                     elsif Is_Function_With_Side_Effects (Id) then
+                        Mark_Violation
+                          ("function with side-effects as"
+                           & " user-defined equality on record type", Id,
+                           SRM_Reference => "SPARK RM 6.11(8)");
+
+                     --  A user-defined primitive equality operation on a
+                     --  non-ghost record type shall not be ghost, unless the
+                     --  record type has only limited views (SPARK RM 6.9(22)).
+                     elsif Is_Ghost_Entity (Id)
+                       and then not Is_Ghost_Entity (Typ)
+                     then
+                        Mark_Violation
+                          ("ghost function as user-defined equality"
+                           & " on non-ghost record type", Id,
+                           SRM_Reference => "SPARK RM 6.9(22)");
+                     end if;
+                  end if;
+               end;
+            end if;
+
             --  We currently do not support functions annotated with No_Return.
             --  If the need arise, we could handle them as raise expressions,
             --  using a precondition of False to ensure that they are never
@@ -6018,22 +6107,6 @@ package body SPARK_Definition is
             Exceptions  : constant Boolean := Has_Exceptional_Contract (Id);
 
          begin
-            case Ekind (Id) is
-               when E_Subprogram_Type =>
-                  if Is_Function_Type (Id) then
-                     Mark_Function_Specification (Id);
-                  end if;
-
-               when E_Function =>
-                  Mark_Function_Specification (Id);
-
-               when E_Entry_Family =>
-                  Mark_Unsupported (Lim_Entry_Family, Id);
-
-               when others =>
-                  null;
-            end case;
-
             while Present (Formal) loop
                if not In_SPARK (Formal) then
                   Mark_Violation (Formal, From => Etype (Formal));
@@ -6069,6 +6142,22 @@ package body SPARK_Definition is
 
                Next_Formal (Formal);
             end loop;
+
+            case Ekind (Id) is
+               when E_Subprogram_Type =>
+                  if Is_Function_Type (Id) then
+                     Mark_Function_Specification (Id);
+                  end if;
+
+               when E_Function =>
+                  Mark_Function_Specification (Id);
+
+               when E_Entry_Family =>
+                  Mark_Unsupported (Lim_Entry_Family, Id);
+
+               when others =>
+                  null;
+            end case;
 
             --  Parse the user-written Global/Depends, if present
 
@@ -6197,6 +6286,7 @@ package body SPARK_Definition is
            and then Is_Local_Subprogram_Always_Inlined (E)
          then
             Gnat2Why_Args.Limit_Subp := Null_Unbounded_String;
+            Gnat2Why_Args.Limit_Name := Null_Unbounded_String;
 
             if Gnat2Why_Args.Limit_Region = Null_Unbounded_String
               and then Gnat2Why_Args.Limit_Line = Null_Unbounded_String
@@ -8345,6 +8435,7 @@ package body SPARK_Definition is
 
          elsif Ekind (E) = E_Function
            and then not Is_Volatile_Function (E)
+           and then not Is_Function_With_Side_Effects (E)
          then
             declare
                Decl_Node : constant Node_Id := Parent (Declaration_Node (E));
@@ -8704,6 +8795,11 @@ package body SPARK_Definition is
          if Is_Volatile_Function (Ent) then
             Mark_Violation
               ("volatile function associated with aspect Iterable", N);
+         end if;
+         if Is_Function_With_Side_Effects (Ent) then
+            Mark_Violation
+              ("function with side-effects associated with aspect Iterable",
+               N);
          end if;
          Get_Globals
            (Subprogram          => Ent,
@@ -10125,7 +10221,7 @@ package body SPARK_Definition is
          Mark_Unsupported (Lim_Relaxed_Init_Invariant, N);
       elsif Is_Tagged_Type (Rep_Ty) then
          Mark_Unsupported (Lim_Relaxed_Init_Tagged_Type, N);
-      elsif Is_Access_Type (Rep_Ty) then
+      elsif Is_Access_Subprogram_Type (Rep_Ty) then
          Mark_Unsupported (Lim_Relaxed_Init_Access_Type, N);
       elsif Is_Concurrent_Type (Rep_Ty) then
          Mark_Unsupported (Lim_Relaxed_Init_Concurrent_Type, N);
@@ -10147,6 +10243,7 @@ package body SPARK_Definition is
 
       if Is_Array_Type (Rep_Ty) then
          Mark_Type_With_Relaxed_Init (N, Component_Type (Rep_Ty));
+
       elsif Is_Record_Type (Rep_Ty) then
          declare
             Comp      : Opt_E_Component_Id := First_Component (Rep_Ty);
@@ -10176,6 +10273,23 @@ package body SPARK_Definition is
 
                Next_Component (Comp);
             end loop;
+         end;
+
+      elsif Is_Access_Type (Rep_Ty)
+        and then not Is_Access_Subprogram_Type (Rep_Ty)
+      then
+         declare
+            Des_Ty : Entity_Id := Directly_Designated_Type (Rep_Ty);
+         begin
+            if Is_Incomplete_Or_Private_Type (Des_Ty)
+              and then Present (Full_View (Des_Ty))
+            then
+               Des_Ty := Full_View (Des_Ty);
+            end if;
+
+            --  ??? This might crash if the designated type is not marked
+
+            Mark_Type_With_Relaxed_Init (N, Des_Ty);
          end;
       end if;
 

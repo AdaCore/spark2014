@@ -183,6 +183,13 @@ package body SPARK_Atree.Entities is
    function First_Formal (Subp : Callable_Kind_Id) return Opt_Formal_Kind_Id is
      (Einfo.Utils.First_Formal (Subp));
 
+   -------------------
+   -- First_Subtype --
+   -------------------
+
+   function First_Subtype (Typ : Type_Kind_Id) return Opt_Type_Kind_Id is
+     (Sem_Aux.First_Subtype (Typ));
+
    ---------------
    -- Full_View --
    ---------------
@@ -405,12 +412,21 @@ package body SPARK_Atree.Entities is
       return Boolean
    is (Sem_Util.Is_Expression_Function_Or_Completion (Subp));
 
-   ---------------------
-   -- Is_Limited_View --
-   ---------------------
+   -----------------------------------
+   -- Is_Function_With_Side_Effects --
+   -----------------------------------
 
-   function Is_Limited_View (Typ : Type_Kind_Id) return Boolean is
-     (Sem_Aux.Is_Limited_View (Typ));
+   function Is_Function_With_Side_Effects
+     (Subp : Callable_Kind_Id)
+      return Boolean
+   is (Sem_Util.Is_Function_With_Side_Effects (Subp));
+
+   --------------------------------
+   -- Is_Inherently_Limited_Type --
+   --------------------------------
+
+   function Is_Inherently_Limited_Type (Typ : Type_Kind_Id) return Boolean is
+     (Sem_Aux.Is_Inherently_Limited_Type (Typ));
 
    ---------------------------
    -- Is_Predicate_Function --

@@ -43,7 +43,7 @@ package SPARK_Util.Types is
    --  the type that represents T in the translation into Why3. It is the most
    --  underlying type of T when it is in SPARK, or the first private type on
    --  the chain of Underlying_Type links at the boundary between SPARK and
-   --  non-SPARK. For non-private types, Retysp is the identity.s
+   --  non-SPARK. For non-private types, Retysp is the identity.
 
    function Retysp (T : Type_Kind_Id) return Type_Kind_Id;
    --  @param T any type
@@ -373,7 +373,19 @@ package SPARK_Util.Types is
    function Might_Contain_Relaxed_Init (Typ : Type_Kind_Id) return Boolean;
    --  Returns True if Typ has subcomponents whose type may be used for
    --  expressions with relaxed initialization but is not itself annotated with
-   --  relaxed initialization.
+   --  relaxed initialization. For example, in the following code snippet,
+   --  Might_Contain_Relaxed_Init will return True on R2 but not on R1.
+   --
+   --  type T is record...
+   --  type T_Rel is new T with Relaxed_Initialization;
+   --
+   --  type R1 is record
+   --    F : T_Rel;
+   --  end record;
+   --
+   --  type R2 is record
+   --    F : T;
+   --  end record;
 
    function Has_Scalar_Full_View (Typ : Type_Kind_Id) return Boolean;
    --  Returns True if initialization checks are required when reading/writing

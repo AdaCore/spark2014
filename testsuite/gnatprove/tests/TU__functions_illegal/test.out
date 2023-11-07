@@ -1,7 +1,11 @@
-functions_illegal.adb:21:22: error: global mode "Output" is not applicable to functions
-functions_illegal.adb:33:22: error: global mode "In_Out" is not applicable to functions
-functions_illegal.ads:11:22: error: global mode "Output" is not applicable to functions
-functions_illegal.ads:19:22: error: global mode "In_Out" is not applicable to functions
+functions_illegal.adb:21:22: error: global mode "Output" is not applicable to function [E0014]
+functions_illegal.adb:21:22: error: launch "gnatprove --explain=E0014" for more information
+functions_illegal.adb:33:22: error: global mode "In_Out" is not applicable to function [E0014]
+functions_illegal.adb:33:22: error: launch "gnatprove --explain=E0014" for more information
+functions_illegal.ads:11:22: error: global mode "Output" is not applicable to function [E0014]
+functions_illegal.ads:11:22: error: launch "gnatprove --explain=E0014" for more information
+functions_illegal.ads:19:22: error: global mode "In_Out" is not applicable to function [E0014]
+functions_illegal.ads:19:22: error: launch "gnatprove --explain=E0014" for more information
 functions_illegal_2.ads:4:35: error: function cannot have parameter of mode "out" or "in out" in SPARK [E0015]
 functions_illegal_2.ads:4:35: error: launch "gnatprove --explain=E0015" for more information
 functions_illegal_2.ads:10:38: error: function cannot have parameter of mode "out" or "in out" in SPARK [E0015]

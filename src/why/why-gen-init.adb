@@ -28,10 +28,8 @@ with Common_Containers;           use Common_Containers;
 with Flow_Utility.Initialization; use Flow_Utility.Initialization;
 with GNATCOLL.Symbols;            use GNATCOLL.Symbols;
 with Gnat2Why.Expr;               use Gnat2Why.Expr;
-with SPARK_Atree;                 use SPARK_Atree;
 with SPARK_Definition;            use SPARK_Definition;
 with SPARK_Util;                  use SPARK_Util;
-with SPARK_Util.Types;            use SPARK_Util.Types;
 with VC_Kinds;                    use VC_Kinds;
 with Why.Atree.Builders;          use Why.Atree.Builders;
 with Why.Gen.Arrays;              use Why.Gen.Arrays;
@@ -39,8 +37,10 @@ with Why.Gen.Binders;             use Why.Gen.Binders;
 with Why.Gen.Decl;                use Why.Gen.Decl;
 with Why.Gen.Expr;                use Why.Gen.Expr;
 with Why.Gen.Names;               use Why.Gen.Names;
+with Why.Gen.Pointers;            use Why.Gen.Pointers;
 with Why.Gen.Progs;               use Why.Gen.Progs;
 with Why.Gen.Records;             use Why.Gen.Records;
+with Why.Gen.Terms;               use Why.Gen.Terms;
 with Why.Images;                  use Why.Images;
 with Why.Inter;                   use Why.Inter;
 with Why.Types;                   use Why.Types;
@@ -56,8 +56,7 @@ package body Why.Gen.Init is
       Name               : W_Expr_Id;
       Params             : Transformation_Params;
       Domain             : EW_Domain;
-      Exclude_Relaxed    : W_Term_Id := False_Term;
-      For_Eq             : Boolean := False;
+      Exclude_Components : Exclude_Components_Kind;
       No_Predicate_Check : Boolean := False;
       Use_Pred           : Boolean := True)
       return W_Expr_Id
@@ -95,32 +94,34 @@ package body Why.Gen.Init is
             else
                return True_Pred;
             end if;
-         elsif (For_Eq and then not Use_Predefined_Equality_For_Type (C_Ty))
-           or else (Is_True_Boolean (+Exclude_Relaxed)
-                    and then Has_Relaxed_Init (C_Ty))
-         then
-            return True_Pred;
          else
-            declare
-               P : W_Pred_Id := +Compute_Is_Initialized
-                 (E               => C_Ty,
-                  Name            => +C_Expr,
-                  Params          => Params,
-                  Domain          => EW_Pred,
-                  Exclude_Relaxed => Exclude_Relaxed,
-                  For_Eq          => For_Eq);
-            begin
-               if Has_Relaxed_Init (C_Ty)
-                 and then not Is_False_Boolean (+Exclude_Relaxed)
-               then
-                  P := New_Conditional
-                    (Condition => New_Not
-                       (Right => Pred_Of_Boolean_Term (Exclude_Relaxed)),
-                     Then_Part => P);
-               end if;
+            --  If Exclude_Components is For_Eq and C_Ty has a user defined
+            --  primitive equality which will be used for equality on composite
+            --  types, do not check the initialization of relaxed subcomponents
+            --  on C_Expr. Remark that the initialization of C_Expr itself
+            --  is still checked even if C_Ty has relaxed initialization.
+            --  Indeed, the comparison will use _user_eq which never
+            --  expects initialization wrappers.
 
-               return P;
-            end;
+            if Exclude_Components = Relaxed and then Has_Relaxed_Init (C_Ty)
+            then
+               return True_Pred;
+            else
+               declare
+                  C_Exclude_Components : constant Exclude_Components_Kind :=
+                    (if Exclude_Components = For_Eq
+                     and then not Use_Predefined_Equality_For_Type (C_Ty)
+                     then Relaxed
+                     else Exclude_Components);
+               begin
+                  return +Compute_Is_Initialized
+                    (E                  => C_Ty,
+                     Name               => +C_Expr,
+                     Params             => Params,
+                     Domain             => EW_Pred,
+                     Exclude_Components => C_Exclude_Components);
+               end;
+            end if;
          end if;
       end Is_Initialized_For_Comp;
 
@@ -146,7 +147,7 @@ package body Why.Gen.Init is
       if not Get_Relaxed_Init (Get_Type (+Name))
         and then (Has_Scalar_Type (E)
                   or else Is_Simple_Private_Type (E)
-                  or else Is_True_Boolean (+Exclude_Relaxed)
+                  or else Exclude_Components = Relaxed
                   or else not Contains_Relaxed_Init_Parts (E))
       then
          return Bool_True (Domain);
@@ -175,17 +176,18 @@ package body Why.Gen.Init is
            and then Get_Relaxed_Init (Get_Type (+Name))
            and then Get_Type_Kind (Get_Type (+Name)) = EW_Abstract
            and then not No_Predicate_Check
-           and then not For_Eq
+           and then Exclude_Components = Relaxed
          then
             P := New_Call (Name => E_Symb (E => E,
                                            S => WNE_Is_Initialized_Pred),
-                           Args => (1 => +Tmp, 2 => +Exclude_Relaxed),
+                           Args => (1 => +Tmp),
                            Typ  => EW_Bool_Type);
 
          --  Initialization of composite types
 
          elsif Has_Array_Type (E) then
             P := Is_Initialized_For_Array (+Tmp, Retysp (E));
+
          elsif Is_Record_Type_In_Why (Retysp (E)) then
             P := Is_Initialized_For_Record (+Tmp, Retysp (E));
 
@@ -197,6 +199,52 @@ package body Why.Gen.Init is
                   Right => Pred_Of_Boolean_Term
                     (New_Init_Attribute_Access (Retysp (E), +Tmp)));
             end if;
+
+         elsif Has_Access_Type (E) then
+            declare
+               Rep_Ty : constant Entity_Id := Retysp (E);
+               pragma Assert (not Is_Access_Subprogram_Type (Rep_Ty));
+               Des_Ty : constant Entity_Id :=
+                 Directly_Designated_Type (Rep_Ty);
+
+            begin
+               --  Consider the top-level initialization flag if the object
+               --  is relaxed.
+
+               if Get_Relaxed_Init (Get_Type (+Name)) then
+                  P := Pred_Of_Boolean_Term
+                    (New_Init_Attribute_Access (Rep_Ty, +Tmp));
+               else
+                  P := True_Pred;
+               end if;
+
+               --  Optionally add the initialization of the designated value.
+               --  Equality on access types does not read the designated
+               --  value.
+
+               if Exclude_Components /= For_Eq
+                 and then
+                   not (Has_Relaxed_Init (Des_Ty)
+                        and then Exclude_Components = Relaxed)
+               then
+                  P := New_And_Pred
+                    (Left  => P,
+                     Right => New_Conditional
+                       (Condition => New_Not
+                            (Right => Pred_Of_Boolean_Term
+                                 (New_Pointer_Is_Null_Access
+                                    (Rep_Ty, +Tmp))),
+                        Then_Part => +Compute_Is_Initialized
+                          (E                  => Des_Ty,
+                           Name               => New_Pointer_Value_Access
+                             (E      => Rep_Ty,
+                              Name   => +Tmp,
+                              Domain => EW_Term),
+                           Params             => Params,
+                           Domain             => EW_Pred,
+                           Exclude_Components => Exclude_Components)));
+               end if;
+            end;
          else
             raise Program_Error;
          end if;
@@ -259,6 +307,8 @@ package body Why.Gen.Init is
          Declare_Init_Wrapper_For_Record (Th, E);
       elsif Is_Array_Type (E) then
          Declare_Init_Wrapper_For_Array (Th, E);
+      elsif Is_Access_Type (E) then
+         Declare_Init_Wrapper_For_Pointer (Th, E);
       else
          raise Program_Error;
       end if;
@@ -410,11 +460,11 @@ package body Why.Gen.Init is
       return Why_Empty;
    end Get_Init_Id_From_Object;
 
-   -----------------------------------------
-   -- Insert_Init_Check_For_Discriminants --
-   -----------------------------------------
+   ---------------------------------
+   -- Insert_Top_Level_Init_Check --
+   ---------------------------------
 
-   function Insert_Init_Check_For_Discriminants
+   function Insert_Top_Level_Init_Check
      (Ada_Node : Node_Id;
       E        : Entity_Id;
       Name     : W_Expr_Id;
@@ -426,17 +476,20 @@ package body Why.Gen.Init is
    begin
       if Domain = EW_Prog
         and then Do_Check
-        and then Has_Mutable_Discriminants (E)
+        and then (Has_Mutable_Discriminants (E)
+                  or else Is_Access_Type (E))
         and then Is_Init_Wrapper_Type (Get_Type (Name))
       then
          declare
+            Msg : constant String :=
+              (if Is_Access_Type (E) then "for pointer allocation"
+               else "for mutable discriminants");
             Tmp : constant W_Expr_Id := New_Temp_For_Expr (Name);
          begin
             Continuation_Stack.Append
               (Continuation_Type'
                  (Ada_Node => E,
-                  Message  =>
-                    To_Unbounded_String ("for mutable discriminants")));
+                  Message  => To_Unbounded_String (Msg)));
             T := +Sequence
               (Left  => New_Located_Assert
                  (Ada_Node => Ada_Node,
@@ -454,7 +507,7 @@ package body Why.Gen.Init is
          T := Name;
       end if;
       return T;
-   end Insert_Init_Check_For_Discriminants;
+   end Insert_Top_Level_Init_Check;
 
    ---------------------------------
    -- Insert_Initialization_Check --
@@ -465,8 +518,7 @@ package body Why.Gen.Init is
       E                  : Entity_Id;
       Name               : W_Expr_Id;
       Domain             : EW_Domain;
-      Exclude_Relaxed    : Boolean := False;
-      For_Eq             : Boolean := False;
+      Exclude_Components : Exclude_Components_Kind;
       No_Predicate_Check : Boolean := False)
       return W_Expr_Id
    is
@@ -476,13 +528,13 @@ package body Why.Gen.Init is
       --  We need initialization checking if either Name is an expression with
       --  relaxed initialization or if it contains subcomponents with
       --  relaxed initialization and checks should be introduced for
-      --  these subcomponents (Excluded_Subcomponents is not Relaxed).
+      --  these subcomponents (Exclude_Components is not Relaxed).
 
       if Domain = EW_Prog
         and then
           (Is_Init_Wrapper_Type (Get_Type (Name))
            or else
-             (not Exclude_Relaxed
+             (Exclude_Components /= Relaxed
               and then Contains_Relaxed_Init_Parts (E, Ignore_Top => True)))
       then
          T := +Sequence
@@ -492,9 +544,7 @@ package body Why.Gen.Init is
                   Pred     => +Compute_Is_Initialized
                     (E, +Tmp,
                      Params             => Body_Params,
-                     Exclude_Relaxed =>
-                       (if Exclude_Relaxed then True_Term else False_Term),
-                     For_Eq             => For_Eq,
+                     Exclude_Components => Exclude_Components,
                      No_Predicate_Check => No_Predicate_Check,
                      Domain             => EW_Pred),
                   Reason   => VC_Initialization_Check,

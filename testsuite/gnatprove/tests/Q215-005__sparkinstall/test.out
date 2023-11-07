@@ -5,11 +5,9 @@ alt-ergo
 alt-ergo.hash
 colibri
 colibri.hash
-cvc4
 cvc5
 gcc
 gnat2why
-gnat_server
 gnatbind
 gnatls
 gnatwhy3

@@ -497,7 +497,9 @@ package SPARK_Util.Subprograms is
                           | E_Procedure
                           | E_Task_Type,
         Post => (if Is_Possibly_Nonreturning_Procedure'Result
-                 then Ekind (E) = E_Procedure);
+                 then Ekind (E) = E_Procedure
+                   or else (Ekind (E) = E_Function
+                     and then Is_Function_With_Side_Effects (E)));
    --  @param E either a procedure that might have a No_Return or
    --           Might_Not_Return contract, or a program unit that might call
    --           such a procedure
