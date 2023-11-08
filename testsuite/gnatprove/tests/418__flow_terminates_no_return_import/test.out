@@ -1,0 +1,4 @@
+repro.adb:1:11: info: aspect Always_Terminates on "Repro" has been proved, subprogram will terminate
+repro.adb:1:11: warning: subprogram "Repro" has no effect
+repro2.adb:3:11: info: aspect Always_Terminates on "Repro2" has been proved, subprogram will terminate
+repro3.adb:3:11: info: aspect Always_Terminates on "Repro3" has been proved, subprogram will terminate
