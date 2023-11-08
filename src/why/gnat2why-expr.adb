@@ -312,6 +312,7 @@ package body Gnat2Why.Expr is
       Pre_Expr       :        W_Expr_Id;
       Store          : in out W_Statement_Sequence_Id;
       Params         :        Transformation_Params;
+      Index_Map      :        Ada_Node_To_Why_Id.Map;
       Exceptional    : Boolean := False);
    --  Compute in Store the sequence of statements necessary to store back
    --  local identifiers of Pattern inside Actual, which is Empty in the case
@@ -320,8 +321,9 @@ package body Gnat2Why.Expr is
    --  that postprocessing may be needed even if Need_Store is False, to
    --  set the init wrapper flag if any, or to perform predicate checks. If
    --  No_Pred_Checks is True, do not check the predicate of the actual after
-   --  the call. Exceptional should be True when Compute_Store is called for
-   --  exceptional cases.
+   --  the call. Index_Map is a mapping from index nodes in Actual to
+   --  identifiers that should be used to refer to these indices. Exceptional
+   --  should be True when Compute_Store is called for exceptional cases.
 
    procedure Compute_Exceptional_Store
      (Formal         :        Formal_Kind_Id;
@@ -331,7 +333,8 @@ package body Gnat2Why.Expr is
       No_Pred_Checks :        Boolean;
       Pre_Expr       :        W_Expr_Id;
       Store          : in out W_Statement_Sequence_Id;
-      Params         :        Transformation_Params);
+      Params         :        Transformation_Params;
+      Index_Map      :        Ada_Node_To_Why_Id.Map);
    --  Same as above but for parameters whose type is neither "by copy" nor
    --  "by reference", the actual is simply havoc'ed.
 
@@ -540,17 +543,19 @@ package body Gnat2Why.Expr is
    type Do_Check_Kind is (All_Checks, Only_Vars, No_Checks);
 
    function New_Assignment
-     (Ada_Node : Node_Id := Empty;
-      Lvalue   : N_Subexpr_Id;
-      Expr     : W_Prog_Id;
-      Do_Check : Do_Check_Kind := All_Checks)
+     (Ada_Node  : Node_Id := Empty;
+      Lvalue    : N_Subexpr_Id;
+      Expr      : W_Prog_Id;
+      Do_Check  : Do_Check_Kind := All_Checks;
+      Index_Map : Ada_Node_To_Why_Id.Map := Ada_Node_To_Why_Id.Empty_Map)
       return W_Prog_Id
    with
 
    --  Expr might be converted without checks to Type_Of_Node (Lvalue), so we
    --  should ensure that we are never missing checks by doing so.
 
-     Pre => Eq_Base (Type_Of_Node (Lvalue), Get_Type (+Expr));
+     Pre => Eq_Base (Type_Of_Node (Lvalue), Get_Type (+Expr))
+     and then (Do_Check /= All_Checks or else Index_Map.Is_Empty);
 
    --  Translate an assignment of the form "Lvalue := Expr" (using Ada_Node
    --  for its source location). If Do_Check is set to No_Checks, then no check
@@ -561,6 +566,10 @@ package body Gnat2Why.Expr is
    --  necessary to check the well-formedness of the prefix (discriminant,
    --  bounds...). This occurs when the new value already contains an
    --  evaluation of the prefix.
+   --  Index_Map is a mapping from index nodes in Lvalue to identifiers that
+   --  should be used to refer to these indices. It is supplied when the
+   --  indices should be evaluated in a different context (typically before a
+   --  call).
 
    function New_Constrained_Attribute_Expr
      (Prefix : N_Subexpr_Id;
@@ -621,23 +630,29 @@ package body Gnat2Why.Expr is
       Value        : W_Expr_Id;
       Domain       : EW_Domain;
       Params       : Transformation_Params;
-      Check_Prefix : Boolean := True)
+      Check_Prefix : Boolean := True;
+      Index_Map    : Ada_Node_To_Why_Id.Map := Ada_Node_To_Why_Id.Empty_Map)
       return W_Expr_Id
    with
      --  Handling of slices is only valid in programs, as it introduces an
      --  "any" Why3 node. This is ensured by not allowing slices in borrowed
      --  expressions.
-     Pre => (if Nkind (N) = N_Slice then Domain in EW_Pterm | EW_Prog);
-   --  @param N       the Ada node which defines the component to be updated
-   --                  (e.g. a record access)
-   --  @param Pref    the currently computed prefix, (e.g. the record value
-   --                  before the update)
-   --  @param Value   the new value of the updated component
-   --  @param Domain  the domain
-   --  @param Params  the translation params
+     Pre => (if Nkind (N) = N_Slice then Domain in EW_Pterm | EW_Prog)
+     and then (not Check_Prefix or else Index_Map.Is_Empty);
+   --  @param N            the Ada node which defines the component to be
+   --                      updated (e.g. a record access)
+   --  @param Pref         the currently computed prefix, (e.g. the record
+   --                      value before the update)
+   --  @param Value        the new value of the updated component
+   --  @param Domain       the domain
+   --  @param Params       the translation params
    --  @param Check_Prefix False if it is not necessary to check the
    --      well-formedness of the prefix (discriminant, bounds...). This occurs
    --      when the new value already contains an evaluation of the prefix.
+   --  @param Index_Map    a mapping from index nodes in N to identifiers that
+   --      should be used to refer to these indices. It is supplied when the
+   --      indices should be evaluated in a different context (typically before
+   --      a call).
    --  @return the Why expression which corresponds to the Pref object, but
    --            updated at the point specified by N, with value Value;
 
@@ -657,7 +672,9 @@ package body Gnat2Why.Expr is
       Expr         : in out W_Expr_Id;
       Last_Access  : in out Opt_N_Subexpr_Id;
       Domain       :        EW_Domain := EW_Prog;
-      Check_Prefix : Boolean := True);
+      Check_Prefix : Boolean := True;
+      Index_Map    : Ada_Node_To_Why_Id.Map := Ada_Node_To_Why_Id.Empty_Map)
+   with Pre => not Check_Prefix or else Index_Map.Is_Empty;
    --  the input pair (N, Expr) describes an assignment
    --      N := Expr
    --  where N is the Ada node for some Lvalue of the form
@@ -672,6 +689,9 @@ package body Gnat2Why.Expr is
    --  If Check_Prefix is False then it is not necessary to check the
    --  well-formedness of the prefix (discriminant, bounds...). This occurs
    --  when the new value already contains an evaluation of the prefix.
+   --  Index_Map is a mapping from index nodes in N to identifiers that should
+   --  be used to refer to these indices. It is supplied when the indices
+   --  should be evaluated in a different context (typically before a call).
 
    function Transform_Aggregate
      (Params        : Transformation_Params;
@@ -3719,7 +3739,13 @@ package body Gnat2Why.Expr is
                else Why_Empty);
             --  Expression for the constrained attribute of split records
 
-            Need_Store  : Boolean;
+            Need_Store    : Boolean;
+            Index_Map     : Ada_Node_To_Why_Id.Map;
+            --  Map for the identifiers used to store the values of the
+            --  potential indexes from Actual before the call. They are used to
+            --  generate bindings for these expressions before the call. This
+            --  is necessary as the call could modify variables referenced from
+            --  these expressions.
 
          begin
             --  Store the converted actual into a temporary constant to avoid
@@ -3828,10 +3854,99 @@ package body Gnat2Why.Expr is
                end if;
             end if;
 
+            --  Populate the Index_Map with a mapping per index in Actual.
+            --  Add the bindings to Context.
+
+            if not Is_Self
+              and then Need_Store
+              and then not Is_Null_Owning_Access (Actual)
+            then
+               declare
+                  procedure Add_Index (Expr : N_Subexpr_Id);
+                  --  Add an identifier of Expr to Index_Map and a binding to
+                  --  Context.
+
+                  ---------------
+                  -- Add_Index --
+                  ---------------
+
+                  procedure Add_Index (Expr : N_Subexpr_Id) is
+                     W_Id : constant W_Identifier_Id := New_Temp_Identifier
+                       (Typ       => Base_Why_Type_No_Bool
+                          (Entity_Id'(Type_Of_Node (Expr))),
+                        Base_Name => "idx");
+                  begin
+                     Index_Map.Insert (Expr, W_Id);
+
+                     --  Do not generate checks for Expr, they have already
+                     --  been generated when transforming the actual.
+
+                     Context.Append
+                       (Ref_Type'(Mutable => False,
+                                  Name    => W_Id,
+                                  Value   => Transform_Expr
+                                    (Expr,
+                                     Get_Typ (W_Id),
+                                     Term_Domain (Domain),
+                                     Params)));
+                  end Add_Index;
+
+                  Pref : Node_Id := Actual;
+               begin
+                  loop
+                     case Nkind (Pref) is
+                        when N_Identifier
+                           | N_Expanded_Name
+                           =>
+                           exit;
+
+                        when N_Type_Conversion
+                           | N_Unchecked_Type_Conversion
+                           | N_Qualified_Expression
+                           =>
+                           Pref := Expression (Pref);
+
+                        when N_Selected_Component
+                           | N_Explicit_Dereference
+                           =>
+                           Pref := Prefix (Pref);
+
+                        when N_Indexed_Component =>
+                           declare
+                              Cursor : Node_Id := First (Expressions (Pref));
+                           begin
+                              while Present (Cursor) loop
+                                 Add_Index (Cursor);
+                                 Next (Cursor);
+                              end loop;
+                           end;
+                           Pref := Prefix (Pref);
+
+                        when N_Slice =>
+                           declare
+                              Rng : constant Node_Id :=
+                                Get_Range (Discrete_Range (Pref));
+                           begin
+                              Add_Index (Low_Bound (Rng));
+                              Add_Index (High_Bound (Rng));
+                           end;
+                           Pref := Prefix (Pref);
+
+                        when others =>
+                           Ada.Text_IO.Put_Line
+                             ("[Compute_Param] kind ="
+                              & Node_Kind'Image (Nkind (Pref)));
+                           raise Not_Implemented;
+                     end case;
+                  end loop;
+               end;
+            end if;
+
             --  If the item is mutable, compute in Store the statements to
             --  store the content of the temporaries back into the actual.
             --  If the actual is NULL, do not attempt to store the value back
-            --  after the call.
+            --  after the call. Use the Index_Map so the indexes used for the
+            --  store are computed before the call.
 
             if Item_Is_Mutable (Pattern)
               and then not Is_Null_Owning_Access (Actual)
@@ -3853,7 +3968,8 @@ package body Gnat2Why.Expr is
                      No_Pred_Checks => No_Pred_Checks,
                      Pre_Expr       => +Actual_Tmp,
                      Store          => Store,
-                     Params         => Params);
+                     Params         => Params,
+                     Index_Map      => Index_Map);
 
                   --  Also append the store to the exception handler if any
 
@@ -3870,7 +3986,8 @@ package body Gnat2Why.Expr is
                            No_Pred_Checks => No_Pred_Checks,
                            Pre_Expr       => +Actual_Tmp,
                            Store          => Store,
-                           Params         => Params);
+                           Params         => Params,
+                           Index_Map      => Index_Map);
                      else
                         Compute_Exceptional_Store
                           (Formal         => Formal,
@@ -3880,7 +3997,8 @@ package body Gnat2Why.Expr is
                            No_Pred_Checks => No_Pred_Checks,
                            Pre_Expr       => +Actual_Tmp,
                            Store          => Exc_Store,
-                           Params         => Params);
+                           Params         => Params,
+                           Index_Map      => Index_Map);
                      end if;
                   end if;
                end;
@@ -6228,7 +6346,8 @@ package body Gnat2Why.Expr is
       No_Pred_Checks :        Boolean;
       Pre_Expr       :        W_Expr_Id;
       Store          : in out W_Statement_Sequence_Id;
-      Params         :        Transformation_Params)
+      Params         :        Transformation_Params;
+      Index_Map      :        Ada_Node_To_Why_Id.Map)
    is
    begin
       --  Parameters of a "by reference" type are handled like in normal return
@@ -6242,6 +6361,7 @@ package body Gnat2Why.Expr is
             Pre_Expr       => Pre_Expr,
             Store          => Store,
             Params         => Params,
+            Index_Map      => Index_Map,
             Exceptional    => True);
          return;
 
@@ -6287,10 +6407,11 @@ package body Gnat2Why.Expr is
       begin
          Append
            (Store, New_Assignment
-              (Ada_Node => Actual,
-               Lvalue   => Actual,
-               Expr     => Unknown_Value,
-               Do_Check => No_Checks));
+              (Ada_Node  => Actual,
+               Lvalue    => Actual,
+               Expr      => Unknown_Value,
+               Do_Check  => No_Checks,
+               Index_Map => Index_Map));
       end;
 
       --  We only have an initialization flag for scalars which are always
@@ -6685,6 +6806,7 @@ package body Gnat2Why.Expr is
       Pre_Expr       :        W_Expr_Id;
       Store          : in out W_Statement_Sequence_Id;
       Params         :        Transformation_Params;
+      Index_Map      :        Ada_Node_To_Why_Id.Map;
       Exceptional    : Boolean := False)
    is
    begin
@@ -6714,10 +6836,11 @@ package body Gnat2Why.Expr is
          begin
             Append
               (Store, New_Assignment
-                 (Ada_Node => Actual,
-                  Lvalue   => Actual,
-                  Expr     => Reconstructed_Arg,
-                  Do_Check => Only_Vars));
+                 (Ada_Node  => Actual,
+                  Lvalue    => Actual,
+                  Expr      => Reconstructed_Arg,
+                  Do_Check  => Only_Vars,
+                  Index_Map => Index_Map));
          end;
       end if;
 
@@ -10285,10 +10408,11 @@ package body Gnat2Why.Expr is
    --------------------
 
    function New_Assignment
-     (Ada_Node : Node_Id := Empty;
-      Lvalue   : N_Subexpr_Id;
-      Expr     : W_Prog_Id;
-      Do_Check : Do_Check_Kind := All_Checks)
+     (Ada_Node  : Node_Id := Empty;
+      Lvalue    : N_Subexpr_Id;
+      Expr      : W_Prog_Id;
+      Do_Check  : Do_Check_Kind := All_Checks;
+      Index_Map : Ada_Node_To_Why_Id.Map := Ada_Node_To_Why_Id.Empty_Map)
       return W_Prog_Id
    is
       --  Here, we deal with assignment statements. In SPARK, the general form
@@ -10340,7 +10464,8 @@ package body Gnat2Why.Expr is
 
       while not (Nkind (Left_Side) in N_Identifier | N_Expanded_Name) loop
          Shift_Rvalue (Left_Side, Right_Side, Last_Access, Domain,
-                       Check_Prefix => Do_Check = All_Checks);
+                       Check_Prefix => Do_Check = All_Checks,
+                       Index_Map    => Index_Map);
       end loop;
 
       --  In those cases where the left-hand side is type converted, the type
@@ -11319,7 +11444,8 @@ package body Gnat2Why.Expr is
       Value        : W_Expr_Id;
       Domain       : EW_Domain;
       Params       : Transformation_Params;
-      Check_Prefix : Boolean := True)
+      Check_Prefix : Boolean := True;
+      Index_Map    : Ada_Node_To_Why_Id.Map := Ada_Node_To_Why_Id.Empty_Map)
       return W_Expr_Id
    is
       --  In some cases, the frontend introduces an Itype for the type of a
@@ -11470,17 +11596,20 @@ package body Gnat2Why.Expr is
             begin
                while Present (Cursor) loop
                   Indices (Count) :=
-                     Transform_Expr
-                      (Cursor,
-                       Base_Why_Type_No_Bool
-                         (Entity_Id'(Type_Of_Node (Cursor))),
-                       Domain,
-                       Params);
+                    (if Index_Map.Is_Empty
+                     then Transform_Expr
+                       (Cursor,
+                        Base_Why_Type_No_Bool
+                          (Entity_Id'(Type_Of_Node (Cursor))),
+                        Domain,
+                        Params)
+                     else +Index_Map.Element (Cursor));
 
                   --  Insert Index Check if needed
 
                   if Prefix_Domain = EW_Prog and then Do_Range_Check (Cursor)
                   then
+                     pragma Assert (Index_Map.Is_Empty);
                      Indices (Count) := +Do_Index_Check
                        (Ada_Node => Cursor,
                         Arr_Expr => Ar_Tmp,
@@ -11510,27 +11639,33 @@ package body Gnat2Why.Expr is
 
          when N_Slice =>
             declare
-               Prefix_Name : constant W_Term_Id := New_Temp_For_Expr (Pref);
-               Value_Name  : constant W_Expr_Id :=
+               Prefix_Name  : constant W_Term_Id := New_Temp_For_Expr (Pref);
+               Value_Name   : constant W_Expr_Id :=
                  New_Temp_For_Expr (Init_Val, True);
-               Dim     : constant Pos := Number_Dimensions (Pref_Ty);
+               Dim          : constant Pos := Number_Dimensions (Pref_Ty);
                pragma Assert (Dim = 1);
                --  Slices are only for one-dimentional arrays (Ada RM 4.1.2)
-               Result_Id   : constant W_Identifier_Id :=
+               Result_Id    : constant W_Identifier_Id :=
                  New_Result_Ident (Get_Type (+Pref));
-               D_Rng       : constant Node_Id := Discrete_Range (N);
+               D_Rng        : constant Node_Id := Discrete_Range (N);
+               Rng          : constant Node_Id := Get_Range (D_Rng);
                Binders_Type : constant W_Type_Id :=
                  Base_Why_Type_No_Bool (D_Rng);
-               Binders     : constant W_Identifier_Array :=
+               Binders      : constant W_Identifier_Array :=
                  New_Temp_Identifiers (Positive (Dim), Typ => Binders_Type);
-               Indexes     : constant W_Expr_Array := To_Exprs (Binders);
+               Indexes      : constant W_Expr_Array := To_Exprs (Binders);
                Range_Pred   : constant W_Pred_Id :=
-                 +Transform_Discrete_Choice
-                   (Choice      => Discrete_Range (N),
-                    Choice_Type => Empty,
-                    Expr        => Indexes (1),
-                    Domain      => EW_Pred,
-                    Params      => Params);
+                 (if Index_Map.Is_Empty
+                  then +Transform_Discrete_Choice
+                    (Choice      => Discrete_Range (N),
+                     Choice_Type => Empty,
+                     Expr        => Indexes (1),
+                     Domain      => EW_Pred,
+                     Params      => Params)
+                  else New_Range_Expr
+                    (Low  => +Index_Map.Element (Low_Bound (Rng)),
+                     High => +Index_Map.Element (High_Bound (Rng)),
+                     Expr => +Indexes (1)));
                In_Slice_Eq  : constant W_Pred_Id :=
                  New_Element_Equality
                    (Left_Arr   => +Result_Id,
@@ -11579,8 +11714,9 @@ package body Gnat2Why.Expr is
                --  Insert checks for bounds in the program domain
 
                if Prefix_Domain = EW_Prog then
+                  pragma Assert (Index_Map.Is_Empty);
+
                   declare
-                     Rng          : constant Node_Id := Get_Range (D_Rng);
                      Low_Expr     : constant W_Prog_Id :=
                        New_Temp_For_Expr
                          (Transform_Prog (Low_Bound (Rng),
@@ -12068,7 +12204,8 @@ package body Gnat2Why.Expr is
       Expr         : in out W_Expr_Id;
       Last_Access  : in out Opt_N_Subexpr_Id;
       Domain       :        EW_Domain := EW_Prog;
-      Check_Prefix : Boolean := True)
+      Check_Prefix : Boolean := True;
+      Index_Map    : Ada_Node_To_Why_Id.Map := Ada_Node_To_Why_Id.Empty_Map)
    is
    begin
       case Nkind (N) is
@@ -12198,7 +12335,8 @@ package body Gnat2Why.Expr is
                   Expr,
                   Domain,
                   Params       => Body_Params,
-                  Check_Prefix => Check_Prefix);
+                  Check_Prefix => Check_Prefix,
+                  Index_Map    => Index_Map);
                Expr := Binding_For_Temp (Domain   => Domain,
                                          Tmp      => Prefix_Var,
                                          Context  => Expr);

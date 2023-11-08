@@ -95,7 +95,6 @@ formal_vectors.adb:116:10: info: precondition proved (CVC5: 1 VC), in instantiat
 formal_vectors.adb:116:23: info: in value of subprogram parameter after the call at formal_vectors.adb:116, in instantiation at use_formal_vectors.ads:11
 formal_vectors.adb:116:23: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at use_formal_vectors.ads:11
 formal_vectors.adb:116:23: info: predicate check proved (CVC5: 1 VC), in instantiation at use_formal_vectors.ads:11
-formal_vectors.adb:116:39: info: in value of subprogram parameter after the call at formal_vectors.adb:116, in instantiation at use_formal_vectors.ads:11
 formal_vectors.adb:116:39: info: overflow check proved (CVC5: 2 VC), in instantiation at use_formal_vectors.ads:11
 formal_vectors.adb:116:39: medium: array index check might fail, in instantiation at use_formal_vectors.ads:11 [reason for check: result of addition must be a valid index into the array]
 formal_vectors.adb:116:54: info: in value of subprogram parameter after the call at formal_vectors.adb:116, in instantiation at use_formal_vectors.ads:11
@@ -215,14 +214,12 @@ formal_vectors.adb:182:30: medium: array index check might fail, in instantiatio
 formal_vectors.adb:182:35: info: in value of subprogram parameter after the call at formal_vectors.adb:182, in instantiation at use_formal_vectors.ads:11
 formal_vectors.adb:182:35: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at use_formal_vectors.ads:11
 formal_vectors.adb:182:35: info: predicate check proved (CVC5: 1 VC), in instantiation at use_formal_vectors.ads:11
-formal_vectors.adb:182:47: info: in value of subprogram parameter after the call at formal_vectors.adb:182, in instantiation at use_formal_vectors.ads:11
 formal_vectors.adb:182:47: info: index check proved (CVC5: 2 VC), in instantiation at use_formal_vectors.ads:11
 formal_vectors.adb:182:47: info: overflow check proved (CVC5: 2 VC), in instantiation at use_formal_vectors.ads:11
 formal_vectors.adb:184:10: medium: resource or memory leak might occur, in instantiation at use_formal_vectors.ads:11
 formal_vectors.adb:184:17: info: in value of subprogram parameter after the call at formal_vectors.adb:184, in instantiation at use_formal_vectors.ads:11
 formal_vectors.adb:184:17: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at use_formal_vectors.ads:11
 formal_vectors.adb:184:17: info: predicate check proved (Z3: 1 VC), in instantiation at use_formal_vectors.ads:11
-formal_vectors.adb:184:33: info: in value of subprogram parameter after the call at formal_vectors.adb:184, in instantiation at use_formal_vectors.ads:11
 formal_vectors.adb:184:33: info: overflow check proved (CVC5: 2 VC), in instantiation at use_formal_vectors.ads:11
 formal_vectors.adb:184:33: medium: array index check might fail, in instantiation at use_formal_vectors.ads:11 [reason for check: result of addition must be a valid index into the array]
 formal_vectors.adb:189:14: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at use_formal_vectors.ads:11
