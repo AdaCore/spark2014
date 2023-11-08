@@ -96,12 +96,15 @@ package body Flow.Analysis.Antialiasing is
       Status   : in out Computed_Aliasing_Result)
    with Pre => (Is_Formal (A_Formal)
                   or else Is_Function_With_Side_Effects (A_Formal))
-               and then (No (B_Formal) or else Is_Formal (B_Formal)),
+               and then (No (B_Formal) or else Is_Formal (B_Formal))
+               and then Nkind (Error_N) in N_Subexpr,
         Post => Status >= Status'Old;
    --  Checks the two nodes for aliasing and issues an error message if
    --  appropriate. The formal of A can be a function entity, which represents
    --  the LHS of assignment that has call with side-effects as the RHS. The
-   --  formal for B can be Empty, which represents a global.
+   --  formal for B can be Empty, which represents a global. Error are emitted
+   --  at Error_N, which is expression that best describes the cause of
+   --  aliasing.
 
    procedure Trace_Line (Txt : String);
    procedure Trace_Two_Nodes (Text1     : String;
@@ -1145,6 +1148,10 @@ package body Flow.Analysis.Antialiasing is
                --  of a function call acting as an array index. We simply
                --  complain that aliasing is possible, because we can't
                --  determine when exactly the aliasing is definite.
+               --
+               --  We can't call the existing alias detection routine, because
+               --  it only works for globals known by Entity_Id and here the
+               --  aliasing might occur between globals known by Entity_Name.
 
                Error_Msg_Flow
                  (FA       => FA,
