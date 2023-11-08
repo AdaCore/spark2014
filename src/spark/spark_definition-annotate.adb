@@ -967,9 +967,9 @@ package body SPARK_Definition.Annotate is
                           ("""Capacity"" function for & shall have no "
                            & "parameters",
                            Ent, Cont_Ty);
-                        Error_Msg_N_If
-                          ("\the ""Empty"" function has no parameters",
-                           Ent);
+                        Error_Msg_NE_If
+                          ("\& has no parameters",
+                           Ent, Annot.Empty_Function);
                         return;
 
                      elsif Number_Formals (Ent) /= 1 then
@@ -1378,120 +1378,6 @@ package body SPARK_Definition.Annotate is
                                  Ent);
                               return;
 
-                           else
-
-                              --  Check that container aggregates on the
-                              --  source and the target match.
-
-                              declare
-                                 Source_Asp            : constant Node_Id :=
-                                   Find_Value_Of_Aspect
-                                     (Cont_Ty, Aspect_Aggregate);
-                                 Source_Empty          : Node_Id := Empty;
-                                 Source_Add_Named      : Node_Id := Empty;
-                                 Source_Add_Unnamed    : Node_Id := Empty;
-                                 Source_New_Indexed    : Node_Id := Empty;
-                                 Source_Assign_Indexed : Node_Id := Empty;
-
-                                 Target_Asp            : constant Node_Id :=
-                                   Find_Value_Of_Aspect
-                                     (Etype (Ent), Aspect_Aggregate);
-                                 Target_Empty          : Node_Id := Empty;
-                                 Target_Add_Named      : Node_Id := Empty;
-                                 Target_Add_Unnamed    : Node_Id := Empty;
-                                 Target_New_Indexed    : Node_Id := Empty;
-                                 Target_Assign_Indexed : Node_Id := Empty;
-
-                                 Source_Add            : Entity_Id;
-                                 Source_C_Formal       : Node_Id;
-                                 Source_E_Formal       : Node_Id;
-                                 Source_K_Formal       : Node_Id;
-
-                                 Target_Add            : Entity_Id;
-                                 Target_C_Formal       : Node_Id;
-                                 Target_E_Formal       : Node_Id;
-                                 Target_K_Formal       : Node_Id;
-
-                                 Error_Msg           : constant String :=
-                                   "concrete and model types of a ""Model"" "
-                                   & "function shall define compatible "
-                                   & "aggregates";
-
-                              begin
-                                 Parse_Aspect_Aggregate
-                                   (N                   => Source_Asp,
-                                    Empty_Subp          => Source_Empty,
-                                    Add_Named_Subp      => Source_Add_Named,
-                                    Add_Unnamed_Subp    => Source_Add_Unnamed,
-                                    New_Indexed_Subp    => Source_New_Indexed,
-                                    Assign_Indexed_Subp =>
-                                      Source_Assign_Indexed);
-                                 Parse_Aspect_Aggregate
-                                   (N                   => Target_Asp,
-                                    Empty_Subp          => Target_Empty,
-                                    Add_Named_Subp      => Target_Add_Named,
-                                    Add_Unnamed_Subp    => Target_Add_Unnamed,
-                                    New_Indexed_Subp    => Target_New_Indexed,
-                                    Assign_Indexed_Subp =>
-                                      Target_Assign_Indexed);
-
-                                 if Present (Source_Add_Named) /=
-                                   Present (Target_Add_Named)
-                                 then
-                                    Error_Msg_N_If
-                                      (Error_Msg, Ent);
-                                    return;
-                                 elsif Present (Source_Add_Named) then
-                                    Source_Add := Entity (Source_Add_Named);
-                                    Target_Add := Entity (Target_Add_Named);
-                                 else
-                                    Source_Add := Entity (Source_Add_Unnamed);
-                                    Target_Add := Entity (Target_Add_Unnamed);
-                                 end if;
-
-                                 --  Retrieve the formals and check their
-                                 --  types.
-
-                                 Source_C_Formal :=
-                                   First_Formal (Source_Add);
-                                 Target_C_Formal :=
-                                   First_Formal (Target_Add);
-
-                                 if Present (Source_Add_Named) then
-                                    Source_K_Formal :=
-                                      Next_Formal (Source_C_Formal);
-                                    Target_K_Formal :=
-                                      Next_Formal (Target_C_Formal);
-                                    Source_E_Formal :=
-                                      Next_Formal (Source_K_Formal);
-                                    Target_E_Formal :=
-                                      Next_Formal (Target_K_Formal);
-                                 else
-                                    Source_E_Formal :=
-                                      Next_Formal (Source_C_Formal);
-                                    Target_E_Formal :=
-                                      Next_Formal (Target_C_Formal);
-                                 end if;
-
-                                 if Etype (Source_E_Formal) /=
-                                   Etype (Target_E_Formal)
-                                 then
-                                    Error_Msg_N_If
-                                      (Error_Msg & ", element types do "
-                                       & "not match",
-                                       Ent);
-                                    return;
-                                 elsif Present (Source_Add_Named)
-                                   and then Etype (Source_K_Formal) /=
-                                   Etype (Target_K_Formal)
-                                 then
-                                    Error_Msg_N_If
-                                      (Error_Msg & ", key types do"
-                                       & " not match",
-                                       Ent);
-                                    return;
-                                 end if;
-                              end;
                            end if;
 
                            --  Store the model function
@@ -3733,9 +3619,9 @@ package body SPARK_Definition.Annotate is
                  ("""Capacity"" function for & shall take the container "
                   & "as a parameter",
                   Element (Position), Typ);
-               Error_Msg_N_If
-                 ("\the ""Empty"" function takes the capacity as a parameter",
-                  Element (Position));
+               Error_Msg_NE_If
+                 ("\& takes the capacity as a parameter",
+                  Element (Position), Annot.Empty_Function);
             else
                Annot.Capacity := Element (Position);
             end if;
@@ -3921,6 +3807,139 @@ package body SPARK_Definition.Annotate is
                Error_Msg_NE_If
                  ("no ""Model"" function found for type "
                   & "with aggregates using models &", Typ, Typ);
+            else
+
+               --  Check that container aggregates on the
+               --  source and the target match.
+
+               declare
+                  Source_Asp            : constant Node_Id :=
+                    Find_Value_Of_Aspect (Typ, Aspect_Aggregate);
+                  Source_Empty          : Node_Id := Empty;
+                  Source_Add_Named      : Node_Id := Empty;
+                  Source_Add_Unnamed    : Node_Id := Empty;
+                  Source_New_Indexed    : Node_Id := Empty;
+                  Source_Assign_Indexed : Node_Id := Empty;
+
+                  Target_Asp            : constant Node_Id :=
+                    Find_Value_Of_Aspect
+                      (Etype (Annot.Model), Aspect_Aggregate);
+                  Target_Empty          : Node_Id := Empty;
+                  Target_Add_Named      : Node_Id := Empty;
+                  Target_Add_Unnamed    : Node_Id := Empty;
+                  Target_New_Indexed    : Node_Id := Empty;
+                  Target_Assign_Indexed : Node_Id := Empty;
+
+                  Source_Add            : Entity_Id;
+                  Source_C_Formal       : Node_Id;
+                  Source_E_Formal       : Node_Id;
+                  Source_K_Formal       : Node_Id;
+
+                  Target_Add            : Entity_Id;
+                  Target_C_Formal       : Node_Id;
+                  Target_E_Formal       : Node_Id;
+                  Target_K_Formal       : Node_Id;
+
+                  Error_Msg           : constant String :=
+                    "concrete and model types of a ""Model"" "
+                    & "function shall define compatible "
+                    & "aggregates";
+
+               begin
+                  Parse_Aspect_Aggregate
+                    (N                   => Source_Asp,
+                     Empty_Subp          => Source_Empty,
+                     Add_Named_Subp      => Source_Add_Named,
+                     Add_Unnamed_Subp    => Source_Add_Unnamed,
+                     New_Indexed_Subp    => Source_New_Indexed,
+                     Assign_Indexed_Subp =>
+                       Source_Assign_Indexed);
+                  Parse_Aspect_Aggregate
+                    (N                   => Target_Asp,
+                     Empty_Subp          => Target_Empty,
+                     Add_Named_Subp      => Target_Add_Named,
+                     Add_Unnamed_Subp    => Target_Add_Unnamed,
+                     New_Indexed_Subp    => Target_New_Indexed,
+                     Assign_Indexed_Subp => Target_Assign_Indexed);
+
+                  if Present (Source_Add_Named) /= Present (Target_Add_Named)
+                  then
+                     Error_Msg_N_If (Error_Msg, Annot.Model);
+                     return;
+                  elsif Present (Source_Add_Named) then
+                     Source_Add := Entity (Source_Add_Named);
+                     Target_Add := Entity (Target_Add_Named);
+                  else
+                     Source_Add := Entity (Source_Add_Unnamed);
+                     Target_Add := Entity (Target_Add_Unnamed);
+                  end if;
+
+                  --  Retrieve the formals and check their
+                  --  types.
+
+                  Source_C_Formal := First_Formal (Source_Add);
+                  Target_C_Formal := First_Formal (Target_Add);
+
+                  if Present (Source_Add_Named) then
+                     Source_K_Formal := Next_Formal (Source_C_Formal);
+                     Target_K_Formal := Next_Formal (Target_C_Formal);
+                     Source_E_Formal := Next_Formal (Source_K_Formal);
+                     Target_E_Formal := Next_Formal (Target_K_Formal);
+                  else
+                     Source_E_Formal := Next_Formal (Source_C_Formal);
+                     Target_E_Formal := Next_Formal (Target_C_Formal);
+                  end if;
+
+                  if Retysp (Etype (Source_E_Formal)) /=
+                    Retysp (Etype (Target_E_Formal))
+                  then
+                     Error_Msg_N_If
+                       (Error_Msg & ", element types do not match",
+                        Annot.Model);
+                     return;
+                  elsif Present (Source_Add_Named)
+                    and then Retysp (Etype (Source_K_Formal)) /=
+                      Retysp (Etype (Target_K_Formal))
+                  then
+                     Error_Msg_N_If
+                       (Error_Msg & ", key types do not match",
+                        Annot.Model);
+                     return;
+                  end if;
+               end;
+            end if;
+
+            --  Check that the capacity function inherited from the model is
+            --  compatible if any.
+
+            if No (Annot.Capacity) then
+               declare
+                  Model_Type    : Entity_Id;
+                  Current_Annot : Aggregate_Annotation := Annot;
+               begin
+                  while Current_Annot.Kind = Model
+                    and then Present (Current_Annot.Model)
+                  loop
+                     Model_Type := Current_Annot.Model_Type;
+                     Current_Annot := Get_Aggregate_Annotation (Model_Type);
+
+                     if Present (Current_Annot.Capacity) then
+                        if No (Annot.Spec_Capacity) /=
+                          No (Current_Annot.Spec_Capacity)
+                        then
+                           Error_Msg_NE_If
+                             ("incompatible ""Capacity"" function inherited "
+                              & "from model type &", Typ, Model_Type);
+                           Error_Msg_NE_If
+                             ((if Present (Annot.Spec_Capacity)
+                              then "\& takes the capacity as a parameter"
+                              else "\& has no parameters"),
+                              Typ, Annot.Empty_Function);
+                        end if;
+                        exit;
+                     end if;
+                  end loop;
+               end;
             end if;
       end case;
 

@@ -1,0 +1,140 @@
+main.adb:23:09: info: Container_Aggregates annotation proved (CVC5: 1 VC)
+main.adb:23:09: info: Container_Aggregates annotation proved (CVC5: 1 VC)
+main.adb:23:09: info: Container_Aggregates annotation proved (CVC5: 1 VC)
+main.adb:23:09: info: after a call to Append at main.adb:35
+main.adb:23:09: info: after a call to Append at main.adb:35
+main.adb:23:09: info: after a call to Empty at main.adb:30
+main.adb:23:09: info: when establishing invariant on Last at spark-containers-functional-vectors.ads:94, in instantiation at main.adb:16
+main.adb:23:09: info: when reestablishing invariant on Get at spark-containers-functional-vectors.ads:101, in instantiation at main.adb:16
+main.adb:23:09: info: when reestablishing invariant on Last at spark-containers-functional-vectors.ads:94, in instantiation at main.adb:16
+main.adb:39:33: info: during checks for container aggregates at main.adb:23
+main.adb:39:33: info: precondition proved (CVC5: 1 VC)
+main.adb:53:46: info: index check proved (CVC5: 2 VC)
+main.adb:66:09: info: Container_Aggregates annotation proved (CVC5: 1 VC)
+main.adb:66:09: info: Container_Aggregates annotation proved (CVC5: 1 VC)
+main.adb:66:09: info: Container_Aggregates annotation proved (CVC5: 1 VC)
+main.adb:66:09: info: Container_Aggregates annotation proved (CVC5: 1 VC)
+main.adb:66:09: info: Container_Aggregates annotation proved (CVC5: 2 VC)
+main.adb:66:09: info: Container_Aggregates annotation proved (CVC5: 3 VC)
+main.adb:66:09: info: after a call to Empty at main.adb:76
+main.adb:66:09: info: after a call to Empty at main.adb:76
+main.adb:66:09: info: after a call to Empty at main.adb:76
+main.adb:66:09: info: after a call to Insert at main.adb:83
+main.adb:66:09: info: after a call to Insert at main.adb:83
+main.adb:66:09: info: after a call to Insert at main.adb:83
+main.adb:66:09: info: when establishing invariant on Capacity at main.adb:68
+main.adb:66:09: info: when establishing invariant on Contains at spark-containers-functional-sets.ads:94, in instantiation at main.adb:59
+main.adb:66:09: info: when establishing invariant on Length at spark-containers-functional-sets.ads:118, in instantiation at main.adb:59
+main.adb:66:09: info: when reestablishing invariant on Capacity at main.adb:68
+main.adb:66:09: info: when reestablishing invariant on Contains at spark-containers-functional-sets.ads:94, in instantiation at main.adb:59
+main.adb:66:09: info: when reestablishing invariant on Length at spark-containers-functional-sets.ads:118, in instantiation at main.adb:59
+main.adb:68:16: info: implicit aspect Always_Terminates on "Capacity" has been proved, subprogram will terminate
+main.adb:99:10: info: range check proved (CVC5: 2 VC)
+main.adb:103:53: info: index check proved (CVC5: 2 VC)
+main.adb:117:09: info: Container_Aggregates annotation proved (CVC5: 1 VC)
+main.adb:117:09: info: Container_Aggregates annotation proved (CVC5: 1 VC)
+main.adb:117:09: info: Container_Aggregates annotation proved (CVC5: 1 VC)
+main.adb:117:09: info: Container_Aggregates annotation proved (CVC5: 1 VC)
+main.adb:117:09: info: Container_Aggregates annotation proved (CVC5: 3 VC)
+main.adb:117:09: info: after a call to Empty at main.adb:124
+main.adb:117:09: info: after a call to Empty at main.adb:124
+main.adb:117:09: info: after a call to Insert at main.adb:130
+main.adb:117:09: info: after a call to Insert at main.adb:130
+main.adb:117:09: info: after a call to Insert at main.adb:130
+main.adb:117:09: info: when establishing invariant on Has_Key at spark-containers-functional-maps.ads:120, in instantiation at main.adb:110
+main.adb:117:09: info: when establishing invariant on Length at spark-containers-functional-maps.ads:166, in instantiation at main.adb:110
+main.adb:117:09: info: when reestablishing invariant on Get at spark-containers-functional-maps.ads:137, in instantiation at main.adb:110
+main.adb:117:09: info: when reestablishing invariant on Has_Key at spark-containers-functional-maps.ads:120, in instantiation at main.adb:110
+main.adb:117:09: info: when reestablishing invariant on Length at spark-containers-functional-maps.ads:166, in instantiation at main.adb:110
+main.adb:133:17: info: during checks for container aggregates at main.adb:117
+main.adb:133:17: info: precondition proved (CVC5: 1 VC)
+main.adb:164:12: info: Container_Aggregates annotation proved (CVC5: 1 VC)
+main.adb:164:12: info: Container_Aggregates annotation proved (CVC5: 1 VC)
+main.adb:164:12: info: after a call to Empty at main.adb:166
+main.adb:164:12: info: after a call to Insert at main.adb:167
+main.adb:164:12: info: when establishing invariant on Get at main.adb:177
+main.adb:164:12: info: when reestablishing invariant on Get at main.adb:177
+main.adb:166:19: info: implicit aspect Always_Terminates on "Empty" has been proved, subprogram will terminate
+main.adb:174:19: info: implicit aspect Always_Terminates on "Default_Value" has been proved, subprogram will terminate
+main.adb:177:19: info: implicit aspect Always_Terminates on "Get" has been proved, subprogram will terminate
+main.adb:180:19: info: implicit aspect Always_Terminates on "Eq_Key" has been proved, subprogram will terminate
+main.adb:191:36: info: precondition proved (CVC5: 1 VC)
+main.adb:200:09: info: Container_Aggregates annotation proved (CVC5: 1 VC)
+main.adb:200:09: info: Container_Aggregates annotation proved (CVC5: 1 VC)
+main.adb:200:09: info: after a call to Empty at main.adb:207
+main.adb:200:09: info: after a call to Insert at main.adb:212
+main.adb:200:09: info: when establishing invariant on Get at main.adb:177
+main.adb:200:09: info: when reestablishing invariant on Get at main.adb:177
+main.adb:232:14: high: all paths in "Test_Sets" raise exceptions or do not terminate normally
+main.adb:233:06: info: data dependencies proved
+main.adb:238:16: info: all elements shall fit in "Natural" for set aggregates at main.adb:66
+main.adb:238:16: info: precondition proved (CVC5: 1 VC)
+main.adb:239:16: info: all elements shall fit in "Natural" for set aggregates at main.adb:66
+main.adb:239:16: info: precondition proved (CVC5: 1 VC)
+main.adb:240:16: info: all elements shall fit in "Natural" for set aggregates at main.adb:66
+main.adb:240:16: info: precondition proved (CVC5: 1 VC)
+main.adb:242:22: info: assertion proved (CVC5: 1 VC)
+main.adb:242:22: info: predicate check proved (Trivial: 1 VC)
+main.adb:242:43: info: predicate check proved (Trivial: 1 VC)
+main.adb:243:22: info: assertion proved (CVC5: 2 VC)
+main.adb:244:22: info: assertion proved (CVC5: 1 VC)
+main.adb:244:22: info: predicate check proved (Trivial: 1 VC)
+main.adb:244:43: info: predicate check proved (Trivial: 1 VC)
+main.adb:245:22: info: assertion proved (CVC5: 1 VC)
+main.adb:246:22: info: assertion proved (CVC5: 1 VC)
+main.adb:246:22: info: predicate check proved (Trivial: 1 VC)
+main.adb:246:43: info: predicate check proved (Trivial: 1 VC)
+main.adb:247:22: info: assertion proved (CVC5: 2 VC)
+main.adb:248:07: medium: assertion might fail
+main.adb:251:14: high: all paths in "Test_Partial_Maps" raise exceptions or do not terminate normally
+main.adb:252:06: info: data dependencies proved
+main.adb:257:16: info: keys shall be distinct for maps aggregates at main.adb:117
+main.adb:257:16: info: precondition proved (CVC5: 10 VC)
+main.adb:258:16: info: keys shall be distinct for maps aggregates at main.adb:117
+main.adb:258:16: info: precondition proved (Trivial: 1 VC)
+main.adb:260:22: info: assertion proved (CVC5: 1 VC)
+main.adb:260:22: info: predicate check proved (Trivial: 1 VC)
+main.adb:260:43: info: predicate check proved (Trivial: 1 VC)
+main.adb:261:22: info: assertion proved (CVC5: 2 VC)
+main.adb:262:38: info: unrolling loop
+main.adb:263:25: info: assertion proved (CVC5: 5 VC)
+main.adb:263:25: info: precondition proved (CVC5: 5 VC)
+main.adb:265:22: info: assertion proved (CVC5: 1 VC)
+main.adb:265:22: info: predicate check proved (Trivial: 1 VC)
+main.adb:265:43: info: predicate check proved (Trivial: 1 VC)
+main.adb:266:22: info: assertion proved (CVC5: 1 VC)
+main.adb:267:07: medium: assertion might fail
+main.adb:271:06: info: data dependencies proved
+main.adb:275:07: medium: resource or memory leak might occur at end of scope
+main.adb:275:16: medium: keys shall be distinct for maps aggregates at main.adb:117
+main.adb:275:16: medium: precondition might fail
+main.adb:280:14: high: all paths in "Test_Total_Maps" raise exceptions or do not terminate normally
+main.adb:281:06: info: data dependencies proved
+main.adb:286:16: info: keys shall be distinct for maps aggregates at main.adb:200
+main.adb:286:16: info: precondition proved (CVC5: 10 VC)
+main.adb:287:16: info: keys shall be distinct for maps aggregates at main.adb:200
+main.adb:287:16: info: precondition proved (Trivial: 1 VC)
+main.adb:289:38: info: unrolling loop
+main.adb:290:25: info: assertion proved (CVC5: 5 VC)
+main.adb:292:22: info: assertion proved (CVC5: 1 VC; Trivial: 1 VC)
+main.adb:293:22: info: assertion proved (CVC5: 1 VC)
+main.adb:294:07: medium: assertion might fail
+main.adb:298:06: info: data dependencies proved
+main.adb:302:07: medium: resource or memory leak might occur at end of scope
+main.adb:302:16: medium: keys shall be distinct for maps aggregates at main.adb:117
+main.adb:302:16: medium: precondition might fail
+main.adb:307:14: high: all paths in "Test_Seqs" raise exceptions or do not terminate normally
+main.adb:308:06: info: data dependencies proved
+main.adb:313:16: info: all elements shall fit in index type for sequence aggregates at main.adb:23
+main.adb:313:16: info: precondition proved (CVC5: 1 VC)
+main.adb:314:16: info: all elements shall fit in index type for sequence aggregates at main.adb:23
+main.adb:314:16: info: precondition proved (Trivial: 1 VC)
+main.adb:316:22: info: assertion proved (CVC5: 1 VC)
+main.adb:317:40: info: unrolling loop
+main.adb:318:25: info: assertion proved (CVC5: 5 VC)
+main.adb:318:25: info: precondition proved (CVC5: 10 VC)
+main.adb:320:22: info: assertion proved (CVC5: 1 VC)
+main.adb:321:07: medium: assertion might fail
+main.adb:325:06: info: data dependencies proved
+main.adb:329:16: medium: all elements shall fit in index type for sequence aggregates at main.adb:23
+main.adb:329:16: medium: precondition might fail
