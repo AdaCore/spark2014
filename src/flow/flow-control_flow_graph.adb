@@ -1447,9 +1447,9 @@ package body Flow.Control_Flow_Graph is
 
          Final_Atr : constant V_Attributes :=
            Make_Variable_Attributes
-             (F_Ent      => F_Final,
-              Mode       => M,
-              E_Loc      => E);
+             (F_Ent  => F_Final,
+              Mode   => M,
+              E_Loc  => E);
 
       begin
 
