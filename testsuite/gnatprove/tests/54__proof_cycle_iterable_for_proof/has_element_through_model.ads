@@ -52,10 +52,10 @@ package Has_Element_Through_Model with SPARK_Mode is
       function Next (X : T; Y : C) return C with
         Pre => Has_Element (X, Y);
       function Has_Element (X : T; Y : C) return Boolean;
-      function Model (X : T) return P1.T;
+      function Model (X : T) return P1.T with
+       Annotate => (GNATprove, Iterable_For_Proof, "Model");
       function Element (X : T; Y : C) return Integer with
         Pre  => Has_Element (X, Y);
-      pragma Annotate (GNATprove, Iterable_For_Proof, "Model", Model);
       function From_Array (X : Int_Arr) return T;
 
    private
@@ -93,10 +93,10 @@ package Has_Element_Through_Model with SPARK_Mode is
       function Next (X : T; Y : C) return C with
         Pre => Has_Element (X, Y);
       function Has_Element (X : T; Y : C) return Boolean;
-      function Model (X : T) return P2.T;
+      function Model (X : T) return P2.T with
+        Annotate => (GNATprove, Iterable_For_Proof, "Model");
       function Element (X : T; Y : C) return Integer with
         Pre  => Has_Element (X, Y);
-      pragma Annotate (GNATprove, Iterable_For_Proof, "Model", Model);
       --  Recursive call - for proof only - because of the iterable_for_proof
       --  annotation.
 

@@ -17,10 +17,10 @@ procedure Quant_late_errors with SPARK_Mode is
       function Has_Element (X : Container; Y : Boolean) return Boolean
         with Post => True;
       function Contains (X : Container; Y : Boolean) return Boolean
-        with Post => True;
+        with Post => True,
+             Annotate => (GNATprove, Iterable_For_Proof, "contains");
       function Element (X : Container; Y : Boolean) return Boolean
         with Post => True;
-      pragma Annotate (GNATprove, Iterable_For_Proof, "contains", Contains);
       function Last (X : Container) return Boolean;
       function Previous (X : Container; Y : Boolean) return Boolean;
    end With_Contains;
@@ -66,10 +66,10 @@ procedure Quant_late_errors with SPARK_Mode is
       function Has_Element (X : Container; Y : Boolean) return Boolean
         with Post => True;
       function Get_Model (X : Container) return Model
-        with Post => True;
+        with Post => True,
+             Annotate => (GNATprove, Iterable_For_Proof, "model");
       function Element (X : Container; Y : Boolean) return Boolean
         with Post => True;
-      pragma Annotate (GNATprove, Iterable_For_Proof, "model", Get_Model);
       function Last (X : Container) return Boolean
         with Pre => False;
       function Previous (X : Container; Y : Boolean) return Boolean

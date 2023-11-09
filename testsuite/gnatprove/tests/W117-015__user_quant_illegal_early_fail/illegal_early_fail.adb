@@ -44,11 +44,11 @@ procedure Illegal_Early_Fail with SPARK_Mode is
       function Has_Element (X : Boolean_Container; C : Boolean_Cursor)
                             return Boolean
       is (C /= 2);
+      function Contains (X : Boolean_Container; B : Boolean) return Boolean
+      is (True);
       function Element (X : Boolean_Container; C : Boolean_Cursor)
                         return Boolean
       is (C /= 0);
-      function Contains (X : Boolean_Container; B : Boolean) return Boolean
-      is (True);
       pragma Annotate (GNATprove, Iterable_For_Proof, "contains", Contains);
       --  FAILS (too late).
 
@@ -75,11 +75,11 @@ procedure Illegal_Early_Fail with SPARK_Mode is
                                return Boolean
          is (C /= 2);
          function Model (X : Boolean_Container) return Boolean_Container
-         is (X);
+         is (X) with
+           Annotate => (GNATprove, Iterable_For_Proof, "model");
          function Element (X : Boolean_Container; C : Boolean_Cursor)
                            return Boolean
          is (C /= 0);
-         pragma Annotate (GNATprove, Iterable_For_Proof, "model", Model);
          --  FAILS.
       end Looping;
 
@@ -123,22 +123,22 @@ procedure Illegal_Early_Fail with SPARK_Mode is
 
          function C12 (X : Boolean_Container) return Boolean_Container2
            with Import, Global => null;
+         pragma Annotate (GNATprove, Iterable_For_Proof, "model", C12);
          function Element (X : Boolean_Container; C : Boolean_Cursor)
                            return Boolean
          is (C /= 0);
-         pragma Annotate (GNATprove, Iterable_For_Proof, "model", C12);
          function C23 (X : Boolean_Container2) return Boolean_Container3
            with Import, Global => null;
+         pragma Annotate (GNATprove, Iterable_For_Proof, "model", C23);
          function Element (X : Boolean_Container2; C : Boolean_Cursor)
                            return Boolean
          is (C /= 0);
-         pragma Annotate (GNATprove, Iterable_For_Proof, "model", C23);
          function C31 (X : Boolean_Container3) return Boolean_Container
            with Import, Global => null;
+         pragma Annotate (GNATprove, Iterable_For_Proof, "model", C31);
          function Element (X : Boolean_Container3; C : Boolean_Cursor)
                            return Boolean
          is (C /= 0);
-         pragma Annotate (GNATprove, Iterable_For_Proof, "model", C31);
          --  This one fails, cycle 1 --C12-> 2 --C23-> 3 --C31->  1.
       end Model_Loop;
 
@@ -170,10 +170,10 @@ procedure Illegal_Early_Fail with SPARK_Mode is
       is (C /= 2);
       function Model (X : Other_Boolean_Container) return Boolean_Container
       is (Booleans);
+      pragma Annotate (GNATprove, Iterable_For_Proof, "model", Model);
       function Element (X : Other_Boolean_Container; C : Boolean_Cursor)
                         return Other_Boolean
       is (Cast (C /= 0));
-      pragma Annotate (GNATprove, Iterable_For_Proof, "model", Model);
       --  FAILS.
 
    end Not_Same_Elements;
@@ -198,10 +198,10 @@ procedure Illegal_Early_Fail with SPARK_Mode is
       Global_Flag : Boolean := True;
       function Convert (X : Boolean_Container) return B0.Boolean_Container
       is (B0.Booleans) with Global => (Input => Global_Flag);
+      pragma Annotate (GNATprove, Iterable_For_Proof, "model", Convert);
       function Element (X : Boolean_Container; C : Boolean_Cursor)
                         return Boolean
       is (C /= 0);
-      pragma Annotate (GNATprove, Iterable_For_Proof, "model", Convert);
       --  FAILS.
 
    end No_Globals_In_Model;
@@ -225,10 +225,10 @@ procedure Illegal_Early_Fail with SPARK_Mode is
       Global_Flag : Boolean := True;
       function Contains (X : Boolean_Container; Y : Boolean) return Boolean
       is (True) with Global => (Input => Global_Flag);
+      pragma Annotate (GNATprove, Iterable_For_Proof, "contains", Contains);
       function Element (X : Boolean_Container; C : Boolean_Cursor)
                         return Boolean
       is (C /= 0);
-      pragma Annotate (GNATprove, Iterable_For_Proof, "contains", Contains);
       --  FAILS.
 
    end No_Globals_In_Contains;
@@ -271,10 +271,10 @@ procedure Illegal_Early_Fail with SPARK_Mode is
                             return Boolean
          is (C /= 2);
          function Model_F (X : Boolean_Container) return Model is (null record);
+         pragma Annotate (GNATprove, Iterable_For_Proof, "Model", Model_F);
          function Element (X : Boolean_Container; C : Boolean_Cursor)
                         return Boolean
          is (C /= 0);
-         pragma Annotate (GNATprove, Iterable_For_Proof, "Model", Model_F);
          --  Fine.
 
       end Non_Controlling;
@@ -311,10 +311,10 @@ procedure Illegal_Early_Fail with SPARK_Mode is
                             return Boolean
          is (C /= 2);
          function Model_F (X : Boolean_Container) return Model is (null record);
+         pragma Annotate (GNATprove, Iterable_For_Proof, "Model", Model_F);
          function Element (X : Boolean_Container; C : Boolean_Cursor)
                         return Boolean
          is (C /= 0);
-         pragma Annotate (GNATprove, Iterable_For_Proof, "Model", Model_F);
          --  FAILS
 
       end Controlling;
@@ -336,6 +336,8 @@ procedure Illegal_Early_Fail with SPARK_Mode is
             type Tagged_Element is tagged null record;
             function Contains (X : Tagged_Container;
                                Y : Tagged_Element) return Boolean is (True);
+            pragma Annotate (GNATprove, Iterable_For_Proof,
+                             "Contains", Contains);
          end Nested_Contains;
          function First (X : Tagged_Container) return Boolean is (True);
          function Next (X : Tagged_Container; C : Boolean) return Boolean
@@ -346,8 +348,6 @@ procedure Illegal_Early_Fail with SPARK_Mode is
          function Element (X : Tagged_Container; C : Boolean)
                            return Nested_Contains.Tagged_Element
          is (null record);
-         pragma Annotate (GNATprove, Iterable_For_Proof,
-                          "Contains", Nested_Contains.Contains);
          --  FAILS
 
       end Contains_Primitive;
@@ -370,11 +370,11 @@ procedure Illegal_Early_Fail with SPARK_Mode is
          package Inner is
             function Model (X : Boolean_Container) return B0.Boolean_Container
             is (B0.Booleans);
+            pragma Annotate (GNATprove, Iterable_For_Proof, "Model", Model);
          end Inner;
          function Element (X : Boolean_Container; C : Boolean_Cursor)
                            return Boolean
          is (C /= 0);
-         pragma Annotate (GNATprove, Iterable_For_Proof, "Model", Inner.Model);
          --  FAILS
 
       end Model_Primitive;
@@ -400,10 +400,10 @@ procedure Illegal_Early_Fail with SPARK_Mode is
          is (C /= 2);
          function Model (X : Boolean_Container) return B0.Boolean_Container
            with Volatile_Function, Import;
+         pragma Annotate (GNATprove, Iterable_For_Proof, "Model", Model);
          function Element (X : Boolean_Container; C : Boolean_Cursor)
                            return Boolean
          is (C /= 0);
-         pragma Annotate (GNATprove, Iterable_For_Proof, "Model", Model);
          --  FAILS
 
       end Model_Volatile;
@@ -425,13 +425,13 @@ procedure Illegal_Early_Fail with SPARK_Mode is
          is (C /= 2);
          function Contains (X : Boolean_Container; Y : Boolean) return Boolean
            with Import, Volatile_Function;
-         function Element (X : Boolean_Container; C : Boolean_Cursor)
-                           return Boolean
-         is (C /= 0);
          pragma Annotate (GNATprove,
                           Iterable_For_Proof,
                           "Contains",
                           Contains);
+         function Element (X : Boolean_Container; C : Boolean_Cursor)
+                           return Boolean
+         is (C /= 0);
          --  FAILS
 
       end Contains_Volatile;

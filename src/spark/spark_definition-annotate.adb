@@ -321,14 +321,11 @@ package body SPARK_Definition.Annotate is
       Prag           : Node_Id;
       Prag_Name      : String;
       Decl_Name      : String;
-      Ok             : out Boolean;
-      Aspect_Allowed : Boolean := True);
+      Ok             : out Boolean);
    --  Check that 'Prag' is declared immediately after declaration of
    --  given entity, emitting appropriate error message.
    --  In case of package specification, the allowed range for the pragma
    --  is immediately after the 'is' of the package.
-   --  Aspect_Allowed should be false only in the cases where the pragma
-   --  must be found at a location differing from its argument entity.
 
    procedure Check_Annotate_Placement
      (E         : Entity_Id;
@@ -433,6 +430,12 @@ package body SPARK_Definition.Annotate is
       E   : Node_Or_Entity_Id);
    --  Wrapper for Error_Msg_NE that conditionally emit message depending
    --  on phase.
+
+   function Get_Container_Function_From_Pragma (N  : Node_Id) return Entity_Id
+   with Pre => Is_Pragma_Annotate_GNATprove (N);
+   --  Return the function F such that N is a pragma Annotate
+   --  (GNATprove, Container_Aggregates, ..., F) or a pragma Annotate
+   --  (GNATprove, Iterable_For_Proof, ..., F).
 
    ---------
    -- "<" --
@@ -1454,17 +1457,14 @@ package body SPARK_Definition.Annotate is
       Prag           : Node_Id;
       Prag_Name      : String;
       Decl_Name      : String;
-      Ok             : out Boolean;
-      Aspect_Allowed : Boolean := True)
+      Ok             : out Boolean)
    is
       Cursor        : Node_Id := Prag;
       Target        : Node_Id;
       Base_Ent      : Entity_Id;
    begin
-
-      if From_Aspect_Specification (Prag)
-      then
-         Ok := Aspect_Allowed;
+      if From_Aspect_Specification (Prag) then
+         Ok := True;
       elsif not Is_List_Member (Cursor) then
          Ok := False;
       else
@@ -2819,7 +2819,9 @@ package body SPARK_Definition.Annotate is
             Mark_Violation (Arg4_Exp, From => E);
             return;
          end if;
-         if Scope (E) /= Scope (Container_Ty) then
+         if List_Containing (Prag) /=
+           List_Containing (Parent (Container_Ty))
+         then
             Error_Msg_N_If
               (Name_For_Error
                & " function must be primitive for container type", E);
@@ -3106,13 +3108,12 @@ package body SPARK_Definition.Annotate is
       end if;
 
       Check_Annotate_Placement
-        (Cont_Element,
+        (New_Prim,
          Placed_At_Specification,
          Prag,
          "Iterable_For_Proof",
-         "declaration of Iterable primitive Element",
-         Ok,
-         False);
+         "specification of function " & Source_Name (New_Prim),
+         Ok);
       if not Ok then
          return;
       end if;
@@ -4113,10 +4114,10 @@ package body SPARK_Definition.Annotate is
    is (Aggregate_Annotations.Element (Base_Retysp (E)));
 
    ----------------------------------------
-   -- Get_Aggregate_Function_From_Pragma --
+   -- Get_Container_Function_From_Pragma --
    ----------------------------------------
 
-   function Get_Aggregate_Function_From_Pragma
+   function Get_Container_Function_From_Pragma
      (N  : Node_Id)
       return Entity_Id
    is
@@ -4136,7 +4137,7 @@ package body SPARK_Definition.Annotate is
          Exp  : constant Node_Id := Expression (Arg4);
 
       begin
-         if Name /= "container_aggregates"
+         if Name not in "container_aggregates" | "iterable_for_proof"
            or else Nkind (Exp) not in N_Has_Entity
          then
             return Empty;
@@ -4152,7 +4153,7 @@ package body SPARK_Definition.Annotate is
             end if;
          end;
       end;
-   end Get_Aggregate_Function_From_Pragma;
+   end Get_Container_Function_From_Pragma;
 
    ------------------------------
    -- Get_Lemmas_To_Specialize --
@@ -4616,12 +4617,14 @@ package body SPARK_Definition.Annotate is
          end;
       end if;
 
-      --  If E is annotated with a Container_Aggregates, go over the
-      --  following declarations to try and find its associated functions.
+      --  If E is annotated with Container_Aggregates or has an Iterable
+      --  aspect, go over the following declarations to try and find its
+      --  associated functions.
 
       if Is_Type (E)
         and then Is_Base_Type (E)
-        and then Has_Aggregate_Annotation (E)
+        and then (Has_Aggregate_Annotation (E)
+                  or else Has_Iterable_Aspect_In_SPARK (E))
       then
          declare
             Decl_Node : constant Node_Id := Declaration_Node (E);
@@ -4633,7 +4636,7 @@ package body SPARK_Definition.Annotate is
                   if Is_Pragma_Annotate_GNATprove (Cur) then
                      declare
                         Fun : constant Entity_Id :=
-                          Get_Aggregate_Function_From_Pragma (Cur);
+                          Get_Container_Function_From_Pragma (Cur);
                      begin
                         if Present (Fun) then
                            Queue_For_Marking (Fun);

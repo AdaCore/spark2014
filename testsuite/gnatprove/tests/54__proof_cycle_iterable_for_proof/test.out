@@ -11,9 +11,9 @@ contains_through_model.ads:19:16: error: iteration primitive shall not be recurs
 contains_through_model.ads:19:16: info: during checks for quantification at contains_through_model.ads:28
 contains_through_model.ads:19:16: info: implicit aspect Always_Terminates on "Contains" has been proved, subprogram will terminate
 contains_through_model.ads:19:16: info: precondition proved (Trivial: 1 VC)
-contains_through_model.ads:20:16: info: during checks for quantification at contains_through_model.ads:28
-contains_through_model.ads:20:16: info: implicit aspect Always_Terminates on "Element" has been proved, subprogram will terminate
-contains_through_model.ads:20:16: info: precondition proved (CVC5: 1 VC)
+contains_through_model.ads:21:16: info: during checks for quantification at contains_through_model.ads:28
+contains_through_model.ads:21:16: info: implicit aspect Always_Terminates on "Element" has been proved, subprogram will terminate
+contains_through_model.ads:21:16: info: precondition proved (CVC5: 1 VC)
 contains_through_model.ads:23:16: info: implicit aspect Always_Terminates on "From_Array" has been proved, subprogram will terminate
 contains_through_model.ads:29:10: info: range check proved (CVC5: 2 VC)
 contains_through_model.ads:33:51: info: overflow check proved (CVC5: 2 VC)
@@ -33,9 +33,9 @@ contains_through_model.ads:58:16: info: precondition proved (Trivial: 1 VC)
 contains_through_model.ads:59:16: info: during checks for quantification at contains_through_model.ads:69
 contains_through_model.ads:59:16: info: implicit aspect Always_Terminates on "Model" has been proved, subprogram will terminate
 contains_through_model.ads:59:16: info: precondition proved (Trivial: 1 VC)
-contains_through_model.ads:60:16: info: during checks for quantification at contains_through_model.ads:69
-contains_through_model.ads:60:16: info: implicit aspect Always_Terminates on "Element" has been proved, subprogram will terminate
-contains_through_model.ads:60:16: info: precondition proved (CVC5: 1 VC)
+contains_through_model.ads:61:16: info: during checks for quantification at contains_through_model.ads:69
+contains_through_model.ads:61:16: info: implicit aspect Always_Terminates on "Element" has been proved, subprogram will terminate
+contains_through_model.ads:61:16: info: precondition proved (CVC5: 1 VC)
 contains_through_model.ads:63:16: info: implicit aspect Always_Terminates on "From_Array" has been proved, subprogram will terminate
 contains_through_model.ads:70:10: info: range check proved (CVC5: 2 VC)
 contains_through_model.ads:74:51: info: overflow check proved (CVC5: 2 VC)
@@ -55,9 +55,9 @@ contains_through_model.ads:99:16: info: precondition proved (Trivial: 1 VC)
 contains_through_model.ads:100:16: info: during checks for quantification at contains_through_model.ads:111
 contains_through_model.ads:100:16: info: implicit aspect Always_Terminates on "Model" has been proved, subprogram will terminate
 contains_through_model.ads:100:16: info: precondition proved (Trivial: 1 VC)
-contains_through_model.ads:101:16: info: during checks for quantification at contains_through_model.ads:111
-contains_through_model.ads:101:16: info: implicit aspect Always_Terminates on "Element" has been proved, subprogram will terminate
-contains_through_model.ads:101:16: info: precondition proved (CVC5: 1 VC)
+contains_through_model.ads:102:16: info: during checks for quantification at contains_through_model.ads:111
+contains_through_model.ads:102:16: info: implicit aspect Always_Terminates on "Element" has been proved, subprogram will terminate
+contains_through_model.ads:102:16: info: precondition proved (CVC5: 1 VC)
 contains_through_model.ads:112:10: info: range check proved (CVC5: 2 VC)
 contains_through_model.ads:116:51: info: overflow check proved (CVC5: 2 VC)
 contains_through_model.ads:120:21: info: index check proved (CVC5: 2 VC)
@@ -94,9 +94,9 @@ element_through_model.ads:54:16: info: precondition proved (Trivial: 1 VC)
 element_through_model.ads:55:16: info: during checks for quantification at element_through_model.ads:65
 element_through_model.ads:55:16: info: implicit aspect Always_Terminates on "Model" has been proved, subprogram will terminate
 element_through_model.ads:55:16: info: precondition proved (Trivial: 1 VC)
-element_through_model.ads:56:16: info: during checks for quantification at element_through_model.ads:65
-element_through_model.ads:56:16: info: implicit aspect Always_Terminates on "Element" has been proved, subprogram will terminate
-element_through_model.ads:56:16: info: precondition proved (CVC5: 1 VC)
+element_through_model.ads:57:16: info: during checks for quantification at element_through_model.ads:65
+element_through_model.ads:57:16: info: implicit aspect Always_Terminates on "Element" has been proved, subprogram will terminate
+element_through_model.ads:57:16: info: precondition proved (CVC5: 1 VC)
 element_through_model.ads:59:16: info: implicit aspect Always_Terminates on "From_Array" has been proved, subprogram will terminate
 element_through_model.ads:66:10: info: range check proved (CVC5: 2 VC)
 element_through_model.ads:70:51: info: overflow check proved (CVC5: 2 VC)
@@ -116,9 +116,9 @@ element_through_model.ads:95:16: info: precondition proved (Trivial: 1 VC)
 element_through_model.ads:96:16: info: during checks for quantification at element_through_model.ads:107
 element_through_model.ads:96:16: info: implicit aspect Always_Terminates on "Model" has been proved, subprogram will terminate
 element_through_model.ads:96:16: info: precondition proved (Trivial: 1 VC)
-element_through_model.ads:97:16: info: during checks for quantification at element_through_model.ads:107
-element_through_model.ads:97:16: info: implicit aspect Always_Terminates on "Element" has been proved, subprogram will terminate
-element_through_model.ads:97:16: info: precondition proved (CVC5: 1 VC)
+element_through_model.ads:98:16: info: during checks for quantification at element_through_model.ads:107
+element_through_model.ads:98:16: info: implicit aspect Always_Terminates on "Element" has been proved, subprogram will terminate
+element_through_model.ads:98:16: info: precondition proved (CVC5: 1 VC)
 element_through_model.ads:108:10: info: range check proved (CVC5: 2 VC)
 element_through_model.ads:112:51: info: overflow check proved (CVC5: 2 VC)
 element_through_model.ads:116:21: info: index check proved (CVC5: 2 VC)
@@ -154,9 +154,9 @@ good.adb:55:16: info: precondition proved (Trivial: 1 VC)
 good.adb:56:16: info: during checks for quantification at good.adb:65
 good.adb:56:16: info: implicit aspect Always_Terminates on "Model" has been proved, subprogram will terminate
 good.adb:56:16: info: precondition proved (Trivial: 1 VC)
-good.adb:57:16: info: during checks for quantification at good.adb:65
-good.adb:57:16: info: implicit aspect Always_Terminates on "Element" has been proved, subprogram will terminate
-good.adb:57:16: info: precondition proved (CVC5: 1 VC)
+good.adb:58:16: info: during checks for quantification at good.adb:65
+good.adb:58:16: info: implicit aspect Always_Terminates on "Element" has been proved, subprogram will terminate
+good.adb:58:16: info: precondition proved (CVC5: 1 VC)
 good.adb:66:10: info: range check proved (CVC5: 2 VC)
 good.adb:70:51: info: overflow check proved (CVC5: 2 VC)
 good.adb:74:21: info: index check proved (CVC5: 2 VC)
@@ -197,9 +197,9 @@ has_element_through_model.ads:54:16: info: precondition proved (Trivial: 1 VC)
 has_element_through_model.ads:55:16: info: during checks for quantification at has_element_through_model.ads:65
 has_element_through_model.ads:55:16: info: implicit aspect Always_Terminates on "Model" has been proved, subprogram will terminate
 has_element_through_model.ads:55:16: info: precondition proved (Trivial: 1 VC)
-has_element_through_model.ads:56:16: info: during checks for quantification at has_element_through_model.ads:65
-has_element_through_model.ads:56:16: info: implicit aspect Always_Terminates on "Element" has been proved, subprogram will terminate
-has_element_through_model.ads:56:16: info: precondition proved (CVC5: 1 VC)
+has_element_through_model.ads:57:16: info: during checks for quantification at has_element_through_model.ads:65
+has_element_through_model.ads:57:16: info: implicit aspect Always_Terminates on "Element" has been proved, subprogram will terminate
+has_element_through_model.ads:57:16: info: precondition proved (CVC5: 1 VC)
 has_element_through_model.ads:59:16: info: implicit aspect Always_Terminates on "From_Array" has been proved, subprogram will terminate
 has_element_through_model.ads:66:10: info: range check proved (CVC5: 2 VC)
 has_element_through_model.ads:70:51: info: overflow check proved (CVC5: 2 VC)
@@ -219,9 +219,9 @@ has_element_through_model.ads:95:16: info: precondition proved (Trivial: 1 VC)
 has_element_through_model.ads:96:16: info: during checks for quantification at has_element_through_model.ads:107
 has_element_through_model.ads:96:16: info: implicit aspect Always_Terminates on "Model" has been proved, subprogram will terminate
 has_element_through_model.ads:96:16: info: precondition proved (Trivial: 1 VC)
-has_element_through_model.ads:97:16: info: during checks for quantification at has_element_through_model.ads:107
-has_element_through_model.ads:97:16: info: implicit aspect Always_Terminates on "Element" has been proved, subprogram will terminate
-has_element_through_model.ads:97:16: info: precondition proved (CVC5: 1 VC)
+has_element_through_model.ads:98:16: info: during checks for quantification at has_element_through_model.ads:107
+has_element_through_model.ads:98:16: info: implicit aspect Always_Terminates on "Element" has been proved, subprogram will terminate
+has_element_through_model.ads:98:16: info: precondition proved (CVC5: 1 VC)
 has_element_through_model.ads:108:10: info: range check proved (CVC5: 2 VC)
 has_element_through_model.ads:112:51: info: overflow check proved (CVC5: 2 VC)
 has_element_through_model.ads:116:21: info: index check proved (CVC5: 2 VC)
@@ -326,9 +326,9 @@ main.adb:184:16: info: function contract might not be available on implicit recu
 main.adb:184:16: info: implicit aspect Always_Terminates on "Contains" has been proved, subprogram will terminate
 main.adb:184:16: info: precondition proved (Trivial: 1 VC)
 main.adb:185:17: info: postcondition proved (CVC5: 2 VC)
-main.adb:186:16: info: during checks for quantification at main.adb:196
-main.adb:186:16: info: implicit aspect Always_Terminates on "Element" has been proved, subprogram will terminate
-main.adb:186:16: info: precondition proved (CVC5: 1 VC)
+main.adb:187:16: info: during checks for quantification at main.adb:196
+main.adb:187:16: info: implicit aspect Always_Terminates on "Element" has been proved, subprogram will terminate
+main.adb:187:16: info: precondition proved (CVC5: 1 VC)
 main.adb:197:10: info: range check proved (CVC5: 2 VC)
 main.adb:201:51: info: overflow check proved (CVC5: 2 VC)
 main.adb:205:21: info: index check proved (CVC5: 2 VC)
@@ -347,9 +347,9 @@ main.adb:223:16: info: function contract might not be available on implicit recu
 main.adb:223:16: info: implicit aspect Always_Terminates on "Model" has been proved, subprogram will terminate
 main.adb:223:16: info: precondition proved (Trivial: 1 VC)
 main.adb:224:17: info: postcondition proved (Z3: 1 VC)
-main.adb:225:16: info: during checks for quantification at main.adb:235
-main.adb:225:16: info: implicit aspect Always_Terminates on "Element" has been proved, subprogram will terminate
-main.adb:225:16: info: precondition proved (CVC5: 1 VC)
+main.adb:226:16: info: during checks for quantification at main.adb:235
+main.adb:226:16: info: implicit aspect Always_Terminates on "Element" has been proved, subprogram will terminate
+main.adb:226:16: info: precondition proved (CVC5: 1 VC)
 main.adb:236:10: info: range check proved (CVC5: 2 VC)
 main.adb:240:51: info: overflow check proved (CVC5: 2 VC)
 main.adb:244:21: info: index check proved (CVC5: 2 VC)
@@ -387,9 +387,9 @@ p.ads:54:16: info: precondition proved (Trivial: 1 VC)
 p.ads:55:16: info: during checks for quantification at p.ads:66
 p.ads:55:16: info: implicit aspect Always_Terminates on "Model" has been proved, subprogram will terminate
 p.ads:55:16: info: precondition proved (Trivial: 1 VC)
-p.ads:56:16: info: during checks for quantification at p.ads:66
-p.ads:56:16: info: implicit aspect Always_Terminates on "Element" has been proved, subprogram will terminate
-p.ads:56:16: info: precondition proved (CVC5: 1 VC)
+p.ads:57:16: info: during checks for quantification at p.ads:66
+p.ads:57:16: info: implicit aspect Always_Terminates on "Element" has been proved, subprogram will terminate
+p.ads:57:16: info: precondition proved (CVC5: 1 VC)
 p.ads:67:10: info: range check proved (CVC5: 2 VC)
 p.ads:71:51: info: overflow check proved (CVC5: 2 VC)
 p.ads:75:21: info: index check proved (CVC5: 2 VC)
