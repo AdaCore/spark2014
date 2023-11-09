@@ -109,10 +109,10 @@ spark-containers-functional-sets.ads:48:16: info: implicit aspect Always_Termina
 spark-containers-functional-sets.ads:48:16: info: implicit aspect Always_Terminates on overriding operator "=" has been proved, subprogram will terminate, in instantiation at use_set_ho.adb:9
 spark-containers-functional-sets.ads:72:06: info: Container_Aggregates annotation proved (CVC5: 1 VC), in instantiation at check_ho_pre.adb:10
 spark-containers-functional-sets.ads:72:06: info: Container_Aggregates annotation proved (CVC5: 1 VC), in instantiation at check_ho_pre.adb:10
+spark-containers-functional-sets.ads:72:06: info: Container_Aggregates annotation proved (CVC5: 1 VC), in instantiation at check_ho_pre.adb:10
 spark-containers-functional-sets.ads:72:06: info: Container_Aggregates annotation proved (CVC5: 1 VC), in instantiation at use_set_ho.adb:9
 spark-containers-functional-sets.ads:72:06: info: Container_Aggregates annotation proved (CVC5: 1 VC), in instantiation at use_set_ho.adb:9
-spark-containers-functional-sets.ads:72:06: info: Container_Aggregates annotation proved (CVC5: 2 VC), in instantiation at check_ho_pre.adb:10
-spark-containers-functional-sets.ads:72:06: info: Container_Aggregates annotation proved (CVC5: 2 VC), in instantiation at use_set_ho.adb:9
+spark-containers-functional-sets.ads:72:06: info: Container_Aggregates annotation proved (CVC5: 1 VC), in instantiation at use_set_ho.adb:9
 spark-containers-functional-sets.ads:72:06: info: Container_Aggregates annotation proved (CVC5: 3 VC), in instantiation at check_ho_pre.adb:10
 spark-containers-functional-sets.ads:72:06: info: Container_Aggregates annotation proved (CVC5: 3 VC), in instantiation at use_set_ho.adb:9
 spark-containers-functional-sets.ads:72:06: info: after a call to Aggr_Include at spark-containers-functional-sets.ads:437, in instantiation at check_ho_pre.adb:10

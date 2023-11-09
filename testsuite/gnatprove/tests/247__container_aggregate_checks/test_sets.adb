@@ -18,9 +18,8 @@ procedure Test_Sets with SPARK_Mode is
         Global => null,
         Always_Terminates,
         Import,
-        Post =>
-	(if Contains (X, E)'Old then Length (X) = Length (X)'Old
-	 else Length (X) = Length (X)'Old + 1)
+	Pre => not Contains (X, E),
+        Post => Length (X) = Length (X'Old) + 1
         and then Contains (X, E)
         and then (for all F in Element_Type =>
                     (if Contains (X, F) then Contains (X'Old, F) or Eq_Elem (F, E)))
@@ -64,9 +63,8 @@ procedure Test_Sets with SPARK_Mode is
         Global => null,
         Always_Terminates,
         Import,
-        Post =>
-	(if Contains (X, E)'Old then Length (X) = Length (X)'Old
-	 else Length (X) = Length (X)'Old + 1)
+	Pre => not Contains (X, E),
+        Post => Length (X) = Length (X'Old) + 1
         and then Contains (X, E)
         and then (for all F in Element_Type =>
                     (if Contains (X, F) then Contains (X'Old, F) or Eq_Elem (F, E)))
@@ -110,9 +108,8 @@ procedure Test_Sets with SPARK_Mode is
         Global => null,
         Always_Terminates,
         Import,
-        Post =>
-	(if Contains (X, E)'Old then Length (X) = Length (X)'Old
-	 else Length (X) = Length (X)'Old + 1)
+	Pre => not Contains (X, E),
+        Post => Length (X) = Length (X'Old) + 1
         and then Contains (X, E)
         and then (for all F in Element_Type =>
                     (if Contains (X, F) then Contains (X'Old, F) or Eq_Elem (F, E)))
@@ -157,6 +154,7 @@ procedure Test_Sets with SPARK_Mode is
         Global => null,
         Always_Terminates,
         Import,
+	Pre => not Contains (X, E),
         Post => Contains (X, E)
         and then (for all F in Element_Type =>
                     (if Contains (X, F) then Contains (X'Old, F) or Eq_Elem (F, E)))
@@ -201,9 +199,8 @@ procedure Test_Sets with SPARK_Mode is
         Global => null,
         Always_Terminates,
         Import,
-        Post =>
-	(if Contains (X, E)'Old then Length (X) = Length (X)'Old
-	 else Length (X) = Length (X)'Old + 1)
+	Pre => not Contains (X, E),
+        Post => Length (X) = Length (X'Old) + 1
         and then (for all F in Element_Type =>
                     (if Contains (X, F) then Contains (X'Old, F) or Eq_Elem (F, E)))
         and then (for all F in Element_Type =>
@@ -247,9 +244,8 @@ procedure Test_Sets with SPARK_Mode is
         Global => null,
         Always_Terminates,
         Import,
-        Post =>
-	(if Contains (X, E)'Old then Length (X) = Length (X)'Old
-	 else Length (X) = Length (X)'Old + 1)
+	Pre => not Contains (X, E),
+        Post => Length (X) = Length (X'Old) + 1
         and then Contains (X, E)
         and then (for all F in Element_Type =>
                     (if Contains (X, F) then Contains (X'Old, F) or Eq_Elem (F, E)));
@@ -292,9 +288,8 @@ procedure Test_Sets with SPARK_Mode is
         Global => null,
         Always_Terminates,
         Import,
-        Post =>
-	(if Contains (X, E)'Old then Length (X) = Length (X)'Old
-	 else Length (X) = Length (X)'Old + 1)
+	Pre => not Contains (X, E),
+        Post => Length (X) = Length (X'Old) + 1
         and then (for all F in Element_Type =>
                     (if Contains (X, F) then Contains (X'Old, F) or Eq_Elem (F, E)));
 
@@ -341,9 +336,8 @@ procedure Test_Sets with SPARK_Mode is
         Global => null,
         Always_Terminates,
         Import,
-        Post =>
-	(if Contains (X, E)'Old then Length (X) = Length (X)'Old
-	 else Length (X) = Length (X)'Old + 1)
+	Pre => not Contains (X, E),
+        Post => Length (X) = Length (X'Old) + 1
         and then Contains (X, E)
         and then (for all F in Element_Type =>
                     (if Contains (X, F) then Contains (X'Old, F) or Eq_Elem (F, E)))
@@ -389,13 +383,11 @@ procedure Test_Sets with SPARK_Mode is
         Post => Length (Empty'Result) = 0
         and then (for all E in Element_Type => not Contains (Empty'Result, E));
       procedure Insert (X : in out T; E : Element_Type) with
-        Pre => Pred (X, E), --@PRECONDITION:FAIL
         Global => null,
         Always_Terminates,
         Import,
-        Post =>
-	(if Contains (X, E)'Old then Length (X) = Length (X)'Old
-	 else Length (X) = Length (X)'Old + 1)
+	Pre => not Contains (X, E) and then Pred (X, E), --@PRECONDITION:FAIL
+        Post => Length (X) = Length (X'Old) + 1
         and then Contains (X, E)
         and then (for all F in Element_Type =>
                     (if Contains (X, F) then Contains (X'Old, F) or Eq_Elem (F, E)))
@@ -422,57 +414,9 @@ procedure Test_Sets with SPARK_Mode is
       type T is new Integer;
    end P9;
 
-   --  Insert can be called on elements already in the set
-
-   package P10 is
-      type Element_Type is new Integer;
-      type T is private with
-        Aggregate => (Empty       => Empty,
-                      Add_Unnamed => Insert),
-        Annotate => (GNATprove, Container_Aggregates, "Predefined_Sets");
-
-      function Empty return T with
-        Global => null,
-        Import,
-        Post => Length (Empty'Result) = 0
-        and then (for all E in Element_Type => not Contains (Empty'Result, E));
-      procedure Insert (X : in out T; E : Element_Type) with
-        Pre => not Contains (X, E), --@PRECONDITION:FAIL
-        Global => null,
-        Always_Terminates,
-        Import,
-        Post =>
-	(if Contains (X, E)'Old then Length (X) = Length (X)'Old
-	 else Length (X) = Length (X)'Old + 1)
-        and then Contains (X, E)
-        and then (for all F in Element_Type =>
-                    (if Contains (X, F) then Contains (X'Old, F) or Eq_Elem (F, E)))
-        and then (for all F in Element_Type =>
-                    (if Contains (X'Old, F) then Contains (X, F)));
-
-      function Contains (X : T; E : Element_Type) return Boolean with
-        Annotate => (GNATprove, Container_Aggregates, "Contains"),
-        Global => null,
-        Import;
-
-      function Length (X : T) return Natural with
-        Annotate => (GNATprove, Container_Aggregates, "Length"),
-        Global => null,
-        Import;
-
-      function Eq_Elem (X, Y : Element_Type) return Boolean with
-        Annotate => (GNATprove, Container_Aggregates, "Equivalent_Elements"),
-        Global => null,
-        Import;
-
-   private
-      pragma SPARK_Mode (Off);
-      type T is new Integer;
-   end P10;
-
    --  Missing Post on Capacity on Empty
 
-   package P11 is
+   package P10 is
       type Element_Type is new Integer;
 
       type T (Capacity : Natural) is private with
@@ -484,12 +428,11 @@ procedure Test_Sets with SPARK_Mode is
         Global => null;
       procedure Append (X : in out T; E : Element_Type) with
         Global => null,
-        Pre  => Length (X) < Capacity (X),
+        Pre  => not Contains (X, E) and then Length (X) < Capacity (X),
         Post => Contains (X, E)
         and then (for all F in Element_Type =>
                     Contains (X, F) = (Contains (X'Old, F) or F = E))
-        and then (if Contains (X'Old, E) then Length (X) = Length (X'Old)
-                  else Length (X) = Length (X'Old) + 1)
+        and then Length (X) = Length (X'Old) + 1
         and then Capacity (X) >= Capacity (X'Old),
         Always_Terminates,
         Import;
@@ -526,11 +469,11 @@ procedure Test_Sets with SPARK_Mode is
 
       function Empty (X : Natural) return T is
         ((Capacity => X, Content => (others => <>), Top => 0));
-   end P11;
+   end P10;
 
    --  Missing Post on Capacity on Append
 
-   package P12 is
+   package P11 is
       type Element_Type is new Integer;
 
       type T (Capacity : Natural) is private with
@@ -544,12 +487,11 @@ procedure Test_Sets with SPARK_Mode is
         Post => Length (Empty'Result) = 0 and then Capacity (Empty'Result) >= X;
       procedure Append (X : in out T; E : Element_Type) with
         Global => null,
-        Pre  => Length (X) < Capacity (X),
+	Pre => not Contains (X, E) and then Length (X) < Capacity (X),
         Post => Contains (X, E)
         and then (for all F in Element_Type =>
                     Contains (X, F) = (Contains (X'Old, F) or F = E))
-        and then (if Contains (X'Old, E) then Length (X) = Length (X'Old)
-                  else Length (X) = Length (X'Old) + 1),
+        and then Length (X) = Length (X'Old) + 1,
         Always_Terminates,
         Import;
 
@@ -583,11 +525,11 @@ procedure Test_Sets with SPARK_Mode is
         (for some I in 1 .. X.Top => X.Content (I) = E);
       function Length (X : T) return Natural is (X.Top);
 
-   end P12;
+   end P11;
 
    --  Correct posts on Capacity
 
-   package P13 is
+   package P12 is
       type Element_Type is new Integer;
 
       type T (Capacity : Natural) is private with
@@ -601,12 +543,11 @@ procedure Test_Sets with SPARK_Mode is
         Post => Length (Empty'Result) = 0 and then Capacity (Empty'Result) >= X;
       procedure Append (X : in out T; E : Element_Type) with
         Global => null,
-        Pre  => Length (X) < Capacity (X),
+        Pre  => not Contains (X, E) and then Length (X) < Capacity (X),
         Post => Contains (X, E)
         and then (for all F in Element_Type =>
                     Contains (X, F) = (Contains (X'Old, F) or F = E))
-        and then (if Contains (X'Old, E) then Length (X) = Length (X'Old)
-                  else Length (X) = Length (X'Old) + 1)
+        and then Length (X) = Length (X'Old) + 1
         and then Capacity (X) >= Capacity (X'Old),
         Always_Terminates,
         Import;
@@ -640,11 +581,11 @@ procedure Test_Sets with SPARK_Mode is
       function Contains (X : T; E : Element_Type) return Boolean is
         (for some I in 1 .. X.Top => X.Content (I) = E);
       function Length (X : T) return Natural is (X.Top);
-   end P13;
+   end P12;
 
    --  No post needed on global Capacity
 
-   package P14 is
+   package P13 is
       Max : constant Natural := 100;
       type Element_Type is new Integer;
 
@@ -656,12 +597,11 @@ procedure Test_Sets with SPARK_Mode is
       Empty : constant T;
       procedure Append (X : in out T; E : Element_Type) with
         Global => null,
-        Pre => Length (X) < Capacity,
+        Pre => not Contains (X, E) and then Length (X) < Capacity,
         Post => Contains (X, E)
         and then (for all F in Element_Type =>
                     Contains (X, F) = (Contains (X'Old, F) or F = E))
-        and then (if Contains (X'Old, E) then Length (X) = Length (X'Old)
-                  else Length (X) = Length (X'Old) + 1),
+        and then Length (X) = Length (X'Old) + 1,
         Always_Terminates,
         Import;
 
@@ -697,7 +637,7 @@ procedure Test_Sets with SPARK_Mode is
 
       Empty : constant T :=
         ((Content => (others => <>), Top => 0));
-   end P14;
+   end P13;
 begin
    null;
 end;

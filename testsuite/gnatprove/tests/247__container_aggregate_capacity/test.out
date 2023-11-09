@@ -6,8 +6,8 @@ test_capacity.adb:21:09: info: Container_Aggregates annotation proved (CVC5: 1 V
 test_capacity.adb:21:09: info: Container_Aggregates annotation proved (CVC5: 1 VC)
 test_capacity.adb:21:09: info: Container_Aggregates annotation proved (CVC5: 1 VC)
 test_capacity.adb:21:09: info: Container_Aggregates annotation proved (CVC5: 1 VC)
+test_capacity.adb:21:09: info: Container_Aggregates annotation proved (CVC5: 1 VC)
 test_capacity.adb:21:09: info: Container_Aggregates annotation proved (CVC5: 1 VC; altergo: 2 VC)
-test_capacity.adb:21:09: info: Container_Aggregates annotation proved (CVC5: 2 VC)
 test_capacity.adb:21:09: info: after a call to Append at test_capacity.adb:25
 test_capacity.adb:21:09: info: after a call to Append at test_capacity.adb:25
 test_capacity.adb:21:09: info: after a call to Append at test_capacity.adb:25
@@ -48,8 +48,8 @@ test_capacity.adb:75:11: info: predicate check proved (CVC5: 2 VC)
 test_capacity.adb:75:25: info: overflow check proved (CVC5: 2 VC)
 test_capacity.adb:85:09: info: Container_Aggregates annotation proved (CVC5: 1 VC)
 test_capacity.adb:85:09: info: Container_Aggregates annotation proved (CVC5: 1 VC)
+test_capacity.adb:85:09: info: Container_Aggregates annotation proved (CVC5: 1 VC)
 test_capacity.adb:85:09: info: Container_Aggregates annotation proved (CVC5: 1 VC; altergo: 2 VC)
-test_capacity.adb:85:09: info: Container_Aggregates annotation proved (CVC5: 2 VC)
 test_capacity.adb:85:09: info: after a call to Append at test_capacity.adb:88
 test_capacity.adb:85:09: info: after a call to Append at test_capacity.adb:88
 test_capacity.adb:85:09: info: after a call to Empty at test_capacity.adb:87
@@ -322,17 +322,17 @@ test_capacity.adb:473:27: info: overflow check proved (CVC5: 2 VC)
 test_capacity.adb:474:11: info: predicate check proved (CVC5: 3 VC)
 test_capacity.adb:474:25: info: overflow check proved (CVC5: 2 VC)
 test_capacity.adb:478:52: info: data dependencies proved
-test_capacity.adb:482:16: info: all elements shall fit in "Small_Nat" for set aggregates at test_capacity.adb:21
-test_capacity.adb:482:16: info: precondition proved (CVC5: 1 VC)
+test_capacity.adb:482:16: info: elements shall be distinct and shall fit in "Small_Nat" for set aggregates at test_capacity.adb:21
+test_capacity.adb:482:16: info: precondition proved (CVC5: 37 VC)
 test_capacity.adb:484:22: info: assertion proved (CVC5: 1 VC)
 test_capacity.adb:487:56: info: data dependencies proved
-test_capacity.adb:491:16: medium: all elements shall fit in "Small_Nat" for set aggregates at test_capacity.adb:21
+test_capacity.adb:491:16: medium: elements shall be distinct and shall fit in "Small_Nat" for set aggregates at test_capacity.adb:21
 test_capacity.adb:491:16: medium: precondition might fail
 test_capacity.adb:496:50: info: data dependencies proved
-test_capacity.adb:500:16: info: all elements shall be smaller than "Capacity" for set aggregates at test_capacity.adb:85
-test_capacity.adb:500:16: info: precondition proved (CVC5: 1 VC)
+test_capacity.adb:500:16: info: elements shall be distinct and shall be smaller than "Capacity" for set aggregates at test_capacity.adb:85
+test_capacity.adb:500:16: info: precondition proved (CVC5: 37 VC)
 test_capacity.adb:505:54: info: data dependencies proved
-test_capacity.adb:509:16: medium: all elements shall be smaller than "Capacity" for set aggregates at test_capacity.adb:85
+test_capacity.adb:509:16: medium: elements shall be distinct and shall be smaller than "Capacity" for set aggregates at test_capacity.adb:85
 test_capacity.adb:509:16: medium: precondition might fail
 test_capacity.adb:514:52: info: data dependencies proved
 test_capacity.adb:518:16: info: keys shall be distinct and all elements shall fit in "Small_Nat" for maps aggregates at test_capacity.adb:149

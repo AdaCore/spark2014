@@ -84,10 +84,8 @@ procedure Main with SPARK_Mode is
         Global => null,
         Import,
         Always_Terminates,
-        Post =>
-          (if Contains (Model (X), E)'Old
-           then Length (Model (X)) = Length (Model (X))'Old
-           else Length (Model (X)) = Length (Model (X))'Old + 1)
+	Pre => not Contains (Model (X), E),
+        Post => Length (Model (X)) = Length (Model (X))'Old + 1
         and then Contains (Model (X), E)
         and then (for all F in Element_Type =>
                     (if F /= E then Contains (Model (X), F) = Contains (Model (X)'Old, F)));
@@ -237,16 +235,23 @@ procedure Main with SPARK_Mode is
       use Sets.Element_Sets;
       X : T := [1, 2, 3, 4, 5];
       Y : T := [];
-      Z : T := [1, 2, 3, 2, 5];
    begin
       pragma Assert (Length (Model (X)) = 5);
       pragma Assert (Contains (Model (X), E) = (E in 1 | 2 | 3 | 4 | 5));
       pragma Assert (Length (Model (Y)) = 0);
       pragma Assert (not Contains (Model (Y), E));
-      pragma Assert (Length (Model (Z)) < 5);
-      pragma Assert (Contains (Model (Z), E) = (E in 1 | 2 | 3 | 5));
       pragma Assert (False); --  @ASSERT:FAIL
    end Test_Sets;
+
+   procedure Test_Bad_Sets with
+     Global => null;
+
+   procedure Test_Bad_Sets is
+      use Sets;
+      X : T := [1, 2, 3, 2, 5]; -- @PRECONDITION:FAIL
+   begin
+      null;
+   end Test_Bad_Sets;
 
    procedure Test_Partial_Maps (K : Partial_Maps.Key_Type) with
      Global => null;
