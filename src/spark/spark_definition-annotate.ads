@@ -436,6 +436,8 @@ package SPARK_Definition.Annotate is
       Empty_Function : Entity_Id;
       Add_Procedure  : Entity_Id;
       Use_Named      : Boolean;
+      Spec_Capacity  : Entity_Id := Empty;
+      Capacity       : Entity_Id := Empty;
 
       case Kind is
          when Sets | Maps | Seqs =>
@@ -443,31 +445,31 @@ package SPARK_Definition.Annotate is
 
             case Kind is
                when Sets =>
-                  Contains            : Entity_Id;
-                  Equivalent_Elements : Entity_Id;
-                  Sets_Length         : Entity_Id;
+                  Contains            : Entity_Id := Empty;
+                  Equivalent_Elements : Entity_Id := Empty;
+                  Sets_Length         : Entity_Id := Empty;
 
                when Maps =>
                   Key_Type            : Entity_Id;
-                  Has_Key             : Entity_Id;
-                  Default_Item        : Entity_Id;
-                  Equivalent_Keys     : Entity_Id;
-                  Maps_Get            : Entity_Id;
-                  Maps_Length         : Entity_Id;
+                  Has_Key             : Entity_Id := Empty;
+                  Default_Item        : Entity_Id := Empty;
+                  Equivalent_Keys     : Entity_Id := Empty;
+                  Maps_Get            : Entity_Id := Empty;
+                  Maps_Length         : Entity_Id := Empty;
 
                when Seqs =>
-                  Index_Type          : Entity_Id;
-                  Seqs_Get            : Entity_Id;
-                  First               : Entity_Id;
-                  Last                : Entity_Id;
+                  Index_Type          : Entity_Id := Empty;
+                  Seqs_Get            : Entity_Id := Empty;
+                  First               : Entity_Id := Empty;
+                  Last                : Entity_Id := Empty;
 
                when others =>
                   null;
             end case;
 
          when Model =>
-            Model_Type : Entity_Id;
-            Model      : Entity_Id;
+            Model_Type : Entity_Id := Empty;
+            Model      : Entity_Id := Empty;
       end case;
    end record;
    --  Record used to store the functions associated to a type with aggregates.
@@ -481,9 +483,11 @@ package SPARK_Definition.Annotate is
    --  interest.
    --  Predefined sequence aggregates are defined by a Get, a First, and a Last
    --  function.
-   --  Model aggregates need at least Model function. An additional check
-   --  function will probably be necessary to restrict valid aggregates on the
-   --  model type.
+   --  Model aggregates need at least Model function.
+   --  All kinds of aggregates can be supplied with an additional Capacity
+   --  function. It shall take the container as a parameter iff the empty
+   --  function takes the capacity as a parameter. Spec_Capacity holds the
+   --  type of the Capacity parameter of the empty function in this case.
 
    function Has_Aggregate_Annotation (E : Type_Kind_Id) return Boolean;
 

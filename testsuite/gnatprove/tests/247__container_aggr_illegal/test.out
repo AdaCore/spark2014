@@ -23,6 +23,24 @@ test_illegal_aggregates.adb:136:07: info: no contextual analysis of "P4" (nested
 test_illegal_aggregates.adb:212:21: error: indexed container aggregate is not allowed in SPARK
 test_illegal_aggregates.adb:212:21: error: violation of aspect SPARK_Mode at line 1
 test_illegal_aggregates.adb:221:07: info: no contextual analysis of "P5" (nested package declaration)
+test_illegal_capacity.adb:25:16: error: "Capacity" function for "T" shall take the container as a parameter
+test_illegal_capacity.adb:25:16: error: the "Empty" function takes the capacity as a parameter
+test_illegal_capacity.adb:78:16: error: "Capacity" function for "T" shall have no parameters
+test_illegal_capacity.adb:78:16: error: the "Empty" function has no parameters
+test_illegal_capacity.adb:128:16: error: type of first parameter shall be annotated with Container_Aggregate
+test_illegal_capacity.adb:180:16: error: "Capacity" function shall have one parameter
+test_illegal_capacity.adb:232:16: error: "Capacity" shall return a signed integer type or a subtype of Big_Integer
+test_illegal_capacity.adb:289:16: error: a single "Capacity" function shall be specified for a type with a Container_Aggregates annotation
+test_illegal_capacity.adb:345:16: error: duplicated "Capacity" function in the same scope
+test_illegal_capacity.adb:398:19: error: "Capacity" shall be declared in the same list of declarations as the partial view of "T"
+test_illegal_capacity.adb:516:07: error: pragma Annotate Container_Aggregate must immediately follow the specification of function Capacity
+test_illegal_capacity.adb:568:07: error: pragma Annotate Container_Aggregate must immediately follow the specification of function Capacity
+test_illegal_capacity.adb:611:16: error: a function annotated with Container_Aggregates must not have side-effects
+test_illegal_capacity.adb:665:16: error: a function annotated with Container_Aggregates must not be volatile
+test_illegal_capacity.adb:718:16: error: "Capacity" function shall be in SPARK
+test_illegal_capacity.adb:828:16: error: a function annotated with Container_Aggregates shall not access global data
+test_illegal_capacity.adb:867:15: error: "Bad" is not allowed in SPARK (due to entity declared with SPARK_Mode Off)
+test_illegal_capacity.adb:867:15: error: violation of aspect SPARK_Mode at line 1
 test_illegal_contains.adb:18:16: error: a function annotated with Container_Aggregates shall have parameters
 test_illegal_contains.adb:35:12: error: no "Contains" function found for type with predefined set aggregates "T"
 test_illegal_contains.adb:58:16: error: type of first parameter shall be annotated with Container_Aggregate
@@ -62,7 +80,7 @@ test_illegal_default_item.adb:378:12: error: no "Has_Key" nor "Default_Item" fun
 test_illegal_empty.adb:30:12: error: "Empty" function shall not have side effects
 test_illegal_empty.adb:30:12: info: no "Length" function found for type with predefined set aggregates "T"
 test_illegal_empty.adb:30:12: info: the cardinality of aggregates will be unknown
-test_illegal_empty.adb:61:12: error: "Empty" function shall not be voltaile
+test_illegal_empty.adb:61:12: error: "Empty" function shall not be volatile
 test_illegal_empty.adb:61:12: info: no "Length" function found for type with predefined set aggregates "T"
 test_illegal_empty.adb:61:12: info: the cardinality of aggregates will be unknown
 test_illegal_empty.adb:97:12: error: "Empty" function shall not access global data

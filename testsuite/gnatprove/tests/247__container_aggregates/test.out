@@ -188,9 +188,9 @@ test.adb:402:16: medium: keys shall be distinct and all elements shall fit in th
 test.adb:402:16: medium: precondition might fail
 test.adb:407:14: high: all paths in "Test_Seqs" raise exceptions or do not terminate normally
 test.adb:408:06: info: data dependencies proved
-test.adb:412:16: info: all of elements shall fit in index type in predefined sequence aggregates at test.adb:13
+test.adb:412:16: info: all elements shall fit in index type for predefined sequence aggregates at test.adb:13
 test.adb:412:16: info: precondition proved (CVC5: 1 VC)
-test.adb:413:16: info: all of elements shall fit in index type in predefined sequence aggregates at test.adb:13
+test.adb:413:16: info: all elements shall fit in index type for predefined sequence aggregates at test.adb:13
 test.adb:413:16: info: precondition proved (Trivial: 1 VC)
 test.adb:415:22: info: assertion proved (CVC5: 1 VC)
 test.adb:416:40: info: unrolling loop
@@ -199,5 +199,5 @@ test.adb:417:25: info: precondition proved (CVC5: 5 VC)
 test.adb:419:22: info: assertion proved (CVC5: 1 VC)
 test.adb:420:07: medium: assertion might fail
 test.adb:424:06: info: data dependencies proved
-test.adb:428:16: medium: all of elements shall fit in index type in predefined sequence aggregates at test.adb:13
+test.adb:428:16: medium: all elements shall fit in index type for predefined sequence aggregates at test.adb:13
 test.adb:428:16: medium: precondition might fail

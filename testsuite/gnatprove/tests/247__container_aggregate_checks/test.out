@@ -193,6 +193,180 @@ test_partial_maps.adb:575:09: info: when reestablishing invariant on Has_Key at 
 test_partial_maps.adb:575:09: info: when reestablishing invariant on Length at test_partial_maps.adb:617
 test_partial_maps.adb:588:35: medium: during checks for container aggregates at test_partial_maps.adb:575
 test_partial_maps.adb:588:35: medium: precondition might fail, cannot prove Pred (X, K, E)
+test_partial_maps.adb:637:09: info: Container_Aggregates annotation proved (CVC5: 1 VC)
+test_partial_maps.adb:637:09: info: Container_Aggregates annotation proved (CVC5: 1 VC)
+test_partial_maps.adb:637:09: info: Container_Aggregates annotation proved (CVC5: 1 VC)
+test_partial_maps.adb:637:09: info: Container_Aggregates annotation proved (CVC5: 1 VC)
+test_partial_maps.adb:637:09: info: Container_Aggregates annotation proved (CVC5: 1 VC)
+test_partial_maps.adb:637:09: info: Container_Aggregates annotation proved (CVC5: 1 VC; altergo: 2 VC)
+test_partial_maps.adb:637:09: info: after a call to Append at test_partial_maps.adb:643
+test_partial_maps.adb:637:09: info: after a call to Append at test_partial_maps.adb:643
+test_partial_maps.adb:637:09: info: after a call to Append at test_partial_maps.adb:643
+test_partial_maps.adb:637:09: info: after a call to Append at test_partial_maps.adb:643
+test_partial_maps.adb:637:09: info: after a call to Empty at test_partial_maps.adb:639
+test_partial_maps.adb:637:09: info: after a call to Empty at test_partial_maps.adb:639
+test_partial_maps.adb:637:09: info: when establishing invariant on Has_Key at test_partial_maps.adb:666
+test_partial_maps.adb:637:09: info: when establishing invariant on Length at test_partial_maps.adb:657
+test_partial_maps.adb:637:09: info: when reestablishing invariant on Capacity at test_partial_maps.adb:661
+test_partial_maps.adb:637:09: info: when reestablishing invariant on Get at test_partial_maps.adb:669
+test_partial_maps.adb:637:09: info: when reestablishing invariant on Has_Key at test_partial_maps.adb:666
+test_partial_maps.adb:637:09: info: when reestablishing invariant on Length at test_partial_maps.adb:657
+test_partial_maps.adb:637:09: medium: Container_Aggregates annotation might be incorrect
+test_partial_maps.adb:637:09: medium: after a call to Empty at test_partial_maps.adb:639
+test_partial_maps.adb:637:09: medium: when establishing invariant on Capacity at test_partial_maps.adb:661
+test_partial_maps.adb:645:43: info: during checks for container aggregates at test_partial_maps.adb:637
+test_partial_maps.adb:645:43: info: precondition proved (CVC5: 2 VC)
+test_partial_maps.adb:657:16: info: implicit aspect Always_Terminates on "Length" has been proved, subprogram will terminate
+test_partial_maps.adb:658:09: info: data dependencies proved
+test_partial_maps.adb:666:16: info: implicit aspect Always_Terminates on "Has_Key" has been proved, subprogram will terminate
+test_partial_maps.adb:669:16: info: implicit aspect Always_Terminates on "Get" has been proved, subprogram will terminate
+test_partial_maps.adb:673:16: info: implicit aspect Always_Terminates on "Eq_Keys" has been proved, subprogram will terminate
+test_partial_maps.adb:685:10: info: range check proved (CVC5: 2 VC)
+test_partial_maps.adb:689:53: info: index check proved (CVC5: 2 VC)
+test_partial_maps.adb:692:49: info: index check proved (CVC5: 2 VC)
+test_partial_maps.adb:692:51: info: initialization check proved (CVC5: 1 VC)
+test_partial_maps.adb:695:16: info: implicit aspect Always_Terminates on "Get" has been proved, subprogram will terminate
+test_partial_maps.adb:695:16: info: implicit function contract might not be available on recursive calls
+test_partial_maps.adb:697:47: info: index check proved (CVC5: 2 VC)
+test_partial_maps.adb:698:48: info: index check proved (CVC5: 2 VC)
+test_partial_maps.adb:698:50: info: initialization check proved (CVC5: 1 VC)
+test_partial_maps.adb:702:16: info: index check proved (CVC5: 2 VC)
+test_partial_maps.adb:702:20: info: initialization check proved (CVC5: 1 VC)
+test_partial_maps.adb:702:35: info: index check proved (CVC5: 2 VC)
+test_partial_maps.adb:702:39: info: initialization check proved (CVC5: 1 VC)
+test_partial_maps.adb:702:47: info: precondition proved (CVC5: 5 VC)
+test_partial_maps.adb:702:47: info: subprogram variant proved (CVC5: 1 VC)
+test_partial_maps.adb:702:62: info: range check proved (CVC5: 2 VC)
+test_partial_maps.adb:705:10: info: precondition proved (CVC5: 5 VC)
+test_partial_maps.adb:717:09: info: Container_Aggregates annotation proved (CVC5: 1 VC)
+test_partial_maps.adb:717:09: info: Container_Aggregates annotation proved (CVC5: 1 VC)
+test_partial_maps.adb:717:09: info: Container_Aggregates annotation proved (CVC5: 1 VC)
+test_partial_maps.adb:717:09: info: Container_Aggregates annotation proved (CVC5: 1 VC)
+test_partial_maps.adb:717:09: info: Container_Aggregates annotation proved (CVC5: 1 VC)
+test_partial_maps.adb:717:09: info: Container_Aggregates annotation proved (CVC5: 1 VC; altergo: 2 VC)
+test_partial_maps.adb:717:09: info: after a call to Append at test_partial_maps.adb:723
+test_partial_maps.adb:717:09: info: after a call to Append at test_partial_maps.adb:723
+test_partial_maps.adb:717:09: info: after a call to Append at test_partial_maps.adb:723
+test_partial_maps.adb:717:09: info: after a call to Empty at test_partial_maps.adb:719
+test_partial_maps.adb:717:09: info: after a call to Empty at test_partial_maps.adb:719
+test_partial_maps.adb:717:09: info: after a call to Empty at test_partial_maps.adb:719
+test_partial_maps.adb:717:09: info: when establishing invariant on Capacity at test_partial_maps.adb:740
+test_partial_maps.adb:717:09: info: when establishing invariant on Has_Key at test_partial_maps.adb:745
+test_partial_maps.adb:717:09: info: when establishing invariant on Length at test_partial_maps.adb:736
+test_partial_maps.adb:717:09: info: when reestablishing invariant on Get at test_partial_maps.adb:748
+test_partial_maps.adb:717:09: info: when reestablishing invariant on Has_Key at test_partial_maps.adb:745
+test_partial_maps.adb:717:09: info: when reestablishing invariant on Length at test_partial_maps.adb:736
+test_partial_maps.adb:717:09: medium: Container_Aggregates annotation might be incorrect
+test_partial_maps.adb:717:09: medium: after a call to Append at test_partial_maps.adb:723
+test_partial_maps.adb:717:09: medium: when reestablishing invariant on Capacity at test_partial_maps.adb:740
+test_partial_maps.adb:725:43: info: during checks for container aggregates at test_partial_maps.adb:717
+test_partial_maps.adb:725:43: info: precondition proved (CVC5: 2 VC)
+test_partial_maps.adb:736:16: info: implicit aspect Always_Terminates on "Length" has been proved, subprogram will terminate
+test_partial_maps.adb:737:09: info: data dependencies proved
+test_partial_maps.adb:745:16: info: implicit aspect Always_Terminates on "Has_Key" has been proved, subprogram will terminate
+test_partial_maps.adb:748:16: info: implicit aspect Always_Terminates on "Get" has been proved, subprogram will terminate
+test_partial_maps.adb:752:16: info: implicit aspect Always_Terminates on "Eq_Keys" has been proved, subprogram will terminate
+test_partial_maps.adb:764:10: info: range check proved (CVC5: 2 VC)
+test_partial_maps.adb:768:53: info: index check proved (CVC5: 2 VC)
+test_partial_maps.adb:771:49: info: index check proved (CVC5: 2 VC)
+test_partial_maps.adb:771:51: info: initialization check proved (CVC5: 1 VC)
+test_partial_maps.adb:774:16: info: implicit aspect Always_Terminates on "Get" has been proved, subprogram will terminate
+test_partial_maps.adb:774:16: info: implicit function contract might not be available on recursive calls
+test_partial_maps.adb:776:47: info: index check proved (CVC5: 2 VC)
+test_partial_maps.adb:777:48: info: index check proved (CVC5: 2 VC)
+test_partial_maps.adb:777:50: info: initialization check proved (CVC5: 1 VC)
+test_partial_maps.adb:781:16: info: index check proved (CVC5: 2 VC)
+test_partial_maps.adb:781:20: info: initialization check proved (CVC5: 1 VC)
+test_partial_maps.adb:781:35: info: index check proved (CVC5: 2 VC)
+test_partial_maps.adb:781:39: info: initialization check proved (CVC5: 1 VC)
+test_partial_maps.adb:781:47: info: precondition proved (CVC5: 5 VC)
+test_partial_maps.adb:781:47: info: subprogram variant proved (CVC5: 1 VC)
+test_partial_maps.adb:781:62: info: range check proved (CVC5: 2 VC)
+test_partial_maps.adb:784:10: info: precondition proved (CVC5: 5 VC)
+test_partial_maps.adb:796:09: info: Container_Aggregates annotation proved (CVC5: 1 VC)
+test_partial_maps.adb:796:09: info: Container_Aggregates annotation proved (CVC5: 1 VC)
+test_partial_maps.adb:796:09: info: Container_Aggregates annotation proved (CVC5: 1 VC)
+test_partial_maps.adb:796:09: info: Container_Aggregates annotation proved (CVC5: 1 VC)
+test_partial_maps.adb:796:09: info: Container_Aggregates annotation proved (CVC5: 1 VC)
+test_partial_maps.adb:796:09: info: Container_Aggregates annotation proved (CVC5: 1 VC)
+test_partial_maps.adb:796:09: info: Container_Aggregates annotation proved (CVC5: 1 VC; altergo: 2 VC)
+test_partial_maps.adb:796:09: info: after a call to Append at test_partial_maps.adb:802
+test_partial_maps.adb:796:09: info: after a call to Append at test_partial_maps.adb:802
+test_partial_maps.adb:796:09: info: after a call to Append at test_partial_maps.adb:802
+test_partial_maps.adb:796:09: info: after a call to Append at test_partial_maps.adb:802
+test_partial_maps.adb:796:09: info: after a call to Empty at test_partial_maps.adb:798
+test_partial_maps.adb:796:09: info: after a call to Empty at test_partial_maps.adb:798
+test_partial_maps.adb:796:09: info: after a call to Empty at test_partial_maps.adb:798
+test_partial_maps.adb:796:09: info: when establishing invariant on Capacity at test_partial_maps.adb:820
+test_partial_maps.adb:796:09: info: when establishing invariant on Has_Key at test_partial_maps.adb:825
+test_partial_maps.adb:796:09: info: when establishing invariant on Length at test_partial_maps.adb:816
+test_partial_maps.adb:796:09: info: when reestablishing invariant on Capacity at test_partial_maps.adb:820
+test_partial_maps.adb:796:09: info: when reestablishing invariant on Get at test_partial_maps.adb:828
+test_partial_maps.adb:796:09: info: when reestablishing invariant on Has_Key at test_partial_maps.adb:825
+test_partial_maps.adb:796:09: info: when reestablishing invariant on Length at test_partial_maps.adb:816
+test_partial_maps.adb:804:43: info: during checks for container aggregates at test_partial_maps.adb:796
+test_partial_maps.adb:804:43: info: precondition proved (CVC5: 2 VC)
+test_partial_maps.adb:816:16: info: implicit aspect Always_Terminates on "Length" has been proved, subprogram will terminate
+test_partial_maps.adb:817:09: info: data dependencies proved
+test_partial_maps.adb:825:16: info: implicit aspect Always_Terminates on "Has_Key" has been proved, subprogram will terminate
+test_partial_maps.adb:828:16: info: implicit aspect Always_Terminates on "Get" has been proved, subprogram will terminate
+test_partial_maps.adb:832:16: info: implicit aspect Always_Terminates on "Eq_Keys" has been proved, subprogram will terminate
+test_partial_maps.adb:844:10: info: range check proved (CVC5: 2 VC)
+test_partial_maps.adb:848:53: info: index check proved (CVC5: 2 VC)
+test_partial_maps.adb:851:49: info: index check proved (CVC5: 2 VC)
+test_partial_maps.adb:851:51: info: initialization check proved (CVC5: 1 VC)
+test_partial_maps.adb:854:16: info: implicit aspect Always_Terminates on "Get" has been proved, subprogram will terminate
+test_partial_maps.adb:854:16: info: implicit function contract might not be available on recursive calls
+test_partial_maps.adb:856:47: info: index check proved (CVC5: 2 VC)
+test_partial_maps.adb:857:48: info: index check proved (CVC5: 2 VC)
+test_partial_maps.adb:857:50: info: initialization check proved (CVC5: 1 VC)
+test_partial_maps.adb:861:16: info: index check proved (CVC5: 2 VC)
+test_partial_maps.adb:861:20: info: initialization check proved (CVC5: 1 VC)
+test_partial_maps.adb:861:35: info: index check proved (CVC5: 2 VC)
+test_partial_maps.adb:861:39: info: initialization check proved (CVC5: 1 VC)
+test_partial_maps.adb:861:47: info: precondition proved (CVC5: 5 VC)
+test_partial_maps.adb:861:47: info: subprogram variant proved (CVC5: 1 VC)
+test_partial_maps.adb:861:62: info: range check proved (CVC5: 2 VC)
+test_partial_maps.adb:864:10: info: precondition proved (CVC5: 5 VC)
+test_partial_maps.adb:877:09: info: Container_Aggregates annotation proved (CVC5: 1 VC)
+test_partial_maps.adb:877:09: info: Container_Aggregates annotation proved (CVC5: 1 VC)
+test_partial_maps.adb:877:09: info: Container_Aggregates annotation proved (CVC5: 1 VC)
+test_partial_maps.adb:877:09: info: Container_Aggregates annotation proved (CVC5: 1 VC)
+test_partial_maps.adb:877:09: info: Container_Aggregates annotation proved (CVC5: 1 VC; altergo: 2 VC)
+test_partial_maps.adb:877:09: info: after a call to Append at test_partial_maps.adb:880
+test_partial_maps.adb:877:09: info: after a call to Append at test_partial_maps.adb:880
+test_partial_maps.adb:877:09: info: after a call to Append at test_partial_maps.adb:880
+test_partial_maps.adb:877:09: info: after a call to Empty at test_partial_maps.adb:879
+test_partial_maps.adb:877:09: info: after a call to Empty at test_partial_maps.adb:879
+test_partial_maps.adb:877:09: info: when establishing invariant on Has_Key at test_partial_maps.adb:902
+test_partial_maps.adb:877:09: info: when establishing invariant on Length at test_partial_maps.adb:893
+test_partial_maps.adb:877:09: info: when reestablishing invariant on Get at test_partial_maps.adb:905
+test_partial_maps.adb:877:09: info: when reestablishing invariant on Has_Key at test_partial_maps.adb:902
+test_partial_maps.adb:877:09: info: when reestablishing invariant on Length at test_partial_maps.adb:893
+test_partial_maps.adb:882:39: info: during checks for container aggregates at test_partial_maps.adb:877
+test_partial_maps.adb:882:39: info: precondition proved (CVC5: 2 VC)
+test_partial_maps.adb:893:16: info: implicit aspect Always_Terminates on "Length" has been proved, subprogram will terminate
+test_partial_maps.adb:894:09: info: data dependencies proved
+test_partial_maps.adb:902:16: info: implicit aspect Always_Terminates on "Has_Key" has been proved, subprogram will terminate
+test_partial_maps.adb:905:16: info: implicit aspect Always_Terminates on "Get" has been proved, subprogram will terminate
+test_partial_maps.adb:909:16: info: implicit aspect Always_Terminates on "Eq_Keys" has been proved, subprogram will terminate
+test_partial_maps.adb:925:53: info: index check proved (CVC5: 2 VC)
+test_partial_maps.adb:928:49: info: index check proved (CVC5: 2 VC)
+test_partial_maps.adb:928:51: info: initialization check proved (CVC5: 1 VC)
+test_partial_maps.adb:931:16: info: implicit aspect Always_Terminates on "Get" has been proved, subprogram will terminate
+test_partial_maps.adb:931:16: info: implicit function contract might not be available on recursive calls
+test_partial_maps.adb:933:47: info: index check proved (CVC5: 2 VC)
+test_partial_maps.adb:934:48: info: index check proved (CVC5: 2 VC)
+test_partial_maps.adb:934:50: info: initialization check proved (CVC5: 1 VC)
+test_partial_maps.adb:938:16: info: index check proved (CVC5: 2 VC)
+test_partial_maps.adb:938:20: info: initialization check proved (CVC5: 1 VC)
+test_partial_maps.adb:938:35: info: index check proved (CVC5: 2 VC)
+test_partial_maps.adb:938:39: info: initialization check proved (CVC5: 1 VC)
+test_partial_maps.adb:938:47: info: precondition proved (CVC5: 4 VC)
+test_partial_maps.adb:938:47: info: subprogram variant proved (CVC5: 1 VC)
+test_partial_maps.adb:938:62: info: range check proved (CVC5: 2 VC)
+test_partial_maps.adb:941:10: info: precondition proved (CVC5: 4 VC)
+test_partial_maps.adb:944:09: info: predicate check proved (CVC5: 2 VC)
 test_sequences.adb:15:09: info: Container_Aggregates annotation proved (CVC5: 1 VC)
 test_sequences.adb:15:09: info: Container_Aggregates annotation proved (CVC5: 1 VC)
 test_sequences.adb:15:09: info: Container_Aggregates annotation proved (CVC5: 1 VC)
@@ -278,6 +452,101 @@ test_sequences.adb:315:09: info: when reestablishing invariant on Get at test_se
 test_sequences.adb:315:09: info: when reestablishing invariant on Last at test_sequences.adb:341
 test_sequences.adb:328:31: medium: during checks for container aggregates at test_sequences.adb:315
 test_sequences.adb:328:31: medium: precondition might fail, cannot prove Pred (X, E)
+test_sequences.adb:369:09: info: Container_Aggregates annotation proved (CVC5: 1 VC)
+test_sequences.adb:369:09: info: Container_Aggregates annotation proved (CVC5: 1 VC)
+test_sequences.adb:369:09: info: Container_Aggregates annotation proved (CVC5: 1 VC)
+test_sequences.adb:369:09: info: Container_Aggregates annotation proved (CVC5: 1 VC)
+test_sequences.adb:369:09: info: after a call to Append at test_sequences.adb:375
+test_sequences.adb:369:09: info: after a call to Append at test_sequences.adb:375
+test_sequences.adb:369:09: info: after a call to Append at test_sequences.adb:375
+test_sequences.adb:369:09: info: after a call to Empty at test_sequences.adb:371
+test_sequences.adb:369:09: info: when establishing invariant on Last at test_sequences.adb:394
+test_sequences.adb:369:09: info: when reestablishing invariant on Capacity at test_sequences.adb:386
+test_sequences.adb:369:09: info: when reestablishing invariant on Get at test_sequences.adb:397
+test_sequences.adb:369:09: info: when reestablishing invariant on Last at test_sequences.adb:394
+test_sequences.adb:369:09: medium: Container_Aggregates annotation might be incorrect
+test_sequences.adb:369:09: medium: after a call to Empty at test_sequences.adb:371
+test_sequences.adb:369:09: medium: when establishing invariant on Capacity at test_sequences.adb:386
+test_sequences.adb:377:51: info: during checks for container aggregates at test_sequences.adb:369
+test_sequences.adb:377:51: info: precondition proved (CVC5: 2 VC)
+test_sequences.adb:391:16: info: implicit aspect Always_Terminates on "First" has been proved, subprogram will terminate
+test_sequences.adb:394:16: info: implicit aspect Always_Terminates on "Last" has been proved, subprogram will terminate
+test_sequences.adb:397:16: info: implicit aspect Always_Terminates on "Get" has been proved, subprogram will terminate
+test_sequences.adb:406:10: info: range check proved (CVC5: 2 VC)
+test_sequences.adb:411:53: info: index check proved (CVC5: 2 VC)
+test_sequences.adb:413:72: info: range check proved (CVC5: 2 VC)
+test_sequences.adb:416:11: info: initialization check proved (CVC5: 1 VC)
+test_sequences.adb:416:21: info: index check proved (CVC5: 2 VC)
+test_sequences.adb:431:09: info: Container_Aggregates annotation proved (CVC5: 1 VC)
+test_sequences.adb:431:09: info: Container_Aggregates annotation proved (CVC5: 1 VC)
+test_sequences.adb:431:09: info: Container_Aggregates annotation proved (CVC5: 1 VC)
+test_sequences.adb:431:09: info: Container_Aggregates annotation proved (CVC5: 1 VC)
+test_sequences.adb:431:09: info: after a call to Append at test_sequences.adb:438
+test_sequences.adb:431:09: info: after a call to Append at test_sequences.adb:438
+test_sequences.adb:431:09: info: after a call to Empty at test_sequences.adb:433
+test_sequences.adb:431:09: info: after a call to Empty at test_sequences.adb:433
+test_sequences.adb:431:09: info: when establishing invariant on Capacity at test_sequences.adb:448
+test_sequences.adb:431:09: info: when establishing invariant on Last at test_sequences.adb:456
+test_sequences.adb:431:09: info: when reestablishing invariant on Get at test_sequences.adb:459
+test_sequences.adb:431:09: info: when reestablishing invariant on Last at test_sequences.adb:456
+test_sequences.adb:431:09: medium: Container_Aggregates annotation might be incorrect
+test_sequences.adb:431:09: medium: after a call to Append at test_sequences.adb:438
+test_sequences.adb:431:09: medium: when reestablishing invariant on Capacity at test_sequences.adb:448
+test_sequences.adb:440:51: info: during checks for container aggregates at test_sequences.adb:431
+test_sequences.adb:440:51: info: precondition proved (CVC5: 2 VC)
+test_sequences.adb:453:16: info: implicit aspect Always_Terminates on "First" has been proved, subprogram will terminate
+test_sequences.adb:456:16: info: implicit aspect Always_Terminates on "Last" has been proved, subprogram will terminate
+test_sequences.adb:459:16: info: implicit aspect Always_Terminates on "Get" has been proved, subprogram will terminate
+test_sequences.adb:468:10: info: range check proved (CVC5: 2 VC)
+test_sequences.adb:473:53: info: index check proved (CVC5: 2 VC)
+test_sequences.adb:475:72: info: range check proved (CVC5: 2 VC)
+test_sequences.adb:478:11: info: initialization check proved (CVC5: 1 VC)
+test_sequences.adb:478:21: info: index check proved (CVC5: 2 VC)
+test_sequences.adb:493:09: info: Container_Aggregates annotation proved (CVC5: 1 VC)
+test_sequences.adb:493:09: info: Container_Aggregates annotation proved (CVC5: 1 VC)
+test_sequences.adb:493:09: info: Container_Aggregates annotation proved (CVC5: 1 VC)
+test_sequences.adb:493:09: info: Container_Aggregates annotation proved (CVC5: 1 VC)
+test_sequences.adb:493:09: info: Container_Aggregates annotation proved (CVC5: 1 VC)
+test_sequences.adb:493:09: info: after a call to Append at test_sequences.adb:500
+test_sequences.adb:493:09: info: after a call to Append at test_sequences.adb:500
+test_sequences.adb:493:09: info: after a call to Append at test_sequences.adb:500
+test_sequences.adb:493:09: info: after a call to Empty at test_sequences.adb:495
+test_sequences.adb:493:09: info: after a call to Empty at test_sequences.adb:495
+test_sequences.adb:493:09: info: when establishing invariant on Capacity at test_sequences.adb:511
+test_sequences.adb:493:09: info: when establishing invariant on Last at test_sequences.adb:519
+test_sequences.adb:493:09: info: when reestablishing invariant on Capacity at test_sequences.adb:511
+test_sequences.adb:493:09: info: when reestablishing invariant on Get at test_sequences.adb:522
+test_sequences.adb:493:09: info: when reestablishing invariant on Last at test_sequences.adb:519
+test_sequences.adb:502:51: info: during checks for container aggregates at test_sequences.adb:493
+test_sequences.adb:502:51: info: precondition proved (CVC5: 2 VC)
+test_sequences.adb:516:16: info: implicit aspect Always_Terminates on "First" has been proved, subprogram will terminate
+test_sequences.adb:519:16: info: implicit aspect Always_Terminates on "Last" has been proved, subprogram will terminate
+test_sequences.adb:522:16: info: implicit aspect Always_Terminates on "Get" has been proved, subprogram will terminate
+test_sequences.adb:531:10: info: range check proved (CVC5: 2 VC)
+test_sequences.adb:536:53: info: index check proved (CVC5: 2 VC)
+test_sequences.adb:538:72: info: range check proved (CVC5: 2 VC)
+test_sequences.adb:541:11: info: initialization check proved (CVC5: 1 VC)
+test_sequences.adb:541:21: info: index check proved (CVC5: 2 VC)
+test_sequences.adb:556:09: info: Container_Aggregates annotation proved (CVC5: 1 VC)
+test_sequences.adb:556:09: info: Container_Aggregates annotation proved (CVC5: 1 VC)
+test_sequences.adb:556:09: info: Container_Aggregates annotation proved (CVC5: 1 VC)
+test_sequences.adb:556:09: info: after a call to Append at test_sequences.adb:562
+test_sequences.adb:556:09: info: after a call to Append at test_sequences.adb:562
+test_sequences.adb:556:09: info: after a call to Empty at test_sequences.adb:558
+test_sequences.adb:556:09: info: when establishing invariant on Last at test_sequences.adb:580
+test_sequences.adb:556:09: info: when reestablishing invariant on Get at test_sequences.adb:583
+test_sequences.adb:556:09: info: when reestablishing invariant on Last at test_sequences.adb:580
+test_sequences.adb:564:47: info: during checks for container aggregates at test_sequences.adb:556
+test_sequences.adb:564:47: info: precondition proved (CVC5: 2 VC)
+test_sequences.adb:572:16: info: implicit function contract might not be available on calls from enclosing unit
+test_sequences.adb:577:16: info: implicit aspect Always_Terminates on "First" has been proved, subprogram will terminate
+test_sequences.adb:580:16: info: implicit aspect Always_Terminates on "Last" has been proved, subprogram will terminate
+test_sequences.adb:583:16: info: implicit aspect Always_Terminates on "Get" has been proved, subprogram will terminate
+test_sequences.adb:588:07: info: range check proved (CVC5: 2 VC)
+test_sequences.adb:597:53: info: index check proved (CVC5: 2 VC)
+test_sequences.adb:599:72: info: range check proved (CVC5: 2 VC)
+test_sequences.adb:602:11: info: initialization check proved (CVC5: 1 VC)
+test_sequences.adb:602:21: info: index check proved (CVC5: 2 VC)
 test_sets.adb:10:09: info: Container_Aggregates annotation proved (CVC5: 1 VC)
 test_sets.adb:10:09: info: Container_Aggregates annotation proved (CVC5: 1 VC)
 test_sets.adb:10:09: info: Container_Aggregates annotation proved (CVC5: 2 VC)
@@ -404,6 +673,116 @@ test_sets.adb:432:09: info: when reestablishing invariant on Contains at test_se
 test_sets.adb:432:09: info: when reestablishing invariant on Length at test_sets.adb:458
 test_sets.adb:440:16: medium: during checks for container aggregates at test_sets.adb:432
 test_sets.adb:440:16: medium: precondition might fail
+test_sets.adb:481:09: info: Container_Aggregates annotation proved (CVC5: 1 VC)
+test_sets.adb:481:09: info: Container_Aggregates annotation proved (CVC5: 1 VC)
+test_sets.adb:481:09: info: Container_Aggregates annotation proved (CVC5: 1 VC)
+test_sets.adb:481:09: info: Container_Aggregates annotation proved (CVC5: 1 VC; altergo: 2 VC)
+test_sets.adb:481:09: info: Container_Aggregates annotation proved (CVC5: 2 VC)
+test_sets.adb:481:09: info: after a call to Append at test_sets.adb:485
+test_sets.adb:481:09: info: after a call to Append at test_sets.adb:485
+test_sets.adb:481:09: info: after a call to Append at test_sets.adb:485
+test_sets.adb:481:09: info: after a call to Empty at test_sets.adb:483
+test_sets.adb:481:09: info: after a call to Empty at test_sets.adb:483
+test_sets.adb:481:09: info: when establishing invariant on Contains at test_sets.adb:506
+test_sets.adb:481:09: info: when establishing invariant on Length at test_sets.adb:497
+test_sets.adb:481:09: info: when reestablishing invariant on Capacity at test_sets.adb:501
+test_sets.adb:481:09: info: when reestablishing invariant on Contains at test_sets.adb:506
+test_sets.adb:481:09: info: when reestablishing invariant on Length at test_sets.adb:497
+test_sets.adb:481:09: medium: Container_Aggregates annotation might be incorrect
+test_sets.adb:481:09: medium: after a call to Empty at test_sets.adb:483
+test_sets.adb:481:09: medium: when establishing invariant on Capacity at test_sets.adb:501
+test_sets.adb:483:16: info: implicit aspect Always_Terminates on "Empty" has been proved, subprogram will terminate
+test_sets.adb:484:09: info: data dependencies proved
+test_sets.adb:487:28: info: during checks for container aggregates at test_sets.adb:481
+test_sets.adb:487:28: info: precondition proved (CVC5: 1 VC)
+test_sets.adb:497:16: info: implicit aspect Always_Terminates on "Length" has been proved, subprogram will terminate
+test_sets.adb:498:09: info: data dependencies proved
+test_sets.adb:506:16: info: implicit aspect Always_Terminates on "Contains" has been proved, subprogram will terminate
+test_sets.adb:509:16: info: implicit aspect Always_Terminates on "Eq_Element" has been proved, subprogram will terminate
+test_sets.adb:517:10: info: range check proved (CVC5: 2 VC)
+test_sets.adb:521:53: info: index check proved (CVC5: 2 VC)
+test_sets.adb:524:39: info: initialization check proved (CVC5: 1 VC)
+test_sets.adb:524:49: info: index check proved (CVC5: 2 VC)
+test_sets.adb:528:10: info: predicate check proved (CVC5: 2 VC)
+test_sets.adb:528:37: info: length check proved (CVC5: 3 VC; Trivial: 1 VC)
+test_sets.adb:539:09: info: Container_Aggregates annotation proved (CVC5: 1 VC)
+test_sets.adb:539:09: info: Container_Aggregates annotation proved (CVC5: 1 VC)
+test_sets.adb:539:09: info: Container_Aggregates annotation proved (CVC5: 1 VC)
+test_sets.adb:539:09: info: Container_Aggregates annotation proved (CVC5: 1 VC; altergo: 2 VC)
+test_sets.adb:539:09: info: Container_Aggregates annotation proved (CVC5: 2 VC)
+test_sets.adb:539:09: info: after a call to Append at test_sets.adb:545
+test_sets.adb:539:09: info: after a call to Append at test_sets.adb:545
+test_sets.adb:539:09: info: after a call to Empty at test_sets.adb:541
+test_sets.adb:539:09: info: after a call to Empty at test_sets.adb:541
+test_sets.adb:539:09: info: after a call to Empty at test_sets.adb:541
+test_sets.adb:539:09: info: when establishing invariant on Capacity at test_sets.adb:560
+test_sets.adb:539:09: info: when establishing invariant on Contains at test_sets.adb:565
+test_sets.adb:539:09: info: when establishing invariant on Length at test_sets.adb:556
+test_sets.adb:539:09: info: when reestablishing invariant on Contains at test_sets.adb:565
+test_sets.adb:539:09: info: when reestablishing invariant on Length at test_sets.adb:556
+test_sets.adb:539:09: medium: Container_Aggregates annotation might be incorrect
+test_sets.adb:539:09: medium: after a call to Append at test_sets.adb:545
+test_sets.adb:539:09: medium: when reestablishing invariant on Capacity at test_sets.adb:560
+test_sets.adb:547:28: info: during checks for container aggregates at test_sets.adb:539
+test_sets.adb:547:28: info: precondition proved (CVC5: 1 VC)
+test_sets.adb:556:16: info: implicit aspect Always_Terminates on "Length" has been proved, subprogram will terminate
+test_sets.adb:557:09: info: data dependencies proved
+test_sets.adb:565:16: info: implicit aspect Always_Terminates on "Contains" has been proved, subprogram will terminate
+test_sets.adb:568:16: info: implicit aspect Always_Terminates on "Eq_Element" has been proved, subprogram will terminate
+test_sets.adb:576:10: info: range check proved (CVC5: 2 VC)
+test_sets.adb:580:53: info: index check proved (CVC5: 2 VC)
+test_sets.adb:583:39: info: initialization check proved (CVC5: 1 VC)
+test_sets.adb:583:49: info: index check proved (CVC5: 2 VC)
+test_sets.adb:596:09: info: Container_Aggregates annotation proved (CVC5: 1 VC)
+test_sets.adb:596:09: info: Container_Aggregates annotation proved (CVC5: 1 VC)
+test_sets.adb:596:09: info: Container_Aggregates annotation proved (CVC5: 1 VC)
+test_sets.adb:596:09: info: Container_Aggregates annotation proved (CVC5: 1 VC)
+test_sets.adb:596:09: info: Container_Aggregates annotation proved (CVC5: 1 VC; altergo: 2 VC)
+test_sets.adb:596:09: info: Container_Aggregates annotation proved (CVC5: 2 VC)
+test_sets.adb:596:09: info: after a call to Append at test_sets.adb:602
+test_sets.adb:596:09: info: after a call to Append at test_sets.adb:602
+test_sets.adb:596:09: info: after a call to Append at test_sets.adb:602
+test_sets.adb:596:09: info: after a call to Empty at test_sets.adb:598
+test_sets.adb:596:09: info: after a call to Empty at test_sets.adb:598
+test_sets.adb:596:09: info: after a call to Empty at test_sets.adb:598
+test_sets.adb:596:09: info: when establishing invariant on Capacity at test_sets.adb:618
+test_sets.adb:596:09: info: when establishing invariant on Contains at test_sets.adb:623
+test_sets.adb:596:09: info: when establishing invariant on Length at test_sets.adb:614
+test_sets.adb:596:09: info: when reestablishing invariant on Capacity at test_sets.adb:618
+test_sets.adb:596:09: info: when reestablishing invariant on Contains at test_sets.adb:623
+test_sets.adb:596:09: info: when reestablishing invariant on Length at test_sets.adb:614
+test_sets.adb:604:28: info: during checks for container aggregates at test_sets.adb:596
+test_sets.adb:604:28: info: precondition proved (CVC5: 1 VC)
+test_sets.adb:614:16: info: implicit aspect Always_Terminates on "Length" has been proved, subprogram will terminate
+test_sets.adb:615:09: info: data dependencies proved
+test_sets.adb:623:16: info: implicit aspect Always_Terminates on "Contains" has been proved, subprogram will terminate
+test_sets.adb:626:16: info: implicit aspect Always_Terminates on "Eq_Element" has been proved, subprogram will terminate
+test_sets.adb:634:10: info: range check proved (CVC5: 2 VC)
+test_sets.adb:638:53: info: index check proved (CVC5: 2 VC)
+test_sets.adb:641:39: info: initialization check proved (CVC5: 1 VC)
+test_sets.adb:641:49: info: index check proved (CVC5: 2 VC)
+test_sets.adb:654:09: info: Container_Aggregates annotation proved (CVC5: 1 VC)
+test_sets.adb:654:09: info: Container_Aggregates annotation proved (CVC5: 1 VC)
+test_sets.adb:654:09: info: Container_Aggregates annotation proved (CVC5: 1 VC; altergo: 2 VC)
+test_sets.adb:654:09: info: Container_Aggregates annotation proved (CVC5: 2 VC)
+test_sets.adb:654:09: info: after a call to Append at test_sets.adb:657
+test_sets.adb:654:09: info: after a call to Append at test_sets.adb:657
+test_sets.adb:654:09: info: after a call to Empty at test_sets.adb:656
+test_sets.adb:654:09: info: after a call to Empty at test_sets.adb:656
+test_sets.adb:654:09: info: when establishing invariant on Contains at test_sets.adb:677
+test_sets.adb:654:09: info: when establishing invariant on Length at test_sets.adb:668
+test_sets.adb:654:09: info: when reestablishing invariant on Contains at test_sets.adb:677
+test_sets.adb:654:09: info: when reestablishing invariant on Length at test_sets.adb:668
+test_sets.adb:659:27: info: during checks for container aggregates at test_sets.adb:654
+test_sets.adb:659:27: info: precondition proved (CVC5: 1 VC)
+test_sets.adb:668:16: info: implicit aspect Always_Terminates on "Length" has been proved, subprogram will terminate
+test_sets.adb:669:09: info: data dependencies proved
+test_sets.adb:677:16: info: implicit aspect Always_Terminates on "Contains" has been proved, subprogram will terminate
+test_sets.adb:680:16: info: implicit aspect Always_Terminates on "Eq_Element" has been proved, subprogram will terminate
+test_sets.adb:692:53: info: index check proved (CVC5: 2 VC)
+test_sets.adb:695:39: info: initialization check proved (CVC5: 1 VC)
+test_sets.adb:695:49: info: index check proved (CVC5: 2 VC)
+test_sets.adb:699:10: info: predicate check proved (CVC5: 2 VC)
 test_total_maps.adb:11:09: info: Container_Aggregates annotation proved (CVC5: 1 VC)
 test_total_maps.adb:11:09: info: Container_Aggregates annotation proved (CVC5: 1 VC)
 test_total_maps.adb:11:09: info: after a call to Empty at test_total_maps.adb:13
