@@ -322,47 +322,47 @@ test_capacity.adb:473:27: info: overflow check proved (CVC5: 2 VC)
 test_capacity.adb:474:11: info: predicate check proved (CVC5: 3 VC)
 test_capacity.adb:474:25: info: overflow check proved (CVC5: 2 VC)
 test_capacity.adb:478:52: info: data dependencies proved
-test_capacity.adb:482:16: info: all elements shall fit in "Small_Nat" for predefined set aggregates at test_capacity.adb:21
+test_capacity.adb:482:16: info: all elements shall fit in "Small_Nat" for set aggregates at test_capacity.adb:21
 test_capacity.adb:482:16: info: precondition proved (CVC5: 1 VC)
 test_capacity.adb:484:22: info: assertion proved (CVC5: 1 VC)
 test_capacity.adb:487:56: info: data dependencies proved
-test_capacity.adb:491:16: medium: all elements shall fit in "Small_Nat" for predefined set aggregates at test_capacity.adb:21
+test_capacity.adb:491:16: medium: all elements shall fit in "Small_Nat" for set aggregates at test_capacity.adb:21
 test_capacity.adb:491:16: medium: precondition might fail
 test_capacity.adb:496:50: info: data dependencies proved
-test_capacity.adb:500:16: info: all elements shall be smaller than "Capacity" for predefined set aggregates at test_capacity.adb:85
+test_capacity.adb:500:16: info: all elements shall be smaller than "Capacity" for set aggregates at test_capacity.adb:85
 test_capacity.adb:500:16: info: precondition proved (CVC5: 1 VC)
 test_capacity.adb:505:54: info: data dependencies proved
-test_capacity.adb:509:16: medium: all elements shall be smaller than "Capacity" for predefined set aggregates at test_capacity.adb:85
+test_capacity.adb:509:16: medium: all elements shall be smaller than "Capacity" for set aggregates at test_capacity.adb:85
 test_capacity.adb:509:16: medium: precondition might fail
 test_capacity.adb:514:52: info: data dependencies proved
-test_capacity.adb:518:16: info: keys shall be distinct and all elements shall fit in "Small_Nat" for predefined maps aggregates at test_capacity.adb:149
+test_capacity.adb:518:16: info: keys shall be distinct and all elements shall fit in "Small_Nat" for maps aggregates at test_capacity.adb:149
 test_capacity.adb:518:16: info: precondition proved (CVC5: 37 VC)
 test_capacity.adb:520:22: info: assertion proved (CVC5: 1 VC)
 test_capacity.adb:523:56: info: data dependencies proved
-test_capacity.adb:527:16: medium: keys shall be distinct and all elements shall fit in "Small_Nat" for predefined maps aggregates at test_capacity.adb:149
+test_capacity.adb:527:16: medium: keys shall be distinct and all elements shall fit in "Small_Nat" for maps aggregates at test_capacity.adb:149
 test_capacity.adb:527:16: medium: precondition might fail
 test_capacity.adb:532:50: info: data dependencies proved
-test_capacity.adb:536:16: info: keys shall be distinct and all elements shall be smaller than "Capacity" for predefined maps aggregates at test_capacity.adb:253
+test_capacity.adb:536:16: info: keys shall be distinct and all elements shall be smaller than "Capacity" for maps aggregates at test_capacity.adb:253
 test_capacity.adb:536:16: info: precondition proved (CVC5: 37 VC)
 test_capacity.adb:541:54: info: data dependencies proved
-test_capacity.adb:545:16: medium: keys shall be distinct and all elements shall be smaller than "Capacity" for predefined maps aggregates at test_capacity.adb:253
+test_capacity.adb:545:16: medium: keys shall be distinct and all elements shall be smaller than "Capacity" for maps aggregates at test_capacity.adb:253
 test_capacity.adb:545:16: medium: precondition might fail
 test_capacity.adb:551:06: info: data dependencies proved
-test_capacity.adb:556:16: info: all elements shall fit in index type and fit in "Small_Nat" for predefined sequence aggregates at test_capacity.adb:356
+test_capacity.adb:556:16: info: all elements shall fit in index type and fit in "Small_Nat" for sequence aggregates at test_capacity.adb:356
 test_capacity.adb:556:16: info: precondition proved (CVC5: 2 VC)
 test_capacity.adb:558:22: info: assertion proved (CVC5: 1 VC)
 test_capacity.adb:562:06: info: data dependencies proved
-test_capacity.adb:567:16: medium: all elements shall fit in index type and fit in "Small_Nat" for predefined sequence aggregates at test_capacity.adb:356
+test_capacity.adb:567:16: medium: all elements shall fit in index type and fit in "Small_Nat" for sequence aggregates at test_capacity.adb:356
 test_capacity.adb:567:16: medium: precondition might fail
 test_capacity.adb:573:06: info: data dependencies proved
-test_capacity.adb:578:16: medium: all elements shall fit in index type and fit in "Small_Nat" for predefined sequence aggregates at test_capacity.adb:356
+test_capacity.adb:578:16: medium: all elements shall fit in index type and fit in "Small_Nat" for sequence aggregates at test_capacity.adb:356
 test_capacity.adb:578:16: medium: precondition might fail
 test_capacity.adb:584:06: info: data dependencies proved
-test_capacity.adb:589:16: info: all elements shall fit in index type and be smaller than "Capacity" for predefined sequence aggregates at test_capacity.adb:421
+test_capacity.adb:589:16: info: all elements shall fit in index type and be smaller than "Capacity" for sequence aggregates at test_capacity.adb:421
 test_capacity.adb:589:16: info: precondition proved (CVC5: 2 VC)
 test_capacity.adb:595:06: info: data dependencies proved
-test_capacity.adb:600:16: medium: all elements shall fit in index type and be smaller than "Capacity" for predefined sequence aggregates at test_capacity.adb:421
+test_capacity.adb:600:16: medium: all elements shall fit in index type and be smaller than "Capacity" for sequence aggregates at test_capacity.adb:421
 test_capacity.adb:600:16: medium: precondition might fail
 test_capacity.adb:606:06: info: data dependencies proved
-test_capacity.adb:611:16: medium: all elements shall fit in index type and be smaller than "Capacity" for predefined sequence aggregates at test_capacity.adb:421
+test_capacity.adb:611:16: medium: all elements shall fit in index type and be smaller than "Capacity" for sequence aggregates at test_capacity.adb:421
 test_capacity.adb:611:16: medium: precondition might fail

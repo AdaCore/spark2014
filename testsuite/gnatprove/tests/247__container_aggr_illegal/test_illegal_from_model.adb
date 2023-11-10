@@ -183,6 +183,116 @@ procedure Test_Illegal_From_Model with SPARK_Mode is
       function Last (X : T) return Ext_Index is (X.Top);
    end P4;
 
+   package Seqs_With_Capacity is
+      type T is private with
+        Aggregate => (Empty       => Empty,
+                      Add_Unnamed => Append),
+        Annotate => (GNATprove, Container_Aggregates, "Predefined_Sequences");
+
+      function Empty return T with
+        Import,
+        Global => null;
+      procedure Append (X : in out T; E : Element_Type) with
+        Global => null,
+        Always_Terminates,
+        Import;
+
+      function Get (X : T; I : Index_Type) return Element_Type with
+        Annotate => (GNATprove, Container_Aggregates, "Get"),
+        Pre => I <= Last (X);
+
+      function Last (X : T) return Ext_Index with
+        Annotate => (GNATprove, Container_Aggregates, "Last");
+
+      function First return Index_Type is (1) with
+        Annotate => (GNATprove, Container_Aggregates, "First");
+
+      function Capacity return Natural is (10) with
+        Annotate => (GNATprove, Container_Aggregates, "Capacity");
+
+   private
+      type T_Content is array (Index_Type) of Element_Type with
+        Relaxed_Initialization;
+      type T is record
+         Content : T_Content;
+         Top     : Ext_Index;
+      end record with
+        Ghost_Predicate =>
+          (for all I in 1 .. Top => Content (I)'Initialized);
+
+      function Get (X : T; I : Index_Type) return Element_Type is
+        (X.Content (I));
+
+      function Last (X : T) return Ext_Index is (X.Top);
+   end Seqs_With_Capacity;
+
+   --  Model with an incompatible inherited capacity function
+
+   package P5 is
+      type T (Capacity : Ext_Index) is private with
+        Aggregate => (Empty       => Empty,
+                      Add_Unnamed => Append),
+        Annotate => (GNATprove, Container_Aggregates, "From_Model");
+
+      function Empty (Capacity : Ext_Index) return T with
+        Import,
+        Global => null;
+      procedure Append (X : in out T; E : Element_Type) with
+        Global => null,
+        Always_Terminates,
+        Import;
+
+      function Model (X : T) return Seqs_With_Capacity.T with
+        Global => null,
+        Import,
+        Annotate => (GNATprove, Container_Aggregates, "Model");
+
+   private
+      type T_Content is array (Index_Type range <>) of Element_Type with
+        Relaxed_Initialization;
+      type T (Capacity : Ext_Index) is record
+         Content : T_Content (1 .. Capacity);
+         Top     : Ext_Index;
+      end record with
+        Ghost_Predicate => Top <= Capacity and then
+          (for all I in 1 .. Top => Content (I)'Initialized);
+   end P5;
+
+   --  Model with a redefined capacity function
+
+   package P6 is
+      type T (Capacity : Ext_Index) is private with
+        Aggregate => (Empty       => Empty,
+                      Add_Unnamed => Append),
+        Annotate => (GNATprove, Container_Aggregates, "From_Model");
+
+      function Empty (Capacity : Ext_Index) return T with
+        Import,
+        Global => null;
+      procedure Append (X : in out T; E : Element_Type) with
+        Global => null,
+        Always_Terminates,
+        Import;
+
+      function Model (X : T) return Seqs_With_Capacity.T with
+        Global => null,
+        Import,
+        Annotate => (GNATprove, Container_Aggregates, "Model");
+
+      function Capacity (X : T) return Ext_Index is (X.Capacity) with
+        Annotate => (GNATprove, Container_Aggregates, "Capacity");
+
+   private
+      type T_Content is array (Index_Type range <>) of Element_Type with
+        Relaxed_Initialization;
+      type T (Capacity : Ext_Index) is record
+         Content : T_Content (1 .. Capacity);
+         Top     : Ext_Index;
+      end record with
+        Ghost_Predicate => Top <= Capacity and then
+          (for all I in 1 .. Top => Content (I)'Initialized);
+   end P6;
+
 begin
    null;
 end Test_Illegal_From_Model;

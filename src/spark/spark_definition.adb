@@ -1741,8 +1741,6 @@ package body SPARK_Definition is
                        and then not Is_Empty_List (Component_Associations (N))
                      then
                         Mark_Violation ("indexed container aggregate", N);
-                     elsif Annot.Kind = Model then
-                        Mark_Violation ("container aggregate using models", N);
                      else
                         Mark_List (Expressions (N));
                         Mark_List (Component_Associations (N));

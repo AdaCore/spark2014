@@ -24,9 +24,9 @@ test_illegal_aggregates.adb:212:21: error: indexed container aggregate is not al
 test_illegal_aggregates.adb:212:21: error: violation of aspect SPARK_Mode at line 1
 test_illegal_aggregates.adb:221:07: info: no contextual analysis of "P5" (nested package declaration)
 test_illegal_capacity.adb:25:16: error: "Capacity" function for "T" shall take the container as a parameter
-test_illegal_capacity.adb:25:16: error: the "Empty" function takes the capacity as a parameter
+test_illegal_capacity.adb:25:16: error: "Empty" takes the capacity as a parameter
 test_illegal_capacity.adb:78:16: error: "Capacity" function for "T" shall have no parameters
-test_illegal_capacity.adb:78:16: error: the "Empty" function has no parameters
+test_illegal_capacity.adb:78:16: error: "Empty" has no parameters
 test_illegal_capacity.adb:128:16: error: type of first parameter shall be annotated with Container_Aggregate
 test_illegal_capacity.adb:180:16: error: "Capacity" function shall have one parameter
 test_illegal_capacity.adb:232:16: error: "Capacity" shall return a signed integer type or a subtype of Big_Integer
@@ -139,6 +139,8 @@ test_illegal_first.adb:500:12: error: no "First" function found for type with pr
 test_illegal_from_model.adb:51:12: error: a type with container aggregates shall specify either an Add_Named or an Add_Unnamed procedure
 test_illegal_from_model.adb:109:12: error: no "Model" function found for type with aggregates using models "T"
 test_illegal_from_model.adb:171:55: error: invalid third parameter for container aggregates using models
+test_illegal_from_model.adb:253:12: error: "Empty" takes the capacity as a parameter
+test_illegal_from_model.adb:253:12: error: incompatible "Capacity" function inherited from model type "T"
 test_illegal_glob.adb:10:76: error: fourth argument of pragma Annotate Container_Aggregates must be an entity
 test_illegal_glob.adb:35:55: error: third argument of aspect Annotate Container_Aggregates must be a string
 test_illegal_glob.adb:60:55: error: third parameter of aspect Annotate Container_Aggregates on a type shall be either predefined_sets, predefined_maps, predefined_sequences, or from_model
@@ -269,13 +271,10 @@ test_illegal_model.adb:190:12: error: no "Model" function found for type with ag
 test_illegal_model.adb:214:16: error: "Model" function shall return a type with a Container_Aggregates annotation
 test_illegal_model.adb:222:12: error: no "Model" function found for type with aggregates using models "T"
 test_illegal_model.adb:246:16: error: concrete and model types of a "Model" function shall define compatible aggregates
-test_illegal_model.adb:254:12: error: no "Model" function found for type with aggregates using models "T"
 test_illegal_model.adb:278:16: error: concrete and model types of a "Model" function shall define compatible aggregates, element types do not match
-test_illegal_model.adb:286:12: error: no "Model" function found for type with aggregates using models "T"
 test_illegal_model.adb:308:16: error: concrete and model types of a "Model" function shall define compatible aggregates, element types do not match
-test_illegal_model.adb:319:12: error: no "Model" function found for type with aggregates using models "T"
 test_illegal_model.adb:343:16: error: concrete and model types of a "Model" function shall define compatible aggregates, key types do not match
-test_illegal_model.adb:354:12: error: no "Model" function found for type with aggregates using models "T"
+test_illegal_model.adb:383:16: error: a single "Model" function shall be specified for a type with a Container_Aggregates annotation
 test_illegal_seqs.adb:11:12: error: a type with predefined sequence aggregates shall specify an Add_Unnamed procedure
 test_illegal_seqs.adb:80:12: error: no "Get" function found for type with predefined sequence aggregates "T"
 test_illegal_seqs.adb:120:12: error: no "Last" function found for type with predefined sequence aggregates "T"
