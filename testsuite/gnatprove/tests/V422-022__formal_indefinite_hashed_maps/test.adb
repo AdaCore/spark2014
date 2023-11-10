@@ -7,7 +7,7 @@ procedure Test with SPARK_Mode is
     (String, String, Ada.Strings.Hash);
    use Maps;
 
-   M : Map (Default_Modulus (4));
+   M : Map;
 
    K1 : String := "1";
    K2 : String := "2";

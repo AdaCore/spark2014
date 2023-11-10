@@ -3,7 +3,7 @@ with SPARK.Containers; use SPARK.Containers;
 package body Test_Map with SPARK_Mode is
    procedure Test_Map_Pos with Pre => True is
       use Test_Map.M;
-      L, K : Map (Default_Modulus (10));
+      L, K : Map;
       C    : Cursor;
       B    : Boolean;
    begin
@@ -44,7 +44,7 @@ package body Test_Map with SPARK_Mode is
 
    procedure Test_Map_Rec with Pre => True is
       use Test_Map.N;
-      L, K : Map (Default_Modulus (10));
+      L, K : Map;
       C    : Cursor;
       B    : Boolean;
    begin
@@ -86,7 +86,7 @@ package body Test_Map with SPARK_Mode is
 
    procedure Test_Map_Rec_2 with Pre => True is
       use Test_Map.N;
-      L, K : Map (Default_Modulus (10));
+      L, K : Map;
       C    : Cursor;
       B    : Boolean;
    begin
@@ -130,12 +130,13 @@ package body Test_Map with SPARK_Mode is
       Test_Map_Pos;
       Test_Map_Rec;
       Test_Map_Rec_2;
+      Test_Resize;
    end Run_Test;
 
    procedure Large_Test is
       use Test_Map.M;
       use Formal_Model;
-      L, K : Map (Default_Modulus (10));
+      L, K : Map;
       C    : Cursor;
 
    begin
@@ -173,7 +174,7 @@ package body Test_Map with SPARK_Mode is
       K := L;
       pragma Assert (K = L);
 
-      K := Empty_Map (K.Modulus);
+      K := Empty_Map;
 
       -- Assign
 
@@ -261,5 +262,15 @@ package body Test_Map with SPARK_Mode is
       Insert (K, 101, 101);
       pragma Check (Proof_Only, False);
    end Large_Test;
+
+   procedure Test_Resize is
+      use Test_Map.M;
+      X : Map;
+   begin
+      for I in 1 .. 1000 loop
+         Include (X, 1111 * I, 3);
+         pragma Loop_Invariant (Length (X) <= Count_Type (I));
+      end loop;
+   end Test_Resize;
 
 end Test_Map;

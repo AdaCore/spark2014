@@ -40,4 +40,6 @@ package Test_Set with SPARK_Mode is
 
    procedure Large_Test;
 
+   procedure Test_Resize;
+
 end Test_Set;
