@@ -11,7 +11,6 @@ procedure Main with SPARK_Mode is
       package My_Sets is new SPARK.Containers.Functional.Sets (String);
       X : My_Sets.Set := ["foo", "bar", "foobar"];
    begin
-      --  Here we do not know precisely the length of X
       pragma Assert (My_Sets.Length (X) = 3);
       pragma Assert (My_Sets.Contains (X, "foo"));
       pragma Assert (My_Sets.Contains (X, "bar"));
