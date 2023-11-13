@@ -3262,6 +3262,7 @@ package body Gnat2Why.Subprograms is
       Params     : Transformation_Params;
 
       Why_Body   : W_Prog_Id := +Void;
+      Why_Spec   : W_Prog_Id := +Void;
       Post       : W_Pred_Id;
       Th         : Theory_UC;
    begin
@@ -3366,37 +3367,43 @@ package body Gnat2Why.Subprograms is
          --  Assume initial conditions of withed units from the body
 
          if Is_Compilation_Unit (E) then
-            Params.Phase := Generate_VCs_For_Contract;
-            Prepend
-              (Assume_Initial_Condition_Of_Withed_Units
-                 (Package_Body_Entity (Body_N), Params),
-               Why_Body);
+            declare
+               Local_Params : constant Transformation_Params :=
+                 (Params with delta Phase => Generate_VCs_For_Contract);
+            begin
+               Prepend
+                 (Assume_Initial_Condition_Of_Withed_Units
+                    (Package_Body_Entity (Body_N), Local_Params),
+                  Why_Body);
+            end;
          end if;
       end if;
 
       --  Introduce a check for the type invariant of all the variables
       --  initialized by the package.
 
-      declare
-         Params : constant Transformation_Params := Contract_VC_Params;
-      begin
-         Append
-           (Why_Body,
-            Check_Type_Invariants_For_Package (E, Params));
-      end;
+      if No (Body_N) or else Entity_Body_In_SPARK (E) then
+         declare
+            Params : constant Transformation_Params := Contract_VC_Params;
+         begin
+            Append
+              (Why_Body,
+               Check_Type_Invariants_For_Package (E, Params));
+         end;
+      end if;
 
       --  Translate public and private declarations of the package
 
       if Present (Priv_Decls)
         and then Private_Spec_In_SPARK (E)
       then
-         Why_Body :=
-           Transform_Declarations_Block (Priv_Decls, Why_Body, Body_Params);
+         Why_Spec :=
+           Transform_Declarations_Block (Priv_Decls, Why_Spec, Body_Params);
       end if;
 
       if Present (Vis_Decls) then
-         Why_Body :=
-           Transform_Declarations_Block (Vis_Decls, Why_Body, Body_Params);
+         Why_Spec :=
+           Transform_Declarations_Block (Vis_Decls, Why_Spec, Body_Params);
       end if;
 
       --  Assume initial conditions of withed units.
@@ -3406,9 +3413,14 @@ package body Gnat2Why.Subprograms is
       --  packages. It may be interesting to rather inline them.
 
       if Is_Compilation_Unit (E) then
-         Params.Phase := Generate_VCs_For_Contract;
-         Prepend
-           (Assume_Initial_Condition_Of_Withed_Units (E, Params), Why_Body);
+         declare
+            Local_Params : constant Transformation_Params :=
+              (Params with delta Phase => Generate_VCs_For_Contract);
+         begin
+            Prepend
+              (Assume_Initial_Condition_Of_Withed_Units (E, Local_Params),
+               Why_Spec);
+         end;
       end if;
 
       --  Assume precondition of the enclosing subprogram for nested packages
@@ -3449,15 +3461,30 @@ package body Gnat2Why.Subprograms is
                   end;
                end if;
 
-               Prepend (New_Assume_Statement (Pred => Pre), Why_Body);
+               Prepend (New_Assume_Statement (Pred => Pre), Why_Spec);
             end;
          end if;
       end;
+
+      --  Assuming information about input variables and constants should be
+      --  done separately for Why_Spec and Why_Body so that objects used in
+      --  the body are not visible when analyszing the spec. It is necessary as
+      --  bodies might introduce cycles in dependencies between packages.
+      --  This might introduce duplicated assumptions in the body.
 
       --  We assume that objects used in the program are in range, if
       --  they are of a dynamic type.
 
       Params.Phase := Generate_VCs_For_Contract;
+
+      Prepend
+        (Assume_Dynamic_Invariant_For_Variables
+           (Vars   => Get_Referenced_Variables (Why_Spec, E),
+            Params => Params,
+            Scope  => E),
+         Why_Spec);
+      --  Flow analysis does not compute the set of variables used from a
+      --  package specification only. Do it from the generated Why.
 
       Prepend
         (Compute_Dynamic_Property_For_Inputs (Params => Params,
@@ -3466,6 +3493,7 @@ package body Gnat2Why.Subprograms is
 
       --  Assume values of constants
 
+      Assume_Value_Of_Constants (Why_Spec, E, Params);
       Assume_Value_Of_Constants (Why_Body, E, Params);
 
       --  Declare the toplevel exceptions for exit paths
@@ -3480,7 +3508,7 @@ package body Gnat2Why.Subprograms is
                Location => Safe_First_Sloc (E),
                Labels   => Symbol_Sets.Empty_Set,
                Post     => Post,
-               Def      => +Why_Body));
+               Def      => +Sequence (Why_Spec, Why_Body)));
 
       --  Cleanup
 

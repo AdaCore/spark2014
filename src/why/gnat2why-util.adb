@@ -1062,6 +1062,34 @@ package body Gnat2Why.Util is
    end Get_Quantified_Variable;
 
    ------------------------------
+   -- Get_Referenced_Variables --
+   ------------------------------
+
+   function Get_Referenced_Variables
+     (Why_Expr : W_Prog_Id;
+      Scope    : Entity_Id)
+      return Node_Sets.Set
+   is
+      Include   : constant Node_Sets.Set := Compute_Ada_Node_Set (+Why_Expr);
+      Variables : Node_Sets.Set;
+   begin
+      for N of Include loop
+         if Nkind (N) in N_Entity
+           and then
+             (Ekind (N) in E_Variable | E_Loop_Parameter
+              or else (Ekind (N) = E_Constant
+                       and then (Is_Access_Variable (Etype (N))
+                                 or else Flow_Utility.Has_Variable_Input (N))))
+           and then not Is_Declared_In_Unit (N, Scope)
+         then
+            Variables.Insert (N);
+         end if;
+      end loop;
+
+      return Variables;
+   end Get_Referenced_Variables;
+
+   ------------------------------
    -- Get_Static_Call_Contract --
    ------------------------------
 
