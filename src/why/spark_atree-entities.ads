@@ -811,6 +811,10 @@ package SPARK_Atree.Entities is
    --  Special case of Sem_Util.Enclosing_Declaration where only one call to
    --  Parent is needed.
 
+   function Esize (Ent : Entity_Id) return Unat with
+     Pre => (Is_Type (Ent) or else Is_Object (Ent))
+       and then Known_Esize (Ent);
+
    function Get_Rep_Item (E : Entity_Id; Nam : Name_Id) return Node_Id with
      Pre => Ekind (E) in Protected_Kind |
                          E_Function     |
@@ -821,6 +825,12 @@ package SPARK_Atree.Entities is
    function Known_Alignment (Ent : Entity_Id) return Boolean with
      Pre => Is_Type (Ent) or else Is_Object (Ent);
 
+   function Known_Esize (Ent : Entity_Id) return Boolean with
+     Pre => Is_Type (Ent) or else Is_Object (Ent);
+
+   function Known_RM_Size (Ent : Entity_Id) return Boolean with
+     Pre => Is_Type (Ent) or else Is_Object (Ent);
+
    function Known_To_Precede (Withed, Main : Entity_Id) return Boolean with
      Pre => Is_Compilation_Unit (Withed)
        and then Is_Compilation_Unit (Main);
@@ -828,5 +838,8 @@ package SPARK_Atree.Entities is
    --  defined in SPARK RM 7.7(2).
 
    function Return_Applies_To (E : E_Return_Statement_Id) return Node_Id;
+
+   function RM_Size (Typ : Type_Kind_Id) return Unat with
+     Pre => Known_RM_Size (Typ);
 
 end SPARK_Atree.Entities;

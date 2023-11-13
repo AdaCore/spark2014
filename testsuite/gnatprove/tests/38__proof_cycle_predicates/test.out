@@ -271,7 +271,7 @@ unch_conversion.adb:6:13: info: function contract might not be available on impl
 unch_conversion.adb:6:13: info: implicit aspect Always_Terminates on "F" has been proved, subprogram will terminate
 unch_conversion.adb:6:65: medium: postcondition might fail (e.g. when V = (A => 1))
 unch_conversion.adb:8:37: info: precondition proved (Trivial: 1 VC)
-unch_conversion.adb:10:13: high: types used for unchecked conversion do not have the same size [possible explanation: type T doesn't have a Size representation clause or aspect]
 unch_conversion.adb:10:13: info: implicit function contract might not be available on implicit recursive calls
-unch_conversion.adb:10:51: high: type is unsuitable for unchecked conversion [possible explanation: type T doesn't have a Size representation clause or aspect]
+unch_conversion.adb:10:13: info: types in unchecked conversion have the same size (Trivial)
+unch_conversion.adb:10:51: info: type is suitable as source for unchecked conversion (Trivial)
 unch_conversion.adb:10:54: high: type is unsuitable as a target for unchecked conversion [possible explanation: type R has invariants or predicates]

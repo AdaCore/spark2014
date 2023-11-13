@@ -23,6 +23,7 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
+with Ada.Containers.Indefinite_Hashed_Maps;
 with Ada.Directories;
 with Ada.Text_IO;
 with Call;                       use Call;
@@ -31,10 +32,122 @@ with GNAT.OS_Lib;
 with GNATCOLL.JSON;              use GNATCOLL.JSON;
 with Namet;                      use Namet;
 with Sinput;                     use Sinput;
-with Types;                      use Types;
+with SPARK_Atree;                use SPARK_Atree;
+with SPARK_Atree.Entities;       use SPARK_Atree.Entities;
+with SPARK_Util;                 use SPARK_Util;
 with VC_Kinds;                   use VC_Kinds;
 
 package body Gnat2Why.Data_Decomposition is
+
+   type Data_Decomposition_Entry is record
+      Size        : Uint := No_Uint;
+      Value_Size  : Uint := No_Uint;
+      Object_Size : Uint := No_Uint;
+      Alignment   : Uint := No_Uint;
+   end record;
+
+   package String_To_Data_Decomposition_Maps is new
+     Ada.Containers.Indefinite_Hashed_Maps
+       (Key_Type        => String,
+        Element_Type    => Data_Decomposition_Entry,
+        Hash            => Ada.Strings.Hash,
+        Equivalent_Keys => "=",
+        "="             => "=");
+
+   Data_Decomposition_Table : String_To_Data_Decomposition_Maps.Map;
+
+   -------------------------
+   -- Get_Attribute_Value --
+   -------------------------
+
+   function Get_Attribute_Value
+     (E       : Entity_Id;
+      Attr_Id : Repr_Attribute_Id) return Uint
+   is
+      Data_Entry : Data_Decomposition_Entry;
+   begin
+      --  Return the known value if any
+      case Attr_Id is
+         when Attribute_Alignment =>
+            if Known_Alignment (E) then
+               return Alignment (E);
+            end if;
+
+         when Attribute_Size =>
+            if Is_Type (E) then
+               if Known_RM_Size (E) then
+                  return RM_Size (E);
+               end if;
+            else
+               pragma Assert (Is_Object (E));
+               if Known_Esize (E) then
+                  return Esize (E);
+               end if;
+            end if;
+
+         when Attribute_Value_Size =>
+            pragma Assert (Is_Type (E));
+            if Known_RM_Size (E) then
+               return RM_Size (E);
+            end if;
+
+         when Attribute_Object_Size =>
+            pragma Assert (Is_Type (E));
+            if Known_Esize (E) then
+               return Esize (E);
+            end if;
+      end case;
+
+      --  Otherwise check if data representation contains it
+      declare
+         Loc : constant String :=
+           Location_String (Sloc (E), Mode => Data_Decomposition_Mode);
+      begin
+         if Data_Decomposition_Table.Contains (Loc) then
+            Data_Entry :=
+              Data_Decomposition_Table.Element (Loc);
+         end if;
+      end;
+
+      if Attr_Id = Attribute_Alignment then
+         return Data_Entry.Alignment;
+
+      elsif Is_Type (E) then
+
+         --  If value of Size is present for a type, it means that Esize
+         --  (storing the value of Object_Size) and RM_Size (storing
+         --  the value of Value_Size) for the type are equal. See
+         --  Repinfo.List_Common_Type_Info
+
+         if Present (Data_Entry.Size) then
+            return Data_Entry.Size;
+         else
+            case Size_Attribute_Id'(Attr_Id) is
+               when Attribute_Size
+                  | Attribute_Value_Size
+               =>
+                  return Data_Entry.Value_Size;
+
+               when Attribute_Object_Size =>
+                  return Data_Entry.Object_Size;
+            end case;
+         end if;
+
+      --  Only attribute Size applies to an object. It is either the specified
+      --  value of Size for the object, or the same as Typ'Object_Size for the
+      --  type of the object.
+
+      else
+         pragma Assert (Is_Object (E));
+         pragma Assert (Attr_Id = Attribute_Size);
+
+         if Present (Data_Entry.Size) then
+            return Data_Entry.Size;
+         else
+            return Get_Attribute_Value (Etype (E), Attribute_Object_Size);
+         end if;
+      end if;
+   end Get_Attribute_Value;
 
    ---------------------------------------
    -- Read_Data_Decomposition_JSON_File --
@@ -46,7 +159,7 @@ package body Gnat2Why.Data_Decomposition is
       --  Insert an entry in the map Data_Decomposition_Table
 
       function Handle_Field
-        (JSON_Entry : JSON_Value; Field : String) return Optional_Int;
+        (JSON_Entry : JSON_Value; Field : String) return Uint;
       --  Return the optional data decomposition entry corresponding to Field
       --  in JSON_Entry, when possible.
 
@@ -80,8 +193,9 @@ package body Gnat2Why.Data_Decomposition is
       ------------------
 
       function Handle_Field
-        (JSON_Entry : JSON_Value; Field : String) return Optional_Int
+        (JSON_Entry : JSON_Value; Field : String) return Uint
       is
+         function To_UI is new UI_From_Integral (Long_Long_Integer);
       begin
          --  We must check whether each value is of integer type, as the value
          --  "??" is used in -gnatR2 mode to indicate that the numerical value
@@ -92,9 +206,9 @@ package body Gnat2Why.Data_Decomposition is
          if Has_Field (JSON_Entry, Field)
            and then Kind (Get (JSON_Entry, Field)) = JSON_Int_Type
          then
-            return (Present => True, Value => Get (Get (JSON_Entry, Field)));
+            return To_UI (Get (Get (JSON_Entry, Field)));
          else
-            return (Present => False);
+            return No_Uint;
          end if;
       end Handle_Field;
 
