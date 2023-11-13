@@ -814,9 +814,9 @@ only part of a program:
     subprogram and the associated postconditions should hold whenever an
     exception is propagated
 
-  * :ref:`Subprogram Termination` (only explicit except for functions which
-    should always return in SPARK) - subprograms annotated with
-    ``Always_Terminates`` should terminate (return normally or raise an
+  * :ref:`Subprogram Termination` (only explicit except for functions without
+    side-effects which should always return in SPARK) - subprograms annotated
+    with ``Always_Terminates`` should terminate (return normally or raise an
     exception) whenever the associated boolean condition evaluates to True on
     entry of the subprogram, assuming that primary stack, secondary stack, and
     heap memory allocations never fail. Other subprograms are not restricted
@@ -864,8 +864,8 @@ only part of a program:
 * [ADA_OBJECT_ADDRESSES]
   When the body of a function is not analyzed by GNATprove, its result should
   not depend on the address of parts of its parameters or global inputs unless
-  it is annotated with ``Volatile_Function``.
-  When the body of a procedure is not analyzed by GNATprove, none of its
+  it is annotated with ``Volatile_Function``. When the body of a procedure,
+  entry or function with side-effects is not analyzed by GNATprove, none of its
   outputs should depend on the address of parts of its parameters or global
   inputs unless the output is volatile for reading, or its value depends on an
   input which is volatile for reading as stated in a Depends contract.
@@ -920,13 +920,13 @@ being available:
   review is required.
 
 * [PARTIAL_TERMINATION]
-  Procedures and entries which are called across the boundary of those units
-  analyzed together should be annotated to specify under which condition they
-  shall terminate using the ``Always_Terminates`` aspect. Otherwise, these
-  subprograms will be assumed to never terminate (if they are annotated with
-  ``No_Return``) or always terminate (otherwise). The warning
-  `assumed Always_Terminates` is guaranteed to be issued in cases where review
-  is required.
+  Procedures, entries and functions with side-effects which are called across
+  the boundary of those units analyzed together should be annotated to specify
+  under which condition they shall terminate using the ``Always_Terminates``
+  aspect. Otherwise, these subprograms will be assumed to never terminate (if
+  they are annotated with ``No_Return``) or always terminate (otherwise). The
+  warning `assumed Always_Terminates` is guaranteed to be issued in cases where
+  review is required.
 
 * [PARTIAL_TASKING]
   If no single run of GNATprove analyzes all units that define tasks, then for
