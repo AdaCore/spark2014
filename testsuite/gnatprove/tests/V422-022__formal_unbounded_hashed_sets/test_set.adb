@@ -2,7 +2,7 @@ package body Test_Set with SPARK_Mode is
 
    procedure Test_Set_Pos with Pre => True, SPARK_Mode is
       use Test_Set.M;
-      L, K : Set (Default_Modulus (10));
+      L, K : Set;
       C    : Cursor;
       B    : Boolean;
    begin
@@ -86,7 +86,7 @@ package body Test_Set with SPARK_Mode is
    procedure Test_Set_Rec with Pre => True, SPARK_Mode is
       use Test_Set.N;
       use Test_Set.G;
-      L, K : Set (Default_Modulus (10));
+      L, K : Set;
       C    : Cursor;
       B    : Boolean;
    begin
@@ -140,7 +140,7 @@ package body Test_Set with SPARK_Mode is
 
    procedure Test_Set_Rec_2 with Pre => True, SPARK_Mode is
       use Test_Set.N;
-      L, K : Set (Default_Modulus (10));
+      L, K : Set;
       C    : Cursor;
       B    : Boolean;
    begin
@@ -183,13 +183,14 @@ package body Test_Set with SPARK_Mode is
       Test_Set_Pos;
       Test_Set_Rec;
       Test_Set_Rec_2;
+      Test_Resize;
    end Run_Test;
 
    procedure Large_Test
    is
       use Test_Set.M;
       use Formal_Model;
-      L, K : Set (Default_Modulus (10));
+      L, K : Set;
       C, D : Cursor;
       B    : Boolean;
    begin
@@ -228,7 +229,7 @@ package body Test_Set with SPARK_Mode is
       pragma Assert (Length (K) = 2);
 
       declare
-         S : Set (Default_Modulus (10));
+         S : Set;
       begin
          Difference (K, S);
 
@@ -239,7 +240,7 @@ package body Test_Set with SPARK_Mode is
 
       --  Empty_Set
 
-      K := (if true then Empty_Set (Modulus => K.Modulus) else K);
+      K := (if true then Empty_Set else K);
 
       pragma Assert_And_Cut (Is_Empty (K));
 
@@ -364,8 +365,6 @@ package body Test_Set with SPARK_Mode is
 
       --  To_Set
 
-      --  To_Set use by default 1 as modulus. Assign allow to use anther one
-
       Assign (L, To_Set (4));
 
       --  Union
@@ -377,7 +376,7 @@ package body Test_Set with SPARK_Mode is
       pragma Assert (Contains (L, 4));
 
       declare
-         S : Set (Default_Modulus (10));
+         S : Set;
       begin
          Union (L, S);
          pragma Assert (Contains (L, 4));
@@ -392,4 +391,14 @@ package body Test_Set with SPARK_Mode is
 
       pragma Check (Proof_Only, False);
    end Large_Test;
+
+   procedure Test_Resize is
+      use Test_Set.M;
+      X : Set;
+   begin
+      for I in 1 .. 1000 loop
+         Include (X, 1111 * I);
+         pragma Loop_Invariant (Length (X) <= Count_Type (I));
+      end loop;
+   end Test_Resize;
 end Test_Set;

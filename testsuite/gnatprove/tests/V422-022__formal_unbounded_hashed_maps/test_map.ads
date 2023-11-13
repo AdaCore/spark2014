@@ -32,4 +32,6 @@ package Test_Map with SPARK_Mode is
 
    procedure Large_Test;
 
+   procedure Test_Resize;
+
 end Test_Map;
