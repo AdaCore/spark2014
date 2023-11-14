@@ -176,23 +176,27 @@ consider the following program:
 
 .. code-block:: ada
 
+  type Nat_Array is array (Positive range <>) of Natural;
+
   pragma Assume (A (A'First) = 0 and then A (A'Last) > 0);
 
   pragma Assert
     (for some I in A'Range =>
        I < A'Last and then A (I) = 0 and then A (I + 1) > 0);
 
-Here we assume that the first element of an array ``A`` is 0, whereas is last
-element is positive. In such a case, we are sure that there is an index ``I`` in
-the array such ``A (I)`` is 0 but not ``A (I + 1)``. Indeed, we know that ``A``
-starts with a non-empty sequence of zeros. The last element of this sequence has
-the expected property. However, automatic solvers are unable to prove such a
-property automatically because they cannot guess which index they should
-consider.
+Here we assume that the first element of an array ``A`` of type ``Nat_Array``
+is 0, whereas is last element is positive. In such a case, we are sure that
+there is an index ``I`` in the array such ``A (I)`` is 0 but not ``A (I + 1)``.
+Indeed, we know that ``A`` starts with a non-empty sequence of zeros. The last
+element of this sequence has the expected property. However, automatic solvers
+are unable to prove such a property automatically because they cannot guess
+which index they should consider.
 To help them, we can define a ghost function returning a value for which the
 property holds, and call it from an assertion:
 
 .. code-block:: ada
+
+  type Nat_Array is array (Positive range <>) of Natural;
 
   function Find_Pos (A : Nat_Array) return Positive with Ghost,
     Pre  => A (A'First) = 0 and then A (A'Last) > 0,
