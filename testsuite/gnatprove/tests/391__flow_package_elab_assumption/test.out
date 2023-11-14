@@ -1,7 +1,7 @@
+main.adb:2:14: info: aspect Always_Terminates on "P1" has been proved, subprogram will terminate
 main.adb:2:14: warning: subprogram "P1" has no effect
 main.adb:3:14: warning: subprogram "P2" has no effect
 main.adb:7:16: info: implicit aspect Always_Terminates on "F" has been proved, subprogram will terminate, in instantiation at main.adb:19
 main.adb:13:07: medium: implicit aspect Always_Terminates on "My_Foo" could be incorrect, loop might be nonterminating, in instantiation at main.adb:19 [possible fix: add loop variant in the loop body]
 main.adb:18:26: info: no contextual analysis of "P2" (body not seen yet)
-main.adb:18:26: medium: aspect Always_Terminates on "P1" could be incorrect, call to "P2" might be nonterminating [possible fix: annotate "P2" with aspect Always_Terminates]
 main.adb:19:20: info: no contextual analysis of "P2" (nested package instantiation)
