@@ -151,12 +151,9 @@ test_set.adb:221:22: info: assertion proved
 test_set.adb:222:22: info: assertion proved
 test_set.adb:223:22: info: assertion proved
 test_set.adb:224:22: info: assertion proved
-test_set.adb:227:19: info: range check proved
-test_set.adb:227:22: info: range check proved
-test_set.adb:227:28: medium: discriminant check might fail
-test_set.adb:229:15: info: discriminant check proved
+test_set.adb:229:12: info: discriminant check proved
 test_set.adb:232:25: info: assertion proved
-test_set.adb:234:15: medium: discriminant check might fail
+test_set.adb:234:12: medium: discriminant check might fail
 test_set.adb:241:30: info: assertion proved
 test_set.adb:243:07: info: precondition proved
 test_set.adb:244:22: info: assertion proved

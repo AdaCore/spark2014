@@ -224,7 +224,7 @@ package body Test_Set with SPARK_Mode is
       pragma Assert (Length (K) = 2);
 
       declare
-         S : Set (0, 0) := Empty_Set;
+         S : Set := Empty_Set;
       begin
          S := Empty_Set;
          Difference (K, S);

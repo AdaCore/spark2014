@@ -15,33 +15,33 @@ spark-containers-functional-maps.ads:97:06: info: Container_Aggregates annotatio
 spark-containers-functional-maps.ads:97:06: info: after a call to Aggr_Include at spark-containers-functional-maps.ads:570, in instantiation at spark-containers-functional-multisets.ads:531, in instantiation at my_multiset.ads:6
 spark-containers-functional-maps.ads:97:06: info: after a call to Aggr_Include at spark-containers-functional-maps.ads:570, in instantiation at spark-containers-functional-multisets.ads:531, in instantiation at my_multiset.ads:6
 spark-containers-functional-maps.ads:97:06: info: after a call to Aggr_Include at spark-containers-functional-maps.ads:570, in instantiation at spark-containers-functional-multisets.ads:531, in instantiation at my_multiset.ads:6
-spark-containers-functional-maps.ads:97:06: info: after a call to Empty_Map at spark-containers-functional-maps.ads:276, in instantiation at spark-containers-functional-multisets.ads:531, in instantiation at my_multiset.ads:6
-spark-containers-functional-maps.ads:97:06: info: after a call to Empty_Map at spark-containers-functional-maps.ads:276, in instantiation at spark-containers-functional-multisets.ads:531, in instantiation at my_multiset.ads:6
+spark-containers-functional-maps.ads:97:06: info: after a call to Empty_Map at spark-containers-functional-maps.ads:277, in instantiation at spark-containers-functional-multisets.ads:531, in instantiation at my_multiset.ads:6
+spark-containers-functional-maps.ads:97:06: info: after a call to Empty_Map at spark-containers-functional-maps.ads:277, in instantiation at spark-containers-functional-multisets.ads:531, in instantiation at my_multiset.ads:6
 spark-containers-functional-maps.ads:97:06: info: when establishing invariant on Has_Key at spark-containers-functional-maps.ads:120, in instantiation at spark-containers-functional-multisets.ads:531, in instantiation at my_multiset.ads:6
-spark-containers-functional-maps.ads:97:06: info: when establishing invariant on Length at spark-containers-functional-maps.ads:166, in instantiation at spark-containers-functional-multisets.ads:531, in instantiation at my_multiset.ads:6
-spark-containers-functional-maps.ads:97:06: info: when reestablishing invariant on Get at spark-containers-functional-maps.ads:137, in instantiation at spark-containers-functional-multisets.ads:531, in instantiation at my_multiset.ads:6
+spark-containers-functional-maps.ads:97:06: info: when establishing invariant on Length at spark-containers-functional-maps.ads:167, in instantiation at spark-containers-functional-multisets.ads:531, in instantiation at my_multiset.ads:6
+spark-containers-functional-maps.ads:97:06: info: when reestablishing invariant on Get at spark-containers-functional-maps.ads:138, in instantiation at spark-containers-functional-multisets.ads:531, in instantiation at my_multiset.ads:6
 spark-containers-functional-maps.ads:97:06: info: when reestablishing invariant on Has_Key at spark-containers-functional-maps.ads:120, in instantiation at spark-containers-functional-multisets.ads:531, in instantiation at my_multiset.ads:6
-spark-containers-functional-maps.ads:97:06: info: when reestablishing invariant on Length at spark-containers-functional-maps.ads:166, in instantiation at spark-containers-functional-multisets.ads:531, in instantiation at my_multiset.ads:6
+spark-containers-functional-maps.ads:97:06: info: when reestablishing invariant on Length at spark-containers-functional-maps.ads:167, in instantiation at spark-containers-functional-multisets.ads:531, in instantiation at my_multiset.ads:6
 spark-containers-functional-maps.ads:120:13: info: during checks for quantification at spark-containers-functional-maps.ads:89, in instantiation at spark-containers-functional-multisets.ads:531, in instantiation at my_multiset.ads:6
 spark-containers-functional-maps.ads:120:13: info: precondition proved, in instantiation at spark-containers-functional-multisets.ads:531, in instantiation at my_multiset.ads:6
-spark-containers-functional-maps.ads:382:13: info: during checks for quantification at spark-containers-functional-maps.ads:348, in instantiation at spark-containers-functional-multisets.ads:531, in instantiation at my_multiset.ads:6
-spark-containers-functional-maps.ads:382:13: info: precondition proved, in instantiation at spark-containers-functional-multisets.ads:531, in instantiation at my_multiset.ads:6
-spark-containers-functional-maps.ads:391:13: info: during checks for quantification at spark-containers-functional-maps.ads:348, in instantiation at spark-containers-functional-multisets.ads:531, in instantiation at my_multiset.ads:6
-spark-containers-functional-maps.ads:391:13: info: precondition proved, in instantiation at spark-containers-functional-multisets.ads:531, in instantiation at my_multiset.ads:6
-spark-containers-functional-maps.ads:397:13: info: during checks for quantification at spark-containers-functional-maps.ads:348, in instantiation at spark-containers-functional-multisets.ads:531, in instantiation at my_multiset.ads:6
-spark-containers-functional-maps.ads:397:13: info: precondition proved, in instantiation at spark-containers-functional-multisets.ads:531, in instantiation at my_multiset.ads:6
-spark-containers-functional-maps.ads:405:13: info: during checks for quantification at spark-containers-functional-maps.ads:348, in instantiation at spark-containers-functional-multisets.ads:531, in instantiation at my_multiset.ads:6
-spark-containers-functional-maps.ads:405:13: info: precondition proved, in instantiation at spark-containers-functional-multisets.ads:531, in instantiation at my_multiset.ads:6
-spark-containers-functional-maps.ads:489:13: info: implicit aspect Always_Terminates on "Copy_Key" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-multisets.ads:531, in instantiation at my_multiset.ads:6
-spark-containers-functional-maps.ads:490:13: info: implicit aspect Always_Terminates on "Copy_Element" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-multisets.ads:531, in instantiation at my_multiset.ads:6
-spark-containers-functional-maps.ads:539:13: info: during checks for quantification at spark-containers-functional-maps.ads:89, in instantiation at spark-containers-functional-multisets.ads:531, in instantiation at my_multiset.ads:6
-spark-containers-functional-maps.ads:539:13: info: precondition proved, in instantiation at spark-containers-functional-multisets.ads:531, in instantiation at my_multiset.ads:6
-spark-containers-functional-maps.ads:542:13: info: during checks for quantification at spark-containers-functional-maps.ads:89, in instantiation at spark-containers-functional-multisets.ads:531, in instantiation at my_multiset.ads:6
-spark-containers-functional-maps.ads:542:13: info: precondition proved, in instantiation at spark-containers-functional-multisets.ads:531, in instantiation at my_multiset.ads:6
-spark-containers-functional-maps.ads:548:13: info: during checks for quantification at spark-containers-functional-maps.ads:89, in instantiation at spark-containers-functional-multisets.ads:531, in instantiation at my_multiset.ads:6
-spark-containers-functional-maps.ads:548:13: info: precondition proved, in instantiation at spark-containers-functional-multisets.ads:531, in instantiation at my_multiset.ads:6
-spark-containers-functional-maps.ads:553:13: info: during checks for quantification at spark-containers-functional-maps.ads:89, in instantiation at spark-containers-functional-multisets.ads:531, in instantiation at my_multiset.ads:6
-spark-containers-functional-maps.ads:553:13: info: precondition proved, in instantiation at spark-containers-functional-multisets.ads:531, in instantiation at my_multiset.ads:6
+spark-containers-functional-maps.ads:383:13: info: during checks for quantification at spark-containers-functional-maps.ads:349, in instantiation at spark-containers-functional-multisets.ads:531, in instantiation at my_multiset.ads:6
+spark-containers-functional-maps.ads:383:13: info: precondition proved, in instantiation at spark-containers-functional-multisets.ads:531, in instantiation at my_multiset.ads:6
+spark-containers-functional-maps.ads:392:13: info: during checks for quantification at spark-containers-functional-maps.ads:349, in instantiation at spark-containers-functional-multisets.ads:531, in instantiation at my_multiset.ads:6
+spark-containers-functional-maps.ads:392:13: info: precondition proved, in instantiation at spark-containers-functional-multisets.ads:531, in instantiation at my_multiset.ads:6
+spark-containers-functional-maps.ads:398:13: info: during checks for quantification at spark-containers-functional-maps.ads:349, in instantiation at spark-containers-functional-multisets.ads:531, in instantiation at my_multiset.ads:6
+spark-containers-functional-maps.ads:398:13: info: precondition proved, in instantiation at spark-containers-functional-multisets.ads:531, in instantiation at my_multiset.ads:6
+spark-containers-functional-maps.ads:406:13: info: during checks for quantification at spark-containers-functional-maps.ads:349, in instantiation at spark-containers-functional-multisets.ads:531, in instantiation at my_multiset.ads:6
+spark-containers-functional-maps.ads:406:13: info: precondition proved, in instantiation at spark-containers-functional-multisets.ads:531, in instantiation at my_multiset.ads:6
+spark-containers-functional-maps.ads:490:13: info: implicit aspect Always_Terminates on "Copy_Key" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-multisets.ads:531, in instantiation at my_multiset.ads:6
+spark-containers-functional-maps.ads:491:13: info: implicit aspect Always_Terminates on "Copy_Element" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-multisets.ads:531, in instantiation at my_multiset.ads:6
+spark-containers-functional-maps.ads:540:13: info: during checks for quantification at spark-containers-functional-maps.ads:89, in instantiation at spark-containers-functional-multisets.ads:531, in instantiation at my_multiset.ads:6
+spark-containers-functional-maps.ads:540:13: info: precondition proved, in instantiation at spark-containers-functional-multisets.ads:531, in instantiation at my_multiset.ads:6
+spark-containers-functional-maps.ads:543:13: info: during checks for quantification at spark-containers-functional-maps.ads:89, in instantiation at spark-containers-functional-multisets.ads:531, in instantiation at my_multiset.ads:6
+spark-containers-functional-maps.ads:543:13: info: precondition proved, in instantiation at spark-containers-functional-multisets.ads:531, in instantiation at my_multiset.ads:6
+spark-containers-functional-maps.ads:549:13: info: during checks for quantification at spark-containers-functional-maps.ads:89, in instantiation at spark-containers-functional-multisets.ads:531, in instantiation at my_multiset.ads:6
+spark-containers-functional-maps.ads:549:13: info: precondition proved, in instantiation at spark-containers-functional-multisets.ads:531, in instantiation at my_multiset.ads:6
+spark-containers-functional-maps.ads:554:13: info: during checks for quantification at spark-containers-functional-maps.ads:89, in instantiation at spark-containers-functional-multisets.ads:531, in instantiation at my_multiset.ads:6
+spark-containers-functional-maps.ads:554:13: info: precondition proved, in instantiation at spark-containers-functional-multisets.ads:531, in instantiation at my_multiset.ads:6
 spark-containers-functional-maps.ads:563:13: info: implicit aspect Always_Terminates on "Aggr_Eq_Keys" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-multisets.ads:531, in instantiation at my_multiset.ads:6
 spark-containers-functional-maps.ads:566:06: info: data dependencies proved, in instantiation at spark-containers-functional-multisets.ads:531, in instantiation at my_multiset.ads:6
 spark-containers-functional-maps.ads:576:16: info: during checks for container aggregates at spark-containers-functional-maps.ads:97, in instantiation at spark-containers-functional-multisets.ads:531, in instantiation at my_multiset.ads:6
@@ -903,7 +903,7 @@ spark-containers-functional-multisets.ads:47:35: info: invariant check proved, i
 spark-containers-functional-multisets.ads:54:06: info: Container_Aggregates annotation proved, in instantiation at my_multiset.ads:6
 spark-containers-functional-multisets.ads:54:06: info: Container_Aggregates annotation proved, in instantiation at my_multiset.ads:6
 spark-containers-functional-multisets.ads:54:06: info: after a call to Aggr_Include at spark-containers-functional-multisets.ads:506, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.ads:54:06: info: after a call to Empty_Multiset at spark-containers-functional-multisets.ads:186, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.ads:54:06: info: after a call to Empty_Multiset at spark-containers-functional-multisets.ads:187, in instantiation at my_multiset.ads:6
 spark-containers-functional-multisets.ads:54:06: info: when establishing invariant on Nb_Occurence at spark-containers-functional-multisets.ads:72, in instantiation at my_multiset.ads:6
 spark-containers-functional-multisets.ads:54:06: info: when reestablishing invariant on Nb_Occurence at spark-containers-functional-multisets.ads:72, in instantiation at my_multiset.ads:6
 spark-containers-functional-multisets.ads:72:13: info: implicit aspect Always_Terminates on "Nb_Occurence" has been proved, subprogram will terminate, in instantiation at my_multiset.ads:6
@@ -924,291 +924,291 @@ spark-containers-functional-multisets.ads:99:37: info: invariant check proved, i
 spark-containers-functional-multisets.ads:99:37: info: predicate check proved, in instantiation at my_multiset.ads:6
 spark-containers-functional-multisets.ads:99:73: info: predicate check proved, in instantiation at my_multiset.ads:6
 spark-containers-functional-multisets.ads:100:06: info: Inline_For_Proof or Logical_Equal annotation proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.ads:102:13: info: implicit aspect Always_Terminates on "Choose" has been proved, subprogram will terminate, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.ads:105:06: info: data dependencies proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.ads:106:20: info: invariant check proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.ads:107:16: info: invariant check proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.ads:107:16: info: postcondition proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.ads:109:13: info: implicit aspect Always_Terminates on "Cardinality" has been proved, subprogram will terminate, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.ads:113:06: info: data dependencies proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.ads:115:09: info: invariant check proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.ads:115:09: info: postcondition proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.ads:116:11: info: invariant check proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.ads:116:11: info: predicate check proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.ads:116:59: info: predicate check proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.ads:122:13: info: implicit aspect Always_Terminates on overriding operator "<=" has been proved, subprogram will terminate, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.ads:125:04: info: data dependencies proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.ads:127:08: info: postcondition proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.ads:128:11: info: invariant check proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.ads:129:13: info: invariant check proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.ads:129:13: info: predicate check proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.ads:129:42: info: invariant check proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.ads:129:42: info: predicate check proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.ads:131:25: info: invariant check proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.ads:131:25: info: predicate check proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.ads:131:47: info: invariant check proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.ads:131:47: info: predicate check proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.ads:133:13: info: implicit aspect Always_Terminates on overriding operator "=" has been proved, subprogram will terminate, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.ads:137:06: info: data dependencies proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.ads:139:08: info: postcondition proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.ads:140:12: info: invariant check proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.ads:141:15: info: invariant check proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.ads:141:15: info: predicate check proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.ads:141:46: info: invariant check proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.ads:141:46: info: predicate check proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.ads:143:14: info: invariant check proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.ads:144:17: info: invariant check proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.ads:144:17: info: predicate check proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.ads:144:48: info: invariant check proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.ads:144:48: info: predicate check proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.ads:146:24: info: invariant check proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.ads:146:24: info: predicate check proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.ads:146:45: info: invariant check proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.ads:146:45: info: predicate check proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.ads:149:13: info: implicit aspect Always_Terminates on "Is_Empty" has been proved, subprogram will terminate, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.ads:153:06: info: data dependencies proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.ads:155:08: info: postcondition proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.ads:156:12: info: invariant check proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.ads:157:38: info: invariant check proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.ads:157:38: info: predicate check proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.ads:157:64: info: predicate check proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.ads:160:13: info: implicit aspect Always_Terminates on "Equal_Except" has been proved, subprogram will terminate, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.ads:168:04: info: data dependencies proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.ads:170:06: info: postcondition proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.ads:171:10: info: invariant check proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.ads:173:17: info: invariant check proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.ads:173:17: info: predicate check proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.ads:173:42: info: invariant check proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.ads:173:42: info: predicate check proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.ads:175:14: info: invariant check proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.ads:177:22: info: invariant check proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.ads:177:22: info: predicate check proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.ads:177:47: info: invariant check proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.ads:177:47: info: predicate check proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.ads:186:13: info: implicit aspect Always_Terminates on "Empty_Multiset" has been proved, subprogram will terminate, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.ads:186:13: info: invariant check proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.ads:189:06: info: data dependencies proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.ads:190:16: info: invariant check proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.ads:190:16: info: postcondition proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.ads:192:13: info: implicit aspect Always_Terminates on "Add" has been proved, subprogram will terminate, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.ads:192:13: info: invariant check proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.ads:198:06: info: data dependencies proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.ads:200:08: info: invariant check proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.ads:200:08: info: postcondition proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.ads:201:19: info: invariant check proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.ads:201:19: info: predicate check proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.ads:201:46: info: invariant check proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.ads:201:46: info: predicate check proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.ads:201:72: info: predicate check proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.ads:103:13: info: implicit aspect Always_Terminates on "Choose" has been proved, subprogram will terminate, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.ads:106:06: info: data dependencies proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.ads:107:20: info: invariant check proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.ads:108:16: info: invariant check proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.ads:108:16: info: postcondition proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.ads:110:13: info: implicit aspect Always_Terminates on "Cardinality" has been proved, subprogram will terminate, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.ads:114:06: info: data dependencies proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.ads:116:09: info: invariant check proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.ads:116:09: info: postcondition proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.ads:117:11: info: invariant check proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.ads:117:11: info: predicate check proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.ads:117:59: info: predicate check proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.ads:123:13: info: implicit aspect Always_Terminates on overriding operator "<=" has been proved, subprogram will terminate, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.ads:126:04: info: data dependencies proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.ads:128:08: info: postcondition proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.ads:129:11: info: invariant check proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.ads:130:13: info: invariant check proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.ads:130:13: info: predicate check proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.ads:130:42: info: invariant check proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.ads:130:42: info: predicate check proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.ads:132:25: info: invariant check proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.ads:132:25: info: predicate check proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.ads:132:47: info: invariant check proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.ads:132:47: info: predicate check proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.ads:134:13: info: implicit aspect Always_Terminates on overriding operator "=" has been proved, subprogram will terminate, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.ads:138:06: info: data dependencies proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.ads:140:08: info: postcondition proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.ads:141:12: info: invariant check proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.ads:142:15: info: invariant check proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.ads:142:15: info: predicate check proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.ads:142:46: info: invariant check proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.ads:142:46: info: predicate check proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.ads:144:14: info: invariant check proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.ads:145:17: info: invariant check proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.ads:145:17: info: predicate check proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.ads:145:48: info: invariant check proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.ads:145:48: info: predicate check proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.ads:147:24: info: invariant check proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.ads:147:24: info: predicate check proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.ads:147:45: info: invariant check proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.ads:147:45: info: predicate check proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.ads:150:13: info: implicit aspect Always_Terminates on "Is_Empty" has been proved, subprogram will terminate, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.ads:154:06: info: data dependencies proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.ads:156:08: info: postcondition proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.ads:157:12: info: invariant check proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.ads:158:38: info: invariant check proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.ads:158:38: info: predicate check proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.ads:158:64: info: predicate check proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.ads:161:13: info: implicit aspect Always_Terminates on "Equal_Except" has been proved, subprogram will terminate, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.ads:169:04: info: data dependencies proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.ads:171:06: info: postcondition proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.ads:172:10: info: invariant check proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.ads:174:17: info: invariant check proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.ads:174:17: info: predicate check proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.ads:174:42: info: invariant check proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.ads:174:42: info: predicate check proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.ads:176:14: info: invariant check proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.ads:178:22: info: invariant check proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.ads:178:22: info: predicate check proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.ads:178:47: info: invariant check proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.ads:178:47: info: predicate check proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.ads:187:13: info: implicit aspect Always_Terminates on "Empty_Multiset" has been proved, subprogram will terminate, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.ads:187:13: info: invariant check proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.ads:190:06: info: data dependencies proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.ads:191:16: info: invariant check proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.ads:191:16: info: postcondition proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.ads:193:13: info: implicit aspect Always_Terminates on "Add" has been proved, subprogram will terminate, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.ads:193:13: info: invariant check proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.ads:199:06: info: data dependencies proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.ads:201:08: info: invariant check proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.ads:201:08: info: postcondition proved, in instantiation at my_multiset.ads:6
 spark-containers-functional-multisets.ads:202:19: info: invariant check proved, in instantiation at my_multiset.ads:6
 spark-containers-functional-multisets.ads:202:19: info: predicate check proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.ads:203:21: info: invariant check proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.ads:203:21: info: predicate check proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.ads:203:57: info: predicate check proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.ads:204:19: info: invariant check proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.ads:206:13: info: implicit aspect Always_Terminates on "Add" has been proved, subprogram will terminate, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.ads:206:13: info: invariant check proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.ads:213:06: info: data dependencies proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.ads:215:08: info: invariant check proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.ads:215:08: info: postcondition proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.ads:216:19: info: invariant check proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.ads:216:19: info: predicate check proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.ads:216:46: info: invariant check proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.ads:216:46: info: predicate check proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.ads:216:72: info: predicate check proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.ads:202:46: info: invariant check proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.ads:202:46: info: predicate check proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.ads:202:72: info: predicate check proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.ads:203:19: info: invariant check proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.ads:203:19: info: predicate check proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.ads:204:21: info: invariant check proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.ads:204:21: info: predicate check proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.ads:204:57: info: predicate check proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.ads:205:19: info: invariant check proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.ads:207:13: info: implicit aspect Always_Terminates on "Add" has been proved, subprogram will terminate, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.ads:207:13: info: invariant check proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.ads:214:06: info: data dependencies proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.ads:216:08: info: invariant check proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.ads:216:08: info: postcondition proved, in instantiation at my_multiset.ads:6
 spark-containers-functional-multisets.ads:217:19: info: invariant check proved, in instantiation at my_multiset.ads:6
 spark-containers-functional-multisets.ads:217:19: info: predicate check proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.ads:218:12: info: invariant check proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.ads:218:12: info: predicate check proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.ads:218:48: info: predicate check proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.ads:219:19: info: invariant check proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.ads:221:13: info: implicit aspect Always_Terminates on "Remove_All" has been proved, subprogram will terminate, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.ads:221:13: info: invariant check proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.ads:226:06: info: data dependencies proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.ads:227:16: info: invariant check proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.ads:228:16: info: postcondition proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.ads:228:20: info: invariant check proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.ads:229:27: info: invariant check proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.ads:229:27: info: predicate check proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.ads:230:29: info: invariant check proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.ads:230:29: info: predicate check proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.ads:231:31: info: invariant check proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.ads:231:31: info: predicate check proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.ads:232:27: info: invariant check proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.ads:234:13: info: implicit aspect Always_Terminates on "Remove" has been proved, subprogram will terminate, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.ads:234:13: info: invariant check proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.ads:241:06: info: data dependencies proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.ads:242:16: info: predicate check proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.ads:242:25: info: invariant check proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.ads:242:25: info: predicate check proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.ads:244:08: info: invariant check proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.ads:244:08: info: postcondition proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.ads:244:08: info: predicate check proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.ads:245:10: info: invariant check proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.ads:245:10: info: predicate check proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.ads:245:46: info: predicate check proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.ads:246:19: info: invariant check proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.ads:246:19: info: predicate check proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.ads:247:21: info: invariant check proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.ads:247:21: info: predicate check proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.ads:247:47: info: predicate check proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.ads:248:19: info: invariant check proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.ads:250:13: info: implicit aspect Always_Terminates on "Sum" has been proved, subprogram will terminate, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.ads:250:13: info: invariant check proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.ads:255:06: info: data dependencies proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.ads:257:08: info: invariant check proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.ads:257:08: info: postcondition proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.ads:257:08: info: predicate check proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.ads:257:35: info: invariant check proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.ads:257:35: info: predicate check proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.ads:257:56: info: invariant check proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.ads:257:56: info: predicate check proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.ads:258:19: info: invariant check proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.ads:259:20: info: invariant check proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.ads:260:15: info: invariant check proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.ads:261:17: info: invariant check proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.ads:261:17: info: predicate check proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.ads:262:19: info: invariant check proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.ads:262:19: info: predicate check proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.ads:263:23: info: invariant check proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.ads:263:23: info: predicate check proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.ads:269:13: info: implicit aspect Always_Terminates on "Difference" has been proved, subprogram will terminate, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.ads:269:13: info: invariant check proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.ads:276:06: info: data dependencies proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.ads:278:09: info: invariant check proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.ads:278:09: info: postcondition proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.ads:279:15: info: invariant check proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.ads:279:15: info: predicate check proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.ads:279:40: info: invariant check proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.ads:279:40: info: predicate check proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.ads:280:17: info: invariant check proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.ads:282:11: info: invariant check proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.ads:283:13: info: invariant check proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.ads:283:13: info: predicate check proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.ads:284:18: info: predicate check proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.ads:284:21: info: invariant check proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.ads:284:21: info: predicate check proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.ads:284:46: info: invariant check proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.ads:284:46: info: predicate check proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.ads:290:13: info: implicit aspect Always_Terminates on "Intersection" has been proved, subprogram will terminate, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.ads:290:13: info: invariant check proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.ads:295:04: info: data dependencies proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.ads:297:09: info: invariant check proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.ads:297:09: info: postcondition proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.ads:298:14: info: invariant check proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.ads:299:16: info: invariant check proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.ads:301:12: info: invariant check proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.ads:302:14: info: invariant check proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.ads:302:14: info: predicate check proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.ads:303:19: info: invariant check proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.ads:303:19: info: predicate check proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.ads:217:46: info: invariant check proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.ads:217:46: info: predicate check proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.ads:217:72: info: predicate check proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.ads:218:19: info: invariant check proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.ads:218:19: info: predicate check proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.ads:219:12: info: invariant check proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.ads:219:12: info: predicate check proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.ads:219:48: info: predicate check proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.ads:220:19: info: invariant check proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.ads:222:13: info: implicit aspect Always_Terminates on "Remove_All" has been proved, subprogram will terminate, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.ads:222:13: info: invariant check proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.ads:227:06: info: data dependencies proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.ads:228:16: info: invariant check proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.ads:229:16: info: postcondition proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.ads:229:20: info: invariant check proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.ads:230:27: info: invariant check proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.ads:230:27: info: predicate check proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.ads:231:29: info: invariant check proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.ads:231:29: info: predicate check proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.ads:232:31: info: invariant check proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.ads:232:31: info: predicate check proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.ads:233:27: info: invariant check proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.ads:235:13: info: implicit aspect Always_Terminates on "Remove" has been proved, subprogram will terminate, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.ads:235:13: info: invariant check proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.ads:242:06: info: data dependencies proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.ads:243:16: info: predicate check proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.ads:243:25: info: invariant check proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.ads:243:25: info: predicate check proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.ads:245:08: info: invariant check proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.ads:245:08: info: postcondition proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.ads:245:08: info: predicate check proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.ads:246:10: info: invariant check proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.ads:246:10: info: predicate check proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.ads:246:46: info: predicate check proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.ads:247:19: info: invariant check proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.ads:247:19: info: predicate check proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.ads:248:21: info: invariant check proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.ads:248:21: info: predicate check proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.ads:248:47: info: predicate check proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.ads:249:19: info: invariant check proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.ads:251:13: info: implicit aspect Always_Terminates on "Sum" has been proved, subprogram will terminate, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.ads:251:13: info: invariant check proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.ads:256:06: info: data dependencies proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.ads:258:08: info: invariant check proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.ads:258:08: info: postcondition proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.ads:258:08: info: predicate check proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.ads:258:35: info: invariant check proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.ads:258:35: info: predicate check proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.ads:258:56: info: invariant check proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.ads:258:56: info: predicate check proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.ads:259:19: info: invariant check proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.ads:260:20: info: invariant check proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.ads:261:15: info: invariant check proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.ads:262:17: info: invariant check proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.ads:262:17: info: predicate check proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.ads:263:19: info: invariant check proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.ads:263:19: info: predicate check proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.ads:264:23: info: invariant check proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.ads:264:23: info: predicate check proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.ads:270:13: info: implicit aspect Always_Terminates on "Difference" has been proved, subprogram will terminate, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.ads:270:13: info: invariant check proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.ads:277:06: info: data dependencies proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.ads:279:09: info: invariant check proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.ads:279:09: info: postcondition proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.ads:280:15: info: invariant check proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.ads:280:15: info: predicate check proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.ads:280:40: info: invariant check proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.ads:280:40: info: predicate check proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.ads:281:17: info: invariant check proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.ads:283:11: info: invariant check proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.ads:284:13: info: invariant check proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.ads:284:13: info: predicate check proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.ads:285:18: info: predicate check proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.ads:285:21: info: invariant check proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.ads:285:21: info: predicate check proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.ads:285:46: info: invariant check proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.ads:285:46: info: predicate check proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.ads:291:13: info: implicit aspect Always_Terminates on "Intersection" has been proved, subprogram will terminate, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.ads:291:13: info: invariant check proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.ads:296:04: info: data dependencies proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.ads:298:09: info: invariant check proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.ads:298:09: info: postcondition proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.ads:299:14: info: invariant check proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.ads:300:16: info: invariant check proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.ads:302:12: info: invariant check proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.ads:303:14: info: invariant check proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.ads:303:14: info: predicate check proved, in instantiation at my_multiset.ads:6
 spark-containers-functional-multisets.ads:304:19: info: invariant check proved, in instantiation at my_multiset.ads:6
 spark-containers-functional-multisets.ads:304:19: info: predicate check proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.ads:306:13: info: implicit aspect Always_Terminates on "Union" has been proved, subprogram will terminate, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.ads:306:13: info: invariant check proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.ads:312:04: info: data dependencies proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.ads:314:07: info: postcondition proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.ads:314:12: info: invariant check proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.ads:315:22: info: invariant check proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.ads:317:10: info: invariant check proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.ads:318:12: info: invariant check proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.ads:318:12: info: predicate check proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.ads:319:17: info: invariant check proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.ads:319:17: info: predicate check proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.ads:305:19: info: invariant check proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.ads:305:19: info: predicate check proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.ads:307:13: info: implicit aspect Always_Terminates on "Union" has been proved, subprogram will terminate, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.ads:307:13: info: invariant check proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.ads:313:04: info: data dependencies proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.ads:315:07: info: postcondition proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.ads:315:12: info: invariant check proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.ads:316:22: info: invariant check proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.ads:318:10: info: invariant check proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.ads:319:12: info: invariant check proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.ads:319:12: info: predicate check proved, in instantiation at my_multiset.ads:6
 spark-containers-functional-multisets.ads:320:17: info: invariant check proved, in instantiation at my_multiset.ads:6
 spark-containers-functional-multisets.ads:320:17: info: predicate check proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.ads:326:14: info: aspect Always_Terminates on "Lemma_Sym_Intersection" has been proved, subprogram will terminate, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.ads:331:06: info: data dependencies proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.ads:332:16: info: invariant check proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.ads:332:16: info: postcondition proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.ads:332:43: info: invariant check proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.ads:332:45: info: invariant check proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.ads:334:14: info: aspect Always_Terminates on "Lemma_Sym_Union" has been proved, subprogram will terminate, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.ads:339:04: info: data dependencies proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.ads:340:14: info: invariant check proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.ads:340:14: info: postcondition proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.ads:340:34: info: invariant check proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.ads:340:36: info: invariant check proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.ads:342:14: info: aspect Always_Terminates on "Lemma_Sym_Sum" has been proved, subprogram will terminate, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.ads:347:06: info: data dependencies proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.ads:348:16: info: invariant check proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.ads:348:16: info: postcondition proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.ads:348:34: info: invariant check proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.ads:348:36: info: invariant check proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.ads:377:13: info: implicit aspect Always_Terminates on "Multiset_Logic_Equal" has been proved, subprogram will terminate, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.ads:379:06: info: Inline_For_Proof or Logical_Equal annotation proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.ads:382:13: info: implicit aspect Always_Terminates on "Iterate" has been proved, subprogram will terminate, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.ads:382:13: info: invariant check proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.ads:383:06: info: data dependencies proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.ads:384:16: info: invariant check proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.ads:384:16: info: postcondition proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.ads:384:38: info: invariant check proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.ads:387:13: info: implicit aspect Always_Terminates on "Get_Multiset" has been proved, subprogram will terminate, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.ads:387:13: info: invariant check proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.ads:388:06: info: data dependencies proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.ads:391:13: info: implicit aspect Always_Terminates on "Valid_Subset" has been proved, subprogram will terminate, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.ads:395:06: info: data dependencies proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.ads:396:17: info: postcondition proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.ads:396:52: info: invariant check proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.ads:396:55: info: invariant check proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.ads:400:13: info: during checks for quantification at spark-containers-functional-multisets.ads:553, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.ads:400:13: info: implicit aspect Always_Terminates on "Element" has been proved, subprogram will terminate, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.ads:400:13: info: precondition proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.ads:401:07: warning: unused variable "Iterator", in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.ads:403:06: info: data dependencies proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.ads:404:22: info: invariant check proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.ads:405:18: info: postcondition proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.ads:405:35: info: invariant check proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.ads:405:35: info: precondition proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.ads:410:13: info: during checks for quantification at spark-containers-functional-multisets.ads:553, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.ads:410:13: info: implicit aspect Always_Terminates on "First" has been proved, subprogram will terminate, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.ads:410:13: info: invariant check proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.ads:410:13: info: precondition proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.ads:411:06: info: data dependencies proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.ads:412:16: info: invariant check proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.ads:412:16: info: postcondition proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.ads:412:52: info: invariant check proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.ads:413:17: info: invariant check proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.ads:417:13: info: during checks for quantification at spark-containers-functional-multisets.ads:553, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.ads:417:13: info: implicit aspect Always_Terminates on "Next" has been proved, subprogram will terminate, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.ads:417:13: info: invariant check proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.ads:417:13: info: precondition proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.ads:420:06: info: data dependencies proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.ads:421:16: info: invariant check proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.ads:421:61: info: invariant check proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.ads:321:17: info: invariant check proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.ads:321:17: info: predicate check proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.ads:327:14: info: aspect Always_Terminates on "Lemma_Sym_Intersection" has been proved, subprogram will terminate, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.ads:332:06: info: data dependencies proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.ads:333:16: info: invariant check proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.ads:333:16: info: postcondition proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.ads:333:43: info: invariant check proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.ads:333:45: info: invariant check proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.ads:335:14: info: aspect Always_Terminates on "Lemma_Sym_Union" has been proved, subprogram will terminate, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.ads:340:04: info: data dependencies proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.ads:341:14: info: invariant check proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.ads:341:14: info: postcondition proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.ads:341:34: info: invariant check proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.ads:341:36: info: invariant check proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.ads:343:14: info: aspect Always_Terminates on "Lemma_Sym_Sum" has been proved, subprogram will terminate, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.ads:348:06: info: data dependencies proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.ads:349:16: info: invariant check proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.ads:349:16: info: postcondition proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.ads:349:34: info: invariant check proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.ads:349:36: info: invariant check proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.ads:378:13: info: implicit aspect Always_Terminates on "Multiset_Logic_Equal" has been proved, subprogram will terminate, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.ads:380:06: info: Inline_For_Proof or Logical_Equal annotation proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.ads:383:13: info: implicit aspect Always_Terminates on "Iterate" has been proved, subprogram will terminate, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.ads:383:13: info: invariant check proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.ads:384:06: info: data dependencies proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.ads:385:16: info: invariant check proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.ads:385:16: info: postcondition proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.ads:385:38: info: invariant check proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.ads:388:13: info: implicit aspect Always_Terminates on "Get_Multiset" has been proved, subprogram will terminate, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.ads:388:13: info: invariant check proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.ads:389:06: info: data dependencies proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.ads:392:13: info: implicit aspect Always_Terminates on "Valid_Subset" has been proved, subprogram will terminate, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.ads:396:06: info: data dependencies proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.ads:397:17: info: postcondition proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.ads:397:52: info: invariant check proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.ads:397:55: info: invariant check proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.ads:401:13: info: during checks for quantification at spark-containers-functional-multisets.ads:553, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.ads:401:13: info: implicit aspect Always_Terminates on "Element" has been proved, subprogram will terminate, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.ads:401:13: info: precondition proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.ads:402:07: warning: unused variable "Iterator", in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.ads:404:06: info: data dependencies proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.ads:405:22: info: invariant check proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.ads:406:18: info: postcondition proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.ads:406:35: info: invariant check proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.ads:406:35: info: precondition proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.ads:411:13: info: during checks for quantification at spark-containers-functional-multisets.ads:553, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.ads:411:13: info: implicit aspect Always_Terminates on "First" has been proved, subprogram will terminate, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.ads:411:13: info: invariant check proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.ads:411:13: info: precondition proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.ads:412:06: info: data dependencies proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.ads:413:16: info: invariant check proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.ads:413:16: info: postcondition proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.ads:413:52: info: invariant check proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.ads:414:17: info: invariant check proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.ads:418:13: info: during checks for quantification at spark-containers-functional-multisets.ads:553, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.ads:418:13: info: implicit aspect Always_Terminates on "Next" has been proved, subprogram will terminate, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.ads:418:13: info: invariant check proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.ads:418:13: info: precondition proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.ads:421:06: info: data dependencies proved, in instantiation at my_multiset.ads:6
 spark-containers-functional-multisets.ads:422:16: info: invariant check proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.ads:422:16: info: postcondition proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.ads:423:17: info: invariant check proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.ads:424:24: info: invariant check proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.ads:424:24: info: precondition proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.ads:424:44: info: invariant check proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.ads:424:44: info: precondition proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.ads:427:13: info: during checks for quantification at spark-containers-functional-multisets.ads:553, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.ads:427:13: info: implicit aspect Always_Terminates on "Has_Element" has been proved, subprogram will terminate, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.ads:427:13: info: precondition proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.ads:431:06: info: data dependencies proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.ads:432:16: info: postcondition proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.ads:433:09: info: invariant check proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.ads:433:54: info: invariant check proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.ads:443:13: info: implicit aspect Always_Terminates on "Copy_Element" has been proved, subprogram will terminate, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.ads:466:13: info: during checks for quantification at spark-containers-functional-multisets.ads:540, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.ads:466:13: info: implicit aspect Always_Terminates on "Iter_First" has been proved, subprogram will terminate, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.ads:466:13: info: precondition proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.ads:467:06: info: data dependencies proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.ads:469:13: info: during checks for quantification at spark-containers-functional-multisets.ads:540, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.ads:469:13: info: implicit aspect Always_Terminates on "Iter_Has_Element" has been proved, subprogram will terminate, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.ads:469:13: info: precondition proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.ads:473:06: info: data dependencies proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.ads:475:13: info: during checks for quantification at spark-containers-functional-multisets.ads:540, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.ads:475:13: info: implicit aspect Always_Terminates on "Iter_Next" has been proved, subprogram will terminate, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.ads:475:13: info: precondition proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.ads:478:06: info: data dependencies proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.ads:479:16: info: invariant check proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.ads:481:13: info: during checks for quantification at spark-containers-functional-multisets.ads:540, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.ads:481:13: info: implicit aspect Always_Terminates on "Iter_Element" has been proved, subprogram will terminate, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.ads:481:13: info: precondition proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.ads:485:06: info: data dependencies proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.ads:486:16: info: invariant check proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.ads:422:61: info: invariant check proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.ads:423:16: info: invariant check proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.ads:423:16: info: postcondition proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.ads:424:17: info: invariant check proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.ads:425:24: info: invariant check proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.ads:425:24: info: precondition proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.ads:425:44: info: invariant check proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.ads:425:44: info: precondition proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.ads:428:13: info: during checks for quantification at spark-containers-functional-multisets.ads:553, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.ads:428:13: info: implicit aspect Always_Terminates on "Has_Element" has been proved, subprogram will terminate, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.ads:428:13: info: precondition proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.ads:432:06: info: data dependencies proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.ads:433:16: info: postcondition proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.ads:434:09: info: invariant check proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.ads:434:54: info: invariant check proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.ads:444:13: info: implicit aspect Always_Terminates on "Copy_Element" has been proved, subprogram will terminate, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.ads:467:13: info: during checks for quantification at spark-containers-functional-multisets.ads:540, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.ads:467:13: info: implicit aspect Always_Terminates on "Iter_First" has been proved, subprogram will terminate, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.ads:467:13: info: precondition proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.ads:468:06: info: data dependencies proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.ads:470:13: info: during checks for quantification at spark-containers-functional-multisets.ads:540, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.ads:470:13: info: implicit aspect Always_Terminates on "Iter_Has_Element" has been proved, subprogram will terminate, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.ads:470:13: info: precondition proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.ads:474:06: info: data dependencies proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.ads:476:13: info: during checks for quantification at spark-containers-functional-multisets.ads:540, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.ads:476:13: info: implicit aspect Always_Terminates on "Iter_Next" has been proved, subprogram will terminate, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.ads:476:13: info: precondition proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.ads:479:06: info: data dependencies proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.ads:480:16: info: invariant check proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.ads:482:13: info: during checks for quantification at spark-containers-functional-multisets.ads:540, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.ads:482:13: info: implicit aspect Always_Terminates on "Iter_Element" has been proved, subprogram will terminate, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.ads:482:13: info: precondition proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.ads:486:06: info: data dependencies proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.ads:487:16: info: invariant check proved, in instantiation at my_multiset.ads:6
 spark-containers-functional-multisets.ads:493:13: info: implicit aspect Always_Terminates on "Aggr_Eq_Elements" has been proved, subprogram will terminate, in instantiation at my_multiset.ads:6
 spark-containers-functional-multisets.ads:496:06: info: data dependencies proved, in instantiation at my_multiset.ads:6
 spark-containers-functional-multisets.ads:500:13: info: implicit aspect Always_Terminates on "Default_Count" has been proved, subprogram will terminate, in instantiation at my_multiset.ads:6
@@ -1240,7 +1240,7 @@ spark-containers-functional-multisets.ads:542:29: info: in default value of priv
 spark-containers-functional-multisets.ads:542:29: info: predicate check proved, in instantiation at my_multiset.ads:6
 spark-containers-functional-multisets.ads:546:13: info: implicit aspect Always_Terminates on "Invariant" has been proved, subprogram will terminate, in instantiation at my_multiset.ads:6
 spark-containers-functional-multisets.ads:553:09: info: invariant check proved on default value, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.ads:555:29: info: in default value of private type at spark-containers-functional-multisets.ads:368, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.ads:555:29: info: in default value of private type at spark-containers-functional-multisets.ads:369, in instantiation at my_multiset.ads:6
 spark-containers-functional-multisets.ads:555:29: info: predicate check proved, in instantiation at my_multiset.ads:6
 spark-containers-functional-multisets.ads:563:07: info: invariant check proved, in instantiation at my_multiset.ads:6
 spark-containers-functional-multisets.ads:563:07: info: precondition proved, in instantiation at my_multiset.ads:6
@@ -1249,73 +1249,73 @@ spark-containers-functional-multisets.ads:575:48: info: predicate check proved, 
 spark-containers-functional-multisets.ads:575:70: info: predicate check proved, in instantiation at my_multiset.ads:6
 spark-containers-functional-multisets.ads:608:07: info: precondition proved, in instantiation at my_multiset.ads:6
 spark-containers-functional-multisets.ads:614:07: info: precondition proved, in instantiation at my_multiset.ads:6
-spark-containers-parameter_checks.adb:31:10: info: precondition proved, in instantiation at spark-containers-functional-maps.ads:511, in instantiation at spark-containers-functional-multisets.ads:531, in instantiation at my_multiset.ads:6
-spark-containers-parameter_checks.adb:40:10: info: precondition proved, in instantiation at spark-containers-functional-maps.ads:511, in instantiation at spark-containers-functional-multisets.ads:531, in instantiation at my_multiset.ads:6
-spark-containers-parameter_checks.adb:58:10: info: precondition proved, in instantiation at spark-containers-functional-maps.ads:521, in instantiation at spark-containers-functional-multisets.ads:531, in instantiation at my_multiset.ads:6
-spark-containers-parameter_checks.ads:30:17: info: aspect Always_Terminates on "Eq_Reflexive" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-maps.ads:502, in instantiation at spark-containers-functional-multisets.ads:531, in instantiation at my_multiset.ads:6
-spark-containers-parameter_checks.ads:30:17: info: aspect Always_Terminates on "Eq_Reflexive" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-maps.ads:511, in instantiation at spark-containers-functional-multisets.ads:531, in instantiation at my_multiset.ads:6
-spark-containers-parameter_checks.ads:30:17: info: aspect Always_Terminates on "Eq_Reflexive" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-multisets.ads:450, in instantiation at my_multiset.ads:6
-spark-containers-parameter_checks.ads:31:09: info: data dependencies proved, in instantiation at spark-containers-functional-maps.ads:502, in instantiation at spark-containers-functional-multisets.ads:531, in instantiation at my_multiset.ads:6
-spark-containers-parameter_checks.ads:31:09: info: data dependencies proved, in instantiation at spark-containers-functional-maps.ads:511, in instantiation at spark-containers-functional-multisets.ads:531, in instantiation at my_multiset.ads:6
-spark-containers-parameter_checks.ads:31:09: info: data dependencies proved, in instantiation at spark-containers-functional-multisets.ads:450, in instantiation at my_multiset.ads:6
-spark-containers-parameter_checks.ads:32:19: info: postcondition proved, in instantiation at spark-containers-functional-maps.ads:502, in instantiation at spark-containers-functional-multisets.ads:531, in instantiation at my_multiset.ads:6
-spark-containers-parameter_checks.ads:32:19: info: postcondition proved, in instantiation at spark-containers-functional-maps.ads:511, in instantiation at spark-containers-functional-multisets.ads:531, in instantiation at my_multiset.ads:6
-spark-containers-parameter_checks.ads:32:19: info: postcondition proved, in instantiation at spark-containers-functional-multisets.ads:450, in instantiation at my_multiset.ads:6
-spark-containers-parameter_checks.ads:32:23: info: predicate check proved, in instantiation at spark-containers-functional-maps.ads:502, in instantiation at spark-containers-functional-multisets.ads:531, in instantiation at my_multiset.ads:6
-spark-containers-parameter_checks.ads:32:26: info: predicate check proved, in instantiation at spark-containers-functional-maps.ads:502, in instantiation at spark-containers-functional-multisets.ads:531, in instantiation at my_multiset.ads:6
-spark-containers-parameter_checks.ads:34:17: info: aspect Always_Terminates on "Eq_Symmetric" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-maps.ads:502, in instantiation at spark-containers-functional-multisets.ads:531, in instantiation at my_multiset.ads:6
-spark-containers-parameter_checks.ads:34:17: info: aspect Always_Terminates on "Eq_Symmetric" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-maps.ads:511, in instantiation at spark-containers-functional-multisets.ads:531, in instantiation at my_multiset.ads:6
-spark-containers-parameter_checks.ads:34:17: info: aspect Always_Terminates on "Eq_Symmetric" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-multisets.ads:450, in instantiation at my_multiset.ads:6
-spark-containers-parameter_checks.ads:35:09: info: data dependencies proved, in instantiation at spark-containers-functional-maps.ads:502, in instantiation at spark-containers-functional-multisets.ads:531, in instantiation at my_multiset.ads:6
-spark-containers-parameter_checks.ads:35:09: info: data dependencies proved, in instantiation at spark-containers-functional-maps.ads:511, in instantiation at spark-containers-functional-multisets.ads:531, in instantiation at my_multiset.ads:6
-spark-containers-parameter_checks.ads:35:09: info: data dependencies proved, in instantiation at spark-containers-functional-multisets.ads:450, in instantiation at my_multiset.ads:6
-spark-containers-parameter_checks.ads:36:23: info: predicate check proved, in instantiation at spark-containers-functional-maps.ads:502, in instantiation at spark-containers-functional-multisets.ads:531, in instantiation at my_multiset.ads:6
-spark-containers-parameter_checks.ads:36:26: info: predicate check proved, in instantiation at spark-containers-functional-maps.ads:502, in instantiation at spark-containers-functional-multisets.ads:531, in instantiation at my_multiset.ads:6
-spark-containers-parameter_checks.ads:37:19: info: postcondition proved, in instantiation at spark-containers-functional-maps.ads:502, in instantiation at spark-containers-functional-multisets.ads:531, in instantiation at my_multiset.ads:6
-spark-containers-parameter_checks.ads:37:19: info: postcondition proved, in instantiation at spark-containers-functional-maps.ads:511, in instantiation at spark-containers-functional-multisets.ads:531, in instantiation at my_multiset.ads:6
-spark-containers-parameter_checks.ads:37:19: info: postcondition proved, in instantiation at spark-containers-functional-multisets.ads:450, in instantiation at my_multiset.ads:6
-spark-containers-parameter_checks.ads:37:23: info: predicate check proved, in instantiation at spark-containers-functional-maps.ads:502, in instantiation at spark-containers-functional-multisets.ads:531, in instantiation at my_multiset.ads:6
-spark-containers-parameter_checks.ads:37:26: info: predicate check proved, in instantiation at spark-containers-functional-maps.ads:502, in instantiation at spark-containers-functional-multisets.ads:531, in instantiation at my_multiset.ads:6
-spark-containers-parameter_checks.ads:39:17: info: aspect Always_Terminates on "Eq_Transitive" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-maps.ads:502, in instantiation at spark-containers-functional-multisets.ads:531, in instantiation at my_multiset.ads:6
-spark-containers-parameter_checks.ads:39:17: info: aspect Always_Terminates on "Eq_Transitive" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-maps.ads:511, in instantiation at spark-containers-functional-multisets.ads:531, in instantiation at my_multiset.ads:6
-spark-containers-parameter_checks.ads:39:17: info: aspect Always_Terminates on "Eq_Transitive" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-multisets.ads:450, in instantiation at my_multiset.ads:6
-spark-containers-parameter_checks.ads:40:09: info: data dependencies proved, in instantiation at spark-containers-functional-maps.ads:502, in instantiation at spark-containers-functional-multisets.ads:531, in instantiation at my_multiset.ads:6
-spark-containers-parameter_checks.ads:40:09: info: data dependencies proved, in instantiation at spark-containers-functional-maps.ads:511, in instantiation at spark-containers-functional-multisets.ads:531, in instantiation at my_multiset.ads:6
-spark-containers-parameter_checks.ads:40:09: info: data dependencies proved, in instantiation at spark-containers-functional-multisets.ads:450, in instantiation at my_multiset.ads:6
-spark-containers-parameter_checks.ads:41:23: info: predicate check proved, in instantiation at spark-containers-functional-maps.ads:502, in instantiation at spark-containers-functional-multisets.ads:531, in instantiation at my_multiset.ads:6
-spark-containers-parameter_checks.ads:41:26: info: predicate check proved, in instantiation at spark-containers-functional-maps.ads:502, in instantiation at spark-containers-functional-multisets.ads:531, in instantiation at my_multiset.ads:6
-spark-containers-parameter_checks.ads:41:37: info: predicate check proved, in instantiation at spark-containers-functional-maps.ads:502, in instantiation at spark-containers-functional-multisets.ads:531, in instantiation at my_multiset.ads:6
-spark-containers-parameter_checks.ads:41:40: info: predicate check proved, in instantiation at spark-containers-functional-maps.ads:502, in instantiation at spark-containers-functional-multisets.ads:531, in instantiation at my_multiset.ads:6
-spark-containers-parameter_checks.ads:42:19: info: postcondition proved, in instantiation at spark-containers-functional-maps.ads:502, in instantiation at spark-containers-functional-multisets.ads:531, in instantiation at my_multiset.ads:6
-spark-containers-parameter_checks.ads:42:19: info: postcondition proved, in instantiation at spark-containers-functional-maps.ads:511, in instantiation at spark-containers-functional-multisets.ads:531, in instantiation at my_multiset.ads:6
-spark-containers-parameter_checks.ads:42:19: info: postcondition proved, in instantiation at spark-containers-functional-multisets.ads:450, in instantiation at my_multiset.ads:6
-spark-containers-parameter_checks.ads:42:23: info: predicate check proved, in instantiation at spark-containers-functional-maps.ads:502, in instantiation at spark-containers-functional-multisets.ads:531, in instantiation at my_multiset.ads:6
-spark-containers-parameter_checks.ads:42:26: info: predicate check proved, in instantiation at spark-containers-functional-maps.ads:502, in instantiation at spark-containers-functional-multisets.ads:531, in instantiation at my_multiset.ads:6
-spark-containers-parameter_checks.ads:62:17: info: aspect Always_Terminates on "Eq_Reflexive" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-maps.ads:521, in instantiation at spark-containers-functional-multisets.ads:531, in instantiation at my_multiset.ads:6
-spark-containers-parameter_checks.ads:63:09: info: data dependencies proved, in instantiation at spark-containers-functional-maps.ads:521, in instantiation at spark-containers-functional-multisets.ads:531, in instantiation at my_multiset.ads:6
-spark-containers-parameter_checks.ads:64:19: info: predicate check proved, in instantiation at spark-containers-functional-maps.ads:521, in instantiation at spark-containers-functional-multisets.ads:531, in instantiation at my_multiset.ads:6
-spark-containers-parameter_checks.ads:64:23: info: predicate check proved, in instantiation at spark-containers-functional-maps.ads:521, in instantiation at spark-containers-functional-multisets.ads:531, in instantiation at my_multiset.ads:6
-spark-containers-parameter_checks.ads:65:19: info: postcondition proved, in instantiation at spark-containers-functional-maps.ads:521, in instantiation at spark-containers-functional-multisets.ads:531, in instantiation at my_multiset.ads:6
-spark-containers-parameter_checks.ads:65:23: info: predicate check proved, in instantiation at spark-containers-functional-maps.ads:521, in instantiation at spark-containers-functional-multisets.ads:531, in instantiation at my_multiset.ads:6
-spark-containers-parameter_checks.ads:65:26: info: predicate check proved, in instantiation at spark-containers-functional-maps.ads:521, in instantiation at spark-containers-functional-multisets.ads:531, in instantiation at my_multiset.ads:6
-spark-containers-parameter_checks.ads:70:17: info: aspect Always_Terminates on "Eq_Reflexive" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-maps.ads:521, in instantiation at spark-containers-functional-multisets.ads:531, in instantiation at my_multiset.ads:6
-spark-containers-parameter_checks.ads:71:09: info: data dependencies proved, in instantiation at spark-containers-functional-maps.ads:521, in instantiation at spark-containers-functional-multisets.ads:531, in instantiation at my_multiset.ads:6
-spark-containers-parameter_checks.ads:72:19: info: postcondition proved, in instantiation at spark-containers-functional-maps.ads:521, in instantiation at spark-containers-functional-multisets.ads:531, in instantiation at my_multiset.ads:6
-spark-containers-parameter_checks.ads:72:23: info: predicate check proved, in instantiation at spark-containers-functional-maps.ads:521, in instantiation at spark-containers-functional-multisets.ads:531, in instantiation at my_multiset.ads:6
-spark-containers-parameter_checks.ads:72:26: info: predicate check proved, in instantiation at spark-containers-functional-maps.ads:521, in instantiation at spark-containers-functional-multisets.ads:531, in instantiation at my_multiset.ads:6
-spark-containers-parameter_checks.ads:74:17: info: aspect Always_Terminates on "Eq_Symmetric" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-maps.ads:521, in instantiation at spark-containers-functional-multisets.ads:531, in instantiation at my_multiset.ads:6
-spark-containers-parameter_checks.ads:75:09: info: data dependencies proved, in instantiation at spark-containers-functional-maps.ads:521, in instantiation at spark-containers-functional-multisets.ads:531, in instantiation at my_multiset.ads:6
-spark-containers-parameter_checks.ads:76:23: info: predicate check proved, in instantiation at spark-containers-functional-maps.ads:521, in instantiation at spark-containers-functional-multisets.ads:531, in instantiation at my_multiset.ads:6
-spark-containers-parameter_checks.ads:76:26: info: predicate check proved, in instantiation at spark-containers-functional-maps.ads:521, in instantiation at spark-containers-functional-multisets.ads:531, in instantiation at my_multiset.ads:6
-spark-containers-parameter_checks.ads:77:19: info: postcondition proved, in instantiation at spark-containers-functional-maps.ads:521, in instantiation at spark-containers-functional-multisets.ads:531, in instantiation at my_multiset.ads:6
-spark-containers-parameter_checks.ads:77:23: info: predicate check proved, in instantiation at spark-containers-functional-maps.ads:521, in instantiation at spark-containers-functional-multisets.ads:531, in instantiation at my_multiset.ads:6
-spark-containers-parameter_checks.ads:77:26: info: predicate check proved, in instantiation at spark-containers-functional-maps.ads:521, in instantiation at spark-containers-functional-multisets.ads:531, in instantiation at my_multiset.ads:6
-spark-containers-parameter_checks.ads:79:17: info: aspect Always_Terminates on "Eq_Transitive" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-maps.ads:521, in instantiation at spark-containers-functional-multisets.ads:531, in instantiation at my_multiset.ads:6
-spark-containers-parameter_checks.ads:80:09: info: data dependencies proved, in instantiation at spark-containers-functional-maps.ads:521, in instantiation at spark-containers-functional-multisets.ads:531, in instantiation at my_multiset.ads:6
-spark-containers-parameter_checks.ads:81:23: info: predicate check proved, in instantiation at spark-containers-functional-maps.ads:521, in instantiation at spark-containers-functional-multisets.ads:531, in instantiation at my_multiset.ads:6
-spark-containers-parameter_checks.ads:81:26: info: predicate check proved, in instantiation at spark-containers-functional-maps.ads:521, in instantiation at spark-containers-functional-multisets.ads:531, in instantiation at my_multiset.ads:6
-spark-containers-parameter_checks.ads:81:37: info: predicate check proved, in instantiation at spark-containers-functional-maps.ads:521, in instantiation at spark-containers-functional-multisets.ads:531, in instantiation at my_multiset.ads:6
-spark-containers-parameter_checks.ads:81:40: info: predicate check proved, in instantiation at spark-containers-functional-maps.ads:521, in instantiation at spark-containers-functional-multisets.ads:531, in instantiation at my_multiset.ads:6
-spark-containers-parameter_checks.ads:82:19: info: postcondition proved, in instantiation at spark-containers-functional-maps.ads:521, in instantiation at spark-containers-functional-multisets.ads:531, in instantiation at my_multiset.ads:6
-spark-containers-parameter_checks.ads:82:23: info: predicate check proved, in instantiation at spark-containers-functional-maps.ads:521, in instantiation at spark-containers-functional-multisets.ads:531, in instantiation at my_multiset.ads:6
-spark-containers-parameter_checks.ads:82:26: info: predicate check proved, in instantiation at spark-containers-functional-maps.ads:521, in instantiation at spark-containers-functional-multisets.ads:531, in instantiation at my_multiset.ads:6
+spark-containers-parameter_checks.adb:31:10: info: precondition proved, in instantiation at spark-containers-functional-maps.ads:512, in instantiation at spark-containers-functional-multisets.ads:531, in instantiation at my_multiset.ads:6
+spark-containers-parameter_checks.adb:40:10: info: precondition proved, in instantiation at spark-containers-functional-maps.ads:512, in instantiation at spark-containers-functional-multisets.ads:531, in instantiation at my_multiset.ads:6
+spark-containers-parameter_checks.adb:58:10: info: precondition proved, in instantiation at spark-containers-functional-maps.ads:522, in instantiation at spark-containers-functional-multisets.ads:531, in instantiation at my_multiset.ads:6
+spark-containers-parameter_checks.ads:30:17: info: aspect Always_Terminates on "Eq_Reflexive" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-maps.ads:503, in instantiation at spark-containers-functional-multisets.ads:531, in instantiation at my_multiset.ads:6
+spark-containers-parameter_checks.ads:30:17: info: aspect Always_Terminates on "Eq_Reflexive" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-maps.ads:512, in instantiation at spark-containers-functional-multisets.ads:531, in instantiation at my_multiset.ads:6
+spark-containers-parameter_checks.ads:30:17: info: aspect Always_Terminates on "Eq_Reflexive" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-multisets.ads:451, in instantiation at my_multiset.ads:6
+spark-containers-parameter_checks.ads:31:09: info: data dependencies proved, in instantiation at spark-containers-functional-maps.ads:503, in instantiation at spark-containers-functional-multisets.ads:531, in instantiation at my_multiset.ads:6
+spark-containers-parameter_checks.ads:31:09: info: data dependencies proved, in instantiation at spark-containers-functional-maps.ads:512, in instantiation at spark-containers-functional-multisets.ads:531, in instantiation at my_multiset.ads:6
+spark-containers-parameter_checks.ads:31:09: info: data dependencies proved, in instantiation at spark-containers-functional-multisets.ads:451, in instantiation at my_multiset.ads:6
+spark-containers-parameter_checks.ads:32:19: info: postcondition proved, in instantiation at spark-containers-functional-maps.ads:503, in instantiation at spark-containers-functional-multisets.ads:531, in instantiation at my_multiset.ads:6
+spark-containers-parameter_checks.ads:32:19: info: postcondition proved, in instantiation at spark-containers-functional-maps.ads:512, in instantiation at spark-containers-functional-multisets.ads:531, in instantiation at my_multiset.ads:6
+spark-containers-parameter_checks.ads:32:19: info: postcondition proved, in instantiation at spark-containers-functional-multisets.ads:451, in instantiation at my_multiset.ads:6
+spark-containers-parameter_checks.ads:32:23: info: predicate check proved, in instantiation at spark-containers-functional-maps.ads:503, in instantiation at spark-containers-functional-multisets.ads:531, in instantiation at my_multiset.ads:6
+spark-containers-parameter_checks.ads:32:26: info: predicate check proved, in instantiation at spark-containers-functional-maps.ads:503, in instantiation at spark-containers-functional-multisets.ads:531, in instantiation at my_multiset.ads:6
+spark-containers-parameter_checks.ads:34:17: info: aspect Always_Terminates on "Eq_Symmetric" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-maps.ads:503, in instantiation at spark-containers-functional-multisets.ads:531, in instantiation at my_multiset.ads:6
+spark-containers-parameter_checks.ads:34:17: info: aspect Always_Terminates on "Eq_Symmetric" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-maps.ads:512, in instantiation at spark-containers-functional-multisets.ads:531, in instantiation at my_multiset.ads:6
+spark-containers-parameter_checks.ads:34:17: info: aspect Always_Terminates on "Eq_Symmetric" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-multisets.ads:451, in instantiation at my_multiset.ads:6
+spark-containers-parameter_checks.ads:35:09: info: data dependencies proved, in instantiation at spark-containers-functional-maps.ads:503, in instantiation at spark-containers-functional-multisets.ads:531, in instantiation at my_multiset.ads:6
+spark-containers-parameter_checks.ads:35:09: info: data dependencies proved, in instantiation at spark-containers-functional-maps.ads:512, in instantiation at spark-containers-functional-multisets.ads:531, in instantiation at my_multiset.ads:6
+spark-containers-parameter_checks.ads:35:09: info: data dependencies proved, in instantiation at spark-containers-functional-multisets.ads:451, in instantiation at my_multiset.ads:6
+spark-containers-parameter_checks.ads:36:23: info: predicate check proved, in instantiation at spark-containers-functional-maps.ads:503, in instantiation at spark-containers-functional-multisets.ads:531, in instantiation at my_multiset.ads:6
+spark-containers-parameter_checks.ads:36:26: info: predicate check proved, in instantiation at spark-containers-functional-maps.ads:503, in instantiation at spark-containers-functional-multisets.ads:531, in instantiation at my_multiset.ads:6
+spark-containers-parameter_checks.ads:37:19: info: postcondition proved, in instantiation at spark-containers-functional-maps.ads:503, in instantiation at spark-containers-functional-multisets.ads:531, in instantiation at my_multiset.ads:6
+spark-containers-parameter_checks.ads:37:19: info: postcondition proved, in instantiation at spark-containers-functional-maps.ads:512, in instantiation at spark-containers-functional-multisets.ads:531, in instantiation at my_multiset.ads:6
+spark-containers-parameter_checks.ads:37:19: info: postcondition proved, in instantiation at spark-containers-functional-multisets.ads:451, in instantiation at my_multiset.ads:6
+spark-containers-parameter_checks.ads:37:23: info: predicate check proved, in instantiation at spark-containers-functional-maps.ads:503, in instantiation at spark-containers-functional-multisets.ads:531, in instantiation at my_multiset.ads:6
+spark-containers-parameter_checks.ads:37:26: info: predicate check proved, in instantiation at spark-containers-functional-maps.ads:503, in instantiation at spark-containers-functional-multisets.ads:531, in instantiation at my_multiset.ads:6
+spark-containers-parameter_checks.ads:39:17: info: aspect Always_Terminates on "Eq_Transitive" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-maps.ads:503, in instantiation at spark-containers-functional-multisets.ads:531, in instantiation at my_multiset.ads:6
+spark-containers-parameter_checks.ads:39:17: info: aspect Always_Terminates on "Eq_Transitive" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-maps.ads:512, in instantiation at spark-containers-functional-multisets.ads:531, in instantiation at my_multiset.ads:6
+spark-containers-parameter_checks.ads:39:17: info: aspect Always_Terminates on "Eq_Transitive" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-multisets.ads:451, in instantiation at my_multiset.ads:6
+spark-containers-parameter_checks.ads:40:09: info: data dependencies proved, in instantiation at spark-containers-functional-maps.ads:503, in instantiation at spark-containers-functional-multisets.ads:531, in instantiation at my_multiset.ads:6
+spark-containers-parameter_checks.ads:40:09: info: data dependencies proved, in instantiation at spark-containers-functional-maps.ads:512, in instantiation at spark-containers-functional-multisets.ads:531, in instantiation at my_multiset.ads:6
+spark-containers-parameter_checks.ads:40:09: info: data dependencies proved, in instantiation at spark-containers-functional-multisets.ads:451, in instantiation at my_multiset.ads:6
+spark-containers-parameter_checks.ads:41:23: info: predicate check proved, in instantiation at spark-containers-functional-maps.ads:503, in instantiation at spark-containers-functional-multisets.ads:531, in instantiation at my_multiset.ads:6
+spark-containers-parameter_checks.ads:41:26: info: predicate check proved, in instantiation at spark-containers-functional-maps.ads:503, in instantiation at spark-containers-functional-multisets.ads:531, in instantiation at my_multiset.ads:6
+spark-containers-parameter_checks.ads:41:37: info: predicate check proved, in instantiation at spark-containers-functional-maps.ads:503, in instantiation at spark-containers-functional-multisets.ads:531, in instantiation at my_multiset.ads:6
+spark-containers-parameter_checks.ads:41:40: info: predicate check proved, in instantiation at spark-containers-functional-maps.ads:503, in instantiation at spark-containers-functional-multisets.ads:531, in instantiation at my_multiset.ads:6
+spark-containers-parameter_checks.ads:42:19: info: postcondition proved, in instantiation at spark-containers-functional-maps.ads:503, in instantiation at spark-containers-functional-multisets.ads:531, in instantiation at my_multiset.ads:6
+spark-containers-parameter_checks.ads:42:19: info: postcondition proved, in instantiation at spark-containers-functional-maps.ads:512, in instantiation at spark-containers-functional-multisets.ads:531, in instantiation at my_multiset.ads:6
+spark-containers-parameter_checks.ads:42:19: info: postcondition proved, in instantiation at spark-containers-functional-multisets.ads:451, in instantiation at my_multiset.ads:6
+spark-containers-parameter_checks.ads:42:23: info: predicate check proved, in instantiation at spark-containers-functional-maps.ads:503, in instantiation at spark-containers-functional-multisets.ads:531, in instantiation at my_multiset.ads:6
+spark-containers-parameter_checks.ads:42:26: info: predicate check proved, in instantiation at spark-containers-functional-maps.ads:503, in instantiation at spark-containers-functional-multisets.ads:531, in instantiation at my_multiset.ads:6
+spark-containers-parameter_checks.ads:62:17: info: aspect Always_Terminates on "Eq_Reflexive" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-maps.ads:522, in instantiation at spark-containers-functional-multisets.ads:531, in instantiation at my_multiset.ads:6
+spark-containers-parameter_checks.ads:63:09: info: data dependencies proved, in instantiation at spark-containers-functional-maps.ads:522, in instantiation at spark-containers-functional-multisets.ads:531, in instantiation at my_multiset.ads:6
+spark-containers-parameter_checks.ads:64:19: info: predicate check proved, in instantiation at spark-containers-functional-maps.ads:522, in instantiation at spark-containers-functional-multisets.ads:531, in instantiation at my_multiset.ads:6
+spark-containers-parameter_checks.ads:64:23: info: predicate check proved, in instantiation at spark-containers-functional-maps.ads:522, in instantiation at spark-containers-functional-multisets.ads:531, in instantiation at my_multiset.ads:6
+spark-containers-parameter_checks.ads:65:19: info: postcondition proved, in instantiation at spark-containers-functional-maps.ads:522, in instantiation at spark-containers-functional-multisets.ads:531, in instantiation at my_multiset.ads:6
+spark-containers-parameter_checks.ads:65:23: info: predicate check proved, in instantiation at spark-containers-functional-maps.ads:522, in instantiation at spark-containers-functional-multisets.ads:531, in instantiation at my_multiset.ads:6
+spark-containers-parameter_checks.ads:65:26: info: predicate check proved, in instantiation at spark-containers-functional-maps.ads:522, in instantiation at spark-containers-functional-multisets.ads:531, in instantiation at my_multiset.ads:6
+spark-containers-parameter_checks.ads:70:17: info: aspect Always_Terminates on "Eq_Reflexive" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-maps.ads:522, in instantiation at spark-containers-functional-multisets.ads:531, in instantiation at my_multiset.ads:6
+spark-containers-parameter_checks.ads:71:09: info: data dependencies proved, in instantiation at spark-containers-functional-maps.ads:522, in instantiation at spark-containers-functional-multisets.ads:531, in instantiation at my_multiset.ads:6
+spark-containers-parameter_checks.ads:72:19: info: postcondition proved, in instantiation at spark-containers-functional-maps.ads:522, in instantiation at spark-containers-functional-multisets.ads:531, in instantiation at my_multiset.ads:6
+spark-containers-parameter_checks.ads:72:23: info: predicate check proved, in instantiation at spark-containers-functional-maps.ads:522, in instantiation at spark-containers-functional-multisets.ads:531, in instantiation at my_multiset.ads:6
+spark-containers-parameter_checks.ads:72:26: info: predicate check proved, in instantiation at spark-containers-functional-maps.ads:522, in instantiation at spark-containers-functional-multisets.ads:531, in instantiation at my_multiset.ads:6
+spark-containers-parameter_checks.ads:74:17: info: aspect Always_Terminates on "Eq_Symmetric" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-maps.ads:522, in instantiation at spark-containers-functional-multisets.ads:531, in instantiation at my_multiset.ads:6
+spark-containers-parameter_checks.ads:75:09: info: data dependencies proved, in instantiation at spark-containers-functional-maps.ads:522, in instantiation at spark-containers-functional-multisets.ads:531, in instantiation at my_multiset.ads:6
+spark-containers-parameter_checks.ads:76:23: info: predicate check proved, in instantiation at spark-containers-functional-maps.ads:522, in instantiation at spark-containers-functional-multisets.ads:531, in instantiation at my_multiset.ads:6
+spark-containers-parameter_checks.ads:76:26: info: predicate check proved, in instantiation at spark-containers-functional-maps.ads:522, in instantiation at spark-containers-functional-multisets.ads:531, in instantiation at my_multiset.ads:6
+spark-containers-parameter_checks.ads:77:19: info: postcondition proved, in instantiation at spark-containers-functional-maps.ads:522, in instantiation at spark-containers-functional-multisets.ads:531, in instantiation at my_multiset.ads:6
+spark-containers-parameter_checks.ads:77:23: info: predicate check proved, in instantiation at spark-containers-functional-maps.ads:522, in instantiation at spark-containers-functional-multisets.ads:531, in instantiation at my_multiset.ads:6
+spark-containers-parameter_checks.ads:77:26: info: predicate check proved, in instantiation at spark-containers-functional-maps.ads:522, in instantiation at spark-containers-functional-multisets.ads:531, in instantiation at my_multiset.ads:6
+spark-containers-parameter_checks.ads:79:17: info: aspect Always_Terminates on "Eq_Transitive" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-maps.ads:522, in instantiation at spark-containers-functional-multisets.ads:531, in instantiation at my_multiset.ads:6
+spark-containers-parameter_checks.ads:80:09: info: data dependencies proved, in instantiation at spark-containers-functional-maps.ads:522, in instantiation at spark-containers-functional-multisets.ads:531, in instantiation at my_multiset.ads:6
+spark-containers-parameter_checks.ads:81:23: info: predicate check proved, in instantiation at spark-containers-functional-maps.ads:522, in instantiation at spark-containers-functional-multisets.ads:531, in instantiation at my_multiset.ads:6
+spark-containers-parameter_checks.ads:81:26: info: predicate check proved, in instantiation at spark-containers-functional-maps.ads:522, in instantiation at spark-containers-functional-multisets.ads:531, in instantiation at my_multiset.ads:6
+spark-containers-parameter_checks.ads:81:37: info: predicate check proved, in instantiation at spark-containers-functional-maps.ads:522, in instantiation at spark-containers-functional-multisets.ads:531, in instantiation at my_multiset.ads:6
+spark-containers-parameter_checks.ads:81:40: info: predicate check proved, in instantiation at spark-containers-functional-maps.ads:522, in instantiation at spark-containers-functional-multisets.ads:531, in instantiation at my_multiset.ads:6
+spark-containers-parameter_checks.ads:82:19: info: postcondition proved, in instantiation at spark-containers-functional-maps.ads:522, in instantiation at spark-containers-functional-multisets.ads:531, in instantiation at my_multiset.ads:6
+spark-containers-parameter_checks.ads:82:23: info: predicate check proved, in instantiation at spark-containers-functional-maps.ads:522, in instantiation at spark-containers-functional-multisets.ads:531, in instantiation at my_multiset.ads:6
+spark-containers-parameter_checks.ads:82:26: info: predicate check proved, in instantiation at spark-containers-functional-maps.ads:522, in instantiation at spark-containers-functional-multisets.ads:531, in instantiation at my_multiset.ads:6
