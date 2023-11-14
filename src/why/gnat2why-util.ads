@@ -413,6 +413,15 @@ package Gnat2Why.Util is
    --  Returns the precondition or postcondition (depending on Kind) for a
    --  static call.
 
+   function Get_Referenced_Variables
+     (Why_Expr : W_Prog_Id;
+      Scope    : Entity_Id)
+      return Node_Sets.Set;
+   --  Return the set of variables used in Why_Expr and not declared in Scope.
+   --  Also include constants of an access-to-variable type and constants with
+   --  variable inputs. This is used as a workaround when no flow analysis
+   --  routine can be called.
+
    function New_Check_Info
      (Range_Check_Ty : Opt_Type_Kind_Id := Empty;
       Divisor        : Node_Or_Entity_Id := Empty;
