@@ -399,6 +399,14 @@ class SPARKTestFinder(TestFinder):
         # If bogus test dir such as git folder, skip it
         if testname == ".git":
             return None
+
+        # We have a valid test directory, so we don't need to visit its
+        # subdirectories, e.g. with session files. This should save us
+        # unnecessary I/O operations. Modify the list of directories in-place,
+        # as explained in the Python documentation for os.walk routine, which
+        # is used by e3-testsuite driver.
+        del dirnames[:]
+
         # If testlist was passed and the dir is not in testlist, skip it
         if self.testlist and testname not in self.testlist:
             return None
