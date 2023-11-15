@@ -2073,8 +2073,10 @@ package body Flow_Generated_Globals.Partial is
 
          --  Terminating stuff, picked no matter if body is in SPARK
          Contr.Always_Terminates :=
-           (if Is_Callable (E)
-              and then Ekind (E) /= E_Entry_Family
+           (if Ekind (E) in E_Entry
+                          | E_Function
+                          | E_Procedure
+                          | E_Package
             then Get_Termination_Condition (E) = (Static, True)
                    or else
                  Get_Termination_Condition (E).Kind = Dynamic
