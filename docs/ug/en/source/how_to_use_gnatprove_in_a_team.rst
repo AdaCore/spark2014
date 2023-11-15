@@ -767,11 +767,16 @@ only part of a program:
 
 * [ADA_ELABORATION]
   If a package is not analyzed but is part of the application code, its
-  elaboration shall not modify any global state visible from SPARK unless
-  it is part of the package's own state. In addition, if the package
-  specification is referenced, directly or indirectly, from a SPARK unit, it
-  needs to comply with the implicit or explicit contracts used by
-  GNATprove to analyze these user packages.
+  elaboration:
+
+  * shall not modify any global state visible from SPARK unless it is part
+    of the package's own state.
+
+  * shall always terminate normally.
+
+  In addition, if the package specification is referenced, directly or
+  indirectly, from a SPARK unit, it needs to comply with the implicit
+  or explicit contracts used by GNATprove to analyze these user packages.
 
   The (explicit or implicit) package contract to check is made up of:
 
