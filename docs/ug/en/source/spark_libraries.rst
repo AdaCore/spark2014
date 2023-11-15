@@ -285,7 +285,7 @@ available resources:
 
 .. note::
 
-   Instances of container packages, both functional and formal, are subjected
+   Instances of container packages, both functional and formal, are subject
    to particular constraints which are necessary for the contracts on the
    instance to be correct. For example, container primitives don't comply with
    the ownership policy of SPARK if element or key types are ownership types.
