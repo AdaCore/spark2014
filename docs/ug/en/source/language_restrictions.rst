@@ -265,7 +265,7 @@ on unused parameters, global items and assignments, also based on the stricter
 It is possible to opt out of the strong data initialization
 policy of |SPARK| on a case by case basis using the aspect
 ``Relaxed_Initialization`` (see section :ref:`Aspect Relaxed_Initialization`).
-Parts of objects subjected to this aspect only need to be initialized when
+Parts of objects subject to this aspect only need to be initialized when
 actually read. Using ``Relaxed_Initialization`` requires specifying data
 initialization through contracts that are verified by proof (as opposed to
 flow analysis). Thus, ``Relaxed_Initialization`` should only be used when

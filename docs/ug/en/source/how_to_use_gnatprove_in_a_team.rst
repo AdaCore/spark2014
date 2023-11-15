@@ -836,7 +836,7 @@ only part of a program:
   * parameter modes - in particular, parameters of
     mode *in* which are not considered to be variable should not be modified,
     including the values designated by their potential access-to-variable
-    subcomponents, and parameters of mode *out* which are not subjected to
+    subcomponents, and parameters of mode *out* which are not subject to
     relaxed initialization (see :ref:`Aspect Relaxed_Initialization`) should be
     entirely initialized.
 
@@ -863,7 +863,7 @@ only part of a program:
 
   * the initialization of inputs (implicit) - parameters of mode *in* or *in
     out* and global variables of mode *Input* or *In_Out* which are not
-    subjected to relaxed initialization (see :ref:`Aspect
+    subject to relaxed initialization (see :ref:`Aspect
     Relaxed_Initialization`) should be entirely initialized
 
 * [ADA_OBJECT_ADDRESSES]

@@ -372,7 +372,7 @@ following example, it is done by declaring a ``Copy`` function which returns
 a copy of its input list. In its postcondition, we use the two-valued
 ``For_All_List`` function to state that the elements of the new structure
 are equal to the elements of the input structure. An alternative could be
-to store the elements in a structure not subjected to ownership like an array.
+to store the elements in a structure not subject to ownership like an array.
 
 .. note::
 
@@ -927,7 +927,7 @@ example, it is done by declaring a ``Copy`` function which returns
 a copy of its input list. In its postcondition, we use the two-valued
 ``For_All_List`` function to state that the elements of the new structure
 are equal to the elements of its input structure. An alternative could be
-to store the elements in a structure not subjected to ownership like an array.
+to store the elements in a structure not subject to ownership like an array.
 
 .. note::
 

@@ -120,7 +120,7 @@ To handle these cases, it is possible to relax the standard data initialization
 policy of |SPARK| using the ``Relaxed_Initialization`` aspect. This aspect can
 be used:
 
-* on objects, to state that the object should not be subjected to the
+* on objects, to state that the object should not be subject to the
   initialization policy of |SPARK|,
 
 * on types, so that it applies to every object or component of the type, or
@@ -217,7 +217,7 @@ necessarily holds a meaningful value. However, because of the API of the stack,
 it is not possible to read a value stored above the ``Top`` index in
 ``Content`` without writing it first. For this reason, it is not necessary to
 initialize all elements of the stack at creation. To express that, we use in
-the type ``Stack``, which itself is subjected to the standard initialization
+the type ``Stack``, which itself is subject to the standard initialization
 policy, an array with the ``Relaxed_Initialization`` aspect for the ``Content``
 field.
 

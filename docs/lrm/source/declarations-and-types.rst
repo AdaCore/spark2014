@@ -396,7 +396,7 @@ Access Types
 In order to reduce the complexity associated with the specification
 and verification of a program's behavior in the face of pointer-related
 aliasing, anonymous access-to-constant types and (named or anonymous)
-access-to-variable types are subjected to an *ownership policy*.
+access-to-variable types are subject to an *ownership policy*.
 
 Restrictions are imposed on the use of these access objects in order
 to ensure, roughly speaking (and using terms that have not been defined yet),
