@@ -774,7 +774,7 @@ package body Gnat2Why.Expr is
            and then
              (if Nkind (Call) = N_Function_Call
               then Is_Function_With_Side_Effects (Get_Called_Entity (Call)));
-   --  Transform a call to a subprogram with side-effects
+   --  Transform a call to a subprogram with side effects
 
    function Transform_Comparison
      (Expr   : Node_Id;
@@ -11710,7 +11710,7 @@ package body Gnat2Why.Expr is
 
       --  In the case of a function call, there is value to return as the final
       --  expression. Note that this can only occur for calls to functions
-      --  with side-effects or calls to or volatile functions, when one of
+      --  with side effects or calls to or volatile functions, when one of
       --  the parameters is of a volatile type. Save the result of the call at
       --  the start of the sequence (Ref_Context consists in the sequence of
       --  post-call assignments and assumptions at this point) and use it as

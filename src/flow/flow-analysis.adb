@@ -5389,7 +5389,7 @@ package body Flow.Analysis is
 
    begin
       --  Ignore packages (which have no Global contracts) and functions with
-      --  no side-effects (which have no global outputs).
+      --  no side effects (which have no global outputs).
 
       if Ekind (FA.Spec_Entity) in E_Procedure | E_Entry | E_Task_Type
         or else Is_Function_With_Side_Effects (FA.Spec_Entity)
@@ -5646,8 +5646,6 @@ package body Flow.Analysis is
             or else (for some F of Get_Explicit_Formals (FA.Spec_Entity)
                        => Is_Effectively_Volatile_For_Reading (Etype (F)));
 
-         --  HACK: Exempt functions with side-effects from checking until
-         --  support is added in flow.
          if not Is_Function_With_Side_Effects (FA.Spec_Entity) then
             pragma Assert (Globals.Outputs.Is_Empty);
          end if;

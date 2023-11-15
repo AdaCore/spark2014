@@ -724,7 +724,7 @@ package body SPARK_Definition.Annotate is
             elsif Is_Function_With_Side_Effects (Ent) then
                Error_Msg_N_If
                  ("a function annotated with Container_Aggregates must not"
-                  & " have side-effects", Ent);
+                  & " have side effects", Ent);
                return;
             end if;
 
@@ -2112,7 +2112,7 @@ package body SPARK_Definition.Annotate is
                      return;
 
                   --  Lemmas cannot be associated to functions with
-                  --  side-effects.
+                  --  side effects.
 
                   elsif Ekind (Prec) = E_Function
                     and then Is_Function_With_Side_Effects (Prec)
@@ -2120,7 +2120,7 @@ package body SPARK_Definition.Annotate is
                      Error_Msg_N_If
                        ("procedure annotated with the " & Aspect_Or_Pragma
                         & " Automatic_Instantiation shall not be declared"
-                        & " after a function with side-effects", E);
+                        & " after a function with side effects", E);
                      return;
 
                   --  A function has been found, add the association to the
@@ -2208,7 +2208,7 @@ package body SPARK_Definition.Annotate is
             Arg3_Exp);
          return;
 
-      --  For now reject volatile functions, functions with side-effects,
+      --  For now reject volatile functions, functions with side effects,
       --  dispatching operations, and borrowing traversal functions.
 
       elsif Ekind (E) = E_Function and then Is_Volatile_Function (E) then
@@ -2222,7 +2222,7 @@ package body SPARK_Definition.Annotate is
       then
          Error_Msg_N_If
            ("function annotated with Higher_Order_Specialization shall not be"
-            & " a function with side-effects",
+            & " a function with side effects",
             Arg3_Exp);
          return;
       elsif Einfo.Entities.Is_Dispatching_Operation (E)
@@ -2634,7 +2634,7 @@ package body SPARK_Definition.Annotate is
          return;
       end if;
 
-      --  For now reject volatile functions, functions with side-effects,
+      --  For now reject volatile functions, functions with side effects,
       --  dispatching operations, and borrowing traversal functions.
 
       if Is_Volatile_Function (E) then
@@ -2646,7 +2646,7 @@ package body SPARK_Definition.Annotate is
       elsif Is_Function_With_Side_Effects (E) then
          Error_Msg_N_If
            ("function annotated with Inline_For_Proof shall not be"
-            & " a function with side-effects",
+            & " a function with side effects",
             Arg3_Exp);
          return;
       elsif Einfo.Entities.Is_Dispatching_Operation (E)
@@ -2834,7 +2834,7 @@ package body SPARK_Definition.Annotate is
          end if;
          if Is_Function_With_Side_Effects (E) then
             Error_Msg_N_If
-              (Name_For_Error & " function must not have side-effects", E);
+              (Name_For_Error & " function must not have side effects", E);
             return;
          end if;
          Get_Globals
@@ -3946,7 +3946,7 @@ package body SPARK_Definition.Annotate is
 
       --  Make sure that the Empty function and the Add procedure used to
       --  create the aggregate are well behaved (they do not access global data
-      --  and do not have side-effects).
+      --  and do not have side effects).
 
       declare
          Globals : Global_Flow_Ids;

@@ -40,7 +40,7 @@ package Flow.Analysis.Antialiasing is
    with Pre => Nkind (N) in N_Entry_Call_Statement
                           | N_Subprogram_Call;
    --  This procedure looks at an entry/procedure call statement (and at
-   --  the call to function with side-effects as well) and determines if it
+   --  the call to function with side effects as well) and determines if it
    --  introduces aliasing that matters. For the full ruleset see the SPARK RM
    --  6.4.2, but for example aliasing between two immutable 'in' parameters is
    --  OK, but aliasing between two out parameters is not.
