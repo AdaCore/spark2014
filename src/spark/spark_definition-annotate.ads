@@ -496,9 +496,4 @@ package SPARK_Definition.Annotate is
       return Aggregate_Annotation
    with Pre => Has_Aggregate_Annotation (E);
 
-   function Get_Aggregate_Function_From_Pragma (N  : Node_Id) return Entity_Id
-   with Pre => Is_Pragma_Annotate_GNATprove (N);
-   --  Return the function F such that N is a pragma Annotate
-   --  (GNATprove, Container_Aggregates, ..., F).
-
 end SPARK_Definition.Annotate;

@@ -53,10 +53,10 @@ is
       function Next (X : T; Y : C) return C with
         Pre => Has_Element (X, Y);
       function Has_Element (X : T; Y : C) return Boolean;
-      function Model (X : T) return P1.T;
+      function Model (X : T) return P1.T with
+        Annotate => (GNATprove, Iterable_For_Proof, "Model");
       function Element (X : T; Y : C) return Integer with
         Pre  => Has_Element (X, Y);
-      pragma Annotate (GNATprove, Iterable_For_Proof, "Model", Model);
 
    private
       Max : constant := 100;

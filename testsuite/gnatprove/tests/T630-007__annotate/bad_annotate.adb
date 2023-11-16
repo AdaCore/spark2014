@@ -38,10 +38,14 @@ procedure Bad_Annotate with SPARK_Mode is
    function Next (X : T; C : Cursor) return Cursor is (C + 1);
    function Has_Element (X : T; C : Cursor) return Boolean is (C /= 0);
    function Get_F1 (X : T) return Integer;
+   pragma Annotate (GNATprove, Iterable_For_Proof, "Model", Get_F1);
    function Id (X : T; Y : Boolean) return Boolean is (Y);
+   pragma Annotate (GNATprove, Iterable_For_Proof, "Contains", Id);
    function Contains (X : T; Y : Integer) return Boolean;
+   pragma Annotate (GNATprove, Iterable_For_Proof, "Contains", Contains);
    function Model (X : T) return Sequences.Sequence with
      Post => Sequences.Length (Model'Result) = 4;
+   pragma Annotate (GNATprove, Iterable_For_Proof, "Model", Model);
    function Element (X : T; C : Cursor) return Integer is
      (case C is
          when 0 => raise Program_Error,
@@ -50,10 +54,6 @@ procedure Bad_Annotate with SPARK_Mode is
          when 3 => X.F3,
          when 4 => X.F4)
         with Pre => Has_Element (X, C);
-   pragma Annotate (GNATprove, Iterable_For_Proof, "Model", Get_F1);
-   pragma Annotate (GNATprove, Iterable_For_Proof, "Contains", Id);
-   pragma Annotate (GNATprove, Iterable_For_Proof, "Contains", Contains);
-   pragma Annotate (GNATprove, Iterable_For_Proof, "Model", Model);
    function Get_F1 (X : T) return Integer is (X.F1);
    function Contains (X : T; Y : Integer) return Boolean is
      (Y in X.F1 | X.F2 | X.F3 | X.F4);

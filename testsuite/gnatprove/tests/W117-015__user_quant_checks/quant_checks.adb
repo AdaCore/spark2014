@@ -32,10 +32,10 @@ procedure Quant_checks with SPARK_Mode is
       function Has_Element (X : Container; Y : Boolean) return Boolean is (True) --@PRECONDITION:FAIL
         with Pre => False;
       function Contains (X : Container; Y : Boolean) return Boolean is (True) --@PRECONDITION:FAIL
-        with Pre => False;
+        with Pre => False,
+             Annotate => (GNATprove, Iterable_For_Proof, "contains");
       function Element (X : Container; Y : Boolean) return Boolean is (False) --@PRECONDITION:FAIL
         with Pre => False;
-      pragma Annotate (GNATprove, Iterable_For_Proof, "contains", Contains);
       function Last (X : Container) return Boolean is (False)
         with Pre => False;
       function Previous (X : Container; Y : Boolean) return Boolean is (False)
@@ -68,10 +68,10 @@ procedure Quant_checks with SPARK_Mode is
         with Pre => False;
       function Get_Model (X : Container) return Model is --@PRECONDITION:FAIL
         (null record)
-        with Pre => False;
+        with Pre => False,
+             Annotate => (GNATprove, Iterable_For_Proof, "model");
       function Element (X : Container; Y : Boolean) return Boolean is (False) --@PRECONDITION:FAIL
         with Pre => False;
-      pragma Annotate (GNATprove, Iterable_For_Proof, "model", Get_Model);
       function Last (X : Container) return Boolean is (False)
         with Pre => False;
       function Previous (X : Container; Y : Boolean) return Boolean is (False)
@@ -101,13 +101,13 @@ procedure Quant_checks with SPARK_Mode is
           Has_Element (X, 0)
           or else Has_Element (X, 1)
           or else Has_Element (X, 2)
-          or else Unknown (0);
+          or else Unknown (0),
+         Annotate => (GNATprove, Iterable_For_Proof, "contains");
       function Element (X : Container; I : Cursor) return Boolean is --@PRECONDITION:FAIL
         (I /= 0)
         with Pre =>
           Has_Element (X, I)
           and then Unknown (0);
-      pragma Annotate (GNATprove, Iterable_For_Proof, "contains", Contains);
    end Slightly_Too_Strong;
 
 begin

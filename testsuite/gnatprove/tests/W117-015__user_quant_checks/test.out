@@ -70,10 +70,10 @@ quant_checks.adb:34:16: info: implicit aspect Always_Terminates on "Contains" ha
 quant_checks.adb:34:16: medium: during checks for quantification at quant_checks.adb:21
 quant_checks.adb:34:16: medium: precondition might fail
 quant_checks.adb:34:41: warning: unused variable "Y"
-quant_checks.adb:36:16: info: implicit aspect Always_Terminates on "Element" has been proved, subprogram will terminate
-quant_checks.adb:36:16: medium: during checks for quantification at quant_checks.adb:21
-quant_checks.adb:36:16: medium: precondition might fail
-quant_checks.adb:36:40: warning: unused variable "Y"
+quant_checks.adb:37:16: info: implicit aspect Always_Terminates on "Element" has been proved, subprogram will terminate
+quant_checks.adb:37:16: medium: during checks for quantification at quant_checks.adb:21
+quant_checks.adb:37:16: medium: precondition might fail
+quant_checks.adb:37:40: warning: unused variable "Y"
 quant_checks.adb:39:16: info: implicit aspect Always_Terminates on "Last" has been proved, subprogram will terminate
 quant_checks.adb:41:16: info: implicit aspect Always_Terminates on "Previous" has been proved, subprogram will terminate
 quant_checks.adb:41:41: warning: unused variable "Y"
@@ -104,10 +104,10 @@ quant_checks.adb:67:44: warning: unused variable "Y"
 quant_checks.adb:69:16: info: implicit aspect Always_Terminates on "Get_Model" has been proved, subprogram will terminate
 quant_checks.adb:69:16: medium: during checks for quantification at quant_checks.adb:56
 quant_checks.adb:69:16: medium: precondition might fail
-quant_checks.adb:72:16: info: implicit aspect Always_Terminates on "Element" has been proved, subprogram will terminate
-quant_checks.adb:72:16: medium: during checks for quantification at quant_checks.adb:56
-quant_checks.adb:72:16: medium: precondition might fail
-quant_checks.adb:72:40: warning: unused variable "Y"
+quant_checks.adb:73:16: info: implicit aspect Always_Terminates on "Element" has been proved, subprogram will terminate
+quant_checks.adb:73:16: medium: during checks for quantification at quant_checks.adb:56
+quant_checks.adb:73:16: medium: precondition might fail
+quant_checks.adb:73:40: warning: unused variable "Y"
 quant_checks.adb:75:16: info: implicit aspect Always_Terminates on "Last" has been proved, subprogram will terminate
 quant_checks.adb:77:16: info: implicit aspect Always_Terminates on "Previous" has been proved, subprogram will terminate
 quant_checks.adb:77:41: warning: unused variable "Y"
@@ -124,9 +124,9 @@ quant_checks.adb:99:16: info: implicit aspect Always_Terminates on "Contains" ha
 quant_checks.adb:99:16: medium: during checks for quantification at quant_checks.adb:81
 quant_checks.adb:99:16: medium: precondition might fail
 quant_checks.adb:99:41: warning: unused variable "B"
-quant_checks.adb:105:16: info: implicit aspect Always_Terminates on "Element" has been proved, subprogram will terminate
-quant_checks.adb:105:16: medium: during checks for quantification at quant_checks.adb:81
-quant_checks.adb:105:16: medium: precondition might fail, cannot prove Unknown (0)
+quant_checks.adb:106:16: info: implicit aspect Always_Terminates on "Element" has been proved, subprogram will terminate
+quant_checks.adb:106:16: medium: during checks for quantification at quant_checks.adb:81
+quant_checks.adb:106:16: medium: precondition might fail, cannot prove Unknown (0)
 quant_late_errors.adb:13:16: error: iteration primitive shall not be recursive, (including implicitly so)
 quant_late_errors.adb:13:16: info: during checks for quantification at quant_late_errors.adb:6
 quant_late_errors.adb:13:16: info: function contract might not be available on recursive calls
@@ -148,11 +148,11 @@ quant_late_errors.adb:19:16: info: function contract might not be available on i
 quant_late_errors.adb:19:16: info: implicit aspect Always_Terminates on "Contains" has been proved, subprogram will terminate
 quant_late_errors.adb:19:16: info: precondition proved (Trivial: 1 VC)
 quant_late_errors.adb:20:22: info: postcondition proved (Trivial: 1 VC)
-quant_late_errors.adb:21:16: error: iteration primitive shall not be recursive, (including implicitly so)
-quant_late_errors.adb:21:16: info: during checks for quantification at quant_late_errors.adb:6
-quant_late_errors.adb:21:16: info: function contract might not be available on recursive calls
-quant_late_errors.adb:21:16: info: precondition proved (Trivial: 1 VC)
-quant_late_errors.adb:22:22: info: postcondition proved (Trivial: 1 VC)
+quant_late_errors.adb:22:16: error: iteration primitive shall not be recursive, (including implicitly so)
+quant_late_errors.adb:22:16: info: during checks for quantification at quant_late_errors.adb:6
+quant_late_errors.adb:22:16: info: function contract might not be available on recursive calls
+quant_late_errors.adb:22:16: info: precondition proved (Trivial: 1 VC)
+quant_late_errors.adb:23:22: info: postcondition proved (Trivial: 1 VC)
 quant_late_errors.adb:24:16: info: implicit aspect Always_Terminates on "Last" has been proved, subprogram will terminate
 quant_late_errors.adb:25:16: info: implicit aspect Always_Terminates on "Previous" has been proved, subprogram will terminate
 quant_late_errors.adb:29:10: medium: implicit aspect Always_Terminates on "First" could be incorrect, "First" and "Element" are mutually recursive [possible fix: annotate "First" and "Element" with Subprogram_Variant aspects]
@@ -205,11 +205,11 @@ quant_late_errors.adb:68:16: info: function contract might not be available on i
 quant_late_errors.adb:68:16: info: implicit aspect Always_Terminates on "Get_Model" has been proved, subprogram will terminate
 quant_late_errors.adb:68:16: info: precondition proved (Trivial: 1 VC)
 quant_late_errors.adb:69:22: info: postcondition proved (Trivial: 1 VC)
-quant_late_errors.adb:70:16: error: iteration primitive shall not be recursive, (including implicitly so)
-quant_late_errors.adb:70:16: info: during checks for quantification at quant_late_errors.adb:55
-quant_late_errors.adb:70:16: info: function contract might not be available on recursive calls
-quant_late_errors.adb:70:16: info: precondition proved (Trivial: 1 VC)
-quant_late_errors.adb:71:22: info: postcondition proved (Trivial: 1 VC)
+quant_late_errors.adb:71:16: error: iteration primitive shall not be recursive, (including implicitly so)
+quant_late_errors.adb:71:16: info: during checks for quantification at quant_late_errors.adb:55
+quant_late_errors.adb:71:16: info: function contract might not be available on recursive calls
+quant_late_errors.adb:71:16: info: precondition proved (Trivial: 1 VC)
+quant_late_errors.adb:72:22: info: postcondition proved (Trivial: 1 VC)
 quant_late_errors.adb:73:16: info: implicit aspect Always_Terminates on "Last" has been proved, subprogram will terminate
 quant_late_errors.adb:75:16: info: implicit aspect Always_Terminates on "Previous" has been proved, subprogram will terminate
 quant_late_errors.adb:80:10: medium: implicit aspect Always_Terminates on "First" could be incorrect, "First" and "Element" are mutually recursive [possible fix: annotate "First" and "Element" with Subprogram_Variant aspects]
