@@ -24,10 +24,10 @@ main.adb:66:09: info: after a call to Insert at main.adb:83
 main.adb:66:09: info: after a call to Insert at main.adb:83
 main.adb:66:09: info: when establishing invariant on Capacity at main.adb:68
 main.adb:66:09: info: when establishing invariant on Contains at spark-containers-functional-sets.ads:94, in instantiation at main.adb:59
-main.adb:66:09: info: when establishing invariant on Length at spark-containers-functional-sets.ads:118, in instantiation at main.adb:59
+main.adb:66:09: info: when establishing invariant on Length at spark-containers-functional-sets.ads:119, in instantiation at main.adb:59
 main.adb:66:09: info: when reestablishing invariant on Capacity at main.adb:68
 main.adb:66:09: info: when reestablishing invariant on Contains at spark-containers-functional-sets.ads:94, in instantiation at main.adb:59
-main.adb:66:09: info: when reestablishing invariant on Length at spark-containers-functional-sets.ads:118, in instantiation at main.adb:59
+main.adb:66:09: info: when reestablishing invariant on Length at spark-containers-functional-sets.ads:119, in instantiation at main.adb:59
 main.adb:68:16: info: implicit aspect Always_Terminates on "Capacity" has been proved, subprogram will terminate
 main.adb:87:16: info: during checks for container aggregates at main.adb:66
 main.adb:87:16: info: precondition proved (CVC5: 1 VC)
@@ -44,10 +44,10 @@ main.adb:115:09: info: after a call to Insert at main.adb:128
 main.adb:115:09: info: after a call to Insert at main.adb:128
 main.adb:115:09: info: after a call to Insert at main.adb:128
 main.adb:115:09: info: when establishing invariant on Has_Key at spark-containers-functional-maps.ads:120, in instantiation at main.adb:108
-main.adb:115:09: info: when establishing invariant on Length at spark-containers-functional-maps.ads:166, in instantiation at main.adb:108
-main.adb:115:09: info: when reestablishing invariant on Get at spark-containers-functional-maps.ads:137, in instantiation at main.adb:108
+main.adb:115:09: info: when establishing invariant on Length at spark-containers-functional-maps.ads:167, in instantiation at main.adb:108
+main.adb:115:09: info: when reestablishing invariant on Get at spark-containers-functional-maps.ads:138, in instantiation at main.adb:108
 main.adb:115:09: info: when reestablishing invariant on Has_Key at spark-containers-functional-maps.ads:120, in instantiation at main.adb:108
-main.adb:115:09: info: when reestablishing invariant on Length at spark-containers-functional-maps.ads:166, in instantiation at main.adb:108
+main.adb:115:09: info: when reestablishing invariant on Length at spark-containers-functional-maps.ads:167, in instantiation at main.adb:108
 main.adb:131:17: info: during checks for container aggregates at main.adb:115
 main.adb:131:17: info: precondition proved (CVC5: 1 VC)
 main.adb:162:12: info: Container_Aggregates annotation proved (CVC5: 1 VC)
