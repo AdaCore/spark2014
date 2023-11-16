@@ -60,6 +60,7 @@ package SPARK_Util.Hardcoded is
       Max                  : constant String := "max";
       From_String          : constant String := "from_string";
       From_Universal_Image : constant String := "from_universal_image";
+      From_Quotient_String : constant String := "from_quotient_string";
       Generic_To_Big_Real  : constant String := "to_big_real";
    end Big_Reals_Names;
    --  Names of entities that will be considered as hardcoded in the
