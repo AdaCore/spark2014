@@ -301,12 +301,14 @@ available resources:
 .. note::
 
    Functional sets, maps and multisets operate with a user-provided equivalence
-   relation, which is different from the logical equality. This can sometimes
-   have surprising results. For example, ``Contains`` can return ``True`` if an
-   equivalent (but not equal) element is in the set. Similarly, the quantified
+   relation, which might be different from the logical equality. In this case,
+   all elements or keys of an equivalence class are removed or included
+   together in the container. This can sometimes have surprising results.
+   For example, ``Contains`` can return ``True`` if an equivalent (but not
+   equal) element has been added to a set. Similarly, the quantified
    expression ``for Some E of S => Cond (E)`` might be proved if Cond is
-   ``False`` for all elements actually in the set, but ``True`` for an object
-   equivalent to any element in the set.
+   ``False`` for all elements that were explicitely added to the set,
+   but ``True`` for an object equivalent to such an element.
 
 The functional sets, maps, sequences, and vectors have child packages providing
 higher order functions:
