@@ -879,7 +879,7 @@ package body Gnat2Why.Types is
          if Is_Tagged_Root then
             Dispatch_Th :=
               Open_Theory
-                (WF_Context, E_Dispatch_Eq_Module (E, Axiom => True),
+                (WF_Context, E_Module (E, Dispatch_Equality_Axiom),
                  Comment =>
                    "Module giving axioms for dispatching equality of record"
                  & " type """ & Get_Name_String (Chars (E)) & """"
@@ -897,7 +897,7 @@ package body Gnat2Why.Types is
          then
             User_Th :=
               Open_Theory
-                (WF_Context, E_User_Eq_Module (E, Axiom => True),
+                (WF_Context, E_Module (E, User_Equality_Axiom),
                  Comment =>
                    "Module giving axioms for primitive equality of record"
                  & " type """ & Get_Name_String (Chars (E)) & """"
@@ -958,7 +958,7 @@ package body Gnat2Why.Types is
                Close_Theory (User_Th,
                              Kind => Definition_Theory);
                Record_Extra_Dependency
-                 (Defining_Module => E_User_Eq_Module (E),
+                 (Defining_Module => E_Module (E, User_Equality),
                   Axiom_Module    => User_Th.Module);
 
                --  If E is the root of a tagged hierarchy, also generate a
@@ -1099,7 +1099,7 @@ package body Gnat2Why.Types is
             Close_Theory (Dispatch_Th,
                           Kind => Definition_Theory);
             Record_Extra_Dependency
-              (Defining_Module => E_Dispatch_Eq_Module (E),
+              (Defining_Module => E_Module (E, Dispatch_Equality),
                Axiom_Module    => Dispatch_Th.Module);
          end if;
       end Generate_Axioms_For_Equality;
@@ -1112,7 +1112,7 @@ package body Gnat2Why.Types is
 
       Th :=
         Open_Theory
-          (WF_Context, E_Axiom_Module (E),
+          (WF_Context, E_Module (E, Axiom),
            Comment =>
              "Module giving axioms for type "
            & """" & Get_Name_String (Chars (E)) & """"
@@ -1145,7 +1145,7 @@ package body Gnat2Why.Types is
       --  depend on locally defined constants such as 'Old.
 
       if not Is_Itype (E) then
-         Create_Dynamic_Invariant (Th, E, E_Axiom_Module (E));
+         Create_Dynamic_Invariant (Th, E, E_Module (E, Axiom));
       end if;
 
       --  If E is a scalar type with dynamic bounds, we give axioms for the
@@ -1176,7 +1176,7 @@ package body Gnat2Why.Types is
       if not Is_Itype (E) and then Can_Be_Default_Initialized (E) then
          Th :=
            Open_Theory
-             (WF_Context, E_DIC_Module (E),
+             (WF_Context, E_Module (E, Default_Initialialization),
               Comment =>
                 "Module giving a predicate for the default initial assumption"
               & " of type """ & Get_Name_String (Chars (E)) & """"
@@ -1192,7 +1192,7 @@ package body Gnat2Why.Types is
       if Has_Invariants_In_SPARK (E) then
          Th :=
            Open_Theory
-             (WF_Context, E_Invariant_Module (E),
+             (WF_Context, E_Module (E, Invariant),
               Comment =>
                 "Module giving a predicate for the type invariant of"
               & " type """ & Get_Name_String (Chars (E)) & """"
@@ -1218,7 +1218,11 @@ package body Gnat2Why.Types is
          begin
             Th :=
               Open_Theory
-                (WF_Context, E_Move_Module (E, Axiom => In_Axiom_Module),
+                (WF_Context,
+                 E_Module
+                   (E,
+                    (if In_Axiom_Module then Ownership_Move_Axiom
+                     else Ownership_Move)),
                  Comment =>
                    "Module declaring a move function and possibly move"
                  & " predicates for type """ & Get_Name_String (Chars (E))
@@ -1240,7 +1244,7 @@ package body Gnat2Why.Types is
 
             if In_Axiom_Module then
                Record_Extra_Dependency
-                 (Defining_Module => E_Move_Module (E),
+                 (Defining_Module => E_Module (E, Ownership_Move),
                   Axiom_Module    => Th.Module);
             end if;
          end;
@@ -1555,7 +1559,7 @@ package body Gnat2Why.Types is
 
          if not Use_Predefined_Equality_For_Type (E) then
             Th := Open_Theory
-              (WF_Context, E_User_Eq_Module (E),
+              (WF_Context, E_Module (E, User_Equality),
                Comment =>
                  "Module for primitive equality of record type "
                & """" & Get_Name_String (Chars (E)) & """"
@@ -1581,7 +1585,7 @@ package body Gnat2Why.Types is
 
          if Is_Tagged_Type (E) and then E = Root_Retysp (E) then
             Th := Open_Theory
-              (WF_Context, E_Dispatch_Eq_Module (E),
+              (WF_Context, E_Module (E, Dispatch_Equality),
                Comment =>
                  "Module for dispatching equality of record type "
                & """" & Get_Name_String (Chars (E)) & """"
@@ -1776,7 +1780,7 @@ package body Gnat2Why.Types is
          then
             Th :=
               Open_Theory
-                (WF_Context, E_Rep_Module (E),
+                (WF_Context, E_Module (E, Type_Representative),
                  Comment =>
                    "Module defining to_rep/of_rep for type "
                  & """" & Get_Name_String (Chars (E)) & """"
@@ -1813,7 +1817,7 @@ package body Gnat2Why.Types is
       if Has_Init_Wrapper (E) then
          Th :=
            Open_Theory
-             (WF_Context, E_Init_Module (E),
+             (WF_Context, E_Module (E, Init_Wrapper),
               Comment =>
                 "Module defining a wrapper to verify initialization for type "
               & """" & Get_Name_String (Chars (E)) & """"
@@ -1857,7 +1861,7 @@ package body Gnat2Why.Types is
         and then Contains_Allocated_Parts (E)
       then
          Th := Open_Theory
-           (WF_Context, E_Move_Module (E),
+           (WF_Context, E_Module (E, Ownership_Move),
             Comment =>
               "Module for the move predicates for the type "
             & """" & Get_Name_String (Chars (E)) & """"

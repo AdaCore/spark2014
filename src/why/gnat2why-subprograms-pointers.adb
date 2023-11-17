@@ -971,7 +971,7 @@ package body Gnat2Why.Subprograms.Pointers is
 
       Th :=
         Open_Theory
-          (WF_Context, E_Axiom_Module (Expr),
+          (WF_Context, E_Module (Expr, Axiom),
            Comment =>
              "Module for defining the value of the subprogram Access"
            & " attribute at "
