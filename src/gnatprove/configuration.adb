@@ -263,7 +263,10 @@ package body Configuration is
          if View.Tree.Runtime (Ada_Language) /= "" then
             declare
                RT_Attr : constant Project.Attribute.Object :=
-                 View.Attribute (Project.Registry.Attribute.Runtime_Dir);
+                 View.Attribute
+                   (Project.Registry.Attribute.Runtime_Dir,
+                    Index =>
+                      GPR2.Project.Attribute_Index.Create (GPR2.Ada_Language));
             begin
                if RT_Attr.Is_Defined then
                   declare
