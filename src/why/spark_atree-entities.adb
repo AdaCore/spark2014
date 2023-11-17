@@ -169,6 +169,13 @@ package body SPARK_Atree.Entities is
    function Enclosing_Type (Obj : Entity_Id) return Type_Kind_Id is
      (Sinfo.Nodes.Scope (Obj));
 
+   -----------
+   -- Esize --
+   -----------
+
+   function Esize (Ent : Entity_Id) return Unat is
+     (Einfo.Entities.Esize (Ent));
+
    ------------------------
    -- First_Discriminant --
    ------------------------
@@ -499,12 +506,26 @@ package body SPARK_Atree.Entities is
       or else (Einfo.Utils.Known_Static_Component_Bit_Offset (Obj)
                and then Einfo.Utils.Known_Static_Component_Size (Obj)));
 
+   -----------------
+   -- Known_Esize --
+   -----------------
+
+   function Known_Esize (Ent : Entity_Id) return Boolean renames
+     Einfo.Utils.Known_Esize;
+
    -----------------------
    -- Known_Object_Size --
    -----------------------
 
    function Known_Object_Size (Typ : Type_Kind_Id) return Boolean is
      (Einfo.Utils.Known_Esize (Typ));
+
+   -------------------
+   -- Known_RM_Size --
+   -------------------
+
+   function Known_RM_Size (Ent : Entity_Id) return Boolean renames
+     Einfo.Utils.Known_RM_Size;
 
    ----------------------
    -- Known_To_Precede --
@@ -750,6 +771,13 @@ package body SPARK_Atree.Entities is
 
    function Return_Applies_To (E : E_Return_Statement_Id) return Node_Id is
      (Einfo.Entities.Return_Applies_To (E));
+
+   -------------
+   -- RM_Size --
+   -------------
+
+   function RM_Size (Typ : Type_Kind_Id) return Unat is
+     (Einfo.Entities.RM_Size (Typ));
 
    -----------------------
    -- Stored_Constraint --

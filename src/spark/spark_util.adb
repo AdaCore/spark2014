@@ -35,6 +35,7 @@ with Flow_Types;                  use Flow_Types;
 with Flow_Utility;                use Flow_Utility;
 with Flow_Utility.Initialization; use Flow_Utility.Initialization;
 with GNATCOLL.Utils;              use GNATCOLL.Utils;
+with Gnat2Why.Data_Decomposition; use Gnat2Why.Data_Decomposition;
 with Gnat2Why_Args;
 with Lib.Xref;
 with Opt;
@@ -4990,8 +4991,8 @@ package body SPARK_Util is
       Result      : out Boolean;
       Explanation : out Unbounded_String)
    is
-      AX : Uint;
-      AY : Uint;
+      AX : constant Uint := Get_Attribute_Value (X, Attribute_Alignment);
+      AY : Uint := Get_Attribute_Value (Y, Attribute_Alignment);
       --  Alignment, which is coming either from the aspect or representation
       --  clause (when specified explicitly for stand-alone object) or from the
       --  type (when possible).
@@ -4999,9 +5000,7 @@ package body SPARK_Util is
    begin
       --  Stand-alone objects can have alignment specified explicitly
 
-      if Known_Alignment (X) then
-         AX := Alignment (X);
-      else
+      if No (AX) then
          Result := False;
          Explanation :=
            To_Unbounded_String
@@ -5013,23 +5012,29 @@ package body SPARK_Util is
       --  Similar for the second object, but also recognize implicit alignment
       --  for formal parameters.
 
-      if Known_Alignment (Y) then
-         AY := Alignment (Y);
-
-      elsif Is_Formal (Y)
-        and then Known_Alignment (Etype (Y))
+      if No (AY)
+        and then Is_Formal (Y)
       then
-         if Is_Aliased (Y) then
-            AY := Alignment (Etype (Y));
-         else
-            Result := False;
-            Explanation :=
-              To_Unbounded_String
-                (Source_Name (Y) &
-                 " must be aliased for its alignment to be known");
-            return;
-         end if;
-      else
+         declare
+            Align_Typ : constant Uint :=
+              Get_Attribute_Value (Etype (Y), Attribute_Alignment);
+         begin
+            if Present (Align_Typ) then
+               if Is_Aliased (Y) then
+                  AY := Align_Typ;
+               else
+                  Result := False;
+                  Explanation :=
+                    To_Unbounded_String
+                      (Source_Name (Y) &
+                       " must be aliased for its alignment to be known");
+                  return;
+               end if;
+            end if;
+         end;
+      end if;
+
+      if No (AY) then
          Result := False;
          Explanation :=
            To_Unbounded_String
