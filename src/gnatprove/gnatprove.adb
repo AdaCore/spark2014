@@ -285,10 +285,14 @@ procedure Gnatprove with SPARK_Mode is
          Args.Append (Arg);
       end loop;
 
-      Args.Append ("-gnatc");  --  Do not generate an object file
-
       if Call_Gnat2Why then
+         --  We don't use -gnatc for generating data representation, as it may
+         --  lead to incorrect results, and also decreases the precision of the
+         --  results.
+         Args.Append ("-gnatc");  --  Do not generate an object file
          Args.Append ("-gnates=" & Opt_File);
+      else
+         Args.Append ("-S");  --  Stop after compilation and do not assemble
       end if;
 
       if GnateT_Switch /= null
