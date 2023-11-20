@@ -1,0 +1,4 @@
+repro.adb:3:18: info: initialization of "X" proved
+repro.adb:8:13: info: implicit aspect Always_Terminates on "FUN_IS_DEBUG_BUILD" has been proved, subprogram will terminate
+repro.adb:12:07: warning: statement has no effect
+repro.adb:16:07: warning: statement has no effect
