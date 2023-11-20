@@ -5658,7 +5658,7 @@ package body Gnat2Why.Subprograms is
       end if;
 
       --  Do not generate an axiom for the postcondition of volatile functions,
-      --  protected subprograms and functions with side-effects.
+      --  protected subprograms and functions with side effects.
 
       if not Is_Function_Or_Function_Type (E)
         or else Is_Function_With_Side_Effects (E)
@@ -6129,7 +6129,7 @@ package body Gnat2Why.Subprograms is
                if Ekind (E) = E_Function then
 
                   --  Do not generate compatibility axioms for volatile
-                  --  functions and functions with side-effects as they do
+                  --  functions and functions with side effects as they do
                   --  not have any associated logic function.
                   --  ??? They could maybe be handled like procedures, using a
                   --  specific_post predicate.
@@ -6756,7 +6756,7 @@ package body Gnat2Why.Subprograms is
 
             begin
                --  A volatile function has an effect, as well as a function
-               --  with side-effects, and should not have the special
+               --  with side effects, and should not have the special
                --  postcondition which says its result is equal to the
                --  logic function.
 
@@ -7539,7 +7539,7 @@ package body Gnat2Why.Subprograms is
       end if;
 
       --  If the entity's body is not in SPARK, if it is inlined for proof, or
-      --  if it is a volatile function or a function with side-effects, do not
+      --  if it is a volatile function or a function with side effects, do not
       --  generate axiom.
 
       if not Entity_Body_Compatible_With_SPARK (E)
@@ -7742,7 +7742,7 @@ package body Gnat2Why.Subprograms is
       end if;
 
       --  No logic function is created for volatile functions and functions
-      --  with side-effects. The function's effects are modelled by an effect
+      --  with side effects. The function's effects are modelled by an effect
       --  on the program function.
 
       if Ekind (E) = E_Function

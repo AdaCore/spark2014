@@ -1197,7 +1197,7 @@ package body Flow.Analysis.Sanity is
                   --  Check that the prefix of a dereference in an object
                   --  renaming declaration which renames part of that
                   --  dereference is without variable inputs. Contrary to
-                  --  indexing expressions and slices whose side-effects are
+                  --  indexing expressions and slices whose side effects are
                   --  correctly hoisted in GNATprove, we can't do the same
                   --  for naming the memory pointed to by a pointer before
                   --  the pointer is reassigned.

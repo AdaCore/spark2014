@@ -101,7 +101,7 @@ package body Flow.Analysis.Antialiasing is
         Post => Status >= Status'Old;
    --  Checks the two nodes for aliasing and issues an error message if
    --  appropriate. The formal of A can be a function entity, which represents
-   --  the LHS of assignment that has call with side-effects as the RHS. The
+   --  the LHS of assignment that has call with side effects as the RHS. The
    --  formal for B can be Empty, which represents a global. Error are emitted
    --  at Error_N, which is expression that best describes the cause of
    --  aliasing.
@@ -561,7 +561,7 @@ package body Flow.Analysis.Antialiasing is
             Trace_Line ("   -> B is an abstract state");
             return Impossible;
 
-         --  SPARK RM 6.4.2(5): A call to a function with side-effects shall
+         --  SPARK RM 6.4.2(5): A call to a function with side effects shall
          --  only pass an actual parameter which potentially introduces
          --  aliasing via parameter passing with an object referenced from the
          --  [left-hand side] name of the enclosing assignment statement, when
@@ -573,7 +573,7 @@ package body Flow.Analysis.Antialiasing is
                      or else B_Present_And_Anonymous_Access_Constant_In)
          then
             Trace_Line
-              ("   -> function with side-effect and formal which is either" &
+              ("   -> function with side effect and formal which is either" &
                  "immutable " &
                  "or mode 'in' anonymous access-to-constant");
             return Impossible;
@@ -972,7 +972,7 @@ package body Flow.Analysis.Antialiasing is
          else
            Flow_Id_Sets.Empty_Set);
       --  Objects referenced from the LHS of the assignment statement where the
-      --  RHS is a call to function with side-effects.
+      --  RHS is a call to function with side effects.
 
       Status : Computed_Aliasing_Result := Impossible;
 
@@ -1059,7 +1059,7 @@ package body Flow.Analysis.Antialiasing is
             end loop;
          end if;
 
-         --  For a call to function with side-effects, check the parameter
+         --  For a call to function with side effects, check the parameter
          --  against the function entity and all the objects referenced from
          --  the LHS of the assignment statement which are known by Entity_Id
          --  (because the actual parameter cannot alias with a global object
@@ -1133,7 +1133,7 @@ package body Flow.Analysis.Antialiasing is
 
       Check_Aliasing_In_Call (N);
 
-      --  SPARK RM 6.4.2(6): A call to a function with side-effects shall
+      --  SPARK RM 6.4.2(6): A call to a function with side effects shall
       --  not reference a ``global_item`` of mode Output or In_Out which
       --  potentially introduces aliasing via parameter passing with an object
       --  referenced from the [left-hand side] name of the enclosing assignment

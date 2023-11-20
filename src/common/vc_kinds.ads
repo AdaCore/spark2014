@@ -215,7 +215,7 @@ package VC_Kinds is
       --  Non Volatile_Function refers to globals with volatile effects
 
       Side_Effects,
-      --  A function with side-effects has been found
+      --  A function with side effects has been found
 
       --  Flow_Check_Kind - checks
       ----------------------------

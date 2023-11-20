@@ -1616,7 +1616,7 @@ package body Flow.Control_Flow_Graph is
 
       FA.Proof_Dependencies.Union (Get_Reclamation_Functions (LHS_Type));
 
-      --  Assignment with a function that has side-effects is handled like a
+      --  Assignment with a function that has side effects is handled like a
       --  subprogram call: the function entity acts like a formal parameter
       --  of mode OUT and the LHS acts like the corresponding actual parameter.
 

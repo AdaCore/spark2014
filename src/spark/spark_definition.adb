@@ -680,7 +680,7 @@ package body SPARK_Definition is
                      Mark_Violation
                        (Msg_Prefix
                         & " occurring inside a procedure call which is not"
-                        & " known to be free of side-effects",
+                        & " known to be free of side effects",
                         Proph);
                      return;
                   end;
@@ -2899,7 +2899,7 @@ package body SPARK_Definition is
          =>
             null;
 
-         --  Itype reference node may be needed to express the side-effects
+         --  Itype reference node may be needed to express the side effects
          --  associated to the creation of an Itype.
 
          when N_Itype_Reference =>
@@ -3059,7 +3059,7 @@ package body SPARK_Definition is
                Mark_Unsupported (Lim_Target_Name_In_Move, N);
             end if;
 
-            --  A call to a function with side-effects shall not reference the
+            --  A call to a function with side effects shall not reference the
             --  symbol ``@`` to refer to the target name of the assignment
             --  (SPARK RM 6.11(7)).
 
@@ -3080,7 +3080,7 @@ package body SPARK_Definition is
                then
                   Mark_Violation
                     ("use of ""'@"" inside a call to a function"
-                     & " with side-effects",
+                     & " with side effects",
                      N);
                end if;
             end;
@@ -4170,7 +4170,7 @@ package body SPARK_Definition is
                      elsif Is_Dispatching_Operation (Subp) then
                         Mark_Unsupported (Lim_Access_To_Dispatch_Op, N);
 
-                     --  Functions with side-effects, volatile functions and
+                     --  Functions with side effects, volatile functions and
                      --  subprograms declared within a protected object have
                      --  an implicit global parameter. We do not support taking
                      --  their access.
@@ -4179,7 +4179,7 @@ package body SPARK_Definition is
                        and then Is_Function_With_Side_Effects (Subp)
                      then
                         Mark_Violation
-                          ("access to function with side-effects", N);
+                          ("access to function with side effects", N);
 
                      elsif Ekind (Subp) = E_Function
                        and then Is_Volatile_Function (Subp)
@@ -4817,7 +4817,7 @@ package body SPARK_Definition is
          end;
       end if;
 
-      --  A call to a function with side-effects may only occur as the
+      --  A call to a function with side effects may only occur as the
       --  [right-hand side] expression of an assignment statement. (SPARK
       --  RM 6.1.11(4))
 
@@ -4826,7 +4826,7 @@ package body SPARK_Definition is
         and then Nkind (Parent (N)) /= N_Assignment_Statement
       then
          Mark_Violation
-           ("call to a function with side-effects outside of assignment", N,
+           ("call to a function with side effects outside of assignment", N,
             Code => EC_Call_To_Function_With_Side_Effects);
          return;
       end if;
@@ -5866,14 +5866,13 @@ package body SPARK_Definition is
                end if;
             end if;
 
-            --  A function with side-effects shall not be a traversal function
+            --  A function with side effects shall not be a traversal function
             --  (SPARK RM 6.1.11(7)).
 
             if Is_Function_With_Side_Effects (Id)
               and then Is_Traversal_Function (Id)
             then
-               Mark_Violation
-                 ("traversal function shall not have side-effects", Id);
+               Mark_Violation ("traversal function with side effects", Id);
             end if;
 
             if Is_User_Defined_Equality (Id)
@@ -5896,12 +5895,12 @@ package body SPARK_Definition is
                            SRM_Reference => "SPARK RM 7.1.3(11)");
 
                      --  A user-defined primitive equality operation on a
-                     --  record type shall not be a function with side-effects,
+                     --  record type shall not be a function with side effects,
                      --  unless the record type has only limited views (SPARK
                      --  RM 6.11(8)).
                      elsif Is_Function_With_Side_Effects (Id) then
                         Mark_Violation
-                          ("function with side-effects as"
+                          ("function with side effects as"
                            & " user-defined equality on record type", Id,
                            SRM_Reference => "SPARK RM 6.11(8)");
 
@@ -5950,7 +5949,7 @@ package body SPARK_Definition is
                        "parameter", Id);
                end if;
 
-               --  The declaration of a function without side-effects shall not
+               --  The declaration of a function without side effects shall not
                --  have a parameter_specification with a mode of OUT or IN OUT
                --  (SPARK RM 6.1(6)).
 
@@ -6000,7 +5999,7 @@ package body SPARK_Definition is
             end if;
 
             --  Go over the global objects accessed by Id to make sure that
-            --  they are not written if Id is not a function with side-effects,
+            --  they are not written if Id is not a function with side effects,
             --  and that they are not volatile if Id is not a volatile
             --  function. This check is done in the frontend for explict
             --  global contracts, but we need it for the generated ones.
@@ -6179,7 +6178,7 @@ package body SPARK_Definition is
             if Present (Prag) then
 
                --  The frontend rejects Exceptional_Cases on functions without
-               --  side-effects.
+               --  side effects.
                pragma Assert (Ekind (E) /= E_Function
                               or else Is_Function_With_Side_Effects (E));
 
@@ -6271,7 +6270,7 @@ package body SPARK_Definition is
             if Present (Prag) then
 
                --  The frontend rejects Always_Terminates on functions without
-               --  side-effects.
+               --  side effects.
                pragma Assert (Ekind (E) /= E_Function
                               or else Is_Function_With_Side_Effects (E));
 
@@ -8888,7 +8887,7 @@ package body SPARK_Definition is
          end if;
          if Is_Function_With_Side_Effects (Ent) then
             Mark_Violation
-              ("function with side-effects associated with aspect Iterable",
+              ("function with side effects associated with aspect Iterable",
                N);
          end if;
          Get_Globals
@@ -9129,7 +9128,7 @@ package body SPARK_Definition is
       --  variable input. We need to do this after marking declarations of
       --  generic actual parameters of mode IN, as otherwise we would memoize
       --  them as having no variable inputs due to their not in SPARK status.
-      --  This memoization is a side-effect of erasing constants without
+      --  This memoization is a side effect of erasing constants without
       --  variable inputs while parsing the contract.
 
       if Present (Get_Pragma (Id, Pragma_Initializes)) then
