@@ -2722,6 +2722,7 @@ package body SPARK_Util is
             | E_Constant
             | E_Variable
             | E_Component
+            | E_Loop_Parameter
             | Type_Kind
             | E_In_Out_Parameter
          =>

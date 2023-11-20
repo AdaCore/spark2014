@@ -1,7 +1,9 @@
-p.ads:17:25: error: entity for aspect "Volatile" must denote a full type or object declaration
-p.ads:21:09: error: non-volatile type "R2" cannot have effectively volatile components
-p.ads:23:07: error: component "F2" of non-volatile type "R2" cannot be volatile
-p.ads:26:13: error: discriminant cannot be volatile
-p.ads:30:09: error: discriminated type "R4" cannot be volatile
-p.ads:38:04: error: discriminated object "SV" cannot be volatile
-gnatprove: error during generation of Global contracts
+p.ads:17:07: error: violation of aspect SPARK_Mode at line 2
+p.ads:17:07: error: volatile component "F2" of non-volatile type "R" is not allowed in SPARK
+p.ads:23:07: error: violation of aspect SPARK_Mode at line 2
+p.ads:23:07: error: volatile component "F2" of non-volatile type "R2" is not allowed in SPARK
+p.ads:26:13: error: violation of aspect SPARK_Mode at line 2
+p.ads:26:13: error: volatile discriminant is not allowed in SPARK
+p.ads:30:09: error: discriminated volatile type is not allowed in SPARK
+p.ads:30:09: error: violation of aspect SPARK_Mode at line 2
+gnatprove: error during flow analysis and proof
