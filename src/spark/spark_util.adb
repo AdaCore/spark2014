@@ -1828,10 +1828,20 @@ package body SPARK_Util is
 
          when N_Allocator =>
             if Nkind (Expression (Expr)) = N_Qualified_Expression then
-               return not Has_Relaxed_Init
-                   (Directly_Designated_Type (Retysp (Etype (Expr))))
-                 and then Expr_Has_Relaxed_Init
-                   (Expression (Expr), No_Eval => False);
+               declare
+                  Des_Ty : Entity_Id := Directly_Designated_Type
+                    (Retysp (Etype (Expr)));
+               begin
+                  if Is_Incomplete_Type (Des_Ty)
+                    and then Present (Full_View (Des_Ty))
+                  then
+                     Des_Ty := Full_View (Des_Ty);
+                  end if;
+
+                  return not Has_Relaxed_Init (Des_Ty)
+                    and then Expr_Has_Relaxed_Init
+                      (Expression (Expr), No_Eval => False);
+               end;
             else
                --  The default value is necessarily entirely initialized
 
