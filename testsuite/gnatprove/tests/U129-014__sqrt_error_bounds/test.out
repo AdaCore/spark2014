@@ -1,9 +1,9 @@
-norm-reals-errors.adb:11:14: medium: postcondition might fail (e.g. when X = 1.6749602E+38 and Y = 1.6749602E+38)
+norm-reals-errors.adb:11:14: medium: postcondition might fail
 norm-reals-errors.adb:11:34: info: float overflow check proved (CVC5: 1 VC)
 norm-reals-errors.adb:12:63: info: predicate check proved (Trivial: 1 VC)
 norm-reals-errors.adb:13:22: info: predicate check proved (Trivial: 1 VC)
 norm-reals-errors.adb:14:22: info: predicate check proved (Trivial: 1 VC)
-norm-reals-errors.adb:17:14: medium: postcondition might fail (e.g. when X = -3.5115314E+15 and Y = -3.5115314E+15)
+norm-reals-errors.adb:17:14: medium: postcondition might fail
 norm-reals-errors.adb:17:34: info: float overflow check proved (Trivial)
 norm-reals-errors.adb:18:63: info: predicate check proved (Trivial: 1 VC)
 norm-reals-errors.adb:19:22: info: predicate check proved (Trivial: 1 VC)
@@ -31,7 +31,7 @@ norm-reals-errors.adb:52:91: info: float overflow check proved (colibri: 1 VC)
 norm-reals-errors.adb:53:14: info: predicate check proved (Trivial: 1 VC)
 norm-reals-errors.adb:53:25: info: predicate check proved (Trivial: 1 VC)
 norm-reals-errors.adb:53:43: info: predicate check proved (Trivial: 1 VC)
-norm-reals-errors.adb:61:13: medium: assertion might fail (e.g. when Sum_F = 5.7013916E+3 and V = 5.7013916E+3)
+norm-reals-errors.adb:61:13: medium: assertion might fail
 norm-reals-errors.adb:61:37: info: float overflow check proved (colibri: 1 VC)
 norm-reals-errors.adb:61:41: info: float overflow check proved (CVC5: 1 VC)
 norm-reals-errors.adb:61:87: info: float overflow check proved (CVC5: 1 VC)
@@ -64,7 +64,7 @@ norm-reals-errors.adb:99:39: info: predicate check proved (Trivial: 1 VC)
 norm-reals-errors.adb:100:35: info: float overflow check proved (CVC5: 1 VC)
 norm-reals-errors.adb:101:14: info: predicate check proved (Trivial: 1 VC)
 norm-reals-errors.adb:101:24: info: predicate check proved (Trivial: 1 VC)
-norm-reals-errors.adb:102:17: medium: postcondition might fail (e.g. when Sum_F = 1.0)
+norm-reals-errors.adb:102:17: medium: postcondition might fail
 norm-reals-errors.adb:103:14: info: predicate check proved (Trivial: 1 VC)
 norm-reals-errors.adb:103:39: info: predicate check proved (Trivial: 1 VC)
 norm-reals-errors.adb:103:48: info: predicate check proved (Trivial: 1 VC)
@@ -86,9 +86,9 @@ norm-reals-errors.adb:141:10: info: precondition proved (CVC5: 2 VC)
 norm-reals-errors.adb:143:10: info: subprogram variant proved (CVC5: 1 VC)
 norm-reals-errors.adb:143:39: info: range check proved (CVC5: 2 VC)
 norm-reals-errors.adb:146:13: info: range check proved (CVC5: 1 VC)
-norm-reals-errors.adb:146:60: medium: float overflow check might fail (e.g. when I = 3 and Values = (3 => -5.7899306E+28, others => 0.0)) [reason for check: result of floating-point exponentiation must be bounded] [possible fix: subprogram at norm-reals-errors.ads:3 should mention I and Values in a precondition]
-norm-reals-errors.adb:146:60: medium: range check might fail (e.g. when I = 3 and Values = (3 => -1.3184857E+19, others => 0.0)) [reason for check: input value must fit in parameter type] [possible fix: subprogram at norm-reals-errors.ads:3 should mention I and Values in a precondition]
-norm-reals-errors.adb:149:10: medium: precondition might fail, cannot prove abs (To_Big_Real (Sum_F + V ** 2) - (To_Big_Real (Sum_F) + To_Big_Real (V ** 2))) <= 1.2E-45 + 1.0E-7 * (To_Big_Real (Sum_F) + To_Big_Real (V ** 2)) (e.g. when I = 3 and Values = (3 => 1.0, others => 1.0)) [possible fix: subprogram at norm-reals-errors.ads:3 should mention I and Values in a precondition]
+norm-reals-errors.adb:146:60: medium: float overflow check might fail [reason for check: result of floating-point exponentiation must be bounded] [possible fix: subprogram at norm-reals-errors.ads:3 should mention I and Values in a precondition]
+norm-reals-errors.adb:146:60: medium: range check might fail [reason for check: input value must fit in parameter type] [possible fix: subprogram at norm-reals-errors.ads:3 should mention I and Values in a precondition]
+norm-reals-errors.adb:149:10: medium: precondition might fail, cannot prove abs (To_Big_Real (Sum_F + V ** 2) - (To_Big_Real (Sum_F) + To_Big_Real (V ** 2))) <= 1.2E-45 + 1.0E-7 * (To_Big_Real (Sum_F) + To_Big_Real (V ** 2)) [possible fix: subprogram at norm-reals-errors.ads:3 should mention I and Values in a precondition]
 norm-reals-errors.adb:150:22: info: range check proved (CVC5: 1 VC)
 norm-reals-errors.adb:154:10: medium: precondition might fail, cannot prove abs (To_Big_Real (V ** 2) - (To_Big_Real (V) * To_Big_Real (V))) <= 1.2E-45 + 1.0E-7 * To_Big_Real (V) * To_Big_Real (V) [possible fix: subprogram at norm-reals-errors.ads:3 should mention I and Values in a precondition]
 norm-reals-errors.adb:155:22: info: range check proved (CVC5: 1 VC)
@@ -145,7 +145,7 @@ norm-reals-errors.adb:212:07: warning: assuming "Bound_Error_Sqrt" always termin
 norm-reals-errors.adb:212:07: warning: assuming "Bound_Error_Sqrt" has no effect on global items
 norm-reals-errors.adb:212:07: warning: no Always_Terminates aspect available for "Bound_Error_Sqrt"
 norm-reals-errors.adb:212:07: warning: no Global contract available for "Bound_Error_Sqrt"
-norm-reals-errors.adb:213:07: medium: precondition might fail, cannot prove Norm_F >= 0.0 (e.g. when Values = (others => 1.4012985E-44))
+norm-reals-errors.adb:213:07: medium: precondition might fail, cannot prove Norm_F >= 0.0
 norm-reals-errors.adb:214:33: info: precondition proved (CVC5: 1 VC)
 norm-reals-errors.adb:215:20: info: precondition proved (colibri: 1 VC)
 norm-reals-errors.adb:215:20: info: predicate check proved (Trivial: 1 VC)
