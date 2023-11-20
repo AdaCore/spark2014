@@ -1109,29 +1109,23 @@ package body Flow_Utility is
       return Flow_Id_Sets.Set
    is
       Subcomponents : Flow_Id_Sets.Set;
+      Components    : constant Flow_Id_Sets.Set := Get_Components (F, Scope);
+
    begin
-      for C of Get_Components (F, Scope) loop
-         declare
-            C_Components : constant Flow_Id_Sets.Set :=
-              Get_Components (C, Scope);
-         begin
-            --  C is a leaf of the tree representing the type of F iff
-            --  C_Components contains C itself. Checking membership instead of
-            --  set equality is important, for example because C_Components
-            --  could also contain an extension part if C was classwide and
-            --  didn't have any component.
+      --  F is a leaf of the tree representing its type iff its components
+      --  contain the F itself. Checking membership instead of set equality
+      --  is important, for example because components could also contain
+      --  an extension part if F was classwide and didn't have any component.
 
-            if C_Components.Contains (C) then
-               Subcomponents.Union (C_Components);
-            else
-               for C_Component of C_Components loop
-                  Subcomponents.Union (Flatten_Variable (C_Component, Scope));
-               end loop;
-            end if;
-         end;
-      end loop;
+      if Components.Contains (F) then
+         return Components;
+      else
+         for Component of Components loop
+            Subcomponents.Union (Flatten_Variable (Component, Scope));
+         end loop;
 
-      return Subcomponents;
+         return Subcomponents;
+      end if;
    end Flatten_Variable;
 
    ----------------------
