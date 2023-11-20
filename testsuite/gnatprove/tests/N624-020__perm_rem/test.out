@@ -364,7 +364,7 @@ perm.adb:357:45: info: range check proved (CVC5: 2 VC)
 perm.adb:357:51: info: precondition proved (CVC5: 3 VC)
 perm.adb:358:29: info: precondition proved (CVC5: 3 VC)
 perm.adb:359:25: info: assertion proved (CVC5: 1 VC)
-perm.adb:361:12: medium: precondition might fail, cannot prove Is_Perm (A, B) (e.g. when AA'First = 1 and AA'Last = 0 and BB'First = 1 and BB'Last = 0)
+perm.adb:361:12: medium: precondition might fail, cannot prove Is_Perm (A, B)
 perm.ads:6:13: info: implicit aspect Always_Terminates on "Invariant" has been proved, subprogram will terminate
 perm.ads:9:13: info: implicit aspect Always_Terminates on "Remove" has been proved, subprogram will terminate
 perm.ads:11:14: info: postcondition proved (CVC5: 5 VC)

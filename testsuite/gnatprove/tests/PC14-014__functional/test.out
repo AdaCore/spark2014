@@ -1,4 +1,4 @@
-spark-containers-formal-unbounded_vectors.ads:668:57: medium: overflow check might fail, cannot prove upper bound for Index - Index_Type'First, in instantiation at use_vectors.ads:23 [reason for check: result of subtraction must fit in a 32-bits machine integer] [possible fix: use pragma Overflow_Mode or switch -gnato13 or unit SPARK.Big_Integers]
+spark-containers-formal-unbounded_vectors.ads:664:57: medium: overflow check might fail, cannot prove upper bound for Index - Index_Type'First, in instantiation at use_vectors.ads:23 [reason for check: result of subtraction must fit in a 32-bits machine integer] [possible fix: use pragma Overflow_Mode or switch -gnato13 or unit SPARK.Big_Integers]
 use_lists.adb:8:33: medium: implicit aspect Always_Terminates on "My_Find" could be incorrect, loop might be nonterminating [possible fix: add loop variant in the loop body]
 use_lists.adb:10:13: info: loop invariant initialization proved
 use_lists.adb:10:13: info: loop invariant preservation proved
@@ -799,7 +799,7 @@ use_sets.adb:26:13: info: loop invariant preservation proved
 use_sets.adb:26:32: info: precondition proved
 use_sets.adb:27:32: info: precondition proved
 use_sets.adb:29:13: info: loop invariant initialization proved
-use_sets.adb:29:13: info: loop invariant preservation proved
+use_sets.adb:29:13: medium: loop invariant might not be preserved by an arbitrary iteration [possible fix: you should consider adding a postcondition to function Get or turning it into an expression function]
 use_sets.adb:30:36: info: precondition proved
 use_sets.adb:31:28: info: precondition proved
 use_sets.adb:32:10: info: precondition proved

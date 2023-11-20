@@ -36,7 +36,7 @@ deceleration_curve.adb:89:29: medium: float overflow check might fail [reason fo
 deceleration_curve.adb:90:13: medium: float overflow check might fail [reason for check: result of floating-point multiplication must be bounded] [possible fix: loop at line 86 should mention location and speed in a loop invariant]
 deceleration_curve.adb:90:46: info: division check proved (CVC5: 1 VC)
 deceleration_curve.adb:90:46: info: float overflow check proved (Trivial)
-deceleration_curve.adb:105:09: medium: precondition might fail [possible fix: subprogram at deceleration_curve.ads:85 should mention Braking_Curve in a precondition]
+deceleration_curve.adb:105:09: high: precondition might fail (e.g. when Braking_Curve = (curve => (others => (location => 5001, speed => 0.0)), end_point => 5001)) [possible fix: subprogram at deceleration_curve.ads:85 should mention Braking_Curve in a precondition]
 deceleration_curve.adb:105:60: info: cannot unroll loop (too many loop iterations)
 deceleration_curve.adb:106:10: warning: assuming "Put" always terminates
 deceleration_curve.adb:106:10: warning: assuming "Put" has no effect on global items
@@ -116,7 +116,7 @@ sec_3_13_6_deceleration.ads:47:30: medium: precondition might fail, cannot prove
 sec_3_13_6_deceleration.ads:51:13: info: implicit aspect Always_Terminates on "A_safe" has been proved, subprogram will terminate
 sec_3_13_6_deceleration.ads:52:26: info: float overflow check proved (Z3: 1 VC)
 sec_3_13_6_deceleration.ads:52:26: info: range check proved (Trivial)
-sec_3_13_8_targets_decel_curves.adb:24:07: medium: precondition might fail
+sec_3_13_8_targets_decel_curves.adb:24:07: high: precondition might fail (e.g. when Braking_Curve = (curve => (others => (location => 0, speed => 0.0)), end_point => 0) and Target(MRSP_Speed_Decrease).supervise = False and Target(MRSP_Speed_Decrease).location = 0 and Target(MRSP_Speed_Decrease).speed = 0.0 and Target(Limit_Of_Authority).supervise = True and Target(Limit_Of_Authority).location = 0)
 sec_3_13_8_targets_decel_curves.ads:48:13: info: implicit aspect Always_Terminates on "Is_Valid_Target" has been proved, subprogram will terminate
 sec_3_13_8_targets_decel_curves.ads:70:32: info: initialization of "Braking_Curve" proved
 section_3_5_3.adb:41:54: info: overflow check proved (CVC5: 2 VC)
