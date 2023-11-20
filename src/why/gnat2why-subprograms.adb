@@ -5555,7 +5555,7 @@ package body Gnat2Why.Subprograms is
       Th :=
         Open_Theory
           (WF_Context,
-           (if Specialization_Module = No_Symbol then E_Lemma_Axiom_Module (E)
+           (if Specialization_Module = No_Symbol then E_Module (E, Lemma_Axiom)
             else M_Lemma_HO_Specializations (E) (Specialization_Module)),
            Comment =>
              "Module for declaring an axiom for the post condition"
@@ -5619,6 +5619,8 @@ package body Gnat2Why.Subprograms is
          Axiom_Module    => Th.Module);
 
       Ada_Ent_To_Why.Pop_Scope (Symbol_Table);
+
+      Register_Automatically_Instanciated_Lemma (E);
    end Generate_Axiom_For_Lemma;
 
    -----------------------------
@@ -5723,7 +5725,7 @@ package body Gnat2Why.Subprograms is
               (if Specialization_Module /= No_Symbol
                then M_HO_Specializations (E)
                (Specialization_Module).Rec_Ax_Module
-               else E_Rec_Axiom_Module (E));
+               else E_Module (E, Recursive_Axiom));
             Has_Spec     : constant String :=
               (if Specialization_Module = No_Symbol then ""
                else "specialization of the ");
@@ -5745,7 +5747,7 @@ package body Gnat2Why.Subprograms is
             then
                My_Dispatch_Th :=
                  Open_Theory
-                   (WF_Context, E_Dispatch_Module (E, Kind => Rec_Axiom),
+                   (WF_Context, E_Module (E, Dispatch_Recursive_Axiom),
                     Comment =>
                       "Module for declaring an axiom for the classwide"
                     & " postcondition of the " & Has_Spec & "recursive"
@@ -5756,6 +5758,8 @@ package body Gnat2Why.Subprograms is
                     & ", created in " & GNAT.Source_Info.Enclosing_Entity);
             end if;
          end;
+
+         Register_Proof_Cyclic_Function (E);
       end if;
 
       --  If the function has a postcondition and is not mutually recursive
@@ -6053,7 +6057,7 @@ package body Gnat2Why.Subprograms is
                           Kind => Definition_Theory);
             Register_Dependency_For_Soundness (My_Dispatch_Th.Module, E);
             Record_Extra_Dependency
-              (Defining_Module => E_Dispatch_Module (E),
+              (Defining_Module => E_Module (E, Dispatch),
                Axiom_Module    => My_Dispatch_Th.Module);
          end if;
       end if;
@@ -6435,7 +6439,7 @@ package body Gnat2Why.Subprograms is
    begin
       Th :=
         Open_Theory
-          (WF_Context, E_Axiom_Module (E),
+          (WF_Context, E_Module (E, Axiom),
            Comment =>
              "Module for declaring a program function (and possibly "
            & "an axiom) for "
@@ -6454,7 +6458,7 @@ package body Gnat2Why.Subprograms is
       then
          Dispatch_Th :=
            Open_Theory
-             (WF_Context, E_Dispatch_Module (E, Kind => Axiom),
+             (WF_Context, E_Module (E, Dispatch_Axiom),
               Comment =>
                 "Module for declaring a program function (and possibly "
               & "an axiom) for the dispatching variant of "
@@ -6520,11 +6524,11 @@ package body Gnat2Why.Subprograms is
 
          if not Proof_Module_Cyclic (E) then
             Register_Dependency_For_Soundness
-              (E_Dispatch_Module (E, Kind => Axiom), E);
+              (E_Module (E, Dispatch_Axiom), E);
          end if;
 
          Record_Extra_Dependency
-           (Defining_Module => E_Dispatch_Module (E),
+           (Defining_Module => E_Module (E, Dispatch),
             Axiom_Module    => Dispatch_Th.Module);
       end if;
 
@@ -7487,7 +7491,7 @@ package body Gnat2Why.Subprograms is
 
       Th :=
         Open_Theory
-          (WF_Context, E_Axiom_Module (E),
+          (WF_Context, E_Module (E, Axiom),
            Comment =>
              "Module giving a program function and a defining axiom "
            & "for the expression function "
@@ -7505,7 +7509,7 @@ package body Gnat2Why.Subprograms is
       then
          Dispatch_Th :=
            Open_Theory
-             (WF_Context, E_Dispatch_Module (E, Kind => Axiom),
+             (WF_Context, E_Module (E, Dispatch_Axiom),
               Comment =>
                 "Module for declaring a program function (and possibly "
               & "an axiom) for the dispatching variant of "
@@ -7559,7 +7563,7 @@ package body Gnat2Why.Subprograms is
             Close_Theory (Dispatch_Th,
                           Kind => Definition_Theory);
             Record_Extra_Dependency
-              (Defining_Module => E_Dispatch_Module (E),
+              (Defining_Module => E_Module (E, Dispatch),
                Axiom_Module    => Dispatch_Th.Module);
          end if;
          return;
@@ -7697,7 +7701,7 @@ package body Gnat2Why.Subprograms is
          Close_Theory (Dispatch_Th,
                        Kind => Definition_Theory);
          Record_Extra_Dependency
-           (Defining_Module => E_Dispatch_Module (E),
+           (Defining_Module => E_Module (E, Dispatch),
             Axiom_Module    => Dispatch_Th.Module);
       end if;
    end Translate_Expression_Function_Body;
@@ -7730,7 +7734,7 @@ package body Gnat2Why.Subprograms is
       then
          Dispatch_Th :=
            Open_Theory
-             (WF_Context, E_Dispatch_Module (E),
+             (WF_Context, E_Module (E, Dispatch),
               Comment =>
                 "Module for declaring the dispatching variant of the"
               & " subprogram"

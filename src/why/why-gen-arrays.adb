@@ -1133,9 +1133,8 @@ package body Why.Gen.Arrays is
             Clone_Name   : constant W_Name_Id :=
               To_Why_Type
                 (Clone_Entity, Local => True, Relaxed_Init => Relaxed_Init);
-            Clone_Module : constant W_Module_Id :=
-              (if Relaxed_Init then E_Init_Module (Clone_Entity)
-               else E_Module (Clone_Entity));
+            Clone_Module : constant W_Module_Id := E_Module
+              (Clone_Entity, (if Relaxed_Init then Init_Wrapper else Regular));
          begin
             Add_With_Clause (Th, Clone_Module, EW_Export);
 

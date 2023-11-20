@@ -14775,7 +14775,7 @@ package body Gnat2Why.Expr is
 
          Th :=
            Open_Theory
-             (WF_Context, E_Axiom_Module (Expr),
+             (WF_Context, E_Module (Expr, Axiom),
               Comment =>
                 "Module for defining the value of the "
               & (if Nkind (Expr) = N_Delta_Aggregate
@@ -21298,7 +21298,7 @@ package body Gnat2Why.Expr is
 
          Th :=
            Open_Theory
-             (WF_Context, E_Axiom_Module (Expr),
+             (WF_Context, E_Module (Expr, Axiom),
               Comment =>
                 "Module for defining the value of the container aggregate at "
               & (if Sloc (Expr) > 0 then

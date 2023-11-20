@@ -362,7 +362,7 @@ package body Why.Inter is
       Add_With_Clause (Th, Module, Use_Kind);
 
       if With_Completion then
-         Add_With_Clause (Th, E_Axiom_Module (E), Use_Kind);
+         Add_With_Clause (Th, E_Module (E, Axiom), Use_Kind);
       end if;
    end Add_Use_For_Entity;
 
@@ -1348,9 +1348,9 @@ package body Why.Inter is
          pragma Assert (Rec /= Empty);
          declare
             Ada_N  : constant Entity_Id := Retysp (Rec);
-            Module : constant W_Module_Id :=
-              (if Relaxed_Init then E_Init_Module (Ada_N)
-               else E_Module (Ada_N));
+            Kind   : constant Module_Kind :=
+              (if Relaxed_Init then Init_Wrapper else Regular);
+            Module : constant W_Module_Id := E_Module (Ada_N, Kind);
             Orig   : constant Entity_Id :=
               (if Ekind (E) in E_Component | E_Discriminant | Type_Kind
                then Representative_Component (E)
@@ -1406,18 +1406,15 @@ package body Why.Inter is
 
       else
          declare
-            Module : constant W_Module_Id :=
+            Kind      : constant Module_Kind :=
               (if Selector = Dispatch
-               then E_Dispatch_Module
-                 (E, Kind => (if Domain = EW_Prog then Axiom else Regular))
+               then (if Domain = EW_Prog then Dispatch_Axiom else Dispatch)
                elsif Ekind (E) in Subprogram_Kind | Entry_Kind
-                 and then Domain = EW_Prog
-               then
-                  E_Axiom_Module (E)
-               elsif Relaxed_Init then
-                  E_Init_Module (E)
-               else
-                  E_Module (E));
+               and then Domain = EW_Prog
+               then Axiom
+               elsif Relaxed_Init then Init_Wrapper
+               else Regular);
+            Module    : constant W_Module_Id := E_Module (E, Kind);
             Namespace : constant Symbol :=
               (case Selector is
                  when Dispatch => No_Symbol,
@@ -1491,8 +1488,8 @@ package body Why.Inter is
            New_Name
              (Ada_Node => E,
               Symb     => NID (Suffix),
-              Module   => (if Relaxed_Init then E_Init_Module (E)
-                           else E_Module (E)));
+              Module   => E_Module
+                (E, (if Relaxed_Init then Init_Wrapper else Regular)));
       end if;
    end To_Why_Type;
 

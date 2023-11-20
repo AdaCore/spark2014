@@ -2291,7 +2291,7 @@ package body Why.Gen.Records is
          declare
             Clone : constant Entity_Id := Oldest_Parent_With_Same_Fields (E);
          begin
-            Add_With_Clause (Th, E_Init_Module (Clone), EW_Export);
+            Add_With_Clause (Th, E_Module (Clone, Init_Wrapper), EW_Export);
 
             --  If the copy has the same name as the original, do not redefine
             --  the type name.
@@ -3716,8 +3716,8 @@ package body Why.Gen.Records is
             Id := New_Identifier
               (Domain   => EW_Pred,
                Ada_Node => E,
-               Module   =>
-                 (if Relaxed_Init then E_Init_Module (E) else E_Module (E)),
+               Module   => E_Module
+                 (E, (if Relaxed_Init then Init_Wrapper else Regular)),
                Name     => Name);
          end if;
       end return;
@@ -3921,7 +3921,7 @@ package body Why.Gen.Records is
    function Get_Rep_Record_Completion (E : Entity_Id) return W_Module_Id is
       Ancestor : constant Entity_Id := Oldest_Parent_With_Same_Fields (E);
    begin
-      return E_Record_Compl_Module (Ancestor);
+      return E_Module (Ancestor, Record_Rep_Completion);
    end Get_Rep_Record_Completion;
 
    ---------------------------
@@ -3931,7 +3931,7 @@ package body Why.Gen.Records is
    function Get_Rep_Record_Module (E : Entity_Id) return W_Module_Id is
       Ancestor : constant Entity_Id := Oldest_Parent_With_Same_Fields (E);
    begin
-      return E_Record_Rep_Module (Ancestor);
+      return E_Module (Ancestor, Type_Representative);
    end Get_Rep_Record_Module;
 
    ---------------------
@@ -4792,7 +4792,7 @@ package body Why.Gen.Records is
         I.Fields.Present
         and then Has_Init_Wrapper (I.Typ)
         and then Get_Module (Get_Name (Get_Typ (I.Fields.Binder.B_Name)))
-          = E_Init_Module (I.Typ);
+          = E_Module (I.Typ, Init_Wrapper);
       Ty           : constant Entity_Id := I.Typ;
       Values       : W_Expr_Array
         (1 .. Count_Why_Top_Level_Fields (Ty, Relaxed_Init));
