@@ -140,6 +140,8 @@ package body Why.Atree.Modules is
               when Regular                  => "",
               when Axiom                     => "___axiom",
               when Recursive_Axiom           => "___rec_axiom",
+              when Logic_Function_Decl       => "___logic_fun",
+              when Program_Function_Decl     => "___program_fun",
               when Dispatch                  => "___dispatch",
               when Dispatch_Axiom            => "___dispatch__axiom",
               when Dispatch_Recursive_Axiom  => "___dispatch__rec_axiom",
@@ -173,6 +175,15 @@ package body Why.Atree.Modules is
               (E in Callable_Kind_Id
                and then Has_Post_Axiom (E)
                and then Proof_Module_Cyclic (E));
+
+         when Logic_Function_Decl =>
+            pragma Assert
+              (Is_Function_Or_Function_Type (E)
+               and then not Has_Pragma_Volatile_Function (E)
+               and then not Is_Function_With_Side_Effects (E));
+
+         when Program_Function_Decl =>
+            pragma Assert (E in Callable_Kind_Id);
 
          when Dispatch
             | Dispatch_Axiom
@@ -2778,51 +2789,54 @@ package body Why.Atree.Modules is
       -------------------------------
 
       procedure Insert_Subprogram_Symbols (E : Entity_Id) is
-         M    : constant W_Module_Id := E_Module (E);
-         M_Ax : constant W_Module_Id := E_Module (E, Axiom);
-         Name : constant String := Short_Name (E);
+         M_Prog : constant W_Module_Id := E_Module (E, Program_Function_Decl);
+         Name   : constant String := Short_Name (E);
 
       begin
          Insert_Symbol
            (E, WNE_Check_Invariants_On_Call,
             New_Identifier
               (Symb   => NID (Name & "__check_invariants_on_call"),
-               Module => M_Ax,
+               Module => M_Prog,
                Domain => EW_Prog,
                Typ    => EW_Unit_Type));
 
          if Ekind (E) = E_Function then
-            Insert_Symbol
-              (E, WNE_Func_Guard,
-               New_Identifier
-                 (Symb   => NID (Name & "__" & Function_Guard),
-                  Module => M,
-                  Domain => EW_Pred,
-                  Typ    => EW_Unit_Type));
-
-            if Entity_Body_In_SPARK (E)
-              and then Has_Contracts (E, Pragma_Refined_Post)
+            if not Has_Pragma_Volatile_Function (E)
+              and then not Is_Function_With_Side_Effects (E)
             then
                Insert_Symbol
-                 (E, WNE_Refined_Func_Guard,
+                 (E, WNE_Func_Guard,
                   New_Identifier
-                    (Symb      => NID (Name & "__" & Function_Guard),
-                     Module    => M,
-                     Namespace => NID (To_String (WNE_Refine_Module)),
-                     Domain    => EW_Pred,
-                     Typ       => EW_Unit_Type));
-            end if;
+                    (Symb   => NID (Name & "__" & Function_Guard),
+                     Module => E_Module (E, Logic_Function_Decl),
+                     Domain => EW_Pred,
+                     Typ    => EW_Unit_Type));
 
-            if Is_Dispatching_Operation (E)
-              and then not Is_Hidden_Dispatching_Operation (E)
-            then
-               Insert_Symbol
-                 (E, WNE_Dispatch_Func_Guard,
-                  New_Identifier
-                    (Symb      => NID (Name & "__" & Function_Guard),
-                     Module    => E_Module (E, Dispatch),
-                     Domain    => EW_Pred,
-                     Typ       => EW_Unit_Type));
+               if Entity_Body_In_SPARK (E)
+                 and then Has_Contracts (E, Pragma_Refined_Post)
+               then
+                  Insert_Symbol
+                    (E, WNE_Refined_Func_Guard,
+                     New_Identifier
+                       (Symb      => NID (Name & "__" & Function_Guard),
+                        Module    => E_Module (E, Logic_Function_Decl),
+                        Namespace => NID (To_String (WNE_Refine_Module)),
+                        Domain    => EW_Pred,
+                        Typ       => EW_Unit_Type));
+               end if;
+
+               if Is_Dispatching_Operation (E)
+                 and then not Is_Hidden_Dispatching_Operation (E)
+               then
+                  Insert_Symbol
+                    (E, WNE_Dispatch_Func_Guard,
+                     New_Identifier
+                       (Symb      => NID (Name & "__" & Function_Guard),
+                        Module    => E_Module (E, Dispatch),
+                        Domain    => EW_Pred,
+                        Typ       => EW_Unit_Type));
+               end if;
             end if;
          elsif Is_Dispatching_Operation (E)
            and then not Is_Hidden_Dispatching_Operation (E)
@@ -2841,7 +2855,7 @@ package body Why.Atree.Modules is
               (E, WNE_Check_Subprogram_Variants,
                New_Identifier
                  (Symb   => NID (Name & "__check_subprogram_variants"),
-                  Module => M_Ax,
+                  Module => M_Prog,
                   Domain => EW_Prog,
                   Typ    => EW_Unit_Type));
          end if;
@@ -2851,7 +2865,7 @@ package body Why.Atree.Modules is
               (E, WNE_Check_Termination_Condition,
                New_Identifier
                  (Symb   => NID (Name & "__check_termination_condition"),
-                  Module => M_Ax,
+                  Module => M_Prog,
                   Domain => EW_Prog,
                   Typ    => EW_Unit_Type));
          end if;
