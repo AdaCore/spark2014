@@ -6509,7 +6509,7 @@ package body Gnat2Why.Subprograms is
       end;
 
       Close_Theory (Th,
-                    Kind => Axiom_Theory,
+                    Kind           => Axiom_Theory,
                     Defined_Entity => E);
 
       --  Close the dispatching axiom module if it is not empty and add an
@@ -7552,7 +7552,8 @@ package body Gnat2Why.Subprograms is
         or else Has_Pragma_Volatile_Function (E)
       then
          Close_Theory (Th,
-                       Kind => Definition_Theory);
+                       Kind           => Axiom_Theory,
+                       Defined_Entity => E);
          Result_Name := Why_Empty;
          Result_Is_Mutable := False;
 
@@ -7595,8 +7596,8 @@ package body Gnat2Why.Subprograms is
                         or else Use_Split_Form_For_Type (Etype (E)));
 
          declare
-            Equ_Ty  : constant W_Type_Id := Type_Of_Node (E);
-            Guard   : constant W_Pred_Id :=
+            Equ_Ty : constant W_Type_Id := Type_Of_Node (E);
+            Guard  : constant W_Pred_Id :=
               +New_And_Then_Expr
               (Left   => +Compute_Guard_Formula
                  (Logic_Func_Binders, Params),
@@ -7606,11 +7607,11 @@ package body Gnat2Why.Subprograms is
             Emit
               (Th,
                New_Defining_Axiom
-                 (Ada_Node    => E,
-                  Name        => Logic_Id,
-                  Binders     => Flat_Binders,
-                  Pre         => Guard,
-                  Def         => +Transform_Expr
+                 (Ada_Node => E,
+                  Name     => Logic_Id,
+                  Binders  => Flat_Binders,
+                  Pre      => Guard,
+                  Def      => +Transform_Expr
                     (Expr,
                      Expected_Type => Equ_Ty,
                      Domain        => EW_Term,
@@ -7691,7 +7692,7 @@ package body Gnat2Why.Subprograms is
       --  Attach the newly created theory as a completion of the existing one.
 
       Close_Theory (Th,
-                    Kind => Axiom_Theory,
+                    Kind           => Axiom_Theory,
                     Defined_Entity => E);
 
       --  Close the dispatching axiom module if it is not empty and add an
