@@ -569,7 +569,7 @@ resources.ads:10:36: info: overflow check proved (CVC5: 2 VC)
 resources.ads:10:46: info: range check proved (CVC5: 2 VC)
 resources.ads:12:22: info: initialization of "D" proved
 resources.ads:13:14: info: postcondition proved (CVC5: 1 VC)
-resources.ads:17:14: info: postcondition proved (CVC5: 1 VC)
+resources.ads:17:14: medium: postcondition might fail
 use_vectors.adb:7:07: info: initialization of "S" proved
 use_vectors.adb:10:15: info: precondition proved (CVC5: 2 VC)
 use_vectors.adb:11:33: info: loop invariant initialization proved (CVC5: 1 VC)
