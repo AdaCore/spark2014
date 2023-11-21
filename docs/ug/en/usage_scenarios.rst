@@ -128,11 +128,11 @@ through appropriate pragmas. See the sections on :ref:`Suppressing Warnings`
 and :ref:`Justifying Check Messages` for more details.
 
 GNATprove can be run at the different levels mentioned in this document, either
-through the Integrated Development Environments (IDE) Eclipse (:ref:`GNATbench
-plugin<Running GNATprove from GNATbench>`) or :ref:`GNAT Studio<Running
-GNATprove from GNAT Studio>`, or :ref:`on the command line<Running GNATprove
-from the Command Line>`. Use of the command-line interface at a given level is
-facilitated by convenient synonyms:
+through the Integrated Development Environments (IDE) :ref:`GNAT Studio<Running
+GNATprove from GNAT Studio>`, :ref:`Visual Studio Code<Running GNATprove from
+Visual Studio Code>` or :ref:`Eclipse<Running GNATprove from GNATbench>`, or
+:ref:`on the command line<Running GNATprove from the Command Line>`. Use of the
+command-line interface at a given level is facilitated by convenient synonyms:
 
 * use switch ``--mode=stone`` for Stone level (synonym of ``--mode=check_all``)
 * use switch ``--mode=bronze`` for Bronze level (synonym of ``--mode=flow``)

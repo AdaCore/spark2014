@@ -53,7 +53,7 @@ test_fold.adb:47:13: info: index check proved (CVC5: 10 VC)
 test_fold.adb:53:31: medium: divide by zero might fail
 test_fold.adb:53:46: info: cannot unroll loop (too many loop iterations)
 test_fold.adb:61:33: info: loop invariant initialization proved (CVC5: 1 VC)
-test_fold.adb:61:33: info: loop invariant preservation proved (altergo: 1 VC)
+test_fold.adb:61:33: info: loop invariant preservation proved (Z3: 1 VC)
 test_fold.adb:61:35: info: division check proved (CVC5: 2 VC)
 test_fold.adb:67:19: info: assertion proved (CVC5: 1 VC; Trivial: 1 VC)
 test_fold.adb:67:47: info: division check proved (CVC5: 1 VC)

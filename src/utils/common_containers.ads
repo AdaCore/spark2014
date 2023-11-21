@@ -50,6 +50,10 @@ package Common_Containers is
    package Entity_Lists is new
      Ada.Containers.Doubly_Linked_Lists (N_Entity_Id);
 
+   package Node_Vectors is new Ada.Containers.Vectors
+     (Index_Type   => Positive,
+      Element_Type => Node_Id);
+
    package Entity_Vectors is new Ada.Containers.Vectors
      (Index_Type   => Positive,
       Element_Type => N_Entity_Id);

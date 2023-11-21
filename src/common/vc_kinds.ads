@@ -119,6 +119,10 @@ package VC_Kinds is
                                      --  Logical_Equal annotation provided for
                                      --  a function is correct.
 
+      VC_Container_Aggr_Check,       --  Check that the Container_Aggregates
+                                     --  annotation provided for a container
+                                     --  type is correct.
+
       VC_Termination_Check,          --  Check conditional termination
 
       VC_UC_Source,                  --  Check that this type is suitable as a
@@ -247,7 +251,7 @@ package VC_Kinds is
       --  A Proof_In variable has been used in the computation of an export
 
       Ghost_Wrong,
-      --  A ghost procedure has a non-ghost global output
+      --  A ghost subprogram has a non-ghost global output
 
       Global_Missing,
       --  There is a variable missing from the Globals
@@ -428,6 +432,7 @@ package VC_Kinds is
       Lim_Conv_Float_Modular_128,
       Lim_Conv_Incompatible_Fixed,
       Lim_Deep_Object_With_Addr,
+      Lim_Deep_Value_In_Delta_Aggregate,
       Lim_Entry_Family,
       Lim_Exceptional_Cases_Dispatch,
       Lim_Exceptional_Cases_Ownership,
@@ -656,6 +661,9 @@ package VC_Kinds is
            "'@ inside a move assignment",
          when Lim_Deep_Object_With_Addr =>
            "address clause on an object of an ownership type",
+         when Lim_Deep_Value_In_Delta_Aggregate =>
+           "delta aggregate with possible aliasing of components of an "
+           & "ownership type",
          when Lim_Overlay_With_Deep_Object =>
            "overlay with an object of an ownership type",
          when Lim_Non_Static_Attribute =>

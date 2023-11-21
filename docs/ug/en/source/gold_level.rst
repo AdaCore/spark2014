@@ -49,11 +49,12 @@ code that follows in the current unit) or in a pragma configuration file
 
 The SPARK code is guaranteed to respect key integrity properties as well as
 being free from all the defects already detected at the Bronze and Silver
-levels: no reads of uninitialized variables, no possible interference
-between parameters and global variables, no unintended access to global
-variables, and no run-time errors. This is a unique feature of SPARK that
-is not found in other programming languages. In particular, such guarantees
-may be used in a safety case to make reliability claims.
+levels: no reads of uninitialized variables, no possible interference between
+parameters and global variables, no unintended access to global variables, no
+infinite loop or recursion in functions, and no run-time errors. This is a
+unique feature of SPARK that is not found in other programming languages. In
+particular, such guarantees may be used in a safety case to make reliability
+claims.
 
 .. index:: DO-178C / ED-12C
 .. index:: EN 50128, CENELEC EN 50128

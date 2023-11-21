@@ -45,7 +45,7 @@ Generated contracts for B.Priv.P_Read_Atomic_State
 Generated contracts for B.Priv
    Initializes =>
       Priv.Atomic_State
-b-priv.ads:2:24: warning: no procedure exists that can initialize abstract state "Priv.State" constituent of "B.State"
+b-priv.ads:2:24: warning: no subprogram exists that can initialize abstract state "Priv.State" constituent of "B.State"
 b-priv.ads:6:28: info: initialization of "X" proved
 b-priv.ads:7:35: info: initialization of "X" proved
 Generated contracts for B.Read_State
@@ -68,6 +68,6 @@ Generated contracts for B.Read_Atomic_State
 Generated contracts for B
    Initializes =>
       B.Atomic_State
-b.ads:2:23: warning: no procedure exists that can initialize abstract state "B.State"
+b.ads:2:23: warning: no subprogram exists that can initialize abstract state "B.State"
 b.ads:6:26: info: initialization of "X" proved
 b.ads:7:33: info: initialization of "X" proved

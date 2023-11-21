@@ -25,9 +25,11 @@
 ------------------------------------------------------------------------------
 
 with Ada.Containers.Indefinite_Hashed_Maps;
+with Ada.Strings.Unbounded;           use Ada.Strings.Unbounded;
 with Ada.Strings.Fixed;               use Ada.Strings.Fixed;
 with Atree;                           use Atree;
 with Flow_Error_Messages;             use Flow_Error_Messages;
+with Gnat2Why_Args;                   use Gnat2Why_Args;
 with Opt;                             use Opt;
 with VC_Kinds;                        use VC_Kinds;
 
@@ -70,6 +72,15 @@ private package SPARK_Definition.Violations is
    --  was detected. This node is used for the analysis of entities, and is
    --  saved/restored around Mark_Entity. Its value is not relevant outside
    --  of the analysis of an entity.
+
+   function Emit_Warning_Info_Messages return Boolean is
+     (Emit_Messages
+      and then Gnat2Why_Args.Limit_Subp = Null_Unbounded_String
+      and then Gnat2Why_Args.Limit_Name = Null_Unbounded_String);
+   --  Emit warning/info messages only when messages should be emitted, and
+   --  analysis is not restricted to a single subprogram/line (typically during
+   --  interactive use in IDEs), to avoid reporting messages on pieces of code
+   --  not belonging to the analyzed subprogram/line.
 
    function Get_Violation_Root_Cause (N : Node_Id) return String
    --  Return a message explaining the root cause of the violation in N not

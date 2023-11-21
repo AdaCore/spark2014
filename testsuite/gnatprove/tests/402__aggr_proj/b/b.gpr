@@ -1,0 +1,9 @@
+project B is
+
+   for Source_Dirs use (".");
+   for Object_Dir use "../build/obj";
+
+   package Prove is
+      for Proof_Switches ("Ada") use ("--prover=alt-ergo");
+   end Prove;
+end B;

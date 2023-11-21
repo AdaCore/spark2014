@@ -518,8 +518,7 @@ package body Flow.Control_Flow_Graph is
       FA  : in out Flow_Analysis_Graphs;
       CM  : in out Connection_Maps.Map;
       Ctx : in out Context)
-   with Pre => Nkind (N) in N_Procedure_Call_Statement |
-                            N_Entry_Call_Statement;
+   with Pre => Nkind (N) in N_Subprogram_Call | N_Entry_Call_Statement;
    --  Deal with procedure and entry calls. We follow the ideas of the SDG
    --  paper by Horowitz, Reps and Binkley and have a separate vertex for
    --  each parameter (if a paramater is an in out, we have two vertices
@@ -988,8 +987,7 @@ package body Flow.Control_Flow_Graph is
       FA                  : in out Flow_Analysis_Graphs;
       CM                  : in out Connection_Maps.Map;
       Ctx                 : in out Context)
-   with Pre => Nkind (Callsite) in N_Procedure_Call_Statement |
-                                   N_Entry_Call_Statement;
+   with Pre => Nkind (Callsite) in N_Subprogram_Call | N_Entry_Call_Statement;
    --  Similar to Process_Subprogram_Globals, this deals with the actuals
    --  provided in a subprogram call. The vertices are created but not linked
    --  up; as above, they are appended to Ins and various variants of Outs,
@@ -1025,8 +1023,7 @@ package body Flow.Control_Flow_Graph is
       FA       : in out Flow_Analysis_Graphs;
       CM       : in out Connection_Maps.Map;
       Ctx      : in out Context)
-   with Pre => Nkind (Callsite) in N_Procedure_Call_Statement |
-                                   N_Entry_Call_Statement;
+   with Pre => Nkind (Callsite) in N_Subprogram_Call | N_Entry_Call_Statement;
    --  This procedures creates the in and out vertices for a
    --  subprogram's globals. They are not connected to anything,
    --  instead the vertices are appended to Ins and Outs.
@@ -1465,20 +1462,6 @@ package body Flow.Control_Flow_Graph is
               (Get_Reclamation_Functions (Etype (E)));
          end if;
 
-         --  Pull proof dependencies from the predicate of the type of E. E
-         --  might not be in SPARK, so we check that it is marked. Otherwise,
-         --  proof will not look at its type nor its predicate.
-         if Ekind (E) in E_Constant
-                       | E_Variable
-                       | E_Function
-                       | E_In_Parameter
-                       | E_Out_Parameter
-                       | E_In_Out_Parameter
-           and then Entity_In_SPARK (E)
-         then
-            Process_Predicate (E, FA.Proof_Dependencies);
-         end if;
-
          --  Setup the n'initial vertex. Note that initialization for
          --  variables is detected (and set) when building the flow graph
          --  for declarative parts.
@@ -1632,6 +1615,22 @@ package body Flow.Control_Flow_Graph is
          Generating_Globals => FA.Generating_Globals);
 
       FA.Proof_Dependencies.Union (Get_Reclamation_Functions (LHS_Type));
+
+      --  Assignment with a function that has side-effects is handled like a
+      --  subprogram call: the function entity acts like a formal parameter
+      --  of mode OUT and the LHS acts like the corresponding actual parameter.
+
+      if Nkind (Expression (N)) = N_Function_Call
+        and then
+          Is_Function_With_Side_Effects (Get_Called_Entity (Expression (N)))
+      then
+         Do_Call_Statement (Expression (N), FA, CM, Ctx);
+         Move_Connections
+           (CM,
+            Dst => Union_Id (N),
+            Src => Union_Id (Expression (N)));
+         return;
+      end if;
 
       --  First we need to determine the root name where we assign to, and
       --  whether this is a partial or full assignment. This mirror the
@@ -4442,6 +4441,15 @@ package body Flow.Control_Flow_Graph is
             raise Program_Error;
       end case;
 
+      --  We pull proof dependencies from the type of the object. Type
+      --  invariants are pulled in the enclosing unit only when the object
+      --  has no initialization, or it is a library-level entity.
+      Process_Predicate_And_Invariant (E,
+                                       FA.B_Scope,
+                                       No (Expr)
+                                         or else Is_Library_Level_Entity (E),
+                                       FA.Proof_Dependencies);
+
       --  We have a declaration with an explicit initialization
 
       if Present (Expr) then
@@ -6359,7 +6367,9 @@ package body Flow.Control_Flow_Graph is
       Called_Thing : constant Entity_Id := Get_Called_Entity (Callsite);
 
       procedure Handle_Parameter (Formal : Entity_Id; Actual : Node_Id)
-      with Pre => Is_Formal (Formal) and then Nkind (Actual) in N_Subexpr;
+        with Pre => (Is_Formal (Formal)
+                       or else Is_Function_With_Side_Effects (Formal))
+                      and then Nkind (Actual) in N_Subexpr;
 
       ----------------------
       -- Handle_Parameter --
@@ -6389,7 +6399,7 @@ package body Flow.Control_Flow_Graph is
                Formal                       => Formal,
                In_Vertex                    => True,
                Discriminants_Or_Bounds_Only =>
-                 Ekind (Formal) = E_Out_Parameter,
+                 Ekind (Formal) in E_Out_Parameter | E_Function,
                Subp_Calls                   => Funcalls,
                Vertex_Ctx                   => Ctx.Vertex_Ctx,
                E_Loc                        => Actual),
@@ -6398,7 +6408,9 @@ package body Flow.Control_Flow_Graph is
          Ins.Append (V);
 
          --  Build an out vertex
-         if Ekind (Formal) in E_In_Out_Parameter | E_Out_Parameter
+         if Ekind (Formal) in E_In_Out_Parameter
+                            | E_Out_Parameter
+                            | E_Function
            or else Is_Writable_Parameter (Formal)
          then
             FA.Proof_Dependencies.Union
@@ -6439,6 +6451,17 @@ package body Flow.Control_Flow_Graph is
 
    begin
       Handle_Parameters (Callsite);
+
+      --  Function call is only processed for assignment where the call
+      --  occurs immediately as the RHS and the function has side effects. The
+      --  function entity acts as a formal parameter and the LHS acts as the
+      --  actual parameter.
+
+      if Nkind (Callsite) = N_Function_Call then
+         Handle_Parameter
+           (Formal => Get_Called_Entity (Callsite),
+            Actual => Name (Parent (Callsite)));
+      end if;
 
       --  Create vertices for the implicit formal parameter
       if Ekind (Scope (Called_Thing)) = E_Protected_Type then
@@ -7693,11 +7716,18 @@ package body Flow.Control_Flow_Graph is
       end loop;
 
       --  Create initial and final vertices for the parameters of the analyzed
-      --  entity.
+      --  entity, and pull the proof dependencies from their types. Type
+      --  invariants from the enclosing unit are pulled only when the entity
+      --  is a boundary subprogram.
       case FA.Kind is
          when Kind_Subprogram =>
             for Param of Get_Formals (FA.Spec_Entity) loop
                Create_Initial_And_Final_Vertices (Param, FA);
+               Process_Predicate_And_Invariant
+                 (Param,
+                  FA.B_Scope,
+                  Is_Globally_Visible (FA.Spec_Entity),
+                  FA.Proof_Dependencies);
             end loop;
 
          when Kind_Task =>
@@ -7827,9 +7857,16 @@ package body Flow.Control_Flow_Graph is
       end if;
 
       --  If we are dealing with a function, we use its entity as a vertex for
-      --  the returned value.
+      --  the returned value. We pull the proof dependencies from its type.
+      --  Type invariants from the enclosing unit are pulled only when the
+      --  entity is a boundary subprogram.
       if Ekind (FA.Spec_Entity) = E_Function then
          Create_Initial_And_Final_Vertices (FA.Spec_Entity, FA);
+         Process_Predicate_And_Invariant
+           (FA.Spec_Entity,
+            FA.B_Scope,
+            Is_Globally_Visible (FA.Spec_Entity),
+            FA.Proof_Dependencies);
       end if;
 
       --  If you're now wondering where we deal with locally declared objects

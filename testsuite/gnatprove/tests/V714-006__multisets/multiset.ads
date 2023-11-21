@@ -1,4 +1,4 @@
-pragma Ada_2012;
+pragma Ada_2022;
 private with SPARK.Containers.Functional.Maps;
 
 with Ada.Numerics.Big_Numbers.Big_Integers;

@@ -117,6 +117,9 @@ package Why.Gen.Expr is
    --  operation depending on "Base", e.g. for modular or boolean types.
 
    function New_And_Pred (Conjuncts : W_Pred_Array) return W_Pred_Id;
+   --  Generate the conjunction of the predicates, the predicate stating that
+   --  all the predicates in the array holds. For zero arguments, this is the
+   --  True predicate.
 
    function New_And_Then_Expr
       (Left, Right : W_Expr_Id;
@@ -199,6 +202,9 @@ package Why.Gen.Expr is
    --  depending on "Base", e.g. for modular or boolean types.
 
    function New_Or_Pred (Conjuncts : W_Pred_Array) return W_Pred_Id;
+   --  Generate the disjunction of the predicates, the predicate stating that
+   --  one of the predicate in the array holds. For zero arguments, this is the
+   --  False predicate.
 
    function New_Or_Else_Expr
      (Left, Right : W_Expr_Id;

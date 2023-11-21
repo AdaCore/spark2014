@@ -87,7 +87,7 @@
   <proof prover="5"><result status="unknown" steps="2140"/></proof>
   <transf name="introduce_premises" >
    <goal name="def&#39;vc.14.0">
-   <proof prover="4"><result status="steplimitexceeded" steps="190222"/></proof>
+   <proof prover="4"><result status="steplimitexceeded" steps="190171"/></proof>
    </goal>
   </transf>
   </goal>

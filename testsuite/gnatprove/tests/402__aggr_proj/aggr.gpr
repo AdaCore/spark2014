@@ -1,0 +1,10 @@
+aggregate project Aggr is
+
+   for Project_Files use ("a/a.gpr", "b/b.gpr");
+   for Create_Missing_Dirs use "True";
+
+   package Prove is
+      for Proof_Switches ("Ada") use ("--prover=alt-ergo");
+   end Prove;
+
+end Aggr;

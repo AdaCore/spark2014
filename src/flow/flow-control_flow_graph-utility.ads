@@ -25,6 +25,7 @@
 
 with Flow_Refinement;             use Flow_Refinement;
 with Flow_Utility.Initialization; use Flow_Utility.Initialization;
+with Sem_Util;                    use Sem_Util;
 with Sinfo.Nodes;                 use Sinfo.Nodes;
 with SPARK_Util;                  use SPARK_Util;
 
@@ -128,8 +129,7 @@ package Flow.Control_Flow_Graph.Utility is
       Vertex_Ctx : Vertex_Context;
       E_Loc      : Node_Or_Entity_Id := Empty)
       return V_Attributes
-   with Pre  => Nkind (Callsite) in N_Procedure_Call_Statement
-                                  | N_Entry_Call_Statement,
+   with Pre  => Nkind (Callsite) in N_Subprogram_Call | N_Entry_Call_Statement,
         Post => not Make_Call_Attributes'Result.Is_Null_Node and
                 Make_Call_Attributes'Result.Is_Program_Node and
                 Make_Call_Attributes'Result.Is_Callsite;
@@ -155,8 +155,8 @@ package Flow.Control_Flow_Graph.Utility is
                      or else Discriminants_Or_Bounds_Only
                  else
                    (Ekind (Formal) in E_Out_Parameter | E_In_Out_Parameter
-                      or else
-                    Is_Writable_Parameter (Formal))
+                      or else Is_Function_With_Side_Effects (Formal)
+                      or else Is_Writable_Parameter (Formal))
                    and then not Discriminants_Or_Bounds_Only)
                 and then Nkind (Actual) in N_Subexpr,
         Post =>

@@ -402,7 +402,7 @@ package SPARK_Util.Subprograms is
      (E : Entity_Id) return Boolean;
    --  Return True if E has an implicit aspect Always_Terminates. The three
    --  cases currently are:
-   --  - E is a function.
+   --  - E is a function with no side effects.
    --  - E is a package.
    --  - E is an automatically instantiated lemma.
 

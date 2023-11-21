@@ -27,9 +27,11 @@
 with Ada.Characters.Handling;      use Ada.Characters.Handling;
 with Ada.Containers.Hashed_Maps;
 with Ada.Containers.Doubly_Linked_Lists;
+with Ada.Containers.Ordered_Maps;
 with Aspects;                      use Aspects;
 with Checked_Types;                use Checked_Types;
 with Common_Containers;
+with Debug;
 with Errout;                       use Errout;
 with Erroutc;
 with Flow_Types;                   use Flow_Types;
@@ -37,8 +39,10 @@ with Flow_Utility;                 use Flow_Utility;
 with Gnat2Why_Args;
 with Namet;                        use Namet;
 with Nlists;                       use Nlists;
+with Rtsfind;                      use Rtsfind;
 with Sem_Aux;                      use Sem_Aux;
 with Sem_Ch12;
+with Sem_Ch13;                     use Sem_Ch13;
 with Sinfo.Utils;                  use Sinfo.Utils;
 with Sinput;                       use Sinput;
 with Snames;                       use Snames;
@@ -90,6 +94,17 @@ package body SPARK_Definition.Annotate is
    Annotations : Annot_Ranges.List := Annot_Ranges.Empty_List;
    --  Sorted ranges
 
+   package Node_To_Aggregates_Maps is new Ada.Containers.Hashed_Maps
+     (Key_Type        => Node_Id,
+      Element_Type    => Aggregate_Annotation,
+      Hash            => Node_Hash,
+      Equivalent_Keys => "=");
+
+   Aggregate_Annotations : Node_To_Aggregates_Maps.Map;
+   --  Stores type entities with a pragma Annotate
+   --  (GNATprove, Container_Aggregate, ..., E) and map them to their
+   --  related entities.
+
    At_End_Borrow_Annotations : Common_Containers.Node_Sets.Set :=
      Common_Containers.Node_Sets.Empty_Set;
    --  Stores function entities with a pragma Annotate
@@ -99,6 +114,34 @@ package body SPARK_Definition.Annotate is
      Common_Containers.Node_Maps.Empty_Map;
    --  Maps lemma procedures annotated with Automatic_Instantiation to their
    --  associated function.
+
+   Delayed_Checks_For_Aggregates : Common_Containers.Node_Sets.Set :=
+     Common_Containers.Node_Sets.Empty_Set;
+   --  Set of types annotated with Container_Aggregates that need to be checked
+
+   type Delayed_Aggregate_Function_Key is record
+      Enclosing_List      : List_Id;
+      Base_Component_Type : Entity_Id;
+   end record;
+   --  Keys to store delayed functions annotated with container aggregates are
+   --  the enclosing list of declarations and the base type of the element or
+   --  key type. They will be used to find delayed functions from the
+   --  corresponding container type (in the same list of declarations and with
+   --  compatible components).
+
+   function "<" (X, Y : Delayed_Aggregate_Function_Key) return Boolean is
+     (X.Enclosing_List < Y.Enclosing_List
+      or else (X.Enclosing_List = Y.Enclosing_List
+        and then X.Base_Component_Type < Y.Base_Component_Type));
+   package Delayed_Aggregate_Function_Maps is new Ada.Containers.Ordered_Maps
+     (Key_Type     => Delayed_Aggregate_Function_Key,
+      Element_Type => Entity_Id);
+
+   Delayed_Default_Item        : Delayed_Aggregate_Function_Maps.Map;
+   Delayed_Equivalent_Elements : Delayed_Aggregate_Function_Maps.Map;
+   Delayed_Equivalent_Keys     : Delayed_Aggregate_Function_Maps.Map;
+   Delayed_First               : Delayed_Aggregate_Function_Maps.Map;
+   --  Delayed function entities for aggregates
 
    Delayed_Checks_For_Lemmas : Common_Containers.Node_Sets.Set :=
      Common_Containers.Node_Sets.Empty_Set;
@@ -262,6 +305,15 @@ package body SPARK_Definition.Annotate is
       Placed_At_Full_View, --  For type: placed at full view declaration
       Placed_At_Private_View); --  For type: placed at private view declaration
 
+   procedure Check_Aggregate_Annotation
+     (Aspect_Or_Pragma : String;
+      Arg3_Exp         : Node_Id;
+      Arg4_Exp         : Node_Id;
+      Prag             : Node_Id);
+   --  Check validity of a pragma Annotate
+   --  (GNATprove, Container_Aggregates, ???, E)
+   --  and update the Aggregate_Annotations map.
+
    procedure Check_Annotate_Placement
      (Ent            : Entity_Id;
       Ent_Decl_Kind  : Annotate_Placement_Kind;
@@ -364,6 +416,12 @@ package body SPARK_Definition.Annotate is
    --  Check validity of pragma Annotate (GNATprove, Skip_Proof, E) and
    --  pragma Annotate (GNATprove, Skip_Flow_And_Proof, E)
 
+   procedure Do_Delayed_Checks_For_Aggregates (Typ : Entity_Id) with
+     Pre => Has_Aggregate_Annotation (Typ);
+   --  Make sure that all the necessary functions for container aggregates have
+   --  been provided. Also fill the Aggregate_Annotations map to add function
+   --  entities which do not take the container as a parameter.
+
    procedure Error_Msg_N_If (Msg : String; N : Node_Or_Entity_Id);
    --  Wrapper for Error_Msg_N that conditionally emit message depending
    --  on phase.
@@ -383,6 +441,965 @@ package body SPARK_Definition.Annotate is
    begin
       return L.First < R.First;
    end "<";
+
+   --------------------------------
+   -- Check_Aggregate_Annotation --
+   --------------------------------
+
+   procedure Check_Aggregate_Annotation
+     (Aspect_Or_Pragma : String;
+      Arg3_Exp         : Node_Id;
+      Arg4_Exp         : Node_Id;
+      Prag             : Node_Id)
+   is
+
+      function Is_Signed_Or_Big_Integer_Type (Ty : Entity_Id) return Boolean is
+        (Is_Signed_Integer_Type (Ty)
+         or else Is_RTE (Base_Type (Ty), RE_Big_Integer)
+         or else Is_RTE (Base_Type (Ty), RO_GH_Big_Integer));
+
+      Ok : Boolean;
+
+   begin
+      --  The 4th argument must be an entity
+
+      Check_Annotate_Entity_Argument
+        (Arg4_Exp, "fourth", Prag, "Container_Aggregates", Ok,
+         Ignore_SPARK_Status => True);
+      --  It would be fine to take SPARK status into account for type case,
+      --  but not in function case.
+
+      if not Ok then
+         return;
+      end if;
+
+      --  The third argument must be a string literal
+
+      if Nkind (Arg3_Exp) not in N_String_Literal then
+         Error_Msg_N_If
+           ("third argument of " & Aspect_Or_Pragma
+            & " Annotate Container_Aggregates must be a string",
+            Arg3_Exp);
+         return;
+      end if;
+
+      declare
+         Kind_Str : constant String :=
+           To_Lower (To_String (Strval (Arg3_Exp)));
+         Ent      : constant Entity_Id := Entity (Arg4_Exp);
+         Cont_Ty  : Entity_Id;
+
+      begin
+         if Ekind (Ent) in Type_Kind then
+            declare
+               Asp                 : constant Node_Id :=
+                 Find_Value_Of_Aspect (Ent, Aspect_Aggregate);
+
+               Empty_Subp          : Node_Id := Empty;
+               Add_Named_Subp      : Node_Id := Empty;
+               Add_Unnamed_Subp    : Node_Id := Empty;
+               New_Indexed_Subp    : Node_Id := Empty;
+               Assign_Indexed_Subp : Node_Id := Empty;
+
+               Annot               : Aggregate_Annotation;
+            begin
+
+               if not In_SPARK (Ent) then
+                  return;
+                  --  Annotation irrelevant if type not in SPARK
+               end if;
+
+               --  Check that the third parameter is an expected container kind
+
+               if Kind_Str = "predefined_sets" then
+                  Annot := (Kind => Sets, Use_Named => False, others => Empty);
+               elsif Kind_Str = "predefined_maps" then
+                  Annot := (Kind => Maps, Use_Named => True, others => Empty);
+               elsif Kind_Str = "predefined_sequences" then
+                  Annot := (Kind => Seqs, Use_Named => False, others => Empty);
+               elsif Kind_Str = "from_model" then
+                  Annot := (Kind => Model, Use_Named => <>, others => Empty);
+               else
+                  Error_Msg_N_If
+                    ("third parameter of " & Aspect_Or_Pragma
+                     & " Annotate Container_Aggregates on a type shall be "
+                     & "either predefined_sets, predefined_maps,"
+                     & " predefined_sequences, or from_model",
+                     Arg3_Exp);
+                  return;
+               end if;
+
+               Annot.Annotate_Node := Prag;
+
+               if Nkind (Parent (Ent)) not in N_Private_Type_Declaration
+                                            | N_Private_Extension_Declaration
+               then
+                  Error_Msg_N_If
+                    ("a type annotated with Container_Aggregates must have a"
+                     & " private declaration",
+                     Ent);
+                  return;
+               end if;
+
+               --  The pragma should be placed on the initial type declaration
+
+               Check_Annotate_Placement
+                 (Ent,
+                  Placed_At_Private_View,
+                  Prag,
+                  "Container_Aggregate",
+                  "initial declaration of type " & Source_Name (Ent),
+                  Ok);
+
+               if not Ok then
+                  return;
+               end if;
+
+               --  Check that the entity has a container aggregate aspect
+
+               if not Has_Aspect (Ent, Aspect_Aggregate) then
+                  Error_Msg_N_If
+                    ("a type annotated with Container_Aggregates must have an"
+                     & " Aggregate aspect",
+                     Ent);
+                  return;
+               end if;
+
+               Parse_Aspect_Aggregate
+                 (N                   => Asp,
+                  Empty_Subp          => Empty_Subp,
+                  Add_Named_Subp      => Add_Named_Subp,
+                  Add_Unnamed_Subp    => Add_Unnamed_Subp,
+                  New_Indexed_Subp    => New_Indexed_Subp,
+                  Assign_Indexed_Subp => Assign_Indexed_Subp);
+
+               Annot.Empty_Function := Entity (Empty_Subp);
+
+               case Annot.Kind is
+                  when Sets | Seqs =>
+                     if No (Add_Unnamed_Subp) then
+                        Error_Msg_N_If
+                          ("a type with predefined "
+                           & (if Annot.Kind = Sets then "set"
+                             else "sequence")
+                           & " aggregates shall specify an Add_Unnamed"
+                           & " procedure",
+                           Ent);
+                        return;
+                     else
+                        Annot.Add_Procedure := Entity (Add_Unnamed_Subp);
+                     end if;
+
+                     declare
+                        Cont_Formal : constant Entity_Id :=
+                          First_Formal (Entity (Add_Unnamed_Subp));
+                        Elem_Formal : constant Entity_Id :=
+                          Next_Formal (Cont_Formal);
+                     begin
+                        Annot.Element_Type := Etype (Elem_Formal);
+                     end;
+
+                  when Maps =>
+                     if No (Add_Named_Subp) then
+                        Error_Msg_N_If
+                          ("a type with predefined map aggregates shall"
+                           & " specify an Add_Named procedure",
+                           Ent);
+                        return;
+                     else
+                        Annot.Add_Procedure := Entity (Add_Named_Subp);
+                     end if;
+
+                     declare
+                        Cont_Formal : constant Entity_Id :=
+                          First_Formal (Entity (Add_Named_Subp));
+                        Key_Formal  : constant Entity_Id :=
+                          Next_Formal (Cont_Formal);
+                        Elem_Formal : constant Entity_Id :=
+                          Next_Formal (Key_Formal);
+                     begin
+                        Annot.Key_Type := Etype (Key_Formal);
+                        Annot.Element_Type := Etype (Elem_Formal);
+                     end;
+
+                  when Model =>
+                     if No (Add_Named_Subp) and then No (Add_Unnamed_Subp) then
+                        Error_Msg_N_If
+                          ("a type with container aggregates shall specify"
+                           & " either an Add_Named or an Add_Unnamed"
+                           & " procedure",
+                           Ent);
+                        return;
+                     elsif Present (Add_Named_Subp) then
+                        Annot.Add_Procedure := Entity (Add_Named_Subp);
+                        Annot.Use_Named := True;
+                     else
+                        Annot.Add_Procedure := Entity (Add_Unnamed_Subp);
+                        Annot.Use_Named := False;
+                     end if;
+               end case;
+
+               declare
+                  Inserted : Boolean;
+                  Position : Node_To_Aggregates_Maps.Cursor;
+               begin
+                  Aggregate_Annotations.Insert
+                    (Base_Retysp (Ent), Annot, Position, Inserted);
+
+                  if not Inserted then
+                     Error_Msg_N_If
+                       ("a single " & Aspect_Or_Pragma & " Annotate "
+                        & "Container_Aggregates shall be specified for type "
+                        & Source_Name (Ent),
+                        Prag);
+                  else
+                     Delayed_Checks_For_Aggregates.Insert (Base_Retysp (Ent));
+                  end if;
+               end;
+            end;
+
+         elsif Ekind (Ent) = E_Function then
+
+            --  First check that the third parameter is a valid kind
+
+            if Kind_Str not in "equivalent_elements"
+                             | "equivalent_keys"
+                             | "contains"
+                             | "has_key"
+                             | "default_item"
+                             | "get"
+                             | "length"
+                             | "first"
+                             | "last"
+                             | "model"
+            then
+               Error_Msg_N_If
+                 ("invalid third parameter for " & Aspect_Or_Pragma
+                  & " Annotate Container_Aggregates on a function",
+                  Arg3_Exp);
+               return;
+            end if;
+
+            --  Common checks to all aggregate functions
+
+            Check_Annotate_Placement
+              (Ent,
+               Placed_At_Specification,
+               Prag,
+               "Container_Aggregate",
+               "specification of function " & Source_Name (Ent),
+               Ok);
+
+            if not Ok then
+               return;
+            end if;
+
+            if Is_Volatile_Function (Ent) then
+               Error_Msg_N_If
+                 ("a function annotated with Container_Aggregates must not"
+                  & " be volatile", Ent);
+               return;
+            elsif Is_Function_With_Side_Effects (Ent) then
+               Error_Msg_N_If
+                 ("a function annotated with Container_Aggregates must not"
+                  & " have side-effects", Ent);
+               return;
+            end if;
+
+            declare
+               Globals : Global_Flow_Ids;
+
+            begin
+               Get_Globals
+                 (Subprogram          => Ent,
+                  Scope               => (Ent => Ent, Part => Visible_Part),
+                  Classwide           => False,
+                  Globals             => Globals,
+                  Use_Deduced_Globals => not Gnat2Why_Args.Global_Gen_Mode,
+                  Ignore_Depends      => False);
+
+               if not Globals.Proof_Ins.Is_Empty
+                 or else not Globals.Inputs.Is_Empty
+                 or else not Globals.Outputs.Is_Empty
+               then
+                  Error_Msg_N_If
+                    ("a function annotated with Container_Aggregates shall not"
+                     & " access global data", Ent);
+                  return;
+               end if;
+            end;
+
+            --  Functions which do not mention the container type are treated
+            --  specially. They are stored in a map and compatibility checks
+            --  on them are deferred.
+            --  Keys to store delayed functions annotated with container
+            --  aggregates are the enclosing list of declarations and the
+            --  base type of the element or key type. They will be used to
+            --  find the corresponding function from a container type (in the
+            --  same list of declarations and with compatible components).
+            --  Ignore the function if it not in SPARK. We cannot complain as
+            --  we do not know what is the container type and whether it is in
+            --  SPARK or not. If the container type ends up being in SPARK, we
+            --  will complain since the function will be missing.
+
+            if Kind_Str = "default_item" then
+
+               if not In_SPARK (Ent) then
+                  return;
+
+               elsif Present (First_Formal (Ent)) then
+                  Error_Msg_N_If
+                    ("""Default_Item"" function shall have no parameters",
+                     Ent);
+                  return;
+               end if;
+
+               declare
+                  Inserted : Boolean;
+                  Position : Delayed_Aggregate_Function_Maps.Cursor;
+               begin
+                  Delayed_Default_Item.Insert
+                    ((Enclosing_List      => List_Containing (Prag),
+                      Base_Component_Type => Base_Type (Etype (Ent))),
+                     Ent, Position, Inserted);
+
+                  if not Inserted then
+                     Error_Msg_N_If
+                       ("duplicated ""Default_Item"" function "
+                        & "returning " & Source_Name (Etype (Ent))
+                        & " in the same scope",
+                        Ent);
+                  end if;
+               end;
+
+            elsif Kind_Str = "first" then
+
+               if not In_SPARK (Ent) then
+                  return;
+
+               elsif Present (First_Formal (Ent)) then
+                  Error_Msg_N_If
+                    ("""First"" function shall have no parameters",
+                     Ent);
+                  return;
+
+               elsif not Is_Signed_Or_Big_Integer_Type (Etype (Ent))
+               then
+                  Error_Msg_N_If
+                    ("""First"" shall return a signed integer type or a "
+                     & "subtype of Big_Integer",
+                     Ent);
+                  return;
+               end if;
+
+               declare
+                  Inserted : Boolean;
+                  Position : Delayed_Aggregate_Function_Maps.Cursor;
+               begin
+                  Delayed_First.Insert
+                    ((Enclosing_List      => List_Containing (Prag),
+                      Base_Component_Type => Base_Type (Etype (Ent))),
+                     Ent, Position, Inserted);
+
+                  if not Inserted then
+                     Error_Msg_N_If
+                       ("duplicated ""First"" function "
+                        & "returning " & Source_Name (Etype (Ent))
+                        & " in the same scope",
+                        Ent);
+                  end if;
+               end;
+
+            elsif Kind_Str in "equivalent_elements"
+                            | "equivalent_keys"
+            then
+
+               if not In_SPARK (Ent) then
+                  return;
+
+               elsif Number_Formals (Ent) /= 2 then
+                  Error_Msg_N_If
+                    ("equivalence relations shall have two parameters", Ent);
+                  return;
+
+               elsif not Is_Standard_Boolean_Type (Etype (Ent)) then
+                  Error_Msg_N_If
+                    ("equivalence relations shall return a boolean", Ent);
+                  return;
+
+               elsif Etype (First_Formal (Ent)) /=
+                 Etype (Next_Formal (First_Formal (Ent)))
+               then
+                  Error_Msg_N_If
+                    ("parameters of equivalence relations shall have the same"
+                     & " type", Ent);
+                  return;
+               end if;
+
+               if Kind_Str = "equivalent_elements" then
+                  declare
+                     Inserted : Boolean;
+                     Position : Delayed_Aggregate_Function_Maps.Cursor;
+                  begin
+                     Delayed_Equivalent_Elements.Insert
+                       ((Enclosing_List      => List_Containing (Prag),
+                         Base_Component_Type =>
+                           Base_Type (Etype (First_Formal (Ent)))),
+                        Ent, Position, Inserted);
+
+                     if not Inserted then
+                        Error_Msg_N_If
+                          ("duplicated ""Equivalent_Elements"" function "
+                           & "for " & Source_Name (Etype (Ent))
+                           & " in the same scope",
+                           Ent);
+                     end if;
+                  end;
+               else
+                  declare
+                     Inserted : Boolean;
+                     Position : Delayed_Aggregate_Function_Maps.Cursor;
+                  begin
+                     Delayed_Equivalent_Keys.Insert
+                       ((Enclosing_List      => List_Containing (Prag),
+                         Base_Component_Type =>
+                           Base_Type (Etype (First_Formal (Ent)))),
+                        Ent, Position, Inserted);
+
+                     if not Inserted then
+                        Error_Msg_N_If
+                          ("duplicated ""Equivalent_Keys"" function "
+                           & "for " & Source_Name (Etype (Ent))
+                           & " in the same scope",
+                           Ent);
+                     end if;
+                  end;
+               end if;
+
+            else
+
+               --  Common checks for other primitives
+
+               if No (First_Formal (Ent)) then
+                  Error_Msg_N_If
+                    ("a function annotated with Container_Aggregates shall "
+                     & "have parameters", Ent);
+                  return;
+               end if;
+
+               Cont_Ty := Etype (First_Formal (Ent));
+
+               if not In_SPARK (Cont_Ty) then
+                  return;
+               elsif not In_SPARK (Ent) then
+                  Error_Msg_N_If
+                    ("a function annotated with Container_Aggregates shall be "
+                     & "in SPARK", Ent);
+                  return;
+               elsif not Has_Aggregate_Annotation (Cont_Ty) then
+                  Error_Msg_N_If
+                    ("type of first parameter shall be annotated with"
+                     & " Container_Aggregate",
+                     Ent);
+                  return;
+               elsif List_Containing (Prag) /=
+                 List_Containing (Parent (Cont_Ty))
+               then
+                  Error_Msg_NE_If
+                    ("a function annotated with Container_Aggregates shall be "
+                     & "declared in the same list of declarations as the "
+                     & "partial view of &", Ent, Cont_Ty);
+                  return;
+               end if;
+
+               Cont_Ty := Base_Retysp (Cont_Ty);
+
+               declare
+                  Annot : Aggregate_Annotation renames
+                    Aggregate_Annotations (Cont_Ty);
+               begin
+                  case Annot.Kind is
+                     when Sets =>
+                        --  The type of the parameters of Contains
+                        --  should match those of the Add_Unnamed primitive.
+                        --  Length should return an integer type.
+
+                        if Kind_Str = "contains" then
+                           if Number_Formals (Ent) /= 2 then
+                              Error_Msg_N_If
+                                ("""Contains"" function shall have two "
+                                 & "parameters",
+                                 Ent);
+                              return;
+
+                           elsif Present (Annot.Contains) then
+                              Error_Msg_N_If
+                                ("a single ""Contains"" function shall be"
+                                 & " specified for a type with a"
+                                 & " Container_Aggregates annotation",
+                                 Ent);
+                              return;
+
+                           elsif not Is_Standard_Boolean_Type (Etype (Ent))
+                           then
+                              Error_Msg_N_If
+                                ("""Contains"" function shall return a "
+                                 & "boolean", Ent);
+                              return;
+
+                           elsif Etype (Next_Formal (First_Formal (Ent)))
+                             /= Annot.Element_Type
+                           then
+                              Error_Msg_N_If
+                                ("second parameter of ""Contains"" function"
+                                 & " shall be of type "
+                                 & Source_Name (Annot.Element_Type),
+                                 Ent);
+                              return;
+                           end if;
+
+                           --  Store the contains function
+
+                           Annot.Contains := Ent;
+                        elsif Kind_Str = "length" then
+                           if Number_Formals (Ent) /= 1 then
+                              Error_Msg_N_If
+                                ("""Length"" function shall have one "
+                                 & "parameter",
+                                 Ent);
+                              return;
+
+                           elsif Present (Annot.Sets_Length) then
+                              Error_Msg_N_If
+                                ("a single ""Length"" function shall be"
+                                 & " specified for a type with a"
+                                 & " Container_Aggregates annotation",
+                                 Ent);
+                              return;
+
+                           elsif not Is_Signed_Or_Big_Integer_Type
+                             (Etype (Ent))
+                           then
+                              Error_Msg_N_If
+                                ("""Length"" shall return a signed integer "
+                                 & "type or a subtype of Big_Integer",
+                                 Ent);
+                              return;
+                           end if;
+
+                           --  Store the length function
+
+                           Annot.Sets_Length := Ent;
+                        else
+                           Error_Msg_N_If
+                             ("invalid third parameter for predefined set "
+                              & "aggregates",
+                              Arg3_Exp);
+                           return;
+                        end if;
+
+                     when Maps =>
+                        --  The type of the parameters/return type of Has_Key,
+                        --  and Get should match those of the Add_Named
+                        --  primitive. Length should return an integer type.
+
+                        if Kind_Str = "has_key" then
+                           if Number_Formals (Ent) /= 2 then
+                              Error_Msg_N_If
+                                ("""Has_Key"" function shall have two "
+                                 & "parameters",
+                                 Ent);
+                              return;
+
+                           elsif Present (Annot.Has_Key) then
+                              Error_Msg_N_If
+                                ("a single ""Has_Key"" function shall be"
+                                 & " specified for a type with a"
+                                 & " Container_Aggregates annotation",
+                                 Ent);
+                              return;
+
+                           elsif not Is_Standard_Boolean_Type (Etype (Ent))
+                           then
+                              Error_Msg_N_If
+                                ("""Has_Key"" function shall return a "
+                                 & "boolean", Ent);
+                              return;
+
+                           elsif Etype (Next_Formal (First_Formal (Ent)))
+                             /= Annot.Key_Type
+                           then
+                              Error_Msg_N_If
+                                ("second parameter of ""Has_Key"" function"
+                                 & " shall be of type "
+                                 & Source_Name (Annot.Key_Type),
+                                 Ent);
+                              return;
+                           end if;
+
+                           --  Store the has_key function
+
+                           Annot.Has_Key := Ent;
+
+                        elsif Kind_Str = "get" then
+                           if Number_Formals (Ent) /= 2 then
+                              Error_Msg_N_If
+                                ("""Get"" function shall have two "
+                                 & "parameters",
+                                 Ent);
+                              return;
+
+                           elsif Present (Annot.Maps_Get) then
+                              Error_Msg_N_If
+                                ("a single ""Get"" function shall be"
+                                 & " specified for a type with a"
+                                 & " Container_Aggregates annotation",
+                                 Ent);
+                              return;
+
+                           elsif Etype (Ent) /= Annot.Element_Type then
+                              Error_Msg_N_If
+                                ("""Get"" function shall return a "
+                                 & "value of type "
+                                 & Source_Name (Annot.Element_Type),
+                                 Ent);
+                              return;
+
+                           elsif Etype (Next_Formal (First_Formal (Ent)))
+                             /= Annot.Key_Type
+                           then
+                              Error_Msg_N_If
+                                ("second parameter of ""Get"" function"
+                                 & " shall be of type "
+                                 & Source_Name (Annot.Key_Type),
+                                 Ent);
+                              return;
+                           end if;
+
+                           --  Store the get function
+
+                           Annot.Maps_Get := Ent;
+
+                        elsif Kind_Str = "length" then
+                           if Number_Formals (Ent) /= 1 then
+                              Error_Msg_N_If
+                                ("""Length"" function shall have one "
+                                 & "parameter",
+                                 Ent);
+                              return;
+
+                           elsif Present (Annot.Maps_Length) then
+                              Error_Msg_N_If
+                                ("a single ""Length"" function shall be"
+                                 & " specified for a type with a"
+                                 & " Container_Aggregates annotation",
+                                 Ent);
+                              return;
+
+                           elsif not Is_Signed_Or_Big_Integer_Type
+                             (Etype (Ent))
+                           then
+                              Error_Msg_N_If
+                                ("""Length"" shall return a signed integer "
+                                 & "type or a subtype of Big_Integer",
+                                 Ent);
+                              return;
+                           end if;
+
+                           --  Store the length function
+
+                           Annot.Maps_Length := Ent;
+
+                        else
+                           Error_Msg_N_If
+                             ("invalid third parameter for predefined map "
+                              & "aggregates",
+                              Arg3_Exp);
+                           return;
+                        end if;
+
+                     when Seqs =>
+
+                        --  The index parameter of Get and the return type of
+                        --  Last should have the same base type. Store it in
+                        --  Annot.Index_Type. It will be reset to the subtype
+                        --  returned by Last afterward so it can be used to
+                        --  determine a potential last possible index if any.
+                        --  The fact that the index type is an integer type is
+                        --  checked on the first occurrence.
+
+                        if Kind_Str = "get" then
+                           if Number_Formals (Ent) /= 2 then
+                              Error_Msg_N_If
+                                ("""Get"" function shall have two "
+                                 & "parameters",
+                                 Ent);
+                              return;
+
+                           elsif Present (Annot.Seqs_Get) then
+                              Error_Msg_N_If
+                                ("a single ""Get"" function shall be"
+                                 & " specified for a type with a"
+                                 & " Container_Aggregates annotation",
+                                 Ent);
+                              return;
+
+                           elsif Etype (Ent) /= Annot.Element_Type then
+                              Error_Msg_N_If
+                                ("""Get"" function shall return a "
+                                 & "value of type "
+                                 & Source_Name (Annot.Element_Type),
+                                 Ent);
+                              return;
+
+                           elsif Present (Annot.Index_Type)
+                             and then Base_Type
+                               (Etype (Next_Formal (First_Formal (Ent))))
+                             /= Annot.Index_Type
+                           then
+                              Error_Msg_N_If
+                                ("second parameter of ""Get"" function"
+                                 & " shall have the same base type as "
+                                 & Source_Name (Annot.Index_Type),
+                                 Ent);
+                              return;
+
+                           elsif No (Annot.Index_Type)
+                             and then not Is_Signed_Or_Big_Integer_Type
+                               (Etype (Next_Formal (First_Formal (Ent))))
+                           then
+                              Error_Msg_N_If
+                                ("second parameter of ""Get"" function"
+                                 & " shall be of a signed integer type or of"
+                                 & " a subtype of Big_Integer",
+                                 Ent);
+                              return;
+                           end if;
+
+                           --  Store the get function
+
+                           Annot.Seqs_Get := Ent;
+                           Annot.Index_Type := Base_Type
+                             (Etype (Next_Formal (First_Formal (Ent))));
+
+                        elsif Kind_Str = "last" then
+                           if Number_Formals (Ent) /= 1 then
+                              Error_Msg_N_If
+                                ("""Last"" function shall have one "
+                                 & "parameter",
+                                 Ent);
+                              return;
+
+                           elsif Present (Annot.Last) then
+                              Error_Msg_N_If
+                                ("a single ""Last"" function shall be"
+                                 & " specified for a type with a"
+                                 & " Container_Aggregates annotation",
+                                 Ent);
+                              return;
+
+                           elsif Present (Annot.Index_Type)
+                             and then Base_Type (Etype (Ent)) /=
+                               Annot.Index_Type
+                           then
+                              Error_Msg_N_If
+                                ("the return type of ""Last"" function shall "
+                                 & "have the same base type as "
+                                 & Source_Name (Annot.Index_Type),
+                                 Ent);
+
+                           elsif No (Annot.Index_Type)
+                             and then not Is_Signed_Or_Big_Integer_Type
+                               (Etype (Ent))
+                           then
+                              Error_Msg_N_If
+                                ("""Last"" shall return a signed integer "
+                                 & "type or a subtype of Big_Integer",
+                                 Ent);
+                              return;
+                           end if;
+
+                           --  Store the last function
+
+                           Annot.Last := Ent;
+                           if No (Annot.Index_Type) then
+                              Annot.Index_Type := Base_Type (Etype (Ent));
+                           end if;
+
+                        else
+                           Error_Msg_N_If
+                             ("invalid third parameter for predefined "
+                              & "sequence aggregates",
+                              Arg3_Exp);
+                           return;
+                        end if;
+
+                     when Model =>
+
+                        --  The return type of the Model should have compatible
+                        --  aggregates.
+
+                        if Kind_Str = "model" then
+                           if Number_Formals (Ent) /= 1 then
+                              Error_Msg_N_If
+                                ("""Model"" function shall have one parameter",
+                                 Ent);
+                              return;
+
+                           elsif not Has_Aggregate_Annotation (Etype (Ent))
+                           then
+                              Error_Msg_N_If
+                                ("""Model"" function shall return a type with"
+                                 & " a Container_Aggregates annotation",
+                                 Ent);
+                              return;
+
+                           elsif Present (Annot.Model) then
+                              Error_Msg_N_If
+                                ("a single ""Model"" function shall be"
+                                 & " specified for a type with a"
+                                 & " Container_Aggregates annotation",
+                                 Ent);
+                              return;
+
+                           else
+
+                              --  Check that container aggregates on the
+                              --  source and the target match.
+
+                              declare
+                                 Source_Asp            : constant Node_Id :=
+                                   Find_Value_Of_Aspect
+                                     (Cont_Ty, Aspect_Aggregate);
+                                 Source_Empty          : Node_Id := Empty;
+                                 Source_Add_Named      : Node_Id := Empty;
+                                 Source_Add_Unnamed    : Node_Id := Empty;
+                                 Source_New_Indexed    : Node_Id := Empty;
+                                 Source_Assign_Indexed : Node_Id := Empty;
+
+                                 Target_Asp            : constant Node_Id :=
+                                   Find_Value_Of_Aspect
+                                     (Etype (Ent), Aspect_Aggregate);
+                                 Target_Empty          : Node_Id := Empty;
+                                 Target_Add_Named      : Node_Id := Empty;
+                                 Target_Add_Unnamed    : Node_Id := Empty;
+                                 Target_New_Indexed    : Node_Id := Empty;
+                                 Target_Assign_Indexed : Node_Id := Empty;
+
+                                 Source_Add            : Entity_Id;
+                                 Source_C_Formal       : Node_Id;
+                                 Source_E_Formal       : Node_Id;
+                                 Source_K_Formal       : Node_Id;
+
+                                 Target_Add            : Entity_Id;
+                                 Target_C_Formal       : Node_Id;
+                                 Target_E_Formal       : Node_Id;
+                                 Target_K_Formal       : Node_Id;
+
+                                 Error_Msg           : constant String :=
+                                   "concrete and model types of a ""Model"" "
+                                   & "function shall define compatible "
+                                   & "aggregates";
+
+                              begin
+                                 Parse_Aspect_Aggregate
+                                   (N                   => Source_Asp,
+                                    Empty_Subp          => Source_Empty,
+                                    Add_Named_Subp      => Source_Add_Named,
+                                    Add_Unnamed_Subp    => Source_Add_Unnamed,
+                                    New_Indexed_Subp    => Source_New_Indexed,
+                                    Assign_Indexed_Subp =>
+                                      Source_Assign_Indexed);
+                                 Parse_Aspect_Aggregate
+                                   (N                   => Target_Asp,
+                                    Empty_Subp          => Target_Empty,
+                                    Add_Named_Subp      => Target_Add_Named,
+                                    Add_Unnamed_Subp    => Target_Add_Unnamed,
+                                    New_Indexed_Subp    => Target_New_Indexed,
+                                    Assign_Indexed_Subp =>
+                                      Target_Assign_Indexed);
+
+                                 if Present (Source_Add_Named) /=
+                                   Present (Target_Add_Named)
+                                 then
+                                    Error_Msg_N_If
+                                      (Error_Msg, Ent);
+                                    return;
+                                 elsif Present (Source_Add_Named) then
+                                    Source_Add := Entity (Source_Add_Named);
+                                    Target_Add := Entity (Target_Add_Named);
+                                 else
+                                    Source_Add := Entity (Source_Add_Unnamed);
+                                    Target_Add := Entity (Target_Add_Unnamed);
+                                 end if;
+
+                                 --  Retrieve the formals and check their
+                                 --  types.
+
+                                 Source_C_Formal :=
+                                   First_Formal (Source_Add);
+                                 Target_C_Formal :=
+                                   First_Formal (Target_Add);
+
+                                 if Present (Source_Add_Named) then
+                                    Source_K_Formal :=
+                                      Next_Formal (Source_C_Formal);
+                                    Target_K_Formal :=
+                                      Next_Formal (Target_C_Formal);
+                                    Source_E_Formal :=
+                                      Next_Formal (Source_K_Formal);
+                                    Target_E_Formal :=
+                                      Next_Formal (Target_K_Formal);
+                                 else
+                                    Source_E_Formal :=
+                                      Next_Formal (Source_C_Formal);
+                                    Target_E_Formal :=
+                                      Next_Formal (Target_C_Formal);
+                                 end if;
+
+                                 if Etype (Source_E_Formal) /=
+                                   Etype (Target_E_Formal)
+                                 then
+                                    Error_Msg_N_If
+                                      (Error_Msg & ", element types do "
+                                       & "not match",
+                                       Ent);
+                                    return;
+                                 elsif Present (Source_Add_Named)
+                                   and then Etype (Source_K_Formal) /=
+                                   Etype (Target_K_Formal)
+                                 then
+                                    Error_Msg_N_If
+                                      (Error_Msg & ", key types do"
+                                       & " not match",
+                                       Ent);
+                                    return;
+                                 end if;
+                              end;
+                           end if;
+
+                           --  Store the model function
+
+                           Annot.Model := Ent;
+                           Annot.Model_Type := Etype (Ent);
+                        else
+                           Error_Msg_N_If
+                             ("invalid third parameter for container "
+                              & "aggregates using models",
+                              Arg3_Exp);
+                           return;
+                        end if;
+                  end case;
+               end;
+            end if;
+         else
+            Error_Msg_N_If
+              ("the entity of a pragma Annotate Container_Aggregates "
+               & "shall be either a type or a function",
+               Ent);
+         end if;
+      end;
+   end Check_Aggregate_Annotation;
 
    ------------------------------------
    -- Check_Annotate_Entity_Argument --
@@ -2573,6 +3590,267 @@ package body SPARK_Definition.Annotate is
                            (Sem_Ch12.Get_Unit_Instantiation_Node
                               (Defining_Entity (Parent (N))))));
 
+   --------------------------------------
+   -- Do_Delayed_Checks_For_Aggregates --
+   --------------------------------------
+
+   procedure Do_Delayed_Checks_For_Aggregates (Typ : Entity_Id) is
+
+      P_Typ    : constant Entity_Id :=
+        (if Is_Full_View (Typ) then Partial_View (Typ) else Typ);
+      Typ_List : constant List_Id := List_Containing (Parent (P_Typ));
+      Annot    : Aggregate_Annotation renames Aggregate_Annotations (Typ);
+   begin
+      case Annot.Kind is
+         when Sets =>
+
+            --  Search for an applicable Equivalent_Elements function. It is
+            --  mandatory.
+
+            declare
+               use Delayed_Aggregate_Function_Maps;
+               Position : constant Delayed_Aggregate_Function_Maps.Cursor :=
+                 Delayed_Equivalent_Elements.Find
+                   ((Enclosing_List      => Typ_List,
+                     Base_Component_Type => Base_Type (Annot.Element_Type)));
+            begin
+               if Has_Element (Position) then
+                  Annot.Equivalent_Elements := Element (Position);
+               else
+                  Error_Msg_NE_If
+                    ("no ""Equivalent_Elements"" function found for type "
+                     & "with predefined set aggregates &", Typ, Typ);
+               end if;
+            end;
+
+            --  Contains function is mandatory
+
+            if No (Annot.Contains) then
+               Error_Msg_NE_If
+                 ("no ""Contains"" function found for type with "
+                  & "predefined set aggregates &", Typ, Typ);
+            end if;
+
+            --  Length is optional
+
+            if No (Annot.Sets_Length)
+              and then Emit_Warning_Info_Messages
+              and then Debug.Debug_Flag_Underscore_F
+            then
+               Error_Msg_NE_If
+                 ("info: ?no ""Length"" function found for type with "
+                  & "predefined set aggregates &", Typ, Typ);
+               Error_Msg_N_If
+                 ("\the cardinality of aggregates will be unknown", Typ);
+            end if;
+
+         when Maps =>
+
+            --  Search for applicable Equivalent_Keys and Default_Item
+            --  functions. Equivalent_Keys is mandatory.
+
+            declare
+               use Delayed_Aggregate_Function_Maps;
+               Position : constant Delayed_Aggregate_Function_Maps.Cursor :=
+                 Delayed_Equivalent_Keys.Find
+                   ((Enclosing_List      => Typ_List,
+                     Base_Component_Type => Base_Type (Annot.Key_Type)));
+            begin
+               if Has_Element (Position) then
+                  Annot.Equivalent_Keys := Element (Position);
+               else
+                  Error_Msg_NE_If
+                    ("no ""Equivalent_Keys"" function found for type "
+                     & "with predefined map aggregates &", Typ, Typ);
+               end if;
+            end;
+
+            declare
+               use Delayed_Aggregate_Function_Maps;
+               Position : constant Delayed_Aggregate_Function_Maps.Cursor :=
+                 Delayed_Default_Item.Find
+                   ((Enclosing_List      => Typ_List,
+                     Base_Component_Type => Base_Type (Annot.Element_Type)));
+            begin
+               if Has_Element (Position) then
+                  Annot.Default_Item := Element (Position);
+               end if;
+            end;
+
+            --  Has_Key and Default_Item are exclusive, exactly one should be
+            --  supplied.
+
+            if No (Annot.Has_Key) and then No (Annot.Default_Item) then
+               Error_Msg_NE_If
+                 ("no ""Has_Key"" nor ""Default_Item"" function found "
+                  & "for type with predefined map aggregates &",
+                  Typ, Typ);
+            end if;
+
+            if Present (Annot.Has_Key)
+              and then Present (Annot.Default_Item)
+            then
+               Error_Msg_NE_If
+                 ("""Has_Key"" and ""Default_Item"" functions shall "
+                  & "not both be specified for type with predefined map"
+                  & " aggregates &",
+                  Typ, Typ);
+            end if;
+
+            --  Get is mandatory
+
+            if No (Annot.Maps_Get) then
+               Error_Msg_NE_If
+                 ("no ""Get"" function found for type "
+                  & "with predefined map aggregates &", Typ, Typ);
+            end if;
+
+            --  Length is optional. It can only be supplied for partial maps
+            --  (with Has_Key and not Default_Item).
+
+            if Present (Annot.Maps_Length)
+              and then Present (Annot.Default_Item)
+            then
+               Error_Msg_NE_If
+                 ("""Length"" and ""Default_Item"" functions shall "
+                  & "not both be specified for type with predefined map"
+                  & " aggregates &",
+                  Typ, Typ);
+            end if;
+
+            if No (Annot.Maps_Length)
+              and then Present (Annot.Has_Key)
+              and then Emit_Warning_Info_Messages
+              and then Debug.Debug_Flag_Underscore_F
+            then
+               Error_Msg_NE_If
+                 ("info: ?no ""Length"" function found for type with "
+                  & "predefined map aggregates &", Typ, Typ);
+               Error_Msg_N_If
+                 ("\the cardinality of aggregates will be unknown", Typ);
+            end if;
+
+         when Seqs =>
+
+            --  Search for an applicable First function. It is mandatory.
+
+            if Present (Annot.Index_Type) then
+               declare
+                  use Delayed_Aggregate_Function_Maps;
+                  Position : constant Delayed_Aggregate_Function_Maps.Cursor :=
+                    Delayed_First.Find
+                      ((Enclosing_List      => Typ_List,
+                        Base_Component_Type => Annot.Index_Type));
+               begin
+                  if Has_Element (Position) then
+                     Annot.First := Element (Position);
+                  else
+                     Error_Msg_NE_If
+                       ("no ""First"" function found for type "
+                        & "with predefined set aggregates &", Typ, Typ);
+                  end if;
+               end;
+            end if;
+
+            --  Last and Get functions are mandatory
+
+            if No (Annot.Last) then
+               Error_Msg_NE_If
+                 ("no ""Last"" function found for type "
+                  & "with predefined sequence aggregates &", Typ, Typ);
+
+            --  Reset the index type to the return type of Last. It will be
+            --  useful to determine the last possible index if any.
+
+            else
+               Annot.Index_Type := Etype (Annot.Last);
+            end if;
+
+            if No (Annot.Seqs_Get) then
+               Error_Msg_NE_If
+                 ("no ""Get"" function found for type "
+                  & "with predefined sequence aggregates &", Typ, Typ);
+            end if;
+
+         when others =>
+
+            --  Model function is mandatory
+
+            if No (Annot.Model) then
+               Error_Msg_NE_If
+                 ("no ""Model"" function found for type "
+                  & "with aggregates using models &", Typ, Typ);
+            end if;
+      end case;
+
+      --  Make sure that the Empty function and the Add procedure used to
+      --  create the aggregate are well behaved (they do not access global data
+      --  and do not have side-effects).
+
+      declare
+         Globals : Global_Flow_Ids;
+      begin
+         Get_Globals
+           (Subprogram          => Annot.Empty_Function,
+            Scope               =>
+              (Ent  => Annot.Empty_Function,
+               Part => Visible_Part),
+            Classwide           => False,
+            Globals             => Globals,
+            Use_Deduced_Globals =>
+               not Gnat2Why_Args.Global_Gen_Mode,
+            Ignore_Depends      => False);
+
+         if Is_Function_With_Side_Effects (Annot.Empty_Function) then
+            Error_Msg_NE_If
+              ("& function shall not have side effects",
+               Typ, Annot.Empty_Function);
+         elsif not Globals.Proof_Ins.Is_Empty
+           or else not Globals.Inputs.Is_Empty
+         then
+            Error_Msg_NE_If
+              ("& function shall not access global data",
+               Typ, Annot.Empty_Function);
+         elsif Is_Volatile_Function (Annot.Empty_Function) then
+            Error_Msg_NE_If
+              ("& function shall not be voltaile", Typ, Annot.Empty_Function);
+         end if;
+
+         Get_Globals
+           (Subprogram          => Annot.Add_Procedure,
+            Scope               =>
+              (Ent  => Annot.Add_Procedure,
+               Part => Visible_Part),
+            Classwide           => False,
+            Globals             => Globals,
+            Use_Deduced_Globals =>
+               not Gnat2Why_Args.Global_Gen_Mode,
+            Ignore_Depends      => False);
+
+         if not Globals.Outputs.Is_Empty then
+            Error_Msg_NE_If
+              ("& procedure shall not have global effects",
+               Typ, Annot.Add_Procedure);
+         elsif not Globals.Proof_Ins.Is_Empty
+           or else not Globals.Inputs.Is_Empty
+         then
+            Error_Msg_NE_If
+              ("& procedure shall not access global data",
+               Typ, Annot.Add_Procedure);
+         elsif Get_Termination_Condition
+           (Annot.Add_Procedure) /= (Static, True)
+         then
+            Error_Msg_NE_If
+              ("& procedure shall always terminate",
+               Typ, Annot.Add_Procedure);
+         elsif Has_Exceptional_Contract (Annot.Add_Procedure) then
+            Error_Msg_NE_If
+              ("& procedure shall not raise exceptions",
+               Typ, Annot.Add_Procedure);
+         end if;
+      end;
+   end Do_Delayed_Checks_For_Aggregates;
+
    ------------------------------------------
    -- Do_Delayed_Checks_On_Pragma_Annotate --
    ------------------------------------------
@@ -2619,6 +3897,14 @@ package body SPARK_Definition.Annotate is
          end;
       end loop;
       Delayed_Checks_For_Lemmas.Clear;
+
+      --  Go over aggregate annotations to make sure that all the necessary
+      --  entities have been provided.
+
+      for Typ of Delayed_Checks_For_Aggregates loop
+         Do_Delayed_Checks_For_Aggregates (Typ);
+      end loop;
+      Delayed_Checks_For_Aggregates.Clear;
    end Do_Delayed_Checks_On_Pragma_Annotate;
 
    ------------------------
@@ -2654,15 +3940,66 @@ package body SPARK_Definition.Annotate is
    end Generate_Useless_Pragma_Annotate_Warnings;
 
    ------------------------------
+   -- Get_Aggregate_Annotation --
+   ------------------------------
+
+   function Get_Aggregate_Annotation
+     (E : Type_Kind_Id)
+      return Aggregate_Annotation
+   is (Aggregate_Annotations.Element (Base_Retysp (E)));
+
+   ----------------------------------------
+   -- Get_Aggregate_Function_From_Pragma --
+   ----------------------------------------
+
+   function Get_Aggregate_Function_From_Pragma
+     (N  : Node_Id)
+      return Entity_Id
+   is
+      Number_Of_Pragma_Args : constant Nat :=
+        List_Length (Pragma_Argument_Associations (N));
+   begin
+      if Number_Of_Pragma_Args /= 4 then
+         return Empty;
+      end if;
+
+      declare
+         Arg2 : constant Node_Id :=
+           Next (First (Pragma_Argument_Associations (N)));
+         Arg4 : constant Node_Id := Next (Next (Arg2));
+         Name : constant String :=
+           Get_Name_String (Chars (Get_Pragma_Arg (Arg2)));
+         Exp  : constant Node_Id := Expression (Arg4);
+
+      begin
+         if Name /= "container_aggregates"
+           or else Nkind (Exp) not in N_Has_Entity
+         then
+            return Empty;
+         end if;
+
+         declare
+            Fun : constant Entity_Id := Entity (Exp);
+         begin
+            if Ekind (Fun) = E_Function then
+               return Fun;
+            else
+               return Empty;
+            end if;
+         end;
+      end;
+   end Get_Aggregate_Function_From_Pragma;
+
+   ------------------------------
    -- Get_Lemmas_To_Specialize --
    ------------------------------
 
    function Get_Lemmas_To_Specialize (E : Entity_Id) return Node_Sets.Set is
       (Higher_Order_Spec_Annotations.Element (E));
 
-   -------------------------------------------
+   ----------------------------------------
    -- Get_Ownership_Function_From_Pragma --
-   -------------------------------------------
+   ----------------------------------------
 
    function Get_Ownership_Function_From_Pragma
      (N  : Node_Id;
@@ -2727,6 +4064,14 @@ package body SPARK_Definition.Annotate is
       Check_Function := Ownership_Annotations (R).Check_Function;
       Reclaimed := Ownership_Annotations (R).Reclaimed;
    end Get_Reclamation_Check_Function;
+
+   ------------------------------
+   -- Has_Aggregate_Annotation --
+   ------------------------------
+
+   function Has_Aggregate_Annotation (E : Type_Kind_Id) return Boolean is
+     (Ekind (E) in Type_Kind
+      and then Aggregate_Annotations.Contains (Base_Retysp (E)));
 
    ----------------------------------
    -- Has_At_End_Borrow_Annotation --
@@ -3054,6 +4399,173 @@ package body SPARK_Definition.Annotate is
    function Needs_Reclamation (E : Entity_Id) return Boolean is
      (Ownership_Annotations (Root_Retysp (E)).Needs_Reclamation);
 
+   ---------------------------------------
+   -- Pull_Entities_For_Annotate_Pragma --
+   ---------------------------------------
+
+   procedure Pull_Entities_For_Annotate_Pragma
+     (E                 : Entity_Id;
+      Queue_For_Marking : not null access procedure (E : Entity_Id))
+   is
+   begin
+
+      --  If E is a private type with ownership which needs reclamation, go
+      --  over the following declarations to try and find its reclamation
+      --  function.
+
+      if Is_Type (E)
+        and then Is_Nouveau_Type (E)
+        and then Has_Ownership_Annotation (E)
+        and then Needs_Reclamation (E)
+        and then No (Get_Reclamation_Check_Function (E))
+      then
+         declare
+            Decl_Node : constant Node_Id := Declaration_Node (E);
+            Cur       : Node_Id;
+            Fun       : Entity_Id := Empty;
+         begin
+            if Is_List_Member (Decl_Node) then
+               Cur := Next (Decl_Node);
+               while Present (Cur) loop
+                  if Is_Pragma_Annotate_GNATprove (Cur) then
+                     Fun := Get_Ownership_Function_From_Pragma (Cur, E);
+                     if Present (Fun) then
+                        Queue_For_Marking (Fun);
+                        exit;
+                     end if;
+                  end if;
+                  Next (Cur);
+               end loop;
+            end if;
+
+            if No (Fun)
+              and then Emit_Warning_Info_Messages
+              and then Debug.Debug_Flag_Underscore_F
+            then
+               Error_Msg_NE
+                 ("info: ?no reclamation function found for type with "
+                  & "ownership &", E, E);
+               Error_Msg_N
+                 ("\checks for ressource or memory reclamation will be"
+                  & " unprovable", E);
+            end if;
+         end;
+      end if;
+
+      --  If E is annotated with a Container_Aggregates, go over the
+      --  following declarations to try and find its associated functions.
+
+      if Is_Type (E)
+        and then Is_Base_Type (E)
+        and then Has_Aggregate_Annotation (E)
+      then
+         declare
+            Decl_Node : constant Node_Id := Declaration_Node (E);
+            Cur       : Node_Id;
+         begin
+            if Is_List_Member (Decl_Node) then
+               Cur := First (List_Containing (Decl_Node));
+               while Present (Cur) loop
+                  if Is_Pragma_Annotate_GNATprove (Cur) then
+                     declare
+                        Fun : constant Entity_Id :=
+                          Get_Aggregate_Function_From_Pragma (Cur);
+                     begin
+                        if Present (Fun) then
+                           Queue_For_Marking (Fun);
+                        end if;
+                     end;
+                  end if;
+                  Next (Cur);
+               end loop;
+            end if;
+         end;
+      end if;
+
+      --  If E is a lemma procedure annotated with Automatic_Instantiation,
+      --  also mark its associated function.
+
+      if Has_Automatic_Instantiation_Annotation (E) then
+         Queue_For_Marking
+           (Retrieve_Automatic_Instantiation_Annotation (E));
+
+         --  Go over the ghost procedure declaration directly following E to
+         --  mark them in case they are lemmas with automatic instantiation.
+         --  We assume that lemma procedures associated to E are declared just
+         --  after E, possibly interspaced with compiler generated stuff and
+         --  pragmas and that the pragma Automatic_Instantiation is always
+         --  located directly after the lemma procedure declaration.
+
+      elsif Ekind (E) = E_Function
+        and then not Is_Volatile_Function (E)
+        and then not Is_Function_With_Side_Effects (E)
+      then
+         declare
+            Decl_Node : constant Node_Id := Parent (Declaration_Node (E));
+            Cur       : Node_Id;
+            Proc      : Entity_Id := Empty;
+
+         begin
+            if Is_List_Member (Decl_Node)
+              and then Decl_Starts_Pragma_Annotate_Range (Decl_Node)
+            then
+               Cur := Next (Decl_Node);
+               while Present (Cur) loop
+
+                  --  We have found a pragma Automatic_Instantiation that
+                  --  applies to Proc, add Proc to the queue for marking and
+                  --  continue the search.
+
+                  if Present (Proc)
+                    and then Is_Pragma_Annotate_GNATprove (Cur)
+                    and then Is_Pragma_Annotate_Automatic_Instantiation
+                      (Cur, Proc)
+                  then
+                     Queue_For_Marking (Proc);
+                     Proc := Empty;
+
+                     --  Ignore other pragmas
+
+                  elsif Nkind (Cur) = N_Pragma then
+                     null;
+
+                     --  We have found a declaration. If Cur is not a lemma
+                     --  procedure annotated with Automatic_Instantiation we
+                     --  can stop the search.
+
+                  elsif Decl_Starts_Pragma_Annotate_Range (Cur) then
+
+                     --  Cur is a declaration of a ghost procedure. Store
+                     --  it in Proc and continue the search to see if there
+                     --  is an associated Automatic_Instantiation
+                     --  Annotation. If there is already something in Proc,
+                     --  stop the search as no pragma
+                     --  Automatic_Instantiation has been found directly
+                     --  after the declaration of Proc.
+
+                     if Nkind (Cur) = N_Subprogram_Declaration
+                       and then Ekind (Unique_Defining_Entity (Cur))
+                         = E_Procedure
+                       and then Is_Ghost_Entity
+                         (Unique_Defining_Entity (Cur))
+                         and then No (Proc)
+                     then
+                        Proc := Unique_Defining_Entity (Cur);
+
+                        --  We have found a declaration which is not a lemma
+                        --  procedure, we can stop the search.
+
+                     else
+                        exit;
+                     end if;
+                  end if;
+                  Next (Cur);
+               end loop;
+            end if;
+         end;
+      end if;
+   end Pull_Entities_For_Annotate_Pragma;
+
    -------------------------------------------------
    -- Retrieve_Automatic_Instantiation_Annotation --
    -------------------------------------------------
@@ -3251,6 +4763,7 @@ package body SPARK_Definition.Annotate is
          Check_Argument_Number (Name, 3, Ok);
 
       elsif Name = "iterable_for_proof"
+        or else Name = "container_aggregates"
         or else (not From_Aspect
                  and then (Name = "false_positive"
                            or else Name = "intentional"))
@@ -3298,6 +4811,10 @@ package body SPARK_Definition.Annotate is
 
       elsif Name = "automatic_instantiation" then
          Check_Automatic_Instantiation_Annotation (Arg3_Exp, Prag);
+
+      elsif Name = "container_aggregates" then
+         Check_Aggregate_Annotation
+           (Aspect_Or_Pragma, Arg3_Exp, Arg4_Exp, Prag);
 
       elsif Name = "inline_for_proof" then
          Check_Inline_Annotation (Arg3_Exp, Prag);
