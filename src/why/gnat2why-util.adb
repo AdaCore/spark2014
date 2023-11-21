@@ -1981,14 +1981,12 @@ package body Gnat2Why.Util is
       -- To_Array --
       --------------
 
-      function To_Array
-        (V    : in out Vector;
-         Init : EW_Literal := EW_True) return W_Pred_Array
+      function To_Array (V : in out Vector) return W_Pred_Array
       is
       begin
          if V.Top = 0 then
             Free (V.Content);
-            return W_Pred_Array'(1 => New_Literal (Value => Init));
+            return W_Pred_Array'(2 .. 1 => <>);
          end if;
 
          return Res : constant W_Pred_Array := V.Content (1 .. V.Top) do

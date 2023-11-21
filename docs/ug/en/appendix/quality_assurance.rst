@@ -184,7 +184,7 @@ Track record: Very good results in various `SMT competitions <http://smtcomp.sou
 
 Relationship with AdaCore/Capgemini Engineering: AdaCore and Capgemini Engineering have provided bug reports, feature requests and small fixes to the cvc5 team, in particular related to a deterministic resource limiting switch. AdaCore is a founding member of `Centaur (the Center for Automated Reasoning at Stanford University) <https://centaur.stanford.edu/affiliates_and_sponsors.html>`_ which is a main contributor to cvc5.
 
-* Main developers: New York University
+* Main developers: Stanford University and the University of Iowa
 * Main website: https://cvc5.github.io/
 * Version Management: Git
 * License: Modified BSD License

@@ -69,6 +69,7 @@ with Tbuild;
 with Uintp;                           use Uintp;
 with Urealp;                          use Urealp;
 with VC_Kinds;                        use VC_Kinds;
+with Sem_Aggr;
 
 package body SPARK_Definition is
 
@@ -328,6 +329,11 @@ package body SPARK_Definition is
    --  If the context is found to be a prophecy save declaration, the
    --  prophecy save is registered.
 
+   procedure Check_No_Deep_Aliasing_In_Assoc (N : N_Delta_Aggregate_Id);
+   --  Search for associations of a deep type, where one of the associations
+   --  has a choice with at least one array index, as an overapproximation of
+   --  whether the choices in associations could alias.
+
    procedure Check_No_Deep_Duplicates_In_Assoc (N : N_Aggregate_Kind_Id);
    --  Search for associations mapping a single deep value to several
    --  components in the Component_Associations of N.
@@ -518,15 +524,6 @@ package body SPARK_Definition is
    --  a type (unlike other aggregate nodes). Mark_Array_Aggregate also makes
    --  sure to skip over those to avoid dealing with this abnormal case in
    --  Mark. Why aren't these kind of nodes Indexed_Components instead ?
-
-   function Emit_Warning_Info_Messages return Boolean is
-     (Emit_Messages
-      and then Gnat2Why_Args.Limit_Subp = Null_Unbounded_String
-      and then Gnat2Why_Args.Limit_Name = Null_Unbounded_String);
-   --  Emit warning/info messages only when messages should be emitted, and
-   --  analysis is not restricted to a single subprogram/line (typically during
-   --  interactive use in IDEs), to avoid reporting messages on pieces of code
-   --  not belonging to the analyzed subprogram/line.
 
    function Is_Incomplete_Type_From_Limited_With (E : Entity_Id) return Boolean
    is
@@ -782,6 +779,80 @@ package body SPARK_Definition is
       --  error message to keep it reasonably short.
 
    end Check_Context_Of_Prophecy;
+
+   -------------------------------------
+   -- Check_No_Deep_Aliasing_In_Assoc --
+   -------------------------------------
+
+   procedure Check_No_Deep_Aliasing_In_Assoc (N : N_Delta_Aggregate_Id) is
+
+      function Choice_Has_Index (Choice : Node_Id) return Boolean;
+      --  Return whether Choice includes an array index
+
+      ----------------------
+      -- Choice_Has_Index --
+      ----------------------
+
+      function Choice_Has_Index (Choice : Node_Id) return Boolean is
+      begin
+         if Is_Array_Type (Etype (N)) then
+            return True;
+
+         elsif Sem_Aggr.Is_Deep_Choice (Choice, Etype (N)) then
+            declare
+               Pref : Node_Id := Choice;
+            begin
+               while not Sem_Aggr.Is_Root_Prefix_Of_Deep_Choice (Pref) loop
+                  if Nkind (Pref) = N_Indexed_Component then
+                     return True;
+                  end if;
+                  Pref := Prefix (Pref);
+               end loop;
+            end;
+         end if;
+
+         return False;
+      end Choice_Has_Index;
+
+      --  Local variables
+
+      Assocs : constant List_Id := Component_Associations (N);
+      Assoc  : Node_Id := First (Assocs);
+
+      Has_Deep_Choice          : Boolean := False;
+      --  Whether a previous choice was of an ownership type
+      Has_Index_In_Deep_Choice : Boolean := False;
+      --  Whether a previous choice of an ownership type contains an index
+   begin
+      while Present (Assoc) loop
+         --  In order to avoid memory leaks from one choice aliasing with
+         --  another, there can be no two values of deep type in delta
+         --  aggregates when at least one of them includes an array index.
+         --  This is a coarse approximation for now, which could be refined
+         --  if needed, by comparing pairs of choices.
+
+         if Is_Deep (Etype (Expression (Assoc))) then
+            declare
+               --  Only consider first choice in list, as absence of duplicate
+               --  choices of deep types is checked separately.
+               Choice : constant Node_Id := First (Choice_List (Assoc));
+            begin
+               Has_Index_In_Deep_Choice :=
+                 Has_Index_In_Deep_Choice or else Choice_Has_Index (Choice);
+
+               if Has_Deep_Choice
+                 and then Has_Index_In_Deep_Choice
+               then
+                  Mark_Unsupported (Lim_Deep_Value_In_Delta_Aggregate, N);
+               end if;
+
+               Has_Deep_Choice := True;
+            end;
+         end if;
+
+         Next (Assoc);
+      end loop;
+   end Check_No_Deep_Aliasing_In_Assoc;
 
    ---------------------------------------
    -- Check_No_Deep_Duplicates_In_Assoc --
@@ -1127,7 +1198,8 @@ package body SPARK_Definition is
                        and then No (Parent_Retysp (E)))
               or else Declares_Iterable_Aspect (E)
               or else (Is_Base_Type (E)
-                       and then not Use_Predefined_Equality_For_Type (E)))
+                       and then not Use_Predefined_Equality_For_Type (E))
+              or else Needs_Check_For_Aggregate_Annotation (E))
          then
 
             declare
@@ -1637,8 +1709,46 @@ package body SPARK_Definition is
             pragma Assert (Present (Etype (N)));
             --  In particular, aggregate node must have a type.
 
-            if Has_Aspect (Base_Type (Etype (N)), Aspect_Aggregate) then
-               Mark_Violation ("container aggregate", N);
+            if SPARK_Util.Is_Container_Aggregate (N) then
+
+               --  For now we voluntarily do not look at parent types of
+               --  derived types to find the aggregate annotation. Indeed,
+               --  inheriting the Aggregate aspect does not work well in GNAT
+               --  currently nor is it clear how it is supposed to work with
+               --  respect to overridden Empty and Add_* primitives.
+
+               if not Has_Aggregate_Annotation (Etype (N)) then
+                  Mark_Violation
+                    ("container aggregate whose type does not have a"
+                     & " ""Container_Aggregates"" annotation", N);
+               else
+                  declare
+                     Annot : constant Aggregate_Annotation :=
+                       Get_Aggregate_Annotation (Etype (N));
+
+                  begin
+                     if not In_SPARK (Annot.Empty_Function) then
+                        Mark_Violation (N, From => Annot.Empty_Function);
+                     elsif not In_SPARK (Annot.Add_Procedure) then
+                        Mark_Violation (N, From => Annot.Add_Procedure);
+
+                     --  Indexed aggregates are not supported for now. They
+                     --  could not easily be used on containers as New_Indexed
+                     --  creates a partially initialized value.
+
+                     elsif not Annot.Use_Named
+                       and then Present (Component_Associations (N))
+                       and then not Is_Empty_List (Component_Associations (N))
+                     then
+                        Mark_Violation ("indexed container aggregate", N);
+                     elsif Annot.Kind = Model then
+                        Mark_Violation ("container aggregate using models", N);
+                     else
+                        Mark_List (Expressions (N));
+                        Mark_List (Component_Associations (N));
+                     end if;
+                  end;
+               end if;
 
             --  Reject 'Update on unconstrained multidimensional array
 
@@ -2815,8 +2925,101 @@ package body SPARK_Definition is
             --  one-dimensional, so extra aggregate node cannot be observed.
 
             Mark (Expression (N));
-            Mark_List (Component_Associations (N));
+
+            --  Roots of choices of deep delta aggregates are ill-typed.
+            --  Traverse them specifically.
+
+            if Is_Deep_Delta_Aggregate (N) then
+               declare
+                  procedure Mark_Deep_Choice (Choice : Node_Id);
+                  --  Traverse choices of deep delta aggregates to mark them
+
+                  ----------------------
+                  -- Mark_Deep_Choice --
+                  ----------------------
+
+                  procedure Mark_Deep_Choice (Choice : Node_Id) is
+                     Pref_Ty : Type_Kind_Id;
+
+                  begin
+                     --  We have reached the root. The prefix type is
+                     --  necessarily in SPARK. Just mark the choice.
+
+                     if Sem_Aggr.Is_Root_Prefix_Of_Deep_Choice (Choice) then
+                        Mark (Choice);
+
+                     --  Otherwise, make sure that the component is visible in
+                     --  SPARK, mark the choice and the prefix.
+
+                     else
+                        Pref_Ty :=
+                          (if Sem_Aggr.Is_Root_Prefix_Of_Deep_Choice
+                             (Prefix (Choice))
+                           then
+                             (if Is_Array_Type (Etype (N))
+                              then Component_Type (Etype (N))
+                              else Etype (Entity (Prefix (Choice))))
+                           else Etype (Prefix (Choice)));
+
+                        if not Retysp_In_SPARK (Pref_Ty) then
+                           Mark_Violation (Choice, From => Pref_Ty);
+                           return;
+                        end if;
+
+                        if Nkind (Choice) = N_Indexed_Component then
+                           if not Most_Underlying_Type_In_SPARK (Pref_Ty)
+                           then
+                              Mark_Violation (N, From => Pref_Ty);
+                              return;
+                           end if;
+                           Mark (First (Expressions (Choice)));
+                           pragma Assert (No (Next
+                                          (First (Expressions (Choice)))));
+                        else
+                           if No
+                             (Search_Component_By_Name
+                                (Unique_Entity (Pref_Ty),
+                                 Entity (Selector_Name (Choice))))
+                           then
+                              if SPARK_Pragma_Is (Opt.On) then
+                                 Error_Msg_NE
+                                   ("component not present in }",
+                                    Choice, Pref_Ty);
+                                 Error_Msg_N
+                                   ("\static expression fails "
+                                    & "Constraint_Check", Choice);
+                              end if;
+
+                              return;
+                           end if;
+                           Mark (Selector_Name (Choice));
+                        end if;
+
+                        Mark_Deep_Choice (Prefix (Choice));
+                     end if;
+                  end Mark_Deep_Choice;
+
+                  Assoc : Node_Id := First (Component_Associations (N));
+               begin
+                  while Present (Assoc) loop
+                     declare
+                        Choice : Node_Id := First (Choices (Assoc));
+                     begin
+                        while Present (Choice) loop
+                           Mark_Deep_Choice (Choice);
+                           Next (Choice);
+                        end loop;
+                     end;
+                     Mark_Component_Of_Component_Association (Assoc);
+                     Next (Assoc);
+                  end loop;
+               end;
+            else
+               Mark_List (Component_Associations (N));
+            end if;
+
             Check_No_Deep_Duplicates_In_Assoc (N);
+            Check_No_Deep_Aliasing_In_Assoc (N);
 
          --  Uses of object renamings are rewritten by expansion, but the name
          --  is still being evaluated at the location of the renaming, even if
@@ -5843,7 +6046,16 @@ package body SPARK_Definition is
                      end if;
 
                   else
-                     for G of Globals.Inputs.Union (Globals.Proof_Ins) loop
+                     --  Violations will be attached to the function entity, so
+                     --  GNAT will only print the first one, which will depend
+                     --  on the order of hash iteration. Future error message
+                     --  backends might be able to print more, but for now we
+                     --  just want to make the order stable.
+
+                     for G of
+                       To_Ordered_Flow_Id_Set
+                         (Globals.Inputs.Union (Globals.Proof_Ins))
+                     loop
 
                         --  Volatile variable with effective reads are outputs.
                         --  This case can only happen with abstract states
@@ -8376,131 +8588,10 @@ package body SPARK_Definition is
             end loop;
          end if;
 
-         --  If E is a private type with ownership which needs reclamation, go
-         --  over the following declarations to try and find its reclamation
-         --  function.
+         --  If E has an annotate pragma, it might be necessary to mark other
+         --  related entities.
 
-         if Is_Type (E)
-           and then Is_Nouveau_Type (E)
-           and then Has_Ownership_Annotation (E)
-           and then Needs_Reclamation (E)
-           and then No (Get_Reclamation_Check_Function (E))
-         then
-            declare
-               Decl_Node : constant Node_Id := Declaration_Node (E);
-               Cur       : Node_Id;
-               Fun       : Entity_Id := Empty;
-            begin
-               if Is_List_Member (Decl_Node) then
-                  Cur := Next (Decl_Node);
-                  while Present (Cur) loop
-                     if Is_Pragma_Annotate_GNATprove (Cur) then
-                        Fun := Get_Ownership_Function_From_Pragma (Cur, E);
-                        if Present (Fun) then
-                           Queue_For_Marking (Fun);
-                           exit;
-                        end if;
-                     end if;
-                     Next (Cur);
-                  end loop;
-               end if;
-
-               if No (Fun)
-                 and then Emit_Warning_Info_Messages
-                 and then Debug.Debug_Flag_Underscore_F
-               then
-                  Error_Msg_NE
-                    ("info: ?no reclamation function found for type with "
-                     & "ownership &", E, E);
-                  Error_Msg_N
-                    ("\checks for ressource or memory reclamation will be"
-                     & " unprovable", E);
-               end if;
-            end;
-         end if;
-
-         --  If E is a lemma procedure annotated with Automatic_Instantiation,
-         --  also mark its associated function.
-
-         if Has_Automatic_Instantiation_Annotation (E) then
-            Queue_For_Marking
-              (Retrieve_Automatic_Instantiation_Annotation (E));
-
-         --  Go over the ghost procedure declaration directly following E to
-         --  mark them in case they are lemmas with automatic instantiation.
-         --  We assume that lemma procedures associated to E are declared just
-         --  after E, possibly interspaced with compiler generated stuff and
-         --  pragmas and that the pragma Automatic_Instantiation is always
-         --  located directly after the lemma procedure declaration.
-
-         elsif Ekind (E) = E_Function
-           and then not Is_Volatile_Function (E)
-           and then not Is_Function_With_Side_Effects (E)
-         then
-            declare
-               Decl_Node : constant Node_Id := Parent (Declaration_Node (E));
-               Cur       : Node_Id;
-               Proc      : Entity_Id := Empty;
-
-            begin
-               if Is_List_Member (Decl_Node)
-                 and then Decl_Starts_Pragma_Annotate_Range (Decl_Node)
-               then
-                  Cur := Next (Decl_Node);
-                  while Present (Cur) loop
-
-                     --  We have found a pragma Automatic_Instantiation that
-                     --  applies to Proc, add Proc to the queue for marking and
-                     --  continue the search.
-
-                     if Present (Proc)
-                       and then Is_Pragma_Annotate_GNATprove (Cur)
-                       and then Is_Pragma_Annotate_Automatic_Instantiation
-                         (Cur, Proc)
-                     then
-                        Queue_For_Marking (Proc);
-                        Proc := Empty;
-
-                     --  Ignore other pragmas
-
-                     elsif Nkind (Cur) = N_Pragma then
-                        null;
-
-                     --  We have found a declaration. If Cur is not a lemma
-                     --  procedure annotated with Automatic_Instantiation we
-                     --  can stop the search.
-
-                     elsif Decl_Starts_Pragma_Annotate_Range (Cur) then
-
-                        --  Cur is a declaration of a ghost procedure. Store
-                        --  it in Proc and continue the search to see if there
-                        --  is an associated Automatic_Instantiation
-                        --  Annotation. If there is already something in Proc,
-                        --  stop the search as no pragma
-                        --  Automatic_Instantiation has been found directly
-                        --  after the declaration of Proc.
-
-                        if Nkind (Cur) = N_Subprogram_Declaration
-                          and then Ekind (Unique_Defining_Entity (Cur))
-                            = E_Procedure
-                          and then Is_Ghost_Entity
-                            (Unique_Defining_Entity (Cur))
-                          and then No (Proc)
-                        then
-                           Proc := Unique_Defining_Entity (Cur);
-
-                        --  We have found a declaration which is not a lemma
-                        --  procedure, we can stop the search.
-
-                        else
-                           exit;
-                        end if;
-                     end if;
-                     Next (Cur);
-                  end loop;
-               end if;
-            end;
-         end if;
+         Pull_Entities_For_Annotate_Pragma (E, Queue_For_Marking'Access);
       end if;
 
       --  Restore prestate

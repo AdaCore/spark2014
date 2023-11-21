@@ -2,3 +2,5 @@ large: True
 replay: True
 session_opt:
   level: 4
+prove_all:
+  opt: []

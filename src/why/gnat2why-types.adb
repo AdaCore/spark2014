@@ -1266,8 +1266,11 @@ package body Gnat2Why.Types is
       Check_Iter    : constant Boolean := Declares_Iterable_Aspect (E);
       Check_Eq      : constant Boolean :=
         Is_Base_Type (E) and then not Use_Predefined_Equality_For_Type (E);
+      Check_Aggr    : constant Boolean :=
+        Needs_Check_For_Aggregate_Annotation (E);
       Need_Check    : constant Boolean :=
-        Check_Default or else Check_Iter or else Check_Subp or else Check_Eq;
+        Check_Default or else Check_Iter or else Check_Subp or else Check_Eq
+        or else Check_Aggr;
       Name          : constant String := Full_Name (E);
       Params        : constant Transformation_Params := Body_Params;
       Why_Body      : W_Prog_Id := +Void;
@@ -1439,11 +1442,21 @@ package body Gnat2Why.Types is
                                         Labels      => Symbol_Sets.Empty_Set,
                                         Return_Type => W_Ty),
                         Context => Check));
-                  Why_Body := Sequence (Why_Body, Check);
+                  Why_Body := Sequence (Why_Body, New_Ignore (Prog => Check));
                end;
                Continuation_Stack.Delete_Last;
             end if;
          end;
+      end if;
+
+      --  Generate checks to make sure that the translation used for container
+      --  aggregates is correct. This is done by checking the initialization
+      --  and the preservation of the associated invariants.
+
+      if Check_Aggr then
+         Why_Body := Sequence
+           (Why_Body,
+            New_Ignore (Prog => Generate_VCs_For_Aggregate_Annotation (E)));
       end if;
 
       if Why_Body /= +Void then

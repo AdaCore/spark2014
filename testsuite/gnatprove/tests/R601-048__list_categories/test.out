@@ -13,7 +13,7 @@ DEPENDS_MISSING_CLAUSE - output item missing from the dependency clause - An out
 DEPENDS_NULL - input item missing from the null dependency clause - An input item is missing from the null dependency clause. - EASY
 DEPENDS_WRONG - extra input item in the dependency clause - Extra input item in the dependency clause. - EASY
 EXPORT_DEPENDS_ON_PROOF_IN - subprogram output depends on a Proof_In global - Subprogram output depends on a Proof_In global. - EASY
-GHOST_WRONG - non-ghost output of ghost procedure - A ghost procedure has a non-ghost global output. - EASY
+GHOST_WRONG - non-ghost output of ghost subprogram - A ghost subprogram has a non-ghost global output. - EASY
 GLOBAL_MISSING - incomplete Global or Initializes contract - A Global or Initializes contract fails to mention some objects. - EASY
 GLOBAL_WRONG - an extra item in the Global or Initializes contract - A Global or Initializes contract wrongly mentions some objects. - EASY
 HIDDEN_UNEXPOSED_STATE - constants with variable inputs that is not a state constituent - Constants with variable inputs that are not state constituents. - EASY
@@ -81,6 +81,7 @@ VC_ASSERT_PREMISE(assertion) - assertion premise - Check that the premise of an 
 VC_RAISE(assertion) - raised exception - Check that raise expressions can never be reached and that all exceptions raised by raise statement and procedure calls are expected. - MEDIUM
 VC_FEASIBLE_POST(assertion) - feasible function - Check that an abstract function or access-to-function type is feasible. - MEDIUM
 VC_INLINE_CHECK(assertion) - Inline_For_Proof or Logical_Equal annotation - Check that an Annotate pragma with the Inline_For_Proof or Logical_Equal identifier is correct. - MEDIUM
+VC_CONTAINER_AGGR_CHECK(assertion) - Container_Aggregates annotation - Check the invariants used to translate container aggregates using the primitives provided by the Aggregate aspect and the Container_Aggregates annotation. - MEDIUM
 VC_TERMINATION_CHECK(assertion) - termination check - Check the termination of subprograms annotated with an Always_Terminates aspect whose value is not known at compile time and of calls to such subprograms. - MEDIUM
 VC_UC_SOURCE(assertion) - unchecked conversion source check - Check that a source type in an unchecked conversion can safely be used for such conversions. This means that the memory occupied by objects of this type is fully used by the object. - MEDIUM
 VC_UC_TARGET(assertion) - unchecked conversion target check - Check that a target type in an unchecked conversion can safely be used for such conversions. This means that the memory occupied by objects of this type is fully used by the object, and no invalid bitpatterns occur. - MEDIUM

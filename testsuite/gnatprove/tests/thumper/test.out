@@ -350,7 +350,7 @@ network-addresses.ads:43:08: info: flow dependencies proved
 network-addresses.ads:46:13: info: implicit aspect Always_Terminates on "To_UDPv4_Address" has been proved, subprogram will terminate
 network-addresses.ads:49:13: info: implicit aspect Always_Terminates on "Get_Port" has been proved, subprogram will terminate
 network-addresses.ads:52:13: info: implicit aspect Always_Terminates on "Get_IPv4" has been proved, subprogram will terminate
-network-socket-writer.ads:17:06: warning: no procedure exists that can initialize abstract state "Writer.Output_Message_Stream"
+network-socket-writer.ads:17:06: warning: no subprogram exists that can initialize abstract state "Writer.Output_Message_Stream"
 serial_generator.adb:21:04: info: initialization of "Current" constituent of "State" proved
 serial_generator.adb:36:07: info: initialization of "Year" proved
 serial_generator.adb:37:07: info: initialization of "Month" proved

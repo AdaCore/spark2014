@@ -2352,6 +2352,42 @@ package body Flow_Error_Messages is
         (N   : Node_Id;
          Tag : VC_Kind) return Flow_Id_Sets.Set
       is
+
+         function Is_Choice_Of_Aggr (N : Node_Id) return Boolean;
+         --  A choice in a component association is not really an expression
+         --  (except when used as an index of an array component association).
+         --  Detect these nodes to exclude them.
+
+         function Is_Choice_Of_Aggr (N : Node_Id) return Boolean is
+            Par : Node_Id := N;
+         begin
+            --  Climb up the parent chain to find a deep container association
+            --  if there is one.
+
+            loop
+               --  Roots of deep array associations are parenthesized indexes
+
+               if Paren_Count (Par) > 0 then
+                  return False;
+               end if;
+
+               exit when Nkind (Parent (Par)) not in N_Indexed_Component
+                                                   | N_Selected_Component;
+
+               if Par /= Prefix (Parent (Par)) then
+                  return False;
+               end if;
+               Par := Parent (Par);
+            end loop;
+
+            return Nkind (Parent (Par)) = N_Component_Association
+              and then Is_List_Member (Par)
+              and then List_Containing (Par) = Choices (Parent (Par))
+              and then
+                (not Is_Array_Type (Etype (Parent (Parent (Par))))
+                 or else Is_Deep_Choice (Par, Etype (Parent (Parent (Par)))));
+         end Is_Choice_Of_Aggr;
+
          Vars : Flow_Id_Sets.Set;
       begin
          --  For a precondition check on a call, retrieve the precondition of
@@ -2430,17 +2466,11 @@ package body Flow_Error_Messages is
          elsif Nkind (N) = N_Procedure_Call_Statement then
             pragma Assert (Tag /= VC_Precondition);
 
-         --  Identifier appearing as a choice in a component association is
-         --  not really an expression (except when used as an index of an
-         --  array component association).
+         --  A choice in a component association is not really an expression
+         --  (except when used as an index of an array component association).
 
-         elsif Nkind (N) = N_Identifier
-           and then Nkind (Parent (N)) = N_Component_Association
-           and then Is_List_Member (N)
-           and then List_Containing (N) = Choices (Parent (N))
-           and then not Is_Array_Type (Etype (Parent (Parent (N))))
-         then
-            pragma Assert (Ekind (Entity (N)) in E_Component | E_Discriminant);
+         elsif Is_Choice_Of_Aggr (N) then
+            null;
 
          else
             pragma Assert (Nkind (N) in N_Subexpr

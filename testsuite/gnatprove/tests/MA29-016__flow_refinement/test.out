@@ -60,7 +60,7 @@ fruit.ads:30:11: info: data dependencies proved
 fruit.ads:31:11: info: flow dependencies proved
 fruit.ads:34:11: info: data dependencies proved
 fruit.ads:35:11: info: flow dependencies proved
-levels.adb:9:27: warning: no procedure exists that can initialize abstract state "Nested_1.Abs_1" constituent of "Levels.Abs_0"
+levels.adb:9:27: warning: no subprogram exists that can initialize abstract state "Nested_1.Abs_1" constituent of "Levels.Abs_0"
 levels.adb:12:16: info: implicit aspect Always_Terminates on "Read_Partial_1" has been proved, subprogram will terminate
 levels.adb:13:12: info: data dependencies proved
 levels.adb:15:16: info: implicit aspect Always_Terminates on "Read_Partial_1_Inner" has been proved, subprogram will terminate
@@ -102,7 +102,7 @@ levels.adb:147:25: info: refined post proved (CVC5: 1 VC)
 levels.adb:147:44: medium: overflow check might fail, cannot prove lower bound for Read_Partial_0 + Nested_1.Read_Partial_1 [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: you should consider adding a postcondition to function Read_Partial_1 and function Read_Partial_0 or turning them into expression functions]
 levels.adb:147:70: info: overflow check proved (CVC5: 2 VC)
 levels.adb:157:17: medium: overflow check might fail, cannot prove lower bound for X0 + Nested_1.Read_Partial_1 [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at levels.ads:8 should mention X2 and Y2 and X1 and Y1 and X0 in a precondition]
-levels.ads:2:26: warning: no procedure exists that can initialize abstract state "Levels.Abs_0"
+levels.ads:2:26: warning: no subprogram exists that can initialize abstract state "Levels.Abs_0"
 levels.ads:5:13: info: implicit aspect Always_Terminates on "Read_Partial_0" has been proved, subprogram will terminate
 levels.ads:6:11: info: data dependencies proved
 levels.ads:8:13: info: implicit aspect Always_Terminates on "Read_Partial_Combined" has been proved, subprogram will terminate
@@ -124,7 +124,7 @@ par-priv.adb:13:04: warning: analyzing unreferenced procedure "Test"
 par-priv.ads:11:13: info: implicit aspect Always_Terminates on "H" has been proved, subprogram will terminate
 par-priv.ads:11:40: medium: overflow check might fail, cannot prove lower bound for Par.X + Par.Y [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at line 11 should mention X and Y in a precondition]
 par-priv.ads:15:13: info: implicit aspect Always_Terminates on "I" has been proved, subprogram will terminate
-par-priv2.ads:4:27: warning: no procedure exists that can initialize abstract state "Priv2.More_Private_State" constituent of "Par.State"
+par-priv2.ads:4:27: warning: no subprogram exists that can initialize abstract state "Priv2.More_Private_State" constituent of "Par.State"
 par-priv2.ads:11:13: info: implicit aspect Always_Terminates on "K" has been proved, subprogram will terminate
 par-pub.adb:9:18: medium: overflow check might fail, cannot prove lower bound for Par.X + Par.Y [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at par-pub.ads:8 should mention X and Y in a precondition]
 par-pub.adb:14:04: warning: analyzing unreferenced procedure "Test"
@@ -136,5 +136,5 @@ par.adb:20:20: medium: overflow check might fail, cannot prove lower bound for X
 par.adb:26:14: medium: overflow check might fail, cannot prove lower bound for X + Y [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at par.ads:7 should mention X and Y in a precondition]
 par.adb:29:04: warning: analyzing unreferenced procedure "Test_1"
 par.adb:37:04: warning: analyzing unreferenced procedure "Test_2"
-par.ads:2:27: warning: no procedure exists that can initialize abstract state "Par.State"
+par.ads:2:27: warning: no subprogram exists that can initialize abstract state "Par.State"
 par.ads:15:13: info: implicit aspect Always_Terminates on "Wibble" has been proved, subprogram will terminate

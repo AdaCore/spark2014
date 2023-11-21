@@ -27,7 +27,6 @@ with Ada.Text_IO; -- debugging purpose
 with Aspects;
 with Einfo.Utils;
 with Nlists;             use Nlists;
-with Sem_Aggr;
 with Sem_Ch12;
 with Sem_Disp;
 with SPARK_Util.Types;

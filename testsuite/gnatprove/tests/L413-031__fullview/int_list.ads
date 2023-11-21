@@ -1,4 +1,4 @@
-pragma Ada_2012;
+pragma Ada_2022;
 with SPARK.Containers.Formal.Doubly_Linked_Lists;
 with Ada.Containers; use Ada.Containers;
 

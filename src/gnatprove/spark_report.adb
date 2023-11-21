@@ -1103,12 +1103,15 @@ procedure SPARK_Report is
 
       function OS_String return String is
          (case Get_OS_Flavor is
-             when X86_Windows | X86_64_Windows => "Windows",
-             when X86_Linux   | X86_64_Linux   => "Linux",
-             when X86_64_Darwin                => "Darwin",
-             when X86_64_FreeBSD               => "FreeBSD",
-             when CodePeer_OS                  => "CodePeer OS",
-             when AArch64_Darwin               => "Darwin");
+             when X86_Windows
+                | X86_64_Windows => "Windows",
+             when X86_Linux
+                | X86_64_Linux
+                | AArch64_Linux  => "Linux",
+             when X86_64_Darwin  => "Darwin",
+             when X86_64_FreeBSD => "FreeBSD",
+             when CodePeer_OS    => "CodePeer OS",
+             when AArch64_Darwin => "Darwin");
 
       Pointer_Size : constant :=
         System.Storage_Elements.Integer_Address'Size / System.Storage_Unit;
@@ -1209,6 +1212,7 @@ procedure SPARK_Report is
             | VC_Complete_Contract_Cases
             | VC_Exceptional_Case
             | VC_Inline_Check
+            | VC_Container_Aggr_Check
             | VC_Feasible_Post
          =>
             return Functional_Contracts;

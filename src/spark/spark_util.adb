@@ -26,6 +26,7 @@
 with Ada.Characters.Latin_1;      use Ada.Characters.Latin_1;
 with Ada.Containers.Hashed_Maps;
 with Ada.Text_IO;
+with Aspects;                     use Aspects;
 with Common_Iterators;            use Common_Iterators;
 with Errout;                      use Errout;
 with Flow_Dependency_Maps;        use Flow_Dependency_Maps;
@@ -45,6 +46,7 @@ with SPARK_Definition.Annotate;   use SPARK_Definition.Annotate;
 with SPARK_Util.Hardcoded;        use SPARK_Util.Hardcoded;
 with SPARK_Util.Subprograms;      use SPARK_Util.Subprograms;
 with SPARK_Util.Types;            use SPARK_Util.Types;
+with Sem_Aggr;
 with Sem_Ch12;                    use Sem_Ch12;
 with Sem_Eval;                    use Sem_Eval;
 with Sem_Prag;                    use Sem_Prag;
@@ -543,6 +545,7 @@ package body SPARK_Util is
             --  Reach past an enclosing aggregate
 
             when N_Aggregate
+               | N_Component_Association
                | N_Delta_Aggregate
                | N_Extension_Aggregate
             =>
@@ -1644,6 +1647,28 @@ package body SPARK_Util is
       ---------------------------
 
       function Aggr_Has_Relaxed_Init (Aggr : Node_Id) return Boolean is
+
+         function Comp_Type_For_Assoc (Assoc : Node_Id) return Type_Kind_Id;
+         --  Return the expected type of the component for an association
+
+         -------------------------
+         -- Comp_Type_For_Assoc --
+         -------------------------
+
+         function Comp_Type_For_Assoc (Assoc : Node_Id) return Type_Kind_Id is
+            Choice : constant Node_Id := First (Choice_List (Assoc));
+         begin
+            if Sem_Aggr.Is_Deep_Choice (Choice, Etype (Aggr))
+              and then not Sem_Aggr.Is_Root_Prefix_Of_Deep_Choice (Choice)
+            then
+               return Etype (Choice);
+            elsif Is_Array_Type (Etype (Aggr)) then
+               return Component_Type (Etype (Aggr));
+            else
+               return Etype (Entity (Choice));
+            end if;
+         end Comp_Type_For_Assoc;
+
          Exprs  : constant List_Id :=
            (if Nkind (Aggr) = N_Delta_Aggregate then No_List
             else Expressions (Aggr));
@@ -1669,11 +1694,7 @@ package body SPARK_Util is
             --  does not impact the status of the aggregate.
 
             if not Box_Present (Assoc)
-              and then not Has_Relaxed_Init
-                (if Is_Array_Type (Etype (Aggr))
-                 then Component_Type (Etype (Aggr))
-                 else Etype
-                   (Entity (First (Choice_List (Assoc)))))
+              and then not Has_Relaxed_Init (Comp_Type_For_Assoc (Assoc))
               and then Expr_Has_Relaxed_Init
                 (Expression (Assoc), No_Eval => False)
             then
@@ -2856,6 +2877,20 @@ package body SPARK_Util is
       end case;
    end Is_Constant_In_SPARK;
 
+   ----------------------------
+   -- Is_Container_Aggregate --
+   ----------------------------
+
+   function Is_Container_Aggregate (Exp : Node_Id) return Boolean is
+   begin
+      --  As the Aggregate aspect connot be specified on arrays, it is enough
+      --  to check whether the aggregate uses () or [].
+
+      return Nkind (Exp) = N_Aggregate
+        and then Has_Aspect (Etype (Exp), Aspect_Aggregate)
+        and then not Is_Parenthesis_Aggregate (Exp);
+   end Is_Container_Aggregate;
+
    ------------------------------------------
    -- Is_Converted_Actual_Output_Parameter --
    ------------------------------------------
@@ -2986,6 +3021,52 @@ package body SPARK_Util is
 
       return N_CU = Main_CU;
    end Is_Declared_In_Main_Unit_Or_Parent;
+
+   -----------------------------
+   -- Is_Deep_Delta_Aggregate --
+   -----------------------------
+
+   function Is_Deep_Delta_Aggregate (Exp : Node_Id) return Boolean is
+      Pref  : Node_Id;
+      Assoc : Node_Id;
+   begin
+      if Nkind (Exp) /= N_Delta_Aggregate then
+         return False;
+      end if;
+
+      Pref := Expression (Exp);
+      Assoc := First (Component_Associations (Exp));
+      while Present (Assoc) loop
+
+         --  Iterated component associations are not allowed in deep delta
+         --  aggregates.
+
+         if Nkind (Assoc) = N_Iterated_Component_Association then
+            return False;
+         end if;
+
+         declare
+            Choice : constant Node_Id := First (Choices (Assoc));
+         begin
+            if Sem_Aggr.Is_Deep_Choice (Choice, Etype (Pref)) then
+               return True;
+
+            --  For arrays, deep and shallow associations cannot be mixed
+
+            elsif Is_Array_Type (Etype (Pref)) then
+               return False;
+            end if;
+
+            --  Multiple choices are expanded in record delta aggregates
+
+            pragma Assert (No (Next (Choice)));
+         end;
+
+         Next (Assoc);
+      end loop;
+
+      return False;
+   end Is_Deep_Delta_Aggregate;
 
    ---------------------
    -- Is_Empty_Others --

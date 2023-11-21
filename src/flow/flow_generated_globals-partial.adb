@@ -714,14 +714,22 @@ package body Flow_Generated_Globals.Partial is
             --  Process predicates that apply to formals of E
 
             for F of Get_Explicit_Formals (E) loop
-               Process_Predicate (F, Contr.Proof_Dependencies);
+               Process_Predicate_And_Invariant
+                 (F,
+                  Get_Flow_Scope (E),
+                  Is_Globally_Visible (E),
+                  Contr.Proof_Dependencies);
             end loop;
 
             --  Process predicates that apply to the return type if E is a
             --  function.
 
             if Ekind (E) = E_Function then
-               Process_Predicate (E, Contr.Proof_Dependencies);
+               Process_Predicate_And_Invariant
+                 (E,
+                  Get_Flow_Scope (E),
+                  Is_Globally_Visible (E),
+                  Contr.Proof_Dependencies);
             end if;
          end if;
 

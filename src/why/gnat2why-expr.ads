@@ -23,6 +23,7 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
+with Ada.Containers.Vectors;
 with Checked_Types;              use Checked_Types;
 with Common_Containers;          use Common_Containers;
 with Flow_Types;                 use Flow_Types;
@@ -30,6 +31,7 @@ with Gnat2Why.Util;              use Gnat2Why.Util;
 with Nlists;                     use Nlists;
 with SPARK_Atree;                use SPARK_Atree;
 with SPARK_Atree.Entities;       use SPARK_Atree.Entities;
+with SPARK_Definition.Annotate;  use SPARK_Definition.Annotate;
 with SPARK_Util;                 use SPARK_Util;
 with SPARK_Util.Types;           use SPARK_Util.Types;
 with Types;                      use Types;
@@ -398,6 +400,13 @@ package Gnat2Why.Expr is
 
    function Count_Numerical_Variants (E : Callable_Kind_Id) return Natural;
    --  Compute the number of numerical variants of a subprogram or entry if any
+
+   function Generate_VCs_For_Aggregate_Annotation
+     (E : Type_Kind_Id)
+     return W_Prog_Id
+   with Pre => Has_Aggregate_Annotation (E);
+   --  Generate checks for the initialization and the preservation of the
+   --  invariants used to model aggregates.
 
    function Get_Pure_Logic_Term_If_Possible
      (Expr          : N_Subexpr_Id;
@@ -863,5 +872,18 @@ private
 
    Incompl_Access_Dyn_Inv_Map : Ada_To_Why_Ident.Map;
    --  Map storing predicates for invariants of access to incomplete types
+
+   type Ref_Type is record
+      Mutable : Boolean;
+      Name    : W_Identifier_Id;
+      Value   : W_Expr_Id;
+   end record;
+   --  Represent a mapping from an identifier Name to an expression Value.
+   --  If Mutable is True, the mapping should be a reference.
+
+   package Ref_Type_Vectors is new Ada.Containers.Vectors
+     (Index_Type   => Positive,
+      Element_Type => Ref_Type);
+   subtype Ref_Context is Ref_Type_Vectors.Vector;
 
 end Gnat2Why.Expr;

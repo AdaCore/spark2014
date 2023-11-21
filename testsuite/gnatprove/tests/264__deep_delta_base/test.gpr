@@ -1,0 +1,11 @@
+project Test is
+
+   package Compiler is
+      for Default_Switches ("ada") use ("-gnatX0");
+   end Compiler;
+
+   package Prove is
+      for Proof_Dir use "proof";
+   end Prove;
+
+end Test;

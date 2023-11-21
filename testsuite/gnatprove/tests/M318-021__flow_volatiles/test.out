@@ -55,7 +55,7 @@ tests_async_readers.adb:133:34: info: initialization of "Y" proved
 tests_async_readers.adb:133:37: info: initialization of "Z" proved
 tests_async_readers.adb:134:11: info: data dependencies proved
 tests_async_readers.adb:135:11: info: flow dependencies proved
-tests_async_readers.ads:2:27: warning: no procedure exists that can initialize abstract state "Tests_Async_Readers.State_With_Async_Readers"
+tests_async_readers.ads:2:27: warning: no subprogram exists that can initialize abstract state "Tests_Async_Readers.State_With_Async_Readers"
 tests_async_writers.adb:29:17: info: initialization of "X" proved
 tests_async_writers.adb:29:20: info: initialization of "Y" proved
 tests_async_writers.adb:30:11: info: data dependencies proved

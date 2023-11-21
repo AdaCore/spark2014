@@ -27,6 +27,7 @@ with Atree;
 with Einfo.Entities;
 with Exp_Util;
 with Namet;       use Namet;
+with Sem_Aggr;
 with Sem_Aux;
 with Sem_Eval;
 with Sem_Util;
@@ -665,6 +666,9 @@ package SPARK_Atree is
    --  Return true if N is a function call and its original node is an equality
    --  operation. This is used to handle specifically dispatching calls to
    --  primitive equality.
+
+   function Is_Root_Prefix_Of_Deep_Choice (N : Node_Id) return Boolean renames
+     Sem_Aggr.Is_Root_Prefix_Of_Deep_Choice;
 
    function Is_Tag_Indeterminate (N : Node_Id) return Boolean with
      Pre => Nkind (N) in N_Subexpr;

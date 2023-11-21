@@ -31,6 +31,7 @@ with Namet;                           use Namet;
 with Nlists;                          use Nlists;
 with Output;                          use Output;
 with Rtsfind;                         use Rtsfind;
+with Sem_Aggr;
 with Sem_Prag;                        use Sem_Prag;
 with Sem_Type;                        use Sem_Type;
 with Sinfo.Utils;                     use Sinfo.Utils;
@@ -138,8 +139,10 @@ package body Flow_Utility is
    --  allows to track which type predicates we already traversed to pick
    --  proof dependencies.
 
-   procedure Process_Predicate_Internal
+   procedure Process_Predicate_And_Invariant_Internal
      (N                  : Node_Or_Entity_Id;
+      Scop               : Flow_Scope;
+      Include_Invariant  : Boolean;
       Proof_Dependencies : in out Node_Sets.Set;
       Types_Seen         : in out Node_Sets.Set)
    with Pre  => N in N_Has_Etype_Id,
@@ -330,8 +333,12 @@ package body Flow_Utility is
                      --  is executed, whereas proof pulls the entire set of
                      --  predicates that apply to P.
 
-                     Process_Predicate_Internal
-                       (P, Proof_Dependencies, Types_Seen);
+                     Process_Predicate_And_Invariant_Internal
+                       (N                  => P,
+                        Scop               => Scop,
+                        Include_Invariant  => False,
+                        Proof_Dependencies => Proof_Dependencies,
+                        Types_Seen         => Types_Seen);
                      Process_Type (Get_Type (P, Scop));
                   end if;
                else
@@ -341,8 +348,12 @@ package body Flow_Utility is
                      if Nkind (P) in N_Identifier | N_Expanded_Name
                        and then Is_Type (Entity (P))
                      then
-                        Process_Predicate_Internal
-                          (P, Proof_Dependencies, Types_Seen);
+                        Process_Predicate_And_Invariant_Internal
+                          (N                  => P,
+                           Scop               => Scop,
+                           Include_Invariant  => False,
+                           Proof_Dependencies => Proof_Dependencies,
+                           Types_Seen         => Types_Seen);
                         Process_Type (Get_Type (P, Scop));
                      end if;
                      Next (P);
@@ -466,8 +477,14 @@ package body Flow_Utility is
                   if Present (E)
                     and then Ekind (E) in E_Constant | E_Variable
                   then
-                     Process_Predicate_Internal
-                       (E, Proof_Dependencies, Types_Seen);
+                     Process_Predicate_And_Invariant_Internal
+                       (N                  => E,
+                        Scop               => Scop,
+                        Include_Invariant  => not Scope_Within_Or_Same
+                                                (Outer => Scop.Ent,
+                                                 Inner => E),
+                        Proof_Dependencies => Proof_Dependencies,
+                        Types_Seen         => Types_Seen);
                   end if;
                end;
 
@@ -478,8 +495,12 @@ package body Flow_Utility is
             when N_Type_Conversion
                | N_Qualified_Expression
             =>
-               Process_Predicate_Internal
-                 (N, Proof_Dependencies, Types_Seen);
+               Process_Predicate_And_Invariant_Internal
+                 (N                  => N,
+                  Scop               => Scop,
+                  Include_Invariant  => False,
+                  Proof_Dependencies => Proof_Dependencies,
+                  Types_Seen         => Types_Seen);
 
             when others =>
                null;
@@ -521,12 +542,14 @@ package body Flow_Utility is
          Generating_Globals);
    end Pick_Generated_Info;
 
-   --------------------------------
-   -- Process_Predicate_Internal --
-   --------------------------------
+   ----------------------------------------------
+   -- Process_Predicate_And_Invariant_Internal --
+   ----------------------------------------------
 
-   procedure Process_Predicate_Internal
+   procedure Process_Predicate_And_Invariant_Internal
      (N                  : Node_Or_Entity_Id;
+      Scop               : Flow_Scope;
+      Include_Invariant  : Boolean;
       Proof_Dependencies : in out Node_Sets.Set;
       Types_Seen         : in out Node_Sets.Set)
    is
@@ -539,17 +562,25 @@ package body Flow_Utility is
       function Explore_Subcomponents (Typ : Type_Kind_Id)
                                       return Test_Result;
       --  Explore subcomponents of a potential composite type to pull
-      --  proof dependencies from their predicates.
+      --  proof dependencies from their predicates and invariants.
 
-      procedure Explore_Parent_Types is new Iterate_Applicable_Predicates
-        (Add_Predicates_To_Proof_Deps);
+      procedure Get_Invariant_From_Parents (Typ : Type_Kind_Id);
+      --  Explore the subtype chain of a type to pull proof dependencies
+      --  from the invariants of its parent types.
+
+      procedure Get_Predicate_From_Parents is new
+        Iterate_Applicable_Predicates (Add_Predicates_To_Proof_Deps);
       --  Explore the subtype chain of a type to pull proof dependencies
       --  from the predicates of its parent types.
+
+      procedure Extract_Proof_Dependencies (Expr : Node_Id);
+      --  Extract proof dependencies and functions calls from Expr and add
+      --  them to Proof_Dependencies.
 
       function Traverse is new Traverse_Subcomponents
         (Explore_Subcomponents);
       --  Traverse a type to pull all proof dependencies related to predicates
-      --  of its subcomponents and their parent types.
+      --  and invariants applying to its subcomponents and their parent types.
 
       ----------------------------------
       -- Add_Predicates_To_Proof_Deps --
@@ -560,34 +591,8 @@ package body Flow_Utility is
          Pred_Expression : Node_Id)
       is
          pragma Unreferenced (Type_Instance);
-         Funcalls : Call_Sets.Set;
-         Unused   : Tasking_Info;
       begin
-         Pick_Generated_Info_Internal
-           (N                  => Pred_Expression,
-            Scop               => Null_Flow_Scope,
-            Function_Calls     => Funcalls,
-            Proof_Dependencies => Proof_Dependencies,
-            Tasking            => Unused,
-            Generating_Globals => True,
-            Types_Seen         => Types_Seen);
-
-         --  Direct function calls in predicate expressions are also treated
-         --  as proof dependencies.
-
-         for Call of Funcalls loop
-
-            --  This avoids picking references of an access-to-function in the
-            --  case of an access-to-function subtype referencing the result of
-            --  said function in its predicate.
-            --
-            --  ??? Is it possible to create a proof cycle using enclosing
-            --  E_Subprogram_Type entities?
-
-            if Ekind (Call.E) /= E_Subprogram_Type then
-               Proof_Dependencies.Include (Call.E);
-            end if;
-         end loop;
+         Extract_Proof_Dependencies (Pred_Expression);
       end Add_Predicates_To_Proof_Deps;
 
       ---------------------------
@@ -597,9 +602,70 @@ package body Flow_Utility is
       function Explore_Subcomponents (Typ : Type_Kind_Id) return Test_Result
       is
       begin
-         Explore_Parent_Types (Typ);
+         Get_Predicate_From_Parents (Typ);
+         Get_Invariant_From_Parents (Typ);
          return Continue;
       end Explore_Subcomponents;
+
+      --------------------------------
+      -- Extract_Proof_Dependencies --
+      --------------------------------
+
+      procedure Extract_Proof_Dependencies (Expr : Node_Id) is
+         Funcalls : Call_Sets.Set;
+         Unused   : Tasking_Info;
+      begin
+         Pick_Generated_Info_Internal
+           (N                  => Expr,
+            Scop               => Scop,
+            Function_Calls     => Funcalls,
+            Proof_Dependencies => Proof_Dependencies,
+            Tasking            => Unused,
+            Types_Seen         => Types_Seen,
+            Generating_Globals => True);
+
+         --  Direct function calls in expressions are also treated
+         --  as proof dependencies.
+
+         for Call of Funcalls loop
+
+            --  This avoids picking references of an access-to-function in the
+            --  case of an access-to-function subtype referencing the result of
+            --  said function in its predicate or invariant.
+            --
+            --  ??? Is it possible to create a proof cycle using enclosing
+            --  E_Subprogram_Type entities?
+
+            if Ekind (Call.E) /= E_Subprogram_Type then
+               Proof_Dependencies.Include (Call.E);
+            end if;
+         end loop;
+      end Extract_Proof_Dependencies;
+
+      procedure Get_Invariant_From_Parents (Typ : Type_Kind_Id) is
+         Current : Entity_Id := Retysp (Typ);
+         Parent  : Entity_Id;
+      begin
+         loop
+
+            --  If the type has invariants in the enclosing unit, and
+            --  Include_Invariant, then pull the proof dependencies from the
+            --  invariant.
+            if Has_Invariants_In_SPARK (Current)
+              and then (if Has_Visible_Type_Invariants (Current)
+                        then Include_Invariant)
+            then
+               Extract_Proof_Dependencies
+                 (Get_Expr_From_Check_Only_Proc
+                    (Invariant_Procedure (Current)));
+            end if;
+
+            --  Explore the subtype chain of the type
+            Parent := Retysp (Etype (Current));
+            exit when Current = Parent;
+            Current := Parent;
+         end loop;
+      end Get_Invariant_From_Parents;
 
       Typ      : constant Entity_Id := Etype (N);
       Discard  : Boolean;
@@ -616,20 +682,27 @@ package body Flow_Utility is
       if Inserted then
          Discard := Traverse (Typ);
       end if;
-   end Process_Predicate_Internal;
+   end Process_Predicate_And_Invariant_Internal;
 
-   -----------------------
-   -- Process_Predicate --
-   -----------------------
+   -------------------------------------
+   -- Process_Predicate_And_Invariant --
+   -------------------------------------
 
-   procedure Process_Predicate
+   procedure Process_Predicate_And_Invariant
      (N                  : Node_Or_Entity_Id;
+      Scop               : Flow_Scope;
+      Include_Invariant  : Boolean;
       Proof_Dependencies : in out Node_Sets.Set)
    is
       Discard : Node_Sets.Set;
    begin
-      Process_Predicate_Internal (N, Proof_Dependencies, Discard);
-   end Process_Predicate;
+      Process_Predicate_And_Invariant_Internal
+        (N                  => N,
+         Scop               => Scop,
+         Include_Invariant  => Include_Invariant,
+         Proof_Dependencies => Proof_Dependencies,
+         Types_Seen         => Discard);
+   end Process_Predicate_And_Invariant;
 
    -----------------------
    -- Unique_Components --
@@ -2916,8 +2989,6 @@ package body Flow_Utility is
          if Nkind (Callsite) = N_Function_Call
            and then not Globals.Outputs.Is_Empty
            and then not Gnat2Why_Args.Global_Gen_Mode
-           --  HACK: Exempt functions with side-effects from checking until
-           --  support is added in flow.
            and then not Is_Function_With_Side_Effects (Subprogram)
          then
             Error_Msg_NE
@@ -3634,104 +3705,110 @@ package body Flow_Utility is
          begin
             Indent;
             while Present (Component_Association) loop
-               declare
-                  Choice : constant Node_Id :=
-                    First (Choices (Component_Association));
-                  Expr   : constant Node_Id :=
-                    Expression (Component_Association);
+               --  HACK: skip deep choices for now until they are supported in
+               --  flow.
+               if not Sem_Aggr.Is_Deep_Choice
+                 (First (Choices (Component_Association)), Etype (N))
+               then
+                  declare
+                     Choice : constant Node_Id :=
+                       First (Choices (Component_Association));
+                     Expr   : constant Node_Id :=
+                       Expression (Component_Association);
 
-                  Comp : constant Entity_Id :=
-                    Unique_Component (Entity (Choice));
+                     Comp : constant Entity_Id :=
+                       Unique_Component (Entity (Choice));
 
-                  Expr_Vars : Flow_Id_Sets.Set;
-                  FS        : Flow_Id_Sets.Set;
+                     Expr_Vars : Flow_Id_Sets.Set;
+                     FS        : Flow_Id_Sets.Set;
 
-               begin
-                  pragma Annotate (Xcov, Exempt_On, "Debugging code");
-                  if Debug_Trace_Untangle_Fields then
-                     Write_Str ("Updating component ");
-                     Sprint_Node_Inline (Comp);
-                     Write_Eol;
-                  end if;
-                  pragma Annotate (Xcov, Exempt_Off);
-
-                  --  Composite update
-
-                  if Is_Record_Type (Get_Type (Comp, Scope)) then
-
-                     --  We should call Untangle_Record_Aggregate here.
-                     --  For now we us a safe default (all fields depend
-                     --  on everything).
-
-                     case Nkind (Expr) is
-                        --  when N_Aggregate =>
-                        --     null;
-
-                        when others =>
-                           if Fold_Functions = Inputs then
-                              Expr_Vars := Get_Vars_Wrapper (Expr);
-
-                              --  Not sure what to do, so set all
-                              --  sensible fields to the given variables.
-
-                              FS :=
-                                Flatten_Variable
-                                  (Add_Component (Current_Field, Comp),
-                                   Scope);
-
-                              for F of FS loop
-                                 M.Replace (F, Expr_Vars);
-                              end loop;
-
-                           else
-                              All_Vars.Union
-                                (Get_Variables
-                                   (N                       => Expr,
-                                    Scope                   => Scope,
-                                    Target_Name             =>
-                                      Target_Name,
-                                    Fold_Functions          => Inputs,
-                                    Use_Computed_Globals    =>
-                                      Use_Computed_Globals,
-                                    Expand_Internal_Objects =>
-                                      Expand_Internal_Objects));
-                           end if;
-
-                     end case;
-
-                  --  Direct field update of M
-
-                  else
-                     if Fold_Functions = Inputs then
-                        Expr_Vars := Get_Vars_Wrapper (Expr);
-
-                        M.Replace
-                          (Add_Component (Current_Field, Comp), Expr_Vars);
-                     else
-                        All_Vars.Union
-                          (Get_Variables
-                             (N                       => Expr,
-                              Scope                   => Scope,
-                              Target_Name             => Target_Name,
-                              Fold_Functions          =>
-                                (if Fold_Functions = Proof_Ins
-                                 then Proof_Ins
-                                 else Inputs),
-                              Use_Computed_Globals    =>
-                                Use_Computed_Globals,
-                              Expand_Internal_Objects =>
-                                Expand_Internal_Objects));
+                  begin
+                     pragma Annotate (Xcov, Exempt_On, "Debugging code");
+                     if Debug_Trace_Untangle_Fields then
+                        Write_Str ("Updating component ");
+                        Sprint_Node_Inline (Comp);
+                        Write_Eol;
                      end if;
-                  end if;
+                     pragma Annotate (Xcov, Exempt_Off);
 
-                  --  Expansion rewrites multiple choices like "X | Y => A"
-                  --  into separate component associations like
-                  --  "X => A, Y => A", because depending on the type of the
-                  --  component we might (or might not) need checks for the
-                  --  expression.
+                     --  Composite update
 
-                  pragma Assert (No (Next (Choice)));
-               end;
+                     if Is_Record_Type (Get_Type (Comp, Scope)) then
+
+                        --  We should call Untangle_Record_Aggregate here.
+                        --  For now we us a safe default (all fields depend
+                        --  on everything).
+
+                        case Nkind (Expr) is
+                           --  when N_Aggregate =>
+                           --     null;
+
+                           when others =>
+                              if Fold_Functions = Inputs then
+                                 Expr_Vars := Get_Vars_Wrapper (Expr);
+
+                                 --  Not sure what to do, so set all
+                                 --  sensible fields to the given variables.
+
+                                 FS :=
+                                   Flatten_Variable
+                                     (Add_Component (Current_Field, Comp),
+                                      Scope);
+
+                                 for F of FS loop
+                                    M.Replace (F, Expr_Vars);
+                                 end loop;
+
+                              else
+                                 All_Vars.Union
+                                   (Get_Variables
+                                      (N                       => Expr,
+                                       Scope                   => Scope,
+                                       Target_Name             =>
+                                         Target_Name,
+                                       Fold_Functions          => Inputs,
+                                       Use_Computed_Globals    =>
+                                         Use_Computed_Globals,
+                                       Expand_Internal_Objects =>
+                                         Expand_Internal_Objects));
+                              end if;
+
+                        end case;
+
+                     --  Direct field update of M
+
+                     else
+                        if Fold_Functions = Inputs then
+                           Expr_Vars := Get_Vars_Wrapper (Expr);
+
+                           M.Replace
+                             (Add_Component (Current_Field, Comp), Expr_Vars);
+                        else
+                           All_Vars.Union
+                             (Get_Variables
+                                (N                       => Expr,
+                                 Scope                   => Scope,
+                                 Target_Name             => Target_Name,
+                                 Fold_Functions          =>
+                                   (if Fold_Functions = Proof_Ins
+                                    then Proof_Ins
+                                    else Inputs),
+                                 Use_Computed_Globals    =>
+                                   Use_Computed_Globals,
+                                 Expand_Internal_Objects =>
+                                   Expand_Internal_Objects));
+                        end if;
+                     end if;
+
+                     --  Expansion rewrites multiple choices like "X | Y => A"
+                     --  into separate component associations like
+                     --  "X => A, Y => A", because depending on the type of the
+                     --  component we might (or might not) need checks for the
+                     --  expression.
+
+                     pragma Assert (No (Next (Choice)));
+                  end;
+               end if;
 
                Next (Component_Association);
             end loop;
@@ -4331,6 +4408,13 @@ package body Flow_Utility is
                      end if;
                   else
                      pragma Assert (Is_Array_Type (T));
+
+                     --  ??? Deep delta aggregates are not handled yet, just
+                     --  skip them.
+
+                     if Is_Deep_Delta_Aggregate (N) then
+                        return Skip;
+                     end if;
                   end if;
                end;
 
@@ -6135,15 +6219,20 @@ package body Flow_Utility is
             Input  := Expression (Assoc);
             Output := First (Choices (Assoc));
 
-            F := Add_Component (Map_Root, Unique_Component (Entity (Output)));
+            --  HACK: skip deep choices for now until they are supported in
+            --  flow.
+            if not Sem_Aggr.Is_Deep_Choice (Output, Etype (Pref)) then
+               F :=
+                 Add_Component (Map_Root, Unique_Component (Entity (Output)));
 
-            if Is_Record_Type (Get_Type (Entity (Output), Scope)) then
-               for C in Recurse_On (Input, F).Iterate loop
-                  M.Replace (Flow_Id_Maps.Key (C),
-                             Flow_Id_Maps.Element (C));
-               end loop;
-            else
-               M.Replace (F, Get_Vars_Wrapper (Input));
+               if Is_Record_Type (Get_Type (Entity (Output), Scope)) then
+                  for C in Recurse_On (Input, F).Iterate loop
+                     M.Replace (Flow_Id_Maps.Key (C),
+                                Flow_Id_Maps.Element (C));
+                  end loop;
+               else
+                  M.Replace (F, Get_Vars_Wrapper (Input));
+               end if;
             end if;
 
             --  Multiple component choices have been rewritten into individual

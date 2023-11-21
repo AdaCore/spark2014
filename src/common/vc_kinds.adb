@@ -151,6 +151,7 @@ package body VC_Kinds is
             | VC_Raise
             | VC_Feasible_Post
             | VC_Inline_Check
+            | VC_Container_Aggr_Check
             | VC_Weaker_Pre
             | VC_Trivial_Weaker_Pre
             | VC_Stronger_Post
@@ -386,6 +387,10 @@ package body VC_Kinds is
          when VC_Inline_Check                     =>
             return "Check that an Annotate pragma with the Inline_For_Proof " &
               "or Logical_Equal identifier is correct.";
+         when VC_Container_Aggr_Check             =>
+            return "Check the invariants used to translate container "
+              & "aggregates using the primitives provided by the Aggregate "
+              & "aspect and the Container_Aggregates annotation.";
          when VC_UC_Source                        =>
             return "Check that a source type in an unchecked conversion can " &
               "safely be used for such conversions. This means that the " &
@@ -473,7 +478,7 @@ package body VC_Kinds is
          when Export_Depends_On_Proof_In                  =>
             "Subprogram output depends on a Proof_In global.",
          when Ghost_Wrong                                 =>
-            "A ghost procedure has a non-ghost global output.",
+            "A ghost subprogram has a non-ghost global output.",
          when Critical_Global_Missing
             | Global_Missing                              =>
             "A Global or Initializes contract fails to mention some objects.",
@@ -676,6 +681,9 @@ package body VC_Kinds is
            "an object with subcomponents of an access-to-variable type "
           & "annotated with an address clause whose value is the address of "
           & "another object",
+         when Lim_Deep_Value_In_Delta_Aggregate =>
+           "delta aggregate with possible aliasing of component associations "
+          & "of an ownership type",
          when Lim_Entry_Family => "entry families",
          when Lim_Exceptional_Cases_Dispatch =>
            "aspect ""Exceptional_Cases"" on dispatching operations",
@@ -1300,6 +1308,8 @@ package body VC_Kinds is
              when VC_Feasible_Post => "feasible function",
              when VC_Inline_Check =>
                "Inline_For_Proof or Logical_Equal annotation",
+             when VC_Container_Aggr_Check =>
+               "Container_Aggregates annotation",
              when VC_UC_Source => "unchecked conversion source check",
              when VC_UC_Target => "unchecked conversion target check",
              when VC_UC_Same_Size => "unchecked conversion size check",
@@ -1364,7 +1374,7 @@ package body VC_Kinds is
          when Export_Depends_On_Proof_In                  =>
             "subprogram output depends on a Proof_In global",
          when Ghost_Wrong                                 =>
-            "non-ghost output of ghost procedure",
+            "non-ghost output of ghost subprogram",
          when Global_Missing                              =>
             "incomplete Global or Initializes contract",
          when Global_Wrong                                =>

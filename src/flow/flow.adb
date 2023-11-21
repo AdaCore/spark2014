@@ -1668,7 +1668,7 @@ package body Flow is
                      --  We exclude tasks from this check since it is only
                      --  relevant for subprograms.
                      Analysis.Check_Always_Terminates (FA);
-                     Analysis.Check_Ghost_Procedure_Outputs (FA);
+                     Analysis.Check_Ghost_Subprogram_Outputs (FA);
                   end if;
                   Analysis.Check_Ghost_Terminates (FA);
                   Analysis.Find_Input_Only_Used_In_Assertions (FA);

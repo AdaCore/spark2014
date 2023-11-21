@@ -139,8 +139,7 @@ package body Flow.Interprocedural is
       V  : Flow_Graphs.Vertex_Id)
    is
       N : constant Node_Id := Get_Direct_Mapping_Id (FA.CFG.Get_Key (V));
-      pragma Assert (Nkind (N) in N_Procedure_Call_Statement |
-                                  N_Entry_Call_Statement);
+      pragma Assert (Nkind (N) in N_Subprogram_Call | N_Entry_Call_Statement);
 
       Atr : V_Attributes renames FA.Atr (V);
       pragma Assert (Atr.Is_Callsite);
@@ -296,6 +295,13 @@ package body Flow.Interprocedural is
 
                end case;
             end loop;
+
+            --  Add function result, which acts as a parameter of mode out
+
+            if Ekind (Called_Thing) = E_Function then
+               Globals.Outputs.Insert
+                 (Direct_Mapping_Id (Called_Thing, Out_View));
+            end if;
 
             if Ekind (Scope (Called_Thing)) = E_Protected_Type then
                declare
