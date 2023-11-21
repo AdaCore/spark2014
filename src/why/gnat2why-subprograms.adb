@@ -6807,6 +6807,28 @@ package body Gnat2Why.Subprograms is
                   end;
                end if;
 
+               --  For functions with tagged results, assume the value of the
+               --  tag of the result.
+
+               if Is_Tagged_Type (Retysp (Etype (E)))
+                 and then not Is_Class_Wide_Type (Etype (E))
+               then
+                  Param_Post := New_And_Pred
+                    (Left  => Param_Post,
+                     Right => New_Comparison
+                       (Symbol => Why_Eq,
+                        Left   => +New_Tag_Access
+                          (Domain   => EW_Term,
+                           Name     => +New_Result_Ident (Why_Type),
+                           Ty       => Retysp (Etype (E))),
+                        Right  =>
+                          (if Ekind (E) = E_Function
+                           and then Selector = Dispatch
+                           and then Has_Controlling_Result (E)
+                           then +Tag_Binder.B_Name
+                           else +E_Symb (Etype (E), WNE_Tag))));
+               end if;
+
                return New_Function_Decl
                  (Domain      => EW_Prog,
                   Name        => Prog_Id,
