@@ -11772,11 +11772,12 @@ package body Gnat2Why.Expr is
            or (Is_Predicate_Function_Call (Right_Opnd (N))
                and then Is_Terminal_Node (Left_Opnd (N)));
       else
-         return Nkind (N) not in N_Quantified_Expression |
-                                 N_Op_And                |
-                                 N_If_Expression         |
-                                 N_Case_Expression       |
-                                 N_Expression_With_Actions;
+         return Nkind (N) not in N_Op_And                 |
+                                 N_If_Expression          |
+                                 N_Case_Expression        |
+                                 N_Expression_With_Actions
+           and then not
+             (Nkind (N) in N_Quantified_Expression and then All_Present (N));
       end if;
    end Is_Terminal_Node;
 
