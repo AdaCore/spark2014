@@ -1571,7 +1571,7 @@ search_trees.adb:37:45: info: index check proved (CVC5: 4 VC)
 search_trees.adb:37:55: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove Contains (S, T.Values (I)) [possible fix: you should consider adding a postcondition to function Contains or turning it into an expression function in its unit spec]
 search_trees.adb:37:78: info: index check proved (CVC5: 4 VC)
 search_trees.adb:39:13: info: loop invariant initialization proved (CVC5: 1 VC; Trivial: 1 VC)
-search_trees.adb:39:13: medium: loop invariant might not be preserved by an arbitrary iteration [possible fix: you should consider adding a postcondition to function Contains or turning it into an expression function in its unit spec]
+search_trees.adb:41:20: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove (for some I in Index_Type => Model (T.Struct, T.Root) (I).K and then T.Values (I) = V) [possible fix: subprogram at search_trees.ads:38 should mention T in a precondition]
 search_trees.adb:42:25: info: precondition proved (CVC5: 2 VC)
 search_trees.adb:42:43: info: range check proved (CVC5: 4 VC)
 search_trees.adb:53:13: info: implicit aspect Always_Terminates on "Ordered_Prefix" has been proved, subprogram will terminate
