@@ -98,12 +98,12 @@ simple_unc_arrays.ads:30:26: info: index check proved (CVC5: 2 VC)
 simple_unc_arrays.ads:30:51: info: index check proved (CVC5: 2 VC)
 simple_unc_arrays.ads:30:51: info: overflow check proved (CVC5: 2 VC)
 simple_unc_arrays.ads:37:13: info: implicit aspect Always_Terminates on "Min" has been proved, subprogram will terminate
-simple_unc_arrays.ads:40:14: medium: postcondition might fail
 simple_unc_arrays.ads:40:64: info: index check proved (CVC5: 2 VC)
+simple_unc_arrays.ads:42:15: medium: postcondition might fail, cannot prove (for some J in 1 .. A.Last => (Min'Result = A.V (J)))
 simple_unc_arrays.ads:42:65: info: index check proved (CVC5: 2 VC)
 simple_unc_arrays.ads:49:13: info: implicit aspect Always_Terminates on "Max" has been proved, subprogram will terminate
-simple_unc_arrays.ads:52:15: medium: postcondition might fail
 simple_unc_arrays.ads:52:64: info: index check proved (CVC5: 2 VC)
+simple_unc_arrays.ads:54:18: medium: postcondition might fail, cannot prove (for some J in 1 .. A.Last => (Max'Result = A.V (J)))
 simple_unc_arrays.ads:54:68: info: index check proved (CVC5: 2 VC)
 simple_unc_arrays.ads:61:13: info: implicit aspect Always_Terminates on "Average" has been proved, subprogram will terminate
 simple_unc_arrays.ads:64:14: info: precondition proved (CVC5: 1 VC)
