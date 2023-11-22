@@ -1,0 +1,5 @@
+main.adb:6:04: info: function contract feasibility proved (CVC5: 1 VC)
+main.adb:16:14: info: overflow check proved (CVC5: 2 VC)
+main.adb:25:14: info: overflow check proved (CVC5: 2 VC)
+main.adb:29:25: medium: precondition of target might not be strong enough to imply precondition of source
+main.adb:30:24: medium: precondition of target might not be strong enough to imply precondition of source

@@ -323,9 +323,12 @@ package body Gnat2Why.Subprograms.Pointers is
          end;
       end loop;
 
-      --  For functions, we need an identifier for the result of the call
+      --  For functions, we need an identifier for the result of the call. It
+      --  is not necessary for handlers which cannot have a postcondition.
 
-      if Is_Function_Type (To_Profile) then
+      if Is_Function_Type (To_Profile)
+        and then not Has_Handler_Annotation (To)
+      then
          Result_Is_Mutable := False;
          Result_Name :=
            New_Temp_Identifier
@@ -354,7 +357,9 @@ package body Gnat2Why.Subprograms.Pointers is
       --  prove the postcondition of functions (eg. if Expr was created as
       --  the 'Access attribute of a function with a precise postcondition).
 
-      if Is_Function_Type (To_Profile) then
+      if Is_Function_Type (To_Profile)
+        and then not Has_Handler_Annotation (To)
+      then
          declare
             Subp_Value   : constant W_Expr_Array :=
               (if not From_Access then (1 .. 0 => <>)
@@ -489,6 +494,10 @@ package body Gnat2Why.Subprograms.Pointers is
       Profile      : constant Entity_Id := Directly_Designated_Type (E);
 
    begin
+      if Has_Handler_Annotation (E) then
+         return;
+      end if;
+
       if Is_Function_Type (Profile) then
          Result_Name := New_Result_Ident (Type_Of_Node (Etype (Profile)));
          Result_Is_Mutable := False;
@@ -754,7 +763,9 @@ package body Gnat2Why.Subprograms.Pointers is
 
       Th : Theory_UC;
    begin
-      if M_Subprogram_Profiles.Contains (Key => Name) then
+      if M_Subprogram_Profiles.Contains (Key => Name)
+        or else Has_Handler_Annotation (E)
+      then
          return;
       end if;
 
@@ -878,34 +889,36 @@ package body Gnat2Why.Subprograms.Pointers is
       --  access-to-subprograms (Get_Called_Entity returns the profile on
       --  these calls).
 
-      declare
-         Profile : constant Entity_Id := Directly_Designated_Type (E);
-      begin
-         if Ada_Ent_To_Why.Has_Element (Symbol_Table, Profile) then
-            pragma Assert (not Is_Base_Type (E));
-         elsif Is_Function_Type (Profile) then
-            Insert_Item
-              (Profile,
-               Item_Type'(Func,
-                 Local     => False,
-                 Init      => <>,
-                 For_Logic => (Ada_Node => Profile,
-                               B_Name   => Get_Logic_Function (Profile),
-                               B_Ent    => Null_Entity_Name,
-                               Mutable  => False,
-                               Labels   => <>),
-                 For_Prog  => (Ada_Node => Profile,
-                               B_Name   => E_Symb (E, WNE_Pointer_Call),
-                               B_Ent    => Null_Entity_Name,
-                               Mutable  => False,
-                               Labels   => <>)));
-         else
-            Insert_Tmp_Item_For_Entity
-              (Profile,
-               E_Symb (E, WNE_Pointer_Call),
-               Mutable => False);
-         end if;
-      end;
+      if not Has_Handler_Annotation (E) then
+         declare
+            Profile : constant Entity_Id := Directly_Designated_Type (E);
+         begin
+            if Ada_Ent_To_Why.Has_Element (Symbol_Table, Profile) then
+               pragma Assert (not Is_Base_Type (E));
+            elsif Is_Function_Type (Profile) then
+               Insert_Item
+                 (Profile,
+                  Item_Type'(Func,
+                    Local     => False,
+                    Init      => <>,
+                    For_Logic => (Ada_Node => Profile,
+                                  B_Name   => Get_Logic_Function (Profile),
+                                  B_Ent    => Null_Entity_Name,
+                                  Mutable  => False,
+                                  Labels   => <>),
+                    For_Prog  => (Ada_Node => Profile,
+                                  B_Name   => E_Symb (E, WNE_Pointer_Call),
+                                  B_Ent    => Null_Entity_Name,
+                                  Mutable  => False,
+                                  Labels   => <>)));
+            else
+               Insert_Tmp_Item_For_Entity
+                 (Profile,
+                  E_Symb (E, WNE_Pointer_Call),
+                  Mutable => False);
+            end if;
+         end;
+      end if;
    end Declare_Access_To_Subprogram_Type;
 
    -----------------------------------------
@@ -1260,27 +1273,45 @@ package body Gnat2Why.Subprograms.Pointers is
    --  Start of processing for Transform_Access_Attribute_Of_Subprogram
 
    begin
-      Check_No_Globals;
+      --  Handlers cannot be called. Use the dummy value of the profile.
 
-      --  Declare a logic symbol for the subprogram object designated by Expr
-      --  if needed.
+      if Has_Handler_Annotation (Etype (Expr)) then
+         T := New_Record_Aggregate
+           (Ada_Node     => Expr,
+            Associations =>
+              (1 => New_Field_Association
+                   (Domain => Domain,
+                    Field  => M_Subprogram_Access.Rec_Is_Null,
+                    Value  => Bool_False (Domain)),
+               2 => New_Field_Association
+                 (Domain => Domain,
+                  Field  => M_Subprogram_Access.Rec_Value,
+                  Value  => +M_Subprogram_Access.Dummy)),
+            Typ          => EW_Abstract (Etype (Expr)));
 
-      Declare_Theory_For_Access_If_Needed (Expr, Logic_Id);
+      else
+         Check_No_Globals;
 
-      --  Construct a pointer value from the subprogram logic object
+         --  Declare a logic symbol for the subprogram object designated by
+         --  Expr if needed.
 
-      T := New_Record_Aggregate
-        (Ada_Node     => Expr,
-         Associations =>
-           (1 => New_Field_Association
-                (Domain => Domain,
-                 Field  => M_Subprogram_Access.Rec_Is_Null,
-                 Value  => Bool_False (Domain)),
-            2 => New_Field_Association
-              (Domain => Domain,
-               Field  => M_Subprogram_Access.Rec_Value,
-               Value  => +Logic_Id)),
-         Typ          => EW_Abstract (Etype (Expr)));
+         Declare_Theory_For_Access_If_Needed (Expr, Logic_Id);
+
+         --  Construct a pointer value from the subprogram logic object
+
+         T := New_Record_Aggregate
+           (Ada_Node     => Expr,
+            Associations =>
+              (1 => New_Field_Association
+                   (Domain => Domain,
+                    Field  => M_Subprogram_Access.Rec_Is_Null,
+                    Value  => Bool_False (Domain)),
+               2 => New_Field_Association
+                 (Domain => Domain,
+                  Field  => M_Subprogram_Access.Rec_Value,
+                  Value  => +Logic_Id)),
+            Typ          => EW_Abstract (Etype (Expr)));
+      end if;
 
       --  In the program domain, we need to perform checks on conversions.
       --  Liskov checks need to be introduced manually so that they are done

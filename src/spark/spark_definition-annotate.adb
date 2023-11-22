@@ -169,6 +169,10 @@ package body SPARK_Definition.Annotate is
       "="             => Node_Maps."=");
    --  Maps of nodes to maps of nodes to nodes
 
+   Handler_Annotations : Node_Sets.Set;
+   --  Stores all the access-to-subprogram types E with a pragma Annotate
+   --  (GNATprove, Handler, E).
+
    Higher_Order_Lemma_Specializations : Node_To_Node_Maps.Map :=
      Node_To_Node_Maps.Empty_Map;
    --  Maps lemma procedures to the mapping that should be used to construct
@@ -367,6 +371,12 @@ package body SPARK_Definition.Annotate is
      Pre => Present (Arg3_Exp);
    --  Check validity of a pragma Annotate (GNATprove, At_End_Borrow, E) and
    --  insert it in the At_End_Borrow_Annotations map.
+
+   procedure Check_Handler_Annotation
+     (Arg3_Exp : Node_Id;
+      Prag     : Node_Id);
+   --  Check validity of a pragma Annotate (GNATprove, Handler, E) and insert
+   --  it in the Handler_Annotations set.
 
    procedure Check_Higher_Order_Specialization_Annotation
      (Arg3_Exp : Node_Id;
@@ -2173,6 +2183,70 @@ package body SPARK_Definition.Annotate is
          end loop;
       end;
    end Check_Automatic_Instantiation_Annotation;
+
+   ------------------------------
+   -- Check_Handler_Annotation --
+   ------------------------------
+
+   procedure Check_Handler_Annotation
+     (Arg3_Exp : Node_Id;
+      Prag     : Node_Id)
+   is
+      From_Aspect      : constant Boolean := From_Aspect_Specification (Prag);
+      Aspect_Or_Pragma : constant String :=
+        (if From_Aspect then "aspect" else "pragma");
+      E                : Entity_Id;
+      Ok               : Boolean;
+      Pre, Post        : Node_Lists.List;
+   begin
+      Check_Annotate_Entity_Argument (Arg3_Exp, "third", Prag, "Handler", Ok);
+      if not Ok then
+         return;
+      end if;
+
+      E := Entity (Arg3_Exp);
+
+      Check_Annotate_Placement
+        (E, Placed_At_Full_View, Prag, "Handler",
+         "full type declaration of " & Source_Name (E), Ok);
+      if not Ok then
+         return;
+      end if;
+
+      if not Is_Access_Subprogram_Type (E) then
+         Error_Msg_N_If
+           ("entity annotated with the " & Aspect_Or_Pragma
+            & " Handler must be an access-to-subprogram type",
+            Arg3_Exp);
+         return;
+      end if;
+
+      Pre := Find_Contracts
+        (Directly_Designated_Type (E), Pragma_Precondition);
+      Post := Find_Contracts
+        (Directly_Designated_Type (E), Pragma_Postcondition);
+
+      if not Pre.Is_Empty then
+         Error_Msg_N_If
+           ("access-to-subprogram type annotated with the " & Aspect_Or_Pragma
+            & " Handler shall not have a precondition",
+            Pre.First_Element);
+         return;
+
+      elsif not Post.Is_Empty then
+         Error_Msg_N_If
+           ("access-to-subprogram type annotated with the " & Aspect_Or_Pragma
+            & " Handler shall not have a postcondition",
+            Post.First_Element);
+         return;
+      end if;
+
+      pragma Assert
+        (No
+           (Get_Pragma (Directly_Designated_Type (E), Pragma_Contract_Cases)));
+
+      Handler_Annotations.Insert (Base_Retysp (E));
+   end Check_Handler_Annotation;
 
    --------------------------------------------------
    -- Check_Higher_Order_Specialization_Annotation --
@@ -4235,8 +4309,7 @@ package body SPARK_Definition.Annotate is
    ------------------------------
 
    function Has_Aggregate_Annotation (E : Type_Kind_Id) return Boolean is
-     (Ekind (E) in Type_Kind
-      and then Aggregate_Annotations.Contains (Base_Retysp (E)));
+     (Aggregate_Annotations.Contains (Base_Retysp (E)));
 
    ----------------------------------
    -- Has_At_End_Borrow_Annotation --
@@ -4253,6 +4326,13 @@ package body SPARK_Definition.Annotate is
    function Has_Automatic_Instantiation_Annotation
      (E : Entity_Id) return Boolean
    is (Automatic_Instantiation_Annotations.Contains (E));
+
+   ----------------------------
+   -- Has_Handler_Annotation --
+   ----------------------------
+
+   function Has_Handler_Annotation (E : Type_Kind_Id) return Boolean is
+     (Handler_Annotations.Contains (Base_Retysp (E)));
 
    ------------------------------------------------
    -- Has_Higher_Order_Specialization_Annotation --
@@ -4919,6 +4999,7 @@ package body SPARK_Definition.Annotate is
 
       elsif Name = "at_end_borrow"
         or else Name = "automatic_instantiation"
+        or else Name = "handler"
         or else Name = "higher_order_specialization"
         or else Name = "init_by_proof"
         or else Name = "inline_for_proof"
@@ -4985,6 +5066,9 @@ package body SPARK_Definition.Annotate is
 
       elsif Name = "inline_for_proof" then
          Check_Inline_Annotation (Arg3_Exp, Prag);
+
+      elsif Name = "handler" then
+         Check_Handler_Annotation (Arg3_Exp, Prag);
 
       elsif Name = "higher_order_specialization" then
          Check_Higher_Order_Specialization_Annotation (Arg3_Exp, Prag);

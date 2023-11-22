@@ -370,6 +370,7 @@ package Why.Atree.Modules is
    type M_Subprogram_Access_Type is record
       Module          : W_Module_Id;
       Subprogram_Type : W_Type_Id;
+      Dummy           : W_Identifier_Id;
       Access_Rep_Type : W_Name_Id;
       Rec_Is_Null     : W_Identifier_Id;
       Rec_Value       : W_Identifier_Id;
