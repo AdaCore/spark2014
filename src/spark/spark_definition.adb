@@ -6254,7 +6254,9 @@ package body SPARK_Definition is
                      declare
                         Id : constant Entity_Id := Entity (N);
                      begin
-                        if Ekind (Id) in E_Out_Parameter | E_In_Out_Parameter
+                        if Present (Id)
+                          and then Ekind (Id) in E_Out_Parameter
+                                               | E_In_Out_Parameter
                           and then Scope (Id) = E
                           and then not Is_By_Reference_Type (Etype (Id))
                           and then not Is_Aliased (Id)
