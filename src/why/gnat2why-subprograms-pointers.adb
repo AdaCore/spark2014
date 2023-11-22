@@ -229,10 +229,11 @@ package body Gnat2Why.Subprograms.Pointers is
    --------------------------------
 
    function Checks_For_Subp_Conversion
-     (Ada_Node : Entity_Id;
-      Expr     : W_Expr_Id := Why_Empty;
-      From, To : Entity_Id;
-      Params   : Transformation_Params)
+     (Ada_Node   : Entity_Id;
+      Expr       : W_Expr_Id := Why_Empty;
+      From, To   : Entity_Id;
+      Params     : Transformation_Params;
+      As_Closure : Boolean := False)
       return W_Prog_Id
    is
       From_Access            : constant Boolean := not Is_Subprogram (From);
@@ -240,12 +241,37 @@ package body Gnat2Why.Subprograms.Pointers is
         (if From_Access then Directly_Designated_Type (From) else From);
       To_Profile             : constant Entity_Id :=
         Directly_Designated_Type (To);
+
+      function Binders_For_Effects return Item_Array;
+      --  Return binders for the effects of To, plus any additional one in From
+      --  if As_Closure is False.
+
+      -------------------------
+      -- Binders_For_Effects --
+      -------------------------
+
+      function Binders_For_Effects return Item_Array is
+         From_Reads : Flow_Id_Sets.Set;
+      begin
+         if not As_Closure then
+            declare
+               Dummy : Flow_Id_Sets.Set;
+            begin
+               Flow_Utility.Get_Proof_Globals (Subprogram      => From_Profile,
+                                               Reads           => From_Reads,
+                                               Writes          => Dummy,
+                                               Erase_Constants => True);
+            end;
+         end if;
+
+         return Compute_Binders_For_Effects (To_Profile, From_Reads);
+      end Binders_For_Effects;
+
       From_Formals           : constant Item_Array :=
         Compute_Subprogram_Parameters (From_Profile, EW_Prog);
       To_Formals             : constant Item_Array (From_Formals'Range) :=
         Compute_Subprogram_Parameters (To_Profile, EW_Prog);
-      To_Effects             : Item_Array :=
-        Compute_Binders_For_Effects (To_Profile);
+      Effects                : Item_Array := Binders_For_Effects;
       Checks                 : W_Prog_Id;
 
       --  As this check can occur anywhere during the translation, we need to
@@ -269,21 +295,17 @@ package body Gnat2Why.Subprograms.Pointers is
       --      the local names used for those of the source.
       --    * We introduce local names for variable parts of global objects
       --      accessed by the target and bind them too.
-      --    * Because of LSP, variables accessed by the source shall be a
-      --      subset of those accessed by the target. For specialized
-      --      actuals, LSP is not ensured but we do not need to sandbox
+      --    * If As_Closure is False, also sandbox additional variable parts
+      --      of global objects accessed by the source. As_Closure is true for
+      --      specialized actuals. In this case, we do not need to sandbox
       --      globals as they cannot be modified.
-      --  ??? The sandboxing of global effect cannot be used yet as function
-      --  pointers cannot be annotated with Global contracts currently.
-
-      pragma Assert
-        (if Is_Specialized_Actual (Ada_Node, Specialized_Call_Params)
-         then To_Effects'Length = 0);
+      --  ??? Function pointers cannot be annotated with Global contracts
+      --  currently, so To cannot have effects.
 
       Ada_Ent_To_Why.Push_Scope (Symbol_Table);
-      Localize_Binders (To_Effects);
+      Localize_Binders (Effects);
       Push_Binders_To_Symbol_Table (From_Formals);
-      Push_Binders_To_Symbol_Table (To_Effects);
+      Push_Binders_To_Symbol_Table (Effects);
 
       --  Go over formal parameters of From and map those of To to the same
       --  binders.
@@ -417,9 +439,9 @@ package body Gnat2Why.Subprograms.Pointers is
          end if;
       end loop;
 
-      --  Map mutable parts of To_Effects only
+      --  Map mutable parts of Effects only
 
-      for Binder of To_Binder_Array (To_Effects) loop
+      for Binder of To_Binder_Array (Effects) loop
          if Binder.Mutable then
             Checks := New_Binding_Ref
               (Ada_Node => Ada_Node,

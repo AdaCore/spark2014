@@ -3745,14 +3745,15 @@ package body Gnat2Why.Expr is
                     then +Sequence
                       (Ada_Node => Actual,
                        Left     => Checks_For_Subp_Conversion
-                         (Ada_Node => Actual,
-                          From     =>
+                         (Ada_Node   => Actual,
+                          From       =>
                             (if Nkind (Actual) = N_Attribute_Reference
                              then Entity (Prefix (Actual))
                              else Specialized_Call_Params.Element
                                (Entity (Actual))),
-                          To       => Etype (Formal),
-                          Params   => Params),
+                          To         => Etype (Formal),
+                          Params     => Params,
+                          As_Closure => True),
                        Right    => +Void)
                     else W_Expr_Id'(+Void))
 
