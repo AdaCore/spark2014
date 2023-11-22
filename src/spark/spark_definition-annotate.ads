@@ -232,7 +232,8 @@ package SPARK_Definition.Annotate is
    --    Handler             is a fixed identifier
    --    E                   is an access-to-subprogram type.
 
-   --  The access-to-subprogram type E shall not have a precondition.
+   --  The access-to-subprogram type E shall not have a precondition nor a
+   --  postcondition.
 
    procedure Mark_Pragma_Annotate
      (N             : Node_Id;

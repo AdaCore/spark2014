@@ -93,7 +93,7 @@ package Gnat2Why.Subprograms.Pointers is
    --  access. It is used to have a precise knowledge of the converted
    --  subprogram for functions. As_Closure should be True iff additional
    --  globals accessed by From and not To should be taken from the current
-   --  environement.
+   --  environment.
    --  These checks are meant to be inlined at the point of conversion, as
    --  opposed to generated in a separate module like LSP checks for
    --  tagged type.

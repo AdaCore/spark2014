@@ -53,7 +53,7 @@ to justify an unproved check message that cannot be proved by other means. See
 the section :ref:`Direct Justification with Pragma Annotate` for more details
 about this use of pragma ``Annotate``.
 
-.. index:: Annotate; No_Wrap_Around
+.. index:: Annotate; Skip_Proof; Skip_Flow_And_Proof
 
 Annotation for Skipping Parts of the Analysis for an Entity
 -----------------------------------------------------------
@@ -85,6 +85,8 @@ this entity (and enclosed entities).
 
 Note that the ``Skip_Proof`` annotation cannot be used if an enclosing
 subprogram already has the ``Skip_Flow_And_Proof`` annotation.
+
+.. index:: Annotate; No_Wrap_Around
 
 Annotation for Overflow Checking on Modular Types
 -------------------------------------------------
@@ -1033,3 +1035,56 @@ instantiated on all specializations of ``Count``.
    associated function. It is the case in particular if the lemma contains
    several calls to the function with different access-to-function parameters.
    In this case, a warning will be emitted on the lemma declaration.
+
+.. index:: Annotate; Handler
+
+Annotation for Handlers
+-----------------------
+
+Some programs define `handlers`, subprograms which might be called
+asynchronously to perform specific treatments, for example when an interrupt
+occurs. These handlers are often registered using access-to-subprogram
+types. In general, access-to-subprograms are not allowed to access or modify
+global data in |SPARK|. However, this is too constraining for handlers which
+tend to work by side-effects. To alleviate this limitation, it is
+possible to annotate an access-to-subprogram type with a pragma or aspect
+``Annotate => (GNATprove, Handler)``. This instructs |GNATprove| that these
+access-to-subprograms will be called asynchronously. It is possible to
+create a value of such a type using a reference to the ``Access`` attribute
+on a subprogram accessing or modifying global data. However, |GNATprove| will
+make sure that the subprograms designated by objects of these types are never
+called from |SPARK| code, as it could result in a missing data dependency.
+
+For example, consider the following procedure which resets to zero a global
+variable ``Counter``:
+
+.. code-block:: ada
+
+   Counter : Natural := 0 with Atomic;
+
+   procedure Reset is
+   begin
+      Counter := 0;
+   end Reset;
+
+It is not possible to store an access to ``Reset`` in a regular
+access-to-procedure type, as it has a global effect. However, it can be stored
+in a type annotated with an aspect ``Annotate => (GNATprove, Handler)`` like
+below:
+
+.. code-block:: ada
+
+   type No_Param_Proc is access procedure with
+     Annotate => (GNATprove, Handler);
+
+   P : No_Param_Proc := Reset'Access;
+
+However, it is not possible to call ``P`` from |SPARK| code as the effect to
+the ``Counter`` variable would be missed.
+
+.. note::
+
+   As handlers are called asynchronously, |GNATprove| does not allow providing
+   pre and postconditions for the access-to-subprogram type. As a result, a
+   check will be emitted to ensure that the precondition of each specific
+   subprogram designated by these handlers is provable in the empty context.
