@@ -17810,7 +17810,7 @@ package body Gnat2Why.Expr is
       Aname   : constant Name_Id      := Attribute_Name (Expr);
       Attr_Id : constant Attribute_Id := Get_Attribute_Id (Aname);
       Var     : constant Node_Id      := Prefix (Expr);
-      T       : W_Expr_Id;
+      T       : W_Expr_Id             := Why_Empty;
 
    begin
       --  The attributes supported here must be a subset of those

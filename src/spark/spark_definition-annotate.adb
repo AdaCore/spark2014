@@ -3834,12 +3834,12 @@ package body SPARK_Definition.Annotate is
                   Source_Add            : Entity_Id;
                   Source_C_Formal       : Node_Id;
                   Source_E_Formal       : Node_Id;
-                  Source_K_Formal       : Node_Id;
+                  Source_K_Formal       : Node_Id := Empty;
 
                   Target_Add            : Entity_Id;
                   Target_C_Formal       : Node_Id;
                   Target_E_Formal       : Node_Id;
-                  Target_K_Formal       : Node_Id;
+                  Target_K_Formal       : Node_Id := Empty;
 
                   Error_Msg           : constant String :=
                     "concrete and model types of a ""Model"" "
