@@ -224,6 +224,17 @@ package SPARK_Definition.Annotate is
    --  See the Aggregate_Annotation type for additional information of the
    --  different kinds of container types and their associated functions.
 
+   --  A pragma Annotate for a handler has the following form:
+   --    pragma Annotate (GNATprove, Handler, Entity => E);
+
+   --  where
+   --    GNATprove           is a fixed identifier
+   --    Handler             is a fixed identifier
+   --    E                   is an access-to-subprogram type.
+
+   --  The access-to-subprogram type E shall not have a precondition nor a
+   --  postcondition.
+
    procedure Mark_Pragma_Annotate
      (N             : Node_Id;
       Preceding     : Node_Id;
@@ -495,5 +506,7 @@ package SPARK_Definition.Annotate is
      (E : Type_Kind_Id)
       return Aggregate_Annotation
    with Pre => Has_Aggregate_Annotation (E);
+
+   function Has_Handler_Annotation (E : Type_Kind_Id) return Boolean;
 
 end SPARK_Definition.Annotate;

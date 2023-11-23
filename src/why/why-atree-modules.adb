@@ -2630,6 +2630,11 @@ package body Why.Atree.Modules is
                   Name       =>
                     New_Name (Symb => NID ("__subprogram"), Module => M),
                   Is_Mutable => False);
+      M_Subprogram_Access.Dummy :=
+        New_Identifier (Module => M,
+                        Domain => EW_Term,
+                        Symb   => NID ("__dummy_subprogram"),
+                        Typ    => M_Subprogram_Access.Subprogram_Type);
       M_Subprogram_Access.Access_Rep_Type :=
         New_Name (Symb => NID ("__rep"), Module => M);
       M_Subprogram_Access.Rec_Is_Null :=

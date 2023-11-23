@@ -77,10 +77,11 @@ package Gnat2Why.Subprograms.Pointers is
    --  Domain is EW_Prog, also perform dereference checks.
 
    function Checks_For_Subp_Conversion
-     (Ada_Node : Entity_Id;
-      Expr     : W_Expr_Id := Why_Empty;
-      From, To : Entity_Id;
-      Params   : Transformation_Params)
+     (Ada_Node   : Entity_Id;
+      Expr       : W_Expr_Id := Why_Empty;
+      From, To   : Entity_Id;
+      Params     : Transformation_Params;
+      As_Closure : Boolean := False)
       return W_Prog_Id
    with
      Pre => Is_Access_Subprogram_Type (To)
@@ -90,7 +91,9 @@ package Gnat2Why.Subprograms.Pointers is
    --  Perform LSP checks to ensure that contracts of To are compatible with
    --  contracts of From. Expr is the Why expression for the subprogram
    --  access. It is used to have a precise knowledge of the converted
-   --  subprogram for functions.
+   --  subprogram for functions. As_Closure should be True iff additional
+   --  globals accessed by From and not To should be taken from the current
+   --  environment.
    --  These checks are meant to be inlined at the point of conversion, as
    --  opposed to generated in a separate module like LSP checks for
    --  tagged type.
