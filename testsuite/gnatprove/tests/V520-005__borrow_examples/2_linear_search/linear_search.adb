@@ -84,6 +84,8 @@ package body Linear_Search with SPARK_Mode is
 
          X := X.Next;
       end loop;
+
+      pragma Assert (for all K in Interval'(1, Length (L)) => Nth (L, K) /= V);
       return null;
    end Linear_Search;
 

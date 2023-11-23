@@ -1,0 +1,10 @@
+with "sparklib";
+project Test is
+  package Compiler is
+    for Default_Switches ("Ada") use ("-gnatws", "-gnatdk", "-gnat2022");
+  end Compiler;
+
+   package Prove is
+      for Proof_Dir use "proof";
+   end Prove;
+end Test;

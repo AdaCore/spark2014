@@ -1,4 +1,6 @@
 large: True
+replay: True
 prove_all:
-  steps: 600
   sparklib: True
+session_opt:
+  level: 2

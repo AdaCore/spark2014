@@ -7609,22 +7609,12 @@ package body Gnat2Why.Subprograms is
               (Ada_Node => E,
                Name     => Logic_Id,
                Binders  => Flat_Binders,
-               Pre      => Func_Guard,
                Dep_Kind => EW_Axdep_Func,
                Def      => Transform_Pred (Expr, Params)));
 
       else
-         pragma Assert (not Has_Scalar_Type (Etype (E))
-                        or else Use_Split_Form_For_Type (Etype (E)));
-
          declare
             Equ_Ty : constant W_Type_Id := Type_Of_Node (E);
-            Guard  : constant W_Pred_Id :=
-              +New_And_Then_Expr
-              (Left   => +Compute_Guard_Formula
-                 (Logic_Func_Binders, Params),
-               Right  => +Func_Guard,
-               Domain => EW_Pred);
          begin
             Emit
               (Th,
@@ -7632,7 +7622,6 @@ package body Gnat2Why.Subprograms is
                  (Ada_Node => E,
                   Name     => Logic_Id,
                   Binders  => Flat_Binders,
-                  Pre      => Guard,
                   Def      => +Transform_Expr
                     (Expr,
                      Expected_Type => Equ_Ty,
