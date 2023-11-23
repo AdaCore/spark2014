@@ -59,8 +59,8 @@ lemma library project to be found by GNAT compiler, as described in
 :ref:`Installation of GNATprove`.
 
 Finally, if you instantiate in your code a generic from the SPARK library, you
-also need to pass ``-gnateDSPARK_BODY_MODE=Off`` as a compilation switch for
-these generic units.
+may also need to pass ``-gnateDSPARK_BODY_MODE=Off`` as a compilation switch
+for the units with these instantiations.
 
 .. index:: Big_Numbers
 
