@@ -1,9 +1,9 @@
 assertion.adb:4:13: info: function contract might not be available on implicit recursive calls
 assertion.adb:4:13: info: implicit aspect Always_Terminates on "F" has been proved, subprogram will terminate
-assertion.adb:4:64: medium: postcondition might fail (e.g. when V = (A => 1))
+assertion.adb:4:64: medium: postcondition might fail
 assertion.adb:6:37: info: precondition proved (Trivial: 1 VC)
-assertion.adb:11:22: medium: assertion might fail (e.g. when V = (A => 0)) [possible fix: precondition of subprogram at line 4 should mention V]
-assertion.adb:11:25: medium: predicate check might fail (e.g. when V = (A => 0)) [possible fix: precondition of subprogram at line 4 should mention V]
+assertion.adb:11:22: medium: assertion might fail [possible fix: precondition of subprogram at line 4 should mention V]
+assertion.adb:11:25: medium: predicate check might fail [possible fix: precondition of subprogram at line 4 should mention V]
 assignment_statement.adb:4:13: info: function contract might not be available on implicit recursive calls
 assignment_statement.adb:4:13: info: implicit aspect Always_Terminates on "F" has been proved, subprogram will terminate
 assignment_statement.adb:4:16: warning: unused initial value of "V"
@@ -18,9 +18,9 @@ case_statement.adb:6:37: info: precondition proved (Trivial: 1 VC)
 case_statement.adb:11:15: medium: predicate check might fail [possible fix: precondition of subprogram at line 4 should mention V]
 conversion.adb:4:13: info: function contract might not be available on implicit recursive calls
 conversion.adb:4:13: info: implicit aspect Always_Terminates on "F" has been proved, subprogram will terminate
-conversion.adb:4:65: medium: postcondition might fail (e.g. when V = (A => 1))
+conversion.adb:4:65: medium: postcondition might fail
 conversion.adb:6:37: info: precondition proved (Trivial: 1 VC)
-conversion.adb:9:11: medium: predicate check might fail (e.g. when V = (A => 0)) [possible fix: precondition of subprogram at line 4 should mention V]
+conversion.adb:9:11: medium: predicate check might fail [possible fix: precondition of subprogram at line 4 should mention V]
 exit_statement.adb:4:13: info: function contract might not be available on implicit recursive calls
 exit_statement.adb:4:13: info: implicit aspect Always_Terminates on "F" has been proved, subprogram will terminate
 exit_statement.adb:4:16: warning: unused initial value of "V"
@@ -48,26 +48,26 @@ for_loop.adb:11:29: warning: statement has no effect
 func_actual.adb:4:13: info: function contract might not be available on calls from enclosing unit
 func_actual.adb:4:13: info: implicit aspect Always_Terminates on "F" has been proved, subprogram will terminate
 func_actual.adb:4:16: warning: unused variable "X"
-func_actual.adb:4:64: medium: postcondition might fail (e.g. when X = 0)
+func_actual.adb:4:64: medium: postcondition might fail
 func_actual.adb:6:37: info: precondition proved (Trivial: 1 VC)
 func_actual.adb:8:22: info: predicate check proved (CVC5: 1 VC)
 func_actual.adb:10:13: info: implicit aspect Always_Terminates on "G" has been proved, subprogram will terminate
 func_actual.adb:13:10: info: predicate check proved (CVC5: 1 VC)
 func_contract_case_lhs.adb:4:13: info: function contract might not be available on implicit recursive calls
 func_contract_case_lhs.adb:4:13: info: implicit aspect Always_Terminates on "F" has been proved, subprogram will terminate
-func_contract_case_lhs.adb:4:64: medium: postcondition might fail (e.g. when X = 0)
+func_contract_case_lhs.adb:4:64: medium: postcondition might fail
 func_contract_case_lhs.adb:6:37: info: precondition proved (Trivial: 1 VC)
 func_contract_case_lhs.adb:10:13: info: function contract might not be available on implicit recursive calls
 func_contract_case_lhs.adb:10:13: info: implicit aspect Always_Terminates on "G" has been proved, subprogram will terminate
 func_contract_case_lhs.adb:11:09: warning: contract cases do not mention function result
 func_contract_case_lhs.adb:11:28: warning: assuming "Foo" has no effect on global items
 func_contract_case_lhs.adb:11:28: warning: no Global contract available for "Foo"
-func_contract_case_lhs.adb:11:33: medium: predicate check might fail (e.g. when X = 0) [possible fix: subprogram at line 10 should mention X in a precondition]
+func_contract_case_lhs.adb:11:33: medium: predicate check might fail [possible fix: subprogram at line 10 should mention X in a precondition]
 func_contract_case_lhs.adb:11:36: info: contract case proved (Trivial: 2 VC)
 func_contract_case_lhs.adb:12:36: info: contract case proved (Trivial: 2 VC)
 func_contract_case_lhs_imp.adb:4:13: info: function contract might not be available on implicit recursive calls
 func_contract_case_lhs_imp.adb:4:13: info: implicit aspect Always_Terminates on "F" has been proved, subprogram will terminate
-func_contract_case_lhs_imp.adb:4:64: medium: postcondition might fail (e.g. when X = 0)
+func_contract_case_lhs_imp.adb:4:64: medium: postcondition might fail
 func_contract_case_lhs_imp.adb:6:37: info: precondition proved (Trivial: 1 VC)
 func_contract_case_lhs_imp.adb:10:13: info: function contract might not be available on implicit recursive calls
 func_contract_case_lhs_imp.adb:11:17: warning: contract cases do not mention function result
@@ -99,10 +99,10 @@ func_contract_case_rhs_imp.adb:14:07: warning: assuming "G" has no effect on glo
 func_contract_case_rhs_imp.adb:14:07: warning: no Global contract available for "G"
 func_formal.adb:4:13: info: function contract might not be available on implicit recursive calls
 func_formal.adb:4:13: info: implicit aspect Always_Terminates on "F" has been proved, subprogram will terminate
-func_formal.adb:4:64: medium: postcondition might fail (e.g. when X = 1)
+func_formal.adb:4:64: medium: postcondition might fail
 func_formal.adb:6:37: info: precondition proved (Trivial: 1 VC)
 func_formal.adb:8:13: info: implicit aspect Always_Terminates on "G" has been proved, subprogram will terminate
-func_formal.adb:11:10: medium: predicate check might fail (e.g. when X = 0) [possible fix: precondition of subprogram at line 4 should mention X]
+func_formal.adb:11:10: medium: predicate check might fail [possible fix: precondition of subprogram at line 4 should mention X]
 func_post.adb:4:13: info: function contract might not be available on implicit recursive calls
 func_post.adb:4:13: info: implicit aspect Always_Terminates on "F" has been proved, subprogram will terminate
 func_post.adb:4:64: medium: postcondition might fail
@@ -145,7 +145,7 @@ func_pre_imp.adb:13:07: warning: assuming "G" has no effect on global items
 func_pre_imp.adb:13:07: warning: no Global contract available for "G"
 func_return.adb:4:13: info: function contract might not be available on implicit recursive calls
 func_return.adb:4:13: info: implicit aspect Always_Terminates on "F" has been proved, subprogram will terminate
-func_return.adb:4:64: medium: postcondition might fail (e.g. when X = 0)
+func_return.adb:4:64: medium: postcondition might fail
 func_return.adb:6:37: info: precondition proved (Trivial: 1 VC)
 func_return.adb:8:13: info: implicit aspect Always_Terminates on "G" has been proved, subprogram will terminate
 func_return.adb:8:13: info: implicit function contract might not be available on implicit recursive calls
@@ -153,10 +153,10 @@ func_return.adb:8:16: warning: unused variable "X"
 func_return.adb:8:36: info: predicate check proved (CVC5: 1 VC)
 handled_seq_statements.adb:4:13: info: function contract might not be available on implicit recursive calls
 handled_seq_statements.adb:4:13: info: implicit aspect Always_Terminates on "F" has been proved, subprogram will terminate
-handled_seq_statements.adb:4:64: medium: postcondition might fail (e.g. when V = (A => 1))
+handled_seq_statements.adb:4:64: medium: postcondition might fail
 handled_seq_statements.adb:6:37: info: precondition proved (Trivial: 1 VC)
-handled_seq_statements.adb:14:46: medium: assertion might fail (e.g. when V = (A => 0)) [possible fix: precondition of subprogram at line 4 should mention V]
-handled_seq_statements.adb:14:49: medium: predicate check might fail (e.g. when V = (A => 0)) [possible fix: precondition of subprogram at line 4 should mention V]
+handled_seq_statements.adb:14:46: medium: assertion might fail [possible fix: precondition of subprogram at line 4 should mention V]
+handled_seq_statements.adb:14:49: medium: predicate check might fail [possible fix: precondition of subprogram at line 4 should mention V]
 if_statement.adb:4:13: info: function contract might not be available on implicit recursive calls
 if_statement.adb:4:13: info: implicit aspect Always_Terminates on "F" has been proved, subprogram will terminate
 if_statement.adb:4:16: warning: unused initial value of "V"
@@ -204,7 +204,7 @@ membership_test.adb:6:18: warning: unused variable "V"
 membership_test.adb:8:37: info: precondition proved (Trivial: 1 VC)
 membership_test_2.adb:4:13: info: function contract might not be available on implicit recursive calls
 membership_test_2.adb:4:13: info: implicit aspect Always_Terminates on "Foo" has been proved, subprogram will terminate
-membership_test_2.adb:4:66: medium: postcondition might fail (e.g. when V = (A => 0))
+membership_test_2.adb:4:66: medium: postcondition might fail
 membership_test_2.adb:6:13: info: implicit aspect Always_Terminates on "Bar" has been proved, subprogram will terminate
 membership_test_2.adb:6:18: warning: unused variable "V"
 membership_test_2.adb:8:37: info: precondition proved (Trivial: 1 VC)
@@ -216,19 +216,19 @@ normal_return.adb:11:18: medium: predicate check might fail [possible fix: preco
 object_decl.adb:4:13: info: function contract might not be available on implicit recursive calls
 object_decl.adb:4:13: info: implicit aspect Always_Terminates on "F" has been proved, subprogram will terminate
 object_decl.adb:4:16: warning: unused variable "V"
-object_decl.adb:4:64: medium: postcondition might fail (e.g. when V = (A => 0))
+object_decl.adb:4:64: medium: postcondition might fail
 object_decl.adb:6:37: info: precondition proved (Trivial: 1 VC)
 object_decl.adb:10:06: warning: unused variable "V1"
 pkg_body.adb:4:13: info: function contract might not be available on implicit recursive calls
 pkg_body.adb:4:13: info: implicit aspect Always_Terminates on "F" has been proved, subprogram will terminate
 pkg_body.adb:4:16: warning: unused initial value of "V"
-pkg_body.adb:4:64: medium: postcondition might fail (e.g. when V = (A => 0))
+pkg_body.adb:4:64: medium: postcondition might fail
 pkg_body.adb:6:37: info: precondition proved (Trivial: 1 VC)
 pkg_body.adb:16:19: medium: predicate check might fail [possible fix: precondition of subprogram at line 4 should mention V]
 pkg_decl.adb:4:13: info: function contract might not be available on implicit recursive calls
 pkg_decl.adb:4:13: info: implicit aspect Always_Terminates on "F" has been proved, subprogram will terminate
 pkg_decl.adb:4:16: warning: unused variable "V"
-pkg_decl.adb:4:64: medium: postcondition might fail (e.g. when V = (A => 0))
+pkg_decl.adb:4:64: medium: postcondition might fail
 pkg_decl.adb:6:37: info: precondition proved (Trivial: 1 VC)
 pkg_decl.adb:11:10: warning: unused variable "V1"
 proc_formal.adb:4:13: info: function contract might not be available on implicit recursive calls
@@ -240,36 +240,36 @@ proc_formal.adb:14:07: info: precondition proved (Trivial: 1 VC)
 proc_formal.adb:14:10: medium: predicate check might fail [possible fix: precondition of subprogram at line 4 should mention X]
 qualified_expression.adb:4:13: info: function contract might not be available on implicit recursive calls
 qualified_expression.adb:4:13: info: implicit aspect Always_Terminates on "F" has been proved, subprogram will terminate
-qualified_expression.adb:4:65: medium: postcondition might fail (e.g. when V = (A => 1))
+qualified_expression.adb:4:65: medium: postcondition might fail
 qualified_expression.adb:6:37: info: precondition proved (Trivial: 1 VC)
-qualified_expression.adb:9:11: medium: predicate check might fail (e.g. when V = (A => 0)) [possible fix: precondition of subprogram at line 4 should mention V]
+qualified_expression.adb:9:11: medium: predicate check might fail [possible fix: precondition of subprogram at line 4 should mention V]
 raise_stmt.adb:4:13: info: function contract might not be available on implicit recursive calls
 raise_stmt.adb:4:13: info: implicit aspect Always_Terminates on "F" has been proved, subprogram will terminate
 raise_stmt.adb:4:16: warning: unused initial value of "V"
-raise_stmt.adb:4:64: medium: postcondition might fail (e.g. when V = (A => 0))
+raise_stmt.adb:4:64: medium: postcondition might fail
 raise_stmt.adb:6:37: info: precondition proved (Trivial: 1 VC)
-raise_stmt.adb:12:38: medium: predicate check might fail (e.g. when V = (A => 0)) [possible fix: precondition of subprogram at line 4 should mention V]
+raise_stmt.adb:12:38: medium: predicate check might fail [possible fix: precondition of subprogram at line 4 should mention V]
 recursive_predicates.adb:4:13: info: function contract might not be available on implicit recursive calls
 recursive_predicates.adb:4:13: info: implicit aspect Always_Terminates on "F" has been proved, subprogram will terminate
-recursive_predicates.adb:4:51: medium: postcondition might fail (e.g. when V = (A => 1))
+recursive_predicates.adb:4:51: medium: postcondition might fail
 recursive_predicates.adb:6:42: info: predicate check proved (CVC5: 1 VC)
 recursive_predicates.adb:7:45: info: predicate check proved (CVC5: 1 VC)
-recursive_predicates.adb:11:18: medium: predicate check might fail (e.g. when V = (A => 0)) [possible fix: subprogram at line 4 should mention V in a precondition]
+recursive_predicates.adb:11:18: medium: predicate check might fail [possible fix: subprogram at line 4 should mention V in a precondition]
 subcomponent_parent.adb:4:13: info: function contract might not be available on implicit recursive calls
 subcomponent_parent.adb:4:13: info: implicit aspect Always_Terminates on "F" has been proved, subprogram will terminate
 subcomponent_parent.adb:4:16: warning: unused variable "V"
-subcomponent_parent.adb:4:64: medium: postcondition might fail (e.g. when V = (A => 0))
+subcomponent_parent.adb:4:64: medium: postcondition might fail
 subcomponent_parent.adb:6:37: info: precondition proved (Trivial: 1 VC)
 subcomponent_parent.adb:16:06: warning: unused variable "R"
 traverse_access.adb:4:13: info: function contract might not be available on implicit recursive calls
 traverse_access.adb:4:13: info: implicit aspect Always_Terminates on "F" has been proved, subprogram will terminate
 traverse_access.adb:4:16: warning: unused variable "V"
-traverse_access.adb:4:64: medium: postcondition might fail (e.g. when V = (A => 0))
+traverse_access.adb:4:64: medium: postcondition might fail
 traverse_access.adb:6:37: info: precondition proved (Trivial: 1 VC)
 traverse_access.adb:16:06: info: absence of resource or memory leak at end of scope proved (CVC5: 1 VC)
 unch_conversion.adb:6:13: info: function contract might not be available on implicit recursive calls
 unch_conversion.adb:6:13: info: implicit aspect Always_Terminates on "F" has been proved, subprogram will terminate
-unch_conversion.adb:6:65: medium: postcondition might fail (e.g. when V = (A => 1))
+unch_conversion.adb:6:65: medium: postcondition might fail
 unch_conversion.adb:8:37: info: precondition proved (Trivial: 1 VC)
 unch_conversion.adb:10:13: info: implicit function contract might not be available on implicit recursive calls
 unch_conversion.adb:10:13: info: types in unchecked conversion have the same size (Trivial)
