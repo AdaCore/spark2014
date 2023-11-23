@@ -377,6 +377,8 @@ package body Gnat2Why.Expr.Aggregates is
                   P : Opt_Path_Type := Value.Status.Path;
                begin
                   Free (P);
+                  pragma Annotate (CodePeer, False_Positive, "use after free",
+                                   "Path is only freed through one owner");
                end;
             end if;
          end loop;
@@ -1280,7 +1282,7 @@ package body Gnat2Why.Expr.Aggregates is
                      C_Writes : constant Write_Status_Access :=
                        Element (Position);
                      C_Acc    : W_Expr_Id;
-                     C_Node   : Node_Id;
+                     C_Node   : Node_Id := Types.Empty;
 
                   begin
                      --  To locate the checks, search for the first association
@@ -2541,8 +2543,8 @@ package body Gnat2Why.Expr.Aggregates is
                   else Has_Relaxed_Init (C_Writes.Ty));
                W_Comp_Ty    : constant W_Type_Id := EW_Abstract
                  (C_Writes.Ty, Comp_Relaxed);
-               C_Node       : Node_Id;
-               Res          : W_Expr_Id;
+               C_Node       : Node_Id := Types.Empty;
+               Res          : W_Expr_Id := Why_Empty;
 
             begin
                --  To locate the check, search for the first association
