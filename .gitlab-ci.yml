@@ -48,8 +48,8 @@ stages:
 .spark2014_test:
   services:
      - image:e3
-     - cpu:8
-     - mem:16
+     - cpu:16
+     - mem:32
   stage: test
   script:
     # Move the package out of the way, so it does not influence "anod vcs"
@@ -168,8 +168,8 @@ spark2014_nocache:
 acats:
   services:
      - image:e3
-     - cpu:8
-     - mem:16
+     - cpu:16
+     - mem:32
   stage: test
   script:
     # Setup the sanbox
