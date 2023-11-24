@@ -49,7 +49,6 @@ stages:
   services:
      - image:e3
      - cpu:16
-     - mem:32
   stage: test
   script:
     # Move the package out of the way, so it does not influence "anod vcs"
@@ -106,7 +105,6 @@ build:
   services:
      - image:e3
      - cpu:8
-     - mem:16
   stage: build
   script:
     - GENERIC_ANOD_CI_OPTIONS="--add-dep eng/spark/sparklib
@@ -169,7 +167,6 @@ acats:
   services:
      - image:e3
      - cpu:16
-     - mem:32
   stage: test
   script:
     # Setup the sanbox
