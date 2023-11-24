@@ -32,6 +32,7 @@ with GNAT.Source_Info;
 with GNATCOLL.Symbols;              use GNATCOLL.Symbols;
 with Gnat2Why.Error_Messages;       use Gnat2Why.Error_Messages;
 with Gnat2Why.Expr;                 use Gnat2Why.Expr;
+with Gnat2Why.Expr.Aggregates;      use Gnat2Why.Expr.Aggregates;
 with Gnat2Why.Subprograms;          use Gnat2Why.Subprograms;
 with Gnat2Why.Subprograms.Pointers; use Gnat2Why.Subprograms.Pointers;
 with Gnat2Why.Tables;               use Gnat2Why.Tables;
