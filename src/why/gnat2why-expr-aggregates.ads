@@ -23,7 +23,25 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
+with SPARK_Definition.Annotate; use SPARK_Definition.Annotate;
+
 package Gnat2Why.Expr.Aggregates is
+
+   function Generate_VCs_For_Aggregate_Annotation
+     (E : Type_Kind_Id)
+     return W_Prog_Id
+   with Pre => Has_Aggregate_Annotation (E);
+   --  Generate checks for the initialization and the preservation of the
+   --  invariants used to model aggregates.
+
+   function Transform_Container_Aggregate
+     (Expr   : Node_Id;
+      Params : Transformation_Params;
+      Domain : EW_Domain)
+      return W_Expr_Id;
+   --  Generate the translation of a container aggregate. It is done similarly
+   --  to array aggregates. A logic function is generated along with an axiom,
+   --  and the aggregate is translated as a function call.
 
    function Transform_Deep_Delta_Aggregate
      (Expr   : Node_Id;

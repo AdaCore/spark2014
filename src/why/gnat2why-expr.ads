@@ -23,6 +23,7 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
+with Ada.Containers;
 with Ada.Containers.Vectors;
 with Checked_Types;              use Checked_Types;
 with Common_Containers;          use Common_Containers;
@@ -31,11 +32,11 @@ with Gnat2Why.Util;              use Gnat2Why.Util;
 with Nlists;                     use Nlists;
 with SPARK_Atree;                use SPARK_Atree;
 with SPARK_Atree.Entities;       use SPARK_Atree.Entities;
-with SPARK_Definition.Annotate;  use SPARK_Definition.Annotate;
 with SPARK_Util;                 use SPARK_Util;
 with SPARK_Util.Types;           use SPARK_Util.Types;
 with Types;                      use Types;
 with Why.Conversions;            use Why.Conversions;
+with Why.Gen.Binders;            use Why.Gen.Binders;
 with Why.Gen.Expr;               use Why.Gen.Expr;
 with Why.Gen.Terms;              use Why.Gen.Terms;
 with Why.Ids;                    use Why.Ids;
@@ -400,13 +401,6 @@ package Gnat2Why.Expr is
 
    function Count_Numerical_Variants (E : Callable_Kind_Id) return Natural;
    --  Compute the number of numerical variants of a subprogram or entry if any
-
-   function Generate_VCs_For_Aggregate_Annotation
-     (E : Type_Kind_Id)
-     return W_Prog_Id
-   with Pre => Has_Aggregate_Annotation (E);
-   --  Generate checks for the initialization and the preservation of the
-   --  invariants used to model aggregates.
 
    function Get_Pure_Logic_Term_If_Possible
      (Expr          : N_Subexpr_Id;
@@ -869,6 +863,7 @@ package Gnat2Why.Expr is
    --  the expressions in Map should be evaluated in the pre state.
 
 private
+   use type Ada.Containers.Count_Type;
 
    Incompl_Access_Dyn_Inv_Map : Ada_To_Why_Ident.Map;
    --  Map storing predicates for invariants of access to incomplete types
@@ -885,5 +880,40 @@ private
      (Index_Type   => Positive,
       Element_Type => Ref_Type);
    subtype Ref_Context is Ref_Type_Vectors.Vector;
+
+   procedure Get_Item_From_Expr
+     (Pattern     :        Item_Type;
+      Expr        :        W_Expr_Id;
+      Constr_Expr :        W_Expr_Id := Why_Empty;
+      Context     : in out Ref_Context;
+      Args        :    out W_Expr_Array;
+      Need_Store  :    out Boolean;
+      Reuse_Discr :        Boolean := False)
+   with Pre => (if Pattern.Kind = DRecord and then Pattern.Constr.Present
+                then Constr_Expr /= Why_Empty)
+     and Args'Length >=
+       Item_Array_Length ((1 => Pattern), Ignore_Init => True),
+     Post => Need_Store or Context.Length = Context.Length'Old;
+   pragma Annotate
+     (CodePeer, False_Positive,
+      "validity check",
+      "Need_Store initialized as the first line in the body");
+   --  Split a Why expression into parts that will be used to call a
+   --  subprogram. The parts are stored in Args. Pattern is an item
+   --  representing the expected form of the formal parameter. Its variable
+   --  parts are used for the names of the new references introduced for the
+   --  variable parts. Mappings for these variables are stored in Context.
+   --  Need_Store is set to True if at least one new reference is introduced.
+   --  If Reuse_Discr is True, the identifier for the discriminant in Pattern
+   --  is the one from the actual, no need to introduce a mapping for it.
+   --  This procedure does not handle the Init flag.
+
+   function Reconstruct_Formal_From_Item
+     (Pattern  : Item_Type;
+      Pre_Expr : W_Expr_Id)
+      return W_Prog_Id;
+   --  From an item Pattern holding the identifiers for the mutable parts of
+   --  a formal parameter and its previous value Pre_Expr, reconstruct an
+   --  expression for the new version of the formal.
 
 end Gnat2Why.Expr;
