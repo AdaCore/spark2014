@@ -2219,6 +2219,12 @@ package body SPARK_Definition.Annotate is
             & " Handler must be an access-to-subprogram type",
             Arg3_Exp);
          return;
+      elsif not Is_Library_Level_Entity (E) then
+         Error_Msg_N_If
+           ("access-to-subprogram type annotated with the " & Aspect_Or_Pragma
+            & " Handler shall be declared at library level",
+            Arg3_Exp);
+         return;
       end if;
 
       Pre := Find_Contracts
