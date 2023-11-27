@@ -651,20 +651,20 @@ package body Gnat2Why.Expr is
    --  be used to refer to these indices. It is supplied when the indices
    --  should be evaluated in a different context (typically before a call).
 
-   function Transform_Aggregate
+   function Transform_Array_Aggregate
      (Params        : Transformation_Params;
       Domain        : EW_Domain;
       Expr          : N_Aggregate_Kind_Id;
       Update_Prefix : Opt_N_Subexpr_Id := Empty;
       Relaxed_Init  : Boolean)
       return W_Expr_Id;
-   --  Transform an aggregate Expr. It may be called multiple times on the
-   --  same Ada node, corresponding to different phases of the translation. The
-   --  first time it is called on an Ada node, a logic function is generated
-   --  and stored in Ada_To_Why_Func, so that the function and axiom are
-   --  generated only once per source aggregate. This function F is used
-   --  for generating each translation of this node. The general signature for
-   --  F  is:
+   --  Transform an aggregate Expr of array type. It may be called multiple
+   --  times on the same Ada node, corresponding to different phases of the
+   --  translation. The first time it is called on an Ada node, a logic
+   --  function is generated and stored in Ada_To_Why_Func, so that the
+   --  function and axiom are generated only once per source aggregate. This
+   --  function F is used for generating each translation of this node. The
+   --  general signature for F is:
    --
    --     function F (<params>) : <type of aggregate>
    --
@@ -12596,11 +12596,11 @@ package body Gnat2Why.Expr is
       end loop;
    end Transform_Actions_Preparation;
 
-   -------------------------
-   -- Transform_Aggregate --
-   -------------------------
+   -------------------------------
+   -- Transform_Array_Aggregate --
+   -------------------------------
 
-   function Transform_Aggregate
+   function Transform_Array_Aggregate
      (Params        : Transformation_Params;
       Domain        : EW_Domain;
       Expr          : N_Aggregate_Kind_Id;
@@ -15249,7 +15249,7 @@ package body Gnat2Why.Expr is
       Variables        : Flow_Id_Sets.Set;
       Contextual_Parts : Node_Sets.Set;
 
-   --  Start of processing for Transform_Aggregate
+   --  Start of processing for Transform_Array_Aggregate
 
    begin
       --  Get the aggregate elements that should be passed in parameter
@@ -15279,7 +15279,7 @@ package body Gnat2Why.Expr is
               Variables,
               Contextual_Parts);
       end;
-   end Transform_Aggregate;
+   end Transform_Array_Aggregate;
 
    --------------------------------
    -- Transform_Array_Comparison --
@@ -19560,7 +19560,7 @@ package body Gnat2Why.Expr is
 
       else
          pragma Assert (Is_Array_Type (Pref_Typ));
-         T := Transform_Aggregate
+         T := Transform_Array_Aggregate
            (Params        => Params,
             Domain        => Domain,
             Expr          => Aggr,
@@ -19949,7 +19949,7 @@ package body Gnat2Why.Expr is
                  (Is_Array_Type (Expr_Type) or else
                   Is_String_Type (Expr_Type));
 
-               T := Transform_Aggregate
+               T := Transform_Array_Aggregate
                  (Params       => Local_Params,
                   Domain       => Domain,
                   Expr         => Expr,
