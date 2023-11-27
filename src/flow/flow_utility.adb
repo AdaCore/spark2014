@@ -4348,14 +4348,16 @@ package body Flow_Utility is
                end if;
 
             when N_Aggregate =>
-               declare
-                  Array_Bounds : constant Node_Id := Aggregate_Bounds (N);
-               begin
-                  if Present (Array_Bounds) then
-                     Variables.Union (Recurse (Low_Bound (Array_Bounds)));
-                     Variables.Union (Recurse (High_Bound (Array_Bounds)));
-                  end if;
-               end;
+               if Is_Array_Type (Etype (N)) then
+                  declare
+                     Array_Bounds : constant Node_Id := Aggregate_Bounds (N);
+                  begin
+                     if Present (Array_Bounds) then
+                        Variables.Union (Recurse (Low_Bound (Array_Bounds)));
+                        Variables.Union (Recurse (High_Bound (Array_Bounds)));
+                     end if;
+                  end;
+               end if;
 
                --  Include variables from the default values that correspond to
                --  boxes in aggregate expressions.
