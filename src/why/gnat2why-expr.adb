@@ -12653,8 +12653,7 @@ package body Gnat2Why.Expr is
       -----------------------
 
       procedure Get_Aggregate_Elements
-        (Expr             : Node_Id;
-         Values           : out Aggregate_Element_Lists.Vector;
+        (Values           : out Aggregate_Element_Lists.Vector;
          Variables        : out Flow_Id_Sets.Set;
          Contextual_Parts : out Node_Sets.Set);
       --  Extract parts of the aggregate Expr that will be passed in
@@ -12670,8 +12669,7 @@ package body Gnat2Why.Expr is
       --  access and their contextual nodes in Variables and Contextual_Parts.
 
       procedure Generate_Logic_Function
-        (Expr             : Node_Id;
-         Values           : Aggregate_Element_Lists.Vector;
+        (Values           : Aggregate_Element_Lists.Vector;
          Variables        : Flow_Id_Sets.Set;
          Contextual_Parts : Node_Sets.Set);
       --  Generate the logic function definition for the aggregate Expr, with a
@@ -12684,8 +12682,7 @@ package body Gnat2Why.Expr is
       --         <proposition for the aggregate F(<params>)>
 
       function Transform_Array_Component_Associations
-        (Expr   : Node_Id;
-         Arr    : W_Term_Id;
+        (Arr    : W_Term_Id;
          Args   : Node_To_Why_Id.Map;
          Bnds   : W_Expr_Array;
          Params : Transformation_Params)
@@ -12694,9 +12691,7 @@ package body Gnat2Why.Expr is
       --  mapping between Ada nodes and corresponding Why identifiers.
 
       function Complete_Translation
-        (Params           : Transformation_Params;
-         Domain           : EW_Domain;
-         Func             : W_Identifier_Id;
+        (Func             : W_Identifier_Id;
          Values           : Aggregate_Element_Lists.Vector;
          Variables        : Flow_Id_Sets.Set;
          Contextual_Parts : Node_Sets.Set)
@@ -12726,9 +12721,7 @@ package body Gnat2Why.Expr is
       --------------------------
 
       function Complete_Translation
-        (Params           : Transformation_Params;
-         Domain           : EW_Domain;
-         Func             : W_Identifier_Id;
+        (Func             : W_Identifier_Id;
          Values           : Aggregate_Element_Lists.Vector;
          Variables        : Flow_Id_Sets.Set;
          Contextual_Parts : Node_Sets.Set)
@@ -12901,8 +12894,7 @@ package body Gnat2Why.Expr is
       -----------------------------
 
       procedure Generate_Logic_Function
-        (Expr             : Node_Id;
-         Values           : Aggregate_Element_Lists.Vector;
+        (Values           : Aggregate_Element_Lists.Vector;
          Variables        : Flow_Id_Sets.Set;
          Contextual_Parts : Node_Sets.Set)
       is
@@ -12936,14 +12928,14 @@ package body Gnat2Why.Expr is
          --  Generate name for the function based on the location of the
          --  aggregate.
 
-         Name          : constant String :=
+         Name           : constant String :=
            Lower_Case_First (Get_Name_For_Aggregate (Expr));
-         Module        : constant W_Module_Id :=
+         Module         : constant W_Module_Id :=
            New_Module
              (Ada_Node => Expr,
               File     => No_Symbol,
               Name     => Name);
-         Func          : constant W_Identifier_Id :=
+         Func           : constant W_Identifier_Id :=
            New_Identifier
              (Ada_Node => Expr,
               Domain   => Domain,
@@ -12952,21 +12944,21 @@ package body Gnat2Why.Expr is
 
          --  Predicate used to define the aggregate/updated object
 
-         Params_No_Ref : constant Transformation_Params :=
+         Params_No_Ref  : constant Transformation_Params :=
            (Logic_Params with delta Old_Policy => Raise_Error);
 
          --  Arrays of binders and arguments, and mapping of nodes to names
 
-         Call_Params   : Binder_Array (1 .. Natural (Values.Length));
-         Call_Args     : W_Expr_Array (1 .. Natural (Values.Length));
-         Args_Map      : Node_To_Why_Id.Map;
+         Call_Params    : Binder_Array (1 .. Natural (Values.Length));
+         Call_Args      : W_Expr_Array (1 .. Natural (Values.Length));
+         Args_Map       : Node_To_Why_Id.Map;
 
          --  Additional arguments for the array bounds
 
-         Bnd_Count     : constant Natural :=
+         Bnd_Count      : constant Natural :=
            (if Needs_Bounds then 2 * Nb_Dim else 0);
-         Bnd_Params    : Binder_Array (1 .. Bnd_Count);
-         Bnd_Args      : W_Expr_Array (1 .. Bnd_Count);
+         Bnd_Args       : W_Expr_Array (1 .. Bnd_Count);
+         Bnd_Params     : Binder_Array (1 .. Bnd_Count);
 
          --  Additional arguments for external references in iterated
          --  component associations.
@@ -12983,18 +12975,18 @@ package body Gnat2Why.Expr is
 
          --  Counter
 
-         Cnt           : Positive;
+         Cnt            : Positive;
 
          --  Variables for the call, guard and proposition for the axiom
 
-         Aggr          : W_Term_Id;
-         Def_Pred      : W_Pred_Id;
-         Axiom_Body    : W_Pred_Id := True_Pred;
+         Aggr           : W_Term_Id;
+         Def_Pred       : W_Pred_Id;
+         Axiom_Body     : W_Pred_Id := True_Pred;
 
-         Aggr_Temp     : constant W_Identifier_Id :=
+         Aggr_Temp      : constant W_Identifier_Id :=
            New_Temp_Identifier (Typ => Ret_Type);
 
-         Th            : Theory_UC;
+         Th             : Theory_UC;
 
       --  Start of processing for Generate_Logic_Function
 
@@ -13169,8 +13161,7 @@ package body Gnat2Why.Expr is
               New_And_Pred
                 (Left   => Axiom_Body,
                  Right  => Transform_Array_Component_Associations
-                   (Expr   => Expr,
-                    Arr    => +Aggr_Temp,
+                   (Arr    => +Aggr_Temp,
                     Args   => Args_Map,
                     Bnds   => Bnd_Args,
                     Params => Params_No_Ref));
@@ -13260,8 +13251,7 @@ package body Gnat2Why.Expr is
       ----------------------------
 
       procedure Get_Aggregate_Elements
-        (Expr             : Node_Id;
-         Values           : out Aggregate_Element_Lists.Vector;
+        (Values           : out Aggregate_Element_Lists.Vector;
          Variables        : out Flow_Id_Sets.Set;
          Contextual_Parts : out Node_Sets.Set)
       is
@@ -14368,8 +14358,7 @@ package body Gnat2Why.Expr is
       --------------------------------------------
 
       function Transform_Array_Component_Associations
-        (Expr   : Node_Id;
-         Arr    : W_Term_Id;
+        (Arr    : W_Term_Id;
          Args   : Node_To_Why_Id.Map;
          Bnds   : W_Expr_Array;
          Params : Transformation_Params)
@@ -14418,8 +14407,7 @@ package body Gnat2Why.Expr is
          --  will be pulled from the arguments to the logic function.
 
          procedure Transform_Aggregate_Values
-           (Expr          : Node_Id;
-            Simple_Assocs : out W_Pred_Id;
+           (Simple_Assocs : out W_Pred_Id;
             Other_Assocs  : out W_Pred_Id);
          --  Main recursive function operating over multi-dimensional array
          --  aggregates.
@@ -14754,8 +14742,7 @@ package body Gnat2Why.Expr is
          --------------------------------
 
          procedure Transform_Aggregate_Values
-           (Expr          : Node_Id;
-            Simple_Assocs : out W_Pred_Id;
+           (Simple_Assocs : out W_Pred_Id;
             Other_Assocs  : out W_Pred_Id)
          is
             function Transform_Complex_Association
@@ -15226,8 +15213,7 @@ package body Gnat2Why.Expr is
             Other_Assocs  : W_Pred_Id;
          begin
             Transform_Aggregate_Values
-              (Expr          => Expr,
-               Simple_Assocs => Simple_Assocs,
+              (Simple_Assocs => Simple_Assocs,
                Other_Assocs  => Other_Assocs);
 
             if Is_True_Boolean (+Other_Assocs) then
@@ -15243,34 +15229,28 @@ package body Gnat2Why.Expr is
          end;
       end Transform_Array_Component_Associations;
 
-      --  Elements of the aggregate
-
-      Values : Aggregate_Element_Lists.Vector;
-      Variables        : Flow_Id_Sets.Set;
-      Contextual_Parts : Node_Sets.Set;
-
    --  Start of processing for Transform_Array_Aggregate
 
    begin
-      --  Get the aggregate elements that should be passed in parameter
-
-      Get_Aggregate_Elements (Expr, Values, Variables, Contextual_Parts);
-
-      --  If not done already, generate the logic function
-
       declare
-         M : W_Module_Id := E_Module (Expr);
+         Values           : Aggregate_Element_Lists.Vector;
+         Variables        : Flow_Id_Sets.Set;
+         Contextual_Parts : Node_Sets.Set;
+         M                : W_Module_Id := E_Module (Expr);
       begin
+         --  Get the aggregate elements that should be passed in parameter
+
+         Get_Aggregate_Elements (Values, Variables, Contextual_Parts);
+
+         --  If not done already, generate the logic function
+
          if M = Why_Empty then
-            Generate_Logic_Function
-              (Expr, Values, Variables, Contextual_Parts);
+            Generate_Logic_Function (Values, Variables, Contextual_Parts);
             M := E_Module (Expr);
          end if;
          return
            Complete_Translation
-             (Params,
-              Domain,
-              New_Identifier
+             (New_Identifier
                 (Ada_Node => Expr,
                  Domain   => Domain,
                  Module   => M,
