@@ -69,7 +69,7 @@ sdc.adb:22:07: medium: "input.line" might not be initialized after elaboration o
 sdc.adb:23:07: medium: "stack.tab" might not be initialized after elaboration of main program "Sdc"
 sdc.adb:23:07: medium: precondition might fail, cannot prove not Stack.Full [possible fix: call at line 22 should mention V (for argument T) in a postcondition]
 stack.adb:31:10: info: only expected exception raised (CVC5: 1 VC)
-stack.adb:34:46: low: range check might fail, cannot prove upper bound for "Pushing -> " & Values.To_String (V) (e.g. when V = (E => 2147483637)) [reason for check: input value must fit in parameter type] [possible fix: precondition of subprogram at stack.ads:18 should mention V]
+stack.adb:34:46: low: range check might fail, cannot prove upper bound for "Pushing -> " & Values.To_String (V) [reason for check: input value must fit in parameter type] [possible fix: precondition of subprogram at stack.ads:18 should mention V]
 stack.adb:36:20: info: range check proved (CVC5: 2 VC)
 stack.adb:37:12: info: index check proved (CVC5: 2 VC)
 stack.adb:47:10: info: only expected exception raised (CVC5: 1 VC)

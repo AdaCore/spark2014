@@ -379,7 +379,7 @@ ring_buffer.ads:26:04: info: initialization of "Model" proved
 ring_buffer.ads:28:13: info: implicit aspect Always_Terminates on "Valid_Model" has been proved, subprogram will terminate
 ring_buffer.ads:29:13: info: implicit aspect Always_Terminates on "Valid_Model" has been proved, subprogram will terminate
 ring_buffer.ads:31:13: info: implicit aspect Always_Terminates on "Get_Model" has been proved, subprogram will terminate
-ring_buffer.ads:32:14: info: postcondition proved (CVC5: 1 VC)
+ring_buffer.ads:32:14: medium: postcondition might fail
 ring_buffer.ads:35:14: info: predicate check proved (Trivial: 1 VC)
 ring_buffer.ads:36:14: info: postcondition proved (CVC5: 3 VC)
 ring_buffer.ads:39:30: info: predicate check proved (Trivial: 1 VC)
