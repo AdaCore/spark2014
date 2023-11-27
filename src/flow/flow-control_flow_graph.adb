@@ -2447,6 +2447,12 @@ package body Flow.Control_Flow_Graph is
          Tasking            => FA.Tasking,
          Generating_Globals => FA.Generating_Globals);
 
+      Ctx.Vertex_Ctx.Warnings_Off :=
+        Save_Warn_Off or else Exp_Util.Is_Statically_Disabled
+                                (N             => Condition (N),
+                                 Value         => True,
+                                 Include_Valid => False);
+
       Add_Vertex
         (FA,
          Direct_Mapping_Id (N),
@@ -2562,6 +2568,13 @@ package body Flow.Control_Flow_Graph is
                   Proof_Dependencies => FA.Proof_Dependencies,
                   Tasking            => FA.Tasking,
                   Generating_Globals => FA.Generating_Globals);
+
+               Ctx.Vertex_Ctx.Warnings_Off :=
+                 Ctx.Vertex_Ctx.Warnings_Off
+                   or else Exp_Util.Is_Statically_Disabled
+                            (N             => Condition (Elsif_Statement),
+                             Value         => True,
+                             Include_Valid => False);
 
                Add_Vertex
                  (FA,

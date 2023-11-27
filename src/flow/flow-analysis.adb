@@ -1846,6 +1846,10 @@ package body Flow.Analysis is
                  --  Suppression for elaboration of nested packages
                  not Is_Package_Elaboration (V) and then
 
+                 --  Suppression for ineffective statements caused by dead code
+                 --  coming from constants with Warnings => Off
+                 not Atr.Warnings_Off and then
+
                  --  Suppression for calls to subprograms with no effects
                  not (Atr.Is_Callsite
                         and then
