@@ -4288,6 +4288,7 @@ package body SPARK_Definition is
 
                      elsif Ekind (Subp) = E_Function
                        and then Is_Volatile_Function (Subp)
+                       and then not Has_Handler_Annotation (Etype (N))
                      then
                         Mark_Violation ("access to volatile function", N);
 
