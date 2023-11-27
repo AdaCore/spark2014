@@ -1,0 +1,5 @@
+prove_all:
+  sparklib: True
+  counterexample: False
+  prover: ["cvc5"]
+  steps: 30
