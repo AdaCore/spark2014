@@ -12667,9 +12667,11 @@ package body Gnat2Why.Expr is
       -----------------------
 
       procedure Get_Aggregate_Elements
-        (Values           : out Aggregate_Element_Lists.Vector;
-         Variables        : out Flow_Id_Sets.Set;
-         Contextual_Parts : out Node_Sets.Set);
+        (Values              : out Aggregate_Element_Lists.Vector;
+         Variables           : out Flow_Id_Sets.Set;
+         Contextual_Parts    : out Node_Sets.Set;
+         Elements_From_Nodes : out Node_To_Why_Id.Map;
+         Bounds              : out W_Expr_Array);
       --  Extract parts of the aggregate Expr that will be passed in
       --  parameter to the logic function for the aggregate.
       --  Collect these parameters in Values.
@@ -12681,11 +12683,18 @@ package body Gnat2Why.Expr is
       --  associations are not collected in Values, as they may depend on
       --  index parameters. Instead, we collect the global variables they
       --  access and their contextual nodes in Variables and Contextual_Parts.
+      --
+      --  Get_Aggregate_Elements additionally bind Why3 identifiers for bounds
+      --  and elements. For elements, those identifiers are found through map
+      --  Elements_From_Nodes. For bounds (if needed as additional arguments),
+      --  they are found in array Bounds.
 
       procedure Generate_Logic_Function
-        (Values           : Aggregate_Element_Lists.Vector;
-         Variables        : Flow_Id_Sets.Set;
-         Contextual_Parts : Node_Sets.Set);
+        (Values              : Aggregate_Element_Lists.Vector;
+         Variables           : Flow_Id_Sets.Set;
+         Contextual_Parts    : Node_Sets.Set;
+         Elements_From_Nodes : Node_To_Why_Id.Map;
+         Bounds              : W_Expr_Array);
       --  Generate the logic function definition for the aggregate Expr, with a
       --  suitable defining axiom:
       --
@@ -12696,21 +12705,21 @@ package body Gnat2Why.Expr is
       --         <proposition for the aggregate F(<params>)>
 
       function Make_Defining_Proposition
-        (Arr    : W_Term_Id;
-         Args   : Node_To_Why_Id.Map;
-         Bnds   : W_Expr_Array;
-         Params : Transformation_Params)
+        (Arr                 : W_Term_Id;
+         Elements_From_Nodes : Node_To_Why_Id.Map;
+         Bounds              : W_Expr_Array;
+         Params              : Transformation_Params)
          return W_Pred_Id;
       --  Generates a proposition stating that array Arr contains the result of
-      --  aggregate Expr, using Args to map nodes for indices
-      --  and components to Why3 identifiers, and Bnds to figure out the
+      --  aggregate Expr, using Elements_From_Nodes to map nodes for indices
+      --  and components to Why3 identifiers, and Bounds to figure out the
       --  bounds when Needs_Bounds = True.
 
       function Transform_Array_Component_Associations
-        (Arr    : W_Term_Id;
-         Args   : Node_To_Why_Id.Map;
-         Bnds   : W_Expr_Array;
-         Params : Transformation_Params)
+        (Arr                 : W_Term_Id;
+         Elements_From_Nodes : Node_To_Why_Id.Map;
+         Bounds              : W_Expr_Array;
+         Params              : Transformation_Params)
          return W_Pred_Id;
       --  Generates the proposition defining the content of components of
       --  aggregate Arr, based on a mapping between Ada nodes and corresponding
@@ -12917,9 +12926,11 @@ package body Gnat2Why.Expr is
       -----------------------------
 
       procedure Generate_Logic_Function
-        (Values           : Aggregate_Element_Lists.Vector;
-         Variables        : Flow_Id_Sets.Set;
-         Contextual_Parts : Node_Sets.Set)
+        (Values              : Aggregate_Element_Lists.Vector;
+         Variables           : Flow_Id_Sets.Set;
+         Contextual_Parts    : Node_Sets.Set;
+         Elements_From_Nodes : Node_To_Why_Id.Map;
+         Bounds              : W_Expr_Array)
       is
          function Get_Name_For_Aggregate (Aggr : Node_Id) return String;
          --  Return a suitable name for the aggregate Aggr. If Aggr is the
@@ -12974,12 +12985,16 @@ package body Gnat2Why.Expr is
 
          Call_Params    : Binder_Array (1 .. Natural (Values.Length));
          Call_Args      : W_Expr_Array (1 .. Natural (Values.Length));
-         Args_Map       : Node_To_Why_Id.Map;
 
          --  Additional arguments for the array bounds
 
-         Bnd_Args       : W_Expr_Array (1 .. Bound_Count);
-         Bnd_Params     : Binder_Array (1 .. Bound_Count);
+         Bnd_Params    : constant Binder_Array :=
+           (for I in 1 .. Bound_Count =>
+              (Ada_Node => Standard.Types.Empty,
+               B_Name   => +Bounds (I),
+               B_Ent    => Null_Entity_Name,
+               Mutable  => False,
+               Labels   => <>));
 
          --  Additional arguments for external references in iterated
          --  component associations.
@@ -13030,81 +13045,18 @@ package body Gnat2Why.Expr is
 
          Cnt := 1;
          for Value of Values loop
-            declare
-               Typ   : constant Node_Id := Value.Typ;
-               Ident : constant W_Identifier_Id :=
-                 New_Temp_Identifier
-                   (Typ =>
-                    --  Special case for associations standing boxes in the
-                    --  aggregate.
-                      (if Nkind (Value.Value) in
-                           N_Iterated_Component_Association
-                         | N_Component_Association
-                       then EW_Abstract (Typ,
-                         Relaxed_Init =>
-                           (if Relaxed_Init
-                            then Has_Init_Wrapper (Typ)
-                            else Has_Relaxed_Init (Typ)))
-                       elsif Expr_Has_Relaxed_Init
-                         (Value.Value, No_Eval => False)
-                       then EW_Abstract (Typ, Relaxed_Init => True)
-                       else Type_Of_Node (Typ)));
-               B     : constant Binder_Type :=
-                 (Ada_Node => Standard.Types.Empty,
-                  B_Name   => Ident,
-                  B_Ent    => Null_Entity_Name,
-                  Mutable  => False,
-                  Labels   => Symbol_Sets.Empty_Set);
-            begin
-               Call_Params (Cnt) := B;
-               Cnt := Cnt + 1;
-
-               --  Fill in mapping from Ada nodes to Why identifiers for the
-               --  generation of the proposition in the defining axiom.
-               --  Guard against duplicate insertions. This could happen if
-               --  someone were to use the same subtype mark as choice twice
-               --  in a delta aggregate (although the point of doing so is
-               --  dubious, this is legal Ada).
-
-               Args_Map.Include (Value.Value, Ident);
-            end;
+            Call_Params (Cnt) :=
+              (Ada_Node => Standard.Types.Empty,
+               B_Name   => Elements_From_Nodes.Element (Value.Value),
+               B_Ent    => Null_Entity_Name,
+               Mutable  => False,
+               Labels   => Symbol_Sets.Empty_Set);
+            Cnt := Cnt + 1;
          end loop;
 
          Call_Args := Get_Args_From_Binders
            (Call_Params, Ref_Allowed => False);
          pragma Assert (Cnt = Call_Params'Last + 1);
-
-         --  If the bounds of the aggregate should be given as additional
-         --  parameters to the call, add them to the arguments.
-
-         if Needs_Bounds then
-            for Dim in Dimensions loop
-               declare
-                  BT   : constant W_Type_Id :=
-                    Base_Why_Type_No_Bool (Index_Types (Dim));
-                  F_Id : constant W_Identifier_Id :=
-                    New_Temp_Identifier (Base_Name => "first", Typ => BT);
-                  L_Id : constant W_Identifier_Id :=
-                    New_Temp_Identifier (Base_Name => "last", Typ => BT);
-
-               begin
-                  Bnd_Args (2 * Dim - 1) := +F_Id;
-                  Bnd_Params (2 * Dim - 1) :=
-                    (Ada_Node => Standard.Types.Empty,
-                     B_Name   => F_Id,
-                     B_Ent    => Null_Entity_Name,
-                     Mutable  => False,
-                     Labels   => <>);
-                  Bnd_Args (2 * Dim) := +L_Id;
-                  Bnd_Params (2 * Dim) :=
-                    (Ada_Node => Standard.Types.Empty,
-                     B_Name   => L_Id,
-                     B_Ent    => Null_Entity_Name,
-                     Mutable  => False,
-                     Labels   => <>);
-               end;
-            end loop;
-         end if;
 
          --  Localize binders for variables and push them to the symbol
          --  table. This is important so that the translation of the
@@ -13124,10 +13076,10 @@ package body Gnat2Why.Expr is
          --  Compute the call, guard and proposition for the axiom
 
          Axiom_Body := Make_Defining_Proposition
-           (Arr    => +Aggr_Temp,
-            Args   => Args_Map,
-            Bnds   => Bnd_Args,
-            Params => Params_No_Ref);
+           (Arr                 => +Aggr_Temp,
+            Elements_From_Nodes => Elements_From_Nodes,
+            Bounds              => Bounds,
+            Params              => Params_No_Ref);
 
          Ada_Ent_To_Why.Pop_Scope (Symbol_Table);
 
@@ -13135,7 +13087,7 @@ package body Gnat2Why.Expr is
            New_Call (Ada_Node => Expr,
                      Name     => Func,
                      Args     =>
-                       Call_Args & Bnd_Args & Var_Args & Context_Args,
+                       Call_Args & Bounds & Var_Args & Context_Args,
                      Typ      => Ret_Type);
 
          Def_Pred :=
@@ -13213,9 +13165,11 @@ package body Gnat2Why.Expr is
       ----------------------------
 
       procedure Get_Aggregate_Elements
-        (Values           : out Aggregate_Element_Lists.Vector;
-         Variables        : out Flow_Id_Sets.Set;
-         Contextual_Parts : out Node_Sets.Set)
+        (Values              : out Aggregate_Element_Lists.Vector;
+         Variables           : out Flow_Id_Sets.Set;
+         Contextual_Parts    : out Node_Sets.Set;
+         Elements_From_Nodes : out Node_To_Why_Id.Map;
+         Bounds              : out W_Expr_Array)
       is
          In_Iterated_Assoc : Boolean := False;
          --  Register whether we have traversed iterated component associations
@@ -13227,6 +13181,14 @@ package body Gnat2Why.Expr is
          -- Local subprograms --
          -----------------------
 
+         procedure Add_Element (E : Aggregate_Element);
+         --  Append a new entry in the Value sequence, and add a corresponding
+         --  Why identifier in the Elements_From_Nodes map. If this would cause
+         --  a pre-existing node to be added again, the entry is discarded.
+         --  This could happen if someone were to use the same subtype mark as
+         --  choice twice in a delta aggregate (although the point of doing so
+         --  is dubious, this is legal Ada).
+
          procedure Traverse_Value_At_Index
            (Dim                 : Dimensions;
             Expr_Or_Association : Node_Id);
@@ -13237,6 +13199,38 @@ package body Gnat2Why.Expr is
             Subexpr : Node_Id);
          --  Main recursive function operating over multi-dimensional array
          --  aggregates.
+
+         -----------------
+         -- Add_Element --
+         -----------------
+
+         procedure Add_Element (E : Aggregate_Element) is
+            Typ      : constant Node_Id := E.Typ;
+            Ident    : constant W_Identifier_Id :=
+              New_Temp_Identifier
+                (Typ =>
+                 --  Special case for associations standing boxes in the
+                 --  aggregate.
+                   (if Nkind (E.Value) in
+                        N_Iterated_Component_Association
+                      | N_Component_Association
+                    then EW_Abstract (Typ,
+                      Relaxed_Init =>
+                        (if Relaxed_Init
+                         then Has_Init_Wrapper (Typ)
+                         else Has_Relaxed_Init (Typ)))
+                    elsif Expr_Has_Relaxed_Init
+                      (E.Value, No_Eval => False)
+                    then EW_Abstract (Typ, Relaxed_Init => True)
+                    else Type_Of_Node (Typ)));
+            Position : Node_To_Why_Id.Cursor;
+            Inserted : Boolean;
+         begin
+            Elements_From_Nodes.Insert (E.Value, Ident, Position, Inserted);
+            if Inserted then
+               Values.Append (E);
+            end if;
+         end Add_Element;
 
          -----------------------------
          -- Traverse_Value_At_Index --
@@ -13283,11 +13277,11 @@ package body Gnat2Why.Expr is
                         --  index sutype in case of empty ranges.
 
                         Rng := Get_Range (Choice);
-                        Values.Append
+                        Add_Element
                           (Aggregate_Element'
                              (Value => Low_Bound (Rng),
                               Typ   => Etype (Low_Bound (Rng))));
-                        Values.Append
+                        Add_Element
                           (Aggregate_Element'
                              (Value => High_Bound (Rng),
                               Typ   => Etype (High_Bound (Rng))));
@@ -13308,7 +13302,7 @@ package body Gnat2Why.Expr is
                              Nlists.First (Expressions (Choice));
                         begin
                            for Dim in Dimensions loop
-                              Values.Append
+                              Add_Element
                                 (Aggregate_Element'
                                    (Value => Multi_Expr,
                                     Typ   => Index_Types (Dim)));
@@ -13325,17 +13319,17 @@ package body Gnat2Why.Expr is
                               Rng : constant Node_Id :=
                                 Get_Range (Entity (Choice));
                            begin
-                              Values.Append
+                              Add_Element
                                 (Aggregate_Element'
                                    (Value => Low_Bound (Rng),
                                     Typ   => Etype (Low_Bound (Rng))));
-                              Values.Append
+                              Add_Element
                                 (Aggregate_Element'
                                    (Value => High_Bound (Rng),
                                     Typ   => Etype (High_Bound (Rng))));
                            end;
                         else
-                           Values.Append
+                           Add_Element
                              (Aggregate_Element'
                                 (Value  => Choice,
                                  Typ    => Index_Types (Dim)));
@@ -13364,7 +13358,7 @@ package body Gnat2Why.Expr is
                --  the association as a placeholder.
 
                else
-                  Values.Append
+                  Add_Element
                     (Aggregate_Element'
                        (Value => Expr_Or_Association,
                         Typ   => Comp_Type));
@@ -13452,7 +13446,7 @@ package body Gnat2Why.Expr is
                        (Collect_Contextual_Nodes (Value_Expr));
 
                   else
-                     Values.Append
+                     Add_Element
                        (Aggregate_Element'
                           (Value => Value_Expr,
                            Typ   => Comp_Type));
@@ -13514,7 +13508,7 @@ package body Gnat2Why.Expr is
          --  a parameter to the logic function.
 
          if In_Delta_Aggregate then
-            Values.Append
+            Add_Element
               (Aggregate_Element'
                  (Value  => Update_Prefix,
                   Typ    => Etype (Update_Prefix)));
@@ -13526,6 +13520,26 @@ package body Gnat2Why.Expr is
          --  set of referenced variables.
 
          Variables.Difference (Index_Parameters);
+
+         --  If the bounds of the aggregate should be given as additional
+         --  parameters to the call, also bind identifiers for them.
+
+         if Needs_Bounds then
+            for Dim in Dimensions loop
+               declare
+                  BT   : constant W_Type_Id :=
+                    Base_Why_Type_No_Bool (Index_Types (Dim));
+                  F_Id : constant W_Identifier_Id :=
+                    New_Temp_Identifier (Base_Name => "first", Typ => BT);
+                  L_Id : constant W_Identifier_Id :=
+                    New_Temp_Identifier (Base_Name => "last", Typ => BT);
+               begin
+                  Bounds (2 * Dim - 1) := +F_Id;
+                  Bounds (2 * Dim) := +L_Id;
+               end;
+            end loop;
+         end if;
+
       end Get_Aggregate_Elements;
 
       ------------------------------
@@ -14225,10 +14239,10 @@ package body Gnat2Why.Expr is
       -------------------------------
 
       function Make_Defining_Proposition
-        (Arr    : W_Term_Id;
-         Args   : Node_To_Why_Id.Map;
-         Bnds   : W_Expr_Array;
-         Params : Transformation_Params)
+        (Arr                 : W_Term_Id;
+         Elements_From_Nodes : Node_To_Why_Id.Map;
+         Bounds              : W_Expr_Array;
+         Params              : Transformation_Params)
          return W_Pred_Id
       is
          Result : W_Pred_Id := True_Pred;
@@ -14245,12 +14259,12 @@ package body Gnat2Why.Expr is
                declare
                   Prefix   : constant W_Term_Id :=
                     (if In_Delta_Aggregate
-                     then +Args.Element (Update_Prefix)
+                     then +Elements_From_Nodes.Element (Update_Prefix)
                      else Why_Empty);
                   F_Expr   : constant W_Term_Id :=
                     (if In_Delta_Aggregate
                      then Get_Array_Attr (Prefix, Attribute_First, Dim)
-                     else +Bnds (2 * Dim - 1));
+                     else +Bounds (2 * Dim - 1));
                   First_Eq : constant W_Pred_Id := New_Comparison
                     (Symbol => Why_Eq,
                      Left   => Get_Array_Attr (Arr, Attribute_First, Dim),
@@ -14258,7 +14272,7 @@ package body Gnat2Why.Expr is
                   L_Expr   : constant W_Term_Id :=
                     (if In_Delta_Aggregate
                      then Get_Array_Attr (Prefix, Attribute_Last, Dim)
-                     else +Bnds (2 * Dim));
+                     else +Bounds (2 * Dim));
                   Last_Eq  : constant W_Pred_Id := New_Comparison
                     (Symbol => Why_Eq,
                      Left   => Get_Array_Attr (Arr, Attribute_Last, Dim),
@@ -14279,7 +14293,7 @@ package body Gnat2Why.Expr is
                Result :=
                  New_Conditional
                    (Condition   => +New_Dynamic_Property
-                      (EW_Pred, Base_Type (Expr_Typ), Bnds, Params),
+                      (EW_Pred, Base_Type (Expr_Typ), Bounds, Params),
                     Then_Part   => Result,
                     Typ         => EW_Bool_Type);
             end if;
@@ -14287,7 +14301,8 @@ package body Gnat2Why.Expr is
 
          Result := New_And_Pred
            (Result,
-            Transform_Array_Component_Associations (Arr, Args, Bnds, Params));
+            Transform_Array_Component_Associations
+              (Arr, Elements_From_Nodes, Bounds, Params));
 
          return Result;
       end Make_Defining_Proposition;
@@ -14360,10 +14375,10 @@ package body Gnat2Why.Expr is
       --------------------------------------------
 
       function Transform_Array_Component_Associations
-        (Arr    : W_Term_Id;
-         Args   : Node_To_Why_Id.Map;
-         Bnds   : W_Expr_Array;
-         Params : Transformation_Params)
+        (Arr                 : W_Term_Id;
+         Elements_From_Nodes : Node_To_Why_Id.Map;
+         Bounds              : W_Expr_Array;
+         Params              : Transformation_Params)
          return W_Pred_Id
       is
          Binders : Binder_Array (Dimensions);
@@ -14424,7 +14439,8 @@ package body Gnat2Why.Expr is
          is
             --  Note that Subexpr here can be the updated expression in the
             --  default case of the logic function of a delta aggregate.
-            Curs    : constant Node_To_Why_Id.Cursor := Args.Find (Subexpr);
+            Curs    : constant Node_To_Why_Id.Cursor :=
+              Elements_From_Nodes.Find (Subexpr);
             Read    : W_Term_Id;
             Arg_Val : W_Term_Id;
          begin
@@ -14581,7 +14597,7 @@ package body Gnat2Why.Expr is
          ------------------
 
          function Lookup_Value (Arg : Node_Id) return W_Term_Id is
-            Val : constant W_Term_Id := +Args.Element (Arg);
+            Val : constant W_Term_Id := +Elements_From_Nodes.Element (Arg);
          begin
             return Insert_Simple_Conversion
               (Expr => Val,
@@ -14610,7 +14626,7 @@ package body Gnat2Why.Expr is
                    (Value => Expr_Value (Low) + UI_From_Int (Offset),
                     Typ   => Typ);
             else
-               First := +Bnds (2 * Dim - 1);
+               First := +Bounds (2 * Dim - 1);
 
                Val :=
                  +New_Discrete_Add (Domain => Domain,
@@ -15231,19 +15247,31 @@ package body Gnat2Why.Expr is
       end;
 
       declare
-         Values           : Aggregate_Element_Lists.Vector;
-         Variables        : Flow_Id_Sets.Set;
-         Contextual_Parts : Node_Sets.Set;
-         M                : W_Module_Id := E_Module (Expr);
+         Values              : Aggregate_Element_Lists.Vector;
+         Variables           : Flow_Id_Sets.Set;
+         Contextual_Parts    : Node_Sets.Set;
+         Elements_From_Nodes : Node_To_Why_Id.Map;
+         Bounds              : W_Expr_Array (1 .. Bound_Count);
+         M                   : W_Module_Id := E_Module (Expr);
       begin
          --  Get the aggregate elements that should be passed in parameter
 
-         Get_Aggregate_Elements (Values, Variables, Contextual_Parts);
+         Get_Aggregate_Elements
+           (Values,
+            Variables,
+            Contextual_Parts,
+            Elements_From_Nodes,
+            Bounds);
 
          --  If not done already, generate the logic function
 
          if M = Why_Empty then
-            Generate_Logic_Function (Values, Variables, Contextual_Parts);
+            Generate_Logic_Function
+              (Values,
+               Variables,
+               Contextual_Parts,
+               Elements_From_Nodes,
+               Bounds);
             M := E_Module (Expr);
          end if;
          return
