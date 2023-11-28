@@ -12666,6 +12666,14 @@ package body Gnat2Why.Expr is
       -- Local subprograms --
       -----------------------
 
+      function Should_Use_Function_Translation return Boolean;
+      --  Detect whether we should use a function-based translation. The
+      --  presence of contextual elements (like 'Old, 'Loop_Entry, target name,
+      --  variables, ...) make this fairly complex for iterated component
+      --  association, so this return False if it is encountered in Expr.
+      --  Instead, we use an epsilon (in term domain) or an any (in program
+      --  domain) for the aggregate.
+
       procedure Get_Aggregate_Elements
         (Values              : out Aggregate_Element_Lists.Vector;
          Variables           : out Flow_Id_Sets.Set;
@@ -12726,14 +12734,18 @@ package body Gnat2Why.Expr is
       --  Why identifiers.
 
       function Complete_Translation
-        (Func             : W_Identifier_Id;
-         Values           : Aggregate_Element_Lists.Vector;
-         Variables        : Flow_Id_Sets.Set;
-         Contextual_Parts : Node_Sets.Set)
-         return W_Expr_Id;
+        (Func                : W_Identifier_Id;
+         Values              : Aggregate_Element_Lists.Vector;
+         Variables           : Flow_Id_Sets.Set;
+         Contextual_Parts    : Node_Sets.Set;
+         Elements_From_Nodes : Node_To_Why_Id.Map;
+         Bounds              : W_Expr_Array)
+         return W_Expr_Id
+        with Pre => (Func /= Why_Empty) = Should_Use_Function_Translation;
       --  Given a logic function Func previously defined for the aggregate,
       --  generate the actual call to Func by translating arguments Values
-      --  of type Types in the context given by Params.
+      --  of type Types in the context given by Params. If Func is empty,
+      --  use a translation based on any/epsilon otherwise.
 
       procedure Insert_Check_For_Choices
         (T          : in out W_Expr_Id;
@@ -12756,109 +12768,200 @@ package body Gnat2Why.Expr is
       --------------------------
 
       function Complete_Translation
-        (Func             : W_Identifier_Id;
-         Values           : Aggregate_Element_Lists.Vector;
-         Variables        : Flow_Id_Sets.Set;
-         Contextual_Parts : Node_Sets.Set)
+        (Func                : W_Identifier_Id;
+         Values              : Aggregate_Element_Lists.Vector;
+         Variables           : Flow_Id_Sets.Set;
+         Contextual_Parts    : Node_Sets.Set;
+         Elements_From_Nodes : Node_To_Why_Id.Map;
+         Bounds              : W_Expr_Array)
          return W_Expr_Id
       is
-         Cnt              : Positive;
-         Args             : W_Expr_Array (1 .. Natural (Values.Length));
-         Bnd_Args         : W_Expr_Array (1 .. Bound_Count);
-         Var_Args         : constant W_Expr_Array := Get_Args_From_Binders
-           (To_Binder_Array
-              (Get_Binders_From_Variables (Variables), Keep_Const => Keep),
-            Ref_Allowed => Params.Ref_Allowed);
-         Context_Args     : constant W_Expr_Array := Get_Args_From_Binders
-           (To_Binder_Array
-              (Get_Binders_From_Contextual_Nodes (Contextual_Parts)),
-            Ref_Allowed => Params.Ref_Allowed);
-         R                : W_Expr_Id;
-
+         R             : W_Expr_Id;
+         Use_Function  : constant Boolean := (Func /= Why_Empty);
       begin
-         --  Compute the arguments for the function call. The values are given
-         --  directly as parameters.
-
-         Cnt := 1;
-         for Value of Values loop
-            Args (Cnt) := Transform_Aggregate_Value
-              (Value  => Value.Value,
-               Typ    => Value.Typ,
-               Domain => Domain,
-               Params => Params);
-            Cnt := Cnt + 1;
-         end loop;
-
-         --  Compute the bounds of the type to be given as additional arguments
-         --  to the aggregate function.
-
-         if Needs_Bounds then
-            for Dim in Dimensions loop
-               Bnd_Args (2 * Dim - 1) := +Get_Array_Attr
-                 (Term_Domain (Domain),
-                  Etype (Expr), Attribute_First, Dim, Params);
-               Bnd_Args (2 * Dim) := +Get_Array_Attr
-                 (Term_Domain (Domain),
-                  Etype (Expr), Attribute_Last, Dim, Params);
-            end loop;
-         end if;
-
-         --  If we are in a delta aggregate and we need checks, introduce
-         --  a temporary for the updated expression so that it can be reused
-         --  for checks of bounds of choices.
-
-         if In_Delta_Aggregate and then Domain = EW_Prog then
-            Args (1) := New_Temp_For_Expr (Args (1));
-         end if;
-
-         --  Compute the call
-
-         R := New_Call (Ada_Node => Expr,
-                        Domain   => Domain,
-                        Name     => Func,
-                        Args     =>
-                          Args & Bnd_Args & Var_Args & Context_Args,
-                        Typ      => Ret_Type);
-
-         --  If the old map is not used by the current translation, we need
-         --  to introduce mappings for those used in Context_Args. We do not
-         --  need to introduce checks here, iterated component associations
-         --  are checked separately.
-
-         if Params.Old_Policy /= Use_Map then
+         if Use_Function then
             declare
-               Assoc_Old : Node_Sets.Set;
+               Cnt          : Positive;
+               Args         : W_Expr_Array (1 .. Natural (Values.Length));
+               Bnd_Args     : W_Expr_Array (1 .. Bound_Count);
+               Var_Args     : constant W_Expr_Array := Get_Args_From_Binders
+                 (To_Binder_Array
+                    (Get_Binders_From_Variables (Variables),
+                     Keep_Const => Keep),
+                  Ref_Allowed => Params.Ref_Allowed);
+               Context_Args : constant W_Expr_Array := Get_Args_From_Binders
+                 (To_Binder_Array
+                    (Get_Binders_From_Contextual_Nodes (Contextual_Parts)),
+                  Ref_Allowed => Params.Ref_Allowed);
             begin
-               for N of Contextual_Parts loop
-                  if Nkind (N) = N_Attribute_Reference
-                    and then Attribute_Name (N) = Name_Old
-                  then
-                     Assoc_Old.Include (Prefix (N));
-                  end if;
+               --  Compute the arguments for the function call. The values are
+               --  given directly as parameters.
+
+               Cnt := 1;
+               for Value of Values loop
+                  Args (Cnt) := Transform_Aggregate_Value
+                    (Value  => Value.Value,
+                     Typ    => Value.Typ,
+                     Domain => Domain,
+                     Params => Params);
+                  Cnt := Cnt + 1;
                end loop;
 
-               R := Bind_From_Mapping_In_Expr
-                 (Params => Params,
-                  Map    => Map_For_Old,
-                  Expr   => R,
-                  Domain => (if Domain = EW_Prog then EW_Pterm else Domain),
-                  Subset => Assoc_Old,
-                  As_Old => True);
+               --  Compute the bounds of the type to be given as additional
+               --  arguments to the aggregate function.
+
+               if Needs_Bounds then
+                  for Dim in Dimensions loop
+                     Bnd_Args (2 * Dim - 1) := +Get_Array_Attr
+                       (Term_Domain (Domain),
+                        Expr_Typ, Attribute_First, Dim, Params);
+                     Bnd_Args (2 * Dim) := +Get_Array_Attr
+                       (Term_Domain (Domain),
+                        Expr_Typ, Attribute_Last, Dim, Params);
+                  end loop;
+               end if;
+
+               --  If we are in a delta aggregate and we need checks, use the
+               --  identifier for the updated expression so that it can be
+               --  reused for checks of bounds of choices.
+
+               if In_Delta_Aggregate and then Domain = EW_Prog then
+                  Args (1) := New_Temp_For_Expr (Args (1));
+               end if;
+
+               --  Compute the call
+
+               R := New_Call (Ada_Node => Expr,
+                              Domain   => Domain,
+                              Name     => Func,
+                              Args     =>
+                                Args & Bnd_Args & Var_Args & Context_Args,
+                              Typ      => Ret_Type);
+
+               --  If the old map is not used by the current translation, we
+               --  need to introduce mappings for those used in Context_Args.
+               --  We do not need to introduce checks here, iterated component
+               --  associations are checked separately.
+
+               if Params.Old_Policy /= Use_Map then
+                  declare
+                     Assoc_Old : Node_Sets.Set;
+                  begin
+                     for N of Contextual_Parts loop
+                        if Nkind (N) = N_Attribute_Reference
+                          and then Attribute_Name (N) = Name_Old
+                        then
+                           Assoc_Old.Include (Prefix (N));
+                        end if;
+                     end loop;
+
+                     R := Bind_From_Mapping_In_Expr
+                       (Params => Params,
+                        Map    => Map_For_Old,
+                        Expr   => R,
+                        Domain =>
+                          (if Domain = EW_Prog then EW_Pterm else Domain),
+                        Subset => Assoc_Old,
+                        As_Old => True);
+                  end;
+               end if;
+
+               --  Insert checks for the choices of the aggregate, binding
+               --  temporary variable for update prefix when present.
+
+               if Domain = EW_Prog then
+                  if In_Delta_Aggregate then
+                     Insert_Check_For_Choices (R, +Args (1));
+                     R := Binding_For_Temp
+                       (Domain  => Domain,
+                        Tmp     => Args (1),
+                        Context => R);
+                  else
+                     Insert_Check_For_Choices (R, Why_Empty);
+                  end if;
+               end if;
             end;
-         end if;
+         else
+            --  Depending on domain, translate aggregate to an epsilon or an
+            --  any. This translates variables/contextual elements in-place
+            --  and leaves to Why3 to turn the variable content in them into
+            --  additional parameters.
 
-         --  Insert checks for the choices of the aggregate
+            declare
+               Aggr_Name : W_Identifier_Id;
+            begin
+               case Domain is
+                  when EW_Term =>
+                     Aggr_Name := New_Temp_Identifier (Typ => Ret_Type);
+                     R := New_Epsilon
+                       (Ada_Node => Expr,
+                        Domain   => EW_Term,
+                        Name     => Aggr_Name,
+                        Typ      => Ret_Type,
+                        Pred     => Make_Defining_Proposition
+                          (Arr                 => +Aggr_Name,
+                           Elements_From_Nodes => Elements_From_Nodes,
+                           Bounds              => Bounds,
+                           Params              => Params));
+                  when EW_Pterm | EW_Prog =>
+                     Aggr_Name := New_Result_Ident (Ret_Type);
+                     R := New_Any_Expr
+                       (Ada_Node    => Expr,
+                        Post        => Make_Defining_Proposition
+                          (Arr                 => +Aggr_Name,
+                           Elements_From_Nodes => Elements_From_Nodes,
+                           Bounds              => Bounds,
+                           Params              => Params),
+                        Return_Type => Ret_Type,
+                        Labels      => Symbol_Sets.Empty_Set);
+                  when others =>
+                     raise Program_Error;
+               end case;
+            end;
 
-         if Domain = EW_Prog then
-            Insert_Check_For_Choices
-              (R, +(if In_Delta_Aggregate then Args (1) else Why_Empty));
+            --  Insert checks for choices.
 
-            if In_Delta_Aggregate then
-               R := Binding_For_Temp (Ada_Node => Expr,
-                                      Domain   => Domain,
-                                      Tmp      => Args (1),
-                                      Context  => R);
+            if Domain = EW_Prog then
+               Insert_Check_For_Choices
+                 (R,
+                  (if In_Delta_Aggregate
+                   then +Elements_From_Nodes.Element (Update_Prefix)
+                   else Why_Empty));
             end if;
+
+            --  Bind the temporaries for elements, for bounds and
+            --  subexpressions.
+
+            if Needs_Bounds then
+               for Dim in reverse Dimensions loop
+                  R := New_Typed_Binding
+                    (Domain   => Domain,
+                     Name     => +Bounds (2 * Dim),
+                     Def      => +Get_Array_Attr
+                       (Term_Domain (Domain),
+                        Expr_Typ, Attribute_Last, Dim, Params),
+                     Context  => R);
+                  R := New_Typed_Binding
+                    (Domain   => Domain,
+                     Name     => +Bounds (2 * Dim - 1),
+                     Def      => +Get_Array_Attr
+                       (Term_Domain (Domain),
+                        Expr_Typ, Attribute_First, Dim, Params),
+                     Context  => R);
+               end loop;
+            end if;
+
+            for Value of reverse Values loop
+               R := New_Typed_Binding
+                 (Domain  => Domain,
+                  Name    => Elements_From_Nodes.Element (Value.Value),
+                  Def     => Transform_Aggregate_Value
+                    (Value  => Value.Value,
+                     Typ    => Value.Typ,
+                     Domain => Domain,
+                     Params => Params),
+                  Context => R);
+            end loop;
          end if;
 
          --  If the aggregate has known bounds, we use this information if it
@@ -14307,6 +14410,67 @@ package body Gnat2Why.Expr is
          return Result;
       end Make_Defining_Proposition;
 
+      -------------------------------------
+      -- Should_Use_Function_Translation --
+      -------------------------------------
+
+      function Should_Use_Function_Translation return Boolean is
+         function Contains_Iterated_Association
+           (Subaggr : Node_Id;
+            Dim     : Dimensions)
+            return Boolean;
+         --  Recursive search over subaggregate.
+
+         -----------------------------------
+         -- Contains_Iterated_Association --
+         -----------------------------------
+
+         function Contains_Iterated_Association
+           (Subaggr : Node_Id;
+            Dim     : Dimensions)
+            return Boolean
+         is
+
+            Positional  : Node_Id :=
+              (if In_Delta_Aggregate
+               then Types.Empty
+               else First (Expressions (Subaggr)));
+            Association : Node_Id := First (Component_Associations (Subaggr));
+            --  Cursors
+
+         begin
+            if Dim /= Nb_Dim and then not In_Delta_Aggregate then
+               while Present (Positional) loop
+                  if Contains_Iterated_Association (Positional, Dim + 1) then
+                     return True;
+                  end if;
+                  Next (Positional);
+               end loop;
+            end if;
+
+            while Present (Association) loop
+               if Nkind (Association) = N_Iterated_Component_Association
+                 or else
+                   (Dim /= Nb_Dim
+                    and then not In_Delta_Aggregate
+                    and then Contains_Iterated_Association
+                      (Expression (Association),
+                       Dim + 1))
+               then
+                  return True;
+               end if;
+               Next (Association);
+            end loop;
+
+            return False;
+         end Contains_Iterated_Association;
+
+      --  Start of processing for Should_Use_Function_Translation
+
+      begin
+         return not Contains_Iterated_Association (Expr, 1);
+      end Should_Use_Function_Translation;
+
       -------------------------------
       -- Transform_Aggregate_Value --
       -------------------------------
@@ -14484,17 +14648,12 @@ package body Gnat2Why.Expr is
             if Node_To_Why_Id.Has_Element (Curs) then
                Arg_Val := +Node_To_Why_Id.Element (Curs);
             else
-               declare
-                  Params : constant Transformation_Params :=
-                    (Logic_Params with delta Old_Policy  => Use_Map);
-               begin
-                  Arg_Val :=
-                    +Transform_Aggregate_Value
-                      (Value  => Subexpr,
-                       Typ    => Comp_Type,
-                       Domain => EW_Term,
-                       Params => Params);
-               end;
+               Arg_Val :=
+                 +Transform_Aggregate_Value
+                 (Value  => Subexpr,
+                  Typ    => Comp_Type,
+                  Domain => EW_Term,
+                  Params => Params);
             end if;
 
             --  Array components have the tag of their types
@@ -15252,7 +15411,7 @@ package body Gnat2Why.Expr is
          Contextual_Parts    : Node_Sets.Set;
          Elements_From_Nodes : Node_To_Why_Id.Map;
          Bounds              : W_Expr_Array (1 .. Bound_Count);
-         M                   : W_Module_Id := E_Module (Expr);
+         Func                : W_Identifier_Id := Why_Empty;
       begin
          --  Get the aggregate elements that should be passed in parameter
 
@@ -15263,27 +15422,37 @@ package body Gnat2Why.Expr is
             Elements_From_Nodes,
             Bounds);
 
-         --  If not done already, generate the logic function
+         --  If using function-based translation and not done already, generate
+         --  the logic function.
 
-         if M = Why_Empty then
-            Generate_Logic_Function
-              (Values,
-               Variables,
-               Contextual_Parts,
-               Elements_From_Nodes,
-               Bounds);
-            M := E_Module (Expr);
+         if Should_Use_Function_Translation then
+
+            declare
+               M : W_Module_Id := E_Module (Expr);
+            begin
+               if M = Why_Empty then
+                  Generate_Logic_Function
+                    (Values,
+                     Variables,
+                     Contextual_Parts,
+                     Elements_From_Nodes,
+                     Bounds);
+                  M := E_Module (Expr);
+               end if;
+               Func :=  New_Identifier
+                 (Ada_Node => Expr,
+                  Domain   => Domain,
+                  Module   => M,
+                  Symb     => NID (Lower_Case_First (Img (Get_Name (M)))));
+            end;
          end if;
-         return
-           Complete_Translation
-             (New_Identifier
-                (Ada_Node => Expr,
-                 Domain   => Domain,
-                 Module   => M,
-                 Symb     => NID (Lower_Case_First (Img (Get_Name (M))))),
-              Values,
-              Variables,
-              Contextual_Parts);
+         return Complete_Translation
+           (Func,
+            Values,
+            Variables,
+            Contextual_Parts,
+            Elements_From_Nodes,
+            Bounds);
       end;
    end Transform_Array_Aggregate;
 
