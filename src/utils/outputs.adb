@@ -49,7 +49,7 @@ package body Outputs is
    begin
       if Output_States (O).New_Line then
          for J in 1 .. Output_States (O).Indent loop
-            Put (Output_Handles (O), " ");
+            Put (Output_Handles (O), ' ');
          end loop;
          Output_States (O).New_Line := False;
       end if;
