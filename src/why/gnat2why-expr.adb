@@ -12695,14 +12695,26 @@ package body Gnat2Why.Expr is
       --       forall id:<type of aggregate>. forall <params>.
       --         <proposition for the aggregate F(<params>)>
 
+      function Make_Defining_Proposition
+        (Arr    : W_Term_Id;
+         Args   : Node_To_Why_Id.Map;
+         Bnds   : W_Expr_Array;
+         Params : Transformation_Params)
+         return W_Pred_Id;
+      --  Generates a proposition stating that array Arr contains the result of
+      --  aggregate Expr, using Args to map nodes for indices
+      --  and components to Why3 identifiers, and Bnds to figure out the
+      --  bounds when Needs_Bounds = True.
+
       function Transform_Array_Component_Associations
         (Arr    : W_Term_Id;
          Args   : Node_To_Why_Id.Map;
          Bnds   : W_Expr_Array;
          Params : Transformation_Params)
          return W_Pred_Id;
-      --  Generates the proposition defining the aggregate Arr, based on a
-      --  mapping between Ada nodes and corresponding Why identifiers.
+      --  Generates the proposition defining the content of components of
+      --  aggregate Arr, based on a mapping between Ada nodes and corresponding
+      --  Why identifiers.
 
       function Complete_Translation
         (Func             : W_Identifier_Id;
@@ -13094,89 +13106,30 @@ package body Gnat2Why.Expr is
             end loop;
          end if;
 
-         --  Assume values of the aggregate's bounds. For delta aggregates,
-         --  take the bounds of the array argument, otherwise, bounds are given
-         --  as parameters.
+         --  Localize binders for variables and push them to the symbol
+         --  table. This is important so that the translation of the
+         --  aggregate can be reused even if the mappings in the symbol
+         --  table are updated (typically, for formal parameters in
+         --  postconditions).
 
-         if not Is_Static_Array_Type (Expr_Typ) then
-            pragma Assert (In_Delta_Aggregate or Needs_Bounds);
+         Ada_Ent_To_Why.Push_Scope (Symbol_Table);
 
-            for Dim in Dimensions loop
-               declare
-                  F_Expr   : constant W_Term_Id :=
-                    (if In_Delta_Aggregate
-                     then Get_Array_Attr
-                       (+Call_Args (1), Attribute_First, Dim)
-                     else +Bnd_Args (2 * Dim - 1));
-                  First_Eq : constant W_Pred_Id := New_Comparison
-                    (Symbol => Why_Eq,
-                     Left   => Get_Array_Attr
-                       (+Aggr_Temp, Attribute_First, Dim),
-                     Right  => F_Expr);
-                  L_Expr   : constant W_Term_Id :=
-                    (if In_Delta_Aggregate
-                     then Get_Array_Attr
-                       (+Call_Args (1), Attribute_Last, Dim)
-                     else +Bnd_Args (2 * Dim));
-                  Last_Eq  : constant W_Pred_Id := New_Comparison
-                    (Symbol => Why_Eq,
-                     Left   => Get_Array_Attr
-                       (+Aggr_Temp, Attribute_Last, Dim),
-                     Right  => L_Expr);
+         Localize_Binders (Binders        => Var_Items,
+                           Only_Variables => False);
+         Var_Params := To_Binder_Array (Var_Items);
+         Var_Args := Get_Args_From_Binders
+           (Var_Params, Ref_Allowed => False);
+         Push_Binders_To_Symbol_Table (Var_Items);
 
-               begin
-                  --  Add equalities to the axiom's body
+         --  Compute the call, guard and proposition for the axiom
 
-                  Axiom_Body := New_And_Pred ([First_Eq, Last_Eq, Axiom_Body]);
-               end;
-            end loop;
+         Axiom_Body := Make_Defining_Proposition
+           (Arr    => +Aggr_Temp,
+            Args   => Args_Map,
+            Bnds   => Bnd_Args,
+            Params => Params_No_Ref);
 
-            --  If bounds are taken as parameters, we should add a guard to the
-            --  axiom for the dynamic property of the array to avoid generating
-            --  an unsound axiom if the bounds are not in their type.
-
-            if Needs_Bounds then
-               Axiom_Body :=
-                 New_Conditional
-                   (Condition   => +New_Dynamic_Property
-                      (EW_Pred, Base_Type (Expr_Typ), Bnd_Args, Params_No_Ref),
-                    Then_Part   => Axiom_Body,
-                    Typ         => EW_Bool_Type);
-            end if;
-         end if;
-
-         --  Assume values of the elements if the array is not []
-
-         if not Empty_Aggregate then
-
-            --  Localize binders for variables and push them to the symbol
-            --  table. This is important so that the translation of the
-            --  aggregate can be reused even if the mappings in the symbol
-            --  table are updated (typically, for formal parameters in
-            --  postconditions).
-
-            Ada_Ent_To_Why.Push_Scope (Symbol_Table);
-
-            Localize_Binders (Binders        => Var_Items,
-                              Only_Variables => False);
-            Var_Params := To_Binder_Array (Var_Items);
-            Var_Args := Get_Args_From_Binders
-              (Var_Params, Ref_Allowed => False);
-            Push_Binders_To_Symbol_Table (Var_Items);
-
-            --  Compute the call, guard and proposition for the axiom
-
-            Axiom_Body :=
-              New_And_Pred
-                (Left   => Axiom_Body,
-                 Right  => Transform_Array_Component_Associations
-                   (Arr    => +Aggr_Temp,
-                    Args   => Args_Map,
-                    Bnds   => Bnd_Args,
-                    Params => Params_No_Ref));
-
-            Ada_Ent_To_Why.Pop_Scope (Symbol_Table);
-         end if;
+         Ada_Ent_To_Why.Pop_Scope (Symbol_Table);
 
          Aggr :=
            New_Call (Ada_Node => Expr,
@@ -14266,6 +14219,78 @@ package body Gnat2Why.Expr is
          Ada_Ent_To_Why.Pop_Scope (Symbol_Table);
          Prepend (+Choice_Checks, +Comp_Checks, T);
       end Insert_Check_For_Choices;
+
+      -------------------------------
+      -- Make_Defining_Proposition --
+      -------------------------------
+
+      function Make_Defining_Proposition
+        (Arr    : W_Term_Id;
+         Args   : Node_To_Why_Id.Map;
+         Bnds   : W_Expr_Array;
+         Params : Transformation_Params)
+         return W_Pred_Id
+      is
+         Result : W_Pred_Id := True_Pred;
+      begin
+
+         --  Assume values of the aggregate's bounds. For delta aggregates,
+         --  take the bounds of the array argument, otherwise, bounds are given
+         --  as parameters.
+
+         if not Is_Static_Array_Type (Expr_Typ) then
+            pragma Assert (In_Delta_Aggregate or Needs_Bounds);
+
+            for Dim in Dimensions loop
+               declare
+                  Prefix   : constant W_Term_Id :=
+                    (if In_Delta_Aggregate
+                     then +Args.Element (Update_Prefix)
+                     else Why_Empty);
+                  F_Expr   : constant W_Term_Id :=
+                    (if In_Delta_Aggregate
+                     then Get_Array_Attr (Prefix, Attribute_First, Dim)
+                     else +Bnds (2 * Dim - 1));
+                  First_Eq : constant W_Pred_Id := New_Comparison
+                    (Symbol => Why_Eq,
+                     Left   => Get_Array_Attr (Arr, Attribute_First, Dim),
+                     Right  => F_Expr);
+                  L_Expr   : constant W_Term_Id :=
+                    (if In_Delta_Aggregate
+                     then Get_Array_Attr (Prefix, Attribute_Last, Dim)
+                     else +Bnds (2 * Dim));
+                  Last_Eq  : constant W_Pred_Id := New_Comparison
+                    (Symbol => Why_Eq,
+                     Left   => Get_Array_Attr (Arr, Attribute_Last, Dim),
+                     Right  => L_Expr);
+
+               begin
+                  --  Add equalities to the axiom's body
+
+                  Result := New_And_Pred ([First_Eq, Last_Eq, Result]);
+               end;
+            end loop;
+
+            --  If bounds are taken as parameters, we should add a guard to the
+            --  axiom for the dynamic property of the array to avoid generating
+            --  an unsound axiom if the bounds are not in their type.
+
+            if Needs_Bounds then
+               Result :=
+                 New_Conditional
+                   (Condition   => +New_Dynamic_Property
+                      (EW_Pred, Base_Type (Expr_Typ), Bnds, Params),
+                    Then_Part   => Result,
+                    Typ         => EW_Bool_Type);
+            end if;
+         end if;
+
+         Result := New_And_Pred
+           (Result,
+            Transform_Array_Component_Associations (Arr, Args, Bnds, Params));
+
+         return Result;
+      end Make_Defining_Proposition;
 
       -------------------------------
       -- Transform_Aggregate_Value --
