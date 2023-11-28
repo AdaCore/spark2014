@@ -72,9 +72,9 @@ package body Outputs is
    procedure Open_Current_File (Filename : String) is
    begin
       pragma Assert (not Is_Open (Output_Handles (Current_File)));
+      pragma Assert (Output_States (Current_File).Indent = 0);
+      pragma Assert (Output_States (Current_File).New_Line = False);
       Create (Output_Handles (Current_File), Out_File, Filename);
-      Output_States (Current_File).Indent := 0;
-      Output_States (Current_File).New_Line := False;
    end Open_Current_File;
 
    -------
