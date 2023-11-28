@@ -508,56 +508,75 @@ spark-containers-functional-maps.ads:55:19: info: aspect Always_Terminates on "E
 spark-containers-functional-maps.ads:57:19: info: aspect Always_Terminates on "Equivalent_Elements_Symmetric" has been proved, subprogram will terminate, in instantiation at test_map_ho.adb:64
 spark-containers-functional-maps.ads:59:19: info: aspect Always_Terminates on "Equivalent_Elements_Transitive" has been proved, subprogram will terminate, in instantiation at test_map_ho.adb:64
 spark-containers-functional-maps.ads:73:16: info: implicit aspect Always_Terminates on overriding operator "=" has been proved, subprogram will terminate, in instantiation at test_map_ho.adb:64
-spark-containers-functional-maps.ads:116:13: info: during checks for quantification at spark-containers-functional-maps.ads:89, in instantiation at test_map_ho.adb:64
-spark-containers-functional-maps.ads:116:13: info: precondition proved, in instantiation at test_map_ho.adb:64
-spark-containers-functional-maps.ads:375:13: info: during checks for quantification at spark-containers-functional-maps.ads:341, in instantiation at test_map_ho.adb:64
-spark-containers-functional-maps.ads:375:13: info: precondition proved, in instantiation at test_map_ho.adb:64
-spark-containers-functional-maps.ads:384:13: info: during checks for quantification at spark-containers-functional-maps.ads:341, in instantiation at test_map_ho.adb:64
-spark-containers-functional-maps.ads:384:13: info: precondition proved, in instantiation at test_map_ho.adb:64
-spark-containers-functional-maps.ads:390:13: info: during checks for quantification at spark-containers-functional-maps.ads:341, in instantiation at test_map_ho.adb:64
-spark-containers-functional-maps.ads:390:13: info: precondition proved, in instantiation at test_map_ho.adb:64
-spark-containers-functional-maps.ads:398:13: info: during checks for quantification at spark-containers-functional-maps.ads:341, in instantiation at test_map_ho.adb:64
+spark-containers-functional-maps.ads:97:06: info: Container_Aggregates annotation proved, in instantiation at test_map_ho.adb:64
+spark-containers-functional-maps.ads:97:06: info: Container_Aggregates annotation proved, in instantiation at test_map_ho.adb:64
+spark-containers-functional-maps.ads:97:06: info: Container_Aggregates annotation proved, in instantiation at test_map_ho.adb:64
+spark-containers-functional-maps.ads:97:06: info: Container_Aggregates annotation proved, in instantiation at test_map_ho.adb:64
+spark-containers-functional-maps.ads:97:06: info: Container_Aggregates annotation proved, in instantiation at test_map_ho.adb:64
+spark-containers-functional-maps.ads:97:06: info: after a call to Aggr_Include at spark-containers-functional-maps.ads:570, in instantiation at test_map_ho.adb:64
+spark-containers-functional-maps.ads:97:06: info: after a call to Aggr_Include at spark-containers-functional-maps.ads:570, in instantiation at test_map_ho.adb:64
+spark-containers-functional-maps.ads:97:06: info: after a call to Aggr_Include at spark-containers-functional-maps.ads:570, in instantiation at test_map_ho.adb:64
+spark-containers-functional-maps.ads:97:06: info: after a call to Empty_Map at spark-containers-functional-maps.ads:277, in instantiation at test_map_ho.adb:64
+spark-containers-functional-maps.ads:97:06: info: after a call to Empty_Map at spark-containers-functional-maps.ads:277, in instantiation at test_map_ho.adb:64
+spark-containers-functional-maps.ads:97:06: info: when establishing invariant on Has_Key at spark-containers-functional-maps.ads:120, in instantiation at test_map_ho.adb:64
+spark-containers-functional-maps.ads:97:06: info: when establishing invariant on Length at spark-containers-functional-maps.ads:167, in instantiation at test_map_ho.adb:64
+spark-containers-functional-maps.ads:97:06: info: when reestablishing invariant on Get at spark-containers-functional-maps.ads:138, in instantiation at test_map_ho.adb:64
+spark-containers-functional-maps.ads:97:06: info: when reestablishing invariant on Has_Key at spark-containers-functional-maps.ads:120, in instantiation at test_map_ho.adb:64
+spark-containers-functional-maps.ads:97:06: info: when reestablishing invariant on Length at spark-containers-functional-maps.ads:167, in instantiation at test_map_ho.adb:64
+spark-containers-functional-maps.ads:120:13: info: during checks for quantification at spark-containers-functional-maps.ads:89, in instantiation at test_map_ho.adb:64
+spark-containers-functional-maps.ads:120:13: info: precondition proved, in instantiation at test_map_ho.adb:64
+spark-containers-functional-maps.ads:383:13: info: during checks for quantification at spark-containers-functional-maps.ads:349, in instantiation at test_map_ho.adb:64
+spark-containers-functional-maps.ads:383:13: info: precondition proved, in instantiation at test_map_ho.adb:64
+spark-containers-functional-maps.ads:392:13: info: during checks for quantification at spark-containers-functional-maps.ads:349, in instantiation at test_map_ho.adb:64
+spark-containers-functional-maps.ads:392:13: info: precondition proved, in instantiation at test_map_ho.adb:64
+spark-containers-functional-maps.ads:398:13: info: during checks for quantification at spark-containers-functional-maps.ads:349, in instantiation at test_map_ho.adb:64
 spark-containers-functional-maps.ads:398:13: info: precondition proved, in instantiation at test_map_ho.adb:64
-spark-containers-functional-maps.ads:482:13: info: implicit aspect Always_Terminates on "Copy_Key" has been proved, subprogram will terminate, in instantiation at test_map_ho.adb:64
-spark-containers-functional-maps.ads:483:13: info: implicit aspect Always_Terminates on "Copy_Element" has been proved, subprogram will terminate, in instantiation at test_map_ho.adb:64
-spark-containers-functional-maps.ads:532:13: info: during checks for quantification at spark-containers-functional-maps.ads:89, in instantiation at test_map_ho.adb:64
-spark-containers-functional-maps.ads:532:13: info: precondition proved, in instantiation at test_map_ho.adb:64
-spark-containers-functional-maps.ads:535:13: info: during checks for quantification at spark-containers-functional-maps.ads:89, in instantiation at test_map_ho.adb:64
-spark-containers-functional-maps.ads:535:13: info: precondition proved, in instantiation at test_map_ho.adb:64
-spark-containers-functional-maps.ads:541:13: info: during checks for quantification at spark-containers-functional-maps.ads:89, in instantiation at test_map_ho.adb:64
-spark-containers-functional-maps.ads:541:13: info: precondition proved, in instantiation at test_map_ho.adb:64
-spark-containers-functional-maps.ads:546:13: info: during checks for quantification at spark-containers-functional-maps.ads:89, in instantiation at test_map_ho.adb:64
-spark-containers-functional-maps.ads:546:13: info: precondition proved, in instantiation at test_map_ho.adb:64
-spark-containers-parameter_checks.adb:58:10: info: precondition proved, in instantiation at spark-containers-functional-maps.ads:514, in instantiation at test_map_ho.adb:64
-spark-containers-parameter_checks.ads:30:17: info: aspect Always_Terminates on "Eq_Reflexive" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-maps.ads:495, in instantiation at test_map_ho.adb:64
-spark-containers-parameter_checks.ads:30:17: info: aspect Always_Terminates on "Eq_Reflexive" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-maps.ads:504, in instantiation at test_map_ho.adb:64
-spark-containers-parameter_checks.ads:31:09: info: data dependencies proved, in instantiation at spark-containers-functional-maps.ads:495, in instantiation at test_map_ho.adb:64
-spark-containers-parameter_checks.ads:31:09: info: data dependencies proved, in instantiation at spark-containers-functional-maps.ads:504, in instantiation at test_map_ho.adb:64
-spark-containers-parameter_checks.ads:32:19: info: postcondition proved, in instantiation at spark-containers-functional-maps.ads:495, in instantiation at test_map_ho.adb:64
-spark-containers-parameter_checks.ads:32:19: info: postcondition proved, in instantiation at spark-containers-functional-maps.ads:504, in instantiation at test_map_ho.adb:64
-spark-containers-parameter_checks.ads:34:17: info: aspect Always_Terminates on "Eq_Symmetric" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-maps.ads:495, in instantiation at test_map_ho.adb:64
-spark-containers-parameter_checks.ads:34:17: info: aspect Always_Terminates on "Eq_Symmetric" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-maps.ads:504, in instantiation at test_map_ho.adb:64
-spark-containers-parameter_checks.ads:35:09: info: data dependencies proved, in instantiation at spark-containers-functional-maps.ads:495, in instantiation at test_map_ho.adb:64
-spark-containers-parameter_checks.ads:35:09: info: data dependencies proved, in instantiation at spark-containers-functional-maps.ads:504, in instantiation at test_map_ho.adb:64
-spark-containers-parameter_checks.ads:37:19: info: postcondition proved, in instantiation at spark-containers-functional-maps.ads:495, in instantiation at test_map_ho.adb:64
-spark-containers-parameter_checks.ads:37:19: info: postcondition proved, in instantiation at spark-containers-functional-maps.ads:504, in instantiation at test_map_ho.adb:64
-spark-containers-parameter_checks.ads:39:17: info: aspect Always_Terminates on "Eq_Transitive" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-maps.ads:495, in instantiation at test_map_ho.adb:64
-spark-containers-parameter_checks.ads:39:17: info: aspect Always_Terminates on "Eq_Transitive" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-maps.ads:504, in instantiation at test_map_ho.adb:64
-spark-containers-parameter_checks.ads:40:09: info: data dependencies proved, in instantiation at spark-containers-functional-maps.ads:495, in instantiation at test_map_ho.adb:64
-spark-containers-parameter_checks.ads:40:09: info: data dependencies proved, in instantiation at spark-containers-functional-maps.ads:504, in instantiation at test_map_ho.adb:64
-spark-containers-parameter_checks.ads:42:19: info: postcondition proved, in instantiation at spark-containers-functional-maps.ads:495, in instantiation at test_map_ho.adb:64
-spark-containers-parameter_checks.ads:42:19: info: postcondition proved, in instantiation at spark-containers-functional-maps.ads:504, in instantiation at test_map_ho.adb:64
-spark-containers-parameter_checks.ads:62:17: info: aspect Always_Terminates on "Eq_Reflexive" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-maps.ads:514, in instantiation at test_map_ho.adb:64
-spark-containers-parameter_checks.ads:63:09: info: data dependencies proved, in instantiation at spark-containers-functional-maps.ads:514, in instantiation at test_map_ho.adb:64
-spark-containers-parameter_checks.ads:65:19: info: postcondition proved, in instantiation at spark-containers-functional-maps.ads:514, in instantiation at test_map_ho.adb:64
-spark-containers-parameter_checks.ads:70:17: info: aspect Always_Terminates on "Eq_Reflexive" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-maps.ads:514, in instantiation at test_map_ho.adb:64
-spark-containers-parameter_checks.ads:71:09: info: data dependencies proved, in instantiation at spark-containers-functional-maps.ads:514, in instantiation at test_map_ho.adb:64
-spark-containers-parameter_checks.ads:72:19: info: postcondition proved, in instantiation at spark-containers-functional-maps.ads:514, in instantiation at test_map_ho.adb:64
-spark-containers-parameter_checks.ads:74:17: info: aspect Always_Terminates on "Eq_Symmetric" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-maps.ads:514, in instantiation at test_map_ho.adb:64
-spark-containers-parameter_checks.ads:75:09: info: data dependencies proved, in instantiation at spark-containers-functional-maps.ads:514, in instantiation at test_map_ho.adb:64
-spark-containers-parameter_checks.ads:77:19: info: postcondition proved, in instantiation at spark-containers-functional-maps.ads:514, in instantiation at test_map_ho.adb:64
-spark-containers-parameter_checks.ads:79:17: info: aspect Always_Terminates on "Eq_Transitive" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-maps.ads:514, in instantiation at test_map_ho.adb:64
-spark-containers-parameter_checks.ads:80:09: info: data dependencies proved, in instantiation at spark-containers-functional-maps.ads:514, in instantiation at test_map_ho.adb:64
-spark-containers-parameter_checks.ads:82:19: info: postcondition proved, in instantiation at spark-containers-functional-maps.ads:514, in instantiation at test_map_ho.adb:64
+spark-containers-functional-maps.ads:406:13: info: during checks for quantification at spark-containers-functional-maps.ads:349, in instantiation at test_map_ho.adb:64
+spark-containers-functional-maps.ads:406:13: info: precondition proved, in instantiation at test_map_ho.adb:64
+spark-containers-functional-maps.ads:490:13: info: implicit aspect Always_Terminates on "Copy_Key" has been proved, subprogram will terminate, in instantiation at test_map_ho.adb:64
+spark-containers-functional-maps.ads:491:13: info: implicit aspect Always_Terminates on "Copy_Element" has been proved, subprogram will terminate, in instantiation at test_map_ho.adb:64
+spark-containers-functional-maps.ads:540:13: info: during checks for quantification at spark-containers-functional-maps.ads:89, in instantiation at test_map_ho.adb:64
+spark-containers-functional-maps.ads:540:13: info: precondition proved, in instantiation at test_map_ho.adb:64
+spark-containers-functional-maps.ads:543:13: info: during checks for quantification at spark-containers-functional-maps.ads:89, in instantiation at test_map_ho.adb:64
+spark-containers-functional-maps.ads:543:13: info: precondition proved, in instantiation at test_map_ho.adb:64
+spark-containers-functional-maps.ads:549:13: info: during checks for quantification at spark-containers-functional-maps.ads:89, in instantiation at test_map_ho.adb:64
+spark-containers-functional-maps.ads:549:13: info: precondition proved, in instantiation at test_map_ho.adb:64
+spark-containers-functional-maps.ads:554:13: info: during checks for quantification at spark-containers-functional-maps.ads:89, in instantiation at test_map_ho.adb:64
+spark-containers-functional-maps.ads:554:13: info: precondition proved, in instantiation at test_map_ho.adb:64
+spark-containers-functional-maps.ads:563:13: info: implicit aspect Always_Terminates on "Aggr_Eq_Keys" has been proved, subprogram will terminate, in instantiation at test_map_ho.adb:64
+spark-containers-functional-maps.ads:566:06: info: data dependencies proved, in instantiation at test_map_ho.adb:64
+spark-containers-functional-maps.ads:576:16: info: during checks for container aggregates at spark-containers-functional-maps.ads:97, in instantiation at test_map_ho.adb:64
+spark-containers-functional-maps.ads:576:16: info: precondition proved, in instantiation at test_map_ho.adb:64
+spark-containers-parameter_checks.adb:58:10: info: precondition proved, in instantiation at spark-containers-functional-maps.ads:522, in instantiation at test_map_ho.adb:64
+spark-containers-parameter_checks.ads:30:17: info: aspect Always_Terminates on "Eq_Reflexive" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-maps.ads:503, in instantiation at test_map_ho.adb:64
+spark-containers-parameter_checks.ads:30:17: info: aspect Always_Terminates on "Eq_Reflexive" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-maps.ads:512, in instantiation at test_map_ho.adb:64
+spark-containers-parameter_checks.ads:31:09: info: data dependencies proved, in instantiation at spark-containers-functional-maps.ads:503, in instantiation at test_map_ho.adb:64
+spark-containers-parameter_checks.ads:31:09: info: data dependencies proved, in instantiation at spark-containers-functional-maps.ads:512, in instantiation at test_map_ho.adb:64
+spark-containers-parameter_checks.ads:32:19: info: postcondition proved, in instantiation at spark-containers-functional-maps.ads:503, in instantiation at test_map_ho.adb:64
+spark-containers-parameter_checks.ads:32:19: info: postcondition proved, in instantiation at spark-containers-functional-maps.ads:512, in instantiation at test_map_ho.adb:64
+spark-containers-parameter_checks.ads:34:17: info: aspect Always_Terminates on "Eq_Symmetric" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-maps.ads:503, in instantiation at test_map_ho.adb:64
+spark-containers-parameter_checks.ads:34:17: info: aspect Always_Terminates on "Eq_Symmetric" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-maps.ads:512, in instantiation at test_map_ho.adb:64
+spark-containers-parameter_checks.ads:35:09: info: data dependencies proved, in instantiation at spark-containers-functional-maps.ads:503, in instantiation at test_map_ho.adb:64
+spark-containers-parameter_checks.ads:35:09: info: data dependencies proved, in instantiation at spark-containers-functional-maps.ads:512, in instantiation at test_map_ho.adb:64
+spark-containers-parameter_checks.ads:37:19: info: postcondition proved, in instantiation at spark-containers-functional-maps.ads:503, in instantiation at test_map_ho.adb:64
+spark-containers-parameter_checks.ads:37:19: info: postcondition proved, in instantiation at spark-containers-functional-maps.ads:512, in instantiation at test_map_ho.adb:64
+spark-containers-parameter_checks.ads:39:17: info: aspect Always_Terminates on "Eq_Transitive" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-maps.ads:503, in instantiation at test_map_ho.adb:64
+spark-containers-parameter_checks.ads:39:17: info: aspect Always_Terminates on "Eq_Transitive" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-maps.ads:512, in instantiation at test_map_ho.adb:64
+spark-containers-parameter_checks.ads:40:09: info: data dependencies proved, in instantiation at spark-containers-functional-maps.ads:503, in instantiation at test_map_ho.adb:64
+spark-containers-parameter_checks.ads:40:09: info: data dependencies proved, in instantiation at spark-containers-functional-maps.ads:512, in instantiation at test_map_ho.adb:64
+spark-containers-parameter_checks.ads:42:19: info: postcondition proved, in instantiation at spark-containers-functional-maps.ads:503, in instantiation at test_map_ho.adb:64
+spark-containers-parameter_checks.ads:42:19: info: postcondition proved, in instantiation at spark-containers-functional-maps.ads:512, in instantiation at test_map_ho.adb:64
+spark-containers-parameter_checks.ads:62:17: info: aspect Always_Terminates on "Eq_Reflexive" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-maps.ads:522, in instantiation at test_map_ho.adb:64
+spark-containers-parameter_checks.ads:63:09: info: data dependencies proved, in instantiation at spark-containers-functional-maps.ads:522, in instantiation at test_map_ho.adb:64
+spark-containers-parameter_checks.ads:65:19: info: postcondition proved, in instantiation at spark-containers-functional-maps.ads:522, in instantiation at test_map_ho.adb:64
+spark-containers-parameter_checks.ads:70:17: info: aspect Always_Terminates on "Eq_Reflexive" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-maps.ads:522, in instantiation at test_map_ho.adb:64
+spark-containers-parameter_checks.ads:71:09: info: data dependencies proved, in instantiation at spark-containers-functional-maps.ads:522, in instantiation at test_map_ho.adb:64
+spark-containers-parameter_checks.ads:72:19: info: postcondition proved, in instantiation at spark-containers-functional-maps.ads:522, in instantiation at test_map_ho.adb:64
+spark-containers-parameter_checks.ads:74:17: info: aspect Always_Terminates on "Eq_Symmetric" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-maps.ads:522, in instantiation at test_map_ho.adb:64
+spark-containers-parameter_checks.ads:75:09: info: data dependencies proved, in instantiation at spark-containers-functional-maps.ads:522, in instantiation at test_map_ho.adb:64
+spark-containers-parameter_checks.ads:77:19: info: postcondition proved, in instantiation at spark-containers-functional-maps.ads:522, in instantiation at test_map_ho.adb:64
+spark-containers-parameter_checks.ads:79:17: info: aspect Always_Terminates on "Eq_Transitive" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-maps.ads:522, in instantiation at test_map_ho.adb:64
+spark-containers-parameter_checks.ads:80:09: info: data dependencies proved, in instantiation at spark-containers-functional-maps.ads:522, in instantiation at test_map_ho.adb:64
+spark-containers-parameter_checks.ads:82:19: info: postcondition proved, in instantiation at spark-containers-functional-maps.ads:522, in instantiation at test_map_ho.adb:64
 test_map_ho.adb:67:04: info: function contract might not be available on recursive calls
 test_map_ho.adb:67:04: info: in instantiation at spark-containers-functional-maps-higher_order.adb:22

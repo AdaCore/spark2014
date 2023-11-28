@@ -51,6 +51,30 @@ package body Flow_Dependency_Maps is
 
    function Parse_Raw_Dependency_Map (N : Node_Id) return Dependency_Maps.Map
    is
+      function LHS_Entity
+        (LHS     : Node_Id;
+         Context : Entity_Id) return Entity_Id
+      with Pre => Is_Attribute_Result (LHS) or else Is_Entity_Name (LHS);
+      --  Extract the entity from the LHS in the given Context
+
+      ----------------
+      -- LHS_Entity --
+      ----------------
+
+      function LHS_Entity
+        (LHS     : Node_Id;
+         Context : Entity_Id) return Entity_Id
+      is
+      begin
+         if Is_Attribute_Result (LHS) then
+            return Entity (Prefix (LHS));
+         else
+            return Canonical_Entity (Entity (LHS), Context);
+         end if;
+      end LHS_Entity;
+
+      --  Local variables
+
       Decl_Id : constant Entity_Id :=
         Defining_Entity (Find_Related_Declaration_Or_Body (N));
       --  Declaration of the entity to which the parsed pragma is attached
@@ -130,26 +154,16 @@ package body Flow_Dependency_Maps is
                LHS := First (Expressions (LHS));
                while Present (LHS) loop
                   Outputs.Insert
-                    (Direct_Mapping_Id
-                       (Canonical_Entity (Entity (LHS), Context)));
+                    (Direct_Mapping_Id (LHS_Entity (LHS, Context)));
                   Next (LHS);
                end loop;
 
-            when N_Attribute_Reference =>
-               --  foo'result => ...
-               pragma Assert (Ekind (Entity (Prefix (LHS))) = E_Function);
-
-               pragma Assert (Get_Attribute_Id (Attribute_Name (LHS)) =
-                                Attribute_Result);
-
+            when N_Attribute_Reference
+               | N_Identifier
+               | N_Expanded_Name
+            =>
                Outputs.Insert
-                 (Direct_Mapping_Id (Entity (Prefix (LHS))));
-
-            when N_Identifier | N_Expanded_Name =>
-               --  Foo => ...
-               Outputs.Insert
-                 (Direct_Mapping_Id
-                    (Canonical_Entity (Entity (LHS), Context)));
+                 (Direct_Mapping_Id (LHS_Entity (LHS, Context)));
 
             when N_Null =>
                --  null => ...

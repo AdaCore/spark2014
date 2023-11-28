@@ -1741,8 +1741,6 @@ package body SPARK_Definition is
                        and then not Is_Empty_List (Component_Associations (N))
                      then
                         Mark_Violation ("indexed container aggregate", N);
-                     elsif Annot.Kind = Model then
-                        Mark_Violation ("container aggregate using models", N);
                      else
                         Mark_List (Expressions (N));
                         Mark_List (Component_Associations (N));
@@ -6022,9 +6020,16 @@ package body SPARK_Definition is
                         not Gnat2Why_Args.Global_Gen_Mode,
                      Ignore_Depends      => False);
 
+                  --  Violations will be attached to the function entity, so
+                  --  GNAT will only print the first one, which will depend
+                  --  on the order of hash iteration. Future error message
+                  --  backends might be able to print more, but for now we just
+                  --  want to make the order stable by iterating over ordered
+                  --  container.
+
                   if not Globals.Outputs.Is_Empty then
                      if not Is_Function_With_Side_Effects (Id) then
-                        for G of Globals.Outputs loop
+                        for G of To_Ordered_Flow_Id_Set (Globals.Outputs) loop
                            declare
                               G_Name : constant String :=
                                 (if G.Kind in Direct_Mapping then "&"
@@ -6046,12 +6051,6 @@ package body SPARK_Definition is
                      end if;
 
                   else
-                     --  Violations will be attached to the function entity, so
-                     --  GNAT will only print the first one, which will depend
-                     --  on the order of hash iteration. Future error message
-                     --  backends might be able to print more, but for now we
-                     --  just want to make the order stable.
-
                      for G of
                        To_Ordered_Flow_Id_Set
                          (Globals.Inputs.Union (Globals.Proof_Ins))

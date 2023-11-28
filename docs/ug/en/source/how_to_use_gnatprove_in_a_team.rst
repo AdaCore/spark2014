@@ -767,11 +767,16 @@ only part of a program:
 
 * [ADA_ELABORATION]
   If a package is not analyzed but is part of the application code, its
-  elaboration shall not modify any global state visible from SPARK unless
-  it is part of the package's own state. In addition, if the package
-  specification is referenced, directly or indirectly, from a SPARK unit, it
-  needs to comply with the implicit or explicit contracts used by
-  GNATprove to analyze these user packages.
+  elaboration:
+
+  * shall not modify any global state visible from SPARK unless it is part
+    of the package's own state.
+
+  * shall always terminate normally.
+
+  In addition, if the package specification is referenced, directly or
+  indirectly, from a SPARK unit, it needs to comply with the implicit
+  or explicit contracts used by GNATprove to analyze these user packages.
 
   The (explicit or implicit) package contract to check is made up of:
 
@@ -814,9 +819,9 @@ only part of a program:
     subprogram and the associated postconditions should hold whenever an
     exception is propagated
 
-  * :ref:`Subprogram Termination` (only explicit except for functions which
-    should always return in SPARK) - subprograms annotated with
-    ``Always_Terminates`` should terminate (return normally or raise an
+  * :ref:`Subprogram Termination` (only explicit except for functions without
+    side-effects which should always return in SPARK) - subprograms annotated
+    with ``Always_Terminates`` should terminate (return normally or raise an
     exception) whenever the associated boolean condition evaluates to True on
     entry of the subprogram, assuming that primary stack, secondary stack, and
     heap memory allocations never fail. Other subprograms are not restricted
@@ -831,7 +836,7 @@ only part of a program:
   * parameter modes - in particular, parameters of
     mode *in* which are not considered to be variable should not be modified,
     including the values designated by their potential access-to-variable
-    subcomponents, and parameters of mode *out* which are not subjected to
+    subcomponents, and parameters of mode *out* which are not subject to
     relaxed initialization (see :ref:`Aspect Relaxed_Initialization`) should be
     entirely initialized.
 
@@ -858,14 +863,14 @@ only part of a program:
 
   * the initialization of inputs (implicit) - parameters of mode *in* or *in
     out* and global variables of mode *Input* or *In_Out* which are not
-    subjected to relaxed initialization (see :ref:`Aspect
+    subject to relaxed initialization (see :ref:`Aspect
     Relaxed_Initialization`) should be entirely initialized
 
 * [ADA_OBJECT_ADDRESSES]
   When the body of a function is not analyzed by GNATprove, its result should
   not depend on the address of parts of its parameters or global inputs unless
-  it is annotated with ``Volatile_Function``.
-  When the body of a procedure is not analyzed by GNATprove, none of its
+  it is annotated with ``Volatile_Function``. When the body of a procedure,
+  entry or function with side-effects is not analyzed by GNATprove, none of its
   outputs should depend on the address of parts of its parameters or global
   inputs unless the output is volatile for reading, or its value depends on an
   input which is volatile for reading as stated in a Depends contract.
@@ -920,13 +925,13 @@ being available:
   review is required.
 
 * [PARTIAL_TERMINATION]
-  Procedures and entries which are called across the boundary of those units
-  analyzed together should be annotated to specify under which condition they
-  shall terminate using the ``Always_Terminates`` aspect. Otherwise, these
-  subprograms will be assumed to never terminate (if they are annotated with
-  ``No_Return``) or always terminate (otherwise). The warning
-  `assumed Always_Terminates` is guaranteed to be issued in cases where review
-  is required.
+  Procedures, entries and functions with side-effects which are called across
+  the boundary of those units analyzed together should be annotated to specify
+  under which condition they shall terminate using the ``Always_Terminates``
+  aspect. Otherwise, these subprograms will be assumed to never terminate (if
+  they are annotated with ``No_Return``) or always terminate (otherwise). The
+  warning `assumed Always_Terminates` is guaranteed to be issued in cases where
+  review is required.
 
 * [PARTIAL_TASKING]
   If no single run of GNATprove analyzes all units that define tasks, then for

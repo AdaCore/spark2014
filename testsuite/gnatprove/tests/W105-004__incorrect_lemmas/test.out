@@ -13,6 +13,8 @@ incorrect_lemmas.adb:24:40: info: function contract feasibility proved (CVC5: 1 
 incorrect_lemmas.adb:29:14: medium: postcondition might fail
 incorrect_lemmas.adb:29:20: info: null exclusion check proved (CVC5: 1 VC)
 incorrect_lemmas.adb:33:16: info: implicit aspect Always_Terminates on "Read_V" has been proved, subprogram will terminate
+incorrect_lemmas.adb:33:16: info: implicit function contract might not be available on calls from enclosing unit
 incorrect_lemmas.adb:35:22: info: assertion proved (CVC5: 1 VC)
 incorrect_lemmas.adb:40:16: info: implicit aspect Always_Terminates on "Read_V" has been proved, subprogram will terminate
+incorrect_lemmas.adb:40:16: info: implicit function contract might not be available on calls from enclosing unit
 incorrect_lemmas.adb:42:22: info: assertion proved (CVC5: 1 VC)

@@ -278,7 +278,7 @@ the complete list).
   order of evaluation of subexpressions chosen by the compiler.
 
 * The use of access types and allocators is restricted to pool specific
-  access types and subjected to an ownership policy ensuring that a mutable
+  access types and subject to an ownership policy ensuring that a mutable
   memory cell has a single owner. In general, pointers can
   introduce aliasing, that is, they can allow the same object to be visible
   through different names at the same program point. This makes it difficult to

@@ -12,6 +12,7 @@ ghost_termination.adb:84:10: medium: call might not terminate [reason for check:
 ghost_termination.adb:86:10: medium: call to ghost subprogram "Non_Term" is nonterminating
 ghost_termination.adb:90:04: info: function contract feasibility proved (CVC5: 1 VC)
 ghost_termination.adb:91:13: info: implicit aspect Always_Terminates on "Z" has been proved, subprogram will terminate
+ghost_termination.adb:91:13: info: implicit function contract might not be available on calls from enclosing unit
 ghost_termination.adb:93:14: info: null exclusion check proved (Trivial: 1 VC)
 ghost_termination.adb:95:43: info: data dependencies proved
 ghost_termination.adb:99:15: info: pointer dereference check proved (CVC5: 1 VC)

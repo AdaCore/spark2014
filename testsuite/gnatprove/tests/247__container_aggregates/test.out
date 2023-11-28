@@ -32,172 +32,173 @@ test.adb:64:11: info: predicate check proved (CVC5: 1 VC)
 test.adb:64:25: info: range check proved (CVC5: 2 VC)
 test.adb:74:09: info: Container_Aggregates annotation proved (CVC5: 1 VC)
 test.adb:74:09: info: Container_Aggregates annotation proved (CVC5: 1 VC)
-test.adb:74:09: info: Container_Aggregates annotation proved (CVC5: 2 VC)
+test.adb:74:09: info: Container_Aggregates annotation proved (CVC5: 1 VC)
 test.adb:74:09: info: Container_Aggregates annotation proved (CVC5: 3 VC)
 test.adb:74:09: info: after a call to Empty at test.adb:76
 test.adb:74:09: info: after a call to Empty at test.adb:76
 test.adb:74:09: info: after a call to Insert at test.adb:77
 test.adb:74:09: info: after a call to Insert at test.adb:77
-test.adb:74:09: info: when establishing invariant on Contains at test.adb:86
-test.adb:74:09: info: when establishing invariant on Length at test.adb:91
-test.adb:74:09: info: when reestablishing invariant on Contains at test.adb:86
-test.adb:74:09: info: when reestablishing invariant on Length at test.adb:91
+test.adb:74:09: info: when establishing invariant on Contains at test.adb:85
+test.adb:74:09: info: when establishing invariant on Length at test.adb:90
+test.adb:74:09: info: when reestablishing invariant on Contains at test.adb:85
+test.adb:74:09: info: when reestablishing invariant on Length at test.adb:90
 test.adb:76:16: info: implicit aspect Always_Terminates on "Empty" has been proved, subprogram will terminate
 test.adb:77:17: info: aspect Always_Terminates on "Insert" has been proved, subprogram will terminate
-test.adb:80:11: info: postcondition proved (CVC5: 5 VC; Trivial: 1 VC)
-test.adb:86:16: info: implicit aspect Always_Terminates on "Contains" has been proved, subprogram will terminate
-test.adb:91:16: info: implicit aspect Always_Terminates on "Length" has been proved, subprogram will terminate
-test.adb:92:17: info: postcondition proved (CVC5: 1 VC)
-test.adb:95:16: info: implicit aspect Always_Terminates on "Length_Rec" has been proved, subprogram will terminate
-test.adb:98:16: info: implicit aspect Always_Terminates on "Eq_Elem" has been proved, subprogram will terminate
-test.adb:113:16: info: function contract might not be available on recursive calls
-test.adb:113:16: info: implicit aspect Always_Terminates on "Length_Rec" has been proved, subprogram will terminate
-test.adb:116:17: info: postcondition proved (CVC5: 1 VC)
-test.adb:118:17: info: implicit aspect Always_Terminates on "Lemma_Length_Empty" has been proved, subprogram will terminate
-test.adb:121:69: info: range check proved (CVC5: 2 VC)
-test.adb:122:17: info: postcondition proved (CVC5: 1 VC)
-test.adb:127:15: info: subprogram variant proved (CVC5: 1 VC)
-test.adb:127:32: info: range check proved (CVC5: 2 VC)
-test.adb:127:37: info: overflow check proved (CVC5: 2 VC)
-test.adb:127:37: info: range check proved (CVC5: 2 VC)
-test.adb:128:39: info: range check proved (CVC5: 2 VC)
-test.adb:139:13: info: precondition proved (CVC5: 1 VC)
-test.adb:139:13: info: subprogram variant proved (CVC5: 1 VC)
-test.adb:139:38: info: range check proved (CVC5: 2 VC)
-test.adb:145:20: info: add a contract to analyze it separately from calling contexts
-test.adb:145:20: info: local subprogram "Prove_Length" only analyzed in the context of calls
-test.adb:150:19: info: loop invariant initialization proved (CVC5: 2 VC), in call inlined at test.adb:159
-test.adb:150:19: info: loop invariant preservation proved (CVC5: 2 VC), in call inlined at test.adb:159
-test.adb:159:10: info: analyzing call to "Prove_Length" in context
-test.adb:167:30: info: range check proved (CVC5: 4 VC)
-test.adb:170:19: info: loop invariant initialization proved (CVC5: 1 VC)
-test.adb:170:19: info: loop invariant preservation proved (CVC5: 1 VC)
-test.adb:183:09: info: Container_Aggregates annotation proved (CVC5: 1 VC)
-test.adb:183:09: info: Container_Aggregates annotation proved (CVC5: 1 VC)
-test.adb:183:09: info: Container_Aggregates annotation proved (CVC5: 1 VC)
-test.adb:183:09: info: Container_Aggregates annotation proved (CVC5: 1 VC)
-test.adb:183:09: info: Container_Aggregates annotation proved (CVC5: 5 VC)
-test.adb:183:09: info: after a call to Empty at test.adb:197
-test.adb:183:09: info: after a call to Empty at test.adb:197
-test.adb:183:09: info: after a call to Insert at test.adb:198
-test.adb:183:09: info: after a call to Insert at test.adb:198
-test.adb:183:09: info: after a call to Insert at test.adb:198
-test.adb:183:09: info: when establishing invariant on Has_Key at test.adb:210
-test.adb:183:09: info: when establishing invariant on Length at test.adb:224
-test.adb:183:09: info: when reestablishing invariant on Get at test.adb:214
-test.adb:183:09: info: when reestablishing invariant on Has_Key at test.adb:210
-test.adb:183:09: info: when reestablishing invariant on Length at test.adb:224
-test.adb:197:16: info: implicit aspect Always_Terminates on "Empty" has been proved, subprogram will terminate
-test.adb:198:17: info: aspect Always_Terminates on "Insert" has been proved, subprogram will terminate
-test.adb:200:17: info: during checks for container aggregates at test.adb:183
-test.adb:200:17: info: precondition proved (CVC5: 1 VC)
-test.adb:201:17: info: postcondition proved (CVC5: 9 VC; Trivial: 2 VC)
-test.adb:203:18: info: precondition proved (CVC5: 2 VC)
-test.adb:205:63: medium: resource or memory leak might occur [possible explanation: call to allocating function inside an assertion leaks some resource or memory]
-test.adb:208:26: info: precondition proved (CVC5: 2 VC)
-test.adb:208:39: info: precondition proved (CVC5: 2 VC)
-test.adb:208:44: medium: resource or memory leak might occur [possible explanation: call to allocating function inside an assertion leaks some resource or memory]
-test.adb:210:16: info: implicit aspect Always_Terminates on "Has_Key" has been proved, subprogram will terminate
-test.adb:214:16: info: implicit aspect Always_Terminates on "Get" has been proved, subprogram will terminate
-test.adb:214:16: info: implicit function contract might not be available on recursive calls
-test.adb:219:16: info: implicit aspect Always_Terminates on "Eq_Key" has been proved, subprogram will terminate
-test.adb:224:16: info: implicit aspect Always_Terminates on "Length" has been proved, subprogram will terminate
-test.adb:224:16: info: implicit function contract might not be available on recursive calls
-test.adb:244:43: info: pointer dereference check proved (CVC5: 1 VC)
-test.adb:244:56: info: subprogram variant proved (Trivial)
-test.adb:244:66: info: pointer dereference check proved (CVC5: 1 VC)
-test.adb:247:18: info: pointer dereference check proved (CVC5: 1 VC)
-test.adb:247:29: info: pointer dereference check proved (CVC5: 1 VC)
-test.adb:247:39: info: precondition proved (CVC5: 2 VC)
-test.adb:247:39: info: subprogram variant proved (Trivial)
-test.adb:247:45: info: pointer dereference check proved (CVC5: 1 VC)
-test.adb:250:34: info: subprogram variant proved (Trivial)
-test.adb:250:43: info: pointer dereference check proved (CVC5: 1 VC)
-test.adb:250:47: medium: range check might fail, cannot prove upper bound for Length (X.N) + 1 [reason for check: result of addition must fit in the type of the qualification] [possible fix: add precondition (Length (X.N) <= Length_Type'Last - 1) to subprogram at line 224]
-test.adb:256:12: info: absence of resource or memory leak proved (CVC5: 1 VC)
-test.adb:267:09: info: Container_Aggregates annotation proved (CVC5: 1 VC)
-test.adb:267:09: info: Container_Aggregates annotation proved (CVC5: 1 VC)
-test.adb:267:09: info: after a call to Empty at test.adb:281
-test.adb:267:09: info: after a call to Insert at test.adb:282
-test.adb:267:09: info: when establishing invariant on Get at test.adb:292
-test.adb:267:09: info: when reestablishing invariant on Get at test.adb:292
-test.adb:281:16: info: implicit aspect Always_Terminates on "Empty" has been proved, subprogram will terminate
-test.adb:282:17: info: aspect Always_Terminates on "Insert" has been proved, subprogram will terminate
-test.adb:284:17: info: postcondition proved (CVC5: 2 VC; Trivial: 1 VC)
-test.adb:287:44: medium: resource or memory leak might occur [possible explanation: call to allocating function inside an assertion leaks some resource or memory]
-test.adb:289:16: info: implicit aspect Always_Terminates on "Default_Value" has been proved, subprogram will terminate
-test.adb:292:16: info: implicit aspect Always_Terminates on "Get" has been proved, subprogram will terminate
-test.adb:292:16: info: implicit function contract might not be available on recursive calls
-test.adb:296:16: info: implicit aspect Always_Terminates on "Eq_Key" has been proved, subprogram will terminate
-test.adb:315:40: info: pointer dereference check proved (CVC5: 1 VC)
-test.adb:315:51: info: pointer dereference check proved (CVC5: 1 VC)
-test.adb:315:61: info: subprogram variant proved (Trivial)
-test.adb:315:67: info: pointer dereference check proved (CVC5: 1 VC)
-test.adb:321:12: info: absence of resource or memory leak proved (CVC5: 1 VC)
-test.adb:325:14: high: all paths in "Test_Sets" raise exceptions or do not terminate normally
-test.adb:326:06: info: data dependencies proved
-test.adb:330:16: info: all elements shall fit in the return type of "Length" for predefined set aggregates at test.adb:74
+test.adb:79:16: info: during checks for container aggregates at test.adb:74
+test.adb:79:16: info: precondition proved (CVC5: 1 VC)
+test.adb:80:17: info: postcondition proved (CVC5: 4 VC; Trivial: 1 VC)
+test.adb:85:16: info: implicit aspect Always_Terminates on "Contains" has been proved, subprogram will terminate
+test.adb:90:16: info: implicit aspect Always_Terminates on "Length" has been proved, subprogram will terminate
+test.adb:91:17: info: postcondition proved (CVC5: 1 VC)
+test.adb:94:16: info: implicit aspect Always_Terminates on "Length_Rec" has been proved, subprogram will terminate
+test.adb:97:16: info: implicit aspect Always_Terminates on "Eq_Elem" has been proved, subprogram will terminate
+test.adb:112:16: info: function contract might not be available on recursive calls
+test.adb:112:16: info: implicit aspect Always_Terminates on "Length_Rec" has been proved, subprogram will terminate
+test.adb:115:17: info: postcondition proved (CVC5: 1 VC)
+test.adb:117:17: info: implicit aspect Always_Terminates on "Lemma_Length_Empty" has been proved, subprogram will terminate
+test.adb:120:69: info: range check proved (CVC5: 2 VC)
+test.adb:121:17: info: postcondition proved (CVC5: 1 VC)
+test.adb:126:15: info: subprogram variant proved (CVC5: 1 VC)
+test.adb:126:32: info: range check proved (CVC5: 2 VC)
+test.adb:126:37: info: overflow check proved (CVC5: 2 VC)
+test.adb:126:37: info: range check proved (CVC5: 2 VC)
+test.adb:127:39: info: range check proved (CVC5: 2 VC)
+test.adb:138:13: info: precondition proved (CVC5: 1 VC)
+test.adb:138:13: info: subprogram variant proved (CVC5: 1 VC)
+test.adb:138:38: info: range check proved (CVC5: 2 VC)
+test.adb:144:20: info: add a contract to analyze it separately from calling contexts
+test.adb:144:20: info: local subprogram "Prove_Length" only analyzed in the context of calls
+test.adb:149:19: info: loop invariant initialization proved (CVC5: 2 VC), in call inlined at test.adb:158
+test.adb:149:19: info: loop invariant preservation proved (CVC5: 2 VC), in call inlined at test.adb:158
+test.adb:158:10: info: analyzing call to "Prove_Length" in context
+test.adb:166:30: info: range check proved (CVC5: 4 VC)
+test.adb:169:19: info: loop invariant initialization proved (CVC5: 1 VC)
+test.adb:169:19: info: loop invariant preservation proved (CVC5: 1 VC)
+test.adb:182:09: info: Container_Aggregates annotation proved (CVC5: 1 VC)
+test.adb:182:09: info: Container_Aggregates annotation proved (CVC5: 1 VC)
+test.adb:182:09: info: Container_Aggregates annotation proved (CVC5: 1 VC)
+test.adb:182:09: info: Container_Aggregates annotation proved (CVC5: 1 VC)
+test.adb:182:09: info: Container_Aggregates annotation proved (CVC5: 5 VC)
+test.adb:182:09: info: after a call to Empty at test.adb:196
+test.adb:182:09: info: after a call to Empty at test.adb:196
+test.adb:182:09: info: after a call to Insert at test.adb:197
+test.adb:182:09: info: after a call to Insert at test.adb:197
+test.adb:182:09: info: after a call to Insert at test.adb:197
+test.adb:182:09: info: when establishing invariant on Has_Key at test.adb:209
+test.adb:182:09: info: when establishing invariant on Length at test.adb:223
+test.adb:182:09: info: when reestablishing invariant on Get at test.adb:213
+test.adb:182:09: info: when reestablishing invariant on Has_Key at test.adb:209
+test.adb:182:09: info: when reestablishing invariant on Length at test.adb:223
+test.adb:196:16: info: implicit aspect Always_Terminates on "Empty" has been proved, subprogram will terminate
+test.adb:197:17: info: aspect Always_Terminates on "Insert" has been proved, subprogram will terminate
+test.adb:199:17: info: during checks for container aggregates at test.adb:182
+test.adb:199:17: info: precondition proved (CVC5: 1 VC)
+test.adb:200:17: info: postcondition proved (CVC5: 9 VC; Trivial: 2 VC)
+test.adb:202:18: info: precondition proved (CVC5: 2 VC)
+test.adb:204:63: medium: resource or memory leak might occur [possible explanation: call to allocating function inside an assertion leaks some resource or memory]
+test.adb:207:26: info: precondition proved (CVC5: 2 VC)
+test.adb:207:39: info: precondition proved (CVC5: 2 VC)
+test.adb:207:44: medium: resource or memory leak might occur [possible explanation: call to allocating function inside an assertion leaks some resource or memory]
+test.adb:209:16: info: implicit aspect Always_Terminates on "Has_Key" has been proved, subprogram will terminate
+test.adb:213:16: info: implicit aspect Always_Terminates on "Get" has been proved, subprogram will terminate
+test.adb:213:16: info: implicit function contract might not be available on recursive calls
+test.adb:218:16: info: implicit aspect Always_Terminates on "Eq_Key" has been proved, subprogram will terminate
+test.adb:223:16: info: implicit aspect Always_Terminates on "Length" has been proved, subprogram will terminate
+test.adb:223:16: info: implicit function contract might not be available on recursive calls
+test.adb:243:43: info: pointer dereference check proved (CVC5: 1 VC)
+test.adb:243:56: info: subprogram variant proved (Trivial)
+test.adb:243:66: info: pointer dereference check proved (CVC5: 1 VC)
+test.adb:246:18: info: pointer dereference check proved (CVC5: 1 VC)
+test.adb:246:29: info: pointer dereference check proved (CVC5: 1 VC)
+test.adb:246:39: info: precondition proved (CVC5: 2 VC)
+test.adb:246:39: info: subprogram variant proved (Trivial)
+test.adb:246:45: info: pointer dereference check proved (CVC5: 1 VC)
+test.adb:249:34: info: subprogram variant proved (Trivial)
+test.adb:249:43: info: pointer dereference check proved (CVC5: 1 VC)
+test.adb:249:47: medium: range check might fail, cannot prove upper bound for Length (X.N) + 1 [reason for check: result of addition must fit in the type of the qualification] [possible fix: add precondition (Length (X.N) <= Length_Type'Last - 1) to subprogram at line 223]
+test.adb:255:12: info: absence of resource or memory leak proved (CVC5: 1 VC)
+test.adb:266:09: info: Container_Aggregates annotation proved (CVC5: 1 VC)
+test.adb:266:09: info: Container_Aggregates annotation proved (CVC5: 1 VC)
+test.adb:266:09: info: after a call to Empty at test.adb:280
+test.adb:266:09: info: after a call to Insert at test.adb:281
+test.adb:266:09: info: when establishing invariant on Get at test.adb:291
+test.adb:266:09: info: when reestablishing invariant on Get at test.adb:291
+test.adb:280:16: info: implicit aspect Always_Terminates on "Empty" has been proved, subprogram will terminate
+test.adb:281:17: info: aspect Always_Terminates on "Insert" has been proved, subprogram will terminate
+test.adb:283:17: info: postcondition proved (CVC5: 2 VC; Trivial: 1 VC)
+test.adb:286:44: medium: resource or memory leak might occur [possible explanation: call to allocating function inside an assertion leaks some resource or memory]
+test.adb:288:16: info: implicit aspect Always_Terminates on "Default_Value" has been proved, subprogram will terminate
+test.adb:291:16: info: implicit aspect Always_Terminates on "Get" has been proved, subprogram will terminate
+test.adb:291:16: info: implicit function contract might not be available on recursive calls
+test.adb:295:16: info: implicit aspect Always_Terminates on "Eq_Key" has been proved, subprogram will terminate
+test.adb:314:40: info: pointer dereference check proved (CVC5: 1 VC)
+test.adb:314:51: info: pointer dereference check proved (CVC5: 1 VC)
+test.adb:314:61: info: subprogram variant proved (Trivial)
+test.adb:314:67: info: pointer dereference check proved (CVC5: 1 VC)
+test.adb:320:12: info: absence of resource or memory leak proved (CVC5: 1 VC)
+test.adb:324:14: high: all paths in "Test_Sets" raise exceptions or do not terminate normally
+test.adb:325:06: info: data dependencies proved
+test.adb:329:16: info: elements shall be distinct and shall fit in the return type of "Length" for set aggregates at test.adb:74
+test.adb:329:16: info: precondition proved (CVC5: 11 VC)
+test.adb:330:16: info: elements shall be distinct and shall fit in the return type of "Length" for set aggregates at test.adb:74
 test.adb:330:16: info: precondition proved (CVC5: 1 VC)
-test.adb:331:16: info: all elements shall fit in the return type of "Length" for predefined set aggregates at test.adb:74
-test.adb:331:16: info: precondition proved (CVC5: 1 VC)
-test.adb:332:16: info: all elements shall fit in the return type of "Length" for predefined set aggregates at test.adb:74
-test.adb:332:16: info: precondition proved (CVC5: 1 VC)
+test.adb:332:22: info: assertion proved (CVC5: 1 VC)
+test.adb:333:22: info: assertion proved (CVC5: 2 VC)
 test.adb:334:22: info: assertion proved (CVC5: 1 VC)
-test.adb:335:22: info: assertion proved (CVC5: 2 VC)
-test.adb:336:22: info: assertion proved (CVC5: 1 VC)
-test.adb:337:22: info: assertion proved (CVC5: 1 VC)
-test.adb:338:22: info: assertion proved (CVC5: 1 VC)
-test.adb:339:22: info: assertion proved (CVC5: 2 VC)
-test.adb:340:07: medium: assertion might fail
-test.adb:343:14: high: all paths in "Test_Partial_Maps" raise exceptions or do not terminate normally
-test.adb:344:06: info: data dependencies proved
-test.adb:348:16: info: keys shall be distinct and all elements shall fit in the return type of "Length" for predefined maps aggregates at test.adb:183
-test.adb:348:16: info: precondition proved (CVC5: 11 VC)
-test.adb:349:16: info: keys shall be distinct and all elements shall fit in the return type of "Length" for predefined maps aggregates at test.adb:183
-test.adb:349:16: info: precondition proved (CVC5: 1 VC)
-test.adb:351:22: info: assertion proved (CVC5: 1 VC)
-test.adb:352:22: info: assertion proved (CVC5: 2 VC; Z3: 1 VC)
-test.adb:353:38: info: unrolling loop
-test.adb:354:25: info: assertion proved (CVC5: 5 VC)
-test.adb:354:25: info: precondition proved (CVC5: 10 VC)
-test.adb:356:22: info: assertion proved (CVC5: 1 VC)
+test.adb:335:22: info: assertion proved (altergo: 1 VC)
+test.adb:336:07: medium: assertion might fail
+test.adb:340:06: info: data dependencies proved
+test.adb:344:16: medium: elements shall be distinct and shall fit in the return type of "Length" for set aggregates at test.adb:74
+test.adb:344:16: medium: precondition might fail
+test.adb:349:14: high: all paths in "Test_Partial_Maps" raise exceptions or do not terminate normally
+test.adb:350:06: info: data dependencies proved
+test.adb:354:16: info: keys shall be distinct and all elements shall fit in the return type of "Length" for maps aggregates at test.adb:182
+test.adb:354:16: info: precondition proved (CVC5: 11 VC)
+test.adb:355:16: info: keys shall be distinct and all elements shall fit in the return type of "Length" for maps aggregates at test.adb:182
+test.adb:355:16: info: precondition proved (CVC5: 1 VC)
 test.adb:357:22: info: assertion proved (CVC5: 1 VC)
-test.adb:358:07: medium: assertion might fail
-test.adb:362:06: info: data dependencies proved
-test.adb:366:07: medium: resource or memory leak might occur at end of scope
-test.adb:366:16: medium: keys shall be distinct and all elements shall fit in the return type of "Length" for predefined maps aggregates at test.adb:183
-test.adb:366:16: medium: precondition might fail
-test.adb:372:06: info: data dependencies proved
-test.adb:376:07: medium: resource or memory leak might occur at end of scope
-test.adb:376:16: medium: keys shall be distinct and all elements shall fit in the return type of "Length" for predefined maps aggregates at test.adb:183
-test.adb:376:16: medium: precondition might fail
-test.adb:381:14: high: all paths in "Test_Total_Maps" raise exceptions or do not terminate normally
-test.adb:382:06: info: data dependencies proved
-test.adb:386:16: info: keys shall be distinct for predefined maps aggregates at test.adb:267
-test.adb:386:16: info: precondition proved (CVC5: 10 VC)
-test.adb:387:16: info: keys shall be distinct for predefined maps aggregates at test.adb:267
-test.adb:387:16: info: precondition proved (Trivial: 1 VC)
-test.adb:389:38: info: unrolling loop
-test.adb:390:25: info: assertion proved (CVC5: 5 VC)
-test.adb:392:22: info: assertion proved (CVC5: 1 VC; Trivial: 1 VC)
-test.adb:393:22: info: assertion proved (CVC5: 1 VC)
-test.adb:394:07: medium: assertion might fail
-test.adb:398:06: info: data dependencies proved
-test.adb:402:07: medium: resource or memory leak might occur at end of scope
-test.adb:402:16: medium: keys shall be distinct and all elements shall fit in the return type of "Length" for predefined maps aggregates at test.adb:183
-test.adb:402:16: medium: precondition might fail
-test.adb:407:14: high: all paths in "Test_Seqs" raise exceptions or do not terminate normally
-test.adb:408:06: info: data dependencies proved
-test.adb:412:16: info: all of elements shall fit in index type in predefined sequence aggregates at test.adb:13
-test.adb:412:16: info: precondition proved (CVC5: 1 VC)
-test.adb:413:16: info: all of elements shall fit in index type in predefined sequence aggregates at test.adb:13
-test.adb:413:16: info: precondition proved (Trivial: 1 VC)
-test.adb:415:22: info: assertion proved (CVC5: 1 VC)
-test.adb:416:40: info: unrolling loop
-test.adb:417:25: info: assertion proved (CVC5: 5 VC)
-test.adb:417:25: info: precondition proved (CVC5: 5 VC)
-test.adb:419:22: info: assertion proved (CVC5: 1 VC)
-test.adb:420:07: medium: assertion might fail
-test.adb:424:06: info: data dependencies proved
-test.adb:428:16: medium: all of elements shall fit in index type in predefined sequence aggregates at test.adb:13
-test.adb:428:16: medium: precondition might fail
+test.adb:358:22: info: assertion proved (CVC5: 2 VC; Z3: 1 VC)
+test.adb:359:38: info: unrolling loop
+test.adb:360:25: info: assertion proved (CVC5: 5 VC)
+test.adb:360:25: info: precondition proved (CVC5: 10 VC)
+test.adb:362:22: info: assertion proved (CVC5: 1 VC)
+test.adb:363:22: info: assertion proved (CVC5: 1 VC)
+test.adb:364:07: medium: assertion might fail
+test.adb:368:06: info: data dependencies proved
+test.adb:372:07: medium: resource or memory leak might occur at end of scope
+test.adb:372:16: medium: keys shall be distinct and all elements shall fit in the return type of "Length" for maps aggregates at test.adb:182
+test.adb:372:16: medium: precondition might fail
+test.adb:378:06: info: data dependencies proved
+test.adb:382:07: medium: resource or memory leak might occur at end of scope
+test.adb:382:16: medium: keys shall be distinct and all elements shall fit in the return type of "Length" for maps aggregates at test.adb:182
+test.adb:382:16: medium: precondition might fail
+test.adb:387:14: high: all paths in "Test_Total_Maps" raise exceptions or do not terminate normally
+test.adb:388:06: info: data dependencies proved
+test.adb:392:16: info: keys shall be distinct for maps aggregates at test.adb:266
+test.adb:392:16: info: precondition proved (CVC5: 10 VC)
+test.adb:393:16: info: keys shall be distinct for maps aggregates at test.adb:266
+test.adb:393:16: info: precondition proved (Trivial: 1 VC)
+test.adb:395:38: info: unrolling loop
+test.adb:396:25: info: assertion proved (CVC5: 5 VC)
+test.adb:398:22: info: assertion proved (CVC5: 1 VC; Trivial: 1 VC)
+test.adb:399:22: info: assertion proved (CVC5: 1 VC)
+test.adb:400:07: medium: assertion might fail
+test.adb:404:06: info: data dependencies proved
+test.adb:408:07: medium: resource or memory leak might occur at end of scope
+test.adb:408:16: medium: keys shall be distinct and all elements shall fit in the return type of "Length" for maps aggregates at test.adb:182
+test.adb:408:16: medium: precondition might fail
+test.adb:413:14: high: all paths in "Test_Seqs" raise exceptions or do not terminate normally
+test.adb:414:06: info: data dependencies proved
+test.adb:418:16: info: all elements shall fit in index type for sequence aggregates at test.adb:13
+test.adb:418:16: info: precondition proved (CVC5: 1 VC)
+test.adb:419:16: info: all elements shall fit in index type for sequence aggregates at test.adb:13
+test.adb:419:16: info: precondition proved (Trivial: 1 VC)
+test.adb:421:22: info: assertion proved (CVC5: 1 VC)
+test.adb:422:40: info: unrolling loop
+test.adb:423:25: info: assertion proved (CVC5: 5 VC)
+test.adb:423:25: info: precondition proved (CVC5: 5 VC)
+test.adb:425:22: info: assertion proved (CVC5: 1 VC)
+test.adb:426:07: medium: assertion might fail
+test.adb:430:06: info: data dependencies proved
+test.adb:434:16: medium: all elements shall fit in index type for sequence aggregates at test.adb:13
+test.adb:434:16: medium: precondition might fail

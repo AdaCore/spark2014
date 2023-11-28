@@ -23,8 +23,8 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with Ada.Containers.Bounded_Vectors;
 with Ada.Containers.Hashed_Maps;
+with Ada.Containers.Indefinite_Vectors;
 with Ada.Text_IO;
 with Ada.Unchecked_Deallocation;
 with Elists;              use Elists;
@@ -91,12 +91,6 @@ package body Gnat2Why.Expr.Aggregates is
    --     H =>
    --        Values => ([], PRESERVED), ([], ENTIRE: W), ([], PRESERVED)
 
-      Arbitrary_Bound : constant := 30;
-      --  ??? For some reason, unbounded indefinite vectors do not work.
-      --  To be fixed...
-      --  This constant is used to bound both the number of associations in the
-      --  aggregate and the number of indexed components in an association.
-
       type Path_Kind is (Root, Record_Acc, Array_Acc);
 
       type Path_Link (Kind : Path_Kind);
@@ -141,9 +135,7 @@ package body Gnat2Why.Expr.Aggregates is
 
       type Choice_Array is array (Positive range <>) of Node_Id;
 
-      subtype Small_Nat is Natural range 0 .. Arbitrary_Bound;
-
-      type Constrained_Value (Size : Small_Nat := 0) is record
+      type Constrained_Value (Size : Natural) is record
          Ada_Node : Node_Id;
          Status   : Write_Type;
          Choices  : Choice_Array (1 .. Size);
@@ -155,7 +147,7 @@ package body Gnat2Why.Expr.Aggregates is
       --  or array accesses or predicate checks).
 
       package Constrained_Value_Vectors is new
-        Ada.Containers.Bounded_Vectors (Positive, Constrained_Value);
+        Ada.Containers.Indefinite_Vectors (Positive, Constrained_Value);
 
       type Tree_Kind is (Entire_Object, Record_Components, Array_Components);
 
@@ -170,7 +162,7 @@ package body Gnat2Why.Expr.Aggregates is
 
       type Write_Status (Kind : Tree_Kind) is limited record
          Ty     : Entity_Id;
-         Values : Constrained_Value_Vectors.Vector (Arbitrary_Bound);
+         Values : Constrained_Value_Vectors.Vector;
          case Kind is
             when Entire_Object     =>
                null;
@@ -179,12 +171,7 @@ package body Gnat2Why.Expr.Aggregates is
             when Array_Components  =>
                Content_Status   : Write_Status_Access;
          end case;
-      end record
-        with Predicate =>
-          (case Kind is
-             when Entire_Object     => True,
-             when Record_Components => Is_Record_Type (Ty),
-             when Array_Components  => Is_Array_Type (Ty));
+      end record;
       --  The tree represents the structure of the base expression in the delta
       --  aggregate. It is extended (or unfolded) on demand so that subtrees
       --  correspond to subcomponents which are mentionned in the delta
@@ -228,12 +215,6 @@ package body Gnat2Why.Expr.Aggregates is
 
    end Association_Trees;
    use Association_Trees;
-
-   package Ada_Node_To_Why_Id is new Ada.Containers.Hashed_Maps
-     (Key_Type        => Node_Id,
-      Equivalent_Keys => "=",
-      Hash            => Node_Hash,
-      Element_Type    => W_Identifier_Id);
 
    -----------------------
    -- Local Subprograms --
@@ -380,8 +361,7 @@ package body Gnat2Why.Expr.Aggregates is
          Writes := new
            Write_Status'(Kind   => Entire_Object,
                          Ty     => Retysp (Ty),
-                         Values => Constrained_Value_Vectors.Empty
-                           (Arbitrary_Bound));
+                         Values => Constrained_Value_Vectors.Empty);
          Unfold_Tree (Writes);
       end Create;
 
@@ -629,7 +609,7 @@ package body Gnat2Why.Expr.Aggregates is
             --  afterward specifically.
 
             declare
-               Values : Constrained_Value_Vectors.Vector (Arbitrary_Bound);
+               Values : Constrained_Value_Vectors.Vector;
             begin
                for I in 1 .. Writes.Values.Last_Index - 1 loop
 
@@ -840,7 +820,7 @@ package body Gnat2Why.Expr.Aggregates is
                pragma Assert (Is_Array_Type (Old_Writes.Ty));
                declare
                   use Constrained_Value_Vectors;
-                  Values : Constrained_Value_Vectors.Vector (Arbitrary_Bound);
+                  Values : Constrained_Value_Vectors.Vector;
                   --  The array has always been updated as a whole until now.
                   --  To initialize the constrained values of its components,
                   --  use the values of Writes with an additional empty choice

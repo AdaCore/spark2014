@@ -141,6 +141,7 @@ package body SPARK_Definition.Annotate is
    Delayed_Equivalent_Elements : Delayed_Aggregate_Function_Maps.Map;
    Delayed_Equivalent_Keys     : Delayed_Aggregate_Function_Maps.Map;
    Delayed_First               : Delayed_Aggregate_Function_Maps.Map;
+   Delayed_Capacity            : Delayed_Aggregate_Function_Maps.Map;
    --  Delayed function entities for aggregates
 
    Delayed_Checks_For_Lemmas : Common_Containers.Node_Sets.Set :=
@@ -320,14 +321,11 @@ package body SPARK_Definition.Annotate is
       Prag           : Node_Id;
       Prag_Name      : String;
       Decl_Name      : String;
-      Ok             : out Boolean;
-      Aspect_Allowed : Boolean := True);
+      Ok             : out Boolean);
    --  Check that 'Prag' is declared immediately after declaration of
    --  given entity, emitting appropriate error message.
    --  In case of package specification, the allowed range for the pragma
    --  is immediately after the 'is' of the package.
-   --  Aspect_Allowed should be false only in the cases where the pragma
-   --  must be found at a location differing from its argument entity.
 
    procedure Check_Annotate_Placement
      (E         : Entity_Id;
@@ -433,6 +431,12 @@ package body SPARK_Definition.Annotate is
    --  Wrapper for Error_Msg_NE that conditionally emit message depending
    --  on phase.
 
+   function Get_Container_Function_From_Pragma (N  : Node_Id) return Entity_Id
+   with Pre => Is_Pragma_Annotate_GNATprove (N);
+   --  Return the function F such that N is a pragma Annotate
+   --  (GNATprove, Container_Aggregates, ..., F) or a pragma Annotate
+   --  (GNATprove, Iterable_For_Proof, ..., F).
+
    ---------
    -- "<" --
    ---------
@@ -512,13 +516,20 @@ package body SPARK_Definition.Annotate is
                --  Check that the third parameter is an expected container kind
 
                if Kind_Str = "predefined_sets" then
-                  Annot := (Kind => Sets, Use_Named => False, others => Empty);
+                  Annot := (Kind      => Sets,
+                            Use_Named => False,
+                            others    => <>);
                elsif Kind_Str = "predefined_maps" then
-                  Annot := (Kind => Maps, Use_Named => True, others => Empty);
+                  Annot := (Kind      => Maps,
+                            Use_Named => True,
+                            others    => <>);
                elsif Kind_Str = "predefined_sequences" then
-                  Annot := (Kind => Seqs, Use_Named => False, others => Empty);
+                  Annot := (Kind      => Seqs,
+                            Use_Named => False,
+                            others    => <>);
                elsif Kind_Str = "from_model" then
-                  Annot := (Kind => Model, Use_Named => <>, others => Empty);
+                  Annot := (Kind   => Model,
+                            others => <>);
                else
                   Error_Msg_N_If
                     ("third parameter of " & Aspect_Or_Pragma
@@ -574,6 +585,16 @@ package body SPARK_Definition.Annotate is
                   Assign_Indexed_Subp => Assign_Indexed_Subp);
 
                Annot.Empty_Function := Entity (Empty_Subp);
+
+               if Ekind (Annot.Empty_Function) = E_Function
+                 and then Present (First_Formal (Annot.Empty_Function))
+               then
+                  Annot.Spec_Capacity := Etype
+                    (First_Formal (Annot.Empty_Function));
+                  pragma Assert
+                    (Number_Formals (Annot.Empty_Function) = 1
+                     and then Is_Signed_Integer_Type (Annot.Spec_Capacity));
+               end if;
 
                case Annot.Kind is
                   when Sets | Seqs =>
@@ -664,6 +685,7 @@ package body SPARK_Definition.Annotate is
 
             if Kind_Str not in "equivalent_elements"
                              | "equivalent_keys"
+                             | "capacity"
                              | "contains"
                              | "has_key"
                              | "default_item"
@@ -876,6 +898,103 @@ package body SPARK_Definition.Annotate is
                   end;
                end if;
 
+            --  Capacity may or may not take the container as a first parameter
+            --  depending on whether the capacity of a container is specific to
+            --  a container object. Delay it if it takes no parameters.
+
+            elsif Kind_Str = "capacity" then
+
+               if not Is_Signed_Or_Big_Integer_Type (Etype (Ent)) then
+                  Error_Msg_N_If
+                    ("""Capacity"" shall return a signed integer "
+                     & "type or a subtype of Big_Integer",
+                     Ent);
+                  return;
+
+               elsif No (First_Formal (Ent)) then
+
+                  if not In_SPARK (Ent) then
+                     return;
+                  end if;
+
+                  declare
+                     Inserted : Boolean;
+                     Position : Delayed_Aggregate_Function_Maps.Cursor;
+                  begin
+                     Delayed_Capacity.Insert
+                       ((Enclosing_List      => List_Containing (Prag),
+                         Base_Component_Type => Empty),
+                        Ent, Position, Inserted);
+
+                     if not Inserted then
+                        Error_Msg_N_If
+                          ("duplicated ""Capacity"" function in the same "
+                           & "scope",
+                           Ent);
+                     end if;
+                  end;
+
+               else
+                  Cont_Ty := Etype (First_Formal (Ent));
+
+                  if not In_SPARK (Cont_Ty) then
+                     return;
+                  elsif not In_SPARK (Ent) then
+                     Error_Msg_N_If
+                       ("""Capacity"" function shall be in SPARK", Ent);
+                     return;
+                  elsif not Has_Aggregate_Annotation (Cont_Ty) then
+                     Error_Msg_N_If
+                       ("type of first parameter shall be annotated with"
+                        & " Container_Aggregate",
+                        Ent);
+                     return;
+                  elsif List_Containing (Prag) /=
+                    List_Containing (Parent (Cont_Ty))
+                  then
+                     Error_Msg_NE_If
+                       ("""Capacity"" shall be "
+                        & "declared in the same list of declarations as the "
+                        & "partial view of &", Ent, Cont_Ty);
+                     return;
+                  end if;
+
+                  Cont_Ty := Base_Retysp (Cont_Ty);
+
+                  declare
+                     Annot : Aggregate_Annotation renames
+                       Aggregate_Annotations (Cont_Ty);
+                  begin
+                     if No (Annot.Spec_Capacity) then
+                        Error_Msg_NE_If
+                          ("""Capacity"" function for & shall have no "
+                           & "parameters",
+                           Ent, Cont_Ty);
+                        Error_Msg_NE_If
+                          ("\& has no parameters",
+                           Ent, Annot.Empty_Function);
+                        return;
+
+                     elsif Number_Formals (Ent) /= 1 then
+                        Error_Msg_N_If
+                          ("""Capacity"" function shall have one parameter",
+                           Ent);
+                        return;
+
+                     elsif Present (Annot.Capacity) then
+                        Error_Msg_N_If
+                          ("a single ""Capacity"" function shall be"
+                           & " specified for a type with a"
+                           & " Container_Aggregates annotation",
+                           Ent);
+                        return;
+                     end if;
+
+                     --  Store the capacity function
+
+                     Annot.Capacity := Ent;
+                  end;
+               end if;
             else
 
                --  Common checks for other primitives
@@ -1262,120 +1381,6 @@ package body SPARK_Definition.Annotate is
                                  Ent);
                               return;
 
-                           else
-
-                              --  Check that container aggregates on the
-                              --  source and the target match.
-
-                              declare
-                                 Source_Asp            : constant Node_Id :=
-                                   Find_Value_Of_Aspect
-                                     (Cont_Ty, Aspect_Aggregate);
-                                 Source_Empty          : Node_Id := Empty;
-                                 Source_Add_Named      : Node_Id := Empty;
-                                 Source_Add_Unnamed    : Node_Id := Empty;
-                                 Source_New_Indexed    : Node_Id := Empty;
-                                 Source_Assign_Indexed : Node_Id := Empty;
-
-                                 Target_Asp            : constant Node_Id :=
-                                   Find_Value_Of_Aspect
-                                     (Etype (Ent), Aspect_Aggregate);
-                                 Target_Empty          : Node_Id := Empty;
-                                 Target_Add_Named      : Node_Id := Empty;
-                                 Target_Add_Unnamed    : Node_Id := Empty;
-                                 Target_New_Indexed    : Node_Id := Empty;
-                                 Target_Assign_Indexed : Node_Id := Empty;
-
-                                 Source_Add            : Entity_Id;
-                                 Source_C_Formal       : Node_Id;
-                                 Source_E_Formal       : Node_Id;
-                                 Source_K_Formal       : Node_Id;
-
-                                 Target_Add            : Entity_Id;
-                                 Target_C_Formal       : Node_Id;
-                                 Target_E_Formal       : Node_Id;
-                                 Target_K_Formal       : Node_Id;
-
-                                 Error_Msg           : constant String :=
-                                   "concrete and model types of a ""Model"" "
-                                   & "function shall define compatible "
-                                   & "aggregates";
-
-                              begin
-                                 Parse_Aspect_Aggregate
-                                   (N                   => Source_Asp,
-                                    Empty_Subp          => Source_Empty,
-                                    Add_Named_Subp      => Source_Add_Named,
-                                    Add_Unnamed_Subp    => Source_Add_Unnamed,
-                                    New_Indexed_Subp    => Source_New_Indexed,
-                                    Assign_Indexed_Subp =>
-                                      Source_Assign_Indexed);
-                                 Parse_Aspect_Aggregate
-                                   (N                   => Target_Asp,
-                                    Empty_Subp          => Target_Empty,
-                                    Add_Named_Subp      => Target_Add_Named,
-                                    Add_Unnamed_Subp    => Target_Add_Unnamed,
-                                    New_Indexed_Subp    => Target_New_Indexed,
-                                    Assign_Indexed_Subp =>
-                                      Target_Assign_Indexed);
-
-                                 if Present (Source_Add_Named) /=
-                                   Present (Target_Add_Named)
-                                 then
-                                    Error_Msg_N_If
-                                      (Error_Msg, Ent);
-                                    return;
-                                 elsif Present (Source_Add_Named) then
-                                    Source_Add := Entity (Source_Add_Named);
-                                    Target_Add := Entity (Target_Add_Named);
-                                 else
-                                    Source_Add := Entity (Source_Add_Unnamed);
-                                    Target_Add := Entity (Target_Add_Unnamed);
-                                 end if;
-
-                                 --  Retrieve the formals and check their
-                                 --  types.
-
-                                 Source_C_Formal :=
-                                   First_Formal (Source_Add);
-                                 Target_C_Formal :=
-                                   First_Formal (Target_Add);
-
-                                 if Present (Source_Add_Named) then
-                                    Source_K_Formal :=
-                                      Next_Formal (Source_C_Formal);
-                                    Target_K_Formal :=
-                                      Next_Formal (Target_C_Formal);
-                                    Source_E_Formal :=
-                                      Next_Formal (Source_K_Formal);
-                                    Target_E_Formal :=
-                                      Next_Formal (Target_K_Formal);
-                                 else
-                                    Source_E_Formal :=
-                                      Next_Formal (Source_C_Formal);
-                                    Target_E_Formal :=
-                                      Next_Formal (Target_C_Formal);
-                                 end if;
-
-                                 if Etype (Source_E_Formal) /=
-                                   Etype (Target_E_Formal)
-                                 then
-                                    Error_Msg_N_If
-                                      (Error_Msg & ", element types do "
-                                       & "not match",
-                                       Ent);
-                                    return;
-                                 elsif Present (Source_Add_Named)
-                                   and then Etype (Source_K_Formal) /=
-                                   Etype (Target_K_Formal)
-                                 then
-                                    Error_Msg_N_If
-                                      (Error_Msg & ", key types do"
-                                       & " not match",
-                                       Ent);
-                                    return;
-                                 end if;
-                              end;
                            end if;
 
                            --  Store the model function
@@ -1452,17 +1457,14 @@ package body SPARK_Definition.Annotate is
       Prag           : Node_Id;
       Prag_Name      : String;
       Decl_Name      : String;
-      Ok             : out Boolean;
-      Aspect_Allowed : Boolean := True)
+      Ok             : out Boolean)
    is
       Cursor        : Node_Id := Prag;
       Target        : Node_Id;
       Base_Ent      : Entity_Id;
    begin
-
-      if From_Aspect_Specification (Prag)
-      then
-         Ok := Aspect_Allowed;
+      if From_Aspect_Specification (Prag) then
+         Ok := True;
       elsif not Is_List_Member (Cursor) then
          Ok := False;
       else
@@ -2817,7 +2819,9 @@ package body SPARK_Definition.Annotate is
             Mark_Violation (Arg4_Exp, From => E);
             return;
          end if;
-         if Scope (E) /= Scope (Container_Ty) then
+         if List_Containing (Prag) /=
+           List_Containing (Parent (Container_Ty))
+         then
             Error_Msg_N_If
               (Name_For_Error
                & " function must be primitive for container type", E);
@@ -3104,13 +3108,12 @@ package body SPARK_Definition.Annotate is
       end if;
 
       Check_Annotate_Placement
-        (Cont_Element,
+        (New_Prim,
          Placed_At_Specification,
          Prag,
          "Iterable_For_Proof",
-         "declaration of Iterable primitive Element",
-         Ok,
-         False);
+         "specification of function " & Source_Name (New_Prim),
+         Ok);
       if not Ok then
          return;
       end if;
@@ -3600,7 +3603,32 @@ package body SPARK_Definition.Annotate is
         (if Is_Full_View (Typ) then Partial_View (Typ) else Typ);
       Typ_List : constant List_Id := List_Containing (Parent (P_Typ));
       Annot    : Aggregate_Annotation renames Aggregate_Annotations (Typ);
+
    begin
+      --  Search for an applicable Capacity function. It is optional.
+
+      declare
+         use Delayed_Aggregate_Function_Maps;
+         Position : constant Delayed_Aggregate_Function_Maps.Cursor :=
+           Delayed_Capacity.Find
+             ((Enclosing_List      => Typ_List,
+               Base_Component_Type => Types.Empty));
+      begin
+         if Has_Element (Position) then
+            if Present (Annot.Spec_Capacity) then
+               Error_Msg_NE_If
+                 ("""Capacity"" function for & shall take the container "
+                  & "as a parameter",
+                  Element (Position), Typ);
+               Error_Msg_NE_If
+                 ("\& takes the capacity as a parameter",
+                  Element (Position), Annot.Empty_Function);
+            else
+               Annot.Capacity := Element (Position);
+            end if;
+         end if;
+      end;
+
       case Annot.Kind is
          when Sets =>
 
@@ -3780,6 +3808,139 @@ package body SPARK_Definition.Annotate is
                Error_Msg_NE_If
                  ("no ""Model"" function found for type "
                   & "with aggregates using models &", Typ, Typ);
+            else
+
+               --  Check that container aggregates on the
+               --  source and the target match.
+
+               declare
+                  Source_Asp            : constant Node_Id :=
+                    Find_Value_Of_Aspect (Typ, Aspect_Aggregate);
+                  Source_Empty          : Node_Id := Empty;
+                  Source_Add_Named      : Node_Id := Empty;
+                  Source_Add_Unnamed    : Node_Id := Empty;
+                  Source_New_Indexed    : Node_Id := Empty;
+                  Source_Assign_Indexed : Node_Id := Empty;
+
+                  Target_Asp            : constant Node_Id :=
+                    Find_Value_Of_Aspect
+                      (Etype (Annot.Model), Aspect_Aggregate);
+                  Target_Empty          : Node_Id := Empty;
+                  Target_Add_Named      : Node_Id := Empty;
+                  Target_Add_Unnamed    : Node_Id := Empty;
+                  Target_New_Indexed    : Node_Id := Empty;
+                  Target_Assign_Indexed : Node_Id := Empty;
+
+                  Source_Add            : Entity_Id;
+                  Source_C_Formal       : Node_Id;
+                  Source_E_Formal       : Node_Id;
+                  Source_K_Formal       : Node_Id;
+
+                  Target_Add            : Entity_Id;
+                  Target_C_Formal       : Node_Id;
+                  Target_E_Formal       : Node_Id;
+                  Target_K_Formal       : Node_Id;
+
+                  Error_Msg           : constant String :=
+                    "concrete and model types of a ""Model"" "
+                    & "function shall define compatible "
+                    & "aggregates";
+
+               begin
+                  Parse_Aspect_Aggregate
+                    (N                   => Source_Asp,
+                     Empty_Subp          => Source_Empty,
+                     Add_Named_Subp      => Source_Add_Named,
+                     Add_Unnamed_Subp    => Source_Add_Unnamed,
+                     New_Indexed_Subp    => Source_New_Indexed,
+                     Assign_Indexed_Subp =>
+                       Source_Assign_Indexed);
+                  Parse_Aspect_Aggregate
+                    (N                   => Target_Asp,
+                     Empty_Subp          => Target_Empty,
+                     Add_Named_Subp      => Target_Add_Named,
+                     Add_Unnamed_Subp    => Target_Add_Unnamed,
+                     New_Indexed_Subp    => Target_New_Indexed,
+                     Assign_Indexed_Subp => Target_Assign_Indexed);
+
+                  if Present (Source_Add_Named) /= Present (Target_Add_Named)
+                  then
+                     Error_Msg_N_If (Error_Msg, Annot.Model);
+                     return;
+                  elsif Present (Source_Add_Named) then
+                     Source_Add := Entity (Source_Add_Named);
+                     Target_Add := Entity (Target_Add_Named);
+                  else
+                     Source_Add := Entity (Source_Add_Unnamed);
+                     Target_Add := Entity (Target_Add_Unnamed);
+                  end if;
+
+                  --  Retrieve the formals and check their
+                  --  types.
+
+                  Source_C_Formal := First_Formal (Source_Add);
+                  Target_C_Formal := First_Formal (Target_Add);
+
+                  if Present (Source_Add_Named) then
+                     Source_K_Formal := Next_Formal (Source_C_Formal);
+                     Target_K_Formal := Next_Formal (Target_C_Formal);
+                     Source_E_Formal := Next_Formal (Source_K_Formal);
+                     Target_E_Formal := Next_Formal (Target_K_Formal);
+                  else
+                     Source_E_Formal := Next_Formal (Source_C_Formal);
+                     Target_E_Formal := Next_Formal (Target_C_Formal);
+                  end if;
+
+                  if Retysp (Etype (Source_E_Formal)) /=
+                    Retysp (Etype (Target_E_Formal))
+                  then
+                     Error_Msg_N_If
+                       (Error_Msg & ", element types do not match",
+                        Annot.Model);
+                     return;
+                  elsif Present (Source_Add_Named)
+                    and then Retysp (Etype (Source_K_Formal)) /=
+                      Retysp (Etype (Target_K_Formal))
+                  then
+                     Error_Msg_N_If
+                       (Error_Msg & ", key types do not match",
+                        Annot.Model);
+                     return;
+                  end if;
+               end;
+            end if;
+
+            --  Check that the capacity function inherited from the model is
+            --  compatible if any.
+
+            if No (Annot.Capacity) then
+               declare
+                  Model_Type    : Entity_Id;
+                  Current_Annot : Aggregate_Annotation := Annot;
+               begin
+                  while Current_Annot.Kind = Model
+                    and then Present (Current_Annot.Model)
+                  loop
+                     Model_Type := Current_Annot.Model_Type;
+                     Current_Annot := Get_Aggregate_Annotation (Model_Type);
+
+                     if Present (Current_Annot.Capacity) then
+                        if No (Annot.Spec_Capacity) /=
+                          No (Current_Annot.Spec_Capacity)
+                        then
+                           Error_Msg_NE_If
+                             ("incompatible ""Capacity"" function inherited "
+                              & "from model type &", Typ, Model_Type);
+                           Error_Msg_NE_If
+                             ((if Present (Annot.Spec_Capacity)
+                              then "\& takes the capacity as a parameter"
+                              else "\& has no parameters"),
+                              Typ, Annot.Empty_Function);
+                        end if;
+                        exit;
+                     end if;
+                  end loop;
+               end;
             end if;
       end case;
 
@@ -3789,31 +3950,35 @@ package body SPARK_Definition.Annotate is
 
       declare
          Globals : Global_Flow_Ids;
-      begin
-         Get_Globals
-           (Subprogram          => Annot.Empty_Function,
-            Scope               =>
-              (Ent  => Annot.Empty_Function,
-               Part => Visible_Part),
-            Classwide           => False,
-            Globals             => Globals,
-            Use_Deduced_Globals =>
-               not Gnat2Why_Args.Global_Gen_Mode,
-            Ignore_Depends      => False);
 
-         if Is_Function_With_Side_Effects (Annot.Empty_Function) then
-            Error_Msg_NE_If
-              ("& function shall not have side effects",
-               Typ, Annot.Empty_Function);
-         elsif not Globals.Proof_Ins.Is_Empty
-           or else not Globals.Inputs.Is_Empty
-         then
-            Error_Msg_NE_If
-              ("& function shall not access global data",
-               Typ, Annot.Empty_Function);
-         elsif Is_Volatile_Function (Annot.Empty_Function) then
-            Error_Msg_NE_If
-              ("& function shall not be voltaile", Typ, Annot.Empty_Function);
+      begin
+         if Ekind (Annot.Empty_Function) /= E_Constant then
+            Get_Globals
+              (Subprogram          => Annot.Empty_Function,
+               Scope               =>
+                 (Ent  => Annot.Empty_Function,
+                  Part => Visible_Part),
+               Classwide           => False,
+               Globals             => Globals,
+               Use_Deduced_Globals =>
+                  not Gnat2Why_Args.Global_Gen_Mode,
+               Ignore_Depends      => False);
+
+            if Is_Function_With_Side_Effects (Annot.Empty_Function) then
+               Error_Msg_NE_If
+                 ("& function shall not have side effects",
+                  Typ, Annot.Empty_Function);
+            elsif not Globals.Proof_Ins.Is_Empty
+              or else not Globals.Inputs.Is_Empty
+            then
+               Error_Msg_NE_If
+                 ("& function shall not access global data",
+                  Typ, Annot.Empty_Function);
+            elsif Is_Volatile_Function (Annot.Empty_Function) then
+               Error_Msg_NE_If
+                 ("& function shall not be volatile",
+                  Typ, Annot.Empty_Function);
+            end if;
          end if;
 
          Get_Globals
@@ -3949,10 +4114,10 @@ package body SPARK_Definition.Annotate is
    is (Aggregate_Annotations.Element (Base_Retysp (E)));
 
    ----------------------------------------
-   -- Get_Aggregate_Function_From_Pragma --
+   -- Get_Container_Function_From_Pragma --
    ----------------------------------------
 
-   function Get_Aggregate_Function_From_Pragma
+   function Get_Container_Function_From_Pragma
      (N  : Node_Id)
       return Entity_Id
    is
@@ -3972,7 +4137,7 @@ package body SPARK_Definition.Annotate is
          Exp  : constant Node_Id := Expression (Arg4);
 
       begin
-         if Name /= "container_aggregates"
+         if Name not in "container_aggregates" | "iterable_for_proof"
            or else Nkind (Exp) not in N_Has_Entity
          then
             return Empty;
@@ -3988,7 +4153,7 @@ package body SPARK_Definition.Annotate is
             end if;
          end;
       end;
-   end Get_Aggregate_Function_From_Pragma;
+   end Get_Container_Function_From_Pragma;
 
    ------------------------------
    -- Get_Lemmas_To_Specialize --
@@ -4452,12 +4617,14 @@ package body SPARK_Definition.Annotate is
          end;
       end if;
 
-      --  If E is annotated with a Container_Aggregates, go over the
-      --  following declarations to try and find its associated functions.
+      --  If E is annotated with Container_Aggregates or has an Iterable
+      --  aspect, go over the following declarations to try and find its
+      --  associated functions.
 
       if Is_Type (E)
         and then Is_Base_Type (E)
-        and then Has_Aggregate_Annotation (E)
+        and then (Has_Aggregate_Annotation (E)
+                  or else Has_Iterable_Aspect_In_SPARK (E))
       then
          declare
             Decl_Node : constant Node_Id := Declaration_Node (E);
@@ -4469,7 +4636,7 @@ package body SPARK_Definition.Annotate is
                   if Is_Pragma_Annotate_GNATprove (Cur) then
                      declare
                         Fun : constant Entity_Id :=
-                          Get_Aggregate_Function_From_Pragma (Cur);
+                          Get_Container_Function_From_Pragma (Cur);
                      begin
                         if Present (Fun) then
                            Queue_For_Marking (Fun);

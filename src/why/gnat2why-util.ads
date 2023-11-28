@@ -173,6 +173,12 @@ package Gnat2Why.Util is
 
    end Ada_Ent_To_Why;
 
+   package Ada_Node_To_Why_Id is new Ada.Containers.Hashed_Maps
+     (Key_Type        => Node_Id,
+      Equivalent_Keys => "=",
+      Hash            => Node_Hash,
+      Element_Type    => W_Identifier_Id);
+
    Symbol_Table       : Ada_Ent_To_Why.Map := Ada_Ent_To_Why.Empty_Map;
    Continuation_Stack : Continuation_Vectors.Vector;
    --  Stack of all the continuation messages relevant for the translation of
@@ -404,6 +410,15 @@ package Gnat2Why.Util is
                      | Pragma_Refined_Post;
    --  Returns the precondition or postcondition (depending on Kind) for a
    --  static call.
+
+   function Get_Referenced_Variables
+     (Why_Expr : W_Prog_Id;
+      Scope    : Entity_Id)
+      return Node_Sets.Set;
+   --  Return the set of variables used in Why_Expr and not declared in Scope.
+   --  Also include constants of an access-to-variable type and constants with
+   --  variable inputs. This is used as a workaround when no flow analysis
+   --  routine can be called.
 
    function New_Check_Info
      (Range_Check_Ty : Opt_Type_Kind_Id := Empty;

@@ -182,10 +182,10 @@ is
         Pre => Has_Element (X, Y);
       function Has_Element (X : T; Y : C) return Boolean;
       function Contains (X : T; E : Integer) return Boolean with
-        Post => Contains'Result = (for some F of X => E = F);
+        Post => Contains'Result = (for some F of X => E = F),
+        Annotate => (GNATprove, Iterable_For_Proof, "Contains");
       function Element (X : T; Y : C) return Integer with
         Pre  => Has_Element (X, Y);
-      pragma Annotate (GNATprove, Iterable_For_Proof, "Contains", Contains);
       --  Recursive call - for proof only - because of the iterable_for_proof
       --  annotation.
 
@@ -221,10 +221,10 @@ is
         Pre => Has_Element (X, Y);
       function Has_Element (X : T; Y : C) return Boolean;
       function Model (X : T) return P1.T with
-        Post => (for all E of X => (for some F of Model'Result => E = F));
+        Post => (for all E of X => (for some F of Model'Result => E = F)),
+        Annotate => (GNATprove, Iterable_For_Proof, "Model");
       function Element (X : T; Y : C) return Integer with
         Pre  => Has_Element (X, Y);
-      pragma Annotate (GNATprove, Iterable_For_Proof, "Model", Model);
       --  Recursive call - for proof only - because of the iterable_for_proof
       --  annotation.
 

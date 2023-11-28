@@ -41,29 +41,29 @@ multiset.ads:53:35: info: invariant check proved (CVC5: 1 VC)
 multiset.ads:53:35: info: predicate check proved (Trivial: 1 VC)
 multiset.ads:53:71: info: predicate check proved (Trivial: 1 VC)
 multiset.ads:54:06: info: Inline_For_Proof or Logical_Equal annotation proved (CVC5: 1 VC)
-multiset.ads:56:13: info: implicit aspect Always_Terminates on "Choose" has been proved, subprogram will terminate
-multiset.ads:57:06: info: data dependencies proved
-multiset.ads:58:20: info: invariant check proved (CVC5: 1 VC)
-multiset.ads:59:16: info: invariant check proved (CVC5: 1 VC)
-multiset.ads:59:16: info: postcondition proved (CVC5: 1 VC)
-multiset.ads:63:13: info: during checks for quantification at multiset.ads:107
-multiset.ads:63:13: info: implicit aspect Always_Terminates on "Iter_First" has been proved, subprogram will terminate
-multiset.ads:63:13: info: precondition proved (Trivial: 1 VC)
-multiset.ads:64:06: info: data dependencies proved
-multiset.ads:66:13: info: during checks for quantification at multiset.ads:107
-multiset.ads:66:13: info: implicit aspect Always_Terminates on "Iter_Has_Element" has been proved, subprogram will terminate
-multiset.ads:66:13: info: precondition proved (Trivial: 1 VC)
-multiset.ads:70:06: info: data dependencies proved
-multiset.ads:72:13: info: during checks for quantification at multiset.ads:107
-multiset.ads:72:13: info: implicit aspect Always_Terminates on "Iter_Next" has been proved, subprogram will terminate
-multiset.ads:72:13: info: precondition proved (CVC5: 1 VC)
-multiset.ads:75:06: info: data dependencies proved
-multiset.ads:76:16: info: invariant check proved (CVC5: 1 VC)
-multiset.ads:78:13: info: during checks for quantification at multiset.ads:107
-multiset.ads:78:13: info: implicit aspect Always_Terminates on "Iter_Element" has been proved, subprogram will terminate
-multiset.ads:78:13: info: precondition proved (CVC5: 1 VC)
-multiset.ads:82:06: info: data dependencies proved
-multiset.ads:83:16: info: invariant check proved (CVC5: 1 VC)
+multiset.ads:57:13: info: implicit aspect Always_Terminates on "Choose" has been proved, subprogram will terminate
+multiset.ads:58:06: info: data dependencies proved
+multiset.ads:59:20: info: invariant check proved (CVC5: 1 VC)
+multiset.ads:60:16: info: invariant check proved (CVC5: 1 VC)
+multiset.ads:60:16: info: postcondition proved (CVC5: 1 VC)
+multiset.ads:64:13: info: during checks for quantification at multiset.ads:107
+multiset.ads:64:13: info: implicit aspect Always_Terminates on "Iter_First" has been proved, subprogram will terminate
+multiset.ads:64:13: info: precondition proved (Trivial: 1 VC)
+multiset.ads:65:06: info: data dependencies proved
+multiset.ads:67:13: info: during checks for quantification at multiset.ads:107
+multiset.ads:67:13: info: implicit aspect Always_Terminates on "Iter_Has_Element" has been proved, subprogram will terminate
+multiset.ads:67:13: info: precondition proved (Trivial: 1 VC)
+multiset.ads:71:06: info: data dependencies proved
+multiset.ads:73:13: info: during checks for quantification at multiset.ads:107
+multiset.ads:73:13: info: implicit aspect Always_Terminates on "Iter_Next" has been proved, subprogram will terminate
+multiset.ads:73:13: info: precondition proved (CVC5: 1 VC)
+multiset.ads:76:06: info: data dependencies proved
+multiset.ads:77:16: info: invariant check proved (CVC5: 1 VC)
+multiset.ads:79:13: info: during checks for quantification at multiset.ads:107
+multiset.ads:79:13: info: implicit aspect Always_Terminates on "Iter_Element" has been proved, subprogram will terminate
+multiset.ads:79:13: info: precondition proved (CVC5: 1 VC)
+multiset.ads:83:06: info: data dependencies proved
+multiset.ads:84:16: info: invariant check proved (CVC5: 1 VC)
 multiset.ads:103:13: info: implicit aspect Always_Terminates on "Cardinality_Rec" has been proved, subprogram will terminate
 multiset.ads:103:13: info: implicit function contract might not be available on recursive calls
 multiset.ads:105:46: info: range check proved (CVC5: 1 VC)

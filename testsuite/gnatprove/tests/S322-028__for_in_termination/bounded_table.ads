@@ -40,11 +40,11 @@ is
                    Index_Of (Next'Result) > Index_Of (Cursor));
 
    function Member (Table : T; Elem : Elem_Type) return Boolean
-   with Post => Member'Result = (for some E of Table => E = Elem);
+   with Post => Member'Result = (for some E of Table => E = Elem),
+        Annotate => (GNATprove, Iterable_For_Proof, "Contains");
 
    function Element (Table : T; Cursor : Cursor_Type) return Elem_Type
    with Pre => Has_Element (Table, Cursor);
-   pragma Annotate (GNATprove, Iterable_For_Proof, "Contains", Member);
 
    procedure Push
      (Table : in out T;
