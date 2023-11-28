@@ -29,27 +29,14 @@ package body Outputs is
    --  If a new line has just been created, print as many spaces
    --  as the indentation level requires.
 
-   type File_Access is access all File_Type;
-
-   function File_Handle (O : Output_Id) return File_Access;
-   --  Return the file handle corresponding to this output id
-
-   function File_Handle (O : Output_Id) return File_Access is
-      (case O is
-          when Stdout =>
-             Stdout_Handle'Access,
-          when Stderr =>
-             Stderr_Handle'Access,
-          when Current_File =>
-             Current_File_Handle'Access);
-
    ------------------------
    -- Close_Current_File --
    ------------------------
 
    procedure Close_Current_File is
    begin
-      Close (Current_File_Handle);
+      pragma Assert (Is_Open (Output_Handles (Current_File)));
+      Close (Output_Handles (Current_File));
       Output_States (Current_File).Indent := 0;
       Output_States (Current_File).New_Line := False;
    end Close_Current_File;
@@ -62,7 +49,7 @@ package body Outputs is
    begin
       if Output_States (O).New_Line then
          for J in 1 .. Output_States (O).Indent loop
-            Put (File_Handle (O).all, " ");
+            Put (Output_Handles (O), " ");
          end loop;
          Output_States (O).New_Line := False;
       end if;
@@ -74,7 +61,7 @@ package body Outputs is
 
    procedure NL (O : Output_Id) is
    begin
-      New_Line (File_Handle (O).all);
+      New_Line (Output_Handles (O));
       Output_States (O).New_Line := True;
    end NL;
 
@@ -84,7 +71,8 @@ package body Outputs is
 
    procedure Open_Current_File (Filename : String) is
    begin
-      Create (Current_File_Handle, Out_File, Filename);
+      pragma Assert (not Is_Open (Output_Handles (Current_File)));
+      Create (Output_Handles (Current_File), Out_File, Filename);
       Output_States (Current_File).Indent := 0;
       Output_States (Current_File).New_Line := False;
    end Open_Current_File;
@@ -97,17 +85,17 @@ package body Outputs is
    begin
       I (O);
       if As_String then
-         Put (File_Handle (O).all, '"');
+         Put (Output_Handles (O), '"');
          for I in S'Range loop
             if S (I) = '"' then
-               Put (File_Handle (O).all, "\""");
+               Put (Output_Handles (O), "\""");
             else
-               Put (File_Handle (O).all, S (I));
+               Put (Output_Handles (O), S (I));
             end if;
          end loop;
-         Put (File_Handle (O).all, '"');
+         Put (Output_Handles (O), '"');
       else
-         Put (File_Handle (O).all, S);
+         Put (Output_Handles (O), S);
       end if;
    end P;
 
@@ -118,7 +106,7 @@ package body Outputs is
    procedure PL (O : Output_Id; S : String) is
    begin
       I (O);
-      Put_Line (File_Handle (O).all, S);
+      Put_Line (Output_Handles (O), S);
       Output_States (O).New_Line := True;
    end PL;
 
