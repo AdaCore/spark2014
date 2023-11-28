@@ -12909,8 +12909,8 @@ package body Gnat2Why.Expr is
          Variables        : Flow_Id_Sets.Set;
          Contextual_Parts : Node_Sets.Set)
       is
-         function Get_Name_For_Aggregate (Expr : Node_Id) return String;
-         --  Return a suitable name for the aggregate Expr. If Expr is the
+         function Get_Name_For_Aggregate (Aggr : Node_Id) return String;
+         --  Return a suitable name for the aggregate Aggr. If Aggr is the
          --  initialization expression in an object declaration, then use the
          --  name of the object as basis, which ensures stable naming across
          --  changes in GNATprove. Otherwise, use a temporary name based on a
@@ -12920,8 +12920,8 @@ package body Gnat2Why.Expr is
          -- Get_Name_For_Aggregate --
          ----------------------------
 
-         function Get_Name_For_Aggregate (Expr : Node_Id) return String is
-            Obj : constant Entity_Id := Get_Initialized_Object (Expr);
+         function Get_Name_For_Aggregate (Aggr : Node_Id) return String is
+            Obj : constant Entity_Id := Get_Initialized_Object (Aggr);
 
          begin
             --  If Expr is used to initialize an object, reuse the object name
@@ -13279,7 +13279,9 @@ package body Gnat2Why.Expr is
             Expr_Or_Association : Node_Id);
          --  Traverse the value Expr_Or_Association to collect desired elements
 
-         procedure Traverse_Rec_Aggregate (Dim : Dimensions; Expr : Node_Id);
+         procedure Traverse_Rec_Aggregate
+           (Dim     : Dimensions;
+            Subexpr : Node_Id);
          --  Main recursive function operating over multi-dimensional array
          --  aggregates.
 
@@ -13512,12 +13514,14 @@ package body Gnat2Why.Expr is
          -- Traverse_Rec_Aggregate --
          ----------------------------
 
-         procedure Traverse_Rec_Aggregate (Dim : Dimensions; Expr : Node_Id)
+         procedure Traverse_Rec_Aggregate
+           (Dim     : Dimensions;
+            Subexpr : Node_Id)
          is
             Exprs       : constant List_Id :=
-              (if Nkind (Expr) = N_Delta_Aggregate then No_List
-               else Expressions (Expr));
-            Assocs      : constant List_Id := Component_Associations (Expr);
+              (if Nkind (Subexpr) = N_Delta_Aggregate then No_List
+               else Expressions (Subexpr));
+            Assocs      : constant List_Id := Component_Associations (Subexpr);
             Expression  : Node_Id := Nlists.First (Exprs);
             Association : Node_Id := Nlists.First (Assocs);
 
@@ -13563,7 +13567,7 @@ package body Gnat2Why.Expr is
                   Typ    => Etype (Update_Prefix)));
          end if;
 
-         Traverse_Rec_Aggregate (Dim => 1, Expr => Expr);
+         Traverse_Rec_Aggregate (Dim => 1, Subexpr => Expr);
 
          --  Remove parameter indices from local component association from the
          --  set of referenced variables.
@@ -13588,7 +13592,7 @@ package body Gnat2Why.Expr is
          --  Register the last dimensional index with a single subaggregate.
          --  Used to eliminate redundant bound checks as much as possible.
 
-         procedure Insert_Checks (Expr : Node_Id; Dim : Dimensions);
+         procedure Insert_Checks (Subexpr : Node_Id; Dim : Dimensions);
          --  Introduce checks for choices of an expression. Recursively call
          --  itself to check choices for upper dimensions in regular
          --  multidimensional aggregates.
@@ -13597,12 +13601,13 @@ package body Gnat2Why.Expr is
          -- Insert_Checks --
          -------------------
 
-         procedure Insert_Checks (Expr : Node_Id; Dim : Dimensions) is
-            Assocs       : constant List_Id := Component_Associations (Expr);
+         procedure Insert_Checks (Subexpr : Node_Id; Dim : Dimensions) is
+            Assocs       : constant List_Id :=
+              Component_Associations (Subexpr);
             Association  : Node_Id := Nlists.First (Assocs);
             Exprs        : constant List_Id :=
-              (if Nkind (Expr) = N_Delta_Aggregate then No_List
-               else Expressions (Expr));
+              (if Nkind (Subexpr) = N_Delta_Aggregate then No_List
+               else Expressions (Subexpr));
             Expression   : Node_Id := Nlists.First (Exprs);
             Index_Typ    : constant Entity_Id := Index_Types (Dim);
             Index_Base   : constant W_Type_Id :=
@@ -13676,7 +13681,7 @@ package body Gnat2Why.Expr is
 
                      if Nkind (High_Bound (Index)) in N_Raise_xxx_Error then
                         Emit_Static_Proof_Result
-                          (Expr, VC_Range_Check, False, Current_Subp,
+                          (Subexpr, VC_Range_Check, False, Current_Subp,
                            Explanation =>
                              "empty aggregates cannot be used if there is no"
                            & " element before the first element of their index"
@@ -13689,7 +13694,7 @@ package body Gnat2Why.Expr is
                         Append
                           (Choice_Checks,
                            New_Located_Assert
-                             (Ada_Node => Expr,
+                             (Ada_Node => Subexpr,
                               Reason   => VC_Range_Check,
                               Pred     => New_Not
                                 (Right => New_Comparison
@@ -13769,7 +13774,7 @@ package body Gnat2Why.Expr is
                   Pred   : W_Pred_Vectors.Vector;
                   --  Accumulate checks
 
-                  Bounds : constant Node_Id := Aggregate_Bounds (Expr);
+                  Bounds : constant Node_Id := Aggregate_Bounds (Subexpr);
                   pragma Assert (Present (Bounds));
                   Low    : constant W_Term_Id := New_Temp_For_Expr
                     (W_Term_Id'(+Transform_Expr
@@ -14111,7 +14116,7 @@ package body Gnat2Why.Expr is
                        To   => Index_Base);
                   --  Expected bounds
 
-                  Bounds   : constant Node_Id := Aggregate_Bounds (Expr);
+                  Bounds   : constant Node_Id := Aggregate_Bounds (Subexpr);
                   pragma Assert (Present (Bounds));
                   --  Aggregate bounds should always be computed for
                   --  sub-aggregates supported by SPARK (they should be
@@ -14134,7 +14139,7 @@ package body Gnat2Why.Expr is
                   Append
                     (Choice_Checks,
                      New_Located_Assert
-                       (Ada_Node => Expr,
+                       (Ada_Node => Subexpr,
                         Reason   => VC_Index_Check,
                         Kind     => EW_Assert,
                         Pred     =>
@@ -14354,9 +14359,11 @@ package body Gnat2Why.Expr is
          -----------------------
 
          function Constrain_Value_At_Index
-           (Expr : Node_Id; Indexes : W_Expr_Array) return W_Pred_Id;
+           (Subexpr : Node_Id;
+            Indexes : W_Expr_Array)
+            return W_Pred_Id;
          --  Return the proposition that the array Arr at the indices Indexes
-         --  is equal to the value given in Expr.
+         --  is equal to the value given in Subexpr.
 
          function Lookup_Value (Arg : Node_Id) return W_Term_Id;
          --  Lookup the value associated to Arg in the Args and convert it
@@ -14386,49 +14393,51 @@ package body Gnat2Why.Expr is
          ------------------------------
 
          function Constrain_Value_At_Index
-           (Expr : Node_Id; Indexes : W_Expr_Array) return W_Pred_Id
+           (Subexpr : Node_Id;
+            Indexes : W_Expr_Array)
+            return W_Pred_Id
          is
-            --  Note that Expr here can be the updated expression in the
+            --  Note that Subexpr here can be the updated expression in the
             --  default case of the logic function of a delta aggregate.
-            Curs    : constant Node_To_Why_Id.Cursor := Args.Find (Expr);
+            Curs    : constant Node_To_Why_Id.Cursor := Args.Find (Subexpr);
             Read    : W_Term_Id;
             Arg_Val : W_Term_Id;
          begin
             --  Whenever possible, take advantage of the why3 construct
             --  for range constants. This improves counterexamples.
 
-            if Nkind (Expr) not in N_Component_Association
+            if Nkind (Subexpr) not in N_Component_Association
               | N_Iterated_Component_Association
               and then Is_Range_Type_In_Why (Comp_Type)
-              and then Compile_Time_Known_Value (Expr)
+              and then Compile_Time_Known_Value (Subexpr)
             then
                return New_Comparison
                  (Symbol => Why_Eq,
                   Left   => New_Array_Access
-                    (Ada_Node => Expr,
+                    (Ada_Node => Subexpr,
                      Ar       => Arr,
                      Index    => Indexes),
                   Right  =>
                     (if Has_Relaxed_Init (Comp_Type) or else Relaxed_Init
                      then Insert_Simple_Conversion
                        (Expr     => New_Range_Constant
-                          (Value => Expr_Value (Expr),
+                          (Value => Expr_Value (Subexpr),
                            Typ   => EW_Abstract (Comp_Type)),
                         To       =>
                           EW_Abstract (Comp_Type, Relaxed_Init => True))
                      else New_Range_Constant
-                       (Value => Expr_Value (Expr),
+                       (Value => Expr_Value (Subexpr),
                         Typ   => EW_Abstract (Comp_Type))));
             end if;
 
             --  Create array access and comparison
 
-            Read := New_Array_Access (Ada_Node => Expr,
+            Read := New_Array_Access (Ada_Node => Subexpr,
                                       Ar       => Arr,
                                       Index    => Indexes);
 
-            --  We may not have a mapping for Expr in Args if Expr is part
-            --  of an iterated association component. In this case, we
+            --  We may not have a mapping for Subexpr in Args if Subexpr is
+            --  part of an iterated association component. In this case, we
             --  need to translate the expression on the fly.
 
             if Node_To_Why_Id.Has_Element (Curs) then
@@ -14440,7 +14449,7 @@ package body Gnat2Why.Expr is
                begin
                   Arg_Val :=
                     +Transform_Aggregate_Value
-                      (Value  => Expr,
+                      (Value  => Subexpr,
                        Typ    => Comp_Type,
                        Domain => EW_Term,
                        Params => Params);
@@ -14461,7 +14470,7 @@ package body Gnat2Why.Expr is
             --  We generate:
             --    arr (indexes) = arg_val (indexes)
 
-            if In_Delta_Aggregate and then Expr = Update_Prefix then
+            if In_Delta_Aggregate and then Subexpr = Update_Prefix then
                declare
                   Prefix_Read : constant W_Term_Id := New_Array_Access
                     (Ar    => Arg_Val,
@@ -14714,9 +14723,9 @@ package body Gnat2Why.Expr is
             --  symbol map when necessary.
 
             procedure Transform_Rec_Aggregate
-              (Dim  : Dimensions;
-               Expr : Node_Id;
-               Pre  : W_Pred_Id)
+              (Dim     : Dimensions;
+               Subexpr : Node_Id;
+               Pre     : W_Pred_Id)
             with Pre => (Dim = 1) = (Pre = True_Pred);
             --  Stores in V_Simple_Assocs the association corresponding to a
             --  single value of each index and in V_Other_Assocs the other
@@ -14727,8 +14736,8 @@ package body Gnat2Why.Expr is
             --  the values of Values.
 
             function Transform_Rec_Complex_Aggregate
-              (Dim  : Dimensions;
-               Expr : Node_Id) return W_Pred_Id;
+              (Dim     : Dimensions;
+               Subexpr : Node_Id) return W_Pred_Id;
             --  Generate a predicate giving the definition of Aggr (Indexes)
             --  for values in Expr.
 
@@ -14796,14 +14805,15 @@ package body Gnat2Why.Expr is
             -----------------------------
 
             procedure Transform_Rec_Aggregate
-              (Dim  : Dimensions;
-               Expr : Node_Id;
-               Pre  : W_Pred_Id)
+              (Dim     : Dimensions;
+               Subexpr : Node_Id;
+               Pre     : W_Pred_Id)
             is
                Exprs       : constant List_Id :=
                  (if In_Delta_Aggregate then Empty_List
-                  else Expressions (Expr));
-               Assocs      : constant List_Id := Component_Associations (Expr);
+                  else Expressions (Subexpr));
+               Assocs      : constant List_Id :=
+                 Component_Associations (Subexpr);
                Assocs_Len  : constant Natural :=
                  Integer (List_Length (Assocs));
                Association : Node_Id;
@@ -14839,9 +14849,9 @@ package body Gnat2Why.Expr is
                                      (Expression, Values));
                         else
                            Transform_Rec_Aggregate
-                             (Dim  => Dim + 1,
-                              Expr => Expression,
-                              Pre  => New_And_Pred (Pre, Cond));
+                             (Dim     => Dim + 1,
+                              Subexpr => Expression,
+                              Pre     => New_And_Pred (Pre, Cond));
                         end if;
                      end;
                      Next (Expression);
@@ -14900,7 +14910,7 @@ package body Gnat2Why.Expr is
                                       (V    => V_Simple_Assocs,
                                        Pred => Compute_Default_Init
                                          (Expr   => New_Array_Access
-                                              (Ada_Node => Expr,
+                                              (Ada_Node => Subexpr,
                                                Ar       => Arr,
                                                Index    => Values),
                                           Ty     => Comp_Type,
@@ -14914,10 +14924,10 @@ package body Gnat2Why.Expr is
                                  end if;
                               else
                                  Transform_Rec_Aggregate
-                                   (Dim  => Dim + 1,
-                                    Expr =>
+                                   (Dim     => Dim + 1,
+                                    Subexpr =>
                                       SPARK_Atree.Expression (Association),
-                                    Pre  => New_And_Pred (Pre, Cond));
+                                    Pre     => New_And_Pred (Pre, Cond));
                               end if;
 
                            --  The choice is not simple, we resort to the
@@ -14983,13 +14993,14 @@ package body Gnat2Why.Expr is
             -------------------------------------
 
             function Transform_Rec_Complex_Aggregate
-              (Dim  : Dimensions;
-               Expr : Node_Id) return W_Pred_Id
+              (Dim     : Dimensions;
+               Subexpr : Node_Id) return W_Pred_Id
             is
                Exprs       : constant List_Id :=
                  (if In_Delta_Aggregate then Empty_List
-                  else Expressions (Expr));
-               Assocs      : constant List_Id := Component_Associations (Expr);
+                  else Expressions (Subexpr));
+               Assocs      : constant List_Id :=
+                 Component_Associations (Subexpr);
                Association : Node_Id := (if Is_Empty_List (Assocs) then Empty
                                          else Nlists.Last (Assocs));
                Expression  : Node_Id := Nlists.First (Exprs);
@@ -15114,7 +15125,7 @@ package body Gnat2Why.Expr is
                      end if;
                   end;
 
-               --  Expr is the empty string or a null aggregate
+               --  Subexpr is the empty string or a null aggregate
 
                else
                   return True_Pred;
