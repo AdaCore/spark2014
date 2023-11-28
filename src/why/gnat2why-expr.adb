@@ -13518,11 +13518,11 @@ package body Gnat2Why.Expr is
            (Dim     : Dimensions;
             Subexpr : Node_Id)
          is
-            Exprs       : constant List_Id :=
+            Positionals : constant List_Id :=
               (if Nkind (Subexpr) = N_Delta_Aggregate then No_List
                else Expressions (Subexpr));
             Assocs      : constant List_Id := Component_Associations (Subexpr);
-            Expression  : Node_Id := Nlists.First (Exprs);
+            Positional  : Node_Id := Nlists.First (Positionals);
             Association : Node_Id := Nlists.First (Assocs);
 
          begin
@@ -13531,12 +13531,12 @@ package body Gnat2Why.Expr is
             --  component association of a multidimensional 'Update
             --  aggregate, but never on the outer level we are at here).
 
-            pragma Assert (if Present (Expression) then
-                             not In_Delta_Aggregate);
+            pragma Assert
+              (if Present (Positional) then not In_Delta_Aggregate);
 
-            while Present (Expression) loop
-               Traverse_Value_At_Index (Dim, Expression);
-               Next (Expression);
+            while Present (Positional) loop
+               Traverse_Value_At_Index (Dim, Positional);
+               Next (Positional);
             end loop;
 
             --  Although named association is not allowed after positional
@@ -13605,10 +13605,10 @@ package body Gnat2Why.Expr is
             Assocs       : constant List_Id :=
               Component_Associations (Subexpr);
             Association  : Node_Id := Nlists.First (Assocs);
-            Exprs        : constant List_Id :=
+            Positionals  : constant List_Id :=
               (if Nkind (Subexpr) = N_Delta_Aggregate then No_List
                else Expressions (Subexpr));
-            Expression   : Node_Id := Nlists.First (Exprs);
+            Positional   : Node_Id := Nlists.First (Positionals);
             Index_Typ    : constant Entity_Id := Index_Types (Dim);
             Index_Base   : constant W_Type_Id :=
               Base_Why_Type_No_Bool (Index_Typ);
@@ -13642,7 +13642,7 @@ package body Gnat2Why.Expr is
             --
             --  Return once done, this completely deal with [] case.
 
-            if No (Association) and then No (Expression) then
+            if No (Association) and then No (Positional) then
                --  Make sure we do not need bound checks
 
                pragma Assert
@@ -13766,7 +13766,7 @@ package body Gnat2Why.Expr is
             --  If there are no others case and the type is not modular, there
             --  is no need to generate anything.
 
-            if Present (Expression)
+            if Present (Positional)
               and then (Present (Association)
                         or else Why_Type_Is_BitVector (Index_Base))
             then
@@ -13776,7 +13776,7 @@ package body Gnat2Why.Expr is
 
                   Bounds : constant Node_Id := Aggregate_Bounds (Subexpr);
                   pragma Assert (Present (Bounds));
-                  Low    : constant W_Term_Id := New_Temp_For_Expr
+                  Low        : constant W_Term_Id := New_Temp_For_Expr
                     (W_Term_Id'(+Transform_Expr
                        (Low_Bound (Bounds),
                         Index_Base,
@@ -13784,12 +13784,13 @@ package body Gnat2Why.Expr is
                         Params)));
                   --  Translate lower bound
 
-                  Offset   : constant W_Term_Id :=
+                  Offset     : constant W_Term_Id :=
                     New_Discrete_Constant
-                      (Value => UI_From_Int (Nlists.List_Length (Exprs) - 1),
+                      (Value => UI_From_Int
+                         (Nlists.List_Length (Positionals) - 1),
                        Typ   => Index_Base);
 
-                  Position : constant W_Term_Id :=
+                  Last_Index : constant W_Term_Id :=
                     (if Why_Type_Is_BitVector (Index_Base)
                      then +New_Binary_Op_Expr
                        (Op          => N_Op_Add,
@@ -13817,7 +13818,7 @@ package body Gnat2Why.Expr is
                         Pred => New_Comparison
                           (Symbol => MF_BVs (Index_Base).Ule,
                            Left   => Low,
-                           Right  => Position));
+                           Right  => Last_Index));
                   end if;
 
                   if Present (Association) then
@@ -13831,7 +13832,7 @@ package body Gnat2Why.Expr is
                           (Symbol => (if Why_Type_Is_BitVector (Index_Base)
                                       then MF_BVs (Index_Base).Ule
                                       else Int_Infix_Le),
-                           Left   => Position,
+                           Left   => Last_Index,
                            Right  => +Transform_Expr
                              (High_Bound (Bounds),
                               Index_Base,
@@ -13844,7 +13845,7 @@ package body Gnat2Why.Expr is
                   Append
                     (Choice_Checks,
                      New_Located_Assert
-                       (Ada_Node => Nlists.Last (Exprs),
+                       (Ada_Node => Nlists.Last (Positionals),
                         Reason   => VC_Range_Check,
                         Kind     => EW_Assert,
                         Pred     => Binding_For_Temp
@@ -14037,8 +14038,7 @@ package body Gnat2Why.Expr is
                --  check choices in upper dimensions.
 
                if not In_Delta_Aggregate and then Dim /= Nb_Dim then
-                  Insert_Checks
-                    (SPARK_Atree.Expression (Association), Dim + 1);
+                  Insert_Checks (Expression (Association), Dim + 1);
 
                --  If we have reached a value which depends on iterated
                --  component associations, we must check the value.
@@ -14047,11 +14047,11 @@ package body Gnat2Why.Expr is
                   Append
                     (Comp_Checks,
                      New_Ignore
-                       (Ada_Node => SPARK_Atree.Expression (Association),
+                       (Ada_Node => Expression (Association),
                         Prog     => +Transform_Aggregate_Value
                           (Value  =>
                                (if Box_Present (Association) then Association
-                                else SPARK_Atree.Expression (Association)),
+                                else Expression (Association)),
                            Typ    => Comp_Type,
                            Domain => Domain,
                            Params => Params)));
@@ -14163,22 +14163,22 @@ package body Gnat2Why.Expr is
             if (not In_Delta_Aggregate and then Dim /= Nb_Dim)
               or else In_Iterated_Assoc
             then
-               while Present (Expression) loop
+               while Present (Positional) loop
                   if not In_Delta_Aggregate and then Dim /= Nb_Dim then
-                     Insert_Checks (Expression, Dim + 1);
+                     Insert_Checks (Positional, Dim + 1);
                   else
                      pragma Assert (In_Iterated_Assoc);
                      Append
                        (Comp_Checks,
                         New_Ignore
-                          (Ada_Node => Expression,
+                          (Ada_Node => Positional,
                            Prog     => +Transform_Aggregate_Value
-                             (Value  => Expression,
+                             (Value  => Positional,
                               Typ    => Comp_Type,
                               Domain => Domain,
                               Params => Params)));
                   end if;
-                  Next (Expression);
+                  Next (Positional);
                end loop;
             end if;
          end Insert_Checks;
@@ -14809,7 +14809,7 @@ package body Gnat2Why.Expr is
                Subexpr : Node_Id;
                Pre     : W_Pred_Id)
             is
-               Exprs       : constant List_Id :=
+               Positionals : constant List_Id :=
                  (if In_Delta_Aggregate then Empty_List
                   else Expressions (Subexpr));
                Assocs      : constant List_Id :=
@@ -14817,19 +14817,19 @@ package body Gnat2Why.Expr is
                Assocs_Len  : constant Natural :=
                  Integer (List_Length (Assocs));
                Association : Node_Id;
-               Expression  : Node_Id;
+               Positional  : Node_Id;
                Condition   : W_Pred_Vectors.Vector;
 
             begin
-               Expression  := Nlists.First (Exprs);
+               Positional := Nlists.First (Positionals);
                Association := Nlists.First (Assocs);
 
                --  On a positional aggregate, all associations are simple.
                --  Store the nth index in Values and either constrain the
                --  value of Aggr or continue the recursion.
 
-               if Present (Expression) then
-                  for Offset in 1 .. List_Length (Exprs) loop
+               if Present (Positional) then
+                  for Offset in 1 .. List_Length (Positionals) loop
                      declare
                         Value : constant W_Term_Id :=
                           Select_Nth_Index (Dim, Offset - 1);
@@ -14846,15 +14846,15 @@ package body Gnat2Why.Expr is
                         if Dim = Nb_Dim then
                            Append (V    => V_Simple_Assocs,
                                    Pred => Constrain_Value_At_Index
-                                     (Expression, Values));
+                                     (Positional, Values));
                         else
                            Transform_Rec_Aggregate
                              (Dim     => Dim + 1,
-                              Subexpr => Expression,
+                              Subexpr => Positional,
                               Pre     => New_And_Pred (Pre, Cond));
                         end if;
                      end;
-                     Next (Expression);
+                     Next (Positional);
                   end loop;
 
                elsif Present (Association) then
@@ -14919,14 +14919,13 @@ package body Gnat2Why.Expr is
                                     Append
                                       (V    => V_Simple_Assocs,
                                        Pred => Constrain_Value_At_Index
-                                         (SPARK_Atree.Expression (Association),
+                                         (Expression (Association),
                                           Values));
                                  end if;
                               else
                                  Transform_Rec_Aggregate
                                    (Dim     => Dim + 1,
-                                    Subexpr =>
-                                      SPARK_Atree.Expression (Association),
+                                    Subexpr => Expression (Association),
                                     Pre     => New_And_Pred (Pre, Cond));
                               end if;
 
@@ -14996,14 +14995,14 @@ package body Gnat2Why.Expr is
               (Dim     : Dimensions;
                Subexpr : Node_Id) return W_Pred_Id
             is
-               Exprs       : constant List_Id :=
+               Positionals : constant List_Id :=
                  (if In_Delta_Aggregate then Empty_List
                   else Expressions (Subexpr));
                Assocs      : constant List_Id :=
                  Component_Associations (Subexpr);
                Association : Node_Id := (if Is_Empty_List (Assocs) then Empty
                                          else Nlists.Last (Assocs));
-               Expression  : Node_Id := Nlists.First (Exprs);
+               Positional  : Node_Id := Nlists.First (Positionals);
                Assocs_Len  : constant Natural :=
                  Integer (List_Length (Assocs));
                Has_Others  : constant Boolean :=
@@ -15016,7 +15015,7 @@ package body Gnat2Why.Expr is
                  (if In_Delta_Aggregate
                   then Constrain_Value_At_Index (Update_Prefix, Indexes)
                   elsif Has_Others
-                    and then (Assocs_Len > 1 or else Present (Expression))
+                    and then (Assocs_Len > 1 or else Present (Positional))
                   then Transform_Complex_Association (Dim, Association)
                   else True_Pred);
 
@@ -15031,21 +15030,21 @@ package body Gnat2Why.Expr is
                --  Associations are taken in the reverse order to accomodate
                --  the semantics of delta aggregates.
 
-               if Present (Expression) then
+               if Present (Positional) then
                   pragma Assert
                     (No (Association)
                      or else (Assocs_Len = 1 and then Has_Others));
 
                   declare
                      Then_Part   : constant W_Pred_Id :=
-                       Transform_Complex_Association (Dim, Expression);
+                       Transform_Complex_Association (Dim, Positional);
                      Elsif_Parts : W_Pred_Array
-                       (1 .. Integer (List_Length (Exprs)) - 1);
+                       (1 .. Integer (List_Length (Positionals)) - 1);
                   begin
-                     Next (Expression);
+                     Next (Positional);
 
-                     for Offset in 1 .. List_Length (Exprs) - 1 loop
-                        pragma Assert (Present (Expression));
+                     for Offset in 1 .. List_Length (Positionals) - 1 loop
+                        pragma Assert (Present (Positional));
                         Elsif_Parts (Integer (Offset)) := New_Elsif
                           (Condition =>
                              +New_Comparison
@@ -15054,11 +15053,11 @@ package body Gnat2Why.Expr is
                                 Right  => +Select_Nth_Index (Dim, Offset),
                                 Domain => EW_Pred),
                            Then_Part =>
-                             Transform_Complex_Association (Dim, Expression));
-                        Next (Expression);
+                             +Transform_Complex_Association (Dim, Positional));
+                        Next (Positional);
                      end loop;
 
-                     pragma Assert (No (Expression));
+                     pragma Assert (No (Positional));
                      return New_Conditional
                        (Condition   =>
                           New_Comparison
