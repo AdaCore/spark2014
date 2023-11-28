@@ -12624,6 +12624,8 @@ package body Gnat2Why.Expr is
 
       Nb_Dim             : constant Positive :=
         Positive (Number_Dimensions (Expr_Typ));
+      subtype Dimensions is Positive range 1 .. Nb_Dim;
+
       Needs_Bounds       : constant Boolean :=
         not In_Delta_Aggregate and then not Is_Static_Array_Type (Expr_Typ);
       --  We do not need to give the array bounds as additional arguments to
@@ -12635,7 +12637,7 @@ package body Gnat2Why.Expr is
         (if Needs_Bounds then 2 * Nb_Dim else 0);
       --  Number of additional bound arguments
 
-      Index_Types        : array (1 .. Nb_Dim) of Node_Id;
+      Index_Types        : array (Dimensions) of Node_Id;
       --  Store index types of Expr_Type for each dimension. Not a constant
       --  because it needs a loop for initialization.
 
@@ -12770,7 +12772,7 @@ package body Gnat2Why.Expr is
          --  to the aggregate function.
 
          if Needs_Bounds then
-            for Dim in 1 .. Nb_Dim loop
+            for Dim in Dimensions loop
                Bnd_Args (2 * Dim - 1) := +Get_Array_Attr
                  (Term_Domain (Domain),
                   Etype (Expr), Attribute_First, Dim, Params);
@@ -13064,7 +13066,7 @@ package body Gnat2Why.Expr is
          --  parameters to the call, add them to the arguments.
 
          if Needs_Bounds then
-            for Dim in 1 .. Nb_Dim loop
+            for Dim in Dimensions loop
                declare
                   BT   : constant W_Type_Id :=
                     Base_Why_Type_No_Bool (Index_Types (Dim));
@@ -13099,7 +13101,7 @@ package body Gnat2Why.Expr is
          if not Is_Static_Array_Type (Expr_Typ) then
             pragma Assert (In_Delta_Aggregate or Needs_Bounds);
 
-            for Dim in 1 .. Nb_Dim loop
+            for Dim in Dimensions loop
                declare
                   F_Expr   : constant W_Term_Id :=
                     (if In_Delta_Aggregate
@@ -13273,11 +13275,11 @@ package body Gnat2Why.Expr is
          -----------------------
 
          procedure Traverse_Value_At_Index
-           (Dim                 : Positive;
+           (Dim                 : Dimensions;
             Expr_Or_Association : Node_Id);
          --  Traverse the value Expr_Or_Association to collect desired elements
 
-         procedure Traverse_Rec_Aggregate (Dim : Positive; Expr : Node_Id);
+         procedure Traverse_Rec_Aggregate (Dim : Dimensions; Expr : Node_Id);
          --  Main recursive function operating over multi-dimensional array
          --  aggregates.
 
@@ -13286,7 +13288,7 @@ package body Gnat2Why.Expr is
          -----------------------------
 
          procedure Traverse_Value_At_Index
-           (Dim                 : Positive;
+           (Dim                 : Dimensions;
             Expr_Or_Association : Node_Id)
          is
             Value_Expr             : Node_Id;
@@ -13344,13 +13346,13 @@ package body Gnat2Why.Expr is
                         --  'Update((I, J, K) => New_Val)
 
                         pragma Assert
-                          (Dim < Nb_Dim and then Dim = 1
+                          (Nb_Dim /= 1 and then Dim = 1
                            and then No (Component_Associations (Choice)));
                         declare
                            Multi_Expr : Node_Id :=
                              Nlists.First (Expressions (Choice));
                         begin
-                           for Dim in 1 .. Nb_Dim loop
+                           for Dim in Dimensions loop
                               Values.Append
                                 (Aggregate_Element'
                                    (Value => Multi_Expr,
@@ -13429,7 +13431,7 @@ package body Gnat2Why.Expr is
                      Value_Expr := Expr_Or_Association;
                end case;
 
-               if Dim < Nb_Dim and then not In_Delta_Aggregate then
+               if Dim /= Nb_Dim and then not In_Delta_Aggregate then
 
                   --  Normal, multidimensional aggregate, for example:
                   --  Array_2D'(1      => (2 => Expr_1, others => Expr_2),
@@ -13510,7 +13512,7 @@ package body Gnat2Why.Expr is
          -- Traverse_Rec_Aggregate --
          ----------------------------
 
-         procedure Traverse_Rec_Aggregate (Dim : Positive; Expr : Node_Id)
+         procedure Traverse_Rec_Aggregate (Dim : Dimensions; Expr : Node_Id)
          is
             Exprs       : constant List_Id :=
               (if Nkind (Expr) = N_Delta_Aggregate then No_List
@@ -13582,11 +13584,11 @@ package body Gnat2Why.Expr is
          In_Iterated_Assoc : Boolean := False;
          --  Register whether we have traversed iterated component associations
 
-         Last_Uniq_Dim     : Positive := 1;
+         Last_Uniq_Dim     : Dimensions := 1;
          --  Register the last dimensional index with a single subaggregate.
          --  Used to eliminate redundant bound checks as much as possible.
 
-         procedure Insert_Checks (Expr : Node_Id; Dim : Positive);
+         procedure Insert_Checks (Expr : Node_Id; Dim : Dimensions);
          --  Introduce checks for choices of an expression. Recursively call
          --  itself to check choices for upper dimensions in regular
          --  multidimensional aggregates.
@@ -13595,7 +13597,7 @@ package body Gnat2Why.Expr is
          -- Insert_Checks --
          -------------------
 
-         procedure Insert_Checks (Expr : Node_Id; Dim : Positive) is
+         procedure Insert_Checks (Expr : Node_Id; Dim : Dimensions) is
             Assocs       : constant List_Id := Component_Associations (Expr);
             Association  : Node_Id := Nlists.First (Assocs);
             Exprs        : constant List_Id :=
@@ -13873,30 +13875,28 @@ package body Gnat2Why.Expr is
                         if Nb_Dim > 1 then
                            pragma Assert (Nkind (Choice) = N_Aggregate);
                            declare
-                              Multi_Exprs      : constant List_Id :=
-                                Expressions (Choice);
-                              Multi_Expression : Node_Id :=
-                                Nlists.First (Multi_Exprs);
+                              Multi_Expr : Node_Id :=
+                                Nlists.First (Expressions (Choice));
                            begin
-                              for I in 1 .. Nb_Dim loop
-                                 pragma Assert (Present (Multi_Expression));
+                              for I in Dimensions loop
+                                 pragma Assert (Present (Multi_Expr));
                                  Append
                                    (Choice_Checks,
                                     New_Ignore
                                       (Prog => Do_Index_Check
-                                           (Ada_Node => Multi_Expression,
+                                           (Ada_Node => Multi_Expr,
                                             Arr_Expr => Array_Expr,
                                             W_Expr   => Transform_Expr
-                                              (Expr          =>
-                                                     Multi_Expression,
+                                              (Expr          => Multi_Expr,
                                                Domain        => EW_Pterm,
                                                Params        => Params,
                                                Expected_Type =>
                                                  Base_Why_Type_No_Bool
                                                    (Index_Types (I))),
                                             Dim      => I)));
-                                 Next (Multi_Expression);
+                                 Next (Multi_Expr);
                               end loop;
+                              pragma Assert (No (Multi_Expr));
                            end;
 
                         --  Choices of unary aggregates can involve ranges or
@@ -14336,9 +14336,9 @@ package body Gnat2Why.Expr is
          Params : Transformation_Params)
          return W_Pred_Id
       is
-         Binders : Binder_Array (1 .. Nb_Dim);
+         Binders : Binder_Array (Dimensions);
 
-         Indexes : W_Expr_Array (1 .. Nb_Dim);
+         Indexes : W_Expr_Array (Dimensions);
          --  This array contains either the identifiers for indexes in the
          --  normal translation, or the actual values of indexes in the
          --  translation for "simple" aggregates. For example, in the first
@@ -14363,12 +14363,12 @@ package body Gnat2Why.Expr is
          --  to the base type for the index.
 
          function Select_Nth_Index
-           (Dim    : Positive;
+           (Dim    : Dimensions;
             Offset : Nat) return W_Term_Id;
          --  Return the value for Index at Offset from Arr'First (Dim)
 
          function Select_These_Choices
-           (Dim : Positive;
+           (Dim : Dimensions;
             L   : List_Id) return W_Pred_Id;
          --  Return a proposition that expresses that Indexes satisfies one
          --  choice in the list of choices L at dimension Dim. In the case of
@@ -14559,7 +14559,7 @@ package body Gnat2Why.Expr is
          ----------------------
 
          function Select_Nth_Index
-           (Dim    : Positive;
+           (Dim    : Dimensions;
             Offset : Nat) return W_Term_Id
          is
             Rng   : constant Node_Id := Get_Range (Index_Types (Dim));
@@ -14594,7 +14594,7 @@ package body Gnat2Why.Expr is
          --------------------------
 
          function Select_These_Choices
-           (Dim : Positive;
+           (Dim : Dimensions;
             L   : List_Id) return W_Pred_Id
          is
             Result   : W_Pred_Id := False_Pred;
@@ -14622,7 +14622,7 @@ package body Gnat2Why.Expr is
                         end;
 
                      when N_Aggregate =>
-                        pragma Assert (Dim < Nb_Dim and then Dim = 1);
+                        pragma Assert (Nb_Dim /= 1 and then Dim = 1);
 
                         --  This is a choice of a multidimensional 'Update,
                         --  for example (I, J, K) of
@@ -14639,7 +14639,7 @@ package body Gnat2Why.Expr is
                         begin
                            pragma Assert (No (Multi_Assocs));
 
-                           for Current_Dim in 1 .. Nb_Dim loop
+                           for Current_Dim in Dimensions loop
                               Rng_Expr :=
                                 New_Comparison
                                   (Symbol => Why_Eq,
@@ -14705,7 +14705,7 @@ package body Gnat2Why.Expr is
             Other_Assocs  : out W_Pred_Id)
          is
             function Transform_Complex_Association
-              (Dim           : Positive;
+              (Dim           : Dimensions;
                Expr_Or_Assoc : Node_Id) return W_Pred_Id;
             --  Either constrains the value at Aggr (Indexes) with the value
             --  Expr_Or_Assoc if we have reached the last dimension, or call
@@ -14714,7 +14714,7 @@ package body Gnat2Why.Expr is
             --  symbol map when necessary.
 
             procedure Transform_Rec_Aggregate
-              (Dim  : Positive;
+              (Dim  : Dimensions;
                Expr : Node_Id;
                Pre  : W_Pred_Id)
             with Pre => (Dim = 1) = (Pre = True_Pred);
@@ -14727,12 +14727,12 @@ package body Gnat2Why.Expr is
             --  the values of Values.
 
             function Transform_Rec_Complex_Aggregate
-              (Dim  : Positive;
+              (Dim  : Dimensions;
                Expr : Node_Id) return W_Pred_Id;
             --  Generate a predicate giving the definition of Aggr (Indexes)
             --  for values in Expr.
 
-            Values          : W_Expr_Array (1 .. Nb_Dim);
+            Values          : W_Expr_Array (Dimensions);
             --  Array in which the specific value of each simple index is
             --  stored.
             use all type W_Pred_Vectors.Vector;
@@ -14744,7 +14744,7 @@ package body Gnat2Why.Expr is
             -----------------------------------
 
             function Transform_Complex_Association
-              (Dim           : Positive;
+              (Dim           : Dimensions;
                Expr_Or_Assoc : Node_Id) return W_Pred_Id
             is
                Expr    : constant Node_Id :=
@@ -14774,7 +14774,7 @@ package body Gnat2Why.Expr is
                   Transform_Actions_Preparation (Actions);
                end if;
 
-               if Dim < Nb_Dim and then not In_Delta_Aggregate then
+               if Dim /= Nb_Dim and then not In_Delta_Aggregate then
                   Result := Transform_Rec_Complex_Aggregate (Dim + 1, Expr);
                else
                   Result := Constrain_Value_At_Index (Expr, Indexes);
@@ -14796,7 +14796,7 @@ package body Gnat2Why.Expr is
             -----------------------------
 
             procedure Transform_Rec_Aggregate
-              (Dim  : Positive;
+              (Dim  : Dimensions;
                Expr : Node_Id;
                Pre  : W_Pred_Id)
             is
@@ -14983,7 +14983,7 @@ package body Gnat2Why.Expr is
             -------------------------------------
 
             function Transform_Rec_Complex_Aggregate
-              (Dim  : Positive;
+              (Dim  : Dimensions;
                Expr : Node_Id) return W_Pred_Id
             is
                Exprs       : constant List_Id :=
@@ -15148,7 +15148,7 @@ package body Gnat2Why.Expr is
       begin
          --  Define index variables
 
-         for Dim in 1 .. Nb_Dim loop
+         for Dim in Dimensions loop
             Binders (Dim) :=
               (B_Name => New_Temp_Identifier
                  (Typ => Base_Why_Type_No_Bool (Index_Types (Dim))),
@@ -15188,7 +15188,7 @@ package body Gnat2Why.Expr is
       declare
          Index : Node_Id := First_Index (Expr_Typ);
       begin
-         for Dim in 1 .. Nb_Dim loop
+         for Dim in Dimensions loop
             Index_Types (Dim) := Etype (Index);
             Next_Index (Index);
          end loop;
