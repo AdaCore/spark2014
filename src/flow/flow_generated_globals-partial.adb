@@ -772,19 +772,17 @@ package body Flow_Generated_Globals.Partial is
          --  We register subprograms with their body not in SPARK as
          --  nonreturning except when they are:
          --  * predefined (or are instances of predefined subprograms)
-         --  * imported
-         --  * intrinsic
-         --  * have no body yet (no .adb) and are not procedures annotated with
-         --    No_Return.
+         --  * imported/intrinsic/have no body yet (no .adb) and are not
+         --    annotated with No_Return.
 
          Contr.Nonreturning := not
            (Is_Ignored_Internal (E)
               or else
-            Is_Imported (E)
-              or else
-            Is_Intrinsic (E)
-              or else
-            (Has_No_Body_Yet (E) and then not No_Return (E)));
+            ((Is_Imported (E)
+               or else
+              Is_Intrinsic (E)
+               or else
+              Has_No_Body_Yet (E)) and then not No_Return (E)));
 
          --  For library-level packages and protected-types the non-blocking
          --  status is meaningless. Otherwise, it is either a user instance of
@@ -2075,8 +2073,10 @@ package body Flow_Generated_Globals.Partial is
 
          --  Terminating stuff, picked no matter if body is in SPARK
          Contr.Always_Terminates :=
-           (if Is_Callable (E)
-              and then Ekind (E) /= E_Entry_Family
+           (if Ekind (E) in E_Entry
+                          | E_Function
+                          | E_Procedure
+                          | E_Package
             then Get_Termination_Condition (E) = (Static, True)
                    or else
                  Get_Termination_Condition (E).Kind = Dynamic

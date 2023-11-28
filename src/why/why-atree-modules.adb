@@ -108,30 +108,31 @@ package body Why.Atree.Modules is
    --  there is already a module associated to E in Modules, in which case the
    --  existing module is returned.
 
-   Why_Symb_Map              : Why_Symb_Maps.Map := Why_Symb_Maps.Empty_Map;
-   Why_Relaxed_Symb_Map      : Why_Symb_Maps.Map := Why_Symb_Maps.Empty_Map;
-   Entity_Modules            : Ada_To_Why.Map := Ada_To_Why.Empty_Map;
-   Axiom_Modules             : Ada_To_Why.Map := Ada_To_Why.Empty_Map;
-   Compl_Modules             : Ada_To_Why.Map := Ada_To_Why.Empty_Map;
-   Compl_Init_Modules        : Ada_To_Why.Map := Ada_To_Why.Empty_Map;
-   Init_Modules              : Ada_To_Why.Map := Ada_To_Why.Empty_Map;
-   Lemma_Axiom_Modules       : Ada_To_Why.Map := Ada_To_Why.Empty_Map;
-   Rec_Axiom_Modules         : Ada_To_Why.Map := Ada_To_Why.Empty_Map;
-   Record_Rep_Modules        : Ada_To_Why.Map := Ada_To_Why.Empty_Map;
-   Record_Compl_Modules      : Ada_To_Why.Map := Ada_To_Why.Empty_Map;
-   Rep_Modules               : Ada_To_Why.Map := Ada_To_Why.Empty_Map;
-   Rep_Init_Pointer_Modules  : Ada_To_Why.Map := Ada_To_Why.Empty_Map;
-   Rep_Pointer_Modules       : Ada_To_Why.Map := Ada_To_Why.Empty_Map;
-   DIC_Modules               : Ada_To_Why.Map := Ada_To_Why.Empty_Map;
-   Dispatch_Modules          : Ada_To_Why.Map := Ada_To_Why.Empty_Map;
-   Dispatch_Axiom_Modules    : Ada_To_Why.Map := Ada_To_Why.Empty_Map;
-   Dispatch_Eq_Modules       : Ada_To_Why.Map := Ada_To_Why.Empty_Map;
-   Dispatch_Eq_Axiom_Modules : Ada_To_Why.Map := Ada_To_Why.Empty_Map;
-   Invariant_Modules         : Ada_To_Why.Map := Ada_To_Why.Empty_Map;
-   Move_Modules              : Ada_To_Why.Map := Ada_To_Why.Empty_Map;
-   Move_Axiom_Modules        : Ada_To_Why.Map := Ada_To_Why.Empty_Map;
-   User_Eq_Modules           : Ada_To_Why.Map := Ada_To_Why.Empty_Map;
-   User_Eq_Axiom_Modules     : Ada_To_Why.Map := Ada_To_Why.Empty_Map;
+   Why_Symb_Map               : Why_Symb_Maps.Map := Why_Symb_Maps.Empty_Map;
+   Why_Relaxed_Symb_Map       : Why_Symb_Maps.Map := Why_Symb_Maps.Empty_Map;
+   Entity_Modules             : Ada_To_Why.Map := Ada_To_Why.Empty_Map;
+   Axiom_Modules              : Ada_To_Why.Map := Ada_To_Why.Empty_Map;
+   Compl_Modules              : Ada_To_Why.Map := Ada_To_Why.Empty_Map;
+   Compl_Init_Modules         : Ada_To_Why.Map := Ada_To_Why.Empty_Map;
+   Init_Modules               : Ada_To_Why.Map := Ada_To_Why.Empty_Map;
+   Lemma_Axiom_Modules        : Ada_To_Why.Map := Ada_To_Why.Empty_Map;
+   Rec_Axiom_Modules          : Ada_To_Why.Map := Ada_To_Why.Empty_Map;
+   Record_Rep_Modules         : Ada_To_Why.Map := Ada_To_Why.Empty_Map;
+   Record_Compl_Modules       : Ada_To_Why.Map := Ada_To_Why.Empty_Map;
+   Rep_Modules                : Ada_To_Why.Map := Ada_To_Why.Empty_Map;
+   Rep_Init_Pointer_Modules   : Ada_To_Why.Map := Ada_To_Why.Empty_Map;
+   Rep_Pointer_Modules        : Ada_To_Why.Map := Ada_To_Why.Empty_Map;
+   DIC_Modules                : Ada_To_Why.Map := Ada_To_Why.Empty_Map;
+   Dispatch_Modules           : Ada_To_Why.Map := Ada_To_Why.Empty_Map;
+   Dispatch_Axiom_Modules     : Ada_To_Why.Map := Ada_To_Why.Empty_Map;
+   Dispatch_Rec_Axiom_Modules : Ada_To_Why.Map := Ada_To_Why.Empty_Map;
+   Dispatch_Eq_Modules        : Ada_To_Why.Map := Ada_To_Why.Empty_Map;
+   Dispatch_Eq_Axiom_Modules  : Ada_To_Why.Map := Ada_To_Why.Empty_Map;
+   Invariant_Modules          : Ada_To_Why.Map := Ada_To_Why.Empty_Map;
+   Move_Modules               : Ada_To_Why.Map := Ada_To_Why.Empty_Map;
+   Move_Axiom_Modules         : Ada_To_Why.Map := Ada_To_Why.Empty_Map;
+   User_Eq_Modules            : Ada_To_Why.Map := Ada_To_Why.Empty_Map;
+   User_Eq_Axiom_Modules      : Ada_To_Why.Map := Ada_To_Why.Empty_Map;
 
    --------------------
    -- E_Axiom_Module --
@@ -186,16 +187,23 @@ package body Why.Atree.Modules is
 
    function E_Dispatch_Module
      (Subp  : Subprogram_Kind_Id;
-      Axiom : Boolean := False) return W_Module_Id
+      Kind : Dispatch_Module_Kind := Regular)
+      return W_Module_Id
    is
       Name : constant String := Full_Name (Subp) & "___dispatch" &
-        (if Axiom then "___axiom" else "");
+      (case Kind is
+          when Regular   => "",
+          when Axiom     =>  "___axiom",
+          when Rec_Axiom => "__rec_axioms");
    begin
-      if Axiom then
-         return Hashconsed_Entity_Module (Subp, Name, Dispatch_Axiom_Modules);
-      else
-         return Hashconsed_Entity_Module (Subp, Name, Dispatch_Modules);
-      end if;
+      return
+        (case Kind is
+            when Regular   => Hashconsed_Entity_Module
+              (Subp, Name, Dispatch_Modules),
+            when Axiom     => Hashconsed_Entity_Module
+              (Subp, Name, Dispatch_Axiom_Modules),
+            when Rec_Axiom => Hashconsed_Entity_Module
+              (Subp, Name, Dispatch_Rec_Axiom_Modules));
    end E_Dispatch_Module;
 
    --------------------------
@@ -4095,7 +4103,8 @@ package body Why.Atree.Modules is
 
    function Mutually_Recursive_Modules (E : Entity_Id) return Why_Node_Sets.Set
    is
-      S : Why_Node_Sets.Set;
+      S  : Why_Node_Sets.Set;
+      E2 : Entity_Id;
 
    begin
       --  For recursive functions, include the axiom module of mutually
@@ -4103,7 +4112,9 @@ package body Why.Atree.Modules is
 
       if Proof_Module_Cyclic (E) then
          for C in Rec_Axiom_Modules.Iterate loop
-            if Proof_Module_Cyclic (E, Ada_To_Why.Key (C)) then
+            E2 := Ada_To_Why.Key (C);
+
+            if Proof_Module_Cyclic (E, E2) then
                S.Insert (Ada_To_Why.Element (C));
 
                --  If the subprogram has specializations, also include its
@@ -4112,7 +4123,7 @@ package body Why.Atree.Modules is
                declare
                   use Node_Id_HO_Specializations_Map;
                   Position : constant Node_Id_HO_Specializations_Map.Cursor :=
-                    M_HO_Specializations.Find (Ada_To_Why.Key (C));
+                    M_HO_Specializations.Find (E2);
                begin
                   if Position /= No_Element then
                      for Th of Element (Position) loop
@@ -4120,6 +4131,12 @@ package body Why.Atree.Modules is
                      end loop;
                   end if;
                end;
+
+               if Is_Dispatching_Operation (E2)
+                 and then not Is_Hidden_Dispatching_Operation (E2)
+               then
+                  S.Insert (+Dispatch_Rec_Axiom_Modules (E2));
+               end if;
             end if;
          end loop;
       end if;

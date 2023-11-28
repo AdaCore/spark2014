@@ -353,6 +353,254 @@ procedure Test_Sequences with SPARK_Mode is
       type Element_Type is new Integer;
       type T is new Integer;
    end P7;
+
+   --  Missing Post on Capacity on Empty
+
+   package P8 is
+      type Index_Type is range 1 .. 100;
+      subtype Ext_Index_Type is Index_Type'Base range 0 .. Index_Type'Last;
+      type Element_Type is new Integer;
+
+      Max_Capacity : constant Natural := Natural (Index_Type'Last);
+
+      type T (Capacity : Natural) is private with
+        Aggregate => (Empty       => Empty,
+                      Add_Unnamed => Append),
+        Annotate => (GNATprove, Container_Aggregates, "Predefined_Sequences"); --@CONTAINER_AGGR_ANNOTATION:FAIL
+
+      function Empty (X : Natural) return T with
+        Global => null,
+        Import,
+        Post => Last (Empty'Result) = 0;
+      procedure Append (X : in out T; E : Element_Type) with
+        Global => null,
+        Pre  => Integer (Last (X)) < Capacity (X) and then Last (X) < 100,
+        Post => Last (X) = Last (X'Old) + 1
+        and then Get (X, Last (X)) = E
+        and then (for all I in 1 .. Last (X) - 1 =>
+                    Get (X, I) = Get (X'Old, I))
+        and then Capacity (X) >= Capacity (X'Old),
+        Always_Terminates,
+        Import;
+
+      function Capacity (X : T) return Natural with
+        Global => null,
+        Import,
+        Annotate => (GNATprove, Container_Aggregates, "Capacity");
+
+      function First return Ext_Index_Type is (1) with
+        Annotate => (GNATprove, Container_Aggregates, "First");
+
+      function Last (X : T) return Ext_Index_Type with
+        Annotate => (GNATprove, Container_Aggregates, "Last");
+
+      function Get (X : T; I : Index_Type) return Element_Type with
+        Pre => I <= Last (X),
+        Annotate => (GNATprove, Container_Aggregates, "Get");
+
+   private
+      type T_Content is array (Positive range <>) of Element_Type with
+        Relaxed_Initialization;
+
+      type T (Capacity : Natural) is record
+         Content : T_Content (1 .. Capacity);
+         Top     : Natural;
+      end record with
+        Ghost_Predicate => Capacity <= Max_Capacity
+        and then Top <= Capacity
+        and then (for all I in 1 .. Top => Content (I)'Initialized);
+
+      function Last (X : T) return Ext_Index_Type is (Ext_Index_Type (X.Top));
+
+      function Get (X : T; I : Index_Type) return Element_Type is
+        (X.Content (Positive (I)));
+   end P8;
+
+   --  Missing Post on Capacity on Append
+
+   package P9 is
+      type Index_Type is range 1 .. 100;
+      subtype Ext_Index_Type is Index_Type'Base range 0 .. Index_Type'Last;
+      type Element_Type is new Integer;
+
+      Max_Capacity : constant Natural := Natural (Index_Type'Last);
+
+      type T (Capacity : Natural) is private with
+        Aggregate => (Empty       => Empty,
+                      Add_Unnamed => Append),
+        Annotate => (GNATprove, Container_Aggregates, "Predefined_Sequences"); --@CONTAINER_AGGR_ANNOTATION:FAIL
+
+      function Empty (X : Natural) return T with
+        Global => null,
+        Import,
+        Post => Last (Empty'Result) = 0
+        and then (if X <= Max_Capacity then Capacity (Empty'Result) = X);
+      procedure Append (X : in out T; E : Element_Type) with
+        Global => null,
+        Pre  => Integer (Last (X)) < Capacity (X) and then Last (X) < 100,
+        Post => Last (X) = Last (X'Old) + 1
+        and then Get (X, Last (X)) = E
+        and then (for all I in 1 .. Last (X) - 1 =>
+                    Get (X, I) = Get (X'Old, I)),
+        Always_Terminates,
+        Import;
+
+      function Capacity (X : T) return Natural with
+        Global => null,
+        Import,
+        Annotate => (GNATprove, Container_Aggregates, "Capacity");
+
+      function First return Ext_Index_Type is (1) with
+        Annotate => (GNATprove, Container_Aggregates, "First");
+
+      function Last (X : T) return Ext_Index_Type with
+        Annotate => (GNATprove, Container_Aggregates, "Last");
+
+      function Get (X : T; I : Index_Type) return Element_Type with
+        Pre => I <= Last (X),
+        Annotate => (GNATprove, Container_Aggregates, "Get");
+
+   private
+      type T_Content is array (Positive range <>) of Element_Type with
+        Relaxed_Initialization;
+
+      type T (Capacity : Natural) is record
+         Content : T_Content (1 .. Capacity);
+         Top     : Natural;
+      end record with
+        Ghost_Predicate => Capacity <= Max_Capacity
+        and then Top <= Capacity
+        and then (for all I in 1 .. Top => Content (I)'Initialized);
+
+      function Last (X : T) return Ext_Index_Type is (Ext_Index_Type (X.Top));
+
+      function Get (X : T; I : Index_Type) return Element_Type is
+        (X.Content (Positive (I)));
+   end P9;
+
+   --  Correct posts on Capacity
+
+   package P10 is
+      type Index_Type is range 1 .. 100;
+      subtype Ext_Index_Type is Index_Type'Base range 0 .. Index_Type'Last;
+      type Element_Type is new Integer;
+
+      Max_Capacity : constant Natural := Natural (Index_Type'Last);
+
+      type T (Capacity : Natural) is private with
+        Aggregate => (Empty       => Empty,
+                      Add_Unnamed => Append),
+        Annotate => (GNATprove, Container_Aggregates, "Predefined_Sequences"); --@CONTAINER_AGGR_ANNOTATION:PASS
+
+      function Empty (X : Natural) return T with
+        Global => null,
+        Import,
+        Post => Last (Empty'Result) = 0
+        and then (if X <= Max_Capacity then Capacity (Empty'Result) = X);
+      procedure Append (X : in out T; E : Element_Type) with
+        Global => null,
+        Pre  => Integer (Last (X)) < Capacity (X) and then Last (X) < 100,
+        Post => Last (X) = Last (X'Old) + 1
+        and then Get (X, Last (X)) = E
+        and then (for all I in 1 .. Last (X) - 1 =>
+                    Get (X, I) = Get (X'Old, I))
+        and then Capacity (X) >= Capacity (X'Old),
+        Always_Terminates,
+        Import;
+
+      function Capacity (X : T) return Natural with
+        Global => null,
+        Import,
+        Annotate => (GNATprove, Container_Aggregates, "Capacity");
+
+      function First return Ext_Index_Type is (1) with
+        Annotate => (GNATprove, Container_Aggregates, "First");
+
+      function Last (X : T) return Ext_Index_Type with
+        Annotate => (GNATprove, Container_Aggregates, "Last");
+
+      function Get (X : T; I : Index_Type) return Element_Type with
+        Pre => I <= Last (X),
+        Annotate => (GNATprove, Container_Aggregates, "Get");
+
+   private
+      type T_Content is array (Positive range <>) of Element_Type with
+        Relaxed_Initialization;
+
+      type T (Capacity : Natural) is record
+         Content : T_Content (1 .. Capacity);
+         Top     : Natural;
+      end record with
+        Ghost_Predicate => Capacity <= Max_Capacity
+        and then Top <= Capacity
+        and then (for all I in 1 .. Top => Content (I)'Initialized);
+
+      function Last (X : T) return Ext_Index_Type is (Ext_Index_Type (X.Top));
+
+      function Get (X : T; I : Index_Type) return Element_Type is
+        (X.Content (Positive (I)));
+   end P10;
+
+   --  No post needed on global Capacity
+
+   package P11 is
+      type Index_Type is range 1 .. 100;
+      subtype Ext_Index_Type is Index_Type'Base range 0 .. Index_Type'Last;
+      type Element_Type is new Integer;
+
+      Max_Capacity : constant Natural := Natural (Index_Type'Last);
+
+      type T is private with
+        Aggregate => (Empty       => Empty,
+                      Add_Unnamed => Append),
+        Annotate => (GNATprove, Container_Aggregates, "Predefined_Sequences"); --@CONTAINER_AGGR_ANNOTATION:PASS
+
+      function Empty return T with
+        Global => null,
+        Import,
+        Post => Last (Empty'Result) = 0;
+      procedure Append (X : in out T; E : Element_Type) with
+        Global => null,
+        Pre  => Integer (Last (X)) < Capacity and then Last (X) < 100,
+        Post => Last (X) = Last (X'Old) + 1
+        and then Get (X, Last (X)) = E
+        and then (for all I in 1 .. Last (X) - 1 =>
+                    Get (X, I) = Get (X'Old, I)),
+        Always_Terminates,
+        Import;
+
+      function Capacity return Natural with
+        Global => null,
+        Import,
+        Annotate => (GNATprove, Container_Aggregates, "Capacity");
+
+      function First return Ext_Index_Type is (1) with
+        Annotate => (GNATprove, Container_Aggregates, "First");
+
+      function Last (X : T) return Ext_Index_Type with
+        Annotate => (GNATprove, Container_Aggregates, "Last");
+
+      function Get (X : T; I : Index_Type) return Element_Type with
+        Pre => I <= Last (X),
+        Annotate => (GNATprove, Container_Aggregates, "Get");
+
+   private
+      type T_Content is array (Positive range 1 .. Capacity) of Element_Type with
+        Relaxed_Initialization;
+
+      type T is record
+         Content : T_Content;
+         Top     : Natural;
+      end record with
+        Ghost_Predicate => Top <= Max_Capacity
+        and then Top <= Capacity
+        and then (for all I in 1 .. Top => Content (I)'Initialized);
+
+      function Last (X : T) return Ext_Index_Type is (Ext_Index_Type (X.Top));
+
+      function Get (X : T; I : Index_Type) return Element_Type is
+        (X.Content (Positive (I)));
+   end P11;
 begin
    null;
 end;

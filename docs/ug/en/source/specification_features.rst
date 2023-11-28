@@ -120,7 +120,7 @@ To handle these cases, it is possible to relax the standard data initialization
 policy of |SPARK| using the ``Relaxed_Initialization`` aspect. This aspect can
 be used:
 
-* on objects, to state that the object should not be subjected to the
+* on objects, to state that the object should not be subject to the
   initialization policy of |SPARK|,
 
 * on types, so that it applies to every object or component of the type, or
@@ -217,7 +217,7 @@ necessarily holds a meaningful value. However, because of the API of the stack,
 it is not possible to read a value stored above the ``Top`` index in
 ``Content`` without writing it first. For this reason, it is not necessary to
 initialize all elements of the stack at creation. To express that, we use in
-the type ``Stack``, which itself is subjected to the standard initialization
+the type ``Stack``, which itself is subject to the standard initialization
 policy, an array with the ``Relaxed_Initialization`` aspect for the ``Content``
 field.
 
@@ -366,6 +366,50 @@ True even if the stack ``S`` contains uninitialized elements.
   of arrays. However, if this initialization goes through a loop, using the
   ``Initialized`` attribute in a loop invariant might be required for proof to
   verify the program.
+
+.. index:: Side_Effects
+           side-effects; in functions
+
+.. _Aspect Side_Effects:
+
+Aspect ``Side_Effects``
+-----------------------
+
+[|SPARK|]
+
+Unless stated otherwise, functions in |SPARK| cannot have side-effects:
+
+- A function must not have an ``out`` or ``in out`` parameter.
+
+- A function must not write a global variable.
+
+- A function must not raise exceptions.
+
+- A function must always terminate.
+
+The aspect ``Side_Effects`` can be used to indicate that a function may in fact
+have side-effects, among the four possible side-effects listed above. A
+`function with side-effects` can be called only as the right-hand side of an
+assignment, as part of a list of statements where a procedure could be called:
+
+.. code-block:: ada
+
+   function Increment_And_Return (X : in out Integer) return Integer
+     with Side_Effects;
+
+   procedure Call is
+     X : Integer := 5;
+     Y : Integer;
+   begin
+     Y := Increment_And_Return (X);
+     --  The value of X is 6 here
+   end Call;
+
+Note that a function with side-effects could in general be converted into a
+procedure with an additional ``out`` parameter for the function's
+result. However, it can be more convenient to use a function with side-effects
+when binding SPARK code with C code where functions have very often
+side-effects.
 
 .. index:: Loop_Entry
            loop; and Loop_Entry

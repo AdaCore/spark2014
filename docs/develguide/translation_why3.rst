@@ -2851,7 +2851,7 @@ to be initialized (see ``Compute_Dynamic_Invariant``). This is no longer the
 case with Relaxed_Initialization, as part of a supposedly initialized object
 can still not be initialized (and global variables and parameters of mode IN
 might not be initialized at all in some cases). Therefore, the predicate
-should be subjected to the initialization status of the particular object
+should be subject to the initialization status of the particular object
 or component. For scalar types, it is easy, as each object or component has its
 own initialization flag. It is therefore enough to condition the predicate to
 the validity of the flag in its dynamic invariant. As an example, consider

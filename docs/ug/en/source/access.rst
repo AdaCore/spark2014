@@ -20,7 +20,7 @@ restrictions, and what they can be used for.
 * Named access-to-constant types (using the keyword ``constant``) can be used
   to designate data regardless of where it is allocated (the stack, the
   heap...), but they cannot be deallocated. Objects of this type
-  are not subjected to any ownership checking but the value they designate
+  are not subject to any ownership checking but the value they designate
   should be constant all the way down (ie. if such a value has a subcomponent
   of an access-to-variable type, the value designated by this subcomponent
   should be constant too).
@@ -35,7 +35,7 @@ restrictions, and what they can be used for.
   designate data regardless of where it is allocated. Like access-to-constant
   types, they cannot be deallocated, so |GNATprove| will flag memory leaks
   as soon as a value of such a type is allocated on the heap. They are
-  subjected to the :ref:`Memory Ownership Policy` of |SPARK|.
+  subject to the :ref:`Memory Ownership Policy` of |SPARK|.
 
   .. code-block:: ada
 
@@ -79,7 +79,7 @@ restrictions, and what they can be used for.
 Access to Objects and Ownership
 -------------------------------
 
-In |SPARK|, values of an access-to-variable type are subjected to a
+In |SPARK|, values of an access-to-variable type are subject to a
 :ref:`Memory Ownership Policy`. The idea is that an object designated by a
 pointer always has a single owner, which retains the right to either modify it,
 or (exclusive or) share it with others in a read-only way. Said otherwise, we
@@ -528,7 +528,7 @@ see :ref:`Annotation for Referring to a value at the end of a local borrow`.
 Subprogram Pointers
 -------------------
 
-Unlike access to objects, access to subprograms are not subjected to the
+Unlike access to objects, access to subprograms are not subject to the
 ownership policy of |SPARK|. Both anonymous and named access-to-subprogram
 types are supported. As an example, the procedure ``Update_All`` below calls
 its parameter ``Update_One`` on all the elements of its array parameter ``A``:

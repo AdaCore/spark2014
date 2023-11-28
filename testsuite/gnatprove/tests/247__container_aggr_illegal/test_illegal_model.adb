@@ -361,6 +361,46 @@ procedure Test_Illegal_Model with SPARK_Mode is
         (null);
    end P8;
 
+   --  Duplicate Model function
+
+   package P9 is
+      type T is private with
+        Aggregate => (Empty     => Empty,
+                      Add_Named => Insert),
+        Annotate => (GNATprove, Container_Aggregates, "From_Model");
+
+      function Empty return T;
+      procedure Insert (X : in out T; K : Key_Type; E : Element_Type) with
+        Global => null,
+        Always_Terminates,
+        Import;
+
+      function Model (X : T) return Maps.T with
+        Global => null,
+        Import,
+        Annotate => (GNATprove, Container_Aggregates, "Model");
+
+      function Model_2 (X : T) return Maps.T with
+        Global => null,
+        Import,
+        Annotate => (GNATprove, Container_Aggregates, "Model");
+
+   private
+      type Pair is record
+         K : Key_Type;
+         E : Element_Type;
+      end record;
+      type T_Cell;
+      type T is access T_Cell;
+      type T_Cell is record
+         P : Pair;
+         N : T;
+      end record;
+
+      function Empty return T is
+        (null);
+   end P9;
+
 begin
    null;
 end Test_Illegal_Model;

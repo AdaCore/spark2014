@@ -1,8 +1,3 @@
-spark-containers-formal-doubly_linked_lists.ads:1768:04: warning: unused variable constant without variable input "Empty_List", in instantiation at test_conts.adb:9
-spark-containers-formal-hashed_maps.ads:1029:04: warning: unused variable constant without variable input "Empty_Map", in instantiation at test_conts.adb:17
-spark-containers-formal-hashed_sets.ads:1651:04: warning: unused variable constant without variable input "Empty_Set", in instantiation at test_conts.adb:19
-spark-containers-formal-ordered_maps.ads:1253:04: warning: unused variable constant without variable input "Empty_Map", in instantiation at test_conts.adb:11
-spark-containers-formal-ordered_sets.ads:1945:04: warning: unused variable constant without variable input "Empty_Set", in instantiation at test_conts.adb:13
 test_conts.adb:8:23: info: initialization of "X" proved
 test_conts.adb:15:13: info: implicit aspect Always_Terminates on "Int_Hash" has been proved, subprogram will terminate
 test_conts.adb:22:04: warning: analyzing unreferenced procedure "Do_Test"

@@ -299,7 +299,8 @@ package body Gnat2Why.Expr is
       Pre_Expr       :        W_Expr_Id;
       Store          : in out W_Statement_Sequence_Id;
       Params         :        Transformation_Params;
-      Exceptional    : Boolean := False);
+      Index_Map      :        Ada_Node_To_Why_Id.Map;
+      Exceptional    :        Boolean := False);
    --  Compute in Store the sequence of statements necessary to store back
    --  local identifiers of Pattern inside Actual, which is Empty in the case
    --  of the special "self" parameter of protected subprograms. If Need_Store
@@ -307,8 +308,9 @@ package body Gnat2Why.Expr is
    --  that postprocessing may be needed even if Need_Store is False, to
    --  set the init wrapper flag if any, or to perform predicate checks. If
    --  No_Pred_Checks is True, do not check the predicate of the actual after
-   --  the call. Exceptional should be True when Compute_Store is called for
-   --  exceptional cases.
+   --  the call. Index_Map is a mapping from index nodes in Actual to
+   --  identifiers that should be used to refer to these indices. Exceptional
+   --  should be True when Compute_Store is called for exceptional cases.
 
    procedure Compute_Exceptional_Store
      (Formal         :        Formal_Kind_Id;
@@ -318,7 +320,8 @@ package body Gnat2Why.Expr is
       No_Pred_Checks :        Boolean;
       Pre_Expr       :        W_Expr_Id;
       Store          : in out W_Statement_Sequence_Id;
-      Params         :        Transformation_Params);
+      Params         :        Transformation_Params;
+      Index_Map      :        Ada_Node_To_Why_Id.Map);
    --  Same as above but for parameters whose type is neither "by copy" nor
    --  "by reference", the actual is simply havoc'ed.
 
@@ -527,17 +530,19 @@ package body Gnat2Why.Expr is
    type Do_Check_Kind is (All_Checks, Only_Vars, No_Checks);
 
    function New_Assignment
-     (Ada_Node : Node_Id := Empty;
-      Lvalue   : N_Subexpr_Id;
-      Expr     : W_Prog_Id;
-      Do_Check : Do_Check_Kind := All_Checks)
+     (Ada_Node  : Node_Id := Empty;
+      Lvalue    : N_Subexpr_Id;
+      Expr      : W_Prog_Id;
+      Do_Check  : Do_Check_Kind := All_Checks;
+      Index_Map : Ada_Node_To_Why_Id.Map := Ada_Node_To_Why_Id.Empty_Map)
       return W_Prog_Id
    with
 
    --  Expr might be converted without checks to Type_Of_Node (Lvalue), so we
    --  should ensure that we are never missing checks by doing so.
 
-     Pre => Eq_Base (Type_Of_Node (Lvalue), Get_Type (+Expr));
+     Pre => Eq_Base (Type_Of_Node (Lvalue), Get_Type (+Expr))
+     and then (Do_Check /= All_Checks or else Index_Map.Is_Empty);
 
    --  Translate an assignment of the form "Lvalue := Expr" (using Ada_Node
    --  for its source location). If Do_Check is set to No_Checks, then no check
@@ -548,6 +553,10 @@ package body Gnat2Why.Expr is
    --  necessary to check the well-formedness of the prefix (discriminant,
    --  bounds...). This occurs when the new value already contains an
    --  evaluation of the prefix.
+   --  Index_Map is a mapping from index nodes in Lvalue to identifiers that
+   --  should be used to refer to these indices. It is supplied when the
+   --  indices should be evaluated in a different context (typically before a
+   --  call).
 
    function New_Constrained_Attribute_Expr
      (Prefix : N_Subexpr_Id;
@@ -608,23 +617,29 @@ package body Gnat2Why.Expr is
       Value        : W_Expr_Id;
       Domain       : EW_Domain;
       Params       : Transformation_Params;
-      Check_Prefix : Boolean := True)
+      Check_Prefix : Boolean := True;
+      Index_Map    : Ada_Node_To_Why_Id.Map := Ada_Node_To_Why_Id.Empty_Map)
       return W_Expr_Id
    with
      --  Handling of slices is only valid in programs, as it introduces an
      --  "any" Why3 node. This is ensured by not allowing slices in borrowed
      --  expressions.
-     Pre => (if Nkind (N) = N_Slice then Domain in EW_Pterm | EW_Prog);
-   --  @param N       the Ada node which defines the component to be updated
-   --                  (e.g. a record access)
-   --  @param Pref    the currently computed prefix, (e.g. the record value
-   --                  before the update)
-   --  @param Value   the new value of the updated component
-   --  @param Domain  the domain
-   --  @param Params  the translation params
+     Pre => (if Nkind (N) = N_Slice then Domain in EW_Pterm | EW_Prog)
+     and then (not Check_Prefix or else Index_Map.Is_Empty);
+   --  @param N            the Ada node which defines the component to be
+   --                      updated (e.g. a record access)
+   --  @param Pref         the currently computed prefix, (e.g. the record
+   --                      value before the update)
+   --  @param Value        the new value of the updated component
+   --  @param Domain       the domain
+   --  @param Params       the translation params
    --  @param Check_Prefix False if it is not necessary to check the
    --      well-formedness of the prefix (discriminant, bounds...). This occurs
    --      when the new value already contains an evaluation of the prefix.
+   --  @param Index_Map    a mapping from index nodes in N to identifiers that
+   --      should be used to refer to these indices. It is supplied when the
+   --      indices should be evaluated in a different context (typically before
+   --      a call).
    --  @return the Why expression which corresponds to the Pref object, but
    --            updated at the point specified by N, with value Value;
 
@@ -650,8 +665,10 @@ package body Gnat2Why.Expr is
      (N            : in out N_Subexpr_Id;
       Expr         : in out W_Expr_Id;
       Last_Access  : in out Opt_N_Subexpr_Id;
-      Domain       :        EW_Domain := EW_Prog;
-      Check_Prefix : Boolean := True);
+      Domain       : EW_Domain := EW_Prog;
+      Check_Prefix : Boolean := True;
+      Index_Map    : Ada_Node_To_Why_Id.Map := Ada_Node_To_Why_Id.Empty_Map)
+   with Pre => not Check_Prefix or else Index_Map.Is_Empty;
    --  the input pair (N, Expr) describes an assignment
    --      N := Expr
    --  where N is the Ada node for some Lvalue of the form
@@ -666,6 +683,9 @@ package body Gnat2Why.Expr is
    --  If Check_Prefix is False then it is not necessary to check the
    --  well-formedness of the prefix (discriminant, bounds...). This occurs
    --  when the new value already contains an evaluation of the prefix.
+   --  Index_Map is a mapping from index nodes in N to identifiers that should
+   --  be used to refer to these indices. It is supplied when the indices
+   --  should be evaluated in a different context (typically before a call).
 
    function Transform_Aggregate
      (Params        : Transformation_Params;
@@ -3591,7 +3611,9 @@ package body Gnat2Why.Expr is
         Compute_Subprogram_Parameters (Subp, Domain, More_Reads);
       Patterns            : Item_Array := Binders;
       Aliasing            : constant Boolean :=
-        Nkind (Call) in N_Procedure_Call_Statement | N_Entry_Call_Statement
+        (Nkind (Call) in N_Procedure_Call_Statement | N_Entry_Call_Statement
+         or else (Ekind (Subp) = E_Function
+                   and then Is_Function_With_Side_Effects (Subp)))
         and then Get_Aliasing_Status_For_Proof (Call) in
         Possible_Aliasing .. Unchecked;
       --  If aliasing can occur for this subprogram call, we should introduce
@@ -3752,7 +3774,13 @@ package body Gnat2Why.Expr is
                else Why_Empty);
             --  Expression for the constrained attribute of split records
 
-            Need_Store  : Boolean;
+            Need_Store    : Boolean;
+            Index_Map     : Ada_Node_To_Why_Id.Map;
+            --  Map for the identifiers used to store the values of the
+            --  potential indexes from Actual before the call. They are used to
+            --  generate bindings for these expressions before the call. This
+            --  is necessary as the call could modify variables referenced from
+            --  these expressions.
 
          begin
             --  Store the converted actual into a temporary constant to avoid
@@ -3861,10 +3889,99 @@ package body Gnat2Why.Expr is
                end if;
             end if;
 
+            --  Populate the Index_Map with a mapping per index in Actual.
+            --  Add the bindings to Context.
+
+            if not Is_Self
+              and then Need_Store
+              and then not Is_Null_Owning_Access (Actual)
+            then
+               declare
+                  procedure Add_Index (Expr : N_Subexpr_Id);
+                  --  Add an identifier of Expr to Index_Map and a binding to
+                  --  Context.
+
+                  ---------------
+                  -- Add_Index --
+                  ---------------
+
+                  procedure Add_Index (Expr : N_Subexpr_Id) is
+                     W_Id : constant W_Identifier_Id := New_Temp_Identifier
+                       (Typ       => Base_Why_Type_No_Bool
+                          (Entity_Id'(Type_Of_Node (Expr))),
+                        Base_Name => "idx");
+                  begin
+                     Index_Map.Insert (Expr, W_Id);
+
+                     --  Do not generate checks for Expr, they have already
+                     --  been generated when transforming the actual.
+
+                     Context.Append
+                       (Ref_Type'(Mutable => False,
+                                  Name    => W_Id,
+                                  Value   => Transform_Expr
+                                    (Expr,
+                                     Get_Typ (W_Id),
+                                     Term_Domain (Domain),
+                                     Params)));
+                  end Add_Index;
+
+                  Pref : Node_Id := Actual;
+               begin
+                  loop
+                     case Nkind (Pref) is
+                        when N_Identifier
+                           | N_Expanded_Name
+                           =>
+                           exit;
+
+                        when N_Type_Conversion
+                           | N_Unchecked_Type_Conversion
+                           | N_Qualified_Expression
+                           =>
+                           Pref := Expression (Pref);
+
+                        when N_Selected_Component
+                           | N_Explicit_Dereference
+                           =>
+                           Pref := Prefix (Pref);
+
+                        when N_Indexed_Component =>
+                           declare
+                              Cursor : Node_Id := First (Expressions (Pref));
+                           begin
+                              while Present (Cursor) loop
+                                 Add_Index (Cursor);
+                                 Next (Cursor);
+                              end loop;
+                           end;
+                           Pref := Prefix (Pref);
+
+                        when N_Slice =>
+                           declare
+                              Rng : constant Node_Id :=
+                                Get_Range (Discrete_Range (Pref));
+                           begin
+                              Add_Index (Low_Bound (Rng));
+                              Add_Index (High_Bound (Rng));
+                           end;
+                           Pref := Prefix (Pref);
+
+                        when others =>
+                           Ada.Text_IO.Put_Line
+                             ("[Compute_Param] kind ="
+                              & Node_Kind'Image (Nkind (Pref)));
+                           raise Not_Implemented;
+                     end case;
+                  end loop;
+               end;
+            end if;
+
             --  If the item is mutable, compute in Store the statements to
             --  store the content of the temporaries back into the actual.
             --  If the actual is NULL, do not attempt to store the value back
-            --  after the call.
+            --  after the call. Use the Index_Map so the indexes used for the
+            --  store are computed before the call.
 
             if Item_Is_Mutable (Pattern)
               and then not Is_Null_Owning_Access (Actual)
@@ -3886,7 +4003,8 @@ package body Gnat2Why.Expr is
                      No_Pred_Checks => No_Pred_Checks,
                      Pre_Expr       => +Actual_Tmp,
                      Store          => Store,
-                     Params         => Params);
+                     Params         => Params,
+                     Index_Map      => Index_Map);
 
                   --  Also append the store to the exception handler if any
 
@@ -3903,7 +4021,8 @@ package body Gnat2Why.Expr is
                            No_Pred_Checks => No_Pred_Checks,
                            Pre_Expr       => +Actual_Tmp,
                            Store          => Store,
-                           Params         => Params);
+                           Params         => Params,
+                           Index_Map      => Index_Map);
                      else
                         Compute_Exceptional_Store
                           (Formal         => Formal,
@@ -3913,7 +4032,8 @@ package body Gnat2Why.Expr is
                            No_Pred_Checks => No_Pred_Checks,
                            Pre_Expr       => +Actual_Tmp,
                            Store          => Exc_Store,
-                           Params         => Params);
+                           Params         => Params,
+                           Index_Map      => Index_Map);
                      end if;
                   end if;
                end;
@@ -6270,7 +6390,8 @@ package body Gnat2Why.Expr is
       No_Pred_Checks :        Boolean;
       Pre_Expr       :        W_Expr_Id;
       Store          : in out W_Statement_Sequence_Id;
-      Params         :        Transformation_Params)
+      Params         :        Transformation_Params;
+      Index_Map      :        Ada_Node_To_Why_Id.Map)
    is
    begin
       --  Parameters of a "by reference" type are handled like in normal return
@@ -6284,6 +6405,7 @@ package body Gnat2Why.Expr is
             Pre_Expr       => Pre_Expr,
             Store          => Store,
             Params         => Params,
+            Index_Map      => Index_Map,
             Exceptional    => True);
          return;
 
@@ -6329,10 +6451,11 @@ package body Gnat2Why.Expr is
       begin
          Append
            (Store, New_Assignment
-              (Ada_Node => Actual,
-               Lvalue   => Actual,
-               Expr     => Unknown_Value,
-               Do_Check => No_Checks));
+              (Ada_Node  => Actual,
+               Lvalue    => Actual,
+               Expr      => Unknown_Value,
+               Do_Check  => No_Checks,
+               Index_Map => Index_Map));
       end;
 
       --  We only have an initialization flag for scalars which are always
@@ -6727,7 +6850,8 @@ package body Gnat2Why.Expr is
       Pre_Expr       :        W_Expr_Id;
       Store          : in out W_Statement_Sequence_Id;
       Params         :        Transformation_Params;
-      Exceptional    : Boolean := False)
+      Index_Map      :        Ada_Node_To_Why_Id.Map;
+      Exceptional    :        Boolean := False)
    is
    begin
       --  Add a continuation locating the potential checks on the copy-back
@@ -6756,10 +6880,11 @@ package body Gnat2Why.Expr is
          begin
             Append
               (Store, New_Assignment
-                 (Ada_Node => Actual,
-                  Lvalue   => Actual,
-                  Expr     => Reconstructed_Arg,
-                  Do_Check => Only_Vars));
+                 (Ada_Node  => Actual,
+                  Lvalue    => Actual,
+                  Expr      => Reconstructed_Arg,
+                  Do_Check  => Only_Vars,
+                  Index_Map => Index_Map));
          end;
       end if;
 
@@ -8841,16 +8966,103 @@ package body Gnat2Why.Expr is
          Continuation_Stack.Delete_Last;
       end Prepend_Call_To_Add;
 
-      Cont_Id     : constant W_Identifier_Id :=
+      Cont_Id           : constant W_Identifier_Id :=
         New_Temp_Identifier (Typ => EW_Abstract (E), Base_Name => "cont");
-      New_Cont_Id : constant W_Identifier_Id :=
+      New_Cont_Id       : constant W_Identifier_Id :=
         New_Temp_Identifier
           (Typ => EW_Abstract (E), Base_Name => "new_cont");
+
+      Model_Annot       : Aggregate_Annotation := Annot;
+      --  Annotation of the last model type
+      Model_Term        : W_Term_Id := +Cont_Id;
+      --  ... model2 (model1 cont_id)
+      New_Model_Term    : W_Term_Id := +New_Cont_Id;
+      --  ... model2 (model1 new_cont_id)
+      Capacity_Fun      : Entity_Id := Empty;
+      --  First encountered capacity function if any
+      Capacity_Call     : W_Term_Id := Why_Empty;
+      --  capacity (... (model1 cont_id))?
+      New_Capacity_Call : W_Term_Id := Why_Empty;
+      --  capacity (... (model1 new_cont_id))
+      --  It is only defined if E has an object specific capacity.
 
    --  Start of processing for Generate_VCs_For_Aggregate_Annotation
 
    begin
-      case Annot.Kind is
+      --  Search for the last model type for E
+
+      loop
+         --  Use the first capacity function encountered
+
+         if Present (Model_Annot.Capacity) and then No (Capacity_Fun) then
+            Capacity_Fun := Model_Annot.Capacity;
+
+            declare
+               Base_Capacity_Typ : constant W_Type_Id :=
+                 (if Has_Scalar_Type (Etype (Capacity_Fun))
+                  then EW_Int_Type
+                  else EW_Abstract
+                    (Base_Retysp (Etype (Capacity_Fun))));
+            begin
+               if Present (Annot.Spec_Capacity) then
+                  Capacity_Call :=
+                    New_Call_To_Ada_Function
+                      (Fun  => Capacity_Fun,
+                       Args => (1 => Model_Term));
+                  New_Capacity_Call :=
+                    New_Call_To_Ada_Function
+                      (Fun  => Capacity_Fun,
+                       Args => (1 => New_Model_Term));
+                  New_Capacity_Call := +Insert_Simple_Conversion
+                    (Domain => EW_Term,
+                     Expr   => +New_Capacity_Call,
+                     To     => Base_Capacity_Typ);
+               else
+                  Capacity_Call :=
+                    New_Call_To_Ada_Function
+                      (Fun  => Capacity_Fun,
+                       Args => (1 .. 0 => <>));
+               end if;
+
+               Capacity_Call := +Insert_Simple_Conversion
+                 (Domain => EW_Term,
+                  Expr   => +Capacity_Call,
+                  To     => Base_Capacity_Typ);
+            end;
+         end if;
+
+         exit when Model_Annot.Kind /= Model;
+
+         --  Construct the access to the last model in Model_Term and
+         --  New_Model_Term.
+
+         Model_Term :=
+           New_Call_To_Ada_Function
+             (Fun  => Model_Annot.Model,
+              Args => (1 => Model_Term));
+         New_Model_Term :=
+           New_Call_To_Ada_Function
+             (Fun  => Model_Annot.Model,
+              Args => (1 => New_Model_Term));
+
+         Model_Annot := Get_Aggregate_Annotation (Model_Annot.Model_Type);
+      end loop;
+
+      --  For containers with a container specific capacity and a capacity
+      --  function, add the preservation of the capacity to Preserv_Checks:
+      --
+      --    capacity_call <= new_capacity_call
+
+      if Present (Annot.Spec_Capacity) and then Present (Capacity_Fun) then
+         Prepend_Assert_To_Preserv_Checks
+           (Pred           => New_Comparison
+              (Symbol => Int_Infix_Le,
+               Left   => Capacity_Call,
+               Right  => New_Capacity_Call),
+            Associated_Fun => Capacity_Fun);
+      end if;
+
+      case Model_Annot.Kind is
          when Sets =>
 
             --  For predefined sets, we want to generate the following
@@ -8858,84 +9070,87 @@ package body Gnat2Why.Expr is
             --  of the invariant used to model aggregates:
             --
             --  let cont_id = empty in
-            --  assert { length cont_id = 0 };
+            --  assert { length model_term = 0 };
             --  let elt_id = any elt_ty ensures { dyn_inv } in
-            --    assert { not contains cont_id elt_id }
+            --    assert { not contains model_term elt_id }
             --
             --  let cont_id = any cont_ty ensures { dyn_inv } in
             --  assume
-            --    { length cont_id < Length_Type'Last } (* for signed types *)
+            --    { length model_term < capacity_call }
+            --    (* if Capacity is supplied *)
+            --  assume
+            --    { length model_term < length_type'Last }
+            --    (* otherwise, for signed types only *)
             --  let elt_id = any elt_ty ensures { dyn_inv } in
+            --  assume { not contains model_term elt_id };
             --  let param_cont_id = ref cont_id in
             --    add param_cont_id elt_id;
             --    let new_cont_id = !param_cont_id in
             --    assert
-            --      { if contains cont_id elt_id
-            --        then length new_cont_id = length cont_id
-            --        else length new_cont_id = length cont_id + 1 };
+            --      { length new_model_term = length model_term + 1 };
             --    let other_id = any elt_ty ensures { dyn_inv } in
             --    assert
-            --      { contains new_cont_id elt_id /\
-            --        (contains cont_id other_id ->
-            --          contains new_cont_id other_id) /\
-            --        (contains new_cont_id other_id ->
-            --          (contains cont_id other_id \/
+            --      { contains new_model_term elt_id /\
+            --        (contains model_term other_id ->
+            --          contains new_model_term other_id) /\
+            --        (contains new_model_term other_id ->
+            --          (contains model_term other_id \/
             --           equivalent_elements other_id elt_id) }
 
             declare
                Elt_Id : constant W_Identifier_Id :=
                  New_Temp_Identifier
-                   (Typ       => Type_Of_Node (Annot.Element_Type),
+                   (Typ       => Type_Of_Node (Model_Annot.Element_Type),
                     Base_Name => "elt");
             begin
                --  Generate in Init_Checks:
                --
-               --    assert { not contains cont_id elt_id }
+               --    assert { not contains model_term elt_id }
 
                declare
                   Contains_Call : constant W_Term_Id :=
                     New_Call_To_Ada_Function
-                      (Fun  => Annot.Contains,
-                       Args => (+Cont_Id, +Elt_Id));
+                      (Fun  => Model_Annot.Contains,
+                       Args => (Model_Term, +Elt_Id));
 
                begin
                   Prepend_Assert_To_Init_Checks
                     (Pred           => New_Not
                        (Right => Pred_Of_Boolean_Term (Contains_Call)),
-                     Associated_Fun => Annot.Contains);
+                     Associated_Fun => Model_Annot.Contains);
                end;
 
                --  Generate in Preserv_Checks:
                --
                --  let other_id = any elt_ty ensures { dyn_inv } in
                --    assert
-               --      { contains new_cont_id elt_id /\
-               --        (contains cont_id other_id ->
-               --          contains new_cont_id other_id) /\
-               --        (contains new_cont_id other_id ->
-               --          (contains cont_id other_id \/
+               --      { contains new_model_term elt_id /\
+               --        (contains model_term other_id ->
+               --          contains new_model_term other_id) /\
+               --        (contains new_model_term other_id ->
+               --          (contains model_term other_id \/
                --           equivalent_elements other_id elt_id) }
 
                declare
                   Other_Id           : constant W_Identifier_Id :=
                     New_Temp_Identifier
-                      (Typ       => Type_Of_Node (Annot.Element_Type),
+                      (Typ       => Type_Of_Node (Model_Annot.Element_Type),
                        Base_Name => "other");
                   New_Contains_Elt   : constant W_Term_Id :=
                     New_Call_To_Ada_Function
-                      (Fun  => Annot.Contains,
-                       Args => (+New_Cont_Id, +Elt_Id));
+                      (Fun  => Model_Annot.Contains,
+                       Args => (New_Model_Term, +Elt_Id));
                   New_Contains_Other : constant W_Term_Id :=
                     New_Call_To_Ada_Function
-                      (Fun  => Annot.Contains,
-                       Args => (+New_Cont_Id, +Other_Id));
+                      (Fun  => Model_Annot.Contains,
+                       Args => (New_Model_Term, +Other_Id));
                   Old_Contains_Other : constant W_Term_Id :=
                     New_Call_To_Ada_Function
-                      (Fun  => Annot.Contains,
-                       Args => (+Cont_Id, +Other_Id));
+                      (Fun  => Model_Annot.Contains,
+                       Args => (Model_Term, +Other_Id));
                   Other_Eq_Elt       : constant W_Term_Id :=
                     New_Call_To_Ada_Function
-                      (Fun  => Annot.Equivalent_Elements,
+                      (Fun  => Model_Annot.Equivalent_Elements,
                        Args => (+Other_Id, +Elt_Id));
 
                begin
@@ -8954,11 +9169,11 @@ package body Gnat2Why.Expr is
                             Left  => Pred_Of_Boolean_Term (Old_Contains_Other),
                             Right => Pred_Of_Boolean_Term
                               (New_Contains_Other)))),
-                     Associated_Fun => Annot.Contains);
+                     Associated_Fun => Model_Annot.Contains);
 
                   Preserv_Checks := New_Binding_To_Any
                     (Name    => Other_Id,
-                     Ty      => Annot.Element_Type,
+                     Ty      => Model_Annot.Element_Type,
                      Context => Preserv_Checks);
                end;
 
@@ -8969,38 +9184,34 @@ package body Gnat2Why.Expr is
 
                Init_Checks := New_Binding_To_Any
                  (Name    => Elt_Id,
-                  Ty      => Annot.Element_Type,
+                  Ty      => Model_Annot.Element_Type,
                   Context => Init_Checks);
 
                --  Prepend checks for length if any.
                --
                --  Prepend to Init_Checks:
                --
-               --    assert { length cont_id = 0 }
+               --    assert { length model_term = 0 }
                --
                --  and to Preserv_Checks:
                --
-               --    assert { length new_cont_id <= length cont_id + 1 }
+               --    assert { length new_model_term = length model_term + 1 }
 
-               if Present (Annot.Sets_Length) then
+               if Present (Model_Annot.Sets_Length) then
                   declare
-                     Contains_Call   : constant W_Term_Id :=
-                       New_Call_To_Ada_Function
-                         (Fun  => Annot.Contains,
-                          Args => (+Cont_Id, +Elt_Id));
                      Length_Call     : W_Term_Id :=
                        New_Call_To_Ada_Function
-                         (Fun  => Annot.Sets_Length,
-                          Args => (1 => +Cont_Id));
+                         (Fun  => Model_Annot.Sets_Length,
+                          Args => (1 => Model_Term));
                      New_Length_Call : W_Term_Id :=
                        New_Call_To_Ada_Function
-                         (Fun  => Annot.Sets_Length,
-                          Args => (1 => +New_Cont_Id));
+                         (Fun  => Model_Annot.Sets_Length,
+                          Args => (1 => New_Model_Term));
                      Base_Length_Typ : constant W_Type_Id :=
-                       (if Has_Scalar_Type (Etype (Annot.Sets_Length))
+                       (if Has_Scalar_Type (Etype (Model_Annot.Sets_Length))
                         then EW_Int_Type
                         else EW_Abstract
-                          (Base_Retysp (Etype (Annot.Sets_Length))));
+                          (Base_Retysp (Etype (Model_Annot.Sets_Length))));
 
                   begin
                      Length_Call := +Insert_Simple_Conversion
@@ -9018,27 +9229,20 @@ package body Gnat2Why.Expr is
                            Left   => Length_Call,
                            Right  =>
                              New_Integer_Constant (Value => Uint_0)),
-                        Associated_Fun => Annot.Sets_Length);
+                        Associated_Fun => Model_Annot.Sets_Length);
 
                      Prepend_Assert_To_Preserv_Checks
-                       (Pred           => New_Conditional
-                          (Condition => Pred_Of_Boolean_Term
-                               (Contains_Call),
-                           Then_Part => New_Comparison
-                             (Symbol => Why_Eq,
-                              Left   => New_Length_Call,
-                              Right  => Length_Call),
-                           Else_Part => New_Comparison
-                             (Symbol => Why_Eq,
-                              Left   => New_Length_Call,
-                              Right  => New_Call
-                                (Name => Int_Infix_Add,
-                                 Args =>
-                                   (1 => +Length_Call,
-                                    2 => New_Integer_Constant
-                                      (Value => Uint_1)),
-                                 Typ  => Base_Length_Typ))),
-                        Associated_Fun => Annot.Sets_Length);
+                       (Pred           => New_Comparison
+                          (Symbol => Why_Eq,
+                           Left   => New_Length_Call,
+                           Right  => New_Call
+                             (Name => Int_Infix_Add,
+                              Args =>
+                                (1 => +Length_Call,
+                                 2 => New_Integer_Constant
+                                   (Value => Uint_1)),
+                              Typ  => Base_Length_Typ)),
+                        Associated_Fun => Model_Annot.Sets_Length);
                   end;
                end if;
 
@@ -9046,6 +9250,7 @@ package body Gnat2Why.Expr is
                --  new_cont_id:
                --
                --  let elt_id = any elt_ty ensures { dyn_inv } in
+               --  assume { not contains model_term elt_id };
                --  let param_cont_id = ref cont_id in
                --    add param_cont_id elt_id;
                --    let new_cont_id = !param_cont_id in
@@ -9057,33 +9262,66 @@ package body Gnat2Why.Expr is
                   Params_Ids     => (Cont_Id, Elt_Id),
                   New_Cont_Id    => New_Cont_Id);
 
+               declare
+                  Contains_Call : constant W_Term_Id :=
+                    New_Call_To_Ada_Function
+                      (Fun  => Model_Annot.Contains,
+                       Args => (Model_Term, +Elt_Id));
+               begin
+                  Preserv_Checks := Sequence
+                    (Left  => New_Assume_Statement
+                       (Pred  => New_Not
+                            (Right => Pred_Of_Boolean_Term (Contains_Call))),
+                     Right => Preserv_Checks);
+               end;
+
                Preserv_Checks := New_Binding_To_Any
                  (Name    => Elt_Id,
-                  Ty      => Annot.Element_Type,
+                  Ty      => Model_Annot.Element_Type,
                   Context => Preserv_Checks);
 
                --  If the length type is a signed integer type, assume that
                --  length is less than the last possible length before the call
                --  to Add:
-               --
-               --  assume { length cont_id < Length_Type'Last }
-               --    (* for signed types *)
+               --  assume
+               --    { length model_term < capacity_call }
+               --    (* if Capacity is supplied *)
+               --  assume
+               --    { length model_term < length_type'Last }
+               --    (* otherwise, for signed types only *)
 
-               if Present (Annot.Sets_Length)
-                 and then Has_Scalar_Type (Etype (Annot.Sets_Length))
+               if Present (Model_Annot.Sets_Length)
+                 and then (Has_Scalar_Type (Etype (Model_Annot.Sets_Length))
+                           or else Present (Capacity_Fun))
                then
                   declare
                      Length_Call     : W_Term_Id :=
                        New_Call_To_Ada_Function
-                         (Fun  => Annot.Sets_Length,
-                          Args => (1 => +Cont_Id));
+                         (Fun  => Model_Annot.Sets_Length,
+                          Args => (1 => Model_Term));
                      Base_Length_Typ : constant W_Type_Id :=
-                       (if Has_Scalar_Type (Etype (Annot.Sets_Length))
+                       (if Has_Scalar_Type (Etype (Model_Annot.Sets_Length))
                         then EW_Int_Type
                         else EW_Abstract
-                          (Base_Retysp (Etype (Annot.Sets_Length))));
+                          (Base_Retysp (Etype (Model_Annot.Sets_Length))));
+                     Length_Max      : W_Term_Id;
 
                   begin
+                     Length_Call := +Insert_Simple_Conversion
+                       (Domain => EW_Term,
+                        Expr   => +Length_Call,
+                        To     => Base_Length_Typ);
+
+                     if Present (Capacity_Fun) then
+                        Length_Max := Capacity_Call;
+                     else
+                        Length_Max := +New_Attribute_Expr
+                          (Ty     => Etype (Model_Annot.Sets_Length),
+                           Domain => EW_Term,
+                           Attr   => Attribute_Last,
+                           Params => Body_Params);
+                     end if;
+
                      Length_Call := +Insert_Simple_Conversion
                        (Domain => EW_Term,
                         Expr   => +Length_Call,
@@ -9093,11 +9331,7 @@ package body Gnat2Why.Expr is
                           (Pred => New_Comparison
                                (Symbol => Int_Infix_Lt,
                                 Left   => Length_Call,
-                                Right  => +New_Attribute_Expr
-                                  (Ty     => Etype (Annot.Sets_Length),
-                                   Domain => EW_Term,
-                                   Attr   => Attribute_Last,
-                                   Params => Body_Params))),
+                                Right  => Length_Max)),
                         Right => Preserv_Checks);
                   end;
                end if;
@@ -9110,41 +9344,45 @@ package body Gnat2Why.Expr is
             --  of the invariant used to model aggregates:
             --
             --  let cont_id = empty in
-            --    assert { last cont_id + 1 = first };
+            --    assert { last model_term + 1 = first };
             --
             --  let cont_id = any cont_ty ensures { dyn_inv } in
             --  assume
-            --    { last cont_id < Index_Type'Last } (* for signed types *)
+            --    { last model_term < first + capacity_call - 1 }
+            --    (* if Capacity is supplied *)
+            --  assume
+            --    { last model_term < index_type'Last } (* for signed types *)
             --  let elt_id = any elt_ty ensures { dyn_inv } in
             --  let param_cont_id = ref cont_id in
             --    add param_cont_id elt_id;
             --    let new_cont_id = !param_cont_id in
-            --    assert { last new_cont_id = last cont_id + 1 };
+            --    assert { last new_model_term = last model_term + 1 };
             --    assert
-            --      { get new_cont_id (last new_cont_id) = <copy elt_id> };
+            --      { get new_model_term (last new_model_term) =
+            --           <copy elt_id> };
             --    let index_id = any int ensures
-            --        { first <= result <= last cont_id } in
+            --        { first <= result <= last model_term } in
             --      assert
-            --        { get new_cont_id index_id = get cont_id index_id }
+            --        { get new_model_term index_id = get model_term index_id }
 
             declare
                Elt_Id        : constant W_Identifier_Id :=
                  New_Temp_Identifier
-                   (Typ       => Type_Of_Node (Annot.Element_Type),
+                   (Typ       => Type_Of_Node (Model_Annot.Element_Type),
                     Base_Name => "elt");
                First_Call    : W_Term_Id := New_Call_To_Ada_Function
-                 (Fun  => Annot.First,
+                 (Fun  => Model_Annot.First,
                   Args => (1 .. 0 => <>));
                Last_Cont     : W_Term_Id := New_Call_To_Ada_Function
-                 (Fun  => Annot.Last,
-                  Args => (1 => +Cont_Id));
+                 (Fun  => Model_Annot.Last,
+                  Args => (1 => Model_Term));
                Last_New_Cont : W_Term_Id := New_Call_To_Ada_Function
-                 (Fun  => Annot.Last,
-                  Args => (1 => +New_Cont_Id));
+                 (Fun  => Model_Annot.Last,
+                  Args => (1 => New_Model_Term));
 
                Base_Index_Typ : constant W_Type_Id :=
-                 (if Has_Scalar_Type (Annot.Index_Type) then EW_Int_Type
-                  else EW_Abstract (Base_Retysp (Annot.Index_Type)));
+                 (if Has_Scalar_Type (Model_Annot.Index_Type) then EW_Int_Type
+                  else EW_Abstract (Base_Retysp (Model_Annot.Index_Type)));
 
             begin
                First_Call := +Insert_Simple_Conversion
@@ -9162,7 +9400,7 @@ package body Gnat2Why.Expr is
 
                --  Generate in Init_Checks:
                --
-               --    assert { last cont_id + 1 = first }
+               --    assert { last model_term + 1 = first }
 
                Prepend_Assert_To_Init_Checks
                  (Pred           => New_Comparison
@@ -9174,17 +9412,19 @@ package body Gnat2Why.Expr is
                            2 => New_Integer_Constant (Value => Uint_1)),
                         Typ  => EW_Int_Type),
                      Right  => First_Call),
-                  Associated_Fun => Annot.Last);
+                  Associated_Fun => Model_Annot.Last);
 
                --  Generate in Preserv_Checks:
                --
-               --  assert { last new_cont_id = last cont_id + 1 };
+               --  assert { last model_term_id = last model_term + 1 };
                --  assert
-               --    { get new_cont_id (last new_cont_id) = <copy elt_id> };
+               --    { get new_model_term (last new_model_term) =
+               --          <copy elt_id> };
                --  let index_id = any int ensures
-               --      { first <= result <= last cont_id } in
+               --      { first <= result <= last model_term } in
                --    assert
-               --      { get new_cont_id index_id = get cont_id index_id }
+               --      { get new_model_term index_id =
+               --          get model_term index_id }
 
                declare
                   Index_Id           : constant W_Identifier_Id :=
@@ -9193,21 +9433,21 @@ package body Gnat2Why.Expr is
                        Base_Name => "index");
                   Get_New_Cont_Last  : constant W_Term_Id :=
                     New_Call_To_Ada_Function
-                      (Fun  => Annot.Seqs_Get,
-                       Args => (+New_Cont_Id, Last_New_Cont));
+                      (Fun  => Model_Annot.Seqs_Get,
+                       Args => (New_Model_Term, Last_New_Cont));
                   Get_New_Cont_Index : constant W_Term_Id :=
                     New_Call_To_Ada_Function
-                      (Fun  => Annot.Seqs_Get,
-                       Args => (+New_Cont_Id, +Index_Id));
+                      (Fun  => Model_Annot.Seqs_Get,
+                       Args => (New_Model_Term, +Index_Id));
                   Get_Cont_Index     : constant W_Term_Id :=
                     New_Call_To_Ada_Function
-                      (Fun  => Annot.Seqs_Get,
-                       Args => (+Cont_Id, +Index_Id));
+                      (Fun  => Model_Annot.Seqs_Get,
+                       Args => (Model_Term, +Index_Id));
                   Elt_Expr           : constant W_Term_Id :=
-                    (if Is_Tagged_Type (Retysp (Annot.Element_Type))
-                     and then not Is_Class_Wide_Type (Annot.Element_Type)
+                    (if Is_Tagged_Type (Retysp (Model_Annot.Element_Type))
+                     and then not Is_Class_Wide_Type (Model_Annot.Element_Type)
                      then New_Tag_Update
-                       (Name => +Elt_Id, Ty => Annot.Element_Type)
+                       (Name => +Elt_Id, Ty => Model_Annot.Element_Type)
                      else +Elt_Id);
 
                begin
@@ -9216,7 +9456,7 @@ package body Gnat2Why.Expr is
                        (Symbol => Why_Eq,
                         Left   => Get_New_Cont_Index,
                         Right  => Get_Cont_Index),
-                     Associated_Fun => Annot.Seqs_Get);
+                     Associated_Fun => Model_Annot.Seqs_Get);
 
                   Preserv_Checks := New_Typed_Binding
                     (Name    => Index_Id,
@@ -9241,7 +9481,7 @@ package body Gnat2Why.Expr is
                        (Symbol => Why_Eq,
                         Left   => Get_New_Cont_Last,
                         Right  => Elt_Expr),
-                     Associated_Fun => Annot.Seqs_Get);
+                     Associated_Fun => Model_Annot.Seqs_Get);
 
                   Prepend_Assert_To_Preserv_Checks
                     (Pred           => New_Comparison
@@ -9253,7 +9493,7 @@ package body Gnat2Why.Expr is
                               2 => New_Integer_Constant (Value => Uint_1)),
                            Typ  => EW_Int_Type),
                         Right  => Last_New_Cont),
-                     Associated_Fun => Annot.Last);
+                     Associated_Fun => Model_Annot.Last);
                end;
 
                --  Define the identifiers used for the checks.
@@ -9264,7 +9504,7 @@ package body Gnat2Why.Expr is
 
                Init_Checks := New_Binding_To_Any
                  (Name    => Elt_Id,
-                  Ty      => Annot.Element_Type,
+                  Ty      => Model_Annot.Element_Type,
                   Context => Init_Checks);
 
                --  For Preserv_Checks, add a call to Add to construct
@@ -9284,26 +9524,53 @@ package body Gnat2Why.Expr is
 
                Preserv_Checks := New_Binding_To_Any
                  (Name    => Elt_Id,
-                  Ty      => Annot.Element_Type,
+                  Ty      => Model_Annot.Element_Type,
                   Context => Preserv_Checks);
 
                --  If the index type is a signed integer type, assume that
                --  last is less than the last index before the call to Add:
                --
-               --  assume
-               --    { last cont_id < Index_Type'Last } (* for signed types *)
+               --  assume { last model_term < index_type'Last }
 
-               if Has_Scalar_Type (Annot.Index_Type) then
+               if Has_Scalar_Type (Model_Annot.Index_Type) then
                   Preserv_Checks := Sequence
                     (Left  => New_Assume_Statement
                        (Pred => New_Comparison
                           (Symbol => Int_Infix_Lt,
                            Left   => Last_Cont,
                            Right  => +New_Attribute_Expr
-                             (Ty     => Annot.Index_Type,
+                             (Ty     => Model_Annot.Index_Type,
                               Domain => EW_Term,
                               Attr   => Attribute_Last,
                               Params => Body_Params))),
+                     Right => Preserv_Checks);
+               end if;
+
+               --  If a capacity function is supplied, assume that there are
+               --  less than capacity elements in the sequence before the call
+               --  to Add:
+               --
+               --  assume
+               --    { last model_term < first + capacity_call - 1 }
+               --    (* if Capacity is supplied *)
+
+               if Present (Capacity_Fun) then
+                  Preserv_Checks := Sequence
+                    (Left  => New_Assume_Statement
+                       (Pred => New_Comparison
+                            (Symbol => Int_Infix_Lt,
+                             Left   => Last_Cont,
+                             Right  => New_Call
+                               (Name => Int_Infix_Add,
+                                Args =>
+                                  (1 => +First_Call,
+                                   2 => New_Call
+                                     (Name   => Int_Infix_Subtr,
+                                      Domain => EW_Term,
+                                      Args   =>
+                                        (1 => +Capacity_Call,
+                                         2 => New_Integer_Constant
+                                           (Value => Uint_1))))))),
                      Right => Preserv_Checks);
                end if;
             end;
@@ -9315,52 +9582,56 @@ package body Gnat2Why.Expr is
             --  of the invariant used to model aggregates:
             --
             --  let cont_id = empty in
-            --  assert { length cont_id = 0 };
+            --  assert { length model_term = 0 };
             --  let key_id = any key_ty ensures { dyn_inv } in
-            --    assert { not has_key cont_id key_id } (* with has_key *)
+            --    assert { not has_key model_term key_id } (* with has_key *)
             --    assert
-            --      { get cont_id key_id = default_item } (* otherwise *)
+            --      { get model_term key_id = default_item } (* otherwise *)
             --
             --  let cont_id = any cont_ty ensures { dyn_inv } in
             --  assume
-            --    { length cont_id < Length_Type'Last } (* for signed types *)
+            --    { length model_term < capacity_call }
+            --    (* if Capacity is supplied *)
+            --  assume
+            --    { length model_term < length_type'Last }
+            --    (* otherwise, for signed types only *)
             --  let key_id = any key_ty ensures { dyn_inv } in
             --  let elt_id = any elt_ty ensures { dyn_inv } in
-            --  assume { not has_key cont_id key_id }; (* with has_key *)
+            --  assume { not has_key model_term key_id }; (* with has_key *)
             --  assume
-            --    { get cont_id key_id = default_item }; (* otherwise *)
+            --    { get model_term key_id = default_item }; (* otherwise *)
             --  let param_cont_id = ref cont_id in
             --    add param_cont_id key_id elt_id;
             --    let new_cont_id = !param_cont_id in
             --    let other_id = any key_ty ensures { dyn_inv } in
-            --      assert { length new_cont_id = length cont_id + 1 };
+            --      assert { length new_model_term = length model_term + 1 };
             --      assert (* with has_key *)
-            --        { has_key new_cont_id key_id /\
-            --          (has_key cont_id other_id ->
-            --            has_key new_cont_id other_id) /\
-            --          (has_key new_cont_id other_id ->
-            --            (has_key cont_id other_id \/
+            --        { has_key new_model_term key_id /\
+            --          (has_key model_term other_id ->
+            --            has_key new_model_term other_id) /\
+            --          (has_key new_model_term other_id ->
+            --            (has_key model_term other_id \/
             --             equivalent_keys other_id key_id) };
             --      assert
-            --        { get new_cont_id key_id = <copy elt_id> }
-            --      assume { has_key cont_id other_id }; (* with has_key *)
+            --        { get new_model_term key_id = <copy elt_id> }
+            --      assume { has_key model_term other_id }; (* with has_key *)
             --      assume
             --        { not equivalent_keys other_id key_id }; (* otherwise *)
             --      assert
-            --        { get new_cont_id other_id = get cont_id other_id }
+            --        { get new_model_term other_id = get model_term other_id }
 
             declare
                Key_Id      : constant W_Identifier_Id :=
                  New_Temp_Identifier
-                   (Typ       => Type_Of_Node (Annot.Key_Type),
+                   (Typ       => Type_Of_Node (Model_Annot.Key_Type),
                     Base_Name => "key");
                Elt_Id      : constant W_Identifier_Id :=
                  New_Temp_Identifier
-                   (Typ       => Type_Of_Node (Annot.Element_Type),
+                   (Typ       => Type_Of_Node (Model_Annot.Element_Type),
                     Base_Name => "elt");
                Other_Id    : constant W_Identifier_Id :=
                  New_Temp_Identifier
-                   (Typ       => Type_Of_Node (Annot.Key_Type),
+                   (Typ       => Type_Of_Node (Model_Annot.Key_Type),
                     Base_Name => "other");
                No_Key_Pred : W_Pred_Id;
                --  Predicate stating that key_id has no association/the default
@@ -9369,15 +9640,15 @@ package body Gnat2Why.Expr is
 
             begin
                --  Construct No_Key_Pred. It contains:
-               --     not has_key cont_id key_id (* with has_key *)
-               --     get cont_id key_id = default_item (* otherwise *)
+               --     not (has_key model_term key_id) (* with has_key *)
+               --     get model_term key_id = default_item (* otherwise *)
 
-               if Present (Annot.Has_Key) then
+               if Present (Model_Annot.Has_Key) then
                   declare
                      Has_Key_Call : constant W_Term_Id :=
                        New_Call_To_Ada_Function
-                         (Fun  => Annot.Has_Key,
-                          Args => (+Cont_Id, +Key_Id));
+                         (Fun  => Model_Annot.Has_Key,
+                          Args => (Model_Term, +Key_Id));
                   begin
                      No_Key_Pred := New_Not
                        (Right => Pred_Of_Boolean_Term (Has_Key_Call));
@@ -9386,12 +9657,12 @@ package body Gnat2Why.Expr is
                   declare
                      Default_Item_Call : constant W_Term_Id :=
                        New_Call_To_Ada_Function
-                         (Fun  => Annot.Default_Item,
+                         (Fun  => Model_Annot.Default_Item,
                           Args => (1 .. 0 => <>));
                      Get_Call          : constant W_Term_Id :=
                        New_Call_To_Ada_Function
-                         (Fun  => Annot.Maps_Get,
-                          Args => (+Cont_Id, +Key_Id));
+                         (Fun  => Model_Annot.Maps_Get,
+                          Args => (Model_Term, +Key_Id));
                   begin
                      No_Key_Pred := New_Comparison
                        (Symbol => Why_Eq,
@@ -9407,38 +9678,40 @@ package body Gnat2Why.Expr is
                Prepend_Assert_To_Init_Checks
                  (Pred           => No_Key_Pred,
                   Associated_Fun =>
-                    (if Present (Annot.Has_Key) then Annot.Has_Key
-                     else Annot.Maps_Get));
+                    (if Present (Model_Annot.Has_Key) then Model_Annot.Has_Key
+                     else Model_Annot.Maps_Get));
 
                --  Add value of elements in Preserv_Checks:
                --
                --      assert
-               --        { get new_cont_id key_id = <copy elt_id> }
-               --      assume { has_key cont_id other_id }; (* with has_key *)
+               --        { get new_model_term key_id = <copy elt_id> }
+               --      assume { has_key model_term other_id };
+               --        (* with has_key *)
                --      assume
                --        { not equivalent_keys other_id key_id };
                --        (* otherwise *)
                --      assert
-               --        { get new_cont_id other_id = get cont_id other_id }
+               --        { get new_model_term other_id =
+               --             get model_term other_id }
 
                declare
                   Get_Cont_Other     : constant W_Term_Id :=
                     New_Call_To_Ada_Function
-                      (Fun  => Annot.Maps_Get,
-                       Args => (+Cont_Id, +Other_Id));
+                      (Fun  => Model_Annot.Maps_Get,
+                       Args => (Model_Term, +Other_Id));
                   Get_New_Cont_Other : constant W_Term_Id :=
                     New_Call_To_Ada_Function
-                      (Fun  => Annot.Maps_Get,
-                       Args => (+New_Cont_Id, +Other_Id));
+                      (Fun  => Model_Annot.Maps_Get,
+                       Args => (New_Model_Term, +Other_Id));
                   Get_New_Cont_Key   : constant W_Term_Id :=
                     New_Call_To_Ada_Function
-                      (Fun  => Annot.Maps_Get,
-                       Args => (+New_Cont_Id, +Key_Id));
+                      (Fun  => Model_Annot.Maps_Get,
+                       Args => (New_Model_Term, +Key_Id));
                   Elt_Expr           : constant W_Term_Id :=
-                    (if Is_Tagged_Type (Retysp (Annot.Element_Type))
-                     and then not Is_Class_Wide_Type (Annot.Element_Type)
+                    (if Is_Tagged_Type (Retysp (Model_Annot.Element_Type))
+                     and then not Is_Class_Wide_Type (Model_Annot.Element_Type)
                      then New_Tag_Update
-                       (Name => +Elt_Id, Ty => Annot.Element_Type)
+                       (Name => +Elt_Id, Ty => Model_Annot.Element_Type)
                      else +Elt_Id);
 
                begin
@@ -9447,18 +9720,18 @@ package body Gnat2Why.Expr is
                        (Symbol => Why_Eq,
                         Left   => Get_New_Cont_Other,
                         Right  => Get_Cont_Other),
-                     Associated_Fun => Annot.Maps_Get);
+                     Associated_Fun => Model_Annot.Maps_Get);
 
                   --  For partial maps generate:
                   --
-                  --   assume { has_key cont_id other_id }
+                  --   assume { has_key model_term other_id }
 
-                  if Present (Annot.Has_Key) then
+                  if Present (Model_Annot.Has_Key) then
                      declare
                         Has_Key_Cont_Other : constant W_Term_Id :=
                           New_Call_To_Ada_Function
-                            (Fun  => Annot.Has_Key,
-                             Args => (+Cont_Id, +Other_Id));
+                            (Fun  => Model_Annot.Has_Key,
+                             Args => (Model_Term, +Other_Id));
                      begin
                         Preserv_Checks := Sequence
                           (Left  => New_Assume_Statement
@@ -9475,7 +9748,7 @@ package body Gnat2Why.Expr is
                      declare
                         Eq_Other_Key : constant W_Term_Id :=
                           New_Call_To_Ada_Function
-                            (Fun  => Annot.Equivalent_Keys,
+                            (Fun  => Model_Annot.Equivalent_Keys,
                              Args => (+Other_Id, +Key_Id));
 
                      begin
@@ -9493,36 +9766,36 @@ package body Gnat2Why.Expr is
                        (Symbol => Why_Eq,
                         Left   => Get_New_Cont_Key,
                         Right  => Elt_Expr),
-                     Associated_Fun => Annot.Maps_Get);
+                     Associated_Fun => Model_Annot.Maps_Get);
                end;
 
                --  For partial maps, generate in Prev_Checks:
                --
                --   assert (* with has_key *)
-               --     { has_key new_cont_id key_id /\
-               --       (has_key cont_id other_id ->
-               --         has_key new_cont_id other_id) /\
-               --       (has_key new_cont_id other_id ->
-               --         (has_key cont_id other_id \/
+               --     { has_key new_model_term key_id /\
+               --       (has_key model_term other_id ->
+               --         has_key new_model_term other_id) /\
+               --       (has_key new_model_term other_id ->
+               --         (has_key model_term other_id \/
                --          equivalent_keys other_id key_id) };
 
-               if Present (Annot.Has_Key) then
+               if Present (Model_Annot.Has_Key) then
                   declare
                      Has_Key_Cont_Other     : constant W_Term_Id :=
                        New_Call_To_Ada_Function
-                         (Fun  => Annot.Has_Key,
-                          Args => (+Cont_Id, +Other_Id));
+                         (Fun  => Model_Annot.Has_Key,
+                          Args => (Model_Term, +Other_Id));
                      Has_Key_New_Cont_Other : constant W_Term_Id :=
                        New_Call_To_Ada_Function
-                         (Fun  => Annot.Has_Key,
-                          Args => (+New_Cont_Id, +Other_Id));
+                         (Fun  => Model_Annot.Has_Key,
+                          Args => (New_Model_Term, +Other_Id));
                      Has_Key_New_Cont_Key   : constant W_Term_Id :=
                        New_Call_To_Ada_Function
-                         (Fun  => Annot.Has_Key,
-                          Args => (+New_Cont_Id, +Key_Id));
+                         (Fun  => Model_Annot.Has_Key,
+                          Args => (New_Model_Term, +Key_Id));
                      Eq_Other_Key           : constant W_Term_Id :=
                        New_Call_To_Ada_Function
-                         (Fun  => Annot.Equivalent_Keys,
+                         (Fun  => Model_Annot.Equivalent_Keys,
                           Args => (+Other_Id, +Key_Id));
                   begin
                      Prepend_Assert_To_Preserv_Checks
@@ -9543,7 +9816,7 @@ package body Gnat2Why.Expr is
                                  (Has_Key_Cont_Other),
                                Right => Pred_Of_Boolean_Term
                                  (Has_Key_New_Cont_Other)))),
-                        Associated_Fun => Annot.Has_Key);
+                        Associated_Fun => Model_Annot.Has_Key);
                   end;
                end if;
 
@@ -9554,7 +9827,7 @@ package body Gnat2Why.Expr is
                          Compute_Dynamic_Inv_And_Initialization
                        (Expr     => +New_Result_Ident
                             (Get_Typ (Other_Id)),
-                        Ty       => Annot.Key_Type,
+                        Ty       => Model_Annot.Key_Type,
                         Params   => Body_Params,
                         Only_Var => False_Term),
                      Return_Type => Get_Typ (Other_Id),
@@ -9568,32 +9841,32 @@ package body Gnat2Why.Expr is
 
                Init_Checks := New_Binding_To_Any
                  (Name    => Key_Id,
-                  Ty      => Annot.Key_Type,
+                  Ty      => Model_Annot.Key_Type,
                   Context => Init_Checks);
 
                --  Prepend checks for length if any.
                --
                --  Prepend to Init_Checks:
                --
-               --    assert { length cont_id = 0 }
+               --    assert { length model_term = 0 }
                --
                --  and to Preserv_Checks:
                --
-               --    assert { length new_cont_id = length cont_id + 1 }
+               --    assert { length new_model_term = length model_term + 1 }
 
-               if Present (Annot.Maps_Length) then
+               if Present (Model_Annot.Maps_Length) then
                   declare
                      Length_Call     : W_Term_Id := New_Call_To_Ada_Function
-                       (Fun  => Annot.Maps_Length,
-                        Args => (1 => +Cont_Id));
+                       (Fun  => Model_Annot.Maps_Length,
+                        Args => (1 => Model_Term));
                      New_Length_Call : W_Term_Id := New_Call_To_Ada_Function
-                       (Fun  => Annot.Maps_Length,
-                        Args => (1 => +New_Cont_Id));
+                       (Fun  => Model_Annot.Maps_Length,
+                        Args => (1 => New_Model_Term));
                      Base_Length_Typ : constant W_Type_Id :=
-                       (if Has_Scalar_Type (Etype (Annot.Maps_Length))
+                       (if Has_Scalar_Type (Etype (Model_Annot.Maps_Length))
                         then EW_Int_Type
                         else EW_Abstract
-                          (Base_Retysp (Etype (Annot.Maps_Length))));
+                          (Base_Retysp (Etype (Model_Annot.Maps_Length))));
 
                   begin
                      Length_Call := +Insert_Simple_Conversion
@@ -9611,7 +9884,7 @@ package body Gnat2Why.Expr is
                               Left   => Length_Call,
                               Right  =>
                                 New_Integer_Constant (Value => Uint_0)),
-                        Associated_Fun => Annot.Maps_Length);
+                        Associated_Fun => Model_Annot.Maps_Length);
 
                      Prepend_Assert_To_Preserv_Checks
                        (Pred           => New_Comparison
@@ -9624,7 +9897,7 @@ package body Gnat2Why.Expr is
                                  2 => New_Integer_Constant
                                    (Value => Uint_1)),
                               Typ  => Base_Length_Typ)),
-                        Associated_Fun => Annot.Maps_Length);
+                        Associated_Fun => Model_Annot.Maps_Length);
                   end;
                end if;
 
@@ -9633,9 +9906,9 @@ package body Gnat2Why.Expr is
                --
                --  let key_id = any key_ty ensures { dyn_inv } in
                --  let elt_id = any elt_ty ensures { dyn_inv } in
-               --  assume { not has_key cont_id key_id }; (* with has_key *)
+               --  assume { not has_key model_term key_id }; (* with has_key *)
                --  assume
-               --    { get cont_id key_id = default_item }; (* otherwise *)
+               --    { get model_term key_id = default_item }; (* otherwise *)
                --  let param_cont_id = ref cont_id in
                --    add param_cont_id key_id elt_id;
                --    let new_cont_id = !param_cont_id in
@@ -9656,36 +9929,57 @@ package body Gnat2Why.Expr is
 
                Preserv_Checks := New_Binding_To_Any
                  (Name    => Elt_Id,
-                  Ty      => Annot.Element_Type,
+                  Ty      => Model_Annot.Element_Type,
                   Context => Preserv_Checks);
 
                Preserv_Checks := New_Binding_To_Any
                  (Name    => Key_Id,
-                  Ty      => Annot.Key_Type,
+                  Ty      => Model_Annot.Key_Type,
                   Context => Preserv_Checks);
 
                --  If the length type is a signed integer type, assume that
                --  length is less than the last possible length before the call
                --  to Add:
                --
-               --  assume { length cont_id < Length_Type'Last }
-               --    (* for signed types *)
+               --  assume
+               --    { length model_term < capacity_call }
+               --    (* if Capacity is supplied *)
+               --  assume
+               --    { length model_term < length_type'Last }
+               --    (* otherwise, for signed types only *)
 
-               if Present (Annot.Maps_Length)
-                 and then Has_Scalar_Type (Etype (Annot.Maps_Length))
+               if Present (Model_Annot.Maps_Length)
+                 and then (Has_Scalar_Type (Etype (Model_Annot.Maps_Length))
+                           or else Present (Capacity_Fun))
                then
                   declare
                      Length_Call     : W_Term_Id :=
                        New_Call_To_Ada_Function
-                         (Fun  => Annot.Maps_Length,
-                          Args => (1 => +Cont_Id));
+                         (Fun  => Model_Annot.Maps_Length,
+                          Args => (1 => Model_Term));
                      Base_Length_Typ : constant W_Type_Id :=
-                       (if Has_Scalar_Type (Etype (Annot.Maps_Length))
+                       (if Has_Scalar_Type (Etype (Model_Annot.Maps_Length))
                         then EW_Int_Type
                         else EW_Abstract
-                          (Base_Retysp (Etype (Annot.Maps_Length))));
+                          (Base_Retysp (Etype (Model_Annot.Maps_Length))));
+                     Length_Max      : W_Term_Id;
 
                   begin
+                     Length_Call := +Insert_Simple_Conversion
+                       (Domain => EW_Term,
+                        Expr   => +Length_Call,
+                        To     => Base_Length_Typ);
+
+                     if Present (Capacity_Fun) then
+                        Length_Max := Capacity_Call;
+                     else
+                        Length_Max := +New_Attribute_Expr
+                          (Ty     => Etype (Model_Annot.Maps_Length),
+                           Domain => EW_Term,
+                           Attr   => Attribute_Last,
+                           Params => Body_Params);
+                     end if;
+
                      Length_Call := +Insert_Simple_Conversion
                        (Domain => EW_Term,
                         Expr   => +Length_Call,
@@ -9695,24 +9989,33 @@ package body Gnat2Why.Expr is
                           (Pred => New_Comparison
                                (Symbol => Int_Infix_Lt,
                                 Left   => Length_Call,
-                                Right  => +New_Attribute_Expr
-                                  (Ty     => Etype (Annot.Maps_Length),
-                                   Domain => EW_Term,
-                                   Attr   => Attribute_Last,
-                                   Params => Body_Params))),
+                                Right  => Length_Max)),
                         Right => Preserv_Checks);
                   end;
                end if;
             end;
 
          when Model =>
-            raise Why.Not_Implemented;
+            raise Program_Error;
       end case;
 
-      --  Bind Cont_Id to a call to Empty in Init_Checks.
-      --  ??? We should support empty function with a capacity parameter
-
-      pragma Assert (Number_Formals (Annot.Empty_Function) = 0);
+      --  Bind Cont_Id to a call to Empty in Init_Checks. If Empty does not
+      --  have a capacity parameter, generate:
+      --
+      --    let cont_id = empty in
+      --      Init_Checks
+      --
+      --  Otherwise, generate:
+      --
+      --    let capacity_id = any int
+      --      ensures
+      --       { 0 <= result <= capacity_type'last
+      --         /\ result <= index_type'last - first + 1 }
+      --      (* for sequences indexed by scalars *)
+      --    in
+      --      let cont_id = empty capacity_id in
+      --         Init_Checks;
+      --         assert { capacity_call >= capacity_id }
 
       Continuation_Stack.Append
         (Continuation_Type'
@@ -9721,25 +10024,56 @@ package body Gnat2Why.Expr is
               ("during checks for container aggregates")));
 
       declare
-         Pre_Empty  : constant Node_Lists.List :=
-           Find_Contracts (Annot.Empty_Function, Pragma_Precondition);
+         Opt_Capacity : constant W_Identifier_Id :=
+           (if No (Annot.Spec_Capacity) then Void
+            else New_Temp_Identifier
+              (Typ       =>
+                   (if Has_Scalar_Type (Annot.Spec_Capacity)
+                    then EW_Int_Type
+                    else EW_Abstract
+                      (Base_Retysp (Annot.Spec_Capacity))),
+               Base_Name => "capacity"));
+         --  Optional Capacity parameter for the empty function
 
-         Empty_Name : constant W_Identifier_Id :=
+         Pre_Empty    : constant Node_Lists.List :=
+           (if Ekind (Annot.Empty_Function) = E_Constant
+            then Node_Lists.Empty_List
+            else Find_Contracts (Annot.Empty_Function, Pragma_Precondition));
+         Empty_Name   : constant W_Prog_Id :=
            +Transform_Identifier (Params => Body_Params,
                                   Expr   => Annot.Empty_Function,
                                   Ent    => Annot.Empty_Function,
                                   Domain => EW_Prog);
-         Empty_Call : constant W_Prog_Id := +New_Function_Call
-           (Ada_Node =>
-              (if Pre_Empty.Is_Empty then Annot.Empty_Function
-               else Pre_Empty.First_Element),
-            Domain   => EW_Prog,
-            Name     => Empty_Name,
-            Subp     => Annot.Empty_Function,
-            Args     => (1 => +Void),
-            Check    => Why_Subp_Has_Precondition (Annot.Empty_Function),
-            Typ      => Get_Typ (Empty_Name));
+         Empty_Call   : constant W_Prog_Id :=
+           (if Ekind (Annot.Empty_Function) = E_Constant
+            then Empty_Name
+            else +New_Function_Call
+              (Ada_Node =>
+                   (if Pre_Empty.Is_Empty then Annot.Empty_Function
+                    else Pre_Empty.First_Element),
+               Domain   => EW_Prog,
+               Name     => +Empty_Name,
+               Subp     => Annot.Empty_Function,
+               Args     => (1 => +Opt_Capacity),
+               Check    => Why_Subp_Has_Precondition (Annot.Empty_Function),
+               Typ      => Get_Typ (W_Identifier_Id'(+Empty_Name))));
+
       begin
+         --  If the empty function has a capacity parameter and a capacity
+         --  function is specified for the container, check that Empty returns
+         --  a container of at least its parameter capacity.
+
+         if Present (Annot.Spec_Capacity) and then Present (Capacity_Fun) then
+            Prepend_Assert_To_Init_Checks
+              (Pred           => New_Comparison
+                 (Symbol => Int_Infix_Le,
+                  Left   => +Opt_Capacity,
+                  Right  => Capacity_Call),
+               Associated_Fun => Capacity_Fun);
+         end if;
+
+         --  Introduce a binding for Cont_Id
+
          Init_Checks := New_Typed_Binding
            (Name    => Cont_Id,
             Def     => +Insert_Checked_Conversion
@@ -9748,6 +10082,81 @@ package body Gnat2Why.Expr is
                Expr     => +Empty_Call,
                To       => Get_Typ (Cont_Id)),
             Context => Init_Checks);
+
+         --  Introduce a binding for the capacity if any:
+         --
+         --    let capacity_id = any int
+         --      ensures
+         --       { 0 <= result <= capacity_type'last
+         --         /\ result <= index_type'last - first + 1 }
+         --            (* for sequences indexed by scalars *)
+         --    in Init_Checks
+
+         if Present (Annot.Spec_Capacity) then
+            declare
+               Result_Id : constant W_Identifier_Id := New_Result_Ident
+                 (Typ => Get_Typ (Opt_Capacity));
+               Guard     : W_Pred_Id := New_And_Pred
+                 (Left  => New_Comparison
+                    (Symbol => Int_Infix_Le,
+                     Left   => New_Discrete_Constant
+                       (Value => Uint_0,
+                        Typ   => Get_Typ (Opt_Capacity)),
+                     Right  => +Result_Id),
+                  Right => New_Comparison
+                    (Symbol => Int_Infix_Le,
+                     Left   => +Result_Id,
+                     Right  => +New_Attribute_Expr
+                       (Ty     => Annot.Spec_Capacity,
+                        Domain => EW_Term,
+                        Attr   => Attribute_Last,
+                        Params => Body_Params)));
+            begin
+               if Model_Annot.Kind = Seqs
+                 and then Has_Scalar_Type (Model_Annot.Index_Type)
+               then
+                  declare
+                     First_Call : W_Term_Id := New_Call_To_Ada_Function
+                       (Fun  => Model_Annot.First,
+                        Args => (1 .. 0 => <>));
+
+                  begin
+                     First_Call := +Insert_Simple_Conversion
+                       (Domain => EW_Term,
+                        Expr   => +First_Call,
+                        To     => EW_Int_Type);
+                     Guard := New_And_Pred
+                       (Left  => Guard,
+                        Right => New_Comparison
+                          (Symbol => Int_Infix_Le,
+                           Left   => +Result_Id,
+                           Right  => New_Call
+                             (Name => Int_Infix_Add,
+                              Args =>
+                                (1 => New_Call
+                                   (Name   => Int_Infix_Subtr,
+                                    Args   =>
+                                      (1 => +New_Attribute_Expr
+                                         (Ty     => Model_Annot.Index_Type,
+                                          Domain => EW_Term,
+                                          Attr   => Attribute_Last,
+                                          Params => Body_Params),
+                                       2 => +First_Call),
+                                    Domain => EW_Term),
+                                 2 => New_Integer_Constant
+                                   (Value => Uint_1)))));
+                  end;
+               end if;
+
+               Init_Checks := New_Typed_Binding
+                 (Name    => Opt_Capacity,
+                  Def     => New_Any_Expr
+                    (Post        => Guard,
+                     Return_Type => Get_Typ (Opt_Capacity),
+                     Labels      => Symbol_Sets.Empty_Set),
+                  Context => Init_Checks);
+            end;
+         end if;
       end;
 
       Continuation_Stack.Delete_Last;
@@ -11565,10 +11974,11 @@ package body Gnat2Why.Expr is
    --------------------
 
    function New_Assignment
-     (Ada_Node : Node_Id := Empty;
-      Lvalue   : N_Subexpr_Id;
-      Expr     : W_Prog_Id;
-      Do_Check : Do_Check_Kind := All_Checks)
+     (Ada_Node  : Node_Id := Empty;
+      Lvalue    : N_Subexpr_Id;
+      Expr      : W_Prog_Id;
+      Do_Check  : Do_Check_Kind := All_Checks;
+      Index_Map : Ada_Node_To_Why_Id.Map := Ada_Node_To_Why_Id.Empty_Map)
       return W_Prog_Id
    is
       --  Here, we deal with assignment statements. In SPARK, the general form
@@ -11620,7 +12030,8 @@ package body Gnat2Why.Expr is
 
       while not (Nkind (Left_Side) in N_Identifier | N_Expanded_Name) loop
          Shift_Rvalue (Left_Side, Right_Side, Last_Access, Domain,
-                       Check_Prefix => Do_Check = All_Checks);
+                       Check_Prefix => Do_Check = All_Checks,
+                       Index_Map    => Index_Map);
       end loop;
 
       --  In those cases where the left-hand side is type converted, the type
@@ -12631,7 +13042,8 @@ package body Gnat2Why.Expr is
       Value        : W_Expr_Id;
       Domain       : EW_Domain;
       Params       : Transformation_Params;
-      Check_Prefix : Boolean := True)
+      Check_Prefix : Boolean := True;
+      Index_Map    : Ada_Node_To_Why_Id.Map := Ada_Node_To_Why_Id.Empty_Map)
       return W_Expr_Id
    is
       --  In some cases, the frontend introduces an Itype for the type of a
@@ -12786,17 +13198,20 @@ package body Gnat2Why.Expr is
             begin
                while Present (Cursor) loop
                   Indices (Count) :=
-                     Transform_Expr
-                      (Cursor,
-                       Base_Why_Type_No_Bool
-                         (Entity_Id'(Type_Of_Node (Cursor))),
-                       Domain,
-                       Params);
+                    (if Index_Map.Is_Empty
+                     then Transform_Expr
+                       (Cursor,
+                        Base_Why_Type_No_Bool
+                          (Entity_Id'(Type_Of_Node (Cursor))),
+                        Domain,
+                        Params)
+                     else +Index_Map.Element (Cursor));
 
                   --  Insert Index Check if needed
 
                   if Prefix_Domain = EW_Prog and then Do_Range_Check (Cursor)
                   then
+                     pragma Assert (Index_Map.Is_Empty);
                      Indices (Count) := +Do_Index_Check
                        (Ada_Node => Cursor,
                         Arr_Expr => Ar_Tmp,
@@ -12826,27 +13241,33 @@ package body Gnat2Why.Expr is
 
          when N_Slice =>
             declare
-               Prefix_Name : constant W_Term_Id := New_Temp_For_Expr (Pref);
-               Value_Name  : constant W_Expr_Id :=
+               Prefix_Name  : constant W_Term_Id := New_Temp_For_Expr (Pref);
+               Value_Name   : constant W_Expr_Id :=
                  New_Temp_For_Expr (Init_Val, True);
-               Dim     : constant Pos := Number_Dimensions (Pref_Ty);
+               Dim          : constant Pos := Number_Dimensions (Pref_Ty);
                pragma Assert (Dim = 1);
                --  Slices are only for one-dimentional arrays (Ada RM 4.1.2)
-               Result_Id   : constant W_Identifier_Id :=
+               Result_Id    : constant W_Identifier_Id :=
                  New_Result_Ident (Get_Type (+Pref));
-               D_Rng       : constant Node_Id := Discrete_Range (N);
+               D_Rng        : constant Node_Id := Discrete_Range (N);
+               Rng          : constant Node_Id := Get_Range (D_Rng);
                Binders_Type : constant W_Type_Id :=
                  Base_Why_Type_No_Bool (D_Rng);
-               Binders     : constant W_Identifier_Array :=
+               Binders      : constant W_Identifier_Array :=
                  New_Temp_Identifiers (Positive (Dim), Typ => Binders_Type);
-               Indexes     : constant W_Expr_Array := To_Exprs (Binders);
+               Indexes      : constant W_Expr_Array := To_Exprs (Binders);
                Range_Pred   : constant W_Pred_Id :=
-                 +Transform_Discrete_Choice
-                   (Choice      => Discrete_Range (N),
-                    Choice_Type => Empty,
-                    Expr        => Indexes (1),
-                    Domain      => EW_Pred,
-                    Params      => Params);
+                 (if Index_Map.Is_Empty
+                  then +Transform_Discrete_Choice
+                    (Choice      => Discrete_Range (N),
+                     Choice_Type => Empty,
+                     Expr        => Indexes (1),
+                     Domain      => EW_Pred,
+                     Params      => Params)
+                  else New_Range_Expr
+                    (Low  => +Index_Map.Element (Low_Bound (Rng)),
+                     High => +Index_Map.Element (High_Bound (Rng)),
+                     Expr => +Indexes (1)));
                In_Slice_Eq  : constant W_Pred_Id :=
                  New_Element_Equality
                    (Left_Arr   => +Result_Id,
@@ -12895,8 +13316,9 @@ package body Gnat2Why.Expr is
                --  Insert checks for bounds in the program domain
 
                if Prefix_Domain = EW_Prog then
+                  pragma Assert (Index_Map.Is_Empty);
+
                   declare
-                     Rng          : constant Node_Id := Get_Range (D_Rng);
                      Low_Expr     : constant W_Prog_Id :=
                        New_Temp_For_Expr
                          (Transform_Prog (Low_Bound (Rng),
@@ -13413,8 +13835,9 @@ package body Gnat2Why.Expr is
      (N            : in out N_Subexpr_Id;
       Expr         : in out W_Expr_Id;
       Last_Access  : in out Opt_N_Subexpr_Id;
-      Domain       :        EW_Domain := EW_Prog;
-      Check_Prefix : Boolean := True)
+      Domain       : EW_Domain := EW_Prog;
+      Check_Prefix : Boolean := True;
+      Index_Map    : Ada_Node_To_Why_Id.Map := Ada_Node_To_Why_Id.Empty_Map)
    is
    begin
       case Nkind (N) is
@@ -13544,7 +13967,8 @@ package body Gnat2Why.Expr is
                   Expr,
                   Domain,
                   Params       => Body_Params,
-                  Check_Prefix => Check_Prefix);
+                  Check_Prefix => Check_Prefix,
+                  Index_Map    => Index_Map);
                Expr := Binding_For_Temp (Domain   => Domain,
                                          Tmp      => Prefix_Var,
                                          Context  => Expr);
@@ -19837,6 +20261,25 @@ package body Gnat2Why.Expr is
          Func      : W_Identifier_Id)
          return W_Expr_Id
       is
+         Model_Annot  : Aggregate_Annotation := Annot;
+         --  Annotation of the last model type
+         Capacity_Fun : Entity_Id := Empty;
+         --  First encountered capacity function if any
+
+         function Length_Check_Msg
+           (Length_Fun : Entity_Id := Empty)
+            return String
+         is
+           (if No (Capacity_Fun)
+            then "fit in the return type of """
+            & Source_Name (Length_Fun) & '"'
+            elsif Present (Annot.Spec_Capacity)
+            then "fit in """
+            & Source_Name (Annot.Spec_Capacity) & '"'
+            else "be smaller than """
+            & Source_Name (Capacity_Fun) & '"');
+         --  Continuation for checks on the length of the aggregate
+
          P_Func     : constant W_Identifier_Id :=
            (if Domain = EW_Prog then To_Program_Space (Func) else Func);
          Num_Params : constant Natural :=
@@ -19844,7 +20287,23 @@ package body Gnat2Why.Expr is
          Call_Args  : W_Expr_Array (1 .. Num_Params);
          Top        : Natural := 0;
          Call       : W_Expr_Id;
+
       begin
+         --  Search for the last model type for E
+
+         loop
+            --  Use the first capacity function encountered
+
+            if Present (Model_Annot.Capacity) and then No (Capacity_Fun) then
+               Capacity_Fun := Model_Annot.Capacity;
+            end if;
+
+            exit when Model_Annot.Kind /= Model;
+
+            Model_Annot :=
+              Get_Aggregate_Annotation (Model_Annot.Model_Type);
+         end loop;
+
          for Value of Values loop
             declare
                Why_Id : W_Identifier_Id renames Value_Map.Element (Value);
@@ -19869,69 +20328,63 @@ package body Gnat2Why.Expr is
             Typ    => Get_Typ (Func));
 
          if Domain = EW_Prog then
-            case Annot.Kind is
-               when Sets =>
-                  if Present (Annot.Sets_Length) then
-                     declare
-                        Check_Info : Check_Info_Type := New_Check_Info;
-                     begin
-                        Check_Info.Continuation.Append
-                          (Continuation_Type'
-                             (Annot.Annotate_Node,
-                              To_Unbounded_String
-                                ("all elements shall fit in the return type "
-                                 & "of """ & Source_Name (Annot.Sets_Length)
-                                 & """ for predefined set aggregates")));
-                        Call := +New_VC_Prog
-                          (Ada_Node   => Expr,
-                           Reason     => VC_Precondition,
-                           Expr       => +Call,
-                           Check_Info => Check_Info);
-                     end;
-                  end if;
-
-               when Seqs =>
-                  declare
-                     Check_Info : Check_Info_Type := New_Check_Info;
-                  begin
+            declare
+               Check_Info : Check_Info_Type := New_Check_Info;
+            begin
+               case Model_Annot.Kind is
+                  when Sets =>
                      Check_Info.Continuation.Append
                        (Continuation_Type'
                           (Annot.Annotate_Node,
                            To_Unbounded_String
-                             ("all of elements shall fit in index type in"
-                              & " predefined sequence aggregates")));
-                     Call := +New_VC_Prog
-                       (Ada_Node   => Expr,
-                        Reason     => VC_Precondition,
-                        Expr       => +Call,
-                        Check_Info => Check_Info);
-                  end;
+                             ("elements shall be distinct" &
+                              (if Present (Capacity_Fun)
+                                 or else
+                                   (Present (Model_Annot.Sets_Length)
+                                    and then Has_Scalar_Type
+                                      (Etype (Model_Annot.Sets_Length)))
+                               then " and shall "
+                                 & Length_Check_Msg (Model_Annot.Sets_Length)
+                               else "")
+                              & " for set aggregates"
+                             )));
 
-               when Maps =>
-                  declare
-                     Check_Info : Check_Info_Type := New_Check_Info;
-                  begin
+                  when Seqs =>
+                     Check_Info.Continuation.Append
+                       (Continuation_Type'
+                          (Annot.Annotate_Node,
+                           To_Unbounded_String
+                             ("all elements shall fit in index type" &
+                              (if Present (Capacity_Fun)
+                                 then " and " & Length_Check_Msg else "")
+                              & " for sequence aggregates")));
+
+                  when Maps =>
                      Check_Info.Continuation.Append
                        (Continuation_Type'
                           (Annot.Annotate_Node,
                            To_Unbounded_String
                              ("keys shall be distinct" &
-                              (if Present (Annot.Maps_Length)
-                               then " and all elements shall fit in the return"
-                                 & " type of """
-                                 & Source_Name (Annot.Maps_Length) & '"'
+                              (if Present (Capacity_Fun)
+                                 or else
+                                   (Present (Model_Annot.Maps_Length)
+                                    and then Has_Scalar_Type
+                                      (Etype (Model_Annot.Maps_Length)))
+                               then " and all elements shall "
+                                 & Length_Check_Msg (Model_Annot.Maps_Length)
                                else "") &
-                                " for predefined maps aggregates")));
-                     Call := +New_VC_Prog
-                       (Ada_Node   => Expr,
-                        Reason     => VC_Precondition,
-                        Expr       => +Call,
-                        Check_Info => Check_Info);
-                  end;
+                                " for maps aggregates")));
 
-               when Model =>
-                  raise Program_Error;
-            end case;
+                  when Model =>
+                     raise Program_Error;
+               end case;
+
+               Call := +New_VC_Prog
+                 (Ada_Node   => Expr,
+                  Reason     => VC_Precondition,
+                  Expr       => +Call,
+                  Check_Info => Check_Info);
+            end;
          end if;
 
          return Call;
@@ -20029,65 +20482,102 @@ package body Gnat2Why.Expr is
          Exprs    : constant List_Id := Expressions (Expr);
          Is_Empty : constant Boolean :=
            Present (Assocs) and then Is_Empty_List (Assocs);
+         Length   : Int := 0;
+
+         Model_Annot       : Aggregate_Annotation := Annot;
+         --  Annotation of the last model type
+         Model_Term        : W_Term_Id := +Aggr_Id;
+         --  ... model2 (model1 aggr_id)
+         Capacity_Fun      : Entity_Id := Empty;
+         --  First encountered capacity function if any
 
       --  Start of processing for Compute_Aggregate_Def
 
       begin
-         case Annot.Kind is
+         --  Search for the last model type for E
+
+         loop
+            --  Use the first capacity function encountered
+
+            if Present (Model_Annot.Capacity) and then No (Capacity_Fun) then
+               Capacity_Fun := Model_Annot.Capacity;
+            end if;
+
+            exit when Model_Annot.Kind /= Model;
+
+            --  Construct the access to the last model in Model_Term and
+            --  New_Model_Term.
+
+            Model_Term :=
+              New_Call_To_Ada_Function
+                (Fun  => Model_Annot.Model,
+                 Args => (1 => Model_Term));
+
+            Model_Annot :=
+              Get_Aggregate_Annotation (Model_Annot.Model_Type);
+         end loop;
+
+         case Model_Annot.Kind is
             when Sets =>
 
-               --  For the precondition of an aggregate with a length
-               --  specified, generate:
+               --  For the precondition of an aggregate (E1, E2, ...),
+               --  generate:
                --
-               --    <List_Length (Exprs)> <= Length_Type'Last
+               --    not equivalent_elements E2 E1 /\ ... /\
+               --    <List_Length (Exprs)> <= length_type'Last
+               --  (* if length has a scalar type and no capacity function is
+               --     provided *)
                --
                --  For the definition of an aggregate (E1, E2, ...), generate:
                --
-               --  contains aggr_id e1 /\ contains aggr_id e2 /\ ... /\
-               --  (forall elt_id. contains aggr_id elt_id ->
+               --  contains model_term e1 /\ contains model_term e2 /\ ... /\
+               --  (forall elt_id. contains model_term elt_id ->
                --    equivalent_elements elt_id e1 \/
                --    equivalent_elements elt_id e2 \/ ...)
 
-               Pre := True_Pred;
-
                if Is_Empty then
+
+                  Pre := True_Pred;
 
                   --  Generate:
                   --
-                  --  (forall elt_id. not contains aggr_id elt_id)
+                  --  (forall elt_id. not contains model_term elt_id)
 
                   declare
                      Quant_Id      : constant W_Identifier_Id :=
                        New_Temp_Identifier
-                         (Typ       => Type_Of_Node (Annot.Element_Type),
+                         (Typ       => Type_Of_Node (Model_Annot.Element_Type),
                           Base_Name => "elt");
                      Contains_Call : constant W_Term_Id :=
                        New_Call_To_Ada_Function
-                         (Fun  => Annot.Contains,
-                          Args => (+Aggr_Id, +Quant_Id));
+                         (Fun  => Model_Annot.Contains,
+                          Args => (Model_Term, +Quant_Id));
                   begin
                      Def := New_Universal_Quantif
                        (Var_Id  => Quant_Id,
-                        Ty      => Annot.Element_Type,
+                        Ty      => Model_Annot.Element_Type,
                         Trigger => Contains_Call,
                         Pred    => New_Not
                           (Right => Pred_Of_Boolean_Term (Contains_Call)));
                   end;
                else
+                  Length := List_Length (Exprs);
 
                   --  Go over the container expressions to generate:
-                  --   * contains aggr_id e1, ... in Contains
+                  --   * e1, ... in E_Ids
+                  --   * contains model_term e1, ... in Contains
                   --   * equivalent_elements elt_id e1, ... in Eq_Elems
 
                   declare
-                     Length   : constant Positive :=
-                       Positive (List_Length (Exprs));
-                     Eq_Elems : W_Pred_Array (1 .. Length);
-                     Contains : W_Pred_Array (1 .. Length);
+                     E_Ids    : W_Identifier_Array
+                       (1 .. Natural (List_Length (Exprs)));
+                     Distinct : W_Pred_Vectors.Vector;
+                     Eq_Elems : W_Pred_Array (1 .. Positive (Length));
+                     Contains : W_Pred_Array (1 .. Positive (Length));
                      Top      : Natural := 0;
                      Quant_Id : constant W_Identifier_Id :=
                        New_Temp_Identifier
-                         (Typ       => Type_Of_Node (Annot.Element_Type),
+                         (Typ       => Type_Of_Node (Model_Annot.Element_Type),
                           Base_Name => "elt");
                      Elt      : Node_Id := First (Exprs);
                   begin
@@ -20098,13 +20588,14 @@ package body Gnat2Why.Expr is
                            Elt_Id : constant W_Identifier_Id :=
                              Value_Map.Element (Elt);
                         begin
+                           E_Ids (Top) := Elt_Id;
                            Contains (Top) := Pred_Of_Boolean_Term
                              (New_Call_To_Ada_Function
-                                (Fun  => Annot.Contains,
-                                 Args => (+Aggr_Id, +Elt_Id)));
+                                (Fun  => Model_Annot.Contains,
+                                 Args => (Model_Term, +Elt_Id)));
                            Eq_Elems (Top) := Pred_Of_Boolean_Term
                              (New_Call_To_Ada_Function
-                                (Fun  => Annot.Equivalent_Elements,
+                                (Fun  => Model_Annot.Equivalent_Elements,
                                  Args => (+Quant_Id, +Elt_Id)));
                         end;
 
@@ -20113,13 +20604,14 @@ package body Gnat2Why.Expr is
                      end loop;
 
                      --  Conjunct all the elements of Contains in Def:
-                     --  contains aggr_id e1 /\ contains aggr_id e2 /\ ...
+                     --    contains model_term e1 /\
+                     --    contains model_term e2 /\ ...
 
                      Def := New_And_Pred (Contains);
 
                      --  Generate:
                      --
-                     --  (forall elt_id. contains aggr_id elt_id ->
+                     --  (forall elt_id. contains model_term elt_id ->
                      --    equivalent_elements elt_id e1 \/
                      --    equivalent_elements elt_id e2 \/ ...)
                      --
@@ -20128,12 +20620,12 @@ package body Gnat2Why.Expr is
                      declare
                         Contains_Call : constant W_Term_Id :=
                           New_Call_To_Ada_Function
-                            (Fun  => Annot.Contains,
-                             Args => (+Aggr_Id, +Quant_Id));
+                            (Fun  => Model_Annot.Contains,
+                             Args => (Model_Term, +Quant_Id));
                         Quant_Pred    : constant W_Pred_Id :=
                           New_Universal_Quantif
                             (Var_Id  => Quant_Id,
-                             Ty      => Annot.Element_Type,
+                             Ty      => Model_Annot.Element_Type,
                              Trigger => Contains_Call,
                              Pred    => New_Connection
                                (Op    => EW_Imply,
@@ -20143,34 +20635,55 @@ package body Gnat2Why.Expr is
                      begin
                         Def := New_And_Pred (Def, Quant_Pred);
                      end;
+
+                     --  For i < j, append:
+                     --
+                     --    not equivalent_elements Ej Ei
+                     --
+                     --  to Distinct.
+
+                     for I in 1 .. E_Ids'Last - 1 loop
+                        for J in I + 1 .. E_Ids'Last loop
+                           W_Pred_Vectors.Append
+                             (Distinct,
+                              New_Not
+                                (Right => Pred_Of_Boolean_Term
+                                     (New_Call_To_Ada_Function
+                                          (Fun  =>
+                                             Model_Annot.Equivalent_Elements,
+                                           Args =>
+                                             (+E_Ids (J), +E_Ids (I))))));
+                        end loop;
+                     end loop;
+
+                     --  Conjunct all the elements of Distinct in Pre:
+                     --    not equivalent_elements e2 e1 /\ ...
+
+                     Pre := New_And_Pred (W_Pred_Vectors.To_Array (Distinct));
                   end;
                end if;
 
                --  If Length is provided, add to Def:
                --
-               --    length aggr_id = 0 (* if Is_Empty *)
-               --    (* otherwise *)
-               --    if equivalent_elements E2 E1 \/ ...
-               --    then length aggr_id < <List_Length (Exprs)>
-               --    else length aggr_id = <List_Length (Exprs)>
+               --    length model_term = 0 (* if Is_Empty *)
+               --    length model_term = <List_Length (Exprs)> (* otherwise *)
                --
-               --  and if Length returns a scalar type, add to Pre:
+               --  and if Length returns a scalar type and no capacity function
+               --  is provided, add to Pre:
                --
-               --    <List_Length (Exprs)> <= Length_Type'Last
+               --    <List_Length (Exprs)> <= length_type'Last
 
-               if Present (Annot.Sets_Length) then
+               if Present (Model_Annot.Sets_Length) then
                   declare
-                     Length          : constant Int :=
-                       (if Is_Empty then 0 else List_Length (Exprs));
                      Length_Call     : W_Term_Id :=
                        New_Call_To_Ada_Function
-                         (Fun  => Annot.Sets_Length,
-                          Args => (1 => +Aggr_Id));
+                         (Fun  => Model_Annot.Sets_Length,
+                          Args => (1 => Model_Term));
                      Base_Length_Typ : constant W_Type_Id :=
-                       (if Has_Scalar_Type (Etype (Annot.Sets_Length))
+                       (if Has_Scalar_Type (Etype (Model_Annot.Sets_Length))
                         then EW_Int_Type
                         else EW_Abstract
-                          (Base_Retysp (Etype (Annot.Sets_Length))));
+                          (Base_Retysp (Etype (Model_Annot.Sets_Length))));
                   begin
                      Length_Call := +Insert_Simple_Conversion
                        (Domain => EW_Term,
@@ -20186,75 +20699,26 @@ package body Gnat2Why.Expr is
                               Right  => New_Integer_Constant
                                 (Value => Uint_0)));
                      else
-                        declare
-                           E_Ids    : W_Identifier_Array
-                             (1 .. Natural (List_Length (Exprs)));
-                           Eq_Elems : W_Pred_Vectors.Vector;
-                           Elt      : Node_Id := First (Exprs);
-                           Top      : Natural := 0;
-
-                        begin
-                           --  Fill E_Ids with all the elements of the
-                           --  aggregate in order.
-
-                           loop
-                              Top := Top + 1;
-                              E_Ids (Top) := Value_Map.Element (Elt);
-
-                              Next (Elt);
-                              exit when No (Elt);
-                           end loop;
-
-                           --  For i < j, append:
-                           --
-                           --     equivalent_elements Ej Ei
-                           --
-                           --  to Eq_Elems.
-
-                           for I in 1 .. E_Ids'Last - 1 loop
-                              for J in I + 1 .. E_Ids'Last loop
-                                 W_Pred_Vectors.Append
-                                   (Eq_Elems,
-                                    Pred_Of_Boolean_Term
-                                      (New_Call_To_Ada_Function
-                                           (Fun  => Annot.Equivalent_Elements,
-                                            Args =>
-                                              (+E_Ids (J), +E_Ids (I)))));
-                              end loop;
-                           end loop;
-
-                           --  Add to Def:
-                           --
-                           --    if equivalent_elements E2 E1 \/ ...
-                           --    then length aggr_id < <List_Length (Exprs)>
-                           --    else length aggr_id = <List_Length (Exprs)>
-
-                           Def := New_And_Pred
-                             (Left  => Def,
-                              Right => New_Conditional
-                                (Condition => New_Or_Pred
-                                     (W_Pred_Vectors.To_Array (Eq_Elems)),
-                                 Then_Part => New_Comparison
-                                   (Symbol => Int_Infix_Lt,
-                                    Left   => Length_Call,
-                                    Right  => New_Integer_Constant
-                                      (Value => UI_From_Int (Length))),
-                                 Else_Part => New_Comparison
-                                   (Symbol => Why_Eq,
-                                    Left   => Length_Call,
-                                    Right  => New_Integer_Constant
-                                      (Value => UI_From_Int (Length)))));
-                        end;
+                        Def := New_And_Pred
+                          (Left  => Def,
+                           Right => New_Comparison
+                             (Symbol => Why_Eq,
+                              Left   => Length_Call,
+                              Right  => New_Integer_Constant
+                                (Value => UI_From_Int (Length))));
                      end if;
 
-                     if Has_Scalar_Type (Etype (Annot.Sets_Length)) then
+                     if No (Capacity_Fun)
+                       and then Has_Scalar_Type
+                         (Etype (Model_Annot.Sets_Length))
+                     then
                         Pre := New_And_Pred
                           (Left  => New_Comparison
                              (Symbol => Int_Infix_Le,
                               Left   => New_Integer_Constant
                                 (Value => UI_From_Int (Length)),
                               Right  => +New_Attribute_Expr
-                                (Ty     => Etype (Annot.Sets_Length),
+                                (Ty     => Etype (Model_Annot.Sets_Length),
                                  Domain => EW_Term,
                                  Attr   => Attribute_Last,
                                  Params => Logic_Params)),
@@ -20270,60 +20734,60 @@ package body Gnat2Why.Expr is
                --
                --  not equivalent_keys k2 k1 /\
                --  not equivalent_keys k3 k1 /\ ... /\
-               --  <List_Length (Assocs)> <= Length_Type'Last
-               --  (* if length is specified *)
+               --  <List_Length (Assocs)> <= length_type'Last
+               --  (* if length has a scalar type and no capacity function is
+               --     provided *)
 
                --  For the definition of a partial map aggregate
                --  (K1 -> E1, K2 -> E2, ...), generate:
                --
-               --  has_key aggr_id k1 /\ has_key aggr_id k2 /\ ... /\
-               --  get aggr_id k1 = copy e1 /\
-               --  get aggr_id k2 = copy e2 /\ ... /\
-               --  (forall key_id. has_key aggr_id key_id ->
+               --  has_key model_term k1 /\ has_key model_term k2 /\ ... /\
+               --  get model_term k1 = copy e1 /\
+               --  get model_term k2 = copy e2 /\ ... /\
+               --  (forall key_id. has_key model_term key_id ->
                --    equivalent_keys key_id k1 \/
                --    equivalent_keys key_id k2 \/ ...)
                --
                --  For the definition of a total map aggregate
                --  (K1 -> E1, K2 -> E2, ...), generate:
                --
-               --  get aggr_id k1 = copy e1 /\
-               --  get aggr_id k2 = copy e2 /\ ... /\
+               --  get model_term k1 = copy e1 /\
+               --  get model_term k2 = copy e2 /\ ... /\
                --  (forall key_id.
                --    not equivalent_keys key_id k1 /\
                --    not equivalent_keys key_id k2 /\ ... ->
-               --    get aggr_id key_id = default)
+               --    get model_term key_id = default)
 
                declare
-                  Partial : constant Boolean := Present (Annot.Has_Key);
-                  Length  : Natural;
+                  Partial : constant Boolean := Present (Model_Annot.Has_Key);
                   Keys    : Node_Vectors.Vector;
                   Assoc   : Node_Id;
 
                begin
                   if Is_Empty then
                      Pre := True_Pred;
-                     Length := 0;
 
                      --  Generate:
-                     --    (forall key_id. not has_key aggr_id key_id)
+                     --    (forall key_id. not has_key model_term key_id)
                      --  or
-                     --    (forall key_id. get aggr_id key_id = default_item)
+                     --    (forall key_id.
+                     --        get model_term key_id = default_item)
 
                      declare
                         Quant_Id            : constant W_Identifier_Id :=
                           New_Temp_Identifier
-                            (Typ       => Type_Of_Node (Annot.Key_Type),
+                            (Typ       => Type_Of_Node (Model_Annot.Key_Type),
                              Base_Name => "key");
                         Has_Key_Or_Get_Call : constant W_Term_Id :=
                           New_Call_To_Ada_Function
-                            (Fun  => (if Partial then Annot.Has_Key
-                                      else Annot.Maps_Get),
-                             Args => (+Aggr_Id, +Quant_Id));
+                            (Fun  => (if Partial then Model_Annot.Has_Key
+                                      else Model_Annot.Maps_Get),
+                             Args => (Model_Term, +Quant_Id));
 
                      begin
                         Def := New_Universal_Quantif
                           (Var_Id  => Quant_Id,
-                           Ty      => Annot.Key_Type,
+                           Ty      => Model_Annot.Key_Type,
                            Trigger => Has_Key_Or_Get_Call,
                            Pred    =>
                              (if Partial
@@ -20334,7 +20798,7 @@ package body Gnat2Why.Expr is
                                 (Symbol => Why_Eq,
                                  Left   => Has_Key_Or_Get_Call,
                                  Right  => New_Call_To_Ada_Function
-                                   (Fun  => Annot.Default_Item,
+                                   (Fun  => Model_Annot.Default_Item,
                                     Args => (1 .. 0 => <>)))));
                      end;
                   else
@@ -20358,25 +20822,26 @@ package body Gnat2Why.Expr is
                         Next (Assoc);
                         exit when No (Assoc);
                      end loop;
-                     Length := Natural (Keys.Length);
+                     Length := Nat (Keys.Length);
 
                      --  Go over the container expressions to generate:
                      --   * not equivalent_keys k2 k1, ... in Distinct
                      --   * equivalent_keys elt_id e1, ... in Eq_Keys
-                     --   * get aggr_id k1 = copy e1, ... in Get
-                     --   * and optionally has_key aggr_id k1, ... in Has_Key
+                     --   * get model_term k1 = copy e1, ... in Get
+                     --   * and optionally has_key model_term k1, ...
+                     --     in Has_Key.
 
                      declare
                         Distinct     : W_Pred_Vectors.Vector;
-                        Eq_Keys      : W_Pred_Array (1 .. Length);
-                        Get          : W_Pred_Array (1 .. Length);
+                        Eq_Keys      : W_Pred_Array (1 .. Natural (Length));
+                        Get          : W_Pred_Array (1 .. Natural (Length));
                         Num_Has_Key  : constant Natural :=
-                          (if Partial then Length else 0);
+                          (if Partial then Natural (Length) else 0);
                         Has_Key      : W_Pred_Array (1 .. Num_Has_Key);
                         Top          : Natural := 0;
                         Quant_Id     : constant W_Identifier_Id :=
                           New_Temp_Identifier
-                            (Typ       => Type_Of_Node (Annot.Key_Type),
+                            (Typ       => Type_Of_Node (Model_Annot.Key_Type),
                              Base_Name => "key");
                      begin
                         Assoc := First (Assocs);
@@ -20388,13 +20853,14 @@ package body Gnat2Why.Expr is
                                 First (Choice_List (Assoc));
                               Key_Id      : W_Identifier_Id;
                            begin
-                              if Is_Tagged_Type (Retysp (Annot.Element_Type))
+                              if Is_Tagged_Type
+                                (Retysp (Model_Annot.Element_Type))
                                 and then not Is_Class_Wide_Type
-                                  (Annot.Element_Type)
+                                  (Model_Annot.Element_Type)
                               then
                                  Elt_Id := New_Tag_Update
                                    (Name => Elt_Id,
-                                    Ty   => Retysp (Annot.Element_Type));
+                                    Ty   => Retysp (Model_Annot.Element_Type));
                               end if;
 
                               loop
@@ -20406,19 +20872,19 @@ package body Gnat2Why.Expr is
                                  Get (Top) := New_Comparison
                                    (Symbol => Why_Eq,
                                     Left   => New_Call_To_Ada_Function
-                                      (Fun  => Annot.Maps_Get,
-                                       Args => (+Aggr_Id, +Key_Id)),
+                                      (Fun  => Model_Annot.Maps_Get,
+                                       Args => (Model_Term, +Key_Id)),
                                     Right  => Elt_Id);
                                  Eq_Keys (Top) := Pred_Of_Boolean_Term
                                    (New_Call_To_Ada_Function
-                                      (Fun  => Annot.Equivalent_Keys,
+                                      (Fun  => Model_Annot.Equivalent_Keys,
                                        Args => (+Quant_Id, +Key_Id)));
 
                                  if Partial then
                                     Has_Key (Top) := Pred_Of_Boolean_Term
                                       (New_Call_To_Ada_Function
-                                         (Fun  => Annot.Has_Key,
-                                          Args => (+Aggr_Id, +Key_Id)));
+                                         (Fun  => Model_Annot.Has_Key,
+                                          Args => (Model_Term, +Key_Id)));
                                  end if;
 
                                  Next (Choice);
@@ -20443,7 +20909,7 @@ package body Gnat2Why.Expr is
                                  New_Not
                                    (Right => Pred_Of_Boolean_Term
                                         (New_Call_To_Ada_Function
-                                             (Annot.Equivalent_Keys,
+                                             (Model_Annot.Equivalent_Keys,
                                               (+Value_Map.Element (Keys (J)),
                                                +Value_Map.Element
                                                  (Keys (I)))))));
@@ -20465,7 +20931,7 @@ package body Gnat2Why.Expr is
 
                         --  Generate:
                         --
-                        --  (forall key_id. has_key aggr_id key_id ->
+                        --  (forall key_id. has_key model_term key_id ->
                         --    equivalent_keys key_id e1 \/
                         --    equivalent_keys key_id e2 \/ ...)
                         --
@@ -20474,20 +20940,20 @@ package body Gnat2Why.Expr is
                         --  (forall key_id.
                         --    not equivalent_keys key_id e1 /\
                         --    not equivalent_keys key_id e2 /\ ... ->
-                        --      get aggr_id key_id = default_item)
+                        --      get model_term key_id = default_item)
                         --
                         --  and add it to Def.
 
                         declare
                            Has_Key_Or_Get_Call : constant W_Term_Id :=
                              New_Call_To_Ada_Function
-                               (Fun  => (if Partial then Annot.Has_Key
-                                         else Annot.Maps_Get),
-                                Args => (+Aggr_Id, +Quant_Id));
+                               (Fun  => (if Partial then Model_Annot.Has_Key
+                                         else Model_Annot.Maps_Get),
+                                Args => (Model_Term, +Quant_Id));
                            Quant_Pred          : constant W_Pred_Id :=
                              New_Universal_Quantif
                                (Var_Id  => Quant_Id,
-                                Ty      => Annot.Key_Type,
+                                Ty      => Model_Annot.Key_Type,
                                 Trigger => Has_Key_Or_Get_Call,
                                 Pred    =>
                                   (if Partial
@@ -20504,7 +20970,7 @@ package body Gnat2Why.Expr is
                                         (Symbol => Why_Eq,
                                          Left   => Has_Key_Or_Get_Call,
                                          Right  => New_Call_To_Ada_Function
-                                           (Fun  => Annot.Default_Item,
+                                           (Fun  => Model_Annot.Default_Item,
                                             Args => (1 .. 0 => <>))))));
 
                         begin
@@ -20515,23 +20981,24 @@ package body Gnat2Why.Expr is
 
                   --  If Length is provided, add to Def:
                   --
-                  --    length aggr_id = <Length>
+                  --    length model_term = <Length>
                   --
-                  --  and if Length returns a scalar type, add to Pre:
+                  --  and if Length returns a scalar type and no capacity
+                  --  function is provided, add to Pre:
                   --
-                  --    <List_Length (Exprs)> <= Length_Type'Last
+                  --    <List_Length (Exprs)> <= length_type'Last
 
-                  if Present (Annot.Maps_Length) then
+                  if Present (Model_Annot.Maps_Length) then
                      declare
                         Length_Call     : W_Term_Id :=
                           New_Call_To_Ada_Function
-                            (Fun  => Annot.Maps_Length,
-                             Args => (1 => +Aggr_Id));
+                            (Fun  => Model_Annot.Maps_Length,
+                             Args => (1 => Model_Term));
                         Base_Length_Typ : constant W_Type_Id :=
-                          (if Has_Scalar_Type (Etype (Annot.Maps_Length))
+                          (if Has_Scalar_Type (Etype (Model_Annot.Maps_Length))
                            then EW_Int_Type
                            else EW_Abstract
-                             (Base_Retysp (Etype (Annot.Maps_Length))));
+                             (Base_Retysp (Etype (Model_Annot.Maps_Length))));
                      begin
                         Length_Call := +Insert_Simple_Conversion
                           (Domain => EW_Term,
@@ -20543,16 +21010,19 @@ package body Gnat2Why.Expr is
                              (Symbol => Why_Eq,
                               Left   => Length_Call,
                               Right  => New_Integer_Constant
-                                (Value => UI_From_Int (Int (Length)))));
+                                (Value => UI_From_Int (Length))));
 
-                        if Has_Scalar_Type (Etype (Annot.Maps_Length)) then
+                        if No (Capacity_Fun)
+                          and then Has_Scalar_Type
+                            (Etype (Model_Annot.Maps_Length))
+                        then
                            Pre := New_And_Pred
                              (Left  => New_Comparison
                                 (Symbol => Int_Infix_Le,
                                  Left   => New_Integer_Constant
-                                   (Value => UI_From_Int (Int (Length))),
+                                   (Value => UI_From_Int (Length)),
                                  Right  => +New_Attribute_Expr
-                                   (Ty     => Etype (Annot.Maps_Length),
+                                   (Ty     => Etype (Model_Annot.Maps_Length),
                                     Domain => EW_Term,
                                     Attr   => Attribute_Last,
                                     Params => Logic_Params)),
@@ -20566,29 +21036,27 @@ package body Gnat2Why.Expr is
 
                --  For the precondition of (E1, E2, ...), generate:
                --
-               --  first + <List_Length (Exprs)> - 1 <= Index_Type'Last
+               --  first + <List_Length (Exprs)> - 1 <= index_type'Last
 
                --  For the definition of (E1, E2, ...), generate:
                --
-               --  last aggr_id = first + <List_Length (Exprs)> - 1 /\
-               --  get aggr_id first = copy e1 /\
-               --  get aggr_id (first + 1) = copy e2 /\ ...
+               --  last model_term = first + <List_Length (Exprs)> - 1 /\
+               --  get model_term first = copy e1 /\
+               --  get model_term (first + 1) = copy e2 /\ ...
 
                declare
-                  Length         : constant Int :=
-                    (if Is_Empty then 0 else List_Length (Exprs));
                   First_Call     : W_Term_Id :=
                     New_Call_To_Ada_Function
-                      (Fun  => Annot.First,
+                      (Fun  => Model_Annot.First,
                        Args => (1 .. 0 => <>));
                   Last_Call      : W_Term_Id :=
                     New_Call_To_Ada_Function
-                      (Fun  => Annot.Last,
-                       Args => (1 => +Aggr_Id));
+                      (Fun  => Model_Annot.Last,
+                       Args => (1 => Model_Term));
                   Base_Index_Typ : constant W_Type_Id :=
-                    (if Has_Scalar_Type (Annot.Index_Type)
+                    (if Has_Scalar_Type (Model_Annot.Index_Type)
                      then EW_Int_Type
-                     else EW_Abstract (Base_Retysp (Annot.Index_Type)));
+                     else EW_Abstract (Base_Retysp (Model_Annot.Index_Type)));
 
                   function Offset (I : Nat) return W_Term_Id is
                     (if I = 0 then First_Call
@@ -20620,12 +21088,14 @@ package body Gnat2Why.Expr is
                                     New_Integer_Constant (Value => Uint_1)),
                            Typ  => Base_Index_Typ));
                   else
-                     if Has_Scalar_Type (Annot.Index_Type) then
+                     Length := List_Length (Exprs);
+
+                     if Has_Scalar_Type (Model_Annot.Index_Type) then
                         Pre := New_Comparison
                           (Symbol => Int_Infix_Le,
                            Left   => Offset (Length - 1),
                            Right  => +New_Attribute_Expr
-                             (Ty     => Annot.Index_Type,
+                             (Ty     => Model_Annot.Index_Type,
                               Domain => EW_Term,
                               Attr   => Attribute_Last,
                               Params => Logic_Params));
@@ -20639,7 +21109,7 @@ package body Gnat2Why.Expr is
                         Right  => Offset (Length - 1));
 
                      --  Go over the container expressions to generate
-                     --  get aggr_id first = copy e1, ... in Get
+                     --  get model_term first = copy e1, ... in Get
 
                      declare
                         Get : W_Pred_Array (1 .. Natural (Length));
@@ -20650,22 +21120,23 @@ package body Gnat2Why.Expr is
                            declare
                               Elt_Id : W_Term_Id := +Value_Map.Element (Elt);
                            begin
-                              if Is_Tagged_Type (Retysp (Annot.Element_Type))
+                              if Is_Tagged_Type
+                                (Retysp (Model_Annot.Element_Type))
                                 and then not Is_Class_Wide_Type
-                                  (Annot.Element_Type)
+                                  (Model_Annot.Element_Type)
                               then
                                  Elt_Id := New_Tag_Update
                                    (Name => Elt_Id,
-                                    Ty   => Retysp (Annot.Element_Type));
+                                    Ty   => Retysp (Model_Annot.Element_Type));
                               end if;
 
                               Top := Top + 1;
                               Get (Top) := New_Comparison
                                 (Symbol => Why_Eq,
                                  Left   => New_Call_To_Ada_Function
-                                   (Fun  => Annot.Seqs_Get,
+                                   (Fun  => Model_Annot.Seqs_Get,
                                     Args =>
-                                      (+Aggr_Id, Offset (Nat (Top - 1)))),
+                                      (Model_Term, Offset (Nat (Top - 1)))),
                                  Right  => Elt_Id);
                            end;
 
@@ -20683,6 +21154,51 @@ package body Gnat2Why.Expr is
             when Model =>
                raise Program_Error;
          end case;
+
+         --  If the empty function takes an integer as a parameter, check that
+         --  the length of the aggregate fits in this parameter type.
+
+         if Present (Annot.Spec_Capacity) then
+            Pre := New_And_Pred
+              (Left  => Pre,
+               Right => New_Comparison
+                 (Symbol => Int_Infix_Le,
+                  Left   => New_Integer_Constant
+                    (Value => UI_From_Int (Length)),
+                  Right  => +New_Attribute_Expr
+                    (Ty     => Annot.Spec_Capacity,
+                     Domain => EW_Term,
+                     Attr   => Attribute_Last,
+                     Params => Body_Params)));
+
+         --  If the container has a global capacity, check in Pre that the
+         --  length of the aggregate fits in the capacity.
+
+         elsif Present (Capacity_Fun) then
+            declare
+               Capacity_Call     : W_Term_Id :=
+                 New_Call_To_Ada_Function
+                   (Fun  => Capacity_Fun,
+                    Args => (1 .. 0 => <>));
+               Base_Capacity_Typ : constant W_Type_Id :=
+                 (if Has_Scalar_Type (Etype (Capacity_Fun))
+                  then EW_Int_Type
+                  else EW_Abstract (Base_Retysp (Etype (Capacity_Fun))));
+
+            begin
+               Capacity_Call := +Insert_Simple_Conversion
+                 (Domain => EW_Term,
+                  Expr   => +Capacity_Call,
+                  To     => Base_Capacity_Typ);
+               Pre := New_And_Pred
+                 (Left  => Pre,
+                  Right => New_Comparison
+                    (Symbol => Int_Infix_Le,
+                     Left   => New_Integer_Constant
+                       (Value => UI_From_Int (Length)),
+                     Right  => Capacity_Call));
+            end;
+         end if;
       end Compute_Aggregate_Def;
 
       ---------------------------------
@@ -20886,18 +21402,27 @@ package body Gnat2Why.Expr is
          Values    : out Node_Vectors.Vector;
          Value_Map : out Ada_Node_To_Why_Id.Map)
       is
-         Assocs : constant List_Id := Component_Associations (Expr);
-         Exprs  : constant List_Id := Expressions (Expr);
+         Assocs      : constant List_Id := Component_Associations (Expr);
+         Exprs       : constant List_Id := Expressions (Expr);
+         Model_Annot : Aggregate_Annotation := Annot;
+
       begin
+         --  Search for the last model type for E
+
+         while Model_Annot.Kind = Model loop
+            Model_Annot :=
+              Get_Aggregate_Annotation (Model_Annot.Model_Type);
+         end loop;
+
          if Present (Assocs) and then List_Length (Assocs) > 0 then
-            pragma Assert (Annot.Kind = Maps);
+            pragma Assert (Model_Annot.Kind = Maps);
             declare
                Assoc : Node_Id := First (Assocs);
             begin
                loop
                   declare
                      Elt_Id : constant W_Identifier_Id := New_Temp_Identifier
-                       (Typ       => Type_Of_Node (Annot.Element_Type),
+                       (Typ       => Type_Of_Node (Model_Annot.Element_Type),
                         Base_Name => "elt");
                      Key_Id : W_Identifier_Id;
                      Choice : Node_Id := First (Choice_List (Assoc));
@@ -20905,7 +21430,7 @@ package body Gnat2Why.Expr is
                      loop
                         Values.Append (Choice);
                         Key_Id := New_Temp_Identifier
-                          (Typ       => Type_Of_Node (Annot.Key_Type),
+                          (Typ       => Type_Of_Node (Model_Annot.Key_Type),
                            Base_Name => "key");
                         Value_Map.Insert (Choice, Key_Id);
                         Next (Choice);
@@ -20920,14 +21445,14 @@ package body Gnat2Why.Expr is
                end loop;
             end;
          elsif Present (Exprs) and then List_Length (Exprs) > 0 then
-            pragma Assert (Annot.Kind in Seqs | Sets);
+            pragma Assert (Model_Annot.Kind in Seqs | Sets);
             declare
                Value : Node_Id := First (Exprs);
             begin
                loop
                   declare
                      Elt_Id : constant W_Identifier_Id := New_Temp_Identifier
-                       (Typ       => Type_Of_Node (Annot.Element_Type),
+                       (Typ       => Type_Of_Node (Model_Annot.Element_Type),
                         Base_Name => "elt");
                   begin
 

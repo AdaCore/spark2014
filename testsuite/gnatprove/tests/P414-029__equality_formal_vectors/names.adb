@@ -86,9 +86,9 @@ is
       pragma Assert (Last_Index (Char_Table) <= Char_Table_Index'Last);
 
       Append (Entry_Table,
-              (Table_Index => Last_Index (Char_Table) - (S'Length - 1),
-               Length      => S'Length,
-               Next_Hash   => 0));
+              Name_Entry'(Table_Index => Last_Index (Char_Table) - (S'Length - 1),
+                          Length      => S'Length,
+                          Next_Hash   => 0));
       N := Last_Index (Entry_Table);
 
       if Ptr in Valid_Name_Id then

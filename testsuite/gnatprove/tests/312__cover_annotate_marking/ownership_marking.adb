@@ -45,9 +45,9 @@ procedure Ownership_Marking with SPARK_Mode is
       function First (X : T) return T is (X);
       function Next (X : T; Y : T) return T is (Y);
       function Has_Element (X : T; Y : T) return Boolean is (False);
-      function Contains (X : T; Y : T) return Boolean is (False);
+      function Contains (X : T; Y : T) return Boolean is (False) with
+        Annotate => (GNATprove, Iterable_For_Proof, "contains");
       function Element (X : T; Y : T) return T is (Y);
-      pragma Annotate (GNATprove, Iterable_For_Proof, "contains", Contains);
    private
       pragma SPARK_Mode (Off);
       type Owned is new Integer;
@@ -64,9 +64,9 @@ procedure Ownership_Marking with SPARK_Mode is
       function First (X : T) return T is (X);
       function Next (X : T; Y : T) return T is (Y);
       function Has_Element (X : T; Y : T) return Boolean is (False);
-      function Contains (X : T; Y : T) return Boolean is (False);
+      function Contains (X : T; Y : T) return Boolean is (False) with
+        Annotate => (GNATprove, Iterable_For_Proof, "contains");
       function Element (X : T; Y : T) return T is (Y);
-      pragma Annotate (GNATprove, Iterable_For_Proof, "contains", Contains);
       function Is_Reclaimed (X : Owned) return Boolean is (True);
       pragma Annotate (GNATprove, Ownership, "is_reclaimed", Is_Reclaimed);
    private

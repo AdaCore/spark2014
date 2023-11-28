@@ -31,7 +31,7 @@ package Flow.Analysis.Antialiasing is
                                   Definite_Aliasing,
                                   Unchecked);
    pragma Ordered (Aliasing_Check_Result);
-   --  These statues represent the computed aliasing status but Unchecked,
+   --  These statuses represent the computed aliasing status but Unchecked,
    --  which represents the case where a status has not been computed yet.
 
    procedure Check_Procedure_Call
@@ -56,8 +56,8 @@ package Flow.Analysis.Antialiasing is
 
    function Get_Aliasing_Status_For_Proof (N : Node_Id)
                                            return Aliasing_Check_Result
-     with Pre => Nkind (N) in N_Entry_Call_Statement
-                            | N_Procedure_Call_Statement;
+   with Pre => Nkind (N) in N_Entry_Call_Statement
+                          | N_Subprogram_Call;
    --  This procedure looks into the map containing information about the
    --  aliasing status for procedure call N (computed by Check_Procedure_Call).
    --  It returns the aliasing status if N has been stored in the map,

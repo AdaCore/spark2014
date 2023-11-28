@@ -1407,8 +1407,9 @@ package body Why.Inter is
       else
          declare
             Module : constant W_Module_Id :=
-              (if Selector = Dispatch then
-                  E_Dispatch_Module (E, Axiom => Domain = EW_Prog)
+              (if Selector = Dispatch
+               then E_Dispatch_Module
+                 (E, Kind => (if Domain = EW_Prog then Axiom else Regular))
                elsif Ekind (E) in Subprogram_Kind | Entry_Kind
                  and then Domain = EW_Prog
                then

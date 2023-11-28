@@ -17,8 +17,9 @@ number of lines of code) by the metrics computation tool GNATmetric.
 
 The stricter SPARK rules are enforced on a (hopefully) large part of the
 program, which leads to higher quality and maintainability, as error-prone
-features such as side-effects and pointers are restricted to avoid common
-mistakes. Individual and peer review processes can be reduced on the SPARK
+features such as side-effects in regular functions are avoided, and others,
+such as pointers, are restricted to avoid common mistakes.
+Individual and peer review processes can be reduced on the SPARK
 parts of the program, since analysis automatically eliminates some categories
 of defects. The parts of the program that don't respect the SPARK rules are
 carefully isolated so they can be more thoroughly reviewed and tested.

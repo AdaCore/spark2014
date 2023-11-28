@@ -6,7 +6,7 @@ procedure Test with SPARK_Mode is
      (String, Ada.Strings.Hash);
    use Sets;
 
-   S : Set (Default_Modulus (4));
+   S : Set;
 
 begin
    Insert (S, "A");
