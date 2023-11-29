@@ -176,7 +176,7 @@ package body Xtree_Builders is
 
          function K (S : String) return String is
          begin
-            if IK = Derived and Is_Why_Id (FI) then
+            if IK = Derived and then Is_Why_Id (FI) then
                declare
                   M : constant Id_Multiplicity :=
                         (if Multiplicity (FI) = Id_One
@@ -447,7 +447,7 @@ package body Xtree_Builders is
 
          for CI of Classes loop
             if Kind in Class_First (CI) .. Class_Last (CI)
-              and Class_Name (CI) /= "W_Any_Node"
+              and then Class_Name (CI) /= "W_Any_Node"
             then
                NL (O);
 
@@ -475,7 +475,7 @@ package body Xtree_Builders is
 
          for CI of Classes loop
             if Kind in Class_First (CI) .. Class_Last (CI)
-              and Class_Name (CI) /= "W_Any_Node"
+              and then Class_Name (CI) /= "W_Any_Node"
             then
                NL (O);
                Print_Builder_Body (O, Kind, Derived,
