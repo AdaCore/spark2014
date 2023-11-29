@@ -3309,6 +3309,14 @@ package body Why.Gen.Expr is
               (for J in Conjuncts'First + 2 .. Conjuncts'Last =>
                  +Conjuncts (J));
          begin
+
+            --  We use the array form with "More_Right" here for these reasons:
+            --  - It avoids a deeply nested tree. Such deep nesting could lead
+            --    to a stack overflow in code that traverses the whole tree;
+            --  - The array form receives special handling in why3, creating a
+            --    balanced tree of binary conjunctions, again to avoid deeply
+            --    nested trees.
+
             return New_Connection
               (Op         => EW_And,
                Left       => Conjuncts (Conjuncts'First),
