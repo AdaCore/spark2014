@@ -370,7 +370,7 @@ package body Xtree_Builders is
                      P (O, "W_Prog_Id");
                   elsif Param_Type = "W_Expr_OId" then
                      P (O, "W_Prog_OId");
-                  elsif Kind = W_Connection
+                  elsif Kind in W_Connection | W_Conditional
                     and then Param_Type = "W_Expr_Array"
                   then
                      P (O, "W_Prog_Array");
@@ -402,7 +402,7 @@ package body Xtree_Builders is
                      end if;
                   elsif Param_Type = "W_Expr_OId" then
                      P (O, "W_Pred_OId");
-                  elsif Kind = W_Connection
+                  elsif Kind in W_Connection | W_Conditional
                     and then Param_Type = "W_Expr_Array"
                   then
                      P (O, "W_Pred_Array");
