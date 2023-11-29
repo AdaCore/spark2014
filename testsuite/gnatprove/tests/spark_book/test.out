@@ -492,7 +492,7 @@ dates.adb:14:13: info: implicit aspect Always_Terminates on "Is_Leap_Year" has b
 dates.adb:14:13: info: local subprogram "Is_Leap_Year" only analyzed in the context of calls
 dates.adb:17:15: info: division check proved (CVC5: 1 VC), in call inlined at dates.adb:49
 dates.adb:25:13: info: implicit aspect Always_Terminates on "Get_Month_Length" has been proved, subprogram will terminate
-dates.adb:28:08: info: postcondition proved (CVC5: 12 VC; Trivial: 12 VC)
+dates.adb:28:08: info: postcondition proved (CVC5: 12 VC; Trivial: 11 VC)
 dates.adb:47:07: info: initialization of "Length" proved
 dates.adb:49:10: info: analyzing call to "Is_Leap_Year" in context
 dates.adb:59:13: info: add a contract to analyze it separately from calling contexts

@@ -128,11 +128,10 @@ example_recursive.adb:222:15: info: precondition proved
 example_recursive.adb:222:40: info: precondition proved
 example_recursive.adb:224:15: info: precondition proved
 example_recursive.adb:226:28: info: overflow check proved
+example_recursive.adb:228:14: info: postcondition proved
 example_recursive.adb:230:15: info: precondition proved
 example_recursive.adb:232:41: info: overflow check proved
 example_recursive.adb:234:45: info: precondition proved
-example_recursive.adb:234:45: medium: in inlined expression function body at example_recursive.adb:67
-example_recursive.adb:234:45: medium: postcondition might fail, cannot prove (L = A or else Reachable (Address (L_Cell (Get (M, L)).N), N - 1, A, M))
 example_recursive.adb:235:19: info: precondition proved
 example_recursive.adb:236:22: info: precondition proved
 example_recursive.adb:241:43: info: precondition proved
