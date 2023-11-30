@@ -24,6 +24,8 @@ aggregate project GNATprove_By_Example is
      "ug__addition_bignum/addition_bignum.gpr",
      "ug__addition_rewrite/addition_rewrite.gpr",
      "ug__addition_saturated/addition_saturated.gpr",
+     "ug__aggregate_aspect_model/aggregate_aspect.gpr",
+     "ug__aggregate_aspect_predefined/aggregate_aspect.gpr",
      "ug__aliasing/aliasing.gpr",
      "ug__arith_with_local_subp/arith_with_local_subp.gpr",
      "ug__assert_disabled/assert_disabled.gpr",
