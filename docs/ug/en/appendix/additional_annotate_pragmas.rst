@@ -1051,9 +1051,10 @@ possible to annotate an access-to-subprogram type with a pragma or aspect
 ``Annotate => (GNATprove, Handler)``. This instructs |GNATprove| that these
 access-to-subprograms will be called asynchronously. It is possible to
 create a value of such a type using a reference to the ``Access`` attribute
-on a subprogram accessing or modifying global data. However, |GNATprove| will
-make sure that the subprograms designated by objects of these types are never
-called from |SPARK| code, as it could result in a missing data dependency.
+on a subprogram accessing or modifying global data, but only when this global
+data is synchronized (see SPARK RM 9.1). However, |GNATprove| will make sure
+that the subprograms designated by objects of these types are never called from
+|SPARK| code, as it could result in a missing data dependency.
 
 For example, consider the following procedure which resets to zero a global
 variable ``Counter``:
