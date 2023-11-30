@@ -346,11 +346,14 @@ package body Flow_Error_Messages is
       V   : Flow_Graphs.Vertex_Id;
       Sep : Character := ':') return String
    is
-      N  : constant Node_Or_Entity_Id := Error_Location (G, M, V);
-      SI : constant Source_File_Index := Get_Source_File_Index (Sloc (N));
+      Loc : constant Source_Ptr := Sloc (Error_Location (G, M, V));
+      SFI : constant Source_File_Index := Get_Source_File_Index (Loc);
+
+      Line_Number : constant Logical_Line_Number :=
+        Get_Logical_Line_Number (Loc);
    begin
-      return Get_Name_String (File_Name (SI)) & Sep &
-        Get_Logical_Line_Number_Img (Sloc (N));
+      return Get_Name_String (File_Name (SFI)) & Sep &
+        Image (Natural (Line_Number), 1);
    end Vertex_Sloc_Location;
 
    --------------------
