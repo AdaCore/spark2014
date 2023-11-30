@@ -403,6 +403,9 @@ package Flow_Types is
    is (Is_Volatile (F)
        and then (Has_Async_Writers (F) or else Has_Effective_Reads (F)));
 
+   function Is_Synchronized (F : Flow_Id) return Boolean;
+   --  Returns True if the global object F is synchronized
+
    function Is_Abstract_State (F : Flow_Id) return Boolean;
    --  Checks if F is an abstract state
 

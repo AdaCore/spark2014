@@ -320,6 +320,9 @@ package body Flow_Generated_Globals.Phase_2 is
    Effective_Writes_Vars : Name_Sets.Set;
    --  Volatile variables; Volatile_Vars is a union of the four other sets
 
+   Synchronized_Vars : Name_Sets.Set;
+   --  Synchronized global objects
+
    ----------------------------------------------------------------------
    --  Local subprograms
    ----------------------------------------------------------------------
@@ -1539,6 +1542,9 @@ package body Flow_Generated_Globals.Phase_2 is
                   Serialize (Async_Writers_Vars,    "AW");
                   Serialize (Effective_Reads_Vars,  "ER");
                   Serialize (Effective_Writes_Vars, "EW");
+
+               when EK_Synchronized =>
+                  Serialize (Synchronized_Vars);
 
                when EK_Globals =>
                   --  ??? this line should be loaded only when
@@ -3138,6 +3144,9 @@ package body Flow_Generated_Globals.Phase_2 is
 
    function GG_Is_Volatile (EN : Entity_Name) return Boolean
      renames Volatile_Vars.Contains;
+
+   function GG_Is_Synchronized (EN : Entity_Name) return Boolean
+     renames Synchronized_Vars.Contains;
 
    ----------------------------------------
    -- Has_Potentially_Blocking_Statement --

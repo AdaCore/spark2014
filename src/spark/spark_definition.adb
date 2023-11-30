@@ -4322,31 +4322,39 @@ package body SPARK_Definition is
                      --  higher order specialization and for
                      --  access-to-subprogram types annotated with Handler.
 
-                     elsif not Is_Specialized_Actual (N)
-                       and then not Has_Handler_Annotation (Etype (N))
-                     then
-                        declare
-                           Globals : Global_Flow_Ids;
-                        begin
-                           Get_Globals
-                             (Subprogram          => Subp,
-                              Scope               =>
-                                (Ent => Subp, Part => Visible_Part),
-                              Classwide           => False,
-                              Globals             => Globals,
-                              Use_Deduced_Globals =>
-                                 not Gnat2Why_Args.Global_Gen_Mode,
-                              Ignore_Depends      => False);
+                     elsif not Is_Specialized_Actual (N) then
+                        if Has_Handler_Annotation (Etype (N)) then
 
-                           if not Globals.Proof_Ins.Is_Empty
-                             or else not Globals.Inputs.Is_Empty
-                             or else not Globals.Outputs.Is_Empty
-                           then
-                              Mark_Violation
-                                ("access to subprogram with global effects",
-                                 N);
+                           --  Postpone check for handler accesses until
+                           --  Skip_Flow_And_Proof annotations are picked.
+
+                           if not Gnat2Why_Args.Global_Gen_Mode then
+                              Handler_Accesses.Insert (N);
                            end if;
-                        end;
+                        else
+                           declare
+                              Globals : Global_Flow_Ids;
+                           begin
+                              Get_Globals
+                                (Subprogram          => Subp,
+                                 Scope               =>
+                                   (Ent => Subp, Part => Visible_Part),
+                                 Classwide           => False,
+                                 Globals             => Globals,
+                                 Use_Deduced_Globals =>
+                                    not Gnat2Why_Args.Global_Gen_Mode,
+                                 Ignore_Depends      => False);
+
+                              if not Globals.Proof_Ins.Is_Empty
+                                or else not Globals.Inputs.Is_Empty
+                                or else not Globals.Outputs.Is_Empty
+                              then
+                                 Mark_Violation
+                                   ("access to subprogram with global effects",
+                                    N);
+                              end if;
+                           end;
+                        end if;
                      end if;
                   end;
 

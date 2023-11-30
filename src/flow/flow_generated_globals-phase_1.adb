@@ -116,6 +116,17 @@ package body Flow_Generated_Globals.Phase_1 is
    --  Process E and adds it to Async_Writers_Vars, Async_Readers_Vars,
    --  Effective_Reads_Vars, or Effective_Writes_Vars as appropriate.
 
+   Synchronized_Vars : Node_Sets.Set;
+   --  Synchronized variables acting as globals
+   --
+   --  We separate this from the unsynchronized objects that we store to check
+   --  conflicting accesses between multiple tasks, so that we can detect
+   --  accesses from handlers regardless if they are coordinated via protected
+   --  subprograms.
+
+   procedure Register_Synchronized (E : Entity_Id);
+   --  Register E as a synchronized global object
+
    --------------------------------
    -- GG_Register_Constant_Calls --
    --------------------------------
@@ -297,6 +308,8 @@ package body Flow_Generated_Globals.Phase_1 is
          for E of Objects loop
             if not Is_Heap_Variable (E) then
                Register_Volatile (E);
+
+               Register_Synchronized (E);
 
                if Ekind (E) = E_Abstract_State
                  and then Enclosing_Lib_Unit_Entity (E) /= Current_Lib_Unit
@@ -647,6 +660,19 @@ package body Flow_Generated_Globals.Phase_1 is
       Terminate_GG_Line;
    end GG_Register_Task_Object;
 
+   ---------------------------
+   -- Register_Synchronized --
+   ---------------------------
+
+   procedure Register_Synchronized (E : Entity_Id) is
+   begin
+      if Is_Library_Level_Entity (E)
+        and then Is_Synchronized (E)
+      then
+         Synchronized_Vars.Include (E);
+      end if;
+   end Register_Synchronized;
+
    -----------------------
    -- Register_Volatile --
    -----------------------
@@ -710,6 +736,12 @@ package body Flow_Generated_Globals.Phase_1 is
          Serialize (Async_Writers_Vars,    "AW");
          Serialize (Effective_Reads_Vars,  "ER");
          Serialize (Effective_Writes_Vars, "EW");
+         Terminate_GG_Line;
+      end if;
+
+      if not Synchronized_Vars.Is_Empty then
+         New_GG_Line (EK_Synchronized);
+         Serialize (Synchronized_Vars);
          Terminate_GG_Line;
       end if;
 
