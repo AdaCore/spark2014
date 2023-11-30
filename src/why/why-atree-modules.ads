@@ -26,13 +26,8 @@
 with Ada;                            use Ada;
 with Ada.Containers.Hashed_Maps;
 with Checked_Types;                  use Checked_Types;
-with Flow_Generated_Globals.Phase_2; use Flow_Generated_Globals.Phase_2;
-with Gnat2Why.Util;                  use Gnat2Why.Util;
 with GNATCOLL.Symbols;
 with SPARK_Atree.Entities;           use SPARK_Atree.Entities;
-with SPARK_Definition;               use SPARK_Definition;
-with SPARK_Definition.Annotate;      use SPARK_Definition.Annotate;
-with SPARK_Util.Types;               use SPARK_Util.Types;
 with VC_Kinds;                       use VC_Kinds;
 with Why.Ids;                        use Why.Ids;
 with Why.Gen.Names;                  use Why.Gen.Names;
@@ -766,11 +761,6 @@ package Why.Atree.Modules is
    procedure Initialize;
    --  Call this procedure before using any of the entities in this package
 
-   function E_Module (E : Entity_Id) return W_Module_Id;
-   --  Returns the module where File = No_Name and Name = Full_Name (E).
-   --  Memoization may be used. Returns Empty when it is called with a node
-   --  which is not an entity, and no module is known for this entity.
-
    function E_Symb
      (E            : Entity_Id;
       S            : Why_Name_Enum;
@@ -783,86 +773,40 @@ package Why.Atree.Modules is
    --    module. This should only be used for symbols which are duplicated
    --    between the two modules.
 
-   function E_Axiom_Module (E : Entity_Id) return W_Module_Id;
+   type Module_Kind is
+     (Regular,
+      Axiom,                     --  Post axiom and program function
+      Recursive_Axiom,           --  Post axiom for recursive subprograms
+      Dispatch,                  --  Dispatch function
+      Dispatch_Axiom,            --  Post'Class axiom and dispatch program
+                                 --  function.
+      Dispatch_Recursive_Axiom,  --  Post'Class axiom for recursive subprograms
+      Lemma_Axiom,               --  Post axiom of a lemma procedure annotated
+                                 --  with Automatic_Instantiation.
+      Type_Completion,           --  Type completion
+      Type_Representative,       --  Representative module for a type
+      Record_Rep_Completion,     --  Completion of representative module for a
+                                 --  record type.
+      Init_Wrapper,              --  Wrappers for relaxed initialization
+      Init_Wrapper_Completion,   --  Completion for init wrappers
+      Init_Wrapper_Pointer_Rep,  --  Representative module for init wrappers of
+                                 --  an access type.
+      Default_Initialialization, --  Default assumption for a type
+      Invariant,                 --  Type invariants
+      User_Equality,             --  Redefined primitive equality on records
+      User_Equality_Axiom,       --  Axiom for redefined primitive equality
+      Dispatch_Equality,         --  Dispatching equality
+      Dispatch_Equality_Axiom,   --  Axiom for dispatching equality
+      Ownership_Move,            --  Move predicates
+      Ownership_Move_Axiom);     --  Axiom for move predicates
 
-   function E_Compl_Module
-     (E            : Entity_Id;
-      Relaxed_Init : Boolean := False)
+   function E_Module
+     (E : Entity_Id;
+      K : Module_Kind := Regular)
       return W_Module_Id;
-   --  Return the module where File = No_Name and Name = (Full_Name (E) &
-   --  "__compl"). Memoization may be used. Returns Empty when it is called
-   --  with a node which is not an entity, and no module is known for this
-   --  entity.
-
-   function E_Rep_Module (E : Entity_Id) return W_Module_Id;
-   --  Return the module where File = No_Name and Name = (Full_Name (E) &
-   --  "__rep"). Memoization may be used. Returns Empty when it is called with
-   --  a node which is not an entity, and no module is known for this entity.
-
-   function E_Init_Module (E : Entity_Id) return W_Module_Id;
-   --  Return the module where File = No_Name and Name = (Full_Name (E) &
-   --  "__init"). Memoization may be used. Returns Empty when it is called with
-   --  a node which is not an entity, and no module is known for this entity.
-
-   function E_Lemma_Axiom_Module (E : Entity_Id) return W_Module_Id with
-     Pre => Has_Automatic_Instantiation_Annotation (E);
-   --  Return the module for the post axiom of a lemma procedure annotated
-   --  with Automatic_Instantiation.
-
-   function E_Rec_Axiom_Module (E : Entity_Id) return W_Module_Id with
-     Pre => Has_Post_Axiom (E) and then Proof_Module_Cyclic (E);
-   --  Return the module where File = No_Name and Name = (Full_Name (E) &
-   --  "__rec_axiom"). Memoization may be used. Returns Empty when it is called
-   --  with a node which is not an entity, and no module is known for this
-   --  entity.
-
-   function E_Record_Rep_Module (E : Entity_Id) return W_Module_Id with
-     Pre => Is_Record_Type_In_Why (E);
-   --  Return the module for representative type of a record type E
-
-   function E_Record_Compl_Module (E : Entity_Id) return W_Module_Id with
-     Pre => Is_Record_Type_In_Why (E);
-   --  Return the module for the completion of the representative type of a
-   --  record type E.
-
-   function E_Rep_Pointer_Module
-     (E            : Entity_Id;
-      Relaxed_Init : Boolean := False)
-      return W_Module_Id;
-   --  Return the name of a pointer's representative module.
-
-   function E_DIC_Module (Ty : Type_Kind_Id) return W_Module_Id with
-     Pre => not Is_Itype (Ty) and then Can_Be_Default_Initialized (Ty);
-   --  Function returning the extra module for the default assumption of Ty
-
-   type Dispatch_Module_Kind is (Regular, Axiom, Rec_Axiom);
-
-   function E_Dispatch_Module
-     (Subp  : Subprogram_Kind_Id;
-      Kind  : Dispatch_Module_Kind := Regular) return W_Module_Id;
-   --  Function returning the module for the dispatching variant of Subp
-
-   function E_Invariant_Module (Ty : Type_Kind_Id) return W_Module_Id with
-     Pre => Has_Invariants_In_SPARK (Ty);
-   --  Function returning the extra module for the type invariant of Ty
-
-   function E_Dispatch_Eq_Module
-     (Ty    : Type_Kind_Id;
-      Axiom : Boolean := False) return W_Module_Id
-   with Pre => Is_Tagged_Type (Ty) and then Ty = Root_Retysp (Ty);
-   --  Function returning the module for the dispatching equality on Ty
-
-   function E_User_Eq_Module
-     (Ty    : Type_Kind_Id;
-      Axiom : Boolean := False) return W_Module_Id
-   with Pre => not Use_Predefined_Equality_For_Type (Ty);
-   --  Function returning the module for the user equality on Ty
-
-   function E_Move_Module
-     (Ty    : Type_Kind_Id;
-      Axiom : Boolean := False) return W_Module_Id
-   with Pre => Contains_Allocated_Parts (Ty);
-   --  Function returning the module for the move predicates for Ty
+   --  Return the module of kind K which should be used for E. Return Empty
+   --  when E is a node which is not an entity, and no module is known for this
+   --  entity. Use memoization.
 
    function Get_Logic_Function (E : Function_Kind_Id) return W_Identifier_Id;
    --  Return the logic function __call associated with the profile of a
@@ -905,5 +849,10 @@ package Why.Atree.Modules is
    --  Function returning the set of axiom modules mutually recursive with a
    --  given entity. Those are the modules which should not be included in the
    --  VC module for E.
+
+   procedure Register_Proof_Cyclic_Function (E : Entity_Id);
+   procedure Register_Automatically_Instanciated_Lemma (E : Entity_Id);
+   --  Register recursive functions and autmatically instanciated lemmas. They
+   --  are used by Mutually_Recursive_Modules.
 
 end Why.Atree.Modules;

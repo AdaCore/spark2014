@@ -103,15 +103,15 @@ test_relaxed_access_params.adb:88:16: medium: initialization check might fail (e
 test_relaxed_access_params.adb:90:11: info: absence of resource or memory leak proved (CVC5: 1 VC)
 test_relaxed_access_params.adb:90:11: info: discriminant check proved (Trivial: 1 VC)
 test_relaxed_access_params.adb:99:16: medium: for pointer allocation at test_relaxed_access_params.adb:9
-test_relaxed_access_params.adb:99:16: medium: initialization check might fail (e.g. when X = (A => new R'((D => 0, F => ?))) and X.A.all.F'Initialized = False) [possible fix: subprogram at line 93 should mention X'Initialized in a precondition]
+test_relaxed_access_params.adb:99:16: medium: initialization check might fail (e.g. when X = (A => null)) [possible fix: subprogram at line 93 should mention X'Initialized in a precondition]
 test_relaxed_access_params.adb:101:16: medium: for pointer allocation at test_relaxed_access_params.adb:9
-test_relaxed_access_params.adb:101:16: medium: initialization check might fail (e.g. when X = (A => new R'((D => 0, F => ?))) and X.A.all.F'Initialized = False) [possible fix: subprogram at line 93 should mention X'Initialized in a precondition]
+test_relaxed_access_params.adb:101:16: medium: initialization check might fail (e.g. when X = (A => null)) [possible fix: subprogram at line 93 should mention X'Initialized in a precondition]
 test_relaxed_access_params.adb:103:11: info: discriminant check proved (Trivial: 1 VC)
 test_relaxed_access_params.adb:103:11: medium: resource or memory leak might occur [possible fix: subprogram at line 93 should mention X in a precondition]
 test_relaxed_access_params.adb:112:16: medium: for pointer allocation at test_relaxed_access_params.adb:9
-test_relaxed_access_params.adb:112:16: medium: initialization check might fail (e.g. when X = (A => new R'((D => 0, F => ?))) and X.A.all.F'Initialized = False) [possible fix: subprogram at line 106 should mention X'Initialized in a precondition]
+test_relaxed_access_params.adb:112:16: medium: initialization check might fail (e.g. when X = (A => null)) [possible fix: subprogram at line 106 should mention X'Initialized in a precondition]
 test_relaxed_access_params.adb:114:16: medium: for pointer allocation at test_relaxed_access_params.adb:9
-test_relaxed_access_params.adb:114:16: medium: initialization check might fail (e.g. when X = (A => new R'((D => 0, F => ?))) and X.A.all.F'Initialized = False) [possible fix: subprogram at line 106 should mention X'Initialized in a precondition]
+test_relaxed_access_params.adb:114:16: medium: initialization check might fail (e.g. when X = (A => null)) [possible fix: subprogram at line 106 should mention X'Initialized in a precondition]
 test_relaxed_access_params.adb:122:29: info: initialization of "Y" proved
 test_relaxed_access_params.adb:124:06: info: flow dependencies proved
 test_relaxed_access_params.adb:128:31: medium: for pointer allocation at test_relaxed_access_params.adb:9
@@ -130,7 +130,7 @@ test_relaxed_access_params.adb:152:31: info: initialization of "Y" proved
 test_relaxed_access_params.adb:156:12: info: absence of resource or memory leak proved (CVC5: 1 VC)
 test_relaxed_access_params.adb:159:34: info: initialization of "Y" proved
 test_relaxed_access_params.adb:163:12: medium: for pointer allocation at test_relaxed_access_params.adb:12
-test_relaxed_access_params.adb:163:12: medium: initialization check might fail (e.g. when X = (A => new R'((D => 0, F => ?))) and X.A.all.F'Initialized = False) [possible fix: subprogram at line 159 should mention X in a precondition]
+test_relaxed_access_params.adb:163:12: medium: initialization check might fail (e.g. when X = (A => null)) [possible fix: subprogram at line 159 should mention X in a precondition]
 test_relaxed_access_params.adb:168:04: medium: resource or memory leak might occur at end of scope
 test_relaxed_access_params.adb:169:04: medium: resource or memory leak might occur at end of scope
 test_relaxed_access_params.adb:172:06: info: data dependencies proved

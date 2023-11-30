@@ -119,7 +119,7 @@ package body Gnat2Why.Decls is
 
       Th := Open_Theory
         (WF_Context,
-         E_Axiom_Module (E),
+         E_Module (E, Axiom),
          Comment =>
            "Module for defining the value of constant "
          & """" & Get_Name_String (Chars (E)) & """"
@@ -180,7 +180,7 @@ package body Gnat2Why.Decls is
                     Defined_Entity =>
                       (if Is_Full_View (E) then Partial_View (E) else E));
       Register_Dependency_For_Soundness
-        (E_Axiom_Module (E), Enclosing_Unit (E));
+        (E_Module (E, Axiom), Enclosing_Unit (E));
    end Translate_Constant_Value;
 
    --------------------------

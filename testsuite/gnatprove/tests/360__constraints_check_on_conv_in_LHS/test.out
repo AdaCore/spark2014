@@ -45,7 +45,7 @@ main.adb:99:20: info: local subprogram "Assign" only analyzed in the context of 
 main.adb:101:13: info: length check proved (CVC5: 3 VC; Trivial: 1 VC), in call inlined at main.adb:104
 main.adb:101:16: info: index check proved (CVC5: 2 VC), in call inlined at main.adb:104
 main.adb:104:10: info: analyzing call to "Assign" in context
-main.adb:104:18: medium: length check might fail [reason for check: array must be of the appropriate length] [possible fix: precondition of subprogram at line 95 should mention V_A]
+main.adb:104:18: medium: length check might fail (e.g. when V_A = (others => 1) and V_A'First = 1 and V_A'Last = 2) [reason for check: array must be of the appropriate length] [possible fix: precondition of subprogram at line 95 should mention V_A]
 main.adb:108:07: info: precondition proved (CVC5: 2 VC)
 main.adb:111:38: info: data dependencies proved
 main.adb:119:07: medium: resource or memory leak might occur at end of scope

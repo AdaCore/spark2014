@@ -1742,7 +1742,7 @@ package body Gnat2Why.Expr.Aggregates is
 
          Th :=
            Open_Theory
-             (WF_Context, E_Axiom_Module (Ada_Node),
+             (WF_Context, E_Module (Ada_Node, Axiom),
               Comment =>
                 "Module for defining the value of the deep delta aggregate at "
               & (if Sloc (Ada_Node) > 0 then

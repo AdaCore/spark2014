@@ -2172,11 +2172,8 @@ package body Flow.Analysis is
       --    True if F it is initialized after elaboration of FA.
       --  * Otherwise, returns Atr.Is_Initialized.
 
-      function Has_Relaxed_Initialization (F : Flow_Id) return Boolean
-      with Pre => not Is_Discriminant (F);
-      --  Returns True iff F is subject to Relaxed_Initialization aspect. This
-      --  routine is not called on discriminants, because they are initialized
-      --  anyway, no matter if the aspect applies to their type.
+      function Has_Relaxed_Initialization (F : Flow_Id) return Boolean;
+      --  Returns True iff F is subject to Relaxed_Initialization aspect
 
       ------------------------
       -- Emit_Check_Message --
@@ -3196,7 +3193,6 @@ package body Flow.Analysis is
          begin
             if Parent_Key.Variant = Initial_Value
               and then not Synthetic (Parent_Key)
-              and then not Is_Discriminant (Parent_Key)
               and then not Is_Empty_Record_Object (Parent_Key)
               and then not Has_Relaxed_Initialization (Parent_Key)
               and then not Is_Initialized (Parent_Key, Parent_Atr)
@@ -5389,7 +5385,7 @@ package body Flow.Analysis is
 
    begin
       --  Ignore packages (which have no Global contracts) and functions with
-      --  no side-effects (which have no global outputs).
+      --  no side effects (which have no global outputs).
 
       if Ekind (FA.Spec_Entity) in E_Procedure | E_Entry | E_Task_Type
         or else Is_Function_With_Side_Effects (FA.Spec_Entity)
@@ -5646,8 +5642,6 @@ package body Flow.Analysis is
             or else (for some F of Get_Explicit_Formals (FA.Spec_Entity)
                        => Is_Effectively_Volatile_For_Reading (Etype (F)));
 
-         --  HACK: Exempt functions with side-effects from checking until
-         --  support is added in flow.
          if not Is_Function_With_Side_Effects (FA.Spec_Entity) then
             pragma Assert (Globals.Outputs.Is_Empty);
          end if;

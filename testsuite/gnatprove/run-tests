@@ -399,6 +399,14 @@ class SPARKTestFinder(TestFinder):
         # If bogus test dir such as git folder, skip it
         if testname == ".git":
             return None
+
+        # We have a valid test directory, so we don't need to visit its
+        # subdirectories, e.g. with session files. This should save us
+        # unnecessary I/O operations. Modify the list of directories in-place,
+        # as explained in the Python documentation for os.walk routine, which
+        # is used by e3-testsuite driver.
+        del dirnames[:]
+
         # If testlist was passed and the dir is not in testlist, skip it
         if self.testlist and testname not in self.testlist:
             return None
@@ -409,16 +417,15 @@ class SPARKTestFinder(TestFinder):
 
         # We read the test.yaml file if present and load it into the
         # environment
-        test_env = None
-        try:
-            yaml_file = os.path.join(dirpath, "test.yaml")
-            if "test.yaml" in filenames:
+        yaml_file = os.path.join(dirpath, "test.yaml")
+        if "test.yaml" in filenames:
+            try:
                 test_env = e3.yaml.load_with_config(yaml_file, Env().to_dict())
-        except e3.yaml.YamlError as exc:
-            raise ProbingError(
-                "invalid syntax for test.yaml in '{}'".format(testname)
-            ) from exc
-        if test_env is None:
+            except e3.yaml.YamlError as exc:
+                raise ProbingError(
+                    "invalid syntax for test.yaml in '{}'".format(testname)
+                ) from exc
+        else:
             test_env = {}
 
         # If this is not a large test, but only large was requested, skip
@@ -429,7 +436,6 @@ class SPARKTestFinder(TestFinder):
             and "large" not in test_env
             and "always_fail" not in testname
         ):
-
             return None
 
         if testname.startswith("ug__"):

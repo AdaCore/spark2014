@@ -1,4 +1,4 @@
-hw-dbc-transfer_rings.adb:33:04: warning: address specification on "Rings" is imprecisely supported: assuming no concurrent accesses to non-atomic object, correct volatile properties, no writes to a potential alias, and valid reads [E0012]
+hw-dbc-transfer_rings.adb:33:04: warning: address specification on "Rings" is imprecisely supported: assuming no concurrent accesses to non-atomic object, correct volatile properties, and no writes to a potential alias [E0012]
 hw-dbc-transfer_rings.adb:33:04: warning: launch "gnatprove --explain=E0012" for more information
 hw-dbc-transfer_rings.adb:33:04: warning: make sure that all overlapping objects have Async_Writers set to True
 hw-dbc-transfer_rings.adb:54:13: error: function "Get_Ring_Address" with output global "Rings" is not allowed in SPARK [E0005]

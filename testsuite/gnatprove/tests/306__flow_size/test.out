@@ -18,7 +18,8 @@ full.adb:24:13: info: the value of "Size" attribute is handled in an imprecise w
 full.adb:24:13: medium: range check might fail, cannot prove upper bound for X.A'Size [reason for check: value must fit in the target type of the assignment] [possible fix: add precondition (X.A'Size <= Natural'Last) to subprogram at line 1]
 full.adb:25:13: info: the value of "Size" attribute is handled in an imprecise way as "Object_Size" is not specified for subtype of "A2d"
 full.adb:25:13: medium: range check might fail, cannot prove upper bound for X.C'Size [reason for check: value must fit in the target type of the assignment] [possible fix: add precondition (X.C'Size <= Natural'Last) to subprogram at line 1]
-full.adb:26:11: info: range check proved (CVC5: 2 VC)
+full.adb:26:11: info: the value of "Size" attribute is handled in an imprecise way as it is not specified for object "X" and "Object_Size" is not specified for subtype of "T"
+full.adb:26:11: medium: range check might fail, cannot prove upper bound for X'Size [reason for check: value must fit in the target type of the assignment] [possible fix: add precondition (X'Size <= Natural'Last) to subprogram at line 1]
 full.adb:27:11: info: the value of "Size" attribute is handled in an imprecise way as it is not specified for type "S"
 full.adb:27:11: medium: range check might fail, cannot prove upper bound for S'Size [reason for check: value must fit in the target type of the assignment] [possible fix: add precondition (S'Size <= Natural'Last) to subprogram at line 1]
 full.adb:33:11: info: the value of "Size" attribute is handled in an imprecise way as it is not specified for type "T"

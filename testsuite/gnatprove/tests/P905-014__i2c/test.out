@@ -1,43 +1,62 @@
-i2c-system_clock.adb:2:06: error: "SYSTEM.STM32" is not a predefined library unit
 i2c-system_clock.proving.adb:1:01: warning: invalid file name, contains dot
-stm32_svd-gpio.ads:23:09: error: discriminated type "MODER_Register" cannot be volatile
-stm32_svd-gpio.ads:23:09: error: discriminated type "MODER_Register" cannot be volatile
-stm32_svd-gpio.ads:23:09: error: discriminated type "MODER_Register" cannot be volatile
-stm32_svd-gpio.ads:23:09: error: discriminated type "MODER_Register" cannot be volatile
-stm32_svd-gpio.ads:93:09: error: discriminated type "OSPEEDR_Register" cannot be volatile
-stm32_svd-gpio.ads:93:09: error: discriminated type "OSPEEDR_Register" cannot be volatile
-stm32_svd-gpio.ads:93:09: error: discriminated type "OSPEEDR_Register" cannot be volatile
-stm32_svd-gpio.ads:93:09: error: discriminated type "OSPEEDR_Register" cannot be volatile
-stm32_svd-gpio.ads:121:09: error: discriminated type "PUPDR_Register" cannot be volatile
-stm32_svd-gpio.ads:121:09: error: discriminated type "PUPDR_Register" cannot be volatile
-stm32_svd-gpio.ads:121:09: error: discriminated type "PUPDR_Register" cannot be volatile
-stm32_svd-gpio.ads:121:09: error: discriminated type "PUPDR_Register" cannot be volatile
-stm32_svd-gpio.ads:349:09: error: discriminated type "AFRL_Register" cannot be volatile
-stm32_svd-gpio.ads:349:09: error: discriminated type "AFRL_Register" cannot be volatile
-stm32_svd-gpio.ads:349:09: error: discriminated type "AFRL_Register" cannot be volatile
-stm32_svd-gpio.ads:349:09: error: discriminated type "AFRL_Register" cannot be volatile
-stm32_svd-gpio.ads:377:09: error: discriminated type "AFRH_Register" cannot be volatile
-stm32_svd-gpio.ads:377:09: error: discriminated type "AFRH_Register" cannot be volatile
-stm32_svd-gpio.ads:377:09: error: discriminated type "AFRH_Register" cannot be volatile
-stm32_svd-gpio.ads:377:09: error: discriminated type "AFRH_Register" cannot be volatile
-stm32_svd-gpio.ads:427:15: error: component clause not allowed for variable length component
-stm32_svd-gpio.ads:427:15: error: component clause not allowed for variable length component
-stm32_svd-gpio.ads:427:15: error: component clause not allowed for variable length component
-stm32_svd-gpio.ads:427:15: error: component clause not allowed for variable length component
-stm32_svd-gpio.ads:429:15: error: component clause not allowed for variable length component
-stm32_svd-gpio.ads:429:15: error: component clause not allowed for variable length component
-stm32_svd-gpio.ads:429:15: error: component clause not allowed for variable length component
-stm32_svd-gpio.ads:429:15: error: component clause not allowed for variable length component
-stm32_svd-gpio.ads:430:15: error: component clause not allowed for variable length component
-stm32_svd-gpio.ads:430:15: error: component clause not allowed for variable length component
-stm32_svd-gpio.ads:430:15: error: component clause not allowed for variable length component
-stm32_svd-gpio.ads:430:15: error: component clause not allowed for variable length component
-stm32_svd-gpio.ads:435:15: error: component clause not allowed for variable length component
-stm32_svd-gpio.ads:435:15: error: component clause not allowed for variable length component
-stm32_svd-gpio.ads:435:15: error: component clause not allowed for variable length component
-stm32_svd-gpio.ads:435:15: error: component clause not allowed for variable length component
-stm32_svd-gpio.ads:436:15: error: component clause not allowed for variable length component
-stm32_svd-gpio.ads:436:15: error: component clause not allowed for variable length component
-stm32_svd-gpio.ads:436:15: error: component clause not allowed for variable length component
-stm32_svd-gpio.ads:436:15: error: component clause not allowed for variable length component
-gnatprove: error during generation of Global contracts
+i2c3.adb:17:07: error: "Initialize" is not allowed in SPARK (due to entity declared with SPARK_Mode Off)
+i2c3.adb:17:07: error: violation of aspect SPARK_Mode at line 6
+stm32_svd-gpio.ads:23:09: error: discriminated volatile type is not allowed in SPARK
+stm32_svd-gpio.ads:23:09: error: discriminated volatile type is not allowed in SPARK
+stm32_svd-gpio.ads:23:09: error: violation of pragma SPARK_Mode at test.adc:1
+stm32_svd-gpio.ads:23:09: error: violation of pragma SPARK_Mode at test.adc:1
+stm32_svd-gpio.ads:93:09: error: discriminated volatile type is not allowed in SPARK
+stm32_svd-gpio.ads:93:09: error: discriminated volatile type is not allowed in SPARK
+stm32_svd-gpio.ads:93:09: error: violation of pragma SPARK_Mode at test.adc:1
+stm32_svd-gpio.ads:93:09: error: violation of pragma SPARK_Mode at test.adc:1
+stm32_svd-gpio.ads:121:09: error: discriminated volatile type is not allowed in SPARK
+stm32_svd-gpio.ads:121:09: error: discriminated volatile type is not allowed in SPARK
+stm32_svd-gpio.ads:121:09: error: violation of pragma SPARK_Mode at test.adc:1
+stm32_svd-gpio.ads:121:09: error: violation of pragma SPARK_Mode at test.adc:1
+stm32_svd-gpio.ads:349:09: error: discriminated volatile type is not allowed in SPARK
+stm32_svd-gpio.ads:349:09: error: discriminated volatile type is not allowed in SPARK
+stm32_svd-gpio.ads:349:09: error: violation of pragma SPARK_Mode at test.adc:1
+stm32_svd-gpio.ads:349:09: error: violation of pragma SPARK_Mode at test.adc:1
+stm32_svd-gpio.ads:377:09: error: discriminated volatile type is not allowed in SPARK
+stm32_svd-gpio.ads:377:09: error: discriminated volatile type is not allowed in SPARK
+stm32_svd-gpio.ads:377:09: error: violation of pragma SPARK_Mode at test.adc:1
+stm32_svd-gpio.ads:377:09: error: violation of pragma SPARK_Mode at test.adc:1
+stm32_svd-gpio.ads:440:04: error: "GPIO_Peripheral" is not allowed in SPARK (due to discriminated volatile type)
+stm32_svd-gpio.ads:440:04: error: "GPIO_Peripheral" is not allowed in SPARK (due to discriminated volatile type)
+stm32_svd-gpio.ads:440:04: error: violation of pragma SPARK_Mode at test.adc:1
+stm32_svd-gpio.ads:440:04: error: violation of pragma SPARK_Mode at test.adc:1
+stm32_svd-gpio.ads:444:04: error: "GPIO_Peripheral" is not allowed in SPARK (due to discriminated volatile type)
+stm32_svd-gpio.ads:444:04: error: violation of pragma SPARK_Mode at test.adc:1
+stm32_svd-gpio.ads:448:04: error: "GPIO_Peripheral" is not allowed in SPARK (due to discriminated volatile type)
+stm32_svd-gpio.ads:448:04: error: "GPIO_Peripheral" is not allowed in SPARK (due to discriminated volatile type)
+stm32_svd-gpio.ads:448:04: error: violation of pragma SPARK_Mode at test.adc:1
+stm32_svd-gpio.ads:448:04: error: violation of pragma SPARK_Mode at test.adc:1
+stm32_svd-gpio.ads:452:04: error: "GPIO_Peripheral" is not allowed in SPARK (due to discriminated volatile type)
+stm32_svd-gpio.ads:452:04: error: violation of pragma SPARK_Mode at test.adc:1
+stm32_svd-gpio.ads:456:04: error: "GPIO_Peripheral" is not allowed in SPARK (due to discriminated volatile type)
+stm32_svd-gpio.ads:456:04: error: violation of pragma SPARK_Mode at test.adc:1
+stm32_svd-gpio.ads:460:04: error: "GPIO_Peripheral" is not allowed in SPARK (due to discriminated volatile type)
+stm32_svd-gpio.ads:460:04: error: violation of pragma SPARK_Mode at test.adc:1
+stm32_svd-gpio.ads:464:04: error: "GPIO_Peripheral" is not allowed in SPARK (due to discriminated volatile type)
+stm32_svd-gpio.ads:464:04: error: violation of pragma SPARK_Mode at test.adc:1
+stm32_svd-gpio.ads:468:04: error: "GPIO_Peripheral" is not allowed in SPARK (due to discriminated volatile type)
+stm32_svd-gpio.ads:468:04: error: violation of pragma SPARK_Mode at test.adc:1
+stm32_svd-gpio.ads:472:04: error: "GPIO_Peripheral" is not allowed in SPARK (due to discriminated volatile type)
+stm32_svd-gpio.ads:472:04: error: violation of pragma SPARK_Mode at test.adc:1
+stm32_svd-gpio.ads:476:04: error: "GPIO_Peripheral" is not allowed in SPARK (due to discriminated volatile type)
+stm32_svd-gpio.ads:476:04: error: violation of pragma SPARK_Mode at test.adc:1
+stm32_svd-gpio.ads:480:04: error: "GPIO_Peripheral" is not allowed in SPARK (due to discriminated volatile type)
+stm32_svd-gpio.ads:480:04: error: violation of pragma SPARK_Mode at test.adc:1
+stm32_svd-i2c.ads:433:04: warning: address specification on "I2C1_Periph" is imprecisely supported: assuming no concurrent accesses to non-atomic object and no writes to a potential alias [E0012]
+stm32_svd-i2c.ads:433:04: warning: launch "gnatprove --explain=E0012" for more information
+stm32_svd-i2c.ads:433:04: warning: make sure that all overlapping objects have Async_Writers set to True
+stm32_svd-i2c.ads:437:04: warning: address specification on "I2C2_Periph" is imprecisely supported: assuming no concurrent accesses to non-atomic object and no writes to a potential alias [E0012]
+stm32_svd-i2c.ads:437:04: warning: launch "gnatprove --explain=E0012" for more information
+stm32_svd-i2c.ads:437:04: warning: make sure that all overlapping objects have Async_Writers set to True
+stm32_svd-i2c.ads:441:04: warning: address specification on "I2C3_Periph" is imprecisely supported: assuming no concurrent accesses to non-atomic object and no writes to a potential alias [E0012]
+stm32_svd-i2c.ads:441:04: warning: launch "gnatprove --explain=E0012" for more information
+stm32_svd-i2c.ads:441:04: warning: make sure that all overlapping objects have Async_Writers set to True
+stm32_svd-rcc.ads:1804:04: warning: address specification on "RCC_Periph" is imprecisely supported: assuming no concurrent accesses to non-atomic object, no writes to a potential alias, and valid reads [E0012]
+stm32_svd-rcc.ads:1804:04: warning: launch "gnatprove --explain=E0012" for more information
+stm32_svd-rcc.ads:1804:04: warning: make sure that all overlapping objects have Async_Writers set to True
+gnatprove: error during flow analysis and proof

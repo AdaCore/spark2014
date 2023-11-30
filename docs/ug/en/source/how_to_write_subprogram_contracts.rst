@@ -825,8 +825,8 @@ Subprogram Termination
 
 |GNATprove| can be used to verify the termination of subprograms. It will do it
 unconditionnally for regular functions and package elaboration (which shall
-have no side-effects in |SPARK|), and on demand for procedures, entries and
-functions with side-effects (see :ref:`Aspect Side_Effects`).  In the following
+have no side effects in |SPARK|), and on demand for procedures, entries and
+functions with side effects (see :ref:`Aspect Side_Effects`).  In the following
 example, we specify that the five procedures should terminate using the
 ``Always_Terminates`` aspect (see :ref:`Contracts for Termination`):
 

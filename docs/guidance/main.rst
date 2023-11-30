@@ -648,7 +648,7 @@ In many cases, code can be modified so that SPARK violations are either
 removed completely or are moved to some part of the code that does not
 prevent most of the code from being analyzed. In general, this is good
 because SPARK violations identify features that may be
-more difficult to maintain (such as side-effects in regular functions) or
+more difficult to maintain (such as side effects in regular functions) or
 to understand (such as aliasing through pointers). Below, we consider typical
 SPARK violations found in Ada code and show how to address each by modifying the
 code. When code modification is not possible or is too complex/costly, the
@@ -663,7 +663,7 @@ typically addressed, as detailed in the rest of this section.
    :widths: 2, 3, 3
 
    "Refactor use of access type", "Use references, addresses, or indexes in an array or a collection, refactor to follow ownership policy", "Use a private type, defined as access type in a private section marked ``SPARK_Mode Off``"
-   "Side-effect in function", "Add aspect ``Side_Effects`` to the function, and move calls to right-hand side of assignments", "Mark function body with ``SPARK_Mode Off`` and function spec with ``Global => null`` to hide side-effect"
+   "Side effect in function", "Add aspect ``Side_Effects`` to the function, and move calls to right-hand side of assignments", "Mark function body with ``SPARK_Mode Off`` and function spec with ``Global => null`` to hide side effect"
 
 In the following, we consider the error messages that are issued in each case.
 
@@ -683,7 +683,7 @@ This error is issued for a function with an 'in out' parameter. For example:
       return X + Y;
    end Increment_And_Add;
 
-The function can be declared to have side-effects with the aspect
+The function can be declared to have side effects with the aspect
 ``Side_Effects``:
 
 .. code-block:: ada
@@ -702,9 +702,9 @@ parameter for the returned value.
 
 .. rubric:: function with output global "X" is not allowed in SPARK
 
-.. index:: Function with side-effect
+.. index:: Function with side effect
 
-This error is issued for a function with a side-effect on a non-local variable.
+This error is issued for a function with a side effect on a non-local variable.
 For example:
 
 .. code-block:: ada
@@ -717,7 +717,7 @@ For example:
       return Count;
    end Increment;
 
-The function can be declared to have side-effects with the aspect
+The function can be declared to have side effects with the aspect
 ``Side_Effects``:
 
 .. code-block:: ada
@@ -735,10 +735,10 @@ The function can be declared to have side-effects with the aspect
 The function could also be transformed into a procedure by adding an 'out'
 parameter for the returned value.
 
-Alternatively, when a side-effect has no influence on the properties to
+Alternatively, when a side effect has no influence on the properties to
 be verified, it can be masked to the analysis. For example, consider a
 procedure ``Log`` that writes global data, causing all of its callers to have
-side-effects:
+side effects:
 
 .. code-block:: ada
 
@@ -755,7 +755,7 @@ side-effects:
       return X + 1;
    end Increment_And_Log;
 
-A legitimate solution here is to mask the side-effects in procedure ``Log`` for
+A legitimate solution here is to mask the side effects in procedure ``Log`` for
 the analysis, by annotating the spec of ``Log`` with an aspect ``Global`` with
 value ``null`` and by excluding the body of ``Log`` from analysis:
 
@@ -937,11 +937,11 @@ that they are back to a readable state:
      pragma Assert (X = null);
   end Ownership_Transfer;
 
-.. rubric:: side-effects of function "F" are not modeled in SPARK
+.. rubric:: side effects of function "F" are not modeled in SPARK
 
 .. index Function with side effect
 
-This error is issued for a call to a function with side-effects on non-local variables.
+This error is issued for a call to a function with side effects on non-local variables.
 Note that a corresponding error
 'function with output global "X" is not allowed in SPARK'
 will also be issued for function ``F`` if it's marked
@@ -957,9 +957,9 @@ as such). For example, on the following code, calling the function
       X := Increment_And_Log (10);  --<<--  VIOLATION
    end Call_Increment_And_Log;
 
-The called function can be marked as having side-effects as seen
+The called function can be marked as having side effects as seen
 previously. If it's not marked ``SPARK_Mode`` with value ``On``, a legitimate
-solution might be to mask its side-effects for the analysis, by annotating
+solution might be to mask its side effects for the analysis, by annotating
 its spec with a ``Global`` aspect with value ``null``.
 
 .. _Bronze Level:

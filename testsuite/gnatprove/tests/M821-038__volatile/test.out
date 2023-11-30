@@ -1,0 +1,13 @@
+test_external_variables.ads:13:07: error: violation of pragma SPARK_Mode at line 4
+test_external_variables.ads:13:07: error: volatile component "Comp" of non-volatile type "Mixed_Rec" is not allowed in SPARK
+test_external_variables.ads:29:04: error: "Mixed_Rec" is not allowed in SPARK (due to volatile component of non-volatile type)
+test_external_variables.ads:29:04: error: violation of pragma SPARK_Mode at line 4
+test_external_variables.ads:30:04: error: "Mixed_Rec" is not allowed in SPARK (due to volatile component of non-volatile type)
+test_external_variables.ads:30:04: error: violation of pragma SPARK_Mode at line 4
+test_external_variables.ads:41:04: error: "Mixed_Rec" is not allowed in SPARK (due to volatile component of non-volatile type)
+test_external_variables.ads:41:04: error: violation of pragma SPARK_Mode at line 4
+test_external_variables.ads:43:22: error: violation of pragma SPARK_Mode at line 4
+test_external_variables.ads:43:22: error: volatile discriminant is not allowed in SPARK
+test_volatile_loop_param.adb:9:08: error: effectively volatile loop parameter is not allowed in SPARK
+test_volatile_loop_param.adb:9:08: error: violation of aspect SPARK_Mode at line 4
+gnatprove: error during flow analysis and proof

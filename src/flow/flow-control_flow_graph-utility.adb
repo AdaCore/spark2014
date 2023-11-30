@@ -717,10 +717,10 @@ package body Flow.Control_Flow_Graph.Utility is
    ------------------------------
 
    function Make_Variable_Attributes
-     (F_Ent      : Flow_Id;
-      Mode       : Param_Mode;
-      E_Loc      : Node_Or_Entity_Id := Empty;
-      S          : Flow_Scope        := Null_Flow_Scope)
+     (F_Ent : Flow_Id;
+      Mode  : Param_Mode;
+      E_Loc : Node_Or_Entity_Id := Empty;
+      S     : Flow_Scope        := Null_Flow_Scope)
       return V_Attributes
    is
       A          : V_Attributes       := Null_Attributes;

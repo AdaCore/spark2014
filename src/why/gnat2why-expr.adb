@@ -774,7 +774,7 @@ package body Gnat2Why.Expr is
            and then
              (if Nkind (Call) = N_Function_Call
               then Is_Function_With_Side_Effects (Get_Called_Entity (Call)));
-   --  Transform a call to a subprogram with side-effects
+   --  Transform a call to a subprogram with side effects
 
    function Transform_Comparison
      (Expr   : Node_Id;
@@ -11710,7 +11710,7 @@ package body Gnat2Why.Expr is
 
       --  In the case of a function call, there is value to return as the final
       --  expression. Note that this can only occur for calls to functions
-      --  with side-effects or calls to or volatile functions, when one of
+      --  with side effects or calls to or volatile functions, when one of
       --  the parameters is of a volatile type. Save the result of the call at
       --  the start of the sequence (Ref_Context consists in the sequence of
       --  post-call assignments and assumptions at this point) and use it as
@@ -14775,7 +14775,7 @@ package body Gnat2Why.Expr is
 
          Th :=
            Open_Theory
-             (WF_Context, E_Axiom_Module (Expr),
+             (WF_Context, E_Module (Expr, Axiom),
               Comment =>
                 "Module for defining the value of the "
               & (if Nkind (Expr) = N_Delta_Aggregate
@@ -18289,11 +18289,6 @@ package body Gnat2Why.Expr is
             --  ** Esize field in GNAT AST
 
             Size_Attributes : declare
-               subtype Size_Attributes is Attribute_Id with
-                 Static_Predicate => Size_Attributes in Attribute_Size
-                                                      | Attribute_Value_Size
-                                                      | Attribute_Object_Size;
-
                function Object_Size (Typ : Entity_Id) return W_Expr_Id is
                  (New_Call (Ada_Node => Expr,
                             Domain   => Domain,
@@ -18317,88 +18312,59 @@ package body Gnat2Why.Expr is
                Type_Could_Have_Object_Size : constant Boolean :=
                  not Is_Standard_Type (Var_Type);
 
-               Loc : constant String :=
-                 (if Nkind (Var) in N_Identifier | N_Expanded_Name then
-                   Location_String
-                     (Sloc (Entity (Var)), Mode => Data_Decomposition_Mode)
-                  else "");
-               Data_Entry : Data_Decomposition_Entry;
-
                Imprecise_Handling : Boolean := False;
                --  Whether the attribute value is known in analysis or not
 
             --  Start of processing for Size_Attributes
 
             begin
-               if Data_Decomposition_Table.Contains (Loc) then
-                  Data_Entry :=
-                    Data_Decomposition_Table.Element (Loc);
-               end if;
-
                if Has_Type_Prefix then
-                  case Size_Attributes'(Attr_Id) is
-                     when Attribute_Size
-                        | Attribute_Value_Size
-                     =>
-                        --  If value of Size is present for a type, it means
-                        --  that Esize (storing the value of Object_Size) and
-                        --  RM_Size (storing the value of Value_Size) for the
-                        --  type are equal. See Repinfo.List_Common_Type_Info
+                  declare
+                     Attr_Value : constant Uint :=
+                       Get_Attribute_Value (Entity (Var), Attr_Id);
+                  begin
+                     if Present (Attr_Value) then
+                        T := New_Integer_Constant (Value => Attr_Value);
+                     else
+                        Imprecise_Handling := True;
 
-                        if Data_Entry.Size.Present then
-                           T := New_Integer_Constant
-                             (Value => UI_From_Int
-                                (Int (Data_Entry.Size.Value)));
-
-                        elsif Data_Entry.Value_Size.Present then
-                           T := New_Integer_Constant
-                             (Value => UI_From_Int
-                                (Int (Data_Entry.Value_Size.Value)));
-                        else
-                           Imprecise_Handling := True;
+                        if Attr_Id /= Attribute_Object_Size then
                            T := New_Attribute_Expr
                              (Entity (Var), Domain, Attr_Id);
-                        end if;
-
-                     when Attribute_Object_Size =>
-                        --  If value of Size is present for a type, it means
-                        --  that Esize (storing the value of Object_Size) and
-                        --  RM_Size (storing the value of Value_Size) for the
-                        --  type are equal. See Repinfo.List_Common_Type_Info
-
-                        if Data_Entry.Size.Present then
-                           T := New_Integer_Constant
-                             (Value => UI_From_Int
-                                (Int (Data_Entry.Size.Value)));
-
-                        elsif Data_Entry.Object_Size.Present then
-                           T := New_Integer_Constant
-                             (Value => UI_From_Int
-                                (Int (Data_Entry.Object_Size.Value)));
                         else
-                           Imprecise_Handling := True;
                            T := Object_Size (Entity (Var));
                         end if;
-                  end case;
-
-               --  Only attribute Size applies to an object. It is either
-               --  the specified value of Size for the object, or the same
-               --  as Typ'Object_Size for the type of the object.
-
+                     end if;
+                  end;
                else
                   pragma Assert (Attr_Id = Attribute_Size);
 
-                  if Data_Entry.Size.Present then
-                     T := New_Integer_Constant
-                       (Value => UI_From_Int
-                          (Int (Data_Entry.Size.Value)));
-
-                  elsif Known_Object_Size (Etype (Var)) then
-                     T := New_Integer_Constant (Expr,
-                                                Object_Size (Etype (Var)));
+                  if Nkind (Var) in N_Identifier | N_Expanded_Name then
+                     declare
+                        Attr_Value : constant Uint :=
+                          Get_Attribute_Value (Entity (Var), Attr_Id);
+                     begin
+                        if Present (Attr_Value) then
+                           T := New_Integer_Constant (Value => Attr_Value);
+                        else
+                           Imprecise_Handling := True;
+                           T := Object_Size (Var_Type);
+                        end if;
+                     end;
                   else
-                     Imprecise_Handling := True;
-                     T := Object_Size (Etype (Var));
+                     --  Var'Size is the same as Var_Type'Object_Size
+                     declare
+                        Attr_Value : constant Uint :=
+                          Get_Attribute_Value
+                            (Var_Type, Attribute_Object_Size);
+                     begin
+                        if Present (Attr_Value) then
+                           T := New_Integer_Constant (Value => Attr_Value);
+                        else
+                           Imprecise_Handling := True;
+                           T := Object_Size (Var_Type);
+                        end if;
+                     end;
                   end if;
 
                   --  In the program domain, translate the object itself to
@@ -18699,43 +18665,30 @@ package body Gnat2Why.Expr is
                end if;
             end;
 
+         --  Alignment may be specified explicitly on the type or object. When
+         --  specified on the type, the frontend replaces T'Alignment by its
+         --  value. When specified on the object, we only support cases where
+         --  the alignment is known. Those are expanded by the frontend, so
+         --  they never occur here.
+
          when Attribute_Alignment =>
-            declare
-               Has_Type_Prefix : constant Boolean :=
-                 Is_Entity_Name (Var) and then Is_Type (Entity (Var));
-            begin
-               --  Alignment may be specified explicitly on the type or
-               --  object. When specified on the type, the frontend replaces
-               --  T'Alignment by its value. When specified on the object,
-               --  we only support cases where the alignment is known.
-               --  Those are expanded by the frontend, so they never occur
-               --  here.
-
-               if Has_Type_Prefix then
-                  declare
-                     Typ : constant Entity_Id := Entity (Var);
-                     Loc : constant String :=
-                       Location_String
-                         (Sloc (Typ), Mode => Data_Decomposition_Mode);
-                     Data_Entry : Data_Decomposition_Entry;
-
-                  begin
-                     if Data_Decomposition_Table.Contains (Loc) then
-                        Data_Entry := Data_Decomposition_Table.Element (Loc);
-                     end if;
-
-                     if Data_Entry.Alignment.Present then
-                        T := New_Integer_Constant
-                          (Value => UI_From_Int
-                             (Int (Data_Entry.Alignment.Value)));
-                     else
-                        T := New_Attribute_Expr (Typ, Domain, Attr_Id);
-                     end if;
-                  end;
-               else
-                  raise Program_Error;
-               end if;
-            end;
+            if Is_Entity_Name (Var) then
+               declare
+                  Has_Type_Prefix : constant Boolean := Is_Type (Entity (Var));
+                  Attr_Value : constant Uint :=
+                    Get_Attribute_Value (Entity (Var), Attr_Id);
+               begin
+                  if Present (Attr_Value) then
+                     T := New_Integer_Constant (Value => Attr_Value);
+                  elsif Has_Type_Prefix then
+                     T := New_Attribute_Expr (Entity (Var), Domain, Attr_Id);
+                  else
+                     raise Program_Error;
+                  end if;
+               end;
+            else
+               raise Program_Error;
+            end if;
 
          when Attribute_First_Bit =>
             declare
@@ -21345,7 +21298,7 @@ package body Gnat2Why.Expr is
 
          Th :=
            Open_Theory
-             (WF_Context, E_Axiom_Module (Expr),
+             (WF_Context, E_Module (Expr, Axiom),
               Comment =>
                 "Module for defining the value of the container aggregate at "
               & (if Sloc (Expr) > 0 then

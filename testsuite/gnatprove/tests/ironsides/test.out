@@ -601,7 +601,7 @@ rr_type.adb:102:25: info: range check proved (CVC5: 2 VC)
 rr_type.adb:113:11: info: range check proved (CVC5: 2 VC)
 rr_type.adb:113:36: info: range check proved (CVC5: 2 VC)
 rr_type.adb:114:25: info: index check proved (CVC5: 2 VC)
-rr_type.adb:114:34: medium: array index check might fail [reason for check: value must be a valid index into the array]
+rr_type.adb:114:34: high: array index check might fail (e.g. when I = 1 and S'First = 2 and S'Last = 2) [reason for check: value must be a valid index into the array]
 rr_type.adb:128:07: info: initialization of "LengthOfDomainName" proved
 rr_type.adb:129:07: info: initialization of "WireVersion" proved
 rr_type.adb:131:16: info: implicit aspect Always_Terminates on "FindPeriod" has been proved, subprogram will terminate

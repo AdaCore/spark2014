@@ -6,7 +6,7 @@ arrays.adb:62:22: high: postcondition might fail (e.g. when C = 'NUL' and Contai
 arrays.adb:68:13: info: implicit aspect Always_Terminates on "Is_Id_1" has been proved, subprogram will terminate
 arrays.adb:71:19: info: postcondition proved (CVC5: 2 VC)
 arrays.adb:77:13: info: implicit aspect Always_Terminates on "Is_Id_2" has been proved, subprogram will terminate
-arrays.adb:80:19: high: postcondition might fail (e.g. when C = 'NUL' and Is_Id_2'Result = False and M = (others => 'NUL'))
+arrays.adb:80:19: high: postcondition might fail (e.g. when C = 'NUL' and Is_Id_2'Result = True and M = (others => 'a'))
 arrays.adb:88:11: info: flow dependencies proved
 arrays.adb:94:22: info: assertion proved (CVC5: 1 VC)
 arrays.adb:99:11: info: flow dependencies proved
@@ -72,10 +72,10 @@ counterexample expected for check at arrays.adb:62
   trace at arrays.adb:62 --> C = 'NUL' and Contains_B'Result = True and S = ('a' => True, others => False)
   trace at arrays.adb:65 --> Contains_B'Result = True
 counterexample expected for check at arrays.adb:80
-  trace at arrays.adb:77 --> M = (others => 'NUL')
+  trace at arrays.adb:77 --> M = (others => 'a')
   trace at arrays.adb:78 --> C = 'NUL'
-  trace at arrays.adb:80 --> C = 'NUL' and Is_Id_2'Result = False and M = (others => 'NUL')
-  trace at arrays.adb:83 --> C = 'NUL' and Is_Id_2'Result = False
+  trace at arrays.adb:80 --> C = 'NUL' and Is_Id_2'Result = True and M = (others => 'a')
+  trace at arrays.adb:83 --> C = 'NUL' and Is_Id_2'Result = True
 counterexample expected for check at arrays.adb:112
   trace at arrays.adb:107 --> M = (others => 'A')
   trace at arrays.adb:111 --> M = (others => 'A')

@@ -820,7 +820,7 @@ only part of a program:
     exception is propagated
 
   * :ref:`Subprogram Termination` (only explicit except for functions without
-    side-effects which should always return in SPARK) - subprograms annotated
+    side effects which should always return in SPARK) - subprograms annotated
     with ``Always_Terminates`` should terminate (return normally or raise an
     exception) whenever the associated boolean condition evaluates to True on
     entry of the subprogram, assuming that primary stack, secondary stack, and
@@ -870,7 +870,7 @@ only part of a program:
   When the body of a function is not analyzed by GNATprove, its result should
   not depend on the address of parts of its parameters or global inputs unless
   it is annotated with ``Volatile_Function``. When the body of a procedure,
-  entry or function with side-effects is not analyzed by GNATprove, none of its
+  entry or function with side effects is not analyzed by GNATprove, none of its
   outputs should depend on the address of parts of its parameters or global
   inputs unless the output is volatile for reading, or its value depends on an
   input which is volatile for reading as stated in a Depends contract.
@@ -925,7 +925,7 @@ being available:
   review is required.
 
 * [PARTIAL_TERMINATION]
-  Procedures, entries and functions with side-effects which are called across
+  Procedures, entries and functions with side effects which are called across
   the boundary of those units analyzed together should be annotated to specify
   under which condition they shall terminate using the ``Always_Terminates``
   aspect. Otherwise, these subprograms will be assumed to never terminate (if

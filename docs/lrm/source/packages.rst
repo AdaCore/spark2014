@@ -472,16 +472,12 @@ be *compatible with respect to volatility* with E2 if
    [full view of] the designated type of a named nonderived access type
    shall be compatible with respect to volatility with the access type.
 
-7. In a generic instantiation, the actual parameter corresponding to a
-   formal type or formal object parameter shall be compatible with
-   respect to volatility with the corresponding formal parameter.
-
-8. A ``global_item`` of a nonvolatile function, or of a function which is
+7. A ``global_item`` of a nonvolatile function, or of a function which is
    nonvolatile for internal calls, shall not denote either an effectively
    volatile object for reading or an external state abstraction which has the
    property Async_Writers => True or Effective_Reads => True.
 
-9. A formal parameter (or result) of a nonvolatile function, or of a
+8. A formal parameter (or result) of a nonvolatile function, or of a
    function which is nonvolatile for internal calls, shall not be of
    an effectively volatile type for reading. [For a protected function, this rule
    does not apply to the notional parameter denoting the current instance of
@@ -489,12 +485,12 @@ be *compatible with respect to volatility* with E2 if
 
 .. index:: non-interfering context; for read of volatile object
 
-10. Contrary to the general |SPARK| rule that expression evaluation
-    cannot have side effects, a read of an effectively volatile object for reading is
-    considered to have a side effect. To reconcile this
-    discrepancy, a name denoting such an object shall only occur in
-    a *non-interfering context*. A name occurs in a non-interfering
-    context if it is:
+9. Contrary to the general |SPARK| rule that expression evaluation
+   cannot have side effects, a read of an effectively volatile object for reading is
+   considered to have a side effect. To reconcile this
+   discrepancy, a name denoting such an object shall only occur in
+   a *non-interfering context*. A name occurs in a non-interfering
+   context if it is:
 
    * the name on the left-hand side of an assignment statement; or
 
@@ -546,7 +542,7 @@ be *compatible with respect to volatility* with E2 if
    function is treated like a call to a nonvolatile function if the
    function's Volatile_Function aspect is False.]
 
-11. A user-defined primitive equality operation on a record type shall not be a
+10. A user-defined primitive equality operation on a record type shall not be a
     volatile function, unless the record type has only limited views (see
     :ref:`Overloading of Operators`).
 
@@ -559,13 +555,13 @@ be *compatible with respect to volatility* with E2 if
 
    Dynamic Semantics
 
-12. There are no dynamic semantics associated with these aspects.
+11. There are no dynamic semantics associated with these aspects.
 
 .. container:: heading
 
    Verification Rules
 
-13. An effectively volatile for reading formal parameter of mode **out** whose
+12. An effectively volatile for reading formal parameter of mode **out** whose
     Async_Writers aspect is True shall not be read, even after it has been
     updated.
 
