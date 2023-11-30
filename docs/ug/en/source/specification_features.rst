@@ -368,7 +368,7 @@ True even if the stack ``S`` contains uninitialized elements.
   verify the program.
 
 .. index:: Side_Effects
-           side-effects; in functions
+           side effects; in functions
 
 .. _Aspect Side_Effects:
 
@@ -377,7 +377,7 @@ Aspect ``Side_Effects``
 
 [|SPARK|]
 
-Unless stated otherwise, functions in |SPARK| cannot have side-effects:
+Unless stated otherwise, functions in |SPARK| cannot have side effects:
 
 - A function must not have an ``out`` or ``in out`` parameter.
 
@@ -388,8 +388,8 @@ Unless stated otherwise, functions in |SPARK| cannot have side-effects:
 - A function must always terminate.
 
 The aspect ``Side_Effects`` can be used to indicate that a function may in fact
-have side-effects, among the four possible side-effects listed above. A
-`function with side-effects` can be called only as the right-hand side of an
+have side effects, among the four possible side effects listed above. A
+`function with side effects` can be called only as the right-hand side of an
 assignment, as part of a list of statements where a procedure could be called:
 
 .. code-block:: ada
@@ -405,11 +405,11 @@ assignment, as part of a list of statements where a procedure could be called:
      --  The value of X is 6 here
    end Call;
 
-Note that a function with side-effects could in general be converted into a
+Note that a function with side effects could in general be converted into a
 procedure with an additional ``out`` parameter for the function's
-result. However, it can be more convenient to use a function with side-effects
+result. However, it can be more convenient to use a function with side effects
 when binding SPARK code with C code where functions have very often
-side-effects.
+side effects.
 
 .. index:: Loop_Entry
            loop; and Loop_Entry
@@ -1922,7 +1922,7 @@ Removal of Ghost Code
 
 By default, |GNAT Pro| completely discards ghost code during compilation, so
 that no ghost code is present in the object code or the executable. This
-ensures that, even if parts of the ghost could have side-effects when executed
+ensures that, even if parts of the ghost could have side effects when executed
 (writing to variables, performing system calls, raising exceptions, etc.), by
 default the compiler ensures that it cannot have any effect on the behavior of
 the program.

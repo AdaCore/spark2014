@@ -520,7 +520,7 @@ in the remaining chapters of this document, the most notable restrictions are:
 - Restrictions on the use of access types and values, similar in some
   ways to the ownership model of the programming language Rust.
 
-- All expressions (including function calls) are free of side-effects.
+- All expressions (including function calls) are free of side effects.
 
 - Aliasing of names is not permitted in general but the renaming of entities is
   permitted as there is a static relationship between the two names.  In

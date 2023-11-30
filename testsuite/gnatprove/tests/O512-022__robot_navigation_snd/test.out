@@ -106,7 +106,7 @@ algorithm.adb:347:13: info: precondition proved (CVC5: 1 VC)
 algorithm.adb:353:25: info: precondition proved (CVC5: 1 VC)
 algorithm.adb:353:64: info: precondition proved (Z3: 1 VC)
 algorithm.adb:353:109: info: float overflow check proved (CVC5: 1 VC)
-algorithm.adb:354:15: medium: precondition might fail
+algorithm.adb:354:15: info: precondition proved (Z3: 1 VC)
 algorithm.adb:354:64: info: precondition proved (CVC5: 1 VC)
 algorithm.adb:356:16: warning: statement has no effect
 algorithm.adb:357:19: warning: this statement is never reached

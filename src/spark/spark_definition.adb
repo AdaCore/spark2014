@@ -338,6 +338,95 @@ package body SPARK_Definition is
    --  Search for associations mapping a single deep value to several
    --  components in the Component_Associations of N.
 
+   ------------------------------------
+   -- Check_Volatility_Compatibility --
+   ------------------------------------
+
+   procedure Check_Volatility_Compatibility
+     (Id1, Id2                     : Entity_Id;
+      Description_1, Description_2 : String;
+      Srcpos_Bearer                : Node_Id);
+
+   procedure Check_Volatility_Compatibility
+     (Id1, Id2                     : Entity_Id;
+      Description_1, Description_2 : String;
+      Srcpos_Bearer                : Node_Id)
+   is
+      AR1 : constant Boolean := Async_Readers_Enabled (Id1);
+      AW1 : constant Boolean := Async_Writers_Enabled (Id1);
+      ER1 : constant Boolean := Effective_Reads_Enabled (Id1);
+      EW1 : constant Boolean := Effective_Writes_Enabled (Id1);
+      AR2 : constant Boolean := Async_Readers_Enabled (Id2);
+      AW2 : constant Boolean := Async_Writers_Enabled (Id2);
+      ER2 : constant Boolean := Effective_Reads_Enabled (Id2);
+      EW2 : constant Boolean := Effective_Writes_Enabled (Id2);
+
+      AR_Check_Failed : constant Boolean := AR1 and not AR2;
+      AW_Check_Failed : constant Boolean := AW1 and not AW2;
+      ER_Check_Failed : constant Boolean := ER1 and not ER2;
+      EW_Check_Failed : constant Boolean := EW1 and not EW2;
+
+      package Failure_Description is
+         procedure Note_If_Failure
+           (Failed : Boolean; Aspect_Name : String);
+         --  If Failed is False, do nothing.
+         --  If Failed is True, add Aspect_Name to the failure description.
+
+         function Failure_Text return String;
+         --  returns accumulated list of failing aspects
+      end Failure_Description;
+
+      package body Failure_Description is
+         Description_Buffer : Bounded_String;
+
+         ---------------------
+         -- Note_If_Failure --
+         ---------------------
+
+         procedure Note_If_Failure
+           (Failed : Boolean; Aspect_Name : String) is
+         begin
+            if Failed then
+               if Description_Buffer.Length /= 0 then
+                  Append (Description_Buffer, ", ");
+               end if;
+               Append (Description_Buffer, Aspect_Name);
+            end if;
+         end Note_If_Failure;
+
+         ------------------
+         -- Failure_Text --
+         ------------------
+
+         function Failure_Text return String is
+         begin
+            return +Description_Buffer;
+         end Failure_Text;
+      end Failure_Description;
+
+      use Failure_Description;
+   begin
+      if AR_Check_Failed
+        or AW_Check_Failed
+        or ER_Check_Failed
+        or EW_Check_Failed
+      then
+         Note_If_Failure (AR_Check_Failed, "Async_Readers");
+         Note_If_Failure (AW_Check_Failed, "Async_Writers");
+         Note_If_Failure (ER_Check_Failed, "Effective_Reads");
+         Note_If_Failure (EW_Check_Failed, "Effective_Writes");
+
+         Mark_Violation
+           ("incompatible "
+            & Description_1
+            & " and "
+            & Description_2
+            & " with respect to volatility due to "
+            & Failure_Text,
+            Srcpos_Bearer);
+      end if;
+   end Check_Volatility_Compatibility;
+
    ------------------------------
    -- Body_Statements_In_SPARK --
    ------------------------------
@@ -680,7 +769,7 @@ package body SPARK_Definition is
                      Mark_Violation
                        (Msg_Prefix
                         & " occurring inside a procedure call which is not"
-                        & " known to be free of side-effects",
+                        & " known to be free of side effects",
                         Proph);
                      return;
                   end;
@@ -2899,7 +2988,7 @@ package body SPARK_Definition is
          =>
             null;
 
-         --  Itype reference node may be needed to express the side-effects
+         --  Itype reference node may be needed to express the side effects
          --  associated to the creation of an Itype.
 
          when N_Itype_Reference =>
@@ -3059,7 +3148,7 @@ package body SPARK_Definition is
                Mark_Unsupported (Lim_Target_Name_In_Move, N);
             end if;
 
-            --  A call to a function with side-effects shall not reference the
+            --  A call to a function with side effects shall not reference the
             --  symbol ``@`` to refer to the target name of the assignment
             --  (SPARK RM 6.11(7)).
 
@@ -3080,7 +3169,7 @@ package body SPARK_Definition is
                then
                   Mark_Violation
                     ("use of ""'@"" inside a call to a function"
-                     & " with side-effects",
+                     & " with side effects",
                      N);
                end if;
             end;
@@ -4170,7 +4259,7 @@ package body SPARK_Definition is
                      elsif Is_Dispatching_Operation (Subp) then
                         Mark_Unsupported (Lim_Access_To_Dispatch_Op, N);
 
-                     --  Functions with side-effects, volatile functions and
+                     --  Functions with side effects, volatile functions and
                      --  subprograms declared within a protected object have
                      --  an implicit global parameter. We do not support taking
                      --  their access.
@@ -4179,7 +4268,7 @@ package body SPARK_Definition is
                        and then Is_Function_With_Side_Effects (Subp)
                      then
                         Mark_Violation
-                          ("access to function with side-effects", N);
+                          ("access to function with side effects", N);
 
                      elsif Ekind (Subp) = E_Function
                        and then Is_Volatile_Function (Subp)
@@ -4571,7 +4660,7 @@ package body SPARK_Definition is
          then
             --  An effectively volatile object may act as an actual when the
             --  corresponding formal is of a non-scalar effectively volatile
-            --  type (SPARK RM 7.1.3(10)).
+            --  type (SPARK RM 7.1.3(9)).
 
             if not Is_Scalar_Type (Etype (Formal))
               and then Is_Effectively_Volatile_For_Reading (Etype (Formal))
@@ -4579,7 +4668,7 @@ package body SPARK_Definition is
                null;
 
             --  An effectively volatile object may act as an actual in a call
-            --  to an instance of Unchecked_Conversion. (SPARK RM 7.1.3(10)).
+            --  to an instance of Unchecked_Conversion. (SPARK RM 7.1.3(9)).
 
             elsif Is_Unchecked_Conversion_Instance (E) then
                null;
@@ -4592,7 +4681,8 @@ package body SPARK_Definition is
                    when others => "volatile object")
                   & " as actual",
                   N             => Actual,
-                  SRM_Reference => "SPARK RM 7.1.3(10)");
+                  Code          => EC_Volatile_Non_Interfering_Context,
+                  SRM_Reference => "SPARK RM 7.1.3(9)");
             end if;
          end if;
 
@@ -4817,7 +4907,7 @@ package body SPARK_Definition is
          end;
       end if;
 
-      --  A call to a function with side-effects may only occur as the
+      --  A call to a function with side effects may only occur as the
       --  [right-hand side] expression of an assignment statement. (SPARK
       --  RM 6.1.11(4))
 
@@ -4826,7 +4916,7 @@ package body SPARK_Definition is
         and then Nkind (Parent (N)) /= N_Assignment_Statement
       then
          Mark_Violation
-           ("call to a function with side-effects outside of assignment", N,
+           ("call to a function with side effects outside of assignment", N,
             Code => EC_Call_To_Function_With_Side_Effects);
          return;
       end if;
@@ -5492,12 +5582,13 @@ package body SPARK_Definition is
    begin
       Violation_Detected := False;
 
-      --  Protected types declared inside other protected types are not
-      --  allowed in SPARK. Indeed SPARK RM 7.1.3(3) mandates effectively
-      --  volatile types to appear at library level.
-
-      pragma Assert
-        (Ekind (E) /= E_Protected_Type or else not Within_Protected_Type (E));
+      --  The declaration of an effectively volatile stand-alone object or type
+      --  shall be a library-level declaration (SPARK RM 7.1.3(3)).
+      if not Is_Library_Level_Entity (E) then
+         Mark_Violation
+           ("effectively volatile type not at library level", E,
+            Code => EC_Volatile_At_Library_Level);
+      end if;
 
       if Has_Discriminants (E) then
          declare
@@ -5663,11 +5754,35 @@ package body SPARK_Definition is
             return;
          end if;
 
-         --  Frontend only rejects volatile ghost objects when SPARK_Mode is On
+         if Is_Effectively_Volatile (E) then
 
-         if Is_Ghost_Entity (E) and then Is_Effectively_Volatile (E) then
-            Mark_Violation
-              ("volatile ghost object", N, SRM_Reference => "SPARK RM 6.9(7)");
+            --  A ghost type or object shall not be effectively volatile (SPARK
+            --  RM 6.9(7)).
+            if Is_Ghost_Entity (E) then
+               Mark_Violation
+                 ("volatile ghost object", N,
+                  SRM_Reference => "SPARK RM 6.9(7)");
+
+            --  The declaration of an effectively volatile stand-alone
+            --  object or type shall be a library-level declaration
+            --  (SPARK RM 7.1.3(3)). A return object introduced by
+            --  an extended_return_statement is not a stand-alone object.
+            elsif not Is_Library_Level_Entity (E)
+              and then not Is_Return_Object (E)
+            then
+               Mark_Violation
+                 ("effectively volatile object not at library level", E,
+                  Code => EC_Volatile_At_Library_Level);
+
+            --  An object decl shall be compatible with respect to volatility
+            --  with its type (SPARK RM 7.1.3(2)).
+
+            elsif Is_Effectively_Volatile (T) then
+               Check_Volatility_Compatibility
+                 (E, T,
+                  "volatile object", "its type",
+                  Srcpos_Bearer => E);
+            end if;
          end if;
 
          --  Do not allow type invariants on volatile data with asynchronous
@@ -5761,6 +5876,13 @@ package body SPARK_Definition is
          elsif not Retysp_In_SPARK (T) then
             Mark_Violation (E, From => T);
 
+         --  A discriminant or a loop parameter shall not be effectively
+         --  volatile (SPARK RM 7.1.3(4)).
+         elsif Ekind (E) = E_Loop_Parameter
+           and then Is_Effectively_Volatile (E)
+         then
+            Mark_Violation ("effectively volatile loop parameter", E);
+
          --  If no violations were found and the object is annotated with
          --  relaxed initialization, populate the Relaxed_Init map.
 
@@ -5822,7 +5944,7 @@ package body SPARK_Definition is
 
          begin
             --  A nonvolatile function shall not have a result of an
-            --  effectively volatile type (SPARK RM 7.1.3(9)).
+            --  effectively volatile type (SPARK RM 7.1.3(8)).
 
             if not Is_Volatile_Func
               and then Is_Effectively_Volatile_For_Reading (Etype (Id))
@@ -5866,14 +5988,13 @@ package body SPARK_Definition is
                end if;
             end if;
 
-            --  A function with side-effects shall not be a traversal function
+            --  A function with side effects shall not be a traversal function
             --  (SPARK RM 6.1.11(7)).
 
             if Is_Function_With_Side_Effects (Id)
               and then Is_Traversal_Function (Id)
             then
-               Mark_Violation
-                 ("traversal function shall not have side-effects", Id);
+               Mark_Violation ("traversal function with side effects", Id);
             end if;
 
             if Is_User_Defined_Equality (Id)
@@ -5888,20 +6009,20 @@ package body SPARK_Definition is
                      --  A user-defined primitive equality operation on a
                      --  record type shall not be a volatile function, unless
                      --  the record type has only limited views (SPARK RM
-                     --  7.1.3(11)).
+                     --  7.1.3(10)).
                      if Is_Volatile_Function (Id) then
                         Mark_Violation
                           ("volatile function as"
                            & " user-defined equality on record type", Id,
-                           SRM_Reference => "SPARK RM 7.1.3(11)");
+                           SRM_Reference => "SPARK RM 7.1.3(10)");
 
                      --  A user-defined primitive equality operation on a
-                     --  record type shall not be a function with side-effects,
+                     --  record type shall not be a function with side effects,
                      --  unless the record type has only limited views (SPARK
                      --  RM 6.11(8)).
                      elsif Is_Function_With_Side_Effects (Id) then
                         Mark_Violation
-                          ("function with side-effects as"
+                          ("function with side effects as"
                            & " user-defined equality on record type", Id,
                            SRM_Reference => "SPARK RM 6.11(8)");
 
@@ -5935,7 +6056,7 @@ package body SPARK_Definition is
             while Present (Formal) loop
 
                --  A nonvolatile function shall not have a formal parameter
-               --  of an effectively volatile type (SPARK RM 7.1.3(9)). Do
+               --  of an effectively volatile type (SPARK RM 7.1.3(8)). Do
                --  not issue this violation on compiler-generated predicate
                --  functions, as the violation is better detected on the
                --  expression itself for a better error message.
@@ -5950,7 +6071,7 @@ package body SPARK_Definition is
                        "parameter", Id);
                end if;
 
-               --  The declaration of a function without side-effects shall not
+               --  The declaration of a function without side effects shall not
                --  have a parameter_specification with a mode of OUT or IN OUT
                --  (SPARK RM 6.1(6)).
 
@@ -6000,7 +6121,7 @@ package body SPARK_Definition is
             end if;
 
             --  Go over the global objects accessed by Id to make sure that
-            --  they are not written if Id is not a function with side-effects,
+            --  they are not written if Id is not a function with side effects,
             --  and that they are not volatile if Id is not a volatile
             --  function. This check is done in the frontend for explict
             --  global contracts, but we need it for the generated ones.
@@ -6082,7 +6203,7 @@ package body SPARK_Definition is
                         end if;
 
                         --  A nonvolatile function shall not have volatile
-                        --  global inputs (SPARK RM 7.1.3(8)).
+                        --  global inputs (SPARK RM 7.1.3(7)).
 
                         if not Is_Volatile_Function (Id)
                           and then Has_Async_Writers (G)
@@ -6179,7 +6300,7 @@ package body SPARK_Definition is
             if Present (Prag) then
 
                --  The frontend rejects Exceptional_Cases on functions without
-               --  side-effects.
+               --  side effects.
                pragma Assert (Ekind (E) /= E_Function
                               or else Is_Function_With_Side_Effects (E));
 
@@ -6271,7 +6392,7 @@ package body SPARK_Definition is
             if Present (Prag) then
 
                --  The frontend rejects Always_Terminates on functions without
-               --  side-effects.
+               --  side effects.
                pragma Assert (Ekind (E) /= E_Function
                               or else Is_Function_With_Side_Effects (E));
 
@@ -6403,7 +6524,7 @@ package body SPARK_Definition is
            (Expr    : N_Subexpr_Id;
             Spec_Id : Subprogram_Kind_Id)
          is
-            Disp_Typ : constant Type_Kind_Id :=
+            Disp_Typ : constant Opt_Type_Kind_Id :=
               SPARK_Util.Subprograms.Find_Dispatching_Type (Spec_Id);
 
             function Replace_Type (N : Node_Id) return Traverse_Result;
@@ -6481,7 +6602,14 @@ package body SPARK_Definition is
          --  Start of processing for Process_Class_Wide_Condition
 
          begin
-            Replace_Types (Expr);
+            --  In the case of a private type that is not visibly tagged, we
+            --  can get also a derived type inheriting classwide contracts that
+            --  is also not visibly tagged, making Find_Dispatching_Type return
+            --  Empty here. Do nothing as this case is marked as a violation
+            --  already.
+            if Present (Disp_Typ) then
+               Replace_Types (Expr);
+            end if;
          end Process_Class_Wide_Condition;
 
       --  Start of processing for Mark_Subprogram_Entity
@@ -6953,11 +7081,14 @@ package body SPARK_Definition is
 
          --  The base type or original type should be marked before the current
          --  type. We also protect ourselves against the case where the Etype
-         --  of a full view points to the partial view.
+         --  of a full view points to the partial view. Continue analysis if
+         --  the Retysp is an Itype, to get proper violation messages on the
+         --  type itself.
 
          if not Is_Nouveau_Type (E)
            and then Underlying_Type (Etype (E)) /= E
            and then not Retysp_In_SPARK (Etype (E))
+           and then not Is_Itype (Retysp (Etype (E)))
          then
             Mark_Violation (E, From => Retysp (Etype (E)));
 
@@ -7064,6 +7195,12 @@ package body SPARK_Definition is
 
                   if not In_SPARK (Etype (Disc)) then
                      Mark_Violation (Disc, From => Etype (Disc));
+                  end if;
+
+                  --  A discriminant or a loop parameter shall not be
+                  --  effectively volatile (SPARK RM 7.1.3(4)).
+                  if Is_Effectively_Volatile (Etype (Disc)) then
+                     Mark_Violation ("volatile discriminant", Disc);
                   end if;
 
                   --  Check that the discriminant is not of an access type as
@@ -7343,6 +7480,40 @@ package body SPARK_Definition is
             end;
          end if;
 
+         --  A private type that is not visibly tagged but whose full view is
+         --  tagged cannot be derived (SPARK RM 3.4(1)).
+
+         if Nkind (Parent (E)) = N_Full_Type_Declaration
+           and then Nkind (Type_Definition (Parent (E))) =
+             N_Derived_Type_Definition
+           and then Is_Tagged_Type (E)
+         then
+            declare
+               Parent_Type  : constant Entity_Id := Etype (E);
+               Partial_View : constant Entity_Id :=
+                 (if Is_Private_Type (Parent_Type)
+                    or else Is_Incomplete_Type (Parent_Type)
+                  then Parent_Type
+                  else Incomplete_Or_Partial_View (Parent_Type));
+            begin
+               --  If the partial view was not found then the parent type is
+               --  not a private type. Otherwise check if the partial view is
+               --  a tagged private type.
+
+               if Present (Partial_View)
+                 and then Is_Private_Type (Partial_View)
+                 and then not Is_Tagged_Type (Partial_View)
+               then
+                  Error_Msg_Node_2 := Partial_View;
+                  Mark_Violation
+                    ("deriving & from & declared as untagged private", E,
+                     SRM_Reference => "SPARK RM 3.4(1)",
+                     Root_Cause_Msg =>
+                       "deriving from type declared as untagged private");
+               end if;
+            end;
+         end if;
+
          --  We currently do not support invariants on components of tagged
          --  types, if the invariant is visible. It is still allowed to include
          --  types with invariants in tagged types as long as the tagged type
@@ -7374,6 +7545,19 @@ package body SPARK_Definition is
             end;
          end if;
 
+         --  The declaration of an effectively volatile stand-alone object or
+         --  type shall be a library-level declaration (SPARK RM 7.1.3(3)).
+         if Is_Effectively_Volatile (E)
+           and then not Is_Library_Level_Entity (E)
+           and then Nkind (Parent (E)) in N_Full_Type_Declaration
+                                        | N_Subtype_Declaration
+           and then Comes_From_Source (Parent (E))
+         then
+            Mark_Violation
+              ("effectively volatile type not at library level", E,
+               Code => EC_Volatile_At_Library_Level);
+         end if;
+
          if Is_Array_Type (E) then
             declare
                Component_Typ : constant Type_Kind_Id := Component_Type (E);
@@ -7389,6 +7573,23 @@ package body SPARK_Definition is
                if Is_Anonymous_Access_Object_Type (Component_Typ) then
                   Mark_Violation
                     ("component of anonymous access type", Component_Typ);
+               end if;
+
+               --  A component of a composite type (in this case, the composite
+               --  type is an array type) shall be compatible with respect to
+               --  volatility with the composite type (SPARK RM 7.1.3(6)).
+               if Is_Effectively_Volatile (E) then
+                  Check_Volatility_Compatibility
+                    (Component_Type (E), E,
+                     "component type", "its enclosing array type",
+                     Srcpos_Bearer => E);
+               elsif Is_Effectively_Volatile (Component_Type (E)) then
+                  Error_Msg_Name_1 := Chars (E);
+                  Mark_Violation
+                    ("volatile component & of non-volatile type %",
+                     Component_Type (E),
+                     Root_Cause_Msg =>
+                       "volatile component of non-volatile type");
                end if;
 
                --  Check that all index types are in SPARK
@@ -7680,6 +7881,104 @@ package body SPARK_Definition is
                Mark_Entity (Cloned_Subtype (E));
             end if;
 
+            --  An effectively volatile type other than a protected type shall
+            --  not have a discriminated part (SPARK RM 7.1.3(5)).
+            if Is_Effectively_Volatile (E) then
+               if Has_Discriminants (E) then
+                  Mark_Violation ("discriminated volatile type", E);
+               end if;
+
+               --  A component of a composite type (in this case, the composite
+               --  type is a record type) shall be compatible with respect to
+               --  volatility with the composite type (SPARK RM 7.1.3(6)).
+               declare
+                  Comp : Entity_Id := First_Component (E);
+               begin
+                  while Present (Comp) loop
+                     Check_Volatility_Compatibility
+                       (Etype (Comp), E,
+                        "record component " & Get_Name_String (Chars (Comp)),
+                        "its enclosing record type",
+                        Srcpos_Bearer => Comp);
+                     Next_Component (Comp);
+                  end loop;
+               end;
+
+            --  A component type of a composite type shall be compatible
+            --  with respect to volatility with the composite type (SPARK
+            --  RM 7.1.3(6)).
+            else
+               declare
+                  Comp : Opt_E_Component_Id := First_Component (E);
+               begin
+                  while Present (Comp) loop
+                     if Comes_From_Source (Comp)
+                       and then
+                         (Is_Effectively_Volatile (Etype (Comp))
+                           or else Has_Aspect (Comp, Aspect_Volatile))
+                     then
+                        Error_Msg_Name_1 := Chars (E);
+                        Mark_Violation
+                          ("volatile component & of non-volatile type %",
+                           Comp,
+                           Root_Cause_Msg =>
+                             "volatile component of non-volatile type");
+                     end if;
+
+                     Next_Component (Comp);
+                  end loop;
+               end;
+            end if;
+
+            --  A type which does not yield synchronized objects shall not have
+            --  a component type which yields synchronized objects (SPARK RM
+            --  9.5).
+
+            if not Yields_Synchronized_Object (E) then
+               declare
+                  Comp : Opt_E_Component_Id := First_Component (E);
+               begin
+                  while Present (Comp) loop
+                     if Comes_From_Source (Comp)
+                       and then Yields_Synchronized_Object (Etype (Comp))
+                     then
+                        Error_Msg_Name_1 := Chars (E);
+                        Mark_Violation
+                          ("synchronized component & of "
+                           & "non-synchronized type %",
+                           Comp,
+                           Root_Cause_Msg => "synchronized component of "
+                           & "non-synchronized type");
+                     end if;
+
+                     Next_Component (Comp);
+                  end loop;
+               end;
+            end if;
+
+            --  A ghost type shall not have a task or protected part (SPARK RM
+            --  6.9(21)).
+            if Is_Ghost_Entity (E) then
+               declare
+                  Comp : Opt_E_Component_Id := First_Component (E);
+               begin
+                  while Present (Comp) loop
+                     if Comes_From_Source (Comp)
+                       and then Is_Concurrent_Type (Etype (Comp))
+                     then
+                        Error_Msg_Name_1 := Chars (E);
+                        Mark_Violation
+                          ("concurrent component & of ghost type %",
+                           Comp,
+                           Root_Cause_Msg =>
+                             "concurrent component of ghost type");
+                     end if;
+
+                     Next_Component (Comp);
+                  end loop;
+               end;
+            end if;
+
             --  Components of a record type should be in SPARK for the record
             --  type to be in SPARK.
 
@@ -7834,6 +8133,13 @@ package body SPARK_Definition is
                Des_Ty : constant Type_Kind_Id := Directly_Designated_Type (E);
 
             begin
+               --  The [full view of] the designated type of a named nonderived
+               --  access type shall be compatible with respect to volatility
+               --  with the access type (SPARK RM 7.1.3(6)).
+               Check_Volatility_Compatibility
+                 (Des_Ty, E, "designated type", "access type",
+                  Srcpos_Bearer => E);
+
                --  For access-to-subprogram types, mark the designated profile
 
                if Ekind (Des_Ty) = E_Subprogram_Type then
@@ -8710,6 +9016,8 @@ package body SPARK_Definition is
                if not In_SPARK (E) then
                   Mark_Violation (N, From => E);
 
+               --  An effectively volatile object for reading must appear in
+               --  non-interfering context (SPARK RM 7.1.3(9)).
                elsif Is_Effectively_Volatile_For_Reading (E)
                  and then
                    (not Is_OK_Volatile_Context (Context       => Parent (N),
@@ -8720,7 +9028,8 @@ package body SPARK_Definition is
                then
                   Mark_Violation
                     ("volatile object in interfering context", N,
-                     SRM_Reference => "SPARK RM 7.1.3(10)");
+                     Code => EC_Volatile_Non_Interfering_Context,
+                     SRM_Reference => "SPARK RM 7.1.3(9)");
                end if;
 
                if Is_Prophecy_Save (E) then
@@ -8888,7 +9197,7 @@ package body SPARK_Definition is
          end if;
          if Is_Function_With_Side_Effects (Ent) then
             Mark_Violation
-              ("function with side-effects associated with aspect Iterable",
+              ("function with side effects associated with aspect Iterable",
                N);
          end if;
          Get_Globals
@@ -9129,7 +9438,7 @@ package body SPARK_Definition is
       --  variable input. We need to do this after marking declarations of
       --  generic actual parameters of mode IN, as otherwise we would memoize
       --  them as having no variable inputs due to their not in SPARK status.
-      --  This memoization is a side-effect of erasing constants without
+      --  This memoization is a side effect of erasing constants without
       --  variable inputs while parsing the contract.
 
       if Present (Get_Pragma (Id, Pragma_Initializes)) then

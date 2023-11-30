@@ -17,13 +17,13 @@ simplifications to Ada. The most notable simplifications are:
 
 .. index:: side effects; excluded feature
 
-* All expressions (including function calls) are free of side-effects, at the
-  exception of calls to so-called functions with side-effects (see :ref:`Aspect
+* All expressions (including function calls) are free of side effects, at the
+  exception of calls to so-called functions with side effects (see :ref:`Aspect
   Side_Effects`) which can only appear as the right-hand side of
-  assignments. Allowing functions with side-effects everywhere could lead to
-  non-deterministic evaluation due to conflicting side-effects in
+  assignments. Allowing functions with side effects everywhere could lead to
+  non-deterministic evaluation due to conflicting side effects in
   sub-expressions of an enclosing expression. Allowing all functions to have
-  side-effects would conflict with the need to treat functions mathematically
+  side effects would conflict with the need to treat functions mathematically
   in specifications.
 
 .. index:: aliasing; excluded feature
@@ -51,7 +51,7 @@ simplifications to Ada. The most notable simplifications are:
 .. index:: termination; excluded feature
 
 * Functions should always terminate when called on inputs satisfying the
-  precondition, at the exception of so-called functions with side-effects (see
+  precondition, at the exception of so-called functions with side effects (see
   :ref:`Aspect Side_Effects`).  While care is taken in |GNATprove| to detect
   possibilities of unsoundness resulting from nonterminating functions, it is
   possible that axioms generated for infeasible contracts may lead to

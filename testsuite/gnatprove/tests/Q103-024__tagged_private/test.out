@@ -1,4 +1,7 @@
-types.ads:16:05: error: cannot derive from "T" declared as untagged private (SPARK RM 3.4(1))
-types.ads:16:05: error: cannot derive from "T" declared as untagged private (SPARK RM 3.4(1))
-types.ads:16:05: error: cannot derive from "T" declared as untagged private (SPARK RM 3.4(1))
-gnatprove: error during generation of Global contracts
+types.ads:16:10: error: deriving "R" from "T" declared as untagged private is not allowed in SPARK (SPARK RM 3.4(1))
+types.ads:16:10: error: deriving "R" from "T" declared as untagged private is not allowed in SPARK (SPARK RM 3.4(1))
+types.ads:16:10: error: violation of aspect SPARK_Mode at line 1
+types.ads:16:10: error: violation of aspect SPARK_Mode at line 1
+use_types.ads:4:14: info: implicit aspect Always_Terminates on "Valid" has been proved, subprogram will terminate
+use_types.ads:4:21: warning: unused variable "X"
+gnatprove: error during flow analysis and proof

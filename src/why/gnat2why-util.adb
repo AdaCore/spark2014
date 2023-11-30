@@ -1884,7 +1884,7 @@ package body Gnat2Why.Util is
       return Gnat2Why_Args.Proof_Generate_Guards
 
         --  No axioms are generated for volatile functions and functions with
-        --  side-effects.
+        --  side effects.
 
         and then not Has_Pragma_Volatile_Function (E)
         and then not Is_Function_With_Side_Effects (E)

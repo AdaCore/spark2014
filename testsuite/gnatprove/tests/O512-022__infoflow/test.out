@@ -62,10 +62,10 @@ infoflow.adb:145:10: info: initialization of "M" proved
 infoflow.adb:147:22: info: division check proved (CVC5: 1 VC)
 infoflow.adb:150:48: info: index check proved (CVC5: 4 VC)
 infoflow.adb:150:69: info: index check proved (CVC5: 4 VC)
-infoflow.adb:152:34: medium: loop invariant might fail in first iteration, cannot prove H (K) = H'Loop_Entry (K - M)
+infoflow.adb:152:34: high: loop invariant might fail in first iteration, cannot prove H (K) = H'Loop_Entry (K - M) (e.g. when H = (2 => 0, others => -1) and H'First = 1 and H'Last = 3 and K = 3 and M = 1 and Q = 1)
 infoflow.adb:152:37: info: index check proved (CVC5: 4 VC)
 infoflow.adb:152:58: info: index check proved (CVC5: 4 VC)
-infoflow.adb:153:36: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove H (K) = H'Loop_Entry (K)
+infoflow.adb:153:36: high: loop invariant might not be preserved by an arbitrary iteration, cannot prove H (K) = H'Loop_Entry (K) (e.g. when H = (1 => 0, 3 => 0, others => -1) and H'First = 1 and H'Last = 4 and K = 3 and M = 2 and Q = 2)
 infoflow.adb:153:39: info: index check proved (CVC5: 4 VC)
 infoflow.adb:153:58: info: index check proved (CVC5: 4 VC)
 infoflow.adb:154:29: info: index check proved (CVC5: 2 VC)
@@ -74,8 +74,8 @@ infoflow.adb:155:31: info: index check proved (CVC5: 2 VC)
 infoflow.adb:155:31: info: overflow check proved (CVC5: 2 VC)
 infoflow.adb:156:18: info: index check proved (CVC5: 2 VC)
 infoflow.adb:156:18: info: overflow check proved (CVC5: 2 VC)
-infoflow.adb:161:07: medium: precondition might fail, cannot prove H'First = 1 (e.g. when H_V1 = (0 => 0) and H_V1'First = 0 and H_V1'Last = 0)
-infoflow.adb:163:07: medium: precondition might fail, cannot prove H'First = 1 (e.g. when H_V2 = (0 => 0) and H_V2'First = 0 and H_V2'Last = 0)
+infoflow.adb:161:07: medium: precondition might fail, cannot prove H'First = 1
+infoflow.adb:163:07: medium: precondition might fail, cannot prove H'First = 1
 infoflow.adb:172:33: info: loop invariant initialization proved (CVC5: 1 VC)
 infoflow.adb:172:33: info: loop invariant preservation proved (CVC5: 1 VC)
 infoflow.adb:173:27: medium: "A_V1" might not be initialized

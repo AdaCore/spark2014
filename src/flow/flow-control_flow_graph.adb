@@ -1447,9 +1447,9 @@ package body Flow.Control_Flow_Graph is
 
          Final_Atr : constant V_Attributes :=
            Make_Variable_Attributes
-             (F_Ent      => F_Final,
-              Mode       => M,
-              E_Loc      => E);
+             (F_Ent  => F_Final,
+              Mode   => M,
+              E_Loc  => E);
 
       begin
 
@@ -1616,7 +1616,7 @@ package body Flow.Control_Flow_Graph is
 
       FA.Proof_Dependencies.Union (Get_Reclamation_Functions (LHS_Type));
 
-      --  Assignment with a function that has side-effects is handled like a
+      --  Assignment with a function that has side effects is handled like a
       --  subprogram call: the function entity acts like a formal parameter
       --  of mode OUT and the LHS acts like the corresponding actual parameter.
 

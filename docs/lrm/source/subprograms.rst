@@ -11,16 +11,16 @@ a ``subprogram_declaration``, the ``subprogram_body`` or
 ``expression_function_declaration`` also introduces a declaration view which
 may be in |SPARK| even if the implementation view is not.
 
-.. index:: subprogram with side-effects
+.. index:: subprogram with side effects
 
-A *subprogram with side-effects* is either a procedure, a protected entry, or a
-function with side-effects (see :ref:`Functions With Side-Effects`). A
-subprogram with side-effects may have output parameters, write global
+A *subprogram with side effects* is either a procedure, a protected entry, or a
+function with side effects (see :ref:`Functions With Side Effects`). A
+subprogram with side effects may have output parameters, write global
 variables, raise exceptions and not terminate.
 
 Rules are imposed in |SPARK| to ensure that the execution of a function call
 does not modify any variables declared outside of the function, unless it is a
-function with side-effects.  Outside of this special case, it follows as a
+function with side effects.  Outside of this special case, it follows as a
 consequence of these rules that the evaluation of any |SPARK| expression is
 side-effect free.
 
@@ -101,15 +101,15 @@ an *entire object*.
    Legality Rules
 
 
-6. The declaration of a function without side-effects shall not have a
+6. The declaration of a function without side effects shall not have a
    ``parameter_specification`` with a mode of **out** or **in out**. This rule
-   also applies to a ``subprogram_body`` for a function without side-effects
-   for which no explicit declaration is given. A function without side-effects
+   also applies to a ``subprogram_body`` for a function without side effects
+   for which no explicit declaration is given. A function without side effects
    shall have no outputs other than its result.
 
 7. A subprogram parameter of mode **in** shall not be an output of its
    subprogram unless the type of the parameter is an access type and the
-   subprogram is a subprogram with side-effects.
+   subprogram is a subprogram with side effects.
 
 .. container:: heading
 
@@ -126,7 +126,7 @@ an *entire object*.
    aliased shall be fully initialized when the exception is propagated
    except for those that have relaxed initialization.
 
-10. A function without side-effects shall always return normally.
+10. A function without side effects shall always return normally.
 
 11. A call to a ghost procedure occurring outside of a ghost context shall
     always return normally.
@@ -591,7 +591,7 @@ and Refined_Depends.]
    Global aspect.
 
 
-10. A function without side-effects shall not have a ``mode_selector`` of
+10. A function without side effects shall not have a ``mode_selector`` of
     Output or In_Out in its Global aspect.
 
 
@@ -912,7 +912,7 @@ where
    subprogram of mode **in out** and **out** along with the entities denoted by
    ``global_items`` of the Global aspect of the subprogram with a
    ``mode_selector`` of In_Out and Output and (for a function) the
-   ``function_result`` or (for a subprogram with side-effects) the set of formal
+   ``function_result`` or (for a subprogram with side effects) the set of formal
    parameters of the subprogram of mode **in** of an access-to-variable type.
 
 
@@ -992,13 +992,13 @@ where
     viewpoint it is a null operation (a no-op).]
 
 
-21. A function without side-effects without an explicit Depends aspect
+21. A function without side effects without an explicit Depends aspect
     specification has the default ``dependency_relation`` that its result is
     dependent on all of its inputs. [Generally an explicit Depends aspect is
     not required for a function declaration.]
 
 
-22. A subprogram with side-effects without an
+22. A subprogram with side effects without an
     explicit Depends aspect specification has a
     default ``dependency_relation`` that each member of its output set
     is dependent on every member of its input set. [This conservative
@@ -1458,8 +1458,8 @@ Exceptional Cases
 ~~~~~~~~~~~~~~~~~
 
 The aspect Exceptional_Cases may be specified for procedures and functions with
-side-effects; it can be used to list exceptions that might be raised by the
-subprogram with side-effects in the context of its precondition, and associate
+side effects; it can be used to list exceptions that might be raised by the
+subprogram with side effects in the context of its precondition, and associate
 them with a specific postcondition. The Exceptional_Cases aspect is specified
 with an aspect_specification where the aspect_mark is Exceptional_Cases and the
 aspect_definition must follow the grammar of exceptional_case_list given below.
@@ -1527,10 +1527,10 @@ Always_Terminates Aspects
 ~~~~~~~~~~~~~~~~~~~~~~~~~
 
 The aspect Always_Terminates may be specified for subprograms with
-side-effects; it can be used to provide a condition under which the subprogram
+side effects; it can be used to provide a condition under which the subprogram
 shall necessarily complete (either return normally or raise an exception). This
 aspect may also be specified on packages to provide a default for all
-subprograms with side-effects declared in the package or in one of its nested
+subprograms with side effects declared in the package or in one of its nested
 packages. The Always_Terminates aspect is specified with an
 aspect_specification where the aspect_mark is Always_Terminates and the
 optional aspect_definition is a boolean expression. An Always_Terminates aspect
@@ -1554,7 +1554,7 @@ precondition.
    an aspect definition.
 
 2. If the aspect Always_Terminates for a package specification or a subprogram
-   with side-effects P is not otherwise specified and P is declared directly
+   with side effects P is not otherwise specified and P is declared directly
    inside a package (explicitly or implicitly) annotated with an aspect
    Always_Terminates then an Always_Terminates aspect of True is implicitly
    specified for P.
@@ -1571,7 +1571,7 @@ Always_Terminates aspects are ignored for execution.
    Legality Rules
 
 3. The Always_Terminates aspect may only be specified for the initial
-   declaration of a subprogram with side-effects (which may be a declaration, a
+   declaration of a subprogram with side effects (which may be a declaration, a
    body or a body stub), or of a package specification.
 
 .. container:: heading
@@ -1579,26 +1579,26 @@ Always_Terminates aspects are ignored for execution.
    Verification Rules
 
 4. A verification condition is introduced on loops and calls occuring inside
-   functions without side-effects or package elaborations to make sure that
+   functions without side effects or package elaborations to make sure that
    they necessarily complete.
 
 5. A verification condition is introduced on loops and calls occuring inside
-   subprograms with side-effects annotated with an Always_Terminates aspect to
+   subprograms with side effects annotated with an Always_Terminates aspect to
    make sure that they necessarily complete in cases where the boolean
    condition mentioned in the Always_Terminates aspect evaluates to True on
-   entry of the subprogram with side-effects.
+   entry of the subprogram with side effects.
 
 
-Functions With Side-Effects
+Functions With Side Effects
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 The aspect Side_Effects may be specified for functions; it can be used to
 indicate that a function should be handled like a procedure with respect to
 parameter modes, Global contract, exceptional contract and termination: it may
 have output parameters, write global variables, raise exceptions and not
-terminate. Such a function is called a *function with side-effects*.
+terminate. Such a function is called a *function with side effects*.
 
-Note that a function with side-effects may also be a volatile function (see
+Note that a function with side effects may also be a volatile function (see
 section :ref:`External State`).
 
 .. container:: heading
@@ -1615,32 +1615,32 @@ section :ref:`External State`).
 
    Legality Rules
 
-2. [Redundant: The declaration of a function with side-effects may have a
+2. [Redundant: The declaration of a function with side effects may have a
    ``parameter_specification`` with a mode of **out** or **in out**. This rule
-   also applies to a ``subprogram_body`` for a function with side-effects for
+   also applies to a ``subprogram_body`` for a function with side effects for
    which no explicit declaration is given.]
 
-3. [Redundant: A function with side-effects may have a ``mode_selector`` of
+3. [Redundant: A function with side effects may have a ``mode_selector`` of
    Output or In_Out in its Global aspect.]
 
-4. A call to a function with side-effects may only occur as the [right-hand
+4. A call to a function with side effects may only occur as the [right-hand
    side] expression of an assignment statement. [Redundant: In particular,
-   functions with side-effects cannot be called inside assertions.]
+   functions with side effects cannot be called inside assertions.]
 
-5. A function with side-effects shall not have a Pure_Function aspect or
+5. A function with side effects shall not have a Pure_Function aspect or
    pragma.
 
-6. A function with side-effects shall not be an expression function.
+6. A function with side effects shall not be an expression function.
 
-7. A function with side-effects shall not be a traversal function (see section
+7. A function with side effects shall not be a traversal function (see section
    :ref:`Access Types`).
 
 8. A user-defined primitive equality operation on a record type shall not be a
-   function with side-effects, unless the record type has only limited views
+   function with side effects, unless the record type has only limited views
    (see :ref:`Overloading of Operators`).
 
    [This avoids the case where such a record type is a component of another
-   composite type, whose predefined equality operation now has side-effects
+   composite type, whose predefined equality operation now has side effects
    through the primitive equality operation on its component.]
 
 
@@ -1737,13 +1737,13 @@ object (although object renaming declarations are not problematic in
 
 A common place for aliasing to be introduced is through the actual parameters
 and between actual parameters and global variables in a call to a subprogram
-with side-effects. Extra verification rules are given that avoid the
+with side effects. Extra verification rules are given that avoid the
 possibility of problematic aliasing through actual parameters and global
-variables.  Except for functions with side-effects (see :ref:`Functions With
-Side-Effects`), a function is not allowed to have side-effects and cannot
+variables.  Except for functions with side effects (see :ref:`Functions With
+Side Effects`), a function is not allowed to have side effects and cannot
 update an actual parameter or global variable.  Therefore, such function calls
 cannot introduce problematic aliasing and are excluded from the anti-aliasing
-rules given below for calls to subprograms with side-effects.
+rules given below for calls to subprograms with side effects.
 
 .. container:: heading
 
@@ -1775,7 +1775,7 @@ rules given below for calls to subprograms with side-effects.
    Verification Rules
 
 
-3. A call to a subprogram with side-effects shall only pass two actual
+3. A call to a subprogram with side effects shall only pass two actual
    parameters which potentially introduce aliasing via parameter passing when
    either
 
@@ -1791,7 +1791,7 @@ rules given below for calls to subprograms with side-effects.
      :ref:`Access Types`.]
 
 
-4. If an actual parameter in a call to a subprogram with side-effects and a
+4. If an actual parameter in a call to a subprogram with side effects and a
    ``global_item`` referenced by the called subprogram potentially introduce
    aliasing via parameter passing, then
 
@@ -1805,7 +1805,7 @@ rules given below for calls to subprograms with side-effects.
      a by-copy type.
 
 
-5. A call to a function with side-effects shall only pass an actual parameter
+5. A call to a function with side effects shall only pass an actual parameter
    which potentially introduces aliasing via parameter passing with an object
    referenced from the [left-hand side] name of the enclosing assignment
    statement, when the corresponding formal parameter is either
@@ -1818,14 +1818,14 @@ rules given below for calls to subprograms with side-effects.
    evaluation chosen by the compiler, as the object assigned to might depend on
    this choice.]
 
-6. A call to a function with side-effects shall not reference a ``global_item``
+6. A call to a function with side effects shall not reference a ``global_item``
    of mode Output or In_Out which potentially introduces aliasing via parameter
    passing with an object referenced from the [left-hand side] name of the
    enclosing assignment statement.
 
    [The rationale for this rule is the same as for the previous rule.]
 
-7. A call to a function with side-effects shall not reference the symbol ``@``
+7. A call to a function with side effects shall not reference the symbol ``@``
    to refer to the target name of the assignment.
 
    [The rationale for this rule is the same as for the previous rule.]
@@ -1887,8 +1887,8 @@ Overloading of Operators
    :ref:`External State - Variables and Types` for the statement of this rule.]
 
 3. [A user-defined primitive equality operation on a record type shall not be a
-   function with side-effects, unless the record type has only limited views;
-   see :ref:`Functions With Side-Effects` for the statement of this rule.]
+   function with side effects, unless the record type has only limited views;
+   see :ref:`Functions With Side Effects` for the statement of this rule.]
 
 4. [A user-defined primitive equality operation on a non-ghost record type
     shall not be ghost, unless the record type has only limited views; see
@@ -2197,7 +2197,7 @@ body (see Ada RM 7.2(4))].
    Verification Rules
 
 
-23. A ghost subprogram with side-effects shall not have a non-ghost [global]
+23. A ghost subprogram with side effects shall not have a non-ghost [global]
     output.
 
 
@@ -2209,13 +2209,13 @@ body (see Ada RM 7.2(4))].
     constituent from depending on the ghost input.]
 
 
-25. A global input of a ghost subprogram with side-effects shall not be effectively
+25. A global input of a ghost subprogram with side effects shall not be effectively
     volatile for reading.  [This rule says, in effect, that ghost procedural
     subprograms are subject to the same restrictions as non-ghost nonvolatile
     functions with respect to reading volatile objects.]  A name occurring
     within a ghost statement shall not denote an object that is effectively
     volatile for reading. [In other words, a ghost statement is subject to
-    effectively the same restrictions as a ghost subprogram with side-effects.]
+    effectively the same restrictions as a ghost subprogram with side effects.]
 
 
 26. If the Ghost assertion policy in effect at the point of the declaration of

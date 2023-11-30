@@ -1,0 +1,3 @@
+test.adb:10:04: info: absence of resource or memory leak at end of scope proved (CVC5: 1 VC)
+test.adb:11:04: medium: resource or memory leak might occur at end of scope
+test.adb:11:34: info: initialization check proved (CVC5: 1 VC)

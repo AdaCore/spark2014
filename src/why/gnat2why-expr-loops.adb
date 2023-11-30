@@ -455,7 +455,7 @@ package body Gnat2Why.Expr.Loops is
                   null;
 
                --  Statements between (in)variants may have been introduced by
-               --  the compiler for removing side-effects. Include these in the
+               --  the compiler for removing side effects. Include these in the
                --  initial statements. Note that this may result in a failure
                --  to prove a run-time error in such statements while in fact
                --  this cannot happen at run time because a previous loop

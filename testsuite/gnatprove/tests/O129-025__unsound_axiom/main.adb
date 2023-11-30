@@ -19,10 +19,10 @@ is
      (Variant_Node => (M_Variant => Empty_Node));
 
    procedure Create_Empty_Branch
-     (Branch       : out Node_Type)
+     (Branch : out Node_Type)
    with
-     Pre     => True,
-     Post    => False
+     Pre  => True,
+     Post => False
    is
    begin
       pragma Assert (False);  --@ASSERT:FAIL

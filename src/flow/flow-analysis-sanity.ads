@@ -29,7 +29,7 @@ private package Flow.Analysis.Sanity is
    procedure Check_Function_Side_Effects
      (FA   : in out Flow_Analysis_Graphs;
       Sane :    out Boolean);
-   --  Make sure no functions with side-effects have been flagged during
+   --  Make sure no functions with side effects have been flagged during
    --  analysis.
    --  In debug mode we emit an error message that analysis is aborted here.
 

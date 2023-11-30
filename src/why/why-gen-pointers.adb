@@ -778,7 +778,10 @@ package body Why.Gen.Pointers is
    begin
       Th :=
         Open_Theory
-          (WF_Context, E_Rep_Pointer_Module (E, Relaxed_Init),
+          (WF_Context, E_Module
+             (E,
+              (if Relaxed_Init then Init_Wrapper_Pointer_Rep
+               else Type_Representative)),
            Comment =>
              "Module for axiomatizing the pointer theory associated to type "
            & """" & Get_Name_String (Chars (E)) & """"
@@ -817,7 +820,8 @@ package body Why.Gen.Pointers is
    -------------------------
 
    procedure Declare_Ada_Pointer (Th : Theory_UC; E : Entity_Id) is
-      Rep_Module : constant W_Module_Id := E_Rep_Pointer_Module (E);
+      Rep_Module : constant W_Module_Id := E_Module
+        (Repr_Pointer_Type (E), Type_Representative);
 
    begin
       --  Export the theory containing the pointer record definition.
@@ -1026,7 +1030,7 @@ package body Why.Gen.Pointers is
       E  : Entity_Id)
    is
       Rep_Module : constant W_Module_Id :=
-        E_Rep_Pointer_Module (E, Relaxed_Init => True);
+        E_Module (Repr_Pointer_Type (E), Init_Wrapper_Pointer_Rep);
 
    begin
       --  Export the theory containing the pointer record definition
@@ -1055,7 +1059,10 @@ package body Why.Gen.Pointers is
    begin
       Th := Open_Theory
         (WF_Context,
-         E_Compl_Module (E, Relaxed_Init),
+         E_Module
+           (E,
+            (if Relaxed_Init then Init_Wrapper_Completion
+             else Type_Completion)),
          Comment =>
            "Module for completing the pointer theory associated to type "
          & """" & Get_Name_String (Chars (E)) & """"
@@ -1064,7 +1071,13 @@ package body Why.Gen.Pointers is
            else "")
          & ", created in " & GNAT.Source_Info.Enclosing_Entity);
 
-      Add_With_Clause (Th, E_Rep_Pointer_Module (E, Relaxed_Init), EW_Import);
+      Add_With_Clause
+        (Th,
+         E_Module
+           (Repr_Pointer_Type (E),
+            (if Relaxed_Init then Init_Wrapper_Pointer_Rep
+             else Type_Representative)),
+         EW_Import);
 
       Emit (Th,
             New_Clone_Declaration
@@ -1858,7 +1871,7 @@ package body Why.Gen.Pointers is
         or else
           (if Has_Init_Wrapper (I.P_Typ) and then not Has_Relaxed_Init (Des_Ty)
            then Get_Module (Get_Name (Get_Typ (I.Value.B_Name)))
-             = E_Init_Module (Des_Ty)
+             = E_Module (Des_Ty, Init_Wrapper)
            else False);
       E            : constant Entity_Id := I.Value.Ada_Node;
       Ty           : constant Entity_Id := I.P_Typ;

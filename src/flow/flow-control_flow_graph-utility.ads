@@ -222,10 +222,10 @@ package Flow.Control_Flow_Graph.Utility is
    --  Creates the attributes for the synthetic null export.
 
    function Make_Variable_Attributes
-     (F_Ent      : Flow_Id;
-      Mode       : Param_Mode;
-      E_Loc      : Node_Or_Entity_Id := Empty;
-      S          : Flow_Scope        := Null_Flow_Scope)
+     (F_Ent : Flow_Id;
+      Mode  : Param_Mode;
+      E_Loc : Node_Or_Entity_Id := Empty;
+      S     : Flow_Scope        := Null_Flow_Scope)
       return V_Attributes
    with Pre  => F_Ent.Kind in Direct_Mapping | Record_Field and
                 F_Ent.Variant in Initial_Or_Final_Variant and

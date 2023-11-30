@@ -79,7 +79,7 @@ should be documented in the User Guide for the tool.
 
 4. The Side_Effects aspect of a subprogram used as the prefix of an Access
    attribute reference, if specified, shall not be True (see section
-   :ref:`Functions With Side-Effects` for the definition of Side_Effects).
+   :ref:`Functions With Side Effects` for the definition of Side_Effects).
 
 5. A reference to the Access attribute whose type is an anonymous
    access-to-object type or a named access-to-variable type shall occur
@@ -346,11 +346,11 @@ No extensions or restrictions.
 Expressions
 -----------
 
-.. index:: side-effects
+.. index:: side effects
 
 An expression is said to be *side-effect free* if the evaluation of the
 expression does not update any object.  The evaluation of an expression
-free from side-effects only retrieves or computes a value.
+free from side effects only retrieves or computes a value.
 
 .. container:: heading
 
@@ -358,10 +358,10 @@ free from side-effects only retrieves or computes a value.
 
 
 1. An expression shall be side-effect free, unless it is a call to a function
-   with side-effects (see section :ref:`Functions With Side-Effects`).
+   with side effects (see section :ref:`Functions With Side Effects`).
    [Strictly speaking, this "rule" is a consequence of other rules, most
-   notably the rule that a function without side-effects cannot have outputs
-   other than its result, and that calls to function with side-effectss are not
+   notably the rule that a function without side effects cannot have outputs
+   other than its result, and that calls to function with side effectss are not
    subexpressions.]
 
 .. index:: expression with a variable input; disallowed contexts

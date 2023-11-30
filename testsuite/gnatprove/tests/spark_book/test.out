@@ -256,7 +256,7 @@ console_io.ads:15:03: info: flow dependencies proved
 contains.adb:2:10: info: implicit aspect Always_Terminates on "Contains" has been proved, subprogram will terminate
 contains.adb:7:04: info: initialization of "Result_Index" proved
 contains.adb:9:37: info: precondition proved (CVC5: 3 VC; Trivial: 1 VC)
-contains.adb:11:57: medium: range check might fail, cannot prove lower bound for S'First [reason for check: input value must fit in parameter type]
+contains.adb:11:57: high: range check might fail, cannot prove lower bound for S'First (e.g. when S'Last = -1) [reason for check: input value must fit in parameter type]
 contains2.adb:2:10: info: implicit aspect Always_Terminates on "Contains2" has been proved, subprogram will terminate
 contains2.adb:9:04: info: initialization of "Result_Index" proved
 contains2.adb:11:37: info: precondition proved (CVC5: 3 VC; Trivial: 1 VC)
@@ -738,7 +738,7 @@ hierarchical_state_demo_nested.ads:9:09: info: flow dependencies proved
 indexed_datebook_v2.ads:6:05: info: flow dependencies proved
 initializer_demo.adb:6:07: warning: initialization of "Sum" has no effect
 initializer_demo.adb:9:28: info: unrolling loop
-initializer_demo.adb:10:21: medium: overflow check might fail, cannot prove lower bound for Sum + A (Index) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at initializer_demo.ads:8 should mention A in a precondition]
+initializer_demo.adb:10:21: high: overflow check might fail, cannot prove lower bound for Sum + A (Index) (e.g. when A = (2 => Integer'First, others => -1) and Index = 2 and Sum = -1) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at initializer_demo.ads:8 should mention A in a precondition]
 initializer_demo.adb:17:07: info: initialization of "Sum" proved
 initializer_demo.adb:22:28: info: unrolling loop
 initializer_demo.adb:23:21: high: overflow check might fail, cannot prove upper bound for Sum + Accumulator (A (Index)) (e.g. when A = (others => Integer'Last) and Index = 1 and Sum = 1) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at initializer_demo.ads:14 should mention A in a precondition]
@@ -857,7 +857,7 @@ prime_search.adb:21:77: info: index check proved (CVC5: 2 VC)
 prime_search.adb:22:04: info: precondition proved (CVC5: 1 VC)
 raster_graphics.adb:12:11: info: data dependencies proved
 raster_graphics.adb:13:32: info: initialization of "Status" proved
-raster_graphics.adb:15:39: medium: range check might fail, cannot prove lower bound for abs (A.X - B.X) (e.g. when A = (X => 1, Y => 1) and B = (X => 1, Y => 1)) [reason for check: default component value must fit in the type]
+raster_graphics.adb:15:39: medium: range check might fail, cannot prove lower bound for abs (A.X - B.X) [reason for check: default component value must fit in the type]
 raster_graphics.adb:16:39: medium: range check might fail, cannot prove lower bound for abs (A.Y - B.Y) (e.g. when A = (X => 2, Y => 1) and B = (X => 1, Y => 1)) [reason for check: default component value must fit in the type]
 raster_graphics.adb:31:41: medium: overflow check might fail, cannot prove upper bound for Line_Count + 1 [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at raster_graphics.ads:18 should mention Line_Count in a precondition]
 raster_graphics.ads:20:08: info: data dependencies proved
@@ -1136,7 +1136,7 @@ strings.adb:44:23: medium: range check might fail (e.g. when Equals_Position = 3
 strings.adb:45:32: info: references to the "Value" attribute are handled in an imprecise way, so the precondition might be impossible to prove.
 strings.adb:45:32: medium: precondition might fail [possible fix: call at line 37 should mention Position (for argument Equals_Position) in a postcondition]
 strings.adb:45:40: medium: range check might fail [reason for check: slice bounds must fit in the underlying array] [possible fix: call at line 37 should mention Position (for argument Equals_Position) in a postcondition]
-strings.adb:45:62: medium: overflow check might fail, cannot prove upper bound for Equals_Position + 1 [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: call at line 37 should mention Position (for argument Equals_Position) in a postcondition]
+strings.adb:45:62: medium: overflow check might fail, cannot prove upper bound for Equals_Position + 1 (e.g. when Equals_Position = Positive'Last) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: call at line 37 should mention Position (for argument Equals_Position) in a postcondition]
 strings.ads:8:22: info: initialization of "Found" proved
 strings.ads:9:22: info: initialization of "Position" proved
 strings.ads:11:10: info: data dependencies proved
@@ -1599,7 +1599,7 @@ workspaces.adb:5:48: info: length check proved (CVC5: 3 VC; Trivial: 1 VC)
 workspaces.adb:7:26: info: division check proved (CVC5: 1 VC)
 workspaces.adb:7:30: info: cannot unroll loop (too many loop iterations)
 workspaces.adb:8:21: info: index check proved (CVC5: 2 VC)
-workspaces.adb:9:27: medium: overflow check might fail, cannot prove upper bound for (Size + 1) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: add precondition (Size <= Integer'Last - 1) to subprogram at workspaces.ads:4]
+workspaces.adb:9:27: high: overflow check might fail, cannot prove upper bound for (Size + 1) (e.g. when Size = Positive'Last and Workspace'First = 1 and Workspace'Last = Integer'Last) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: add precondition (Size <= Integer'Last - 1) to subprogram at workspaces.ads:4]
 workspaces.adb:9:32: info: index check proved (CVC5: 2 VC)
 workspaces.ads:4:13: info: implicit aspect Always_Terminates on "Generate_Workspace" has been proved, subprogram will terminate
 test.gpr: warning: there are no sources of language "Ada" in this project

@@ -1341,7 +1341,7 @@ package body Gnat2Why.Driver is
          Th : Theory_UC;
       begin
          Th := Open_Theory
-           (WF_Context, E_Axiom_Module (E),
+           (WF_Context, E_Module (E, Axiom),
             Comment =>
               "Module giving an empty axiom for the entity "
             & """" & Get_Name_String (Chars (E)) & """"

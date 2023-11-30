@@ -157,7 +157,7 @@ and ``gold``, you can choose which analysis is performed:
 * In mode ``check_all`` (``stone`` is a synonym for this mode), |GNATprove|
   fully checks that the program does not violate |SPARK| restrictions,
   including checks not performed in mode ``check`` like the absence of
-  side-effects in regular functions. Mode ``check_all`` includes mode
+  side effects in regular functions. Mode ``check_all`` includes mode
   ``check``.
 
 * In mode ``flow`` (``bronze`` is a synonym for this mode), |GNATprove| checks
