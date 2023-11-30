@@ -2472,7 +2472,7 @@ package body Gnat2Why.Subprograms is
            Nkind (First (Choice_List (Last (Assocs)))) = N_Others_Choice;
          Nb_Cases             : constant Integer :=
            Natural (List_Length (Assocs));
-         Elsif_Parts          : W_Expr_Array
+         Elsif_Parts          : W_Pred_Array
            (2 .. Nb_Cases - (if Others_Present then 1 else 0));
          Else_Part            : W_Pred_Id;
          Exceptional_Case     : Node_Id := First (Assocs);
@@ -2504,11 +2504,10 @@ package body Gnat2Why.Subprograms is
          if Elsif_Parts'Length > 0 then
             for Num in Elsif_Parts'Range loop
                Elsif_Parts (Num) := New_Elsif
-                 (Condition => Compute_Guard_For_Exceptions
+                 (Condition => +Compute_Guard_For_Exceptions
                     (Choice_List (Exceptional_Case), Exc_Id, EW_Pred),
-                  Then_Part => +Transform_Pred
-                    (Expression (Exceptional_Case), Params),
-                  Domain    => EW_Pred);
+                  Then_Part => Transform_Pred
+                    (Expression (Exceptional_Case), Params));
                Next (Exceptional_Case);
             end loop;
          end if;
@@ -4112,7 +4111,7 @@ package body Gnat2Why.Subprograms is
               Nkind (First (Choice_List (Last (Assocs)))) = N_Others_Choice;
             Nb_Cases         : constant Integer :=
               Natural (List_Length (Assocs));
-            Elsif_Parts      : W_Expr_Array
+            Elsif_Parts      : W_Prog_Array
               (2 .. Nb_Cases - (if Others_Present then 1 else 0));
             Else_Part        : W_Prog_Id;
             Exceptional_Case : Node_Id := First (Assocs);
@@ -4132,11 +4131,10 @@ package body Gnat2Why.Subprograms is
             if Elsif_Parts'Length > 0 then
                for Num in Elsif_Parts'Range loop
                   Elsif_Parts (Num) := New_Elsif
-                    (Condition => Compute_Guard_For_Exceptions
+                    (Condition => +Compute_Guard_For_Exceptions
                        (Choice_List (Exceptional_Case), Exc_Id, EW_Prog),
-                     Then_Part => +Check_Post_For_Case
-                       (Exceptional_Case, Params),
-                     Domain    => EW_Prog);
+                     Then_Part => Check_Post_For_Case
+                       (Exceptional_Case, Params));
                   Next (Exceptional_Case);
                end loop;
             end if;

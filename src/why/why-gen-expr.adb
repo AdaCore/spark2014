@@ -3304,25 +3304,18 @@ package body Why.Gen.Expr is
          return Conjuncts (Conjuncts'First);
 
       else
-         declare
-            More : constant W_Expr_Array :=
-              (for J in Conjuncts'First + 2 .. Conjuncts'Last =>
-                 +Conjuncts (J));
-         begin
+         --  We use the array form with "More_Right" here for these reasons:
+         --  - It avoids a deeply nested tree. Such deep nesting could lead
+         --    to a stack overflow in code that traverses the whole tree;
+         --  - The array form receives special handling in why3, creating a
+         --    balanced tree of binary conjunctions, again to avoid deeply
+         --    nested trees.
 
-            --  We use the array form with "More_Right" here for these reasons:
-            --  - It avoids a deeply nested tree. Such deep nesting could lead
-            --    to a stack overflow in code that traverses the whole tree;
-            --  - The array form receives special handling in why3, creating a
-            --    balanced tree of binary conjunctions, again to avoid deeply
-            --    nested trees.
-
-            return New_Connection
-              (Op         => EW_And,
-               Left       => Conjuncts (Conjuncts'First),
-               Right      => Conjuncts (Conjuncts'First + 1),
-               More_Right => More);
-         end;
+         return New_Connection
+           (Op         => EW_And,
+            Left       => Conjuncts (Conjuncts'First),
+            Right      => Conjuncts (Conjuncts'First + 1),
+            More_Right => Conjuncts (Conjuncts'First + 2 .. Conjuncts'Last));
       end if;
    end New_And_Pred;
 
@@ -4343,17 +4336,11 @@ package body Why.Gen.Expr is
          return Conjuncts (Conjuncts'First);
 
       else
-         declare
-            More : constant W_Expr_Array :=
-              (for J in Conjuncts'First + 2 .. Conjuncts'Last =>
-                 +Conjuncts (J));
-         begin
-            return New_Connection
-              (Op         => EW_Or,
-               Left       => Conjuncts (Conjuncts'First),
-               Right      => Conjuncts (Conjuncts'First + 1),
-               More_Right => More);
-         end;
+         return New_Connection
+           (Op         => EW_Or,
+            Left       => Conjuncts (Conjuncts'First),
+            Right      => Conjuncts (Conjuncts'First + 1),
+            More_Right => Conjuncts (Conjuncts'First + 2 .. Conjuncts'Last));
       end if;
    end New_Or_Pred;
 

@@ -15082,7 +15082,7 @@ package body Gnat2Why.Expr is
                   declare
                      Then_Part   : constant W_Pred_Id :=
                        Transform_Complex_Association (Dim, Expression);
-                     Elsif_Parts : W_Expr_Array
+                     Elsif_Parts : W_Pred_Array
                        (1 .. Integer (List_Length (Exprs)) - 1);
                   begin
                      Next (Expression);
@@ -15091,14 +15091,13 @@ package body Gnat2Why.Expr is
                         pragma Assert (Present (Expression));
                         Elsif_Parts (Integer (Offset)) := New_Elsif
                           (Condition =>
-                             New_Comparison
+                             +New_Comparison
                                (Symbol => Why_Eq,
                                 Left   => +Indexes (Integer (Dim)),
                                 Right  => +Select_Nth_Index (Dim, Offset),
                                 Domain => EW_Pred),
                            Then_Part =>
-                             +Transform_Complex_Association (Dim, Expression),
-                           Domain    => EW_Pred);
+                             Transform_Complex_Association (Dim, Expression));
                         Next (Expression);
                      end loop;
 
@@ -15118,7 +15117,7 @@ package body Gnat2Why.Expr is
                   declare
                      Cond        : W_Pred_Id;
                      Then_Part   : W_Pred_Id;
-                     Elsif_Parts : W_Expr_Array
+                     Elsif_Parts : W_Pred_Array
                        (1 .. Assocs_Len - (if Has_Others then 2 else 1));
 
                   begin
@@ -22671,7 +22670,7 @@ package body Gnat2Why.Expr is
                 N_Others_Choice;
             Nb_Cases            : constant Positive :=
               Natural (List_Length_Non_Pragma (Handlers));
-            Elsif_Parts         : W_Expr_Array
+            Elsif_Parts         : W_Prog_Array
               (2 .. Nb_Cases - (if Others_Present then 1 else 0));
             Else_Part           : W_Prog_Id;
             Handler             : Node_Id := First_Non_Pragma (Handlers);
@@ -22696,10 +22695,9 @@ package body Gnat2Why.Expr is
                if Elsif_Parts'Length > 0 then
                   for Num in Elsif_Parts'Range loop
                      Elsif_Parts (Num) := New_Elsif
-                       (Condition => Compute_Guard_For_Exceptions
+                       (Condition => +Compute_Guard_For_Exceptions
                           (Exception_Choices (Handler), Exc_Id, EW_Prog),
-                        Then_Part => +Transform_Handler (Handler),
-                        Domain    => EW_Prog);
+                        Then_Part => Transform_Handler (Handler));
                      Next_Non_Pragma (Handler);
                   end loop;
                end if;
