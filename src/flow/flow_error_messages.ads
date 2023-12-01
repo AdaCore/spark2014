@@ -255,9 +255,14 @@ package Flow_Error_Messages is
    --  Finally, for debug purposes, Vertex should be set to the vertex
    --  where the error was detected. This is printed in debug mode.
 
+   function Not_Proved_Message
+     (Node : Node_Id;
+      Kind : VC_Kind) return String;
+   --  Return the message string for an unproved VC
+
    procedure Error_Msg_Proof
      (N             : Node_Id;
-      Msg           : String;
+      Extra_Msg     : String;
       Is_Proved     : Boolean;
       Tag           : VC_Kind;
       Cntexmp       : JSON_Value;
