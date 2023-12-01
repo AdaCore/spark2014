@@ -1070,8 +1070,8 @@ package body Flow_Error_Messages is
 
       Msg : constant String :=
         (if Is_Proved
-         then Proved_Message (N, Tag) & Stat_Message
-         else Not_Proved_Message (N, Tag)
+         then Proved_Message (VC_Loc, Tag) & Stat_Message
+         else Not_Proved_Message (VC_Loc, Tag)
          & (if CWE then CWE_Message (Tag) else ""))
         & Extra_Msg
         & (if VC_File /= "" then ", vc file: " & VC_File else "");
@@ -1093,7 +1093,7 @@ package body Flow_Error_Messages is
             Cntexample_File_Maps.Empty);
 
       Severity  : constant Msg_Severity :=
-        Get_Severity (N, Is_Proved, Tag, Verdict);
+        Get_Severity (VC_Loc, Is_Proved, Tag, Verdict);
       Suppr     : String_Id := No_String;
       Msg_Id    : Message_Id := No_Message_Id;
       Info      : Annotated_Range;
@@ -1125,8 +1125,9 @@ package body Flow_Error_Messages is
                Suppr := Info.Reason;
 
                if Report_Mode /= GPR_Fail then
-                  Msg_Id := Print_Regular_Msg (Justified_Message (N, Tag),
-                                               Span, Info_Kind);
+                  Msg_Id :=
+                    Print_Regular_Msg (Justified_Message (VC_Loc, Tag),
+                                       Span, Info_Kind);
                end if;
 
             else
