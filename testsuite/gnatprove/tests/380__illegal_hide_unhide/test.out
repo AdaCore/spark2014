@@ -1,0 +1,21 @@
+test_hide_annot.adb:12:04: error: wrong number of arguments in pragma Annotate (GNATprove, Hide_Info, ...), expected 4
+test_hide_annot.adb:16:43: error: third argument of pragma Annotate Hide_Info must be a string
+test_hide_annot.adb:20:43: error: third parameter for pragma Annotate Hide_Info should be "Expression_Function_Body"
+test_hide_annot.adb:24:71: error: fourth argument of pragma Annotate Hide_Info must be an entity
+test_hide_annot.adb:31:74: error: the entity of a pragma Annotate Hide_Info for expression function bodies shall be an expression function
+test_hide_annot.adb:42:74: error: an expression function annotated with Annotate Hide_Info shall be in SPARK
+test_hide_annot.adb:54:74: error: the body of an expression function annotated with Annotate Hide_Info shall be compatible with SPARK
+test_hide_annot.adb:71:77: error: an expression function annotated with Annotate Hide_Info shall not have a refined postcondition
+test_hide_annot.adb:84:74: error: an expression function annotated with Annotate Hide_Info shall not be inlined for proof
+test_hide_annot.adb:92:06: error: a function annotated with Annotate Hide_Info or Unhide_Info shall not be inlined for proof
+test_hide_annot.adb:100:74: error: an expression function annotated with Annotate Hide_Info shall not be a logical equality
+test_hide_annot.adb:106:13: error: a function annotated with Annotate Hide_Info or Unhide_Info shall not be a logical equality
+test_hide_annot.adb:117:74: error: an expression function annotated with Annotate Hide_Info shall not be annotated with At_End_Borow
+test_hide_annot.adb:125:13: error: a function annotated with Annotate Hide_Info or Unhide_Info shall not be annotated with At_End_Borow
+test_hide_annot.adb:136:74: error: an expression function annotated with Annotate Hide_Info shall not have higher-order specialization
+test_hide_annot.adb:142:13: error: a subprogram annotated with Annotate Hide_Info or Unhide_Info shall not have higher-order specialization
+test_hide_annot.adb:150:07: error: there shall be at most one Hide_Info or Unhide_Info annotation for Id in Duplicated_Annot
+test_hide_annot.adb:159:07: error: pragma Annotate Hide_Info must appear at the beginning of a subprogram, entry, or package body, or just after a subprogram, entry, or package body or declaration
+test_hide_annot.adb:194:07: error: Unhide_Info annotation is redundant, Id is visible by default
+test_hide_annot.adb:195:07: error: Hide_Info annotation is redundant, Hidden_Id is hidden by default
+gnatprove: error during flow analysis and proof

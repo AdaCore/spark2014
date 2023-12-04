@@ -25,7 +25,6 @@
 ------------------------------------------------------------------------------
 
 with Ada.Characters.Handling;      use Ada.Characters.Handling;
-with Ada.Containers.Hashed_Maps;
 with Ada.Containers.Doubly_Linked_Lists;
 with Ada.Containers.Ordered_Maps;
 with Aspects;                      use Aspects;
@@ -154,6 +153,23 @@ package body SPARK_Definition.Annotate is
    --  annotated with Higher_Order_Specialization to the node on which the
    --  checks shall be emited.
 
+   type Node_Pair is record
+      First : Node_Id;
+      Snd   : Node_Id;
+   end record;
+
+   package Node_To_Node_Pairs is new Ada.Containers.Hashed_Maps
+     (Key_Type        => Node_Id,
+      Element_Type    => Node_Pair,
+      Hash            => Node_Hash,
+      Equivalent_Keys => "=");
+   --  Maps of nodes to pairs of nodes
+
+   Delayed_Hide_Compatibility_Checks : Node_To_Node_Pairs.Map :=
+     Node_To_Node_Pairs.Empty_Map;
+   --  Map Hide or Unhide annotations that should be checked for compatibility
+   --  with the default to their scope and their entity.
+
    Higher_Order_Spec_Annotations : Common_Containers.Node_Graphs.Map :=
      Common_Containers.Node_Graphs.Empty_Map;
    --  Stores function entities with a pragma Annotate
@@ -182,6 +198,10 @@ package body SPARK_Definition.Annotate is
      Common_Containers.Node_Maps.Empty_Map;
    --  Maps all the function entities E with a pragma Annotate
    --  (GNATprove, Inline_For_Proof, E) to their expression.
+   Inferred_Inline_Annotations : Common_Containers.Node_Maps.Map :=
+     Common_Containers.Node_Maps.Empty_Map;
+   --  Same as above but for annotations inferred by the tool
+
    Inline_Pragmas : Common_Containers.Node_Maps.Map :=
      Common_Containers.Node_Maps.Empty_Map;
    --  Maps all the function entities E with a pragma Annotate
@@ -200,6 +220,22 @@ package body SPARK_Definition.Annotate is
      Common_Containers.Node_Sets.Empty_Set;
    --  Stores type entities with a pragma Annotate
    --  (GNATprove, No_Wrap_Around, E).
+
+   package Hide_Annotations_Maps is new Ada.Containers.Hashed_Maps
+     (Key_Type        => Node_Id,
+      Element_Type    => Node_To_Hide_Annotation_Kind_Maps.Map,
+      Hash            => Node_Hash,
+      Equivalent_Keys => "=",
+      "="             => Node_To_Hide_Annotation_Kind_Maps."=");
+
+   Hide_Or_Unhide_Annotations : Hide_Annotations_Maps.Map :=
+     Hide_Annotations_Maps.Empty_Map;
+   --  Map entities to the hide or unhide annotations that should be
+   --  considered for its body.
+
+   Potentially_Hidden_Entities : Node_To_Hide_Annotation_Kind_Maps.Map :=
+     Node_To_Hide_Annotation_Kind_Maps.Empty_Map;
+   --  Map potentially hidden entities to their default
 
    Skip_Proof_Annotations : Common_Containers.Node_Sets.Set :=
      Common_Containers.Node_Sets.Empty_Set;
@@ -310,6 +346,13 @@ package body SPARK_Definition.Annotate is
       Placed_At_Full_View, --  For type: placed at full view declaration
       Placed_At_Private_View); --  For type: placed at private view declaration
 
+   function Annot_Applies_To (Prag : Node_Id) return Opt_N_Entity_Id;
+   --  Return the entity a Hide_Info or Unhide_Info annotation applies to, or
+   --  Empty if none is found. It shall be a subprogram, entry, or package
+   --  entity. The pragma can be localized either at the top inside the
+   --  package, subprogram, or entry body, or just after the entity body or
+   --  declaration. For now, it does not expect concurrent types nor generics.
+
    procedure Check_Aggregate_Annotation
      (Aspect_Or_Pragma : String;
       Arg3_Exp         : Node_Id;
@@ -377,6 +420,16 @@ package body SPARK_Definition.Annotate is
       Prag     : Node_Id);
    --  Check validity of a pragma Annotate (GNATprove, Handler, E) and insert
    --  it in the Handler_Annotations set.
+
+   procedure Check_Hide_Annotation
+     (Aspect_Or_Pragma : String;
+      Arg3_Exp         : Node_Id;
+      Arg4_Exp         : Node_Id;
+      Unhide           : Boolean;
+      Prag             : Node_Id);
+   --  Check validity of a pragma Annotate (GNATprove, Hide, ..., E) and insert
+   --  it in the Hide_Or_Unhide_Annotations map. Also keep the
+   --  Potentially_Hidden_Expr_Fun map up-to-date.
 
    procedure Check_Higher_Order_Specialization_Annotation
      (Arg3_Exp : Node_Id;
@@ -455,6 +508,42 @@ package body SPARK_Definition.Annotate is
    begin
       return L.First < R.First;
    end "<";
+
+   ----------------------
+   -- Annot_Applies_To --
+   ----------------------
+
+   function Annot_Applies_To (Prag : Node_Id) return Opt_N_Entity_Id is
+      Cur : Node_Id := Prag;
+   begin
+      if not Is_List_Member (Prag) then
+         return Empty;
+      end if;
+
+      loop
+         Cur := Prev (Cur);
+         exit when No (Cur) or else
+           ((Comes_From_Source (Cur)
+             or else Comes_From_Source (Original_Node (Cur)))
+            and then Nkind (Cur) /= N_Pragma);
+      end loop;
+
+      if No (Cur) then
+         Cur := Parent (Prag);
+      end if;
+
+      if Nkind (Cur) in N_Subprogram_Body
+                      | N_Subprogram_Declaration
+                      | N_Entry_Body
+                      | N_Entry_Declaration
+                      | N_Package_Body
+                      | N_Package_Declaration
+      then
+         return Unique_Defining_Entity (Cur);
+      end if;
+
+      return Empty;
+   end Annot_Applies_To;
 
    --------------------------------
    -- Check_Aggregate_Annotation --
@@ -1673,6 +1762,13 @@ package body SPARK_Definition.Annotate is
          elsif not Is_Expression_Function_Or_Completion (E) then
             Error_Msg_N_If
               ("At_End_Borrow function must be an expression function", E);
+
+         elsif Potentially_Hidden_Entities.Contains (E) then
+            Error_Msg_N_If
+              ("a function annotated with Annotate Hide_Info or "
+               & "Unhide_Info shall not be annotated with At_End_Borow",
+               E);
+            return;
          else
             declare
                Expr : constant Node_Id :=
@@ -2254,6 +2350,187 @@ package body SPARK_Definition.Annotate is
       Handler_Annotations.Insert (Base_Retysp (E));
    end Check_Handler_Annotation;
 
+   ---------------------------
+   -- Check_Hide_Annotation --
+   ---------------------------
+
+   procedure Check_Hide_Annotation
+     (Aspect_Or_Pragma : String;
+      Arg3_Exp         : Node_Id;
+      Arg4_Exp         : Node_Id;
+      Unhide           : Boolean;
+      Prag             : Node_Id)
+   is
+      Annot   : constant String :=
+        (if Unhide then "Unhide_Info" else "Hide_Info");
+      Ok      : Boolean;
+      Ent     : Entity_Id;
+      Default : Boolean;
+      Scope   : Entity_Id;
+   begin
+      --  The 4th argument must be an entity
+
+      Check_Annotate_Entity_Argument
+        (Arg4_Exp, "fourth", Prag, Annot, Ok, Ignore_SPARK_Status => True);
+      if not Ok then
+         return;
+      end if;
+      Ent := Entity (Arg4_Exp);
+
+      if Nkind (Arg3_Exp) not in N_String_Literal then
+         Error_Msg_N_If
+           ("third argument of " & Aspect_Or_Pragma
+            & " Annotate " & Annot & " must be a string",
+            Arg3_Exp);
+         return;
+      end if;
+
+      --  Search the node to which the current annotation applies. For aspects,
+      --  it is the 4th parameter. For pragmas, look for a declaration or body
+      --  directly before or enclosing Prag. Default is set to True if Ent
+      --  itself is annotated with Hide_Info. In this case, Ent is considered
+      --  to be hidden by default.
+
+      if From_Aspect_Specification (Prag) then
+         Scope := Ent;
+         Default := not Unhide;
+      else
+         Scope := Annot_Applies_To (Prag);
+         if No (Scope) then
+            Error_Msg_N_If
+              (Aspect_Or_Pragma & " Annotate " & Annot
+               & " must appear at the beginning of a subprogram, entry, or "
+               & "package body, or just after a subprogram, entry, or package "
+               & "body or declaration",
+               Prag);
+            return;
+         end if;
+         Default := not Unhide and then Scope = Ent;
+      end if;
+
+      --  For now Hide_Info and Unhide_Info only apply to expression function
+      --  bodies.
+
+      if To_Lower (To_String (Strval (Arg3_Exp))) /= "expression_function_body"
+      then
+         Error_Msg_N_If
+           ("third parameter for " & Aspect_Or_Pragma  & " Annotate "
+            & Annot & " should be ""Expression_Function_Body""",
+            Arg3_Exp);
+         return;
+      end if;
+
+      if not Is_Expression_Function_Or_Completion (Ent) then
+         Error_Msg_N_If
+           ("the entity of a pragma Annotate " & Annot & " for expression "
+            & "function bodies shall be an expression function",
+            Arg4_Exp);
+         return;
+
+      elsif not In_SPARK (Ent) then
+         Error_Msg_N_If
+           ("an expression function annotated with Annotate "
+            & Annot & " shall be in SPARK",
+            Arg4_Exp);
+         return;
+
+      elsif not Entity_Body_Compatible_With_SPARK (Ent) then
+         Error_Msg_N_If
+           ("the body of an expression function annotated with Annotate "
+            & Annot & " shall be compatible with SPARK",
+            Arg4_Exp);
+         return;
+
+      elsif Has_Contracts (Ent, Pragma_Refined_Post) then
+         Error_Msg_N_If
+           ("an expression function annotated with Annotate "
+            & Annot & " shall not have a refined postcondition",
+            Arg4_Exp);
+         return;
+
+      elsif Inline_Annotations.Contains (Ent) then
+         Error_Msg_N_If
+           ("an expression function annotated with Annotate "
+            & Annot & " shall not be inlined for proof",
+            Arg4_Exp);
+         return;
+
+      elsif Has_At_End_Borrow_Annotation (Ent) then
+         Error_Msg_N_If
+           ("an expression function annotated with Annotate "
+            & Annot & " shall not be annotated with At_End_Borow",
+            Arg4_Exp);
+         return;
+
+      elsif Has_Logical_Eq_Annotation (Ent) then
+         Error_Msg_N_If
+           ("an expression function annotated with Annotate "
+            & Annot & " shall not be a logical equality",
+            Arg4_Exp);
+         return;
+
+      elsif Has_Higher_Order_Specialization_Annotation (Ent) then
+         Error_Msg_N_If
+           ("an expression function annotated with Annotate "
+            & Annot & " shall not have higher-order specialization",
+            Arg4_Exp);
+         return;
+      end if;
+
+      --  Insert specific annotations in Hide_Or_Unhide_Annotations
+
+      if not Default then
+         declare
+            Kind      : constant Hide_Annotation_Kind :=
+              (if Unhide then Unhide_Expr_Fun else Hide_Expr_Fun);
+            Inserted  : Boolean;
+            Position  : Hide_Annotations_Maps.Cursor;
+            Inner_Pos : Node_To_Hide_Annotation_Kind_Maps.Cursor;
+         begin
+            Hide_Or_Unhide_Annotations.Insert
+              (Scope, Node_To_Hide_Annotation_Kind_Maps.Empty_Map,
+               Position, Inserted);
+            Hide_Or_Unhide_Annotations (Position).Insert
+              (Ent, Kind, Inner_Pos, Inserted);
+
+            --  Check that there is a single Hide or Unhide annotation for Ent
+            --  in Scope. We allow duplicating the same annotation, as such a
+            --  duplicate might be introduced by the frontend.
+
+            if not Inserted
+              and then
+                Hide_Or_Unhide_Annotations (Position) (Inner_Pos) /= Kind
+            then
+               Error_Msg_N_If
+                 ("there shall be at most one Hide_Info or Unhide_Info"
+                  & " annotation for " & Source_Name (Ent) & " in "
+                  & Source_Name (Scope),
+                  Prag);
+            end if;
+         end;
+
+         --  As the default can change, compatibility checks between the
+         --  default and other hide or unhide annotations are deferred.
+
+         Delayed_Hide_Compatibility_Checks.Insert (Prag, (Scope, Ent));
+      end if;
+
+      --  Also fill the Potentially_Hidden_Entities map. The default might
+      --  change from unhidden to hidden but not the other way around.
+
+      declare
+         Kind     : constant Hide_Annotation_Kind :=
+           (if Default then Hide_Expr_Fun else Unhide_Expr_Fun);
+         Inserted : Boolean;
+         Position : Node_To_Hide_Annotation_Kind_Maps.Cursor;
+      begin
+         Potentially_Hidden_Entities.Insert (Ent, Kind, Position, Inserted);
+         if not Inserted and then Default then
+            Potentially_Hidden_Entities (Position) := Kind;
+         end if;
+      end;
+   end Check_Hide_Annotation;
+
    --------------------------------------------------
    -- Check_Higher_Order_Specialization_Annotation --
    --------------------------------------------------
@@ -2318,6 +2595,12 @@ package body SPARK_Definition.Annotate is
            ("function annotated with Higher_Order_Specialization shall not be"
             & " a borrowing traversal function",
             Arg3_Exp);
+         return;
+      elsif Potentially_Hidden_Entities.Contains (E) then
+         Error_Msg_N_If
+           ("a subprogram annotated with Annotate Hide_Info or "
+            & "Unhide_Info shall not have higher-order specialization",
+            E);
          return;
 
       --  For procedures, check that we have a lemma
@@ -2741,6 +3024,12 @@ package body SPARK_Definition.Annotate is
          Error_Msg_N_If
            ("function annotated with Inline_For_Proof shall not be"
             & " a borrowing traversal function",
+            Arg3_Exp);
+         return;
+      elsif Potentially_Hidden_Entities.Contains (E) then
+         Error_Msg_N_If
+           ("a function annotated with Annotate Hide_Info or "
+            & "Unhide_Info shall not be inlined for proof",
             Arg3_Exp);
          return;
       end if;
@@ -3255,6 +3544,12 @@ package body SPARK_Definition.Annotate is
          Error_Msg_N_If
            ("Entity parameter of a pragma Logical_Equal shall not have"
             & " contract cases", E);
+         return;
+      elsif Potentially_Hidden_Entities.Contains (E) then
+         Error_Msg_N_If
+           ("a function annotated with Annotate Hide_Info or "
+            & "Unhide_Info shall not be a logical equality",
+            E);
          return;
       else
          declare
@@ -4150,6 +4445,34 @@ package body SPARK_Definition.Annotate is
          Do_Delayed_Checks_For_Aggregates (Typ);
       end loop;
       Delayed_Checks_For_Aggregates.Clear;
+
+      --  Go over hide and unhide annotations to make sure that they are
+      --  compatible with the default.
+
+      for Position in Delayed_Hide_Compatibility_Checks.Iterate loop
+         declare
+            use Node_To_Node_Pairs;
+            Prag  : constant Node_Id := Key (Position);
+            Scope : constant Entity_Id := Element (Position).First;
+            E     : constant Entity_Id := Element (Position).Snd;
+            Kind  : constant Hide_Annotation_Kind :=
+              Hide_Or_Unhide_Annotations (Scope) (E);
+         begin
+            if Potentially_Hidden_Entities (E) = Kind then
+               case Kind is
+                  when Hide_Expr_Fun =>
+                     Error_Msg_N_If
+                       ("Hide_Info annotation is redundant, " & Source_Name (E)
+                        & " is hidden by default", Prag);
+                  when Unhide_Expr_Fun =>
+                     Error_Msg_N_If
+                       ("Unhide_Info annotation is redundant, "
+                        & Source_Name (E) & " is visible by default", Prag);
+               end case;
+            end if;
+         end;
+      end loop;
+      Delayed_Hide_Compatibility_Checks.Clear;
    end Do_Delayed_Checks_On_Pragma_Annotate;
 
    ------------------------
@@ -4234,6 +4557,46 @@ package body SPARK_Definition.Annotate is
          end;
       end;
    end Get_Container_Function_From_Pragma;
+
+   --------------------------
+   -- Get_Hide_Annotations --
+   --------------------------
+
+   function Get_Hide_Annotations (E : Entity_Id) return
+     Node_To_Hide_Annotation_Kind_Maps.Map
+   is
+      use Hide_Annotations_Maps;
+      Position : constant Hide_Annotations_Maps.Cursor :=
+        Hide_Or_Unhide_Annotations.Find (E);
+   begin
+      if Has_Element (Position) then
+         return Element (Position);
+      else
+         return Node_To_Hide_Annotation_Kind_Maps.Empty_Map;
+      end if;
+   end Get_Hide_Annotations;
+
+   ------------------------------
+   -- Expr_Fun_Might_Be_Hidden --
+   ------------------------------
+
+   function Expr_Fun_Might_Be_Hidden (E : Entity_Id) return Boolean is
+     (Potentially_Hidden_Entities.Contains (E));
+   --  For now, the expression function body is the only thing which can be
+   --  hidden.
+
+   --------------------------------
+   -- Expr_Fun_Hidden_By_Default --
+   --------------------------------
+
+   function Expr_Fun_Hidden_By_Default (E : Entity_Id) return Boolean is
+      use Node_To_Hide_Annotation_Kind_Maps;
+      Position : constant Node_To_Hide_Annotation_Kind_Maps.Cursor :=
+        Potentially_Hidden_Entities.Find (E);
+   begin
+      return Has_Element (Position)
+        and then Element (Position) = Hide_Expr_Fun;
+   end Expr_Fun_Hidden_By_Default;
 
    ------------------------------
    -- Get_Lemmas_To_Specialize --
@@ -4482,7 +4845,7 @@ package body SPARK_Definition.Annotate is
          if Contains_Function_Call (Value) then
             return;
          else
-            Inline_Annotations.Include (E, Value);
+            Inferred_Inline_Annotations.Include (E, Value);
          end if;
       end if;
    end Infer_Inline_Annotation;
@@ -4832,9 +5195,17 @@ package body SPARK_Definition.Annotate is
    --------------------------------
 
    function Retrieve_Inline_Annotation (E : Entity_Id) return Node_Id is
-      Position : constant Common_Containers.Node_Maps.Cursor :=
+      Position : Common_Containers.Node_Maps.Cursor :=
         Inline_Annotations.Find (E);
+
    begin
+      --  Do not infer inline annotations for potentially hidden functions
+
+      if not Common_Containers.Node_Maps.Has_Element (Position)
+        and then not Potentially_Hidden_Entities.Contains (E)
+      then
+         Position := Inferred_Inline_Annotations.Find (E);
+      end if;
       if not Common_Containers.Node_Maps.Has_Element (Position) then
          return Empty;
       else
@@ -5018,6 +5389,8 @@ package body SPARK_Definition.Annotate is
 
       elsif Name = "iterable_for_proof"
         or else Name = "container_aggregates"
+        or else Name = "hide_info"
+        or else Name = "unhide_info"
         or else (not From_Aspect
                  and then (Name = "false_positive"
                            or else Name = "intentional"))
@@ -5075,6 +5448,14 @@ package body SPARK_Definition.Annotate is
 
       elsif Name = "handler" then
          Check_Handler_Annotation (Arg3_Exp, Prag);
+
+      elsif Name = "hide_info" then
+         Check_Hide_Annotation
+           (Aspect_Or_Pragma, Arg3_Exp, Arg4_Exp, False, Prag);
+
+      elsif Name = "unhide_info" then
+         Check_Hide_Annotation
+           (Aspect_Or_Pragma, Arg3_Exp, Arg4_Exp, True, Prag);
 
       elsif Name = "higher_order_specialization" then
          Check_Higher_Order_Specialization_Annotation (Arg3_Exp, Prag);
