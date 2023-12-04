@@ -7536,7 +7536,7 @@ package body Gnat2Why.Subprograms is
         Open_Theory
           (WF_Context, E_Module (E, Axiom),
            Comment =>
-             "Module giving a defining axiom for the expression function "
+             "Module giving a post axiom for the expression function "
            & """" & Get_Name_String (Chars (E)) & """"
            & (if Sloc (E) > 0 then
                 " defined at " & Build_Location_String (Sloc (E))
@@ -7588,6 +7588,10 @@ package body Gnat2Why.Subprograms is
          Generate_Dispatch_Compatibility_Axioms (Dispatch_Th, E);
       end if;
 
+      Close_Theory (Axiom_Th,
+                    Kind           => Axiom_Theory,
+                    Defined_Entity => E);
+
       --  If the entity's body is not in SPARK, if it is inlined for proof, or
       --  if it is a volatile function or a function with side effects, do not
       --  generate axiom.
@@ -7597,9 +7601,6 @@ package body Gnat2Why.Subprograms is
         or else Is_Function_With_Side_Effects (E)
         or else Has_Pragma_Volatile_Function (E)
       then
-         Close_Theory (Axiom_Th,
-                       Kind           => Axiom_Theory,
-                       Defined_Entity => E);
          Result_Name := Why_Empty;
          Result_Is_Mutable := False;
 
@@ -7615,6 +7616,17 @@ package body Gnat2Why.Subprograms is
          end if;
          return;
       end if;
+
+      Axiom_Th :=
+        Open_Theory
+          (WF_Context, E_Module (E, Expr_Fun_Axiom),
+           Comment =>
+             "Module giving a defining axiom for the expression function "
+           & """" & Get_Name_String (Chars (E)) & """"
+           & (if Sloc (E) > 0 then
+                " defined at " & Build_Location_String (Sloc (E))
+             else "")
+           & ", created in " & GNAT.Source_Info.Enclosing_Entity);
 
       Params := (Logic_Params with delta Gen_Marker => GM_Toplevel);
 

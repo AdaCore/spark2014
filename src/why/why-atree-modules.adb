@@ -139,6 +139,7 @@ package body Why.Atree.Modules is
         & (case K is
               when Regular                  => "",
               when Axiom                     => "___axiom",
+              when Expr_Fun_Axiom            => "___def__axiom",
               when Recursive_Axiom           => "___rec_axiom",
               when Logic_Function_Decl       => "___logic_fun",
               when Program_Function_Decl     => "___program_fun",
@@ -169,6 +170,12 @@ package body Why.Atree.Modules is
             | Axiom
          =>
             null;
+
+         when Expr_Fun_Axiom =>
+            pragma Assert
+              (E in Callable_Kind_Id
+               and then Is_Expression_Function_Or_Completion (E)
+               and then Entity_Body_Compatible_With_SPARK (E));
 
          when Recursive_Axiom =>
             pragma Assert

@@ -776,7 +776,8 @@ package Why.Atree.Modules is
 
    type Module_Kind is
      (Regular,
-      Axiom,                     --  Defining and post axioms
+      Axiom,                     --  Defining or post axioms
+      Expr_Fun_Axiom,            --  Defining axiom of expression functions
       Recursive_Axiom,           --  Post axiom for recursive subprograms
       Logic_Function_Decl,       --  Declaration of the logic function
       Program_Function_Decl,     --  Declaration of the program function
