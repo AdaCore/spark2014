@@ -12677,7 +12677,6 @@ package body Gnat2Why.Expr is
       procedure Get_Aggregate_Elements
         (Values              : out Aggregate_Element_Lists.Vector;
          Variables           : out Flow_Id_Sets.Set;
-         Contextual_Parts    : out Node_Sets.Set;
          Elements_From_Nodes : out Node_To_Why_Id.Map;
          Bounds              : out W_Expr_Array);
       --  Extract parts of the aggregate Expr that will be passed in
@@ -12689,8 +12688,8 @@ package body Gnat2Why.Expr is
       --  addition to the elements.
       --  Elements of the aggregate located inside iterated component
       --  associations are not collected in Values, as they may depend on
-      --  index parameters. Instead, we collect the global variables they
-      --  access and their contextual nodes in Variables and Contextual_Parts.
+      --  index parameters. Instead, we bypass the function-based translation
+      --  and translate those elements in-place.
       --
       --  Get_Aggregate_Elements additionally bind Why3 identifiers for bounds
       --  and elements. For elements, those identifiers are found through map
@@ -12700,7 +12699,6 @@ package body Gnat2Why.Expr is
       procedure Generate_Logic_Function
         (Values              : Aggregate_Element_Lists.Vector;
          Variables           : Flow_Id_Sets.Set;
-         Contextual_Parts    : Node_Sets.Set;
          Elements_From_Nodes : Node_To_Why_Id.Map;
          Bounds              : W_Expr_Array);
       --  Generate the logic function definition for the aggregate Expr, with a
@@ -12737,7 +12735,6 @@ package body Gnat2Why.Expr is
         (Func                : W_Identifier_Id;
          Values              : Aggregate_Element_Lists.Vector;
          Variables           : Flow_Id_Sets.Set;
-         Contextual_Parts    : Node_Sets.Set;
          Elements_From_Nodes : Node_To_Why_Id.Map;
          Bounds              : W_Expr_Array)
          return W_Expr_Id
@@ -12771,7 +12768,6 @@ package body Gnat2Why.Expr is
         (Func                : W_Identifier_Id;
          Values              : Aggregate_Element_Lists.Vector;
          Variables           : Flow_Id_Sets.Set;
-         Contextual_Parts    : Node_Sets.Set;
          Elements_From_Nodes : Node_To_Why_Id.Map;
          Bounds              : W_Expr_Array)
          return W_Expr_Id
@@ -12788,10 +12784,6 @@ package body Gnat2Why.Expr is
                  (To_Binder_Array
                     (Get_Binders_From_Variables (Variables),
                      Keep_Const => Keep),
-                  Ref_Allowed => Params.Ref_Allowed);
-               Context_Args : constant W_Expr_Array := Get_Args_From_Binders
-                 (To_Binder_Array
-                    (Get_Binders_From_Contextual_Nodes (Contextual_Parts)),
                   Ref_Allowed => Params.Ref_Allowed);
             begin
                --  Compute the arguments for the function call. The values are
@@ -12834,37 +12826,8 @@ package body Gnat2Why.Expr is
                R := New_Call (Ada_Node => Expr,
                               Domain   => Domain,
                               Name     => Func,
-                              Args     =>
-                                Args & Bnd_Args & Var_Args & Context_Args,
+                              Args     => Args & Bnd_Args & Var_Args,
                               Typ      => Ret_Type);
-
-               --  If the old map is not used by the current translation, we
-               --  need to introduce mappings for those used in Context_Args.
-               --  We do not need to introduce checks here, iterated component
-               --  associations are checked separately.
-
-               if Params.Old_Policy /= Use_Map then
-                  declare
-                     Assoc_Old : Node_Sets.Set;
-                  begin
-                     for N of Contextual_Parts loop
-                        if Nkind (N) = N_Attribute_Reference
-                          and then Attribute_Name (N) = Name_Old
-                        then
-                           Assoc_Old.Include (Prefix (N));
-                        end if;
-                     end loop;
-
-                     R := Bind_From_Mapping_In_Expr
-                       (Params => Params,
-                        Map    => Map_For_Old,
-                        Expr   => R,
-                        Domain =>
-                          (if Domain = EW_Prog then EW_Pterm else Domain),
-                        Subset => Assoc_Old,
-                        As_Old => True);
-                  end;
-               end if;
 
                --  Insert checks for the choices of the aggregate, binding
                --  temporary variable for update prefix when present.
@@ -13031,7 +12994,6 @@ package body Gnat2Why.Expr is
       procedure Generate_Logic_Function
         (Values              : Aggregate_Element_Lists.Vector;
          Variables           : Flow_Id_Sets.Set;
-         Contextual_Parts    : Node_Sets.Set;
          Elements_From_Nodes : Node_To_Why_Id.Map;
          Bounds              : W_Expr_Array)
       is
@@ -13099,18 +13061,14 @@ package body Gnat2Why.Expr is
                Mutable  => False,
                Labels   => <>));
 
-         --  Additional arguments for external references in iterated
-         --  component associations.
+         --  Additional arguments for variables occurring in dynamic invariant/
+         --  default init.
 
          Var_Items      : Item_Array :=
            Get_Binders_From_Variables (Variables);
          Var_Params     : Binder_Array
            (1 .. Item_Array_Length (Var_Items, Keep_Const => Keep));
          Var_Args       : W_Expr_Array (Var_Params'Range);
-         Context_Params : constant Binder_Array := To_Binder_Array
-           (Get_Binders_From_Contextual_Nodes (Contextual_Parts));
-         Context_Args   : constant W_Expr_Array := Get_Args_From_Binders
-           (Context_Params, Ref_Allowed => False);
 
          --  Counter
 
@@ -13189,8 +13147,7 @@ package body Gnat2Why.Expr is
          Aggr :=
            New_Call (Ada_Node => Expr,
                      Name     => Func,
-                     Args     =>
-                       Call_Args & Bounds & Var_Args & Context_Args,
+                     Args     => Call_Args & Bounds & Var_Args,
                      Typ      => Ret_Type);
 
          Def_Pred :=
@@ -13223,8 +13180,7 @@ package body Gnat2Why.Expr is
                   Name        => To_Local (Func),
                   Labels      => Symbol_Sets.Empty_Set,
                   Location    => No_Location,
-                  Binders     =>
-                    Call_Params & Bnd_Params & Var_Params & Context_Params,
+                  Binders     => Call_Params & Bnd_Params & Var_Params,
                   Return_Type => Ret_Type));
 
          Close_Theory (Th,
@@ -13251,8 +13207,7 @@ package body Gnat2Why.Expr is
          Emit (Th,
                New_Guarded_Axiom
                  (Name     => NID (Def_Axiom),
-                  Binders  =>
-                    Call_Params & Bnd_Params & Var_Params & Context_Params,
+                  Binders  => Call_Params & Bnd_Params & Var_Params,
                   Def      => Def_Pred,
                   Dep      =>
                     New_Axiom_Dep (Name => Func,
@@ -13270,15 +13225,11 @@ package body Gnat2Why.Expr is
       procedure Get_Aggregate_Elements
         (Values              : out Aggregate_Element_Lists.Vector;
          Variables           : out Flow_Id_Sets.Set;
-         Contextual_Parts    : out Node_Sets.Set;
          Elements_From_Nodes : out Node_To_Why_Id.Map;
          Bounds              : out W_Expr_Array)
       is
          In_Iterated_Assoc : Boolean := False;
          --  Register whether we have traversed iterated component associations
-         Index_Parameters  : Flow_Id_Sets.Set;
-         --  Set of all the index parameters defined in Expr. They are removed
-         --  from the set of accessed global variables.
 
          -----------------------
          -- Local subprograms --
@@ -13451,8 +13402,8 @@ package body Gnat2Why.Expr is
               and then Box_Present (Expr_Or_Association)
             then
 
-               --  Collecting variables and contextual nodes of the default
-               --  expression for later use as parameter.
+               --  Collecting variables of the default expression for later use
+               --  as parameter.
 
                if In_Iterated_Assoc then
                   Variables_In_Default_Init (Comp_Type, Variables);
@@ -13474,9 +13425,6 @@ package body Gnat2Why.Expr is
                   when N_Iterated_Component_Association =>
                      Value_Expr := Expression (Expr_Or_Association);
                      In_Iterated_Assoc := True;
-                     Index_Parameters.Insert
-                       (Direct_Mapping_Id
-                          (Defining_Identifier (Expr_Or_Association)));
                   when N_Component_Association =>
                      Value_Expr := Expression (Expr_Or_Association);
                   when others =>
@@ -13510,45 +13458,7 @@ package body Gnat2Why.Expr is
                   pragma Assert (Dim = Nb_Dim or else
                                    (In_Delta_Aggregate and then Dim = 1));
 
-                  --  Collect variables and contextual nodes of the associated
-                  --  actions if any.
-
-                  if Nkind (Expr_Or_Association)
-                    = N_Iterated_Component_Association
-                  then
-                     declare
-                        Actions : constant List_Id :=
-                          Loop_Actions (Expr_Or_Association);
-                        Action  : Node_Id := First (Actions);
-                     begin
-                        while Present (Action) loop
-                           if Nkind (Action) = N_Object_Declaration then
-                              declare
-                                 Const : constant N_Subexpr_Id :=
-                                   Expression (Action);
-                              begin
-                                 Variables.Union
-                                   (Get_Variables_For_Proof (Const, Expr));
-                                 Contextual_Parts.Union
-                                   (Collect_Contextual_Nodes (Const));
-                              end;
-                           end if;
-
-                           Next (Action);
-                        end loop;
-                     end;
-                  end if;
-
-                  --  Collecting variables and contextual nodes of the
-                  --  component expression for later use as parameter.
-
-                  if In_Iterated_Assoc then
-                     Variables.Union
-                       (Get_Variables_For_Proof (Value_Expr, Expr));
-                     Contextual_Parts.Union
-                       (Collect_Contextual_Nodes (Value_Expr));
-
-                  else
+                  if not In_Iterated_Assoc then
                      Add_Element
                        (Aggregate_Element'
                           (Value => Value_Expr,
@@ -13618,11 +13528,6 @@ package body Gnat2Why.Expr is
          end if;
 
          Traverse_Rec_Aggregate (Dim => 1, Subexpr => Expr);
-
-         --  Remove parameter indices from local component association from the
-         --  set of referenced variables.
-
-         Variables.Difference (Index_Parameters);
 
          --  If the bounds of the aggregate should be given as additional
          --  parameters to the call, also bind identifiers for them.
@@ -15408,7 +15313,6 @@ package body Gnat2Why.Expr is
       declare
          Values              : Aggregate_Element_Lists.Vector;
          Variables           : Flow_Id_Sets.Set;
-         Contextual_Parts    : Node_Sets.Set;
          Elements_From_Nodes : Node_To_Why_Id.Map;
          Bounds              : W_Expr_Array (1 .. Bound_Count);
          Func                : W_Identifier_Id := Why_Empty;
@@ -15418,7 +15322,6 @@ package body Gnat2Why.Expr is
          Get_Aggregate_Elements
            (Values,
             Variables,
-            Contextual_Parts,
             Elements_From_Nodes,
             Bounds);
 
@@ -15434,7 +15337,6 @@ package body Gnat2Why.Expr is
                   Generate_Logic_Function
                     (Values,
                      Variables,
-                     Contextual_Parts,
                      Elements_From_Nodes,
                      Bounds);
                   M := E_Module (Expr);
@@ -15450,7 +15352,6 @@ package body Gnat2Why.Expr is
            (Func,
             Values,
             Variables,
-            Contextual_Parts,
             Elements_From_Nodes,
             Bounds);
       end;
