@@ -658,53 +658,116 @@ package body Gnat2Why.Expr is
       Update_Prefix : Opt_N_Subexpr_Id := Empty;
       Relaxed_Init  : Boolean)
       return W_Expr_Id;
-   --  Transform an aggregate Expr of array type. It may be called multiple
-   --  times on the same Ada node, corresponding to different phases of the
-   --  translation. The first time it is called on an Ada node, a logic
-   --  function is generated and stored in Ada_To_Why_Func, so that the
-   --  function and axiom are generated only once per source aggregate. This
-   --  function F is used for generating each translation of this node. The
-   --  general signature for F is:
+   --  Transform an aggregate Expr of array type. The aggregate may be a plain
+   --  array aggregate (Ada RM 4.3.3), an array delta aggregate (Ada RM 4.3.4),
+   --  or a multi-dimensional delta array aggregate defined by a 'Update
+   --  attribute (GNAT extension). The aggregate is delta iff there is a
+   --  non-empty update prefix supplied, in which case only the updates are
+   --  looked up in Expr. Relaxed_Init identify whether the resulting array
+   --  should have relaxed initialization.
    --
-   --     function F (<params>) : <type of aggregate>
+   --  The core translation is to produce a Why3 proposition P that defines the
+   --  aggregate value by stating what its components and bounds are. The
+   --  subexpressions of the aggregate, its 'elements', are separated out of
+   --  the aggregate through the use of intermediate Why3 variables. This is
+   --  done whenever such separation is possible (for components under iterated
+   --  component association, elements depends on index, so they cannot be
+   --  defined once and for all ahead of time). For example, for aggregate:
    --
-   --     axiom A:
-   --        forall R:<type of aggregate>. forall <params>.
-   --           R = F(<params>) -> <proposition for the aggregate R>
+   --  A : array (B .. B + 3) of Integer :=
+   --    (1 => V + 3, 2 => V + 4, others => K - 1)
    --
-   --  F takes as in parameters all components passed to the aggregate.
-   --  This is simply the list of components for a one-dimensional aggregate,
-   --  and it takes into account sub-components for multi-dimensional
-   --  aggregates.
+   --  the defining proposition is generated along the lines of:
    --
-   --  ( On the aggregate (1 => X, others => Y), components are {X, Y}.
-   --  On the aggregate (1 => (1 => X, others => Y), 2 => Z), components are
-   --  {X, Y, Z}.)
+   --  def_prop a f l x y z :=
+   --      a.__first = f /\ a.__last = l /\ get a 1 = x /\ get a 2 = y
+   --         /\ (forall i. i <> 1 /\ i <> 2 -> get a i = z)
    --
-   --  In_Delta_Aggregate is True for an aggregate used as argument of a
-   --  'Update attribute_reference, and False for a regular aggregate.
+   --  With a being a variable standing for the defined value, and x,y,z,f,l
+   --  being free variables standing for the translation of components (x,y,z
+   --  for subexpressions V + 3, V + 4, K-1 respectively) and bounds (f,l for
+   --  lower and upper bounds B, B+3 respectively). In general, the proposition
+   --  will contain additional guards for bounds/indexes to ensures it has a
+   --  witness (a) for every instance of the elements (x,y,z,f,l). That is,
+   --  (forall x y z f l. exists a. def_prop a f l x y z) should be justified
+   --  at the meta level for the translation to be sound.
    --
-   --  If In_Delta_Aggregate is True, there are some additional properties for
-   --  the logic function created (F):
+   --  As an alternative to the conjunctive structure above, the components of
+   --  the aggregate can be described for an arbitrary index by a succession of
+   --  ifs (a mix of conjunctive structure and successive if may occur for
+   --  multidimensional arrays). This is necessary for delta aggregates, due to
+   --  updated choices being allowed to overlap (possibly dynamically). For
+   --  example, the following delta aggregate is allowed:
    --
-   --    a) the prefix array is sent as an extra parameter. "Others" is not
-   --       allowed so no parameter for that, instead the values from the
-   --       prefix array are used.
+   --  (U with delta I .. J => X, K => Y)
    --
-   --    b) an extra parameter for every choice, since they can be dynamic,
-   --       and an extra pair of parameters for each choice range (high and
-   --       low range bounds).
+   --  And the defining proposition (about result array a) is:
    --
-   --    c) the order of the cases in the generated why if statement in the
-   --       axiom for the logic function needs to be the _reverse_ of that
-   --       given in the aggregate, because associations can duplicate indices,
-   --       and the prefix should be updated in the order the associations and
-   --       choices are given.
+   --  def_prop a u i j k x y :=
+   --    a.__first = u.__first /\ a.__last = u.__last /\
+   --    (forall index. if index = k then get a index = y else
+   --                   if i <= index <= j then get a index = x else
+   --                   get a index = get u index)
    --
-   --  As an example:
-   --  Arr'Update(1 .. 3 => 10, 2 => 20, 2 .. 4 => 30, 3 => 40));
-   --  is allowed for an array and should mean
-   --  Arr(1) = 10 and Arr(2) = 30 and Arr(3) = 40 and Arr(4) = 30
+   --  The translation may be called multiple times on the same Ada node,
+   --  corresponding to different phases. If all elements of Expr can be
+   --  properly separated away (that is, there is no iterated component
+   --  association), a logic function aggr_func is generated and stored in the
+   --  E_Module for Expr. That function is axiomatized (in the corresponding
+   --  axiom module) as returning a witness for the defining proposition for
+   --  every instance of the elements, taken as parameters.
+   --
+   --  function aggr_func <element-types> : <type of aggregate>
+   --
+   --  axiom aggr_func_def : forall <element-vars>:<element-types>.
+   --    let a = aggr_func <element-vars> in def_prop a <element-vars>
+   --    (* def_prop inline, we do not make a predicate symbol *)
+   --
+   --  The aggregate is then translated by a call to aggr_func, preceded in the
+   --  program domain by the various checks expected for the aggregate.
+   --
+   --  If there are iterated component associations, instead, the expression is
+   --  completely processed every time to translate components under iterated
+   --  association properly. The components cannot be replaced by variables as
+   --  they depend on the iteration index.
+   --  The translation in the program domain replace the function call by an
+   --  any statement:
+   --
+   --  let <element-vars> = <element-values> in
+   --  ... (* Checks *) ...;
+   --  any { def_prop result <element-vars> } (* In place of call *)
+   --
+   --  The translation in the term domain produces a Why3 epsilon:
+   --
+   --  let <element-vars> = <element-values> in
+   --  (epsilon A. def_prop result <element-vars>) (* In place of call *)
+   --
+   --  A function call could be used if we processed components under iterated
+   --  component associations to find the actual variable content and replaced
+   --  it by additional elements. For example, for aggregate:
+   --
+   --  (for I in 1 .. 42 => H (I, G(X,X)))
+   --
+   --  We produce defining proposition:
+   --
+   --  def_prop a :=
+   --    a.__first = 1 /\ a.__last = 42
+   --    /\ (forall i. get A i = 'H' i ('G' 'X' 'X'))
+   --
+   --  Which is only meaningful in a context where reference to variable 'X'
+   --  make sense (so not in axioms). This could be turned into a format
+   --  suitable for the function-based translation if we took X through an
+   --  additional parameter. This is effectively what Why3 does when
+   --  eliminating epsilon on its end, but it would be more error-prone to do
+   --  so ahead of time due to the variety of contextual elements (variables,
+   --  but also reference to 'Old, 'Loop_Entry, @, etc.), and the need to
+   --  correctly replace them by element variables during translation. In
+   --  contrast, Why3's epsilon elimination is a standalone pass which only
+   --  have to deal with substitution of free variables in logic terms. We
+   --  still make the effort of generating the function ourselves when it is
+   --  reasonably easy to do so, because relying on Why3's epsilon elimination
+   --  result in one function symbol per epsilon instead of a single global
+   --  one, resulting in possibly lost sharing.
 
    function Transform_Assignment_Statement
      (Stmt   : N_Assignment_Statement_Id;
@@ -12628,10 +12691,10 @@ package body Gnat2Why.Expr is
 
       Needs_Bounds       : constant Boolean :=
         not In_Delta_Aggregate and then not Is_Static_Array_Type (Expr_Typ);
-      --  We do not need to give the array bounds as additional arguments to
-      --  the aggregate function if it is a delta aggregate (we will use the
-      --  bounds of the updated object) or if the type is static (the bounds
-      --  are declared in the type).
+      --  In general, we need to take the bound as additional elements as they
+      --  can be dynamically determined. We do not need them for
+      --  * Delta aggregates, as they can be read from the element for prefix
+      --  * Static array types, as the bounds are already baked in the type.
 
       Bound_Count        : constant Natural :=
         (if Needs_Bounds then 2 * Nb_Dim else 0);
@@ -12645,12 +12708,13 @@ package body Gnat2Why.Expr is
          Value : Node_Id;
          Typ   : Node_Id;
       end record;
-      --  Aggregate elements are the parts of the aggregate which are given as
-      --  parameters to the aggregate function. This include the values of the
-      --  aggregate, the index expressions used in choices of delta aggregates
-      --  and the update prefix if any. We do not include there values which
-      --  are located inside iterated component associations, as they may
-      --  depend on index parameters.
+      --  Aggregate elements corresponds to the subexpression of the aggregate
+      --  that dynamically parameterize it. This include the component values
+      --  of the aggregate, the index expressions used in choices of delta
+      --  aggregates, and the update prefix if any. We do not include there
+      --  component values which are located inside iterated component
+      --  associations, as they may depend on index parameters. This does not
+      --  cover bounds, which are treated outside.
 
       package Aggregate_Element_Lists is new Ada.Containers.Vectors
         (Index_Type => Positive, Element_Type => Aggregate_Element);
@@ -12679,28 +12743,27 @@ package body Gnat2Why.Expr is
          Variables           : out Flow_Id_Sets.Set;
          Elements_From_Nodes : out Node_To_Why_Id.Map;
          Bounds              : out W_Expr_Array);
-      --  Extract parts of the aggregate Expr that will be passed in
-      --  parameter to the logic function for the aggregate.
-      --  Collect these parameters in Values.
-      --  For a normal aggregate each element of Values is an element of the
-      --  (possibly multi-dimensional) aggregate.
-      --  For a delta aggregate, the choice indexes are collected in Values in
-      --  addition to the elements.
-      --  Elements of the aggregate located inside iterated component
-      --  associations are not collected in Values, as they may depend on
-      --  index parameters. Instead, we bypass the function-based translation
-      --  and translate those elements in-place.
+      --  Extract elements of the aggregate Expr. Those will be passed in
+      --  parameter to the logic function of the aggregate if one is generated.
       --
-      --  Get_Aggregate_Elements additionally bind Why3 identifiers for bounds
-      --  and elements. For elements, those identifiers are found through map
-      --  Elements_From_Nodes. For bounds (if needed as additional arguments),
-      --  they are found in array Bounds.
+      --  @param Values is set to the sequence of subexpressions that
+      --  corresponds to an element. The order of Values is used to generate
+      --  the signature of the logic function.
+      --  @param Variables corresponds to additional variables that are needed
+      --  for guards within the defining proposition (and also for default
+      --  value under iterated component association). Those variables need to
+      --  be additional parameters for function-based translation.
+      --  @param Elements_From_Nodes corresponds to the mapping from element
+      --    subexrepssions to their name in Why.
+      --  @param Bounds corresponds to the sequence of name for bound elements,
+      --    if they are needed as parameters.
 
       procedure Generate_Logic_Function
         (Values              : Aggregate_Element_Lists.Vector;
          Variables           : Flow_Id_Sets.Set;
          Elements_From_Nodes : Node_To_Why_Id.Map;
-         Bounds              : W_Expr_Array);
+         Bounds              : W_Expr_Array)
+        with Pre => Should_Use_Function_Translation;
       --  Generate the logic function definition for the aggregate Expr, with a
       --  suitable defining axiom:
       --
@@ -13097,12 +13160,7 @@ package body Gnat2Why.Expr is
                         Name => Name & To_String (WNE_Axiom_Suffix)),
             Is_Axiom => True);
 
-         --  Compute the parameters/arguments for the axiom/call as well as
-         --  the guard (dynamic property of the aggregate values).
-         --  As equality of array elements is done in the base type
-         --  (to_rep (a [x]) = v), this guard is necessary for the axiom to be
-         --  sound (if v is not in bounds, there is no a such that
-         --  to_rep (a [x]) = v).
+         --  Compute the parameters/arguments for the axiom/call
 
          Cnt := 1;
          for Value of Values loop
