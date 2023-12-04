@@ -1,3 +1,4 @@
+convert.adb:9:13: info: imprecise handling of Unchecked_Conversion (type is unsuitable as target for unchecked conversion)
 convert.adb:9:13: info: types in unchecked conversion have the same size (Trivial)
 convert.adb:10:07: info: type is suitable as source for unchecked conversion (Trivial)
 convert.adb:10:20: high: type is unsuitable as a target for unchecked conversion [possible explanation: floating-point types have invalid bit patterns for SPARK]

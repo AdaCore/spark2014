@@ -487,6 +487,9 @@ package SPARK_Atree.Entities is
        (if Present (Predicate_Function'Result) then
           Einfo.Utils.Number_Formals (Predicate_Function'Result) = 1);
 
+   function Reverse_Storage_Order (Typ : Type_Kind_Id) return Boolean
+     renames Einfo.Entities.Reverse_Storage_Order;
+
    function Ultimate_Ancestor (Typ : Type_Kind_Id) return Type_Kind_Id;
    --  Return the ultimate ancestor of a type (the fisrt subtype of its root
    --  type.
@@ -595,6 +598,13 @@ package SPARK_Atree.Entities is
    --  Same as Einfo.Has_Discriminants except that it ignores hidden
    --  discriminants.
 
+   function First_Component (Typ : Type_Kind_Id) return E_Component_Id
+   is (Einfo.Utils.First_Component (Typ))
+   with
+     Pre  => not Has_Discriminants (Typ);
+
+   procedure Next_Component (Comp : in out Opt_E_Component_Id);
+
    function First_Discriminant (Typ : Type_Kind_Id) return E_Discriminant_Id
    with
      Pre  => Has_Discriminants (Typ),
@@ -605,6 +615,14 @@ package SPARK_Atree.Entities is
      with Post => (if Present (Discr) then
                      SPARK_Util.Is_Not_Hidden_Discriminant (Discr));
    --  Same as Einfo.Next_Discriminants
+
+   function Component_Bit_Offset (Comp : Record_Field_Kind_Id) return Uint
+   is (Einfo.Entities.Component_Bit_Offset (Comp));
+
+   function Component_Size (Typ : Type_Kind_Id) return Uint
+   is (Einfo.Entities.Component_Size (Typ))
+   with
+     Pre => Is_Array_Type (Typ);
 
    function Stored_Constraint (Typ : Type_Kind_Id) return Elist_Id
      with Pre => Ekind (Typ) in Record_Kind

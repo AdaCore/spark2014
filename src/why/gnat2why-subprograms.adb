@@ -35,6 +35,7 @@ with Flow_Generated_Globals.Phase_2; use Flow_Generated_Globals.Phase_2;
 with Flow_Refinement;                use Flow_Refinement;
 with Flow_Utility;                   use Flow_Utility;
 with GNAT.Source_Info;
+with Gnat2Why.Data_Decomposition; use Gnat2Why.Data_Decomposition;
 with Gnat2Why.Error_Messages;        use Gnat2Why.Error_Messages;
 with Gnat2Why.Expr;                  use Gnat2Why.Expr;
 with Gnat2Why.Tables;                use Gnat2Why.Tables;
@@ -57,6 +58,7 @@ with Why.Atree.Accessors;            use Why.Atree.Accessors;
 with Why.Atree.Builders;             use Why.Atree.Builders;
 with Why.Atree.Modules;              use Why.Atree.Modules;
 with Why.Atree.Mutators;             use Why.Atree.Mutators;
+with Why.Gen.Arrays;                 use Why.Gen.Arrays;
 with Why.Gen.Decl;                   use Why.Gen.Decl;
 with Why.Gen.Init;                   use Why.Gen.Init;
 with Why.Gen.Names;                  use Why.Gen.Names;
@@ -2651,6 +2653,16 @@ package body Gnat2Why.Subprograms is
    is
       --  Local subprograms
 
+      function Precise_Integer_UC
+        (Arg              : W_Term_Id;
+         Source_Type      : W_Type_Id;
+         Target_Type      : W_Type_Id;
+         Source_Is_Signed : Boolean;
+         Target_Is_Signed : Boolean)
+         return W_Term_Id;
+      --  Return Arg of Source_Type converted to Target_Type, when both are of
+      --  integer types.
+
       function Is_UC_With_Precise_Definition (E : Entity_Id) return Boolean
       with
         Pre => Is_Unchecked_Conversion_Instance (E);
@@ -2661,48 +2673,220 @@ package body Gnat2Why.Subprograms is
       -----------------------------------
 
       function Is_UC_With_Precise_Definition (E : Entity_Id) return Boolean is
-         Source_Type : constant Entity_Id := Retysp (Etype (First_Formal (E)));
-         Target_Type : constant Entity_Id := Retysp (Etype (E));
 
+         function Suitable_For_Precise_UC
+           (Arg_Typ : Type_Kind_Id)
+            return True_Or_Explain;
+         --  Check if Typ is only made of integers. When returning False,
+         --  return also the Explanation.
+
+         -----------------------------
+         -- Suitable_For_Precise_UC --
+         -----------------------------
+
+         function Suitable_For_Precise_UC
+           (Arg_Typ : Type_Kind_Id)
+            return True_Or_Explain
+         is
+            Typ : constant Type_Kind_Id := Retysp (Arg_Typ);
+         begin
+            case Ekind (Typ) is
+               when Integer_Kind =>
+                  if Has_Biased_Representation (Typ) then
+                     return False_With_Explain
+                       ("type with biased representation");
+                  end if;
+
+               when Record_Kind =>
+                  if Is_Tagged_Type (Typ) then
+                     return False_With_Explain ("type is tagged");
+
+                  elsif Has_Discriminants (Typ) then
+                     return False_With_Explain ("type has discriminants");
+
+                  elsif Reverse_Storage_Order (Base_Retysp (Typ)) then
+                     return False_With_Explain
+                       ("type has reverse storage order");
+                  end if;
+
+                  declare
+                     Comps : constant Component_Sets.Set :=
+                       Get_Component_Set (Typ);
+                  begin
+                     for Comp of Comps loop
+                        if No (Component_Bit_Offset (Comp)) then
+                           return False_With_Explain
+                             ("component offset not known");
+                        end if;
+
+                        declare
+                           Check : constant True_Or_Explain :=
+                             Suitable_For_Precise_UC (Etype (Comp));
+                        begin
+                           if not Check.Ok then
+                              return Check;
+                           end if;
+                        end;
+                     end loop;
+                  end;
+
+               when Array_Kind =>
+                  declare
+                     Check : constant True_Or_Explain :=
+                       Suitable_For_Precise_UC (Component_Type (Typ));
+                  begin
+                     if not Check.Ok then
+                        return Check;
+                     end if;
+                  end;
+
+                  if Number_Dimensions (Typ) > Uint_1 then
+                     return False_With_Explain
+                       ("array has multiple dimensions");
+
+                  elsif Reverse_Storage_Order (Base_Retysp (Typ)) then
+                     return False_With_Explain
+                       ("type has reverse storage order");
+                  end if;
+
+               when others =>
+                  return False_With_Explain ("elementary non-integer type");
+            end case;
+
+            return True_Or_Explain'(Ok => True);
+         end Suitable_For_Precise_UC;
+
+         --  Local variables
+
+         Source, Target                         : Node_Id;
+         Source_Type, Target_Type               : Entity_Id;
          Valid_Source, Valid_Target, Valid_Size : Boolean;
-         Ignored : Unbounded_String;
+         Explanation                            : Unbounded_String;
+         Check                                  : True_Or_Explain;
 
       begin
-         --  Only generate a definition for UC between integer types...
+         Get_Unchecked_Conversion_Args (E, Source, Target);
+         Source_Type := Retysp (Entity (Source));
+         Target_Type := Retysp (Entity (Target));
 
-         if not Is_Integer_Type (Source_Type)
-           or else not Is_Integer_Type (Target_Type)
-         then
-            return False;
+         --  Check that types are suitable for UC.
 
-         --  where Source_Type is not a signed type marked as unsigned or with
-         --  a biased representation...
-
-         elsif Is_Signed_Integer_Type (Source_Type)
-           and then (Is_Unsigned_Type (Source_Type)
-                     or else Has_Biased_Representation (Source_Type))
-         then
-            return False;
-
-         --  and Target_Type is not a signed type marked as unsigned or with a
-         --  biased representation...
-
-         elsif Is_Signed_Integer_Type (Target_Type)
-           and then (Is_Unsigned_Type (Target_Type)
-                     or else Has_Biased_Representation (Target_Type))
-         then
-            return False;
+         Suitable_For_UC (Source_Type, False, Valid_Source, Explanation);
+         if not Valid_Source then
+            --  Override explanation to avoid special characters
+            Explanation := To_Unbounded_String
+              ("type is unsuitable as source for unchecked conversion");
+            goto UC_Imprecise;
          end if;
 
-         --  that are suitable for UC.
+         Suitable_For_UC_Target
+           (Target_Type, False, Valid_Target, Explanation);
+         if not Valid_Target then
+            --  Override explanation to avoid special characters
+            Explanation := To_Unbounded_String
+              ("type is unsuitable as target for unchecked conversion");
+            goto UC_Imprecise;
+         end if;
 
-         Suitable_For_UC (Source_Type, False, Valid_Source, Ignored);
-         Suitable_For_UC_Target (Target_Type, False, Valid_Target, Ignored);
          Have_Same_Known_RM_Size
-           (Source_Type, Target_Type, Valid_Size, Ignored);
+           (Source_Type, Target_Type, Valid_Size, Explanation);
+         if not Valid_Size then
+            --  Override explanation to avoid special characters
+            Explanation := To_Unbounded_String
+              ("types in unchecked conversion do not have the same size");
+            goto UC_Imprecise;
+         end if;
 
-         return Valid_Source and Valid_Target and Valid_Size;
+         --  Only support types with size up to 128 bits, to use one of the
+         --  available bitvector types with conversions from other bitvector
+         --  sizes.
+
+         if Get_Attribute_Value (Source_Type, Attribute_Size) > 128 then
+            Explanation :=
+              To_Unbounded_String ("type size larger than 128 bits");
+            goto UC_Imprecise;
+         end if;
+
+         --  Only generate a definition for UC between integer types, and
+         --  composites of integer types.
+
+         Check := Suitable_For_Precise_UC (Source_Type);
+         if not Check.Ok then
+            Explanation := Check.Explanation;
+            goto UC_Imprecise;
+         end if;
+
+         Check := Suitable_For_Precise_UC (Target_Type);
+         if not Check.Ok then
+            Explanation := Check.Explanation;
+            goto UC_Imprecise;
+         end if;
+
+         return True;
+
+      <<UC_Imprecise>>
+
+         --  If --info is set, output information on reason for imprecise
+         --  handling of UC.
+
+         if Debug.Debug_Flag_Underscore_F then
+            Error_Msg_N
+              ("info: ?imprecise handling of Unchecked_Conversion ("
+               & To_String (Explanation) & ")", E);
+         end if;
+
+         return False;
       end Is_UC_With_Precise_Definition;
+
+      ------------------------
+      -- Precise_Integer_UC --
+      ------------------------
+
+      function Precise_Integer_UC
+        (Arg              : W_Term_Id;
+         Source_Type      : W_Type_Id;
+         Target_Type      : W_Type_Id;
+         Source_Is_Signed : Boolean;
+         Target_Is_Signed : Boolean)
+         return W_Term_Id
+      is
+         Source_Base_Type : constant W_Type_Id :=
+           Base_Why_Type_No_Bool (Source_Type);
+         Target_Base_Type : constant W_Type_Id :=
+           Base_Why_Type_No_Bool (Target_Type);
+         Conv : W_Term_Id;
+      begin
+         Conv :=
+           Insert_Simple_Conversion (Expr => Arg, To => Source_Base_Type);
+
+         if Source_Is_Signed
+           and then Target_Is_Signed
+         then
+            null;  --  Trivial case of UC between signed types
+
+         elsif not Source_Is_Signed
+           and then not Target_Is_Signed
+         then
+            pragma Assert (Source_Base_Type = Target_Base_Type);
+            null;  --  Trivial case of UC between modular types
+
+         elsif not Source_Is_Signed
+           and then Target_Is_Signed
+         then
+            Conv := New_Call
+              (Name => MF_BVs (Source_Base_Type).UC_To_Int,
+               Args => (1 => +Conv),
+               Typ  => EW_Int_Type);
+
+         else
+            Conv := New_Call
+              (Name => MF_BVs (Target_Base_Type).UC_Of_Int,
+               Args => (1 => +Conv),
+               Typ  => Target_Base_Type);
+         end if;
+
+         return Insert_Simple_Conversion (Expr => Conv, To => Target_Type);
+      end Precise_Integer_UC;
 
       --  Local variables
 
@@ -2746,37 +2930,538 @@ package body Gnat2Why.Subprograms is
         and then Is_UC_With_Precise_Definition (E)
       then
          declare
-            Source_Type : constant Entity_Id :=
-              Retysp (Etype (First_Formal (E)));
-            Target_Type : constant Entity_Id := Retysp (Etype (E));
+            Source, Target : Node_Id;
+            Source_Type, Target_Type : Entity_Id;
             Arg         : constant W_Identifier_Id :=
               Logic_Why_Binders (1).B_Name;
-
          begin
-            if Is_Signed_Integer_Type (Source_Type)
-              and then Is_Signed_Integer_Type (Target_Type)
-            then
-               Def := +Arg;  --  Trivial case of UC between signed types
+            Get_Unchecked_Conversion_Args (E, Source, Target);
+            Source_Type := Retysp (Entity (Source));
+            Target_Type := Retysp (Entity (Target));
 
-            elsif Is_Modular_Integer_Type (Source_Type)
-              and then Is_Modular_Integer_Type (Target_Type)
+            if Is_Integer_Type (Source_Type)
+              and then Is_Integer_Type (Target_Type)
             then
-               pragma Assert
-                 (Base_Why_Type (Source_Type) = Base_Why_Type (Target_Type));
-               Def := +Arg;  --  Trivial case of UC between modular types
+               Def :=
+                 Precise_Integer_UC
+                   (Arg              => +Arg,
+                    Source_Type      => EW_Abstract (Source_Type),
+                    Target_Type      => Base_Why_Type (Target_Type),
+                    Source_Is_Signed => Is_Signed_Integer_Type (Source_Type),
+                    Target_Is_Signed => Is_Signed_Integer_Type (Target_Type));
 
-            elsif Is_Modular_Integer_Type (Source_Type) then
-               Def := New_Call
-                 (Name    => MF_BVs (Base_Why_Type (Source_Type)).UC_To_Int,
-                  Binders => Logic_Why_Binders,
-                  Typ     => Why_Type);
+            --  At least one of Source or Target is a composite type made up
+            --  of integers. Convert Source to a large-enough modular type,
+            --  and convert that value to Target. If all types involved are
+            --  modular, then this benefits from bitvector support in provers.
 
             else
-               pragma Assert (Is_Modular_Integer_Type (Target_Type));
-               Def := New_Call
-                 (Name    => MF_BVs (Base_Why_Type (Target_Type)).UC_Of_Int,
-                  Binders => Logic_Why_Binders,
-                  Typ     => Why_Type);
+               declare
+                  --  Representation of a subcomponent of Source
+                  type Source_Element is record
+                     Typ    : Type_Kind_Id;
+                     Offset : Uint;
+                     Size   : Uint;
+                     Expr   : W_Term_Id;
+                  end record;
+
+                  package Source_Elements is new
+                    Ada.Containers.Doubly_Linked_Lists (Source_Element);
+                  use Source_Elements;
+
+                  --  Local subprograms
+
+                  function Contribute_Value
+                    (Base   : W_Type_Id;
+                     Expr   : W_Expr_Id;
+                     Offset : Uint;
+                     Size   : Uint;
+                     Typ    : Type_Kind_Id)
+                     return W_Expr_Id;
+                  --  Given a scalar expression Expr of type Typ, return its
+                  --  contribution to a modular value of type Base, when its
+                  --  bit representation takes Size bits at a given Offset in
+                  --  Base.
+
+                  function Expr_Index
+                    (Typ : Type_Kind_Id;
+                     Idx : Uint)
+                     return W_Expr_Id;
+                  --  Return the expression for indexing into array of type Typ
+
+                  function Extract_Value
+                    (Base   : W_Type_Id;
+                     Bits   : W_Expr_Id;
+                     Offset : Uint;
+                     Size   : Uint;
+                     Typ    : Type_Kind_Id)
+                     return W_Expr_Id;
+                  --  Return (Bits and (2**(Offset+Size)-1)) / 2**(Offset) as
+                  --  a value of type Typ, to extract the value of an element
+                  --  from its bit representation.
+
+                  procedure Get_Source_Elements
+                    (Typ      : Type_Kind_Id;
+                     Offset   : Uint;
+                     Size     : Uint;
+                     Expr     : W_Term_Id;
+                     Elements : in out List);
+                  --  Retrieve the list of scalar elements from an object Expr
+                  --  of type Typ located at a given Offset and of a given
+                  --  Size, and append these to Elements.
+
+                  function Reconstruct_Value
+                    (Base   : W_Type_Id;
+                     Bits   : W_Expr_Id;
+                     Offset : Uint;
+                     Size   : Uint;
+                     Typ    : Type_Kind_Id)
+                     return W_Expr_Id;
+                  --  Given the representation Bits of modular type Base for
+                  --  the complete object, reconstruct the element of type Typ
+                  --  of a given Size at a given Offset.
+
+                  ----------------------
+                  -- Contribute_Value --
+                  ----------------------
+
+                  function Contribute_Value
+                    (Base   : W_Type_Id;
+                     Expr   : W_Expr_Id;
+                     Offset : Uint;
+                     Size   : Uint;
+                     Typ    : Type_Kind_Id)
+                     return W_Expr_Id
+                  is
+                     Value : W_Expr_Id;
+                  begin
+                     --  If the value is from a modular type, or from a signed
+                     --  type with no negative value, then simply convert it to
+                     --  Base.
+                     if Is_Unsigned_Type (Typ) then
+                        Value := Insert_Scalar_Conversion
+                          (Domain => EW_Term,
+                           Expr   => Expr,
+                           To     => Base);
+                     --  Otherwise, we need to consider the bit representation
+                     --  of that (possibly negative) signed value as Base, and
+                     --  extract the low Size bits with the expression
+                     --  (uc_of_int Expr) and (2**Size - 1)
+                     else
+                        Value :=
+                          New_Call
+                            (Domain   => EW_Term,
+                             Name     => MF_BVs (Base).BW_And,
+                             Typ      => Base,
+                             Args     =>
+                               (1 =>
+                                  New_Call
+                                    (Domain => EW_Term,
+                                     Name   => MF_BVs (Base).UC_Of_Int,
+                                     Args   =>
+                                       (1 =>
+                                          Insert_Scalar_Conversion
+                                            (Domain => EW_Term,
+                                             Expr   => Expr,
+                                             To     => EW_Int_Type)),
+                                     Typ    => Base),
+                                2 =>
+                                  New_Modular_Constant
+                                    (Value => Uint_2 ** Size - Uint_1,
+                                     Typ   => Base)));
+                     end if;
+
+                     --  Multiply this value by 2**Offset to get its
+                     --  contribution to the overall value.
+                     return
+                       New_Call
+                         (Domain   => EW_Term,
+                          Name     => MF_BVs (Base).Mult,
+                          Typ      => Base,
+                          Args     =>
+                            (1 =>
+                               New_Modular_Constant
+                                 (Value => Uint_2 ** Offset,
+                                  Typ   => Base),
+                             2 => Value));
+                  end Contribute_Value;
+
+                  ----------------
+                  -- Expr_Index --
+                  ----------------
+
+                  function Expr_Index
+                    (Typ : Type_Kind_Id;
+                     Idx : Uint)
+                     return W_Expr_Id
+                  is
+                     Index_Typ : constant Type_Kind_Id :=
+                       Etype (First_Index (Typ));
+                  begin
+                     if Is_Modular_Integer_Type (Index_Typ) then
+                        return
+                          New_Modular_Constant
+                            (Value => Idx,
+                             Typ   => Base_Why_Type_No_Bool (Index_Typ));
+                     else
+                        return New_Integer_Constant (Value => Idx);
+                     end if;
+                  end Expr_Index;
+
+                  -------------------
+                  -- Extract_Value --
+                  -------------------
+
+                  function Extract_Value
+                    (Base   : W_Type_Id;
+                     Bits   : W_Expr_Id;
+                     Offset : Uint;
+                     Size   : Uint;
+                     Typ    : Type_Kind_Id)
+                     return W_Expr_Id
+                  is
+                     Mask : constant W_Expr_Id :=
+                       New_Modular_Constant
+                         (Value => Uint_2 ** (Offset + Size) - Uint_1,
+                          Typ   => Base);
+                     Divisor : constant W_Expr_Id :=
+                       New_Modular_Constant
+                         (Value => Uint_2 ** Offset,
+                          Typ   => Base);
+                     --  Value is (Bits and (2**(Offset+Size)-1)) / 2**(Offset)
+                     Value : constant W_Expr_Id :=
+                       New_Call
+                         (Domain => EW_Term,
+                          Name   => MF_BVs (Base).Udiv,
+                          Typ    => Base,
+                          Args   =>
+                            (1 =>
+                               New_Call
+                                 (Domain => EW_Term,
+                                  Name   => MF_BVs (Base).BW_And,
+                                  Typ    => Base,
+                                  Args   =>
+                                    (1 => Bits,
+                                     2 => Mask)),
+                             2 => Divisor));
+                  begin
+                     --  If the value is to a modular type, or to a signed
+                     --  type with no negative value, then simply convert it
+                     --  to Typ.
+                     if Is_Unsigned_Type (Typ) then
+                        return Insert_Scalar_Conversion
+                          (Domain => EW_Term,
+                           Expr   => Value,
+                           To     => EW_Abstract (Typ));
+                     --  Otherwise, we need to consider the bit representation
+                     --  of that (possibly negative) signed value, to see
+                     --  if the high bit is 1, in which case the value is
+                     --  negative. So we generate the value
+                     --  if Value >= 2**(Size-1) then Value-2**Size else Value
+                     else
+                        declare
+                           Top_Bit : constant W_Expr_Id :=
+                             New_Modular_Constant
+                               (Value => Uint_2 ** (Size - Uint_1),
+                                Typ   => Base);
+                           Negative_Value : constant W_Expr_Id :=
+                             New_Call
+                               (Domain => EW_Term,
+                                Name   => Int_Infix_Subtr,
+                                Typ    => EW_Int_Type,
+                                Args   =>
+                                  (1 =>
+                                     Insert_Scalar_Conversion
+                                       (Domain => EW_Term,
+                                        Expr   => Value,
+                                        To     => EW_Int_Type),
+                                   2 =>
+                                     New_Integer_Constant
+                                       (Value => 2 ** Size)));
+                        begin
+                           return New_Conditional
+                             (Domain    => EW_Term,
+                              Condition =>
+                                New_Comparison
+                                  (Domain => EW_Term,
+                                   Symbol => MF_BVs (Base).Uge,
+                                   Left   => Value,
+                                   Right  => Top_Bit),
+                              Then_Part =>
+                                Insert_Scalar_Conversion
+                                  (Domain => EW_Term,
+                                   Expr   => Negative_Value,
+                                   To     => EW_Abstract (Typ)),
+                              Else_Part =>
+                                Insert_Scalar_Conversion
+                                  (Domain => EW_Term,
+                                   Expr   => Value,
+                                   To     => EW_Abstract (Typ)),
+                              Typ => EW_Abstract (Typ));
+                        end;
+                     end if;
+                  end Extract_Value;
+
+                  --------------------------
+                  -- Get_Type_Offset_List --
+                  --------------------------
+
+                  procedure Get_Source_Elements
+                    (Typ      : Type_Kind_Id;
+                     Offset   : Uint;
+                     Size     : Uint;
+                     Expr     : W_Term_Id;
+                     Elements : in out List)
+                  is
+                  begin
+                     if Is_Integer_Type (Typ) then
+                        Elements.Append
+                          (Source_Element'(Typ    => Typ,
+                                           Offset => Offset,
+                                           Size   => Size,
+                                           Expr   => Expr));
+
+                     elsif Is_Record_Type (Typ) then
+                        declare
+                           Comp : Node_Id := First_Component (Typ);
+                        begin
+                           while Present (Comp) loop
+                              Get_Source_Elements
+                                (Typ     => Retysp (Etype (Comp)),
+                                 Offset  =>
+                                   Offset + Component_Bit_Offset (Comp),
+                                 Size    => Esize (Comp),
+                                 Expr    => New_Ada_Record_Access
+                                   (Ada_Node => Types.Empty,
+                                    Name     => +Expr,
+                                    Ty       => Typ,
+                                    Field    => Comp),
+                                 Elements => Elements);
+                              Next_Component (Comp);
+                           end loop;
+                        end;
+
+                     elsif Is_Array_Type (Typ) then
+                        declare
+                           Index : constant Node_Id := First_Index (Typ);
+                           Rng   : constant Node_Id := Get_Range (Index);
+                           Low   : constant Uint :=
+                             Expr_Value (Low_Bound (Rng));
+                           High : constant Uint :=
+                             Expr_Value (High_Bound (Rng));
+                           Cur : Uint;
+                        begin
+                           if Low <= High then
+                              Cur := Low;
+                              while Cur <= High loop
+                                 Get_Source_Elements
+                                   (Typ      => Retysp (Component_Type (Typ)),
+                                    Offset   =>
+                                      (Cur - Low) * Component_Size (Typ),
+                                    Size     => Component_Size (Typ),
+                                    Expr     =>
+                                      New_Array_Access
+                                        (Ar    => Expr,
+                                         Index =>
+                                           (1 => Expr_Index (Typ, Cur))),
+                                    Elements => Elements);
+                                 Cur := Cur + Uint_1;
+                              end loop;
+                           end if;
+                        end;
+
+                     else
+                        raise Program_Error;
+                     end if;
+                  end Get_Source_Elements;
+
+                  -----------------------
+                  -- Reconstruct_Value --
+                  -----------------------
+
+                  function Reconstruct_Value
+                    (Base   : W_Type_Id;
+                     Bits   : W_Expr_Id;
+                     Offset : Uint;
+                     Size   : Uint;
+                     Typ    : Type_Kind_Id)
+                     return W_Expr_Id
+                  is
+                  begin
+                     if Is_Integer_Type (Typ) then
+                        return Extract_Value
+                          (Base   => Base,
+                           Bits   => Bits,
+                           Offset => Offset,
+                           Size   => Size,
+                           Typ    => Typ);
+
+                     elsif Is_Record_Type (Typ) then
+                        declare
+                           Comps : constant Component_Sets.Set :=
+                             Get_Component_Set (Typ);
+                           Assocs : W_Field_Association_Array
+                             (1 .. Integer (Comps.Length));
+                           Index : Positive := 1;
+                        begin
+                           for Comp of Comps loop
+                              Assocs (Index) :=
+                                New_Field_Association
+                                  (Domain => EW_Term,
+                                   Field  =>
+                                     To_Why_Id
+                                       (Comp, Local => False, Rec => Typ),
+                                   Value  =>
+                                     Reconstruct_Value
+                                       (Base   => Base,
+                                        Bits   => Bits,
+                                        Offset =>
+                                          Offset + Component_Bit_Offset (Comp),
+                                        Size   => Esize (Comp),
+                                        Typ    => Retysp (Etype (Comp))));
+                              Index := Index + 1;
+                           end loop;
+
+                           return New_Record_Aggregate
+                             (Associations =>
+                                (1 => New_Field_Association
+                                   (Domain => EW_Term,
+                                    Field  =>
+                                      E_Symb (Typ, WNE_Rec_Split_Fields),
+                                    Value  =>
+                                      New_Record_Aggregate
+                                        (Associations => Assocs))),
+                              Typ          => EW_Abstract (Typ));
+                        end;
+
+                     elsif Is_Array_Type (Typ) then
+                        declare
+                           Index : constant Node_Id := First_Index (Typ);
+                           Rng   : constant Node_Id := Get_Range (Index);
+                           Low   : constant Uint :=
+                             Expr_Value (Low_Bound (Rng));
+                           High  : constant Uint :=
+                             Expr_Value (High_Bound (Rng));
+                           Cur   : Uint;
+                           Ar    : W_Expr_Id := +E_Symb (Typ, WNE_Dummy);
+                        begin
+                           if Low <= High then
+                              Cur := Low;
+                              while Cur <= High loop
+                                 Ar := New_Array_Update
+                                   (Ada_Node => Types.Empty,
+                                    Ar     => Ar,
+                                    Index  => (1 => Expr_Index (Typ, Cur)),
+                                    Value  =>
+                                      Reconstruct_Value
+                                       (Base   => Base,
+                                        Bits   => Bits,
+                                        Offset =>
+                                          Offset +
+                                          (Cur - Low) * Component_Size (Typ),
+                                        Size   =>
+                                          Component_Size (Typ),
+                                        Typ    =>
+                                          Retysp (Component_Type (Typ))),
+                                    Domain => EW_Term);
+                                 Cur := Cur + 1;
+                              end loop;
+                           end if;
+
+                           return Ar;
+                        end;
+
+                     else
+                        raise Program_Error;
+                     end if;
+                  end Reconstruct_Value;
+
+                  --  Local variables
+
+                  Conv         : W_Term_Id;
+                  Source_Elems : List;
+                  Target_Size  : constant Uint :=
+                    Get_Attribute_Value (Target_Type, Attribute_Size);
+                  Base         : constant W_Type_Id :=
+                    (if    Target_Size <=   Uint_8 then EW_BitVector_8_Type
+                     elsif Target_Size <=  Uint_16 then EW_BitVector_16_Type
+                     elsif Target_Size <=  Uint_32 then EW_BitVector_32_Type
+                     elsif Target_Size <=  Uint_64 then EW_BitVector_64_Type
+                     elsif Target_Size <= Uint_128 then EW_BitVector_128_Type
+                     else raise Program_Error);
+
+               begin
+                  --  1. Convert the argument to a value of modular type Base
+
+                  --  1.a Conversion from an integer type should be identity or
+                  --  call to uc_of_int.
+
+                  if Is_Integer_Type (Source_Type) then
+                     Conv :=
+                       Precise_Integer_UC
+                         (Arg              => +Arg,
+                          Source_Type      => EW_Abstract (Source_Type),
+                          Target_Type      => Base,
+                          Source_Is_Signed =>
+                            Is_Signed_Integer_Type (Source_Type),
+                          Target_Is_Signed => False);
+
+                  --  1.b Otherwise extract all integer subcomponents from the
+                  --  composite value and sum up their contributions to the
+                  --  value of type Base.
+
+                  else
+                     Get_Source_Elements
+                       (Source_Type, Uint_0, Uint_0, +Arg, Source_Elems);
+                     Conv :=
+                       New_Modular_Constant (Value => Uint_0, Typ => Base);
+
+                     for Elem of Source_Elems loop
+                        Conv :=
+                          New_Call
+                            (Name     => MF_BVs (Base).Add,
+                             Typ      => Base,
+                             Args     =>
+                               (1 => +Conv,
+                                2 => Contribute_Value
+                                  (Base   => Base,
+                                   Expr   => +Elem.Expr,
+                                   Offset => Elem.Offset,
+                                   Size   => Elem.Size,
+                                   Typ    => Elem.Typ)));
+                     end loop;
+                  end if;
+
+                  --  2. Convert the converted argument to a value of the
+                  --  target type.
+
+                  --  2.a Conversion to an integer type should be identity or
+                  --  call to uc_to_int.
+
+                  if Is_Integer_Type (Target_Type) then
+                     Def :=
+                       Precise_Integer_UC
+                         (Arg              => Conv,
+                          Source_Type      => Base,
+                          Target_Type      => Base_Why_Type (Target_Type),
+                          Source_Is_Signed => False,
+                          Target_Is_Signed =>
+                            Is_Signed_Integer_Type (Target_Type));
+
+                  --  2.b Otherwise recursively reconstruct all integer
+                  --  subcomponents from the value of type Base.
+
+                  else
+                     Def :=
+                       +Reconstruct_Value
+                         (Base   => Base,
+                          Bits   => +Conv,
+                          Offset => Uint_0,
+                          Size   =>
+                            Get_Attribute_Value (Target_Type, Attribute_Size),
+                          Typ    => Target_Type);
+                  end if;
+               end;
             end if;
          end;
 
