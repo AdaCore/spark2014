@@ -225,6 +225,7 @@ test_partial_maps.adb:685:10: info: range check proved (CVC5: 2 VC)
 test_partial_maps.adb:689:53: info: index check proved (CVC5: 2 VC)
 test_partial_maps.adb:692:49: info: index check proved (CVC5: 2 VC)
 test_partial_maps.adb:692:51: info: initialization check proved (CVC5: 1 VC)
+test_partial_maps.adb:695:16: info: expression function body of subprograms with a numeric variant might not be available on recursive calls
 test_partial_maps.adb:695:16: info: implicit aspect Always_Terminates on "Get" has been proved, subprogram will terminate
 test_partial_maps.adb:695:16: info: implicit function contract might not be available on recursive calls
 test_partial_maps.adb:697:47: info: index check proved (CVC5: 2 VC)
@@ -270,6 +271,7 @@ test_partial_maps.adb:764:10: info: range check proved (CVC5: 2 VC)
 test_partial_maps.adb:768:53: info: index check proved (CVC5: 2 VC)
 test_partial_maps.adb:771:49: info: index check proved (CVC5: 2 VC)
 test_partial_maps.adb:771:51: info: initialization check proved (CVC5: 1 VC)
+test_partial_maps.adb:774:16: info: expression function body of subprograms with a numeric variant might not be available on recursive calls
 test_partial_maps.adb:774:16: info: implicit aspect Always_Terminates on "Get" has been proved, subprogram will terminate
 test_partial_maps.adb:774:16: info: implicit function contract might not be available on recursive calls
 test_partial_maps.adb:776:47: info: index check proved (CVC5: 2 VC)
@@ -315,6 +317,7 @@ test_partial_maps.adb:844:10: info: range check proved (CVC5: 2 VC)
 test_partial_maps.adb:848:53: info: index check proved (CVC5: 2 VC)
 test_partial_maps.adb:851:49: info: index check proved (CVC5: 2 VC)
 test_partial_maps.adb:851:51: info: initialization check proved (CVC5: 1 VC)
+test_partial_maps.adb:854:16: info: expression function body of subprograms with a numeric variant might not be available on recursive calls
 test_partial_maps.adb:854:16: info: implicit aspect Always_Terminates on "Get" has been proved, subprogram will terminate
 test_partial_maps.adb:854:16: info: implicit function contract might not be available on recursive calls
 test_partial_maps.adb:856:47: info: index check proved (CVC5: 2 VC)
@@ -353,6 +356,7 @@ test_partial_maps.adb:909:16: info: implicit aspect Always_Terminates on "Eq_Key
 test_partial_maps.adb:925:53: info: index check proved (CVC5: 2 VC)
 test_partial_maps.adb:928:49: info: index check proved (CVC5: 2 VC)
 test_partial_maps.adb:928:51: info: initialization check proved (CVC5: 1 VC)
+test_partial_maps.adb:931:16: info: expression function body of subprograms with a numeric variant might not be available on recursive calls
 test_partial_maps.adb:931:16: info: implicit aspect Always_Terminates on "Get" has been proved, subprogram will terminate
 test_partial_maps.adb:931:16: info: implicit function contract might not be available on recursive calls
 test_partial_maps.adb:933:47: info: index check proved (CVC5: 2 VC)

@@ -7742,6 +7742,46 @@ package body Gnat2Why.Subprograms is
                     Kind           => Axiom_Theory,
                     Defined_Entity => E);
 
+      --  The defining axiom has the form f params = expr which is always sound
+      --  unless expr depends on f params, which should not be possible if F is
+      --  not recursive or if it structurally terminates. We don't protect the
+      --  axiom if F does not have a variant either, as in this case a check
+      --  message about termination will be emitted.
+
+      if Ekind (E) = E_Function
+        and then Is_Recursive (E)
+        and then Has_Subprogram_Variant (E)
+        and then not Is_Structural_Subprogram_Variant
+          (Get_Pragma (E, Pragma_Subprogram_Variant))
+      then
+
+         --  Raise a warning about missing definition on recursive calls
+
+         if Debug.Debug_Flag_Underscore_F then
+            declare
+               Scope               : constant Entity_Id :=
+                 Enclosing_Unit (E);
+               String_For_Scope    : constant String :=
+                 (if Present (Scope)
+                  and then Ekind (Scope) in
+                      E_Package | E_Function | E_Procedure | E_Entry
+                  and then Proof_Module_Cyclic (E, Scope)
+                  then " and on calls from enclosing unit"
+                  else "");
+            begin
+               Error_Msg_N
+                 ("info: ?"
+                  & "expression function body of subprograms with a numeric "
+                  & "variant might not be available on recursive calls"
+                  & String_For_Scope,
+                  E);
+            end;
+         end if;
+
+         Register_Proof_Cyclic_Function (E);
+         Register_Dependency_For_Soundness (E_Module (E, Expr_Fun_Axiom), E);
+      end if;
+
       --  Close the dispatching axiom module if it is not empty and add an
       --  extra dependency to the dispatching definition module.
 

@@ -4023,13 +4023,33 @@ package body Why.Atree.Modules is
       S : Why_Node_Sets.Set;
 
    begin
-      --  For recursive functions, include the axiom module of mutually
-      --  recursive subprograms if any.
+      --  For recursive functions, include the module for the post axiom of
+      --  mutually recursive subprograms if any.
 
       if Proof_Module_Cyclic (E) then
          for F of Proof_Cyclic_Functions loop
             if Proof_Module_Cyclic (E, F) then
-               S.Insert (+Entity_Modules (F) (Recursive_Axiom));
+               if Has_Post_Axiom (F) then
+                  S.Insert (+Entity_Modules (F) (Recursive_Axiom));
+               end if;
+
+               --  Only remove the defining axioms of expression functions
+               --  which are recursive and have a numeric subprogram variant.
+               --  The axiom has the form f params = expr which is always sound
+               --  unless expr depends on f params, which should not be
+               --  possible if f is not recursive or if it structurally
+               --  terminates.
+
+               if Is_Expression_Function_Or_Completion (F)
+                 and then Entity_Body_Compatible_With_SPARK (F)
+                 and then No (Retrieve_Inline_Annotation (F))
+                 and then Is_Recursive (F)
+                 and then Has_Subprogram_Variant (F)
+                 and then not Is_Structural_Subprogram_Variant
+                   (Get_Pragma (F, Pragma_Subprogram_Variant))
+               then
+                  S.Insert (+Entity_Modules (F) (Expr_Fun_Axiom));
+               end if;
 
                --  If the subprogram has specializations, also include its
                --  specialized axioms.

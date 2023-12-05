@@ -319,37 +319,41 @@ procedure Example_Recursive with SPARK_Mode is
 
    function Rand (X : Integer) return Boolean with Import;
 
-   L1 : List;
-   L2 : List;
-   L3 : List;
-   M  : Memory_Type with Ghost;
-begin
-   Create_List ((1, 2, 3), L1);
-   Create_List ((4, 5, 6), L2);
-   Create_List ((7, 8, 9), L3);
-   pragma Assert (Valid_List (L1));
-   pragma Assert (Valid_List (L2));
-   pragma Assert (Valid_List (L3));
-   pragma Assert (Disjoint (L1, L2));
-   pragma Assert (Disjoint (L2, L3));
-   pragma Assert (Disjoint (L1, L3));
+   procedure Test with Pre => Valid_Memory (Memory) is
+      L1 : List;
+      L2 : List;
+      L3 : List;
+      M  : Memory_Type with Ghost;
+   begin
+      Create_List ((1, 2, 3), L1);
+      Create_List ((4, 5, 6), L2);
+      Create_List ((7, 8, 9), L3);
+      pragma Assert (Valid_List (L1));
+      pragma Assert (Valid_List (L2));
+      pragma Assert (Valid_List (L3));
+      pragma Assert (Disjoint (L1, L2));
+      pragma Assert (Disjoint (L2, L3));
+      pragma Assert (Disjoint (L1, L3));
 
-   M := Memory;
-   Append (L1, L2);
-   Prove_Valid_Preserved (Address (L2.Values), L2.Length, M, Memory);
-   Prove_Reach_Preserved (Address (L2.Values), L2.Length, M, Memory);
-   Prove_Valid_Preserved (Address (L3.Values), L3.Length, M, Memory);
-   Prove_Reach_Preserved (Address (L3.Values), L3.Length, M, Memory);
-
-   if Rand (0) then
-      Append (L1, L3);
-      pragma Assert (Valid_List (L2)); --  Not provable, L2 has been silently updated in an unknown way
-   elsif Rand (1) then
       M := Memory;
-      Append (L3, L2);
-      Prove_Valid_Preserved (Address (L1.Values), L1.Length, M, Memory);
-      pragma Assert (Valid_List (L1)); --  Ok, L1 and L3 are valid lists sharing the same tail
-   elsif Rand (2) then
-      Append (L1, L2); --  The call is not allowed, L1 and L2 are not disjoint, it would cause a cycle
-   end if;
+      Append (L1, L2);
+      Prove_Valid_Preserved (Address (L2.Values), L2.Length, M, Memory);
+      Prove_Reach_Preserved (Address (L2.Values), L2.Length, M, Memory);
+      Prove_Valid_Preserved (Address (L3.Values), L3.Length, M, Memory);
+      Prove_Reach_Preserved (Address (L3.Values), L3.Length, M, Memory);
+
+      if Rand (0) then
+         Append (L1, L3);
+         pragma Assert (Valid_List (L2)); --  Not provable, L2 has been silently updated in an unknown way
+      elsif Rand (1) then
+         M := Memory;
+         Append (L3, L2);
+         Prove_Valid_Preserved (Address (L1.Values), L1.Length, M, Memory);
+         pragma Assert (Valid_List (L1)); --  Ok, L1 and L3 are valid lists sharing the same tail
+      elsif Rand (2) then
+         Append (L1, L2); --  The call is not allowed, L1 and L2 are not disjoint, it would cause a cycle
+      end if;
+   end Test;
+begin
+   null;
 end Example_Recursive;

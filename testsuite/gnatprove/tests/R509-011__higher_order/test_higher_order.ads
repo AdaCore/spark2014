@@ -91,7 +91,7 @@ package Test_Higher_Order with SPARK_Mode is
       Array_Type  => Small_Int_Array,
       Value       => Id);
 
-   pragma Assert (Sum_l.Sum (A => (1, 2, 3, 4, 5, 6, 7, 1, 1)) = 30);
+   procedure Test1;
 
    function Is_Pos (X : Small_Int) return Boolean is (X >= 0);
 
@@ -101,7 +101,7 @@ package Test_Higher_Order with SPARK_Mode is
       Array_Type  => Small_Int_Array,
       Choose      => Is_Pos);
 
-   pragma Assert (Cnt.Count (A => (1, -2, 3, -4, -5, 6, 7, 13, 0)) = 6);
+   procedure Test2;
 
    package Sum2_l is new SPARK.Higher_Order.Fold.Sum_2
      (Index_1     => Small_Index,
@@ -115,11 +115,7 @@ package Test_Higher_Order with SPARK_Mode is
       Array_Type  => Matrix,
       Value       => Id);
 
-   pragma Assert (Sum2_L.No_Overflows (A => (1 => (1, 2, 3, 4, 5, 6, 7),
-                                             2 => (1, 2, 3, 4, 5, 6, 7))));
-
-   pragma Assert (Sum2_l.Sum (A => (1 => (1, 2, 3, 4, 5, 6, 7),
-                                    2 => (1, 2, 3, 4, 5, 6, 7))) = 56);
+   procedure Test3;
 
    package Cnt2 is new SPARK.Higher_Order.Fold.Count_2
      (Index_1     => Small_Index,
@@ -128,8 +124,6 @@ package Test_Higher_Order with SPARK_Mode is
       Array_Type  => Matrix,
       Choose      => Is_Pos);
 
-   pragma Assert (Cnt2.Count (A => (1 => (1, -2, 3, -4, -5, 6, 7, 13, 0),
-                                    2 => (1, -2, 3, -4, -5, 6, 7, 13, 0),
-                                    3 => (1, -2, 3, -4, -5, 6, 7, 13, -1))) = 17);
+   procedure Test4;
 
 end Test_Higher_Order;
