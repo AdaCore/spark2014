@@ -2653,15 +2653,32 @@ package body Gnat2Why.Subprograms is
    is
       --  Local subprograms
 
+      type Scalar_Status is
+        (Signed,    --  Signed integer type
+         Unsigned,  --  Unsigned integer type = signed with no negative value,
+                    --  also used for enumerations with default representation
+                    --  clauses.
+         Modular);  --  Modular integer type
+
+      function Get_Scalar_Status (Typ : Type_Kind_Id) return Scalar_Status is
+        (if Is_Modular_Integer_Type (Typ)   then Modular
+         elsif Is_Enumeration_Type (Typ)    then Unsigned
+         elsif Is_Unsigned_Type (Typ)       then Unsigned
+         elsif Is_Signed_Integer_Type (Typ) then Signed
+         else raise Program_Error);
+
       function Precise_Integer_UC
-        (Arg              : W_Term_Id;
-         Source_Type      : W_Type_Id;
-         Target_Type      : W_Type_Id;
-         Source_Is_Signed : Boolean;
-         Target_Is_Signed : Boolean)
+        (Arg           : W_Term_Id;
+         Size          : Uint;
+         Source_Type   : W_Type_Id;
+         Target_Type   : W_Type_Id;
+         Source_Status : Scalar_Status;
+         Target_Status : Scalar_Status)
          return W_Term_Id;
       --  Return Arg of Source_Type converted to Target_Type, when both are of
-      --  integer types.
+      --  scalar types. Size is the shared size of both types, when arguments
+      --  of the UC are integer types, which is used for conversion from an
+      --  Unsigned type to a Signed one. Otherwise it is No_Uint.
 
       function Is_UC_With_Precise_Definition (E : Entity_Id) return Boolean
       with
@@ -2695,6 +2712,14 @@ package body Gnat2Why.Subprograms is
                   if Has_Biased_Representation (Typ) then
                      return False_With_Explain
                        ("type with biased representation");
+                  end if;
+
+               when Enumeration_Kind =>
+                  if Has_Enumeration_Rep_Clause (Typ)
+                    and then Enumeration_Rep (First_Literal (Typ)) /= Uint_0
+                  then
+                     return False_With_Explain
+                       ("enumeration with non-default representation");
                   end if;
 
                when Record_Kind =>
@@ -2843,11 +2868,12 @@ package body Gnat2Why.Subprograms is
       ------------------------
 
       function Precise_Integer_UC
-        (Arg              : W_Term_Id;
-         Source_Type      : W_Type_Id;
-         Target_Type      : W_Type_Id;
-         Source_Is_Signed : Boolean;
-         Target_Is_Signed : Boolean)
+        (Arg           : W_Term_Id;
+         Size          : Uint;
+         Source_Type   : W_Type_Id;
+         Target_Type   : W_Type_Id;
+         Source_Status : Scalar_Status;
+         Target_Status : Scalar_Status)
          return W_Term_Id
       is
          Source_Base_Type : constant W_Type_Id :=
@@ -2859,30 +2885,96 @@ package body Gnat2Why.Subprograms is
          Conv :=
            Insert_Simple_Conversion (Expr => Arg, To => Source_Base_Type);
 
-         if Source_Is_Signed
-           and then Target_Is_Signed
-         then
-            null;  --  Trivial case of UC between signed types
+         if Source_Status = Target_Status then
+            null;  --  Trivial case of UC between identical types
 
-         elsif not Source_Is_Signed
-           and then not Target_Is_Signed
+         elsif Source_Status = Unsigned
+           and then Target_Status = Modular
          then
-            pragma Assert (Source_Base_Type = Target_Base_Type);
-            null;  --  Trivial case of UC between modular types
+            null;  --  Unsigned value can be directly converted to modular
 
-         elsif not Source_Is_Signed
-           and then Target_Is_Signed
+         elsif Source_Status = Modular
+           and then Target_Status = Unsigned
+         then
+            null;  --  Modular value can be directly converted to unsigned
+
+         --  Apply the appropriate UC function for conversions between Modular
+         --  and Signed.
+
+         elsif Source_Status = Modular
+           and then Target_Status = Signed
          then
             Conv := New_Call
               (Name => MF_BVs (Source_Base_Type).UC_To_Int,
                Args => (1 => +Conv),
                Typ  => EW_Int_Type);
 
-         else
+         elsif Source_Status = Signed
+           and then Target_Status = Modular
+         then
             Conv := New_Call
               (Name => MF_BVs (Target_Base_Type).UC_Of_Int,
                Args => (1 => +Conv),
                Typ  => Target_Base_Type);
+
+         --  Otherwise, this is a conversion between Unsigned and Signed.
+         --  We need to consider the bit representation of that (possibly
+         --  negative) signed value, to see if the high bit is 1, in which
+         --  case the Signed value is negative.
+
+         elsif Source_Status = Unsigned
+           and then Target_Status = Signed
+         then
+            --  Generate the value
+            --  if Conv >= 2**(Size-1) then Conv-2**Size else Conv
+            declare
+               Top_Bit : constant W_Term_Id :=
+                 New_Integer_Constant
+                   (Value => Uint_2 ** (Size - Uint_1));
+               Negative_Value : constant W_Term_Id :=
+                 New_Call
+                   (Name   => Int_Infix_Subtr,
+                    Typ    => EW_Int_Type,
+                    Args   =>
+                      (1 => +Conv,
+                       2 => New_Integer_Constant (Value => 2 ** Size)));
+            begin
+               Conv := New_Conditional
+                 (Condition =>
+                    New_Comparison
+                      (Symbol => Int_Infix_Ge,
+                       Left   => Conv,
+                       Right  => Top_Bit),
+                  Then_Part => Negative_Value,
+                  Else_Part => Conv,
+                  Typ       => EW_Int_Type);
+            end;
+
+         else
+            pragma Assert (Source_Status = Signed);
+            pragma Assert (Target_Status = Unsigned);
+
+            --  Generate the value
+            --  if Conv < 0 then Conv+2**Size else Conv
+            declare
+               Large_Value : constant W_Term_Id :=
+                 New_Call
+                   (Name   => Int_Infix_Add,
+                    Typ    => EW_Int_Type,
+                    Args   =>
+                      (1 => +Conv,
+                       2 => New_Integer_Constant (Value => 2 ** Size)));
+            begin
+               Conv := New_Conditional
+                 (Condition =>
+                    New_Comparison
+                      (Symbol => Int_Infix_Lt,
+                       Left   => Conv,
+                       Right  => New_Integer_Constant (Value => Uint_0)),
+                  Then_Part => Large_Value,
+                  Else_Part => Conv,
+                  Typ       => EW_Int_Type);
+            end;
          end if;
 
          return Insert_Simple_Conversion (Expr => Conv, To => Target_Type);
@@ -2939,16 +3031,18 @@ package body Gnat2Why.Subprograms is
             Source_Type := Retysp (Entity (Source));
             Target_Type := Retysp (Entity (Target));
 
-            if Is_Integer_Type (Source_Type)
-              and then Is_Integer_Type (Target_Type)
+            if Is_Scalar_Type (Source_Type)
+              and then Is_Scalar_Type (Target_Type)
             then
                Def :=
                  Precise_Integer_UC
-                   (Arg              => +Arg,
-                    Source_Type      => EW_Abstract (Source_Type),
-                    Target_Type      => Base_Why_Type (Target_Type),
-                    Source_Is_Signed => Is_Signed_Integer_Type (Source_Type),
-                    Target_Is_Signed => Is_Signed_Integer_Type (Target_Type));
+                   (Arg           => +Arg,
+                    Size          =>
+                      Get_Attribute_Value (Source_Type, Attribute_Size),
+                    Source_Type   => EW_Abstract (Source_Type),
+                    Target_Type   => Base_Why_Type_No_Bool (Target_Type),
+                    Source_Status => Get_Scalar_Status (Source_Type),
+                    Target_Status => Get_Scalar_Status (Target_Type));
 
             --  At least one of Source or Target is a composite type made up
             --  of integers. Convert Source to a large-enough modular type,
@@ -3035,14 +3129,31 @@ package body Gnat2Why.Subprograms is
                   is
                      Value : W_Expr_Id;
                   begin
+                     --  Special case for Boolean
+                     if Is_Standard_Boolean_Type (Typ) then
+                        Value :=
+                          New_Conditional
+                            (Domain    => EW_Term,
+                             Condition => Expr,
+                             Then_Part =>
+                               New_Modular_Constant
+                                 (Value => Uint_1,
+                                  Typ   => Base),
+                             Else_Part =>
+                               New_Modular_Constant
+                                 (Value => Uint_0,
+                                  Typ   => Base),
+                             Typ => Base);
+
                      --  If the value is from a modular type, or from a signed
                      --  type with no negative value, then simply convert it to
                      --  Base.
-                     if Is_Unsigned_Type (Typ) then
+                     elsif Is_Unsigned_Type (Typ) then
                         Value := Insert_Scalar_Conversion
                           (Domain => EW_Term,
                            Expr   => Expr,
                            To     => Base);
+
                      --  Otherwise, we need to consider the bit representation
                      --  of that (possibly negative) signed value as Base, and
                      --  extract the low Size bits with the expression
@@ -3145,14 +3256,34 @@ package body Gnat2Why.Subprograms is
                                      2 => Mask)),
                              2 => Divisor));
                   begin
-                     --  If the value is to a modular type, or to a signed
+                     --  Special case for Boolean
+                     if Is_Standard_Boolean_Type (Typ) then
+                        return
+                          New_Conditional
+                            (Domain    => EW_Term,
+                             Condition =>
+                               New_Comparison
+                                 (Domain => EW_Term,
+                                  Symbol => Why_Eq,
+                                  Left   => Value,
+                                  Right  =>
+                                    New_Modular_Constant
+                                      (Value => Uint_1,
+                                       Typ   => Base)),
+                             Then_Part => +True_Term,
+                             Else_Part => +False_Term,
+                             Typ       => EW_Bool_Type);
+
+                     --  If the value is to a modular type, or an enumeration
+                     --  with default 0-based representation, or to a signed
                      --  type with no negative value, then simply convert it
                      --  to Typ.
-                     if Is_Unsigned_Type (Typ) then
+                     elsif Is_Unsigned_Type (Typ) then
                         return Insert_Scalar_Conversion
                           (Domain => EW_Term,
                            Expr   => Value,
                            To     => EW_Abstract (Typ));
+
                      --  Otherwise, we need to consider the bit representation
                      --  of that (possibly negative) signed value, to see
                      --  if the high bit is 1, in which case the value is
@@ -3214,7 +3345,7 @@ package body Gnat2Why.Subprograms is
                      Elements : in out List)
                   is
                   begin
-                     if Is_Integer_Type (Typ) then
+                     if Is_Scalar_Type (Typ) then
                         Elements.Append
                           (Source_Element'(Typ    => Typ,
                                            Offset => Offset,
@@ -3288,7 +3419,7 @@ package body Gnat2Why.Subprograms is
                      return W_Expr_Id
                   is
                   begin
-                     if Is_Integer_Type (Typ) then
+                     if Is_Scalar_Type (Typ) then
                         return Extract_Value
                           (Base   => Base,
                            Bits   => Bits,
@@ -3393,20 +3524,20 @@ package body Gnat2Why.Subprograms is
                begin
                   --  1. Convert the argument to a value of modular type Base
 
-                  --  1.a Conversion from an integer type should be identity or
+                  --  1.a Conversion from a scalar type should be identity or
                   --  call to uc_of_int.
 
-                  if Is_Integer_Type (Source_Type) then
+                  if Is_Scalar_Type (Source_Type) then
                      Conv :=
                        Precise_Integer_UC
-                         (Arg              => +Arg,
-                          Source_Type      => EW_Abstract (Source_Type),
-                          Target_Type      => Base,
-                          Source_Is_Signed =>
-                            Is_Signed_Integer_Type (Source_Type),
-                          Target_Is_Signed => False);
+                         (Arg           => +Arg,
+                          Size          => No_Uint,
+                          Source_Type   => EW_Abstract (Source_Type),
+                          Target_Type   => Base,
+                          Source_Status => Get_Scalar_Status (Source_Type),
+                          Target_Status => Modular);
 
-                  --  1.b Otherwise extract all integer subcomponents from the
+                  --  1.b Otherwise extract all scalar subcomponents from the
                   --  composite value and sum up their contributions to the
                   --  value of type Base.
 
@@ -3435,20 +3566,20 @@ package body Gnat2Why.Subprograms is
                   --  2. Convert the converted argument to a value of the
                   --  target type.
 
-                  --  2.a Conversion to an integer type should be identity or
+                  --  2.a Conversion to a scalar type should be identity or
                   --  call to uc_to_int.
 
-                  if Is_Integer_Type (Target_Type) then
+                  if Is_Scalar_Type (Target_Type) then
                      Def :=
                        Precise_Integer_UC
-                         (Arg              => Conv,
-                          Source_Type      => Base,
-                          Target_Type      => Base_Why_Type (Target_Type),
-                          Source_Is_Signed => False,
-                          Target_Is_Signed =>
-                            Is_Signed_Integer_Type (Target_Type));
+                         (Arg           => Conv,
+                          Size          => No_Uint,
+                          Source_Type   => Base,
+                          Target_Type   => Base_Why_Type_No_Bool (Target_Type),
+                          Source_Status => Modular,
+                          Target_Status => Get_Scalar_Status (Target_Type));
 
-                  --  2.b Otherwise recursively reconstruct all integer
+                  --  2.b Otherwise recursively reconstruct all scalar
                   --  subcomponents from the value of type Base.
 
                   else

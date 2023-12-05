@@ -1,3 +1,34 @@
+enums.adb:12:13: info: implicit function contract might not be available on calls from enclosing unit
+enums.adb:12:13: info: types in unchecked conversion have the same size (Trivial)
+enums.adb:12:62: info: type is suitable as source for unchecked conversion (Trivial)
+enums.adb:12:76: info: type is suitable for unchecked conversion (Trivial)
+enums.adb:13:13: info: implicit function contract might not be available on calls from enclosing unit
+enums.adb:13:13: info: types in unchecked conversion have the same size (Trivial)
+enums.adb:13:62: info: type is suitable as source for unchecked conversion (Trivial)
+enums.adb:13:76: info: type is suitable for unchecked conversion (Trivial)
+enums.adb:15:13: info: types in unchecked conversion have the same size (Trivial)
+enums.adb:15:65: info: type is suitable as source for unchecked conversion (Trivial)
+enums.adb:15:79: info: type is suitable for unchecked conversion (Trivial)
+enums.adb:16:13: info: implicit function contract might not be available on calls from enclosing unit
+enums.adb:16:13: info: types in unchecked conversion have the same size (Trivial)
+enums.adb:16:65: info: type is suitable as source for unchecked conversion (Trivial)
+enums.adb:16:82: info: type is suitable for unchecked conversion (Trivial)
+enums.adb:19:11: info: data dependencies proved
+enums.adb:24:22: info: assertion proved (CVC5: 1 VC)
+enums.adb:26:22: info: assertion proved (CVC5: 1 VC)
+enums.adb:30:11: info: data dependencies proved
+enums.adb:35:22: info: assertion proved (Z3: 1 VC)
+enums.adb:37:22: info: assertion proved (Z3: 1 VC)
+enums.adb:45:13: info: types in unchecked conversion have the same size (Trivial)
+enums.adb:45:63: info: type is suitable as source for unchecked conversion (Trivial)
+enums.adb:45:78: info: type is suitable for unchecked conversion (Trivial)
+enums.adb:46:13: info: implicit function contract might not be available on calls from enclosing unit
+enums.adb:46:13: info: types in unchecked conversion have the same size (Trivial)
+enums.adb:46:63: info: type is suitable as source for unchecked conversion (Trivial)
+enums.adb:46:78: info: type is suitable for unchecked conversion (Trivial)
+enums.adb:49:11: info: data dependencies proved
+enums.adb:54:22: medium: assertion might fail [possible fix: subprogram at line 48 should mention X in a precondition]
+enums.adb:56:22: medium: assertion might fail [possible fix: subprogram at line 48 should mention Y in a precondition]
 imprecise.adb:12:13: high: types used for unchecked conversion do not have the same size [possible explanation: Size of type U32 and type U16 differ]
 imprecise.adb:12:13: info: imprecise handling of Unchecked_Conversion (types in unchecked conversion do not have the same size)
 imprecise.adb:12:60: info: type is suitable as source for unchecked conversion (Trivial)
@@ -6,7 +37,6 @@ imprecise.adb:18:13: info: imprecise handling of Unchecked_Conversion (component
 imprecise.adb:18:13: info: types in unchecked conversion have the same size (Trivial)
 imprecise.adb:18:60: info: type is suitable as source for unchecked conversion (Trivial)
 imprecise.adb:18:75: info: type is suitable for unchecked conversion (Trivial)
-imprecise.adb:27:13: info: imprecise handling of Unchecked_Conversion (elementary non-integer type)
 imprecise.adb:27:13: info: types in unchecked conversion have the same size (Trivial)
 imprecise.adb:27:60: info: type is suitable as source for unchecked conversion (Trivial)
 imprecise.adb:27:74: info: type is suitable for unchecked conversion (Trivial)
@@ -38,7 +68,6 @@ imprecise.adb:83:13: info: imprecise handling of Unchecked_Conversion (type is u
 imprecise.adb:83:13: info: types in unchecked conversion have the same size (Trivial)
 imprecise.adb:83:61: info: type is suitable as source for unchecked conversion (Trivial)
 imprecise.adb:83:76: high: type is unsuitable as a target for unchecked conversion [possible explanation: floating-point types have invalid bit patterns for SPARK]
-imprecise.adb:88:13: info: imprecise handling of Unchecked_Conversion (elementary non-integer type)
 imprecise.adb:88:13: info: types in unchecked conversion have the same size (Trivial)
 imprecise.adb:88:61: info: type is suitable as source for unchecked conversion (Trivial)
 imprecise.adb:88:76: info: type is suitable for unchecked conversion (Trivial)
@@ -228,3 +257,50 @@ uc_sign.ads:29:13: info: types in unchecked conversion have the same size (Trivi
 uc_sign.ads:29:64: info: type is suitable as source for unchecked conversion (Trivial)
 uc_sign.ads:29:79: info: type is suitable for unchecked conversion (Trivial)
 uc_sign.ads:31:20: warning: unused variable "Val"
+unsigned.adb:9:13: info: implicit function contract might not be available on calls from enclosing unit
+unsigned.adb:9:13: info: types in unchecked conversion have the same size (Trivial)
+unsigned.adb:9:67: info: type is suitable as source for unchecked conversion (Trivial)
+unsigned.adb:9:82: info: type is suitable for unchecked conversion (Trivial)
+unsigned.adb:10:13: info: implicit function contract might not be available on calls from enclosing unit
+unsigned.adb:10:13: info: types in unchecked conversion have the same size (Trivial)
+unsigned.adb:10:67: info: type is suitable as source for unchecked conversion (Trivial)
+unsigned.adb:10:82: info: type is suitable for unchecked conversion (Trivial)
+unsigned.adb:12:13: info: implicit function contract might not be available on calls from enclosing unit
+unsigned.adb:12:13: info: types in unchecked conversion have the same size (Trivial)
+unsigned.adb:12:67: info: type is suitable as source for unchecked conversion (Trivial)
+unsigned.adb:12:82: info: type is suitable for unchecked conversion (Trivial)
+unsigned.adb:13:13: info: implicit function contract might not be available on calls from enclosing unit
+unsigned.adb:13:13: info: types in unchecked conversion have the same size (Trivial)
+unsigned.adb:13:67: info: type is suitable as source for unchecked conversion (Trivial)
+unsigned.adb:13:82: info: type is suitable for unchecked conversion (Trivial)
+unsigned.adb:15:13: info: implicit function contract might not be available on calls from enclosing unit
+unsigned.adb:15:13: info: types in unchecked conversion have the same size (Trivial)
+unsigned.adb:15:67: info: type is suitable as source for unchecked conversion (Trivial)
+unsigned.adb:15:82: info: type is suitable for unchecked conversion (Trivial)
+unsigned.adb:16:13: info: implicit function contract might not be available on calls from enclosing unit
+unsigned.adb:16:13: info: types in unchecked conversion have the same size (Trivial)
+unsigned.adb:16:67: info: type is suitable as source for unchecked conversion (Trivial)
+unsigned.adb:16:82: info: type is suitable for unchecked conversion (Trivial)
+unsigned.adb:19:11: info: data dependencies proved
+unsigned.adb:24:22: info: assertion proved (CVC5: 1 VC; Trivial: 1 VC)
+unsigned.adb:25:22: info: assertion proved (Trivial: 1 VC; Z3: 1 VC)
+unsigned.adb:27:22: info: assertion proved (CVC5: 1 VC; Trivial: 1 VC)
+unsigned.adb:28:22: info: assertion proved (Trivial: 1 VC; Z3: 1 VC)
+unsigned.adb:30:22: info: assertion proved (CVC5: 1 VC; Trivial: 1 VC)
+unsigned.adb:31:22: info: assertion proved (Trivial: 1 VC; Z3: 1 VC)
+unsigned.adb:33:22: info: assertion proved (CVC5: 1 VC; Trivial: 1 VC)
+unsigned.adb:34:22: info: assertion proved (Trivial: 1 VC; colibri: 1 VC)
+unsigned.adb:38:11: info: data dependencies proved
+unsigned.adb:43:22: info: assertion proved (CVC5: 1 VC; Trivial: 1 VC)
+unsigned.adb:44:22: info: assertion proved (Trivial: 1 VC; Z3: 1 VC)
+unsigned.adb:46:22: info: assertion proved (CVC5: 1 VC; Trivial: 1 VC)
+unsigned.adb:47:22: info: assertion proved (Trivial: 1 VC; Z3: 1 VC)
+unsigned.adb:49:22: info: assertion proved (CVC5: 1 VC; Trivial: 1 VC)
+unsigned.adb:50:22: info: assertion proved (Trivial: 1 VC; Z3: 1 VC)
+unsigned.adb:54:11: info: data dependencies proved
+unsigned.adb:59:22: info: assertion proved (CVC5: 1 VC; Trivial: 1 VC)
+unsigned.adb:60:22: info: assertion proved (CVC5: 1 VC; Trivial: 1 VC)
+unsigned.adb:62:22: info: assertion proved (CVC5: 1 VC; Trivial: 1 VC)
+unsigned.adb:63:22: info: assertion proved (CVC5: 1 VC; Trivial: 1 VC)
+unsigned.adb:65:22: info: assertion proved (CVC5: 1 VC; Trivial: 1 VC)
+unsigned.adb:66:22: info: assertion proved (CVC5: 1 VC; Trivial: 1 VC)
