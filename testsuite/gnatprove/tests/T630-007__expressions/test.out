@@ -21,6 +21,7 @@ test_bv_compare.adb:5:13: info: implicit aspect Always_Terminates on "Id" has be
 test_bv_compare.adb:7:13: info: no contextual analysis of "Rand" (body not seen yet)
 test_bv_compare.adb:7:13: warning: assuming "Rand" has no effect on global items
 test_bv_compare.adb:7:13: warning: no Global contract available for "Rand"
+test_bv_compare.adb:8:13: info: no contextual analysis of "Rand" (body not seen yet)
 test_bv_compare.adb:8:13: warning: assuming "Rand" has no effect on global items
 test_bv_compare.adb:8:13: warning: no Global contract available for "Rand"
 test_bv_compare.adb:10:19: info: assertion proved (CVC5: 1 VC; Trivial: 1 VC)

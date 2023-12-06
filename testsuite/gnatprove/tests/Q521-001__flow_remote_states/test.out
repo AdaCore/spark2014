@@ -1,5 +1,6 @@
 pumpunit.adb:55:13: info: implicit aspect Always_Terminates on "current_variant" has been proved, subprogram will terminate
 pumpunit.adb:63:07: info: initialization of "sum" proved
+pumpunit.adb:63:07: info: initialization of "sum" proved, in call inlined at pumpunit.adb:106
 pumpunit.adb:73:07: info: no contextual analysis of "current_variant" (inside expression function)
 pumpunit.adb:81:11: info: initialization of "pump_one" constituent of "Children" proved
 pumpunit.adb:81:21: info: initialization of "pump_two" constituent of "Children" proved
@@ -8,6 +9,7 @@ pumpunit.adb:81:42: info: initialization of "cur_pump" constituent of "Children"
 pumpunit.adb:81:52: info: initialization of "outstanding" constituent of "Account" proved
 pumpunit.adb:81:65: info: initialization of "total_pay" constituent of "Account" proved
 pumpunit.adb:82:11: info: initialization of "invariant_value" constituent of "Account" proved
+pumpunit.adb:106:26: info: analyzing call to "current_variant" in context
 pumpunit.adb:119:43: info: overflow check proved (CVC5: 2 VC)
 pumpunit.adb:120:49: info: range check proved (CVC5: 2 VC)
 pumpunit.adb:147:68: info: initialization of "cur_pump" constituent of "Children" proved

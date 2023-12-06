@@ -25,9 +25,43 @@ compiler.adb:56:05: warning: no Always_Terminates aspect available for "Put"
 compiler.adb:57:05: warning: assuming "New_Line" always terminates
 compiler.adb:57:05: warning: no Always_Terminates aspect available for "New_Line"
 compiler.adb:118:15: info: no contextual analysis of "To_String80" (in potentially unevaluated context)
+compiler.adb:119:31: info: no contextual analysis of "To_String80" (in potentially unevaluated context)
+compiler.adb:120:31: info: no contextual analysis of "To_String80" (in potentially unevaluated context)
+compiler.adb:121:31: info: no contextual analysis of "To_String80" (in potentially unevaluated context)
+compiler.adb:122:31: info: no contextual analysis of "To_String80" (in potentially unevaluated context)
+compiler.adb:123:31: info: no contextual analysis of "To_String80" (in potentially unevaluated context)
+compiler.adb:124:31: info: no contextual analysis of "To_String80" (in potentially unevaluated context)
+compiler.adb:125:31: info: no contextual analysis of "To_String80" (in potentially unevaluated context)
+compiler.adb:126:31: info: no contextual analysis of "To_String80" (in potentially unevaluated context)
+compiler.adb:127:31: info: no contextual analysis of "To_String80" (in potentially unevaluated context)
+compiler.adb:128:31: info: no contextual analysis of "To_String80" (in potentially unevaluated context)
+compiler.adb:129:31: info: no contextual analysis of "To_String80" (in potentially unevaluated context)
+compiler.adb:130:31: info: no contextual analysis of "To_String80" (in potentially unevaluated context)
+compiler.adb:131:31: info: no contextual analysis of "To_String80" (in potentially unevaluated context)
+compiler.adb:132:31: info: no contextual analysis of "To_String80" (in potentially unevaluated context)
+compiler.adb:133:31: info: no contextual analysis of "To_String80" (in potentially unevaluated context)
+compiler.adb:134:31: info: no contextual analysis of "To_String80" (in potentially unevaluated context)
+compiler.adb:135:31: info: no contextual analysis of "To_String80" (in potentially unevaluated context)
+compiler.adb:136:31: info: no contextual analysis of "To_String80" (in potentially unevaluated context)
+compiler.adb:137:31: info: no contextual analysis of "To_String80" (in potentially unevaluated context)
+compiler.adb:138:31: info: no contextual analysis of "To_String80" (in potentially unevaluated context)
+compiler.adb:139:31: info: no contextual analysis of "To_String80" (in potentially unevaluated context)
+compiler.adb:140:31: info: no contextual analysis of "To_String80" (in potentially unevaluated context)
+compiler.adb:141:31: info: no contextual analysis of "To_String80" (in potentially unevaluated context)
+compiler.adb:142:31: info: no contextual analysis of "To_String80" (in potentially unevaluated context)
+compiler.adb:143:31: info: no contextual analysis of "To_String80" (in potentially unevaluated context)
+compiler.adb:144:31: info: no contextual analysis of "To_String80" (in potentially unevaluated context)
+compiler.adb:145:31: info: no contextual analysis of "To_String80" (in potentially unevaluated context)
+compiler.adb:146:31: info: no contextual analysis of "To_String80" (in potentially unevaluated context)
+compiler.adb:147:31: info: no contextual analysis of "To_String80" (in potentially unevaluated context)
+compiler.adb:149:07: info: no contextual analysis of "To_String80" (in potentially unevaluated context)
+compiler.adb:150:31: info: no contextual analysis of "To_String80" (in potentially unevaluated context)
+compiler.adb:151:31: info: no contextual analysis of "To_String80" (in potentially unevaluated context)
+compiler.adb:153:11: info: no contextual analysis of "To_String80" (in potentially unevaluated context)
 compiler.adb:164:07: warning: assuming "New_Line" always terminates
 compiler.adb:164:07: warning: no Always_Terminates aspect available for "New_Line"
 compiler.adb:308:25: info: analyzing call to "Error" in context
+compiler.adb:312:22: info: analyzing call to "To_String80" in context
 compiler.adb:314:32: warning: assuming "New_Line" always terminates
 compiler.adb:314:32: warning: no Always_Terminates aspect available for "New_Line"
 compiler.adb:315:14: warning: assuming "Put" always terminates
@@ -42,6 +76,9 @@ compiler.adb:443:12: info: analyzing call to "Identify_Symbol" in context
 compiler.adb:443:28: info: no contextual analysis of "Get_Symbol" (call returns unconstrained type)
 compiler.adb:448:09: info: no contextual analysis of "Char_Type" (in while loop condition)
 compiler.adb:452:31: info: analyzing call to "Ordinal" in context
+compiler.adb:454:17: info: analyzing call to "Char_Type" in context
+compiler.adb:458:09: info: no contextual analysis of "Char_Type" (in while loop condition)
+compiler.adb:465:10: info: analyzing call to "Char_Type" in context
 compiler.adb:479:12: info: analyzing call to "Identify_Punctuation" in context
 compiler.adb:480:30: info: analyzing call to "Error" in context
 compiler.adb:522:26: info: analyzing call to "Error" in context
@@ -50,56 +87,142 @@ compiler.adb:526:24: info: analyzing call to "Error" in context
 compiler.adb:529:26: info: analyzing call to "Error" in context
 compiler.adb:585:39: info: analyzing call to "Error" in context
 compiler.adb:638:05: info: no contextual analysis of "Expression" (body not seen yet)
+compiler.adb:639:26: info: analyzing call to "To_String80" in context
+compiler.adb:643:05: info: no contextual analysis of "Expression" (body not seen yet)
+compiler.adb:647:07: info: no contextual analysis of "Expression" (body not seen yet)
+compiler.adb:653:11: info: analyzing call to "To_String80" in context
+compiler.adb:679:28: info: analyzing call to "To_String80" in context
 compiler.adb:690:07: info: analyzing call to "General_Expression" in context
 compiler.adb:691:29: info: analyzing call to "Error" in context
 compiler.adb:697:07: info: analyzing call to "Factor" in context
 compiler.adb:697:07: info: no contextual analysis of call to recursive subprogram
+compiler.adb:698:28: info: analyzing call to "To_String80" in context
+compiler.adb:699:28: info: analyzing call to "To_String80" in context
 compiler.adb:703:12: info: analyzing call to "Position" in context
 compiler.adb:704:21: info: analyzing call to "Error" in context
 compiler.adb:705:43: info: analyzing call to "Error" in context
 compiler.adb:726:35: info: analyzing call to "Error" in context
+compiler.adb:728:11: info: no contextual analysis of "Expression" (body not seen yet)
 compiler.adb:729:35: info: analyzing call to "Error" in context
 compiler.adb:738:24: info: analyzing call to "Error" in context
 compiler.adb:744:20: info: analyzing call to "Error" in context
+compiler.adb:768:49: info: analyzing call to "To_String80" in context
+compiler.adb:769:53: info: analyzing call to "To_String80" in context
+compiler.adb:770:31: info: analyzing call to "To_String80" in context
 compiler.adb:786:05: info: analyzing call to "Term" in context
+compiler.adb:788:28: info: analyzing call to "To_String80" in context
 compiler.adb:791:05: info: analyzing call to "Term" in context
 compiler.adb:796:05: info: analyzing call to "Term" in context
+compiler.adb:797:51: info: analyzing call to "To_String80" in context
+compiler.adb:798:53: info: analyzing call to "To_String80" in context
+compiler.adb:799:31: info: analyzing call to "To_String80" in context
+compiler.adb:817:24: info: analyzing call to "To_String80" in context
+compiler.adb:819:03: info: analyzing call to "Expression" in context
+compiler.adb:819:03: info: analyzing call to "Expression" in context
+compiler.adb:819:03: info: analyzing call to "Expression" in context
 compiler.adb:819:03: info: analyzing call to "General_Expression" in context
+compiler.adb:819:03: info: in inlined body at line 638
+compiler.adb:819:03: info: in inlined body at line 643
+compiler.adb:819:03: info: in inlined body at line 647
 compiler.adb:822:26: info: analyzing call to "Error" in context
 compiler.adb:824:03: info: no contextual analysis of "Statement" (body not seen yet)
+compiler.adb:830:05: info: no contextual analysis of "Statement" (body not seen yet)
+compiler.adb:849:24: info: analyzing call to "To_String80" in context
+compiler.adb:852:05: info: no contextual analysis of "Statement" (body not seen yet)
 compiler.adb:855:27: info: analyzing call to "Error" in context
+compiler.adb:856:24: info: analyzing call to "To_String80" in context
+compiler.adb:858:03: info: analyzing call to "Expression" in context
+compiler.adb:858:03: info: analyzing call to "Expression" in context
+compiler.adb:858:03: info: analyzing call to "Expression" in context
 compiler.adb:858:03: info: analyzing call to "General_Expression" in context
+compiler.adb:858:03: info: in inlined body at line 638
+compiler.adb:858:03: info: in inlined body at line 643
+compiler.adb:858:03: info: in inlined body at line 647
+compiler.adb:877:24: info: analyzing call to "To_String80" in context
 compiler.adb:879:24: info: analyzing call to "Error" in context
 compiler.adb:880:08: info: analyzing call to "Position" in context
 compiler.adb:881:39: info: analyzing call to "Error" in context
 compiler.adb:883:25: info: analyzing call to "Error" in context
+compiler.adb:885:03: info: analyzing call to "Expression" in context
 compiler.adb:893:45: info: analyzing call to "Error" in context
+compiler.adb:896:03: info: analyzing call to "Expression" in context
+compiler.adb:907:41: info: analyzing call to "To_String80" in context
+compiler.adb:908:30: info: analyzing call to "To_String80" in context
 compiler.adb:912:24: info: analyzing call to "Error" in context
+compiler.adb:914:03: info: no contextual analysis of "Statement" (body not seen yet)
+compiler.adb:915:40: info: analyzing call to "To_String80" in context
+compiler.adb:916:30: info: analyzing call to "To_String80" in context
+compiler.adb:925:24: info: analyzing call to "To_String80" in context
+compiler.adb:952:37: info: analyzing call to "To_String80" in context
+compiler.adb:956:03: info: analyzing call to "Expression" in context
 compiler.adb:957:24: info: analyzing call to "Error" in context
 compiler.adb:962:41: info: analyzing call to "Error" in context
 compiler.adb:964:12: info: analyzing call to "Position" in context
 compiler.adb:965:45: info: analyzing call to "Error" in context
+compiler.adb:971:11: info: analyzing call to "To_String80" in context
+compiler.adb:979:11: info: analyzing call to "To_String80" in context
+compiler.adb:982:26: info: analyzing call to "To_String80" in context
 compiler.adb:984:26: info: analyzing call to "Error" in context
+compiler.adb:988:05: info: no contextual analysis of "Statement" (body not seen yet)
 compiler.adb:990:30: info: analyzing call to "Error" in context
+compiler.adb:995:25: info: analyzing call to "To_String80" in context
+compiler.adb:1013:24: info: analyzing call to "To_String80" in context
+compiler.adb:1023:09: info: analyzing call to "To_String80" in context
+compiler.adb:1025:05: info: no contextual analysis of "Statement" (body not seen yet)
+compiler.adb:1031:09: info: analyzing call to "To_String80" in context
 compiler.adb:1034:30: info: analyzing call to "Error" in context
+compiler.adb:1037:24: info: analyzing call to "To_String80" in context
 compiler.adb:1055:12: info: analyzing call to "Position" in context
 compiler.adb:1056:21: info: analyzing call to "Error" in context
 compiler.adb:1063:33: info: analyzing call to "Error" in context
+compiler.adb:1065:11: info: analyzing call to "Expression" in context
 compiler.adb:1077:35: info: analyzing call to "Error" in context
+compiler.adb:1079:11: info: analyzing call to "Expression" in context
 compiler.adb:1080:35: info: analyzing call to "Error" in context
 compiler.adb:1082:33: info: analyzing call to "Error" in context
+compiler.adb:1084:11: info: analyzing call to "Expression" in context
 compiler.adb:1093:24: info: analyzing call to "Error" in context
 compiler.adb:1100:28: info: analyzing call to "Error" in context
 compiler.adb:1101:12: info: analyzing call to "Position" in context
 compiler.adb:1102:21: info: analyzing call to "Error" in context
 compiler.adb:1103:44: info: analyzing call to "Error" in context
+compiler.adb:1116:07: info: analyzing call to "Statement" in context
+compiler.adb:1116:07: info: no contextual analysis of call to recursive subprogram
 compiler.adb:1121:29: info: analyzing call to "Error" in context
+compiler.adb:1126:28: info: analyzing call to "To_String80" in context
+compiler.adb:1129:07: info: analyzing call to "Expression" in context
+compiler.adb:1129:07: info: analyzing call to "Expression" in context
+compiler.adb:1129:07: info: analyzing call to "Expression" in context
 compiler.adb:1129:07: info: analyzing call to "General_Expression" in context
+compiler.adb:1129:07: info: in inlined body at line 638
+compiler.adb:1129:07: info: in inlined body at line 643
+compiler.adb:1129:07: info: in inlined body at line 647
 compiler.adb:1132:28: info: analyzing call to "Error" in context
+compiler.adb:1138:19: info: analyzing call to "Expression" in context
+compiler.adb:1138:19: info: analyzing call to "Expression" in context
+compiler.adb:1138:19: info: analyzing call to "Expression" in context
 compiler.adb:1138:19: info: analyzing call to "Process_If" in context
+compiler.adb:1138:19: info: in inlined body at line 638
+compiler.adb:1138:19: info: in inlined body at line 643
+compiler.adb:1138:19: info: in inlined body at line 647
+compiler.adb:1138:19: info: in inlined body at line 819
+compiler.adb:1138:19: info: in inlined body at line 819
+compiler.adb:1138:19: info: in inlined body at line 819
 compiler.adb:1145:31: info: analyzing call to "Error" in context
+compiler.adb:1148:11: info: analyzing call to "Expression" in context
+compiler.adb:1149:33: info: analyzing call to "To_String80" in context
 compiler.adb:1152:31: info: analyzing call to "Error" in context
+compiler.adb:1154:45: info: analyzing call to "To_String80" in context
+compiler.adb:1157:24: info: analyzing call to "Expression" in context
+compiler.adb:1157:24: info: analyzing call to "Expression" in context
+compiler.adb:1157:24: info: analyzing call to "Expression" in context
 compiler.adb:1157:24: info: analyzing call to "Process_Repeat" in context
+compiler.adb:1157:24: info: in inlined body at line 638
+compiler.adb:1157:24: info: in inlined body at line 643
+compiler.adb:1157:24: info: in inlined body at line 647
+compiler.adb:1157:24: info: in inlined body at line 858
+compiler.adb:1157:24: info: in inlined body at line 858
+compiler.adb:1157:24: info: in inlined body at line 858
 compiler.adb:1159:24: info: analyzing call to "Process_For" in context
 compiler.adb:1161:24: info: analyzing call to "Process_Case" in context
 compiler.adb:1163:24: info: analyzing call to "Process_Cobegin" in context
@@ -118,6 +241,8 @@ compiler.adb:1233:28: info: analyzing call to "Error" in context
 compiler.adb:1236:33: info: analyzing call to "Error" in context
 compiler.adb:1237:09: info: analyzing call to "Enter" in context
 compiler.adb:1240:32: info: analyzing call to "Error" in context
+compiler.adb:1248:31: info: analyzing call to "To_String80" in context
+compiler.adb:1250:24: info: analyzing call to "To_String80" in context
 compiler.adb:1252:03: warning: assuming "New_Line" always terminates
 compiler.adb:1252:03: warning: no Always_Terminates aspect available for "New_Line"
 compiler.adb:1269:03: warning: assuming "New_Line" always terminates

@@ -208,30 +208,42 @@ flight_modes.adb:656:19: info: no contextual analysis of "FD_Turn_FD_On" (body n
 flight_modes.adb:672:16: info: no contextual analysis of "ANNUNCIATIONS_Turn_Annunciations_Off" (body not seen yet)
 flight_modes.adb:686:19: info: no contextual analysis of "ANNUNCIATIONS_Turn_Annunciations_On" (body not seen yet)
 flight_modes.adb:702:22: info: no contextual analysis of "INDEPENDENT_In_Independent_Mode" (body not seen yet)
+flight_modes.adb:716:19: info: no contextual analysis of "INDEPENDENT_In_Independent_Mode" (body not seen yet)
 flight_modes.adb:732:22: info: no contextual analysis of "ACTIVE_In_Active_Mode" (body not seen yet)
+flight_modes.adb:746:19: info: no contextual analysis of "ACTIVE_In_Active_Mode" (body not seen yet)
+flight_modes.adb:761:10: info: no contextual analysis of "LATERAL_Update_Activated_Modes" (body not seen yet)
 flight_modes.adb:765:16: info: no contextual analysis of "LATERAL_HDG_Clear" (body not seen yet)
 flight_modes.adb:787:22: info: no contextual analysis of "LATERAL_New_Lateral_Mode_Activated" (body not seen yet)
 flight_modes.adb:809:19: info: no contextual analysis of "LATERAL_HDG_Select" (body not seen yet)
 flight_modes.adb:829:16: info: no contextual analysis of "LATERAL_NAV_Clear" (body not seen yet)
+flight_modes.adb:859:22: info: no contextual analysis of "LATERAL_New_Lateral_Mode_Activated" (body not seen yet)
 flight_modes.adb:877:25: info: no contextual analysis of "LATERAL_NAV_Capture" (body not seen yet)
 flight_modes.adb:897:19: info: no contextual analysis of "LATERAL_NAV_Select" (body not seen yet)
 flight_modes.adb:916:16: info: no contextual analysis of "LATERAL_LAPPR_Clear" (body not seen yet)
+flight_modes.adb:946:22: info: no contextual analysis of "LATERAL_New_Lateral_Mode_Activated" (body not seen yet)
 flight_modes.adb:964:25: info: no contextual analysis of "LATERAL_LAPPR_Capture" (body not seen yet)
 flight_modes.adb:984:19: info: no contextual analysis of "LATERAL_LAPPR_Select" (body not seen yet)
 flight_modes.adb:1003:16: info: no contextual analysis of "LATERAL_LGA_Clear" (body not seen yet)
+flight_modes.adb:1025:22: info: no contextual analysis of "LATERAL_New_Lateral_Mode_Activated" (body not seen yet)
 flight_modes.adb:1047:19: info: no contextual analysis of "LATERAL_LGA_Select" (body not seen yet)
 flight_modes.adb:1069:19: info: no contextual analysis of "LATERAL_Lateral_Mode_Active" (body not seen yet)
+flight_modes.adb:1089:25: info: no contextual analysis of "LATERAL_Lateral_Mode_Active" (body not seen yet)
+flight_modes.adb:1108:10: info: no contextual analysis of "VERTICAL_Update_Activated_Modes" (body not seen yet)
 flight_modes.adb:1112:16: info: no contextual analysis of "VERTICAL_VS_Clear" (body not seen yet)
 flight_modes.adb:1134:22: info: no contextual analysis of "VERTICAL_New_Vertical_Mode_Activated" (body not seen yet)
 flight_modes.adb:1156:19: info: no contextual analysis of "VERTICAL_VS_Select" (body not seen yet)
 flight_modes.adb:1176:16: info: no contextual analysis of "VERTICAL_FLC_Clear" (body not seen yet)
+flight_modes.adb:1198:22: info: no contextual analysis of "VERTICAL_New_Vertical_Mode_Activated" (body not seen yet)
 flight_modes.adb:1220:19: info: no contextual analysis of "VERTICAL_FLC_Select" (body not seen yet)
 flight_modes.adb:1240:16: info: no contextual analysis of "VERTICAL_ALT_Clear" (body not seen yet)
+flight_modes.adb:1262:22: info: no contextual analysis of "VERTICAL_New_Vertical_Mode_Activated" (body not seen yet)
 flight_modes.adb:1284:19: info: no contextual analysis of "VERTICAL_ALT_Select" (body not seen yet)
 flight_modes.adb:1304:16: info: no contextual analysis of "VERTICAL_VAPPR_Clear" (body not seen yet)
+flight_modes.adb:1334:22: info: no contextual analysis of "VERTICAL_New_Vertical_Mode_Activated" (body not seen yet)
 flight_modes.adb:1352:25: info: no contextual analysis of "VERTICAL_VAPPR_Capture" (body not seen yet)
 flight_modes.adb:1372:19: info: no contextual analysis of "VERTICAL_VAPPR_Select" (body not seen yet)
 flight_modes.adb:1391:16: info: no contextual analysis of "VERTICAL_VGA_Clear" (body not seen yet)
+flight_modes.adb:1413:22: info: no contextual analysis of "VERTICAL_New_Vertical_Mode_Activated" (body not seen yet)
 flight_modes.adb:1435:19: info: no contextual analysis of "VERTICAL_VGA_Select" (body not seen yet)
 flight_modes.adb:1455:16: info: no contextual analysis of "VERTICAL_ALTSEL_Clear" (body not seen yet)
 flight_modes.adb:1503:22: info: no contextual analysis of "VERTICAL_ALTSEL_Deactivate" (body not seen yet)
@@ -239,6 +251,7 @@ flight_modes.adb:1533:28: info: no contextual analysis of "VERTICAL_ALTSEL_Track
 flight_modes.adb:1551:25: info: no contextual analysis of "VERTICAL_ALTSEL_Capture" (body not seen yet)
 flight_modes.adb:1574:19: info: no contextual analysis of "VERTICAL_ALTSEL_Select" (body not seen yet)
 flight_modes.adb:1595:19: info: no contextual analysis of "VERTICAL_Vertical_Mode_Active" (body not seen yet)
+flight_modes.adb:1615:25: info: no contextual analysis of "VERTICAL_Vertical_Mode_Active" (body not seen yet)
 flight_modes.adb:1669:07: warning: initialization of "aVarTruthTableCondition_1" has no effect
 flight_modes.adb:1670:07: warning: initialization of "aVarTruthTableCondition_2" has no effect
 flight_modes.adb:1671:07: warning: initialization of "aVarTruthTableCondition_3" has no effect
@@ -288,7 +301,11 @@ flight_modes.adb:1960:07: warning: initialization of "aVarTruthTableCondition_1"
 flight_modes.adb:1961:07: warning: initialization of "aVarTruthTableCondition_2" has no effect
 flight_modes.adb:1962:07: warning: initialization of "r" has no effect
 flight_modes.adb:1984:07: warning: initialization of "aVarTruthTableCondition_1" has no effect
+flight_modes.adb:1984:07: warning: initialization of "aVarTruthTableCondition_1" has no effect, in call inlined at flight_modes.adb:2037
+flight_modes.adb:1984:07: warning: initialization of "aVarTruthTableCondition_1" has no effect, in call inlined at flight_modes.adb:2037, in call inlined at flight_modes.adb:2346
 flight_modes.adb:1985:07: warning: initialization of "r" has no effect
+flight_modes.adb:1985:07: warning: initialization of "r" has no effect, in call inlined at flight_modes.adb:2037
+flight_modes.adb:1985:07: warning: initialization of "r" has no effect, in call inlined at flight_modes.adb:2037, in call inlined at flight_modes.adb:2346
 flight_modes.adb:2000:07: warning: initialization of "aVarTruthTableCondition_1" has no effect
 flight_modes.adb:2001:07: warning: initialization of "aVarTruthTableCondition_2" has no effect
 flight_modes.adb:2002:07: warning: initialization of "aVarTruthTableCondition_3" has no effect
@@ -299,16 +316,33 @@ flight_modes.adb:2033:07: warning: initialization of "aVarTruthTableCondition_2"
 flight_modes.adb:2033:07: warning: initialization of "aVarTruthTableCondition_2" has no effect, in call inlined at flight_modes.adb:2346
 flight_modes.adb:2034:07: warning: initialization of "r" has no effect
 flight_modes.adb:2034:07: warning: initialization of "r" has no effect, in call inlined at flight_modes.adb:2346
+flight_modes.adb:2037:36: info: analyzing call to "LATERAL_HDG_Select" in context
 flight_modes.adb:2052:07: warning: initialization of "aVarTruthTableCondition_1" has no effect
 flight_modes.adb:2053:07: warning: initialization of "r" has no effect
 flight_modes.adb:2068:07: warning: initialization of "aVarTruthTableCondition_1" has no effect
+flight_modes.adb:2068:07: warning: initialization of "aVarTruthTableCondition_1" has no effect, in call inlined at flight_modes.adb:2138
+flight_modes.adb:2068:07: warning: initialization of "aVarTruthTableCondition_1" has no effect, in call inlined at flight_modes.adb:2138, in call inlined at flight_modes.adb:2347
 flight_modes.adb:2069:07: warning: initialization of "r" has no effect
+flight_modes.adb:2069:07: warning: initialization of "r" has no effect, in call inlined at flight_modes.adb:2138
+flight_modes.adb:2069:07: warning: initialization of "r" has no effect, in call inlined at flight_modes.adb:2138, in call inlined at flight_modes.adb:2347
 flight_modes.adb:2084:07: warning: initialization of "aVarTruthTableCondition_1" has no effect
+flight_modes.adb:2084:07: warning: initialization of "aVarTruthTableCondition_1" has no effect, in call inlined at flight_modes.adb:2139
+flight_modes.adb:2084:07: warning: initialization of "aVarTruthTableCondition_1" has no effect, in call inlined at flight_modes.adb:2139, in call inlined at flight_modes.adb:2347
 flight_modes.adb:2085:07: warning: initialization of "aVarTruthTableCondition_2" has no effect
+flight_modes.adb:2085:07: warning: initialization of "aVarTruthTableCondition_2" has no effect, in call inlined at flight_modes.adb:2139
+flight_modes.adb:2085:07: warning: initialization of "aVarTruthTableCondition_2" has no effect, in call inlined at flight_modes.adb:2139, in call inlined at flight_modes.adb:2347
 flight_modes.adb:2086:07: warning: initialization of "aVarTruthTableCondition_3" has no effect
+flight_modes.adb:2086:07: warning: initialization of "aVarTruthTableCondition_3" has no effect, in call inlined at flight_modes.adb:2139
+flight_modes.adb:2086:07: warning: initialization of "aVarTruthTableCondition_3" has no effect, in call inlined at flight_modes.adb:2139, in call inlined at flight_modes.adb:2347
 flight_modes.adb:2087:07: warning: initialization of "aVarTruthTableCondition_4" has no effect
+flight_modes.adb:2087:07: warning: initialization of "aVarTruthTableCondition_4" has no effect, in call inlined at flight_modes.adb:2139
+flight_modes.adb:2087:07: warning: initialization of "aVarTruthTableCondition_4" has no effect, in call inlined at flight_modes.adb:2139, in call inlined at flight_modes.adb:2347
 flight_modes.adb:2088:07: warning: initialization of "aVarTruthTableCondition_5" has no effect
+flight_modes.adb:2088:07: warning: initialization of "aVarTruthTableCondition_5" has no effect, in call inlined at flight_modes.adb:2139
+flight_modes.adb:2088:07: warning: initialization of "aVarTruthTableCondition_5" has no effect, in call inlined at flight_modes.adb:2139, in call inlined at flight_modes.adb:2347
 flight_modes.adb:2089:07: warning: initialization of "r" has no effect
+flight_modes.adb:2089:07: warning: initialization of "r" has no effect, in call inlined at flight_modes.adb:2139
+flight_modes.adb:2089:07: warning: initialization of "r" has no effect, in call inlined at flight_modes.adb:2139, in call inlined at flight_modes.adb:2347
 flight_modes.adb:2132:07: warning: initialization of "aVarTruthTableCondition_1" has no effect
 flight_modes.adb:2132:07: warning: initialization of "aVarTruthTableCondition_1" has no effect, in call inlined at flight_modes.adb:2347
 flight_modes.adb:2133:07: warning: initialization of "aVarTruthTableCondition_2" has no effect
@@ -317,16 +351,34 @@ flight_modes.adb:2134:07: warning: initialization of "aVarTruthTableCondition_3"
 flight_modes.adb:2134:07: warning: initialization of "aVarTruthTableCondition_3" has no effect, in call inlined at flight_modes.adb:2347
 flight_modes.adb:2135:07: warning: initialization of "r" has no effect
 flight_modes.adb:2135:07: warning: initialization of "r" has no effect, in call inlined at flight_modes.adb:2347
+flight_modes.adb:2138:36: info: analyzing call to "LATERAL_NAV_Capture" in context
+flight_modes.adb:2139:36: info: analyzing call to "LATERAL_NAV_Clear" in context
 flight_modes.adb:2155:07: warning: initialization of "aVarTruthTableCondition_1" has no effect
 flight_modes.adb:2156:07: warning: initialization of "r" has no effect
 flight_modes.adb:2171:07: warning: initialization of "aVarTruthTableCondition_1" has no effect
+flight_modes.adb:2171:07: warning: initialization of "aVarTruthTableCondition_1" has no effect, in call inlined at flight_modes.adb:2241
+flight_modes.adb:2171:07: warning: initialization of "aVarTruthTableCondition_1" has no effect, in call inlined at flight_modes.adb:2241, in call inlined at flight_modes.adb:2348
 flight_modes.adb:2172:07: warning: initialization of "r" has no effect
+flight_modes.adb:2172:07: warning: initialization of "r" has no effect, in call inlined at flight_modes.adb:2241
+flight_modes.adb:2172:07: warning: initialization of "r" has no effect, in call inlined at flight_modes.adb:2241, in call inlined at flight_modes.adb:2348
 flight_modes.adb:2187:07: warning: initialization of "aVarTruthTableCondition_1" has no effect
+flight_modes.adb:2187:07: warning: initialization of "aVarTruthTableCondition_1" has no effect, in call inlined at flight_modes.adb:2242
+flight_modes.adb:2187:07: warning: initialization of "aVarTruthTableCondition_1" has no effect, in call inlined at flight_modes.adb:2242, in call inlined at flight_modes.adb:2348
 flight_modes.adb:2188:07: warning: initialization of "aVarTruthTableCondition_2" has no effect
+flight_modes.adb:2188:07: warning: initialization of "aVarTruthTableCondition_2" has no effect, in call inlined at flight_modes.adb:2242
+flight_modes.adb:2188:07: warning: initialization of "aVarTruthTableCondition_2" has no effect, in call inlined at flight_modes.adb:2242, in call inlined at flight_modes.adb:2348
 flight_modes.adb:2189:07: warning: initialization of "aVarTruthTableCondition_3" has no effect
+flight_modes.adb:2189:07: warning: initialization of "aVarTruthTableCondition_3" has no effect, in call inlined at flight_modes.adb:2242
+flight_modes.adb:2189:07: warning: initialization of "aVarTruthTableCondition_3" has no effect, in call inlined at flight_modes.adb:2242, in call inlined at flight_modes.adb:2348
 flight_modes.adb:2190:07: warning: initialization of "aVarTruthTableCondition_4" has no effect
+flight_modes.adb:2190:07: warning: initialization of "aVarTruthTableCondition_4" has no effect, in call inlined at flight_modes.adb:2242
+flight_modes.adb:2190:07: warning: initialization of "aVarTruthTableCondition_4" has no effect, in call inlined at flight_modes.adb:2242, in call inlined at flight_modes.adb:2348
 flight_modes.adb:2191:07: warning: initialization of "aVarTruthTableCondition_5" has no effect
+flight_modes.adb:2191:07: warning: initialization of "aVarTruthTableCondition_5" has no effect, in call inlined at flight_modes.adb:2242
+flight_modes.adb:2191:07: warning: initialization of "aVarTruthTableCondition_5" has no effect, in call inlined at flight_modes.adb:2242, in call inlined at flight_modes.adb:2348
 flight_modes.adb:2192:07: warning: initialization of "r" has no effect
+flight_modes.adb:2192:07: warning: initialization of "r" has no effect, in call inlined at flight_modes.adb:2242
+flight_modes.adb:2192:07: warning: initialization of "r" has no effect, in call inlined at flight_modes.adb:2242, in call inlined at flight_modes.adb:2348
 flight_modes.adb:2235:07: warning: initialization of "aVarTruthTableCondition_1" has no effect
 flight_modes.adb:2235:07: warning: initialization of "aVarTruthTableCondition_1" has no effect, in call inlined at flight_modes.adb:2348
 flight_modes.adb:2236:07: warning: initialization of "aVarTruthTableCondition_2" has no effect
@@ -335,9 +387,17 @@ flight_modes.adb:2237:07: warning: initialization of "aVarTruthTableCondition_3"
 flight_modes.adb:2237:07: warning: initialization of "aVarTruthTableCondition_3" has no effect, in call inlined at flight_modes.adb:2348
 flight_modes.adb:2238:07: warning: initialization of "r" has no effect
 flight_modes.adb:2238:07: warning: initialization of "r" has no effect, in call inlined at flight_modes.adb:2348
+flight_modes.adb:2241:36: info: analyzing call to "LATERAL_LAPPR_Capture" in context
+flight_modes.adb:2242:36: info: analyzing call to "LATERAL_LAPPR_Clear" in context
 flight_modes.adb:2258:07: warning: initialization of "aVarTruthTableCondition_1" has no effect
+flight_modes.adb:2258:07: warning: initialization of "aVarTruthTableCondition_1" has no effect, in call inlined at flight_modes.adb:2331
+flight_modes.adb:2258:07: warning: initialization of "aVarTruthTableCondition_1" has no effect, in call inlined at flight_modes.adb:2331, in call inlined at flight_modes.adb:2349
 flight_modes.adb:2259:07: warning: initialization of "aVarTruthTableCondition_2" has no effect
+flight_modes.adb:2259:07: warning: initialization of "aVarTruthTableCondition_2" has no effect, in call inlined at flight_modes.adb:2331
+flight_modes.adb:2259:07: warning: initialization of "aVarTruthTableCondition_2" has no effect, in call inlined at flight_modes.adb:2331, in call inlined at flight_modes.adb:2349
 flight_modes.adb:2260:07: warning: initialization of "r" has no effect
+flight_modes.adb:2260:07: warning: initialization of "r" has no effect, in call inlined at flight_modes.adb:2331
+flight_modes.adb:2260:07: warning: initialization of "r" has no effect, in call inlined at flight_modes.adb:2331, in call inlined at flight_modes.adb:2349
 flight_modes.adb:2278:07: warning: initialization of "aVarTruthTableCondition_1" has no effect
 flight_modes.adb:2279:07: warning: initialization of "aVarTruthTableCondition_2" has no effect
 flight_modes.adb:2280:07: warning: initialization of "aVarTruthTableCondition_3" has no effect
@@ -350,6 +410,7 @@ flight_modes.adb:2327:07: warning: initialization of "aVarTruthTableCondition_2"
 flight_modes.adb:2327:07: warning: initialization of "aVarTruthTableCondition_2" has no effect, in call inlined at flight_modes.adb:2349
 flight_modes.adb:2328:07: warning: initialization of "r" has no effect
 flight_modes.adb:2328:07: warning: initialization of "r" has no effect, in call inlined at flight_modes.adb:2349
+flight_modes.adb:2331:36: info: analyzing call to "LATERAL_LGA_Select" in context
 flight_modes.adb:2346:43: info: analyzing call to "LATERAL_HDG_Will_Be_Activated" in context
 flight_modes.adb:2347:43: info: analyzing call to "LATERAL_NAV_Will_Be_Activated" in context
 flight_modes.adb:2348:45: info: analyzing call to "LATERAL_LAPPR_Will_Be_Activated" in context
@@ -365,9 +426,17 @@ flight_modes.adb:2396:07: warning: initialization of "aVarTruthTableCondition_3"
 flight_modes.adb:2397:07: warning: initialization of "aVarTruthTableCondition_4" has no effect
 flight_modes.adb:2398:07: warning: initialization of "r" has no effect
 flight_modes.adb:2434:07: warning: initialization of "aVarTruthTableCondition_1" has no effect
+flight_modes.adb:2434:07: warning: initialization of "aVarTruthTableCondition_1" has no effect, in call inlined at flight_modes.adb:2494
+flight_modes.adb:2434:07: warning: initialization of "aVarTruthTableCondition_1" has no effect, in call inlined at flight_modes.adb:2494, in call inlined at flight_modes.adb:3080
 flight_modes.adb:2435:07: warning: initialization of "aVarTruthTableCondition_2" has no effect
+flight_modes.adb:2435:07: warning: initialization of "aVarTruthTableCondition_2" has no effect, in call inlined at flight_modes.adb:2494
+flight_modes.adb:2435:07: warning: initialization of "aVarTruthTableCondition_2" has no effect, in call inlined at flight_modes.adb:2494, in call inlined at flight_modes.adb:3080
 flight_modes.adb:2436:07: warning: initialization of "aVarTruthTableCondition_3" has no effect
+flight_modes.adb:2436:07: warning: initialization of "aVarTruthTableCondition_3" has no effect, in call inlined at flight_modes.adb:2494
+flight_modes.adb:2436:07: warning: initialization of "aVarTruthTableCondition_3" has no effect, in call inlined at flight_modes.adb:2494, in call inlined at flight_modes.adb:3080
 flight_modes.adb:2437:07: warning: initialization of "r" has no effect
+flight_modes.adb:2437:07: warning: initialization of "r" has no effect, in call inlined at flight_modes.adb:2494
+flight_modes.adb:2437:07: warning: initialization of "r" has no effect, in call inlined at flight_modes.adb:2494, in call inlined at flight_modes.adb:3080
 flight_modes.adb:2457:07: warning: initialization of "aVarTruthTableCondition_1" has no effect
 flight_modes.adb:2458:07: warning: initialization of "aVarTruthTableCondition_2" has no effect
 flight_modes.adb:2459:07: warning: initialization of "aVarTruthTableCondition_3" has no effect
@@ -378,14 +447,31 @@ flight_modes.adb:2490:07: warning: initialization of "aVarTruthTableCondition_2"
 flight_modes.adb:2490:07: warning: initialization of "aVarTruthTableCondition_2" has no effect, in call inlined at flight_modes.adb:3080
 flight_modes.adb:2491:07: warning: initialization of "r" has no effect
 flight_modes.adb:2491:07: warning: initialization of "r" has no effect, in call inlined at flight_modes.adb:3080
+flight_modes.adb:2494:36: info: analyzing call to "VERTICAL_VS_Select" in context
 flight_modes.adb:2509:07: warning: initialization of "aVarTruthTableCondition_1" has no effect
+flight_modes.adb:2509:07: warning: initialization of "aVarTruthTableCondition_1" has no effect, in call inlined at flight_modes.adb:2601
+flight_modes.adb:2509:07: warning: initialization of "aVarTruthTableCondition_1" has no effect, in call inlined at flight_modes.adb:2601, in call inlined at flight_modes.adb:3081
 flight_modes.adb:2510:07: warning: initialization of "aVarTruthTableCondition_2" has no effect
+flight_modes.adb:2510:07: warning: initialization of "aVarTruthTableCondition_2" has no effect, in call inlined at flight_modes.adb:2601
+flight_modes.adb:2510:07: warning: initialization of "aVarTruthTableCondition_2" has no effect, in call inlined at flight_modes.adb:2601, in call inlined at flight_modes.adb:3081
 flight_modes.adb:2511:07: warning: initialization of "aVarTruthTableCondition_3" has no effect
+flight_modes.adb:2511:07: warning: initialization of "aVarTruthTableCondition_3" has no effect, in call inlined at flight_modes.adb:2601
+flight_modes.adb:2511:07: warning: initialization of "aVarTruthTableCondition_3" has no effect, in call inlined at flight_modes.adb:2601, in call inlined at flight_modes.adb:3081
 flight_modes.adb:2512:07: warning: initialization of "aVarTruthTableCondition_4" has no effect
+flight_modes.adb:2512:07: warning: initialization of "aVarTruthTableCondition_4" has no effect, in call inlined at flight_modes.adb:2601
+flight_modes.adb:2512:07: warning: initialization of "aVarTruthTableCondition_4" has no effect, in call inlined at flight_modes.adb:2601, in call inlined at flight_modes.adb:3081
 flight_modes.adb:2513:07: warning: initialization of "aVarTruthTableCondition_5" has no effect
+flight_modes.adb:2513:07: warning: initialization of "aVarTruthTableCondition_5" has no effect, in call inlined at flight_modes.adb:2601
+flight_modes.adb:2513:07: warning: initialization of "aVarTruthTableCondition_5" has no effect, in call inlined at flight_modes.adb:2601, in call inlined at flight_modes.adb:3081
 flight_modes.adb:2514:07: warning: initialization of "aVarTruthTableCondition_6" has no effect
+flight_modes.adb:2514:07: warning: initialization of "aVarTruthTableCondition_6" has no effect, in call inlined at flight_modes.adb:2601
+flight_modes.adb:2514:07: warning: initialization of "aVarTruthTableCondition_6" has no effect, in call inlined at flight_modes.adb:2601, in call inlined at flight_modes.adb:3081
 flight_modes.adb:2515:07: warning: initialization of "aVarTruthTableCondition_7" has no effect
+flight_modes.adb:2515:07: warning: initialization of "aVarTruthTableCondition_7" has no effect, in call inlined at flight_modes.adb:2601
+flight_modes.adb:2515:07: warning: initialization of "aVarTruthTableCondition_7" has no effect, in call inlined at flight_modes.adb:2601, in call inlined at flight_modes.adb:3081
 flight_modes.adb:2516:07: warning: initialization of "r" has no effect
+flight_modes.adb:2516:07: warning: initialization of "r" has no effect, in call inlined at flight_modes.adb:2601
+flight_modes.adb:2516:07: warning: initialization of "r" has no effect, in call inlined at flight_modes.adb:2601, in call inlined at flight_modes.adb:3081
 flight_modes.adb:2550:07: warning: initialization of "aVarTruthTableCondition_1" has no effect
 flight_modes.adb:2551:07: warning: initialization of "aVarTruthTableCondition_2" has no effect
 flight_modes.adb:2552:07: warning: initialization of "aVarTruthTableCondition_3" has no effect
@@ -398,11 +484,22 @@ flight_modes.adb:2597:07: warning: initialization of "aVarTruthTableCondition_2"
 flight_modes.adb:2597:07: warning: initialization of "aVarTruthTableCondition_2" has no effect, in call inlined at flight_modes.adb:3081
 flight_modes.adb:2598:07: warning: initialization of "r" has no effect
 flight_modes.adb:2598:07: warning: initialization of "r" has no effect, in call inlined at flight_modes.adb:3081
+flight_modes.adb:2601:36: info: analyzing call to "VERTICAL_FLC_Select" in context
 flight_modes.adb:2616:07: warning: initialization of "aVarTruthTableCondition_1" has no effect
+flight_modes.adb:2616:07: warning: initialization of "aVarTruthTableCondition_1" has no effect, in call inlined at flight_modes.adb:2693
+flight_modes.adb:2616:07: warning: initialization of "aVarTruthTableCondition_1" has no effect, in call inlined at flight_modes.adb:2693, in call inlined at flight_modes.adb:3082
 flight_modes.adb:2617:07: warning: initialization of "aVarTruthTableCondition_2" has no effect
+flight_modes.adb:2617:07: warning: initialization of "aVarTruthTableCondition_2" has no effect, in call inlined at flight_modes.adb:2693
+flight_modes.adb:2617:07: warning: initialization of "aVarTruthTableCondition_2" has no effect, in call inlined at flight_modes.adb:2693, in call inlined at flight_modes.adb:3082
 flight_modes.adb:2618:07: warning: initialization of "aVarTruthTableCondition_3" has no effect
+flight_modes.adb:2618:07: warning: initialization of "aVarTruthTableCondition_3" has no effect, in call inlined at flight_modes.adb:2693
+flight_modes.adb:2618:07: warning: initialization of "aVarTruthTableCondition_3" has no effect, in call inlined at flight_modes.adb:2693, in call inlined at flight_modes.adb:3082
 flight_modes.adb:2619:07: warning: initialization of "aVarTruthTableCondition_4" has no effect
+flight_modes.adb:2619:07: warning: initialization of "aVarTruthTableCondition_4" has no effect, in call inlined at flight_modes.adb:2693
+flight_modes.adb:2619:07: warning: initialization of "aVarTruthTableCondition_4" has no effect, in call inlined at flight_modes.adb:2693, in call inlined at flight_modes.adb:3082
 flight_modes.adb:2620:07: warning: initialization of "r" has no effect
+flight_modes.adb:2620:07: warning: initialization of "r" has no effect, in call inlined at flight_modes.adb:2693
+flight_modes.adb:2620:07: warning: initialization of "r" has no effect, in call inlined at flight_modes.adb:2693, in call inlined at flight_modes.adb:3082
 flight_modes.adb:2648:07: warning: initialization of "aVarTruthTableCondition_1" has no effect
 flight_modes.adb:2649:07: warning: initialization of "aVarTruthTableCondition_2" has no effect
 flight_modes.adb:2650:07: warning: initialization of "aVarTruthTableCondition_3" has no effect
@@ -414,19 +511,42 @@ flight_modes.adb:2689:07: warning: initialization of "aVarTruthTableCondition_2"
 flight_modes.adb:2689:07: warning: initialization of "aVarTruthTableCondition_2" has no effect, in call inlined at flight_modes.adb:3082
 flight_modes.adb:2690:07: warning: initialization of "r" has no effect
 flight_modes.adb:2690:07: warning: initialization of "r" has no effect, in call inlined at flight_modes.adb:3082
+flight_modes.adb:2693:36: info: analyzing call to "VERTICAL_ALT_Select" in context
 flight_modes.adb:2708:07: warning: initialization of "aVarTruthTableCondition_1" has no effect
 flight_modes.adb:2709:07: warning: initialization of "r" has no effect
 flight_modes.adb:2724:07: warning: initialization of "aVarTruthTableCondition_1" has no effect
+flight_modes.adb:2724:07: warning: initialization of "aVarTruthTableCondition_1" has no effect, in call inlined at flight_modes.adb:2809
+flight_modes.adb:2724:07: warning: initialization of "aVarTruthTableCondition_1" has no effect, in call inlined at flight_modes.adb:2809, in call inlined at flight_modes.adb:3084
 flight_modes.adb:2725:07: warning: initialization of "aVarTruthTableCondition_2" has no effect
+flight_modes.adb:2725:07: warning: initialization of "aVarTruthTableCondition_2" has no effect, in call inlined at flight_modes.adb:2809
+flight_modes.adb:2725:07: warning: initialization of "aVarTruthTableCondition_2" has no effect, in call inlined at flight_modes.adb:2809, in call inlined at flight_modes.adb:3084
 flight_modes.adb:2726:07: warning: initialization of "aVarTruthTableCondition_3" has no effect
+flight_modes.adb:2726:07: warning: initialization of "aVarTruthTableCondition_3" has no effect, in call inlined at flight_modes.adb:2809
+flight_modes.adb:2726:07: warning: initialization of "aVarTruthTableCondition_3" has no effect, in call inlined at flight_modes.adb:2809, in call inlined at flight_modes.adb:3084
 flight_modes.adb:2727:07: warning: initialization of "r" has no effect
+flight_modes.adb:2727:07: warning: initialization of "r" has no effect, in call inlined at flight_modes.adb:2809
+flight_modes.adb:2727:07: warning: initialization of "r" has no effect, in call inlined at flight_modes.adb:2809, in call inlined at flight_modes.adb:3084
 flight_modes.adb:2747:07: warning: initialization of "aVarTruthTableCondition_1" has no effect
+flight_modes.adb:2747:07: warning: initialization of "aVarTruthTableCondition_1" has no effect, in call inlined at flight_modes.adb:2810
+flight_modes.adb:2747:07: warning: initialization of "aVarTruthTableCondition_1" has no effect, in call inlined at flight_modes.adb:2810, in call inlined at flight_modes.adb:3084
 flight_modes.adb:2748:07: warning: initialization of "aVarTruthTableCondition_2" has no effect
+flight_modes.adb:2748:07: warning: initialization of "aVarTruthTableCondition_2" has no effect, in call inlined at flight_modes.adb:2810
+flight_modes.adb:2748:07: warning: initialization of "aVarTruthTableCondition_2" has no effect, in call inlined at flight_modes.adb:2810, in call inlined at flight_modes.adb:3084
 flight_modes.adb:2749:07: warning: initialization of "aVarTruthTableCondition_3" has no effect
+flight_modes.adb:2749:07: warning: initialization of "aVarTruthTableCondition_3" has no effect, in call inlined at flight_modes.adb:2810
+flight_modes.adb:2749:07: warning: initialization of "aVarTruthTableCondition_3" has no effect, in call inlined at flight_modes.adb:2810, in call inlined at flight_modes.adb:3084
 flight_modes.adb:2750:07: warning: initialization of "aVarTruthTableCondition_4" has no effect
+flight_modes.adb:2750:07: warning: initialization of "aVarTruthTableCondition_4" has no effect, in call inlined at flight_modes.adb:2810
+flight_modes.adb:2750:07: warning: initialization of "aVarTruthTableCondition_4" has no effect, in call inlined at flight_modes.adb:2810, in call inlined at flight_modes.adb:3084
 flight_modes.adb:2751:07: warning: initialization of "aVarTruthTableCondition_5" has no effect
+flight_modes.adb:2751:07: warning: initialization of "aVarTruthTableCondition_5" has no effect, in call inlined at flight_modes.adb:2810
+flight_modes.adb:2751:07: warning: initialization of "aVarTruthTableCondition_5" has no effect, in call inlined at flight_modes.adb:2810, in call inlined at flight_modes.adb:3084
 flight_modes.adb:2752:07: warning: initialization of "aVarTruthTableCondition_6" has no effect
+flight_modes.adb:2752:07: warning: initialization of "aVarTruthTableCondition_6" has no effect, in call inlined at flight_modes.adb:2810
+flight_modes.adb:2752:07: warning: initialization of "aVarTruthTableCondition_6" has no effect, in call inlined at flight_modes.adb:2810, in call inlined at flight_modes.adb:3084
 flight_modes.adb:2753:07: warning: initialization of "r" has no effect
+flight_modes.adb:2753:07: warning: initialization of "r" has no effect, in call inlined at flight_modes.adb:2810
+flight_modes.adb:2753:07: warning: initialization of "r" has no effect, in call inlined at flight_modes.adb:2810, in call inlined at flight_modes.adb:3084
 flight_modes.adb:2803:07: warning: initialization of "aVarTruthTableCondition_1" has no effect
 flight_modes.adb:2803:07: warning: initialization of "aVarTruthTableCondition_1" has no effect, in call inlined at flight_modes.adb:3084
 flight_modes.adb:2804:07: warning: initialization of "aVarTruthTableCondition_2" has no effect
@@ -435,9 +555,17 @@ flight_modes.adb:2805:07: warning: initialization of "aVarTruthTableCondition_3"
 flight_modes.adb:2805:07: warning: initialization of "aVarTruthTableCondition_3" has no effect, in call inlined at flight_modes.adb:3084
 flight_modes.adb:2806:07: warning: initialization of "r" has no effect
 flight_modes.adb:2806:07: warning: initialization of "r" has no effect, in call inlined at flight_modes.adb:3084
+flight_modes.adb:2809:36: info: analyzing call to "VERTICAL_VAPPR_Capture" in context
+flight_modes.adb:2810:36: info: analyzing call to "VERTICAL_VAPPR_Clear" in context
 flight_modes.adb:2826:07: warning: initialization of "aVarTruthTableCondition_1" has no effect
+flight_modes.adb:2826:07: warning: initialization of "aVarTruthTableCondition_1" has no effect, in call inlined at flight_modes.adb:2907
+flight_modes.adb:2826:07: warning: initialization of "aVarTruthTableCondition_1" has no effect, in call inlined at flight_modes.adb:2907, in call inlined at flight_modes.adb:3085
 flight_modes.adb:2827:07: warning: initialization of "aVarTruthTableCondition_2" has no effect
+flight_modes.adb:2827:07: warning: initialization of "aVarTruthTableCondition_2" has no effect, in call inlined at flight_modes.adb:2907
+flight_modes.adb:2827:07: warning: initialization of "aVarTruthTableCondition_2" has no effect, in call inlined at flight_modes.adb:2907, in call inlined at flight_modes.adb:3085
 flight_modes.adb:2828:07: warning: initialization of "r" has no effect
+flight_modes.adb:2828:07: warning: initialization of "r" has no effect, in call inlined at flight_modes.adb:2907
+flight_modes.adb:2828:07: warning: initialization of "r" has no effect, in call inlined at flight_modes.adb:2907, in call inlined at flight_modes.adb:3085
 flight_modes.adb:2846:07: warning: initialization of "aVarTruthTableCondition_1" has no effect
 flight_modes.adb:2847:07: warning: initialization of "aVarTruthTableCondition_2" has no effect
 flight_modes.adb:2848:07: warning: initialization of "aVarTruthTableCondition_3" has no effect
@@ -451,12 +579,17 @@ flight_modes.adb:2903:07: warning: initialization of "aVarTruthTableCondition_2"
 flight_modes.adb:2903:07: warning: initialization of "aVarTruthTableCondition_2" has no effect, in call inlined at flight_modes.adb:3085
 flight_modes.adb:2904:07: warning: initialization of "r" has no effect
 flight_modes.adb:2904:07: warning: initialization of "r" has no effect, in call inlined at flight_modes.adb:3085
+flight_modes.adb:2907:36: info: analyzing call to "VERTICAL_VGA_Select" in context
 flight_modes.adb:2922:07: warning: initialization of "aVarTruthTableCondition_1" has no effect
 flight_modes.adb:2923:07: warning: initialization of "aVarTruthTableCondition_2" has no effect
 flight_modes.adb:2924:07: warning: initialization of "aVarTruthTableCondition_3" has no effect
 flight_modes.adb:2925:07: warning: initialization of "r" has no effect
 flight_modes.adb:2945:07: warning: initialization of "aVarTruthTableCondition_1" has no effect
+flight_modes.adb:2945:07: warning: initialization of "aVarTruthTableCondition_1" has no effect, in call inlined at flight_modes.adb:3063
+flight_modes.adb:2945:07: warning: initialization of "aVarTruthTableCondition_1" has no effect, in call inlined at flight_modes.adb:3063, in call inlined at flight_modes.adb:3083
 flight_modes.adb:2946:07: warning: initialization of "r" has no effect
+flight_modes.adb:2946:07: warning: initialization of "r" has no effect, in call inlined at flight_modes.adb:3063
+flight_modes.adb:2946:07: warning: initialization of "r" has no effect, in call inlined at flight_modes.adb:3063, in call inlined at flight_modes.adb:3083
 flight_modes.adb:2961:07: warning: initialization of "aVarTruthTableCondition_1" has no effect
 flight_modes.adb:2962:07: warning: initialization of "r" has no effect
 flight_modes.adb:2977:07: warning: initialization of "aVarTruthTableCondition_1" has no effect
@@ -464,11 +597,22 @@ flight_modes.adb:2978:07: warning: initialization of "aVarTruthTableCondition_2"
 flight_modes.adb:2979:07: warning: initialization of "aVarTruthTableCondition_3" has no effect
 flight_modes.adb:2980:07: warning: initialization of "aVarTruthTableCondition_4" has no effect
 flight_modes.adb:2981:07: warning: initialization of "r" has no effect
+flight_modes.adb:2986:36: info: no contextual analysis of "VERTICAL_New_Vertical_Mode_Activated" (body not seen yet)
 flight_modes.adb:3017:07: warning: initialization of "aVarTruthTableCondition_1" has no effect
+flight_modes.adb:3017:07: warning: initialization of "aVarTruthTableCondition_1" has no effect, in call inlined at flight_modes.adb:3064
+flight_modes.adb:3017:07: warning: initialization of "aVarTruthTableCondition_1" has no effect, in call inlined at flight_modes.adb:3064, in call inlined at flight_modes.adb:3083
 flight_modes.adb:3018:07: warning: initialization of "aVarTruthTableCondition_2" has no effect
+flight_modes.adb:3018:07: warning: initialization of "aVarTruthTableCondition_2" has no effect, in call inlined at flight_modes.adb:3064
+flight_modes.adb:3018:07: warning: initialization of "aVarTruthTableCondition_2" has no effect, in call inlined at flight_modes.adb:3064, in call inlined at flight_modes.adb:3083
 flight_modes.adb:3019:07: warning: initialization of "aVarTruthTableCondition_3" has no effect
+flight_modes.adb:3019:07: warning: initialization of "aVarTruthTableCondition_3" has no effect, in call inlined at flight_modes.adb:3064
+flight_modes.adb:3019:07: warning: initialization of "aVarTruthTableCondition_3" has no effect, in call inlined at flight_modes.adb:3064, in call inlined at flight_modes.adb:3083
 flight_modes.adb:3020:07: warning: initialization of "aVarTruthTableCondition_4" has no effect
+flight_modes.adb:3020:07: warning: initialization of "aVarTruthTableCondition_4" has no effect, in call inlined at flight_modes.adb:3064
+flight_modes.adb:3020:07: warning: initialization of "aVarTruthTableCondition_4" has no effect, in call inlined at flight_modes.adb:3064, in call inlined at flight_modes.adb:3083
 flight_modes.adb:3021:07: warning: initialization of "r" has no effect
+flight_modes.adb:3021:07: warning: initialization of "r" has no effect, in call inlined at flight_modes.adb:3064
+flight_modes.adb:3021:07: warning: initialization of "r" has no effect, in call inlined at flight_modes.adb:3064, in call inlined at flight_modes.adb:3083
 flight_modes.adb:3057:07: warning: initialization of "aVarTruthTableCondition_1" has no effect
 flight_modes.adb:3057:07: warning: initialization of "aVarTruthTableCondition_1" has no effect, in call inlined at flight_modes.adb:3083
 flight_modes.adb:3058:07: warning: initialization of "aVarTruthTableCondition_2" has no effect
@@ -477,6 +621,8 @@ flight_modes.adb:3059:07: warning: initialization of "aVarTruthTableCondition_3"
 flight_modes.adb:3059:07: warning: initialization of "aVarTruthTableCondition_3" has no effect, in call inlined at flight_modes.adb:3083
 flight_modes.adb:3060:07: warning: initialization of "r" has no effect
 flight_modes.adb:3060:07: warning: initialization of "r" has no effect, in call inlined at flight_modes.adb:3083
+flight_modes.adb:3063:36: info: analyzing call to "VERTICAL_ALTSEL_Capture" in context
+flight_modes.adb:3064:36: info: analyzing call to "VERTICAL_ALTSEL_Clear" in context
 flight_modes.adb:3080:43: info: analyzing call to "VERTICAL_VS_Will_Be_Activated" in context
 flight_modes.adb:3081:44: info: analyzing call to "VERTICAL_FLC_Will_Be_Activated" in context
 flight_modes.adb:3082:44: info: analyzing call to "VERTICAL_ALT_Will_Be_Activated" in context

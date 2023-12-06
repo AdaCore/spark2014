@@ -7,6 +7,7 @@ test_fold.adb:14:50: warning: assuming "P" has no effect on global items
 test_fold.adb:14:50: warning: no Global contract available for "P"
 test_fold.adb:14:56: info: index check proved (CVC5: 2 VC)
 test_fold.adb:17:32: info: index check proved (CVC5: 4 VC)
+test_fold.adb:17:55: info: no contextual analysis of "P" (in potentially unevaluated context)
 test_fold.adb:17:55: warning: assuming "P" has no effect on global items
 test_fold.adb:17:55: warning: no Global contract available for "P"
 test_fold.adb:17:61: info: index check proved (CVC5: 4 VC)
@@ -26,6 +27,7 @@ test_fold.adb:28:50: warning: assuming "P" has no effect on global items
 test_fold.adb:28:50: warning: no Global contract available for "P"
 test_fold.adb:28:56: info: index check proved (CVC5: 2 VC)
 test_fold.adb:31:40: info: index check proved (CVC5: 4 VC)
+test_fold.adb:31:63: info: no contextual analysis of "P" (in potentially unevaluated context)
 test_fold.adb:31:63: warning: assuming "P" has no effect on global items
 test_fold.adb:31:63: warning: no Global contract available for "P"
 test_fold.adb:31:69: info: index check proved (CVC5: 4 VC)
@@ -45,6 +47,7 @@ test_fold.adb:43:50: warning: assuming "P" has no effect on global items
 test_fold.adb:43:50: warning: no Global contract available for "P"
 test_fold.adb:43:56: info: index check proved (CVC5: 2 VC)
 test_fold.adb:46:31: info: index check proved (CVC5: 10 VC)
+test_fold.adb:46:54: info: no contextual analysis of "P" (in potentially unevaluated context)
 test_fold.adb:46:54: warning: assuming "P" has no effect on global items
 test_fold.adb:46:54: warning: no Global contract available for "P"
 test_fold.adb:46:60: info: index check proved (CVC5: 10 VC)
