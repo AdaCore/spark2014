@@ -52,6 +52,7 @@ test.adb:90:16: info: implicit aspect Always_Terminates on "Length" has been pro
 test.adb:91:17: info: postcondition proved (CVC5: 1 VC)
 test.adb:94:16: info: implicit aspect Always_Terminates on "Length_Rec" has been proved, subprogram will terminate
 test.adb:97:16: info: implicit aspect Always_Terminates on "Eq_Elem" has been proved, subprogram will terminate
+test.adb:112:16: info: expression function body of subprograms with a numeric variant might not be available on recursive calls
 test.adb:112:16: info: function contract might not be available on recursive calls
 test.adb:112:16: info: implicit aspect Always_Terminates on "Length_Rec" has been proved, subprogram will terminate
 test.adb:115:17: info: postcondition proved (CVC5: 1 VC)

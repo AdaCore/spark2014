@@ -1,21 +1,23 @@
 library.ads:4:13: info: implicit aspect Always_Terminates on "At_End" has been proved, subprogram will terminate
 library.ads:6:08: info: dynamic accessibility check proved (Trivial)
-main.adb:5:13: info: implicit aspect Always_Terminates on "Flip" has been proved, subprogram will terminate
-main.adb:6:30: info: subprogram variant proved (CVC5: 1 VC)
-main.adb:6:38: info: overflow check proved (CVC5: 2 VC)
-main.adb:13:41: info: in reconstructed value at the end of the borrow at main.adb:13
-main.adb:13:41: info: null exclusion check proved (CVC5: 1 VC)
-main.adb:16:36: info: loop invariant initialization proved (CVC5: 2 VC)
-main.adb:16:36: info: loop invariant preservation proved (CVC5: 2 VC)
-main.adb:16:47: info: pointer dereference check proved (CVC5: 2 VC)
-main.adb:17:36: info: loop invariant initialization proved (CVC5: 2 VC)
-main.adb:17:36: info: loop invariant preservation proved (CVC5: 2 VC)
-main.adb:17:47: info: pointer dereference check proved (CVC5: 2 VC)
-main.adb:17:64: info: pointer dereference check proved (CVC5: 2 VC)
-main.adb:18:15: info: pointer dereference check proved (CVC5: 1 VC)
-main.adb:18:28: info: pointer dereference check proved (CVC5: 1 VC)
-main.adb:21:25: info: assertion proved (CVC5: 2 VC)
-main.adb:21:37: info: pointer dereference check proved (CVC5: 1 VC)
-main.adb:23:22: info: assertion proved (CVC5: 2 VC)
-main.adb:23:34: info: pointer dereference check proved (CVC5: 1 VC)
-main.adb:25:19: info: assertion proved (CVC5: 2 VC)
+main.adb:4:13: info: expression function body of subprograms with a numeric variant might not be available on recursive calls
+main.adb:4:13: info: implicit aspect Always_Terminates on "Flip" has been proved, subprogram will terminate
+main.adb:5:30: info: subprogram variant proved (CVC5: 1 VC)
+main.adb:5:38: info: overflow check proved (CVC5: 2 VC)
+main.adb:8:21: info: data dependencies proved
+main.adb:17:44: info: in reconstructed value at the end of the borrow at main.adb:17
+main.adb:17:44: info: null exclusion check proved (CVC5: 1 VC)
+main.adb:20:39: info: loop invariant initialization proved (CVC5: 2 VC)
+main.adb:20:39: info: loop invariant preservation proved (CVC5: 2 VC)
+main.adb:20:50: info: pointer dereference check proved (CVC5: 2 VC)
+main.adb:21:39: info: loop invariant initialization proved (CVC5: 2 VC)
+main.adb:21:39: info: loop invariant preservation proved (CVC5: 2 VC)
+main.adb:21:50: info: pointer dereference check proved (CVC5: 2 VC)
+main.adb:21:67: info: pointer dereference check proved (CVC5: 2 VC)
+main.adb:22:18: info: pointer dereference check proved (CVC5: 1 VC)
+main.adb:22:31: info: pointer dereference check proved (CVC5: 1 VC)
+main.adb:25:28: info: assertion proved (CVC5: 2 VC)
+main.adb:25:40: info: pointer dereference check proved (CVC5: 1 VC)
+main.adb:27:25: info: assertion proved (CVC5: 2 VC)
+main.adb:27:37: info: pointer dereference check proved (CVC5: 1 VC)
+main.adb:29:22: info: assertion proved (CVC5: 2 VC)

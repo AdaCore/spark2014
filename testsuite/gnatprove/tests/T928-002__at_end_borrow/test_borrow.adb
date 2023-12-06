@@ -29,7 +29,7 @@ procedure Test_Borrow with SPARK_Mode is
    with Ghost,
        Pre => Length (X) <= To_Big_Integer (Positive'Last)
        and then To_Big_Integer (Pos) <= Length (X),
-       Subprogram_Variant => (Decreases => Pos);
+       Subprogram_Variant => (Structural => X);
 
    package Sequences is new SPARK.Containers.Functional.Vectors
      (Positive, Integer);

@@ -7536,7 +7536,7 @@ package body Gnat2Why.Subprograms is
         Open_Theory
           (WF_Context, E_Module (E, Axiom),
            Comment =>
-             "Module giving a defining axiom for the expression function "
+             "Module giving a post axiom for the expression function "
            & """" & Get_Name_String (Chars (E)) & """"
            & (if Sloc (E) > 0 then
                 " defined at " & Build_Location_String (Sloc (E))
@@ -7588,6 +7588,10 @@ package body Gnat2Why.Subprograms is
          Generate_Dispatch_Compatibility_Axioms (Dispatch_Th, E);
       end if;
 
+      Close_Theory (Axiom_Th,
+                    Kind           => Axiom_Theory,
+                    Defined_Entity => E);
+
       --  If the entity's body is not in SPARK, if it is inlined for proof, or
       --  if it is a volatile function or a function with side effects, do not
       --  generate axiom.
@@ -7597,9 +7601,6 @@ package body Gnat2Why.Subprograms is
         or else Is_Function_With_Side_Effects (E)
         or else Has_Pragma_Volatile_Function (E)
       then
-         Close_Theory (Axiom_Th,
-                       Kind           => Axiom_Theory,
-                       Defined_Entity => E);
          Result_Name := Why_Empty;
          Result_Is_Mutable := False;
 
@@ -7615,6 +7616,17 @@ package body Gnat2Why.Subprograms is
          end if;
          return;
       end if;
+
+      Axiom_Th :=
+        Open_Theory
+          (WF_Context, E_Module (E, Expr_Fun_Axiom),
+           Comment =>
+             "Module giving a defining axiom for the expression function "
+           & """" & Get_Name_String (Chars (E)) & """"
+           & (if Sloc (E) > 0 then
+                " defined at " & Build_Location_String (Sloc (E))
+             else "")
+           & ", created in " & GNAT.Source_Info.Enclosing_Entity);
 
       Params := (Logic_Params with delta Gen_Marker => GM_Toplevel);
 
@@ -7729,6 +7741,46 @@ package body Gnat2Why.Subprograms is
       Close_Theory (Axiom_Th,
                     Kind           => Axiom_Theory,
                     Defined_Entity => E);
+
+      --  The defining axiom has the form f params = expr which is always sound
+      --  unless expr depends on f params, which should not be possible if F is
+      --  not recursive or if it structurally terminates. We don't protect the
+      --  axiom if F does not have a variant either, as in this case a check
+      --  message about termination will be emitted.
+
+      if Ekind (E) = E_Function
+        and then Is_Recursive (E)
+        and then Has_Subprogram_Variant (E)
+        and then not Is_Structural_Subprogram_Variant
+          (Get_Pragma (E, Pragma_Subprogram_Variant))
+      then
+
+         --  Raise a warning about missing definition on recursive calls
+
+         if Debug.Debug_Flag_Underscore_F then
+            declare
+               Scope               : constant Entity_Id :=
+                 Enclosing_Unit (E);
+               String_For_Scope    : constant String :=
+                 (if Present (Scope)
+                  and then Ekind (Scope) in
+                      E_Package | E_Function | E_Procedure | E_Entry
+                  and then Proof_Module_Cyclic (E, Scope)
+                  then " and on calls from enclosing unit"
+                  else "");
+            begin
+               Error_Msg_N
+                 ("info: ?"
+                  & "expression function body of subprograms with a numeric "
+                  & "variant might not be available on recursive calls"
+                  & String_For_Scope,
+                  E);
+            end;
+         end if;
+
+         Register_Proof_Cyclic_Function (E);
+         Register_Dependency_For_Soundness (E_Module (E, Expr_Fun_Axiom), E);
+      end if;
 
       --  Close the dispatching axiom module if it is not empty and add an
       --  extra dependency to the dispatching definition module.

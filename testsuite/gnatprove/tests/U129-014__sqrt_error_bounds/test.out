@@ -166,6 +166,7 @@ norm-reals.ads:5:04: info: analyzing call to "Log2_Estimate" in context
 norm-reals.ads:5:04: info: analyzing call to "Minus_Log2_Estimate" in context
 norm-reals.ads:5:04: info: in instantiation at a-nbnbre.adb:256
 norm-reals.ads:5:04: info: in instantiation at a-nbnbre.adb:264
+norm-reals.ads:12:13: info: expression function body of subprograms with a numeric variant might not be available on recursive calls
 norm-reals.ads:12:13: info: function contract might not be available on recursive calls
 norm-reals.ads:12:13: info: implicit aspect Always_Terminates on "Sum_Of_Squares_Rec" has been proved, subprogram will terminate
 norm-reals.ads:16:14: info: postcondition proved (CVC5: 1 VC)

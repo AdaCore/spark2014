@@ -425,6 +425,7 @@ libst-reals-errors.ads:15:08: info: postcondition proved
 libst-reals-errors.ads:15:50: info: predicate check proved
 libst-reals-errors.ads:16:13: info: predicate check proved
 libst-reals-errors.ads:16:24: info: predicate check proved
+libst-reals-errors.ads:19:13: info: expression function body of subprograms with a numeric variant might not be available on recursive calls
 libst-reals-errors.ads:19:13: info: function contract might not be available on recursive calls
 libst-reals-errors.ads:19:13: info: implicit aspect Always_Terminates on "Weighted_Sum_Abs_Rec" has been proved, subprogram will terminate
 libst-reals-errors.ads:25:12: info: predicate check proved
@@ -476,6 +477,7 @@ libst-reals.ads:7:04: info: analyzing call to "Log2_Estimate" in context
 libst-reals.ads:7:04: info: analyzing call to "Minus_Log2_Estimate" in context
 libst-reals.ads:7:04: info: in instantiation at a-nbnbre.adb:256
 libst-reals.ads:7:04: info: in instantiation at a-nbnbre.adb:264
+libst-reals.ads:15:13: info: expression function body of subprograms with a numeric variant might not be available on recursive calls
 libst-reals.ads:15:13: info: function contract might not be available on recursive calls
 libst-reals.ads:15:13: info: implicit aspect Always_Terminates on "Sum_Weight_Rec" has been proved, subprogram will terminate
 libst-reals.ads:20:12: info: predicate check proved
@@ -486,6 +488,7 @@ libst-reals.ads:22:14: info: postcondition proved
 libst-reals.ads:22:28: info: predicate check proved
 libst-reals.ads:22:39: info: predicate check proved
 libst-reals.ads:23:13: info: implicit aspect Always_Terminates on "Sum_Weight" has been proved, subprogram will terminate
+libst-reals.ads:27:13: info: expression function body of subprograms with a numeric variant might not be available on recursive calls
 libst-reals.ads:27:13: info: implicit aspect Always_Terminates on "Weighted_Sum_Rec" has been proved, subprogram will terminate
 libst-reals.ads:33:12: info: predicate check proved
 libst-reals.ads:33:12: info: subprogram variant proved
