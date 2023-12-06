@@ -2,5 +2,7 @@ inline_init.adb:4:13: info: implicit aspect Always_Terminates on "Id" has been p
 inline_init.adb:4:13: info: implicit function contract might not be available on calls from enclosing unit
 inline_init.adb:7:22: info: no contextual analysis of "Id" (in default expression)
 inline_init.adb:15:04: info: initialization of "R" proved
-inline_init.adb:18:19: medium: assertion might fail
+inline_init.adb:16:19: info: analyzing call to "Id" in context
+inline_init.adb:18:19: info: assertion proved (CVC5: 1 VC)
 inline_init.adb:19:19: info: assertion proved (CVC5: 1 VC)
+inline_init.adb:19:25: info: no contextual analysis of "Id" (in assertion expression)
