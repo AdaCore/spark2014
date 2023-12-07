@@ -716,13 +716,13 @@ package Why.Atree.Modules is
    M_Subprogram_Profiles : Name_Id_Profile_Map.Map;
 
    type M_HO_Specialization_Type is record
-      Module        : W_Module_Id;
-      Ax_Module     : W_Module_Id;
-      Rec_Ax_Module : W_Module_Id;
-      Prog_Id       : W_Identifier_Id;
-      Fun_Id        : W_Identifier_Id;
-      Guard_Id      : W_Identifier_Id;
-      Variant_Id    : W_Identifier_Id;
+      Module      : W_Module_Id;
+      Ax_Module   : W_Module_Id;
+      Post_Module : W_Module_Id;
+      Prog_Id     : W_Identifier_Id;
+      Fun_Id      : W_Identifier_Id;
+      Guard_Id    : W_Identifier_Id;
+      Variant_Id  : W_Identifier_Id;
    end record;
 
    package Name_Id_HO_Specializations_Map is new Ada.Containers.Hashed_Maps
@@ -776,15 +776,15 @@ package Why.Atree.Modules is
 
    type Module_Kind is
      (Regular,
-      Axiom,                     --  Defining or post axioms
+      Axiom,                     --  Defining axiom of constants and aggregates
       Expr_Fun_Axiom,            --  Defining axiom of expression functions
-      Recursive_Axiom,           --  Post axiom for recursive subprograms
+      Fun_Post_Axiom,            --  Post axiom for functions
       Logic_Function_Decl,       --  Declaration of the logic function
       Program_Function_Decl,     --  Declaration of the program function
       Dispatch,                  --  Dispatch function
-      Dispatch_Axiom,            --  Post'Class axiom and dispatch program
+      Dispatch_Axiom,            --  Compatibility axioms and dispatch program
                                  --  function.
-      Dispatch_Recursive_Axiom,  --  Post'Class axiom for recursive subprograms
+      Dispatch_Post_Axiom,       --  Post'Class axiom for dispatching functions
       Lemma_Axiom,               --  Post axiom of a lemma procedure annotated
                                  --  with Automatic_Instantiation.
       Type_Completion,           --  Type completion

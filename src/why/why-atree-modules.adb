@@ -140,12 +140,12 @@ package body Why.Atree.Modules is
               when Regular                  => "",
               when Axiom                     => "___axiom",
               when Expr_Fun_Axiom            => "___def__axiom",
-              when Recursive_Axiom           => "___rec_axiom",
+              when Fun_Post_Axiom            => "___post__axiom",
               when Logic_Function_Decl       => "___logic_fun",
               when Program_Function_Decl     => "___program_fun",
               when Dispatch                  => "___dispatch",
               when Dispatch_Axiom            => "___dispatch__axiom",
-              when Dispatch_Recursive_Axiom  => "___dispatch__rec_axiom",
+              when Dispatch_Post_Axiom       => "___dispatch__post__axiom",
               when Lemma_Axiom               => "___post_axiom",
               when Type_Completion           => "___compl",
               when Type_Representative       => "___rep",
@@ -177,11 +177,8 @@ package body Why.Atree.Modules is
                and then Is_Expression_Function_Or_Completion (E)
                and then Entity_Body_Compatible_With_SPARK (E));
 
-         when Recursive_Axiom =>
-            pragma Assert
-              (E in Callable_Kind_Id
-               and then Has_Post_Axiom (E)
-               and then Proof_Module_Cyclic (E));
+         when Fun_Post_Axiom =>
+            pragma Assert (E in Callable_Kind_Id);
 
          when Logic_Function_Decl =>
             pragma Assert
@@ -194,17 +191,12 @@ package body Why.Atree.Modules is
 
          when Dispatch
             | Dispatch_Axiom
-            | Dispatch_Recursive_Axiom
+            | Dispatch_Post_Axiom
          =>
             pragma Assert
               (E in Callable_Kind_Id
                and then Is_Dispatching_Operation (E)
                and then not Is_Hidden_Dispatching_Operation (E));
-            if K = Dispatch_Recursive_Axiom then
-               pragma Assert
-                 (Is_Dispatching_Operation (E)
-                  and then not Is_Hidden_Dispatching_Operation (E));
-            end if;
 
          when Lemma_Axiom =>
             pragma Assert
@@ -4029,9 +4021,7 @@ package body Why.Atree.Modules is
       if Proof_Module_Cyclic (E) then
          for F of Proof_Cyclic_Functions loop
             if Proof_Module_Cyclic (E, F) then
-               if Has_Post_Axiom (F) then
-                  S.Insert (+Entity_Modules (F) (Recursive_Axiom));
-               end if;
+               S.Insert (+Entity_Modules (F) (Fun_Post_Axiom));
 
                --  Only remove the defining axioms of expression functions
                --  which are recursive and have a numeric subprogram variant.
@@ -4061,7 +4051,7 @@ package body Why.Atree.Modules is
                begin
                   if Position /= No_Element then
                      for Th of Element (Position) loop
-                        S.Insert (+Th.Rec_Ax_Module);
+                        S.Insert (+Th.Post_Module);
                      end loop;
                   end if;
                end;
@@ -4069,7 +4059,7 @@ package body Why.Atree.Modules is
                if Is_Dispatching_Operation (F)
                  and then not Is_Hidden_Dispatching_Operation (F)
                then
-                  S.Insert (+Entity_Modules (F) (Dispatch_Recursive_Axiom));
+                  S.Insert (+Entity_Modules (F) (Dispatch_Post_Axiom));
                end if;
             end if;
          end loop;
