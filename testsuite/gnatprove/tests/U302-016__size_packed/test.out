@@ -18,6 +18,7 @@ use_bytes.adb:16:25: info: object is suitable for aliasing via address clause (T
 use_bytes.adb:16:25: info: types of aliased objects have the same size (Trivial)
 use_bytes.adb:19:29: info: unrolling loop
 use_bytes.adb:26:19: high: assertion might fail (e.g. when R = (A => 0, B => 1, C => 41)) [possible fix: you should consider adding a postcondition to function Extract or turning it into an expression function]
+use_bytes.adb:26:19: info: no contextual analysis of "Extract" (in assertion expression)
 use_bytes2.adb:15:04: info: no contextual analysis of "Extract" (object renaming)
 use_bytes2.adb:15:13: info: implicit aspect Always_Terminates on "Extract" has been proved, subprogram will terminate
 use_bytes2.adb:15:13: info: implicit function contract might not be available on calls from enclosing unit
@@ -28,6 +29,7 @@ use_bytes2.adb:18:25: info: object is suitable for aliasing via address clause (
 use_bytes2.adb:18:25: info: types of aliased objects have the same size (Trivial)
 use_bytes2.adb:21:29: info: unrolling loop
 use_bytes2.adb:28:19: high: assertion might fail (e.g. when R = (A => 0, B => 1, C => 41)) [possible fix: you should consider adding a postcondition to function Extract or turning it into an expression function]
+use_bytes2.adb:28:19: info: no contextual analysis of "Extract" (in assertion expression)
 use_bytes_gen.adb:11:04: info: in instantiation at bytes.adb:12
 use_bytes_gen.adb:11:04: info: unrolling loop
 use_bytes_gen.adb:11:13: info: implicit aspect Always_Terminates on "Extract_Gen" has been proved, subprogram will terminate

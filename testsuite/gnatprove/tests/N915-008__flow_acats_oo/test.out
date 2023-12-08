@@ -122,16 +122,22 @@ c392008.adb:50:10: warning: assuming "TEST" always terminates
 c392008.adb:50:10: warning: no Always_Terminates aspect available for "TEST"
 c392008.adb:57:04: info: no contextual analysis of "New_Account" (possible check on input parameters)
 c392008.adb:57:17: high: "B_Acct" is not initialized
+c392008.adb:58:04: info: no contextual analysis of "New_Account" (possible check on input parameters)
 c392008.adb:58:17: high: "C_Acct" is not initialized
+c392008.adb:59:04: info: no contextual analysis of "New_Account" (possible check on input parameters)
 c392008.adb:59:17: high: "IC_Acct" is not initialized
 c392008.adb:65:13: medium: precondition might fail
 c392008.adb:65:13: warning: assuming "FAILED" always terminates
 c392008.adb:65:13: warning: no Always_Terminates aspect available for "FAILED"
 c392008.adb:69:04: info: no contextual analysis of "Annual_Interest" (possible check on input parameters)
+c392008.adb:70:04: info: no contextual analysis of "Annual_Interest" (possible check on input parameters)
+c392008.adb:71:04: info: no contextual analysis of "Annual_Interest" (possible check on input parameters)
 c392008.adb:78:13: medium: precondition might fail
 c392008.adb:78:13: warning: assuming "FAILED" always terminates
 c392008.adb:78:13: warning: no Always_Terminates aspect available for "FAILED"
 c392008.adb:82:04: info: no contextual analysis of "Apply_Service_Charge" (possible check on input parameters)
+c392008.adb:83:04: info: no contextual analysis of "Apply_Service_Charge" (possible check on input parameters)
+c392008.adb:84:04: info: no contextual analysis of "Apply_Service_Charge" (possible check on input parameters)
 c392008.adb:92:13: medium: precondition might fail
 c392008.adb:92:13: warning: assuming "FAILED" always terminates
 c392008.adb:92:13: warning: no Always_Terminates aspect available for "FAILED"
