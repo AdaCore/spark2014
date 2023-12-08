@@ -871,6 +871,109 @@ Such lemmas should be declared directly after a function declaration, here the
 ``Equivalent`` function. The axiom will only be available when the associated
 function is used in the proof context.
 
+Annotation for Hiding Information
+---------------------------------
+
+By default, when verifying a part of a program, GNATprove makes all information
+about used entities available in the context. For example, it assumes values of
+global constants, postconditions of called subprograms, bodies of expression
+functions...
+While in general this behavior is desirable, it might result in untractable
+proof contexts on large programs. It is possible to use an annotation to
+manually add or remove information from the proof context.
+For the time being, only bodies of expression functions can be handled in this
+way.
+
+Information hiding is decided at the level of an entity for which checks are
+generated, namely, a subprogram or entry, or the elaboration of a package. It
+cannot be refined in a smaller scope. To state that the body of an expression
+function should be hidden when verifying an entity ``E``, a pragma with the
+``Hide_Info`` annotation should be used either at the begining of the body of
+``E`` or just after its specification or body. In the following example, the
+body of the expression function ``F`` is hidden when verifying its callers,
+making it impossible to prove their postconditions:
+
+.. code-block:: ada
+
+   function F (X, Y : Boolean) return Boolean is (X and Y);
+
+   function Call_F (X, Y : Boolean) return Boolean is
+     (F (X, Y))
+   with Post => Call_F'Result = (X and Y); --  Unprovable, F is hidden
+   pragma Annotate (GNATprove, Hide_Info, "Expression_Function_Body", F);
+
+   function Call_F_2 (X, Y : Boolean) return Boolean with
+     Post => Call_F_2'Result = (X and Y); --  Unprovable, F is hidden
+
+   function Call_F_2 (X, Y : Boolean) return Boolean is
+   begin
+      return F (X, Y);
+   end Call_F_2;
+   pragma Annotate (GNATprove, Hide_Info, "Expression_Function_Body", F);
+
+   function Call_F_3 (X, Y : Boolean) return Boolean with
+     Post => Call_F_3'Result = (X and Y); --  Unprovable, F is hidden
+
+   function Call_F_3 (X, Y : Boolean) return Boolean is
+      pragma Annotate (GNATprove, Hide_Info, "Expression_Function_Body", F);
+   begin
+      return F (X, Y);
+   end Call_F_3;
+
+It is also possible to hide information by default and then use an annotation to
+disclose it when needed. A ``Hide_Info`` annotation located on the entity which
+is hidden is considered to provide a default. For example, the body of the
+expression function ``G`` is hidden by default. The postcondition of its caller
+``Call_G`` cannot be proved.
+
+.. code-block:: ada
+
+   function G (X, Y : Boolean) return Boolean is (X and Y) with
+     Annotate => (GNATprove, Hide_Info, "Expression_Function_Body");
+   --  G is hidden by default
+
+   function Call_G (X, Y : Boolean) return Boolean is
+     (G (X, Y))
+   with Post => Call_G'Result = (X and Y); --  Unprovable, G is hidden
+
+When information is hidden by default, it is possible to disclose it while
+verifying an entity using the ``Unhide_Info`` annotation. This allows proving
+the ``Call_G_2`` function below:
+
+.. code-block:: ada
+
+   function Call_G_2 (X, Y : Boolean) return Boolean is
+     (G (X, Y))
+   with Post => Call_G_2'Result = (X and Y); --  Provable, G is no longer hidden
+   pragma Annotate (GNATprove, Unhide_Info, "Expression_Function_Body", G);
+
+Remark that, when information is hidden by default, it is even hidden during
+the verification of the entity whose information we are hiding. For example,
+when verifying a recursive expression function whose body is hidden by default,
+the body of recursive calls is not available. If necessary, it can be disclosed
+using an ``Unhide_Info`` annotation:
+
+.. code-block:: ada
+
+   --  Rec_F is hidden for its recursive calls
+
+   function Rec_F (X, Y : Boolean) return Boolean is
+     (if not X then False elsif X = Y then True else Rec_F (Y, X))
+       with
+         Subprogram_Variant => (Decreases => X),
+         Post => (if X then Rec_F'Result = Y), --  Unprovable, Rec_F is hidden
+         Annotate => (GNATprove, Hide_Info, "Expression_Function_Body");
+
+   --  The second annotation overrides the default for recursive calls
+
+   function Rec_F_2 (X, Y : Boolean) return Boolean is
+     (if not X then False elsif X = Y then True else Rec_F_2 (Y, X))
+       with
+         Subprogram_Variant => (Decreases => X),
+         Post => (if X then Rec_F_2'Result = Y), --  Provable, Rec_F_2 is visible
+         Annotate => (GNATprove, Hide_Info, "Expression_Function_Body");
+   pragma Annotate (GNATprove, Unhide_Info, "Expression_Function_Body", Rec_F_2);
+
 Annotation for Handling Specially Higher Order Functions
 --------------------------------------------------------
 
