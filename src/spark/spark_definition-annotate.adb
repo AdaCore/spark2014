@@ -2420,11 +2420,24 @@ package body SPARK_Definition.Annotate is
          return;
       end if;
 
-      if not Is_Expression_Function_Or_Completion (Ent) then
-         Error_Msg_N_If
-           ("the entity of a pragma Annotate " & Annot & " for expression "
-            & "function bodies shall be an expression function",
-            Arg4_Exp);
+      --  If Scope is not in the analyzed files, only process defaults
+
+      if not Default and then not Is_In_Analyzed_Files (Scope) then
+         return;
+
+      elsif not Is_Expression_Function_Or_Completion (Ent) then
+
+         --  If Scope is not in the analyzed files, the annotation is a
+         --  default. It is possible that we do not have visibility on the
+         --  body of Ent. Ignore the annotation in that case, the body is
+         --  always hidden.
+
+         if Is_In_Analyzed_Files (Scope) or else Ekind (Ent) /= E_Function then
+            Error_Msg_N_If
+              ("the entity of a pragma Annotate " & Annot & " for expression "
+               & "function bodies shall be an expression function",
+               Arg4_Exp);
+         end if;
          return;
 
       elsif not In_SPARK (Ent) then
