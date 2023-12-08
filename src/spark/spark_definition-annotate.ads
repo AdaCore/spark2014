@@ -24,6 +24,7 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
+with Ada.Containers.Hashed_Maps;
 with Atree;       use Atree;
 with Einfo.Utils; use Einfo.Utils;
 with SPARK_Util;  use SPARK_Util;
@@ -234,6 +235,26 @@ package SPARK_Definition.Annotate is
 
    --  The access-to-subprogram type E shall be library level and shall not
    --  have a precondition nor a postcondition.
+
+   --  A pragma Annotate to hide or disclose information has one of the
+   --  following forms:
+   --    pragma Annotate (GNATprove, Hide_Info,   "Info_Kind", Entity => E);
+   --    pragma Annotate (GNATprove, Unhide_Info, "Info_Kind", Entity => E);
+
+   --  where
+   --    GNATprove                 is a fixed identifier
+   --    Hide_Info and Unhide_Info are fixed identifiers
+   --    Info_Kind                 is a string that can only be
+   --                              Expression_Function_Body for now.
+   --    E                         is the entity whose information should be
+   --                              hidden or disclosed.
+
+   --  The location of this pragma gives the verification context on which
+   --  information should be hidden or disclosed. It can only occur at the
+   --  beginning of a package, subprogram, or entry body or right after a
+   --  package, subprogram, or entry body or specification. The information is
+   --  then hidden or disclosed (if it is hidden by default) for the
+   --  verification of the package, subprogram, or entry.
 
    procedure Mark_Pragma_Annotate
      (N             : Node_Id;
@@ -508,5 +529,23 @@ package SPARK_Definition.Annotate is
    with Pre => Has_Aggregate_Annotation (E);
 
    function Has_Handler_Annotation (E : Type_Kind_Id) return Boolean;
+
+   type Hide_Annotation_Kind is (Hide_Expr_Fun, Unhide_Expr_Fun);
+
+   package Node_To_Hide_Annotation_Kind_Maps is new Ada.Containers.Hashed_Maps
+     (Key_Type        => Node_Id,
+      Element_Type    => Hide_Annotation_Kind,
+      Hash            => Node_Hash,
+      Equivalent_Keys => "=");
+
+   function Get_Hide_Annotations (E : Entity_Id) return
+     Node_To_Hide_Annotation_Kind_Maps.Map;
+   --  Return all the hide or unhide annotations applying to E
+
+   function Expr_Fun_Might_Be_Hidden (E : Entity_Id) return Boolean;
+   --  Return True if the body of an expression function E might be hidden
+
+   function Expr_Fun_Hidden_By_Default (E : Entity_Id) return Boolean;
+   --  Return True if the body of an expression function E is hidden by default
 
 end SPARK_Definition.Annotate;

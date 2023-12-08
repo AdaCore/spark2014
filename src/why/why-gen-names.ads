@@ -397,6 +397,10 @@ package Why.Gen.Names is
       --  refined version (refined_post) of a subprogram.
       WNE_Refine_Module,  --  Refine
 
+      --  Name of module containing declarations without information hidden
+      --  through the Hide annotation
+      WNE_Hidden_Module,
+
       --  Names of predicates for functions guards
       WNE_Func_Guard,
       WNE_Refined_Func_Guard,
