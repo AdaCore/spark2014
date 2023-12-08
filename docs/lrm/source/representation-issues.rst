@@ -137,9 +137,19 @@ A subtype ``S`` is said to be `suitable for unchecked conversion` if:
   limited type, of a type with discriminants, or of a private type whose
   completion fails to meet these requirements.
 
-- ``S`` is a scalar type, or if it is a composite type, the Size N of
-  ``S`` is the sum of the size of the components of ``S``, and all components
-  of ``S`` are also suitable for unchecked conversion.
+- if ``S`` is a floating-point type, its Size is not greater than the Size of
+  the largest floating-point type on the target.
+
+- if ``S`` is a scalar type that is not a floating-point type, its Size is not
+  greater than the Size of the largest integer type on the target.
+
+- if ``S`` is a composite type, the Size N of ``S`` is the sum of the Size of
+  the components of ``S``, and all components of ``S`` are also suitable for
+  unchecked conversion.
+
+[Limits on the Size of scalar types are meant to allow the compiler to zero out
+extra bits not used in the representation of the scalar value, when writing a
+value of the type (as GNAT ensures).]
 
 A subtype ``S`` is said to be `suitable as the target of an unchecked
 conversion` if it is suitable for unchecked conversion, and, in addition:
