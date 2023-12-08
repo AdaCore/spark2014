@@ -593,13 +593,6 @@ package Gnat2Why.Util is
    function Has_Post_Axiom (E : Callable_Kind_Id) return Boolean;
    --  Returns True if we may produce an axiom for the post of E
 
-   function Collect_Contextual_Nodes (N : Node_Id) return Node_Sets.Set with
-     Post => (for all E of Collect_Contextual_Nodes'Result =>
-                E in Contextual_Node);
-   --  @param N any node
-   --  @return the set of contextual nodes in N (objects from declare
-   --  expressions, old and loop_entry attributes and target name).
-
    procedure Collect_Attr_Parts
      (N         :        Node_Id;
       Attr_Name :        Name_Id;
