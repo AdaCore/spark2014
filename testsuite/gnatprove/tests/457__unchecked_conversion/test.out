@@ -1,0 +1,18 @@
+conv.adb:7:13: high: types used for unchecked conversion do not have the same size [possible explanation: type R2 doesn't have a Size representation clause or aspect]
+conv.adb:7:49: high: type is unsuitable for unchecked conversion [possible explanation: too large value of Size for type R1]
+conv.adb:7:53: high: type is unsuitable as a target for unchecked conversion [possible explanation: type R2 doesn't have a Size representation clause or aspect]
+conv.adb:9:04: info: initialization of "V11" proved
+conv.adb:9:09: info: initialization of "V12" proved
+conv.adb:10:04: info: initialization of "V21" proved
+conv.adb:10:09: info: initialization of "V22" proved
+conv.adb:14:19: info: assertion proved (CVC5: 1 VC)
+conv.adb:17:19: info: assertion proved (CVC5: 1 VC)
+convf.adb:7:13: high: types used for unchecked conversion do not have the same size [possible explanation: type R2 doesn't have a Size representation clause or aspect]
+convf.adb:7:49: high: type is unsuitable for unchecked conversion [possible explanation: too large value of Size for type R1]
+convf.adb:7:53: high: type is unsuitable as a target for unchecked conversion [possible explanation: type R2 doesn't have a Size representation clause or aspect]
+convf.adb:9:04: info: initialization of "V11" proved
+convf.adb:9:09: info: initialization of "V12" proved
+convf.adb:10:04: info: initialization of "V21" proved
+convf.adb:10:09: info: initialization of "V22" proved
+convf.adb:14:19: info: assertion proved (CVC5: 1 VC)
+convf.adb:17:19: info: assertion proved (CVC5: 1 VC)
