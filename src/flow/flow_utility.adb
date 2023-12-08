@@ -481,6 +481,25 @@ package body Flow_Utility is
                Process_Predicate_Internal
                  (N, Proof_Dependencies, Types_Seen);
 
+            --  Pull subprograms referenced through 'Access in the proof
+            --  dependencies.
+
+            when N_Attribute_Reference =>
+               if Attribute_Name (N) = Name_Access then
+                  declare
+                     P : constant Node_Id := Prefix (N);
+                     E : constant Entity_Id :=
+                       (if Is_Entity_Name (P) then Entity (P)
+                        else Empty);
+                  begin
+                     if Present (E)
+                       and then Ekind (E) in E_Function | E_Procedure
+                     then
+                        Proof_Dependencies.Include (E);
+                     end if;
+                  end;
+               end if;
+
             when others =>
                null;
          end case;
