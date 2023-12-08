@@ -2670,8 +2670,26 @@ package body Gnat2Why.Subprograms is
       begin
          --  Only generate a definition for UC between integer types...
 
-         if not Has_Integer_Type (Source_Type)
-           or else not Has_Integer_Type (Target_Type)
+         if not Is_Integer_Type (Source_Type)
+           or else not Is_Integer_Type (Target_Type)
+         then
+            return False;
+
+         --  where Source_Type is not a signed type marked as unsigned or with
+         --  a biased representation...
+
+         elsif Is_Signed_Integer_Type (Source_Type)
+           and then (Is_Unsigned_Type (Source_Type)
+                     or else Has_Biased_Representation (Source_Type))
+         then
+            return False;
+
+         --  and Target_Type is not a signed type marked as unsigned or with a
+         --  biased representation...
+
+         elsif Is_Signed_Integer_Type (Target_Type)
+           and then (Is_Unsigned_Type (Target_Type)
+                     or else Has_Biased_Representation (Target_Type))
          then
             return False;
          end if;
