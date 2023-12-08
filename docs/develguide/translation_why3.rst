@@ -1151,8 +1151,8 @@ declared for statically constrained array types). These modules are
 then cloned by Gnat2why as appropriate (see
 Declare_Unconstrained/Declare_Constrained declared in Why.Gen.Arrays).
 
-Conversions
-"""""""""""
+Array Conversions
+"""""""""""""""""
 
 Most array conversions can be handled by going to the underlying map
 type and then apply some sliding if necessary. However, Ada also
@@ -1551,8 +1551,8 @@ the attr_constrained field is always set to False if the component
 type is unconstrained whereas ‘Constrained always returns True on
 (parts of) constant objects (see ``Gnat2why.Expr.Transform_Attr``).
 
-Conversions
-"""""""""""
+Record Conversions
+""""""""""""""""""
 
 When two types of a record hierarchy share the same representative
 type, no conversion is required. Otherwise, conversions go through the
@@ -3719,7 +3719,7 @@ will result in different translations in Why:
 
      val f (x : int) (y : my_rec) (z : my_array) : int
       requires { true }
-      ensures { … }
+      ensures { ... }
 
      val p (x : int__ref)
 	   (y__split_fields : P__my_rec.__split_fields__ref)
@@ -3729,7 +3729,7 @@ will result in different translations in Why:
 	   (z__first : integer)
 	   (z__last : integer) : unit
       requires { true }
-      ensures { … }
+      ensures { ... }
       writes {x, y__split_fields, y__split_discrs, z}
 
 We can see that the parameters of F are given as a whole whereas the
@@ -5495,7 +5495,7 @@ important to take into account the potential mutal recursivity between
 entities to avoid including the axioms of entities ``A`` when verifying
 entity ``B`` and the axioms of entity ``B`` when verifying entity ``A``.
 To that end, a set of modules that should not be included for a given
-entity is computed using ``Why.Atree.Modules.Mutually_Recursive_Modules.
+entity is computed using ``Why.Atree.Modules.Mutually_Recursive_Modules``.
 These modules are filtered when computing the closure.
 
 Global Structures
@@ -5519,8 +5519,8 @@ Symbol Map for Variables (Symbol_Table)
 Name for Old
 ------------
 
-Self Reference of Protected Objects
------------------------------------
+Global Self Reference of Protected Objects
+------------------------------------------
 
 Architecture
 ============
