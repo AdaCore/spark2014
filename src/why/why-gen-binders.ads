@@ -339,7 +339,9 @@ package Why.Gen.Binders is
    function Mk_Item_Of_Entity
      (E           : Entity_Id;
       Local       : Boolean := False;
-      In_Fun_Decl : Boolean := False) return Item_Type
+      In_Fun_Decl : Boolean := False;
+      Hide_Info   : Boolean := False)
+      return Item_Type
      with Pre  => Entity_In_SPARK (E),
           Post => (if Mk_Item_Of_Entity'Result.Kind = Regular then
                    Present (Mk_Item_Of_Entity'Result.Main.Ada_Node)
@@ -351,6 +353,8 @@ package Why.Gen.Binders is
    --  @param In_Fun_Decl Use the type expected in function declaration for
    --    parameters of subprograms (Do not use Actual_Subtype; use
    --    representation type for scalars...).
+   --  @param Hide_Info True if information for E is hidden in the current
+   --    scope.
    --  @return an Item representing the Entity E.
 
    function Get_Ada_Node_From_Item (B : Item_Type) return Node_Id;

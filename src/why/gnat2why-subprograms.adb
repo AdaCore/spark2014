@@ -6816,6 +6816,40 @@ package body Gnat2Why.Subprograms is
             end Create_Function_Decl;
 
          begin
+            --  For a volatile function that is not protected, we need to
+            --  generate a dummy effect. Protected functions are OK, they
+            --  already have their own state (the protected object).
+
+            if Has_Pragma_Volatile_Function (E) then
+               Effects_Append_To_Writes (Effects, Volatile_State);
+
+               Emit
+                 (Th,
+                  New_Global_Ref_Declaration
+                    (Ada_Node => E,
+                     Labels   => Symbol_Sets.Empty_Set,
+                     Location => No_Location,
+                     Name     => Volatile_State,
+                     Ref_Type => EW_Private_Type));
+            end if;
+
+            --  If the expression function definition might be hidden, generate
+            --  a program function without the body as a post.
+
+            if Expr_Fun_Might_Be_Hidden (E) then
+               Emit
+                 (Th,
+                  New_Namespace_Declaration
+                    (Name         => NID (To_String (WNE_Hidden_Module)),
+                     Declarations =>
+                       (1 => Create_Function_Decl
+                            (Prog_Id  => Prog_Id,
+                             Selector => Why.Inter.Standard,
+                             Pre      => Pre,
+                             Post     => Post,
+                             Effects  => Effects))));
+            end if;
+
             --  If E is an expression function, add its body to its
             --  postcondition. For higher order specializations, the expression
             --  function body is not taken into account.
@@ -6845,7 +6879,6 @@ package body Gnat2Why.Subprograms is
                begin
                   if Entity_Body_In_SPARK (E)
                     and then Has_Contracts (E, Pragma_Refined_Post)
-                    and then Specialization_Module = No_Symbol
                   then
                      Refined_Post :=
                        +New_And_Expr (+Eq_Expr, +Refined_Post, EW_Pred);
@@ -6853,23 +6886,6 @@ package body Gnat2Why.Subprograms is
                      Post := +New_And_Expr (+Eq_Expr, +Post, EW_Pred);
                   end if;
                end;
-            end if;
-
-            --  For a volatile function that is not protected, we need to
-            --  generate a dummy effect. Protected functions are OK, they
-            --  already have their own state (the protected object).
-
-            if Has_Pragma_Volatile_Function (E) then
-               Effects_Append_To_Writes (Effects, Volatile_State);
-
-               Emit
-                 (Th,
-                  New_Global_Ref_Declaration
-                    (Ada_Node => E,
-                     Labels   => Symbol_Sets.Empty_Set,
-                     Location => No_Location,
-                     Name     => Volatile_State,
-                     Ref_Type => EW_Private_Type));
             end if;
 
             Emit
@@ -6903,7 +6919,7 @@ package body Gnat2Why.Subprograms is
                Emit
                  (Th,
                   New_Namespace_Declaration
-                    (Name    => NID (To_String (WNE_Refine_Module)),
+                    (Name         => NID (To_String (WNE_Refine_Module)),
                      Declarations =>
                        (1 => Create_Function_Decl
                             (Prog_Id   => Prog_Id,
@@ -7714,15 +7730,18 @@ package body Gnat2Why.Subprograms is
       Result_Name := Why_Empty;
       Result_Is_Mutable := False;
 
-      --  No filtering is necessary here, as the theory should on the contrary
-      --  use the previously defined theory for the function declaration. Pass
-      --  in the defined entity E so that the graph of dependencies between
-      --  expression functions can be built.
-      --  Attach the newly created theory as a completion of the existing one.
+      --  If the body of the expression function is hidden by default, do not
+      --  record the dependency to the defining module. It will be added on a
+      --  case by case bases if the body is made visible.
 
       Close_Theory (Expr_Fun_Axiom_Th,
-                    Kind           => Axiom_Theory,
-                    Defined_Entity => E);
+                    Kind => Definition_Theory);
+
+      if not Expr_Fun_Hidden_By_Default (E) then
+         Record_Extra_Dependency
+           (Axiom_Module    => Expr_Fun_Axiom_Th.Module,
+            Defining_Module => E_Module (E));
+      end if;
 
       --  The defining axiom has the form f params = expr which is always sound
       --  unless expr depends on f params, which should not be possible if F is

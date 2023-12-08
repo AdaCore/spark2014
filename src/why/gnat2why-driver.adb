@@ -427,6 +427,10 @@ package body Gnat2Why.Driver is
          return;
       end if;
 
+      --  Process Hide_Info and Unhide_Info annotations for E
+
+      Process_Info_Hiding_For_VCs (E);
+
       case Ekind (E) is
          when Entry_Kind
             | E_Function
@@ -506,6 +510,7 @@ package body Gnat2Why.Driver is
          end;
       end if;
 
+      Reset_Info_Hiding_For_VCs (E);
       Current_Subp := Empty;
    end Do_Generate_VCs;
 
@@ -1254,7 +1259,9 @@ package body Gnat2Why.Driver is
                | E_Procedure =>
                if Is_Translated_Subprogram (E) then
                   Ada_Ent_To_Why.Insert
-                    (Symbol_Table, E, Mk_Item_Of_Entity (E));
+                    (Symbol_Table, E,
+                     Mk_Item_Of_Entity
+                       (E, Hide_Info => Expr_Fun_Hidden_By_Default (E)));
                end if;
             when Object_Kind =>
 
