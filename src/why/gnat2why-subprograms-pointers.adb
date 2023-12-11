@@ -992,7 +992,7 @@ package body Gnat2Why.Subprograms.Pointers is
         (Expr,
          New_Module (File => No_Symbol,
                      Name => Name & To_String (WNE_Axiom_Suffix)),
-         Is_Axiom => True);
+         Axiom);
 
       --  Generate the logic constant declaration
 

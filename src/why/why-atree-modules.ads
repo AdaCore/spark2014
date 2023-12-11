@@ -829,14 +829,14 @@ package Why.Atree.Modules is
    --  Compute the name of the theory for a profile
 
    procedure Insert_Extra_Module
-     (N        : Node_Id;
-      M        : W_Module_Id;
-      Is_Axiom : Boolean := False);
+     (N    : Node_Id;
+      M    : W_Module_Id;
+      Kind : Module_Kind := Regular);
    --  After a call to this procedure, if Is_Axiom is false then E_Module (N)
    --  will return M otherwise E_Axiom_Module (N) will return M.
    --  @param N the Ada Node
    --  @param M Why3 module associated to N
-   --  @param Is_Axiom True if M is an axiom module
+   --  @param Kind the kind of module inserted
 
    --  Functions returning array module types from the array theory module
 

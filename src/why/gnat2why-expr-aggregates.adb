@@ -3433,7 +3433,7 @@ package body Gnat2Why.Expr.Aggregates is
            (Expr,
             New_Module (File => No_Symbol,
                         Name => Name & To_String (WNE_Axiom_Suffix)),
-            Is_Axiom => True);
+            Axiom);
 
          --  Compute the parameters and guards for the axiom
 
@@ -4449,7 +4449,7 @@ package body Gnat2Why.Expr.Aggregates is
            (Ada_Node,
             New_Module (File => No_Symbol,
                         Name => Name & To_String (WNE_Axiom_Suffix)),
-            Is_Axiom => True);
+            Axiom);
 
          --  Compute the parameters/arguments for the axiom/call
 
