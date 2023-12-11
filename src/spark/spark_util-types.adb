@@ -32,6 +32,7 @@ with Sinfo.Utils;                 use Sinfo.Utils;
 with SPARK_Definition;            use SPARK_Definition;
 with SPARK_Definition.Annotate;   use SPARK_Definition.Annotate;
 with SPARK_Util.Subprograms;      use SPARK_Util.Subprograms;
+with Ttypes;
 
 package body SPARK_Util.Types is
 
@@ -2431,16 +2432,14 @@ package body SPARK_Util.Types is
            (Ok          => False,
             Explanation =>
               To_Unbounded_String (Typ_Name & " is a tagged type"));
-      end if;
 
-      if Is_Incomplete_Or_Private_Type (Typ) then
+      elsif Is_Incomplete_Or_Private_Type (Typ) then
          return
            (Ok          => False,
             Explanation =>
               To_Unbounded_String (Typ_Name & " is a private type"));
-      end if;
 
-      if Is_Concurrent_Type (Typ) then
+      elsif Is_Concurrent_Type (Typ) then
          pragma Annotate
            (Xcov, Exempt_On, "The frontend crashes on UC on tasks and "
             & "rejectes UC on protected types");
@@ -2449,23 +2448,45 @@ package body SPARK_Util.Types is
             Explanation =>
               To_Unbounded_String (Typ_Name & " is a concurrent type"));
          pragma Annotate (Xcov, Exempt_Off);
-      end if;
 
-      if Has_Discriminants (Typ) then
+      elsif Has_Discriminants (Typ) then
          return
            (Ok          => False,
             Explanation =>
               To_Unbounded_String (Typ_Name & " has discriminants"));
-      end if;
 
-      if Is_Access_Type (Typ) then
+      elsif Is_Access_Type (Typ) then
          return
            (Ok          => False,
             Explanation =>
               To_Unbounded_String (Typ_Name & " is an access type"));
-      end if;
 
-      return (Ok => True);
+      --  GNAT only guarantees to zero-out extra bits when writing in a scalar
+      --  component if its size is not larger than the largest floating-point
+      --  type (for floats) or the largest integer type (for other scalar
+      --  types) on the target.
+
+      elsif Is_Floating_Point_Type (Typ)
+        and then Get_Attribute_Value (Typ, Attribute_Size)
+        > Ttypes.Standard_Long_Long_Float_Size
+      then
+         return
+           (Ok          => False,
+            Explanation =>
+              To_Unbounded_String ("too large value of Size for " & Typ_Name));
+
+      elsif Is_Scalar_Type (Typ)
+        and then Get_Attribute_Value (Typ, Attribute_Size)
+        > Ttypes.Standard_Long_Long_Long_Integer_Size
+      then
+         return
+           (Ok          => False,
+            Explanation =>
+              To_Unbounded_String ("too large value of Size for " & Typ_Name));
+
+      else
+         return (Ok => True);
+      end if;
    end Type_Is_Suitable_For_UC;
 
    ------------------------------------
