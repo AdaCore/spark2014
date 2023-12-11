@@ -886,7 +886,7 @@ binary_trees.ads:131:08: info: invariant check proved (CVC5: 1 VC)
 binary_trees.ads:134:17: info: invariant check proved (CVC5: 1 VC)
 binary_trees.ads:134:17: info: precondition proved (CVC5: 1 VC)
 binary_trees.ads:137:08: info: invariant check proved (CVC5: 1 VC)
-binary_trees.ads:137:08: medium: postcondition might fail, cannot prove Size (F) = Size (F)'Old
+binary_trees.ads:137:08: medium: postcondition might fail
 binary_trees.ads:137:19: medium: invariant check might fail
 binary_trees.ads:140:17: medium: invariant check might fail
 binary_trees.ads:143:21: info: invariant check proved (CVC5: 1 VC)
@@ -956,7 +956,7 @@ binary_trees.ads:225:17: info: invariant check proved (CVC5: 1 VC)
 binary_trees.ads:231:37: info: invariant check proved (CVC5: 1 VC)
 binary_trees.ads:231:52: info: range check proved (CVC5: 2 VC)
 binary_trees.ads:234:08: medium: invariant check might fail
-binary_trees.ads:234:08: medium: postcondition might fail, cannot prove Size (F) = Size (F'Old)
+binary_trees.ads:234:08: medium: postcondition might fail
 binary_trees.ads:234:19: medium: invariant check might fail
 binary_trees.ads:237:21: medium: invariant check might fail
 binary_trees.ads:241:23: medium: invariant check might fail
@@ -1025,7 +1025,7 @@ binary_trees.ads:314:17: info: precondition proved (CVC5: 1 VC)
 binary_trees.ads:317:17: info: invariant check proved (CVC5: 1 VC)
 binary_trees.ads:320:17: info: invariant check proved (CVC5: 1 VC)
 binary_trees.ads:323:08: info: invariant check proved (CVC5: 1 VC)
-binary_trees.ads:323:08: medium: postcondition might fail, cannot prove Size (F) = Size (F)'Old + 1
+binary_trees.ads:323:08: medium: postcondition might fail
 binary_trees.ads:323:19: info: invariant check proved (CVC5: 1 VC)
 binary_trees.ads:326:17: medium: invariant check might fail
 binary_trees.ads:326:17: medium: precondition might fail
@@ -2115,7 +2115,7 @@ search_trees.adb:849:16: medium: precondition might fail, cannot prove Valid_Roo
 search_trees.adb:849:56: medium: precondition might fail, in call inlined at search_trees.adb:968
 search_trees.adb:849:77: info: index check proved (CVC5: 2 VC), in call inlined at search_trees.adb:968
 search_trees.adb:849:87: medium: range check might fail, cannot prove lower bound for YL, in call inlined at search_trees.adb:968 [reason for check: input value must fit in parameter type]
-search_trees.adb:850:16: medium: precondition might fail, cannot prove Valid_Root (F_Old, Root), in call inlined at search_trees.adb:968
+search_trees.adb:850:16: medium: precondition might fail, in call inlined at search_trees.adb:968
 search_trees.adb:850:56: info: range check proved (CVC5: 2 VC), in call inlined at search_trees.adb:968
 search_trees.adb:857:16: medium: precondition might fail, cannot prove Valid_Root (F1, Root), in call inlined at search_trees.adb:968
 search_trees.adb:863:13: medium: precondition might fail, cannot prove Valid_Root (F1, Root), in call inlined at search_trees.adb:968
@@ -2139,7 +2139,7 @@ search_trees.adb:882:17: info: local subprogram "Prove_Plug_X" only analyzed in 
 search_trees.adb:888:13: medium: precondition might fail, cannot prove Valid_Root (F, Root), in call inlined at search_trees.adb:973
 search_trees.adb:890:13: medium: precondition might fail, cannot prove Valid_Root (F, Root), in call inlined at search_trees.adb:973
 search_trees.adb:890:53: medium: precondition might fail, in call inlined at search_trees.adb:973
-search_trees.adb:891:13: medium: precondition might fail, cannot prove Valid_Root (F_Old, Root), in call inlined at search_trees.adb:973
+search_trees.adb:891:13: medium: precondition might fail, in call inlined at search_trees.adb:973
 search_trees.adb:897:16: medium: precondition might fail, cannot prove Valid_Root (F1, Root), in call inlined at search_trees.adb:973
 search_trees.adb:897:59: medium: range check might fail, cannot prove lower bound for T.Root, in call inlined at search_trees.adb:973 [reason for check: input value must fit in parameter type]
 search_trees.adb:901:37: medium: precondition might fail, in call inlined at search_trees.adb:973
@@ -2177,7 +2177,7 @@ search_trees.adb:926:13: medium: precondition might fail, cannot prove Valid_Roo
 search_trees.adb:927:35: medium: precondition might fail, in call inlined at search_trees.adb:981
 search_trees.adb:927:50: info: range check proved (CVC5: 2 VC), in call inlined at search_trees.adb:981
 search_trees.adb:927:65: info: range check proved (CVC5: 2 VC), in call inlined at search_trees.adb:981
-search_trees.adb:932:13: medium: precondition might fail, cannot prove Valid_Root (F_Old, Root), in call inlined at search_trees.adb:981
+search_trees.adb:932:13: medium: precondition might fail, in call inlined at search_trees.adb:981
 search_trees.adb:932:51: info: range check proved (CVC5: 2 VC), in call inlined at search_trees.adb:981
 search_trees.adb:934:16: medium: assertion might fail, cannot prove Valid_Root (T.Struct, T.Root), in call inlined at search_trees.adb:981
 search_trees.adb:934:39: info: range check proved (CVC5: 2 VC), in call inlined at search_trees.adb:981
@@ -2310,7 +2310,7 @@ search_trees.adb:1130:16: medium: precondition might fail, cannot prove Valid_Ro
 search_trees.adb:1130:56: medium: precondition might fail, in call inlined at search_trees.adb:1249
 search_trees.adb:1130:77: info: index check proved (CVC5: 2 VC), in call inlined at search_trees.adb:1249
 search_trees.adb:1130:87: medium: range check might fail, cannot prove lower bound for XR, in call inlined at search_trees.adb:1249 [reason for check: input value must fit in parameter type]
-search_trees.adb:1131:16: medium: precondition might fail, cannot prove Valid_Root (F_Old, Root), in call inlined at search_trees.adb:1249
+search_trees.adb:1131:16: medium: precondition might fail, in call inlined at search_trees.adb:1249
 search_trees.adb:1131:56: info: range check proved (CVC5: 2 VC), in call inlined at search_trees.adb:1249
 search_trees.adb:1138:16: medium: precondition might fail, cannot prove Valid_Root (F1, Root), in call inlined at search_trees.adb:1249
 search_trees.adb:1144:13: medium: precondition might fail, cannot prove Valid_Root (F1, Root), in call inlined at search_trees.adb:1249
@@ -2334,7 +2334,7 @@ search_trees.adb:1163:17: info: local subprogram "Prove_Plug_Y" only analyzed in
 search_trees.adb:1169:13: medium: precondition might fail, cannot prove Valid_Root (F, Root), in call inlined at search_trees.adb:1254
 search_trees.adb:1171:13: medium: precondition might fail, cannot prove Valid_Root (F, Root), in call inlined at search_trees.adb:1254
 search_trees.adb:1171:53: medium: precondition might fail, in call inlined at search_trees.adb:1254
-search_trees.adb:1172:13: medium: precondition might fail, cannot prove Valid_Root (F_Old, Root), in call inlined at search_trees.adb:1254
+search_trees.adb:1172:13: medium: precondition might fail, in call inlined at search_trees.adb:1254
 search_trees.adb:1178:16: medium: precondition might fail, cannot prove Valid_Root (F1, Root), in call inlined at search_trees.adb:1254
 search_trees.adb:1178:59: medium: range check might fail, cannot prove lower bound for T.Root, in call inlined at search_trees.adb:1254 [reason for check: input value must fit in parameter type]
 search_trees.adb:1182:37: medium: precondition might fail, in call inlined at search_trees.adb:1254
@@ -2372,7 +2372,7 @@ search_trees.adb:1207:13: medium: precondition might fail, cannot prove Valid_Ro
 search_trees.adb:1208:35: medium: precondition might fail, in call inlined at search_trees.adb:1262
 search_trees.adb:1208:50: info: range check proved (CVC5: 2 VC), in call inlined at search_trees.adb:1262
 search_trees.adb:1208:65: info: range check proved (CVC5: 2 VC), in call inlined at search_trees.adb:1262
-search_trees.adb:1213:13: medium: precondition might fail, cannot prove Valid_Root (F_Old, Root), in call inlined at search_trees.adb:1262
+search_trees.adb:1213:13: medium: precondition might fail, in call inlined at search_trees.adb:1262
 search_trees.adb:1213:51: info: range check proved (CVC5: 2 VC), in call inlined at search_trees.adb:1262
 search_trees.adb:1215:16: medium: assertion might fail, cannot prove Valid_Root (T.Struct, T.Root), in call inlined at search_trees.adb:1262
 search_trees.adb:1215:39: info: range check proved (CVC5: 2 VC), in call inlined at search_trees.adb:1262
@@ -2615,7 +2615,7 @@ search_trees.adb:1528:29: info: range check proved (CVC5: 2 VC)
 search_trees.adb:1528:36: info: range check proved (CVC5: 2 VC)
 search_trees.adb:1529:20: info: index check proved (CVC5: 2 VC)
 search_trees.adb:1530:10: info: invariant check proved (CVC5: 1 VC)
-search_trees.adb:1530:10: medium: precondition might fail, cannot prove T_Old.Values (L) /= V [possible fix: loop invariant at line 1493 should mention D and Previous]
+search_trees.adb:1530:10: medium: precondition might fail [possible fix: loop invariant at line 1493 should mention D and Previous]
 search_trees.adb:1530:34: info: range check proved (CVC5: 2 VC)
 search_trees.ads:17:09: info: default initial condition proved (CVC5: 1 VC)
 search_trees.ads:18:06: info: invariant check proved (CVC5: 1 VC)
@@ -2743,7 +2743,7 @@ search_trees.ads:127:17: info: precondition proved (CVC5: 1 VC)
 search_trees.ads:130:17: info: invariant check proved (CVC5: 1 VC)
 search_trees.ads:130:17: info: precondition proved (CVC5: 2 VC)
 search_trees.ads:133:08: info: invariant check proved (CVC5: 1 VC)
-search_trees.ads:133:08: medium: postcondition might fail, cannot prove Size (T) = Size (T)'Old
+search_trees.ads:133:08: medium: postcondition might fail
 search_trees.ads:133:19: info: invariant check proved (CVC5: 1 VC)
 search_trees.ads:137:21: info: invariant check proved (CVC5: 1 VC)
 search_trees.ads:137:21: info: precondition proved (CVC5: 1 VC)
@@ -2875,7 +2875,7 @@ search_trees.ads:221:17: info: precondition proved (CVC5: 1 VC)
 search_trees.ads:224:17: info: invariant check proved (CVC5: 1 VC)
 search_trees.ads:224:17: info: precondition proved (CVC5: 2 VC)
 search_trees.ads:227:08: info: invariant check proved (CVC5: 1 VC)
-search_trees.ads:227:08: medium: postcondition might fail, cannot prove Size (T) = Size (T)'Old
+search_trees.ads:227:08: medium: postcondition might fail
 search_trees.ads:227:19: info: invariant check proved (CVC5: 1 VC)
 search_trees.ads:231:21: info: invariant check proved (CVC5: 1 VC)
 search_trees.ads:231:21: info: precondition proved (CVC5: 1 VC)
