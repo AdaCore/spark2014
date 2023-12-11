@@ -325,11 +325,11 @@ memcpy.ads:58:28: warning: assuming "InRange64" has no effect on global items
 memcpy.ads:58:28: warning: no Global contract available for "InRange64"
 memcpy.ads:59:29: warning: assuming "InSafeRegion64" has no effect on global items
 memcpy.ads:59:29: warning: no Global contract available for "InSafeRegion64"
+memcpy.ads:60:16: medium: postcondition might fail
 memcpy.ads:61:31: warning: assuming "InRange64" has no effect on global items
 memcpy.ads:61:31: warning: no Global contract available for "InRange64"
 memcpy.ads:62:32: warning: assuming "InRange64" has no effect on global items
 memcpy.ads:62:32: warning: no Global contract available for "InRange64"
-memcpy.ads:63:22: medium: postcondition might fail, cannot prove (X86.Memory(i) = X86.Memory'Old(i))
 memcpy.ads:86:92: info: division check proved (CVC5: 1 VC)
 memcpy.ads:111:06: info: data dependencies proved
 memcpy.ads:112:31: info: initialization of "ZeroFlag" proved
@@ -341,11 +341,11 @@ memcpy.ads:118:28: warning: assuming "InRange64" has no effect on global items
 memcpy.ads:118:28: warning: no Global contract available for "InRange64"
 memcpy.ads:119:29: warning: assuming "InSafeRegion64" has no effect on global items
 memcpy.ads:119:29: warning: no Global contract available for "InSafeRegion64"
+memcpy.ads:120:16: medium: postcondition might fail
 memcpy.ads:121:31: warning: assuming "InRange64" has no effect on global items
 memcpy.ads:121:31: warning: no Global contract available for "InRange64"
 memcpy.ads:122:32: warning: assuming "InRange64" has no effect on global items
 memcpy.ads:122:32: warning: no Global contract available for "InRange64"
-memcpy.ads:123:22: medium: postcondition might fail, cannot prove (X86.Memory(i) = X86.Memory'Old(i))
 memcpy.ads:169:09: info: data dependencies proved
 memcpy.ads:170:52: warning: unused initial value of "SignFlag"
 memcpy.ads:170:66: warning: unused initial value of "ZeroFlag"
