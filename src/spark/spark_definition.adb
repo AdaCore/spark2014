@@ -957,36 +957,8 @@ package body SPARK_Definition is
      (Expr       : N_Subexpr_Id;
       In_Observe : Boolean)
    is
-      function Path_Goes_Through_Slice (Expr : Node_Id) return Boolean;
-      --  Determine if borrowed path Expr goes through a slice
-
-      -----------------------------
-      -- Path_Goes_Through_Slice --
-      -----------------------------
-
-      function Path_Goes_Through_Slice (Expr : Node_Id) return Boolean is
-      begin
-         case Nkind (Expr) is
-            when N_Slice =>
-               return True;
-
-            when N_Attribute_Reference
-               | N_Explicit_Dereference
-               | N_Indexed_Component
-               | N_Selected_Component
-            =>
-               return Path_Goes_Through_Slice (Prefix (Expr));
-
-            when N_Qualified_Expression
-               | N_Type_Conversion
-               | N_Unchecked_Type_Conversion
-            =>
-               return Path_Goes_Through_Slice (Expression (Expr));
-
-            when others =>
-               return False;
-         end case;
-      end Path_Goes_Through_Slice;
+      function Is_Slice (Expr : Node_Id) return Boolean is
+         (Nkind (Expr) = N_Slice);
 
       --  Local variables
 
@@ -1050,7 +1022,7 @@ package body SPARK_Definition is
       --  indexed_component.
 
       elsif not In_Observe
-        and then Path_Goes_Through_Slice (Expr)
+        and then Path_Contains_Witness (Expr, Is_Slice'Access)
       then
          Mark_Violation ("borrow through a slice", Expr);
       end if;
