@@ -15,14 +15,14 @@
  <transf name="split_goal_wp_conj" >
   <goal name="def&#39;vc.0">
   <proof prover="0"><result status="steplimitexceeded" steps="3594"/></proof>
-  <proof prover="1"><result status="unknown" steps="33892"/></proof>
+  <proof prover="1"><result status="unknown" steps="33897"/></proof>
   <proof prover="2"><result status="unknown" steps="1515"/></proof>
   <proof prover="4"><result status="unknown" steps="249"/></proof>
   </goal>
   <goal name="def&#39;vc.1">
   <proof prover="0"><result status="steplimitexceeded" steps="3740"/></proof>
   <proof prover="1"><result status="steplimitexceeded" steps="603878"/></proof>
-  <proof prover="2"><result status="unknown" steps="2797230"/></proof>
+  <proof prover="2"><result status="unknown" steps="3993236"/></proof>
   <proof prover="4"><result status="unknown" steps="287"/></proof>
   </goal>
   <goal name="def&#39;vc.2" proved="true">

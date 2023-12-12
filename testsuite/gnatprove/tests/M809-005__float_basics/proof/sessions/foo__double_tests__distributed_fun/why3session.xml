@@ -15,13 +15,13 @@
  <transf name="split_goal_wp_conj" >
   <goal name="def&#39;vc.0">
   <proof prover="0"><result status="steplimitexceeded" steps="4502"/></proof>
-  <proof prover="1"><result status="unknown" steps="170994"/></proof>
-  <proof prover="2"><result status="unknown" steps="5130200"/></proof>
+  <proof prover="1"><result status="unknown" steps="170999"/></proof>
+  <proof prover="2"><result status="unknown" steps="2642027"/></proof>
   <proof prover="4"><result status="unknown" steps="224"/></proof>
   </goal>
   <goal name="def&#39;vc.1">
   <proof prover="0"><result status="steplimitexceeded" steps="2317"/></proof>
-  <proof prover="1"><result status="unknown" steps="307356"/></proof>
+  <proof prover="1"><result status="unknown" steps="307361"/></proof>
   <proof prover="2"><result status="steplimitexceeded" steps="8450186"/></proof>
   <proof prover="4"><result status="unknown" steps="259"/></proof>
   </goal>
@@ -49,7 +49,7 @@
   <goal name="def&#39;vc.6">
   <proof prover="0"><result status="steplimitexceeded" steps="5287"/></proof>
   <proof prover="1"><result status="steplimitexceeded" steps="523948"/></proof>
-  <proof prover="2"><result status="steplimitexceeded" steps="8450161"/></proof>
+  <proof prover="2"><result status="unknown" steps="5408791"/></proof>
   <proof prover="4"><result status="unknown" steps="475"/></proof>
   </goal>
  </transf>

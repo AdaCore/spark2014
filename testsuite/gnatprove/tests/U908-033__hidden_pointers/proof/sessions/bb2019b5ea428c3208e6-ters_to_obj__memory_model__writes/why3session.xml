@@ -22,13 +22,13 @@
   <goal name="def&#39;vc.2" proved="true">
   <proof prover="0"><result status="highfailure"/></proof>
   <proof prover="1"><result status="valid" steps="1365"/></proof>
-  <proof prover="2"><result status="valid" steps="370"/></proof>
+  <proof prover="2"><result status="highfailure"/></proof>
   <proof prover="4"><result status="valid" steps="135"/></proof>
   </goal>
   <goal name="def&#39;vc.3" proved="true">
   <proof prover="0"><result status="valid" steps="1140"/></proof>
   <proof prover="1"><result status="valid" steps="1365"/></proof>
-  <proof prover="2"><result status="valid" steps="374"/></proof>
+  <proof prover="2"><result status="valid" steps="369"/></proof>
   <proof prover="4"><result status="highfailure"/></proof>
   </goal>
   <goal name="def&#39;vc.4" proved="true">
