@@ -57,7 +57,7 @@ complex_trajectory.adb:44:48: info: range check proved (CVC5: 2 VC)
 complex_trajectory.adb:44:70: info: range check proved (CVC5: 2 VC)
 complex_trajectory.adb:46:25: info: assertion proved (colibri: 2 VC)
 complex_trajectory.adb:48:25: info: assertion proved (colibri: 2 VC)
-complex_trajectory.adb:50:22: info: assertion proved (Z3: 2 VC)
+complex_trajectory.adb:50:22: info: assertion proved (Z3: 1 VC; colibri: 1 VC)
 complex_trajectory.adb:50:46: info: range check proved (CVC5: 2 VC)
 complex_trajectory.adb:50:68: info: range check proved (CVC5: 2 VC)
 complex_trajectory.adb:51:22: medium: assertion might fail

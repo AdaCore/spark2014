@@ -86,7 +86,7 @@ norm-reals-errors.adb:141:10: info: precondition proved (CVC5: 2 VC)
 norm-reals-errors.adb:143:10: info: subprogram variant proved (CVC5: 1 VC)
 norm-reals-errors.adb:143:39: info: range check proved (CVC5: 2 VC)
 norm-reals-errors.adb:146:13: info: range check proved (CVC5: 1 VC)
-norm-reals-errors.adb:146:60: medium: float overflow check might fail [reason for check: result of floating-point exponentiation must be bounded] [possible fix: subprogram at norm-reals-errors.ads:3 should mention I and Values in a precondition]
+norm-reals-errors.adb:146:60: info: float overflow check proved (Z3: 1 VC)
 norm-reals-errors.adb:146:60: medium: range check might fail [reason for check: input value must fit in parameter type] [possible fix: subprogram at norm-reals-errors.ads:3 should mention I and Values in a precondition]
 norm-reals-errors.adb:149:10: medium: precondition might fail, cannot prove abs (To_Big_Real (Sum_F + V ** 2) - (To_Big_Real (Sum_F) + To_Big_Real (V ** 2))) <= 1.2E-45 + 1.0E-7 * (To_Big_Real (Sum_F) + To_Big_Real (V ** 2)) [possible fix: subprogram at norm-reals-errors.ads:3 should mention I and Values in a precondition]
 norm-reals-errors.adb:150:22: info: range check proved (CVC5: 1 VC)
@@ -101,7 +101,7 @@ norm-reals-errors.adb:185:18: info: predicate check proved (Trivial: 1 VC)
 norm-reals-errors.adb:185:31: info: predicate check proved (Trivial: 1 VC)
 norm-reals-errors.adb:186:18: info: predicate check proved (Trivial: 1 VC)
 norm-reals-errors.adb:186:31: info: predicate check proved (Trivial: 1 VC)
-norm-reals-errors.adb:188:17: info: postcondition proved (Z3: 1 VC)
+norm-reals-errors.adb:188:17: medium: postcondition might fail
 norm-reals-errors.adb:188:22: info: precondition proved (CVC5: 1 VC)
 norm-reals-errors.adb:188:22: info: predicate check proved (Trivial: 1 VC)
 norm-reals-errors.adb:188:22: warning: assuming "Sqrt" has no effect on global items
@@ -189,8 +189,8 @@ norm.adb:19:49: info: float overflow check proved (CVC5: 1 VC)
 norm.adb:19:54: info: float overflow check proved (Z3: 1 VC)
 norm.adb:26:10: info: precondition proved (CVC5: 7 VC)
 norm.adb:27:10: info: precondition proved (CVC5: 2 VC; Z3: 1 VC; altergo: 4 VC)
-norm.adb:28:10: info: precondition proved (CVC5: 1 VC; Z3: 2 VC; altergo: 2 VC; colibri: 2 VC)
-norm.adb:28:39: info: float overflow check proved (Z3: 1 VC)
+norm.adb:28:10: info: precondition proved (CVC5: 1 VC; Z3: 3 VC; altergo: 2 VC; colibri: 1 VC)
+norm.adb:28:39: info: float overflow check proved (colibri: 1 VC)
 norm.adb:28:50: info: float overflow check proved (Z3: 1 VC)
 norm.adb:29:10: info: precondition proved (CVC5: 3 VC; Z3: 1 VC; altergo: 3 VC)
 norm.adb:29:51: info: float overflow check proved (CVC5: 1 VC)

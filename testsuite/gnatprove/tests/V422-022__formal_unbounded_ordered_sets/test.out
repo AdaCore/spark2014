@@ -14,7 +14,7 @@ test_set.adb:21:07: info: precondition proved (CVC5: 1 VC)
 test_set.adb:28:22: info: assertion proved (CVC5: 1 VC)
 test_set.adb:29:07: info: precondition proved (CVC5: 1 VC)
 test_set.adb:30:07: info: precondition proved (CVC5: 1 VC; Z3: 1 VC)
-test_set.adb:32:22: medium: assertion might fail [possible fix: you should consider adding a postcondition to function Get or turning it into an expression function]
+test_set.adb:32:22: info: assertion proved (Z3: 1 VC)
 test_set.adb:32:36: info: precondition proved (CVC5: 1 VC)
 test_set.adb:33:22: info: assertion proved (Z3: 1 VC)
 test_set.adb:33:36: info: precondition proved (CVC5: 1 VC)
@@ -42,7 +42,7 @@ test_set.adb:65:23: info: precondition proved (CVC5: 1 VC)
 test_set.adb:68:25: medium: assertion might fail
 test_set.adb:68:28: info: precondition proved (CVC5: 1 VC)
 test_set.adb:68:39: info: precondition proved (CVC5: 1 VC)
-test_set.adb:69:25: info: assertion proved (Z3: 1 VC)
+test_set.adb:69:25: medium: assertion might fail
 test_set.adb:70:10: info: precondition proved (CVC5: 1 VC)
 test_set.adb:77:25: medium: assertion might fail
 test_set.adb:81:23: info: precondition proved (CVC5: 1 VC)
@@ -185,7 +185,7 @@ test_set.adb:348:07: info: precondition proved (CVC5: 1 VC; Z3: 1 VC)
 test_set.adb:349:07: info: precondition proved (CVC5: 1 VC; Z3: 1 VC)
 test_set.adb:352:22: info: assertion proved (Z3: 1 VC)
 test_set.adb:353:22: info: assertion proved (Z3: 1 VC)
-test_set.adb:356:22: info: assertion proved (Z3: 1 VC)
+test_set.adb:356:22: medium: assertion might fail
 test_set.adb:364:07: info: initialization of "L" proved
 test_set.adb:364:10: info: initialization of "K" proved
 test_set.adb:365:07: info: initialization of "C" proved
@@ -196,7 +196,7 @@ test_set.adb:374:07: info: precondition proved (CVC5: 2 VC)
 test_set.adb:375:07: info: precondition proved (CVC5: 2 VC)
 test_set.adb:376:07: info: precondition proved (CVC5: 2 VC)
 test_set.adb:381:22: info: assertion proved (Z3: 1 VC)
-test_set.adb:384:22: info: assertion proved (Z3: 1 VC)
+test_set.adb:384:22: medium: assertion might fail
 test_set.adb:384:26: info: precondition proved (CVC5: 1 VC)
 test_set.adb:389:07: info: precondition proved (CVC5: 1 VC)
 test_set.adb:390:22: info: assertion proved (CVC5: 1 VC)
