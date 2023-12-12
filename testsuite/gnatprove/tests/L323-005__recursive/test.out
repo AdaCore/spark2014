@@ -14,4 +14,4 @@ p.ads:10:43: medium: overflow check might fail, cannot prove upper bound for Dow
 p.ads:12:15: warning: subprogram "Use_Down" has no effect
 p.ads:14:15: info: postcondition proved (CVC5: 1 VC)
 p.ads:14:34: info: range check proved (CVC5: 2 VC)
-p.ads:14:39: info: overflow check proved (CVC5: 1 VC; Z3: 1 VC)
+p.ads:14:39: medium: overflow check might fail, cannot prove upper bound for Down (X - 1) + 1 [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: use pragma Overflow_Mode or switch -gnato13 or unit SPARK.Big_Integers]
