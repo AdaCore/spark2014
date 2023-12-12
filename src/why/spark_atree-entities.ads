@@ -514,6 +514,12 @@ package SPARK_Atree.Entities is
    --  on the result of SPARK_Util.Nth_Index_Type which may return a string
    --  literal subtype.
 
+   function Is_Unsigned_Type (Typ : Scalar_Kind_Id) return Boolean
+   is (Einfo.Entities.Is_Unsigned_Type (Typ));
+
+   function Has_Biased_Representation (Typ : Scalar_Kind_Id) return Boolean
+   is (Einfo.Entities.Has_Biased_Representation (Typ));
+
    ----------------------------
    --  For Enumeration Types --
    ----------------------------
