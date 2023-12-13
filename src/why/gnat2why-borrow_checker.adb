@@ -4681,7 +4681,8 @@ package body Gnat2Why.Borrow_Checker is
 
       function Get_Expr_Array (Expr : Node_Id) return Expr_Array;
       pragma Precondition (Is_Path_Expression (Expr));
-      --  Return the sequence of expressions that make up a path
+      --  Return the sequence of expressions that make up a path, excluding
+      --  slices.
 
       --------------------
       -- Get_Expr_Array --
@@ -4695,10 +4696,12 @@ package body Gnat2Why.Borrow_Checker is
             =>
                return Expr_Array'(1 => Entity (Expr));
 
+            when N_Slice =>
+               return Get_Expr_Array (Prefix (Expr));
+
             when N_Explicit_Dereference
                | N_Indexed_Component
                | N_Selected_Component
-               | N_Slice
                | N_Attribute_Reference
             =>
                return Get_Expr_Array (Prefix (Expr)) & Expr;
@@ -4749,42 +4752,31 @@ package body Gnat2Why.Borrow_Checker is
             Prefix_Elt : constant Node_Id := Prefix_Path (J);
             Expr_Elt   : constant Node_Id := Expr_Path (J);
          begin
+
+            if Nkind (Prefix_Elt) /= Nkind (Expr_Elt) then
+               return False;
+            end if;
+
             case Nkind (Prefix_Elt) is
-               when N_Explicit_Dereference =>
-                  if Nkind (Expr_Elt) /= N_Explicit_Dereference then
-                     return False;
-                  end if;
+               when N_Explicit_Dereference
+                  | N_Indexed_Component =>
+                  null;
 
                when N_Op_Ne
                   | N_Op_Eq
                =>
-                  --  Prefix and Expr cannot be equality operators together
-                  --  as one or the other necessarily is a borrowed expression.
+                  --  Prefix and Expr cannot be equality operators together,
+                  --  nor attribute references together, as one or the other
+                  --  necessarily is a borrowed expression.
 
-                  pragma Assert (Nkind (Expr_Elt) not in N_Op_Eq | N_Op_Ne);
-                  return False;
-
-               when N_Attribute_Reference =>
-                  --  Prefix and Expr cannot be attribute references together
-                  --  as one or the other necessarily is a borrowed expression.
-
-                  pragma Assert (Nkind (Expr_Elt) /= N_Attribute_Reference);
-                  return False;
+                  raise Program_Error;
 
                when N_Selected_Component =>
-                  if Nkind (Expr_Elt) /= N_Selected_Component
-                    or else Original_Record_Component
-                              (Entity (Selector_Name (Prefix_Elt)))
-                         /= Original_Record_Component
-                              (Entity (Selector_Name (Expr_Elt)))
+                  if Original_Record_Component
+                    (Entity (Selector_Name (Prefix_Elt)))
+                    /= Original_Record_Component
+                      (Entity (Selector_Name (Expr_Elt)))
                   then
-                     return False;
-                  end if;
-
-               when N_Indexed_Component
-                  | N_Slice
-               =>
-                  if Nkind (Expr_Elt) not in N_Indexed_Component | N_Slice then
                      return False;
                   end if;
 
