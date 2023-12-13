@@ -289,7 +289,7 @@ unsigned.adb:28:22: info: assertion proved (Trivial: 1 VC; Z3: 1 VC)
 unsigned.adb:30:22: info: assertion proved (CVC5: 1 VC; Trivial: 1 VC)
 unsigned.adb:31:22: info: assertion proved (Trivial: 1 VC; Z3: 1 VC)
 unsigned.adb:33:22: info: assertion proved (CVC5: 1 VC; Trivial: 1 VC)
-unsigned.adb:34:22: info: assertion proved (Trivial: 1 VC; colibri: 1 VC)
+unsigned.adb:34:22: info: assertion proved (Trivial: 1 VC; Z3: 1 VC)
 unsigned.adb:38:11: info: data dependencies proved
 unsigned.adb:43:22: info: assertion proved (CVC5: 1 VC; Trivial: 1 VC)
 unsigned.adb:44:22: info: assertion proved (Trivial: 1 VC; Z3: 1 VC)
