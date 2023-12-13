@@ -401,7 +401,6 @@ package body Gnat2Why.Error_Messages is
             Msg,
             Proved,
             Kind,
-            Place_First   => Locate_On_First_Token (Kind),
             Cntexmp       => Cntexmp,
             Verdict       => Verdict,
             Check_Tree    => Check_Tree,
