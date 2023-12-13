@@ -4,5 +4,5 @@ multi.adb:11:20: info: range check proved (CVC5: 1 VC)
 multi.adb:15:24: info: index check proved (CVC5: 2 VC)
 multi.adb:15:44: info: index check proved (CVC5: 2 VC)
 multi.ads:8:18: warning: unused initial value of "A"
-multi.ads:10:14: info: postcondition proved (CVC5: 4 VC; Z3: 1 VC; altergo: 1 VC)
+multi.ads:10:14: info: postcondition proved (CVC5: 6 VC)
 multi.ads:10:67: info: index check proved (CVC5: 2 VC)

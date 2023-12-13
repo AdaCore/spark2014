@@ -12758,41 +12758,50 @@ package body Gnat2Why.Expr is
       --  @param Bounds corresponds to the sequence of name for bound elements,
       --    if they are needed as parameters.
 
-      procedure Generate_Logic_Function
+      procedure Generate_Aggregate_Functions
         (Values              : Aggregate_Element_Lists.Vector;
          Variables           : Flow_Id_Sets.Set;
          Elements_From_Nodes : Node_To_Why_Id.Map;
          Bounds              : W_Expr_Array)
         with Pre => Should_Use_Function_Translation;
       --  Generate the logic function definition for the aggregate Expr, with a
-      --  suitable defining axiom:
+      --  suitable defining axiom, as well as a program function with a post:
       --
       --     function F (<params>) : <type of aggregate>
       --
       --     axiom A:
       --       forall id:<type of aggregate>. forall <params>.
       --         <proposition for the aggregate F(<params>)>
+      --
+      --     val F (<params>) : <type of aggregate>
+      --       ensures { <proposition for the aggregate result> }
 
       function Make_Defining_Proposition
         (Arr                 : W_Term_Id;
          Elements_From_Nodes : Node_To_Why_Id.Map;
          Bounds              : W_Expr_Array;
-         Params              : Transformation_Params)
+         Params              : Transformation_Params;
+         Skip_Guards         : Boolean := False)
          return W_Pred_Id;
       --  Generates a proposition stating that array Arr contains the result of
       --  aggregate Expr, using Elements_From_Nodes to map nodes for indices
       --  and components to Why3 identifiers, and Bounds to figure out the
       --  bounds when Needs_Bounds = True.
+      --  If Skip_Guards is True, does not generate guards to guarantee the
+      --  soundness of the proposition.
 
       function Transform_Array_Component_Associations
         (Arr                 : W_Term_Id;
          Elements_From_Nodes : Node_To_Why_Id.Map;
          Bounds              : W_Expr_Array;
-         Params              : Transformation_Params)
+         Params              : Transformation_Params;
+         Skip_Guards         : Boolean := False)
          return W_Pred_Id;
       --  Generates the proposition defining the content of components of
       --  aggregate Arr, based on a mapping between Ada nodes and corresponding
       --  Why identifiers.
+      --  If Skip_Guards is True, does not generate guards to guarantee the
+      --  soundness of the proposition.
 
       function Complete_Translation
         (Func                : W_Identifier_Id;
@@ -12929,6 +12938,11 @@ package body Gnat2Why.Expr is
                            Elements_From_Nodes => Elements_From_Nodes,
                            Bounds              => Bounds,
                            Params              => Params));
+
+                  --  The postcondition of the any expression is only
+                  --  assumed in the current context. No need to emit guards
+                  --  for soundness.
+
                   when EW_Pterm | EW_Prog =>
                      Aggr_Name := New_Result_Ident (Ret_Type);
                      R := New_Any_Expr
@@ -12937,7 +12951,8 @@ package body Gnat2Why.Expr is
                           (Arr                 => +Aggr_Name,
                            Elements_From_Nodes => Elements_From_Nodes,
                            Bounds              => Bounds,
-                           Params              => Params),
+                           Params              => Params,
+                           Skip_Guards         => True),
                         Return_Type => Ret_Type,
                         Labels      => Symbol_Sets.Empty_Set);
                   when others =>
@@ -13050,11 +13065,11 @@ package body Gnat2Why.Expr is
          return R;
       end Complete_Translation;
 
-      -----------------------------
-      -- Generate_Logic_Function --
-      -----------------------------
+      ----------------------------------
+      -- Generate_Aggregate_Functions --
+      ----------------------------------
 
-      procedure Generate_Logic_Function
+      procedure Generate_Aggregate_Functions
         (Values              : Aggregate_Element_Lists.Vector;
          Variables           : Flow_Id_Sets.Set;
          Elements_From_Nodes : Node_To_Why_Id.Map;
@@ -13092,17 +13107,6 @@ package body Gnat2Why.Expr is
 
          Name           : constant String :=
            Lower_Case_First (Get_Name_For_Aggregate (Expr));
-         Module         : constant W_Module_Id :=
-           New_Module
-             (Ada_Node => Expr,
-              File     => No_Symbol,
-              Name     => Name);
-         Func           : constant W_Identifier_Id :=
-           New_Identifier
-             (Ada_Node => Expr,
-              Domain   => Domain,
-              Module   => Module,
-              Symb     => NID (Name));
 
          --  Predicate used to define the aggregate/updated object
 
@@ -13139,9 +13143,11 @@ package body Gnat2Why.Expr is
 
          --  Variables for the call, guard and proposition for the axiom
 
+         Func           : W_Identifier_Id;
          Aggr           : W_Term_Id;
          Def_Pred       : W_Pred_Id;
          Axiom_Body     : W_Pred_Id := True_Pred;
+         Post           : W_Pred_Id := True_Pred;
 
          Aggr_Temp      : constant W_Identifier_Id :=
            New_Temp_Identifier (Typ => Ret_Type);
@@ -13151,14 +13157,34 @@ package body Gnat2Why.Expr is
       --  Start of processing for Generate_Logic_Function
 
       begin
-         --  Insert new modules for the logic function in the module map
+         --  Insert new modules for the program and logic functions in the
+         --  module map. The translation follows the same schema as regular
+         --  functions: an early declaration for the logic function exported
+         --  again in the regular module for the aggregate, a defining axiom in
+         --  the axiom module linked to the regular module, and a program
+         --  function with an instance of the defining axiom inlined in its
+         --  postcondition.
 
-         Insert_Extra_Module (Expr, Module);
+         Insert_Extra_Module
+           (Expr, New_Module
+              (Ada_Node => Expr,
+               File     => No_Symbol,
+               Name     => Name));
+         Insert_Extra_Module
+           (Expr,
+            New_Module (File => No_Symbol,
+                        Name => Name & "___logic_fun"),
+            Logic_Function_Decl);
+         Insert_Extra_Module
+           (Expr,
+            New_Module (File => No_Symbol,
+                        Name => Name & "___program_fun"),
+            Program_Function_Decl);
          Insert_Extra_Module
            (Expr,
             New_Module (File => No_Symbol,
                         Name => Name & To_String (WNE_Axiom_Suffix)),
-            Is_Axiom => True);
+            Axiom);
 
          --  Compute the parameters/arguments for the axiom/call
 
@@ -13200,7 +13226,27 @@ package body Gnat2Why.Expr is
             Bounds              => Bounds,
             Params              => Params_No_Ref);
 
+         --  The postcondition of the program function is only assumed in the
+         --  context of the call. No need to emit guards for soundness.
+
+         Post := Make_Defining_Proposition
+           (Arr                 => +New_Result_Ident (Typ => Ret_Type),
+            Elements_From_Nodes => Elements_From_Nodes,
+            Bounds              => Bounds,
+            Params              => Params_No_Ref,
+            Skip_Guards         => True);
+
          Ada_Ent_To_Why.Pop_Scope (Symbol_Table);
+
+         --  Like for regular functions, call the early declaration of the
+         --  logic function to avoid pulling the axiom when using the program
+         --  function.
+
+         Func := New_Identifier
+           (Ada_Node => Expr,
+            Domain   => Domain,
+            Module   => E_Module (Expr, Logic_Function_Decl),
+            Symb     => NID (Name));
 
          Aggr :=
            New_Call (Ada_Node => Expr,
@@ -13214,13 +13260,23 @@ package body Gnat2Why.Expr is
               Def     => Aggr,
               Context => Axiom_Body);
 
-         --  Generate the logic function declaration
+         --  Add the equality with the logic function to the post of the
+         --  program function.
+
+         Post := New_And_Pred
+           (Left  => Post,
+            Right => New_Comparison
+              (Symbol => Why_Eq,
+               Left   => +New_Result_Ident (Typ => Ret_Type),
+               Right  => Aggr));
+
+         --  Generate the logic function declaration in its specific module
 
          Th :=
            Open_Theory
-             (WF_Context, E_Module (Expr),
+             (WF_Context, E_Module (Expr, Logic_Function_Decl),
               Comment =>
-                "Module for declaring an abstract function for the "
+                "Module for initial declaration of the logic function for the "
               & (if Nkind (Expr) = N_Delta_Aggregate
                 then "delta aggregate"
                 elsif In_Delta_Aggregate
@@ -13242,16 +13298,15 @@ package body Gnat2Why.Expr is
                   Return_Type => Ret_Type));
 
          Close_Theory (Th,
-                       Kind => Definition_Theory,
-                       Defined_Entity => Expr);
+                       Kind => Definition_Theory);
 
-         --  Generate the axiom in a completion module
+         --  Export the logic symbol in Expr's regular module
 
          Th :=
            Open_Theory
-             (WF_Context, E_Module (Expr, Axiom),
+             (WF_Context, E_Module (Expr),
               Comment =>
-                "Module for defining the value of the "
+                "Module for declaring a logic function for the "
               & (if Nkind (Expr) = N_Delta_Aggregate
                 then "delta aggregate"
                 elsif In_Delta_Aggregate
@@ -13262,6 +13317,62 @@ package body Gnat2Why.Expr is
                    Build_Location_String (Sloc (Expr))
                 else "<no location>")
               & ", created in " & GNAT.Source_Info.Enclosing_Entity);
+
+         Add_With_Clause (Th, E_Module (Expr, Logic_Function_Decl), EW_Export);
+
+         Close_Theory (Th,
+                       Kind => Definition_Theory);
+
+         --  Generate the program function declaration in its specific module
+
+         Th :=
+           Open_Theory
+             (WF_Context, E_Module (Expr, Program_Function_Decl),
+              Comment =>
+                "Module for declaring a program function for the "
+              & (if Nkind (Expr) = N_Delta_Aggregate
+                then "delta aggregate"
+                elsif In_Delta_Aggregate
+                then "update attribute"
+                else "aggregate")
+              & " at "
+              & (if Sloc (Expr) > 0 then
+                   Build_Location_String (Sloc (Expr))
+                else "<no location>")
+              & ", created in " & GNAT.Source_Info.Enclosing_Entity);
+
+         Emit (Th,
+               New_Function_Decl
+                 (Domain      => EW_Prog,
+                  Name        => To_Local (Func),
+                  Labels      => Symbol_Sets.Empty_Set,
+                  Location    => No_Location,
+                  Binders     => Call_Params & Bnd_Params & Var_Params,
+                  Return_Type => Ret_Type,
+                  Post        => Post));
+
+         Close_Theory (Th,
+                       Kind => Definition_Theory);
+
+         --  Generate the axiom in an axiom module always included with Expr's
+         --  regular module.
+
+         Th :=
+           Open_Theory
+             (WF_Context, E_Module (Expr, Axiom),
+              Comment =>
+                "Module for declaring an axiom defining the value of the "
+              & (if Nkind (Expr) = N_Delta_Aggregate
+                then "delta aggregate"
+                elsif In_Delta_Aggregate
+                then "update attribute"
+                else "aggregate")
+              & " at "
+              & (if Sloc (Expr) > 0 then
+                   Build_Location_String (Sloc (Expr))
+                else "<no location>")
+              & ", created in " & GNAT.Source_Info.Enclosing_Entity);
+
          Emit (Th,
                New_Guarded_Axiom
                  (Name     => NID (Def_Axiom),
@@ -13272,9 +13383,9 @@ package body Gnat2Why.Expr is
                                    Kind => EW_Axdep_Func)));
 
          Close_Theory (Th,
-                       Kind => Axiom_Theory,
+                       Kind           => Axiom_Theory,
                        Defined_Entity => Expr);
-      end Generate_Logic_Function;
+      end Generate_Aggregate_Functions;
 
       ----------------------------
       -- Get_Aggregate_Elements --
@@ -14308,7 +14419,8 @@ package body Gnat2Why.Expr is
         (Arr                 : W_Term_Id;
          Elements_From_Nodes : Node_To_Why_Id.Map;
          Bounds              : W_Expr_Array;
-         Params              : Transformation_Params)
+         Params              : Transformation_Params;
+         Skip_Guards         : Boolean := False)
          return W_Pred_Id
       is
          Result : W_Pred_Id := True_Pred;
@@ -14355,7 +14467,7 @@ package body Gnat2Why.Expr is
             --  axiom for the dynamic property of the array to avoid generating
             --  an unsound axiom if the bounds are not in their type.
 
-            if Needs_Bounds then
+            if Needs_Bounds and then not Skip_Guards then
                Result :=
                  New_Conditional
                    (Condition   => +New_Dynamic_Property
@@ -14505,7 +14617,8 @@ package body Gnat2Why.Expr is
         (Arr                 : W_Term_Id;
          Elements_From_Nodes : Node_To_Why_Id.Map;
          Bounds              : W_Expr_Array;
-         Params              : Transformation_Params)
+         Params              : Transformation_Params;
+         Skip_Guards         : Boolean := False)
          return W_Pred_Id
       is
          Binders : Binder_Array (Dimensions);
@@ -14673,14 +14786,10 @@ package body Gnat2Why.Expr is
                declare
                   Is_Init  : W_Pred_Id := True_Pred;
                   Value    : W_Term_Id;
-                  Dyn_Prop : W_Pred_Id := True_Pred;
+                  Prop     : W_Pred_Id;
 
                begin
                   Value := New_Temp_For_Expr (Arg_Val);
-                  Dyn_Prop := Compute_Dynamic_Invariant
-                    (Expr   => Value,
-                     Ty     => Comp_Type,
-                     Params => Params);
 
                   --  If the value has a type which does not have
                   --  relaxed initialization, it must be initialized.
@@ -14700,16 +14809,29 @@ package body Gnat2Why.Expr is
                     (Expr => Read,
                      To   => Get_Type (+Value));
 
+                  Prop := New_Comparison (Symbol => Why_Eq,
+                                          Left   => Read,
+                                          Right  => Value);
+
+                  if not Skip_Guards then
+                     declare
+                        Dyn_Prop : constant W_Pred_Id :=
+                          Compute_Dynamic_Invariant
+                            (Expr   => Value,
+                             Ty     => Comp_Type,
+                             Params => Params);
+                     begin
+                        Prop := New_Conditional
+                          (Condition => Dyn_Prop,
+                           Then_Part => Prop);
+                     end;
+                  end if;
+
                   return New_And_Pred
-                    (Left   => Binding_For_Temp
+                    (Left  => Binding_For_Temp
                        (Tmp     => Value,
-                        Context => New_Conditional
-                          (Condition   => Dyn_Prop,
-                           Then_Part   =>
-                             New_Comparison (Symbol => Why_Eq,
-                                             Left   => Read,
-                                             Right  => Value))),
-                     Right  => Is_Init);
+                        Context => Prop),
+                     Right => Is_Init);
                end;
             end if;
          end Constrain_Value_At_Index;
@@ -15344,7 +15466,14 @@ package body Gnat2Why.Expr is
                return Simple_Assocs;
             else
                Other_Assocs := New_Universal_Quantif
-                 (Binders => Binders,
+                 (Binders  => Binders,
+                  Triggers =>  New_Triggers
+                    (Triggers =>
+                         (1 => New_Trigger
+                              (Terms =>
+                                 (1 => +New_Array_Access
+                                    (Ar    => Arr,
+                                     Index => Indexes))))),
                   Pred    => Other_Assocs);
                return New_And_Pred
                  (Left  => Simple_Assocs,
@@ -15392,17 +15521,24 @@ package body Gnat2Why.Expr is
                M : W_Module_Id := E_Module (Expr);
             begin
                if M = Why_Empty then
-                  Generate_Logic_Function
+                  Generate_Aggregate_Functions
                     (Values,
                      Variables,
                      Elements_From_Nodes,
                      Bounds);
                   M := E_Module (Expr);
                end if;
+
+               --  For program terms, use the program function declared in the
+               --  axiom module. It has an instance of the defining axiom as a
+               --  post.
+
                Func :=  New_Identifier
                  (Ada_Node => Expr,
                   Domain   => Domain,
-                  Module   => M,
+                  Module   =>
+                    (if Domain in EW_Term | EW_Pred then M
+                     else E_Module (Expr, Program_Function_Decl)),
                   Symb     => NID (Lower_Case_First (Img (Get_Name (M)))));
             end;
          end if;

@@ -182,12 +182,15 @@ package body Why.Atree.Modules is
 
          when Logic_Function_Decl =>
             pragma Assert
-              (Is_Function_Or_Function_Type (E)
-               and then not Has_Pragma_Volatile_Function (E)
-               and then not Is_Function_With_Side_Effects (E));
+              (Nkind (E) in N_Aggregate | N_Delta_Aggregate
+               or else (Is_Function_Or_Function_Type (E)
+                 and then not Has_Pragma_Volatile_Function (E)
+                 and then not Is_Function_With_Side_Effects (E)));
 
          when Program_Function_Decl =>
-            pragma Assert (E in Callable_Kind_Id);
+            pragma Assert
+              (Nkind (E) in N_Aggregate | N_Delta_Aggregate
+               or else E in Callable_Kind_Id);
 
          when Dispatch
             | Dispatch_Axiom
@@ -2669,17 +2672,16 @@ package body Why.Atree.Modules is
    -------------------------
 
    procedure Insert_Extra_Module
-     (N        : Node_Id;
-      M        : W_Module_Id;
-      Is_Axiom : Boolean := False)
+     (N    : Node_Id;
+      M    : W_Module_Id;
+      Kind : Module_Kind := Regular)
    is
       Position : Ada_Node_To_Module.Cursor;
       Inserted : Boolean;
    begin
       Entity_Modules.Insert
         (N, Module_Kind_To_Module.Empty_Map, Position, Inserted);
-      Entity_Modules (Position).Insert
-        ((if Is_Axiom then Axiom else Regular), M);
+      Entity_Modules (Position).Insert (Kind, M);
    end Insert_Extra_Module;
 
    ------------------------
