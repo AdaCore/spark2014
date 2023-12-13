@@ -809,7 +809,6 @@ package body Flow_Error_Messages is
       E             : Entity_Id;
       How_Proved    : Prover_Category;
       Stats         : Prover_Stat_Maps.Map;
-      Place_First   : Boolean;
       Check_Info    : Check_Info_Type;
       Fuzzing_Used  : Boolean := False;
       Print_Fuzzing : Boolean := False)
@@ -918,10 +917,11 @@ package body Flow_Error_Messages is
 
       Message : Unbounded_String     :=
         To_Unbounded_String (Compute_Message (Msg, N));
-      Span    : constant Source_Span := Compute_Sloc (N, Place_First);
-      Slc     : constant Source_Ptr  := Span.Ptr;
-      VC_Span : constant Source_Span := Compute_Sloc (VC_Loc, Place_First);
-      VC_Slc  : constant Source_Ptr  := VC_Span.Ptr;
+      Place_First : constant Boolean := Locate_On_First_Token (Tag);
+      Span        : constant Source_Span := Compute_Sloc (N, Place_First);
+      Slc         : constant Source_Ptr  := Span.Ptr;
+      VC_Span     : constant Source_Span := Compute_Sloc (VC_Loc, Place_First);
+      VC_Slc      : constant Source_Ptr  := VC_Span.Ptr;
 
       Pretty_Cntexmp  : constant Cntexample_File_Maps.Map :=
         (if Verdict.Verdict_Category in

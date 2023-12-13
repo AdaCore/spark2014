@@ -270,7 +270,6 @@ package Flow_Error_Messages is
       E             : Entity_Id;
       How_Proved    : Prover_Category;
       Stats         : Prover_Stat_Maps.Map;
-      Place_First   : Boolean;
       Check_Info    : Check_Info_Type;
       Fuzzing_Used  : Boolean := False;
       Print_Fuzzing : Boolean := False);
