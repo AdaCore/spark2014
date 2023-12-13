@@ -1,3 +1,4 @@
+foo.adb:12:13: info: imprecise handling of Unchecked_Conversion (component offset not known)
 foo.adb:12:13: info: types in unchecked conversion have the same size (Trivial)
 foo.adb:13:17: info: type is suitable as source for unchecked conversion (Trivial)
 foo.adb:14:17: info: type is suitable for unchecked conversion (Trivial)

@@ -43,21 +43,10 @@ package body SPARK_Util.Types is
    --  This function computes a user-visible string to represent the type in
    --  argument.
 
-   type Result_Type (Ok : Boolean := True) is record
-      case Ok is
-         when True  =>
-            null;
-         when False =>
-            Explanation : Unbounded_String;
-      end case;
-   end record;
-   --  Type to store a check result along with an explanation in case of
-   --  failure.
-
    generic
       with function Type_Is_Suitable
      (Typ       : Type_Kind_Id;
-      Use_Esize : Boolean) return Result_Type;
+      Use_Esize : Boolean) return True_Or_Explain;
 
    procedure Suitable_For_UC_Gen
      (Typ         :     Type_Kind_Id;
@@ -72,13 +61,13 @@ package body SPARK_Util.Types is
 
    function Type_Is_Suitable_For_UC
      (Typ       : Type_Kind_Id;
-      Use_Esize : Boolean) return Result_Type;
+      Use_Esize : Boolean) return True_Or_Explain;
    --  Function to check the properties enforced on all subcomponents of a
    --  type "suitable for unchecked conversion" of SPARK RM 13.9.
 
    function Type_Is_Suitable_For_UC_Target
      (Typ       : Type_Kind_Id;
-      Use_Esize : Boolean) return Result_Type;
+      Use_Esize : Boolean) return True_Or_Explain;
    --  Function to check the properties enforced on all subcomponents of a
    --  type "suitable as a target of an unchecked conversion" of SPARK RM 13.9.
 
@@ -1992,7 +1981,7 @@ package body SPARK_Util.Types is
          Size := Uint_0;
 
          declare
-            Check_Result : constant Result_Type :=
+            Check_Result : constant True_Or_Explain :=
               Type_Is_Suitable (Typ, Use_Esize);
          begin
             if not Check_Result.Ok then
@@ -2418,7 +2407,7 @@ package body SPARK_Util.Types is
 
    function Type_Is_Suitable_For_UC
      (Typ       : Type_Kind_Id;
-      Use_Esize : Boolean) return Result_Type
+      Use_Esize : Boolean) return True_Or_Explain
    is
       pragma Unreferenced (Use_Esize);
       function Typ_Name return String is (Type_Name_For_Explanation (Typ));
@@ -2495,11 +2484,11 @@ package body SPARK_Util.Types is
 
    function Type_Is_Suitable_For_UC_Target
      (Typ       : Type_Kind_Id;
-      Use_Esize : Boolean) return Result_Type
+      Use_Esize : Boolean) return True_Or_Explain
    is
       function Typ_Name return String is (Type_Name_For_Explanation (Typ));
 
-      Check_For_UC_Res : constant Result_Type :=
+      Check_For_UC_Res : constant True_Or_Explain :=
         Type_Is_Suitable_For_UC (Typ, Use_Esize);
 
    begin

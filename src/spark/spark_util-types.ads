@@ -24,9 +24,23 @@
 ------------------------------------------------------------------------------
 
 with Sem_Type;
-with Stand;     use Stand;
+with Stand;    use Stand;
 
 package SPARK_Util.Types is
+
+   type True_Or_Explain (Ok : Boolean := True) is record
+      case Ok is
+         when True  =>
+            null;
+         when False =>
+            Explanation : Unbounded_String;
+      end case;
+   end record;
+   --  Type to store a check result along with an explanation in case of
+   --  failure.
+
+   function False_With_Explain (S : String) return True_Or_Explain is
+     (True_Or_Explain'(Ok => False, Explanation => To_Unbounded_String (S)));
 
    ---------------------------------------------
    -- Queries related to representative types --

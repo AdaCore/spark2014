@@ -649,6 +649,15 @@ package body SPARK_Atree.Entities is
    function Modulus (Typ : Modular_Integer_Kind_Id) return Uint is
      (Einfo.Entities.Modulus (SPARK_Util.Types.Base_Retysp (Typ)));
 
+   --------------------
+   -- Next_Component --
+   --------------------
+
+   procedure Next_Component (Comp : in out Opt_E_Component_Id) is
+   begin
+      Einfo.Utils.Next_Component (Comp);
+   end Next_Component;
+
    -----------------------
    -- Next_Discriminant --
    -----------------------
