@@ -428,6 +428,7 @@ package VC_Kinds is
       Lim_Conv_Float_Modular_128,
       Lim_Conv_Incompatible_Fixed,
       Lim_Deep_Object_With_Addr,
+      Lim_Deep_Value_In_Delta_Aggregate,
       Lim_Entry_Family,
       Lim_Exceptional_Cases_Dispatch,
       Lim_Exceptional_Cases_Ownership,
@@ -656,6 +657,9 @@ package VC_Kinds is
            "'@ inside a move assignment",
          when Lim_Deep_Object_With_Addr =>
            "address clause on an object of an ownership type",
+         when Lim_Deep_Value_In_Delta_Aggregate =>
+           "delta aggregate with possible aliasing of components of an "
+           & "ownership type",
          when Lim_Overlay_With_Deep_Object =>
            "overlay with an object of an ownership type",
          when Lim_Non_Static_Attribute =>
