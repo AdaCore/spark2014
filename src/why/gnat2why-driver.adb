@@ -355,7 +355,6 @@ package body Gnat2Why.Driver is
       end if;
       if Progress >= Progress_Proof then
          Set_Field (Full, "pragma_assume", Create (Get_Pragma_Assume_JSON));
-         Set_Field (Full, "session_map", Get_Session_Map_JSON);
          Set_Field (Full, "proof", Create (Get_Proof_JSON));
       end if;
       Set_Field (Full, "assumptions", Get_Assume_JSON);

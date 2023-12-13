@@ -25,7 +25,6 @@
 
 with Ada.Containers;
 with Debug.Timing;              use Debug.Timing;
-with Flow_Error_Messages;       use Flow_Error_Messages;
 with GNATCOLL.JSON;
 with SPARK_Atree;               use SPARK_Atree;
 with SPARK_Util;                use SPARK_Util;
@@ -81,7 +80,6 @@ package Gnat2Why.Error_Messages is
       Kind          : VC_Kind;
       Proved        : Boolean;
       E             : Entity_Id;
-      SD_Id         : Session_Dir_Base_ID;
       How_Proved    : Prover_Category;
       Check_Info    : Check_Info_Type;
       Extra_Msg     : String := "";
