@@ -281,13 +281,18 @@ package SPARK_Definition.Annotate is
 
    type Annotate_Kind is (Intentional, False_Positive);
 
-   type Annotated_Range is record
-      Kind    : Annotate_Kind;       --  the kind of pragma Annotate
-      Pattern : String_Id;           --  the message pattern
-      Reason  : String_Id;           --  the user-provided reason for hiding
-      First   : Source_Ptr;          --  first source pointer
-      Last    : Source_Ptr;          --  last source pointer
-      Prgma   : Node_Id;             --  the pragma which this range belongs to
+   type Annotated_Range (Present : Boolean := False) is record
+      case Present is
+         when True =>
+            Kind    : Annotate_Kind; --  the kind of pragma Annotate
+            Pattern : String_Id;     --  the message pattern
+            Reason  : String_Id;     --  the user-provided reason for hiding
+            First   : Source_Ptr;    --  first source pointer
+            Last    : Source_Ptr;    --  last source pointer
+            Prgma   : Node_Id;       --  the pragma which this range belongs to
+         when False =>
+            null;
+      end case;
    end record;
 
    function Decl_Starts_Pragma_Annotate_Range (N : Node_Id) return Boolean;
@@ -302,7 +307,6 @@ package SPARK_Definition.Annotate is
      (Node  : Node_Id;
       Msg   : String;
       Check : Boolean;
-      Found : out Boolean;
       Info  : out Annotated_Range);
    --  For a given node and a message string, search if there is a pragma
    --  Annotate that applies to the message for this node. If so, set Found to
