@@ -3076,12 +3076,11 @@ package body SPARK_Definition.Annotate is
      (Node  : Node_Id;
       Msg   : String;
       Check : Boolean;
-      Found : out Boolean;
       Info  : out Annotated_Range)
    is
       Node_Slc : constant Source_Ptr := Sloc (Node);
    begin
-      Found := False;
+      Info := Annotated_Range'(Present => False);
 
       --  This is a simple linear search in a sorted list, the only subtle
       --  thing is that several entries may match, or entries may include
@@ -3103,7 +3102,6 @@ package body SPARK_Definition.Annotate is
                                      P => '*' & String_Value (E.Pattern) & '*')
          then
             Info := E;
-            Found := True;
 
             --  Deal with useless pragma Annotate; Check = False means a proved
             --  message.
@@ -4947,7 +4945,8 @@ package body SPARK_Definition.Annotate is
       end loop;
       Annotations.Insert
         (Before   => Cur,
-         New_Item => (Kind    => Kind,
+         New_Item => (Present => True,
+                      Kind    => Kind,
                       First   => First,
                       Last    => Last,
                       Pattern => Pattern,

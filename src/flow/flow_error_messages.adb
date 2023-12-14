@@ -449,7 +449,6 @@ package body Flow_Error_Messages is
         Source_Ptr'Image (Slc) &
         Integer'Image (Msg_Severity'Pos (Severity));
 
-      Is_Annot : Boolean := False;
       Info     : Annotated_Range;
 
       Suppr             : String_Id  := No_String;
@@ -511,9 +510,9 @@ package body Flow_Error_Messages is
                   Suppressed := Report_Mode = GPR_Fail;
 
                when Check_Kind =>
-                  Check_Is_Annotated (N, Msg3, True, Is_Annot, Info);
+                  Check_Is_Annotated (N, Msg3, True, Info);
 
-                  if Is_Annot then
+                  if Info.Present then
                      Suppr := Info.Reason;
 
                      if Report_Mode /= GPR_Fail then
@@ -936,7 +935,6 @@ package body Flow_Error_Messages is
         Get_Severity (N, Is_Proved, Tag, Verdict);
       Suppr     : String_Id := No_String;
       Msg_Id    : Message_Id := No_Message_Id;
-      Is_Annot  : Boolean;
       Info      : Annotated_Range;
       Ignore_Id : Message_Id;
 
@@ -958,11 +956,11 @@ package body Flow_Error_Messages is
       --  that also in the Info_Kind case, we want to know whether the check
       --  corresponds to a pragma Annotate.
 
-      Check_Is_Annotated (N, Msg, Severity in Check_Kind, Is_Annot, Info);
+      Check_Is_Annotated (N, Msg, Severity in Check_Kind, Info);
 
       case Severity is
          when Check_Kind =>
-            if Is_Annot then
+            if Info.Present then
                Suppr := Info.Reason;
 
                if Report_Mode /= GPR_Fail then
@@ -1134,7 +1132,7 @@ package body Flow_Error_Messages is
 
       if Report_Mode /= GPR_Fail
         or else Severity = Warning_Kind
-        or else (Severity in Check_Kind and then not Is_Annot)
+        or else (Severity in Check_Kind and then not Info.Present)
       then
          for Cont of reverse Check_Info.Continuation loop
 
@@ -1162,7 +1160,7 @@ package body Flow_Error_Messages is
       end if;
 
       Add_Json_Msg
-        (Suppr      => (if Is_Annot
+        (Suppr      => (if Info.Present
                         and then Severity in Check_Kind
                         then
                            Suppressed_Message'(Suppression_Kind => Check,
