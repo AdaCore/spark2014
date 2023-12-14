@@ -4759,11 +4759,13 @@ package body Gnat2Why.Borrow_Checker is
 
             case Nkind (Prefix_Elt) is
                when N_Explicit_Dereference
-                  | N_Indexed_Component =>
+                  | N_Indexed_Component
+               =>
                   null;
 
                when N_Op_Ne
                   | N_Op_Eq
+                  | N_Attribute_Reference
                =>
                   --  Prefix and Expr cannot be equality operators together,
                   --  nor attribute references together, as one or the other
