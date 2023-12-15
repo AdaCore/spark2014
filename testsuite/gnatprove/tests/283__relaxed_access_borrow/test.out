@@ -1,7 +1,4 @@
 test_relaxed_borrower.adb:20:14: info: postcondition proved (CVC5: 1 VC)
-test_relaxed_borrower.adb:27:14: info: add a contract to analyze it separately from calling contexts
-test_relaxed_borrower.adb:27:14: info: local subprogram "Update_Uninit" only analyzed in the context of calls
-test_relaxed_borrower.adb:33:07: info: pointer dereference check proved (CVC5: 1 VC), in call inlined at test_relaxed_borrower.adb:64
 test_relaxed_borrower.adb:40:35: info: null exclusion check proved (CVC5: 1 VC)
 test_relaxed_borrower.adb:42:14: info: pointer dereference check proved (CVC5: 2 VC)
 test_relaxed_borrower.adb:43:16: info: null exclusion check proved (CVC5: 1 VC)
@@ -25,9 +22,10 @@ test_relaxed_borrower.adb:62:41: info: null exclusion check proved (CVC5: 1 VC)
 test_relaxed_borrower.adb:62:41: info: pointer dereference check proved (CVC5: 1 VC)
 test_relaxed_borrower.adb:62:41: medium: in reconstructed value at the end of the borrow at test_relaxed_borrower.adb:62
 test_relaxed_borrower.adb:62:41: medium: initialization check might fail
-test_relaxed_borrower.adb:64:10: info: analyzing call to "Update_Uninit" in context
-test_relaxed_borrower.adb:64:10: info: pointer dereference check proved (CVC5: 1 VC)
+test_relaxed_borrower.adb:64:10: info: no contextual analysis of "Update_Uninit" (possible check on parameters)
+test_relaxed_borrower.adb:64:25: info: for pointer allocation at test_relaxed_borrower.adb:62
 test_relaxed_borrower.adb:64:25: info: initialization check proved (CVC5: 1 VC)
+test_relaxed_borrower.adb:64:27: info: pointer dereference check proved (CVC5: 1 VC)
 test_relaxed_reborrow.adb:19:13: info: implicit aspect Always_Terminates on "At_End" has been proved, subprogram will terminate
 test_relaxed_reborrow.adb:19:79: info: dynamic accessibility check proved (Trivial)
 test_relaxed_reborrow.adb:33:13: info: implicit aspect Always_Terminates on "At_End" has been proved, subprogram will terminate
