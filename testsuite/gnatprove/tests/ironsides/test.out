@@ -926,6 +926,7 @@ zone_file_parser.adb:698:07: info: initialization of "BlockIndex" proved
 zone_file_parser.adb:699:07: info: initialization of "ByteNumber" proved
 zone_file_parser.adb:700:07: info: initialization of "BitNumber" proved
 zone_file_parser.adb:702:16: info: implicit function contract might not be available on calls from enclosing unit
+zone_file_parser.adb:702:16: info: imprecise handling of Unchecked_Conversion (enumeration with non-default representation)
 zone_file_parser.adb:702:16: info: types in unchecked conversion have the same size (Trivial)
 zone_file_parser.adb:703:10: info: type is suitable as source for unchecked conversion (Trivial)
 zone_file_parser.adb:703:32: info: type is suitable for unchecked conversion (Trivial)
@@ -941,7 +942,7 @@ zone_file_parser.adb:737:80: info: division check proved (CVC5: 1 VC)
 zone_file_parser.adb:737:86: info: division check proved (CVC5: 1 VC)
 zone_file_parser.adb:737:90: info: division check proved (CVC5: 1 VC)
 zone_file_parser.adb:748:16: info: loop invariant initialization proved (CVC5: 7 VC)
-zone_file_parser.adb:748:16: info: loop invariant preservation proved (CVC5: 7 VC)
+zone_file_parser.adb:755:19: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove BlockLengthMap(J) >= Rr_Type.Nsec_Record_Type.blockLengthValue'first
 zone_file_parser.adb:760:29: info: precondition proved (CVC5: 1 VC)
 zone_file_parser.adb:766:46: info: precondition proved (CVC5: 1 VC)
 zone_file_parser.adb:769:59: info: range check proved (CVC5: 2 VC)
