@@ -2017,8 +2017,13 @@ package body Gnat2Why.Borrow_Checker is
                Check_Subobject (Expression (Expr));
 
             when N_Aggregate =>
-               Check_Expressions (Expressions (Expr));
-               Check_Associations (Component_Associations (Expr));
+
+               --  Container aggregates should be treated as function calls
+
+               if not SPARK_Util.Is_Container_Aggregate (Expr) then
+                  Check_Expressions (Expressions (Expr));
+                  Check_Associations (Component_Associations (Expr));
+               end if;
 
             when N_Delta_Aggregate =>
                Check_Subobject (Expression (Expr));
