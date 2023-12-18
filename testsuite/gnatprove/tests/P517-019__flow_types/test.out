@@ -28,6 +28,7 @@ p.ads:34:54: error: use instead a constant initialized to the expression with va
 p.ads:40:28: error: default initialization cannot depend on variable input "X" [E0007]
 p.ads:40:28: error: launch "gnatprove --explain=E0007" for more information
 p.ads:40:28: error: use instead a constant initialized to the expression with variable input
+p.ads:48:60: error: launch "gnatprove --explain=E0007" for more information
 p.ads:48:60: error: predicate cannot depend on variable input "X" [E0007]
 p.ads:48:60: error: use instead a constant initialized to the expression with variable input
 q.ads:4:28: error: default initialization cannot depend on variable input "X" [E0007]

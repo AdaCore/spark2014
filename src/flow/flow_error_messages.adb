@@ -62,7 +62,6 @@ with SPARK_Util.Subprograms;    use SPARK_Util.Subprograms;
 with SPARK_Util.Types;          use SPARK_Util.Types;
 with SPARK_Xrefs;               use SPARK_Xrefs;
 with Stringt;                   use Stringt;
-with String_Utils;
 with Uintp;                     use Uintp;
 
 package body Flow_Error_Messages is
@@ -203,10 +202,10 @@ package body Flow_Error_Messages is
    --  is provided.
 
    function Print_Regular_Msg
-     (Msg          : String;
-      Span         : Source_Span;
-      Severity     : Msg_Severity;
-      Continuation : Boolean := False)
+     (Msg           : String;
+      Span          : Source_Span;
+      Severity      : Msg_Severity;
+      Continuations : String_Lists.List := String_Lists.Empty)
       return Message_Id
    with Post => Print_Regular_Msg'Result /= No_Message_Id;
    --  Print a regular error, warning or info message using the frontend
@@ -246,10 +245,6 @@ package body Flow_Error_Messages is
    File_Counter : Natural := 0;
    Message_Id_Counter : Message_Id := 0;
    No_Message_Id : constant Message_Id := -1;
-
-   Last_Suppressed : Boolean := False;
-   --  Used by Error_Msg_Flow to suppress continuation messages of suppressed
-   --  messages. We need to know if a message was suppressed the last time.
 
    ------------------
    -- Add_Json_Msg --
@@ -467,24 +462,24 @@ package body Flow_Error_Messages is
    --------------------
 
    procedure Error_Msg_Flow
-     (E            : Entity_Id;
-      Msg          : String;
-      Details      : String        := "";
-      Explanation  : String        := "";
-      Fix          : String        := "";
-      Severity     : Msg_Severity;
-      N            : Node_Id;
-      Suppressed   : out Boolean;
-      F1           : Flow_Id       := Null_Flow_Id;
-      F2           : Flow_Id       := Null_Flow_Id;
-      F3           : Flow_Id       := Null_Flow_Id;
-      FF1          : Flow_Id       := Null_Flow_Id;
-      FF2          : Flow_Id       := Null_Flow_Id;
-      Tag          : Flow_Tag_Kind := Empty_Tag;
-      Explain_Code : Natural       := 0;
-      SRM_Ref      : String        := "";
-      Tracefile    : String        := "";
-      Continuation : Boolean       := False)
+     (E             : Entity_Id;
+      Msg           : String;
+      Details       : String             := "";
+      Explanation   : String             := "";
+      Fix           : String             := "";
+      Severity      : Msg_Severity;
+      N             : Node_Id;
+      Suppressed    : out Boolean;
+      F1            : Flow_Id            := Null_Flow_Id;
+      F2            : Flow_Id            := Null_Flow_Id;
+      F3            : Flow_Id            := Null_Flow_Id;
+      FF1           : Flow_Id            := Null_Flow_Id;
+      FF2           : Flow_Id            := Null_Flow_Id;
+      Tag           : Flow_Tag_Kind      := Empty_Tag;
+      Explain_Code  : Natural            := 0;
+      SRM_Ref       : String             := "";
+      Tracefile     : String             := "";
+      Continuations : String_Lists.List  := String_Lists.Empty)
    is
       function Get_Explain_Code return String
         with Pre => Explain_Code /= 0;
@@ -548,18 +543,12 @@ package body Flow_Error_Messages is
       --  True when we are only reporting legiality errors that require flow
       --  analysis.
 
+      My_Conts    : String_Lists.List := Continuations;
       Suppression : Suppressed_Message := No_Suppressed_Message;
 
    --  Start of processing for Error_Msg_Flow
 
    begin
-      --  In the case of a continuation message, do nothing if the last
-      --  non-continuation message has been suppressed.
-
-      if Continuation and Last_Suppressed then
-         Suppressed := True;
-         return;
-      end if;
 
       --  If the message we are about to emit has already been emitted in the
       --  past then do nothing.
@@ -601,8 +590,8 @@ package body Flow_Error_Messages is
                      Suppr := Info.Reason;
 
                      if Report_Mode /= GPR_Fail then
-                        Msg_Id := Print_Regular_Msg (Justified_Message (Msg3),
-                                                     Span, Info_Kind);
+                        Msg_Id := Print_Regular_Msg
+                          (Justified_Message (Msg3), Span, Info_Kind);
                      end if;
                   end if;
 
@@ -636,6 +625,15 @@ package body Flow_Error_Messages is
 
          if not Suppressed and then Is_Specified_Line (Slc) then
 
+            --  If an explain code was used in the message, output a
+            --  continuation message to indicate how to get more
+            --  information, using the same message as in Errout.
+            if Explain_Code /= 0 then
+               My_Conts.Append
+                  ("launch ""gnatprove --explain="
+                   & Get_Explain_Code & """ for more information");
+            end if;
+
             --  Only display message details when outputting on one line,
             --  either as part of automatic testing or inside an IDE, to
             --  avoid long unreadable messages for command-line use.
@@ -646,7 +644,7 @@ package body Flow_Error_Messages is
 
                when GPO_Brief =>
                   Msg_Id :=
-                    Print_Regular_Msg (Msg3, Span, Severity, Continuation);
+                    Print_Regular_Msg (Msg3, Span, Severity, My_Conts);
 
                --  In oneline mode, append all the extra information to the
                --  main message and print it.
@@ -673,7 +671,7 @@ package body Flow_Error_Messages is
                        Msg3 & Details_Msg & Explanation_Msg & Fix_Msg;
                   begin
                      Msg_Id :=
-                       Print_Regular_Msg (Msg4, Span, Severity, Continuation);
+                       Print_Regular_Msg (Msg4, Span, Severity, My_Conts);
                   end;
 
                --  In pretty mode, print the message, then print all the extra
@@ -684,21 +682,15 @@ package body Flow_Error_Messages is
                --  and info/warning/error information.
 
                when GPO_Pretty =>
-                  Msg_Id :=
-                    Print_Regular_Msg (Msg3, Span, Severity, Continuation);
-
                   if Details /= "" then
-                     Ignore_Id := Print_Regular_Msg
-                       (SGR_Note & "reason for check: " & SGR_Reset
-                        & Details,
-                        Span, Severity, Continuation => True);
+                     My_Conts.Append
+                       (SGR_Note & "reason for check: " & SGR_Reset & Details);
                   end if;
 
                   if Explanation /= "" then
-                     Ignore_Id := Print_Regular_Msg
+                     My_Conts.Append
                        (SGR_Note & "possible explanation: " & SGR_Reset
-                        & Explanation,
-                        Span, Severity, Continuation => True);
+                        & Explanation);
                   end if;
 
                   declare
@@ -707,34 +699,16 @@ package body Flow_Error_Messages is
                                         With_Location => False);
                   begin
                      if Fix /= "" then
-                        Ignore_Id := Print_Regular_Msg
-                          (SGR_Note & "possible fix: " & SGR_Reset
-                           & Fix_Str,
-                           Span, Severity, Continuation => True);
+                        My_Conts.Append
+                          (SGR_Note & "possible fix: " & SGR_Reset & Fix_Str);
                      end if;
                   end;
+
+                  Msg_Id :=
+                    Print_Regular_Msg (Msg3, Span, Severity, My_Conts);
+
             end case;
 
-            --  If an explain code was used in the message, output a
-            --  continuation message to indicate how to get more
-            --  information, using the same message as in Errout.
-
-            declare
-               Dummy : Boolean;
-            begin
-               if Explain_Code /= 0 then
-                  Error_Msg_Flow
-                    (E            => E,
-                     Msg          =>
-                       "launch ""gnatprove --explain="
-                     & Get_Explain_Code & """ for more information",
-                     Severity     => Severity,
-                     N            => N,
-                     Suppressed   => Dummy,
-                     Tag          => Tag,
-                     Continuation => True);
-               end if;
-            end;
          else
             Msg_Id := No_Message_Id;
          end if;
@@ -761,32 +735,27 @@ package body Flow_Error_Messages is
          Suppressed := True;
       end if;
 
-      --  In case of a non-continuation message, store the suppressed info
-
-      if not Continuation then
-         Last_Suppressed := Suppressed;
-      end if;
    end Error_Msg_Flow;
 
    procedure Error_Msg_Flow
-     (FA           : in out Flow_Analysis_Graphs;
-      Msg          : String;
-      Details      : String                := "";
-      Explanation  : String                := "";
-      Fix          : String                := "";
-      Severity     : Msg_Severity;
-      N            : Node_Id;
-      F1           : Flow_Id               := Null_Flow_Id;
-      F2           : Flow_Id               := Null_Flow_Id;
-      F3           : Flow_Id               := Null_Flow_Id;
-      FF1          : Flow_Id               := Null_Flow_Id;
-      FF2          : Flow_Id               := Null_Flow_Id;
-      Tag          : Flow_Tag_Kind         := Empty_Tag;
-      Explain_Code : Natural               := 0;
-      SRM_Ref      : String                := "";
-      Path         : Vertex_Sets.Set       := Vertex_Sets.Empty_Set;
-      Vertex       : Flow_Graphs.Vertex_Id := Flow_Graphs.Null_Vertex;
-      Continuation : Boolean               := False)
+     (FA            : in out Flow_Analysis_Graphs;
+      Msg           : String;
+      Details       : String                := "";
+      Explanation   : String                := "";
+      Fix           : String                := "";
+      Severity      : Msg_Severity;
+      N             : Node_Id;
+      F1            : Flow_Id               := Null_Flow_Id;
+      F2            : Flow_Id               := Null_Flow_Id;
+      F3            : Flow_Id               := Null_Flow_Id;
+      FF1           : Flow_Id               := Null_Flow_Id;
+      FF2           : Flow_Id               := Null_Flow_Id;
+      Tag           : Flow_Tag_Kind         := Empty_Tag;
+      Explain_Code  : Natural               := 0;
+      SRM_Ref       : String                := "";
+      Path          : Vertex_Sets.Set       := Vertex_Sets.Empty_Set;
+      Vertex        : Flow_Graphs.Vertex_Id := Flow_Graphs.Null_Vertex;
+      Continuations : String_Lists.List     := String_Lists.Empty)
    is
       Vertex_Img : constant String :=
         Image (FA.CFG.Vertex_To_Natural (Vertex), 1);
@@ -856,7 +825,7 @@ package body Flow_Error_Messages is
                       SRM_Ref      => SRM_Ref,
                       Explain_Code => Explain_Code,
                       Tracefile    => Tracefile,
-                      Continuation => Continuation);
+                      Continuations        => Continuations);
 
       --  Set the Errors_Or_Warnings flag to True for this entity if we are
       --  with anything but a suppressed warning.
@@ -1107,6 +1076,8 @@ package body Flow_Error_Messages is
       Info      : Annotated_Range;
       Ignore_Id : Message_Id;
 
+      Cont_Msgs : String_Lists.List;
+
    --  Start of processing for Error_Msg_Proof
 
    begin
@@ -1119,6 +1090,28 @@ package body Flow_Error_Messages is
       then
          return;
       end if;
+
+      for Cont of reverse Check_Info.Continuation loop
+
+         --  No need to emit the continuation if it is located on the same
+         --  node as the check message.
+
+         if Cont.Ada_Node /= N then
+            declare
+               Loc  : constant Source_Ptr := Sloc
+                 (First_Node (Cont.Ada_Node));
+               File : constant String := File_Name (Loc);
+               Line : constant Physical_Line_Number :=
+                 Get_Physical_Line_Number (Loc);
+               Msg  : constant String :=
+                 To_String (Cont.Message)
+                 & " at " & File & ":" & Image (Integer (Line), 1);
+
+            begin
+               Cont_Msgs.Append (Compute_Message (Msg, Cont.Ada_Node));
+            end;
+         end if;
+      end loop;
 
       --  The call to Check_Is_Annotated needs to happen on all paths, even
       --  though we only need the info in the Check_Kind path. The reason is
@@ -1180,7 +1173,8 @@ package body Flow_Error_Messages is
 
                   when GPO_Brief =>
                      Msg_Id :=
-                       Print_Regular_Msg (To_String (Message), Span, Severity);
+                       Print_Regular_Msg
+                         (To_String (Message), Span, Severity, Cont_Msgs);
 
                   --  In oneline mode, append all the extra information to the
                   --  main message and print it.
@@ -1221,7 +1215,8 @@ package body Flow_Error_Messages is
                      end;
 
                      Msg_Id :=
-                       Print_Regular_Msg (To_String (Message), Span, Severity);
+                       Print_Regular_Msg
+                         (To_String (Message), Span, Severity, Cont_Msgs);
 
                   --  In pretty mode, print the message, then print all the
                   --  extra information as continuation messages. The mechanism
@@ -1232,28 +1227,21 @@ package body Flow_Error_Messages is
                   --  information.
 
                   when GPO_Pretty =>
-                     Msg_Id :=
-                       Print_Regular_Msg (To_String (Message), Span, Severity);
-
                      if Check_Info.User_Message /= No_String then
-                        Ignore_Id := Print_Regular_Msg
+                        Cont_Msgs.Append
                           (SGR_Note & "user message: " & SGR_Reset
-                           & To_String (Check_Info.User_Message),
-                           Span, Severity, Continuation => True);
+                           & To_String (Check_Info.User_Message));
                      end if;
 
                      if One_Liner /= "" then
-                        Ignore_Id := Print_Regular_Msg
-                          (SGR_Note & "e.g. when " & SGR_Reset
-                           & One_Liner,
-                           Span, Severity, Continuation => True);
+                        Cont_Msgs.Append
+                          (SGR_Note & "e.g. when " & SGR_Reset & One_Liner);
                      end if;
 
                      if Details /= "" then
-                        Ignore_Id := Print_Regular_Msg
+                        Cont_Msgs.Append
                           (SGR_Note & "reason for check: " & SGR_Reset
-                           & Details,
-                           Span, Severity, Continuation => True);
+                           & Details);
                      end if;
 
                      declare
@@ -1261,10 +1249,9 @@ package body Flow_Error_Messages is
                           Get_Explanation (N, E, Tag, Explanation);
                      begin
                         if Expl /= "" then
-                           Ignore_Id := Print_Regular_Msg
-                             (SGR_Note & "possible explanation: " & SGR_Reset
-                              & Expl,
-                              Span, Severity, Continuation => True);
+                           Cont_Msgs.Append
+                             (SGR_Note & "possible explanation: "
+                              & SGR_Reset & Expl);
                         end if;
                      end;
 
@@ -1273,12 +1260,14 @@ package body Flow_Error_Messages is
                           Get_Fix_Or_Verdict (N, Tag, How_Proved, Verdict);
                      begin
                         if Fix /= "" then
-                           Ignore_Id := Print_Regular_Msg
-                             (SGR_Note & "possible fix: " & SGR_Reset
-                              & Fix,
-                              Span, Severity, Continuation => True);
+                           Cont_Msgs.Append
+                             (SGR_Note & "possible fix: " & SGR_Reset & Fix);
                         end if;
                      end;
+
+                     Msg_Id :=
+                       Print_Regular_Msg
+                         (To_String (Message), Span, Severity, Cont_Msgs);
                   end case;
                end;
             end if;
@@ -1286,48 +1275,19 @@ package body Flow_Error_Messages is
          when Info_Kind =>
             if Report_Mode /= GPR_Fail then
                Msg_Id :=
-                 Print_Regular_Msg (To_String (Message), Span, Severity);
+                 Print_Regular_Msg
+                   (To_String (Message), Span, Severity, Cont_Msgs);
             end if;
 
          when Warning_Kind =>
-            Msg_Id := Print_Regular_Msg (To_String (Message), Span, Severity);
+            Msg_Id :=
+              Print_Regular_Msg
+                (To_String (Message), Span, Severity, Cont_Msgs);
 
          when Error_Kind =>
             --  cannot happen
             raise Program_Error;
       end case;
-
-      --  If a message was emitted, then go over the continuations and output
-      --  them in the reverse order.
-
-      if Report_Mode /= GPR_Fail
-        or else Severity = Warning_Kind
-        or else (Severity in Check_Kind and then not Info.Present)
-      then
-         for Cont of reverse Check_Info.Continuation loop
-
-            --  No need to emit the continuation if it is located on the same
-            --  node as the check message.
-
-            if Cont.Ada_Node /= N then
-               declare
-                  Loc  : constant Source_Ptr := Sloc
-                    (First_Node (Cont.Ada_Node));
-                  File : constant String := File_Name (Loc);
-                  Line : constant Physical_Line_Number :=
-                    Get_Physical_Line_Number (Loc);
-                  Msg  : constant String :=
-                    To_String (Cont.Message)
-                    & " at " & File & ":" & Image (Integer (Line), 1);
-
-               begin
-                  Ignore_Id := Print_Regular_Msg
-                    (Compute_Message (Msg, Cont.Ada_Node),
-                     Span, Severity, Continuation => True);
-               end;
-            end if;
-         end loop;
-      end if;
 
       Add_Json_Msg
         (Suppr      => (if Info.Present
@@ -4050,42 +4010,45 @@ package body Flow_Error_Messages is
    -----------------------
 
    function Print_Regular_Msg
-     (Msg          : String;
-      Span         : Source_Span;
-      Severity     : Msg_Severity;
-      Continuation : Boolean := False)
+     (Msg           : String;
+      Span          : Source_Span;
+      Severity      : Msg_Severity;
+      Continuations : String_Lists.List := String_Lists.Empty)
       return Message_Id
    is
-      Id         : constant Message_Id := Message_Id_Counter;
-      Prefix     : constant String :=
-        (if Continuation then "\" else "") &
+      Id            : constant Message_Id := Message_Id_Counter;
 
-        --  In pretty output mode, continuation messages follow the main
-        --  message with only an indentation of two space characters,
-        --  without repeating severity prefix.
+      --  Errout.Error_Msg will add "info:" (on continuation messages
+      --  only) and "warning:" prefix when needed, so we only have to do
+      --  it in other cases, for prefixes on check messages in particular.
 
-        (if Continuation
-           and then Gnat2Why_Args.Output_Mode in GPO_Pretty
-         then ""
-         else
-           --  Errout.Error_Msg will add "info:" (on continuation messages
-           --  only) and "warning:" prefix when needed, so we only have to do
-           --  it in other cases, for prefixes on check messages in particular.
-           (case Severity is
-             when Info_Kind         => (if Continuation then "" else "info: "),
-             when Low_Check_Kind    => "low: ",
-             when Medium_Check_Kind => "medium: ",
-             when High_Check_Kind   => "high: ",
-             when Warning_Kind      => "?",
-             when Error_Kind        => ""));
-      Actual_Msg : constant String :=
-        Prefix & Escape (Msg) & "!!" &
+      Severity_Text : constant String :=
+        (case Severity is
+            when Info_Kind         => "info: ",
+            when Low_Check_Kind    => "low: ",
+            when Medium_Check_Kind => "medium: ",
+            when High_Check_Kind   => "high: ",
+            when Warning_Kind      => "?",
+            when Error_Kind        => "");
+      Actual_Msg    : constant String :=
+        Severity_Text & Escape (Msg) & "!!" &
         (if Ide_Mode
          then "'['#" & Image (Integer (Id), 1) & "']"
          else "");
    begin
       Message_Id_Counter := Message_Id_Counter + 1;
       Error_Msg (Actual_Msg, Span);
+      declare
+         Sev_Text_Cont : constant String :=
+           (if Gnat2Why_Args.Output_Mode in GPO_Pretty
+              or else Severity = Info_Kind
+            then ""
+            else Severity_Text);
+      begin
+         for Elt of Continuations loop
+            Error_Msg ("\" & Sev_Text_Cont & Escape (Elt), Span);
+         end loop;
+      end;
       return Id;
    end Print_Regular_Msg;
 
@@ -4564,6 +4527,28 @@ package body Flow_Error_Messages is
 
       return R;
    end Substitute;
+
+   ------------------------
+   -- Substitute_Message --
+   ------------------------
+
+   function Substitute_Message (Text : String;
+                                N    : Node_Id;
+                                F1   : Flow_Id;
+                                F2   : Flow_Id := Null_Flow_Id;
+                                F3   : Flow_Id := Null_Flow_Id) return String
+   is
+      M : Unbounded_String := To_Unbounded_String (Text);
+   begin
+      M := Substitute (M, F1, Sloc (N));
+      if Present (F2) then
+         M := Substitute (M, F2, Sloc (N));
+         if Present (F3) then
+            M := Substitute (M, F3, Sloc (N));
+         end if;
+      end if;
+      return To_String (M);
+   end Substitute_Message;
 
    -----------------
    -- VC_Messsage --

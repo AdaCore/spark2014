@@ -19,9 +19,9 @@ Assertions . . . . .
 Functional Contracts . . . . .
 LSP Verification . . . . .
 Termination . . . . .
-Concurrency 3 . . . 3
+Concurrency 1 . . . 1
 -
-Total 6 . 2 (33%) . 4 (67%)
+Total 4 . 2 (50%) . 2 (50%)
 
 
 max steps used for successful proof: 1
@@ -40,7 +40,7 @@ absence of run-time errors of P.Insider depends on
 in unit q, 2 subprograms and packages out of 2 analyzed
  Q at q.ads:3 flow analyzed (0 errors, 0 checks, 0 warnings and 0 pragma Assume statements) and proved (0 checks)
 absence of run-time errors of Q fully established
- Q.Outsider at q.ads:5 flow analyzed (0 errors, 3 checks, 0 warnings and 0 pragma Assume statements) and proved (1 checks)
+ Q.Outsider at q.ads:5 flow analyzed (0 errors, 1 checks, 0 warnings and 0 pragma Assume statements) and proved (1 checks)
 effects on parameters and Global variables of Q.Outsider depends on
  effects on parameters and Global variables of P.Flip
 absence of run-time errors of Q.Outsider depends on
