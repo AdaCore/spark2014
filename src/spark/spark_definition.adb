@@ -1045,7 +1045,61 @@ package body SPARK_Definition is
 
    procedure Check_Source_Of_Move
      (Expr        : N_Subexpr_Id;
-      To_Constant : Boolean := False) is
+      To_Constant : Boolean := False)
+   is
+      procedure Check_Associations (Assocs : List_Id);
+      --  Check all associations of an aggregate
+
+      procedure Check_Expressions (Expressions : List_Id);
+      --  Check all expressions of an aggregate
+
+      procedure Check_Subobject (Expr : Node_Id);
+      --  Check a subobject
+
+      ------------------------
+      -- Check_Associations --
+      ------------------------
+
+      procedure Check_Associations (Assocs : List_Id) is
+         Assoc  : Node_Id := Nlists.First (Assocs);
+      begin
+         while Present (Assoc) loop
+            if not Box_Present (Assoc) then
+               Check_Subobject (Expression (Assoc));
+            end if;
+            Next (Assoc);
+         end loop;
+      end Check_Associations;
+
+      -----------------------
+      -- Check_Expressions --
+      -----------------------
+
+      procedure Check_Expressions (Expressions : List_Id) is
+         Positional : Node_Id := Nlists.First (Expressions);
+      begin
+         while Present (Positional) loop
+            Check_Subobject (Positional);
+            Next (Positional);
+         end loop;
+      end Check_Expressions;
+
+      ---------------------
+      -- Check_Subobject --
+      ---------------------
+
+      procedure Check_Subobject (Expr : Node_Id) is
+      begin
+         --  The subexpression is a subobject only if it contains deep
+         --  components. Otherwise, everything is copied to the target.
+
+         if Is_Deep (Etype (Expr)) then
+            Check_Source_Of_Move (Expr, To_Constant => To_Constant);
+         end if;
+      end Check_Subobject;
+
+   --  Start of processing for Check_Source_Of_Move
+
    begin
       if not Is_Path_Expression (Expr) then
          Mark_Violation ("expression as source of move", Expr);
@@ -1057,13 +1111,50 @@ package body SPARK_Definition is
            ("call to a traversal function as source of move", Expr);
       else
          declare
-            Root : constant Opt_Object_Kind_Id := Get_Root_Object (Expr);
+            Root : constant N_Subexpr_Id := Get_Root_Expr (Expr);
          begin
-            if Present (Root)
-              and then Is_Effectively_Volatile (Root)
-            then
-               Mark_Violation ("move of a volatile object", Expr);
-            end if;
+            case Nkind (Root) is
+               when N_Null
+                  | N_Function_Call
+               =>
+                  null;
+
+               when N_Expanded_Name
+                  | N_Identifier
+               =>
+                  if Is_Object (Entity (Root))
+                    and then Is_Effectively_Volatile (Entity (Root))
+                  then
+                     Mark_Violation ("move of a volatile object", Expr);
+                  end if;
+
+               when N_Allocator =>
+                  Check_Subobject (Expression (Root));
+
+               when N_Aggregate =>
+                  Check_Expressions (Expressions (Root));
+                  Check_Associations (Component_Associations (Root));
+
+               when N_Delta_Aggregate =>
+                  Check_Subobject (Expression (Root));
+                  Check_Associations (Component_Associations (Root));
+
+               when N_Extension_Aggregate =>
+                  Check_Subobject (Ancestor_Part (Root));
+                  Check_Expressions (Expressions (Root));
+                  Check_Associations (Component_Associations (Root));
+
+               when N_Attribute_Reference =>
+                  if Get_Attribute_Id (Attribute_Name (Root))
+                    = Attribute_Update
+                  then
+                     Check_Subobject (Prefix (Root));
+                     Check_Expressions (Expressions (Root));
+                  end if;
+
+               when others =>
+                  raise Program_Error;
+            end case;
          end;
       end if;
    end Check_Source_Of_Move;

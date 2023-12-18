@@ -2473,66 +2473,53 @@ package body SPARK_Util is
       end case;
    end Get_Range;
 
-   ---------------------
-   -- Get_Root_Object --
-   ---------------------
+   -------------------
+   -- Get_Root_Expr --
+   -------------------
 
-   function Get_Root_Object
+   function Get_Root_Expr
      (Expr              : N_Subexpr_Id;
       Through_Traversal : Boolean := True)
-      return Opt_Object_Kind_Id
+      return N_Subexpr_Id
    is
-      function GRO (Expr : Node_Id) return Entity_Id;
+      function GRE (Expr : Node_Id) return Entity_Id;
       --  Local wrapper on the actual function, to propagate the values of
       --  optional parameters.
 
       ---------
-      -- GRO --
+      -- GRE --
       ---------
 
-      function GRO (Expr : Node_Id) return Entity_Id is
+      function GRE (Expr : Node_Id) return Entity_Id is
       begin
-         return Get_Root_Object (Expr, Through_Traversal);
-      end GRO;
+         return Get_Root_Expr (Expr, Through_Traversal);
+      end GRE;
 
-      Get_Root_Object : Boolean;
-      pragma Unmodified (Get_Root_Object);
-      --  Local variable to mask the name of function Get_Root_Object, to
-      --  prevent direct call. Instead GRO wrapper should be called.
+      Get_Root_Expr : Boolean;
+      pragma Unmodified (Get_Root_Expr);
+      --  Local variable to mask the name of function Get_Root_Expr, to
+      --  prevent direct call. Instead GRE wrapper should be called.
 
-   --  Start of processing for Get_Root_Object
+   --  Start of processing for Get_Root_Expr
 
    begin
       case Nkind (Expr) is
          when N_Expanded_Name
             | N_Identifier
+            | N_Aggregate
+            | N_Allocator
+            | N_Delta_Aggregate
+            | N_Extension_Aggregate
+            | N_Null
          =>
-            --  There is no root object for an enumeration literal or a type,
-            --  which may occur as the prefix of an attribute reference.
-
-            if Is_Object (Entity (Expr)) then
-               return Entity (Expr);
-            else
-               return Empty;
-            end if;
+            return Expr;
 
          when N_Explicit_Dereference
             | N_Indexed_Component
             | N_Selected_Component
             | N_Slice
          =>
-            return GRO (Prefix (Expr));
-
-         --  There is no root object for an (extension) aggregate, allocator,
-         --  concat, or NULL.
-
-         when N_Aggregate
-            | N_Allocator
-            | N_Delta_Aggregate
-            | N_Extension_Aggregate
-            | N_Null
-         =>
-            return Empty;
+            return GRE (Prefix (Expr));
 
          --  In the case of a call to a traversal function, the root object is
          --  the root of the traversed parameter. Otherwise there is no root
@@ -2543,16 +2530,16 @@ package body SPARK_Util is
               and then Is_Traversal_Function_Call (Expr)
               and then Is_Path_Expression (First_Actual (Expr))
             then
-               return GRO (First_Actual (Expr));
+               return GRE (First_Actual (Expr));
             else
-               return Empty;
+               return Expr;
             end if;
 
          when N_Qualified_Expression
             | N_Type_Conversion
             | N_Unchecked_Type_Conversion
          =>
-            return GRO (Expression (Expr));
+            return GRE (Expression (Expr));
 
          when N_Attribute_Reference =>
             if Attribute_Name (Expr) in Name_First
@@ -2560,28 +2547,52 @@ package body SPARK_Util is
                                       | Name_Length
                                       | Name_Access
             then
-               return GRO (Prefix (Expr));
+               return GRE (Prefix (Expr));
             else
                pragma Assert
                  (Attribute_Name (Expr) in Name_Loop_Entry
                                          | Name_Old
                                          | Name_Update);
-               return Empty;
+               return Expr;
             end if;
 
          when N_Op_Eq
             | N_Op_Ne
          =>
             if Nkind (Left_Opnd (Expr)) = N_Null then
-               return GRO (Right_Opnd (Expr));
+               return GRE (Right_Opnd (Expr));
             else
                pragma Assert (Nkind (Right_Opnd (Expr)) = N_Null);
-               return GRO (Left_Opnd (Expr));
+               return GRE (Left_Opnd (Expr));
             end if;
 
          when others =>
             raise Program_Error;
       end case;
+   end Get_Root_Expr;
+
+   ---------------------
+   -- Get_Root_Object --
+   ---------------------
+
+   function Get_Root_Object
+     (Expr              : N_Subexpr_Id;
+      Through_Traversal : Boolean := True)
+      return Opt_Object_Kind_Id
+   is
+      Res : constant N_Subexpr_Id := Get_Root_Expr (Expr, Through_Traversal);
+   begin
+      --  We need to check Is_Object because there is no root object for an
+      --  enumeration literal or a type, which may occur as the prefix of an
+      --  attribute reference.
+
+      if Nkind (Res) in N_Expanded_Name | N_Identifier
+        and then Is_Object (Entity (Res))
+      then
+         return Entity (Res);
+      else
+         return Empty;
+      end if;
    end Get_Root_Object;
 
    --------------------------------
