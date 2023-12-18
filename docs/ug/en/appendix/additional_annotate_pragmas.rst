@@ -340,7 +340,7 @@ will regain ownership afterward.
 During the lifetime of the borrower, the borrowed object can be accessed
 indirectly through the borrower. It is forbidden to modify or even read the
 borrowed object during the borrow.
-As an example, let us consider a recursive type of doubly-linked lists:
+As an example, let us consider a recursive type of singly-linked lists:
 
 .. code-block:: ada
 
