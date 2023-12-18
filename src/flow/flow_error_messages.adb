@@ -251,6 +251,94 @@ package body Flow_Error_Messages is
    --  Used by Error_Msg_Flow to suppress continuation messages of suppressed
    --  messages. We need to know if a message was suppressed the last time.
 
+   ------------------
+   -- Add_Json_Msg --
+   ------------------
+
+   procedure Add_Json_Msg
+     (Suppr      : Suppressed_Message;
+      Tag        : String;
+      Severity   : Msg_Severity;
+      Slc        : Source_Ptr;
+      Msg_List   : in out GNATCOLL.JSON.JSON_Array;
+      E          : Entity_Id;
+      Msg_Id     : Message_Id;
+      How_Proved : Prover_Category;
+      Tracefile  : String := "";
+      Cntexmp    : Cntexample_File_Maps.Map := Cntexample_File_Maps.Empty_Map;
+      Check_Tree : JSON_Value;
+      VC_File    : String := "";
+      VC_Loc     : Source_Ptr := No_Location;
+      Stats      : Prover_Stat_Maps.Map := Prover_Stat_Maps.Empty_Map;
+      Editor_Cmd : String := "")
+   is
+      Value : constant JSON_Value := Create_Object;
+      File  : constant String     := File_Name (Slc);
+      Line  : constant Natural    := Positive (Get_Logical_Line_Number (Slc));
+      Col   : constant Natural    := Positive (Get_Column_Number (Slc));
+   begin
+
+      Set_Field (Value, "file", File);
+      Set_Field (Value, "line", Line);
+      Set_Field (Value, "col", Col);
+
+      if Suppr.Suppression_Kind in Warning | Check then
+         Set_Field (Value, "suppressed", To_String (Suppr.Msg));
+         if Suppr.Suppression_Kind = Check then
+            Set_Field (Value, "annot_kind", To_String (Suppr.Annot_Kind));
+            Set_Field (Value, "justif_msg", To_String (Suppr.Justification));
+         end if;
+      end if;
+
+      Set_Field (Value, "rule", Tag);
+      Set_Field (Value, "severity", Msg_Severity_To_String (Severity));
+      Set_Field (Value, "entity", To_JSON (Entity_To_Subp_Assumption (E)));
+      Set_Field (Value, "check_tree", Check_Tree);
+
+      if VC_Loc /= No_Location then
+         declare
+            VC_File : constant String  := File_Name (VC_Loc);
+            VC_Line : constant Natural :=
+                         Positive (Get_Logical_Line_Number (VC_Loc));
+            VC_Col  : constant Natural :=
+                         Positive (Get_Column_Number (VC_Loc));
+         begin
+            --  Note that vc_file already exists
+            Set_Field (Value, "check_file", VC_File);
+            Set_Field (Value, "check_line", VC_Line);
+            Set_Field (Value, "check_col", VC_Col);
+         end;
+      end if;
+
+      if Tracefile /= "" then
+         Set_Field (Value, "tracefile", Tracefile);
+      end if;
+
+      if not Cntexmp.Is_Empty then
+         Set_Field (Value, "cntexmp", To_JSON (Cntexmp));
+      end if;
+
+      if VC_File /= "" then
+         Set_Field (Value, "vc_file", VC_File);
+      end if;
+
+      if Editor_Cmd /= "" then
+         Set_Field (Value, "editor_cmd", Editor_Cmd);
+      end if;
+
+      if Msg_Id /= No_Message_Id then
+         Set_Field (Value, "msg_id", Natural (Msg_Id));
+      end if;
+
+      Set_Field (Value, "how_proved", To_JSON (How_Proved));
+
+      if not Stats.Is_Empty then
+         Set_Field (Value, "stats", To_JSON (Stats));
+      end if;
+
+      Append (Msg_List, Value);
+   end Add_Json_Msg;
+
    ---------------------
    -- Compute_Message --
    ---------------------
@@ -337,26 +425,6 @@ package body Flow_Error_Messages is
       end if;
       return To_Span (First => Fst, Ptr => Slc, Last => Lst);
    end Compute_Sloc;
-
-   --------------------------
-   -- Vertex_Sloc_Location --
-   --------------------------
-
-   function Vertex_Sloc_Location
-     (G   : Flow_Graphs.Graph;
-      M   : Attribute_Maps.Map;
-      V   : Flow_Graphs.Vertex_Id;
-      Sep : Character := ':') return String
-   is
-      Loc : constant Source_Ptr := Sloc (Error_Location (G, M, V));
-      SFI : constant Source_File_Index := Get_Source_File_Index (Loc);
-
-      Line_Number : constant Logical_Line_Number :=
-        Get_Logical_Line_Number (Loc);
-   begin
-      return Get_Name_String (File_Name (SFI)) & Sep &
-        Image (Natural (Line_Number), 1);
-   end Vertex_Sloc_Location;
 
    --------------------
    -- Error_Location --
@@ -3938,6 +4006,23 @@ package body Flow_Error_Messages is
       return Result;
    end Is_Specified_Line;
 
+   -----------------------
+   -- Justified_Message --
+   -----------------------
+
+   function Justified_Message (Node : Node_Id; Kind : VC_Kind) return String is
+      function Inst is new VC_Message
+        (Verb   => "justified",
+         Prefix => "justified that ",
+         Suffix => " justified");
+   begin
+      return Inst (Node, Kind);
+   end Justified_Message;
+
+   function Justified_Message (Flow_Check_Message : String) return String is
+     ("justified that " & Flow_Check_Message);
+   --  Return the message string for a justified flow check message
+
    ----------------------------
    -- Msg_Severity_To_String --
    ----------------------------
@@ -3950,94 +4035,6 @@ package body Flow_Error_Messages is
          when High_Check_Kind   => "high",
          when Medium_Check_Kind => "medium",
          when Low_Check_Kind    => "low");
-
-   ------------------
-   -- Add_Json_Msg --
-   ------------------
-
-   procedure Add_Json_Msg
-     (Suppr      : Suppressed_Message;
-      Tag        : String;
-      Severity   : Msg_Severity;
-      Slc        : Source_Ptr;
-      Msg_List   : in out GNATCOLL.JSON.JSON_Array;
-      E          : Entity_Id;
-      Msg_Id     : Message_Id;
-      How_Proved : Prover_Category;
-      Tracefile  : String := "";
-      Cntexmp    : Cntexample_File_Maps.Map := Cntexample_File_Maps.Empty_Map;
-      Check_Tree : JSON_Value;
-      VC_File    : String := "";
-      VC_Loc     : Source_Ptr := No_Location;
-      Stats      : Prover_Stat_Maps.Map := Prover_Stat_Maps.Empty_Map;
-      Editor_Cmd : String := "")
-   is
-      Value : constant JSON_Value := Create_Object;
-      File  : constant String     := File_Name (Slc);
-      Line  : constant Natural    := Positive (Get_Logical_Line_Number (Slc));
-      Col   : constant Natural    := Positive (Get_Column_Number (Slc));
-   begin
-
-      Set_Field (Value, "file", File);
-      Set_Field (Value, "line", Line);
-      Set_Field (Value, "col", Col);
-
-      if Suppr.Suppression_Kind in Warning | Check then
-         Set_Field (Value, "suppressed", To_String (Suppr.Msg));
-         if Suppr.Suppression_Kind = Check then
-            Set_Field (Value, "annot_kind", To_String (Suppr.Annot_Kind));
-            Set_Field (Value, "justif_msg", To_String (Suppr.Justification));
-         end if;
-      end if;
-
-      Set_Field (Value, "rule", Tag);
-      Set_Field (Value, "severity", Msg_Severity_To_String (Severity));
-      Set_Field (Value, "entity", To_JSON (Entity_To_Subp_Assumption (E)));
-      Set_Field (Value, "check_tree", Check_Tree);
-
-      if VC_Loc /= No_Location then
-         declare
-            VC_File : constant String  := File_Name (VC_Loc);
-            VC_Line : constant Natural :=
-                         Positive (Get_Logical_Line_Number (VC_Loc));
-            VC_Col  : constant Natural :=
-                         Positive (Get_Column_Number (VC_Loc));
-         begin
-            --  Note that vc_file already exists
-            Set_Field (Value, "check_file", VC_File);
-            Set_Field (Value, "check_line", VC_Line);
-            Set_Field (Value, "check_col", VC_Col);
-         end;
-      end if;
-
-      if Tracefile /= "" then
-         Set_Field (Value, "tracefile", Tracefile);
-      end if;
-
-      if not Cntexmp.Is_Empty then
-         Set_Field (Value, "cntexmp", To_JSON (Cntexmp));
-      end if;
-
-      if VC_File /= "" then
-         Set_Field (Value, "vc_file", VC_File);
-      end if;
-
-      if Editor_Cmd /= "" then
-         Set_Field (Value, "editor_cmd", Editor_Cmd);
-      end if;
-
-      if Msg_Id /= No_Message_Id then
-         Set_Field (Value, "msg_id", Natural (Msg_Id));
-      end if;
-
-      Set_Field (Value, "how_proved", To_JSON (How_Proved));
-
-      if not Stats.Is_Empty then
-         Set_Field (Value, "stats", To_JSON (Stats));
-      end if;
-
-      Append (Msg_List, Value);
-   end Add_Json_Msg;
 
    -----------------------
    -- Print_Regular_Msg --
@@ -4082,23 +4079,6 @@ package body Flow_Error_Messages is
       Error_Msg (Actual_Msg, Span);
       return Id;
    end Print_Regular_Msg;
-
-   -----------------------
-   -- Justified_Message --
-   -----------------------
-
-   function Justified_Message (Node : Node_Id; Kind : VC_Kind) return String is
-      function Inst is new VC_Message
-        (Verb   => "justified",
-         Prefix => "justified that ",
-         Suffix => " justified");
-   begin
-      return Inst (Node, Kind);
-   end Justified_Message;
-
-   function Justified_Message (Flow_Check_Message : String) return String is
-     ("justified that " & Flow_Check_Message);
-   --  Return the message string for a justified flow check message
 
    ------------------------
    -- Not_Proved_Message --
@@ -4768,6 +4748,26 @@ package body Flow_Error_Messages is
             return "unreachable code" & Suffix;
       end case;
    end VC_Message;
+
+   --------------------------
+   -- Vertex_Sloc_Location --
+   --------------------------
+
+   function Vertex_Sloc_Location
+     (G   : Flow_Graphs.Graph;
+      M   : Attribute_Maps.Map;
+      V   : Flow_Graphs.Vertex_Id;
+      Sep : Character := ':') return String
+   is
+      Loc : constant Source_Ptr := Sloc (Error_Location (G, M, V));
+      SFI : constant Source_File_Index := Get_Source_File_Index (Loc);
+
+      Line_Number : constant Logical_Line_Number :=
+        Get_Logical_Line_Number (Loc);
+   begin
+      return Get_Name_String (File_Name (SFI)) & Sep &
+        Image (Natural (Line_Number), 1);
+   end Vertex_Sloc_Location;
 
    ---------------------------
    -- Warning_Is_Suppressed --
