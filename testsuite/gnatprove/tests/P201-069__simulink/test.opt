@@ -1,2 +1,1 @@
-assertions SKIP too slow for build with assertions
-NT SKIP platform diffs
+ALL SKIP random minor diffs in nightly testing
