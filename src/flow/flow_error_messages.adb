@@ -24,6 +24,8 @@
 
 with Ada.Characters.Handling;   use Ada.Characters.Handling;
 with Ada.Containers;
+with Ada.Float_Text_IO;
+with Ada.Strings.Fixed;
 with Ada.Text_IO;               use Ada.Text_IO;
 with Aspects;                   use Aspects;
 with Assumption_Types;          use Assumption_Types;
@@ -39,7 +41,6 @@ with Erroutc;                   use Erroutc;
 with Flow_Generated_Globals.Phase_2;
 with Flow_Refinement;           use Flow_Refinement;
 with Flow_Utility;              use Flow_Utility;
-with Gnat2Why.Error_Messages;
 with Gnat2Why.Expr.Loops;
 with Gnat2Why.Util;             use Gnat2Why.Util;
 with Gnat2Why_Args;             use Gnat2Why_Args;
@@ -106,15 +107,23 @@ package body Flow_Error_Messages is
    --  @param Info additional informations on the check
    --  @result message part suggesting a fix to make the unproved check proved
 
-   function Justified_Message is new Gnat2Why.Error_Messages.VC_Message
-     (Verb   => "justified",
-      Prefix => "justified that ",
-      Suffix => " justified");
+   function Proved_Message
+     (Node : Node_Id;
+      Kind : VC_Kind) return String;
+   --  Return the message string for a proved VC
+
+   generic
+      Verb : String;
+      Prefix : String := "";
+      Suffix : String := "";
+   function VC_Message (Node : Node_Id; Kind : VC_Kind) return String;
+   --  Return the message string for a VC. This is used for proved checks and
+   --  for justified checks
+
+   function Justified_Message (Node : Node_Id; Kind : VC_Kind) return String;
    --  Return the message string for a justified VC
 
-   function Justified_Message (Flow_Check_Message : String) return String is
-     ("justified that " & Flow_Check_Message);
-   --  Return the message string for a justified flow check message
+   function Justified_Message (Flow_Check_Message : String) return String;
 
    function Msg_Severity_To_String (Severity : Msg_Severity) return String;
    --  Transform the msg kind into a string, for the JSON output
@@ -242,6 +251,94 @@ package body Flow_Error_Messages is
    --  Used by Error_Msg_Flow to suppress continuation messages of suppressed
    --  messages. We need to know if a message was suppressed the last time.
 
+   ------------------
+   -- Add_Json_Msg --
+   ------------------
+
+   procedure Add_Json_Msg
+     (Suppr      : Suppressed_Message;
+      Tag        : String;
+      Severity   : Msg_Severity;
+      Slc        : Source_Ptr;
+      Msg_List   : in out GNATCOLL.JSON.JSON_Array;
+      E          : Entity_Id;
+      Msg_Id     : Message_Id;
+      How_Proved : Prover_Category;
+      Tracefile  : String := "";
+      Cntexmp    : Cntexample_File_Maps.Map := Cntexample_File_Maps.Empty_Map;
+      Check_Tree : JSON_Value;
+      VC_File    : String := "";
+      VC_Loc     : Source_Ptr := No_Location;
+      Stats      : Prover_Stat_Maps.Map := Prover_Stat_Maps.Empty_Map;
+      Editor_Cmd : String := "")
+   is
+      Value : constant JSON_Value := Create_Object;
+      File  : constant String     := File_Name (Slc);
+      Line  : constant Natural    := Positive (Get_Logical_Line_Number (Slc));
+      Col   : constant Natural    := Positive (Get_Column_Number (Slc));
+   begin
+
+      Set_Field (Value, "file", File);
+      Set_Field (Value, "line", Line);
+      Set_Field (Value, "col", Col);
+
+      if Suppr.Suppression_Kind in Warning | Check then
+         Set_Field (Value, "suppressed", To_String (Suppr.Msg));
+         if Suppr.Suppression_Kind = Check then
+            Set_Field (Value, "annot_kind", To_String (Suppr.Annot_Kind));
+            Set_Field (Value, "justif_msg", To_String (Suppr.Justification));
+         end if;
+      end if;
+
+      Set_Field (Value, "rule", Tag);
+      Set_Field (Value, "severity", Msg_Severity_To_String (Severity));
+      Set_Field (Value, "entity", To_JSON (Entity_To_Subp_Assumption (E)));
+      Set_Field (Value, "check_tree", Check_Tree);
+
+      if VC_Loc /= No_Location then
+         declare
+            VC_File : constant String  := File_Name (VC_Loc);
+            VC_Line : constant Natural :=
+                         Positive (Get_Logical_Line_Number (VC_Loc));
+            VC_Col  : constant Natural :=
+                         Positive (Get_Column_Number (VC_Loc));
+         begin
+            --  Note that vc_file already exists
+            Set_Field (Value, "check_file", VC_File);
+            Set_Field (Value, "check_line", VC_Line);
+            Set_Field (Value, "check_col", VC_Col);
+         end;
+      end if;
+
+      if Tracefile /= "" then
+         Set_Field (Value, "tracefile", Tracefile);
+      end if;
+
+      if not Cntexmp.Is_Empty then
+         Set_Field (Value, "cntexmp", To_JSON (Cntexmp));
+      end if;
+
+      if VC_File /= "" then
+         Set_Field (Value, "vc_file", VC_File);
+      end if;
+
+      if Editor_Cmd /= "" then
+         Set_Field (Value, "editor_cmd", Editor_Cmd);
+      end if;
+
+      if Msg_Id /= No_Message_Id then
+         Set_Field (Value, "msg_id", Natural (Msg_Id));
+      end if;
+
+      Set_Field (Value, "how_proved", To_JSON (How_Proved));
+
+      if not Stats.Is_Empty then
+         Set_Field (Value, "stats", To_JSON (Stats));
+      end if;
+
+      Append (Msg_List, Value);
+   end Add_Json_Msg;
+
    ---------------------
    -- Compute_Message --
    ---------------------
@@ -328,26 +425,6 @@ package body Flow_Error_Messages is
       end if;
       return To_Span (First => Fst, Ptr => Slc, Last => Lst);
    end Compute_Sloc;
-
-   --------------------------
-   -- Vertex_Sloc_Location --
-   --------------------------
-
-   function Vertex_Sloc_Location
-     (G   : Flow_Graphs.Graph;
-      M   : Attribute_Maps.Map;
-      V   : Flow_Graphs.Vertex_Id;
-      Sep : Character := ':') return String
-   is
-      Loc : constant Source_Ptr := Sloc (Error_Location (G, M, V));
-      SFI : constant Source_File_Index := Get_Source_File_Index (Loc);
-
-      Line_Number : constant Logical_Line_Number :=
-        Get_Logical_Line_Number (Loc);
-   begin
-      return Get_Name_String (File_Name (SFI)) & Sep &
-        Image (Natural (Line_Number), 1);
-   end Vertex_Sloc_Location;
 
    --------------------
    -- Error_Location --
@@ -795,7 +872,7 @@ package body Flow_Error_Messages is
 
    procedure Error_Msg_Proof
      (N             : Node_Id;
-      Msg           : String;
+      Extra_Msg     : String;
       Is_Proved     : Boolean;
       Tag           : VC_Kind;
       Cntexmp       : JSON_Value;
@@ -827,6 +904,11 @@ package body Flow_Error_Messages is
          Tag       : VC_Kind;
          Verdict   : Cntexmp_Verdict) return Msg_Severity;
       --  @result Severity of the proof message
+
+      function Nice_Float (F : Float) return String;
+
+      function Stat_Message return String;
+      --  Prepare a message for statistics of proof results
 
       ------------------------
       -- Get_Fix_Or_Verdict --
@@ -912,8 +994,87 @@ package body Flow_Error_Messages is
          return Result;
       end Get_Severity;
 
+      ----------------
+      -- Nice_Float --
+      ----------------
+
+      function Nice_Float (F : Float) return String is
+         S : String (1 .. 10);
+      begin
+         Ada.Float_Text_IO.Put (S, F, 1, 0);
+         return Ada.Strings.Fixed.Trim (S, Ada.Strings.Left);
+      end Nice_Float;
+
+      ------------------
+      -- Stat_Message --
+      ------------------
+
+      function Stat_Message return String is
+         Buf : Unbounded_String := Null_Unbounded_String;
+         use Prover_Stat_Maps;
+      begin
+         --  Check if VC is not proved or statistics are enabled
+
+         if not Is_Proved or else
+           Gnat2Why_Args.Report_Mode not in GPR_Statistics | GPR_Provers
+         then
+            return "";
+         end if;
+
+         --  In case of the check being proved not by Why3, simply identify
+         --  this, no need for statistics.
+
+         if How_Proved /= PC_Prover then
+            return " (" & To_String (How_Proved) & ")";
+         end if;
+
+         --  In the case of missing statistics, don't show them
+
+         if Stats.Is_Empty then
+            return "";
+         end if;
+
+         --  We are now in the general case (several provers). We first count
+         --  the total number of VCs.
+
+         Append (Buf, " (");
+         for C in Stats.Iterate loop
+            declare
+               Elt : Prover_Stat renames Stats (C);
+            begin
+               Append (Buf, Key (C));
+               Append (Buf, ':');
+               Append (Buf, Integer'Image (Elt.Count));
+               Append (Buf, " VC");
+               if Gnat2Why_Args.Report_Mode = GPR_Statistics then
+                  Append (Buf, " in max ");
+                  Append (Buf, Nice_Float (Elt.Max_Time));
+                  Append (Buf, " seconds and");
+                  Append (Buf, Positive'Image (Elt.Max_Steps));
+                  Append (Buf, " step");
+                  if Elt.Max_Steps /= 1 then
+                     Append (Buf, 's');
+                  end if;
+               end if;
+               if Has_Element (Next (C)) then
+                  Append (Buf, "; ");
+               end if;
+            end;
+         end loop;
+         Append (Buf, ')');
+
+         return To_String (Buf);
+      end Stat_Message;
+
       --  Local variables
 
+      Msg : constant String :=
+        (if Is_Proved
+         then Proved_Message (N, Tag) & Stat_Message
+         else Not_Proved_Message (N, Tag)
+         & (if CWE then CWE_Message (Tag) else ""))
+        & Extra_Msg
+        & (if VC_File /= "" then ", vc file: " & VC_File else "");
       Message : Unbounded_String     :=
         To_Unbounded_String (Compute_Message (Msg, N));
       Place_First : constant Boolean := Locate_On_First_Token (Tag);
@@ -3845,6 +4006,23 @@ package body Flow_Error_Messages is
       return Result;
    end Is_Specified_Line;
 
+   -----------------------
+   -- Justified_Message --
+   -----------------------
+
+   function Justified_Message (Node : Node_Id; Kind : VC_Kind) return String is
+      function Inst is new VC_Message
+        (Verb   => "justified",
+         Prefix => "justified that ",
+         Suffix => " justified");
+   begin
+      return Inst (Node, Kind);
+   end Justified_Message;
+
+   function Justified_Message (Flow_Check_Message : String) return String is
+     ("justified that " & Flow_Check_Message);
+   --  Return the message string for a justified flow check message
+
    ----------------------------
    -- Msg_Severity_To_String --
    ----------------------------
@@ -3857,94 +4035,6 @@ package body Flow_Error_Messages is
          when High_Check_Kind   => "high",
          when Medium_Check_Kind => "medium",
          when Low_Check_Kind    => "low");
-
-   ------------------
-   -- Add_Json_Msg --
-   ------------------
-
-   procedure Add_Json_Msg
-     (Suppr      : Suppressed_Message;
-      Tag        : String;
-      Severity   : Msg_Severity;
-      Slc        : Source_Ptr;
-      Msg_List   : in out GNATCOLL.JSON.JSON_Array;
-      E          : Entity_Id;
-      Msg_Id     : Message_Id;
-      How_Proved : Prover_Category;
-      Tracefile  : String := "";
-      Cntexmp    : Cntexample_File_Maps.Map := Cntexample_File_Maps.Empty_Map;
-      Check_Tree : JSON_Value;
-      VC_File    : String := "";
-      VC_Loc     : Source_Ptr := No_Location;
-      Stats      : Prover_Stat_Maps.Map := Prover_Stat_Maps.Empty_Map;
-      Editor_Cmd : String := "")
-   is
-      Value : constant JSON_Value := Create_Object;
-      File  : constant String     := File_Name (Slc);
-      Line  : constant Natural    := Positive (Get_Logical_Line_Number (Slc));
-      Col   : constant Natural    := Positive (Get_Column_Number (Slc));
-   begin
-
-      Set_Field (Value, "file", File);
-      Set_Field (Value, "line", Line);
-      Set_Field (Value, "col", Col);
-
-      if Suppr.Suppression_Kind in Warning | Check then
-         Set_Field (Value, "suppressed", To_String (Suppr.Msg));
-         if Suppr.Suppression_Kind = Check then
-            Set_Field (Value, "annot_kind", To_String (Suppr.Annot_Kind));
-            Set_Field (Value, "justif_msg", To_String (Suppr.Justification));
-         end if;
-      end if;
-
-      Set_Field (Value, "rule", Tag);
-      Set_Field (Value, "severity", Msg_Severity_To_String (Severity));
-      Set_Field (Value, "entity", To_JSON (Entity_To_Subp_Assumption (E)));
-      Set_Field (Value, "check_tree", Check_Tree);
-
-      if VC_Loc /= No_Location then
-         declare
-            VC_File : constant String  := File_Name (VC_Loc);
-            VC_Line : constant Natural :=
-                         Positive (Get_Logical_Line_Number (VC_Loc));
-            VC_Col  : constant Natural :=
-                         Positive (Get_Column_Number (VC_Loc));
-         begin
-            --  Note that vc_file already exists
-            Set_Field (Value, "check_file", VC_File);
-            Set_Field (Value, "check_line", VC_Line);
-            Set_Field (Value, "check_col", VC_Col);
-         end;
-      end if;
-
-      if Tracefile /= "" then
-         Set_Field (Value, "tracefile", Tracefile);
-      end if;
-
-      if not Cntexmp.Is_Empty then
-         Set_Field (Value, "cntexmp", To_JSON (Cntexmp));
-      end if;
-
-      if VC_File /= "" then
-         Set_Field (Value, "vc_file", VC_File);
-      end if;
-
-      if Editor_Cmd /= "" then
-         Set_Field (Value, "editor_cmd", Editor_Cmd);
-      end if;
-
-      if Msg_Id /= No_Message_Id then
-         Set_Field (Value, "msg_id", Natural (Msg_Id));
-      end if;
-
-      Set_Field (Value, "how_proved", To_JSON (How_Proved));
-
-      if not Stats.Is_Empty then
-         Set_Field (Value, "stats", To_JSON (Stats));
-      end if;
-
-      Append (Msg_List, Value);
-   end Add_Json_Msg;
 
    -----------------------
    -- Print_Regular_Msg --
@@ -3989,6 +4079,246 @@ package body Flow_Error_Messages is
       Error_Msg (Actual_Msg, Span);
       return Id;
    end Print_Regular_Msg;
+
+   ------------------------
+   -- Not_Proved_Message --
+   ------------------------
+
+   function Not_Proved_Message
+     (Node : Node_Id;
+      Kind : VC_Kind) return String is
+   begin
+      --  Any change in the messages issued for a check should be reflected in
+      --    - GPS plug-in spark2014.py
+      --    - the section of SPARK User's Guide on GNATprove
+
+      case Kind is
+         --  VC_RTE_Kind - run-time checks
+
+         when VC_Division_Check            =>
+            return "divide by zero might fail";
+         when VC_Index_Check               =>
+            return "array index check might fail";
+         when VC_Overflow_Check            =>
+            return "overflow check might fail";
+         when VC_FP_Overflow_Check            =>
+            return "float overflow check might fail";
+         when VC_Range_Check               =>
+            return "range check might fail";
+         when VC_Predicate_Check           =>
+            return "predicate check might fail";
+         when VC_Predicate_Check_On_Default_Value =>
+            return "predicate check might fail on default value";
+         when VC_Null_Pointer_Dereference =>
+            return "pointer dereference check might fail";
+         when VC_Null_Exclusion =>
+            return "null exclusion check might fail";
+         when VC_Dynamic_Accessibility_Check =>
+            return "dynamic accessibility check might fail";
+         when VC_Resource_Leak =>
+            return "resource or memory leak might occur";
+         when VC_Resource_Leak_At_End_Of_Scope =>
+            return "resource or memory leak might occur at end of scope";
+         when VC_Invariant_Check           =>
+            return "invariant check might fail";
+         when VC_Invariant_Check_On_Default_Value =>
+            return "invariant check might fail on default value";
+         when VC_Length_Check              =>
+            return "length check might fail";
+         when VC_Discriminant_Check        =>
+            return "discriminant check might fail";
+         when VC_Tag_Check                 =>
+            return "tag check might fail";
+         when VC_Ceiling_Interrupt         =>
+            return "ceiling priority might not be in Interrupt_Priority";
+         when VC_Interrupt_Reserved        =>
+            return "this interrupt might be reserved";
+         when VC_Ceiling_Priority_Protocol =>
+            return "ceiling priority protocol might not be respected";
+         when VC_Task_Termination          =>
+            return "the task might terminate, which is not allowed in SPARK";
+
+         --  VC_Assert_Kind - assertions
+
+         when VC_Initial_Condition         =>
+            return "initial condition might fail";
+         when VC_Default_Initial_Condition =>
+            return "default initial condition might fail";
+         when VC_Precondition              =>
+            return "precondition might fail";
+         when VC_Precondition_Main         =>
+            return "precondition of main program might fail";
+         when VC_Postcondition             =>
+            return "postcondition might fail";
+         when VC_Refined_Post              =>
+            return "refined postcondition might fail";
+         when VC_Contract_Case             =>
+            return "contract case might fail";
+         when VC_Disjoint_Contract_Cases   =>
+            return "contract cases might not be disjoint";
+         when VC_Complete_Contract_Cases   =>
+            return "contract cases might not be complete";
+         when VC_Exceptional_Case             =>
+            return "exceptional case might fail";
+         when VC_Loop_Invariant            =>
+            return "loop invariant might fail";
+         when VC_Loop_Invariant_Init       =>
+            return "loop invariant might fail in first iteration";
+         when VC_Loop_Invariant_Preserv    =>
+            return "loop invariant might not be preserved by an arbitrary " &
+              "iteration";
+         when VC_Loop_Variant              =>
+            return "loop variant might fail";
+         when VC_Assert                    =>
+            return "assertion might fail";
+         when VC_Assert_Premise            =>
+            return "assertion premise might fail";
+         when VC_Assert_Step               =>
+            return "assertion step might fail";
+         when VC_Raise                     =>
+            --  Give explanations for exceptions which frontend statically
+            --  determined to always happen, should the given node be executed.
+
+            if Nkind (Node) in N_Raise_xxx_Error then
+               --  ??? The following doesn't work for proving messages manually
+               --  in GS, which relies on being able to get back to the VC kind
+               --  from the message. A better solution would be to include the
+               --  VC kind in the JSON file. Same for Proved_Message.
+
+               case RT_Exception_Code'Val (UI_To_Int (Reason (Node))) is
+                  when CE_Range_Check_Failed =>
+                     return Not_Proved_Message (Node, VC_Range_Check);
+                  when CE_Index_Check_Failed =>
+                     return Not_Proved_Message (Node, VC_Index_Check);
+                  when CE_Divide_By_Zero =>
+                     return Not_Proved_Message (Node, VC_Division_Check);
+                  when CE_Access_Check_Failed =>
+                     return Not_Proved_Message (Node, VC_Null_Exclusion);
+                  when SE_Infinite_Recursion =>
+
+                     --  ??? This message should be reflected in the "Messages
+                     --  reported by Proof" SPARK UG table, which is generated
+                     --  automatically. Also, it should appear in the
+                     --  GNATstudio plugin's vc_fail_msg_dict. Same for
+                     --  Proved_Message.
+
+                     return "infinite recursion might occur";
+
+                  --  In debug builds developers will get a crash with a
+                  --  missing case, which we will fix whenever it occurs;
+                  --  in production builds users will get a generic message.
+
+                  when others =>
+                     pragma Assert (False);
+               end case;
+            end if;
+            return "unexpected exception might be raised";
+         when VC_Feasible_Post             =>
+            return "contract of function might not be feasible";
+         when VC_Inline_Check              =>
+            return "Inline_For_Proof or Logical_Equal annotation might be"
+              & " incorrect";
+         when VC_Container_Aggr_Check      =>
+            return "Container_Aggregates annotation might be incorrect";
+         when VC_Subprogram_Variant        =>
+            return "subprogram variant might fail";
+         when VC_Termination_Check         =>
+            declare
+               Statement : constant String :=
+                 (case Nkind (Node) is
+                     when N_Procedure_Call_Statement
+                        | N_Entry_Call_Statement
+                        | N_Function_Call
+                     => "call",
+                     when N_Loop_Statement => "loop",
+                     when others => raise Program_Error);
+            begin
+               return Statement & " might not terminate";
+            end;
+         when VC_UC_Source                 =>
+            return "type is unsuitable for unchecked conversion";
+
+         when VC_UC_Target                 =>
+            declare
+               Common : constant String :=
+                 " is unsuitable ";
+            begin
+               if Nkind (Node) in N_Attribute_Reference | N_Object_Declaration
+               then
+                  return "object" & Common &
+                    "for aliasing via address clause";
+               else
+                  return "type" & Common
+                    & "as a target for unchecked conversion";
+               end if;
+            end;
+
+         when VC_UC_Same_Size              =>
+            declare
+               Prefix : constant String :=
+                 (if Nkind (Node) = N_Attribute_Reference then
+                       "types of aliased objects"
+                  else "types used for unchecked conversion");
+            begin
+               return Prefix & " do not have the same size";
+            end;
+
+         when VC_UC_Alignment =>
+            return "alignment of overlayed object might not be an integral " &
+              "multiple of alignment of overlaying object";
+         when VC_Initialization_Check      =>
+            return "initialization check might fail";
+         when VC_Unchecked_Union_Restriction =>
+            return "operation on unchecked union type will raise"
+              & " Program_Error";
+
+         when VC_UC_Volatile =>
+            return "object with non-trivial address clause or prefix of the " &
+              "'Address reference does not have asynchronous writers";
+
+         --  VC_LSP_Kind - Liskov Substitution Principle
+
+         when VC_Weaker_Pre                =>
+            return "precondition might be stronger than "
+              & "class-wide precondition";
+         when VC_Trivial_Weaker_Pre        =>
+            return "precondition is stronger than the default "
+              & "class-wide precondition of True";
+         when VC_Stronger_Post             =>
+            return "postcondition might be weaker than "
+              & "class-wide postcondition";
+         when VC_Weaker_Classwide_Pre      =>
+            return
+              "class-wide precondition might be stronger than overridden one";
+         when VC_Stronger_Classwide_Post   =>
+            return
+              "class-wide postcondition might be weaker than overridden one";
+
+         when VC_Weaker_Pre_Access         =>
+            return "precondition of target might not be strong enough to"
+              & " imply precondition of source";
+         when VC_Stronger_Post_Access      =>
+            return "postcondition of source might not be strong enough to"
+              & " imply postcondition of target";
+
+         --  VC_Warning_Kind - warnings
+
+         --  Warnings should only be issued when the VC is proved
+
+         when VC_Warning_Kind              =>
+            raise Program_Error;
+      end case;
+   end Not_Proved_Message;
+
+   --------------------
+   -- Proved_Message --
+   --------------------
+
+   function Proved_Message (Node : Node_Id; Kind : VC_Kind) return String is
+      function Inst is new VC_Message (Verb => "proved");
+   begin
+      return Inst (Node, Kind);
+   end Proved_Message;
 
    ----------------
    -- Substitute --
@@ -4225,6 +4555,219 @@ package body Flow_Error_Messages is
 
       return R;
    end Substitute;
+
+   -----------------
+   -- VC_Messsage --
+   -----------------
+
+   function VC_Message (Node : Node_Id; Kind : VC_Kind) return String is
+   begin
+      case Kind is
+         when VC_Division_Check            =>
+            return "division check " & Verb;
+         when VC_Index_Check               => return "index check " & Verb;
+         when VC_Overflow_Check            =>
+            return "overflow check " & Verb;
+         when VC_FP_Overflow_Check         =>
+            return "float overflow check " & Verb;
+         when VC_Range_Check               => return "range check " & Verb;
+         when VC_Predicate_Check           =>
+            return "predicate check " & Verb;
+         when VC_Predicate_Check_On_Default_Value =>
+            return "predicate check " & Verb & " on default value";
+         when VC_Null_Pointer_Dereference =>
+            return "pointer dereference check " & Verb;
+         when VC_Null_Exclusion =>
+            return "null exclusion check " & Verb;
+         when VC_Dynamic_Accessibility_Check =>
+            return "dynamic accessibility check " & Verb;
+         when VC_Resource_Leak =>
+            return "absence of resource or memory leak " & Verb;
+         when VC_Resource_Leak_At_End_Of_Scope =>
+            return "absence of resource or memory leak at end of scope "
+              & Verb;
+         when VC_Invariant_Check           =>
+            return "invariant check " & Verb;
+         when VC_Invariant_Check_On_Default_Value =>
+            return "invariant check " & Verb & " on default value";
+         when VC_Length_Check              => return "length check " & Verb;
+         when VC_Discriminant_Check        =>
+            return "discriminant check " & Verb;
+         when VC_Tag_Check                 => return "tag check " & Verb;
+         when VC_Ceiling_Interrupt         =>
+            return "ceiling priority in Interrupt_Priority " & Verb;
+         when VC_Interrupt_Reserved        =>
+            return "availability of interrupt " & Verb;
+         when VC_Ceiling_Priority_Protocol =>
+            return Prefix & "ceiling priority protocol is respected";
+         when VC_Task_Termination          =>
+            return "nontermination of task " & Verb;
+
+         when VC_Initial_Condition         =>
+            return "initial condition " & Verb;
+         when VC_Default_Initial_Condition =>
+            return "default initial condition " & Verb;
+         when VC_Precondition              =>
+            return "precondition " & Verb;
+         when VC_Precondition_Main         =>
+            return "precondition of main program " & Verb;
+         when VC_Postcondition             => return "postcondition " & Verb;
+         when VC_Refined_Post              => return "refined post " & Verb;
+         when VC_Contract_Case             => return "contract case " & Verb;
+         when VC_Disjoint_Contract_Cases   =>
+            return "disjoint contract cases " & Verb;
+         when VC_Complete_Contract_Cases   =>
+            return "complete contract cases " & Verb;
+         when VC_Exceptional_Case          =>
+            return "exceptional case " & Verb;
+         when VC_Loop_Invariant            =>
+            return "loop invariant " & Verb;
+         when VC_Loop_Invariant_Init       =>
+            return "loop invariant initialization " & Verb;
+         when VC_Loop_Invariant_Preserv    =>
+            return "loop invariant preservation " & Verb;
+         when VC_Loop_Variant              => return "loop variant " & Verb;
+         when VC_Assert                    => return "assertion " & Verb;
+         when VC_Assert_Premise            =>
+            return "assertion premise " & Verb;
+         when VC_Assert_Step               => return "assertion step " & Verb;
+         when VC_Raise                     =>
+            --  Give explanations for exceptions which frontend statically
+            --  determined to always happen, but backend proved to be
+            --  unreachable.
+
+            if Nkind (Node) in N_Raise_xxx_Error then
+               case RT_Exception_Code'Val (UI_To_Int (Reason (Node))) is
+                  when CE_Range_Check_Failed =>
+                     return VC_Message (Node, VC_Range_Check);
+                  when CE_Index_Check_Failed =>
+                     return VC_Message (Node, VC_Index_Check);
+                  when CE_Divide_By_Zero =>
+                     return VC_Message (Node, VC_Division_Check);
+                  when SE_Infinite_Recursion =>
+                     return "infinite recursion " & Verb & " unreachable";
+
+                  --  In debug builds developers will get a crash with a
+                  --  missing case, which we will fix whenever it occurs;
+                  --  in production builds users will get a generic message.
+
+                  when others =>
+                     pragma Assert (False);
+               end case;
+            end if;
+            return Prefix & "only expected exception raised";
+         when VC_Feasible_Post             =>
+            return "function contract feasibility " & Verb;
+         when VC_Inline_Check              =>
+            return "Inline_For_Proof or Logical_Equal annotation " & Verb;
+         when VC_Container_Aggr_Check      =>
+            return "Container_Aggregates annotation " & Verb;
+         when VC_Subprogram_Variant        =>
+            return "subprogram variant " & Verb;
+         when VC_Termination_Check         =>
+            declare
+               Statement : constant String :=
+                 (case Nkind (Node) is
+                     when N_Procedure_Call_Statement
+                        | N_Entry_Call_Statement
+                        | N_Function_Call
+                     => "call",
+                     when N_Loop_Statement => "loop",
+                     when others => raise Program_Error);
+            begin
+               return "conditional " & Statement & " termination " & Verb;
+            end;
+         when VC_UC_Source                 =>
+            return Prefix
+              & "type is suitable as source for unchecked conversion";
+         when VC_UC_Target                 =>
+            declare
+               Common : constant String := " is suitable for ";
+            begin
+               if Nkind (Node) in N_Attribute_Reference | N_Object_Declaration
+               then
+                  return Prefix & "object" & Common &
+                    "aliasing via address clause";
+               else
+                  return Prefix & "type" & Common & "unchecked conversion";
+               end if;
+            end;
+
+         when VC_UC_Same_Size              =>
+            if Nkind (Node) = N_Attribute_Reference then
+               return Prefix & "types of aliased objects have the same size";
+            else
+               return Prefix
+                 & "types in unchecked conversion have the same size";
+            end if;
+
+         when VC_UC_Alignment =>
+            return Prefix & "alignment of overlaid objects is compatible";
+
+         when VC_UC_Volatile =>
+            return Prefix
+              & "object with non-trivial address clause and prefix of the"
+              & " 'Address attribute have asynchronous writers";
+
+         when VC_Weaker_Pre                =>
+            return Prefix & "precondition is weaker than"
+              & " class-wide precondition";
+         when VC_Trivial_Weaker_Pre        =>
+            return Prefix & "precondition is always True";
+         when VC_Stronger_Post             =>
+            return Prefix & "postcondition is stronger"
+              & " than class-wide postcondition";
+         when VC_Weaker_Classwide_Pre      =>
+            return Prefix
+              & "class-wide precondition is weaker than overridden one";
+         when VC_Stronger_Classwide_Post   =>
+            return Prefix & "class-wide postcondition is stronger"
+              & " than overridden one";
+         when VC_Weaker_Pre_Access         =>
+            return Prefix & "precondition of target is strong enough to imply"
+              & " precondition of source";
+         when VC_Stronger_Post_Access      =>
+            return Prefix & "postcondition of source is strong enough to imply"
+              & " postcondition of target";
+         when VC_Initialization_Check      =>
+            return "initialization check " & Verb;
+         when VC_Unchecked_Union_Restriction =>
+            return "operation on unchecked union type " & Verb;
+
+         --  VC_Warning_Kind - warnings
+
+         when VC_Inconsistent_Pre          =>
+            return Prefix & "precondition is always False";
+         when VC_Inconsistent_Post         =>
+            return Prefix & "postcondition is always False";
+         when VC_Inconsistent_Assume         =>
+            return Prefix & "pragma Assume is always False";
+         when VC_Unreachable_Branch        =>
+            return "unreachable branch" & Suffix;
+         when VC_Dead_Code                 =>
+            return "unreachable code" & Suffix;
+      end case;
+   end VC_Message;
+
+   --------------------------
+   -- Vertex_Sloc_Location --
+   --------------------------
+
+   function Vertex_Sloc_Location
+     (G   : Flow_Graphs.Graph;
+      M   : Attribute_Maps.Map;
+      V   : Flow_Graphs.Vertex_Id;
+      Sep : Character := ':') return String
+   is
+      Loc : constant Source_Ptr := Sloc (Error_Location (G, M, V));
+      SFI : constant Source_File_Index := Get_Source_File_Index (Loc);
+
+      Line_Number : constant Logical_Line_Number :=
+        Get_Logical_Line_Number (Loc);
+   begin
+      return Get_Name_String (File_Name (SFI)) & Sep &
+        Image (Natural (Line_Number), 1);
+   end Vertex_Sloc_Location;
 
    ---------------------------
    -- Warning_Is_Suppressed --
