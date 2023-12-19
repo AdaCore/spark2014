@@ -54,6 +54,11 @@ stages:
     # Move the package out of the way, so it does not influence "anod vcs"
     - mv $PACKAGE_ABSOLUTE_NAME /tmp
 
+    # add sparklib and internal testsuite for which we want to use most recent
+    # sources for testing
+    - GENERIC_ANOD_CI_OPTIONS="--add-dep eng/spark/sparklib
+                               --add-dep eng/spark/spark-internal-testsuite"
+
     # Setup the "anod vcs as appropriate"
     - *setup_repos
 
@@ -109,6 +114,7 @@ build:
   script:
     - GENERIC_ANOD_CI_OPTIONS="--add-dep eng/spark/sparklib
                                --add-dep eng/spark/spark-internal-testsuite
+                               --add-dep eng/toolchain/gnat
                                --add-dep eng/spark/why3"
     - *setup_repos
 
