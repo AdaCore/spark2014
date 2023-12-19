@@ -34,6 +34,7 @@ package Flow_Generated_Globals.ALI_Serialization is
                            EK_Constants,
                            EK_CAE_Entities,
                            EK_Volatiles,
+                           EK_Synchronized,
                            EK_Globals,
                            EK_Constant_Calls,
                            EK_Protected_Instance,

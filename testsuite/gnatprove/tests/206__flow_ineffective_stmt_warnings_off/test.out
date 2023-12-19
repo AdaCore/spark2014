@@ -1,0 +1,6 @@
+repro.adb:3:18: info: initialization of "X" proved
+repro.adb:8:13: info: implicit aspect Always_Terminates on "FUN_IS_DEBUG_BUILD" has been proved, subprogram will terminate
+repro.adb:16:07: warning: statement has no effect
+repro_elsif.adb:3:24: medium: "X" might not be initialized in "Repro_Elsif" [reason for check: OUT parameter should be initialized on return] [possible fix: initialize "X" on all paths or make "X" an IN OUT parameter]
+repro_elsif.adb:8:13: info: implicit aspect Always_Terminates on "FUN_IS_DEBUG_BUILD" has been proved, subprogram will terminate
+repro_elsif.adb:20:07: warning: statement has no effect

@@ -198,22 +198,22 @@ step_function.adb:116:15: medium: loop invariant might not be preserved by an ar
 step_function.adb:116:27: info: index check proved (CVC5: 4 VC)
 step_function.adb:116:54: info: index check proved (CVC5: 4 VC)
 step_function.adb:120:13: info: loop invariant initialization proved (CVC5: 1 VC)
-step_function.adb:120:13: medium: loop invariant might not be preserved by an arbitrary iteration
+step_function.adb:121:15: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove (for some j in 0..im-1 => SFun1.Step(i).Delimiter = Merge.Step(j).Delimiter)
 step_function.adb:122:30: info: index check proved (CVC5: 4 VC)
 step_function.adb:122:45: medium: "Merge.Step" might not be initialized
 step_function.adb:122:56: info: index check proved (CVC5: 4 VC)
 step_function.adb:124:13: info: loop invariant initialization proved (CVC5: 1 VC; Trivial: 1 VC)
-step_function.adb:124:13: medium: loop invariant might not be preserved by an arbitrary iteration
+step_function.adb:126:20: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove (for some j in 0..im-1 => SFun1.Step(i).Delimiter = Merge.Step(j).Delimiter)
 step_function.adb:127:36: info: index check proved (CVC5: 4 VC)
 step_function.adb:127:51: medium: "Merge.Step" might not be initialized
 step_function.adb:127:62: info: index check proved (CVC5: 4 VC)
 step_function.adb:131:13: info: loop invariant initialization proved (CVC5: 1 VC)
-step_function.adb:131:13: medium: loop invariant might not be preserved by an arbitrary iteration
+step_function.adb:132:15: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove (for some j in 0..im-1 => SFun2.Step(i).Delimiter = Merge.Step(j).Delimiter)
 step_function.adb:133:30: info: index check proved (CVC5: 4 VC)
 step_function.adb:133:45: medium: "Merge.Step" might not be initialized
 step_function.adb:133:56: info: index check proved (CVC5: 4 VC)
 step_function.adb:135:13: info: loop invariant initialization proved (CVC5: 1 VC; Trivial: 1 VC)
-step_function.adb:135:13: medium: loop invariant might not be preserved by an arbitrary iteration
+step_function.adb:137:20: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove (for some j in 0..im-1 => SFun2.Step(i).Delimiter = Merge.Step(j).Delimiter)
 step_function.adb:138:36: info: index check proved (CVC5: 4 VC)
 step_function.adb:138:51: medium: "Merge.Step" might not be initialized
 step_function.adb:138:62: info: index check proved (CVC5: 4 VC)

@@ -111,7 +111,7 @@ test_capacity.adb:155:41: info: during checks for container aggregates at test_c
 test_capacity.adb:155:41: info: precondition proved (CVC5: 2 VC)
 test_capacity.adb:156:17: info: postcondition proved (CVC5: 4 VC; Trivial: 1 VC; Z3: 2 VC)
 test_capacity.adb:157:18: info: precondition proved (CVC5: 1 VC)
-test_capacity.adb:161:49: info: precondition proved (Z3: 1 VC)
+test_capacity.adb:161:49: info: precondition proved (CVC5: 1 VC)
 test_capacity.adb:161:62: info: precondition proved (CVC5: 1 VC)
 test_capacity.adb:162:46: info: overflow check proved (CVC5: 2 VC)
 test_capacity.adb:165:16: info: implicit aspect Always_Terminates on "Length" has been proved, subprogram will terminate
@@ -179,9 +179,9 @@ test_capacity.adb:256:17: info: aspect Always_Terminates on "Append" has been pr
 test_capacity.adb:257:09: info: data dependencies proved
 test_capacity.adb:258:34: info: during checks for container aggregates at test_capacity.adb:253
 test_capacity.adb:258:34: info: precondition proved (CVC5: 2 VC)
-test_capacity.adb:259:17: info: postcondition proved (CVC5: 4 VC; Trivial: 1 VC; Z3: 2 VC)
+test_capacity.adb:259:17: info: postcondition proved (CVC5: 5 VC; Trivial: 1 VC; Z3: 1 VC)
 test_capacity.adb:260:18: info: precondition proved (CVC5: 1 VC)
-test_capacity.adb:264:49: info: precondition proved (Z3: 1 VC)
+test_capacity.adb:264:49: info: precondition proved (CVC5: 1 VC)
 test_capacity.adb:264:62: info: precondition proved (CVC5: 1 VC)
 test_capacity.adb:265:46: info: overflow check proved (CVC5: 2 VC)
 test_capacity.adb:268:16: info: implicit aspect Always_Terminates on "Length" has been proved, subprogram will terminate
@@ -323,27 +323,27 @@ test_capacity.adb:474:11: info: predicate check proved (CVC5: 3 VC)
 test_capacity.adb:474:25: info: overflow check proved (CVC5: 2 VC)
 test_capacity.adb:478:52: info: data dependencies proved
 test_capacity.adb:482:16: info: elements shall be distinct and shall fit in "Small_Nat" for set aggregates at test_capacity.adb:21
-test_capacity.adb:482:16: info: precondition proved (CVC5: 37 VC)
+test_capacity.adb:482:16: info: precondition proved (CVC5: 25 VC)
 test_capacity.adb:484:22: info: assertion proved (CVC5: 1 VC)
 test_capacity.adb:487:56: info: data dependencies proved
 test_capacity.adb:491:16: medium: elements shall be distinct and shall fit in "Small_Nat" for set aggregates at test_capacity.adb:21
 test_capacity.adb:491:16: medium: precondition might fail
 test_capacity.adb:496:50: info: data dependencies proved
 test_capacity.adb:500:16: info: elements shall be distinct and shall be smaller than "Capacity" for set aggregates at test_capacity.adb:85
-test_capacity.adb:500:16: info: precondition proved (CVC5: 37 VC)
+test_capacity.adb:500:16: info: precondition proved (CVC5: 25 VC)
 test_capacity.adb:505:54: info: data dependencies proved
 test_capacity.adb:509:16: medium: elements shall be distinct and shall be smaller than "Capacity" for set aggregates at test_capacity.adb:85
 test_capacity.adb:509:16: medium: precondition might fail
 test_capacity.adb:514:52: info: data dependencies proved
 test_capacity.adb:518:16: info: keys shall be distinct and all elements shall fit in "Small_Nat" for maps aggregates at test_capacity.adb:149
-test_capacity.adb:518:16: info: precondition proved (CVC5: 37 VC)
+test_capacity.adb:518:16: info: precondition proved (CVC5: 25 VC)
 test_capacity.adb:520:22: info: assertion proved (CVC5: 1 VC)
 test_capacity.adb:523:56: info: data dependencies proved
 test_capacity.adb:527:16: medium: keys shall be distinct and all elements shall fit in "Small_Nat" for maps aggregates at test_capacity.adb:149
 test_capacity.adb:527:16: medium: precondition might fail
 test_capacity.adb:532:50: info: data dependencies proved
 test_capacity.adb:536:16: info: keys shall be distinct and all elements shall be smaller than "Capacity" for maps aggregates at test_capacity.adb:253
-test_capacity.adb:536:16: info: precondition proved (CVC5: 37 VC)
+test_capacity.adb:536:16: info: precondition proved (CVC5: 25 VC)
 test_capacity.adb:541:54: info: data dependencies proved
 test_capacity.adb:545:16: medium: keys shall be distinct and all elements shall be smaller than "Capacity" for maps aggregates at test_capacity.adb:253
 test_capacity.adb:545:16: medium: precondition might fail

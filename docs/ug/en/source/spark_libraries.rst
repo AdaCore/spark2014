@@ -59,8 +59,8 @@ lemma library project to be found by GNAT compiler, as described in
 :ref:`Installation of GNATprove`.
 
 Finally, if you instantiate in your code a generic from the SPARK library, you
-also need to pass ``-gnateDSPARK_BODY_MODE=Off`` as a compilation switch for
-these generic units.
+may also need to pass ``-gnateDSPARK_BODY_MODE=Off`` as a compilation switch
+for the units with these instantiations.
 
 .. index:: Big_Numbers
 
@@ -576,6 +576,73 @@ quantified expression above is equivalent to:
 
 where ``Result`` is the value of the quantified expression. See |GNAT Pro|
 Reference Manual for details on aspect ``Iterable``.
+
+Containers and Executablity
+---------------------------
+
+Some features of the container library (both functional and formal) might not
+have executable semantics. To ensure that user code never attempts to execute
+them, these subprograms call the ``Check_Or_Fail`` procedure declared in
+``SPARK.Containers``. This procedure is marked as ``Import``, so an error will
+occur at link time if these features are used in normal code (or in enabled
+ghost code or assertions).
+These non-executable features include quantified expressions over functional
+maps, sets, and multisets and logical equality in nearly all functional and
+formal containers.
+
+Quantified Expressions over Functional Maps, Sets, and Multisets
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Functional maps, sets, and multisets take as parameters an equivalence relation.
+Inclusion in the container works modulo equivalence: when ``Add`` or ``Remove``
+is called, the whole equivalence class is included or excluded at once. As
+equivalence classes might be infinite, quantified expressions over elements of
+a set or multiset or keys of a map could fail to terminate.
+
+To replace quantified expressions over a functional map, set, or multisets
+occurring in
+the code, it is possible to use a loop over the ``Iterable_Map``,
+``Iterable_Set``, or ``Iterable_Multiset`` types instead. They use the
+``Choose`` function to get an unspecified element of the container from a
+different equivalence class at each iteration of the loop. As an example:
+
+.. code-block:: ada
+
+  B := (for some E of S => P (E));
+
+can be replaced by:
+
+.. code-block:: ada
+
+  B := False;
+  for C in Iterate (S) loop
+     pragma Loop_Invariant (for all E of S => (if not Contains (C, E) then not P (E)));
+     if P (Choose (C)) then
+        B := True;
+        exit;
+     end if;
+  end loop;
+
+Logical Equality
+^^^^^^^^^^^^^^^^
+
+The specifications of most formal and functional containers use
+`logical equality` to specify that all properties of elements placed in the
+container are preserved (see
+:ref:`Annotation for Accessing the Logical Equality for a Type`).
+Using logical equality to express such properties increases provability of user
+code, as it is optimally precise and
+natively handled by the automated solvers at the background of SPARK.
+However, logical equality does not always correspond to Ada equality, and there
+are even types for which it is not possible to write a valid logical equality in
+Ada, due to how things are encoded in the backend of the tool.
+As a result, logical equality functions used in the specification of formal and
+functional containers are not executable.
+
+For formal containers, as the logical equality is given as a parameter to the
+functional containers used as models, the model themselves are not executable.
+As a result, it is not possible to execute ghost code or assertions that mention
+these model functions.
 
 .. index:: lemma library
 

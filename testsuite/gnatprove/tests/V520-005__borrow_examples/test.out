@@ -223,6 +223,9 @@ linear_search.adb:80:28: info: predicate check proved
 linear_search.adb:80:32: info: predicate check proved
 linear_search.adb:82:21: info: pointer dereference check proved
 linear_search.adb:85:16: info: pointer dereference check proved
+linear_search.adb:88:22: info: assertion proved
+linear_search.adb:88:63: info: precondition proved
+linear_search.adb:88:71: info: predicate check proved
 linear_search.ads:17:12: info: implicit aspect Always_Terminates on "Length" has been proved, subprogram will terminate
 linear_search.ads:17:12: info: implicit function contract might not be available on recursive calls
 linear_search.ads:18:22: info: predicate check proved

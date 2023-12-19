@@ -27,7 +27,12 @@ package body Perm.Lemma_Subprograms with SPARK_Mode is
         and then Nb_Occurence (Occurrences (R, L), A (I)) =
           Nb_Occurence (Occurrences (A, L), A (I)) - 1
         and then
-          (for all E of Union (Occurrences (R, L), Occurrences (A, L)) =>
+          (for all E of Occurrences (R, L) =>
+             (if E not in V | A (I)
+              then Nb_Occurence (Occurrences (R, L), E) =
+	        Nb_Occurence (Occurrences (A, L), E)))
+	and then
+          (for all E of Occurrences (A, L) =>
              (if E not in V | A (I)
               then Nb_Occurence (Occurrences (R, L), E) =
                 Nb_Occurence (Occurrences (A, L), E))));
@@ -44,12 +49,6 @@ package body Perm.Lemma_Subprograms with SPARK_Mode is
          Occ_Eq (A, R, L - 1, L - 1);
       else
          Occ_Set_Rec (A, I, V, R, L - 1);
-         pragma Assert
-           (if V /= A (I) then
-                (for all E of Union (Occurrences (R, L), Occurrences (A, L)) =>
-                     (if E not in V | A (I)
-                      then Nb_Occurence (Occurrences (R, L), E) =
-                        Nb_Occurence (Occurrences (A, L), E))));
       end if;
    end Occ_Set_Rec;
 

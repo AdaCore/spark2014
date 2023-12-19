@@ -304,6 +304,8 @@ package body SPARK_Definition is
    --  Check that the type of Expression and Expected_Type have compatible
    --  designated types. This is used to ensure that there can be no
    --  conversions between access types with different representative types.
+   --  Also check that we are not converting from a type with the Handler
+   --  annotation to a type without.
 
    procedure Check_User_Defined_Eq
      (Ty  : Type_Kind_Id;
@@ -677,6 +679,19 @@ package body SPARK_Definition is
          then
             Mark_Unsupported (Lim_Access_Conv, Expression);
          end if;
+
+      --  The Handler annotation can be used to annotate access-to-subprograms
+      --  which access unspecified global data. The annotation needs to be
+      --  preserved so we can make sure they are never called.
+
+      elsif Is_Access_Subprogram_Type (Expected_Type)
+        and then Has_Handler_Annotation (Etype (Expression))
+        and then not Has_Handler_Annotation (Expected_Type)
+      then
+         Mark_Violation
+           ("conversion from an access-to-subprogram type with the "
+            & """Handler"" annotation to an access-to-subprogram type"
+            & " without", Expression);
       end if;
    end Check_Compatible_Access_Types;
 
@@ -4266,12 +4281,14 @@ package body SPARK_Definition is
 
                      elsif Ekind (Subp) = E_Function
                        and then Is_Function_With_Side_Effects (Subp)
+                       and then not Has_Handler_Annotation (Etype (N))
                      then
                         Mark_Violation
                           ("access to function with side effects", N);
 
                      elsif Ekind (Subp) = E_Function
                        and then Is_Volatile_Function (Subp)
+                       and then not Has_Handler_Annotation (Etype (N))
                      then
                         Mark_Violation ("access to volatile function", N);
 
@@ -4302,31 +4319,42 @@ package body SPARK_Definition is
                      --  Subprogram with non-null Global contract (either
                      --  explicit or generated). Global accesses are allowed
                      --  for specialized actuals of functions annotated with
-                     --  higher order specialization.
+                     --  higher order specialization and for
+                     --  access-to-subprogram types annotated with Handler.
 
                      elsif not Is_Specialized_Actual (N) then
-                        declare
-                           Globals : Global_Flow_Ids;
-                        begin
-                           Get_Globals
-                             (Subprogram          => Subp,
-                              Scope               =>
-                                (Ent => Subp, Part => Visible_Part),
-                              Classwide           => False,
-                              Globals             => Globals,
-                              Use_Deduced_Globals =>
-                                 not Gnat2Why_Args.Global_Gen_Mode,
-                              Ignore_Depends      => False);
+                        if Has_Handler_Annotation (Etype (N)) then
 
-                           if not Globals.Proof_Ins.Is_Empty
-                             or else not Globals.Inputs.Is_Empty
-                             or else not Globals.Outputs.Is_Empty
-                           then
-                              Mark_Violation
-                                ("access to subprogram with global effects",
-                                 N);
+                           --  Postpone check for handler accesses until
+                           --  Skip_Flow_And_Proof annotations are picked.
+
+                           if not Gnat2Why_Args.Global_Gen_Mode then
+                              Handler_Accesses.Insert (N);
                            end if;
-                        end;
+                        else
+                           declare
+                              Globals : Global_Flow_Ids;
+                           begin
+                              Get_Globals
+                                (Subprogram          => Subp,
+                                 Scope               =>
+                                   (Ent => Subp, Part => Visible_Part),
+                                 Classwide           => False,
+                                 Globals             => Globals,
+                                 Use_Deduced_Globals =>
+                                    not Gnat2Why_Args.Global_Gen_Mode,
+                                 Ignore_Depends      => False);
+
+                              if not Globals.Proof_Ins.Is_Empty
+                                or else not Globals.Inputs.Is_Empty
+                                or else not Globals.Outputs.Is_Empty
+                              then
+                                 Mark_Violation
+                                   ("access to subprogram with global effects",
+                                    N);
+                              end if;
+                           end;
+                        end if;
                      end if;
                   end;
 
@@ -4824,6 +4852,17 @@ package body SPARK_Definition is
       if Nkind (Name (N)) = N_Explicit_Dereference then
          Mark (Prefix (Name (N)));
          Mark_Actuals (N);
+
+         --  The Handler annotation can be used to annotate
+         --  access-to-subprograms which access unspecified global data.
+         --  Make sure they are never called from SPARK code.
+
+         if Has_Handler_Annotation (Etype (Prefix (Name (N)))) then
+            Mark_Violation
+              ("call to an access-to-subprogram type with the "
+               & """Handler"" annotation", N);
+         end if;
+
          return;
 
       else
@@ -6238,6 +6277,73 @@ package body SPARK_Definition is
          -------------------------------
 
          procedure Mark_Subprogram_Contracts is
+
+            function Check_Param (N : Node_Id) return Traverse_Result;
+            --  Parameters of modes OUT or IN OUT of the subprogram shall not
+            --  occur in the consequences of an exceptional contract unless
+            --  they are either passed by reference or occur in the prefix
+            --  of a reference to the 'Old attribute or as direct prefixes
+            --  of attributes that do not actually read data from the object
+            --  (SPARK RM 6.1.9(1)).
+
+            function Check_Param (N : Node_Id) return Traverse_Result is
+            begin
+               case Nkind (N) is
+                  when N_Identifier | N_Expanded_Name =>
+                     declare
+                        Id : constant Entity_Id := Entity (N);
+                     begin
+                        if Present (Id)
+                          and then Ekind (Id) in E_Out_Parameter
+                                               | E_In_Out_Parameter
+                          and then Scope (Id) = E
+                          and then not Is_By_Reference_Type (Etype (Id))
+                          and then not Is_Aliased (Id)
+                        then
+                           declare
+                              Mode : constant String :=
+                                (if Ekind (Id) = E_Out_Parameter then "OUT"
+                                 else "IN OUT");
+                           begin
+                              Mark_Violation
+                                ("formal parameter of mode `" & Mode
+                                 & "` in consequence of Exceptional_Cases", N,
+                                 Cont_Msg =>
+                                   "only parameters passed by reference "
+                                   & "are allowed");
+                           end;
+                        end if;
+                     end;
+
+                  when N_Attribute_Reference =>
+                     case Attribute_Name (N) is
+                        when Name_Old =>
+                           return Skip;
+                        when Name_Constrained
+                           | Name_First
+                           | Name_Last
+                           | Name_Length
+                           | Name_Range
+                        =>
+                           if Nkind (Prefix (N)) in N_Identifier
+                                                  | N_Expanded_Name
+                           then
+                              return Skip;
+                           end if;
+                        when others => null;
+                     end case;
+
+                  when others => null;
+               end case;
+
+               return OK;
+            end Check_Param;
+
+            procedure Check_Params_In_Consequence is
+              new Traverse_More_Proc (Check_Param);
+
+            --  Local variables
+
             Prag : Node_Id := (if Present (Contract (E))
                                then Pre_Post_Conditions (Contract (E))
                                else Empty);
@@ -6343,6 +6449,8 @@ package body SPARK_Definition is
                         end loop;
                      end;
 
+                     Check_Params_In_Consequence
+                       (Expression (Exceptional_Case));
                      Mark (Expression (Exceptional_Case));
                      Next (Exceptional_Case);
                   end loop;

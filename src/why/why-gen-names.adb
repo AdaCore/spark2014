@@ -653,7 +653,11 @@ package body Why.Gen.Names is
       then M_HO_Specializations (E) (Specialization_Module).Fun_Id
       elsif Ekind (E) = E_Function
       then To_Why_Id
-        (E, Domain => EW_Term, Local => False, Selector => Selector_Name)
+        (E,
+         Domain    => EW_Term,
+         Local     => False,
+         Selector  => Selector_Name,
+         Init_Decl => True)
       else Get_Logic_Function (E));
 
    -------------

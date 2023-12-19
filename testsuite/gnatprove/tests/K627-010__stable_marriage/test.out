@@ -90,7 +90,7 @@ stable_marriage.adb:291:10: info: initialization of "G2" proved
 stable_marriage.adb:292:10: info: initialization of "Accepted" proved
 stable_marriage.adb:294:10: info: initialization of "Already_Asked" proved
 stable_marriage.adb:297:10: info: analyzing call to "Select_And_Remove_An_Unmatched_G1" in context
-stable_marriage.adb:298:25: medium: assertion might fail
+stable_marriage.adb:298:25: medium: assertion might fail (e.g. when G1 = 1 and Proposals_Made = (1 => Count'Last, others => 0))
 stable_marriage.adb:302:30: info: range check proved (CVC5: 2 VC)
 stable_marriage.adb:302:45: info: range check proved (CVC5: 2 VC)
 stable_marriage.adb:304:16: info: assertion proved (altergo: 1 VC)
@@ -166,7 +166,7 @@ stable_marriage.ads:83:14: info: postcondition proved (CVC5: 2 VC)
 stable_marriage.ads:84:09: info: precondition proved (CVC5: 1 VC)
 stable_marriage.ads:84:33: info: precondition proved (CVC5: 1 VC)
 stable_marriage.ads:88:13: info: function contract might not be available on implicit recursive calls
-stable_marriage.ads:95:08: medium: postcondition might fail
+stable_marriage.ads:96:11: medium: postcondition might fail, cannot prove (for some G2 in Group2_Id => (Matching'Result (G2) = G1))
 stable_marriage.ads:99:16: info: precondition proved (CVC5: 1 VC)
 stable_marriage.ads:100:17: info: precondition proved (CVC5: 1 VC)
 stable_marriage.ads:101:18: info: precondition proved (CVC5: 1 VC)

@@ -46,7 +46,7 @@ package body SPARK_Atree is
    ----------------------
 
    function Aggregate_Bounds (N : Node_Id) return Node_Id is
-     (Sinfo.Nodes.Aggregate_Bounds (N));
+     (Sinfo.Utils.Aggregate_Bounds (N));
 
    -----------------
    -- All_Present --

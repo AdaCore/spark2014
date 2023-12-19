@@ -53,7 +53,7 @@ to justify an unproved check message that cannot be proved by other means. See
 the section :ref:`Direct Justification with Pragma Annotate` for more details
 about this use of pragma ``Annotate``.
 
-.. index:: Annotate; No_Wrap_Around
+.. index:: Annotate; Skip_Proof; Skip_Flow_And_Proof
 
 Annotation for Skipping Parts of the Analysis for an Entity
 -----------------------------------------------------------
@@ -85,6 +85,8 @@ this entity (and enclosed entities).
 
 Note that the ``Skip_Proof`` annotation cannot be used if an enclosing
 subprogram already has the ``Skip_Flow_And_Proof`` annotation.
+
+.. index:: Annotate; No_Wrap_Around
 
 Annotation for Overflow Checking on Modular Types
 -------------------------------------------------
@@ -1033,3 +1035,443 @@ instantiated on all specializations of ``Count``.
    associated function. It is the case in particular if the lemma contains
    several calls to the function with different access-to-function parameters.
    In this case, a warning will be emitted on the lemma declaration.
+
+.. index:: Annotate; Handler
+
+Annotation for Handlers
+-----------------------
+
+Some programs define `handlers`, subprograms which might be called
+asynchronously to perform specific treatments, for example when an interrupt
+occurs. These handlers are often registered using access-to-subprogram
+types. In general, access-to-subprograms are not allowed to access or modify
+global data in |SPARK|. However, this is too constraining for handlers which
+tend to work by side-effects. To alleviate this limitation, it is
+possible to annotate an access-to-subprogram type with a pragma or aspect
+``Annotate => (GNATprove, Handler)``. This instructs |GNATprove| that these
+access-to-subprograms will be called asynchronously. It is possible to
+create a value of such a type using a reference to the ``Access`` attribute
+on a subprogram accessing or modifying global data, but only when this global
+data is synchronized (see SPARK RM 9.1). However, |GNATprove| will make sure
+that the subprograms designated by objects of these types are never called from
+|SPARK| code, as it could result in a missing data dependency.
+
+For example, consider the following procedure which resets to zero a global
+variable ``Counter``:
+
+.. code-block:: ada
+
+   Counter : Natural := 0 with Atomic;
+
+   procedure Reset is
+   begin
+      Counter := 0;
+   end Reset;
+
+It is not possible to store an access to ``Reset`` in a regular
+access-to-procedure type, as it has a global effect. However, it can be stored
+in a type annotated with an aspect ``Annotate => (GNATprove, Handler)`` like
+below:
+
+.. code-block:: ada
+
+   type No_Param_Proc is access procedure with
+     Annotate => (GNATprove, Handler);
+
+   P : No_Param_Proc := Reset'Access;
+
+However, it is not possible to call ``P`` from |SPARK| code as the effect to
+the ``Counter`` variable would be missed.
+
+.. note::
+
+   As handlers are called asynchronously, |GNATprove| does not allow providing
+   pre and postconditions for the access-to-subprogram type. As a result, a
+   check will be emitted to ensure that the precondition of each specific
+   subprogram designated by these handlers is provable in the empty context.
+
+Annotation for Container Aggregates
+-----------------------------------
+
+The ``Container_Aggregates`` annotation allows specifying aggregates on types
+annotated with the :ref:`Aspect Aggregate` either
+directly, using predefined aggregate patterns, or through a model. The second
+option is the easiest. It is enough to provide a model function returning a type
+which supports compatible aggregates. When an aggregate is encountered,
+|GNATprove| deduces the value of its model using the ``Container_Aggregates``
+annotation on the model type. In particular, functional containers from the
+:ref:`SPARK Libraries` are annotated with the ``Aggregate`` aspect. Other
+container libraries can take advantage of this support to specify aggregates on
+their own library by providing a model function returning a functional
+container. As an example, sequences can be used as a model to provide aggregates
+for a linked list of integers:
+
+.. literalinclude:: /examples/ug__aggregate_aspect_model/through_model.ads
+   :language: ada
+   :linenos:
+
+The ``Container_Aggregates`` annotation on type ``List`` indicates that its
+aggregates are specified using a model function. The annotation on the ``Model``
+function identifies it as the function that should be used to model aggregates
+of type ``List``. It is then possible to use aggregates of type ``List`` in
+|SPARK| as in the ``Main`` procedure below. |GNATprove| will use the handling of
+aggregates on infinite sequences to determine the value of the model of the
+aggregate and use it to prove the program.
+
+.. literalinclude:: /examples/ug__aggregate_aspect_model/main.adb
+   :language: ada
+   :linenos:
+
+It is also possible to specify directly how aggregates should be handled,
+without going through a model. To do this, |GNATprove| provides three different
+predefined patterns: one for vectors and sequences, one for sets,
+and one for maps. The chosen pattern is specified inside the
+``Container_Aggregates`` annotation on the type. Depending on this pattern,
+different functions can be provided to describe it. As an example, aggregates
+on our linked list of integers can also be described directly by supplying the
+three functions required for predefined sequence aggregates - ``First``,
+``Last``, and ``Get``:
+
+.. literalinclude:: /examples/ug__aggregate_aspect_predefined/predefined.ads
+   :language: ada
+   :linenos:
+
+For all types annotated with ``Container_Aggregates``, |GNATprove| performs
+`consistency checks` to make sure that the description induced by the annotation
+is compatible with the subprograms supplied by its ``Aggregate`` aspect. For
+example, on the ``List`` type defined above, |GNATprove| generates checks to
+ensure that ``Length`` returns ``First - 1`` on ``Empty_List``. It also checks
+that calling ``Add`` increases the result of ``Length`` by one and that its
+parameter ``E`` is associated to this last position. These checks succeed on
+our example thanks to the postcondition of ``Add`` as made explicit by the
+``info`` messages on line 8:
+
+.. literalinclude:: /examples/ug__aggregate_aspect_predefined/test.out
+   :language: none
+   :lines: 5-13
+
+The ``Container_Aggregates`` annotation might also induce
+`restrictions on aggregate usage`. For example, if we had chosen a signed
+integer type for the return type of ``Length`` in ``Predefined``,
+|GNATprove| would have introduced checks on all aggregates of type ``List`` to
+make sure that the number of elements doesn't exceed the number of indexes.
+
+When a model is used to specify aggregates, both the restrictions on
+aggregate usage and the consistency checks of the model are inherited. For
+example, |GNATprove| attempts to prove the consistency of ``Empty_List``
+and ``Add`` from ``Through_Model`` with the functions supplied for the model.
+These checks are proved thanks to the precise postcondition on ``Add``.
+In the same way, if we had chosen to use a functional vector indexed by a signed
+integer type instead of an infinite sequence as a model in ``Through_Model``,
+we would have been limited by the size of the integer type for our aggregates.
+
+All types with a ``Container_Aggregates`` annotation can be supplied an
+additional ``Capacity`` function. In general, this function does not have any
+parameters. It provides a constant bound on the number of elements allowed in
+the container. If a ``Capacity`` function is supplied on a type using models for
+its aggregates, it overrides the ``Capacity`` function of the model if any.
+If present, the ``Capacity`` function is used both as an additional restriction
+on aggregate usage and as an additional assumption for the consistency checks:
+|GNATprove| assumes that the container holds strictly less than ``Capacity``
+elements before a call to ``Add`` and it makes sure that the number of elements
+in actual aggregates never exceeds the capacity.
+
+To accomodate containers which can have a different capacity depending on the
+object, Ada allows providing an ``Empty`` function which takes an integer value
+for the capacity as a parameter in the ``Aggregate`` aspect. If a ``Capacity``
+function is specified for such a type, it shall take the container as a
+parameter since the capacity is specific to each container. In this case, it is
+the upper bound of the parameter type of the ``Empty`` function which is used
+as a restriction on aggregate usage. Examples of containers with
+a capacity function (both with and without parameters) can be found in formal
+container packages in the :ref:`SPARK Libraries`.
+
+There are three kinds of predefined aggregates patterns:
+``Predefined_Sequences`` like in the ``Predefined`` package,
+``Predefined_Sets``, and ``Predefined_Maps``. The selected pattern should be
+provided as a string to the ``Container_Aggregates`` annotation specified on the
+container type. Additional ``Container_Aggregates`` annotations are necessary on
+each specific function supported by the pattern. They also require a string
+encoding its intended use. This usage is examplified in
+the ``Predefined`` package.
+
+The ``Predefined_Sequences`` pattern can be applied to containers with
+positional aggregates. It supports three kinds of function annotations:
+
+* The function ``First`` returns the index or position that should be used
+  for the first element in a container.
+
+* The function ``Last`` returns the index or position of the last element
+  in a specific container.
+
+* The function ``Get`` returns the element associated to a valid index or
+  position in the container.
+
+All three functions are mandatory. The return types of ``First`` and ``Last``
+should be subtypes of the same signed integer type, or possibly of
+``Big_Integer``.
+
+The consistency checks ensure that:
+
+* ``Empty`` returns a container ``C`` such that ``Last (C) = First - 1``,
+
+* ``Add`` can be called on a container ``C`` such that
+  ``Last (C) < Index_Type'Last``, and
+
+* after a call to ``Add``, the result of ``Last (C)`` has been incremented by
+  one, the result of calling ``Get`` on all previous indexes is unchanged, and
+  calling ``Get`` on the last index returns the added element.
+
+The contracts of ``Empty`` and ``Append`` below ensure conformance to
+these consistency checks:
+
+.. code-block:: ada
+
+   type T is private with
+     Aggregate => (Empty       => Empty,
+                   Add_Unnamed => Append),
+     Annotate => (GNATprove, Container_Aggregates, "Predefined_Sequences");
+
+   function Empty return T with
+     Post => Last (Empty'Result) = First - 1;
+   procedure Append (X : in out T; E : Element_Type) with
+     Always_Terminates,
+     Pre  => Last (X) < Index_Type'Last,
+     Post => Last (X) = Last (X)'Old + 1 and Get (X, Last (X)) = E
+     and (for all I in First .. Last (X) - 1 => Get (X, I) = Get (X'Old, I));
+
+   function Last (X : T) return Ext_Index with
+     Annotate => (GNATprove, Container_Aggregates, "Last");
+
+   function First return Index_Type with
+     Annotate => (GNATprove, Container_Aggregates, "First");
+
+   function Get (X : T; I : Index_Type) return Element_Type with
+     Annotate => (GNATprove, Container_Aggregates, "Get"),
+     Pre => I <= Last (X);
+
+If ``Last`` returns a signed integer type, there is a restriction on predefined
+sequence aggregates usage: |GNATprove| will make sure that the number of
+elements in an aggregate never exceeds the maximum value of the return type of
+``Last``.
+
+When an aggregate ``C`` is encountered, |GNATprove| automatically infers that:
+
+* ``Last (C) - First + 1`` is the number of elements in the aggregate and
+
+* ``Get (First + N - 1)`` returns a copy of the N'th element.
+
+The ``Predefined_Sets`` pattern can be applied to containers with
+positional aggregates. It supports three kinds of function annotations:
+
+* The ``Contains`` function returns True if and only if its element
+  parameter is in the container.
+
+* ``Equivalent_Elements`` is an equivalence relation such that ``Contains``
+  always returns the same value on two equivalent elements.
+
+* The ``Length`` function returns the number of elements in the set.
+
+``Contains`` and ``Equivalent_Elements`` are mandatory, ``Length`` is optional.
+If it is supplied, the ``Length`` function should return a signed
+integer type or a subtype of ``Big_Integer``.
+
+The consistency checks ensure that:
+
+*  ``Contains`` returns False for all elements on the result of ``Empty`` and
+   ``Length``, if specified, returns 0,
+
+* ``Add`` can be called on a container ``C`` and an element ``E`` such that
+  ``Contains (C, E)`` returns False,
+
+* after a call to ``Add`` on a container ``C`` and an element ``E``,
+  ``Contains`` returns True on ``E`` and on all elements which were in ``C``
+  before the call, plus potential additional elements equivalent to ``E``,
+
+* after a call to ``Add``, the result of the ``Length`` function if any is
+  incremented by one.
+
+The contracts of ``Empty`` and ``Insert`` below ensure conformance to
+these consistency checks:
+
+.. code-block:: ada
+
+   type T is private with
+     Aggregate => (Empty       => Empty,
+                   Add_Unnamed => Insert),
+     Annotate => (GNATprove, Container_Aggregates, "Predefined_Sets");
+
+   function Empty return T with
+     Post => Length (Empty'Result) = 0
+     and then (for all E in Element_Type => not Contains (Empty'Result, E));
+   procedure Insert (X : in out T; E : Element_Type) with
+     Always_Terminates,
+     Pre  => not Contains (X, E),
+     Post => Length (X) = Length (X'Old) + 1 and Contains (X, E)
+     and (for all F in Element_Type =>
+            (if Contains (X'Old, F) then Contains (X, F)))
+     and (for all F in Element_Type =>
+            (if Contains (X, F) then Contains (X'Old, F) or Eq_Elem (F, E)));
+
+   function Eq_Elem (X, Y : Element_Type) return Boolean with
+     Annotate => (GNATprove, Container_Aggregates, "Equivalent_Elements");
+
+   function Contains (X : T; E : Element_Type) return Boolean with
+     Annotate => (GNATprove, Container_Aggregates, "Contains");
+
+   function Length (X : T) return Natural with
+     Annotate => (GNATprove, Container_Aggregates, "Length");
+
+Aggregates of types annotated with ``Predefined_Sets`` cannot contain
+`duplicates`, that is, two elements on which ``Equivalent_Elements`` returns
+True. This restriction on aggregate usage is enforced by |GNATprove|. It
+allows the tool to properly assess the cardinality of the resulting set. If
+a ``Length`` function is supplied and returns a signed integer type, and no
+``Capacity`` function applies to the type, |GNATprove| also makes sure that the
+number of elements in the aggregate does not exceed the upper bound of the
+return type of ``Length``. This last check is replaced by a check on the
+capacity if there is one.
+
+When an aggregate ``C`` is encountered, |GNATprove| automatically infers that:
+
+* ``Contains (C, E)`` returns True for every element ``E`` of the aggregate,
+
+* ``Contains (C, E)`` returns False for every element ``E`` which is not
+  equivalent to any element in the aggregate, and
+
+* ``Length (C)``, if supplied, is the number of elements in the aggregate.
+
+The ``Predefined_Maps`` pattern can be applied to containers with
+named aggregates. It supports five kinds of function annotations:
+
+* The ``Default_Item`` function returns the element associated by default to
+  keys of total maps.
+
+* The ``Has_Key`` function returns True if and only if its key parameter has an
+  association in a partial map.
+
+* The ``Get`` function returns the element associated to a key in the container.
+
+* ``Equivalent_Keys`` is an equivalence relation such that ``Has_Key`` and
+  ``Get`` return the same value on two equivalent keys.
+
+* The ``Length`` function returns the number of associations in a partial map.
+
+``Get`` and ``Equivalent_Keys`` are mandatory, exactly one of ``Default_Item``
+and ``Has_Key`` should be supplied (depending on whether the map is total - it
+associates a value to all keys - or partial) , and ``Length`` is optional and
+can only be supplied for partial maps. If it is supplied, the ``Length``
+function should return a signed integer type or a subtype of ``Big_Integer``.
+
+The consistency checks ensure that:
+
+* if ``Default_Item`` is supplied, ``Get`` returns ``Default_Item`` for all keys
+  on the result of ``Empty``,
+
+* if ``Has_Key`` is supplied, it returns False for all keys on the result of
+  ``Empty``, and ``Length``, if specified, returns 0,
+
+* ``Add`` can be called on a container ``C`` and a key ``K`` such that
+  ``Has_Key (C, K)`` returns False (for patial maps) or
+  ``Get (C, K) = Default_Item`` (for total maps),
+
+* after a call to ``Add`` on a container ``C``, a key ``K``, and an element
+  ``E``, ``Has_Key``, if any, returns True on ``K`` and on all keys which were
+  in ``C`` before the call, plus potential additional keys equivalent to ``K``,
+
+* after a call to ``Add`` on a container ``C``, a key ``K``, and an element
+  ``E``, ``Get`` returns a copy of ``E`` on ``K`` and its association in ``C``
+  before the call on keys which are not equivalent to ``K``, and
+
+* after a call to ``Add``, the result of the ``Length`` function if any is
+  incremented by one.
+
+The contracts of ``Empty`` and ``Insert`` below ensure conformance to
+these consistency checks for total maps:
+
+.. code-block:: ada
+
+   type T is private with
+     Aggregate => (Empty     => Empty,
+                   Add_Named => Insert),
+     Annotate => (GNATprove, Container_Aggregates, "Predefined_Maps");
+
+   function Empty return T with
+     Post => (for all K in Key_Type => Get (Empty'Result, K) = Default_Value);
+   procedure Insert (X : in out T; K : Key_Type; E : Element_Type) with
+     Always_Terminates,
+     Pre  => Get (X, K) = Default_Value,
+     Post => Get (X, K) = E
+     and (for all F in Key_Type =>
+            (if not Eq_Key (F, K) then Get (X, F) = Get (X'Old, F)));
+
+   function Eq_Key (X, Y : Key_Type) return Boolean with
+     Annotate => (GNATprove, Container_Aggregates, "Equivalent_Keys");
+
+   function Default_Value return Element_Type with
+     Annotate => (GNATprove, Container_Aggregates, "Default_Item");
+
+   function Get (X : T; K : Key_Type) return Element_Type with
+     Annotate => (GNATprove, Container_Aggregates, "Get";
+
+And here is a version for partial maps:
+
+.. code-block:: ada
+
+   type T is private with
+     Aggregate => (Empty     => Empty,
+                   Add_Named => Insert),
+     Annotate => (GNATprove, Container_Aggregates, "Predefined_Maps");
+
+   function Empty return T with
+     Post => Length (Empty'Result) = 0
+     and (for all K in Key_Type => not Has_Key (Empty'Result, K));
+   procedure Insert (X : in out T; K : Key_Type; E : Element_Type) with
+     Always_Terminates,
+     Pre  => not Has_Key (X, K),
+     Post => Length (X) - 1 = Length (X)'Old
+     and Has_Key (X, K)
+     and (for all F in Key_Type =>
+            (if Has_Key (X'Old, F) then Has_Key (X, F)))
+     and (for all L in Key_Type =>
+            (if Has_Key (X, L) then Has_Key (X'Old, L) or Eq_Key (L, K)))
+     and Get (X, K) = E
+     and (for all F in Key_Type =>
+            (if Has_Key (X'Old, F) then Get (X, F) = Get (X'Old, F)));
+
+   function Eq_Key (X, Y : Key_Type) return Boolean with
+     Annotate => (GNATprove, Container_Aggregates, "Equivalent_Keys");
+
+   function Has_Key (X : T; K : Key_Type) return Boolean with
+     Annotate => (GNATprove, Container_Aggregates, "Has_Key");
+
+   function Get (X : T; K : Key_Type) return Element_Type with
+     Pre => Has_Key (X, K),
+     Annotate => (GNATprove, Container_Aggregates, "Get");
+
+   function Length (X : T) return Natural with
+     Annotate => (GNATprove, Container_Aggregates, "Length");
+
+Aggregates of types annotated with ``Predefined_Maps`` cannot contain
+`duplicates`, that is, two keys on which ``Equivalent_Keys`` returns
+True. This restriction on aggregate usage is enforced by |GNATprove|. It
+allows the tool to determine the associated element uniquely and to assess the
+cardinality of the resulting map. If a ``Length`` function is supplied and
+returns a signed integer type, and no ``Capacity`` function applies to the type,
+|GNATprove| also makes sure that the number of elements in the aggregate does
+not exceed the upper bound of the return type of ``Length``. This last check is
+replaced by a check on the capacity if there is one.
+
+When an aggregate ``C`` is encountered, |GNATprove| automatically infers that:
+
+* if ``Has_Key`` is supplied, ``Has_Key (C, K)`` returns True for every
+  association ``K => _`` in the aggregate,
+
+* ``Get (C, K)`` returns a copy of ``E`` for every association ``K => E`` in
+  the aggregate,
+
+* for every key ``K`` which is not equivalent to any key in the aggregate
+  either ``Has_Key (C, K)`` returns False (for patial maps) or ``Get (C, K)``
+  returns ``Default_Item`` (for total maps), and
+
+* ``Length (C)``, if supplied, is the number of elements in the aggregate.

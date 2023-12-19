@@ -3,4 +3,4 @@ test.adb:9:04: info: initialization of "S" proved
 test.adb:9:13: info: range check proved (CVC5: 2 VC)
 test.adb:11:04: info: precondition proved (CVC5: 2 VC)
 test.adb:12:04: info: precondition proved (CVC5: 2 VC)
-test.adb:14:04: info: precondition proved (Z3: 1 VC)
+test.adb:14:04: info: precondition proved (CVC5: 1 VC)

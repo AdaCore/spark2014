@@ -1331,6 +1331,7 @@ package body Why.Inter is
       Selector     : Selection_Kind := Standard;
       No_Comp      : Boolean := False;
       Rec          : Entity_Id := Empty;
+      Init_Decl    : Boolean := False;
       Typ          : W_Type_Id := Why_Empty;
       Relaxed_Init : Boolean := False) return W_Identifier_Id
    is
@@ -1409,9 +1410,10 @@ package body Why.Inter is
             Kind      : constant Module_Kind :=
               (if Selector = Dispatch
                then (if Domain = EW_Prog then Dispatch_Axiom else Dispatch)
+               elsif Init_Decl then Logic_Function_Decl
                elsif Ekind (E) in Subprogram_Kind | Entry_Kind
                and then Domain = EW_Prog
-               then Axiom
+               then Program_Function_Decl
                elsif Relaxed_Init then Init_Wrapper
                else Regular);
             Module    : constant W_Module_Id := E_Module (E, Kind);

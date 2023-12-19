@@ -49,21 +49,20 @@ infinite_sequences.adb:51:55: info: predicate check proved (Trivial: 2 VC)
 infinite_sequences.adb:51:61: info: predicate check proved (CVC5: 2 VC; Trivial: 2 VC)
 infinite_sequences.adb:51:63: info: predicate check proved (Trivial: 2 VC)
 infinite_sequences.adb:53:19: info: loop invariant initialization proved (CVC5: 2 VC)
-infinite_sequences.adb:54:23: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove Has_Key (Content, K) [possible fix: you should consider adding a postcondition to function Has_Key or turning it into an expression function]
+infinite_sequences.adb:53:19: info: loop invariant preservation proved (CVC5: 2 VC)
 infinite_sequences.adb:54:41: info: predicate check proved (CVC5: 2 VC; Trivial: 2 VC)
 infinite_sequences.adb:55:28: info: precondition proved (CVC5: 2 VC)
 infinite_sequences.adb:55:42: info: predicate check proved (CVC5: 2 VC; Trivial: 2 VC)
 infinite_sequences.adb:55:47: info: precondition proved (CVC5: 4 VC)
 infinite_sequences.adb:55:56: info: predicate check proved (CVC5: 2 VC; Trivial: 2 VC)
 infinite_sequences.adb:57:19: info: loop invariant initialization proved (CVC5: 2 VC)
-infinite_sequences.adb:57:43: medium: in inlined expression function body at a-nbnbin.ads:66
-infinite_sequences.adb:57:43: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove Low <= Arg
+infinite_sequences.adb:57:19: info: loop invariant preservation proved (CVC5: 2 VC)
 infinite_sequences.adb:57:53: info: predicate check proved (Trivial: 2 VC)
 infinite_sequences.adb:58:21: info: predicate check proved (Trivial: 1 VC)
 infinite_sequences.adb:58:23: info: predicate check proved (CVC5: 1 VC; Trivial: 1 VC)
 infinite_sequences.adb:58:25: info: predicate check proved (Trivial: 1 VC)
-infinite_sequences.adb:62:14: medium: in inlined expression function body at infinite_sequences.adb:14
-infinite_sequences.adb:62:14: medium: predicate check might fail, cannot prove Has_Key (M, I)
+infinite_sequences.adb:62:14: medium: in inlined expression function body at infinite_sequences.adb:15
+infinite_sequences.adb:62:14: medium: predicate check might fail, cannot prove In_Range (I, Fst, Lst)
 infinite_sequences.ads:7:09: info: predicate check proved on default value (CVC5: 3 VC)
 infinite_sequences.ads:8:13: info: implicit aspect Always_Terminates on "First" has been proved, subprogram will terminate
 infinite_sequences.ads:9:13: info: implicit aspect Always_Terminates on "Last" has been proved, subprogram will terminate

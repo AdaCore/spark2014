@@ -21,6 +21,6 @@ sort.adb:48:40: info: range check proved (CVC5: 8 VC)
 sort.adb:51:13: info: precondition proved (CVC5: 10 VC)
 sort.adb:52:29: info: range check proved (CVC5: 4 VC)
 sort.adb:53:29: info: range check proved (CVC5: 4 VC)
-sort.adb:56:33: medium: loop invariant might fail in first iteration (e.g. when Values = (others => 1) and Values'First = 1 and Values'Last = 100)
+sort.adb:56:33: medium: loop invariant might fail in first iteration (e.g. when Values = (others => 1) and Values'First = 1 and Values'Last = 2)
 sort.adb:56:33: medium: loop invariant might not be preserved by an arbitrary iteration
 sort.ads:8:16: medium: postcondition might fail

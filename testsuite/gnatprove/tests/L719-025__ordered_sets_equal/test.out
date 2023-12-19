@@ -15,4 +15,4 @@ p.ads:8:13: info: implicit aspect Always_Terminates on "My_Lt" has been proved, 
 p.ads:17:14: info: postcondition proved (CVC5: 1 VC)
 p.ads:17:14: info: precondition proved (CVC5: 1 VC)
 p.ads:21:14: info: postcondition proved (CVC5: 3 VC)
-p.ads:26:14: info: postcondition proved (CVC5: 3 VC; Trivial: 1 VC)
+p.ads:26:14: info: postcondition proved (CVC5: 2 VC; Trivial: 1 VC; Z3: 1 VC)

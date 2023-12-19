@@ -1,7 +1,6 @@
 prove_all:
-  opt: ["--function-sandboxing=off"]
   sparklib: True
   no_fail: True
 replay: True
 session_opt:
-  level: 2
+  level: 3

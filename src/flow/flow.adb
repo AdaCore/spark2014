@@ -55,6 +55,7 @@ with Output;                           use Output;
 with Sem_Ch7;                          use Sem_Ch7;
 with Sem_Util;                         use Sem_Util;
 with Sinfo.Nodes;                      use Sinfo.Nodes;
+with Sinfo.Utils;                      use Sinfo.Utils;
 with Sinput;                           use Sinput;
 with Snames;                           use Snames;
 with SPARK_Definition;                 use SPARK_Definition;
@@ -101,6 +102,9 @@ package body Flow is
 
    procedure Build_Graphs_For_Analysis (FA_Graphs : out Analysis_Maps.Map);
    --  Build flow graphs for the current compilation unit; phase 2
+
+   procedure Check_Handler_Accesses;
+   --  Check Handler'Access expressions in the current compilation unit
 
    procedure Check_Specification_Contracts;
    --  Perform initial checks on contracts:
@@ -1559,6 +1563,55 @@ package body Flow is
       end if;
    end Build_Graphs_For_Analysis;
 
+   ----------------------------
+   -- Check_Handler_Accesses --
+   ----------------------------
+
+   procedure Check_Handler_Accesses is
+   begin
+      for N of SPARK_Definition.Handler_Accesses loop
+         declare
+            Context : constant Entity_Id := Find_Enclosing_Scope (N);
+            Subp    : constant Entity_Id := Entity (Prefix (N));
+            Globals : Global_Flow_Ids;
+            Unused  : Boolean;
+            use type Flow_Id_Sets.Set;
+         begin
+            if Is_In_Analyzed_Files (Context) then
+               Get_Globals
+                 (Subprogram          => Subp,
+                  Scope               => (Ent => Subp, Part => Visible_Part),
+                  Classwide           => False,
+                  Globals             => Globals,
+                  Use_Deduced_Globals => True,
+                  Ignore_Depends      => False);
+
+               for Var of
+                 To_Ordered_Flow_Id_Set
+                   (Globals.Proof_Ins
+                      or
+                    Globals.Inputs
+                      or
+                    Globals.Outputs)
+               loop
+                  if not Is_Synchronized (Var) then
+                     Error_Msg_Flow
+                       (E          => Context,
+                        Msg        =>
+                           "handler & with unsychchronized global &",
+                        N          => N,
+                        Severity   => Medium_Check_Kind,
+                        Tag        => Concurrent_Access,
+                        Suppressed => Unused,
+                        F1         => Direct_Mapping_Id (Subp),
+                        F2         => Var);
+                  end if;
+               end loop;
+            end if;
+         end;
+      end loop;
+   end Check_Handler_Accesses;
+
    -----------------------------------
    -- Check_Specification_Contracts --
    -----------------------------------
@@ -1619,6 +1672,7 @@ package body Flow is
    begin
       Found_Error := False;
 
+      Check_Handler_Accesses;
       Check_Specification_Contracts;
 
       --  Process entities and construct graphs if necessary
