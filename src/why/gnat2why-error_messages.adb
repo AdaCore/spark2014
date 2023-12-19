@@ -304,7 +304,7 @@ package body Gnat2Why.Error_Messages is
          Verdict       => Verdict,
          Check_Tree    => Check_Tree,
          VC_File       => VC_File,
-         VC_Loc        => VC_Loc,
+         VC_Loc        => (if VC_Loc /= Empty then VC_Loc else Node),
          Editor_Cmd    => Editor_Cmd,
          Explanation   => Explanation,
          Stats         => Stats,
