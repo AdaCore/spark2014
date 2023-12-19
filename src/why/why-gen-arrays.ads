@@ -453,6 +453,14 @@ package Why.Gen.Arrays is
       Typ    : W_Type_Id) return W_Expr_Id;
    --  Return a call to the singleton function in Why array theory
 
+   function New_Slice_Call
+     (Domain : EW_Domain;
+      Arr    : W_Expr_Id;
+      Typ    : W_Type_Id;
+      Low    : W_Expr_Id;
+      High   : W_Expr_Id) return W_Expr_Id;
+   --  Return a call to the slice function in Why array theory
+
    function Get_Array_Theory_Name
      (E            : Entity_Id;
       Relaxed_Init : Boolean := False) return Symbol

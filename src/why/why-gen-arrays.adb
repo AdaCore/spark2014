@@ -3037,6 +3037,28 @@ package body Why.Gen.Arrays is
            Typ    => EW_Split (E, Relaxed_Init => Relaxed_Init));
    end New_Singleton_Call;
 
+   --------------------
+   -- New_Slice_Call --
+   --------------------
+
+   function New_Slice_Call
+     (Domain : EW_Domain;
+      Arr    : W_Expr_Id;
+      Typ    : W_Type_Id;
+      Low    : W_Expr_Id;
+      High   : W_Expr_Id) return W_Expr_Id
+   is
+      Relaxed_Init : constant Boolean := Is_Init_Wrapper_Type (Typ);
+      E            : constant Entity_Id := Get_Ada_Node (+Typ);
+   begin
+      return
+        New_Call
+          (Domain => Domain,
+           Name   => Get_Array_Theory_1 (E, Relaxed_Init).Slice,
+           Args   => (1 => Arr, 2 => Low, 3 => High),
+           Typ    => EW_Split (E, Relaxed_Init => Relaxed_Init));
+   end New_Slice_Call;
+
    -----------------------------------
    -- Prepare_Indexes_Substitutions --
    -----------------------------------

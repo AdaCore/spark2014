@@ -25128,14 +25128,20 @@ package body Gnat2Why.Expr is
 
       --  if needed, we convert the arrray to a simple base type
 
-      if not Is_Static_Array_Type (Etype (Expr))
-        and then
-          not Is_Static_Array_Type (Get_Ada_Node (+Get_Type (+Pref_Term)))
-      then
+      if not Is_Static_Array_Type (Get_Ada_Node (+Get_Type (+Pref_Term))) then
          T := Array_Convert_To_Base (Domain, T);
       end if;
 
-      --  if needed, we insert a check that the slice bounds are in the bounds
+      --  Call the slice function
+
+      T := New_Slice_Call
+        (Domain => Domain,
+         Arr    => T,
+         Typ    => Get_Type (+Pref_Term),
+         Low    => +Low_Expr,
+         High   => +High_Expr);
+
+      --  If needed, we insert a check that the slice bounds are in the bounds
       --  of the prefix
 
       if Domain = EW_Prog then
@@ -25186,16 +25192,14 @@ package body Gnat2Why.Expr is
 
       if Is_Static_Array_Type (Etype (Expr)) then
 
-         --  a conversion may be needed to the target type
+         --  Fix the type of the Why3 AST
 
-         T :=
-           Insert_Array_Conversion
-             (Domain         => Domain,
-              Expr           => T,
-              To             => Target_Ty,
-              Force_No_Slide => True);
+         T :=  New_Label (Labels => Symbol_Sets.Empty_Set,
+                          Def    => T,
+                          Domain => Domain,
+                          Typ    => Target_Ty);
 
-      --  when the slice bounds are not static, we produce a compound object
+      --  When the slice bounds are not static, we produce a compound object
       --  contents + bounds.
 
       else

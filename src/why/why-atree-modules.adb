@@ -980,6 +980,11 @@ package body Why.Atree.Modules is
                         Domain => EW_Term,
                         Symb   => NID ("singleton"),
                         Typ    => Ty);
+      M_Array_1.Slice :=
+        New_Identifier (Module => Module,
+                        Domain => EW_Term,
+                        Symb   => NID ("slice"),
+                        Typ    => Ty);
 
       return M_Array_1;
    end Init_Array_1_Module;
