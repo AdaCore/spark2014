@@ -1421,13 +1421,20 @@ package body SPARK_Definition is
                return True;
 
             --  The allocating expression corresponds to a component value in
-            --  an aggregate occurring in an allocating context.
+            --  an aggregate occurring in an allocating context. Container
+            --  aggregates are really subprogram calls, they are never
+            --  allocating contexts.
 
             when N_Aggregate
-               | N_Component_Association
-               | N_Iterated_Component_Association
                | N_Delta_Aggregate
                | N_Extension_Aggregate
+            =>
+               if SPARK_Util.Is_Container_Aggregate (Context) then
+                  return False;
+               end if;
+
+            when N_Component_Association
+               | N_Iterated_Component_Association
             =>
                null;
 
