@@ -2013,15 +2013,22 @@ package body SPARK_Definition is
 
                else
                   declare
-                     --  In non-interfering contexts the subtype indicator
-                     --  is always a subtype name, because frontend creates
-                     --  an itype for each constrained subtype indicator.
                      Expr : constant Node_Id := Expression (N);
-                     pragma Assert (Is_Entity_Name (Expr));
-
-                     Typ  : constant Type_Kind_Id := Entity (Expr);
+                     Typ  : constant Type_Kind_Id :=
+                       (if Nkind (Expr) = N_Subtype_Indication
+                        then Entity (Subtype_Mark (Expr))
+                        else Entity (Expr));
                   begin
-                     if not In_SPARK (Typ) then
+                     --  In general, the subtype indicator is a subtype name,
+                     --  because frontend creates an itype for each constrained
+                     --  subtype indicator. When it is not possible (when the
+                     --  allocator occurs in contracts for example) reject the
+                     --  code.
+
+                     if Nkind (Expr) = N_Subtype_Indication then
+                        Mark_Unsupported
+                          (Lim_Alloc_With_Type_Constraints, Expr);
+                     elsif not In_SPARK (Typ) then
                         Mark_Violation (Expr, Typ);
 
                      elsif Default_Initialization (Typ)
