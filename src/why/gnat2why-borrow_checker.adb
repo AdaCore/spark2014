@@ -1925,6 +1925,19 @@ package body Gnat2Why.Borrow_Checker is
             procedure Read_Choice (Choice : Node_Id) is
                Pref : Node_Id := Choice;
             begin
+               if Nkind (Choice) = N_Aggregate then
+                  --  Deal with special choices of multi-dimensional 'Update
+                  --  attribute for arrays
+
+                  Pref := First (Expressions (Choice));
+                  while Present (Pref) loop
+                     Read_Expression (Pref);
+                     Next (Pref);
+                  end loop;
+
+                  return;
+               end if;
+
                if Is_Deep_Choice (Choice, Etype (Expr)) then
                   while not Is_Root_Prefix_Of_Deep_Choice (Pref) loop
                      if Nkind (Pref) = N_Indexed_Component then
