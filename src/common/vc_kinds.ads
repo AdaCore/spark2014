@@ -416,6 +416,7 @@ package VC_Kinds is
       Lim_Access_To_Relaxed_Init_Subp,
       Lim_Access_To_Subp_With_Exc,
       Lim_Address_Attr_In_Unsupported_Context,
+      Lim_Alloc_With_Type_Constraints,
       Lim_Array_Conv_Different_Size_Modular_Index,
       Lim_Array_Conv_Signed_Modular_Index,
       Lim_Assert_And_Cut_Meet_Inv,
@@ -600,6 +601,8 @@ package VC_Kinds is
            "access to procedure which might raise exceptions",
          when Lim_Address_Attr_In_Unsupported_Context =>
            "attribute ""Address"" in unsupported context",
+         when Lim_Alloc_With_Type_Constraints =>
+           "uninitialized allocator with type constraints",
          when Lim_Object_Before_Inv =>
            "non-scalar object declared before loop-invariant",
          when Lim_Package_Before_Inv =>
