@@ -1864,13 +1864,13 @@ module Array__1
   (* An array containing the value v at all indexes. It is used for the value
      of aggregate associations with a box. *)
 
-   function const component_type : map
+   function const component_type I1.t I1.t : map
    meta "encoding:lskept" function const
 
    axiom const_def :
     forall v : component_type.
-    forall i : I1.t  [get (const v) i].
-      get (const v) i = v
+    forall first last i : I1.t  [get (const v first last) i].
+      (I1.le first i /\ I1.le i last) -> get (const v first last) i = v
    meta "remove_unused:dependency" axiom const_def, function const
 end
 
@@ -2037,14 +2037,17 @@ module Array__2
   (* An array containing the value v at all indexes. It is used for the value
      of aggregate associations with a box. *)
 
-   val function const component_type : map
+   val function const component_type I1.t I1.t I2.t I2.t : map
    meta "encoding:lskept" function const
 
    axiom const_def :
     forall v : component_type.
-    forall i : I1.t.
-    forall j : I2.t  [get (const v) i j].
-      get (const v) i j = v
+    forall first_1 last_1 i : I1.t.
+    forall first_2 last_2 j : I2.t
+    [get (const v first_1 last_1 first_2 last_2) i j].
+    (I1.le first_1 i /\ I1.le i last_1) ->
+    (I2.le first_2 j /\ I2.le j last_2) ->
+      get (const v first_1 last_1 first_2 last_2) i j = v
    meta "remove_unused:dependency" axiom const_def, function const
 end
 
@@ -2108,15 +2111,19 @@ module Array__3
   (* An array containing the value v at all indexes. It is used for the value
      of aggregate associations with a box. *)
 
-   val function const component_type : map
+   val function const component_type I1.t I1.t I2.t I2.t I3.t I3.t : map
    meta "encoding:lskept" function const
 
    axiom const_def :
     forall v : component_type.
-    forall i : I1.t.
-    forall j : I2.t.
-    forall k : I3.t  [get (const v) i j k].
-      get (const v) i j k = v
+    forall first_1 last_1 i : I1.t.
+    forall first_2 last_2 j : I2.t.
+    forall first_3 last_3 k : I3.t
+    [get (const v first_1 last_1 first_2 last_2 first_3 last_3) i j k].
+    (I1.le first_1 i /\ I1.le i last_1) ->
+    (I2.le first_2 j /\ I2.le j last_2) ->
+    (I3.le first_3 k /\ I3.le k last_3) ->
+      get (const v first_1 last_1 first_2 last_2 first_3 last_3) i j k = v
    meta "remove_unused:dependency" axiom const_def, function const
 end
 
@@ -2188,16 +2195,24 @@ module Array__4
   (* An array containing the value v at all indexes. It is used for the value
      of aggregate associations with a box. *)
 
-   val function const component_type : map
+   val function const
+     component_type I1.t I1.t I2.t I2.t I3.t I3.t I4.t I4.t : map
    meta "encoding:lskept" function const
 
    axiom const_def :
     forall v : component_type.
-    forall i : I1.t.
-    forall j : I2.t.
-    forall k : I3.t.
-    forall l : I4.t  [get (const v) i j k l].
-      get (const v) i j k l = v
+    forall first_1 last_1 i : I1.t.
+    forall first_2 last_2 j : I2.t.
+    forall first_3 last_3 k : I3.t.
+    forall first_4 last_4 l : I4.t
+    [get (const v first_1 last_1 first_2 last_2 first_3 last_3 first_4 last_4)
+      i j k l].
+    (I1.le first_1 i /\ I1.le i last_1) ->
+    (I2.le first_2 j /\ I2.le j last_2) ->
+    (I3.le first_3 k /\ I3.le k last_3) ->
+    (I4.le first_4 l /\ I4.le l last_4) ->
+      get (const v first_1 last_1 first_2 last_2 first_3 last_3 first_4 last_4)
+        i j k l = v
    meta "remove_unused:dependency" axiom const_def, function const
 end
 

@@ -443,6 +443,7 @@ package Why.Gen.Arrays is
    function New_Const_Call
      (Domain : EW_Domain;
       Elt    : W_Expr_Id;
+      Bounds : W_Expr_Array;
       Typ    : W_Type_Id) return W_Expr_Id;
    --  Return a call to the const function in Why array theory
 

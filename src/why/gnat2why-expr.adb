@@ -5278,36 +5278,37 @@ package body Gnat2Why.Expr is
 
                --  Create an array with the same element at all indexes
 
-               Def := +New_Const_Call
-                 (Domain => EW_Term,
-                  Elt    => +Comp_Default,
-                  Typ    => W_Ty);
+               declare
+                  Dim    : constant Positive :=
+                    Positive (Number_Dimensions (Ty));
+                  Bounds : W_Expr_Array (1 .. 2 * Dim);
+                  Count  : Positive := 1;
+               begin
+                  for D in 1 .. Dim loop
+                     Add_Attr_Arg
+                       (EW_Term, Bounds, Ty, Attribute_First, D, Count,
+                        Params);
+                     Add_Attr_Arg
+                       (EW_Term, Bounds, Ty, Attribute_Last, D, Count,
+                        Params);
+                  end loop;
 
-               --  For unconstrained arrays, reconstruct the array
+                  Def := +New_Const_Call
+                    (Domain => EW_Term,
+                     Elt    => +Comp_Default,
+                     Bounds => Bounds,
+                     Typ    => W_Ty);
 
-               if not Is_Static_Array_Type (Ty) then
-                  declare
-                     Dim    : constant Positive :=
-                       Positive (Number_Dimensions (Ty));
-                     Bounds : W_Expr_Array (1 .. 2 * Dim);
-                     Count  : Positive := 1;
-                  begin
-                     for D in 1 .. Dim loop
-                        Add_Attr_Arg
-                          (EW_Term, Bounds, Ty, Attribute_First, D, Count,
-                           Params);
-                        Add_Attr_Arg
-                          (EW_Term, Bounds, Ty, Attribute_Last, D, Count,
-                           Params);
-                     end loop;
+                  --  For unconstrained arrays, reconstruct the array
 
+                  if not Is_Static_Array_Type (Ty) then
                      Def := +Array_Convert_From_Base
                        (Domain => EW_Term,
                         Ty     => Ty,
                         Ar     => +Def,
                         Bounds => Bounds);
-                  end;
-               end if;
+                  end if;
+               end;
             end;
 
          elsif Is_Access_Type (Ty) then

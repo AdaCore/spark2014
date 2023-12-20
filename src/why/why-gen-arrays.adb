@@ -2718,6 +2718,7 @@ package body Why.Gen.Arrays is
    function New_Const_Call
      (Domain : EW_Domain;
       Elt    : W_Expr_Id;
+      Bounds : W_Expr_Array;
       Typ    : W_Type_Id) return W_Expr_Id
    is
       Relaxed_Init : constant Boolean := Is_Init_Wrapper_Type (Typ);
@@ -2727,7 +2728,7 @@ package body Why.Gen.Arrays is
         New_Call
           (Domain => Domain,
            Name   => Get_Array_Theory (E, Relaxed_Init).Const,
-           Args   => (1 => Elt),
+           Args   => Elt & Bounds,
            Typ    => EW_Split (E, Relaxed_Init => Relaxed_Init));
    end New_Const_Call;
 
