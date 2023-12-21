@@ -2842,10 +2842,10 @@ package body Flow.Analysis is
                begin
                   case Ekind (E) is
 
-                     --  Abstract state will be annotated directly
+                     --  Abstract state can't be annotated
 
                      when E_Abstract_State =>
-                        return Has_Relaxed_Initialization (E);
+                        return False;
 
                      --  Other objects can be either annotated directly, or
                      --  else the aspect can apply to their type, or else
