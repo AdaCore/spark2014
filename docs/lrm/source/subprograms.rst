@@ -1598,8 +1598,8 @@ parameter modes, Global contract, exceptional contract and termination: it may
 have output parameters, write global variables, raise exceptions and not
 terminate. Such a function is called a *function with side effects*.
 
-Note that a function with side effects may also be a volatile function (see
-section :ref:`External State`).
+Note that a function with side effects is also a volatile function (see section
+:ref:`External State`).
 
 .. container:: heading
 

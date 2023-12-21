@@ -6102,6 +6102,15 @@ package body SPARK_Definition is
                  ("nonvolatile function with effectively volatile result", Id);
             end if;
 
+            --  A function with side effects shall not be a traversal function
+            --  (SPARK RM 6.1.11(7)).
+
+            if Is_Function_With_Side_Effects (Id)
+              and then Is_Traversal_Function (Id)
+            then
+               Mark_Violation ("traversal function with side effects", Id);
+            end if;
+
             --  Only traversal functions can return anonymous access types.
             --  Check for the first formal to be in SPARK before calling
             --  Is_Traversal_Function to avoid calling Retysp on an unmarked
@@ -6137,15 +6146,6 @@ package body SPARK_Definition is
                end if;
             end if;
 
-            --  A function with side effects shall not be a traversal function
-            --  (SPARK RM 6.1.11(7)).
-
-            if Is_Function_With_Side_Effects (Id)
-              and then Is_Traversal_Function (Id)
-            then
-               Mark_Violation ("traversal function with side effects", Id);
-            end if;
-
             if Is_User_Defined_Equality (Id)
               and then Is_Primitive (Id)
             then
@@ -6156,24 +6156,24 @@ package body SPARK_Definition is
                     and then not Is_Limited_Type (Retysp (Typ))
                   then
                      --  A user-defined primitive equality operation on a
-                     --  record type shall not be a volatile function, unless
-                     --  the record type has only limited views (SPARK RM
-                     --  7.1.3(10)).
-                     if Is_Volatile_Function (Id) then
-                        Mark_Violation
-                          ("volatile function as"
-                           & " user-defined equality on record type", Id,
-                           SRM_Reference => "SPARK RM 7.1.3(10)");
-
-                     --  A user-defined primitive equality operation on a
                      --  record type shall not be a function with side effects,
                      --  unless the record type has only limited views (SPARK
                      --  RM 6.11(8)).
-                     elsif Is_Function_With_Side_Effects (Id) then
+                     if Is_Function_With_Side_Effects (Id) then
                         Mark_Violation
                           ("function with side effects as"
                            & " user-defined equality on record type", Id,
                            SRM_Reference => "SPARK RM 6.11(8)");
+
+                     --  A user-defined primitive equality operation on a
+                     --  record type shall not be a volatile function, unless
+                     --  the record type has only limited views (SPARK RM
+                     --  7.1.3(10)).
+                     elsif Is_Volatile_Func then
+                        Mark_Violation
+                          ("volatile function as"
+                           & " user-defined equality on record type", Id,
+                           SRM_Reference => "SPARK RM 7.1.3(10)");
 
                      --  A user-defined primitive equality operation on a
                      --  non-ghost record type shall not be ghost, unless the
@@ -6272,11 +6272,11 @@ package body SPARK_Definition is
             --  Go over the global objects accessed by Id to make sure that
             --  they are not written if Id is not a function with side effects,
             --  and that they are not volatile if Id is not a volatile
-            --  function. This check is done in the frontend for explict
-            --  global contracts, but we need it for the generated ones.
+            --  function.
 
             if Ekind (Id) = E_Function
               and then not Is_Predicate_Function (Id)
+              and then not Is_Function_With_Side_Effects (Id)
             then
                declare
                   Globals : Global_Flow_Ids;
@@ -6298,38 +6298,32 @@ package body SPARK_Definition is
                   --  container.
 
                   if not Globals.Outputs.Is_Empty then
-                     if not Is_Function_With_Side_Effects (Id) then
-                        for G of To_Ordered_Flow_Id_Set (Globals.Outputs) loop
-                           declare
-                              G_Name : constant String :=
-                                (if G.Kind in Direct_Mapping then "&"
-                                 else '"'
-                                 & Flow_Id_To_String (G, Pretty => True)
-                                 & '"');
-                           begin
-                              if G.Kind in Direct_Mapping then
-                                 Error_Msg_Node_2 := G.Node;
-                              end if;
-                              Mark_Violation
-                                ("function & with output global " & G_Name,
-                                 Id,
-                                 Code => EC_Function_Output_Global,
-                                 Root_Cause_Msg =>
-                                   "function with global outputs");
-                           end;
-                        end loop;
-                     end if;
+                     for G of To_Ordered_Flow_Id_Set (Globals.Outputs) loop
+                        declare
+                           G_Name : constant String :=
+                             (if G.Kind in Direct_Mapping then "&"
+                              else '"'
+                              & Flow_Id_To_String (G, Pretty => True)
+                              & '"');
+                        begin
+                           if G.Kind in Direct_Mapping then
+                              Error_Msg_Node_2 := G.Node;
+                           end if;
+                           Mark_Violation
+                             ("function & with output global " & G_Name,
+                              Id,
+                              Code => EC_Function_Output_Global,
+                              Root_Cause_Msg =>
+                                "function with global outputs");
+                        end;
+                     end loop;
 
                   else
                      for G of
                        To_Ordered_Flow_Id_Set
                          (Globals.Inputs.Union (Globals.Proof_Ins))
                      loop
-
-                        --  Volatile variable with effective reads are outputs.
-                        --  This case can only happen with abstract states
-                        --  annotated with External. Other cases are rejected
-                        --  in the frontend.
+                        --  Volatile variable with effective reads are outputs
 
                         if Has_Effective_Reads (G) then
                            declare
@@ -6354,7 +6348,7 @@ package body SPARK_Definition is
                         --  A nonvolatile function shall not have volatile
                         --  global inputs (SPARK RM 7.1.3(7)).
 
-                        if not Is_Volatile_Function (Id)
+                        if not Is_Volatile_Func
                           and then Has_Async_Writers (G)
                         then
                            declare

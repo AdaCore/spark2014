@@ -30,6 +30,7 @@ with Restrict;                    use Restrict;
 with Rident;                      use Rident;
 with Sem_Aggr;
 with Sem_Aux;                     use Sem_Aux;
+with Sem_Prag;
 with Sem_Type;                    use Sem_Type;
 with Sem_Warn;                    use Sem_Warn;
 with Sinfo.Utils;                 use Sinfo.Utils;
@@ -5503,6 +5504,7 @@ package body Flow.Analysis is
      (FA : in out Flow_Analysis_Graphs)
    is
       Volatile_Effect_Found    : Boolean := False;
+      Volatile_Effect_Allowed  : Boolean;
       Volatile_Effect_Expected : Boolean;
 
       procedure Report_Erroneous_Volatility;
@@ -5607,10 +5609,14 @@ package body Flow.Analysis is
          return;
       end if;
 
-      Volatile_Effect_Expected :=
+      Volatile_Effect_Allowed :=
         (if Is_Protected_Type (Scope (FA.Spec_Entity))
          then Is_Volatile_For_Internal_Calls (FA.Spec_Entity)
          else Is_Volatile_Function (FA.Spec_Entity));
+
+      Volatile_Effect_Expected :=
+        Sem_Prag.Is_Enabled_Pragma
+          (Get_Pragma (FA.Spec_Entity, Pragma_Volatile_Function));
 
       declare
          Globals : Global_Flow_Ids;
@@ -5645,7 +5651,7 @@ package body Flow.Analysis is
       end;
 
       --  Emit messages about nonvolatile functions with volatile effects
-      if not Volatile_Effect_Expected
+      if not Volatile_Effect_Allowed
          and then Volatile_Effect_Found
       then
          Report_Erroneous_Volatility;

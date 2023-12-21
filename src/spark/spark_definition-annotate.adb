@@ -832,15 +832,15 @@ package body SPARK_Definition.Annotate is
                return;
             end if;
 
-            if Is_Volatile_Function (Ent) then
-               Error_Msg_N_If
-                 ("a function annotated with Container_Aggregates must not"
-                  & " be volatile", Ent);
-               return;
-            elsif Is_Function_With_Side_Effects (Ent) then
+            if Is_Function_With_Side_Effects (Ent) then
                Error_Msg_N_If
                  ("a function annotated with Container_Aggregates must not"
                   & " have side effects", Ent);
+               return;
+            elsif Is_Volatile_Function (Ent) then
+               Error_Msg_N_If
+                 ("a function annotated with Container_Aggregates must not"
+                  & " be volatile", Ent);
                return;
             end if;
 
@@ -2223,27 +2223,27 @@ package body SPARK_Definition.Annotate is
                   Prec : constant Entity_Id := Unique_Defining_Entity (Cur);
 
                begin
-                  --  Lemmas cannot be associated to volatile functions
-
-                  if Ekind (Prec) = E_Function
-                    and then Is_Volatile_Function (Prec)
-                  then
-                     Error_Msg_N_If
-                       ("procedure annotated with the " & Aspect_Or_Pragma
-                        & " Automatic_Instantiation shall not be declared"
-                        & " after a volatile function", E);
-                     return;
-
                   --  Lemmas cannot be associated to functions with
                   --  side effects.
 
-                  elsif Ekind (Prec) = E_Function
+                  if Ekind (Prec) = E_Function
                     and then Is_Function_With_Side_Effects (Prec)
                   then
                      Error_Msg_N_If
                        ("procedure annotated with the " & Aspect_Or_Pragma
                         & " Automatic_Instantiation shall not be declared"
                         & " after a function with side effects", E);
+                     return;
+
+                  --  Lemmas cannot be associated to volatile functions
+
+                  elsif Ekind (Prec) = E_Function
+                    and then Is_Volatile_Function (Prec)
+                  then
+                     Error_Msg_N_If
+                       ("procedure annotated with the " & Aspect_Or_Pragma
+                        & " Automatic_Instantiation shall not be declared"
+                        & " after a volatile function", E);
                      return;
 
                   --  A function has been found, add the association to the
@@ -2598,18 +2598,18 @@ package body SPARK_Definition.Annotate is
       --  For now reject volatile functions, functions with side effects,
       --  dispatching operations, and borrowing traversal functions.
 
-      elsif Ekind (E) = E_Function and then Is_Volatile_Function (E) then
-         Error_Msg_N_If
-           ("function annotated with Higher_Order_Specialization shall not be"
-            & " a volatile function",
-            Arg3_Exp);
-         return;
       elsif Ekind (E) = E_Function
         and then Is_Function_With_Side_Effects (E)
       then
          Error_Msg_N_If
            ("function annotated with Higher_Order_Specialization shall not be"
             & " a function with side effects",
+            Arg3_Exp);
+         return;
+      elsif Ekind (E) = E_Function and then Is_Volatile_Function (E) then
+         Error_Msg_N_If
+           ("function annotated with Higher_Order_Specialization shall not be"
+            & " a volatile function",
             Arg3_Exp);
          return;
       elsif Einfo.Entities.Is_Dispatching_Operation (E)
@@ -3030,16 +3030,16 @@ package body SPARK_Definition.Annotate is
       --  For now reject volatile functions, functions with side effects,
       --  dispatching operations, and borrowing traversal functions.
 
-      if Is_Volatile_Function (E) then
-         Error_Msg_N_If
-           ("function annotated with Inline_For_Proof shall not be"
-            & " a volatile function",
-            Arg3_Exp);
-         return;
-      elsif Is_Function_With_Side_Effects (E) then
+      if Is_Function_With_Side_Effects (E) then
          Error_Msg_N_If
            ("function annotated with Inline_For_Proof shall not be"
             & " a function with side effects",
+            Arg3_Exp);
+         return;
+      elsif Is_Volatile_Function (E) then
+         Error_Msg_N_If
+           ("function annotated with Inline_For_Proof shall not be"
+            & " a volatile function",
             Arg3_Exp);
          return;
       elsif Einfo.Entities.Is_Dispatching_Operation (E)
@@ -3224,14 +3224,14 @@ package body SPARK_Definition.Annotate is
                & " function must be primitive for container type", E);
             return;
          end if;
-         if Is_Volatile_Function (E) then
-            Error_Msg_N_If
-              (Name_For_Error & " function must not be volatile", E);
-            return;
-         end if;
          if Is_Function_With_Side_Effects (E) then
             Error_Msg_N_If
               (Name_For_Error & " function must not have side effects", E);
+            return;
+         end if;
+         if Is_Volatile_Function (E) then
+            Error_Msg_N_If
+              (Name_For_Error & " function must not be volatile", E);
             return;
          end if;
          Get_Globals
