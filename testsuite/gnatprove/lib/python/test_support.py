@@ -797,6 +797,7 @@ def gnatprove(
                 + ' use ("-gnatws",'
                 # force generation of BUGBOX even when error is issued
                 + ' "-gnatdk", '
+                + ' "-gnatd.k", '
                 + '"-gnat'
                 + str(ada)
                 + '");\n'
