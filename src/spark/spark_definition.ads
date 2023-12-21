@@ -222,6 +222,9 @@ package SPARK_Definition is
       C    : Cursor)
       return Entity_Id;
 
+   Handler_Accesses : Node_Sets.Set;
+   --  Occurrences of Handler'Access, which need to be flow-analyzed
+
 private
 
    type Cursor is new Node_Lists.Cursor;

@@ -102,7 +102,11 @@ html_title = project + " " + release
 # The name of an image file (within the static path) to use as favicon of the
 # docs.  This file should be a Windows icon file (.ico) being 16x16 or 32x32
 # pixels large.
-html_favicon = "../favicon.ico"
+html_favicon = "../shared_images/favicon.ico"
+
+# The name of an image file (relative to this directory) to place at the top
+# of the sidebar.
+html_logo = "../shared_images/adacore-logo-white.png"
 
 # Add any paths that contain custom static files (such as style sheets) here,
 # relative to this directory. They are copied after the builtin static files,
@@ -111,6 +115,12 @@ html_static_path = ["static"]
 
 # Output file base name for HTML help builder.
 htmlhelp_basename = "SPARK2014UsersGuidedoc"
+
+# https://sphinx-rtd-theme.readthedocs.io/en/stable/configuring.html#theme-options
+html_theme_options = {
+     # Use AdaCore blue in the Table Of Content
+     "style_nav_header_background": "#12284c",
+ }
 
 
 # -- Options for LaTeX output -------------------------------------------------

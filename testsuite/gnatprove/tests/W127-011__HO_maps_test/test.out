@@ -309,15 +309,15 @@ use_map_ho.adb:87:17: info: range check proved (CVC5: 2 VC)
 use_map_ho.adb:87:19: info: range check proved (CVC5: 4 VC)
 use_map_ho.adb:89:16: info: implicit aspect Always_Terminates on "Add_Zero" has been proved, subprogram will terminate
 use_map_ho.adb:90:10: info: precondition proved (CVC5: 1 VC)
-use_map_ho.adb:92:19: info: postcondition proved (CVC5: 2 VC; Z3: 2 VC)
+use_map_ho.adb:92:19: info: postcondition proved (CVC5: 3 VC; Z3: 1 VC)
 use_map_ho.adb:96:16: info: implicit aspect Always_Terminates on "F" has been proved, subprogram will terminate
 use_map_ho.adb:97:23: info: predicate check proved (Trivial: 1 VC)
 use_map_ho.adb:97:65: info: range check proved (CVC5: 2 VC)
 use_map_ho.adb:97:77: info: predicate check proved (Trivial: 2 VC)
 use_map_ho.adb:98:16: info: implicit aspect Always_Terminates on "F" has been proved, subprogram will terminate
 use_map_ho.adb:98:19: warning: unused variable "I"
-use_map_ho.adb:103:17: medium: in inlined expression function body at use_map_ho.adb:70
-use_map_ho.adb:103:17: medium: postcondition might fail, cannot prove Has_Key (M2, K)
+use_map_ho.adb:103:17: medium: in inlined expression function body at use_map_ho.adb:68
+use_map_ho.adb:103:17: medium: postcondition might fail, cannot prove M1 <= M2
 use_map_ho.adb:103:25: info: precondition proved (CVC5: 1 VC)
 use_map_ho.adb:103:33: info: predicate check proved (CVC5: 1 VC; Trivial: 1 VC)
 use_map_ho.adb:103:90: info: precondition proved (CVC5: 1 VC)

@@ -2604,6 +2604,8 @@ end
 module Subprogram_Pointer_Rep
   type __subprogram
 
+  val constant __dummy_subprogram : __subprogram
+
   type __rep =
     { __is_null_pointer : bool;
       __pointer_value   : __subprogram }

@@ -225,6 +225,11 @@ package Flow_Generated_Globals.Phase_2 is
    --  @param EN is the entity name that we check for having Effective_Writes
    --  @return True iff EN has Effective_Writes set
 
+   function GG_Is_Synchronized (EN : Entity_Name) return Boolean
+   with Pre => GG_Has_Been_Generated;
+   --  @param EN is the entity name that we check for being synchronized
+   --  @return True iff EN is synchronized
+
    function Generated_Calls (E : Entity_Id) return Node_Lists.List
    with Pre  => GG_Has_Been_Generated and then
                 Analysis_Requested (E, With_Inlined => True) and then

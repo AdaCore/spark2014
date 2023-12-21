@@ -76,6 +76,7 @@ procedure Main with SPARK_Mode is
          else
             Source.N := Right;
             Right := Source;
+            pragma Assert (Occ_S = Sum (Occurrences (Left), Occurrences (Right)));
          end if;
          Source := null;
       end if;
@@ -93,10 +94,13 @@ procedure Main with SPARK_Mode is
 
    procedure Quicksort (L : in out List) is
       Left, Right  : List;
-      Occ_L        : constant Multiset := Occurrences (L) with Ghost;
+      Occ_LN       : Multiset with Ghost;
    begin
       if L /= null then
+         Occ_LN := Occurrences (L.N);
          Filter (L.N, L.V, Left, Right);
+         pragma Assert
+           (Occ_LN = Sum (Occurrences (Left), Occurrences (Right)));
          Quicksort (Left);
          Quicksort (Right);
          L.N := Right;
@@ -187,6 +191,8 @@ procedure Main with SPARK_Mode is
    end Split;
 
    procedure Merge (Left, Right : in out List) is
+      Occ_L : constant Multiset := Occurrences (Left) with Ghost;
+      Occ_R : constant Multiset := Occurrences (Right) with Ghost;
    begin
       if Right = null then
          null;
@@ -195,10 +201,13 @@ procedure Main with SPARK_Mode is
       elsif Left.V <= Right.V then
          Merge (Left.N, Right);
          pragma Assert (Is_Sorted (Left));
+         pragma Assert (Occurrences (Left) = Sum (Occ_L, Occ_R));
       else
          Merge (Left, Right.N);
          Right.N := Left;
          Left := Right;
+         pragma Assert (Is_Sorted (Left));
+         pragma Assert (Occurrences (Left) = Sum (Occ_L, Occ_R));
       end if;
       Right := null;
    end Merge;

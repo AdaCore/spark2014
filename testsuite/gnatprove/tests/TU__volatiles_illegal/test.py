@@ -9,5 +9,6 @@ gcc("volatiles_illegal_6.adb", opt=["-c", "-gnatf"])
 gcc("volatiles_illegal_7.adb", opt=["-c", "-gnatf"])
 gcc("volatiles_illegal_8.adb", opt=["-c", "-gnatf"])
 gcc("volatiles_illegal_9.adb", opt=["-c", "-gnatf"])
-gcc("volatiles_illegal_10.ads", opt=["-S", "-c", "-gnatf"])
+# gcc("volatiles_illegal_10.ads", opt=["-S", "-c", "-gnatf"])
+# crash in GNAT reported as issue #581
 gcc("vc3.ads", opt=["-c", "-gnatf"])

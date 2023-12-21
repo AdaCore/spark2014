@@ -1061,6 +1061,79 @@ limited.
    In |SPARK| versions up to |SPARK| 21, delta aggregates are not supported
    and an equivalent attribute named ``Update`` can be used instead.
 
+.. index:: Aspect Aggregate
+
+Aspect Aggregate
+^^^^^^^^^^^^^^^^
+
+[Ada 2022]
+
+The ``Aggregate`` aspect has been introduced in
+`Ada 2022 <http://www.ada-auth.org/standards/22rm/html/RM-4-3-5.html>`_.
+It allows providing subprograms that can be used to create aggregates of a
+particular container type. The required subprograms differ depending on the
+kind of aggregate being defined - positional, named, or indexed. Only positional
+and named container aggregates are allowed in SPARK. They require supplying
+an ``Empty`` function, to create the container, and an ``Add`` procedure to
+insert a new element (possibly associated to a key) in the container:
+
+.. code-block:: ada
+
+   --  We can use positional aggregates for sets
+   type Set_Type is private
+      with Aggregate => (Empty       => Empty_Set,
+                         Add_Unnamed => Include);
+   function Empty_Set return Set_Type;
+   procedure Include (S : in out Set_Type; E : Element_Type);
+
+   --  and named aggregates for maps
+   type Map_Type is private
+      with Aggregate =>  (Empty     => Empty_Map,
+                          Add_Named => Add_To_Map);
+   function Empty_Map return Map_Type;
+   procedure Add_To_Map (M     : in out Map_Type;
+                         Key   : Key_Type;
+                         Value : Element_Type);
+
+For execution, container aggregates are expanded into a call to the ``Empty``
+function, followed by a sequence of calls to the ``Add`` procedure. However,
+for proof, this is not appropriate. Due to how VC generation works, instructions
+cannot be used to expand expressions occurring in annotations in particular.
+In addition, such an expansion would be inefficient in terms of provability, as
+it would introduce multiple intermediate values on which the provers need to
+reason.
+
+To be able to use container aggregates in proof, additional annotations are
+necessary. They describe how the information supplied by the aggregate - the
+elements, the keys, their order, the number of elements... - affects the
+value of the container after the insertions. It works by supplying additional
+functions that should be used to describe the container. These functions and
+their intended usage are recognized using an
+:ref:`Annotation for Container Aggregates`.
+
+Container aggregates follow the Ada 2022 syntax for homogeous aggregates. The
+values, or associations for named aggregates, are enclosed in square brackets.
+As an example, here are a few aggregates for functional and formal containers
+from the :ref:`SPARK Libraries`.
+
+.. code-block:: ada
+
+   package Integer_Sets is new SPARK.Containers.Formal.Ordered_Sets (Integer);
+   S : Integer_Sets.Set := [1, 2, 3, 4, 12, 42];
+
+   package String_Lists is new
+     SPARK.Containers.Formal.Unbounded_Doubly_Linked_Lists (String);
+   L : String_Lists.List := ["foo", "bar", "foobar"];
+
+   package Int_To_String_Maps is new
+     SPARK.Containers.Functional.Maps (Integer, String);
+   M : Int_To_String_Maps.Map := [1 => "one", 2 => "two", 3 => "three"];
+
+.. note::
+
+   So the handling is as precisely as possible, |SPARK| only
+   supports aggregates with distinct values or keys for sets and maps.
+
 .. index:: if-expression, case-expression
 
 Conditional Expressions

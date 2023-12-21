@@ -4,6 +4,4 @@ main.adb:27:28: info: contract case proved (CVC5: 1 VC; Trivial: 1 VC)
 main.adb:28:28: info: contract case proved (CVC5: 1 VC; Trivial: 1 VC)
 main.adb:29:28: info: contract case proved (CVC5: 1 VC; Trivial: 1 VC)
 main.adb:30:28: info: contract case proved (CVC5: 1 VC; Trivial: 1 VC)
-main.adb:36:07: warning: statement has no effect
-main.adb:38:07: warning: statement has no effect
 main.adb:58:14: warning: attribute Valid is assumed to return True

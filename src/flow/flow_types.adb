@@ -542,6 +542,24 @@ package body Flow_Types is
       end case;
    end Has_Effective_Writes;
 
+   ---------------------
+   -- Is_Synchronized --
+   ---------------------
+
+   function Is_Synchronized (F : Flow_Id) return Boolean is
+   begin
+      case F.Kind is
+         when Magic_String =>
+            return GG_Is_Synchronized (F.Name);
+
+         when Direct_Mapping =>
+            return Is_Synchronized (F.Node);
+
+         when others =>
+            raise Program_Error;
+      end case;
+   end Is_Synchronized;
+
    -----------------------
    -- Is_Abstract_State --
    -----------------------

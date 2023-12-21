@@ -17,6 +17,9 @@ main.adb:31:51: info: range check proved (CVC5: 2 VC)
 main.adb:37:22: info: assertion proved (CVC5: 1 VC)
 main.adb:40:14: high: all paths in "Test4" raise exceptions or do not terminate normally
 main.adb:40:38: info: data dependencies proved
+main.adb:41:54: info: in default initialization of component "F" at main.adb:47
+main.adb:41:54: info: in default value of box association at main.adb:56
+main.adb:41:54: info: range check proved (CVC5: 2 VC)
 main.adb:42:16: info: implicit aspect Always_Terminates on "Id" has been proved, subprogram will terminate
 main.adb:43:15: info: range check proved (CVC5: 2 VC)
 main.adb:56:22: info: assertion proved (CVC5: 1 VC)

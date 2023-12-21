@@ -68,7 +68,7 @@ camera_motion.adb:126:13: warning: statement has no effect, in call inlined at c
 camera_motion.adb:127:20: warning: unused assignment, in call inlined at camera_motion.adb:240
 camera_motion.adb:129:13: warning: statement has no effect, in call inlined at camera_motion.adb:240
 camera_motion.adb:130:20: warning: unused assignment, in call inlined at camera_motion.adb:240
-camera_motion.adb:132:24: medium: overflow check might fail, cannot prove lower bound for Sum + Natural (v), in call inlined at camera_motion.adb:240 [reason for check: result of addition must fit in a 32-bits machine integer]
+camera_motion.adb:132:24: medium: overflow check might fail, cannot prove upper bound for Sum + Natural (v), in call inlined at camera_motion.adb:240 [reason for check: result of addition must fit in a 32-bits machine integer]
 camera_motion.adb:133:28: medium: overflow check might fail, cannot prove upper bound for Count + 1, in call inlined at camera_motion.adb:240 [reason for check: result of addition must fit in a 32-bits machine integer]
 camera_motion.adb:137:19: medium: divide by zero might fail, in call inlined at camera_motion.adb:240
 camera_motion.adb:143:32: medium: overflow check might fail, cannot prove upper bound for Var_Sum + (Integer (v) - Mean) ** 2, in call inlined at camera_motion.adb:240 [reason for check: result of addition must fit in a 32-bits machine integer]

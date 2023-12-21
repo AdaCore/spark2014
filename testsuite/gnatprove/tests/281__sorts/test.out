@@ -46,116 +46,123 @@ main.adb:75:28: info: assertion proved
 main.adb:77:19: info: pointer dereference check proved
 main.adb:77:22: info: absence of resource or memory leak proved
 main.adb:78:19: info: absence of resource or memory leak proved
-main.adb:80:17: info: absence of resource or memory leak proved
-main.adb:87:15: info: absence of resource or memory leak proved
-main.adb:89:10: info: precondition proved
-main.adb:89:22: info: pointer dereference check proved
-main.adb:91:13: info: absence of resource or memory leak proved
-main.adb:95:07: info: absence of resource or memory leak at end of scope proved
-main.adb:95:07: info: initialization of "Left" proved
-main.adb:95:13: info: initialization of "Right" proved
-main.adb:99:19: info: pointer dereference check proved
-main.adb:99:24: info: pointer dereference check proved
-main.adb:99:28: info: absence of resource or memory leak proved
-main.adb:99:34: info: absence of resource or memory leak proved
-main.adb:100:10: info: subprogram variant proved
-main.adb:101:10: info: subprogram variant proved
-main.adb:102:11: info: pointer dereference check proved
-main.adb:102:14: info: absence of resource or memory leak proved
-main.adb:103:10: info: precondition proved
-main.adb:104:12: info: absence of resource or memory leak proved
-main.adb:113:42: info: range check proved
-main.adb:114:14: info: postcondition proved
-main.adb:114:14: info: predicate check proved
-main.adb:114:37: info: predicate check proved
-main.adb:119:06: info: flow dependencies proved
-main.adb:120:34: info: pointer dereference check proved
-main.adb:121:14: info: postcondition proved
-main.adb:121:59: info: pointer dereference check proved
-main.adb:122:10: info: predicate check proved
-main.adb:122:33: info: predicate check proved
-main.adb:122:40: info: predicate check proved
-main.adb:125:36: info: pointer dereference check proved
-main.adb:129:12: info: absence of resource or memory leak proved
-main.adb:130:14: info: pointer dereference check proved
-main.adb:130:21: info: pointer dereference check proved
-main.adb:131:11: info: pointer dereference check proved
-main.adb:131:14: info: absence of resource or memory leak proved
-main.adb:132:12: info: absence of resource or memory leak proved
-main.adb:134:10: info: precondition proved
-main.adb:134:22: info: pointer dereference check proved
-main.adb:135:25: info: assertion proved
-main.adb:137:09: info: absence of resource or memory leak proved
-main.adb:141:07: info: absence of resource or memory leak at end of scope proved
-main.adb:141:07: info: initialization of "N" proved
-main.adb:144:10: info: subprogram variant proved
-main.adb:144:23: info: pointer dereference check proved
-main.adb:145:12: info: absence of resource or memory leak proved
-main.adb:145:16: info: pointer dereference check proved
-main.adb:146:11: info: pointer dereference check proved
-main.adb:146:14: info: absence of resource or memory leak proved
-main.adb:147:10: info: precondition proved
-main.adb:148:12: info: absence of resource or memory leak proved
-main.adb:157:42: info: range check proved
-main.adb:158:14: info: postcondition proved
-main.adb:158:14: info: predicate check proved
-main.adb:158:37: info: predicate check proved
-main.adb:162:60: info: initialization of "Left" proved
-main.adb:162:66: info: initialization of "Right" proved
-main.adb:163:06: info: flow dependencies proved
-main.adb:164:14: info: predicate check proved
-main.adb:164:19: info: predicate check proved
-main.adb:165:14: info: postcondition proved
-main.adb:165:37: info: predicate check proved
-main.adb:165:53: info: predicate check proved
-main.adb:165:85: info: predicate check proved
-main.adb:166:15: info: predicate check proved
-main.adb:166:31: info: predicate check proved
-main.adb:170:06: info: flow dependencies proved
-main.adb:172:14: info: postcondition proved
-main.adb:172:14: info: predicate check proved
-main.adb:172:43: info: predicate check proved
-main.adb:172:64: info: predicate check proved
-main.adb:178:10: info: predicate check proved
-main.adb:178:14: info: predicate check proved
-main.adb:179:15: info: absence of resource or memory leak proved
-main.adb:180:16: info: absence of resource or memory leak proved
-main.adb:182:10: info: precondition proved
-main.adb:182:23: info: pointer dereference check proved
-main.adb:182:27: info: predicate check proved
-main.adb:182:29: info: predicate check proved
-main.adb:182:31: info: predicate check proved
-main.adb:182:34: info: absence of resource or memory leak proved
-main.adb:182:40: info: absence of resource or memory leak proved
-main.adb:183:16: info: pointer dereference check proved
-main.adb:183:19: info: absence of resource or memory leak proved
-main.adb:184:15: info: absence of resource or memory leak proved
-main.adb:186:14: info: absence of resource or memory leak proved
-main.adb:194:15: info: absence of resource or memory leak proved
-main.adb:195:17: info: pointer dereference check proved
-main.adb:195:28: info: pointer dereference check proved
-main.adb:196:10: info: precondition proved
-main.adb:196:21: info: pointer dereference check proved
-main.adb:197:25: info: assertion proved
-main.adb:199:10: info: precondition proved
-main.adb:199:28: info: pointer dereference check proved
-main.adb:200:15: info: pointer dereference check proved
-main.adb:200:18: info: absence of resource or memory leak proved
-main.adb:201:15: info: absence of resource or memory leak proved
-main.adb:203:13: info: absence of resource or memory leak proved
-main.adb:207:07: info: absence of resource or memory leak at end of scope proved
-main.adb:207:07: info: initialization of "Left" proved
-main.adb:207:13: info: initialization of "Right" proved
-main.adb:209:10: info: predicate check proved
-main.adb:209:23: info: predicate check proved
-main.adb:210:10: info: precondition proved
-main.adb:210:20: info: predicate check proved
-main.adb:210:31: info: division check proved
-main.adb:210:31: info: predicate check proved
-main.adb:210:33: info: predicate check proved
-main.adb:210:36: info: absence of resource or memory leak proved
-main.adb:210:42: info: absence of resource or memory leak proved
-main.adb:211:10: info: subprogram variant proved
-main.adb:212:10: info: subprogram variant proved
-main.adb:213:10: info: precondition proved
-main.adb:214:12: info: absence of resource or memory leak proved
+main.adb:79:28: info: assertion proved
+main.adb:81:17: info: absence of resource or memory leak proved
+main.adb:88:15: info: absence of resource or memory leak proved
+main.adb:90:10: info: precondition proved
+main.adb:90:22: info: pointer dereference check proved
+main.adb:92:13: info: absence of resource or memory leak proved
+main.adb:96:07: info: absence of resource or memory leak at end of scope proved
+main.adb:96:07: info: initialization of "Left" proved
+main.adb:96:13: info: initialization of "Right" proved
+main.adb:97:07: info: initialization of "Occ_LN" proved
+main.adb:100:34: info: pointer dereference check proved
+main.adb:101:19: info: pointer dereference check proved
+main.adb:101:24: info: pointer dereference check proved
+main.adb:101:28: info: absence of resource or memory leak proved
+main.adb:101:34: info: absence of resource or memory leak proved
+main.adb:103:13: info: assertion proved
+main.adb:104:10: info: subprogram variant proved
+main.adb:105:10: info: subprogram variant proved
+main.adb:106:11: info: pointer dereference check proved
+main.adb:106:14: info: absence of resource or memory leak proved
+main.adb:107:10: info: precondition proved
+main.adb:108:12: info: absence of resource or memory leak proved
+main.adb:117:42: info: range check proved
+main.adb:118:14: info: postcondition proved
+main.adb:118:14: info: predicate check proved
+main.adb:118:37: info: predicate check proved
+main.adb:123:06: info: flow dependencies proved
+main.adb:124:34: info: pointer dereference check proved
+main.adb:125:14: info: postcondition proved
+main.adb:125:59: info: pointer dereference check proved
+main.adb:126:10: info: predicate check proved
+main.adb:126:33: info: predicate check proved
+main.adb:126:40: info: predicate check proved
+main.adb:129:36: info: pointer dereference check proved
+main.adb:133:12: info: absence of resource or memory leak proved
+main.adb:134:14: info: pointer dereference check proved
+main.adb:134:21: info: pointer dereference check proved
+main.adb:135:11: info: pointer dereference check proved
+main.adb:135:14: info: absence of resource or memory leak proved
+main.adb:136:12: info: absence of resource or memory leak proved
+main.adb:138:10: info: precondition proved
+main.adb:138:22: info: pointer dereference check proved
+main.adb:139:25: info: assertion proved
+main.adb:141:09: info: absence of resource or memory leak proved
+main.adb:145:07: info: absence of resource or memory leak at end of scope proved
+main.adb:145:07: info: initialization of "N" proved
+main.adb:148:10: info: subprogram variant proved
+main.adb:148:23: info: pointer dereference check proved
+main.adb:149:12: info: absence of resource or memory leak proved
+main.adb:149:16: info: pointer dereference check proved
+main.adb:150:11: info: pointer dereference check proved
+main.adb:150:14: info: absence of resource or memory leak proved
+main.adb:151:10: info: precondition proved
+main.adb:152:12: info: absence of resource or memory leak proved
+main.adb:161:42: info: range check proved
+main.adb:162:14: info: postcondition proved
+main.adb:162:14: info: predicate check proved
+main.adb:162:37: info: predicate check proved
+main.adb:166:60: info: initialization of "Left" proved
+main.adb:166:66: info: initialization of "Right" proved
+main.adb:167:06: info: flow dependencies proved
+main.adb:168:14: info: predicate check proved
+main.adb:168:19: info: predicate check proved
+main.adb:169:14: info: postcondition proved
+main.adb:169:37: info: predicate check proved
+main.adb:169:53: info: predicate check proved
+main.adb:169:85: info: predicate check proved
+main.adb:170:15: info: predicate check proved
+main.adb:170:31: info: predicate check proved
+main.adb:174:06: info: flow dependencies proved
+main.adb:176:14: info: postcondition proved
+main.adb:176:14: info: predicate check proved
+main.adb:176:43: info: predicate check proved
+main.adb:176:64: info: predicate check proved
+main.adb:182:10: info: predicate check proved
+main.adb:182:14: info: predicate check proved
+main.adb:183:15: info: absence of resource or memory leak proved
+main.adb:184:16: info: absence of resource or memory leak proved
+main.adb:186:10: info: precondition proved
+main.adb:186:23: info: pointer dereference check proved
+main.adb:186:27: info: predicate check proved
+main.adb:186:29: info: predicate check proved
+main.adb:186:31: info: predicate check proved
+main.adb:186:34: info: absence of resource or memory leak proved
+main.adb:186:40: info: absence of resource or memory leak proved
+main.adb:187:16: info: pointer dereference check proved
+main.adb:187:19: info: absence of resource or memory leak proved
+main.adb:188:15: info: absence of resource or memory leak proved
+main.adb:190:14: info: absence of resource or memory leak proved
+main.adb:200:15: info: absence of resource or memory leak proved
+main.adb:201:17: info: pointer dereference check proved
+main.adb:201:28: info: pointer dereference check proved
+main.adb:202:10: info: precondition proved
+main.adb:202:21: info: pointer dereference check proved
+main.adb:203:25: info: assertion proved
+main.adb:204:25: info: assertion proved
+main.adb:206:10: info: precondition proved
+main.adb:206:28: info: pointer dereference check proved
+main.adb:207:15: info: pointer dereference check proved
+main.adb:207:18: info: absence of resource or memory leak proved
+main.adb:208:15: info: absence of resource or memory leak proved
+main.adb:209:25: info: assertion proved
+main.adb:210:25: info: assertion proved
+main.adb:212:13: info: absence of resource or memory leak proved
+main.adb:216:07: info: absence of resource or memory leak at end of scope proved
+main.adb:216:07: info: initialization of "Left" proved
+main.adb:216:13: info: initialization of "Right" proved
+main.adb:218:10: info: predicate check proved
+main.adb:218:23: info: predicate check proved
+main.adb:219:10: info: precondition proved
+main.adb:219:20: info: predicate check proved
+main.adb:219:31: info: division check proved
+main.adb:219:31: info: predicate check proved
+main.adb:219:33: info: predicate check proved
+main.adb:219:36: info: absence of resource or memory leak proved
+main.adb:219:42: info: absence of resource or memory leak proved
+main.adb:220:10: info: subprogram variant proved
+main.adb:221:10: info: subprogram variant proved
+main.adb:222:10: info: precondition proved
+main.adb:223:12: info: absence of resource or memory leak proved
