@@ -16557,26 +16557,34 @@ package body Gnat2Why.Expr is
          =>
             --  'Succ and 'Pred on floating-point types are modelled as calls
             --  to logic functions next_representable and prev_representable
-            --  for the corresponding type. The value of these functions should
-            --  only be specified for values of the argument that do not lead
-            --  to an overflow, so that a possible overflow check failure
-            --  may be detected when computing Float'Succ(Float'Last) or
-            --  Float'Pred(Float'First).
+            --  for the corresponding type.
 
             if Is_Floating_Point_Type (Etype (Var)) then
                declare
+                  Opnd   : constant Node_Id := First (Expressions (Expr));
                   W_Type : constant W_Type_Id := Base_Why_Type (Etype (Var));
-                  Oper : constant W_Identifier_Id :=
+                  Oper   : constant W_Identifier_Id :=
                     (if Attr_Id = Attribute_Pred then
                         MF_Floats (W_Type).Prev_Rep
                      else
                         MF_Floats (W_Type).Next_Rep);
-                  Arg : constant W_Expr_Id :=
-                    Transform_Expr (First (Expressions (Expr)),
+                  Arg    : W_Expr_Id :=
+                    Transform_Expr (Opnd,
                                     W_Type,
                                     Domain,
                                     Params);
                begin
+                  if Domain = EW_Prog and then Do_Range_Check (Opnd) then
+                     Arg := +Do_Range_Check
+                       (Ada_Node   => Opnd,
+                        Ty         => Base_Retysp (Etype (Var)),
+                        W_Expr     => Arg,
+                        Check_Kind =>
+                          (if Attr_Id = Attribute_Succ
+                           then RCK_FP_Overflow_Not_Last
+                           else RCK_FP_Overflow_Not_First));
+                  end if;
+
                   T := New_Call (Ada_Node => Expr,
                                  Domain   => Domain,
                                  Name     => Oper,
@@ -16590,6 +16598,7 @@ package body Gnat2Why.Expr is
 
             elsif Is_Modular_Integer_Type (Etype (Var)) then
                declare
+                  Opnd   : constant Node_Id := First (Expressions (Expr));
                   W_Type : constant W_Type_Id := Base_Why_Type (Etype (Var));
                   Op     : constant N_Op :=
                     (if Attr_Id = Attribute_Succ then
@@ -16602,10 +16611,12 @@ package body Gnat2Why.Expr is
                                           Value => Uint_1);
                   NType : constant Entity_Id := Etype (Expr);
                begin
-                  Old := Transform_Expr (First (Expressions (Expr)),
+                  Old := Transform_Expr (Opnd,
                                          W_Type,
                                          Domain,
                                          Params);
+
+                  pragma Assert (not Do_Range_Check (Opnd));
 
                   T := New_Binary_Op_Expr (Op          => Op,
                                            Left        => Old,
@@ -16619,6 +16630,7 @@ package body Gnat2Why.Expr is
 
             else
                declare
+                  Opnd   : constant Node_Id := First (Expressions (Expr));
                   Op     : constant W_Identifier_Id :=
                     (if Attr_Id = Attribute_Succ then Int_Infix_Add
                      else Int_Infix_Subtr);
@@ -16638,10 +16650,25 @@ package body Gnat2Why.Expr is
                        (Value => Uint_1, Typ => W_Type);
                   end if;
 
-                  Old := Transform_Expr (First (Expressions (Expr)),
+                  Old := Transform_Expr (Opnd,
                                          W_Type,
                                          Domain,
                                          Params);
+
+                  if Domain = EW_Prog and then Do_Range_Check (Opnd) then
+                     Old := +Do_Range_Check
+                       (Ada_Node   => Opnd,
+                        Ty         => Base_Retysp (Etype (Var)),
+                        W_Expr     => Old,
+                        Check_Kind =>
+                          (if Is_Enumeration_Type (Etype (Var)) then
+                               (if Attr_Id = Attribute_Succ
+                                then RCK_Range_Not_Last
+                                else RCK_Range_Not_First)
+                           elsif Attr_Id = Attribute_Succ
+                           then RCK_Overflow_Not_Last
+                           else RCK_Overflow_Not_First));
+                  end if;
 
                   T :=
                     New_Call
@@ -20619,7 +20646,7 @@ package body Gnat2Why.Expr is
                Right     : constant N_Subexpr_Id := Right_Opnd (Expr);
                W_Right   : constant W_Expr_Id :=
                  Transform_Expr (Right,
-                                 EW_Int_Type,
+                                 Type_Of_Node (Standard_Natural),
                                  Domain,
                                  Local_Params);
                Base_Type : constant W_Type_Id := Base_Why_Type (Left);
@@ -21154,88 +21181,57 @@ package body Gnat2Why.Expr is
             end;
 
          when N_Type_Conversion =>
+            --  For array conversions, if target and source types have
+            --  different component type, we may need to generate an
+            --  appropriate conversion theory.
+            --  Also generate the theory for the reverse conversion as it
+            --  may be needed if Expr is a left value.
 
-            --  When converting between scalar types, only require that the
-            --  converted expression is translated into a value of the expected
-            --  base type. Necessary checks, rounding and conversions will
-            --  be introduced at the end of Transform_Expr below. Fixed-point
-            --  types are special, because the base type __fixed really
-            --  represents a different base for every fixed-point type, so use
-            --  full conversion to the expected type in that case. Types with
-            --  predicates are also treated specially, so that the type with
-            --  predicate is explicitly the target of the conversion, to avoid
-            --  having it being skipped.
+            if Has_Array_Type (Etype (Expr)) then
+               declare
+                  Target_Typ      : constant Entity_Id :=
+                    Retysp (Etype (Expr));
+                  Target_Comp_Typ : constant Entity_Id :=
+                    Retysp (Component_Type (Target_Typ));
+                  Source_Typ      : constant Entity_Id :=
+                    Retysp (Etype (Expression (Expr)));
+                  Source_Comp_Typ : constant Entity_Id :=
+                    Retysp (Component_Type (Source_Typ));
+               begin
+                  if Target_Comp_Typ /= Source_Comp_Typ then
+                     Create_Array_Conversion_Theory_If_Needed
+                       (From         => Source_Typ,
+                        To           => Target_Typ);
+                     Create_Array_Conversion_Theory_If_Needed
+                       (From         => Target_Typ,
+                        To           => Source_Typ);
+                  end if;
+               end;
 
-            if Is_Scalar_Type (Expr_Type)
-              and then not Has_Fixed_Point_Type (Expr_Type)
-              and then not Has_Predicates (Expr_Type)
+            elsif Has_Fixed_Point_Type (Expr_Type)
+              and then Has_Fixed_Point_Type (Etype (Expression (Expr)))
             then
-               T := Transform_Expr (Expression (Expr),
-                                    Base_Why_Type (Expr_Type),
-                                    Domain,
-                                    Local_Params,
-                                    No_Read);
-
-            --  In other cases, require that the converted expression
-            --  is translated into a value of the type of the conversion.
-
-            --  When converting to a discriminant record or an array, this
-            --  ensures that the proper target type can be retrieved from
-            --  the current node, to call the right checking function.
-
-            else
-               --  For array conversions, if target and source types have
-               --  different component type, we may need to generate an
-               --  appropriate conversion theory.
-               --  Also generate the theory for the reverse conversion as it
-               --  may be needed if Expr is a left value.
-
-               if Has_Array_Type (Etype (Expr)) then
-                  declare
-                     Target_Typ      : constant Entity_Id :=
-                       Retysp (Etype (Expr));
-                     Target_Comp_Typ : constant Entity_Id :=
-                       Retysp (Component_Type (Target_Typ));
-                     Source_Typ      : constant Entity_Id :=
-                       Retysp (Etype (Expression (Expr)));
-                     Source_Comp_Typ : constant Entity_Id :=
-                       Retysp (Component_Type (Source_Typ));
-                  begin
-                     if Target_Comp_Typ /= Source_Comp_Typ then
-                        Create_Array_Conversion_Theory_If_Needed
-                          (From         => Source_Typ,
-                           To           => Target_Typ);
-                        Create_Array_Conversion_Theory_If_Needed
-                          (From         => Target_Typ,
-                           To           => Source_Typ);
-                     end if;
-                  end;
-
-               elsif Has_Fixed_Point_Type (Expr_Type)
-                 and then Has_Fixed_Point_Type (Etype (Expression (Expr)))
-               then
-                  declare
-                     From_Small : constant Ureal :=
-                       Small_Value (Retysp (Etype (Expression (Expr))));
-                     To_Small   : constant Ureal :=
-                       Small_Value (Expr_Type);
-                  begin
-                     if From_Small /= To_Small then
-                        Create_Fixed_Point_Mult_Div_Theory_If_Needed
-                          (Typ_Left     => Etype (Expression (Expr)),
-                           Typ_Right    => Standard_Integer,
-                           Typ_Result   => Expr_Type,
-                           Expr         => Expr);
-                     end if;
-                  end;
-               end if;
-
-               T := Transform_Expr (Expression (Expr),
-                                    Type_Of_Node (Expr),
-                                    Domain,
-                                    Local_Params,
-                                    No_Read);
+               declare
+                  From_Small : constant Ureal :=
+                    Small_Value (Retysp (Etype (Expression (Expr))));
+                  To_Small   : constant Ureal :=
+                    Small_Value (Expr_Type);
+               begin
+                  if From_Small /= To_Small then
+                     Create_Fixed_Point_Mult_Div_Theory_If_Needed
+                       (Typ_Left     => Etype (Expression (Expr)),
+                        Typ_Right    => Standard_Integer,
+                        Typ_Result   => Expr_Type,
+                        Expr         => Expr);
+                  end if;
+               end;
             end if;
+
+            T := Transform_Expr (Expression (Expr),
+                                 Type_Of_Node (Expr),
+                                 Domain,
+                                 Local_Params,
+                                 No_Read);
 
             --  Insert static resource leak if the conversion is a move of a
             --  pool specific access type.

@@ -1,17 +1,19 @@
-p.adb:8:13: info: implicit aspect Always_Terminates on "Ident" has been proved, subprogram will terminate
-p.adb:13:35: info: overflow check proved (CVC5: 1 VC)
-p.adb:13:42: medium: overflow check might fail (e.g. when N = Integer'Last) [reason for check: value must fit in a 32-bits machine integer] [possible fix: add precondition (N in Integer) to subprogram at line 8]
-p.adb:16:13: info: implicit aspect Always_Terminates on "Ident" has been proved, subprogram will terminate
-p.adb:21:31: info: range check proved (CVC5: 1 VC)
-p.adb:21:38: high: range check might fail (e.g. when C = Green) [reason for check: value cannot be maximum value of the type]
-p.adb:24:13: info: implicit aspect Always_Terminates on "Ident" has been proved, subprogram will terminate
-p.adb:29:18: info: range check proved (CVC5: 2 VC)
-p.adb:29:29: info: overflow check proved (CVC5: 1 VC)
-p.adb:29:36: info: overflow check proved (CVC5: 1 VC)
-p.adb:32:13: info: implicit aspect Always_Terminates on "Ident" has been proved, subprogram will terminate
-p.adb:37:19: info: range check proved (CVC5: 2 VC)
-p.adb:37:31: info: overflow check proved (CVC5: 1 VC)
-p.adb:37:38: info: overflow check proved (CVC5: 1 VC)
-p.adb:40:13: info: implicit aspect Always_Terminates on "Ident" has been proved, subprogram will terminate
-p.adb:45:31: info: float overflow check proved (CVC5: 1 VC)
-p.adb:45:38: high: float overflow check might fail (e.g. when F = 3.4028235E+38) [reason for check: value must be bounded]
+p.adb:10:13: info: implicit aspect Always_Terminates on "Ident" has been proved, subprogram will terminate
+p.adb:15:35: info: overflow check proved (CVC5: 1 VC)
+p.adb:15:42: medium: overflow check might fail (e.g. when N = Integer'Last) [reason for check: value must fit in a 32-bits machine integer] [possible fix: add precondition (N in Integer) to subprogram at line 10]
+p.adb:18:13: info: implicit aspect Always_Terminates on "Ident" has been proved, subprogram will terminate
+p.adb:20:14: info: postcondition proved (CVC5: 1 VC)
+p.adb:27:13: info: implicit aspect Always_Terminates on "Ident" has been proved, subprogram will terminate
+p.adb:32:31: info: range check proved (CVC5: 1 VC)
+p.adb:32:38: high: range check might fail (e.g. when C = Green) [reason for check: value cannot be maximum value of the type]
+p.adb:35:13: info: implicit aspect Always_Terminates on "Ident" has been proved, subprogram will terminate
+p.adb:40:18: info: range check proved (CVC5: 2 VC)
+p.adb:40:29: info: overflow check proved (CVC5: 1 VC)
+p.adb:40:36: info: overflow check proved (CVC5: 1 VC)
+p.adb:43:13: info: implicit aspect Always_Terminates on "Ident" has been proved, subprogram will terminate
+p.adb:48:19: info: range check proved (CVC5: 2 VC)
+p.adb:48:31: info: overflow check proved (CVC5: 1 VC)
+p.adb:48:38: info: overflow check proved (CVC5: 1 VC)
+p.adb:51:13: info: implicit aspect Always_Terminates on "Ident" has been proved, subprogram will terminate
+p.adb:56:31: info: float overflow check proved (CVC5: 1 VC)
+p.adb:56:38: high: float overflow check might fail (e.g. when F = 3.4028235E+38) [reason for check: value must be bounded]

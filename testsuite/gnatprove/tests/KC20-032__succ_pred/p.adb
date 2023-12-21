@@ -5,6 +5,8 @@ procedure P is
 
    type Money is delta 0.01 digits 15;
 
+   type Modular is mod 256;
+
    function Ident (N : Natural) return Natural with
      Pre  => (N /= Natural'Last),
      Post => (Ident'Result = N);
@@ -12,6 +14,15 @@ procedure P is
    function Ident (N : Natural) return Natural is
    begin
       return Natural'Pred (Natural'Succ (N));
+   end Ident;
+
+   function Ident (N : Modular) return Modular with
+     Pre  => (N /= Modular'Last),
+     Post => (Ident'Result = N);
+
+   function Ident (N : Modular) return Modular is
+   begin
+      return Modular'Pred (Modular'Succ (N));
    end Ident;
 
    function Ident (C : Color) return Color with

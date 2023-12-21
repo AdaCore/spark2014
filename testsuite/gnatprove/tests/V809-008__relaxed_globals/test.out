@@ -15,10 +15,12 @@ test_relaxed_globals.adb:34:14: info: postcondition proved (CVC5: 1 VC)
 test_relaxed_globals.adb:39:06: info: data dependencies proved
 test_relaxed_globals.adb:43:16: info: predicate check proved (CVC5: 1 VC)
 test_relaxed_globals.adb:50:06: info: data dependencies proved
+test_relaxed_globals.adb:51:14: info: initialization check proved (CVC5: 1 VC)
 test_relaxed_globals.adb:51:14: medium: postcondition might fail (e.g. when C = 100 and G1 = 0)
 test_relaxed_globals.adb:51:23: medium: initialization check might fail (e.g. when G1'Initialized = False)
 test_relaxed_globals.adb:55:16: info: predicate check proved (CVC5: 1 VC)
 test_relaxed_globals.adb:63:06: info: data dependencies proved
+test_relaxed_globals.adb:64:14: info: initialization check proved (CVC5: 1 VC)
 test_relaxed_globals.adb:64:14: medium: postcondition might fail (e.g. when C = 100 and H1 = 0)
 test_relaxed_globals.adb:64:23: medium: initialization check might fail (e.g. when H1'Initialized = False)
 test_relaxed_globals.adb:68:16: info: predicate check proved (CVC5: 1 VC)
