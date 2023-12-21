@@ -1,7 +1,7 @@
 main.adb:6:04: info: analyzing call to "Log2_Estimate" in context
 main.adb:6:04: info: analyzing call to "Minus_Log2_Estimate" in context
-main.adb:6:04: info: in instantiation at a-nbnbre.adb:256
-main.adb:6:04: info: in instantiation at a-nbnbre.adb:264
+main.adb:6:04: info: in instantiation at a-nbnbre.adb
+main.adb:6:04: info: in instantiation at a-nbnbre.adb
 main.adb:18:13: info: implicit aspect Always_Terminates on "Prove_Exact" has been proved, subprogram will terminate
 main.adb:20:06: warning: postcondition does not mention function result
 main.adb:20:14: medium: postcondition might fail
