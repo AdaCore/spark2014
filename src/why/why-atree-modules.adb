@@ -3035,6 +3035,13 @@ package body Why.Atree.Modules is
                      Domain => EW_Term,
                      Typ    => Get_Array_Theory (E, Relaxed_Init).Ty),
                   Relaxed_Init);
+               Insert_Symbol
+                 (E, WNE_Array_Well_Formed,
+                  New_Identifier
+                    (Symb   => NID ("well_formed"),
+                     Module => M,
+                     Domain => EW_Pred),
+                  Relaxed_Init);
 
                for Dim in 1 .. Ar_Dim loop
                   declare

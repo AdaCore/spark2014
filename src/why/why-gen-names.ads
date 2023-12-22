@@ -246,6 +246,7 @@ package Why.Gen.Names is
       WNE_Array_Component_Type,
       WNE_Array_Elts,
       WNE_Array_Type,
+      WNE_Array_Well_Formed,
 
       --  Prefixes and Suffixes used to compose representative array theory
       --  names.

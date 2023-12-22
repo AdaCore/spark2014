@@ -6122,6 +6122,11 @@ package body Gnat2Why.Expr is
       if Is_Array_Type (Ty_Ext)
         and then Ekind (Ty_Ext) /= E_String_Literal_Subtype
       then
+         --  Add the well_formed property of the array type
+
+         T := New_And_Pred
+           (Left   => T,
+            Right  => New_Well_Formed_Pred (Expr));
 
          --  Generates:
          --  forall i1 .. in : int. in_range i1 /\ .. /\ in_range in ->

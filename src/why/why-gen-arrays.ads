@@ -462,6 +462,9 @@ package Why.Gen.Arrays is
       High   : W_Expr_Id) return W_Expr_Id;
    --  Return a call to the slice function in Why array theory
 
+   function New_Well_Formed_Pred (Arr : W_Term_Id) return W_Pred_Id;
+   --  Return a call to the Well_Formed predicate
+
    function Get_Array_Theory_Name
      (E            : Entity_Id;
       Relaxed_Init : Boolean := False) return Symbol

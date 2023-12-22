@@ -1834,6 +1834,8 @@ module Array__1
   val map__havoc (x : map__ref) : unit
      writes { x }
 
+  predicate has_bounds (a : map) (f : I1.t) (l : I1.t) = true
+
   function get (a : map) (i : I1.t) : component_type = Map.get a i
   function set (a : map) (i : I1.t) (v : component_type) : map = Map.set a i v
 
@@ -1884,7 +1886,7 @@ module Array__1__Concat
 
   function get (a : map) (i : Index.t) : component_type
 
-  let function slice (a : map) (a_first : Index.t) (a_last : Index.t) : map =
+  let function slice (a : map) (first : Index.t) (last : Index.t) : map =
     a
 
   (* Concatenation is only defined for one-dimensional arrays; it appends a
@@ -2000,6 +2002,10 @@ module Array__2
   val map__havoc (x : map__ref) : unit
      writes { x }
 
+  predicate has_bounds (a : map)
+    (f1 : I1.t) (l1 : I1.t) (f2 : I2.t) (l2 : I2.t)
+  = true
+
   val function get map I1.t I2.t : component_type
   meta "encoding:lskept" function get
   val function set map I1.t I2.t component_type : map
@@ -2064,6 +2070,10 @@ module Array__3
   type map__ref = { mutable map__content [@model_trace:] : map }
   val map__havoc (x : map__ref) : unit
      writes { x }
+
+  predicate has_bounds (a : map)
+    (f1 : I1.t) (l1 : I1.t) (f2 : I2.t) (l2 : I2.t) (f3 : I3.t) (l3 : I3.t)
+  = true
 
   val function get map I1.t I2.t I3.t : component_type
   meta "encoding:lskept" function get
@@ -2141,6 +2151,11 @@ module Array__4
   type map__ref = { mutable map__content [@model_trace:] : map }
   val map__havoc (x : map__ref) : unit
      writes { x }
+
+  predicate has_bounds (a : map)
+    (f1 : I1.t) (l1 : I1.t) (f2 : I2.t) (l2 : I2.t)
+    (f3 : I3.t) (l3 : I3.t) (f4 : I4.t) (l4 : I4.t)
+  = true
 
   val function get map I1.t I2.t I3.t I4.t : component_type
   meta "encoding:lskept" function get
