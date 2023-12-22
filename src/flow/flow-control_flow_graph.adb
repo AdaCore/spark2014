@@ -3341,7 +3341,7 @@ package body Flow.Control_Flow_Graph is
 
                when N_Selected_Component =>
                   F := Record_Field_Id (Prefix (N));
-                  T := Get_Type (Etype (Prefix (N)), FA.B_Scope);
+                  T := Get_Type (Prefix (N), FA.B_Scope);
 
                when others =>
                   raise Program_Error;
