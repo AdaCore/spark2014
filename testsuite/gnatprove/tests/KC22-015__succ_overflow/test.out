@@ -9,11 +9,15 @@ p.adb:32:38: high: range check might fail (e.g. when C = Green) [reason for chec
 p.adb:35:13: info: implicit aspect Always_Terminates on "Ident" has been proved, subprogram will terminate
 p.adb:40:18: info: range check proved (CVC5: 2 VC)
 p.adb:40:29: info: overflow check proved (CVC5: 1 VC)
+p.adb:40:29: info: range check proved (CVC5: 2 VC)
 p.adb:40:36: info: overflow check proved (CVC5: 1 VC)
+p.adb:40:36: info: range check proved (CVC5: 2 VC)
 p.adb:43:13: info: implicit aspect Always_Terminates on "Ident" has been proved, subprogram will terminate
 p.adb:48:19: info: range check proved (CVC5: 2 VC)
 p.adb:48:31: info: overflow check proved (CVC5: 1 VC)
+p.adb:48:31: info: range check proved (CVC5: 2 VC)
 p.adb:48:38: info: overflow check proved (CVC5: 1 VC)
+p.adb:48:38: info: range check proved (CVC5: 2 VC)
 p.adb:51:13: info: implicit aspect Always_Terminates on "Ident" has been proved, subprogram will terminate
 p.adb:56:31: info: float overflow check proved (CVC5: 1 VC)
 p.adb:56:38: high: float overflow check might fail (e.g. when F = 3.4028235E+38) [reason for check: value must be bounded]
