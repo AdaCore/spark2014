@@ -787,7 +787,8 @@ package body Flow.Analysis.Sanity is
                & "expression with variable input");
             Error_Msg_Flow
               (FA            => FA,
-               Msg           => Err_Desc & " cannot depend on variable input &",
+               Msg           =>
+                 Err_Desc & " cannot depend on variable input &",
                Explain_Code  =>
                  Explain_Code'Enum_Rep (EC_Variable_Input_In_Expression),
                N             => N,
