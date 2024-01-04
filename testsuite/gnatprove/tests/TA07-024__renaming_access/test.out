@@ -1,9 +1,9 @@
 renam2.adb:4:24: error: launch "gnatprove --explain=E0007" for more information
 renam2.adb:4:24: error: renamed dereference cannot depend on variable input "X" [E0007]
 renam2.adb:4:24: error: use instead a constant initialized to the expression with variable input
-renam4.adb:8:29: error: launch "gnatprove --explain=E0007" for more information, in instantiation at renam4.adb:11
+renam4.adb:8:29: error: launch "gnatprove --explain=E0007" for more information
 renam4.adb:8:29: error: renamed dereference cannot depend on variable input "X" [E0007], in instantiation at renam4.adb:11
-renam4.adb:8:29: error: use instead a constant initialized to the expression with variable input, in instantiation at renam4.adb:11
+renam4.adb:8:29: error: use instead a constant initialized to the expression with variable input
 renam4.adb:11:24: error: launch "gnatprove --explain=E0007" for more information
 renam4.adb:11:24: error: renamed dereference cannot depend on variable input "X" [E0007]
 renam4.adb:11:24: error: use instead a constant initialized to the expression with variable input

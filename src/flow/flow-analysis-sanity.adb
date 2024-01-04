@@ -42,6 +42,7 @@ with SPARK_Definition;               use SPARK_Definition;
 with SPARK_Util.Subprograms;         use SPARK_Util.Subprograms;
 with SPARK_Util.Types;               use SPARK_Util.Types;
 with SPARK_Util;                     use SPARK_Util;
+with String_Utils;                   use String_Utils;
 with VC_Kinds;                       use VC_Kinds;
 
 package body Flow.Analysis.Sanity is
@@ -779,22 +780,20 @@ package body Flow.Analysis.Sanity is
 
          procedure Emit_Error (F : Flow_Id)
          is
+            Conts : String_Lists.List;
          begin
+            Conts.Append
+              ("use instead a constant initialized to the "
+               & "expression with variable input");
             Error_Msg_Flow
-              (FA           => FA,
-               Msg          => Err_Desc & " cannot depend on variable input &",
-               Explain_Code =>
+              (FA            => FA,
+               Msg           => Err_Desc & " cannot depend on variable input &",
+               Explain_Code  =>
                  Explain_Code'Enum_Rep (EC_Variable_Input_In_Expression),
-               N            => N,
-               Severity     => Error_Kind,
-               F1           => Entire_Variable (F));
-            Error_Msg_Flow
-              (FA           => FA,
-               Msg          => "use instead a constant initialized to the "
-                 & "expression with variable input",
-               N            => N,
-               Severity     => Error_Kind,
-               Continuation => True);
+               N             => N,
+               Severity      => Error_Kind,
+               F1            => Entire_Variable (F),
+               Continuations => Conts);
             Sane := False;
          end Emit_Error;
 
@@ -1706,21 +1705,9 @@ package body Flow.Analysis.Sanity is
                            Subprogram : constant Flow_Id :=
                              Direct_Mapping_Id (FA.Spec_Entity);
 
-                        begin
-                           Error_Msg_Flow
-                             (FA       => FA,
-                              Msg      => "& " & Msg & " &",
-                              SRM_Ref  => SRM_Ref,
-                              N        => First_Var_Use,
-                              F1       => (if Gnat2Why_Args.Flow_Advanced_Debug
-                                           then Var
-                                           else Entire_Variable (Var)),
-                              Severity => High_Check_Kind,
-                              Tag      => Global_Missing,
-                              F2       => Subprogram,
-                              Vertex   => V);
+                           Conts      : String_Lists.List;
 
-                           Sane := False;
+                        begin
 
                            --  If the global is missing both from the refined
                            --  contract and the abstract contract, issue a
@@ -1741,21 +1728,33 @@ package body Flow.Analysis.Sanity is
                                     else Entire_Variable (Var));
 
                               begin
-                                 Error_Msg_Flow
-                                   (FA           => FA,
-                                    Msg          => "as a result & must be " &
-                                                    "listed in the " &
-                                                    Next_Aspect_To_Fix &
-                                                    " of &",
-                                    Severity     => High_Check_Kind,
-                                    Tag          => Global_Missing,
-                                    N            => First_Var_Use,
-                                    F1           => Missing,
-                                    F2           => Subprogram,
-                                    SRM_Ref      => SRM_Ref,
-                                    Continuation => True);
+                                 Conts.Append
+                                    (Substitute_Message
+                                       ("as a result & must be "
+                                        & "listed in the " & Next_Aspect_To_Fix
+                                        & " of &",
+                                        N  => First_Var_Use,
+                                        F1 => Missing,
+                                        F2 => Subprogram));
                               end;
                            end if;
+
+                           Error_Msg_Flow
+                             (FA       => FA,
+                              Msg      => "& " & Msg & " &",
+                              SRM_Ref  => SRM_Ref,
+                              N        => First_Var_Use,
+                              F1       => (if Gnat2Why_Args.Flow_Advanced_Debug
+                                           then Var
+                                           else Entire_Variable (Var)),
+                              Severity => High_Check_Kind,
+                              Tag      => Global_Missing,
+                              F2       => Subprogram,
+                              Vertex   => V,
+                              Continuations    => Conts);
+
+                           Sane := False;
+
                         end;
 
                         --  Sanity check: if the Global contract is generated,
