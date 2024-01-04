@@ -107,15 +107,10 @@ package Flow_Error_Messages is
 
    type Suppressed_Message (Suppression_Kind : Suppression := None) is record
       case Suppression_Kind is
-         when Warning | Check =>
-            Msg : String_Id;
-            case Suppression_Kind is
-               when Check =>
-                  Annot_Kind    : Annotate_Kind;
-                  Justification : Unbounded_String;
-               when others =>
-                  null;
-            end case;
+         when Check =>
+            Msg           : String_Id;
+            Annot_Kind    : Annotate_Kind;
+            Justification : Unbounded_String;
          when others =>
             null;
       end case;
@@ -124,9 +119,8 @@ package Flow_Error_Messages is
    --  suppressed, we can store its message, annotation kind and justification.
 
    Suppressed_Warning : constant Suppressed_Message :=
-     Suppressed_Message'(Suppression_Kind => Warning, Msg => First_String_Id);
-   --  This represents a suppressed warning. We don't care about its content,
-   --  because suppressed warnings are not reported.
+     Suppressed_Message'(Suppression_Kind => Warning);
+   --  This represents a suppressed warning
 
    No_Suppressed_Message : constant Suppressed_Message :=
      Suppressed_Message'(Suppression_Kind => None);

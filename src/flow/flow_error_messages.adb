@@ -283,11 +283,19 @@ package body Flow_Error_Messages is
       Set_Field (Value, "col", Col);
 
       if Suppr.Suppression_Kind in Warning | Check then
-         Set_Field (Value, "suppressed", To_String (Suppr.Msg));
-         if Suppr.Suppression_Kind = Check then
-            Set_Field (Value, "annot_kind", To_String (Suppr.Annot_Kind));
-            Set_Field (Value, "justif_msg", To_String (Suppr.Justification));
-         end if;
+         declare
+            Suppr_Reason : constant String :=
+              (if Suppr.Suppression_Kind = Check then To_String (Suppr.Msg)
+               else "");
+         begin
+            Set_Field (Value, "suppressed", Suppr_Reason);
+            if Suppr.Suppression_Kind = Check then
+               Set_Field
+                 (Value, "annot_kind", To_String (Suppr.Annot_Kind));
+               Set_Field
+                 (Value, "justif_msg", To_String (Suppr.Justification));
+            end if;
+         end;
       end if;
 
       Set_Field (Value, "rule", Tag);
