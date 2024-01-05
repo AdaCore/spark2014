@@ -2386,42 +2386,55 @@ package body Flow_Utility is
             --  We don't expect to get any other kind of node
             raise Program_Error);
 
+      --  Deal with Abstract_State, which doesn't have a proper type
+
       if T = Standard_Void_Type then
          pragma Assert (Nkind (N) = N_Defining_Identifier and then
                         Ekind (N) = E_Abstract_State);
 
          return T;
-      else
-         loop
-            pragma Loop_Invariant (Is_Type (T));
-
-            declare
-               Full_V : constant Entity_Id := Full_View (T);
-
-            begin
-               if Present (Full_V)
-                 and then Entity_In_SPARK (Full_V)
-                 and then Is_Visible (Full_V, Scope)
-               then
-                  T := Full_V;
-               else
-                  exit;
-               end if;
-            end;
-         end loop;
-
-         --  We do not want to return an Itype so we recurse on T's Etype if
-         --  it different to T. If we cannot do any better then we will in
-         --  fact return an Itype.
-
-         if Is_Itype (T)
-           and then not Is_Nouveau_Type (T)
-         then
-            T := Get_Type (Etype (T), Scope);
-         end if;
-
-         return T;
       end if;
+
+      loop
+         declare
+            Full_V : constant Entity_Id := Full_View (T);
+
+         begin
+            --  We prefer to return the full view, if it is in SPARK and
+            --  visible.
+
+            if Present (Full_V)
+              and then Entity_In_SPARK (Full_V)
+              and then Is_Visible (Full_V, Scope)
+            then
+               T := Full_V;
+
+            --  We do not want to return an Itype so we recurse on T's Etype if
+            --  it different to T. If we cannot do any better then we will in
+            --  fact return an Itype.
+
+            elsif Is_Itype (T) then
+
+               if Is_Nouveau_Type (T) then
+
+                  --  The Itype is returned when we got into various base types
+                  --  which flow analysis handles as blobs anyway.
+
+                  pragma Assert (Is_Base_Type (T));
+                  pragma Assert
+                    (Is_Array_Type (T)
+                     or else Is_Anonymous_Access_Type (T)
+                     or else Is_Fixed_Point_Type (T));
+
+                  return T;
+               else
+                  T := Etype (T);
+               end if;
+            else
+               return T;
+            end if;
+         end;
+      end loop;
    end Get_Type;
 
    --------------------------
