@@ -569,18 +569,13 @@ package SPARK_Atree is
    function Get_Pragma_Id (N : Node_Id) return Pragma_Id with
      Pre => Nkind (N) = N_Pragma;
 
-   procedure Get_Range_Check_Info
-     (N                 : Node_Id;
-      In_Left_Hand_Side : Boolean := False;
-      Check_Type        : out Entity_Id;
-      Check_Kind        : out SPARK_Util.Scalar_Check_Kind)
+   function Get_Range_Check_Info
+     (N : Node_Id) return SPARK_Util.Scalar_Check_Kind
    with Pre => Nkind (N) in N_Subexpr
      and then Do_Check_On_Scalar_Conversion (N);
    --  @param N a scalar expression requiring a check
-   --  @param In_Left_Hand_Side True if N occurs in the lefthand side of an
-   --         assignment.
-   --  @param Check_Type the type agains which the check should be done
-   --  @param Check_Kind the kind of check expected (overflow, range, index...)
+   --  @return Check_Kind the kind of check expected
+   --     (overflow, range, index...).
 
    function Get_Return_Object (N : Node_Id) return Entity_Id with
      Pre => Nkind (N) = N_Extended_Return_Statement;

@@ -5,12 +5,23 @@ procedure P is
 
    type Money is delta 0.01 digits 15;
 
+   type Modular is mod 256;
+
    function Ident (N : Integer) return Integer with
      Pre => (N = Integer'Last);
 
    function Ident (N : Integer) return Integer is
    begin
-      return Integer'Pred (Integer'Succ (N));
+      return Integer'Pred (Integer'Succ (N)); --@OVERFLOW_CHECK:FAIL
+   end Ident;
+
+   function Ident (N : Modular) return Modular with
+     Pre  => (N = Modular'Last),
+     Post => (Ident'Result = N);
+
+   function Ident (N : Modular) return Modular is
+   begin
+      return Modular'Pred (Modular'Succ (N));
    end Ident;
 
    function Ident (C : Color) return Color with
@@ -18,7 +29,7 @@ procedure P is
 
    function Ident (C : Color) return Color is
    begin
-      return Color'Pred (Color'Succ (C));
+      return Color'Pred (Color'Succ (C)); --@RANGE_CHECK:FAIL
    end Ident;
 
    function Ident (V : Volt) return Volt with
@@ -42,7 +53,7 @@ procedure P is
 
    function Ident (F : Float) return Float is
    begin
-      return Float'Pred (Float'Succ (F));
+      return Float'Pred (Float'Succ (F)); --@FLOAT_OVERFLOW_CHECK:FAIL
    end Ident;
 
 begin

@@ -23,14 +23,11 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with Ada.Text_IO; -- debugging purpose
-with Aspects;
 with Einfo.Utils;
 with Nlists;             use Nlists;
 with Sem_Ch12;
 with Sem_Disp;
 with SPARK_Util.Types;
-with Stand;              use Stand;
 with Stringt;            use Stringt;
 
 package body SPARK_Atree is
@@ -214,7 +211,6 @@ package body SPARK_Atree is
    -----------------------------------
 
    function Do_Check_On_Scalar_Conversion (N : Node_Id) return Boolean is
-      use type Einfo.Entities.Entity_Kind;
    begin
       return
       Sinfo.Nodes.Do_Range_Check (N)
@@ -471,12 +467,10 @@ package body SPARK_Atree is
    -- Get_Range_Check_Info --
    --------------------------
 
-   procedure Get_Range_Check_Info
-     (N                 : Node_Id;
-      In_Left_Hand_Side : Boolean := False;
-      Check_Type        : out Entity_Id;
-      Check_Kind        : out SPARK_Util.Scalar_Check_Kind)
+   function Get_Range_Check_Info
+     (N : Node_Id) return SPARK_Util.Scalar_Check_Kind
    is
+      Typ : constant Entity_Id := SPARK_Util.Types.Retysp (Etype (N));
       Par : Node_Id := Atree.Parent (N);
 
    begin
@@ -487,335 +481,22 @@ package body SPARK_Atree is
          Par := N;
       end if;
 
-      --  Set the appropriate entity in Check_Type giving the bounds for the
-      --  check, depending on the parent node Par.
+      --  Access to components in arrays are index checks
 
-      case Nkind (Par) is
+      if Nkind (Par) = N_Indexed_Component then
+         return SPARK_Util.RCK_Index;
 
-         when N_Assignment_Statement =>
-            Check_Type := Etype (Name (Par));
+      --  If the target type is a constrained array, we have a length check
 
-            --  For an array access, an index check has already been introduced
-            --  if needed. There is no other check to do.
-
-         when N_Indexed_Component =>
-            Check_Type := Empty;
-            Check_Kind := SPARK_Util.RCK_Index;
-            return;
-
-            --  Frontend may have introduced unchecked type conversions on
-            --  expressions or variables assigned to, which require range
-            --  checking. When applied to a left-hand side of an assignment,
-            --  the target type for the range check is the type of the object
-            --  being converted. Otherwise, the target type is the type of the
-            --  conversion.
-
-         when N_Type_Conversion
-            | N_Unchecked_Type_Conversion
-         =>
-            Check_Type :=
-              (if In_Left_Hand_Side then Etype (N) else Etype (Par));
-
-         when N_Qualified_Expression =>
-            Check_Type := Etype (Par);
-
-         when N_Simple_Return_Statement =>
-            Check_Type :=
-              Etype
-                (Einfo.Entities.Return_Applies_To
-                   (Return_Statement_Entity (Par)));
-
-         --  For a call, retrieve the type for the corresponding argument
-
-         when N_Function_Call
-            | N_Procedure_Call_Statement
-            | N_Entry_Call_Statement
-            | N_Parameter_Association
-         =>
-            --  If In_Left_Hand_Side is True, we are checking actual parameters
-            --  on stores. In this case, the Check_Type is the type of the
-            --  expression. Otherwise, the Check_Type is the expected formal
-            --  type.
-
-            if In_Left_Hand_Side then
-               Check_Type := Etype (N);
-            else
-               Check_Type := Etype (SPARK_Util.Get_Formal_From_Actual (N));
-            end if;
-
-         when N_Attribute_Reference =>
-            Attribute : declare
-               Aname   : constant Name_Id := Attribute_Name (Par);
-               Attr_Id : constant Attribute_Id := Get_Attribute_Id (Aname);
-            begin
-               case Attr_Id is
-                  when Attribute_Pred
-                     | Attribute_Succ
-                     | Attribute_Val
-                  =>
-                     Check_Type :=
-                       Einfo.Utils.Base_Type (Entity (Prefix (Par)));
-
-                  when others =>
-                     Ada.Text_IO.Put_Line ("[Get_Range_Check_Info] attr ="
-                                           & Attribute_Id'Image (Attr_Id));
-                     raise Program_Error;
-               end case;
-            end Attribute;
-
-         when N_Op_Expon =>
-
-            --  A range check on exponentiation is only possible on the right
-            --  operand, and in this case the check range is "Natural".
-
-            Check_Type := Standard_Natural;
-
-         when N_Component_Association
-            | N_Iterated_Component_Association
-         =>
-
-            declare
-               Pref        : Node_Id;
-               Prefix_Type : Entity_Id;
-
-            begin
-               --  Expr is either
-               --  1) a choice of a 'Update aggregate, and needs a
-               --  range check towards the corresponding index type of the
-               --  prefix to the 'Update aggregate, or
-               --  2) a component expression of a 'Update aggregate for arrays,
-               --  and needs a range check towards the component type.
-               --  3) a component expression of a 'Update aggregate for
-               --  records, and needs a range check towards the type of
-               --  the component
-               --  4) a discrete choice of an iterated component association
-               --  ??? Why is it different from regular component associations?
-               --  5) an expression of a regular record aggregate, and
-               --  needs a range check towards the expected type.
-
-               if (Nkind (Atree.Parent (Par)) = N_Aggregate
-                   and then
-                   Sem_Util.Is_Attribute_Update
-                     (Atree.Parent (Atree.Parent (Par))))
-                 or else Nkind (Atree.Parent (Par)) = N_Delta_Aggregate
-               then
-                  if Nkind (Atree.Parent (Par)) = N_Delta_Aggregate then
-                     Pref := Expression (Atree.Parent (Par));
-                  else
-                     Pref := Prefix (Atree.Parent (Atree.Parent (Par)));
-                  end if;
-
-                  Prefix_Type := Etype (Pref);
-
-                  if SPARK_Util.Types.Has_Record_Type (Prefix_Type) then
-
-                     Check_Type := Etype (Nlists.First (Choice_List (Par)));
-
-                  --  it's an array type, determine whether the check is for
-                  --  the component or the index
-
-                  elsif Expression (Par) = N then
-                     Check_Type :=
-                       Einfo.Entities.Component_Type
-                         (Sem_Util.Unique_Entity (Prefix_Type));
-
-                  else
-                     Check_Type :=
-                       Etype (Einfo.Entities.First_Index
-                              (Sem_Util.Unique_Entity (Prefix_Type)));
-                  end if;
-
-               --  must be a regular record aggregate
-
-               else
-                  pragma Assert (Expression (Par) = N);
-
-                  Check_Type := Etype (N);
-               end if;
-            end;
-
-         when N_Range =>
-            Check_Type := Etype (Par);
-
-         when N_Aggregate =>
-
-            if No (Etype (Par)) then
-
-               --  This parent is a special choice, the LHS of an association
-               --  of a 'Update of a multi-dimensional array, for example:
-               --  (I, J, K) of 'Update((I, J, K) => New_Val).
-
-               Update_Aggregate : declare
-
-                  Aggr : constant Node_Id := Atree.Parent (Atree.Parent (Par));
-
-                  pragma Assert
-                    (Nkind (Aggr) = N_Aggregate
-                     and then Sem_Util.Is_Attribute_Update
-                       (Atree.Parent (Aggr)));
-
-                  Pref        : constant Node_Id :=
-                    Prefix (Atree.Parent (Aggr));
-                  Num_Dim     : constant Pos :=
-                    Einfo.Utils.Number_Dimensions
-                      (SPARK_Util.Types.Retysp (Etype (Pref)));
-                  Multi_Exprs : constant List_Id := Expressions (Par);
-
-                  Dim_Expr      : Node_Id;
-                  Array_Type    : Entity_Id;
-                  Current_Index : Node_Id;
-                  Found         : Boolean;
-
-                  pragma Assert (1 < Num_Dim
-                                 and then No (Component_Associations (Par))
-                                 and then List_Length (Multi_Exprs) = Num_Dim);
-
-               begin
-
-                  --  When present, the Actual_Subtype of the entity should be
-                  --  used instead of the Etype of the prefix.
-
-                  if Einfo.Utils.Is_Entity_Name (Pref)
-                    and then
-                      Present (Einfo.Entities.Actual_Subtype (Entity (Pref)))
-                  then
-                     Array_Type := Einfo.Entities.Actual_Subtype
-                       (Entity (Pref));
-                  else
-                     Array_Type := Etype (Pref);
-                  end if;
-
-                  --  Find the index type for this expression's dimension
-
-                  Dim_Expr      := Nlists.First (Multi_Exprs);
-                  Current_Index :=
-                    Einfo.Entities.First_Index
-                      (Sem_Util.Unique_Entity (Array_Type));
-                  Found         := False;
-
-                  while Present (Dim_Expr) loop
-                     if N = Dim_Expr then
-                        Check_Type := Etype (Current_Index);
-                        Found := True;
-                        exit;
-                     end if;
-                     Next (Dim_Expr);
-                     Einfo.Utils.Next_Index (Current_Index);
-                  end loop;
-
-                  pragma Assert (Found);
-
-               end Update_Aggregate;
-
-            --  Normal positional aggregates, the range is the element
-
-            else
-               Check_Type := Einfo.Entities.Component_Type (Etype (Par));
-            end if;
-
-         when N_Aspect_Specification =>
-
-            --  We only expect range checks on aspects for default values
-
-            case Aspects.Get_Aspect_Id (Par) is
-            when Aspects.Aspect_Default_Component_Value =>
-               pragma Assert
-                 (Einfo.Utils.Is_Array_Type
-                    (SPARK_Util.Types.Retysp (Entity (Par))));
-               Check_Type :=
-                 Einfo.Entities.Component_Type
-                   (SPARK_Util.Types.Retysp (Entity (Par)));
-            when Aspects.Aspect_Default_Value =>
-               pragma Assert
-                 (Einfo.Utils.Is_Scalar_Type
-                    (SPARK_Util.Types.Retysp (Entity (Par))));
-               Check_Type := SPARK_Util.Types.Retysp (Entity (Par));
-            when others =>
-               Ada.Text_IO.Put_Line ("[Get_Range_Check_Info] aspect ="
-                                     &  Aspects.Aspect_Id'Image
-                                       (Aspects.Get_Aspect_Id (Par)));
-               raise Program_Error;
-            end case;
-
-         when N_Object_Declaration
-            | N_Component_Declaration
-            | N_Discriminant_Specification
-         =>
-            --  We expect range checks on defaults of record fields and
-            --  discriminants.
-
-            Check_Type := Etype (Defining_Identifier (Par));
-
-         when N_If_Expression =>
-            Check_Type := Etype (Par);
-
-         when N_Case_Expression_Alternative =>
-            Check_Type := Etype (Atree.Parent (Par));
-
-         when N_Allocator =>
-            Check_Type := Einfo.Entities.Directly_Designated_Type
-              (if Present (Einfo.Entities.Full_View (Etype (Par)))
-               then Einfo.Entities.Full_View (Etype (Par))
-               else Etype (Par));
-
-            if Einfo.Utils.Is_Incomplete_Type (Check_Type)
-              and then Present (Einfo.Entities.Full_View (Check_Type))
-            then
-               Check_Type := Einfo.Entities.Full_View (Check_Type);
-            end if;
-
-         when others =>
-            Ada.Text_IO.Put_Line ("[Get_Range_Check_Info] kind ="
-                                  & Node_Kind'Image (Nkind (Par)));
-            raise Program_Error;
-      end case;
-
-      --  Reach through a non-private type in order to query its kind
-
-      Check_Type := SPARK_Util.Types.Retysp (Check_Type);
-      pragma Annotate
-        (CodePeer, False_Positive,
-         "validity check",
-         "Check_Type initialized in every branch above");
-
-      --  If the target type is a constrained array, we have a length check.
-
-      if Einfo.Utils.Is_Array_Type (Check_Type)
-        and then Einfo.Entities.Is_Constrained (Check_Type)
+      elsif Einfo.Utils.Is_Array_Type (Typ)
+        and then Einfo.Entities.Is_Constrained (Typ)
       then
-         Check_Kind := SPARK_Util.RCK_Length;
-
-         --  For attributes Pred and Succ, the check is a range check for
-         --  enumeration types, and an overflow check otherwise. We use special
-         --  values of Check_Kind to account for the different range checked in
-         --  these cases.
-
-      elsif Nkind (Par) = N_Attribute_Reference
-        and then Get_Attribute_Id (Attribute_Name (Par)) = Attribute_Pred
-      then
-         if Einfo.Utils.Is_Enumeration_Type (Check_Type) then
-            Check_Kind := SPARK_Util.RCK_Range_Not_First;
-         elsif Einfo.Utils.Is_Floating_Point_Type (Check_Type) then
-            Check_Kind := SPARK_Util.RCK_FP_Overflow_Not_First;
-         else
-            Check_Kind := SPARK_Util.RCK_Overflow_Not_First;
-         end if;
-
-      elsif Nkind (Par) = N_Attribute_Reference
-        and then Get_Attribute_Id (Attribute_Name (Par)) = Attribute_Succ
-      then
-         if Einfo.Utils.Is_Enumeration_Type (Check_Type) then
-            Check_Kind := SPARK_Util.RCK_Range_Not_Last;
-         elsif Einfo.Utils.Is_Floating_Point_Type (Check_Type) then
-            Check_Kind := SPARK_Util.RCK_FP_Overflow_Not_Last;
-         else
-            Check_Kind := SPARK_Util.RCK_Overflow_Not_Last;
-         end if;
+         return SPARK_Util.RCK_Length;
 
       --  Otherwise, this is a range check
 
       else
-         Check_Kind := SPARK_Util.RCK_Range;
+         return SPARK_Util.RCK_Range;
       end if;
    end Get_Range_Check_Info;
 

@@ -42,7 +42,7 @@ division_by_zero.adb:34:14: medium: divide by zero might fail (e.g. when Y = 0) 
 division_by_zero.adb:34:14: medium: overflow check might fail, cannot prove lower bound for X / Y (e.g. when X = 1/128 and Y = 0) [reason for check: result of fixed-point division must fit in the underlying 8-bits machine integer] [possible fix: subprogram at line 32 should mention X and Y in a precondition]
 division_by_zero.adb:37:04: warning: analyzing unreferenced procedure "Exp_Float"
 division_by_zero.adb:37:49: info: initialization of "U" proved
-division_by_zero.adb:39:14: medium: divide by zero might fail [possible fix: add precondition (Y /= 0) to subprogram at line 37]
+division_by_zero.adb:39:14: medium: divide by zero might fail [possible fix: subprogram at line 37 should mention X and Y in a precondition]
 division_by_zero.adb:39:14: medium: float overflow check might fail [reason for check: result of floating-point exponentiation must be bounded] [possible fix: subprogram at line 37 should mention X and Y in a precondition]
 index_check.adb:3:04: warning: analyzing unreferenced function "Get"
 index_check.adb:3:13: info: implicit aspect Always_Terminates on "Get" has been proved, subprogram will terminate

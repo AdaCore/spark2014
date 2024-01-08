@@ -2,12 +2,14 @@ test_init_by_proof.adb:26:14: warning: subprogram "Test_Discr" has no effect
 test_init_by_proof.adb:29:23: info: discriminant check proved (CVC5: 1 VC)
 test_init_by_proof.adb:29:23: info: initialization check proved (CVC5: 1 VC)
 test_init_by_proof.adb:29:26: info: overflow check proved (CVC5: 2 VC)
+test_init_by_proof.adb:29:28: info: initialization check proved (CVC5: 1 VC)
 test_init_by_proof.adb:30:22: info: initialization check proved (CVC5: 1 VC)
 test_init_by_proof.adb:30:25: info: overflow check proved (CVC5: 2 VC)
 test_init_by_proof.adb:35:14: warning: subprogram "Test_Discr_2" has no effect
 test_init_by_proof.adb:38:23: info: discriminant check proved (CVC5: 1 VC)
 test_init_by_proof.adb:38:23: medium: initialization check might fail (e.g. when X = (D => 0, Y => 0, X => ?) and X.Y'Initialized = True and X.X'Initialized = False)
 test_init_by_proof.adb:38:26: info: overflow check proved (CVC5: 2 VC)
+test_init_by_proof.adb:38:28: info: initialization check proved (CVC5: 1 VC)
 test_init_by_proof.adb:39:22: medium: initialization check might fail (e.g. when X = (D => 0, Y => ?, X => 0) and X.Y'Initialized = False and X.X'Initialized = True)
 test_init_by_proof.adb:39:25: info: overflow check proved (CVC5: 2 VC)
 test_init_by_proof.adb:44:14: warning: subprogram "Test_Init_Attr" has no effect
