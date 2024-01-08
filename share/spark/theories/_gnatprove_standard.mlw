@@ -1948,7 +1948,8 @@ module Array__1__Concat
     forall b : component_type.
     forall a_first a_last : Index.t
     [concat_singleton_right a a_first a_last b].
-    get (concat_singleton_right a a_first a_last b) (Index.add a_last Index.one) = b
+    (Index.lt a_last (Index.add a_last Index.one) ->
+     get (concat_singleton_right a a_first a_last b) (Index.add a_last Index.one) = b)
   /\
     forall i : Index.t [get (concat_singleton_right a a_first a_last b) i | get a i].
       ((Index.le a_first i /\ Index.le i a_last) ->
