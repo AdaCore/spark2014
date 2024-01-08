@@ -1485,6 +1485,8 @@ module Unconstr_Array
 
   predicate has_bounds map index_rep_type index_rep_type
 
+  predicate eq_ext map map index_rep_type index_rep_type
+
   function array_bool_eq map index_rep_type index_rep_type map index_rep_type index_rep_type : bool
 
   clone Index_Type as I1 with
@@ -1552,11 +1554,15 @@ module Unconstr_Array
       x.elts (to_rep (I1.first x.rt)) (to_rep (I1.last x.rt))
       y.elts (to_rep (I1.first y.rt)) (to_rep (I1.last y.rt))
 
+  val bool_eq (x : __t) (y : __t) : bool
+  ensures { result =  bool_eq x y }
+
   predicate well_formed (a : __t) =
     has_bounds a.elts (to_rep (I1.first a.rt)) (to_rep (I1.last a.rt))
 
-  val bool_eq (x : __t) (y : __t) : bool
-  ensures { result =  bool_eq x y }
+  predicate logic_eq (x : __t) (y : __t) =
+    x.rt = y.rt /\
+    eq_ext x.elts y.elts (to_rep (I1.first x.rt)) (to_rep (I1.last x.rt))
 
   val function user_eq (x : __t) (y : __t) : bool
 
@@ -1594,6 +1600,8 @@ module Unconstr_Array_2
   predicate index_rep_le_2 index_rep_type_2 index_rep_type_2
 
   predicate has_bounds map index_rep_type index_rep_type index_rep_type_2 index_rep_type_2
+
+  predicate eq_ext map map index_rep_type index_rep_type index_rep_type_2 index_rep_type_2
 
   function array_bool_eq map index_rep_type index_rep_type index_rep_type_2 index_rep_type_2 map index_rep_type index_rep_type index_rep_type_2 index_rep_type_2 : bool
 
@@ -1700,6 +1708,11 @@ module Unconstr_Array_2
   val bool_eq (x : __t) (y : __t) : bool
   ensures { result =  bool_eq x y }
 
+  predicate logic_eq (x : __t) (y : __t) =
+    x.rt = y.rt /\ x.rt_2 = y.rt_2 /\
+    eq_ext x.elts y.elts (to_rep (I1.first x.rt)) (to_rep (I1.last x.rt))
+       (to_rep_2 (I2.first x.rt_2)) (to_rep_2 (I2.last x.rt_2))
+
   val function user_eq (x : __t) (y : __t) : bool
 
   val constant dummy : __t
@@ -1748,6 +1761,8 @@ module Unconstr_Array_3
   predicate index_rep_le_3 index_rep_type_3 index_rep_type_3
 
   predicate has_bounds map index_rep_type index_rep_type index_rep_type_2 index_rep_type_2 index_rep_type_3 index_rep_type_3
+
+  predicate eq_ext map map index_rep_type index_rep_type index_rep_type_2 index_rep_type_2 index_rep_type_3 index_rep_type_3
 
   function array_bool_eq map index_rep_type index_rep_type index_rep_type_2 index_rep_type_2 index_rep_type_3 index_rep_type_3 map index_rep_type index_rep_type index_rep_type_2 index_rep_type_2 index_rep_type_3 index_rep_type_3 : bool
 
@@ -1885,6 +1900,12 @@ module Unconstr_Array_3
   val bool_eq (x : __t) (y : __t) : bool
   ensures { result =  bool_eq x y }
 
+  predicate logic_eq (x : __t) (y : __t) =
+    x.rt = y.rt /\ x.rt_2 = y.rt_2 /\ x.rt_3 = y.rt_3 /\
+    eq_ext x.elts y.elts (to_rep (I1.first x.rt)) (to_rep (I1.last x.rt))
+       (to_rep_2 (I2.first x.rt_2)) (to_rep_2 (I2.last x.rt_2))
+       (to_rep_3 (I3.first x.rt_3)) (to_rep_3 (I3.last x.rt_3))
+
   val function user_eq (x : __t) (y : __t) : bool
 
   val constant dummy : __t
@@ -1945,6 +1966,8 @@ module Unconstr_Array_4
   predicate index_rep_le_4 index_rep_type_4 index_rep_type_4
 
   predicate has_bounds map index_rep_type index_rep_type index_rep_type_2 index_rep_type_2 index_rep_type_3 index_rep_type_3 index_rep_type_4 index_rep_type_4
+
+  predicate eq_ext map map index_rep_type index_rep_type index_rep_type_2 index_rep_type_2 index_rep_type_3 index_rep_type_3 index_rep_type_4 index_rep_type_4
 
   function array_bool_eq map index_rep_type index_rep_type index_rep_type_2 index_rep_type_2 index_rep_type_3 index_rep_type_3 index_rep_type_4 index_rep_type_4 map index_rep_type index_rep_type index_rep_type_2 index_rep_type_2 index_rep_type_3 index_rep_type_3 index_rep_type_4 index_rep_type_4 : bool
 
@@ -2114,6 +2137,13 @@ module Unconstr_Array_4
   val bool_eq (x : __t) (y : __t) : bool
   ensures { result =  bool_eq x y }
 
+  predicate logic_eq (x : __t) (y : __t) =
+    x.rt = y.rt /\ x.rt_2 = y.rt_2 /\ x.rt_3 = y.rt_3 /\ x.rt_4 = y.rt_4 /\
+    eq_ext x.elts y.elts (to_rep (I1.first x.rt)) (to_rep (I1.last x.rt))
+       (to_rep_2 (I2.first x.rt_2)) (to_rep_2 (I2.last x.rt_2))
+       (to_rep_3 (I3.first x.rt_3)) (to_rep_3 (I3.last x.rt_3))
+       (to_rep_4 (I4.first x.rt_4)) (to_rep_4 (I4.last x.rt_4))
+
   val function user_eq (x : __t) (y : __t) : bool
 
   val constant dummy : __t
@@ -2130,6 +2160,8 @@ module Constr_Array
   function array_bool_eq map index_rep_type index_rep_type map index_rep_type index_rep_type : bool
 
   predicate has_bounds map index_rep_type index_rep_type
+
+  predicate eq_ext map map index_rep_type index_rep_type
 
   type __t = map
 
@@ -2172,6 +2204,9 @@ module Constr_Array
   val bool_eq (x : __t) (y : __t) : bool
   ensures { result =  bool_eq x y }
 
+  predicate logic_eq (x : __t) (y : __t) =
+    eq_ext x y first last
+
   val function user_eq (x : __t) (y : __t) : bool
 end
 
@@ -2189,6 +2224,8 @@ module Constr_Array_2
   function array_bool_eq map index_rep_type index_rep_type index_rep_type_2 index_rep_type_2 map index_rep_type index_rep_type index_rep_type_2 index_rep_type_2 : bool
 
   predicate has_bounds map index_rep_type index_rep_type index_rep_type_2 index_rep_type_2
+
+  predicate eq_ext map map index_rep_type index_rep_type index_rep_type_2 index_rep_type_2
 
   type __t = map
 
@@ -2231,6 +2268,9 @@ module Constr_Array_2
   val bool_eq (x : __t) (y : __t) : bool
   ensures { result =  bool_eq x y }
 
+  predicate logic_eq (x : __t) (y : __t) =
+    eq_ext x y first last first_2 last_2
+
   val function user_eq (x : __t) (y : __t) : bool
 end
 
@@ -2252,6 +2292,8 @@ module Constr_Array_3
   function array_bool_eq map index_rep_type index_rep_type index_rep_type_2 index_rep_type_2 index_rep_type_3 index_rep_type_3 map index_rep_type index_rep_type index_rep_type_2 index_rep_type_2 index_rep_type_3 index_rep_type_3 : bool
 
   predicate has_bounds map index_rep_type index_rep_type index_rep_type_2 index_rep_type_2 index_rep_type_3 index_rep_type_3
+
+  predicate eq_ext map map index_rep_type index_rep_type index_rep_type_2 index_rep_type_2 index_rep_type_3 index_rep_type_3
 
   type __t = map
 
@@ -2294,6 +2336,9 @@ module Constr_Array_3
   val bool_eq (x : __t) (y : __t) : bool
   ensures { result =  bool_eq x y }
 
+  predicate logic_eq (x : __t) (y : __t) =
+    eq_ext x y first last first_2 last_2 first_3 last_3
+
   val function user_eq (x : __t) (y : __t) : bool
 end
 
@@ -2317,6 +2362,8 @@ module Constr_Array_4
   function last_4  : index_rep_type_4
 
   predicate has_bounds map index_rep_type index_rep_type index_rep_type_2 index_rep_type_2 index_rep_type_3 index_rep_type_3 index_rep_type_4 index_rep_type_4
+
+  predicate eq_ext map map index_rep_type index_rep_type index_rep_type_2 index_rep_type_2 index_rep_type_3 index_rep_type_3 index_rep_type_4 index_rep_type_4
 
   function array_bool_eq map index_rep_type index_rep_type index_rep_type_2 index_rep_type_2 index_rep_type_3 index_rep_type_3 index_rep_type_4 index_rep_type_4 map index_rep_type index_rep_type index_rep_type_2 index_rep_type_2 index_rep_type_3 index_rep_type_3 index_rep_type_4 index_rep_type_4 : bool
 
@@ -2360,6 +2407,9 @@ module Constr_Array_4
 
   val bool_eq (x : __t) (y : __t) : bool
   ensures { result =  bool_eq x y }
+
+  predicate logic_eq (x : __t) (y : __t) =
+    eq_ext x y first last first_2 last_2 first_3 last_3 first_4 last_4
 
   val function user_eq (x : __t) (y : __t) : bool
 end

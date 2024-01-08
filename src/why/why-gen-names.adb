@@ -997,6 +997,7 @@ package body Why.Gen.Names is
             | WNE_Array_Base_Range_Pred_3
             | WNE_Array_Base_Range_Pred_4
             | WNE_Array_Elts
+            | WNE_Array_Logic_Eq
             | WNE_Array_Well_Formed
             | WNE_Assign_Null_Check
             | WNE_Attr_Alignment

@@ -1128,7 +1128,7 @@ package body Why.Gen.Arrays is
             Array_Theory  : constant W_Module_Id :=
               Get_Array_Theory (E, Relaxed_Init).Module;
             Nb_Subst      : constant Positive :=
-              (if Relaxed_Init then 2 else 3);
+              (if Relaxed_Init then 3 else 4);
             Subst         : W_Clone_Substitution_Array (1 .. Nb_Subst);
          begin
             Emit (Th,
@@ -1149,10 +1149,17 @@ package body Why.Gen.Arrays is
                  Image     => New_Name (Symb   => NID ("has_bounds"),
                                         Module => Array_Theory));
 
+            Subst (3) :=
+              New_Clone_Substitution
+                (Kind      => EW_Predicate,
+                 Orig_Name => New_Name (Symb => NID ("eq_ext")),
+                 Image     => New_Name (Symb   => NID ("eq_ext"),
+                                        Module => Array_Theory));
+
             --  We do not have an equality on wrapper types
 
             if not Relaxed_Init then
-               Subst (3) :=
+               Subst (4) :=
                  New_Clone_Substitution
                    (Kind      => EW_Function,
                     Orig_Name => New_Name (Symb => NID ("array_bool_eq")),
@@ -2932,6 +2939,24 @@ package body Why.Gen.Arrays is
 
       return +Result;
    end New_Length_Equality;
+
+   -----------------------
+   -- New_Logic_Eq_Call --
+   -----------------------
+
+   function New_Logic_Eq_Call
+     (Left, Right : W_Term_Id;
+      Domain      : EW_Domain)
+      return W_Expr_Id
+   is
+      Typ : constant W_Type_Id := Get_Type (+Left);
+      E   : constant Entity_Id := Get_Ada_Node (+Typ);
+      P   : constant W_Pred_Id := New_Call
+        (Name => E_Symb (E, WNE_Array_Logic_Eq),
+         Args => (1 => +Left, 2 => +Right));
+   begin
+      return Boolean_Expr_Of_Pred (P, Domain);
+   end New_Logic_Eq_Call;
 
    ------------------------
    -- New_Singleton_Call --

@@ -21693,11 +21693,16 @@ package body Gnat2Why.Expr is
                      Right_Expr : constant W_Expr_Id :=
                        Transform_Expr (Right, BT, EW_Term, Params);
                   begin
-                     T := New_Comparison
-                       (Symbol => Why_Eq,
-                        Left   => Left_Expr,
-                        Right  => Right_Expr,
-                        Domain => Domain);
+                     if Has_Array_Type (Etype (Left)) then
+                        T := New_Logic_Eq_Call
+                          (+Left_Expr, +Right_Expr, Domain);
+                     else
+                        T := New_Comparison
+                          (Symbol => Why_Eq,
+                           Left   => Left_Expr,
+                           Right  => Right_Expr,
+                           Domain => Domain);
+                     end if;
                   end;
 
                elsif Is_Function_With_Side_Effects (Subp) then

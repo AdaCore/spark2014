@@ -447,6 +447,12 @@ package Why.Gen.Arrays is
       Typ    : W_Type_Id) return W_Expr_Id;
    --  Return a call to the const function in Why array theory
 
+   function New_Logic_Eq_Call
+     (Left, Right : W_Term_Id;
+      Domain      : EW_Domain)
+      return W_Expr_Id;
+   --  Return a call to the logic_eq predicate
+
    function New_Singleton_Call
      (Domain : EW_Domain;
       Elt    : W_Expr_Id;
@@ -463,7 +469,7 @@ package Why.Gen.Arrays is
    --  Return a call to the slice function in Why array theory
 
    function New_Well_Formed_Pred (Arr : W_Term_Id) return W_Pred_Id;
-   --  Return a call to the Well_Formed predicate
+   --  Return a call to the well_formed predicate
 
    function Get_Array_Theory_Name
      (E            : Entity_Id;

@@ -245,6 +245,7 @@ package Why.Gen.Names is
       WNE_Array_Base_Range_Pred_4,
       WNE_Array_Component_Type,
       WNE_Array_Elts,
+      WNE_Array_Logic_Eq,
       WNE_Array_Type,
       WNE_Array_Well_Formed,
 
