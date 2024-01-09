@@ -9,6 +9,7 @@ main.adb:26:10: error: "Y" is not allowed in SPARK (due to borrow of a qualified
 main.adb:26:10: error: violation of aspect SPARK_Mode at line 1
 main.adb:35:10: error: assignment into a qualified expression is not allowed in SPARK
 main.adb:35:10: error: violation of aspect SPARK_Mode at line 1
+main.adb:36:10: info: no contextual analysis of "Set" (body not seen yet)
 main.adb:36:15: error: qualified expression as "in out" parameter is not allowed in SPARK
 main.adb:36:15: error: violation of aspect SPARK_Mode at line 1
 gnatprove: error during flow analysis and proof

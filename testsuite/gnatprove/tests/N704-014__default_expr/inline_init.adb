@@ -15,6 +15,8 @@ is
    R : Rec;
    Y : Integer := Id(3);
 begin
-   pragma Assert (Y = 3);
-   pragma Assert (R.C = 3);
+   pragma Assert (Y = 3);         -- @ASSERT:PASS
+   pragma Assert (R.C = Id (3));  -- @ASSERT:PASS
+   --  The first assertion is proved because the call in declaration is inlined
+   --  The second one is proved, because proof knows the default expression
 end Inline_Init;

@@ -139,12 +139,13 @@ package body Why.Atree.Modules is
         & (case K is
               when Regular                  => "",
               when Axiom                     => "___axiom",
-              when Recursive_Axiom           => "___rec_axiom",
+              when Expr_Fun_Axiom            => "___def__axiom",
+              when Fun_Post_Axiom            => "___post__axiom",
               when Logic_Function_Decl       => "___logic_fun",
               when Program_Function_Decl     => "___program_fun",
               when Dispatch                  => "___dispatch",
               when Dispatch_Axiom            => "___dispatch__axiom",
-              when Dispatch_Recursive_Axiom  => "___dispatch__rec_axiom",
+              when Dispatch_Post_Axiom       => "___dispatch__post__axiom",
               when Lemma_Axiom               => "___post_axiom",
               when Type_Completion           => "___compl",
               when Type_Representative       => "___rep",
@@ -170,34 +171,35 @@ package body Why.Atree.Modules is
          =>
             null;
 
-         when Recursive_Axiom =>
+         when Expr_Fun_Axiom =>
             pragma Assert
               (E in Callable_Kind_Id
-               and then Has_Post_Axiom (E)
-               and then Proof_Module_Cyclic (E));
+               and then Is_Expression_Function_Or_Completion (E)
+               and then Entity_Body_Compatible_With_SPARK (E));
+
+         when Fun_Post_Axiom =>
+            pragma Assert (E in Callable_Kind_Id);
 
          when Logic_Function_Decl =>
             pragma Assert
-              (Is_Function_Or_Function_Type (E)
-               and then not Has_Pragma_Volatile_Function (E)
-               and then not Is_Function_With_Side_Effects (E));
+              (Nkind (E) in N_Aggregate | N_Delta_Aggregate
+               or else (Is_Function_Or_Function_Type (E)
+                 and then not Has_Pragma_Volatile_Function (E)
+                 and then not Is_Function_With_Side_Effects (E)));
 
          when Program_Function_Decl =>
-            pragma Assert (E in Callable_Kind_Id);
+            pragma Assert
+              (Nkind (E) in N_Aggregate | N_Delta_Aggregate
+               or else E in Callable_Kind_Id);
 
          when Dispatch
             | Dispatch_Axiom
-            | Dispatch_Recursive_Axiom
+            | Dispatch_Post_Axiom
          =>
             pragma Assert
               (E in Callable_Kind_Id
                and then Is_Dispatching_Operation (E)
                and then not Is_Hidden_Dispatching_Operation (E));
-            if K = Dispatch_Recursive_Axiom then
-               pragma Assert
-                 (Is_Dispatching_Operation (E)
-                  and then not Is_Hidden_Dispatching_Operation (E));
-            end if;
 
          when Lemma_Axiom =>
             pragma Assert
@@ -2670,17 +2672,16 @@ package body Why.Atree.Modules is
    -------------------------
 
    procedure Insert_Extra_Module
-     (N        : Node_Id;
-      M        : W_Module_Id;
-      Is_Axiom : Boolean := False)
+     (N    : Node_Id;
+      M    : W_Module_Id;
+      Kind : Module_Kind := Regular)
    is
       Position : Ada_Node_To_Module.Cursor;
       Inserted : Boolean;
    begin
       Entity_Modules.Insert
         (N, Module_Kind_To_Module.Empty_Map, Position, Inserted);
-      Entity_Modules (Position).Insert
-        ((if Is_Axiom then Axiom else Regular), M);
+      Entity_Modules (Position).Insert (Kind, M);
    end Insert_Extra_Module;
 
    ------------------------
@@ -4016,13 +4017,31 @@ package body Why.Atree.Modules is
       S : Why_Node_Sets.Set;
 
    begin
-      --  For recursive functions, include the axiom module of mutually
-      --  recursive subprograms if any.
+      --  For recursive functions, include the module for the post axiom of
+      --  mutually recursive subprograms if any.
 
       if Proof_Module_Cyclic (E) then
          for F of Proof_Cyclic_Functions loop
             if Proof_Module_Cyclic (E, F) then
-               S.Insert (+Entity_Modules (F) (Recursive_Axiom));
+               S.Insert (+Entity_Modules (F) (Fun_Post_Axiom));
+
+               --  Only remove the defining axioms of expression functions
+               --  which are recursive and have a numeric subprogram variant.
+               --  The axiom has the form f params = expr which is always sound
+               --  unless expr depends on f params, which should not be
+               --  possible if f is not recursive or if it structurally
+               --  terminates.
+
+               if Is_Expression_Function_Or_Completion (F)
+                 and then Entity_Body_Compatible_With_SPARK (F)
+                 and then No (Retrieve_Inline_Annotation (F))
+                 and then Is_Recursive (F)
+                 and then Has_Subprogram_Variant (F)
+                 and then not Is_Structural_Subprogram_Variant
+                   (Get_Pragma (F, Pragma_Subprogram_Variant))
+               then
+                  S.Insert (+Entity_Modules (F) (Expr_Fun_Axiom));
+               end if;
 
                --  If the subprogram has specializations, also include its
                --  specialized axioms.
@@ -4034,7 +4053,7 @@ package body Why.Atree.Modules is
                begin
                   if Position /= No_Element then
                      for Th of Element (Position) loop
-                        S.Insert (+Th.Rec_Ax_Module);
+                        S.Insert (+Th.Post_Module);
                      end loop;
                   end if;
                end;
@@ -4042,7 +4061,7 @@ package body Why.Atree.Modules is
                if Is_Dispatching_Operation (F)
                  and then not Is_Hidden_Dispatching_Operation (F)
                then
-                  S.Insert (+Entity_Modules (F) (Dispatch_Recursive_Axiom));
+                  S.Insert (+Entity_Modules (F) (Dispatch_Post_Axiom));
                end if;
             end if;
          end loop;

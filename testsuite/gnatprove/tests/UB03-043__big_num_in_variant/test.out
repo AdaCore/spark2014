@@ -8,6 +8,7 @@ main.adb:16:45: info: subprogram variant proved (Trivial)
 main.adb:16:54: info: pointer dereference check proved (CVC5: 1 VC)
 main.adb:16:58: info: predicate check proved (CVC5: 1 VC; Trivial: 1 VC)
 main.adb:16:60: info: predicate check proved (Trivial: 1 VC)
+main.adb:19:13: info: expression function body of subprograms with a numeric variant might not be available on recursive calls
 main.adb:19:13: info: implicit aspect Always_Terminates on "All_Zero" has been proved, subprogram will terminate
 main.adb:20:26: info: pointer dereference check proved (CVC5: 1 VC)
 main.adb:20:42: info: subprogram variant proved (CVC5: 1 VC)
@@ -24,6 +25,7 @@ main.adb:33:25: info: predicate check proved (Trivial: 1 VC)
 main.adb:33:38: info: predicate check proved (Trivial: 1 VC)
 main.adb:33:47: info: pointer dereference check proved (CVC5: 1 VC)
 main.adb:34:16: info: pointer dereference check proved (CVC5: 1 VC)
+main.adb:38:13: info: expression function body of subprograms with a numeric variant might not be available on recursive calls
 main.adb:38:13: info: implicit aspect Always_Terminates on "All_Zero_Bad" has been proved, subprogram will terminate
 main.adb:39:26: info: pointer dereference check proved (CVC5: 1 VC)
 main.adb:39:42: info: subprogram variant proved (CVC5: 1 VC)

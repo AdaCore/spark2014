@@ -25,7 +25,7 @@
   <goal name="def&#39;vc.2">
   <proof prover="0"><result status="steplimitexceeded" steps="1632"/></proof>
   <proof prover="1"><result status="steplimitexceeded" steps="581722"/></proof>
-  <proof prover="2"><result status="unknown" steps="5982573"/></proof>
+  <proof prover="2"><result status="unknown" steps="4218788"/></proof>
   <proof prover="4"><result status="unknown" steps="112"/></proof>
   </goal>
   <goal name="def&#39;vc.3" proved="true">

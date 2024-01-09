@@ -135,6 +135,7 @@ package Why.Inter is
       No_Comp      : Boolean := False;
       Rec          : Entity_Id := Empty;
       Init_Decl    : Boolean := False;
+      Hide_Info    : Boolean := False;
       Typ          : W_Type_Id := Why_Empty;
       Relaxed_Init : Boolean := False) return W_Identifier_Id
    with Pre => Ekind (E) in Subprogram_Kind
@@ -162,6 +163,7 @@ package Why.Inter is
    --         specifies the (sub-)type which contains the component.
    --  @param Init_Decl Use the initial declaration of a function, to avoid
    --         pulling its defining and post axioms.
+   --  @param Hide_Info Use the special declarations without hidden information
    --  @param Typ Expected type of the id.
    --  @param Relaxed_Init True if the identifier should be located in the
    --         module for the init wrapper type.
@@ -284,6 +286,13 @@ package Why.Inter is
       return Boolean;
    --  Return true whenever the Why declaration that corresponds to the given
    --  subprogram has a precondition.
+
+   procedure Process_Info_Hiding_For_VCs (E : Entity_Id);
+   --  Process Hide_Info and Unhide_Info annotations for E. Information should
+   --  be reset afterwards.
+
+   procedure Reset_Info_Hiding_For_VCs (E : Entity_Id);
+   --  Clean-up information hiding
 
 private
    Module_Dependencies : Why_Node_Graphs.Map;

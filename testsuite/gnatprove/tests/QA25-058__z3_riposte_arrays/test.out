@@ -19,7 +19,7 @@ arrays.adb:124:11: info: flow dependencies proved
 arrays.adb:128:22: high: assertion might fail (e.g. when MM = ('a' => (Elem_0 => Elem_0, others => Elem_0), others => (others => Elem_0))) [possible fix: subprogram at line 123 should mention MM in a precondition]
 arrays.adb:131:22: info: initialization of "M" proved
 arrays.adb:132:11: info: flow dependencies proved
-arrays.adb:136:22: info: assertion proved (altergo: 1 VC)
+arrays.adb:136:22: info: assertion proved (CVC5: 1 VC)
 arrays.adb:140:11: info: flow dependencies proved
 arrays.adb:144:22: high: assertion might fail (e.g. when R = (A => (3 => 5, others => 5), Exists => False)) [possible fix: subprogram at line 139 should mention R in a precondition]
 arrays.adb:146:22: info: assertion proved (CVC5: 1 VC)

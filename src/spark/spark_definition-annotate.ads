@@ -24,6 +24,7 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
+with Ada.Containers.Hashed_Maps;
 with Atree;       use Atree;
 with Einfo.Utils; use Einfo.Utils;
 with SPARK_Util;  use SPARK_Util;
@@ -235,6 +236,26 @@ package SPARK_Definition.Annotate is
    --  The access-to-subprogram type E shall be library level and shall not
    --  have a precondition nor a postcondition.
 
+   --  A pragma Annotate to hide or disclose information has one of the
+   --  following forms:
+   --    pragma Annotate (GNATprove, Hide_Info,   "Info_Kind", Entity => E);
+   --    pragma Annotate (GNATprove, Unhide_Info, "Info_Kind", Entity => E);
+
+   --  where
+   --    GNATprove                 is a fixed identifier
+   --    Hide_Info and Unhide_Info are fixed identifiers
+   --    Info_Kind                 is a string that can only be
+   --                              Expression_Function_Body for now.
+   --    E                         is the entity whose information should be
+   --                              hidden or disclosed.
+
+   --  The location of this pragma gives the verification context on which
+   --  information should be hidden or disclosed. It can only occur at the
+   --  beginning of a package, subprogram, or entry body or right after a
+   --  package, subprogram, or entry body or specification. The information is
+   --  then hidden or disclosed (if it is hidden by default) for the
+   --  verification of the package, subprogram, or entry.
+
    procedure Mark_Pragma_Annotate
      (N             : Node_Id;
       Preceding     : Node_Id;
@@ -260,13 +281,18 @@ package SPARK_Definition.Annotate is
 
    type Annotate_Kind is (Intentional, False_Positive);
 
-   type Annotated_Range is record
-      Kind    : Annotate_Kind;       --  the kind of pragma Annotate
-      Pattern : String_Id;           --  the message pattern
-      Reason  : String_Id;           --  the user-provided reason for hiding
-      First   : Source_Ptr;          --  first source pointer
-      Last    : Source_Ptr;          --  last source pointer
-      Prgma   : Node_Id;             --  the pragma which this range belongs to
+   type Annotated_Range (Present : Boolean := False) is record
+      case Present is
+         when True =>
+            Kind    : Annotate_Kind; --  the kind of pragma Annotate
+            Pattern : String_Id;     --  the message pattern
+            Reason  : String_Id;     --  the user-provided reason for hiding
+            First   : Source_Ptr;    --  first source pointer
+            Last    : Source_Ptr;    --  last source pointer
+            Prgma   : Node_Id;       --  the pragma which this range belongs to
+         when False =>
+            null;
+      end case;
    end record;
 
    function Decl_Starts_Pragma_Annotate_Range (N : Node_Id) return Boolean;
@@ -281,7 +307,6 @@ package SPARK_Definition.Annotate is
      (Node  : Node_Id;
       Msg   : String;
       Check : Boolean;
-      Found : out Boolean;
       Info  : out Annotated_Range);
    --  For a given node and a message string, search if there is a pragma
    --  Annotate that applies to the message for this node. If so, set Found to
@@ -508,5 +533,23 @@ package SPARK_Definition.Annotate is
    with Pre => Has_Aggregate_Annotation (E);
 
    function Has_Handler_Annotation (E : Type_Kind_Id) return Boolean;
+
+   type Hide_Annotation_Kind is (Hide_Expr_Fun, Unhide_Expr_Fun);
+
+   package Node_To_Hide_Annotation_Kind_Maps is new Ada.Containers.Hashed_Maps
+     (Key_Type        => Node_Id,
+      Element_Type    => Hide_Annotation_Kind,
+      Hash            => Node_Hash,
+      Equivalent_Keys => "=");
+
+   function Get_Hide_Annotations (E : Entity_Id) return
+     Node_To_Hide_Annotation_Kind_Maps.Map;
+   --  Return all the hide or unhide annotations applying to E
+
+   function Expr_Fun_Might_Be_Hidden (E : Entity_Id) return Boolean;
+   --  Return True if the body of an expression function E might be hidden
+
+   function Expr_Fun_Hidden_By_Default (E : Entity_Id) return Boolean;
+   --  Return True if the body of an expression function E is hidden by default
 
 end SPARK_Definition.Annotate;

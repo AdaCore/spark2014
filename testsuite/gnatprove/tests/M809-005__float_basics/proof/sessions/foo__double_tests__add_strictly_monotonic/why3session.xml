@@ -18,8 +18,8 @@
   </goal>
   <goal name="def&#39;vc.1">
   <proof prover="0"><result status="steplimitexceeded" steps="3644"/></proof>
-  <proof prover="1"><result status="unknown" steps="58389"/></proof>
-  <proof prover="2"><result status="unknown" steps="117199"/></proof>
+  <proof prover="1"><result status="unknown" steps="58394"/></proof>
+  <proof prover="2"><result status="unknown" steps="123770"/></proof>
   <proof prover="4"><result status="unknown" steps="188"/></proof>
   </goal>
   <goal name="def&#39;vc.2" proved="true">
@@ -27,8 +27,8 @@
   </goal>
   <goal name="def&#39;vc.3">
   <proof prover="0"><result status="steplimitexceeded" steps="3638"/></proof>
-  <proof prover="1"><result status="unknown" steps="60710"/></proof>
-  <proof prover="2"><result status="unknown" steps="307896"/></proof>
+  <proof prover="1"><result status="unknown" steps="60715"/></proof>
+  <proof prover="2"><result status="unknown" steps="439451"/></proof>
   <proof prover="4"><result status="unknown" steps="190"/></proof>
   </goal>
  </transf>

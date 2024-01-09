@@ -103,14 +103,6 @@ package Flow_Error_Messages is
    --  This boolean becomes True if we find a error during flow analysis which
    --  should stop further analysis (i.e. proof).
 
-   type Session_Dir_Base_ID is new Natural;
-
-   subtype Session_Dir_ID is Session_Dir_Base_ID
-   range 1 .. Session_Dir_Base_ID'Last;
-   --  Indices for session files
-
-   No_Session_Dir : constant Session_Dir_Base_ID := 0;
-
    type Suppression is (Warning, Check, None);
 
    type Suppressed_Message (Suppression_Kind : Suppression := None) is record
@@ -139,9 +131,6 @@ package Flow_Error_Messages is
    No_Suppressed_Message : constant Suppressed_Message :=
      Suppressed_Message'(Suppression_Kind => None);
 
-   function Register_Session_Dir (S : String) return Session_Dir_ID;
-   --  Register a string as a session file, create its ID and return it.
-
    function Get_Filtered_Variables_For_Proof
      (Expr    : Node_Id;
       Context : Node_Id)
@@ -152,7 +141,6 @@ package Flow_Error_Messages is
 
    function Get_Flow_JSON return JSON_Array;
    function Get_Proof_JSON return JSON_Array;
-   function Get_Session_Map_JSON return JSON_Value;
    --  Call these functions to get the messages of proof and flow in JSON form.
    --  Should be called only when analysis is finished.
 
@@ -281,9 +269,7 @@ package Flow_Error_Messages is
       Explanation   : String;
       E             : Entity_Id;
       How_Proved    : Prover_Category;
-      SD_Id         : Session_Dir_Base_ID;
       Stats         : Prover_Stat_Maps.Map;
-      Place_First   : Boolean;
       Check_Info    : Check_Info_Type;
       Fuzzing_Used  : Boolean := False;
       Print_Fuzzing : Boolean := False);

@@ -23,7 +23,7 @@
 ------------------------------------------------------------------------------
 
 with Ada.Characters.Handling;   use Ada.Characters.Handling;
-with Ada.Containers.Indefinite_Vectors;
+with Ada.Containers;
 with Ada.Text_IO;               use Ada.Text_IO;
 with Aspects;                   use Aspects;
 with Assumption_Types;          use Assumption_Types;
@@ -73,12 +73,6 @@ package body Flow_Error_Messages is
 
    Flow_Msgs_Set : String_Sets.Set;
    --  Container with flow-related messages; used to prevent duplicate messages
-
-   package Session_File_Maps is new Ada.Containers.Indefinite_Vectors
-     (Index_Type => Session_Dir_ID, Element_Type => String, "=" => "=");
-
-   Session_File_Map : Session_File_Maps.Vector;
-   --  The list of session files that belong to this gnat2why invocation
 
    function Get_Details
      (N   : Node_Id;
@@ -178,7 +172,6 @@ package body Flow_Error_Messages is
       Tracefile  : String := "";
       Cntexmp    : Cntexample_File_Maps.Map := Cntexample_File_Maps.Empty_Map;
       Check_Tree : JSON_Value;
-      SD_Id      : Session_Dir_Base_ID := No_Session_Dir;
       VC_File    : String := "";
       VC_Loc     : Source_Ptr := No_Location;
       Stats      : Prover_Stat_Maps.Map := Prover_Stat_Maps.Empty_Map;
@@ -456,7 +449,6 @@ package body Flow_Error_Messages is
         Source_Ptr'Image (Slc) &
         Integer'Image (Msg_Severity'Pos (Severity));
 
-      Is_Annot : Boolean := False;
       Info     : Annotated_Range;
 
       Suppr             : String_Id  := No_String;
@@ -518,9 +510,9 @@ package body Flow_Error_Messages is
                   Suppressed := Report_Mode = GPR_Fail;
 
                when Check_Kind =>
-                  Check_Is_Annotated (N, Msg3, True, Is_Annot, Info);
+                  Check_Is_Annotated (N, Msg3, True, Info);
 
-                  if Is_Annot then
+                  if Info.Present then
                      Suppr := Info.Reason;
 
                      if Report_Mode /= GPR_Fail then
@@ -815,9 +807,7 @@ package body Flow_Error_Messages is
       Explanation   : String;
       E             : Entity_Id;
       How_Proved    : Prover_Category;
-      SD_Id         : Session_Dir_Base_ID;
       Stats         : Prover_Stat_Maps.Map;
-      Place_First   : Boolean;
       Check_Info    : Check_Info_Type;
       Fuzzing_Used  : Boolean := False;
       Print_Fuzzing : Boolean := False)
@@ -926,10 +916,11 @@ package body Flow_Error_Messages is
 
       Message : Unbounded_String     :=
         To_Unbounded_String (Compute_Message (Msg, N));
-      Span    : constant Source_Span := Compute_Sloc (N, Place_First);
-      Slc     : constant Source_Ptr  := Span.Ptr;
-      VC_Span : constant Source_Span := Compute_Sloc (VC_Loc, Place_First);
-      VC_Slc  : constant Source_Ptr  := VC_Span.Ptr;
+      Place_First : constant Boolean := Locate_On_First_Token (Tag);
+      Span        : constant Source_Span := Compute_Sloc (N, Place_First);
+      Slc         : constant Source_Ptr  := Span.Ptr;
+      VC_Span     : constant Source_Span := Compute_Sloc (VC_Loc, Place_First);
+      VC_Slc      : constant Source_Ptr  := VC_Span.Ptr;
 
       Pretty_Cntexmp  : constant Cntexample_File_Maps.Map :=
         (if Verdict.Verdict_Category in
@@ -944,7 +935,6 @@ package body Flow_Error_Messages is
         Get_Severity (N, Is_Proved, Tag, Verdict);
       Suppr     : String_Id := No_String;
       Msg_Id    : Message_Id := No_Message_Id;
-      Is_Annot  : Boolean;
       Info      : Annotated_Range;
       Ignore_Id : Message_Id;
 
@@ -966,11 +956,11 @@ package body Flow_Error_Messages is
       --  that also in the Info_Kind case, we want to know whether the check
       --  corresponds to a pragma Annotate.
 
-      Check_Is_Annotated (N, Msg, Severity in Check_Kind, Is_Annot, Info);
+      Check_Is_Annotated (N, Msg, Severity in Check_Kind, Info);
 
       case Severity is
          when Check_Kind =>
-            if Is_Annot then
+            if Info.Present then
                Suppr := Info.Reason;
 
                if Report_Mode /= GPR_Fail then
@@ -1142,7 +1132,7 @@ package body Flow_Error_Messages is
 
       if Report_Mode /= GPR_Fail
         or else Severity = Warning_Kind
-        or else (Severity in Check_Kind and then not Is_Annot)
+        or else (Severity in Check_Kind and then not Info.Present)
       then
          for Cont of reverse Check_Info.Continuation loop
 
@@ -1170,7 +1160,7 @@ package body Flow_Error_Messages is
       end if;
 
       Add_Json_Msg
-        (Suppr      => (if Is_Annot
+        (Suppr      => (if Info.Present
                         and then Severity in Check_Kind
                         then
                            Suppressed_Message'(Suppression_Kind => Check,
@@ -1189,7 +1179,6 @@ package body Flow_Error_Messages is
          E           => E,
          Cntexmp     => Pretty_Cntexmp,
          Check_Tree  => Check_Tree,
-         SD_Id       => SD_Id,
          VC_File     => VC_File,
          VC_Loc      => VC_Slc,
          How_Proved  => How_Proved,
@@ -3789,22 +3778,6 @@ package body Flow_Error_Messages is
 
    function Get_Proof_JSON return JSON_Array is (Proof_Msgs);
 
-   --------------------------
-   -- Get_Session_Map_JSON --
-   --------------------------
-
-   function Get_Session_Map_JSON return JSON_Value is
-      Value : constant JSON_Value := Create_Object;
-   begin
-      for Key in Session_File_Map.First_Index .. Session_File_Map.Last_Index
-      loop
-         Set_Field (Value,
-                    Session_Dir_ID'Image (Key),
-                    Session_File_Map (Key));
-      end loop;
-      return Value;
-   end Get_Session_Map_JSON;
-
    ----------------------
    -- Is_Excluded_Line --
    ----------------------
@@ -3901,7 +3874,6 @@ package body Flow_Error_Messages is
       Tracefile  : String := "";
       Cntexmp    : Cntexample_File_Maps.Map := Cntexample_File_Maps.Empty_Map;
       Check_Tree : JSON_Value;
-      SD_Id      : Session_Dir_Base_ID := No_Session_Dir;
       VC_File    : String := "";
       VC_Loc     : Source_Ptr := No_Location;
       Stats      : Prover_Stat_Maps.Map := Prover_Stat_Maps.Empty_Map;
@@ -3965,10 +3937,6 @@ package body Flow_Error_Messages is
          Set_Field (Value, "msg_id", Natural (Msg_Id));
       end if;
 
-      if SD_Id /= No_Session_Dir then
-         Set_Field (Value, "session_dir", Natural (SD_Id));
-      end if;
-
       Set_Field (Value, "how_proved", To_JSON (How_Proved));
 
       if not Stats.Is_Empty then
@@ -4021,16 +3989,6 @@ package body Flow_Error_Messages is
       Error_Msg (Actual_Msg, Span);
       return Id;
    end Print_Regular_Msg;
-
-   ---------------------------
-   -- Register_Session_File --
-   ---------------------------
-
-   function Register_Session_Dir (S : String) return Session_Dir_ID is
-   begin
-      Session_File_Map.Append (S);
-      return Session_File_Map.Last_Index;
-   end Register_Session_Dir;
 
    ----------------
    -- Substitute --

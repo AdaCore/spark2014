@@ -716,13 +716,13 @@ package Why.Atree.Modules is
    M_Subprogram_Profiles : Name_Id_Profile_Map.Map;
 
    type M_HO_Specialization_Type is record
-      Module        : W_Module_Id;
-      Ax_Module     : W_Module_Id;
-      Rec_Ax_Module : W_Module_Id;
-      Prog_Id       : W_Identifier_Id;
-      Fun_Id        : W_Identifier_Id;
-      Guard_Id      : W_Identifier_Id;
-      Variant_Id    : W_Identifier_Id;
+      Module      : W_Module_Id;
+      Ax_Module   : W_Module_Id;
+      Post_Module : W_Module_Id;
+      Prog_Id     : W_Identifier_Id;
+      Fun_Id      : W_Identifier_Id;
+      Guard_Id    : W_Identifier_Id;
+      Variant_Id  : W_Identifier_Id;
    end record;
 
    package Name_Id_HO_Specializations_Map is new Ada.Containers.Hashed_Maps
@@ -776,14 +776,15 @@ package Why.Atree.Modules is
 
    type Module_Kind is
      (Regular,
-      Axiom,                     --  Defining and post axioms
-      Recursive_Axiom,           --  Post axiom for recursive subprograms
+      Axiom,                     --  Defining axiom of constants and aggregates
+      Expr_Fun_Axiom,            --  Defining axiom of expression functions
+      Fun_Post_Axiom,            --  Post axiom for functions
       Logic_Function_Decl,       --  Declaration of the logic function
       Program_Function_Decl,     --  Declaration of the program function
       Dispatch,                  --  Dispatch function
-      Dispatch_Axiom,            --  Post'Class axiom and dispatch program
+      Dispatch_Axiom,            --  Compatibility axioms and dispatch program
                                  --  function.
-      Dispatch_Recursive_Axiom,  --  Post'Class axiom for recursive subprograms
+      Dispatch_Post_Axiom,       --  Post'Class axiom for dispatching functions
       Lemma_Axiom,               --  Post axiom of a lemma procedure annotated
                                  --  with Automatic_Instantiation.
       Type_Completion,           --  Type completion
@@ -828,14 +829,14 @@ package Why.Atree.Modules is
    --  Compute the name of the theory for a profile
 
    procedure Insert_Extra_Module
-     (N        : Node_Id;
-      M        : W_Module_Id;
-      Is_Axiom : Boolean := False);
+     (N    : Node_Id;
+      M    : W_Module_Id;
+      Kind : Module_Kind := Regular);
    --  After a call to this procedure, if Is_Axiom is false then E_Module (N)
    --  will return M otherwise E_Axiom_Module (N) will return M.
    --  @param N the Ada Node
    --  @param M Why3 module associated to N
-   --  @param Is_Axiom True if M is an axiom module
+   --  @param Kind the kind of module inserted
 
    --  Functions returning array module types from the array theory module
 

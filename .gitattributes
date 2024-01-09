@@ -38,6 +38,7 @@ docs/booklet/* no-precommit-check
 trace_units_script/* no-precommit-check
 include/*.adb no-precommit-check
 
+why3session.xml -diff
 *.ads diff=ada
 *.adb diff=ada
 *.docx diff=docx

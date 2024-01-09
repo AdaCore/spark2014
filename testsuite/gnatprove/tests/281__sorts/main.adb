@@ -99,10 +99,10 @@ procedure Main with SPARK_Mode is
       if L /= null then
          Occ_LN := Occurrences (L.N);
          Filter (L.N, L.V, Left, Right);
-         pragma Assert
-           (Occ_LN = Sum (Occurrences (Left), Occurrences (Right)));
          Quicksort (Left);
          Quicksort (Right);
+         pragma Assert
+           (Occ_LN = Sum (Occurrences (Left), Occurrences (Right)));
          L.N := Right;
          Append (Left, L);
          L := Left;

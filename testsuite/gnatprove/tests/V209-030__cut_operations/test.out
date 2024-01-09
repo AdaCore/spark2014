@@ -12,6 +12,7 @@ main.adb:27:19: warning: assuming "F" has no effect on global items
 main.adb:27:19: warning: no Global contract available for "F"
 main.adb:28:19: warning: assuming "Axiom_F_Pos" has no effect on global items
 main.adb:28:19: warning: no Global contract available for "Axiom_F_Pos"
+main.adb:29:13: info: no contextual analysis of "Rand" (body not seen yet)
 main.adb:29:13: warning: assuming "Rand" has no effect on global items
 main.adb:29:13: warning: no Global contract available for "Rand"
 main.adb:31:13: info: assertion premise proved (CVC5: 1 VC)
@@ -20,6 +21,7 @@ main.adb:32:19: warning: assuming "F" has no effect on global items
 main.adb:32:19: warning: no Global contract available for "F"
 main.adb:33:19: warning: assuming "Axiom_F_Pos" has no effect on global items
 main.adb:33:19: warning: no Global contract available for "Axiom_F_Pos"
+main.adb:34:13: info: no contextual analysis of "Rand" (body not seen yet)
 main.adb:34:13: warning: assuming "Rand" has no effect on global items
 main.adb:34:13: warning: no Global contract available for "Rand"
 main.adb:36:13: info: assertion premise proved (CVC5: 1 VC)
@@ -128,18 +130,21 @@ main.adb:121:75: info: precondition proved (CVC5: 2 VC)
 main.adb:121:75: warning: assuming "Find_First_0" has no effect on global items
 main.adb:121:75: warning: no Global contract available for "Find_First_0"
 main.adb:129:67: info: data dependencies proved
+main.adb:131:10: info: no contextual analysis of "Rand" (body not seen yet)
 main.adb:131:10: warning: assuming "Rand" has no effect on global items
 main.adb:131:10: warning: no Global contract available for "Rand"
 main.adb:136:25: info: assertion premise proved (CVC5: 3 VC)
 main.adb:136:33: info: assertion step proved (CVC5: 1 VC)
 main.adb:136:45: info: assertion step proved (CVC5: 1 VC)
 main.adb:136:61: info: assertion step proved (CVC5: 1 VC)
+main.adb:137:13: info: no contextual analysis of "Rand" (body not seen yet)
 main.adb:137:13: warning: assuming "Rand" has no effect on global items
 main.adb:137:13: warning: no Global contract available for "Rand"
 main.adb:142:33: info: assertion step proved (CVC5: 1 VC)
 main.adb:143:33: info: assertion step proved (CVC5: 1 VC)
 main.adb:144:33: medium: assertion premise might fail, cannot prove A2 [possible fix: subprogram at line 129 should mention A2 in a precondition]
 main.adb:145:33: info: assertion step proved (CVC5: 1 VC)
+main.adb:146:13: info: no contextual analysis of "Rand" (body not seen yet)
 main.adb:146:13: warning: assuming "Rand" has no effect on global items
 main.adb:146:13: warning: no Global contract available for "Rand"
 main.adb:150:25: info: assertion premise proved (CVC5: 3 VC)
@@ -147,24 +152,28 @@ main.adb:150:33: info: assertion step proved (CVC5: 1 VC)
 main.adb:151:33: medium: assertion step might fail [possible fix: subprogram at line 129 should mention B2 in a precondition]
 main.adb:153:33: info: assertion step proved (CVC5: 1 VC)
 main.adb:157:67: info: data dependencies proved
+main.adb:159:10: info: no contextual analysis of "Rand" (body not seen yet)
 main.adb:159:10: warning: assuming "Rand" has no effect on global items
 main.adb:159:10: warning: no Global contract available for "Rand"
 main.adb:164:25: info: assertion premise proved (CVC5: 1 VC)
 main.adb:164:33: info: assertion step proved (CVC5: 1 VC)
 main.adb:164:48: info: assertion step proved (CVC5: 1 VC)
 main.adb:164:59: info: assertion step proved (CVC5: 1 VC)
+main.adb:165:13: info: no contextual analysis of "Rand" (body not seen yet)
 main.adb:165:13: warning: assuming "Rand" has no effect on global items
 main.adb:165:13: warning: no Global contract available for "Rand"
 main.adb:169:25: medium: assertion premise might fail [possible fix: subprogram at line 157 should mention A1 and A2 and A3 and B1 and B2 and B3 in a precondition]
 main.adb:169:33: info: assertion step proved (CVC5: 1 VC)
 main.adb:170:36: info: assertion step proved (CVC5: 1 VC)
 main.adb:171:32: info: assertion step proved (CVC5: 1 VC)
+main.adb:172:13: info: no contextual analysis of "Rand" (body not seen yet)
 main.adb:172:13: warning: assuming "Rand" has no effect on global items
 main.adb:172:13: warning: no Global contract available for "Rand"
 main.adb:177:29: info: assertion step proved (CVC5: 1 VC)
 main.adb:178:29: medium: assertion premise might fail, cannot prove (So (A1, B1)  or So (A2, B2)) [possible fix: subprogram at line 157 should mention A1 and A2 and B1 and B2 in a precondition]
 main.adb:178:38: info: assertion step proved (CVC5: 1 VC)
 main.adb:179:38: info: assertion step proved (CVC5: 1 VC)
+main.adb:180:13: info: no contextual analysis of "Rand" (body not seen yet)
 main.adb:180:13: warning: assuming "Rand" has no effect on global items
 main.adb:180:13: warning: no Global contract available for "Rand"
 main.adb:184:25: info: assertion premise proved (CVC5: 1 VC)
@@ -184,6 +193,7 @@ main.adb:200:28: warning: no Global contract available for "A2"
 main.adb:200:40: info: precondition proved (CVC5: 1 VC)
 main.adb:200:40: warning: assuming "B1" has no effect on global items
 main.adb:200:40: warning: no Global contract available for "B1"
+main.adb:202:10: info: no contextual analysis of "Rand" (body not seen yet)
 main.adb:202:10: warning: assuming "Rand" has no effect on global items
 main.adb:202:10: warning: no Global contract available for "Rand"
 main.adb:203:29: medium: assertion premise might fail, cannot prove A1 [possible fix: you should consider adding a postcondition to function A1 or turning it into an expression function in its unit spec]
@@ -200,6 +210,7 @@ main.adb:205:33: warning: no Global contract available for "B2"
 main.adb:206:33: medium: precondition might fail
 main.adb:206:33: warning: assuming "A2" has no effect on global items
 main.adb:206:33: warning: no Global contract available for "A2"
+main.adb:207:13: info: no contextual analysis of "Rand" (body not seen yet)
 main.adb:207:13: warning: assuming "Rand" has no effect on global items
 main.adb:207:13: warning: no Global contract available for "Rand"
 main.adb:208:29: warning: assuming "A1" has no effect on global items
@@ -246,6 +257,7 @@ main.adb:227:36: warning: no Global contract available for "B1"
 main.adb:227:48: info: precondition proved (CVC5: 1 VC)
 main.adb:227:48: warning: assuming "A2" has no effect on global items
 main.adb:227:48: warning: no Global contract available for "A2"
+main.adb:229:10: info: no contextual analysis of "Rand" (body not seen yet)
 main.adb:229:10: warning: assuming "Rand" has no effect on global items
 main.adb:229:10: warning: no Global contract available for "Rand"
 main.adb:230:25: medium: assertion premise might fail [possible fix: you should consider adding a postcondition to function A1 and function B1 and function A2 and function B2 or turning them into expression functions in their unit spec]
@@ -262,6 +274,7 @@ main.adb:232:32: warning: no Global contract available for "B2"
 main.adb:233:32: medium: precondition might fail
 main.adb:233:32: warning: assuming "A2" has no effect on global items
 main.adb:233:32: warning: no Global contract available for "A2"
+main.adb:234:13: info: no contextual analysis of "Rand" (body not seen yet)
 main.adb:234:13: warning: assuming "Rand" has no effect on global items
 main.adb:234:13: warning: no Global contract available for "Rand"
 main.adb:235:25: medium: assertion premise might fail [possible fix: you should consider adding a postcondition to function A1 and function B1 and function A2 and function B2 or turning them into expression functions in their unit spec]
@@ -293,24 +306,28 @@ main.adb:243:37: info: precondition proved (CVC5: 1 VC)
 main.adb:243:37: warning: assuming "A2" has no effect on global items
 main.adb:243:37: warning: no Global contract available for "A2"
 main.adb:249:70: info: data dependencies proved
+main.adb:252:10: info: no contextual analysis of "Rand" (body not seen yet)
 main.adb:252:10: warning: assuming "Rand" has no effect on global items
 main.adb:252:10: warning: no Global contract available for "Rand"
 main.adb:256:25: info: assertion premise proved (CVC5: 2 VC; Trivial: 2 VC)
 main.adb:256:44: info: assertion step proved (CVC5: 1 VC)
 main.adb:257:39: warning: unreachable branch (CVC5: 1 VC)
 main.adb:257:43: info: assertion step proved (CVC5: 1 VC)
+main.adb:260:13: info: no contextual analysis of "Rand" (body not seen yet)
 main.adb:260:13: warning: assuming "Rand" has no effect on global items
 main.adb:260:13: warning: no Global contract available for "Rand"
 main.adb:264:25: info: assertion premise proved (CVC5: 3 VC)
 main.adb:264:44: info: assertion step proved (CVC5: 1 VC)
 main.adb:265:47: info: assertion step proved (CVC5: 1 VC)
 main.adb:266:30: warning: unreachable branch (CVC5: 1 VC)
+main.adb:267:13: info: no contextual analysis of "Rand" (body not seen yet)
 main.adb:267:13: warning: assuming "Rand" has no effect on global items
 main.adb:267:13: warning: no Global contract available for "Rand"
 main.adb:271:25: info: assertion premise proved (CVC5: 2 VC; Trivial: 1 VC)
 main.adb:272:50: info: assertion step proved (CVC5: 1 VC)
 main.adb:275:45: warning: unreachable branch (CVC5: 1 VC)
 main.adb:275:49: info: assertion step proved (CVC5: 1 VC)
+main.adb:277:13: info: no contextual analysis of "Rand" (body not seen yet)
 main.adb:277:13: warning: assuming "Rand" has no effect on global items
 main.adb:277:13: warning: no Global contract available for "Rand"
 main.adb:282:25: info: assertion premise proved (CVC5: 1 VC; Trivial: 1 VC)

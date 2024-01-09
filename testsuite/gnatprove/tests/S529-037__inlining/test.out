@@ -8,4 +8,5 @@ c37102b.adb:18:21: info: no contextual analysis of "F" (inside record type)
 c37102b.adb:21:28: error: launch "gnatprove --explain=E0007" for more information
 c37102b.adb:21:28: error: subtype constraint cannot depend on variable input "G" [E0007]
 c37102b.adb:21:28: error: use instead a constant initialized to the expression with variable input
+c37102b.adb:21:28: info: analyzing call to "F" in context
 gnatprove: error during flow analysis and proof

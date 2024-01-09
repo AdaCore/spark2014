@@ -788,6 +788,8 @@ Depends, Pre, Post, Contract_Cases), and respect the following conditions:
  * not a traversal function
  * without an annotation to skip part of the analysis (see :ref:`Annotation for
    Skipping Parts of the Analysis for an Entity`)
+ * without an annotation to hide or unhide information on another entity (see
+   :ref:`Annotation for Hiding Information`)
 
 Subprograms that respects all of the above conditions are candidates for
 contextual analysis, and calls to such subprograms are inlined provided the
