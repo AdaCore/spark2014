@@ -1041,11 +1041,13 @@ package body Flow.Control_Flow_Graph is
    --  the created vertex, so this procedure can be called again with another
    --  borrower.
 
-   function RHS_Split_Useful (LHS   : Node_Id;
+   function RHS_Split_Useful (LHS   : Node_Or_Entity_Id;
                               RHS   : Node_Id;
                               Scope : Flow_Scope)
                               return Boolean
-   with Pre => Nkind (RHS) in N_Subexpr;
+   with Pre => (Nkind (LHS) in N_Subexpr
+                  or else Ekind (LHS) in E_Constant | E_Variable)
+               and then Nkind (RHS) in N_Subexpr;
    --  Checks the right hand side of an assignment statement (or the
    --  expression on an object declaration) and determines if we can
    --  perform some meaningful record-field splitting.
@@ -6815,7 +6817,7 @@ package body Flow.Control_Flow_Graph is
    -- RHS_Split_Useful --
    ----------------------
 
-   function RHS_Split_Useful (LHS   : Node_Id;
+   function RHS_Split_Useful (LHS   : Node_Or_Entity_Id;
                               RHS   : Node_Id;
                               Scope : Flow_Scope)
                               return Boolean is
