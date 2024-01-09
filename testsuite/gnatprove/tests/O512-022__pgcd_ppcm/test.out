@@ -22,7 +22,7 @@ a.ads:7:07: info: postcondition proved (CVC5: 1 VC)
 a.ads:8:34: info: overflow check proved (CVC5: 2 VC)
 a.ads:9:34: info: overflow check proved (CVC5: 2 VC)
 a.ads:11:13: info: implicit aspect Always_Terminates on "Ppcm" has been proved, subprogram will terminate
-a.ads:17:07: medium: postcondition might fail
+a.ads:17:07: info: postcondition proved (Z3: 1 VC)
 a.ads:18:29: info: overflow check proved (CVC5: 2 VC)
 a.ads:18:38: info: overflow check proved (CVC5: 2 VC)
 a.ads:18:45: info: overflow check proved (CVC5: 2 VC)
