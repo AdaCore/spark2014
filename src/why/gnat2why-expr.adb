@@ -5278,36 +5278,37 @@ package body Gnat2Why.Expr is
 
                --  Create an array with the same element at all indexes
 
-               Def := +New_Const_Call
-                 (Domain => EW_Term,
-                  Elt    => +Comp_Default,
-                  Typ    => W_Ty);
+               declare
+                  Dim    : constant Positive :=
+                    Positive (Number_Dimensions (Ty));
+                  Bounds : W_Expr_Array (1 .. 2 * Dim);
+                  Count  : Positive := 1;
+               begin
+                  for D in 1 .. Dim loop
+                     Add_Attr_Arg
+                       (EW_Term, Bounds, Ty, Attribute_First, D, Count,
+                        Params);
+                     Add_Attr_Arg
+                       (EW_Term, Bounds, Ty, Attribute_Last, D, Count,
+                        Params);
+                  end loop;
 
-               --  For unconstrained arrays, reconstruct the array
+                  Def := +New_Const_Call
+                    (Domain => EW_Term,
+                     Elt    => +Comp_Default,
+                     Bounds => Bounds,
+                     Typ    => W_Ty);
 
-               if not Is_Static_Array_Type (Ty) then
-                  declare
-                     Dim    : constant Positive :=
-                       Positive (Number_Dimensions (Ty));
-                     Bounds : W_Expr_Array (1 .. 2 * Dim);
-                     Count  : Positive := 1;
-                  begin
-                     for D in 1 .. Dim loop
-                        Add_Attr_Arg
-                          (EW_Term, Bounds, Ty, Attribute_First, D, Count,
-                           Params);
-                        Add_Attr_Arg
-                          (EW_Term, Bounds, Ty, Attribute_Last, D, Count,
-                           Params);
-                     end loop;
+                  --  For unconstrained arrays, reconstruct the array
 
+                  if not Is_Static_Array_Type (Ty) then
                      Def := +Array_Convert_From_Base
                        (Domain => EW_Term,
                         Ty     => Ty,
                         Ar     => +Def,
                         Bounds => Bounds);
-                  end;
-               end if;
+                  end if;
+               end;
             end;
 
          elsif Is_Access_Type (Ty) then
@@ -6121,6 +6122,11 @@ package body Gnat2Why.Expr is
       if Is_Array_Type (Ty_Ext)
         and then Ekind (Ty_Ext) /= E_String_Literal_Subtype
       then
+         --  Add the well_formed property of the array type
+
+         T := New_And_Pred
+           (Left   => T,
+            Right  => New_Well_Formed_Pred (Expr));
 
          --  Generates:
          --  forall i1 .. in : int. in_range i1 /\ .. /\ in_range in ->
@@ -25128,14 +25134,20 @@ package body Gnat2Why.Expr is
 
       --  if needed, we convert the arrray to a simple base type
 
-      if not Is_Static_Array_Type (Etype (Expr))
-        and then
-          not Is_Static_Array_Type (Get_Ada_Node (+Get_Type (+Pref_Term)))
-      then
+      if not Is_Static_Array_Type (Get_Ada_Node (+Get_Type (+Pref_Term))) then
          T := Array_Convert_To_Base (Domain, T);
       end if;
 
-      --  if needed, we insert a check that the slice bounds are in the bounds
+      --  Call the slice function
+
+      T := New_Slice_Call
+        (Domain => Domain,
+         Arr    => T,
+         Typ    => Get_Type (+Pref_Term),
+         Low    => +Low_Expr,
+         High   => +High_Expr);
+
+      --  If needed, we insert a check that the slice bounds are in the bounds
       --  of the prefix
 
       if Domain = EW_Prog then
@@ -25186,16 +25198,14 @@ package body Gnat2Why.Expr is
 
       if Is_Static_Array_Type (Etype (Expr)) then
 
-         --  a conversion may be needed to the target type
+         --  Fix the type of the Why3 AST
 
-         T :=
-           Insert_Array_Conversion
-             (Domain         => Domain,
-              Expr           => T,
-              To             => Target_Ty,
-              Force_No_Slide => True);
+         T :=  New_Label (Labels => Symbol_Sets.Empty_Set,
+                          Def    => T,
+                          Domain => Domain,
+                          Typ    => Target_Ty);
 
-      --  when the slice bounds are not static, we produce a compound object
+      --  When the slice bounds are not static, we produce a compound object
       --  contents + bounds.
 
       else

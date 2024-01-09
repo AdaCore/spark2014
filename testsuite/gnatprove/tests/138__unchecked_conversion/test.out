@@ -6,6 +6,7 @@ enums.adb:13:13: info: implicit function contract might not be available on call
 enums.adb:13:13: info: types in unchecked conversion have the same size (Trivial)
 enums.adb:13:62: info: type is suitable as source for unchecked conversion (Trivial)
 enums.adb:13:76: info: type is suitable for unchecked conversion (Trivial)
+enums.adb:15:13: info: implicit function contract might not be available on calls from enclosing unit
 enums.adb:15:13: info: types in unchecked conversion have the same size (Trivial)
 enums.adb:15:65: info: type is suitable as source for unchecked conversion (Trivial)
 enums.adb:15:79: info: type is suitable for unchecked conversion (Trivial)
@@ -19,6 +20,7 @@ enums.adb:26:22: info: assertion proved (CVC5: 1 VC)
 enums.adb:30:11: info: data dependencies proved
 enums.adb:35:22: info: assertion proved (Z3: 1 VC)
 enums.adb:37:22: info: assertion proved (Z3: 1 VC)
+enums.adb:45:13: info: implicit function contract might not be available on calls from enclosing unit
 enums.adb:45:13: info: types in unchecked conversion have the same size (Trivial)
 enums.adb:45:63: info: type is suitable as source for unchecked conversion (Trivial)
 enums.adb:45:78: info: type is suitable for unchecked conversion (Trivial)
@@ -118,6 +120,7 @@ modular.adb:77:42: info: division check proved (CVC5: 1 VC)
 modular.adb:78:22: info: assertion proved (CVC5: 1 VC)
 modular.adb:80:22: info: assertion proved (CVC5: 1 VC)
 modular.adb:88:22: info: assertion proved (Z3: 1 VC)
+modular.adb:120:13: info: implicit function contract might not be available on calls from enclosing unit
 modular.adb:120:13: info: types in unchecked conversion have the same size (Trivial)
 modular.adb:120:64: info: type is suitable as source for unchecked conversion (Trivial)
 modular.adb:120:79: info: type is suitable for unchecked conversion (Trivial)
@@ -141,6 +144,7 @@ modular.adb:134:49: info: division check proved (CVC5: 1 VC)
 modular.adb:135:22: info: assertion proved (CVC5: 1 VC)
 modular.adb:137:22: info: assertion proved (CVC5: 1 VC)
 modular.adb:143:22: info: assertion proved (Z3: 1 VC)
+modular.adb:148:13: info: implicit function contract might not be available on calls from enclosing unit
 modular.adb:148:13: info: types in unchecked conversion have the same size (Trivial)
 modular.adb:148:69: info: type is suitable as source for unchecked conversion (Trivial)
 modular.adb:148:83: info: type is suitable for unchecked conversion (Trivial)
@@ -150,6 +154,7 @@ modular.adb:149:83: info: type is suitable for unchecked conversion (Trivial)
 modular.adb:152:11: info: data dependencies proved
 modular.adb:157:22: info: assertion proved (CVC5: 1 VC)
 modular.adb:158:22: info: assertion proved (Z3: 1 VC)
+modular.adb:196:13: info: implicit function contract might not be available on calls from enclosing unit
 modular.adb:196:13: info: types in unchecked conversion have the same size (Trivial)
 modular.adb:196:65: info: type is suitable as source for unchecked conversion (Trivial)
 modular.adb:196:79: info: type is suitable for unchecked conversion (Trivial)

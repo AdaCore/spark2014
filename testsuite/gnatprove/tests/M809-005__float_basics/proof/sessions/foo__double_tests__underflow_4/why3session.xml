@@ -33,7 +33,7 @@
   </goal>
   <goal name="def&#39;vc.4" proved="true">
   <proof prover="0"><result status="steplimitexceeded" steps="1555"/></proof>
-  <proof prover="1"><result status="steplimitexceeded" steps="579694"/></proof>
+  <proof prover="1"><result status="highfailure"/></proof>
   <proof prover="2"><result status="highfailure"/></proof>
   <proof prover="4"><result status="valid" steps="111"/></proof>
   </goal>

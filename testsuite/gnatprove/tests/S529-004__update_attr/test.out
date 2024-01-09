@@ -17,7 +17,7 @@ relaxed_initialization.adb:31:22: info: discriminant check proved (CVC5: 2 VC)
 relaxed_initialization.adb:31:28: info: range check proved (colibri: 2 VC)
 relaxed_initialization.adb:31:35: info: range check proved (Trivial)
 relaxed_initialization.adb:33:22: info: discriminant check proved (CVC5: 2 VC)
-relaxed_initialization.adb:37:13: info: loop invariant initialization proved (CVC5: 4 VC)
+relaxed_initialization.adb:37:13: info: loop invariant initialization proved (Z3: 4 VC)
 relaxed_initialization.adb:37:13: info: loop invariant preservation proved (Z3: 4 VC)
 relaxed_initialization.adb:37:30: info: range check proved (CVC5: 8 VC)
 relaxed_initialization.adb:39:19: info: for mutable discriminants at relaxed_initialization.adb:5
