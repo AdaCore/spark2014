@@ -15,19 +15,15 @@ call_actuals.adb:32:17: high: range check might fail, cannot prove upper bound f
 call_actuals.adb:38:11: info: range check proved (CVC5: 2 VC)
 call_actuals.adb:38:11: medium: range check might fail, cannot prove lower bound for A1 (e.g. when A1 = -1) [reason for check: input value must fit in parameter type and output value must fit in argument type] [possible fix: add or complete related loop invariants or postconditions]
 call_actuals.adb:38:15: info: range check proved (CVC5: 2 VC)
-call_actuals.adb:39:11: info: range check proved (CVC5: 2 VC)
 call_actuals.adb:39:13: info: in value of subprogram parameter after the call at call_actuals.adb:39
 call_actuals.adb:39:13: info: range check proved (CVC5: 2 VC)
 call_actuals.adb:39:13: medium: range check might fail, cannot prove upper bound for A1 (e.g. when A1 = 21) [reason for check: value must be convertible to the target type of the conversion] [possible fix: add or complete related loop invariants or postconditions]
-call_actuals.adb:39:18: info: range check proved (CVC5: 2 VC)
 call_actuals.adb:39:20: info: in value of subprogram parameter after the call at call_actuals.adb:39
 call_actuals.adb:39:20: info: range check proved (CVC5: 2 VC)
 call_actuals.adb:39:20: medium: range check might fail, cannot prove upper bound for A2 (e.g. when A1 = 20 and A2 = 21) [reason for check: value must be convertible to the target type of the conversion] [possible fix: add or complete related loop invariants or postconditions]
-call_actuals.adb:40:12: info: range check proved (CVC5: 2 VC)
 call_actuals.adb:40:15: info: in value of subprogram parameter after the call at call_actuals.adb:40
 call_actuals.adb:40:15: info: range check proved (CVC5: 2 VC)
 call_actuals.adb:40:15: medium: range check might fail, cannot prove lower bound for A1 (e.g. when A1 = -1) [reason for check: value must be convertible to the target type of the conversion] [possible fix: add or complete related loop invariants or postconditions]
-call_actuals.adb:40:20: info: range check proved (CVC5: 2 VC)
 call_actuals.adb:40:23: info: in value of subprogram parameter after the call at call_actuals.adb:40
 call_actuals.adb:40:23: info: range check proved (CVC5: 2 VC)
 call_actuals.adb:41:11: info: range check proved (CVC5: 2 VC)
