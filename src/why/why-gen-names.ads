@@ -309,10 +309,6 @@ package Why.Gen.Names is
 
       WNE_Type_Invariant,          --  toplevel invariant checking function
 
-      --  Name of the program function for type invariant checks on subprogram
-      --  calls.
-      WNE_Check_Invariants_On_Call,
-
       --  Name of the program function for variant checks on subprogram calls
       WNE_Check_Subprogram_Variants,
 
