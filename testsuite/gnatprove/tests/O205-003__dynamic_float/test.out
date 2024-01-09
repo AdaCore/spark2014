@@ -25,10 +25,12 @@ test_dynamic_property.adb:53:19: medium: assertion might fail [possible fix: you
 test_dynamic_property.adb:54:04: info: precondition proved (Trivial: 1 VC)
 test_dynamic_property.adb:55:19: info: assertion proved (CVC5: 1 VC)
 test_dynamic_property.adb:57:07: info: precondition proved (Trivial: 1 VC)
+test_dynamic_property.adb:57:24: info: in value of subprogram parameter after the call at test_dynamic_property.adb:57
 test_dynamic_property.adb:57:24: info: range check proved (CVC5: 1 VC)
 test_dynamic_property.adb:57:24: info: range check proved (Z3: 1 VC)
 test_dynamic_property.adb:58:22: info: assertion proved (altergo: 1 VC)
 test_dynamic_property.adb:60:10: info: precondition proved (Trivial: 1 VC)
+test_dynamic_property.adb:60:22: info: in value of subprogram parameter after the call at test_dynamic_property.adb:60
 test_dynamic_property.adb:60:22: info: range check proved (Z3: 1 VC)
 test_dynamic_property.adb:60:22: info: range check proved (altergo: 1 VC)
 test_dynamic_property.adb:61:19: info: assertion proved (altergo: 1 VC)

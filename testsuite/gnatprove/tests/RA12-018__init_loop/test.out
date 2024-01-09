@@ -16,6 +16,7 @@ init_pred_in_loop.adb:29:25: info: assertion proved (CVC5: 1 VC)
 init_pred_in_loop.adb:30:11: info: predicate check proved (CVC5: 2 VC)
 init_pred_in_loop.adb:40:04: warning: analyzing unreferenced procedure "Test_Partial_Init_1"
 init_pred_in_loop.adb:40:14: warning: subprogram "Test_Partial_Init_1" has no effect
+init_pred_in_loop.adb:41:07: info: in default value at init_pred_in_loop.adb:41
 init_pred_in_loop.adb:41:07: info: initialization of "X" proved
 init_pred_in_loop.adb:41:07: info: predicate check proved on default value (CVC5: 1 VC)
 init_pred_in_loop.adb:43:08: info: predicate check proved (CVC5: 1 VC)
@@ -32,6 +33,7 @@ init_pred_in_loop.adb:56:25: info: assertion proved (CVC5: 1 VC)
 init_pred_in_loop.adb:57:11: info: predicate check proved (CVC5: 1 VC)
 init_pred_in_loop.adb:61:04: warning: analyzing unreferenced procedure "Test_Partial_Init_3"
 init_pred_in_loop.adb:61:14: warning: subprogram "Test_Partial_Init_3" has no effect
+init_pred_in_loop.adb:62:07: info: in default value at init_pred_in_loop.adb:62
 init_pred_in_loop.adb:62:07: info: initialization of "X" proved
 init_pred_in_loop.adb:62:07: info: predicate check proved on default value (CVC5: 1 VC)
 init_pred_in_loop.adb:65:33: info: loop invariant initialization proved (Trivial: 1 VC)
@@ -40,6 +42,7 @@ init_pred_in_loop.adb:66:25: info: assertion proved (CVC5: 1 VC)
 init_pred_in_loop.adb:67:11: info: predicate check proved (CVC5: 1 VC)
 init_pred_in_loop.adb:77:04: warning: analyzing unreferenced procedure "Test_Full_Init_1"
 init_pred_in_loop.adb:77:14: warning: subprogram "Test_Full_Init_1" has no effect
+init_pred_in_loop.adb:78:07: info: in default value at init_pred_in_loop.adb:78
 init_pred_in_loop.adb:78:07: info: initialization of "X" proved
 init_pred_in_loop.adb:78:07: info: predicate check proved on default value (CVC5: 2 VC)
 init_pred_in_loop.adb:81:33: info: loop invariant initialization proved (Trivial: 1 VC)
@@ -67,12 +70,14 @@ init_pred_in_loop.adb:130:04: warning: analyzing unreferenced procedure "Test_Wr
 init_pred_in_loop.adb:130:14: warning: subprogram "Test_Wrong_Partial_Init" has no effect
 init_pred_in_loop.adb:133:33: info: loop invariant initialization proved (Trivial: 1 VC)
 init_pred_in_loop.adb:133:33: info: loop invariant preservation proved (Trivial: 1 VC)
+init_pred_in_loop.adb:135:13: medium: in default value at init_pred_in_loop.adb:135
 init_pred_in_loop.adb:135:13: medium: predicate check might fail on default value
 init_pred_in_loop.adb:137:18: info: predicate check proved (CVC5: 1 VC)
 init_pred_in_loop.adb:148:04: warning: analyzing unreferenced procedure "Test_Wrong_Full_Init"
 init_pred_in_loop.adb:148:14: warning: subprogram "Test_Wrong_Full_Init" has no effect
 init_pred_in_loop.adb:151:33: info: loop invariant initialization proved (Trivial: 1 VC)
 init_pred_in_loop.adb:151:33: info: loop invariant preservation proved (Trivial: 1 VC)
+init_pred_in_loop.adb:153:13: medium: in default value at init_pred_in_loop.adb:153
 init_pred_in_loop.adb:153:13: medium: predicate check might fail on default value
 init_pred_in_loop.adb:155:18: info: predicate check proved (CVC5: 1 VC)
 init_pred_in_loop.adb:163:04: warning: analyzing unreferenced procedure "Test_Wrong_Scalar_1"
@@ -99,10 +104,12 @@ init_pred_in_loop.adb:202:04: warning: analyzing unreferenced procedure "Test_Wr
 init_pred_in_loop.adb:202:14: warning: subprogram "Test_Wrong_Scalar_Def_1" has no effect
 init_pred_in_loop.adb:205:33: info: loop invariant initialization proved (Trivial: 1 VC)
 init_pred_in_loop.adb:205:33: info: loop invariant preservation proved (Trivial: 1 VC)
+init_pred_in_loop.adb:207:13: medium: in default value at init_pred_in_loop.adb:207
 init_pred_in_loop.adb:207:13: medium: predicate check might fail on default value
 init_pred_in_loop.adb:209:18: info: predicate check proved (CVC5: 1 VC)
 init_pred_in_loop.adb:214:04: warning: analyzing unreferenced procedure "Test_Wrong_Scalar_Def_2"
 init_pred_in_loop.adb:214:14: warning: subprogram "Test_Wrong_Scalar_Def_2" has no effect
+init_pred_in_loop.adb:218:13: medium: in default value at init_pred_in_loop.adb:218
 init_pred_in_loop.adb:218:13: medium: predicate check might fail on default value
 init_pred_in_loop.adb:220:36: info: loop invariant initialization proved (Trivial: 1 VC)
 init_pred_in_loop.adb:220:36: info: loop invariant preservation proved (Trivial: 1 VC)
@@ -110,5 +117,6 @@ init_pred_in_loop.adb:221:18: info: predicate check proved (CVC5: 1 VC)
 init_pred_in_loop.adb:226:04: warning: analyzing unreferenced procedure "Test_Wrong_Scalar_Def_3"
 init_pred_in_loop.adb:226:14: warning: subprogram "Test_Wrong_Scalar_Def_3" has no effect
 init_pred_in_loop.adb:228:23: info: unrolling loop
+init_pred_in_loop.adb:230:13: medium: in default value at init_pred_in_loop.adb:230
 init_pred_in_loop.adb:230:13: medium: predicate check might fail on default value
 init_pred_in_loop.adb:232:18: info: predicate check proved (CVC5: 3 VC)

@@ -34,25 +34,33 @@ generic_ring_buffer.ads:91:17: info: precondition proved (CVC5: 1 VC), in instan
 generic_ring_buffer.ads:92:51: info: overflow check proved (CVC5: 2 VC), in instantiation at tester.adb:10
 generic_ring_buffer.ads:96:16: info: aspect Always_Terminates on "Clear" has been proved, subprogram will terminate, in instantiation at tester.adb:10
 generic_ring_buffer.ads:99:16: info: postcondition proved (CVC5: 3 VC), in instantiation at tester.adb:10
+tester.adb:15:04: info: in default value at tester.adb:15
 tester.adb:15:04: info: predicate check proved on default value (CVC5: 5 VC)
 tester.adb:15:26: info: range check proved (CVC5: 2 VC)
 tester.adb:16:04: info: initialization of "Element" proved
 tester.adb:17:04: info: initialization of "Counter" proved
 tester.adb:20:04: info: precondition proved (CVC5: 1 VC)
 tester.adb:20:09: high: "X.Items" is not initialized
+tester.adb:20:09: info: in value of subprogram parameter after the call at tester.adb:20
 tester.adb:20:09: info: predicate check proved (CVC5: 5 VC)
 tester.adb:21:04: info: precondition proved (CVC5: 2 VC)
+tester.adb:21:09: info: in value of subprogram parameter after the call at tester.adb:21
 tester.adb:21:09: info: predicate check proved (CVC5: 5 VC)
 tester.adb:21:12: warning: "Element" is set by "Get" but not used after the call
 tester.adb:22:04: info: precondition proved (CVC5: 1 VC)
+tester.adb:22:09: info: in value of subprogram parameter after the call at tester.adb:22
 tester.adb:22:09: info: predicate check proved (CVC5: 5 VC)
 tester.adb:23:04: info: precondition proved (CVC5: 1 VC)
+tester.adb:23:09: info: in value of subprogram parameter after the call at tester.adb:23
 tester.adb:23:09: info: predicate check proved (CVC5: 5 VC)
 tester.adb:24:04: info: precondition proved (CVC5: 1 VC)
+tester.adb:24:09: info: in value of subprogram parameter after the call at tester.adb:24
 tester.adb:24:09: info: predicate check proved (CVC5: 5 VC)
 tester.adb:25:04: info: precondition proved (CVC5: 1 VC)
+tester.adb:25:09: info: in value of subprogram parameter after the call at tester.adb:25
 tester.adb:25:09: info: predicate check proved (CVC5: 5 VC)
 tester.adb:28:08: info: range check proved (CVC5: 2 VC)
 tester.adb:28:40: info: cannot unroll loop (too many loop iterations)
 tester.adb:29:07: medium: precondition might fail, cannot prove not Empty (Buffer) [possible fix: loop at line 28 should mention X in a loop invariant]
+tester.adb:29:12: info: in value of subprogram parameter after the call at tester.adb:29
 tester.adb:29:12: info: predicate check proved (CVC5: 5 VC)

@@ -52,6 +52,7 @@ ipv4_parsing.adb:96:07: info: only expected exception raised
 ipv4_parsing.adb:101:07: info: initialization of "Byte" proved
 ipv4_parsing.adb:108:23: info: unrolling loop
 ipv4_parsing.adb:109:09: info: precondition proved
+ipv4_parsing.adb:109:27: info: in value of subprogram parameter after the call at ipv4_parsing.adb:109
 ipv4_parsing.adb:109:27: info: range check proved
 ipv4_parsing.adb:112:28: info: overflow check proved
 ipv4_parsing.adb:117:24: info: overflow check proved
@@ -59,6 +60,7 @@ ipv4_parsing.adb:124:07: info: initialization of "Byte" proved
 ipv4_parsing.adb:125:07: info: initialization of "Error" proved
 ipv4_parsing.adb:127:23: info: unrolling loop
 ipv4_parsing.adb:128:09: info: precondition proved
+ipv4_parsing.adb:128:27: info: in value of subprogram parameter after the call at ipv4_parsing.adb:128
 ipv4_parsing.adb:128:27: info: range check proved
 ipv4_parsing.adb:129:24: info: assertion proved
 ipv4_parsing.adb:132:24: info: overflow check proved

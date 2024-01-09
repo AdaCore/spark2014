@@ -1,5 +1,6 @@
 main.adb:11:09: info: range check proved (CVC5: 2 VC)
 main.adb:18:07: info: data dependencies proved
+main.adb:23:05: info: in default value at main.adb:23
 main.adb:23:05: info: initialization of "y" proved
 main.adb:23:05: info: predicate check proved on default value (CVC5: 1 VC; Trivial: 1 VC)
 main.adb:23:13: info: range check proved (CVC5: 2 VC)

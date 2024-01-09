@@ -1,1 +1,2 @@
+g.ads:5:03: medium: in default value at g.ads:5, in instantiation at inst.adb:6
 g.ads:5:03: medium: predicate check might fail on default value, in instantiation at inst.adb:6

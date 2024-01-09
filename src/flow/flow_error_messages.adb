@@ -1039,25 +1039,19 @@ package body Flow_Error_Messages is
       end if;
 
       for Cont of reverse Check_Info.Continuation loop
+         declare
+            Loc  : constant Source_Ptr := Sloc
+              (First_Node (Cont.Ada_Node));
+            File : constant String := File_Name (Loc);
+            Line : constant Physical_Line_Number :=
+              Get_Physical_Line_Number (Loc);
+            Msg  : constant String :=
+              To_String (Cont.Message)
+              & " at " & File & ":" & Image (Integer (Line), 1);
 
-         --  No need to emit the continuation if it is located on the same
-         --  node as the check message.
-
-         if Cont.Ada_Node /= N then
-            declare
-               Loc  : constant Source_Ptr := Sloc
-                 (First_Node (Cont.Ada_Node));
-               File : constant String := File_Name (Loc);
-               Line : constant Physical_Line_Number :=
-                 Get_Physical_Line_Number (Loc);
-               Msg  : constant String :=
-                 To_String (Cont.Message)
-                 & " at " & File & ":" & Image (Integer (Line), 1);
-
-            begin
-               Cont_Msgs.Append (Compute_Message (Msg, Cont.Ada_Node));
-            end;
-         end if;
+         begin
+            Cont_Msgs.Append (Compute_Message (Msg, Cont.Ada_Node));
+         end;
       end loop;
 
       --  The call to Check_Is_Annotated needs to happen on all paths, even

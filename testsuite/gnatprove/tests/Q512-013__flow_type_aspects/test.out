@@ -8,6 +8,7 @@ types.ads:18:04: info: invariant check proved (CVC5: 1 VC)
 types.ads:19:16: medium: in inlined predicate at types.ads:13
 types.ads:19:16: medium: predicate check might fail, cannot prove not Boolean (T2)
 types.ads:20:04: info: default initial condition proved (CVC5: 2 VC)
+types.ads:20:04: info: in default value at types.ads:20
 types.ads:22:14: info: aspect Always_Terminates on "Proc1" has been proved, subprogram will terminate
 types.ads:23:14: info: aspect Always_Terminates on "Proc2" has been proved, subprogram will terminate
 types.ads:24:14: info: aspect Always_Terminates on "Proc3" has been proved, subprogram will terminate

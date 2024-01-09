@@ -37,6 +37,8 @@ spark-containers-formal-hashed_maps.ads:94:06: info: after a call to Insert at s
 spark-containers-formal-hashed_maps.ads:94:06: info: after a call to Insert at spark-containers-formal-hashed_maps.ads:665, in instantiation at test_hmaps.ads:8
 spark-containers-formal-hashed_maps.ads:94:06: info: after a call to Insert at spark-containers-formal-hashed_maps.ads:665, in instantiation at test_hmaps.ads:8
 spark-containers-formal-hashed_maps.ads:94:06: info: after a call to Insert at spark-containers-formal-hashed_maps.ads:665, in instantiation at test_hmaps.ads:8
+spark-containers-formal-hashed_maps.ads:94:06: info: during checks for container aggregates at spark-containers-formal-hashed_maps.ads:94, in instantiation at test_hmaps.ads:13
+spark-containers-formal-hashed_maps.ads:94:06: info: during checks for container aggregates at spark-containers-formal-hashed_maps.ads:94, in instantiation at test_hmaps.ads:8
 spark-containers-formal-hashed_maps.ads:94:06: info: when establishing invariant on Aggr_Capacity at spark-containers-formal-hashed_maps.ads:1005, in instantiation at test_hmaps.ads:13
 spark-containers-formal-hashed_maps.ads:94:06: info: when establishing invariant on Aggr_Capacity at spark-containers-formal-hashed_maps.ads:1005, in instantiation at test_hmaps.ads:8
 spark-containers-formal-hashed_maps.ads:94:06: info: when establishing invariant on Has_Key at spark-containers-functional-maps.ads:120, in instantiation at spark-containers-formal-hashed_maps.ads:183, in instantiation at test_hmaps.ads:13

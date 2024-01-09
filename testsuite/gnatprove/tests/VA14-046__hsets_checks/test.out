@@ -33,6 +33,8 @@ spark-containers-formal-hashed_sets.ads:95:06: info: after a call to Insert at s
 spark-containers-formal-hashed_sets.ads:95:06: info: after a call to Insert at spark-containers-formal-hashed_sets.ads:724, in instantiation at test_hsets.ads:8
 spark-containers-formal-hashed_sets.ads:95:06: info: after a call to Insert at spark-containers-formal-hashed_sets.ads:724, in instantiation at test_hsets.ads:8
 spark-containers-formal-hashed_sets.ads:95:06: info: after a call to Insert at spark-containers-formal-hashed_sets.ads:724, in instantiation at test_hsets.ads:8
+spark-containers-formal-hashed_sets.ads:95:06: info: during checks for container aggregates at spark-containers-formal-hashed_sets.ads:95, in instantiation at test_hsets.ads:12
+spark-containers-formal-hashed_sets.ads:95:06: info: during checks for container aggregates at spark-containers-formal-hashed_sets.ads:95, in instantiation at test_hsets.ads:8
 spark-containers-formal-hashed_sets.ads:95:06: info: when establishing invariant on Aggr_Capacity at spark-containers-formal-hashed_sets.ads:1632, in instantiation at test_hsets.ads:12
 spark-containers-formal-hashed_sets.ads:95:06: info: when establishing invariant on Aggr_Capacity at spark-containers-formal-hashed_sets.ads:1632, in instantiation at test_hsets.ads:8
 spark-containers-formal-hashed_sets.ads:95:06: info: when establishing invariant on Contains at spark-containers-functional-sets.ads:94, in instantiation at spark-containers-formal-hashed_sets.ads:175, in instantiation at test_hsets.ads:12

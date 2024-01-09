@@ -39,6 +39,7 @@ spark-containers-formal-doubly_linked_lists.ads:52:06: info: Container_Aggregate
 spark-containers-formal-doubly_linked_lists.ads:52:06: info: Container_Aggregates annotation proved, in instantiation at loop_types.ads:17
   when establishing invariant on Aggr_Capacity at spark-containers-formal-doubly_linked_lists.ads:1748, in instantiation at loop_types.ads:17
   after a call to Empty_List at spark-containers-formal-doubly_linked_lists.ads:63, in instantiation at loop_types.ads:17
+  during checks for container aggregates at spark-containers-formal-doubly_linked_lists.ads:52, in instantiation at loop_types.ads:17
 spark-containers-formal-doubly_linked_lists.ads:400:13: info: precondition proved, in instantiation at loop_types.ads:17
   during checks for quantification at spark-containers-formal-doubly_linked_lists.ads:44, in instantiation at loop_types.ads:17
 spark-containers-formal-doubly_linked_lists.ads:440:13: info: implicit aspect Always_Terminates on "At_End" has been proved, subprogram will terminate, in instantiation at loop_types.ads:17
@@ -297,6 +298,7 @@ spark-containers-formal-vectors.ads:79:06: info: Container_Aggregates annotation
 spark-containers-formal-vectors.ads:79:06: info: Container_Aggregates annotation proved, in instantiation at loop_types.ads:14
   when establishing invariant on Aggr_Capacity at spark-containers-formal-vectors.ads:1036, in instantiation at loop_types.ads:14
   after a call to Empty_Vector at spark-containers-formal-vectors.ads:259, in instantiation at loop_types.ads:14
+  during checks for container aggregates at spark-containers-formal-vectors.ads:79, in instantiation at loop_types.ads:14
 spark-containers-formal-vectors.ads:328:13: info: precondition proved, in instantiation at loop_types.ads:14
   during checks for quantification at spark-containers-formal-vectors.ads:71, in instantiation at loop_types.ads:14
 spark-containers-formal-vectors.ads:359:13: info: implicit aspect Always_Terminates on "At_End" has been proved, subprogram will terminate, in instantiation at loop_types.ads:14

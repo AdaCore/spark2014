@@ -202,13 +202,24 @@ test_relaxed_parameters.adb:16:33: info: exceptional case proved (Trivial: 1 VC)
 test_relaxed_parameters.adb:23:22: info: initialization of "X" proved
 test_relaxed_parameters.adb:25:33: info: exceptional case proved (Trivial: 1 VC)
 test_relaxed_parameters.adb:29:07: info: only expected exception raised (CVC5: 1 VC)
+test_relaxed_parameters.adb:29:10: info: in value of subprogram parameter after the call at test_relaxed_parameters.adb:29
+test_relaxed_parameters.adb:29:10: info: in value of subprogram parameter after the call at test_relaxed_parameters.adb:29
+test_relaxed_parameters.adb:29:10: info: in value of subprogram parameter after the call when an exception is raised at test_relaxed_parameters.adb:29
 test_relaxed_parameters.adb:29:10: info: initialization check proved (CVC5: 2 VC)
 test_relaxed_parameters.adb:29:10: info: predicate check proved (CVC5: 1 VC)
+test_relaxed_parameters.adb:29:10: info: predicate check proved (CVC5: 1 VC)
+test_relaxed_parameters.adb:29:10: medium: in value of subprogram parameter after the call when an exception is raised at test_relaxed_parameters.adb:29
 test_relaxed_parameters.adb:29:10: medium: initialization check might fail [possible fix: call at line 29 should mention X'Initialized (for argument X) in a postcondition]
 test_relaxed_parameters.adb:35:33: info: exceptional case proved (CVC5: 2 VC)
 test_relaxed_parameters.adb:39:12: info: predicate check proved (CVC5: 1 VC)
 test_relaxed_parameters.adb:43:22: info: initialization of "X" proved
 test_relaxed_parameters.adb:45:33: info: exceptional case proved (Trivial: 1 VC)
 test_relaxed_parameters.adb:49:07: info: only expected exception raised (CVC5: 1 VC)
+test_relaxed_parameters.adb:49:10: info: in value of subprogram parameter after the call at test_relaxed_parameters.adb:49
+test_relaxed_parameters.adb:49:10: info: in value of subprogram parameter after the call at test_relaxed_parameters.adb:49
+test_relaxed_parameters.adb:49:10: info: in value of subprogram parameter after the call when an exception is raised at test_relaxed_parameters.adb:49
+test_relaxed_parameters.adb:49:10: info: in value of subprogram parameter after the call when an exception is raised at test_relaxed_parameters.adb:49
 test_relaxed_parameters.adb:49:10: info: initialization check proved (CVC5: 2 VC)
+test_relaxed_parameters.adb:49:10: info: initialization check proved (CVC5: 2 VC)
+test_relaxed_parameters.adb:49:10: info: predicate check proved (CVC5: 1 VC)
 test_relaxed_parameters.adb:49:10: info: predicate check proved (CVC5: 1 VC)
