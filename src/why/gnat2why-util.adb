@@ -1223,13 +1223,11 @@ package body Gnat2Why.Util is
             then
                return True;
 
-            --  An owning access type provides a read/write access to procedure
-            --  and entry parameters.
+            --  An owning access type provides a read/write access to
+            --  subprograms with side effects.
 
             else
-               return not Is_Constant_In_SPARK (E)
-                 and then
-                 not Is_Function_Or_Function_Type (Enclosing_Unit (E));
+               return not Is_Constant_In_SPARK (E);
             end if;
 
          when others =>
