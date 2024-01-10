@@ -37,6 +37,8 @@ spark-containers-formal-ordered_maps.ads:95:06: info: after a call to Insert at 
 spark-containers-formal-ordered_maps.ads:95:06: info: after a call to Insert at spark-containers-formal-ordered_maps.ads:671, in instantiation at test_omaps.ads:8
 spark-containers-formal-ordered_maps.ads:95:06: info: after a call to Insert at spark-containers-formal-ordered_maps.ads:671, in instantiation at test_omaps.ads:8
 spark-containers-formal-ordered_maps.ads:95:06: info: after a call to Insert at spark-containers-formal-ordered_maps.ads:671, in instantiation at test_omaps.ads:8
+spark-containers-formal-ordered_maps.ads:95:06: info: during checks for container aggregates at spark-containers-formal-ordered_maps.ads:95, in instantiation at test_omaps.ads:11
+spark-containers-formal-ordered_maps.ads:95:06: info: during checks for container aggregates at spark-containers-formal-ordered_maps.ads:95, in instantiation at test_omaps.ads:8
 spark-containers-formal-ordered_maps.ads:95:06: info: when establishing invariant on Aggr_Capacity at spark-containers-formal-ordered_maps.ads:1230, in instantiation at test_omaps.ads:11
 spark-containers-formal-ordered_maps.ads:95:06: info: when establishing invariant on Aggr_Capacity at spark-containers-formal-ordered_maps.ads:1230, in instantiation at test_omaps.ads:8
 spark-containers-formal-ordered_maps.ads:95:06: info: when establishing invariant on Has_Key at spark-containers-functional-maps.ads:120, in instantiation at spark-containers-formal-ordered_maps.ads:175, in instantiation at test_omaps.ads:11

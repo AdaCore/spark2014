@@ -8,6 +8,7 @@ dimensions.ads:377:14: medium: float overflow check might fail [reason for check
 image_golf_hole.adb:14:17: info: add a contract to analyze it separately from calling contexts
 image_golf_hole.adb:14:17: info: local subprogram "Set_Position" only analyzed in the context of calls
 image_golf_hole.adb:14:17: warning: subprogram "Set_Position" has no effect
+image_golf_hole.adb:16:10: info: in default value at image_golf_hole.adb:16, in call inlined at image_golf_hole.adb:32
 image_golf_hole.adb:16:10: info: initialization of "Blob" proved
 image_golf_hole.adb:16:10: info: initialization of "Blob" proved, in call inlined at image_golf_hole.adb:32
 image_golf_hole.adb:16:10: info: predicate check proved on default value (CVC5: 4 VC), in call inlined at image_golf_hole.adb:32

@@ -1,3 +1,5 @@
 client.adb:4:04: medium: default initial condition might fail
+client.adb:4:04: medium: in default value at client.adb:4
 client.adb:5:04: info: default initial condition proved (CVC5: 1 VC)
+client.adb:5:04: info: in default value at client.adb:5
 p.ads:3:13: info: implicit aspect Always_Terminates on "Really_False" has been proved, subprogram will terminate

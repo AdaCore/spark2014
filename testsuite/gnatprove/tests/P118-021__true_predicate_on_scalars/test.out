@@ -1,1 +1,2 @@
+p.adb:12:04: info: in default value at p.adb:12
 p.adb:12:04: info: predicate check proved on default value (Trivial: 1 VC)

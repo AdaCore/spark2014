@@ -1,11 +1,13 @@
 test_dic.adb:9:12: info: default initial condition proved (CVC5: 1 VC)
 test_dic.adb:13:16: info: implicit aspect Always_Terminates on "F" has been proved, subprogram will terminate
 test_dic.adb:17:12: info: default initial condition proved (CVC5: 1 VC)
+test_dic.adb:17:12: info: in default value of private type at test_dic.adb:17
 test_dic.adb:17:12: info: predicate check proved on default value (CVC5: 1 VC)
 test_dic.adb:21:16: info: implicit aspect Always_Terminates on "F" has been proved, subprogram will terminate
 test_dic.adb:24:12: medium: default initial condition might fail
 test_dic.adb:28:16: info: implicit aspect Always_Terminates on "F" has been proved, subprogram will terminate
 test_dic.adb:32:12: info: default initial condition proved (CVC5: 1 VC)
+test_dic.adb:32:12: medium: in default value of private type at test_dic.adb:32
 test_dic.adb:32:12: medium: predicate check might fail on default value
 test_dic.adb:36:16: info: implicit aspect Always_Terminates on "F" has been proved, subprogram will terminate
 test_dic.adb:38:07: medium: type "T1" is not fully initialized
@@ -147,6 +149,8 @@ test_predicates.adb:221:19: info: initialization check proved (CVC5: 2 VC; Trivi
 test_predicates.adb:221:19: info: predicate check proved (CVC5: 1 VC)
 test_predicates.adb:221:38: medium: initialization check might fail (e.g. when H.C'Initialized = False)
 test_predicates_2.adb:1:11: warning: subprogram "Test_Predicates_2" has no effect
+test_predicates_2.adb:46:11: info: in value of subprogram parameter after the call at test_predicates_2.adb:46
+test_predicates_2.adb:46:11: info: in value of subprogram parameter after the call at test_predicates_2.adb:46
 test_predicates_2.adb:46:11: info: initialization check proved (CVC5: 1 VC; Trivial: 2 VC)
 test_predicates_2.adb:46:11: info: predicate check proved (CVC5: 1 VC)
 test_predicates_2.adb:51:10: medium: initialization check might fail (e.g. when X = (H => (F => ?, G => 0)) and X.H.F'Initialized = False and X.H.G'Initialized = True)
@@ -154,11 +158,15 @@ test_predicates_2.adb:51:10: medium: predicate check might fail (e.g. when X = (
 test_predicates_2.adb:55:12: info: predicate check proved (CVC5: 1 VC)
 test_predicates_2.adb:56:10: info: initialization check proved (CVC5: 1 VC; Trivial: 2 VC)
 test_predicates_2.adb:56:10: info: predicate check proved (CVC5: 1 VC)
+test_predicates_2.adb:56:11: info: in value of subprogram parameter after the call at test_predicates_2.adb:56
+test_predicates_2.adb:56:11: info: in value of subprogram parameter after the call at test_predicates_2.adb:56
 test_predicates_2.adb:56:11: info: initialization check proved (CVC5: 1 VC; Trivial: 2 VC)
 test_predicates_2.adb:56:11: info: predicate check proved (CVC5: 1 VC)
 test_predicates_2.adb:60:12: info: predicate check proved (CVC5: 1 VC)
 test_predicates_2.adb:61:10: info: initialization check proved (CVC5: 1 VC; Trivial: 2 VC)
 test_predicates_2.adb:61:10: info: predicate check proved (CVC5: 1 VC)
+test_predicates_2.adb:61:11: medium: in value of subprogram parameter after the call at test_predicates_2.adb:61
+test_predicates_2.adb:61:11: medium: in value of subprogram parameter after the call at test_predicates_2.adb:61
 test_predicates_2.adb:61:11: medium: initialization check might fail
 test_predicates_2.adb:61:11: medium: predicate check might fail
 test_scalar_preds.adb:25:06: info: data dependencies proved
@@ -188,6 +196,7 @@ test_scalar_preds.adb:107:23: info: in default value at test_scalar_preds.adb:39
 test_scalar_preds.adb:107:23: info: in default value at test_scalar_preds.adb:431
 test_scalar_preds.adb:107:23: info: range check proved (CVC5: 2 VC)
 test_scalar_preds.adb:107:23: info: range check proved (CVC5: 2 VC)
+test_scalar_preds.adb:112:07: info: in default initialization of component "C" at test_scalar_preds.adb:112
 test_scalar_preds.adb:112:07: info: in default value at test_scalar_preds.adb:431
 test_scalar_preds.adb:112:07: info: predicate check proved on default value (CVC5: 1 VC)
 test_scalar_preds.adb:116:17: medium: in default value at test_scalar_preds.adb:432
@@ -212,6 +221,7 @@ test_scalar_preds.adb:173:23: info: in default value at test_scalar_preds.adb:39
 test_scalar_preds.adb:173:23: info: in default value at test_scalar_preds.adb:433
 test_scalar_preds.adb:173:23: info: range check proved (CVC5: 2 VC)
 test_scalar_preds.adb:173:23: info: range check proved (CVC5: 2 VC)
+test_scalar_preds.adb:178:07: medium: in default initialization of component "C" at test_scalar_preds.adb:178
 test_scalar_preds.adb:178:07: medium: in default value at test_scalar_preds.adb:433
 test_scalar_preds.adb:178:07: medium: predicate check might fail on default value
 test_scalar_preds.adb:182:17: info: in default value at test_scalar_preds.adb:434
@@ -251,6 +261,7 @@ test_scalar_preds.adb:300:23: info: in default value at test_scalar_preds.adb:39
 test_scalar_preds.adb:300:23: info: in default value at test_scalar_preds.adb:436
 test_scalar_preds.adb:300:23: info: range check proved (CVC5: 2 VC)
 test_scalar_preds.adb:300:23: info: range check proved (CVC5: 2 VC)
+test_scalar_preds.adb:304:07: info: in default initialization of component "C" at test_scalar_preds.adb:304
 test_scalar_preds.adb:304:07: info: in default value at test_scalar_preds.adb:436
 test_scalar_preds.adb:304:07: info: predicate check proved on default value (CVC5: 1 VC)
 test_scalar_preds.adb:308:17: medium: in default value at test_scalar_preds.adb:437
@@ -270,6 +281,7 @@ test_scalar_preds.adb:344:23: info: in default value at test_scalar_preds.adb:39
 test_scalar_preds.adb:344:23: info: in default value at test_scalar_preds.adb:438
 test_scalar_preds.adb:344:23: info: range check proved (CVC5: 2 VC)
 test_scalar_preds.adb:344:23: info: range check proved (CVC5: 2 VC)
+test_scalar_preds.adb:348:07: medium: in default initialization of component "C" at test_scalar_preds.adb:348
 test_scalar_preds.adb:348:07: medium: in default value at test_scalar_preds.adb:438
 test_scalar_preds.adb:348:07: medium: predicate check might fail on default value
 test_scalar_preds.adb:352:17: info: in default value at test_scalar_preds.adb:439
@@ -285,9 +297,13 @@ test_scalar_preds.adb:377:35: medium: initialization check might fail [possible 
 test_scalar_preds.adb:381:06: info: data dependencies proved
 test_scalar_preds.adb:384:22: info: assertion proved (CVC5: 1 VC)
 test_scalar_preds.adb:388:06: info: data dependencies proved
+test_scalar_preds.adb:391:07: info: in default value at test_scalar_preds.adb:391
 test_scalar_preds.adb:391:07: info: predicate check proved on default value (CVC5: 1 VC)
+test_scalar_preds.adb:392:07: medium: in default value at test_scalar_preds.adb:392
 test_scalar_preds.adb:392:07: medium: predicate check might fail on default value
+test_scalar_preds.adb:394:07: info: in default value at test_scalar_preds.adb:394
 test_scalar_preds.adb:394:07: info: predicate check proved on default value (CVC5: 1 VC)
+test_scalar_preds.adb:395:07: medium: in default value at test_scalar_preds.adb:395
 test_scalar_preds.adb:395:07: medium: predicate check might fail on default value
 test_scalar_preds.adb:399:16: medium: initialization check might fail
 test_scalar_preds.adb:401:16: medium: initialization check might fail

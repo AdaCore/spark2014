@@ -30,9 +30,11 @@ binary_search_trees.adb:66:15: info: absence of resource or memory leak proved (
 binary_search_trees.adb:66:18: info: predicate check proved (CVC5: 2 VC)
 binary_search_trees.adb:66:55: info: overflow check proved (CVC5: 2 VC)
 binary_search_trees.adb:68:10: info: precondition proved (CVC5: 1 VC)
+binary_search_trees.adb:68:26: info: in value of subprogram parameter after the call at binary_search_trees.adb:68
 binary_search_trees.adb:68:26: info: non-aliasing of formal parameters "Starting_At" and "Size" proved
 binary_search_trees.adb:68:26: info: null exclusion check proved (CVC5: 1 VC)
 binary_search_trees.adb:68:26: info: predicate check proved (CVC5: 2 VC)
+binary_search_trees.adb:68:43: info: in value of subprogram parameter after the call at binary_search_trees.adb:68
 binary_search_trees.adb:68:43: info: predicate check proved (CVC5: 2 VC)
 binary_search_trees.adb:76:10: info: initialization of "Result" proved
 binary_search_trees.adb:81:34: info: pointer dereference check proved (CVC5: 1 VC)
@@ -50,6 +52,7 @@ binary_search_trees.adb:105:14: info: dynamic accessibility check proved (Trivia
 binary_search_trees.adb:105:14: info: null exclusion check proved (CVC5: 1 VC)
 binary_search_trees.adb:111:31: info: null exclusion check proved (CVC5: 1 VC)
 binary_search_trees.adb:111:37: info: pointer dereference check proved (CVC5: 1 VC)
+binary_search_trees.ads:5:09: info: in default value of private type at binary_search_trees.ads:5
 binary_search_trees.ads:5:09: info: predicate check proved on default value (CVC5: 2 VC)
 binary_search_trees.ads:16:13: info: implicit aspect Always_Terminates on "Lookup" has been proved, subprogram will terminate
 binary_search_trees.ads:19:13: info: implicit aspect Always_Terminates on "Minimum" has been proved, subprogram will terminate

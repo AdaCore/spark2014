@@ -165,6 +165,11 @@ test_ownership_annotation.adb:242:11: medium: resource or memory leak might occu
 test_ownership_annotation.adb:244:07: medium: resource or memory leak might occur
 test_ownership_annotation.adb:248:06: info: data dependencies proved
 test_ownership_annotation.adb:252:65: info: precondition proved (CVC5: 1 VC)
+test_ownership_annotation.adb:254:10: info: in default initialization of component "A" at test_ownership_annotation.adb:254
+test_ownership_annotation.adb:254:10: info: in default initialization of component "A" at test_ownership_annotation.adb:254
+test_ownership_annotation.adb:254:10: info: in default initialization of component "A" at test_ownership_annotation.adb:254
+test_ownership_annotation.adb:254:10: info: in default initialization of component "A" at test_ownership_annotation.adb:254
+test_ownership_annotation.adb:254:10: info: in default initialization of component "A" at test_ownership_annotation.adb:254
 test_ownership_annotation.adb:254:10: info: in default value at test_ownership_annotation.adb:273
 test_ownership_annotation.adb:254:10: info: in default value at test_ownership_annotation.adb:274
 test_ownership_annotation.adb:254:10: info: in default value at test_ownership_annotation.adb:275
@@ -193,6 +198,7 @@ test_ownership_annotation.adb:281:11: info: absence of resource or memory leak p
 test_ownership_annotation.adb:281:14: info: predicate check proved (CVC5: 1 VC)
 test_ownership_annotation.adb:282:11: info: absence of resource or memory leak proved (CVC5: 1 VC)
 test_ownership_annotation.adb:282:14: info: predicate check proved (CVC5: 1 VC)
+test_ownership_annotation.adb:283:20: info: in value of subprogram parameter after the call at test_ownership_annotation.adb:283
 test_ownership_annotation.adb:283:20: info: predicate check proved (CVC5: 1 VC)
 test_ownership_annotation.adb:284:09: medium: resource or memory leak might occur
 test_ownership_annotation.adb:286:11: medium: resource or memory leak might occur [possible fix: call at line 285 should mention X (for argument D) in a postcondition]

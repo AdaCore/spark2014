@@ -13,6 +13,7 @@ test_stack.adb:17:24: info: index check proved (CVC5: 2 VC)
 test_stack.adb:18:08: info: predicate check proved (CVC5: 2 VC)
 test_stack.adb:18:22: info: range check proved (CVC5: 2 VC)
 test_stack.ads:4:09: info: default initial condition proved (CVC5: 1 VC)
+test_stack.ads:4:09: info: in default value of private type at test_stack.ads:4
 test_stack.ads:4:09: info: predicate check proved on default value (CVC5: 2 VC)
 test_stack.ads:7:13: info: implicit aspect Always_Terminates on "Size" has been proved, subprogram will terminate
 test_stack.ads:8:13: info: implicit aspect Always_Terminates on "Peek" has been proved, subprogram will terminate

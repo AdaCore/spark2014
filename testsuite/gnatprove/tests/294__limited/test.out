@@ -14,6 +14,7 @@ rflx-dhcp-message.adb:22:11: medium: discriminant check might fail [possible fix
 rflx-dhcp-message.adb:23:14: info: absence of resource or memory leak proved (CVC5: 1 VC)
 rflx-dhcp-message.ads:24:09: info: default initial condition proved (CVC5: 1 VC)
 rflx-dhcp-message.ads:24:09: info: in default initialization of array component at rflx-dhcp-message.ads:20
+rflx-dhcp-message.ads:24:09: info: in default value of private type at rflx-dhcp-message.ads:24
 rflx-dhcp-message.ads:30:14: info: aspect Always_Terminates on "Initialize" has been proved, subprogram will terminate
 rflx-dhcp-message.ads:30:26: info: initialization of "Ctx" proved
 rflx-dhcp-message.ads:32:14: info: aspect Always_Terminates on "Initialize" has been proved, subprogram will terminate
@@ -126,24 +127,31 @@ rflx-dhcp_client-session.adb:42:37: medium: resource or memory leak might occur 
 rflx-dhcp_client-session.adb:42:47: warning: "Ack_Buffer" is set by "Initialize" but not used after the call
 rflx-dhcp_client-session_allocator.ads:34:17: info: pointer dereference check proved (CVC5: 1 VC)
 rflx-dhcp_client-session_allocator.ads:35:26: info: pointer dereference check proved (CVC5: 1 VC)
+rflx-dhcp_client-session_allocator.ads:39:10: info: in default initialization of component "Slot_Ptr_1" at rflx-dhcp_client-session_allocator.ads:39
 rflx-dhcp_client-session_allocator.ads:39:10: info: in default initialization of component "Slots" at rflx-dhcp_client-session.ads:41
 rflx-dhcp_client-session_allocator.ads:39:10: info: in default value of private type at rflx-dhcp_client-session.ads:23
 rflx-dhcp_client-session_allocator.ads:39:10: info: predicate check proved on default value (CVC5: 1 VC)
+rflx-dhcp_client-session_allocator.ads:40:10: info: in default initialization of component "Slot_Ptr_2" at rflx-dhcp_client-session_allocator.ads:40
 rflx-dhcp_client-session_allocator.ads:40:10: info: in default initialization of component "Slots" at rflx-dhcp_client-session.ads:41
 rflx-dhcp_client-session_allocator.ads:40:10: info: in default value of private type at rflx-dhcp_client-session.ads:23
 rflx-dhcp_client-session_allocator.ads:40:10: info: predicate check proved on default value (CVC5: 1 VC)
+rflx-dhcp_client-session_allocator.ads:41:10: info: in default initialization of component "Slot_Ptr_3" at rflx-dhcp_client-session_allocator.ads:41
 rflx-dhcp_client-session_allocator.ads:41:10: info: in default initialization of component "Slots" at rflx-dhcp_client-session.ads:41
 rflx-dhcp_client-session_allocator.ads:41:10: info: in default value of private type at rflx-dhcp_client-session.ads:23
 rflx-dhcp_client-session_allocator.ads:41:10: info: predicate check proved on default value (CVC5: 1 VC)
+rflx-dhcp_client-session_allocator.ads:42:10: info: in default initialization of component "Slot_Ptr_4" at rflx-dhcp_client-session_allocator.ads:42
 rflx-dhcp_client-session_allocator.ads:42:10: info: in default initialization of component "Slots" at rflx-dhcp_client-session.ads:41
 rflx-dhcp_client-session_allocator.ads:42:10: info: in default value of private type at rflx-dhcp_client-session.ads:23
 rflx-dhcp_client-session_allocator.ads:42:10: info: predicate check proved on default value (CVC5: 1 VC)
+rflx-dhcp_client-session_allocator.ads:43:10: info: in default initialization of component "Slot_Ptr_5" at rflx-dhcp_client-session_allocator.ads:43
 rflx-dhcp_client-session_allocator.ads:43:10: info: in default initialization of component "Slots" at rflx-dhcp_client-session.ads:41
 rflx-dhcp_client-session_allocator.ads:43:10: info: in default value of private type at rflx-dhcp_client-session.ads:23
 rflx-dhcp_client-session_allocator.ads:43:10: info: predicate check proved on default value (CVC5: 1 VC)
+rflx-dhcp_client-session_allocator.ads:44:10: info: in default initialization of component "Slot_Ptr_6" at rflx-dhcp_client-session_allocator.ads:44
 rflx-dhcp_client-session_allocator.ads:44:10: info: in default initialization of component "Slots" at rflx-dhcp_client-session.ads:41
 rflx-dhcp_client-session_allocator.ads:44:10: info: in default value of private type at rflx-dhcp_client-session.ads:23
 rflx-dhcp_client-session_allocator.ads:44:10: info: predicate check proved on default value (CVC5: 1 VC)
+rflx-dhcp_client-session_allocator.ads:45:10: info: in default initialization of component "Slot_Ptr_7" at rflx-dhcp_client-session_allocator.ads:45
 rflx-dhcp_client-session_allocator.ads:45:10: info: in default initialization of component "Slots" at rflx-dhcp_client-session.ads:41
 rflx-dhcp_client-session_allocator.ads:45:10: info: in default value of private type at rflx-dhcp_client-session.ads:23
 rflx-dhcp_client-session_allocator.ads:45:10: info: predicate check proved on default value (CVC5: 1 VC)

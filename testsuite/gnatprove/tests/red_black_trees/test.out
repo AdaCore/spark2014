@@ -27,6 +27,7 @@ binary_trees.adb:115:36: info: loop invariant initialization proved (CVC5: 1 VC)
 binary_trees.adb:115:36: info: loop invariant preservation proved (CVC5: 1 VC)
 binary_trees.adb:115:73: info: index check proved (CVC5: 4 VC)
 binary_trees.adb:130:07: info: in default initialization of array component at tree_model.ads:29
+binary_trees.adb:130:07: info: in default value at binary_trees.adb:130
 binary_trees.adb:130:07: info: initialization of "R" proved
 binary_trees.adb:130:07: info: predicate check proved on default value (CVC5: 1 VC)
 binary_trees.adb:131:39: info: range check proved (CVC5: 2 VC)
@@ -2192,9 +2193,11 @@ search_trees.adb:949:15: medium: range check might fail, cannot prove lower boun
 search_trees.adb:950:15: info: precondition proved (CVC5: 1 VC)
 search_trees.adb:951:10: medium: precondition might fail, cannot prove Model (F, Root) (I).K
 search_trees.adb:951:30: info: range check proved (CVC5: 2 VC)
+search_trees.adb:951:43: medium: in value of subprogram parameter after the call at search_trees.adb:951
 search_trees.adb:951:43: medium: range check might fail, cannot prove lower bound for X [reason for check: output value must fit in argument type]
 search_trees.adb:953:07: info: analyzing call to "Prove_Extract_X" in context
 search_trees.adb:957:07: medium: precondition might fail, cannot prove Valid_Root (F, Root)
+search_trees.adb:957:39: medium: in value of subprogram parameter after the call at search_trees.adb:957
 search_trees.adb:957:39: medium: range check might fail, cannot prove lower bound for Y [reason for check: output value must fit in argument type]
 search_trees.adb:958:07: info: analyzing call to "Prove_Extract_Y" in context
 search_trees.adb:962:07: medium: precondition might fail, cannot prove Valid_Root (F, Root)
@@ -2387,9 +2390,11 @@ search_trees.adb:1230:15: medium: range check might fail, cannot prove lower bou
 search_trees.adb:1231:15: info: precondition proved (CVC5: 1 VC)
 search_trees.adb:1232:10: medium: precondition might fail, cannot prove Model (F, Root) (I).K
 search_trees.adb:1232:30: info: range check proved (CVC5: 2 VC)
+search_trees.adb:1232:43: medium: in value of subprogram parameter after the call at search_trees.adb:1232
 search_trees.adb:1232:43: medium: range check might fail, cannot prove lower bound for Y [reason for check: output value must fit in argument type]
 search_trees.adb:1234:07: info: analyzing call to "Prove_Extract_Y" in context
 search_trees.adb:1238:07: medium: precondition might fail, cannot prove Valid_Root (F, Root)
+search_trees.adb:1238:38: medium: in value of subprogram parameter after the call at search_trees.adb:1238
 search_trees.adb:1238:38: medium: range check might fail, cannot prove lower bound for X [reason for check: output value must fit in argument type]
 search_trees.adb:1239:07: info: analyzing call to "Prove_Extract_X" in context
 search_trees.adb:1243:07: medium: precondition might fail, cannot prove Valid_Root (F, Root)

@@ -4,6 +4,7 @@ marching_cubes.adb:18:16: info: implicit function contract might not be availabl
 marching_cubes.adb:21:12: info: precondition proved (Trivial: 1 VC)
 marching_cubes.adb:22:23: info: overflow check proved (CVC5: 2 VC)
 marching_cubes.adb:22:27: info: cannot unroll loop (too many loop iterations)
+marching_cubes.adb:23:13: info: in value of subprogram parameter after the call at marching_cubes.adb:23
 marching_cubes.adb:23:13: info: null exclusion check proved (CVC5: 1 VC)
 marching_cubes.adb:23:19: warning: "Y" is set by "Q" but not used after the call
 marching_cubes_2.adb:5:50: info: initialization of "C" proved
