@@ -171,9 +171,12 @@ test_invariants.adb:5:18: info: overflow check proved (CVC5: 2 VC)
 test_invariants.adb:9:18: info: overflow check proved (CVC5: 2 VC)
 test_invariants.adb:14:18: info: overflow check proved (CVC5: 2 VC)
 test_invariants.adb:18:18: info: overflow check proved (CVC5: 2 VC)
+test_invariants.ads:9:14: info: for X at the end of P at test_invariants.ads:9
 test_invariants.ads:9:14: info: invariant check proved (CVC5: 1 VC)
 test_invariants.ads:10:33: info: exceptional case proved (Trivial: 1 VC)
+test_invariants.ads:14:14: info: for X at the end of Q at test_invariants.ads:14
 test_invariants.ads:14:14: info: invariant check proved (CVC5: 1 VC)
+test_invariants.ads:14:14: medium: for X at the end of Q at test_invariants.ads:14
 test_invariants.ads:14:14: medium: invariant check might fail (e.g. when B = True and X = (F => 0, G => 1))
 test_invariants.ads:14:14: medium: on exceptional exit at test_invariants.adb:12
 test_invariants.ads:15:33: info: exceptional case proved (Trivial: 1 VC)

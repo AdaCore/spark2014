@@ -7,34 +7,46 @@ invariants.adb:11:19: info: index check proved
 invariants.adb:16:07: info: precondition proved
 invariants.adb:24:07: info: precondition proved
 invariants.adb:24:07: info: invariant check proved
+  for S before the call at invariants.ads:13
 invariants.adb:27:04: info: invariant check proved
   at the end of the elaboration of package at invariants.ads:1
 
 invariants.adb:33:14: medium: invariant check might fail
    33 |   procedure Push_Internal (E : Element) with
       |             ^~~~~~~~~~~~~
+  for The_Stack at the end of Push_Internal at invariants.adb:27
   e.g. when E = 0
 invariants.adb:37:40: info: range check proved
 invariants.adb:38:35: info: index check proved
 invariants.adb:43:07: info: precondition proved
 invariants.adb:43:07: info: invariant check proved
+  for The_Stack before the call at invariants.adb:27
 invariants.adb:51:07: info: precondition proved
 invariants.adb:51:07: info: invariant check proved
+  for The_Stack before the call at invariants.adb:27
 invariants.ads:9:13: info: implicit aspect Always_Terminates on "Max" has been proved, subprogram will terminate
 invariants.ads:11:13: info: implicit aspect Always_Terminates on "Size" has been proved, subprogram will terminate
 invariants.ads:13:14: info: invariant check proved
+  for S at the end of Push at invariants.ads:13
 invariants.ads:14:13: info: invariant check proved
+  for S before the call at invariants.ads:11
 invariants.ads:16:14: info: invariant check proved
+  for S at the end of Push_Zero at invariants.ads:16
 invariants.ads:17:13: info: invariant check proved
+  for S before the call at invariants.ads:11
 invariants.ads:19:13: info: implicit aspect Always_Terminates on "Size" has been proved, subprogram will terminate
 
 invariants.ads:21:14: medium: invariant check might fail
    21 |   procedure Push (E : Element) with
       |             ^~~~
+  for The_Stack at the end of Push at invariants.adb:27
   e.g. when E = 0
 invariants.ads:22:13: info: invariant check proved
+  for The_Stack before the call at invariants.adb:27
 invariants.ads:24:14: info: invariant check proved
+  for The_Stack at the end of Push_Zero at invariants.adb:27
 invariants.ads:25:13: info: invariant check proved
+  for The_Stack before the call at invariants.adb:27
 invariants.ads:31:09: info: invariant check proved on default value
 invariants.ads:38:13: info: implicit aspect Always_Terminates on "Is_Valid" has been proved, subprogram will terminate
 invariants.ads:39:47: info: index check proved

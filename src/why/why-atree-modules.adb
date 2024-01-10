@@ -2799,14 +2799,6 @@ package body Why.Atree.Modules is
          Name   : constant String := Short_Name (E);
 
       begin
-         Insert_Symbol
-           (E, WNE_Check_Invariants_On_Call,
-            New_Identifier
-              (Symb   => NID (Name & "__check_invariants_on_call"),
-               Module => M_Prog,
-               Domain => EW_Prog,
-               Typ    => EW_Unit_Type));
-
          if Ekind (E) = E_Function then
             if not Has_Pragma_Volatile_Function (E)
               and then not Is_Function_With_Side_Effects (E)

@@ -285,14 +285,8 @@ package body Gnat2Why.Subprograms is
                 Is_True_Boolean
                   (+Compute_Type_Invariants_For_Subprogram'Result)
                 /= Subp_Needs_Invariant_Checks (E));
-   --  @param E Entity of a subprogram or entry.
-   --  @param Params the transformation parameters
-   --  @param For_Input True if we are interested in inputs of E, False if we
-   --         are interested in its outputs.
-   --  @param Exceptional True if we are interested in outputs of E on
-   --         exceptional paths.
-   --  @result a predicate including the type invariants that should be checked
-   --          on entry/exit of E.
+   --  Conjuncts all invariants produced by
+   --  Process_Type_Invariants_For_Subprogram.
 
    procedure Declare_Exceptions (Th : Theory_UC);
    --  Declare exceptions needed for translation of the current unit. Those
@@ -1702,185 +1696,28 @@ package body Gnat2Why.Subprograms is
       For_Input   : Boolean;
       Exceptional : Boolean := False) return W_Pred_Id
    is
+      Res : W_Pred_Id := True_Pred;
 
-      procedure Add_Type_Invariants_For_Globals
-        (Ids      :        Flow_Types.Flow_Id_Sets.Set;
-         Inv_Pred : in out W_Pred_Id);
-      --  Add the type invariants of elements of Ids to Inv_Pred.
-      --  @param Ids the set of read / write effects for the subprogram
-      --  @param Inv_Pred a why predicate
+      procedure Add_To_Res (Dummy : Node_Id; Inv : W_Pred_Id);
+      --  Conjunct Inv to Res
 
-      procedure Add_Type_Invariants_For_Params
-        (Subp      : Entity_Id;
-         For_Input : Boolean;
-         Inv_Pred  : in out W_Pred_Id);
-      --  Add the type invariants of Subp's parameters to Inv_Pred.
-      --  @param Subp the entity of the subprogram
-      --  @param For_Input True if we should consider inputs of Subp, False if
-      --         we should consider outputs.
-      --  @param Inv_Pred a why predicate
+      ----------------
+      -- Add_To_Res --
+      ----------------
 
-      function Compute_Type_Invariant_For_Entity
-        (E : Entity_Id) return W_Pred_Id
-      with Pre => Ada_Ent_To_Why.Has_Element (Symbol_Table, E);
-      --  @param E Entity of an object stored in the Symbol_Table
-      --  @return a predicate containing the invariants of all parts of E
-      --          which have an external invariant.
-
-      -------------------------------------
-      -- Add_Type_Invariants_For_Globals --
-      -------------------------------------
-
-      procedure Add_Type_Invariants_For_Globals
-        (Ids      :        Flow_Types.Flow_Id_Sets.Set;
-         Inv_Pred : in out W_Pred_Id)
-      is
+      procedure Add_To_Res (Dummy : Node_Id; Inv : W_Pred_Id) is
       begin
-         for F of Ids loop
-            pragma Assert (F.Kind in Direct_Mapping | Magic_String);
+         Res := New_And_Pred
+           (Left   => Res,
+            Right  => Inv);
+      end Add_To_Res;
 
-            --  Magic_String are global state with no attached entities. As
-            --  such state is translated as private in Why3, we do not need
-            --  to consider any type invariant for it.
-
-            if F.Kind = Direct_Mapping then
-               declare
-                  E : constant Entity_Id := Get_Direct_Mapping_Id (F);
-               begin
-                  --  Global variables accessed by the subprogram. Abstract
-                  --  states and private variables are not considered here,
-                  --  as they cannot have visible type invariants.
-
-                  if Is_Object (E) then
-                     Inv_Pred := +New_And_Then_Expr
-                       (Left   => +Inv_Pred,
-                        Right  => +Compute_Type_Invariant_For_Entity (E),
-                        Domain => EW_Pred);
-
-                  --  Self reference of protected subprograms
-
-                  else pragma Assert (Is_Concurrent_Type (E));
-
-                     Inv_Pred := +New_And_Then_Expr
-                       (Left   => +Inv_Pred,
-                        Right  => +Compute_Type_Invariant
-                          (Expr        =>
-                               +Concurrent_Self_Binder (E).B_Name,
-                           Ty          => E,
-                           Params      => Params,
-                           On_Internal => True),
-                        Domain => EW_Pred);
-                  end if;
-               end;
-            end if;
-         end loop;
-      end Add_Type_Invariants_For_Globals;
-
-      ------------------------------------
-      -- Add_Type_Invariants_For_Params --
-      ------------------------------------
-
-      procedure Add_Type_Invariants_For_Params
-        (Subp      : Entity_Id;
-         For_Input : Boolean;
-         Inv_Pred  : in out W_Pred_Id)
-      is
-         Formal : Entity_Id := First_Formal (Subp);
-
-      begin
-         while Present (Formal) loop
-            if (if For_Input then Ekind (Formal) /= E_Out_Parameter
-                else Ekind (Formal) /= E_In_Parameter
-                  or else Is_Access_Variable (Etype (Formal)))
-              and then (not Exceptional or else By_Reference (Formal))
-            then
-               Inv_Pred := +New_And_Then_Expr
-                 (Left   => +Inv_Pred,
-                  Right  => +Compute_Type_Invariant_For_Entity (Formal),
-                  Domain => EW_Pred);
-            end if;
-
-            Next_Formal (Formal);
-         end loop;
-      end Add_Type_Invariants_For_Params;
-
-      ---------------------------------------
-      -- Compute_Type_Invariant_For_Entity --
-      ---------------------------------------
-
-      function Compute_Type_Invariant_For_Entity
-        (E : Entity_Id) return W_Pred_Id
-      is
-         Binder : constant Item_Type :=
-           Ada_Ent_To_Why.Element (Symbol_Table, E);
-         Expr   : constant W_Term_Id :=
-           Reconstruct_Item (Binder, Ref_Allowed => Params.Ref_Allowed);
-      begin
-         return Compute_Type_Invariant
-           (Expr        => Expr,
-            Ty          => Etype (E),
-            Params      => Params,
-            On_Internal => True);
-      end Compute_Type_Invariant_For_Entity;
-
-      Read_Ids    : Flow_Types.Flow_Id_Sets.Set;
-      Write_Ids   : Flow_Types.Flow_Id_Sets.Set;
-
-      Inv_Pred    : W_Pred_Id := True_Pred;
-
-      Is_External : constant Boolean := Is_Globally_Visible (E);
-      --  The subprogram is an external or a boundary subprogram if it is
-      --  visible from outside the current compilation unit.
-
+      procedure Compute_Type_Invariants is new
+        Process_Type_Invariants_For_Subprogram (Add_To_Res);
    begin
-      --  If the subprogram is boundary or external, we should assume/check the
-      --  type invariants of its parameters.
+      Compute_Type_Invariants (E, Params, For_Input, Exceptional);
 
-      if Is_External then
-         Add_Type_Invariants_For_Params (E, For_Input, Inv_Pred);
-      end if;
-
-      Flow_Utility.Get_Proof_Globals (Subprogram      => E,
-                                      Reads           => Read_Ids,
-                                      Writes          => Write_Ids,
-                                      Erase_Constants => True);
-
-      --  If For_Input is True, add the invariants of the variables read by E,
-      --  otherwise add the invariants of the variables written by E.
-
-      if For_Input then
-         Add_Type_Invariants_For_Globals (Read_Ids, Inv_Pred);
-      else
-         Add_Type_Invariants_For_Globals (Write_Ids, Inv_Pred);
-      end if;
-
-      --  If For_Input is false and E is a function, add the invariants of its
-      --  result.
-
-      if Is_External
-        and then not For_Input
-        and then Ekind (E) = E_Function
-      then
-         declare
-            Result : constant W_Term_Id :=
-              (if not Result_Is_Mutable
-               then +Result_Name
-               else New_Deref
-                 (Right => Result_Name,
-                  Typ   => Get_Typ (+Result_Name)));
-         begin
-            Inv_Pred := +New_And_Then_Expr
-              (Left   => +Inv_Pred,
-               Right  => +Compute_Type_Invariant
-                 (Expr        => Result,
-                  Ty          => Etype (E),
-                  Params      => Params,
-                  On_Internal => True),
-               Domain => EW_Pred);
-         end;
-      end if;
-
-      return Inv_Pred;
+      return Res;
    end Compute_Type_Invariants_For_Subprogram;
 
    -----------------------
@@ -5184,21 +5021,9 @@ package body Gnat2Why.Subprograms is
         (Exceptional : Boolean := False) return W_Prog_Id
       is
          Params : constant Transformation_Params := Contract_VC_Params;
-         Check : constant W_Pred_Id :=
-           Compute_Type_Invariants_For_Subprogram
-             (E, Params, False, Exceptional);
       begin
-         if Is_True_Boolean (+Check) then
-            return +Void;
-         else
-            return New_Assert
-              (Pred        =>
-                 New_VC_Pred
-                   (Ada_Node => E,
-                    Expr     => Check,
-                    Reason   => VC_Invariant_Check),
-               Assert_Kind => EW_Assert);
-         end if;
+         return Check_Type_Invariants_For_Subprogram
+           (E, E, Params, For_Input => False, Exceptional => Exceptional);
       end Check_Invariants_Of_Outputs;
 
       ------------------------------
@@ -7921,30 +7746,6 @@ package body Gnat2Why.Subprograms is
             end if;
          end;
       end if;
-
-      --  Generate a check_invariants_on_call program function with the
-      --  same parameters as E but with the invariant for E's inputs as a
-      --  precondition.
-
-      declare
-         Inv_Checks : constant W_Pred_Id :=
-           Compute_Type_Invariants_For_Subprogram (E, Params, True);
-      begin
-         if not Is_True_Boolean (+Inv_Checks) then
-            Emit
-              (Th,
-               New_Function_Decl
-                 (Domain      => EW_Prog,
-                  Name        =>
-                    To_Local (E_Symb (E, WNE_Check_Invariants_On_Call)),
-                  Binders     => Spec_Binders & Func_Why_Binders,
-                  Location    => No_Location,
-                  Labels      => Symbol_Sets.Empty_Set,
-                  Return_Type => EW_Unit_Type,
-                  Pre         => Inv_Checks,
-                  Post        => Inv_Checks));
-         end if;
-      end;
 
       --  Generate a check_subprogram_variants function. It has the same
       --  parameters as E as well as previous variant values. Its

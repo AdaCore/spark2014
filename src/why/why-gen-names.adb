@@ -1020,7 +1020,6 @@ package body Why.Gen.Names is
             | WNE_Attr_Value
             | WNE_Attr_Value_Size
             | WNE_Bool_Eq
-            | WNE_Check_Invariants_On_Call
             | WNE_Check_Not_First
             | WNE_Check_Not_Last
             | WNE_Check_Subprogram_Variants

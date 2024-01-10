@@ -326,8 +326,10 @@ auditlog.adb:1289:16: info: loop invariant initialization proved
 auditlog.adb:1289:16: info: loop invariant preservation proved
 auditlog.adb:1290:66: info: range check proved
 auditlog.adb:1320:52: info: range check proved
+auditlog.adb:1328:10: info: for LogFileState before the call at auditlog.ads:306
 auditlog.adb:1328:10: info: invariant check proved
 auditlog.adb:1328:10: info: precondition proved
+auditlog.adb:1338:07: info: for LogFileState before the call at auditlog.ads:306
 auditlog.adb:1338:07: info: invariant check proved
 auditlog.adb:1338:07: info: precondition proved
 auditlog.adb:1381:30: info: refined post proved
@@ -338,22 +340,28 @@ auditlog.adb:1400:13: info: loop invariant preservation proved
 auditlog.adb:1404:63: info: range check proved
 auditlog.adb:1412:79: info: range check proved
 auditlog.adb:1415:73: info: range check proved
+auditlog.adb:1428:10: info: for LogFileState before the call at auditlog.ads:306
 auditlog.adb:1428:10: info: invariant check proved
 auditlog.adb:1428:10: info: precondition proved
+auditlog.adb:1436:07: info: for LogFileState before the call at auditlog.ads:306
 auditlog.adb:1436:07: info: invariant check proved
 auditlog.adb:1436:07: info: precondition proved
 auditlog.adb:1459:30: info: unrolling loop
 auditlog.ads:27:08: info: flow dependencies proved
+auditlog.ads:47:14: info: for LogFileState at the end of Init at auditlog.ads:306
 auditlog.ads:47:14: info: invariant check proved
 auditlog.ads:48:11: info: data dependencies proved
 auditlog.ads:51:11: info: flow dependencies proved
+auditlog.ads:67:14: info: for LogFileState at the end of AddElementToLog at auditlog.ads:306
 auditlog.ads:67:14: info: invariant check proved
 auditlog.ads:71:11: info: data dependencies proved
 auditlog.ads:75:11: info: flow dependencies proved
+auditlog.ads:96:14: info: for LogFileState at the end of ArchiveLog at auditlog.ads:306
 auditlog.ads:96:14: info: invariant check proved
 auditlog.ads:97:26: info: initialization of "Archive" proved
 auditlog.ads:98:11: info: data dependencies proved
 auditlog.ads:102:11: info: flow dependencies proved
+auditlog.ads:121:14: info: for LogFileState at the end of ClearLogEntries at auditlog.ads:306
 auditlog.ads:121:14: info: invariant check proved
 auditlog.ads:122:11: info: data dependencies proved
 auditlog.ads:126:11: info: flow dependencies proved
