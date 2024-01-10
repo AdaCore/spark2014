@@ -17264,23 +17264,15 @@ package body Gnat2Why.Expr is
                                                    EW_Int_Type,
                                                    Domain,
                                                    Params),
-                              2 =>
-                                (if Get_EW_Type (Var) = EW_Builtin then
-                                 --  if we're builtin, i.e., not abstract,
-                                 --  we use standard modulus from why theory
-                                   +MF_BVs (Base_Why_Type (Var)).Two_Power_Size
-
-                                 else
-                                 --  else we refer to the attribute modulus
-                                   Insert_Simple_Conversion
+                              2 => Insert_Simple_Conversion
                                      (Domain => EW_Term,
                                       Expr   =>
                                         New_Attribute_Expr
                                           (Etype (Var),
                                            Domain,
                                            Attribute_Modulus),
-                                       To     => EW_Int_Type))),
-                                 Typ   => EW_Int_Type),
+                                       To     => EW_Int_Type)),
+                           Typ    => EW_Int_Type),
                      To     => Target_Type);
                end if;
             end;
