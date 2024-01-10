@@ -45,7 +45,7 @@ array_aggregates.adb:190:11: info: flow dependencies proved
 array_aggregates.adb:199:22: info: assertion proved (CVC5: 1 VC)
 array_aggregates.adb:202:32: info: initialization of "X" proved
 array_aggregates.adb:203:11: info: flow dependencies proved
-array_aggregates.adb:212:22: high: assertion might fail (e.g. when X(2)(1) = 1 and X(2)(2) = 2 and X(2)(3) = 3 and X(3)(1) = 12 and X(3)(2) = 12)
+array_aggregates.adb:212:22: high: assertion might fail (e.g. when X(2)(1) = 1 and X(2)(3) = 3 and X(2)(5) = 0 and X(3)(1) = 12 and X(3)(2) = 12)
 array_aggregates.adb:215:32: info: initialization of "X" proved
 array_aggregates.adb:216:11: info: flow dependencies proved
 array_aggregates.adb:225:22: info: assertion proved (CVC5: 1 VC)
@@ -105,7 +105,7 @@ array_aggregates.adb:401:11: info: flow dependencies proved
 array_aggregates.adb:408:22: info: assertion proved (CVC5: 1 VC)
 array_aggregates.adb:414:33: info: initialization of "X" proved
 array_aggregates.adb:415:11: info: flow dependencies proved
-array_aggregates.adb:422:22: info: assertion proved (altergo: 1 VC)
+array_aggregates.adb:422:22: info: assertion proved (Z3: 1 VC)
 array_aggregates.adb:433:11: info: flow dependencies proved
 array_aggregates.adb:436:22: info: assertion proved (altergo: 1 VC)
 array_aggregates.adb:439:22: info: assertion proved (Z3: 1 VC)
