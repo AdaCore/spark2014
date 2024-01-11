@@ -52,6 +52,7 @@ test.adb:90:16: info: implicit aspect Always_Terminates on "Length" has been pro
 test.adb:91:17: info: postcondition proved (CVC5: 1 VC)
 test.adb:94:16: info: implicit aspect Always_Terminates on "Length_Rec" has been proved, subprogram will terminate
 test.adb:97:16: info: implicit aspect Always_Terminates on "Eq_Elem" has been proved, subprogram will terminate
+test.adb:112:16: info: expression function body of subprograms with a numeric variant might not be available on recursive calls
 test.adb:112:16: info: function contract might not be available on recursive calls
 test.adb:112:16: info: implicit aspect Always_Terminates on "Length_Rec" has been proved, subprogram will terminate
 test.adb:115:17: info: postcondition proved (CVC5: 1 VC)
@@ -145,7 +146,7 @@ test.adb:330:16: info: precondition proved (CVC5: 1 VC)
 test.adb:332:22: info: assertion proved (CVC5: 1 VC)
 test.adb:333:22: info: assertion proved (CVC5: 2 VC)
 test.adb:334:22: info: assertion proved (CVC5: 1 VC)
-test.adb:335:22: info: assertion proved (altergo: 1 VC)
+test.adb:335:22: info: assertion proved (CVC5: 1 VC)
 test.adb:336:07: medium: assertion might fail
 test.adb:340:06: info: data dependencies proved
 test.adb:344:16: medium: elements shall be distinct and shall fit in the return type of "Length" for set aggregates at test.adb:74
@@ -169,7 +170,7 @@ test.adb:372:07: medium: resource or memory leak might occur at end of scope
 test.adb:372:16: medium: keys shall be distinct and all elements shall fit in the return type of "Length" for maps aggregates at test.adb:182
 test.adb:372:16: medium: precondition might fail
 test.adb:378:06: info: data dependencies proved
-test.adb:382:07: medium: resource or memory leak might occur at end of scope
+test.adb:382:07: info: absence of resource or memory leak at end of scope proved (CVC5: 1 VC)
 test.adb:382:16: medium: keys shall be distinct and all elements shall fit in the return type of "Length" for maps aggregates at test.adb:182
 test.adb:382:16: medium: precondition might fail
 test.adb:387:14: high: all paths in "Test_Total_Maps" raise exceptions or do not terminate normally
@@ -184,7 +185,7 @@ test.adb:398:22: info: assertion proved (CVC5: 1 VC; Trivial: 1 VC)
 test.adb:399:22: info: assertion proved (CVC5: 1 VC)
 test.adb:400:07: medium: assertion might fail
 test.adb:404:06: info: data dependencies proved
-test.adb:408:07: medium: resource or memory leak might occur at end of scope
+test.adb:408:07: info: absence of resource or memory leak at end of scope proved (CVC5: 1 VC)
 test.adb:408:16: medium: keys shall be distinct and all elements shall fit in the return type of "Length" for maps aggregates at test.adb:182
 test.adb:408:16: medium: precondition might fail
 test.adb:413:14: high: all paths in "Test_Seqs" raise exceptions or do not terminate normally

@@ -45,13 +45,61 @@ array_arith.adb:39:15: info: analyzing call to "Ident" in context
 array_arith.adb:40:15: info: analyzing call to "Ident" in context
 array_arith.adb:41:16: info: analyzing call to "Ident" in context
 array_arith.adb:46:16: info: implicit aspect Always_Terminates on "Ident" has been proved, subprogram will terminate
-array_arith.adb:46:16: info: implicit function contract might not be available on calls from enclosing unit
 array_arith.adb:47:17: info: add a contract to analyze it separately from calling contexts
 array_arith.adb:47:17: info: local subprogram "Local" only analyzed in the context of calls
 array_arith.adb:50:18: info: no contextual analysis of "Ident" (body not seen yet)
+array_arith.adb:51:18: info: no contextual analysis of "Ident" (body not seen yet)
+array_arith.adb:52:18: info: no contextual analysis of "Ident" (body not seen yet)
+array_arith.adb:53:18: info: no contextual analysis of "Ident" (body not seen yet)
+array_arith.adb:54:18: info: no contextual analysis of "Ident" (body not seen yet)
+array_arith.adb:55:18: info: no contextual analysis of "Ident" (body not seen yet)
+array_arith.adb:56:18: info: no contextual analysis of "Ident" (body not seen yet)
+array_arith.adb:57:18: info: no contextual analysis of "Ident" (body not seen yet)
+array_arith.adb:58:18: info: no contextual analysis of "Ident" (body not seen yet)
+array_arith.adb:59:19: info: no contextual analysis of "Ident" (body not seen yet)
 array_arith.adb:63:19: high: overflow check might fail, cannot prove upper bound for Y + One (e.g. when One = Integer'Last and Y = 1) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at line 46 should mention Y and One in a precondition]
 array_arith.adb:63:19: high: range check might fail, cannot prove lower bound for Y + One (e.g. when One = -1 and Y = 0) [reason for check: returned value must fit in the result type of the function] [possible fix: subprogram at line 46 should mention Y and One in a precondition]
+array_arith.adb:63:19: info: overflow check proved (CVC5: 2 VC), in call inlined at array_arith.adb:50, in call inlined at array_arith.adb:66
+array_arith.adb:63:19: info: overflow check proved (CVC5: 2 VC), in call inlined at array_arith.adb:51, in call inlined at array_arith.adb:66
+array_arith.adb:63:19: info: overflow check proved (CVC5: 2 VC), in call inlined at array_arith.adb:52, in call inlined at array_arith.adb:66
+array_arith.adb:63:19: info: overflow check proved (CVC5: 2 VC), in call inlined at array_arith.adb:53, in call inlined at array_arith.adb:66
+array_arith.adb:63:19: info: overflow check proved (CVC5: 2 VC), in call inlined at array_arith.adb:54, in call inlined at array_arith.adb:66
+array_arith.adb:63:19: info: overflow check proved (CVC5: 2 VC), in call inlined at array_arith.adb:55, in call inlined at array_arith.adb:66
+array_arith.adb:63:19: info: overflow check proved (CVC5: 2 VC), in call inlined at array_arith.adb:56, in call inlined at array_arith.adb:66
+array_arith.adb:63:19: info: overflow check proved (CVC5: 2 VC), in call inlined at array_arith.adb:57, in call inlined at array_arith.adb:66
+array_arith.adb:63:19: info: overflow check proved (CVC5: 2 VC), in call inlined at array_arith.adb:58, in call inlined at array_arith.adb:66
+array_arith.adb:63:19: info: overflow check proved (CVC5: 2 VC), in call inlined at array_arith.adb:59, in call inlined at array_arith.adb:66
+array_arith.adb:63:19: info: range check proved (CVC5: 2 VC), in call inlined at array_arith.adb:50, in call inlined at array_arith.adb:66
+array_arith.adb:63:19: info: range check proved (CVC5: 2 VC), in call inlined at array_arith.adb:51, in call inlined at array_arith.adb:66
+array_arith.adb:63:19: info: range check proved (CVC5: 2 VC), in call inlined at array_arith.adb:52, in call inlined at array_arith.adb:66
+array_arith.adb:63:19: info: range check proved (CVC5: 2 VC), in call inlined at array_arith.adb:53, in call inlined at array_arith.adb:66
+array_arith.adb:63:19: info: range check proved (CVC5: 2 VC), in call inlined at array_arith.adb:54, in call inlined at array_arith.adb:66
+array_arith.adb:63:19: info: range check proved (CVC5: 2 VC), in call inlined at array_arith.adb:55, in call inlined at array_arith.adb:66
+array_arith.adb:63:19: info: range check proved (CVC5: 2 VC), in call inlined at array_arith.adb:56, in call inlined at array_arith.adb:66
+array_arith.adb:63:19: info: range check proved (CVC5: 2 VC), in call inlined at array_arith.adb:57, in call inlined at array_arith.adb:66
+array_arith.adb:63:19: info: range check proved (CVC5: 2 VC), in call inlined at array_arith.adb:58, in call inlined at array_arith.adb:66
+array_arith.adb:63:19: info: range check proved (CVC5: 2 VC), in call inlined at array_arith.adb:59, in call inlined at array_arith.adb:66
+array_arith.adb:66:07: info: analyzing call to "Ident" in context
+array_arith.adb:66:07: info: analyzing call to "Ident" in context
+array_arith.adb:66:07: info: analyzing call to "Ident" in context
+array_arith.adb:66:07: info: analyzing call to "Ident" in context
+array_arith.adb:66:07: info: analyzing call to "Ident" in context
+array_arith.adb:66:07: info: analyzing call to "Ident" in context
+array_arith.adb:66:07: info: analyzing call to "Ident" in context
+array_arith.adb:66:07: info: analyzing call to "Ident" in context
+array_arith.adb:66:07: info: analyzing call to "Ident" in context
+array_arith.adb:66:07: info: analyzing call to "Ident" in context
 array_arith.adb:66:07: info: analyzing call to "Local" in context
+array_arith.adb:66:07: info: in inlined body at line 50
+array_arith.adb:66:07: info: in inlined body at line 51
+array_arith.adb:66:07: info: in inlined body at line 52
+array_arith.adb:66:07: info: in inlined body at line 53
+array_arith.adb:66:07: info: in inlined body at line 54
+array_arith.adb:66:07: info: in inlined body at line 55
+array_arith.adb:66:07: info: in inlined body at line 56
+array_arith.adb:66:07: info: in inlined body at line 57
+array_arith.adb:66:07: info: in inlined body at line 58
+array_arith.adb:66:07: info: in inlined body at line 59
 array_arith.adb:70:17: info: add a contract to analyze it separately from calling contexts
 array_arith.adb:70:17: info: local subprogram "Put_A_Zero" only analyzed in the context of calls
 array_arith.adb:70:29: info: initialization of "Y" proved
@@ -72,8 +120,8 @@ array_arith.ads:11:21: medium: "X" might not be initialized in "Init2" [reason f
 array_arith.ads:12:14: info: postcondition proved (CVC5: 1 VC)
 array_arith.ads:12:35: medium: "X" might not be initialized
 array_arith.ads:14:21: medium: "X" might not be initialized in "Init3" [reason for check: OUT parameter should be fully initialized on return] [possible fix: initialize "X" on all paths, make "X" an IN OUT parameter or annotate it with aspect Relaxed_Initialization]
+array_arith.ads:15:14: info: postcondition proved (CVC5: 1 VC)
 array_arith.ads:15:35: medium: "X" might not be initialized
-array_arith.ads:15:35: medium: postcondition might fail, cannot prove X(J) = Natural(J) + 1
 array_arith.ads:17:20: medium: "X" might not be initialized in "Zero" [reason for check: OUT parameter should be fully initialized on return] [possible fix: initialize "X" on all paths, make "X" an IN OUT parameter or annotate it with aspect Relaxed_Initialization]
 array_arith.ads:18:14: info: postcondition proved (CVC5: 1 VC)
 array_arith.ads:18:35: medium: "X" might not be initialized

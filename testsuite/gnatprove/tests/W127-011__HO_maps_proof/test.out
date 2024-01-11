@@ -578,5 +578,9 @@ spark-containers-parameter_checks.ads:77:19: info: postcondition proved, in inst
 spark-containers-parameter_checks.ads:79:17: info: aspect Always_Terminates on "Eq_Transitive" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-maps.ads:526, in instantiation at test_map_ho.adb:64
 spark-containers-parameter_checks.ads:80:09: info: data dependencies proved, in instantiation at spark-containers-functional-maps.ads:526, in instantiation at test_map_ho.adb:64
 spark-containers-parameter_checks.ads:82:19: info: postcondition proved, in instantiation at spark-containers-functional-maps.ads:526, in instantiation at test_map_ho.adb:64
+test_map_ho.adb:67:04: info: expression function body of subprograms with a numeric variant might not be available on recursive calls
+test_map_ho.adb:67:04: info: expression function body of subprograms with a numeric variant might not be available on recursive calls
 test_map_ho.adb:67:04: info: function contract might not be available on recursive calls
 test_map_ho.adb:67:04: info: in instantiation at spark-containers-functional-maps-higher_order.adb:22
+test_map_ho.adb:67:04: info: in instantiation at spark-containers-functional-maps-higher_order.adb:22
+test_map_ho.adb:67:04: info: in instantiation at spark-containers-functional-maps-higher_order.adb:61

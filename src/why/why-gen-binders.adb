@@ -644,7 +644,9 @@ package body Why.Gen.Binders is
    function Mk_Item_Of_Entity
      (E           : Entity_Id;
       Local       : Boolean := False;
-      In_Fun_Decl : Boolean := False) return Item_Type
+      In_Fun_Decl : Boolean := False;
+      Hide_Info   : Boolean := False)
+      return Item_Type
    is
       Use_Ty : constant Entity_Id :=
         (if not In_Fun_Decl
@@ -695,7 +697,8 @@ package body Why.Gen.Binders is
                     Labels   => <>));
 
       --  For functions, store both the name to be used in logic and the name
-      --  to be used in programs
+      --  to be used in programs. If Hide_Info is True, use the appropriate
+      --  symbol in the program domain.
 
       elsif Ekind (E) = E_Function then
          declare
@@ -712,8 +715,10 @@ package body Why.Gen.Binders is
                        Mutable  => False,
                        Labels   => <>),
                     For_Prog => Binder_Type'
-                      (B_Name   =>
-                         To_Why_Id (E, Typ => Typ, Domain => EW_Prog),
+                      (B_Name   => To_Why_Id
+                         (E, Typ    => Typ,
+                          Domain    => EW_Prog,
+                          Hide_Info => Hide_Info),
                        B_Ent    => Null_Entity_Name,
                        Ada_Node => E,
                        Mutable  => False,

@@ -355,7 +355,6 @@ package body Gnat2Why.Driver is
       end if;
       if Progress >= Progress_Proof then
          Set_Field (Full, "pragma_assume", Create (Get_Pragma_Assume_JSON));
-         Set_Field (Full, "session_map", Get_Session_Map_JSON);
          Set_Field (Full, "proof", Create (Get_Proof_JSON));
       end if;
       Set_Field (Full, "assumptions", Get_Assume_JSON);
@@ -426,6 +425,10 @@ package body Gnat2Why.Driver is
          Skipped_Proof.Insert (E);
          return;
       end if;
+
+      --  Process Hide_Info and Unhide_Info annotations for E
+
+      Process_Info_Hiding_For_VCs (E);
 
       case Ekind (E) is
          when Entry_Kind
@@ -506,6 +509,7 @@ package body Gnat2Why.Driver is
          end;
       end if;
 
+      Reset_Info_Hiding_For_VCs (E);
       Current_Subp := Empty;
    end Do_Generate_VCs;
 
@@ -1254,7 +1258,9 @@ package body Gnat2Why.Driver is
                | E_Procedure =>
                if Is_Translated_Subprogram (E) then
                   Ada_Ent_To_Why.Insert
-                    (Symbol_Table, E, Mk_Item_Of_Entity (E));
+                    (Symbol_Table, E,
+                     Mk_Item_Of_Entity
+                       (E, Hide_Info => Expr_Fun_Hidden_By_Default (E)));
                end if;
             when Object_Kind =>
 

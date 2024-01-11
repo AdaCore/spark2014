@@ -1151,8 +1151,8 @@ declared for statically constrained array types). These modules are
 then cloned by Gnat2why as appropriate (see
 Declare_Unconstrained/Declare_Constrained declared in Why.Gen.Arrays).
 
-Conversions
-"""""""""""
+Array Conversions
+"""""""""""""""""
 
 Most array conversions can be handled by going to the underlying map
 type and then apply some sliding if necessary. However, Ada also
@@ -1551,8 +1551,8 @@ the attr_constrained field is always set to False if the component
 type is unconstrained whereas ‘Constrained always returns True on
 (parts of) constant objects (see ``Gnat2why.Expr.Transform_Attr``).
 
-Conversions
-"""""""""""
+Record Conversions
+""""""""""""""""""
 
 When two types of a record hierarchy share the same representative
 type, no conversion is required. Otherwise, conversions go through the
@@ -3513,7 +3513,7 @@ Global View
 
 The declaration of a SPARK subprogram will lead to the declaration of
 one or several Why function declarations and axioms located in one or
-two modules.
+several modules.
 
 Procedures
 """"""""""
@@ -3522,7 +3522,7 @@ For procedures that are not primitives of tagged types, have no
 refined postcondition, and are not boundary subprograms of any type
 with an invariant, only one abstract program function is declared in
 Why (see ``Gnat2why.Subprograms.Generate_Subprogram_Fun``). It is supplied
-in a module named <my_subprogram_full_name>___axiom and mimics as much
+in a module named <my_subprogram_full_name>___program_fun and mimics as much
 as possible the effects and contracts of the Ada procedure.
 
 As an example, let us consider the following minimalist procedure declaration:
@@ -3535,7 +3535,7 @@ It leads to the declaration of a single Why program function as follows:
 
 .. code-block:: whyml
 
-    module P__p___axiom
+    module P__p___program_fun
      val p (__void_param : unit) : unit
       requires { true }
       ensures { true }
@@ -3554,24 +3554,31 @@ calls to the P procedure, but not to verify it.
 Functions
 """""""""
 
-For functions, declarations are separated in two modules to avoid
+For functions, declarations are separated in three modules to avoid
 circularity issues caused by forward references of other entities in
-function contracts. The first module, named by the subprogram full
-name, contains a (generally abstract) logic function declaration for
+function contracts. The first module, <my_subprogram_full_name>___logic_fun,
+contains a (generally abstract) logic function declaration for
 the Ada function, along with a guard predicate which is used to
-specifically determine when the function is actually called. This
-logic function is used to transform function calls occurring in
-assertions in the generated Why code, as Why does not allow calling
+specifically determine when the function is actually called. This package is
+then exported as is in a module named by the subprogram full name. It is the
+logic function from this module which is used to transform function calls
+occurring in assertions in the generated Why code, as Why does not allow calling
 program functions in assertions. Since this function is logic, it is
 terminating and complete, unlike the translated Ada function. This
 means that special care should be taken when giving a meaning to such
 a function. More precisely, we only give information about the result
-of a why logic function in the context of its precondition and if it
-is ascertained to terminate. The guard predicate is used to give
+of a why logic function in the context of its precondition. This information is
+supplied through axioms generated in separate modules named
+<my_subprogram_full_name>___post_axiom for the postcondition and
+<my_subprogram_full_name>___def_axiom for the body of expression functions.
+The additional axiom modules are included each time the logic function is used
+in VCs modules. In cases where we detect that the entity for which we generate
+VCs and the function are inter-dependent (for recursive functions in particular)
+the axioms are not included. The guard predicate is used to give
 additional protection against errors in function contracts by only
 assuming the information on actual calls of the subprogram. It is not
 required if all functions are thoroughly verified, which is why its
-usage can be disabled by the --no-axiom-guard option.
+usage can be disabled by the --function-sandboxing=off option.
 
 As an example, let us look at the following Ada function:
 
@@ -3583,7 +3590,7 @@ Here are the logic declarations introduced for F:
 
 .. code-block:: whyml
 
-    module P__f
+    module P__f___logic_fun
      function f (__void_param : unit) : bool
      predicate f__function_guard (result : bool) (__void_param : unit)
     end
@@ -3593,18 +3600,24 @@ not given in this module, but is postponed until after all functions,
 types, and objects have been defined.
 
 Just like for procedures, a Why program function is defined for Ada
-functions in a second module named <my_subprogram_full_name>___axiom.
-It is also in this module that an axiom is generated for the contract
-of the associated Why logic function. Here are the axioms and
-declarations introduced for F:
+functions in a second module named <my_subprogram_full_name>___program_fun:
 
 .. code-block:: whyml
 
-    module P__f___axiom
+    module P__f___program_fun
      val f (__void_param : unit) : bool
       requires { true }
-      ensures { result = P__f.f ()
-	     /\ P__f.f__function_guard result () }
+      ensures { result = P__f___logic_fun.f ()
+	     /\ P__f___logic_fun.f__function_guard result () }
+    end
+
+Axioms are generated for the contract of the associated Why logic function and
+its definition (if any) in separate modules. Here is the axiom introduced
+for F:
+
+.. code-block:: whyml
+
+    module P__f___post__axiom
 
      axiom f__post_axiom :
       (forall __void_param : unit.
@@ -3618,9 +3631,12 @@ that the associated Why program function has a postcondition. It is
 used to link the two definitions of f (the logic one and the program
 one). Each time the program function f is called, we will assume that
 F’s guard predicate is true, and that the result of the call is equal
-to the result of the logic function f.
+to the result of the logic function f. Remark that the symbols used in this
+postcondition are the symbols declared in P__f___logic_fun. This is so that
+programs using only the program function do not pull the axioms associated
+to the logic function.
 
-We see that the P__f___axiom module also contains a post axiom for the
+We see that the P__f___post__axiom module also contains a post axiom for the
 logic function f (see ``Gnat2why.Subprograms.Generate_Axiom_For_Post``).
 It is used to state that results of f are always compliant with its
 postcondition. Since F has no postcondition, this axiom is useless
@@ -3719,7 +3735,7 @@ will result in different translations in Why:
 
      val f (x : int) (y : my_rec) (z : my_array) : int
       requires { true }
-      ensures { … }
+      ensures { ... }
 
      val p (x : int__ref)
 	   (y__split_fields : P__my_rec.__split_fields__ref)
@@ -3729,7 +3745,7 @@ will result in different translations in Why:
 	   (z__first : integer)
 	   (z__last : integer) : unit
       requires { true }
-      ensures { … }
+      ensures { ... }
       writes {x, y__split_fields, y__split_discrs, z}
 
 We can see that the parameters of F are given as a whole whereas the
@@ -3851,7 +3867,7 @@ Contracts
 
 Contracts or definitions of generated Why functions can come from
 several sources: typing information, Ada contracts, bodies of
-expression functions… These informations are given as Why contracts
+expression functions... These informations are given as Why contracts
 for program functions and through axioms (or possibly immediate
 definition in particular cases) for logic functions. Why contracts are
 always safe, as they are only assumed at call site. Conversely, axioms
@@ -3893,8 +3909,8 @@ precondition is still true:
 
      val f (x : int) (y : my_rec) (z : my_array) : int
       requires { true }
-      ensures { result = P__f.f x y z
-	     /\ P__f.f__function_guard result x y z
+      ensures { result = P__f___logic_fun.f x y z
+	     /\ P__f___logic_fun.f__function_guard result x y z
 	     /\ Standard__integer___axiom.dynamic_invariant result
 		     True False True }
 
@@ -4052,8 +4068,8 @@ function calls has been simplified to improve readability):
 
      val f (x : int) : int
       requires { my_pre x }
-      ensures { result = P__f.f x
-	     /\ P__f.f__function_guard result x
+      ensures { result = P__f___logic_fun.f x
+	     /\ P__f___logic_fun.f__function_guard result x
 	     /\ Standard__integer___axiom.dynamic_invariant result
 		     True False True
 	     /\ my_post result }
@@ -4137,8 +4153,8 @@ program function:
 
      val f (x :root) : int
       requires { to_rep (x.__split_fields.rec__subp__root__f) > 0 }
-      ensures {result = P__f.f x
-	   /\ P__f.f__function_guard result x
+      ensures {result = P__f___logic_fun.f x
+	   /\ P__f___logic_fun.f__function_guard result x
 	   /\ Standard__integer___axiom.dynamic_invariant result
 		 True False True True
 	   /\ result > 0 }
@@ -4152,8 +4168,8 @@ other contract is supplied:
    function F (X : Child) return Integer;
 
      val f__2 (x : child) : int
-      requires { result = P__f__2.f x
-	   /\ P__f__2.f__2__function_guard result x
+      requires { result = P__f__2___logic_fun.f x
+	   /\ P__f__2___logic_fun.f__2__function_guard result x
 	   /\ Standard__integer___axiom.dynamic_invariant result
 		 True False True True
 	   /\ result > 0 }
@@ -4169,8 +4185,8 @@ postcondition must always be stronger than the classwide one:
        Post => F'Result > 10;
 
      val f__2 (x : child) : int
-      requires { result = P__f__2.f x
-	   /\ P__f__2.f__2__function_guard result x
+      requires { result = P__f__2___logic_fun.f x
+	   /\ P__f__2___logic_fun.f__2__function_guard result x
 	   /\ Standard__integer___axiom.dynamic_invariant result
 		 True False True True
 	   /\ result > 10 }
@@ -5495,7 +5511,7 @@ important to take into account the potential mutal recursivity between
 entities to avoid including the axioms of entities ``A`` when verifying
 entity ``B`` and the axioms of entity ``B`` when verifying entity ``A``.
 To that end, a set of modules that should not be included for a given
-entity is computed using ``Why.Atree.Modules.Mutually_Recursive_Modules.
+entity is computed using ``Why.Atree.Modules.Mutually_Recursive_Modules``.
 These modules are filtered when computing the closure.
 
 Global Structures
@@ -5519,8 +5535,8 @@ Symbol Map for Variables (Symbol_Table)
 Name for Old
 ------------
 
-Self Reference of Protected Objects
------------------------------------
+Global Self Reference of Protected Objects
+------------------------------------------
 
 Architecture
 ============

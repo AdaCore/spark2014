@@ -119,7 +119,7 @@ main.adb:297:22: info: assertion proved (CVC5: 1 VC; Trivial: 1 VC)
 main.adb:298:22: info: assertion proved (CVC5: 1 VC)
 main.adb:299:07: medium: assertion might fail
 main.adb:303:06: info: data dependencies proved
-main.adb:307:07: medium: resource or memory leak might occur at end of scope
+main.adb:307:07: info: absence of resource or memory leak at end of scope proved (CVC5: 1 VC)
 main.adb:307:16: medium: keys shall be distinct for maps aggregates at main.adb:115
 main.adb:307:16: medium: precondition might fail
 main.adb:312:14: high: all paths in "Test_Seqs" raise exceptions or do not terminate normally

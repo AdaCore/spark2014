@@ -43,12 +43,12 @@
   </goal>
   <goal name="def&#39;vc.8">
   <proof prover="0"><result status="unknown"/></proof>
-  <proof prover="1"><result status="unknown" steps="2841"/></proof>
+  <proof prover="1"><result status="unknown" steps="2913"/></proof>
   <proof prover="2"><result status="timeout"/></proof>
   <proof prover="5"><result status="unknown" steps="1819"/></proof>
   <transf name="introduce_premises" >
    <goal name="def&#39;vc.8.0">
-   <proof prover="4"><result status="unknown" steps="4510"/></proof>
+   <proof prover="4"><result status="unknown" steps="4615"/></proof>
    </goal>
   </transf>
   </goal>

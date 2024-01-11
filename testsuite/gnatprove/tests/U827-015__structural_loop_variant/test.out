@@ -23,6 +23,7 @@ main.adb:48:13: info: implicit aspect Always_Terminates on "Length_2_b" has been
 main.adb:51:33: info: predicate check proved (CVC5: 1 VC; Trivial: 1 VC)
 main.adb:53:13: info: loop variant proved (Trivial)
 main.adb:54:19: info: pointer dereference check proved (CVC5: 1 VC)
+main.adb:55:16: info: no contextual analysis of "Rand" (body not seen yet)
 main.adb:55:16: warning: assuming "Rand" has no effect on global items
 main.adb:55:16: warning: no Global contract available for "Rand"
 main.adb:58:18: info: predicate check proved (Trivial: 1 VC)
@@ -34,6 +35,7 @@ main.adb:69:13: info: loop variant proved (Trivial)
 main.adb:70:18: info: predicate check proved (Trivial: 1 VC)
 main.adb:70:20: info: predicate check proved (CVC5: 1 VC; Trivial: 1 VC)
 main.adb:70:22: info: predicate check proved (Trivial: 1 VC)
+main.adb:71:18: info: no contextual analysis of "Rand" (body not seen yet)
 main.adb:71:18: warning: assuming "Rand" has no effect on global items
 main.adb:71:18: warning: no Global contract available for "Rand"
 main.adb:75:19: info: pointer dereference check proved (CVC5: 1 VC)
@@ -254,16 +256,21 @@ main_bad.adb:89:13: medium: loop variant might fail [possible explanation: "C" m
 main_bad.adb:90:18: info: predicate check proved (Trivial: 1 VC)
 main_bad.adb:90:20: info: predicate check proved (CVC5: 1 VC; Trivial: 1 VC)
 main_bad.adb:90:22: info: predicate check proved (Trivial: 1 VC)
+main_bad.adb:91:16: info: no contextual analysis of "Rand" (body not seen yet)
 main_bad.adb:91:16: warning: assuming "Rand" has no effect on global items
 main_bad.adb:91:16: warning: no Global contract available for "Rand"
 main_bad.adb:92:22: info: pointer dereference check proved (CVC5: 1 VC)
+main_bad.adb:94:19: info: no contextual analysis of "Rand" (body not seen yet)
 main_bad.adb:94:19: warning: assuming "Rand" has no effect on global items
 main_bad.adb:94:19: warning: no Global contract available for "Rand"
+main_bad.adb:95:22: info: no contextual analysis of "Rand" (body not seen yet)
 main_bad.adb:95:22: warning: assuming "Rand" has no effect on global items
 main_bad.adb:95:22: warning: no Global contract available for "Rand"
 main_bad.adb:96:28: info: pointer dereference check proved (CVC5: 1 VC)
+main_bad.adb:97:25: info: no contextual analysis of "Rand" (body not seen yet)
 main_bad.adb:97:25: warning: assuming "Rand" has no effect on global items
 main_bad.adb:97:25: warning: no Global contract available for "Rand"
+main_bad.adb:99:25: info: no contextual analysis of "Rand" (body not seen yet)
 main_bad.adb:99:25: warning: assuming "Rand" has no effect on global items
 main_bad.adb:99:25: warning: no Global contract available for "Rand"
 main_bad.adb:102:28: info: pointer dereference check proved (CVC5: 1 VC)
@@ -274,6 +281,7 @@ main_bad.adb:117:13: medium: loop variant might fail [possible explanation: "C" 
 main_bad.adb:118:18: info: predicate check proved (Trivial: 1 VC)
 main_bad.adb:118:20: info: predicate check proved (CVC5: 1 VC; Trivial: 1 VC)
 main_bad.adb:118:22: info: predicate check proved (Trivial: 1 VC)
+main_bad.adb:119:18: info: no contextual analysis of "Rand" (body not seen yet)
 main_bad.adb:119:18: warning: assuming "Rand" has no effect on global items
 main_bad.adb:119:18: warning: no Global contract available for "Rand"
 main_bad.adb:120:35: info: pointer dereference check proved (CVC5: 1 VC)
@@ -285,6 +293,7 @@ main_bad.adb:133:20: info: predicate check proved (CVC5: 1 VC; Trivial: 1 VC)
 main_bad.adb:133:22: info: predicate check proved (Trivial: 1 VC)
 main_bad.adb:134:29: info: unrolling loop
 main_bad.adb:134:29: warning: statement has no effect
+main_bad.adb:135:19: info: no contextual analysis of "Rand" (body not seen yet)
 main_bad.adb:135:19: warning: assuming "Rand" has no effect on global items
 main_bad.adb:135:19: warning: no Global contract available for "Rand"
 main_bad.adb:139:19: info: pointer dereference check proved (CVC5: 1 VC)

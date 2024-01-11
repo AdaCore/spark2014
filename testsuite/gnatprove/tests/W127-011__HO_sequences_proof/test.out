@@ -559,7 +559,13 @@ spark-containers-parameter_checks.ads:77:19: info: postcondition proved, in inst
 spark-containers-parameter_checks.ads:79:17: info: aspect Always_Terminates on "Eq_Transitive" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-infinite_sequences.ads:307, in instantiation at test_sequence_ho.adb:44
 spark-containers-parameter_checks.ads:80:09: info: data dependencies proved, in instantiation at spark-containers-functional-infinite_sequences.ads:307, in instantiation at test_sequence_ho.adb:44
 spark-containers-parameter_checks.ads:82:19: info: postcondition proved, in instantiation at spark-containers-functional-infinite_sequences.ads:307, in instantiation at test_sequence_ho.adb:44
+test_sequence_ho.adb:47:04: info: expression function body of subprograms with a numeric variant might not be available on recursive calls
+test_sequence_ho.adb:47:04: info: expression function body of subprograms with a numeric variant might not be available on recursive calls
+test_sequence_ho.adb:47:04: info: expression function body of subprograms with a numeric variant might not be available on recursive calls
 test_sequence_ho.adb:47:04: info: function contract might not be available on recursive calls
 test_sequence_ho.adb:47:04: info: function contract might not be available on recursive calls
 test_sequence_ho.adb:47:04: info: in instantiation at spark-containers-functional-infinite_sequences-higher_order.adb:16
+test_sequence_ho.adb:47:04: info: in instantiation at spark-containers-functional-infinite_sequences-higher_order.adb:16
 test_sequence_ho.adb:47:04: info: in instantiation at spark-containers-functional-infinite_sequences-higher_order.adb:29
+test_sequence_ho.adb:47:04: info: in instantiation at spark-containers-functional-infinite_sequences-higher_order.adb:29
+test_sequence_ho.adb:47:04: info: in instantiation at spark-containers-functional-infinite_sequences-higher_order.adb:44

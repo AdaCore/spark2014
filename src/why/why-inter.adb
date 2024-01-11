@@ -29,6 +29,7 @@ with Gnat2Why.Tables;                use Gnat2Why.Tables;
 with Namet;                          use Namet;
 with Snames;                         use Snames;
 with SPARK_Definition;               use SPARK_Definition;
+with SPARK_Definition.Annotate;      use SPARK_Definition.Annotate;
 with SPARK_Frame_Conditions;         use SPARK_Frame_Conditions;
 with SPARK_Util;                     use SPARK_Util;
 with SPARK_Util.Subprograms;         use SPARK_Util.Subprograms;
@@ -44,6 +45,7 @@ with Why.Atree.Tables;               use Why.Atree.Tables;
 with Why.Atree.Traversal;            use Why.Atree.Traversal;
 with Why.Conversions;                use Why.Conversions;
 with Why.Gen.Arrays;                 use Why.Gen.Arrays;
+with Why.Gen.Binders;                use Why.Gen.Binders;
 with Why.Gen.Expr;                   use Why.Gen.Expr;
 with Why.Gen.Names;                  use Why.Gen.Names;
 with Why.Gen.Scalars;                use Why.Gen.Scalars;
@@ -1296,6 +1298,54 @@ package body Why.Inter is
                         Finished => False);
    end Open_Theory;
 
+   ---------------------------------
+   -- Process_Info_Hiding_For_VCs --
+   ---------------------------------
+
+   procedure Process_Info_Hiding_For_VCs (E : Entity_Id) is
+   begin
+      --  For logic functions, information hiding is handled via module
+      --  inclusion. Set the Module_Dependencies map to the value that should
+      --  be used when generating VCs for E.
+
+      for Position in Get_Hide_Annotations (E).Iterate loop
+         declare
+            use Node_To_Hide_Annotation_Kind_Maps;
+            Ent : constant Entity_Id := Key (Position);
+         begin
+            case Element (Position) is
+               when Hide_Expr_Fun =>
+                  Module_Dependencies (+E_Module (Ent)).Delete
+                    (+E_Module (Ent, Expr_Fun_Axiom));
+               when Unhide_Expr_Fun =>
+                  Module_Dependencies (+E_Module (Ent)).Insert
+                    (+E_Module (Ent, Expr_Fun_Axiom));
+            end case;
+         end;
+      end loop;
+
+      --  For program functions, different symbols need to be used
+
+      Ada_Ent_To_Why.Push_Scope (Symbol_Table);
+      for Position in Get_Hide_Annotations (E).Iterate loop
+         declare
+            use Node_To_Hide_Annotation_Kind_Maps;
+            Ent : constant Entity_Id := Key (Position);
+         begin
+            case Element (Position) is
+               when Hide_Expr_Fun =>
+                  Ada_Ent_To_Why.Insert
+                    (Symbol_Table, Ent,
+                     Mk_Item_Of_Entity (Ent, Hide_Info => True));
+               when Unhide_Expr_Fun =>
+                  Ada_Ent_To_Why.Insert
+                    (Symbol_Table, Ent,
+                     Mk_Item_Of_Entity (Ent, Hide_Info => False));
+            end case;
+         end;
+      end loop;
+   end Process_Info_Hiding_For_VCs;
+
    -----------------------------
    -- Record_Extra_Dependency --
    -----------------------------
@@ -1320,6 +1370,33 @@ package body Why.Inter is
       Entity_For_Axiom_Module.Insert (Why_Node_Id (M), E);
    end Register_Dependency_For_Soundness;
 
+   -------------------------------
+   -- Reset_Info_Hiding_For_VCs --
+   -------------------------------
+
+   procedure Reset_Info_Hiding_For_VCs (E : Entity_Id) is
+   begin
+      --  Reset the default value for defining axiom module inclusion
+
+      for Position in Get_Hide_Annotations (E).Iterate loop
+         declare
+            use Node_To_Hide_Annotation_Kind_Maps;
+            Ent : constant Entity_Id := Key (Position);
+         begin
+            case Element (Position) is
+               when Hide_Expr_Fun =>
+                  Module_Dependencies (+E_Module (Ent)).Insert
+                    (+E_Module (Ent, Expr_Fun_Axiom));
+               when Unhide_Expr_Fun =>
+                  Module_Dependencies (+E_Module (Ent)).Delete
+                    (+E_Module (Ent, Expr_Fun_Axiom));
+            end case;
+         end;
+      end loop;
+
+      Ada_Ent_To_Why.Pop_Scope (Symbol_Table);
+   end Reset_Info_Hiding_For_VCs;
+
    ---------------
    -- To_Why_Id --
    ---------------
@@ -1332,6 +1409,7 @@ package body Why.Inter is
       No_Comp      : Boolean := False;
       Rec          : Entity_Id := Empty;
       Init_Decl    : Boolean := False;
+      Hide_Info    : Boolean := False;
       Typ          : W_Type_Id := Why_Empty;
       Relaxed_Init : Boolean := False) return W_Identifier_Id
    is
@@ -1418,10 +1496,9 @@ package body Why.Inter is
                else Regular);
             Module    : constant W_Module_Id := E_Module (E, Kind);
             Namespace : constant Symbol :=
-              (case Selector is
-                 when Dispatch => No_Symbol,
-                 when Refine   => NID (To_String (WNE_Refine_Module)),
-                 when Standard => No_Symbol);
+              (if Hide_Info then NID (To_String (WNE_Hidden_Module))
+               elsif Selector = Refine then NID (To_String (WNE_Refine_Module))
+               else No_Symbol);
          begin
             return
               New_Identifier

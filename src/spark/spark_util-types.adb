@@ -32,6 +32,7 @@ with Sinfo.Utils;                 use Sinfo.Utils;
 with SPARK_Definition;            use SPARK_Definition;
 with SPARK_Definition.Annotate;   use SPARK_Definition.Annotate;
 with SPARK_Util.Subprograms;      use SPARK_Util.Subprograms;
+with Ttypes;
 
 package body SPARK_Util.Types is
 
@@ -42,21 +43,10 @@ package body SPARK_Util.Types is
    --  This function computes a user-visible string to represent the type in
    --  argument.
 
-   type Result_Type (Ok : Boolean := True) is record
-      case Ok is
-         when True  =>
-            null;
-         when False =>
-            Explanation : Unbounded_String;
-      end case;
-   end record;
-   --  Type to store a check result along with an explanation in case of
-   --  failure.
-
    generic
       with function Type_Is_Suitable
      (Typ       : Type_Kind_Id;
-      Use_Esize : Boolean) return Result_Type;
+      Use_Esize : Boolean) return True_Or_Explain;
 
    procedure Suitable_For_UC_Gen
      (Typ         :     Type_Kind_Id;
@@ -71,13 +61,13 @@ package body SPARK_Util.Types is
 
    function Type_Is_Suitable_For_UC
      (Typ       : Type_Kind_Id;
-      Use_Esize : Boolean) return Result_Type;
+      Use_Esize : Boolean) return True_Or_Explain;
    --  Function to check the properties enforced on all subcomponents of a
    --  type "suitable for unchecked conversion" of SPARK RM 13.9.
 
    function Type_Is_Suitable_For_UC_Target
      (Typ       : Type_Kind_Id;
-      Use_Esize : Boolean) return Result_Type;
+      Use_Esize : Boolean) return True_Or_Explain;
    --  Function to check the properties enforced on all subcomponents of a
    --  type "suitable as a target of an unchecked conversion" of SPARK RM 13.9.
 
@@ -1991,7 +1981,7 @@ package body SPARK_Util.Types is
          Size := Uint_0;
 
          declare
-            Check_Result : constant Result_Type :=
+            Check_Result : constant True_Or_Explain :=
               Type_Is_Suitable (Typ, Use_Esize);
          begin
             if not Check_Result.Ok then
@@ -2417,7 +2407,7 @@ package body SPARK_Util.Types is
 
    function Type_Is_Suitable_For_UC
      (Typ       : Type_Kind_Id;
-      Use_Esize : Boolean) return Result_Type
+      Use_Esize : Boolean) return True_Or_Explain
    is
       pragma Unreferenced (Use_Esize);
       function Typ_Name return String is (Type_Name_For_Explanation (Typ));
@@ -2431,16 +2421,14 @@ package body SPARK_Util.Types is
            (Ok          => False,
             Explanation =>
               To_Unbounded_String (Typ_Name & " is a tagged type"));
-      end if;
 
-      if Is_Incomplete_Or_Private_Type (Typ) then
+      elsif Is_Incomplete_Or_Private_Type (Typ) then
          return
            (Ok          => False,
             Explanation =>
               To_Unbounded_String (Typ_Name & " is a private type"));
-      end if;
 
-      if Is_Concurrent_Type (Typ) then
+      elsif Is_Concurrent_Type (Typ) then
          pragma Annotate
            (Xcov, Exempt_On, "The frontend crashes on UC on tasks and "
             & "rejectes UC on protected types");
@@ -2449,23 +2437,45 @@ package body SPARK_Util.Types is
             Explanation =>
               To_Unbounded_String (Typ_Name & " is a concurrent type"));
          pragma Annotate (Xcov, Exempt_Off);
-      end if;
 
-      if Has_Discriminants (Typ) then
+      elsif Has_Discriminants (Typ) then
          return
            (Ok          => False,
             Explanation =>
               To_Unbounded_String (Typ_Name & " has discriminants"));
-      end if;
 
-      if Is_Access_Type (Typ) then
+      elsif Is_Access_Type (Typ) then
          return
            (Ok          => False,
             Explanation =>
               To_Unbounded_String (Typ_Name & " is an access type"));
-      end if;
 
-      return (Ok => True);
+      --  GNAT only guarantees to zero-out extra bits when writing in a scalar
+      --  component if its size is not larger than the largest floating-point
+      --  type (for floats) or the largest integer type (for other scalar
+      --  types) on the target.
+
+      elsif Is_Floating_Point_Type (Typ)
+        and then Get_Attribute_Value (Typ, Attribute_Size)
+        > Ttypes.Standard_Long_Long_Float_Size
+      then
+         return
+           (Ok          => False,
+            Explanation =>
+              To_Unbounded_String ("too large value of Size for " & Typ_Name));
+
+      elsif Is_Scalar_Type (Typ)
+        and then Get_Attribute_Value (Typ, Attribute_Size)
+        > Ttypes.Standard_Long_Long_Long_Integer_Size
+      then
+         return
+           (Ok          => False,
+            Explanation =>
+              To_Unbounded_String ("too large value of Size for " & Typ_Name));
+
+      else
+         return (Ok => True);
+      end if;
    end Type_Is_Suitable_For_UC;
 
    ------------------------------------
@@ -2474,11 +2484,11 @@ package body SPARK_Util.Types is
 
    function Type_Is_Suitable_For_UC_Target
      (Typ       : Type_Kind_Id;
-      Use_Esize : Boolean) return Result_Type
+      Use_Esize : Boolean) return True_Or_Explain
    is
       function Typ_Name return String is (Type_Name_For_Explanation (Typ));
 
-      Check_For_UC_Res : constant Result_Type :=
+      Check_For_UC_Res : constant True_Or_Explain :=
         Type_Is_Suitable_For_UC (Typ, Use_Esize);
 
    begin

@@ -97,7 +97,7 @@ simple_arrays.adb:286:22: info: assertion proved (CVC5: 1 VC; Trivial: 1 VC; Z3:
 simple_arrays.adb:288:50: info: index check proved (CVC5: 2 VC)
 simple_arrays.adb:291:50: info: index check proved (CVC5: 2 VC)
 simple_arrays.adb:300:11: info: flow dependencies proved
-simple_arrays.adb:303:22: info: assertion proved (Trivial: 1 VC; Z3: 2 VC)
+simple_arrays.adb:303:22: info: assertion proved (CVC5: 1 VC; Trivial: 1 VC; Z3: 1 VC)
 simple_arrays.adb:305:50: info: index check proved (CVC5: 2 VC)
 simple_arrays.adb:308:50: info: index check proved (CVC5: 2 VC)
 simple_arrays.adb:318:11: info: flow dependencies proved

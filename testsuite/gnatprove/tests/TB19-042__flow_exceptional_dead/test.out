@@ -9,6 +9,7 @@ main.adb:17:04: info: no contextual analysis of "Dead_Return" (multiple returns)
 main.adb:17:14: warning: subprogram "Dead_Return" has no effect
 main.adb:20:07: warning: this statement is never reached
 main.adb:20:07: warning: unreachable code
+main.adb:22:21: info: no contextual analysis of "Call" (body not seen yet)
 main.adb:22:21: warning: assuming "Call" always terminates
 main.adb:22:21: warning: no Always_Terminates aspect available for "Call"
 main.adb:22:21: warning: this statement is never reached
@@ -16,6 +17,7 @@ main.adb:27:04: warning: analyzing unreferenced procedure "Dead_Goto"
 main.adb:27:14: warning: subprogram "Dead_Goto" has no effect
 main.adb:30:07: warning: this statement is never reached
 main.adb:30:07: warning: unreachable code
+main.adb:32:21: info: no contextual analysis of "Call" (body not seen yet)
 main.adb:32:21: warning: assuming "Call" always terminates
 main.adb:32:21: warning: no Always_Terminates aspect available for "Call"
 main.adb:32:21: warning: this statement is never reached

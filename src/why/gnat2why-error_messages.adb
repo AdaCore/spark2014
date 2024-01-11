@@ -39,6 +39,7 @@ with CE_RAC;                 use CE_RAC;
 with Common_Containers;      use Common_Containers;
 with Comperr;                use Comperr;
 with Debug;                  use Debug;
+with Flow_Error_Messages;    use Flow_Error_Messages;
 with Flow_Refinement;        use Flow_Refinement;
 with Flow_Types;             use Flow_Types;
 with Flow_Utility;           use Flow_Utility;
@@ -281,7 +282,6 @@ package body Gnat2Why.Error_Messages is
       Kind          : VC_Kind;
       Proved        : Boolean;
       E             : Entity_Id;
-      SD_Id         : Session_Dir_Base_ID;
       How_Proved    : Prover_Category;
       Check_Info    : Check_Info_Type;
       Extra_Msg     : String := "";
@@ -401,7 +401,6 @@ package body Gnat2Why.Error_Messages is
             Msg,
             Proved,
             Kind,
-            Place_First   => Locate_On_First_Token (Kind),
             Cntexmp       => Cntexmp,
             Verdict       => Verdict,
             Check_Tree    => Check_Tree,
@@ -411,7 +410,6 @@ package body Gnat2Why.Error_Messages is
             Explanation   => Explanation,
             Stats         => Stats,
             How_Proved    => How_Proved,
-            SD_Id         => SD_Id,
             E             => E,
             Check_Info    => Check_Info,
             Fuzzing_Used  => Fuzzing_Used,
@@ -440,7 +438,6 @@ package body Gnat2Why.Error_Messages is
          Kind,
          Proved,
          E,
-         No_Session_Dir,
          PC_Trivial,
          Explanation => Explanation,
          Check_Info  => Check_Info);
@@ -840,7 +837,7 @@ package body Gnat2Why.Error_Messages is
         (V : JSON_Value) return CE_RAC.Result;
       --  Parse the JSON produced by Why3 for the results of the giant-step RAC
 
-      procedure Handle_Result (V : JSON_Value; SD_Id : Session_Dir_Base_ID);
+      procedure Handle_Result (V : JSON_Value);
       --  Parse a single result entry. The entry comes from the session dir
       --  identified by [SD_Id].
 
@@ -911,7 +908,7 @@ package body Gnat2Why.Error_Messages is
       -- Handle_Result --
       -------------------
 
-      procedure Handle_Result (V : JSON_Value; SD_Id : Session_Dir_Base_ID) is
+      procedure Handle_Result (V : JSON_Value) is
 
          procedure Check_Counterexample
            (Rec            :     Why3_Prove_Result;
@@ -1299,7 +1296,6 @@ package body Gnat2Why.Error_Messages is
                Kind          => Rec.Kind,
                Proved        => Rec.Result,
                E             => Subp,
-               SD_Id         => SD_Id,
                How_Proved    => PC_Prover,
                Cntexmp       => Rec.Cntexmp,
                Verdict       => Verdict,
@@ -1469,7 +1465,6 @@ package body Gnat2Why.Error_Messages is
       declare
          File    : constant JSON_Value := Read_File_Into_JSON (Fn);
          Results : constant JSON_Array := Get (Get (File, "results"));
-         SD_Id   : Session_Dir_Base_ID := 0;
       begin
          if Has_Field (File, "error") then
             declare
@@ -1482,14 +1477,11 @@ package body Gnat2Why.Error_Messages is
             end;
          end if;
          Subp := Entity_Id (Integer'(Get (File, "entity")));
-         if Has_Field (File, "session_dir") then
-            SD_Id := Register_Session_Dir (Get (Get (File, "session_dir")));
-         end if;
          if Has_Field (File, "timings") then
             Handle_Timings (Get (File, "timings"));
          end if;
          for Index in 1 .. Length (Results) loop
-            Handle_Result (Get (Results, Index), SD_Id);
+            Handle_Result (Get (Results, Index));
          end loop;
          if Has_Field (File, "warnings") then
             declare

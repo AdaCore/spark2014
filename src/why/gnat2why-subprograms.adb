@@ -35,6 +35,7 @@ with Flow_Generated_Globals.Phase_2; use Flow_Generated_Globals.Phase_2;
 with Flow_Refinement;                use Flow_Refinement;
 with Flow_Utility;                   use Flow_Utility;
 with GNAT.Source_Info;
+with Gnat2Why.Data_Decomposition; use Gnat2Why.Data_Decomposition;
 with Gnat2Why.Error_Messages;        use Gnat2Why.Error_Messages;
 with Gnat2Why.Expr;                  use Gnat2Why.Expr;
 with Gnat2Why.Tables;                use Gnat2Why.Tables;
@@ -57,6 +58,7 @@ with Why.Atree.Accessors;            use Why.Atree.Accessors;
 with Why.Atree.Builders;             use Why.Atree.Builders;
 with Why.Atree.Modules;              use Why.Atree.Modules;
 with Why.Atree.Mutators;             use Why.Atree.Mutators;
+with Why.Gen.Arrays;                 use Why.Gen.Arrays;
 with Why.Gen.Decl;                   use Why.Gen.Decl;
 with Why.Gen.Init;                   use Why.Gen.Init;
 with Why.Gen.Names;                  use Why.Gen.Names;
@@ -2651,6 +2653,33 @@ package body Gnat2Why.Subprograms is
    is
       --  Local subprograms
 
+      type Scalar_Status is
+        (Signed,    --  Signed integer type
+         Unsigned,  --  Unsigned integer type = signed with no negative value,
+                    --  also used for enumerations with default representation
+                    --  clauses.
+         Modular);  --  Modular integer type
+
+      function Get_Scalar_Status (Typ : Type_Kind_Id) return Scalar_Status is
+        (if Is_Modular_Integer_Type (Typ)   then Modular
+         elsif Is_Enumeration_Type (Typ)    then Unsigned
+         elsif Is_Unsigned_Type (Typ)       then Unsigned
+         elsif Is_Signed_Integer_Type (Typ) then Signed
+         else raise Program_Error);
+
+      function Precise_Integer_UC
+        (Arg           : W_Term_Id;
+         Size          : Uint;
+         Source_Type   : W_Type_Id;
+         Target_Type   : W_Type_Id;
+         Source_Status : Scalar_Status;
+         Target_Status : Scalar_Status)
+         return W_Term_Id;
+      --  Return Arg of Source_Type converted to Target_Type, when both are of
+      --  scalar types. Size is the shared size of both types, when arguments
+      --  of the UC are integer types, which is used for conversion from an
+      --  Unsigned type to a Signed one. Otherwise it is No_Uint.
+
       function Is_UC_With_Precise_Definition (E : Entity_Id) return Boolean
       with
         Pre => Is_Unchecked_Conversion_Instance (E);
@@ -2661,30 +2690,295 @@ package body Gnat2Why.Subprograms is
       -----------------------------------
 
       function Is_UC_With_Precise_Definition (E : Entity_Id) return Boolean is
-         Source_Type : constant Entity_Id := Retysp (Etype (First_Formal (E)));
-         Target_Type : constant Entity_Id := Retysp (Etype (E));
 
+         function Suitable_For_Precise_UC
+           (Arg_Typ : Type_Kind_Id)
+            return True_Or_Explain;
+         --  Check if Typ is only made of integers. When returning False,
+         --  return also the Explanation.
+
+         -----------------------------
+         -- Suitable_For_Precise_UC --
+         -----------------------------
+
+         function Suitable_For_Precise_UC
+           (Arg_Typ : Type_Kind_Id)
+            return True_Or_Explain
+         is
+            Typ : constant Type_Kind_Id := Retysp (Arg_Typ);
+         begin
+            case Ekind (Typ) is
+               when Integer_Kind =>
+                  if Has_Biased_Representation (Typ) then
+                     return False_With_Explain
+                       ("type with biased representation");
+                  end if;
+
+               when Enumeration_Kind =>
+                  if Has_Enumeration_Rep_Clause (Typ)
+                    and then Enumeration_Rep (First_Literal (Typ)) /= Uint_0
+                  then
+                     return False_With_Explain
+                       ("enumeration with non-default representation");
+                  end if;
+
+               when Record_Kind =>
+                  if Is_Tagged_Type (Typ) then
+                     return False_With_Explain ("type is tagged");
+
+                  elsif Has_Discriminants (Typ) then
+                     return False_With_Explain ("type has discriminants");
+
+                  elsif Reverse_Storage_Order (Base_Retysp (Typ)) then
+                     return False_With_Explain
+                       ("type has reverse storage order");
+                  end if;
+
+                  declare
+                     Comps : constant Component_Sets.Set :=
+                       Get_Component_Set (Typ);
+                  begin
+                     for Comp of Comps loop
+                        if No (Component_Bit_Offset (Comp)) then
+                           return False_With_Explain
+                             ("component offset not known");
+                        end if;
+
+                        declare
+                           Check : constant True_Or_Explain :=
+                             Suitable_For_Precise_UC (Etype (Comp));
+                        begin
+                           if not Check.Ok then
+                              return Check;
+                           end if;
+                        end;
+                     end loop;
+                  end;
+
+               when Array_Kind =>
+                  declare
+                     Check : constant True_Or_Explain :=
+                       Suitable_For_Precise_UC (Component_Type (Typ));
+                  begin
+                     if not Check.Ok then
+                        return Check;
+                     end if;
+                  end;
+
+                  if Number_Dimensions (Typ) > Uint_1 then
+                     return False_With_Explain
+                       ("array has multiple dimensions");
+
+                  elsif Reverse_Storage_Order (Base_Retysp (Typ)) then
+                     return False_With_Explain
+                       ("type has reverse storage order");
+                  end if;
+
+               when others =>
+                  return False_With_Explain ("elementary non-integer type");
+            end case;
+
+            return True_Or_Explain'(Ok => True);
+         end Suitable_For_Precise_UC;
+
+         --  Local variables
+
+         Source, Target                         : Node_Id;
+         Source_Type, Target_Type               : Entity_Id;
          Valid_Source, Valid_Target, Valid_Size : Boolean;
-         Ignored : Unbounded_String;
+         Explanation                            : Unbounded_String;
+         Check                                  : True_Or_Explain;
 
       begin
-         --  Only generate a definition for UC between integer types...
+         Get_Unchecked_Conversion_Args (E, Source, Target);
+         Source_Type := Retysp (Entity (Source));
+         Target_Type := Retysp (Entity (Target));
 
-         if not Has_Integer_Type (Source_Type)
-           or else not Has_Integer_Type (Target_Type)
-         then
-            return False;
+         --  Check that types are suitable for UC.
+
+         Suitable_For_UC (Source_Type, False, Valid_Source, Explanation);
+         if not Valid_Source then
+            --  Override explanation to avoid special characters
+            Explanation := To_Unbounded_String
+              ("type is unsuitable as source for unchecked conversion");
+            goto UC_Imprecise;
          end if;
 
-         --  that are suitable for UC.
+         Suitable_For_UC_Target
+           (Target_Type, False, Valid_Target, Explanation);
+         if not Valid_Target then
+            --  Override explanation to avoid special characters
+            Explanation := To_Unbounded_String
+              ("type is unsuitable as target for unchecked conversion");
+            goto UC_Imprecise;
+         end if;
 
-         Suitable_For_UC (Source_Type, False, Valid_Source, Ignored);
-         Suitable_For_UC_Target (Target_Type, False, Valid_Target, Ignored);
          Have_Same_Known_RM_Size
-           (Source_Type, Target_Type, Valid_Size, Ignored);
+           (Source_Type, Target_Type, Valid_Size, Explanation);
+         if not Valid_Size then
+            --  Override explanation to avoid special characters
+            Explanation := To_Unbounded_String
+              ("types in unchecked conversion do not have the same size");
+            goto UC_Imprecise;
+         end if;
 
-         return Valid_Source and Valid_Target and Valid_Size;
+         --  Only support types with size up to 128 bits, to use one of the
+         --  available bitvector types with conversions from other bitvector
+         --  sizes.
+
+         if Get_Attribute_Value (Source_Type, Attribute_Size) > 128 then
+            Explanation :=
+              To_Unbounded_String ("type size larger than 128 bits");
+            goto UC_Imprecise;
+         end if;
+
+         --  Only generate a definition for UC between integer types, and
+         --  composites of integer types.
+
+         Check := Suitable_For_Precise_UC (Source_Type);
+         if not Check.Ok then
+            Explanation := Check.Explanation;
+            goto UC_Imprecise;
+         end if;
+
+         Check := Suitable_For_Precise_UC (Target_Type);
+         if not Check.Ok then
+            Explanation := Check.Explanation;
+            goto UC_Imprecise;
+         end if;
+
+         return True;
+
+      <<UC_Imprecise>>
+
+         --  If --info is set, output information on reason for imprecise
+         --  handling of UC.
+
+         if Debug.Debug_Flag_Underscore_F then
+            Error_Msg_N
+              ("info: ?imprecise handling of Unchecked_Conversion ("
+               & To_String (Explanation) & ")", E);
+         end if;
+
+         return False;
       end Is_UC_With_Precise_Definition;
+
+      ------------------------
+      -- Precise_Integer_UC --
+      ------------------------
+
+      function Precise_Integer_UC
+        (Arg           : W_Term_Id;
+         Size          : Uint;
+         Source_Type   : W_Type_Id;
+         Target_Type   : W_Type_Id;
+         Source_Status : Scalar_Status;
+         Target_Status : Scalar_Status)
+         return W_Term_Id
+      is
+         Source_Base_Type : constant W_Type_Id :=
+           Base_Why_Type_No_Bool (Source_Type);
+         Target_Base_Type : constant W_Type_Id :=
+           Base_Why_Type_No_Bool (Target_Type);
+         Conv : W_Term_Id;
+      begin
+         Conv :=
+           Insert_Simple_Conversion (Expr => Arg, To => Source_Base_Type);
+
+         if Source_Status = Target_Status then
+            null;  --  Trivial case of UC between identical types
+
+         elsif Source_Status = Unsigned
+           and then Target_Status = Modular
+         then
+            null;  --  Unsigned value can be directly converted to modular
+
+         elsif Source_Status = Modular
+           and then Target_Status = Unsigned
+         then
+            null;  --  Modular value can be directly converted to unsigned
+
+         --  Apply the appropriate UC function for conversions between Modular
+         --  and Signed.
+
+         elsif Source_Status = Modular
+           and then Target_Status = Signed
+         then
+            Conv := New_Call
+              (Name => MF_BVs (Source_Base_Type).UC_To_Int,
+               Args => (1 => +Conv),
+               Typ  => EW_Int_Type);
+
+         elsif Source_Status = Signed
+           and then Target_Status = Modular
+         then
+            Conv := New_Call
+              (Name => MF_BVs (Target_Base_Type).UC_Of_Int,
+               Args => (1 => +Conv),
+               Typ  => Target_Base_Type);
+
+         --  Otherwise, this is a conversion between Unsigned and Signed.
+         --  We need to consider the bit representation of that (possibly
+         --  negative) signed value, to see if the high bit is 1, in which
+         --  case the Signed value is negative.
+
+         elsif Source_Status = Unsigned
+           and then Target_Status = Signed
+         then
+            --  Generate the value
+            --  if Conv >= 2**(Size-1) then Conv-2**Size else Conv
+            declare
+               Top_Bit : constant W_Term_Id :=
+                 New_Integer_Constant
+                   (Value => Uint_2 ** (Size - Uint_1));
+               Negative_Value : constant W_Term_Id :=
+                 New_Call
+                   (Name   => Int_Infix_Subtr,
+                    Typ    => EW_Int_Type,
+                    Args   =>
+                      (1 => +Conv,
+                       2 => New_Integer_Constant (Value => 2 ** Size)));
+            begin
+               Conv := New_Conditional
+                 (Condition =>
+                    New_Comparison
+                      (Symbol => Int_Infix_Ge,
+                       Left   => Conv,
+                       Right  => Top_Bit),
+                  Then_Part => Negative_Value,
+                  Else_Part => Conv,
+                  Typ       => EW_Int_Type);
+            end;
+
+         else
+            pragma Assert (Source_Status = Signed);
+            pragma Assert (Target_Status = Unsigned);
+
+            --  Generate the value
+            --  if Conv < 0 then Conv+2**Size else Conv
+            declare
+               Large_Value : constant W_Term_Id :=
+                 New_Call
+                   (Name   => Int_Infix_Add,
+                    Typ    => EW_Int_Type,
+                    Args   =>
+                      (1 => +Conv,
+                       2 => New_Integer_Constant (Value => 2 ** Size)));
+            begin
+               Conv := New_Conditional
+                 (Condition =>
+                    New_Comparison
+                      (Symbol => Int_Infix_Lt,
+                       Left   => Conv,
+                       Right  => New_Integer_Constant (Value => Uint_0)),
+                  Then_Part => Large_Value,
+                  Else_Part => Conv,
+                  Typ       => EW_Int_Type);
+            end;
+         end if;
+
+         return Insert_Simple_Conversion (Expr => Conv, To => Target_Type);
+      end Precise_Integer_UC;
 
       --  Local variables
 
@@ -2728,37 +3022,577 @@ package body Gnat2Why.Subprograms is
         and then Is_UC_With_Precise_Definition (E)
       then
          declare
-            Source_Type : constant Entity_Id :=
-              Retysp (Etype (First_Formal (E)));
-            Target_Type : constant Entity_Id := Retysp (Etype (E));
+            Source, Target : Node_Id;
+            Source_Type, Target_Type : Entity_Id;
             Arg         : constant W_Identifier_Id :=
               Logic_Why_Binders (1).B_Name;
-
          begin
-            if Is_Signed_Integer_Type (Source_Type)
-              and then Is_Signed_Integer_Type (Target_Type)
-            then
-               Def := +Arg;  --  Trivial case of UC between signed types
+            Get_Unchecked_Conversion_Args (E, Source, Target);
+            Source_Type := Retysp (Entity (Source));
+            Target_Type := Retysp (Entity (Target));
 
-            elsif Is_Modular_Integer_Type (Source_Type)
-              and then Is_Modular_Integer_Type (Target_Type)
+            if Is_Scalar_Type (Source_Type)
+              and then Is_Scalar_Type (Target_Type)
             then
-               pragma Assert
-                 (Base_Why_Type (Source_Type) = Base_Why_Type (Target_Type));
-               Def := +Arg;  --  Trivial case of UC between modular types
+               Def :=
+                 Precise_Integer_UC
+                   (Arg           => +Arg,
+                    Size          =>
+                      Get_Attribute_Value (Source_Type, Attribute_Size),
+                    Source_Type   => EW_Abstract (Source_Type),
+                    Target_Type   => Base_Why_Type_No_Bool (Target_Type),
+                    Source_Status => Get_Scalar_Status (Source_Type),
+                    Target_Status => Get_Scalar_Status (Target_Type));
 
-            elsif Is_Modular_Integer_Type (Source_Type) then
-               Def := New_Call
-                 (Name    => MF_BVs (Base_Why_Type (Source_Type)).UC_To_Int,
-                  Binders => Logic_Why_Binders,
-                  Typ     => Why_Type);
+            --  At least one of Source or Target is a composite type made up
+            --  of integers. Convert Source to a large-enough modular type,
+            --  and convert that value to Target. If all types involved are
+            --  modular, then this benefits from bitvector support in provers.
 
             else
-               pragma Assert (Is_Modular_Integer_Type (Target_Type));
-               Def := New_Call
-                 (Name    => MF_BVs (Base_Why_Type (Target_Type)).UC_Of_Int,
-                  Binders => Logic_Why_Binders,
-                  Typ     => Why_Type);
+               declare
+                  --  Representation of a subcomponent of Source
+                  type Source_Element is record
+                     Typ    : Type_Kind_Id;
+                     Offset : Uint;
+                     Size   : Uint;
+                     Expr   : W_Term_Id;
+                  end record;
+
+                  package Source_Elements is new
+                    Ada.Containers.Doubly_Linked_Lists (Source_Element);
+                  use Source_Elements;
+
+                  --  Local subprograms
+
+                  function Contribute_Value
+                    (Base   : W_Type_Id;
+                     Expr   : W_Expr_Id;
+                     Offset : Uint;
+                     Size   : Uint;
+                     Typ    : Type_Kind_Id)
+                     return W_Expr_Id;
+                  --  Given a scalar expression Expr of type Typ, return its
+                  --  contribution to a modular value of type Base, when its
+                  --  bit representation takes Size bits at a given Offset in
+                  --  Base.
+
+                  function Expr_Index
+                    (Typ : Type_Kind_Id;
+                     Idx : Uint)
+                     return W_Expr_Id;
+                  --  Return the expression for indexing into array of type Typ
+
+                  function Extract_Value
+                    (Base   : W_Type_Id;
+                     Bits   : W_Expr_Id;
+                     Offset : Uint;
+                     Size   : Uint;
+                     Typ    : Type_Kind_Id)
+                     return W_Expr_Id;
+                  --  Return (Bits and (2**(Offset+Size)-1)) / 2**(Offset) as
+                  --  a value of type Typ, to extract the value of an element
+                  --  from its bit representation.
+
+                  procedure Get_Source_Elements
+                    (Typ      : Type_Kind_Id;
+                     Offset   : Uint;
+                     Size     : Uint;
+                     Expr     : W_Term_Id;
+                     Elements : in out List);
+                  --  Retrieve the list of scalar elements from an object Expr
+                  --  of type Typ located at a given Offset and of a given
+                  --  Size, and append these to Elements.
+
+                  function Reconstruct_Value
+                    (Base   : W_Type_Id;
+                     Bits   : W_Expr_Id;
+                     Offset : Uint;
+                     Size   : Uint;
+                     Typ    : Type_Kind_Id)
+                     return W_Expr_Id;
+                  --  Given the representation Bits of modular type Base for
+                  --  the complete object, reconstruct the element of type Typ
+                  --  of a given Size at a given Offset.
+
+                  ----------------------
+                  -- Contribute_Value --
+                  ----------------------
+
+                  function Contribute_Value
+                    (Base   : W_Type_Id;
+                     Expr   : W_Expr_Id;
+                     Offset : Uint;
+                     Size   : Uint;
+                     Typ    : Type_Kind_Id)
+                     return W_Expr_Id
+                  is
+                     Value : W_Expr_Id;
+                  begin
+                     --  Special case for Boolean
+                     if Is_Standard_Boolean_Type (Typ) then
+                        Value :=
+                          New_Conditional
+                            (Domain    => EW_Term,
+                             Condition => Expr,
+                             Then_Part =>
+                               New_Modular_Constant
+                                 (Value => Uint_1,
+                                  Typ   => Base),
+                             Else_Part =>
+                               New_Modular_Constant
+                                 (Value => Uint_0,
+                                  Typ   => Base),
+                             Typ => Base);
+
+                     --  If the value is from a modular type, or from a signed
+                     --  type with no negative value, then simply convert it to
+                     --  Base.
+                     elsif Is_Unsigned_Type (Typ) then
+                        Value := Insert_Scalar_Conversion
+                          (Domain => EW_Term,
+                           Expr   => Expr,
+                           To     => Base);
+
+                     --  Otherwise, we need to consider the bit representation
+                     --  of that (possibly negative) signed value as Base, and
+                     --  extract the low Size bits with the expression
+                     --  (uc_of_int Expr) and (2**Size - 1)
+                     else
+                        Value :=
+                          New_Call
+                            (Domain   => EW_Term,
+                             Name     => MF_BVs (Base).BW_And,
+                             Typ      => Base,
+                             Args     =>
+                               (1 =>
+                                  New_Call
+                                    (Domain => EW_Term,
+                                     Name   => MF_BVs (Base).UC_Of_Int,
+                                     Args   =>
+                                       (1 =>
+                                          Insert_Scalar_Conversion
+                                            (Domain => EW_Term,
+                                             Expr   => Expr,
+                                             To     => EW_Int_Type)),
+                                     Typ    => Base),
+                                2 =>
+                                  New_Modular_Constant
+                                    (Value => Uint_2 ** Size - Uint_1,
+                                     Typ   => Base)));
+                     end if;
+
+                     --  Multiply this value by 2**Offset to get its
+                     --  contribution to the overall value.
+                     return
+                       New_Call
+                         (Domain   => EW_Term,
+                          Name     => MF_BVs (Base).Mult,
+                          Typ      => Base,
+                          Args     =>
+                            (1 =>
+                               New_Modular_Constant
+                                 (Value => Uint_2 ** Offset,
+                                  Typ   => Base),
+                             2 => Value));
+                  end Contribute_Value;
+
+                  ----------------
+                  -- Expr_Index --
+                  ----------------
+
+                  function Expr_Index
+                    (Typ : Type_Kind_Id;
+                     Idx : Uint)
+                     return W_Expr_Id
+                  is
+                     Index_Typ : constant Type_Kind_Id :=
+                       Etype (First_Index (Typ));
+                  begin
+                     if Is_Modular_Integer_Type (Index_Typ) then
+                        return
+                          New_Modular_Constant
+                            (Value => Idx,
+                             Typ   => Base_Why_Type_No_Bool (Index_Typ));
+                     else
+                        return New_Integer_Constant (Value => Idx);
+                     end if;
+                  end Expr_Index;
+
+                  -------------------
+                  -- Extract_Value --
+                  -------------------
+
+                  function Extract_Value
+                    (Base   : W_Type_Id;
+                     Bits   : W_Expr_Id;
+                     Offset : Uint;
+                     Size   : Uint;
+                     Typ    : Type_Kind_Id)
+                     return W_Expr_Id
+                  is
+                     Mask : constant W_Expr_Id :=
+                       New_Modular_Constant
+                         (Value => Uint_2 ** (Offset + Size) - Uint_1,
+                          Typ   => Base);
+                     Divisor : constant W_Expr_Id :=
+                       New_Modular_Constant
+                         (Value => Uint_2 ** Offset,
+                          Typ   => Base);
+                     --  Value is (Bits and (2**(Offset+Size)-1)) / 2**(Offset)
+                     Value : constant W_Expr_Id :=
+                       New_Call
+                         (Domain => EW_Term,
+                          Name   => MF_BVs (Base).Udiv,
+                          Typ    => Base,
+                          Args   =>
+                            (1 =>
+                               New_Call
+                                 (Domain => EW_Term,
+                                  Name   => MF_BVs (Base).BW_And,
+                                  Typ    => Base,
+                                  Args   =>
+                                    (1 => Bits,
+                                     2 => Mask)),
+                             2 => Divisor));
+                  begin
+                     --  Special case for Boolean
+                     if Is_Standard_Boolean_Type (Typ) then
+                        return
+                          New_Conditional
+                            (Domain    => EW_Term,
+                             Condition =>
+                               New_Comparison
+                                 (Domain => EW_Term,
+                                  Symbol => Why_Eq,
+                                  Left   => Value,
+                                  Right  =>
+                                    New_Modular_Constant
+                                      (Value => Uint_1,
+                                       Typ   => Base)),
+                             Then_Part => +True_Term,
+                             Else_Part => +False_Term,
+                             Typ       => EW_Bool_Type);
+
+                     --  If the value is to a modular type, or an enumeration
+                     --  with default 0-based representation, or to a signed
+                     --  type with no negative value, then simply convert it
+                     --  to Typ.
+                     elsif Is_Unsigned_Type (Typ) then
+                        return Insert_Scalar_Conversion
+                          (Domain => EW_Term,
+                           Expr   => Value,
+                           To     => EW_Abstract (Typ));
+
+                     --  Otherwise, we need to consider the bit representation
+                     --  of that (possibly negative) signed value, to see
+                     --  if the high bit is 1, in which case the value is
+                     --  negative. So we generate the value
+                     --  if Value >= 2**(Size-1) then Value-2**Size else Value
+                     else
+                        declare
+                           Top_Bit : constant W_Expr_Id :=
+                             New_Modular_Constant
+                               (Value => Uint_2 ** (Size - Uint_1),
+                                Typ   => Base);
+                           Negative_Value : constant W_Expr_Id :=
+                             New_Call
+                               (Domain => EW_Term,
+                                Name   => Int_Infix_Subtr,
+                                Typ    => EW_Int_Type,
+                                Args   =>
+                                  (1 =>
+                                     Insert_Scalar_Conversion
+                                       (Domain => EW_Term,
+                                        Expr   => Value,
+                                        To     => EW_Int_Type),
+                                   2 =>
+                                     New_Integer_Constant
+                                       (Value => 2 ** Size)));
+                        begin
+                           return New_Conditional
+                             (Domain    => EW_Term,
+                              Condition =>
+                                New_Comparison
+                                  (Domain => EW_Term,
+                                   Symbol => MF_BVs (Base).Uge,
+                                   Left   => Value,
+                                   Right  => Top_Bit),
+                              Then_Part =>
+                                Insert_Scalar_Conversion
+                                  (Domain => EW_Term,
+                                   Expr   => Negative_Value,
+                                   To     => EW_Abstract (Typ)),
+                              Else_Part =>
+                                Insert_Scalar_Conversion
+                                  (Domain => EW_Term,
+                                   Expr   => Value,
+                                   To     => EW_Abstract (Typ)),
+                              Typ => EW_Abstract (Typ));
+                        end;
+                     end if;
+                  end Extract_Value;
+
+                  --------------------------
+                  -- Get_Type_Offset_List --
+                  --------------------------
+
+                  procedure Get_Source_Elements
+                    (Typ      : Type_Kind_Id;
+                     Offset   : Uint;
+                     Size     : Uint;
+                     Expr     : W_Term_Id;
+                     Elements : in out List)
+                  is
+                  begin
+                     if Is_Scalar_Type (Typ) then
+                        Elements.Append
+                          (Source_Element'(Typ    => Typ,
+                                           Offset => Offset,
+                                           Size   => Size,
+                                           Expr   => Expr));
+
+                     elsif Is_Record_Type (Typ) then
+                        declare
+                           Comp : Node_Id := First_Component (Typ);
+                        begin
+                           while Present (Comp) loop
+                              Get_Source_Elements
+                                (Typ     => Retysp (Etype (Comp)),
+                                 Offset  =>
+                                   Offset + Component_Bit_Offset (Comp),
+                                 Size    => Esize (Comp),
+                                 Expr    => New_Ada_Record_Access
+                                   (Ada_Node => Types.Empty,
+                                    Name     => +Expr,
+                                    Ty       => Typ,
+                                    Field    => Comp),
+                                 Elements => Elements);
+                              Next_Component (Comp);
+                           end loop;
+                        end;
+
+                     elsif Is_Array_Type (Typ) then
+                        declare
+                           Index : constant Node_Id := First_Index (Typ);
+                           Rng   : constant Node_Id := Get_Range (Index);
+                           Low   : constant Uint :=
+                             Expr_Value (Low_Bound (Rng));
+                           High : constant Uint :=
+                             Expr_Value (High_Bound (Rng));
+                           Cur : Uint;
+                        begin
+                           if Low <= High then
+                              Cur := Low;
+                              while Cur <= High loop
+                                 Get_Source_Elements
+                                   (Typ      => Retysp (Component_Type (Typ)),
+                                    Offset   =>
+                                      (Cur - Low) * Component_Size (Typ),
+                                    Size     => Component_Size (Typ),
+                                    Expr     =>
+                                      New_Array_Access
+                                        (Ar    => Expr,
+                                         Index =>
+                                           (1 => Expr_Index (Typ, Cur))),
+                                    Elements => Elements);
+                                 Cur := Cur + Uint_1;
+                              end loop;
+                           end if;
+                        end;
+
+                     else
+                        raise Program_Error;
+                     end if;
+                  end Get_Source_Elements;
+
+                  -----------------------
+                  -- Reconstruct_Value --
+                  -----------------------
+
+                  function Reconstruct_Value
+                    (Base   : W_Type_Id;
+                     Bits   : W_Expr_Id;
+                     Offset : Uint;
+                     Size   : Uint;
+                     Typ    : Type_Kind_Id)
+                     return W_Expr_Id
+                  is
+                  begin
+                     if Is_Scalar_Type (Typ) then
+                        return Extract_Value
+                          (Base   => Base,
+                           Bits   => Bits,
+                           Offset => Offset,
+                           Size   => Size,
+                           Typ    => Typ);
+
+                     elsif Is_Record_Type (Typ) then
+                        declare
+                           Comps : constant Component_Sets.Set :=
+                             Get_Component_Set (Typ);
+                           Assocs : W_Field_Association_Array
+                             (1 .. Integer (Comps.Length));
+                           Index : Positive := 1;
+                        begin
+                           for Comp of Comps loop
+                              Assocs (Index) :=
+                                New_Field_Association
+                                  (Domain => EW_Term,
+                                   Field  =>
+                                     To_Why_Id
+                                       (Comp, Local => False, Rec => Typ),
+                                   Value  =>
+                                     Reconstruct_Value
+                                       (Base   => Base,
+                                        Bits   => Bits,
+                                        Offset =>
+                                          Offset + Component_Bit_Offset (Comp),
+                                        Size   => Esize (Comp),
+                                        Typ    => Retysp (Etype (Comp))));
+                              Index := Index + 1;
+                           end loop;
+
+                           return New_Record_Aggregate
+                             (Associations =>
+                                (1 => New_Field_Association
+                                   (Domain => EW_Term,
+                                    Field  =>
+                                      E_Symb (Typ, WNE_Rec_Split_Fields),
+                                    Value  =>
+                                      New_Record_Aggregate
+                                        (Associations => Assocs))),
+                              Typ          => EW_Abstract (Typ));
+                        end;
+
+                     elsif Is_Array_Type (Typ) then
+                        declare
+                           Index : constant Node_Id := First_Index (Typ);
+                           Rng   : constant Node_Id := Get_Range (Index);
+                           Low   : constant Uint :=
+                             Expr_Value (Low_Bound (Rng));
+                           High  : constant Uint :=
+                             Expr_Value (High_Bound (Rng));
+                           Cur   : Uint;
+                           Ar    : W_Expr_Id := +E_Symb (Typ, WNE_Dummy);
+                        begin
+                           if Low <= High then
+                              Cur := Low;
+                              while Cur <= High loop
+                                 Ar := New_Array_Update
+                                   (Ada_Node => Types.Empty,
+                                    Ar     => Ar,
+                                    Index  => (1 => Expr_Index (Typ, Cur)),
+                                    Value  =>
+                                      Reconstruct_Value
+                                       (Base   => Base,
+                                        Bits   => Bits,
+                                        Offset =>
+                                          Offset +
+                                          (Cur - Low) * Component_Size (Typ),
+                                        Size   =>
+                                          Component_Size (Typ),
+                                        Typ    =>
+                                          Retysp (Component_Type (Typ))),
+                                    Domain => EW_Term);
+                                 Cur := Cur + 1;
+                              end loop;
+                           end if;
+
+                           return Ar;
+                        end;
+
+                     else
+                        raise Program_Error;
+                     end if;
+                  end Reconstruct_Value;
+
+                  --  Local variables
+
+                  Conv         : W_Term_Id;
+                  Source_Elems : List;
+                  Target_Size  : constant Uint :=
+                    Get_Attribute_Value (Target_Type, Attribute_Size);
+                  Base         : constant W_Type_Id :=
+                    (if    Target_Size <=   Uint_8 then EW_BitVector_8_Type
+                     elsif Target_Size <=  Uint_16 then EW_BitVector_16_Type
+                     elsif Target_Size <=  Uint_32 then EW_BitVector_32_Type
+                     elsif Target_Size <=  Uint_64 then EW_BitVector_64_Type
+                     elsif Target_Size <= Uint_128 then EW_BitVector_128_Type
+                     else raise Program_Error);
+
+               begin
+                  --  1. Convert the argument to a value of modular type Base
+
+                  --  1.a Conversion from a scalar type should be identity or
+                  --  call to uc_of_int.
+
+                  if Is_Scalar_Type (Source_Type) then
+                     Conv :=
+                       Precise_Integer_UC
+                         (Arg           => +Arg,
+                          Size          => No_Uint,
+                          Source_Type   => EW_Abstract (Source_Type),
+                          Target_Type   => Base,
+                          Source_Status => Get_Scalar_Status (Source_Type),
+                          Target_Status => Modular);
+
+                  --  1.b Otherwise extract all scalar subcomponents from the
+                  --  composite value and sum up their contributions to the
+                  --  value of type Base.
+
+                  else
+                     Get_Source_Elements
+                       (Source_Type, Uint_0, Uint_0, +Arg, Source_Elems);
+                     Conv :=
+                       New_Modular_Constant (Value => Uint_0, Typ => Base);
+
+                     for Elem of Source_Elems loop
+                        Conv :=
+                          New_Call
+                            (Name     => MF_BVs (Base).Add,
+                             Typ      => Base,
+                             Args     =>
+                               (1 => +Conv,
+                                2 => Contribute_Value
+                                  (Base   => Base,
+                                   Expr   => +Elem.Expr,
+                                   Offset => Elem.Offset,
+                                   Size   => Elem.Size,
+                                   Typ    => Elem.Typ)));
+                     end loop;
+                  end if;
+
+                  --  2. Convert the converted argument to a value of the
+                  --  target type.
+
+                  --  2.a Conversion to a scalar type should be identity or
+                  --  call to uc_to_int.
+
+                  if Is_Scalar_Type (Target_Type) then
+                     Def :=
+                       Precise_Integer_UC
+                         (Arg           => Conv,
+                          Size          => No_Uint,
+                          Source_Type   => Base,
+                          Target_Type   => Base_Why_Type_No_Bool (Target_Type),
+                          Source_Status => Modular,
+                          Target_Status => Get_Scalar_Status (Target_Type));
+
+                  --  2.b Otherwise recursively reconstruct all scalar
+                  --  subcomponents from the value of type Base.
+
+                  else
+                     Def :=
+                       +Reconstruct_Value
+                         (Base   => Base,
+                          Bits   => +Conv,
+                          Offset => Uint_0,
+                          Size   =>
+                            Get_Attribute_Value (Target_Type, Attribute_Size),
+                          Typ    => Target_Type);
+                  end if;
+               end;
             end if;
          end;
 
@@ -5642,12 +6476,6 @@ package body Gnat2Why.Subprograms is
       Refined_Post       : W_Pred_Id := Why_Empty;
       Why_Type           : W_Type_Id := Why_Empty;
 
-      --  Some declarations will be generated in the parameter theory, but new
-      --  theories might be created
-
-      My_Th              : Theory_UC := Th;
-      My_Dispatch_Th     : Theory_UC := Dispatch_Th;
-
    begin
       Params := (Logic_Params with delta Old_Policy => Ignore);
 
@@ -5713,45 +6541,6 @@ package body Gnat2Why.Subprograms is
                      & "function contract might not be available on "
                      & String_For_Rec & String_For_Scope, E);
                end;
-            end if;
-         end;
-
-         declare
-            Axiom_Module : constant W_Module_Id :=
-              (if Specialization_Module /= No_Symbol
-               then M_HO_Specializations (E)
-               (Specialization_Module).Rec_Ax_Module
-               else E_Module (E, Recursive_Axiom));
-            Has_Spec     : constant String :=
-              (if Specialization_Module = No_Symbol then ""
-               else "specialization of the ");
-         begin
-            My_Th :=
-              Open_Theory
-                (WF_Context, Axiom_Module,
-                 Comment =>
-                   "Module for declaring an axiom for the post condition"
-                 & " of the " & Has_Spec & "recursive function"
-                 & """" & Get_Name_String (Chars (E)) & """"
-                 & (if Sloc (E) > 0 then
-                      " defined at " & Build_Location_String (Sloc (E))
-                   else "")
-                 & ", created in " & GNAT.Source_Info.Enclosing_Entity);
-
-            if Is_Dispatching_Operation (E)
-              and then not Is_Hidden_Dispatching_Operation (E)
-            then
-               My_Dispatch_Th :=
-                 Open_Theory
-                   (WF_Context, E_Module (E, Dispatch_Recursive_Axiom),
-                    Comment =>
-                      "Module for declaring an axiom for the classwide"
-                    & " postcondition of the " & Has_Spec & "recursive"
-                    & " function """ & Get_Name_String (Chars (E)) & """"
-                    & (if Sloc (E) > 0 then
-                         " defined at " & Build_Location_String (Sloc (E))
-                      else "")
-                    & ", created in " & GNAT.Source_Info.Enclosing_Entity);
             end if;
          end;
 
@@ -5994,7 +6783,7 @@ package body Gnat2Why.Subprograms is
          --  Do not emit an axiom for E if it is inlined for proof
 
          if No (Retrieve_Inline_Annotation (E)) then
-            Emit_Post_Axiom (My_Th, Post_Axiom, Why.Inter.Standard, Pre, Post);
+            Emit_Post_Axiom (Th, Post_Axiom, Why.Inter.Standard, Pre, Post);
          end if;
 
          if Is_Dispatching_Operation (E)
@@ -6002,7 +6791,7 @@ package body Gnat2Why.Subprograms is
          then
             pragma Assert (Present (Dispatch_Pre)
                             and then Present (Dispatch_Post));
-            Emit_Post_Axiom (My_Dispatch_Th,
+            Emit_Post_Axiom (Dispatch_Th,
                              Post_Dispatch_Axiom,
                              Dispatch,
                              New_And_Pred
@@ -6023,7 +6812,7 @@ package body Gnat2Why.Subprograms is
            and then Specialization_Module = No_Symbol
          then
             pragma Assert (Present (Refined_Post));
-            Emit_Post_Axiom (My_Th,
+            Emit_Post_Axiom (Th,
                              Post_Refine_Axiom,
                              Refine,
                              Pre,
@@ -6031,33 +6820,12 @@ package body Gnat2Why.Subprograms is
          end if;
       end;
 
-      if Ekind (E) = E_Function and then Proof_Module_Cyclic (E) then
-         if Specialization_Module = No_Symbol then
-            Close_Theory (My_Th,
-                          Kind           => Axiom_Theory,
-                          Defined_Entity => E);
-         else
-            Close_Theory (My_Th, Kind => Definition_Theory);
-            Record_Extra_Dependency
-              (Defining_Module =>
-                 M_HO_Specializations (E) (Specialization_Module).Module,
-               Axiom_Module    =>
-                 M_HO_Specializations (E)
-                   (Specialization_Module).Rec_Ax_Module);
-         end if;
-
-         if Is_Dispatching_Operation (E)
-           and then not Is_Hidden_Dispatching_Operation (E)
-         then
-            Close_Theory (My_Dispatch_Th,
-                          Kind => Definition_Theory);
-            Register_Dependency_For_Soundness (My_Dispatch_Th.Module, E);
-            Record_Extra_Dependency
-              (Defining_Module => E_Module (E, Dispatch),
-               Axiom_Module    => My_Dispatch_Th.Module);
-         end if;
+      Register_Dependency_For_Soundness (Th.Module, E);
+      if Is_Dispatching_Operation (E)
+        and then not Is_Hidden_Dispatching_Operation (E)
+      then
+         Register_Dependency_For_Soundness (Dispatch_Th.Module, E);
       end if;
-      Register_Dependency_For_Soundness (My_Th.Module, E);
 
       Ada_Ent_To_Why.Pop_Scope (Symbol_Table);
    end Generate_Axiom_For_Post;
@@ -6430,25 +7198,26 @@ package body Gnat2Why.Subprograms is
    ------------------------------------
 
    procedure Generate_Subprogram_Completion (E : Callable_Kind_Id) is
-      Dispatch_Th : Theory_UC := Empty_Theory;
-      Axiom_Th    : Theory_UC;
-      Program_Th  : Theory_UC;
+      Dispatch_Th      : Theory_UC := Empty_Theory;
+      Dispatch_Post_Th : Theory_UC := Empty_Theory;
+      Post_Axiom_Th    : Theory_UC;
+      Program_Th       : Theory_UC;
    begin
-      Axiom_Th :=
-        Open_Theory
-          (WF_Context, E_Module (E, Axiom),
-           Comment =>
-             "Module for defining and post axioms for "
-           & """" & Get_Name_String (Chars (E)) & """"
-           & (if Sloc (E) > 0 then
-                " defined at " & Build_Location_String (Sloc (E))
-             else "")
-           & ", created in " & GNAT.Source_Info.Enclosing_Entity);
       Program_Th :=
         Open_Theory
           (WF_Context, E_Module (E, Program_Function_Decl),
            Comment =>
              "Module for declaring a program function for "
+           & """" & Get_Name_String (Chars (E)) & """"
+           & (if Sloc (E) > 0 then
+                " defined at " & Build_Location_String (Sloc (E))
+             else "")
+           & ", created in " & GNAT.Source_Info.Enclosing_Entity);
+      Post_Axiom_Th :=
+        Open_Theory
+          (WF_Context, E_Module (E, Fun_Post_Axiom),
+           Comment =>
+             "Module for defining a post axiom for "
            & """" & Get_Name_String (Chars (E)) & """"
            & (if Sloc (E) > 0 then
                 " defined at " & Build_Location_String (Sloc (E))
@@ -6466,9 +7235,19 @@ package body Gnat2Why.Subprograms is
            Open_Theory
              (WF_Context, E_Module (E, Dispatch_Axiom),
               Comment =>
-                "Module for declaring a program function (and possibly "
-              & "an axiom) for the dispatching variant of "
+                "Module for declaring a program function (and compatibility "
+              & "axioms) for the dispatching variant of "
               & """" & Get_Name_String (Chars (E)) & """"
+              & (if Sloc (E) > 0 then
+                   " defined at " & Build_Location_String (Sloc (E))
+                else "")
+              & ", created in " & GNAT.Source_Info.Enclosing_Entity);
+         Dispatch_Post_Th :=
+           Open_Theory
+             (WF_Context, E_Module (E, Dispatch_Post_Axiom),
+              Comment =>
+                "Module for declaring a post axiom for the dispatching variant"
+              & " of """ & Get_Name_String (Chars (E)) & """"
               & (if Sloc (E) > 0 then
                    " defined at " & Build_Location_String (Sloc (E))
                 else "")
@@ -6494,7 +7273,7 @@ package body Gnat2Why.Subprograms is
            (Program_Th, Dispatch_Th, E,
             To_Why_Id (E, Domain => EW_Prog, Local => True));
 
-         Generate_Axiom_For_Post (Axiom_Th, Dispatch_Th, E);
+         Generate_Axiom_For_Post (Post_Axiom_Th, Dispatch_Post_Th, E);
 
          if Is_Dispatching_Operation (E)
            and then not Is_Hidden_Dispatching_Operation (E)
@@ -6514,7 +7293,7 @@ package body Gnat2Why.Subprograms is
          end if;
       end;
 
-      Close_Theory (Axiom_Th,
+      Close_Theory (Post_Axiom_Th,
                     Kind           => Axiom_Theory,
                     Defined_Entity => E);
 
@@ -6525,20 +7304,21 @@ package body Gnat2Why.Subprograms is
       --  extra dependency to the dispatching definition module.
 
       if Dispatch_Th /= Empty_Theory then
+
+         --  Compatibility axioms are always sound, so we do not need a
+         --  dependency for soundness here.
+
          Close_Theory (Dispatch_Th,
                        Kind => Definition_Theory);
-
-         --  If E is known to be cyclic, the axiom for the classwide
-         --  postcondition of E will be stored in a Rec_Axiom module instead.
-
-         if not Proof_Module_Cyclic (E) then
-            Register_Dependency_For_Soundness
-              (E_Module (E, Dispatch_Axiom), E);
-         end if;
-
          Record_Extra_Dependency
            (Defining_Module => E_Module (E, Dispatch),
             Axiom_Module    => Dispatch_Th.Module);
+
+         Close_Theory (Dispatch_Post_Th,
+                       Kind => Definition_Theory);
+         Record_Extra_Dependency
+           (Defining_Module => E_Module (E, Dispatch),
+            Axiom_Module    => Dispatch_Post_Th.Module);
       end if;
 
       --  If E is a lemma procedure with an Automatic_Instantiation annotation,
@@ -6852,6 +7632,40 @@ package body Gnat2Why.Subprograms is
             end Create_Function_Decl;
 
          begin
+            --  For a volatile function that is not protected, we need to
+            --  generate a dummy effect. Protected functions are OK, they
+            --  already have their own state (the protected object).
+
+            if Has_Pragma_Volatile_Function (E) then
+               Effects_Append_To_Writes (Effects, Volatile_State);
+
+               Emit
+                 (Th,
+                  New_Global_Ref_Declaration
+                    (Ada_Node => E,
+                     Labels   => Symbol_Sets.Empty_Set,
+                     Location => No_Location,
+                     Name     => Volatile_State,
+                     Ref_Type => EW_Private_Type));
+            end if;
+
+            --  If the expression function definition might be hidden, generate
+            --  a program function without the body as a post.
+
+            if Expr_Fun_Might_Be_Hidden (E) then
+               Emit
+                 (Th,
+                  New_Namespace_Declaration
+                    (Name         => NID (To_String (WNE_Hidden_Module)),
+                     Declarations =>
+                       (1 => Create_Function_Decl
+                            (Prog_Id  => Prog_Id,
+                             Selector => Why.Inter.Standard,
+                             Pre      => Pre,
+                             Post     => Post,
+                             Effects  => Effects))));
+            end if;
+
             --  If E is an expression function, add its body to its
             --  postcondition. For higher order specializations, the expression
             --  function body is not taken into account.
@@ -6881,7 +7695,6 @@ package body Gnat2Why.Subprograms is
                begin
                   if Entity_Body_In_SPARK (E)
                     and then Has_Contracts (E, Pragma_Refined_Post)
-                    and then Specialization_Module = No_Symbol
                   then
                      Refined_Post :=
                        +New_And_Expr (+Eq_Expr, +Refined_Post, EW_Pred);
@@ -6889,23 +7702,6 @@ package body Gnat2Why.Subprograms is
                      Post := +New_And_Expr (+Eq_Expr, +Post, EW_Pred);
                   end if;
                end;
-            end if;
-
-            --  For a volatile function that is not protected, we need to
-            --  generate a dummy effect. Protected functions are OK, they
-            --  already have their own state (the protected object).
-
-            if Has_Pragma_Volatile_Function (E) then
-               Effects_Append_To_Writes (Effects, Volatile_State);
-
-               Emit
-                 (Th,
-                  New_Global_Ref_Declaration
-                    (Ada_Node => E,
-                     Labels   => Symbol_Sets.Empty_Set,
-                     Location => No_Location,
-                     Name     => Volatile_State,
-                     Ref_Type => EW_Private_Type));
             end if;
 
             Emit
@@ -6939,7 +7735,7 @@ package body Gnat2Why.Subprograms is
                Emit
                  (Th,
                   New_Namespace_Declaration
-                    (Name    => NID (To_String (WNE_Refine_Module)),
+                    (Name         => NID (To_String (WNE_Refine_Module)),
                      Declarations =>
                        (1 => Create_Function_Decl
                             (Prog_Id   => Prog_Id,
@@ -7516,10 +8312,12 @@ package body Gnat2Why.Subprograms is
                                    Binders => Pred_Binders,
                                    Typ     => EW_Bool_Type)));
 
-      Params      : Transformation_Params;
-      Axiom_Th    : Theory_UC;
-      Program_Th  : Theory_UC;
-      Dispatch_Th : Theory_UC := Empty_Theory;
+      Params            : Transformation_Params;
+      Post_Axiom_Th     : Theory_UC;
+      Expr_Fun_Axiom_Th : Theory_UC;
+      Program_Th        : Theory_UC;
+      Dispatch_Th       : Theory_UC := Empty_Theory;
+      Dispatch_Post_Th  : Theory_UC := Empty_Theory;
 
    begin
       Program_Th :=
@@ -7532,11 +8330,11 @@ package body Gnat2Why.Subprograms is
                 " defined at " & Build_Location_String (Sloc (E))
              else "")
            & ", created in " & GNAT.Source_Info.Enclosing_Entity);
-      Axiom_Th :=
+      Post_Axiom_Th :=
         Open_Theory
-          (WF_Context, E_Module (E, Axiom),
+          (WF_Context, E_Module (E, Fun_Post_Axiom),
            Comment =>
-             "Module giving a defining axiom for the expression function "
+             "Module giving a post axiom for the expression function "
            & """" & Get_Name_String (Chars (E)) & """"
            & (if Sloc (E) > 0 then
                 " defined at " & Build_Location_String (Sloc (E))
@@ -7553,9 +8351,19 @@ package body Gnat2Why.Subprograms is
            Open_Theory
              (WF_Context, E_Module (E, Dispatch_Axiom),
               Comment =>
-                "Module for declaring a program function (and possibly "
-              & "an axiom) for the dispatching variant of "
+                "Module for declaring a program function and compatibility "
+              & "axioms for the dispatching variant of "
               & """" & Get_Name_String (Chars (E)) & """"
+              & (if Sloc (E) > 0 then
+                   " defined at " & Build_Location_String (Sloc (E))
+                else "")
+              & ", created in " & GNAT.Source_Info.Enclosing_Entity);
+         Dispatch_Post_Th :=
+           Open_Theory
+             (WF_Context, E_Module (E, Dispatch_Post_Axiom),
+              Comment =>
+                "Module for declaring a post axiom for the dispatching variant"
+              & " of """ & Get_Name_String (Chars (E)) & """"
               & (if Sloc (E) > 0 then
                    " defined at " & Build_Location_String (Sloc (E))
                 else "")
@@ -7580,12 +8388,33 @@ package body Gnat2Why.Subprograms is
       Close_Theory (Program_Th,
                     Kind => Definition_Theory);
 
-      Generate_Axiom_For_Post (Axiom_Th, Dispatch_Th, E);
+      Generate_Axiom_For_Post (Post_Axiom_Th, Dispatch_Post_Th, E);
 
       if Is_Dispatching_Operation (E)
         and then not Is_Hidden_Dispatching_Operation (E)
       then
          Generate_Dispatch_Compatibility_Axioms (Dispatch_Th, E);
+      end if;
+
+      Close_Theory (Post_Axiom_Th,
+                    Kind           => Axiom_Theory,
+                    Defined_Entity => E);
+
+      --  Close the dispatching axiom module if it is not empty and add an
+      --  extra dependency to the dispatching definition module.
+
+      if Dispatch_Th /= Empty_Theory then
+         Close_Theory (Dispatch_Th,
+                       Kind => Definition_Theory);
+         Record_Extra_Dependency
+           (Defining_Module => E_Module (E, Dispatch),
+            Axiom_Module    => Dispatch_Th.Module);
+
+         Close_Theory (Dispatch_Post_Th,
+                       Kind => Definition_Theory);
+         Record_Extra_Dependency
+           (Defining_Module => E_Module (E, Dispatch),
+            Axiom_Module    => Dispatch_Post_Th.Module);
       end if;
 
       --  If the entity's body is not in SPARK, if it is inlined for proof, or
@@ -7597,24 +8426,21 @@ package body Gnat2Why.Subprograms is
         or else Is_Function_With_Side_Effects (E)
         or else Has_Pragma_Volatile_Function (E)
       then
-         Close_Theory (Axiom_Th,
-                       Kind           => Axiom_Theory,
-                       Defined_Entity => E);
          Result_Name := Why_Empty;
          Result_Is_Mutable := False;
-
-         --  Close the dispatching axiom module if it is not empty and add an
-         --  extra dependency to the dispatching definition module.
-
-         if Dispatch_Th /= Empty_Theory then
-            Close_Theory (Dispatch_Th,
-                          Kind => Definition_Theory);
-            Record_Extra_Dependency
-              (Defining_Module => E_Module (E, Dispatch),
-               Axiom_Module    => Dispatch_Th.Module);
-         end if;
          return;
       end if;
+
+      Expr_Fun_Axiom_Th :=
+        Open_Theory
+          (WF_Context, E_Module (E, Expr_Fun_Axiom),
+           Comment =>
+             "Module giving a defining axiom for the expression function "
+           & """" & Get_Name_String (Chars (E)) & """"
+           & (if Sloc (E) > 0 then
+                " defined at " & Build_Location_String (Sloc (E))
+             else "")
+           & ", created in " & GNAT.Source_Info.Enclosing_Entity);
 
       Params := (Logic_Params with delta Gen_Marker => GM_Toplevel);
 
@@ -7628,7 +8454,7 @@ package body Gnat2Why.Subprograms is
 
       if Is_Standard_Boolean_Type (Etype (E)) then
          Emit
-           (Axiom_Th,
+           (Expr_Fun_Axiom_Th,
             New_Defining_Bool_Axiom
               (Ada_Node => E,
                Name     => Logic_Id,
@@ -7641,7 +8467,7 @@ package body Gnat2Why.Subprograms is
             Equ_Ty : constant W_Type_Id := Type_Of_Node (E);
          begin
             Emit
-              (Axiom_Th,
+              (Expr_Fun_Axiom_Th,
                New_Defining_Axiom
                  (Ada_Node => E,
                   Name     => Logic_Id,
@@ -7689,7 +8515,7 @@ package body Gnat2Why.Subprograms is
                Reconstructed => Def,
                Checks        => Dummy);
             Emit
-              (Axiom_Th,
+              (Expr_Fun_Axiom_Th,
                New_Guarded_Axiom
                  (Ada_Node => E,
                   Name     => NID (Short_Name (E) & "__" & Pledge_Axiom),
@@ -7720,25 +8546,57 @@ package body Gnat2Why.Subprograms is
       Result_Name := Why_Empty;
       Result_Is_Mutable := False;
 
-      --  No filtering is necessary here, as the theory should on the contrary
-      --  use the previously defined theory for the function declaration. Pass
-      --  in the defined entity E so that the graph of dependencies between
-      --  expression functions can be built.
-      --  Attach the newly created theory as a completion of the existing one.
+      --  If the body of the expression function is hidden by default, do not
+      --  record the dependency to the defining module. It will be added on a
+      --  case by case bases if the body is made visible.
 
-      Close_Theory (Axiom_Th,
-                    Kind           => Axiom_Theory,
-                    Defined_Entity => E);
+      Close_Theory (Expr_Fun_Axiom_Th,
+                    Kind => Definition_Theory);
 
-      --  Close the dispatching axiom module if it is not empty and add an
-      --  extra dependency to the dispatching definition module.
-
-      if Dispatch_Th /= Empty_Theory then
-         Close_Theory (Dispatch_Th,
-                       Kind => Definition_Theory);
+      if not Expr_Fun_Hidden_By_Default (E) then
          Record_Extra_Dependency
-           (Defining_Module => E_Module (E, Dispatch),
-            Axiom_Module    => Dispatch_Th.Module);
+           (Axiom_Module    => Expr_Fun_Axiom_Th.Module,
+            Defining_Module => E_Module (E));
+      end if;
+
+      --  The defining axiom has the form f params = expr which is always sound
+      --  unless expr depends on f params, which should not be possible if F is
+      --  not recursive or if it structurally terminates. We don't protect the
+      --  axiom if F does not have a variant either, as in this case a check
+      --  message about termination will be emitted.
+
+      if Ekind (E) = E_Function
+        and then Is_Recursive (E)
+        and then Has_Subprogram_Variant (E)
+        and then not Is_Structural_Subprogram_Variant
+          (Get_Pragma (E, Pragma_Subprogram_Variant))
+      then
+
+         --  Raise a warning about missing definition on recursive calls
+
+         if Debug.Debug_Flag_Underscore_F then
+            declare
+               Scope               : constant Entity_Id :=
+                 Enclosing_Unit (E);
+               String_For_Scope    : constant String :=
+                 (if Present (Scope)
+                  and then Ekind (Scope) in
+                      E_Package | E_Function | E_Procedure | E_Entry
+                  and then Proof_Module_Cyclic (E, Scope)
+                  then " and on calls from enclosing unit"
+                  else "");
+            begin
+               Error_Msg_N
+                 ("info: ?"
+                  & "expression function body of subprograms with a numeric "
+                  & "variant might not be available on recursive calls"
+                  & String_For_Scope,
+                  E);
+            end;
+         end if;
+
+         Register_Proof_Cyclic_Function (E);
+         Register_Dependency_For_Soundness (E_Module (E, Expr_Fun_Axiom), E);
       end if;
    end Translate_Expression_Function_Body;
 
