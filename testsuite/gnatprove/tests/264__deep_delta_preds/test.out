@@ -138,9 +138,9 @@ deep_delta_predicate_checks.adb:166:08: info: predicate check proved (CVC5: 1 VC
 deep_delta_predicate_checks.adb:166:13: info: index check proved (CVC5: 2 VC)
 deep_delta_predicate_checks.adb:166:15: info: predicate check proved (CVC5: 2 VC)
 deep_delta_predicate_checks.adb:166:18: info: predicate check proved (CVC5: 2 VC)
-deep_delta_predicate_checks.adb:167:08: info: predicate check proved (CVC5: 1 VC)
+deep_delta_predicate_checks.adb:167:08: info: predicate check proved (Z3: 1 VC)
 deep_delta_predicate_checks.adb:167:13: info: index check proved (CVC5: 2 VC)
-deep_delta_predicate_checks.adb:167:15: info: predicate check proved (CVC5: 2 VC)
-deep_delta_predicate_checks.adb:167:18: info: predicate check proved (CVC5: 2 VC)
+deep_delta_predicate_checks.adb:167:15: info: predicate check proved (Z3: 2 VC)
+deep_delta_predicate_checks.adb:167:18: info: predicate check proved (CVC5: 1 VC; Z3: 1 VC)
 deep_delta_predicate_checks.adb:168:22: info: assertion proved (Z3: 1 VC)
 deep_delta_predicate_checks.adb:169:22: medium: assertion might fail

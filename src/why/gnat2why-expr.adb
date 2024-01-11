@@ -14786,9 +14786,10 @@ package body Gnat2Why.Expr is
          end if;
 
          Result := New_And_Pred
-           (Result,
-            Transform_Array_Component_Associations
-              (Arr, Elements_From_Nodes, Bounds, Params));
+           ((1 => Result,
+             2 => New_Well_Formed_Pred (Arr),
+             3 => Transform_Array_Component_Associations
+               (Arr, Elements_From_Nodes, Bounds, Params)));
 
          return Result;
       end Make_Defining_Proposition;
@@ -15574,7 +15575,12 @@ package body Gnat2Why.Expr is
                     (V    => V_Other_Assocs,
                      Pred => New_Conditional
                        (Condition => New_And_Pred
-                            (Pre & To_Array (Condition)),
+                            (Pre & To_Array (Condition) & New_Range_Expr
+                             (Low  => Get_Array_Attr
+                              (Arr, Attribute_First, Dim),
+                              High => Get_Array_Attr
+                                (Arr, Attribute_Last, Dim),
+                              Expr => +Indexes (Dim))),
                         Then_Part => Transform_Complex_Association
                           (Dim, Association)));
                end if;
@@ -15609,7 +15615,13 @@ package body Gnat2Why.Expr is
                   then Constrain_Value_At_Index (Update_Prefix, Indexes)
                   elsif Has_Others
                     and then (Assocs_Len > 1 or else Present (Positional))
-                  then Transform_Complex_Association (Dim, Association)
+                  then New_Conditional
+                    (Condition => New_Range_Expr
+                         (Low  => Get_Array_Attr (Arr, Attribute_First, Dim),
+                          High => Get_Array_Attr (Arr, Attribute_Last, Dim),
+                          Expr => +Indexes (Dim)),
+                     Then_Part => Transform_Complex_Association
+                       (Dim, Association))
                   else True_Pred);
 
             begin
@@ -15782,7 +15794,7 @@ package body Gnat2Why.Expr is
                                  (1 => +New_Array_Access
                                     (Ar    => Arr,
                                      Index => Indexes))))),
-                  Pred    => Other_Assocs);
+                  Pred     => Other_Assocs);
                return New_And_Pred
                  (Left  => Simple_Assocs,
                   Right => Other_Assocs);
