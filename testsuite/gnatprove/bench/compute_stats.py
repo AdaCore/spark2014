@@ -1,21 +1,16 @@
 #!/usr/bin/env python
 import argparse
 import dataclasses
-import glob
 import json
 import os.path
 import subprocess
+import sys
 from typing import List
 import config
 
 descr = """Compute statistics from json files for provers"""
 
-stats_filename = "stats.txt"
-results_filename = "results.json"
 
-
-# from StackOverflow:
-# https://stackoverflow.com/questions/51286748
 class EnhancedJSONEncoder(json.JSONEncoder):
     def default(self, o):
         if dataclasses.is_dataclass(o):
@@ -26,14 +21,7 @@ class EnhancedJSONEncoder(json.JSONEncoder):
 def parse_arguments():
     args = None
     parser = argparse.ArgumentParser(description=descr)
-    parser.add_argument(
-        "resultsdir", metavar="R", help="directory which contains proof results"
-    )
-    parser.add_argument(
-        "outdir",
-        metavar="O",
-        help="directory where results will be stored",
-    )
+    parser.add_argument("json_report", metavar="R", help="file contains proof results")
     args = parser.parse_args()
     return args
 
@@ -100,41 +88,26 @@ stats_provers_all = {}
 stats_tests_provers = {}
 
 
-def process_test_prover(json_file, testname, provername):
-    with open(json_file) as f:
-        data = json.load(f)
-    for elt in data["results"]:
-        status = elt["status"]
-        filename = os.path.basename(elt["filename"])
-        time = elt["time"] if "time" in elt else 0
-        steps = elt["steps"] if "steps" in elt else 0
-        if provername not in stats_provers_all:
-            stats_provers_all[provername] = Stats()
-        if provername not in stats_tests_provers[testname]:
-            stats_tests_provers[testname][provername] = Stats()
-        for stats_obj in [
-            stats_all_vcs,
-            stats_provers_all[provername],
-            stats_tests_provers[testname][provername],
-        ]:
-            stats_obj.add_result(testname, filename, provername, status, time, steps)
-
-
-def process_test(testdir, testname):
-    stats_tests_provers[testname] = {}
-    for json_file in glob.glob(os.path.join(testdir, "*.json")):
-        provername = os.path.splitext(os.path.basename(json_file))[0]
+def process_item(elt):
+    global stats_tests_provers, stats_provers_all, stats_all_vcs
+    status = elt["status"]
+    filename = os.path.basename(elt["filename"])
+    time = elt["time"] if "time" in elt else 0
+    steps = elt["steps"] if "steps" in elt else 0
+    testname = elt["testname"]
+    provername = elt["prover"]
+    if provername not in stats_provers_all:
+        stats_provers_all[provername] = Stats()
+    if testname not in stats_tests_provers:
+        stats_tests_provers[testname] = {}
+    if provername not in stats_tests_provers[testname]:
         stats_tests_provers[testname][provername] = Stats()
-        process_test_prover(json_file, testname, provername)
-
-
-def compute_stats(resultsdir):
-    dirs = os.listdir(resultsdir)
-    for test in dirs:
-        mydir = os.path.join(resultsdir, test)
-        if not os.path.isdir(mydir):
-            continue
-        process_test(mydir, test)
+    for stats_obj in [
+        stats_all_vcs,
+        stats_provers_all[provername],
+        stats_tests_provers[testname][provername],
+    ]:
+        stats_obj.add_result(testname, filename, provername, status, time, steps)
 
 
 def print_stats(f):
@@ -154,13 +127,11 @@ def print_stats(f):
 
 def main():
     args = parse_arguments()
-    assert os.path.exists(args.outdir)
-    compute_stats(args.resultsdir)
-    with open(os.path.join(args.outdir, stats_filename), "w") as f:
-        produce_version_output(f)
-        print_stats(f)
-    with open(os.path.join(args.outdir, results_filename), "w") as f:
-        json.dump(stats_all_vcs.entries, f, cls=EnhancedJSONEncoder)
+    with open(args.json_report, "r") as f:
+        data = json.load(f)
+    for item in data["results"]:
+        process_item(item)
+    print_stats(sys.stdout)
 
 
 if __name__ == "__main__":
