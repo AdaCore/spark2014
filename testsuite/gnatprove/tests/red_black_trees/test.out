@@ -1522,8 +1522,8 @@ red_black_trees.adb:71:13: info: loop invariant initialization proved (CVC5: 1 V
 red_black_trees.adb:71:40: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove Res (I).Count <= Res (I).Depth
 red_black_trees.adb:75:13: info: loop invariant initialization proved (CVC5: 1 VC)
 red_black_trees.adb:76:15: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove Res (I).Depth = Max or Res (I).Depth <= N
+red_black_trees.adb:84:21: medium: loop invariant might fail in first iteration, cannot prove Last (M (I).A) < Max - N [possible fix: you should consider adding a postcondition to function Last or turning it into an expression function in its unit spec]
 red_black_trees.adb:84:21: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove Last (M (I).A) < Max - N [possible fix: you should consider adding a postcondition to function Last or turning it into an expression function in its unit spec]
-red_black_trees.adb:87:20: medium: loop invariant might fail in first iteration, cannot prove Res (I).Status = (Res (Peek (T.Struct, I, Left)).Count = Res (Peek (T.Struct, I, Right)).Count)
 red_black_trees.adb:88:26: info: precondition proved (CVC5: 4 VC)
 red_black_trees.adb:89:26: info: precondition proved (CVC5: 4 VC)
 red_black_trees.adb:91:26: info: precondition proved (CVC5: 4 VC)
@@ -2456,7 +2456,7 @@ search_trees.adb:738:17: info: local subprogram "Prove_Extract_X" only analyzed 
 search_trees.adb:747:16: medium: precondition might fail, cannot prove Valid_Root (F_Old, Root), in call inlined at search_trees.adb:953
 search_trees.adb:747:55: info: range check proved (CVC5: 2 VC), in call inlined at search_trees.adb:953
 search_trees.adb:750:16: medium: precondition might fail, in call inlined at search_trees.adb:953
-search_trees.adb:750:42: info: range check proved (CVC5: 2 VC), in call inlined at search_trees.adb:953
+search_trees.adb:750:42: medium: range check might fail, cannot prove lower bound for T.Root, in call inlined at search_trees.adb:953 [reason for check: input value must fit in parameter type]
 search_trees.adb:751:25: medium: precondition might fail, in call inlined at search_trees.adb:953
 search_trees.adb:753:30: medium: assertion might fail, cannot prove Model (F_Old, Root (T)) (I).K = (Model (T.Struct, Root (T)) (I).K or Model (T.Struct, X) (I).K), in call inlined at search_trees.adb:953
 search_trees.adb:753:30: medium: precondition might fail, in call inlined at search_trees.adb:953

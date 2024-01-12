@@ -545,6 +545,7 @@ parser_utilities.ads:142:09: info: flow dependencies proved
 parser_utilities.ads:144:13: info: implicit aspect Always_Terminates on "ConvertIPV4" has been proved, subprogram will terminate
 parser_utilities.ads:144:13: info: implicit function contract might not be available on implicit recursive calls
 parser_utilities.ads:150:13: info: implicit aspect Always_Terminates on "ConvertIPV6" has been proved, subprogram will terminate
+parser_utilities.ads:150:13: info: implicit function contract might not be available on implicit recursive calls
 parser_utilities.ads:156:13: info: implicit aspect Always_Terminates on "GetRecordType" has been proved, subprogram will terminate
 process_dns_request.ads:130:50: medium: range check might fail, cannot prove lower bound for DNSKey_Record.KeyLength [reason for check: value must be convertible to the target type of the conversion] [possible fix: add precondition (DNSKey_Record.KeyLength >= Integer(Packet_Bytes_Range'First)) to subprogram at line 121]
 process_dns_request.ads:223:50: info: range check proved (CVC5: 2 VC)
@@ -955,11 +956,11 @@ zone_file_parser.adb:782:92: info: division check proved (CVC5: 1 VC)
 zone_file_parser.adb:782:96: info: division check proved (CVC5: 1 VC)
 zone_file_parser.adb:802:16: medium: assertion might fail, cannot prove BlockLengthMap (J) >= RR_Type.Nsec_Record_Type.blockLengthValue'First
 zone_file_parser.adb:812:16: info: loop invariant initialization proved (CVC5: 6 VC)
-zone_file_parser.adb:812:16: info: loop invariant preservation proved (CVC5: 6 VC)
+zone_file_parser.adb:812:16: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove NumberOfBlocks >= 1
 zone_file_parser.adb:824:49: info: range check proved (CVC5: 2 VC)
 zone_file_parser.adb:825:30: info: index check proved (CVC5: 2 VC)
 zone_file_parser.adb:826:30: info: index check proved (CVC5: 2 VC)
-zone_file_parser.adb:840:13: info: assertion proved (CVC5: 4 VC)
+zone_file_parser.adb:843:13: medium: assertion might fail, cannot prove NumberOfBlocks >= 1
 zone_file_parser.adb:851:14: info: range check proved (CVC5: 2 VC)
 zone_file_parser.adb:855:16: info: loop invariant initialization proved (CVC5: 4 VC)
 zone_file_parser.adb:855:16: info: loop invariant preservation proved (CVC5: 4 VC)
