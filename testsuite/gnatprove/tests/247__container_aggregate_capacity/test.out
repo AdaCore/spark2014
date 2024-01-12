@@ -182,7 +182,7 @@ test_capacity.adb:256:17: info: aspect Always_Terminates on "Append" has been pr
 test_capacity.adb:257:09: info: data dependencies proved
 test_capacity.adb:258:34: info: during checks for container aggregates at test_capacity.adb:253
 test_capacity.adb:258:34: info: precondition proved (CVC5: 2 VC)
-test_capacity.adb:259:17: info: postcondition proved (CVC5: 5 VC; Trivial: 1 VC; Z3: 1 VC)
+test_capacity.adb:259:17: info: postcondition proved (CVC5: 4 VC; Trivial: 1 VC; Z3: 2 VC)
 test_capacity.adb:260:18: info: precondition proved (CVC5: 1 VC)
 test_capacity.adb:264:49: info: precondition proved (CVC5: 1 VC)
 test_capacity.adb:264:62: info: precondition proved (CVC5: 1 VC)

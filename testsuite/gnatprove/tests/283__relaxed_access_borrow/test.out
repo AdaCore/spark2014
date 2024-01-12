@@ -134,7 +134,7 @@ test_relaxed_reborrow.adb:128:37: info: for pointer allocation at test_relaxed_r
 test_relaxed_reborrow.adb:128:37: info: initialization check proved (CVC5: 2 VC)
 test_relaxed_reborrow.adb:128:37: info: pointer dereference check proved (CVC5: 2 VC)
 test_relaxed_reborrow.adb:129:36: info: loop invariant initialization proved (CVC5: 1 VC)
-test_relaxed_reborrow.adb:129:36: info: loop invariant preservation proved (CVC5: 1 VC)
+test_relaxed_reborrow.adb:129:36: info: loop invariant preservation proved (Z3: 1 VC)
 test_relaxed_reborrow.adb:129:53: info: initialization check proved (CVC5: 2 VC)
 test_relaxed_reborrow.adb:131:16: info: loop invariant initialization proved (CVC5: 1 VC; Trivial: 1 VC)
 test_relaxed_reborrow.adb:131:36: info: initialization check proved (CVC5: 2 VC)
@@ -144,7 +144,7 @@ test_relaxed_reborrow.adb:132:14: info: pointer dereference check proved (CVC5: 
 test_relaxed_reborrow.adb:133:18: info: initialization check proved (CVC5: 1 VC)
 test_relaxed_reborrow.adb:133:18: info: null exclusion check proved (CVC5: 1 VC)
 test_relaxed_reborrow.adb:133:19: info: for pointer allocation at test_relaxed_reborrow.adb:25
-test_relaxed_reborrow.adb:133:19: info: initialization check proved (CVC5: 1 VC)
+test_relaxed_reborrow.adb:133:19: info: initialization check proved (Z3: 1 VC)
 test_relaxed_reborrow.adb:133:19: info: null exclusion check proved (CVC5: 1 VC)
 test_relaxed_reborrow.adb:133:19: info: pointer dereference check proved (CVC5: 1 VC)
 test_relaxed_reborrow.adb:134:23: info: initialization check proved (CVC5: 1 VC)

@@ -150,13 +150,13 @@ test_list.adb:87:22: info: assertion proved
 test_list.adb:90:07: info: precondition proved
 test_list.adb:91:07: info: precondition proved
 test_list.adb:91:27: info: precondition proved
-test_list.adb:93:22: info: assertion proved
 test_list.adb:93:22: info: precondition proved
+test_list.adb:93:22: medium: assertion might fail
 test_list.adb:94:22: info: assertion proved
 test_list.adb:94:22: info: precondition proved
 test_list.adb:94:45: info: precondition proved
-test_list.adb:95:22: info: assertion proved
 test_list.adb:95:22: info: precondition proved
+test_list.adb:95:22: medium: assertion might fail
 test_list.adb:96:22: info: assertion proved
 test_list.adb:96:22: info: precondition proved
 test_list.adb:99:07: info: precondition proved

@@ -1,6 +1,6 @@
-test_higher_order.adb:6:22: info: assertion proved (CVC5: 1 VC)
+test_higher_order.adb:6:22: info: assertion proved (altergo: 1 VC)
 test_higher_order.adb:6:27: info: precondition proved (CVC5: 1 VC; Trivial: 1 VC)
-test_higher_order.adb:11:22: info: assertion proved (CVC5: 1 VC)
+test_higher_order.adb:11:22: info: assertion proved (altergo: 1 VC)
 test_higher_order.adb:16:22: info: assertion proved (Trivial: 1 VC; altergo: 1 VC)
 test_higher_order.adb:16:54: info: index check proved (CVC5: 2 VC)
 test_higher_order.adb:17:54: info: index check proved (CVC5: 2 VC)

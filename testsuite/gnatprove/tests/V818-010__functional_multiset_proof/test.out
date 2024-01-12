@@ -1,3 +1,4 @@
+FAILED CHECK UNEXPECTED at spark-containers-functional-multisets.adb:481
 my_multiset.ads:6:01: info: expression function body of subprograms with a numeric variant might not be available on recursive calls
 my_multiset.ads:6:01: info: function contract might not be available on recursive calls
 my_multiset.ads:6:01: info: in instantiation at spark-containers-functional-multisets.adb:21
@@ -543,11 +544,11 @@ spark-containers-functional-multisets.adb:475:19: info: predicate check proved, 
 spark-containers-functional-multisets.adb:476:20: info: for Container before the call at spark-containers-functional-multisets.ads:211, in instantiation at my_multiset.ads:6
 spark-containers-functional-multisets.adb:476:20: info: invariant check proved, in instantiation at my_multiset.ads:6
 spark-containers-functional-multisets.adb:476:33: info: predicate check proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:480:13: info: assertion proved, in instantiation at my_multiset.ads:6
 spark-containers-functional-multisets.adb:480:13: info: invariant check proved, in instantiation at my_multiset.ads:6
 spark-containers-functional-multisets.adb:481:15: info: for Container before the call at spark-containers-functional-multisets.ads:74, in instantiation at my_multiset.ads:6
 spark-containers-functional-multisets.adb:481:15: info: invariant check proved, in instantiation at my_multiset.ads:6
 spark-containers-functional-multisets.adb:481:15: info: predicate check proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:481:15: medium: assertion might fail, cannot prove Nb_Occurence (Set, Element) <= Nb_Occurence (Left, Element), in instantiation at my_multiset.ads:6
 spark-containers-functional-multisets.adb:481:46: info: for Container before the call at spark-containers-functional-multisets.ads:74, in instantiation at my_multiset.ads:6
 spark-containers-functional-multisets.adb:481:46: info: invariant check proved, in instantiation at my_multiset.ads:6
 spark-containers-functional-multisets.adb:481:46: info: predicate check proved, in instantiation at my_multiset.ads:6

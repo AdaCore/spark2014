@@ -319,7 +319,7 @@ x86.ads:661:13: info: implicit aspect Always_Terminates on "ReadMem64" has been 
 x86.ads:662:06: info: data dependencies proved
 x86.ads:665:14: info: postcondition proved (CVC5: 1 VC)
 x86.ads:670:06: info: data dependencies proved
-x86.ads:671:14: info: postcondition proved (CVC5: 1 VC; Trivial: 1 VC; Z3: 1 VC)
+x86.ads:671:14: info: postcondition proved (CVC5: 2 VC; Trivial: 1 VC)
 x86.ads:678:13: info: implicit aspect Always_Terminates on "SignedLT_32" has been proved, subprogram will terminate
 x86.ads:679:14: info: postcondition proved (CVC5: 2 VC)
 x86.ads:682:13: info: implicit aspect Always_Terminates on "SignedLTE_32" has been proved, subprogram will terminate

@@ -17,6 +17,6 @@ main.adb:42:20: high: assertion might fail (e.g. when Res = (A => 0))
 main.adb:46:12: info: implicit aspect Always_Terminates on "Test_2" has been proved, subprogram will terminate
 main.adb:49:20: high: assertion might fail (e.g. when Res.A = 0 and Res.B = 0 and Res.C = 0 and Res.D = 0 and Res.E = 0)
 main.adb:53:12: info: implicit aspect Always_Terminates on "Test_3" has been proved, subprogram will terminate
-main.adb:56:20: high: assertion might fail (e.g. when Res = (A => 0, B => 0, C => (A => -1), D => (A => 0)))
+main.adb:56:20: medium: assertion might fail
 main.adb:60:12: info: implicit aspect Always_Terminates on "Test_4" has been proved, subprogram will terminate
 main.adb:63:20: high: assertion might fail (e.g. when Res = (A => (A => 0)))

@@ -31,15 +31,15 @@ skein.adb:95:43: info: range check proved (CVC5: 2 VC), in call inlined at skein
 skein.adb:96:26: warning: unused assignment, in call inlined at skein.adb:125
 skein.adb:96:72: info: range check proved (CVC5: 2 VC), in call inlined at skein.adb:125
 skein.adb:97:26: warning: unused assignment, in call inlined at skein.adb:125
-skein.adb:97:72: medium: range check might fail, in call inlined at skein.adb:125 [reason for check: result of operation must be convertible to the target type of the conversion]
+skein.adb:97:72: info: range check proved (CVC5: 2 VC), in call inlined at skein.adb:125
 skein.adb:98:26: warning: unused assignment, in call inlined at skein.adb:125
-skein.adb:98:72: medium: range check might fail, in call inlined at skein.adb:125 [reason for check: result of operation must be convertible to the target type of the conversion]
+skein.adb:98:72: info: range check proved (CVC5: 2 VC), in call inlined at skein.adb:125
 skein.adb:99:26: warning: unused assignment, in call inlined at skein.adb:125
-skein.adb:99:72: medium: range check might fail, in call inlined at skein.adb:125 [reason for check: result of operation must be convertible to the target type of the conversion]
+skein.adb:99:72: info: range check proved (CVC5: 2 VC), in call inlined at skein.adb:125
 skein.adb:100:26: warning: unused assignment, in call inlined at skein.adb:125
-skein.adb:100:72: medium: range check might fail, in call inlined at skein.adb:125 [reason for check: result of operation must be convertible to the target type of the conversion]
+skein.adb:100:72: info: range check proved (CVC5: 2 VC), in call inlined at skein.adb:125
 skein.adb:101:26: warning: unused assignment, in call inlined at skein.adb:125
-skein.adb:101:72: medium: range check might fail, in call inlined at skein.adb:125 [reason for check: result of operation must be convertible to the target type of the conversion]
+skein.adb:101:72: info: range check proved (CVC5: 2 VC), in call inlined at skein.adb:125
 skein.adb:102:26: warning: unused assignment, in call inlined at skein.adb:125
 skein.adb:102:72: medium: range check might fail, in call inlined at skein.adb:125 [reason for check: result of operation must be convertible to the target type of the conversion]
 skein.adb:107:12: info: length check proved (CVC5: 3 VC; Trivial: 1 VC)
@@ -69,17 +69,17 @@ Data Dependencies . . . . .
 Flow Dependencies . . . . .
 Initialization 7 7 . . .
 Non-Aliasing . . . . .
-Run-time Checks 21 . 9 . 12
+Run-time Checks 21 . 14 . 7
 Assertions . . . . .
 Functional Contracts . . . . .
 LSP Verification . . . . .
 Termination . . . . .
 Concurrency . . . . .
 -
-Total 28 7 (25%) 9 (32%) . 12 (43%)
+Total 28 7 (25%) 14 (50%) . 7 (25%)
 
 
-max steps used for successful proof: 375
+max steps used for successful proof: 398
 
 Analyzed 1 unit
 in unit skein, 8 subprograms and packages out of 8 analyzed
@@ -90,7 +90,7 @@ effects on parameters and Global variables of Skein.Put_64_LSB_First depends on
  effects on parameters and Global variables of Interfaces.Shift_Right
  Skein.Skein_512_Context at skein.ads:259 flow analyzed (0 errors, 0 checks, 0 warnings and 0 pragma Assume statements) and proved (0 checks)
 absence of run-time errors of Skein.Skein_512_Context fully established
- Skein.Skein_512_Final at skein.ads:131 flow analyzed (0 errors, 0 checks, 15 warnings and 0 pragma Assume statements) and not proved, 8 checks out of 20 proved
+ Skein.Skein_512_Final at skein.ads:131 flow analyzed (0 errors, 0 checks, 15 warnings and 0 pragma Assume statements) and not proved, 13 checks out of 20 proved
  Skein.Skein_512_Final.Set_B_Counter at skein.adb:92 flow analyzed (0 errors, 0 checks, 0 warnings and 0 pragma Assume statements) and proved (0 checks)
 effects on parameters and Global variables of Skein.Skein_512_Final.Set_B_Counter depends on
  effects on parameters and Global variables of Interfaces.Shift_Right

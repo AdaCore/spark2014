@@ -1,3 +1,3 @@
 large: True
 prove_all:
-  prover: ["cvc5"]
+  prover: ["cvc5", "z3"]

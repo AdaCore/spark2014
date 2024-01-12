@@ -96,7 +96,8 @@ binary_search.adb:143:46: info: pointer dereference check proved
 binary_search.adb:144:31: info: pointer dereference check proved
 binary_search.adb:145:18: info: precondition proved
 binary_search.adb:145:27: info: pointer dereference check proved
-binary_search.adb:152:14: info: postcondition proved
+binary_search.adb:152:14: medium: in inlined expression function body at binary_search.adb:71
+binary_search.adb:152:14: medium: postcondition might fail, cannot prove T.Left < T.Data
 binary_search.adb:154:53: info: precondition proved
 binary_search.adb:159:25: info: assertion proved
 binary_search.adb:160:12: info: absence of resource or memory leak proved
@@ -129,7 +130,8 @@ binary_search.adb:193:16: info: loop invariant preservation proved
 binary_search.adb:195:16: info: loop invariant initialization proved
 binary_search.adb:195:16: info: loop invariant preservation proved
 binary_search.adb:199:16: info: loop invariant initialization proved
-binary_search.adb:199:16: info: loop invariant preservation proved
+binary_search.adb:201:21: medium: in inlined expression function body at binary_search.adb:71
+binary_search.adb:201:21: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove T.Left < T.Data
 binary_search.adb:203:17: info: pointer dereference check proved
 binary_search.adb:205:24: info: pointer dereference check proved
 binary_search.adb:206:20: info: pointer dereference check proved

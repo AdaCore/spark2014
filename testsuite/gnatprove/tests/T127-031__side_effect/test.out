@@ -10,7 +10,7 @@ pre_post_exercise.ads:6:15: info: postcondition proved (CVC5: 2 VC)
 pre_post_exercise.ads:10:15: info: postcondition proved (Z3: 1 VC)
 pre_post_exercise.ads:10:33: info: range check proved (CVC5: 2 VC)
 pre_post_exercise.ads:12:20: info: initialization of "X" proved
-pre_post_exercise.ads:14:15: info: postcondition proved (CVC5: 1 VC)
+pre_post_exercise.ads:14:15: info: postcondition proved (Z3: 1 VC)
 pre_post_exercise.ads:14:21: info: range check proved (CVC5: 2 VC)
 pre_post_exercise.ads:18:14: info: implicit aspect Always_Terminates on "Model" has been proved, subprogram will terminate
 pre_post_exercise.ads:19:15: info: postcondition proved (CVC5: 1 VC)
