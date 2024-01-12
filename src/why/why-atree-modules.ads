@@ -118,7 +118,6 @@ package Why.Atree.Modules is
 
    Constr_Arrays                 : W_Module_Array (1 .. Max_Array_Dimensions);
    Unconstr_Arrays               : W_Module_Array (1 .. Max_Array_Dimensions);
-   Array_Concat_Axioms           : W_Module_Id;
    Array_Int_Rep_Comparison_Ax   : W_Module_Id;
    Array_BV8_Rep_Comparison_Ax   : W_Module_Id;
    Array_BV16_Rep_Comparison_Ax  : W_Module_Id;

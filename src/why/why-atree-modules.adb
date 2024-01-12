@@ -642,11 +642,6 @@ package body Why.Atree.Modules is
          4 => New_Module (File => Ada_Model_File,
                           Name => "Unconstr_Array_4"));
 
-      Array_Concat_Axioms :=
-        New_Module
-          (File => Gnatprove_Standard_File,
-           Name => "Array__1__Concat");
-
       Array_Int_Rep_Comparison_Ax :=
         New_Module
           (File => Ada_Model_File,
