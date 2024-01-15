@@ -95,8 +95,9 @@ def compute_results(data, outdir, testsuitedir, resultfile):
         testdata = [x for x in data if x["testname"] == test]
         with open(os.path.join(outdir, test + ".out"), "w") as f:
             for p in config.all_provers:
+                proverdata = [x for x in testdata if x["prover"] == p]
                 f.write(p + ":")
-                f.write(str(compute_stat_count(testdata)))
+                f.write(str(compute_stat_count(proverdata)))
                 f.write("\n")
         compute_test_status(testsuitedir, outdir, test, testdata, resultfile)
 
