@@ -24,6 +24,16 @@ procedure Main with SPARK_Mode is
       end if;
    end Do_Nothing;
 
+   function F (X : Int_Array) return Integer with
+     Global => null,
+     Import;
+
+   procedure Check_Congruence (X, Y : Int_Array) with
+     Pre => Eq (X, Y),
+     Post => F (X) = F (Y);
+
+   procedure Check_Congruence (X, Y : Int_Array) is null;
+
    type Int_Matrix is array (Positive range <>, Positive range <>) of Integer;
 
    function Eq (X, Y : Int_Matrix) return Boolean with
@@ -48,6 +58,16 @@ procedure Main with SPARK_Mode is
          X (1, 1) := Tmp;
       end if;
    end Do_Nothing;
+
+   function F (X : Int_Matrix) return Integer with
+     Global => null,
+     Import;
+
+   procedure Check_Congruence (X, Y : Int_Matrix) with
+     Pre => Eq (X, Y),
+     Post => F (X) = F (Y);
+
+   procedure Check_Congruence (X, Y : Int_Matrix) is null;
 begin
    null;
 end Main;
