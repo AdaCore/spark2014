@@ -114,7 +114,7 @@ procedure Iterable_For_Proof_Marking with SPARK_Mode is
    end D;
 
    --  Iterable_For_Proof with a non-sensical argument
-   X : constant Integer := 0;
+   X : Integer := 0;
    pragma Annotate (GNATprove, Iterable_For_Proof, "contains", 0);
    pragma Annotate (GNATprove, Iterable_For_Proof, "contains", X);
 

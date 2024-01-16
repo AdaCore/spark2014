@@ -134,8 +134,8 @@ package SPARK_Definition.Annotate is
    --  When such an annotation is provided for a function E, is is assumed to
    --  be an application of the logical "=" operator of Why3.
 
-   --  A pragma Annotate for ownership can be applied either on a type or a
-   --  function. On a type, it has the following form:
+   --  A pragma Annotate for ownership can be applied either on a type, a
+   --  constant, or a function. On a type, it has the following form:
    --    pragma Annotate
    --        (GNATprove, Ownership, ["Needs_Reclamation",] Entity => E);
 
@@ -169,6 +169,19 @@ package SPARK_Definition.Annotate is
 
    --  and E shall have a single parameter of a type annotated with ownership
    --  that needs reclamation and shall return a boolean.
+   --
+   --  On a constant, it has the following forms:
+   --    pragma Annotate
+   --        (GNATprove, Ownership, "Reclaimed_Value", Entity => E);
+
+   --  where
+   --    GNATprove           is a fixed identifier
+   --    Ownership           is a fixed identifier
+   --    Reclaimed_Value     is a string
+   --    E                   is a constanr entity
+
+   --  and E shall be a constant of a type annotated with ownership that needs
+   --  reclamation.
 
    --  When such an annotation is provided for a function E, this function is
    --  used when checking reclamation of objects of E's formal parameter type.
@@ -401,22 +414,26 @@ package SPARK_Definition.Annotate is
      with Pre => Is_Type (E) and then Has_Ownership_Annotation (E);
    --  Return True if E needs checks to ensure that the memory is reclaimed
 
-   procedure Get_Reclamation_Check_Function
-     (E              : Entity_Id;
-      Check_Function : out Entity_Id;
-      Reclaimed      : out Boolean)
+   type Reclamation_Kind is
+     (Reclaimed_Value, Is_Reclaimed, Needs_Reclamation);
+
+   procedure Get_Reclamation_Entity
+     (E                  : Entity_Id;
+      Reclamation_Entity : out Entity_Id;
+      Kind               : out Reclamation_Kind)
    with Pre => Is_Type (E)
      and then Has_Ownership_Annotation (E)
      and then Needs_Reclamation (E);
-   --  Retrieve the check function for a type which needs reclamation if any
+   --  Retrieve the check function or constant for a type which needs
+   --  reclamation if any.
 
-   function Get_Reclamation_Check_Function (E : Entity_Id) return Entity_Id
+   function Get_Reclamation_Entity (E : Entity_Id) return Entity_Id
    with Pre => Is_Type (E)
      and then Has_Ownership_Annotation (E)
      and then Needs_Reclamation (E);
    --  Same as above but only returns the check function
 
-   function Get_Ownership_Function_From_Pragma
+   function Get_Ownership_Entity_From_Pragma
      (N  : Node_Id;
       Ty : Entity_Id) return Entity_Id
    with Pre => Is_Pragma_Annotate_GNATprove (N);

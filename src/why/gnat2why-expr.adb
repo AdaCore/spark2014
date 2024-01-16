@@ -6688,25 +6688,45 @@ package body Gnat2Why.Expr is
             --  Get the check function for Ty if any
 
             declare
-               Check_Function : Entity_Id;
-               Check_Param    : Item_Type;
-               Is_Reclaimed   : Boolean;
+               Reclamation_Entity : Entity_Id;
+               Check_Param        : Item_Type;
+               Kind               : Reclamation_Kind;
 
             begin
-               Get_Reclamation_Check_Function
-                 (Retysp (Ty), Check_Function, Is_Reclaimed);
+               Get_Reclamation_Entity
+                 (Retysp (Ty), Reclamation_Entity, Kind);
 
-               --  If no check functions are supplied, consider the value is
-               --  never reclaimed. It can still have been moved.
+               --  If no check functions or constants are supplied, consider
+               --  the value is never reclaimed. It can still have been moved.
 
-               if No (Check_Function) then
+               if No (Reclamation_Entity) then
                   return Pred_Of_Boolean_Term
                     (+New_Record_Is_Moved_Access (Ty, +Expr));
+
+               elsif Kind = Reclaimed_Value then
+                  pragma Assert (Ekind (Reclamation_Entity) = E_Constant);
+                  return New_Or_Pred
+                    (Left   => Pred_Of_Boolean_Term
+                       (+New_Record_Is_Moved_Access (Ty, +Expr)),
+                     Right  => +New_Ada_Equality
+                       (Typ    => Retysp (Ty),
+                        Domain => EW_Pred,
+                        Left   => Insert_Simple_Conversion
+                          (Expr   => +Expr,
+                           Domain => EW_Term,
+                           To     => Type_Of_Node (Reclamation_Entity)),
+                        Right  => Transform_Identifier
+                          (Params => Logic_Params,
+                           Expr   => Reclamation_Entity,
+                           Ent    => Reclamation_Entity,
+                           Domain => EW_Term)));
+
                else
+                  pragma Assert (Ekind (Reclamation_Entity) = E_Function);
                   declare
                      Check_Params : constant Item_Array :=
                        Compute_Subprogram_Parameters
-                         (Check_Function, EW_Term);
+                         (Reclamation_Entity, EW_Term);
                   begin
                      pragma Assert (Check_Params'Length = 1);
                      Check_Param := Check_Params (Check_Params'First);
@@ -6718,12 +6738,13 @@ package body Gnat2Why.Expr is
                      Right  => New_Comparison
                        (Symbol => Why_Eq,
                         Left   =>
-                          (if Is_Reclaimed then True_Term else False_Term),
+                          (if Kind = Is_Reclaimed then True_Term
+                           else False_Term),
                         Right  => New_Call
                           (Name => +Transform_Identifier
                                (Params => Logic_Params,
-                                Expr   => Check_Function,
-                                Ent    => Check_Function,
+                                Expr   => Reclamation_Entity,
+                                Ent    => Reclamation_Entity,
                                 Domain => EW_Term),
                            Args =>
                              (1 => Insert_Simple_Conversion
