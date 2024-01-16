@@ -160,7 +160,7 @@ amortized_queue.ads:67:14: info: postcondition proved (CVC5: 1 VC)
 amortized_queue.ads:67:14: info: precondition proved (CVC5: 1 VC)
 amortized_queue.ads:67:28: info: precondition proved (CVC5: 3 VC)
 amortized_queue.ads:69:13: info: implicit aspect Always_Terminates on "Tail" has been proved, subprogram will terminate
-amortized_queue.ads:72:06: info: precondition proved (CVC5: 3 VC)
+amortized_queue.ads:72:06: info: precondition proved (CVC5: 1 VC; Z3: 2 VC)
 amortized_queue.ads:72:06: medium: postcondition might fail, cannot prove Model (Q) = Model (Tail'Result) & Last_Element (Model (Q))
 amortized_queue.ads:72:18: info: precondition proved (CVC5: 3 VC)
 amortized_queue.ads:72:38: info: precondition proved (CVC5: 1 VC)

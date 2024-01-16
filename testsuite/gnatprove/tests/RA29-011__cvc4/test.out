@@ -1,14 +1,11 @@
 
-Copyright (c) 2009-2022 by the authors and their institutional
+Copyright (c) 2009-2023 by the authors and their institutional
 affiliations listed at https://cvc5.github.io/people.html
 
 cvc5 is open-source and is covered by the BSD license (modified).
 
 THIS SOFTWARE IS PROVIDED AS-IS, WITHOUT ANY WARRANTIES.
 USE AT YOUR OWN RISK.
-
-cvc5 incorporates code from ANTLR3 (http://www.antlr.org).
-See licenses/antlr3-LICENSE for copyright and licensing information.
 
 This version of cvc5 is linked against the following non-(L)GPL'ed
 third party libraries.
@@ -17,7 +14,7 @@ third party libraries.
   See https://github.com/arminbiere/cadical for copyright information.
 
   SymFPU - The Symbolic Floating Point Unit
-  See https://github.com/martin-cs/symfpu/tree/cvc5 for copyright information.
+  See https://github.com/martin-cs/symfpu/tree/CVC4 for copyright information.
 
 This version of cvc5 is linked against the following third party
 libraries covered by the LGPLv3 license.
@@ -34,9 +31,9 @@ See the file COPYING (distributed with the source code, and with
 all binaries) for the full cvc5 copyright, licensing, and (lack of)
 warranty information.
 
-version       : 1.0.5
+version       : 1.1.0
 
-library       : 1.0.5
+library       : 1.1.0
 
 debug code    : no
 statistics    : yes

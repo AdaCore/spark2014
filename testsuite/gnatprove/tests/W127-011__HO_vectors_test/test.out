@@ -128,5 +128,5 @@ use_sequence_ho.adb:90:19: info: postcondition proved (Z3: 1 VC)
 use_sequence_ho.adb:90:59: info: precondition proved (CVC5: 1 VC)
 use_sequence_ho.adb:94:16: info: implicit aspect Always_Terminates on "F" has been proved, subprogram will terminate
 use_sequence_ho.adb:94:19: warning: unused variable "I"
-use_sequence_ho.adb:99:17: info: postcondition proved (CVC5: 1 VC)
+use_sequence_ho.adb:99:17: info: postcondition proved (Z3: 1 VC)
 use_sequence_ho.adb:99:40: info: precondition proved (CVC5: 1 VC)

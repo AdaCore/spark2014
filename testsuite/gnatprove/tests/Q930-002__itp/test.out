@@ -115,7 +115,7 @@ bounded_dynamic_arrays.ads:28:13: info: implicit aspect Always_Terminates on "Nu
 bounded_dynamic_arrays.ads:29:14: info: postcondition proved (CVC5: 3 VC), in instantiation at bounded_dynamic_strings.ads:5
 bounded_dynamic_arrays.ads:33:13: info: implicit aspect Always_Terminates on "Instance" has been proved, subprogram will terminate, in instantiation at bounded_dynamic_strings.ads:5
 bounded_dynamic_arrays.ads:34:21: info: range check proved (CVC5: 2 VC), in instantiation at bounded_dynamic_strings.ads:5
-bounded_dynamic_arrays.ads:35:14: info: postcondition proved (CVC5: 3 VC), in instantiation at bounded_dynamic_strings.ads:5
+bounded_dynamic_arrays.ads:35:14: info: postcondition proved (CVC5: 2 VC; Z3: 1 VC), in instantiation at bounded_dynamic_strings.ads:5
 bounded_dynamic_arrays.ads:36:48: info: range check proved (CVC5: 2 VC), in instantiation at bounded_dynamic_strings.ads:5
 bounded_dynamic_arrays.ads:39:13: info: implicit aspect Always_Terminates on "Instance" has been proved, subprogram will terminate, in instantiation at bounded_dynamic_strings.ads:5
 bounded_dynamic_arrays.ads:41:14: info: postcondition proved (CVC5: 3 VC), in instantiation at bounded_dynamic_strings.ads:5

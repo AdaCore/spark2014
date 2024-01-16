@@ -24,8 +24,8 @@ call_dispatch.adb:19:04: warning: assuming "P" always terminates
 call_dispatch.adb:19:04: warning: no Always_Terminates aspect available for "P"
 call_dispatch.adb:19:23: warning: "Y2" is set by "P" but not used after the call
 call_dispatch.adb:19:35: warning: "Z2" is set by "P" but not used after the call
-call_dispatch.adb:20:19: info: assertion proved (CVC5: 1 VC)
-call_dispatch.adb:21:19: info: assertion proved (CVC5: 1 VC)
+call_dispatch.adb:20:19: info: assertion proved (altergo: 1 VC)
+call_dispatch.adb:21:19: info: assertion proved (altergo: 1 VC)
 call_dispatch.adb:22:04: info: precondition proved (CVC5: 1 VC)
 call_dispatch.adb:22:04: info: tag check proved (CVC5: 2 VC)
 call_dispatch.adb:22:04: warning: assuming "P" always terminates
@@ -36,11 +36,11 @@ call_dispatch.adb:22:35: warning: "Z2" is set by "P" but not used after the call
 call_dispatch.adb:22:39: warning: "Z3" is set by "P" but not used after the call
 call_dispatch.adb:22:47: warning: "W2" is set by "P" but not used after the call
 call_dispatch.adb:22:51: warning: "W3" is set by "P" but not used after the call
-call_dispatch.adb:23:19: info: assertion proved (CVC5: 1 VC)
-call_dispatch.adb:24:19: info: assertion proved (CVC5: 1 VC)
-call_dispatch.adb:25:19: info: assertion proved (CVC5: 1 VC)
+call_dispatch.adb:23:19: info: assertion proved (altergo: 1 VC)
+call_dispatch.adb:24:19: info: assertion proved (altergo: 1 VC)
+call_dispatch.adb:25:19: info: assertion proved (altergo: 1 VC)
 call_dispatch.adb:25:26: info: tag check proved (CVC5: 1 VC)
-call_dispatch.adb:26:19: info: assertion proved (CVC5: 1 VC)
+call_dispatch.adb:26:19: info: assertion proved (altergo: 1 VC)
 call_dispatch.adb:26:26: info: tag check proved (CVC5: 1 VC)
 dispatch.ads:2:03: info: flow dependencies proved
 dispatch.ads:13:13: info: implicit aspect Always_Terminates on "Id" has been proved, subprogram will terminate
