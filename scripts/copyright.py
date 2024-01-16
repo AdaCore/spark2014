@@ -11,16 +11,22 @@ max_copyright_lines = 30
 expected_length = 78
 
 # current year
-current_year = 2024
+current_year = 2025
 
-copyright_line_regex = re.compile(r"--.*Copyright \(C\) (\d\d\d\d)(-\d\d\d\d)?,(.*)--")
+box_copyright_line_regex = re.compile(
+    r"--.*Copyright \(C\) (\d\d\d\d)(-\d\d\d\d)?,(.*)--"
+)
+
+line_copyright_line_regex = re.compile(
+    r"(--.*Copyright \(C\) )(\d\d\d\d)(-\d\d\d\d)?(,.*)"
+)
 
 matched = False
 
 
 def process_line(line):
     global matched
-    m = copyright_line_regex.match(line)
+    m = box_copyright_line_regex.match(line)
     if m:
         matched = True
         year = m.group(1)
@@ -30,21 +36,21 @@ def process_line(line):
         first_fill = " " * (free_chars // 2 + free_chars % 2)
         last_fill = " " * (free_chars // 2)
         line = (
-            "--"
-            + first_fill
-            + "Copyright (C) "
-            + str(year)
-            + "-"
-            + str(current_year)
-            + ", "
-            + name
-            + last_fill
-            + "--"
-            + "\n"
+            f"--{first_fill}Copyright (C) {year}-{current_year}, "
+            f"{name}{last_fill}--\n"
         )
         return line
     else:
-        return line
+        m = line_copyright_line_regex.match(line)
+        if m:
+            matched = True
+            prelude = m.group(1)
+            year = m.group(2)
+            name = m.group(4)
+            line = f"{prelude}{year}-{current_year}{name}\n"
+            return line
+        else:
+            return line
 
 
 def process_file(fn):
