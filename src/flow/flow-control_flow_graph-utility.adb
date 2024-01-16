@@ -90,11 +90,12 @@ package body Flow.Control_Flow_Graph.Utility is
    begin
       for Part of Get_Reclaimed_Parts (Typ) loop
          declare
-            Func : constant Entity_Id :=
-              Get_Reclamation_Check_Function (Part);
+            Ent : constant Entity_Id := Get_Reclamation_Entity (Part);
          begin
-            if Present (Func) then
-               Result.Include (Func);
+            --  For now, only collect functions
+
+            if Present (Ent) and then Ekind (Ent) = E_Function then
+               Result.Include (Ent);
             end if;
          end;
       end loop;

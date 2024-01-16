@@ -5425,6 +5425,15 @@ package body Gnat2Why.Borrow_Checker is
          return;
       end if;
 
+      --  Nothing to do if Expr is statically reclaimed (ie. stands for null)
+
+      if (if Expr.Is_Ent then Is_Statically_Reclaimed (Expr.Ent)
+          else Nkind (Expr.Expr) in N_Identifier | N_Expanded_Name
+          and then Is_Statically_Reclaimed (Entity (Expr.Expr)))
+      then
+         return;
+      end if;
+
       --  Identify the root type for the path
 
       Root := Unique_Entity_In_SPARK (Root);

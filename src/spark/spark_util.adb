@@ -3846,6 +3846,18 @@ package body SPARK_Util is
           Get_Specialized_Parameters (Call, Specialized_Entities).Is_Empty;
    end Is_Specialized_Call;
 
+   -----------------------------
+   -- Is_Statically_Reclaimed --
+   -----------------------------
+
+   function Is_Statically_Reclaimed (Obj : Object_Kind_Id) return Boolean is
+   begin
+      return Ekind (Obj) = E_Constant
+        and then Has_Ownership_Annotation (Etype (Obj))
+        and then Needs_Reclamation (Etype (Obj))
+        and then Get_Reclamation_Entity (Etype (Obj)) = Obj;
+   end Is_Statically_Reclaimed;
+
    ---------------------------
    -- Is_Strict_Reborrow_Of --
    ---------------------------

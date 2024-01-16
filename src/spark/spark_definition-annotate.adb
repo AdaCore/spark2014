@@ -249,8 +249,8 @@ package body SPARK_Definition.Annotate is
    type Ownership_Annotation (Needs_Reclamation : Boolean := False) is record
       case Needs_Reclamation is
          when True =>
-            Check_Function : Entity_Id := Empty;
-            Reclaimed      : Boolean := False;
+            Reclamation_Entity : Entity_Id := Empty;
+            Reclaimed          : Reclamation_Kind := Reclaimed_Value;
          when False =>
             null;
       end case;
@@ -343,6 +343,8 @@ package body SPARK_Definition.Annotate is
       --  For subprogram/packages, placed at specification.
       Placed_At_Task_Specification,
       --  For task types, placed at specification.
+      Placed_At_Declaration,
+      --  For constants: placed at declaration (full or private view)
       Placed_At_Full_View, --  For type: placed at full view declaration
       Placed_At_Private_View); --  For type: placed at private view declaration
 
@@ -381,6 +383,7 @@ package body SPARK_Definition.Annotate is
       Ok        : out Boolean)
      with Pre =>
        Ekind (E) in Subprogram_Kind
+                  | E_Constant
                   | E_Package
                   | Generic_Unit_Kind
                   | E_Task_Type
@@ -1549,7 +1552,9 @@ package body SPARK_Definition.Annotate is
          when E_Package => Continue := True;
          when Subprogram_Kind
             | Type_Kind
-            | Entry_Kind =>
+            | Entry_Kind
+            | E_Constant
+         =>
             Continue := Ignore_SPARK_Status or else In_SPARK (E);
          when Generic_Unit_Kind =>
             --  For generic units: SPARK does not verify anything,
@@ -1561,11 +1566,16 @@ package body SPARK_Definition.Annotate is
          when others =>
             Error_Msg_N_If
               ("entity argument of pragma Annotate "
-               & Prag_Name & " shall be a subprogram, a type or a package",
+               & Prag_Name & " shall be a subprogram, a type, a constant,"
+               & " or a package",
                Arg);
             Continue := False;
       end case;
    end Check_Annotate_Entity_Argument;
+
+   ------------------------------
+   -- Check_Annotate_Placement --
+   ------------------------------
 
    procedure Check_Annotate_Placement
      (Ent            : Entity_Id;
@@ -1623,10 +1633,12 @@ package body SPARK_Definition.Annotate is
                      Target := Declaration_Node (Ent);
                   when others => raise Program_Error;
                end case;
-            when Placed_At_Full_View
+            when Placed_At_Declaration
+               | Placed_At_Full_View
                | Placed_At_Private_View
-               | Placed_At_Task_Specification =>
-               pragma Assert (Ekind (Ent) in Type_Kind);
+               | Placed_At_Task_Specification
+            =>
+               pragma Assert (Ekind (Ent) in Type_Kind | E_Constant);
                Target := Unique_Entity (Ent);
          end case;
          loop
@@ -1649,6 +1661,9 @@ package body SPARK_Definition.Annotate is
                when Placed_At_Private_View =>
                   exit when Nkind (Cursor) in N_Private_Type_Declaration
                                             | N_Private_Extension_Declaration
+                    and then Unique_Defining_Entity (Cursor) = Target;
+               when Placed_At_Declaration =>
+                  exit when Nkind (Cursor) = N_Object_Declaration
                     and then Unique_Defining_Entity (Cursor) = Target;
             end case;
             if Decl_Starts_Pragma_Annotate_Range (Cursor)
@@ -1718,6 +1733,14 @@ package body SPARK_Definition.Annotate is
                Prag,
                Prag_Name,
                "declaration of task " & Source_Name (E),
+               Ok);
+         when E_Constant =>
+            Check_Annotate_Placement
+              (E,
+               Placed_At_Declaration,
+               Prag,
+               Prag_Name,
+               "declaration of constant " & Source_Name (E),
                Ok);
          when others =>
             pragma Assert (False);
@@ -3922,18 +3945,21 @@ package body SPARK_Definition.Annotate is
                         & ", ...)",
                         Ent);
 
-                  elsif Present (Ownership_Annotations (Typ).Check_Function)
+                  elsif Present
+                    (Ownership_Annotations (Typ).Reclamation_Entity)
                   then
                      Error_Msg_N_If
-                       ("a single ownership function shall be supplied for a "
-                        & "given type annotated with Ownership",
+                       ("a single ownership function or constant shall be"
+                        & " supplied for a given type annotated with"
+                        & " Ownership",
                         Ent);
                      Error_Msg_NE_If
-                       ("\the function & conflicts with the current"
-                        & " annotation",
-                        Ent, Ownership_Annotations (Typ).Check_Function);
+                       ("\& conflicts with the current annotation",
+                        Ent, Ownership_Annotations (Typ).Reclamation_Entity);
 
-                  elsif Scope (Typ) /= Scope (Ent) then
+                  elsif List_Containing (Parent (Typ)) /=
+                    List_Containing (Prag)
+                  then
                      Error_Msg_N_If
                        ("ownership function shall be declared in same "
                         & "declaration list as input type",
@@ -3957,9 +3983,10 @@ package body SPARK_Definition.Annotate is
                         return;
                      end if;
 
-                     Ownership_Annotations (Typ).Check_Function := Ent;
+                     Ownership_Annotations (Typ).Reclamation_Entity := Ent;
                      Ownership_Annotations (Typ).Reclaimed :=
-                       (Kind = "is_reclaimed");
+                       (if Kind = "is_reclaimed" then Is_Reclaimed
+                        else Needs_Reclamation);
 
                   --  Nothing else is allowed
 
@@ -3973,10 +4000,116 @@ package body SPARK_Definition.Annotate is
                   end if;
                end;
             end if;
+
+         elsif Ekind (Ent) = E_Constant then
+
+            --  Check that an extra parameter is provided
+
+            if No (Extra_Exp) then
+               Error_Msg_N_If
+                 ("third argument of " & Aspect_Or_Pragma
+                  & " Annotate Ownership on a"
+                  & " constant must be ""Reclaimed_Value""",
+                  Last_Exp);
+
+            else
+               --  Annotation for a type that is not in SPARK is irrelevant
+
+               if not In_SPARK (Etype (Ent)) then
+                  return;
+               end if;
+
+               --  Constant must be in SPARK
+
+               if not In_SPARK (Ent) then
+                  Mark_Violation (Last_Exp, From => Ent);
+                  return;
+               end if;
+
+               declare
+                  Typ : constant Entity_Id := Retysp (Etype (Ent));
+
+               begin
+                  if not Ownership_Annotations.Contains (Typ) then
+                     Error_Msg_N_If
+                       ("the type of a constant annotated with Ownership must"
+                        & " be annotated with Ownership",
+                        Ent);
+                     Error_Msg_N_If
+                       ("\consider annotating it with a pragma Annotate "
+                        & "('G'N'A'Tprove, Ownership, ""Needs_Reclamation"""
+                        & ", ...)",
+                        Ent);
+
+                  elsif not Ownership_Annotations (Typ).Needs_Reclamation then
+                     Error_Msg_N_If
+                       ("the type of a constant annotated with Ownership shall"
+                        & " need reclamation",
+                        Ent);
+                     Error_Msg_N_If
+                       ("\consider annotating it with a pragma Annotate "
+                        & "('G'N'A'Tprove, Ownership, ""Needs_Reclamation"""
+                        & ", ...)",
+                        Ent);
+
+                  elsif Is_Tagged_Type (Typ) then
+                     Error_Msg_N_If
+                       ("constant annotated with Ownership cannot be used on"
+                        & " a tagged type", Ent);
+                     Error_Msg_N_If
+                       ("\use a reclamation function instead", Ent);
+
+                  elsif
+                    Present (Ownership_Annotations (Typ).Reclamation_Entity)
+                  then
+                     Error_Msg_N_If
+                       ("a single ownership function or constant shall be"
+                        & " supplied for a given type annotated with"
+                        & " Ownership",
+                        Ent);
+                     Error_Msg_NE_If
+                       ("\& conflicts with the current annotation",
+                        Ent, Ownership_Annotations (Typ).Reclamation_Entity);
+
+                  elsif List_Containing (Parent (Typ)) /=
+                    List_Containing (Prag)
+                  then
+                     Error_Msg_N_If
+                       ("constant annotated with ownership shall be declared "
+                        & "in same declaration list as its type",
+                        Ent);
+
+                  --  pragma Annotate
+                  --   (GNATprove, Ownership, "Reclaimed_Value", Ent);
+
+                  elsif Kind = "reclaimed_value" then
+
+                     --  Check placement
+
+                     Check_Annotate_Placement (Ent, Prag, "Ownership", Ok);
+                     if not Ok then
+                        return;
+                     end if;
+
+                     Ownership_Annotations (Typ).Reclamation_Entity := Ent;
+                     Ownership_Annotations (Typ).Reclaimed :=
+                       Reclaimed_Value;
+
+                  --  Nothing else is allowed
+
+                  else
+                     Error_Msg_N_If
+                       ("third argument of " & Aspect_Or_Pragma
+                        & " Annotate Ownership on a"
+                        & " constant must be ""Reclaimed_Value""",
+                        Extra_Exp);
+                  end if;
+               end;
+            end if;
          else
             Error_Msg_N_If
               ("the entity of a pragma Annotate Ownership "
-               & "shall be either a type or a function",
+               & "shall be either a type, a constant, or a function",
                Ent);
          end if;
       end;
@@ -4634,10 +4767,10 @@ package body SPARK_Definition.Annotate is
       (Higher_Order_Spec_Annotations.Element (E));
 
    ----------------------------------------
-   -- Get_Ownership_Function_From_Pragma --
+   -- Get_Ownership_Entity_From_Pragma --
    ----------------------------------------
 
-   function Get_Ownership_Function_From_Pragma
+   function Get_Ownership_Entity_From_Pragma
      (N  : Node_Id;
       Ty : Entity_Id) return Entity_Id
    is
@@ -4664,42 +4797,46 @@ package body SPARK_Definition.Annotate is
          end if;
 
          declare
-            Fun : constant Entity_Id := Entity (Exp);
+            Ent : constant Entity_Id := Entity (Exp);
          begin
-            if Ekind (Fun) = E_Function
-              and then Present (First_Formal (Fun))
-              and then Root_Type (Etype (First_Formal (Fun))) = Root_Type (Ty)
+            if Ekind (Ent) = E_Function
+              and then Present (First_Formal (Ent))
+              and then Root_Type (Etype (First_Formal (Ent))) = Root_Type (Ty)
             then
-               return Fun;
+               return Ent;
+            elsif Ekind (Ent) = E_Constant
+              and then Root_Type (Etype (Ent)) = Root_Type (Ty)
+            then
+               return Ent;
             else
                return Empty;
             end if;
          end;
       end;
-   end Get_Ownership_Function_From_Pragma;
+   end Get_Ownership_Entity_From_Pragma;
 
    ------------------------------------
    -- Get_Reclamation_Check_Function --
    ------------------------------------
 
-   function Get_Reclamation_Check_Function (E : Entity_Id) return Entity_Id is
+   function Get_Reclamation_Entity (E : Entity_Id) return Entity_Id is
       use Node_To_Ownership_Maps;
       R : constant Entity_Id := Root_Retysp (E);
    begin
-      return Ownership_Annotations (R).Check_Function;
-   end Get_Reclamation_Check_Function;
+      return Ownership_Annotations (R).Reclamation_Entity;
+   end Get_Reclamation_Entity;
 
-   procedure Get_Reclamation_Check_Function
-     (E              : Entity_Id;
-      Check_Function : out Entity_Id;
-      Reclaimed      : out Boolean)
+   procedure Get_Reclamation_Entity
+     (E                  : Entity_Id;
+      Reclamation_Entity : out Entity_Id;
+      Kind               : out Reclamation_Kind)
    is
       use Node_To_Ownership_Maps;
       R : constant Entity_Id := Root_Retysp (E);
    begin
-      Check_Function := Ownership_Annotations (R).Check_Function;
-      Reclaimed := Ownership_Annotations (R).Reclaimed;
-   end Get_Reclamation_Check_Function;
+      Reclamation_Entity := Ownership_Annotations (R).Reclamation_Entity;
+      Kind := Ownership_Annotations (R).Reclaimed;
+   end Get_Reclamation_Entity;
 
    ------------------------------
    -- Has_Aggregate_Annotation --
@@ -5060,20 +5197,20 @@ package body SPARK_Definition.Annotate is
         and then Is_Nouveau_Type (E)
         and then Has_Ownership_Annotation (E)
         and then Needs_Reclamation (E)
-        and then No (Get_Reclamation_Check_Function (E))
+        and then No (Get_Reclamation_Entity (E))
       then
          declare
             Decl_Node : constant Node_Id := Declaration_Node (E);
             Cur       : Node_Id;
-            Fun       : Entity_Id := Empty;
+            Ent       : Entity_Id := Empty;
          begin
             if Is_List_Member (Decl_Node) then
                Cur := Next (Decl_Node);
                while Present (Cur) loop
                   if Is_Pragma_Annotate_GNATprove (Cur) then
-                     Fun := Get_Ownership_Function_From_Pragma (Cur, E);
-                     if Present (Fun) then
-                        Queue_For_Marking (Fun);
+                     Ent := Get_Ownership_Entity_From_Pragma (Cur, E);
+                     if Present (Ent) then
+                        Queue_For_Marking (Ent);
                         exit;
                      end if;
                   end if;
@@ -5081,13 +5218,13 @@ package body SPARK_Definition.Annotate is
                end loop;
             end if;
 
-            if No (Fun)
+            if No (Ent)
               and then Emit_Warning_Info_Messages
               and then Debug.Debug_Flag_Underscore_F
             then
                Error_Msg_NE
-                 ("info: ?no reclamation function found for type with "
-                  & "ownership &", E, E);
+                 ("info: ?no reclamation function nor reclaimed value found "
+                  & "for type with ownership &", E, E);
                Error_Msg_N
                  ("\checks for ressource or memory reclamation will be"
                   & " unprovable", E);
