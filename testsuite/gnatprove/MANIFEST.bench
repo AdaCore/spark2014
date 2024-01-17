@@ -5,7 +5,6 @@ binary_search
 binary_search_unconstrained
 bitwalker
 cartesian_trees
-crazyflie
 database
 euclidian_division
 evoting
@@ -15,7 +14,6 @@ gcd
 ghc_sort
 heatingsystem
 intro
-ipstack
 linear_search
 longest_common_prefix
 M607-025__rev_stack
@@ -29,7 +27,6 @@ OC08-050__functional_sets
 openETCS
 P518-021__frame_for_max
 P518-021__frame_for_swap
-P725-029__indef_hashed_set
 PA25-037__bit_set
 pair_insertion_sort
 patience

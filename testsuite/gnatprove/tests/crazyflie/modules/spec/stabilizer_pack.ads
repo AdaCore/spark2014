@@ -1,5 +1,5 @@
 with Ada.Real_Time;
-with Interfaces.C.Extensions; use Interfaces.C.Extensions;
+with Interfaces.C.Extensions; use Interfaces.C.Extensions; use Interfaces.C;
 
 with Types; use Types;
 with IMU_Pack; use IMU_Pack;
