@@ -5427,9 +5427,8 @@ package body Gnat2Why.Borrow_Checker is
 
       --  Nothing to do if Expr is statically reclaimed (ie. stands for null)
 
-      if (if Expr.Is_Ent then Is_Statically_Reclaimed (Expr.Ent)
-          else Nkind (Expr.Expr) in N_Identifier | N_Expanded_Name
-          and then Is_Statically_Reclaimed (Entity (Expr.Expr)))
+      if (if Expr.Is_Ent then Is_Statically_Reclaimed_Obj (Expr.Ent)
+          else Is_Statically_Reclaimed_Expr (Expr.Expr))
       then
          return;
       end if;

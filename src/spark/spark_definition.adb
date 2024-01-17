@@ -974,18 +974,21 @@ package body SPARK_Definition is
 
       function Can_Be_Duplicated (N : Node_Id) return Boolean is
       begin
-         --  If the type is not deep, then no aliases can occur
+         --  If the type is not deep, or if N does not own resources, then no
+         --  aliases can occur.
 
-         if not Is_Deep (Etype (N)) then
+         if not Is_Deep (Etype (N))
+           or else Is_Statically_Reclaimed_Expr (N)
+         then
             return True;
          end if;
 
          case Nkind (N) is
 
-            --  Null can always be safely duplicated
+            --  Null is statically reclaimed
 
             when N_Null =>
-               return True;
+               raise Program_Error;
 
             --  Allocators are fine as long as the allocated value itself
             --  can be duplicated.
@@ -2378,10 +2381,10 @@ package body SPARK_Definition is
                Eq_On_Access : constant Boolean :=
                  not Is_Concurrent_Type (Retysp (Etype (Left_Opnd (N))))
                  and then Predefined_Eq_Uses_Pointer_Eq (Etype (Left_Opnd (N)))
-                 and then Nkind (Left_Opnd (N)) /= N_Null;
+                 and then not Is_Statically_Reclaimed_Expr (Left_Opnd (N));
                --  Disallow membership tests if they involved the use of the
                --  predefined equality on access types (except if one of the
-               --  operands is syntactically null).
+               --  operands is statically null).
 
                function Alternative_Uses_Eq (Alt : Node_Id) return Boolean
                is
@@ -2406,7 +2409,7 @@ package body SPARK_Definition is
 
                         pragma Assert (Eq_On_Access);
 
-                        if Nkind (Alt) /= N_Null then
+                        if not Is_Statically_Reclaimed_Expr (Alt) then
                            Mark_Violation
                              ("equality on access types", Alt);
                            exit;
@@ -2420,7 +2423,8 @@ package body SPARK_Definition is
                   Check_User_Defined_Eq
                     (Etype (Left_Opnd (N)), N, "membership test on type");
 
-                  if Eq_On_Access and then Nkind (Right_Opnd (N)) /= N_Null
+                  if Eq_On_Access
+                    and then not Is_Statically_Reclaimed_Expr (Right_Opnd (N))
                   then
                      Mark_Violation ("equality on access types", N);
                   end if;
@@ -4600,8 +4604,8 @@ package body SPARK_Definition is
       if Nkind (N) in N_Op_Eq | N_Op_Ne
         and then Retysp_In_SPARK (Etype (Left_Opnd (N)))
         and then Predefined_Eq_Uses_Pointer_Eq (Etype (Left_Opnd (N)))
-        and then Nkind (Left_Opnd (N)) /= N_Null
-        and then Nkind (Right_Opnd (N)) /= N_Null
+        and then not Is_Statically_Reclaimed_Expr (Left_Opnd (N))
+        and then not Is_Statically_Reclaimed_Expr (Right_Opnd (N))
       then
          Mark_Violation ("equality on access types", N);
 
