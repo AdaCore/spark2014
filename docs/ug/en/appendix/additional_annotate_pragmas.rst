@@ -847,6 +847,13 @@ each time it is called.
    :language: ada
    :linenos:
 
+.. note::
+   The equality used to check whether an object is equal to a reclaimed value
+   is the same as the equality used by membership tests and equality of
+   composite types: it uses the predefined equality even if it has been
+   redefined by the user, unless the type of the operands is ultimately a
+   record type in which case it uses the primitive equality.
+
 Annotation for Instantiating Lemma Procedures Automatically
 -----------------------------------------------------------
 
