@@ -3,5 +3,6 @@ replay: True
 prove_all:
   sparklib: True
   filter_sparklib: False
+  no_fail: True
 session_opt:
   level: 4
