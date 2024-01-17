@@ -3846,17 +3846,61 @@ package body SPARK_Util is
           Get_Specialized_Parameters (Call, Specialized_Entities).Is_Empty;
    end Is_Specialized_Call;
 
-   -----------------------------
-   -- Is_Statically_Reclaimed --
-   -----------------------------
+   ----------------------------------
+   -- Is_Statically_Reclaimed_Expr --
+   ----------------------------------
 
-   function Is_Statically_Reclaimed (Obj : Object_Kind_Id) return Boolean is
+   function Is_Statically_Reclaimed_Expr (Expr : N_Subexpr_Id) return Boolean
+   is
    begin
-      return Ekind (Obj) = E_Constant
-        and then Has_Ownership_Annotation (Etype (Obj))
+      return Nkind (Expr) = N_Null
+        or else
+          (Nkind (Expr) in N_Identifier | N_Expanded_Name
+           and then Is_Statically_Reclaimed_Obj (Entity (Expr)));
+   end Is_Statically_Reclaimed_Expr;
+
+   ---------------------------------
+   -- Is_Statically_Reclaimed_Obj --
+   ---------------------------------
+
+   function Is_Statically_Reclaimed_Obj (Obj : Object_Kind_Id) return Boolean
+   is
+      use type Opt.SPARK_Mode_Type;
+   begin
+      if Ekind (Obj) /= E_Constant then
+         return False;
+
+      --  Consider the full view if it is not in a part annotated with
+      --  SPARK_Mode => Off.
+
+      elsif Present (Full_View (Obj))
+        and then (No (SPARK_Aux_Pragma (Scope (Obj)))
+                  or else Get_SPARK_Mode_From_Annotation
+                    (SPARK_Aux_Pragma (Scope (Obj))) /= Opt.Off)
+      then
+         return Is_Statically_Reclaimed_Obj (Full_View (Obj));
+
+      --  Return True on reclaimed values of private types with ownership
+
+      elsif Has_Ownership_Annotation (Etype (Obj))
         and then Needs_Reclamation (Etype (Obj))
-        and then Get_Reclamation_Entity (Etype (Obj)) = Obj;
-   end Is_Statically_Reclaimed;
+        and then Get_Reclamation_Entity (Etype (Obj)) = Obj
+      then
+         return True;
+
+      --  Otherwise, look at the definition of the constant to see if it is
+      --  statically reclaimed.
+
+      else
+         declare
+            Decl : constant Node_Id := Parent (Obj);
+         begin
+            return Nkind (Decl) = N_Object_Declaration
+              and then Present (Expression (Decl))
+              and then Is_Statically_Reclaimed_Expr (Expression (Decl));
+         end;
+      end if;
+   end Is_Statically_Reclaimed_Obj;
 
    ---------------------------
    -- Is_Strict_Reborrow_Of --
