@@ -98,7 +98,7 @@ A special run of the SPARK main testsuite allows to monitor statement coverage
 of the testsuite over GNAT2Why source code, which is maintained above 95%, and
 aiming at full statement coverage.
 
-Addionally, through their use of the switch ``--proof-warnings`` aiming at
+Addionally, through their use of the switch ``--proof-warnings=on`` aiming at
 detecting dead code at branching points in the program and other
 inconsistencies, users can protect against unsound tool behavior which would
 result in similar findings. This use is traditionally called a "smoke detector"

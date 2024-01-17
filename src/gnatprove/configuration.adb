@@ -812,7 +812,7 @@ package body Configuration is
          Define_Switch
            (Config,
             CL_Switches.Proof_Warnings'Access,
-            Long_Switch => "--proof-warnings");
+            Long_Switch => "--proof-warnings=");
          Define_Switch
            (Config,
             CL_Switches.Q'Access,
@@ -1411,7 +1411,7 @@ package body Configuration is
          FS.No_Inlining := CL_Switches.No_Inlining;
          FS.Info := CL_Switches.Info;
          FS.No_Loop_Unrolling := CL_Switches.No_Loop_Unrolling;
-         FS.Proof_Warnings := CL_Switches.Proof_Warnings;
+         FS.Proof_Warnings := Proof_Warnings;
          FS.No_Inlining := CL_Switches.No_Inlining or
                            CL_Switches.No_Global_Generation;
       end File_Specific_Postprocess;
@@ -1698,6 +1698,20 @@ package body Configuration is
             Abort_Msg ("error: wrong argument """
                        & CL_Switches.Checks_As_Errors.all
                        & """ for --checks-as-errors, "
+                       & "must be one of (on, off)",
+                       With_Help => False);
+         end if;
+
+         if CL_Switches.Proof_Warnings.all = ""
+           or else CL_Switches.Proof_Warnings.all = "off"
+         then
+            Proof_Warnings := False;
+         elsif CL_Switches.Proof_Warnings.all = "on" then
+            Proof_Warnings := True;
+         else
+            Abort_Msg ("error: wrong argument """
+                       & CL_Switches.Proof_Warnings.all
+                       & """ for --proof-warnings, "
                        & "must be one of (on, off)",
                        With_Help => False);
          end if;
@@ -2469,7 +2483,7 @@ package body Configuration is
             CL_Switches.No_Inlining := False;
             CL_Switches.Mode := null;
             CL_Switches.No_Loop_Unrolling := False;
-            CL_Switches.Proof_Warnings := False;
+            CL_Switches.Proof_Warnings := null;
             CL_Switches.Proof_Warn_Timeout := Invalid_Timeout;
          end Reset_File_Specific_Switches;
 

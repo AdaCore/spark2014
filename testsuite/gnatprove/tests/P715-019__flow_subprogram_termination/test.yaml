@@ -1,4 +1,4 @@
 large: True
 do_flow:
   sparklib: True
-  opt: ["--proof-warnings"]
+  opt: ["--proof-warnings=on"]

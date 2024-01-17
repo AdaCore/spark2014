@@ -140,7 +140,7 @@ package Configuration is
       Pedantic              : aliased Boolean;
       Print_Gpr_Registry    : aliased Boolean;
       Proof                 : aliased GNAT.Strings.String_Access;
-      Proof_Warnings        : aliased Boolean;
+      Proof_Warnings        : aliased GNAT.Strings.String_Access;
       Proof_Warn_Timeout    : aliased Integer;
       Prover                : aliased GNAT.Strings.String_Access;
       Q                     : aliased Boolean;
@@ -181,6 +181,7 @@ package Configuration is
    Only_Given       : Boolean;
    Output           : Output_Mode_Type;
    Parallel         : Integer;
+   Proof_Warnings   : Boolean;
    Report           : Report_Mode_Type;
    Warning_Mode     : Gnat2Why_Opts.SPARK_Warning_Mode_Type;
 

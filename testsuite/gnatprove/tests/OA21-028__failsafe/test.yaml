@@ -1,4 +1,4 @@
 large: True
 prove_all:
   steps: 10000
-  opt: ["--proof-warnings"]
+  opt: ["--proof-warnings=on"]
