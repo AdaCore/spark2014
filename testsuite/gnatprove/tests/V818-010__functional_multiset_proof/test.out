@@ -543,734 +543,724 @@ spark-containers-functional-multisets.adb:475:19: info: predicate check proved, 
 spark-containers-functional-multisets.adb:476:20: info: for Container before the call at spark-containers-functional-multisets.ads:211, in instantiation at my_multiset.ads:6
 spark-containers-functional-multisets.adb:476:20: info: invariant check proved, in instantiation at my_multiset.ads:6
 spark-containers-functional-multisets.adb:476:33: info: predicate check proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:480:13: info: assertion proved, in instantiation at my_multiset.ads:6
 spark-containers-functional-multisets.adb:480:13: info: invariant check proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:481:15: info: for Container before the call at spark-containers-functional-multisets.ads:74, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:481:15: info: invariant check proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:481:15: info: predicate check proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:481:15: medium: assertion might fail, cannot prove Nb_Occurence (Set, Element) <= Nb_Occurence (Left, Element), in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:481:46: info: for Container before the call at spark-containers-functional-multisets.ads:74, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:481:46: info: invariant check proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:481:46: info: predicate check proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:482:25: info: assertion proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:482:25: info: invariant check proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:482:51: info: for Container before the call at spark-containers-functional-multisets.ads:95, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:482:51: info: invariant check proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:483:25: info: assertion proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:483:25: info: invariant check proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:485:13: info: assertion proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:485:13: info: invariant check proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:487:26: info: precondition proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:487:26: info: predicate check proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:487:52: info: precondition proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:487:52: info: predicate check proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:488:10: info: precondition proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:489:25: info: assertion proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:489:25: info: for Container before the call at spark-containers-functional-multisets.ads:111, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:489:25: info: invariant check proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:489:25: info: predicate check proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:489:46: info: for Container before the call at spark-containers-functional-multisets.ads:111, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:489:46: info: invariant check proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:489:46: info: predicate check proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:492:13: info: assertion proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:492:13: info: invariant check proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:494:26: info: precondition proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:494:26: info: predicate check proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:494:52: info: precondition proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:494:52: info: predicate check proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:495:10: info: precondition proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:497:31: info: loop variant proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:497:44: info: for Container before the call at spark-containers-functional-multisets.ads:111, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:497:44: info: invariant check proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:497:44: info: range check proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:482:21: info: for Container before the call at spark-containers-functional-multisets.ads:74, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:482:21: info: invariant check proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:482:21: info: predicate check proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:483:20: info: for Container before the call at spark-containers-functional-multisets.ads:74, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:483:20: info: invariant check proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:483:20: info: predicate check proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:484:25: info: assertion proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:484:25: info: invariant check proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:485:10: info: precondition proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:486:25: info: assertion proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:486:25: info: for Container before the call at spark-containers-functional-multisets.ads:111, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:486:25: info: invariant check proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:486:25: info: predicate check proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:486:46: info: for Container before the call at spark-containers-functional-multisets.ads:111, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:486:46: info: invariant check proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:486:46: info: predicate check proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:489:13: info: assertion proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:489:13: info: invariant check proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:491:26: info: precondition proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:491:26: info: predicate check proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:491:52: info: precondition proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:491:52: info: predicate check proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:492:10: info: precondition proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:494:31: info: loop variant proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:494:44: info: for Container before the call at spark-containers-functional-multisets.ads:111, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:494:44: info: invariant check proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:494:44: info: range check proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:496:33: info: loop invariant initialization proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:496:33: info: loop invariant preservation proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:497:33: info: loop invariant initialization proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:497:33: info: loop invariant preservation proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:498:33: info: loop invariant initialization proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:498:33: info: loop invariant preservation proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:498:37: info: for Left before the call at spark-containers-functional-multisets.ads:125, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:498:37: info: for Right before the call at spark-containers-functional-multisets.ads:125, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:498:37: info: invariant check proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:498:37: info: invariant check proved, in instantiation at my_multiset.ads:6
 spark-containers-functional-multisets.adb:499:33: info: loop invariant initialization proved, in instantiation at my_multiset.ads:6
 spark-containers-functional-multisets.adb:499:33: info: loop invariant preservation proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:500:33: info: loop invariant initialization proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:500:33: info: loop invariant preservation proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:501:33: info: loop invariant initialization proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:501:33: info: loop invariant preservation proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:501:37: info: for Left before the call at spark-containers-functional-multisets.ads:125, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:501:37: info: for Right before the call at spark-containers-functional-multisets.ads:125, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:501:37: info: invariant check proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:501:37: info: invariant check proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:502:33: info: loop invariant initialization proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:502:33: info: loop invariant preservation proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:502:37: info: for Left before the call at spark-containers-functional-multisets.ads:125, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:502:37: info: for Right before the call at spark-containers-functional-multisets.ads:125, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:502:37: info: invariant check proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:502:37: info: invariant check proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:499:37: info: for Left before the call at spark-containers-functional-multisets.ads:125, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:499:37: info: for Right before the call at spark-containers-functional-multisets.ads:125, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:499:37: info: invariant check proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:499:37: info: invariant check proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:501:13: info: invariant check proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:501:13: info: loop invariant initialization proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:501:13: info: loop invariant preservation proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:501:42: info: for Container before the call at spark-containers-functional-multisets.ads:74, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:501:42: info: invariant check proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:501:42: info: predicate check proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:501:72: info: predicate check proved, in instantiation at my_multiset.ads:6
 spark-containers-functional-multisets.adb:504:13: info: invariant check proved, in instantiation at my_multiset.ads:6
 spark-containers-functional-multisets.adb:504:13: info: loop invariant initialization proved, in instantiation at my_multiset.ads:6
 spark-containers-functional-multisets.adb:504:13: info: loop invariant preservation proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:504:42: info: for Container before the call at spark-containers-functional-multisets.ads:74, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:504:42: info: invariant check proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:504:42: info: predicate check proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:504:72: info: predicate check proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:507:13: info: invariant check proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:507:13: info: loop invariant initialization proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:507:13: info: loop invariant preservation proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:508:23: info: for Container before the call at spark-containers-functional-multisets.ads:95, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:505:23: info: for Container before the call at spark-containers-functional-multisets.ads:95, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:505:23: info: invariant check proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:506:26: info: for Container before the call at spark-containers-functional-multisets.ads:74, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:506:26: info: invariant check proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:506:26: info: predicate check proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:507:26: info: for Container before the call at spark-containers-functional-multisets.ads:74, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:507:26: info: invariant check proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:507:26: info: predicate check proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:508:23: info: for Container before the call at spark-containers-functional-multisets.ads:74, in instantiation at my_multiset.ads:6
 spark-containers-functional-multisets.adb:508:23: info: invariant check proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:509:26: info: for Container before the call at spark-containers-functional-multisets.ads:74, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:509:26: info: invariant check proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:509:26: info: predicate check proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:510:26: info: for Container before the call at spark-containers-functional-multisets.ads:74, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:510:26: info: invariant check proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:510:26: info: predicate check proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:511:23: info: for Container before the call at spark-containers-functional-multisets.ads:74, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:511:23: info: invariant check proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:511:23: info: predicate check proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:522:08: info: predicate check proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:522:15: info: predicate check proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:532:07: info: precondition proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:544:07: info: precondition proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:555:48: info: precondition proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:557:28: info: assertion proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:557:28: info: for Container before the call at spark-containers-functional-multisets.ads:95, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:557:28: info: invariant check proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:568:10: info: predicate check proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:568:25: info: predicate check proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:570:42: info: precondition proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:572:13: info: precondition proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:572:13: info: subprogram variant proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:573:13: info: precondition proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:573:13: info: subprogram variant proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:573:23: info: precondition proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:573:39: info: precondition proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:587:07: info: initialization of "E" proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:590:15: info: precondition proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:593:28: info: assertion proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:593:28: info: for Container before the call at spark-containers-functional-multisets.ads:74, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:593:28: info: invariant check proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:593:28: info: predicate check proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:593:55: info: predicate check proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:594:28: info: assertion proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:595:28: info: assertion proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:595:28: info: precondition proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:595:28: info: predicate check proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:595:48: info: precondition proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:595:48: info: predicate check proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:598:20: info: precondition proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:600:31: info: loop variant proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:600:44: info: range check proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:601:33: info: loop invariant initialization proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:601:33: info: loop invariant preservation proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:603:13: info: invariant check proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:603:13: info: loop invariant initialization proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:603:13: info: loop invariant preservation proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:607:32: info: precondition proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:607:32: info: predicate check proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:607:53: info: precondition proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:607:53: info: predicate check proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:616:07: info: initialization of "E" proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:619:15: info: precondition proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:508:23: info: predicate check proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:519:08: info: predicate check proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:519:15: info: predicate check proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:529:07: info: precondition proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:541:07: info: precondition proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:552:48: info: precondition proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:554:28: info: assertion proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:554:28: info: for Container before the call at spark-containers-functional-multisets.ads:95, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:554:28: info: invariant check proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:565:10: info: predicate check proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:565:25: info: predicate check proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:567:42: info: precondition proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:569:13: info: precondition proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:569:13: info: subprogram variant proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:570:13: info: precondition proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:570:13: info: subprogram variant proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:570:23: info: precondition proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:570:39: info: precondition proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:584:07: info: initialization of "E" proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:587:15: info: precondition proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:590:28: info: assertion proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:590:28: info: for Container before the call at spark-containers-functional-multisets.ads:74, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:590:28: info: invariant check proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:590:28: info: predicate check proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:590:55: info: predicate check proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:591:28: info: assertion proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:592:28: info: assertion proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:592:28: info: precondition proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:592:28: info: predicate check proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:592:48: info: precondition proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:592:48: info: predicate check proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:595:20: info: precondition proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:597:31: info: loop variant proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:597:44: info: range check proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:598:33: info: loop invariant initialization proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:598:33: info: loop invariant preservation proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:600:13: info: invariant check proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:600:13: info: loop invariant initialization proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:600:13: info: loop invariant preservation proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:604:32: info: precondition proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:604:32: info: predicate check proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:604:53: info: precondition proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:604:53: info: predicate check proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:613:07: info: initialization of "E" proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:616:15: info: precondition proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:618:10: info: precondition proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:620:10: info: precondition proved, in instantiation at my_multiset.ads:6
 spark-containers-functional-multisets.adb:621:10: info: precondition proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:623:10: info: precondition proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:624:10: info: precondition proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:624:10: info: subprogram variant proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:624:33: info: precondition proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:624:51: info: precondition proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:638:10: info: precondition proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:639:25: info: assertion proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:639:25: info: for Container before the call at spark-containers-functional-multisets.ads:74, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:639:25: info: invariant check proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:639:25: info: predicate check proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:640:27: info: for Container before the call at spark-containers-functional-multisets.ads:74, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:640:27: info: invariant check proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:640:27: info: predicate check proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:642:10: info: precondition proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:643:25: info: assertion proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:643:25: info: for Container before the call at spark-containers-functional-multisets.ads:74, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:643:25: info: invariant check proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:643:25: info: predicate check proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:644:27: info: for Container before the call at spark-containers-functional-multisets.ads:74, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:644:27: info: invariant check proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:644:27: info: predicate check proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:646:10: info: precondition proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:647:25: info: assertion proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:647:25: info: for Container before the call at spark-containers-functional-multisets.ads:74, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:647:25: info: invariant check proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:647:25: info: predicate check proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:648:27: info: for Container before the call at spark-containers-functional-multisets.ads:74, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:648:27: info: invariant check proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:648:27: info: predicate check proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:657:36: info: precondition proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:660:10: info: precondition proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:660:10: info: subprogram variant proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:660:24: info: precondition proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:621:10: info: subprogram variant proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:621:33: info: precondition proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:621:51: info: precondition proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:635:10: info: precondition proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:636:25: info: assertion proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:636:25: info: for Container before the call at spark-containers-functional-multisets.ads:74, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:636:25: info: invariant check proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:636:25: info: predicate check proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:637:27: info: for Container before the call at spark-containers-functional-multisets.ads:74, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:637:27: info: invariant check proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:637:27: info: predicate check proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:639:10: info: precondition proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:640:25: info: assertion proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:640:25: info: for Container before the call at spark-containers-functional-multisets.ads:74, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:640:25: info: invariant check proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:640:25: info: predicate check proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:641:27: info: for Container before the call at spark-containers-functional-multisets.ads:74, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:641:27: info: invariant check proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:641:27: info: predicate check proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:643:10: info: precondition proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:644:25: info: assertion proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:644:25: info: for Container before the call at spark-containers-functional-multisets.ads:74, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:644:25: info: invariant check proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:644:25: info: predicate check proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:645:27: info: for Container before the call at spark-containers-functional-multisets.ads:74, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:645:27: info: invariant check proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:645:27: info: predicate check proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:654:36: info: precondition proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:657:10: info: precondition proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:657:10: info: subprogram variant proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:657:24: info: precondition proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:658:10: info: precondition proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:658:10: info: subprogram variant proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:658:20: info: precondition proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:658:28: info: precondition proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:658:47: info: precondition proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:658:55: info: precondition proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:659:10: info: precondition proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:659:10: info: subprogram variant proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:659:24: info: precondition proved, in instantiation at my_multiset.ads:6
 spark-containers-functional-multisets.adb:661:10: info: precondition proved, in instantiation at my_multiset.ads:6
 spark-containers-functional-multisets.adb:661:10: info: subprogram variant proved, in instantiation at my_multiset.ads:6
 spark-containers-functional-multisets.adb:661:20: info: precondition proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:661:28: info: precondition proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:661:47: info: precondition proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:661:55: info: precondition proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:662:10: info: precondition proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:662:10: info: subprogram variant proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:662:24: info: precondition proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:664:10: info: precondition proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:664:10: info: subprogram variant proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:664:20: info: precondition proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:664:35: info: precondition proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:677:35: info: for Left before the call at spark-containers-functional-multisets.ads:295, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:677:35: info: for Right before the call at spark-containers-functional-multisets.ads:296, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:677:35: info: invariant check proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:677:35: info: invariant check proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:678:07: info: initialization of "RInt" proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:679:07: info: initialization of "IntR" proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:682:10: info: for Container before the call at spark-containers-functional-multisets.ads:95, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:682:10: info: invariant check proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:682:44: info: for Container before the call at spark-containers-functional-multisets.ads:95, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:682:44: info: invariant check proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:683:18: info: for Container before the call at spark-containers-functional-multisets.ads:226, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:683:18: info: invariant check proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:683:18: info: precondition proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:685:12: info: for Left before the call at spark-containers-functional-multisets.ads:295, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:685:12: info: for Right before the call at spark-containers-functional-multisets.ads:296, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:685:12: info: invariant check proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:685:12: info: invariant check proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:686:15: info: for Container before the call at spark-containers-functional-multisets.ads:226, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:686:15: info: invariant check proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:686:15: info: precondition proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:686:43: info: for Container before the call at spark-containers-functional-multisets.ads:226, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:686:43: info: invariant check proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:686:43: info: precondition proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:688:25: info: assertion proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:688:25: info: invariant check proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:688:46: info: for Container before the call at spark-containers-functional-multisets.ads:95, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:688:46: info: invariant check proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:661:35: info: precondition proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:674:35: info: for Left before the call at spark-containers-functional-multisets.ads:295, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:674:35: info: for Right before the call at spark-containers-functional-multisets.ads:296, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:674:35: info: invariant check proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:674:35: info: invariant check proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:675:07: info: initialization of "RInt" proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:676:07: info: initialization of "IntR" proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:679:10: info: for Container before the call at spark-containers-functional-multisets.ads:95, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:679:10: info: invariant check proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:679:44: info: for Container before the call at spark-containers-functional-multisets.ads:95, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:679:44: info: invariant check proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:680:18: info: for Container before the call at spark-containers-functional-multisets.ads:226, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:680:18: info: invariant check proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:680:18: info: precondition proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:682:12: info: for Left before the call at spark-containers-functional-multisets.ads:295, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:682:12: info: for Right before the call at spark-containers-functional-multisets.ads:296, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:682:12: info: invariant check proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:682:12: info: invariant check proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:683:15: info: for Container before the call at spark-containers-functional-multisets.ads:226, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:683:15: info: invariant check proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:683:15: info: precondition proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:683:43: info: for Container before the call at spark-containers-functional-multisets.ads:226, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:683:43: info: invariant check proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:683:43: info: precondition proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:685:25: info: assertion proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:685:25: info: invariant check proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:685:46: info: for Container before the call at spark-containers-functional-multisets.ads:95, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:685:46: info: invariant check proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:687:13: info: assertion proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:687:13: info: invariant check proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:688:15: info: for Container before the call at spark-containers-functional-multisets.ads:74, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:688:15: info: invariant check proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:688:15: info: predicate check proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:688:39: info: for Container before the call at spark-containers-functional-multisets.ads:74, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:688:39: info: invariant check proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:688:39: info: predicate check proved, in instantiation at my_multiset.ads:6
 spark-containers-functional-multisets.adb:690:13: info: assertion proved, in instantiation at my_multiset.ads:6
 spark-containers-functional-multisets.adb:690:13: info: invariant check proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:691:15: info: for Container before the call at spark-containers-functional-multisets.ads:74, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:691:15: info: invariant check proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:691:15: info: predicate check proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:691:39: info: for Container before the call at spark-containers-functional-multisets.ads:74, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:691:39: info: invariant check proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:691:39: info: predicate check proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:693:13: info: assertion proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:693:13: info: invariant check proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:695:21: info: for Container before the call at spark-containers-functional-multisets.ads:95, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:695:21: info: invariant check proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:699:13: info: assertion proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:699:13: info: invariant check proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:700:15: info: for Container before the call at spark-containers-functional-multisets.ads:74, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:700:15: info: invariant check proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:700:15: info: predicate check proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:700:40: info: for Container before the call at spark-containers-functional-multisets.ads:74, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:700:40: info: invariant check proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:700:40: info: predicate check proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:701:25: info: assertion proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:701:25: info: invariant check proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:701:46: info: for Container before the call at spark-containers-functional-multisets.ads:95, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:701:46: info: invariant check proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:692:21: info: for Container before the call at spark-containers-functional-multisets.ads:95, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:692:21: info: invariant check proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:696:13: info: assertion proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:696:13: info: invariant check proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:697:15: info: for Container before the call at spark-containers-functional-multisets.ads:74, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:697:15: info: invariant check proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:697:15: info: predicate check proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:697:40: info: for Container before the call at spark-containers-functional-multisets.ads:74, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:697:40: info: invariant check proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:697:40: info: predicate check proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:698:25: info: assertion proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:698:25: info: invariant check proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:698:46: info: for Container before the call at spark-containers-functional-multisets.ads:95, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:698:46: info: invariant check proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:699:25: info: assertion proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:699:25: info: invariant check proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:699:46: info: for Container before the call at spark-containers-functional-multisets.ads:74, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:699:46: info: invariant check proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:699:46: info: predicate check proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:699:72: info: predicate check proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:700:25: info: assertion proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:700:25: info: invariant check proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:701:10: info: precondition proved, in instantiation at my_multiset.ads:6
 spark-containers-functional-multisets.adb:702:25: info: assertion proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:702:25: info: invariant check proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:702:46: info: for Container before the call at spark-containers-functional-multisets.ads:74, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:702:46: info: invariant check proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:702:46: info: predicate check proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:702:72: info: predicate check proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:703:25: info: assertion proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:703:25: info: invariant check proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:704:10: info: precondition proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:702:30: info: for Left before the call at spark-containers-functional-multisets.ads:125, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:702:30: info: for Right before the call at spark-containers-functional-multisets.ads:125, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:702:30: info: invariant check proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:702:30: info: invariant check proved, in instantiation at my_multiset.ads:6
 spark-containers-functional-multisets.adb:705:25: info: assertion proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:705:30: info: for Left before the call at spark-containers-functional-multisets.ads:125, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:705:30: info: for Right before the call at spark-containers-functional-multisets.ads:125, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:705:30: info: invariant check proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:705:30: info: invariant check proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:708:25: info: assertion proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:708:25: info: invariant check proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:708:46: info: for Container before the call at spark-containers-functional-multisets.ads:74, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:708:46: info: invariant check proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:708:46: info: predicate check proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:708:72: info: predicate check proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:711:13: info: assertion proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:711:13: info: invariant check proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:712:15: info: for Container before the call at spark-containers-functional-multisets.ads:74, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:712:15: info: invariant check proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:712:15: info: predicate check proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:712:40: info: for Container before the call at spark-containers-functional-multisets.ads:74, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:712:40: info: invariant check proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:712:40: info: predicate check proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:705:25: info: invariant check proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:705:46: info: for Container before the call at spark-containers-functional-multisets.ads:74, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:705:46: info: invariant check proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:705:46: info: predicate check proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:705:72: info: predicate check proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:708:13: info: assertion proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:708:13: info: invariant check proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:709:15: info: for Container before the call at spark-containers-functional-multisets.ads:74, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:709:15: info: invariant check proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:709:15: info: predicate check proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:709:40: info: for Container before the call at spark-containers-functional-multisets.ads:74, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:709:40: info: invariant check proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:709:40: info: predicate check proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:710:25: info: assertion proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:710:25: info: invariant check proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:711:10: info: precondition proved, in instantiation at my_multiset.ads:6
 spark-containers-functional-multisets.adb:713:25: info: assertion proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:713:25: info: invariant check proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:714:10: info: precondition proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:716:25: info: assertion proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:716:30: info: for Left before the call at spark-containers-functional-multisets.ads:125, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:716:30: info: for Right before the call at spark-containers-functional-multisets.ads:125, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:716:30: info: invariant check proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:716:30: info: invariant check proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:718:25: info: assertion proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:718:25: info: for Container before the call at spark-containers-functional-multisets.ads:111, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:718:25: info: invariant check proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:718:25: info: predicate check proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:718:46: info: for Container before the call at spark-containers-functional-multisets.ads:111, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:718:46: info: invariant check proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:718:46: info: predicate check proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:720:13: info: for Container before the call at spark-containers-functional-multisets.ads:95, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:720:13: info: invariant check proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:721:21: info: for Left before the call at spark-containers-functional-multisets.ads:295, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:721:21: info: for Right before the call at spark-containers-functional-multisets.ads:296, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:721:21: info: invariant check proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:721:21: info: invariant check proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:721:35: info: for Container before the call at spark-containers-functional-multisets.ads:226, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:721:35: info: invariant check proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:721:35: info: precondition proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:723:21: info: for Left before the call at spark-containers-functional-multisets.ads:295, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:723:21: info: for Right before the call at spark-containers-functional-multisets.ads:296, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:723:21: info: invariant check proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:723:21: info: invariant check proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:723:41: info: for Container before the call at spark-containers-functional-multisets.ads:226, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:723:41: info: invariant check proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:723:41: info: precondition proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:728:13: info: assertion proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:728:13: info: invariant check proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:729:15: info: for Container before the call at spark-containers-functional-multisets.ads:74, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:729:15: info: invariant check proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:729:15: info: predicate check proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:729:40: info: for Container before the call at spark-containers-functional-multisets.ads:74, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:729:40: info: invariant check proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:729:40: info: predicate check proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:731:10: info: precondition proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:733:25: info: assertion proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:733:30: info: for Left before the call at spark-containers-functional-multisets.ads:125, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:733:30: info: for Right before the call at spark-containers-functional-multisets.ads:125, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:733:30: info: invariant check proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:733:30: info: invariant check proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:737:13: info: assertion proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:737:13: info: invariant check proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:738:15: info: for Container before the call at spark-containers-functional-multisets.ads:74, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:738:15: info: invariant check proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:738:15: info: predicate check proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:738:39: info: for Container before the call at spark-containers-functional-multisets.ads:74, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:738:39: info: invariant check proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:738:39: info: predicate check proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:740:10: info: precondition proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:742:25: info: assertion proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:742:29: info: for Left before the call at spark-containers-functional-multisets.ads:125, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:742:29: info: for Right before the call at spark-containers-functional-multisets.ads:125, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:742:29: info: invariant check proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:742:29: info: invariant check proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:757:38: info: for Left before the call at spark-containers-functional-multisets.ads:311, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:757:38: info: for Right before the call at spark-containers-functional-multisets.ads:312, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:757:38: info: invariant check proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:757:38: info: invariant check proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:758:38: info: for Container before the call at spark-containers-functional-multisets.ads:226, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:758:38: info: invariant check proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:758:38: info: precondition proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:759:07: info: initialization of "Union_R" proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:762:10: info: for Container before the call at spark-containers-functional-multisets.ads:95, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:762:10: info: invariant check proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:762:44: info: for Container before the call at spark-containers-functional-multisets.ads:95, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:762:44: info: invariant check proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:764:12: info: for Left before the call at spark-containers-functional-multisets.ads:311, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:764:12: info: for Right before the call at spark-containers-functional-multisets.ads:312, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:764:12: info: invariant check proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:764:12: info: invariant check proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:764:19: info: for Container before the call at spark-containers-functional-multisets.ads:226, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:764:19: info: invariant check proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:764:19: info: precondition proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:764:47: info: for Container before the call at spark-containers-functional-multisets.ads:226, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:764:47: info: invariant check proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:764:47: info: precondition proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:768:13: info: assertion proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:768:13: info: invariant check proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:769:15: info: precondition proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:769:15: info: predicate check proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:769:38: info: precondition proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:769:38: info: predicate check proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:771:10: info: precondition proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:773:25: info: assertion proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:773:33: info: for Left before the call at spark-containers-functional-multisets.ads:125, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:773:33: info: for Right before the call at spark-containers-functional-multisets.ads:125, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:773:33: info: invariant check proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:773:33: info: invariant check proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:777:13: info: assertion proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:777:13: info: invariant check proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:778:10: info: precondition proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:780:25: info: assertion proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:780:33: info: for Left before the call at spark-containers-functional-multisets.ads:125, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:780:33: info: for Right before the call at spark-containers-functional-multisets.ads:125, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:780:33: info: invariant check proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:780:33: info: invariant check proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:782:25: info: assertion proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:782:25: info: for Container before the call at spark-containers-functional-multisets.ads:111, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:782:25: info: invariant check proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:782:25: info: predicate check proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:782:49: info: for Container before the call at spark-containers-functional-multisets.ads:111, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:782:49: info: invariant check proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:782:49: info: predicate check proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:784:10: info: precondition proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:786:13: info: for Container before the call at spark-containers-functional-multisets.ads:95, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:786:13: info: invariant check proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:787:24: info: for Left before the call at spark-containers-functional-multisets.ads:311, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:787:24: info: for Right before the call at spark-containers-functional-multisets.ads:312, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:787:24: info: invariant check proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:787:24: info: invariant check proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:787:31: info: for Container before the call at spark-containers-functional-multisets.ads:226, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:787:31: info: invariant check proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:787:31: info: precondition proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:789:24: info: for Left before the call at spark-containers-functional-multisets.ads:311, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:789:24: info: for Right before the call at spark-containers-functional-multisets.ads:312, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:789:24: info: invariant check proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:789:24: info: invariant check proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:789:37: info: for Container before the call at spark-containers-functional-multisets.ads:226, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:789:37: info: invariant check proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:789:37: info: precondition proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:794:13: info: assertion proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:794:13: info: invariant check proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:795:15: info: precondition proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:795:15: info: predicate check proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:795:38: info: precondition proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:795:38: info: predicate check proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:797:10: info: precondition proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:799:25: info: assertion proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:799:33: info: for Left before the call at spark-containers-functional-multisets.ads:125, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:799:33: info: for Right before the call at spark-containers-functional-multisets.ads:125, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:799:33: info: invariant check proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:799:33: info: invariant check proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:803:13: info: assertion proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:803:13: info: invariant check proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:804:10: info: precondition proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:806:25: info: assertion proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:806:33: info: for Left before the call at spark-containers-functional-multisets.ads:125, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:806:33: info: for Right before the call at spark-containers-functional-multisets.ads:125, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:806:33: info: invariant check proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:806:33: info: invariant check proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:808:25: info: assertion proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:808:25: info: for Container before the call at spark-containers-functional-multisets.ads:111, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:808:25: info: invariant check proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:808:25: info: predicate check proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:808:49: info: for Container before the call at spark-containers-functional-multisets.ads:111, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:808:49: info: invariant check proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:808:49: info: predicate check proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:810:10: info: precondition proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:818:14: info: precondition proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:831:07: info: initialization of "E" proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:833:14: info: for Container before the call at spark-containers-functional-multisets.ads:152, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:833:14: info: invariant check proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:834:15: info: for Container before the call at spark-containers-functional-multisets.ads:104, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:834:15: info: invariant check proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:834:15: info: precondition proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:835:10: info: precondition proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:836:10: info: precondition proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:837:13: info: for Container before the call at spark-containers-functional-multisets.ads:95, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:837:13: info: invariant check proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:838:13: info: precondition proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:838:13: info: subprogram variant proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:839:16: info: for Container before the call at spark-containers-functional-multisets.ads:226, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:713:30: info: for Left before the call at spark-containers-functional-multisets.ads:125, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:713:30: info: for Right before the call at spark-containers-functional-multisets.ads:125, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:713:30: info: invariant check proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:713:30: info: invariant check proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:715:25: info: assertion proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:715:25: info: for Container before the call at spark-containers-functional-multisets.ads:111, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:715:25: info: invariant check proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:715:25: info: predicate check proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:715:46: info: for Container before the call at spark-containers-functional-multisets.ads:111, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:715:46: info: invariant check proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:715:46: info: predicate check proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:717:13: info: for Container before the call at spark-containers-functional-multisets.ads:95, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:717:13: info: invariant check proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:718:21: info: for Left before the call at spark-containers-functional-multisets.ads:295, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:718:21: info: for Right before the call at spark-containers-functional-multisets.ads:296, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:718:21: info: invariant check proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:718:21: info: invariant check proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:718:35: info: for Container before the call at spark-containers-functional-multisets.ads:226, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:718:35: info: invariant check proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:718:35: info: precondition proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:720:21: info: for Left before the call at spark-containers-functional-multisets.ads:295, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:720:21: info: for Right before the call at spark-containers-functional-multisets.ads:296, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:720:21: info: invariant check proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:720:21: info: invariant check proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:720:41: info: for Container before the call at spark-containers-functional-multisets.ads:226, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:720:41: info: invariant check proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:720:41: info: precondition proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:725:13: info: assertion proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:725:13: info: invariant check proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:726:15: info: for Container before the call at spark-containers-functional-multisets.ads:74, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:726:15: info: invariant check proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:726:15: info: predicate check proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:726:40: info: for Container before the call at spark-containers-functional-multisets.ads:74, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:726:40: info: invariant check proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:726:40: info: predicate check proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:728:10: info: precondition proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:730:25: info: assertion proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:730:30: info: for Left before the call at spark-containers-functional-multisets.ads:125, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:730:30: info: for Right before the call at spark-containers-functional-multisets.ads:125, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:730:30: info: invariant check proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:730:30: info: invariant check proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:734:13: info: assertion proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:734:13: info: invariant check proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:735:15: info: for Container before the call at spark-containers-functional-multisets.ads:74, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:735:15: info: invariant check proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:735:15: info: predicate check proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:735:39: info: for Container before the call at spark-containers-functional-multisets.ads:74, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:735:39: info: invariant check proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:735:39: info: predicate check proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:737:10: info: precondition proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:739:25: info: assertion proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:739:29: info: for Left before the call at spark-containers-functional-multisets.ads:125, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:739:29: info: for Right before the call at spark-containers-functional-multisets.ads:125, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:739:29: info: invariant check proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:739:29: info: invariant check proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:754:38: info: for Left before the call at spark-containers-functional-multisets.ads:311, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:754:38: info: for Right before the call at spark-containers-functional-multisets.ads:312, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:754:38: info: invariant check proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:754:38: info: invariant check proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:755:38: info: for Container before the call at spark-containers-functional-multisets.ads:226, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:755:38: info: invariant check proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:755:38: info: precondition proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:756:07: info: initialization of "Union_R" proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:759:10: info: for Container before the call at spark-containers-functional-multisets.ads:95, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:759:10: info: invariant check proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:759:44: info: for Container before the call at spark-containers-functional-multisets.ads:95, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:759:44: info: invariant check proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:761:12: info: for Left before the call at spark-containers-functional-multisets.ads:311, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:761:12: info: for Right before the call at spark-containers-functional-multisets.ads:312, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:761:12: info: invariant check proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:761:12: info: invariant check proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:761:19: info: for Container before the call at spark-containers-functional-multisets.ads:226, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:761:19: info: invariant check proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:761:19: info: precondition proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:761:47: info: for Container before the call at spark-containers-functional-multisets.ads:226, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:761:47: info: invariant check proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:761:47: info: precondition proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:765:13: info: assertion proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:765:13: info: invariant check proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:766:15: info: precondition proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:766:15: info: predicate check proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:766:38: info: precondition proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:766:38: info: predicate check proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:768:10: info: precondition proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:770:25: info: assertion proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:770:33: info: for Left before the call at spark-containers-functional-multisets.ads:125, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:770:33: info: for Right before the call at spark-containers-functional-multisets.ads:125, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:770:33: info: invariant check proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:770:33: info: invariant check proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:774:13: info: assertion proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:774:13: info: invariant check proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:775:10: info: precondition proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:777:25: info: assertion proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:777:33: info: for Left before the call at spark-containers-functional-multisets.ads:125, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:777:33: info: for Right before the call at spark-containers-functional-multisets.ads:125, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:777:33: info: invariant check proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:777:33: info: invariant check proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:779:25: info: assertion proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:779:25: info: for Container before the call at spark-containers-functional-multisets.ads:111, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:779:25: info: invariant check proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:779:25: info: predicate check proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:779:49: info: for Container before the call at spark-containers-functional-multisets.ads:111, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:779:49: info: invariant check proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:779:49: info: predicate check proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:781:10: info: precondition proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:783:13: info: for Container before the call at spark-containers-functional-multisets.ads:95, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:783:13: info: invariant check proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:784:24: info: for Left before the call at spark-containers-functional-multisets.ads:311, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:784:24: info: for Right before the call at spark-containers-functional-multisets.ads:312, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:784:24: info: invariant check proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:784:24: info: invariant check proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:784:31: info: for Container before the call at spark-containers-functional-multisets.ads:226, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:784:31: info: invariant check proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:784:31: info: precondition proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:786:24: info: for Left before the call at spark-containers-functional-multisets.ads:311, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:786:24: info: for Right before the call at spark-containers-functional-multisets.ads:312, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:786:24: info: invariant check proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:786:24: info: invariant check proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:786:37: info: for Container before the call at spark-containers-functional-multisets.ads:226, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:786:37: info: invariant check proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:786:37: info: precondition proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:791:13: info: assertion proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:791:13: info: invariant check proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:792:15: info: precondition proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:792:15: info: predicate check proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:792:38: info: precondition proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:792:38: info: predicate check proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:794:10: info: precondition proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:796:25: info: assertion proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:796:33: info: for Left before the call at spark-containers-functional-multisets.ads:125, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:796:33: info: for Right before the call at spark-containers-functional-multisets.ads:125, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:796:33: info: invariant check proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:796:33: info: invariant check proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:800:13: info: assertion proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:800:13: info: invariant check proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:801:10: info: precondition proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:803:25: info: assertion proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:803:33: info: for Left before the call at spark-containers-functional-multisets.ads:125, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:803:33: info: for Right before the call at spark-containers-functional-multisets.ads:125, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:803:33: info: invariant check proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:803:33: info: invariant check proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:805:25: info: assertion proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:805:25: info: for Container before the call at spark-containers-functional-multisets.ads:111, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:805:25: info: invariant check proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:805:25: info: predicate check proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:805:49: info: for Container before the call at spark-containers-functional-multisets.ads:111, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:805:49: info: invariant check proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:805:49: info: predicate check proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:807:10: info: precondition proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:815:14: info: precondition proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:828:07: info: initialization of "E" proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:830:14: info: for Container before the call at spark-containers-functional-multisets.ads:152, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:830:14: info: invariant check proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:831:15: info: for Container before the call at spark-containers-functional-multisets.ads:104, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:831:15: info: invariant check proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:831:15: info: precondition proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:832:10: info: precondition proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:833:10: info: precondition proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:834:13: info: for Container before the call at spark-containers-functional-multisets.ads:95, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:834:13: info: invariant check proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:835:13: info: precondition proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:835:13: info: subprogram variant proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:836:16: info: for Container before the call at spark-containers-functional-multisets.ads:226, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:836:16: info: invariant check proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:836:16: info: precondition proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:836:38: info: for Container before the call at spark-containers-functional-multisets.ads:226, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:836:38: info: invariant check proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:836:38: info: precondition proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:839:16: info: assertion proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:839:16: info: for Container before the call at spark-containers-functional-multisets.ads:111, in instantiation at my_multiset.ads:6
 spark-containers-functional-multisets.adb:839:16: info: invariant check proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:839:16: info: precondition proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:839:38: info: for Container before the call at spark-containers-functional-multisets.ads:226, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:839:38: info: invariant check proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:839:38: info: precondition proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:842:16: info: assertion proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:842:16: info: for Container before the call at spark-containers-functional-multisets.ads:111, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:842:16: info: invariant check proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:842:16: info: predicate check proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:842:29: info: for Left before the call at spark-containers-functional-multisets.ads:295, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:842:29: info: for Right before the call at spark-containers-functional-multisets.ads:296, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:842:29: info: invariant check proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:842:29: info: invariant check proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:843:18: info: for Container before the call at spark-containers-functional-multisets.ads:111, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:843:18: info: invariant check proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:843:18: info: predicate check proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:843:31: info: for Left before the call at spark-containers-functional-multisets.ads:295, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:843:31: info: for Right before the call at spark-containers-functional-multisets.ads:296, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:843:31: info: invariant check proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:843:31: info: invariant check proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:845:13: info: precondition proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:845:13: info: subprogram variant proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:845:41: info: for Container before the call at spark-containers-functional-multisets.ads:226, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:845:41: info: invariant check proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:845:41: info: precondition proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:865:14: info: precondition proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:878:07: info: initialization of "E" proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:880:14: info: for Container before the call at spark-containers-functional-multisets.ads:152, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:880:14: info: invariant check proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:881:15: info: for Container before the call at spark-containers-functional-multisets.ads:104, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:881:15: info: invariant check proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:881:15: info: precondition proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:883:10: info: precondition proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:884:10: info: precondition proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:886:13: info: for Container before the call at spark-containers-functional-multisets.ads:95, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:886:13: info: invariant check proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:887:13: info: precondition proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:887:13: info: subprogram variant proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:887:34: info: for Container before the call at spark-containers-functional-multisets.ads:226, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:887:34: info: invariant check proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:887:34: info: precondition proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:887:56: info: for Container before the call at spark-containers-functional-multisets.ads:226, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:887:56: info: invariant check proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:887:56: info: precondition proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:889:28: info: assertion proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:889:28: info: for Left before the call at spark-containers-functional-multisets.ads:311, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:889:28: info: for Right before the call at spark-containers-functional-multisets.ads:312, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:889:28: info: invariant check proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:889:28: info: invariant check proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:889:48: info: for Left before the call at spark-containers-functional-multisets.ads:136, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:889:48: info: for Right before the call at spark-containers-functional-multisets.ads:136, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:889:48: info: invariant check proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:889:48: info: invariant check proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:889:50: info: for Left before the call at spark-containers-functional-multisets.ads:311, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:889:50: info: for Right before the call at spark-containers-functional-multisets.ads:312, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:889:50: info: invariant check proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:889:50: info: invariant check proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:891:13: info: precondition proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:891:13: info: subprogram variant proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:891:34: info: for Container before the call at spark-containers-functional-multisets.ads:226, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:891:34: info: invariant check proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:891:34: info: precondition proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:893:28: info: assertion proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:893:28: info: for Left before the call at spark-containers-functional-multisets.ads:311, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:893:28: info: for Right before the call at spark-containers-functional-multisets.ads:312, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:893:28: info: invariant check proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:893:28: info: invariant check proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:893:48: info: for Left before the call at spark-containers-functional-multisets.ads:136, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:893:48: info: for Right before the call at spark-containers-functional-multisets.ads:136, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:893:48: info: invariant check proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:893:48: info: invariant check proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:893:50: info: for Left before the call at spark-containers-functional-multisets.ads:311, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:893:50: info: for Right before the call at spark-containers-functional-multisets.ads:312, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:893:50: info: invariant check proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:893:50: info: invariant check proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:896:25: info: assertion proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:896:25: info: for Left before the call at spark-containers-functional-multisets.ads:311, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:896:25: info: for Right before the call at spark-containers-functional-multisets.ads:312, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:896:25: info: invariant check proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:896:25: info: invariant check proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:896:45: info: for Left before the call at spark-containers-functional-multisets.ads:136, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:896:45: info: for Right before the call at spark-containers-functional-multisets.ads:136, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:896:45: info: invariant check proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:896:45: info: invariant check proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:896:47: info: for Left before the call at spark-containers-functional-multisets.ads:311, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:896:47: info: for Right before the call at spark-containers-functional-multisets.ads:312, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:896:47: info: invariant check proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:896:47: info: invariant check proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:899:22: info: assertion proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:899:22: info: for Left before the call at spark-containers-functional-multisets.ads:311, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:899:22: info: for Right before the call at spark-containers-functional-multisets.ads:312, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:899:22: info: invariant check proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:899:22: info: invariant check proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:899:42: info: for Left before the call at spark-containers-functional-multisets.ads:136, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:899:42: info: for Right before the call at spark-containers-functional-multisets.ads:136, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:899:42: info: invariant check proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:899:42: info: invariant check proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:899:44: info: for Left before the call at spark-containers-functional-multisets.ads:311, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:899:44: info: for Right before the call at spark-containers-functional-multisets.ads:312, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:899:44: info: invariant check proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:899:44: info: invariant check proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:910:13: info: precondition proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:910:13: info: predicate check proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:911:13: info: predicate check proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:920:32: info: for Container before the call at spark-containers-functional-multisets.ads:226, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:920:32: info: invariant check proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:920:32: info: precondition proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:920:52: info: for Container before the call at spark-containers-functional-multisets.ads:104, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:920:52: info: invariant check proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:920:52: info: precondition proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:921:27: info: precondition proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:935:10: info: predicate check proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:935:18: info: for Container before the call at spark-containers-functional-multisets.ads:74, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:935:18: info: invariant check proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:935:18: info: predicate check proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:936:17: info: for Container before the call at spark-containers-functional-multisets.ads:226, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:936:17: info: invariant check proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:936:17: info: precondition proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:939:13: info: initialization of "Result" proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:943:15: info: precondition proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:944:29: info: for Container before the call at spark-containers-functional-multisets.ads:74, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:944:29: info: invariant check proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:944:29: info: predicate check proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:944:63: info: predicate check proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:944:65: info: predicate check proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:839:16: info: predicate check proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:839:29: info: for Left before the call at spark-containers-functional-multisets.ads:295, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:839:29: info: for Right before the call at spark-containers-functional-multisets.ads:296, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:839:29: info: invariant check proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:839:29: info: invariant check proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:840:18: info: for Container before the call at spark-containers-functional-multisets.ads:111, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:840:18: info: invariant check proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:840:18: info: predicate check proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:840:31: info: for Left before the call at spark-containers-functional-multisets.ads:295, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:840:31: info: for Right before the call at spark-containers-functional-multisets.ads:296, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:840:31: info: invariant check proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:840:31: info: invariant check proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:842:13: info: precondition proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:842:13: info: subprogram variant proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:842:41: info: for Container before the call at spark-containers-functional-multisets.ads:226, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:842:41: info: invariant check proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:842:41: info: precondition proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:862:14: info: precondition proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:875:07: info: initialization of "E" proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:877:14: info: for Container before the call at spark-containers-functional-multisets.ads:152, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:877:14: info: invariant check proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:878:15: info: for Container before the call at spark-containers-functional-multisets.ads:104, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:878:15: info: invariant check proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:878:15: info: precondition proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:880:10: info: precondition proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:881:10: info: precondition proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:883:13: info: for Container before the call at spark-containers-functional-multisets.ads:95, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:883:13: info: invariant check proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:884:13: info: precondition proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:884:13: info: subprogram variant proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:884:34: info: for Container before the call at spark-containers-functional-multisets.ads:226, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:884:34: info: invariant check proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:884:34: info: precondition proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:884:56: info: for Container before the call at spark-containers-functional-multisets.ads:226, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:884:56: info: invariant check proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:884:56: info: precondition proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:886:28: info: assertion proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:886:28: info: for Left before the call at spark-containers-functional-multisets.ads:311, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:886:28: info: for Right before the call at spark-containers-functional-multisets.ads:312, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:886:28: info: invariant check proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:886:28: info: invariant check proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:886:48: info: for Left before the call at spark-containers-functional-multisets.ads:136, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:886:48: info: for Right before the call at spark-containers-functional-multisets.ads:136, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:886:48: info: invariant check proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:886:48: info: invariant check proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:886:50: info: for Left before the call at spark-containers-functional-multisets.ads:311, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:886:50: info: for Right before the call at spark-containers-functional-multisets.ads:312, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:886:50: info: invariant check proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:886:50: info: invariant check proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:888:13: info: precondition proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:888:13: info: subprogram variant proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:888:34: info: for Container before the call at spark-containers-functional-multisets.ads:226, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:888:34: info: invariant check proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:888:34: info: precondition proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:890:28: info: assertion proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:890:28: info: for Left before the call at spark-containers-functional-multisets.ads:311, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:890:28: info: for Right before the call at spark-containers-functional-multisets.ads:312, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:890:28: info: invariant check proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:890:28: info: invariant check proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:890:48: info: for Left before the call at spark-containers-functional-multisets.ads:136, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:890:48: info: for Right before the call at spark-containers-functional-multisets.ads:136, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:890:48: info: invariant check proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:890:48: info: invariant check proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:890:50: info: for Left before the call at spark-containers-functional-multisets.ads:311, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:890:50: info: for Right before the call at spark-containers-functional-multisets.ads:312, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:890:50: info: invariant check proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:890:50: info: invariant check proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:893:25: info: assertion proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:893:25: info: for Left before the call at spark-containers-functional-multisets.ads:311, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:893:25: info: for Right before the call at spark-containers-functional-multisets.ads:312, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:893:25: info: invariant check proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:893:25: info: invariant check proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:893:45: info: for Left before the call at spark-containers-functional-multisets.ads:136, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:893:45: info: for Right before the call at spark-containers-functional-multisets.ads:136, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:893:45: info: invariant check proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:893:45: info: invariant check proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:893:47: info: for Left before the call at spark-containers-functional-multisets.ads:311, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:893:47: info: for Right before the call at spark-containers-functional-multisets.ads:312, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:893:47: info: invariant check proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:893:47: info: invariant check proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:896:22: info: assertion proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:896:22: info: for Left before the call at spark-containers-functional-multisets.ads:311, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:896:22: info: for Right before the call at spark-containers-functional-multisets.ads:312, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:896:22: info: invariant check proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:896:22: info: invariant check proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:896:42: info: for Left before the call at spark-containers-functional-multisets.ads:136, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:896:42: info: for Right before the call at spark-containers-functional-multisets.ads:136, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:896:42: info: invariant check proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:896:42: info: invariant check proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:896:44: info: for Left before the call at spark-containers-functional-multisets.ads:311, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:896:44: info: for Right before the call at spark-containers-functional-multisets.ads:312, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:896:44: info: invariant check proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:896:44: info: invariant check proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:907:13: info: precondition proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:907:13: info: predicate check proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:908:13: info: predicate check proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:917:32: info: for Container before the call at spark-containers-functional-multisets.ads:226, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:917:32: info: invariant check proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:917:32: info: precondition proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:917:52: info: for Container before the call at spark-containers-functional-multisets.ads:104, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:917:52: info: invariant check proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:917:52: info: precondition proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:918:27: info: precondition proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:932:10: info: predicate check proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:932:18: info: for Container before the call at spark-containers-functional-multisets.ads:74, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:932:18: info: invariant check proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:932:18: info: predicate check proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:933:17: info: for Container before the call at spark-containers-functional-multisets.ads:226, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:933:17: info: invariant check proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:933:17: info: precondition proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:936:13: info: initialization of "Result" proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:940:15: info: precondition proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:941:29: info: for Container before the call at spark-containers-functional-multisets.ads:74, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:941:29: info: invariant check proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:941:29: info: predicate check proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:941:63: info: predicate check proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:941:65: info: predicate check proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:942:13: info: precondition proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:943:28: info: for Container before the call at spark-containers-functional-multisets.ads:111, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:943:28: info: invariant check proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:943:28: info: predicate check proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:943:52: info: predicate check proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:943:54: info: predicate check proved, in instantiation at my_multiset.ads:6
 spark-containers-functional-multisets.adb:945:13: info: precondition proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:946:28: info: for Container before the call at spark-containers-functional-multisets.ads:111, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:946:28: info: invariant check proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:946:28: info: predicate check proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:946:52: info: predicate check proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:946:54: info: predicate check proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:946:13: info: precondition proved, in instantiation at my_multiset.ads:6
 spark-containers-functional-multisets.adb:948:13: info: precondition proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:949:13: info: precondition proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:951:13: info: precondition proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:952:16: info: precondition proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:952:46: info: precondition proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:969:06: info: refined post proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:970:19: info: for Container before the call at spark-containers-functional-multisets.ads:95, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:970:19: info: invariant check proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:971:15: info: for Container before the call at spark-containers-functional-multisets.ads:111, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:971:15: info: invariant check proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:971:15: info: predicate check proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:972:08: info: for Container before the call at spark-containers-functional-multisets.ads:111, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:972:08: info: invariant check proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:972:08: info: predicate check proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:972:34: info: for Container before the call at spark-containers-functional-multisets.ads:74, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:972:34: info: invariant check proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:972:34: info: predicate check proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:973:15: info: for Left before the call at spark-containers-functional-multisets.ads:164, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:973:15: info: for Right before the call at spark-containers-functional-multisets.ads:165, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:973:15: info: invariant check proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:973:15: info: invariant check proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:975:32: info: precondition proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:978:14: info: initialization of "Set" proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:979:22: info: precondition proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:980:10: info: precondition proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:981:31: info: predicate check proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:981:37: info: predicate check proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:981:39: info: precondition proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:981:39: info: predicate check proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:990:07: info: initialization of "E" proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:992:07: info: initialization of "Buffer" proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:997:17: info: for Container before the call at spark-containers-functional-multisets.ads:152, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:997:17: info: invariant check proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:998:15: info: for Container before the call at spark-containers-functional-multisets.ads:104, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:998:15: info: invariant check proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:998:15: info: precondition proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:1000:23: info: for Container before the call at spark-containers-functional-multisets.ads:211, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:1000:23: info: invariant check proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:1000:42: info: precondition proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:1001:20: info: for Container before the call at spark-containers-functional-multisets.ads:226, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:1001:20: info: invariant check proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:1001:20: info: precondition proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:1003:31: info: loop variant proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:1003:44: info: for Container before the call at spark-containers-functional-multisets.ads:111, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:1003:44: info: invariant check proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:1003:44: info: range check proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:1004:33: info: loop invariant initialization proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:1004:33: info: loop invariant preservation proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:1005:33: info: loop invariant initialization proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:1005:33: info: loop invariant preservation proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:1007:13: info: for Container before the call at spark-containers-functional-multisets.ads:111, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:949:16: info: precondition proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:949:46: info: precondition proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:966:06: info: refined post proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:967:19: info: for Container before the call at spark-containers-functional-multisets.ads:95, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:967:19: info: invariant check proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:968:15: info: for Container before the call at spark-containers-functional-multisets.ads:111, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:968:15: info: invariant check proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:968:15: info: predicate check proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:969:08: info: for Container before the call at spark-containers-functional-multisets.ads:111, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:969:08: info: invariant check proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:969:08: info: predicate check proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:969:34: info: for Container before the call at spark-containers-functional-multisets.ads:74, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:969:34: info: invariant check proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:969:34: info: predicate check proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:970:15: info: for Left before the call at spark-containers-functional-multisets.ads:164, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:970:15: info: for Right before the call at spark-containers-functional-multisets.ads:165, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:970:15: info: invariant check proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:970:15: info: invariant check proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:972:32: info: precondition proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:975:14: info: initialization of "Set" proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:976:22: info: precondition proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:977:10: info: precondition proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:978:31: info: predicate check proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:978:37: info: predicate check proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:978:39: info: precondition proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:978:39: info: predicate check proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:987:07: info: initialization of "E" proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:989:07: info: initialization of "Buffer" proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:994:17: info: for Container before the call at spark-containers-functional-multisets.ads:152, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:994:17: info: invariant check proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:995:15: info: for Container before the call at spark-containers-functional-multisets.ads:104, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:995:15: info: invariant check proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:995:15: info: precondition proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:997:23: info: for Container before the call at spark-containers-functional-multisets.ads:211, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:997:23: info: invariant check proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:997:42: info: precondition proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:998:20: info: for Container before the call at spark-containers-functional-multisets.ads:226, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:998:20: info: invariant check proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:998:20: info: precondition proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:1000:31: info: loop variant proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:1000:44: info: for Container before the call at spark-containers-functional-multisets.ads:111, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:1000:44: info: invariant check proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:1000:44: info: range check proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:1001:33: info: loop invariant initialization proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:1001:33: info: loop invariant preservation proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:1002:33: info: loop invariant initialization proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:1002:33: info: loop invariant preservation proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:1004:13: info: for Container before the call at spark-containers-functional-multisets.ads:111, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:1004:13: info: invariant check proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:1004:13: info: loop invariant initialization proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:1004:13: info: loop invariant preservation proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:1004:13: info: predicate check proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:1004:39: info: for Container before the call at spark-containers-functional-multisets.ads:111, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:1004:39: info: invariant check proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:1004:39: info: predicate check proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:1005:17: info: for Container before the call at spark-containers-functional-multisets.ads:111, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:1005:17: info: invariant check proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:1005:17: info: predicate check proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:1005:38: info: for Container before the call at spark-containers-functional-multisets.ads:111, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:1005:38: info: invariant check proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:1005:38: info: predicate check proved, in instantiation at my_multiset.ads:6
 spark-containers-functional-multisets.adb:1007:13: info: invariant check proved, in instantiation at my_multiset.ads:6
 spark-containers-functional-multisets.adb:1007:13: info: loop invariant initialization proved, in instantiation at my_multiset.ads:6
 spark-containers-functional-multisets.adb:1007:13: info: loop invariant preservation proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:1007:13: info: predicate check proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:1007:39: info: for Container before the call at spark-containers-functional-multisets.ads:111, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:1007:39: info: invariant check proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:1007:39: info: predicate check proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:1008:17: info: for Container before the call at spark-containers-functional-multisets.ads:111, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:1008:17: info: invariant check proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:1008:17: info: predicate check proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:1008:38: info: for Container before the call at spark-containers-functional-multisets.ads:111, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:1008:38: info: invariant check proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:1008:38: info: predicate check proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:1010:13: info: invariant check proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:1010:13: info: loop invariant initialization proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:1010:13: info: loop invariant preservation proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:1011:15: info: for Container before the call at spark-containers-functional-multisets.ads:95, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:1011:15: info: invariant check proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:1012:25: info: for Container before the call at spark-containers-functional-multisets.ads:95, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:1012:25: info: invariant check proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:1014:13: info: invariant check proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:1014:13: info: loop invariant initialization proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:1014:13: info: loop invariant preservation proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:1014:40: info: for Container before the call at spark-containers-functional-multisets.ads:95, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:1014:40: info: invariant check proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:1016:13: info: invariant check proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:1016:13: info: loop invariant initialization proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:1016:13: info: loop invariant preservation proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:1017:15: info: for Container before the call at spark-containers-functional-multisets.ads:74, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:1017:15: info: invariant check proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:1017:15: info: predicate check proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:1018:17: info: for Container before the call at spark-containers-functional-multisets.ads:74, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:1018:17: info: invariant check proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:1018:17: info: predicate check proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:1020:13: info: invariant check proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:1020:13: info: loop invariant initialization proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:1020:13: info: loop invariant preservation proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:1021:15: info: for Container before the call at spark-containers-functional-multisets.ads:74, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:1021:15: info: invariant check proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:1021:15: info: predicate check proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:1022:17: info: for Container before the call at spark-containers-functional-multisets.ads:74, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:1022:17: info: invariant check proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:1022:17: info: predicate check proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:1024:13: info: invariant check proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:1024:13: info: loop invariant initialization proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:1024:13: info: loop invariant preservation proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:1025:19: info: for Container before the call at spark-containers-functional-multisets.ads:95, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:1025:19: info: invariant check proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:1026:21: info: for Container before the call at spark-containers-functional-multisets.ads:74, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:1026:21: info: invariant check proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:1026:21: info: predicate check proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:1027:23: info: for Container before the call at spark-containers-functional-multisets.ads:74, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:1027:23: info: invariant check proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:1027:23: info: predicate check proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:1028:21: info: for Container before the call at spark-containers-functional-multisets.ads:74, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:1028:21: info: invariant check proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:1028:21: info: predicate check proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:1029:23: info: for Container before the call at spark-containers-functional-multisets.ads:74, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:1029:23: info: invariant check proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:1029:23: info: predicate check proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:1030:25: info: for Container before the call at spark-containers-functional-multisets.ads:74, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:1030:25: info: invariant check proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:1030:25: info: predicate check proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:1046:07: info: initialization of "E" proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:1047:07: info: initialization of "Occ" proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:1050:17: info: for Container before the call at spark-containers-functional-multisets.ads:152, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:1050:17: info: invariant check proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:1051:15: info: for Container before the call at spark-containers-functional-multisets.ads:104, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:1051:15: info: invariant check proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:1051:15: info: precondition proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:1052:20: info: for Container before the call at spark-containers-functional-multisets.ads:226, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:1052:20: info: invariant check proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:1052:20: info: precondition proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:1054:22: info: for Container before the call at spark-containers-functional-multisets.ads:74, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:1054:22: info: invariant check proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:1054:22: info: predicate check proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:1054:46: info: for Container before the call at spark-containers-functional-multisets.ads:74, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:1054:46: info: invariant check proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:1054:46: info: predicate check proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:1055:13: info: predicate check proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:1055:19: info: for Container before the call at spark-containers-functional-multisets.ads:74, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:1055:19: info: invariant check proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:1055:19: info: predicate check proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:1057:15: info: for Container before the call at spark-containers-functional-multisets.ads:211, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:1057:15: info: invariant check proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:1057:28: info: predicate check proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:1057:32: info: predicate check proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:1057:34: info: for Container before the call at spark-containers-functional-multisets.ads:74, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:1057:34: info: invariant check proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:1057:34: info: predicate check proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:1060:31: info: loop variant proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:1060:44: info: for Container before the call at spark-containers-functional-multisets.ads:111, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:1060:44: info: invariant check proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:1060:44: info: range check proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:1062:33: info: loop invariant initialization proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:1062:33: info: loop invariant preservation proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:1063:33: info: loop invariant initialization proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:1063:33: info: loop invariant preservation proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:1065:13: info: invariant check proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:1065:13: info: loop invariant initialization proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:1065:13: info: loop invariant preservation proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:1066:15: info: for Container before the call at spark-containers-functional-multisets.ads:74, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:1066:15: info: invariant check proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:1066:15: info: predicate check proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:1066:45: info: for Container before the call at spark-containers-functional-multisets.ads:74, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:1066:45: info: invariant check proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:1066:45: info: predicate check proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:1068:33: info: loop invariant initialization proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:1068:33: info: loop invariant preservation proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:1068:38: info: for Left before the call at spark-containers-functional-multisets.ads:125, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:1068:38: info: for Right before the call at spark-containers-functional-multisets.ads:125, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:1068:38: info: invariant check proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:1068:38: info: invariant check proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:1070:13: info: invariant check proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:1070:13: info: loop invariant initialization proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:1070:13: info: loop invariant preservation proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:1071:22: info: for Container before the call at spark-containers-functional-multisets.ads:95, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:1071:22: info: invariant check proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:1074:13: info: invariant check proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:1074:13: info: loop invariant initialization proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:1074:13: info: loop invariant preservation proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:1075:23: info: for Container before the call at spark-containers-functional-multisets.ads:95, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:1075:23: info: invariant check proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:1076:21: info: for Container before the call at spark-containers-functional-multisets.ads:74, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:1076:21: info: invariant check proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:1076:21: info: predicate check proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:1077:28: info: for Container before the call at spark-containers-functional-multisets.ads:74, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:1077:28: info: invariant check proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:1077:28: info: predicate check proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:1078:28: info: for Container before the call at spark-containers-functional-multisets.ads:74, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:1078:28: info: invariant check proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:1078:28: info: predicate check proved, in instantiation at my_multiset.ads:6
-spark-containers-functional-multisets.adb:1081:07: info: precondition proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:1008:15: info: for Container before the call at spark-containers-functional-multisets.ads:95, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:1008:15: info: invariant check proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:1009:25: info: for Container before the call at spark-containers-functional-multisets.ads:95, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:1009:25: info: invariant check proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:1011:13: info: invariant check proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:1011:13: info: loop invariant initialization proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:1011:13: info: loop invariant preservation proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:1011:40: info: for Container before the call at spark-containers-functional-multisets.ads:95, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:1011:40: info: invariant check proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:1013:13: info: invariant check proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:1013:13: info: loop invariant initialization proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:1013:13: info: loop invariant preservation proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:1014:15: info: for Container before the call at spark-containers-functional-multisets.ads:74, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:1014:15: info: invariant check proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:1014:15: info: predicate check proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:1015:17: info: for Container before the call at spark-containers-functional-multisets.ads:74, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:1015:17: info: invariant check proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:1015:17: info: predicate check proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:1017:13: info: invariant check proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:1017:13: info: loop invariant initialization proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:1017:13: info: loop invariant preservation proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:1018:15: info: for Container before the call at spark-containers-functional-multisets.ads:74, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:1018:15: info: invariant check proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:1018:15: info: predicate check proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:1019:17: info: for Container before the call at spark-containers-functional-multisets.ads:74, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:1019:17: info: invariant check proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:1019:17: info: predicate check proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:1021:13: info: invariant check proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:1021:13: info: loop invariant initialization proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:1021:13: info: loop invariant preservation proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:1022:19: info: for Container before the call at spark-containers-functional-multisets.ads:95, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:1022:19: info: invariant check proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:1023:21: info: for Container before the call at spark-containers-functional-multisets.ads:74, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:1023:21: info: invariant check proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:1023:21: info: predicate check proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:1024:23: info: for Container before the call at spark-containers-functional-multisets.ads:74, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:1024:23: info: invariant check proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:1024:23: info: predicate check proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:1025:21: info: for Container before the call at spark-containers-functional-multisets.ads:74, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:1025:21: info: invariant check proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:1025:21: info: predicate check proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:1026:23: info: for Container before the call at spark-containers-functional-multisets.ads:74, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:1026:23: info: invariant check proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:1026:23: info: predicate check proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:1027:25: info: for Container before the call at spark-containers-functional-multisets.ads:74, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:1027:25: info: invariant check proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:1027:25: info: predicate check proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:1043:07: info: initialization of "E" proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:1044:07: info: initialization of "Occ" proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:1047:17: info: for Container before the call at spark-containers-functional-multisets.ads:152, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:1047:17: info: invariant check proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:1048:15: info: for Container before the call at spark-containers-functional-multisets.ads:104, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:1048:15: info: invariant check proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:1048:15: info: precondition proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:1049:20: info: for Container before the call at spark-containers-functional-multisets.ads:226, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:1049:20: info: invariant check proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:1049:20: info: precondition proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:1051:22: info: for Container before the call at spark-containers-functional-multisets.ads:74, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:1051:22: info: invariant check proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:1051:22: info: predicate check proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:1051:46: info: for Container before the call at spark-containers-functional-multisets.ads:74, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:1051:46: info: invariant check proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:1051:46: info: predicate check proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:1052:13: info: predicate check proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:1052:19: info: for Container before the call at spark-containers-functional-multisets.ads:74, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:1052:19: info: invariant check proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:1052:19: info: predicate check proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:1054:15: info: for Container before the call at spark-containers-functional-multisets.ads:211, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:1054:15: info: invariant check proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:1054:28: info: predicate check proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:1054:32: info: predicate check proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:1054:34: info: for Container before the call at spark-containers-functional-multisets.ads:74, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:1054:34: info: invariant check proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:1054:34: info: predicate check proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:1057:31: info: loop variant proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:1057:44: info: for Container before the call at spark-containers-functional-multisets.ads:111, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:1057:44: info: invariant check proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:1057:44: info: range check proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:1059:33: info: loop invariant initialization proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:1059:33: info: loop invariant preservation proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:1060:33: info: loop invariant initialization proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:1060:33: info: loop invariant preservation proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:1062:13: info: invariant check proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:1062:13: info: loop invariant initialization proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:1062:13: info: loop invariant preservation proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:1063:15: info: for Container before the call at spark-containers-functional-multisets.ads:74, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:1063:15: info: invariant check proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:1063:15: info: predicate check proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:1063:45: info: for Container before the call at spark-containers-functional-multisets.ads:74, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:1063:45: info: invariant check proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:1063:45: info: predicate check proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:1065:33: info: loop invariant initialization proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:1065:33: info: loop invariant preservation proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:1065:38: info: for Left before the call at spark-containers-functional-multisets.ads:125, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:1065:38: info: for Right before the call at spark-containers-functional-multisets.ads:125, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:1065:38: info: invariant check proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:1065:38: info: invariant check proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:1067:13: info: invariant check proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:1067:13: info: loop invariant initialization proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:1067:13: info: loop invariant preservation proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:1068:22: info: for Container before the call at spark-containers-functional-multisets.ads:95, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:1068:22: info: invariant check proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:1071:13: info: invariant check proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:1071:13: info: loop invariant initialization proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:1071:13: info: loop invariant preservation proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:1072:23: info: for Container before the call at spark-containers-functional-multisets.ads:95, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:1072:23: info: invariant check proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:1073:21: info: for Container before the call at spark-containers-functional-multisets.ads:74, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:1073:21: info: invariant check proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:1073:21: info: predicate check proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:1074:28: info: for Container before the call at spark-containers-functional-multisets.ads:74, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:1074:28: info: invariant check proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:1074:28: info: predicate check proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:1075:28: info: for Container before the call at spark-containers-functional-multisets.ads:74, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:1075:28: info: invariant check proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:1075:28: info: predicate check proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.adb:1078:07: info: precondition proved, in instantiation at my_multiset.ads:6
 spark-containers-functional-multisets.ads:29:19: info: aspect Always_Terminates on "Equivalent_Elements_Reflexive" has been proved, subprogram will terminate, in instantiation at my_multiset.ads:6
 spark-containers-functional-multisets.ads:31:19: info: aspect Always_Terminates on "Equivalent_Elements_Symmetric" has been proved, subprogram will terminate, in instantiation at my_multiset.ads:6
 spark-containers-functional-multisets.ads:33:19: info: aspect Always_Terminates on "Equivalent_Elements_Transitive" has been proved, subprogram will terminate, in instantiation at my_multiset.ads:6
