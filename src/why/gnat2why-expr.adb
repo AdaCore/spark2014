@@ -11203,7 +11203,7 @@ package body Gnat2Why.Expr is
       Result_Id       : constant W_Identifier_Id :=
         New_Result_Ident (Typ => Get_Typ (Brower_At_End));
       Brower_Relaxed  : constant Boolean :=
-        Ekind (Brower) in Object_Kind  and then Obj_Has_Relaxed_Init (Brower);
+        Is_Object (Brower) and then Obj_Has_Relaxed_Init (Brower);
       pragma Assert
         (if Ekind (Brower) = E_Function
          then not Fun_Has_Relaxed_Init (Brower));
