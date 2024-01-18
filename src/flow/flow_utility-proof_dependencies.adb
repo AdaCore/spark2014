@@ -21,6 +21,7 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
+with Gnat2Why.Tables;           use Gnat2Why.Tables;
 with Flow_Refinement;           use Flow_Refinement;
 with SPARK_Definition.Annotate; use SPARK_Definition.Annotate;
 with SPARK_Util.Subprograms;    use SPARK_Util.Subprograms;
@@ -72,6 +73,29 @@ package body Flow_Utility.Proof_Dependencies is
       Process_Expressions
         (Find_Contracts (Profile, Pragma_Postcondition));
    end Process_Access_To_Subprogram_Contracts;
+
+   ------------------------------
+   -- Process_Dispatching_Call --
+   ------------------------------
+
+   procedure Process_Dispatching_Call
+     (N                  : Node_Id;
+      Proof_Dependencies : in out Node_Sets.Set)
+   is
+      Called_Subp      : constant Entity_Id := Get_Called_Entity (N);
+      Dispatching_Type : constant Entity_Id :=
+        Base_Retysp
+          (SPARK_Util.Subprograms.Find_Dispatching_Type (Called_Subp));
+      Descendants      : constant Node_Sets.Set :=
+        Get_Descendant_Set (Dispatching_Type);
+      Descendant_E     : Entity_Id;
+   begin
+      for Descendant of Descendants loop
+         Descendant_E := Corresponding_Primitive
+           (Called_Subp, Descendant);
+         Proof_Dependencies.Include (Descendant_E);
+      end loop;
+   end Process_Dispatching_Call;
 
    -----------------------
    -- Process_Attribute --

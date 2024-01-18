@@ -38,6 +38,10 @@ package Gnat2Why.Tables is
    --  @param E any entity that we want to translate in Why3
    --  Store all the necessary information about E in internal tables.
 
+   procedure Store_Descendants_Information (E : Entity_Id);
+   --  @param E any entity that we want to translate in Why3
+   --  Store information about tagged type chains in an internal table.
+
    -------------------------
    -- Component Info Maps --
    -------------------------

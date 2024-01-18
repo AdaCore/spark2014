@@ -751,6 +751,24 @@ package body Gnat2Why.Tables is
       end if;
    end Search_Component_In_Type;
 
+   -----------------------------------
+   -- Store_Descendants_Information --
+   -----------------------------------
+
+   procedure Store_Descendants_Information (E : Entity_Id) is
+   begin
+      if Ekind (E) in
+          Incomplete_Or_Private_Kind | Record_Kind
+        and then Is_Base_Type (E)
+        and then not Is_Class_Wide_Type (E)
+        and then Retysp (E) = E
+        and then Is_Tagged_Type (Root_Retysp (E))
+      then
+         Descendants.Include (E, Node_Sets.Empty_Set);
+         Store_In_Ancestors (E);
+      end if;
+   end Store_Descendants_Information;
+
    ------------------------
    -- Store_In_Ancestors --
    ------------------------

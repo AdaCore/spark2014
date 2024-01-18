@@ -296,6 +296,12 @@ package body Flow_Utility is
                   Function_Calls.Include
                     (Subprogram_Call'(N => N, E => Called_Func));
 
+                  if Generating_Globals
+                    and then Flow_Classwide.Is_Dispatching_Call (N)
+                  then
+                     Process_Dispatching_Call (N, Proof_Dependencies);
+                  end if;
+
                   --  Only external calls to protected functions trigger
                   --  priority ceiling protocol checks; internal calls do not.
 

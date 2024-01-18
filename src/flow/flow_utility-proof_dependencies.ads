@@ -23,6 +23,7 @@
 
 --  This package contains utilities related to proof dependencies.
 
+with Flow_Classwide;
 with SPARK_Util.Types;          use SPARK_Util.Types;
 
 with Namet;                     use Namet;
@@ -50,6 +51,15 @@ package Flow_Utility.Proof_Dependencies is
           Proof_Dependencies'Old.Is_Subset (Of_Set => Proof_Dependencies);
    --  Fill Proof_Dependencies when the 'Access attribute references a
    --  subprogram.
+
+   procedure Process_Dispatching_Call
+     (N                  : Node_Id;
+      Proof_Dependencies : in out Node_Sets.Set)
+   with Pre  => Flow_Classwide.Is_Dispatching_Call (N),
+        Post =>
+          Proof_Dependencies'Old.Is_Subset (Of_Set => Proof_Dependencies);
+   --  Fill Proof_Dependencies with all possible callees for dispatching
+   --  call N.
 
    procedure Process_Iterable_For_Proof_Annotation
      (N                  : Node_Id;

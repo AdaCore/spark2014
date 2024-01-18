@@ -5625,6 +5625,12 @@ package body Flow.Control_Flow_Graph is
          Check_Visibility;
       end if;
 
+      if FA.Generating_Globals
+        and then Flow_Classwide.Is_Dispatching_Call (N)
+      then
+         Process_Dispatching_Call (N, FA.Proof_Dependencies);
+      end if;
+
       --  Add a cluster to help pretty printing
       FA.CFG.New_Cluster (C);
 
