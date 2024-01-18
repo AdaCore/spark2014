@@ -3856,6 +3856,7 @@ package body SPARK_Util is
       return Nkind (Expr) = N_Null
         or else
           (Nkind (Expr) in N_Identifier | N_Expanded_Name
+           and then Ekind (Entity (Expr)) in Object_Kind
            and then Is_Statically_Reclaimed_Obj (Entity (Expr)));
    end Is_Statically_Reclaimed_Expr;
 
