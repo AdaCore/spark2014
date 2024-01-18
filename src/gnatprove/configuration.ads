@@ -138,6 +138,7 @@ package Configuration is
       P                     : aliased GNAT.Strings.String_Access;
       --  The project file name, given with option -P
       Pedantic              : aliased Boolean;
+      Print_Gpr_Registry    : aliased Boolean;
       Proof                 : aliased GNAT.Strings.String_Access;
       Proof_Warnings        : aliased Boolean;
       Proof_Warn_Timeout    : aliased Integer;

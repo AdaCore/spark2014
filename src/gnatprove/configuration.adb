@@ -46,7 +46,10 @@ with GPR2.Path_Name;
 with GPR2.Project.Attribute;
 with GPR2.Project.Attribute_Index;
 with GPR2.Project.Registry.Attribute;
+with GPR2.Project.Registry.Attribute.Description;
+with GPR2.Project.Registry.Exchange;
 with GPR2.Project.Registry.Pack;
+with GPR2.Project.Registry.Pack.Description;
 with Platform;          use Platform;
 with SPARK2014VSN;      use SPARK2014VSN;
 with System.Multiprocessors;
@@ -666,6 +669,10 @@ package body Configuration is
            (Config,
             Explain'Access,
             Long_Switch => "--explain=");
+         Define_Switch
+           (Config,
+            CL_Switches.Print_Gpr_Registry'Access,
+            Long_Switch => GPR2.Options.Print_GPR_Registry_Option);
       end if;
 
       if Mode in Project_Parsing | All_Switches | Global_Switches_Only then
@@ -1426,12 +1433,20 @@ package body Configuration is
            (Options.Subdirs, Phase2_Subdir.Display_Full_Name);
          Project.Registry.Pack.Add
            (+"Prove", Project.Registry.Pack.Everywhere);
+         Project.Registry.Pack.Description.Set_Package_Description
+           (+"Prove",
+            "This package specifies the options used when calling " &
+              "'gnatprove' tool.");
          Project.Registry.Attribute.Add
            (Q_Attribute_Id'(+"Prove", +"Switches"),
             Index_Type           => Project.Registry.Attribute.No_Index,
             Value                => Project.Registry.Attribute.List,
             Value_Case_Sensitive => False,
             Is_Allowed_In        => Project.Registry.Attribute.Everywhere);
+         Project.Registry.Attribute.Description.Set_Attribute_Description
+           (Q_Attribute_Id'(+"Prove", +"Switches"),
+            "This deprecated attribute is the same as Proof_Switches " &
+              "(""Ada"").");
          Project.Registry.Attribute.Add
            (Q_Attribute_Id'(+"Prove", +"Proof_Switches"),
             Index_Type           =>
@@ -1439,12 +1454,41 @@ package body Configuration is
             Value                => Project.Registry.Attribute.List,
             Value_Case_Sensitive => False,
             Is_Allowed_In        => Project.Registry.Attribute.Everywhere);
+         Project.Registry.Attribute.Description.Set_Attribute_Description
+           (Q_Attribute_Id'(+"Prove", +"Proof_Switches"),
+            "Defines additional command line switches that are used for the " &
+              "invokation of GNATprove. Only the following switches are " &
+              "allowed for file-specific switches: '--steps', '--timeout', " &
+              "'--memlimit', '--proof', '--prover', '--level', '--mode', " &
+              "'--counterexamples', '--no-inlining', '--no-loop-unrolling'");
          Project.Registry.Attribute.Add
            (Q_Attribute_Id'(+"Prove", +"Proof_Dir"),
             Index_Type           => Project.Registry.Attribute.No_Index,
             Value                => Project.Registry.Attribute.Single,
             Value_Case_Sensitive => True,
             Is_Allowed_In        => Project.Registry.Attribute.Everywhere);
+         Project.Registry.Attribute.Description.Set_Attribute_Description
+           (Q_Attribute_Id'(+"Prove", +"Proof_Dir"),
+            "Defines the directory where are stored the files " &
+              "concerning the state of the proof of a project. This " &
+              "directory contains a sub-directory sessions with one " &
+              "directory per source package analyzed for proof. Each of " &
+              "these package directories contains a Why3 session file. If a " &
+              "manual prover is used to prove some VCs, then a " &
+              "sub-directory called by the name of the prover is created " &
+              "next to sessions, with the same organization of " &
+              "sub-directories. Each of these package directories contains " &
+              "manual proof files. Common proof files to be used across " &
+              "various proofs can be stored at the toplevel of the " &
+              "prover-specific directory.");
+
+         if CL_Switches.Print_Gpr_Registry then
+            --  Print registered gpr attributes and exit as requested
+            --  This should be done here before any warning/error outputs.
+
+            GPR2.Project.Registry.Exchange.Export (Output => Put'Access);
+            Succeed;
+         end if;
 
          if CL_Switches.Target /= null and then CL_Switches.Target.all /= ""
          then
