@@ -1,6 +1,6 @@
 with System; use System;
 with Types; use Types;
-with Interfaces.C.Extensions; use Interfaces.C.Extensions;
+with Interfaces.C.Extensions; use Interfaces.C.Extensions; use Interfaces.C;
 with FreeRTOS_Pack; use FreeRTOS_Pack;
 
 package Worker_Pack
