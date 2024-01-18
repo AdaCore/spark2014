@@ -358,6 +358,18 @@ procedure Gnatprove with SPARK_Mode is
       end;
       Args.Append ("--no-object-check");
 
+      --  We want to run phase 1 at least on the files that are processed by
+      --  phase 2. By not using -u in phase 1 we will obtain a larger set of
+      --  files, except when -u was used without files. In addition,
+      --  --no-subprojects being equivalent to -u without files, we force -u
+      --  when present.
+
+      if (CL_Switches.U and then CL_Switches.File_List.Is_Empty)
+        or else (not CL_Switches.U and then CL_Switches.No_Subprojects)
+      then
+         Args.Append ("-u");
+      end if;
+
       --  Keep going after a compilation error in 'check' mode
 
       if Configuration.Mode = GPM_Check then

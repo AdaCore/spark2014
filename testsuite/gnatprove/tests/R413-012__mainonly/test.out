@@ -1,4 +1,10 @@
 a~main.adb:8:07: info: initialization of "X" proved
+a~main.adb:10:07: warning: assuming "Set" always terminates
+a~main.adb:10:07: warning: assuming "Set" has no effect on global items
+a~main.adb:10:07: warning: no Always_Terminates aspect available for "Set" [assumed-always-terminates]
+a~main.adb:10:07: warning: no Global contract available for "Set" [assumed-global-null]
 a~main.ads:5:17: info: initialization of "Y" proved
+a~main.ads:6:19: warning: assuming "Get" has no effect on global items
+a~main.ads:6:19: warning: no Global contract available for "Get" [assumed-global-null]
 b.ads:3:04: error: "State" is referenced in expression function but missing from the Global
 gnatprove: error during flow analysis and proof
