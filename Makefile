@@ -142,7 +142,7 @@ gnat2why:
 	cmp "$$SOURCE" "$$TARGET" || $(CP) $$SOURCE $$TARGET
 
 coverage:
-	$(MAKE) -C gnat2why AUTOMATED=1 coverage
+	$(MAKE) -C gnat2why AUTOMATED=1 coverage GPRARGS=$(PROD)
 
 install-coverage:
 	rm -rf $(SIDDIR)
