@@ -2888,9 +2888,18 @@ package body SPARK_Util is
    begin
       case Ekind (E) is
          when E_In_Parameter =>
+
+            --  The enclosing subprogram should have been marked so potential
+            --  annotations for mutable In parameters are processed.
+
+            pragma Assert (not Is_Subprogram_Or_Entry (Scope (E))
+                           or else Subprogram_Is_Ignored_For_Proof (Scope (E))
+                           or else Entity_Marked (Scope (E)));
+
             return (Is_Function_Or_Function_Type (Scope (E))
                       and then not Is_Function_With_Side_Effects (Scope (E)))
-              or else not Is_Access_Variable (Etype (E));
+              or else (not Is_Access_Variable (Etype (E))
+                       and then not Has_Mutable_In_Param_Annotation (E));
          when E_Loop_Parameter =>
             return True;
          when E_Constant =>

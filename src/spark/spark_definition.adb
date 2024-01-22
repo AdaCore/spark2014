@@ -4864,12 +4864,7 @@ package body SPARK_Definition is
          --  OUT or IN OUT, or if its mode is IN, it has an access-to-variable
          --  type, and the called subprogram is not a function.
 
-         if Ekind (Formal) in E_In_Out_Parameter | E_Out_Parameter
-           or else
-             (not Is_Function_Or_Function_Type (E)
-              and then Ekind (Formal) = E_In_Parameter
-              and then Is_Access_Variable (Etype (Formal)))
-         then
+         if not Is_Constant_In_SPARK (Formal) then
             declare
                Mode : constant String :=
                  (case Ekind (Formal) is

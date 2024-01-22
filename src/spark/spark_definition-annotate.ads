@@ -269,6 +269,19 @@ package SPARK_Definition.Annotate is
    --  then hidden or disclosed (if it is hidden by default) for the
    --  verification of the package, subprogram, or entry.
 
+   --  A pragma Annotate for private types with mutable IN parameters has the
+   --  following form:
+   --    pragma Annotate (GNATprove, Mutable_IN_Parameters, Entity => E);
+
+   --  where
+   --    GNATprove               is a fixed identifier
+   --    Mutable_IN_Parameters   is a fixed identifier
+   --    E                       is a private type.
+
+   --  The private type E shall be either a simple private type or ultimately
+   --  an access-to-variable type. It should be located directly after an
+   --  entry or a subprogram with side effects.
+
    procedure Mark_Pragma_Annotate
      (N             : Node_Id;
       Preceding     : Node_Id;
@@ -568,5 +581,8 @@ package SPARK_Definition.Annotate is
 
    function Expr_Fun_Hidden_By_Default (E : Entity_Id) return Boolean;
    --  Return True if the body of an expression function E is hidden by default
+
+   function Has_Mutable_In_Param_Annotation (E : Entity_Id) return Boolean;
+   --  Return True if E is a IN parameter annotated as mutable
 
 end SPARK_Definition.Annotate;
