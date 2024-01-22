@@ -1,7 +1,7 @@
 dyn.adb:2:13: info: implicit aspect Always_Terminates on "F" has been proved, subprogram will terminate
 dyn.adb:2:13: info: implicit function contract might not be available on calls from enclosing unit
 dyn.adb:3:04: info: range check proved (CVC5: 2 VC)
+dyn.adb:3:27: high: range check might fail (e.g. when X'First = 0 and X'Last = 0)
 dyn.adb:3:27: info: length check proved (CVC5: 3 VC; Trivial: 1 VC)
-dyn.adb:3:27: medium: range check might fail
 dyn.adb:3:30: info: overflow check proved (CVC5: 2 VC)
 dyn.adb:3:30: info: range check proved (CVC5: 2 VC)

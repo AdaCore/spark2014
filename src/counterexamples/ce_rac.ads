@@ -61,8 +61,9 @@ package CE_RAC is
      (Ty       :     Entity_Id;
       Fst, Lst : out Big_Integer)
    with
-     Pre => Is_Integer_Type (Ty);
-   --  Write the first and last value of an integer type Ty in Fst and Lst
+     Pre => Is_Integer_Type (Ty)
+       or else Is_Enumeration_Type (Ty);
+   --  Write the first and last value of a type Ty in Fst and Lst
 
    function Integer_Value (I : Big_Integer; N : Node_Id) return Value_Type;
    --  Construct an integer value after checking against type bounds or

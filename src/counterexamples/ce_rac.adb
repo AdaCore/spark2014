@@ -127,6 +127,15 @@ package body CE_RAC is
    function Character_Value (C : Character; Ty : Entity_Id) return Value_Type;
    --  Make a character value, i.e. an enum value
 
+   function Not_Null_Access_Value
+     (Ty               : Entity_Id;
+      Designated_Value : Value_Type)
+      return Value_Type;
+   --  Make a not null access value
+
+   function Null_Access_Value (Ty : Entity_Id) return Value_Type;
+   --  Make a null access value
+
    function Value_Boolean (V : Value_Type) return Boolean;
    --  Get the value of a boolean enum value, fail for other types
 
@@ -215,9 +224,9 @@ package body CE_RAC is
    function "=" (F1, F2 : Entity_To_Value_Maps.Map) return Boolean;
 
    procedure Cleanup_Counterexample_Value (V : in out Value_Type; N : Node_Id);
-   --  Clean-up counterexample values so they can be used by the RAC.
-   --  Call RAC_Unsupported if the counterexample value is unsupported yet, and
-   --  Exn_RAC_Stuck if the value is incomplete.
+   --  Clean-up counterexample values so they can be used by the RAC. Call
+   --  RAC_Unsupported if the counterexample value is unsupported yet,
+   --  RAC_Stuck if the value is incomplete, RAC_Failure if it fails a check.
 
    --------------------------------
    -- Runtime control exceptions --
@@ -507,6 +516,12 @@ package body CE_RAC is
       Do_Sideeffects : Boolean)
       return Opt_Value_Type;
    --  Execute a builtin E, if it exists, or raise No_Builtin otherwise
+
+   procedure RAC_Scalar_Range
+     (N    : Node_Id;
+      Base : Type_Kind_Id);
+   --  Evaluate the bounds of a range and check that the range_constraint is
+   --  compatible with the subtype.
 
    procedure Init_Global
      (N             :     Node_Id;
@@ -904,9 +919,7 @@ package body CE_RAC is
                   if Fst <= Lst
                     and then (Fst < Type_Fst or else Lst > Type_Lst)
                   then
-                     RAC_Stuck
-                       ("Incorrect bound in unconstrained array"
-                        & " counterexample");
+                     RAC_Failure (N, VC_Range_Check);
                   end if;
                end if;
 
@@ -1154,6 +1167,9 @@ package body CE_RAC is
 
             return Record_Value (F, Rep_Ty);
          end;
+
+      elsif Is_Access_Type (Rep_Ty) then
+         return Null_Access_Value (Rep_Ty);
 
       else
          RAC_Unsupported ("Default_Value", Ty);
@@ -1792,6 +1808,36 @@ package body CE_RAC is
 
    end Match_Case_Alternative;
 
+   ---------------------------
+   -- Not_Null_Access_Value --
+   ---------------------------
+
+   function Not_Null_Access_Value
+     (Ty               : Entity_Id;
+      Designated_Value : Value_Type)
+      return Value_Type
+   is
+   begin
+      return Value_Type'(K                => Access_K,
+                         AST_Ty           => Ty,
+                         Designated_Value => new Value_Type'(Designated_Value),
+                         Is_Null          =>
+                           Opt_Boolean'(Present => True, Content => False));
+   end Not_Null_Access_Value;
+
+   -----------------------
+   -- Null_Access_Value --
+   -----------------------
+
+   function Null_Access_Value (Ty : Entity_Id) return Value_Type is
+   begin
+      return Value_Type'(K                => Access_K,
+                         AST_Ty           => Ty,
+                         Designated_Value => null,
+                         Is_Null          =>
+                           Opt_Boolean'(Present => True, Content => True));
+   end Null_Access_Value;
+
    -----------------
    -- Param_Scope --
    -----------------
@@ -2210,9 +2256,32 @@ package body CE_RAC is
                      "N_Defining_Identifier not package or package body");
             end case;
 
-         when N_Pragma
+         when N_Subtype_Declaration
             | N_Full_Type_Declaration
-            | N_Subtype_Declaration
+         =>
+            declare
+               Ent  : constant Entity_Id :=
+                 Retysp (Unique_Defining_Entity (Decl));
+               Base : Entity_Id;
+
+            begin
+               Base := Get_Parent_Type_If_Check_Needed (Decl);
+
+               if Present (Base) then
+                  Base := Retysp (Base);
+               end if;
+
+               if Present (Base)
+                 and then not Is_Type_Renaming (Decl)
+                 and then not Is_Actual_Subtype (Ent)
+               then
+                  if Is_Scalar_Type (Ent) then
+                     RAC_Scalar_Range (Ent, Base);
+                  end if;
+               end if;
+            end;
+
+         when N_Pragma
             | N_Subprogram_Declaration
             | N_Subprogram_Body
             | N_Ignored_In_SPARK
@@ -2462,6 +2531,20 @@ package body CE_RAC is
          Val    : Value_Access;
 
       begin
+         --  Check for RTE in scalar ranges of the aggregate subtype
+         if Is_Array_Type (Ty) then
+            declare
+               Expr_Typ   : constant Entity_Id := Type_Of_Node (N);
+               Index      : Node_Id := First_Index (Expr_Typ);
+               Index_Base : Node_Id := First_Index (Retysp (Etype (Expr_Typ)));
+            begin
+               while Present (Index) loop
+                  RAC_Scalar_Range (Etype (Index), Etype (Index_Base));
+                  Next_Index (Index);
+                  Next_Index (Index_Base);
+               end loop;
+            end;
+         end if;
 
          if Nkind (N) = N_Delta_Aggregate then
             Res := RAC_Expr (Expression (N));
@@ -3767,6 +3850,19 @@ package body CE_RAC is
                end if;
             end;
 
+         when N_Allocator =>
+            declare
+               Value : constant Value_Type :=
+                 (if Present (Expression (N))
+                    and then Nkind (Expression (N)) = N_Qualified_Expression
+                  then
+                     RAC_Expr (Expression (N))
+                  else
+                     Default_Value (Directly_Designated_Type (Ty)));
+            begin
+               Res := Not_Null_Access_Value (Ty, Value);
+            end;
+
          when others =>
             RAC_Unsupported ("RAC_Expr", N);
       end case;
@@ -3956,6 +4052,31 @@ package body CE_RAC is
       Exn_RAC_Return_Value := new Opt_Value_Type'(V);
       raise Exn_RAC_Return;
    end RAC_Return;
+
+   ----------------------
+   -- RAC_Scalar_Range --
+   ----------------------
+
+   procedure RAC_Scalar_Range
+     (N    : Node_Id;
+      Base : Type_Kind_Id)
+   is
+      Rng : constant Node_Id := Get_Range (N);
+      Low, High, Low_Base, High_Base : Big_Integer;
+   begin
+      if Is_Integer_Type (Base)
+        or else Is_Enumeration_Type (Base)
+      then
+         Get_Bounds (Rng, Low, High);
+         Get_Integer_Type_Bounds (Base, Low_Base, High_Base);
+
+         if Low <= High
+           and then not (Low_Base <= Low and High <= High_Base)
+         then
+            RAC_Failure (Etype (Rng), VC_Range_Check);
+         end if;
+      end if;
+   end RAC_Scalar_Range;
 
    -------------------
    -- RAC_Statement --
