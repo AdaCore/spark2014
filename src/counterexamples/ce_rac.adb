@@ -3853,9 +3853,7 @@ package body CE_RAC is
          when N_Allocator =>
             declare
                Value : constant Value_Type :=
-                 (if Present (Expression (N))
-                    and then Nkind (Expression (N)) = N_Qualified_Expression
-                  then
+                 (if Nkind (Expression (N)) = N_Qualified_Expression then
                      RAC_Expr (Expression (N))
                   else
                      Default_Value (Directly_Designated_Type (Ty)));
@@ -4071,7 +4069,7 @@ package body CE_RAC is
          Get_Integer_Type_Bounds (Base, Low_Base, High_Base);
 
          if Low <= High
-           and then not (Low_Base <= Low and High <= High_Base)
+           and then not (Low_Base <= Low and then High <= High_Base)
          then
             RAC_Failure (Etype (Rng), VC_Range_Check);
          end if;
