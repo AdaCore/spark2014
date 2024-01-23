@@ -256,7 +256,7 @@ procedure Table_Generator is
       New_Line (File);
       Put_Line (File, "The following table shows all warning " &
                   "messages reported by proof when using switch " &
-                  "``--proof-warnings``.");
+                  "``--proof-warnings=on``.");
       New_Line (File);
       Put_Line (File, ".. tabularcolumns:: |p{2in}|l|p{3in}|");
       New_Line (File);

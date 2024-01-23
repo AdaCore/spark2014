@@ -4,7 +4,7 @@ replay: True
 prove_all:
   opt:
     - --function-sandboxing=off
-    - --proof-warnings
+    - --proof-warnings=on
     - -u
     - prefixsum.adb
     - prefixsum_expanded.adb

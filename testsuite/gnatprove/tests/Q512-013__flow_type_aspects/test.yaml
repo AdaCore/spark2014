@@ -1,2 +1,2 @@
 do_flow:
-  opt: ["--proof-warnings"]
+  opt: ["--proof-warnings=on"]

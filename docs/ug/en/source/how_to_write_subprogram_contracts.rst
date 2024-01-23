@@ -434,7 +434,7 @@ guards using the ``--function-sandboxing=off`` option.
 .. note::
 
    The effects of an infeasible contract can sometimes be detected by enabling
-   warnings produced by proof using the switch ``--proof-warnings``.
+   warnings produced by proof using the switch ``--proof-warnings=on``.
    An incorrect assumption might cause branches and code snippets to be wrongly
    flagged as dead by this mechanism.
 
