@@ -12184,8 +12184,7 @@ package body Gnat2Why.Expr is
       begin
          while Present (Formal) loop
             if (if For_Input then Ekind (Formal) /= E_Out_Parameter
-                else Ekind (Formal) /= E_In_Parameter
-                  or else Is_Access_Variable (Etype (Formal)))
+                else not Is_Constant_In_SPARK (Formal))
               and then (not Exceptional or else By_Reference (Formal))
             then
                Process

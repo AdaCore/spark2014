@@ -216,6 +216,12 @@ package body SPARK_Definition.Annotate is
    --  Stores all the function entities E with a pragma Annotate
    --  (GNATprove, Logical_Equal, E).
 
+   Mutable_In_Params_Annotations : Common_Containers.Node_Graphs.Map :=
+     Common_Containers.Node_Graphs.Empty_Map;
+   --  Maps all subprogram entities followed by one or more pragmas Annotate
+   --  (GNATprove, Mutable_In_Parameters, Ty) to a set containing all such
+   --  types Ty.
+
    No_Wrap_Around_Annotations : Common_Containers.Node_Sets.Set :=
      Common_Containers.Node_Sets.Empty_Set;
    --  Stores type entities with a pragma Annotate
@@ -348,12 +354,17 @@ package body SPARK_Definition.Annotate is
       Placed_At_Full_View, --  For type: placed at full view declaration
       Placed_At_Private_View); --  For type: placed at private view declaration
 
-   function Annot_Applies_To (Prag : Node_Id) return Opt_N_Entity_Id;
-   --  Return the entity a Hide_Info or Unhide_Info annotation applies to, or
+   function Annot_Applies_To
+     (Prag     : Node_Id;
+      OK_Scope : Boolean := True;
+      OK_Body  : Boolean := True)
+      return Opt_N_Entity_Id;
+   --  Return the entity a location dependent annotation applies to, or
    --  Empty if none is found. It shall be a subprogram, entry, or package
    --  entity. The pragma can be localized either at the top inside the
-   --  package, subprogram, or entry body, or just after the entity body or
-   --  declaration. For now, it does not expect concurrent types nor generics.
+   --  package, subprogram, or entry body, if OK_Scope is True, or just after
+   --  the entity body, if OK_Body is True, or declaration. For now, it does
+   --  not expect concurrent types nor generics.
 
    procedure Check_Aggregate_Annotation
      (Aspect_Or_Pragma : String;
@@ -458,6 +469,13 @@ package body SPARK_Definition.Annotate is
    --  Check validity of a pragma Annotate (GNATprove, Logical_Equal, E)
    --  and insert it in the Logical_Eq_Annotations set.
 
+   procedure Check_Mutable_In_Parameters_Annotation
+     (Arg3_Exp : Node_Id;
+      Prag     : Node_Id);
+   --  Check validity of a pragma Annotate
+   --  (GNATprove, Mutable_In_Parameters, E) and fill the
+   --  Mutable_In_Params_Annotations map.
+
    procedure Check_No_Wrap_Around_Annotation
      (Arg3_Exp : Node_Id;
       Prag     : Node_Id);
@@ -516,7 +534,12 @@ package body SPARK_Definition.Annotate is
    -- Annot_Applies_To --
    ----------------------
 
-   function Annot_Applies_To (Prag : Node_Id) return Opt_N_Entity_Id is
+   function Annot_Applies_To
+     (Prag     : Node_Id;
+      OK_Scope : Boolean := True;
+      OK_Body  : Boolean := True)
+      return Opt_N_Entity_Id
+   is
       Cur : Node_Id := Prag;
    begin
       if not Is_List_Member (Prag) then
@@ -531,16 +554,21 @@ package body SPARK_Definition.Annotate is
             and then Nkind (Cur) /= N_Pragma);
       end loop;
 
-      if No (Cur) then
+      if No (Cur) and then OK_Scope then
          Cur := Parent (Prag);
       end if;
 
-      if Nkind (Cur) in N_Subprogram_Body
-                      | N_Subprogram_Declaration
-                      | N_Entry_Body
+      if Nkind (Cur) in N_Subprogram_Declaration
                       | N_Entry_Declaration
-                      | N_Package_Body
                       | N_Package_Declaration
+      then
+         return Unique_Defining_Entity (Cur);
+      end if;
+
+      if OK_Body
+        and then Nkind (Cur) in N_Subprogram_Body
+                              | N_Entry_Body
+                              | N_Package_Body
       then
          return Unique_Defining_Entity (Cur);
       end if;
@@ -2133,6 +2161,12 @@ package body SPARK_Definition.Annotate is
             & " Automatic_Instantiation shall not raise exceptions",
             E);
          return;
+      elsif Mutable_In_Params_Annotations.Contains (E) then
+         Error_Msg_N_If
+           ("procedure annotated with the " & Aspect_Or_Pragma
+            & " Automatic_Instantiation shall not have mutable IN parameters",
+            E);
+         return;
       end if;
 
       --  It shall not have mutable parameters
@@ -3669,6 +3703,136 @@ package body SPARK_Definition.Annotate is
       Inline_Pragmas.Include (E, Prag);
    end Check_Logical_Equal_Annotation;
 
+   --------------------------------------------
+   -- Check_Mutable_In_Parameters_Annotation --
+   --------------------------------------------
+
+   procedure Check_Mutable_In_Parameters_Annotation
+     (Arg3_Exp : Node_Id;
+      Prag     : Node_Id)
+   is
+      Ok      : Boolean;
+      Ent     : Entity_Id;
+      Scope   : Entity_Id;
+   begin
+      --  The 4th argument must be an entity
+
+      Check_Annotate_Entity_Argument
+        (Arg3_Exp, "third", Prag, "Mutable_In_Parameters", Ok);
+      if not Ok then
+         return;
+      end if;
+      Ent := Entity (Arg3_Exp);
+
+      --  Ent shall be a private type whose full view is ultimately either
+      --  private or an access-to-variable type. For now, do not allow
+      --  tags and discriminants.
+
+      if not Is_Private_Type (Ent) then
+         Error_Msg_N_If
+           ("Entity parameter of a pragma Annotate ""Mutable_In_Parameters"""
+            & " shall be a private type",
+            Prag);
+         return;
+
+      elsif Has_Discriminants (Retysp (Ent)) then
+         Error_Msg_N_If
+           ("Entity parameter of a pragma Annotate ""Mutable_In_Parameters"""
+            & " shall not have discriminants",
+            Prag);
+         return;
+
+      elsif Is_Tagged_Type (Retysp (Ent)) then
+         Error_Msg_N_If
+           ("Entity parameter of a pragma Annotate ""Mutable_In_Parameters"""
+            & " shall not be tagged",
+            Prag);
+         return;
+
+      elsif not Is_Private_Type (Retysp (Ent))
+        and then not (Is_Access_Type (Retysp (Ent))
+                      and then Is_Access_Variable (Retysp (Ent)))
+      then
+         Error_Msg_N_If
+           ("the full view of the Entity parameter of a pragma Annotate"
+            & " ""Mutable_In_Parameters"" shall either be an"
+            & " access-to-variable type or not be visible in SPARK",
+            Prag);
+         return;
+      end if;
+
+      --  Search the node to which the current annotation applies. Look for a
+      --  declaration directly before Prag.
+
+      Scope := Annot_Applies_To (Prag, OK_Scope => False, OK_Body => False);
+
+      if No (Scope) or else not Is_Subprogram_Or_Entry (Scope) then
+         Error_Msg_N_If
+           ("pragma Annotate ""Mutable_In_Parameters"""
+            & " must appear just after a subprogram or entry",
+            Prag);
+         return;
+
+      elsif Ekind (Scope) = E_Function
+        and then not Is_Function_With_Side_Effects (Scope)
+      then
+         Error_Msg_N_If
+           ("pragma Annotate ""Mutable_In_Parameters"""
+            & " cannot appear after function without side effects",
+            Prag);
+         return;
+
+      elsif Is_Dispatching_Operation (Scope) then
+         Error_Msg_N_If
+           ("pragma Annotate ""Mutable_In_Parameters"""
+            & " cannot appear after a dispatching operation",
+            Prag);
+         return;
+
+      elsif Has_Automatic_Instantiation_Annotation (Scope) then
+         Error_Msg_N_If
+           ("pragma Annotate ""Mutable_In_Parameters"""
+            & " cannot appear after an automatically instantiated lemma",
+            Prag);
+         return;
+      end if;
+
+      declare
+         Formal : Entity_Id := First_Formal (Scope);
+         Found  : Boolean := False;
+      begin
+         while Present (Formal) loop
+            if Ekind (Formal) = E_In_Parameter
+              and then Retysp (Etype (Formal)) = Retysp (Ent)
+            then
+               Found := True;
+               exit;
+            end if;
+            Next_Formal (Formal);
+         end loop;
+
+         if not Found then
+            Error_Msg_N_If
+              (Source_Name (Scope)
+               & " does not have any ""in"" parameter of type "
+               & Source_Name (Ent),
+               Prag);
+            return;
+         end if;
+      end;
+
+      --  Update the Mutable_In_Params_Annotations map
+
+      declare
+         Position : Node_Graphs.Cursor;
+         Inserted : Boolean;
+      begin
+         Mutable_In_Params_Annotations.Insert
+           (Scope, Node_Sets.Empty_Set, Position, Inserted);
+         Mutable_In_Params_Annotations (Position).Include (Retysp (Ent));
+      end;
+   end Check_Mutable_In_Parameters_Annotation;
+
    -------------------------------------
    -- Check_No_Wrap_Around_Annotation --
    -------------------------------------
@@ -4892,6 +5056,16 @@ package body SPARK_Definition.Annotate is
    function Has_No_Wrap_Around_Annotation (E : Entity_Id) return Boolean is
      (No_Wrap_Around_Annotations.Contains (E));
 
+   -------------------------------------
+   -- Has_Mutable_In_Param_Annotation --
+   -------------------------------------
+
+   function Has_Mutable_In_Param_Annotation (E : Entity_Id) return Boolean is
+     (Ekind (E) = E_In_Parameter
+      and then Mutable_In_Params_Annotations.Contains (Scope (E))
+      and then Mutable_In_Params_Annotations.Element
+        (Scope (E)).Contains (Retysp (Etype (E))));
+
    ------------------------------
    -- Has_Ownership_Annotation --
    ------------------------------
@@ -5547,6 +5721,7 @@ package body SPARK_Definition.Annotate is
         or else Name = "init_by_proof"
         or else Name = "inline_for_proof"
         or else Name = "logical_equal"
+        or else Name = "mutable_in_parameters"
         or else Name = "no_wrap_around"
         or else Name = "skip_proof"
         or else Name = "skip_flow_and_proof"
@@ -5628,6 +5803,9 @@ package body SPARK_Definition.Annotate is
 
       elsif Name = "logical_equal" then
          Check_Logical_Equal_Annotation (Arg3_Exp, Prag);
+
+      elsif Name = "mutable_in_parameters" then
+         Check_Mutable_In_Parameters_Annotation (Arg3_Exp, Prag);
 
       elsif Name = "no_wrap_around" then
          Check_No_Wrap_Around_Annotation (Arg3_Exp, Prag);
