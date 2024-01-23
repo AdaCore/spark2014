@@ -61,6 +61,6 @@ tester.adb:25:09: info: in value of subprogram parameter after the call at teste
 tester.adb:25:09: info: predicate check proved (CVC5: 5 VC)
 tester.adb:28:08: info: range check proved (CVC5: 2 VC)
 tester.adb:28:40: info: cannot unroll loop (too many loop iterations)
-tester.adb:29:07: medium: precondition might fail, cannot prove not Empty (Buffer) (e.g. when X = (Max_Size => 4, Count => 0, Head => 2, Tail => 1, Items => (others => 1))) [possible fix: loop at line 28 should mention X in a loop invariant]
+tester.adb:29:07: medium: precondition might fail, cannot prove not Empty (Buffer) [possible fix: loop at line 28 should mention X in a loop invariant]
 tester.adb:29:12: info: in value of subprogram parameter after the call at tester.adb:29
 tester.adb:29:12: info: predicate check proved (CVC5: 5 VC)
