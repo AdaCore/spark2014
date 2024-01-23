@@ -1,4 +1,4 @@
-null_exclusion_borrow.adb:11:40: medium: null exclusion check might fail [possible fix: subprogram at line 10 should mention X in a precondition]
+null_exclusion_borrow.adb:11:40: medium: null exclusion check might fail (e.g. when X = null) [possible fix: subprogram at line 10 should mention X in a precondition]
 null_exclusion_borrow.adb:17:16: medium: null exclusion check might fail [possible fix: loop at line 13 should mention B in a loop invariant]
 null_exclusion_borrow.adb:25:12: info: absence of resource or memory leak proved (CVC5: 1 VC)
 null_exclusion_borrow.adb:32:43: info: null exclusion check proved (CVC5: 1 VC)
