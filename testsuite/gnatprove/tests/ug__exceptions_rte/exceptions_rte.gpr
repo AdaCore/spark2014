@@ -5,7 +5,7 @@ project Exceptions_RTE is
    end Compiler;
 
    package Prove is
-      for Proof_Switches ("Ada") use ("--report=fail", "--proof-warnings");
+      for Proof_Switches ("Ada") use ("--report=fail", "--proof-warnings=on");
    end Prove;
 
 end Exceptions_RTE;
