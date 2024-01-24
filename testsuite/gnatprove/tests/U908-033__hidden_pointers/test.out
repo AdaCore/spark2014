@@ -146,7 +146,6 @@ example_recursive.adb:257:39: info: loop invariant initialization proved
 example_recursive.adb:257:39: info: loop invariant preservation proved
 example_recursive.adb:257:39: info: precondition proved
 example_recursive.adb:262:27: info: precondition proved
-example_recursive.adb:262:58: info: pointer dereference check proved
 example_recursive.adb:262:58: info: tag check proved
 example_recursive.adb:269:58: info: precondition proved
 example_recursive.adb:269:69: info: null exclusion check proved
@@ -159,7 +158,6 @@ example_recursive.adb:278:16: info: precondition proved
 example_recursive.adb:278:91: info: precondition proved
 example_recursive.adb:278:91: info: tag check proved
 example_recursive.adb:279:29: info: precondition proved
-example_recursive.adb:279:60: info: pointer dereference check proved
 example_recursive.adb:279:60: info: tag check proved
 example_recursive.adb:280:27: info: range check proved
 example_recursive.adb:287:47: info: initialization of "L" proved

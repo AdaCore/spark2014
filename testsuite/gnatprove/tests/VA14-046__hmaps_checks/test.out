@@ -61,16 +61,10 @@ spark-containers-formal-hashed_maps.ads:500:13: info: implicit aspect Always_Ter
 spark-containers-formal-hashed_maps.ads:500:13: info: implicit aspect Always_Terminates on "At_End" has been proved, subprogram will terminate, in instantiation at test_hmaps.ads:8
 spark-containers-formal-hashed_maps.ads:502:08: info: dynamic accessibility check proved (Trivial), in instantiation at test_hmaps.ads:13
 spark-containers-formal-hashed_maps.ads:502:08: info: dynamic accessibility check proved (Trivial), in instantiation at test_hmaps.ads:8
-spark-containers-formal-hashed_maps.ads:502:08: info: null exclusion check proved (Z3: 1 VC), in instantiation at test_hmaps.ads:13
-spark-containers-formal-hashed_maps.ads:502:08: info: null exclusion check proved (Z3: 1 VC), in instantiation at test_hmaps.ads:8
 spark-containers-formal-hashed_maps.ads:506:13: info: implicit aspect Always_Terminates on "At_End" has been proved, subprogram will terminate, in instantiation at test_hmaps.ads:13
 spark-containers-formal-hashed_maps.ads:506:13: info: implicit aspect Always_Terminates on "At_End" has been proved, subprogram will terminate, in instantiation at test_hmaps.ads:8
 spark-containers-formal-hashed_maps.ads:508:08: info: dynamic accessibility check proved (Trivial), in instantiation at test_hmaps.ads:13
 spark-containers-formal-hashed_maps.ads:508:08: info: dynamic accessibility check proved (Trivial), in instantiation at test_hmaps.ads:8
-spark-containers-formal-hashed_maps.ads:528:39: info: pointer dereference check proved (Z3: 1 VC), in instantiation at test_hmaps.ads:13
-spark-containers-formal-hashed_maps.ads:528:39: info: pointer dereference check proved (Z3: 1 VC), in instantiation at test_hmaps.ads:8
-spark-containers-formal-hashed_maps.ads:568:36: info: pointer dereference check proved (Z3: 1 VC), in instantiation at test_hmaps.ads:13
-spark-containers-formal-hashed_maps.ads:568:36: info: pointer dereference check proved (Z3: 1 VC), in instantiation at test_hmaps.ads:8
 spark-containers-formal-hashed_maps.ads:673:09: info: during checks for container aggregates at spark-containers-formal-hashed_maps.ads:94, in instantiation at test_hmaps.ads:13
 spark-containers-formal-hashed_maps.ads:673:09: info: during checks for container aggregates at spark-containers-formal-hashed_maps.ads:94, in instantiation at test_hmaps.ads:8
 spark-containers-formal-hashed_maps.ads:673:09: info: precondition proved (Z3: 2 VC), in instantiation at test_hmaps.ads:13
@@ -156,16 +150,10 @@ spark-containers-formal-unbounded_hashed_maps.ads:458:13: info: implicit aspect 
 spark-containers-formal-unbounded_hashed_maps.ads:458:13: info: implicit aspect Always_Terminates on "At_End" has been proved, subprogram will terminate, in instantiation at test_hmaps.ads:30
 spark-containers-formal-unbounded_hashed_maps.ads:460:08: info: dynamic accessibility check proved (Trivial), in instantiation at test_hmaps.ads:25
 spark-containers-formal-unbounded_hashed_maps.ads:460:08: info: dynamic accessibility check proved (Trivial), in instantiation at test_hmaps.ads:30
-spark-containers-formal-unbounded_hashed_maps.ads:460:08: info: null exclusion check proved (Z3: 1 VC), in instantiation at test_hmaps.ads:25
-spark-containers-formal-unbounded_hashed_maps.ads:460:08: info: null exclusion check proved (Z3: 1 VC), in instantiation at test_hmaps.ads:30
 spark-containers-formal-unbounded_hashed_maps.ads:464:13: info: implicit aspect Always_Terminates on "At_End" has been proved, subprogram will terminate, in instantiation at test_hmaps.ads:25
 spark-containers-formal-unbounded_hashed_maps.ads:464:13: info: implicit aspect Always_Terminates on "At_End" has been proved, subprogram will terminate, in instantiation at test_hmaps.ads:30
 spark-containers-formal-unbounded_hashed_maps.ads:466:08: info: dynamic accessibility check proved (Trivial), in instantiation at test_hmaps.ads:25
 spark-containers-formal-unbounded_hashed_maps.ads:466:08: info: dynamic accessibility check proved (Trivial), in instantiation at test_hmaps.ads:30
-spark-containers-formal-unbounded_hashed_maps.ads:486:39: info: pointer dereference check proved (Z3: 1 VC), in instantiation at test_hmaps.ads:25
-spark-containers-formal-unbounded_hashed_maps.ads:486:39: info: pointer dereference check proved (Z3: 1 VC), in instantiation at test_hmaps.ads:30
-spark-containers-formal-unbounded_hashed_maps.ads:526:36: info: pointer dereference check proved (Z3: 1 VC), in instantiation at test_hmaps.ads:25
-spark-containers-formal-unbounded_hashed_maps.ads:526:36: info: pointer dereference check proved (Z3: 1 VC), in instantiation at test_hmaps.ads:30
 spark-containers-formal-unbounded_hashed_maps.ads:632:09: info: during checks for container aggregates at spark-containers-formal-unbounded_hashed_maps.ads:81, in instantiation at test_hmaps.ads:25
 spark-containers-formal-unbounded_hashed_maps.ads:632:09: info: during checks for container aggregates at spark-containers-formal-unbounded_hashed_maps.ads:81, in instantiation at test_hmaps.ads:30
 spark-containers-formal-unbounded_hashed_maps.ads:632:09: info: precondition proved (Z3: 2 VC), in instantiation at test_hmaps.ads:25

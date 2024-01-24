@@ -14,14 +14,12 @@ test.adb:4:77: info: dynamic accessibility check proved (Trivial)
 test.adb:6:13: info: implicit aspect Always_Terminates on "Id" has been proved, subprogram will terminate
 test.adb:6:13: info: implicit function contract might not be available on calls from enclosing unit
 test.adb:8:14: info: dynamic accessibility check proved (Trivial)
-test.adb:8:14: info: null exclusion check proved (CVC5: 1 VC)
 test.adb:13:13: info: implicit aspect Always_Terminates on "At_End" has been proved, subprogram will terminate
 test.adb:13:13: info: implicit function contract might not be available on calls from enclosing unit
 test.adb:13:77: info: dynamic accessibility check proved (Trivial)
 test.adb:15:13: info: implicit aspect Always_Terminates on "Id" has been proved, subprogram will terminate
 test.adb:15:13: info: implicit function contract might not be available on calls from enclosing unit
 test.adb:17:14: info: dynamic accessibility check proved (Trivial)
-test.adb:17:14: info: null exclusion check proved (CVC5: 1 VC)
 test.adb:20:13: info: implicit aspect Always_Terminates on "Id" has been proved, subprogram will terminate
 test.adb:20:13: info: implicit function contract might not be available on calls from enclosing unit
 test.adb:21:04: info: range check proved (CVC5: 2 VC)
@@ -31,14 +29,12 @@ test.adb:23:79: info: dynamic accessibility check proved (Trivial)
 test.adb:25:13: info: implicit aspect Always_Terminates on "Id" has been proved, subprogram will terminate
 test.adb:25:13: info: implicit function contract might not be available on calls from enclosing unit
 test.adb:27:14: info: dynamic accessibility check proved (Trivial)
-test.adb:27:14: info: null exclusion check proved (CVC5: 1 VC)
 test.adb:32:13: info: implicit aspect Always_Terminates on "At_End" has been proved, subprogram will terminate
 test.adb:32:13: info: implicit function contract might not be available on calls from enclosing unit
 test.adb:32:79: info: dynamic accessibility check proved (Trivial)
 test.adb:34:13: info: implicit aspect Always_Terminates on "Id" has been proved, subprogram will terminate
 test.adb:34:13: info: implicit function contract might not be available on calls from enclosing unit
 test.adb:36:14: info: dynamic accessibility check proved (Trivial)
-test.adb:36:14: info: null exclusion check proved (CVC5: 1 VC)
 test.adb:39:04: medium: resource or memory leak might occur at end of scope
 test.adb:40:04: medium: resource or memory leak might occur at end of scope
 test.adb:41:04: medium: resource or memory leak might occur at end of scope

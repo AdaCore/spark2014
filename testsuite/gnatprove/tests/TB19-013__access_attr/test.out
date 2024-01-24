@@ -3,13 +3,11 @@ ext.ads:6:13: error: return from "F" with moved value for "C"
 ext.ads:6:13: info: implicit aspect Always_Terminates on "F" has been proved, subprogram will terminate
 test_access.adb:11:19: info: assertion proved (CVC5: 1 VC)
 test_access.adb:11:21: info: pointer dereference check proved (CVC5: 1 VC)
-test_access.adb:14:31: info: pointer dereference check proved (CVC5: 1 VC)
 test_access.adb:16:29: info: data dependencies proved
 test_access.adb:17:30: medium: predicate check might fail
 test_access.adb:26:13: info: function contract might not be available on calls from enclosing unit
 test_access.adb:26:13: info: implicit aspect Always_Terminates on "F_Obs" has been proved, subprogram will terminate
 test_access.adb:27:14: info: postcondition proved (CVC5: 1 VC)
-test_access.adb:27:27: info: pointer dereference check proved (CVC5: 1 VC)
 test_access.adb:33:13: info: implicit aspect Always_Terminates on "At_End" has been proved, subprogram will terminate
 test_access.adb:33:77: info: dynamic accessibility check proved (Trivial)
 test_access.adb:38:13: info: implicit aspect Always_Terminates on "At_End" has been proved, subprogram will terminate
@@ -19,7 +17,6 @@ test_access.adb:43:13: info: implicit aspect Always_Terminates on "F_Bor" has be
 test_access.adb:44:14: info: postcondition proved (CVC5: 1 VC)
 test_access.adb:44:36: info: pointer dereference check proved (CVC5: 1 VC)
 test_access.adb:44:52: info: pointer dereference check proved (CVC5: 1 VC)
-test_access.adb:47:15: info: pointer dereference check proved (CVC5: 1 VC)
 test_access.adb:47:18: info: dynamic accessibility check proved (Trivial)
 test_access.adb:56:22: info: assertion proved (CVC5: 1 VC)
 test_access.adb:56:28: info: pointer dereference check proved (CVC5: 1 VC)

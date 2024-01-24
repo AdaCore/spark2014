@@ -9,13 +9,11 @@ loop_types.ads:31:13: info: implicit aspect Always_Terminates on "At_End" has be
 loop_types.ads:33:08: info: dynamic accessibility check proved
 loop_types.ads:37:04: info: function contract feasibility proved
 loop_types.ads:43:16: info: justified that implicit aspect Always_Terminates on "For_All_List" could be incorrect, call via access-to-subprogram might be nonterminating
-loop_types.ads:43:25: info: pointer dereference check proved
 loop_types.ads:43:29: info: pointer dereference check proved
 loop_types.ads:43:46: info: subprogram variant proved
 loop_types.ads:43:61: info: pointer dereference check proved
 loop_types.ads:49:04: info: function contract feasibility proved
 loop_types.ads:56:07: info: justified that implicit aspect Always_Terminates on "For_All_List" could be incorrect, call via access-to-subprogram might be nonterminating
-loop_types.ads:58:15: info: pointer dereference check proved
 loop_types.ads:58:20: info: pointer dereference check proved
 loop_types.ads:58:30: info: pointer dereference check proved
 loop_types.ads:59:19: info: subprogram variant proved
@@ -46,7 +44,6 @@ spark-containers-formal-doubly_linked_lists.ads:440:13: info: implicit aspect Al
 spark-containers-formal-doubly_linked_lists.ads:441:08: info: dynamic accessibility check proved, in instantiation at loop_types.ads:17
 spark-containers-formal-doubly_linked_lists.ads:445:13: info: implicit aspect Always_Terminates on "At_End" has been proved, subprogram will terminate, in instantiation at loop_types.ads:17
 spark-containers-formal-doubly_linked_lists.ads:447:08: info: dynamic accessibility check proved, in instantiation at loop_types.ads:17
-spark-containers-formal-doubly_linked_lists.ads:468:39: info: pointer dereference check proved, in instantiation at loop_types.ads:17
 spark-containers-formal-doubly_linked_lists.ads:578:49: info: overflow check proved, in instantiation at loop_types.ads:17
 spark-containers-formal-doubly_linked_lists.ads:713:49: info: overflow check proved, in instantiation at loop_types.ads:17
 spark-containers-formal-doubly_linked_lists.ads:804:57: info: overflow check proved, in instantiation at loop_types.ads:17
@@ -305,8 +302,6 @@ spark-containers-formal-vectors.ads:359:13: info: implicit aspect Always_Termina
 spark-containers-formal-vectors.ads:360:08: info: dynamic accessibility check proved, in instantiation at loop_types.ads:14
 spark-containers-formal-vectors.ads:364:13: info: implicit aspect Always_Terminates on "At_End" has been proved, subprogram will terminate, in instantiation at loop_types.ads:14
 spark-containers-formal-vectors.ads:366:08: info: dynamic accessibility check proved, in instantiation at loop_types.ads:14
-spark-containers-formal-vectors.ads:386:39: info: pointer dereference check proved, in instantiation at loop_types.ads:14
-spark-containers-formal-vectors.ads:386:69: info: pointer dereference check proved, in instantiation at loop_types.ads:14
 spark-containers-formal-vectors.ads:613:35: info: precondition proved, in instantiation at loop_types.ads:14
   during checks for container aggregates at spark-containers-formal-vectors.ads:79, in instantiation at loop_types.ads:14
 spark-containers-formal-vectors.ads:698:57: info: range check proved, in instantiation at loop_types.ads:14

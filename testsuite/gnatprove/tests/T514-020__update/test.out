@@ -1,5 +1,4 @@
 test_callback.adb:9:18: info: cannot unroll loop (too many loop iterations)
-test_callback.adb:10:10: info: pointer dereference check proved (CVC5: 1 VC)
 test_callback.adb:19:14: warning: assuming "Relation" has no effect on global items
 test_callback.adb:19:14: warning: no Global contract available for "Relation"
 test_callback.adb:23:34: info: null exclusion check proved (Trivial: 1 VC)
@@ -20,7 +19,6 @@ test_callback.adb:43:42: warning: assuming "Relation" has no effect on global it
 test_callback.adb:43:42: warning: no Global contract available for "Relation"
 test_callback.adb:43:59: info: index check proved (CVC5: 2 VC)
 test_callback.adb:43:66: info: index check proved (CVC5: 2 VC)
-test_callback.adb:47:10: info: pointer dereference check proved (CVC5: 2 VC)
 test_callback.adb:47:10: info: precondition proved (CVC5: 2 VC)
 test_callback.adb:49:13: info: loop invariant initialization proved (CVC5: 1 VC)
 test_callback.adb:49:13: info: loop invariant preservation proved (CVC5: 1 VC)

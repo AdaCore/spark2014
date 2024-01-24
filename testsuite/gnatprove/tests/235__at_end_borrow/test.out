@@ -2,13 +2,11 @@ int_lists.adb:5:13: info: implicit aspect Always_Terminates on "Model_Impl" has 
 int_lists.adb:6:49: info: subprogram variant proved (Trivial)
 int_lists.adb:6:62: info: pointer dereference check proved (CVC5: 1 VC)
 int_lists.adb:6:68: info: pointer dereference check proved (CVC5: 1 VC)
-int_lists.adb:16:08: info: pointer dereference check proved (CVC5: 1 VC)
 int_lists.adb:21:09: info: absence of resource or memory leak proved (CVC5: 1 VC)
 int_lists.adb:26:07: info: absence of resource or memory leak at end of scope proved (CVC5: 1 VC)
 int_lists.adb:28:09: info: absence of resource or memory leak proved (CVC5: 1 VC)
 int_lists.adb:28:19: info: pointer dereference check proved (CVC5: 1 VC)
 int_lists.adb:29:07: info: absence of resource or memory leak proved (CVC5: 1 VC; Trivial: 1 VC)
-int_lists.adb:34:15: info: pointer dereference check proved (CVC5: 1 VC)
 int_lists.ads:12:13: info: implicit aspect Always_Terminates on "Model" has been proved, subprogram will terminate
 int_lists.ads:13:14: info: postcondition proved (CVC5: 2 VC)
 int_lists.ads:13:15: info: predicate check proved (Trivial: 1 VC)
@@ -38,10 +36,7 @@ int_lists.ads:37:26: info: precondition proved (CVC5: 1 VC)
 int_lists.ads:37:67: info: predicate check proved (CVC5: 1 VC; Trivial: 1 VC)
 int_lists.ads:39:13: info: implicit aspect Always_Terminates on "Next" has been proved, subprogram will terminate
 int_lists.ads:40:14: info: postcondition proved (CVC5: 1 VC)
-int_lists.ads:40:74: info: null exclusion check proved (CVC5: 1 VC)
 int_lists.ads:42:13: info: implicit aspect Always_Terminates on "Peek" has been proved, subprogram will terminate
-int_lists.ads:51:73: info: pointer dereference check proved (CVC5: 1 VC)
-int_lists.ads:53:87: info: pointer dereference check proved (CVC5: 1 VC)
 use_lists.adb:5:11: info: aspect Always_Terminates on "Use_Lists" has been proved, subprogram will terminate
 use_lists.adb:9:14: info: postcondition proved (CVC5: 1 VC; Z3: 1 VC)
 use_lists.adb:9:14: info: predicate check proved (Trivial: 1 VC)

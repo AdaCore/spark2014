@@ -4079,6 +4079,7 @@ package body Gnat2Why.Expr is
          if Call_Through_Access then
             Why_Args (Arg_Cnt) := New_Subprogram_Value_Access
               (Ada_Node => Name (Call),
+               Ty       => Retysp (Etype (Prefix (Name (Call)))),
                Expr     => Transform_Expr
                  (Expr   => Prefix (Name (Call)),
                   Domain => Domain,
@@ -7068,6 +7069,7 @@ package body Gnat2Why.Expr is
                  and then Can_Never_Be_Null (Retysp (Etype (Actual)))
                  and then not
                    Can_Never_Be_Null (Get_Ada_Type_From_Item (Pattern))
+                 and then Pattern.Mutable
                then
                   Append
                     (Store,

@@ -24,7 +24,6 @@ spark-containers-functional-maps-higher_order.adb:58:28: medium: aspect Always_T
 spark-containers-functional-maps-higher_order.adb:58:30: info: predicate check proved, in instantiation at test_map_ho.adb:67
 spark-containers-functional-maps-higher_order.adb:58:41: info: precondition proved, in instantiation at test_map_ho.adb:67
 spark-containers-functional-maps-higher_order.adb:58:56: info: null exclusion check proved, in instantiation at test_map_ho.adb:67
-spark-containers-functional-maps-higher_order.adb:59:15: info: pointer dereference check proved, in instantiation at test_map_ho.adb:67
 spark-containers-functional-maps-higher_order.adb:59:24: info: precondition proved, in instantiation at test_map_ho.adb:67
 spark-containers-functional-maps-higher_order.adb:59:41: info: predicate check proved, in instantiation at test_map_ho.adb:67
 spark-containers-functional-maps-higher_order.adb:59:59: info: predicate check proved, in instantiation at test_map_ho.adb:67
@@ -52,7 +51,6 @@ spark-containers-functional-maps-higher_order.adb:96:27: medium: aspect Always_T
 spark-containers-functional-maps-higher_order.adb:97:10: info: predicate check proved, in instantiation at test_map_ho.adb:67
 spark-containers-functional-maps-higher_order.adb:97:19: info: precondition proved, in instantiation at test_map_ho.adb:67
 spark-containers-functional-maps-higher_order.adb:97:34: info: null exclusion check proved, in instantiation at test_map_ho.adb:67
-spark-containers-functional-maps-higher_order.adb:97:43: info: pointer dereference check proved, in instantiation at test_map_ho.adb:67
 spark-containers-functional-maps-higher_order.adb:97:43: info: predicate check proved, in instantiation at test_map_ho.adb:67
 spark-containers-functional-maps-higher_order.adb:97:53: info: precondition proved, in instantiation at test_map_ho.adb:67
 spark-containers-functional-maps-higher_order.adb:108:25: info: refined post proved, in instantiation at test_map_ho.adb:67
@@ -70,7 +68,6 @@ spark-containers-functional-maps-higher_order.adb:114:44: info: predicate check 
 spark-containers-functional-maps-higher_order.adb:114:63: info: null exclusion check proved, in instantiation at test_map_ho.adb:67
 spark-containers-functional-maps-higher_order.adb:116:37: info: precondition proved, in instantiation at test_map_ho.adb:67
 spark-containers-functional-maps-higher_order.adb:118:16: medium: implicit aspect Always_Terminates on "Count" could be incorrect, call via access-to-subprogram might be nonterminating, in instantiation at test_map_ho.adb:67 [possible explanation: call could hide recursive calls]
-spark-containers-functional-maps-higher_order.adb:118:19: info: pointer dereference check proved, in instantiation at test_map_ho.adb:67
 spark-containers-functional-maps-higher_order.adb:118:28: info: precondition proved, in instantiation at test_map_ho.adb:67
 spark-containers-functional-maps-higher_order.adb:119:26: info: predicate check proved, in instantiation at test_map_ho.adb:67
 spark-containers-functional-maps-higher_order.adb:119:30: info: predicate check proved, in instantiation at test_map_ho.adb:67
@@ -82,7 +79,6 @@ spark-containers-functional-maps-higher_order.adb:137:12: info: subprogram varia
 spark-containers-functional-maps-higher_order.adb:137:23: info: precondition proved, in instantiation at test_map_ho.adb:67
 spark-containers-functional-maps-higher_order.adb:137:34: info: precondition proved, in instantiation at test_map_ho.adb:67
 spark-containers-functional-maps-higher_order.adb:137:53: info: predicate check proved, in instantiation at test_map_ho.adb:67
-spark-containers-functional-maps-higher_order.adb:138:13: info: pointer dereference check proved, in instantiation at test_map_ho.adb:67
 spark-containers-functional-maps-higher_order.adb:138:19: info: precondition proved, in instantiation at test_map_ho.adb:67
 spark-containers-functional-maps-higher_order.adb:138:31: info: precondition proved, in instantiation at test_map_ho.adb:67
 spark-containers-functional-maps-higher_order.adb:138:39: info: precondition proved, in instantiation at test_map_ho.adb:67
@@ -95,8 +91,6 @@ spark-containers-functional-maps-higher_order.adb:155:16: info: predicate check 
 spark-containers-functional-maps-higher_order.adb:155:21: info: predicate check proved, in instantiation at test_map_ho.adb:67
 spark-containers-functional-maps-higher_order.adb:156:17: medium: implicit aspect Always_Terminates on "Create" could be incorrect, call via access-to-subprogram might be nonterminating, in instantiation at test_map_ho.adb:67 [possible explanation: call could hide recursive calls]
 spark-containers-functional-maps-higher_order.adb:156:20: info: precondition proved, in instantiation at test_map_ho.adb:67
-spark-containers-functional-maps-higher_order.adb:156:30: info: pointer dereference check proved, in instantiation at test_map_ho.adb:67
-spark-containers-functional-maps-higher_order.adb:156:43: info: pointer dereference check proved, in instantiation at test_map_ho.adb:67
 spark-containers-functional-maps-higher_order.adb:157:34: info: loop variant proved, in instantiation at test_map_ho.adb:67
 spark-containers-functional-maps-higher_order.adb:157:47: info: predicate check proved, in instantiation at test_map_ho.adb:67
 spark-containers-functional-maps-higher_order.adb:157:60: info: predicate check proved, in instantiation at test_map_ho.adb:67
@@ -113,34 +107,26 @@ spark-containers-functional-maps-higher_order.adb:159:51: info: predicate check 
 spark-containers-functional-maps-higher_order.adb:160:13: medium: implicit aspect Always_Terminates on "Create" could be incorrect, call via access-to-subprogram might be nonterminating, in instantiation at test_map_ho.adb:67 [possible explanation: call could hide recursive calls]
 spark-containers-functional-maps-higher_order.adb:161:16: info: loop invariant initialization proved, in instantiation at test_map_ho.adb:67
 spark-containers-functional-maps-higher_order.adb:161:16: info: loop invariant preservation proved, in instantiation at test_map_ho.adb:67
-spark-containers-functional-maps-higher_order.adb:161:62: info: pointer dereference check proved, in instantiation at test_map_ho.adb:67
 spark-containers-functional-maps-higher_order.adb:161:71: info: predicate check proved, in instantiation at test_map_ho.adb:67
 spark-containers-functional-maps-higher_order.adb:162:13: medium: implicit aspect Always_Terminates on "Create" could be incorrect, call via access-to-subprogram might be nonterminating, in instantiation at test_map_ho.adb:67 [possible explanation: call could hide recursive calls]
 spark-containers-functional-maps-higher_order.adb:163:16: info: loop invariant initialization proved, in instantiation at test_map_ho.adb:67
 spark-containers-functional-maps-higher_order.adb:163:16: info: loop invariant preservation proved, in instantiation at test_map_ho.adb:67
-spark-containers-functional-maps-higher_order.adb:165:43: info: pointer dereference check proved, in instantiation at test_map_ho.adb:67
 spark-containers-functional-maps-higher_order.adb:165:52: info: predicate check proved, in instantiation at test_map_ho.adb:67
 spark-containers-functional-maps-higher_order.adb:166:13: medium: implicit aspect Always_Terminates on "Create" could be incorrect, call via access-to-subprogram might be nonterminating, in instantiation at test_map_ho.adb:67 [possible explanation: call could hide recursive calls]
 spark-containers-functional-maps-higher_order.adb:167:16: info: loop invariant initialization proved, in instantiation at test_map_ho.adb:67
 spark-containers-functional-maps-higher_order.adb:167:16: info: loop invariant preservation proved, in instantiation at test_map_ho.adb:67
 spark-containers-functional-maps-higher_order.adb:168:41: info: precondition proved, in instantiation at test_map_ho.adb:67
-spark-containers-functional-maps-higher_order.adb:168:51: info: pointer dereference check proved, in instantiation at test_map_ho.adb:67
 spark-containers-functional-maps-higher_order.adb:168:60: info: predicate check proved, in instantiation at test_map_ho.adb:67
-spark-containers-functional-maps-higher_order.adb:168:65: info: pointer dereference check proved, in instantiation at test_map_ho.adb:67
 spark-containers-functional-maps-higher_order.adb:168:75: info: predicate check proved, in instantiation at test_map_ho.adb:67
 spark-containers-functional-maps-higher_order.adb:169:18: info: predicate check proved, in instantiation at test_map_ho.adb:67
 spark-containers-functional-maps-higher_order.adb:169:20: info: predicate check proved, in instantiation at test_map_ho.adb:67
 spark-containers-functional-maps-higher_order.adb:169:22: info: predicate check proved, in instantiation at test_map_ho.adb:67
 spark-containers-functional-maps-higher_order.adb:184:07: medium: implicit aspect Always_Terminates on "Eq_Compatible" could be incorrect, call via access-to-subprogram might be nonterminating, in instantiation at test_map_ho.adb:67 [possible explanation: call could hide recursive calls]
-spark-containers-functional-maps-higher_order.adb:187:20: info: pointer dereference check proved, in instantiation at test_map_ho.adb:67
 spark-containers-functional-maps-higher_order.adb:187:30: info: precondition proved, in instantiation at test_map_ho.adb:67
-spark-containers-functional-maps-higher_order.adb:187:45: info: pointer dereference check proved, in instantiation at test_map_ho.adb:67
 spark-containers-functional-maps-higher_order.adb:187:55: info: precondition proved, in instantiation at test_map_ho.adb:67
 spark-containers-functional-maps-higher_order.adb:195:07: medium: implicit aspect Always_Terminates on "Eq_Compatible" could be incorrect, call via access-to-subprogram might be nonterminating, in instantiation at test_map_ho.adb:67 [possible explanation: call could hide recursive calls]
-spark-containers-functional-maps-higher_order.adb:198:20: info: pointer dereference check proved, in instantiation at test_map_ho.adb:67
 spark-containers-functional-maps-higher_order.adb:198:20: info: predicate check proved, in instantiation at test_map_ho.adb:67
 spark-containers-functional-maps-higher_order.adb:198:31: info: precondition proved, in instantiation at test_map_ho.adb:67
-spark-containers-functional-maps-higher_order.adb:198:46: info: pointer dereference check proved, in instantiation at test_map_ho.adb:67
 spark-containers-functional-maps-higher_order.adb:198:46: info: predicate check proved, in instantiation at test_map_ho.adb:67
 spark-containers-functional-maps-higher_order.adb:198:57: info: precondition proved, in instantiation at test_map_ho.adb:67
 spark-containers-functional-maps-higher_order.adb:211:14: info: initialization of "Res" proved, in instantiation at test_map_ho.adb:67
@@ -161,16 +147,13 @@ spark-containers-functional-maps-higher_order.adb:217:16: info: loop invariant p
 spark-containers-functional-maps-higher_order.adb:218:13: medium: implicit aspect Always_Terminates on "Filter" could be incorrect, call via access-to-subprogram might be nonterminating, in instantiation at test_map_ho.adb:67 [possible explanation: call could hide recursive calls]
 spark-containers-functional-maps-higher_order.adb:219:16: info: loop invariant initialization proved, in instantiation at test_map_ho.adb:67
 spark-containers-functional-maps-higher_order.adb:219:16: info: loop invariant preservation proved, in instantiation at test_map_ho.adb:67
-spark-containers-functional-maps-higher_order.adb:220:50: info: pointer dereference check proved, in instantiation at test_map_ho.adb:67
 spark-containers-functional-maps-higher_order.adb:220:59: info: precondition proved, in instantiation at test_map_ho.adb:67
 spark-containers-functional-maps-higher_order.adb:222:13: medium: implicit aspect Always_Terminates on "Filter" could be incorrect, call via access-to-subprogram might be nonterminating, in instantiation at test_map_ho.adb:67 [possible explanation: call could hide recursive calls]
 spark-containers-functional-maps-higher_order.adb:222:36: info: loop invariant initialization proved, in instantiation at test_map_ho.adb:67
 spark-containers-functional-maps-higher_order.adb:222:36: info: loop invariant preservation proved, in instantiation at test_map_ho.adb:67
-spark-containers-functional-maps-higher_order.adb:222:56: info: pointer dereference check proved, in instantiation at test_map_ho.adb:67
 spark-containers-functional-maps-higher_order.adb:222:65: info: precondition proved, in instantiation at test_map_ho.adb:67
 spark-containers-functional-maps-higher_order.adb:225:37: info: precondition proved, in instantiation at test_map_ho.adb:67
 spark-containers-functional-maps-higher_order.adb:227:16: medium: implicit aspect Always_Terminates on "Filter" could be incorrect, call via access-to-subprogram might be nonterminating, in instantiation at test_map_ho.adb:67 [possible explanation: call could hide recursive calls]
-spark-containers-functional-maps-higher_order.adb:227:19: info: pointer dereference check proved, in instantiation at test_map_ho.adb:67
 spark-containers-functional-maps-higher_order.adb:227:28: info: precondition proved, in instantiation at test_map_ho.adb:67
 spark-containers-functional-maps-higher_order.adb:228:26: info: precondition proved, in instantiation at test_map_ho.adb:67
 spark-containers-functional-maps-higher_order.adb:228:39: info: precondition proved, in instantiation at test_map_ho.adb:67
@@ -273,7 +256,6 @@ spark-containers-functional-maps-higher_order.adb:421:60: info: null exclusion c
 spark-containers-functional-maps-higher_order.adb:423:37: info: precondition proved, in instantiation at test_map_ho.adb:67
 spark-containers-functional-maps-higher_order.adb:425:20: medium: implicit aspect Always_Terminates on "Sum" could be incorrect, call via access-to-subprogram might be nonterminating, in instantiation at test_map_ho.adb:67 [possible explanation: call could hide recursive calls]
 spark-containers-functional-maps-higher_order.adb:425:23: info: predicate check proved, in instantiation at test_map_ho.adb:67
-spark-containers-functional-maps-higher_order.adb:425:29: info: pointer dereference check proved, in instantiation at test_map_ho.adb:67
 spark-containers-functional-maps-higher_order.adb:425:29: info: predicate check proved, in instantiation at test_map_ho.adb:67
 spark-containers-functional-maps-higher_order.adb:425:39: info: precondition proved, in instantiation at test_map_ho.adb:67
 spark-containers-functional-maps-higher_order.adb:441:07: medium: implicit aspect Always_Terminates on "Sum_Rec" could be incorrect, call via access-to-subprogram might be nonterminating, in instantiation at test_map_ho.adb:67 [possible explanation: call could hide recursive calls]
@@ -281,7 +263,6 @@ spark-containers-functional-maps-higher_order.adb:442:12: info: predicate check 
 spark-containers-functional-maps-higher_order.adb:442:12: info: subprogram variant proved, in instantiation at test_map_ho.adb:67
 spark-containers-functional-maps-higher_order.adb:442:21: info: precondition proved, in instantiation at test_map_ho.adb:67
 spark-containers-functional-maps-higher_order.adb:442:32: info: precondition proved, in instantiation at test_map_ho.adb:67
-spark-containers-functional-maps-higher_order.adb:443:11: info: pointer dereference check proved, in instantiation at test_map_ho.adb:67
 spark-containers-functional-maps-higher_order.adb:443:11: info: predicate check proved, in instantiation at test_map_ho.adb:67
 spark-containers-functional-maps-higher_order.adb:443:18: info: precondition proved, in instantiation at test_map_ho.adb:67
 spark-containers-functional-maps-higher_order.adb:443:30: info: precondition proved, in instantiation at test_map_ho.adb:67
@@ -296,23 +277,17 @@ spark-containers-functional-maps-higher_order.adb:460:49: info: predicate check 
 spark-containers-functional-maps-higher_order.adb:461:13: medium: implicit aspect Always_Terminates on "Transform" could be incorrect, call via access-to-subprogram might be nonterminating, in instantiation at test_map_ho.adb:67 [possible explanation: call could hide recursive calls]
 spark-containers-functional-maps-higher_order.adb:462:16: info: loop invariant initialization proved, in instantiation at test_map_ho.adb:67
 spark-containers-functional-maps-higher_order.adb:462:16: info: loop invariant preservation proved, in instantiation at test_map_ho.adb:67
-spark-containers-functional-maps-higher_order.adb:463:60: info: pointer dereference check proved, in instantiation at test_map_ho.adb:67
 spark-containers-functional-maps-higher_order.adb:464:13: medium: implicit aspect Always_Terminates on "Transform" could be incorrect, call via access-to-subprogram might be nonterminating, in instantiation at test_map_ho.adb:67 [possible explanation: call could hide recursive calls]
 spark-containers-functional-maps-higher_order.adb:465:16: info: loop invariant initialization proved, in instantiation at test_map_ho.adb:67
 spark-containers-functional-maps-higher_order.adb:465:16: info: loop invariant preservation proved, in instantiation at test_map_ho.adb:67
-spark-containers-functional-maps-higher_order.adb:467:48: info: pointer dereference check proved, in instantiation at test_map_ho.adb:67
 spark-containers-functional-maps-higher_order.adb:468:13: medium: implicit aspect Always_Terminates on "Transform" could be incorrect, call via access-to-subprogram might be nonterminating, in instantiation at test_map_ho.adb:67 [possible explanation: call could hide recursive calls]
 spark-containers-functional-maps-higher_order.adb:469:16: info: loop invariant initialization proved, in instantiation at test_map_ho.adb:67
 spark-containers-functional-maps-higher_order.adb:469:16: info: loop invariant preservation proved, in instantiation at test_map_ho.adb:67
 spark-containers-functional-maps-higher_order.adb:472:19: info: precondition proved, in instantiation at test_map_ho.adb:67
-spark-containers-functional-maps-higher_order.adb:472:29: info: pointer dereference check proved, in instantiation at test_map_ho.adb:67
-spark-containers-functional-maps-higher_order.adb:472:49: info: pointer dereference check proved, in instantiation at test_map_ho.adb:67
 spark-containers-functional-maps-higher_order.adb:472:65: info: precondition proved, in instantiation at test_map_ho.adb:67
 spark-containers-functional-maps-higher_order.adb:475:37: info: precondition proved, in instantiation at test_map_ho.adb:67
 spark-containers-functional-maps-higher_order.adb:477:20: medium: implicit aspect Always_Terminates on "Transform" could be incorrect, call via access-to-subprogram might be nonterminating, in instantiation at test_map_ho.adb:67 [possible explanation: call could hide recursive calls]
 spark-containers-functional-maps-higher_order.adb:477:23: info: precondition proved, in instantiation at test_map_ho.adb:67
-spark-containers-functional-maps-higher_order.adb:478:24: info: pointer dereference check proved, in instantiation at test_map_ho.adb:67
-spark-containers-functional-maps-higher_order.adb:478:43: info: pointer dereference check proved, in instantiation at test_map_ho.adb:67
 spark-containers-functional-maps-higher_order.adb:478:59: info: precondition proved, in instantiation at test_map_ho.adb:67
 spark-containers-functional-maps-higher_order.adb:495:14: info: initialization of "Res" proved, in instantiation at test_map_ho.adb:67
 spark-containers-functional-maps-higher_order.adb:496:14: info: precondition proved, in instantiation at test_map_ho.adb:67
@@ -329,29 +304,23 @@ spark-containers-functional-maps-higher_order.adb:505:13: medium: implicit aspec
 spark-containers-functional-maps-higher_order.adb:506:16: info: loop invariant initialization proved, in instantiation at test_map_ho.adb:67
 spark-containers-functional-maps-higher_order.adb:506:16: info: loop invariant preservation proved, in instantiation at test_map_ho.adb:67
 spark-containers-functional-maps-higher_order.adb:508:21: info: precondition proved, in instantiation at test_map_ho.adb:67
-spark-containers-functional-maps-higher_order.adb:508:35: info: pointer dereference check proved, in instantiation at test_map_ho.adb:67
 spark-containers-functional-maps-higher_order.adb:508:51: info: precondition proved, in instantiation at test_map_ho.adb:67
 spark-containers-functional-maps-higher_order.adb:511:37: info: precondition proved, in instantiation at test_map_ho.adb:67
 spark-containers-functional-maps-higher_order.adb:513:20: medium: implicit aspect Always_Terminates on "Transform_Element" could be incorrect, call via access-to-subprogram might be nonterminating, in instantiation at test_map_ho.adb:67 [possible explanation: call could hide recursive calls]
 spark-containers-functional-maps-higher_order.adb:513:23: info: precondition proved, in instantiation at test_map_ho.adb:67
-spark-containers-functional-maps-higher_order.adb:513:36: info: pointer dereference check proved, in instantiation at test_map_ho.adb:67
 spark-containers-functional-maps-higher_order.adb:513:52: info: precondition proved, in instantiation at test_map_ho.adb:67
 spark-containers-functional-maps-higher_order.ads:19:23: info: function contract feasibility proved, in instantiation at test_map_ho.adb:67
 spark-containers-functional-maps-higher_order.ads:25:08: info: data dependencies proved, in instantiation at test_map_ho.adb:67
 spark-containers-functional-maps-higher_order.ads:26:20: info: postcondition proved, in instantiation at test_map_ho.adb:67
 spark-containers-functional-maps-higher_order.ads:26:41: medium: implicit aspect Always_Terminates on "Eq_Compatible" could be incorrect, call via access-to-subprogram might be nonterminating, in instantiation at test_map_ho.adb:67 [possible explanation: call could hide recursive calls]
-spark-containers-functional-maps-higher_order.ads:30:22: info: pointer dereference check proved, in instantiation at test_map_ho.adb:67
 spark-containers-functional-maps-higher_order.ads:30:32: info: precondition proved, in instantiation at test_map_ho.adb:67
-spark-containers-functional-maps-higher_order.ads:30:47: info: pointer dereference check proved, in instantiation at test_map_ho.adb:67
 spark-containers-functional-maps-higher_order.ads:30:57: info: precondition proved, in instantiation at test_map_ho.adb:67
 spark-containers-functional-maps-higher_order.ads:36:24: info: function contract feasibility proved, in instantiation at test_map_ho.adb:67
 spark-containers-functional-maps-higher_order.ads:42:08: info: data dependencies proved, in instantiation at test_map_ho.adb:67
 spark-containers-functional-maps-higher_order.ads:43:20: info: postcondition proved, in instantiation at test_map_ho.adb:67
 spark-containers-functional-maps-higher_order.ads:43:41: medium: implicit aspect Always_Terminates on "Eq_Compatible" could be incorrect, call via access-to-subprogram might be nonterminating, in instantiation at test_map_ho.adb:67 [possible explanation: call could hide recursive calls]
-spark-containers-functional-maps-higher_order.ads:47:22: info: pointer dereference check proved, in instantiation at test_map_ho.adb:67
 spark-containers-functional-maps-higher_order.ads:47:22: info: predicate check proved, in instantiation at test_map_ho.adb:67
 spark-containers-functional-maps-higher_order.ads:47:33: info: precondition proved, in instantiation at test_map_ho.adb:67
-spark-containers-functional-maps-higher_order.ads:47:48: info: pointer dereference check proved, in instantiation at test_map_ho.adb:67
 spark-containers-functional-maps-higher_order.ads:47:48: info: predicate check proved, in instantiation at test_map_ho.adb:67
 spark-containers-functional-maps-higher_order.ads:47:59: info: precondition proved, in instantiation at test_map_ho.adb:67
 spark-containers-functional-maps-higher_order.ads:53:29: info: function contract feasibility proved, in instantiation at test_map_ho.adb:67
@@ -360,38 +329,26 @@ spark-containers-functional-maps-higher_order.ads:61:06: info: data dependencies
 spark-containers-functional-maps-higher_order.ads:64:09: medium: implicit aspect Always_Terminates on "Create" could be incorrect, call via access-to-subprogram might be nonterminating, in instantiation at test_map_ho.adb:67 [possible explanation: call could hide recursive calls]
 spark-containers-functional-maps-higher_order.ads:65:36: info: predicate check proved, in instantiation at test_map_ho.adb:67
 spark-containers-functional-maps-higher_order.ads:65:41: info: predicate check proved, in instantiation at test_map_ho.adb:67
-spark-containers-functional-maps-higher_order.ads:66:35: info: pointer dereference check proved, in instantiation at test_map_ho.adb:67
 spark-containers-functional-maps-higher_order.ads:66:44: info: predicate check proved, in instantiation at test_map_ho.adb:67
-spark-containers-functional-maps-higher_order.ads:66:49: info: pointer dereference check proved, in instantiation at test_map_ho.adb:67
 spark-containers-functional-maps-higher_order.ads:66:58: info: predicate check proved, in instantiation at test_map_ho.adb:67
 spark-containers-functional-maps-higher_order.ads:67:18: info: postcondition proved, in instantiation at test_map_ho.adb:67
 spark-containers-functional-maps-higher_order.ads:67:18: info: predicate check proved, in instantiation at test_map_ho.adb:67
 spark-containers-functional-maps-higher_order.ads:67:43: info: predicate check proved, in instantiation at test_map_ho.adb:67
-spark-containers-functional-maps-higher_order.ads:70:38: info: pointer dereference check proved, in instantiation at test_map_ho.adb:67
 spark-containers-functional-maps-higher_order.ads:70:47: info: predicate check proved, in instantiation at test_map_ho.adb:67
-spark-containers-functional-maps-higher_order.ads:74:39: info: pointer dereference check proved, in instantiation at test_map_ho.adb:67
 spark-containers-functional-maps-higher_order.ads:74:48: info: predicate check proved, in instantiation at test_map_ho.adb:67
 spark-containers-functional-maps-higher_order.ads:75:08: medium: implicit aspect Always_Terminates on "Create" could be incorrect, call via access-to-subprogram might be nonterminating, in instantiation at test_map_ho.adb:67 [possible explanation: call could hide recursive calls]
 spark-containers-functional-maps-higher_order.ads:78:17: info: precondition proved, in instantiation at test_map_ho.adb:67
-spark-containers-functional-maps-higher_order.ads:78:37: info: pointer dereference check proved, in instantiation at test_map_ho.adb:67
 spark-containers-functional-maps-higher_order.ads:78:46: info: predicate check proved, in instantiation at test_map_ho.adb:67
-spark-containers-functional-maps-higher_order.ads:78:51: info: pointer dereference check proved, in instantiation at test_map_ho.adb:67
 spark-containers-functional-maps-higher_order.ads:78:61: info: predicate check proved, in instantiation at test_map_ho.adb:67
 spark-containers-functional-maps-higher_order.ads:82:33: info: function contract feasibility proved, in instantiation at test_map_ho.adb:67
 spark-containers-functional-maps-higher_order.ads:83:33: info: function contract feasibility proved, in instantiation at test_map_ho.adb:67
 spark-containers-functional-maps-higher_order.ads:91:06: info: data dependencies proved, in instantiation at test_map_ho.adb:67
 spark-containers-functional-maps-higher_order.ads:94:09: medium: implicit aspect Always_Terminates on "Transform" could be incorrect, call via access-to-subprogram might be nonterminating, in instantiation at test_map_ho.adb:67 [possible explanation: call could hide recursive calls]
-spark-containers-functional-maps-higher_order.ads:96:31: info: pointer dereference check proved, in instantiation at test_map_ho.adb:67
-spark-containers-functional-maps-higher_order.ads:96:51: info: pointer dereference check proved, in instantiation at test_map_ho.adb:67
 spark-containers-functional-maps-higher_order.ads:98:18: info: postcondition proved, in instantiation at test_map_ho.adb:67
 spark-containers-functional-maps-higher_order.ads:98:18: info: predicate check proved, in instantiation at test_map_ho.adb:67
 spark-containers-functional-maps-higher_order.ads:98:46: info: predicate check proved, in instantiation at test_map_ho.adb:67
-spark-containers-functional-maps-higher_order.ads:100:47: info: pointer dereference check proved, in instantiation at test_map_ho.adb:67
-spark-containers-functional-maps-higher_order.ads:103:55: info: pointer dereference check proved, in instantiation at test_map_ho.adb:67
 spark-containers-functional-maps-higher_order.ads:104:08: medium: implicit aspect Always_Terminates on "Transform" could be incorrect, call via access-to-subprogram might be nonterminating, in instantiation at test_map_ho.adb:67 [possible explanation: call could hide recursive calls]
 spark-containers-functional-maps-higher_order.ads:107:18: info: precondition proved, in instantiation at test_map_ho.adb:67
-spark-containers-functional-maps-higher_order.ads:107:41: info: pointer dereference check proved, in instantiation at test_map_ho.adb:67
-spark-containers-functional-maps-higher_order.ads:108:18: info: pointer dereference check proved, in instantiation at test_map_ho.adb:67
 spark-containers-functional-maps-higher_order.ads:108:34: info: precondition proved, in instantiation at test_map_ho.adb:67
 spark-containers-functional-maps-higher_order.ads:112:33: info: function contract feasibility proved, in instantiation at test_map_ho.adb:67
 spark-containers-functional-maps-higher_order.ads:119:06: info: data dependencies proved, in instantiation at test_map_ho.adb:67
@@ -400,7 +357,6 @@ spark-containers-functional-maps-higher_order.ads:121:18: info: predicate check 
 spark-containers-functional-maps-higher_order.ads:121:54: info: predicate check proved, in instantiation at test_map_ho.adb:67
 spark-containers-functional-maps-higher_order.ads:123:08: medium: implicit aspect Always_Terminates on "Transform_Element" could be incorrect, call via access-to-subprogram might be nonterminating, in instantiation at test_map_ho.adb:67 [possible explanation: call could hide recursive calls]
 spark-containers-functional-maps-higher_order.ads:126:18: info: precondition proved, in instantiation at test_map_ho.adb:67
-spark-containers-functional-maps-higher_order.ads:127:18: info: pointer dereference check proved, in instantiation at test_map_ho.adb:67
 spark-containers-functional-maps-higher_order.ads:127:34: info: precondition proved, in instantiation at test_map_ho.adb:67
 spark-containers-functional-maps-higher_order.ads:131:23: info: function contract feasibility proved, in instantiation at test_map_ho.adb:67
 spark-containers-functional-maps-higher_order.ads:139:06: info: data dependencies proved, in instantiation at test_map_ho.adb:67
@@ -431,7 +387,6 @@ spark-containers-functional-maps-higher_order.ads:173:10: info: precondition pro
 spark-containers-functional-maps-higher_order.ads:173:10: info: predicate check proved, in instantiation at test_map_ho.adb:67
 spark-containers-functional-maps-higher_order.ads:173:17: info: precondition proved, in instantiation at test_map_ho.adb:67
 spark-containers-functional-maps-higher_order.ads:173:32: info: null exclusion check proved, in instantiation at test_map_ho.adb:67
-spark-containers-functional-maps-higher_order.ads:174:18: info: pointer dereference check proved, in instantiation at test_map_ho.adb:67
 spark-containers-functional-maps-higher_order.ads:174:27: info: precondition proved, in instantiation at test_map_ho.adb:67
 spark-containers-functional-maps-higher_order.ads:174:55: info: predicate check proved, in instantiation at test_map_ho.adb:67
 spark-containers-functional-maps-higher_order.ads:174:57: info: predicate check proved, in instantiation at test_map_ho.adb:67
@@ -439,7 +394,6 @@ spark-containers-functional-maps-higher_order.ads:174:65: info: predicate check 
 spark-containers-functional-maps-higher_order.ads:178:23: info: function contract feasibility proved, in instantiation at test_map_ho.adb:67
 spark-containers-functional-maps-higher_order.ads:184:06: info: data dependencies proved, in instantiation at test_map_ho.adb:67
 spark-containers-functional-maps-higher_order.ads:186:19: medium: aspect Always_Terminates on "Lemma_Count_All" could be incorrect, call via access-to-subprogram might be nonterminating, in instantiation at test_map_ho.adb:67 [possible explanation: call could hide recursive calls]
-spark-containers-functional-maps-higher_order.ads:186:37: info: pointer dereference check proved, in instantiation at test_map_ho.adb:67
 spark-containers-functional-maps-higher_order.ads:186:46: info: precondition proved, in instantiation at test_map_ho.adb:67
 spark-containers-functional-maps-higher_order.ads:187:18: info: postcondition proved, in instantiation at test_map_ho.adb:67
 spark-containers-functional-maps-higher_order.ads:187:18: info: precondition proved, in instantiation at test_map_ho.adb:67
@@ -449,7 +403,6 @@ spark-containers-functional-maps-higher_order.ads:187:36: info: predicate check 
 spark-containers-functional-maps-higher_order.ads:191:23: info: function contract feasibility proved, in instantiation at test_map_ho.adb:67
 spark-containers-functional-maps-higher_order.ads:197:06: info: data dependencies proved, in instantiation at test_map_ho.adb:67
 spark-containers-functional-maps-higher_order.ads:199:19: medium: aspect Always_Terminates on "Lemma_Count_None" could be incorrect, call via access-to-subprogram might be nonterminating, in instantiation at test_map_ho.adb:67 [possible explanation: call could hide recursive calls]
-spark-containers-functional-maps-higher_order.ads:199:41: info: pointer dereference check proved, in instantiation at test_map_ho.adb:67
 spark-containers-functional-maps-higher_order.ads:199:50: info: precondition proved, in instantiation at test_map_ho.adb:67
 spark-containers-functional-maps-higher_order.ads:200:18: info: postcondition proved, in instantiation at test_map_ho.adb:67
 spark-containers-functional-maps-higher_order.ads:200:18: info: precondition proved, in instantiation at test_map_ho.adb:67
@@ -464,10 +417,8 @@ spark-containers-functional-maps-higher_order.ads:215:18: info: predicate check 
 spark-containers-functional-maps-higher_order.ads:215:43: info: precondition proved, in instantiation at test_map_ho.adb:67
 spark-containers-functional-maps-higher_order.ads:215:43: info: predicate check proved, in instantiation at test_map_ho.adb:67
 spark-containers-functional-maps-higher_order.ads:215:53: info: null exclusion check proved, in instantiation at test_map_ho.adb:67
-spark-containers-functional-maps-higher_order.ads:217:48: info: pointer dereference check proved, in instantiation at test_map_ho.adb:67
 spark-containers-functional-maps-higher_order.ads:217:57: info: precondition proved, in instantiation at test_map_ho.adb:67
 spark-containers-functional-maps-higher_order.ads:218:08: medium: implicit aspect Always_Terminates on "Filter" could be incorrect, call via access-to-subprogram might be nonterminating, in instantiation at test_map_ho.adb:67 [possible explanation: call could hide recursive calls]
-spark-containers-functional-maps-higher_order.ads:220:17: info: pointer dereference check proved, in instantiation at test_map_ho.adb:67
 spark-containers-functional-maps-higher_order.ads:220:26: info: precondition proved, in instantiation at test_map_ho.adb:67
 spark-containers-functional-maps-higher_order.ads:224:24: info: function contract feasibility proved, in instantiation at test_map_ho.adb:67
 spark-containers-functional-maps-higher_order.ads:232:06: info: data dependencies proved, in instantiation at test_map_ho.adb:67
@@ -495,7 +446,6 @@ spark-containers-functional-maps-higher_order.ads:265:10: info: precondition pro
 spark-containers-functional-maps-higher_order.ads:265:10: info: predicate check proved, in instantiation at test_map_ho.adb:67
 spark-containers-functional-maps-higher_order.ads:265:15: info: precondition proved, in instantiation at test_map_ho.adb:67
 spark-containers-functional-maps-higher_order.ads:265:30: info: null exclusion check proved, in instantiation at test_map_ho.adb:67
-spark-containers-functional-maps-higher_order.ads:265:39: info: pointer dereference check proved, in instantiation at test_map_ho.adb:67
 spark-containers-functional-maps-higher_order.ads:265:39: info: predicate check proved, in instantiation at test_map_ho.adb:67
 spark-containers-functional-maps-higher_order.ads:265:49: info: precondition proved, in instantiation at test_map_ho.adb:67
 spark-containers-functional-maps.ads:35:19: info: aspect Always_Terminates on "Eq_Reflexive" has been proved, subprogram will terminate, in instantiation at test_map_ho.adb:64

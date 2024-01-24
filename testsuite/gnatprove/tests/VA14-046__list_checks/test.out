@@ -49,8 +49,6 @@ spark-containers-formal-doubly_linked_lists.ads:445:13: info: implicit aspect Al
 spark-containers-formal-doubly_linked_lists.ads:445:13: info: implicit aspect Always_Terminates on "At_End" has been proved, subprogram will terminate, in instantiation at test_lists.ads:8
 spark-containers-formal-doubly_linked_lists.ads:447:08: info: dynamic accessibility check proved (Trivial), in instantiation at test_lists.ads:10
 spark-containers-formal-doubly_linked_lists.ads:447:08: info: dynamic accessibility check proved (Trivial), in instantiation at test_lists.ads:8
-spark-containers-formal-doubly_linked_lists.ads:468:39: info: pointer dereference check proved (Z3: 1 VC), in instantiation at test_lists.ads:10
-spark-containers-formal-doubly_linked_lists.ads:468:39: info: pointer dereference check proved (Z3: 1 VC), in instantiation at test_lists.ads:8
 spark-containers-formal-doubly_linked_lists.ads:578:49: info: overflow check proved (Z3: 2 VC), in instantiation at test_lists.ads:10
 spark-containers-formal-doubly_linked_lists.ads:578:49: info: overflow check proved (Z3: 2 VC), in instantiation at test_lists.ads:8
 spark-containers-formal-doubly_linked_lists.ads:713:49: info: overflow check proved (Z3: 2 VC), in instantiation at test_lists.ads:10
@@ -150,8 +148,6 @@ spark-containers-formal-unbounded_doubly_linked_lists.ads:439:13: info: implicit
 spark-containers-formal-unbounded_doubly_linked_lists.ads:439:13: info: implicit aspect Always_Terminates on "At_End" has been proved, subprogram will terminate, in instantiation at test_lists.ads:23
 spark-containers-formal-unbounded_doubly_linked_lists.ads:441:08: info: dynamic accessibility check proved (Trivial), in instantiation at test_lists.ads:21
 spark-containers-formal-unbounded_doubly_linked_lists.ads:441:08: info: dynamic accessibility check proved (Trivial), in instantiation at test_lists.ads:23
-spark-containers-formal-unbounded_doubly_linked_lists.ads:462:39: info: pointer dereference check proved (Z3: 1 VC), in instantiation at test_lists.ads:21
-spark-containers-formal-unbounded_doubly_linked_lists.ads:462:39: info: pointer dereference check proved (Z3: 1 VC), in instantiation at test_lists.ads:23
 spark-containers-formal-unbounded_doubly_linked_lists.ads:571:46: info: overflow check proved (Z3: 2 VC), in instantiation at test_lists.ads:21
 spark-containers-formal-unbounded_doubly_linked_lists.ads:571:46: info: overflow check proved (Z3: 2 VC), in instantiation at test_lists.ads:23
 spark-containers-formal-unbounded_doubly_linked_lists.ads:706:46: info: overflow check proved (Z3: 2 VC), in instantiation at test_lists.ads:21

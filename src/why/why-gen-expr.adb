@@ -1680,7 +1680,8 @@ package body Why.Gen.Expr is
       Relaxed_Init : constant Boolean := Is_Init_Wrapper_Type (From)
         and then Is_Init_Wrapper_Type (To);
 
-      Need_Not_Null_Check : constant Boolean := Can_Never_Be_Null (R);
+      Need_Not_Null_Check : constant Boolean := Can_Never_Be_Null (R)
+        and then not Can_Never_Be_Null (L);
 
       --  Do not generate a predicate check for an internal call to a parent
       --  predicate function inside the definition of a predicate function.

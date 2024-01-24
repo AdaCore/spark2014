@@ -1,5 +1,4 @@
 test_1.adb:14:17: warning: subprogram "Test" has no effect
-test_1.adb:35:15: info: pointer dereference check proved (CVC5: 1 VC)
 test_1.adb:35:15: info: range check proved (CVC5: 1 VC)
 test_1.adb:35:19: medium: discriminant check might fail [possible fix: subprogram at line 33 should mention X in a precondition]
 test_1.adb:35:22: medium: discriminant check might fail

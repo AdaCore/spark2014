@@ -70,6 +70,7 @@ package Gnat2Why.Subprograms.Pointers is
 
    function New_Subprogram_Value_Access
      (Ada_Node : Entity_Id := Empty;
+      Ty       : Access_Kind_Id;
       Expr     : W_Expr_Id;
       Domain   : EW_Domain)
       return W_Expr_Id;
