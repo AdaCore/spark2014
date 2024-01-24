@@ -1697,3 +1697,76 @@ When an aggregate ``C`` is encountered, |GNATprove| automatically infers that:
   returns ``Default_Item`` (for total maps), and
 
 * ``Length (C)``, if supplied, is the number of elements in the aggregate.
+
+Annotation for Mutable IN Parameters
+------------------------------------
+
+In |SPARK|, parameters of mode ``in`` - and every object they designate,
+see :ref:`Memory Ownership Policy` - are considered to be preserved by
+subprogram calls unless the parameters are of an access-to-variable type. Ada,
+however, does not enforce the same restriction. In particular, if a parameter of
+mode ``in`` is of a private type which is ultimately an access-to-variable type,
+then the subprogram might modify the value it designates. The
+``Mutable_In_Parameter`` annotation is designed to make it possible to interact
+with existing Ada libraries from |SPARK| code, even if the libraries are not
+abiding by the language restrictions. It allows annotating an entry, procedure,
+or function with side effects so that all its parameters of mode ``in`` of
+a given type are considered to be potentially modified by the subprogram. This
+is only supported for parameters of a private type whose ultimate full view is
+either not visible from |SPARK| or an access-to-variable type.
+
+As an example, consider an Ada library for strings with the following signature:
+
+.. code-block:: ada
+
+   package My_Unbounded_Strings is
+
+     type My_String is private;
+
+     Null_String : constant My_String;
+
+     function Get (S : My_String) return String with
+       Pre => S /= Null_String;
+
+     procedure Update
+       (S     : My_String;
+        Index : Positive;
+        Char  : Character)
+     with Pre =>
+       S /= Null_String and then Index in Get (S)'Range;
+
+   private
+
+     type My_String is access String;
+
+     Null_String : constant My_String := null;
+
+   end My_Unbounded_Strings;
+
+
+To be able to designate strings of any size, the type ``My_String`` is in fact
+a pointer to an Ada string that can be retrieved through the ``Get`` function.
+The ``Update`` procedure writes a character ``Char`` at position ``Index``
+in the value designated by ``S``. Since the value of the pointer ``S`` is not
+modified by ``Update``, Ada allows it to be a parameter of mode ``in``. However,
+this procedure is not compatible with |SPARK|, as it modifies the value
+designated by ``Item`` which is considered to be part of ``Item`` as per the
+:ref:`Memory Ownership Policy`. To make it possible to use this procedure from
+|SPARK| code, a ``pragma Annotate`` is supplied directly after ``Update``:
+
+.. code-block:: ada
+
+   pragma Annotate (GNATprove, Mutable_In_Parameters, My_String);
+
+Thanks to this annotation, |GNATprove| considers that a call to ``Update`` can
+modify its parameter ``Item``, even if it has mode ``in``.
+
+.. note::
+
+   This pragma ``Annotate`` does not designate a parameter by name but the
+   parameter type (because the scope of the parameter entity is limited to the
+   declaration of the enclosing subprogram). It can happen that the same type
+   is used for more than one parameter of mode ``in`` in the subprogram. If it
+   is the case, all such parameters will be considered to be potentially mutated
+   by the call. If some are in fact preserved, it will need to be stated as a
+   postcondition of the subprogram.
