@@ -110,7 +110,7 @@ package Gnat2Why.Expr is
 
    function Check_Scalar_Range
      (Params : Transformation_Params;
-      N      : Entity_Id;
+      N      : Node_Id;
       Base   : Type_Kind_Id)
       return W_Prog_Id;
    --  Generate checks for the bounds of a range as well as a

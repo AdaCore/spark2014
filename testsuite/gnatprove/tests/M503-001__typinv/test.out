@@ -78,7 +78,7 @@ inside_out.adb:68:20: info: for X before the call at inside_out.ads:9
 inside_out.adb:68:20: info: invariant check proved (CVC5: 1 VC)
 inside_out.adb:70:13: medium: implicit aspect Always_Terminates on "Get" could be incorrect, "Get" and "Body_Get" are mutually recursive [possible fix: annotate "Get" and "Body_Get" with Subprogram_Variant aspects]
 inside_out.ads:5:14: medium: for X at the end of Create at inside_out.ads:5
-inside_out.ads:5:14: medium: invariant check might fail (e.g. when Mode = Prv) [possible fix: add or complete related loop invariants or postconditions]
+inside_out.ads:5:14: medium: invariant check might fail (e.g. when Mode = Prv)
 inside_out.ads:5:22: info: initialization of "X" proved
 inside_out.ads:7:14: medium: for X at the end of Update at inside_out.ads:7
 inside_out.ads:7:14: medium: invariant check might fail (e.g. when Mode = Prv and X = 0)
