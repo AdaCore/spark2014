@@ -1458,7 +1458,7 @@ Exceptional Cases
 ~~~~~~~~~~~~~~~~~
 
 The aspect Exceptional_Cases may be specified for procedures and functions with
-side effects; it can be used to list exceptions that might be raised by the
+side effects; it can be used to list exceptions that might be propagated by the
 subprogram with side effects in the context of its precondition, and associate
 them with a specific postcondition. The Exceptional_Cases aspect is specified
 with an aspect_specification where the aspect_mark is Exceptional_Cases and the
