@@ -9,7 +9,6 @@ sequences.adb:11:13: info: implicit aspect Always_Terminates on "Get" has been p
 sequences.adb:14:10: info: predicate check proved (Trivial: 1 VC), in instantiation at use_list.adb:3
 sequences.adb:14:21: info: predicate check proved (Trivial: 1 VC), in instantiation at use_list.adb:3
 sequences.adb:14:37: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at use_list.adb:3
-sequences.adb:14:44: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at use_list.adb:3
 sequences.adb:15:12: info: precondition proved (CVC5: 1 VC), in instantiation at use_list.adb:3
 sequences.adb:15:12: info: subprogram variant proved (CVC5: 1 VC), in instantiation at use_list.adb:3
 sequences.adb:15:26: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at use_list.adb:3

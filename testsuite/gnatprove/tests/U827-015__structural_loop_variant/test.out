@@ -1,7 +1,6 @@
 main.adb:13:13: info: implicit aspect Always_Terminates on "Id" has been proved, subprogram will terminate
 main.adb:13:79: info: dynamic accessibility check proved (Trivial)
 main.adb:14:13: info: implicit aspect Always_Terminates on "Next" has been proved, subprogram will terminate
-main.adb:14:91: info: pointer dereference check proved (CVC5: 1 VC)
 main.adb:16:13: info: implicit aspect Always_Terminates on "Length_1" has been proved, subprogram will terminate
 main.adb:19:33: info: predicate check proved (CVC5: 1 VC; Trivial: 1 VC)
 main.adb:21:13: info: loop variant proved (Trivial)
@@ -135,7 +134,6 @@ main.adb:226:24: info: pointer dereference check proved (CVC5: 1 VC)
 main.adb:227:16: info: pointer dereference check proved (CVC5: 1 VC)
 main.adb:231:43: info: initialization of "R" proved
 main.adb:233:09: info: data dependencies proved
-main.adb:236:11: info: pointer dereference check proved (CVC5: 1 VC)
 main.adb:240:12: info: predicate check proved (CVC5: 1 VC; Trivial: 1 VC)
 main.adb:242:33: info: loop invariant initialization proved (CVC5: 1 VC)
 main.adb:242:33: info: loop invariant preservation proved (CVC5: 1 VC)
@@ -190,7 +188,6 @@ main.adb:304:27: info: pointer dereference check proved (CVC5: 1 VC)
 main.adb:306:16: info: pointer dereference check proved (CVC5: 1 VC)
 main.adb:310:44: info: initialization of "R" proved
 main.adb:312:09: info: data dependencies proved
-main.adb:315:11: info: pointer dereference check proved (CVC5: 1 VC)
 main.adb:319:12: info: predicate check proved (CVC5: 1 VC; Trivial: 1 VC)
 main.adb:321:33: info: loop invariant initialization proved (CVC5: 1 VC)
 main.adb:321:33: info: loop invariant preservation proved (CVC5: 1 VC)
@@ -205,7 +202,6 @@ main.adb:329:16: info: pointer dereference check proved (CVC5: 1 VC)
 main_bad.adb:13:13: info: implicit aspect Always_Terminates on "Id" has been proved, subprogram will terminate
 main_bad.adb:13:79: info: dynamic accessibility check proved (Trivial)
 main_bad.adb:14:13: info: implicit aspect Always_Terminates on "Next" has been proved, subprogram will terminate
-main_bad.adb:14:91: info: pointer dereference check proved (CVC5: 1 VC)
 main_bad.adb:16:13: info: implicit aspect Always_Terminates on "Length_1" has been proved, subprogram will terminate
 main_bad.adb:19:33: info: predicate check proved (CVC5: 1 VC; Trivial: 1 VC)
 main_bad.adb:21:13: medium: loop variant might fail [possible explanation: "C" might not be updated on all paths]

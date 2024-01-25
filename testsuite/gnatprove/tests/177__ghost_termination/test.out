@@ -15,7 +15,5 @@ ghost_termination.adb:91:13: info: implicit aspect Always_Terminates on "Z" has 
 ghost_termination.adb:91:13: info: implicit function contract might not be available on calls from enclosing unit
 ghost_termination.adb:93:14: info: null exclusion check proved (Trivial: 1 VC)
 ghost_termination.adb:95:43: info: data dependencies proved
-ghost_termination.adb:99:15: info: pointer dereference check proved (CVC5: 1 VC)
 ghost_termination.adb:102:40: info: data dependencies proved
-ghost_termination.adb:106:15: info: pointer dereference check proved (CVC5: 1 VC)
 ghost_termination.adb:106:15: medium: call to ghost access-to-subprogram might be nonterminating

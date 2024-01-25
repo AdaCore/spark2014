@@ -2,4 +2,3 @@ hidden_dispatch.ads:5:13: warning: assuming "F" has no effect on global items
 hidden_dispatch.ads:5:13: warning: no Global contract available for "F"
 hidden_dispatch.ads:7:13: warning: assuming "F" has no effect on global items
 hidden_dispatch.ads:7:13: warning: no Global contract available for "F"
-hidden_dispatch.ads:7:18: info: pointer dereference check proved (CVC5: 1 VC)

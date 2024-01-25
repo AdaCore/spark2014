@@ -21,12 +21,8 @@ spark-containers-functional-sets-higher_order.ads:63:36: info: predicate check p
 spark-containers-functional-sets-higher_order.ads:63:36: info: predicate check proved (Trivial: 1 VC), in instantiation at use_set_ho.adb:13
 spark-containers-functional-sets-higher_order.ads:63:41: info: predicate check proved (Trivial: 1 VC), in instantiation at check_ho_pre.adb:14
 spark-containers-functional-sets-higher_order.ads:63:41: info: predicate check proved (Trivial: 1 VC), in instantiation at use_set_ho.adb:13
-spark-containers-functional-sets-higher_order.ads:64:39: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at check_ho_pre.adb:14
-spark-containers-functional-sets-higher_order.ads:64:39: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at use_set_ho.adb:13
 spark-containers-functional-sets-higher_order.ads:64:49: info: predicate check proved (CVC5: 1 VC; Trivial: 1 VC), in instantiation at check_ho_pre.adb:14
 spark-containers-functional-sets-higher_order.ads:64:49: info: predicate check proved (CVC5: 1 VC; Trivial: 1 VC), in instantiation at use_set_ho.adb:13
-spark-containers-functional-sets-higher_order.ads:64:54: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at check_ho_pre.adb:14
-spark-containers-functional-sets-higher_order.ads:64:54: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at use_set_ho.adb:13
 spark-containers-functional-sets-higher_order.ads:64:64: info: predicate check proved (CVC5: 1 VC; Trivial: 1 VC), in instantiation at check_ho_pre.adb:14
 spark-containers-functional-sets-higher_order.ads:64:64: info: predicate check proved (CVC5: 1 VC; Trivial: 1 VC), in instantiation at use_set_ho.adb:13
 spark-containers-functional-sets-higher_order.ads:76:29: info: function contract feasibility proved (CVC5: 1 VC), in instantiation at use_set_ho.adb:13
@@ -37,32 +33,16 @@ spark-containers-functional-sets-higher_order.ads:108:36: info: predicate check 
 spark-containers-functional-sets-higher_order.ads:108:36: info: predicate check proved (Trivial: 1 VC), in instantiation at use_set_ho.adb:13
 spark-containers-functional-sets-higher_order.ads:108:41: info: predicate check proved (Trivial: 1 VC), in instantiation at check_ho_pre.adb:14
 spark-containers-functional-sets-higher_order.ads:108:41: info: predicate check proved (Trivial: 1 VC), in instantiation at use_set_ho.adb:13
-spark-containers-functional-sets-higher_order.ads:109:39: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at check_ho_pre.adb:14
-spark-containers-functional-sets-higher_order.ads:109:39: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at use_set_ho.adb:13
 spark-containers-functional-sets-higher_order.ads:109:49: info: predicate check proved (CVC5: 1 VC; Trivial: 1 VC), in instantiation at check_ho_pre.adb:14
 spark-containers-functional-sets-higher_order.ads:109:49: info: predicate check proved (CVC5: 1 VC; Trivial: 1 VC), in instantiation at use_set_ho.adb:13
-spark-containers-functional-sets-higher_order.ads:109:54: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at check_ho_pre.adb:14
-spark-containers-functional-sets-higher_order.ads:109:54: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at use_set_ho.adb:13
 spark-containers-functional-sets-higher_order.ads:109:64: info: predicate check proved (CVC5: 1 VC; Trivial: 1 VC), in instantiation at check_ho_pre.adb:14
 spark-containers-functional-sets-higher_order.ads:109:64: info: predicate check proved (CVC5: 1 VC; Trivial: 1 VC), in instantiation at use_set_ho.adb:13
 spark-containers-functional-sets-higher_order.ads:114:33: info: function contract feasibility proved (CVC5: 1 VC), in instantiation at use_set_ho.adb:13
 spark-containers-functional-sets-higher_order.ads:114:33: info: function contract feasibility proved (Z3: 1 VC), in instantiation at check_ho_pre.adb:14
-spark-containers-functional-sets-higher_order.ads:128:35: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at check_ho_pre.adb:14
-spark-containers-functional-sets-higher_order.ads:128:35: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at use_set_ho.adb:13
-spark-containers-functional-sets-higher_order.ads:128:56: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at check_ho_pre.adb:14
-spark-containers-functional-sets-higher_order.ads:128:56: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at use_set_ho.adb:13
 spark-containers-functional-sets-higher_order.ads:140:33: info: function contract feasibility proved (CVC5: 1 VC), in instantiation at use_set_ho.adb:13
 spark-containers-functional-sets-higher_order.ads:140:33: info: function contract feasibility proved (Z3: 1 VC), in instantiation at check_ho_pre.adb:14
-spark-containers-functional-sets-higher_order.ads:157:18: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at check_ho_pre.adb:14
-spark-containers-functional-sets-higher_order.ads:157:18: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at use_set_ho.adb:13
-spark-containers-functional-sets-higher_order.ads:157:39: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at check_ho_pre.adb:14
-spark-containers-functional-sets-higher_order.ads:157:39: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at use_set_ho.adb:13
 spark-containers-functional-sets-higher_order.ads:168:33: info: function contract feasibility proved (CVC5: 1 VC), in instantiation at use_set_ho.adb:13
 spark-containers-functional-sets-higher_order.ads:168:33: info: function contract feasibility proved (Z3: 1 VC), in instantiation at check_ho_pre.adb:14
-spark-containers-functional-sets-higher_order.ads:180:35: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at check_ho_pre.adb:14
-spark-containers-functional-sets-higher_order.ads:180:35: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at use_set_ho.adb:13
-spark-containers-functional-sets-higher_order.ads:180:56: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at check_ho_pre.adb:14
-spark-containers-functional-sets-higher_order.ads:180:56: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at use_set_ho.adb:13
 spark-containers-functional-sets-higher_order.ads:186:23: info: function contract feasibility proved (Trivial: 1 VC), in instantiation at check_ho_pre.adb:14
 spark-containers-functional-sets-higher_order.ads:186:23: info: function contract feasibility proved (Trivial: 1 VC), in instantiation at use_set_ho.adb:13
 spark-containers-functional-sets-higher_order.ads:195:36: info: null exclusion check proved (CVC5: 1 VC), in instantiation at check_ho_pre.adb:14
@@ -77,12 +57,8 @@ spark-containers-functional-sets-higher_order.ads:222:61: info: null exclusion c
 spark-containers-functional-sets-higher_order.ads:222:61: info: null exclusion check proved (CVC5: 1 VC), in instantiation at use_set_ho.adb:13
 spark-containers-functional-sets-higher_order.ads:229:23: info: function contract feasibility proved (Trivial: 1 VC), in instantiation at check_ho_pre.adb:14
 spark-containers-functional-sets-higher_order.ads:229:23: info: function contract feasibility proved (Trivial: 1 VC), in instantiation at use_set_ho.adb:13
-spark-containers-functional-sets-higher_order.ads:236:37: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at check_ho_pre.adb:14
-spark-containers-functional-sets-higher_order.ads:236:37: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at use_set_ho.adb:13
 spark-containers-functional-sets-higher_order.ads:241:23: info: function contract feasibility proved (Trivial: 1 VC), in instantiation at check_ho_pre.adb:14
 spark-containers-functional-sets-higher_order.ads:241:23: info: function contract feasibility proved (Trivial: 1 VC), in instantiation at use_set_ho.adb:13
-spark-containers-functional-sets-higher_order.ads:248:41: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at check_ho_pre.adb:14
-spark-containers-functional-sets-higher_order.ads:248:41: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at use_set_ho.adb:13
 spark-containers-functional-sets-higher_order.ads:253:23: info: function contract feasibility proved (Trivial: 1 VC), in instantiation at check_ho_pre.adb:14
 spark-containers-functional-sets-higher_order.ads:253:23: info: function contract feasibility proved (Trivial: 1 VC), in instantiation at use_set_ho.adb:13
 spark-containers-functional-sets-higher_order.ads:262:36: info: null exclusion check proved (CVC5: 1 VC), in instantiation at check_ho_pre.adb:14

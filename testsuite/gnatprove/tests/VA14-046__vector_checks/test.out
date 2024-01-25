@@ -96,14 +96,6 @@ spark-containers-formal-vectors.ads:366:08: info: dynamic accessibility check pr
 spark-containers-formal-vectors.ads:366:08: info: dynamic accessibility check proved (Trivial), in instantiation at test_vectors.ads:23
 spark-containers-formal-vectors.ads:366:08: info: dynamic accessibility check proved (Trivial), in instantiation at test_vectors.ads:26
 spark-containers-formal-vectors.ads:366:08: info: dynamic accessibility check proved (Trivial), in instantiation at test_vectors.ads:8
-spark-containers-formal-vectors.ads:386:39: info: pointer dereference check proved (Z3: 1 VC), in instantiation at test_vectors.ads:11
-spark-containers-formal-vectors.ads:386:39: info: pointer dereference check proved (Z3: 1 VC), in instantiation at test_vectors.ads:23
-spark-containers-formal-vectors.ads:386:39: info: pointer dereference check proved (Z3: 1 VC), in instantiation at test_vectors.ads:26
-spark-containers-formal-vectors.ads:386:39: info: pointer dereference check proved (Z3: 1 VC), in instantiation at test_vectors.ads:8
-spark-containers-formal-vectors.ads:386:69: info: pointer dereference check proved (Z3: 1 VC), in instantiation at test_vectors.ads:11
-spark-containers-formal-vectors.ads:386:69: info: pointer dereference check proved (Z3: 1 VC), in instantiation at test_vectors.ads:23
-spark-containers-formal-vectors.ads:386:69: info: pointer dereference check proved (Z3: 1 VC), in instantiation at test_vectors.ads:26
-spark-containers-formal-vectors.ads:386:69: info: pointer dereference check proved (Z3: 1 VC), in instantiation at test_vectors.ads:8
 spark-containers-formal-vectors.ads:410:51: info: overflow check proved (Z3: 2 VC), in instantiation at test_vectors.ads:11
 spark-containers-formal-vectors.ads:410:51: info: overflow check proved (Z3: 2 VC), in instantiation at test_vectors.ads:23
 spark-containers-formal-vectors.ads:410:51: info: overflow check proved (Z3: 2 VC), in instantiation at test_vectors.ads:26

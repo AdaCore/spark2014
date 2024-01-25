@@ -28,26 +28,14 @@ test_annotate.adb:56:13: info: absence of resource or memory leak at end of scop
 test_annotate.adb:57:13: medium: resource or memory leak might occur at end of scope
 test_annotate.adb:76:13: info: implicit aspect Always_Terminates on "Find" has been proved, subprogram will terminate
 test_annotate.adb:77:14: info: postcondition proved (CVC5: 1 VC; Z3: 1 VC)
-test_annotate.adb:77:58: info: pointer dereference check proved (CVC5: 1 VC)
-test_annotate.adb:77:71: info: pointer dereference check proved (CVC5: 1 VC)
-test_annotate.adb:78:37: info: pointer dereference check proved (CVC5: 1 VC)
-test_annotate.adb:79:31: info: pointer dereference check proved (CVC5: 1 VC)
 test_annotate.adb:79:55: warning: consider extracting conjunct from quantified expression
 test_annotate.adb:79:55: warning: unused variable "P" in conjunct
 test_annotate.adb:79:79: info: pointer dereference check proved (CVC5: 1 VC)
-test_annotate.adb:79:91: info: pointer dereference check proved (CVC5: 1 VC)
-test_annotate.adb:82:16: info: pointer dereference check proved (CVC5: 1 VC)
-test_annotate.adb:83:13: info: pointer dereference check proved (CVC5: 2 VC)
 test_annotate.adb:83:16: info: index check proved (CVC5: 4 VC)
-test_annotate.adb:83:23: info: pointer dereference check proved (CVC5: 2 VC)
-test_annotate.adb:84:20: info: pointer dereference check proved (CVC5: 2 VC)
 test_annotate.adb:84:23: info: index check proved (CVC5: 4 VC)
 test_annotate.adb:86:33: info: loop invariant initialization proved (CVC5: 1 VC)
 test_annotate.adb:86:33: info: loop invariant preservation proved (Z3: 1 VC)
-test_annotate.adb:86:46: info: pointer dereference check proved (CVC5: 2 VC)
-test_annotate.adb:86:62: info: pointer dereference check proved (CVC5: 2 VC)
 test_annotate.adb:86:65: info: index check proved (CVC5: 4 VC)
-test_annotate.adb:86:72: info: pointer dereference check proved (CVC5: 2 VC)
 test_annotate.adb:94:04: info: initialization of "X" proved
 test_annotate.adb:94:04: medium: resource or memory leak might occur at end of scope
 test_annotate.adb:97:04: warning: assuming "Do_Something" always terminates

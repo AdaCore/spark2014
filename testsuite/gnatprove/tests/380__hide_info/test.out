@@ -34,37 +34,15 @@ test_dispatch.adb:35:22: medium: assertion might fail
 test_dispatch.adb:39:06: info: data dependencies proved
 test_dispatch.adb:45:22: medium: assertion might fail
 test_traversal.adb:8:13: info: implicit aspect Always_Terminates on "Get_F" has been proved, subprogram will terminate
-test_traversal.adb:8:79: info: null exclusion check proved (CVC5: 1 VC)
-test_traversal.adb:8:79: info: pointer dereference check proved (CVC5: 1 VC)
 test_traversal.adb:10:27: warning: "X" is not modified, parameter type could be rewritten as 'access constant R'
 test_traversal.adb:11:06: info: data dependencies proved
-test_traversal.adb:12:14: info: pointer dereference check proved (CVC5: 1 VC)
-test_traversal.adb:12:17: info: pointer dereference check proved (CVC5: 1 VC)
 test_traversal.adb:15:22: info: assertion proved (CVC5: 1 VC)
-test_traversal.adb:15:29: info: null exclusion check proved (CVC5: 1 VC)
-test_traversal.adb:15:32: info: pointer dereference check proved (CVC5: 1 VC)
 test_traversal.adb:19:06: info: data dependencies proved
-test_traversal.adb:20:15: info: pointer dereference check proved (CVC5: 1 VC)
-test_traversal.adb:20:18: info: pointer dereference check proved (CVC5: 1 VC)
 test_traversal.adb:21:14: info: postcondition proved (CVC5: 1 VC)
-test_traversal.adb:21:15: info: pointer dereference check proved (CVC5: 1 VC)
-test_traversal.adb:21:18: info: pointer dereference check proved (CVC5: 1 VC)
-test_traversal.adb:23:36: info: in reconstructed value at the end of the borrow at test_traversal.adb:23
-test_traversal.adb:23:36: info: null exclusion check proved (CVC5: 1 VC)
 test_traversal.adb:25:09: info: pointer dereference check proved (CVC5: 1 VC)
 test_traversal.adb:28:27: warning: "X" is not modified, parameter type could be rewritten as 'access constant R'
 test_traversal.adb:29:06: info: data dependencies proved
-test_traversal.adb:30:14: info: pointer dereference check proved (CVC5: 1 VC)
-test_traversal.adb:30:17: info: pointer dereference check proved (CVC5: 1 VC)
 test_traversal.adb:34:22: medium: assertion might fail
-test_traversal.adb:34:29: info: null exclusion check proved (CVC5: 1 VC)
-test_traversal.adb:34:32: info: pointer dereference check proved (CVC5: 1 VC)
 test_traversal.adb:38:06: info: data dependencies proved
-test_traversal.adb:39:15: info: pointer dereference check proved (CVC5: 1 VC)
-test_traversal.adb:39:18: info: pointer dereference check proved (CVC5: 1 VC)
 test_traversal.adb:40:14: medium: postcondition might fail
-test_traversal.adb:40:15: info: pointer dereference check proved (CVC5: 1 VC)
-test_traversal.adb:40:18: info: pointer dereference check proved (CVC5: 1 VC)
-test_traversal.adb:43:36: info: in reconstructed value at the end of the borrow at test_traversal.adb:43
-test_traversal.adb:43:36: info: null exclusion check proved (CVC5: 1 VC)
 test_traversal.adb:45:09: info: pointer dereference check proved (CVC5: 1 VC)

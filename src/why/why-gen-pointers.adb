@@ -1786,7 +1786,7 @@ package body Why.Gen.Pointers is
          Field :=  To_Local (Field);
       end if;
 
-      if Domain = EW_Prog then
+      if Domain = EW_Prog and then not Can_Never_Be_Null (E) then
          return
            +New_VC_Call
            (Ada_Node => Ada_Node,

@@ -61,16 +61,10 @@ spark-containers-formal-ordered_maps.ads:492:13: info: implicit aspect Always_Te
 spark-containers-formal-ordered_maps.ads:492:13: info: implicit aspect Always_Terminates on "At_End" has been proved, subprogram will terminate, in instantiation at test_omaps.ads:8
 spark-containers-formal-ordered_maps.ads:494:08: info: dynamic accessibility check proved (Trivial), in instantiation at test_omaps.ads:11
 spark-containers-formal-ordered_maps.ads:494:08: info: dynamic accessibility check proved (Trivial), in instantiation at test_omaps.ads:8
-spark-containers-formal-ordered_maps.ads:494:08: info: null exclusion check proved (Z3: 1 VC), in instantiation at test_omaps.ads:11
-spark-containers-formal-ordered_maps.ads:494:08: info: null exclusion check proved (Z3: 1 VC), in instantiation at test_omaps.ads:8
 spark-containers-formal-ordered_maps.ads:498:13: info: implicit aspect Always_Terminates on "At_End" has been proved, subprogram will terminate, in instantiation at test_omaps.ads:11
 spark-containers-formal-ordered_maps.ads:498:13: info: implicit aspect Always_Terminates on "At_End" has been proved, subprogram will terminate, in instantiation at test_omaps.ads:8
 spark-containers-formal-ordered_maps.ads:500:08: info: dynamic accessibility check proved (Trivial), in instantiation at test_omaps.ads:11
 spark-containers-formal-ordered_maps.ads:500:08: info: dynamic accessibility check proved (Trivial), in instantiation at test_omaps.ads:8
-spark-containers-formal-ordered_maps.ads:520:39: info: pointer dereference check proved (Z3: 1 VC), in instantiation at test_omaps.ads:11
-spark-containers-formal-ordered_maps.ads:520:39: info: pointer dereference check proved (Z3: 1 VC), in instantiation at test_omaps.ads:8
-spark-containers-formal-ordered_maps.ads:560:36: info: pointer dereference check proved (Z3: 1 VC), in instantiation at test_omaps.ads:11
-spark-containers-formal-ordered_maps.ads:560:36: info: pointer dereference check proved (Z3: 1 VC), in instantiation at test_omaps.ads:8
 spark-containers-formal-ordered_maps.ads:679:10: info: during checks for container aggregates at spark-containers-formal-ordered_maps.ads:95, in instantiation at test_omaps.ads:11
 spark-containers-formal-ordered_maps.ads:679:10: info: during checks for container aggregates at spark-containers-formal-ordered_maps.ads:95, in instantiation at test_omaps.ads:8
 spark-containers-formal-ordered_maps.ads:679:10: info: precondition proved (Z3: 2 VC), in instantiation at test_omaps.ads:11
@@ -172,16 +166,10 @@ spark-containers-formal-unbounded_ordered_maps.ads:468:13: info: implicit aspect
 spark-containers-formal-unbounded_ordered_maps.ads:468:13: info: implicit aspect Always_Terminates on "At_End" has been proved, subprogram will terminate, in instantiation at test_omaps.ads:24
 spark-containers-formal-unbounded_ordered_maps.ads:470:08: info: dynamic accessibility check proved (Trivial), in instantiation at test_omaps.ads:21
 spark-containers-formal-unbounded_ordered_maps.ads:470:08: info: dynamic accessibility check proved (Trivial), in instantiation at test_omaps.ads:24
-spark-containers-formal-unbounded_ordered_maps.ads:470:08: info: null exclusion check proved (Z3: 1 VC), in instantiation at test_omaps.ads:21
-spark-containers-formal-unbounded_ordered_maps.ads:470:08: info: null exclusion check proved (Z3: 1 VC), in instantiation at test_omaps.ads:24
 spark-containers-formal-unbounded_ordered_maps.ads:474:13: info: implicit aspect Always_Terminates on "At_End" has been proved, subprogram will terminate, in instantiation at test_omaps.ads:21
 spark-containers-formal-unbounded_ordered_maps.ads:474:13: info: implicit aspect Always_Terminates on "At_End" has been proved, subprogram will terminate, in instantiation at test_omaps.ads:24
 spark-containers-formal-unbounded_ordered_maps.ads:476:08: info: dynamic accessibility check proved (Trivial), in instantiation at test_omaps.ads:21
 spark-containers-formal-unbounded_ordered_maps.ads:476:08: info: dynamic accessibility check proved (Trivial), in instantiation at test_omaps.ads:24
-spark-containers-formal-unbounded_ordered_maps.ads:496:39: info: pointer dereference check proved (Z3: 1 VC), in instantiation at test_omaps.ads:21
-spark-containers-formal-unbounded_ordered_maps.ads:496:39: info: pointer dereference check proved (Z3: 1 VC), in instantiation at test_omaps.ads:24
-spark-containers-formal-unbounded_ordered_maps.ads:536:36: info: pointer dereference check proved (Z3: 1 VC), in instantiation at test_omaps.ads:21
-spark-containers-formal-unbounded_ordered_maps.ads:536:36: info: pointer dereference check proved (Z3: 1 VC), in instantiation at test_omaps.ads:24
 spark-containers-formal-unbounded_ordered_maps.ads:655:10: info: during checks for container aggregates at spark-containers-formal-unbounded_ordered_maps.ads:80, in instantiation at test_omaps.ads:21
 spark-containers-formal-unbounded_ordered_maps.ads:655:10: info: during checks for container aggregates at spark-containers-formal-unbounded_ordered_maps.ads:80, in instantiation at test_omaps.ads:24
 spark-containers-formal-unbounded_ordered_maps.ads:655:10: info: precondition proved (Z3: 2 VC), in instantiation at test_omaps.ads:21

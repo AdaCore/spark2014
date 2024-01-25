@@ -4,7 +4,6 @@ borrow.adb:16:13: info: implicit aspect Always_Terminates on "Next_Next" has bee
 borrow.adb:17:33: info: pointer dereference check proved (CVC5: 1 VC)
 borrow.adb:20:48: info: null exclusion check proved (CVC5: 1 VC)
 borrow.adb:20:48: info: pointer dereference check proved (CVC5: 1 VC)
-borrow.adb:20:51: info: pointer dereference check proved (CVC5: 1 VC)
 borrow.adb:27:16: info: implicit aspect Always_Terminates on "Get" has been proved, subprogram will terminate
 borrow.adb:28:38: info: precondition proved (Trivial: 1 VC)
 borrow.adb:28:44: info: precondition proved (Trivial: 1 VC)

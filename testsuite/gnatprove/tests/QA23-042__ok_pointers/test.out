@@ -2,21 +2,14 @@ n02.adb:16:04: info: absence of resource or memory leak at end of scope proved (
 n02.adb:17:04: info: absence of resource or memory leak at end of scope proved (CVC5: 1 VC)
 n02.adb:18:04: medium: resource or memory leak might occur at end of scope
 n02.adb:19:04: medium: resource or memory leak might occur at end of scope
-n02.adb:19:25: info: pointer dereference check proved (CVC5: 1 VC)
-n02.adb:21:06: info: pointer dereference check proved (CVC5: 1 VC)
 n02.adb:23:07: info: absence of resource or memory leak proved (CVC5: 1 VC)
 n02.adb:24:07: info: absence of resource or memory leak proved (CVC5: 1 VC)
 n02.adb:25:06: medium: resource or memory leak might occur
 n02.adb:28:26: info: range check proved (CVC5: 2 VC)
-n02.adb:28:44: info: pointer dereference check proved (CVC5: 1 VC)
-n02.adb:28:50: info: pointer dereference check proved (CVC5: 1 VC)
 n02.adb:29:14: info: range check proved (CVC5: 2 VC)
 n02.adb:29:30: info: range check proved (CVC5: 2 VC)
-n02.adb:29:48: info: pointer dereference check proved (CVC5: 1 VC)
-n02.adb:29:54: info: pointer dereference check proved (CVC5: 1 VC)
 n02.adb:30:14: info: range check proved (CVC5: 2 VC)
 n02.adb:30:28: info: range check proved (CVC5: 2 VC)
-n02.adb:30:46: info: pointer dereference check proved (CVC5: 1 VC)
 spark01.adb:8:16: info: implicit aspect Always_Terminates on "GetA" has been proved, subprogram will terminate
 spark01.adb:10:17: info: postcondition proved (CVC5: 1 VC)
 spark04.adb:8:16: medium: pointer dereference check might fail (e.g. when X = null and Y.all = 0) [possible fix: subprogram at spark04.ads:11 should mention X in a precondition]
