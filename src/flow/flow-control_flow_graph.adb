@@ -1380,12 +1380,14 @@ package body Flow.Control_Flow_Graph is
         (case Ekind (E) is
 
          --  Formal parameters of mode IN with a visibly non-constant access
-         --  type can be assigned in procedures (or procedure-like constructs
-         --  like entry) so we handle them very much like IN OUTs.
+         --  type can be assigned in subprograms with side-effects, so we
+         --  handle them very much like IN OUTs.
 
             when E_In_Parameter =>
                (if Is_Access_Variable (Etype (E))
-                and then Ekind (FA.Spec_Entity) in E_Procedure | E_Entry
+                  and then
+                    (Ekind (FA.Spec_Entity) in E_Procedure | E_Entry
+                       or else Is_Function_With_Side_Effects (FA.Spec_Entity))
                 then Mode_In_Out
                 else Mode_In),
 
