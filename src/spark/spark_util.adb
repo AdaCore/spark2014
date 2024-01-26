@@ -5001,8 +5001,18 @@ package body SPARK_Util is
    -- Path_Contains_Traversal_Calls --
    -----------------------------------
 
-   function Path_Contains_Traversal_Calls (Expr : N_Subexpr_Id) return Boolean
-   is (Path_Contains_Witness (Expr, Is_Traversal_Function_Call'Access));
+   function Path_Contains_Traversal_Calls
+     (Expr         : N_Subexpr_Id;
+      Only_Observe : Boolean := False)
+      return Boolean
+   is
+      function Is_Traversal (N : Node_Id) return Boolean is
+        (Is_Traversal_Function_Call (N)
+         and then (if Only_Observe
+           then Is_Access_Constant (Etype (Get_Called_Entity (N)))));
+   begin
+      return Path_Contains_Witness (Expr, Is_Traversal'Access);
+   end Path_Contains_Traversal_Calls;
 
    ---------------------------
    -- Path_Contains_Witness --
