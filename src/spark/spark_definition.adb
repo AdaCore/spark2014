@@ -1132,6 +1132,15 @@ package body SPARK_Definition is
          Mark_Violation
            ("borrow of an access-to-constant part of an object", Expr);
 
+      --  In case of a borrow, all traversal function calls should be borrowing
+      --  traversal functions.
+
+      elsif not In_Observe
+        and then Path_Contains_Traversal_Calls (Expr, Only_Observe => True)
+      then
+         Mark_Violation
+           ("borrow through an observing traversal function", Expr);
+
       --  Qualified expressions are considered to provide a constant view of
       --  the object.
 
