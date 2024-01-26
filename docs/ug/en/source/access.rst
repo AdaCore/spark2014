@@ -587,7 +587,7 @@ prove anything on the effect of ``Update_All``.
 Contracts for Subprogram Pointers
 ---------------------------------
 
-[Ada202X]
+[Ada 2022]
 
 The upcoming standard of Ada allows adding contracts to access-to-subprogram
 types. As an example, here is a named access type ``Update_Proc`` with a
