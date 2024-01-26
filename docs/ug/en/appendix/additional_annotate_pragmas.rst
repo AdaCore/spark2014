@@ -120,7 +120,7 @@ Annotation for Simplifying Iteration for Proof
 
 .. index:: Annotate; Iterable_For_Proof
 
-The translation presented in :ref:``Aspect and Pragma Iterable`
+The translation presented in :ref:`Aspect and Pragma Iterable`
 may produce complicated proofs,
 especially when verifying complex properties over sets. The |GNATprove|
 annotation ``Iterable_For_Proof`` can be used to change the way ``for ... of``
