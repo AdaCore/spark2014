@@ -3932,54 +3932,10 @@ package body SPARK_Util is
    -----------------------
 
    function Is_Strict_Subpath (Expr : N_Subexpr_Id) return Boolean is
-      Path : N_Subexpr_Id := Expr;
-
+      function Is_Strict_Witness (N : Node_Id) return Boolean is
+        (Nkind (N) in N_Indexed_Component | N_Selected_Component);
    begin
-      loop
-         case Nkind (Path) is
-
-            --  We have reached the root of the path, return False
-
-            when N_Expanded_Name
-               | N_Identifier
-            =>
-               return False;
-
-            --  The traversal function call might create a strict subpath, but
-            --  we cannot be sure. Search the first parameter.
-
-            when N_Function_Call =>
-               pragma Assert (Is_Traversal_Function_Call (Path));
-               Path := First_Actual (Path);
-
-            --  Access attribute references and explicit derefences are
-            --  ignored. Only actual component accesses are considered to be
-            --  strict subpathes.
-
-            when N_Attribute_Reference =>
-               pragma Assert (Attribute_Name (Path) = Name_Access);
-               Path := Prefix (Path);
-
-            when N_Explicit_Dereference
-               | N_Slice
-            =>
-               Path := Prefix (Path);
-
-            when N_Indexed_Component
-               | N_Selected_Component
-            =>
-               return True;
-
-            when N_Qualified_Expression
-               | N_Type_Conversion
-               | N_Unchecked_Type_Conversion
-            =>
-               Path := Expression (Path);
-
-            when others =>
-               raise Program_Error;
-         end case;
-      end loop;
+      return Path_Contains_Witness (Expr, Is_Strict_Witness'Access);
    end Is_Strict_Subpath;
 
    ---------------------
@@ -5154,90 +5110,127 @@ package body SPARK_Util is
 
    function Path_Contains_Qualified_Expr (Expr : N_Subexpr_Id) return Boolean
    is
+      function Is_Qualified_Expression (N : Node_Id) return Boolean is
+        (Nkind (N) = N_Qualified_Expression);
    begin
-      case Nkind (Expr) is
-         when N_Expanded_Name
-            | N_Identifier
-         =>
-            return False;
-
-         when N_Explicit_Dereference
-            | N_Indexed_Component
-            | N_Selected_Component
-            | N_Slice
-         =>
-            return Path_Contains_Qualified_Expr (Prefix (Expr));
-
-         when N_Function_Call =>
-            pragma Assert (Is_Traversal_Function_Call (Expr));
-            return Path_Contains_Qualified_Expr (First_Actual (Expr));
-
-         when N_Type_Conversion
-            | N_Unchecked_Type_Conversion
-         =>
-            return Path_Contains_Qualified_Expr (Expression (Expr));
-
-         when N_Qualified_Expression =>
-            return True;
-
-         when N_Attribute_Reference =>
-            pragma Assert (Attribute_Name (Expr) = Name_Access);
-            return Path_Contains_Qualified_Expr (Prefix (Expr));
-
-         when others =>
-            raise Program_Error;
-      end case;
+      return Path_Contains_Witness (Expr, Is_Qualified_Expression'Access);
    end Path_Contains_Qualified_Expr;
 
    -----------------------------------
    -- Path_Contains_Traversal_Calls --
    -----------------------------------
 
-   function Path_Contains_Traversal_Calls (Expr : N_Subexpr_Id) return Boolean
+   function Path_Contains_Traversal_Calls
+     (Expr         : N_Subexpr_Id;
+      Only_Observe : Boolean := False)
+      return Boolean
    is
+      function Is_Traversal (N : Node_Id) return Boolean is
+        (Is_Traversal_Function_Call (N)
+         and then (if Only_Observe
+           then Is_Access_Constant (Etype (Get_Called_Entity (N)))));
+   begin
+      return Path_Contains_Witness (Expr, Is_Traversal'Access);
+   end Path_Contains_Traversal_Calls;
+
+   ---------------------------
+   -- Path_Contains_Witness --
+   ---------------------------
+
+   function Path_Contains_Witness
+     (Expr : N_Subexpr_Id;
+      Test : access function (N : Node_Id) return Boolean)
+      return Boolean
+   is
+      function Path_Contains_Auxiliary (Subpath : N_Subexpr_Id) return Boolean;
+      --  Function processing recursive parts.
+
+      -----------------------------
+      -- Path_Contains_Auxiliary --
+      -----------------------------
+
+      function Path_Contains_Auxiliary (Subpath : N_Subexpr_Id) return Boolean
+      is
+      begin
+         if Test (Subpath) then
+            return True;
+         end if;
+
+         case Nkind (Subpath) is
+            when N_Expanded_Name
+               | N_Identifier
+               | N_Null
+               | N_Aggregate
+               | N_Allocator
+               | N_Delta_Aggregate
+               | N_Extension_Aggregate
+            =>
+               return False;
+
+            when N_Explicit_Dereference
+               | N_Indexed_Component
+               | N_Selected_Component
+               | N_Slice
+            =>
+               return Path_Contains_Auxiliary (Prefix (Subpath));
+
+            when N_Function_Call =>
+               return Is_Traversal_Function_Call (Subpath)
+                 and then Is_Path_Expression (First_Actual (Subpath))
+                 and then Path_Contains_Auxiliary (First_Actual (Subpath));
+
+            when N_Attribute_Reference =>
+
+               pragma Assert
+                 (Attribute_Name (Subpath) in Name_Loop_Entry
+                                            | Name_Old
+                                            | Name_Update);
+               return False;
+
+            when N_Qualified_Expression
+               | N_Type_Conversion
+               | N_Unchecked_Type_Conversion
+            =>
+               return Path_Contains_Auxiliary (Expression (Subpath));
+
+            when others =>
+               raise Program_Error;
+         end case;
+      end Path_Contains_Auxiliary;
+
+   --  Start of processing for Path_Contains_Witness
+
    begin
       case Nkind (Expr) is
-         when N_Expanded_Name
-            | N_Identifier
-            | N_Aggregate
-            | N_Allocator
-            | N_Delta_Aggregate
-            | N_Extension_Aggregate
-            | N_Null
-         =>
-            return False;
-
-         when N_Explicit_Dereference
-            | N_Indexed_Component
-            | N_Selected_Component
-            | N_Slice
-         =>
-            return Path_Contains_Traversal_Calls (Prefix (Expr));
-
-         when N_Function_Call =>
-            return Is_Traversal_Function_Call (Expr);
-
-         when N_Qualified_Expression
-            | N_Type_Conversion
-            | N_Unchecked_Type_Conversion
-         =>
-            return Path_Contains_Traversal_Calls (Expression (Expr));
-
          when N_Attribute_Reference =>
-            if Attribute_Name (Expr) in Name_Old
-                                      | Name_Loop_Entry
-                                      | Name_Update
+            if Attribute_Name (Expr) in Name_Access
+                                      | Name_First
+                                      | Name_Last
+                                      | Name_Length
             then
-               return False;
+               if Test (Expr) then
+                  return True;
+               end if;
+               return Path_Contains_Auxiliary (Prefix (Expr));
             else
-               pragma Assert (Attribute_Name (Expr) = Name_Access);
-               return Path_Contains_Traversal_Calls (Prefix (Expr));
+               return Path_Contains_Auxiliary (Expr);
+            end if;
+
+         when N_Op_Eq | N_Op_Ne =>
+            if Test (Expr) then
+               return True;
+            end if;
+            if Nkind (Left_Opnd (Expr)) = N_Null then
+               return Path_Contains_Auxiliary (Right_Opnd (Expr));
+            else
+               pragma Assert (Nkind (Right_Opnd (Expr)) = N_Null);
+               return Path_Contains_Auxiliary (Left_Opnd (Expr));
             end if;
 
          when others =>
-            raise Program_Error;
+            return Path_Contains_Auxiliary (Expr);
       end case;
-   end Path_Contains_Traversal_Calls;
+   end Path_Contains_Witness;
 
    ------------------------
    -- Reachable_Handlers --
@@ -6188,88 +6181,17 @@ package body SPARK_Util is
    ---------------------------------
 
    function Traverse_Access_To_Constant (Expr : N_Subexpr_Id) return Boolean is
+      function Is_Access_To_Constant (N : Node_Id) return Boolean
+      is (Nkind (N) = N_Explicit_Dereference
+          and then
+            (declare
+                Ty : constant Node_Id := Retysp (Etype (Prefix (N)));
+             begin
+                Is_Access_Type (Ty)
+                and then Is_Access_Constant (Ty)
+                and then not Is_Anonymous_Access_Type (Ty)));
    begin
-      case Nkind (Expr) is
-
-         --  We have reached the root of the path, return False
-
-         when N_Expanded_Name
-            | N_Identifier
-            | N_Aggregate
-            | N_Allocator
-            | N_Delta_Aggregate
-            | N_Extension_Aggregate
-            | N_Null
-         =>
-            return False;
-
-         --  In the case of a call to a traversal function, the root object is
-         --  the root of the traversed parameter. Otherwise there is no root
-         --  object.
-
-         when N_Function_Call =>
-            if Is_Traversal_Function_Call (Expr)
-              and then Is_Path_Expression (First_Actual (Expr))
-            then
-               return Traverse_Access_To_Constant (First_Actual (Expr));
-            else
-               return False;
-            end if;
-
-         when N_Attribute_Reference =>
-            if Attribute_Name (Expr) in Name_First
-                                      | Name_Last
-                                      | Name_Length
-                                      | Name_Access
-            then
-               return Traverse_Access_To_Constant (Prefix (Expr));
-
-            --  We have reached the root of the path, return False
-
-            else
-               pragma Assert
-                 (Attribute_Name (Expr) in Name_Loop_Entry
-                                         | Name_Old
-                                         | Name_Update);
-               return False;
-            end if;
-
-         when N_Explicit_Dereference =>
-            return Is_Access_Type (Retysp (Etype (Prefix (Expr))))
-              and then ((Is_Access_Constant (Retysp (Etype (Prefix (Expr))))
-                         and then not Is_Anonymous_Access_Type
-                           (Etype (Prefix (Expr))))
-                        or else Traverse_Access_To_Constant (Prefix (Expr)));
-
-         when N_Indexed_Component
-            | N_Selected_Component
-            | N_Slice
-         =>
-            return Traverse_Access_To_Constant (Prefix (Expr));
-
-         when N_Qualified_Expression
-            | N_Type_Conversion
-            | N_Unchecked_Type_Conversion
-         =>
-            return Traverse_Access_To_Constant (Expression (Expr));
-
-         when N_Op_Eq
-            | N_Op_Ne
-         =>
-            pragma Annotate
-              (Xcov, Exempt_On,
-               "The routine is only called on deep paths or objects");
-            if Nkind (Left_Opnd (Expr)) = N_Null then
-               return Traverse_Access_To_Constant (Right_Opnd (Expr));
-            else
-               pragma Assert (Nkind (Right_Opnd (Expr)) = N_Null);
-               return Traverse_Access_To_Constant (Left_Opnd (Expr));
-            end if;
-            pragma Annotate (Xcov, Exempt_Off);
-
-         when others =>
-            raise Program_Error;
-      end case;
+      return Path_Contains_Witness (Expr, Is_Access_To_Constant'Access);
    end Traverse_Access_To_Constant;
 
    -----------------------------
