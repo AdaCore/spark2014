@@ -4326,39 +4326,48 @@ package body Gnat2Why.Borrow_Checker is
             return Permission (C);
          end;
 
-      --  The expression is a call to a traversal function
-
-      elsif Is_Traversal_Function_Call (N.Expr) then
+      else
          declare
-            Callee : constant Entity_Id := Get_Called_Entity (N.Expr);
+            Root : constant Node_Id :=
+              Get_Root_Expr (N.Expr, Through_Traversal => False);
          begin
-            if Is_Access_Constant (Etype (Callee)) then
-               return Read_Only;
+            --  The expression is rooted in a call to a traversal function
+
+            if Is_Traversal_Function_Call (Root) then
+               declare
+                  Callee : constant Entity_Id := Get_Called_Entity (Root);
+               begin
+                  if Is_Access_Constant (Etype (Callee)) then
+                     return Read_Only;
+                  else
+                     return Read_Write;
+                  end if;
+               end;
+
+            --  The expression is directly rooted in an object
+
+            elsif Present
+              (Get_Root_Object (N.Expr, Through_Traversal => False))
+            then
+               declare
+                  Tree_Or_Perm : constant Perm_Or_Tree := Get_Perm_Or_Tree (N);
+               begin
+                  case Tree_Or_Perm.R is
+                     when Folded =>
+                        return Tree_Or_Perm.Found_Permission;
+
+                     when Unfolded =>
+                        pragma Assert (Tree_Or_Perm.Tree_Access /= null);
+                        return Permission (Tree_Or_Perm.Tree_Access);
+                  end case;
+               end;
+
+            --  The expression is a function call, an allocation, or null
+
             else
                return Read_Write;
             end if;
          end;
-
-      --  The expression is directly rooted in an object
-
-      elsif Present (Get_Root_Object (N.Expr, Through_Traversal => False)) then
-         declare
-            Tree_Or_Perm : constant Perm_Or_Tree := Get_Perm_Or_Tree (N);
-         begin
-            case Tree_Or_Perm.R is
-               when Folded =>
-                  return Tree_Or_Perm.Found_Permission;
-
-               when Unfolded =>
-                  pragma Assert (Tree_Or_Perm.Tree_Access /= null);
-                  return Permission (Tree_Or_Perm.Tree_Access);
-            end case;
-         end;
-
-      --  The expression is a function call, an allocation, or null
-
-      else
-         return Read_Write;
       end if;
    end Get_Perm;
 
