@@ -1,0 +1,21 @@
+main.adb:13:39: info: data dependencies proved
+main.adb:14:40: info: data dependencies proved
+main.adb:15:40: info: data dependencies proved
+main.adb:16:40: info: data dependencies proved
+main.adb:17:40: info: data dependencies proved
+main.adb:18:40: info: data dependencies proved
+main.adb:20:40: info: data dependencies proved
+main.adb:21:41: info: data dependencies proved
+main.adb:22:41: info: data dependencies proved
+main.adb:23:41: info: data dependencies proved
+main.adb:24:41: info: data dependencies proved
+main.adb:25:41: info: data dependencies proved
+main.adb:26:41: info: data dependencies proved
+main.adb:41:31: error: object was borrowed at line 39
+main.adb:49:30: error: object was borrowed at line 47
+main.adb:57:41: error: object was borrowed at line 55
+main.adb:99:24: error: object was borrowed at line 94
+main.adb:109:23: error: object was borrowed at line 106
+main.adb:133:42: error: object was borrowed at line 130
+main.adb:135:39: error: object was borrowed at line 130
+gnatprove: error during flow analysis and proof

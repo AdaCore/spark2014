@@ -1,0 +1,17 @@
+main.adb:9:13: info: implicit aspect Always_Terminates on "Bad_Variant" has been proved, subprogram will terminate
+main.adb:9:13: info: implicit function contract might not be available on recursive calls
+main.adb:11:13: info: implicit aspect Always_Terminates on "Node" has been proved, subprogram will terminate
+main.adb:13:08: medium: resource or memory leak might occur [possible explanation: allocator for an access-to-constant type leaks memory]
+main.adb:19:11: info: pointer dereference check proved (CVC5: 1 VC)
+main.adb:20:17: info: subprogram variant proved (Trivial)
+main.adb:20:31: info: pointer dereference check proved (CVC5: 1 VC)
+main.adb:22:11: info: pointer dereference check proved (CVC5: 1 VC)
+main.adb:22:35: info: pointer dereference check proved (CVC5: 1 VC)
+main.adb:28:17: medium: subprogram variant might fail [possible explanation: structural variant of "Bad_Variant" might not be a part of "X"]
+main.adb:31:26: info: pointer dereference check proved (CVC5: 1 VC)
+main.adb:31:35: info: pointer dereference check proved (CVC5: 1 VC)
+main.adb:31:40: info: pointer dereference check proved (CVC5: 1 VC)
+main.adb:31:48: info: pointer dereference check proved (CVC5: 1 VC)
+main.adb:31:54: info: pointer dereference check proved (CVC5: 1 VC)
+main.adb:35:14: info: subprogram variant proved (Trivial)
+main.adb:35:28: info: pointer dereference check proved (CVC5: 1 VC)
