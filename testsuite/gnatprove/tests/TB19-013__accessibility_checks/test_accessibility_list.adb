@@ -42,7 +42,7 @@ procedure Test_Accessibility_List with SPARK_Mode is
          declare
             Res : access constant Integer := C.all.V'Access;
          begin
-            return Res; -- @ACCESSIBILITY_CHECK:NONE
+            return Res; -- @ACCESSIBILITY_CHECK:PASS
          end;
       end;
    end Nth;

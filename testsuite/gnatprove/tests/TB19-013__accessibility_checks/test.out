@@ -13,6 +13,7 @@ test_accessibility.adb:40:14: info: postcondition proved (CVC5: 1 VC)
 test_accessibility.adb:43:14: medium: dynamic accessibility check might fail [possible fix: subprogram at line 39 should mention X in a precondition]
 test_accessibility.adb:48:13: info: implicit aspect Always_Terminates on "OK4" has been proved, subprogram will terminate
 test_accessibility.adb:49:14: info: postcondition proved (CVC5: 1 VC)
+test_accessibility.adb:56:17: info: dynamic accessibility check proved (Trivial)
 test_accessibility.adb:56:17: info: null exclusion check proved (CVC5: 1 VC)
 test_accessibility.adb:60:13: info: implicit aspect Always_Terminates on "KO1" has been proved, subprogram will terminate
 test_accessibility.adb:61:14: info: postcondition proved (CVC5: 1 VC)
@@ -68,6 +69,7 @@ test_accessibility_2.adb:96:17: medium: dynamic accessibility check might fail
 test_accessibility_2.adb:100:13: info: function contract might not be available on calls from enclosing unit
 test_accessibility_2.adb:100:13: info: implicit aspect Always_Terminates on "OK5" has been proved, subprogram will terminate
 test_accessibility_2.adb:101:14: info: postcondition proved (CVC5: 1 VC)
+test_accessibility_2.adb:107:17: info: dynamic accessibility check proved (Trivial)
 test_accessibility_2.adb:107:17: info: null exclusion check proved (CVC5: 1 VC)
 test_accessibility_2.adb:111:13: info: implicit aspect Always_Terminates on "KO6" has been proved, subprogram will terminate
 test_accessibility_2.adb:112:14: info: postcondition proved (CVC5: 1 VC)
@@ -81,6 +83,7 @@ test_accessibility_2.adb:130:17: medium: dynamic accessibility check might fail
 test_accessibility_2.adb:134:13: info: function contract might not be available on calls from enclosing unit
 test_accessibility_2.adb:134:13: info: implicit aspect Always_Terminates on "OK8" has been proved, subprogram will terminate
 test_accessibility_2.adb:135:14: info: postcondition proved (CVC5: 1 VC)
+test_accessibility_2.adb:141:17: info: dynamic accessibility check proved (Trivial)
 test_accessibility_2.adb:141:17: info: null exclusion check proved (CVC5: 1 VC)
 test_accessibility_2.adb:145:13: info: function contract might not be available on calls from enclosing unit
 test_accessibility_2.adb:145:13: info: implicit aspect Always_Terminates on "OK9" has been proved, subprogram will terminate
@@ -90,6 +93,7 @@ test_accessibility_2.adb:153:21: info: null exclusion check proved (CVC5: 1 VC)
 test_accessibility_2.adb:157:13: info: function contract might not be available on calls from enclosing unit
 test_accessibility_2.adb:157:13: info: implicit aspect Always_Terminates on "OK10" has been proved, subprogram will terminate
 test_accessibility_2.adb:158:14: info: postcondition proved (CVC5: 1 VC)
+test_accessibility_2.adb:162:14: info: dynamic accessibility check proved (Trivial)
 test_accessibility_2.adb:165:13: info: implicit aspect Always_Terminates on "OK11" has been proved, subprogram will terminate
 test_accessibility_2.adb:166:14: info: postcondition proved (CVC5: 1 VC)
 test_accessibility_2.adb:169:14: info: dynamic accessibility check proved (Trivial)
@@ -165,6 +169,7 @@ test_accessibility_list.adb:39:19: info: null exclusion check proved (CVC5: 1 VC
 test_accessibility_list.adb:40:18: info: predicate check proved (Trivial: 1 VC)
 test_accessibility_list.adb:40:20: info: predicate check proved (CVC5: 1 VC; Trivial: 1 VC)
 test_accessibility_list.adb:40:22: info: predicate check proved (Trivial: 1 VC)
+test_accessibility_list.adb:45:20: info: dynamic accessibility check proved (Trivial)
 test_accessibility_list.adb:45:20: info: null exclusion check proved (CVC5: 1 VC)
 test_accessibility_list.adb:51:16: info: predicate check proved (Trivial: 1 VC)
 test_accessibility_list.adb:51:21: info: predicate check proved (Trivial: 1 VC)

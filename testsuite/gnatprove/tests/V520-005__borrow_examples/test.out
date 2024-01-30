@@ -219,6 +219,7 @@ linear_search.adb:79:36: info: predicate check proved
 linear_search.adb:80:28: info: assertion proved
 linear_search.adb:80:28: info: predicate check proved
 linear_search.adb:80:32: info: predicate check proved
+linear_search.adb:82:21: info: dynamic accessibility check proved
 linear_search.adb:82:21: info: pointer dereference check proved
 linear_search.adb:85:16: info: pointer dereference check proved
 linear_search.adb:88:22: info: assertion proved
@@ -305,6 +306,7 @@ my_map.adb:64:33: info: loop invariant preservation proved
 my_map.adb:64:33: info: precondition proved
 my_map.adb:64:54: info: precondition proved
 my_map.adb:66:14: info: pointer dereference check proved
+my_map.adb:67:21: info: dynamic accessibility check proved
 my_map.adb:67:21: info: pointer dereference check proved
 my_map.adb:69:16: info: pointer dereference check proved
 my_map.adb:71:07: info: only expected exception raised
@@ -320,6 +322,7 @@ my_map.adb:91:13: info: loop invariant preservation proved
 my_map.adb:92:22: info: precondition proved
 my_map.adb:92:52: info: precondition proved
 my_map.adb:94:14: info: pointer dereference check proved
+my_map.adb:95:21: info: dynamic accessibility check proved
 my_map.adb:95:21: info: pointer dereference check proved
 my_map.adb:97:16: info: pointer dereference check proved
 my_map.adb:99:07: info: only expected exception raised
@@ -444,7 +447,9 @@ test_route.adb:23:20: info: predicate check proved
 test_route.adb:23:22: info: predicate check proved
 test_route.adb:30:10: info: predicate check proved
 test_route.adb:30:14: info: predicate check proved
+test_route.adb:31:18: info: dynamic accessibility check proved
 test_route.adb:31:18: info: pointer dereference check proved
+test_route.adb:33:17: info: dynamic accessibility check proved
 test_route.adb:33:17: info: precondition proved
 test_route.adb:33:17: info: subprogram variant proved
 test_route.adb:33:29: info: pointer dereference check proved

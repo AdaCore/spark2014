@@ -126,6 +126,7 @@ test_list.adb:70:20: info: predicate check proved (CVC5: 1 VC; Trivial: 1 VC)
 test_list.adb:70:22: info: predicate check proved (Trivial: 1 VC)
 test_list.adb:71:18: info: predicate check proved (Trivial: 1 VC)
 test_list.adb:71:22: info: predicate check proved (Trivial: 1 VC)
+test_list.adb:76:20: info: dynamic accessibility check proved (Trivial)
 test_list.adb:76:20: info: null exclusion check proved (CVC5: 1 VC)
 test_list.adb:81:13: info: implicit aspect Always_Terminates on "All_Zeros" has been proved, subprogram will terminate
 test_list.adb:82:44: info: subprogram variant proved (Trivial)

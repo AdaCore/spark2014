@@ -1,2 +1,3 @@
 traversal_funcs.adb:9:13: info: implicit aspect Always_Terminates on "Next" has been proved, subprogram will terminate
+traversal_funcs.adb:12:18: info: dynamic accessibility check proved (Trivial)
 traversal_funcs.adb:12:18: info: pointer dereference check proved (CVC5: 1 VC)
