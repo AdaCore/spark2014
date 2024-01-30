@@ -147,8 +147,7 @@ example_recursive.adb:245:70: info: range check proved
 example_recursive.adb:246:10: info: precondition proved
 example_recursive.adb:246:70: info: range check proved
 example_recursive.adb:249:18: info: overflow check proved
-example_recursive.adb:256:14: medium: in inlined expression function body at example_recursive.adb:62
-example_recursive.adb:256:14: medium: postcondition might fail, cannot prove Reachable (Address (L.F), Address (L.F), L.L, A, +L.M)
+example_recursive.adb:256:14: info: postcondition proved
 example_recursive.adb:257:31: info: overflow check proved
 example_recursive.adb:260:16: info: implicit aspect Always_Terminates on "Valid_In_L2" has been proved, subprogram will terminate
 example_recursive.adb:263:07: info: initialization of "F1_Next" proved

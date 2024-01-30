@@ -6,7 +6,7 @@ large_control_flow_frame_condition.adb:61:23: medium: implicit aspect Always_Ter
 large_control_flow_frame_condition.adb:63:26: info: overflow check proved (CVC5: 4 VC)
 large_control_flow_frame_condition.adb:65:13: warning: this statement is never reached
 large_control_flow_frame_condition.adb:65:13: warning: unreachable code
-large_control_flow_frame_condition.adb:69:23: medium: overflow check might fail, cannot prove upper bound for MD10 + 1 [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: loop invariant at line 72 should mention MD10]
+large_control_flow_frame_condition.adb:69:23: medium: overflow check might fail, cannot prove upper bound for MD10 + 1 (e.g. when MD10 = Integer'Last) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: loop invariant at line 72 should mention MD10]
 large_control_flow_frame_condition.adb:72:36: info: loop invariant initialization proved (Trivial: 1 VC)
 large_control_flow_frame_condition.adb:72:36: info: loop invariant preservation proved (Trivial: 1 VC)
 large_control_flow_frame_condition.adb:75:31: medium: implicit aspect Always_Terminates on "Nested" could be incorrect, loop might be nonterminating [possible fix: add loop variant in the loop body]

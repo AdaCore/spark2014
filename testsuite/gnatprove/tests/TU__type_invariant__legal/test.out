@@ -8,7 +8,7 @@ type_invariant_legal.adb:41:14: info: range check proved (CVC5: 2 VC)
 type_invariant_legal.adb:47:14: medium: range check might fail, cannot prove lower bound for X - 1 (e.g. when X = 0) [reason for check: result of subtraction must fit in the target type of the assignment] [possible fix: precondition of subprogram at line 5 should mention X]
 type_invariant_legal.ads:7:13: info: implicit aspect Always_Terminates on "Pub" has been proved, subprogram will terminate
 type_invariant_legal.ads:7:13: medium: for the result of Pub at type_invariant_legal.ads:7
-type_invariant_legal.ads:7:13: medium: invariant check might fail (e.g. when Pub'Result = 0) [possible fix: add or complete related loop invariants or postconditions]
+type_invariant_legal.ads:7:13: medium: invariant check might fail (e.g. when Pub'Result = 0)
 type_invariant_legal.ads:8:13: info: for the result of E_Pub at type_invariant_legal.ads:8
 type_invariant_legal.ads:8:13: info: implicit aspect Always_Terminates on "E_Pub" has been proved, subprogram will terminate
 type_invariant_legal.ads:8:13: info: invariant check proved (CVC5: 1 VC)
