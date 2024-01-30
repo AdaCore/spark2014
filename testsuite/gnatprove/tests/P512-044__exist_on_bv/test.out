@@ -19,7 +19,7 @@ x86.adb:77:34: info: assertion proved (CVC5: 2 VC), in call inlined at x86.adb:9
 x86.adb:79:22: info: loop invariant initialization proved (CVC5: 1 VC), in call inlined at x86.adb:99
 x86.adb:79:22: info: loop invariant preservation proved (altergo: 1 VC), in call inlined at x86.adb:99
 x86.adb:82:19: info: assertion proved (CVC5: 1 VC), in call inlined at x86.adb:99
-x86.adb:86:42: medium: assertion might fail, cannot prove (var1 + i) /= (var2 + j), in call inlined at x86.adb:99 [possible fix: precondition of subprogram at x86.ads:19 should mention var1 and var2]
+x86.adb:83:31: info: assertion proved (Trivial: 1 VC; altergo: 1 VC), in call inlined at x86.adb:99
 x86.adb:87:31: info: assertion proved (CVC5: 1 VC), in call inlined at x86.adb:99
 x86.adb:92:28: info: assertion proved (CVC5: 1 VC), in call inlined at x86.adb:99
 x86.adb:99:07: info: analyzing call to "Prove_Post" in context

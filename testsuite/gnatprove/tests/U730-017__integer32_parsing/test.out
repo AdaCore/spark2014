@@ -338,7 +338,7 @@ integer32_parsing.ads:28:46: info: precondition proved (CVC5: 2 VC)
 integer32_parsing.ads:29:14: info: postcondition proved (CVC5: 1 VC)
 integer32_parsing.ads:34:15: info: precondition proved (CVC5: 1 VC)
 integer32_parsing.ads:35:14: info: precondition proved (CVC5: 1 VC)
-integer32_parsing.ads:35:14: medium: postcondition might fail
+integer32_parsing.ads:35:14: medium: postcondition might fail (e.g. when s2'First = 1 and s2'Last = 0)
 integer32_parsing.ads:40:15: info: precondition proved (CVC5: 1 VC)
 integer32_parsing.ads:40:56: info: precondition proved (CVC5: 2 VC)
 integer32_parsing.ads:41:14: info: postcondition proved (CVC5: 4 VC)
