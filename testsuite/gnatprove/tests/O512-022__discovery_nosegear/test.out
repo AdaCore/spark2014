@@ -12,7 +12,7 @@ ng.adb:30:07: info: initialization of "Result" proved
 ng.adb:34:17: medium: postcondition might fail, cannot prove Result = Velocity( (((WHCF * Integer (ThisCount - PrevCount)) + ((WHCF * Integer (ThisCount - PrevCount)) * Integer (CurrTime - ThisTime)) / Integer (ThisTime - PrevTime)) * 3600) / Integer (CurrTime - PrevTime))
 ng.adb:36:62: info: overflow check proved (altergo: 2 VC)
 ng.adb:38:22: info: overflow check proved (altergo: 2 VC)
-ng.adb:39:22: medium: divide by zero might fail
+ng.adb:39:22: info: division check proved (altergo: 1 VC)
 ng.adb:40:19: info: overflow check proved (altergo: 2 VC)
 ng.adb:41:19: medium: divide by zero might fail
 ng.adb:50:07: info: initialization of "T1" proved
@@ -20,10 +20,10 @@ ng.adb:50:11: info: initialization of "T2" proved
 ng.adb:51:07: info: initialization of "D1" proved
 ng.adb:51:11: info: initialization of "D2" proved
 ng.adb:62:17: medium: overflow check might fail, cannot prove upper bound for (D1 * T2) [reason for check: result of multiplication must fit in a 32-bits machine integer]
-ng.adb:62:23: medium: divide by zero might fail
-ng.adb:65:23: medium: overflow check might fail, cannot prove lower bound for (D1 + D2) [reason for check: result of addition must fit in a 32-bits machine integer]
-ng.adb:65:29: medium: overflow check might fail, cannot prove lower bound for ((D1 + D2) * 3600) [reason for check: result of multiplication must fit in a 32-bits machine integer]
-ng.adb:65:37: medium: divide by zero might fail
+ng.adb:62:23: info: division check proved (altergo: 1 VC)
+ng.adb:65:23: medium: overflow check might fail, cannot prove upper bound for (D1 + D2) [reason for check: result of addition must fit in a 32-bits machine integer]
+ng.adb:65:29: medium: overflow check might fail, cannot prove upper bound for ((D1 + D2) * 3600) [reason for check: result of multiplication must fit in a 32-bits machine integer]
+ng.adb:65:37: info: division check proved (altergo: 1 VC)
 ng.adb:65:43: info: overflow check proved (altergo: 2 VC)
 ng.adb:69:31: info: analyzing call to "Millisecs" in context
 ng.adb:70:31: info: analyzing call to "NGClickTime" in context
@@ -33,17 +33,17 @@ ng_v1.adb:20:07: info: initialization of "T1" proved
 ng_v1.adb:20:11: info: initialization of "T2" proved
 ng_v1.adb:20:15: info: initialization of "D1" proved
 ng_v1.adb:20:19: info: initialization of "D2" proved
-ng_v1.adb:30:23: medium: divide by zero might fail
+ng_v1.adb:30:23: info: division check proved (altergo: 1 VC)
 ng_v1.adb:33:53: medium: divide by zero might fail
 ng_v1.ads:24:13: info: implicit aspect Always_Terminates on "DistanceFromLastClickToLastUpdate" has been proved, subprogram will terminate
-ng_v1.ads:28:17: medium: postcondition might fail, cannot prove EstimatedGroundVelocity = (((WHCF * (ThisCount - PrevCount)) + ((WHCF * (ThisCount - PrevCount)) * (CurrTime - ThisTime)) / (ThisTime - PrevTime)) * 3600) / (CurrTime - PrevTime)
-ng_v1.ads:31:23: medium: divide by zero might fail
+ng_v1.ads:27:14: info: postcondition proved (Trivial: 1 VC; altergo: 1 VC)
+ng_v1.ads:31:23: info: division check proved (altergo: 1 VC)
 ng_v1.ads:32:28: medium: divide by zero might fail
 ng_v2.adb:32:13: info: implicit aspect Always_Terminates on "DistanceSinceLastUpdate" has been proved, subprogram will terminate
 ng_v2.adb:35:13: info: implicit aspect Always_Terminates on "TimeFromLastClickToLastUpdate" has been proved, subprogram will terminate
 ng_v2.adb:38:13: info: implicit aspect Always_Terminates on "TimeSinceLastUpdate" has been proved, subprogram will terminate
 ng_v2.adb:44:13: info: implicit aspect Always_Terminates on "DistanceFromLastClickToLastUpdate" has been proved, subprogram will terminate
-ng_v2.adb:49:09: medium: divide by zero might fail [possible fix: precondition of subprogram at line 32 should mention CurrTime and PrevCount and ThisCount]
+ng_v2.adb:49:09: info: division check proved (altergo: 1 VC)
 ng_v2.adb:52:44: medium: precondition might fail [possible fix: subprogram at ng_v2.ads:8 should mention PrevTime and ThisTime in a precondition]
 ng_v2.adb:55:07: info: initialization of "T1" proved
 ng_v2.adb:55:11: info: initialization of "T2" proved

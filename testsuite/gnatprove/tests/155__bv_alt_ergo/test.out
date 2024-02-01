@@ -1,0 +1,13 @@
+ops.ads:7:04: info: initialization of "A" proved
+ops.ads:7:07: info: initialization of "B" proved
+ops.ads:9:19: info: assertion proved (altergo: 1 VC)
+ops.ads:12:07: info: assertion proved (Trivial: 1 VC; altergo: 1 VC)
+ops.ads:12:57: info: range check proved (altergo: 2 VC)
+ops.ads:15:07: info: assertion proved (Trivial: 1 VC; altergo: 1 VC)
+ops.ads:18:50: info: range check proved (altergo: 2 VC)
+ops.ads:21:07: info: assertion proved (altergo: 1 VC)
+ops.ads:25:44: info: range check proved (altergo: 2 VC)
+ops.ads:25:58: info: range check proved (altergo: 2 VC)
+ops.ads:28:07: info: assertion proved (altergo: 1 VC)
+ops.ads:32:45: info: range check proved (altergo: 2 VC)
+ops.ads:32:63: info: range check proved (altergo: 2 VC)
