@@ -366,7 +366,7 @@ The Ada Standard Library defines two kinds of containers:
   reallocated during assignment and automatically freed when the container
   object's scope ends.
 * The bounded containers not using dynamic allocation, for example
-  ``SPARK.Containers.Fromal.Vectors``. They define containers as discriminated
+  ``SPARK.Containers.Formal.Vectors``. They define containers as discriminated
   tagged types, so that the memory for the container can be reserved at
   initialization.
 
