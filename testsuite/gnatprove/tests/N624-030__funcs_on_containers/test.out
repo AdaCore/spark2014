@@ -33,7 +33,7 @@ find_map.adb:49:17: info: precondition proved (CVC5: 5 VC; Trivial: 1 VC)
 find_map.ads:8:13: info: implicit aspect Always_Terminates on "Hash" has been proved, subprogram will terminate
 find_map.ads:13:13: info: implicit aspect Always_Terminates on "Equivalent_Keys" has been proved, subprogram will terminate
 find_map.ads:23:30: info: range check proved (CVC5: 2 VC)
-find_map.ads:24:30: info: range check proved (CVC5: 1 VC)
+find_map.ads:24:30: info: range check proved (CVC5: 2 VC)
 find_map.ads:26:13: info: implicit aspect Always_Terminates on "Find_All" has been proved, subprogram will terminate
 find_map.ads:27:14: info: postcondition proved (CVC5: 7 VC; Trivial: 1 VC)
 find_map.ads:28:47: info: index check proved (CVC5: 2 VC)
