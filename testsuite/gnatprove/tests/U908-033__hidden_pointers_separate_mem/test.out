@@ -142,7 +142,7 @@ example_recursive.adb:241:30: info: tag check proved
 example_recursive.adb:242:22: info: assertion proved
 example_recursive.adb:242:30: info: precondition proved
 example_recursive.adb:242:30: info: tag check proved
-example_recursive.adb:245:10: info: precondition proved
+example_recursive.adb:245:10: medium: precondition might fail, cannot prove ( Get (M1, A2) = Get (M2, A2))
 example_recursive.adb:245:70: info: range check proved
 example_recursive.adb:246:10: info: precondition proved
 example_recursive.adb:246:70: info: range check proved
@@ -186,7 +186,7 @@ example_recursive.adb:315:10: info: precondition proved
 example_recursive.adb:315:73: info: range check proved
 example_recursive.adb:316:10: info: precondition proved
 example_recursive.adb:316:73: info: range check proved
-example_recursive.adb:322:10: info: precondition proved
+example_recursive.adb:322:10: medium: precondition might fail, cannot prove F1 /= F2
 example_recursive.adb:322:70: info: range check proved
 example_recursive.adb:323:10: info: precondition proved
 example_recursive.adb:323:70: info: range check proved
@@ -201,7 +201,7 @@ example_recursive.adb:345:22: info: assertion proved
 example_recursive.adb:346:22: info: assertion proved
 example_recursive.adb:346:30: info: precondition proved
 example_recursive.adb:346:30: info: tag check proved
-example_recursive.adb:348:07: info: precondition proved
+example_recursive.adb:348:07: medium: precondition might fail, cannot prove ( Get (M1, A2) = Get (M2, A2))
 example_recursive.adb:348:70: info: overflow check proved
 example_recursive.adb:349:07: info: precondition proved
 example_recursive.adb:349:70: info: overflow check proved
