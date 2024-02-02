@@ -144,7 +144,7 @@ p64.adb:54:18: info: initialization of "Res_G" proved
 p64.adb:58:22: info: assertion proved (Trivial)
 p64.adb:67:25: info: assertion proved (CVC5: 2 VC)
 p64.adb:71:25: info: assertion proved (CVC5: 2 VC)
-p64.adb:72:25: info: assertion proved (CVC5: 1 VC; altergo: 1 VC)
+p64.adb:72:25: info: assertion proved (CVC5: 1 VC; Z3: 1 VC)
 p64.adb:73:25: info: assertion proved (CVC5: 2 VC)
 p64.adb:74:12: warning: unused assignment
 p64.adb:76:25: info: assertion proved (CVC5: 2 VC)
