@@ -2,10 +2,10 @@ dic_of_cont.adb:3:07: info: initialization of "Dlli" proved
 dic_of_cont.adb:3:28: info: range check proved (CVC5: 2 VC)
 dic_of_cont.adb:4:07: info: initialization of "Dhama" proved
 dic_of_cont.adb:4:28: info: range check proved (CVC5: 2 VC)
-dic_of_cont.adb:4:45: info: range check proved (CVC5: 1 VC)
+dic_of_cont.adb:4:45: info: range check proved (CVC5: 2 VC)
 dic_of_cont.adb:5:07: info: initialization of "Dhase" proved
 dic_of_cont.adb:5:28: info: range check proved (CVC5: 2 VC)
-dic_of_cont.adb:5:45: info: range check proved (CVC5: 1 VC)
+dic_of_cont.adb:5:45: info: range check proved (CVC5: 2 VC)
 dic_of_cont.adb:6:07: info: initialization of "Dorma" proved
 dic_of_cont.adb:6:28: info: range check proved (CVC5: 2 VC)
 dic_of_cont.adb:7:07: info: initialization of "Dorse" proved
