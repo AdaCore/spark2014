@@ -23,10 +23,17 @@
   <proof prover="3"><result status="valid" steps="1"/></proof>
   </goal>
   <goal name="def&#39;vc.3" proved="true">
+<<<<<<< HEAD
   <proof prover="0"><result status="valid" steps="77"/></proof>
   <proof prover="1"><result status="valid" steps="1368"/></proof>
   <proof prover="2"><result status="valid" steps="5451"/></proof>
   <proof prover="4"><result status="highfailure"/></proof>
+=======
+  <proof prover="0"><result status="highfailure"/></proof>
+  <proof prover="1"><result status="valid" steps="1368"/></proof>
+  <proof prover="2"><result status="valid" steps="5451"/></proof>
+  <proof prover="4"><result status="unknown" steps="202"/></proof>
+>>>>>>> Update output after line changes in SPARKlib
   </goal>
   <goal name="def&#39;vc.4" proved="true">
   <proof prover="3"><result status="valid" steps="1"/></proof>
@@ -50,6 +57,7 @@
   <proof prover="3"><result status="valid" steps="1"/></proof>
   </goal>
   <goal name="def&#39;vc.11" proved="true">
+<<<<<<< HEAD
   <proof prover="0"><result status="valid" steps="48"/></proof>
   <proof prover="1"><result status="valid" steps="838"/></proof>
   <proof prover="2"><result status="valid" steps="521"/></proof>
@@ -60,14 +68,32 @@
   <proof prover="1"><result status="valid" steps="867"/></proof>
   <proof prover="2"><result status="valid" steps="3006"/></proof>
   <proof prover="4"><result status="highfailure"/></proof>
+=======
+  <proof prover="0"><result status="highfailure"/></proof>
+  <proof prover="1"><result status="valid" steps="838"/></proof>
+  <proof prover="2"><result status="valid" steps="521"/></proof>
+  <proof prover="4"><result status="failure" steps="0"/></proof>
+  </goal>
+  <goal name="def&#39;vc.12" proved="true">
+  <proof prover="0"><result status="highfailure"/></proof>
+  <proof prover="1"><result status="valid" steps="867"/></proof>
+  <proof prover="2"><result status="valid" steps="3006"/></proof>
+  <proof prover="4"><result status="failure" steps="0"/></proof>
+>>>>>>> Update output after line changes in SPARKlib
   </goal>
   <goal name="def&#39;vc.13" proved="true">
   <proof prover="3"><result status="valid" steps="1"/></proof>
   </goal>
   <goal name="def&#39;vc.14" proved="true">
+<<<<<<< HEAD
   <proof prover="0"><result status="valid" steps="58"/></proof>
   <proof prover="1"><result status="valid" steps="1640"/></proof>
   <proof prover="2"><result status="valid" steps="7581"/></proof>
+=======
+  <proof prover="0"><result status="highfailure"/></proof>
+  <proof prover="1"><result status="valid" steps="1640"/></proof>
+  <proof prover="2"><result status="highfailure"/></proof>
+>>>>>>> Update output after line changes in SPARKlib
   <proof prover="4"><result status="highfailure"/></proof>
   </goal>
   <goal name="def&#39;vc.15" proved="true">
@@ -76,8 +102,13 @@
   <goal name="def&#39;vc.16" proved="true">
   <proof prover="0"><result status="valid" steps="91"/></proof>
   <proof prover="1"><result status="valid" steps="3517"/></proof>
+<<<<<<< HEAD
   <proof prover="2"><result status="valid" steps="8897"/></proof>
   <proof prover="4"><result status="highfailure"/></proof>
+=======
+  <proof prover="2"><result status="failure" steps="0"/></proof>
+  <proof prover="4"><result status="failure" steps="0"/></proof>
+>>>>>>> Update output after line changes in SPARKlib
   </goal>
   <goal name="def&#39;vc.17" proved="true">
   <proof prover="3"><result status="valid" steps="1"/></proof>
@@ -97,6 +128,7 @@
   <goal name="def&#39;vc.22" proved="true">
   <proof prover="0"><result status="valid" steps="64"/></proof>
   <proof prover="1"><result status="valid" steps="1584"/></proof>
+<<<<<<< HEAD
   <proof prover="2"><result status="valid" steps="885"/></proof>
   <proof prover="4"><result status="highfailure"/></proof>
   </goal>
@@ -105,6 +137,16 @@
   <proof prover="1"><result status="valid" steps="4536"/></proof>
   <proof prover="2"><result status="highfailure"/></proof>
   <proof prover="4"><result status="highfailure"/></proof>
+=======
+  <proof prover="2"><result status="failure" steps="0"/></proof>
+  <proof prover="4"><result status="failure" steps="0"/></proof>
+  </goal>
+  <goal name="def&#39;vc.23" proved="true">
+  <proof prover="0"><result status="failure" steps="0"/></proof>
+  <proof prover="1"><result status="valid" steps="4536"/></proof>
+  <proof prover="2"><result status="failure" steps="0"/></proof>
+  <proof prover="4"><result status="failure" steps="0"/></proof>
+>>>>>>> Update output after line changes in SPARKlib
   </goal>
   <goal name="def&#39;vc.24" proved="true">
   <proof prover="3"><result status="valid" steps="1"/></proof>
@@ -112,17 +154,29 @@
   <goal name="def&#39;vc.25" proved="true">
   <proof prover="0"><result status="valid" steps="123"/></proof>
   <proof prover="1"><result status="valid" steps="4022"/></proof>
+<<<<<<< HEAD
   <proof prover="2"><result status="valid" steps="13327"/></proof>
   <proof prover="4"><result status="highfailure"/></proof>
+=======
+  <proof prover="2"><result status="failure" steps="0"/></proof>
+  <proof prover="4"><result status="failure" steps="0"/></proof>
+>>>>>>> Update output after line changes in SPARKlib
   </goal>
   <goal name="def&#39;vc.26" proved="true">
   <proof prover="3"><result status="valid" steps="1"/></proof>
   </goal>
   <goal name="def&#39;vc.27" proved="true">
+<<<<<<< HEAD
   <proof prover="0"><result status="valid" steps="199"/></proof>
   <proof prover="1"><result status="valid" steps="3520"/></proof>
   <proof prover="2"><result status="valid" steps="11358"/></proof>
   <proof prover="4"><result status="highfailure"/></proof>
+=======
+  <proof prover="0"><result status="highfailure"/></proof>
+  <proof prover="1"><result status="valid" steps="3520"/></proof>
+  <proof prover="2"><result status="valid" steps="11358"/></proof>
+  <proof prover="4"><result status="unknown" steps="565"/></proof>
+>>>>>>> Update output after line changes in SPARKlib
   </goal>
   <goal name="def&#39;vc.28" proved="true">
   <proof prover="3"><result status="valid" steps="1"/></proof>
@@ -134,12 +188,21 @@
   <proof prover="0"><result status="valid" steps="50"/></proof>
   <proof prover="1"><result status="valid" steps="1561"/></proof>
   <proof prover="2"><result status="valid" steps="1124"/></proof>
+<<<<<<< HEAD
   <proof prover="4"><result status="highfailure"/></proof>
   </goal>
   <goal name="def&#39;vc.31" proved="true">
   <proof prover="0"><result status="valid" steps="50"/></proof>
   <proof prover="1"><result status="valid" steps="1561"/></proof>
   <proof prover="2"><result status="valid" steps="1130"/></proof>
+=======
+  <proof prover="4"><result status="failure" steps="0"/></proof>
+  </goal>
+  <goal name="def&#39;vc.31" proved="true">
+  <proof prover="0"><result status="highfailure"/></proof>
+  <proof prover="1"><result status="valid" steps="1561"/></proof>
+  <proof prover="2"><result status="highfailure"/></proof>
+>>>>>>> Update output after line changes in SPARKlib
   <proof prover="4"><result status="highfailure"/></proof>
   </goal>
   <goal name="def&#39;vc.32" proved="true">
@@ -149,8 +212,13 @@
   <proof prover="3"><result status="valid" steps="1"/></proof>
   </goal>
   <goal name="def&#39;vc.34" proved="true">
+<<<<<<< HEAD
   <proof prover="0"><result status="valid" steps="293"/></proof>
   <proof prover="1"><result status="valid" steps="10343"/></proof>
+=======
+  <proof prover="0"><result status="highfailure"/></proof>
+  <proof prover="1"><result status="highfailure"/></proof>
+>>>>>>> Update output after line changes in SPARKlib
   <proof prover="2"><result status="valid" steps="45046"/></proof>
   <proof prover="4"><result status="highfailure"/></proof>
   </goal>
