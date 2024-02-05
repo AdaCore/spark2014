@@ -18,7 +18,7 @@ main.adb:13:56: low: range check might fail, cannot prove lower bound for "Fail 
 main.adb:13:56: low: range check might fail, cannot prove upper bound for "Fail : " & Actual'Image & ", Expected : ", in call inlined at main.adb:22
 main.adb:13:74: info: range check proved (CVC5: 2 VC), in call inlined at main.adb:19
 main.adb:13:74: info: range check proved (CVC5: 2 VC), in call inlined at main.adb:20
-main.adb:13:74: low: range check might fail, cannot prove lower bound for "Fail : " & Actual'Image & ", Expected : " & Expected'Image, in call inlined at main.adb:21 [reason for check: input value must fit in parameter type]
+main.adb:13:74: info: range check proved (CVC5: 2 VC), in call inlined at main.adb:21
 main.adb:13:74: low: range check might fail, cannot prove lower bound for "Fail : " & Actual'Image & ", Expected : " & Expected'Image, in call inlined at main.adb:22 [reason for check: input value must fit in parameter type]
 main.adb:13:74: low: range check might fail, cannot prove lower bound for "Fail : " & Actual'Image & ", Expected : " & Expected'Image, in call inlined at main.adb:23 [reason for check: input value must fit in parameter type]
 main.adb:18:59: info: range check proved (CVC5: 1 VC)

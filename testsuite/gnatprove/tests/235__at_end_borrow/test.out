@@ -25,7 +25,7 @@ int_lists.ads:26:06: info: data dependencies proved
 int_lists.ads:27:14: info: postcondition proved (CVC5: 1 VC)
 int_lists.ads:27:27: info: precondition proved (CVC5: 1 VC)
 int_lists.ads:29:14: info: aspect Always_Terminates on "Set" has been proved, subprogram will terminate
-int_lists.ads:30:14: info: postcondition proved (Z3: 1 VC)
+int_lists.ads:30:14: info: postcondition proved (CVC5: 1 VC)
 int_lists.ads:30:26: info: precondition proved (CVC5: 1 VC)
 int_lists.ads:30:64: info: predicate check proved (CVC5: 1 VC; Trivial: 1 VC)
 int_lists.ads:32:14: info: aspect Always_Terminates on "Insert" has been proved, subprogram will terminate
@@ -38,7 +38,7 @@ int_lists.ads:39:13: info: implicit aspect Always_Terminates on "Next" has been 
 int_lists.ads:40:14: info: postcondition proved (CVC5: 1 VC)
 int_lists.ads:42:13: info: implicit aspect Always_Terminates on "Peek" has been proved, subprogram will terminate
 use_lists.adb:5:11: info: aspect Always_Terminates on "Use_Lists" has been proved, subprogram will terminate
-use_lists.adb:9:14: info: postcondition proved (CVC5: 1 VC; Z3: 1 VC)
+use_lists.adb:9:14: info: postcondition proved (CVC5: 2 VC)
 use_lists.adb:9:14: info: predicate check proved (Trivial: 1 VC)
 use_lists.adb:9:53: info: predicate check proved (Trivial: 1 VC)
 use_lists.adb:17:13: info: loop invariant initialization proved (CVC5: 1 VC)

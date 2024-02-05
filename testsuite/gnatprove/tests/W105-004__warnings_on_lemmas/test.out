@@ -58,7 +58,7 @@ warnings_on_lemmas.adb:72:14: info: implicit aspect Always_Terminates on "Lemma_
 warnings_on_lemmas.adb:72:14: warning: automatically instantiated lemma contains calls to "Call_2" which cannot be arbitrarily specialized
 warnings_on_lemmas.adb:72:14: warning: it will not be automatically instantiated on specializations of "Call_2"
 warnings_on_lemmas.adb:72:60: info: function contract feasibility proved (CVC5: 1 VC)
-warnings_on_lemmas.adb:78:14: info: postcondition proved (altergo: 1 VC)
+warnings_on_lemmas.adb:78:14: info: postcondition proved (CVC5: 1 VC)
 warnings_on_lemmas.adb:78:40: info: null exclusion check proved (CVC5: 1 VC)
 warnings_on_lemmas.adb:80:14: warning: automatically instantiated lemma contains calls to "Call_2" which cannot be arbitrarily specialized
 warnings_on_lemmas.adb:80:14: warning: it will not be automatically instantiated on specializations of "Call_2"

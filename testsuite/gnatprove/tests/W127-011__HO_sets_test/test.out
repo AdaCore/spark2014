@@ -221,8 +221,8 @@ use_set_ho.adb:68:16: info: implicit aspect Always_Terminates on "F" has been pr
 use_set_ho.adb:69:56: info: overflow check proved (CVC5: 2 VC)
 use_set_ho.adb:71:16: info: implicit aspect Always_Terminates on "Add_Zero" has been proved, subprogram will terminate
 use_set_ho.adb:72:10: info: precondition proved (CVC5: 1 VC)
+use_set_ho.adb:74:19: info: postcondition proved (CVC5: 1 VC)
 use_set_ho.adb:74:19: info: precondition proved (CVC5: 2 VC)
-use_set_ho.adb:74:19: medium: postcondition might fail
 use_set_ho.adb:74:68: info: precondition proved (CVC5: 1 VC)
 use_set_ho.adb:74:73: info: precondition proved (CVC5: 2 VC)
 use_set_ho.adb:78:16: info: implicit aspect Always_Terminates on "F" has been proved, subprogram will terminate
@@ -249,7 +249,7 @@ use_set_ho.adb:100:65: info: range check proved (CVC5: 2 VC)
 use_set_ho.adb:100:77: info: predicate check proved (Trivial: 2 VC)
 use_set_ho.adb:100:79: info: division check proved (CVC5: 2 VC)
 use_set_ho.adb:100:83: info: predicate check proved (Trivial: 2 VC)
-use_set_ho.adb:104:17: info: postcondition proved (Z3: 1 VC; altergo: 1 VC)
+use_set_ho.adb:104:17: info: postcondition proved (CVC5: 1 VC; Z3: 1 VC)
 use_set_ho.adb:104:25: info: predicate check proved (CVC5: 1 VC; Trivial: 1 VC)
 use_set_ho.adb:104:70: info: predicate check proved (CVC5: 1 VC; Trivial: 1 VC)
 use_set_ho.adb:105:36: info: predicate check proved (CVC5: 1 VC; Trivial: 1 VC)
