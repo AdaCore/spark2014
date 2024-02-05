@@ -7552,17 +7552,22 @@ package body Gnat2Why.Expr is
      (Returned_Expr : N_Subexpr_Id;
       Subp          : E_Function_Id)
    is
-      Param       : constant Entity_Id := First_Formal (Subp);
-      Path        : Node_Id := Returned_Expr;
-      Access_Seen : Boolean := False;
+      Param : constant Entity_Id := First_Formal (Subp);
 
-   begin
+      Seen  : Node_Sets.Set;
+      --  Remember already processed locally declared objects.
+
+      function Compute_Check
+        (Path         : N_Subexpr_Id;
+         Under_Access : Boolean)
+         return Boolean;
       --  Approximate the accessibility level check on the return statement in
       --  the following way:
       --    * If we are in a part of a named access type, then no checks are
       --      necessary.
-      --    * If we have a call to traversal function inside the declaration
-      --      of a local object, then the accessibility check will fail.
+      --    * If we have a call to traversal function inside the declaration of
+      --      a local object on the path to the ultimate root of E, then the
+      --      accessibility check will fail.
       --    * If we have a call to traversal function inside the return
       --      expression, the accessibility of the result will be the result
       --      accessibility. It is still possible that a failed accessibility
@@ -7578,70 +7583,74 @@ package body Gnat2Why.Expr is
       --      directly at the traversed parameter and this parameter is
       --      aliased.
 
-      loop
+      -------------------
+      -- Compute_Check --
+      -------------------
+
+      function Compute_Check
+        (Path         : N_Subexpr_Id;
+         Under_Access : Boolean)
+         return Boolean is
+      begin
+         --  We are in a part of a named access type. This type is necessarily
+         --  declared above the scope of the caller, since it can be found from
+         --  the type of the first parameter, so the accessibility check is
+         --  guaranteed to succeed.
+
+         if Is_Access_Type (Retysp (Etype (Path)))
+           and then not Is_Anonymous_Access_Type (Etype (Path))
+         then
+            return True;
+         end if;
+
          case Nkind (Path) is
             when N_Expanded_Name
                | N_Identifier
-               =>
-               declare
-                  Root : constant Entity_Id := Entity (Path);
+            =>
+               --  If we take the address of a local object, which returns
+               --  something with local accessibility, the overall check might
+               --  fail.
 
-               begin
-                  --  We have reached the traversed parameter. Check that we
-                  --  have not encountered any 'Access attribute without a
-                  --  dereference in its prefix.
+               if Under_Access then
+                  return False;
+               else
+                  declare
+                     Root : constant Entity_Id := Get_Root_Object (Path);
+                  begin
+                     --  If we have reached the traversed parameter (or
+                     --  something which was already checked), this is fine.
 
-                  if Root = Param then
+                     if Root = Param or else Seen.Contains (Root) then
+                        return True;
 
-                     --  Do not generate a check if the returned expression
-                     --  is a part of the traversed parameter and this
-                     --  parameter is aliased. In this case the accessibility
-                     --  check is deferred to the call site.
+                     --  Otherwise, continue verification on the initialization
+                     --  expression of the root object.
 
-                     if Get_Root_Object
-                       (Returned_Expr, Through_Traversal => False) /= Param
-                       or else not Is_Aliased (Param)
-                     then
-                        Emit_Static_Proof_Result
-                          (Node   => Returned_Expr,
-                           Kind   => VC_Dynamic_Accessibility_Check,
-                           Proved => not Access_Seen,
-                           E      => Subp);
+                     else
+                        Seen.Insert (Root);
+                        return Compute_Check
+                          (Expression (Enclosing_Declaration (Root)),
+                           Under_Access => False);
                      end if;
-                     exit;
-
-                  --  Root is a local borrower/observer, continue the traversal
-                  --  in its initial value. We ignore reborrows here. As they
-                  --  can only go deeper in the structure, it can be imprecise
-                  --  but safe.
-
-                  else
-                     declare
-                        Decl : constant Node_Id :=
-                          Enclosing_Declaration (Root);
-                     begin
-                        Path := Expression (Decl);
-                     end;
-                  end if;
-               end;
+                  end;
+               end if;
 
             when N_Attribute_Reference =>
                pragma Assert (Attribute_Name (Path) = Name_Access);
+               pragma Assert (not Under_Access);
 
-               --  Use Access_Seen to record that we are in the prefix of a
+               --  Use Under_Access to record that we are in the prefix of a
                --  reference to the 'Access attribute and we should check for a
                --  dereference.
 
-               Access_Seen := True;
-               Path := Prefix (Path);
+               return Compute_Check (Prefix (Path), Under_Access => True);
 
             when N_Explicit_Dereference =>
 
                --  We have found a dereference. The previously encountered
-               --  accesses are fine.
+               --  accesses (if any) are fine.
 
-               Access_Seen := False;
-               Path := Prefix (Path);
+               return Compute_Check (Prefix (Path), Under_Access => False);
 
             when N_Function_Call =>
 
@@ -7652,51 +7661,59 @@ package body Gnat2Why.Expr is
                pragma Assert (Is_Traversal_Function_Call (Path));
                if Get_Root_Object (Returned_Expr) /= Get_Root_Object (Path)
                then
-                  Emit_Static_Proof_Result
-                    (Node   => Returned_Expr,
-                     Kind   => VC_Dynamic_Accessibility_Check,
-                     Proved => False,
-                     E      => Subp);
-                  exit;
+                  return False;
                end if;
 
-               --  If the first formal is aliased, an accessibility check
-               --  might have been deferred to the call site. We need to check
-               --  that it is OK to call Actual'Access in this context.
+               --  If the first formal is aliased, an accessibility check might
+               --  have been deferred to the call site. We need to check that
+               --  it is OK to call Actual'Access in this context.
 
-               if Is_Aliased
-                 (First_Formal (Get_Called_Entity_For_Proof (Path)))
-               then
-                  Access_Seen := True;
-               end if;
-
-               Path := First_Actual (Path);
+               pragma Assert (not Under_Access);
+               return Compute_Check
+                 (First_Actual (Path),
+                  Under_Access => Is_Aliased
+                    (First_Formal (Get_Called_Entity_For_Proof (Path))));
 
             when N_Indexed_Component
                | N_Selected_Component
                | N_Slice
-               =>
-               Path := Prefix (Path);
+            =>
+               return Compute_Check (Prefix (Path), Under_Access);
 
             when N_Qualified_Expression
                | N_Type_Conversion
                | N_Unchecked_Type_Conversion
-               =>
-               Path := Expression (Path);
+            =>
+               return Compute_Check (Expression (Path), Under_Access);
+
+            when N_If_Expression
+               | N_Case_Expression
+            =>
+               return (for all P of Terminal_Alternatives (Path) =>
+                          Compute_Check (P, Under_Access));
 
             when others =>
                raise Program_Error;
          end case;
+      end Compute_Check;
 
-         --  We are in a part of a named access type. The accessibility check
-         --  is guaranteed to succeed.
+   begin
 
-         if Is_Access_Type (Retysp (Etype (Path)))
-           and then not Is_Anonymous_Access_Type (Etype (Path))
-         then
-            exit;
-         end if;
-      end loop;
+      --  Do not generate a check if the returned expression is a part of the
+      --  traversed parameter and this parameter is aliased. In this case the
+      --  accessibility check is deferred to the call site.
+
+      if Get_Root_Object (Returned_Expr, Through_Traversal => False) = Param
+        and then Is_Aliased (Param)
+      then
+         return;
+      end if;
+
+      Emit_Static_Proof_Result
+        (Node   => Returned_Expr,
+         Kind   => VC_Dynamic_Accessibility_Check,
+         Proved => Compute_Check (Returned_Expr, Under_Access => False),
+         E      => Subp);
    end Emit_Dynamic_Accessibility_Check;
 
    -----------------------------
