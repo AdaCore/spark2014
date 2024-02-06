@@ -197,6 +197,30 @@ procedure Test_Hide_Annot with SPARK_Mode is
       null;
    end Incompatible;
 
+   --  Expression function whose body is hidden in a package body. It can
+   --  only be hidden/unhidden where it is visible.
+
+   package Deferred_Expr_Fun is
+      function Deferred_Id (X : Integer) return Integer;
+      procedure OK_Deferred with Global => null;
+   end Deferred_Expr_Fun;
+
+   package body Deferred_Expr_Fun is
+      function Deferred_Id (X : Integer) return Integer is (X);
+
+      procedure OK_Deferred is
+         pragma Annotate (GNATprove, Hide_Info, "Expression_Function_Body", Deferred_Id);
+      begin
+         null;
+      end OK_Deferred;
+   end Deferred_Expr_Fun;
+
+   procedure Bad_Deferred with Global => null is
+      pragma Annotate (GNATprove, Hide_Info, "Expression_Function_Body", Deferred_Expr_Fun.Deferred_Id);
+   begin
+      null;
+   end Bad_Deferred;
+
 begin
    null;
 end Test_Hide_Annot;

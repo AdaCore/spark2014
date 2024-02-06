@@ -79,6 +79,19 @@ procedure Main with SPARK_Mode is
       function Use_Rec_And_2 (X, Y : Boolean) return Boolean is (Rec_And_2 (X, Y)) with
         Post => Use_Rec_And_2'Result = (X and Y); -- @POSTCONDITION:FAIL
 
+      --  The same in the reverse order
+
+      function Rec_And_3 (X, Y : Boolean) return Boolean is
+        (if not X then False elsif X = Y then True else Rec_And_3 (Y, X))
+          with
+            Subprogram_Variant => (Decreases => X),
+            Post => (if X then Rec_And_3'Result = Y), -- @POSTCONDITION:PASS
+            Annotate => (GNATprove, Unhide_Info, "Expression_Function_Body"),
+            Annotate => (GNATprove, Hide_Info, "Expression_Function_Body");
+
+      function Use_Rec_And_3 (X, Y : Boolean) return Boolean is (Rec_And_3 (X, Y)) with
+        Post => Use_Rec_And_3'Result = (X and Y); -- @POSTCONDITION:FAIL
+
    end Recursive;
 
 begin

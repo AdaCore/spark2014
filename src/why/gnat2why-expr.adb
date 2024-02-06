@@ -1125,14 +1125,6 @@ package body Gnat2Why.Expr is
    --  Returns the Why program for raise statement Stat if the exception is not
    --  handled.
 
-   function Has_Visibility_On_Refined
-     (Expr : Node_Id;
-      E    : Callable_Kind_Id)
-      return Boolean
-   with Pre => Ekind (E) in E_Function | E_Procedure | E_Entry
-               and then Entity_Body_In_SPARK (E);
-   --  Return True if node Expr can "see" the Refined_Post of entity E
-
    ---------------------------------
    -- Handling of Local Borrowers --
    ---------------------------------
@@ -1621,7 +1613,7 @@ package body Gnat2Why.Expr is
                   end if;
                end;
 
-            when Func =>
+            when Subp =>
                raise Program_Error;
             end case;
 
@@ -9004,7 +8996,7 @@ package body Gnat2Why.Expr is
             Args (Count) := +Pattern.Is_Moved;
             Count := Count + 1;
 
-         when Func    =>
+         when Subp    =>
             raise Program_Error;
       end case;
    end Get_Item_From_Expr;
@@ -9297,7 +9289,7 @@ package body Gnat2Why.Expr is
                   Need_Store => Need_Store);
                return;
             end if;
-         when Func    =>
+         when Subp    =>
             raise Program_Error;
       end case;
    end Get_Item_From_Var;
@@ -9421,17 +9413,6 @@ package body Gnat2Why.Expr is
       end if;
       return Exprs;
    end Get_Variants_Ids;
-
-   -------------------------------
-   -- Has_Visibility_On_Refined --
-   -------------------------------
-
-   function Has_Visibility_On_Refined
-     (Expr : Node_Id;
-      E    : Callable_Kind_Id)
-      return Boolean
-   is
-    (Subprogram_Refinement_Is_Visible (E, Get_Flow_Scope (Expr)));
 
    -----------------------------------------------
    -- Havoc_Borrowed_And_Check_No_Leaks_On_Goto --
@@ -10830,7 +10811,7 @@ package body Gnat2Why.Expr is
                                               Context  => Result);
                end;
 
-            when Func
+            when Subp
                | Concurrent_Self
             =>
                raise Program_Error;
@@ -12495,7 +12476,7 @@ package body Gnat2Why.Expr is
                   To     => EW_Abstract
                     (Etype (Actual), Relaxed_Init => Relaxed_Init));
             end;
-         when Func => raise Program_Error;
+         when Subp => raise Program_Error;
       end case;
 
       --  T has the relaxed initialization status of the formal. We need to
@@ -12713,7 +12694,7 @@ package body Gnat2Why.Expr is
                   Ty           => Formal_Typ,
                   Relaxed_Init => Relaxed_Init);
             end;
-         when Func => raise Program_Error;
+         when Subp => raise Program_Error;
       end case;
    end Reconstruct_Formal_From_Item;
 
@@ -18074,13 +18055,14 @@ package body Gnat2Why.Expr is
          then
             Dispatch
 
-         --  When the call has visibility over the refined postcondition of the
+         --  In the program domain, if the call has visibility over the refined
+         --  postcondition or the expression function completion of the
          --  subprogram, use the Refine variant of the program function, which
          --  has the appropriate refined contract.
 
          elsif Entity_Body_In_SPARK (Subp)
-           and then Has_Contracts (Subp, Pragma_Refined_Post)
-           and then Has_Visibility_On_Refined (Call, Subp)
+           and then Has_Refinement (Subp)
+           and then Has_Visibility_On_Refined_Expr (Call, Subp)
          then
             Refine
 
@@ -22980,13 +22962,15 @@ package body Gnat2Why.Expr is
          and then Present (Controlling_Argument (Expr))
          then Dispatch
 
-         --  When the call has visibility over the refined postcondition of the
+         --  In the program domain, if the call has visibility over the refined
+         --  postcondition or the expression function completion of the
          --  subprogram, use the Refine variant of the program function, which
          --  has the appropriate refined contract.
 
-         elsif Entity_Body_In_SPARK (Subp)
-           and then Has_Contracts (Subp, Pragma_Refined_Post)
-           and then Has_Visibility_On_Refined (Expr, Subp)
+         elsif Domain = EW_Prog
+           and then Entity_Body_In_SPARK (Subp)
+           and then Has_Refinement (Subp)
+           and then Has_Visibility_On_Refined_Expr (Expr, Subp)
          then
             Refine
 
@@ -23419,25 +23403,35 @@ package body Gnat2Why.Expr is
             E : constant Item_Type := Ada_Ent_To_Why.Element (C);
 
          begin
-            if Selector /= Why.Inter.Standard then
-               pragma Assert (Is_Subprogram_Or_Entry (Ent));
-               declare
-                  Ty : constant W_Type_Id := Get_Why_Type_From_Item (E);
-               begin
-                  T := +To_Why_Id (Ent, Domain,
-                                   Selector => Selector,
-                                   Typ      => Ty);
-               end;
+            pragma Assert
+              (if Selector /= Why.Inter.Standard then E.Kind = Subp);
 
-            --  If E is a function and Domain is Prog, use the program specific
-            --  identifier instead.
+            --  If E is a subprogram, use tha appropriate symbol depending on
+            --  the domain and the selector.
 
-            elsif E.Kind = Func then
-               if Domain = EW_Prog then
-                  T := +E.For_Prog.B_Name;
-               else
-                  T := +E.For_Logic.B_Name;
-               end if;
+            if E.Kind = Subp then
+               case Selector is
+                  when Why.Inter.Standard =>
+                     if Domain = EW_Prog then
+                        T := +E.For_Prog;
+                     else
+                        T := +E.For_Logic.Id;
+                     end if;
+
+                  when Why.Inter.Dispatch =>
+                     if Domain = EW_Prog then
+                        T := +E.Dispatch_Prog.Id;
+                     else
+                        T := +E.Dispatch_Logic.Id;
+                     end if;
+
+                  when Why.Inter.Refine =>
+                     if Domain = EW_Prog then
+                        T := +E.Refine_Prog.Id;
+                     else
+                        T := +E.For_Logic.Id;
+                     end if;
+               end case;
             else
                declare
                   Var : constant W_Expr_Id :=
@@ -23538,7 +23532,7 @@ package body Gnat2Why.Expr is
                         Havoc    : W_Prog_Id := +Void;
                      begin
                         case E.Kind is
-                           when Func =>
+                           when Subp =>
                               raise Program_Error;
                            when Regular | Concurrent_Self =>
                               if E.Main.Mutable then

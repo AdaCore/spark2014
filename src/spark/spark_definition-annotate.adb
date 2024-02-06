@@ -4772,7 +4772,8 @@ package body SPARK_Definition.Annotate is
       Delayed_Checks_For_Aggregates.Clear;
 
       --  Go over hide and unhide annotations to make sure that they are
-      --  compatible with the default.
+      --  compatible with the default and with the visibility of the expression
+      --  function body if it is deferred to the body.
 
       for Position in Delayed_Hide_Compatibility_Checks.Iterate loop
          declare
@@ -4794,6 +4795,17 @@ package body SPARK_Definition.Annotate is
                        ("Unhide_Info annotation is redundant, "
                         & Source_Name (E) & " is visible by default", Prag);
                end case;
+            end if;
+
+            if not Gnat2Why_Args.Global_Gen_Mode
+              and then Has_Refinement (E)
+              and then not Has_Visibility_On_Refined (Scope, E)
+            then
+               Error_Msg_N_If
+                 ("the body of " & Source_Name (E)
+                  & " is not visible at the current location",
+                  Prag);
+               return;
             end if;
          end;
       end loop;
@@ -5539,10 +5551,14 @@ package body SPARK_Definition.Annotate is
         Inline_Annotations.Find (E);
 
    begin
-      --  Do not infer inline annotations for potentially hidden functions
+      --  Do not infer inline annotations for potentially hidden functions nor
+      --  for deferred expression functions from nested packages.
 
       if not Common_Containers.Node_Maps.Has_Element (Position)
         and then not Potentially_Hidden_Entities.Contains (E)
+        and then (not Is_Expression_Function_Or_Completion (E)
+                  or else not Completion_Deferred_To_Body (E)
+                  or else Is_Compilation_Unit (Enclosing_Unit (E)))
       then
          Position := Inferred_Inline_Annotations.Find (E);
       end if;

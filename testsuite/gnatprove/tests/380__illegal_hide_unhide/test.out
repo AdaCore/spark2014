@@ -18,4 +18,5 @@ test_hide_annot.adb:150:07: error: there shall be at most one Hide_Info or Unhid
 test_hide_annot.adb:159:07: error: pragma Annotate Hide_Info must appear at the beginning of a subprogram, entry, or package body, or just after a subprogram, entry, or package body or declaration
 test_hide_annot.adb:194:07: error: Unhide_Info annotation is redundant, Id is visible by default
 test_hide_annot.adb:195:07: error: Hide_Info annotation is redundant, Hidden_Id is hidden by default
+test_hide_annot.adb:219:07: error: the body of Deferred_Id is not visible at the current location
 gnatprove: error during flow analysis and proof

@@ -911,27 +911,19 @@ package body Gnat2Why.Subprograms.Pointers is
          begin
             if Ada_Ent_To_Why.Has_Element (Symbol_Table, Profile) then
                pragma Assert (not Is_Base_Type (E));
-            elsif Is_Function_Type (Profile) then
+            else
                Insert_Item
                  (Profile,
-                  Item_Type'(Func,
+                  Item_Type'(Subp,
                     Local     => False,
                     Init      => <>,
-                    For_Logic => (Ada_Node => Profile,
-                                  B_Name   => Get_Logic_Function (Profile),
-                                  B_Ent    => Null_Entity_Name,
-                                  Mutable  => False,
-                                  Labels   => <>),
-                    For_Prog  => (Ada_Node => Profile,
-                                  B_Name   => E_Symb (E, WNE_Pointer_Call),
-                                  B_Ent    => Null_Entity_Name,
-                                  Mutable  => False,
-                                  Labels   => <>)));
-            else
-               Insert_Tmp_Item_For_Entity
-                 (Profile,
-                  E_Symb (E, WNE_Pointer_Call),
-                  Mutable => False);
+                    For_Logic =>
+                      (if Is_Function_Type (Profile)
+                       then (Present => True,
+                             Id      => Get_Logic_Function (Profile))
+                       else (Present => False)),
+                    For_Prog  => E_Symb (E, WNE_Pointer_Call),
+                    others    => <>));
             end if;
          end;
       end if;

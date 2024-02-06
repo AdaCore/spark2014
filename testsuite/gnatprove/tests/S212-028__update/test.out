@@ -43,4 +43,4 @@ generic_ring_buffer.ads:93:04: medium: type "Ring_Buffer_Type" is not fully init
 generic_ring_buffer.ads:97:07: info: range check proved (CVC5: 2 VC), in instantiation at tester.adb:9
 tester.adb:13:04: info: initialization of "X" proved
 tester.adb:13:26: info: range check proved (CVC5: 2 VC)
-tester.adb:16:04: info: precondition proved (CVC5: 1 VC)
+tester.adb:16:04: medium: precondition might fail

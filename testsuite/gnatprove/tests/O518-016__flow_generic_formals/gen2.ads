@@ -5,5 +5,6 @@ package Gen2 is
      Global => (Output => G),
      Post   => G = V;
    function Get return Integer with
-     Global => (Input => G);
+     Global => (Input => G),
+     Post => Get'Result = G;
 end Gen2;
