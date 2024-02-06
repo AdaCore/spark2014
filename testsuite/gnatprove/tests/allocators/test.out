@@ -302,8 +302,7 @@ list_mod_allocator.ads:102:19: info: precondition proved
 list_mod_allocator.ads:102:55: info: precondition proved
 list_mod_allocator.ads:106:14: info: postcondition proved
 list_mod_allocator.ads:111:19: info: precondition proved
-list_mod_allocator.ads:111:41: medium: contract case might fail, cannot prove not Contains (S, E)
-list_mod_allocator.ads:111:41: medium: in inlined expression function body at list_mod_allocator.ads:60
+list_mod_allocator.ads:111:41: info: contract case proved
 list_mod_allocator.ads:112:25: info: precondition proved
 list_mod_allocator.ads:112:61: info: precondition proved
 list_mod_allocator.ads:114:19: info: precondition proved

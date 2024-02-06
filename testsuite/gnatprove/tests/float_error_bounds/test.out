@@ -552,8 +552,8 @@ libst.adb:78:33: info: loop invariant preservation proved
 libst.adb:79:33: info: loop invariant initialization proved
 libst.adb:79:33: info: loop invariant preservation proved
 libst.adb:81:18: info: division check proved
-libst.adb:81:18: medium: float overflow check might fail [reason for check: result of floating-point division must be bounded]
-libst.adb:81:18: medium: range check might fail [reason for check: returned value must fit in the result type of the function]
+libst.adb:81:18: info: float overflow check proved
+libst.adb:81:18: info: range check proved
 libst.ads:30:13: info: function contract might not be available on recursive calls
 libst.ads:30:13: info: implicit aspect Always_Terminates on "Sum_Weight_Rec" has been proved, subprogram will terminate
 libst.ads:36:14: info: postcondition proved

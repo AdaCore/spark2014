@@ -21,9 +21,9 @@
   </goal>
   <goal name="def&#39;vc.2" proved="true">
   <proof prover="0"><result status="valid" steps="276"/></proof>
-  <proof prover="1"><result status="valid" steps="4222"/></proof>
+  <proof prover="1"><result status="valid" steps="4201"/></proof>
   <proof prover="2"><result status="valid" steps="2898"/></proof>
-  <proof prover="4"><result status="valid" steps="322"/></proof>
+  <proof prover="4"><result status="highfailure"/></proof>
   </goal>
   <goal name="def&#39;vc.3" proved="true">
   <proof prover="3"><result status="valid" steps="1"/></proof>
@@ -35,9 +35,9 @@
   <proof prover="3"><result status="valid" steps="1"/></proof>
   </goal>
   <goal name="def&#39;vc.6" proved="true">
-  <proof prover="0"><result status="failure" steps="0"/></proof>
-  <proof prover="1"><result status="valid" steps="4820"/></proof>
-  <proof prover="2"><result status="failure" steps="0"/></proof>
+  <proof prover="0"><result status="highfailure"/></proof>
+  <proof prover="1"><result status="valid" steps="4795"/></proof>
+  <proof prover="2"><result status="valid" steps="3148"/></proof>
   <proof prover="4"><result status="failure" steps="0"/></proof>
   </goal>
  </transf>
