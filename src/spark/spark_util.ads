@@ -744,6 +744,15 @@ package SPARK_Util is
    --      Note that B_Ty is not the type of B_Expr but a compatible anonymous
    --      access type.
 
+   function Get_Root_Expr
+     (Expr              : N_Subexpr_Id;
+      Through_Traversal : Boolean := True)
+      return N_Subexpr_Id
+     with Pre => Is_Path_Expression (Expr);
+   --  Return the root of the path expression Expr (object, aggregate,
+   --  allocator, NULL, or function call). Through_Traversal is True if it
+   --  should follow through calls to traversal functions.
+
    function Get_Root_Object
      (Expr              : N_Subexpr_Id;
       Through_Traversal : Boolean := True)
