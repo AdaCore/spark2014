@@ -26,7 +26,7 @@
   <proof prover="0"><result status="valid" steps="332"/></proof>
   <proof prover="1"><result status="valid" steps="6357"/></proof>
   <proof prover="2"><result status="valid" steps="3383"/></proof>
-  <proof prover="4"><result status="failure" steps="0"/></proof>
+  <proof prover="4"><result status="valid" steps="117"/></proof>
   </goal>
  </transf>
  </goal>
