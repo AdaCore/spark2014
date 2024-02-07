@@ -162,6 +162,9 @@ package SPARK_Definition is
    --  Should be called after marking is finished. Returns the result of
    --  marking as a JSON record.
 
+   function Get_Unused_Records return Node_Sets.Set;
+   --  Return the set of Unused records, remove.
+
    function Has_Relaxed_Init (E : Type_Kind_Id) return Boolean
      with Post => (if Has_Relaxed_Init'Result then In_Relaxed_Init (E));
    --  True if type E is annotated with relaxed initialization

@@ -580,15 +580,6 @@ package SPARK_Atree is
    function Get_Return_Object (N : Node_Id) return Entity_Id with
      Pre => Nkind (N) = N_Extended_Return_Statement;
 
-   procedure Get_Unchecked_Conversion_Args (E              : Entity_Id;
-                                            Source, Target : out Node_Id)
-     with Pre => Sem_Util.Is_Unchecked_Conversion_Instance (E);
-   --  @param E Entity for an instance of Unchecked_Conversion
-   --  @param Source will be filled with the node for the first argument of the
-   --           instance of Unchecked_Conversion.
-   --  @param Target same for the second argument of the instance of
-   --           Unchecked_Conversion.
-
    function Has_Inferable_Discriminants (N : Node_Id) return Boolean with
      Pre => Nkind (N) in N_Subexpr;
 

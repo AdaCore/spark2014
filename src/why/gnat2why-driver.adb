@@ -892,6 +892,17 @@ package body Gnat2Why.Driver is
          --  Start the translation to Why
 
          if Gnat2Why_Args.Mode not in GPM_Check_All | GPM_Flow then
+
+            --  To be removed: print information about record types that can
+            --  be abstracted away.
+
+            for E of Get_Unused_Records loop
+               Error_Msg_N
+                 ("info: ?record type " & Source_Name (E) & " can be "
+                  & "abstracted",
+                  GNAT_Root);
+            end loop;
+
             Why.Gen.Names.Initialize;
             Why.Atree.Modules.Initialize;
             Init_Why_Sections;

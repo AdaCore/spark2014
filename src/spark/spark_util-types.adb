@@ -1077,6 +1077,70 @@ package body SPARK_Util.Types is
       end if;
    end Has_Default_Initialized_Component;
 
+   ------------------------
+   -- Has_Empty_Variants --
+   ------------------------
+
+   function Has_Empty_Variants (Typ : Type_Kind_Id) return Boolean is
+
+      function Has_Empty_Variants_Rec (N : Node_Id) return Boolean;
+      --  Traverse the record declaration to search for empty variants
+
+      ----------------------------
+      -- Has_Empty_Variants_Rec --
+      ----------------------------
+
+      function Has_Empty_Variants_Rec (N : Node_Id) return Boolean is
+         Field : Node_Id := First (Component_Items (N));
+      begin
+         while Present (Field) loop
+            if Nkind (Field) /= N_Pragma then
+               return False;
+            end if;
+            Next (Field);
+         end loop;
+         if Present (Variant_Part (N)) then
+            declare
+               Var : Node_Id := First (Variants (Variant_Part (N)));
+            begin
+               while Present (Var) loop
+                  if Has_Empty_Variants_Rec (Component_List (Var)) then
+                     return True;
+                  end if;
+                  Next (Var);
+               end loop;
+               return False;
+            end;
+         end if;
+         return True;
+      end Has_Empty_Variants_Rec;
+
+      Decl_Node : constant Node_Id := Parent (Typ);
+      Def_Node  : constant Node_Id :=
+        (if Nkind (Decl_Node) = N_Full_Type_Declaration
+         then Type_Definition (Decl_Node)
+         else Empty);
+
+      Components : constant Node_Id :=
+        (if Present (Def_Node) then
+             (case Nkind (Def_Node) is
+                 when N_Record_Definition =>
+                    Component_List (Def_Node),
+                 when N_Derived_Type_Definition =>
+                   (if Present (Record_Extension_Part (Def_Node)) then
+                      Component_List (Record_Extension_Part (Def_Node))
+                    else Empty),
+                 when others =>
+                    raise Program_Error)
+         else Empty);
+   begin
+      if Present (Components) then
+         return Has_Empty_Variants_Rec (Components);
+      else
+         return True;
+      end if;
+   end Has_Empty_Variants;
+
    -----------------------------
    -- Has_Invariants_In_SPARK --
    -----------------------------
@@ -1176,6 +1240,74 @@ package body SPARK_Util.Types is
 
       return Is_Incomplete_Or_Private_Type (Ty);
    end Has_Private_Fields;
+
+   --------------------------
+   -- Has_Shallow_Variants --
+   --------------------------
+
+   function Has_Shallow_Variants (Typ : Type_Kind_Id) return Boolean is
+
+      function Has_Shallow_Variants_Rec (N : Node_Id) return Boolean;
+      --  Traverse the record declaration to search for shallow variants
+
+      ------------------------------
+      -- Has_Shallow_Variants_Rec --
+      ------------------------------
+
+      function Has_Shallow_Variants_Rec (N : Node_Id) return Boolean is
+         Field : Node_Id := First (Component_Items (N));
+      begin
+         while Present (Field) loop
+            if Nkind (Field) /= N_Pragma
+              and then Is_Deep (Etype (Defining_Identifier (Field)))
+            then
+               return False;
+            end if;
+            Next (Field);
+         end loop;
+         if Present (Variant_Part (N)) then
+            declare
+               Var : Node_Id := First (Variants (Variant_Part (N)));
+            begin
+               while Present (Var) loop
+                  if Has_Shallow_Variants_Rec (Component_List (Var)) then
+                     return True;
+                  end if;
+                  Next (Var);
+               end loop;
+               return False;
+            end;
+         end if;
+         return True;
+      end Has_Shallow_Variants_Rec;
+
+      Decl_Node : constant Node_Id := Parent (Typ);
+      Def_Node  : constant Node_Id :=
+        (if Nkind (Decl_Node) = N_Full_Type_Declaration
+         then Type_Definition (Decl_Node)
+         else Empty);
+
+      Components : constant Node_Id :=
+        (if Present (Def_Node) then
+             (case Nkind (Def_Node) is
+                 when N_Record_Definition =>
+                    Component_List (Def_Node),
+                 when N_Derived_Type_Definition =>
+                   (if Present (Record_Extension_Part (Def_Node)) then
+                      Component_List (Record_Extension_Part (Def_Node))
+                    else Empty),
+                 when others =>
+                    raise Program_Error)
+         else Empty);
+   begin
+      pragma Assert (Present (Components));
+
+      if No (Variant_Part (Components)) then
+         return False;
+      else
+         return Has_Shallow_Variants_Rec (Components);
+      end if;
+   end Has_Shallow_Variants;
 
    -------------------------------
    -- Has_Subcomponents_Of_Type --
@@ -2221,6 +2353,96 @@ package body SPARK_Util.Types is
       end if;
    end Suitable_For_UC_Gen;
 
+   -----------------------------
+   -- Suitable_For_Precise_UC --
+   -----------------------------
+
+   function Suitable_For_Precise_UC
+     (Arg_Typ : Type_Kind_Id)
+      return True_Or_Explain
+   is
+      Typ : constant Type_Kind_Id := Retysp (Arg_Typ);
+   begin
+      case Ekind (Typ) is
+         when Integer_Kind =>
+            if Has_Biased_Representation (Typ) then
+               return False_With_Explain
+                 ("type with biased representation");
+
+            elsif Has_Modular_Integer_Type (Typ)
+              and then Has_No_Bitwise_Operations_Annotation (Typ)
+            then
+               return False_With_Explain
+                 ("type with No_Bitwise_Operations annotation");
+            end if;
+
+         when Enumeration_Kind =>
+            if Has_Enumeration_Rep_Clause (Typ)
+              and then Enumeration_Rep (First_Literal (Typ)) /= Uint_0
+            then
+               return False_With_Explain
+                 ("enumeration with non-default representation");
+            end if;
+
+         when Record_Kind =>
+            if Is_Tagged_Type (Typ) then
+               return False_With_Explain ("type is tagged");
+
+            elsif Has_Discriminants (Typ) then
+               return False_With_Explain ("type has discriminants");
+
+            elsif Reverse_Storage_Order (Base_Retysp (Typ)) then
+               return False_With_Explain
+                 ("type has reverse storage order");
+            end if;
+
+            declare
+               Comp : Entity_Id := First_Component (Typ);
+            begin
+               while Present (Comp) loop
+                  if No (Component_Bit_Offset (Comp)) then
+                     return False_With_Explain
+                       ("component offset not known");
+                  end if;
+
+                  declare
+                     Check : constant True_Or_Explain :=
+                       Suitable_For_Precise_UC (Etype (Comp));
+                  begin
+                     if not Check.Ok then
+                        return Check;
+                     end if;
+                  end;
+                  Next_Component (Comp);
+               end loop;
+            end;
+
+         when Array_Kind =>
+            declare
+               Check : constant True_Or_Explain :=
+                 Suitable_For_Precise_UC (Component_Type (Typ));
+            begin
+               if not Check.Ok then
+                  return Check;
+               end if;
+            end;
+
+            if Number_Dimensions (Typ) > Uint_1 then
+               return False_With_Explain
+                 ("array has multiple dimensions");
+
+            elsif Reverse_Storage_Order (Base_Retysp (Typ)) then
+               return False_With_Explain
+                 ("type has reverse storage order");
+            end if;
+
+         when others =>
+            return False_With_Explain ("elementary non-integer type");
+      end case;
+
+      return True_Or_Explain'(Ok => True);
+   end Suitable_For_Precise_UC;
+
    ----------------------------
    -- Suitable_For_UC_Target --
    ----------------------------
@@ -2291,8 +2513,9 @@ package body SPARK_Util.Types is
    ----------------------------
 
    function Traverse_Subcomponents
-     (Typ        : Type_Kind_Id;
-      Skip_Discr : Boolean := False) return Boolean
+     (Typ                : Type_Kind_Id;
+      Skip_Discr         : Boolean := False;
+      Traverse_Ancestors : Boolean := False) return Boolean
    is
 
       Seen : Node_Sets.Set;
@@ -2324,14 +2547,22 @@ package body SPARK_Util.Types is
             --  For tagged records, also look at inherited subcomponents
 
             declare
-               Base_Ty : constant Type_Kind_Id := Base_Retysp (Rep_Ty);
+               Base_Ty   : constant Type_Kind_Id := Base_Retysp (Rep_Ty);
+               Parent_Ty : constant Opt_Type_Kind_Id :=
+                 Parent_Retysp (Base_Ty);
             begin
                if Is_Tagged_Type (Base_Ty)
-                 and then Present (Parent_Retysp (Base_Ty))
-                 and then Parent_Retysp (Base_Ty) /= Base_Ty
+                 and then Present (Parent_Ty)
+                 and then Parent_Ty /= Base_Ty
                then
-                  if Traverse_Subcomponents_Only (Parent_Retysp (Base_Ty)) then
-                     return True;
+                  if Traverse_Ancestors then
+                     if Traverse_Type (Parent_Ty) then
+                        return True;
+                     end if;
+                  else
+                     if Traverse_Subcomponents_Only (Parent_Ty) then
+                        return True;
+                     end if;
                   end if;
 
                --  Traverse the discriminants of Base_Ty if any
