@@ -15,7 +15,7 @@ spark-containers-functional-infinite_sequences-higher_order.adb:41:37: info: pre
 spark-containers-functional-infinite_sequences-higher_order.adb:41:37: info: predicate check proved, in instantiation at test_sequence_ho.adb:47
 spark-containers-functional-infinite_sequences-higher_order.adb:41:57: info: null exclusion check proved, in instantiation at test_sequence_ho.adb:47
 spark-containers-functional-infinite_sequences-higher_order.adb:42:08: medium: implicit aspect Always_Terminates on "Filter_Rec" could be incorrect, call via access-to-subprogram might be nonterminating, in instantiation at test_sequence_ho.adb:47 [possible explanation: call could hide recursive calls]
-spark-containers-functional-infinite_sequences-higher_order.adb:47:24: medium: contract of function might not be feasible, in instantiation at test_sequence_ho.adb:47
+spark-containers-functional-infinite_sequences-higher_order.adb:47:24: info: function contract feasibility proved, in instantiation at test_sequence_ho.adb:47
 spark-containers-functional-infinite_sequences-higher_order.adb:53:42: info: range check proved, in instantiation at test_sequence_ho.adb:47
 spark-containers-functional-infinite_sequences-higher_order.adb:54:28: info: predicate check proved, in instantiation at test_sequence_ho.adb:47
 spark-containers-functional-infinite_sequences-higher_order.adb:54:36: info: predicate check proved, in instantiation at test_sequence_ho.adb:47
@@ -223,7 +223,7 @@ spark-containers-functional-infinite_sequences-higher_order.adb:351:16: info: lo
 spark-containers-functional-infinite_sequences-higher_order.adb:351:16: info: loop invariant preservation proved, in instantiation at test_sequence_ho.adb:47
 spark-containers-functional-infinite_sequences-higher_order.adb:353:22: info: precondition proved, in instantiation at test_sequence_ho.adb:47
 spark-containers-functional-infinite_sequences-higher_order.adb:353:52: info: precondition proved, in instantiation at test_sequence_ho.adb:47
-spark-containers-functional-infinite_sequences-higher_order.ads:18:29: medium: contract of function might not be feasible, in instantiation at test_sequence_ho.adb:47
+spark-containers-functional-infinite_sequences-higher_order.ads:18:29: info: function contract feasibility proved, in instantiation at test_sequence_ho.adb:47
 spark-containers-functional-infinite_sequences-higher_order.ads:25:06: info: data dependencies proved, in instantiation at test_sequence_ho.adb:47
 spark-containers-functional-infinite_sequences-higher_order.ads:27:18: info: postcondition proved, in instantiation at test_sequence_ho.adb:47
 spark-containers-functional-infinite_sequences-higher_order.ads:27:18: info: predicate check proved, in instantiation at test_sequence_ho.adb:47
@@ -231,7 +231,7 @@ spark-containers-functional-infinite_sequences-higher_order.ads:27:43: info: pre
 spark-containers-functional-infinite_sequences-higher_order.ads:28:08: medium: implicit aspect Always_Terminates on "Create" could be incorrect, call via access-to-subprogram might be nonterminating, in instantiation at test_sequence_ho.adb:47 [possible explanation: call could hide recursive calls]
 spark-containers-functional-infinite_sequences-higher_order.ads:30:35: info: precondition proved, in instantiation at test_sequence_ho.adb:47
 spark-containers-functional-infinite_sequences-higher_order.ads:30:69: info: predicate check proved, in instantiation at test_sequence_ho.adb:47
-spark-containers-functional-infinite_sequences-higher_order.ads:34:33: medium: contract of function might not be feasible, in instantiation at test_sequence_ho.adb:47
+spark-containers-functional-infinite_sequences-higher_order.ads:34:33: info: function contract feasibility proved, in instantiation at test_sequence_ho.adb:47
 spark-containers-functional-infinite_sequences-higher_order.ads:41:06: info: data dependencies proved, in instantiation at test_sequence_ho.adb:47
 spark-containers-functional-infinite_sequences-higher_order.ads:43:18: info: postcondition proved, in instantiation at test_sequence_ho.adb:47
 spark-containers-functional-infinite_sequences-higher_order.ads:43:18: info: predicate check proved, in instantiation at test_sequence_ho.adb:47
@@ -408,14 +408,14 @@ spark-containers-functional-infinite_sequences-higher_order.ads:220:52: info: pr
 spark-containers-functional-infinite_sequences-higher_order.ads:221:31: info: precondition proved, in instantiation at test_sequence_ho.adb:47
 spark-containers-functional-infinite_sequences-higher_order.ads:221:48: info: null exclusion check proved, in instantiation at test_sequence_ho.adb:47
 spark-containers-functional-infinite_sequences-higher_order.ads:223:13: info: implicit aspect Always_Terminates on "Sum" has been proved, subprogram will terminate, in instantiation at test_sequence_ho.adb:47
-spark-containers-functional-infinite_sequences-higher_order.ads:225:24: medium: contract of function might not be feasible, in instantiation at test_sequence_ho.adb:47
+spark-containers-functional-infinite_sequences-higher_order.ads:225:24: info: function contract feasibility proved, in instantiation at test_sequence_ho.adb:47
 spark-containers-functional-infinite_sequences-higher_order.ads:230:06: info: data dependencies proved, in instantiation at test_sequence_ho.adb:47
 spark-containers-functional-infinite_sequences-higher_order.ads:233:18: info: postcondition proved, in instantiation at test_sequence_ho.adb:47
 spark-containers-functional-infinite_sequences-higher_order.ads:233:21: info: predicate check proved, in instantiation at test_sequence_ho.adb:47
 spark-containers-functional-infinite_sequences-higher_order.ads:233:31: info: precondition proved, in instantiation at test_sequence_ho.adb:47
 spark-containers-functional-infinite_sequences-higher_order.ads:233:31: info: predicate check proved, in instantiation at test_sequence_ho.adb:47
 spark-containers-functional-infinite_sequences-higher_order.ads:233:51: info: null exclusion check proved, in instantiation at test_sequence_ho.adb:47
-spark-containers-functional-infinite_sequences-higher_order.ads:238:24: medium: contract of function might not be feasible, in instantiation at test_sequence_ho.adb:47
+spark-containers-functional-infinite_sequences-higher_order.ads:238:24: info: function contract feasibility proved, in instantiation at test_sequence_ho.adb:47
 spark-containers-functional-infinite_sequences-higher_order.ads:243:06: info: data dependencies proved, in instantiation at test_sequence_ho.adb:47
 spark-containers-functional-infinite_sequences-higher_order.ads:245:18: info: predicate check proved, in instantiation at test_sequence_ho.adb:47
 spark-containers-functional-infinite_sequences-higher_order.ads:245:26: info: predicate check proved, in instantiation at test_sequence_ho.adb:47
@@ -425,7 +425,7 @@ spark-containers-functional-infinite_sequences-higher_order.ads:246:29: info: pr
 spark-containers-functional-infinite_sequences-higher_order.ads:246:39: info: predicate check proved, in instantiation at test_sequence_ho.adb:47
 spark-containers-functional-infinite_sequences-higher_order.ads:246:49: info: predicate check proved, in instantiation at test_sequence_ho.adb:47
 spark-containers-functional-infinite_sequences-higher_order.ads:248:14: info: implicit aspect Always_Terminates on "Lemma_Sum_Eq" has been proved, subprogram will terminate, in instantiation at test_sequence_ho.adb:47
-spark-containers-functional-infinite_sequences-higher_order.ads:251:25: medium: contract of function might not be feasible, in instantiation at test_sequence_ho.adb:47
+spark-containers-functional-infinite_sequences-higher_order.ads:251:25: info: function contract feasibility proved, in instantiation at test_sequence_ho.adb:47
 spark-containers-functional-infinite_sequences-higher_order.ads:256:06: info: data dependencies proved, in instantiation at test_sequence_ho.adb:47
 spark-containers-functional-infinite_sequences-higher_order.ads:259:18: info: predicate check proved, in instantiation at test_sequence_ho.adb:47
 spark-containers-functional-infinite_sequences-higher_order.ads:259:26: info: predicate check proved, in instantiation at test_sequence_ho.adb:47
@@ -440,7 +440,7 @@ spark-containers-functional-infinite_sequences-higher_order.ads:261:33: info: nu
 spark-containers-functional-infinite_sequences-higher_order.ads:261:42: info: precondition proved, in instantiation at test_sequence_ho.adb:47
 spark-containers-functional-infinite_sequences-higher_order.ads:261:42: info: predicate check proved, in instantiation at test_sequence_ho.adb:47
 spark-containers-functional-infinite_sequences-higher_order.ads:261:57: info: null exclusion check proved, in instantiation at test_sequence_ho.adb:47
-spark-containers-functional-infinite_sequences-higher_order.ads:266:24: medium: contract of function might not be feasible, in instantiation at test_sequence_ho.adb:47
+spark-containers-functional-infinite_sequences-higher_order.ads:266:24: info: function contract feasibility proved, in instantiation at test_sequence_ho.adb:47
 spark-containers-functional-infinite_sequences-higher_order.ads:271:06: info: data dependencies proved, in instantiation at test_sequence_ho.adb:47
 spark-containers-functional-infinite_sequences-higher_order.ads:274:18: info: predicate check proved, in instantiation at test_sequence_ho.adb:47
 spark-containers-functional-infinite_sequences-higher_order.ads:274:26: info: predicate check proved, in instantiation at test_sequence_ho.adb:47

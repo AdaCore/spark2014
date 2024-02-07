@@ -391,7 +391,7 @@ red_black_trees.adb:314:48: info: pointer dereference check proved (CVC5: 1 VC)
 red_black_trees.adb:314:55: info: predicate check proved (CVC5: 1 VC; Trivial: 1 VC)
 red_black_trees.adb:314:57: info: predicate check proved (Trivial: 1 VC)
 red_black_trees.adb:319:10: medium: in inlined expression function body at infinite_sequences.ads:31
-red_black_trees.adb:319:10: medium: precondition might fail, cannot prove First (R) = First (S1)
+red_black_trees.adb:319:10: medium: precondition might fail, cannot prove Last (R) = Last (S3)
 red_black_trees.adb:320:27: info: pointer dereference check proved (CVC5: 1 VC)
 red_black_trees.adb:321:20: info: pointer dereference check proved (CVC5: 1 VC)
 red_black_trees.adb:322:27: info: pointer dereference check proved (CVC5: 1 VC)
@@ -460,8 +460,8 @@ red_black_trees.adb:360:24: medium: pointer dereference check might fail
 red_black_trees.adb:360:29: medium: pointer dereference check might fail
 red_black_trees.adb:360:53: info: pointer dereference check proved (CVC5: 1 VC)
 red_black_trees.adb:360:59: info: pointer dereference check proved (CVC5: 1 VC)
-red_black_trees.adb:367:07: medium: in inlined expression function body at infinite_sequences.ads:31
-red_black_trees.adb:367:07: medium: precondition might fail, cannot prove Last (R) = Last (S3)
+red_black_trees.adb:367:07: medium: in inlined expression function body at infinite_sequences.ads:32
+red_black_trees.adb:367:07: medium: precondition might fail, cannot prove First (S3) = Last (S1) + 2
 red_black_trees.adb:368:18: info: pointer dereference check proved (CVC5: 1 VC)
 red_black_trees.adb:368:32: info: pointer dereference check proved (CVC5: 1 VC)
 red_black_trees.adb:368:48: info: pointer dereference check proved (CVC5: 1 VC)

@@ -15,35 +15,35 @@
  <transf name="split_goal_wp_conj" >
   <goal name="def&#39;vc.0" proved="true">
   <proof prover="0"><result status="valid" steps="12"/></proof>
-  <proof prover="1"><result status="valid" steps="933"/></proof>
+  <proof prover="1"><result status="valid" steps="910"/></proof>
   <proof prover="2"><result status="valid" steps="4101"/></proof>
   <proof prover="4"><result status="highfailure"/></proof>
   </goal>
   <goal name="def&#39;vc.1">
-  <proof prover="0"><result status="unknown"/></proof>
-  <proof prover="1"><result status="unknown" steps="1271"/></proof>
+  <proof prover="0"><result status="unknown" steps="131"/></proof>
+  <proof prover="1"><result status="unknown" steps="1248"/></proof>
   <proof prover="2"><result status="timeout"/></proof>
   <proof prover="4"><result status="unknown" steps="60"/></proof>
   <transf name="introduce_premises" >
    <goal name="def&#39;vc.1.0">
-   <proof prover="3"><result status="unknown" steps="1388"/></proof>
+   <proof prover="3"><result status="unknown" steps="1365"/></proof>
    </goal>
   </transf>
   </goal>
   <goal name="def&#39;vc.2">
-  <proof prover="0"><result status="unknown"/></proof>
-  <proof prover="1"><result status="unknown" steps="1303"/></proof>
+  <proof prover="0"><result status="unknown" steps="183"/></proof>
+  <proof prover="1"><result status="unknown" steps="1280"/></proof>
   <proof prover="2"><result status="timeout"/></proof>
   <proof prover="4"><result status="unknown" steps="104"/></proof>
   <transf name="introduce_premises" >
    <goal name="def&#39;vc.2.0">
-   <proof prover="3"><result status="unknown" steps="1492"/></proof>
+   <proof prover="3"><result status="unknown" steps="1469"/></proof>
    </goal>
   </transf>
   </goal>
   <goal name="def&#39;vc.3" proved="true">
   <proof prover="0"><result status="valid" steps="211"/></proof>
-  <proof prover="1"><result status="valid" steps="1201"/></proof>
+  <proof prover="1"><result status="valid" steps="1178"/></proof>
   <proof prover="2"><result status="valid" steps="4852"/></proof>
   <proof prover="4"><result status="highfailure"/></proof>
   </goal>
