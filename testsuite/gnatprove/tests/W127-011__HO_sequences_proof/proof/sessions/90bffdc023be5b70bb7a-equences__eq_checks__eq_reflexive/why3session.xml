@@ -25,8 +25,13 @@
   <goal name="def&#39;vc.3" proved="true">
   <proof prover="0"><result status="highfailure"/></proof>
   <proof prover="1"><result status="valid" steps="293"/></proof>
+<<<<<<< HEAD
   <proof prover="2"><result status="highfailure"/></proof>
   <proof prover="4"><result status="highfailure"/></proof>
+=======
+  <proof prover="2"><result status="valid" steps="1027"/></proof>
+  <proof prover="4"><result status="unknown" steps="34"/></proof>
+>>>>>>> Update output after line changes in SPARKlib
   </goal>
  </transf>
  </goal>

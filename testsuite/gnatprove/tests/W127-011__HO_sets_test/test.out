@@ -11,70 +11,70 @@ check_ho_pre.adb:47:13: info: implicit aspect Always_Terminates on "Value_OK" ha
 check_ho_pre.adb:48:24: info: range check proved (CVC5: 2 VC)
 check_ho_pre.adb:52:32: info: data dependencies proved
 check_ho_pre.adb:54:22: info: assertion proved (CVC5: 1 VC)
-spark-containers-functional-sets-higher_order.ads:19:23: info: function contract feasibility proved (Trivial: 1 VC), in instantiation at check_ho_pre.adb:14
-spark-containers-functional-sets-higher_order.ads:19:23: info: function contract feasibility proved (Trivial: 1 VC), in instantiation at use_set_ho.adb:13
-spark-containers-functional-sets-higher_order.ads:34:24: info: function contract feasibility proved (CVC5: 1 VC), in instantiation at check_ho_pre.adb:14
-spark-containers-functional-sets-higher_order.ads:34:24: info: function contract feasibility proved (CVC5: 1 VC), in instantiation at use_set_ho.adb:13
-spark-containers-functional-sets-higher_order.ads:50:29: info: function contract feasibility proved (CVC5: 1 VC), in instantiation at use_set_ho.adb:13
-spark-containers-functional-sets-higher_order.ads:50:29: info: function contract feasibility proved (Z3: 1 VC), in instantiation at check_ho_pre.adb:14
-spark-containers-functional-sets-higher_order.ads:63:36: info: predicate check proved (Trivial: 1 VC), in instantiation at check_ho_pre.adb:14
-spark-containers-functional-sets-higher_order.ads:63:36: info: predicate check proved (Trivial: 1 VC), in instantiation at use_set_ho.adb:13
-spark-containers-functional-sets-higher_order.ads:63:41: info: predicate check proved (Trivial: 1 VC), in instantiation at check_ho_pre.adb:14
-spark-containers-functional-sets-higher_order.ads:63:41: info: predicate check proved (Trivial: 1 VC), in instantiation at use_set_ho.adb:13
-spark-containers-functional-sets-higher_order.ads:64:49: info: predicate check proved (CVC5: 1 VC; Trivial: 1 VC), in instantiation at check_ho_pre.adb:14
-spark-containers-functional-sets-higher_order.ads:64:49: info: predicate check proved (CVC5: 1 VC; Trivial: 1 VC), in instantiation at use_set_ho.adb:13
-spark-containers-functional-sets-higher_order.ads:64:64: info: predicate check proved (CVC5: 1 VC; Trivial: 1 VC), in instantiation at check_ho_pre.adb:14
-spark-containers-functional-sets-higher_order.ads:64:64: info: predicate check proved (CVC5: 1 VC; Trivial: 1 VC), in instantiation at use_set_ho.adb:13
-spark-containers-functional-sets-higher_order.ads:76:29: info: function contract feasibility proved (CVC5: 1 VC), in instantiation at use_set_ho.adb:13
-spark-containers-functional-sets-higher_order.ads:76:29: info: function contract feasibility proved (Z3: 1 VC), in instantiation at check_ho_pre.adb:14
-spark-containers-functional-sets-higher_order.ads:97:29: info: function contract feasibility proved (CVC5: 1 VC), in instantiation at use_set_ho.adb:13
-spark-containers-functional-sets-higher_order.ads:97:29: info: function contract feasibility proved (Z3: 1 VC), in instantiation at check_ho_pre.adb:14
-spark-containers-functional-sets-higher_order.ads:108:36: info: predicate check proved (Trivial: 1 VC), in instantiation at check_ho_pre.adb:14
-spark-containers-functional-sets-higher_order.ads:108:36: info: predicate check proved (Trivial: 1 VC), in instantiation at use_set_ho.adb:13
-spark-containers-functional-sets-higher_order.ads:108:41: info: predicate check proved (Trivial: 1 VC), in instantiation at check_ho_pre.adb:14
-spark-containers-functional-sets-higher_order.ads:108:41: info: predicate check proved (Trivial: 1 VC), in instantiation at use_set_ho.adb:13
-spark-containers-functional-sets-higher_order.ads:109:49: info: predicate check proved (CVC5: 1 VC; Trivial: 1 VC), in instantiation at check_ho_pre.adb:14
-spark-containers-functional-sets-higher_order.ads:109:49: info: predicate check proved (CVC5: 1 VC; Trivial: 1 VC), in instantiation at use_set_ho.adb:13
-spark-containers-functional-sets-higher_order.ads:109:64: info: predicate check proved (CVC5: 1 VC; Trivial: 1 VC), in instantiation at check_ho_pre.adb:14
-spark-containers-functional-sets-higher_order.ads:109:64: info: predicate check proved (CVC5: 1 VC; Trivial: 1 VC), in instantiation at use_set_ho.adb:13
-spark-containers-functional-sets-higher_order.ads:114:33: info: function contract feasibility proved (CVC5: 1 VC), in instantiation at use_set_ho.adb:13
-spark-containers-functional-sets-higher_order.ads:114:33: info: function contract feasibility proved (Z3: 1 VC), in instantiation at check_ho_pre.adb:14
-spark-containers-functional-sets-higher_order.ads:140:33: info: function contract feasibility proved (CVC5: 1 VC), in instantiation at use_set_ho.adb:13
-spark-containers-functional-sets-higher_order.ads:140:33: info: function contract feasibility proved (Z3: 1 VC), in instantiation at check_ho_pre.adb:14
-spark-containers-functional-sets-higher_order.ads:168:33: info: function contract feasibility proved (CVC5: 1 VC), in instantiation at use_set_ho.adb:13
-spark-containers-functional-sets-higher_order.ads:168:33: info: function contract feasibility proved (Z3: 1 VC), in instantiation at check_ho_pre.adb:14
-spark-containers-functional-sets-higher_order.ads:186:23: info: function contract feasibility proved (Trivial: 1 VC), in instantiation at check_ho_pre.adb:14
-spark-containers-functional-sets-higher_order.ads:186:23: info: function contract feasibility proved (Trivial: 1 VC), in instantiation at use_set_ho.adb:13
-spark-containers-functional-sets-higher_order.ads:195:36: info: null exclusion check proved (CVC5: 1 VC), in instantiation at check_ho_pre.adb:14
-spark-containers-functional-sets-higher_order.ads:195:36: info: null exclusion check proved (CVC5: 1 VC), in instantiation at use_set_ho.adb:13
-spark-containers-functional-sets-higher_order.ads:200:25: info: function contract feasibility proved (Trivial: 1 VC), in instantiation at check_ho_pre.adb:14
-spark-containers-functional-sets-higher_order.ads:200:25: info: function contract feasibility proved (Trivial: 1 VC), in instantiation at use_set_ho.adb:13
-spark-containers-functional-sets-higher_order.ads:208:37: info: null exclusion check proved (CVC5: 1 VC), in instantiation at check_ho_pre.adb:14
-spark-containers-functional-sets-higher_order.ads:208:37: info: null exclusion check proved (CVC5: 1 VC), in instantiation at use_set_ho.adb:13
-spark-containers-functional-sets-higher_order.ads:214:23: info: function contract feasibility proved (Trivial: 1 VC), in instantiation at check_ho_pre.adb:14
-spark-containers-functional-sets-higher_order.ads:214:23: info: function contract feasibility proved (Trivial: 1 VC), in instantiation at use_set_ho.adb:13
-spark-containers-functional-sets-higher_order.ads:222:61: info: null exclusion check proved (CVC5: 1 VC), in instantiation at check_ho_pre.adb:14
-spark-containers-functional-sets-higher_order.ads:222:61: info: null exclusion check proved (CVC5: 1 VC), in instantiation at use_set_ho.adb:13
-spark-containers-functional-sets-higher_order.ads:229:23: info: function contract feasibility proved (Trivial: 1 VC), in instantiation at check_ho_pre.adb:14
-spark-containers-functional-sets-higher_order.ads:229:23: info: function contract feasibility proved (Trivial: 1 VC), in instantiation at use_set_ho.adb:13
-spark-containers-functional-sets-higher_order.ads:241:23: info: function contract feasibility proved (Trivial: 1 VC), in instantiation at check_ho_pre.adb:14
-spark-containers-functional-sets-higher_order.ads:241:23: info: function contract feasibility proved (Trivial: 1 VC), in instantiation at use_set_ho.adb:13
-spark-containers-functional-sets-higher_order.ads:253:23: info: function contract feasibility proved (Trivial: 1 VC), in instantiation at check_ho_pre.adb:14
-spark-containers-functional-sets-higher_order.ads:253:23: info: function contract feasibility proved (Trivial: 1 VC), in instantiation at use_set_ho.adb:13
-spark-containers-functional-sets-higher_order.ads:262:36: info: null exclusion check proved (CVC5: 1 VC), in instantiation at check_ho_pre.adb:14
-spark-containers-functional-sets-higher_order.ads:262:36: info: null exclusion check proved (CVC5: 1 VC), in instantiation at use_set_ho.adb:13
-spark-containers-functional-sets-higher_order.ads:271:24: info: function contract feasibility proved (CVC5: 1 VC), in instantiation at check_ho_pre.adb:14
-spark-containers-functional-sets-higher_order.ads:271:24: info: function contract feasibility proved (CVC5: 1 VC), in instantiation at use_set_ho.adb:13
-spark-containers-functional-sets-higher_order.ads:280:36: info: null exclusion check proved (CVC5: 1 VC), in instantiation at check_ho_pre.adb:14
-spark-containers-functional-sets-higher_order.ads:280:36: info: null exclusion check proved (CVC5: 1 VC), in instantiation at use_set_ho.adb:13
-spark-containers-functional-sets-higher_order.ads:284:25: info: function contract feasibility proved (CVC5: 1 VC), in instantiation at check_ho_pre.adb:14
-spark-containers-functional-sets-higher_order.ads:284:25: info: function contract feasibility proved (CVC5: 1 VC), in instantiation at use_set_ho.adb:13
-spark-containers-functional-sets-higher_order.ads:292:37: info: null exclusion check proved (CVC5: 1 VC), in instantiation at check_ho_pre.adb:14
-spark-containers-functional-sets-higher_order.ads:292:37: info: null exclusion check proved (CVC5: 1 VC), in instantiation at use_set_ho.adb:13
-spark-containers-functional-sets-higher_order.ads:298:24: info: function contract feasibility proved (CVC5: 1 VC), in instantiation at check_ho_pre.adb:14
-spark-containers-functional-sets-higher_order.ads:298:24: info: function contract feasibility proved (CVC5: 1 VC), in instantiation at use_set_ho.adb:13
-spark-containers-functional-sets-higher_order.ads:306:61: info: null exclusion check proved (CVC5: 1 VC), in instantiation at check_ho_pre.adb:14
-spark-containers-functional-sets-higher_order.ads:306:61: info: null exclusion check proved (CVC5: 1 VC), in instantiation at use_set_ho.adb:13
+spark-containers-functional-sets-higher_order.ads:20:23: info: function contract feasibility proved (Trivial: 1 VC), in instantiation at check_ho_pre.adb:14
+spark-containers-functional-sets-higher_order.ads:20:23: info: function contract feasibility proved (Trivial: 1 VC), in instantiation at use_set_ho.adb:13
+spark-containers-functional-sets-higher_order.ads:35:24: info: function contract feasibility proved (CVC5: 1 VC), in instantiation at check_ho_pre.adb:14
+spark-containers-functional-sets-higher_order.ads:35:24: info: function contract feasibility proved (CVC5: 1 VC), in instantiation at use_set_ho.adb:13
+spark-containers-functional-sets-higher_order.ads:51:29: info: function contract feasibility proved (CVC5: 1 VC), in instantiation at use_set_ho.adb:13
+spark-containers-functional-sets-higher_order.ads:51:29: info: function contract feasibility proved (Z3: 1 VC), in instantiation at check_ho_pre.adb:14
+spark-containers-functional-sets-higher_order.ads:64:36: info: predicate check proved (Trivial: 1 VC), in instantiation at check_ho_pre.adb:14
+spark-containers-functional-sets-higher_order.ads:64:36: info: predicate check proved (Trivial: 1 VC), in instantiation at use_set_ho.adb:13
+spark-containers-functional-sets-higher_order.ads:64:41: info: predicate check proved (Trivial: 1 VC), in instantiation at check_ho_pre.adb:14
+spark-containers-functional-sets-higher_order.ads:64:41: info: predicate check proved (Trivial: 1 VC), in instantiation at use_set_ho.adb:13
+spark-containers-functional-sets-higher_order.ads:65:49: info: predicate check proved (CVC5: 1 VC; Trivial: 1 VC), in instantiation at check_ho_pre.adb:14
+spark-containers-functional-sets-higher_order.ads:65:49: info: predicate check proved (CVC5: 1 VC; Trivial: 1 VC), in instantiation at use_set_ho.adb:13
+spark-containers-functional-sets-higher_order.ads:65:64: info: predicate check proved (CVC5: 1 VC; Trivial: 1 VC), in instantiation at check_ho_pre.adb:14
+spark-containers-functional-sets-higher_order.ads:65:64: info: predicate check proved (CVC5: 1 VC; Trivial: 1 VC), in instantiation at use_set_ho.adb:13
+spark-containers-functional-sets-higher_order.ads:77:29: info: function contract feasibility proved (CVC5: 1 VC), in instantiation at use_set_ho.adb:13
+spark-containers-functional-sets-higher_order.ads:77:29: info: function contract feasibility proved (Z3: 1 VC), in instantiation at check_ho_pre.adb:14
+spark-containers-functional-sets-higher_order.ads:98:29: info: function contract feasibility proved (CVC5: 1 VC), in instantiation at use_set_ho.adb:13
+spark-containers-functional-sets-higher_order.ads:98:29: info: function contract feasibility proved (Z3: 1 VC), in instantiation at check_ho_pre.adb:14
+spark-containers-functional-sets-higher_order.ads:109:36: info: predicate check proved (Trivial: 1 VC), in instantiation at check_ho_pre.adb:14
+spark-containers-functional-sets-higher_order.ads:109:36: info: predicate check proved (Trivial: 1 VC), in instantiation at use_set_ho.adb:13
+spark-containers-functional-sets-higher_order.ads:109:41: info: predicate check proved (Trivial: 1 VC), in instantiation at check_ho_pre.adb:14
+spark-containers-functional-sets-higher_order.ads:109:41: info: predicate check proved (Trivial: 1 VC), in instantiation at use_set_ho.adb:13
+spark-containers-functional-sets-higher_order.ads:110:49: info: predicate check proved (CVC5: 1 VC; Trivial: 1 VC), in instantiation at check_ho_pre.adb:14
+spark-containers-functional-sets-higher_order.ads:110:49: info: predicate check proved (CVC5: 1 VC; Trivial: 1 VC), in instantiation at use_set_ho.adb:13
+spark-containers-functional-sets-higher_order.ads:110:64: info: predicate check proved (CVC5: 1 VC; Trivial: 1 VC), in instantiation at check_ho_pre.adb:14
+spark-containers-functional-sets-higher_order.ads:110:64: info: predicate check proved (CVC5: 1 VC; Trivial: 1 VC), in instantiation at use_set_ho.adb:13
+spark-containers-functional-sets-higher_order.ads:115:33: info: function contract feasibility proved (CVC5: 1 VC), in instantiation at use_set_ho.adb:13
+spark-containers-functional-sets-higher_order.ads:115:33: info: function contract feasibility proved (Z3: 1 VC), in instantiation at check_ho_pre.adb:14
+spark-containers-functional-sets-higher_order.ads:141:33: info: function contract feasibility proved (CVC5: 1 VC), in instantiation at use_set_ho.adb:13
+spark-containers-functional-sets-higher_order.ads:141:33: info: function contract feasibility proved (Z3: 1 VC), in instantiation at check_ho_pre.adb:14
+spark-containers-functional-sets-higher_order.ads:169:33: info: function contract feasibility proved (CVC5: 1 VC), in instantiation at use_set_ho.adb:13
+spark-containers-functional-sets-higher_order.ads:169:33: info: function contract feasibility proved (Z3: 1 VC), in instantiation at check_ho_pre.adb:14
+spark-containers-functional-sets-higher_order.ads:187:23: info: function contract feasibility proved (Trivial: 1 VC), in instantiation at check_ho_pre.adb:14
+spark-containers-functional-sets-higher_order.ads:187:23: info: function contract feasibility proved (Trivial: 1 VC), in instantiation at use_set_ho.adb:13
+spark-containers-functional-sets-higher_order.ads:196:36: info: null exclusion check proved (CVC5: 1 VC), in instantiation at check_ho_pre.adb:14
+spark-containers-functional-sets-higher_order.ads:196:36: info: null exclusion check proved (CVC5: 1 VC), in instantiation at use_set_ho.adb:13
+spark-containers-functional-sets-higher_order.ads:201:25: info: function contract feasibility proved (Trivial: 1 VC), in instantiation at check_ho_pre.adb:14
+spark-containers-functional-sets-higher_order.ads:201:25: info: function contract feasibility proved (Trivial: 1 VC), in instantiation at use_set_ho.adb:13
+spark-containers-functional-sets-higher_order.ads:209:37: info: null exclusion check proved (CVC5: 1 VC), in instantiation at check_ho_pre.adb:14
+spark-containers-functional-sets-higher_order.ads:209:37: info: null exclusion check proved (CVC5: 1 VC), in instantiation at use_set_ho.adb:13
+spark-containers-functional-sets-higher_order.ads:215:23: info: function contract feasibility proved (Trivial: 1 VC), in instantiation at check_ho_pre.adb:14
+spark-containers-functional-sets-higher_order.ads:215:23: info: function contract feasibility proved (Trivial: 1 VC), in instantiation at use_set_ho.adb:13
+spark-containers-functional-sets-higher_order.ads:223:61: info: null exclusion check proved (CVC5: 1 VC), in instantiation at check_ho_pre.adb:14
+spark-containers-functional-sets-higher_order.ads:223:61: info: null exclusion check proved (CVC5: 1 VC), in instantiation at use_set_ho.adb:13
+spark-containers-functional-sets-higher_order.ads:230:23: info: function contract feasibility proved (Trivial: 1 VC), in instantiation at check_ho_pre.adb:14
+spark-containers-functional-sets-higher_order.ads:230:23: info: function contract feasibility proved (Trivial: 1 VC), in instantiation at use_set_ho.adb:13
+spark-containers-functional-sets-higher_order.ads:242:23: info: function contract feasibility proved (Trivial: 1 VC), in instantiation at check_ho_pre.adb:14
+spark-containers-functional-sets-higher_order.ads:242:23: info: function contract feasibility proved (Trivial: 1 VC), in instantiation at use_set_ho.adb:13
+spark-containers-functional-sets-higher_order.ads:254:23: info: function contract feasibility proved (Trivial: 1 VC), in instantiation at check_ho_pre.adb:14
+spark-containers-functional-sets-higher_order.ads:254:23: info: function contract feasibility proved (Trivial: 1 VC), in instantiation at use_set_ho.adb:13
+spark-containers-functional-sets-higher_order.ads:263:36: info: null exclusion check proved (CVC5: 1 VC), in instantiation at check_ho_pre.adb:14
+spark-containers-functional-sets-higher_order.ads:263:36: info: null exclusion check proved (CVC5: 1 VC), in instantiation at use_set_ho.adb:13
+spark-containers-functional-sets-higher_order.ads:272:24: info: function contract feasibility proved (CVC5: 1 VC), in instantiation at check_ho_pre.adb:14
+spark-containers-functional-sets-higher_order.ads:272:24: info: function contract feasibility proved (CVC5: 1 VC), in instantiation at use_set_ho.adb:13
+spark-containers-functional-sets-higher_order.ads:281:36: info: null exclusion check proved (CVC5: 1 VC), in instantiation at check_ho_pre.adb:14
+spark-containers-functional-sets-higher_order.ads:281:36: info: null exclusion check proved (CVC5: 1 VC), in instantiation at use_set_ho.adb:13
+spark-containers-functional-sets-higher_order.ads:285:25: info: function contract feasibility proved (CVC5: 1 VC), in instantiation at check_ho_pre.adb:14
+spark-containers-functional-sets-higher_order.ads:285:25: info: function contract feasibility proved (CVC5: 1 VC), in instantiation at use_set_ho.adb:13
+spark-containers-functional-sets-higher_order.ads:293:37: info: null exclusion check proved (CVC5: 1 VC), in instantiation at check_ho_pre.adb:14
+spark-containers-functional-sets-higher_order.ads:293:37: info: null exclusion check proved (CVC5: 1 VC), in instantiation at use_set_ho.adb:13
+spark-containers-functional-sets-higher_order.ads:299:24: info: function contract feasibility proved (CVC5: 1 VC), in instantiation at check_ho_pre.adb:14
+spark-containers-functional-sets-higher_order.ads:299:24: info: function contract feasibility proved (CVC5: 1 VC), in instantiation at use_set_ho.adb:13
+spark-containers-functional-sets-higher_order.ads:307:61: info: null exclusion check proved (CVC5: 1 VC), in instantiation at check_ho_pre.adb:14
+spark-containers-functional-sets-higher_order.ads:307:61: info: null exclusion check proved (CVC5: 1 VC), in instantiation at use_set_ho.adb:13
 spark-containers-functional-sets.ads:30:19: info: aspect Always_Terminates on "Equivalent_Elements_Reflexive" has been proved, subprogram will terminate, in instantiation at check_ho_pre.adb:10
 spark-containers-functional-sets.ads:30:19: info: aspect Always_Terminates on "Equivalent_Elements_Reflexive" has been proved, subprogram will terminate, in instantiation at use_set_ho.adb:9
 spark-containers-functional-sets.ads:32:19: info: aspect Always_Terminates on "Equivalent_Elements_Symmetric" has been proved, subprogram will terminate, in instantiation at check_ho_pre.adb:10
