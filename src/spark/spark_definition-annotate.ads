@@ -416,10 +416,6 @@ package SPARK_Definition.Annotate is
    --  Return True if N is a pragma Annotate (GNATprove,
    --  Automatic_Instantiation, P). If P is Empty, accept any procedure entity.
 
-   function Has_Ownership_Annotation (E : Entity_Id) return Boolean
-     with Pre => Is_Type (E);
-   --  Return True if E is annotated with ownership
-
    function Has_Skip_Proof_Annotation (E : Entity_Id) return Boolean;
    --  True if E or an enclosing entity has pragma Annotate(GNATProve,
    --  Skip_Proof) or pragma Annotate (GNATProve, Skip_Flow_And_Proof).
@@ -432,6 +428,10 @@ package SPARK_Definition.Annotate is
    Skipped_Proof          : Node_Sets.Set;
    --  These sets contain all entities for which flow or proof (or both) was
    --  actually skipped.
+
+   function Has_Ownership_Annotation (E : Entity_Id) return Boolean
+     with Pre => Is_Type (E);
+   --  Return True if E is annotated with ownership
 
    function Needs_Reclamation (E : Entity_Id) return Boolean
      with Pre => Is_Type (E) and then Has_Ownership_Annotation (E);
@@ -463,6 +463,10 @@ package SPARK_Definition.Annotate is
    --  Return the function F such that N is a pragma Annotate
    --  (GNATprove,  Ownership, ..., F) and F and Ty have the same root type if
    --  any.
+
+   procedure Infer_Ownership_Annotation (E : Type_Kind_Id);
+   --  Infer ownership annotation for E. This is used when abstracting away
+   --  unused record components. E should be a root retysp here.
 
    function Has_Automatic_Instantiation_Annotation
      (E : Entity_Id) return Boolean;

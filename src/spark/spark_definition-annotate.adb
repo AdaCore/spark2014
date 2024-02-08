@@ -5378,6 +5378,28 @@ package body SPARK_Definition.Annotate is
       end if;
    end Infer_Inline_Annotation;
 
+   --------------------------------
+   -- Infer_Ownership_Annotation --
+   --------------------------------
+
+   procedure Infer_Ownership_Annotation (E : Type_Kind_Id) is
+      pragma Assert (E = Root_Retysp (E));
+   begin
+      if Is_Deep (E) and then not Ownership_Annotations.Contains (E) then
+         if Contains_Allocated_Parts (E) then
+            Ownership_Annotations.Insert
+              (Key      => E,
+               New_Item =>
+                 Ownership_Annotation'
+                   (Needs_Reclamation => True, others => <>));
+         else
+            Ownership_Annotations.Insert
+              (Key      => E,
+               New_Item => Ownership_Annotation'(Needs_Reclamation => False));
+         end if;
+      end if;
+   end Infer_Ownership_Annotation;
+
    ---------------------------
    -- Insert_Annotate_Range --
    ---------------------------

@@ -1218,9 +1218,6 @@ package body SPARK_Util.Types is
    function Has_Private_Fields (E : Type_Kind_Id) return Boolean is
       Ty : constant Type_Kind_Id := Retysp (E);
    begin
-      if not Full_View_Not_In_SPARK (Ty) then
-         return False;
-      end if;
 
       --  Only base types have private fields of their own; subtypes do not
 
@@ -1233,6 +1230,16 @@ package body SPARK_Util.Types is
       if not Is_Tagged_Type (Ty)
         and then Retysp (Etype (Ty)) /= Ty
       then
+         return False;
+      end if;
+
+      --  For unused records, replace the components by a private part
+
+      if Is_Unused_Record (Ty) then
+         return True;
+      end if;
+
+      if not Full_View_Not_In_SPARK (Ty) then
          return False;
       end if;
 

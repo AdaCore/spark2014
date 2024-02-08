@@ -1479,13 +1479,6 @@ package body SPARK_Definition is
       return SPARK_Status_JSON;
    end Get_SPARK_JSON;
 
-   ------------------------
-   -- Get_Unused_Records --
-   ------------------------
-
-   function Get_Unused_Records return Node_Sets.Set is
-     (Unused_Records);
-
    ----------------------
    -- Has_Relaxed_Init --
    ----------------------
@@ -1534,6 +1527,20 @@ package body SPARK_Definition is
       and Marking_Queue.Is_Empty
       and Delayed_Type_Aspects.Is_Empty
       and Access_To_Incomplete_Types.Is_Empty);
+
+   ----------------------
+   -- Is_Unused_Record --
+   ----------------------
+
+   function Is_Unused_Record (E : Type_Kind_Id) return Boolean is
+      Rep : Type_Kind_Id := Base_Retysp (E);
+   begin
+      if not Is_Tagged_Type (Rep) then
+         Rep := Root_Retysp (Rep);
+      end if;
+
+      return Unused_Records.Contains (Rep);
+   end Is_Unused_Record;
 
    ---------------------------------
    -- Is_Valid_Allocating_Context --

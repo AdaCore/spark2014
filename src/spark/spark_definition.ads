@@ -162,9 +162,6 @@ package SPARK_Definition is
    --  Should be called after marking is finished. Returns the result of
    --  marking as a JSON record.
 
-   function Get_Unused_Records return Node_Sets.Set;
-   --  Return the set of Unused records, remove.
-
    function Has_Relaxed_Init (E : Type_Kind_Id) return Boolean
      with Post => (if Has_Relaxed_Init'Result then In_Relaxed_Init (E));
    --  True if type E is annotated with relaxed initialization
@@ -180,6 +177,9 @@ package SPARK_Definition is
    function Is_Loop_Entity (E : Constant_Or_Variable_Kind_Id) return Boolean;
    --  Returns True iff entity E is defined in loop before the invariants and
    --  thus may require a special translation. See gnat2why.ads for details.
+
+   function Is_Unused_Record (E : Type_Kind_Id) return Boolean;
+   --  Return True if E is an unused record type
 
    procedure Mark_Standard_Package;
    --  Put marks on package Standard

@@ -1,0 +1,10 @@
+ext.ads:23:13: info: implicit aspect Always_Terminates on overriding operator "=" has been proved, subprogram will terminate
+ext.ads:25:37: info: pointer dereference check proved (CVC5: 1 VC)
+ext.ads:25:47: info: pointer dereference check proved (CVC5: 1 VC)
+test_abs_1.adb:3:04: info: absence of resource or memory leak at end of scope proved (CVC5: 1 VC)
+test_abs_1.adb:3:04: info: initialization of "X" proved
+test_abs_1.adb:5:13: info: implicit aspect Always_Terminates on "Eq" has been proved, subprogram will terminate
+test_abs_1.adb:8:19: info: assertion proved (CVC5: 1 VC)
+test_abs_2.adb:5:07: info: absence of resource or memory leak at end of scope proved (CVC5: 1 VC)
+test_abs_2.adb:7:09: info: absence of resource or memory leak proved (CVC5: 1 VC)
+test_abs_2.adb:8:09: info: absence of resource or memory leak proved (CVC5: 1 VC)
