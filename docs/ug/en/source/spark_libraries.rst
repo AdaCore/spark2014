@@ -586,9 +586,25 @@ them, these subprograms call the ``Check_Or_Fail`` procedure declared in
 ``SPARK.Containers``. This procedure is marked as ``Import``, so an error will
 occur at link time if these features are used in normal code (or in enabled
 ghost code or assertions).
+
 These non-executable features include quantified expressions over functional
 maps, sets, and multisets and logical equality in nearly all functional and
 formal containers.
+
+.. note::
+
+   When instantiating containers from SPARKlib in your code, and compiling with
+   assertions enabled (e.g. because you passed the switch ``-gnata``), you may
+   get the following error, even if you don't use the non-executable features
+   mentioned above::
+
+      undefined reference to `check_or_fail'
+
+   This spurious error comes from your executable including unused functions
+   calling in the undefined procedure ``Check_Or_Fail``. To get rid of this
+   error, you should compile your code with the switch ``-ffunction-sections``
+   and link it with the switch ``-Wl,--gc-sections``, so that unused functions
+   are not included in the executable.
 
 Quantified Expressions over Functional Maps, Sets, and Multisets
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
