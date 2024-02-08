@@ -766,16 +766,21 @@ package SPARK_Util is
    --  Return the root of the path expression Expr (object, aggregate,
    --  allocator, NULL, or function call). Through_Traversal is True if it
    --  should follow through calls to traversal functions.
+   --  For actual conditional path selections, this return the root of the
+   --  first branch. It should only be used when all branches have equivalent
+   --  roots.
 
    function Get_Root_Object
      (Expr              : N_Subexpr_Id;
       Through_Traversal : Boolean := True)
       return Opt_Object_Kind_Id
    with
-     Pre => Is_Path_Expression (Expr);
+     Pre => Is_Conditional_Path_Selection (Expr);
    --  Return the root of the path expression Expr, or Empty for an allocator,
    --  NULL, or a function call. Through_Traversal is True if it should follow
    --  through calls to traversal functions.
+   --  For actual conditional path selections, this return a root only if all
+   --  branches have the same root object, otherwise it returns empty.
 
    function Get_Specialized_Parameters
      (Call                 : Node_Id;
@@ -843,6 +848,11 @@ package SPARK_Util is
 
    function Is_Path_Expression (Expr : N_Subexpr_Id) return Boolean;
    --  Return whether Expr corresponds to a path
+
+   function Is_Conditional_Path_Selection (Expr : N_Subexpr_Id) return Boolean;
+   --  Return whether Expr is a conditional path selection, that is a nest of
+   --  conditional/case expressions (possibly empty) whose terminal dependent
+   --  expressions are paths.
 
    function Is_Strict_Subpath (Expr : N_Subexpr_Id) return Boolean
    with Pre => Is_Path_Expression (Expr)
@@ -978,6 +988,11 @@ package SPARK_Util is
    function Supported_Alias (Expr : Node_Id) return Entity_Id;
    --  If Expr is of the form "X'Address", return the root object of X.
    --  Otherwise, return Empty. This function accepts empty expressions.
+
+   function Terminal_Alternatives (Expr : N_Subexpr_Id)
+                                   return Node_Vectors.Vector;
+   --  From a nest of conditional/case expressions (possibly empty), return the
+   --  sequence of terminal dependent subexpressions of Expr.
 
    ---------------------------------
    -- Misc operations and queries --

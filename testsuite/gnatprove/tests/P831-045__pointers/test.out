@@ -128,6 +128,6 @@ test.adb:84:08: warning: "B" may be null
 test.adb:87:08: info: analyzing call to "g" in context
 test.adb:89:03: error: "A" is not allowed in SPARK (due to uninitialized object of anonymous access type)
 test.adb:89:03: error: violation of aspect SPARK_Mode at line 7
-test.adb:89:08: error: borrow or observe of an expression which is not part of stand-alone object or parameter is not allowed in SPARK (SPARK RM 3.10(4)))
+test.adb:89:08: error: borrow or observe of a non-traversal function call is not allowed in SPARK (SPARK RM 3.10(4))
 test.adb:89:08: error: violation of aspect SPARK_Mode at line 7
 gnatprove: error during flow analysis and proof

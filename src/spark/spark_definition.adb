@@ -287,7 +287,10 @@ package body SPARK_Definition is
       In_Observe : Boolean)
    with
      Post => (if not Violation_Detected
-              then Is_Path_Expression (Expr)
+                then
+                  (if In_Observe
+                   then Is_Conditional_Path_Selection (Expr)
+                   else Is_Path_Expression (Expr))
                 and then Present (Get_Root_Object (Expr)));
    --  Check that a borrow or observe has a valid source (stand-alone object
    --  or call to a traversal function, that does not go through a slice in
@@ -1083,9 +1086,12 @@ package body SPARK_Definition is
 
       --  Local variables
 
-      Root : constant Opt_Object_Kind_Id :=
-        (if Is_Path_Expression (Expr) then Get_Root_Object (Expr)
-         else Empty);
+      Is_Path : constant Boolean :=
+        (if In_Observe
+         then Is_Conditional_Path_Selection (Expr)
+         else Is_Path_Expression (Expr));
+      Root    : constant Opt_Object_Kind_Id :=
+        (if Is_Path then Get_Root_Object (Expr) else Types.Empty);
 
    --  Start of processing for Check_Source_Of_Borrow_Or_Observe
 
@@ -1097,13 +1103,61 @@ package body SPARK_Definition is
       --  function.
 
       if No (Root) then
-         Mark_Violation
-           ((if Nkind (Expr) = N_Function_Call
-             then "borrow or observe of a non-traversal function call"
-             else "borrow or observe of an expression which is not part of "
-                  & "stand-alone object or parameter"),
-            Expr,
-            SRM_Reference => "SPARK RM 3.10(4))");
+
+         --  There can be no root object if:
+         --  * There is a conditional expression at head of a borrowed
+         --    expression
+         --  * Some alternative expressions are not path
+         --  * Some alternative paths have no root
+         --  * Alternatives do not agree on root
+
+         declare
+            First_Root           : Node_Id := Types.Empty;
+            Root_Expr            : Node_Id;
+            Distinct_Not_Emitted : Boolean := True;
+            Alternatives         : Node_Vectors.Vector;
+         begin
+            --  Only skip head conditionals for observe. This way, top
+            --  conditionals in borrow are treated like nested ones.
+
+            if In_Observe then
+               Alternatives := Terminal_Alternatives (Expr);
+            else
+               Alternatives.Append (Expr);
+            end if;
+
+            for Alt_Expr of Alternatives loop
+               Root_Expr := (if Is_Path_Expression (Alt_Expr)
+                             then Get_Root_Expr (Alt_Expr)
+                             else Types.Empty);
+               if Nkind (Root_Expr) = N_Function_Call
+                 and then not Is_Traversal_Function_Call (Root_Expr)
+               then
+                  Mark_Violation
+                    ("borrow or observe of a non-traversal function call",
+                     Root_Expr,
+                     SRM_Reference => "SPARK RM 3.10(4)");
+               elsif No (Root_Expr) or else No (Get_Root_Object (Root_Expr))
+               then
+                  Mark_Violation
+                    ("borrow or observe of an expression which is not part "
+                     & "of stand-alone object or parameter",
+                     Alt_Expr,
+                     SRM_Reference => "SPARK RM 3.10(4)");
+               elsif No (First_Root) then
+                  First_Root := Get_Root_Object (Root_Expr);
+               elsif Distinct_Not_Emitted
+                 and then First_Root /= Get_Root_Object (Root_Expr)
+               then
+                  Distinct_Not_Emitted := False;
+                  Mark_Violation
+                    ("observe of a conditional or case expression with "
+                     & "branches rooted in different objects",
+                     Expr);
+               end if;
+            end loop;
+            pragma Assert (Violation_Detected);
+         end;
 
       --  The root object should not be effectively volatile
 

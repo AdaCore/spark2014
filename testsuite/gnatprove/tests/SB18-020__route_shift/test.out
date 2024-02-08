@@ -38,8 +38,10 @@ test_route.adb:73:13: info: precondition proved
 test_route.adb:73:76: info: pointer dereference check proved
 test_route.adb:75:32: info: precondition proved
 test_route.adb:75:63: info: precondition proved
+test_route.adb:80:18: info: dynamic accessibility check proved
 test_route.adb:80:18: info: pointer dereference check proved
 test_route.adb:82:10: medium: implicit aspect Always_Terminates on "Nth_Point" could be incorrect, subprogram is recursive [possible fix: annotate "Nth_Point" with a Subprogram_Variant aspect]
+test_route.adb:82:17: info: dynamic accessibility check proved
 test_route.adb:82:17: info: precondition proved
 test_route.adb:82:29: info: pointer dereference check proved
 test_route.adb:82:38: info: range check proved

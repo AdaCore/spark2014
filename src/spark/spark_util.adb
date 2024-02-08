@@ -2625,16 +2625,27 @@ package body SPARK_Util is
       Through_Traversal : Boolean := True)
       return Opt_Object_Kind_Id
    is
-      Res : constant N_Subexpr_Id := Get_Root_Expr (Expr, Through_Traversal);
+      function Get_Entity (X : Node_Id) return Entity_Id is
+        (if Nkind (X) in N_Expanded_Name | N_Identifier
+           and then Is_Object (Entity (X))
+         then Entity (X)
+         else Empty);
+
+      Alts : constant Node_Vectors.Vector :=
+        Terminal_Alternatives (Expr);
+      Res  : constant Entity_Id :=
+        Get_Entity
+          (Get_Root_Expr (Alts.First_Element, Through_Traversal));
    begin
       --  We need to check Is_Object because there is no root object for an
       --  enumeration literal or a type, which may occur as the prefix of an
       --  attribute reference.
 
-      if Nkind (Res) in N_Expanded_Name | N_Identifier
-        and then Is_Object (Entity (Res))
+      if Present (Res)
+        and then (for all I in Alts.First_Index + 1 .. Alts.Last_Index =>
+                    Get_Entity (Get_Root_Expr (Alts.Element (I))) = Res)
       then
-         return Entity (Res);
+         return Res;
       else
          return Empty;
       end if;
@@ -2978,6 +2989,14 @@ package body SPARK_Util is
       return Ekind (E) in E_Component | E_Discriminant | E_In_Parameter
         and then Ekind (Scope (E)) in E_Protected_Type | E_Task_Type;
    end Is_Concurrent_Component_Or_Discr;
+
+   -----------------------------------
+   -- Is_Conditional_Path_Selection --
+   -----------------------------------
+
+   function Is_Conditional_Path_Selection (Expr : N_Subexpr_Id) return Boolean
+   is (for all Dep_Expr of Terminal_Alternatives (Expr) =>
+          Is_Path_Expression (Dep_Expr));
 
    ----------------------------------
    -- Is_Declared_Directly_In_Unit --
@@ -3925,7 +3944,8 @@ package body SPARK_Util is
           begin
              Nkind (Nm) in N_Identifier | N_Expanded_Name
              and then Entity (Nm) = Variable
-             and then Is_Strict_Subpath (Expression (N))));
+          and then (for all Path of Terminal_Alternatives (Expression (N)) =>
+                 Is_Strict_Subpath (Path))));
 
    -----------------------
    -- Is_Strict_Subpath --
@@ -3982,6 +4002,54 @@ package body SPARK_Util is
          return Empty;
       end if;
    end Supported_Alias;
+
+   ---------------------------
+   -- Terminal_Alternatives --
+   ---------------------------
+
+   function Terminal_Alternatives (Expr : N_Subexpr_Id)
+                                            return Node_Vectors.Vector
+   is
+      Result : Node_Vectors.Vector;
+
+      procedure Auxiliary_Append (Subexpr : N_Subexpr_Id);
+      --  Main recursive procedure. Append the collection of terminal dependent
+      --  paths of Subexpr to Result.
+
+      ----------------------
+      -- Auxiliary_Append --
+      ----------------------
+
+      procedure Auxiliary_Append (Subexpr : N_Subexpr_Id) is
+      begin
+         case Nkind (Subexpr) is
+            when N_If_Expression =>
+               declare
+                  Then_Expr : constant N_Subexpr_Id :=
+                    Next (First (Expressions (Subexpr)));
+               begin
+                  Auxiliary_Append (Then_Expr);
+                  Auxiliary_Append (Next (Then_Expr));
+               end;
+            when N_Case_Expression =>
+               declare
+                  Branch : Node_Id :=
+                    First_Non_Pragma (Alternatives (Subexpr));
+               begin
+                  while Present (Branch) loop
+                     Auxiliary_Append (Expression (Branch));
+                     Next_Non_Pragma (Branch);
+                  end loop;
+               end;
+            when others =>
+               Result.Append (Subexpr);
+         end case;
+      end Auxiliary_Append;
+
+   begin
+      Auxiliary_Append (Expr);
+      return Result;
+   end Terminal_Alternatives;
 
    ---------------------------
    -- Is_Writable_Parameter --
@@ -5829,20 +5897,16 @@ package body SPARK_Util is
       --  deduced from the encountered declarations only.
 
       declare
-         Root : Entity_Id;
-         Expr : Node_Id := Call_Actual;
+         Root         : Entity_Id;
+         Expr         : Node_Id := Call_Actual;
       begin
          loop
             --  If Expr is not a Path or does not have a root object, it is
             --  not a part of Param.
 
-            if not Is_Path_Expression (Expr) then
-               Result := False;
-               exit;
-            end if;
-
-            Root := Get_Root_Object (Expr);
-
+            Root := (if Is_Conditional_Path_Selection (Expr)
+                     then Get_Root_Object (Expr)
+                     else Empty);
             if No (Root) then
                Result := False;
                exit;
@@ -5852,7 +5916,8 @@ package body SPARK_Util is
             --  decreases.
 
             if not Decreases then
-               Decreases := Is_Strict_Subpath (Expr);
+               Decreases := (for all Path of Terminal_Alternatives (Expr) =>
+                               Is_Strict_Subpath (Path));
             end if;
 
             --  We have reached Param, stop the search
