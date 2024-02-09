@@ -1,6 +1,6 @@
 test_hide_annot.adb:12:04: error: wrong number of arguments in pragma Annotate (GNATprove, Hide_Info, ...), expected 4
 test_hide_annot.adb:16:43: error: third argument of pragma Annotate Hide_Info must be a string
-test_hide_annot.adb:20:43: error: third parameter for pragma Annotate Hide_Info should be "Expression_Function_Body"
+test_hide_annot.adb:20:43: error: unexpected third parameter for pragma Annotate Hide_Info
 test_hide_annot.adb:24:71: error: fourth argument of pragma Annotate Hide_Info must be an entity
 test_hide_annot.adb:31:74: error: the entity of a pragma Annotate Hide_Info for expression function bodies shall be an expression function
 test_hide_annot.adb:42:74: error: an expression function annotated with Annotate Hide_Info shall be in SPARK

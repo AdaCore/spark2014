@@ -15,7 +15,9 @@ is
    function All_Available return Boolean is
      (for all R in Valid_Resource => Data (R) = Available);
 
-   package body M is
+   package body M with
+     Annotate => (GNATprove, Unhide_Info, "Package_Body")
+   is
 
       function Is_Valid (M : T) return Boolean is
         ((for all E in M.Available => E in Valid_Resource)

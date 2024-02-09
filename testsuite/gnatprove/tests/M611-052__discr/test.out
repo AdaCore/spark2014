@@ -25,13 +25,13 @@ list.ads:13:34: medium: precondition might fail
 list.ads:13:79: info: overflow check proved (CVC5: 2 VC)
 list.ads:13:83: info: overflow check proved (CVC5: 2 VC)
 list.ads:13:83: info: range check proved (CVC5: 2 VC)
-stack.adb:4:47: info: range check proved (CVC5: 1 VC)
-stack.adb:4:47: medium: range check might fail [reason for check: slice bounds must fit in the underlying array] [possible fix: subprogram at stack.ads:10 should mention S in a precondition]
-stack.adb:5:55: info: range check proved (CVC5: 1 VC)
-stack.adb:5:55: medium: range check might fail [reason for check: slice bounds must fit in the underlying array] [possible fix: subprogram at stack.ads:11 should mention S in a precondition]
-stack.adb:20:22: info: range check proved (CVC5: 2 VC)
-stack.adb:21:19: info: index check proved (CVC5: 2 VC)
-stack.adb:32:22: info: range check proved (CVC5: 2 VC)
+stack.adb:6:47: info: range check proved (CVC5: 1 VC)
+stack.adb:6:47: medium: range check might fail [reason for check: slice bounds must fit in the underlying array] [possible fix: subprogram at stack.ads:10 should mention S in a precondition]
+stack.adb:7:55: info: range check proved (CVC5: 1 VC)
+stack.adb:7:55: medium: range check might fail [reason for check: slice bounds must fit in the underlying array] [possible fix: subprogram at stack.ads:11 should mention S in a precondition]
+stack.adb:22:22: info: range check proved (CVC5: 2 VC)
+stack.adb:23:19: info: index check proved (CVC5: 2 VC)
+stack.adb:34:22: info: range check proved (CVC5: 2 VC)
 stack.ads:10:16: info: implicit aspect Always_Terminates on "To" has been proved, subprogram will terminate
 stack.ads:11:16: info: implicit aspect Always_Terminates on "To_But_Top" has been proved, subprogram will terminate
 stack.ads:13:16: info: implicit aspect Always_Terminates on "Is_Full" has been proved, subprogram will terminate

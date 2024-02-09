@@ -968,10 +968,19 @@ package body SPARK_Util.Subprograms is
       Subp : Callable_Kind_Id)
       return Boolean
    is
-      Subp_Scop : constant Entity_Id := Enclosing_Unit (Subp);
+      Subp_Scop : Entity_Id := Enclosing_Unit (Subp);
       Curr      : Entity_Id := From;
    begin
       pragma Assert (Present (Subp_Scop));
+
+      --  For visible package bodies, go to the enclosing unit, as it has
+      --  visibility.
+
+      while Ekind (Subp_Scop) = E_Package
+        and then Has_Visible_Package_Body (Subp_Scop)
+      loop
+         Subp_Scop := Enclosing_Unit (Subp_Scop);
+      end loop;
 
       --  Return True if From is inside Subp_Scop
 

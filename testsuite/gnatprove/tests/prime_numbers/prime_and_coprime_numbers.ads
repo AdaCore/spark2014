@@ -42,7 +42,9 @@ is
      Ghost,
      Pre => Low in Number_List'Range and High in Number_List'Range;
 
-   function Has_Prime (Low, High : Value_Type) return Boolean with Ghost;
+   function Has_Prime (Low, High : Value_Type) return Boolean is
+     (for some V in Low .. High => Is_Prime (V))
+   with Ghost;
 
    -----------------------
    -- Program functions --

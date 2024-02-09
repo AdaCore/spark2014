@@ -4,7 +4,9 @@ package body Time_Triggered_Response is
 
    Time_Idle : Natural := 0;
 
-   package body History is
+   package body History with
+     Annotate => (GNATprove, Unhide_Info, "Package_Body")
+   is
 
       function Valid return Boolean is
          ((if Time_Idle /= 0 then Always_Set_Until_Now (From => Natural'Min (Past_Time'Last, Time_Idle - 1)))

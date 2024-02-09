@@ -1326,6 +1326,8 @@ package body Why.Inter is
                when Unhide_Expr_Fun =>
                   Module_Dependencies (+E_Module (Ent)).Insert
                     (+E_Module (Ent, Expr_Fun_Axiom));
+               when Unhide_Package_Body =>
+                  raise Program_Error;
             end case;
          end;
       end loop;
@@ -1347,6 +1349,8 @@ package body Why.Inter is
                   Ada_Ent_To_Why.Insert
                     (Symbol_Table, Ent,
                      Mk_Item_Of_Entity (Ent, Hide_Info => False));
+               when Unhide_Package_Body =>
+                  raise Program_Error;
             end case;
          end;
       end loop;
@@ -1396,6 +1400,8 @@ package body Why.Inter is
                when Unhide_Expr_Fun =>
                   Module_Dependencies (+E_Module (Ent)).Delete
                     (+E_Module (Ent, Expr_Fun_Axiom));
+               when Unhide_Package_Body =>
+                  raise Program_Error;
             end case;
          end;
       end loop;

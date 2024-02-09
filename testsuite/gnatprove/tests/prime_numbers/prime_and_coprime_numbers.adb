@@ -15,9 +15,6 @@ is
    function Valid_Prime_Data return Boolean is
      (for all V in Number_List_Type'Range => Set.Is_Prime (V) = Is_Prime (V));
 
-   function Has_Prime (Low, High : Value_Type) return Boolean is
-     (for some V in Low .. High => Is_Prime (V));
-
    -----------------------------------------------------------------------------
 
    function Initialize_Coprime_List

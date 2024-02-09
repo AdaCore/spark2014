@@ -459,21 +459,22 @@ package SPARK_Util.Subprograms is
    --  an expression function and its body is deferred to the body of its
    --  enclosing package.
 
-   function Has_Visibility_On_Refined_Expr
-     (Expr : Node_Id;
-      Subp : Callable_Kind_Id)
-      return Boolean
-   with Pre => Has_Refinement (Subp);
-   --  Return True if node Expr can "see" the Refined_Post or deferred body of
-   --  Subp.
-
    function Has_Visibility_On_Refined
      (From : Entity_Id;
       Subp : Callable_Kind_Id)
       return Boolean
    with Pre => Has_Refinement (Subp);
-   --  Return True the Refined_Post or deferred body of Subp is visible from
-   --  scope From.
+   --  Return True if the Refined_Post or deferred body of Subp is visible from
+   --  scope From. Look into package bodies if they are annotated with an
+   --  Unhide annotation.
+
+   function Has_Visibility_On_Refined_Expr
+     (Expr : Node_Id;
+      Subp : Callable_Kind_Id)
+      return Boolean
+   with Pre => Has_Refinement (Subp);
+   --  Return True if the Refined_Post or deferred body of Subp is visible from
+   --  the scope of Expr. Use Get_Flow_Scope to determine the scope of Expr.
 
    function Includes_Current_Task (Calls : Node_Sets.Set) return Boolean
    with Pre => (for all Call of Calls => Ekind (Call) in Entry_Kind
