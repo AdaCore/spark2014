@@ -229,56 +229,139 @@ package body CE_Parsing is
 
          when Array_K =>
 
-            --  Counterexample should be an array
+            --  When the array has no bounds, we have a Cnt_Array
 
-            if Cnt_Value.T /= Cnt_Array then
-               raise Parse_Error;
-            end if;
-
-            --  Go over the association in the Why3 counterexample. If we fail
-            --  to parse an element, continue with the next.
-
-            declare
-               Comp_Ty : constant Entity_Id := Retysp (Component_Type (Ty));
-               Comp    : Value_Type;
-            begin
-               if Cnt_Value.Array_Others /= null then
-                  begin
-                     Comp := Parse_Cnt_Value
-                       (Cnt_Labels, Cnt_Value.Array_Others, Comp_Ty);
-                     Val.Array_Others := new Value_Type'(Comp);
-                  exception
-                     when Parse_Error =>
-                        null;
-                  end;
-               end if;
+            if Cnt_Value.T = Cnt_Array then
+               --  Go over the association in the Why3 counterexample. If we
+               --  fail to parse an element, continue with the next.
 
                declare
-                  C : Cntexmp_Value_Array.Cursor :=
-                    Cnt_Value.Array_Indices.First;
+                  Comp_Ty : constant Entity_Id := Retysp (Component_Type (Ty));
+                  Comp    : Value_Type;
                begin
-                  while Has_Element (C) loop
+                  if Cnt_Value.Array_Others /= null then
                      begin
                         Comp := Parse_Cnt_Value
-                          (Cnt_Labels, Element (C), Comp_Ty);
-                        Val.Array_Values.Insert
-                          (From_String (Key (C)), new Value_Type'(Comp));
+                          (Cnt_Labels, Cnt_Value.Array_Others, Comp_Ty);
+                        Val.Array_Others := new Value_Type'(Comp);
                      exception
                         when Parse_Error =>
                            null;
                      end;
+                  end if;
+
+                  declare
+                     C : Cntexmp_Value_Array.Cursor :=
+                       Cnt_Value.Array_Indices.First;
+                  begin
+                     while Has_Element (C) loop
+                        begin
+                           Comp := Parse_Cnt_Value
+                             (Cnt_Labels, Element (C), Comp_Ty);
+                           Val.Array_Values.Insert
+                             (From_String (Key (C)), new Value_Type'(Comp));
+                        exception
+                           when Parse_Error =>
+                              null;
+                        end;
+                        Next (C);
+                     end loop;
+                  end;
+               end;
+
+            --  Otherwise, a record with 2 fields: values, record with bounds
+
+            elsif Cnt_Value.T = Cnt_Record then
+               declare
+                  C : Cntexmp_Value_Array.Cursor := Cnt_Value.Fi.First;
+               begin
+                  while Has_Element (C) loop
+                     declare
+                        Comp_Name : String renames Key (C);
+
+                     begin
+                        --  if the key is "rt", then Element (C) is a record
+                        --  with the bounds
+                        if Comp_Name = "rt" then
+                           declare
+                              Cnt_Bounds : Cntexmp_Value_Ptr
+                                renames Element (C);
+                              C : Cntexmp_Value_Array.Cursor :=
+                                Cnt_Bounds.Fi.First;
+                           begin
+                              while Has_Element (C) loop
+                                 declare
+                                    Comp_Name : String renames Key (C);
+                                 begin
+                                    if Comp_Name = "rec__first" then
+                                       Set_Integer_Flag
+                                         (Element (C), Val.First_Attr);
+                                    elsif Comp_Name = "rec__last" then
+                                       Set_Integer_Flag
+                                         (Element (C), Val.Last_Attr);
+                                    else
+                                       raise Parse_Error;
+                                    end if;
+                                    Next (C);
+                                 end;
+                              end loop;
+                           end;
+                        else
+                           --  Go over the association in the Why3
+                           --  counterexample. If we fail to parse an element,
+                           --  continue with the next.
+                           declare
+                              Comp_Elem : Cntexmp_Value_Ptr renames
+                                Element (C);
+                              Comp_Ty : constant Entity_Id :=
+                                Retysp (Component_Type (Ty));
+                              Comp    : Value_Type;
+                           begin
+                              if Comp_Elem.Array_Others /= null then
+                                 begin
+                                    Comp := Parse_Cnt_Value
+                                      (Cnt_Labels, Comp_Elem.Array_Others,
+                                       Comp_Ty);
+                                    Val.Array_Others := new Value_Type'(Comp);
+                                 exception
+                                    when Parse_Error =>
+                                       null;
+                                 end;
+                              end if;
+
+                              declare
+                                 C : Cntexmp_Value_Array.Cursor :=
+                                   Comp_Elem.Array_Indices.First;
+                              begin
+                                 while Has_Element (C) loop
+                                    begin
+                                       Comp := Parse_Cnt_Value
+                                         (Cnt_Labels, Element (C), Comp_Ty);
+                                       Val.Array_Values.Insert
+                                         (From_String (Key (C)),
+                                          new Value_Type'(Comp));
+                                    exception
+                                       when Parse_Error =>
+                                          null;
+                                    end;
+                                    Next (C);
+                                 end loop;
+                              end;
+                              --  Parse_Error If the parsed value is empty
+                              if Val.Array_Others = null
+                                and then Val.Array_Values.Is_Empty
+                              then
+                                 raise Parse_Error;
+                              end if;
+                           end;
+                        end if;
+                     end;
                      Next (C);
                   end loop;
                end;
-
-               --  If the parsed value is empty, raise Parse_Error
-
-               if Val.Array_Others = null
-                 and then Val.Array_Values.Is_Empty
-               then
-                  raise Parse_Error;
-               end if;
-            end;
+            else
+               raise Parse_Error;
+            end if;
 
          when Record_K =>
 
