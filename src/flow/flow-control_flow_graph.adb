@@ -1498,9 +1498,6 @@ package body Flow.Control_Flow_Graph is
    begin
       for Comp of Flatten_Variable (E, FA.B_Scope) loop
          Process (Comp);
-         if Has_Bounds (Comp, FA.B_Scope) then
-            Process ((Comp with delta Facet => The_Bounds));
-         end if;
       end loop;
 
       if Extensions_Visible (E, FA.B_Scope) then
@@ -1570,9 +1567,6 @@ package body Flow.Control_Flow_Graph is
    begin
       for Comp of Flatten_Variable (F, FA.B_Scope) loop
          Process (Comp);
-         if Has_Bounds (Comp, FA.B_Scope) then
-            Process ((Comp with delta Facet => The_Bounds));
-         end if;
       end loop;
 
       if Extensions_Visible (F, FA.B_Scope) then
@@ -4469,29 +4463,18 @@ package body Flow.Control_Flow_Graph is
 
       if Present (Expr) then
          declare
-            Var_Def   : Flow_Id_Sets.Set;
-            Funcalls  : Call_Sets.Set;
+            Funcalls : Call_Sets.Set;
 
             To_CW : constant Boolean :=
               Is_Class_Wide_Type (Get_Type (E, FA.B_Scope))
               and then not Is_Class_Wide_Type (Get_Type (Expr, FA.B_Scope));
 
-            FS : constant Flow_Id_Sets.Set :=
+            Var_Def : constant Flow_Id_Sets.Set :=
               (if Present (Alias)
                then Flatten_Variable (Alias, FA.B_Scope)
                else Flatten_Variable (E, FA.B_Scope));
 
          begin
-            --  Initialize the set of defined variables with all components
-            --  of the flattened view and add extra elements for bounds.
-            Var_Def := FS;
-
-            for F of FS loop
-               if Has_Bounds (F, FA.B_Scope) then
-                  Var_Def.Insert ((F with delta Facet => The_Bounds));
-               end if;
-            end loop;
-
             Pick_Generated_Info
               (Expr,
                FA.B_Scope,

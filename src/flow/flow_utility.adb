@@ -1070,6 +1070,16 @@ package body Flow_Utility is
 
                      Results := Flow_Id_Sets.To_Set (F);
 
+                     --  For top-level unconstrained array objects the
+                     --  flattened view also includes their bounds.
+
+                     if F.Kind = Direct_Mapping
+                       and then Is_Array_Type (T)
+                       and then not Is_Constrained (T)
+                     then
+                        Results.Insert ((F with delta Facet => The_Bounds));
+                     end if;
+
                   when E_Exception_Type
                      | E_Subprogram_Type
                      | Incomplete_Kind
@@ -3536,13 +3546,52 @@ package body Flow_Utility is
                | Attribute_Range
             =>
                declare
-                  T : constant Entity_Id := Get_Type (Prefix (N), Ctx.Scope);
+                  T : Entity_Id;
+                  --  Type of the attribute prefix
 
                   LB : Node_Id;
                   HB : Node_Id;
                   --  Low and high bounds, respectively
 
                begin
+                  --  ??? We don't use Get_Type, because currently for a record
+                  --  component with per-object constraints it returns its
+                  --  ultimate constrained type. Instead, when the Etype is
+                  --  private, we just take its full view, because we know that
+                  --  the attribute wouldn't be legal on a private type so its
+                  --  full view must have been visible.
+
+                  T := Etype (Prefix (N));
+
+                  if Is_Private_Type (T) then
+                     T := Full_View (T);
+                  end if;
+
+                  pragma Assert (Is_Array_Type (T) or else Is_Scalar_Type (T));
+                  pragma Assert (Entity_In_SPARK (T));
+
+                  --  Explicitly handle references to components with
+                  --  per-object constraints.
+
+                  if Is_Constrained (T)
+                    and then Is_Itype (T)
+                    and then Nkind
+                               (Associated_Node_For_Itype (T)) =
+                                  N_Component_Declaration
+                  then
+                     pragma Assert
+                       (Nkind (Prefix (N)) in N_Explicit_Dereference
+                                            | N_Selected_Component);
+                     declare
+                        Comp : constant Entity_Id :=
+                          Defining_Identifier (Associated_Node_For_Itype (T));
+                     begin
+                        if Has_Per_Object_Constraint (Comp) then
+                           return Recurse (Prefix (N));
+                        end if;
+                     end;
+                  end if;
+
                   if Is_Constrained (T) then
                      if Is_Array_Type (T) then
                         LB := Type_Low_Bound  (Get_Index_Subtype (N));
@@ -5256,23 +5305,14 @@ package body Flow_Utility is
    is
       T : Entity_Id;
    begin
-      case F.Kind is
-         when Null_Value | Synthetic_Null_Export | Magic_String =>
-            return False;
+      if F.Kind = Direct_Mapping then
+         T := Get_Type (F.Node, Scope);
 
-         when Direct_Mapping =>
-            T := Get_Type (F.Node, Scope);
-
-         when Record_Field =>
-            if F.Facet = Normal_Part then
-               T := Get_Type (F.Component.Last_Element, Scope);
-            else
-               return False;
-            end if;
-      end case;
-
-      return Is_Array_Type (T)
-        and then not Is_Constrained (T);
+         return Is_Array_Type (T)
+           and then not Is_Constrained (T);
+      else
+         return False;
+      end if;
    end Has_Bounds;
 
    --------------------------------------
@@ -6764,6 +6804,10 @@ package body Flow_Utility is
 
       Vars_Defined := Flatten_Variable (Base_Node, Scope);
       Vars_Used    := Flow_Id_Sets.Empty_Set;
+
+      --  Assignment to an unconstrained record doesn't modify its bounds
+
+      Vars_Defined.Exclude ((Base_Node with delta Facet => The_Bounds));
 
       pragma Annotate (Xcov, Exempt_On, "Debugging code");
       if Debug_Trace_Untangle then
