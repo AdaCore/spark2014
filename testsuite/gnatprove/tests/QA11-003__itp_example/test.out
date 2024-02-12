@@ -3,7 +3,7 @@ test.adb:9:08: warning: postcondition does not check the outcome of calling "Tes
 test.adb:9:08: warning: postcondition does not mention function result
 test.adb:9:16: info: postcondition proved (CVC5: 1 VC)
 test.adb:16:13: info: implicit aspect Always_Terminates on "Test_2" has been proved, subprogram will terminate
-test.adb:17:17: medium: postcondition might fail (e.g. when Test_2'Result = 'NUL')
+test.adb:17:17: high: postcondition might fail (e.g. when Test_2'Result = 'NUL')
 test.adb:20:17: high: array index check might fail (e.g. when A'First = 2 and A'Last = 0) [reason for check: value must be a valid index into the array]
 test.adb:28:13: info: implicit aspect Always_Terminates on "Test_3" has been proved, subprogram will terminate
 test.adb:29:17: high: postcondition might fail (e.g. when Test_3'Result = 0)
