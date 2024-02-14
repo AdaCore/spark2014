@@ -379,6 +379,16 @@ package SPARK_Definition.Annotate is
    function Has_Logical_Eq_Annotation (E : Entity_Id) return Boolean;
    --  Return True if a pragma Annotate Logical_Equal applies to entity E
 
+   function Has_No_Bitwise_Operations_Annotation
+     (E : Entity_Id) return Boolean;
+   --  Return True if a pragma Annotate No_Bitwise_Operations applies to the
+   --  type E.
+
+   procedure Set_Has_No_Bitwise_Operations_Annotation (E : Entity_Id);
+   --  Register entity E has having the No_Bitwise_Operations annotation,
+   --  either directly or inherited through a parent type (for derived
+   --  types) or base type (for subtypes).
+
    function Has_No_Wrap_Around_Annotation (E : Entity_Id) return Boolean
    with Pre => Is_Type (E);
    --  Return True if a pragma Annotate No_Wrap_Around applies to the type E

@@ -1,0 +1,27 @@
+illegal.adb:4:06: error: Entity parameter of annotation No_Bitwise_Operations must be a modular type
+illegal.adb:7:06: error: Entity parameter of annotation No_Bitwise_Operations must be a modular type
+illegal.adb:11:06: error: Annotation No_Bitwise_Operations must apply to a type declaration
+illegal.adb:19:09: error: bitwise operation on type with No_Bitwise_Operations annotation is not allowed in SPARK
+illegal.adb:19:09: error: violation of pragma SPARK_Mode at test.adc:1
+illegal.adb:20:09: error: bitwise operation on type with No_Bitwise_Operations annotation is not allowed in SPARK
+illegal.adb:20:09: error: violation of pragma SPARK_Mode at test.adc:1
+illegal.adb:21:09: error: bitwise operation on type with No_Bitwise_Operations annotation is not allowed in SPARK
+illegal.adb:21:09: error: violation of pragma SPARK_Mode at test.adc:1
+illegal.adb:22:09: error: bitwise operation on type with No_Bitwise_Operations annotation is not allowed in SPARK
+illegal.adb:22:09: error: violation of pragma SPARK_Mode at test.adc:1
+illegal.adb:23:09: error: bitwise operation on type with No_Bitwise_Operations annotation is not allowed in SPARK
+illegal.adb:23:09: error: violation of pragma SPARK_Mode at test.adc:1
+illegal.adb:23:09: info: no contextual analysis of "Shift_Left" (body not seen yet)
+illegal.adb:24:09: error: bitwise operation on type with No_Bitwise_Operations annotation is not allowed in SPARK
+illegal.adb:24:09: error: violation of pragma SPARK_Mode at test.adc:1
+illegal.adb:24:09: info: no contextual analysis of "Shift_Right" (body not seen yet)
+illegal.adb:25:09: error: bitwise operation on type with No_Bitwise_Operations annotation is not allowed in SPARK
+illegal.adb:25:09: error: violation of pragma SPARK_Mode at test.adc:1
+illegal.adb:25:09: info: no contextual analysis of "Shift_Right_Arithmetic" (body not seen yet)
+illegal.adb:26:09: error: bitwise operation on type with No_Bitwise_Operations annotation is not allowed in SPARK
+illegal.adb:26:09: error: violation of pragma SPARK_Mode at test.adc:1
+illegal.adb:26:09: info: no contextual analysis of "Rotate_Left" (body not seen yet)
+illegal.adb:27:09: error: bitwise operation on type with No_Bitwise_Operations annotation is not allowed in SPARK
+illegal.adb:27:09: error: violation of pragma SPARK_Mode at test.adc:1
+illegal.adb:27:09: info: no contextual analysis of "Rotate_Right" (body not seen yet)
+gnatprove: error during flow analysis and proof
