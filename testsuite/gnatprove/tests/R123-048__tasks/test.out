@@ -51,7 +51,7 @@ psu_monitoring.ads:74:09: info: nontermination of task proved (CVC5: 1 VC)
 psu_monitoring.ads:75:39: info: range check proved (CVC5: 2 VC)
 psu_monitoring.ads:89:15: medium: postcondition might fail, cannot prove monitor.next_state /= reset
 psu_monitoring.ads:90:13: info: implicit aspect Always_Terminates on "is_within_limits" has been proved, subprogram will terminate
-psu_monitoring.ads:92:07: info: complete contract cases proved (Z3: 1 VC)
+psu_monitoring.ads:92:07: info: complete contract cases proved (CVC5: 1 VC)
 psu_monitoring.ads:92:07: info: disjoint contract cases proved (CVC5: 1 VC)
 psu_monitoring.ads:92:70: info: contract case proved (CVC5: 1 VC; Trivial: 2 VC)
 psu_monitoring.ads:92:132: info: float overflow check proved (CVC5: 1 VC)
