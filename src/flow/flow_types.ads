@@ -376,7 +376,8 @@ package Flow_Types is
 
    function Is_Bound (F : Flow_Id) return Boolean
    is (F.Kind in Direct_Mapping | Record_Field
-         and then F.Facet = The_Bounds);
+         and then F.Facet = The_Bounds)
+     with Post => (if Is_Bound'Result then F.Kind = Direct_Mapping);
    --  Returns True if the given Flow_Id represents a bound
 
    function Is_Volatile (F : Flow_Id) return Boolean;

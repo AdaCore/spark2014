@@ -67,7 +67,7 @@ procedure P with SPARK_Mode is
    end Call_Ok_Arr;
 
    procedure Bad (X : out Arr; Y : out Boolean) with
-     Depends => (X => X, Y => null),
+     Depends => (X => X, Y => X),
      Relaxed_Initialization => X,
      Pre => X'Initialized;
 

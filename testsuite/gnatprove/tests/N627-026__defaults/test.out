@@ -93,6 +93,7 @@ with_default.adb:189:07: info: initialization of "W_Disc" proved
 with_default.adb:189:32: info: range check proved (CVC5: 1 VC)
 with_default.adb:190:07: info: initialization of "W_D_Di" proved
 with_default.adb:191:07: info: initialization of "W_O_Di" proved
+with_default.adb:192:07: info: initialization of "Empty" proved
 with_default.adb:193:07: info: initialization of "Wrap" proved
 with_default.adb:195:22: info: assertion proved (CVC5: 1 VC)
 with_default.adb:196:22: info: assertion proved (CVC5: 1 VC)
