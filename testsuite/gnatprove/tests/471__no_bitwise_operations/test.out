@@ -59,3 +59,37 @@ modular.adb:374:32: medium: overflow check might fail, cannot prove upper bound 
 modular.adb:376:32: medium: overflow check might fail, cannot prove upper bound for NBNW + No_Bitwise_No_Wrap(NW) (e.g. when NBNW = No_Bitwise_No_Wrap'Last and NW = No_Wrap'Last) [reason for check: result of addition must fit in a 32-bits machine integer]
 modular.adb:378:32: medium: overflow check might fail, cannot prove upper bound for NBNW + No_Bitwise_No_Wrap(NB) (e.g. when NB = No_Bitwise'Last and NBNW = No_Bitwise_No_Wrap'Last) [reason for check: result of addition must fit in a 32-bits machine integer]
 modular.adb:380:32: medium: overflow check might fail, cannot prove upper bound for NBNW + No_Bitwise_No_Wrap(NWNB) (e.g. when NBNW = No_Bitwise_No_Wrap'Last and NWNB = No_Wrap_No_Bitwise'Last) [reason for check: result of addition must fit in a 32-bits machine integer]
+modular.adb:403:34: info: division check proved (CVC5: 1 VC)
+modular.adb:405:34: info: division check proved (CVC5: 1 VC)
+modular.adb:407:34: info: division check proved (CVC5: 1 VC)
+modular.adb:411:29: info: range check proved (CVC5: 2 VC)
+modular.adb:413:29: info: range check proved (CVC5: 2 VC)
+modular.adb:428:24: medium: overflow check might fail (e.g. when B = 2) [reason for check: result of negation must fit in a 32-bits machine integer]
+modular.adb:430:26: medium: overflow check might fail (e.g. when B = 2) [reason for check: result of subtraction must fit in a 32-bits machine integer]
+modular.adb:432:26: medium: overflow check might fail (e.g. when B = 2) [reason for check: result of multiplication must fit in a 32-bits machine integer]
+modular.adb:434:34: info: division check proved (CVC5: 1 VC)
+modular.adb:436:34: info: division check proved (CVC5: 1 VC)
+modular.adb:438:34: info: division check proved (CVC5: 1 VC)
+modular.adb:440:35: info: overflow check proved (CVC5: 10 VC)
+modular.adb:440:40: medium: overflow check might fail (e.g. when B = 2) [reason for check: result of exponentiation must fit in a 32-bits machine integer]
+modular.adb:442:26: medium: overflow check might fail (e.g. when B = 2 and Exp = 35) [reason for check: result of exponentiation must fit in a 32-bits machine integer]
+modular.adb:442:29: info: range check proved (CVC5: 4 VC)
+modular.adb:444:26: medium: overflow check might fail (e.g. when Exp = 35) [reason for check: result of exponentiation must fit in a 32-bits machine integer]
+modular.adb:444:29: info: range check proved (CVC5: 4 VC)
+modular.adb:460:24: medium: overflow check might fail, cannot prove lower bound for - B (e.g. when B = 2) [reason for check: result of negation must fit in a 32-bits machine integer]
+modular.adb:462:26: medium: overflow check might fail, cannot prove lower bound for B - Base'Last (e.g. when B = 2) [reason for check: result of subtraction must fit in a 32-bits machine integer]
+modular.adb:464:26: medium: overflow check might fail, cannot prove upper bound for B * Base'Last (e.g. when B = 2) [reason for check: result of multiplication must fit in a 32-bits machine integer]
+modular.adb:466:34: info: division check proved (CVC5: 1 VC)
+modular.adb:468:34: info: division check proved (CVC5: 1 VC)
+modular.adb:470:34: info: division check proved (CVC5: 1 VC)
+modular.adb:472:35: info: overflow check proved (CVC5: 6 VC)
+modular.adb:472:40: info: overflow check proved (CVC5: 2 VC)
+modular.adb:472:40: medium: overflow check might fail, cannot prove upper bound for (Base'Last - B) ** 3 (e.g. when B = 2) [reason for check: result of exponentiation must fit in a 32-bits machine integer]
+modular.adb:474:26: medium: overflow check might fail, cannot prove upper bound for B ** Exp (e.g. when B = 2 and Exp = 35) [reason for check: result of exponentiation must fit in a 32-bits machine integer]
+modular.adb:474:29: info: range check proved (CVC5: 2 VC)
+modular.adb:476:26: medium: overflow check might fail, cannot prove upper bound for 2 ** Exp (e.g. when Exp = 35) [reason for check: result of exponentiation must fit in a 32-bits machine integer]
+modular.adb:476:29: info: range check proved (CVC5: 2 VC)
+uc.ads:7:13: info: imprecise handling of Unchecked_Conversion (type with No_Bitwise_Operations annotation)
+uc.ads:7:13: info: types in unchecked conversion have the same size (Trivial)
+uc.ads:7:54: info: type is suitable as source for unchecked conversion (Trivial)
+uc.ads:7:63: info: type is suitable for unchecked conversion (Trivial)

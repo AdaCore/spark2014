@@ -381,6 +381,102 @@ begin
             end case;
          end;
 
+      -- Other operations than addition
+
+      when 170 .. 179 =>
+         declare
+            type Base is mod 2**32
+              with Annotate => (GNATprove, No_Bitwise_Operations);
+            B : Base := 2;
+	    Exp : Integer := 35;
+         begin
+	    case Arg is
+	       when 170 =>
+		  B := + B; -- @OVERFLOW_CHECK:NONE
+	       when 171 =>
+		  B := - B; -- @OVERFLOW_CHECK:NONE
+	       when 172 =>
+		  B := B - Base'Last; -- @OVERFLOW_CHECK:NONE
+	       when 173 =>
+		  B := B * Base'Last; -- @OVERFLOW_CHECK:NONE
+	       when 174 =>
+		  B := Base'Last / B; -- @OVERFLOW_CHECK:NONE
+	       when 175 =>
+		  B := Base'Last mod B; -- @OVERFLOW_CHECK:NONE
+	       when 176 =>
+		  B := Base'Last rem B; -- @OVERFLOW_CHECK:NONE
+	       when 177 =>
+		  B := (Base'Last - B) ** 3; -- @OVERFLOW_CHECK:NONE
+	       when 178 =>
+		  B := B ** Exp; -- @OVERFLOW_CHECK:NONE
+	       when others =>
+		  B := 2 ** Exp; -- @OVERFLOW_CHECK:NONE
+	    end case;
+         end;
+
+      when 180 .. 189 =>
+         declare
+            type Base is mod 2**32
+              with Annotate => (GNATprove, No_Wrap_Around);
+            B : Base := 2;
+	    Exp : Integer := 35;
+         begin
+	    case Arg is
+	       when 180 =>
+		  B := + B; -- @OVERFLOW_CHECK:NONE
+	       when 181 =>
+		  B := - B; -- @OVERFLOW_CHECK:FAIL
+	       when 182 =>
+		  B := B - Base'Last; -- @OVERFLOW_CHECK:FAIL
+	       when 183 =>
+		  B := B * Base'Last; -- @OVERFLOW_CHECK:FAIL
+	       when 184 =>
+		  B := Base'Last / B; -- @OVERFLOW_CHECK:NONE
+	       when 185 =>
+		  B := Base'Last mod B; -- @OVERFLOW_CHECK:NONE
+	       when 186 =>
+		  B := Base'Last rem B; -- @OVERFLOW_CHECK:NONE
+	       when 187 =>
+		  B := (Base'Last - B) ** 3; -- @OVERFLOW_CHECK:FAIL
+	       when 188 =>
+		  B := B ** Exp; -- @OVERFLOW_CHECK:FAIL
+	       when others =>
+		  B := 2 ** Exp; -- @OVERFLOW_CHECK:FAIL
+	    end case;
+         end;
+
+      when 190 .. 199 =>
+         declare
+            type Base is mod 2**32
+              with Annotate => (GNATprove, No_Bitwise_Operations),
+                   Annotate => (GNATprove, No_Wrap_Around);
+            B : Base := 2;
+	    Exp : Integer := 35;
+         begin
+	    case Arg is
+	       when 190 =>
+		  B := + B; -- @OVERFLOW_CHECK:NONE
+	       when 191 =>
+		  B := - B; -- @OVERFLOW_CHECK:FAIL
+	       when 192 =>
+		  B := B - Base'Last; -- @OVERFLOW_CHECK:FAIL
+	       when 193 =>
+		  B := B * Base'Last; -- @OVERFLOW_CHECK:FAIL
+	       when 194 =>
+		  B := Base'Last / B; -- @OVERFLOW_CHECK:NONE
+	       when 195 =>
+		  B := Base'Last mod B; -- @OVERFLOW_CHECK:NONE
+	       when 196 =>
+		  B := Base'Last rem B; -- @OVERFLOW_CHECK:NONE
+	       when 197 =>
+		  B := (Base'Last - B) ** 3; -- @OVERFLOW_CHECK:FAIL
+	       when 198 =>
+		  B := B ** Exp; -- @OVERFLOW_CHECK:FAIL
+	       when others =>
+		  B := 2 ** Exp; -- @OVERFLOW_CHECK:FAIL
+	    end case;
+         end;
+
       when others =>
          null;
    end case;
