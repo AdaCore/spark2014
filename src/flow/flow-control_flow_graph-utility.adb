@@ -165,6 +165,7 @@ package body Flow.Control_Flow_Graph.Utility is
       Var_Ex_Use : Flow_Id_Sets.Set    := Flow_Id_Sets.Empty_Set;
       Var_Im_Use : Flow_Id_Sets.Set    := Flow_Id_Sets.Empty_Set;
       Subp_Calls : Call_Sets.Set       := Call_Sets.Empty_Set;
+      Indt_Calls : Node_Sets.Set       := Node_Sets.Empty_Set;
       Vertex_Ctx : Vertex_Context;
       E_Loc      : Node_Or_Entity_Id   := Empty;
       Print_Hint : Pretty_Print_Kind_T := Pretty_Print_Null)
@@ -177,6 +178,7 @@ package body Flow.Control_Flow_Graph.Utility is
       A.Variables_Used            := Var_Ex_Use or Var_Im_Use;
       A.Variables_Explicitly_Used := Var_Ex_Use;
       A.Subprogram_Calls          := Subp_Calls;
+      A.Indirect_Calls            := Indt_Calls;
       A.Loops                     := Vertex_Ctx.Current_Loops;
       A.In_Nested_Package         := Vertex_Ctx.In_Nested_Package;
       A.Warnings_Off              := Vertex_Ctx.Warnings_Off;
@@ -221,6 +223,7 @@ package body Flow.Control_Flow_Graph.Utility is
    function Make_Sink_Vertex_Attributes
      (Var_Use       : Flow_Id_Sets.Set  := Flow_Id_Sets.Empty_Set;
       Subp_Calls    : Call_Sets.Set     := Call_Sets.Empty_Set;
+      Indt_Calls    : Node_Sets.Set     := Node_Sets.Empty_Set;
       Aspect        : Type_Aspect       := No_Aspect;
       Is_Assertion  : Boolean           := False;
       Is_Loop_Entry : Boolean           := False;
@@ -241,6 +244,7 @@ package body Flow.Control_Flow_Graph.Utility is
       end if;
 
       A.Subprogram_Calls  := Subp_Calls;
+      A.Indirect_Calls    := Indt_Calls;
       A.Is_Assertion      := Is_Assertion;
       A.Is_Loop_Entry     := Is_Loop_Entry;
       A.In_Nested_Package := Vertex_Ctx.In_Nested_Package;
@@ -304,6 +308,7 @@ package body Flow.Control_Flow_Graph.Utility is
      (Callsite   : Node_Id;
       Var_Use    : Flow_Id_Sets.Set  := Flow_Id_Sets.Empty_Set;
       Subp_Calls : Call_Sets.Set     := Call_Sets.Empty_Set;
+      Indt_Calls : Node_Sets.Set     := Node_Sets.Empty_Set;
       Vertex_Ctx : Vertex_Context;
       E_Loc      : Node_Or_Entity_Id := Empty)
       return V_Attributes
@@ -314,6 +319,7 @@ package body Flow.Control_Flow_Graph.Utility is
       A.Variables_Explicitly_Used := Var_Use;
       A.Variables_Used            := Var_Use;
       A.Subprogram_Calls          := Subp_Calls;
+      A.Indirect_Calls            := Indt_Calls;
       A.Is_Program_Node           := True;
       A.Loops                     := Vertex_Ctx.Current_Loops;
       A.In_Nested_Package         := Vertex_Ctx.In_Nested_Package;
@@ -355,6 +361,7 @@ package body Flow.Control_Flow_Graph.Utility is
       In_Vertex                    : Boolean;
       Discriminants_Or_Bounds_Only : Boolean;
       Subp_Calls                   : Call_Sets.Set   := Call_Sets.Empty_Set;
+      Indt_Calls                   : Node_Sets.Set   := Node_Sets.Empty_Set;
       Vertex_Ctx                   : Vertex_Context;
       E_Loc                        : Node_Or_Entity_Id)
       return V_Attributes
@@ -372,6 +379,7 @@ package body Flow.Control_Flow_Graph.Utility is
       A.Is_Parameter                 := True;
       A.Is_Discr_Or_Bounds_Parameter := Discriminants_Or_Bounds_Only;
       A.Subprogram_Calls             := Subp_Calls;
+      A.Indirect_Calls               := Indt_Calls;
       A.Call_Vertex                  := Direct_Mapping_Id (Call_Vertex);
       A.Parameter_Actual             := Direct_Mapping_Id (Actual);
       A.Parameter_Formal             := Direct_Mapping_Id (Formal);
@@ -692,7 +700,8 @@ package body Flow.Control_Flow_Graph.Utility is
       Call_Vertex : Node_Id;
       In_Vertex   : Boolean;
       Scope       : Flow_Scope;
-      Subp_Calls  : Call_Sets.Set   := Call_Sets.Empty_Set;
+      Subp_Calls  : Call_Sets.Set := Call_Sets.Empty_Set;
+      Indt_Calls  : Node_Sets.Set := Node_Sets.Empty_Set;
       Vertex_Ctx  : Vertex_Context;
       E_Loc       : Node_Or_Entity_Id)
       return V_Attributes
@@ -718,6 +727,7 @@ package body Flow.Control_Flow_Graph.Utility is
       if Is_External_Call (Call_Vertex) then
          A.Is_Parameter     := True;
          A.Subprogram_Calls := Subp_Calls;
+         A.Indirect_Calls   := Indt_Calls;
          A.Call_Vertex      := Direct_Mapping_Id (Call_Vertex);
          A.Parameter_Actual :=
            Direct_Mapping_Id (Prefix (Name (Call_Vertex)));

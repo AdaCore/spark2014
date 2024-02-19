@@ -627,6 +627,14 @@ package body SPARK_Util is
       raise Program_Error;
    end Aggregate_Is_In_Assignment;
 
+   -------------------------
+   -- Alternative_Uses_Eq --
+   -------------------------
+
+   function Alternative_Uses_Eq (Alt : Node_Id) return Boolean is
+     (not Is_Entity_Name (Alt)
+      or else not Is_Type (Entity (Alt)));
+
    ---------------------------
    -- Append_Multiple_Index --
    ---------------------------

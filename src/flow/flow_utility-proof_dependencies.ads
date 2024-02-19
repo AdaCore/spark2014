@@ -61,6 +61,14 @@ package Flow_Utility.Proof_Dependencies is
    --  Fill Proof_Dependencies with all possible callees for dispatching
    --  call N.
 
+   procedure Process_Indirect_Dispatching_Equality
+     (Ty                 : Node_Id;
+      Proof_Dependencies : in out Node_Sets.Set)
+   with Post => Proof_Dependencies'Old.Is_Subset
+                  (Of_Set => Proof_Dependencies);
+   --  Fill Proof_Dependencies with all potential candidates for a dispatching
+   --  call on the equality of Ty.
+
    procedure Process_Iterable_For_Proof_Annotation
      (N                  : Node_Id;
       Proof_Dependencies : in out Node_Sets.Set)
@@ -89,13 +97,5 @@ package Flow_Utility.Proof_Dependencies is
           Proof_Dependencies'Old.Is_Subset (Of_Set => Proof_Dependencies);
    --  Fill Proof_Dependencies with the reclamation functions associated to
    --  all components of Typ.
-
-   function Subprogram_Proof_Dependencies (E : Entity_Id) return Node_Sets.Set
-   with Pre  => Ekind (E) in Entry_Kind
-                           | E_Function
-                           | E_Procedure;
-   --  Return proof dependencies that we can extract from the declaration of
-   --  a subprogram E, i.e. in its Pre, Post, Contract_Cases, type of formals
-   --  and return type when present.
 
 end Flow_Utility.Proof_Dependencies;

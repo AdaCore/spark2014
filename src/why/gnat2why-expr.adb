@@ -24416,13 +24416,6 @@ package body Gnat2Why.Expr is
       ---------------------------------
 
       function Initialization_Check_For_Eq return Boolean is
-
-         function Contains_Eq (Alt : Node_Id) return Boolean is
-           (not Is_Entity_Name (Alt)
-            or else not Is_Type (Entity (Alt)));
-         --  Return True if the evaluation of a membership test with Alt
-         --  involves an equality relation.
-
       begin
          if Present (Alternatives (Expr)) then
             declare
@@ -24430,13 +24423,13 @@ package body Gnat2Why.Expr is
             begin
                Alt := First (Alternatives (Expr));
                while Present (Alt) loop
-                  if Contains_Eq (Alt) then
+                  if Alternative_Uses_Eq (Alt) then
                      return True;
                   end if;
                   Next (Alt);
                end loop;
             end;
-         elsif Contains_Eq (Right_Opnd (Expr)) then
+         elsif Alternative_Uses_Eq (Right_Opnd (Expr)) then
             return True;
          end if;
          return False;

@@ -131,6 +131,7 @@ package body Flow_Utility is
      (N                  : Node_Id;
       Scop               : Flow_Scope;
       Function_Calls     : in out Call_Sets.Set;
+      Indirect_Calls     : in out Node_Sets.Set;
       Proof_Dependencies : in out Node_Sets.Set;
       Tasking            : in out Tasking_Info;
       Types_Seen         : in out Node_Sets.Set;
@@ -221,6 +222,7 @@ package body Flow_Utility is
      (N                  : Node_Id;
       Scop               : Flow_Scope;
       Function_Calls     : in out Call_Sets.Set;
+      Indirect_Calls     : in out Node_Sets.Set;
       Proof_Dependencies : in out Node_Sets.Set;
       Tasking            : in out Tasking_Info;
       Types_Seen         : in out Node_Sets.Set;
@@ -246,6 +248,7 @@ package body Flow_Utility is
               (N                  => Get_Expr_From_Return_Only_Func (P),
                Scop               => Scop,
                Function_Calls     => Function_Calls,
+               Indirect_Calls     => Indirect_Calls,
                Proof_Dependencies => Proof_Dependencies,
                Tasking            => Tasking,
                Generating_Globals => Generating_Globals);
@@ -284,6 +287,8 @@ package body Flow_Utility is
                   --  Likewise for the generated dispatching equality
 
                   elsif Is_Tagged_Predefined_Eq (Called_Func) then
+
+                     Indirect_Calls.Include (N);
                      return OK;
 
                   --  Likewise for calls to unchecked conversion, except we
@@ -319,30 +324,13 @@ package body Flow_Utility is
                if Present (Right_Opnd (N)) then
                   --  x in t
                   P := Right_Opnd (N);
-                  if Nkind (P) in N_Identifier | N_Expanded_Name
-                    and then Is_Type (Entity (P))
-                  then
+                  if Is_Entity_Name (P) and then Is_Type (Entity (P)) then
 
-                     --  The predicate is processed separately for proof
-                     --  dependencies because only the predicate on type P
-                     --  is executed, whereas proof pulls the entire set of
-                     --  predicates that apply to P.
+                        --  The predicate is processed separately for proof
+                        --  dependencies because only the predicate on type P
+                        --  is executed, whereas proof pulls the entire set of
+                        --  predicates that apply to P.
 
-                     Process_Predicate_And_Invariant_Internal
-                       (N                  => P,
-                        Scop               => Scop,
-                        Include_Invariant  => False,
-                        Proof_Dependencies => Proof_Dependencies,
-                        Types_Seen         => Types_Seen);
-                     Process_Type (Get_Type (P, Scop));
-                  end if;
-               else
-                  --  x in t | 1 .. y | u
-                  P := First (Alternatives (N));
-                  loop
-                     if Nkind (P) in N_Identifier | N_Expanded_Name
-                       and then Is_Type (Entity (P))
-                     then
                         Process_Predicate_And_Invariant_Internal
                           (N                  => P,
                            Scop               => Scop,
@@ -350,6 +338,27 @@ package body Flow_Utility is
                            Proof_Dependencies => Proof_Dependencies,
                            Types_Seen         => Types_Seen);
                         Process_Type (Get_Type (P, Scop));
+
+                  --  If the membership test involves a call to equality, then
+                  --  we add N to the set of indirect calls.
+
+                  elsif Alternative_Uses_Eq (P) then
+                     Indirect_Calls.Include (N);
+                  end if;
+               else
+                  --  x in t | 1 .. y | u
+                  P := First (Alternatives (N));
+                  loop
+                     if Is_Entity_Name (P) and then Is_Type (Entity (P)) then
+                        Process_Predicate_And_Invariant_Internal
+                          (N                  => P,
+                           Scop               => Scop,
+                           Include_Invariant  => False,
+                           Proof_Dependencies => Proof_Dependencies,
+                           Types_Seen         => Types_Seen);
+                        Process_Type (Get_Type (P, Scop));
+                     elsif Alternative_Uses_Eq (P) then
+                        Indirect_Calls.Include (N);
                      end if;
                      Next (P);
 
@@ -358,10 +367,17 @@ package body Flow_Utility is
                end if;
 
             --  Operator nodes represent calls to intrinsic subprograms, which
-            --  we assume to be free from any side effects.
+            --  we assume to be free from any side effects. We store equality
+            --  in the set of indirect calls to include the appropriate
+            --  primitives in the call set.
 
             when N_Op =>
-               pragma Assert (Is_Intrinsic_Subprogram (Entity (N)));
+
+               if Nkind (N) in N_Op_Eq | N_Op_Ne then
+                  Indirect_Calls.Include (N);
+               else
+                  pragma Assert (Is_Intrinsic_Subprogram (Entity (N)));
+               end if;
 
             --  Detect calls via Iterable aspect specification, if present
 
@@ -558,6 +574,7 @@ package body Flow_Utility is
      (N                  : Node_Id;
       Scop               : Flow_Scope;
       Function_Calls     : in out Call_Sets.Set;
+      Indirect_Calls     : in out Node_Sets.Set;
       Proof_Dependencies : in out Node_Sets.Set;
       Tasking            : in out Tasking_Info;
       Generating_Globals : Boolean)
@@ -568,6 +585,7 @@ package body Flow_Utility is
         (N,
          Scop,
          Function_Calls,
+         Indirect_Calls,
          Proof_Dependencies,
          Tasking,
          Unused,
@@ -631,12 +649,14 @@ package body Flow_Utility is
 
       procedure Extract_Proof_Dependencies (Expr : Node_Id) is
          Funcalls : Call_Sets.Set;
+         Indcalls : Node_Sets.Set;
          Unused   : Tasking_Info;
       begin
          Pick_Generated_Info_Internal
            (N                  => Expr,
             Scop               => Scop,
             Function_Calls     => Funcalls,
+            Indirect_Calls     => Indcalls,
             Proof_Dependencies => Proof_Dependencies,
             Tasking            => Unused,
             Types_Seen         => Types_Seen,
@@ -722,6 +742,54 @@ package body Flow_Utility is
          Discard := Visit_Subcomponents (Typ);
       end if;
    end Process_Predicate_And_Invariant_Internal;
+
+   ---------------------------------
+   -- Called_Primitive_Equalities --
+   ---------------------------------
+
+   function Called_Primitive_Equalities
+     (Ty           : Entity_Id;
+      Force_Predef : Boolean := False)
+      return Node_Sets.Set
+   is
+      Calls : Node_Sets.Set;
+
+      function Do_Comp (Comp_Ty : Node_Id) return Test_Result;
+      --  Include the user-defined equality on Comp_Ty in Calls if it exists
+      --  and stop searching. If not, continue the search.
+
+      -------------
+      -- Do_Comp --
+      -------------
+
+      function Do_Comp (Comp_Ty : Node_Id) return Test_Result is
+      begin
+         if Is_Access_Type (Comp_Ty) then
+            return Fail;
+
+         --  If Comp_Ty does not use the predefined equality, and we don't
+         --  force the use of predefined equality on Ty, then we include
+         --  the user-defined equality on Comp_Ty and stop searching.
+
+         elsif not Use_Predefined_Equality_For_Type (Comp_Ty)
+           and then (not Force_Predef or else Comp_Ty /= Retysp (Ty))
+         then
+            Calls.Include (Get_User_Defined_Eq (Comp_Ty));
+            return Fail;
+         else
+            return Continue;
+         end if;
+      end Do_Comp;
+
+      function Do_Components is new Traverse_Subcomponents (Do_Comp);
+      --  Explore the subcomponents of type Ty to include all primitive
+      --  equalities in Calls.
+
+      Discard : constant Boolean := Do_Components
+        (Ty, Skip_Discr => True, Traverse_Ancestors => True);
+   begin
+      return Calls;
+   end Called_Primitive_Equalities;
 
    -----------------------
    -- Unique_Components --
@@ -1501,6 +1569,7 @@ package body Flow_Utility is
       return Node_Sets.Set
    is
       Funcalls  : Call_Sets.Set;
+      Indcalls  : Node_Sets.Set;
       Proofdeps : Node_Sets.Set;
       Unused    : Tasking_Info;
    begin
@@ -1508,6 +1577,7 @@ package body Flow_Utility is
         (N,
          Scop               => Get_Flow_Scope (N), --  ??? could be parameter
          Function_Calls     => Funcalls,
+         Indirect_Calls     => Indcalls,
          Proof_Dependencies => Proofdeps,
          Tasking            => Unused,
          Generating_Globals => Include_Predicates);
@@ -5413,6 +5483,64 @@ package body Flow_Utility is
             raise Program_Error;
       end case;
    end Is_Constant_After_Elaboration;
+
+   --------------------------------
+   -- Calls_Dispatching_Equality --
+   --------------------------------
+
+   function Calls_Dispatching_Equality (N : Node_Id) return Boolean is
+   begin
+      case Nkind (N) is
+
+         --  On a function call, the usual routine works correctly
+         when N_Function_Call =>
+            pragma Assert (Is_Tagged_Predefined_Eq (Get_Called_Entity (N)));
+
+            return Flow_Classwide.Is_Dispatching_Call (N);
+
+         --  On a membership test, if the left operand is a class-wide type
+         --  and the right operand includes at least a constant or variable,
+         --  then the equality function is called and it dispatches.
+         when N_Membership_Test =>
+
+            if Is_Class_Wide_Type (Etype (Left_Opnd (N)))
+            then
+               declare
+                  P : Node_Id;
+
+               begin
+                  if Present (Right_Opnd (N)) then
+                     P := Right_Opnd (N);
+                     return Alternative_Uses_Eq (P);
+
+                  else
+                     --  x in t | 1 .. y | u
+                     P := First (Alternatives (N));
+                     loop
+                        if Alternative_Uses_Eq (P) then
+                           return True;
+                        end if;
+                        Next (P);
+
+                        exit when No (P);
+                     end loop;
+                  end if;
+               end;
+            end if;
+
+            return False;
+
+         --  On an operator, the equality dispatchs if one of the operands is
+         --  of a class-wide type.
+         when N_Op_Eq | N_Op_Ne =>
+
+            return Is_Class_Wide_Type (Etype (Left_Opnd (N)))
+              or else Is_Class_Wide_Type (Etype (Right_Opnd (N)));
+
+         when others =>
+            raise Program_Error;
+      end case;
+   end Calls_Dispatching_Equality;
 
    -----------------------------------
    -- Is_Initialized_At_Elaboration --

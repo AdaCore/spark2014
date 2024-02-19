@@ -2518,12 +2518,6 @@ package body SPARK_Definition is
                --  predefined equality on access types (except if one of the
                --  operands is statically null).
 
-               function Alternative_Uses_Eq (Alt : Node_Id) return Boolean
-               is
-                 ((not Is_Entity_Name (Alt)
-                  or else not Is_Type (Entity (Alt))));
-               --  Return True if Alt is not a type inclusion
-
                Alt             : Node_Id;
                User_Eq_Checked : Boolean := False;
             begin

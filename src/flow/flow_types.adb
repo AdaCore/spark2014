@@ -257,12 +257,18 @@ package body Flow_Types is
       --  because it uniquely determines the entity of the called subprogram.
       --  Same for elaboration of nested packages.
 
-      else
+      elsif Present (SC.N) then
          pragma Assert (Nkind (SC.N) in N_Entry_Call_Statement
                                       | N_Package_Declaration
                                       | N_Subprogram_Call);
-
          return Node_Hash (SC.N);
+
+      --  Otherwise, this is an indirect call to a user-defined equality
+      --  (through primitive equalities). We hash the corresponding subprogram.
+
+      else
+         pragma Assert (Is_User_Defined_Equality (SC.E));
+         return Node_Hash (SC.E);
       end if;
    end Hash;
 

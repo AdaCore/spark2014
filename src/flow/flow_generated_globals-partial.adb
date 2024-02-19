@@ -251,14 +251,18 @@ package body Flow_Generated_Globals.Partial is
    --  subprograms are included as is and do not contribute to the
    --  closure.
 
-   function Contract_Calls (E : Entity_Id) return Node_Sets.Set
+   procedure Contract_Calls
+     (E                  : Entity_Id;
+      Function_Calls     : out Node_Sets.Set;
+      Proof_Dependencies : out Node_Sets.Set;
+      Indirect_Calls     : out Node_Sets.Set)
    with Pre => Ekind (E) in Entry_Kind
                           | E_Function
                           | E_Procedure,
-        Post => (for all Call of Contract_Calls'Result =>
+        Post => (for all Call of Function_Calls =>
                     Ekind (Call) in E_Function | E_Subprogram_Type);
-   --  Return direct calls in the contract of E, i.e. in its Pre, Post and
-   --  Contract_Cases.
+   --  Return function calls, proof dependencies and indirect calls in
+   --  the contract of E, i.e. in its Pre, Post and Contract_Cases.
 
    function Contract_Globals
      (E       : Entity_Id;
@@ -675,33 +679,87 @@ package body Flow_Generated_Globals.Partial is
 
       if Entity_In_SPARK (E) then
          if Is_Callable (E) then
+            declare
+               Function_Calls     : Node_Sets.Set;
+               Proof_Dependencies : Node_Sets.Set;
+               Indirect_Calls     : Node_Sets.Set;
+            begin
+               Contract_Calls
+                 (E, Function_Calls, Proof_Dependencies, Indirect_Calls);
 
-            for Call of Contract_Calls (E) loop
+               for Call of Function_Calls loop
 
-               --  Ignore calls via access-to-subprogram, because we can't know
-               --  the actual subprogram and thus we assume it to be pure.
+                  --  Ignore calls via access-to-subprogram, because we can't
+                  --  know the actual subprogram and thus we assume it to be
+                  --  pure.
 
-               if Ekind (Call) = E_Subprogram_Type then
-                  null;
+                  if Ekind (Call) = E_Subprogram_Type then
+                     null;
 
-               --  Likewise, ignore calls to abstract functions (since
-               --  procedures or entries cannot be called in contracts),
-               --  because we assume abstract subprograms to be pure.
+                     --  Likewise, ignore calls to abstract functions (since
+                     --  procedures or entries cannot be called in contracts),
+                     --  because we assume abstract subprograms to be pure.
 
-               elsif Ekind (Call) = E_Function
-                 and then Is_Abstract_Subprogram (Call)
-               then
-                  null;
+                  elsif Ekind (Call) = E_Function
+                    and then Is_Abstract_Subprogram (Call)
+                  then
+                     null;
 
-               else
-                  Contr.Direct_Calls.Insert (Call);
-               end if;
+                  else
+                     Contr.Direct_Calls.Insert (Call);
+                  end if;
+               end loop;
+
+               --  Collect proof dependencies from the contracts of E
+
+               pragma Assert (Contr.Proof_Dependencies.Is_Empty);
+               Contr.Proof_Dependencies := Proof_Dependencies;
+
+               --  Collect calls to dispatching and primitive equalities and
+               --  add them to proof dependencies and direct calls
+               --  respectively.
+
+               for N of Indirect_Calls loop
+                  declare
+                     Typ : constant Entity_Id :=
+                       (if Nkind (N) = N_Function_Call
+                        then Etype (First_Actual (N))
+                        else Etype (Left_Opnd (N)));
+                  begin
+                     if Calls_Dispatching_Equality (N) then
+                        Contr.Nonreturning := True;
+                        Process_Indirect_Dispatching_Equality
+                          (Typ, Contr.Proof_Dependencies);
+                     else
+                        Contr.Direct_Calls.Union
+                          (Called_Primitive_Equalities
+                             (Typ,
+                              Nkind (N) in N_Op));
+                     end if;
+                  end;
+               end loop;
+            end;
+
+            --  Process predicates that apply to formals of E
+
+            for F of Get_Explicit_Formals (E) loop
+               Process_Predicate_And_Invariant
+                 (F,
+                  Get_Flow_Scope (E),
+                  Is_Globally_Visible (E),
+                  Contr.Proof_Dependencies);
             end loop;
 
-            --  Collect proof dependencies from the contracts of E
+            --  Process predicates that apply to the return type if E is a
+            --  function.
 
-            pragma Assert (Contr.Proof_Dependencies.Is_Empty);
-            Contr.Proof_Dependencies := Subprogram_Proof_Dependencies (E);
+            if Ekind (E) = E_Function then
+               Process_Predicate_And_Invariant
+                 (E,
+                  Get_Flow_Scope (E),
+                  Is_Globally_Visible (E),
+                  Contr.Proof_Dependencies);
+            end if;
          end if;
 
          --  For subprograms in a generic predefined unit with its body not
@@ -1131,19 +1189,46 @@ package body Flow_Generated_Globals.Partial is
    -- Contract_Calls --
    --------------------
 
-   function Contract_Calls (E : Entity_Id) return Node_Sets.Set is
-      Calls : Node_Sets.Set;
+   procedure Contract_Calls
+     (E                  : Entity_Id;
+      Function_Calls     : out Node_Sets.Set;
+      Proof_Dependencies : out Node_Sets.Set;
+      Indirect_Calls     : out Node_Sets.Set)
+   is
 
       procedure Collect_Calls (Expr : Node_Id);
-      --  Collect function calls in expression Expr and put them in Calls
+      --  Collects function calls, proof dependencies and indirect calls in
+      --  expression Expr and add them to Function_Calls, Proof_Dependencies
+      --  and Indirect_Calls.
 
       -------------------
       -- Collect_Calls --
       -------------------
 
       procedure Collect_Calls (Expr : Node_Id) is
+         Funcalls : Call_Sets.Set;
+         Unused   : Tasking_Info;
       begin
-         Calls.Union (Get_Functions (Expr, Include_Predicates => True));
+         Pick_Generated_Info
+           (Expr,
+            Scop               => Get_Flow_Scope (Expr),
+            Function_Calls     => Funcalls,
+            Indirect_Calls     => Indirect_Calls,
+            Proof_Dependencies => Proof_Dependencies,
+            Tasking            => Unused,
+            Generating_Globals => True);
+
+         for Call of Funcalls loop
+
+            Function_Calls.Include (Call.E);
+
+            --  We don't pull calls via access-to-subprograms in proof
+            --  dependencies.
+
+            if Ekind (Call.E) /= E_Subprogram_Type then
+               Proof_Dependencies.Include (Call.E);
+            end if;
+         end loop;
       end Collect_Calls;
 
    --  Start of processing for Contract_Calls
@@ -1157,8 +1242,6 @@ package body Flow_Generated_Globals.Partial is
       loop
          Collect_Calls (Expr);
       end loop;
-
-      return Calls;
    end Contract_Calls;
 
    ----------------------

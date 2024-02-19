@@ -22,7 +22,6 @@
 ------------------------------------------------------------------------------
 
 with Gnat2Why.Tables;           use Gnat2Why.Tables;
-with Flow_Refinement;           use Flow_Refinement;
 with SPARK_Definition.Annotate; use SPARK_Definition.Annotate;
 with SPARK_Util.Subprograms;    use SPARK_Util.Subprograms;
 
@@ -49,6 +48,7 @@ package body Flow_Utility.Proof_Dependencies is
 
       procedure Process_Expressions (L : Node_Lists.List) is
          Funcalls : Call_Sets.Set;
+         Indcalls : Node_Sets.Set;
          Unused   : Tasking_Info;
       begin
          for Expr of L loop
@@ -56,6 +56,7 @@ package body Flow_Utility.Proof_Dependencies is
               (Expr,
                Scop,
                Funcalls,
+               Indcalls,
                Proof_Dependencies,
                Unused,
                Generating_Globals);
@@ -96,6 +97,59 @@ package body Flow_Utility.Proof_Dependencies is
          Proof_Dependencies.Include (Descendant_E);
       end loop;
    end Process_Dispatching_Call;
+
+   -------------------------------------------
+   -- Process_Indirect_Dispatching_Equality --
+   -------------------------------------------
+
+   procedure Process_Indirect_Dispatching_Equality
+     (Ty                 : Node_Id;
+      Proof_Dependencies : in out Node_Sets.Set)
+   is
+
+      procedure Traverse_Ancestors;
+      --  Traverse ancestors of type Ty to pull called equalities in proof
+      --  dependencies.
+
+      ------------------------
+      -- Traverse_Ancestors --
+      ------------------------
+
+      procedure Traverse_Ancestors is
+         Base_Ty   : Type_Kind_Id := Base_Retysp (Ty);
+         Parent_Ty : Opt_Type_Kind_Id :=
+           Parent_Retysp (Base_Ty);
+      begin
+         loop
+            if not Use_Predefined_Equality_For_Type (Base_Ty) then
+               Proof_Dependencies.Include (Get_User_Defined_Eq (Base_Ty));
+               exit;
+            end if;
+
+            Base_Ty := Parent_Ty;
+            Parent_Ty := Parent_Retysp (Base_Ty);
+
+            exit when No (Parent_Ty) or else Base_Ty = Parent_Ty;
+         end loop;
+      end Traverse_Ancestors;
+
+      Descendants  : constant Node_Sets.Set := Get_Descendant_Set (Ty);
+      Descendant_E : Entity_Id;
+   begin
+
+      --  Pull user-defined equalities from descendants of type Ty
+
+      for Descendant of Descendants loop
+         if not Use_Predefined_Equality_For_Type (Descendant) then
+            Descendant_E := Get_User_Defined_Eq (Descendant);
+            Proof_Dependencies.Include (Descendant_E);
+         end if;
+      end loop;
+
+      --  Pull user-defined equalities from ancestors of type Ty
+
+      Traverse_Ancestors;
+   end Process_Indirect_Dispatching_Equality;
 
    -----------------------
    -- Process_Attribute --
@@ -211,77 +265,4 @@ package body Flow_Utility.Proof_Dependencies is
          end;
       end loop;
    end Process_Reclamation_Functions;
-
-   -----------------------------------
-   -- Subprogram_Proof_Dependencies --
-   -----------------------------------
-
-   function Subprogram_Proof_Dependencies (E : Entity_Id) return Node_Sets.Set
-   is
-      Proof_Dependencies : Node_Sets.Set;
-
-      procedure Collect_Proof_Dependencies (Expr : Node_Id);
-      --  Collect proof dependencies in expression Expr and put them in Deps
-
-      --------------------------------
-      -- Collect_Proof_Dependencies --
-      --------------------------------
-
-      procedure Collect_Proof_Dependencies (Expr : Node_Id) is
-         Funcalls  : Call_Sets.Set;
-         Unused    : Tasking_Info;
-      begin
-         Pick_Generated_Info
-           (Expr,
-            Scop               => Get_Flow_Scope (Expr),
-            Function_Calls     => Funcalls,
-            Proof_Dependencies => Proof_Dependencies,
-            Tasking            => Unused,
-            Generating_Globals => True);
-
-         for Call of Funcalls loop
-
-            --  We don't pull calls via access-to-subprograms in proof
-            --  dependencies.
-
-            if Ekind (Call.E) /= E_Subprogram_Type then
-               Proof_Dependencies.Include (Call.E);
-            end if;
-         end loop;
-      end Collect_Proof_Dependencies;
-
-   --  Start of processing for Contract_Proof_Dependencies
-
-   begin
-      for Expr of Get_Precondition_Expressions (E) loop
-         Collect_Proof_Dependencies (Expr);
-      end loop;
-
-      for Expr of Get_Postcondition_Expressions (E, Refined => False) loop
-         Collect_Proof_Dependencies (Expr);
-      end loop;
-
-      --  Process predicates that apply to formals of E
-
-      for F of Get_Explicit_Formals (E) loop
-         Process_Predicate_And_Invariant
-           (F,
-            Get_Flow_Scope (E),
-            Is_Globally_Visible (E),
-            Proof_Dependencies);
-      end loop;
-
-      --  Process predicates that apply to the return type if E is a function
-
-      if Ekind (E) = E_Function then
-         Process_Predicate_And_Invariant
-           (E,
-            Get_Flow_Scope (E),
-            Is_Globally_Visible (E),
-            Proof_Dependencies);
-      end if;
-
-      return Proof_Dependencies;
-   end Subprogram_Proof_Dependencies;
-
 end Flow_Utility.Proof_Dependencies;
