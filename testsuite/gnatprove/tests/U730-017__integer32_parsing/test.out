@@ -217,7 +217,7 @@ integer32_parsing.adb:229:28: medium: assertion might fail (e.g. when s'First = 
 integer32_parsing.adb:229:32: info: precondition proved (CVC5: 1 VC)
 integer32_parsing.adb:232:17: medium: overflow check might fail, cannot prove lower bound for V * 10 (e.g. when Is_Pos = False and V = -214748365) [reason for check: result of multiplication must fit in a 32-bits machine integer] [possible fix: loop at line 221 should mention V in a loop invariant]
 integer32_parsing.adb:232:22: medium: overflow check might fail, cannot prove lower bound for V * 10 + (if Is_Pos then 1 else -1) * Char_To_Int (s (I - 1 + First)) (e.g. when First = 2 and I = 1 and Is_Pos = False and V = -214748364 and s'First = 1 and s'Last = 2) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: loop at line 221 should mention V in a loop invariant]
-integer32_parsing.adb:232:51: medium: overflow check might fail, cannot prove lower bound for (if Is_Pos then 1 else -1) * Char_To_Int (s (I - 1 + First)) [reason for check: result of multiplication must fit in a 32-bits machine integer] [possible fix: precondition of subprogram at integer32_parsing.ads:47 should mention s]
+integer32_parsing.adb:232:51: info: overflow check proved (CVC5: 2 VC)
 integer32_parsing.adb:232:53: info: precondition proved (CVC5: 2 VC)
 integer32_parsing.adb:232:75: info: index check proved (CVC5: 2 VC)
 integer32_parsing.adb:232:75: info: overflow check proved (CVC5: 2 VC)

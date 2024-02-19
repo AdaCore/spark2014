@@ -28,10 +28,10 @@ spark-containers-functional-maps-higher_order.adb:59:24: info: precondition prov
 spark-containers-functional-maps-higher_order.adb:59:41: info: predicate check proved, in instantiation at test_map_ho.adb:67
 spark-containers-functional-maps-higher_order.adb:59:59: info: predicate check proved, in instantiation at test_map_ho.adb:67
 spark-containers-functional-maps-higher_order.adb:59:61: info: predicate check proved, in instantiation at test_map_ho.adb:67
-spark-containers-functional-maps-higher_order.adb:63:24: medium: contract of function might not be feasible, in instantiation at test_map_ho.adb:67
+spark-containers-functional-maps-higher_order.adb:63:24: info: function contract feasibility proved, in instantiation at test_map_ho.adb:67
 spark-containers-functional-maps-higher_order.adb:69:42: info: range check proved, in instantiation at test_map_ho.adb:67
 spark-containers-functional-maps-higher_order.adb:71:14: info: aspect Always_Terminates on "Lemma_Sum_Rec_Eq" has been proved, subprogram will terminate, in instantiation at test_map_ho.adb:67
-spark-containers-functional-maps-higher_order.adb:73:25: medium: contract of function might not be feasible, in instantiation at test_map_ho.adb:67
+spark-containers-functional-maps-higher_order.adb:73:25: info: function contract feasibility proved, in instantiation at test_map_ho.adb:67
 spark-containers-functional-maps-higher_order.adb:80:71: info: null exclusion check proved, in instantiation at test_map_ho.adb:67
 spark-containers-functional-maps-higher_order.adb:81:28: info: postcondition proved, in instantiation at test_map_ho.adb:67
 spark-containers-functional-maps-higher_order.adb:81:28: info: precondition proved, in instantiation at test_map_ho.adb:67
@@ -41,7 +41,7 @@ spark-containers-functional-maps-higher_order.adb:81:46: info: precondition prov
 spark-containers-functional-maps-higher_order.adb:81:46: info: predicate check proved, in instantiation at test_map_ho.adb:67
 spark-containers-functional-maps-higher_order.adb:81:55: info: null exclusion check proved, in instantiation at test_map_ho.adb:67
 spark-containers-functional-maps-higher_order.adb:82:42: info: range check proved, in instantiation at test_map_ho.adb:67
-spark-containers-functional-maps-higher_order.adb:87:24: medium: contract of function might not be feasible, in instantiation at test_map_ho.adb:67
+spark-containers-functional-maps-higher_order.adb:87:24: info: function contract feasibility proved, in instantiation at test_map_ho.adb:67
 spark-containers-functional-maps-higher_order.adb:93:42: info: range check proved, in instantiation at test_map_ho.adb:67
 spark-containers-functional-maps-higher_order.adb:94:70: info: null exclusion check proved, in instantiation at test_map_ho.adb:67
 spark-containers-functional-maps-higher_order.adb:96:08: info: postcondition proved, in instantiation at test_map_ho.adb:67
@@ -315,7 +315,7 @@ spark-containers-functional-maps-higher_order.ads:27:20: info: postcondition pro
 spark-containers-functional-maps-higher_order.ads:27:41: medium: implicit aspect Always_Terminates on "Eq_Compatible" could be incorrect, call via access-to-subprogram might be nonterminating, in instantiation at test_map_ho.adb:67 [possible explanation: call could hide recursive calls]
 spark-containers-functional-maps-higher_order.ads:31:32: info: precondition proved, in instantiation at test_map_ho.adb:67
 spark-containers-functional-maps-higher_order.ads:31:57: info: precondition proved, in instantiation at test_map_ho.adb:67
-spark-containers-functional-maps-higher_order.ads:37:24: medium: contract of function might not be feasible, in instantiation at test_map_ho.adb:67
+spark-containers-functional-maps-higher_order.ads:37:24: info: function contract feasibility proved, in instantiation at test_map_ho.adb:67
 spark-containers-functional-maps-higher_order.ads:43:08: info: data dependencies proved, in instantiation at test_map_ho.adb:67
 spark-containers-functional-maps-higher_order.ads:44:20: info: postcondition proved, in instantiation at test_map_ho.adb:67
 spark-containers-functional-maps-higher_order.ads:44:41: medium: implicit aspect Always_Terminates on "Eq_Compatible" could be incorrect, call via access-to-subprogram might be nonterminating, in instantiation at test_map_ho.adb:67 [possible explanation: call could hide recursive calls]
@@ -323,8 +323,8 @@ spark-containers-functional-maps-higher_order.ads:48:22: info: predicate check p
 spark-containers-functional-maps-higher_order.ads:48:33: info: precondition proved, in instantiation at test_map_ho.adb:67
 spark-containers-functional-maps-higher_order.ads:48:48: info: predicate check proved, in instantiation at test_map_ho.adb:67
 spark-containers-functional-maps-higher_order.ads:48:59: info: precondition proved, in instantiation at test_map_ho.adb:67
-spark-containers-functional-maps-higher_order.ads:54:29: medium: contract of function might not be feasible, in instantiation at test_map_ho.adb:67
-spark-containers-functional-maps-higher_order.ads:55:29: medium: contract of function might not be feasible, in instantiation at test_map_ho.adb:67
+spark-containers-functional-maps-higher_order.ads:54:29: info: function contract feasibility proved, in instantiation at test_map_ho.adb:67
+spark-containers-functional-maps-higher_order.ads:55:29: info: function contract feasibility proved, in instantiation at test_map_ho.adb:67
 spark-containers-functional-maps-higher_order.ads:62:06: info: data dependencies proved, in instantiation at test_map_ho.adb:67
 spark-containers-functional-maps-higher_order.ads:65:09: medium: implicit aspect Always_Terminates on "Create" could be incorrect, call via access-to-subprogram might be nonterminating, in instantiation at test_map_ho.adb:67 [possible explanation: call could hide recursive calls]
 spark-containers-functional-maps-higher_order.ads:66:36: info: predicate check proved, in instantiation at test_map_ho.adb:67
@@ -340,8 +340,8 @@ spark-containers-functional-maps-higher_order.ads:76:08: medium: implicit aspect
 spark-containers-functional-maps-higher_order.ads:79:17: info: precondition proved, in instantiation at test_map_ho.adb:67
 spark-containers-functional-maps-higher_order.ads:79:46: info: predicate check proved, in instantiation at test_map_ho.adb:67
 spark-containers-functional-maps-higher_order.ads:79:61: info: predicate check proved, in instantiation at test_map_ho.adb:67
-spark-containers-functional-maps-higher_order.ads:83:33: medium: contract of function might not be feasible, in instantiation at test_map_ho.adb:67
-spark-containers-functional-maps-higher_order.ads:84:33: medium: contract of function might not be feasible, in instantiation at test_map_ho.adb:67
+spark-containers-functional-maps-higher_order.ads:83:33: info: function contract feasibility proved, in instantiation at test_map_ho.adb:67
+spark-containers-functional-maps-higher_order.ads:84:33: info: function contract feasibility proved, in instantiation at test_map_ho.adb:67
 spark-containers-functional-maps-higher_order.ads:92:06: info: data dependencies proved, in instantiation at test_map_ho.adb:67
 spark-containers-functional-maps-higher_order.ads:95:09: medium: implicit aspect Always_Terminates on "Transform" could be incorrect, call via access-to-subprogram might be nonterminating, in instantiation at test_map_ho.adb:67 [possible explanation: call could hide recursive calls]
 spark-containers-functional-maps-higher_order.ads:99:18: info: postcondition proved, in instantiation at test_map_ho.adb:67
@@ -350,7 +350,7 @@ spark-containers-functional-maps-higher_order.ads:99:46: info: predicate check p
 spark-containers-functional-maps-higher_order.ads:105:08: medium: implicit aspect Always_Terminates on "Transform" could be incorrect, call via access-to-subprogram might be nonterminating, in instantiation at test_map_ho.adb:67 [possible explanation: call could hide recursive calls]
 spark-containers-functional-maps-higher_order.ads:108:18: info: precondition proved, in instantiation at test_map_ho.adb:67
 spark-containers-functional-maps-higher_order.ads:109:34: info: precondition proved, in instantiation at test_map_ho.adb:67
-spark-containers-functional-maps-higher_order.ads:113:33: medium: contract of function might not be feasible, in instantiation at test_map_ho.adb:67
+spark-containers-functional-maps-higher_order.ads:113:33: info: function contract feasibility proved, in instantiation at test_map_ho.adb:67
 spark-containers-functional-maps-higher_order.ads:120:06: info: data dependencies proved, in instantiation at test_map_ho.adb:67
 spark-containers-functional-maps-higher_order.ads:122:18: info: postcondition proved, in instantiation at test_map_ho.adb:67
 spark-containers-functional-maps-higher_order.ads:122:18: info: predicate check proved, in instantiation at test_map_ho.adb:67
@@ -420,11 +420,11 @@ spark-containers-functional-maps-higher_order.ads:216:53: info: null exclusion c
 spark-containers-functional-maps-higher_order.ads:218:57: info: precondition proved, in instantiation at test_map_ho.adb:67
 spark-containers-functional-maps-higher_order.ads:219:08: medium: implicit aspect Always_Terminates on "Filter" could be incorrect, call via access-to-subprogram might be nonterminating, in instantiation at test_map_ho.adb:67 [possible explanation: call could hide recursive calls]
 spark-containers-functional-maps-higher_order.ads:221:26: info: precondition proved, in instantiation at test_map_ho.adb:67
-spark-containers-functional-maps-higher_order.ads:225:24: medium: contract of function might not be feasible, in instantiation at test_map_ho.adb:67
+spark-containers-functional-maps-higher_order.ads:225:24: info: function contract feasibility proved, in instantiation at test_map_ho.adb:67
 spark-containers-functional-maps-higher_order.ads:233:06: info: data dependencies proved, in instantiation at test_map_ho.adb:67
 spark-containers-functional-maps-higher_order.ads:235:36: info: null exclusion check proved, in instantiation at test_map_ho.adb:67
 spark-containers-functional-maps-higher_order.ads:237:14: info: implicit aspect Always_Terminates on "Lemma_Sum_Eq" has been proved, subprogram will terminate, in instantiation at test_map_ho.adb:67
-spark-containers-functional-maps-higher_order.ads:239:25: medium: contract of function might not be feasible, in instantiation at test_map_ho.adb:67
+spark-containers-functional-maps-higher_order.ads:239:25: info: function contract feasibility proved, in instantiation at test_map_ho.adb:67
 spark-containers-functional-maps-higher_order.ads:245:06: info: data dependencies proved, in instantiation at test_map_ho.adb:67
 spark-containers-functional-maps-higher_order.ads:248:37: info: null exclusion check proved, in instantiation at test_map_ho.adb:67
 spark-containers-functional-maps-higher_order.ads:250:18: info: postcondition proved, in instantiation at test_map_ho.adb:67
@@ -434,7 +434,7 @@ spark-containers-functional-maps-higher_order.ads:250:27: info: null exclusion c
 spark-containers-functional-maps-higher_order.ads:250:36: info: precondition proved, in instantiation at test_map_ho.adb:67
 spark-containers-functional-maps-higher_order.ads:250:36: info: predicate check proved, in instantiation at test_map_ho.adb:67
 spark-containers-functional-maps-higher_order.ads:250:45: info: null exclusion check proved, in instantiation at test_map_ho.adb:67
-spark-containers-functional-maps-higher_order.ads:255:24: medium: contract of function might not be feasible, in instantiation at test_map_ho.adb:67
+spark-containers-functional-maps-higher_order.ads:255:24: info: function contract feasibility proved, in instantiation at test_map_ho.adb:67
 spark-containers-functional-maps-higher_order.ads:261:06: info: data dependencies proved, in instantiation at test_map_ho.adb:67
 spark-containers-functional-maps-higher_order.ads:264:60: info: null exclusion check proved, in instantiation at test_map_ho.adb:67
 spark-containers-functional-maps-higher_order.ads:265:18: info: postcondition proved, in instantiation at test_map_ho.adb:67

@@ -50,7 +50,7 @@ deep_delta_access_checks.adb:117:22: info: discriminant check proved (CVC5: 1 VC
 deep_delta_access_checks.adb:118:13: info: index check proved (CVC5: 2 VC)
 deep_delta_access_checks.adb:118:18: info: discriminant check proved (CVC5: 1 VC)
 deep_delta_access_checks.adb:119:08: info: discriminant check proved (CVC5: 1 VC)
-deep_delta_access_checks.adb:120:22: info: assertion proved (Z3: 1 VC)
+deep_delta_access_checks.adb:120:22: info: assertion proved (CVC5: 1 VC)
 deep_delta_access_checks.adb:121:22: medium: assertion might fail
 deep_delta_access_checks.adb:126:43: warning: unused variable "M"
 deep_delta_access_checks.adb:126:46: warning: unused variable "N"
