@@ -804,11 +804,12 @@ package body SPARK_Util.Types is
          then
             --  Types whose private view has unknown discriminants,
             --  including the implicit tag for class-wide type,
-            --  cannot be default initialized
-            if Is_Class_Wide_Type (Typ) or else Has_Unknown_Discriminants (Typ)
-            then
+            --  cannot be default initialized.
+
+            if Has_Unknown_Discriminants (Typ) then
                return Empty;
             else
+               pragma Assert (not Is_Class_Wide_Type (Typ));
                return Typ;
             end if;
          end if;
@@ -1600,6 +1601,13 @@ package body SPARK_Util.Types is
       end loop;
       return Count;
    end Num_Literals;
+
+   -----------------------
+   -- Partial_Base_Type --
+   -----------------------
+
+   function Partial_Base_Type (Ty : Type_Kind_Id) return Type_Kind_Id is
+     (Base_Type (if Is_Full_View (Ty) then Partial_View (Ty) else Ty));
 
    -------------------
    -- Parent_Retysp --

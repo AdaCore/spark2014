@@ -4194,8 +4194,7 @@ package body Gnat2Why.Expr is
       Ty               : Type_Kind_Id;
       Params           : Transformation_Params;
       At_Declaration   : Boolean := False;
-      Include_Subtypes : Boolean := False;
-      Decl_Node        : Opt_N_Declaration_Id := Empty)
+      Include_Subtypes : Boolean := False)
       return W_Prog_Id
    is
 
@@ -4203,8 +4202,7 @@ package body Gnat2Why.Expr is
         (Ada_Node         : Node_Id;
          Ty               : Type_Kind_Id;
          Include_Subtypes : Boolean := False;
-         At_Declaration   : Boolean := False;
-         Decl_Node        : Opt_N_Declaration_Id := Empty)
+         At_Declaration   : Boolean := False)
          return W_Prog_Id;
       --  Recursively traverse the type to generate the checks
 
@@ -4216,23 +4214,24 @@ package body Gnat2Why.Expr is
         (Ada_Node         : Node_Id;
          Ty               : Type_Kind_Id;
          Include_Subtypes : Boolean := False;
-         At_Declaration   : Boolean := False;
-         Decl_Node        : Opt_N_Declaration_Id := Empty)
+         At_Declaration   : Boolean := False)
          return W_Prog_Id
       is
          --  If Ty's fullview is in SPARK, go to its underlying type to check
          --  its kind.
-         Ty_Ext  : constant Entity_Id := Retysp (Ty);
-         Checks  : W_Prog_Id := +Void;
-         Tmp_Exp : W_Identifier_Id := Why_Empty;
+         Ty_Ext    : constant Entity_Id := Retysp (Ty);
+         Priv_Base : constant Entity_Id := Partial_Base_Type (Ty);
+
+         Checks    : W_Prog_Id := +Void;
+         Tmp_Exp   : W_Identifier_Id := Why_Empty;
          --  Temporary variable for the type instance of Ty_Ext
 
-         Post    : W_Pred_Id := True_Pred;
+         Post      : W_Pred_Id := True_Pred;
          --  Post used for the assignment of tmp_exp
 
-         Discrs  : constant Natural := Count_Discriminants (Ty_Ext);
-         Tmps    : W_Identifier_Array (1 .. Discrs);
-         Binds   : W_Prog_Array (1 .. Discrs);
+         Discrs    : constant Natural := Count_Discriminants (Ty_Ext);
+         Tmps      : W_Identifier_Array (1 .. Discrs);
+         Binds     : W_Prog_Array (1 .. Discrs);
          --  Arrays to store the bindings for discriminants
 
       begin
@@ -4321,9 +4320,10 @@ package body Gnat2Why.Expr is
          --  If Ty is checked at declaration, do not recheck its predicate
          --  at use.
 
-         if (At_Declaration or else not Needs_Default_Checks_At_Decl (Ty))
-           and then Has_Predicates (Ty)
-           and then Default_Initialization (Ty) /= No_Default_Initialization
+         if (At_Declaration or else not Needs_Default_Checks_At_Decl (Ty_Ext))
+           and then Has_Predicates (Ty_Ext)
+           and then Default_Initialization (Ty_Ext) /=
+           No_Default_Initialization
          then
             declare
                W_Typ   : constant W_Type_Id := EW_Abstract
@@ -4377,7 +4377,7 @@ package body Gnat2Why.Expr is
                Pred_Check : constant W_Prog_Id :=
                  New_Predicate_Check
                    (Ada_Node         => Ada_Node,
-                    Ty               => Ty,
+                    Ty               => Ty_Ext,
                     W_Expr           => +Tmp_Exp,
                     On_Default_Value => True);
 
@@ -4392,7 +4392,16 @@ package body Gnat2Why.Expr is
             end;
          end if;
 
-         if Is_Scalar_Type (Ty) then
+         --  Default checks for private types are done at declaration
+
+         if not At_Declaration
+           and then Ekind (Priv_Base) in
+           E_Private_Type | E_Limited_Private_Type
+           and then not Has_Unknown_Discriminants (Priv_Base)
+         then
+            null;
+
+         elsif Is_Scalar_Type (Ty_Ext) then
             if Has_Default_Aspect (Ty_Ext) then
                declare
                   Default_Expr : constant W_Expr_Id :=
@@ -4419,8 +4428,8 @@ package body Gnat2Why.Expr is
                end;
             end if;
 
-         elsif Is_Array_Type (Ty)
-           and then Ekind (Ty) /= E_String_Literal_Subtype
+         elsif Is_Array_Type (Ty_Ext)
+           and then Ekind (Ty_Ext) /= E_String_Literal_Subtype
          then
             pragma Assert (Is_Constrained (Ty_Ext) or else Include_Subtypes);
 
@@ -4482,7 +4491,7 @@ package body Gnat2Why.Expr is
 
                if T_Comp /= +Void then
                   T_Comp := New_Conditional
-                    (Ada_Node    => Ty,
+                    (Ada_Node    => Ty_Ext,
                      Condition   => Range_Expr,
                      Then_Part   => New_Ignore
                        (Component_Type (Ty_Ext), T_Comp));
@@ -4491,7 +4500,7 @@ package body Gnat2Why.Expr is
                end if;
             end;
 
-         elsif Is_Record_Type_In_Why (Ty) then
+         elsif Is_Record_Type_In_Why (Ty_Ext) then
 
             --  Go through other fields to create the expression
             --  (check_for_f1 expr ->
@@ -4501,28 +4510,45 @@ package body Gnat2Why.Expr is
             --  Components of protected types are checked when generating VCs
             --  for the protected type.
             --  If At_Declaration is False, do not generate checks for
-            --  components of private types.
-            --  If Decl_Node is a private extension, do not generate checks for
+            --  components of private types (if they can be default
+            --  initialized). For private extension, do not generate checks for
             --  visibly inherited components.
             --  Do not generate checks for hidden components, they will be
             --  checked at the place where they are hidden.
 
-            if not Is_Concurrent_Type (Ty_Ext)
-              and then (Is_Record_Type (Ty) or else At_Declaration)
-            then
-               declare
-                  Checks_Seq : W_Statement_Sequence_Id := Void_Sequence;
-                  T_Comp     : W_Prog_Id;
-               begin
+            declare
+               Is_Priv_Ext : constant Boolean :=
+                 Ekind (Priv_Base) = E_Record_Type_With_Private
+                 and then not Has_Unknown_Discriminants (Priv_Base);
+               --  True if Priv_Base is a private type extension whose hidden
+               --  components are checked at declaration.
+
+               Comp_In_Ext : Boolean;
+               Checks_Seq  : W_Statement_Sequence_Id := Void_Sequence;
+               T_Comp      : W_Prog_Id;
+
+            begin
+               if not Is_Concurrent_Type (Ty_Ext) then
                   for Field of Get_Component_Set (Ty_Ext) loop
-                     if Component_Is_Visible_In_Type (Ty, Field)
-                       and then
-                         (Nkind (Decl_Node) /=
-                                N_Private_Extension_Declaration
-                          or else No
-                            (Search_Component_In_Type
-                               (Etype (Partial_View (Ty_Ext)),
-                                Field)))
+
+                     --  Field is hidden in the extension if either Priv_Base
+                     --  does not visibly derive from anything or Field is
+                     --  not present in Priv_Base's parent.
+
+                     Comp_In_Ext :=
+                       Base_Retysp (Parent_Type (Priv_Base)) =
+                         Base_Retysp (Priv_Base)
+                       or else No
+                         (Search_Component_In_Type
+                            (Parent_Type (Priv_Base), Field));
+
+                     --  In private extension, if At_Declaration is True
+                     --  consider fields hidden in the extension, otherwise
+                     --  consider visible fields.
+
+                     if Component_Is_Visible_In_Type (Ty_Ext, Field)
+                       and then (not Is_Priv_Ext
+                                 or else Comp_In_Ext = At_Declaration)
                      then
                         if Present
                           (Expression (Enclosing_Declaration (Field)))
@@ -4588,8 +4614,8 @@ package body Gnat2Why.Expr is
                   end loop;
 
                   Append (Checks, +Checks_Seq);
-               end;
-            end if;
+               end if;
+            end;
          elsif Is_Access_Type (Ty_Ext) and then Can_Never_Be_Null (Ty_Ext) then
             Append
               (Checks,
@@ -4605,9 +4631,9 @@ package body Gnat2Why.Expr is
          --  no runtime error in the DIC and that the DIC holds. The checks
          --  are inserted before Checks.
 
-         if Has_DIC (Ty) then
+         if Has_DIC (Ty_Ext) then
             Check_Or_Assume_All_DICs_At_Use
-              (Ada_Node, Ty, +Tmp_Exp, Params, Checks,
+              (Ada_Node, Ty_Ext, +Tmp_Exp, Params, Checks,
                Check => not At_Declaration);
          end if;
 
@@ -4637,7 +4663,7 @@ package body Gnat2Why.Expr is
             --  Generate the bindings if we have some fields to check or if
             --  we need to check the bindings themselves.
 
-            if Checks /= +Void or else not Is_Constrained (Ty) then
+            if Checks /= +Void or else not Is_Constrained (Ty_Ext) then
                for I in 1 .. Discrs loop
                   Checks := New_Typed_Binding
                     (Name     => Tmps (I),
@@ -4653,11 +4679,11 @@ package body Gnat2Why.Expr is
       end Compute_Default_Check_Rec;
 
       Msg    : constant String := "in default value"
-        & (if Present (Decl_Node) then " of private type"
+        & (if At_Declaration then " of private type"
            elsif Nkind (Ada_Node) = N_Component_Association
            then " of box association"
            else "");
-      --  If Decl_Node is present, we are checking the default initialization
+      --  If At_Declaration is True, we are checking the default initialization
       --  of a private type. If the Ada node is a component association, then
       --  we are checking a box association.
       Checks : W_Prog_Id;
@@ -4673,8 +4699,7 @@ package body Gnat2Why.Expr is
         (Ada_Node         => Ada_Node,
          Ty               => Ty,
          Include_Subtypes => Include_Subtypes,
-         At_Declaration   => At_Declaration,
-         Decl_Node        => Decl_Node);
+         At_Declaration   => At_Declaration);
       Continuation_Stack.Delete_Last;
       return Checks;
    end Compute_Default_Check;
