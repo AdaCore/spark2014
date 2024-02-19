@@ -294,14 +294,4 @@ package Flow.Control_Flow_Graph.Utility is
    --  representation into the defined variable's discriminant to correctly
    --  identify "variables used".
 
-   function Get_Reclamation_Functions
-     (Typ : Type_Kind_Id)
-      return Node_Sets.Set
-   with Post =>
-          (for all E of Get_Reclamation_Functions'Result =>
-             Ekind (E) = E_Function);
-   --  Returns the reclamation functions associated to all components of Typ.
-   --  This function is used to add proof dependencies only, it should not
-   --  affect flow analysis output.
-
 end Flow.Control_Flow_Graph.Utility;
