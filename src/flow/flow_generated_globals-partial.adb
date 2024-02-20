@@ -32,6 +32,7 @@ with Flow_Generated_Globals.Traversal; use Flow_Generated_Globals.Traversal;
 with Flow_Generated_Globals.Phase_1;   use Flow_Generated_Globals.Phase_1;
 with Flow_Refinement;                  use Flow_Refinement;
 with Flow.Slice;                       use Flow.Slice;
+with Flow_Utility.Proof_Dependencies;  use Flow_Utility.Proof_Dependencies;
 with Flow_Utility;                     use Flow_Utility;
 with Flow_Visibility;                  use Flow_Visibility;
 with Gnat2Why_Args;                    use Gnat2Why_Args;
@@ -258,15 +259,6 @@ package body Flow_Generated_Globals.Partial is
                     Ekind (Call) in E_Function | E_Subprogram_Type);
    --  Return direct calls in the contract of E, i.e. in its Pre, Post and
    --  Contract_Cases.
-
-   function Contract_Proof_Dependencies (E : Entity_Id) return Node_Sets.Set
-   with Pre  => Ekind (E) in Entry_Kind
-                           | E_Function
-                           | E_Procedure,
-        Post => (for all Call of Contract_Proof_Dependencies'Result =>
-                   Ekind (Call) = E_Function);
-   --  Return proof dependencies in the contract of E, i.e. in its Pre, Post
-   --  and Contract_Cases.
 
    function Contract_Globals
      (E       : Entity_Id;
@@ -709,28 +701,7 @@ package body Flow_Generated_Globals.Partial is
             --  Collect proof dependencies from the contracts of E
 
             pragma Assert (Contr.Proof_Dependencies.Is_Empty);
-            Contr.Proof_Dependencies := Contract_Proof_Dependencies (E);
-
-            --  Process predicates that apply to formals of E
-
-            for F of Get_Explicit_Formals (E) loop
-               Process_Predicate_And_Invariant
-                 (F,
-                  Get_Flow_Scope (E),
-                  Is_Globally_Visible (E),
-                  Contr.Proof_Dependencies);
-            end loop;
-
-            --  Process predicates that apply to the return type if E is a
-            --  function.
-
-            if Ekind (E) = E_Function then
-               Process_Predicate_And_Invariant
-                 (E,
-                  Get_Flow_Scope (E),
-                  Is_Globally_Visible (E),
-                  Contr.Proof_Dependencies);
-            end if;
+            Contr.Proof_Dependencies := Subprogram_Proof_Dependencies (E);
          end if;
 
          --  For subprograms in a generic predefined unit with its body not
@@ -2193,58 +2164,6 @@ package body Flow_Generated_Globals.Partial is
          Edge_Info => EDI'Access);
    end Print;
    pragma Annotate (Xcov, Exempt_Off);
-
-   ---------------------------------
-   -- Contract_Proof_Dependencies --
-   ---------------------------------
-
-   function Contract_Proof_Dependencies (E : Entity_Id) return Node_Sets.Set is
-      Proofdeps : Node_Sets.Set;
-
-      procedure Collect_Proof_Dependencies (Expr : Node_Id);
-      --  Collect proof dependencies in expression Expr and put them in Deps
-
-      --------------------------------
-      -- Collect_Proof_Dependencies --
-      --------------------------------
-
-      procedure Collect_Proof_Dependencies (Expr : Node_Id) is
-         Funcalls  : Call_Sets.Set;
-         Unused    : Tasking_Info;
-      begin
-         Pick_Generated_Info
-           (Expr,
-            Scop               => Get_Flow_Scope (Expr),
-            Function_Calls     => Funcalls,
-            Proof_Dependencies => Proofdeps,
-            Tasking            => Unused,
-            Generating_Globals => True);
-
-         for Call of Funcalls loop
-
-            --  We don't pull calls via access-to-subprograms in proof
-            --  dependencies.
-
-            if Ekind (Call.E) /= E_Subprogram_Type then
-               Proofdeps.Include (Call.E);
-            end if;
-         end loop;
-      end Collect_Proof_Dependencies;
-
-   --  Start of processing for Contract_Proof_Dependencies
-
-   begin
-      for Expr of Get_Precondition_Expressions (E) loop
-         Collect_Proof_Dependencies (Expr);
-      end loop;
-
-      for Expr of Get_Postcondition_Expressions (E, Refined => False)
-      loop
-         Collect_Proof_Dependencies (Expr);
-      end loop;
-
-      return Proofdeps;
-   end Contract_Proof_Dependencies;
 
    -----------------------
    -- Resolve_Constants --

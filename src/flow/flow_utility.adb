@@ -42,7 +42,6 @@ with Common_Iterators;                use Common_Iterators;
 with Gnat2Why_Args;
 with Gnat2Why.Util;
 with SPARK_Definition;                use SPARK_Definition;
-with SPARK_Definition.Annotate;       use SPARK_Definition.Annotate;
 with SPARK_Frame_Conditions;          use SPARK_Frame_Conditions;
 with SPARK_Util.Subprograms;          use SPARK_Util.Subprograms;
 with SPARK_Util.Types;                use SPARK_Util.Types;
@@ -53,6 +52,7 @@ with Flow_Debug;                      use Flow_Debug;
 with Flow_Generated_Globals.Phase_2;  use Flow_Generated_Globals.Phase_2;
 with Flow_Refinement;                 use Flow_Refinement;
 with Flow_Utility.Initialization;     use Flow_Utility.Initialization;
+with Flow_Utility.Proof_Dependencies; use Flow_Utility.Proof_Dependencies;
 
 package body Flow_Utility is
 
@@ -136,18 +136,6 @@ package body Flow_Utility is
       Generating_Globals : Boolean)
    with Post => Proof_Dependencies'Old.Is_Subset (Proof_Dependencies);
    --  Like Pick_Generated_Info, with an additional parameter Types_Seen that
-   --  allows to track which type predicates we already traversed to pick
-   --  proof dependencies.
-
-   procedure Process_Predicate_And_Invariant_Internal
-     (N                  : Node_Or_Entity_Id;
-      Scop               : Flow_Scope;
-      Include_Invariant  : Boolean;
-      Proof_Dependencies : in out Node_Sets.Set;
-      Types_Seen         : in out Node_Sets.Set)
-   with Pre  => N in N_Has_Etype_Id,
-        Post => Proof_Dependencies'Old.Is_Subset (Proof_Dependencies);
-   --  Like Process_Predicate, with an additional parameter Types_Seen that
    --  allows to track which type predicates we already traversed to pick
    --  proof dependencies.
 
@@ -308,6 +296,12 @@ package body Flow_Utility is
                   Function_Calls.Include
                     (Subprogram_Call'(N => N, E => Called_Func));
 
+                  if Generating_Globals
+                    and then Flow_Classwide.Is_Dispatching_Call (N)
+                  then
+                     Process_Dispatching_Call (N, Proof_Dependencies);
+                  end if;
+
                   --  Only external calls to protected functions trigger
                   --  priority ceiling protocol checks; internal calls do not.
 
@@ -372,9 +366,7 @@ package body Flow_Utility is
 
             when N_Iterator_Specification =>
                declare
-                  Typ           : Entity_Id := Etype (Name (N));
-                  Found         : Boolean;
-                  Iterable_Info : Iterable_Annotation;
+                  Typ : constant Entity_Id := Etype (Name (N));
 
                   procedure Process_Iterable_Primitive (Nam : Name_Id);
                   --  Process implicit call to iterable primitive function Nam
@@ -420,45 +412,9 @@ package body Flow_Utility is
                         Process_Iterable_Primitive (Name_Next);
                      end if;
 
-                     --  Proof might transform the quantified expression using
-                     --  the chain of Model functions associated to the types
-                     --  using Iterable_For_Proof.
-                     if Nkind (Parent (Parent (N))) /= N_Loop_Statement then
+                     Process_Iterable_For_Proof_Annotation
+                       (N, Proof_Dependencies);
 
-                        loop
-                           Retrieve_Iterable_Annotation (Typ,
-                                                         Found,
-                                                         Iterable_Info);
-
-                           if Found
-                             and then
-                               Iterable_Info.Kind
-                               = SPARK_Definition.Annotate.Model
-                           then
-                              Proof_Dependencies.Include
-                                (Iterable_Info.Entity);
-
-                              Typ := Etype (Iterable_Info.Entity);
-                           else
-                              exit;
-                           end if;
-                        end loop;
-
-                        --  Finally, proof transforms the quantification using
-                        --  either the Contains function on the type, if it
-                        --  exists, or the Has_Element and Element functions
-                        --  otherwise.
-                        if Found then
-                           Proof_Dependencies.Include (Iterable_Info.Entity);
-
-                        elsif Typ /= Etype (Name (N)) then
-                           Proof_Dependencies.Include
-                             (Get_Iterable_Type_Primitive
-                                (Typ, Name_Has_Element));
-                           Proof_Dependencies.Include
-                             (Get_Iterable_Type_Primitive (Typ, Name_Element));
-                        end if;
-                     end if;
                   else
                      pragma Assert
                        (Of_Present (N)
@@ -507,18 +463,7 @@ package body Flow_Utility is
 
             when N_Attribute_Reference =>
                if Attribute_Name (N) = Name_Access then
-                  declare
-                     P : constant Node_Id := Prefix (N);
-                     E : constant Entity_Id :=
-                       (if Is_Entity_Name (P) then Entity (P)
-                        else Empty);
-                  begin
-                     if Present (E)
-                       and then Ekind (E) in E_Function | E_Procedure
-                     then
-                        Proof_Dependencies.Include (E);
-                     end if;
-                  end;
+                  Process_Access_Attribute (N, Proof_Dependencies);
                end if;
 
             when others =>
@@ -702,26 +647,6 @@ package body Flow_Utility is
          Discard := Traverse (Typ);
       end if;
    end Process_Predicate_And_Invariant_Internal;
-
-   -------------------------------------
-   -- Process_Predicate_And_Invariant --
-   -------------------------------------
-
-   procedure Process_Predicate_And_Invariant
-     (N                  : Node_Or_Entity_Id;
-      Scop               : Flow_Scope;
-      Include_Invariant  : Boolean;
-      Proof_Dependencies : in out Node_Sets.Set)
-   is
-      Discard : Node_Sets.Set;
-   begin
-      Process_Predicate_And_Invariant_Internal
-        (N                  => N,
-         Scop               => Scop,
-         Include_Invariant  => Include_Invariant,
-         Proof_Dependencies => Proof_Dependencies,
-         Types_Seen         => Discard);
-   end Process_Predicate_And_Invariant;
 
    -----------------------
    -- Unique_Components --

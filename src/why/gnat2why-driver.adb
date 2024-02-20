@@ -706,6 +706,13 @@ package body Gnat2Why.Driver is
             goto Leave;
          end if;
 
+         --  Store information for tagged types in phase 1, as we want to link
+         --  all possible subprograms for a given dispatching call.
+
+         for E of Entities_To_Translate loop
+            Store_Descendants_Information (E);
+         end loop;
+
          --  Build hierarchical representation of scopes in the current
          --  compilation unit.
          --

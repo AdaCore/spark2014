@@ -56,6 +56,7 @@ with Flow_Generated_Globals;             use Flow_Generated_Globals;
 with Flow_Generated_Globals.Phase_1;     use Flow_Generated_Globals.Phase_1;
 with Flow_Refinement;                    use Flow_Refinement;
 with Flow_Utility.Initialization;        use Flow_Utility.Initialization;
+with Flow_Utility.Proof_Dependencies;    use Flow_Utility.Proof_Dependencies;
 with Flow_Utility;                       use Flow_Utility;
 
 with VC_Kinds;                           use VC_Kinds;
@@ -1460,8 +1461,7 @@ package body Flow.Control_Flow_Graph is
          if Ekind (E) in E_Constant | E_Variable
            and then not Is_Library_Level_Entity (E)
          then
-            FA.Proof_Dependencies.Union
-              (Get_Reclamation_Functions (Etype (E)));
+            Process_Reclamation_Functions (Etype (E), FA.Proof_Dependencies);
          end if;
 
          --  Setup the n'initial vertex. Note that initialization for
@@ -1610,7 +1610,7 @@ package body Flow.Control_Flow_Graph is
          Tasking            => FA.Tasking,
          Generating_Globals => FA.Generating_Globals);
 
-      FA.Proof_Dependencies.Union (Get_Reclamation_Functions (LHS_Type));
+      Process_Reclamation_Functions (LHS_Type, FA.Proof_Dependencies);
 
       --  Assignment with a function that has side effects is handled like a
       --  subprogram call: the function entity acts like a formal parameter
@@ -5625,6 +5625,12 @@ package body Flow.Control_Flow_Graph is
          Check_Visibility;
       end if;
 
+      if FA.Generating_Globals
+        and then Flow_Classwide.Is_Dispatching_Call (N)
+      then
+         Process_Dispatching_Call (N, FA.Proof_Dependencies);
+      end if;
+
       --  Add a cluster to help pretty printing
       FA.CFG.New_Cluster (C);
 
@@ -6219,41 +6225,11 @@ package body Flow.Control_Flow_Graph is
       if Is_Access_Subprogram_Type (Typ)
         and then No (Parent_Retysp (Typ))
       then
-         declare
-
-            procedure Process_Expressions (L : Node_Lists.List);
-            --  Process a list of expressions L to fill FA.Proof_Dependencies
-
-            -------------------------
-            -- Process_Expressions --
-            -------------------------
-
-            procedure Process_Expressions (L : Node_Lists.List) is
-               Funcalls : Call_Sets.Set;
-               Unused   : Tasking_Info;
-            begin
-               for Expr of L loop
-                  Pick_Generated_Info
-                    (Expr,
-                     FA.B_Scope,
-                     Funcalls,
-                     FA.Proof_Dependencies,
-                     Unused,
-                     FA.Generating_Globals);
-               end loop;
-
-               for Call of Funcalls loop
-                  FA.Proof_Dependencies.Include (Call.E);
-               end loop;
-            end Process_Expressions;
-
-            Profile : constant Entity_Id := Directly_Designated_Type (Typ);
-         begin
-            Process_Expressions
-              (Find_Contracts (Profile, Pragma_Precondition));
-            Process_Expressions
-              (Find_Contracts (Profile, Pragma_Postcondition));
-         end;
+         Process_Access_To_Subprogram_Contracts
+           (Typ,
+            FA.B_Scope,
+            FA.Proof_Dependencies,
+            FA.Generating_Globals);
       end if;
 
       --  In phase 2 check DIC on type definitions that come from source
@@ -6454,8 +6430,8 @@ package body Flow.Control_Flow_Graph is
                             | E_Function
            or else Is_Writable_Parameter (Formal)
          then
-            FA.Proof_Dependencies.Union
-              (Get_Reclamation_Functions (Etype (Formal)));
+            Process_Reclamation_Functions
+              (Etype (Formal), FA.Proof_Dependencies);
 
             Add_Vertex
               (FA,
