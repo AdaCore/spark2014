@@ -105,10 +105,10 @@ array_aggregates.adb:401:11: info: flow dependencies proved
 array_aggregates.adb:408:22: info: assertion proved (CVC5: 1 VC)
 array_aggregates.adb:414:33: info: initialization of "X" proved
 array_aggregates.adb:415:11: info: flow dependencies proved
-array_aggregates.adb:422:22: info: assertion proved (Z3: 1 VC)
+array_aggregates.adb:422:22: info: assertion proved (altergo: 1 VC)
 array_aggregates.adb:433:11: info: flow dependencies proved
 array_aggregates.adb:436:22: info: assertion proved (altergo: 1 VC)
-array_aggregates.adb:439:22: info: assertion proved (Z3: 1 VC)
+array_aggregates.adb:439:22: info: assertion proved (altergo: 1 VC)
 array_aggregates.adb:447:33: info: initialization of "X" proved
 array_aggregates.adb:448:11: info: flow dependencies proved
 array_aggregates.adb:452:22: info: assertion proved (CVC5: 1 VC)
