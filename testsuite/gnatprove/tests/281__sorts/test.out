@@ -18,9 +18,9 @@ main.adb:35:42: info: pointer dereference check proved
 main.adb:35:54: info: subprogram variant proved
 main.adb:35:66: info: pointer dereference check proved
 main.adb:44:42: info: range check proved
-main.adb:45:14: info: postcondition proved
 main.adb:45:14: info: predicate check proved
 main.adb:45:37: info: predicate check proved
+main.adb:47:15: medium: postcondition might fail, cannot prove Occurrences (L) = Occurrences (L)'Old
 main.adb:49:57: info: initialization of "Left" proved
 main.adb:49:63: info: initialization of "Right" proved
 main.adb:50:14: info: postcondition proved

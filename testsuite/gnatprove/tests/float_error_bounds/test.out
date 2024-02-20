@@ -110,7 +110,7 @@ libst-reals-errors.adb:210:13: info: assertion proved
 libst-reals-errors.adb:210:33: info: float overflow check proved
 libst-reals-errors.adb:211:16: info: predicate check proved
 libst-reals-errors.adb:212:15: info: predicate check proved
-libst-reals-errors.adb:214:13: medium: assertion might fail [possible fix: subprogram at libst-reals-errors.ads:57 should mention I in a precondition]
+libst-reals-errors.adb:214:13: info: assertion proved
 libst-reals-errors.adb:214:40: info: predicate check proved
 libst-reals-errors.adb:215:16: info: predicate check proved
 libst-reals-errors.adb:215:42: info: predicate check proved
