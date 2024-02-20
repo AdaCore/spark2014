@@ -4503,7 +4503,7 @@ package body Gnat2Why.Expr is
             --  If At_Declaration is False, do not generate checks for
             --  components of private types.
             --  If Decl_Node is a private extension, do not generate checks for
-            --  inherited components.
+            --  visibly inherited components.
             --  Do not generate checks for hidden components, they will be
             --  checked at the place where they are hidden.
 
@@ -4519,7 +4519,10 @@ package body Gnat2Why.Expr is
                        and then
                          (Nkind (Decl_Node) /=
                                 N_Private_Extension_Declaration
-                          or else Original_Declaration (Field) = Ty_Ext)
+                          or else No
+                            (Search_Component_In_Type
+                               (Etype (Partial_View (Ty_Ext)),
+                                Field)))
                      then
                         if Present
                           (Expression (Enclosing_Declaration (Field)))
