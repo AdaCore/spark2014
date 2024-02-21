@@ -4620,8 +4620,8 @@ package body SPARK_Definition is
       --  user-defined (completed with a pragma Intrinsic).
 
       pragma Assert (Is_Intrinsic_Subprogram (E));
-
       pragma Assert (Ekind (E) in E_Function | E_Operator);
+      pragma Assert (E = Ultimate_Alias (E));
 
       if Ekind (E) = E_Function
         and then not In_SPARK (E)

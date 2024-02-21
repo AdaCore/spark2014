@@ -374,6 +374,7 @@ package body SPARK_Rewrite is
 
             when N_Identifier
                | N_Expanded_Name
+               | N_Op
                | N_Operator_Symbol
             =>
                Rewrite_Subprogram_Reference (N);
