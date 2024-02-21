@@ -269,6 +269,10 @@ package body SPARK_Rewrite is
          --  ??? this is copy-pasted from SPARK_Register; refactor
 
       begin
+         --  Set error node so that bugbox information will be correct
+
+         Current_Error_Node := N;
+
          --  Delete lines of code passed through the --exclude-line switch, by
          --  rewriting the declaration, statement or pragma into a call marker
          --  node which is ignored by gnat2why.
