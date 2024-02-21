@@ -227,8 +227,7 @@ package Gnat2Why.Expr is
       Ty               : Type_Kind_Id;
       Params           : Transformation_Params;
       At_Declaration   : Boolean := False;
-      Include_Subtypes : Boolean := False;
-      Decl_Node        : Opt_N_Declaration_Id := Empty)
+      Include_Subtypes : Boolean := False)
       return W_Prog_Id
    with Pre => (if not Include_Subtypes
                 then Can_Be_Default_Initialized (Retysp (Ty)));
@@ -244,9 +243,6 @@ package Gnat2Why.Expr is
    --         particular, if Ty is a record type with defaulted discriminants,
    --         we only assume the value of its discriminants to be the defaults
    --         if Include_Subtypes is false.
-   --  @param Decl_Node If we are checking the declaration of a type whose
-   --         default initial value is checked at declaration, Decl_Node is
-   --         the node of Ty's declaration.
    --  @result Why3 code to check for absence of runtime errors in default
    --         initialization of Expr of type Ty.
 

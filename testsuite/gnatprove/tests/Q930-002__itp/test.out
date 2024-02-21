@@ -188,13 +188,7 @@ bounded_dynamic_arrays.ads:194:14: info: postcondition proved (CVC5: 4 VC), in i
 bounded_dynamic_arrays.ads:199:13: info: implicit aspect Always_Terminates on "Contains" has been proved, subprogram will terminate, in instantiation at bounded_dynamic_strings.ads:5
 bounded_dynamic_arrays.ads:202:13: info: implicit aspect Always_Terminates on "Contains" has been proved, subprogram will terminate, in instantiation at bounded_dynamic_strings.ads:5
 bounded_dynamic_arrays.ads:212:07: info: range check proved (CVC5: 2 VC), in instantiation at bounded_dynamic_strings.ads:5
-bounded_dynamic_arrays.ads:212:48: info: in default value at bounded_dynamic_arrays.adb:18, in instantiation at bounded_dynamic_strings.ads:5
-bounded_dynamic_arrays.ads:212:48: info: in default value at bounded_dynamic_arrays.adb:30, in instantiation at bounded_dynamic_strings.ads:5
-bounded_dynamic_arrays.ads:212:48: info: in default value at bounded_dynamic_arrays.adb:51, in instantiation at bounded_dynamic_strings.ads:5
 bounded_dynamic_arrays.ads:212:48: info: in default value of private type at bounded_dynamic_arrays.ads:23, in instantiation at bounded_dynamic_strings.ads:5
-bounded_dynamic_arrays.ads:212:48: info: length check proved (CVC5: 3 VC; Trivial: 1 VC), in instantiation at bounded_dynamic_strings.ads:5
-bounded_dynamic_arrays.ads:212:48: info: length check proved (CVC5: 3 VC; Trivial: 1 VC), in instantiation at bounded_dynamic_strings.ads:5
-bounded_dynamic_arrays.ads:212:48: info: length check proved (CVC5: 3 VC; Trivial: 1 VC), in instantiation at bounded_dynamic_strings.ads:5
 bounded_dynamic_arrays.ads:212:48: info: length check proved (CVC5: 3 VC; Trivial: 1 VC), in instantiation at bounded_dynamic_strings.ads:5
 bounded_dynamic_arrays.ads:228:11: info: range check proved (CVC5: 4 VC), in instantiation at bounded_dynamic_strings.ads:5
 bounded_dynamic_arrays.ads:235:21: info: index check proved (CVC5: 2 VC), in instantiation at bounded_dynamic_strings.ads:5

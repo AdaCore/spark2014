@@ -26,9 +26,7 @@ private_types.ads:24:32: medium: range check might fail, cannot prove lower boun
 private_types.ads:24:32: medium: range check might fail, cannot prove lower bound for Id (0) [reason for check: default component value must fit in the type]
 private_types.ads:29:14: info: range check proved (CVC5: 1 VC)
 private_types.ads:31:25: info: range check proved (CVC5: 1 VC)
-private_types.ads:40:32: medium: in default value at private_types.ads:45
 private_types.ads:40:32: medium: in default value of private type at private_types.ads:35
-private_types.ads:40:32: medium: range check might fail, cannot prove lower bound for Id (0) [reason for check: default component value must fit in the type]
 private_types.ads:40:32: medium: range check might fail, cannot prove lower bound for Id (0) [reason for check: default component value must fit in the type]
 private_types.ads:45:14: info: range check proved (CVC5: 1 VC)
 private_types.ads:56:32: medium: in default value at private_types.ads:62
