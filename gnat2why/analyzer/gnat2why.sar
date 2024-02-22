@@ -1,0 +1,40 @@
+{
+  "info": {
+    "sar_version": 1,
+    "review_statuses": {
+      "Uncategorized": "Uncategorized",
+      "Pending": "Pending",
+      "Not A Bug": "Not_a_bug",
+      "Intentional": "Not_a_bug",
+      "False Positive": "Not_a_bug",
+      "Bug": "Bug"
+    }
+  },
+  "prjs": {
+    "gnat2why.gpr": [
+      {
+        "file_info": { "basename": "ce_values.adb", "path": "." },
+        "subps": {
+          "ce_values.\"=\".check_array_values": [
+            {
+              "msg_id": {
+                "tool_kind": [ "Infer", "Access_check" ],
+                "key": "6d2771d7abd224d81467f4b22f419592",
+                "key_seq": 1
+              },
+              "data": [
+                {
+                  "date": "2024-02-22 01:39:31",
+                  "status": "Not A Bug",
+                  "author": "Guillaume Rivier",
+                  "text": "Analysis showed that the code is safe, the final '=' operator has all the guards for null dereferences.",
+                  "from_source": false
+                }
+              ]
+            }
+          ]
+        }
+      }
+    ]
+  }
+}
