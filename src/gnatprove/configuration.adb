@@ -2646,8 +2646,7 @@ package body Configuration is
                   then
                      CU := View_DB.Compilation_Unit (Elt);
                   elsif View_DB.Source_Option > No_Source then
-                     VS :=
-                       View_DB.Visible_Source (GPR2.Simple_Name (Elt)).Source;
+                     VS := View_DB.Visible_Source (GPR2.Simple_Name (Elt));
                      if VS.Is_Defined
                        and then View_DB.Has_Compilation_Unit (VS.Unit.Name)
                      then
