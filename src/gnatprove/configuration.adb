@@ -26,6 +26,7 @@
 with Ada.Characters.Handling;
 with Ada.Command_Line;
 with Ada.Containers;    use Ada.Containers;
+with Ada.IO_Exceptions;
 with Ada.Strings.Fixed; use Ada.Strings.Fixed;
 with Ada.Strings.Unbounded;
 with Ada.Text_IO;       use Ada.Text_IO;
@@ -758,6 +759,10 @@ package body Configuration is
            (Config,
             CL_Switches.Limit_Line'Access,
             Long_Switch => "--limit-line=");
+         Define_Switch
+           (Config,
+            CL_Switches.Limit_Lines'Access,
+            Long_Switch => "--limit-lines=");
          Define_Switch
            (Config,
             CL_Switches.Limit_Name'Access,
@@ -1720,7 +1725,8 @@ package body Configuration is
 
          Only_Given := CL_Switches.U
            or not Null_Or_Empty_String (CL_Switches.Limit_Subp)
-           or not Null_Or_Empty_String (CL_Switches.Limit_Line);
+           or not Null_Or_Empty_String (CL_Switches.Limit_Line)
+           or not Null_Or_Empty_String (CL_Switches.Limit_Lines);
 
          if CL_Switches.U and then CL_Switches.File_List.Is_Empty then
             Put_Line
@@ -1745,49 +1751,91 @@ package body Configuration is
       ----------------------------
 
       procedure Process_Limit_Switches is
+
+         Switch_Count : Integer := 0;
+
+         procedure Check_Switch (Arg : GNAT.Strings.String_Access);
+         --  Increase Switch_Count by one if arg is not the null pointer or
+         --  empty string.
+
+         procedure Process_Limit_Directive (Msg, Limit_String : String);
+         --  Check if the Limit_String is a valid directive. Use Msg for error
+         --  message prefix. If valid, add the file mentioned in the limit
+         --  directive to the list of files.
+
+         procedure Process_Limit_Directive
+           (Msg : String;  Limit_String : GNAT.Strings.String_Access);
+         --  Same, but do nothing if Limit_String is the null pointer or empty
+         --  string.
+
+         ------------------
+         -- Check_Switch --
+         ------------------
+
+         procedure Check_Switch (Arg : GNAT.Strings.String_Access) is
+         begin
+            if not Null_Or_Empty_String (Arg) then
+               Switch_Count := Switch_Count + 1;
+            end if;
+         end Check_Switch;
+
+         -----------------------------
+         -- Process_Limit_Directive --
+         -----------------------------
+
+         procedure Process_Limit_Directive (Msg, Limit_String : String)
+         is
+            Colon_Index : constant Natural :=
+              Ada.Strings.Fixed.Index (Source  => Limit_String,
+                                       Pattern => ":");
+         begin
+            if Colon_Index = 0 then
+               Abort_Msg
+                 (Msg & ": incorrect line specification" &
+                    " - missing ':' followed by operand",
+                  With_Help => False);
+            end if;
+            CL_Switches.File_List.Append
+              (Limit_String
+                 (Limit_String'First .. Colon_Index - 1));
+         end Process_Limit_Directive;
+
+         procedure Process_Limit_Directive
+           (Msg : String;  Limit_String : GNAT.Strings.String_Access) is
+         begin
+            if not Null_Or_Empty_String (Limit_String) then
+               Process_Limit_Directive (Msg, Limit_String.all);
+            end if;
+         end Process_Limit_Directive;
+
+      --  Start of processing for Process_Limit_Switches
+
       begin
 
          --  We do not allow mixing of --limit-* switches, except for the
          --  combination of --limit-subp + --limit-line or --limit-region,
          --  as this is used by the gnatstudio plug-in.
 
-         declare
-            Count : Integer := 0;
-
-            procedure Check_Switch (Arg : GNAT.Strings.String_Access);
-
-            ------------------
-            -- Check_Switch --
-            ------------------
-
-            procedure Check_Switch (Arg : GNAT.Strings.String_Access) is
-            begin
-               if not Null_Or_Empty_String (Arg) then
-                  Count := Count + 1;
-               end if;
-            end Check_Switch;
-
-         begin
-            Check_Switch (CL_Switches.Limit_Name);
-            Check_Switch (CL_Switches.Limit_Subp);
-            Check_Switch (CL_Switches.Limit_Region);
-            Check_Switch (CL_Switches.Limit_Line);
-            if Count > 1 then
-               if Count = 2
-                 and then not Null_Or_Empty_String (CL_Switches.Limit_Subp)
-                 and then
-                   (not Null_Or_Empty_String (CL_Switches.Limit_Region)
-                    or else not Null_Or_Empty_String (CL_Switches.Limit_Line))
-               then
-                  null;
-               else
-                  Abort_Msg
-                    ("Switches --limit-line, --limit-name, --limit-region and "
-                     & "--limit-subp are mutually exclusive",
-                     With_Help => False);
-               end if;
+         Check_Switch (CL_Switches.Limit_Name);
+         Check_Switch (CL_Switches.Limit_Subp);
+         Check_Switch (CL_Switches.Limit_Region);
+         Check_Switch (CL_Switches.Limit_Line);
+         Check_Switch (CL_Switches.Limit_Lines);
+         if Switch_Count > 1 then
+            if Switch_Count = 2
+              and then not Null_Or_Empty_String (CL_Switches.Limit_Subp)
+              and then
+                (not Null_Or_Empty_String (CL_Switches.Limit_Region)
+                 or else not Null_Or_Empty_String (CL_Switches.Limit_Line))
+            then
+               null;
+            else
+               Abort_Msg
+                 ("Switches --limit-line, --limit-name, --limit-region and "
+                  & "--limit-subp are mutually exclusive",
+                  With_Help => False);
             end if;
-         end;
+         end if;
 
          --  Unless -U is specified, use of --limit-[line,region,subp] leads
          --  to only the file with the given line or subprogram to be analyzed.
@@ -1797,51 +1845,38 @@ package body Configuration is
          --  the line/subprogram are analyzed.
 
          if not All_Projects then
-            declare
-               Limit_String : GNAT.Strings.String_Access;
-               Msg_String : constant String :=
-                 (if not Null_Or_Empty_String (CL_Switches.Limit_Line)
-                  then "limit-line"
-                  elsif not Null_Or_Empty_String (CL_Switches.Limit_Region)
-                  then "limit-region"
-                  else "limit-subp");
-            begin
-               --  Limit_Line, Limit_Region, and Limit_Subp all imply -u for
-               --  the corresponding file. We take care of that using the
-               --  Limit_String variable, note that "Limit_Line" is
-               --  stronger naturally.
-
-               if not Null_Or_Empty_String (CL_Switches.Limit_Subp) then
-                  Limit_String := CL_Switches.Limit_Subp;
-               end if;
-
-               if not Null_Or_Empty_String (CL_Switches.Limit_Region) then
-                  Limit_String := CL_Switches.Limit_Region;
-               end if;
-
-               if not Null_Or_Empty_String (CL_Switches.Limit_Line) then
-                  Limit_String := CL_Switches.Limit_Line;
-               end if;
-
-               if Limit_String /= null then
-                  declare
-                     Colon_Index : constant Natural :=
-                       Ada.Strings.Fixed.Index (Source  => Limit_String.all,
-                                                Pattern => ":");
-
-                  begin
-                     if Colon_Index = 0 then
-                        Abort_Msg
-                          (Msg_String & ": incorrect line specification" &
-                             " - missing ':' followed by operand",
-                           With_Help => False);
-                     end if;
-                     CL_Switches.File_List.Append
-                       (Limit_String.all
-                          (Limit_String.all'First .. Colon_Index - 1));
-                  end;
-               end if;
-            end;
+            Process_Limit_Directive ("limit-subp", CL_Switches.Limit_Subp);
+            Process_Limit_Directive
+              ("limit-region", CL_Switches.Limit_Region);
+            Process_Limit_Directive ("limit-line", CL_Switches.Limit_Line);
+            if not Null_Or_Empty_String (CL_Switches.Limit_Line) then
+               Limit_Lines.Append (CL_Switches.Limit_Line.all);
+            end if;
+            if not Null_Or_Empty_String (CL_Switches.Limit_Lines) then
+               declare
+                  File_Handle : File_Type;
+                  Line_Count : Integer := 1;
+               begin
+                  Open (File_Handle, In_File, CL_Switches.Limit_Lines.all);
+                  while True loop
+                     declare
+                        Line : constant String :=
+                          Trim (Get_Line (File_Handle), Ada.Strings.Both);
+                     begin
+                        if Line /= "" then
+                           Process_Limit_Directive
+                             ("limit-lines: line" & Integer'Image (Line_Count),
+                              Line);
+                           Limit_Lines.Append (Line);
+                        end if;
+                        Line_Count := Line_Count + 1;
+                     end;
+                  end loop;
+               exception
+                  when Ada.IO_Exceptions.End_Error =>
+                     Close (File_Handle);
+               end;
+            end if;
          end if;
       end Process_Limit_Switches;
 
@@ -2861,6 +2896,11 @@ package body Configuration is
       if CL_Switches.Limit_Line.all /= "" then
          Args.Append ("--limit-line");
          Args.Append (CL_Switches.Limit_Line.all);
+      end if;
+
+      if CL_Switches.Limit_Lines.all /= "" then
+         Args.Append ("--limit-lines");
+         Args.Append (Ada.Directories.Full_Name (CL_Switches.Limit_Lines.all));
       end if;
       if CL_Switches.Limit_Region.all /= "" then
          Args.Append ("--limit-region");

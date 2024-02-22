@@ -119,6 +119,7 @@ package Configuration is
       K                     : aliased Boolean;
       Level                 : aliased Integer;
       Limit_Line            : aliased GNAT.Strings.String_Access;
+      Limit_Lines           : aliased GNAT.Strings.String_Access;
       Limit_Name            : aliased GNAT.Strings.String_Access;
       Limit_Region          : aliased GNAT.Strings.String_Access;
       Limit_Subp            : aliased GNAT.Strings.String_Access;
@@ -176,13 +177,14 @@ package Configuration is
    Debug            : Boolean;
    Debug_Exec_RAC   : Boolean;
    GnateT_Switch    : GNAT.Strings.String_Access;
+   Limit_Lines      : String_Lists.List;
    Mode             : GP_Mode := GPM_Check;
-   Use_Semaphores   : Boolean;
    Only_Given       : Boolean;
    Output           : Output_Mode_Type;
    Parallel         : Integer;
    Proof_Warnings   : Boolean;
    Report           : Report_Mode_Type;
+   Use_Semaphores   : Boolean;
    Warning_Mode     : Gnat2Why_Opts.SPARK_Warning_Mode_Type;
 
    All_Projects      : Boolean renames CL_Switches.UU;

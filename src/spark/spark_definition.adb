@@ -6893,7 +6893,7 @@ package body SPARK_Definition is
             Gnat2Why_Args.Limit_Name := Null_Unbounded_String;
 
             if Gnat2Why_Args.Limit_Region = Null_Unbounded_String
-              and then Gnat2Why_Args.Limit_Line = Null_Unbounded_String
+              and then Gnat2Why_Args.Limit_Lines.Is_Empty
             then
                declare
                   function Line_Image (Val : Pos) return String;
