@@ -45,6 +45,8 @@ project GNAT2Why is
          "obj/einfo-entities.adb",
          "obj/sinfo-nodes.adb");
 
+      for Review_File use "analyzer/gnat2why.sar";
+
    end Analyzer;
 
    package Coverage is
