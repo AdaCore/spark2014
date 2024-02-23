@@ -15547,23 +15547,13 @@ package body Gnat2Why.Expr is
                               end;
 
                               if Dim = Nb_Dim then
-                                 if Box_Present (Association) then
-                                    Append
-                                      (V    => V_Simple_Assocs,
-                                       Pred => Compute_Default_Init
-                                         (Expr   => New_Array_Access
-                                              (Ada_Node => Subexpr,
-                                               Ar       => Arr,
-                                               Index    => Values),
-                                          Ty     => Comp_Type,
-                                          Params => Params));
-                                 else
-                                    Append
-                                      (V    => V_Simple_Assocs,
-                                       Pred => Constrain_Value_At_Index
-                                         (Expression (Association),
-                                          Values));
-                                 end if;
+                                 Append
+                                   (V    => V_Simple_Assocs,
+                                    Pred => Constrain_Value_At_Index
+                                      ((if Box_Present (Association)
+                                        then Association
+                                        else Expression (Association)),
+                                       Values));
                               else
                                  Transform_Rec_Aggregate
                                    (Dim     => Dim + 1,
