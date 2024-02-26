@@ -2555,6 +2555,12 @@ package body Gnat2Why.Subprograms is
                   if Has_Biased_Representation (Typ) then
                      return False_With_Explain
                        ("type with biased representation");
+
+                  elsif Has_Modular_Integer_Type (Typ)
+                    and then Has_No_Bitwise_Operations_Annotation (Typ)
+                  then
+                     return False_With_Explain
+                       ("type with No_Bitwise_Operations annotation");
                   end if;
 
                when Enumeration_Kind =>

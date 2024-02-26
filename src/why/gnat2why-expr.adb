@@ -16975,8 +16975,11 @@ package body Gnat2Why.Expr is
                         N_Op_Subtract);
                   Old    : W_Expr_Id;
                   Offset : constant W_Expr_Id :=
-                    New_Modular_Constant (Typ => W_Type,
-                                          Value => Uint_1);
+                    (if Has_No_Bitwise_Operations_Annotation (Etype (Var)) then
+                        New_Integer_Constant (Value => Uint_1)
+                     else
+                        New_Modular_Constant (Typ => W_Type,
+                                              Value => Uint_1));
                   NType : constant Entity_Id := Etype (Expr);
                begin
                   Old := Transform_Expr (Opnd,
@@ -17671,7 +17674,10 @@ package body Gnat2Why.Expr is
                  (if Is_Discrete_Type (Ada_Ty)
                     or else Is_Fixed_Point_Type (Ada_Ty)
                   then
-                      (if Is_Modular_Integer_Type (Ada_Ty) then
+                      (if Is_Modular_Integer_Type (Ada_Ty)
+                         and then
+                           not Has_No_Bitwise_Operations_Annotation (Ada_Ty)
+                       then
                          (if Attr_Id = Attribute_Min
                           then MF_BVs (Base).BV_Min
                           else MF_BVs (Base).BV_Max)
@@ -20796,9 +20802,14 @@ package body Gnat2Why.Expr is
                Right_Rep : constant W_Expr_Id :=
                  Transform_Expr (Right, Typ, Domain, Local_Params);
 
+               Check_No_Wrap_Around : constant Boolean :=
+                 Domain = EW_Prog
+                 and then Has_No_Wrap_Around_Annotation (Expr_Type);
+
             begin
                if Has_Modular_Integer_Type (Expr_Type)
                  and then Non_Binary_Modulus (Expr_Type)
+                 and then not Has_No_Bitwise_Operations_Annotation (Expr_Type)
                then
                   T := Transform_Non_Binary_Modular_Operation
                     (Ada_Node   => Expr,
@@ -20817,24 +20828,43 @@ package body Gnat2Why.Expr is
                        Args     =>
                          (1 => Right_Rep),
                        Typ       => Typ);
-                  T := Apply_Modulus (N_Op_Minus, Expr_Type, T, Domain);
+
+                  if not Check_No_Wrap_Around then
+                     T := Apply_Modulus (N_Op_Minus, Expr_Type, T, Domain);
+                  end if;
                end if;
 
-               if Domain = EW_Prog
-                 and then Has_No_Wrap_Around_Annotation (Expr_Type)
-               then
-                  declare
-                     Check : constant W_Prog_Id :=
-                       Check_No_Wrap_Around_Modular_Operation
-                         (Ada_Node   => Expr,
-                          Ada_Type   => Expr_Type,
-                          Op         => N_Op_Minus,
-                          Right_Opnd => Right_Rep,
-                          Rep_Type   => Typ,
-                          Modulus    => Modulus (Expr_Type));
-                  begin
-                     Prepend (Check, T);
-                  end;
+               --  If the type is subject to No_Wrap_Around annotation and we
+               --  need to insert a check, there are two cases:
+               --
+               --  . The type is also subject to No_Bitwise_Operations
+               --    annotation, hence its base type in Why is "int" and we can
+               --    check the absence of wrap around on the result of the
+               --    operation, provided we did not apply modulo on the result.
+               --
+               --  . Otherwise, we need to check the absence of wrap around
+               --    before evaluating the operation in bitvectors.
+
+               if Check_No_Wrap_Around then
+                  if Has_No_Bitwise_Operations_Annotation (Expr_Type) then
+                     T := +Do_Range_Check (Ada_Node   => Expr,
+                                           Ty         => Expr_Type,
+                                           W_Expr     => T,
+                                           Check_Kind => RCK_Overflow);
+                  else
+                     declare
+                        Check : constant W_Prog_Id :=
+                          Check_No_Wrap_Around_Modular_Operation
+                            (Ada_Node   => Expr,
+                             Ada_Type   => Expr_Type,
+                             Op         => N_Op_Minus,
+                             Right_Opnd => Right_Rep,
+                             Rep_Type   => Typ,
+                             Modulus    => Modulus (Expr_Type));
+                     begin
+                        Prepend (Check, T);
+                     end;
+                  end if;
                end if;
             end;
 
@@ -21014,9 +21044,13 @@ package body Gnat2Why.Expr is
 
                One : constant W_Expr_Id :=
                  (if Has_Modular_Integer_Type (Left_Type) then
+                    (if Has_No_Bitwise_Operations_Annotation (Left_Type) then
+                       New_Integer_Constant (Ada_Node => Expr,
+                                             Value => Uint_1)
+                     else
                        New_Modular_Constant (Ada_Node => Expr,
                                              Value    => Uint_1,
-                                             Typ      => Base_Type)
+                                             Typ      => Base_Type))
                   elsif Has_Signed_Integer_Type (Left_Type) then
                        New_Integer_Constant (Ada_Node => Expr,
                                              Value => Uint_1)
@@ -21100,6 +21134,10 @@ package body Gnat2Why.Expr is
                                            Context  => E);
                end Inv;
 
+               Check_No_Wrap_Around : constant Boolean :=
+                 Domain = EW_Prog
+                 and then Has_No_Wrap_Around_Annotation (Expr_Type);
+
             --  Start of processing for N_Op_Expon_Case
 
             begin
@@ -21109,6 +21147,7 @@ package body Gnat2Why.Expr is
                --  type.
 
                if Has_Modular_Integer_Type (Left_Type)
+                 and then not Has_No_Bitwise_Operations_Annotation (Left_Type)
                  and then not Non_Binary_Modulus (Left_Type)
                  and then Compile_Time_Known_Value (Left)
                  and then Expr_Value (Left) = Uint_2
@@ -21160,9 +21199,7 @@ package body Gnat2Why.Expr is
                      --  this case, as New_Binary_Op_Expr is not called, yet
                      --  there could be an overflow.
 
-                     if Domain = EW_Prog
-                       and then Has_No_Wrap_Around_Annotation (Expr_Type)
-                     then
+                     if Check_No_Wrap_Around then
                         declare
                            Check : constant W_Prog_Id :=
                              Check_No_Wrap_Around_Modular_Operation

@@ -166,13 +166,103 @@ package body Why.Gen.Expr is
       Modulus_Val : Uint;
       BV_Type     : W_Type_Id;
    begin
-      if Is_Modular_Integer_Type (Ty) and then Op /= N_Op_Divide then
-         Modulus_Val := Modulus (Ty);
-         BV_Type := Base_Why_Type (Ty);
+      if not Is_Modular_Integer_Type (Ty) then
+         return T;
+      end if;
 
+      Modulus_Val := Modulus (Ty);
+
+      if Op = N_Op_Divide then
+         return T;
+
+      --  If type Ty has "int" as base Why type, perform the modulo without
+      --  calling operator modulo in the case of additions and subtractions:
+      --
+      --  . Subtract the value of the modulus from the result of the addition
+      --    in case of overflow.
+      --  . Add the value of the modulus to the result of the subtraction (or
+      --    unary negation) in case of underflow.
+
+      elsif Has_No_Bitwise_Operations_Annotation (Ty) then
+         case Op is
+            when N_Op_Add =>
+               declare
+                  Modulus   : constant W_Expr_Id :=
+                    New_Integer_Constant (Value => Modulus_Val);
+                  Oper      : constant W_Expr_Id := New_Temp_For_Expr (T);
+                  Shifted_T : constant W_Expr_Id :=
+                    New_Conditional
+                      (Domain    => Domain,
+                       Condition =>
+                         New_Comparison (Domain => EW_Pred,
+                                         Symbol => Int_Infix_Lt,
+                                         Left   => Oper,
+                                         Right  => Modulus),
+                       Then_Part => Oper,
+                       Else_Part =>
+                         New_Call (Name   => Int_Infix_Subtr,
+                                   Domain => Domain,
+                                   Args   => (1 => Oper,
+                                              2 => Modulus),
+                                   Typ    => EW_Int_Type),
+                       Typ       => EW_Int_Type);
+               begin
+                  return Binding_For_Temp (Domain  => Domain,
+                                           Tmp     => Oper,
+                                           Context => Shifted_T);
+               end;
+
+            when N_Op_Subtract | N_Op_Minus =>
+               declare
+                  Zero      : constant W_Expr_Id :=
+                    New_Integer_Constant (Value => Uint_0);
+                  Modulus   : constant W_Expr_Id :=
+                    New_Integer_Constant (Value => Modulus_Val);
+                  Oper      : constant W_Expr_Id := New_Temp_For_Expr (T);
+                  Shifted_T : constant W_Expr_Id :=
+                    New_Conditional
+                      (Domain    => Domain,
+                       Condition =>
+                         New_Comparison (Domain => EW_Pred,
+                                         Symbol => Int_Infix_Ge,
+                                         Left   => Oper,
+                                         Right  => Zero),
+                       Then_Part => Oper,
+                       Else_Part =>
+                         New_Call (Name   => Int_Infix_Add,
+                                   Domain => Domain,
+                                   Args   => (1 => Oper,
+                                              2 => Modulus),
+                                   Typ    => EW_Int_Type),
+                       Typ       => EW_Int_Type);
+               begin
+                  return Binding_For_Temp (Domain  => Domain,
+                                           Tmp     => Oper,
+                                           Context => Shifted_T);
+               end;
+
+            when N_Op_Multiply | N_Op_Expon =>
+               declare
+                  Modulus   : constant W_Expr_Id :=
+                    New_Integer_Constant (Value => Modulus_Val);
+               begin
+                  return New_Call (Name   => M_Int_Div.Mod_Id,
+                                   Domain => Domain,
+                                   Args   => (1 => T,
+                                              2 => Modulus),
+                                   Typ    => EW_Int_Type);
+               end;
+
+            when others =>
+               raise Program_Error;
+         end case;
+
+      else
          --  If the modulus matches the size of the machine integer (for
          --  example a modulus of 2 ** 32 for a 32-bits machine integer),
          --  no modulo operation is needed.
+
+         BV_Type := Base_Why_Type (Ty);
 
          if Modulus_Val = UI_Expon (2, Modular_Size (Ty)) then
             return T;
@@ -188,9 +278,6 @@ package body Why.Gen.Expr is
                                                 Typ   => BV_Type)),
                              Typ    => BV_Type);
          end if;
-
-      else
-         return T;
       end if;
    end Apply_Modulus;
 
@@ -1924,7 +2011,9 @@ package body Why.Gen.Expr is
       --  on int, as we don't know that the value of the expression fits in a
       --  bitvector.
 
-      if Is_Modular_Integer_Type (Ty) then
+      if Is_Modular_Integer_Type (Ty)
+        and then not Has_No_Bitwise_Operations_Annotation (Ty)
+      then
 
          --  The type of expression is int, so we apply the range check on int
 
@@ -2590,7 +2679,9 @@ package body Why.Gen.Expr is
         and then From /= EW_Bool_Type
         and then (Base_Why_Type (Range_Type) = Cur
                    or else
-                  Has_Modular_Integer_Type (Range_Type))
+                 (Has_Modular_Integer_Type (Range_Type)
+                    and then
+                  not Has_No_Bitwise_Operations_Annotation (Range_Type)))
       then
          Range_Check_Applied := True;
          Result := +Do_Range_Check (Ada_Node   => Ada_Node,
@@ -3510,6 +3601,11 @@ package body Why.Gen.Expr is
       Base      : W_Type_Id := Why_Empty;
       T         : W_Expr_Id;
 
+      Check_No_Wrap_Around : constant Boolean :=
+        Domain = EW_Prog
+        and then Op in N_Op_Add | N_Op_Subtract | N_Op_Multiply | N_Op_Expon
+        and then Has_No_Wrap_Around_Annotation (Return_Type);
+
    begin
       case Op is
          when N_Op_Compare
@@ -3553,6 +3649,8 @@ package body Why.Gen.Expr is
                                            To       => Base);
 
                if Has_Modular_Integer_Type (Return_Type)
+                 and then
+                   not Has_No_Bitwise_Operations_Annotation (Return_Type)
                  and then Non_Binary_Modulus (Return_Type)
                then
                   T := Transform_Non_Binary_Modular_Operation
@@ -3574,7 +3672,10 @@ package body Why.Gen.Expr is
                        Args     => (1 => Left_Rep,
                                     2 => Right_Rep),
                        Typ   => Base);
-                  T := Apply_Modulus (Op, Return_Type, T, Domain);
+
+                  if not Check_No_Wrap_Around then
+                     T := Apply_Modulus (Op, Return_Type, T, Domain);
+                  end if;
                end if;
             end;
 
@@ -3670,6 +3771,8 @@ package body Why.Gen.Expr is
                   end;
 
                elsif Has_Modular_Integer_Type (Return_Type)
+                 and then
+                   not Has_No_Bitwise_Operations_Annotation (Return_Type)
                  and then Non_Binary_Modulus (Return_Type)
                then
                   T := Transform_Non_Binary_Modular_Operation
@@ -3699,7 +3802,10 @@ package body Why.Gen.Expr is
                           Args     => (1 => Left_Rep, 2 => Right_Rep),
                           Typ      => Base);
                   end;
-                  T := Apply_Modulus (Op, Return_Type, T, Domain);
+
+                  if not Check_No_Wrap_Around then
+                     T := Apply_Modulus (Op, Return_Type, T, Domain);
+                  end if;
                end if;
 
                if Base_Why_Type (Return_Type) /= Base then
@@ -3862,6 +3968,8 @@ package body Why.Gen.Expr is
                Base := Typ;
 
                if Has_Modular_Integer_Type (Return_Type)
+                 and then
+                   not Has_No_Bitwise_Operations_Annotation (Return_Type)
                  and then Non_Binary_Modulus (Return_Type)
                then
                   T := Transform_Non_Binary_Modular_Operation
@@ -3884,7 +3992,9 @@ package body Why.Gen.Expr is
                      Args     => (1 => Value, 2 => Expon),
                      Typ      => Typ);
 
-                  T := Apply_Modulus (Op, Return_Type, T, Domain);
+                  if not Check_No_Wrap_Around then
+                     T := Apply_Modulus (Op, Return_Type, T, Domain);
+                  end if;
 
                   --  Exponentiation on floats can actually cause a division
                   --  check, when the base is 0 and the exponent is negative.
@@ -3926,23 +4036,38 @@ package body Why.Gen.Expr is
             end;
       end case;
 
-      if Domain = EW_Prog
-        and then Op in N_Op_Add | N_Op_Subtract | N_Op_Multiply | N_Op_Expon
-        and then Has_No_Wrap_Around_Annotation (Return_Type)
-      then
-         declare
-            Check : constant W_Prog_Id :=
-              Check_No_Wrap_Around_Modular_Operation
-                (Ada_Node   => Ada_Node,
-                 Ada_Type   => Return_Type,
-                 Op         => Op,
-                 Left_Opnd  => Left_Rep,
-                 Right_Opnd => Right_Rep,
-                 Rep_Type   => Base,
-                 Modulus    => Modulus (Return_Type));
-         begin
-            Prepend (Check, T);
-         end;
+      --  If the type is subject to No_Wrap_Around annotation, and we need to
+      --  insert a check, there are two cases:
+      --
+      --  . The type is also subject to No_Bitwise_Operations annotation, hence
+      --    its base type in Why is "int" and we can check the absence of wrap
+      --    around on the result of the operation, provided we did not apply
+      --    modulo on the result.
+      --
+      --  . Otherwise, we need to check the absence of wrap around before
+      --    evaluating the operation in bitvectors.
+
+      if Check_No_Wrap_Around then
+         if Has_No_Bitwise_Operations_Annotation (Return_Type) then
+            T := +Do_Range_Check (Ada_Node   => Ada_Node,
+                                  Ty         => Return_Type,
+                                  W_Expr     => T,
+                                  Check_Kind => RCK_Overflow);
+         else
+            declare
+               Check : constant W_Prog_Id :=
+                 Check_No_Wrap_Around_Modular_Operation
+                   (Ada_Node   => Ada_Node,
+                    Ada_Type   => Return_Type,
+                    Op         => Op,
+                    Left_Opnd  => Left_Rep,
+                    Right_Opnd => Right_Rep,
+                    Rep_Type   => Base,
+                    Modulus    => Modulus (Return_Type));
+            begin
+               Prepend (Check, T);
+            end;
+         end if;
       end if;
 
       return T;

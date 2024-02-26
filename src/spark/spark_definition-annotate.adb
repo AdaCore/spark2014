@@ -222,6 +222,11 @@ package body SPARK_Definition.Annotate is
    --  (GNATprove, Mutable_In_Parameters, Ty) to a set containing all such
    --  types Ty.
 
+   No_Bitwise_Operations_Annotations : Common_Containers.Node_Sets.Set :=
+     Common_Containers.Node_Sets.Empty_Set;
+   --  Stores type entities with a pragma Annotate
+   --  (GNATprove, No_Bitwise_Operations, E).
+
    No_Wrap_Around_Annotations : Common_Containers.Node_Sets.Set :=
      Common_Containers.Node_Sets.Empty_Set;
    --  Stores type entities with a pragma Annotate
@@ -475,6 +480,12 @@ package body SPARK_Definition.Annotate is
    --  Check validity of a pragma Annotate
    --  (GNATprove, Mutable_In_Parameters, E) and fill the
    --  Mutable_In_Params_Annotations map.
+
+   procedure Check_No_Bitwise_Operations_Annotation
+     (Arg3_Exp : Node_Id;
+      Prag     : Node_Id);
+   --  Check validity of a pragma Annotate (GNATprove, No_Bitwise_Operations,
+   --  E) and insert it in the No_Bitwise_Operations_Annotations map.
 
    procedure Check_No_Wrap_Around_Annotation
      (Arg3_Exp : Node_Id;
@@ -3911,6 +3922,72 @@ package body SPARK_Definition.Annotate is
       end;
    end Check_Mutable_In_Parameters_Annotation;
 
+   --------------------------------------------
+   -- Check_No_Bitwise_Operations_Annotation --
+   --------------------------------------------
+
+   procedure Check_No_Bitwise_Operations_Annotation
+     (Arg3_Exp : Node_Id;
+      Prag : Node_Id)
+   is
+      E    : Entity_Id;
+      Decl : Node_Id;
+      Base : Entity_Id;
+      Ok   : Boolean;
+
+   begin
+      Check_Annotate_Entity_Argument
+        (Arg3_Exp, "third", Prag, "No_Bitwise_Operations", Ok);
+      if not Ok then
+         return;
+      end if;
+
+      E := Entity (Arg3_Exp);
+      Decl := Parent (E);
+
+      --  Annotation should apply to type declaration (not subtype)
+
+      if Nkind (Decl) /= N_Full_Type_Declaration then
+         Error_Msg_N_If
+           ("Annotation No_Bitwise_Operations must apply"
+            & " to a type declaration",
+            Arg3_Exp);
+         return;
+
+      --  This entity must be a modular type
+
+      elsif not Is_Modular_Integer_Type (E) then
+         Error_Msg_N_If
+           ("Entity parameter of annotation No_Bitwise_Operations must"
+            & " be a modular type",
+            Arg3_Exp);
+         return;
+      end if;
+
+      --  Annotation may apply to a (derived) type declaration. In case of
+      --  derivation, retrieve the base type.
+
+      if Ekind (E) = E_Modular_Integer_Type then
+         Base := E;
+      else
+         Base := Etype (E);
+      end if;
+      pragma Assert (Ekind (Base) = E_Modular_Integer_Type);
+
+      Check_Annotate_Placement
+        (E,
+         Placed_At_Full_View,
+         Prag,
+         "No_Bitwise_Operations",
+         "full type declaration of " & Source_Name (E),
+         Ok);
+      if not Ok then
+         return;
+      end if;
+
+      Set_Has_No_Bitwise_Operations_Annotation (Base);
+   end Check_No_Bitwise_Operations_Annotation;
+
    -------------------------------------
    -- Check_No_Wrap_Around_Annotation --
    -------------------------------------
@@ -5141,6 +5218,14 @@ package body SPARK_Definition.Annotate is
      (Ekind (E) = E_Function
       and then Logical_Eq_Annotations.Contains (E));
 
+   ------------------------------------------
+   -- Has_No_Bitwise_Operations_Annotation --
+   ------------------------------------------
+
+   function Has_No_Bitwise_Operations_Annotation (E : Entity_Id) return Boolean
+   is
+     (No_Bitwise_Operations_Annotations.Contains (E));
+
    -----------------------------------
    -- Has_No_Wrap_Around_Annotation --
    -----------------------------------
@@ -5868,6 +5953,7 @@ package body SPARK_Definition.Annotate is
         or else Name = "inline_for_proof"
         or else Name = "logical_equal"
         or else Name = "mutable_in_parameters"
+        or else Name = "no_bitwise_operations"
         or else Name = "no_wrap_around"
         or else Name = "skip_proof"
         or else Name = "skip_flow_and_proof"
@@ -5952,6 +6038,9 @@ package body SPARK_Definition.Annotate is
 
       elsif Name = "mutable_in_parameters" then
          Check_Mutable_In_Parameters_Annotation (Arg3_Exp, Prag);
+
+      elsif Name = "no_bitwise_operations" then
+         Check_No_Bitwise_Operations_Annotation (Arg3_Exp, Prag);
 
       elsif Name = "no_wrap_around" then
          Check_No_Wrap_Around_Annotation (Arg3_Exp, Prag);
@@ -6114,6 +6203,15 @@ package body SPARK_Definition.Annotate is
          Error_Msg_NE (Msg, N, E);
       end if;
    end Error_Msg_NE_If;
+
+   ----------------------------------------------
+   -- Set_Has_No_Bitwise_Operations_Annotation --
+   ----------------------------------------------
+
+   procedure Set_Has_No_Bitwise_Operations_Annotation (E : Entity_Id) is
+   begin
+      No_Bitwise_Operations_Annotations.Include (Unique_Entity (E));
+   end Set_Has_No_Bitwise_Operations_Annotation;
 
    ---------------------------------------
    -- Set_Has_No_Wrap_Around_Annotation --

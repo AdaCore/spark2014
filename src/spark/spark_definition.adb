@@ -4644,6 +4644,14 @@ package body SPARK_Definition is
       then
          Mark_Violation ("equality on access types", N);
 
+      elsif Nkind (N) in N_Op_And | N_Op_Or | N_Op_Xor
+        and then Has_Modular_Integer_Type (Etype (N))
+        and then Has_No_Bitwise_Operations_Annotation (Etype (N))
+      then
+         Mark_Violation
+           ("bitwise operation on type with No_Bitwise_Operations annotation",
+            N);
+
       --  Only support multiplication and division operations on fixed-point
       --  types if either:
       --  - one of the arguments is an integer type, or
@@ -4971,6 +4979,15 @@ package body SPARK_Definition is
          Mark_Violation
            ("call to allocating function not stored in object as "
             & "part of assignment, declaration or return", N);
+      end if;
+
+      if Is_Simple_Shift_Or_Rotate (E) in N_Op_Shift
+        and then Has_Modular_Integer_Type (Etype (N))
+        and then Has_No_Bitwise_Operations_Annotation (Etype (N))
+      then
+         Mark_Violation
+           ("bitwise operation on type with No_Bitwise_Operations annotation",
+            N);
       end if;
 
       --  If N is a call to the predefined equality of a tagged type, mark
@@ -7957,6 +7974,16 @@ package body SPARK_Definition is
               and then Has_No_Wrap_Around_Annotation (Etype (E))
             then
                Set_Has_No_Wrap_Around_Annotation (E);
+            end if;
+
+            --  Inherit the annotation No_Bitwise_Operations when set on a
+            --  parent type (for a derived types) or base type (for a subtype).
+
+            if Is_Modular_Integer_Type (E)
+              and then Etype (E) /= E
+              and then Has_No_Bitwise_Operations_Annotation (Etype (E))
+            then
+               Set_Has_No_Bitwise_Operations_Annotation (E);
             end if;
 
          elsif Is_Class_Wide_Type (E) then
@@ -10961,6 +10988,15 @@ package body SPARK_Definition is
 
       pragma Assert (Is_Intrinsic_Subprogram (E)
                        and then Ekind (E) in E_Function | E_Operator);
+
+      if Nkind (N) = N_Op_Not
+        and then Has_Modular_Integer_Type (Etype (N))
+        and then Has_No_Bitwise_Operations_Annotation (Etype (N))
+      then
+         Mark_Violation
+           ("bitwise operation on type with No_Bitwise_Operations annotation",
+            N);
+      end if;
 
       if Ekind (E) = E_Function
         and then not In_SPARK (E)

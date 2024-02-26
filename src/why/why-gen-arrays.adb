@@ -23,27 +23,28 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
-with Common_Containers;     use Common_Containers;
+with Ada.Strings.Unbounded;     use Ada.Strings.Unbounded;
+with Common_Containers;         use Common_Containers;
 with GNAT.Source_Info;
-with Gnat2Why.Types;        use Gnat2Why.Types;
-with GNATCOLL.Utils;        use GNATCOLL.Utils;
-with Namet;                 use Namet;
-with Sinput;                use Sinput;
-with SPARK_Atree;           use SPARK_Atree;
-with SPARK_Definition;      use SPARK_Definition;
-with SPARK_Util;            use SPARK_Util;
-with Stand;                 use Stand;
-with String_Utils;          use String_Utils;
-with Uintp;                 use Uintp;
-with Why.Atree.Builders;    use Why.Atree.Builders;
-with Why.Gen.Decl;          use Why.Gen.Decl;
-with Why.Gen.Init;          use Why.Gen.Init;
-with Why.Gen.Names;         use Why.Gen.Names;
-with Why.Gen.Terms;         use Why.Gen.Terms;
-with Why.Images;            use Why.Images;
-with Why.Inter;             use Why.Inter;
-with Why.Types;             use Why.Types;
+with Gnat2Why.Types;            use Gnat2Why.Types;
+with GNATCOLL.Utils;            use GNATCOLL.Utils;
+with Namet;                     use Namet;
+with Sinput;                    use Sinput;
+with SPARK_Atree;               use SPARK_Atree;
+with SPARK_Definition;          use SPARK_Definition;
+with SPARK_Definition.Annotate; use SPARK_Definition.Annotate;
+with SPARK_Util;                use SPARK_Util;
+with Stand;                     use Stand;
+with String_Utils;              use String_Utils;
+with Uintp;                     use Uintp;
+with Why.Atree.Builders;        use Why.Atree.Builders;
+with Why.Gen.Decl;              use Why.Gen.Decl;
+with Why.Gen.Init;              use Why.Gen.Init;
+with Why.Gen.Names;             use Why.Gen.Names;
+with Why.Gen.Terms;             use Why.Gen.Terms;
+with Why.Images;                use Why.Images;
+with Why.Inter;                 use Why.Inter;
+with Why.Types;                 use Why.Types;
 
 package body Why.Gen.Arrays is
 
@@ -1399,7 +1400,9 @@ package body Why.Gen.Arrays is
                  Image     => Get_Name (Symbols.Bool_Eq)));
 
       begin
-         if Has_Modular_Integer_Type (Component_Typ) then
+         if Has_Modular_Integer_Type (Component_Typ)
+           and then not Has_No_Bitwise_Operations_Annotation (Component_Typ)
+         then
             Emit (Th,
                   New_Clone_Declaration
                     (Theory_Kind   => EW_Module,
@@ -2132,7 +2135,10 @@ package body Why.Gen.Arrays is
                  Orig_Name => New_Name
                    (Symb => NID (Append_Num ("index_rep_le", Dim_Count))),
                  Image     => Get_Name
-                   (if Has_Modular_Integer_Type (Ind_Ty) then
+                   (if Has_Modular_Integer_Type (Ind_Ty)
+                      and then
+                        not Has_No_Bitwise_Operations_Annotation (Ind_Ty)
+                    then
                          MF_BVs (R_Ty).Ule
                     else
                        Int_Infix_Le));
@@ -2369,7 +2375,9 @@ package body Why.Gen.Arrays is
       end if;
 
       for I in 1 .. Dim loop
-         if Has_Modular_Integer_Type (Etype (Index)) then
+         if Has_Modular_Integer_Type (Etype (Index))
+           and then not Has_No_Bitwise_Operations_Annotation (Etype (Index))
+         then
             Type_Name := To_Unbounded_String
               (To_String (WNE_Array_BV_Suffix)
                & Image (Integer (UI_To_Int
@@ -3040,7 +3048,9 @@ package body Why.Gen.Arrays is
                Labels      => Symbol_Sets.Empty_Set,
                Binders     => (1 .. 0 => <>),
                Def         =>
-                 (if Is_Modular_Integer_Type (Typ) then
+                 (if Is_Modular_Integer_Type (Typ)
+                    and then not Has_No_Bitwise_Operations_Annotation (Typ)
+                  then
                     New_Modular_Constant (Value => Uint_1,
                                           Typ   => WTyp)
                   else
@@ -3062,7 +3072,9 @@ package body Why.Gen.Arrays is
                  New_Name (Module => Prefix_Mod,
                            Symb   => NID ("le")),
                  Image     => Get_Name
-                   (if Is_Modular_Integer_Type (Typ) then
+                   (if Is_Modular_Integer_Type (Typ)
+                      and then not Has_No_Bitwise_Operations_Annotation (Typ)
+                    then
                       MF_BVs (WTyp).Ule
                     else
                       Int_Infix_Le)),
@@ -3072,7 +3084,9 @@ package body Why.Gen.Arrays is
                    New_Name (Module => Prefix_Mod,
                              Symb   => NID ("lt")),
                  Image     => Get_Name
-                   (if Is_Modular_Integer_Type (Typ) then
+                   (if Is_Modular_Integer_Type (Typ)
+                      and then not Has_No_Bitwise_Operations_Annotation (Typ)
+                    then
                       MF_BVs (WTyp).Ult
                     else
                       Int_Infix_Lt)),
@@ -3082,7 +3096,9 @@ package body Why.Gen.Arrays is
                    New_Name (Module => Prefix_Mod,
                              Symb   => NID ("gt")),
                  Image     => Get_Name
-                   (if Is_Modular_Integer_Type (Typ) then
+                   (if Is_Modular_Integer_Type (Typ)
+                      and then not Has_No_Bitwise_Operations_Annotation (Typ)
+                    then
                       MF_BVs (WTyp).Ugt
                     else
                       Int_Infix_Gt)),
@@ -3092,7 +3108,9 @@ package body Why.Gen.Arrays is
                    New_Name (Module => Prefix_Mod,
                              Symb   => NID ("add")),
                  Image     => Get_Name
-                   (if Is_Modular_Integer_Type (Typ) then
+                   (if Is_Modular_Integer_Type (Typ)
+                      and then not Has_No_Bitwise_Operations_Annotation (Typ)
+                    then
                       MF_BVs (WTyp).Add
                     else
                       Int_Infix_Add)),
@@ -3102,7 +3120,9 @@ package body Why.Gen.Arrays is
                    New_Name (Module => Prefix_Mod,
                              Symb   => NID ("sub")),
                  Image     => Get_Name
-                   (if Is_Modular_Integer_Type (Typ) then
+                   (if Is_Modular_Integer_Type (Typ)
+                      and then not Has_No_Bitwise_Operations_Annotation (Typ)
+                    then
                       MF_BVs (WTyp).Sub
                     else
                       Int_Infix_Subtr)),
@@ -3112,7 +3132,9 @@ package body Why.Gen.Arrays is
                    New_Name (Module => Prefix_Mod,
                              Symb   => NID ("one")),
                  Image     => Get_Name
-                   (if Is_Modular_Integer_Type (Typ) then
+                   (if Is_Modular_Integer_Type (Typ)
+                      and then not Has_No_Bitwise_Operations_Annotation (Typ)
+                    then
                       MF_BVs (WTyp).One
                     else
                       One_Id)));

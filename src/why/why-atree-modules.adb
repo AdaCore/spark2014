@@ -3560,29 +3560,7 @@ package body Why.Atree.Modules is
                   declare
                      RM : constant W_Module_Id :=
                        E_Module (E, Type_Representative);
-
-                     To_Int : constant W_Identifier_Id :=
-                       New_Identifier
-                         (Symb   => NID ("to_int"),
-                          Module => RM,
-                          Domain => EW_Term,
-                          Typ    => EW_Int_Type);
                   begin
-                     Insert_Symbol (E, WNE_To_Int, To_Int);
-                     Insert_Symbol
-                       (E, WNE_Of_BitVector,
-                        New_Identifier
-                          (Symb   => NID ("of_int"),
-                           Module => M,
-                           Domain => EW_Term,
-                           Typ    => Base));
-                     Insert_Symbol
-                       (E, WNE_Dynamic_Property_BV_Int,
-                        New_Identifier
-                          (Symb   => NID ("dynamic_property_int"),
-                           Module => M,
-                           Domain => EW_Term,
-                           Typ    => EW_Bool_Type));
                      Insert_Symbol
                        (E, WNE_Attr_Modulus,
                         New_Identifier
@@ -3590,19 +3568,44 @@ package body Why.Atree.Modules is
                            Module => M,
                            Domain => EW_Term,
                            Typ    => Base));
-                     Insert_Symbol
-                       (E, WNE_Range_Check_Fun_BV_Int,
-                        New_Identifier
-                          (Symb   => NID ("range_check_int_"),
-                           Module => M,
-                           Domain => EW_Term,
-                           Typ    => EW_Int_Type));
+
+                     if not Has_No_Bitwise_Operations_Annotation (E) then
+                        Insert_Symbol
+                          (E, WNE_To_Int,
+                           New_Identifier
+                             (Symb   => NID ("to_int"),
+                              Module => RM,
+                              Domain => EW_Term,
+                              Typ    => EW_Int_Type));
+                        Insert_Symbol
+                          (E, WNE_Of_BitVector,
+                           New_Identifier
+                             (Symb   => NID ("of_int"),
+                              Module => M,
+                              Domain => EW_Term,
+                              Typ    => Base));
+                        Insert_Symbol
+                          (E, WNE_Dynamic_Property_BV_Int,
+                           New_Identifier
+                             (Symb   => NID ("dynamic_property_int"),
+                              Module => M,
+                              Domain => EW_Term,
+                              Typ    => EW_Bool_Type));
+                        Insert_Symbol
+                          (E, WNE_Range_Check_Fun_BV_Int,
+                           New_Identifier
+                             (Symb   => NID ("range_check_int_"),
+                              Module => M,
+                              Domain => EW_Term,
+                              Typ    => EW_Int_Type));
+                     end if;
                   end;
                end if;
 
                --  Symbols for modular static types
 
                if Has_Modular_Integer_Type (E)
+                 and then not Has_No_Bitwise_Operations_Annotation (E)
                  and then not Type_Is_Modeled_As_Base (E)
                then
                   Insert_Symbol
