@@ -439,9 +439,6 @@ package Flow_Types is
         Post => Parent_Record'Result.Kind in Direct_Mapping | Record_Field
                 and then Parent_Record'Result.Facet = Normal_Part
                 and then Parent_Record'Result.Variant = F.Variant;
-   pragma Annotate
-      (GNATSAS, Intentional, "condition predetermined",
-       "Preconditionn always true is expected.");
    --  Return the parent record for the given record field. If given the
    --  hidden fields of a record, returns the visible part (i.e. clears the
    --  hidden_part flag before moving up the component list). If given a
