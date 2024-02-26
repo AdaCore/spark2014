@@ -95,6 +95,7 @@ procedure Main with SPARK_Mode is
    procedure Quicksort (L : in out List) is
       Left, Right  : List;
       Occ_LN       : Multiset with Ghost;
+      Old_Len      : constant Big_Natural := Length (L) with Ghost;
    begin
       if L /= null then
          Occ_LN := Occurrences (L.N);
@@ -107,6 +108,7 @@ procedure Main with SPARK_Mode is
          Append (Left, L);
          L := Left;
       end if;
+      pragma Assert (Length (L) = Old_Len);
    end Quicksort;
 
    --------------------
