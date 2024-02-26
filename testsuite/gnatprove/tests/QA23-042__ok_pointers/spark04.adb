@@ -3,7 +3,9 @@ use Ada.Text_IO;
 
 package body Spark04 is
 
-   package body Data is
+   package body Data with
+     Annotate => (GNATprove, Unhide_Info, "Package_Body")
+   is
       function CreatePoint (X: AI; Y: AI) return Point --peeked X and Y
       is (X=>X.all, Y=>Y.all); --no move for X and Y : ok
    end Data;

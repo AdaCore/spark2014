@@ -69,7 +69,7 @@ package Why.Gen.Binders is
    type Binder_Array is array (Positive range <>) of Binder_Type;
 
    type Item_Enum is
-     (Regular, UCArray, DRecord, Pointer, Func, Concurrent_Self);
+     (Regular, UCArray, DRecord, Pointer, Subp, Concurrent_Self);
    --  See the comment of the Item_Type type below to see the meaning of this
    --  enum.
 
@@ -153,12 +153,16 @@ package Why.Gen.Binders is
             Tag        : Opt_Id;
             Is_Moved_R : Opt_Id;
 
-         --  Case of functions where we need different translations when used
-         --  in programs or in assertions.
+         --  Case of subprograms where we need different translations when used
+         --  in programs or in assertions, plus possibly refined and dispatch
+         --  versions.
 
-         when Func    =>
-            For_Logic : Binder_Type;
-            For_Prog  : Binder_Type;
+         when Subp    =>
+            For_Logic      : Opt_Id;
+            For_Prog       : W_Identifier_Id;
+            Refine_Prog    : Opt_Id;
+            Dispatch_Logic : Opt_Id;
+            Dispatch_Prog  : Opt_Id;
       end case;
    end record;
 

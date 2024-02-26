@@ -2,7 +2,8 @@ procedure Inherited with SPARK_Mode is
 
    package P1 is
       type R is tagged null record;
-      function F return R;
+      function F return R with
+        Post => F'Result = V;
       V : constant R := (null record);
    end P1;
 
@@ -20,7 +21,8 @@ procedure Inherited with SPARK_Mode is
       type R is tagged record
          X : Integer;
       end record;
-      function F return R;
+      function F return R with
+        Post => F'Result = V;
       V : constant R := (X => 0);
    end P2;
 

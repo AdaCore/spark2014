@@ -3,7 +3,9 @@ package body Failsafe with SPARK_Mode,
 is
    Counter : Unsigned_8 range 0 .. Failsafe_Cycles := 0;
 
-   package body Model is
+   package body Model with
+     Annotate => (GNATprove, Unhide_Info, "Package_Body")
+   is
       function Time_Below_Threshold return Time_Slot_Length is
          Res : Time_Slot_Length := 0;
       begin

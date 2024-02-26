@@ -3,23 +3,6 @@ pragma Spark_Mode (On);
 package body Generic_Ring_Buffer
 is
 
-   function Empty
-     (Buffer : in Ring_Buffer_Type)
-     return Boolean
-   is (Size (Buffer) = 0);
-
-
-   function Full
-     (Buffer : in Ring_Buffer_Type)
-     return Boolean
-   is (Size (Buffer) = Buffer.Max_Size);
-
-
-   function Size
-     (Buffer : in Ring_Buffer_Type)
-     return Natural
-   is (Buffer.Count);
-
 
    function Free
      (Buffer : in Ring_Buffer_Type)

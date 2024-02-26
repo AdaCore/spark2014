@@ -454,6 +454,28 @@ package SPARK_Util.Subprograms is
    --     because of pragma Pure_Function or pragma Pure), which means an
    --     implicit Global => null.
 
+   function Has_Refinement (E : Callable_Kind_Id) return Boolean;
+   --  Returns True if E has a refinement, ie. it has a refined post of it is
+   --  an expression function and its body is deferred to the body of its
+   --  enclosing package.
+
+   function Has_Visibility_On_Refined
+     (From : Entity_Id;
+      Subp : Callable_Kind_Id)
+      return Boolean
+   with Pre => Has_Refinement (Subp);
+   --  Return True if the Refined_Post or deferred body of Subp is visible from
+   --  scope From. Look into package bodies if they are annotated with an
+   --  Unhide annotation.
+
+   function Has_Visibility_On_Refined_Expr
+     (Expr : Node_Id;
+      Subp : Callable_Kind_Id)
+      return Boolean
+   with Pre => Has_Refinement (Subp);
+   --  Return True if the Refined_Post or deferred body of Subp is visible from
+   --  the scope of Expr. Use Get_Flow_Scope to determine the scope of Expr.
+
    function Includes_Current_Task (Calls : Node_Sets.Set) return Boolean
    with Pre => (for all Call of Calls => Ekind (Call) in Entry_Kind
                                                        | E_Function
@@ -708,6 +730,13 @@ package SPARK_Util.Subprograms is
 
    function Is_Overriding_Subprogram (E : Entity_Id) return Boolean renames
      Inheritance_Utilities_Inst.Is_Overriding_Subprogram;
+
+   function Completion_Deferred_To_Body
+     (E : Subprogram_Kind_Id) return Boolean;
+   --  Return True if E is declared in the spec of a package or protected type
+   --  and its body is in the package or protected body. This is used for
+   --  expression functions to decide whether their body should be handled as a
+   --  refinement.
 
    --------------------------------
    -- Queries related to entries --

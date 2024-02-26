@@ -27,6 +27,7 @@ with Flow_Utility;                use Flow_Utility;
 with Gnat2Why.Util;               use Gnat2Why.Util;
 with Namet;                       use Namet;
 with SPARK_Definition.Annotate;   use SPARK_Definition.Annotate;
+with SPARK_Util.Subprograms;      use SPARK_Util.Subprograms;
 with SPARK_Util.Types;            use SPARK_Util.Types;
 with Why.Atree.Modules;           use Why.Atree.Modules;
 with Why.Gen.Arrays;              use Why.Gen.Arrays;
@@ -117,7 +118,7 @@ package body Why.Gen.Binders is
                Effects_Append (Eff, Binder.Discrs.Binder.B_Name);
             end if;
 
-         when Func => raise Program_Error;
+         when Subp => raise Program_Error;
       end case;
    end Effects_Append_Binder;
 
@@ -146,7 +147,7 @@ package body Why.Gen.Binders is
          when Pointer =>
             return B.Value.Ada_Node;
 
-         when Func =>
+         when Subp =>
             raise Program_Error;
       end case;
    end Get_Ada_Node_From_Item;
@@ -158,7 +159,9 @@ package body Why.Gen.Binders is
    function Get_Ada_Type_From_Item (B : Item_Type) return Entity_Id is
    begin
       case B.Kind is
-         when Regular | UCArray | Func
+         when Subp =>
+            raise Program_Error;
+         when Regular | UCArray
             =>
             if Present (Get_Ada_Node_From_Item (B)) then
                return Etype (Get_Ada_Node_From_Item (B));
@@ -401,8 +404,8 @@ package body Why.Gen.Binders is
                  EW_Abstract (B.P_Typ, Relaxed_Init => Relaxed_Init);
             end;
 
-         when Func =>
-            return Get_Typ (B.For_Logic.B_Name);
+         when Subp =>
+            raise Program_Error;
 
       end case;
    end Get_Why_Type_From_Item;
@@ -484,7 +487,7 @@ package body Why.Gen.Binders is
                      Count := Count + 1;
                   end if;
 
-               when Func => raise Program_Error;
+               when Subp => raise Program_Error;
             end case;
          end;
       end loop;
@@ -506,7 +509,7 @@ package body Why.Gen.Binders is
          when UCArray | DRecord | Pointer =>
             return True;
 
-         when Func =>
+         when Subp =>
             raise Program_Error;
       end case;
    end Item_Is_Mutable;
@@ -630,7 +633,7 @@ package body Why.Gen.Binders is
                   B.Is_Moved_R.Id := Local_Name (B.Is_Moved_R.Id);
                end if;
 
-               when Func => raise Program_Error;
+               when Subp => raise Program_Error;
             end case;
             B.Local := B.Local or not Only_Variables;
          end if;
@@ -684,45 +687,60 @@ package body Why.Gen.Binders is
    begin
       --  For procedures, use a regular binder
 
-      if Ekind (E) in E_Procedure | E_Entry then
-         return (Regular,
-                 False,
-                 Init => <>,
-                 Main => Binder_Type'
-                   (B_Name   =>
-                      To_Why_Id (E, Typ => Why_Empty),
-                    B_Ent    => Null_Entity_Name,
-                    Ada_Node => E,
-                    Mutable  => False,
-                    Labels   => <>));
+      --  For subprograms, store the name for all possible variants. For
+      --  functions, also store the name to be used in logic. If Hide_Info is
+      --  True, use the appropriate symbol in the program domain.
 
-      --  For functions, store both the name to be used in logic and the name
-      --  to be used in programs. If Hide_Info is True, use the appropriate
-      --  symbol in the program domain.
-
-      elsif Ekind (E) = E_Function then
+      if Ekind (E) in E_Procedure | E_Entry | E_Function then
          declare
-            Typ : constant W_Type_Id := Type_Of_Node (E);
+            Typ            : constant W_Type_Id :=
+              (if Ekind (E) = E_Function then Type_Of_Node (E) else Why_Empty);
+            For_Prog       : W_Identifier_Id;
+            For_Logic      : Opt_Id;
+            Refine_Prog    : Opt_Id;
+            Dispatch_Prog  : Opt_Id;
+            Dispatch_Logic : Opt_Id;
          begin
-            return (Func,
+            For_Prog := To_Why_Id (E, Typ => Typ, Hide_Info => Hide_Info);
+
+            if Ekind (E) = E_Function then
+               For_Logic :=
+                 (Present => True,
+                  Id      => To_Why_Id (E, Typ => Typ, Domain => EW_Term));
+            end if;
+
+            if Is_Dispatching_Operation (E)
+              and then not Is_Hidden_Dispatching_Operation (E)
+            then
+               Dispatch_Prog :=
+                 (Present => True,
+                  Id      => To_Why_Id (E, Typ => Typ, Selector => Dispatch));
+
+               if Ekind (E) = E_Function then
+                  Dispatch_Logic :=
+                    (Present => True,
+                     Id      => To_Why_Id
+                       (E, Typ => Typ, Domain => EW_Term,
+                        Selector => Dispatch));
+               end if;
+            end if;
+
+            if Has_Refinement (E) then
+               Refine_Prog :=
+                 (Present => True,
+                  Id      =>
+                    To_Why_Id (E, Typ => Typ, Selector => Refine,
+                               Hide_Info => Hide_Info));
+            end if;
+
+            return (Subp,
                     False,
-                    Init      => <>,
-                    For_Logic => Binder_Type'
-                      (B_Name   =>
-                         To_Why_Id (E, Typ => Typ, Domain => EW_Term),
-                       B_Ent    => Null_Entity_Name,
-                       Ada_Node => E,
-                       Mutable  => False,
-                       Labels   => <>),
-                    For_Prog => Binder_Type'
-                      (B_Name   => To_Why_Id
-                         (E, Typ    => Typ,
-                          Domain    => EW_Prog,
-                          Hide_Info => Hide_Info),
-                       B_Ent    => Null_Entity_Name,
-                       Ada_Node => E,
-                       Mutable  => False,
-                       Labels   => <>));
+                    Init           => <>,
+                    For_Logic      => For_Logic,
+                    For_Prog       => For_Prog,
+                    Refine_Prog    => Refine_Prog,
+                    Dispatch_Logic => Dispatch_Logic,
+                    Dispatch_Prog  => Dispatch_Prog);
          end;
 
       --  If E is in SPARK, decide whether it should be split into multiple
@@ -1379,7 +1397,7 @@ package body Why.Gen.Binders is
       T : W_Term_Id;
    begin
       case E.Kind is
-         when Func =>
+         when Subp =>
             raise Program_Error;
 
          when Regular
@@ -1514,7 +1532,7 @@ package body Why.Gen.Binders is
                      Count := Count + 1;
                   end if;
 
-               when Func =>
+               when Subp =>
                   raise Program_Error;
             end case;
          end;

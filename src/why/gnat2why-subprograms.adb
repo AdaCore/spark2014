@@ -3496,34 +3496,6 @@ package body Gnat2Why.Subprograms is
                Return_Type => EW_Bool_Type));
       end if;
 
-      --  For higher order specializations, we do not take into account
-      --  refined postcondition if any.
-
-      if Entity_Body_In_SPARK (E)
-        and then Has_Contracts (E, Pragma_Refined_Post)
-        and then Specialization_Module = No_Symbol
-      then
-         Emit
-           (Th,
-            New_Namespace_Declaration
-              (Name         => NID (To_String (WNE_Refine_Module)),
-               Declarations =>
-                 (1 => New_Function_Decl
-                      (Domain      => EW_Pterm,
-                       Name        => Logic_Id,
-                       Binders     => Logic_Why_Binders,
-                       Labels      => Symbol_Sets.Empty_Set,
-                       Location    => No_Location,
-                       Return_Type => Why_Type),
-                  2 => New_Function_Decl
-                    (Domain      => EW_Pred,
-                     Name        => Pred_Id,
-                     Binders     => Pred_Binders,
-                     Labels      => Symbol_Sets.Empty_Set,
-                     Location    => No_Location,
-                     Return_Type => EW_Bool_Type))));
-      end if;
-
       --  Generate a function return the pledge of a traversal function.
       --  We don't need anything specific for dispatching functions as
       --  tagged types cannot be deep.
@@ -4456,7 +4428,8 @@ package body Gnat2Why.Subprograms is
       Self_Is_Mutable := False;
 
       Close_Theory (Th,
-                    Kind => VC_Generation_Theory);
+                    Kind           => VC_Generation_Theory,
+                    Defined_Entity => E);
    end Generate_VCs_For_Protected_Type;
 
    ---------------------------------
@@ -6105,7 +6078,8 @@ package body Gnat2Why.Subprograms is
 
       Ada_Ent_To_Why.Pop_Scope (Symbol_Table);
       Close_Theory (Th,
-                    Kind => VC_Generation_Theory);
+                    Kind           => VC_Generation_Theory,
+                    Defined_Entity => E);
 
    end Generate_VCs_For_Task_Type;
 
@@ -6291,6 +6265,7 @@ package body Gnat2Why.Subprograms is
    procedure Generate_Axiom_For_Post
      (Th                    : Theory_UC;
       Dispatch_Th           : Theory_UC := Empty_Theory;
+      Refined_Th            : Theory_UC := Empty_Theory;
       E                     : Callable_Kind_Id;
       Spec_Binders          : Binder_Array := (1 .. 0 => <>);
       Spec_Guard            : W_Pred_Id := True_Pred;
@@ -6615,6 +6590,7 @@ package body Gnat2Why.Subprograms is
 
          if No (Retrieve_Inline_Annotation (E)) then
             Emit_Post_Axiom (Th, Post_Axiom, Why.Inter.Standard, Pre, Post);
+            Register_Dependency_For_Soundness (Th.Module, E);
          end if;
 
          if Is_Dispatching_Operation (E)
@@ -6633,6 +6609,7 @@ package body Gnat2Why.Subprograms is
                                    Params  => Params),
                                 Right => Dispatch_Pre),
                              Dispatch_Post);
+            Register_Dependency_For_Soundness (Dispatch_Th.Module, E);
          end if;
 
          --  For higher order specializations, we do not take into account
@@ -6643,20 +6620,18 @@ package body Gnat2Why.Subprograms is
            and then Specialization_Module = No_Symbol
          then
             pragma Assert (Present (Refined_Post));
-            Emit_Post_Axiom (Th,
+            Emit_Post_Axiom (Refined_Th,
                              Post_Refine_Axiom,
                              Refine,
                              Pre,
                              Refined_Post);
+            Register_Dependency_For_Soundness (Refined_Th.Module, E);
+
+            --  E needs special handling for visibility
+
+            Register_Function_With_Refinement (E);
          end if;
       end;
-
-      Register_Dependency_For_Soundness (Th.Module, E);
-      if Is_Dispatching_Operation (E)
-        and then not Is_Hidden_Dispatching_Operation (E)
-      then
-         Register_Dependency_For_Soundness (Dispatch_Th.Module, E);
-      end if;
 
       Ada_Ent_To_Why.Pop_Scope (Symbol_Table);
    end Generate_Axiom_For_Post;
@@ -7032,6 +7007,7 @@ package body Gnat2Why.Subprograms is
       Dispatch_Th      : Theory_UC := Empty_Theory;
       Dispatch_Post_Th : Theory_UC := Empty_Theory;
       Post_Axiom_Th    : Theory_UC;
+      Refined_Post_Th  : Theory_UC := Empty_Theory;
       Program_Th       : Theory_UC;
    begin
       Program_Th :=
@@ -7085,6 +7061,21 @@ package body Gnat2Why.Subprograms is
               & ", created in " & GNAT.Source_Info.Enclosing_Entity);
       end if;
 
+      if Entity_Body_In_SPARK (E)
+        and then Has_Contracts (E, Pragma_Refined_Post)
+      then
+         Refined_Post_Th :=
+           Open_Theory
+             (WF_Context, E_Module (E, Refined_Post_Axiom),
+              Comment =>
+                "Module for declaring an axiom for the refined postcondition"
+              & " of """ & Get_Name_String (Chars (E)) & """"
+              & (if Sloc (E) > 0 then
+                   " defined at " & Build_Location_String (Sloc (E))
+                else "")
+              & ", created in " & GNAT.Source_Info.Enclosing_Entity);
+      end if;
+
       declare
          Use_Result_Name : constant Boolean := Ekind (E) = E_Function;
          --  Store the result identifier in Result_Name
@@ -7104,7 +7095,8 @@ package body Gnat2Why.Subprograms is
            (Program_Th, Dispatch_Th, E,
             To_Why_Id (E, Domain => EW_Prog, Local => True));
 
-         Generate_Axiom_For_Post (Post_Axiom_Th, Dispatch_Post_Th, E);
+         Generate_Axiom_For_Post
+           (Post_Axiom_Th, Dispatch_Post_Th, Refined_Post_Th, E);
 
          if Is_Dispatching_Operation (E)
            and then not Is_Hidden_Dispatching_Operation (E)
@@ -7150,6 +7142,13 @@ package body Gnat2Why.Subprograms is
          Record_Extra_Dependency
            (Defining_Module => E_Module (E, Dispatch),
             Axiom_Module    => Dispatch_Post_Th.Module);
+      end if;
+
+      --  Close the refined post axiom module if it is not empty
+
+      if Refined_Post_Th /= Empty_Theory then
+         Close_Theory (Refined_Post_Th,
+                       Kind => Definition_Theory);
       end if;
 
       --  If E is a lemma procedure with an Automatic_Instantiation annotation,
@@ -7290,6 +7289,13 @@ package body Gnat2Why.Subprograms is
          then
             Refined_Post :=
               Get_Static_Call_Contract (Params, E, Pragma_Refined_Post);
+
+         --  If E is an expression function, it might have a refinement even if
+         --  it does not have a refine postcondition. In this case, use the
+         --  normal post for the refine version.
+
+         elsif Has_Refinement (E) then
+            Refined_Post := Post;
          end if;
       end if;
 
@@ -7524,8 +7530,7 @@ package body Gnat2Why.Subprograms is
                                Args => (Res_Expr, Expr_Body),
                                Typ  => EW_Bool_Type));
                begin
-                  if Entity_Body_In_SPARK (E)
-                    and then Has_Contracts (E, Pragma_Refined_Post)
+                  if Entity_Body_In_SPARK (E) and then Has_Refinement (E)
                   then
                      Refined_Post :=
                        +New_And_Expr (+Eq_Expr, +Refined_Post, EW_Pred);
@@ -7560,7 +7565,7 @@ package body Gnat2Why.Subprograms is
             --  refined postcondition if any.
 
             if Entity_Body_In_SPARK (E)
-              and then Has_Contracts (E, Pragma_Refined_Post)
+              and then Has_Refinement (E)
               and then Specialization_Module = No_Symbol
             then
                Emit
@@ -8082,19 +8087,11 @@ package body Gnat2Why.Subprograms is
       Flat_Binders       : constant Binder_Array :=
         To_Binder_Array (Logic_Func_Binders);
 
-      Use_Refined_Post : constant Boolean :=
-        Entity_Body_In_SPARK (E)
-        and then Has_Contracts (E, Pragma_Refined_Post);
-
       Logic_Id           : constant W_Identifier_Id :=
         To_Why_Id (E, Domain => EW_Term, Local => False,
-                   Selector => (if Use_Refined_Post
-                                then Refine
-                                else Why.Inter.Standard));
+                   Selector => Why.Inter.Standard);
       Pred_Name          : constant Why_Name_Enum :=
-        (if Use_Refined_Post
-         then WNE_Refined_Func_Guard
-         else WNE_Func_Guard);
+        WNE_Func_Guard;
       Result_Id          : constant W_Identifier_Id :=
          New_Result_Ident (Type_Of_Node (E));
       Pred_Binders       : constant Binder_Array :=
@@ -8125,6 +8122,7 @@ package body Gnat2Why.Subprograms is
       Program_Th        : Theory_UC;
       Dispatch_Th       : Theory_UC := Empty_Theory;
       Dispatch_Post_Th  : Theory_UC := Empty_Theory;
+      Refined_Post_Th   : Theory_UC := Empty_Theory;
 
    begin
       Program_Th :=
@@ -8177,6 +8175,21 @@ package body Gnat2Why.Subprograms is
               & ", created in " & GNAT.Source_Info.Enclosing_Entity);
       end if;
 
+      if Entity_Body_In_SPARK (E)
+        and then Has_Contracts (E, Pragma_Refined_Post)
+      then
+         Refined_Post_Th :=
+           Open_Theory
+             (WF_Context, E_Module (E, Refined_Post_Axiom),
+              Comment =>
+                "Module for declaring an axiom for the refined postcondition"
+              & " of """ & Get_Name_String (Chars (E)) & """"
+              & (if Sloc (E) > 0 then
+                   " defined at " & Build_Location_String (Sloc (E))
+                else "")
+              & ", created in " & GNAT.Source_Info.Enclosing_Entity);
+      end if;
+
       --  Store an appropriate value for the result identifier in Result_Name.
 
       Result_Name := New_Result_Ident (Type_Of_Node (E));
@@ -8195,7 +8208,8 @@ package body Gnat2Why.Subprograms is
       Close_Theory (Program_Th,
                     Kind => Definition_Theory);
 
-      Generate_Axiom_For_Post (Post_Axiom_Th, Dispatch_Post_Th, E);
+      Generate_Axiom_For_Post
+        (Post_Axiom_Th, Dispatch_Post_Th, Refined_Post_Th, E);
 
       if Is_Dispatching_Operation (E)
         and then not Is_Hidden_Dispatching_Operation (E)
@@ -8224,6 +8238,13 @@ package body Gnat2Why.Subprograms is
             Axiom_Module    => Dispatch_Post_Th.Module);
       end if;
 
+      --  Close the refined post axiom module if it is not empty
+
+      if Refined_Post_Th /= Empty_Theory then
+         Close_Theory (Refined_Post_Th,
+                       Kind => Definition_Theory);
+      end if;
+
       --  If the entity's body is not in SPARK, if it is inlined for proof, or
       --  if it is a volatile function or a function with side effects, do not
       --  generate axiom.
@@ -8248,6 +8269,13 @@ package body Gnat2Why.Subprograms is
                 " defined at " & Build_Location_String (Sloc (E))
              else "")
            & ", created in " & GNAT.Source_Info.Enclosing_Entity);
+
+      --  If E's body is deferred to the enclosing package's body, it needs
+      --  special handling for visibility.
+
+      if Has_Refinement (E) then
+         Register_Function_With_Refinement (E);
+      end if;
 
       Params := (Logic_Params with delta Gen_Marker => GM_Toplevel);
 
