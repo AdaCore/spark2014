@@ -13361,53 +13361,6 @@ package body Gnat2Why.Expr is
             end loop;
          end if;
 
-         --  If the aggregate has known bounds, we use this information if it
-         --  is not contained in the type.
-
-         if Domain = EW_Prog
-           and then (Nkind (Expr) = N_Aggregate
-                     and then Present (Aggregate_Bounds (Expr)))
-           and then not Is_Static_Array_Type (Expr_Typ)
-         then
-            declare
-               Temp   : constant W_Term_Id := New_Temp_For_Expr (R);
-               A1, A2 : W_Prog_Id;
-               W_Typ  : constant W_Type_Id :=
-                 Base_Why_Type_No_Bool (Index_Types (1));
-            begin
-               A1 :=
-                 New_Assume_Statement
-                   (Pred =>
-                      New_Call
-                        (Name => Why_Eq,
-                         Typ  => EW_Bool_Type,
-                         Args =>
-                           (1 => +Get_Array_Attr (Temp, Attribute_First, 1),
-                            2 =>
-                              Transform_Expr
-                                (Low_Bound (Aggregate_Bounds (Expr)),
-                                 W_Typ,
-                                 EW_Term,
-                                 Params))));
-               A2 :=
-                 New_Assume_Statement
-                   (Pred =>
-                      New_Call
-                        (Name => Why_Eq,
-                         Typ  => EW_Bool_Type,
-                         Args =>
-                           (1 => +Get_Array_Attr (Temp, Attribute_Last, 1),
-                            2 =>
-                              Transform_Expr
-                                (High_Bound (Aggregate_Bounds (Expr)),
-                                 W_Typ,
-                                 EW_Term,
-                                 Params))));
-               R := +Sequence ((1 => A1, 2 => A2, 3 => +Temp));
-               R := Binding_For_Temp (Expr, EW_Prog, +Temp, R);
-            end;
-         end if;
-
          --  Possibly check the predicate on the aggregate
 
          if Domain = EW_Prog
