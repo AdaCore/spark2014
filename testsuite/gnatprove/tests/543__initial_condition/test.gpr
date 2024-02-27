@@ -1,0 +1,16 @@
+project Test is
+
+   for Languages use ("C", "Ada");
+
+   for Main use ("rnd_test.adb", "rnd_test_2.adb");
+   for Source_Files use ("rnd.c",
+                    "random.adb",
+                    "random.ads",
+                    "rnd_test.adb",
+                    "rnd_test_2.adb");
+
+   package Builder is
+      for Global_Configuration_Pragmas use "spark.adc";
+   end Builder;
+
+end Test;

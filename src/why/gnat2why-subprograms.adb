@@ -388,7 +388,8 @@ package body Gnat2Why.Subprograms is
 
       --  For each withed unit which is a package declaration, assume its
       --  Initial_Condition if the elaboration of the withed unit is known
-      --  to precede the elaboration of E.
+      --  to precede the elaboration of E or if E is a subprogram (all withed
+      --  units are elaborated before the main subprogram is called).
 
       Context_Item := First (Context_Items (CU));
       while Present (Context_Item) loop
@@ -401,7 +402,9 @@ package body Gnat2Why.Subprograms is
                        else Empty);
 
             if Nkind (Withed_Unit) = N_Package_Declaration
-              and then Known_To_Precede (Withed => Withed, Main => Main)
+              and then
+                (Is_Subprogram (Main)
+                 or else Known_To_Precede (Withed => Withed, Main => Main))
             then
                declare
                   Init_Cond : constant Node_Id :=
@@ -4645,6 +4648,12 @@ package body Gnat2Why.Subprograms is
          --  entries is just to protect the call to Might_Be_Main.
 
          if Is_Subprogram (E) and then Might_Be_Main (E) then
+
+            --  Initial conditions of withed units should only be available to
+            --  prove the precondition of potential Main subprograms. It cannot
+            --  be assumed for potential other calls which might occur during
+            --  the elaboration.
+
             if No (Pre_Node) then
                pragma Assert (Is_True_Boolean (+Pre));
                Stmt := +Void;
