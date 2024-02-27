@@ -908,7 +908,7 @@ package body Gnat2Why.Driver is
             --  do not warn about useless pragma Annotate, because it's likely
             --  to be a false positive.
 
-            if Gnat2Why_Args.Limit_Line = Null_Unbounded_String
+            if Gnat2Why_Args.Limit_Lines.Is_Empty
               and then Gnat2Why_Args.Limit_Region = Null_Unbounded_String
               and then Gnat2Why_Args.Limit_Subp = Null_Unbounded_String
             then

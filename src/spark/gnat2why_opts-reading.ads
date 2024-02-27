@@ -125,9 +125,10 @@ package Gnat2Why_Opts.Reading is
 
    Limit_Region : Unbounded_String;
 
-   --  Limit analysis to this line
+   --  Limit analysis to these lines. This corresponds to both --limit-line and
+   --  --limit-lines option.
 
-   Limit_Line : Unbounded_String;
+   Limit_Lines : String_Lists.List;
 
    --  Limit analysis to entities with this exact name
 
