@@ -852,14 +852,19 @@ procedure Gnatprove with SPARK_Mode is
       Sharegpr : constant String :=
         Compose (SPARK_Install.Share, "gpr");
    begin
-      --  Unset various environmment variables which might confuse the compiler
-      --  or gprbuild.
+      --  Unset various environmment variables which might confuse the
+      --  compiler, gprbuild or why3.
 
       Clear ("ADA_INCLUDE_PATH");
       Clear ("ADA_OBJECTS_PATH");
       Clear ("GCC_EXEC_PREFIX");
       Clear ("GCC_ROOT");
       Clear ("GNAT_ROOT");
+      Clear ("WHY3LIB");
+      Clear ("WHY3DATA");
+      Clear ("WHY3LOADPATH");
+      Clear ("WHY3CONFIG");
+      Clear ("WHY3DEBUG");
 
       --  Add <prefix>/libexec/spark/bin in front of the PATH to find gnatwhy3
       --  and provers. Also add GNSA dir in front of PATH for gprbuild and
