@@ -4250,7 +4250,7 @@ package body Flow.Control_Flow_Graph is
          Funcalls       : Call_Sets.Set;
          Variables_Used : Flow_Id_Sets.Set;
 
-         DIC_Param_Components : Flow_Id_Sets.Set :=
+         DIC_Param_Components : constant Flow_Id_Sets.Set :=
            Flatten_Variable (Default_Init_Param, FA.B_Scope);
          --  Flattened view of the DIC procedure parameter
 
@@ -4288,25 +4288,6 @@ package body Flow.Control_Flow_Graph is
          --  type is called with an object of a constrained type. (In this
          --  scenario the DIC expression might refer to components of the
          --  _object parameter that are not present in the declared object.)
-
-         --  The flattened view of the DIC parameter does not include array
-         --  bounds, so we add them (very much like with subprogram calls).
-
-         declare
-            Bounds_Of_Param_Components : Flow_Id_Sets.Set;
-            --  We need this extra container, because inserting elements into
-            --  DIC_Param_Components while iterating would tamper with cursors.
-
-         begin
-            for Comp of DIC_Param_Components loop
-               if Has_Bounds (Comp, FA.B_Scope) then
-                  Bounds_Of_Param_Components.Insert
-                    ((Comp with delta Facet => The_Bounds));
-               end if;
-            end loop;
-
-            DIC_Param_Components.Union (Bounds_Of_Param_Components);
-         end;
 
          Variables_Used := Get_Variables
            (Default_Init_Expr,

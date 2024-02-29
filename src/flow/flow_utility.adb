@@ -3368,18 +3368,10 @@ package body Flow_Utility is
 
             when Attribute_Constrained =>
                for F of Recurse (Prefix (N)) loop
-                  if F.Kind in Direct_Mapping | Record_Field
-                    and then F.Facet = Normal_Part
-                    and then Has_Bounds (F, Ctx.Scope)
+                  if Is_Bound (F)
+                    or else Is_Discriminant (F)
                   then
-                     --  This is not a bound variable, but it requires
-                     --  bounds tracking. We make it a bound variable.
-                     Variables.Include
-                       ((F with delta Facet => The_Bounds));
-
-                  elsif Is_Discriminant (F) then
                      Variables.Include (F);
-
                   end if;
                end loop;
                return Variables;
@@ -5078,8 +5070,7 @@ package body Flow_Utility is
 
    begin
       --  Ignore references to array bounds of objects (because they are never
-      --  mutable) but keep references to array bounds of components (because
-      --  they might be mutable).
+      --  mutable).
 
       for V of Get_All_Variables
         (Expr_N,
@@ -5089,11 +5080,7 @@ package body Flow_Utility is
          Assume_In_Expression    => True,
          Expand_Internal_Objects => False)
       loop
-         if V.Kind = Direct_Mapping
-           and then V.Facet = The_Bounds
-         then
-            null;
-         else
+         if not Is_Bound (V) then
             Entire_Variables.Include (Entire_Variable (V));
          end if;
       end loop;

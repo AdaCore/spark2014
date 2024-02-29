@@ -394,12 +394,9 @@ package body Flow.Control_Flow_Graph.Utility is
             for F of Used loop
                if not Discriminants_Or_Bounds_Only
                  or else Is_Discriminant (F)
+                 or else Is_Bound (F)
                then
                   A.Variables_Used.Include (F);
-               end if;
-               if not Is_Bound (F) and then Has_Bounds (F, Scope) then
-                  A.Variables_Used.Include
-                    ((F with delta Facet => The_Bounds));
                end if;
             end loop;
 
@@ -498,13 +495,9 @@ package body Flow.Control_Flow_Graph.Utility is
             for F of Tmp loop
                if not Discriminants_Or_Bounds_Only
                  or else Is_Discriminant (F)
+                 or else Is_Bound (F)
                then
                   A.Variables_Used.Include (F);
-               end if;
-
-               if not Is_Bound (F) and then Has_Bounds (F, Scope) then
-                  A.Variables_Used.Include
-                    ((F with delta Facet => The_Bounds));
                end if;
             end loop;
 
@@ -583,13 +576,6 @@ package body Flow.Control_Flow_Graph.Utility is
                     Use_Computed_Globals => not FA.Generating_Globals);
             begin
                A.Variables_Used := Used;
-               for F of Used loop
-                  if not Is_Bound (F) and then Has_Bounds (F, Scope) then
-                     A.Variables_Used.Include
-                       ((F with delta Facet => The_Bounds));
-                  end if;
-               end loop;
-
                A.Variables_Explicitly_Used := A.Variables_Used;
             end;
          else
