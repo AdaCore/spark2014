@@ -726,10 +726,9 @@ package body SPARK_Definition.Annotate is
                   Assign_Indexed_Subp => Assign_Indexed_Subp);
 
                Annot.Empty_Function := Entity (Empty_Subp);
+               pragma Assert (Ekind (Annot.Empty_Function) = E_Function);
 
-               if Ekind (Annot.Empty_Function) = E_Function
-                 and then Present (First_Formal (Annot.Empty_Function))
-               then
+               if Present (First_Formal (Annot.Empty_Function)) then
                   Annot.Spec_Capacity := Etype
                     (First_Formal (Annot.Empty_Function));
                   pragma Assert
@@ -4807,33 +4806,31 @@ package body SPARK_Definition.Annotate is
          Globals : Global_Flow_Ids;
 
       begin
-         if Ekind (Annot.Empty_Function) /= E_Constant then
-            Get_Globals
-              (Subprogram          => Annot.Empty_Function,
-               Scope               =>
-                 (Ent  => Annot.Empty_Function,
-                  Part => Visible_Part),
-               Classwide           => False,
-               Globals             => Globals,
-               Use_Deduced_Globals =>
-                  not Gnat2Why_Args.Global_Gen_Mode,
-               Ignore_Depends      => False);
+         Get_Globals
+           (Subprogram          => Annot.Empty_Function,
+            Scope               =>
+              (Ent  => Annot.Empty_Function,
+               Part => Visible_Part),
+            Classwide           => False,
+            Globals             => Globals,
+            Use_Deduced_Globals =>
+               not Gnat2Why_Args.Global_Gen_Mode,
+            Ignore_Depends      => False);
 
-            if Is_Function_With_Side_Effects (Annot.Empty_Function) then
-               Error_Msg_NE_If
-                 ("& function shall not have side effects",
-                  Typ, Annot.Empty_Function);
-            elsif not Globals.Proof_Ins.Is_Empty
-              or else not Globals.Inputs.Is_Empty
-            then
-               Error_Msg_NE_If
-                 ("& function shall not access global data",
-                  Typ, Annot.Empty_Function);
-            elsif Is_Volatile_Function (Annot.Empty_Function) then
-               Error_Msg_NE_If
-                 ("& function shall not be volatile",
-                  Typ, Annot.Empty_Function);
-            end if;
+         if Is_Function_With_Side_Effects (Annot.Empty_Function) then
+            Error_Msg_NE_If
+              ("& function shall not have side effects",
+               Typ, Annot.Empty_Function);
+         elsif not Globals.Proof_Ins.Is_Empty
+           or else not Globals.Inputs.Is_Empty
+         then
+            Error_Msg_NE_If
+              ("& function shall not access global data",
+               Typ, Annot.Empty_Function);
+         elsif Is_Volatile_Function (Annot.Empty_Function) then
+            Error_Msg_NE_If
+              ("& function shall not be volatile",
+               Typ, Annot.Empty_Function);
          end if;
 
          Get_Globals

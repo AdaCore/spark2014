@@ -349,6 +349,7 @@ test_partial_maps.adb:877:09: info: when establishing invariant on Length at tes
 test_partial_maps.adb:877:09: info: when reestablishing invariant on Get at test_partial_maps.adb:905
 test_partial_maps.adb:877:09: info: when reestablishing invariant on Has_Key at test_partial_maps.adb:902
 test_partial_maps.adb:877:09: info: when reestablishing invariant on Length at test_partial_maps.adb:893
+test_partial_maps.adb:879:16: info: implicit aspect Always_Terminates on "Empty" has been proved, subprogram will terminate
 test_partial_maps.adb:882:39: info: during checks for container aggregates at test_partial_maps.adb:877
 test_partial_maps.adb:882:39: info: precondition proved (CVC5: 2 VC)
 test_partial_maps.adb:893:16: info: implicit aspect Always_Terminates on "Length" has been proved, subprogram will terminate
@@ -373,7 +374,7 @@ test_partial_maps.adb:938:47: info: precondition proved (CVC5: 4 VC)
 test_partial_maps.adb:938:47: info: subprogram variant proved (CVC5: 1 VC)
 test_partial_maps.adb:938:62: info: range check proved (CVC5: 2 VC)
 test_partial_maps.adb:941:10: info: precondition proved (CVC5: 4 VC)
-test_partial_maps.adb:944:09: info: predicate check proved (CVC5: 2 VC)
+test_partial_maps.adb:944:10: info: predicate check proved (CVC5: 2 VC)
 test_sequences.adb:15:09: info: Container_Aggregates annotation proved (CVC5: 1 VC)
 test_sequences.adb:15:09: info: Container_Aggregates annotation proved (CVC5: 1 VC)
 test_sequences.adb:15:09: info: Container_Aggregates annotation proved (CVC5: 1 VC)
@@ -788,6 +789,7 @@ test_sets.adb:595:09: info: when establishing invariant on Contains at test_sets
 test_sets.adb:595:09: info: when establishing invariant on Length at test_sets.adb:608
 test_sets.adb:595:09: info: when reestablishing invariant on Contains at test_sets.adb:617
 test_sets.adb:595:09: info: when reestablishing invariant on Length at test_sets.adb:608
+test_sets.adb:597:16: info: implicit aspect Always_Terminates on "Empty" has been proved, subprogram will terminate
 test_sets.adb:600:36: info: during checks for container aggregates at test_sets.adb:595
 test_sets.adb:600:36: info: precondition proved (CVC5: 2 VC)
 test_sets.adb:608:16: info: implicit aspect Always_Terminates on "Length" has been proved, subprogram will terminate
