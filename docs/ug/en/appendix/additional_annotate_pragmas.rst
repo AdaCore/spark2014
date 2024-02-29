@@ -928,14 +928,76 @@ Such lemmas should be declared directly after a function declaration, here the
 ``Equivalent`` function. The axiom will only be available when the associated
 function is used in the proof context.
 
-Annotation for Hiding Information
----------------------------------
+Annotation for Managing the Proof Context
+-----------------------------------------
 
-By default, when verifying a part of a program, GNATprove makes all information
-about used entities available in the context. For example, it assumes values of
+By default, when verifying a part of a program, |GNATprove| chooses which
+information is available for proof based on a liberal notion of visibility:
+everything is visible except if it is declared in the body of another
+(possibly nested) unit. It assumes values of
 global constants, postconditions of called subprograms, bodies of expression
-functions...
-While in general this behavior is desirable, it might result in untractable
+functions... This behavior can be tuned either globally or, in some cases,
+specificaly for the analysis of a given unit, using the dual annotations
+``Hide_Info`` and ``Unhide_Info``.
+
+Overriding the Default Handling of Visibility
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+By default, refined postconditions and bodies of expression functions declared
+in the body of a package are not visible from outside of this package. This
+enforces abstraction and prevents the proof context from growing too much, in
+particular with generic instantiations. However, it can be the case that the
+information hidden in the body of a nested package is in fact necessary to
+prove its enclosing unit. In particular, it happens when all entities introduced
+for the specification of a library are grouped together in a ghost nested
+package:
+
+.. code-block:: ada
+
+   package My_Lib is
+
+      type T is private;
+
+      package Formal_Model with Ghost is
+
+         type Model_T is ...;
+
+	 function Model (X : T) return Model_T;
+
+      end Formal_Model;
+
+      ...
+
+   end My_Lib;
+
+It is possible to disclose the content of the body of a nested package using
+an ``Unhide_Info`` annotation. In this case, the body of expression functions
+and potential refined postconditions specified in this body are visible as if
+they were declared directly in the enclosing unit.
+
+
+.. code-block:: ada
+
+   package body My_Lib is
+
+      package body Formal_Model with
+         Annotate => (GNATprove, Unhide_Info, "Package_Body")
+      is
+
+	 function Model (X : T) return Model_T is (...);
+
+      end Formal_Model;
+
+      ...
+
+   end My_Lib;
+
+
+Pruning the Proof Context on a Case by Case Basis
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+While, in general, having information about all used entities is desirable, it
+might result in untractable
 proof contexts on large programs. It is possible to use an annotation to
 manually add or remove information from the proof context.
 For the time being, only bodies of expression functions can be handled in this
