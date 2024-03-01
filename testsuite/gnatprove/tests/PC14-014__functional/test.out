@@ -868,7 +868,7 @@ use_sets.ads:44:13: info: implicit aspect Always_Terminates on "Prop" has been p
 use_sets.ads:50:24: info: overflow check proved
 use_sets.ads:51:14: info: postcondition proved
 use_sets.ads:56:14: info: postcondition proved
-use_sets.ads:62:14: medium: postcondition might fail, cannot prove Model (S1)'Old = Model (S2)
+use_sets.ads:62:14: info: postcondition proved
 use_sets.ads:72:14: info: postcondition proved
 use_sets.ads:72:43: info: overflow check proved
 use_sets.ads:80:13: info: implicit aspect Always_Terminates on "Q" has been proved, subprogram will terminate
