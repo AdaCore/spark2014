@@ -11,6 +11,7 @@ predefined.ads:8:06: info: Container_Aggregates annotation proved
 predefined.ads:8:06: info: Container_Aggregates annotation proved
   when reestablishing invariant on Length at predefined.ads:15
   after a call to Add at predefined.ads:34
+predefined.ads:10:13: info: implicit aspect Always_Terminates on "Empty_List" has been proved, subprogram will terminate
 predefined.ads:12:13: info: implicit aspect Always_Terminates on "First" has been proved, subprogram will terminate
 predefined.ads:12:43: info: predicate check proved
 predefined.ads:15:13: info: implicit aspect Always_Terminates on "Length" has been proved, subprogram will terminate

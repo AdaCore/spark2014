@@ -59,6 +59,7 @@ test_capacity.adb:85:09: info: when establishing invariant on Contains at test_c
 test_capacity.adb:85:09: info: when establishing invariant on Length at test_capacity.adb:98
 test_capacity.adb:85:09: info: when reestablishing invariant on Contains at test_capacity.adb:105
 test_capacity.adb:85:09: info: when reestablishing invariant on Length at test_capacity.adb:98
+test_capacity.adb:87:16: info: implicit aspect Always_Terminates on "Empty" has been proved, subprogram will terminate
 test_capacity.adb:88:17: info: aspect Always_Terminates on "Append" has been proved, subprogram will terminate
 test_capacity.adb:89:09: info: data dependencies proved
 test_capacity.adb:90:27: info: during checks for container aggregates at test_capacity.adb:85
@@ -178,6 +179,7 @@ test_capacity.adb:253:09: info: when establishing invariant on Length at test_ca
 test_capacity.adb:253:09: info: when reestablishing invariant on Get at test_capacity.adb:278
 test_capacity.adb:253:09: info: when reestablishing invariant on Has_Key at test_capacity.adb:275
 test_capacity.adb:253:09: info: when reestablishing invariant on Length at test_capacity.adb:268
+test_capacity.adb:255:16: info: implicit aspect Always_Terminates on "Empty" has been proved, subprogram will terminate
 test_capacity.adb:256:17: info: aspect Always_Terminates on "Append" has been proved, subprogram will terminate
 test_capacity.adb:257:09: info: data dependencies proved
 test_capacity.adb:258:34: info: during checks for container aggregates at test_capacity.adb:253
@@ -190,7 +192,6 @@ test_capacity.adb:265:46: info: overflow check proved (CVC5: 2 VC)
 test_capacity.adb:268:16: info: implicit aspect Always_Terminates on "Length" has been proved, subprogram will terminate
 test_capacity.adb:269:09: info: data dependencies proved
 test_capacity.adb:272:16: info: implicit aspect Always_Terminates on "Capacity" has been proved, subprogram will terminate
-test_capacity.adb:272:16: info: implicit function contract might not be available on calls from enclosing unit
 test_capacity.adb:275:16: info: implicit aspect Always_Terminates on "Has_Key" has been proved, subprogram will terminate
 test_capacity.adb:278:16: info: implicit aspect Always_Terminates on "Get" has been proved, subprogram will terminate
 test_capacity.adb:282:16: info: implicit aspect Always_Terminates on "Eq_Keys" has been proved, subprogram will terminate
@@ -296,6 +297,7 @@ test_capacity.adb:421:09: info: after a call to Empty at test_capacity.adb:423
 test_capacity.adb:421:09: info: when establishing invariant on Last at test_capacity.adb:439
 test_capacity.adb:421:09: info: when reestablishing invariant on Get at test_capacity.adb:442
 test_capacity.adb:421:09: info: when reestablishing invariant on Last at test_capacity.adb:439
+test_capacity.adb:423:16: info: implicit aspect Always_Terminates on "Empty" has been proved, subprogram will terminate
 test_capacity.adb:424:17: info: aspect Always_Terminates on "Append" has been proved, subprogram will terminate
 test_capacity.adb:425:09: info: data dependencies proved
 test_capacity.adb:426:47: info: during checks for container aggregates at test_capacity.adb:421
@@ -319,8 +321,8 @@ test_capacity.adb:458:53: info: index check proved (CVC5: 2 VC)
 test_capacity.adb:460:72: info: range check proved (CVC5: 2 VC)
 test_capacity.adb:463:11: info: initialization check proved (CVC5: 1 VC)
 test_capacity.adb:463:21: info: index check proved (CVC5: 2 VC)
-test_capacity.adb:465:30: info: predicate check proved (CVC5: 3 VC)
-test_capacity.adb:465:42: info: length check proved (CVC5: 3 VC; Trivial: 1 VC)
+test_capacity.adb:465:35: info: predicate check proved (CVC5: 3 VC)
+test_capacity.adb:465:47: info: length check proved (CVC5: 3 VC; Trivial: 1 VC)
 test_capacity.adb:473:11: info: predicate check proved (CVC5: 3 VC)
 test_capacity.adb:473:27: info: index check proved (CVC5: 2 VC)
 test_capacity.adb:473:27: info: overflow check proved (CVC5: 2 VC)

@@ -594,7 +594,7 @@ procedure Test_Sets with SPARK_Mode is
                       Add_Unnamed => Append),
         Annotate => (GNATprove, Container_Aggregates, "Predefined_Sets"); --@CONTAINER_AGGR_ANNOTATION:PASS
 
-      Empty : constant T;
+      function Empty return T;
       procedure Append (X : in out T; E : Element_Type) with
         Global => null,
         Pre => not Contains (X, E) and then Length (X) < Capacity,
@@ -635,7 +635,7 @@ procedure Test_Sets with SPARK_Mode is
         (for some I in 1 .. X.Top => X.Content (I) = E);
       function Length (X : T) return Natural is (X.Top);
 
-      Empty : constant T :=
+      function Empty return T is
         ((Content => (others => <>), Top => 0));
    end P13;
 begin
