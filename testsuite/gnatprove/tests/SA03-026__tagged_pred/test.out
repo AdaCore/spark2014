@@ -1,0 +1,4 @@
+preds.ads:11:09: info: for inherited predicate at preds.ads:17
+preds.ads:11:09: info: predicate check proved on default value (CVC5: 1 VC)
+preds.ads:11:09: medium: for inherited predicate at preds.ads:9
+preds.ads:11:09: medium: predicate check might fail on default value
