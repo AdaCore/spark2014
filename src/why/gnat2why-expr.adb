@@ -1693,13 +1693,13 @@ package body Gnat2Why.Expr is
                                      else False_Term))));
             end if;
 
-            --  L has its top-level initialization flag True iff its type
-            --  has some initialized component.
+            --  For entirely private types, L has its top-level initialization
+            --  flag True iff its type is entirely initialized.
 
             if Binder.Init.Present
               and then
-                (Default_Initialization (Constrained_Ty) /=
-                       No_Default_Initialization
+                (Default_Initialization (Constrained_Ty) =
+                       Full_Default_Initialization
                  or else Has_Mutable_Discriminants (Constrained_Ty)
                  or else Has_Access_Type (Constrained_Ty))
             then
@@ -4313,9 +4313,7 @@ package body Gnat2Why.Expr is
          --  at use.
 
          if (At_Declaration or else not Needs_Default_Checks_At_Decl (Ty_Ext))
-           and then Has_Predicates (Ty_Ext)
-           and then Default_Initialization (Ty_Ext) /=
-           No_Default_Initialization
+           and then Needs_Default_Predicate_Checks (Ty_Ext)
          then
             declare
                W_Typ   : constant W_Type_Id := EW_Abstract
@@ -6096,7 +6094,7 @@ package body Gnat2Why.Expr is
             Typ_Pred              : constant W_Pred_Id :=
               Compute_Dynamic_Predicate (Expr, Ty_Ext, Params, Top_Predicate);
             Pred_Check_At_Default : constant Boolean :=
-              Default_Initialization (Ty_Ext) /= No_Default_Initialization;
+              Needs_Default_Predicate_Checks (Ty_Ext);
             Init_Flag             : constant W_Pred_Id :=
               Pred_Of_Boolean_Term
                 (if Relaxed_Init

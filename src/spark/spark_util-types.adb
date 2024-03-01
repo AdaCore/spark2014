@@ -25,6 +25,7 @@
 
 with Aspects;                     use Aspects;
 with Elists;                      use Elists;
+with Flow_Utility.Initialization; use Flow_Utility.Initialization;
 with Gnat2Why.Data_Decomposition; use Gnat2Why.Data_Decomposition;
 with Rtsfind;                     use Rtsfind;
 with Sem_Eval;                    use Sem_Eval;
@@ -84,6 +85,15 @@ package body SPARK_Util.Types is
       Esize       : out Uint;
       Explanation : out Unbounded_String);
    --  same as Check_Known_RM_Size, but for Esize
+
+   function Has_Default_Initialized_Component
+     (Typ : Entity_Id)
+      return Boolean
+   with Pre => Is_Type (Typ);
+   --  Returns True if Typ has at least a component which has default values
+   --  (not including the default initialization of a pointer to null).
+   --  This is used to determine whether a predicate check is needed at
+   --  default. Look through SPARK boundaries.
 
    generic
       with function Test (Typ : Type_Kind_Id) return Test_Result;
@@ -994,6 +1004,79 @@ package body SPARK_Util.Types is
       return Eq;
    end Get_User_Defined_Eq;
 
+   ---------------------------------------
+   -- Has_Default_Initialized_Component --
+   ---------------------------------------
+
+   function Has_Default_Initialized_Component
+     (Typ : Entity_Id)
+      return Boolean
+   is
+      F_Typ : constant Entity_Id := Unchecked_Full_Type (Typ);
+   begin
+      if Is_Access_Type (F_Typ) then
+         return False;
+
+      elsif Is_Array_Type (F_Typ) then
+         return Has_Default_Aspect (F_Typ)
+           or else Has_Default_Initialized_Component (Component_Type (F_Typ));
+
+      elsif Is_Record_Type (F_Typ)
+        or else Is_Concurrent_Type (F_Typ)
+      then
+         declare
+            Parent_Ty : constant Opt_Type_Kind_Id :=
+              Unchecked_Full_Type (Parent_Type (F_Typ));
+
+         begin
+            --  For tagged types, consider inherited components
+
+            if Is_Tagged_Type (F_Typ)
+              and then Present (Parent_Ty)
+              and then Parent_Ty /= F_Typ
+              and then Has_Default_Initialized_Component (Parent_Ty)
+            then
+               return True;
+            end if;
+
+            --  Go over F_Typ's own components
+
+            if Ekind (F_Typ) in Record_Kind | E_Protected_Type then
+               declare
+                  Comp : Opt_E_Component_Id := First_Component (F_Typ);
+               begin
+                  while Present (Comp) loop
+                     if not Is_Tagged_Type (F_Typ)
+                       or else Unchecked_Full_Type
+                         (Scope (Original_Record_Component (Comp))) = F_Typ
+                     then
+                        if Present
+                          (Expression (Enclosing_Declaration (Comp)))
+                        or else Has_Default_Initialized_Component
+                            (Etype (Comp))
+                        then
+                           return True;
+                        end if;
+
+                     end if;
+                     Next_Component (Comp);
+                  end loop;
+               end;
+            end if;
+
+            return False;
+         end;
+
+      elsif Is_Incomplete_Type (F_Typ) then
+         raise Program_Error;
+
+      else
+         pragma Assert (Is_Scalar_Type (F_Typ));
+
+         return Has_Default_Aspect (F_Typ);
+      end if;
+   end Has_Default_Initialized_Component;
+
    -----------------------------
    -- Has_Invariants_In_SPARK --
    -----------------------------
@@ -1559,6 +1642,20 @@ package body SPARK_Util.Types is
          begin
            Entity_In_SPARK (Annot.Add_Procedure)
          and then Entity_In_SPARK (Annot.Empty_Function)));
+
+   ------------------------------------
+   -- Needs_Default_Predicate_Checks --
+   ------------------------------------
+
+   function Needs_Default_Predicate_Checks (E : Type_Kind_Id) return Boolean is
+     (Has_Predicates (E)
+      and then (Has_Default_Initialized_Component (E)
+        or else Default_Initialization (E) in
+          Full_Default_Initialization | No_Possible_Initialization));
+   --  Check the predicate if it is mandated by Ada (E has default initialized
+   --  components) or flow analysis considers the object to be fully
+   --  initialized (in this case, the object can be read as is so we need to
+   --  check the predicate).
 
    --------------------
    -- Nth_Index_Type --

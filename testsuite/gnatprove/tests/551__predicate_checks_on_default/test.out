@@ -1,0 +1,4 @@
+test.adb:30:04: medium: in default value at test.adb:30
+test.adb:30:04: medium: predicate check might fail on default value
+test.adb:31:04: medium: in default value at test.adb:31
+test.adb:31:04: medium: predicate check might fail on default value
