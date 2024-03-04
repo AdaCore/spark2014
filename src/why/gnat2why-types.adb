@@ -506,7 +506,11 @@ package body Gnat2Why.Types is
          Variables_In_Default_Init (E, Variables);
 
          declare
-            Items    : Item_Array := Get_Binders_From_Variables (Variables);
+            Items    : constant Item_Array :=
+              Get_Localized_Binders_From_Variables
+                (Variables, Only_Variables => False);
+            --  Use local names for variables
+
             Main_Arg : constant W_Identifier_Id :=
               New_Temp_Identifier (Typ       => Type_Of_Node (E),
                                    Base_Name => "expr");
@@ -520,11 +524,7 @@ package body Gnat2Why.Types is
             Def      : W_Pred_Id;
 
          begin
-            --  Use local names for variables
-
-            Localize_Binders (Items, Only_Variables => False);
-
-            --  Push the names to Symbol_Table
+            --  Push variable names to Symbol_Table
 
             Ada_Ent_To_Why.Push_Scope (Symbol_Table);
             Push_Binders_To_Symbol_Table (Items);
@@ -599,7 +599,11 @@ package body Gnat2Why.Types is
             Variables_In_Dynamic_Invariant (E, Variables);
 
             declare
-               Items    : Item_Array := Get_Binders_From_Variables (Variables);
+               Items    : constant Item_Array :=
+                 Get_Localized_Binders_From_Variables
+                   (Variables, Only_Variables => False);
+               --  Use local names for variables
+
                Init_Arg : constant W_Identifier_Id :=
                  New_Temp_Identifier (Typ       => EW_Bool_Type,
                                       Base_Name => "is_init");
@@ -630,11 +634,7 @@ package body Gnat2Why.Types is
                use Ada_To_Why_Ident;
 
             begin
-               --  Use local names for variables
-
-               Localize_Binders (Items, Only_Variables => False);
-
-               --  Push the names to Symbol_Table
+               --  Push variable names to Symbol_Table
 
                Ada_Ent_To_Why.Push_Scope (Symbol_Table);
                Push_Binders_To_Symbol_Table (Items);
@@ -815,18 +815,18 @@ package body Gnat2Why.Types is
          Variables_In_Type_Invariant (E, Variables);
 
          declare
-            Items    : Item_Array := Get_Binders_From_Variables (Variables);
+            Items    : constant Item_Array :=
+              Get_Localized_Binders_From_Variables
+                (Variables, Only_Variables => False);
+            --  Use local names for variables
+
             Main_Arg : constant W_Identifier_Id :=
               New_Temp_Identifier (Typ => Type_Of_Node (E));
             --  Expression on which we want to assume the property
             Def      : W_Pred_Id;
 
          begin
-            --  Use local names for variables
-
-            Localize_Binders (Items, Only_Variables => False);
-
-            --  Push the names to Symbol_Table
+            --  Push variable names to Symbol_Table
 
             Ada_Ent_To_Why.Push_Scope (Symbol_Table);
             Push_Binders_To_Symbol_Table (Items);
