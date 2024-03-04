@@ -351,6 +351,27 @@ package body Why.Gen.Binders is
       return Binders (1 .. I - 1);
    end Get_Binders_From_Variables;
 
+   ------------------------------------------
+   -- Get_Localized_Binders_From_Variables --
+   ------------------------------------------
+
+   function Get_Localized_Binders_From_Variables
+     (Variables      : Flow_Id_Sets.Set;
+      Ignore_Self    : Boolean := False;
+      Suffix         : String := "";
+      Only_Variables : Boolean := True)
+      return Item_Array
+   is
+   begin
+      return Items : Item_Array :=
+        Get_Binders_From_Variables (Variables, Ignore_Self => Ignore_Self)
+      do
+         Localize_Binders (Binders        => Items,
+                           Suffix         => Suffix,
+                           Only_Variables => Only_Variables);
+      end return;
+   end Get_Localized_Binders_From_Variables;
+
    ----------------------------
    -- Get_Why_Type_From_Item --
    ----------------------------

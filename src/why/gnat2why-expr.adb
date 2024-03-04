@@ -13208,11 +13208,8 @@ package body Gnat2Why.Expr is
                Cnt          : Positive;
                Args         : W_Expr_Array (1 .. Natural (Values.Length));
                Bnd_Args     : W_Expr_Array (1 .. Bound_Count);
-               Var_Args     : constant W_Expr_Array := Get_Args_From_Binders
-                 (To_Binder_Array
-                    (Get_Binders_From_Variables (Variables),
-                     Keep_Const => Keep),
-                  Ref_Allowed => Params.Ref_Allowed);
+               Var_Args     : constant W_Expr_Array := Get_Args_From_Variables
+                 (Variables, Ref_Allowed => Params.Ref_Allowed);
             begin
                --  Compute the arguments for the function call. The values are
                --  given directly as parameters.
@@ -13440,11 +13437,13 @@ package body Gnat2Why.Expr is
          --  Additional arguments for variables occurring in dynamic invariant/
          --  default init.
 
-         Var_Items      : Item_Array :=
-           Get_Binders_From_Variables (Variables);
-         Var_Params     : Binder_Array
-           (1 .. Item_Array_Length (Var_Items, Keep_Const => Keep));
-         Var_Args       : W_Expr_Array (Var_Params'Range);
+         Var_Items      : constant Item_Array :=
+           Get_Localized_Binders_From_Variables
+             (Variables, Only_Variables => False);
+         Var_Params     : constant Binder_Array :=
+           To_Binder_Array (Var_Items);
+         Var_Args       : constant W_Expr_Array :=
+           Get_Args_From_Binders (Var_Params, Ref_Allowed => False);
 
          --  Counter
 
@@ -13512,19 +13511,12 @@ package body Gnat2Why.Expr is
            (Call_Params, Ref_Allowed => False);
          pragma Assert (Cnt = Call_Params'Last + 1);
 
-         --  Localize binders for variables and push them to the symbol
-         --  table. This is important so that the translation of the
-         --  aggregate can be reused even if the mappings in the symbol
-         --  table are updated (typically, for formal parameters in
-         --  postconditions).
+         --  Push localized binders for variables to the symbol table. This is
+         --  important so that the translation of the aggregate can be reused
+         --  even if the mappings in the symbol table are updated (typically,
+         --  for formal parameters in postconditions).
 
          Ada_Ent_To_Why.Push_Scope (Symbol_Table);
-
-         Localize_Binders (Binders        => Var_Items,
-                           Only_Variables => False);
-         Var_Params := To_Binder_Array (Var_Items);
-         Var_Args := Get_Args_From_Binders
-           (Var_Params, Ref_Allowed => False);
          Push_Binders_To_Symbol_Table (Var_Items);
 
          --  Compute the call, guard and proposition for the axiom
