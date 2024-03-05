@@ -35,7 +35,7 @@ with Flow_Generated_Globals.Phase_2; use Flow_Generated_Globals.Phase_2;
 with Flow_Refinement;                use Flow_Refinement;
 with Flow_Utility;                   use Flow_Utility;
 with GNAT.Source_Info;
-with Gnat2Why.Data_Decomposition; use Gnat2Why.Data_Decomposition;
+with Gnat2Why.Data_Decomposition;    use Gnat2Why.Data_Decomposition;
 with Gnat2Why.Error_Messages;        use Gnat2Why.Error_Messages;
 with Gnat2Why.Expr;                  use Gnat2Why.Expr;
 with Gnat2Why.Tables;                use Gnat2Why.Tables;
@@ -2526,195 +2526,6 @@ package body Gnat2Why.Subprograms is
       --  of the UC are integer types, which is used for conversion from an
       --  Unsigned type to a Signed one. Otherwise it is No_Uint.
 
-      function Is_UC_With_Precise_Definition (E : Entity_Id) return Boolean
-      with
-        Pre => Is_Unchecked_Conversion_Instance (E);
-      --  Return whether E is an UC for which a precise definition is given
-
-      -----------------------------------
-      -- Is_UC_With_Precise_Definition --
-      -----------------------------------
-
-      function Is_UC_With_Precise_Definition (E : Entity_Id) return Boolean is
-
-         function Suitable_For_Precise_UC
-           (Arg_Typ : Type_Kind_Id)
-            return True_Or_Explain;
-         --  Check if Typ is only made of integers. When returning False,
-         --  return also the Explanation.
-
-         -----------------------------
-         -- Suitable_For_Precise_UC --
-         -----------------------------
-
-         function Suitable_For_Precise_UC
-           (Arg_Typ : Type_Kind_Id)
-            return True_Or_Explain
-         is
-            Typ : constant Type_Kind_Id := Retysp (Arg_Typ);
-         begin
-            case Ekind (Typ) is
-               when Integer_Kind =>
-                  if Has_Biased_Representation (Typ) then
-                     return False_With_Explain
-                       ("type with biased representation");
-
-                  elsif Has_Modular_Integer_Type (Typ)
-                    and then Has_No_Bitwise_Operations_Annotation (Typ)
-                  then
-                     return False_With_Explain
-                       ("type with No_Bitwise_Operations annotation");
-                  end if;
-
-               when Enumeration_Kind =>
-                  if Has_Enumeration_Rep_Clause (Typ)
-                    and then Enumeration_Rep (First_Literal (Typ)) /= Uint_0
-                  then
-                     return False_With_Explain
-                       ("enumeration with non-default representation");
-                  end if;
-
-               when Record_Kind =>
-                  if Is_Tagged_Type (Typ) then
-                     return False_With_Explain ("type is tagged");
-
-                  elsif Has_Discriminants (Typ) then
-                     return False_With_Explain ("type has discriminants");
-
-                  elsif Reverse_Storage_Order (Base_Retysp (Typ)) then
-                     return False_With_Explain
-                       ("type has reverse storage order");
-                  end if;
-
-                  declare
-                     Comps : constant Component_Sets.Set :=
-                       Get_Component_Set (Typ);
-                  begin
-                     for Comp of Comps loop
-                        if No (Component_Bit_Offset (Comp)) then
-                           return False_With_Explain
-                             ("component offset not known");
-                        end if;
-
-                        declare
-                           Check : constant True_Or_Explain :=
-                             Suitable_For_Precise_UC (Etype (Comp));
-                        begin
-                           if not Check.Ok then
-                              return Check;
-                           end if;
-                        end;
-                     end loop;
-                  end;
-
-               when Array_Kind =>
-                  declare
-                     Check : constant True_Or_Explain :=
-                       Suitable_For_Precise_UC (Component_Type (Typ));
-                  begin
-                     if not Check.Ok then
-                        return Check;
-                     end if;
-                  end;
-
-                  if Number_Dimensions (Typ) > Uint_1 then
-                     return False_With_Explain
-                       ("array has multiple dimensions");
-
-                  elsif Reverse_Storage_Order (Base_Retysp (Typ)) then
-                     return False_With_Explain
-                       ("type has reverse storage order");
-                  end if;
-
-               when others =>
-                  return False_With_Explain ("elementary non-integer type");
-            end case;
-
-            return True_Or_Explain'(Ok => True);
-         end Suitable_For_Precise_UC;
-
-         --  Local variables
-
-         Source, Target                         : Node_Id;
-         Source_Type, Target_Type               : Entity_Id;
-         Valid_Source, Valid_Target, Valid_Size : Boolean;
-         Explanation                            : Unbounded_String;
-         Check                                  : True_Or_Explain;
-
-      begin
-         Get_Unchecked_Conversion_Args (E, Source, Target);
-         Source_Type := Retysp (Entity (Source));
-         Target_Type := Retysp (Entity (Target));
-
-         --  Check that types are suitable for UC.
-
-         Suitable_For_UC (Source_Type, False, Valid_Source, Explanation);
-         if not Valid_Source then
-            --  Override explanation to avoid special characters
-            Explanation := To_Unbounded_String
-              ("type is unsuitable as source for unchecked conversion");
-            goto UC_Imprecise;
-         end if;
-
-         Suitable_For_UC_Target
-           (Target_Type, False, Valid_Target, Explanation);
-         if not Valid_Target then
-            --  Override explanation to avoid special characters
-            Explanation := To_Unbounded_String
-              ("type is unsuitable as target for unchecked conversion");
-            goto UC_Imprecise;
-         end if;
-
-         Have_Same_Known_RM_Size
-           (Source_Type, Target_Type, Valid_Size, Explanation);
-         if not Valid_Size then
-            --  Override explanation to avoid special characters
-            Explanation := To_Unbounded_String
-              ("types in unchecked conversion do not have the same size");
-            goto UC_Imprecise;
-         end if;
-
-         --  Only support types with size up to 128 bits, to use one of the
-         --  available bitvector types with conversions from other bitvector
-         --  sizes.
-
-         if Get_Attribute_Value (Source_Type, Attribute_Size) > 128 then
-            Explanation :=
-              To_Unbounded_String ("type size larger than 128 bits");
-            goto UC_Imprecise;
-         end if;
-
-         --  Only generate a definition for UC between integer types, and
-         --  composites of integer types.
-
-         Check := Suitable_For_Precise_UC (Source_Type);
-         if not Check.Ok then
-            Explanation := Check.Explanation;
-            goto UC_Imprecise;
-         end if;
-
-         Check := Suitable_For_Precise_UC (Target_Type);
-         if not Check.Ok then
-            Explanation := Check.Explanation;
-            goto UC_Imprecise;
-         end if;
-
-         return True;
-
-      <<UC_Imprecise>>
-
-         --  If --info is set, output information on reason for imprecise
-         --  handling of UC.
-
-         if Debug.Debug_Flag_Underscore_F then
-            Error_Msg_N
-              ("info: ?imprecise handling of Unchecked_Conversion ("
-               & To_String (Explanation) & ")", E);
-         end if;
-
-         return False;
-      end Is_UC_With_Precise_Definition;
-
       ------------------------
       -- Precise_Integer_UC --
       ------------------------
@@ -2870,20 +2681,33 @@ package body Gnat2Why.Subprograms is
    --  Start of processing for Declare_Logic_Functions
 
    begin
-      if Is_Unchecked_Conversion_Instance (E)
-        and then Is_UC_With_Precise_Definition (E)
-      then
+      if Is_Unchecked_Conversion_Instance (E) then
          declare
-            Source, Target : Node_Id;
+            Precise_UC               : constant True_Or_Explain :=
+              Is_UC_With_Precise_Definition (E);
+            Source, Target           : Node_Id;
             Source_Type, Target_Type : Entity_Id;
-            Arg         : constant W_Identifier_Id :=
+            Arg                      : constant W_Identifier_Id :=
               Logic_Why_Binders (1).B_Name;
          begin
             Get_Unchecked_Conversion_Args (E, Source, Target);
             Source_Type := Retysp (Entity (Source));
             Target_Type := Retysp (Entity (Target));
 
-            if Is_Scalar_Type (Source_Type)
+            if not Precise_UC.Ok then
+
+               --  If --info is set, output information on reason for imprecise
+               --  handling of UC.
+
+               if Debug.Debug_Flag_Underscore_F then
+                  Error_Msg_N
+                    ("info: ?imprecise handling of Unchecked_Conversion ("
+                     & To_String (Precise_UC.Explanation) & ")", E);
+               end if;
+
+               Def := Why_Empty;
+
+            elsif Is_Scalar_Type (Source_Type)
               and then Is_Scalar_Type (Target_Type)
             then
                Def :=

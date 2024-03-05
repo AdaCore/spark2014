@@ -23,15 +23,16 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with Atree;            use Atree;
-with Common_Iterators; use Common_Iterators;
-with Einfo.Utils;      use Einfo.Utils;
-with Namet;            use Namet;
-with Nlists;           use Nlists;
-with Sem_Aux;          use Sem_Aux;
-with Sem_Util;         use Sem_Util;
-with Sinfo.Nodes;      use Sinfo.Nodes;
-with SPARK_Definition; use SPARK_Definition;
+with Atree;                     use Atree;
+with Common_Iterators;          use Common_Iterators;
+with Einfo.Utils;               use Einfo.Utils;
+with Namet;                     use Namet;
+with Nlists;                    use Nlists;
+with Sem_Aux;                   use Sem_Aux;
+with Sem_Util;                  use Sem_Util;
+with Sinfo.Nodes;               use Sinfo.Nodes;
+with SPARK_Definition;          use SPARK_Definition;
+with SPARK_Definition.Annotate; use SPARK_Definition.Annotate;
 
 package body Gnat2Why.Tables is
 
@@ -459,9 +460,8 @@ package body Gnat2Why.Tables is
       begin
          while Present (Comp) loop
             if Component_Is_Visible_In_SPARK (Comp)
-              and then No
-                (Search_Component_In_Info
-                   (Info.Components, Comp))
+              and then not Is_Unused_Record (Original_Declaration (Comp))
+              and then No (Search_Component_In_Info (Info.Components, Comp))
             then
                Is_Duplicate := Has_Duplicates (Info.Components, Comp);
                Info.Components.Insert (Comp);
@@ -479,7 +479,7 @@ package body Gnat2Why.Tables is
       --  If the type has private fields that are not visible in SPARK, add the
       --  type to the list of components to model these fields.
 
-      if Has_Private_Fields (E) then
+      if Has_Private_Fields (E)  then
          Info.Components.Insert (E);
          Info.Visibility.Insert (E, Hidden);
       end if;
@@ -803,6 +803,14 @@ package body Gnat2Why.Tables is
             Init_Component_Info_For_Protected_Types (E);
          else
             Init_Component_Info (E);
+
+            --  For unused record types, infer ownership annotation. It is
+            --  enough to do it on roots as record extension cannot contain
+            --  components with ownership.
+
+            if E = Root_Retysp (E) and then Is_Unused_Record (E) then
+               Infer_Ownership_Annotation (E);
+            end if;
          end if;
       end if;
    end Store_Information_For_Entity;

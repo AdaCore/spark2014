@@ -398,6 +398,15 @@ package SPARK_Util.Subprograms is
    --  lemma procedures), or computed by flow analysis if Compute is True. In
    --  the last two cases, the condition is necessarily static.
 
+   procedure Get_Unchecked_Conversion_Args (E              : Entity_Id;
+                                            Source, Target : out Node_Id)
+     with Pre => Sem_Util.Is_Unchecked_Conversion_Instance (E);
+   --  @param E Entity for an instance of Unchecked_Conversion
+   --  @param Source will be filled with the node for the first argument of the
+   --           instance of Unchecked_Conversion.
+   --  @param Target same for the second argument of the instance of
+   --           Unchecked_Conversion.
+
    function Has_Implicit_Always_Terminates
      (E : Entity_Id) return Boolean;
    --  Return True if E has an implicit aspect Always_Terminates. The three
@@ -572,6 +581,12 @@ package SPARK_Util.Subprograms is
    function Is_Traversal_Function (E : Entity_Id) return Boolean;
    --  @param E any entity
    --  @return True iff E is a traversal function
+
+   function Is_UC_With_Precise_Definition
+     (E : Entity_Id)
+      return True_Or_Explain
+   with Pre => Is_Unchecked_Conversion_Instance (E);
+   --  Return whether E is an UC for which a precise definition is given
 
    function Is_Unary_Text_IO_Put_Line (E : Entity_Id) return Boolean;
    --  Return True iff E is the unary version of Ada.Text_IO.Put_Line

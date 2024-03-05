@@ -892,6 +892,7 @@ package body Gnat2Why.Driver is
          --  Start the translation to Why
 
          if Gnat2Why_Args.Mode not in GPM_Check_All | GPM_Flow then
+
             Why.Gen.Names.Initialize;
             Why.Atree.Modules.Initialize;
             Init_Why_Sections;

@@ -49,9 +49,11 @@ with Nlists;                          use Nlists;
 with Nmake;
 with Opt;                             use Opt;
 with Rtsfind;                         use Rtsfind;
+with Sem_Aggr;
 with Sem_Aux;                         use Sem_Aux;
 with Sem_Ch12;
 with Sem_Disp;
+with Sem_Eval;                        use Sem_Eval;
 with Sem_Prag;                        use Sem_Prag;
 with Sinfo.Utils;                     use Sinfo.Utils;
 with Sinput;                          use Sinput;
@@ -69,7 +71,6 @@ with Tbuild;
 with Uintp;                           use Uintp;
 with Urealp;                          use Urealp;
 with VC_Kinds;                        use VC_Kinds;
-with Sem_Aggr;
 
 package body SPARK_Definition is
 
@@ -239,6 +240,9 @@ package body SPARK_Definition is
    --  initialization to a flag which is true if the type has relaxed
    --  initialization itself.
 
+   Unused_Records : Node_Sets.Set;
+   --  Record types which can be abstracted away (their fields are unused)
+
    function Entity_In_SPARK (E : Entity_Id) return Boolean
      renames Entities_In_SPARK.Contains;
 
@@ -342,6 +346,24 @@ package body SPARK_Definition is
    procedure Check_No_Deep_Duplicates_In_Assoc (N : N_Aggregate_Kind_Id);
    --  Search for associations mapping a single deep value to several
    --  components in the Component_Associations of N.
+
+   procedure Touch_Record_Fields_For_Eq
+     (Ty           : Type_Kind_Id;
+      Force_Predef : Boolean := False);
+   --  Remove from Unused_Records all record subcomponents of Ty on which the
+   --  predefined equality is used from equality on Ty, unless the abstract
+   --  equality on the subcomponent can be precisely handled. If Force_Predef
+   --  is True, use the predefined equality even if Ty is a type on which Ada
+   --  equality uses the primitive equality.
+
+   procedure Touch_Record_Fields_For_Default_Init (Ty : Type_Kind_Id);
+   --  Remove from Unused_Records all record subcomponents of Ty which are
+   --  default initialized when default initializing Ty if they need checks at
+   --  default initialization.
+
+   procedure Touch_All_Record_Fields (Ty : Type_Kind_Id);
+   --  Remove from Unused_Records all record subcomponents of Ty. This is used
+   --  when a precise unchecked conversion is encountered.
 
    ------------------------------------
    -- Check_Volatility_Compatibility --
@@ -1506,6 +1528,20 @@ package body SPARK_Definition is
       and Delayed_Type_Aspects.Is_Empty
       and Access_To_Incomplete_Types.Is_Empty);
 
+   ----------------------
+   -- Is_Unused_Record --
+   ----------------------
+
+   function Is_Unused_Record (E : Type_Kind_Id) return Boolean is
+      Rep : Type_Kind_Id := Base_Retysp (E);
+   begin
+      if not Is_Tagged_Type (Rep) then
+         Rep := Root_Retysp (Rep);
+      end if;
+
+      return Unused_Records.Contains (Rep);
+   end Is_Unused_Record;
+
    ---------------------------------
    -- Is_Valid_Allocating_Context --
    ---------------------------------
@@ -2075,6 +2111,12 @@ package body SPARK_Definition is
                      then
                         Mark_Violation ("uninitialized allocator without"
                                         & " default initialization", N);
+
+                     --  Record components might be used during default
+                     --  initialization. Update the Unused_Records set.
+
+                     else
+                        Touch_Record_Fields_For_Default_Init (Typ);
                      end if;
                   end;
                end if;
@@ -2410,7 +2452,7 @@ package body SPARK_Definition is
             end if;
 
             --  Iterate through the alternatives to see if some involve the
-            --  use of the predefined equality.
+            --  use of the Ada equality.
 
             declare
                Eq_On_Access : constant Boolean :=
@@ -2438,6 +2480,8 @@ package body SPARK_Definition is
                            Check_User_Defined_Eq
                              (Etype (Left_Opnd (N)), N,
                               "membership test on type");
+                           Touch_Record_Fields_For_Eq
+                             (Etype (Left_Opnd (N)));
                            User_Eq_Checked := True;
                            exit when not Eq_On_Access;
                         end if;
@@ -2457,6 +2501,7 @@ package body SPARK_Definition is
                     (Xcov, Exempt_On, "X in Y is expanded into X = Y");
                   Check_User_Defined_Eq
                     (Etype (Left_Opnd (N)), N, "membership test on type");
+                  Touch_Record_Fields_For_Eq (Etype (Left_Opnd (N)));
 
                   if Eq_On_Access
                     and then not Is_Statically_Reclaimed_Expr (Right_Opnd (N))
@@ -3023,6 +3068,36 @@ package body SPARK_Definition is
                            Mark (Subtype_Indication (T_Def));
                         end if;
                      end;
+                  end if;
+
+                  --  Default initialization of private types is checked at
+                  --  declaration.
+
+                  if Is_In_Analyzed_Files (E)
+                    and then not Has_Unknown_Discriminants (E)
+                  then
+                     if Nkind (N) = N_Private_Type_Declaration then
+                        Touch_Record_Fields_For_Default_Init (E);
+
+                     --  Consider fields of record extensions separately to
+                     --  avoid pulling inherited fields.
+
+                     elsif Nkind (N) = N_Private_Extension_Declaration then
+                        declare
+                           Comp : Entity_Id := First_Component (E);
+                        begin
+                           while Present (Comp) loop
+                              if Component_Is_Visible_In_SPARK (Comp)
+                                and then No
+                                  (Search_Component_By_Name (Etype (E), Comp))
+                              then
+                                 Touch_Record_Fields_For_Default_Init
+                                   (Etype (Comp));
+                              end if;
+                              Next_Component (Comp);
+                           end loop;
+                        end;
+                     end if;
                   end if;
                end if;
             end;
@@ -4725,6 +4800,14 @@ package body SPARK_Definition is
          end;
       end if;
 
+      --  Equality implicitly reads record fields, update the Unused_Records
+      --  set.
+
+      if Nkind (N) in N_Op_Eq | N_Op_Ne then
+         Touch_Record_Fields_For_Eq
+           (Etype (Left_Opnd (N)), Force_Predef => True);
+      end if;
+
       --  In pedantic mode, issue a warning whenever an arithmetic operation
       --  could be reordered by the compiler, like "A + B - C", as a given
       --  ordering may overflow and another may not. Not that a warning is
@@ -5005,6 +5088,8 @@ package body SPARK_Definition is
             if Predefined_Eq_Uses_Pointer_Eq (Etype (Left)) then
                Mark_Violation ("equality on access types", N);
             end if;
+
+            Touch_Record_Fields_For_Eq (Etype (Left), Force_Predef => True);
          end;
 
          return;
@@ -5704,7 +5789,7 @@ package body SPARK_Definition is
 
       if not Box_Present (N) then
          Mark (Expression (N));
-      elsif not Component_Inherits_Relaxed_Initialization (N) then
+      else
          pragma Assert (Nkind (Parent (N)) in N_Aggregate
                                             | N_Extension_Aggregate);
 
@@ -5728,7 +5813,8 @@ package body SPARK_Definition is
                      --  N_Identifier or N_Others_Choice, but the latter
                      --  is expanded by the frontend.
 
-                     if Default_Initialization (Choice_Typ) not in
+                     if not Component_Inherits_Relaxed_Initialization (N)
+                       and then Default_Initialization (Choice_Typ) not in
                            Full_Default_Initialization
                          | No_Possible_Initialization
                        and then not Has_Relaxed_Init (Choice_Typ)
@@ -5738,6 +5824,12 @@ package body SPARK_Definition is
                            & "initialization",
                            Choice,
                            SRM_Reference => "SPARK RM 4.3(1)");
+
+                     --  Record components might be used for default value.
+                     --  Update the Unused_Records set.
+
+                     else
+                        Touch_Record_Fields_For_Default_Init (Typ);
                      end if;
                   end;
 
@@ -5749,7 +5841,8 @@ package body SPARK_Definition is
                --  initialization of the array, so we only check the latter.
 
                when Array_Kind =>
-                  if Default_Initialization (Typ) not in
+                  if not Component_Inherits_Relaxed_Initialization (N)
+                    and then Default_Initialization (Typ) not in
                         Full_Default_Initialization
                       | No_Possible_Initialization
                     and then not Has_Relaxed_Init (Typ)
@@ -5759,6 +5852,12 @@ package body SPARK_Definition is
                         & "initialization",
                         N,
                         SRM_Reference => "SPARK RM 4.3(1)");
+
+                  --  Record components might be used for default value.
+                  --  Update the Unused_Records set.
+
+                  else
+                     Touch_Record_Fields_For_Default_Init (Typ);
                   end if;
 
                when others =>
@@ -6026,6 +6125,12 @@ package body SPARK_Definition is
             --  E have incompatible designated type. Reject this case.
 
             Check_Compatible_Access_Types (T, Expr);
+
+         --  Record components might be used for default initialization.
+         --  Update the Unused_Records set.
+
+         elsif Ekind (E) = E_Variable and then not Is_Imported (E) then
+            Touch_Record_Fields_For_Default_Init (T);
          end if;
 
          --  If no violations were found and the object is annotated with
@@ -7012,6 +7117,13 @@ package body SPARK_Definition is
                     ("unchecked conversion instance to a pool-specific access"
                      & " type",
                      E);
+
+               --  Precise unchecked conversion accesses record fields, update
+               --  the Unused_Records set.
+
+               elsif Is_UC_With_Precise_Definition (E).Ok then
+                  Touch_All_Record_Fields (To);
+                  Touch_All_Record_Fields (From);
                end if;
             end;
          end if;
@@ -9132,6 +9244,32 @@ package body SPARK_Definition is
             when E_Abstract_State | Named_Kind =>
                null;
 
+            when E_Record_Type =>
+
+               Entity_List.Append (E);
+
+               --  Insert record types into the Unused_Records set
+
+               if not Is_In_Analyzed_Files (E)
+                 and then (Is_Tagged_Type (E)
+                           or else Retysp (Etype (E)) = E)
+               then
+
+                  --  Do not attempt to abstract away types which might not
+                  --  have components nor deep types which might happen to
+                  --  be shallow. This ensures that proof of initialization
+                  --  (when relaxed initialization is used) and absence of
+                  --  leaks (for deep types) is done precisely.
+
+                  if not Has_Empty_Variants (E)
+                    and then
+                      (not Is_Deep (E)
+                       or else not Has_Shallow_Variants (E))
+                  then
+                     Unused_Records.Insert (E);
+                  end if;
+               end if;
+
             when others =>
 
                --  Do not translate objects from declare expressions. They
@@ -9330,6 +9468,29 @@ package body SPARK_Definition is
                     or else not Component_Is_Visible_In_SPARK (E)
                   then
                      Mark_Violation (N, From => Ty);
+
+                  --  E is used, update the Unused_Records set
+
+                  elsif Ekind (E) = E_Component
+                    and then not Is_Protected_Component (E)
+                  then
+                     declare
+                        Orig_Ty : constant Entity_Id :=
+                          (if Is_Tagged_Type (Retysp (Ty))
+                           then Retysp
+                             (Scope (Original_Record_Component (E)))
+                           else Root_Retysp (Ty));
+                        --  First record type in the hierarchy in which the
+                        --  field is present.
+                     begin
+                        pragma Assert
+                          (In_SPARK (Orig_Ty)
+                           and then Ekind (Orig_Ty) = E_Record_Type
+                           and then
+                             (Is_Tagged_Type (Orig_Ty)
+                              or else Retysp (Etype (Orig_Ty)) = Orig_Ty));
+                        Unused_Records.Exclude (Orig_Ty);
+                     end;
                   end if;
                end;
             end if;
@@ -11298,6 +11459,293 @@ package body SPARK_Definition is
       return SPARK_Pragma_Of_Decl (Enclosing_Declaration (E));
 
    end SPARK_Pragma_Of_Entity;
+
+   -----------------------------
+   -- Touch_All_Record_Fields --
+   -----------------------------
+
+   procedure Touch_All_Record_Fields (Ty : Type_Kind_Id) is
+
+      function Touch_Comp (Comp_Ty : Node_Id) return Test_Result;
+      --  Remove Comp_Ty from the set of unused record types
+
+      ----------------
+      -- Touch_Comp --
+      ----------------
+
+      function Touch_Comp (Comp_Ty : Node_Id) return Test_Result is
+      begin
+         Unused_Records.Exclude (Base_Retysp (Comp_Ty));
+         return Continue;
+      end Touch_Comp;
+
+      function Touch_Components is new Traverse_Subcomponents (Touch_Comp);
+
+      Discard : constant Boolean := Touch_Components
+        (Ty, Skip_Discr => True, Traverse_Ancestors => True);
+   begin
+      null;
+   end Touch_All_Record_Fields;
+
+   ------------------------------------------
+   -- Touch_Record_Fields_For_Default_Init --
+   ------------------------------------------
+
+   procedure Touch_Record_Fields_For_Default_Init (Ty : Type_Kind_Id) is
+
+      function Touch_For_Init (Ty : Node_Id) return Boolean;
+      --  Remove types whose default initialization should remain visible from
+      --  the Unused_Records set. It might occur for two reasons, if the
+      --  type needs default initialization checks or if it contains allocated
+      --  parts. To allow recursive usage, return True if some checks might be
+      --  needed when default initializing components of type Ty.
+
+      function DIC_Checked_At_Use (Ty : Node_Id) return Boolean;
+      --  Return True if Ty has an applicable DIC which is checked at use
+
+      function Contains_Access_Or_Ownership
+        (Typ : Type_Kind_Id) return Boolean;
+      --  Return True if Typ might have parts which need reclamation. As we
+      --  cannot traverse pointers at this stage (their designated value might
+      --  not have been marked) also consider general access types.
+
+      ----------------------------------
+      -- Contains_Access_Or_Ownership --
+      ----------------------------------
+
+      function Contains_Access_Or_Ownership (Typ : Type_Kind_Id) return Boolean
+      is
+
+         function Is_Access_Or_Ownership
+           (Typ : Type_Kind_Id) return Test_Result
+         is
+           (if Is_Access_Type (Typ)
+            or else (Has_Ownership_Annotation (Typ)
+              and then Needs_Reclamation (Typ))
+            then Pass
+            else Fail);
+
+         function Contains_Access_Or_Ownership_Subcomps is new
+           Traverse_Subcomponents (Is_Access_Or_Ownership);
+
+      begin
+         return Contains_Access_Or_Ownership_Subcomps (Typ);
+      end Contains_Access_Or_Ownership;
+
+      ------------------------
+      -- DIC_Checked_At_Use --
+      ------------------------
+
+      function DIC_Checked_At_Use (Ty : Node_Id) return Boolean is
+         DIC_Found : Boolean := False;
+
+         procedure Find_DIC_Checked_At_Use
+           (Default_Init_Param : Formal_Kind_Id;
+            Default_Init_Expr  : Node_Id);
+         --  Set DIC_Found to True if the DIC is checked at use
+
+         -----------------------------
+         -- Find_DIC_Checked_At_Use --
+         -----------------------------
+
+         procedure Find_DIC_Checked_At_Use
+           (Default_Init_Param : Formal_Kind_Id;
+            Default_Init_Expr  : Node_Id)
+         is
+         begin
+            if (not Compile_Time_Known_Value (Default_Init_Expr)
+                or else not Is_True (Expr_Value (Default_Init_Expr)))
+              and then not Check_DIC_At_Declaration
+                (Etype (Default_Init_Param))
+            then
+               DIC_Found := True;
+            end if;
+         end Find_DIC_Checked_At_Use;
+
+         procedure Find_DIC_Checked_At_Use is new
+           Iterate_Applicable_DIC (Find_DIC_Checked_At_Use);
+      begin
+         Find_DIC_Checked_At_Use (Ty);
+         return DIC_Found;
+      end DIC_Checked_At_Use;
+
+      --------------------
+      -- Touch_For_Init --
+      --------------------
+
+      function Touch_For_Init (Ty : Node_Id) return Boolean is
+         Rep_Ty               : constant Entity_Id := Base_Retysp (Ty);
+         Priv_Ty              : constant Entity_Id := Partial_Base_Type (Ty);
+         Needs_Default_Checks : Boolean;
+
+      begin
+         --  If Ty has a DIC, we might need to check it
+
+         Needs_Default_Checks := DIC_Checked_At_Use (Rep_Ty);
+
+         --  Default checks for private types are done at declaration unless
+         --  they have unknown discriminant parts. For such types, only
+         --  consider the initialization if the type is declared in the
+         --  analyzed unit.
+
+         if Ekind (Priv_Ty) in E_Private_Type | E_Limited_Private_Type
+           and then not Has_Unknown_Discriminants (Priv_Ty)
+           and then not Is_In_Analyzed_Files (Priv_Ty)
+         then
+            null;
+
+         elsif Is_Access_Type (Rep_Ty) then
+            Needs_Default_Checks := Needs_Default_Checks
+              or else Has_Null_Exclusion (Rep_Ty);
+
+         elsif Is_Array_Type (Rep_Ty) then
+            Needs_Default_Checks := Needs_Default_Checks
+              or else Has_Default_Aspect (Rep_Ty)
+              or else Touch_For_Init (Component_Type (Rep_Ty));
+
+         elsif Is_Record_Type (Rep_Ty)
+           or else Is_Concurrent_Type (Rep_Ty)
+         then
+            declare
+               Priv_Ext  : constant Boolean :=
+                 Ekind (Priv_Ty) = E_Record_Type_With_Private
+                 and then not Has_Unknown_Discriminants (Priv_Ty);
+               --  Default checks for private extensions are done at
+               --  declaration unless they have unknown discriminant parts.
+               Parent_Ty : constant Opt_Type_Kind_Id :=
+                 (if Priv_Ext then Parent_Type (Priv_Ty)
+                  else Parent_Retysp (Rep_Ty));
+               --  First visible ancestor of Ty. Visible inherited components
+               --  should be searched from here.
+
+            begin
+               --  Never look into components hidden by the private extension,
+               --  they will be considered separately while handling the
+               --  extension declaration.
+
+               if Is_Tagged_Type (Rep_Ty)
+                 and then Present (Parent_Ty)
+                 and then Base_Retysp (Parent_Ty) /= Rep_Ty
+                 and then Touch_For_Init (Parent_Ty)
+               then
+
+                  --  No need to exclude a tagged type for default values in an
+                  --  ancestor, components are hidden independently in the
+                  --  type itself and its ancestors.
+
+                  null;
+               end if;
+
+               if Priv_Ext then
+                  null;
+
+               elsif Ekind (Rep_Ty) in Record_Kind | E_Protected_Type then
+                  declare
+                     Comp : Opt_E_Component_Id := First_Component (Rep_Ty);
+                  begin
+                     while Present (Comp) loop
+                        if Component_Is_Visible_In_SPARK (Comp)
+                          and then
+                            (not Is_Tagged_Type (Rep_Ty)
+                             or else Base_Retysp
+                               (Scope (Original_Record_Component (Comp))) =
+                               Rep_Ty)
+                        then
+                           if Present
+                             (Expression (Enclosing_Declaration (Comp)))
+                             or else Touch_For_Init (Etype (Comp))
+                           then
+                              Needs_Default_Checks := True;
+                           end if;
+                        end if;
+                        Next_Component (Comp);
+                     end loop;
+                  end;
+               end if;
+            end;
+
+         elsif Is_Incomplete_Or_Private_Type (Rep_Ty) then
+            null;
+
+         else
+            pragma Assert (Is_Scalar_Type (Rep_Ty));
+            Needs_Default_Checks :=  Needs_Default_Checks
+              or else Has_Default_Aspect (Rep_Ty);
+         end if;
+
+         if Needs_Default_Checks
+           or else Contains_Access_Or_Ownership (Rep_Ty)
+         then
+            if Is_Tagged_Type (Rep_Ty) then
+               Unused_Records.Exclude (Base_Retysp (Rep_Ty));
+            else
+               Unused_Records.Exclude (Root_Retysp (Rep_Ty));
+            end if;
+         end if;
+
+         --  Discriminants and predicates are going to remain visible in
+         --  abstracted types, so no need to take them into account for the
+         --  inclusion of the type itself.
+
+         if (Has_Predicates (Ty)
+             and then Needs_Default_Predicate_Checks (Rep_Ty))
+           or else (Has_Discriminants (Rep_Ty)
+                    and then Has_Defaulted_Discriminants (Rep_Ty)
+                    and then not Is_Constrained (Rep_Ty))
+         then
+            return True;
+         else
+            return Needs_Default_Checks;
+         end if;
+
+      end Touch_For_Init;
+
+      Discard : constant Boolean := Touch_For_Init (Ty);
+   begin
+      null;
+   end Touch_Record_Fields_For_Default_Init;
+
+   --------------------------------
+   -- Touch_Record_Fields_For_Eq --
+   --------------------------------
+
+   procedure Touch_Record_Fields_For_Eq
+     (Ty           : Type_Kind_Id;
+      Force_Predef : Boolean := False)
+   is
+      function Touch_Comp (Comp_Ty : Node_Id) return Test_Result;
+      --  Remove Comp_Ty from the set of unused record types. Stop the search
+      --  when a user defined equality is used. For record types for which the
+      --  real equality can be used if they are hidden, do not consider the
+      --  use of the equality as a read.
+
+      ----------------
+      -- Touch_Comp --
+      ----------------
+
+      function Touch_Comp (Comp_Ty : Node_Id) return Test_Result is
+      begin
+         if Is_Access_Type (Comp_Ty) then
+            return Fail;
+         elsif not Use_Predefined_Equality_For_Type (Comp_Ty)
+           and then (not Force_Predef or else Comp_Ty /= Retysp (Ty))
+         then
+            return Fail;
+         elsif Is_Record_Type (Comp_Ty) then
+            if not Use_Real_Eq_For_Private_Type (Comp_Ty) then
+               Unused_Records.Exclude (Base_Retysp (Comp_Ty));
+            end if;
+         end if;
+         return Continue;
+      end Touch_Comp;
+
+      function Touch_Components is new Traverse_Subcomponents (Touch_Comp);
+
+      Discard : constant Boolean := Touch_Components
+        (Ty, Skip_Discr => True, Traverse_Ancestors => True);
+   begin
+      null;
+   end Touch_Record_Fields_For_Eq;
 
    ----------------------------------------------------------------------
    --  Iterators
