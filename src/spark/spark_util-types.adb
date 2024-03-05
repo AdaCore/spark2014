@@ -1905,87 +1905,37 @@ package body SPARK_Util.Types is
 
    function Predefined_Eq_Uses_Pointer_Eq (Ty : Type_Kind_Id) return Boolean is
 
-      function Uses_Pointer_Eq_Comp (Ty : Type_Kind_Id) return Boolean is
-        (not (Is_Record_Type (Unchecked_Full_Type (Ty))
-              and then Present (Get_User_Defined_Eq (Base_Type (Ty))))
-         and then Predefined_Eq_Uses_Pointer_Eq (Ty));
-      --  The predefined equality on pointer is used for a component of type Ty
-      --  if the predefined equality is used for components of this type and
-      --  this equality uses predefined equality on pointers.
+      function Check_Comp (Comp_Ty : Node_Id) return Test_Result;
+      --  Return Pass if an access type is found. Stop the search when a
+      --  primitive equality is used.
 
-      Spec_Ty : constant Entity_Id :=
-        (if Is_Class_Wide_Type (Retysp (Ty))
-         then Get_Specific_Type_From_Classwide (Retysp (Ty))
-         else Ty);
-      Rep_Ty  : constant Type_Kind_Id := Retysp (Spec_Ty);
+      ----------------
+      -- Check_Comp --
+      ----------------
 
+      function Check_Comp (Comp_Ty : Node_Id) return Test_Result is
+      begin
+         if Is_Access_Type (Comp_Ty) then
+            return Pass;
+
+         --  Check_Comp will be called on Retysp (Ty) as part of the traversal.
+         --  Force the predefined equality here.
+
+         elsif not Use_Predefined_Equality_For_Type (Comp_Ty)
+           and then Comp_Ty /= Retysp (Ty)
+         then
+            return Fail;
+         else
+            return Continue;
+         end if;
+      end Check_Comp;
+
+      function Uses_Pointer_Eq is new Traverse_Subcomponents (Check_Comp);
    begin
-      --  The predefined equality on a class-wide type uses the primitive
-      --  equality on its specific view.
+      --  No need to traverse discriminants, they cannot contain access types
 
-      if Is_Class_Wide_Type (Retysp (Ty))
-        and then Present (Get_User_Defined_Eq (Spec_Ty))
-      then
-         return False;
-      elsif Is_Access_Type (Rep_Ty) then
-         return True;
-      elsif Is_Array_Type (Rep_Ty) then
-         return Uses_Pointer_Eq_Comp (Component_Type (Rep_Ty));
-      elsif Is_Record_Type (Rep_Ty) then
-         declare
-            Is_Tagged : constant Boolean := Is_Tagged_Type (Rep_Ty);
-            Base      : constant Type_Kind_Id := Base_Retysp (Rep_Ty);
-            Parent    : constant Type_Kind_Id := Retysp (Etype (Base));
-
-         begin
-            --  Check if a pointer equality is used for one of the visible
-            --  components of Ty. For tagged types, only consider components
-            --  which are not in the parent type as the primitive equality of
-            --  the parent type will be used for its components.
-
-            if not Is_Incomplete_Or_Private_Type (Base) then
-               declare
-                  Comp : Entity_Id := First_Component (Rep_Ty);
-               begin
-                  while Present (Comp) loop
-                     if Component_Is_Visible_In_SPARK (Comp)
-                       and then
-                         (not Is_Tagged
-                          or else Retysp
-                            (Scope (Original_Record_Component (Comp))) = Base)
-                       and then Uses_Pointer_Eq_Comp (Etype (Comp))
-                     then
-                        return True;
-                     end if;
-
-                     pragma Assert
-                       (if Component_Is_Visible_In_SPARK (Comp)
-                          and then Is_Tagged
-                          and then Retysp
-                            (Scope (Original_Record_Component (Comp))) /= Base
-                        then Present
-                          (Search_Component_By_Name (Parent, Comp)));
-                     Next_Component (Comp);
-                  end loop;
-               end;
-            end if;
-
-            --  If the type is tagged, we need to check components inherited
-            --  from the ancestor.
-
-            if Is_Tagged then
-               return Parent /= Base
-                 and then No (Get_User_Defined_Eq (Parent))
-                 and then Predefined_Eq_Uses_Pointer_Eq (Parent);
-            else
-               return False;
-            end if;
-         end;
-      else
-         pragma Assert
-           (Ekind (Rep_Ty) in Incomplete_Or_Private_Kind | Scalar_Kind);
-         return False;
-      end if;
+      return Uses_Pointer_Eq
+        (Ty, Skip_Discr => True, Traverse_Ancestors => True);
    end Predefined_Eq_Uses_Pointer_Eq;
 
    ---------------------------------------
