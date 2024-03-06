@@ -1,5 +1,4 @@
 main.adb:5:13: info: implicit aspect Always_Terminates on "Build_Rec" has been proved, subprogram will terminate
-main.adb:5:13: info: implicit function contract might not be available on calls from enclosing unit
 main.adb:9:24: info: range check proved (CVC5: 2 VC)
 main.adb:11:14: high: "Z.Plop.X" is not initialized
 main.adb:11:14: high: "Z.Plop.Y" is not initialized
