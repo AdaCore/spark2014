@@ -1,0 +1,23 @@
+flow.adb:4:05: info: initialization of "L1" proved
+flow.adb:4:09: info: initialization of "L2" proved
+flow.adb:4:13: info: initialization of "L3" proved
+flow.adb:4:17: info: initialization of "H1" proved
+flow.adb:4:21: info: initialization of "H2" proved
+flow.adb:4:25: info: initialization of "H3" proved
+flow.adb:5:08: info: flow dependencies proved
+flow.adb:11:20: info: initialization of "S" proved
+flow.adb:11:36: info: initialization of "L" proved
+flow.adb:11:39: info: initialization of "H" proved
+flow.adb:12:12: info: flow dependencies proved
+flow.adb:13:20: info: postcondition proved (CVC5: 2 VC)
+flow.adb:18:09: info: length check proved (CVC5: 3 VC; Trivial: 1 VC)
+flow.adb:21:18: medium: range check might fail
+flow.adb:21:23: info: range check proved (CVC5: 2 VC)
+flow.adb:22:04: medium: range check might fail
+flow.adb:26:10: warning: "X" is set by "Pick" but not used after the call
+flow.adb:27:19: info: assertion proved (CVC5: 2 VC)
+flow.adb:30:10: warning: "X" is set by "Pick" but not used after the call
+flow.adb:31:19: info: assertion proved (CVC5: 2 VC)
+flow.adb:34:10: warning: "X" is set by "Pick" but not used after the call
+flow.adb:34:17: medium: length check might fail [reason for check: value must have same length as the target array type of the conversion] [possible fix: postcondition of call at line 30 should mention S (for argument X)]
+flow.adb:35:19: info: assertion proved (CVC5: 2 VC)
