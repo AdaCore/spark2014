@@ -22,7 +22,7 @@ procedure Test with SPARK_Mode is
 
    procedure Q_1 (X : out RR; B : out Boolean) is
    begin
-      P (X.F, B); --  there should be an initialization check here
+      P (X.F, B); --  @INITIALIZED:CHECK
    end Q_1;
 
    type A is array (Integer range 1 .. 1) of R;
@@ -33,7 +33,7 @@ procedure Test with SPARK_Mode is
    procedure Q_2 (X : out A; B : out Boolean) is
    begin
       for I in A'Range loop
-         P (X (I), B); --  there should be an initialization check here
+         P (X (I), B); --  @INITIALIZED:CHECK
       end loop;
    end Q_2;
 

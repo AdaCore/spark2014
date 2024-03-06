@@ -703,20 +703,6 @@ package body Flow_Utility is
    end Unique_Components;
 
    ----------------------------
-   -- Contains_Discriminants --
-   ----------------------------
-
-   function Contains_Discriminants
-     (F : Flow_Id;
-      S : Flow_Scope)
-      return Boolean
-   is
-      FS : constant Flow_Id_Sets.Set := Flatten_Variable (F, S);
-   begin
-      return (for some X of FS => Is_Discriminant (X));
-   end Contains_Discriminants;
-
-   ----------------------------
    -- Expand_Abstract_States --
    ----------------------------
 
