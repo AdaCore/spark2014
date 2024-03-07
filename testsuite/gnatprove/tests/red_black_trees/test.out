@@ -2457,7 +2457,7 @@ search_trees.adb:747:16: medium: precondition might fail, cannot prove Valid_Roo
 search_trees.adb:747:55: info: range check proved (CVC5: 2 VC), in call inlined at search_trees.adb:953
 search_trees.adb:750:16: info: precondition proved (CVC5: 1 VC), in call inlined at search_trees.adb:953
 search_trees.adb:750:42: info: range check proved (CVC5: 2 VC), in call inlined at search_trees.adb:953
-search_trees.adb:751:25: medium: precondition might fail, in call inlined at search_trees.adb:953
+search_trees.adb:751:25: info: precondition proved (CVC5: 1 VC), in call inlined at search_trees.adb:953
 search_trees.adb:753:30: medium: assertion might fail, cannot prove Model (F_Old, Root (T)) (I).K = (Model (T.Struct, Root (T)) (I).K or Model (T.Struct, X) (I).K), in call inlined at search_trees.adb:953
 search_trees.adb:753:30: medium: precondition might fail, in call inlined at search_trees.adb:953
 search_trees.adb:753:44: medium: for T before the call at search_trees.ads:22
@@ -2608,7 +2608,7 @@ search_trees.adb:937:45: info: range check proved (CVC5: 2 VC), in call inlined 
 search_trees.adb:938:28: info: precondition proved (CVC5: 1 VC), in call inlined at search_trees.adb:981
 search_trees.adb:938:46: info: range check proved (CVC5: 2 VC), in call inlined at search_trees.adb:981
 search_trees.adb:947:16: info: range check proved (CVC5: 2 VC)
-search_trees.adb:949:15: medium: range check might fail, cannot prove lower bound for Parent (T.Struct, I) [reason for check: value must fit in the target type of the assignment]
+search_trees.adb:949:15: info: range check proved (CVC5: 2 VC)
 search_trees.adb:950:15: info: precondition proved (CVC5: 1 VC)
 search_trees.adb:951:10: medium: precondition might fail, cannot prove Model (F, Root) (I).K
 search_trees.adb:951:30: info: range check proved (CVC5: 2 VC)
@@ -3063,7 +3063,7 @@ search_trees.adb:1528:36: info: range check proved (CVC5: 2 VC)
 search_trees.adb:1529:20: info: index check proved (CVC5: 2 VC)
 search_trees.adb:1530:10: info: for T_Old before the call at search_trees.adb:1330
 search_trees.adb:1530:10: info: invariant check proved (CVC5: 1 VC)
-search_trees.adb:1530:10: medium: precondition might fail [possible fix: loop invariant at line 1493 should mention D and Previous]
+search_trees.adb:1530:10: medium: precondition might fail, cannot prove V < T_Old.Values (I) [possible fix: loop invariant at line 1493 should mention D and Previous]
 search_trees.adb:1530:34: info: range check proved (CVC5: 2 VC)
 search_trees.ads:17:09: info: default initial condition proved (CVC5: 1 VC)
 search_trees.ads:18:06: info: for T before the call at search_trees.ads:20

@@ -185,7 +185,7 @@ test_set.adb:348:07: info: precondition proved (CVC5: 1 VC; Z3: 1 VC)
 test_set.adb:349:07: info: precondition proved (CVC5: 1 VC; Z3: 1 VC)
 test_set.adb:352:22: info: assertion proved (Z3: 1 VC)
 test_set.adb:353:22: info: assertion proved (Z3: 1 VC)
-test_set.adb:356:22: medium: assertion might fail
+test_set.adb:356:22: info: assertion proved (Z3: 1 VC)
 test_set.adb:364:07: info: initialization of "L" proved
 test_set.adb:364:10: info: initialization of "K" proved
 test_set.adb:365:07: info: initialization of "C" proved
