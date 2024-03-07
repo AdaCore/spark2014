@@ -62,7 +62,7 @@
   <goal name="def&#39;vc.14">
   <proof prover="0"><result status="unknown" steps="21"/></proof>
   <proof prover="1"><result status="unknown" steps="923"/></proof>
-  <proof prover="2"><result status="unknown" steps="16003"/></proof>
+  <proof prover="2"><result status="unknown" steps="15924"/></proof>
   <proof prover="5"><result status="unknown" steps="73"/></proof>
   <transf name="introduce_premises" >
    <goal name="def&#39;vc.14.0">
