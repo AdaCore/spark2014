@@ -1,0 +1,2 @@
+test.adb:30:04: medium: predicate check might fail on default value
+test.adb:31:04: medium: predicate check might fail on default value

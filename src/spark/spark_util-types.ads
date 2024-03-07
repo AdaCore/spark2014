@@ -288,6 +288,11 @@ package SPARK_Util.Types is
    --  @return True if E needs a specific module to check its default
    --     expression at declaration
 
+   function Needs_Default_Predicate_Checks (E : Type_Kind_Id) return Boolean;
+   --  @param E type
+   --  @return True if E has predicates that need to be check on the default
+   --  value.
+
    function Is_Deep (Typ : Type_Kind_Id) return Boolean;
    --  Returns True if the type passed as argument is deep (ie. it has
    --  subcomponents of an access-to-variable type or a private type annotated
