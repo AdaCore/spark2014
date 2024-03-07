@@ -5775,11 +5775,13 @@ package body SPARK_Definition.Annotate is
             Subp_Scop := Enclosing_Unit (Subp_Scop);
          end loop;
 
-         --  If Subp_Scop is not a nested package or protected type, then
-         --  refinement is always visible.
+         --  If Subp_Scop is not a nested package or protected type, or if it
+         --  is the analyzed unit, then the refinement of Subp is always
+         --  visible.
 
          return Ekind (Subp_Scop) not in E_Package | E_Protected_Type
-           or else Is_Compilation_Unit (Subp_Scop);
+           or else (Is_Compilation_Unit (Subp_Scop)
+                    and then Is_In_Analyzed_Files (Subp_Scop));
       end Refinement_Is_Always_Visible;
 
       Position : Common_Containers.Node_Maps.Cursor :=
