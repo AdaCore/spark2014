@@ -1,68 +1,68 @@
 list_allocator.adb:22:39: info: index check proved
 list_allocator.adb:24:39: info: index check proved
-list_allocator.adb:35:11: info: predicate check proved
-list_allocator.adb:35:29: info: predicate check proved
-list_allocator.adb:36:11: info: predicate check proved
 list_allocator.adb:37:11: info: predicate check proved
-list_allocator.adb:37:28: info: predicate check proved
-list_allocator.adb:39:14: info: predicate check proved
-list_allocator.adb:39:31: info: predicate check proved
-list_allocator.adb:39:42: info: precondition proved
+list_allocator.adb:37:29: info: predicate check proved
+list_allocator.adb:38:11: info: predicate check proved
+list_allocator.adb:39:11: info: predicate check proved
+list_allocator.adb:39:28: info: predicate check proved
 list_allocator.adb:41:14: info: predicate check proved
 list_allocator.adb:41:31: info: predicate check proved
-list_allocator.adb:44:14: info: precondition proved
-list_allocator.adb:46:20: info: index check proved
-list_allocator.adb:46:20: info: precondition proved
-list_allocator.adb:47:42: info: precondition proved
-list_allocator.adb:47:56: info: overflow check proved
-list_allocator.adb:50:17: info: precondition proved
-list_allocator.adb:50:35: info: precondition proved
-list_allocator.adb:60:22: info: assertion proved
-list_allocator.adb:60:22: info: predicate check proved
-list_allocator.adb:60:49: info: predicate check proved
-list_allocator.adb:62:29: info: precondition proved
-list_allocator.adb:63:33: info: loop invariant initialization proved
-list_allocator.adb:63:33: info: loop invariant preservation proved
-list_allocator.adb:64:33: info: loop invariant initialization proved
-list_allocator.adb:64:33: info: loop invariant preservation proved
-list_allocator.adb:64:33: info: predicate check proved
-list_allocator.adb:64:60: info: predicate check proved
+list_allocator.adb:41:42: info: precondition proved
+list_allocator.adb:43:14: info: predicate check proved
+list_allocator.adb:43:31: info: predicate check proved
+list_allocator.adb:46:14: info: precondition proved
+list_allocator.adb:48:20: info: index check proved
+list_allocator.adb:48:20: info: precondition proved
+list_allocator.adb:49:42: info: precondition proved
+list_allocator.adb:49:56: info: overflow check proved
+list_allocator.adb:52:17: info: precondition proved
+list_allocator.adb:52:35: info: precondition proved
+list_allocator.adb:62:22: info: assertion proved
+list_allocator.adb:62:22: info: predicate check proved
+list_allocator.adb:62:49: info: predicate check proved
+list_allocator.adb:64:29: info: precondition proved
 list_allocator.adb:65:33: info: loop invariant initialization proved
 list_allocator.adb:65:33: info: loop invariant preservation proved
 list_allocator.adb:66:33: info: loop invariant initialization proved
 list_allocator.adb:66:33: info: loop invariant preservation proved
-list_allocator.adb:66:33: info: precondition proved
-list_allocator.adb:68:13: info: loop invariant initialization proved
-list_allocator.adb:68:13: info: loop invariant preservation proved
-list_allocator.adb:68:37: info: precondition proved
+list_allocator.adb:66:33: info: predicate check proved
+list_allocator.adb:66:60: info: predicate check proved
+list_allocator.adb:67:33: info: loop invariant initialization proved
+list_allocator.adb:67:33: info: loop invariant preservation proved
+list_allocator.adb:68:33: info: loop invariant initialization proved
+list_allocator.adb:68:33: info: loop invariant preservation proved
+list_allocator.adb:68:33: info: precondition proved
 list_allocator.adb:70:13: info: loop invariant initialization proved
 list_allocator.adb:70:13: info: loop invariant preservation proved
-list_allocator.adb:70:64: info: range check proved
-list_allocator.adb:72:22: info: assertion proved
-list_allocator.adb:72:22: info: predicate check proved
-list_allocator.adb:72:49: info: predicate check proved
-list_allocator.adb:76:07: info: initialization of "Next_Avail" proved
-list_allocator.adb:77:07: warning: initialization of "MA" has no effect
-list_allocator.adb:81:30: info: index check proved
-list_allocator.adb:82:16: info: index check proved
-list_allocator.adb:85:29: info: precondition proved
-list_allocator.adb:86:29: info: precondition proved
-list_allocator.adb:89:13: info: assertion proved
-list_allocator.adb:91:20: info: precondition proved
-list_allocator.adb:91:48: info: precondition proved
-list_allocator.adb:99:44: info: index check proved
-list_allocator.adb:100:16: info: index check proved
-list_allocator.adb:103:29: info: precondition proved
-list_allocator.adb:104:29: info: precondition proved
-list_allocator.adb:110:47: info: range check proved
-list_allocator.adb:112:10: info: loop invariant initialization proved
-list_allocator.adb:112:10: info: loop invariant preservation proved
-list_allocator.adb:113:18: info: index check proved
-list_allocator.adb:113:72: info: overflow check proved
-list_allocator.adb:114:30: info: loop invariant initialization proved
-list_allocator.adb:114:30: info: loop invariant preservation proved
-list_allocator.adb:115:30: info: loop invariant initialization proved
-list_allocator.adb:115:30: info: loop invariant preservation proved
+list_allocator.adb:70:37: info: precondition proved
+list_allocator.adb:72:13: info: loop invariant initialization proved
+list_allocator.adb:72:13: info: loop invariant preservation proved
+list_allocator.adb:72:64: info: range check proved
+list_allocator.adb:74:22: info: assertion proved
+list_allocator.adb:74:22: info: predicate check proved
+list_allocator.adb:74:49: info: predicate check proved
+list_allocator.adb:78:07: info: initialization of "Next_Avail" proved
+list_allocator.adb:79:07: warning: initialization of "MA" has no effect
+list_allocator.adb:83:30: info: index check proved
+list_allocator.adb:84:16: info: index check proved
+list_allocator.adb:87:29: info: precondition proved
+list_allocator.adb:88:29: info: precondition proved
+list_allocator.adb:91:13: info: assertion proved
+list_allocator.adb:93:20: info: precondition proved
+list_allocator.adb:93:48: info: precondition proved
+list_allocator.adb:101:44: info: index check proved
+list_allocator.adb:102:16: info: index check proved
+list_allocator.adb:105:29: info: precondition proved
+list_allocator.adb:106:29: info: precondition proved
+list_allocator.adb:112:47: info: range check proved
+list_allocator.adb:114:10: info: loop invariant initialization proved
+list_allocator.adb:114:10: info: loop invariant preservation proved
+list_allocator.adb:115:18: info: index check proved
+list_allocator.adb:115:72: info: overflow check proved
+list_allocator.adb:116:30: info: loop invariant initialization proved
+list_allocator.adb:116:30: info: loop invariant preservation proved
+list_allocator.adb:117:30: info: loop invariant initialization proved
+list_allocator.adb:117:30: info: loop invariant preservation proved
 list_allocator.ads:11:03: info: flow dependencies proved
 list_allocator.ads:12:03: info: initial condition proved
 list_allocator.ads:23:13: info: implicit aspect Always_Terminates on "Is_Available" has been proved, subprogram will terminate
@@ -98,175 +98,174 @@ list_allocator.ads:116:41: info: contract case proved
 list_allocator.ads:123:16: info: contract case proved
 list_mod_allocator.adb:27:39: info: index check proved
 list_mod_allocator.adb:29:39: info: index check proved
-list_mod_allocator.adb:37:22: info: index check proved
-list_mod_allocator.adb:40:42: info: index check proved
-list_mod_allocator.adb:51:13: info: predicate check proved
-list_mod_allocator.adb:51:31: info: predicate check proved
-list_mod_allocator.adb:54:21: info: predicate check proved
-list_mod_allocator.adb:54:38: info: predicate check proved
-list_mod_allocator.adb:54:49: info: precondition proved
-list_mod_allocator.adb:55:21: info: predicate check proved
-list_mod_allocator.adb:55:38: info: predicate check proved
-list_mod_allocator.adb:58:21: info: precondition proved
-list_mod_allocator.adb:61:30: info: index check proved
-list_mod_allocator.adb:61:30: info: precondition proved
-list_mod_allocator.adb:61:53: info: precondition proved
-list_mod_allocator.adb:61:67: info: overflow check proved
-list_mod_allocator.adb:65:26: info: precondition proved
-list_mod_allocator.adb:66:34: info: precondition proved
-list_mod_allocator.adb:66:57: info: index check proved
-list_mod_allocator.adb:66:57: info: precondition proved
-list_mod_allocator.adb:70:29: info: precondition proved
-list_mod_allocator.adb:70:46: info: precondition proved
-list_mod_allocator.adb:72:38: info: index check proved
-list_mod_allocator.adb:72:38: info: precondition proved
-list_mod_allocator.adb:73:51: info: index check proved
-list_mod_allocator.adb:73:51: info: precondition proved
-list_mod_allocator.adb:86:10: info: initialization of "Avail" proved
-list_mod_allocator.adb:87:10: info: initialization of "Alloc" proved
-list_mod_allocator.adb:88:10: info: initialization of "Unseen" proved
-list_mod_allocator.adb:96:16: info: loop invariant initialization proved
-list_mod_allocator.adb:96:16: info: loop invariant preservation proved
+list_mod_allocator.adb:39:22: info: index check proved
+list_mod_allocator.adb:42:42: info: index check proved
+list_mod_allocator.adb:53:13: info: predicate check proved
+list_mod_allocator.adb:53:31: info: predicate check proved
+list_mod_allocator.adb:56:21: info: predicate check proved
+list_mod_allocator.adb:56:38: info: predicate check proved
+list_mod_allocator.adb:56:49: info: precondition proved
+list_mod_allocator.adb:57:21: info: predicate check proved
+list_mod_allocator.adb:57:38: info: predicate check proved
+list_mod_allocator.adb:60:21: info: precondition proved
+list_mod_allocator.adb:63:30: info: index check proved
+list_mod_allocator.adb:63:30: info: precondition proved
+list_mod_allocator.adb:63:53: info: precondition proved
+list_mod_allocator.adb:63:67: info: overflow check proved
+list_mod_allocator.adb:67:26: info: precondition proved
+list_mod_allocator.adb:68:34: info: precondition proved
+list_mod_allocator.adb:68:57: info: index check proved
+list_mod_allocator.adb:68:57: info: precondition proved
+list_mod_allocator.adb:72:29: info: precondition proved
+list_mod_allocator.adb:72:46: info: precondition proved
+list_mod_allocator.adb:74:38: info: index check proved
+list_mod_allocator.adb:74:38: info: precondition proved
+list_mod_allocator.adb:75:51: info: index check proved
+list_mod_allocator.adb:75:51: info: precondition proved
+list_mod_allocator.adb:88:10: info: initialization of "Avail" proved
+list_mod_allocator.adb:89:10: info: initialization of "Alloc" proved
+list_mod_allocator.adb:90:10: info: initialization of "Unseen" proved
 list_mod_allocator.adb:98:16: info: loop invariant initialization proved
 list_mod_allocator.adb:98:16: info: loop invariant preservation proved
 list_mod_allocator.adb:100:16: info: loop invariant initialization proved
 list_mod_allocator.adb:100:16: info: loop invariant preservation proved
-list_mod_allocator.adb:103:16: info: loop invariant initialization proved
-list_mod_allocator.adb:103:16: info: loop invariant preservation proved
-list_mod_allocator.adb:104:28: info: index check proved
-list_mod_allocator.adb:104:70: info: range check proved
-list_mod_allocator.adb:105:42: info: range check proved
-list_mod_allocator.adb:106:36: info: loop invariant initialization proved
-list_mod_allocator.adb:106:36: info: loop invariant preservation proved
-list_mod_allocator.adb:106:36: info: predicate check proved
-list_mod_allocator.adb:107:36: info: loop invariant initialization proved
-list_mod_allocator.adb:107:36: info: loop invariant preservation proved
-list_mod_allocator.adb:107:36: info: predicate check proved
-list_mod_allocator.adb:109:25: info: precondition proved
-list_mod_allocator.adb:111:26: info: precondition proved
-list_mod_allocator.adb:119:26: info: precondition proved
-list_mod_allocator.adb:120:25: info: precondition proved
-list_mod_allocator.adb:121:27: info: index check proved
-list_mod_allocator.adb:123:37: info: loop variant proved
-list_mod_allocator.adb:124:39: info: loop invariant initialization proved
-list_mod_allocator.adb:124:39: info: loop invariant preservation proved
-list_mod_allocator.adb:124:39: info: predicate check proved
-list_mod_allocator.adb:125:39: info: loop invariant initialization proved
-list_mod_allocator.adb:125:39: info: loop invariant preservation proved
-list_mod_allocator.adb:125:39: info: predicate check proved
-list_mod_allocator.adb:125:85: info: predicate check proved
-list_mod_allocator.adb:127:19: info: loop invariant initialization proved
-list_mod_allocator.adb:127:19: info: loop invariant preservation proved
-list_mod_allocator.adb:131:19: info: loop invariant initialization proved
-list_mod_allocator.adb:131:19: info: loop invariant preservation proved
-list_mod_allocator.adb:131:19: info: predicate check proved
-list_mod_allocator.adb:131:36: info: predicate check proved
-list_mod_allocator.adb:131:47: info: precondition proved
+list_mod_allocator.adb:102:16: info: loop invariant initialization proved
+list_mod_allocator.adb:102:16: info: loop invariant preservation proved
+list_mod_allocator.adb:105:16: info: loop invariant initialization proved
+list_mod_allocator.adb:105:16: info: loop invariant preservation proved
+list_mod_allocator.adb:106:28: info: index check proved
+list_mod_allocator.adb:106:70: info: range check proved
+list_mod_allocator.adb:107:42: info: range check proved
+list_mod_allocator.adb:108:36: info: loop invariant initialization proved
+list_mod_allocator.adb:108:36: info: loop invariant preservation proved
+list_mod_allocator.adb:108:36: info: predicate check proved
+list_mod_allocator.adb:109:36: info: loop invariant initialization proved
+list_mod_allocator.adb:109:36: info: loop invariant preservation proved
+list_mod_allocator.adb:109:36: info: predicate check proved
+list_mod_allocator.adb:111:25: info: precondition proved
+list_mod_allocator.adb:113:26: info: precondition proved
+list_mod_allocator.adb:121:26: info: precondition proved
+list_mod_allocator.adb:122:25: info: precondition proved
+list_mod_allocator.adb:123:27: info: index check proved
+list_mod_allocator.adb:125:37: info: loop variant proved
+list_mod_allocator.adb:126:39: info: loop invariant initialization proved
+list_mod_allocator.adb:126:39: info: loop invariant preservation proved
+list_mod_allocator.adb:126:39: info: predicate check proved
+list_mod_allocator.adb:127:39: info: loop invariant initialization proved
+list_mod_allocator.adb:127:39: info: loop invariant preservation proved
+list_mod_allocator.adb:127:39: info: predicate check proved
+list_mod_allocator.adb:127:85: info: predicate check proved
+list_mod_allocator.adb:129:19: info: loop invariant initialization proved
+list_mod_allocator.adb:129:19: info: loop invariant preservation proved
 list_mod_allocator.adb:133:19: info: loop invariant initialization proved
 list_mod_allocator.adb:133:19: info: loop invariant preservation proved
-list_mod_allocator.adb:134:21: info: precondition proved
-list_mod_allocator.adb:136:19: info: loop invariant initialization proved
-list_mod_allocator.adb:136:19: info: loop invariant preservation proved
-list_mod_allocator.adb:136:29: info: index check proved
-list_mod_allocator.adb:136:29: info: precondition proved
+list_mod_allocator.adb:133:19: info: predicate check proved
+list_mod_allocator.adb:133:36: info: predicate check proved
+list_mod_allocator.adb:133:47: info: precondition proved
+list_mod_allocator.adb:135:19: info: loop invariant initialization proved
+list_mod_allocator.adb:135:19: info: loop invariant preservation proved
+list_mod_allocator.adb:136:21: info: precondition proved
 list_mod_allocator.adb:138:19: info: loop invariant initialization proved
 list_mod_allocator.adb:138:19: info: loop invariant preservation proved
-list_mod_allocator.adb:139:33: info: index check proved
-list_mod_allocator.adb:139:33: info: precondition proved
-list_mod_allocator.adb:139:56: info: precondition proved
-list_mod_allocator.adb:139:70: info: overflow check proved
-list_mod_allocator.adb:141:19: info: loop invariant initialization proved
-list_mod_allocator.adb:141:19: info: loop invariant preservation proved
-list_mod_allocator.adb:142:21: info: precondition proved
-list_mod_allocator.adb:142:44: info: index check proved
-list_mod_allocator.adb:142:44: info: precondition proved
-list_mod_allocator.adb:144:19: info: loop invariant initialization proved
-list_mod_allocator.adb:144:19: info: loop invariant preservation proved
-list_mod_allocator.adb:146:30: info: precondition proved
-list_mod_allocator.adb:146:47: info: precondition proved
-list_mod_allocator.adb:148:19: info: loop invariant initialization proved
-list_mod_allocator.adb:148:19: info: loop invariant preservation proved
-list_mod_allocator.adb:155:25: info: assertion proved
-list_mod_allocator.adb:166:19: info: index check proved
-list_mod_allocator.adb:166:19: info: precondition proved
-list_mod_allocator.adb:166:24: info: precondition proved
-list_mod_allocator.adb:166:47: info: precondition proved
-list_mod_allocator.adb:169:62: info: precondition proved
-list_mod_allocator.adb:176:14: info: add a contract to analyze it separately from calling contexts
-list_mod_allocator.adb:176:14: info: local subprogram "Prove_Is_Preprend" only analyzed in the context of calls
-list_mod_allocator.adb:184:13: info: loop invariant initialization proved, in call inlined at list_mod_allocator.adb:212
-list_mod_allocator.adb:184:13: info: loop invariant initialization proved, in call inlined at list_mod_allocator.adb:225
-list_mod_allocator.adb:184:13: info: loop invariant preservation proved, in call inlined at list_mod_allocator.adb:212
-list_mod_allocator.adb:184:13: info: loop invariant preservation proved, in call inlined at list_mod_allocator.adb:225
-list_mod_allocator.adb:184:28: info: overflow check proved, in call inlined at list_mod_allocator.adb:212
-list_mod_allocator.adb:184:28: info: overflow check proved, in call inlined at list_mod_allocator.adb:225
-list_mod_allocator.adb:186:13: info: loop invariant initialization proved, in call inlined at list_mod_allocator.adb:212
-list_mod_allocator.adb:186:13: info: loop invariant initialization proved, in call inlined at list_mod_allocator.adb:225
-list_mod_allocator.adb:186:13: info: loop invariant preservation proved, in call inlined at list_mod_allocator.adb:212
-list_mod_allocator.adb:186:13: info: loop invariant preservation proved, in call inlined at list_mod_allocator.adb:225
-list_mod_allocator.adb:187:15: info: precondition proved, in call inlined at list_mod_allocator.adb:212
-list_mod_allocator.adb:187:15: info: precondition proved, in call inlined at list_mod_allocator.adb:225
-list_mod_allocator.adb:187:29: info: precondition proved, in call inlined at list_mod_allocator.adb:212
-list_mod_allocator.adb:187:29: info: precondition proved, in call inlined at list_mod_allocator.adb:225
-list_mod_allocator.adb:187:40: info: overflow check proved, in call inlined at list_mod_allocator.adb:212
-list_mod_allocator.adb:187:40: info: overflow check proved, in call inlined at list_mod_allocator.adb:225
-list_mod_allocator.adb:189:13: info: loop invariant initialization proved, in call inlined at list_mod_allocator.adb:212
-list_mod_allocator.adb:189:13: info: loop invariant initialization proved, in call inlined at list_mod_allocator.adb:225
-list_mod_allocator.adb:189:13: info: loop invariant preservation proved, in call inlined at list_mod_allocator.adb:212
-list_mod_allocator.adb:189:13: info: loop invariant preservation proved, in call inlined at list_mod_allocator.adb:225
-list_mod_allocator.adb:189:33: info: overflow check proved, in call inlined at list_mod_allocator.adb:212
-list_mod_allocator.adb:189:33: info: overflow check proved, in call inlined at list_mod_allocator.adb:225
-list_mod_allocator.adb:190:15: info: precondition proved, in call inlined at list_mod_allocator.adb:212
-list_mod_allocator.adb:190:15: info: precondition proved, in call inlined at list_mod_allocator.adb:225
-list_mod_allocator.adb:190:33: info: precondition proved, in call inlined at list_mod_allocator.adb:212
-list_mod_allocator.adb:190:33: info: precondition proved, in call inlined at list_mod_allocator.adb:225
-list_mod_allocator.adb:193:25: info: assertion proved, in call inlined at list_mod_allocator.adb:212
-list_mod_allocator.adb:193:25: info: assertion proved, in call inlined at list_mod_allocator.adb:225
-list_mod_allocator.adb:193:53: info: overflow check proved, in call inlined at list_mod_allocator.adb:212
-list_mod_allocator.adb:193:53: info: overflow check proved, in call inlined at list_mod_allocator.adb:225
-list_mod_allocator.adb:194:27: info: precondition proved, in call inlined at list_mod_allocator.adb:212
-list_mod_allocator.adb:194:27: info: precondition proved, in call inlined at list_mod_allocator.adb:225
-list_mod_allocator.adb:194:48: info: index check proved, in call inlined at list_mod_allocator.adb:212
-list_mod_allocator.adb:194:48: info: index check proved, in call inlined at list_mod_allocator.adb:225
-list_mod_allocator.adb:194:48: info: precondition proved, in call inlined at list_mod_allocator.adb:212
-list_mod_allocator.adb:194:48: info: precondition proved, in call inlined at list_mod_allocator.adb:225
-list_mod_allocator.adb:199:07: info: initialization of "Next_Avail" proved
-list_mod_allocator.adb:200:33: info: precondition proved
-list_mod_allocator.adb:204:30: info: index check proved
-list_mod_allocator.adb:205:16: info: index check proved
-list_mod_allocator.adb:209:13: info: assertion proved
-list_mod_allocator.adb:211:35: info: index check proved
-list_mod_allocator.adb:212:10: info: analyzing call to "Prove_Is_Preprend" in context
-list_mod_allocator.adb:212:29: info: precondition proved
-list_mod_allocator.adb:219:33: info: precondition proved
-list_mod_allocator.adb:221:44: info: index check proved
-list_mod_allocator.adb:222:16: info: index check proved
-list_mod_allocator.adb:225:10: info: analyzing call to "Prove_Is_Preprend" in context
-list_mod_allocator.adb:225:33: info: precondition proved
-list_mod_allocator.adb:229:14: info: add a contract to analyze it separately from calling contexts
-list_mod_allocator.adb:229:14: info: local subprogram "Prove_Init" only analyzed in the context of calls
-list_mod_allocator.adb:237:13: info: loop invariant initialization proved, in call inlined at list_mod_allocator.adb:251
-list_mod_allocator.adb:237:13: info: loop invariant preservation proved, in call inlined at list_mod_allocator.adb:251
-list_mod_allocator.adb:237:36: info: precondition proved, in call inlined at list_mod_allocator.adb:251
-list_mod_allocator.adb:237:65: info: range check proved, in call inlined at list_mod_allocator.adb:251
-list_mod_allocator.adb:243:47: info: range check proved
-list_mod_allocator.adb:245:10: info: loop invariant initialization proved
-list_mod_allocator.adb:245:10: info: loop invariant preservation proved
-list_mod_allocator.adb:246:18: info: index check proved
-list_mod_allocator.adb:246:72: info: overflow check proved
-list_mod_allocator.adb:247:30: info: loop invariant initialization proved
-list_mod_allocator.adb:247:30: info: loop invariant preservation proved
-list_mod_allocator.adb:248:30: info: loop invariant initialization proved
-list_mod_allocator.adb:248:30: info: loop invariant preservation proved
-list_mod_allocator.adb:251:04: info: analyzing call to "Prove_Init" in context
-list_mod_allocator.adb:251:16: info: precondition proved
-list_mod_allocator.adb:253:07: info: assertion proved
-list_mod_allocator.adb:253:13: info: index check proved
-list_mod_allocator.adb:253:13: info: precondition proved
-list_mod_allocator.adb:253:18: info: precondition proved
-list_mod_allocator.adb:253:41: info: precondition proved
+list_mod_allocator.adb:138:29: info: index check proved
+list_mod_allocator.adb:138:29: info: precondition proved
+list_mod_allocator.adb:140:19: info: loop invariant initialization proved
+list_mod_allocator.adb:140:19: info: loop invariant preservation proved
+list_mod_allocator.adb:141:33: info: index check proved
+list_mod_allocator.adb:141:33: info: precondition proved
+list_mod_allocator.adb:141:56: info: precondition proved
+list_mod_allocator.adb:141:70: info: overflow check proved
+list_mod_allocator.adb:143:19: info: loop invariant initialization proved
+list_mod_allocator.adb:143:19: info: loop invariant preservation proved
+list_mod_allocator.adb:144:21: info: precondition proved
+list_mod_allocator.adb:144:44: info: index check proved
+list_mod_allocator.adb:144:44: info: precondition proved
+list_mod_allocator.adb:146:19: info: loop invariant initialization proved
+list_mod_allocator.adb:146:19: info: loop invariant preservation proved
+list_mod_allocator.adb:148:30: info: precondition proved
+list_mod_allocator.adb:148:47: info: precondition proved
+list_mod_allocator.adb:150:19: info: loop invariant initialization proved
+list_mod_allocator.adb:150:19: info: loop invariant preservation proved
+list_mod_allocator.adb:157:25: info: assertion proved
+list_mod_allocator.adb:168:19: info: index check proved
+list_mod_allocator.adb:168:19: info: precondition proved
+list_mod_allocator.adb:168:24: info: precondition proved
+list_mod_allocator.adb:168:47: info: precondition proved
+list_mod_allocator.adb:171:62: info: precondition proved
+list_mod_allocator.adb:178:14: info: add a contract to analyze it separately from calling contexts
+list_mod_allocator.adb:178:14: info: local subprogram "Prove_Is_Preprend" only analyzed in the context of calls
+list_mod_allocator.adb:186:13: info: loop invariant initialization proved, in call inlined at list_mod_allocator.adb:214
+list_mod_allocator.adb:186:13: info: loop invariant initialization proved, in call inlined at list_mod_allocator.adb:227
+list_mod_allocator.adb:186:13: info: loop invariant preservation proved, in call inlined at list_mod_allocator.adb:214
+list_mod_allocator.adb:186:13: info: loop invariant preservation proved, in call inlined at list_mod_allocator.adb:227
+list_mod_allocator.adb:186:28: info: overflow check proved, in call inlined at list_mod_allocator.adb:214
+list_mod_allocator.adb:186:28: info: overflow check proved, in call inlined at list_mod_allocator.adb:227
+list_mod_allocator.adb:188:13: info: loop invariant initialization proved, in call inlined at list_mod_allocator.adb:214
+list_mod_allocator.adb:188:13: info: loop invariant initialization proved, in call inlined at list_mod_allocator.adb:227
+list_mod_allocator.adb:188:13: info: loop invariant preservation proved, in call inlined at list_mod_allocator.adb:214
+list_mod_allocator.adb:188:13: info: loop invariant preservation proved, in call inlined at list_mod_allocator.adb:227
+list_mod_allocator.adb:189:15: info: precondition proved, in call inlined at list_mod_allocator.adb:214
+list_mod_allocator.adb:189:15: info: precondition proved, in call inlined at list_mod_allocator.adb:227
+list_mod_allocator.adb:189:29: info: precondition proved, in call inlined at list_mod_allocator.adb:214
+list_mod_allocator.adb:189:29: info: precondition proved, in call inlined at list_mod_allocator.adb:227
+list_mod_allocator.adb:189:40: info: overflow check proved, in call inlined at list_mod_allocator.adb:214
+list_mod_allocator.adb:189:40: info: overflow check proved, in call inlined at list_mod_allocator.adb:227
+list_mod_allocator.adb:191:13: info: loop invariant initialization proved, in call inlined at list_mod_allocator.adb:214
+list_mod_allocator.adb:191:13: info: loop invariant initialization proved, in call inlined at list_mod_allocator.adb:227
+list_mod_allocator.adb:191:13: info: loop invariant preservation proved, in call inlined at list_mod_allocator.adb:214
+list_mod_allocator.adb:191:13: info: loop invariant preservation proved, in call inlined at list_mod_allocator.adb:227
+list_mod_allocator.adb:191:33: info: overflow check proved, in call inlined at list_mod_allocator.adb:214
+list_mod_allocator.adb:191:33: info: overflow check proved, in call inlined at list_mod_allocator.adb:227
+list_mod_allocator.adb:192:15: info: precondition proved, in call inlined at list_mod_allocator.adb:214
+list_mod_allocator.adb:192:15: info: precondition proved, in call inlined at list_mod_allocator.adb:227
+list_mod_allocator.adb:192:33: info: precondition proved, in call inlined at list_mod_allocator.adb:214
+list_mod_allocator.adb:192:33: info: precondition proved, in call inlined at list_mod_allocator.adb:227
+list_mod_allocator.adb:195:25: info: assertion proved, in call inlined at list_mod_allocator.adb:214
+list_mod_allocator.adb:195:25: info: assertion proved, in call inlined at list_mod_allocator.adb:227
+list_mod_allocator.adb:195:53: info: overflow check proved, in call inlined at list_mod_allocator.adb:214
+list_mod_allocator.adb:195:53: info: overflow check proved, in call inlined at list_mod_allocator.adb:227
+list_mod_allocator.adb:196:27: info: precondition proved, in call inlined at list_mod_allocator.adb:214
+list_mod_allocator.adb:196:27: info: precondition proved, in call inlined at list_mod_allocator.adb:227
+list_mod_allocator.adb:196:48: info: index check proved, in call inlined at list_mod_allocator.adb:214
+list_mod_allocator.adb:196:48: info: index check proved, in call inlined at list_mod_allocator.adb:227
+list_mod_allocator.adb:196:48: info: precondition proved, in call inlined at list_mod_allocator.adb:214
+list_mod_allocator.adb:196:48: info: precondition proved, in call inlined at list_mod_allocator.adb:227
+list_mod_allocator.adb:201:07: info: initialization of "Next_Avail" proved
+list_mod_allocator.adb:202:33: info: precondition proved
+list_mod_allocator.adb:206:13: info: assertion proved
+list_mod_allocator.adb:211:30: info: index check proved
+list_mod_allocator.adb:212:16: info: index check proved
+list_mod_allocator.adb:214:10: info: analyzing call to "Prove_Is_Preprend" in context
+list_mod_allocator.adb:214:29: info: precondition proved
+list_mod_allocator.adb:221:33: info: precondition proved
+list_mod_allocator.adb:223:44: info: index check proved
+list_mod_allocator.adb:224:16: info: index check proved
+list_mod_allocator.adb:227:10: info: analyzing call to "Prove_Is_Preprend" in context
+list_mod_allocator.adb:227:33: info: precondition proved
+list_mod_allocator.adb:231:14: info: add a contract to analyze it separately from calling contexts
+list_mod_allocator.adb:231:14: info: local subprogram "Prove_Init" only analyzed in the context of calls
+list_mod_allocator.adb:239:13: info: loop invariant initialization proved, in call inlined at list_mod_allocator.adb:253
+list_mod_allocator.adb:239:13: info: loop invariant preservation proved, in call inlined at list_mod_allocator.adb:253
+list_mod_allocator.adb:239:36: info: precondition proved, in call inlined at list_mod_allocator.adb:253
+list_mod_allocator.adb:239:65: info: range check proved, in call inlined at list_mod_allocator.adb:253
+list_mod_allocator.adb:245:47: info: range check proved
+list_mod_allocator.adb:247:10: info: loop invariant initialization proved
+list_mod_allocator.adb:247:10: info: loop invariant preservation proved
+list_mod_allocator.adb:248:18: info: index check proved
+list_mod_allocator.adb:248:72: info: overflow check proved
+list_mod_allocator.adb:249:30: info: loop invariant initialization proved
+list_mod_allocator.adb:249:30: info: loop invariant preservation proved
+list_mod_allocator.adb:250:30: info: loop invariant initialization proved
+list_mod_allocator.adb:250:30: info: loop invariant preservation proved
+list_mod_allocator.adb:253:04: info: analyzing call to "Prove_Init" in context
+list_mod_allocator.adb:253:16: info: precondition proved
 list_mod_allocator.adb:255:07: info: assertion proved
-list_mod_allocator.adb:255:49: info: precondition proved
+list_mod_allocator.adb:255:13: info: index check proved
+list_mod_allocator.adb:255:13: info: precondition proved
+list_mod_allocator.adb:255:18: info: precondition proved
+list_mod_allocator.adb:255:41: info: precondition proved
+list_mod_allocator.adb:257:07: info: assertion proved
+list_mod_allocator.adb:257:49: info: precondition proved
 list_mod_allocator.ads:11:03: info: flow dependencies proved
 list_mod_allocator.ads:12:03: info: initial condition proved
 list_mod_allocator.ads:23:13: info: implicit aspect Always_Terminates on "Is_Available" has been proved, subprogram will terminate
@@ -312,22 +311,22 @@ list_mod_allocator.ads:119:11: info: precondition proved
 list_mod_allocator.ads:119:19: info: precondition proved
 simple_allocator.adb:22:39: info: index check proved
 simple_allocator.adb:24:39: info: index check proved
-simple_allocator.adb:45:10: info: initialization of "Avail" proved
-simple_allocator.adb:46:10: info: initialization of "Alloc" proved
-simple_allocator.adb:50:43: info: precondition proved
-simple_allocator.adb:51:43: info: precondition proved
-simple_allocator.adb:54:16: info: loop invariant initialization proved
-simple_allocator.adb:54:16: info: loop invariant preservation proved
-simple_allocator.adb:54:16: info: predicate check proved
-simple_allocator.adb:54:33: info: predicate check proved
-simple_allocator.adb:62:69: info: range check proved
-simple_allocator.adb:63:69: info: range check proved
-simple_allocator.adb:65:33: info: index check proved
-simple_allocator.adb:83:13: info: loop invariant initialization proved
-simple_allocator.adb:83:13: info: loop invariant preservation proved
-simple_allocator.adb:84:53: info: index check proved
-simple_allocator.adb:91:44: info: index check proved
-simple_allocator.adb:92:16: info: index check proved
+simple_allocator.adb:47:10: info: initialization of "Avail" proved
+simple_allocator.adb:48:10: info: initialization of "Alloc" proved
+simple_allocator.adb:52:43: info: precondition proved
+simple_allocator.adb:53:43: info: precondition proved
+simple_allocator.adb:56:16: info: loop invariant initialization proved
+simple_allocator.adb:56:16: info: loop invariant preservation proved
+simple_allocator.adb:56:16: info: predicate check proved
+simple_allocator.adb:56:33: info: predicate check proved
+simple_allocator.adb:64:69: info: range check proved
+simple_allocator.adb:65:69: info: range check proved
+simple_allocator.adb:67:33: info: index check proved
+simple_allocator.adb:85:13: info: loop invariant initialization proved
+simple_allocator.adb:85:13: info: loop invariant preservation proved
+simple_allocator.adb:86:53: info: index check proved
+simple_allocator.adb:93:44: info: index check proved
+simple_allocator.adb:94:16: info: index check proved
 simple_allocator.ads:8:03: info: flow dependencies proved
 simple_allocator.ads:9:03: info: initial condition proved
 simple_allocator.ads:18:13: info: implicit aspect Always_Terminates on "Is_Available" has been proved, subprogram will terminate
