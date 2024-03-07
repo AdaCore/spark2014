@@ -4725,12 +4725,11 @@ package body SPARK_Definition is
          return;
       end if;
 
-      --  We are calling a predicate function whose predicate is not visible
-      --  in SPARK. This is OK, we do not try to mark the call.
+      --  We are calling a predicate function. This is OK, we do not try to
+      --  mark the call.
 
       if Ekind (E) = E_Function
         and then Is_Predicate_Function (E)
-        and then not In_SPARK (E)
       then
          return;
       end if;
