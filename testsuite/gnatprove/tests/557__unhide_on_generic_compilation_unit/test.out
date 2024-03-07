@@ -1,0 +1,4 @@
+gen.ads:3:13: info: implicit aspect Always_Terminates on "F" has been proved, subprogram will terminate, in instantiation at inst.ads:3
+gen.ads:3:13: info: implicit aspect Always_Terminates on "F" has been proved, subprogram will terminate, in instantiation at main.adb:4
+main.adb:6:19: info: assertion proved (Trivial: 1 VC)
+main.adb:7:19: medium: assertion might fail [possible fix: you should consider adding a postcondition to function F or turning it into an expression function in its unit spec]
