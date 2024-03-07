@@ -2535,10 +2535,15 @@ package body SPARK_Definition.Annotate is
             return;
 
          elsif Is_Compilation_Unit (Ent) then
-            Error_Msg_N_If
-              ("the entity of a pragma Annotate " & Annot & " for "
-               & "package bodies shall not be a compilation unit",
-               Prag);
+            --  Special case: ignore such annotation pragma on package bodies
+            --  of generic units.
+
+            if not Is_Generic_Instance (Get_Renamed_Entity (Ent)) then
+               Error_Msg_N_If
+                 ("the entity of a pragma Annotate " & Annot & " for "
+                  & "package bodies shall not be a compilation unit",
+                  Prag);
+            end if;
             return;
          end if;
 

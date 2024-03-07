@@ -5511,8 +5511,11 @@ package body SPARK_Definition is
    ---------------------------
 
    procedure Mark_Compilation_Unit (N : Node_Id) is
-      CU        : constant Node_Id := Parent (N);
-      Context_N : Node_Id;
+      CU            : constant Node_Id := Parent (N);
+      pragma Assert (Nkind (CU) = N_Compilation_Unit);
+
+      Extra_Pragmas : constant List_Id := Pragmas_After (Aux_Decls_Node (CU));
+      Context_N     : Node_Id;
 
    begin
       --  Violations within Context_Items, e.g. unknown configuration pragmas,
@@ -5524,7 +5527,18 @@ package body SPARK_Definition is
 
       Context_N := First (Context_Items (CU));
       while Present (Context_N) loop
-         Mark (Context_N);
+         --  Pragmas annotate may occur in context clause, but are necessarily
+         --  misplaced.
+
+         if Is_Pragma_Annotate_GNATprove (Context_N) then
+            if Emit_Messages then
+               Error_Msg_N
+                 ("pragma Annotate ('G'N'A'Tprove, ...) cannot occur"
+                  & " within context clauses", Context_N);
+            end if;
+         else
+            Mark (Context_N);
+         end if;
          Next (Context_N);
       end loop;
 
@@ -5538,6 +5552,13 @@ package body SPARK_Definition is
       --  Reset it here.
 
       Violation_Detected := False;
+
+      --  Mark pragmas following the compilation unit (can come from rewriting
+      --  aspects)
+
+      if Present (Extra_Pragmas) then
+         Mark_Stmt_Or_Decl_List (Extra_Pragmas);
+      end if;
 
       --  Mark entities from the marking queue, delayed type aspects, full
       --  views of accesses to incomplete or partial types. Conceptually, they
