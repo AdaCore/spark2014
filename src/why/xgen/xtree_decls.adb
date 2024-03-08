@@ -41,8 +41,7 @@ package body Xtree_Decls is
       use Node_Lists;
    begin
       PL (O, "type " & Node_Type_Name
-          & " (" & Kind_Name  & " : " & Node_Kind_Name
-          & " := " & Default_Kind & ")"
+          & " (" & Kind_Name  & " : " & Node_Kind_Name & ")"
           & " is record");
       Relative_Indent (O, 3);
 
