@@ -1083,16 +1083,12 @@ package body Gnat2Why.Driver is
    --------------------------
 
    procedure Print_GNAT_Json_File (Filename : String) is
-      Modules    : constant Why_Node_Lists.List := Build_Printing_Plan;
-      Json_File  : constant JSON_Value := Create_Object;
-      Json_Decls : constant JSON_Value :=
-        Why_Node_Lists_List_To_Json (Modules);
+      Modules : constant Why_Node_Lists.List := Build_Printing_Plan;
    begin
-      Set_Field (Json_File, "theory_declarations", Json_Decls);
-
-      --  Output to file
       Open_Current_File (Filename);
-      P (Current_File, Write (Json_File, Compact => True));
+      P (Current_File, "{ ""theory_declarations"" : ");
+      Why_Node_Lists_List_To_Json (Current_File, Modules);
+      P (Current_File, "}");
       Close_Current_File;
    end Print_GNAT_Json_File;
 

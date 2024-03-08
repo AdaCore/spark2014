@@ -138,14 +138,23 @@ package body Xtree_Why_AST is
    --  Start of processing for Print_Ada_Enum_To_Json
 
    begin
-      PL (O, "function " & Name & "_To_Json (Arg : " & Name & ")");
-      PL (O, "   return JSON_Value;");
+      PL (O, "procedure " & Name & "_To_Json");
+      Relative_Indent (O, 2);
+      PL (O, "(O : Output_Id;");
+      Relative_Indent (O, 1);
+      PL (O, "Arg : " & Name & ");");
+      Relative_Indent (O, -3);
       NL (O);
-      PL (O, "function " & Name & "_To_Json (Arg : " & Name & ")");
-      PL (O, "return JSON_Value");
+      PL (O, "procedure " & Name & "_To_Json");
+      Relative_Indent (O, 2);
+      PL (O, "(O : Output_Id;");
+      Relative_Indent (O, 1);
+      PL (O, "Arg : " & Name & ") is");
+      Relative_Indent (O, -3);
       begin
+         PL (O, "begin");
          Relative_Indent (O, 3);
-         PL (O, "is (Create (Integer (case Arg is");
+         PL (O, "P (O, Integer'Image (case Arg is");
          begin
             Relative_Indent (O, 3);
             for E in T'Range loop
@@ -157,9 +166,11 @@ package body Xtree_Why_AST is
             end loop;
             Relative_Indent (O, -3);
          end;
-         PL (O, ")));");
+         PL (O, "));");
          Relative_Indent (O, -3);
       end;
+      PL (O, "end " & Name & "_To_Json;");
+
       NL (O);
    end Print_Ada_Enum_To_Json;
 
@@ -220,27 +231,23 @@ package body Xtree_Why_AST is
    begin
       PL (O, "Why_Node_Counter : Integer := 0;");
       NL (O);
-      PL (O, "function Why_Node_To_Json (Node : Why_Node) " &
-            "return JSON_Value is");
-      begin
-         Relative_Indent (O, 3);
-         PL (O, "Res : constant JSON_Value := Create (Empty_Array);");
-         Relative_Indent (O, -3);
-      end;
+      PL (O, "procedure Why_Node_To_Json (O : Output_Id; Node : Why_Node) is");
       PL (O, "begin");
       begin
          Relative_Indent (O, 3);
+         PL (O, "P (O, ""["");");
          PL (O, "Why_Node_Counter := Why_Node_Counter + 1;");
-         PL (O, "Append (Res, Create (Why_Node_Kind'Image (Node.Kind)));");
-         PL (O, "Append (Res, Create (Why_Node_Counter));");
+         PL (O, "P (O, Why_Node_Kind'Image (Node.Kind), As_String => True);");
+         PL (O, "P (O, "","");");
+         PL (O, "P (O, Integer'Image (Why_Node_Counter));");
          for FI of Common_Fields.Fields loop
             declare
                Typ_Name : constant String :=
                  Clean_Identifier (Type_Name (FI, Opaque));
             begin
-               PL (O, "Append (Res, " &
-                     Typ_Name & "_To_Json (Node." & Field_Name (FI) &
-                     "));");
+               PL (O, "P (O, "","");");
+               PL (O,
+                   Typ_Name & "_To_Json (O, Node." & Field_Name (FI) & ");");
             end;
          end loop;
          PL (O, "case Node.Kind is");
@@ -257,8 +264,13 @@ package body Xtree_Why_AST is
                         Field_Type : constant String :=
                           Clean_Identifier (Type_Name (FI, Opaque));
                      begin
-                        PL (O, "Append (Res, " & Field_Type & "_To_Json");
-                        PL (O, "   (Node." & Field_Name (FI) & "));");
+                        PL (O, "P (O, "","");");
+                        PL (O, Field_Type & "_To_Json");
+                        Relative_Indent (O, 2);
+                        PL (O, "(O,");
+                        Relative_Indent (O, 1);
+                        PL (O, "Node." & Field_Name (FI) & ");");
+                        Relative_Indent (O, -3);
                      end;
                   end loop;
                end if;
@@ -267,7 +279,7 @@ package body Xtree_Why_AST is
             Relative_Indent (O, -3);
          end;
          PL (O, "end case;");
-         PL (O, "return Res;");
+         PL (O, "P (O, ""]"");");
          Relative_Indent (O, -3);
       end;
       PL (O, "end Why_Node_To_Json;");
@@ -319,20 +331,19 @@ package body Xtree_Why_AST is
                Why_Node_Name : constant String :=
                  Id_Subtype ("Why_Node", Derived, Multiplicity);
             begin
-               PL (O, "function " & Name & "_To_Json");
+               PL (O, "procedure " & Name & "_To_Json");
                begin
                   Relative_Indent (O, 3);
-                  PL (O, "(Arg : " & Name & ")");
-                  PL (O, "return JSON_Value;");
+                  PL (O, "(O : Output_Id; Arg : " & Name & ");");
                   Relative_Indent (O, -3);
                end;
                NL (O);
-               PL (O, "function " & Name & "_To_Json");
+               PL (O, "procedure " & Name & "_To_Json");
                begin
                   Relative_Indent (O, 3);
-                  PL (O, "(Arg : " & Name & ")");
-                  PL (O, "return JSON_Value");
-                  PL (O, "is (" & Why_Node_Name & "_To_Json (Arg));");
+                  PL (O, "(O : Output_Id; Arg : " & Name & ")");
+                  PL (O, "is begin " & Why_Node_Name & "_To_Json (O, Arg);");
+                  PL (O, "end " & Name & "_To_Json;");
                   Relative_Indent (O, -3);
                end;
                NL (O);
