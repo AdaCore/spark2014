@@ -96,9 +96,9 @@ package body Xkind_Checks is
 
                   if False then
                      PL (O,
-                         " and then for all Element in Get_List ("
-                         & Node_Id_Param & ") | ");
-                     PL (O, Kind_Check (Prefix, Id_One) & " (Element));");
+                         " and then (for all Element of Get_List ("
+                         & Node_Id_Param & ") =>");
+                     PL (O, Kind_Check (Prefix, Id_One) & " (Element)));");
                   else
                      PL (O, " and then True);");
                      Relative_Indent (O, -2);
