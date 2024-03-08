@@ -29,8 +29,6 @@ with Why.Atree.Validity; use Why.Atree.Validity;
 
 package body Why.Atree.Builders is
 
-   _@Implement_Unchecked_Builders@_
-
    _@Implement_Class_Wide_Builders@_
 
 end Why.Atree.Builders;

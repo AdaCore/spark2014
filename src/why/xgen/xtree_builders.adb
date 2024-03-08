@@ -48,12 +48,6 @@ package body Xtree_Builders is
    --  default one.
 
    procedure Print_Builder_Body
-     (O    : in out Output_Record;
-      Kind : Why_Node_Kind;
-      IK   : Id_Kind);
-   --  Print builder body for the given node kind
-
-   procedure Print_Builder_Body
      (O           : in out Output_Record;
       Kind        : Why_Node_Kind;
       IK          : Id_Kind;
@@ -77,14 +71,6 @@ package body Xtree_Builders is
    ------------------------
    -- Print_Builder_Body --
    ------------------------
-
-   procedure Print_Builder_Body
-     (O    : in out Output_Record;
-      Kind : Why_Node_Kind;
-      IK   : Id_Kind) is
-   begin
-      Print_Builder_Body (O, Kind, IK, Id_Subtype (Kind, IK));
-   end Print_Builder_Body;
 
    procedure Print_Builder_Body
      (O           : in out Output_Record;
@@ -492,48 +478,5 @@ package body Xtree_Builders is
          end if;
       end loop;
    end Print_Class_Wide_Builder_Bodies;
-
-   ------------------------------------
-   -- Print_Unchecked_Builder_Bodies --
-   ------------------------------------
-
-   procedure Print_Unchecked_Builder_Bodies (O : in out Output_Record) is
-      First : Boolean := True;
-   begin
-      for J in Valid_Kind'Range loop
-         if Is_Mutable (J) then
-            if First then
-               First := False;
-            else
-               NL (O);
-            end if;
-
-            Print_Builder_Body (O, J, Unchecked);
-         end if;
-      end loop;
-   end Print_Unchecked_Builder_Bodies;
-
-   ------------------------------------------
-   -- Print_Unchecked_Builder_Declarations --
-   ------------------------------------------
-
-   procedure Print_Unchecked_Builder_Declarations
-     (O  : in out Output_Record)
-   is
-      First : Boolean := True;
-   begin
-      for J in Valid_Kind'Range loop
-         if Is_Mutable (J) then
-            if First then
-               First := False;
-            else
-               NL (O);
-            end if;
-
-            Print_Builder_Declaration (O, J, Unchecked,
-                                       Id_Subtype (J, Unchecked));
-         end if;
-      end loop;
-   end Print_Unchecked_Builder_Declarations;
 
 end Xtree_Builders;
