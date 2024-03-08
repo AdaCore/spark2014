@@ -73,7 +73,7 @@ loops_static.adb:164:13: high: array index check might fail (e.g. when I = 1 and
 loops_static.adb:166:20: info: initialization of "Bad" proved
 loops_static.adb:168:38: info: cannot unroll loop (too many loop iterations)
 loops_static.adb:169:25: info: index check proved (CVC5: 4 VC)
-loops_static.adb:176:42: medium: assertion might fail, cannot prove R (J) = 0
+loops_static.adb:176:42: high: assertion might fail, cannot prove R (J) = 0 (e.g. when J = 0 and R = (1 => 0, others => 1))
 loops_static.adb:176:45: info: index check proved (CVC5: 4 VC)
 loops_static.adb:178:07: medium: assertion might fail
 loops_static.adb:180:07: warning: this statement is never reached
