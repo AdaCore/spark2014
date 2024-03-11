@@ -23,7 +23,6 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with GNATCOLL.JSON;    use GNATCOLL.JSON;
 with Why.Atree.Tables; use Why.Atree.Tables;
 with Outputs;          use Outputs;
 
