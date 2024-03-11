@@ -44,7 +44,7 @@ procedure Test with SPARK_Mode is
 
    procedure P_1 (X : out RR; B : out Boolean) is
    begin
-      B := X.F.D = 0; --  Flow analysis should emit an initialization check here
+      B := X.F.D = 0; --  @INITIALIZED:CHECK
       X := (F => (D => 12, others => 0));
    end P_1;
 

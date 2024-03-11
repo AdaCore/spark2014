@@ -381,8 +381,167 @@ package body Flow.Control_Flow_Graph.Utility is
       A.Error_Location               := E_Loc;
 
       if In_Vertex then
-         declare
-            Used : constant Flow_Id_Sets.Set :=
+         if Discriminants_Or_Bounds_Only then
+            declare
+               Formal_Type : constant Entity_Id := Get_Type (Formal, Scope);
+
+               Partial    : Boolean;
+               Unused_Vc  : Boolean;
+               Unused_Seq : Node_Lists.List;
+               Map_Root   : Flow_Id;
+
+            begin
+               --  If the formal parameter of mode OUT is of an unconstrained
+               --  type, then the callee is allowed to use the top-level
+               --  discriminants, array bounds and tags.
+
+               pragma Assert
+                 (Is_Tagged_Type (Etype (Formal)) =
+                    Is_Tagged_Type (Formal_Type));
+
+               --  ??? Extract top-level tag
+
+               if Is_Tagged_Type (Formal_Type) then
+                  null;
+               end if;
+
+               --  Extract top-level array bounds
+
+               if Is_Array_Type (Formal_Type)
+                 and then not Is_Constrained (Formal_Type)
+               then
+                  declare
+                     Actual_Object : Node_Id;
+                     Actual_Type   : Entity_Id;
+                     Index         : Node_Id;
+                     Index_Type    : Entity_Id;
+                  begin
+                     --  Conversions to unconstrained types are transparent
+                     --  to the array bounds; conversions to constrained types
+                     --  introduce new bounds.
+
+                     Actual_Object := Actual;
+
+                     while Nkind (Actual_Object) = N_Type_Conversion
+                       and then not Is_Constrained (Etype (Actual_Object))
+                     loop
+                        Actual_Object := Expression (Actual_Object);
+                     end loop;
+
+                     pragma Assert
+                       (Nkind (Actual_Object) /= N_Unchecked_Type_Conversion);
+
+                     --  If the actual parameter is constrained, then the
+                     --  bounds can be picked like for the 'First/'Last.
+
+                     Actual_Type := Etype (Actual_Object);
+
+                     if Is_Private_Type (Actual_Type) then
+                        Actual_Type := Full_View (Actual_Type);
+                     end if;
+
+                     if Is_Constrained (Actual_Type) then
+
+                        Index      := First_Index (Actual_Type);
+                        Index_Type := Etype (Index);
+
+                        while Present (Index) loop
+                           A.Variables_Used.Union
+                             (Get_Variables
+                                (N              =>
+                                   Type_Low_Bound (Index_Type),
+                                 Scope          => Scope,
+                                 Target_Name    => Null_Flow_Id,
+                                 Fold_Functions => Inputs,
+                                 Use_Computed_Globals =>
+                                   not FA.Generating_Globals));
+                           A.Variables_Used.Union
+                             (Get_Variables
+                                (N              =>
+                                   Type_High_Bound (Index_Type),
+                                 Scope          => Scope,
+                                 Target_Name    => Null_Flow_Id,
+                                 Fold_Functions => Inputs,
+                                 Use_Computed_Globals =>
+                                   not FA.Generating_Globals));
+                           Next_Index (Index);
+                        end loop;
+
+                     --  If the actual parameter is unconstrained, it must
+                     --  be an entire object, except for a component of an
+                     --  access-to-unconstrained-array type.
+
+                     else
+                        Get_Assignment_Target_Properties
+                           (Actual,
+                            Partial_Definition => Partial,
+                            View_Conversion    => Unused_Vc,
+                            Map_Root           => Map_Root,
+                            Seq                => Unused_Seq);
+
+                        --  If the bounds are located in a "blob", e.g. in an
+                        --  array component or pointed-to object, then they are
+                        --  represented by the "blob" itself.
+
+                        if Partial then
+                           A.Variables_Used.Insert (Map_Root);
+
+                        --  If the bounds are located in the object itself,
+                        --  then we just pick them.
+
+                        elsif Has_Bounds (Map_Root, Scope) then
+                           A.Variables_Used.Insert
+                              ((Map_Root with delta Facet => The_Bounds));
+                        end if;
+
+                        --  Make sure that we have actually picked some
+                        --  variables and recognize them as being passed to
+                        --  the callee.
+
+                        pragma Assert (not A.Variables_Used.Is_Empty);
+                     end if;
+                  end;
+
+               --  Extract top-level discriminants, both from plain and tagged
+               --  record types.
+
+               elsif Has_Discriminants (Formal_Type)
+                 and then not Is_Constrained (Formal_Type)
+               then
+
+                  Get_Assignment_Target_Properties
+                     (Actual,
+                      Partial_Definition => Partial,
+                      View_Conversion    => Unused_Vc,
+                      Map_Root           => Map_Root,
+                      Seq                => Unused_Seq);
+
+                  --  If the discrimnants are located in a "blob", e.g. in an
+                  --  array component or pointed-to object, then they are
+                  --  represented by the "blob" itself.
+
+                  if Partial then
+                     A.Variables_Used.Insert (Map_Root);
+
+                  --  If discriminants are represented precisely, then we just
+                  --  pick them.
+
+                  else
+                     for C of Get_Components (Map_Root, Scope) loop
+                        if Is_Discriminant (C) then
+                           A.Variables_Used.Insert (C);
+                        end if;
+                     end loop;
+                  end if;
+
+                  --  Make sure that we have actually picked some variables and
+                  --  recognize them as being passed to the callee.
+
+                  pragma Assert (not A.Variables_Used.Is_Empty);
+               end if;
+            end;
+         else
+            A.Variables_Used :=
               Get_Variables
                 (Actual,
                  Scope                => Scope,
@@ -390,21 +549,9 @@ package body Flow.Control_Flow_Graph.Utility is
                  Fold_Functions       => Inputs,
                  Use_Computed_Globals => not FA.Generating_Globals,
                  Consider_Extensions  => Ext_Relevant_To_Formal);
-         begin
-            for F of Used loop
-               if not Discriminants_Or_Bounds_Only
-                 or else Is_Discriminant (F)
-               then
-                  A.Variables_Used.Include (F);
-               end if;
-               if not Is_Bound (F) and then Has_Bounds (F, Scope) then
-                  A.Variables_Used.Include
-                    ((F with delta Facet => The_Bounds));
-               end if;
-            end loop;
+         end if;
 
-            A.Variables_Explicitly_Used := A.Variables_Used;
-         end;
+         A.Variables_Explicitly_Used := A.Variables_Used;
 
       --  For a "null" appearing as actual parameter of mode IN where the
       --  formal parameter is of an owning access type do nothing. Such a
@@ -489,24 +636,32 @@ package body Flow.Control_Flow_Graph.Utility is
 
       case Global.Variant is
          when In_View =>
-            Tmp := Flatten_Variable (G, Scope);
-            if Extensions_Visible (G, Scope) then
-               --  Tmp.Include ((G with delta Facet => The_Tag));
-               Tmp.Include ((G with delta Facet => Extension_Part));
-            end if;
-
-            for F of Tmp loop
-               if not Discriminants_Or_Bounds_Only
-                 or else Is_Discriminant (F)
+            if Discriminants_Or_Bounds_Only then
+               if G.Kind = Direct_Mapping
+                 and then
+                   Is_Unconstrained_Or_Tagged_Item (Get_Direct_Mapping_Id (G))
                then
-                  A.Variables_Used.Include (F);
+                  for C of Get_Components (G, Scope) loop
+                     if Is_Discriminant (C) then
+                        A.Variables_Used.Insert (C);
+                     end if;
+                  end loop;
+
+                  if Has_Bounds (G, Scope) then
+                     A.Variables_Used.Insert
+                       ((G with delta Facet => The_Bounds));
+                  end if;
+               end if;
+            else
+               Tmp := Flatten_Variable (G, Scope);
+
+               if Extensions_Visible (G, Scope) then
+                  --  Tmp.Include ((G with delta Facet => The_Tag));
+                  Tmp.Include ((G with delta Facet => Extension_Part));
                end if;
 
-               if not Is_Bound (F) and then Has_Bounds (F, Scope) then
-                  A.Variables_Used.Include
-                    ((F with delta Facet => The_Bounds));
-               end if;
-            end loop;
+               A.Variables_Used := Tmp;
+            end if;
 
             A.Variables_Explicitly_Used := A.Variables_Used;
 
@@ -583,13 +738,6 @@ package body Flow.Control_Flow_Graph.Utility is
                     Use_Computed_Globals => not FA.Generating_Globals);
             begin
                A.Variables_Used := Used;
-               for F of Used loop
-                  if not Is_Bound (F) and then Has_Bounds (F, Scope) then
-                     A.Variables_Used.Include
-                       ((F with delta Facet => The_Bounds));
-                  end if;
-               end loop;
-
                A.Variables_Explicitly_Used := A.Variables_Used;
             end;
          else
@@ -724,8 +872,22 @@ package body Flow.Control_Flow_Graph.Utility is
             A.Is_Import :=
               A.Mode in Mode_In | Mode_In_Out;
 
-            if Is_Discriminant (F_Ent)
-              or else Is_Bound (F_Ent)
+            --  Special handling of initialization and import status for
+            --  discriminants, bounds and tags belonging to formal parameters
+            --  of mode OUT.
+
+            if Is_Discriminant (F_Ent) then
+
+               if Ekind (Entire_Var) = E_Out_Parameter then
+                  if Is_Input_Discriminant (F_Ent) then
+                     A.Is_Initialized := True;
+                     A.Is_Import := True;
+                  end if;
+               else
+                  A.Is_Initialized := True;
+               end if;
+
+            elsif Is_Bound (F_Ent)
               or else Is_Record_Tag (F_Ent)
             then
                --  Discriminants, array bounds and tags are *always*
@@ -779,7 +941,8 @@ package body Flow.Control_Flow_Graph.Utility is
 
       case F.Variant is
          when Initial_Value =>
-            if Is_Discriminant (F)
+            if Mode in Initialized_Global_Modes
+              or else Is_Input_Discriminant (F)
               or else Is_Bound (F)
               or else Is_Record_Tag (F)
             then
@@ -787,9 +950,6 @@ package body Flow.Control_Flow_Graph.Utility is
                --  initialized imports.
                A.Is_Initialized := True;
                A.Is_Import      := True;
-            else
-               A.Is_Initialized := Mode in Initialized_Global_Modes;
-               A.Is_Import      := A.Is_Initialized;
             end if;
 
             A.Variables_Defined :=

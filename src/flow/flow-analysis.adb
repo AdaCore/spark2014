@@ -4259,22 +4259,50 @@ package body Flow.Analysis is
                               then "self-dependency "
                               else "dependency ");
 
-                           Hint : constant String :=
-                             (if Missing_Out = Missing_In then
-                                (if Has_Bounds (Missing_Out, FA.B_Scope)
-                                 then " (array bounds are preserved)"
-                                 elsif Contains_Discriminants (Missing_Out,
-                                   FA.B_Scope)
-                                 then " (discriminants are preserved)"
-                                 else "")
-                              else "");
+                           function Hint (F : Flow_Id) return String;
+                           --  Return a hint about F being a self-dependency on
+                           --  implicit input.
+
+                           ----------
+                           -- Hint --
+                           ----------
+
+                           function Hint (F : Flow_Id) return String is
+                              Typ : Entity_Id;
+                           begin
+                              if not Is_Abstract_State (F)
+                                and then F.Kind = Direct_Mapping
+                              then
+                                 Typ := Get_Type (F, FA.B_Scope);
+                              else
+                                 return "";
+                              end if;
+
+                              if Is_Tagged_Type (Typ) then
+                                 return " (tag is preserved)";
+
+                              elsif Is_Array_Type (Typ)
+                                and then not Is_Constrained (Typ)
+                              then
+                                 return " (array bounds are preserved)";
+
+                              elsif Is_Record_Type (Typ)
+                                and then not Is_Constrained (Typ)
+                              then
+                                 return " (discriminants are preserved)";
+
+                              else
+                                 return "";
+                              end if;
+                           end Hint;
 
                         begin
                            Error_Msg_Flow
                              (FA       => FA,
                               Path     => Path,
                               Msg      => "missing " & Kind & """% => %""" &
-                                Hint,
+                                (if Missing_Out = Missing_In
+                                 then Hint (Missing_Out) else ""),
                               N        => N,
                               F1       => Missing_Out,
                               F2       => Missing_In,
