@@ -48,26 +48,6 @@ package Why.Atree.Tables is
      Post => (Get_Node (Node_Id) = Node);
    --  Assign the given Id to the given Node
 
-   function Get_Link (Node_Id : Why_Node_Id) return Why_Node_Set with Ghost;
-   function Get_Link (List_Id : Why_Node_List) return Why_Node_Set with Ghost;
-
-   procedure Set_Link (Node_Id : Why_Node_Id; Link : Why_Node_Set) with
-     Post => (Node_Id = Why_Empty
-              or else Get_Link (Node_Id) = Link);
-   procedure Set_Link (Node_Id : Why_Node_Id; Link : Why_Node_Id) with
-     Post => (Node_Id = Why_Empty
-              or else Get_Link (Node_Id) = Why_Node_Set (Link));
-   procedure Set_Link (Node_Id : Why_Node_Id; Link : Why_Node_List) with
-     Post => (Node_Id = Why_Empty
-              or else Get_Link (Node_Id) = Why_Node_Set (Link));
-   procedure Set_Link (List_Id : Why_Node_List; Link : Why_Node_Set) with
-     Post => (Get_Link (List_Id) = Link);
-   procedure Set_Link (List_Id : Why_Node_List; Link : Why_Node_Id) with
-     Post => (Get_Link (List_Id) = Why_Node_Set (Link));
-   procedure Set_Link (List_Id : Why_Node_List; Link : Why_Node_List) with
-     Post => (Get_Link (List_Id) = Why_Node_Set (Link));
-   --  Set the link of the given node
-
    procedure Update_Validity_Status
      (Node_Id : Why_Node_Id;
       Checked : Boolean);
@@ -135,12 +115,6 @@ private
 
    function Is_Checked (Node_Id : Why_Node_Id) return Boolean is
      (Node_Table (Node_Id).Checked);
-
-   function Get_Link (Node_Id : Why_Node_Id) return Why_Node_Set is
-     (Node_Table (Node_Id).Link);
-
-   function Get_Link (List_Id : Why_Node_List) return Why_Node_Set is
-     (List_Table (List_Id).Link);
 
    function Get_List (List_Id : Why_Node_List) return Why_Node_Lists.List is
      (List_Table (List_Id).Content);

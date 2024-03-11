@@ -71,7 +71,6 @@ package body Xtree_Sinfo is
 
       New_Common_Field ("Ada_Node", "Node_Id", "Empty");
       New_Domain_Field ("Domain", "EW_Domain", "EW_Prog");
-      New_Special_Field ("Link", "Why_Node_Set", "Why_Empty");
       New_Special_Field ("Checked", "Boolean", Checked_Default_Value);
 
       ------------

@@ -36,7 +36,6 @@ package body Why.Atree.Tables is
       LI : List_Info renames List_Table (List_Id);
    begin
       LI.Content.Append (New_Item);
-      Set_Link (New_Item, Why_Node_Set (List_Id));
 
       --  Assuming that the list is kind-valid (which should have been checked
       --  at this point), it is now valid, as it contains at least one element.
@@ -51,7 +50,6 @@ package body Why.Atree.Tables is
       LI : List_Info renames List_Table (List_Id);
    begin
       LI.Content.Prepend (New_Item);
-      Set_Link (New_Item, Why_Node_Set (List_Id));
 
       --  Assuming that the list is kind-valid (which should have been checked
       --  at this point), it is now valid, as it contains at least one element.
@@ -88,7 +86,6 @@ package body Why.Atree.Tables is
                      (Kind     => W_Unused_At_Start,
                       Ada_Node => Empty,
                       Domain   => EW_Prog,
-                      Link     => Why_Empty,
                       Checked  => True);
    begin
       Node_Table.Append (Empty_Node);
@@ -126,61 +123,9 @@ package body Why.Atree.Tables is
       New_Node : Why_Node (Kind);
    begin
       New_Node.Ada_Node := Empty;
-      New_Node.Link := Why_Empty;
       New_Node.Checked := False;
       return New_Why_Node_Id (New_Node);
    end New_Why_Node_Id;
-
-   --------------
-   -- Set_Link --
-   --------------
-
-   procedure Set_Link
-     (Node_Id : Why_Node_Id;
-      Link    : Why_Node_Set) is
-   begin
-      if Node_Id = Why_Empty then
-         null;
-      else
-         Node_Table (Node_Id).Link := Link;
-      end if;
-   end Set_Link;
-
-   procedure Set_Link
-     (Node_Id : Why_Node_Id;
-      Link    : Why_Node_Id) is
-   begin
-      Set_Link (Node_Id, Why_Node_Set (Link));
-   end Set_Link;
-
-   procedure Set_Link
-     (Node_Id : Why_Node_Id;
-      Link    : Why_Node_List) is
-   begin
-      Set_Link (Node_Id, Why_Node_Set (Link));
-   end Set_Link;
-
-   procedure Set_Link
-     (List_Id : Why_Node_List;
-      Link    : Why_Node_Set)
-   is
-   begin
-      List_Table (List_Id).Link := Link;
-   end Set_Link;
-
-   procedure Set_Link
-     (List_Id : Why_Node_List;
-      Link    : Why_Node_Id) is
-   begin
-      Set_Link (List_Id, Why_Node_Set (Link));
-   end Set_Link;
-
-   procedure Set_Link
-     (List_Id : Why_Node_List;
-      Link    : Why_Node_List) is
-   begin
-      Set_Link (List_Id, Why_Node_Set (Link));
-   end Set_Link;
 
    --------------
    -- Set_Node --
