@@ -71,16 +71,6 @@ package Gnat2Why_Opts is
    --    GPR_Statistics in addition prints maximum steps and timings for proved
    --    checks.
 
-   type GP_Mode is (GPM_Check, GPM_Check_All, GPM_Flow, GPM_Prove, GPM_All);
-   --  The feature modes of GNATprove are:
-   --  * GPM_Check     : Check SPARK rules
-   --  * GPM_Check_All : Check all SPARK rules, including the ones checked
-   --                    during flow analysis.
-   --  * GPM_Prove     : Check validity of contracts, proof of subprogram
-   --                    bodies.
-   --  * GPM_Flow      : Check validity of Globals, Depends
-   --  * GPM_All       : Union of GPM_Prove and GPM_Flow
-
 private
 
    ------------------

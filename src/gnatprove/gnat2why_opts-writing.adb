@@ -24,12 +24,13 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with Configuration;              use Configuration;
-with Ada.Directories;            use Ada.Directories;
-with Ada.Text_IO;                use Ada.Text_IO;
-with GNATCOLL.JSON;              use GNATCOLL.JSON;
+with Configuration;   use Configuration;
+with Ada.Directories; use Ada.Directories;
+with Ada.Text_IO;     use Ada.Text_IO;
+with GNATCOLL.JSON;   use GNATCOLL.JSON;
 with GNAT.SHA1;
-with String_Utils;               use String_Utils;
+with String_Utils;    use String_Utils;
+with VC_Kinds;        use VC_Kinds;
 
 package body Gnat2Why_Opts.Writing is
 
@@ -49,7 +50,6 @@ package body Gnat2Why_Opts.Writing is
 
       function To_JSON (SL : String_Lists.List) return JSON_Array;
       function To_JSON (FS : File_Specific) return JSON_Value;
-      function To_JSON (M : GP_Mode) return JSON_Value;
 
       -------------------
       -- Write_To_File --
@@ -111,11 +111,6 @@ package body Gnat2Why_Opts.Writing is
             Append (A, Create (S));
          end loop;
          return A;
-      end To_JSON;
-
-      function To_JSON (M : GP_Mode) return JSON_Value is
-      begin
-         return Create (GP_Mode'Image (M));
       end To_JSON;
 
       --  Local variables

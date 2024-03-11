@@ -53,15 +53,6 @@ package body Gnat2Why_Opts.Reading is
       with Pre => Has_Field (V, Field);
       --  Return the string value of the [Field] of the JSON record [V]
 
-      function Get_Opt
-        (V     : JSON_Value;
-         Field : String)
-         return GP_Mode
-      is
-        (GP_Mode'Value (Get (V, Field)))
-        with Pre => Has_Field (V, Field);
-      --  Return the GP_Mode value of the [Field] of the JSON record [V]
-
       procedure Read_File_Specific_Info (V : JSON_Value);
 
       -----------------------------
@@ -79,7 +70,7 @@ package body Gnat2Why_Opts.Reading is
          No_Inlining           := Get_Opt (R, No_Inlining_Name);
          Info_Messages         := Get_Opt (R, Info_Messages_Name);
          Check_Counterexamples := Get_Opt (R, Check_Counterexamples_Name);
-         Mode                  := Get_Opt (R, GP_Mode_Name);
+         Mode                  := From_JSON (Get (R, GP_Mode_Name));
 
          if not Global_Gen_Mode then
             Proof_Warnings := Get_Opt (R, Proof_Warnings_Name);

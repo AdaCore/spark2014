@@ -74,7 +74,6 @@ with Call;             use Call;
 with Configuration;    use Configuration;
 with GNAT.OS_Lib;
 with GNAT.Strings;     use GNAT.Strings;
-with Gnat2Why_Opts;    use Gnat2Why_Opts;
 with Gnat2Why_Opts.Writing;
 with GNATCOLL.JSON;    use GNATCOLL.JSON;
 with GNATCOLL.Tribooleans;
@@ -86,6 +85,7 @@ with GPR2.Project.Tree;
 with GPR2.Project.View;
 with Named_Semaphores; use Named_Semaphores;
 with String_Utils;     use String_Utils;
+with VC_Kinds;         use VC_Kinds;
 
 procedure Gnatprove with SPARK_Mode is
 
@@ -135,8 +135,10 @@ procedure Gnatprove with SPARK_Mode is
    --  To be called between phase 1 and phase2. Copies the ALI files from the
    --  subdir of the first phase to the one for the second phase.
 
-   procedure Generate_SPARK_Report (Tree : Project.Tree.Object);
-   --  Generate the SPARK report
+   procedure Generate_SPARK_Report
+     (Tree : Project.Tree.Object; Errors : Boolean);
+   --  Generate the SPARK report. Set Errors to True if previous phases
+   --  contained errors.
 
    procedure Flow_Analysis_And_Proof
      (Project_File : String;
@@ -654,7 +656,9 @@ procedure Gnatprove with SPARK_Mode is
    -- Generate_SPARK_Report --
    ---------------------------
 
-   procedure Generate_SPARK_Report (Tree : Project.Tree.Object)
+   procedure Generate_SPARK_Report
+     (Tree   : Project.Tree.Object;
+      Errors : Boolean)
    is
       Obj_Dir : constant String := Artifact_Dir (Tree).Display_Full_Name;
       Obj_Dir_Fn : constant String :=
@@ -752,11 +756,17 @@ procedure Gnatprove with SPARK_Mode is
          Set_Field (JSON_Rec, "proof_switches", FS_Switches_JSON);
       end;
 
+      if not Null_Or_Empty_String (CL_Switches.Limit_Name)
+        or else not Null_Or_Empty_String (CL_Switches.Limit_Subp)
+        or else not Null_Or_Empty_String (CL_Switches.Limit_Line)
+        or else not Null_Or_Empty_String (CL_Switches.Limit_Lines)
+        or else not Null_Or_Empty_String (CL_Switches.Limit_Region)
+      then
+         Set_Field (JSON_Rec, "has_limit_switches", True);
+      end if;
+
       if CL_Switches.Assumptions then
          Set_Field (JSON_Rec, "assumptions", True);
-         if CL_Switches.Limit_Subp.all /= "" then
-            Set_Field (JSON_Rec, "limit_subp", CL_Switches.Limit_Subp.all);
-         end if;
       end if;
 
       if Quiet then
@@ -766,6 +776,9 @@ procedure Gnatprove with SPARK_Mode is
       if CL_Switches.Output_Header then
          Set_Field (JSON_Rec, "output_header", True);
       end if;
+
+      Set_Field (JSON_Rec, "mode", To_JSON (Configuration.Mode));
+      Set_Field (JSON_Rec, "has_errors", Errors);
 
       declare
          Report_Info_File : File_Type;
@@ -1258,11 +1271,11 @@ begin
 
    exception
       when E : GNATprove_Recoverable_Failure =>
-         Generate_SPARK_Report (Tree);
+         Generate_SPARK_Report (Tree, Errors => True);
          Fail (Ada.Exceptions.Exception_Message (E));
    end Analysis;
 
-   Generate_SPARK_Report (Tree);
+   Generate_SPARK_Report (Tree, Errors => False);
    Cleanup (Tree, "", Success_Exit_Code);
 
 exception

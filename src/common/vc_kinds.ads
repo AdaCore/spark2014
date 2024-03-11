@@ -836,6 +836,16 @@ package VC_Kinds is
       Spec_Only_In_SPARK, --  Only spec is in SPARK, body is not in SPARK
       Not_In_SPARK);      --  Not in SPARK
 
+   type GP_Mode is (GPM_Check, GPM_Check_All, GPM_Flow, GPM_Prove, GPM_All);
+   --  The feature modes of GNATprove are:
+   --  * GPM_Check     : Check SPARK rules
+   --  * GPM_Check_All : Check all SPARK rules, including the ones checked
+   --                    during flow analysis.
+   --  * GPM_Prove     : Check validity of contracts, proof of subprogram
+   --                    bodies.
+   --  * GPM_Flow      : Check validity of Globals, Depends
+   --  * GPM_All       : Union of GPM_Prove and GPM_Flow
+
    ------------
    -- Labels --
    ------------
@@ -1128,6 +1138,7 @@ package VC_Kinds is
    function From_JSON (V : JSON_Value) return Prover_Category;
    function From_JSON (V : JSON_Value) return Cntexample_File_Maps.Map;
    function From_JSON (V : JSON_Value) return SPARK_Mode_Status;
+   function From_JSON (V : JSON_Value) return GP_Mode;
 
    function From_JSON_Labels (Ar : JSON_Array) return S_String_List.List;
 
@@ -1136,4 +1147,5 @@ package VC_Kinds is
    function To_JSON (F : Cntexample_File_Maps.Map) return JSON_Value;
    function To_JSON (V : Cntexmp_Value) return JSON_Value;
    function To_JSON (Status : SPARK_Mode_Status) return JSON_Value;
+   function To_JSON (M : GP_Mode) return JSON_Value;
 end VC_Kinds;
