@@ -117,7 +117,6 @@ package body Why.Atree.To_Json is
    procedure Why_Node_OId_To_Json (O : Output_Id; Id : Why_Node_Id);
    procedure Why_Node_OList_To_Json (O : Output_Id; Id : Why_Node_List);
    procedure Why_Node_List_To_Json (O : Output_Id; Id : Why_Node_List);
-   procedure Why_Node_Set_To_Json (O : Output_Id; S : Why_Node_Set);
 
    procedure Why_Node_Id_To_Json (O : Output_Id; Id : Why_Node_Id) is
    begin
@@ -163,12 +162,6 @@ package body Why.Atree.To_Json is
       end loop;
       P (O, "]");
    end Why_Node_Lists_List_To_Json;
-
-   procedure Why_Node_Set_To_Json (O : Output_Id; S : Why_Node_Set) is
-      pragma Unreferenced (S);
-   begin
-      P (O, "<Why_Node_Set>", As_String => True); --  TODO
-   end Why_Node_Set_To_Json;
 
    pragma Warnings (Off, "procedure * is not referenced");
    _@Declare_Ada_To_Json@_

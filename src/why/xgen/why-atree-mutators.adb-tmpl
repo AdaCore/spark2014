@@ -26,6 +26,7 @@
 
 with Why.Atree.Tables;   use Why.Atree.Tables;
 with Why.Atree.Validity; use Why.Atree.Validity;
+with Why.Conversions;    use Why.Conversions;
 
 package body Why.Atree.Mutators is
 

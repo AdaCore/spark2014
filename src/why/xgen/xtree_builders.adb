@@ -247,10 +247,6 @@ package body Xtree_Builders is
             end if;
          end if;
 
-         if Is_Why_Id (FI) then
-            PL (O, "Set_Link (" & New_Node & "." & FN
-                & ", " & New_Node_Id & ");");
-         end if;
       end Print_Record_Initialization;
 
    --  Start of processing for Print_Builder_Implementation
