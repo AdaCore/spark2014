@@ -53,11 +53,7 @@ package Why.Atree is
    pragma Inline (New_Why_Node_Id);
    --  Allocate a new (uninitialized) Why node in table of the given kind
 
-   function Get_Node (Node_Id : Why_Node_Id) return Why_Node;
-   --  Get the node whose id is Node_Id
-
-   procedure Set_Node (Node_Id : Why_Node_Id; Node : Why_Node) with
-     Post => (Get_Node (Node_Id) = Node);
+   procedure Set_Node (Node_Id : Why_Node_Id; Node : Why_Node);
    --  Assign the given Id to the given Node
 
    procedure Update_Validity_Status
@@ -118,9 +114,6 @@ private
                                             Element_Type => List_Info);
 
    List_Table : Node_List_Tables.Vector;
-
-   function Get_Node (Node_Id : Why_Node_Id) return Why_Node renames
-     Node_Table.Element;
 
    function Get_Kind (Node_Id : Why_Node_Id) return Why_Node_Kind is
      (Node_Table (Node_Id).Kind);

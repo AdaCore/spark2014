@@ -264,7 +264,7 @@ package body Xtree_Children_Checks is
             end if;
 
             PL (O, Cache_Check (Multiplicity (FI)));
-            P (O, "  (Get_Node"
+            P (O, "  (Node_Table"
                & " (" & Node_Id_Param & ")"
                & "."  & Field_Name (FI) & ")");
             Field_Printed := True;

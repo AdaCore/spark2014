@@ -120,7 +120,7 @@ package body Why.Atree.To_Json is
 
    procedure Why_Node_Id_To_Json (O : Output_Id; Id : Why_Node_Id) is
    begin
-      Why_Node_To_Json (O, Get_Node (Id));
+      Why_Node_To_Json (O, Node_Table (Id));
    end Why_Node_Id_To_Json;
 
    procedure Why_Node_OId_To_Json (O : Output_Id; Id : Why_Node_Id) is

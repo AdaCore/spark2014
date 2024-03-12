@@ -122,8 +122,8 @@ package body Xtree_Mutators is
       List_Op : List_Op_Kind) is
    begin
       Relative_Indent (O, 3);
-      PL (O, "Node : constant Why_Node :=");
-      PL (O, "         Get_Node (+" & Node_Id_Param & ");");
+      PL (O, "Node : Why_Node renames");
+      PL (O, "         Node_Table (+" & Node_Id_Param & ");");
       Relative_Indent (O, -3);
       PL (O, "begin");
       Relative_Indent (O, 3);
@@ -375,7 +375,7 @@ package body Xtree_Mutators is
       FI   : Field_Info) is
    begin
       Relative_Indent (O, 3);
-      PL (O, "Node : Why_Node := Get_Node (+" & Node_Id_Param & ");");
+      PL (O, "Node : Why_Node renames Node_Table (+" & Node_Id_Param & ");");
       Relative_Indent (O, -3);
       PL (O, "begin");
       Relative_Indent (O, 3);
