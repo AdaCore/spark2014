@@ -23,8 +23,7 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with Why.Atree.Tables; use Why.Atree.Tables;
-with Outputs;          use Outputs;
+with Outputs; use Outputs;
 
 package Why.Atree.To_Json is
 
