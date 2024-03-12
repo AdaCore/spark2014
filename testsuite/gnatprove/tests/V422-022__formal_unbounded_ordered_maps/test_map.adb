@@ -2,6 +2,16 @@ with Ada.Containers; use Ada.Containers;
 with Ada.Unchecked_Deallocation;
 
 package body Test_Map with SPARK_Mode is
+
+   --  Do not execute ghost procedures from the model, or assertions which call
+   --  ghost functions from the model, as the container instance is compiled
+   --  without assertions. Add a special Static check policy for such
+   --  assertions. Since the model is also used in loop invariants, we also
+   --  need to ignore here loop invariants during execution.
+   pragma Assertion_Policy (Ghost => Ignore);
+   pragma Assertion_Policy (Loop_Invariant => Ignore);
+   pragma Check_Policy (Static => Ignore);
+
    procedure Test_Map_Pos with Pre => True is
       use Test_Map.M;
       L, K : Map;
@@ -29,11 +39,11 @@ package body Test_Map with SPARK_Mode is
       Include (L, 1, 3);
       Insert (L, 4, 4);
 
-      pragma Assert (Formal_Model.P.Get (Formal_Model.Positions (L), Floor (L, 1)) = 1);
-      pragma Assert (Formal_Model.P.Get (Formal_Model.Positions (L), Floor (L, 3)) = 2);
+      pragma Check (Static, Formal_Model.P.Get (Formal_Model.Positions (L), Floor (L, 1)) = 1);
+      pragma Check (Static, Formal_Model.P.Get (Formal_Model.Positions (L), Floor (L, 3)) = 2);
       pragma Assert (Floor (L, 0) = No_Element);
-      pragma Assert (Formal_Model.P.Get (Formal_Model.Positions (L), Ceiling (L, 1)) = 1);
-      pragma Assert (Formal_Model.P.Get (Formal_Model.Positions (L), Ceiling (L, 3)) = 3);
+      pragma Check (Static, Formal_Model.P.Get (Formal_Model.Positions (L), Ceiling (L, 1)) = 1);
+      pragma Check (Static, Formal_Model.P.Get (Formal_Model.Positions (L), Ceiling (L, 3)) = 3);
       pragma Assert (Ceiling (L, 5) = No_Element);
 
       pragma Assert (not Contains (L, 3));
@@ -213,12 +223,12 @@ package body Test_Map with SPARK_Mode is
       --  Find (Formal)
 
       C := Find (L, 4);
-      pragma Assert (Find (Keys (L), 4) = P.Get (Positions (L), C));
+      pragma Check (Static, Find (Keys (L), 4) = P.Get (Positions (L), C));
 
       --  First_Element
 
       Insert (L, 0, 9);
-      pragma Assert (Formal_Model.K.Get (Keys (L), Formal_Model.K.First) = 0);
+      pragma Check (Static, Formal_Model.K.Get (Keys (L), Formal_Model.K.First) = 0);
       pragma Assert (First_Element (L) = 9);
 
       --  First_Key
@@ -233,8 +243,8 @@ package body Test_Map with SPARK_Mode is
 
       pragma Assert (Last_Element (L) = 5);
       pragma Assert (Last_Key (L) = 4);
-      pragma Assert (Formal_Model.K.Get (Keys (L), Formal_Model.K.Last (Keys (L))) = 4);
-      pragma Assert (Formal_Model.M.Get (Model (L), 4) = 5);
+      pragma Check (Static, Formal_Model.K.Get (Keys (L), Formal_Model.K.Last (Keys (L))) = 4);
+      pragma Check (Static, Formal_Model.M.Get (Model (L), 4) = 5);
 
       --  Force Resize
 

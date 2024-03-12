@@ -1,3 +1,5 @@
+pragma Ignore_Pragma (Assertion_Policy);
+
 with Ada;
 with Ada.Containers;
 with SPARK.Containers.Formal.Unbounded_Doubly_Linked_Lists;
