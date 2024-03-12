@@ -99,7 +99,6 @@ package body Why.Atree.Tables is
    function New_List return Why_Node_List is
       New_Item : constant List_Info :=
         (Checked => False,
-         Link    => Why_Empty,
          Content => Why_Node_Lists.Empty_List);
    begin
       List_Table.Append (New_Item);

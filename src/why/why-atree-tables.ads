@@ -97,7 +97,6 @@ private
 
    type List_Info is record
       Checked : Boolean;
-      Link    : Why_Node_Set;
       Content : Why_Node_Lists.List;
    end record;
 
