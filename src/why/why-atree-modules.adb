@@ -414,11 +414,18 @@ package body Why.Atree.Modules is
       Modules : in out Ada_Node_To_Module.Map) return W_Module_Id
    is
       use Module_Kind_To_Module;
-      Position : Ada_Node_To_Module.Cursor;
-      Inserted : Boolean;
-      C        : Module_Kind_To_Module.Cursor := No_Element;
+      Normalized_E : constant Entity_Id :=
+        (if Nkind (E) in N_Entity
+         and then Ekind (E) = E_Constant
+         and then Is_Partial_View (E)
+         and then Entity_In_SPARK (Full_View (E))
+         then Full_View (E) else E);
+      --  For constants, use the entity of the full view if it is in SPARK
+      Position     : Ada_Node_To_Module.Cursor;
+      Inserted     : Boolean;
+      C            : Module_Kind_To_Module.Cursor := No_Element;
    begin
-      Modules.Insert (E, Empty_Map, Position, Inserted);
+      Modules.Insert (Normalized_E, Empty_Map, Position, Inserted);
 
       if not Inserted then
          C := Modules (Position).Find (K);
@@ -430,7 +437,7 @@ package body Why.Atree.Modules is
          declare
             M : constant W_Module_Id :=
               New_Module
-                (Ada_Node => E,
+                (Ada_Node => Normalized_E,
                  File     => No_Symbol,
                  Name     => Name);
          begin
