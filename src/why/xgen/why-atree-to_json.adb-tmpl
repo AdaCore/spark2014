@@ -7,16 +7,50 @@ with Why.Sinfo;         use Why.Sinfo;
 
 package body Why.Atree.To_Json is
 
+   use Ada.Text_IO;
+
+   procedure P (O : File_Type; S : String; As_String : Boolean := False);
+   --  If As_String is True, then surround S with quotes and prefix all quotes
+   --  inside it with backslash; otherwise print S as it is.
+
+   procedure P (O : File_Type; C : Character) renames Put;
+   --  Print single character, which should be more efficient than printing
+   --  a 1-character string.
+
+   -------
+   -- P --
+   -------
+
+   procedure P
+     (O : File_Type;
+      S : String;
+      As_String : Boolean := False)
+   is
+   begin
+      if As_String then
+         Put (O, '"');
+         for C of S loop
+            if C = '"' then
+               Put (O, '\');
+            end if;
+            Put (O, C);
+         end loop;
+         Put (O, '"');
+      else
+         Put (O, S);
+      end if;
+   end P;
+
    ---------------------
    --  General types  --
    ---------------------
 
-   procedure Boolean_To_Json (O : Output_Id; B : Boolean);
-   procedure Uint_To_Json (O : Output_Id; I : Uint);
-   procedure Ureal_To_Json (O : Output_Id; I : Ureal);
-   procedure String_Sets_Set_To_Json (O : Output_Id; S : String_Sets.Set);
+   procedure Boolean_To_Json         (O : File_Type; B : Boolean);
+   procedure Uint_To_Json            (O : File_Type; I : Uint);
+   procedure Ureal_To_Json           (O : File_Type; I : Ureal);
+   procedure String_Sets_Set_To_Json (O : File_Type; S : String_Sets.Set);
 
-   procedure Boolean_To_Json (O : Output_Id; B : Boolean) is
+   procedure Boolean_To_Json (O : File_Type; B : Boolean) is
    begin
       if B then
          P (O, "true");
@@ -25,55 +59,55 @@ package body Why.Atree.To_Json is
       end if;
    end Boolean_To_Json;
 
-   procedure Uint_To_Json (O : Output_Id; I : Uint) is
+   procedure Uint_To_Json (O : File_Type; I : Uint) is
    begin
       P (O, UI_Image (I, Decimal), As_String => True);
    end Uint_To_Json;
 
-   procedure Ureal_To_Json (O : Output_Id; I : Ureal) is
+   procedure Ureal_To_Json (O : File_Type; I : Ureal) is
    begin
-      P (O, "[");
+      P (O, '[');
       Uint_To_Json (O, Numerator (I));
-      P (O, ",");
+      P (O, ',');
       Uint_To_Json (O, Denominator (I));
-      P (O, ",");
+      P (O, ',');
       P (O, Nat'Image (Rbase (I)));
-      P (O, ",");
+      P (O, ',');
       Boolean_To_Json (O, UR_Is_Negative (I));
-      P (O, "]");
+      P (O, ']');
    end Ureal_To_Json;
 
-   procedure String_Sets_Set_To_Json (O : Output_Id; S : String_Sets.Set) is
+   procedure String_Sets_Set_To_Json (O : File_Type; S : String_Sets.Set) is
       First : Boolean := True;
    begin
-      P (O, "[");
+      P (O, '[');
          for El of S loop
             if First then
                First := False;
             else
-               P (O, ",");
+               P (O, ',');
             end if;
             P (O, El, As_String => True);
          end loop;
-      P (O, "]");
+      P (O, ']');
    end String_Sets_Set_To_Json;
 
    ------------------
    --  Gnat types  --
    ------------------
 
-   procedure Node_Id_To_Json (O : Output_Id; Id : Node_Id);
-   procedure Source_Ptr_To_Json (O : Output_Id; X : Source_Ptr);
-   procedure Symbol_To_Json (O : Output_Id; S : Symbols.Symbol);
-   procedure Symbol_Set_To_Json (O : Output_Id; S : Symbol_Set);
+   procedure Node_Id_To_Json (O : File_Type; Id : Node_Id);
+   procedure Source_Ptr_To_Json (O : File_Type; X : Source_Ptr);
+   procedure Symbol_To_Json (O : File_Type; S : Symbols.Symbol);
+   procedure Symbol_Set_To_Json (O : File_Type; S : Symbol_Set);
 
-   procedure Node_Id_To_Json (O : Output_Id; Id : Node_Id) is
+   procedure Node_Id_To_Json (O : File_Type; Id : Node_Id) is
       pragma Unreferenced (Id);
    begin
       P (O, "<Node_Id>", As_String => True);
    end Node_Id_To_Json;
 
-   procedure Source_Ptr_To_Json (O : Output_Id; X : Source_Ptr) is
+   procedure Source_Ptr_To_Json (O : File_Type; X : Source_Ptr) is
       File : constant String               := SPARK_Util.File_Name (X);
       Line : constant Physical_Line_Number := Get_Physical_Line_Number (X);
    begin
@@ -81,49 +115,49 @@ package body Why.Atree.To_Json is
          P (O, "null");
          return;
       end if;
-      P (O, "[");
+      P (O, '[');
       P (O, File, As_String => True);
-      P (O, ",");
+      P (O, ',');
       P (O, Physical_Line_Number'Image (Line));
-      P (O, "]");
+      P (O, ']');
    end Source_Ptr_To_Json;
 
-   procedure Symbol_To_Json (O : Output_Id; S : Symbols.Symbol) is
+   procedure Symbol_To_Json (O : File_Type; S : Symbols.Symbol) is
       X : constant GNATCOLL.Utils.Cst_String_Access := Symbols.Get (S);
    begin
       P (O, X.all, As_String => True);
    end Symbol_To_Json;
 
-   procedure Symbol_Set_To_Json (O : Output_Id; S : Symbol_Set) is
+   procedure Symbol_Set_To_Json (O : File_Type; S : Symbol_Set) is
       First : Boolean := True;
    begin
-      P (O, "[");
+      P (O, '[');
       for El of S loop
          if First then
             First := False;
          else
-            P (O, ",");
+            P (O, ',');
          end if;
          Symbol_To_Json (O, El);
       end loop;
-      P (O, "]");
+      P (O, ']');
    end Symbol_Set_To_Json;
 
    -----------------------------------------
    --  Why nodes types with multiplicity  --
    -----------------------------------------
 
-   procedure Why_Node_Id_To_Json (O : Output_Id; Id : Why_Node_Id);
-   procedure Why_Node_OId_To_Json (O : Output_Id; Id : Why_Node_Id);
-   procedure Why_Node_OList_To_Json (O : Output_Id; Id : Why_Node_List);
-   procedure Why_Node_List_To_Json (O : Output_Id; Id : Why_Node_List);
+   procedure Why_Node_Id_To_Json (O : File_Type; Id : Why_Node_Id);
+   procedure Why_Node_OId_To_Json (O : File_Type; Id : Why_Node_Id);
+   procedure Why_Node_OList_To_Json (O : File_Type; Id : Why_Node_List);
+   procedure Why_Node_List_To_Json (O : File_Type; Id : Why_Node_List);
 
-   procedure Why_Node_Id_To_Json (O : Output_Id; Id : Why_Node_Id) is
+   procedure Why_Node_Id_To_Json (O : File_Type; Id : Why_Node_Id) is
    begin
-      Why_Node_To_Json (O, Get_Node (Id));
+      Why_Node_To_Json (O, Node_Table (Id));
    end Why_Node_Id_To_Json;
 
-   procedure Why_Node_OId_To_Json (O : Output_Id; Id : Why_Node_Id) is
+   procedure Why_Node_OId_To_Json (O : File_Type; Id : Why_Node_Id) is
    begin
       if Id = Why_Empty then
          P (O, "null");
@@ -132,7 +166,7 @@ package body Why.Atree.To_Json is
       end if;
    end Why_Node_OId_To_Json;
 
-   procedure Why_Node_OList_To_Json (O : Output_Id; Id : Why_Node_List) is
+   procedure Why_Node_OList_To_Json (O : File_Type; Id : Why_Node_List) is
    begin
       if Is_Empty (Id) then
          P (O, "null");
@@ -141,26 +175,26 @@ package body Why.Atree.To_Json is
       end if;
    end Why_Node_OList_To_Json;
 
-   procedure Why_Node_List_To_Json (O : Output_Id; Id : Why_Node_List) is
+   procedure Why_Node_List_To_Json (O  : File_Type; Id : Why_Node_List) is
    begin
-      Why_Node_Lists_List_To_Json (O, Get_List (Id));
+      Why_Node_Lists_List_To_Json (O, List_Table (Id).Content);
    end Why_Node_List_To_Json;
 
    procedure Why_Node_Lists_List_To_Json
-     (O : Output_Id; L : Why_Node_Lists.List)
+     (O : File_Type; L : Why_Node_Lists.List)
    is
       First : Boolean := True;
    begin
-      P (O, "[");
+      P (O, '[');
       for El of L loop
          if First then
             First := False;
          else
-            P (O, ",");
+            P (O, ',');
          end if;
          Why_Node_Id_To_Json (O, El);
       end loop;
-      P (O, "]");
+      P (O, ']');
    end Why_Node_Lists_List_To_Json;
 
    pragma Warnings (Off, "procedure * is not referenced");

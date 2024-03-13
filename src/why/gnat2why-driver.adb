@@ -73,7 +73,6 @@ with Namet;                           use Namet;
 with Nlists;                          use Nlists;
 with Osint.C;                         use Osint.C;
 with Osint;                           use Osint;
-with Outputs;                         use Outputs;
 with Sem;
 with Sem_Aux;                         use Sem_Aux;
 with Sem_Util;                        use Sem_Util;
@@ -94,9 +93,9 @@ with Switch;                          use Switch;
 with Tempdir;                         use Tempdir;
 with VC_Kinds;                        use VC_Kinds;
 with Why;                             use Why;
+with Why.Atree;                       use Why.Atree;
 with Why.Atree.Modules;               use Why.Atree.Modules;
 with Why.Atree.To_Json;               use Why.Atree.To_Json;
-with Why.Atree.Tables;                use Why.Atree.Tables;
 with Why.Gen.Binders;                 use Why.Gen.Binders;
 with Why.Gen.Expr;                    use Why.Gen.Expr;
 with Why.Gen.Names;
@@ -1011,7 +1010,8 @@ package body Gnat2Why.Driver is
       Result : JSON_Array := Empty_Array;
    begin
       for Elt of Skipped_Flow_And_Proof loop
-         Append (Result, To_JSON (Entity_To_Subp_Assumption (Elt)));
+         Append (Result,
+                 Assumption_Types.To_JSON (Entity_To_Subp_Assumption (Elt)));
       end loop;
       return Result;
    end Get_Skip_Flow_And_Proof_JSON;
@@ -1024,7 +1024,8 @@ package body Gnat2Why.Driver is
       Result : JSON_Array := Empty_Array;
    begin
       for Elt of Skipped_Proof loop
-         Append (Result, To_JSON (Entity_To_Subp_Assumption (Elt)));
+         Append (Result,
+                 Assumption_Types.To_JSON (Entity_To_Subp_Assumption (Elt)));
       end loop;
       return Result;
    end Get_Skip_Proof_JSON;
@@ -1084,12 +1085,16 @@ package body Gnat2Why.Driver is
 
    procedure Print_GNAT_Json_File (Filename : String) is
       Modules : constant Why_Node_Lists.List := Build_Printing_Plan;
+      File    : Ada.Text_IO.File_Type;
+
    begin
-      Open_Current_File (Filename);
-      P (Current_File, "{ ""theory_declarations"" : ");
-      Why_Node_Lists_List_To_Json (Current_File, Modules);
-      P (Current_File, "}");
-      Close_Current_File;
+      Create (File, Ada.Text_IO.Out_File, Filename);
+
+      Put (File, "{ ""theory_declarations"" : ");
+      Why_Node_Lists_List_To_Json (File, Modules);
+      Put (File, '}');
+
+      Close (File);
    end Print_GNAT_Json_File;
 
    ------------------
@@ -1327,7 +1332,7 @@ package body Gnat2Why.Driver is
       Translated_Object_Names.Reserve_Capacity (0);
 
       Why.Gen.Names.Free;
-      Why.Atree.Tables.Free;
+      Why.Atree.Free;
    end Translate_CUnit;
 
    ----------------------

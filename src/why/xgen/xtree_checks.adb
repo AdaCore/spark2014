@@ -90,19 +90,10 @@ package body Xtree_Checks is
                   when Id_Some =>
                      PL (O, "(not Is_Empty (" & Node_Id_Param & ")");
 
-                     if False then
-                        PL (O,
-                            " and then for all Element in Get_List ("
-                            & Node_Id_Param & ") | ");
-                        PL (O, Check_One & " (Element));");
-                     else
-                        PL (O, " and then True);");
-                        Relative_Indent (O, -2);
-                        PL (O, "--  ??? Partial implementation;");
-                        PL (O, "--  ??? universal quantif on containers "
-                            & "has not been implemented yet.");
-                        Relative_Indent (O, 2);
-                     end if;
+                     PL (O,
+                         " and then (for all Element of Get_List ("
+                         & Node_Id_Param & ") =>");
+                     PL (O, Check_One & " (Element)));");
 
                   when Id_Set =>
                      PL (O,

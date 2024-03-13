@@ -27,7 +27,6 @@
 with Why.Ids;           use Why.Ids;
 with Why.Unchecked_Ids; use Why.Unchecked_Ids;
 with Why.Conversions;   use Why.Conversions;
-with Why.Atree.Tables;  use Why.Atree.Tables;
 
 package Why.Atree.Accessors is
    --  This package provides a set of accessors to the content of

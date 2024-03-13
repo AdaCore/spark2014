@@ -24,32 +24,32 @@
 ------------------------------------------------------------------------------
 
 with Ada.Containers.Hashed_Maps;
-with Errout;                         use Errout;
-with Gnat2Why.Tables;                use Gnat2Why.Tables;
-with Namet;                          use Namet;
-with Snames;                         use Snames;
-with SPARK_Definition;               use SPARK_Definition;
-with SPARK_Definition.Annotate;      use SPARK_Definition.Annotate;
-with SPARK_Frame_Conditions;         use SPARK_Frame_Conditions;
-with SPARK_Util;                     use SPARK_Util;
-with SPARK_Util.Subprograms;         use SPARK_Util.Subprograms;
-with SPARK_Xrefs;                    use SPARK_Xrefs;
-with Stand;                          use Stand;
-with String_Utils;                   use String_Utils;
+with Errout;                    use Errout;
+with Gnat2Why.Tables;           use Gnat2Why.Tables;
+with Namet;                     use Namet;
+with Snames;                    use Snames;
+with SPARK_Definition;          use SPARK_Definition;
+with SPARK_Definition.Annotate; use SPARK_Definition.Annotate;
+with SPARK_Frame_Conditions;    use SPARK_Frame_Conditions;
+with SPARK_Util;                use SPARK_Util;
+with SPARK_Util.Subprograms;    use SPARK_Util.Subprograms;
+with SPARK_Xrefs;               use SPARK_Xrefs;
+with Stand;                     use Stand;
+with String_Utils;              use String_Utils;
 with Uintp;
-with Why.Atree.Accessors;            use Why.Atree.Accessors;
-with Why.Atree.Builders;             use Why.Atree.Builders;
-with Why.Atree.Modules;              use Why.Atree.Modules;
-with Why.Atree.Mutators;             use Why.Atree.Mutators;
-with Why.Atree.Tables;               use Why.Atree.Tables;
-with Why.Atree.Traversal;            use Why.Atree.Traversal;
-with Why.Conversions;                use Why.Conversions;
-with Why.Gen.Arrays;                 use Why.Gen.Arrays;
-with Why.Gen.Binders;                use Why.Gen.Binders;
-with Why.Gen.Expr;                   use Why.Gen.Expr;
-with Why.Gen.Names;                  use Why.Gen.Names;
-with Why.Gen.Scalars;                use Why.Gen.Scalars;
-with Why.Images;                     use Why.Images;
+with Why.Atree;                 use Why.Atree;
+with Why.Atree.Accessors;       use Why.Atree.Accessors;
+with Why.Atree.Builders;        use Why.Atree.Builders;
+with Why.Atree.Modules;         use Why.Atree.Modules;
+with Why.Atree.Mutators;        use Why.Atree.Mutators;
+with Why.Atree.Traversal;       use Why.Atree.Traversal;
+with Why.Conversions;           use Why.Conversions;
+with Why.Gen.Arrays;            use Why.Gen.Arrays;
+with Why.Gen.Binders;           use Why.Gen.Binders;
+with Why.Gen.Expr;              use Why.Gen.Expr;
+with Why.Gen.Names;             use Why.Gen.Names;
+with Why.Gen.Scalars;           use Why.Gen.Scalars;
+with Why.Images;                use Why.Images;
 
 ---------------
 -- Why.Inter --
