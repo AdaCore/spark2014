@@ -90,13 +90,11 @@ package body Xtree_Why_AST is
    -- Print Ada conversions to Json --
    -----------------------------------
 
-   generic
-      type T is (<>);
-      Name : String;
-   procedure Print_Ada_Enum_To_Json (O : in out Output_Record);
-   --  This procedure, when instantiated, will print to O a serialization
-   --  routine for an enumeration type T called Name. It assumes that
-   --  individual enumeration literals are of the form "EW_Literal_Name".
+   procedure Print_Ada_Enum_To_Json
+     (O : in out Output_Record; Name : String);
+   --  This procedure will print to O a serialization routine for an
+   --  enumeration type T called Name. It assumes that individual enumeration
+   --  literals are of the form "EW_Literal_Name".
 
    procedure Print_Ada_Why_Sinfo_Types_To_Json (O : in out Output_Record);
 
@@ -115,28 +113,9 @@ package body Xtree_Why_AST is
    -- Print_Ada_Enum_To_Json --
    ----------------------------
 
-   procedure Print_Ada_Enum_To_Json (O : in out Output_Record) is
-
-      function EW_Mixed_Image (Val : T) return String;
-      --  Given an enumeration value Val of the form "EW_Enum_Val" it returns
-      --  its wide string representation with the "EW" prefix in upper case and
-      --  the rest of the string in mixed case, so exactly as it would appear
-      --  in gnat2why code.
-
-      --------------------
-      -- EW_Mixed_Image --
-      --------------------
-
-      function EW_Mixed_Image (Val : T) return String is
-         Result : String := Val'Img;
-      begin
-         pragma Assert (Result (1 .. 3) = "EW_");
-         To_Mixed (Result (4 .. Result'Last));
-         return Result;
-      end EW_Mixed_Image;
-
-   --  Start of processing for Print_Ada_Enum_To_Json
-
+   procedure Print_Ada_Enum_To_Json
+     (O : in out Output_Record; Name : String)
+   is
    begin
       PL (O, "procedure " & Name & "_To_Json");
       Relative_Indent (O, 2);
@@ -154,19 +133,7 @@ package body Xtree_Why_AST is
       begin
          PL (O, "begin");
          Relative_Indent (O, 3);
-         PL (O, "P (O, Integer'Image (case Arg is");
-         begin
-            Relative_Indent (O, 3);
-            for E in T'Range loop
-               P (O, "when " & EW_Mixed_Image (E) & " =>");
-               P (O, Integer'Image (E'Enum_Rep));
-               if E /= T'Last then
-                  PL (O, ",");
-               end if;
-            end loop;
-            Relative_Indent (O, -3);
-         end;
-         PL (O, "));");
+         PL (O, "P (O, Integer'Image (" & Name & "'Enum_Rep (Arg)));");
          Relative_Indent (O, -3);
       end;
       PL (O, "end " & Name & "_To_Json;");
@@ -179,47 +146,20 @@ package body Xtree_Why_AST is
    ---------------------------------------
 
    procedure Print_Ada_Why_Sinfo_Types_To_Json (O : in out Output_Record) is
-      procedure Print_EW_Domain is new
-        Print_Ada_Enum_To_Json (EW_Domain,      "EW_Domain");
-
-      procedure Print_EW_Type is new
-        Print_Ada_Enum_To_Json (EW_Type,        "EW_Type");
-
-      procedure Print_EW_Literal is new
-        Print_Ada_Enum_To_Json (EW_Literal,     "EW_Literal");
-
-      procedure Print_EW_Theory_Type is new
-        Print_Ada_Enum_To_Json (EW_Theory_Type, "EW_Theory_Type");
-
-      procedure Print_EW_Clone_Type is new
-        Print_Ada_Enum_To_Json (EW_Clone_Type,  "EW_Clone_Type");
-
-      procedure Print_EW_Subst_Type is new
-        Print_Ada_Enum_To_Json (EW_Subst_Type,  "EW_Subst_Type");
-
-      procedure Print_EW_Connector is new
-        Print_Ada_Enum_To_Json (EW_Connector,   "EW_Connector");
-
-      procedure Print_EW_Assert_Kind is new
-        Print_Ada_Enum_To_Json (EW_Assert_Kind, "EW_Assert_Kind");
-
-      procedure Print_EW_Axiom_Dep_Kind is new
-        Print_Ada_Enum_To_Json (EW_Axiom_Dep_Kind, "EW_Axiom_Dep_Kind");
-
    begin
       PL (O, "--  Why.Sinfo");
 
       NL (O);
 
-      Print_EW_Domain         (O);
-      Print_EW_Type           (O);
-      Print_EW_Literal        (O);
-      Print_EW_Theory_Type    (O);
-      Print_EW_Clone_Type     (O);
-      Print_EW_Subst_Type     (O);
-      Print_EW_Connector      (O);
-      Print_EW_Assert_Kind    (O);
-      Print_EW_Axiom_Dep_Kind (O);
+      Print_Ada_Enum_To_Json (O, "EW_Domain");
+      Print_Ada_Enum_To_Json (O, "EW_Type");
+      Print_Ada_Enum_To_Json (O, "EW_Literal");
+      Print_Ada_Enum_To_Json (O, "EW_Theory_Type");
+      Print_Ada_Enum_To_Json (O, "EW_Clone_Type");
+      Print_Ada_Enum_To_Json (O, "EW_Subst_Type");
+      Print_Ada_Enum_To_Json (O, "EW_Connector");
+      Print_Ada_Enum_To_Json (O, "EW_Assert_Kind");
+      Print_Ada_Enum_To_Json (O, "EW_Axiom_Dep_Kind");
 
    end Print_Ada_Why_Sinfo_Types_To_Json;
 
