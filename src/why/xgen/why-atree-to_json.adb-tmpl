@@ -32,30 +32,30 @@ package body Why.Atree.To_Json is
 
    procedure Ureal_To_Json (O : Output_Id; I : Ureal) is
    begin
-      P (O, "[");
+      P (O, '[');
       Uint_To_Json (O, Numerator (I));
-      P (O, ",");
+      P (O, ',');
       Uint_To_Json (O, Denominator (I));
-      P (O, ",");
+      P (O, ',');
       P (O, Nat'Image (Rbase (I)));
-      P (O, ",");
+      P (O, ',');
       Boolean_To_Json (O, UR_Is_Negative (I));
-      P (O, "]");
+      P (O, ']');
    end Ureal_To_Json;
 
    procedure String_Sets_Set_To_Json (O : Output_Id; S : String_Sets.Set) is
       First : Boolean := True;
    begin
-      P (O, "[");
+      P (O, '[');
          for El of S loop
             if First then
                First := False;
             else
-               P (O, ",");
+               P (O, ',');
             end if;
             P (O, El, As_String => True);
          end loop;
-      P (O, "]");
+      P (O, ']');
    end String_Sets_Set_To_Json;
 
    ------------------
@@ -74,11 +74,11 @@ package body Why.Atree.To_Json is
          P (O, "null");
          return;
       end if;
-      P (O, "[");
+      P (O, '[');
       P (O, File, As_String => True);
-      P (O, ",");
+      P (O, ',');
       P (O, Physical_Line_Number'Image (Line));
-      P (O, "]");
+      P (O, ']');
    end Source_Ptr_To_Json;
 
    procedure Symbol_To_Json (O : Output_Id; S : Symbols.Symbol) is
@@ -90,16 +90,16 @@ package body Why.Atree.To_Json is
    procedure Symbol_Set_To_Json (O : Output_Id; S : Symbol_Set) is
       First : Boolean := True;
    begin
-      P (O, "[");
+      P (O, '[');
       for El of S loop
          if First then
             First := False;
          else
-            P (O, ",");
+            P (O, ',');
          end if;
          Symbol_To_Json (O, El);
       end loop;
-      P (O, "]");
+      P (O, ']');
    end Symbol_Set_To_Json;
 
    -----------------------------------------
@@ -144,16 +144,16 @@ package body Why.Atree.To_Json is
    is
       First : Boolean := True;
    begin
-      P (O, "[");
+      P (O, '[');
       for El of L loop
          if First then
             First := False;
          else
-            P (O, ",");
+            P (O, ',');
          end if;
          Why_Node_Id_To_Json (O, El);
       end loop;
-      P (O, "]");
+      P (O, ']');
    end Why_Node_Lists_List_To_Json;
 
    pragma Warnings (Off, "procedure * is not referenced");

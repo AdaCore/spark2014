@@ -47,6 +47,9 @@ package Outputs is
    --  Increase the indentation level of O by Level (or decrease it
    --  if Level is lesser than zero).
 
+   procedure P  (O : Output_Id; C : Character);
+   --  Put C to output O, but can only be used when indentation level is 0
+
    procedure P  (O : Output_Id; S : String; As_String : Boolean := False);
    --  Put S to output O, indenting it if need be. If As_String is true, the
    --  argument string is interpreted as a string literal.

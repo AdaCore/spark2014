@@ -175,10 +175,10 @@ package body Xtree_Why_AST is
       PL (O, "begin");
       begin
          Relative_Indent (O, 3);
-         PL (O, "P (O, ""["");");
+         PL (O, "P (O, '[');");
          PL (O, "Why_Node_Counter := Why_Node_Counter + 1;");
          PL (O, "P (O, Why_Node_Kind'Image (Node.Kind), As_String => True);");
-         PL (O, "P (O, "","");");
+         PL (O, "P (O, ',');");
          PL (O, "P (O, Integer'Image (Why_Node_Counter));");
          for FI of Common_Fields.Fields loop
             declare
@@ -189,7 +189,7 @@ package body Xtree_Why_AST is
                      Typ_Name : constant String :=
                        Clean_Identifier (Type_Name (FI, Opaque));
                   begin
-                     PL (O, "P (O, "","");");
+                     PL (O, "P (O, ',');");
                      PL (O,
                          Typ_Name & "_To_Json (O, Node." & FN & ");");
                   end;
@@ -210,7 +210,7 @@ package body Xtree_Why_AST is
                         Field_Type : constant String :=
                           Clean_Identifier (Type_Name (FI, Opaque));
                      begin
-                        PL (O, "P (O, "","");");
+                        PL (O, "P (O, ',');");
                         PL (O, Field_Type & "_To_Json");
                         Relative_Indent (O, 2);
                         PL (O, "(O,");
@@ -225,7 +225,7 @@ package body Xtree_Why_AST is
             Relative_Indent (O, -3);
          end;
          PL (O, "end case;");
-         PL (O, "P (O, ""]"");");
+         PL (O, "P (O, ']');");
          Relative_Indent (O, -3);
       end;
       PL (O, "end Why_Node_To_Json;");

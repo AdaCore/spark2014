@@ -80,6 +80,12 @@ package body Outputs is
    -- P --
    -------
 
+   procedure P  (O : Output_Id; C : Character) is
+   begin
+      pragma Assert (Output_States (O).Indent = 0);
+      Put (Output_Handles (O), C);
+   end P;
+
    procedure P  (O : Output_Id; S : String; As_String : Boolean := False) is
    begin
       I (O);
