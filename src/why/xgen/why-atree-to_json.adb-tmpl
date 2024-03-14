@@ -27,7 +27,7 @@ package body Why.Atree.To_Json is
 
    procedure Uint_To_Json (O : Output_Id; I : Uint) is
    begin
-      P (O, UI_Image (I, Decimal), As_String => True);
+      P (O, '"' & UI_Image (I, Decimal) & '"');
    end Uint_To_Json;
 
    procedure Ureal_To_Json (O : Output_Id; I : Ureal) is

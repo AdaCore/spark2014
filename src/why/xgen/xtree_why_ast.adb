@@ -177,7 +177,7 @@ package body Xtree_Why_AST is
          Relative_Indent (O, 3);
          PL (O, "P (O, '[');");
          PL (O, "Why_Node_Counter := Why_Node_Counter + 1;");
-         PL (O, "P (O, Why_Node_Kind'Image (Node.Kind), As_String => True);");
+         PL (O, "P (O, '""' & Why_Node_Kind'Image (Node.Kind) & '""');");
          PL (O, "P (O, ',');");
          PL (O, "P (O, Integer'Image (Why_Node_Counter));");
          for FI of Common_Fields.Fields loop
