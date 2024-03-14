@@ -82,7 +82,6 @@ package body Outputs is
 
    procedure P  (O : Output_Id; C : Character) is
    begin
-      pragma Assert (Output_States (O).Indent = 0);
       Put (Output_Handles (O), C);
    end P;
 

@@ -33,21 +33,28 @@ package Outputs is
    --  output; this package offers ways to modify this level and to write
    --  into the corresponding stream.
 
-   procedure Open_Current_File (Filename : String);
+   procedure Open_Current_File (Filename : String)
+     with Post => Indent_Level (Current_File) = 0;
    --  Open Filename and set current file's output to the corresponding file
    --  descriptor.
 
    procedure Close_Current_File;
    --  Close current file
 
-   procedure Absolute_Indent (O : Output_Id; Level : Natural);
+   function Indent_Level (O : Output_Id) return Natural with Ghost;
+   --  Returns the current indentation level of O
+
+   procedure Absolute_Indent (O : Output_Id; Level : Natural)
+     with Post => Indent_Level (O) = Level;
    --  Set the indentation level of O to Level
 
-   procedure Relative_Indent (O : Output_Id; Diff : Integer);
+   procedure Relative_Indent (O : Output_Id; Diff : Integer)
+     with Post => Indent_Level (O) = Indent_Level (O)'Old + Diff;
    --  Increase the indentation level of O by Level (or decrease it
    --  if Level is lesser than zero).
 
-   procedure P  (O : Output_Id; C : Character);
+   procedure P  (O : Output_Id; C : Character)
+     with Pre => Indent_Level (O) = 0;
    --  Put C to output O, but can only be used when indentation level is 0
 
    procedure P  (O : Output_Id; S : String; As_String : Boolean := False);
@@ -79,5 +86,8 @@ private
      (Stderr       => Standard_Error,
       Stdout       => Standard_Output,
       Current_File => <>);
+
+   function Indent_Level (O : Output_Id) return Natural is
+     (Output_States (O).Indent);
 
 end Outputs;
