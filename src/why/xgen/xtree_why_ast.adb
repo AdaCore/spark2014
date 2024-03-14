@@ -182,12 +182,18 @@ package body Xtree_Why_AST is
          PL (O, "P (O, Integer'Image (Why_Node_Counter));");
          for FI of Common_Fields.Fields loop
             declare
-               Typ_Name : constant String :=
-                 Clean_Identifier (Type_Name (FI, Opaque));
+               FN : constant String := Field_Name (FI);
             begin
-               PL (O, "P (O, ',');");
-               PL (O,
-                   Typ_Name & "_To_Json (O, Node." & Field_Name (FI) & ");");
+               if FN not in "Checked" | "Ada_Node" then
+                  declare
+                     Typ_Name : constant String :=
+                       Clean_Identifier (Type_Name (FI, Opaque));
+                  begin
+                     PL (O, "P (O, ',');");
+                     PL (O,
+                         Typ_Name & "_To_Json (O, Node." & FN & ");");
+                  end;
+               end if;
             end;
          end loop;
          PL (O, "case Node.Kind is");
@@ -617,11 +623,13 @@ package body Xtree_Why_AST is
                  OCaml_Lower_Identifier
                    (Strip_Prefix (Type_Name (FI, Opaque)));
             begin
-               if not First then
-                  P (O, "; ");
+               if Field not in "checked" | "node" then
+                  if not First then
+                     P (O, "; ");
+                  end if;
+                  P (O, Field & ": " & Typ);
+                  First := False;
                end if;
-               P (O, Field & ": " & Typ);
-               First := False;
             end;
          end loop;
       end;
@@ -759,7 +767,14 @@ package body Xtree_Why_AST is
                   P (O, "`String """ & Kind_Str & """");
                   P (O, "; id");
                   for I in Common_Field_Names'Range loop
-                     P (O, "; " & To_String (Common_Field_Names (I)));
+                     declare
+                        S : constant String :=
+                          To_String (Common_Field_Names (I));
+                     begin
+                        if S not in "checked" | "node" then
+                           P (O, "; " & S);
+                        end if;
+                     end;
                   end loop;
                   for I in Variant_Field_Names'Range loop
                      P (O, "; " & To_String (Variant_Field_Names (I)));
@@ -773,12 +788,20 @@ package body Xtree_Why_AST is
                         Relative_Indent (O, 2);
                         PL (O, "id = int_from_json id;");
                         for I in Common_Field_Names'Range loop
-                           P (O, To_String (Common_Field_Names (I)));
-                           P (O, " = ");
-                           P (O, To_String (Common_Field_Converters (I)));
-                           P (O, " ");
-                           P (O, To_String (Common_Field_Names (I)));
-                           PL (O, ";");
+                           declare
+                              S : constant String :=
+                                To_String (Common_Field_Names (I));
+                           begin
+                              if S not in "checked" | "node" then
+                                 P (O, S);
+                                 P (O, " = ");
+                                 P (O,
+                                    To_String (Common_Field_Converters (I)));
+                                 P (O, " ");
+                                 P (O, To_String (Common_Field_Names (I)));
+                                 PL (O, ";");
+                              end if;
+                           end;
                         end loop;
                         Relative_Indent (O, -2);
                      end;
