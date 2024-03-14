@@ -48,9 +48,8 @@ package body Outputs is
    procedure I (O : Output_Id) is
    begin
       if Output_States (O).New_Line then
-         for J in 1 .. Output_States (O).Indent loop
-            Put (Output_Handles (O), ' ');
-         end loop;
+         Put (Output_Handles (O),
+           String'(1 .. Output_States (O).Indent => ' '));
          Output_States (O).New_Line := False;
       end if;
    end I;
@@ -85,15 +84,31 @@ package body Outputs is
    begin
       I (O);
       if As_String then
-         Put (Output_Handles (O), '"');
-         for I in S'Range loop
-            if S (I) = '"' then
-               Put (Output_Handles (O), "\""");
-            else
-               Put (Output_Handles (O), S (I));
-            end if;
-         end loop;
-         Put (Output_Handles (O), '"');
+
+         --  Prepare buffer for escaping each quote with a backslash and
+         --  enclosing the resulting string in quotes.
+
+         declare
+            Buffer : String (1 .. S'Length * 2 + 2);
+            Cursor : Positive := 1;
+         begin
+            Buffer (Cursor) := '"';
+            Cursor := Cursor + 1;
+
+            for C of S loop
+               if C = '"' then
+                  Buffer (Cursor) := '\';
+                  Cursor := Cursor + 1;
+               end if;
+               Buffer (Cursor) := C;
+               Cursor := Cursor + 1;
+            end loop;
+
+            Buffer (Cursor) := '"';
+            --  No need to advance cursor for the last character
+
+            Put (Output_Handles (O), Buffer (1 .. Cursor));
+         end;
       else
          Put (Output_Handles (O), S);
       end if;
