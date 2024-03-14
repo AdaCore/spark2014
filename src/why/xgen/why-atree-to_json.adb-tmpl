@@ -96,16 +96,9 @@ package body Why.Atree.To_Json is
    --  Gnat types  --
    ------------------
 
-   procedure Node_Id_To_Json (O : File_Type; Id : Node_Id);
    procedure Source_Ptr_To_Json (O : File_Type; X : Source_Ptr);
    procedure Symbol_To_Json (O : File_Type; S : Symbols.Symbol);
    procedure Symbol_Set_To_Json (O : File_Type; S : Symbol_Set);
-
-   procedure Node_Id_To_Json (O : File_Type; Id : Node_Id) is
-      pragma Unreferenced (Id);
-   begin
-      P (O, "<Node_Id>", As_String => True);
-   end Node_Id_To_Json;
 
    procedure Source_Ptr_To_Json (O : File_Type; X : Source_Ptr) is
       File : constant String               := SPARK_Util.File_Name (X);
