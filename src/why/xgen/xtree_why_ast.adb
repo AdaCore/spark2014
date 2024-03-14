@@ -51,9 +51,9 @@ package body Xtree_Why_AST is
    function Clean_Identifier (Str : String) return String is
       Res : String := Str;
    begin
-      for Ix in Res'Range loop
-         if Res (Ix) = '.' then
-            Res (Ix) := '_';
+      for C of Res loop
+         if C = '.' then
+            C := '_';
          end if;
       end loop;
       return Res;
