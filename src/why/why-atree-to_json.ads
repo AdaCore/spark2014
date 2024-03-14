@@ -23,14 +23,12 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with Ada.Text_IO;
+with Outputs; use Outputs;
 
 package Why.Atree.To_Json is
 
-   subtype File_Type is Ada.Text_IO.File_Type;
+   procedure Why_Node_To_Json (O : Output_Id; Node : Why_Node);
 
-   procedure Why_Node_To_Json (O : File_Type; Node : Why_Node);
-
-   procedure Why_Node_Lists_List_To_Json (O : File_Type;
+   procedure Why_Node_Lists_List_To_Json (O : Output_Id;
                                           L : Why_Node_Lists.List);
 end Why.Atree.To_Json;
