@@ -29,8 +29,8 @@ with Xkind_Tables;  use Xkind_Tables;
 
 package body Xtree_Builders is
 
-   New_Node      : constant String := "New_Node";
-   New_Node_Id   : constant String := "New_Id";
+   New_Node    : constant String := "New_Node";
+   New_Node_Id : constant String := "New_Id";
 
    procedure Print_Builder_Declaration
      (O           : in out Output_Record;
@@ -251,11 +251,13 @@ package body Xtree_Builders is
    procedure Print_Builder_Local_Declarations
      (O    : in out Output_Record;
       Kind : Why_Node_Kind;
-      IK   : Id_Kind) is
+      IK   : Id_Kind)
+   is
+      Mixed_Kind_Name : constant String := Mixed_Case_Name (Kind);
    begin
-      PL (O, New_Node & " : Why_Node (" & Mixed_Case_Name (Kind)  & ");");
+      PL (O, New_Node & " : Why_Node (" & Mixed_Kind_Name & ");");
       PL (O, New_Node_Id & " : constant Why_Node_Id :=");
-      PL (O, "  New_Why_Node_Id (" & Mixed_Case_Name (Kind)  & ");");
+      PL (O, "  New_Why_Node_Id (" & Mixed_Kind_Name & ");");
       PL (O, Checked_Default_Value & " : constant Boolean :=");
 
       if IK = Unchecked then
