@@ -169,7 +169,7 @@ package body Xtree_Why_AST is
 
    procedure Print_Ada_Why_Node_To_Json (O : in out Output_Record) is
    begin
-      PL (O, "Why_Node_Counter : Integer := 0;");
+      PL (O, "Why_Node_Counter : Natural := 0;");
       NL (O);
       PL (O, "procedure Why_Node_To_Json (O : Output_Id; Node : Why_Node) is");
       PL (O, "begin");
