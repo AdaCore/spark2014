@@ -73,6 +73,7 @@ with Namet;                           use Namet;
 with Nlists;                          use Nlists;
 with Osint.C;                         use Osint.C;
 with Osint;                           use Osint;
+with Outputs;                         use Outputs;
 with Sem;
 with Sem_Aux;                         use Sem_Aux;
 with Sem_Util;                        use Sem_Util;
@@ -1085,16 +1086,12 @@ package body Gnat2Why.Driver is
 
    procedure Print_GNAT_Json_File (Filename : String) is
       Modules : constant Why_Node_Lists.List := Build_Printing_Plan;
-      File    : Ada.Text_IO.File_Type;
-
    begin
-      Create (File, Ada.Text_IO.Out_File, Filename);
-
-      Put (File, "{ ""theory_declarations"" : ");
-      Why_Node_Lists_List_To_Json (File, Modules);
-      Put (File, '}');
-
-      Close (File);
+      Open_Current_File (Filename);
+      P (Current_File, "{ ""theory_declarations"" : ");
+      Why_Node_Lists_List_To_Json (Current_File, Modules);
+      P (Current_File, "}");
+      Close_Current_File;
    end Print_GNAT_Json_File;
 
    ------------------

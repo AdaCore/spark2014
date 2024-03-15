@@ -54,9 +54,7 @@ package body Debug.Timing is
          Element := Element + Time;
          if Debug_Mode then
             Put (Msg);
-            for I in Msg'Length + 1 .. 60 loop
-               Put (' ');
-            end loop;
+            Put (String'(Msg'Length + 1 .. 60 => ' '));
             --  Print elapsed time in 1234.5 notation; this is enough for
             --  around 2.5 hours and if we hit this limit then we have other
             --  problems to worry about.

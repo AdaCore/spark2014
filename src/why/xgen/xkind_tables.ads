@@ -92,9 +92,6 @@ package Xkind_Tables is
    function Mixed_Case_Name (D : EW_ODomain) return String;
    --  Return the mixed case name of the given node kind
 
-   function Default_Kind return Why_Node_Kind;
-   function Default_Kind return String;
-
    function Multiplicity_Suffix
      (Multiplicity : Id_Multiplicity)
      return String;

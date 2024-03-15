@@ -51,9 +51,9 @@ package body Xtree_Why_AST is
    function Clean_Identifier (Str : String) return String is
       Res : String := Str;
    begin
-      for Ix in Res'Range loop
-         if Res (Ix) = '.' then
-            Res (Ix) := '_';
+      for C of Res loop
+         if C = '.' then
+            C := '_';
          end if;
       end loop;
       return Res;
@@ -119,14 +119,14 @@ package body Xtree_Why_AST is
    begin
       PL (O, "procedure " & Name & "_To_Json");
       Relative_Indent (O, 2);
-      PL (O, "(O : File_Type;");
+      PL (O, "(O : Output_Id;");
       Relative_Indent (O, 1);
       PL (O, "Arg : " & Name & ");");
       Relative_Indent (O, -3);
       NL (O);
       PL (O, "procedure " & Name & "_To_Json");
       Relative_Indent (O, 2);
-      PL (O, "(O : File_Type;");
+      PL (O, "(O : Output_Id;");
       Relative_Indent (O, 1);
       PL (O, "Arg : " & Name & ") is");
       Relative_Indent (O, -3);
@@ -169,15 +169,15 @@ package body Xtree_Why_AST is
 
    procedure Print_Ada_Why_Node_To_Json (O : in out Output_Record) is
    begin
-      PL (O, "Why_Node_Counter : Integer := 0;");
+      PL (O, "Why_Node_Counter : Natural := 0;");
       NL (O);
-      PL (O, "procedure Why_Node_To_Json (O : File_Type; Node : Why_Node) is");
+      PL (O, "procedure Why_Node_To_Json (O : Output_Id; Node : Why_Node) is");
       PL (O, "begin");
       begin
          Relative_Indent (O, 3);
          PL (O, "P (O, '[');");
          PL (O, "Why_Node_Counter := Why_Node_Counter + 1;");
-         PL (O, "P (O, Why_Node_Kind'Image (Node.Kind), As_String => True);");
+         PL (O, "P (O, '""' & Why_Node_Kind'Image (Node.Kind) & '""');");
          PL (O, "P (O, ',');");
          PL (O, "P (O, Integer'Image (Why_Node_Counter));");
          for FI of Common_Fields.Fields loop
@@ -280,14 +280,14 @@ package body Xtree_Why_AST is
                PL (O, "procedure " & Name & "_To_Json");
                begin
                   Relative_Indent (O, 2);
-                  PL (O, "(O : File_Type; Arg : " & Name & ");");
+                  PL (O, "(O : Output_Id; Arg : " & Name & ");");
                   Relative_Indent (O, -2);
                end;
                NL (O);
                PL (O, "procedure " & Name & "_To_Json");
                begin
                   Relative_Indent (O, 2);
-                  PL (O, "(O : File_Type; Arg : " & Name & ")");
+                  PL (O, "(O : Output_Id; Arg : " & Name & ")");
                   Relative_Indent (O, -2);
                   PL (O, "is");
                   PL (O, "begin");
