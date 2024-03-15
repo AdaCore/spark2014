@@ -188,7 +188,7 @@ package body SPARK_Definition is
    --  function with an implicit postcondition when they are subject to
    --  SPARK_Mode of Auto.
 
-   Full_Views_Not_In_SPARK : Node_Sets.Set;
+   Full_Views_Not_In_SPARK : Hashed_Node_Sets.Set;
    --  Registers type entities in SPARK whose full view was declared in a
    --  private part with SPARK_Mode => Off or a subtype or derived type of such
    --  an entity.
@@ -229,10 +229,10 @@ package body SPARK_Definition is
    --  calling Mark_Entity directly would not be appropriate, e.g. for
    --  primitive operations of a tagged type.
 
-   Goto_Labels : Node_Sets.Set;
+   Goto_Labels : Hashed_Node_Sets.Set;
    --  Goto labels encountered during marking
 
-   Raise_Exprs_From_Pre : Node_Sets.Set;
+   Raise_Exprs_From_Pre : Hashed_Node_Sets.Set;
    --  Store raise expressions occuring in preconditions
 
    Relaxed_Init : Node_To_Bool_Maps.Map;
@@ -240,7 +240,7 @@ package body SPARK_Definition is
    --  initialization to a flag which is true if the type has relaxed
    --  initialization itself.
 
-   Unused_Records : Node_Sets.Set;
+   Unused_Records : Hashed_Node_Sets.Set;
    --  Record types which can be abstracted away (their fields are unused)
 
    function Entity_In_SPARK (E : Entity_Id) return Boolean
