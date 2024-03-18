@@ -1,63 +1,63 @@
 test_formal.adb:5:30: info: data dependencies proved
-test_formal.adb:7:28: info: all elements shall fit in index type and fit in "Count_Type" for sequence aggregates at spark-containers-formal-doubly_linked_lists.ads:54, in instantiation at test_formal_instances.ads:25
+test_formal.adb:7:28: info: all elements shall fit in index type and fit in "Count_Type" for sequence aggregates at spark-containers-formal-doubly_linked_lists.ads:52, in instantiation at test_formal_instances.ads:25
 test_formal.adb:7:28: info: precondition proved (CVC5: 2 VC)
 test_formal.adb:7:32: medium: range check might fail, cannot prove lower bound for Get_Value [possible fix: you should consider adding a postcondition to function Get_Value or turning it into an expression function in its unit spec]
 test_formal.adb:12:32: warning: unused variable "K"
 test_formal.adb:12:50: info: data dependencies proved
-test_formal.adb:14:27: info: keys shall be distinct and all elements shall fit in "Count_Type" for maps aggregates at spark-containers-formal-hashed_maps.ads:98, in instantiation at test_formal_instances.ads:27
+test_formal.adb:14:27: info: keys shall be distinct and all elements shall fit in "Count_Type" for maps aggregates at spark-containers-formal-hashed_maps.ads:96, in instantiation at test_formal_instances.ads:27
 test_formal.adb:14:27: info: precondition proved (CVC5: 4 VC)
 test_formal.adb:14:41: medium: range check might fail, cannot prove lower bound for Get_Value [reason for check: value must fit in component type] [possible fix: you should consider adding a postcondition to function Get_Value or turning it into an expression function in its unit spec]
 test_formal.adb:19:32: warning: unused variable "E"
 test_formal.adb:19:50: info: data dependencies proved
-test_formal.adb:21:27: medium: elements shall be distinct and shall fit in "Count_Type" for set aggregates at spark-containers-formal-hashed_sets.ads:99, in instantiation at test_formal_instances.ads:29
+test_formal.adb:21:27: medium: elements shall be distinct and shall fit in "Count_Type" for set aggregates at spark-containers-formal-hashed_sets.ads:97, in instantiation at test_formal_instances.ads:29
 test_formal.adb:21:27: medium: precondition might fail
 test_formal.adb:21:34: medium: range check might fail, cannot prove lower bound for Get_Value [possible fix: you should consider adding a postcondition to function Get_Value or turning it into an expression function in its unit spec]
 test_formal.adb:26:37: info: data dependencies proved
-test_formal.adb:28:27: info: keys shall be distinct and all elements shall fit in "Count_Type" for maps aggregates at spark-containers-formal-ordered_maps.ads:97, in instantiation at test_formal_instances.ads:31
+test_formal.adb:28:27: info: keys shall be distinct and all elements shall fit in "Count_Type" for maps aggregates at spark-containers-formal-ordered_maps.ads:95, in instantiation at test_formal_instances.ads:31
 test_formal.adb:28:27: info: precondition proved (CVC5: 4 VC)
 test_formal.adb:28:33: medium: range check might fail, cannot prove lower bound for Get_Value [reason for check: value must fit in component type] [possible fix: you should consider adding a postcondition to function Get_Value or turning it into an expression function in its unit spec]
 test_formal.adb:33:37: info: data dependencies proved
-test_formal.adb:35:27: medium: elements shall be distinct and shall fit in "Count_Type" for set aggregates at spark-containers-formal-ordered_sets.ads:96, in instantiation at test_formal_instances.ads:33
+test_formal.adb:35:27: medium: elements shall be distinct and shall fit in "Count_Type" for set aggregates at spark-containers-formal-ordered_sets.ads:94, in instantiation at test_formal_instances.ads:33
 test_formal.adb:35:27: medium: precondition might fail
 test_formal.adb:35:34: medium: range check might fail, cannot prove lower bound for Get_Value [possible fix: you should consider adding a postcondition to function Get_Value or turning it into an expression function in its unit spec]
 test_formal.adb:40:32: info: data dependencies proved
-test_formal.adb:42:32: info: all elements shall fit in index type and fit in "Count_Type" for sequence aggregates at spark-containers-formal-vectors.ads:81, in instantiation at test_formal_instances.ads:35
+test_formal.adb:42:32: info: all elements shall fit in index type and fit in "Count_Type" for sequence aggregates at spark-containers-formal-vectors.ads:79, in instantiation at test_formal_instances.ads:35
 test_formal.adb:42:32: info: precondition proved (CVC5: 2 VC)
 test_formal.adb:42:36: medium: range check might fail, cannot prove lower bound for Get_Value [possible fix: you should consider adding a postcondition to function Get_Value or turning it into an expression function in its unit spec]
 test_formal_predicate.adb:5:30: info: data dependencies proved
-test_formal_predicate.adb:7:28: info: all elements shall fit in index type and fit in "Count_Type" for sequence aggregates at spark-containers-formal-doubly_linked_lists.ads:54, in instantiation at test_formal_predicate_instances.ads:33
+test_formal_predicate.adb:7:28: info: all elements shall fit in index type and fit in "Count_Type" for sequence aggregates at spark-containers-formal-doubly_linked_lists.ads:52, in instantiation at test_formal_predicate_instances.ads:33
 test_formal_predicate.adb:7:28: info: precondition proved (CVC5: 2 VC)
 test_formal_predicate.adb:7:29: info: predicate check proved (CVC5: 1 VC)
 test_formal_predicate.adb:7:35: medium: predicate check might fail [possible fix: you should consider adding a postcondition to function Get_Value or turning it into an expression function in its unit spec]
 test_formal_predicate.adb:7:49: info: predicate check proved (CVC5: 1 VC)
 test_formal_predicate.adb:12:32: warning: unused variable "K"
 test_formal_predicate.adb:12:50: info: data dependencies proved
-test_formal_predicate.adb:14:27: info: keys shall be distinct and all elements shall fit in "Count_Type" for maps aggregates at spark-containers-formal-hashed_maps.ads:98, in instantiation at test_formal_predicate_instances.ads:35
+test_formal_predicate.adb:14:27: info: keys shall be distinct and all elements shall fit in "Count_Type" for maps aggregates at spark-containers-formal-hashed_maps.ads:96, in instantiation at test_formal_predicate_instances.ads:35
 test_formal_predicate.adb:14:27: info: precondition proved (CVC5: 4 VC)
 test_formal_predicate.adb:14:33: info: predicate check proved (CVC5: 1 VC)
 test_formal_predicate.adb:14:44: medium: predicate check might fail [possible fix: you should consider adding a postcondition to function Get_Value or turning it into an expression function in its unit spec]
 test_formal_predicate.adb:14:63: info: predicate check proved (CVC5: 1 VC)
 test_formal_predicate.adb:19:32: warning: unused variable "E"
 test_formal_predicate.adb:19:50: info: data dependencies proved
-test_formal_predicate.adb:21:27: medium: elements shall be distinct and shall fit in "Count_Type" for set aggregates at spark-containers-formal-hashed_sets.ads:99, in instantiation at test_formal_predicate_instances.ads:37
+test_formal_predicate.adb:21:27: medium: elements shall be distinct and shall fit in "Count_Type" for set aggregates at spark-containers-formal-hashed_sets.ads:97, in instantiation at test_formal_predicate_instances.ads:37
 test_formal_predicate.adb:21:27: medium: precondition might fail
 test_formal_predicate.adb:21:28: info: predicate check proved (CVC5: 1 VC)
 test_formal_predicate.adb:21:34: info: predicate check proved (CVC5: 1 VC)
 test_formal_predicate.adb:21:40: medium: predicate check might fail [possible fix: you should consider adding a postcondition to function Get_Value or turning it into an expression function in its unit spec]
 test_formal_predicate.adb:26:37: info: data dependencies proved
-test_formal_predicate.adb:28:27: info: keys shall be distinct and all elements shall fit in "Count_Type" for maps aggregates at spark-containers-formal-ordered_maps.ads:97, in instantiation at test_formal_predicate_instances.ads:39
+test_formal_predicate.adb:28:27: info: keys shall be distinct and all elements shall fit in "Count_Type" for maps aggregates at spark-containers-formal-ordered_maps.ads:95, in instantiation at test_formal_predicate_instances.ads:39
 test_formal_predicate.adb:28:27: info: precondition proved (CVC5: 4 VC)
 test_formal_predicate.adb:28:33: medium: predicate check might fail [possible fix: you should consider adding a postcondition to function Get_Value or turning it into an expression function in its unit spec]
 test_formal_predicate.adb:28:52: info: predicate check proved (CVC5: 1 VC)
 test_formal_predicate.adb:28:63: info: predicate check proved (CVC5: 1 VC)
 test_formal_predicate.adb:33:37: info: data dependencies proved
-test_formal_predicate.adb:35:27: medium: elements shall be distinct and shall fit in "Count_Type" for set aggregates at spark-containers-formal-ordered_sets.ads:96, in instantiation at test_formal_predicate_instances.ads:41
+test_formal_predicate.adb:35:27: medium: elements shall be distinct and shall fit in "Count_Type" for set aggregates at spark-containers-formal-ordered_sets.ads:94, in instantiation at test_formal_predicate_instances.ads:41
 test_formal_predicate.adb:35:27: medium: precondition might fail
 test_formal_predicate.adb:35:28: info: predicate check proved (CVC5: 1 VC)
 test_formal_predicate.adb:35:34: info: predicate check proved (CVC5: 1 VC)
 test_formal_predicate.adb:35:40: medium: predicate check might fail [possible fix: you should consider adding a postcondition to function Get_Value or turning it into an expression function in its unit spec]
 test_formal_predicate.adb:40:32: info: data dependencies proved
-test_formal_predicate.adb:42:32: info: all elements shall fit in index type and fit in "Count_Type" for sequence aggregates at spark-containers-formal-vectors.ads:81, in instantiation at test_formal_predicate_instances.ads:43
+test_formal_predicate.adb:42:32: info: all elements shall fit in index type and fit in "Count_Type" for sequence aggregates at spark-containers-formal-vectors.ads:79, in instantiation at test_formal_predicate_instances.ads:43
 test_formal_predicate.adb:42:32: info: precondition proved (CVC5: 2 VC)
 test_formal_predicate.adb:42:33: info: predicate check proved (CVC5: 1 VC)
 test_formal_predicate.adb:42:39: medium: predicate check might fail [possible fix: you should consider adding a postcondition to function Get_Value or turning it into an expression function in its unit spec]

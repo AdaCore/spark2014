@@ -1,5 +1,12 @@
 package body Test_Set with SPARK_Mode is
 
+   --  Do not execute ghost procedures from the model, or assertions which call
+   --  ghost functions from the model, as the container instance is compiled
+   --  without assertions. Add a special Static check policy for such
+   --  assertions.
+   pragma Assertion_Policy (Ghost => Ignore);
+   pragma Check_Policy (Static => Ignore);
+
    procedure Test_Set_Pos with Pre => True, SPARK_Mode is
       use Test_Set.M;
       L, K : Set;
@@ -207,7 +214,7 @@ package body Test_Set with SPARK_Mode is
       D := Next (L, C);
 
       K := Copy (L);
-      pragma Assert (Model (K) = Model (L));
+      pragma Check (Static, Model (K) = Model (L));
       pragma Assert (Element (L, C) = Element (K, C));
       pragma Assert (Element (L, D) = Element (K, D));
       pragma Assert (not Contains (K, 1));
@@ -315,7 +322,7 @@ package body Test_Set with SPARK_Mode is
       pragma Assert (not Contains (L, 1));
       pragma Assert (not Contains (L, 2));
 
-      pragma Assert (Model (L) = Formal_Model.M.Empty_Set);
+      pragma Check (Static, Model (L) = Formal_Model.M.Empty_Set);
 
       Insert (L, 1);
       Insert (L, 2);
@@ -328,7 +335,7 @@ package body Test_Set with SPARK_Mode is
 
       pragma Assert (not Contains (K, 1));
       pragma Assert (not Contains (K, 2));
-      pragma Assert (Model (K) <= Model (L));
+      pragma Check (Static, Model (K) <= Model (L));
 
       Insert (K, 1);
       pragma Assert (Is_Subset (K, L));

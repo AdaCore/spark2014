@@ -185,6 +185,6 @@ test_vectors.adb:351:07: info: precondition proved (CVC5: 3 VC)
 test_vectors.adb:353:07: info: precondition proved (CVC5: 1 VC)
 test_vectors.adb:354:22: info: assertion proved (CVC5: 1 VC)
 test_vectors.adb:354:22: info: precondition proved (CVC5: 1 VC)
-test_vectors.ads:8:14: warning: subprogram "Run" has no effect
-test_vectors.ads:10:14: warning: subprogram "Large_Run" has no effect
-test_vectors.ads:12:14: warning: subprogram "Index_Negative" has no effect
+test_vectors.ads:10:14: warning: subprogram "Run" has no effect
+test_vectors.ads:12:14: warning: subprogram "Large_Run" has no effect
+test_vectors.ads:14:14: warning: subprogram "Index_Negative" has no effect
