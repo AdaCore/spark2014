@@ -685,6 +685,10 @@ of a program:
   * does not lock protected objects with calls to protected subprograms,
   * does not call Ada.Task_Identification.Current_Task.
 
+* [SPARK_C_STRINGS_FREE]
+  GNATprove assumes that the procedure ``SPARK.C.Strings.Free`` is never called
+  when deallocation is prohibited (eg: cert runtimes).
+
 In addition, the following assumptions need to be addressed when using SPARK on
 only part of a program:
 
