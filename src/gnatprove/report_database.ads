@@ -163,6 +163,13 @@ package Report_Database is
       (for some Check_Kind in Summary'Range =>
           Summary (Check_Kind).Unproved > 0);
 
+   function Has_Check return Boolean is
+     (for some Line of Summary =>
+         Line.Flow > 0
+         or else Line.Provers.Total > 0
+         or else Line.Justified > 0
+         or else Line.Unproved > 0);
+
    procedure Add_Skip_Proof (S : Subp_Type);
    --  Register that proofs were skipped for S
 

@@ -1038,6 +1038,9 @@ package body VC_Kinds is
          else raise Program_Error);
    end From_JSON;
 
+   function From_JSON (V : JSON_Value) return GP_Mode is
+     (GP_Mode'Value (Get (V)));
+
    ----------------------
    -- From_JSON_Labels --
    ----------------------
@@ -1694,6 +1697,11 @@ package body VC_Kinds is
             when Not_In_SPARK => "no");
    begin
       return Create (S);
+   end To_JSON;
+
+   function To_JSON (M : GP_Mode) return JSON_Value is
+   begin
+      return Create (GP_Mode'Image (M));
    end To_JSON;
 
    ---------------
