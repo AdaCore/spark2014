@@ -3436,6 +3436,90 @@ package body SPARK_Util is
         and then Nkind (First (Choices)) = N_Others_Choice;
    end Is_Others_Choice;
 
+   -------------------------------
+   -- Is_Null_Or_Reclaimed_Expr --
+   -------------------------------
+
+   function Is_Null_Or_Reclaimed_Expr
+     (Expr       : N_Subexpr_Id;
+      Reclaimed  : Boolean := False;
+      Null_Value : Boolean := False)
+      return Boolean
+   is
+   begin
+      return Nkind (Expr) = N_Null
+        or else
+          (Nkind (Expr) in N_Identifier | N_Expanded_Name
+           and then Is_Object (Entity (Expr))
+           and then Is_Null_Or_Reclaimed_Obj
+             (Entity (Expr), Reclaimed, Null_Value))
+        or else
+          (Nkind (Expr) in N_Qualified_Expression | N_Type_Conversion
+           and then Is_Null_Or_Reclaimed_Expr
+             (Expression (Expr), Reclaimed, Null_Value));
+   end Is_Null_Or_Reclaimed_Expr;
+
+   ------------------------------
+   -- Is_Null_Or_Reclaimed_Obj --
+   ------------------------------
+
+   function Is_Null_Or_Reclaimed_Obj
+     (Obj        : Object_Kind_Id;
+      Reclaimed  : Boolean := False;
+      Null_Value : Boolean := False)
+      return Boolean
+   is
+      use type Opt.SPARK_Mode_Type;
+   begin
+      if Ekind (Obj) /= E_Constant then
+         return False;
+
+      --  Consider the full view if it is not in a part annotated with
+      --  SPARK_Mode => Off.
+
+      elsif Present (Full_View (Obj))
+        and then (No (SPARK_Aux_Pragma (Scope (Obj)))
+                  or else Get_SPARK_Mode_From_Annotation
+                    (SPARK_Aux_Pragma (Scope (Obj))) /= Opt.Off)
+      then
+         return Is_Null_Or_Reclaimed_Obj
+           (Full_View (Obj), Reclaimed, Null_Value);
+
+      --  If Reclaimed is True, return True on reclaimed values of private
+      --  types with ownership
+
+      elsif Reclaimed
+        and then Has_Ownership_Annotation (Etype (Obj))
+        and then Needs_Reclamation (Etype (Obj))
+        and then Get_Reclamation_Entity (Etype (Obj)) = Obj
+      then
+         return True;
+
+      --  If Null_Value is True, return True on null values of private types
+      --  with Only_Null predefined equality.
+
+      elsif Null_Value
+        and then Has_Predefined_Eq_Annotation (Etype (Obj))
+        and then Get_Predefined_Eq_Kind (Etype (Obj)) = Only_Null
+        and then Get_Null_Value (Etype (Obj)) = Obj
+      then
+         return True;
+
+      --  Otherwise, look at the definition of the constant to see if it is
+      --  statically reclaimed.
+
+      else
+         declare
+            Decl : constant Node_Id := Parent (Obj);
+         begin
+            return Nkind (Decl) = N_Object_Declaration
+              and then Present (Expression (Decl))
+              and then Is_Null_Or_Reclaimed_Expr
+                (Expression (Decl), Reclaimed, Null_Value);
+         end;
+      end if;
+   end Is_Null_Or_Reclaimed_Obj;
+
    ----------------------
    -- Is_Package_State --
    ----------------------
@@ -3873,63 +3957,6 @@ package body SPARK_Util is
         and then not
           Get_Specialized_Parameters (Call, Specialized_Entities).Is_Empty;
    end Is_Specialized_Call;
-
-   ----------------------------------
-   -- Is_Statically_Reclaimed_Expr --
-   ----------------------------------
-
-   function Is_Statically_Reclaimed_Expr (Expr : N_Subexpr_Id) return Boolean
-   is
-   begin
-      return Nkind (Expr) = N_Null
-        or else
-          (Nkind (Expr) in N_Identifier | N_Expanded_Name
-           and then Is_Object (Entity (Expr))
-           and then Is_Statically_Reclaimed_Obj (Entity (Expr)));
-   end Is_Statically_Reclaimed_Expr;
-
-   ---------------------------------
-   -- Is_Statically_Reclaimed_Obj --
-   ---------------------------------
-
-   function Is_Statically_Reclaimed_Obj (Obj : Object_Kind_Id) return Boolean
-   is
-      use type Opt.SPARK_Mode_Type;
-   begin
-      if Ekind (Obj) /= E_Constant then
-         return False;
-
-      --  Consider the full view if it is not in a part annotated with
-      --  SPARK_Mode => Off.
-
-      elsif Present (Full_View (Obj))
-        and then (No (SPARK_Aux_Pragma (Scope (Obj)))
-                  or else Get_SPARK_Mode_From_Annotation
-                    (SPARK_Aux_Pragma (Scope (Obj))) /= Opt.Off)
-      then
-         return Is_Statically_Reclaimed_Obj (Full_View (Obj));
-
-      --  Return True on reclaimed values of private types with ownership
-
-      elsif Has_Ownership_Annotation (Etype (Obj))
-        and then Needs_Reclamation (Etype (Obj))
-        and then Get_Reclamation_Entity (Etype (Obj)) = Obj
-      then
-         return True;
-
-      --  Otherwise, look at the definition of the constant to see if it is
-      --  statically reclaimed.
-
-      else
-         declare
-            Decl : constant Node_Id := Parent (Obj);
-         begin
-            return Nkind (Decl) = N_Object_Declaration
-              and then Present (Expression (Decl))
-              and then Is_Statically_Reclaimed_Expr (Expression (Decl));
-         end;
-      end if;
-   end Is_Statically_Reclaimed_Obj;
 
    ---------------------------
    -- Is_Strict_Reborrow_Of --

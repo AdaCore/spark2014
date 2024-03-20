@@ -1003,7 +1003,7 @@ package body SPARK_Definition is
          --  aliases can occur.
 
          if not Is_Deep (Etype (N))
-           or else Is_Statically_Reclaimed_Expr (N)
+           or else Is_Null_Or_Reclaimed_Expr (N, Reclaimed => True)
          then
             return True;
          end if;
@@ -2455,10 +2455,13 @@ package body SPARK_Definition is
             --  use of the Ada equality.
 
             declare
+               Exp          : Unbounded_String;
                Eq_On_Access : constant Boolean :=
                  not Is_Concurrent_Type (Retysp (Etype (Left_Opnd (N))))
-                 and then Predefined_Eq_Uses_Pointer_Eq (Etype (Left_Opnd (N)))
-                 and then not Is_Statically_Reclaimed_Expr (Left_Opnd (N));
+                 and then Predefined_Eq_Uses_Pointer_Eq
+                   (Etype (Left_Opnd (N)), Exp)
+                 and then not Is_Null_Or_Reclaimed_Expr
+                   (Left_Opnd (N), Null_Value => True);
                --  Disallow membership tests if they involved the use of the
                --  predefined equality on access types (except if one of the
                --  operands is statically null).
@@ -2488,9 +2491,11 @@ package body SPARK_Definition is
 
                         pragma Assert (Eq_On_Access);
 
-                        if not Is_Statically_Reclaimed_Expr (Alt) then
+                        if not Is_Null_Or_Reclaimed_Expr
+                          (Alt, Null_Value => True)
+                        then
                            Mark_Violation
-                             ("equality on access types", Alt);
+                             ("equality on " & To_String (Exp), Alt);
                            exit;
                         end if;
                      end if;
@@ -2504,9 +2509,11 @@ package body SPARK_Definition is
                   Touch_Record_Fields_For_Eq (Etype (Left_Opnd (N)));
 
                   if Eq_On_Access
-                    and then not Is_Statically_Reclaimed_Expr (Right_Opnd (N))
+                    and then not Is_Null_Or_Reclaimed_Expr
+                      (Right_Opnd (N), Null_Value => True)
                   then
-                     Mark_Violation ("equality on access types", N);
+                     Mark_Violation
+                       ("equality on " & To_String (Exp), N);
                   end if;
                   pragma Annotate (Xcov, Exempt_Off);
                end if;
@@ -4682,7 +4689,8 @@ package body SPARK_Definition is
    --------------------
 
    procedure Mark_Binary_Op (N : N_Binary_Op_Id) is
-      E : constant Subprogram_Kind_Id := Entity (N);
+      E   : constant Subprogram_Kind_Id := Entity (N);
+      Exp : Unbounded_String;
 
    begin
       --  Call is in SPARK only if the subprogram called is in SPARK.
@@ -4713,11 +4721,13 @@ package body SPARK_Definition is
 
       if Nkind (N) in N_Op_Eq | N_Op_Ne
         and then Retysp_In_SPARK (Etype (Left_Opnd (N)))
-        and then Predefined_Eq_Uses_Pointer_Eq (Etype (Left_Opnd (N)))
-        and then not Is_Statically_Reclaimed_Expr (Left_Opnd (N))
-        and then not Is_Statically_Reclaimed_Expr (Right_Opnd (N))
+        and then Predefined_Eq_Uses_Pointer_Eq (Etype (Left_Opnd (N)), Exp)
+        and then not Is_Null_Or_Reclaimed_Expr
+          (Left_Opnd (N), Null_Value => True)
+        and then not Is_Null_Or_Reclaimed_Expr
+            (Right_Opnd (N), Null_Value => True)
       then
-         Mark_Violation ("equality on access types", N);
+         Mark_Violation ("equality on " & To_String (Exp),  N);
 
       elsif Nkind (N) in N_Op_And | N_Op_Or | N_Op_Xor
         and then Has_Modular_Integer_Type (Etype (N))
@@ -5083,10 +5093,16 @@ package body SPARK_Definition is
          declare
             Left  : constant Node_Id := First_Actual (N);
             Right : constant Node_Id := Next_Actual (Left);
+            Exp   : Unbounded_String;
             pragma Assert (No (Next_Actual (Right)));
          begin
-            if Predefined_Eq_Uses_Pointer_Eq (Etype (Left)) then
-               Mark_Violation ("equality on access types", N);
+            if Predefined_Eq_Uses_Pointer_Eq (Etype (Left), Exp)
+              and then not Is_Null_Or_Reclaimed_Expr
+                (Left, Null_Value => True)
+              and then not Is_Null_Or_Reclaimed_Expr
+                (Right, Null_Value => True)
+            then
+               Mark_Violation ("equality on " & To_String (Exp), N);
             end if;
 
             Touch_Record_Fields_For_Eq (Etype (Left), Force_Predef => True);

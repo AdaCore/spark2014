@@ -447,10 +447,15 @@ package SPARK_Util.Types is
    procedure Iterate_Applicable_Predicates (Ty : Type_Kind_Id);
    --  Traverse all predicates associated to the type Ty
 
-   function Predefined_Eq_Uses_Pointer_Eq (Ty : Type_Kind_Id) return Boolean
+   function Predefined_Eq_Uses_Pointer_Eq
+     (Ty  : Type_Kind_Id;
+      Exp : out Unbounded_String)
+      return Boolean
      with Pre => not Is_Concurrent_Type (Retysp (Ty));
-   --  Return True if the predefined equality of Ty uses the predefined
-   --  equality on access types.
+   --  Retur True if the predefined equality of Ty uses the predefined equality
+   --  on access types or on types on which the predefined equality is either
+   --  completely disallowed or only allowed on null values. In this case, set
+   --  Exp to an explanation of the detected construct.
 
    function Predicate_Requires_Initialization
      (Ty : Type_Kind_Id) return Boolean
