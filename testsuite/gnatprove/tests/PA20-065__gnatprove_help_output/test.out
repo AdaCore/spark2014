@@ -112,6 +112,7 @@ gnatprove advanced switches:
  --RTS=dir            Specify the Ada runtime name/location
  --steps=nnn          Set the maximum number of proof steps (prover-specific)
                       Use value 0 for no steps limit.
+ --target=target_name Specify the name of the target platform
  --timeout=nnn        Set the prover timeout in seconds. Use value 0 for
                       no timeout (default when no level set)
  --why3-conf=f        Specify a configuration file for why3
