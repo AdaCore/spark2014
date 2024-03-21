@@ -809,6 +809,117 @@ proved correct (no assumption is used).
       pragma Assert (not Real_Eq (S1 (1 .. 3), S2 (1 .. 3)));
    end Test;
 
+Annotation for the Predefined Equality of Private Types
+-------------------------------------------------------
+
+In Ada, an equality operator is predefined for almost all types (except
+limited types). This *predefined equality* depends on the shape of the type.
+It is also possible to override the equality operator for a given type. This
+overriding is called the *primitive equality* of the type. Depending on the
+context, the predefined or the primitive equality of a type might be used. In
+particular, implicit equality operations on types which are not record types -
+in membership tests or predefined equality of composite types typically - uses
+the predefined equality, even if a primitive equality is supplied for the type.
+
+In general, predefined equality operators are handled precisely by |GNATprove|
+following the semantics of Ada. However, when the full view of a private type
+is not visible in |SPARK|, it might not be possible to do so. In this case,
+|GNATprove| approximates the behavior of the predefined equality by peeking
+beyond ``SPARK_Mode`` boundaries into the full view of the type. If it can
+determine that it is safe to do so, it will handle the predefined equality of
+a private type as the logical equality (see
+:ref:`Annotation for Accessing the Logical Equality for a Type`). Otherwise,
+the predefined equality of the private type will be left unspecified and nothing
+will be provable about it.
+
+It is possible for a user to short-circuit this mechanism and instead specify
+directly on a private type whose full view is not in |SPARK| how the predefined
+equality should be handled using the ``Predefined_Equality`` annotation. If this
+annotation is provided on a type, it will be trusted and |GNATprove| will not
+peek into the full view. For now, the following profiles are supported:
+
+- ``No_Equality``: |GNATprove| will make sure that the predefined equality of
+  the private type is never used. It can be a good way to ensure that users of a
+  library use the primitive equality instead. This is the default handling of
+  |GNATprove| for visible composite types containing a component of an
+  access-to-object type.
+
+- ``Only_Null``: |GNATprove| will make sure that the predefined equality of
+  the private type is only used when one of the operands is a specific constant
+  annotated as the ``Null_Value``. This is the default handling of
+  |GNATprove| for visible access-to-object types.
+
+As an example consider the following package. An appropriate equality for the
+``Unbounded_String`` type is provided as a primitive equality in
+``Unbounded_Strings``. The ``Predefined_Equality`` annotation is used to make
+sure that its predefined equality will never be called by programs using this
+library. It is necessary in particular so that the ``To_Unbounded_String``
+function can be used safely even though it will produce different pointers each
+time it is called.
+
+.. code-block:: ada
+
+   package Unbounded_Strings is
+
+      type Unbounded_String is private with
+        Default_Initial_Condition => False,
+        Annotate => (GNATprove, Predefined_Equality, "No_Equality");
+
+      function "=" (X, Y : Unbounded_String) return Boolean;
+
+      function To_Unbounded_String (S : String) return Unbounded_String;
+
+      function To_String (S : Unbounded_String) return String;
+
+   private
+      pragma SPARK_Mode (Off);
+
+      type Unbounded_String is not null access constant String;
+
+      function "=" (X, Y : Unbounded_String) return Boolean is (X.all = Y.all);
+
+      function To_Unbounded_String (S : String) return Unbounded_String is
+        (new String'(S));
+
+      function To_String (S : Unbounded_String) return String is
+        (S.all);
+
+   end Unbounded_Strings;
+
+It would be possible instead to provide a specific
+``Null_String`` value on which the predefined equality is allowed:
+
+.. code-block:: ada
+
+   package Unbounded_Strings is
+
+      type Unbounded_String is private with
+        Default_Initial_Condition => Unbounded_String = Null_String,
+        Annotate => (GNATprove, Predefined_Equality, "Only_Null");
+
+      Null_String : constant Unbounded_String with
+        Annotate => (GNATprove, Predefined_Equality, "Null_Value");
+
+      function To_Unbounded_String (S : String) return Unbounded_String;
+
+      function To_String (S : Unbounded_String) return String with
+        Pre => S /= Null_String;
+
+   private
+      pragma SPARK_Mode (Off);
+
+      type Unbounded_String is access constant String;
+
+      Null_String : constant Unbounded_String := null;
+
+      function To_Unbounded_String (S : String) return Unbounded_String is
+        (new String'(S));
+
+      function To_String (S : Unbounded_String) return String is
+        (S.all);
+
+   end Unbounded_Strings;
+
 Annotation for Enforcing Ownership Checking on a Private Type
 -------------------------------------------------------------
 
