@@ -1929,7 +1929,7 @@ package body SPARK_Util.Types is
             return Fail;
 
          elsif Is_Access_Type (Comp_Ty) then
-            Exp := To_Unbounded_String ("access type");
+            Exp := To_Unbounded_String ("access types");
             return Pass;
 
          elsif Has_Predefined_Eq_Annotation (Comp_Ty)
