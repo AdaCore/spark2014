@@ -282,6 +282,43 @@ package SPARK_Definition.Annotate is
    --  an access-to-variable type. It should be located directly after an
    --  entry or a subprogram with side effects.
 
+   --  A pragma Annotate for predefined equality of private types can be
+   --  applied either on a type or a constant. On a type, it has the following
+   --  form:
+   --    pragma Annotate
+   --        (GNATprove, Predefined_Equality, Kind, Entity => E);
+
+   --  where
+   --    GNATprove           is a fixed identifier
+   --    Predefined_Equality is a fixed identifier
+   --    Kind                can be either "Only_Null" or "No_Equality"
+   --    E                   is a type entity
+
+   --  and E shall be a private type whose full view is in a part annotated
+   --  with SPARK_Mode => Off.
+
+   --  When such an annotation is provided for a type E, the SPARK tool will
+   --  translate uses of the predefined equality on values of type E in a
+   --  specific way depending on the kind:
+   --   * If Kind is "No_Equality" then it will disallow uses of the predefined
+   --     equality on E.
+   --   * If Kind is "Only_Null" then it will disallow uses of the predefined
+   --     equality on E unless one of the operand is recognized statically as
+   --     a null value, see below. In this case, the predefined equality will
+   --     be handled as the logical equality instead.
+   --
+   --  On a constant, it has the following form:
+   --    pragma Annotate
+   --        (GNATprove, Predefined_Equality, "Null_Value", Entity => E);
+
+   --  where
+   --    GNATprove           is a fixed identifier
+   --    Predefined_Equality is a fixed identifier
+   --    E                   is a constant entity
+
+   --  and E shall be a constant of a type annotated with predefined equality
+   --  of kind "Only_Null".
+
    procedure Mark_Pragma_Annotate
      (N             : Node_Id;
       Preceding     : Node_Id;
@@ -456,17 +493,26 @@ package SPARK_Definition.Annotate is
      and then Needs_Reclamation (E);
    --  Same as above but only returns the check function
 
-   function Get_Ownership_Entity_From_Pragma
-     (N  : Node_Id;
-      Ty : Entity_Id) return Entity_Id
-   with Pre => Is_Pragma_Annotate_GNATprove (N);
-   --  Return the function F such that N is a pragma Annotate
-   --  (GNATprove,  Ownership, ..., F) and F and Ty have the same root type if
-   --  any.
-
    procedure Infer_Ownership_Annotation (E : Type_Kind_Id);
    --  Infer ownership annotation for E. This is used when abstracting away
    --  unused record components. E should be a root retysp here.
+
+   function Has_Predefined_Eq_Annotation (E : Entity_Id) return Boolean
+     with Pre => Is_Type (E);
+   --  Return True if E is annotated with predefined equality
+
+   type Predefined_Eq_Kind is (Only_Null, No_Equality);
+
+   function Get_Predefined_Eq_Kind (E : Entity_Id) return Predefined_Eq_Kind
+   with Pre => Is_Type (E) and then Has_Predefined_Eq_Annotation (E);
+   --  Return expected handling for the predefined equality on E
+
+   function Get_Null_Value (E : Entity_Id) return Entity_Id
+   with Pre => Is_Type (E)
+     and then Has_Predefined_Eq_Annotation (E)
+     and then Get_Predefined_Eq_Kind (E) = Only_Null;
+   --  Return the null value for private types whose predefined equality is
+   --  only allowed on null values.
 
    function Has_Automatic_Instantiation_Annotation
      (E : Entity_Id) return Boolean;

@@ -1903,11 +1903,16 @@ package body SPARK_Util.Types is
    -- Predefined_Eq_Uses_Pointer_Eq --
    -----------------------------------
 
-   function Predefined_Eq_Uses_Pointer_Eq (Ty : Type_Kind_Id) return Boolean is
+   function Predefined_Eq_Uses_Pointer_Eq
+     (Ty  : Type_Kind_Id;
+      Exp : out Unbounded_String)
+      return Boolean
+   is
 
       function Check_Comp (Comp_Ty : Node_Id) return Test_Result;
-      --  Return Pass if an access type is found. Stop the search when a
-      --  primitive equality is used.
+      --  Return Pass if an access type or a type on which the predefined
+      --  equality is disallowed is found. Stop the search when a primitive
+      --  equality is used. Set Comp to Comp_Ty before returning Pass.
 
       ----------------
       -- Check_Comp --
@@ -1915,16 +1920,26 @@ package body SPARK_Util.Types is
 
       function Check_Comp (Comp_Ty : Node_Id) return Test_Result is
       begin
-         if Is_Access_Type (Comp_Ty) then
-            return Pass;
-
          --  Check_Comp will be called on Retysp (Ty) as part of the traversal.
          --  Force the predefined equality here.
 
-         elsif not Use_Predefined_Equality_For_Type (Comp_Ty)
+         if not Use_Predefined_Equality_For_Type (Comp_Ty)
            and then Comp_Ty /= Retysp (Ty)
          then
             return Fail;
+
+         elsif Is_Access_Type (Comp_Ty) then
+            Exp := To_Unbounded_String ("access type");
+            return Pass;
+
+         elsif Has_Predefined_Eq_Annotation (Comp_Ty)
+           and then Get_Predefined_Eq_Kind (Comp_Ty) in Only_Null | No_Equality
+         then
+            Exp := To_Unbounded_String
+              (Source_Name
+                 (if Is_Tagged_Type (Comp_Ty) then Base_Type (Comp_Ty)
+                  else Root_Retysp (Comp_Ty)));
+            return Pass;
          else
             return Continue;
          end if;
@@ -2992,7 +3007,16 @@ package body SPARK_Util.Types is
       end Use_Real_Eq_For_Type;
 
    begin
-      return Use_Real_Eq_For_Type (E);
+      --  If E has an annotation for its predefined equality, trust it
+
+      if Has_Predefined_Eq_Annotation (E) then
+         return Get_Predefined_Eq_Kind (E) = Only_Null;
+
+      --  Otherwise, peek inside the full view to decide
+
+      else
+         return Use_Real_Eq_For_Type (E);
+      end if;
    end Use_Real_Eq_For_Private_Type;
 
    ---------------------------------------

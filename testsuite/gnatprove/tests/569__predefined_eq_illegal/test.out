@@ -1,0 +1,43 @@
+illegal_annot.adb:7:09: error: wrong number of arguments in aspect Annotate (GNATprove, Predefined_Equality, ...), expected 4
+illegal_annot.adb:16:17: error: the entity of a pragma Annotate Predefined_Equality shall be either a type or a constant
+illegal_annot.adb:27:54: error: third argument of aspect Annotate Predefined_Equality must be a string
+illegal_annot.adb:37:54: error: third argument of aspect Annotate Predefined_Equality on a type must be either "Only_Null" or "No_Equality"
+illegal_annot.adb:49:54: error: third argument of aspect Annotate Predefined_Equality on a constant must be "Null_Value"
+illegal_annot.adb:59:12: error: a type annotated with Predefined_Equality must be a private type whose full view is not in SPARK
+illegal_annot.adb:68:12: error: a tagged type cannot be annotated with "Only_Null"
+illegal_annot.adb:86:07: error: pragma Annotate Predefined_Equality must immediately follow the  private declaration of type T
+illegal_annot.adb:99:07: error: pragma Annotate Predefined_Equality must immediately follow the declaration of constant C
+illegal_annot.adb:110:15: info: "No_Equality" could be used instead of "Only_Null"
+illegal_annot.adb:110:15: info: no null value found for type with predefined equality "T"
+illegal_annot.adb:118:07: error: constant annotated with Predefined_Equality shall be declared in same declaration list as its type
+illegal_annot.adb:126:12: info: "No_Equality" could be used instead of "Only_Null"
+illegal_annot.adb:126:12: info: no null value found for type with predefined equality "T"
+illegal_annot.adb:148:07: error: consider annotating it with a pragma Annotate (GNATprove, Predefined_Equality, "Only_Null", ...)
+illegal_annot.adb:148:07: error: the type of a constant annotated with Predefined_Equality must be annotated with Predefined_Equality
+illegal_annot.adb:161:07: error: consider annotating it with a pragma Annotate (GNATprove, Predefined_Equality, "Only_Null", ...)
+illegal_annot.adb:161:07: error: the type of a constant annotated with Predefined_Equality must be annotated with "Only_Null"
+illegal_annot.adb:176:07: error: "C" conflicts with the current annotation
+illegal_annot.adb:176:07: error: a single null value shall be supplied for a given type annotated with Predefined_Equality
+illegal_annot.adb:188:12: error: type shall not have multiple Predefined_Equality annotations
+illegal_annot.adb:201:07: error: constant shall not have multiple Predefined_Equality annotations
+test_usage.adb:31:07: info: no contextual analysis of "Use_No_Eq" (subtype declaration with predicate)
+test_usage.adb:33:24: error: equality on T is not allowed in SPARK
+test_usage.adb:33:24: error: violation of aspect SPARK_Mode at line 1
+test_usage.adb:34:29: error: equality on T is not allowed in SPARK
+test_usage.adb:34:29: error: violation of aspect SPARK_Mode at line 1
+test_usage.adb:42:07: info: no contextual analysis of "Use_Only_Null" (subtype declaration with predicate)
+test_usage.adb:44:24: error: equality on T is not allowed in SPARK
+test_usage.adb:44:24: error: violation of aspect SPARK_Mode at line 1
+test_usage.adb:45:29: error: equality on T is not allowed in SPARK
+test_usage.adb:45:29: error: violation of aspect SPARK_Mode at line 1
+test_usage.adb:65:24: error: equality on T is not allowed in SPARK
+test_usage.adb:65:24: error: violation of aspect SPARK_Mode at line 1
+test_usage.adb:66:29: error: equality on T is not allowed in SPARK
+test_usage.adb:66:29: error: violation of aspect SPARK_Mode at line 1
+test_usage.adb:97:07: info: no contextual analysis of "Use_No_Eq_Tagged_1" (subtype declaration with predicate)
+test_usage.adb:99:24: error: equality on T is not allowed in SPARK
+test_usage.adb:99:24: error: violation of aspect SPARK_Mode at line 1
+test_usage.adb:100:29: error: equality on T is not allowed in SPARK
+test_usage.adb:100:29: error: violation of aspect SPARK_Mode at line 1
+test_usage.adb:129:04: warning: analyzing unreferenced procedure "Use_No_Eq_Tagged_2"
+gnatprove: error during flow analysis and proof

@@ -907,13 +907,25 @@ package SPARK_Util is
    --  ??? We could also consider the call to be specialized only if at
    --  least one of its specialized parameters has global inputs.
 
-   function Is_Statically_Reclaimed_Expr (Expr : N_Subexpr_Id) return Boolean;
-   --  Return True if Expr is statically known to not own ressources. If Expr
-   --  has an access type, it returns True iff Expr is statically null.
+   function Is_Null_Or_Reclaimed_Expr
+     (Expr       : N_Subexpr_Id;
+      Reclaimed  : Boolean := False;
+      Null_Value : Boolean := False)
+      return Boolean;
+   --  If Expr has an access type, it returns True iff Expr is statically null.
+   --  If Expr is a private type and Reclaimed is True, return True if Expr is
+   --  statically known to be a constant with the Reclaimed_Value annotation.
+   --  If Expr is a private type and Null_Value is True, return
+   --  True if Expr is statically known to be a constant with the
+   --  Null_Value annotation.
 
-   function Is_Statically_Reclaimed_Obj (Obj : Object_Kind_Id) return Boolean;
-   --  Return True if Obj is statically known to not own ressources and
-   --  therefore can be duplicated.
+   function Is_Null_Or_Reclaimed_Obj
+     (Obj        : Object_Kind_Id;
+      Reclaimed  : Boolean := False;
+      Null_Value : Boolean := False)
+      return Boolean;
+   --  Same as above but with an object. Look through the definition of
+   --  constants.
 
    function Is_Traversal_Function_Call (Expr : Node_Id) return Boolean;
    --  @param Expr any node
