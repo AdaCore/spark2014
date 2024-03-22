@@ -858,6 +858,7 @@ package body SPARK_Util.Types is
                if Get_Aspect_Id (Rep_Item) in Aspect_Predicate
                                             | Aspect_Dynamic_Predicate
                                             | Aspect_Static_Predicate
+                                            | Aspect_Ghost_Predicate
                    and then Unique_Entity (Entity (Rep_Item)) =
                      Unique_Entity (Ty)
                then
