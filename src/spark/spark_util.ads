@@ -352,6 +352,19 @@ package SPARK_Util is
    --  @param E any entity
    --  @return True iff E is declared in the private part of a package
 
+   function Is_In_Potentially_Hidden_Private (E : Entity_Id) return Boolean;
+   --  Return True if E is defined in the private part of a package annotated
+   --  with a Hide_Info "Private_Part" annotation.
+
+   function Hide_For_Current_Analysis (N : Node_Id) return Boolean;
+   --  Return True if potentially hidden entities declared in node N should be
+   --  considered hidden during the current analysis.
+
+   function Is_In_Hidden_Private (E : Entity_Id) return Boolean;
+   --  @param E any entity
+   --  @return True iff E is hidden by a Hide_Info "Private_Part" annotation
+   --     for the current analysis.
+
    function Is_Ignored_Internal (N : Node_Or_Entity_Id) return Boolean is
      (In_Internal_Unit (N)
        and then not Is_Internal_Unit (Main_Unit));

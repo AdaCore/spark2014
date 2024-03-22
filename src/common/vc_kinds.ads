@@ -438,8 +438,12 @@ package VC_Kinds is
       Lim_Exceptional_Cases_Dispatch,
       Lim_Exceptional_Cases_Ownership,
       Lim_Ext_Aggregate_With_Type_Ancestor,
+      Lim_Generic_In_Hidden_Private,
       Lim_Generic_In_Type_Inv,
       Lim_Goto_Cross_Inv,
+      Lim_Hidden_Private_Ownership,
+      Lim_Hidden_Private_Predefined_Eq,
+      Lim_Hidden_Private_Relaxed_Init,
       Lim_Img_On_Non_Scalar,
       Lim_Interpolated_String_Literal,
       Lim_Iterated_Element_Association,
@@ -463,6 +467,7 @@ package VC_Kinds is
       Lim_Overlay_With_Deep_Object,
       Lim_Package_Before_Inv,
       Lim_Predicate_With_Different_SPARK_Mode,
+      Lim_Predicate_With_Different_Visibility,
       Lim_Primitive_Call_In_DIC,
       Lim_Protected_Operation_Of_Component,
       Lim_Protected_Operation_Of_Formal,
@@ -733,6 +738,8 @@ package VC_Kinds is
            "type aspect on type derived from a private type",
          when Lim_Predicate_With_Different_SPARK_Mode =>
            "type with predicates with different SPARK_Mode values",
+         when Lim_Predicate_With_Different_Visibility =>
+           "type with predicates with different visibility",
          when Lim_UU_Tagged_Comp =>
            "component of an unconstrained unchecked union type in a tagged"
           & " extension",
@@ -765,9 +772,19 @@ package VC_Kinds is
            "Refined_Post aspect on a protected entry",
          when Lim_Entry_Family =>
            "entry family",
+         when Lim_Generic_In_Hidden_Private =>
+            "instance of a generic unit declared in a package whose private "
+          & "part is hidden outside of this package",
          when Lim_Generic_In_Type_Inv =>
             "instance of a generic unit declared in a package containing a "
-          & "type with an invariant outside of this package"
+          & "type with an invariant outside of this package",
+         when Lim_Hidden_Private_Ownership =>
+            "owning type in a hidden private part",
+         when Lim_Hidden_Private_Predefined_Eq =>
+            "hidden type whose predefined equality is restricted",
+         when Lim_Hidden_Private_Relaxed_Init =>
+            "hidden private type containing only subcomponents whose type is"
+          & " annotated with Relaxed_Initialization"
      );
 
    function CWE_ID (Kind : VC_Kind) return String;
