@@ -4,7 +4,6 @@ def build():
     anod_install("gnatcov", query_range=20)
     anod_install("gprbuild", target="host", query_range=20)
     anod_install("alt-ergo", query_range=20)
-    anod_install("cvc5", query_range=20)
     anod_install("colibri", query_range=20)
     anod_install("spark2014-doc", query_range=20)
     anod_install("xmlada", query_range=20)
