@@ -872,12 +872,13 @@ only part of a program:
 
 * [ADA_OBJECT_ADDRESSES]
   When the body of a function is not analyzed by GNATprove, its result should
-  not depend on the address of parts of its parameters or global inputs unless
-  it is annotated with ``Volatile_Function``. When the body of a procedure,
-  entry or function with side effects is not analyzed by GNATprove, none of its
-  outputs should depend on the address of parts of its parameters or global
-  inputs unless the output is volatile for reading, or its value depends on an
-  input which is volatile for reading as stated in a Depends contract.
+  not depend on the address or pointer value of parts of its parameters or
+  global inputs unless it is annotated with ``Volatile_Function``. When the body
+  of a procedure, entry, or function with side effects is not analyzed by
+  GNATprove, none of its outputs should depend on the address or pointer value
+  of parts of its parameters or global inputs unless the output is volatile for
+  reading, or its value depends on an input which is volatile for reading as
+  stated in a Depends contract.
 
 * [ADA_STATE_ABSTRACTION]
   Units whose body is not analyzed, yet are used from SPARK code, need to
@@ -913,6 +914,22 @@ only part of a program:
   then |GNATprove| assumes that the value of the postcondition expression is
   true if and only if the function return value is logically equal to an Ada
   copy of the value of the other side of the relation.
+
+* [ADA_PREDEFINED_EQUALITY]
+  If a private type whose full view is not visible by GNATprove is annotated
+  with a ``Predefined_Equality`` annotation, its predefined equality should
+  conform to the profile supplied by the annotation, see
+  :ref:`Annotation for the Predefined Equality of Private Types`.
+  In addition, when the body of a function is not analyzed by GNATprove, its
+  result should not depend on a usage of the predefined equality that is
+  disallowed by the ``Predefined_Equality`` annotation unless it is annotated
+  with ``Volatile_Function``. When the body of a procedure, entry, or function
+  with side effects is not analyzed by GNATprove, none of its outputs should
+  depend on a usage of the predefined equality that is disallowed by the
+  ``Predefined_Equality`` annotation unless the output is volatile for
+  reading, or its value depends on an input which is volatile for reading as
+  stated in a Depends contract. This is similar to the [ADA_OBJECT_ADDRESSES]
+  rule for pointers hidden inside private types.
 
 In addition, the following assumptions need to be addressed when calling
 GNATprove on only part of a SPARK program at a time (either on an individual
