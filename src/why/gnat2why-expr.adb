@@ -17079,34 +17079,94 @@ package body Gnat2Why.Expr is
                case Ekind (Ty_Ent) is
                   when Array_Kind =>
                      declare
-                        Arr_Ty : constant Entity_Id :=
+                        Arr_Ty              : constant Entity_Id :=
                           (if Nkind (Var) in N_Identifier | N_Expanded_Name
                            and then Is_Type (Entity (Var))
                            then Entity (Var)
                            else Etype (Var));
-                        Dim    : constant Positive :=
+                        Dim                 : constant Positive :=
                           (if Present (Expressions (Expr)) then
                               Positive
                              (UI_To_Int (Intval (First (Expressions (Expr)))))
                            else 1);
-                        B_Exp  : constant W_Type_Id :=
+                        B_Exp               : constant W_Type_Id :=
                           Base_Why_Type_No_Bool (Expected_Typ);
-                        B_Rng  : constant W_Type_Id :=
-                          Base_Why_Type_No_Bool
-                            (Nth_Index_Type (Retysp (Arr_Ty), Dim));
-                        Typ    : constant W_Type_Id :=
-                          (if not Why_Type_Is_BitVector (B_Exp)
-                           or else not Why_Type_Is_BitVector (B_Rng)
-                           or else (BitVector_Type_Size (B_Rng) = Uint_64
-                             and then Domain = EW_Prog)
-                           then EW_Int_Type else EW_BitVector_64_Type);
+                        Index_Rng           : constant Type_Kind_Id :=
+                          Nth_Index_Type (Retysp (Arr_Ty), Dim);
+                        B_Rng               : constant W_Type_Id :=
+                          Base_Why_Type_No_Bool (Index_Rng);
+                        Typ                 : constant W_Type_Id :=
+                          (if not Why_Type_Is_BitVector (B_Rng)
+                             or else not Why_Type_Is_BitVector (B_Exp)
+                           then EW_Int_Type
+                           elsif BitVector_Type_Size (B_Rng)
+                                 <= BitVector_Type_Size (B_Exp)
+                           then B_Exp
+                           else B_Rng);
                         --  Typ is only used for the computation of 'Length.
-                        --  On 64 bv, in the program domain, use EW_Int_Type so
-                        --  that potential range or overflow checks can be
-                        --  applied. Do computation on bitvectors only if the
-                        --  array ranges over bitvectors as otherwise the
-                        --  conversion of 'First and 'Last to Typ may be
-                        --  incorrect.
+                        --  Do computation on bitvectors only if the array
+                        --  ranges over bitvectors, as otherwise the conversion
+                        --  of 'First and 'Last to Typ may be incorrect. We
+                        --  also use the widest of B_Rng and B_Exp for
+                        --  bitvector computation. We cannot use B_Exp
+                        --  systematically as it may be too short, producing
+                        --  unexpected overflows.
+
+                        Modular_Range_Check : constant Boolean :=
+                          Domain = EW_Prog
+                          and then Attr_Id = Attribute_Length
+                          and then Why_Type_Is_BitVector (Typ)
+                          and then
+                            UI_Expon (2, BitVector_Type_Size (Typ))
+                              = Modulus (Index_Rng);
+                        --  If attribute is length, computation on plain
+                        --  bitvectors may already overflow. This can only
+                        --  happen when 'First = 0 and 'Last is the maximum
+                        --  bitvector value. Furthermore, since additionally
+                        --  Last < Modulus (range), we can use modulus value
+                        --  to remove the check entirely in cases where
+                        --  bitvector maximum value exceeds modulus.
+
+                        pragma Assert
+                          (if Why_Type_Is_BitVector (Typ)
+                           then Modulus (Index_Rng) <=
+                               UI_Expon (2, BitVector_Type_Size (Typ)));
+
+                        function Prepend_Modular_Range_Check
+                          (Src   : W_Prog_Id;
+                           First : W_Term_Id;
+                           Last  : W_Term_Id)
+                          return W_Prog_Id
+                        is
+                          (Sequence
+                             (Left => New_Located_Assert
+                                (Ada_Node   => Expr,
+                                 Reason     => VC_Range_Check,
+                                 Kind       => EW_Assert,
+                                 Pred       => New_Or_Pred
+                                   (New_Comparison
+                                      (Symbol => Why_Neq,
+                                       Left   => Insert_Simple_Conversion
+                                         (Expr => First,
+                                          To   => Typ),
+                                       Right  => New_Discrete_Constant
+                                         (Value => Uint_0,
+                                          Typ   => Typ)),
+                                    New_Comparison
+                                      (Symbol => Why_Neq,
+                                       Left   => Insert_Simple_Conversion
+                                         (Expr => Last,
+                                          To   => Typ),
+                                       Right  => New_Discrete_Constant
+                                         (Value => UI_Sub
+                                            (Modulus (Index_Rng), Uint_1),
+                                          Typ   => Typ)))),
+                              Right => Src))
+                          with Pre => Modular_Range_Check;
+                        --  Prepend additional check. While this looks like an
+                        --  overflow, this should be a range check as this
+                        --  comes from the length not being representable in
+                        --  the modular type.
 
                      begin
                         --  Array_Type'First/Last/Length
@@ -17120,27 +17180,58 @@ package body Gnat2Why.Expr is
                               Attr   => Attr_Id,
                               Dim    => Dim,
                               Typ    => Typ);
+                           if Modular_Range_Check then
+                              T := +Prepend_Modular_Range_Check
+                                (+T,
+                                 +Get_Array_Attr
+                                   (Domain => EW_Term,
+                                    Ty     => Entity (Var),
+                                    Attr   => Attribute_First,
+                                    Dim    => Dim),
+                                 +Get_Array_Attr
+                                   (Domain => EW_Term,
+                                    Ty     => Entity (Var),
+                                    Attr   => Attribute_Last,
+                                    Dim    => Dim));
+                           end if;
 
                         --  Object'First/Last/Length
 
                         else
                            declare
-                              Why_Expr : constant W_Expr_Id :=
+                              Why_Expr  : constant W_Expr_Id :=
                                 Transform_Expr (Var, Domain, Params);
-                              Tmp      : constant W_Term_Id :=
+                              Tmp       : constant W_Term_Id :=
                                 New_Temp_For_Expr (Why_Expr);
                               Simpl_Var : constant Boolean :=
                                 Nkind (Var) in N_Identifier | N_Expanded_Name;
+                              Item      : Item_Type;
 
                            begin
                               if Simpl_Var then
+                                 Item := Ada_Ent_To_Why.Element
+                                   (Symbol_Table, Entity (Var));
                                  T := +Get_Array_Attr
-                                   (Ada_Ent_To_Why.Element
-                                      (Symbol_Table, Entity (Var)),
-                                    Attr_Id, Dim, Typ => Typ);
+                                   (Item, Attr_Id, Dim, Typ => Typ);
+                                 if Modular_Range_Check then
+                                    T := +Prepend_Modular_Range_Check
+                                      (+T,
+                                       +Get_Array_Attr
+                                         (Item, Attribute_First, Dim),
+                                       +Get_Array_Attr
+                                         (Item, Attribute_Last, Dim));
+                                 end if;
                               else
                                  T := +Get_Array_Attr
                                    (Tmp, Attr_Id, Dim, Typ => Typ);
+                                 if Modular_Range_Check then
+                                    T := +Prepend_Modular_Range_Check
+                                      (+T,
+                                       +Get_Array_Attr
+                                         (Tmp, Attribute_First, Dim),
+                                       +Get_Array_Attr
+                                         (Tmp, Attribute_Last, Dim));
+                                 end if;
                               end if;
 
                               if not Simpl_Var or else Domain = EW_Prog then

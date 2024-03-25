@@ -45,14 +45,14 @@ test_string.adb:16:22: medium: assertion might fail
 test_string.adb:20:14: warning: subprogram "Test_Char_Array" has no effect
 test_string.adb:21:07: info: absence of resource or memory leak at end of scope proved (CVC5: 1 VC)
 test_string.adb:22:07: info: absence of resource or memory leak at end of scope proved (CVC5: 1 VC)
-test_string.adb:22:24: medium: precondition might fail
+test_string.adb:22:24: info: precondition proved (CVC5: 1 VC)
 test_string.adb:24:22: info: assertion proved (Z3: 1 VC)
 test_string.adb:24:22: info: precondition proved (CVC5: 1 VC)
 test_string.adb:25:22: info: assertion proved (Z3: 1 VC)
 test_string.adb:25:22: info: no contextual analysis of "Test_Char_Array" (call returns unconstrained type)
 test_string.adb:25:22: info: precondition proved (CVC5: 1 VC)
 test_string.adb:26:09: info: absence of resource or memory leak proved (CVC5: 1 VC)
-test_string.adb:26:12: medium: precondition might fail
+test_string.adb:26:12: info: precondition proved (CVC5: 1 VC)
 test_string.adb:27:07: info: precondition proved (CVC5: 2 VC; Z3: 2 VC)
 test_string.adb:27:33: info: precondition proved (CVC5: 1 VC; Z3: 1 VC)
 test_string.adb:27:43: info: precondition proved (CVC5: 1 VC)
