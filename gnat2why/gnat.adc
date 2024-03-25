@@ -11,3 +11,7 @@ pragma Restrictions (No_Dependence => Ada.Real_Time);
 
 --  Attribute Update is soon to be obsoleted and then deconstructed
 pragma Restrictions (No_Use_Of_Attribute => Update);
+
+--  Currently we don't use Ada.Streams, so by announcing this to the compiler,
+--  we can benefit from smaller executables and faster compilation time (~2%).
+pragma Restrictions (No_Streams);
