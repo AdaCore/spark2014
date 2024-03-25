@@ -8643,7 +8643,14 @@ package body SPARK_Definition is
 
                --  Use the base type as some subtypes of access to incomplete
                --  types introduced by the frontend designate record subtypes
-               --  instead (see CA11019).
+               --  instead (see CA11019). Make sure that the base type is
+               --  visibly access type - it could be a private type whose
+               --  full view is not in SPARK.
+
+               elsif Ekind (E) in E_Access_Subtype
+                 and then not Most_Underlying_Type_In_SPARK (Base_Retysp (E))
+               then
+                  Mark_Violation (E, From => Base_Retysp (E));
 
                elsif Ekind (E) in E_Access_Subtype
                  and then Acts_As_Incomplete_Type
