@@ -8,8 +8,7 @@ package User is
    with
       Ghost,
       Import,
-      Global   => null,
-      Always_Terminates;
+      Global   => null;
 
    type T is access function (P : Ptr) return Integer with
      Post => State (P.all);
