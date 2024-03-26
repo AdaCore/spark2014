@@ -43,6 +43,11 @@ def parse_options():
         help="Rerun tests after updating sessions",
     )
     parser.add_argument(
+        "--resultspath",
+        type=str,
+        help="path to the testsuite results (used with --failed-replay-tests)",
+    )
+    parser.add_argument(
         "-j",
         dest="procs",
         type=int,
@@ -81,9 +86,9 @@ def is_replaytest(testname):
     return False
 
 
-def failed_replay_tests():
+def failed_replay_tests(resultspath):
     result = []
-    index = ReportIndex.read(os.path.join("out", "new"))
+    index = ReportIndex.read(resultspath)
     for entry in index.entries.values():
         if entry.status == TestStatus.FAIL and is_replaytest(entry.test_name):
             result.append(entry.test_name)
@@ -126,10 +131,11 @@ def main():
     args = parse_options()
     testnames = args.testnames
     if args.failed_replay_tests:
-        testnames += failed_replay_tests()
+        resultspath = args.resultspath if args.resultspath else os.join("out", "new")
+        testnames += failed_replay_tests(resultspath)
     if len(testnames) == 0:
         print("no tests to replay")
-        exit(1)
+        exit(0)
     for testname in testnames:
         replay_test(args, testname)
     if not args.skip_rerun_tests:
