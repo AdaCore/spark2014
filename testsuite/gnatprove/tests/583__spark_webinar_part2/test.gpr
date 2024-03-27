@@ -1,0 +1,5 @@
+project Test is
+   package Builder is
+      for Switches ("Ada") use ("-gnatX");
+   end Builder;
+end Test;

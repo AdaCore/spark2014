@@ -1,0 +1,53 @@
+better_types_without_rte.adb:11:12: info: index check proved (CVC5: 2 VC)
+better_types_without_rte.adb:13:22: info: division check proved (CVC5: 1 VC)
+partial_assign.adb:12:08: info: postcondition proved (CVC5: 3 VC)
+partial_assign.adb:13:33: info: index check proved (CVC5: 2 VC)
+partial_assign.adb:14:18: info: index check proved (CVC5: 2 VC)
+partial_assign.adb:14:41: info: index check proved (CVC5: 2 VC)
+partial_assign.adb:18:07: info: range check proved (CVC5: 4 VC)
+partial_assign.adb:18:10: info: index check proved (CVC5: 2 VC)
+partial_assign.adb:18:15: info: index check proved (CVC5: 2 VC)
+partial_assign.adb:18:18: info: length check proved (CVC5: 3 VC; Trivial: 1 VC)
+partial_assign.adb:18:21: info: length check proved (CVC5: 3 VC; Trivial: 1 VC)
+partial_assign.adb:18:21: info: range check proved (CVC5: 2 VC)
+partial_assign.adb:18:24: info: range check proved (CVC5: 2 VC)
+partial_assign.adb:25:15: info: initialization check proved (CVC5: 1 VC)
+partial_assign.adb:28:04: info: precondition proved (CVC5: 4 VC)
+partial_assign.adb:30:19: info: assertion proved (CVC5: 1 VC)
+stacks.adb:6:08: info: predicate check proved (CVC5: 3 VC; Trivial: 1 VC)
+stacks.adb:6:24: info: index check proved (CVC5: 2 VC)
+stacks.adb:7:08: info: predicate check proved (CVC5: 3 VC; Trivial: 1 VC)
+stacks.adb:7:22: info: range check proved (CVC5: 2 VC)
+stacks.adb:11:23: info: initialization check proved (CVC5: 1 VC)
+stacks.adb:11:34: info: index check proved (CVC5: 2 VC)
+stacks.adb:13:08: info: predicate check proved (CVC5: 3 VC; Trivial: 1 VC)
+stacks.adb:13:22: info: range check proved (CVC5: 2 VC)
+stacks.ads:11:13: info: implicit aspect Always_Terminates on "Is_Empty" has been proved, subprogram will terminate
+stacks.ads:12:13: info: implicit aspect Always_Terminates on "Is_Full" has been proved, subprogram will terminate
+stacks.ads:13:13: info: implicit aspect Always_Terminates on "Size" has been proved, subprogram will terminate
+stacks.ads:18:14: info: postcondition proved (CVC5: 1 VC)
+stacks.ads:24:14: info: postcondition proved (CVC5: 1 VC)
+stacks.ads:35:17: info: range check proved (CVC5: 4 VC)
+stacks.ads:37:36: info: predicate check proved (CVC5: 3 VC; Trivial: 1 VC)
+types.adb:11:10: info: index check proved (CVC5: 2 VC)
+types_with_rte.adb:11:12: medium: array index check might fail [reason for check: result of addition must be a valid index into the array] [possible fix: add precondition (if J >= 0 then I <= A'Last - J else I >= A'First - J) to subprogram at types_with_rte.ads:9]
+types_with_rte.adb:11:12: medium: overflow check might fail, cannot prove lower bound for I + J [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: add precondition (if J >= 0 then I <= Integer'Last - J else I >= Integer'First - J) to subprogram at types_with_rte.ads:9]
+types_with_rte.adb:13:22: high: divide by zero might fail (e.g. when Q = 0) [possible fix: add precondition (Q /= 0) to subprogram at types_with_rte.ads:9]
+types_with_rte.adb:13:22: medium: overflow check might fail, cannot prove bounds for P / Q [reason for check: result of division must fit in a 32-bits machine integer] [possible fix: add precondition (P / Q >= Integer'First) to subprogram at types_with_rte.ads:9]
+types_with_rte.adb:13:22: medium: range check might fail, cannot prove bounds for P / Q [reason for check: result of division must fit in the target type of the assignment] [possible fix: add precondition (P / Q >= Element'First) to subprogram at types_with_rte.ads:9]
+types_without_rte.adb:11:12: info: index check proved (CVC5: 2 VC)
+types_without_rte.adb:11:12: info: overflow check proved (CVC5: 2 VC)
+types_without_rte.adb:13:22: info: division check proved (CVC5: 1 VC)
+types_without_rte.adb:13:22: info: overflow check proved (CVC5: 2 VC)
+types_without_rte.adb:13:22: info: range check proved (CVC5: 2 VC)
+types_without_rte.ads:14:47: info: overflow check proved (CVC5: 2 VC)
+types_without_rte.ads:14:75: info: overflow check proved (CVC5: 2 VC)
+types_without_rte.ads:15:20: info: overflow check proved (CVC5: 2 VC)
+types_without_rte.ads:18:20: info: division check proved (CVC5: 1 VC)
+types_without_rte.ads:18:20: info: overflow check proved (CVC5: 2 VC)
+use_stacks.adb:10:13: info: implicit aspect Always_Terminates on "Is_Prime" has been proved, subprogram will terminate
+use_stacks.adb:11:50: info: division check proved (CVC5: 1 VC)
+use_stacks.adb:16:08: info: precondition proved (CVC5: 1 VC)
+use_stacks.adb:17:08: info: precondition proved (CVC5: 1 VC)
+use_stacks.adb:18:08: info: precondition proved (CVC5: 1 VC)
+use_stacks.adb:22:10: info: precondition proved (Z3: 1 VC)

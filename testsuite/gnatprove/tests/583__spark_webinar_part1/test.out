@@ -1,0 +1,45 @@
+function_contracts.adb:28:24: medium: loop might not terminate (e.g. when Arg = 1) [reason for check: procedure "May_Halt" has an Always_Terminates aspect]
+function_contracts.ads:6:14: info: implicit aspect Always_Terminates on "Maximum" has been proved, subprogram will terminate
+function_contracts.ads:9:32: high: postcondition might fail, cannot prove Maximum'Result = Y (e.g. when Maximum'Result = -1 and X = -1 and Y = 0)
+function_contracts.ads:11:24: warning: unused initial value of "Y"
+function_contracts.ads:13:09: info: data dependencies proved
+function_contracts.ads:14:17: high: postcondition might fail, cannot prove X = Y'Old (e.g. when X = -1 and Y'Old = 0)
+function_contracts.ads:20:51: medium: exceptional case might fail (e.g. when Arg = -1) [possible fix: subprogram at line 18 should mention Arg in a precondition]
+low_level.adb:22:14: info: imprecise handling of Unchecked_Conversion (component offset not known)
+low_level.adb:22:14: info: types in unchecked conversion have the same size (Trivial)
+low_level.adb:22:65: info: type is suitable as source for unchecked conversion (Trivial)
+low_level.adb:22:83: info: type is suitable for unchecked conversion (Trivial)
+low_level.adb:25:09: info: alignment of overlaid objects is compatible (Trivial)
+low_level.adb:25:09: info: object is suitable for aliasing via address clause (Trivial)
+low_level.adb:26:33: info: object is suitable for aliasing via address clause (Trivial)
+low_level.adb:26:33: info: types of aliased objects have the same size (Trivial)
+low_level.adb:28:31: info: unrolling loop
+low_level.adb:69:14: info: implicit aspect Always_Terminates on "Read_C_Struct" has been proved, subprogram will terminate
+rich_data.ads:36:30: info: predicate check proved (CVC5: 1 VC)
+rich_data.ads:41:24: info: predicate check proved (CVC5: 2 VC)
+rich_data.ads:46:24: info: predicate check proved (CVC5: 1 VC)
+safe_pointers.adb:11:09: info: absence of resource or memory leak at end of scope proved (CVC5: 1 VC)
+safe_pointers.adb:11:09: info: initialization of "X" proved
+safe_pointers.adb:12:09: info: absence of resource or memory leak at end of scope proved (CVC5: 1 VC)
+safe_pointers.adb:17:11: info: absence of resource or memory leak proved (CVC5: 1 VC)
+safe_pointers.adb:19:11: info: pointer dereference check proved (CVC5: 1 VC)
+safe_pointers.adb:19:20: info: pointer dereference check proved (CVC5: 1 VC)
+safe_pointers.adb:19:24: info: overflow check proved (CVC5: 2 VC)
+safe_pointers.adb:37:09: info: absence of resource or memory leak at end of scope proved (CVC5: 1 VC)
+safe_pointers.adb:41:09: info: absence of resource or memory leak at end of scope proved (CVC5: 1 VC)
+safe_pointers.adb:41:29: info: pointer dereference check proved (CVC5: 1 VC)
+safe_pointers.adb:42:09: info: absence of resource or memory leak at end of scope proved (CVC5: 1 VC)
+safe_pointers.adb:42:30: info: pointer dereference check proved (CVC5: 1 VC)
+safe_pointers.adb:44:13: info: pointer dereference check proved (CVC5: 1 VC)
+safe_pointers.adb:44:19: info: absence of resource or memory leak proved (CVC5: 1 VC)
+safe_pointers.adb:45:14: info: pointer dereference check proved (CVC5: 1 VC)
+safe_pointers.adb:45:20: info: absence of resource or memory leak proved (CVC5: 1 VC)
+safe_pointers.adb:46:14: info: pointer dereference check proved (CVC5: 1 VC)
+safe_pointers.adb:46:20: info: absence of resource or memory leak proved (CVC5: 1 VC)
+safe_pointers.adb:47:14: info: absence of resource or memory leak proved (CVC5: 1 VC)
+safe_pointers.adb:49:09: info: absence of resource or memory leak proved (CVC5: 1 VC; Trivial: 1 VC)
+safe_pointers.adb:49:19: info: pointer dereference check proved (CVC5: 1 VC)
+safe_pointers.adb:49:24: info: pointer dereference check proved (CVC5: 1 VC)
+safe_pointers.adb:50:09: info: absence of resource or memory leak proved (CVC5: 1 VC; Trivial: 1 VC)
+safe_pointers.adb:50:19: info: pointer dereference check proved (CVC5: 1 VC)
+safe_pointers.adb:51:09: info: absence of resource or memory leak proved (CVC5: 1 VC; Trivial: 1 VC)
