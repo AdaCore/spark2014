@@ -722,6 +722,10 @@ package SPARK_Util is
    --    instances of generic subprograms)
    --  @return actual subprogram parameters of E
 
+   function Parent_Instance_From_Child_Unit (E : Entity_Id) return Entity_Id
+     with Pre => Is_Generic_Instance (E);
+   --  Get the instance of the parent from the instance of a child package
+
    function Get_Formal_From_Actual
      (Actual : N_Subexpr_Id)
       return Formal_Kind_Id
