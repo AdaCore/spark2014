@@ -563,8 +563,15 @@ package body SPARK_Definition is
       Actual_Type     : constant Type_Kind_Id := Etype (Expression);
       Actual_Des_Ty   : Type_Kind_Id;
       Expected_Des_Ty : Type_Kind_Id;
+
    begin
-      if Is_Access_Object_Type (Root_Retysp (Expected_Type)) then
+      if not Is_Access_Type (Root_Retysp (Expected_Type)) then
+         return;
+
+      elsif not Most_Underlying_Type_In_SPARK (Actual_Type) then
+         Mark_Violation (Expression, From => Actual_Type);
+
+      elsif Is_Access_Object_Type (Root_Retysp (Expected_Type)) then
 
          --  Get the designated types of the root type of the actual and
          --  expected types.
@@ -8591,7 +8598,7 @@ package body SPARK_Definition is
       end if;
 
       --  If Subp has an anonymous access type, it can happen that the return
-      --  object and Sup have incompatible designated types. Reject this case.
+      --  object and Subp have incompatible designated types. Reject this case.
 
       Check_Compatible_Access_Types (Etype (Subp), Ret_Obj);
    end Mark_Extended_Return_Statement;
