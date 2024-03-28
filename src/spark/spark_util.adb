@@ -1461,6 +1461,7 @@ package body SPARK_Util is
      (Is_Access_Object_Type (Retysp (Etype (Expr)))
       and then Is_Access_Constant (Retysp (Etype (Expr)))
       and then not Is_Anonymous_Access_Object_Type (Etype (Expr))
+      and then Is_Access_Type (Retysp (Etype (Expression (Expr))))
       and then not Is_Access_Constant
         (Retysp (Etype (Expression (Expr))))
       and then not Is_Rooted_In_Constant (Expression (Expr))
