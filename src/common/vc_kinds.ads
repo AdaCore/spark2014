@@ -438,6 +438,7 @@ package VC_Kinds is
       Lim_Exceptional_Cases_Dispatch,
       Lim_Exceptional_Cases_Ownership,
       Lim_Ext_Aggregate_With_Type_Ancestor,
+      Lim_Generic_In_Type_Inv,
       Lim_Goto_Cross_Inv,
       Lim_Img_On_Non_Scalar,
       Lim_Interpolated_String_Literal,
@@ -763,7 +764,10 @@ package VC_Kinds is
          when Lim_Refined_Post_On_Entry =>
            "Refined_Post aspect on a protected entry",
          when Lim_Entry_Family =>
-           "entry family"
+           "entry family",
+         when Lim_Generic_In_Type_Inv =>
+            "instance of a generic unit declared in a package containing a "
+          & "type with an invariant outside of this package"
      );
 
    function CWE_ID (Kind : VC_Kind) return String;
