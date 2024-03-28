@@ -1005,6 +1005,50 @@ package body SPARK_Util.Types is
       return Eq;
    end Get_User_Defined_Eq;
 
+   ----------------------------
+   -- Get_View_For_Predicate --
+   ----------------------------
+
+   function Get_View_For_Predicate (Ty : Type_Kind_Id) return Entity_Id is
+      Rep : Node_Id;
+   begin
+      if No (Full_View (Ty)) then
+         return Ty;
+      else
+         Rep := First_Rep_Item
+           (if Present (Full_View (Ty)) then Full_View (Ty) else Ty);
+
+         Find_Predicate_Item (Ty, Rep);
+         if No (Rep) then
+
+            --  The type only has inherited predicates. The predicate
+            --  function is empty, we can choose view.
+
+            return Ty;
+         elsif Nkind (Rep) = N_Pragma then
+
+            --  Look at the location of the predicate
+
+            if In_Private_Declarations (Rep) then
+               return Full_View (Ty);
+            else
+               return Ty;
+            end if;
+         else
+            pragma Assert (Nkind (Rep) = N_Aspect_Specification);
+
+            --  Use the partial or full view of the type, depending on
+            --  Aspect_On_Partial_View.
+
+            if Aspect_On_Partial_View (Rep) then
+               return Ty;
+            else
+               return Full_View (Ty);
+            end if;
+         end if;
+      end if;
+   end Get_View_For_Predicate;
+
    ---------------------------------------
    -- Has_Default_Initialized_Component --
    ---------------------------------------

@@ -11461,46 +11461,10 @@ package body SPARK_Definition is
 
       if Ekind (E) = E_Function and then Is_Predicate_Function (E) then
 
-         --  The predicate function has the SPARK_Mode of the associated type.
-         --  If this type has a full view, search the rep item list to know the
-         --  correct SPARK_Mode.
+         --  The predicate function has the SPARK_Mode of the associated type
 
-         declare
-            Ty  : constant Type_Kind_Id := Etype (First_Formal (E));
-            Rep : Node_Id;
-         begin
-            if No (Full_View (Ty)) then
-               return SPARK_Pragma_Of_Entity (Ty);
-            else
-               Rep := First_Rep_Item
-                 (if Present (Full_View (Ty)) then Full_View (Ty) else Ty);
-
-               Find_Predicate_Item (Ty, Rep);
-               if No (Rep) then
-
-                  --  The type only has inherited predicates. The predicate
-                  --  function is empty, we can choose any SPARK_Mode.
-
-                  return SPARK_Pragma_Of_Entity (Ty);
-               elsif Nkind (Rep) = N_Pragma then
-
-                  --  Search for the SPARK_Mode applying to the predicate
-
-                  return SPARK_Pragma_Of_Decl (Rep);
-               else
-                  pragma Assert (Nkind (Rep) = N_Aspect_Specification);
-
-                  --  Use the SPARK_Mode of the partial or full view of the
-                  --  type, depending on Aspect_On_Partial_View.
-
-                  if Aspect_On_Partial_View (Rep) then
-                     return SPARK_Pragma_Of_Entity (Ty);
-                  else
-                     return SPARK_Pragma_Of_Entity (Full_View (Ty));
-                  end if;
-               end if;
-            end if;
-         end;
+         return SPARK_Pragma_Of_Entity
+           (Get_View_For_Predicate (Etype (First_Formal (E))));
 
       --  For the wrapper for a function with dispatching result type pick the
       --  SPARK_Pragma of its type, because the wrapper could be inserted at
