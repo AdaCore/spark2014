@@ -300,6 +300,36 @@ package body SPARK_Util is
       Partial_Views.Insert (E, V);
    end Set_Partial_View;
 
+   -------------------------------------
+   -- Parent_Instance_From_Child_Unit --
+   -------------------------------------
+
+   function Parent_Instance_From_Child_Unit (E : Entity_Id) return Entity_Id is
+      Child_Inst : constant Entity_Id :=
+        (if Ekind (E) = E_Package
+         then E
+         else Defining_Entity (Atree.Parent (Subprogram_Spec (E))));
+      --  If the child instance is a package, we can directly pass it
+      --  to Get_Unit_Instantiation_Node; when it is a subprogram, we
+      --  must get its wrapper package. Typically it is just the Scope
+      --  of E, except for instance-as-compilation-unit, where we need
+      --  to retrieve the wrapper package syntactically.
+
+   begin
+      return Instance_Parent : Entity_Id :=
+        Entity (Prefix (Name (Get_Unit_Instantiation_Node (Child_Inst))))
+      do
+         pragma Assert (Ekind (Instance_Parent) = E_Package);
+
+         if Present (Renamed_Entity (Instance_Parent)) then
+            Instance_Parent := Renamed_Entity (Instance_Parent);
+
+            pragma Assert (Ekind (Instance_Parent) = E_Package);
+
+         end if;
+      end return;
+   end Parent_Instance_From_Child_Unit;
+
    ------------------
    -- Partial_View --
    ------------------
