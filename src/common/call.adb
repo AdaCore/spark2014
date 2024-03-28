@@ -177,7 +177,6 @@ package body Call is
       package File_String_IO is new Ada.Direct_IO (File_String);
 
       File     : File_String_IO.File_Type;
-      Contents : File_String;
    begin
 
       --  The read operation below will crash with an empty buffer
@@ -186,11 +185,12 @@ package body Call is
          return "";
       end if;
 
-      File_String_IO.Open  (File, Mode => File_String_IO.In_File, Name => Fn);
-      File_String_IO.Read  (File, Item => Contents);
-      File_String_IO.Close (File);
-
-      return Contents;
+      return Contents : File_String do
+         File_String_IO.Open
+           (File, Mode => File_String_IO.In_File, Name => Fn);
+         File_String_IO.Read (File, Item => Contents);
+         File_String_IO.Close (File);
+      end return;
    end Read_File_Into_String;
    pragma Annotate (Xcov, Exempt_Off);
 
