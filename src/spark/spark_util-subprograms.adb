@@ -897,6 +897,47 @@ package body SPARK_Util.Subprograms is
       Target := Sinfo.Nodes.Explicit_Generic_Actual_Parameter (Second_Accoc);
    end Get_Unchecked_Conversion_Args;
 
+   -------------------------------------
+   -- Get_View_For_Dispatching_Result --
+   -------------------------------------
+
+   function Get_View_For_Dispatching_Result
+     (E : E_Function_Id) return Entity_Id
+   is
+      Ty   : constant Entity_Id := Etype (E);
+      F_Ty : constant Entity_Id := Full_View (Ty);
+   begin
+      pragma Assert (not Is_Full_View (Ty));
+
+      if No (F_Ty) then
+         return Ty;
+      else
+
+         --  Look at the type from which the partial view of Ty is derived. If
+         --  its the type of the overridden primitive, the partial view can be
+         --  used. Otherwise, use the full view.
+         --  ??? This is not ideal as we might reject calls to the wrapper
+         --  if E is available in Par but Ty's full view derives from something
+         --  else. However, E cannot be accepted in this case as it would
+         --  break the translation later. Also, this is consistent with what
+         --  we do with other inherited primitives in that case.
+
+         declare
+            Par : constant Entity_Id := Parent_Type (Ty);
+         begin
+            if No (Par)
+              or else Unique_Entity
+                (Etype (Ultimate_Alias (Overridden_Operation (E))))
+              /= Unique_Entity (Par)
+            then
+               return F_Ty;
+            else
+               return Ty;
+            end if;
+         end;
+      end if;
+   end Get_View_For_Dispatching_Result;
+
    ------------------------------------
    -- Has_Implicit_Always_Terminates --
    ------------------------------------

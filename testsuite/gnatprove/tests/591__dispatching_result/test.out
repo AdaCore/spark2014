@@ -1,0 +1,4 @@
+test.adb:6:27: error: "Create" is not allowed in SPARK (due to entity declared with SPARK_Mode Off)
+test.adb:6:27: error: separate subprogram declaration from subprogram body to allow calling it from SPARK code
+test.adb:6:27: error: violation of aspect SPARK_Mode at line 4
+gnatprove: error during flow analysis and proof
