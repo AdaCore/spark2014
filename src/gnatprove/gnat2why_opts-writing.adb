@@ -137,7 +137,6 @@ package body Gnat2Why_Opts.Writing is
       if Translation_Phase then
          Set_Field (Obj, Limit_Units_Name,  CL_Switches.U);
          Set_Field (Obj, Limit_Subp_Name,   CL_Switches.Limit_Subp.all);
-         Set_Field (Obj, Limit_Line_Name,   CL_Switches.Limit_Line.all);
          Set_Field (Obj, Limit_Region_Name, CL_Switches.Limit_Region.all);
          Set_Field (Obj, Limit_Name_Name, CL_Switches.Limit_Name.all);
          Set_Field (Obj, Limit_Lines_Name, To_JSON (Limit_Lines));
