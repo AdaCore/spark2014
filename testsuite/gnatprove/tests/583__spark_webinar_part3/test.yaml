@@ -1,2 +1,2 @@
 prove_all:
-  check_counterexamples: False
+  counterexample: False
