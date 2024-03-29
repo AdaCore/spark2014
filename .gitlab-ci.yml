@@ -192,6 +192,7 @@ acats:
   artifacts:
      paths:
         - xunit-*.xml
+        - __results*
      reports:
        junit: xunit-*.xml
 
