@@ -7618,6 +7618,10 @@ package body SPARK_Definition is
            and then not Is_Class_Wide_Type (E)
            and then Unique_Entity (Etype (E)) /= Unique_Entity (E)
            and then Present (Discriminant_Specifications (Parent (E)))
+           and then
+             Comes_From_Source
+               (First
+                 (Discriminant_Specifications (Original_Node (Parent (E)))))
            and then Entity_Comes_From_Source (E)
          then
             Mark_Violation
