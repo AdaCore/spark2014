@@ -11475,17 +11475,7 @@ package body SPARK_Definition is
       --  the freeze node.
 
       elsif Is_Wrapper_For_Dispatching_Result (E) then
-         declare
-            Typ : constant Entity_Id := Etype (E);
-         begin
-            if Is_Incomplete_Or_Private_Type (Typ)
-              and then Present (Full_View (Typ))
-            then
-               return SPARK_Pragma_Of_Entity (Full_View (Typ));
-            else
-               return SPARK_Pragma_Of_Entity (Typ);
-            end if;
-         end;
+         return SPARK_Pragma_Of_Entity (Get_View_For_Dispatching_Result (E));
       end if;
 
       --  For entities that can carry a SPARK_Mode Pragma and that have one, we

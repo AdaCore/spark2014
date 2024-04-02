@@ -746,6 +746,12 @@ package SPARK_Util.Subprograms is
    function Is_Overriding_Subprogram (E : Entity_Id) return Boolean renames
      Inheritance_Utilities_Inst.Is_Overriding_Subprogram;
 
+   function Get_View_For_Dispatching_Result
+     (E : E_Function_Id) return Entity_Id
+     with Pre => Is_Wrapper_For_Dispatching_Result (E);
+   --  Return the view of the return type of E which should be used to check
+   --  function E.
+
    function Completion_Deferred_To_Body
      (E : Subprogram_Kind_Id) return Boolean;
    --  Return True if E is declared in the spec of a package or protected type
