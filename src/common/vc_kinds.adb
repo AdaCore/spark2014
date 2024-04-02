@@ -688,6 +688,9 @@ package body VC_Kinds is
           & "passed by reference",
          when Lim_Ext_Aggregate_With_Type_Ancestor =>
            "an extension aggregate whose ancestor part is a subtype mark",
+         when Lim_Generic_In_Type_Inv =>
+            "instance of a generic unit declared in a package containing a "
+          & "type with an invariant outside of this package",
          when Lim_Goto_Cross_Inv =>
            "a goto statement occuring in a loop before the invariant which"
           & " refers to a label occuring inside the loop but after the "

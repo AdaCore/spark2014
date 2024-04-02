@@ -278,6 +278,10 @@ package body SPARK_Definition is
    procedure Discard_Underlying_Type (T : Type_Kind_Id);
    --  Mark T's underlying type as seen and store T as its partial view
 
+   function Contains_Type_With_Invariant (P : E_Package_Id) return Boolean;
+   --  Return True if there is a type with a type invariant visible in SPARK
+   --  declared directly in P.
+
    procedure Queue_For_Marking (E : Entity_Id);
    --  Register E for marking at a later stage
 
@@ -477,6 +481,12 @@ package body SPARK_Definition is
 
    procedure Mark_Exception_Handler (N : N_Exception_Handler_Id);
    --  Mark an exception handler
+
+   procedure Mark_Generic_Instance (E : Entity_Id) with
+     Pre => Is_Generic_Instance (E);
+   --  Perform specific checks required on instances of generics. This checks
+   --  are related to visibility so they are only required on subprogram bodies
+   --  and package declarations (as they might have a private part).
 
    procedure Mark_Iterable_Aspect
      (Iterable_Aspect : N_Aspect_Specification_Id);
@@ -1190,6 +1200,26 @@ package body SPARK_Definition is
          end if;
       end if;
    end Check_User_Defined_Eq;
+
+   ----------------------------------
+   -- Contains_Type_With_Invariant --
+   ----------------------------------
+
+   function Contains_Type_With_Invariant (P : E_Package_Id) return Boolean is
+      Decl : Node_Id := First
+        (Visible_Declarations (Package_Specification (P)));
+   begin
+      while Present (Decl) loop
+         if Nkind (Decl) = N_Private_Type_Declaration
+           and then In_SPARK (Defining_Identifier (Decl))
+           and then Has_Invariants_In_SPARK (Defining_Identifier (Decl))
+         then
+            return True;
+         end if;
+         Next (Decl);
+      end loop;
+      return False;
+   end Contains_Type_With_Invariant;
 
    -----------------------------
    -- Discard_Underlying_Type --
@@ -8603,6 +8633,46 @@ package body SPARK_Definition is
       Check_Compatible_Access_Types (Etype (Subp), Ret_Obj);
    end Mark_Extended_Return_Statement;
 
+   ---------------------------
+   -- Mark_Generic_Instance --
+   ---------------------------
+
+   procedure Mark_Generic_Instance (E : Entity_Id) is
+      Spec : constant Node_Id :=
+        (if Ekind (E) = E_Package then Package_Specification (E)
+         else Subprogram_Specification (E));
+      Scop : Entity_Id;
+   begin
+      if No (Generic_Parent (Spec)) then
+         pragma Assert (Is_Wrapper_Package (E));
+         return;
+      end if;
+
+      Scop := Scope (Generic_Parent (Spec));
+
+      if Ekind (Scop) = E_Generic_Package then
+         pragma Assert
+           (Is_Child_Unit (Generic_Parent (Spec)));
+         Scop := Parent_Instance_From_Child_Unit (E);
+      end if;
+
+      --  Reject instances of generic units if their scopes declare types with
+      --  invariants unless they are instantiated directly in their scope. This
+      --  ensures that we only need to handle a single chain of visibility.
+
+      while Present (Scop) and then Ekind (Scop) = E_Package loop
+         if Contains_Type_With_Invariant (Scop)
+           and then not Is_Declared_In_Unit (E, Scop)
+         then
+            Mark_Unsupported
+              (Lim_Generic_In_Type_Inv, E,
+               Cont_Msg => "package " & Source_Name (Scop)
+               & " declares a type with an invariant");
+         end if;
+         Scop := Scope (Scop);
+      end loop;
+   end Mark_Generic_Instance;
+
    -----------------------------
    -- Mark_Handled_Statements --
    -----------------------------
@@ -9021,6 +9091,12 @@ package body SPARK_Definition is
       --  in the package declaration itself.
 
       Violation_Detected := False;
+
+      --  Perform specific checks for generic instances
+
+      if Is_Generic_Instance (Id) then
+         Mark_Generic_Instance (Id);
+      end if;
 
       --  Mark abstract state entities, since they may be referenced from
       --  the outside. Iff SPARK_Mode is On | None then they will be in
@@ -9977,6 +10053,12 @@ package body SPARK_Definition is
                      raise Program_Error;
 
                   end case;
+               end if;
+
+               --  Perform specific checks for generic instances
+
+               if Is_Generic_Instance (E) then
+                  Mark_Generic_Instance (E);
                end if;
 
                --  Mark Actual_Subtypes of body formal parameters, if any
