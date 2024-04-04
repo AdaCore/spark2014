@@ -1,0 +1,14 @@
+main1.adb:15:04: info: alignment of overlaid objects is compatible (Trivial)
+main1.adb:15:04: info: object is suitable for aliasing via address clause (Trivial)
+main1.adb:15:38: high: types of aliased objects do not have the same size [possible explanation: Object_Sizes of type Large and type Small differ]
+main1.adb:15:38: info: object is suitable for aliasing via address clause (Trivial)
+main1.adb:18:05: high: "X" is not initialized
+main1.adb:18:08: high: "X" is not initialized
+main2.adb:15:04: info: alignment of overlaid objects is compatible (Trivial)
+main2.adb:15:04: info: object is suitable for aliasing via address clause (Trivial)
+main2.adb:15:38: high: types of aliased objects do not have the same size [possible explanation: Object_Sizes of type Large and type Small differ]
+main2.adb:15:38: info: object is suitable for aliasing via address clause (Trivial)
+main3.adb:15:04: info: alignment of overlaid objects is compatible (Trivial)
+main3.adb:15:04: info: object is suitable for aliasing via address clause (Trivial)
+main3.adb:15:38: high: types of aliased objects do not have the same size [possible explanation: Object_Sizes of type Large and type Small differ]
+main3.adb:15:38: info: object is suitable for aliasing via address clause (Trivial)
