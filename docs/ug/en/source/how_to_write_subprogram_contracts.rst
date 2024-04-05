@@ -797,7 +797,6 @@ subprogram and its calls respect the following additional conditions:
 
  * does not contain nested subprogram or package declarations or instantiations
  * not recursive
- * has a single point of return at the end of the subprogram
  * not called in an assertion or a contract
  * not called in a potentially unevaluated context
  * not called before its body is seen

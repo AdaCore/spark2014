@@ -1,6 +1,5 @@
 main.adb:5:13: info: implicit aspect Always_Terminates on "Is_Null" has been proved, subprogram will terminate
 main.adb:9:13: info: implicit aspect Always_Terminates on "Helper" has been proved, subprogram will terminate
 main.adb:9:21: warning: unused variable "X"
-main.adb:11:04: info: no contextual analysis of "Is_Null" (multiple returns)
 main.adb:14:16: info: no contextual analysis of "Helper" (body not seen yet)
 main.adb:14:24: medium: predicate check might fail [possible fix: subprogram at line 5 should mention X in a precondition]
