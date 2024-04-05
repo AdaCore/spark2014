@@ -424,6 +424,7 @@ package body SPARK_Definition.Violations is
                          then "aspect"
                          else "pragma") &
                         " SPARK_Mode #", N);
+
       elsif Present (Current_Incomplete_Type) then
          Error_Msg_Sloc := Sloc (Current_Incomplete_Type);
 

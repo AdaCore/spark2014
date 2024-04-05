@@ -8952,7 +8952,11 @@ package body SPARK_Definition is
          --  cannot be hidden for now. They would need an Ownership or
          --  Predefined_Equality annotation.
 
-         if Is_In_Potentially_Hidden_Private (E) then
+         if Is_Partial_View (E)
+           and then Entity_In_SPARK (Full_View (E))
+           and then not Is_In_Potentially_Hidden_Private (E)
+           and then Is_In_Potentially_Hidden_Private (Full_View (E))
+         then
             declare
                Exp : Unbounded_String;
             begin
@@ -9013,7 +9017,11 @@ package body SPARK_Definition is
                --  private part as they would not be handled in the same way
                --  if their full view is visible and if it is not.
 
-               elsif Is_In_Potentially_Hidden_Private (E) then
+               elsif Is_Partial_View (E)
+                 and then Entity_In_SPARK (Full_View (E))
+                 and then not Is_In_Potentially_Hidden_Private (E)
+                 and then Is_In_Potentially_Hidden_Private (Full_View (E))
+               then
                   Mark_Unsupported
                     (Lim_Hidden_Private_Relaxed_Init, E,
                      Cont_Msg =>
