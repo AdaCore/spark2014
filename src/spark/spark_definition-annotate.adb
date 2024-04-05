@@ -27,6 +27,7 @@
 with Ada.Characters.Handling;      use Ada.Characters.Handling;
 with Ada.Containers.Doubly_Linked_Lists;
 with Ada.Containers.Ordered_Maps;
+with Ada.Strings.Unbounded;        use Ada.Strings.Unbounded;
 with Aspects;                      use Aspects;
 with Checked_Types;                use Checked_Types;
 with Common_Containers;
@@ -266,6 +267,7 @@ package body SPARK_Definition.Annotate is
    --    pragma Annotate (GNATprove, Skip_Flow_And_Proof, E);
 
    type Ownership_Annotation (Needs_Reclamation : Boolean := False) is record
+      Confirming : Boolean;
       case Needs_Reclamation is
          when True =>
             Reclamation_Entity : Entity_Id := Empty;
@@ -290,11 +292,13 @@ package body SPARK_Definition.Annotate is
    --  to check whether or not objects of type E own a resource, and a boolean
    --  Reclaimed which is the value returned by the check function when called
    --  on an object which was reclaimed (to accomodate both Is_Reclaimed and
-   --  Needs_Reclamation functions).
+   --  Needs_Reclamation functions). Confirming is set to True if the full
+   --  view of E is visible for the current analysis.
 
    type Predefined_Eq_Annotation
      (Kind : Predefined_Eq_Kind := No_Equality)
    is record
+      Confirming : Boolean;
       case Kind is
          when Only_Null =>
             Null_Value : Entity_Id := Empty;
@@ -317,7 +321,14 @@ package body SPARK_Definition.Annotate is
    --  equality on E is entirely disallowed or Only_Null if it is still allowed
    --  if one of the operands is a special constant. In the second cased, an
    --  the component Null_Value stores the entity on which the predefined
-   --  equality can be used.
+   --  equality can be used. Confirming is set to True if the full view of E is
+   --  visible for the current analysis.
+
+   Delayed_Null_Values       : Node_Lists.List;
+   --  For confirming Predefined_Equality annotations, we need to check that
+   --  the value of the constant is a null value. The check is delayed to be
+   --  sure the full view is marked. All entities which have not be checked
+   --  are stored in Delayed_Null_Values.
 
    procedure Insert_Annotate_Range
      (Prgma           : Node_Id;
@@ -4253,12 +4264,19 @@ package body SPARK_Definition.Annotate is
             if Ekind (Ent) not in E_Private_Type
                                 | E_Record_Type_With_Private
                                 | E_Limited_Private_Type
-              or else Retysp (Ent) /= Ent
               or else Parent_Type (Ent) /= Ent
             then
                Error_Msg_N_If
-                 ("a type annotated with Ownership must be"
-                  & " a private type whose full view is not in SPARK",
+                 ("a type annotated with Ownership must be a private type",
+                  Ent);
+
+            elsif Retysp (Ent) /= Ent
+              and then not Has_Hidden_Private_Part (Scope (Ent))
+            then
+               Error_Msg_N_If
+                 ("the private part of the scope of a private type annotated "
+                  & "with Ownership must have either a pragma SPARK_Mode "
+                  & "(Off) or a Hide_Info annotation",
                   Ent);
 
             --  pragma Annotate (GNATprove, Ownership, Ent);
@@ -4277,13 +4295,65 @@ package body SPARK_Definition.Annotate is
                   return;
                end if;
 
+               --  The full view of Ent is visible, check that the annotation
+               --  is a confirming annotation. We do not return early in case
+               --  of violations to avoid spurious error messages about missing
+               --  annotations on the partial views.
+
+               if Retysp (Ent) /= Ent then
+                  pragma Assert (Has_Hidden_Private_Part (Scope (Ent)));
+
+                  declare
+                     Dummy       : Unbounded_String;
+                     Full_Ty     : constant Entity_Id := Retysp (Ent);
+                     Reclamation : constant Boolean := Present (Extra_Exp);
+                  begin
+                     if Has_Ownership_Annotation (Full_Ty) then
+                        if Needs_Reclamation (Full_Ty) /= Reclamation then
+                           Error_Msg_N_If
+                             ("full view of type annotated with an "
+                              & "Ownership annotation "
+                              & "shall have a matching annotation", Full_Ty);
+                        end if;
+
+                     elsif not Is_Deep (Full_Ty) then
+                        Error_Msg_N_If
+                          ("full view of type annotated with an Ownership "
+                           & "annotation shall be subject to ownership",
+                           Full_Ty);
+
+                     elsif Reclamation
+                       and then not Contains_Allocated_Parts (Full_Ty)
+                     then
+                        Error_Msg_N_If
+                          ("full view of type annotated with "
+                           & """Needs_Reclamation"" shall need reclamation",
+                           Full_Ty);
+
+                     elsif not Reclamation
+                       and then Contains_Allocated_Parts (Full_Ty)
+                     then
+                        Error_Msg_N_If
+                          ("full view of type annotated with an Ownership "
+                           & "annotation without ""Needs_Reclamation"" shall "
+                           & "not need reclamation",
+                           Full_Ty);
+                     end if;
+                  end;
+               end if;
+
                declare
-                  Position : Node_To_Ownership_Maps.Cursor;
+                  Confirming : constant Boolean := Retysp (Ent) /= Ent;
+                  Position   : Node_To_Ownership_Maps.Cursor;
                begin
                   Ownership_Annotations.Insert
-                    (Ent,
-                     (if No (Extra_Exp) then (Needs_Reclamation => False)
-                      else (Needs_Reclamation => True, others => <>)),
+                    (Retysp (Ent),
+                     (if No (Extra_Exp)
+                      then (Needs_Reclamation => False,
+                            Confirming        => Confirming)
+                      else (Needs_Reclamation => True,
+                            Confirming        => Confirming,
+                            others            => <>)),
                      Position,
                      Ok
                     );
@@ -4346,8 +4416,8 @@ package body SPARK_Definition.Annotate is
                end if;
 
                declare
-                  G_Typ   : constant Entity_Id :=
-                    Retysp (Etype (First_Formal (Ent)));
+                  P_Typ   : constant Entity_Id := Etype (First_Formal (Ent));
+                  G_Typ   : constant Entity_Id := Retysp (P_Typ);
                   Typ     : constant Entity_Id :=
                     (if Is_Class_Wide_Type (G_Typ)
                      then Retysp (Get_Specific_Type_From_Classwide (G_Typ))
@@ -4381,8 +4451,7 @@ package body SPARK_Definition.Annotate is
                        ("function annotated with Ownership on a tagged type "
                         & "expects a classwide type", Ent);
 
-                  elsif not Ownership_Annotations.Contains (Typ)
-                  then
+                  elsif not Ownership_Annotations.Contains (Typ) then
                      Error_Msg_N_If
                        ("the type of the first parameter of a function "
                         & "annotated with Ownership must be annotated with"
@@ -4417,7 +4486,7 @@ package body SPARK_Definition.Annotate is
                        ("\& conflicts with the current annotation",
                         Ent, Ownership_Annotations (Typ).Reclamation_Entity);
 
-                  elsif List_Containing (Parent (Typ)) /=
+                  elsif List_Containing (Parent (P_Typ)) /=
                     List_Containing (Prag)
                   then
                      Error_Msg_N_If
@@ -4488,7 +4557,6 @@ package body SPARK_Definition.Annotate is
 
                declare
                   Typ : constant Entity_Id := Retysp (Etype (Ent));
-
                begin
                   if not Ownership_Annotations.Contains (Typ) then
                      Error_Msg_N_If
@@ -4519,8 +4587,8 @@ package body SPARK_Definition.Annotate is
                      Error_Msg_N_If
                        ("\use a reclamation function instead", Ent);
 
-                  elsif
-                    Present (Ownership_Annotations (Typ).Reclamation_Entity)
+                  elsif Present
+                    (Ownership_Annotations (Typ).Reclamation_Entity)
                   then
                      Error_Msg_N_If
                        ("a single ownership function or constant shall be"
@@ -4531,7 +4599,7 @@ package body SPARK_Definition.Annotate is
                        ("\& conflicts with the current annotation",
                         Ent, Ownership_Annotations (Typ).Reclamation_Entity);
 
-                  elsif List_Containing (Parent (Typ)) /=
+                  elsif List_Containing (Parent (Etype (Ent))) /=
                     List_Containing (Prag)
                   then
                      Error_Msg_N_If
@@ -4552,8 +4620,7 @@ package body SPARK_Definition.Annotate is
                      end if;
 
                      Ownership_Annotations (Typ).Reclamation_Entity := Ent;
-                     Ownership_Annotations (Typ).Reclaimed :=
-                       Reclaimed_Value;
+                     Ownership_Annotations (Typ).Reclaimed := Reclaimed_Value;
 
                   --  Nothing else is allowed
 
@@ -4625,12 +4692,20 @@ package body SPARK_Definition.Annotate is
             if Ekind (Ent) not in E_Private_Type
                                 | E_Record_Type_With_Private
                                 | E_Limited_Private_Type
-              or else Retysp (Ent) /= Ent
               or else Parent_Type (Ent) /= Ent
             then
                Error_Msg_N_If
                  ("a type annotated with Predefined_Equality must be"
-                  & " a private type whose full view is not in SPARK",
+                  & " a private type",
+                  Ent);
+
+            elsif Retysp (Ent) /= Ent
+              and then not Has_Hidden_Private_Part (Scope (Ent))
+            then
+               Error_Msg_N_If
+                 ("the private part of the scope of a type annotated with "
+                  & "Predefined_Equality must have either a pragma SPARK_Mode "
+                  & "(Off) or a Hide_Info annotation",
                   Ent);
 
             --  For now, we only support:
@@ -4668,15 +4743,64 @@ package body SPARK_Definition.Annotate is
                   return;
                end if;
 
+               --  The full view of Ent is visible, check that the annotation
+               --  is a confirming annotation. We do not return early in case
+               --  of violations to avoid spurious error messages about missing
+               --  annotations on the partial views.
+
+               if Retysp (Ent) /= Ent then
+                  pragma Assert (Has_Hidden_Private_Part (Scope (Ent)));
+
+                  declare
+                     Dummy    : Unbounded_String;
+                     Full_Ty  : constant Entity_Id := Retysp (Ent);
+                     Exp_Kind : constant Predefined_Eq_Kind :=
+                       (if Kind = "only_null" then Only_Null else No_Equality);
+                  begin
+                     if Has_Predefined_Eq_Annotation (Full_Ty) then
+                        if Get_Predefined_Eq_Kind (Full_Ty) /= Exp_Kind then
+                           Error_Msg_N_If
+                             ("full view of type annotated with a "
+                              & "Predefined_Equality annotation "
+                              & "shall have a matching annotation", Full_Ty);
+                        end if;
+                     elsif Exp_Kind = Only_Null
+                       and then not Is_Access_Type (Full_Ty)
+                     then
+                        Error_Msg_N_If
+                          ("full view of type annotated with a "
+                           & "Predefined_Equality ""Only_Null"" annotation "
+                           & "shall be an access type", Full_Ty);
+
+                     elsif Exp_Kind = No_Equality
+                       and then
+                         (Is_Access_Type (Full_Ty)
+                          or else not Predefined_Eq_Uses_Pointer_Eq
+                            (Full_Ty, Dummy))
+                     then
+                        Error_Msg_N_If
+                          ("full view of type annotated with a "
+                           & "Predefined_Equality ""No_Equality"" annotation "
+                           & "shall be a composite type whose components have "
+                           & "a restricted equality", Full_Ty);
+                     end if;
+                  end;
+               end if;
+
+               --  Store the annotation in the map
+
                declare
-                  Position  : Node_To_Predefined_Eq_Maps.Cursor;
-                  New_Value : constant Predefined_Eq_Annotation :=
+                  Position   : Node_To_Predefined_Eq_Maps.Cursor;
+                  Confirming : constant Boolean := Retysp (Ent) /= Ent;
+                  New_Value  : constant Predefined_Eq_Annotation :=
                     (if Kind = "only_null"
-                     then (Kind => Only_Null, others => <>)
-                     else (Kind => No_Equality));
+                     then (Kind       => Only_Null,
+                           Confirming => Confirming,
+                           others     => <>)
+                     else (Kind => No_Equality, Confirming => Confirming));
                begin
                   Predefined_Eq_Annotations.Insert
-                    (Ent,
+                    (Retysp (Ent),
                      New_Value,
                      Position,
                      Ok
@@ -4692,7 +4816,6 @@ package body SPARK_Definition.Annotate is
 
             declare
                Typ : constant Entity_Id := Retysp (Etype (Ent));
-
             begin
                --  pragma Annotate
                --   (GNATprove, Predefined_Equality, "Null_Value", Ent);
@@ -4741,7 +4864,7 @@ package body SPARK_Definition.Annotate is
                     ("\& conflicts with the current annotation",
                      Ent, Predefined_Eq_Annotations (Typ).Null_Value);
 
-               elsif List_Containing (Parent (Typ)) /=
+               elsif List_Containing (Parent (Etype (Ent))) /=
                  List_Containing (Prag)
                then
                   Error_Msg_N_If
@@ -4758,6 +4881,16 @@ package body SPARK_Definition.Annotate is
                   if not Ok then
                      return;
                   end if;
+
+                  --  For confirming annotations, we need to check that the
+                  --  value of the constant is a null value. Delay the check
+                  --  to be sure the full view is marked.
+
+                  if Predefined_Eq_Annotations (Typ).Confirming then
+                     Delayed_Null_Values.Append (Ent);
+                  end if;
+
+                  --  Update the Predefined_Eq_Annotations map
 
                   Predefined_Eq_Annotations (Typ).Null_Value := Ent;
                end if;
@@ -5302,6 +5435,27 @@ package body SPARK_Definition.Annotate is
          end;
       end loop;
       Delayed_Hide_Compatibility_Checks.Clear;
+
+      --  Go over null values with confirming annotations to check that the
+      --  value of the constant is a null value.
+
+      for Ent of Delayed_Null_Values loop
+         pragma Assert (Is_Partial_View (Ent));
+         pragma Assert (Entity_Marked (Full_View (Ent)));
+         declare
+            Decl : constant Node_Id := Parent (Full_View (Ent));
+         begin
+            if not Is_Null_Or_Reclaimed_Expr
+              (Expression (Decl), Null_Value => True)
+            then
+               Error_Msg_N_If
+                 ("the value of " & Source_Name (Ent)
+                  & " shall be a null value", Decl);
+               return;
+            end if;
+         end;
+      end loop;
+      Delayed_Null_Values.Clear;
    end Do_Delayed_Checks_On_Pragma_Annotate;
 
    ------------------------
@@ -5555,13 +5709,19 @@ package body SPARK_Definition.Annotate is
    procedure Get_Reclamation_Entity
      (E                  : Entity_Id;
       Reclamation_Entity : out Entity_Id;
-      Kind               : out Reclamation_Kind)
+      Kind               : out Reclamation_Kind;
+      For_Check          : Boolean := False)
    is
       use Node_To_Ownership_Maps;
-      R : constant Entity_Id := Root_Retysp (E);
+      R : constant Entity_Id :=
+        (if For_Check then Retysp (E) else Root_Retysp (E));
+      --  If For_Check is True, get the E's own annotation. Otherwise, get the
+      --  annotation on E's root type.
+
    begin
       Reclamation_Entity := Ownership_Annotations (R).Reclamation_Entity;
       Kind := Ownership_Annotations (R).Reclaimed;
+      pragma Assert (Ownership_Annotations (R).Confirming = For_Check);
    end Get_Reclamation_Entity;
 
    ------------------------------
@@ -5702,24 +5862,52 @@ package body SPARK_Definition.Annotate is
       and then Mutable_In_Params_Annotations.Element
         (Scope (E)).Contains (Retysp (Etype (E))));
 
+   ----------------------------------
+   -- Has_Own_Ownership_Annotation --
+   ----------------------------------
+
+   function Has_Own_Ownership_Annotation (E : Entity_Id) return Boolean is
+     (Ownership_Annotations.Contains (Retysp (E)));
+
    ------------------------------
    -- Has_Ownership_Annotation --
    ------------------------------
 
    function Has_Ownership_Annotation (E : Entity_Id) return Boolean is
-     (Ownership_Annotations.Contains (Root_Retysp (E)));
+      use Node_To_Ownership_Maps;
+      Position : constant Node_To_Ownership_Maps.Cursor :=
+        Ownership_Annotations.Find (Root_Retysp (E));
+   begin
+      return Has_Element (Position)
+        and then not Ownership_Annotations (Position).Confirming;
+   end Has_Ownership_Annotation;
+
+   --------------------------------------
+   -- Has_Own_Predefined_Eq_Annotation --
+   --------------------------------------
+
+   function Has_Own_Predefined_Eq_Annotation (E : Entity_Id) return Boolean is
+      (Predefined_Eq_Annotations.Contains (Retysp (E)));
 
    ----------------------------------
    -- Has_Predefined_Eq_Annotation --
    ----------------------------------
 
    function Has_Predefined_Eq_Annotation (E : Entity_Id) return Boolean is
-     (if Is_Tagged_Type (Retysp (E))
-      then Predefined_Eq_Annotations.Contains (Base_Retysp (E))
-      else Predefined_Eq_Annotations.Contains (Root_Retysp (E)));
-   --  On tagged types, the predefined equality annotation is not inherited.
-   --  The primitive equality function can be used to override the handling
-   --  on the inherited part.
+      use Node_To_Predefined_Eq_Maps;
+      Rep_Ty    : constant Entity_Id :=
+        (if Is_Tagged_Type (Retysp (E)) then Base_Retysp (E)
+         else Root_Retysp (E));
+      --  On tagged types, the predefined equality annotation is not inherited.
+      --  The primitive equality function can be used to override the handling
+      --  on the inherited part.
+
+      Position : constant Node_To_Predefined_Eq_Maps.Cursor :=
+        Predefined_Eq_Annotations.Find (Rep_Ty);
+   begin
+      return Has_Element (Position)
+        and then not Predefined_Eq_Annotations (Position).Confirming;
+   end Has_Predefined_Eq_Annotation;
 
    ----------------------------------------
    -- Has_Skip_Flow_And_Proof_Annotation --
@@ -5865,11 +6053,14 @@ package body SPARK_Definition.Annotate is
               (Key      => E,
                New_Item =>
                  Ownership_Annotation'
-                   (Needs_Reclamation => True, others => <>));
+                   (Needs_Reclamation => True,
+                    Confirming        => False,
+                    others            => <>));
          else
             Ownership_Annotations.Insert
               (Key      => E,
-               New_Item => Ownership_Annotation'(Needs_Reclamation => False));
+               New_Item => Ownership_Annotation'
+                 (Needs_Reclamation => False, Confirming => False));
          end if;
       end if;
    end Infer_Ownership_Annotation;
@@ -6031,6 +6222,21 @@ package body SPARK_Definition.Annotate is
       end case;
    end Mark_Pragma_Annotate;
 
+   ---------------------------
+   -- Needs_Ownership_Check --
+   ---------------------------
+
+   function Needs_Ownership_Check (E : Entity_Id) return Boolean is
+      use Node_To_Ownership_Maps;
+      Position : constant Node_To_Ownership_Maps.Cursor :=
+        Ownership_Annotations.Find (Retysp (E));
+   begin
+      return Has_Element (Position)
+        and then Ownership_Annotations (Position).Confirming
+        and then Ownership_Annotations (Position).Needs_Reclamation
+        and then Present (Ownership_Annotations (Position).Reclamation_Entity);
+   end Needs_Ownership_Check;
+
    -----------------------
    -- Needs_Reclamation --
    -----------------------
@@ -6050,13 +6256,14 @@ package body SPARK_Definition.Annotate is
 
       --  If E is a private type with ownership which needs reclamation, go
       --  over the following declarations to try and find its reclamation
-      --  function.
+      --  function. Do not use the getter functions as they discard confirming
+      --  annotations.
 
       if Is_Type (E)
-        and then Is_Nouveau_Type (E)
-        and then Has_Ownership_Annotation (E)
-        and then Needs_Reclamation (E)
-        and then No (Get_Reclamation_Entity (E))
+        and then Is_Partial_View (E)
+        and then Ownership_Annotations.Contains (Retysp (E))
+        and then Ownership_Annotations (Retysp (E)).Needs_Reclamation
+        and then No (Ownership_Annotations (Retysp (E)).Reclamation_Entity)
       then
          declare
             Decl_Node : constant Node_Id := Declaration_Node (E);
@@ -6089,15 +6296,18 @@ package body SPARK_Definition.Annotate is
                   & " unprovable", E);
             end if;
          end;
+      end if;
 
       --  If E is a private type with predefined equality of kind "Only_Null",
       --  go over the following declarations to try and find its null value.
+      --  Do not use the getter functions as they discard confirming
+      --  annotations.
 
-      elsif Is_Type (E)
-        and then Is_Nouveau_Type (E)
-        and then Has_Predefined_Eq_Annotation (E)
-        and then Get_Predefined_Eq_Kind (E) = Only_Null
-        and then No (Get_Null_Value (E))
+      if Is_Type (E)
+        and then Is_Partial_View (E)
+        and then Predefined_Eq_Annotations.Contains (Retysp (E))
+        and then Predefined_Eq_Annotations (Retysp (E)).Kind = Only_Null
+        and then No (Predefined_Eq_Annotations (Retysp (E)).Null_Value)
       then
          declare
             Decl_Node : constant Node_Id := Declaration_Node (E);
@@ -6127,7 +6337,9 @@ package body SPARK_Definition.Annotate is
                   & "equality &",
                   E, E);
                Error_Msg_N
-                 ("\""No_Equality"" could be used instead of ""Only_Null""",
+                 ("\consider annotating a constant with a pragma Annotate "
+                  & "('G'N'A'Tprove, Predefined_Equality, ""Null_Value"""
+                  & ", ...)",
                   E);
             end if;
          end;

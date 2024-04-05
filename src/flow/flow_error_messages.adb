@@ -4158,6 +4158,9 @@ package body Flow_Error_Messages is
               & " incorrect";
          when VC_Container_Aggr_Check      =>
             return "Container_Aggregates annotation might be incorrect";
+         when VC_Reclamation_Check      =>
+            return "reclamation entity might not be consistent with "
+              & "reclamation on the full view";
          when VC_Subprogram_Variant        =>
             return "subprogram variant might fail";
          when VC_Termination_Check         =>
@@ -4622,6 +4625,8 @@ package body Flow_Error_Messages is
             return "Inline_For_Proof or Logical_Equal annotation " & Verb;
          when VC_Container_Aggr_Check      =>
             return "Container_Aggregates annotation " & Verb;
+         when VC_Reclamation_Check         =>
+            return "reclamation entity consistency " & Verb;
          when VC_Subprogram_Variant        =>
             return "subprogram variant " & Verb;
          when VC_Termination_Check         =>

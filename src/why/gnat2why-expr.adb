@@ -6703,77 +6703,13 @@ package body Gnat2Why.Expr is
 
          if Has_Ownership_Annotation (Ty) then
             pragma Assert (Needs_Reclamation (Ty));
-
-            --  Get the check function for Ty if any
-
-            declare
-               Reclamation_Entity : Entity_Id;
-               Check_Param        : Item_Type;
-               Kind               : Reclamation_Kind;
-
-            begin
-               Get_Reclamation_Entity
-                 (Retysp (Ty), Reclamation_Entity, Kind);
-
-               --  If no check functions or constants are supplied, consider
-               --  the value is never reclaimed. It can still have been moved.
-
-               if No (Reclamation_Entity) then
-                  return Pred_Of_Boolean_Term
-                    (+New_Record_Is_Moved_Access (Ty, +Expr));
-
-               elsif Kind = Reclaimed_Value then
-                  pragma Assert (Ekind (Reclamation_Entity) = E_Constant);
-                  return New_Or_Pred
-                    (Left   => Pred_Of_Boolean_Term
-                       (+New_Record_Is_Moved_Access (Ty, +Expr)),
-                     Right  => +New_Ada_Equality
-                       (Typ    => Retysp (Ty),
-                        Domain => EW_Pred,
-                        Left   => Insert_Simple_Conversion
-                          (Expr   => +Expr,
-                           Domain => EW_Term,
-                           To     => Type_Of_Node (Reclamation_Entity)),
-                        Right  => Transform_Identifier
-                          (Params => Logic_Params,
-                           Expr   => Reclamation_Entity,
-                           Ent    => Reclamation_Entity,
-                           Domain => EW_Term)));
-
-               else
-                  pragma Assert (Ekind (Reclamation_Entity) = E_Function);
-                  declare
-                     Check_Params : constant Item_Array :=
-                       Compute_Subprogram_Parameters
-                         (Reclamation_Entity, EW_Term);
-                  begin
-                     pragma Assert (Check_Params'Length = 1);
-                     Check_Param := Check_Params (Check_Params'First);
-                  end;
-
-                  return New_Or_Pred
-                    (Left   => Pred_Of_Boolean_Term
-                       (+New_Record_Is_Moved_Access (Ty, +Expr)),
-                     Right  => New_Comparison
-                       (Symbol => Why_Eq,
-                        Left   =>
-                          (if Kind = Is_Reclaimed then True_Term
-                           else False_Term),
-                        Right  => New_Call
-                          (Name => +Transform_Identifier
-                               (Params => Logic_Params,
-                                Expr   => Reclamation_Entity,
-                                Ent    => Reclamation_Entity,
-                                Domain => EW_Term),
-                           Args =>
-                             (1 => Insert_Simple_Conversion
-                                  (Expr   => +Expr,
-                                   Domain => EW_Term,
-                                   To     => Get_Why_Type_From_Item
-                                     (Check_Param))),
-                           Typ  => EW_Bool_Type)));
-               end if;
-            end;
+            return New_Or_Pred
+              (Left  => Pred_Of_Boolean_Term
+                 (+New_Record_Is_Moved_Access (Ty, +Expr)),
+               Right => Compute_Is_Reclaimed_For_Ownership
+                 (Expr      => Expr,
+                  Ty        => Ty,
+                  For_Check => False));
          else
             return Is_Moved_For_Record (Expr, Ty);
          end if;
@@ -6783,6 +6719,79 @@ package body Gnat2Why.Expr is
          return Is_Moved_For_Array (Expr, Ty);
       end if;
    end Compute_Is_Moved_Property;
+
+   ----------------------------------------
+   -- Compute_Is_Reclaimed_For_Ownership --
+   ----------------------------------------
+
+   function Compute_Is_Reclaimed_For_Ownership
+     (Expr      : W_Term_Id;
+      Ty        : Type_Kind_Id;
+      For_Check : Boolean)
+      return W_Pred_Id
+   is
+      Reclamation_Entity : Entity_Id;
+      Kind               : Reclamation_Kind;
+      Check_Param        : Item_Type;
+
+   begin
+      --  Get the check function for Ty if any
+
+      Get_Reclamation_Entity
+        (Retysp (Ty), Reclamation_Entity, Kind, For_Check);
+
+      --  If no check functions or constants are supplied, consider
+      --  the value is never reclaimed. It can still have been moved.
+
+      if No (Reclamation_Entity) then
+         return False_Pred;
+
+      elsif Kind = Reclaimed_Value then
+         pragma Assert (Ekind (Reclamation_Entity) = E_Constant);
+         return +New_Ada_Equality
+           (Typ    => Retysp (Ty),
+            Domain => EW_Pred,
+            Left   => Insert_Simple_Conversion
+              (Expr   => +Expr,
+               Domain => EW_Term,
+               To     => Type_Of_Node (Reclamation_Entity)),
+            Right  => Transform_Identifier
+              (Params => Logic_Params,
+               Expr   => Reclamation_Entity,
+               Ent    => Reclamation_Entity,
+               Domain => EW_Term));
+
+      else
+         pragma Assert (Ekind (Reclamation_Entity) = E_Function);
+         declare
+            Check_Params : constant Item_Array :=
+              Compute_Subprogram_Parameters
+                (Reclamation_Entity, EW_Term);
+         begin
+            pragma Assert (Check_Params'Length = 1);
+            Check_Param := Check_Params (Check_Params'First);
+         end;
+
+         return New_Comparison
+           (Symbol => Why_Eq,
+            Left   =>
+              (if Kind = Is_Reclaimed then True_Term
+               else False_Term),
+            Right  => New_Call
+              (Name => +Transform_Identifier
+                   (Params => Logic_Params,
+                    Expr   => Reclamation_Entity,
+                    Ent    => Reclamation_Entity,
+                    Domain => EW_Term),
+               Args =>
+                 (1 => Insert_Simple_Conversion
+                      (Expr   => +Expr,
+                       Domain => EW_Term,
+                       To     => Get_Why_Type_From_Item
+                         (Check_Param))),
+               Typ  => EW_Bool_Type));
+      end if;
+   end Compute_Is_Reclaimed_For_Ownership;
 
    ----------------------------
    -- Compute_Moved_Relation --

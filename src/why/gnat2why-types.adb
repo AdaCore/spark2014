@@ -49,6 +49,7 @@ with SPARK_Util.Subprograms;        use SPARK_Util.Subprograms;
 with SPARK_Util.Types;              use SPARK_Util.Types;
 with Stand;                         use Stand;
 with Types;                         use Types;
+with VC_Kinds;                      use VC_Kinds;
 with Why;                           use Why;
 with Why.Atree.Accessors;           use Why.Atree.Accessors;
 with Why.Atree.Builders;            use Why.Atree.Builders;
@@ -1263,23 +1264,32 @@ package body Gnat2Why.Types is
    ---------------------------
 
    procedure Generate_VCs_For_Type (E : Type_Kind_Id) is
-      Priv_View     : constant Opt_Type_Kind_Id :=
+      Priv_View       : constant Opt_Type_Kind_Id :=
         Find_View_For_Default_Checks (E);
-      Check_Default : constant Boolean := Present (Priv_View);
-      Check_Subp    : constant Boolean := Is_Access_Subprogram_Type (E)
+      Check_Default   : constant Boolean := Present (Priv_View);
+      Check_Subp      : constant Boolean := Is_Access_Subprogram_Type (E)
         and then No (Parent_Retysp (E));
-      Check_Iter    : constant Boolean := Declares_Iterable_Aspect (E);
-      Check_Eq      : constant Boolean :=
+      Check_Iter      : constant Boolean := Declares_Iterable_Aspect (E);
+      Check_Eq        : constant Boolean :=
         Is_Base_Type (E) and then not Use_Predefined_Equality_For_Type (E);
-      Check_Aggr    : constant Boolean :=
+      Check_Aggr      : constant Boolean :=
         Needs_Check_For_Aggregate_Annotation (E);
-      Need_Check    : constant Boolean :=
+      Check_Ownership : constant Boolean := Needs_Ownership_Check (E);
+      Need_Check      : constant Boolean :=
         Check_Default or else Check_Iter or else Check_Subp or else Check_Eq
-        or else Check_Aggr;
-      Name          : constant String := Full_Name (E);
-      Params        : constant Transformation_Params := Body_Params;
-      Why_Body      : W_Prog_Id := +Void;
-      Th            : Theory_UC;
+        or else Check_Aggr or else Check_Ownership;
+      Name            : constant String := Full_Name (E);
+      S_Ty            : constant Entity_Id :=
+        (if Present (First_Subtype (E))
+         and then Entity_In_SPARK (First_Subtype (E))
+         then First_Subtype (E)
+         else E);
+      --  Use the first subtype if any, as it can be more
+      --  constrained than the base type introduced by the
+      --  compiler.
+      Params          : constant Transformation_Params := Body_Params;
+      Why_Body        : W_Prog_Id := +Void;
+      Th              : Theory_UC;
    begin
       if not Need_Check then
          return;
@@ -1379,14 +1389,6 @@ package body Gnat2Why.Types is
                   Binders : constant Item_Array :=
                     Compute_Subprogram_Parameters (Eq, EW_Term);
                   pragma Assert (Binders'Length = 2);
-                  S_Ty    : constant Entity_Id :=
-                    (if Present (First_Subtype (E))
-                     and then Entity_In_SPARK (First_Subtype (E))
-                     then First_Subtype (E)
-                     else E);
-                  --  Use the first subtype if any, as it can be more
-                  --  constrained than the base type introduced by the
-                  --  compiler.
 
                   W_Ty    : constant W_Type_Id := Type_Of_Node (S_Ty);
                   Result  : constant W_Identifier_Id :=
@@ -1460,6 +1462,55 @@ package body Gnat2Why.Types is
          Why_Body := Sequence
            (Why_Body,
             New_Ignore (Prog => Generate_VCs_For_Aggregate_Annotation (E)));
+      end if;
+
+      --  Generate checks for the reclamation function of E. If an object of
+      --  type E is considered to be reclaimed as per its ownership annotation,
+      --  it should be reclaimed (or moved but this cannot occur) for its full
+      --  view. Generate:
+      --
+      --  let value = any <E> { <dynamic_property of E> } in
+      --  assert { is_reclaimed value -> is_moved value }
+
+      if Check_Ownership then
+         declare
+            W_Ty    : constant W_Type_Id := Type_Of_Node (S_Ty);
+            W_Post  : constant W_Pred_Id :=
+              Compute_Dynamic_Inv_And_Initialization
+                (Expr        => +New_Result_Ident (W_Ty),
+                 Ty          => Retysp (E),
+                 Initialized => True_Term,
+                 Only_Var    => False_Term,
+                 Params      => Params);
+            Value_Id           : constant W_Identifier_Id :=
+              New_Temp_Identifier (Typ => W_Ty, Base_Name => "reclaimed");
+            Check              : W_Prog_Id;
+            Reclamation_Entity : Entity_Id;
+            Kind               : Reclamation_Kind;
+         begin
+            Get_Reclamation_Entity
+              (Retysp (E), Reclamation_Entity, Kind, For_Check => True);
+            Check := New_Located_Assert
+              (Ada_Node => Reclamation_Entity,
+               Pred     => New_Conditional
+                 (Condition => Compute_Is_Reclaimed_For_Ownership
+                      (Expr => +Value_Id, Ty => E, For_Check => True),
+                  Then_Part => Compute_Is_Moved_Property
+                    (Expr => +Value_Id, Ty => E)),
+               Reason   => VC_Reclamation_Check,
+               Kind     => EW_Assert);
+            Check := New_Typed_Binding
+              (Name    => Value_Id,
+               Def     =>
+                 New_Any_Expr (Ada_Node    => E,
+                               Post        => W_Post,
+                               Labels      => Symbol_Sets.Empty_Set,
+                               Return_Type => W_Ty),
+               Context => Check);
+            Why_Body := Sequence
+              (Why_Body,
+               New_Ignore (Prog => Check));
+         end;
       end if;
 
       if Why_Body /= +Void then
