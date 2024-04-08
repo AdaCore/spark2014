@@ -1,314 +1,314 @@
-spark-containers-functional-maps-higher_order.adb:24:23: info: function contract feasibility proved, in instantiation at test_map_ho.adb:67
-spark-containers-functional-maps-higher_order.adb:30:42: info: range check proved, in instantiation at test_map_ho.adb:67
-spark-containers-functional-maps-higher_order.adb:31:28: info: postcondition proved, in instantiation at test_map_ho.adb:67
-spark-containers-functional-maps-higher_order.adb:31:37: info: predicate check proved, in instantiation at test_map_ho.adb:67
-spark-containers-functional-maps-higher_order.adb:31:48: info: predicate check proved, in instantiation at test_map_ho.adb:67
-spark-containers-functional-maps-higher_order.adb:33:14: info: aspect Always_Terminates on "Lemma_Count_Rec_Eq" has been proved, subprogram will terminate, in instantiation at test_map_ho.adb:67
-spark-containers-functional-maps-higher_order.adb:35:25: info: function contract feasibility proved, in instantiation at test_map_ho.adb:67
-spark-containers-functional-maps-higher_order.adb:42:71: info: null exclusion check proved, in instantiation at test_map_ho.adb:67
-spark-containers-functional-maps-higher_order.adb:43:28: info: postcondition proved, in instantiation at test_map_ho.adb:67
-spark-containers-functional-maps-higher_order.adb:43:28: info: precondition proved, in instantiation at test_map_ho.adb:67
-spark-containers-functional-maps-higher_order.adb:43:28: info: predicate check proved, in instantiation at test_map_ho.adb:67
-spark-containers-functional-maps-higher_order.adb:43:39: info: null exclusion check proved, in instantiation at test_map_ho.adb:67
-spark-containers-functional-maps-higher_order.adb:43:47: info: precondition proved, in instantiation at test_map_ho.adb:67
-spark-containers-functional-maps-higher_order.adb:43:47: info: predicate check proved, in instantiation at test_map_ho.adb:67
-spark-containers-functional-maps-higher_order.adb:43:58: info: null exclusion check proved, in instantiation at test_map_ho.adb:67
-spark-containers-functional-maps-higher_order.adb:44:42: info: range check proved, in instantiation at test_map_ho.adb:67
-spark-containers-functional-maps-higher_order.adb:49:23: info: function contract feasibility proved, in instantiation at test_map_ho.adb:67
-spark-containers-functional-maps-higher_order.adb:55:42: info: range check proved, in instantiation at test_map_ho.adb:67
-spark-containers-functional-maps-higher_order.adb:56:70: info: null exclusion check proved, in instantiation at test_map_ho.adb:67
-spark-containers-functional-maps-higher_order.adb:58:08: info: postcondition proved, in instantiation at test_map_ho.adb:67
-spark-containers-functional-maps-higher_order.adb:58:08: info: predicate check proved, in instantiation at test_map_ho.adb:67
-spark-containers-functional-maps-higher_order.adb:58:22: info: null exclusion check proved, in instantiation at test_map_ho.adb:67
-spark-containers-functional-maps-higher_order.adb:58:28: medium: aspect Always_Terminates on "Lemma_Count_Rec_Remove" could be incorrect, call via access-to-subprogram might be nonterminating, in instantiation at test_map_ho.adb:67 [possible explanation: call could hide recursive calls]
-spark-containers-functional-maps-higher_order.adb:58:30: info: predicate check proved, in instantiation at test_map_ho.adb:67
-spark-containers-functional-maps-higher_order.adb:58:41: info: precondition proved, in instantiation at test_map_ho.adb:67
-spark-containers-functional-maps-higher_order.adb:58:56: info: null exclusion check proved, in instantiation at test_map_ho.adb:67
-spark-containers-functional-maps-higher_order.adb:59:24: info: precondition proved, in instantiation at test_map_ho.adb:67
-spark-containers-functional-maps-higher_order.adb:59:41: info: predicate check proved, in instantiation at test_map_ho.adb:67
-spark-containers-functional-maps-higher_order.adb:59:59: info: predicate check proved, in instantiation at test_map_ho.adb:67
-spark-containers-functional-maps-higher_order.adb:59:61: info: predicate check proved, in instantiation at test_map_ho.adb:67
-spark-containers-functional-maps-higher_order.adb:63:24: info: function contract feasibility proved, in instantiation at test_map_ho.adb:67
-spark-containers-functional-maps-higher_order.adb:69:42: info: range check proved, in instantiation at test_map_ho.adb:67
-spark-containers-functional-maps-higher_order.adb:71:14: info: aspect Always_Terminates on "Lemma_Sum_Rec_Eq" has been proved, subprogram will terminate, in instantiation at test_map_ho.adb:67
-spark-containers-functional-maps-higher_order.adb:73:25: info: function contract feasibility proved, in instantiation at test_map_ho.adb:67
-spark-containers-functional-maps-higher_order.adb:80:71: info: null exclusion check proved, in instantiation at test_map_ho.adb:67
-spark-containers-functional-maps-higher_order.adb:81:28: info: postcondition proved, in instantiation at test_map_ho.adb:67
-spark-containers-functional-maps-higher_order.adb:81:28: info: precondition proved, in instantiation at test_map_ho.adb:67
-spark-containers-functional-maps-higher_order.adb:81:28: info: predicate check proved, in instantiation at test_map_ho.adb:67
-spark-containers-functional-maps-higher_order.adb:81:37: info: null exclusion check proved, in instantiation at test_map_ho.adb:67
-spark-containers-functional-maps-higher_order.adb:81:46: info: precondition proved, in instantiation at test_map_ho.adb:67
-spark-containers-functional-maps-higher_order.adb:81:46: info: predicate check proved, in instantiation at test_map_ho.adb:67
-spark-containers-functional-maps-higher_order.adb:81:55: info: null exclusion check proved, in instantiation at test_map_ho.adb:67
-spark-containers-functional-maps-higher_order.adb:82:42: info: range check proved, in instantiation at test_map_ho.adb:67
-spark-containers-functional-maps-higher_order.adb:87:24: info: function contract feasibility proved, in instantiation at test_map_ho.adb:67
-spark-containers-functional-maps-higher_order.adb:93:42: info: range check proved, in instantiation at test_map_ho.adb:67
-spark-containers-functional-maps-higher_order.adb:94:70: info: null exclusion check proved, in instantiation at test_map_ho.adb:67
-spark-containers-functional-maps-higher_order.adb:96:08: info: postcondition proved, in instantiation at test_map_ho.adb:67
-spark-containers-functional-maps-higher_order.adb:96:08: info: predicate check proved, in instantiation at test_map_ho.adb:67
-spark-containers-functional-maps-higher_order.adb:96:20: info: null exclusion check proved, in instantiation at test_map_ho.adb:67
-spark-containers-functional-maps-higher_order.adb:96:27: medium: aspect Always_Terminates on "Lemma_Sum_Rec_Remove" could be incorrect, call via access-to-subprogram might be nonterminating, in instantiation at test_map_ho.adb:67 [possible explanation: call could hide recursive calls]
-spark-containers-functional-maps-higher_order.adb:97:10: info: predicate check proved, in instantiation at test_map_ho.adb:67
-spark-containers-functional-maps-higher_order.adb:97:19: info: precondition proved, in instantiation at test_map_ho.adb:67
-spark-containers-functional-maps-higher_order.adb:97:34: info: null exclusion check proved, in instantiation at test_map_ho.adb:67
-spark-containers-functional-maps-higher_order.adb:97:43: info: predicate check proved, in instantiation at test_map_ho.adb:67
-spark-containers-functional-maps-higher_order.adb:97:53: info: precondition proved, in instantiation at test_map_ho.adb:67
-spark-containers-functional-maps-higher_order.adb:108:25: info: refined post proved, in instantiation at test_map_ho.adb:67
-spark-containers-functional-maps-higher_order.adb:108:30: info: predicate check proved, in instantiation at test_map_ho.adb:67
-spark-containers-functional-maps-higher_order.adb:108:40: info: predicate check proved, in instantiation at test_map_ho.adb:67
-spark-containers-functional-maps-higher_order.adb:108:54: info: null exclusion check proved, in instantiation at test_map_ho.adb:67
-spark-containers-functional-maps-higher_order.adb:111:35: info: predicate check proved, in instantiation at test_map_ho.adb:67
-spark-containers-functional-maps-higher_order.adb:112:14: info: precondition proved, in instantiation at test_map_ho.adb:67
-spark-containers-functional-maps-higher_order.adb:114:16: info: loop invariant initialization proved, in instantiation at test_map_ho.adb:67
-spark-containers-functional-maps-higher_order.adb:114:16: info: loop invariant preservation proved, in instantiation at test_map_ho.adb:67
-spark-containers-functional-maps-higher_order.adb:114:16: info: predicate check proved, in instantiation at test_map_ho.adb:67
-spark-containers-functional-maps-higher_order.adb:114:30: info: null exclusion check proved, in instantiation at test_map_ho.adb:67
-spark-containers-functional-maps-higher_order.adb:114:38: info: predicate check proved, in instantiation at test_map_ho.adb:67
-spark-containers-functional-maps-higher_order.adb:114:44: info: predicate check proved, in instantiation at test_map_ho.adb:67
-spark-containers-functional-maps-higher_order.adb:114:63: info: null exclusion check proved, in instantiation at test_map_ho.adb:67
-spark-containers-functional-maps-higher_order.adb:116:37: info: precondition proved, in instantiation at test_map_ho.adb:67
-spark-containers-functional-maps-higher_order.adb:118:16: medium: implicit aspect Always_Terminates on "Count" could be incorrect, call via access-to-subprogram might be nonterminating, in instantiation at test_map_ho.adb:67 [possible explanation: call could hide recursive calls]
-spark-containers-functional-maps-higher_order.adb:118:28: info: precondition proved, in instantiation at test_map_ho.adb:67
-spark-containers-functional-maps-higher_order.adb:119:26: info: predicate check proved, in instantiation at test_map_ho.adb:67
-spark-containers-functional-maps-higher_order.adb:119:30: info: predicate check proved, in instantiation at test_map_ho.adb:67
-spark-containers-functional-maps-higher_order.adb:119:32: info: predicate check proved, in instantiation at test_map_ho.adb:67
-spark-containers-functional-maps-higher_order.adb:136:07: medium: implicit aspect Always_Terminates on "Count_Rec" could be incorrect, call via access-to-subprogram might be nonterminating, in instantiation at test_map_ho.adb:67 [possible explanation: call could hide recursive calls]
-spark-containers-functional-maps-higher_order.adb:136:28: info: predicate check proved, in instantiation at test_map_ho.adb:67
-spark-containers-functional-maps-higher_order.adb:137:12: info: predicate check proved, in instantiation at test_map_ho.adb:67
-spark-containers-functional-maps-higher_order.adb:137:12: info: subprogram variant proved, in instantiation at test_map_ho.adb:67
-spark-containers-functional-maps-higher_order.adb:137:23: info: precondition proved, in instantiation at test_map_ho.adb:67
-spark-containers-functional-maps-higher_order.adb:137:34: info: precondition proved, in instantiation at test_map_ho.adb:67
-spark-containers-functional-maps-higher_order.adb:137:53: info: predicate check proved, in instantiation at test_map_ho.adb:67
-spark-containers-functional-maps-higher_order.adb:138:19: info: precondition proved, in instantiation at test_map_ho.adb:67
-spark-containers-functional-maps-higher_order.adb:138:31: info: precondition proved, in instantiation at test_map_ho.adb:67
-spark-containers-functional-maps-higher_order.adb:138:39: info: precondition proved, in instantiation at test_map_ho.adb:67
-spark-containers-functional-maps-higher_order.adb:138:68: info: predicate check proved, in instantiation at test_map_ho.adb:67
-spark-containers-functional-maps-higher_order.adb:138:70: info: predicate check proved, in instantiation at test_map_ho.adb:67
-spark-containers-functional-maps-higher_order.adb:139:15: info: predicate check proved, in instantiation at test_map_ho.adb:67
-spark-containers-functional-maps-higher_order.adb:152:27: info: predicate check proved, in instantiation at test_map_ho.adb:67
-spark-containers-functional-maps-higher_order.adb:154:14: info: initialization of "Res" proved, in instantiation at test_map_ho.adb:67
-spark-containers-functional-maps-higher_order.adb:155:16: info: predicate check proved, in instantiation at test_map_ho.adb:67
-spark-containers-functional-maps-higher_order.adb:155:21: info: predicate check proved, in instantiation at test_map_ho.adb:67
-spark-containers-functional-maps-higher_order.adb:156:17: medium: implicit aspect Always_Terminates on "Create" could be incorrect, call via access-to-subprogram might be nonterminating, in instantiation at test_map_ho.adb:67 [possible explanation: call could hide recursive calls]
-spark-containers-functional-maps-higher_order.adb:156:20: info: precondition proved, in instantiation at test_map_ho.adb:67
-spark-containers-functional-maps-higher_order.adb:157:34: info: loop variant proved, in instantiation at test_map_ho.adb:67
-spark-containers-functional-maps-higher_order.adb:157:47: info: predicate check proved, in instantiation at test_map_ho.adb:67
-spark-containers-functional-maps-higher_order.adb:157:60: info: predicate check proved, in instantiation at test_map_ho.adb:67
-spark-containers-functional-maps-higher_order.adb:157:62: info: range check proved, in instantiation at test_map_ho.adb:67
-spark-containers-functional-maps-higher_order.adb:157:64: info: predicate check proved, in instantiation at test_map_ho.adb:67
-spark-containers-functional-maps-higher_order.adb:158:36: info: loop invariant initialization proved, in instantiation at test_map_ho.adb:67
-spark-containers-functional-maps-higher_order.adb:158:36: info: loop invariant preservation proved, in instantiation at test_map_ho.adb:67
-spark-containers-functional-maps-higher_order.adb:158:36: info: predicate check proved, in instantiation at test_map_ho.adb:67
-spark-containers-functional-maps-higher_order.adb:158:41: info: predicate check proved, in instantiation at test_map_ho.adb:67
-spark-containers-functional-maps-higher_order.adb:159:36: info: loop invariant initialization proved, in instantiation at test_map_ho.adb:67
-spark-containers-functional-maps-higher_order.adb:159:36: info: loop invariant preservation proved, in instantiation at test_map_ho.adb:67
-spark-containers-functional-maps-higher_order.adb:159:36: info: predicate check proved, in instantiation at test_map_ho.adb:67
-spark-containers-functional-maps-higher_order.adb:159:51: info: predicate check proved, in instantiation at test_map_ho.adb:67
-spark-containers-functional-maps-higher_order.adb:160:13: medium: implicit aspect Always_Terminates on "Create" could be incorrect, call via access-to-subprogram might be nonterminating, in instantiation at test_map_ho.adb:67 [possible explanation: call could hide recursive calls]
-spark-containers-functional-maps-higher_order.adb:161:16: info: loop invariant initialization proved, in instantiation at test_map_ho.adb:67
-spark-containers-functional-maps-higher_order.adb:161:16: info: loop invariant preservation proved, in instantiation at test_map_ho.adb:67
-spark-containers-functional-maps-higher_order.adb:161:71: info: predicate check proved, in instantiation at test_map_ho.adb:67
+spark-containers-functional-maps-higher_order.adb:26:23: info: function contract feasibility proved, in instantiation at test_map_ho.adb:67
+spark-containers-functional-maps-higher_order.adb:32:42: info: range check proved, in instantiation at test_map_ho.adb:67
+spark-containers-functional-maps-higher_order.adb:33:28: info: postcondition proved, in instantiation at test_map_ho.adb:67
+spark-containers-functional-maps-higher_order.adb:33:37: info: predicate check proved, in instantiation at test_map_ho.adb:67
+spark-containers-functional-maps-higher_order.adb:33:48: info: predicate check proved, in instantiation at test_map_ho.adb:67
+spark-containers-functional-maps-higher_order.adb:35:14: info: aspect Always_Terminates on "Lemma_Count_Rec_Eq" has been proved, subprogram will terminate, in instantiation at test_map_ho.adb:67
+spark-containers-functional-maps-higher_order.adb:37:25: info: function contract feasibility proved, in instantiation at test_map_ho.adb:67
+spark-containers-functional-maps-higher_order.adb:44:71: info: null exclusion check proved, in instantiation at test_map_ho.adb:67
+spark-containers-functional-maps-higher_order.adb:45:28: info: postcondition proved, in instantiation at test_map_ho.adb:67
+spark-containers-functional-maps-higher_order.adb:45:28: info: precondition proved, in instantiation at test_map_ho.adb:67
+spark-containers-functional-maps-higher_order.adb:45:28: info: predicate check proved, in instantiation at test_map_ho.adb:67
+spark-containers-functional-maps-higher_order.adb:45:39: info: null exclusion check proved, in instantiation at test_map_ho.adb:67
+spark-containers-functional-maps-higher_order.adb:45:47: info: precondition proved, in instantiation at test_map_ho.adb:67
+spark-containers-functional-maps-higher_order.adb:45:47: info: predicate check proved, in instantiation at test_map_ho.adb:67
+spark-containers-functional-maps-higher_order.adb:45:58: info: null exclusion check proved, in instantiation at test_map_ho.adb:67
+spark-containers-functional-maps-higher_order.adb:46:42: info: range check proved, in instantiation at test_map_ho.adb:67
+spark-containers-functional-maps-higher_order.adb:51:23: info: function contract feasibility proved, in instantiation at test_map_ho.adb:67
+spark-containers-functional-maps-higher_order.adb:57:42: info: range check proved, in instantiation at test_map_ho.adb:67
+spark-containers-functional-maps-higher_order.adb:58:70: info: null exclusion check proved, in instantiation at test_map_ho.adb:67
+spark-containers-functional-maps-higher_order.adb:60:08: info: postcondition proved, in instantiation at test_map_ho.adb:67
+spark-containers-functional-maps-higher_order.adb:60:08: info: predicate check proved, in instantiation at test_map_ho.adb:67
+spark-containers-functional-maps-higher_order.adb:60:22: info: null exclusion check proved, in instantiation at test_map_ho.adb:67
+spark-containers-functional-maps-higher_order.adb:60:28: medium: aspect Always_Terminates on "Lemma_Count_Rec_Remove" could be incorrect, call via access-to-subprogram might be nonterminating, in instantiation at test_map_ho.adb:67 [possible explanation: call could hide recursive calls]
+spark-containers-functional-maps-higher_order.adb:60:30: info: predicate check proved, in instantiation at test_map_ho.adb:67
+spark-containers-functional-maps-higher_order.adb:60:41: info: precondition proved, in instantiation at test_map_ho.adb:67
+spark-containers-functional-maps-higher_order.adb:60:56: info: null exclusion check proved, in instantiation at test_map_ho.adb:67
+spark-containers-functional-maps-higher_order.adb:61:24: info: precondition proved, in instantiation at test_map_ho.adb:67
+spark-containers-functional-maps-higher_order.adb:61:41: info: predicate check proved, in instantiation at test_map_ho.adb:67
+spark-containers-functional-maps-higher_order.adb:61:59: info: predicate check proved, in instantiation at test_map_ho.adb:67
+spark-containers-functional-maps-higher_order.adb:61:61: info: predicate check proved, in instantiation at test_map_ho.adb:67
+spark-containers-functional-maps-higher_order.adb:65:24: info: function contract feasibility proved, in instantiation at test_map_ho.adb:67
+spark-containers-functional-maps-higher_order.adb:71:42: info: range check proved, in instantiation at test_map_ho.adb:67
+spark-containers-functional-maps-higher_order.adb:73:14: info: aspect Always_Terminates on "Lemma_Sum_Rec_Eq" has been proved, subprogram will terminate, in instantiation at test_map_ho.adb:67
+spark-containers-functional-maps-higher_order.adb:75:25: info: function contract feasibility proved, in instantiation at test_map_ho.adb:67
+spark-containers-functional-maps-higher_order.adb:82:71: info: null exclusion check proved, in instantiation at test_map_ho.adb:67
+spark-containers-functional-maps-higher_order.adb:83:28: info: postcondition proved, in instantiation at test_map_ho.adb:67
+spark-containers-functional-maps-higher_order.adb:83:28: info: precondition proved, in instantiation at test_map_ho.adb:67
+spark-containers-functional-maps-higher_order.adb:83:28: info: predicate check proved, in instantiation at test_map_ho.adb:67
+spark-containers-functional-maps-higher_order.adb:83:37: info: null exclusion check proved, in instantiation at test_map_ho.adb:67
+spark-containers-functional-maps-higher_order.adb:83:46: info: precondition proved, in instantiation at test_map_ho.adb:67
+spark-containers-functional-maps-higher_order.adb:83:46: info: predicate check proved, in instantiation at test_map_ho.adb:67
+spark-containers-functional-maps-higher_order.adb:83:55: info: null exclusion check proved, in instantiation at test_map_ho.adb:67
+spark-containers-functional-maps-higher_order.adb:84:42: info: range check proved, in instantiation at test_map_ho.adb:67
+spark-containers-functional-maps-higher_order.adb:89:24: info: function contract feasibility proved, in instantiation at test_map_ho.adb:67
+spark-containers-functional-maps-higher_order.adb:95:42: info: range check proved, in instantiation at test_map_ho.adb:67
+spark-containers-functional-maps-higher_order.adb:96:70: info: null exclusion check proved, in instantiation at test_map_ho.adb:67
+spark-containers-functional-maps-higher_order.adb:98:08: info: postcondition proved, in instantiation at test_map_ho.adb:67
+spark-containers-functional-maps-higher_order.adb:98:08: info: predicate check proved, in instantiation at test_map_ho.adb:67
+spark-containers-functional-maps-higher_order.adb:98:20: info: null exclusion check proved, in instantiation at test_map_ho.adb:67
+spark-containers-functional-maps-higher_order.adb:98:27: medium: aspect Always_Terminates on "Lemma_Sum_Rec_Remove" could be incorrect, call via access-to-subprogram might be nonterminating, in instantiation at test_map_ho.adb:67 [possible explanation: call could hide recursive calls]
+spark-containers-functional-maps-higher_order.adb:99:10: info: predicate check proved, in instantiation at test_map_ho.adb:67
+spark-containers-functional-maps-higher_order.adb:99:19: info: precondition proved, in instantiation at test_map_ho.adb:67
+spark-containers-functional-maps-higher_order.adb:99:34: info: null exclusion check proved, in instantiation at test_map_ho.adb:67
+spark-containers-functional-maps-higher_order.adb:99:43: info: predicate check proved, in instantiation at test_map_ho.adb:67
+spark-containers-functional-maps-higher_order.adb:99:53: info: precondition proved, in instantiation at test_map_ho.adb:67
+spark-containers-functional-maps-higher_order.adb:110:25: info: refined post proved, in instantiation at test_map_ho.adb:67
+spark-containers-functional-maps-higher_order.adb:110:30: info: predicate check proved, in instantiation at test_map_ho.adb:67
+spark-containers-functional-maps-higher_order.adb:110:40: info: predicate check proved, in instantiation at test_map_ho.adb:67
+spark-containers-functional-maps-higher_order.adb:110:54: info: null exclusion check proved, in instantiation at test_map_ho.adb:67
+spark-containers-functional-maps-higher_order.adb:113:35: info: predicate check proved, in instantiation at test_map_ho.adb:67
+spark-containers-functional-maps-higher_order.adb:114:14: info: precondition proved, in instantiation at test_map_ho.adb:67
+spark-containers-functional-maps-higher_order.adb:116:16: info: loop invariant initialization proved, in instantiation at test_map_ho.adb:67
+spark-containers-functional-maps-higher_order.adb:116:16: info: loop invariant preservation proved, in instantiation at test_map_ho.adb:67
+spark-containers-functional-maps-higher_order.adb:116:16: info: predicate check proved, in instantiation at test_map_ho.adb:67
+spark-containers-functional-maps-higher_order.adb:116:30: info: null exclusion check proved, in instantiation at test_map_ho.adb:67
+spark-containers-functional-maps-higher_order.adb:116:38: info: predicate check proved, in instantiation at test_map_ho.adb:67
+spark-containers-functional-maps-higher_order.adb:116:44: info: predicate check proved, in instantiation at test_map_ho.adb:67
+spark-containers-functional-maps-higher_order.adb:116:63: info: null exclusion check proved, in instantiation at test_map_ho.adb:67
+spark-containers-functional-maps-higher_order.adb:118:37: info: precondition proved, in instantiation at test_map_ho.adb:67
+spark-containers-functional-maps-higher_order.adb:120:16: medium: implicit aspect Always_Terminates on "Count" could be incorrect, call via access-to-subprogram might be nonterminating, in instantiation at test_map_ho.adb:67 [possible explanation: call could hide recursive calls]
+spark-containers-functional-maps-higher_order.adb:120:28: info: precondition proved, in instantiation at test_map_ho.adb:67
+spark-containers-functional-maps-higher_order.adb:121:26: info: predicate check proved, in instantiation at test_map_ho.adb:67
+spark-containers-functional-maps-higher_order.adb:121:30: info: predicate check proved, in instantiation at test_map_ho.adb:67
+spark-containers-functional-maps-higher_order.adb:121:32: info: predicate check proved, in instantiation at test_map_ho.adb:67
+spark-containers-functional-maps-higher_order.adb:138:07: medium: implicit aspect Always_Terminates on "Count_Rec" could be incorrect, call via access-to-subprogram might be nonterminating, in instantiation at test_map_ho.adb:67 [possible explanation: call could hide recursive calls]
+spark-containers-functional-maps-higher_order.adb:138:28: info: predicate check proved, in instantiation at test_map_ho.adb:67
+spark-containers-functional-maps-higher_order.adb:139:12: info: predicate check proved, in instantiation at test_map_ho.adb:67
+spark-containers-functional-maps-higher_order.adb:139:12: info: subprogram variant proved, in instantiation at test_map_ho.adb:67
+spark-containers-functional-maps-higher_order.adb:139:23: info: precondition proved, in instantiation at test_map_ho.adb:67
+spark-containers-functional-maps-higher_order.adb:139:34: info: precondition proved, in instantiation at test_map_ho.adb:67
+spark-containers-functional-maps-higher_order.adb:139:53: info: predicate check proved, in instantiation at test_map_ho.adb:67
+spark-containers-functional-maps-higher_order.adb:140:19: info: precondition proved, in instantiation at test_map_ho.adb:67
+spark-containers-functional-maps-higher_order.adb:140:31: info: precondition proved, in instantiation at test_map_ho.adb:67
+spark-containers-functional-maps-higher_order.adb:140:39: info: precondition proved, in instantiation at test_map_ho.adb:67
+spark-containers-functional-maps-higher_order.adb:140:68: info: predicate check proved, in instantiation at test_map_ho.adb:67
+spark-containers-functional-maps-higher_order.adb:140:70: info: predicate check proved, in instantiation at test_map_ho.adb:67
+spark-containers-functional-maps-higher_order.adb:141:15: info: predicate check proved, in instantiation at test_map_ho.adb:67
+spark-containers-functional-maps-higher_order.adb:154:27: info: predicate check proved, in instantiation at test_map_ho.adb:67
+spark-containers-functional-maps-higher_order.adb:156:14: info: initialization of "Res" proved, in instantiation at test_map_ho.adb:67
+spark-containers-functional-maps-higher_order.adb:157:16: info: predicate check proved, in instantiation at test_map_ho.adb:67
+spark-containers-functional-maps-higher_order.adb:157:21: info: predicate check proved, in instantiation at test_map_ho.adb:67
+spark-containers-functional-maps-higher_order.adb:158:17: medium: implicit aspect Always_Terminates on "Create" could be incorrect, call via access-to-subprogram might be nonterminating, in instantiation at test_map_ho.adb:67 [possible explanation: call could hide recursive calls]
+spark-containers-functional-maps-higher_order.adb:158:20: info: precondition proved, in instantiation at test_map_ho.adb:67
+spark-containers-functional-maps-higher_order.adb:159:34: info: loop variant proved, in instantiation at test_map_ho.adb:67
+spark-containers-functional-maps-higher_order.adb:159:47: info: predicate check proved, in instantiation at test_map_ho.adb:67
+spark-containers-functional-maps-higher_order.adb:159:60: info: predicate check proved, in instantiation at test_map_ho.adb:67
+spark-containers-functional-maps-higher_order.adb:159:62: info: range check proved, in instantiation at test_map_ho.adb:67
+spark-containers-functional-maps-higher_order.adb:159:64: info: predicate check proved, in instantiation at test_map_ho.adb:67
+spark-containers-functional-maps-higher_order.adb:160:36: info: loop invariant initialization proved, in instantiation at test_map_ho.adb:67
+spark-containers-functional-maps-higher_order.adb:160:36: info: loop invariant preservation proved, in instantiation at test_map_ho.adb:67
+spark-containers-functional-maps-higher_order.adb:160:36: info: predicate check proved, in instantiation at test_map_ho.adb:67
+spark-containers-functional-maps-higher_order.adb:160:41: info: predicate check proved, in instantiation at test_map_ho.adb:67
+spark-containers-functional-maps-higher_order.adb:161:36: info: loop invariant initialization proved, in instantiation at test_map_ho.adb:67
+spark-containers-functional-maps-higher_order.adb:161:36: info: loop invariant preservation proved, in instantiation at test_map_ho.adb:67
+spark-containers-functional-maps-higher_order.adb:161:36: info: predicate check proved, in instantiation at test_map_ho.adb:67
+spark-containers-functional-maps-higher_order.adb:161:51: info: predicate check proved, in instantiation at test_map_ho.adb:67
 spark-containers-functional-maps-higher_order.adb:162:13: medium: implicit aspect Always_Terminates on "Create" could be incorrect, call via access-to-subprogram might be nonterminating, in instantiation at test_map_ho.adb:67 [possible explanation: call could hide recursive calls]
 spark-containers-functional-maps-higher_order.adb:163:16: info: loop invariant initialization proved, in instantiation at test_map_ho.adb:67
 spark-containers-functional-maps-higher_order.adb:163:16: info: loop invariant preservation proved, in instantiation at test_map_ho.adb:67
-spark-containers-functional-maps-higher_order.adb:165:52: info: predicate check proved, in instantiation at test_map_ho.adb:67
-spark-containers-functional-maps-higher_order.adb:166:13: medium: implicit aspect Always_Terminates on "Create" could be incorrect, call via access-to-subprogram might be nonterminating, in instantiation at test_map_ho.adb:67 [possible explanation: call could hide recursive calls]
-spark-containers-functional-maps-higher_order.adb:167:16: info: loop invariant initialization proved, in instantiation at test_map_ho.adb:67
-spark-containers-functional-maps-higher_order.adb:167:16: info: loop invariant preservation proved, in instantiation at test_map_ho.adb:67
-spark-containers-functional-maps-higher_order.adb:168:41: info: precondition proved, in instantiation at test_map_ho.adb:67
-spark-containers-functional-maps-higher_order.adb:168:60: info: predicate check proved, in instantiation at test_map_ho.adb:67
-spark-containers-functional-maps-higher_order.adb:168:75: info: predicate check proved, in instantiation at test_map_ho.adb:67
-spark-containers-functional-maps-higher_order.adb:169:18: info: predicate check proved, in instantiation at test_map_ho.adb:67
-spark-containers-functional-maps-higher_order.adb:169:20: info: predicate check proved, in instantiation at test_map_ho.adb:67
-spark-containers-functional-maps-higher_order.adb:169:22: info: predicate check proved, in instantiation at test_map_ho.adb:67
-spark-containers-functional-maps-higher_order.adb:184:07: medium: implicit aspect Always_Terminates on "Eq_Compatible" could be incorrect, call via access-to-subprogram might be nonterminating, in instantiation at test_map_ho.adb:67 [possible explanation: call could hide recursive calls]
-spark-containers-functional-maps-higher_order.adb:187:30: info: precondition proved, in instantiation at test_map_ho.adb:67
-spark-containers-functional-maps-higher_order.adb:187:55: info: precondition proved, in instantiation at test_map_ho.adb:67
-spark-containers-functional-maps-higher_order.adb:195:07: medium: implicit aspect Always_Terminates on "Eq_Compatible" could be incorrect, call via access-to-subprogram might be nonterminating, in instantiation at test_map_ho.adb:67 [possible explanation: call could hide recursive calls]
-spark-containers-functional-maps-higher_order.adb:198:20: info: predicate check proved, in instantiation at test_map_ho.adb:67
-spark-containers-functional-maps-higher_order.adb:198:31: info: precondition proved, in instantiation at test_map_ho.adb:67
-spark-containers-functional-maps-higher_order.adb:198:46: info: predicate check proved, in instantiation at test_map_ho.adb:67
-spark-containers-functional-maps-higher_order.adb:198:57: info: precondition proved, in instantiation at test_map_ho.adb:67
-spark-containers-functional-maps-higher_order.adb:211:14: info: initialization of "Res" proved, in instantiation at test_map_ho.adb:67
-spark-containers-functional-maps-higher_order.adb:212:14: info: precondition proved, in instantiation at test_map_ho.adb:67
-spark-containers-functional-maps-higher_order.adb:214:16: info: loop invariant initialization proved, in instantiation at test_map_ho.adb:67
-spark-containers-functional-maps-higher_order.adb:214:16: info: loop invariant preservation proved, in instantiation at test_map_ho.adb:67
-spark-containers-functional-maps-higher_order.adb:214:16: info: predicate check proved, in instantiation at test_map_ho.adb:67
-spark-containers-functional-maps-higher_order.adb:214:31: info: precondition proved, in instantiation at test_map_ho.adb:67
-spark-containers-functional-maps-higher_order.adb:214:31: info: predicate check proved, in instantiation at test_map_ho.adb:67
-spark-containers-functional-maps-higher_order.adb:214:46: info: null exclusion check proved, in instantiation at test_map_ho.adb:67
-spark-containers-functional-maps-higher_order.adb:214:54: info: precondition proved, in instantiation at test_map_ho.adb:67
-spark-containers-functional-maps-higher_order.adb:214:54: info: predicate check proved, in instantiation at test_map_ho.adb:67
-spark-containers-functional-maps-higher_order.adb:214:64: info: null exclusion check proved, in instantiation at test_map_ho.adb:67
-spark-containers-functional-maps-higher_order.adb:215:36: info: loop invariant initialization proved, in instantiation at test_map_ho.adb:67
-spark-containers-functional-maps-higher_order.adb:215:36: info: loop invariant preservation proved, in instantiation at test_map_ho.adb:67
-spark-containers-functional-maps-higher_order.adb:217:16: info: loop invariant initialization proved, in instantiation at test_map_ho.adb:67
-spark-containers-functional-maps-higher_order.adb:217:16: info: loop invariant preservation proved, in instantiation at test_map_ho.adb:67
-spark-containers-functional-maps-higher_order.adb:218:13: medium: implicit aspect Always_Terminates on "Filter" could be incorrect, call via access-to-subprogram might be nonterminating, in instantiation at test_map_ho.adb:67 [possible explanation: call could hide recursive calls]
+spark-containers-functional-maps-higher_order.adb:163:71: info: predicate check proved, in instantiation at test_map_ho.adb:67
+spark-containers-functional-maps-higher_order.adb:164:13: medium: implicit aspect Always_Terminates on "Create" could be incorrect, call via access-to-subprogram might be nonterminating, in instantiation at test_map_ho.adb:67 [possible explanation: call could hide recursive calls]
+spark-containers-functional-maps-higher_order.adb:165:16: info: loop invariant initialization proved, in instantiation at test_map_ho.adb:67
+spark-containers-functional-maps-higher_order.adb:165:16: info: loop invariant preservation proved, in instantiation at test_map_ho.adb:67
+spark-containers-functional-maps-higher_order.adb:167:52: info: predicate check proved, in instantiation at test_map_ho.adb:67
+spark-containers-functional-maps-higher_order.adb:168:13: medium: implicit aspect Always_Terminates on "Create" could be incorrect, call via access-to-subprogram might be nonterminating, in instantiation at test_map_ho.adb:67 [possible explanation: call could hide recursive calls]
+spark-containers-functional-maps-higher_order.adb:169:16: info: loop invariant initialization proved, in instantiation at test_map_ho.adb:67
+spark-containers-functional-maps-higher_order.adb:169:16: info: loop invariant preservation proved, in instantiation at test_map_ho.adb:67
+spark-containers-functional-maps-higher_order.adb:170:41: info: precondition proved, in instantiation at test_map_ho.adb:67
+spark-containers-functional-maps-higher_order.adb:170:60: info: predicate check proved, in instantiation at test_map_ho.adb:67
+spark-containers-functional-maps-higher_order.adb:170:75: info: predicate check proved, in instantiation at test_map_ho.adb:67
+spark-containers-functional-maps-higher_order.adb:171:18: info: predicate check proved, in instantiation at test_map_ho.adb:67
+spark-containers-functional-maps-higher_order.adb:171:20: info: predicate check proved, in instantiation at test_map_ho.adb:67
+spark-containers-functional-maps-higher_order.adb:171:22: info: predicate check proved, in instantiation at test_map_ho.adb:67
+spark-containers-functional-maps-higher_order.adb:186:07: medium: implicit aspect Always_Terminates on "Eq_Compatible" could be incorrect, call via access-to-subprogram might be nonterminating, in instantiation at test_map_ho.adb:67 [possible explanation: call could hide recursive calls]
+spark-containers-functional-maps-higher_order.adb:189:30: info: precondition proved, in instantiation at test_map_ho.adb:67
+spark-containers-functional-maps-higher_order.adb:189:55: info: precondition proved, in instantiation at test_map_ho.adb:67
+spark-containers-functional-maps-higher_order.adb:197:07: medium: implicit aspect Always_Terminates on "Eq_Compatible" could be incorrect, call via access-to-subprogram might be nonterminating, in instantiation at test_map_ho.adb:67 [possible explanation: call could hide recursive calls]
+spark-containers-functional-maps-higher_order.adb:200:20: info: predicate check proved, in instantiation at test_map_ho.adb:67
+spark-containers-functional-maps-higher_order.adb:200:31: info: precondition proved, in instantiation at test_map_ho.adb:67
+spark-containers-functional-maps-higher_order.adb:200:46: info: predicate check proved, in instantiation at test_map_ho.adb:67
+spark-containers-functional-maps-higher_order.adb:200:57: info: precondition proved, in instantiation at test_map_ho.adb:67
+spark-containers-functional-maps-higher_order.adb:213:14: info: initialization of "Res" proved, in instantiation at test_map_ho.adb:67
+spark-containers-functional-maps-higher_order.adb:214:14: info: precondition proved, in instantiation at test_map_ho.adb:67
+spark-containers-functional-maps-higher_order.adb:216:16: info: loop invariant initialization proved, in instantiation at test_map_ho.adb:67
+spark-containers-functional-maps-higher_order.adb:216:16: info: loop invariant preservation proved, in instantiation at test_map_ho.adb:67
+spark-containers-functional-maps-higher_order.adb:216:16: info: predicate check proved, in instantiation at test_map_ho.adb:67
+spark-containers-functional-maps-higher_order.adb:216:31: info: precondition proved, in instantiation at test_map_ho.adb:67
+spark-containers-functional-maps-higher_order.adb:216:31: info: predicate check proved, in instantiation at test_map_ho.adb:67
+spark-containers-functional-maps-higher_order.adb:216:46: info: null exclusion check proved, in instantiation at test_map_ho.adb:67
+spark-containers-functional-maps-higher_order.adb:216:54: info: precondition proved, in instantiation at test_map_ho.adb:67
+spark-containers-functional-maps-higher_order.adb:216:54: info: predicate check proved, in instantiation at test_map_ho.adb:67
+spark-containers-functional-maps-higher_order.adb:216:64: info: null exclusion check proved, in instantiation at test_map_ho.adb:67
+spark-containers-functional-maps-higher_order.adb:217:36: info: loop invariant initialization proved, in instantiation at test_map_ho.adb:67
+spark-containers-functional-maps-higher_order.adb:217:36: info: loop invariant preservation proved, in instantiation at test_map_ho.adb:67
 spark-containers-functional-maps-higher_order.adb:219:16: info: loop invariant initialization proved, in instantiation at test_map_ho.adb:67
 spark-containers-functional-maps-higher_order.adb:219:16: info: loop invariant preservation proved, in instantiation at test_map_ho.adb:67
-spark-containers-functional-maps-higher_order.adb:220:59: info: precondition proved, in instantiation at test_map_ho.adb:67
-spark-containers-functional-maps-higher_order.adb:222:13: medium: implicit aspect Always_Terminates on "Filter" could be incorrect, call via access-to-subprogram might be nonterminating, in instantiation at test_map_ho.adb:67 [possible explanation: call could hide recursive calls]
-spark-containers-functional-maps-higher_order.adb:222:36: info: loop invariant initialization proved, in instantiation at test_map_ho.adb:67
-spark-containers-functional-maps-higher_order.adb:222:36: info: loop invariant preservation proved, in instantiation at test_map_ho.adb:67
-spark-containers-functional-maps-higher_order.adb:222:65: info: precondition proved, in instantiation at test_map_ho.adb:67
-spark-containers-functional-maps-higher_order.adb:225:37: info: precondition proved, in instantiation at test_map_ho.adb:67
-spark-containers-functional-maps-higher_order.adb:227:16: medium: implicit aspect Always_Terminates on "Filter" could be incorrect, call via access-to-subprogram might be nonterminating, in instantiation at test_map_ho.adb:67 [possible explanation: call could hide recursive calls]
-spark-containers-functional-maps-higher_order.adb:227:28: info: precondition proved, in instantiation at test_map_ho.adb:67
-spark-containers-functional-maps-higher_order.adb:228:26: info: precondition proved, in instantiation at test_map_ho.adb:67
-spark-containers-functional-maps-higher_order.adb:228:39: info: precondition proved, in instantiation at test_map_ho.adb:67
-spark-containers-functional-maps-higher_order.adb:245:11: info: precondition proved, in instantiation at test_map_ho.adb:67
-spark-containers-functional-maps-higher_order.adb:247:13: info: loop invariant initialization proved, in instantiation at test_map_ho.adb:67
-spark-containers-functional-maps-higher_order.adb:247:13: info: loop invariant preservation proved, in instantiation at test_map_ho.adb:67
-spark-containers-functional-maps-higher_order.adb:247:16: info: predicate check proved, in instantiation at test_map_ho.adb:67
-spark-containers-functional-maps-higher_order.adb:247:35: info: null exclusion check proved, in instantiation at test_map_ho.adb:67
-spark-containers-functional-maps-higher_order.adb:247:43: info: predicate check proved, in instantiation at test_map_ho.adb:67
-spark-containers-functional-maps-higher_order.adb:248:18: info: predicate check proved, in instantiation at test_map_ho.adb:67
-spark-containers-functional-maps-higher_order.adb:248:32: info: null exclusion check proved, in instantiation at test_map_ho.adb:67
-spark-containers-functional-maps-higher_order.adb:248:40: info: predicate check proved, in instantiation at test_map_ho.adb:67
-spark-containers-functional-maps-higher_order.adb:262:07: info: precondition proved, in instantiation at test_map_ho.adb:67
-spark-containers-functional-maps-higher_order.adb:262:35: info: null exclusion check proved, in instantiation at test_map_ho.adb:67
-spark-containers-functional-maps-higher_order.adb:275:11: info: precondition proved, in instantiation at test_map_ho.adb:67
-spark-containers-functional-maps-higher_order.adb:277:13: info: loop invariant initialization proved, in instantiation at test_map_ho.adb:67
-spark-containers-functional-maps-higher_order.adb:277:13: info: loop invariant preservation proved, in instantiation at test_map_ho.adb:67
-spark-containers-functional-maps-higher_order.adb:277:16: info: predicate check proved, in instantiation at test_map_ho.adb:67
-spark-containers-functional-maps-higher_order.adb:277:35: info: null exclusion check proved, in instantiation at test_map_ho.adb:67
-spark-containers-functional-maps-higher_order.adb:277:43: info: predicate check proved, in instantiation at test_map_ho.adb:67
-spark-containers-functional-maps-higher_order.adb:277:50: info: predicate check proved, in instantiation at test_map_ho.adb:67
-spark-containers-functional-maps-higher_order.adb:277:64: info: null exclusion check proved, in instantiation at test_map_ho.adb:67
-spark-containers-functional-maps-higher_order.adb:277:72: info: predicate check proved, in instantiation at test_map_ho.adb:67
-spark-containers-functional-maps-higher_order.adb:291:10: info: predicate check proved, in instantiation at test_map_ho.adb:67
-spark-containers-functional-maps-higher_order.adb:291:25: info: predicate check proved, in instantiation at test_map_ho.adb:67
-spark-containers-functional-maps-higher_order.adb:293:38: info: precondition proved, in instantiation at test_map_ho.adb:67
-spark-containers-functional-maps-higher_order.adb:295:13: info: precondition proved, in instantiation at test_map_ho.adb:67
-spark-containers-functional-maps-higher_order.adb:295:13: info: subprogram variant proved, in instantiation at test_map_ho.adb:67
-spark-containers-functional-maps-higher_order.adb:295:44: info: null exclusion check proved, in instantiation at test_map_ho.adb:67
-spark-containers-functional-maps-higher_order.adb:296:13: info: precondition proved, in instantiation at test_map_ho.adb:67
-spark-containers-functional-maps-higher_order.adb:296:13: info: subprogram variant proved, in instantiation at test_map_ho.adb:67
-spark-containers-functional-maps-higher_order.adb:296:33: info: precondition proved, in instantiation at test_map_ho.adb:67
-spark-containers-functional-maps-higher_order.adb:296:49: info: precondition proved, in instantiation at test_map_ho.adb:67
-spark-containers-functional-maps-higher_order.adb:311:32: info: precondition proved, in instantiation at test_map_ho.adb:67
-spark-containers-functional-maps-higher_order.adb:314:10: info: precondition proved, in instantiation at test_map_ho.adb:67
-spark-containers-functional-maps-higher_order.adb:314:10: info: subprogram variant proved, in instantiation at test_map_ho.adb:67
-spark-containers-functional-maps-higher_order.adb:314:34: info: precondition proved, in instantiation at test_map_ho.adb:67
-spark-containers-functional-maps-higher_order.adb:315:10: info: precondition proved, in instantiation at test_map_ho.adb:67
-spark-containers-functional-maps-higher_order.adb:315:10: info: subprogram variant proved, in instantiation at test_map_ho.adb:67
-spark-containers-functional-maps-higher_order.adb:316:13: info: precondition proved, in instantiation at test_map_ho.adb:67
-spark-containers-functional-maps-higher_order.adb:316:21: info: precondition proved, in instantiation at test_map_ho.adb:67
-spark-containers-functional-maps-higher_order.adb:316:40: info: precondition proved, in instantiation at test_map_ho.adb:67
-spark-containers-functional-maps-higher_order.adb:316:48: info: precondition proved, in instantiation at test_map_ho.adb:67
-spark-containers-functional-maps-higher_order.adb:316:67: info: null exclusion check proved, in instantiation at test_map_ho.adb:67
+spark-containers-functional-maps-higher_order.adb:220:13: medium: implicit aspect Always_Terminates on "Filter" could be incorrect, call via access-to-subprogram might be nonterminating, in instantiation at test_map_ho.adb:67 [possible explanation: call could hide recursive calls]
+spark-containers-functional-maps-higher_order.adb:221:16: info: loop invariant initialization proved, in instantiation at test_map_ho.adb:67
+spark-containers-functional-maps-higher_order.adb:221:16: info: loop invariant preservation proved, in instantiation at test_map_ho.adb:67
+spark-containers-functional-maps-higher_order.adb:222:59: info: precondition proved, in instantiation at test_map_ho.adb:67
+spark-containers-functional-maps-higher_order.adb:224:13: medium: implicit aspect Always_Terminates on "Filter" could be incorrect, call via access-to-subprogram might be nonterminating, in instantiation at test_map_ho.adb:67 [possible explanation: call could hide recursive calls]
+spark-containers-functional-maps-higher_order.adb:224:36: info: loop invariant initialization proved, in instantiation at test_map_ho.adb:67
+spark-containers-functional-maps-higher_order.adb:224:36: info: loop invariant preservation proved, in instantiation at test_map_ho.adb:67
+spark-containers-functional-maps-higher_order.adb:224:65: info: precondition proved, in instantiation at test_map_ho.adb:67
+spark-containers-functional-maps-higher_order.adb:227:37: info: precondition proved, in instantiation at test_map_ho.adb:67
+spark-containers-functional-maps-higher_order.adb:229:16: medium: implicit aspect Always_Terminates on "Filter" could be incorrect, call via access-to-subprogram might be nonterminating, in instantiation at test_map_ho.adb:67 [possible explanation: call could hide recursive calls]
+spark-containers-functional-maps-higher_order.adb:229:28: info: precondition proved, in instantiation at test_map_ho.adb:67
+spark-containers-functional-maps-higher_order.adb:230:26: info: precondition proved, in instantiation at test_map_ho.adb:67
+spark-containers-functional-maps-higher_order.adb:230:39: info: precondition proved, in instantiation at test_map_ho.adb:67
+spark-containers-functional-maps-higher_order.adb:247:11: info: precondition proved, in instantiation at test_map_ho.adb:67
+spark-containers-functional-maps-higher_order.adb:249:13: info: loop invariant initialization proved, in instantiation at test_map_ho.adb:67
+spark-containers-functional-maps-higher_order.adb:249:13: info: loop invariant preservation proved, in instantiation at test_map_ho.adb:67
+spark-containers-functional-maps-higher_order.adb:249:16: info: predicate check proved, in instantiation at test_map_ho.adb:67
+spark-containers-functional-maps-higher_order.adb:249:35: info: null exclusion check proved, in instantiation at test_map_ho.adb:67
+spark-containers-functional-maps-higher_order.adb:249:43: info: predicate check proved, in instantiation at test_map_ho.adb:67
+spark-containers-functional-maps-higher_order.adb:250:18: info: predicate check proved, in instantiation at test_map_ho.adb:67
+spark-containers-functional-maps-higher_order.adb:250:32: info: null exclusion check proved, in instantiation at test_map_ho.adb:67
+spark-containers-functional-maps-higher_order.adb:250:40: info: predicate check proved, in instantiation at test_map_ho.adb:67
+spark-containers-functional-maps-higher_order.adb:264:07: info: precondition proved, in instantiation at test_map_ho.adb:67
+spark-containers-functional-maps-higher_order.adb:264:35: info: null exclusion check proved, in instantiation at test_map_ho.adb:67
+spark-containers-functional-maps-higher_order.adb:277:11: info: precondition proved, in instantiation at test_map_ho.adb:67
+spark-containers-functional-maps-higher_order.adb:279:13: info: loop invariant initialization proved, in instantiation at test_map_ho.adb:67
+spark-containers-functional-maps-higher_order.adb:279:13: info: loop invariant preservation proved, in instantiation at test_map_ho.adb:67
+spark-containers-functional-maps-higher_order.adb:279:16: info: predicate check proved, in instantiation at test_map_ho.adb:67
+spark-containers-functional-maps-higher_order.adb:279:35: info: null exclusion check proved, in instantiation at test_map_ho.adb:67
+spark-containers-functional-maps-higher_order.adb:279:43: info: predicate check proved, in instantiation at test_map_ho.adb:67
+spark-containers-functional-maps-higher_order.adb:279:50: info: predicate check proved, in instantiation at test_map_ho.adb:67
+spark-containers-functional-maps-higher_order.adb:279:64: info: null exclusion check proved, in instantiation at test_map_ho.adb:67
+spark-containers-functional-maps-higher_order.adb:279:72: info: predicate check proved, in instantiation at test_map_ho.adb:67
+spark-containers-functional-maps-higher_order.adb:293:10: info: predicate check proved, in instantiation at test_map_ho.adb:67
+spark-containers-functional-maps-higher_order.adb:293:25: info: predicate check proved, in instantiation at test_map_ho.adb:67
+spark-containers-functional-maps-higher_order.adb:295:38: info: precondition proved, in instantiation at test_map_ho.adb:67
+spark-containers-functional-maps-higher_order.adb:297:13: info: precondition proved, in instantiation at test_map_ho.adb:67
+spark-containers-functional-maps-higher_order.adb:297:13: info: subprogram variant proved, in instantiation at test_map_ho.adb:67
+spark-containers-functional-maps-higher_order.adb:297:44: info: null exclusion check proved, in instantiation at test_map_ho.adb:67
+spark-containers-functional-maps-higher_order.adb:298:13: info: precondition proved, in instantiation at test_map_ho.adb:67
+spark-containers-functional-maps-higher_order.adb:298:13: info: subprogram variant proved, in instantiation at test_map_ho.adb:67
+spark-containers-functional-maps-higher_order.adb:298:33: info: precondition proved, in instantiation at test_map_ho.adb:67
+spark-containers-functional-maps-higher_order.adb:298:49: info: precondition proved, in instantiation at test_map_ho.adb:67
+spark-containers-functional-maps-higher_order.adb:313:32: info: precondition proved, in instantiation at test_map_ho.adb:67
+spark-containers-functional-maps-higher_order.adb:316:10: info: precondition proved, in instantiation at test_map_ho.adb:67
+spark-containers-functional-maps-higher_order.adb:316:10: info: subprogram variant proved, in instantiation at test_map_ho.adb:67
+spark-containers-functional-maps-higher_order.adb:316:34: info: precondition proved, in instantiation at test_map_ho.adb:67
 spark-containers-functional-maps-higher_order.adb:317:10: info: precondition proved, in instantiation at test_map_ho.adb:67
 spark-containers-functional-maps-higher_order.adb:317:10: info: subprogram variant proved, in instantiation at test_map_ho.adb:67
-spark-containers-functional-maps-higher_order.adb:317:34: info: precondition proved, in instantiation at test_map_ho.adb:67
+spark-containers-functional-maps-higher_order.adb:318:13: info: precondition proved, in instantiation at test_map_ho.adb:67
+spark-containers-functional-maps-higher_order.adb:318:21: info: precondition proved, in instantiation at test_map_ho.adb:67
+spark-containers-functional-maps-higher_order.adb:318:40: info: precondition proved, in instantiation at test_map_ho.adb:67
+spark-containers-functional-maps-higher_order.adb:318:48: info: precondition proved, in instantiation at test_map_ho.adb:67
+spark-containers-functional-maps-higher_order.adb:318:67: info: null exclusion check proved, in instantiation at test_map_ho.adb:67
 spark-containers-functional-maps-higher_order.adb:319:10: info: precondition proved, in instantiation at test_map_ho.adb:67
 spark-containers-functional-maps-higher_order.adb:319:10: info: subprogram variant proved, in instantiation at test_map_ho.adb:67
-spark-containers-functional-maps-higher_order.adb:319:30: info: precondition proved, in instantiation at test_map_ho.adb:67
-spark-containers-functional-maps-higher_order.adb:319:45: info: precondition proved, in instantiation at test_map_ho.adb:67
-spark-containers-functional-maps-higher_order.adb:319:60: info: null exclusion check proved, in instantiation at test_map_ho.adb:67
-spark-containers-functional-maps-higher_order.adb:334:07: info: precondition proved, in instantiation at test_map_ho.adb:67
-spark-containers-functional-maps-higher_order.adb:334:37: info: null exclusion check proved, in instantiation at test_map_ho.adb:67
-spark-containers-functional-maps-higher_order.adb:347:07: info: precondition proved, in instantiation at test_map_ho.adb:67
-spark-containers-functional-maps-higher_order.adb:347:33: info: null exclusion check proved, in instantiation at test_map_ho.adb:67
-spark-containers-functional-maps-higher_order.adb:360:10: info: predicate check proved, in instantiation at test_map_ho.adb:67
-spark-containers-functional-maps-higher_order.adb:360:25: info: predicate check proved, in instantiation at test_map_ho.adb:67
-spark-containers-functional-maps-higher_order.adb:362:38: info: precondition proved, in instantiation at test_map_ho.adb:67
-spark-containers-functional-maps-higher_order.adb:364:13: info: precondition proved, in instantiation at test_map_ho.adb:67
-spark-containers-functional-maps-higher_order.adb:364:13: info: subprogram variant proved, in instantiation at test_map_ho.adb:67
-spark-containers-functional-maps-higher_order.adb:364:42: info: null exclusion check proved, in instantiation at test_map_ho.adb:67
-spark-containers-functional-maps-higher_order.adb:365:13: info: precondition proved, in instantiation at test_map_ho.adb:67
-spark-containers-functional-maps-higher_order.adb:365:13: info: subprogram variant proved, in instantiation at test_map_ho.adb:67
-spark-containers-functional-maps-higher_order.adb:365:31: info: precondition proved, in instantiation at test_map_ho.adb:67
-spark-containers-functional-maps-higher_order.adb:365:47: info: precondition proved, in instantiation at test_map_ho.adb:67
-spark-containers-functional-maps-higher_order.adb:380:32: info: precondition proved, in instantiation at test_map_ho.adb:67
-spark-containers-functional-maps-higher_order.adb:383:10: info: precondition proved, in instantiation at test_map_ho.adb:67
-spark-containers-functional-maps-higher_order.adb:383:10: info: subprogram variant proved, in instantiation at test_map_ho.adb:67
-spark-containers-functional-maps-higher_order.adb:383:32: info: precondition proved, in instantiation at test_map_ho.adb:67
-spark-containers-functional-maps-higher_order.adb:384:10: info: precondition proved, in instantiation at test_map_ho.adb:67
-spark-containers-functional-maps-higher_order.adb:384:10: info: subprogram variant proved, in instantiation at test_map_ho.adb:67
-spark-containers-functional-maps-higher_order.adb:385:13: info: precondition proved, in instantiation at test_map_ho.adb:67
-spark-containers-functional-maps-higher_order.adb:385:21: info: precondition proved, in instantiation at test_map_ho.adb:67
-spark-containers-functional-maps-higher_order.adb:385:40: info: precondition proved, in instantiation at test_map_ho.adb:67
-spark-containers-functional-maps-higher_order.adb:385:48: info: precondition proved, in instantiation at test_map_ho.adb:67
-spark-containers-functional-maps-higher_order.adb:385:67: info: null exclusion check proved, in instantiation at test_map_ho.adb:67
+spark-containers-functional-maps-higher_order.adb:319:34: info: precondition proved, in instantiation at test_map_ho.adb:67
+spark-containers-functional-maps-higher_order.adb:321:10: info: precondition proved, in instantiation at test_map_ho.adb:67
+spark-containers-functional-maps-higher_order.adb:321:10: info: subprogram variant proved, in instantiation at test_map_ho.adb:67
+spark-containers-functional-maps-higher_order.adb:321:30: info: precondition proved, in instantiation at test_map_ho.adb:67
+spark-containers-functional-maps-higher_order.adb:321:45: info: precondition proved, in instantiation at test_map_ho.adb:67
+spark-containers-functional-maps-higher_order.adb:321:60: info: null exclusion check proved, in instantiation at test_map_ho.adb:67
+spark-containers-functional-maps-higher_order.adb:336:07: info: precondition proved, in instantiation at test_map_ho.adb:67
+spark-containers-functional-maps-higher_order.adb:336:37: info: null exclusion check proved, in instantiation at test_map_ho.adb:67
+spark-containers-functional-maps-higher_order.adb:349:07: info: precondition proved, in instantiation at test_map_ho.adb:67
+spark-containers-functional-maps-higher_order.adb:349:33: info: null exclusion check proved, in instantiation at test_map_ho.adb:67
+spark-containers-functional-maps-higher_order.adb:362:10: info: predicate check proved, in instantiation at test_map_ho.adb:67
+spark-containers-functional-maps-higher_order.adb:362:25: info: predicate check proved, in instantiation at test_map_ho.adb:67
+spark-containers-functional-maps-higher_order.adb:364:38: info: precondition proved, in instantiation at test_map_ho.adb:67
+spark-containers-functional-maps-higher_order.adb:366:13: info: precondition proved, in instantiation at test_map_ho.adb:67
+spark-containers-functional-maps-higher_order.adb:366:13: info: subprogram variant proved, in instantiation at test_map_ho.adb:67
+spark-containers-functional-maps-higher_order.adb:366:42: info: null exclusion check proved, in instantiation at test_map_ho.adb:67
+spark-containers-functional-maps-higher_order.adb:367:13: info: precondition proved, in instantiation at test_map_ho.adb:67
+spark-containers-functional-maps-higher_order.adb:367:13: info: subprogram variant proved, in instantiation at test_map_ho.adb:67
+spark-containers-functional-maps-higher_order.adb:367:31: info: precondition proved, in instantiation at test_map_ho.adb:67
+spark-containers-functional-maps-higher_order.adb:367:47: info: precondition proved, in instantiation at test_map_ho.adb:67
+spark-containers-functional-maps-higher_order.adb:382:32: info: precondition proved, in instantiation at test_map_ho.adb:67
+spark-containers-functional-maps-higher_order.adb:385:10: info: precondition proved, in instantiation at test_map_ho.adb:67
+spark-containers-functional-maps-higher_order.adb:385:10: info: subprogram variant proved, in instantiation at test_map_ho.adb:67
+spark-containers-functional-maps-higher_order.adb:385:32: info: precondition proved, in instantiation at test_map_ho.adb:67
 spark-containers-functional-maps-higher_order.adb:386:10: info: precondition proved, in instantiation at test_map_ho.adb:67
 spark-containers-functional-maps-higher_order.adb:386:10: info: subprogram variant proved, in instantiation at test_map_ho.adb:67
-spark-containers-functional-maps-higher_order.adb:386:32: info: precondition proved, in instantiation at test_map_ho.adb:67
+spark-containers-functional-maps-higher_order.adb:387:13: info: precondition proved, in instantiation at test_map_ho.adb:67
+spark-containers-functional-maps-higher_order.adb:387:21: info: precondition proved, in instantiation at test_map_ho.adb:67
+spark-containers-functional-maps-higher_order.adb:387:40: info: precondition proved, in instantiation at test_map_ho.adb:67
+spark-containers-functional-maps-higher_order.adb:387:48: info: precondition proved, in instantiation at test_map_ho.adb:67
+spark-containers-functional-maps-higher_order.adb:387:67: info: null exclusion check proved, in instantiation at test_map_ho.adb:67
 spark-containers-functional-maps-higher_order.adb:388:10: info: precondition proved, in instantiation at test_map_ho.adb:67
 spark-containers-functional-maps-higher_order.adb:388:10: info: subprogram variant proved, in instantiation at test_map_ho.adb:67
-spark-containers-functional-maps-higher_order.adb:388:28: info: precondition proved, in instantiation at test_map_ho.adb:67
-spark-containers-functional-maps-higher_order.adb:388:43: info: precondition proved, in instantiation at test_map_ho.adb:67
-spark-containers-functional-maps-higher_order.adb:388:58: info: null exclusion check proved, in instantiation at test_map_ho.adb:67
-spark-containers-functional-maps-higher_order.adb:403:07: info: precondition proved, in instantiation at test_map_ho.adb:67
-spark-containers-functional-maps-higher_order.adb:403:35: info: null exclusion check proved, in instantiation at test_map_ho.adb:67
-spark-containers-functional-maps-higher_order.adb:415:25: info: refined post proved, in instantiation at test_map_ho.adb:67
-spark-containers-functional-maps-higher_order.adb:415:28: info: predicate check proved, in instantiation at test_map_ho.adb:67
-spark-containers-functional-maps-higher_order.adb:415:38: info: predicate check proved, in instantiation at test_map_ho.adb:67
-spark-containers-functional-maps-higher_order.adb:415:50: info: null exclusion check proved, in instantiation at test_map_ho.adb:67
-spark-containers-functional-maps-higher_order.adb:419:14: info: precondition proved, in instantiation at test_map_ho.adb:67
-spark-containers-functional-maps-higher_order.adb:421:16: info: loop invariant initialization proved, in instantiation at test_map_ho.adb:67
-spark-containers-functional-maps-higher_order.adb:421:16: info: loop invariant preservation proved, in instantiation at test_map_ho.adb:67
-spark-containers-functional-maps-higher_order.adb:421:16: info: predicate check proved, in instantiation at test_map_ho.adb:67
-spark-containers-functional-maps-higher_order.adb:421:28: info: null exclusion check proved, in instantiation at test_map_ho.adb:67
-spark-containers-functional-maps-higher_order.adb:421:37: info: predicate check proved, in instantiation at test_map_ho.adb:67
-spark-containers-functional-maps-higher_order.adb:421:43: info: predicate check proved, in instantiation at test_map_ho.adb:67
-spark-containers-functional-maps-higher_order.adb:421:60: info: null exclusion check proved, in instantiation at test_map_ho.adb:67
-spark-containers-functional-maps-higher_order.adb:423:37: info: precondition proved, in instantiation at test_map_ho.adb:67
-spark-containers-functional-maps-higher_order.adb:425:20: medium: implicit aspect Always_Terminates on "Sum" could be incorrect, call via access-to-subprogram might be nonterminating, in instantiation at test_map_ho.adb:67 [possible explanation: call could hide recursive calls]
-spark-containers-functional-maps-higher_order.adb:425:23: info: predicate check proved, in instantiation at test_map_ho.adb:67
-spark-containers-functional-maps-higher_order.adb:425:29: info: predicate check proved, in instantiation at test_map_ho.adb:67
-spark-containers-functional-maps-higher_order.adb:425:39: info: precondition proved, in instantiation at test_map_ho.adb:67
-spark-containers-functional-maps-higher_order.adb:441:07: medium: implicit aspect Always_Terminates on "Sum_Rec" could be incorrect, call via access-to-subprogram might be nonterminating, in instantiation at test_map_ho.adb:67 [possible explanation: call could hide recursive calls]
-spark-containers-functional-maps-higher_order.adb:442:12: info: predicate check proved, in instantiation at test_map_ho.adb:67
-spark-containers-functional-maps-higher_order.adb:442:12: info: subprogram variant proved, in instantiation at test_map_ho.adb:67
-spark-containers-functional-maps-higher_order.adb:442:21: info: precondition proved, in instantiation at test_map_ho.adb:67
-spark-containers-functional-maps-higher_order.adb:442:32: info: precondition proved, in instantiation at test_map_ho.adb:67
-spark-containers-functional-maps-higher_order.adb:443:11: info: predicate check proved, in instantiation at test_map_ho.adb:67
-spark-containers-functional-maps-higher_order.adb:443:18: info: precondition proved, in instantiation at test_map_ho.adb:67
-spark-containers-functional-maps-higher_order.adb:443:30: info: precondition proved, in instantiation at test_map_ho.adb:67
-spark-containers-functional-maps-higher_order.adb:443:38: info: precondition proved, in instantiation at test_map_ho.adb:67
-spark-containers-functional-maps-higher_order.adb:457:14: info: initialization of "Res" proved, in instantiation at test_map_ho.adb:67
-spark-containers-functional-maps-higher_order.adb:458:14: info: precondition proved, in instantiation at test_map_ho.adb:67
-spark-containers-functional-maps-higher_order.adb:460:16: info: loop invariant initialization proved, in instantiation at test_map_ho.adb:67
-spark-containers-functional-maps-higher_order.adb:460:16: info: loop invariant preservation proved, in instantiation at test_map_ho.adb:67
-spark-containers-functional-maps-higher_order.adb:460:16: info: predicate check proved, in instantiation at test_map_ho.adb:67
-spark-containers-functional-maps-higher_order.adb:460:31: info: predicate check proved, in instantiation at test_map_ho.adb:67
-spark-containers-functional-maps-higher_order.adb:460:49: info: predicate check proved, in instantiation at test_map_ho.adb:67
-spark-containers-functional-maps-higher_order.adb:461:13: medium: implicit aspect Always_Terminates on "Transform" could be incorrect, call via access-to-subprogram might be nonterminating, in instantiation at test_map_ho.adb:67 [possible explanation: call could hide recursive calls]
+spark-containers-functional-maps-higher_order.adb:388:32: info: precondition proved, in instantiation at test_map_ho.adb:67
+spark-containers-functional-maps-higher_order.adb:390:10: info: precondition proved, in instantiation at test_map_ho.adb:67
+spark-containers-functional-maps-higher_order.adb:390:10: info: subprogram variant proved, in instantiation at test_map_ho.adb:67
+spark-containers-functional-maps-higher_order.adb:390:28: info: precondition proved, in instantiation at test_map_ho.adb:67
+spark-containers-functional-maps-higher_order.adb:390:43: info: precondition proved, in instantiation at test_map_ho.adb:67
+spark-containers-functional-maps-higher_order.adb:390:58: info: null exclusion check proved, in instantiation at test_map_ho.adb:67
+spark-containers-functional-maps-higher_order.adb:405:07: info: precondition proved, in instantiation at test_map_ho.adb:67
+spark-containers-functional-maps-higher_order.adb:405:35: info: null exclusion check proved, in instantiation at test_map_ho.adb:67
+spark-containers-functional-maps-higher_order.adb:417:25: info: refined post proved, in instantiation at test_map_ho.adb:67
+spark-containers-functional-maps-higher_order.adb:417:28: info: predicate check proved, in instantiation at test_map_ho.adb:67
+spark-containers-functional-maps-higher_order.adb:417:38: info: predicate check proved, in instantiation at test_map_ho.adb:67
+spark-containers-functional-maps-higher_order.adb:417:50: info: null exclusion check proved, in instantiation at test_map_ho.adb:67
+spark-containers-functional-maps-higher_order.adb:421:14: info: precondition proved, in instantiation at test_map_ho.adb:67
+spark-containers-functional-maps-higher_order.adb:423:16: info: loop invariant initialization proved, in instantiation at test_map_ho.adb:67
+spark-containers-functional-maps-higher_order.adb:423:16: info: loop invariant preservation proved, in instantiation at test_map_ho.adb:67
+spark-containers-functional-maps-higher_order.adb:423:16: info: predicate check proved, in instantiation at test_map_ho.adb:67
+spark-containers-functional-maps-higher_order.adb:423:28: info: null exclusion check proved, in instantiation at test_map_ho.adb:67
+spark-containers-functional-maps-higher_order.adb:423:37: info: predicate check proved, in instantiation at test_map_ho.adb:67
+spark-containers-functional-maps-higher_order.adb:423:43: info: predicate check proved, in instantiation at test_map_ho.adb:67
+spark-containers-functional-maps-higher_order.adb:423:60: info: null exclusion check proved, in instantiation at test_map_ho.adb:67
+spark-containers-functional-maps-higher_order.adb:425:37: info: precondition proved, in instantiation at test_map_ho.adb:67
+spark-containers-functional-maps-higher_order.adb:427:20: medium: implicit aspect Always_Terminates on "Sum" could be incorrect, call via access-to-subprogram might be nonterminating, in instantiation at test_map_ho.adb:67 [possible explanation: call could hide recursive calls]
+spark-containers-functional-maps-higher_order.adb:427:23: info: predicate check proved, in instantiation at test_map_ho.adb:67
+spark-containers-functional-maps-higher_order.adb:427:29: info: predicate check proved, in instantiation at test_map_ho.adb:67
+spark-containers-functional-maps-higher_order.adb:427:39: info: precondition proved, in instantiation at test_map_ho.adb:67
+spark-containers-functional-maps-higher_order.adb:443:07: medium: implicit aspect Always_Terminates on "Sum_Rec" could be incorrect, call via access-to-subprogram might be nonterminating, in instantiation at test_map_ho.adb:67 [possible explanation: call could hide recursive calls]
+spark-containers-functional-maps-higher_order.adb:444:12: info: predicate check proved, in instantiation at test_map_ho.adb:67
+spark-containers-functional-maps-higher_order.adb:444:12: info: subprogram variant proved, in instantiation at test_map_ho.adb:67
+spark-containers-functional-maps-higher_order.adb:444:21: info: precondition proved, in instantiation at test_map_ho.adb:67
+spark-containers-functional-maps-higher_order.adb:444:32: info: precondition proved, in instantiation at test_map_ho.adb:67
+spark-containers-functional-maps-higher_order.adb:445:11: info: predicate check proved, in instantiation at test_map_ho.adb:67
+spark-containers-functional-maps-higher_order.adb:445:18: info: precondition proved, in instantiation at test_map_ho.adb:67
+spark-containers-functional-maps-higher_order.adb:445:30: info: precondition proved, in instantiation at test_map_ho.adb:67
+spark-containers-functional-maps-higher_order.adb:445:38: info: precondition proved, in instantiation at test_map_ho.adb:67
+spark-containers-functional-maps-higher_order.adb:459:14: info: initialization of "Res" proved, in instantiation at test_map_ho.adb:67
+spark-containers-functional-maps-higher_order.adb:460:14: info: precondition proved, in instantiation at test_map_ho.adb:67
 spark-containers-functional-maps-higher_order.adb:462:16: info: loop invariant initialization proved, in instantiation at test_map_ho.adb:67
 spark-containers-functional-maps-higher_order.adb:462:16: info: loop invariant preservation proved, in instantiation at test_map_ho.adb:67
-spark-containers-functional-maps-higher_order.adb:464:13: medium: implicit aspect Always_Terminates on "Transform" could be incorrect, call via access-to-subprogram might be nonterminating, in instantiation at test_map_ho.adb:67 [possible explanation: call could hide recursive calls]
-spark-containers-functional-maps-higher_order.adb:465:16: info: loop invariant initialization proved, in instantiation at test_map_ho.adb:67
-spark-containers-functional-maps-higher_order.adb:465:16: info: loop invariant preservation proved, in instantiation at test_map_ho.adb:67
-spark-containers-functional-maps-higher_order.adb:468:13: medium: implicit aspect Always_Terminates on "Transform" could be incorrect, call via access-to-subprogram might be nonterminating, in instantiation at test_map_ho.adb:67 [possible explanation: call could hide recursive calls]
-spark-containers-functional-maps-higher_order.adb:469:16: info: loop invariant initialization proved, in instantiation at test_map_ho.adb:67
-spark-containers-functional-maps-higher_order.adb:469:16: info: loop invariant preservation proved, in instantiation at test_map_ho.adb:67
-spark-containers-functional-maps-higher_order.adb:472:19: info: precondition proved, in instantiation at test_map_ho.adb:67
-spark-containers-functional-maps-higher_order.adb:472:65: info: precondition proved, in instantiation at test_map_ho.adb:67
-spark-containers-functional-maps-higher_order.adb:475:37: info: precondition proved, in instantiation at test_map_ho.adb:67
-spark-containers-functional-maps-higher_order.adb:477:20: medium: implicit aspect Always_Terminates on "Transform" could be incorrect, call via access-to-subprogram might be nonterminating, in instantiation at test_map_ho.adb:67 [possible explanation: call could hide recursive calls]
-spark-containers-functional-maps-higher_order.adb:477:23: info: precondition proved, in instantiation at test_map_ho.adb:67
-spark-containers-functional-maps-higher_order.adb:478:59: info: precondition proved, in instantiation at test_map_ho.adb:67
-spark-containers-functional-maps-higher_order.adb:495:14: info: initialization of "Res" proved, in instantiation at test_map_ho.adb:67
-spark-containers-functional-maps-higher_order.adb:496:14: info: precondition proved, in instantiation at test_map_ho.adb:67
-spark-containers-functional-maps-higher_order.adb:498:16: info: loop invariant initialization proved, in instantiation at test_map_ho.adb:67
-spark-containers-functional-maps-higher_order.adb:498:16: info: loop invariant preservation proved, in instantiation at test_map_ho.adb:67
-spark-containers-functional-maps-higher_order.adb:498:16: info: predicate check proved, in instantiation at test_map_ho.adb:67
-spark-containers-functional-maps-higher_order.adb:498:31: info: predicate check proved, in instantiation at test_map_ho.adb:67
-spark-containers-functional-maps-higher_order.adb:498:49: info: predicate check proved, in instantiation at test_map_ho.adb:67
+spark-containers-functional-maps-higher_order.adb:462:16: info: predicate check proved, in instantiation at test_map_ho.adb:67
+spark-containers-functional-maps-higher_order.adb:462:31: info: predicate check proved, in instantiation at test_map_ho.adb:67
+spark-containers-functional-maps-higher_order.adb:462:49: info: predicate check proved, in instantiation at test_map_ho.adb:67
+spark-containers-functional-maps-higher_order.adb:463:13: medium: implicit aspect Always_Terminates on "Transform" could be incorrect, call via access-to-subprogram might be nonterminating, in instantiation at test_map_ho.adb:67 [possible explanation: call could hide recursive calls]
+spark-containers-functional-maps-higher_order.adb:464:16: info: loop invariant initialization proved, in instantiation at test_map_ho.adb:67
+spark-containers-functional-maps-higher_order.adb:464:16: info: loop invariant preservation proved, in instantiation at test_map_ho.adb:67
+spark-containers-functional-maps-higher_order.adb:466:13: medium: implicit aspect Always_Terminates on "Transform" could be incorrect, call via access-to-subprogram might be nonterminating, in instantiation at test_map_ho.adb:67 [possible explanation: call could hide recursive calls]
+spark-containers-functional-maps-higher_order.adb:467:16: info: loop invariant initialization proved, in instantiation at test_map_ho.adb:67
+spark-containers-functional-maps-higher_order.adb:467:16: info: loop invariant preservation proved, in instantiation at test_map_ho.adb:67
+spark-containers-functional-maps-higher_order.adb:470:13: medium: implicit aspect Always_Terminates on "Transform" could be incorrect, call via access-to-subprogram might be nonterminating, in instantiation at test_map_ho.adb:67 [possible explanation: call could hide recursive calls]
+spark-containers-functional-maps-higher_order.adb:471:16: info: loop invariant initialization proved, in instantiation at test_map_ho.adb:67
+spark-containers-functional-maps-higher_order.adb:471:16: info: loop invariant preservation proved, in instantiation at test_map_ho.adb:67
+spark-containers-functional-maps-higher_order.adb:474:19: info: precondition proved, in instantiation at test_map_ho.adb:67
+spark-containers-functional-maps-higher_order.adb:474:65: info: precondition proved, in instantiation at test_map_ho.adb:67
+spark-containers-functional-maps-higher_order.adb:477:37: info: precondition proved, in instantiation at test_map_ho.adb:67
+spark-containers-functional-maps-higher_order.adb:479:20: medium: implicit aspect Always_Terminates on "Transform" could be incorrect, call via access-to-subprogram might be nonterminating, in instantiation at test_map_ho.adb:67 [possible explanation: call could hide recursive calls]
+spark-containers-functional-maps-higher_order.adb:479:23: info: precondition proved, in instantiation at test_map_ho.adb:67
+spark-containers-functional-maps-higher_order.adb:480:59: info: precondition proved, in instantiation at test_map_ho.adb:67
+spark-containers-functional-maps-higher_order.adb:497:14: info: initialization of "Res" proved, in instantiation at test_map_ho.adb:67
+spark-containers-functional-maps-higher_order.adb:498:14: info: precondition proved, in instantiation at test_map_ho.adb:67
 spark-containers-functional-maps-higher_order.adb:500:16: info: loop invariant initialization proved, in instantiation at test_map_ho.adb:67
 spark-containers-functional-maps-higher_order.adb:500:16: info: loop invariant preservation proved, in instantiation at test_map_ho.adb:67
-spark-containers-functional-maps-higher_order.adb:503:16: info: loop invariant initialization proved, in instantiation at test_map_ho.adb:67
-spark-containers-functional-maps-higher_order.adb:503:16: info: loop invariant preservation proved, in instantiation at test_map_ho.adb:67
-spark-containers-functional-maps-higher_order.adb:505:13: medium: implicit aspect Always_Terminates on "Transform_Element" could be incorrect, call via access-to-subprogram might be nonterminating, in instantiation at test_map_ho.adb:67 [possible explanation: call could hide recursive calls]
-spark-containers-functional-maps-higher_order.adb:506:16: info: loop invariant initialization proved, in instantiation at test_map_ho.adb:67
-spark-containers-functional-maps-higher_order.adb:506:16: info: loop invariant preservation proved, in instantiation at test_map_ho.adb:67
-spark-containers-functional-maps-higher_order.adb:508:21: info: precondition proved, in instantiation at test_map_ho.adb:67
-spark-containers-functional-maps-higher_order.adb:508:51: info: precondition proved, in instantiation at test_map_ho.adb:67
-spark-containers-functional-maps-higher_order.adb:511:37: info: precondition proved, in instantiation at test_map_ho.adb:67
-spark-containers-functional-maps-higher_order.adb:513:20: medium: implicit aspect Always_Terminates on "Transform_Element" could be incorrect, call via access-to-subprogram might be nonterminating, in instantiation at test_map_ho.adb:67 [possible explanation: call could hide recursive calls]
-spark-containers-functional-maps-higher_order.adb:513:23: info: precondition proved, in instantiation at test_map_ho.adb:67
-spark-containers-functional-maps-higher_order.adb:513:52: info: precondition proved, in instantiation at test_map_ho.adb:67
+spark-containers-functional-maps-higher_order.adb:500:16: info: predicate check proved, in instantiation at test_map_ho.adb:67
+spark-containers-functional-maps-higher_order.adb:500:31: info: predicate check proved, in instantiation at test_map_ho.adb:67
+spark-containers-functional-maps-higher_order.adb:500:49: info: predicate check proved, in instantiation at test_map_ho.adb:67
+spark-containers-functional-maps-higher_order.adb:502:16: info: loop invariant initialization proved, in instantiation at test_map_ho.adb:67
+spark-containers-functional-maps-higher_order.adb:502:16: info: loop invariant preservation proved, in instantiation at test_map_ho.adb:67
+spark-containers-functional-maps-higher_order.adb:505:16: info: loop invariant initialization proved, in instantiation at test_map_ho.adb:67
+spark-containers-functional-maps-higher_order.adb:505:16: info: loop invariant preservation proved, in instantiation at test_map_ho.adb:67
+spark-containers-functional-maps-higher_order.adb:507:13: medium: implicit aspect Always_Terminates on "Transform_Element" could be incorrect, call via access-to-subprogram might be nonterminating, in instantiation at test_map_ho.adb:67 [possible explanation: call could hide recursive calls]
+spark-containers-functional-maps-higher_order.adb:508:16: info: loop invariant initialization proved, in instantiation at test_map_ho.adb:67
+spark-containers-functional-maps-higher_order.adb:508:16: info: loop invariant preservation proved, in instantiation at test_map_ho.adb:67
+spark-containers-functional-maps-higher_order.adb:510:21: info: precondition proved, in instantiation at test_map_ho.adb:67
+spark-containers-functional-maps-higher_order.adb:510:51: info: precondition proved, in instantiation at test_map_ho.adb:67
+spark-containers-functional-maps-higher_order.adb:513:37: info: precondition proved, in instantiation at test_map_ho.adb:67
+spark-containers-functional-maps-higher_order.adb:515:20: medium: implicit aspect Always_Terminates on "Transform_Element" could be incorrect, call via access-to-subprogram might be nonterminating, in instantiation at test_map_ho.adb:67 [possible explanation: call could hide recursive calls]
+spark-containers-functional-maps-higher_order.adb:515:23: info: precondition proved, in instantiation at test_map_ho.adb:67
+spark-containers-functional-maps-higher_order.adb:515:52: info: precondition proved, in instantiation at test_map_ho.adb:67
 spark-containers-functional-maps-higher_order.ads:20:23: info: function contract feasibility proved, in instantiation at test_map_ho.adb:67
 spark-containers-functional-maps-higher_order.ads:26:08: info: data dependencies proved, in instantiation at test_map_ho.adb:67
 spark-containers-functional-maps-higher_order.ads:27:20: info: postcondition proved, in instantiation at test_map_ho.adb:67
@@ -531,6 +531,6 @@ spark-containers-parameter_checks.ads:82:19: info: postcondition proved, in inst
 test_map_ho.adb:67:04: info: expression function body of subprograms with a numeric variant might not be available on recursive calls
 test_map_ho.adb:67:04: info: expression function body of subprograms with a numeric variant might not be available on recursive calls
 test_map_ho.adb:67:04: info: function contract might not be available on recursive calls
-test_map_ho.adb:67:04: info: in instantiation at spark-containers-functional-maps-higher_order.adb:22
-test_map_ho.adb:67:04: info: in instantiation at spark-containers-functional-maps-higher_order.adb:22
-test_map_ho.adb:67:04: info: in instantiation at spark-containers-functional-maps-higher_order.adb:61
+test_map_ho.adb:67:04: info: in instantiation at spark-containers-functional-maps-higher_order.adb:24
+test_map_ho.adb:67:04: info: in instantiation at spark-containers-functional-maps-higher_order.adb:24
+test_map_ho.adb:67:04: info: in instantiation at spark-containers-functional-maps-higher_order.adb:63

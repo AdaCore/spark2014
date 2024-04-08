@@ -1,205 +1,205 @@
-spark-containers-functional-vectors-higher_order.adb:19:23: info: function contract feasibility proved, in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.adb:27:28: info: postcondition proved, in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.adb:27:37: info: predicate check proved, in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.adb:28:42: info: range check proved, in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.adb:33:23: info: function contract feasibility proved, in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.adb:42:08: info: postcondition proved, in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.adb:42:08: info: predicate check proved, in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.adb:42:37: info: precondition proved, in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.adb:42:37: info: predicate check proved, in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.adb:42:57: info: null exclusion check proved, in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.adb:43:08: medium: implicit aspect Always_Terminates on "Filter_Rec" could be incorrect, call via access-to-subprogram might be nonterminating, in instantiation at test_sequence_ho.adb:61 [possible explanation: call could hide recursive calls]
-spark-containers-functional-vectors-higher_order.adb:48:24: info: function contract feasibility proved, in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.adb:66:07: info: precondition proved, in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.adb:66:27: info: null exclusion check proved, in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.adb:73:25: info: refined post proved, in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.adb:73:30: info: predicate check proved, in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.adb:73:40: info: precondition proved, in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.adb:73:40: info: predicate check proved, in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.adb:73:60: info: null exclusion check proved, in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.adb:76:35: info: predicate check proved, in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.adb:78:13: medium: implicit aspect Always_Terminates on "Count" could be incorrect, call via access-to-subprogram might be nonterminating, in instantiation at test_sequence_ho.adb:61 [possible explanation: call could hide recursive calls]
-spark-containers-functional-vectors-higher_order.adb:78:22: info: precondition proved, in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.adb:78:30: info: range check proved, in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.adb:79:23: info: predicate check proved, in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.adb:79:27: info: predicate check proved, in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.adb:79:29: info: predicate check proved, in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.adb:81:36: info: loop invariant initialization proved, in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.adb:81:36: info: loop invariant preservation proved, in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.adb:82:36: info: loop invariant initialization proved, in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.adb:82:36: info: loop invariant preservation proved, in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.adb:82:36: info: predicate check proved, in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.adb:82:42: info: precondition proved, in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.adb:82:42: info: predicate check proved, in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.adb:82:56: info: range check proved, in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.adb:82:59: info: null exclusion check proved, in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.adb:97:07: medium: implicit aspect Always_Terminates on "Count_Rec" could be incorrect, call via access-to-subprogram might be nonterminating, in instantiation at test_sequence_ho.adb:61 [possible explanation: call could hide recursive calls]
-spark-containers-functional-vectors-higher_order.adb:97:43: info: predicate check proved, in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.adb:98:12: info: precondition proved, in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.adb:98:12: info: predicate check proved, in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.adb:98:12: info: subprogram variant proved, in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.adb:98:40: info: range check proved, in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.adb:98:47: info: overflow check proved, in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.adb:98:60: info: predicate check proved, in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.adb:99:19: info: precondition proved, in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.adb:99:50: info: predicate check proved, in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.adb:99:71: info: predicate check proved, in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.adb:112:14: info: initialization of "Res" proved, in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.adb:114:17: medium: implicit aspect Always_Terminates on "Create" could be incorrect, call via access-to-subprogram might be nonterminating, in instantiation at test_sequence_ho.adb:61 [possible explanation: call could hide recursive calls]
-spark-containers-functional-vectors-higher_order.adb:114:20: info: precondition proved, in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.adb:114:40: info: range check proved, in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.adb:116:36: info: loop invariant initialization proved, in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.adb:116:36: info: loop invariant preservation proved, in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.adb:117:13: medium: implicit aspect Always_Terminates on "Create" could be incorrect, call via access-to-subprogram might be nonterminating, in instantiation at test_sequence_ho.adb:61 [possible explanation: call could hide recursive calls]
-spark-containers-functional-vectors-higher_order.adb:118:16: info: loop invariant initialization proved, in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.adb:118:16: info: loop invariant preservation proved, in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.adb:119:41: info: precondition proved, in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.adb:119:51: info: range check proved, in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.adb:119:65: info: range check proved, in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.adb:132:08: info: precondition proved, in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.adb:132:29: info: null exclusion check proved, in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.adb:140:06: info: predicate check proved, in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.adb:140:06: info: refined post proved, in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.adb:140:31: info: predicate check proved, in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.adb:140:39: info: precondition proved, in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.adb:140:60: info: null exclusion check proved, in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.adb:141:44: info: precondition proved, in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.adb:141:65: info: null exclusion check proved, in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.adb:144:14: info: initialization of "Res" proved, in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.adb:146:13: medium: implicit aspect Always_Terminates on "Filter" could be incorrect, call via access-to-subprogram might be nonterminating, in instantiation at test_sequence_ho.adb:61 [possible explanation: call could hide recursive calls]
-spark-containers-functional-vectors-higher_order.adb:146:22: info: precondition proved, in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.adb:146:30: info: range check proved, in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.adb:147:23: info: precondition proved, in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.adb:147:33: info: precondition proved, in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.adb:147:41: info: range check proved, in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.adb:150:16: info: loop invariant initialization proved, in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.adb:150:16: info: loop invariant preservation proved, in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.adb:150:16: info: predicate check proved, in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.adb:150:31: info: predicate check proved, in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.adb:150:39: info: precondition proved, in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.adb:150:54: info: range check proved, in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.adb:150:57: info: null exclusion check proved, in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.adb:21:23: info: function contract feasibility proved, in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.adb:29:28: info: postcondition proved, in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.adb:29:37: info: predicate check proved, in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.adb:30:42: info: range check proved, in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.adb:35:23: info: function contract feasibility proved, in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.adb:44:08: info: postcondition proved, in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.adb:44:08: info: predicate check proved, in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.adb:44:37: info: precondition proved, in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.adb:44:37: info: predicate check proved, in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.adb:44:57: info: null exclusion check proved, in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.adb:45:08: medium: implicit aspect Always_Terminates on "Filter_Rec" could be incorrect, call via access-to-subprogram might be nonterminating, in instantiation at test_sequence_ho.adb:61 [possible explanation: call could hide recursive calls]
+spark-containers-functional-vectors-higher_order.adb:50:24: info: function contract feasibility proved, in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.adb:68:07: info: precondition proved, in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.adb:68:27: info: null exclusion check proved, in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.adb:75:25: info: refined post proved, in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.adb:75:30: info: predicate check proved, in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.adb:75:40: info: precondition proved, in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.adb:75:40: info: predicate check proved, in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.adb:75:60: info: null exclusion check proved, in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.adb:78:35: info: predicate check proved, in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.adb:80:13: medium: implicit aspect Always_Terminates on "Count" could be incorrect, call via access-to-subprogram might be nonterminating, in instantiation at test_sequence_ho.adb:61 [possible explanation: call could hide recursive calls]
+spark-containers-functional-vectors-higher_order.adb:80:22: info: precondition proved, in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.adb:80:30: info: range check proved, in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.adb:81:23: info: predicate check proved, in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.adb:81:27: info: predicate check proved, in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.adb:81:29: info: predicate check proved, in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.adb:83:36: info: loop invariant initialization proved, in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.adb:83:36: info: loop invariant preservation proved, in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.adb:84:36: info: loop invariant initialization proved, in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.adb:84:36: info: loop invariant preservation proved, in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.adb:84:36: info: predicate check proved, in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.adb:84:42: info: precondition proved, in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.adb:84:42: info: predicate check proved, in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.adb:84:56: info: range check proved, in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.adb:84:59: info: null exclusion check proved, in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.adb:99:07: medium: implicit aspect Always_Terminates on "Count_Rec" could be incorrect, call via access-to-subprogram might be nonterminating, in instantiation at test_sequence_ho.adb:61 [possible explanation: call could hide recursive calls]
+spark-containers-functional-vectors-higher_order.adb:99:43: info: predicate check proved, in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.adb:100:12: info: precondition proved, in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.adb:100:12: info: predicate check proved, in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.adb:100:12: info: subprogram variant proved, in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.adb:100:40: info: range check proved, in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.adb:100:47: info: overflow check proved, in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.adb:100:60: info: predicate check proved, in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.adb:101:19: info: precondition proved, in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.adb:101:50: info: predicate check proved, in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.adb:101:71: info: predicate check proved, in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.adb:114:14: info: initialization of "Res" proved, in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.adb:116:17: medium: implicit aspect Always_Terminates on "Create" could be incorrect, call via access-to-subprogram might be nonterminating, in instantiation at test_sequence_ho.adb:61 [possible explanation: call could hide recursive calls]
+spark-containers-functional-vectors-higher_order.adb:116:20: info: precondition proved, in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.adb:116:40: info: range check proved, in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.adb:118:36: info: loop invariant initialization proved, in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.adb:118:36: info: loop invariant preservation proved, in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.adb:119:13: medium: implicit aspect Always_Terminates on "Create" could be incorrect, call via access-to-subprogram might be nonterminating, in instantiation at test_sequence_ho.adb:61 [possible explanation: call could hide recursive calls]
+spark-containers-functional-vectors-higher_order.adb:120:16: info: loop invariant initialization proved, in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.adb:120:16: info: loop invariant preservation proved, in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.adb:121:41: info: precondition proved, in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.adb:121:51: info: range check proved, in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.adb:121:65: info: range check proved, in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.adb:134:08: info: precondition proved, in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.adb:134:29: info: null exclusion check proved, in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.adb:142:06: info: predicate check proved, in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.adb:142:06: info: refined post proved, in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.adb:142:31: info: predicate check proved, in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.adb:142:39: info: precondition proved, in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.adb:142:60: info: null exclusion check proved, in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.adb:143:44: info: precondition proved, in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.adb:143:65: info: null exclusion check proved, in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.adb:146:14: info: initialization of "Res" proved, in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.adb:148:13: medium: implicit aspect Always_Terminates on "Filter" could be incorrect, call via access-to-subprogram might be nonterminating, in instantiation at test_sequence_ho.adb:61 [possible explanation: call could hide recursive calls]
+spark-containers-functional-vectors-higher_order.adb:148:22: info: precondition proved, in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.adb:148:30: info: range check proved, in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.adb:149:23: info: precondition proved, in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.adb:149:33: info: precondition proved, in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.adb:149:41: info: range check proved, in instantiation at test_sequence_ho.adb:61
 spark-containers-functional-vectors-higher_order.adb:152:16: info: loop invariant initialization proved, in instantiation at test_sequence_ho.adb:61
 spark-containers-functional-vectors-higher_order.adb:152:16: info: loop invariant preservation proved, in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.adb:152:35: info: precondition proved, in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.adb:152:50: info: range check proved, in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.adb:152:53: info: null exclusion check proved, in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.adb:167:07: medium: implicit aspect Always_Terminates on "Filter_Rec" could be incorrect, call via access-to-subprogram might be nonterminating, in instantiation at test_sequence_ho.adb:61 [possible explanation: call could hide recursive calls]
-spark-containers-functional-vectors-higher_order.adb:168:19: info: precondition proved, in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.adb:169:12: info: precondition proved, in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.adb:169:17: info: precondition proved, in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.adb:169:17: info: subprogram variant proved, in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.adb:169:46: info: range check proved, in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.adb:169:53: info: overflow check proved, in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.adb:170:17: info: precondition proved, in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.adb:152:16: info: predicate check proved, in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.adb:152:31: info: predicate check proved, in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.adb:152:39: info: precondition proved, in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.adb:152:54: info: range check proved, in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.adb:152:57: info: null exclusion check proved, in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.adb:154:16: info: loop invariant initialization proved, in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.adb:154:16: info: loop invariant preservation proved, in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.adb:154:35: info: precondition proved, in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.adb:154:50: info: range check proved, in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.adb:154:53: info: null exclusion check proved, in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.adb:169:07: medium: implicit aspect Always_Terminates on "Filter_Rec" could be incorrect, call via access-to-subprogram might be nonterminating, in instantiation at test_sequence_ho.adb:61 [possible explanation: call could hide recursive calls]
+spark-containers-functional-vectors-higher_order.adb:170:19: info: precondition proved, in instantiation at test_sequence_ho.adb:61
 spark-containers-functional-vectors-higher_order.adb:171:12: info: precondition proved, in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.adb:171:12: info: subprogram variant proved, in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.adb:171:41: info: range check proved, in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.adb:171:48: info: overflow check proved, in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.adb:185:13: info: loop invariant initialization proved, in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.adb:185:13: info: loop invariant preservation proved, in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.adb:185:13: info: precondition proved, in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.adb:185:13: info: predicate check proved, in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.adb:185:27: info: range check proved, in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.adb:185:30: info: null exclusion check proved, in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.adb:185:43: info: range check proved, in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.adb:185:67: info: range check proved, in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.adb:201:13: info: loop invariant initialization proved, in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.adb:201:13: info: loop invariant preservation proved, in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.adb:201:13: info: precondition proved, in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.adb:201:13: info: predicate check proved, in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.adb:201:28: info: range check proved, in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.adb:201:31: info: null exclusion check proved, in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.adb:201:39: info: precondition proved, in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.adb:201:39: info: predicate check proved, in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.adb:201:54: info: range check proved, in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.adb:201:57: info: null exclusion check proved, in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.adb:226:33: info: loop invariant initialization proved, in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.adb:226:33: info: loop invariant preservation proved, in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.adb:226:33: info: precondition proved, in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.adb:226:33: info: predicate check proved, in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.adb:226:47: info: range check proved, in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.adb:226:50: info: null exclusion check proved, in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.adb:226:58: info: predicate check proved, in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.adb:241:33: info: loop invariant initialization proved, in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.adb:241:33: info: loop invariant preservation proved, in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.adb:241:47: info: precondition proved, in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.adb:241:62: info: range check proved, in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.adb:241:65: info: null exclusion check proved, in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.adb:242:33: info: loop invariant initialization proved, in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.adb:242:33: info: loop invariant preservation proved, in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.adb:242:47: info: precondition proved, in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.adb:242:62: info: range check proved, in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.adb:242:65: info: null exclusion check proved, in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.adb:258:13: info: loop invariant initialization proved, in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.adb:258:13: info: loop invariant preservation proved, in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.adb:258:13: info: predicate check proved, in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.adb:258:21: info: precondition proved, in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.adb:258:37: info: range check proved, in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.adb:258:40: info: null exclusion check proved, in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.adb:259:15: info: predicate check proved, in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.adb:259:23: info: precondition proved, in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.adb:259:39: info: range check proved, in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.adb:259:42: info: null exclusion check proved, in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.adb:261:13: info: loop invariant initialization proved, in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.adb:261:13: info: loop invariant preservation proved, in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.adb:261:27: info: precondition proved, in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.adb:261:43: info: range check proved, in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.adb:261:46: info: null exclusion check proved, in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.adb:261:53: info: precondition proved, in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.adb:261:69: info: range check proved, in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.adb:261:72: info: null exclusion check proved, in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.adb:287:13: info: loop invariant initialization proved, in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.adb:287:13: info: loop invariant preservation proved, in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.adb:287:13: info: precondition proved, in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.adb:287:13: info: predicate check proved, in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.adb:287:26: info: range check proved, in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.adb:287:29: info: null exclusion check proved, in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.adb:287:38: info: precondition proved, in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.adb:287:38: info: predicate check proved, in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.adb:287:51: info: range check proved, in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.adb:287:54: info: null exclusion check proved, in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.adb:309:08: info: precondition proved, in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.adb:309:26: info: null exclusion check proved, in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.adb:316:25: info: refined post proved, in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.adb:316:28: info: predicate check proved, in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.adb:316:38: info: precondition proved, in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.adb:316:38: info: predicate check proved, in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.adb:316:56: info: null exclusion check proved, in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.adb:321:17: medium: implicit aspect Always_Terminates on "Sum" could be incorrect, call via access-to-subprogram might be nonterminating, in instantiation at test_sequence_ho.adb:61 [possible explanation: call could hide recursive calls]
-spark-containers-functional-vectors-higher_order.adb:321:20: info: predicate check proved, in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.adb:321:26: info: predicate check proved, in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.adb:321:33: info: precondition proved, in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.adb:321:41: info: range check proved, in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.adb:322:36: info: loop invariant initialization proved, in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.adb:322:36: info: loop invariant preservation proved, in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.adb:322:36: info: predicate check proved, in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.adb:322:42: info: precondition proved, in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.adb:322:42: info: predicate check proved, in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.adb:322:54: info: range check proved, in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.adb:322:57: info: null exclusion check proved, in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.adb:337:07: medium: implicit aspect Always_Terminates on "Sum_Rec" could be incorrect, call via access-to-subprogram might be nonterminating, in instantiation at test_sequence_ho.adb:61 [possible explanation: call could hide recursive calls]
-spark-containers-functional-vectors-higher_order.adb:338:12: info: precondition proved, in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.adb:338:12: info: predicate check proved, in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.adb:338:12: info: subprogram variant proved, in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.adb:339:27: info: range check proved, in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.adb:339:34: info: overflow check proved, in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.adb:339:50: info: predicate check proved, in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.adb:339:57: info: precondition proved, in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.adb:352:14: info: initialization of "Res" proved, in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.adb:354:17: medium: implicit aspect Always_Terminates on "Transform" could be incorrect, call via access-to-subprogram might be nonterminating, in instantiation at test_sequence_ho.adb:61 [possible explanation: call could hide recursive calls]
-spark-containers-functional-vectors-higher_order.adb:354:20: info: precondition proved, in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.adb:354:46: info: precondition proved, in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.adb:354:54: info: range check proved, in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.adb:355:36: info: loop invariant initialization proved, in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.adb:355:36: info: loop invariant preservation proved, in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.adb:356:13: medium: implicit aspect Always_Terminates on "Transform" could be incorrect, call via access-to-subprogram might be nonterminating, in instantiation at test_sequence_ho.adb:61 [possible explanation: call could hide recursive calls]
-spark-containers-functional-vectors-higher_order.adb:357:16: info: loop invariant initialization proved, in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.adb:357:16: info: loop invariant preservation proved, in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.adb:359:22: info: precondition proved, in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.adb:359:32: info: range check proved, in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.adb:359:52: info: precondition proved, in instantiation at test_sequence_ho.adb:61
-spark-containers-functional-vectors-higher_order.adb:359:60: info: range check proved, in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.adb:171:17: info: precondition proved, in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.adb:171:17: info: subprogram variant proved, in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.adb:171:46: info: range check proved, in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.adb:171:53: info: overflow check proved, in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.adb:172:17: info: precondition proved, in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.adb:173:12: info: precondition proved, in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.adb:173:12: info: subprogram variant proved, in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.adb:173:41: info: range check proved, in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.adb:173:48: info: overflow check proved, in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.adb:187:13: info: loop invariant initialization proved, in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.adb:187:13: info: loop invariant preservation proved, in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.adb:187:13: info: precondition proved, in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.adb:187:13: info: predicate check proved, in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.adb:187:27: info: range check proved, in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.adb:187:30: info: null exclusion check proved, in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.adb:187:43: info: range check proved, in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.adb:187:67: info: range check proved, in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.adb:203:13: info: loop invariant initialization proved, in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.adb:203:13: info: loop invariant preservation proved, in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.adb:203:13: info: precondition proved, in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.adb:203:13: info: predicate check proved, in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.adb:203:28: info: range check proved, in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.adb:203:31: info: null exclusion check proved, in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.adb:203:39: info: precondition proved, in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.adb:203:39: info: predicate check proved, in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.adb:203:54: info: range check proved, in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.adb:203:57: info: null exclusion check proved, in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.adb:228:33: info: loop invariant initialization proved, in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.adb:228:33: info: loop invariant preservation proved, in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.adb:228:33: info: precondition proved, in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.adb:228:33: info: predicate check proved, in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.adb:228:47: info: range check proved, in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.adb:228:50: info: null exclusion check proved, in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.adb:228:58: info: predicate check proved, in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.adb:243:33: info: loop invariant initialization proved, in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.adb:243:33: info: loop invariant preservation proved, in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.adb:243:47: info: precondition proved, in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.adb:243:62: info: range check proved, in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.adb:243:65: info: null exclusion check proved, in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.adb:244:33: info: loop invariant initialization proved, in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.adb:244:33: info: loop invariant preservation proved, in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.adb:244:47: info: precondition proved, in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.adb:244:62: info: range check proved, in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.adb:244:65: info: null exclusion check proved, in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.adb:260:13: info: loop invariant initialization proved, in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.adb:260:13: info: loop invariant preservation proved, in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.adb:260:13: info: predicate check proved, in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.adb:260:21: info: precondition proved, in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.adb:260:37: info: range check proved, in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.adb:260:40: info: null exclusion check proved, in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.adb:261:15: info: predicate check proved, in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.adb:261:23: info: precondition proved, in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.adb:261:39: info: range check proved, in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.adb:261:42: info: null exclusion check proved, in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.adb:263:13: info: loop invariant initialization proved, in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.adb:263:13: info: loop invariant preservation proved, in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.adb:263:27: info: precondition proved, in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.adb:263:43: info: range check proved, in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.adb:263:46: info: null exclusion check proved, in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.adb:263:53: info: precondition proved, in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.adb:263:69: info: range check proved, in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.adb:263:72: info: null exclusion check proved, in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.adb:289:13: info: loop invariant initialization proved, in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.adb:289:13: info: loop invariant preservation proved, in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.adb:289:13: info: precondition proved, in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.adb:289:13: info: predicate check proved, in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.adb:289:26: info: range check proved, in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.adb:289:29: info: null exclusion check proved, in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.adb:289:38: info: precondition proved, in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.adb:289:38: info: predicate check proved, in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.adb:289:51: info: range check proved, in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.adb:289:54: info: null exclusion check proved, in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.adb:311:08: info: precondition proved, in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.adb:311:26: info: null exclusion check proved, in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.adb:318:25: info: refined post proved, in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.adb:318:28: info: predicate check proved, in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.adb:318:38: info: precondition proved, in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.adb:318:38: info: predicate check proved, in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.adb:318:56: info: null exclusion check proved, in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.adb:323:17: medium: implicit aspect Always_Terminates on "Sum" could be incorrect, call via access-to-subprogram might be nonterminating, in instantiation at test_sequence_ho.adb:61 [possible explanation: call could hide recursive calls]
+spark-containers-functional-vectors-higher_order.adb:323:20: info: predicate check proved, in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.adb:323:26: info: predicate check proved, in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.adb:323:33: info: precondition proved, in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.adb:323:41: info: range check proved, in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.adb:324:36: info: loop invariant initialization proved, in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.adb:324:36: info: loop invariant preservation proved, in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.adb:324:36: info: predicate check proved, in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.adb:324:42: info: precondition proved, in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.adb:324:42: info: predicate check proved, in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.adb:324:54: info: range check proved, in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.adb:324:57: info: null exclusion check proved, in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.adb:339:07: medium: implicit aspect Always_Terminates on "Sum_Rec" could be incorrect, call via access-to-subprogram might be nonterminating, in instantiation at test_sequence_ho.adb:61 [possible explanation: call could hide recursive calls]
+spark-containers-functional-vectors-higher_order.adb:340:12: info: precondition proved, in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.adb:340:12: info: predicate check proved, in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.adb:340:12: info: subprogram variant proved, in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.adb:341:27: info: range check proved, in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.adb:341:34: info: overflow check proved, in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.adb:341:50: info: predicate check proved, in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.adb:341:57: info: precondition proved, in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.adb:354:14: info: initialization of "Res" proved, in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.adb:356:17: medium: implicit aspect Always_Terminates on "Transform" could be incorrect, call via access-to-subprogram might be nonterminating, in instantiation at test_sequence_ho.adb:61 [possible explanation: call could hide recursive calls]
+spark-containers-functional-vectors-higher_order.adb:356:20: info: precondition proved, in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.adb:356:46: info: precondition proved, in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.adb:356:54: info: range check proved, in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.adb:357:36: info: loop invariant initialization proved, in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.adb:357:36: info: loop invariant preservation proved, in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.adb:358:13: medium: implicit aspect Always_Terminates on "Transform" could be incorrect, call via access-to-subprogram might be nonterminating, in instantiation at test_sequence_ho.adb:61 [possible explanation: call could hide recursive calls]
+spark-containers-functional-vectors-higher_order.adb:359:16: info: loop invariant initialization proved, in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.adb:359:16: info: loop invariant preservation proved, in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.adb:361:22: info: precondition proved, in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.adb:361:32: info: range check proved, in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.adb:361:52: info: precondition proved, in instantiation at test_sequence_ho.adb:61
+spark-containers-functional-vectors-higher_order.adb:361:60: info: range check proved, in instantiation at test_sequence_ho.adb:61
 spark-containers-functional-vectors-higher_order.ads:18:27: info: function contract feasibility proved, in instantiation at test_sequence_ho.adb:61
 spark-containers-functional-vectors-higher_order.ads:25:06: info: data dependencies proved, in instantiation at test_sequence_ho.adb:61
 spark-containers-functional-vectors-higher_order.ads:27:18: info: postcondition proved, in instantiation at test_sequence_ho.adb:61
@@ -470,8 +470,8 @@ test_sequence_ho.adb:61:04: info: expression function body of subprograms with a
 test_sequence_ho.adb:61:04: info: expression function body of subprograms with a numeric variant might not be available on recursive calls
 test_sequence_ho.adb:61:04: info: function contract might not be available on recursive calls
 test_sequence_ho.adb:61:04: info: function contract might not be available on recursive calls
-test_sequence_ho.adb:61:04: info: in instantiation at spark-containers-functional-vectors-higher_order.adb:16
-test_sequence_ho.adb:61:04: info: in instantiation at spark-containers-functional-vectors-higher_order.adb:16
-test_sequence_ho.adb:61:04: info: in instantiation at spark-containers-functional-vectors-higher_order.adb:30
-test_sequence_ho.adb:61:04: info: in instantiation at spark-containers-functional-vectors-higher_order.adb:30
-test_sequence_ho.adb:61:04: info: in instantiation at spark-containers-functional-vectors-higher_order.adb:45
+test_sequence_ho.adb:61:04: info: in instantiation at spark-containers-functional-vectors-higher_order.adb:18
+test_sequence_ho.adb:61:04: info: in instantiation at spark-containers-functional-vectors-higher_order.adb:18
+test_sequence_ho.adb:61:04: info: in instantiation at spark-containers-functional-vectors-higher_order.adb:32
+test_sequence_ho.adb:61:04: info: in instantiation at spark-containers-functional-vectors-higher_order.adb:32
+test_sequence_ho.adb:61:04: info: in instantiation at spark-containers-functional-vectors-higher_order.adb:47
