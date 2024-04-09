@@ -49,4 +49,14 @@ private
    type T_P2 (D : Integer := 1) is null record with
      Predicate => D /= 0;
 
+   --  Non-conforming types which are not visible from the public part
+   --  of the package are OK.
+
+   type Int_Acc is access all Integer;
+
+   type Int_Relaxed is new Integer with Relaxed_Initialization;
+
+   type Only_Relaxed is record
+      F1, F2 : Int_Relaxed;
+   end record;
 end Hidden_Private_Part;

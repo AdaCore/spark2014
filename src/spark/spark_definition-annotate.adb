@@ -39,10 +39,12 @@ with Flow_Utility;                 use Flow_Utility;
 with Gnat2Why_Args;
 with Namet;                        use Namet;
 with Nlists;                       use Nlists;
+with Opt;
 with Rtsfind;                      use Rtsfind;
 with Sem_Aux;                      use Sem_Aux;
 with Sem_Ch12;
 with Sem_Ch13;                     use Sem_Ch13;
+with Sem_Prag;                     use Sem_Prag;
 with Sinfo.Utils;                  use Sinfo.Utils;
 with Sinput;                       use Sinput;
 with Snames;                       use Snames;
@@ -2502,6 +2504,7 @@ package body SPARK_Definition.Annotate is
       Unhide           : Boolean;
       Prag             : Node_Id)
    is
+      use type Opt.SPARK_Mode_Type;
       Annot   : constant String :=
         (if Unhide then "Unhide_Info" else "Hide_Info");
       Ok      : Boolean;
@@ -2668,6 +2671,16 @@ package body SPARK_Definition.Annotate is
                   & "private parts shall be in a visible package",
                   Prag);
             end if;
+            return;
+
+         elsif No (SPARK_Pragma (Ent))
+           or else Get_SPARK_Mode_From_Annotation (SPARK_Pragma (Ent))
+             /= Opt.On
+         then
+            Error_Msg_N_If
+              ("package annotated with a pragma Annotate " & Annot & " for "
+               & "private parts shall be in SPARK",
+               Prag);
             return;
          end if;
 
