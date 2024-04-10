@@ -2507,14 +2507,15 @@ package body Why.Gen.Records is
                  New_Record_Access
                    (Name  => +A_Ident,
                     Field => To_Ident (WNE_Rec_Split_Discrs));
-               Discr     : constant W_Term_Id :=
-                 +Insert_Conversion_To_Rep_No_Bool
-                   (Domain => EW_Term,
-                    Expr   => New_Record_Access
-                      (Name  => R_Access,
-                       Field => To_Why_Id
-                         (Ada_Discr, Local => not Reuse_Discr, Rec => Root),
-                       Typ   => EW_Abstract (Etype (Ada_Discr))));
+               Discr_Acc : constant W_Expr_Id := New_Record_Access
+                 (Name  => R_Access,
+                  Field => To_Why_Id
+                    (Ada_Discr, Local => not Reuse_Discr, Rec => Root),
+                  Typ   => EW_Abstract (Etype (Ada_Discr)));
+               Discr     : constant W_Term_Id := +Insert_Simple_Conversion
+                 (Domain => EW_Term,
+                  Expr   => Discr_Acc,
+                  To     => Base_Why_Type (Get_Type (Discr_Acc)));
                New_Cond  : constant W_Pred_Id :=
                  (if Is_Others_Choice (Discrete_Choices (Info.Parent_Variant))
                   then
