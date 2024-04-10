@@ -1,0 +1,5 @@
+hidden_ownership.ads:7:04: info: reclamation entity consistency proved (CVC5: 1 VC; Trivial: 1 VC)
+hidden_ownership.ads:22:13: info: implicit aspect Always_Terminates on "T_Acc_Holder_Is_Reclaimed" has been proved, subprogram will terminate
+hidden_ownership.ads:22:13: info: reclamation entity consistency proved (CVC5: 1 VC; Trivial: 1 VC)
+hidden_ownership.ads:35:13: info: implicit aspect Always_Terminates on "T_Priv_Needs_Reclamation" has been proved, subprogram will terminate
+hidden_ownership.ads:35:13: info: reclamation entity consistency proved (CVC5: 1 VC; Trivial: 1 VC)
