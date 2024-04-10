@@ -1084,8 +1084,9 @@ at the top of the private part of a package:
    :language: ada
    :linenos:
 
-Such an annotation is only allowed on library level packages and child
-units if they are visible from outside of the library. They cause the private
+Such an annotation is only allowed on library-level packages that are visible
+from outside the library unit. This excludes in particular nested packages in
+a package body or in a private child package. They cause the private
 parts of annotated packages to no longer be visible when verifying
 user code. However, they remain visible when analysing enclosing units and
 child packages. Note that using this annotation generally requires users to
@@ -1110,6 +1111,17 @@ abstraction is not enforced on private parts by default:
 .. literalinclude:: /examples/ug__hide_private_abstraction/test.out
    :language: none
    :linenos:
+
+.. note::
+
+   Private types declared in packages with hidden private parts should be
+   annotated with ``Ownership`` and ``Predefined_Equality`` annotations if
+   their full view is subject to ownership or if its predefined equality is
+   restricted (in particular if they have access parts). Otherwise, |GNATprove|
+   rejects the code with an error. See
+   :ref:`Annotation for Enforcing Ownership Checking on a Private Type`
+   and :ref:`Annotation for the Predefined Equality of Private Types` for more
+   information.
 
 By default, refined postconditions and bodies of expression functions declared
 in the body of a package are not visible from outside of this package. This
