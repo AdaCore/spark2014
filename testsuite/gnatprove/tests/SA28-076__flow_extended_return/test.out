@@ -2,12 +2,13 @@ id.adb:1:10: info: implicit aspect Always_Terminates on "Id" has been proved, su
 id.adb:2:12: info: postcondition proved (CVC5: 2 VC)
 nest_return.adb:13:07: info: initialization of "Temp" proved
 nest_return.adb:37:19: info: initialization of "Temp" proved
-nest_return.adb:38:19: info: no contextual analysis of "Return_Proc" (multiple returns)
+nest_return.adb:38:29: info: add a contract to analyze it separately from calling contexts
+nest_return.adb:38:29: info: local subprogram "Return_Proc" only analyzed in the context of calls
 nest_return.adb:38:55: info: initialization of "B" proved
+nest_return.adb:47:19: info: analyzing call to "Return_Proc" in context
 nest_return.ads:4:43: info: initialization of "Y" proved
 nest_return.ads:5:15: info: postcondition proved (CVC5: 2 VC)
 nest_return.ads:9:13: info: implicit aspect Always_Terminates on "Nesting_Func" has been proved, subprogram will terminate
 nest_return.ads:10:15: info: postcondition proved (CVC5: 2 VC)
-nest_return.ads:14:13: info: function contract might not be available on implicit recursive calls
 nest_return.ads:14:13: info: implicit aspect Always_Terminates on "Declare_Block_Func" has been proved, subprogram will terminate
 nest_return.ads:15:15: info: postcondition proved (CVC5: 2 VC)
