@@ -1,0 +1,11 @@
+project Hide_Private is
+
+   package Compiler is
+      for Switches ("Ada") use ("-gnat2020");
+   end Compiler;
+
+   package Prove is
+      for Proof_Switches ("Ada") use ("--report=all", "-u", "use_geometry.adb");
+   end Prove;
+
+end Hide_Private;

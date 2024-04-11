@@ -1,0 +1,14 @@
+
+use_geometry.adb:8:19: medium: assertion might fail
+    8 |   pragma Assert ((Area (X) >= 3) = (Perimeter (X) >= 8));
+      |                  ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  possible fix: subprogram at line 3 should mention X in a precondition
+    3 |procedure Use_Geometry (X, Y : Rectangle) with
+      |^ here
+
+use_geometry.adb:11:12: medium: assertion might fail, cannot prove X = Y
+   11 |      then X = Y);
+      |           ^~~~~
+  possible fix: subprogram at line 3 should mention X and Y in a precondition
+    3 |procedure Use_Geometry (X, Y : Rectangle) with
+      |^ here
