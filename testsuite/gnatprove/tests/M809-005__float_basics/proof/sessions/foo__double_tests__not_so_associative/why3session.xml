@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE why3session PUBLIC "-//Why3//proof session v5//EN"
-"http://why3.lri.fr/why3session.dtd">
+"https://www.why3.org/why3session.dtd">
 <why3session shape_version="6">
 <prover id="0" name="altergo" version="1.30-gnatprove" timelimit="120" steplimit="10000" memlimit="0"/>
 <prover id="1" name="CVC5" version="0.0.7-gnatprove" timelimit="120" steplimit="365000" memlimit="0"/>
@@ -17,25 +17,25 @@
   <proof prover="0"><result status="steplimitexceeded" steps="3777"/></proof>
   <proof prover="1"><result status="unknown" steps="69141"/></proof>
   <proof prover="2"><result status="unknown" steps="98255"/></proof>
-  <proof prover="4"><result status="unknown" steps="227"/></proof>
+  <proof prover="4"><result status="unknown" steps="225"/></proof>
   </goal>
   <goal name="def&#39;vc.1">
   <proof prover="0"><result status="steplimitexceeded" steps="3939"/></proof>
   <proof prover="1"><result status="unknown" steps="104755"/></proof>
   <proof prover="2"><result status="unknown" steps="921266"/></proof>
-  <proof prover="4"><result status="unknown" steps="256"/></proof>
+  <proof prover="4"><result status="unknown" steps="254"/></proof>
   </goal>
   <goal name="def&#39;vc.2">
   <proof prover="0"><result status="steplimitexceeded" steps="3247"/></proof>
   <proof prover="1"><result status="unknown" steps="140476"/></proof>
   <proof prover="2"><result status="unknown" steps="884403"/></proof>
-  <proof prover="4"><result status="unknown" steps="283"/></proof>
+  <proof prover="4"><result status="unknown" steps="281"/></proof>
   </goal>
   <goal name="def&#39;vc.3">
   <proof prover="0"><result status="steplimitexceeded" steps="4498"/></proof>
   <proof prover="1"><result status="unknown" steps="204333"/></proof>
   <proof prover="2"><result status="unknown" steps="1626794"/></proof>
-  <proof prover="4"><result status="unknown" steps="313"/></proof>
+  <proof prover="4"><result status="unknown" steps="311"/></proof>
   </goal>
   <goal name="def&#39;vc.4" proved="true">
   <proof prover="3"><result status="valid" steps="1"/></proof>
@@ -44,7 +44,7 @@
   <proof prover="0"><result status="steplimitexceeded" steps="4095"/></proof>
   <proof prover="1"><result status="unknown" steps="197324"/></proof>
   <proof prover="2"><result status="steplimitexceeded" steps="8450159"/></proof>
-  <proof prover="4"><result status="unknown" steps="2629"/></proof>
+  <proof prover="4"><result status="unknown" steps="2627"/></proof>
   </goal>
  </transf>
  </goal>

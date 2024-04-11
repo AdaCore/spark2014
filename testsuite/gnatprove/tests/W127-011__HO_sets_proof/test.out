@@ -87,47 +87,43 @@ spark-containers-functional-sets-higher_order.adb:153:47: info: predicate check 
 spark-containers-functional-sets-higher_order.adb:153:49: info: predicate check proved, in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.adb:153:57: info: predicate check proved, in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.adb:164:27: info: predicate check proved, in instantiation at test_set_ho.adb:49
+spark-containers-functional-sets-higher_order.adb:164:27: info: refined post proved, in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.adb:164:53: info: predicate check proved, in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.adb:166:40: medium: null exclusion check might fail, in instantiation at test_set_ho.adb:49 [possible fix: subprogram at spark-containers-functional-sets-higher_order.ads:75 should mention New_Item in a precondition]
+spark-containers-functional-sets-higher_order.adb:166:40: info: null exclusion check proved, in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.adb:167:16: info: predicate check proved, in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.adb:167:41: info: predicate check proved, in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.adb:170:13: medium: refined postcondition might fail, cannot prove Contains (Create'Result, New_Item (I)), in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.adb:170:48: medium: in inlined predicate at a-nbnbin.ads:55
-spark-containers-functional-sets-higher_order.adb:170:48: medium: predicate check might fail, cannot prove Big_Positive > To_Big_Integer (0), in instantiation at test_set_ho.adb:49
+spark-containers-functional-sets-higher_order.adb:170:48: info: predicate check proved, in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.adb:171:08: medium: implicit aspect Always_Terminates on "Create" could be incorrect, call via access-to-subprogram might be nonterminating, in instantiation at test_set_ho.adb:49 [possible explanation: call could hide recursive calls]
-spark-containers-functional-sets-higher_order.adb:174:50: medium: in inlined predicate at a-nbnbin.ads:55
-spark-containers-functional-sets-higher_order.adb:174:50: medium: predicate check might fail, cannot prove Big_Positive > To_Big_Integer (0), in instantiation at test_set_ho.adb:49
+spark-containers-functional-sets-higher_order.adb:174:50: info: predicate check proved, in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.adb:176:26: info: predicate check proved, in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.adb:178:14: info: initialization of "Res" proved, in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.adb:179:16: info: predicate check proved, in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.adb:179:20: info: predicate check proved, in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.adb:180:34: medium: loop variant might fail, in instantiation at test_set_ho.adb:49
+spark-containers-functional-sets-higher_order.adb:180:34: info: loop variant proved, in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.adb:180:47: info: predicate check proved, in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.adb:180:58: medium: range check might fail, in instantiation at test_set_ho.adb:49 [reason for check: expression of type Big_Integer must be non-negative]
+spark-containers-functional-sets-higher_order.adb:180:58: info: range check proved, in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.adb:180:60: info: predicate check proved, in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.adb:181:36: info: loop invariant initialization proved, in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.adb:181:36: info: loop invariant preservation proved, in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.adb:181:36: info: predicate check proved, in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.adb:181:40: info: predicate check proved, in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.adb:182:36: info: loop invariant initialization proved, in instantiation at test_set_ho.adb:49
+spark-containers-functional-sets-higher_order.adb:182:36: info: loop invariant preservation proved, in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.adb:182:36: info: predicate check proved, in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.adb:182:36: medium: loop invariant might not be preserved by an arbitrary iteration, in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.adb:182:52: info: predicate check proved, in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.adb:184:16: info: loop invariant initialization proved, in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.adb:184:45: medium: null exclusion check might fail, in instantiation at test_set_ho.adb:49 [possible fix: subprogram at spark-containers-functional-sets-higher_order.ads:75 should mention New_Item in a precondition]
+spark-containers-functional-sets-higher_order.adb:184:16: info: loop invariant preservation proved, in instantiation at test_set_ho.adb:49
+spark-containers-functional-sets-higher_order.adb:184:45: info: null exclusion check proved, in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.adb:184:60: info: predicate check proved, in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.adb:184:60: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove Length (Res) = I, in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.adb:184:75: info: predicate check proved, in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.adb:185:13: medium: implicit aspect Always_Terminates on "Create" could be incorrect, call via access-to-subprogram might be nonterminating, in instantiation at test_set_ho.adb:49 [possible explanation: call could hide recursive calls]
 spark-containers-functional-sets-higher_order.adb:186:16: info: loop invariant initialization proved, in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.adb:186:48: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove Contains (Res, New_Item (J)), in instantiation at test_set_ho.adb:49 [possible fix: you should consider adding a postcondition to type Create]
-spark-containers-functional-sets-higher_order.adb:186:73: medium: in inlined predicate at a-nbnbin.ads:55
-spark-containers-functional-sets-higher_order.adb:186:73: medium: predicate check might fail, cannot prove Big_Positive > To_Big_Integer (0), in instantiation at test_set_ho.adb:49
+spark-containers-functional-sets-higher_order.adb:186:16: info: loop invariant preservation proved, in instantiation at test_set_ho.adb:49
+spark-containers-functional-sets-higher_order.adb:186:73: info: predicate check proved, in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.adb:187:13: medium: implicit aspect Always_Terminates on "Create" could be incorrect, call via access-to-subprogram might be nonterminating, in instantiation at test_set_ho.adb:49 [possible explanation: call could hide recursive calls]
 spark-containers-functional-sets-higher_order.adb:188:16: info: loop invariant initialization proved, in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.adb:189:19: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove (for some J in Interval'(1, I) => Equivalent_Elements (E, New_Item (J))), in instantiation at test_set_ho.adb:49 [possible fix: you should consider adding a postcondition to type Create]
-spark-containers-functional-sets-higher_order.adb:190:57: medium: in inlined predicate at a-nbnbin.ads:55
-spark-containers-functional-sets-higher_order.adb:190:57: medium: predicate check might fail, cannot prove Big_Positive > To_Big_Integer (0), in instantiation at test_set_ho.adb:49
+spark-containers-functional-sets-higher_order.adb:188:16: info: loop invariant preservation proved, in instantiation at test_set_ho.adb:49
+spark-containers-functional-sets-higher_order.adb:190:57: info: predicate check proved, in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.adb:191:18: info: predicate check proved, in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.adb:191:20: info: predicate check proved, in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.adb:191:22: info: predicate check proved, in instantiation at test_set_ho.adb:49
@@ -135,8 +131,7 @@ spark-containers-functional-sets-higher_order.adb:192:13: medium: implicit aspec
 spark-containers-functional-sets-higher_order.adb:192:45: info: predicate check proved, in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.adb:193:20: medium: implicit aspect Always_Terminates on "Create" could be incorrect, call via access-to-subprogram might be nonterminating, in instantiation at test_set_ho.adb:49 [possible explanation: call could hide recursive calls]
 spark-containers-functional-sets-higher_order.adb:193:23: info: precondition proved, in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.adb:193:43: medium: in inlined predicate at a-nbnbin.ads:55
-spark-containers-functional-sets-higher_order.adb:193:43: medium: predicate check might fail, cannot prove Big_Positive > To_Big_Integer (0), in instantiation at test_set_ho.adb:49
+spark-containers-functional-sets-higher_order.adb:193:43: info: predicate check proved, in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.adb:209:27: info: predicate check proved, in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.adb:211:14: info: initialization of "Res" proved, in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.adb:212:16: info: predicate check proved, in instantiation at test_set_ho.adb:49
@@ -372,14 +367,12 @@ spark-containers-functional-sets-higher_order.ads:70:08: medium: implicit aspect
 spark-containers-functional-sets-higher_order.ads:73:53: info: predicate check proved, in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.ads:77:29: info: function contract feasibility proved, in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.ads:85:06: info: data dependencies proved, in instantiation at test_set_ho.adb:49
+spark-containers-functional-sets-higher_order.ads:87:18: info: postcondition proved, in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.ads:87:18: info: predicate check proved, in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.ads:87:18: medium: postcondition might fail, cannot prove Length (Create'Result) <= New_Length, in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.ads:87:44: info: predicate check proved, in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.ads:90:49: medium: in inlined predicate at a-nbnbin.ads:55
-spark-containers-functional-sets-higher_order.ads:90:49: medium: predicate check might fail, cannot prove Big_Positive > To_Big_Integer (0), in instantiation at test_set_ho.adb:49
+spark-containers-functional-sets-higher_order.ads:90:49: info: predicate check proved, in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.ads:91:08: medium: implicit aspect Always_Terminates on "Create" could be incorrect, call via access-to-subprogram might be nonterminating, in instantiation at test_set_ho.adb:49 [possible explanation: call could hide recursive calls]
-spark-containers-functional-sets-higher_order.ads:94:53: medium: in inlined predicate at a-nbnbin.ads:55
-spark-containers-functional-sets-higher_order.ads:94:53: medium: predicate check might fail, cannot prove Big_Positive > To_Big_Integer (0), in instantiation at test_set_ho.adb:49
+spark-containers-functional-sets-higher_order.ads:94:53: info: predicate check proved, in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.ads:98:29: info: function contract feasibility proved, in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.ads:105:06: info: data dependencies proved, in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.ads:108:09: medium: aspect Always_Terminates on "Lemma_Create_Distinct" could be incorrect, call via access-to-subprogram might be nonterminating, in instantiation at test_set_ho.adb:49 [possible explanation: call could hide recursive calls]
