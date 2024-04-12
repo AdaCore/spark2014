@@ -590,14 +590,15 @@ elaboration_demo.adb:5:61: info: precondition proved (CVC5: 1 VC)
 elaboration_demo.adb:5:74: info: division check proved (CVC5: 1 VC)
 elaboration_demo.adb:5:74: info: float overflow check proved (Trivial)
 enum_example.adb:4:35: info: exceptional case proved (Trivial: 1 VC)
-enum_example.adb:15:04: info: no contextual analysis of "Next_Day" (multiple returns)
+enum_example.adb:15:13: info: add a contract to analyze it separately from calling contexts
 enum_example.adb:15:13: info: implicit aspect Always_Terminates on "Next_Day" has been proved, subprogram will terminate
-enum_example.adb:15:13: info: implicit function contract might not be available on calls from enclosing unit
-enum_example.adb:20:32: info: range check proved (CVC5: 1 VC)
+enum_example.adb:15:13: info: local subprogram "Next_Day" only analyzed in the context of calls
+enum_example.adb:20:32: info: range check proved (CVC5: 1 VC), in call inlined at enum_example.adb:30
 enum_example.adb:24:04: info: initialization of "Today" proved
 enum_example.adb:25:04: info: initialization of "Tomorrow" proved
 enum_example.adb:26:04: info: initialization of "Count" proved
 enum_example.adb:29:10: info: only expected exception raised (CVC5: 1 VC)
+enum_example.adb:30:16: info: analyzing call to "Next_Day" in context
 enum_example.adb:32:10: info: only expected exception raised (CVC5: 1 VC)
 enum_example.adb:43:47: info: unrolling loop
 enum_example.adb:44:13: info: only expected exception raised (CVC5: 5 VC)
