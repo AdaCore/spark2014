@@ -1,0 +1,103 @@
+--  This project file is intended for use with reduced runtimes without
+--  Ada.Numerics.Big_Numbers or Ada.Finalization units.
+
+project SPARKlib_Light extends "sparklib_light_external" is
+
+   -- This project is not supposed to be used directly. Instead, copy it in
+   -- your code and provide appropriate values for the object directory
+   -- Object_Dir (so that compilation and artifacts are generated in
+   -- directories under your control) and the list of excluded source files
+   -- Excluded_Source_Files (so that you only compile and analyse files from
+   -- the library that you need).
+
+   for Object_Dir use "obj";
+
+   for Source_Dirs use SPARKlib_Light_External'Source_Dirs;
+
+   for Excluded_Source_Files use SPARKlib_Light_External'Excluded_Source_Files;
+      -- Uncomment the files you want to exclude from your project
+      -- & (
+      -- "spark-big_integers__light.ads",
+      -- "spark-big_intervals__light.ads",
+      -- "spark-big_reals__light.adb",
+      -- "spark-big_reals__light.ads",
+      -- "spark-containers__exec.ads",
+      -- "spark-containers-formal.ads",
+      -- "spark-containers-formal-doubly_linked_lists.adb",
+      -- "spark-containers-formal-doubly_linked_lists.ads",
+      -- "spark-containers-functional.ads",
+      -- "spark-containers-functional-base.adb",
+      -- "spark-containers-functional-base__light.ads",
+      -- "spark-containers-functional-infinite_sequences-higher_order.adb",
+      -- "spark-containers-functional-infinite_sequences-higher_order.ads",
+      -- "spark-containers-functional-infinite_sequences.adb",
+      -- "spark-containers-functional-infinite_sequences__light.ads",
+      -- "spark-containers-functional-maps-higher_order.adb",
+      -- "spark-containers-functional-maps-higher_order.ads",
+      -- "spark-containers-functional-maps.adb",
+      -- "spark-containers-functional-maps__light.ads",
+      -- "spark-containers-functional-multisets.adb",
+      -- "spark-containers-functional-multisets__light.ads",
+      -- "spark-containers-functional-sets-higher_order.adb",
+      -- "spark-containers-functional-sets-higher_order.ads",
+      -- "spark-containers-functional-sets.adb",
+      -- "spark-containers-functional-sets__light.ads",
+      -- "spark-containers-functional-vectors-higher_order.adb",
+      -- "spark-containers-functional-vectors-higher_order.ads",
+      -- "spark-containers-functional-vectors.adb",
+      -- "spark-containers-functional-vectors__light.ads",
+      -- "spark-containers-parameter_checks.adb",
+      -- "spark-containers-parameter_checks.ads",
+      -- "spark-containers-stable_sorting.adb",
+      -- "spark-containers-stable_sorting.ads",
+      -- "spark-containers-types__light.ads",
+      -- "spark-conversions.ads",
+      -- "spark-conversions-float_conversions.ads",
+      -- "spark-conversions-long_float_conversions.ads",
+      -- "spark-conversions-long_integer_conversions.ads",
+      -- "spark-cut_operations.adb",
+      -- "spark-cut_operations.ads",
+      -- "spark-higher_order.adb",
+      -- "spark-higher_order.ads",
+      -- "spark-higher_order-fold.adb",
+      -- "spark-higher_order-fold.ads",
+      -- "spark-lemmas.ads",
+      -- "spark-lemmas-arithmetic.adb",
+      -- "spark-lemmas-arithmetic.ads",
+      -- "spark-lemmas-constrained_array.adb",
+      -- "spark-lemmas-constrained_array.ads",
+      -- "spark-lemmas-fixed_point_arithmetic.adb",
+      -- "spark-lemmas-fixed_point_arithmetic.ads",
+      -- "spark-lemmas-float_arithmetic.ads",
+      -- "spark-lemmas-float_base.ads",
+      -- "spark-lemmas-floating_point_arithmetic.adb",
+      -- "spark-lemmas-floating_point_arithmetic.ads",
+      -- "spark-lemmas-integer_arithmetic.ads",
+      -- "spark-lemmas-long_float_arithmetic.ads",
+      -- "spark-lemmas-long_integer_arithmetic.ads",
+      -- "spark-lemmas-mod32_arithmetic.ads",
+      -- "spark-lemmas-mod64_arithmetic.ads",
+      -- "spark-lemmas-mod_arithmetic.adb",
+      -- "spark-lemmas-mod_arithmetic.ads",
+      -- "spark-lemmas-unconstrained_array.adb",
+      -- "spark-lemmas-unconstrained_array.ads",
+      -- "spark-pointers-abstract_maps.ads",
+      -- "spark-pointers-abstract_sets.adb",
+      -- "spark-pointers-abstract_sets.ads",
+      -- "spark-pointers.ads",
+      -- "spark-pointers-pointers_with_aliasing.adb",
+      -- "spark-pointers-pointers_with_aliasing.ads",
+      -- "spark-pointers-pointers_with_aliasing_separate_memory.adb",
+      -- "spark-pointers-pointers_with_aliasing_separate_memory.ads",
+      -- "spark-tests.ads",
+      -- "spark-tests-array_lemmas.adb",
+      -- "spark-tests-array_lemmas.ads"
+      -- );
+
+   package Compiler is
+      --  Compile SPARKlib with assertions to be able to execute ghost code
+      for Default_Switches ("Ada") use
+         SPARKlib_Light_External.Common_Default_Switches & ("-gnata");
+   end Compiler;
+
+end SPARKlib_Light;
