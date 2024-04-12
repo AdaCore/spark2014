@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE why3session PUBLIC "-//Why3//proof session v5//EN"
-"http://why3.lri.fr/why3session.dtd">
+"https://www.why3.org/why3session.dtd">
 <why3session shape_version="6">
 <prover id="0" name="altergo" version="1.30-gnatprove" timelimit="120" steplimit="10000" memlimit="0"/>
 <prover id="1" name="CVC5" version="0.0.7-gnatprove" timelimit="120" steplimit="365000" memlimit="0"/>
@@ -20,22 +20,22 @@
   <proof prover="0"><result status="steplimitexceeded" steps="3514"/></proof>
   <proof prover="1"><result status="unknown" steps="23459"/></proof>
   <proof prover="2"><result status="unknown" steps="983"/></proof>
-  <proof prover="4"><result status="unknown" steps="150"/></proof>
+  <proof prover="4"><result status="unknown" steps="148"/></proof>
   </goal>
   <goal name="def&#39;vc.2">
   <proof prover="0"><result status="steplimitexceeded" steps="3683"/></proof>
   <proof prover="1"><result status="steplimitexceeded" steps="660630"/></proof>
   <proof prover="2"><result status="unknown" steps="2347533"/></proof>
-  <proof prover="4"><result status="unknown" steps="210"/></proof>
+  <proof prover="4"><result status="unknown" steps="208"/></proof>
   </goal>
   <goal name="def&#39;vc.3" proved="true">
-  <proof prover="0"><result status="highfailure"/></proof>
+  <proof prover="0"><result status="valid" steps="597"/></proof>
   <proof prover="1"><result status="highfailure"/></proof>
   <proof prover="2"><result status="valid" steps="16694"/></proof>
   <proof prover="4"><result status="failure" steps="0"/></proof>
   </goal>
   <goal name="def&#39;vc.4" proved="true">
-  <proof prover="0"><result status="valid" steps="222"/></proof>
+  <proof prover="0"><result status="failure" steps="0"/></proof>
   <proof prover="1"><result status="valid" steps="14"/></proof>
   <proof prover="2"><result status="failure" steps="0"/></proof>
   <proof prover="4"><result status="failure" steps="0"/></proof>
@@ -47,7 +47,7 @@
   <proof prover="0"><result status="steplimitexceeded" steps="3752"/></proof>
   <proof prover="1"><result status="steplimitexceeded" steps="660388"/></proof>
   <proof prover="2"><result status="unknown" steps="2065661"/></proof>
-  <proof prover="4"><result status="unknown" steps="258"/></proof>
+  <proof prover="4"><result status="unknown" steps="256"/></proof>
   </goal>
  </transf>
  </goal>

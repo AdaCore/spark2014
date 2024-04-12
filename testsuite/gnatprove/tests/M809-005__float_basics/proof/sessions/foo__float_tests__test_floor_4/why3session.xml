@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE why3session PUBLIC "-//Why3//proof session v5//EN"
-"http://why3.lri.fr/why3session.dtd">
+"https://www.why3.org/why3session.dtd">
 <why3session shape_version="6">
 <prover id="0" name="altergo" version="1.30-gnatprove" timelimit="120" steplimit="10000" memlimit="0"/>
 <prover id="1" name="CVC5" version="0.0.7-gnatprove" timelimit="120" steplimit="365000" memlimit="0"/>
@@ -29,7 +29,7 @@
   <proof prover="0"><result status="steplimitexceeded" steps="5470"/></proof>
   <proof prover="1"><result status="unknown" steps="28331"/></proof>
   <proof prover="2"><result status="unknown" steps="593167"/></proof>
-  <proof prover="4"><result status="unknown" steps="390"/></proof>
+  <proof prover="4"><result status="unknown" steps="388"/></proof>
   </goal>
  </transf>
  </goal>

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE why3session PUBLIC "-//Why3//proof session v5//EN"
-"http://why3.lri.fr/why3session.dtd">
+"https://www.why3.org/why3session.dtd">
 <why3session shape_version="6">
 <prover id="0" name="altergo" version="1.30-gnatprove" timelimit="120" steplimit="10000" memlimit="0"/>
 <prover id="1" name="CVC5" version="0.0.7-gnatprove" timelimit="120" steplimit="365000" memlimit="0"/>
@@ -20,10 +20,10 @@
   <proof prover="0"><result status="steplimitexceeded" steps="3881"/></proof>
   <proof prover="1"><result status="unknown" steps="46425"/></proof>
   <proof prover="2"><result status="unknown" steps="277287"/></proof>
-  <proof prover="4"><result status="unknown" steps="223"/></proof>
+  <proof prover="4"><result status="unknown" steps="221"/></proof>
   </goal>
   <goal name="def&#39;vc.2" proved="true">
-  <proof prover="0"><result status="valid" steps="456"/></proof>
+  <proof prover="0"><result status="highfailure"/></proof>
   <proof prover="1"><result status="valid" steps="46574"/></proof>
   <proof prover="2"><result status="failure" steps="0"/></proof>
   <proof prover="4"><result status="failure" steps="0"/></proof>
@@ -32,13 +32,13 @@
   <proof prover="0"><result status="steplimitexceeded" steps="1436"/></proof>
   <proof prover="1"><result status="unknown" steps="192207"/></proof>
   <proof prover="2"><result status="unknown" steps="2484533"/></proof>
-  <proof prover="4"><result status="unknown" steps="253"/></proof>
+  <proof prover="4"><result status="unknown" steps="251"/></proof>
   </goal>
   <goal name="def&#39;vc.4" proved="true">
-  <proof prover="0"><result status="highfailure"/></proof>
+  <proof prover="0"><result status="steplimitexceeded" steps="1827"/></proof>
   <proof prover="1"><result status="highfailure"/></proof>
   <proof prover="2"><result status="highfailure"/></proof>
-  <proof prover="4"><result status="valid" steps="342"/></proof>
+  <proof prover="4"><result status="valid" steps="340"/></proof>
   </goal>
   <goal name="def&#39;vc.5" proved="true">
   <proof prover="0"><result status="valid" steps="948"/></proof>
@@ -53,7 +53,7 @@
   <proof prover="0"><result status="steplimitexceeded" steps="2582"/></proof>
   <proof prover="1"><result status="unknown" steps="249158"/></proof>
   <proof prover="2"><result status="steplimitexceeded" steps="8450413"/></proof>
-  <proof prover="4"><result status="unknown" steps="466"/></proof>
+  <proof prover="4"><result status="unknown" steps="464"/></proof>
   </goal>
   <goal name="def&#39;vc.8">
   </goal>

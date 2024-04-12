@@ -824,7 +824,8 @@ package body Gnat2Why.Expr is
       Expr        : W_Expr_Id;
       Domain      : EW_Domain;
       Params      : Transformation_Params)
-      return W_Expr_Id;
+      return W_Expr_Id
+     with Pre => Get_Type (Expr) = Base_Why_Type (Get_Type (Expr));
    --  For an expression Expr of a discrete type and a discrete Choice, build
    --  the expression that Expr belongs to the range expressed by Choice. In
    --  programs, also generate a check that dynamic choices are in the subtype
@@ -7916,8 +7917,7 @@ package body Gnat2Why.Expr is
       Matched_Expr : constant W_Expr_Id :=
         New_Temp_For_Expr
           (Transform_Expr (Expr,
-           Base_Why_Type_No_Bool
-             (Entity_Id'(Type_Of_Node (Expr))),
+           Base_Why_Type (Entity_Id'(Type_Of_Node (Expr))),
            Match_Domain,
            Params));
       Then_Expr    : constant W_Expr_Id := Generate_Branch_Expr
@@ -18571,14 +18571,12 @@ package body Gnat2Why.Expr is
                                 (Expr          => Low_Bound (Rng),
                                  Domain        => Subdomain,
                                  Params        => Params,
-                                 Expected_Type => Get_Typ
-                                   (W_Identifier_Id'(+Vars (1)))),
+                                 Expected_Type => Get_Type (Vars (1))),
                               High   => Transform_Expr
                                 (Expr          => High_Bound (Rng),
                                  Domain        => Subdomain,
                                  Params        => Params,
-                                 Expected_Type => Get_Typ
-                                   (W_Identifier_Id'(+Vars (1)))),
+                                 Expected_Type => Get_Type (Vars (1))),
                               Expr   => Vars (1));
                         when N_Aggregate =>
                            declare
@@ -20368,39 +20366,55 @@ package body Gnat2Why.Expr is
          end if;
 
       else
-         R := New_Comparison
-           (Symbol => Transform_Compare_Op
-              (N_Op_Eq, Base_Why_Type_No_Bool (Choice), Domain),
-            Left   => Expr,
-            Right  => Transform_Expr
+         declare
+            Base_Ty    : constant W_Type_Id := Get_Type (Expr);
+            --  We need to get the base Why type from Expr (not Choice) as the
+            --  context (typically index choice in array aggregates) may impose
+            --  EW_Int_Type for Boolean-Valued choices.
+
+            Need_Check : constant Boolean :=
+              Domain = EW_Prog
+              and then
+                (not Is_OK_Static_Expression (Choice)
+                 or else not Has_OK_Static_Scalar_Subtype (Choice_Type));
+            W_Choice   : W_Expr_Id := Transform_Expr
               (Expr          => Choice,
-               Expected_Type => Base_Why_Type_No_Bool (Choice),
+               Expected_Type => Base_Ty,
                Domain        => Subdomain,
-               Params        => Params),
-            Domain => Domain);
+               Params        => Params);
+         begin
+            if Need_Check then
+               W_Choice := New_Temp_For_Expr (W_Choice);
+            end if;
 
-         --  In programs, we generate a check that the non-static value of a
-         --  choice belongs to the given subtype.
+            R := New_Comparison
+              (Symbol => Transform_Compare_Op (N_Op_Eq, Base_Ty, Domain),
+               Left   => Expr,
+               Right  => W_Choice,
+               Domain => Domain);
 
-         if Domain = EW_Prog
-           and then (not Is_OK_Static_Expression (Choice)
-                     or else not Has_OK_Static_Scalar_Subtype (Choice_Type))
-         then
-            pragma Assert (Present (Choice_Type));
-            Prepend
-              (New_Ignore
-                 (Prog => Do_Range_Check
-                      (Ada_Node => Choice,
-                       Ty       => Choice_Type,
-                       W_Expr   =>
-                         Transform_Expr (Expr          => Choice,
-                                         Expected_Type =>
-                                           Base_Why_Type_No_Bool (Choice),
-                                         Domain        => Subdomain,
-                                         Params        => Params),
-                       Check_Kind => RCK_Range)),
-               R);
-         end if;
+            --  In programs, we generate a check that the non-static value of a
+            --  choice belongs to the given subtype.
+
+            if Need_Check then
+               pragma Assert (Present (Choice_Type));
+               Prepend
+                 (New_Ignore
+                    (Prog => Do_Range_Check
+                       (Ada_Node   => Choice,
+                        Ty         => Choice_Type,
+                        W_Expr     => Insert_Simple_Conversion
+                          (Domain => Domain,
+                           Expr   => W_Choice,
+                           To     => Base_Why_Type_No_Bool (Base_Ty)),
+                        Check_Kind => RCK_Range)),
+                  R);
+               R := Binding_For_Temp
+                 (Domain  => Domain,
+                  Tmp     => W_Choice,
+                  Context => R);
+            end if;
+         end;
       end if;
 
       return R;
@@ -20555,7 +20569,7 @@ package body Gnat2Why.Expr is
       then
          T := New_Discrete_Constant
            (Value => Expr_Value (Expr),
-            Typ   => Base_Why_Type_No_Bool (Expr_Type));
+            Typ   => Base_Why_Type (Expr_Type));
 
        --  Intrinsic operators should be translated as function calls in SPARK
        --  if the intrinsic pragma is located in a part with SPARK_Mode Off.
