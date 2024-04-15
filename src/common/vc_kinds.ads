@@ -517,53 +517,53 @@ package VC_Kinds is
    function Warning_Message (Kind : Misc_Warning_Kind) return String is
      (case Kind is
         when Warn_Address_To_Access =>
-          "?call to & is assumed to return a valid access"
+          "call to & is assumed to return a valid access"
           & " designating a valid value",
         when Warn_Alias_Atomic_Vol =>
-          "?aliased objects must have the same volatility and atomic status",
+          "aliased objects must have the same volatility and atomic status",
         when Warn_Alias_Different_Volatility =>
-          "?aliased objects have different volatile properties",
+          "aliased objects have different volatile properties",
         when Warn_Attribute_Valid =>
-          "?attribute Valid is assumed to return True",
+          "attribute Valid is assumed to return True",
         when Warn_Initialization_To_Alias =>
-          "?initialization of & is assumed to have no effects on"
+          "initialization of & is assumed to have no effects on"
           & " other non-volatile objects",
         when Warn_Function_Is_Valid =>
-          "?function Is_Valid is assumed to return True",
+          "function Is_Valid is assumed to return True",
         when Warn_No_Possible_Termination =>
-          "?procedure which does not return normally nor raises an exception"
+          "procedure which does not return normally nor raises an exception"
           & " cannot always terminate",
         when Warn_Pragma_Annotate_No_Check =>
-          "?no check message justified by this pragma",
+          "no check message justified by this pragma",
         when Warn_Pragma_Annotate_Proved_Check =>
-          "?only proved check messages justified by this pragma",
+          "only proved check messages justified by this pragma",
         when Warn_Pragma_Annotate_Terminating =>
-          "?Terminating, Always_Return, and Might_Not_Return annotations are"
+          "Terminating, Always_Return, and Might_Not_Return annotations are"
           & " deprecated, ignored",
         when Warn_Pragma_External_Axiomatization =>
-          "?External Axiomatizations are not supported anymore, ignored",
+          "External Axiomatizations are not supported anymore, ignored",
         when Warn_Pragma_Ignored =>
-          "?pragma % ignored (not yet supported)",
+          "pragma & ignored (not yet supported)",
         when Warn_Pragma_Overflow_Mode =>
-          "?pragma Overflow_Mode in code is ignored",
+          "pragma Overflow_Mode in code is ignored",
         when Warn_Precondition_Statically_False =>
-          "?precondition is statically False",
+          "precondition is statically False",
         when Warn_Unreferenced_Function =>
-          "?analyzing unreferenced function &",
+          "analyzing unreferenced function &",
         when Warn_Unreferenced_Procedure =>
-          "?analyzing unreferenced procedure &",
+          "analyzing unreferenced procedure &",
         when Warn_Useless_Relaxed_Init_Fun =>
-          "?the result of & cannot be partially initialized",
+          "the result of & cannot be partially initialized",
         when Warn_Useless_Relaxed_Init_Obj =>
-          "?& cannot be partially initialized",
+          "& cannot be partially initialized",
         when Warn_Variant_Not_Recursive =>
-          "?no recursive call visible",
+          "no recursive call visible",
 
         --  Warnings guaranteed to be issued
         when Warn_Assumed_Always_Terminates =>
-          "?no Always_Terminates aspect available for &",
+          "no Always_Terminates aspect available for &",
         when Warn_Assumed_Global_Null =>
-          "?no Global contract available for &",
+          "no Global contract available for &",
         --  The warning message is customized depending on the assumptions that
         --  need to be checked.
         when Warn_Imprecisely_Supported_Address =>
@@ -571,11 +571,11 @@ package VC_Kinds is
 
         --  Warnings only issued when using switch --pedantic
         when Warn_Image_Attribute_Length =>
-          "?attribute % has an implementation-defined length",
+          "attribute & has an implementation-defined length",
         when Warn_Operator_Reassociation =>
-          "?possible reassociation due to missing parentheses",
+          "possible reassociation due to missing parentheses",
         when Warn_Representation_Attribute_Value =>
-          "?attribute % has an implementation-defined value"
+          "attribute & has an implementation-defined value"
      );
 
    function Unsupported_Message

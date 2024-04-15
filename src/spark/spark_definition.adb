@@ -34,7 +34,8 @@ with Common_Iterators;                use Common_Iterators;
 with Debug;
 with Einfo.Utils;                     use Einfo.Utils;
 with Elists;                          use Elists;
-with Errout;                          use Errout;
+with Errout;
+with Errout_Wrapper;                  use Errout_Wrapper;
 with Exp_Util;                        use Exp_Util;
 with Flow_Dependency_Maps;            use Flow_Dependency_Maps;
 with Flow_Error_Messages;             use Flow_Error_Messages;
@@ -2788,10 +2789,12 @@ package body SPARK_Definition is
             begin
                if No (Search_Component_By_Name (Prefix_Type, Selector)) then
                   if SPARK_Pragma_Is (Opt.On) then
-                     Error_Msg_NE
-                       ("component not present in }", N, Prefix_Type);
                      Error_Msg_N
-                       ("\static expression fails Constraint_Check", N);
+                       ("component not present in &",
+                        N,
+                        Names => [Prefix_Type],
+                        Continuations =>
+                          ["static expression fails Constraint_Check"]);
                   end if;
 
                   return;
@@ -3075,8 +3078,10 @@ package body SPARK_Definition is
                         then
                            Mark_Unsupported
                              (Lim_Conv_Fixed_Integer, N,
-                              Cont_Msg => "fixed-point with fractional small "
-                              & "leads to imprecise conversion");
+                              Cont_Msg =>
+                                Create
+                                ("fixed-point with fractional small "
+                                 & "leads to imprecise conversion"));
                         end if;
                      end;
 
@@ -3354,12 +3359,13 @@ package body SPARK_Definition is
                                  Entity (Selector_Name (Choice))))
                            then
                               if SPARK_Pragma_Is (Opt.On) then
-                                 Error_Msg_NE
-                                   ("component not present in }",
-                                    Choice, Pref_Ty);
                                  Error_Msg_N
-                                   ("\static expression fails "
-                                    & "Constraint_Check", Choice);
+                                   ("component not present in &",
+                                    Choice,
+                                    Names => [Pref_Ty],
+                                    Continuations =>
+                                      ["static expression fails"
+                                       & " Constraint_Check"]);
                               end if;
 
                               return;
@@ -3811,6 +3817,7 @@ package body SPARK_Definition is
                if Nb_Warn > 0 then
                   declare
                      Msg : Unbounded_String;
+                     Cont : String_Lists.List;
                   begin
                      if Nb_Warn = 1 then
                         Msg := Warnings (1);
@@ -3826,23 +3833,28 @@ package body SPARK_Definition is
                         Msg := Msg & "and " & Warnings (Nb_Warn);
                      end if;
 
-                     Error_Msg_Code :=
-                       Explain_Code'Enum_Rep (EC_Address_Spec_Imprecise_Warn);
-                     Error_Msg_NE
-                       ("?address specification on & is imprecisely supported:"
-                        & " assuming " & To_String (Msg) & " '[[]']", E, E);
+                     if Nb_Cont > 0 then
+                        declare
+                           Msg : constant String :=
+                             (if Nb_Cont = 1 then To_String (Continuations (1))
+                              else To_String (Continuations (1)) & " and " &
+                                To_String (Continuations (2)));
+                        begin
+                           Cont.Append (Msg);
+                        end;
+                     end if;
+
+                     Error_Msg_N
+                       ("address specification on & is imprecisely supported:"
+                        & " assuming " & To_String (Msg),
+                        E,
+                        Kind => MK_Warning,
+                        Explain_Code =>
+                          Explain_Code'Enum_Rep
+                            (EC_Address_Spec_Imprecise_Warn),
+                        Continuations => Cont);
                   end;
 
-                  if Nb_Cont > 0 then
-                     declare
-                        Msg : constant String :=
-                          (if Nb_Cont = 1 then To_String (Continuations (1))
-                           else To_String (Continuations (1)) & " and " &
-                             To_String (Continuations (2)));
-                     begin
-                        Error_Msg_NE ('\' & Msg, E, E);
-                     end;
-                  end if;
                end if;
             end;
 
@@ -3929,9 +3941,6 @@ package body SPARK_Definition is
                begin
                   if (for some X in Volatile_Pragma_Id => Prop_Differs (X))
                   then
-                     Error_Msg_NE
-                       (Warning_Message (Warn_Alias_Different_Volatility),
-                        Address, E);
                      for Prop in Volatile_Pragma_Id loop
                         if Prop_Differs (Prop) then
                            if First then
@@ -3942,11 +3951,14 @@ package body SPARK_Definition is
                            end if;
                         end if;
                      end loop;
-                     Error_Msg_NE
-                       ("\values for property "
-                        & To_String (Buf)
-                        & " are different",
-                        Address, E);
+                     Error_Msg_N
+                       (Warning_Message (Warn_Alias_Different_Volatility),
+                        Address,
+                        Kind => MK_Warning,
+                        Names => [E],
+                        Continuations =>
+                          ["values for property " & To_String (Buf)
+                           & " are different"]);
                   end if;
                end;
             end if;
@@ -3960,9 +3972,11 @@ package body SPARK_Definition is
             if Has_Volatile (E) /= Has_Volatile (Aliased_Object)
               or else Is_Atomic (E) /= Is_Atomic (Aliased_Object)
             then
-               Error_Msg_NE
+               Error_Msg_N
                  (Warning_Message (Warn_Alias_Atomic_Vol),
-                  Address, E);
+                  Address,
+                  Kind => MK_Warning,
+                  Names => [E]);
             end if;
 
             --  We do not support overlays with Relaxed_Initialization yet
@@ -3997,12 +4011,16 @@ package body SPARK_Definition is
                --  variables.
 
                if E_Is_Constant then
-                  Error_Msg_NE
-                    (Warning_Message (Warn_Initialization_To_Alias),
-                     Address, E);
-                  Error_Msg_NE
-                    ("\consider annotating & with Import",
-                     Address, E);
+                  Error_Msg_N
+                    (Create
+                       (Warning_Message (Warn_Initialization_To_Alias),
+                        Names => [E]),
+                     Address,
+                     Kind => MK_Warning,
+                     Continuations =>
+                       [Create
+                            ("consider annotating & with Import",
+                             Names => [E])]);
                end if;
 
                --  Constants are aliased with constants, they should always be
@@ -4099,8 +4117,10 @@ package body SPARK_Definition is
 
             Mark_Unsupported
               (Lim_Null_Aggregate_In_Branching_Array_Aggregate, Inner,
-               Cont_Msg => "consider combining associations of enclosing"
-               & " multi-dimensional array aggregate into one");
+               Cont_Msg =>
+                 Create
+                   ("consider combining associations of enclosing"
+                    & " multi-dimensional array aggregate into one"));
             return;
          end if;
 
@@ -4320,8 +4340,12 @@ package body SPARK_Definition is
               and then Gnat2Why_Args.Pedantic
               and then Is_Enumeration_Type (Etype (P))
             then
-               Error_Msg_Name_1 := Aname;
-               Error_Msg_N (Warning_Message (Warn_Image_Attribute_Length), N);
+               Error_Msg_N
+                 (Create_N (Warning_Message (Warn_Image_Attribute_Length),
+                            N => N,
+                            Names => [Aname]),
+                  N,
+                  Kind => MK_Warning);
             end if;
 
          --  These attributes are supported, but generate a warning in
@@ -4386,16 +4410,23 @@ package body SPARK_Definition is
               and then SPARK_Pragma_Is (Opt.On)
               and then Gnat2Why_Args.Pedantic
             then
-               Error_Msg_Name_1 := Aname;
                Error_Msg_N
-                 (Warning_Message (Warn_Representation_Attribute_Value), N);
+                 (Create_N
+                    (Warning_Message (Warn_Representation_Attribute_Value),
+                     N     => N,
+                     Names => [Aname]),
+                  N,
+                  Kind => MK_Warning);
             end if;
 
          when Attribute_Valid =>
             if Emit_Warning_Info_Messages
               and then SPARK_Pragma_Is (Opt.On)
             then
-               Error_Msg_F (Warning_Message (Warn_Attribute_Valid), N);
+               Error_Msg_N (Warning_Message (Warn_Attribute_Valid),
+                            N,
+                            Kind => MK_Warning,
+                            First => True);
             end if;
 
          --  Attribute Initialized is used on prefixes with relaxed
@@ -4884,9 +4915,11 @@ package body SPARK_Definition is
                if Nkind (Left_Opnd (N)) in N_Op_Add | N_Op_Subtract
                  and then Paren_Count (Left_Opnd (N)) = 0
                then
-                  Error_Msg_F
+                  Error_Msg_N
                     (Warning_Message (Warn_Operator_Reassociation),
-                     Left_Opnd (N));
+                     Left_Opnd (N),
+                     Kind => MK_Warning,
+                     First => True);
                end if;
 
                if Nkind (Right_Opnd (N)) in N_Op_Add | N_Op_Subtract
@@ -4894,9 +4927,11 @@ package body SPARK_Definition is
                then
                   pragma Annotate
                     (Xcov, Exempt_On, "GNAT associates to the left");
-                  Error_Msg_F
+                  Error_Msg_N
                     (Warning_Message (Warn_Operator_Reassociation),
-                     Right_Opnd (N));
+                     Right_Opnd (N),
+                     Kind => MK_Warning,
+                     First => True);
                   pragma Annotate (Xcov, Exempt_Off);
                end if;
 
@@ -4904,9 +4939,11 @@ package body SPARK_Definition is
                if Nkind (Left_Opnd (N)) in N_Multiplying_Operator
                  and then Paren_Count (Left_Opnd (N)) = 0
                then
-                  Error_Msg_F
+                  Error_Msg_N
                     (Warning_Message (Warn_Operator_Reassociation),
-                     Left_Opnd (N));
+                     Left_Opnd (N),
+                     Kind => MK_Warning,
+                     First => True);
                end if;
 
                if Nkind (Right_Opnd (N)) in N_Multiplying_Operator
@@ -4914,9 +4951,11 @@ package body SPARK_Definition is
                then
                   pragma Annotate
                     (Xcov, Exempt_On, "GNAT associates to the left");
-                  Error_Msg_F
+                  Error_Msg_N
                     (Warning_Message (Warn_Operator_Reassociation),
-                     Right_Opnd (N));
+                     Right_Opnd (N),
+                     Kind => MK_Warning,
+                     First => True);
                   pragma Annotate (Xcov, Exempt_Off);
                end if;
 
@@ -5344,19 +5383,27 @@ package body SPARK_Definition is
          begin
             if Might_Have_Flow_Assumptions then
                if not Has_User_Supplied_Globals (E) then
-                  Error_Msg_NE
-                    (Warning_Message (Warn_Assumed_Global_Null), N, E);
-                  Error_Msg_NE
-                    ("\\assuming & has no effect on global items", N, E);
+                  Error_Msg_N
+                    (Create (Warning_Message (Warn_Assumed_Global_Null),
+                             Names => [E]),
+                     N,
+                     Kind => MK_Warning,
+                     Continuations =>
+                       [Create ("assuming & has no effect on global items",
+                                Names => [E])]);
                end if;
 
                if Get_Termination_Condition (E).Kind = Unspecified
                  and then not No_Return (E)
                then
-                  Error_Msg_NE
-                    (Warning_Message (Warn_Assumed_Always_Terminates), N, E);
-                  Error_Msg_NE
-                    ("\\assuming & always terminates", N, E);
+                  Error_Msg_N
+                    (Create (Warning_Message (Warn_Assumed_Always_Terminates),
+                             Names => [E]),
+                     N,
+                     Kind => MK_Warning,
+                     Continuations =>
+                       [Create ("assuming & always terminates",
+                                Names => [E])]);
                end if;
             end if;
          end;
@@ -5372,16 +5419,22 @@ package body SPARK_Definition is
            or else (Is_Unchecked_Conversion_Instance (E)
                     and then Has_Access_Type (Etype (E)))
          then
-            Error_Msg_NE (Warning_Message (Warn_Address_To_Access), N, E);
-            if Is_Access_Constant (Etype (E)) then
-               Error_Msg_NE
-                 ("\\potential aliases of the value returned by a call"
-                  & " to & are assumed to be constant", N, E);
-            else
-               Error_Msg_NE
-                 ("\\the value returned by a call to & is assumed to "
-                  & "have no aliases", N, E);
-            end if;
+            declare
+               Cont : constant String :=
+                 (if Is_Access_Constant (Etype (E)) then
+                     "potential aliases of the value returned by a call"
+                     & " to & are assumed to be constant"
+                  else "the value returned by a call to & is assumed to "
+                       & "have no aliases");
+            begin
+               Error_Msg_N
+                 (Create (Warning_Message (Warn_Address_To_Access),
+                          Names => [E]),
+                  N,
+                  Kind => MK_Warning,
+                  Continuations =>
+                    [Create (Cont, Names => [E])]);
+            end;
          end if;
       end if;
 
@@ -6222,10 +6275,11 @@ package body SPARK_Definition is
 
             if not Obj_Has_Relaxed_Init (E) then
                if Emit_Warning_Info_Messages then
-                  Error_Msg_NE
-                    (Warning_Message (Warn_Useless_Relaxed_Init_Obj), E, E);
                   Error_Msg_N
-                    ("\Relaxed_Initialization annotation is useless", E);
+                    (Warning_Message (Warn_Useless_Relaxed_Init_Obj), E,
+                     Kind => MK_Warning,
+                     Continuations =>
+                       ["Relaxed_Initialization annotation is useless"]);
                end if;
             else
                Mark_Type_With_Relaxed_Init
@@ -6278,10 +6332,11 @@ package body SPARK_Definition is
 
             if not Obj_Has_Relaxed_Init (E) then
                if Emit_Warning_Info_Messages then
-                  Error_Msg_NE
-                    (Warning_Message (Warn_Useless_Relaxed_Init_Obj), E, E);
                   Error_Msg_N
-                    ("\Relaxed_Initialization annotation is useless", E);
+                    (Warning_Message (Warn_Useless_Relaxed_Init_Obj), E,
+                     Kind => MK_Warning,
+                     Continuations =>
+                       ["Relaxed_Initialization annotation is useless"]);
                end if;
             else
                Mark_Type_With_Relaxed_Init
@@ -6538,13 +6593,15 @@ package body SPARK_Definition is
                               else '"'
                               & Flow_Id_To_String (G, Pretty => True)
                               & '"');
+                           Names : Node_Lists.List := [Id];
                         begin
                            if G.Kind in Direct_Mapping then
-                              Error_Msg_Node_2 := G.Node;
+                              Names.Append (G.Node);
                            end if;
                            Mark_Violation
                              ("function & with output global " & G_Name,
                               Id,
+                              Names => Names,
                               Code => EC_Function_Output_Global,
                               Root_Cause_Msg =>
                                 "function with global outputs");
@@ -6565,14 +6622,16 @@ package body SPARK_Definition is
                                  else '"'
                                  & Flow_Id_To_String (G, Pretty => True)
                                  & '"');
+                              Names : Node_Lists.List := [Id];
                            begin
                               if G.Kind in Direct_Mapping then
-                                 Error_Msg_Node_2 := G.Node;
+                                 Names.Append (G.Node);
                               end if;
                               Mark_Violation
                                 ("function & with volatile input global "
                                  & G_Name & " with effective reads",
                                  Id,
+                                 Names => Names,
                                  Root_Cause_Msg => "function with global "
                                  & "inputs with effective reads");
                            end;
@@ -6590,14 +6649,16 @@ package body SPARK_Definition is
                                  else '"'
                                  & Flow_Id_To_String (G, Pretty => True)
                                  & '"');
+                              Names : Node_Lists.List := [Id];
                            begin
                               if G.Kind in Direct_Mapping then
-                                 Error_Msg_Node_2 := G.Node;
+                                 Names.Append (G.Node);
                               end if;
                               Mark_Violation
                                 ("nonvolatile function & with volatile input "
                                  & "global " & G_Name,
                                  Id,
+                                 Names => Names,
                                  Code => EC_Function_Volatile_Input_Global,
                                  Root_Cause_Msg => "nonvolatile function with "
                                  & " volatile global inputs");
@@ -6863,12 +6924,12 @@ package body SPARK_Definition is
               and then Get_Termination_Condition (E) = (Static, True)
             then
                if Emit_Warning_Info_Messages then
-                  Error_Msg_Code :=
-                    Explain_Code'Enum_Rep (EC_Always_Terminates_Warn);
                   Error_Msg_N
-                    (Warning_Message (Warn_No_Possible_Termination)
-                     & " '[[]']",
-                     E);
+                    (Warning_Message (Warn_No_Possible_Termination),
+                     E,
+                     Kind => MK_Warning,
+                     Explain_Code =>
+                       Explain_Code'Enum_Rep (EC_Always_Terminates_Warn));
                end if;
             end if;
          end Mark_Subprogram_Contracts;
@@ -6914,7 +6975,9 @@ package body SPARK_Definition is
                      Formal,
                      Root_Cause_Msg =>
                        "exceptional contracts and parameters with ownership",
-                     Cont_Msg       => "& should be marked as aliased");
+                     Cont_Msg       =>
+                       Create ("& should be marked as aliased",
+                               Names => [Formal]));
                end if;
 
                Next_Formal (Formal);
@@ -7102,7 +7165,8 @@ package body SPARK_Definition is
                   First_Line : constant Physical_Line_Number :=
                     Get_Physical_Line_Number (Slc);
                   Last_Line  : constant Physical_Line_Number :=
-                    Get_Physical_Line_Number (Sloc (Last_Node (This_Decl)));
+                    Get_Physical_Line_Number
+                      (Sloc (Errout.Last_Node (This_Decl)));
                   Limit_Str  : constant String :=
                     File
                     & ':' & Line_Image (Pos (First_Line))
@@ -7348,10 +7412,11 @@ package body SPARK_Definition is
 
             if not Fun_Has_Relaxed_Init (E) then
                if Emit_Warning_Info_Messages then
-                  Error_Msg_NE
-                    (Warning_Message (Warn_Useless_Relaxed_Init_Fun), E, E);
                   Error_Msg_N
-                    ("\Relaxed_Initialization annotation is useless", E);
+                    (Warning_Message (Warn_Useless_Relaxed_Init_Fun), E,
+                     Kind => MK_Warning,
+                     Continuations =>
+                       ["Relaxed_Initialization annotation is useless"]);
                end if;
             else
                Mark_Type_With_Relaxed_Init
@@ -7979,9 +8044,9 @@ package body SPARK_Definition is
                  and then Is_Private_Type (Partial_View)
                  and then not Is_Tagged_Type (Partial_View)
                then
-                  Error_Msg_Node_2 := Partial_View;
                   Mark_Violation
                     ("deriving & from & declared as untagged private", E,
+                     Names => [E, Partial_View],
                      SRM_Reference => "SPARK RM 3.4(1)",
                      Root_Cause_Msg =>
                        "deriving from type declared as untagged private");
@@ -8059,10 +8124,10 @@ package body SPARK_Definition is
                      "component type", "its enclosing array type",
                      Srcpos_Bearer => E);
                elsif Is_Effectively_Volatile (Component_Type (E)) then
-                  Error_Msg_Name_1 := Chars (E);
                   Mark_Violation
-                    ("volatile component & of non-volatile type %",
+                    ("volatile component & of non-volatile type &",
                      Component_Type (E),
+                     Names => [Component_Type (E), E],
                      Root_Cause_Msg =>
                        "volatile component of non-volatile type");
                end if;
@@ -8411,10 +8476,10 @@ package body SPARK_Definition is
                          (Is_Effectively_Volatile (Etype (Comp))
                            or else Has_Aspect (Comp, Aspect_Volatile))
                      then
-                        Error_Msg_Name_1 := Chars (E);
                         Mark_Violation
-                          ("volatile component & of non-volatile type %",
+                          ("volatile component & of non-volatile type &",
                            Comp,
+                           Names => [Comp, E],
                            Root_Cause_Msg =>
                              "volatile component of non-volatile type");
                      end if;
@@ -8436,11 +8501,11 @@ package body SPARK_Definition is
                      if Comes_From_Source (Comp)
                        and then Yields_Synchronized_Object (Etype (Comp))
                      then
-                        Error_Msg_Name_1 := Chars (E);
                         Mark_Violation
                           ("synchronized component & of "
-                           & "non-synchronized type %",
+                           & "non-synchronized type &",
                            Comp,
+                           Names => [Comp, E],
                            Root_Cause_Msg => "synchronized component of "
                            & "non-synchronized type");
                      end if;
@@ -8460,10 +8525,10 @@ package body SPARK_Definition is
                      if Comes_From_Source (Comp)
                        and then Is_Concurrent_Type (Etype (Comp))
                      then
-                        Error_Msg_Name_1 := Chars (E);
                         Mark_Violation
-                          ("concurrent component & of ghost type %",
+                          ("concurrent component & of ghost type &",
                            Comp,
+                           Names => [Comp, E],
                            Root_Cause_Msg =>
                              "concurrent component of ghost type");
                      end if;
@@ -8518,11 +8583,10 @@ package body SPARK_Definition is
                              = Underlying_Type (E)
                            then
                               if Is_Deep (Comp_Type) then
-                                 Error_Msg_Node_1 := Comp_Type;
-                                 Error_Msg_Node_2 := E;
                                  Mark_Violation
                                    ("owning component & of tagged extension &",
                                     Comp,
+                                    Names => [Comp, E],
                                     Root_Cause_Msg =>
                                       "owning component of tagged extension");
 
@@ -8534,11 +8598,11 @@ package body SPARK_Definition is
 
                               elsif Contains_Relaxed_Init_Parts (Comp_Type)
                               then
-                                 Error_Msg_Node_1 := Comp_Type;
-                                 Error_Msg_Node_2 := E;
                                  Mark_Violation
                                    ("component & of tagged extension & with"
-                                    & " relaxed initialization", Comp,
+                                    & " relaxed initialization",
+                                    Comp,
+                                    Names => [Comp, E],
                                     Root_Cause_Msg =>
                                       "component of tagged extension with"
                                     & " relaxed Initialization");
@@ -8989,9 +9053,12 @@ package body SPARK_Definition is
 
                if not Contains_Only_Relaxed_Init (Base_Retysp (E)) then
                   Mark_Unsupported
-                    (Lim_Relaxed_Init_Variant_Part, E, Base_Type (E),
+                    (Lim_Relaxed_Init_Variant_Part, E,
+                     Names => [Base_Type (E)],
                      Cont_Msg =>
-                       "consider annotating & with Relaxed_Initialization");
+                       Create
+                         ("consider annotating & with Relaxed_Initialization",
+                          Names => [Base_Type (E)]));
 
                --  Reject types containing only relaxed components in hidden
                --  private part as they would not be handled in the same way
@@ -9005,7 +9072,9 @@ package body SPARK_Definition is
                   Mark_Unsupported
                     (Lim_Hidden_Private_Relaxed_Init, E,
                      Cont_Msg =>
-                       "consider annotating it with Relaxed_Initialization");
+                       Create
+                         ("consider annotating it with Relaxed_Initialization")
+                    );
 
                --  Emit an info message with --info when a type is considered
                --  to be annotated with Relaxed_Initialization and it has a
@@ -9018,13 +9087,19 @@ package body SPARK_Definition is
                     and then Has_Predicates (E)
                     and then Comes_From_Source (E)
                   then
-                     Error_Msg_NE
-                       ("info: ?" & "& is handled as if it was annotated with "
-                        & "Relaxed_Initialization as all its components are "
-                        & "annotated that way", E, E);
-                     Error_Msg_NE
-                       ("\consider annotating & with Relaxed_Initialization",
-                        E, Base_Type (E));
+                     Error_Msg_N
+                       (Create
+                          ("& is handled as if it was annotated with"
+                           & " Relaxed_Initialization as all its components"
+                           & " are annotated that way",
+                           Names => [E]),
+                        E,
+                        Kind => MK_Info,
+                        Continuations =>
+                          [Create
+                               ("consider annotating & with"
+                                & " Relaxed_Initialization",
+                                Names => [Base_Type (E)])]);
                   end if;
 
                   Mark_Type_With_Relaxed_Init
@@ -9607,8 +9682,9 @@ package body SPARK_Definition is
             then
                Mark_Unsupported
                  (Lim_Generic_In_Type_Inv, E,
-                  Cont_Msg => "package " & Source_Name (Scop)
-                  & " declares a type with an invariant");
+                  Cont_Msg =>
+                    Create ("package & declares a type with an invariant",
+                            Names => [Scop]));
             end if;
             Scop := Scope (Scop);
          end loop;
@@ -9626,8 +9702,10 @@ package body SPARK_Definition is
                if Has_Hidden_Private_Part (Scop) then
                   Mark_Unsupported
                     (Lim_Generic_In_Hidden_Private, E,
-                     Cont_Msg => "the private part of package "
-                     & Source_Name (Scop) & " is hidden for proof");
+                     Cont_Msg =>
+                       Create
+                         ("the private part of package & is hidden for proof",
+                          Names => [Scop]));
                end if;
                Scop := Scope (Scop);
             end loop;
@@ -10331,7 +10409,10 @@ package body SPARK_Definition is
             elsif Emit_Warning_Info_Messages
               and then not SPARK_Pragma_Is (Opt.Off)
             then
-               Error_Msg_F (Warning_Message (Warn_Pragma_Overflow_Mode), N);
+               Error_Msg_N (Warning_Message (Warn_Pragma_Overflow_Mode),
+                            N,
+                            Kind => MK_Warning,
+                            First => True);
             end if;
 
          when Pragma_Attach_Handler =>
@@ -10646,8 +10727,13 @@ package body SPARK_Definition is
             if Emit_Warning_Info_Messages
               and then SPARK_Pragma_Is (Opt.On)
             then
-               Error_Msg_Name_1 := Pname;
-               Error_Msg_N (Warning_Message (Warn_Pragma_Ignored), N);
+               Error_Msg_N
+                 (Create_N
+                    (Warning_Message (Warn_Pragma_Ignored),
+                     N     => N,
+                     Names => [Pname]),
+                  N,
+                  Kind => MK_Warning);
             end if;
 
          --  Unknown_Pragma is treated here. We use an OTHERS case in order to
@@ -10655,8 +10741,7 @@ package body SPARK_Definition is
          --  we have not yet defined how they are supported in SPARK.
 
          when others =>
-            Error_Msg_Name_1 := Pname;
-            Mark_Violation ("unknown pragma %", N);
+            Mark_Violation ("unknown pragma &", N, N_Names => [Pname]);
       end case;
    end Mark_Pragma;
 
@@ -11063,12 +11148,18 @@ package body SPARK_Definition is
                then
                   case Ekind (E) is
                   when E_Function =>
-                     Error_Msg_NE
-                       (Warning_Message (Warn_Unreferenced_Function), N, E);
+                     Error_Msg_N
+                       (Warning_Message (Warn_Unreferenced_Function),
+                        N,
+                        Kind => MK_Warning,
+                        Names => [E]);
 
                   when E_Procedure =>
-                     Error_Msg_NE
-                       (Warning_Message (Warn_Unreferenced_Procedure), N, E);
+                     Error_Msg_N
+                       (Warning_Message (Warn_Unreferenced_Procedure),
+                        N,
+                        Kind => MK_Warning,
+                        Names => [E]);
 
                   when others =>
                      raise Program_Error;
@@ -11480,14 +11571,12 @@ package body SPARK_Definition is
       Marked_Entity : Entity_Id)
    is
    begin
-      Error_Msg_Node_1 := Limited_View;
-      Error_Msg_Node_2 := Limited_View;
       Mark_Unsupported
         (Lim_Limited_Type_From_Limited_With,
          N              => Marked_Entity,
-         E              => Limited_View,
+         Names          => [Limited_View, Limited_View],
          Cont_Msg       =>
-           "consider restructuring code to avoid `LIMITED WITH`",
+           Create ("consider restructuring code to avoid `LIMITED WITH`"),
          Root_Cause_Msg => "limited view coming from limited with");
    end Reject_Incomplete_Type_From_Limited_With;
 

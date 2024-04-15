@@ -27,8 +27,10 @@ with Ada.Characters.Latin_1;      use Ada.Characters.Latin_1;
 with Ada.Containers.Hashed_Maps;
 with Ada.Text_IO;
 with Aspects;                     use Aspects;
+with Casing;                      use Casing;
 with Common_Iterators;            use Common_Iterators;
-with Errout;                      use Errout;
+with Errout;
+with Errout_Wrapper;              use Errout_Wrapper;
 with Flow_Dependency_Maps;        use Flow_Dependency_Maps;
 with Flow_Refinement;             use Flow_Refinement;
 with Flow_Types;                  use Flow_Types;
@@ -693,8 +695,9 @@ package body SPARK_Util is
       Low_Val     : out Uint;
       High_Val    : out Uint)
    is
-      Reason : Unbounded_String;
-      --  Reason to output for not unrolling the loop
+      Reason        : Unbounded_String;
+      Secondary_Loc : Source_Ptr := No_Location;
+      --  Reason and location to output for not unrolling the loop
 
       -----------------------
       -- Local Subprograms --
@@ -749,7 +752,7 @@ package body SPARK_Util is
          case Nkind (N) is
             when N_Object_Declaration =>
                if not Is_Scalar_Type (Etype (Defining_Identifier (N))) then
-                  Error_Msg_Sloc := Sloc (N);
+                  Secondary_Loc := Sloc (N);
                   Reason :=
                     To_Unbounded_String ("local non-scalar declaration #");
                   return Abandon;
@@ -869,13 +872,17 @@ package body SPARK_Util is
 
          if Output_Info then
             if Result /= No_Unrolling then
-               Error_Msg_N ("info: ?unrolling loop", Loop_Stmt);
+               Error_Msg_N ("unrolling loop",
+                            Loop_Stmt,
+                            Kind => MK_Info);
 
             else
                pragma Assert (Reason /= "");
                Error_Msg_N
-                 ("info: ?cannot unroll loop (" & To_String (Reason) & ")",
-                  Loop_Stmt);
+                 ("cannot unroll loop (" & To_String (Reason) & ")",
+                  Loop_Stmt,
+                  Secondary_Loc => Secondary_Loc,
+                  Kind => MK_Info);
             end if;
          end if;
       end if;
@@ -4154,6 +4161,50 @@ package body SPARK_Util is
       return Result;
    end Terminal_Alternatives;
 
+   ---------------
+   -- To_String --
+   ---------------
+
+   function To_String (N : Name_Id; Sloc : Source_Ptr) return String is
+      Buf : Bounded_String;
+      Name_Len : Natural;
+   begin
+      Append_Unqualified_Decoded (Buf, N);
+      Name_Len := Buf.Length;
+      if Name_Len > 2
+        and then Buf.Chars (Name_Len - 1) = '%'
+        and then (Buf.Chars (Name_Len) = 'b'
+                  or else
+                  Buf.Chars (Name_Len) = 's')
+      then
+         Name_Len := Name_Len - 2;
+      end if;
+
+      --  Remove upper case letter at end, again, we should not be getting
+      --  such names, and what we hope is that the remainder makes sense.
+
+      if Name_Len > 1 and then Buf.Chars (Name_Len) in 'A' .. 'Z' then
+         Name_Len := Name_Len - 1;
+      end if;
+
+      --  If operator name or character literal name, just print it as is.
+      --  Also print as is if it ends in a right paren (case of x'val(nnn)).
+
+      if Buf.Chars (1) = '"'
+        or else Buf.Chars (1) = '''
+        or else Buf.Chars (Name_Len) = ')'
+      then
+         return Buf.Chars (1 .. Name_Len);
+      else
+         if Sloc <= No_Location then
+            Set_Casing (Buf, Mixed_Case);
+         else
+            Set_Casing (Buf, Identifier_Casing (Get_Source_File_Index (Sloc)));
+         end if;
+         return """" & Buf.Chars (1 .. Name_Len) & """";
+      end if;
+   end To_String;
+
    ---------------------------
    -- Is_Writable_Parameter --
    ---------------------------
@@ -5472,13 +5523,13 @@ package body SPARK_Util is
 
    function Safe_First_Sloc (N : Node_Id) return Source_Ptr is
      (if Instantiation_Location (Sloc (N)) = No_Location
-      then First_Sloc (N)
-      else Sloc (First_Node (N)));
+      then Errout.First_Sloc (N)
+      else Sloc (Errout.First_Node (N)));
 
    function Safe_Last_Sloc (N : Node_Id) return Source_Ptr is
      (if Instantiation_Location (Sloc (N)) = No_Location
-      then Last_Sloc (N)
-      else Sloc (Last_Node (N)));
+      then Errout.Last_Sloc (N)
+      else Sloc (Errout.Last_Node (N)));
 
    ------------------------------
    -- Search_Component_By_Name --
@@ -5857,7 +5908,7 @@ package body SPARK_Util is
          return Source_Name (Anonymous_Object (N));
       else
          Append_Unqualified_Decoded (Buf, Chars (N));
-         Adjust_Name_Case (Buf, Sloc (N));
+         Errout.Adjust_Name_Case (Buf, Sloc (N));
 
          return To_String (Buf);
       end if;
