@@ -1,0 +1,12 @@
+abstract project Prj_Naming is
+
+   package Naming is
+      for Spec ("Pkg") use "sources.ada" at 1;
+      for Body ("Pkg") use "sources.ada" at 2;
+      for Body ("Main") use "sources.ada" at 3;
+      for Spec ("Pkg2") use "src2.ada" at 1;
+      for Body ("Pkg2") use "src2.ada" at 2;
+      for Body ("Main2") use "src2.ada" at 3;
+   end Naming;
+
+end Prj_Naming;

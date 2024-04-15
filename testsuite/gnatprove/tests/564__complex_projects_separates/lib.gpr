@@ -1,0 +1,9 @@
+aggregate library project Lib is
+
+   for Library_Name use "lib";
+   for Library_Kind use "static";
+   for Project_Files use ("prj.gpr");
+   for Object_Dir use "obj2";
+   for Library_Dir use "lib";
+
+end Lib;
