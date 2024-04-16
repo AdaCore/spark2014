@@ -3756,7 +3756,8 @@ package body Flow.Control_Flow_Graph is
          Ctx.Folded_Function_Checks.Append (Cont);
 
          --  Pretty normal flow (see while loops)
-         CM (Union_Id (N)) := Trivial_Connection (V);
+         CM (Union_Id (N)).Standard_Entry := V;
+         CM (Union_Id (N)).Standard_Exits.Insert (V);
 
          --  Loop the loop: V -> body -> V
          Linkup (FA, V, CM (Union_Id (Statements (N))).Standard_Entry);
