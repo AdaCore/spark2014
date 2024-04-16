@@ -1,0 +1,16 @@
+with "prj_naming.gpr";
+
+project Prj is
+
+   for Source_List_File use "prj_source_list.txt";
+   for Source_Files use ("src2.ada");
+   for Source_Dirs use (".");
+   for Languages use ("Ada");
+
+   package Naming renames Prj_Naming.Naming;
+
+   package Builder is
+      for Global_Configuration_Pragmas use "spark.adc";
+   end Builder;
+
+end Prj;
