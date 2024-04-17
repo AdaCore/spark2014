@@ -36,7 +36,7 @@ ng_v1.adb:20:19: info: initialization of "D2" proved
 ng_v1.adb:30:23: info: division check proved (altergo: 1 VC)
 ng_v1.adb:33:53: medium: divide by zero might fail
 ng_v1.ads:24:13: info: implicit aspect Always_Terminates on "DistanceFromLastClickToLastUpdate" has been proved, subprogram will terminate
-ng_v1.ads:28:17: medium: postcondition might fail, cannot prove EstimatedGroundVelocity = (((WHCF * (ThisCount - PrevCount)) + ((WHCF * (ThisCount - PrevCount)) * (CurrTime - ThisTime)) / (ThisTime - PrevTime)) * 3600) / (CurrTime - PrevTime)
+ng_v1.ads:27:14: info: postcondition proved (Trivial: 1 VC; altergo: 1 VC)
 ng_v1.ads:31:23: info: division check proved (altergo: 1 VC)
 ng_v1.ads:32:28: medium: divide by zero might fail
 ng_v2.adb:32:13: info: implicit aspect Always_Terminates on "DistanceSinceLastUpdate" has been proved, subprogram will terminate
