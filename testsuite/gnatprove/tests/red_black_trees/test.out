@@ -1108,7 +1108,7 @@ binary_trees.ads:45:13: info: function contract might not be available on implic
 binary_trees.ads:45:13: info: implicit aspect Always_Terminates on "Model" has been proved, subprogram will terminate
 binary_trees.ads:53:14: info: for F before the call at binary_trees.ads:20
 binary_trees.ads:53:14: info: invariant check proved (CVC5: 1 VC)
-binary_trees.ads:56:08: medium: postcondition might fail, cannot prove Model'Result (Root).K
+binary_trees.ads:59:17: medium: postcondition might fail, cannot prove Last (Model'Result (Root).A) = 0
 binary_trees.ads:64:25: info: for F before the call at binary_trees.ads:24
 binary_trees.ads:64:25: info: invariant check proved (CVC5: 1 VC)
 binary_trees.ads:65:47: info: for F before the call at binary_trees.ads:24
@@ -1572,7 +1572,7 @@ red_black_trees.adb:165:49: info: range check proved (CVC5: 4 VC)
 red_black_trees.adb:166:33: info: precondition proved (CVC5: 4 VC)
 red_black_trees.adb:166:49: info: range check proved (CVC5: 4 VC)
 red_black_trees.adb:167:24: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove Res (J).Depth <= N + 1
-red_black_trees.adb:167:29: medium: array index check might fail [reason for check: value must be a valid index into the array]
+red_black_trees.adb:167:29: info: index check proved (CVC5: 4 VC)
 red_black_trees.adb:177:26: info: precondition proved (CVC5: 2 VC)
 red_black_trees.adb:179:26: info: precondition proved (CVC5: 2 VC)
 red_black_trees.adb:185:56: medium: range check might fail, cannot prove lower bound for Count_L.Count + 1 [reason for check: result of addition must fit in the target type of the assignment]
