@@ -321,6 +321,8 @@ begin
       GNAT.OS_Lib.OS_Exit (Status);
    end;
 exception
-   when Error : GNAT.Sockets.Socket_Error =>
+   when Error : GNAT.Sockets.Socket_Error
+              | GNAT.Sockets.Host_Error
+   =>
       Report_Error (Ada.Exceptions.Exception_Message (Error));
 end SPARK_Memcached_Wrapper;
