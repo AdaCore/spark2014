@@ -380,7 +380,7 @@ package body Why.Gen.Progs is
       J : Integer := Non_Void_Progs'First;
    begin
       for E of Progs loop
-         if not (Is_Void (E)) then
+         if not Is_Void (E) then
             Non_Void_Progs (J) := E;
             J := J + 1;
          end if;
