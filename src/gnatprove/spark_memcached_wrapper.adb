@@ -202,6 +202,7 @@ is
       declare
          First  : String renames Info (Info'First .. Colon - 1);
          Second : String renames Info (Colon + 1 .. Info'Last);
+         Port   : Port_Type;
       begin
          if First'Length = 4 and then First = "file" then
             if not Ada.Directories.Exists (Second) then
@@ -209,18 +210,17 @@ is
             end if;
             return Filecache_Client.Init (Second);
          else
-            declare
-               Port     : constant Port_Type :=
-                 Port_Type'Value (Info (Colon + 1 .. Info'Last));
             begin
-               if Port = No_Port then
-                  Report_Error (Wrong_Port_Msg);
-               else
-                  return Memcache_Client.Init (First, Port);
-               end if;
+               Port := Port_Type'Value (Info (Colon + 1 .. Info'Last));
             exception
                when Constraint_Error => Report_Error (Wrong_Port_Msg);
             end;
+
+            if Port = No_Port then
+               Report_Error (Wrong_Port_Msg);
+            else
+               return Memcache_Client.Init (First, Port);
+            end if;
          end if;
       end;
    end Init_Client;
