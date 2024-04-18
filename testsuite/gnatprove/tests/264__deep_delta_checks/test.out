@@ -7,7 +7,7 @@ deep_delta_access_checks.adb:24:64: info: discriminant check proved (CVC5: 1 VC)
 deep_delta_access_checks.adb:31:28: info: data dependencies proved
 deep_delta_access_checks.adb:32:42: info: discriminant check proved (CVC5: 1 VC)
 deep_delta_access_checks.adb:33:48: info: discriminant check proved (CVC5: 1 VC)
-deep_delta_access_checks.adb:33:64: medium: discriminant check might fail (e.g. when V'Constrained = False and X.D = True and X.G1.D = True and X.G1.F1 = 1 and X.G1.F2 = 1 and X.G2.D = True)
+deep_delta_access_checks.adb:33:64: medium: discriminant check might fail
 deep_delta_access_checks.adb:38:39: info: discriminant check proved (CVC5: 1 VC)
 deep_delta_access_checks.adb:39:45: info: discriminant check proved (CVC5: 1 VC)
 deep_delta_access_checks.adb:39:61: info: discriminant check proved (CVC5: 1 VC)
@@ -18,7 +18,7 @@ deep_delta_access_checks.adb:43:11: info: discriminant check proved (CVC5: 1 VC)
 deep_delta_access_checks.adb:44:08: info: range check proved (CVC5: 1 VC)
 deep_delta_access_checks.adb:44:11: info: discriminant check proved (CVC5: 1 VC)
 deep_delta_access_checks.adb:45:22: info: assertion proved (CVC5: 1 VC)
-deep_delta_access_checks.adb:46:22: medium: assertion might fail (e.g. when X.D = True and X.G1.D = True and X.G1.F1 = 1 and X.G1.F2 = 1 and X.G2.D = True and Y.D = True and Y.G1.D = True and Y.G1.F1 = 2 and Y.G1.F2 = 1 and Y.G2.D = True)
+deep_delta_access_checks.adb:46:22: medium: assertion might fail
 deep_delta_access_checks.adb:52:06: info: data dependencies proved
 deep_delta_access_checks.adb:65:19: info: range check proved (CVC5: 1 VC)
 deep_delta_access_checks.adb:68:07: info: range check proved (CVC5: 2 VC)
