@@ -1078,6 +1078,9 @@ package body Flow_Utility is
       Root_Entity : Entity_Id;
       --  To avoid repeated calls to Entity on the Root_Node
 
+      Root_Overlaid : Boolean;
+      --  If the root entity is overlaid, we handle it as a partial assignemt
+
    begin
       --  First we turn the tree into a more useful sequence. We also determine
       --  the root node which should be an entire variable.
@@ -1098,7 +1101,8 @@ package body Flow_Utility is
 
       pragma Assert (Nkind (Root_Node) in N_Identifier | N_Expanded_Name);
 
-      Root_Entity := Entity (Root_Node);
+      Root_Entity   := Entity (Root_Node);
+      Root_Overlaid := False;
 
       if Is_Protected_Component (Root_Entity) then
          Map_Root :=
@@ -1119,6 +1123,8 @@ package body Flow_Utility is
          Map_Root :=
            Direct_Mapping_Id (Ultimate_Overlaid_Entity (Root_Entity));
 
+         Root_Overlaid := True;
+
       else
          Map_Root := Direct_Mapping_Id (Root_Entity);
       end if;
@@ -1134,10 +1140,15 @@ package body Flow_Utility is
       for N of Seq loop
          case Interesting_Nodes (Nkind (N)) is
             when N_Selected_Component =>
-               Map_Root :=
-                 Add_Component
-                   (Map_Root,
-                    Unique_Component (Entity (Selector_Name (N))));
+               if Root_Overlaid then
+                  Partial_Definition := True;
+                  exit;
+               else
+                  Map_Root :=
+                    Add_Component
+                      (Map_Root,
+                       Unique_Component (Entity (Selector_Name (N))));
+               end if;
 
             when N_Type_Conversion =>
                View_Conversion := True;
@@ -1154,7 +1165,7 @@ package body Flow_Utility is
       --  Sanity-check: the Map_Root part of the results should be the same as
       --  what would be returned by Path_To_Flow_Id.
 
-      pragma Assert (Map_Root = Path_To_Flow_Id (N));
+      pragma Assert (Root_Overlaid or else Map_Root = Path_To_Flow_Id (N));
    end Get_Assignment_Target_Properties;
 
    -----------------
