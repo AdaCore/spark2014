@@ -2,5 +2,6 @@ test_moved.adb:14:35: warning: "I" is not modified, could be IN
 test_moved.adb:14:38: warning: "J" is not modified, could be IN
 test_moved.adb:14:44: warning: "L" is not modified, could be IN
 test_moved.adb:38:32: error: dereference from "K" is not readable
+test_moved.adb:38:32: error: launch "gnatprove --explain=E0010" for more information
 test_moved.adb:38:32: error: object was moved at line 33 [E0010]
 gnatprove: error during flow analysis and proof

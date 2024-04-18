@@ -1,3 +1,4 @@
 top.adb:15:06: error: borrower "W" is reborrowed with moved value
+top.adb:15:06: error: launch "gnatprove --explain=E0010" for more information
 top.adb:15:06: error: object was moved at line 13 [E0010]
 gnatprove: error during flow analysis and proof

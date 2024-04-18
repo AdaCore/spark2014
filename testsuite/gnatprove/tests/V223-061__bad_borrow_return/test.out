@@ -1,5 +1,7 @@
 bad_loop.adb:10:09: error: "X" is not readable
+bad_loop.adb:10:09: error: launch "gnatprove --explain=E0010" for more information
 bad_loop.adb:10:09: error: object was moved at line 7 [E0010]
+bad_return.adb:2:11: error: launch "gnatprove --explain=E0010" for more information
 bad_return.adb:2:11: error: object was moved at line 6 [E0010]
 bad_return.adb:2:11: error: return from "Bad_Return" with moved value for "X"
 bad_return.adb:2:23: warning: "X" is not modified, could be IN
