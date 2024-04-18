@@ -6247,6 +6247,8 @@ package body Flow_Utility is
          while Present (Assoc) loop
             pragma Assert (Nkind (Assoc) = N_Component_Association);
 
+            Deep_Choice_Partial := False;
+
             Input  := Expression (Assoc);
             Output := First (Choices (Assoc));
 
@@ -6262,7 +6264,8 @@ package body Flow_Utility is
                   Deep_Choice_Root := Prefix (Deep_Choice_Root);
                end loop;
 
-               --  Build the assigned target Flow_Id
+               --  Build the assigned target Flow_Id and determine whether this
+               --  is a partial update (like partially assigned arrays).
 
                F :=
                  Add_Component
@@ -6278,6 +6281,7 @@ package body Flow_Utility is
                              Unique_Component (Entity (Selector_Name (N))));
 
                      when N_Indexed_Component =>
+                        Deep_Choice_Partial := True;
                         exit;
 
                      when others =>
@@ -6285,12 +6289,16 @@ package body Flow_Utility is
                   end case;
                end loop;
 
-               --  Determine whether this is a partial update (like partially
-               --  assigned arrays).
+            else
+               F :=
+                 Add_Component (Map_Root, Unique_Component (Entity (Output)));
+            end if;
 
-               Deep_Choice_Partial :=
-                 (for some N of Deep_Choice_Seq =>
-                    Nkind (N) /= N_Selected_Component);
+            --  Partial update is handled like a self-assignment, i.e. it uses
+            --  the current value, variables from the index expressions and
+            --  from the input expression.
+
+            if Deep_Choice_Partial then
 
                --  For a partial update collect variables from its index
                --  expressions.
@@ -6318,42 +6326,17 @@ package body Flow_Utility is
                   end case;
                end loop;
 
-               --  Partial update is handled like a self-assignment, i.e. it
-               --  uses the current value, variables from the index expressions
-               --  and from the input expression.
+               Deep_Choice_Vars.Union (M (F));
+               Deep_Choice_Vars.Union (Get_Vars_Wrapper (Input));
+               M.Replace (F, Deep_Choice_Vars);
 
-               if Deep_Choice_Partial then
-                  Deep_Choice_Vars.Union (M (F));
-                  Deep_Choice_Vars.Union (Get_Vars_Wrapper (Input));
-                  M.Replace (F, Deep_Choice_Vars);
-
-               elsif Is_Record_Type (Get_Type (F, Scope)) then
-                  for C in Recurse_On (Input, F).Iterate loop
-                     M.Replace (Flow_Id_Maps.Key (C),
-                                Flow_Id_Maps.Element (C));
-                  end loop;
-               else
-                  M.Replace (F, Get_Vars_Wrapper (Input));
-               end if;
-
+            elsif Is_Record_Type (Get_Type (F, Scope)) then
+               for C in Recurse_On (Input, F).Iterate loop
+                  M.Replace (Flow_Id_Maps.Key (C),
+                             Flow_Id_Maps.Element (C));
+               end loop;
             else
-               F :=
-                 Add_Component (Map_Root, Unique_Component (Entity (Output)));
-
-               --  ??? We should try to merge the following code with the one
-               --  for deep delta aggregates above.
-
-               pragma Assert
-                 (Get_Type (Entity (Output), Scope) = Get_Type (F, Scope));
-
-               if Is_Record_Type (Get_Type (Entity (Output), Scope)) then
-                  for C in Recurse_On (Input, F).Iterate loop
-                     M.Replace (Flow_Id_Maps.Key (C),
-                                Flow_Id_Maps.Element (C));
-                  end loop;
-               else
-                  M.Replace (F, Get_Vars_Wrapper (Input));
-               end if;
+               M.Replace (F, Get_Vars_Wrapper (Input));
             end if;
 
             --  Multiple component choices have been rewritten into individual
