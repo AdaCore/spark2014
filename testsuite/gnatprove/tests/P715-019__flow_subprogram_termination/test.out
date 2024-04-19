@@ -118,7 +118,6 @@ modular_analysis.adb:8:14: warning: no Always_Terminates aspect available for "O
 modular_analysis.adb:8:14: warning: no Global contract available for "Open_Read"
 nest_in_proc.adb:5:17: info: aspect Always_Terminates on "Nothing" has been proved, subprogram will terminate
 nest_in_proc.adb:5:17: warning: subprogram "Nothing" has no effect
-nest_in_proc.adb:7:20: warning: subprogram "Nothing2" has no effect
 nest_in_proc.adb:20:21: medium: implicit aspect Always_Terminates on "Pkg2" could be incorrect, loop might be nonterminating [possible fix: add loop variant in the loop body]
 nest_in_proc.adb:20:21: warning: statement has no effect
 nest_in_proc.ads:1:11: info: aspect Always_Terminates on "Nest_In_Proc" has been proved, subprogram will terminate

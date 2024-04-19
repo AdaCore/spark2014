@@ -6,7 +6,6 @@ main.adb:18:07: info: initialization of "Tmp" proved
 main.adb:21:20: info: index check proved (CVC5: 2 VC)
 main.adb:22:13: info: index check proved (CVC5: 2 VC)
 main.adb:23:13: info: index check proved (CVC5: 2 VC)
-main.adb:31:14: warning: subprogram "Check_Congruence" has no effect
 main.adb:33:14: info: postcondition proved (CVC5: 1 VC)
 main.adb:39:13: info: implicit aspect Always_Terminates on "Eq" has been proved, subprogram will terminate
 main.adb:40:06: info: data dependencies proved
@@ -19,5 +18,4 @@ main.adb:57:13: info: index check proved (CVC5: 2 VC)
 main.adb:57:16: info: index check proved (CVC5: 2 VC)
 main.adb:58:13: info: index check proved (CVC5: 2 VC)
 main.adb:58:16: info: index check proved (CVC5: 2 VC)
-main.adb:66:14: warning: subprogram "Check_Congruence" has no effect
 main.adb:68:14: info: postcondition proved (altergo: 1 VC)
