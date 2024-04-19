@@ -39,7 +39,7 @@
 
 .PHONY: clean doc gnat2why gnat2why-nightly gnatprove install \
 	install-all why3 all setup all-nightly doc-nightly run-benchmark \
-        create-benchmark
+        create-benchmark session_archive
 
 COVERAGE_ROOT_DIR=/it/wave/x86_64-linux/spark2014-core_assertions_coverage/src/
 
@@ -179,6 +179,13 @@ codepeer: codepeer-run
 	else \
 	  echo "codepeer:PASSED" >> out/results; \
 	fi
+
+session_archive:
+	# Prepare an archive containing all session files of the testsuite.
+	# This is useful for the "replay" mailserver to recreate sessions.
+	find testsuite/gnatprove -name why3session.xml > sessions.txt
+	tar -czf sessions.tgz -T sessions.txt
+	rm sessions.txt
 
 gnatprove:
 	$(MAKE) -f Makefile.gnatprove build
