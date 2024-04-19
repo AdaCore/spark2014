@@ -14788,10 +14788,10 @@ package body Gnat2Why.Expr is
          end if;
 
          Result := New_And_Pred
-           ((1 => Result,
-             2 => New_Well_Formed_Pred (Arr),
-             3 => Transform_Array_Component_Associations
-               (Arr, Elements_From_Nodes, Bounds, Params)));
+           (Result,
+            Transform_Array_Component_Associations
+              (Arr, Elements_From_Nodes, Bounds, Params,
+               Skip_Guards => Skip_Guards));
 
          return Result;
       end Make_Defining_Proposition;
@@ -14974,7 +14974,8 @@ package body Gnat2Why.Expr is
          --  will be pulled from the arguments to the logic function.
 
          procedure Transform_Aggregate_Values
-           (Simple_Assocs : out W_Pred_Id;
+           (Simple_Ranges : out W_Pred_Id;
+            Simple_Assocs : out W_Pred_Id;
             Other_Assocs  : out W_Pred_Id);
          --  Main recursive function operating over multi-dimensional array
          --  aggregates.
@@ -15306,7 +15307,8 @@ package body Gnat2Why.Expr is
          --------------------------------
 
          procedure Transform_Aggregate_Values
-           (Simple_Assocs : out W_Pred_Id;
+           (Simple_Ranges : out W_Pred_Id;
+            Simple_Assocs : out W_Pred_Id;
             Other_Assocs  : out W_Pred_Id)
          is
             function Transform_Complex_Association
@@ -15341,6 +15343,7 @@ package body Gnat2Why.Expr is
             --  Array in which the specific value of each simple index is
             --  stored.
             use all type W_Pred_Vectors.Vector;
+            V_Simple_Ranges : W_Pred_Vectors.Vector;
             V_Simple_Assocs : W_Pred_Vectors.Vector;
             V_Other_Assocs  : W_Pred_Vectors.Vector;
 
@@ -15439,6 +15442,14 @@ package body Gnat2Why.Expr is
                         Append (V    => Condition,
                                 Pred => New_Not (Right => Cond));
 
+                        Append (V    => V_Simple_Ranges,
+                                Pred => New_Range_Expr
+                                  (Low  => Get_Array_Attr
+                                     (Arr, Attribute_First, Dim),
+                                   High => Get_Array_Attr
+                                     (Arr, Attribute_Last, Dim),
+                                   Expr => Value));
+
                         if Dim = Nb_Dim then
                            Append (V    => V_Simple_Assocs,
                                    Pred => Constrain_Value_At_Index
@@ -15455,7 +15466,7 @@ package body Gnat2Why.Expr is
 
                elsif Present (Association) then
 
-                  --  Go over the choices  which are not the others choice.
+                  --  Go over the choices which are not the others choice.
                   --  Note that a single choice is handled as an others choice.
                   --  Along the way, store in Condition, the condition for the
                   --  others or default choice.
@@ -15499,6 +15510,14 @@ package body Gnat2Why.Expr is
                                        Domain        => EW_Term,
                                        Params        => Params));
                               end;
+
+                              Append (V    => V_Simple_Ranges,
+                                      Pred => New_Range_Expr
+                                        (Low  => Get_Array_Attr
+                                           (Arr, Attribute_First, Dim),
+                                         High => Get_Array_Attr
+                                           (Arr, Attribute_Last, Dim),
+                                         Expr => +Values (Integer (Dim))));
 
                               if Dim = Nb_Dim then
                                  Append
@@ -15567,12 +15586,7 @@ package body Gnat2Why.Expr is
                     (V    => V_Other_Assocs,
                      Pred => New_Conditional
                        (Condition => New_And_Pred
-                            (Pre & To_Array (Condition) & New_Range_Expr
-                             (Low  => Get_Array_Attr
-                              (Arr, Attribute_First, Dim),
-                              High => Get_Array_Attr
-                                (Arr, Attribute_Last, Dim),
-                              Expr => +Indexes (Dim))),
+                            (Pre & To_Array (Condition)),
                         Then_Part => Transform_Complex_Association
                           (Dim, Association)));
                end if;
@@ -15607,13 +15621,7 @@ package body Gnat2Why.Expr is
                   then Constrain_Value_At_Index (Update_Prefix, Indexes)
                   elsif Has_Others
                     and then (Assocs_Len > 1 or else Present (Positional))
-                  then New_Conditional
-                    (Condition => New_Range_Expr
-                         (Low  => Get_Array_Attr (Arr, Attribute_First, Dim),
-                          High => Get_Array_Attr (Arr, Attribute_Last, Dim),
-                          Expr => +Indexes (Dim)),
-                     Then_Part => Transform_Complex_Association
-                       (Dim, Association))
+                  then Transform_Complex_Association (Dim, Association)
                   else True_Pred);
 
             begin
@@ -15739,10 +15747,12 @@ package body Gnat2Why.Expr is
             --  aggregate as the order of values is relevant.
 
             if In_Delta_Aggregate then
+               Simple_Ranges := True_Pred;
                Simple_Assocs := True_Pred;
                Other_Assocs := Transform_Rec_Complex_Aggregate (1, Expr);
             else
                Transform_Rec_Aggregate (1, Expr, True_Pred);
+               Simple_Ranges := New_And_Pred (To_Array (V_Simple_Ranges));
                Simple_Assocs := New_And_Pred (To_Array (V_Simple_Assocs));
                Other_Assocs := New_And_Pred (To_Array (V_Other_Assocs));
             end if;
@@ -15767,26 +15777,59 @@ package body Gnat2Why.Expr is
          --  Create the proposition defining the aggregate
 
          declare
+            Simple_Ranges : W_Pred_Id;
             Simple_Assocs : W_Pred_Id;
             Other_Assocs  : W_Pred_Id;
          begin
             Transform_Aggregate_Values
-              (Simple_Assocs => Simple_Assocs,
+              (Simple_Ranges => Simple_Ranges,
+               Simple_Assocs => Simple_Assocs,
                Other_Assocs  => Other_Assocs);
+
+            --  Add the well_formed predicate. It is only valid if all simple
+            --  associations are in range. For complex associations, the range
+            --  is enforced on the quantification.
+
+            if Skip_Guards then
+               Simple_Assocs := New_And_Pred
+                 (Left  => Simple_Assocs,
+                  Right => New_Well_Formed_Pred (Arr));
+            else
+               Simple_Assocs := New_And_Pred
+                 (Left  => Simple_Assocs,
+                  Right => New_Conditional
+                    (Condition => Simple_Ranges,
+                     Then_Part => New_Well_Formed_Pred (Arr)));
+            end if;
 
             if Is_True_Boolean (+Other_Assocs) then
                return Simple_Assocs;
             else
-               Other_Assocs := New_Universal_Quantif
-                 (Binders  => Binders,
-                  Triggers =>  New_Triggers
-                    (Triggers =>
-                         (1 => New_Trigger
-                              (Terms =>
-                                 (1 => +New_Array_Access
-                                    (Ar    => Arr,
-                                     Index => Indexes))))),
-                  Pred     => Other_Assocs);
+               declare
+                  Range_Preds : W_Pred_Array (1 .. Nb_Dim);
+
+               begin
+                  for Dim in Range_Preds'Range loop
+                     Range_Preds (Dim) := New_Range_Expr
+                       (Low  => Get_Array_Attr (Arr, Attribute_First, Dim),
+                        High => Get_Array_Attr (Arr, Attribute_Last, Dim),
+                        Expr => +Indexes (Dim));
+                  end loop;
+
+                  Other_Assocs := New_Universal_Quantif
+                    (Binders  => Binders,
+                     Triggers =>  New_Triggers
+                       (Triggers =>
+                            (1 => New_Trigger
+                                 (Terms =>
+                                    (1 => +New_Array_Access
+                                       (Ar    => Arr,
+                                        Index => Indexes))))),
+                     Pred     => New_Conditional
+                       (Condition => New_And_Pred (Range_Preds),
+                        Then_Part => Other_Assocs));
+               end;
+
                return New_And_Pred
                  (Left  => Simple_Assocs,
                   Right => Other_Assocs);
@@ -18996,6 +19039,11 @@ package body Gnat2Why.Expr is
       --  Last is always computed with integer (even when dealing with modular)
       --  in order to be coherent with length which is always an integer.
 
+      function Build_Last_No_Slide return W_Expr_Id;
+      --  build the expression that yields the value of the 'Last attribute
+      --  of the call to concat. It is simply
+      --    last left opnd + length of right_opnd
+
       ---------------------
       -- Build_Last_Expr --
       ---------------------
@@ -19007,24 +19055,21 @@ package body Gnat2Why.Expr is
          Left_Length : constant W_Expr_Id :=
            (if Is_Component_Left
             then One_Term
-            else
-               Build_Length_Expr
+            else Build_Length_Expr
               (Domain => Domain,
                First => +Get_Array_Attr (+Left_Expr, Attribute_First, 1),
                Last => +Get_Array_Attr (+Left_Expr, Attribute_Last, 1)));
          Right_Length : constant W_Expr_Id :=
            (if Is_Component_Right
             then One_Term
-            else
-               Build_Length_Expr
+            else Build_Length_Expr
               (Domain => Domain,
                First => +Get_Array_Attr
                  (+Right_Expr, Attribute_First, 1),
                Last => +Get_Array_Attr
                  (+Right_Expr, Attribute_Last, 1)));
       begin
-         return
-           +New_Discrete_Substract
+         return +New_Discrete_Substract
            (Domain,
             New_Discrete_Add
               (Domain,
@@ -19036,6 +19081,39 @@ package body Gnat2Why.Expr is
                EW_Int_Type),
             One_Term);
       end Build_Last_Expr;
+
+      -------------------------
+      -- Build_Last_No_Slide --
+      -------------------------
+
+      function Build_Last_No_Slide return W_Expr_Id is
+         Typ      : constant W_Type_Id :=
+           Nth_Index_Rep_Type_No_Bool (Return_Type, 1);
+         One_Term : constant W_Expr_Id :=
+           New_Discrete_Constant (Value => Uint_1,
+                                  Typ   => Typ);
+         Left_Last : constant W_Expr_Id :=
+           (if Is_Component_Left
+            then First_Expr
+            else New_Attribute_Expr
+              (Nth_Index_Type (Return_Type, 1),
+               Domain, Attribute_Last, Body_Params));
+         Right_Length : constant W_Expr_Id :=
+           (if Is_Component_Right
+            then One_Term
+            else Build_Length_Expr
+              (Domain => Domain,
+               First => +Get_Array_Attr
+                 (+Right_Expr, Attribute_First, 1),
+               Last => +Get_Array_Attr
+                 (+Right_Expr, Attribute_Last, 1)));
+      begin
+            return +New_Discrete_Add
+              (Domain,
+               Left_Last,
+               Right_Length,
+               Typ);
+      end Build_Last_No_Slide;
 
    --  Start of processing for Transform_Concatenation
 
@@ -19154,9 +19232,10 @@ package body Gnat2Why.Expr is
 
          --  We build the call to concat
 
-         T := New_Concat_Call (Domain, Args, Type_Of_Node (Ada_Node),
-                               Is_Component_Left  => Is_Component_Left,
-                               Is_Component_Right => Is_Component_Right);
+         T := New_Concat_Call
+           (Domain, Args & Build_Last_No_Slide, Type_Of_Node (Ada_Node),
+            Is_Component_Left  => Is_Component_Left,
+            Is_Component_Right => Is_Component_Right);
 
          --  Depending on the lower bound of the concat, the object may not be
          --  slided correctly, because the concat operator in Why assumes that
@@ -25565,7 +25644,8 @@ package body Gnat2Why.Expr is
            Relaxed_Init => Expr_Has_Relaxed_Init (Expr, No_Eval => False));
       Rng       : constant Node_Id := Get_Range (Discrete_Range (Expr));
       Pref_Expr : constant W_Expr_Id := Transform_Expr (Pref, Domain, Params);
-      Pref_Term : constant W_Term_Id := New_Temp_For_Expr (Pref_Expr);
+      Pref_Term : constant W_Term_Id := +New_Temp_For_Expr
+        (Pref_Expr, Need_Temp => Domain = EW_Prog);
       T         : W_Expr_Id;
       Rng_Type  : constant W_Type_Id :=
         Base_Why_Type_No_Bool (Entity_Id'(Type_Of_Node (Low_Bound (Rng))));
@@ -26481,6 +26561,18 @@ package body Gnat2Why.Expr is
                        (Triggers =>
                             (1 => New_Trigger (Terms => (1 => +Call)))),
                      Pred     => Def),
+                  Dep      => New_Axiom_Dep (Name => Id,
+                                             Kind => EW_Axdep_Func)));
+
+            Emit
+              (Th,
+               New_Axiom
+                 (Ada_Node => N,
+                  Name     => NID (Axiom_Name & "__well_formed"),
+                  Def      => New_Well_Formed_Pred
+                    (New_Call (Name => Id,
+                               Args => (1 => +Void),
+                               Typ  => Why_Type)),
                   Dep      => New_Axiom_Dep (Name => Id,
                                              Kind => EW_Axdep_Func)));
          end;

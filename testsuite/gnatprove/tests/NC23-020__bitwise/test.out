@@ -29,4 +29,4 @@ x86.ads:49:16: info: postcondition proved (CVC5: 1 VC)
 x86.ads:56:06: info: data dependencies proved
 x86.ads:57:16: info: postcondition proved (CVC5: 1 VC)
 x86.ads:70:06: info: data dependencies proved
-x86.ads:71:14: info: postcondition proved (CVC5: 2 VC; Trivial: 1 VC)
+x86.ads:84:27: medium: postcondition might fail, cannot prove (Memory(i) = Memory'Old(i))

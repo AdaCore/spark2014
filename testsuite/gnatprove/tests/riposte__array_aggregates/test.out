@@ -3,7 +3,7 @@ array_aggregates.adb:55:07: info: initialization of "M" proved
 array_aggregates.adb:63:22: info: assertion proved (CVC5: 1 VC)
 array_aggregates.adb:69:12: info: flow dependencies proved
 array_aggregates.adb:71:07: info: initialization of "M" proved
-array_aggregates.adb:75:22: high: assertion might fail (e.g. when M = (Elem_0 => Elem_0, others => Elem_1))
+array_aggregates.adb:75:22: high: assertion might fail (e.g. when M = (Elem_1 => Elem_1, others => Elem_0))
 array_aggregates.adb:79:32: info: initialization of "M" proved
 array_aggregates.adb:80:11: info: flow dependencies proved
 array_aggregates.adb:84:22: info: assertion proved (CVC5: 1 VC)
@@ -33,25 +33,25 @@ array_aggregates.adb:150:11: info: flow dependencies proved
 array_aggregates.adb:155:22: high: assertion might fail (e.g. when X = (3 => 8, others => 2))
 array_aggregates.adb:158:32: info: initialization of "X" proved
 array_aggregates.adb:159:11: info: flow dependencies proved
-array_aggregates.adb:164:22: high: assertion might fail (e.g. when X = (2 => Elem_0, others => Elem_1))
+array_aggregates.adb:164:22: high: assertion might fail (e.g. when X = (others => Elem_1))
 array_aggregates.adb:167:32: info: initialization of "X" proved
 array_aggregates.adb:168:11: info: flow dependencies proved
 array_aggregates.adb:173:22: info: assertion proved (CVC5: 1 VC)
 array_aggregates.adb:176:32: info: initialization of "X" proved
 array_aggregates.adb:177:11: info: flow dependencies proved
-array_aggregates.adb:186:22: high: assertion might fail (e.g. when X(2).A = 5 and X(2).B = False and X(2).C = Elem_0 and X(3).A = 10 and X(3).B = True)
+array_aggregates.adb:186:22: high: assertion might fail (e.g. when X(3).A = 10 and X(3).B = True and X(3).C = Elem_1)
 array_aggregates.adb:189:32: info: initialization of "X" proved
 array_aggregates.adb:190:11: info: flow dependencies proved
 array_aggregates.adb:199:22: info: assertion proved (CVC5: 1 VC)
 array_aggregates.adb:202:32: info: initialization of "X" proved
 array_aggregates.adb:203:11: info: flow dependencies proved
-array_aggregates.adb:212:22: high: assertion might fail (e.g. when X(2)(1) = 1 and X(2)(3) = 3 and X(2)(5) = 0 and X(3)(1) = 12 and X(3)(2) = 12)
+array_aggregates.adb:212:22: high: assertion might fail (e.g. when X(3)(1) = 12 and X(3)(2) = 12 and X(3)(3) = 12 and X(3)(4) = 12 and X(3)(5) = 10)
 array_aggregates.adb:215:32: info: initialization of "X" proved
 array_aggregates.adb:216:11: info: flow dependencies proved
 array_aggregates.adb:225:22: info: assertion proved (CVC5: 1 VC)
 array_aggregates.adb:228:32: info: initialization of "X" proved
 array_aggregates.adb:229:12: info: flow dependencies proved
-array_aggregates.adb:234:22: high: assertion might fail (e.g. when X = (3 => (4 => 12, others => 10), others => (others => 10)))
+array_aggregates.adb:234:22: high: assertion might fail (e.g. when X = (others => (4 => 12, others => 10)))
 array_aggregates.adb:237:32: info: initialization of "X" proved
 array_aggregates.adb:238:11: info: flow dependencies proved
 array_aggregates.adb:243:22: info: assertion proved (CVC5: 1 VC)
@@ -63,22 +63,22 @@ array_aggregates.adb:255:11: info: flow dependencies proved
 array_aggregates.adb:259:22: info: assertion proved (CVC5: 1 VC)
 array_aggregates.adb:262:32: info: initialization of "X" proved
 array_aggregates.adb:263:12: info: flow dependencies proved
-array_aggregates.adb:273:22: high: assertion might fail (e.g. when X = (3 => (Len => 5, Elem => "Hello"), others => (Len => 5, Elem => "lllll")))
+array_aggregates.adb:273:22: high: assertion might fail (e.g. when X = (others => (Len => 5, Elem => "Hello")))
 array_aggregates.adb:276:32: info: initialization of "X" proved
 array_aggregates.adb:277:12: info: flow dependencies proved
 array_aggregates.adb:287:22: info: assertion proved (CVC5: 1 VC)
 array_aggregates.adb:290:32: info: initialization of "X" proved
 array_aggregates.adb:291:11: info: flow dependencies proved
-array_aggregates.adb:297:22: high: assertion might fail (e.g. when X = (2 => Elem_0, others => Elem_2))
+array_aggregates.adb:297:22: high: assertion might fail (e.g. when X = (others => Elem_2))
 array_aggregates.adb:300:32: info: initialization of "X" proved
 array_aggregates.adb:302:11: info: flow dependencies proved
-array_aggregates.adb:309:22: high: assertion might fail (e.g. when N = Small_Index_T'Last and X = (2 => Elem_0, others => Elem_2)) [possible fix: subprogram at line 300 should mention N in a precondition]
+array_aggregates.adb:309:22: high: assertion might fail (e.g. when N = 1 and X = (1 => Elem_1, others => Elem_2)) [possible fix: subprogram at line 300 should mention N in a precondition]
 array_aggregates.adb:312:32: info: initialization of "X" proved
 array_aggregates.adb:314:11: info: flow dependencies proved
-array_aggregates.adb:321:22: high: assertion might fail (e.g. when N = 2 and X = (2 => Elem_0, others => Elem_2)) [possible fix: subprogram at line 312 should mention N in a precondition]
+array_aggregates.adb:321:22: high: assertion might fail (e.g. when N = Small_Index_T'Last and X = (others => Elem_2)) [possible fix: subprogram at line 312 should mention N in a precondition]
 array_aggregates.adb:324:33: info: initialization of "X" proved
 array_aggregates.adb:326:11: info: flow dependencies proved
-array_aggregates.adb:333:22: high: assertion might fail (e.g. when N = 2 and X = (2 => Elem_0, others => Elem_2)) [possible fix: subprogram at line 324 should mention N in a precondition]
+array_aggregates.adb:333:22: high: assertion might fail (e.g. when N = 1 and X = (1 => Elem_1, others => Elem_2)) [possible fix: subprogram at line 324 should mention N in a precondition]
 array_aggregates.adb:336:33: info: initialization of "X" proved
 array_aggregates.adb:338:11: info: flow dependencies proved
 array_aggregates.adb:345:46: high: assertion might fail, cannot prove X (N) = Elem_2 (e.g. when N = 2 and X = (2 => Elem_0, others => Elem_2)) [possible fix: subprogram at line 336 should mention N in a precondition]
@@ -102,7 +102,7 @@ array_aggregates.adb:393:11: info: flow dependencies proved
 array_aggregates.adb:397:22: medium: assertion might fail [possible fix: you should consider adding a postcondition to function Get_Length or turning it into an expression function in its unit spec]
 array_aggregates.adb:400:33: info: initialization of "X" proved
 array_aggregates.adb:401:11: info: flow dependencies proved
-array_aggregates.adb:408:22: info: assertion proved (CVC5: 1 VC)
+array_aggregates.adb:408:22: info: assertion proved (altergo: 1 VC)
 array_aggregates.adb:414:33: info: initialization of "X" proved
 array_aggregates.adb:415:11: info: flow dependencies proved
 array_aggregates.adb:422:22: info: assertion proved (altergo: 1 VC)

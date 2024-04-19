@@ -3,4 +3,5 @@ comment: "Do not use Z3, as the step limit fluctuates too much between platforms
 prove_all:
   sparklib: True
   prover: ["cvc5", "altergo"]
+  steps: 200
 large: True

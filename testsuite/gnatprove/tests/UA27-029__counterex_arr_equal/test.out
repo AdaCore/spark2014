@@ -1,9 +1,9 @@
 arr_equal.adb:7:22: medium: assertion might fail [possible fix: subprogram at arr_equal.ads:5 should mention A in a precondition]
 arr_equal.adb:16:22: high: assertion might fail (e.g. when A = (0 => 0, others => 3) and A'First = -2 and A'Last = 0) [possible fix: precondition of subprogram at arr_equal.ads:7 should mention A]
 arr_equal.adb:25:22: high: assertion might fail (e.g. when A = (0 => 0, others => -2) and A'First = -2 and A'Last = 0) [possible fix: precondition of subprogram at arr_equal.ads:10 should mention A]
-arr_equal.adb:34:22: high: assertion might fail (e.g. when A = (0 => 2, others => 1) and A'First = -2 and A'Last = 0) [possible fix: precondition of subprogram at arr_equal.ads:13 should mention A]
-arr_equal.adb:43:22: high: assertion might fail (e.g. when A = (1 => 1, others => 2) and A'First = -1 and A'Last = 1) [possible fix: precondition of subprogram at arr_equal.ads:16 should mention A]
-arr_equal.adb:59:22: high: assertion might fail (e.g. when A = (2 => 3, 3 => 3, 5 => 4, others => 1) and A'First = -4 and A'Last = 6) [possible fix: precondition of subprogram at arr_equal.ads:19 should mention A]
+arr_equal.adb:34:22: high: assertion might fail (e.g. when A = (0 => 2, others => 3) and A'First = -2 and A'Last = 0) [possible fix: precondition of subprogram at arr_equal.ads:13 should mention A]
+arr_equal.adb:43:22: high: assertion might fail (e.g. when A = (0 => 2, others => -2) and A'First = -2 and A'Last = 0) [possible fix: precondition of subprogram at arr_equal.ads:16 should mention A]
+arr_equal.adb:59:22: high: assertion might fail (e.g. when A = (-6 => 2, 2 => 3, 3 => 3, others => 1) and A'First = -7 and A'Last = 3) [possible fix: precondition of subprogram at arr_equal.ads:19 should mention A]
 arr_equal.ads:5:13: info: implicit aspect Always_Terminates on "Empty" has been proved, subprogram will terminate
 arr_equal.ads:7:13: info: implicit aspect Always_Terminates on "All_Same_Values" has been proved, subprogram will terminate
 arr_equal.ads:10:13: info: implicit aspect Always_Terminates on "All_Same_Others" has been proved, subprogram will terminate
@@ -13,8 +13,8 @@ arr_equal.ads:19:13: info: implicit aspect Always_Terminates on "Mix" has been p
 arr_not_equal.adb:7:22: high: assertion might fail (e.g. when A'First = 0 and A'Last = -1) [possible fix: subprogram at arr_not_equal.ads:5 should mention A in a precondition]
 arr_not_equal.adb:16:22: high: assertion might fail (e.g. when A = (others => 1) and A'First = 0 and A'Last = 2) [possible fix: precondition of subprogram at arr_not_equal.ads:7 should mention A]
 arr_not_equal.adb:25:22: high: assertion might fail (e.g. when A = (others => 1) and A'First = 0 and A'Last = 2) [possible fix: precondition of subprogram at arr_not_equal.ads:10 should mention A]
-arr_not_equal.adb:34:22: medium: assertion might fail [possible fix: precondition of subprogram at arr_not_equal.ads:13 should mention A]
-arr_not_equal.adb:43:22: medium: assertion might fail [possible fix: precondition of subprogram at arr_not_equal.ads:16 should mention A]
+arr_not_equal.adb:34:22: high: assertion might fail (e.g. when A = (0 => 1, 1 => 2, 2 => 3) and A'First = 0 and A'Last = 2) [possible fix: precondition of subprogram at arr_not_equal.ads:13 should mention A]
+arr_not_equal.adb:43:22: high: assertion might fail (e.g. when A = (0 => 1, 1 => 2, 2 => 3) and A'First = 0 and A'Last = 2) [possible fix: precondition of subprogram at arr_not_equal.ads:16 should mention A]
 arr_not_equal.adb:59:22: medium: assertion might fail [possible fix: precondition of subprogram at arr_not_equal.ads:19 should mention A]
 arr_not_equal.ads:5:13: info: implicit aspect Always_Terminates on "Empty" has been proved, subprogram will terminate
 arr_not_equal.ads:7:13: info: implicit aspect Always_Terminates on "All_Same_Values" has been proved, subprogram will terminate

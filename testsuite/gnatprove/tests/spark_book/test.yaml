@@ -4,5 +4,6 @@ prove_all:
   prover: ["cvc5", "altergo"]
   opt: ["-U"]
   steps: 400
+  counterexample: False #counterexamples lead to a constraint_error in gnatcoll-json
 large: True
 timeout: 1500

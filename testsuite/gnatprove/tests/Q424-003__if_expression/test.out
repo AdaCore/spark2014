@@ -26,7 +26,7 @@ string_utilities.adb:41:53: medium: "Lengths" might not be initialized
 string_utilities.adb:41:72: info: overflow check proved (CVC5: 2 VC)
 string_utilities.adb:41:72: info: range check proved (CVC5: 2 VC)
 string_utilities.adb:47:10: medium: "Lengths" might not be initialized
-string_utilities.adb:47:33: medium: range check might fail, cannot prove lower bound for S2'Last (e.g. when S2'Last = -1) [reason for check: input value must fit in parameter type]
+string_utilities.adb:47:33: medium: range check might fail, cannot prove lower bound for S2'Last [reason for check: input value must fit in parameter type]
 string_utilities.adb:52:48: medium: "Lengths" might not be initialized
 string_utilities.adb:52:71: info: range check proved (CVC5: 2 VC)
 string_utilities.adb:53:10: info: range check proved (CVC5: 2 VC)
@@ -51,10 +51,10 @@ string_utilities.adb:68:25: info: range check proved (CVC5: 2 VC)
 string_utilities.adb:70:25: info: overflow check proved (CVC5: 2 VC)
 string_utilities.adb:70:25: medium: range check might fail, cannot prove lower bound for X2 - 1 [reason for check: result of subtraction must fit in the target type of the assignment] [possible fix: loop at line 58 should mention X2 in a loop invariant]
 string_utilities.ads:3:12: info: implicit aspect Always_Terminates on "Head" has been proved, subprogram will terminate
-string_utilities.ads:3:55: medium: array index check might fail (e.g. when S'First = 1 and S'Last = 0) [reason for check: value must be a valid index into the array]
+string_utilities.ads:3:55: medium: array index check might fail [reason for check: value must be a valid index into the array]
 string_utilities.ads:4:12: info: implicit aspect Always_Terminates on "Tail" has been proved, subprogram will terminate
 string_utilities.ads:4:48: info: range check proved (CVC5: 4 VC)
-string_utilities.ads:4:59: medium: overflow check might fail, cannot prove upper bound for S'First +1 (e.g. when S'First = Integer'Last and S'Last = 0) [reason for check: result of addition must fit in a 32-bits machine integer]
+string_utilities.ads:4:59: medium: overflow check might fail, cannot prove upper bound for S'First +1 [reason for check: result of addition must fit in a 32-bits machine integer]
 string_utilities.ads:7:06: medium: implicit aspect Always_Terminates on "Is_Subsequence" could be incorrect, subprogram is recursive [possible fix: annotate "Is_Subsequence" with a Subprogram_Variant aspect]
 string_utilities.ads:13:12: info: implicit function contract might not be available on recursive calls
 string_utilities.ads:15:06: medium: implicit aspect Always_Terminates on "Slow_LCS_Length" could be incorrect, subprogram is recursive [possible fix: annotate "Slow_LCS_Length" with a Subprogram_Variant aspect]
