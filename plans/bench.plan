@@ -1,7 +1,5 @@
 def myplan():
-    anod_install("cvc5", query_range=20)
     anod_install("colibri", query_range=20)
-    anod_install("why3", query_range=20)
     anod_install("alt-ergo", query_range=20)
     anod_install("gcc", query_range=20)
     anod_install("gnsa", query_range=20)
@@ -12,6 +10,7 @@ def myplan():
     anod_install("libgpr2", qualifier="next", query_range=20)
     anod_install("e3", query_range=20)
     anod_install("e3-for-testing", query_range=20)
+    anod_build("why3")
     anod_build("spark2014")
     anod_build("spark-create-bench")
     anod_test("sparkbench")
