@@ -2148,7 +2148,8 @@ package body SPARK_Definition is
                        | No_Possible_Initialization
                      then
                         Mark_Violation ("uninitialized allocator without"
-                                        & " default initialization", N);
+                                        & " default initialization", N,
+                                        Code => EC_Uninitialized_Allocator);
 
                      --  Record components might be used during default
                      --  initialization. Update the Unused_Records set.
