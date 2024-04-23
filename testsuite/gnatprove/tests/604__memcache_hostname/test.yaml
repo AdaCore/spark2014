@@ -1,2 +1,0 @@
-prove_all:
-  opt: ["--memcached-server=unknown:11211"]
