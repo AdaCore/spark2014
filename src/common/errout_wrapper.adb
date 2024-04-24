@@ -4,13 +4,6 @@ with SPARK_Util; use SPARK_Util;
 
 package body Errout_Wrapper is
 
-   --  TODO Avoid code duplication of Get_Explain_Code
-
-   function Get_Explain_Code (Explain_Code : Natural) return String
-     with Pre => Explain_Code /= 0;
-   --  If Explain_Code is not zero, return the error code to include in the
-   --  message, in the same format used by Errout procedures.
-
    ------------
    -- Create --
    ------------
@@ -19,7 +12,7 @@ package body Errout_Wrapper is
      (Msg           : String;
       Names         : Node_Lists.List := Node_Lists.Empty;
       Secondary_Loc : Source_Ptr := No_Location;
-      Explain_Code  : Natural := No_Explain_Code) return Message is
+      Explain_Code  : Explain_Code_Kind := EC_None) return Message is
    begin
       return Message'(Msg'Length, Names, Secondary_Loc, Explain_Code, Msg);
    end Create;
@@ -29,7 +22,7 @@ package body Errout_Wrapper is
       N             : Node_Id := Empty;
       Names         : Name_Id_Lists.List := Name_Id_Lists.Empty;
       Secondary_Loc : Source_Ptr := No_Location;
-      Explain_Code  : Natural := No_Explain_Code) return Message
+      Explain_Code  : Explain_Code_Kind := EC_None) return Message
    is
       use Ada.Strings.Unbounded;
       Buf : Unbounded_String;
@@ -70,7 +63,7 @@ package body Errout_Wrapper is
    is
       procedure Print_Msg (Msg : Message; Cont : Boolean);
 
-      function First_Explain_Code return Natural;
+      function First_Explain_Code return Explain_Code_Kind;
       --  Return the first explain code found in the message or continuations
       --  (in that order).
 
@@ -78,17 +71,17 @@ package body Errout_Wrapper is
       -- First_Explain_Code --
       ------------------------
 
-      function First_Explain_Code return Natural is
+      function First_Explain_Code return Explain_Code_Kind is
       begin
-         if Msg.Explain_Code /= No_Explain_Code then
+         if Msg.Explain_Code /= EC_None then
             return Msg.Explain_Code;
          end if;
          for Cont of Continuations loop
-            if Cont.Explain_Code /= No_Explain_Code then
+            if Cont.Explain_Code /= EC_None then
                return Cont.Explain_Code;
             end if;
          end loop;
-         return No_Explain_Code;
+         return EC_None;
       end First_Explain_Code;
 
       ---------------
@@ -107,8 +100,8 @@ package body Errout_Wrapper is
                when MK_Warning | MK_Info => "\?");
          use Node_Lists;
          Expl_Code : constant String :=
-           (if Msg.Explain_Code = No_Explain_Code then ""
-            else " '[" & Get_Explain_Code (Msg.Explain_Code) & "']");
+           (if Msg.Explain_Code = EC_None then ""
+            else " '[" & To_String (Msg.Explain_Code) & "']");
          Names : constant Node_Lists.List :=
            (if not Msg.Names.Is_Empty then Node_Lists.List'(Msg.Names)
             else Node_Lists.List'([N]));
@@ -141,12 +134,12 @@ package body Errout_Wrapper is
          Print_Msg (Cont, Cont => True);
       end loop;
       declare
-         Code : constant Natural := First_Explain_Code;
+         Code : constant Explain_Code_Kind := First_Explain_Code;
       begin
-         if Code /= No_Explain_Code then
+         if Code /= EC_None then
             Print_Msg (Create
                        ("launch ""gnatprove --explain="
-                        & Get_Explain_Code (Code)
+                        & To_String (Code)
                         & """ for more information"),
                        Cont => True);
          end if;
@@ -163,7 +156,7 @@ package body Errout_Wrapper is
       Kind          : Msg_Kind := MK_Error;
       Names         : Node_Lists.List := Node_Lists.Empty;
       Secondary_Loc : Source_Ptr := No_Location;
-      Explain_Code  : Natural := No_Explain_Code;
+      Explain_Code  : Explain_Code_Kind := EC_None;
       First         : Boolean := False;
       Continuations : String_Lists.List := String_Lists.Empty)
    is
@@ -178,21 +171,5 @@ package body Errout_Wrapper is
                    First => First,
                    Continuations => Conts);
    end Error_Msg_N;
-
-   ----------------------
-   -- Get_Explain_Code --
-   ----------------------
-
-   function Get_Explain_Code (Explain_Code : Natural) return String is
-      Code : String := "0000";
-      Rest : Natural := Explain_Code;
-   begin
-      for J in reverse Code'Range loop
-         Code (J) := Character'Val (Character'Pos ('0') + Rest mod 10);
-         Rest := Rest / 10;
-      end loop;
-
-      return "E" & Code;
-   end Get_Explain_Code;
 
 end Errout_Wrapper;

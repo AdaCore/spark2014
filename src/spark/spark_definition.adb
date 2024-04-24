@@ -24,54 +24,53 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with Atree;                           use Atree;
-with Ada.Strings.Unbounded;           use Ada.Strings.Unbounded;
+with Atree;                          use Atree;
+with Ada.Strings.Unbounded;          use Ada.Strings.Unbounded;
 with Ada.Text_IO;
-with Aspects;                         use Aspects;
-with Assumption_Types;                use Assumption_Types;
-with Checked_Types;                   use Checked_Types;
-with Common_Iterators;                use Common_Iterators;
+with Aspects;                        use Aspects;
+with Assumption_Types;               use Assumption_Types;
+with Checked_Types;                  use Checked_Types;
+with Common_Iterators;               use Common_Iterators;
 with Debug;
-with Einfo.Utils;                     use Einfo.Utils;
-with Elists;                          use Elists;
+with Einfo.Utils;                    use Einfo.Utils;
+with Elists;                         use Elists;
 with Errout;
-with Errout_Wrapper;                  use Errout_Wrapper;
-with Exp_Util;                        use Exp_Util;
-with Flow_Dependency_Maps;            use Flow_Dependency_Maps;
-with Flow_Error_Messages;             use Flow_Error_Messages;
-with Flow_Generated_Globals.Phase_2;  use Flow_Generated_Globals.Phase_2;
-with Flow_Utility;                    use Flow_Utility;
-with Flow_Utility.Initialization;     use Flow_Utility.Initialization;
-with Flow_Types;                      use Flow_Types;
+with Errout_Wrapper;                 use Errout_Wrapper;
+with Exp_Util;                       use Exp_Util;
+with Flow_Dependency_Maps;           use Flow_Dependency_Maps;
+with Flow_Generated_Globals.Phase_2; use Flow_Generated_Globals.Phase_2;
+with Flow_Utility;                   use Flow_Utility;
+with Flow_Utility.Initialization;    use Flow_Utility.Initialization;
+with Flow_Types;                     use Flow_Types;
 with Gnat2Why_Args;
 with Lib;
-with Namet;                           use Namet;
-with Nlists;                          use Nlists;
+with Namet;                          use Namet;
+with Nlists;                         use Nlists;
 with Nmake;
-with Opt;                             use Opt;
-with Rtsfind;                         use Rtsfind;
+with Opt;                            use Opt;
+with Rtsfind;                        use Rtsfind;
 with Sem_Aggr;
-with Sem_Aux;                         use Sem_Aux;
+with Sem_Aux;                        use Sem_Aux;
 with Sem_Ch12;
 with Sem_Disp;
-with Sem_Eval;                        use Sem_Eval;
-with Sem_Prag;                        use Sem_Prag;
-with Sinfo.Utils;                     use Sinfo.Utils;
-with Sinput;                          use Sinput;
-with Snames;                          use Snames;
+with Sem_Eval;                       use Sem_Eval;
+with Sem_Prag;                       use Sem_Prag;
+with Sinfo.Utils;                    use Sinfo.Utils;
+with Sinput;                         use Sinput;
+with Snames;                         use Snames;
 with SPARK_Atree.Entities;
-with SPARK_Util;                      use SPARK_Util;
-with SPARK_Definition.Annotate;       use SPARK_Definition.Annotate;
-with SPARK_Definition.Violations;     use SPARK_Definition.Violations;
-with SPARK_Util.Hardcoded;            use SPARK_Util.Hardcoded;
-with SPARK_Util.Subprograms;          use SPARK_Util.Subprograms;
-with SPARK_Util.Types;                use SPARK_Util.Types;
-with Stand;                           use Stand;
-with String_Utils;                    use String_Utils;
+with SPARK_Util;                     use SPARK_Util;
+with SPARK_Definition.Annotate;      use SPARK_Definition.Annotate;
+with SPARK_Definition.Violations;    use SPARK_Definition.Violations;
+with SPARK_Util.Hardcoded;           use SPARK_Util.Hardcoded;
+with SPARK_Util.Subprograms;         use SPARK_Util.Subprograms;
+with SPARK_Util.Types;               use SPARK_Util.Types;
+with Stand;                          use Stand;
+with String_Utils;                   use String_Utils;
 with Tbuild;
-with Uintp;                           use Uintp;
-with Urealp;                          use Urealp;
-with VC_Kinds;                        use VC_Kinds;
+with Uintp;                          use Uintp;
+with Urealp;                         use Urealp;
+with VC_Kinds;                       use VC_Kinds;
 
 package body SPARK_Definition is
 
@@ -3849,9 +3848,7 @@ package body SPARK_Definition is
                         & " assuming " & To_String (Msg),
                         E,
                         Kind => MK_Warning,
-                        Explain_Code =>
-                          Explain_Code'Enum_Rep
-                            (EC_Address_Spec_Imprecise_Warn),
+                        Explain_Code => EC_Address_Spec_Imprecise_Warn,
                         Continuations => Cont);
                   end;
 
@@ -6928,8 +6925,7 @@ package body SPARK_Definition is
                     (Warning_Message (Warn_No_Possible_Termination),
                      E,
                      Kind => MK_Warning,
-                     Explain_Code =>
-                       Explain_Code'Enum_Rep (EC_Always_Terminates_Warn));
+                     Explain_Code => EC_Always_Terminates_Warn);
                end if;
             end if;
          end Mark_Subprogram_Contracts;

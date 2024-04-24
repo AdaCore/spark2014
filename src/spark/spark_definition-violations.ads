@@ -25,14 +25,13 @@
 ------------------------------------------------------------------------------
 
 with Ada.Containers.Indefinite_Hashed_Maps;
-with Ada.Strings.Unbounded;           use Ada.Strings.Unbounded;
-with Ada.Strings.Fixed;               use Ada.Strings.Fixed;
-with Atree;                           use Atree;
-with Errout_Wrapper;                  use Errout_Wrapper;
-with Flow_Error_Messages;             use Flow_Error_Messages;
-with Gnat2Why_Args;                   use Gnat2Why_Args;
-with Opt;                             use Opt;
-with VC_Kinds;                        use VC_Kinds;
+with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
+with Ada.Strings.Fixed;     use Ada.Strings.Fixed;
+with Atree;                 use Atree;
+with Errout_Wrapper;        use Errout_Wrapper;
+with Gnat2Why_Args;         use Gnat2Why_Args;
+with Opt;                   use Opt;
+with VC_Kinds;              use VC_Kinds;
 
 private package SPARK_Definition.Violations is
 
@@ -128,7 +127,7 @@ private package SPARK_Definition.Violations is
       N              : Node_Id;
       Names          : Node_Lists.List := Node_Lists.Empty;
       N_Names        : Name_Id_Lists.List := Name_Id_Lists.Empty;
-      Code           : Explain_Code := EC_None;
+      Code           : Explain_Code_Kind := EC_None;
       SRM_Reference  : String := "";
       Cont_Msg       : String := "";
       Root_Cause_Msg : String := "")

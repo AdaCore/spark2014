@@ -785,6 +785,58 @@ package VC_Kinds is
           & " annotated with Relaxed_Initialization"
      );
 
+   --  Explain codes are used in GNATprove to provide more information on
+   --  selected error/warning messages. The subset of those codes used in
+   --  the frontend are redefined in Errout.
+
+   type Explain_Code_Kind is
+     (EC_None,
+      EC_Volatile_At_Library_Level,
+      EC_Address_In_Expression,
+      EC_Type_Early_Call_Region,
+      EC_Volatile_Non_Interfering_Context,
+      EC_Function_Output_Global,
+      EC_Function_Volatile_Input_Global,
+      EC_Variable_Input_In_Expression,
+      EC_Write_In_Elaboration,
+      EC_Required_Part_Of,
+      EC_Ownership_Moved_Object,
+      EC_SPARK_Mode_On_Not_Library_Level,
+      EC_Address_Spec_Imprecise_Warn,
+      EC_Always_Terminates_Warn,
+      EC_Output_In_Function_Global_Or_Depends,
+      EC_Out_Parameter_In_Function,
+      EC_Always_Terminates_On_Function,
+      EC_Exceptional_Cases_On_Function,
+      EC_Call_To_Function_With_Side_Effects,
+      EC_Uninitialized_Allocator);
+   for Explain_Code_Kind use
+     (EC_None                                 => 0,
+      EC_Volatile_At_Library_Level            => 1,
+      EC_Address_In_Expression                => 2,
+      EC_Type_Early_Call_Region               => 3,
+      EC_Volatile_Non_Interfering_Context     => 4,
+      EC_Function_Output_Global               => 5,
+      EC_Function_Volatile_Input_Global       => 6,
+      EC_Variable_Input_In_Expression         => 7,
+      EC_Write_In_Elaboration                 => 8,
+      EC_Required_Part_Of                     => 9,
+      EC_Ownership_Moved_Object               => 10,
+      EC_SPARK_Mode_On_Not_Library_Level      => 11,
+      EC_Address_Spec_Imprecise_Warn          => 12,
+      EC_Always_Terminates_Warn               => 13,
+      EC_Output_In_Function_Global_Or_Depends => 14,
+      EC_Out_Parameter_In_Function            => 15,
+      EC_Always_Terminates_On_Function        => 16,
+      EC_Exceptional_Cases_On_Function        => 17,
+      EC_Call_To_Function_With_Side_Effects   => 18,
+      EC_Uninitialized_Allocator              => 19);
+
+   function To_String (Code : Explain_Code_Kind) return String
+     with Pre => Code /= EC_None;
+   --  Return the error code to include in the message, in the same format used
+   --  by Errout procedures.
+
    function CWE_ID (Kind : VC_Kind) return String;
    function CWE_ID (Kind : Valid_Flow_Tag_Kind) return String;
    --  Return the CWE number for a given kind as a string; return the empty

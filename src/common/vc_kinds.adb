@@ -1736,6 +1736,18 @@ package body VC_Kinds is
                  when PC_Flow     => "Flow analysis");
    end To_String;
 
+   function To_String (Code : Explain_Code_Kind) return String is
+      Result : String := "0000";
+      Rest : Natural := Explain_Code_Kind'Enum_Rep (Code);
+   begin
+      for J in reverse Result'Range loop
+         Result (J) := Character'Val (Character'Pos ('0') + Rest mod 10);
+         Rest := Rest / 10;
+      end loop;
+
+      return "E" & Result;
+   end To_String;
+
    --------------
    -- Wrap_CWE --
    --------------

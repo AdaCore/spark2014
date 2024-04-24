@@ -296,7 +296,7 @@ package body SPARK_Definition.Violations is
       N              : Node_Id;
       Names          : Node_Lists.List := Node_Lists.Empty;
       N_Names        : Name_Id_Lists.List := Name_Id_Lists.Empty;
-      Code           : Explain_Code := EC_None;
+      Code           : Explain_Code_Kind := EC_None;
       SRM_Reference  : String := "";
       Cont_Msg       : String := "";
       Root_Cause_Msg : String := "")
@@ -325,22 +325,18 @@ package body SPARK_Definition.Violations is
          end if;
 
          declare
-            Ex_Code : constant Natural :=
-              (if Code /= EC_None
-               then Explain_Code'Enum_Rep (Code)
-               else No_Explain_Code);
             Mess : constant Message :=
               (if not N_Names.Is_Empty then
                   Errout_Wrapper.Create_N
                     (To_String (Full_Msg),
                      Names => N_Names,
                      N     => N,
-                     Explain_Code => Ex_Code)
+                     Explain_Code => Code)
                else
                   Errout_Wrapper.Create
                     (To_String (Full_Msg),
                      Names => Names,
-                  Explain_Code => Ex_Code));
+                  Explain_Code => Code));
             Conts : Message_Lists.List := Message_Lists.Empty;
          begin
             if Cont_Msg /= "" then

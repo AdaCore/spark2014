@@ -25,31 +25,32 @@
 
 with Ada.Containers;
 with Ada.Unchecked_Deallocation;
-with Atree;                       use Atree;
-with Checked_Types;               use Checked_Types;
-with Common_Containers;           use Common_Containers;
-with Einfo.Entities;              use Einfo.Entities;
-with Einfo.Utils;                 use Einfo.Utils;
-with Errout_Wrapper;              use Errout_Wrapper;
-with Flow_Error_Messages;         use Flow_Error_Messages;
-with Flow_Types;                  use Flow_Types;
-with Flow_Utility;                use Flow_Utility;
-with GNAT.Dynamic_HTables;        use GNAT.Dynamic_HTables;
-with Gnat2Why.Util;               use Gnat2Why.Util;
-with Namet;                       use Namet;
-with Nlists;                      use Nlists;
-with Sem_Util;                    use Sem_Util;
-with Sem_Aggr;                    use Sem_Aggr;
-with Sem_Aux;                     use Sem_Aux;
-with Sinfo.Nodes;                 use Sinfo.Nodes;
-with Sinfo.Utils;                 use Sinfo.Utils;
-with Snames;                      use Snames;
-with SPARK_Definition;            use SPARK_Definition;
-with SPARK_Definition.Annotate;   use SPARK_Definition.Annotate;
-with SPARK_Util;                  use SPARK_Util;
-with SPARK_Util.Subprograms;      use SPARK_Util.Subprograms;
-with SPARK_Util.Types;            use SPARK_Util.Types;
-with Treepr;                      use Treepr;
+with Atree;                     use Atree;
+with Checked_Types;             use Checked_Types;
+with Common_Containers;         use Common_Containers;
+with Einfo.Entities;            use Einfo.Entities;
+with Einfo.Utils;               use Einfo.Utils;
+with Errout_Wrapper;            use Errout_Wrapper;
+with Flow_Types;                use Flow_Types;
+with Flow_Utility;              use Flow_Utility;
+with GNAT.Dynamic_HTables;      use GNAT.Dynamic_HTables;
+with Gnat2Why.Util;             use Gnat2Why.Util;
+with Namet;                     use Namet;
+with Nlists;                    use Nlists;
+with Sem_Util;                  use Sem_Util;
+with Sem_Aggr;                  use Sem_Aggr;
+with Sem_Aux;                   use Sem_Aux;
+with Sinfo.Nodes;               use Sinfo.Nodes;
+with Sinfo.Utils;               use Sinfo.Utils;
+with Snames;                    use Snames;
+with SPARK_Definition;          use SPARK_Definition;
+with SPARK_Definition.Annotate; use SPARK_Definition.Annotate;
+with SPARK_Util;                use SPARK_Util;
+with SPARK_Util.Subprograms;    use SPARK_Util.Subprograms;
+with SPARK_Util.Types;          use SPARK_Util.Types;
+with Treepr;                    use Treepr;
+with VC_Kinds;                  use VC_Kinds;
+
 use all type Ada.Containers.Count_Type;
 
 package body Gnat2Why.Borrow_Checker is
@@ -3478,22 +3479,16 @@ package body Gnat2Why.Borrow_Checker is
              (if Expr.Is_Ent then Get_Root_Object (Moved) = Expr.Ent
               else Is_Prefix_Or_Almost (Expr.Expr, +Moved))
          then
-            declare
-               Code : constant Natural :=
-                 Explain_Code'Enum_Rep (EC_Ownership_Moved_Object);
-               Loc : constant Source_Ptr := Sloc (Moved);
-            begin
-               if Expr.Is_Ent then
-                  Error_Msg_N ("& was moved #",
-                               Expr.Loc,
-                               Names         => [Expr.Ent],
-                               Secondary_Loc => Loc);
-               else
-                  Error_Msg_N ("object was moved #", Expr.Expr,
-                               Secondary_Loc => Loc,
-                               Explain_Code  => Code);
-               end if;
-            end;
+            if Expr.Is_Ent then
+               Error_Msg_N ("& was moved #",
+                            Expr.Loc,
+                            Names         => [Expr.Ent],
+                            Secondary_Loc => Sloc (Moved));
+            else
+               Error_Msg_N ("object was moved #", Expr.Expr,
+                            Secondary_Loc => Sloc (Moved),
+                            Explain_Code  => EC_Ownership_Moved_Object);
+            end if;
             Permission_Error := True;
             return;
          end if;
@@ -5459,9 +5454,9 @@ package body Gnat2Why.Borrow_Checker is
         (if Present (Observed) then "observed #"
          elsif Present (Borrowed) then "borrowed #"
          else "moved #");
-      Code     : constant Natural :=
-        (if Present (Observed) or else Present (Borrowed) then No_Explain_Code
-         else Explain_Code'Enum_Rep (EC_Ownership_Moved_Object));
+      Code     : constant Explain_Code_Kind :=
+        (if Present (Observed) or else Present (Borrowed) then EC_None
+         else EC_Ownership_Moved_Object);
       Sec_Sloc : constant Source_Ptr := Sloc (Expl);
    begin
       if Forbidden_Perm then
