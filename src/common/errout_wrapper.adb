@@ -29,6 +29,8 @@ package body Errout_Wrapper is
       Index : Integer := Msg'First;
       C : Name_Id_Lists.Cursor := Names.First;
    begin
+      --  Given that message objects hold lists of nodes, we need to do the
+      --  replacement ourselves.
       while Index in Msg'Range loop
          if Msg (Index) = ''' then
             Append (Buf, Msg (Index));
@@ -110,12 +112,18 @@ package body Errout_Wrapper is
          Errout.Error_Msg_Sloc := Msg.Secondary_Loc;
          if Has_Element (C) then
             Errout.Error_Msg_Node_2 := Element (C);
+            Next (C);
+            if Has_Element (C) then
+               Errout.Error_Msg_Node_3 := Element (C);
+               Next (C);
+               if Has_Element (C) then
+                  Errout.Error_Msg_Node_4 := Element (C);
+                  Next (C);
+               end if;
+               --  ??? ideally would need to go up to 6
+            end if;
+
          end if;
-         Next (C);
-         if Has_Element (C) then
-            Errout.Error_Msg_Node_3 := Element (C);
-         end if;
-         --  TODO go up to 6 ???
          declare
             S : constant String :=
               (if Cont then Cont_Prefix else Prefix) & Msg.Msg & Expl_Code;
