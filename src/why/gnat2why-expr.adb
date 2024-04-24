@@ -1034,9 +1034,23 @@ package body Gnat2Why.Expr is
    --   * A predicate Result which is the translation of Assertion when we
    --     want to assume it.
 
-   procedure Transform_String_Literal (N : N_String_Literal_Id);
-   --  Create an uninterpreted logic function with no parameters that returns a
-   --  string value corresponding to the string literal.
+   function Transform_String_Literal
+     (N      : Node_Id;
+      Domain : EW_Domain;
+      Params : Transformation_Params)
+      return W_Expr_Id
+   with Pre => Nkind (N) = N_String_Literal
+     or else (Nkind (N) = N_Unchecked_Type_Conversion
+              and then Nkind (Expression (N)) = N_String_Literal);
+   --  Transform a string literal. It uses an uninterpreted logic function with
+   --  no parameters that returns a string value corresponding to the string
+   --  literal.
+   --  N here can be either a string literal if the literal has a static lower
+   --  bound or an unchecked conversion introduced by the frontend to
+   --  mimic the dynamic low bound. In the first case, the low bound can be
+   --  taken from the string literal. In the second, it should be taken from
+   --  the target of the conversion as the  string literal subtype might have
+   --  bounds which are outside of the index type's base type.
 
    function Transform_Record_Component_Associations
      (Domain             : EW_Domain;
@@ -21478,27 +21492,7 @@ package body Gnat2Why.Expr is
             --  * loop parameters are always mutable, and of type int
 
          when N_String_Literal =>
-            declare
-               M  : W_Module_Id := E_Module (Expr);
-               Id : W_Identifier_Id;
-            begin
-               if M = Why_Empty then
-                  Transform_String_Literal (Expr);
-                  M := E_Module (Expr);
-               end if;
-               Id :=
-                 New_Identifier
-                   (Ada_Node => Expr,
-                    Domain   => Domain,
-                    Module   => M,
-                    Symb     => NID (Lower_Case_First (Img (Get_Name (M)))),
-                    Typ      => New_Abstract_Base_Type (Type_Of_Node (Expr)));
-               T := New_Call (Ada_Node => Expr,
-                              Domain   => Domain,
-                              Name     => Id,
-                              Args     => (1 .. 1 => +Void),
-                              Typ      => Get_Typ (Id));
-            end;
+            T := Transform_String_Literal (Expr, Domain, Params);
 
          when N_Identifier
             | N_Expanded_Name
@@ -22448,16 +22442,28 @@ package body Gnat2Why.Expr is
             end;
 
          when N_Unchecked_Type_Conversion =>
-
-            --  Compiler-generated unchecked type conversions are transparent
-            --  for Why with our translation.
-
             pragma Assert (not Comes_From_Source (Expr));
-            T := Transform_Expr (Expression (Expr),
-                                 Expected_Type,
-                                 Domain,
-                                 Local_Params,
-                                 No_Read);
+
+            --  For string literals with a dynamic low bound, the frontend uses
+            --  an arbitrary low bound of 1 and introduces a shift afterward
+            --  through an unchecked conversion. It might produce incorrect
+            --  string literal subtypes with bounds which are outside of the
+            --  index type's base type. We avoid looking at such subtypes by
+            --  using the target type of the unchecked conversion instead.
+
+            if Nkind (Original_Node (Expr)) = N_String_Literal then
+               T := Transform_String_Literal (Expr, Domain, Params);
+
+            --  Other compiler-generated unchecked type conversions are
+            --  transparent for Why with our translation.
+
+            else
+               T := Transform_Expr (Expression (Expr),
+                                    Expected_Type,
+                                    Domain,
+                                    Local_Params,
+                                    No_Read);
+            end if;
 
          when N_Function_Call =>
             declare
@@ -27047,136 +27053,425 @@ package body Gnat2Why.Expr is
    -- Transform_String_Literal --
    ------------------------------
 
-   procedure Transform_String_Literal (N : N_String_Literal_Id) is
-      Name      : constant String := New_Temp_Identifier ("String_Literal");
+   function Transform_String_Literal
+     (N      : Node_Id;
+      Domain : EW_Domain;
+      Params : Transformation_Params)
+      return W_Expr_Id
+   is
+      Is_Static : constant Boolean := Nkind (N) = N_String_Literal;
+      Expr      : constant N_String_Literal_Id :=
+        (if Is_Static then N else Expression (N));
       Ty        : constant Entity_Id := Type_Of_Node (N);
+      pragma Assert (Is_Constrained (Ty));
+      pragma Assert (Is_Static = Is_Static_Array_Type (Ty));
+
+      Low       : constant Node_Id :=
+        (if Is_Static then String_Literal_Low_Bound (Ty)
+         else Empty);
       Why_Type  : constant W_Type_Id := New_Abstract_Base_Type (Ty);
-      Id        : constant W_Identifier_Id :=
-        New_Identifier (Ada_Node => N,
-                        Name     => Name,
-                        Typ      => Why_Type);
-      Binders   : constant Binder_Array := (1 .. 1 => Unit_Param);
-      Th        : Theory_UC;
-   begin
-      Insert_Extra_Module
-        (N,
-         New_Module (File => No_Symbol, Name => Name));
-
-      Th :=
-        Open_Theory
-          (WF_Context, E_Module (N),
-           Comment =>
-             "Module for defining a value for string literal "
-           & (if Sloc (N) > 0 then
-                " defined at " & Build_Location_String (Sloc (N))
-             else "")
-           & ", created in " & GNAT.Source_Info.Enclosing_Entity);
-
-      --  Generate an abstract logic function for the Why3 map of the literal.
-      --  Use a function with a unit parameter instead of a constant so that
+      Args      : constant W_Expr_Array :=
+        (1 =>
+           (if Is_Static then +Void
+            else +Get_Array_Attr
+              (Domain => Term_Domain (Domain),
+               Ty     => Ty,
+               Attr   => Attribute_First,
+               Dim    => 1,
+               Params => Params)));
+      --  If the low bound is not static, give it as a parameter. Otherwise,
+      --  use a function with a unit parameter instead of a constant so that
       --  the axiom is only instantiated when the literal is used.
+      Str_Value : constant String_Id := Strval (Expr);
+      Length    : constant Nat := String_Length (Str_Value);
+      Idx       : constant Entity_Id := First_Index
+        (Retysp (Etype (Ty)));
+      Idx_Ty    : constant Entity_Id := Retysp (Etype (Idx));
+      B_Ty      : constant W_Type_Id :=
+        Base_Why_Type_No_Bool (Idx_Ty);
 
-      Emit
-        (Th,
-         New_Function_Decl
-           (Domain      => EW_Pterm,
-            Name        => Id,
-            Location    => No_Location,
-            Labels      => Symbol_Sets.Empty_Set,
-            Binders     => Binders,
-            Return_Type => Why_Type));
+      M  : W_Module_Id := E_Module (Expr);
+      Id : W_Identifier_Id;
+      T  : W_Expr_Id;
 
-      --  We now generate an axiom which gives the values stored in Id,
-      --  when the literal contains only plain Character as expected by
-      --  String_To_Name_Buffer.
-
-      if not (Has_Wide_Character (N)
-                or else
-              Has_Wide_Wide_Character (N))
-      then
+   begin
+      if M = Why_Empty then
          declare
-            Call         : constant W_Term_Id :=
-              +New_Call (Domain  => EW_Term,
-                         Name    => Id,
-                         Binders => Binders,
-                         Typ     => Why_Type);
-            Axiom_Name   : constant String := Name & "__" & Def_Axiom;
-            Str_Value    : constant String_Id := Strval (N);
-            Len          : constant Nat := String_Length (Str_Value);
-            Low_Bound    : constant Int :=
-              UI_To_Int (Expr_Value (String_Literal_Low_Bound (Ty)));
-            B_Ty         : constant W_Type_Id :=
-              Nth_Index_Rep_Type_No_Bool (Ty, 1);
-            Expr_Ar      : W_Pred_Array (1 .. Natural (Len));
-            Def          : W_Pred_Id;
-
+            Low_Id  : constant W_Identifier_Id := New_Temp_Identifier
+              (Base_Name => "low",
+               Typ       => Nth_Index_Rep_Type_No_Bool (Ty, 1));
+            Binders : constant Binder_Array :=
+              (1 =>
+                 (if Is_Static then Unit_Param
+                  else Binder_Type'
+                    (B_Name => Low_Id,
+                     B_Ent  => Null_Entity_Name,
+                     others => <>)));
+            Name    : constant String :=
+              New_Temp_Identifier ("String_Literal");
+            Id      : constant W_Identifier_Id :=
+              New_Identifier (Ada_Node => N,
+                              Name     => Name,
+                              Typ      => Why_Type);
+            Th      : Theory_UC;
          begin
-            --  For each index in the string, add an assumption specifying the
-            --  value stored in Id at this index.
+            Insert_Extra_Module
+              (Expr,
+               New_Module (File => No_Symbol, Name => Name));
 
-            for I in 1 .. Len loop
+            M := E_Module (Expr);
+
+            Th :=
+              Open_Theory
+                (WF_Context, M,
+                 Comment =>
+                   "Module for defining a value for string literal "
+                 & (if Sloc (N) > 0 then
+                      " defined at " & Build_Location_String (Sloc (N))
+                   else "")
+                 & ", created in " & GNAT.Source_Info.Enclosing_Entity);
+
+            --  Generate an abstract logic function for the Why3 map of the
+            --  literal.
+
+            Emit
+              (Th,
+               New_Function_Decl
+                 (Domain      => EW_Pterm,
+                  Name        => Id,
+                  Location    => No_Location,
+                  Labels      => Symbol_Sets.Empty_Set,
+                  Binders     => Binders,
+                  Return_Type => Why_Type));
+
+            --  We now generate an axiom which gives the values stored in Id,
+            --  when the literal contains only plain Character as expected by
+            --  String_To_Name_Buffer.
+
+            if not (Has_Wide_Character (Expr)
+                    or else
+                    Has_Wide_Wide_Character (Expr))
+            then
                declare
-                  Arr_Val : constant W_Term_Id :=
-                    New_Array_Access
-                      (Ar    => Call,
-                       Index =>
-                         (1 => New_Discrete_Constant
-                            (Value => UI_From_Int (I - 1 + Low_Bound),
-                             Typ   => B_Ty)));
-                  Char   : constant W_Term_Id :=
-                    New_Integer_Constant
-                      (Value => UI_From_CC (Get_String_Char (Str_Value, I)));
-               begin
-                  Expr_Ar (Positive (I)) :=
-                    New_Comparison
-                      (Symbol => Why_Eq,
-                       Left   => Insert_Simple_Conversion
-                         (Expr => Arr_Val,
-                          To   => EW_Int_Type),
-                       Right  => Char);
-               end;
-            end loop;
+                  Call       : constant W_Term_Id :=
+                    +New_Call (Domain  => EW_Term,
+                               Name    => Id,
+                               Binders => Binders,
+                               Typ     => Why_Type);
+                  Axiom_Name : constant String := Name & "__" & Def_Axiom;
+                  Expr_Ar    : W_Pred_Array (1 .. Natural (Length));
+                  Def        : W_Pred_Id;
 
-            if Len > 0 then
-               Def := New_And_Pred (Expr_Ar);
-            else
-               Def := True_Pred;
+               begin
+                  --  For each index in the string, add an assumption
+                  --  specifying the value stored in Id at this index.
+
+                  for I in 1 .. Length loop
+                     declare
+                        Offset  : constant Uint := UI_From_Int (I - 1);
+                        Idx_Val : constant W_Term_Id :=
+                          (if Is_Static
+                           then New_Discrete_Constant
+                             (Value => Expr_Value (Low) + Offset,
+                              Typ   => B_Ty)
+                           else +New_Discrete_Add
+                             (Domain => EW_Term,
+                              Left   => +Low_Id,
+                              Right  => New_Discrete_Constant
+                                (Value => Offset,
+                                 Typ   => B_Ty)));
+                        Arr_Val : constant W_Term_Id :=
+                          New_Array_Access
+                            (Ar    => Call,
+                             Index => (1 => +Idx_Val));
+                        Char    : constant W_Term_Id :=
+                          New_Integer_Constant
+                            (Value =>
+                               UI_From_CC (Get_String_Char (Str_Value, I)));
+                     begin
+                        Expr_Ar (Positive (I)) :=
+                          New_Comparison
+                            (Symbol => Why_Eq,
+                             Left   => Insert_Simple_Conversion
+                               (Expr => Arr_Val,
+                                To   => EW_Int_Type),
+                             Right  => Char);
+                     end;
+                  end loop;
+
+                  if Length > 0 then
+                     Def := New_And_Pred (Expr_Ar);
+                  else
+                     Def := True_Pred;
+                  end if;
+
+                  --  Add the value of the bounds for string literals with a
+                  --  non-static low bound.
+
+                  if not Is_Static then
+                     declare
+                        High_Term    : constant W_Term_Id :=
+                          (if Length = 0
+                           then +New_Discrete_Substract
+                             (Domain   => EW_Term,
+                              Left     => +Low_Id,
+                              Right    => New_Discrete_Constant
+                                (Value => Uint_1,
+                                 Typ   => B_Ty),
+                              Typ      => B_Ty)
+                           else +New_Discrete_Add
+                             (Domain   => EW_Term,
+                              Left     => +Low_Id,
+                              Right    => New_Discrete_Constant
+                                (Value => UI_From_Int (Length - 1),
+                                 Typ   => B_Ty),
+                              Typ      => B_Ty));
+                        Bounds_Value : W_Pred_Id := New_And_Pred
+                          (Left  => New_Comparison
+                               (Symbol => Why_Eq,
+                                Left   => Get_Array_Attr
+                                  (Expr => Call,
+                                   Attr => Attribute_First,
+                                   Dim  => 1),
+                                Right  => +Low_Id),
+                           Right => New_Comparison
+                             (Symbol => Why_Eq,
+                              Left   => +Get_Array_Attr
+                                (Expr => Call,
+                                 Attr => Attribute_Last,
+                                 Dim  => 1),
+                              Right  => High_Term));
+
+                     begin
+                        --  If the computation of the high bound wrap-arounds,
+                        --  do not assume the bounds value to avoid generating
+                        --  an incorrect axiom.
+
+                        if Is_Modular_Integer_Type (Idx_Ty) then
+                           if Length = 0 then
+                              Bounds_Value := New_Conditional
+                                (Condition => New_Comparison
+                                   (Symbol => MF_BVs (B_Ty).Ugt,
+                                    Left   => +Low_Id,
+                                    Right  => High_Term),
+                                 Then_Part => Bounds_Value);
+                           elsif Length >= 1 then
+                              Bounds_Value := New_Conditional
+                                (Condition => New_Comparison
+                                   (Symbol => MF_BVs (B_Ty).Ule,
+                                    Left   => +Low_Id,
+                                    Right  => High_Term),
+                                 Then_Part => Bounds_Value);
+                           end if;
+                        end if;
+
+                        --  The low bound is taken as parameter, we should add
+                        --  a guard to the axiom for the dynamic property of
+                        --  the array to avoid generating an unsound axiom if
+                        --  the bounds are not in their type.
+
+                        Bounds_Value :=
+                          New_Conditional
+                            (Condition => +New_Dynamic_Property
+                               (Domain => EW_Pred,
+                                Ty => Base_Type (Ty),
+                                Args   => (+Low_Id, +High_Term),
+                                Params => Params),
+                             Then_Part => Bounds_Value,
+                             Typ       => EW_Bool_Type);
+
+                        Def := New_And_Pred
+                          (Left  => Def,
+                           Right => Bounds_Value);
+                     end;
+                  end if;
+
+                  --  Emit an axiom containing all the assumptions
+
+                  Emit
+                    (Th,
+                     New_Axiom
+                       (Ada_Node => N,
+                        Name     => NID (Axiom_Name),
+                        Def      => New_Universal_Quantif
+                          (Binders  => Binders,
+                           Triggers => New_Triggers
+                             (Triggers =>
+                                  (1 => New_Trigger (Terms => (1 => +Call)))),
+                           Pred     => Def),
+                        Dep      => New_Axiom_Dep (Name => Id,
+                                                   Kind => EW_Axdep_Func)));
+
+                  if Is_Static then
+                     Def := New_Well_Formed_Pred
+                       (New_Call (Name => Id,
+                                  Args => (1 => +Void),
+                                  Typ  => Why_Type));
+
+                  else
+                     Def := New_Universal_Quantif
+                       (Binders  => Binders,
+                        Triggers => New_Triggers
+                          (Triggers =>
+                               (1 => New_Trigger (Terms => (1 => +Call)))),
+                        Pred     => New_Well_Formed_Pred (Call));
+                  end if;
+
+                  Emit
+                    (Th,
+                     New_Axiom
+                       (Ada_Node => Expr,
+                        Name     => NID (Axiom_Name & "__well_formed"),
+                        Def      => Def,
+                        Dep      => New_Axiom_Dep (Name => Id,
+                                                   Kind => EW_Axdep_Func)));
+               end;
             end if;
 
-            --  Emit an axiom containing all the assumptions
-
-            Emit
-              (Th,
-               New_Axiom
-                 (Ada_Node => N,
-                  Name     => NID (Axiom_Name),
-                  Def      => New_Universal_Quantif
-                    (Binders  => Binders,
-                     Triggers => New_Triggers
-                       (Triggers =>
-                            (1 => New_Trigger (Terms => (1 => +Call)))),
-                     Pred     => Def),
-                  Dep      => New_Axiom_Dep (Name => Id,
-                                             Kind => EW_Axdep_Func)));
-
-            Emit
-              (Th,
-               New_Axiom
-                 (Ada_Node => N,
-                  Name     => NID (Axiom_Name & "__well_formed"),
-                  Def      => New_Well_Formed_Pred
-                    (New_Call (Name => Id,
-                               Args => (1 => +Void),
-                               Typ  => Why_Type)),
-                  Dep      => New_Axiom_Dep (Name => Id,
-                                             Kind => EW_Axdep_Func)));
+            Close_Theory (Th,
+                          Kind           => Definition_Theory,
+                          Defined_Entity => Expr);
          end;
       end if;
 
-      Close_Theory (Th,
-                    Kind => Definition_Theory,
-                    Defined_Entity => N);
+      Id :=
+        New_Identifier
+          (Ada_Node => Expr,
+           Domain   => Domain,
+           Module   => M,
+           Symb     => NID (Lower_Case_First (Img (Get_Name (M)))),
+           Typ      => Why_Type);
 
+      T := New_Call (Ada_Node => Expr,
+                     Domain   => Domain,
+                     Name     => Id,
+                     Args     => Args,
+                     Typ      => Get_Typ (Id));
+
+      --  In the program domain, emit the necessary range checks. No need to
+      --  emit them if everything is static. This case is rejected by the
+      --  compiler.
+
+      if Domain = EW_Prog then
+         declare
+            Low_Expr  : constant W_Term_Id :=
+              (if Is_Static
+               then New_Discrete_Constant
+                 (Value => Expr_Value (Low),
+                  Typ   => B_Ty)
+               else +New_Attribute_Expr
+                 (Idx_Ty,
+                  EW_Term,
+                  Attribute_First,
+                  Params));
+            Checks    : W_Pred_Id := True_Pred;
+
+         begin
+            --  For empty strings, check that Low_Expr is not the
+            --  first element of the base type.
+
+            if Length = 0 then
+               if Is_Static
+                 and then Compile_Time_Known_Value
+                   (Type_Low_Bound (Base_Type (Idx_Ty)))
+               then
+                  pragma Assert
+                    (Expr_Value (Low) /= Expr_Value
+                     (Type_Low_Bound (Base_Type (Idx_Ty))));
+               else
+                  Checks := New_Comparison
+                    (Symbol => Why_Neq,
+                     Left   => Low_Expr,
+                     Right  => +New_Attribute_Expr
+                       (Base_Type (Idx_Ty),
+                        EW_Term,
+                        Attribute_First,
+                        Params));
+               end if;
+
+            else
+               declare
+                  Offset     : constant W_Term_Id :=
+                    New_Discrete_Constant
+                      (Value => UI_From_Int (Length - 1),
+                       Typ   => B_Ty);
+                  Last_Index : constant W_Term_Id :=
+                    (if Why_Type_Is_BitVector (B_Ty)
+                     then +New_Binary_Op_Expr
+                       (Op          => N_Op_Add,
+                        Left        => +Low_Expr,
+                        Right       => +Offset,
+                        Left_Type   => Idx_Ty,
+                        Right_Type  => Idx_Ty,
+                        Return_Type => Idx_Ty,
+                        Domain      => EW_Term)
+                     else +New_Discrete_Add
+                       (Domain => EW_Term,
+                        Left   => +Low_Expr,
+                        Right  => +Offset));
+
+               begin
+                  --  Check that the last index is at most the last
+                  --  index of the subtype.
+
+                  if Is_Static
+                    and then Compile_Time_Known_Value
+                      (Type_High_Bound (Idx_Ty))
+                  then
+                     pragma Assert
+                       (Expr_Value (Low) + UI_From_Int (Length - 1) <=
+                            Expr_Value (Type_High_Bound (Idx_Ty)));
+                  else
+                     Checks := New_Comparison
+                       (Symbol =>
+                          (if Why_Type_Is_BitVector (B_Ty)
+                           then MF_BVs (B_Ty).Ule else Int_Infix_Le),
+                        Left   => Last_Index,
+                        Right  => +New_Attribute_Expr
+                          (Idx_Ty,
+                           EW_Term,
+                           Attribute_Last,
+                           Params));
+                  end if;
+
+                  --  For bitvectors, add no-wraparound check
+
+                  if Why_Type_Is_BitVector (B_Ty) then
+                     if Is_Static
+                       and then Compile_Time_Known_Value
+                         (Type_High_Bound (Idx_Ty))
+                     then
+                        pragma Assert
+                          (Expr_Value (Low) +
+                               UI_From_Int (Length - 1) <=
+                               Expr_Value (Type_High_Bound (Idx_Ty)));
+                     else
+                        Checks := New_And_Pred
+                          (New_Comparison
+                             (Symbol => MF_BVs (B_Ty).Ule,
+                              Left   => Low_Expr,
+                              Right  => Last_Index),
+                           Checks);
+                     end if;
+                  end if;
+               end;
+
+            end if;
+
+            if not Is_True_Boolean (+Checks) then
+               T := +Sequence
+                 (New_Ignore
+                    (Prog => New_Located_Assert
+                         (Ada_Node => Expr,
+                          Pred     => Checks,
+                          Reason   => VC_Range_Check,
+                          Kind     => EW_Assert)),
+                  Right => +T);
+            end if;
+         end;
+      end if;
+
+      return T;
    end Transform_String_Literal;
 
    -------------------------------
