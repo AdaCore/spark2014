@@ -64,6 +64,8 @@ package body Errout_Wrapper is
       Continuations : Message_Lists.List := Message_Lists.Empty)
    is
       procedure Print_Msg (Msg : Message; Cont : Boolean);
+      --  encapsulate the logic of actually printing a message. Cont is true if
+      --  this is a continuation message.
 
       function First_Explain_Code return Explain_Code_Kind;
       --  Return the first explain code found in the message or continuations
@@ -93,12 +95,12 @@ package body Errout_Wrapper is
       procedure Print_Msg (Msg : Message; Cont : Boolean) is
          Prefix : constant String :=
            (case Kind is
-               when MK_Error => "",
+               when MK_Error   => "",
                when MK_Warning => "?",
-               when MK_Info => "info: ?");
+               when MK_Info    => "info: ?");
          Cont_Prefix : constant String :=
            (case Kind is
-               when MK_Error => "\",
+               when MK_Error             => "\",
                when MK_Warning | MK_Info => "\?");
          use Node_Lists;
          Expl_Code : constant String :=

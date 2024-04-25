@@ -1745,7 +1745,7 @@ package body VC_Kinds is
          Rest := Rest / 10;
       end loop;
 
-      return "E" & Result;
+      return 'E' & Result;
    end To_String;
 
    --------------

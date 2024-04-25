@@ -329,13 +329,13 @@ package body SPARK_Definition.Violations is
               (if not N_Names.Is_Empty then
                   Errout_Wrapper.Create_N
                     (To_String (Full_Msg),
-                     Names => N_Names,
-                     N     => N,
+                     Names        => N_Names,
+                     N            => N,
                      Explain_Code => Code)
                else
                   Errout_Wrapper.Create
                     (To_String (Full_Msg),
-                     Names => Names,
+                     Names     => Names,
                   Explain_Code => Code));
             Conts : Message_Lists.List := Message_Lists.Empty;
          begin
@@ -346,7 +346,7 @@ package body SPARK_Definition.Violations is
             Error_Msg_N
               (Mess,
                N,
-               First => True,
+               First         => True,
                Continuations => Conts);
          end;
       end if;

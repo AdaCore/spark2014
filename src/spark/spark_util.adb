@@ -882,7 +882,7 @@ package body SPARK_Util is
                  ("cannot unroll loop (" & To_String (Reason) & ")",
                   Loop_Stmt,
                   Secondary_Loc => Secondary_Loc,
-                  Kind => MK_Info);
+                  Kind          => MK_Info);
             end if;
          end if;
       end if;
@@ -4190,8 +4190,7 @@ package body SPARK_Util is
       --  If operator name or character literal name, just print it as is.
       --  Also print as is if it ends in a right paren (case of x'val(nnn)).
 
-      if Buf.Chars (1) = '"'
-        or else Buf.Chars (1) = '''
+      if Buf.Chars (1) in '"' | '''
         or else Buf.Chars (Name_Len) = ')'
       then
          return Buf.Chars (1 .. Name_Len);
@@ -4201,7 +4200,7 @@ package body SPARK_Util is
          else
             Set_Casing (Buf, Identifier_Casing (Get_Source_File_Index (Sloc)));
          end if;
-         return """" & Buf.Chars (1 .. Name_Len) & """";
+         return '"' & Buf.Chars (1 .. Name_Len) & '"';
       end if;
    end To_String;
 
