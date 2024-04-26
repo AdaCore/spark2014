@@ -25,13 +25,13 @@
 ------------------------------------------------------------------------------
 
 with Ada.Containers.Indefinite_Hashed_Maps;
-with Ada.Strings.Unbounded;           use Ada.Strings.Unbounded;
-with Ada.Strings.Fixed;               use Ada.Strings.Fixed;
-with Atree;                           use Atree;
-with Flow_Error_Messages;             use Flow_Error_Messages;
-with Gnat2Why_Args;                   use Gnat2Why_Args;
-with Opt;                             use Opt;
-with VC_Kinds;                        use VC_Kinds;
+with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
+with Ada.Strings.Fixed;     use Ada.Strings.Fixed;
+with Atree;                 use Atree;
+with Errout_Wrapper;        use Errout_Wrapper;
+with Gnat2Why_Args;         use Gnat2Why_Args;
+with Opt;                   use Opt;
+with VC_Kinds;              use VC_Kinds;
 
 private package SPARK_Definition.Violations is
 
@@ -109,9 +109,9 @@ private package SPARK_Definition.Violations is
    procedure Mark_Unsupported
      (Kind           : Unsupported_Kind;
       N              : Node_Id;
-      E              : Entity_Id := Types.Empty;
+      Names          : Node_Lists.List := Node_Lists.Empty;
       Name           : String := "";
-      Cont_Msg       : String := "";
+      Cont_Msg       : Message := No_Message;
       Root_Cause_Msg : String := "")
      with
        Global => (Output => Violation_Detected,
@@ -125,25 +125,32 @@ private package SPARK_Definition.Violations is
    procedure Mark_Violation
      (Msg            : String;
       N              : Node_Id;
-      Code           : Explain_Code := EC_None;
+      Names          : Node_Lists.List := Node_Lists.Empty;
+      N_Names        : Name_Id_Lists.List := Name_Id_Lists.Empty;
+      Code           : Explain_Code_Kind := EC_None;
       SRM_Reference  : String := "";
       Cont_Msg       : String := "";
       Root_Cause_Msg : String := "")
      with
        Global => (Output => Violation_Detected,
                   Input  => Current_SPARK_Pragma),
-     Pre => SRM_Reference = ""
-     or else
-       (SRM_Reference'Length > 9
-        and then Head (SRM_Reference, 9) = "SPARK RM ");
+       Pre =>
+         (Names.Is_Empty or else N_Names.Is_Empty)
+         and then
+         (SRM_Reference = ""
+          or else
+            (SRM_Reference'Length > 9
+             and then Head (SRM_Reference, 9) = "SPARK RM "));
    --  Mark node N as a violation of SPARK. An error message pointing to the
    --  current SPARK_Mode pragma/aspect is issued if current SPARK_Mode is On.
-   --  If Explain_Code is set to a positive number, this is taken as an error
-   --  code to be displayed using the mechanism in Errout. If SRM_Reference
+   --  If Explain_Code is set to a positive number, this is taken as an explain
+   --  code to be displayed along with the error message. If SRM_Reference
    --  is set, the reference to the SRM is appended to the error message. If
    --  Cont_Msg is set, a continuation message is issued. If Root_Cause_Msg
    --  is set, the corresponding message is used as root cause message for
    --  cascading violations (typically used if Msg has character insertions).
+   --  If Names or N_Names is set, use this to replace & in error messages.
+   --  Only one of the two can be set.
 
    procedure Mark_Violation
      (N        : Node_Id;
@@ -163,12 +170,6 @@ private package SPARK_Definition.Violations is
    --  Mark node N as a violation of SPARK because of unsupported tasking
    --  configuration. An error message is issued if current SPARK_Mode is
    --  On.
-
-   procedure Mark_Violation_Of_SPARK_Mode (N : Node_Id)
-     with Global => (Input => (Current_SPARK_Pragma,
-                               Current_Delayed_Aspect_Type));
-   --  Issue an error continuation message for node N with the location of
-   --  the violated SPARK_Mode pragma/aspect.
 
    Ravenscar_Profile_Result : Boolean := False;
    --  This switch memoizes the result of Ravenscar_Profile function calls

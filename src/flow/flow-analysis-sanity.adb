@@ -789,8 +789,7 @@ package body Flow.Analysis.Sanity is
               (FA            => FA,
                Msg           =>
                  Err_Desc & " cannot depend on variable input &",
-               Explain_Code  =>
-                 Explain_Code'Enum_Rep (EC_Variable_Input_In_Expression),
+               Explain_Code  => EC_Variable_Input_In_Expression,
                N             => N,
                Severity      => Error_Kind,
                F1            => Entire_Variable (F),
@@ -1604,8 +1603,7 @@ package body Flow.Analysis.Sanity is
                        (FA           => FA,
                         Msg          => "cannot write & during elaboration" &
                                         " of &",
-                        Explain_Code =>
-                          Explain_Code'Enum_Rep (EC_Write_In_Elaboration),
+                        Explain_Code => EC_Write_In_Elaboration,
                         N            => Error_Location (FA.PDG, FA.Atr, V),
                         Severity     => High_Check_Kind,
                         Tag          => Illegal_Update,
@@ -1637,8 +1635,7 @@ package body Flow.Analysis.Sanity is
                           (FA           => FA,
                            Msg          => "cannot write & during" &
                                            " elaboration of &",
-                           Explain_Code =>
-                             Explain_Code'Enum_Rep (EC_Write_In_Elaboration),
+                           Explain_Code => EC_Write_In_Elaboration,
                            N            => Error_Location (FA.PDG, FA.Atr, V),
                            Severity     => High_Check_Kind,
                            Tag          => Illegal_Update,

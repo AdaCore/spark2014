@@ -64,6 +64,10 @@ with SPARK_Xrefs;               use SPARK_Xrefs;
 with Stringt;                   use Stringt;
 with Uintp;                     use Uintp;
 
+-------------------------
+-- Flow_Error_Messages --
+-------------------------
+
 package body Flow_Error_Messages is
 
    At_Line_Placeholder : constant String := "###AT_LINE_PLACEHOLDER###";
@@ -481,33 +485,18 @@ package body Flow_Error_Messages is
       FF1           : Flow_Id            := Null_Flow_Id;
       FF2           : Flow_Id            := Null_Flow_Id;
       Tag           : Flow_Tag_Kind      := Empty_Tag;
-      Explain_Code  : Natural            := 0;
+      Explain_Code  : Explain_Code_Kind  := EC_None;
       SRM_Ref       : String             := "";
       Tracefile     : String             := "";
       Continuations : String_Lists.List  := String_Lists.Empty)
    is
-      function Get_Explain_Code return String
-        with Pre => Explain_Code /= 0;
-      --  If Explain_Code is not zero, return the error code to include in the
-      --  message, in the same format used by Errout procedures.
-
-      function Get_Explain_Code return String is
-         Code : String := "0000";
-         Rest : Natural := Explain_Code;
-      begin
-         for J in reverse Code'Range loop
-            Code (J) := Character'Val (Character'Pos ('0') + Rest mod 10);
-            Rest := Rest / 10;
-         end loop;
-
-         return "E" & Code;
-      end Get_Explain_Code;
 
       Msg2 : constant String :=
         Msg &
         (if CWE and Severity /= Info_Kind then CWE_Message (Tag) else "") &
         (if SRM_Ref'Length > 0 then " (SPARK RM " & SRM_Ref & ")" else "") &
-        (if Explain_Code /= 0 then " [" & Get_Explain_Code & "]" else "");
+        (if Explain_Code /= EC_None then " [" & To_String (Explain_Code) & "]"
+         else "");
 
       Attach_Node : constant Node_Id :=
         (if Instantiation_Location (Sloc (Original_Node (N))) = No_Location
@@ -633,10 +622,10 @@ package body Flow_Error_Messages is
             --  If an explain code was used in the message, output a
             --  continuation message to indicate how to get more
             --  information, using the same message as in Errout.
-            if Explain_Code /= 0 then
+            if Explain_Code /= EC_None then
                My_Conts.Append
                   ("launch ""gnatprove --explain="
-                   & Get_Explain_Code & """ for more information");
+                   & To_String (Explain_Code) & """ for more information");
             end if;
 
             --  Only display message details when outputting on one line,
@@ -699,7 +688,7 @@ package body Flow_Error_Messages is
       FF1           : Flow_Id               := Null_Flow_Id;
       FF2           : Flow_Id               := Null_Flow_Id;
       Tag           : Flow_Tag_Kind         := Empty_Tag;
-      Explain_Code  : Natural               := 0;
+      Explain_Code  : Explain_Code_Kind     := EC_None;
       SRM_Ref       : String                := "";
       Path          : Vertex_Sets.Set       := Vertex_Sets.Empty_Set;
       Vertex        : Flow_Graphs.Vertex_Id := Flow_Graphs.Null_Vertex;

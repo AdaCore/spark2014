@@ -41,7 +41,7 @@ with Debug;                           use Debug;
 with Debug.Timing;                    use Debug.Timing;
 with Einfo.Entities;                  use Einfo.Entities;
 with Einfo.Utils;                     use Einfo.Utils;
-with Errout;                          use Errout;
+with Errout_Wrapper;                  use Errout_Wrapper;
 with Flow;                            use Flow;
 with Flow.Analysis.Assumptions;       use Flow.Analysis.Assumptions;
 with Flow_Error_Messages;             use Flow_Error_Messages;
@@ -638,11 +638,11 @@ package body Gnat2Why.Driver is
 
             if Gnat2Why_Args.Limit_Units then
                Error_Msg_N
-                 ("?generic compilation unit is not analyzed",
-                  GNAT_Root);
-               Error_Msg_N
-                 ("\?only instantiations of the generic will be analyzed",
-                  GNAT_Root);
+                 ("generic compilation unit is not analyzed",
+                  GNAT_Root,
+                  Kind => MK_Warning,
+                  Continuations =>
+                    ["only instantiations of the generic will be analyzed"]);
             end if;
          end if;
 
@@ -745,12 +745,12 @@ package body Gnat2Why.Driver is
               and then No (SPARK_Pragma (Root))
             then
                Error_Msg_N
-                 ("info: ?SPARK_Mode not applied to this compilation unit",
-                  GNAT_Root);
-               Error_Msg_N
-                 ("\?only enclosed declarations with SPARK_Mode"
-                  & " will be analyzed",
-                  GNAT_Root);
+                 ("SPARK_Mode not applied to this compilation unit",
+                  GNAT_Root,
+                  MK_Info,
+                  Continuations =>
+                    ["only enclosed declarations with SPARK_Mode"
+                     & " will be analyzed"]);
             end if;
          end;
 
@@ -1242,12 +1242,14 @@ package body Gnat2Why.Driver is
 
                when Contextually_Analyzed =>
                   if Debug.Debug_Flag_Underscore_F then
-                     Error_Msg_NE
-                       ("info: ?local subprogram &" &
-                          " only analyzed in the context of calls", E, E);
                      Error_Msg_N
-                       ("\add a contract to" &
-                          " analyze it separately from calling contexts", E);
+                       ("local subprogram &" &
+                          " only analyzed in the context of calls",
+                        E,
+                        Kind => MK_Info,
+                        Continuations =>
+                          ["add a contract to"
+                           & " analyze it separately from calling contexts"]);
                   end if;
 
                when Not_In_Analyzed_Files

@@ -2,10 +2,13 @@ borrow.adb:33:04: warning: assuming "Free" always terminates
 borrow.adb:33:04: warning: assuming "Free" has no effect on global items
 borrow.adb:33:04: warning: no Always_Terminates aspect available for "Free"
 borrow.adb:33:04: warning: no Global contract available for "Free"
+borrow.adb:43:36: error: launch "gnatprove --explain=E0010" for more information
 borrow.adb:43:36: error: object was moved at line 42 [E0010]
 borrow.adb:43:36: error: part of "U" is not readable
+borrow.adb:44:20: error: launch "gnatprove --explain=E0010" for more information
 borrow.adb:44:20: error: object was moved at line 42 [E0010]
 borrow.adb:44:20: error: part of "U" is not readable
+borrow.adb:52:35: error: launch "gnatprove --explain=E0010" for more information
 borrow.adb:52:35: error: object was moved at line 51 [E0010]
 borrow.adb:52:35: error: part of dereference from "A" is not readable
 borrow.adb:58:07: info: initialization of "Var" proved

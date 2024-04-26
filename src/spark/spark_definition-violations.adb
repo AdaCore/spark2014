@@ -24,14 +24,19 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with Errout;                use Errout;
-with Namet;                 use Namet;
-with Restrict;              use Restrict;
-with Rident;                use Rident;
-with Sem_Prag;              use Sem_Prag;
-with Tbuild;                use Tbuild;
+with Namet;          use Namet;
+with Restrict;       use Restrict;
+with Rident;         use Rident;
+with Sem_Prag;       use Sem_Prag;
+with Tbuild;         use Tbuild;
 
 package body SPARK_Definition.Violations is
+
+   function Mark_Violation_Of_SPARK_Mode return Message
+     with Global => (Input => (Current_SPARK_Pragma,
+                               Current_Delayed_Aspect_Type));
+   --  Issue an error continuation message for node N with the location of
+   --  the violated SPARK_Mode pragma/aspect.
 
    ------------------------------
    -- Add_Violation_Root_Cause --
@@ -252,9 +257,9 @@ package body SPARK_Definition.Violations is
    procedure Mark_Unsupported
      (Kind           : Unsupported_Kind;
       N              : Node_Id;
-      E              : Entity_Id := Types.Empty;
+      Names          : Node_Lists.List := Node_Lists.Empty;
       Name           : String := "";
-      Cont_Msg       : String := "";
+      Cont_Msg       : Message := No_Message;
       Root_Cause_Msg : String := "")
    is
       Msg : constant String := Unsupported_Message (Kind, Name);
@@ -274,19 +279,11 @@ package body SPARK_Definition.Violations is
       --  If SPARK_Mode is On, raise an error
 
       if Emit_Messages and then SPARK_Pragma_Is (Opt.On) then
-         if Present (E) then
-            Error_Msg_NE (Msg & " is not yet supported", N, E);
-
-            if Cont_Msg /= "" then
-               Error_Msg_NE ('\' & Cont_Msg, N, E);
-            end if;
-         else
-            Error_Msg_N (Msg & " is not yet supported", N);
-
-            if Cont_Msg /= "" then
-               Error_Msg_N ('\' & Cont_Msg, N);
-            end if;
-         end if;
+         Error_Msg_N
+           (Create (Msg & " is not yet supported", Names => Names),
+            N,
+            Continuations =>
+              (if Cont_Msg /= No_Message then [Cont_Msg] else []));
       end if;
    end Mark_Unsupported;
 
@@ -297,7 +294,9 @@ package body SPARK_Definition.Violations is
    procedure Mark_Violation
      (Msg            : String;
       N              : Node_Id;
-      Code           : Explain_Code := EC_None;
+      Names          : Node_Lists.List := Node_Lists.Empty;
+      N_Names        : Name_Id_Lists.List := Name_Id_Lists.Empty;
+      Code           : Explain_Code_Kind := EC_None;
       SRM_Reference  : String := "";
       Cont_Msg       : String := "";
       Root_Cause_Msg : String := "")
@@ -325,18 +324,31 @@ package body SPARK_Definition.Violations is
             Full_Msg := Full_Msg & " (" & SRM_Reference & ")";
          end if;
 
-         if Code /= EC_None then
-            Error_Msg_Code := Explain_Code'Enum_Rep (Code);
-            Full_Msg := Full_Msg & " '[[]']";
-         end if;
-
-         Error_Msg_F (To_String (Full_Msg), N);
-
-         if Cont_Msg /= "" then
-            Error_Msg_F ('\' & Cont_Msg, N);
-         end if;
-
-         Mark_Violation_Of_SPARK_Mode (N);
+         declare
+            Mess : constant Message :=
+              (if not N_Names.Is_Empty then
+                  Errout_Wrapper.Create_N
+                    (To_String (Full_Msg),
+                     Names        => N_Names,
+                     N            => N,
+                     Explain_Code => Code)
+               else
+                  Errout_Wrapper.Create
+                    (To_String (Full_Msg),
+                     Names     => Names,
+                  Explain_Code => Code));
+            Conts : Message_Lists.List := Message_Lists.Empty;
+         begin
+            if Cont_Msg /= "" then
+               Conts.Append (Create (Cont_Msg));
+            end if;
+            Conts.Append (Mark_Violation_Of_SPARK_Mode);
+            Error_Msg_N
+              (Mess,
+               N,
+               First         => True,
+               Continuations => Conts);
+         end;
       end if;
    end Mark_Violation;
 
@@ -365,14 +377,17 @@ package body SPARK_Definition.Violations is
             Root_Msg   : constant String :=
               (if Root_Cause = "" then ""
                else " (due to " & Root_Cause & ")");
+            Conts : Message_Lists.List := Message_Lists.Empty;
          begin
-            Error_Msg_FE ("& is not allowed in SPARK" & Root_Msg, N, From);
-
             if Cont_Msg /= "" then
-               Error_Msg_F ('\' & Cont_Msg, N);
+               Conts.Append (Create (Cont_Msg));
             end if;
-
-            Mark_Violation_Of_SPARK_Mode (N);
+            Conts.Append (Mark_Violation_Of_SPARK_Mode);
+            Error_Msg_N (Create ("& is not allowed in SPARK" & Root_Msg,
+                                 Names => [From]),
+                         N,
+                         First => True,
+                         Continuations => Conts);
          end;
       end if;
    end Mark_Violation;
@@ -399,14 +414,18 @@ package body SPARK_Definition.Violations is
       if Emit_Messages and then SPARK_Pragma_Is (Opt.On) then
 
          if not GNATprove_Tasking_Profile then
-            Error_Msg_F (Msg_Prefix &
-                           "Ravenscar profile" & Msg_Suffix, N);
+            Error_Msg_N
+              (Create (Msg_Prefix & "Ravenscar profile" & Msg_Suffix),
+               N,
+               First => True,
+               Continuations => [Mark_Violation_Of_SPARK_Mode]);
          elsif not Sequential_Elaboration then
-            Error_Msg_F (Msg_Prefix &
-                           "sequential elaboration" & Msg_Suffix, N);
+            Error_Msg_N
+              (Create (Msg_Prefix & "sequential elaboration" & Msg_Suffix),
+               N,
+               First => True,
+               Continuations => [Mark_Violation_Of_SPARK_Mode]);
          end if;
-
-         Mark_Violation_Of_SPARK_Mode (N);
       end if;
    end Mark_Violation_In_Tasking;
 
@@ -414,30 +433,26 @@ package body SPARK_Definition.Violations is
    -- Mark_Violation_Of_SPARK_Mode --
    ----------------------------------
 
-   procedure Mark_Violation_Of_SPARK_Mode (N : Node_Id) is
+   function Mark_Violation_Of_SPARK_Mode return Message is
    begin
       if Present (Current_SPARK_Pragma) then
-         Error_Msg_Sloc := Sloc (Current_SPARK_Pragma);
-
-         Error_Msg_F ("\\violation of " &
+         return Create ("violation of " &
                       (if From_Aspect_Specification (Current_SPARK_Pragma)
                          then "aspect"
                          else "pragma") &
-                        " SPARK_Mode #", N);
-
+                          " SPARK_Mode #",
+                        Secondary_Loc => Sloc (Current_SPARK_Pragma));
       elsif Present (Current_Incomplete_Type) then
-         Error_Msg_Sloc := Sloc (Current_Incomplete_Type);
-
-         Error_Msg_FE
-           ("\\access to incomplete type & is required to be in SPARK",
-            N, Current_Incomplete_Type);
+         return Create
+           ("access to incomplete type & is required to be in SPARK",
+            Secondary_Loc => Sloc (Current_Incomplete_Type),
+            Names => [Current_Incomplete_Type]);
       else
          pragma Assert (Present (Current_Delayed_Aspect_Type));
-         Error_Msg_Sloc := Sloc (Current_Delayed_Aspect_Type);
-
-         Error_Msg_FE
-           ("\\delayed type aspect on & is required to be in SPARK", N,
-            Current_Delayed_Aspect_Type);
+         return Create
+           ("delayed type aspect on & is required to be in SPARK",
+            Secondary_Loc => Sloc (Current_Delayed_Aspect_Type),
+            Names => [Current_Delayed_Aspect_Type]);
       end if;
    end Mark_Violation_Of_SPARK_Mode;
 

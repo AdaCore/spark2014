@@ -550,7 +550,7 @@ package body VC_Kinds is
         when Warn_Function_Is_Valid =>
           "function Is_Valid is assumed to return True",
         when Warn_No_Possible_Termination =>
-          "?procedure which does not return normally nor raises an exception"
+          "procedure which does not return normally nor raises an exception"
           & " cannot always terminate",
         when Warn_Pragma_Annotate_No_Check =>
           "no check message justified by this pragma",
@@ -1734,6 +1734,18 @@ package body VC_Kinds is
                  when PC_Prover   => "Automatic provers",
                  when PC_Trivial  => "Trivial",
                  when PC_Flow     => "Flow analysis");
+   end To_String;
+
+   function To_String (Code : Explain_Code_Kind) return String is
+      Result : String := "0000";
+      Rest : Natural := Explain_Code_Kind'Enum_Rep (Code);
+   begin
+      for J in reverse Result'Range loop
+         Result (J) := Character'Val (Character'Pos ('0') + Rest mod 10);
+         Rest := Rest / 10;
+      end loop;
+
+      return 'E' & Result;
    end To_String;
 
    --------------

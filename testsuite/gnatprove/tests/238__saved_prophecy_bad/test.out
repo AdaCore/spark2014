@@ -8,6 +8,7 @@ borrow_checking.adb:25:28: error: "Y" was borrowed at line 23
 borrow_checking.adb:33:28: error: "Y" was borrowed at line 31
 borrow_checking.adb:40:07: warning: initialization of "V" has no effect
 borrow_checking.adb:42:28: error: "Y" is not readable
+borrow_checking.adb:42:28: error: launch "gnatprove --explain=E0010" for more information
 borrow_checking.adb:42:28: error: object was moved at line 40 [E0010]
 borrow_checking.adb:50:07: warning: initialization of "V" has no effect
 marking.adb:24:35: error: call to a function annotated with At_End_Borrow occurring inside the initialization expression of an object other than of a constant of anonymous access-to-constant type is not allowed in SPARK

@@ -26,7 +26,7 @@ with Ada.Containers.Hashed_Maps;
 
 with Aspects;                         use Aspects;
 with Exp_Util;                        use Exp_Util;
-with Errout;                          use Errout;
+with Errout_Wrapper;                  use Errout_Wrapper;
 with Namet;                           use Namet;
 with Nlists;                          use Nlists;
 with Output;                          use Output;
@@ -2949,10 +2949,10 @@ package body Flow_Utility is
            and then not Gnat2Why_Args.Global_Gen_Mode
            and then not Is_Function_With_Side_Effects (Subprogram)
          then
-            Error_Msg_NE
+            Error_Msg_N
               (Msg => "side effects of function & are not modeled in SPARK",
                N   => Callsite,
-               E   => Subprogram);
+               Names => [Subprogram]);
          end if;
 
          return V;
