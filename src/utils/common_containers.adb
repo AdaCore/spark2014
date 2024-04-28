@@ -61,10 +61,10 @@ package body Common_Containers is
       Next_Num : constant Entity_Name := String_Cache.Last_Index + 1;
 
    begin
-      Symbol_Cache.Insert (Key       => Sym,
-                           New_Item  => Next_Num,
-                           Position  => Position,
-                           Inserted  => Inserted);
+      Symbol_Cache.Insert (Key      => Sym,
+                           New_Item => Next_Num,
+                           Position => Position,
+                           Inserted => Inserted);
 
       if Inserted then
          String_Cache.Append (Sym);

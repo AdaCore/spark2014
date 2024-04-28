@@ -348,7 +348,7 @@ package body Configuration is
 
    begin
       for Cursor in Tree.Iterate
-        (Kind  =>
+        (Kind   =>
            [Project.I_Project       => True,
             Project.I_Runtime       => False,
             Project.I_Configuration => False,
@@ -750,7 +750,7 @@ package body Configuration is
          Define_Switch
            (Config, CL_Switches.J'Access,
             Long_Switch => "-j:",
-            Initial => 1);
+            Initial     => 1);
          Define_Switch
            (Config,
             CL_Switches.K'Access,
@@ -870,7 +870,7 @@ package body Configuration is
          Define_Switch
            (Config, CL_Switches.Level'Access,
             Long_Switch => "--level=",
-            Initial => Invalid_Level);
+            Initial     => Invalid_Level);
          Define_Switch
            (Config,
             CL_Switches.Memlimit'Access,
@@ -916,11 +916,11 @@ package body Configuration is
          Define_Switch
            (Config, CL_Switches.Steps'Access,
             Long_Switch => "--steps=",
-            Initial => Invalid_Steps);
+            Initial     => Invalid_Steps);
          Define_Switch
            (Config, CL_Switches.CE_Steps'Access,
             Long_Switch => "--ce-steps=",
-            Initial => Invalid_Steps);
+            Initial     => Invalid_Steps);
          Define_Switch
            (Config,
             CL_Switches.Timeout'Access,
