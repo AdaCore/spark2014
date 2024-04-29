@@ -1742,9 +1742,10 @@ package body Flow.Analysis.Sanity is
                               Msg           => "& " & Msg & " &",
                               SRM_Ref       => SRM_Ref,
                               N             => First_Var_Use,
-                              F1            => (if Gnat2Why_Args.Flow_Advanced_Debug
-                                           then Var
-                                           else Entire_Variable (Var)),
+                              F1            =>
+                                (if Gnat2Why_Args.Flow_Advanced_Debug
+                                 then Var
+                                 else Entire_Variable (Var)),
                               Severity      => High_Check_Kind,
                               Tag           => Global_Missing,
                               F2            => Subprogram,
