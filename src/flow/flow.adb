@@ -567,7 +567,8 @@ package body Flow is
                  when E_Function | E_Procedure | E_Entry => Kind_Subprogram,
                  when E_Task_Type                        => Kind_Task,
                  when E_Package                          => Kind_Package,
-                 when others                             => raise Program_Error)
+                 when others                             =>
+                   raise Program_Error)
        and then (if not X.Generating_Globals
                  then
                    X.GG.Globals.Is_Empty

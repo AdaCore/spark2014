@@ -361,8 +361,8 @@ package Flow_Types is
 
    function Is_Entire_Variable (F : Flow_Id) return Boolean
    is (case F.Kind is
-       when Direct_Mapping                       => F.Facet = Normal_Part and then
-                              Nkind (F.Node) in N_Entity,
+       when Direct_Mapping                       =>
+             F.Facet = Normal_Part and then Nkind (F.Node) in N_Entity,
        when Synthetic_Null_Export | Magic_String => True,
        when Null_Value | Record_Field            => False);
    --  Returns True iff the given flow id represents an entire variable (or the
