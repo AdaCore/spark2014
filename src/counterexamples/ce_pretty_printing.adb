@@ -335,8 +335,8 @@ package body CE_Pretty_Printing is
       begin
          if Ind_Printed /= Dont_Display then
             if Element.Value /= Dont_Display then
-               S_Array.Include (Key       => Index,
-                                New_Item  =>
+               S_Array.Include (Key      => Index,
+                                New_Item =>
                                   (Ind_Printed  => Ind_Printed,
                                    Elem_Printed => Element.Value));
                String_Lit := String_Lit
