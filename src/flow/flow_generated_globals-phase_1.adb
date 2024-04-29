@@ -178,9 +178,9 @@ package body Flow_Generated_Globals.Phase_1 is
                       or else
                     Nkind (Original_Node (Subprogram_Spec (Call))) =
                       N_Subprogram_Renaming_Declaration,
-                  when E_Function =>
+                  when E_Function  =>
                     True,
-                  when others =>
+                  when others      =>
                     raise Program_Error));
       end loop;
    end GG_Register_Calls;

@@ -128,11 +128,11 @@ package Flow_Error_Messages is
      and then (if Present (FF2) then Present (FF1))
      and then (if Severity in Check_Kind then Tag in Valid_Flow_Tag_Kind)
      and then (case Tag is
-                 when Empty_Tag =>
+                 when Empty_Tag         =>
                    True,
-                 when Flow_Error_Kind =>
+                 when Flow_Error_Kind   =>
                    Severity = Error_Kind,
-                 when Flow_Check_Kind =>
+                 when Flow_Check_Kind   =>
                    Severity in Check_Kind | Info_Kind,
                  when Flow_Warning_Kind =>
                    Severity = Warning_Kind);
@@ -180,11 +180,11 @@ package Flow_Error_Messages is
      and then (if Present (FF2) then Present (FF1))
      and then (if Severity in Check_Kind then Tag in Valid_Flow_Tag_Kind)
      and then (case Tag is
-                 when Empty_Tag =>
+                 when Empty_Tag         =>
                    True,
-                 when Flow_Error_Kind =>
+                 when Flow_Error_Kind   =>
                    Severity = Error_Kind,
-                 when Flow_Check_Kind =>
+                 when Flow_Check_Kind   =>
                    Severity in Check_Kind | Info_Kind,
                  when Flow_Warning_Kind =>
                    Severity = Warning_Kind);

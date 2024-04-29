@@ -624,7 +624,7 @@ package body Flow.Analysis.Sanity is
                   if Ekind (SC.E) = E_Subprogram_Type then
                      Error_Msg_Flow
                         (FA       => FA,
-                           Msg      =>
+                           Msg    =>
                               "call via access-to-subprogram " &
                               "in the invariant of & might not terminate",
                          Severity => High_Check_Kind,
@@ -1532,7 +1532,7 @@ package body Flow.Analysis.Sanity is
                elsif Present (FA.Depends_N)         then "Depends"
                else                                      "Global"),
 
-            when Kind_Package =>
+            when Kind_Package                =>
                "Initializes");
       --  A string representation of the aspect that needs to be corrected; the
       --  preference in choosing a contract matches the preference hardcoded in
@@ -1550,7 +1550,7 @@ package body Flow.Analysis.Sanity is
                 then "Depends"
                 else ""),
 
-            when Kind_Package => "");
+            when Kind_Package                => "");
       --  A string representation of the next aspect that needs to be
       --  corrected, i.e. this is the Global/Depends aspect if a global has
       --  been detected to be missing from a Refined_Global/Refined_Depends
@@ -1563,7 +1563,7 @@ package body Flow.Analysis.Sanity is
         (case FA.Kind is
             when Kind_Subprogram | Kind_Task =>
               "must be listed in the " & Aspect_To_Fix & " aspect of",
-            when Kind_Package =>
+            when Kind_Package                =>
               "must be mentioned as an input of the " & Aspect_To_Fix &
               " aspect of");
 
@@ -1738,18 +1738,18 @@ package body Flow.Analysis.Sanity is
                            end if;
 
                            Error_Msg_Flow
-                             (FA       => FA,
-                              Msg      => "& " & Msg & " &",
-                              SRM_Ref  => SRM_Ref,
-                              N        => First_Var_Use,
-                              F1       => (if Gnat2Why_Args.Flow_Advanced_Debug
+                             (FA            => FA,
+                              Msg           => "& " & Msg & " &",
+                              SRM_Ref       => SRM_Ref,
+                              N             => First_Var_Use,
+                              F1            => (if Gnat2Why_Args.Flow_Advanced_Debug
                                            then Var
                                            else Entire_Variable (Var)),
-                              Severity => High_Check_Kind,
-                              Tag      => Global_Missing,
-                              F2       => Subprogram,
-                              Vertex   => V,
-                              Continuations    => Conts);
+                              Severity      => High_Check_Kind,
+                              Tag           => Global_Missing,
+                              F2            => Subprogram,
+                              Vertex        => V,
+                              Continuations => Conts);
 
                            Sane := False;
 
