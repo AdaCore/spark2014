@@ -1,0 +1,19 @@
+collection.ads:27:12: error: consider overriding the following primitive subprograms: "P", "G", "Create"
+collection.ads:27:12: error: tagged type with primitive subprograms inherited from a type declared in a private part with SPARK_Mode Off is not yet supported
+collection.ads:30:12: error: consider overriding the following primitive subprograms: "Q", "F", "Create"
+collection.ads:30:12: error: tagged type with primitive subprograms inherited from a type declared in a private part with SPARK_Mode Off is not yet supported
+collection.ads:39:12: error: consider overriding the following primitive subprogram: "Q"
+collection.ads:39:12: error: tagged type with primitive subprograms inherited from a type declared in a private part with SPARK_Mode Off is not yet supported
+collection.ads:50:12: error: consider overriding the following primitive subprogram: "Create"
+collection.ads:50:12: error: tagged type with inherited primitive subprograms with controlling result and private extension outside SPARK is not yet supported
+collection.ads:93:12: error: consider overriding the following primitive subprograms: "P", "G", "Create"
+collection.ads:93:12: error: tagged type with primitive subprograms inherited from a type declared in a hidden private part is not yet supported
+collection.ads:96:12: error: consider overriding the following primitive subprograms: "Q", "F", "Create"
+collection.ads:96:12: error: tagged type with primitive subprograms inherited from a type declared in a hidden private part is not yet supported
+collection.ads:105:12: error: consider overriding the following primitive subprogram: "Q"
+collection.ads:105:12: error: tagged type with primitive subprograms inherited from a type declared in a hidden private part is not yet supported
+collection.ads:116:12: error: consider overriding the following primitive subprogram: "Create"
+collection.ads:116:12: error: tagged type with inherited primitive subprograms with controlling result and hidden private extension is not yet supported
+reproducer.adb:10:12: error: consider overriding the following primitive subprogram: "P"
+reproducer.adb:10:12: error: tagged type with primitive subprograms inherited from a type declared in a private part with SPARK_Mode Off is not yet supported
+gnatprove: error during flow analysis and proof

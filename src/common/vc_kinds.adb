@@ -717,6 +717,20 @@ package body VC_Kinds is
          when Lim_Img_On_Non_Scalar =>
            "a reference to the ""Image"" or ""Img"" attribute on a type or "
           & "an object of a type which is not a scalar type",
+         when Lim_Inherited_Controlling_Result_From_Hidden_Part =>
+            "a subprogram with dispatching result which is inherited,"
+          & " not overriden, by a private extension completed in a hidden"
+          & " private part",
+         when Lim_Inherited_Controlling_Result_From_SPARK_Off =>
+            "a subprogram with dispatching result which is inherited,"
+          & " not overriden, by a private extension completed in a private"
+          & " part with SPARK_Mode Off",
+         when Lim_Inherited_Prim_From_Hidden_Part =>
+            "a subprogram which is inherited, not overriden, from an ancestor"
+          & " declared in a hidden private part",
+         when Lim_Inherited_Prim_From_SPARK_Off =>
+            "a subprogram which is inherited, not overriden, from an ancestor"
+          & " declared in the private part of a package with SPARK_Mode Off",
          when Lim_Interpolated_String_Literal =>
            "interpolated string literals",
          when Lim_Iterated_Element_Association => "container aggregates",

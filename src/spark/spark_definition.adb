@@ -8418,6 +8418,140 @@ package body SPARK_Definition is
                end;
             end if;
 
+            --  When the full view of a private extension is defined in a
+            --  private part with SPARK_Mode Off, all (public) primitive
+            --  subprograms must either be redeclared as a primitive of E or
+            --  inherited from the public ancestor. Indeed, they are otherwise
+            --  defined as alias to primitive subprograms for an intermediate
+            --  type defined under a part with SPARK_Mode Off, which leads to
+            --  unexpected behavior. They should also be rejected in hidden
+            --  parts to avoid looking up hidden stuff from those aliases
+
+            if Ekind (E) in E_Record_Type_With_Private then
+               declare
+                  Full             : constant Entity_Id := Full_View (E);
+                  Parent           : constant Entity_Id := Parent_Type (E);
+                  Full_Parent      : constant Entity_Id := Parent_Type (Full);
+                  Parent_Full      : constant Entity_Id :=
+                    (if Present (Full_View (Parent))
+                     then Full_View (Parent)
+                     else Parent);
+
+                  Bad_Subprograms  : Node_Lists.List;
+                  Bad_Intermediate : Boolean := False;
+                  Kind             : Unsupported_Kind;
+
+               begin
+                  if Is_In_Potentially_Hidden_Private (Full)
+                    or else Is_Private_Entity_Mode_Off (Full)
+                  then
+                     for Prim of Iter (Direct_Primitive_Operations (E)) loop
+                        declare
+                           Inh_Prim : constant Entity_Id :=
+                             Ultimate_Alias (Prim);
+                           --  Declaration of dispatching subprograms as
+                           --  renamings are already forbidden by the frontend.
+                           --  This stops at the inherited primitive operation.
+
+                           Inh_Type : Entity_Id;
+                           Formal   : Node_Id;
+                        begin
+                           --  When a function with controlling result is
+                           --  inherited and extension is null, the frontend
+                           --  creates a wrapper. We cannot handle this wrapper
+                           --  properly in proof.
+
+                           if Is_Wrapper_For_Dispatching_Result (Prim) then
+                              Bad_Subprograms.Append (Prim);
+
+                           --  For other primitives, there is no need for check
+                           --  if the parent type is the public ancestor.
+
+                           elsif Full_Parent /= Parent
+                             and then Full_Parent /= Parent_Full
+                           then
+                              --  We look for the dispatching type here. We
+                              --  cannot use Find_Dispatching_Type directly as
+                              --  it uses Retysp to post-process the result.
+                              --  Here, we may be crossing SPARK boundaries
+                              --  arbitrarily, so that is unsuitable.
+
+                              if Ekind (Inh_Prim) = E_Function
+                                and then Has_Controlling_Result (Inh_Prim)
+                              then
+                                 Inh_Type := Etype (E);
+                              else
+                                 Formal := First_Formal (Inh_Prim);
+                                 loop
+                                    pragma Assert (Present (Formal));
+                                    if Is_Controlling_Formal (Formal) then
+                                       Inh_Type := Etype (Formal);
+                                       exit;
+                                    end if;
+                                    Next_Formal (Formal);
+                                 end loop;
+                              end if;
+
+                              Inh_Type :=
+                                (if Present (Full_View (Inh_Type))
+                                 then Full_View (Inh_Type)
+                                 else Inh_Type);
+
+                              if Is_Ancestor (Parent, Inh_Type)
+                                and then
+                                  Base_Type (Inh_Type)
+                                /= Base_Type (Parent_Full)
+                                and then
+                                  Base_Type (Inh_Type) /= Base_Type (Full)
+                              then
+                                 Bad_Subprograms.Append (Prim);
+                                 Bad_Intermediate := True;
+                              end if;
+                           end if;
+                        end;
+                     end loop;
+
+                     Kind :=
+                       (if Bad_Intermediate then
+                          (if Is_In_Potentially_Hidden_Private (Full)
+                           then Lim_Inherited_Prim_From_Hidden_Part
+                           else Lim_Inherited_Prim_From_SPARK_Off)
+                        elsif Is_In_Potentially_Hidden_Private (Full)
+                        then Lim_Inherited_Controlling_Result_From_Hidden_Part
+                        else Lim_Inherited_Controlling_Result_From_SPARK_Off);
+
+                     if not Bad_Subprograms.Is_Empty then
+                        declare
+                           Names : Unbounded_String;
+                           First : Boolean := True;
+                        begin
+                           for Prim of Bad_Subprograms loop
+                              if First then
+                                 First := False;
+                              else
+                                 Append (Names, ", ");
+                              end if;
+                              Append (Names, "&");
+                           end loop;
+                           Mark_Unsupported
+                             (Kind,
+                              E,
+                              Cont_Msg =>
+                                Errout_Wrapper.Create
+                                  (Msg =>
+                                     "consider overriding the following"
+                                   & " primitive subprogram"
+                                   & (if Natural (Bad_Subprograms.Length) = 1
+                                     then ""
+                                     else "s")
+                                   & ": " & To_String (Names),
+                                  Names => Bad_Subprograms));
+                        end;
+                     end if;
+                  end if;
+               end;
+            end if;
+
          elsif Is_Record_Type (E) then
 
             if Ekind (E) = E_Record_Subtype

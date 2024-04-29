@@ -447,6 +447,10 @@ package VC_Kinds is
       Lim_Goto_Cross_Inv,
       Lim_Hidden_Private_Relaxed_Init,
       Lim_Img_On_Non_Scalar,
+      Lim_Inherited_Controlling_Result_From_Hidden_Part,
+      Lim_Inherited_Controlling_Result_From_SPARK_Off,
+      Lim_Inherited_Prim_From_Hidden_Part,
+      Lim_Inherited_Prim_From_SPARK_Off,
       Lim_Interpolated_String_Literal,
       Lim_Iterated_Element_Association,
       Lim_Iterator_In_Component_Assoc,
@@ -681,6 +685,18 @@ package VC_Kinds is
            "non-static attribute """ & Standard_Ada_Case (Name) & """",
          when Lim_Img_On_Non_Scalar =>
            "attribute """ & Standard_Ada_Case (Name) & """ on non-scalar type",
+         when Lim_Inherited_Controlling_Result_From_Hidden_Part =>
+           "tagged type with inherited primitive subprograms with controlling"
+           & " result and hidden private extension",
+         when Lim_Inherited_Controlling_Result_From_SPARK_Off =>
+           "tagged type with inherited primitive subprograms with controlling"
+           & " result and private extension outside SPARK",
+         when Lim_Inherited_Prim_From_Hidden_Part =>
+           "tagged type with primitive subprograms inherited from a type"
+           & " declared in a hidden private part",
+         when Lim_Inherited_Prim_From_SPARK_Off =>
+           "tagged type with primitive subprograms inherited from a type"
+           & " declared in a private part with SPARK_Mode Off",
          when Lim_Interpolated_String_Literal =>
            "interpolated string literal",
          when Lim_Unknown_Alignment =>
