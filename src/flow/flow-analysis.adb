@@ -2465,9 +2465,9 @@ package body Flow.Analysis is
                           (case FA.Kind is
                               when Kind_Subprogram =>
                                 " after elaboration of main program &",
-                              when Kind_Task =>
+                              when Kind_Task       =>
                                 " before start of tasks of type &",
-                              when others =>
+                              when others          =>
                                  raise Program_Error));
                   --  ??? this message should be tuned for interrupt handlers
                end if;
@@ -5793,7 +5793,7 @@ package body Flow.Analysis is
       is
          Msg : constant String :=
            (case Owning_Kind is
-               when Suspends_On =>
+               when Suspends_On      =>
                   "multiple tasks might suspend on suspension object &",
                when Unsynch_Accesses =>
                   "possible data race when accessing variable &");

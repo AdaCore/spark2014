@@ -1566,7 +1566,7 @@ package body Flow_Generated_Globals.Partial is
                then
                   --  ??? flatten the condition, e.g. make it a function
                   if (case Ekind (Callee) is
-                         when E_Package =>
+                         when E_Package        =>
                             Present (Get_Pragma (Callee, Pragma_Initializes)),
 
                          when Entry_Kind
@@ -1581,7 +1581,7 @@ package body Flow_Generated_Globals.Partial is
                          when E_Protected_Type =>
                             Meaningless,
 
-                         when others => raise Program_Error)
+                         when others           => raise Program_Error)
                   then
                      Debug ("Folding with down-projected globals:", Callee);
                      return Down_Project (Callee_Globals.Proper, Caller);
@@ -2466,13 +2466,13 @@ package body Flow_Generated_Globals.Partial is
 
             Variable_Inputs : constant Node_Lists.List :=
               (case Ekind (E) is
-                  when E_Constant =>
+                  when E_Constant                            =>
                      Direct_Inputs_Of_Constant (E),
 
                   when Entry_Kind | E_Function | E_Procedure =>
                      Direct_Inputs_Of_Subprogram (E),
 
-                  when others =>
+                  when others                                =>
                      raise Program_Error);
 
             LHS : constant Constant_Graphs.Vertex_Id :=

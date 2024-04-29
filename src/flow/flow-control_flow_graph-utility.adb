@@ -448,20 +448,20 @@ package body Flow.Control_Flow_Graph.Utility is
                         while Present (Index) loop
                            A.Variables_Used.Union
                              (Get_Variables
-                                (N              =>
+                                (N                    =>
                                    Type_Low_Bound (Index_Type),
-                                 Scope          => Scope,
-                                 Target_Name    => Null_Flow_Id,
-                                 Fold_Functions => Inputs,
+                                 Scope                => Scope,
+                                 Target_Name          => Null_Flow_Id,
+                                 Fold_Functions       => Inputs,
                                  Use_Computed_Globals =>
                                    not FA.Generating_Globals));
                            A.Variables_Used.Union
                              (Get_Variables
-                                (N              =>
+                                (N                    =>
                                    Type_High_Bound (Index_Type),
-                                 Scope          => Scope,
-                                 Target_Name    => Null_Flow_Id,
-                                 Fold_Functions => Inputs,
+                                 Scope                => Scope,
+                                 Target_Name          => Null_Flow_Id,
+                                 Fold_Functions       => Inputs,
                                  Use_Computed_Globals =>
                                    not FA.Generating_Globals));
                            Next_Index (Index);
@@ -1045,16 +1045,16 @@ package body Flow.Control_Flow_Graph.Utility is
       end loop;
 
       A := Make_Basic_Attributes
-        (Var_Def       => Split_State,
-         Var_Ex_Use    => Split_Inputs,
-         Var_Im_Use    =>
+        (Var_Def    => Split_State,
+         Var_Ex_Use => Split_Inputs,
+         Var_Im_Use =>
            (if Present (The_State)
               and then Is_Initialized_At_Elaboration (The_State, Scope)
               and then Is_Initialized_In_Specification (The_State, Scope)
             then Split_State
             else Flow_Id_Sets.Empty_Set),
-         Vertex_Ctx    => Vertex_Ctx,
-         E_Loc         => E_Loc);
+         Vertex_Ctx => Vertex_Ctx,
+         E_Loc      => E_Loc);
       A.Is_Package_Initialization := True;
       return A;
    end Make_Package_Initialization_Attributes;

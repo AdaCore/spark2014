@@ -489,7 +489,7 @@ package body Flow is
                 (if Nkind (Get_Direct_Mapping_Id (F)) in N_Entity
                  then Flow_Id_To_String (F)
                  else Node_Or_Entity_Id'Image (Get_Direct_Mapping_Id (F))),
-             when others =>
+             when others         =>
                 Flow_Id_To_String (F)) & "|" & F.Variant'Img);
 
    --  Start of processing for Print_Graph_Vertex
@@ -567,7 +567,7 @@ package body Flow is
                  when E_Function | E_Procedure | E_Entry => Kind_Subprogram,
                  when E_Task_Type                        => Kind_Task,
                  when E_Package                          => Kind_Package,
-                 when others => raise Program_Error)
+                 when others                             => raise Program_Error)
        and then (if not X.Generating_Globals
                  then
                    X.GG.Globals.Is_Empty

@@ -155,13 +155,15 @@ package Flow.Control_Flow_Graph.Utility is
                      or else Discriminants_Or_Bounds_Only
                  else
                    (case Ekind (Formal) is
-                      when E_Out_Parameter | E_In_Out_Parameter =>
+                      when E_Out_Parameter
+                         | E_In_Out_Parameter
+                      =>
                         True,
                       when E_In_Parameter =>
                         Is_Writable_Parameter (Formal),
-                      when E_Function =>
+                      when E_Function     =>
                         Is_Function_With_Side_Effects (Formal),
-                      when others =>
+                      when others         =>
                         False)
                    and then not Discriminants_Or_Bounds_Only)
                 and then Nkind (Actual) in N_Subexpr,

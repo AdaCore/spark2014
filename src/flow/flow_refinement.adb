@@ -415,7 +415,7 @@ package body Flow_Refinement is
      (case State.Kind is
          when Direct_Mapping =>
             Is_Fully_Contained (State.Node, To_Node_Set (Outputs), Scop),
-         when others =>
+         when others         =>
             raise Program_Error);
 
    ----------------

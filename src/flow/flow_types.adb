@@ -623,9 +623,9 @@ package body Flow_Types is
      (case F.Kind is
          when Direct_Mapping | Record_Field =>
             Direct_Mapping_Id (Encapsulating_State (F.Node), F.Variant),
-         when Magic_String =>
+         when Magic_String                  =>
             Magic_String_Id (GG_Encapsulating_State (F.Name), F.Variant),
-         when others =>
+         when others                        =>
             raise Program_Error);
 
    ------------------------
@@ -1079,10 +1079,10 @@ package body Flow_Types is
          when Direct_Mapping =>
             To_Entity_Name (F.Node),
 
-         when Magic_String =>
+         when Magic_String   =>
             F.Name,
 
-         when others =>
+         when others         =>
             raise Program_Error);
 
    -----------------

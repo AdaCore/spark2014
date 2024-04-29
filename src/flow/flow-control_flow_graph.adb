@@ -1386,7 +1386,7 @@ package body Flow.Control_Flow_Graph is
          --  type can be assigned in subprograms with side-effects, so we
          --  handle them very much like IN OUTs.
 
-            when E_In_Parameter =>
+            when E_In_Parameter   =>
                (if Is_Access_Variable (Etype (E))
                   and then
                     (Ekind (FA.Spec_Entity) in E_Procedure | E_Entry
@@ -1416,7 +1416,7 @@ package body Flow.Control_Flow_Graph is
             =>
                Mode_Invalid,
 
-            when others =>
+            when others           =>
                raise Program_Error);
 
       Scop : constant Flow_Scope :=
@@ -1452,9 +1452,9 @@ package body Flow.Control_Flow_Graph is
 
          Final_Atr : constant V_Attributes :=
            Make_Variable_Attributes
-             (F_Ent  => F_Final,
-              Mode   => M,
-              E_Loc  => E);
+             (F_Ent => F_Final,
+              Mode  => M,
+              E_Loc => E);
 
       begin
 
@@ -1738,11 +1738,11 @@ package body Flow.Control_Flow_Graph is
                   Add_Vertex
                     (FA,
                      Make_Basic_Attributes
-                       (Var_Ex_Use    => Inputs,
-                        Subp_Calls    => Funcalls,
-                        Vertex_Ctx    => Ctx.Vertex_Ctx,
-                        E_Loc         => N,
-                        Print_Hint    => Pretty_Print_Record_Field),
+                       (Var_Ex_Use => Inputs,
+                        Subp_Calls => Funcalls,
+                        Vertex_Ctx => Ctx.Vertex_Ctx,
+                        E_Loc      => N,
+                        Print_Hint => Pretty_Print_Record_Field),
                      V_Used);
                   Verts.Append (V_Used);
 
@@ -1751,11 +1751,11 @@ package body Flow.Control_Flow_Graph is
                   Add_Vertex
                     (FA,
                      Make_Basic_Attributes
-                       (Var_Def       => Flow_Id_Sets.To_Set (Output),
-                        Subp_Calls    => Funcalls,
-                        Vertex_Ctx    => Ctx.Vertex_Ctx,
-                        E_Loc         => N,
-                        Print_Hint    => Pretty_Print_Record_Field),
+                       (Var_Def    => Flow_Id_Sets.To_Set (Output),
+                        Subp_Calls => Funcalls,
+                        Vertex_Ctx => Ctx.Vertex_Ctx,
+                        E_Loc      => N,
+                        Print_Hint => Pretty_Print_Record_Field),
                      V_Defined);
                   Verts_Defined.Append (V_Defined);
 
@@ -1779,11 +1779,11 @@ package body Flow.Control_Flow_Graph is
                   Add_Vertex
                     (FA,
                      Make_Basic_Attributes
-                       (Var_Def       => Flow_Id_Sets.To_Set (F),
-                        Var_Ex_Use    => Flow_Id_Sets.Empty_Set,
-                        Vertex_Ctx    => Ctx.Vertex_Ctx,
-                        E_Loc         => N,
-                        Print_Hint    => Pretty_Print_Record_Field),
+                       (Var_Def    => Flow_Id_Sets.To_Set (F),
+                        Var_Ex_Use => Flow_Id_Sets.Empty_Set,
+                        Vertex_Ctx => Ctx.Vertex_Ctx,
+                        E_Loc      => N,
+                        Print_Hint => Pretty_Print_Record_Field),
                      V);
                   Verts_Defined.Append (V);
                   All_Vertices.Insert (V);
@@ -1880,14 +1880,14 @@ package body Flow.Control_Flow_Graph is
               (FA,
                Direct_Mapping_Id (N),
                Make_Basic_Attributes
-                 (Var_Def       => Vars_Defined,
-                  Var_Ex_Use    => Vars_Used,
-                  Var_Im_Use    => (if Partial
+                 (Var_Def    => Vars_Defined,
+                  Var_Ex_Use => Vars_Used,
+                  Var_Im_Use => (if Partial
                                     then Vars_Defined
                                     else Flow_Id_Sets.Empty_Set),
-                  Subp_Calls    => Funcalls,
-                  Vertex_Ctx    => Ctx.Vertex_Ctx,
-                  E_Loc         => N),
+                  Subp_Calls => Funcalls,
+                  Vertex_Ctx => Ctx.Vertex_Ctx,
+                  E_Loc      => N),
                V);
 
             CM.Insert (Union_Id (N), Trivial_Connection (V));
@@ -1928,15 +1928,15 @@ package body Flow.Control_Flow_Graph is
         (FA,
          Direct_Mapping_Id (N),
          Make_Basic_Attributes
-           (Var_Ex_Use    => Get_Variables
+           (Var_Ex_Use => Get_Variables
               (Expression (N),
                Scope                => FA.B_Scope,
                Target_Name          => Null_Flow_Id,
                Fold_Functions       => Inputs,
                Use_Computed_Globals => not FA.Generating_Globals),
-            Subp_Calls    => Funcalls,
-            Vertex_Ctx    => Ctx.Vertex_Ctx,
-            E_Loc         => N),
+            Subp_Calls => Funcalls,
+            Vertex_Ctx => Ctx.Vertex_Ctx,
+            E_Loc      => N),
          V_Case);
       Ctx.Folded_Function_Checks.Append (Expression (N));
       CM.Insert (Union_Id (N),
@@ -2056,11 +2056,11 @@ package body Flow.Control_Flow_Graph is
               (case Nkind (N) is
                when N_Delay_Relative_Statement =>
                   RE_Clock_Time,
-               when N_Delay_Until_Statement =>
+               when N_Delay_Until_Statement    =>
                   (if Is_RTE (Base_Type (Etype (Expression (N))), RO_CA_Time)
                    then RO_CA_Clock_Time
                    else RE_Clock_Time),
-               when others =>
+               when others                     =>
                   raise Program_Error)));
 
       Pick_Generated_Info
@@ -2075,11 +2075,11 @@ package body Flow.Control_Flow_Graph is
         (FA,
          Direct_Mapping_Id (N),
          Make_Basic_Attributes
-           (Var_Def       => Flow_Id_Sets.To_Set (Null_Export_Flow_Id),
-            Var_Ex_Use    => Vars_Used,
-            Subp_Calls    => Funcalls,
-            Vertex_Ctx    => Ctx.Vertex_Ctx,
-            E_Loc         => N),
+           (Var_Def    => Flow_Id_Sets.To_Set (Null_Export_Flow_Id),
+            Var_Ex_Use => Vars_Used,
+            Subp_Calls => Funcalls,
+            Vertex_Ctx => Ctx.Vertex_Ctx,
+            E_Loc      => N),
          V);
       Ctx.Folded_Function_Checks.Append (Expression (N));
       CM.Insert (Union_Id (N), Trivial_Connection (V));
@@ -2152,15 +2152,15 @@ package body Flow.Control_Flow_Graph is
            (FA,
             Direct_Mapping_Id (N),
             Make_Basic_Attributes
-              (Var_Ex_Use    => Get_Variables
+              (Var_Ex_Use => Get_Variables
                  (Cond,
                   Scope                => FA.B_Scope,
                   Target_Name          => Null_Flow_Id,
                   Fold_Functions       => Inputs,
                   Use_Computed_Globals => not FA.Generating_Globals),
-               Subp_Calls    => Funcalls,
-               Vertex_Ctx    => Ctx.Vertex_Ctx,
-               E_Loc         => N),
+               Subp_Calls => Funcalls,
+               Vertex_Ctx => Ctx.Vertex_Ctx,
+               E_Loc      => N),
             V);
          Ctx.Folded_Function_Checks.Append (Cond);
          CM.Insert (Union_Id (N),
@@ -2455,15 +2455,15 @@ package body Flow.Control_Flow_Graph is
         (FA,
          Direct_Mapping_Id (N),
          Make_Basic_Attributes
-           (Var_Ex_Use    => Get_Variables
+           (Var_Ex_Use => Get_Variables
               (Condition (N),
                Scope                => FA.B_Scope,
                Target_Name          => Null_Flow_Id,
                Fold_Functions       => Inputs,
                Use_Computed_Globals => not FA.Generating_Globals),
-            Subp_Calls    => Funcalls,
-            Vertex_Ctx    => Ctx.Vertex_Ctx,
-            E_Loc         => N),
+            Subp_Calls => Funcalls,
+            Vertex_Ctx => Ctx.Vertex_Ctx,
+            E_Loc      => N),
          V);
       Ctx.Folded_Function_Checks.Append (Condition (N));
       CM.Insert (Union_Id (N),
@@ -2578,15 +2578,15 @@ package body Flow.Control_Flow_Graph is
                  (FA,
                   Direct_Mapping_Id (Elsif_Statement),
                   Make_Basic_Attributes
-                    (Var_Ex_Use    => Get_Variables
+                    (Var_Ex_Use => Get_Variables
                        (Condition (Elsif_Statement),
                         Scope                => FA.B_Scope,
                         Target_Name          => Null_Flow_Id,
                         Fold_Functions       => Inputs,
                         Use_Computed_Globals => not FA.Generating_Globals),
-                     Subp_Calls    => Funcalls,
-                     Vertex_Ctx    => Ctx.Vertex_Ctx,
-                     E_Loc         => Elsif_Statement),
+                     Subp_Calls => Funcalls,
+                     Vertex_Ctx => Ctx.Vertex_Ctx,
+                     E_Loc      => Elsif_Statement),
                   V);
                Ctx.Folded_Function_Checks.Append (Condition (Elsif_Statement));
 
@@ -3024,15 +3024,15 @@ package body Flow.Control_Flow_Graph is
            (FA,
             Direct_Mapping_Id (N),
             Make_Basic_Attributes
-              (Var_Ex_Use    => Get_Variables
+              (Var_Ex_Use => Get_Variables
                  (Condition (Iteration_Scheme (N)),
                   Scope                => FA.B_Scope,
                   Target_Name          => Null_Flow_Id,
                   Fold_Functions       => Inputs,
                   Use_Computed_Globals => not FA.Generating_Globals),
-               Subp_Calls    => Funcalls,
-               Vertex_Ctx    => Ctx.Vertex_Ctx,
-               E_Loc         => N),
+               Subp_Calls => Funcalls,
+               Vertex_Ctx => Ctx.Vertex_Ctx,
+               E_Loc      => N),
             V);
          Ctx.Folded_Function_Checks.Append (Condition (Iteration_Scheme (N)));
 
@@ -3739,8 +3739,8 @@ package body Flow.Control_Flow_Graph is
            (FA,
             Direct_Mapping_Id (N),
             Make_Basic_Attributes
-              (Var_Def       => Flatten_Variable (Param, FA.B_Scope),
-               Var_Ex_Use    =>
+              (Var_Def    => Flatten_Variable (Param, FA.B_Scope),
+               Var_Ex_Use =>
                  Get_Variables
                    (Cont,
                     Scope                => FA.B_Scope,
@@ -3749,9 +3749,9 @@ package body Flow.Control_Flow_Graph is
                     Use_Computed_Globals => not FA.Generating_Globals)
                    or
                  Get_Filter_Variables (Filter),
-               Subp_Calls    => Funcalls,
-               Vertex_Ctx    => Ctx.Vertex_Ctx,
-               E_Loc         => Cont),
+               Subp_Calls => Funcalls,
+               Vertex_Ctx => Ctx.Vertex_Ctx,
+               E_Loc      => Cont),
             V);
          Ctx.Folded_Function_Checks.Append (Cont);
 
@@ -3893,10 +3893,10 @@ package body Flow.Control_Flow_Graph is
             Add_Vertex
               (FA,
                (Make_Basic_Attributes
-                  (Var_Def       => Fully_Initialized,
-                   Vertex_Ctx    => Ctx.Vertex_Ctx,
-                   E_Loc         => Loop_Id,
-                   Print_Hint    => Pretty_Print_Loop_Init)
+                  (Var_Def    => Fully_Initialized,
+                   Vertex_Ctx => Ctx.Vertex_Ctx,
+                   E_Loc      => Loop_Id,
+                   Print_Hint => Pretty_Print_Loop_Init)
                 with delta Is_Program_Node => False),
                V);
 
@@ -4318,12 +4318,12 @@ package body Flow.Control_Flow_Graph is
          Add_Vertex
            (FA,
             Make_Sink_Vertex_Attributes
-              (Var_Use       => Variables_Used,
-               Subp_Calls    => Funcalls,
-               Is_Assertion  => True,
-               Vertex_Ctx    => Ctx.Vertex_Ctx,
-               Aspect        => DIC,
-               E_Loc         => N),
+              (Var_Use      => Variables_Used,
+               Subp_Calls   => Funcalls,
+               Is_Assertion => True,
+               Vertex_Ctx   => Ctx.Vertex_Ctx,
+               Aspect       => DIC,
+               E_Loc        => N),
             V);
          Inits.Append (V);
 
@@ -4498,12 +4498,12 @@ package body Flow.Control_Flow_Graph is
                         Add_Vertex
                           (FA,
                            (Make_Basic_Attributes
-                             (Var_Def       => Flow_Id_Sets.To_Set (Output),
-                              Var_Ex_Use    => Inputs,
-                              Subp_Calls    => Funcalls,
-                              Vertex_Ctx    => Ctx.Vertex_Ctx,
-                              E_Loc         => N,
-                              Print_Hint    => Pretty_Print_Record_Field)
+                             (Var_Def    => Flow_Id_Sets.To_Set (Output),
+                              Var_Ex_Use => Inputs,
+                              Subp_Calls => Funcalls,
+                              Vertex_Ctx => Ctx.Vertex_Ctx,
+                              E_Loc      => N,
+                              Print_Hint => Pretty_Print_Record_Field)
                            with delta Is_Declaration_Node => True),
                            V);
                         Missing.Exclude (Output);
@@ -4524,11 +4524,11 @@ package body Flow.Control_Flow_Graph is
                      Add_Vertex
                        (FA,
                         (Make_Basic_Attributes
-                          (Var_Def       => Flow_Id_Sets.To_Set (F),
-                           Var_Ex_Use    => Flow_Id_Sets.Empty_Set,
-                           Vertex_Ctx    => Ctx.Vertex_Ctx,
-                           E_Loc         => N,
-                           Print_Hint    => Pretty_Print_Record_Field)
+                          (Var_Def    => Flow_Id_Sets.To_Set (F),
+                           Var_Ex_Use => Flow_Id_Sets.Empty_Set,
+                           Vertex_Ctx => Ctx.Vertex_Ctx,
+                           E_Loc      => N,
+                           Print_Hint => Pretty_Print_Record_Field)
                            with delta Is_Declaration_Node => True),
                         V);
                      Inits.Append (V);
@@ -4572,17 +4572,17 @@ package body Flow.Control_Flow_Graph is
                  (FA,
                   Direct_Mapping_Id (N),
                   (Make_Basic_Attributes
-                    (Var_Def       => Var_Def,
-                     Var_Ex_Use    => Get_Variables
+                    (Var_Def    => Var_Def,
+                     Var_Ex_Use => Get_Variables
                        (Expr,
                         Scope                => FA.B_Scope,
                         Target_Name          => Null_Flow_Id,
                         Fold_Functions       => Inputs,
                         Use_Computed_Globals => not FA.Generating_Globals,
                         Consider_Extensions  => To_CW),
-                     Subp_Calls    => Funcalls,
-                     Vertex_Ctx    => Ctx.Vertex_Ctx,
-                     E_Loc         => N)
+                     Subp_Calls => Funcalls,
+                     Vertex_Ctx => Ctx.Vertex_Ctx,
+                     E_Loc      => N)
                    with delta Is_Declaration_Node => True),
                   V);
                Inits.Append (V);
@@ -4636,12 +4636,12 @@ package body Flow.Control_Flow_Graph is
                Add_Vertex
                  (FA,
                   Make_Basic_Attributes
-                    (Var_Def       => Flow_Id_Sets.To_Set (F),
-                     Var_Ex_Use    => Addr_Deps,
-                     Subp_Calls    => Funcalls,
-                     Vertex_Ctx    => Ctx.Vertex_Ctx,
-                     Print_Hint    => Pretty_Print_Record_Field,
-                     E_Loc         => Addr_Expr),
+                    (Var_Def    => Flow_Id_Sets.To_Set (F),
+                     Var_Ex_Use => Addr_Deps,
+                     Subp_Calls => Funcalls,
+                     Vertex_Ctx => Ctx.Vertex_Ctx,
+                     Print_Hint => Pretty_Print_Record_Field,
+                     E_Loc      => Addr_Expr),
                   V);
                Inits.Append (V);
             end loop;
@@ -4700,15 +4700,15 @@ package body Flow.Control_Flow_Graph is
                   Add_Vertex
                     (FA,
                      Make_Basic_Attributes
-                       (Var_Def       => Flow_Id_Sets.To_Set (F),
-                        Var_Ex_Use    =>
+                       (Var_Def    => Flow_Id_Sets.To_Set (F),
+                        Var_Ex_Use =>
                           Process_Discriminants
                             (Intermediate_Vars_Used => Constraint_Vars,
                              Var_Defined            => F),
-                        Subp_Calls    => Funcalls,
-                        Vertex_Ctx    => Ctx.Vertex_Ctx,
-                        E_Loc         => N,
-                        Print_Hint    => Pretty_Print_Record_Field),
+                        Subp_Calls => Funcalls,
+                        Vertex_Ctx => Ctx.Vertex_Ctx,
+                        E_Loc      => N,
+                        Print_Hint => Pretty_Print_Record_Field),
                      V);
                   Inits.Append (V);
                end;
@@ -4716,10 +4716,10 @@ package body Flow.Control_Flow_Graph is
                Add_Vertex
                  (FA,
                   Make_Default_Initialization_Attributes
-                    (FA            => FA,
-                     Scope         => FA.B_Scope,
-                     F             => F,
-                     Vertex_Ctx    => Ctx.Vertex_Ctx),
+                    (FA         => FA,
+                     Scope      => FA.B_Scope,
+                     F          => F,
+                     Vertex_Ctx => Ctx.Vertex_Ctx),
                   V);
                Inits.Append (V);
             end if;
@@ -4898,18 +4898,18 @@ package body Flow.Control_Flow_Graph is
          Add_Vertex (FA,
                      Direct_Mapping_Id (N),
                      Make_Basic_Attributes
-                       (Subp_Calls    =>
+                       (Subp_Calls =>
                           (if Enclosing_Unit (Spec_E) = FA.Spec_Entity
                              and then not Is_Wrapper_Package (Spec_E)
                            then Call_Sets.To_Set
                                   (Subprogram_Call'(N => N, E => Spec_E))
                            else Call_Sets.Empty_Set),
-                        Vertex_Ctx    =>
+                        Vertex_Ctx =>
                           (No_Vertex_Context with delta
                                In_Nested_Package =>
                                  Ctx.Vertex_Ctx.In_Nested_Package),
-                        E_Loc         => N,
-                        Print_Hint    => Pretty_Print_Package),
+                        E_Loc      => N,
+                        Print_Hint => Pretty_Print_Package),
                      V);
 
          Ctx.Vertex_Ctx.In_Nested_Package := True;
@@ -5254,23 +5254,23 @@ package body Flow.Control_Flow_Graph is
            (FA,
             Direct_Mapping_Id (N),
             Make_Sink_Vertex_Attributes
-              (Var_Use       => Get_All_Variables
+              (Var_Use      => Get_All_Variables
                  (Expression
                     (case Get_Pragma_Id (N) is
-                        when Pragma_Check =>
+                        when Pragma_Check        =>
                            Next (First (Pragma_Argument_Associations (N))),
                         when Pragma_Loop_Variant =>
                            First (Pragma_Argument_Associations (N)),
-                        when others =>
+                        when others              =>
                            raise Program_Error),
                   Scope                => FA.B_Scope,
                   Target_Name          => Null_Flow_Id,
                   Use_Computed_Globals => not FA.Generating_Globals),
-               Subp_Calls    => Funcalls,
-               Is_Assertion  => True,
-               Vertex_Ctx    => Ctx.Vertex_Ctx,
-               E_Loc         => N,
-               Execution     => Find_Execution_Kind),
+               Subp_Calls   => Funcalls,
+               Is_Assertion => True,
+               Vertex_Ctx   => Ctx.Vertex_Ctx,
+               E_Loc        => N,
+               Execution    => Find_Execution_Kind),
             V);
 
       else
@@ -5650,13 +5650,13 @@ package body Flow.Control_Flow_Graph is
         (FA,
          Direct_Mapping_Id (N),
          Make_Call_Attributes
-           (Callsite      => N,
-            Var_Use       => Vars_Used,
-            Subp_Calls    =>
+           (Callsite   => N,
+            Var_Use    => Vars_Used,
+            Subp_Calls =>
               Call_Sets.To_Set
                 (Subprogram_Call'(N => N, E => Called_Thing)).Union (Funcalls),
-            Vertex_Ctx    => Ctx.Vertex_Ctx,
-            E_Loc         => N),
+            Vertex_Ctx => Ctx.Vertex_Ctx,
+            E_Loc      => N),
          V);
       FA.CFG.Set_Cluster (V, C);
 
@@ -5926,15 +5926,15 @@ package body Flow.Control_Flow_Graph is
         (FA,
          Direct_Mapping_Id (N),
          Make_Sink_Vertex_Attributes
-           (Var_Use       => Get_All_Variables
+           (Var_Use      => Get_All_Variables
               (N,
                Scope                => FA.B_Scope,
                Target_Name          => Null_Flow_Id,
                Use_Computed_Globals => not FA.Generating_Globals),
-            Subp_Calls    => Funcalls,
-            Is_Assertion  => True,
-            Vertex_Ctx    => Ctx.Vertex_Ctx,
-            E_Loc         => N),
+            Subp_Calls   => Funcalls,
+            Is_Assertion => True,
+            Vertex_Ctx   => Ctx.Vertex_Ctx,
+            E_Loc        => N),
          V);
 
       CM.Insert (Union_Id (N), Trivial_Connection (V));
@@ -6522,12 +6522,12 @@ package body Flow.Control_Flow_Graph is
                Add_Vertex
                  (FA,
                   Make_Implicit_Parameter_Attributes
-                    (FA            => FA,
-                     Call_Vertex   => Callsite,
-                     In_Vertex     => True,
-                     Scope         => FA.B_Scope,
-                     Vertex_Ctx    => Ctx.Vertex_Ctx,
-                     E_Loc         => Callsite),
+                    (FA          => FA,
+                     Call_Vertex => Callsite,
+                     In_Vertex   => True,
+                     Scope       => FA.B_Scope,
+                     Vertex_Ctx  => Ctx.Vertex_Ctx,
+                     E_Loc       => Callsite),
                   V);
                Ins.Append (V);
 
@@ -6536,12 +6536,12 @@ package body Flow.Control_Flow_Graph is
                   Add_Vertex
                     (FA,
                      Make_Implicit_Parameter_Attributes
-                       (FA            => FA,
-                        Call_Vertex   => Callsite,
-                        In_Vertex     => False,
-                        Scope         => FA.B_Scope,
-                        Vertex_Ctx    => Ctx.Vertex_Ctx,
-                        E_Loc         => Callsite),
+                       (FA          => FA,
+                        Call_Vertex => Callsite,
+                        In_Vertex   => False,
+                        Scope       => FA.B_Scope,
+                        Vertex_Ctx  => Ctx.Vertex_Ctx,
+                        E_Loc       => Callsite),
                      V);
                   Outs_By_Reference.Append (V);
                end if;
