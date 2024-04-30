@@ -3254,13 +3254,14 @@ package body SPARK_Definition is
          =>
             Mark_Violation ("tasking", N);
 
-         --  Unsupported INOX constructs
+         --  Unsupported GNAT extensions
 
-         when N_Goto_When_Statement
-            | N_Raise_When_Statement
-            | N_Return_When_Statement
-         =>
-            Mark_Violation ("'I'N'O'X", N);
+         when N_Goto_When_Statement =>
+            Mark_Violation ("'G'N'A'T extension for conditional goto", N);
+         when N_Raise_When_Statement =>
+            Mark_Violation ("'G'N'A'T extension for conditional raise", N);
+         when N_Return_When_Statement =>
+            Mark_Violation ("'G'N'A'T extension for conditional return", N);
 
          --  The following kinds can be safely ignored by marking
 

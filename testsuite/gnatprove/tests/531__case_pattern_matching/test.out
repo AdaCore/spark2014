@@ -1,0 +1,12 @@
+bound.adb:34:15: error: box notation without default or relaxed initialization is not allowed in SPARK (SPARK RM 4.3(1))
+bound.adb:34:15: error: violation of pragma SPARK_Mode at spark.adc:1
+bound.adb:37:15: error: box notation without default or relaxed initialization is not allowed in SPARK (SPARK RM 4.3(1))
+bound.adb:37:15: error: violation of pragma SPARK_Mode at spark.adc:1
+bound.adb:50:19: info: no contextual analysis of "Classify" (in assertion expression)
+bound.adb:51:19: info: no contextual analysis of "Classify" (in assertion expression)
+bound.adb:53:19: info: no contextual analysis of "Classify" (in assertion expression)
+bound.adb:54:19: info: no contextual analysis of "Classify" (in assertion expression)
+bound.adb:55:19: info: no contextual analysis of "Classify" (in assertion expression)
+bound.adb:56:19: info: no contextual analysis of "Classify" (in assertion expression)
+bound.adb:57:19: info: no contextual analysis of "Classify" (in assertion expression)
+gnatprove: error during flow analysis and proof

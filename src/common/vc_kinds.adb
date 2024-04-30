@@ -732,7 +732,7 @@ package body VC_Kinds is
             "a subprogram which is inherited, not overriden, from an ancestor"
           & " declared in the private part of a package with SPARK_Mode Off",
          when Lim_Interpolated_String_Literal =>
-           "interpolated string literals",
+           "'G'N'A'T extension for interpolated string literals",
          when Lim_Iterated_Element_Association => "container aggregates",
          when Lim_Iterator_In_Component_Assoc =>
            "an iterated component associations with an iterator specification"
