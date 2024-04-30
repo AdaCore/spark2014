@@ -1,7 +1,7 @@
 foo.adb:7:13: info: implicit aspect Always_Terminates on "Bar" has been proved, subprogram will terminate
 foo.adb:7:13: info: implicit function contract might not be available on calls from enclosing unit
 foo.adb:7:18: warning: unused variable "Data"
-foo.adb:15:07: high: alignment of overlayed object might not be an integral multiple of alignment of overlaying object [possible explanation: Q_Arr doesn't have an Alignment representation clause or aspect] [possible fix: overlaying object should have an Alignment representation clause]
-foo.adb:15:07: high: object is unsuitable for aliasing via address clause [possible explanation: type Half_Byte_Array doesn't have an Object_Size representation clause or aspect]
-foo.adb:15:56: high: types of aliased objects do not have the same size [possible explanation: type Half_Byte_Array doesn't have an Object_Size representation clause or aspect]
+foo.adb:15:07: info: alignment of overlaid objects is compatible (Trivial)
+foo.adb:15:07: info: object is suitable for aliasing via address clause (Trivial)
 foo.adb:15:56: info: object is suitable for aliasing via address clause (Trivial)
+foo.adb:15:56: info: types of aliased objects have the same size (Trivial)
