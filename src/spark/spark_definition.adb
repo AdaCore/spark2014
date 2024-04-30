@@ -10858,10 +10858,7 @@ package body SPARK_Definition is
               and then SPARK_Pragma_Is (Opt.On)
             then
                Error_Msg_N
-                 (Create_N
-                    (Warning_Message (Warn_Pragma_Ignored),
-                     N     => N,
-                     Names => [Pname]),
+                 (Warning_Message (Warn_Pragma_Ignored),
                   N,
                   Kind => MK_Warning);
             end if;
@@ -10871,7 +10868,7 @@ package body SPARK_Definition is
          --  we have not yet defined how they are supported in SPARK.
 
          when others =>
-            Mark_Violation ("unknown pragma &", N, N_Names => [Pname]);
+            Mark_Violation ("unknown pragma &", N, Names => [N]);
       end case;
    end Mark_Pragma;
 

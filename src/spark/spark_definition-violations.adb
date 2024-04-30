@@ -295,7 +295,6 @@ package body SPARK_Definition.Violations is
      (Msg            : String;
       N              : Node_Id;
       Names          : Node_Lists.List := Node_Lists.Empty;
-      N_Names        : Name_Id_Lists.List := Name_Id_Lists.Empty;
       Code           : Explain_Code_Kind := EC_None;
       SRM_Reference  : String := "";
       Cont_Msg       : String := "";
@@ -326,17 +325,10 @@ package body SPARK_Definition.Violations is
 
          declare
             Mess : constant Message :=
-              (if not N_Names.Is_Empty then
-                  Errout_Wrapper.Create_N
-                    (To_String (Full_Msg),
-                     Names        => N_Names,
-                     N            => N,
-                     Explain_Code => Code)
-               else
-                  Errout_Wrapper.Create
-                    (To_String (Full_Msg),
-                     Names     => Names,
-                  Explain_Code => Code));
+              Errout_Wrapper.Create
+                (To_String (Full_Msg),
+                 Names     => Names,
+                 Explain_Code => Code);
             Conts : Message_Lists.List := Message_Lists.Empty;
          begin
             if Cont_Msg /= "" then

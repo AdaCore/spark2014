@@ -126,7 +126,6 @@ private package SPARK_Definition.Violations is
      (Msg            : String;
       N              : Node_Id;
       Names          : Node_Lists.List := Node_Lists.Empty;
-      N_Names        : Name_Id_Lists.List := Name_Id_Lists.Empty;
       Code           : Explain_Code_Kind := EC_None;
       SRM_Reference  : String := "";
       Cont_Msg       : String := "";
@@ -135,12 +134,10 @@ private package SPARK_Definition.Violations is
        Global => (Output => Violation_Detected,
                   Input  => Current_SPARK_Pragma),
        Pre =>
-         (Names.Is_Empty or else N_Names.Is_Empty)
-         and then
-         (SRM_Reference = ""
+         SRM_Reference = ""
           or else
             (SRM_Reference'Length > 9
-             and then Head (SRM_Reference, 9) = "SPARK RM "));
+             and then Head (SRM_Reference, 9) = "SPARK RM ");
    --  Mark node N as a violation of SPARK. An error message pointing to the
    --  current SPARK_Mode pragma/aspect is issued if current SPARK_Mode is On.
    --  If Explain_Code is set to a positive number, this is taken as an explain
@@ -149,8 +146,7 @@ private package SPARK_Definition.Violations is
    --  Cont_Msg is set, a continuation message is issued. If Root_Cause_Msg
    --  is set, the corresponding message is used as root cause message for
    --  cascading violations (typically used if Msg has character insertions).
-   --  If Names or N_Names is set, use this to replace & in error messages.
-   --  Only one of the two can be set.
+   --  If Names is set, use this to replace & in error messages.
 
    procedure Mark_Violation
      (N        : Node_Id;
