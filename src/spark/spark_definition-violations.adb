@@ -295,7 +295,6 @@ package body SPARK_Definition.Violations is
      (Msg            : String;
       N              : Node_Id;
       Names          : Node_Lists.List := Node_Lists.Empty;
-      N_Names        : Name_Id_Lists.List := Name_Id_Lists.Empty;
       Code           : Explain_Code_Kind := EC_None;
       SRM_Reference  : String := "";
       Cont_Msg       : String := "";
@@ -326,17 +325,10 @@ package body SPARK_Definition.Violations is
 
          declare
             Mess : constant Message :=
-              (if not N_Names.Is_Empty then
-                  Errout_Wrapper.Create_N
-                    (To_String (Full_Msg),
-                     Names        => N_Names,
-                     N            => N,
-                     Explain_Code => Code)
-               else
-                  Errout_Wrapper.Create
-                    (To_String (Full_Msg),
-                     Names     => Names,
-                  Explain_Code => Code));
+              Errout_Wrapper.Create
+                (To_String (Full_Msg),
+                 Names        => Names,
+                 Explain_Code => Code);
             Conts : Message_Lists.List := Message_Lists.Empty;
          begin
             if Cont_Msg /= "" then
@@ -386,7 +378,7 @@ package body SPARK_Definition.Violations is
             Error_Msg_N (Create ("& is not allowed in SPARK" & Root_Msg,
                                  Names => [From]),
                          N,
-                         First => True,
+                         First         => True,
                          Continuations => Conts);
          end;
       end if;
@@ -417,13 +409,13 @@ package body SPARK_Definition.Violations is
             Error_Msg_N
               (Create (Msg_Prefix & "Ravenscar profile" & Msg_Suffix),
                N,
-               First => True,
+               First         => True,
                Continuations => [Mark_Violation_Of_SPARK_Mode]);
          elsif not Sequential_Elaboration then
             Error_Msg_N
               (Create (Msg_Prefix & "sequential elaboration" & Msg_Suffix),
                N,
-               First => True,
+               First         => True,
                Continuations => [Mark_Violation_Of_SPARK_Mode]);
          end if;
       end if;
@@ -446,13 +438,13 @@ package body SPARK_Definition.Violations is
          return Create
            ("access to incomplete type & is required to be in SPARK",
             Secondary_Loc => Sloc (Current_Incomplete_Type),
-            Names => [Current_Incomplete_Type]);
+            Names         => [Current_Incomplete_Type]);
       else
          pragma Assert (Present (Current_Delayed_Aspect_Type));
          return Create
            ("delayed type aspect on & is required to be in SPARK",
             Secondary_Loc => Sloc (Current_Delayed_Aspect_Type),
-            Names => [Current_Delayed_Aspect_Type]);
+            Names         => [Current_Delayed_Aspect_Type]);
       end if;
    end Mark_Violation_Of_SPARK_Mode;
 
