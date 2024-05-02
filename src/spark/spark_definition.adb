@@ -6470,6 +6470,16 @@ package body SPARK_Definition is
                           ("ghost function as user-defined equality"
                            & " on non-ghost record type", Id,
                            SRM_Reference => "SPARK RM 6.9(22)");
+
+                     --  A user-defined primitive equality operation on a
+                     --  record type shall not have a subprogram variant.
+                     elsif Present (Get_Pragma (Id, Pragma_Subprogram_Variant))
+                     then
+                        Mark_Violation
+                          ("subprogram variant on a user-defined equality"
+                           & " on record type", Id,
+                           Cont_Msg => "consider introducing another recursive"
+                           & " function and defining ""="" as a wrapper");
                      end if;
                   end if;
                end;
