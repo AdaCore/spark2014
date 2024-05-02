@@ -8442,8 +8442,15 @@ package body SPARK_Definition is
                   Kind             : Unsupported_Kind;
 
                begin
-                  if Is_In_Potentially_Hidden_Private (Full)
-                    or else Is_Private_Entity_Mode_Off (Full)
+                  --  Purely private tagged type (without any public ancestor)
+                  --  are also in kind E_Record_Type_With_Private, but should
+                  --  not be subject to additional restrictions as all public
+                  --  primitives are necessarily declared in the public part,
+                  --  hence new or explicitly overriden.
+
+                  if Parent /= E
+                    and then (Is_In_Potentially_Hidden_Private (Full)
+                              or else Is_Private_Entity_Mode_Off (Full))
                   then
                      for Prim of Iter (Direct_Primitive_Operations (E)) loop
                         declare
