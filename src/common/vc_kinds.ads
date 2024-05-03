@@ -698,7 +698,7 @@ package VC_Kinds is
            "tagged type with primitive subprograms inherited from a type"
            & " declared in a private part with SPARK_Mode Off",
          when Lim_Interpolated_String_Literal =>
-           "interpolated string literal",
+           "'G'N'A'T extension for interpolated string literal",
          when Lim_Unknown_Alignment =>
            "unknown value of object alignment",
          when Lim_Op_Fixed_Float =>
