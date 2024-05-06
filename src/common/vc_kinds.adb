@@ -700,6 +700,8 @@ package body VC_Kinds is
           & "passed by reference",
          when Lim_Ext_Aggregate_With_Type_Ancestor =>
            "an extension aggregate whose ancestor part is a subtype mark",
+         when Lim_Extension_Case_Pattern_Matching =>
+           "GNAT extension for case pattern matching",
          when Lim_Generic_In_Hidden_Private =>
             "instance of a generic unit declared in a package whose private "
           & "part is hidden outside of this package",
@@ -732,7 +734,7 @@ package body VC_Kinds is
             "a subprogram which is inherited, not overriden, from an ancestor"
           & " declared in the private part of a package with SPARK_Mode Off",
          when Lim_Interpolated_String_Literal =>
-           "'G'N'A'T extension for interpolated string literals",
+           "GNAT extension for interpolated string literals",
          when Lim_Iterated_Element_Association => "container aggregates",
          when Lim_Iterator_In_Component_Assoc =>
            "an iterated component associations with an iterator specification"
