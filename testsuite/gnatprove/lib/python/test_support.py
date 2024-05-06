@@ -770,6 +770,7 @@ def gnatprove(
     ada=default_ada,
     sparklib=False,
     filter_sparklib=True,
+    info=True,
 ):
     """Invoke gnatprove, and in case of success return list of output lines
 
@@ -796,6 +797,7 @@ def gnatprove(
                 + ' use ("-gnatws",'
                 # force generation of BUGBOX even when error is issued
                 + ' "-gnatdk", '
+                + ' "-gnatd.k", '
                 + '"-gnat'
                 + str(ada)
                 + '");\n'
@@ -816,7 +818,8 @@ def gnatprove(
     # Continue on errors, to get the maximum number of messages for tests
     cmd += ["-k"]
     # Issue all information messages for tests
-    cmd += ["--info"]
+    if info:
+        cmd += ["--info"]
     # If the tests uses SPARKlib, do not prove them again
     if sparklib:
         cmd += ["--no-subprojects"]
@@ -1174,3 +1177,40 @@ def check_output_file(sort=False):
         print_sorted(str.splitlines(output))
     else:
         print(output)
+
+
+def print_version():
+    """Print the output of "gnatprove --version".
+
+    Typical output is like this:
+      $ gnatprove --version
+      <gnatprove version>
+      <full-path-to-prover> : <version output for prover>
+    Z3 output looks like this:
+      Z3 version <bla> - 64 bit
+    We remove:
+    - the gnatprove version, which changes too much
+    - the prover locations
+    - platform (32bits/64bits) in Z3 output
+    """
+
+    # We remove LD_LIBRARY_PATH which is set by the GNAT compiler dependency.
+    # In this way we can test if the provers work without this env var.
+    # ??? os.unsetenv didn't work, so setting to empty string instead
+    os.environ["LD_LIBRARY_PATH"] = ""
+
+    p = Run(["gnatprove", "--version"])
+    lines = p.out.splitlines()
+    # drop first line of output
+    lines = lines[1:]
+    for line in lines:
+        # remove everything before the colon, to remove path info
+        # there might be no colon, but the code still works
+        elts = line.split(":")
+        text = elts[-1]
+
+        # remove everything after " - ", to remove mention of platform in z3
+        # output
+        elts = text.split(" - ")
+        text = elts[0]
+        print(text)

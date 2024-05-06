@@ -1,0 +1,2 @@
+acc_vectors.ads:8:06: error: container aggregates cannot contain access-to-variable elements or keys
+gnatprove: error during flow analysis and proof

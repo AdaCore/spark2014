@@ -1,8 +1,8 @@
 test_raise.adb:2:11: warning: subprogram "Test_Raise" has no effect
 test_raise.adb:3:04: info: analyzing call to "Log2_Estimate" in context
 test_raise.adb:3:04: info: analyzing call to "Minus_Log2_Estimate" in context
-test_raise.adb:3:04: info: in instantiation at a-nbnbre.adb:256
-test_raise.adb:3:04: info: in instantiation at a-nbnbre.adb:264
+test_raise.adb:3:04: info: in instantiation at a-nbnbre.adb
+test_raise.adb:3:04: info: in instantiation at a-nbnbre.adb
 test_raise.adb:7:14: warning: subprogram "OK" has no effect
 test_raise.adb:19:22: info: assertion proved (CVC5: 1 VC; Trivial: 7 VC)
 test_raise.adb:19:41: info: only expected exception raised (CVC5: 1 VC)

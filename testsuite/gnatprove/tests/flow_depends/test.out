@@ -1,0 +1,12 @@
+multi.adb:14:37: info: data dependencies proved
+multi.adb:14:59: info: initialization of "X" proved
+multi.adb:14:62: info: initialization of "Y" proved
+multi.adb:14:65: info: initialization of "Z" proved
+multi.adb:16:09: info: discriminant check proved (CVC5: 1 VC; Trivial: 1 VC)
+multi.adb:17:09: info: discriminant check proved (CVC5: 1 VC; Trivial: 1 VC)
+multi.adb:18:09: info: discriminant check proved (CVC5: 1 VC; Trivial: 1 VC)
+multi.adb:23:14: warning: unused initial value of "X"
+multi.adb:23:14: warning: unused initial value of "Y"
+multi.adb:23:14: warning: unused initial value of "Z"
+multi.adb:24:07: info: flow dependencies proved
+multi.adb:29:07: info: precondition proved (Trivial: 1 VC)

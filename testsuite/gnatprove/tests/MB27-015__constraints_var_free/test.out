@@ -15,8 +15,10 @@ p.ads:26:37: error: launch "gnatprove --explain=E0007" for more information
 p.ads:26:37: error: subtype constraint cannot depend on variable input "B" [E0007]
 p.ads:26:37: error: use instead a constant initialized to the expression with variable input
 p.ads:36:40: error: launch "gnatprove --explain=E0007" for more information
+p.ads:36:40: error: launch "gnatprove --explain=E0007" for more information
 p.ads:36:40: error: subtype constraint cannot depend on variable input "A" [E0007]
 p.ads:36:40: error: subtype constraint cannot depend on variable input "B" [E0007]
+p.ads:36:40: error: use instead a constant initialized to the expression with variable input
 p.ads:36:40: error: use instead a constant initialized to the expression with variable input
 p.ads:39:33: error: launch "gnatprove --explain=E0007" for more information
 p.ads:39:33: error: subtype constraint cannot depend on variable input "A" [E0007]

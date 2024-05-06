@@ -268,6 +268,13 @@ package body Flow.Interprocedural is
                Remove_Constants (Globals.Inputs);
             end if;
 
+            --  Add implicit global inputs
+            for Output of Globals.Outputs loop
+               if Is_Implicit_Input (Output) then
+                  Globals.Inputs.Include (Change_Variant (Output, In_View));
+               end if;
+            end loop;
+
             --  Add parameters
             for E of Get_Explicit_Formals (Called_Thing) loop
                The_In  := Direct_Mapping_Id (E, In_View);
@@ -355,16 +362,7 @@ package body Flow.Interprocedural is
                      Output_Is_Ghost : constant Boolean :=
                        Is_Ghost_Entity (Output);
 
-                     The_In : constant Flow_Id :=
-                       Change_Variant (Output, In_View);
-
                   begin
-                     if not Globals.Inputs.Contains (The_In)
-                       and then Is_Implicit_Input (The_In)
-                     then
-                        Globals.Inputs.Insert (The_In);
-                     end if;
-
                      for Input of Globals.Inputs loop
                         declare
                            Dependency_Allowed : constant Boolean :=

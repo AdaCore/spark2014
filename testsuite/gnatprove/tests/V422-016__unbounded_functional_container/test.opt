@@ -1,1 +1,2 @@
 NT SKIP proof diffs on Windows
+ALL XFAIL front-end regression eng/toolchain/gnat#621

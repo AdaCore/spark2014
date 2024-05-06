@@ -42,6 +42,7 @@ with SPARK_Frame_Conditions;      use SPARK_Frame_Conditions;
 with SPARK_Util.Subprograms;      use SPARK_Util.Subprograms;
 with SPARK_Util.Types;            use SPARK_Util.Types;
 with SPARK_Util;                  use SPARK_Util;
+with String_Utils;                use String_Utils;
 with VC_Kinds;                    use VC_Kinds;
 
 with Flow.Analysis.Antialiasing;
@@ -2321,30 +2322,25 @@ package body Flow.Analysis is
             --  In case of a subprogram with an output global which is actually
             --  used as an input in its body, we emit dedicated messages.
 
-            Error_Msg_Flow (FA       => FA,
-                            Msg      => "& is not an input in the " &
-                                        "Global contract of subprogram #",
-                            Severity => High_Check_Kind,
-                            N        => N,
-                            F1       => Var,
-                            F2       => Direct_Mapping_Id (FA.Spec_Entity),
-                            Tag      => Uninitialized);
-
             declare
                Msg : constant String :=
                  "either make & an input in the Global contract or " &
                  (if Has_Async_Readers (Var)
                   then "write to it before use"
                   else "initialize it before use");
-
+               Conts : String_Lists.List;
             begin
-               Error_Msg_Flow (FA           => FA,
-                               Msg          => Msg,
-                               Severity     => High_Check_Kind,
-                               N            => N,
-                               F1           => Var,
-                               Tag          => Uninitialized,
-                               Continuation => True);
+               Conts.Append (Substitute_Message (Msg, N, Var));
+               Error_Msg_Flow (FA            => FA,
+                               Msg           => "& is not an input in the " &
+                                 "Global contract of subprogram #",
+                               Severity      => High_Check_Kind,
+                               N             => N,
+                               F1            => Var,
+                               F2            =>
+                                 Direct_Mapping_Id (FA.Spec_Entity),
+                               Tag           => Uninitialized,
+                               Continuations => Conts);
             end;
          else
             if Is_Function then
@@ -2479,53 +2475,50 @@ package body Flow.Analysis is
                Path : constant Vertex_Sets.Set :=
                  Mark_Definition_Free_Path (To  => V_Goal,
                                             Var => Var);
-
+               Conts : String_Lists.List;
             begin
-               Error_Msg_Flow
-                 (FA       => FA,
-                  Path     => Path,
-                  Msg      => To_String (Msg),
-                  Details  => To_String (Details),
-                  Fix      => To_String (Fix),
-                  N        => N,
-                  F1       => Var,
-                  F2       => Direct_Mapping_Id (FA.Spec_Entity),
-                  FF1      => Fix_F1,
-                  FF2      => Fix_F2,
-                  Tag      => Uninitialized,
-                  Severity => (case Kind is
-                                  when Unknown => (if Default_Init
-                                                   then Low_Check_Kind
-                                                   else Medium_Check_Kind),
-                                  when Err     => (if Default_Init
-                                                   then Medium_Check_Kind
-                                                   else High_Check_Kind)),
-                  Vertex   => V_Use);
 
                --  ??? only when Is_Final_Use ?
                if Is_Constituent (Var)
                  and then FA.Kind = Kind_Package
                  and then Present (FA.Initializes_N)
                then
-                  Error_Msg_Flow
-                    (FA           => FA,
-                     Msg          => "initialization of & is specified @",
-                     N            => N,
-                     F1           => Direct_Mapping_Id
-                       (Encapsulating_State
-                            (Get_Direct_Mapping_Id (Var))),
-                     F2           =>
-                       Direct_Mapping_Id
-                         (if From_Aspect_Specification (FA.Initializes_N)
-                          then Corresponding_Aspect (FA.Initializes_N)
-                          else FA.Initializes_N),
-                     Tag          => Uninitialized,
-                     Severity     => (case Kind is
-                                         when Unknown => Medium_Check_Kind,
-                                         when Err     => High_Check_Kind),
-                     Vertex       => V_Use,
-                     Continuation => True);
+                  Conts.Append
+                    (Substitute_Message
+                       ("initialization of & is specified @",
+                        N  => N,
+                        F1 => Direct_Mapping_Id
+                          (Encapsulating_State
+                               (Get_Direct_Mapping_Id (Var))),
+                        F2 =>
+                          Direct_Mapping_Id
+                            (if From_Aspect_Specification (FA.Initializes_N)
+                             then Corresponding_Aspect (FA.Initializes_N)
+                             else FA.Initializes_N)));
                end if;
+
+               Error_Msg_Flow
+                 (FA            => FA,
+                  Path          => Path,
+                  Msg           => To_String (Msg),
+                  Details       => To_String (Details),
+                  Fix           => To_String (Fix),
+                  N             => N,
+                  F1            => Var,
+                  F2            => Direct_Mapping_Id (FA.Spec_Entity),
+                  FF1           => Fix_F1,
+                  FF2           => Fix_F2,
+                  Tag           => Uninitialized,
+                  Severity      =>
+                    (case Kind is
+                        when Unknown => (if Default_Init
+                                         then Low_Check_Kind
+                                         else Medium_Check_Kind),
+                        when Err     => (if Default_Init
+                                         then Medium_Check_Kind
+                                         else High_Check_Kind)),
+                  Vertex        => V_Use,
+                  Continuations => Conts);
             end;
          end if;
       end Emit_Check_Message;
@@ -2842,10 +2835,10 @@ package body Flow.Analysis is
                begin
                   case Ekind (E) is
 
-                     --  Abstract state will be annotated directly
+                     --  Abstract state can't be annotated
 
                      when E_Abstract_State =>
-                        return Has_Relaxed_Initialization (E);
+                        return False;
 
                      --  Other objects can be either annotated directly, or
                      --  else the aspect can apply to their type, or else
@@ -6052,37 +6045,34 @@ package body Flow.Analysis is
          Severity : constant Check_Kind := High_Check_Kind;
          --  Severity of the error messages
 
+         Conts : String_Lists.List;
          Dummy : Boolean;
          --  Dummy variable needed for Error_Msg_Flow
 
       begin
-         Error_Msg_Flow
-           (E            => Msg_Node,
-            N            => Msg_Node,
-            Suppressed   => Dummy,
-            Severity     => Severity,
-            Tag          => Concurrent_Access,
-            Msg          => Msg_Object,
-            F1           => Magic_String_Id (Object),
-            SRM_Ref      => SRM_Ref,
-            Continuation => False);
-
          --  Print all the queueing tasks objects that we found. Include the
          --  Object to ensure that when multiple objects need to be reported
          --  for contention by the same tasks, they are all reported separately
          --  (otherwise messages get suppresed giving a confusing output.)
          for Task_Obj of Owners loop
-            Error_Msg_Flow
-              (E            => Msg_Node,
-               N            => Msg_Node,
-               Suppressed   => Dummy,
-               Severity     => Severity,
-               Tag          => Concurrent_Access,
-               Msg          => Msg_Owner,
-               F1           => Magic_String_Id (Task_Obj.Name),
-               F2           => Magic_String_Id (Object),
-               Continuation => True);
+            Conts.Append
+              (Substitute_Message
+                 (Msg_Owner,
+                  Msg_Node,
+                  F1 => Magic_String_Id (Task_Obj.Name),
+                  F2 => Magic_String_Id (Object)));
          end loop;
+
+         Error_Msg_Flow
+           (E             => Msg_Node,
+            N             => Msg_Node,
+            Suppressed    => Dummy,
+            Severity      => Severity,
+            Tag           => Concurrent_Access,
+            Msg           => Msg_Object,
+            F1            => Magic_String_Id (Object),
+            SRM_Ref       => SRM_Ref,
+            Continuations => Conts);
       end Report_Violations;
 
    --  Start of processing for Check_Concurrent_Accesses

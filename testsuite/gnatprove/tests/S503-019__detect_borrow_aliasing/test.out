@@ -6,9 +6,9 @@ q.adb:9:13: info: data dependencies proved
 q.adb:19:16: high: formal parameter "Y" and global "X_Ptr" are aliased (SPARK RM 6.4.2)
 r.adb:10:04: info: initialization of "O" proved
 r.adb:12:20: warning: unused initial value of "X"
-r.adb:24:04: info: analyzing call to "Proc" in context
+r.adb:24:04: info: no contextual analysis of "Proc" (possible check on parameters)
 r.adb:24:25: medium: formal parameters "X" and "Y" might be aliased (SPARK RM 6.4.2)
 s.adb:10:04: info: initialization of "Ptr" proved
 s.adb:12:20: warning: unused initial value of "X"
-s.adb:21:04: info: analyzing call to "Proc" in context
+s.adb:21:04: info: no contextual analysis of "Proc" (possible check on parameters)
 s.adb:21:17: info: non-aliasing of formal parameters "X" and "Y" proved

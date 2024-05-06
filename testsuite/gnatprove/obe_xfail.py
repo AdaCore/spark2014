@@ -1,5 +1,6 @@
 from e3.auth.gitlab import gen_gitlab_token
 import gitlab
+import gitlab.exceptions
 import glob
 import os.path
 import re
@@ -17,12 +18,15 @@ spark2014_project = gl.projects.get("eng/spark/spark2014")
 
 
 def get_issue(issue):
-    project_name, issue_id = issue.split("#")
-    if project_name == "eng/spark/spark2014":
-        project = spark2014_project
-    else:
-        project = gl.projects.get(project_name)
-    return project.issues.get(issue_id)
+    try:
+        project_name, issue_id = issue.split("#")
+        if project_name == "eng/spark/spark2014":
+            project = spark2014_project
+        else:
+            project = gl.projects.get(project_name)
+        return project.issues.get(issue_id)
+    except gitlab.exceptions.GitlabHttpError:
+        return None
 
 
 def test_is_xfail(testdir):
@@ -66,13 +70,14 @@ def check_xfail_tests():
             print(f"test {testname} is XFAIL, but there is no TN")
         else:
             issues = [get_issue(issue_id) for issue_id in xfail_list]
+            issues = [issue for issue in issues if issue is not None]
             all_closed = True
 
             for issue in issues:
                 if issue.state == "opened":
                     all_closed = False
             if all_closed:
-                assignee = issues[0].assignee
+                assignee = issues[0].assignee if len(issues) > 0 else ""
                 print(
                     (
                         f"test {testname} is XFAIL, all associated issues"

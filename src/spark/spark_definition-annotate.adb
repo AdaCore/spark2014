@@ -759,6 +759,23 @@ package body SPARK_Definition.Annotate is
                      end if;
                end case;
 
+               --  Reject containers containing access-to-variable types as
+               --  Add could modify its IN parameters.
+
+               if (Annot.Kind = Maps
+                   and then Is_Access_Object_Type (Annot.Key_Type)
+                   and then not Is_Access_Constant (Annot.Key_Type))
+                 or else
+                   (Annot.Kind /= Model
+                    and then Is_Access_Object_Type (Annot.Element_Type)
+                    and then not Is_Access_Constant (Annot.Element_Type))
+               then
+                  Error_Msg_N_If
+                    ("container aggregates cannot contain access-to-variable "
+                     & "elements or keys",
+                     Prag);
+               end if;
+
                declare
                   Inserted : Boolean;
                   Position : Node_To_Aggregates_Maps.Cursor;
