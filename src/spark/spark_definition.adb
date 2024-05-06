@@ -2280,7 +2280,7 @@ package body SPARK_Definition is
          when N_Case_Expression
             | N_Case_Statement
          =>
-            if not Is_Discrete_Type (Etype (Expression (N))) then
+            if not Has_Discrete_Type (Etype (Expression (N))) then
                Mark_Unsupported (Lim_Extension_Case_Pattern_Matching, N);
             else
                Mark (Expression (N));
