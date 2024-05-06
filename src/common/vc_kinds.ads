@@ -54,24 +54,24 @@ package VC_Kinds is
       VC_FP_Overflow_Check,
       VC_Range_Check,
       VC_Predicate_Check,
-      VC_Predicate_Check_On_Default_Value,  --  the predicate check on
-                                            --  the default value of a type,
-                                            --  to be used when a value of the
-                                            --  type is default initialized
+
+      VC_Predicate_Check_On_Default_Value,
+      --  The predicate check on the default value of a type, to be used when a
+      --  value of the type is default initialized.
+
       VC_Null_Pointer_Dereference,
-      --  This VC is to be used whenever we try to dereference an object
-      --  with access type. This check should be done on the _is_null_pointer
-      --  field of the why record corresponding to the pointer type.
+      --  This VC is to be used whenever we try to dereference an object with
+      --  access type. This check should be done on the _is_null_pointer field
+      --  of the why record corresponding to the pointer type.
 
       VC_Null_Exclusion,
       VC_Dynamic_Accessibility_Check,
       VC_Resource_Leak,
       VC_Resource_Leak_At_End_Of_Scope,
 
-      VC_Unchecked_Union_Restriction, --  Specific restrictions for types
-                                      --  with Unchecked_Union occuring in
-                                      --  equality, membership tests, and
-                                      --  type conversions
+      VC_Unchecked_Union_Restriction,
+      --  Specific restrictions for types with Unchecked_Union occuring in
+      --  equality, membership tests, and type conversions.
 
       VC_Length_Check,
       VC_Discriminant_Check,
@@ -80,10 +80,11 @@ package VC_Kinds is
       VC_Initialization_Check,
       VC_Interrupt_Reserved,
       VC_Invariant_Check,
-      VC_Invariant_Check_On_Default_Value,  --  the invariant check on
-                                            --  the default value of a type,
-                                            --  it is used once at the type
-                                            --  declaration.
+
+      VC_Invariant_Check_On_Default_Value,
+      --  The invariant check on the default value of a type, it is used once
+      --  at the type declaration.
+
       VC_Ceiling_Priority_Protocol,
       VC_Task_Termination,
 
@@ -99,11 +100,11 @@ package VC_Kinds is
       VC_Disjoint_Contract_Cases,
       VC_Complete_Contract_Cases,
       VC_Exceptional_Case,
-      VC_Loop_Invariant,             --  internal check kind, transformed
-                                     --  by gnatwhy3 into
-                                     --    VC_Loop_Invariant_Init
-                                     --  or
-                                     --    VC_Loop_Invariant_Preserv
+
+      VC_Loop_Invariant,
+      --  Internal check kind, transformed by gnatwhy3 into
+      --  VC_Loop_Invariant_Init or VC_Loop_Invariant_Preserv.
+
       VC_Loop_Invariant_Init,
       VC_Loop_Invariant_Preserv,
       VC_Loop_Variant,
@@ -112,54 +113,63 @@ package VC_Kinds is
       VC_Assert_Step,                --  Side condition for proof cut points
       VC_Assert_Premise,             --  Premise for proof with cut points
       VC_Raise,
-      VC_Feasible_Post,              --  Check that the postcondition of
-                                     --  abstract functions and
-                                     --  access-to-function types are feasible.
-      VC_Inline_Check,               --  Check that the Inline_For_Proof or
-                                     --  Logical_Equal annotation provided for
-                                     --  a function is correct.
 
-      VC_Container_Aggr_Check,       --  Check that the Container_Aggregates
-                                     --  annotation provided for a container
-                                     --  type is correct.
+      VC_Feasible_Post,
+      --  Check that the postcondition of abstract functions and
+      --  access-to-function types are feasible.
 
-      VC_Reclamation_Check,          --  Check that confirming annotations on
-                                     --  hidden types which need reclamation
-                                     --  are correct.
+      VC_Inline_Check,
+      --  Check that the Inline_For_Proof or Logical_Equal annotation provided
+      --  for a function is correct.
 
-      VC_Termination_Check,          --  Check conditional termination
+      VC_Container_Aggr_Check,
+      --  Check that the Container_Aggregates annotation provided for a
+      --  container type is correct.
 
-      VC_UC_Source,                  --  Check that this type is suitable as a
-                                    --  source for an Unchecked_Conversion
-      VC_UC_Target,                  --  Check that this type is suitable as a
-                                    --  target for an Unchecked_Conversion
+      VC_Reclamation_Check,
+      --  Check that confirming annotations on hidden types which need
+      --  reclamation are correct.
 
-      VC_UC_Same_Size,               --  Check that the two types of an
-                                    --  Unchecked_Conversion are of the same
-                                    --  size
+      VC_Termination_Check,
+      --  Check conditional termination.
 
-      VC_UC_Alignment,                --  Check that the two objects
-                                      --  in an overlay have compatible
-                                      --  alignments
+      VC_UC_Source,
+      --  Check that this type is suitable as a source for an
+      --  Unchecked_Conversion.
 
-      VC_UC_Volatile,                 --  Check that we specify the address of
-                                      --  an object only if it is volatile, or
-                                      --  the address clause is "simple"
+      VC_UC_Target,
+      --  Check that this type is suitable as a target for an
+      --  Unchecked_Conversion.
+
+      VC_UC_Same_Size,
+      --  Check that the two types of an Unchecked_Conversion are of the same
+      --  size.
+
+      VC_UC_Alignment,
+      --  Check that the two objects in an overlay have compatible alignments.
+
+      VC_UC_Volatile,
+      --  Check that we specify the address of an object only if it is
+      --  volatile, or the address clause is "simple".
 
       --  VC_LSP_Kind - Liskov Substitution Principle
 
-      VC_Weaker_Pre,                  --  pre weaker than classwide pre
-      VC_Trivial_Weaker_Pre,          --  specialization of VC_Weaker_Pre when
-                                      --  there is no classwide or inherited
-                                      --  precondition
+      VC_Weaker_Pre,
+      --  pre weaker than classwide pre
+
+      VC_Trivial_Weaker_Pre,
+      --  specialization of VC_Weaker_Pre when there is no classwide or
+      --  inherited precondition
+
       VC_Stronger_Post,               --  post stronger than classwide post
       VC_Weaker_Classwide_Pre,        --  classwide pre weaker than inherited
       VC_Stronger_Classwide_Post,     --  classwide post stronger t/ inherited
 
-      VC_Weaker_Pre_Access,           --  pre of source is weaker than pre of
-                                       --  target.
-      VC_Stronger_Post_Access,        --  post of source is stronger than post
-                                       --  of target.
+      VC_Weaker_Pre_Access,
+      --  pre of source is weaker than pre of target.
+
+      VC_Stronger_Post_Access,
+      --  post of source is stronger than post of target.
 
       --  VC_Warning_Kind - warnings
 
