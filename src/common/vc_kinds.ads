@@ -146,7 +146,7 @@ package VC_Kinds is
       --  size.
 
       VC_UC_Alignment,
-      --  Check that the two objects in an overlay have compatible alignments.
+      --  Check that the address in an address clause respect object alignment
 
       VC_UC_Volatile,
       --  Check that we specify the address of an object only if it is
@@ -208,7 +208,6 @@ package VC_Kinds is
          VC_UC_Source
        | VC_UC_Target
        | VC_UC_Same_Size
-       | VC_UC_Alignment
        | VC_UC_Volatile
        | VC_Unchecked_Union_Restriction;
    --  Subtype used to indicate VC kinds that have high severity if unproved.

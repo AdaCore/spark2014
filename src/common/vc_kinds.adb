@@ -409,8 +409,8 @@ package body VC_Kinds is
             return "Check that the two types in an unchecked conversion " &
               "instance are of the same size.";
          when VC_UC_Alignment                     =>
-            return "Check that the first object's alignment is an integral " &
-              "multiple of the second object's alignment.";
+            return "Check that the address within address clause is " &
+              "a multiple of the object's alignment.";
          when VC_UC_Volatile                      =>
             return "Check that, if an object has an address clause that is " &
               "not simply the address of another object, it is volatile";
