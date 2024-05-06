@@ -1,0 +1,84 @@
+rfc_vectors_example.adb:9:31: warning: "V" is not modified, could be IN, in instantiation at rfc_vectors_example.adb:52
+rfc_vectors_example.adb:9:31: warning: unused variable "V", in instantiation at rfc_vectors_example.adb:52
+rfc_vectors_example.adb:9:50: warning: unused variable "Elem", in instantiation at rfc_vectors_example.adb:52
+rfc_vectors_example.adb:11:17: info: implicit aspect Always_Terminates on "Nth_Element" has been proved, subprogram will terminate, in instantiation at rfc_vectors_example.adb:52
+rfc_vectors_example.adb:11:30: warning: unused variable "V", in instantiation at rfc_vectors_example.adb:52
+rfc_vectors_example.adb:11:42: warning: unused variable "N", in instantiation at rfc_vectors_example.adb:52
+rfc_vectors_example.adb:13:17: info: implicit aspect Always_Terminates on "Length" has been proved, subprogram will terminate, in instantiation at rfc_vectors_example.adb:52
+rfc_vectors_example.adb:13:25: warning: unused variable "V", in instantiation at rfc_vectors_example.adb:52
+rfc_vectors_example.adb:17:17: info: implicit aspect Always_Terminates on "Capacity" has been proved, subprogram will terminate, in instantiation at rfc_vectors_example.adb:52
+rfc_vectors_example.adb:17:27: warning: unused variable "V", in instantiation at rfc_vectors_example.adb:52
+rfc_vectors_example.adb:57:04: high: "V" is not initialized
+rfc_vectors_example.adb:59:19: medium: assertion might fail [possible fix: call at line 58 should mention V (for argument V) in a postcondition]
+rfc_vectors_example.adb:60:19: medium: assertion might fail [possible fix: call at line 58 should mention V (for argument V) in a postcondition]
+rfc_vectors_example.adb:60:20: high: "E" is not initialized
+untagged_prefixed_calls.adb:10:17: warning: subprogram "Op_1" has no effect
+untagged_prefixed_calls.adb:11:23: warning: "Obj" is not modified, parameter type could be rewritten as 'access constant Rec'
+untagged_prefixed_calls.adb:11:23: warning: unused variable "Obj"
+untagged_prefixed_calls.adb:11:41: warning: unused variable "B"
+untagged_prefixed_calls.adb:12:16: info: implicit aspect Always_Terminates on "Op_3" has been proved, subprogram will terminate
+untagged_prefixed_calls.adb:17:17: warning: subprogram "Prim_Op_1" has no effect
+untagged_prefixed_calls.adb:22:17: warning: subprogram "Prim_Op_1" has no effect
+untagged_prefixed_calls.adb:23:16: info: implicit aspect Always_Terminates on overriding operator "=" has been proved, subprogram will terminate
+untagged_prefixed_calls.adb:23:21: warning: unused variable "L"
+untagged_prefixed_calls.adb:23:24: warning: unused variable "R"
+untagged_prefixed_calls.adb:28:16: info: implicit aspect Always_Terminates on overriding operator "+" has been proved, subprogram will terminate
+untagged_prefixed_calls.adb:30:17: warning: subprogram "Proc_Op" has no effect
+untagged_prefixed_calls.adb:34:17: warning: subprogram "Proc_Op" has no effect
+untagged_prefixed_calls.adb:38:17: warning: subprogram "Proc_Op" has no effect
+untagged_prefixed_calls.adb:45:23: warning: "Obj" is not modified, parameter type could be rewritten as 'access constant Rec'
+untagged_prefixed_calls.adb:45:23: warning: unused variable "Obj"
+untagged_prefixed_calls.adb:45:38: warning: unused variable "I"
+untagged_prefixed_calls.adb:46:23: warning: "Obj" is not modified, parameter type could be rewritten as 'access constant Acc_Rec'
+untagged_prefixed_calls.adb:46:23: warning: unused variable "Obj"
+untagged_prefixed_calls.adb:46:45: warning: unused variable "B"
+untagged_prefixed_calls.adb:52:17: warning: subprogram "Prim_Op_2" has no effect
+untagged_prefixed_calls.adb:53:17: warning: subprogram "Prim_Op_3" has no effect
+untagged_prefixed_calls.adb:56:17: warning: subprogram "Prim_Op_2" has no effect
+untagged_prefixed_calls.adb:62:17: warning: subprogram "Prim_Op_3" has no effect
+untagged_prefixed_calls.adb:105:36: high: range check might fail, cannot prove upper bound for Integer (L) + Integer (R) (e.g. when L = Int_1'Last and R = 1) [reason for check: result of addition must be convertible to the target type of the conversion] [possible fix: add precondition (if Integer (R) >= 0 then Integer (L) <= Int_1'Last - Integer (R) else Integer (L) >= Int_1'First - Integer (R)) to subprogram at line 28]
+untagged_prefixed_calls.adb:148:07: info: initialization of "Rec_Object" proved
+untagged_prefixed_calls.adb:148:37: info: range check proved (CVC5: 2 VC)
+untagged_prefixed_calls.adb:149:39: medium: resource or memory leak might occur [possible explanation: allocator for a general access-to-variable type leaks memory]
+untagged_prefixed_calls.adb:149:52: info: range check proved (CVC5: 2 VC)
+untagged_prefixed_calls.adb:156:07: info: pointer dereference check proved (CVC5: 1 VC)
+untagged_prefixed_calls.adb:159:07: high: "Full_View_Priv_Obj" is not initialized
+untagged_prefixed_calls.adb:160:07: high: "Full_View_Priv_Obj" is not initialized
+untagged_prefixed_calls.adb:161:07: high: "Full_View_Priv_Obj" is not initialized
+untagged_prefixed_calls.adb:163:07: high: "Full_View_Other_Priv_Obj" is not initialized
+untagged_prefixed_calls.adb:164:07: high: "Full_View_Other_Priv_Obj" is not initialized
+untagged_prefixed_calls.adb:165:07: high: "Full_View_Other_Priv_Obj" is not initialized
+untagged_prefixed_calls.adb:174:17: warning: subprogram "Prim_Op_1" has no effect
+untagged_prefixed_calls.adb:178:17: warning: subprogram "Prim_Op_2" has no effect
+untagged_prefixed_calls.adb:180:17: warning: subprogram "Misc_Op" has no effect
+untagged_prefixed_calls.adb:184:17: warning: subprogram "Prim_Op_3" has no effect
+untagged_prefixed_calls.adb:213:07: high: "Full_View_Obj" is not initialized
+untagged_prefixed_calls.adb:214:07: high: "Full_View_Obj" is not initialized
+untagged_prefixed_calls.adb:215:07: high: "Full_View_Obj" is not initialized
+untagged_prefixed_calls.adb:216:07: high: "Full_View_Obj" is not initialized
+untagged_prefixed_calls.adb:240:04: info: initialization of "Rec_Object" proved
+untagged_prefixed_calls.adb:240:34: info: range check proved (CVC5: 2 VC)
+untagged_prefixed_calls.adb:243:32: info: range check proved (CVC5: 2 VC)
+untagged_prefixed_calls.adb:245:04: info: initialization of "Sub_Rec_Object" proved
+untagged_prefixed_calls.adb:247:33: info: range check proved (CVC5: 2 VC)
+untagged_prefixed_calls.adb:249:04: info: initialization of "New_Rec_Object" proved
+untagged_prefixed_calls.adb:277:44: medium: resource or memory leak might occur [possible explanation: allocator for a general access-to-variable type leaks memory]
+untagged_prefixed_calls.adb:277:57: info: range check proved (CVC5: 2 VC)
+untagged_prefixed_calls.adb:278:44: medium: resource or memory leak might occur [possible explanation: allocator for a general access-to-variable type leaks memory]
+untagged_prefixed_calls.adb:282:04: info: initialization of "New_Acc_Rec_Object" proved
+untagged_prefixed_calls.adb:286:04: info: pointer dereference check proved (CVC5: 1 VC)
+untagged_prefixed_calls.adb:292:04: high: "Priv_Object" is not initialized
+untagged_prefixed_calls.adb:293:04: high: "New_Priv_Object" is not initialized
+untagged_prefixed_calls.adb:294:04: high: "D_Priv_Object" is not initialized
+untagged_prefixed_calls.adb:295:04: high: "New_D_Priv_Object" is not initialized
+untagged_prefixed_calls.adb:297:04: high: "Other_Priv_Object" is not initialized
+untagged_prefixed_calls.adb:298:29: high: "Other_Priv_Object" is not initialized
+untagged_prefixed_calls.adb:302:04: high: "Int_1_Object" is not initialized
+untagged_prefixed_calls.adb:303:38: high: "Int_1_Object" is not initialized
+untagged_prefixed_calls.adb:304:04: high: "Int_2_Object" is not initialized
+untagged_prefixed_calls.adb:305:04: high: "Int_3_Object" is not initialized
+untagged_prefixed_calls.adb:306:04: high: "Sub_Int_1_A_Object" is not initialized
+untagged_prefixed_calls.adb:307:04: high: "Sub_Int_1_B_Object" is not initialized
+untagged_prefixed_calls.adb:309:04: info: pointer dereference check proved (CVC5: 1 VC)
+untagged_prefixed_calls.adb:312:04: medium: pointer dereference check might fail
+untagged_prefixed_calls.adb:312:04: warning: "New_Acc_Rec_Object" may be null
