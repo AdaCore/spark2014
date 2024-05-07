@@ -35,6 +35,7 @@ with Ada.Strings.Unbounded;  use Ada.Strings.Unbounded;
 with Ada.Text_IO;
 with Ada.Unchecked_Deallocation;
 with Call;                   use Call;
+with CE_Display;             use CE_Display;
 with CE_RAC;                 use CE_RAC;
 with Common_Containers;      use Common_Containers;
 with Comperr;                use Comperr;
@@ -109,6 +110,13 @@ package body Gnat2Why.Error_Messages is
         ")");
    --  Pretty print a VC and info for debugging
 
+   function Compute_Cannot_Prove_Message
+     (EI : Extra_Info;
+      VC : VC_Info)
+      return String;
+   --  Function to compute the "cannot prove ..." part of a message. Returns
+   --  empty string if no such message can be generated.
+
    function Decide_Cntexmp_Verdict
      (Small_Step : CE_RAC.Result;
       Giant_Step : CE_RAC.Result;
@@ -125,19 +133,24 @@ package body Gnat2Why.Error_Messages is
          or else
       (Target_Kind in VC_Range_Kind and then Found_Kind in VC_Range_Kind)
          or else
-      (Target_Kind in VC_Assert_Kind and then Found_Kind in VC_Assert_Kind)
+      (Found_Kind in VC_Loop_Invariant_Init | VC_Loop_Invariant_Preserv
+          and then Target_Kind = VC_Loop_Invariant)
+         or else
+      (Found_Kind not in VC_Loop_Invariant_Init | VC_Loop_Invariant_Preserv
+          and then Target_Kind in VC_Assert_Kind
+          and then Found_Kind in VC_Assert_Kind)
          or else
       (Target_Kind in VC_Inline_Check
          and then Found_Kind in VC_Postcondition));
    --  When checking whether the VC kind by RAC matches the target VC kind,
    --  collapse all scalar checks for now, as RAC cannot distinguish with them
-   --  when a node has has the Do_Range_Check flag set to True. Indeed, RAC
+   --  when a node has the Do_Range_Check flag set to True. Indeed, RAC
    --  does not have the machinery to determine what check is emitted in
    --  gnat2why for a given Do_Range_Check flag, so it uses consistently
    --  VC_Range_Check.
    --
    --  Similarly, RAC will use the generic VC_Assert for various kinds of
-   --  assertions, so collapse all assertions for now.
+   --  assertions, so collapse all assertions except loop invariants for now.
    --
    --  If the target VC kind is VC_Inline_Check, we know that finding the
    --  triggered VC to be VC_Postcondition corresponds to the same check.
@@ -163,6 +176,37 @@ package body Gnat2Why.Error_Messages is
       VC_Set_Table (E).Include (Id);
    end Add_Id_To_Entity;
 
+   ----------------------------------
+   -- Compute_Cannot_Prove_Message --
+   ----------------------------------
+
+   function Compute_Cannot_Prove_Message
+     (EI : Extra_Info;
+      VC : VC_Info)
+      return String
+   is
+      Extra_Text : constant String :=
+        (case EI.Bound_Info is
+            when Low_Bound  =>
+              "lower bound for "
+         & String_Of_Node (Original_Node (VC.Node)),
+            when High_Bound =>
+              "upper bound for "
+         & String_Of_Node (Original_Node (VC.Node)),
+            when No_Bound   =>
+           (if Present (EI.Node)
+            and then VC.Node /= EI.Node
+            then String_Of_Node (Original_Node (EI.Node))
+            else "")
+        );
+   begin
+      if Extra_Text /= "" then
+         return ", cannot prove " & Extra_Text;
+      else
+         return "";
+      end if;
+   end Compute_Cannot_Prove_Message;
+
    ----------------------------
    -- Decide_Cntexmp_Verdict --
    ----------------------------
@@ -180,7 +224,15 @@ package body Gnat2Why.Error_Messages is
             if VC_Id (Small_Step.Res_VC_Id) = VC
               and then VC_Kinds_Match (Info.Kind, Small_Step.Res_VC_Kind)
             then
-               return (Verdict_Category => Non_Conformity);
+               return (Verdict_Category => Non_Conformity,
+                       One_Liner        => To_Unbounded_String
+                         (Get_Environment_One_Liner
+                            ((if Present (Small_Step.Res_EI.Node)
+                             then Small_Step.Res_EI.Node else Info.Node),
+                             Info.Kind)),
+                       Info             => To_Unbounded_String
+                         (Compute_Cannot_Prove_Message
+                            (Small_Step.Res_EI, Info)));
             else
                return
                  (Verdict_Category => Bad_Counterexample,
@@ -199,7 +251,8 @@ package body Gnat2Why.Error_Messages is
          when Res_Normal  =>
             case Giant_Step.Res_Kind is
                when Res_Failure =>
-                  return (Verdict_Category => Subcontract_Weakness);
+                  return (Verdict_Category => Subcontract_Weakness,
+                          others           => <>);
                when Res_Normal  =>
                   return
                     (Verdict_Category => Bad_Counterexample,
@@ -228,7 +281,8 @@ package body Gnat2Why.Error_Messages is
                when Res_Failure =>
                   return
                     (Verdict_Category =>
-                        Non_Conformity_Or_Subcontract_Weakness);
+                        Non_Conformity_Or_Subcontract_Weakness,
+                     others           => <>);
                when Res_Normal  =>
                   return
                     (Verdict_Category => Incomplete,
@@ -451,21 +505,6 @@ package body Gnat2Why.Error_Messages is
 
       Subp : Entity_Id;
 
-      type Inline_Info (Inline : Boolean := False) is record
-         case Inline is
-            when False =>
-               null;
-            when True =>
-               Inline_Node : Node_Id;
-         end case;
-      end record;
-
-      type Extra_Info is record
-         Node       : Node_Id;
-         Inline     : Inline_Info;
-         Bound_Info : Bound_Info_Type;
-      end record;
-
       type Cntexample_Info is record
          Cntexample        : Cntexample_File_Maps.Map;
          Giant_Step_Result : CE_RAC.Result;
@@ -485,21 +524,6 @@ package body Gnat2Why.Error_Messages is
          Cntexmps       : JSON_Value;
          Check_Tree     : JSON_Value;
       end record;
-
-      function Compute_Cannot_Prove_Message
-        (Rec             : Why3_Prove_Result;
-         VC              : VC_Info;
-         Show_Bound_Info : Boolean := True)
-         return String
-        with Pre => not Rec.Result;
-      --  Function to compute the "cannot prove ..." part of a message. Returns
-      --  empty string if no such message can be generated. When the fuzzer is
-      --  used to find counterexample values for an overflow check and finds
-      --  one that leads to an overflow, we don't check for which bound. The
-      --  bound on which the overflow occured isn't displayed in order to avoid
-      --  confusion if it was an underflow for an overflow VC. Show_Bound_Info
-      --  indicates if the fuzzer was used, in which case don't specify the
-      --  bound.
 
       function Parse_Why3_Prove_Result (V : JSON_Value)
                                         return Why3_Prove_Result;
@@ -554,42 +578,6 @@ package body Gnat2Why.Error_Messages is
          end loop;
          return S;
       end Parse_Cntexamples_List;
-
-      ----------------------------------
-      -- Compute_Cannot_Prove_Message --
-      ----------------------------------
-
-      function Compute_Cannot_Prove_Message
-        (Rec             : Why3_Prove_Result;
-         VC              : VC_Info;
-         Show_Bound_Info : Boolean := True)
-         return String
-      is
-         Extra_Text : constant String :=
-           (case Rec.EI.Bound_Info is
-               when Low_Bound =>
-                 (if Show_Bound_Info
-                  then "lower bound for "
-                  else "bounds for ")
-                   & String_Of_Node (Original_Node (VC.Node)),
-               when High_Bound =>
-                 (if Show_Bound_Info
-                  then "upper bound for "
-                  else "bounds for ")
-                   & String_Of_Node (Original_Node (VC.Node)),
-               when No_Bound =>
-                 (if Present (Rec.EI.Node)
-                  and then VC.Node /= Rec.EI.Node
-                  then String_Of_Node (Original_Node (Rec.EI.Node))
-                  else "")
-           );
-      begin
-         if Extra_Text /= "" then
-            return ", cannot prove " & Extra_Text;
-         else
-            return "";
-         end if;
-      end Compute_Cannot_Prove_Message;
 
       ------------------
       -- Handle_Error --
@@ -840,8 +828,10 @@ package body Gnat2Why.Error_Messages is
             if Cntexmp_Present then
                --  Check the counterexample like normal
 
-               Check_Counterexample (Rec.Id, VC, Last_Cnt.Cntexample,
-                 Last_Cnt.Giant_Step_Result, Fuel, Small_Step_Res, Verdict);
+               Check_Counterexample
+                 (Rec.Id,
+                  (VC with delta Kind => Rec.Kind), Last_Cnt.Cntexample,
+                  Last_Cnt.Giant_Step_Result, Fuel, Small_Step_Res, Verdict);
             else
                Small_Step_Res :=
                  (Res_Kind   => Res_Not_Executed,
@@ -998,19 +988,20 @@ package body Gnat2Why.Error_Messages is
          Check_Info.Fix_Info.Bound_Info := Rec.EI.Bound_Info;
 
          declare
-            --  If the fuzzer found a counterexample for a VC associated to an
-            --  overflow check, the message saying if the overflow was on the
-            --  lower or upper bound might be wrong since it depends on the
-            --  giant-step RAC's result. For now when the fuzzer was used,
-            --  don't distinguish between upper or lower bound overflow.
+            --  If the RAC has found a valid counterexample, it might not be
+            --  compatible with the extra information present in the prover
+            --  result. Use information computed by the RAC instead.
 
             CP_Msg : constant String :=
-              (if not Rec.Result
-               then Compute_Cannot_Prove_Message
-                 (Rec             => Rec,
-                  VC              => VC,
-                  Show_Bound_Info => not Print_Fuzzing)
-               else "");
+              (if Rec.Result then ""
+               elsif Verdict.Verdict_Category in
+                 Cntexmp_Confirmed_Verdict_Category
+               and then (not Fuzzing_Used or else Print_Fuzzing)
+               and then Verdict.One_Liner /= Null_Unbounded_String
+               then To_String (Verdict.Info)
+               else Compute_Cannot_Prove_Message
+                 (EI => Rec.EI,
+                  VC => VC));
             Cex_Ar : constant JSON_Array := Get (Rec.Cntexmps);
             Last_Cex  : constant JSON_Value :=
                 (if Is_Empty (Cex_Ar) then Create_Object else
@@ -1094,12 +1085,13 @@ package body Gnat2Why.Error_Messages is
                                     "missing from the output"));
                   else
                      return
-                       (Res_Kind  => Res_Failure,
-                        Res_Node  => Empty,
-                        Res_VC_Id =>
+                       (Res_Kind    => Res_Failure,
+                        Res_Node    => Empty,
+                        Res_VC_Id   =>
                           Natural (Integer'(Get (Check, "id"))),
                         Res_VC_Kind => VC_Kind'Value
-                          (Get (Check, "vc_kind")));
+                          (Get (Check, "vc_kind")),
+                        Res_EI      => <>);
                   end if;
                elsif State = "STUCK" then
                   return

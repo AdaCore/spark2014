@@ -389,8 +389,8 @@ package body CE_Pretty_Printing is
          Others_Val : out CNT_Unbounded_String;
          Attributes : out Name_Value_Lists.List)
       is
-         Fst_Index   : constant Node_Id := First_Index (Value.AST_Ty);
-         Index_Type  : constant Entity_Id := Retysp (Etype (Fst_Index));
+         Fst_Index   : Node_Id := First_Index (Value.AST_Ty);
+         Index_Type  : Entity_Id;
 
          Others_Elem : Value_And_Attributes;
 
@@ -402,6 +402,16 @@ package body CE_Pretty_Printing is
          Last        : Big_Integer;
 
       begin
+         --  Empty arrays can have bounds in the base type of their index type
+
+         if Attr_First.Present
+           and then Attr_Last.Present
+           and then Attr_First.Content > Attr_Last.Content
+         then
+            Fst_Index := Etype (Etype (Fst_Index));
+         end if;
+         Index_Type := Retysp (Etype (Fst_Index));
+
          --  Use static array type bounds or index type bounds as default
 
          Find_First_Static_Range (Fst_Index, U_Fst, U_Lst);
@@ -421,39 +431,6 @@ package body CE_Pretty_Printing is
             Last := Attr_Last.Content;
          else
             Attr_Last := (Present => False);
-         end if;
-
-         --  Add the first and last attributes if any
-
-         Attributes.Clear;
-
-         if Attr_First.Present then
-            declare
-               First_Str : constant CNT_Unbounded_String :=
-                 Parse_And_Print_Index
-                   (Attr_First.Content, Base_Type (Index_Type));
-            begin
-               if First_Str = Dont_Display then
-                  Attr_First := (Present => False);
-               else
-                  Attributes.Append
-                    ((To_Unbounded_String ("'First"), First_Str));
-               end if;
-            end;
-         end if;
-         if Attr_Last.Present then
-            declare
-               Last_Str : constant CNT_Unbounded_String :=
-                 Parse_And_Print_Index
-                   (Attr_Last.Content, Base_Type (Index_Type));
-            begin
-               if Last_Str = Dont_Display then
-                  Attr_Last := (Present => False);
-               else
-                  Attributes.Append
-                    ((To_Unbounded_String ("'Last"), Last_Str));
-               end if;
-            end;
          end if;
 
          --  Format the others choice if any
@@ -480,7 +457,13 @@ package body CE_Pretty_Printing is
                Elem_Printed : constant Value_And_Attributes :=
                  Print_Value (Elem.all);
             begin
-               if First <= Index and then Index <= Last then
+               --  We collapse indexes with the others choice if they are the
+               --  same.
+
+               if First <= Index
+                 and then Index <= Last
+                 and then (First = Last or else Elem_Printed /= Others_Elem)
+               then
                   Add_Index
                     (S_Array, Attributes, String_Lit,
                      Index, Index_Type, Elem_Printed);
@@ -499,7 +482,7 @@ package body CE_Pretty_Printing is
          --  is supplied.
 
          elsif Others_Elem.Value /= Dont_Display
-           and then  To_Big_Integer (Integer (S_Array.Length)) >=
+           and then To_Big_Integer (Integer (S_Array.Length)) >=
              Last - First + 1 -
              Max_Exp_Others (String_Lit => String_Lit
                                and then Is_Normal_Char (Others_Elem.Value.Str))
@@ -523,9 +506,47 @@ package body CE_Pretty_Printing is
             Complete := True;
 
          else
-            --  DECISION: We discard the attributes on the others choice
+            --  We discard the attributes on the others choice
 
             Others_Val := Others_Elem.Value;
+         end if;
+
+         --  Add the first and last attributes if any. Do not add the attribute
+         --  if the array type is static or if they are implied by the
+         --  aggregate value. For string literals, the first bound is not
+         --  implied even if the aggregate is complete.
+
+         Attributes.Clear;
+
+         if not Is_Static_Array_Type (Value.AST_Ty)
+           and then (String_Lit or else not Complete or else Last < First)
+         then
+            if Attr_First.Present then
+               declare
+                  First_Str : constant CNT_Unbounded_String :=
+                    Parse_And_Print_Index
+                      (Attr_First.Content, Index_Type);
+               begin
+                  if First_Str /= Dont_Display then
+                     Attributes.Append
+                       ((To_Unbounded_String ("'First"), First_Str));
+                  end if;
+               end;
+            end if;
+            if (not Complete or else Last < First)
+              and then Attr_Last.Present
+            then
+               declare
+                  Last_Str : constant CNT_Unbounded_String :=
+                    Parse_And_Print_Index
+                      (Attr_Last.Content, Index_Type);
+               begin
+                  if Last_Str /= Dont_Display then
+                     Attributes.Append
+                       ((To_Unbounded_String ("'Last"), Last_Str));
+                  end if;
+               end;
+            end if;
          end if;
       end Print_Elements;
 
@@ -666,6 +687,15 @@ package body CE_Pretty_Printing is
    --  Start of processing for Print_Discrete
 
    begin
+      --  Try to avoid base types introduced by the compiler if possible
+
+      if not Comes_From_Source (Nb_Type)
+        and then not Is_Standard_Type (Nb_Type)
+        and then Present (First_Subtype (Nb_Type))
+      then
+         Nb_Type := First_Subtype (Nb_Type);
+      end if;
+
       --  If one of the bounds is not known, use the base type for evaluating
       --  the type range to decide if we alter printing.
 

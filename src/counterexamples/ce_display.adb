@@ -26,16 +26,16 @@
 with Ada.Containers.Ordered_Sets;
 with Ada.Strings;                 use Ada.Strings;
 with Ada.Strings.Unbounded;       use Ada.Strings.Unbounded;
+with Atree;
 with CE_Interval_Sets;
 with CE_Parsing;                  use CE_Parsing;
 with CE_Pretty_Printing;          use CE_Pretty_Printing;
-with CE_RAC;
+with CE_RAC;                      use CE_RAC;
 with CE_Utils;                    use CE_Utils;
 with CE_Values;                   use CE_Values;
-with Common_Containers;           use Common_Containers;
 with Erroutc;                     use Erroutc;
-with Flow_Error_Messages;         use Flow_Error_Messages;
 with Flow_Types;                  use Flow_Types;
+with Flow_Utility;                use Flow_Utility;
 with Flow_Utility.Initialization; use Flow_Utility.Initialization;
 with Gnat2Why_Args;
 with Gnat2Why_Opts;               use Gnat2Why_Opts;
@@ -88,6 +88,10 @@ package body CE_Display is
       or else (Source_Name (X) = Source_Name (Y) and then X < Y));
    --  Variables are stored in alphabetical order. Compare the entity id in
    --  case there are homonyms.
+
+   function Get_Cntexmp_Line_Str
+     (Cntexmp_Line : Cntexample_Elt_Lists.List) return String;
+   --  Reconstruct a string from a pretty printed one line counterexample
 
    package Name_Ordered_Entities_Sets is
      new Ada.Containers.Ordered_Sets
@@ -183,7 +187,7 @@ package body CE_Display is
                      Append (Name, "'Old");
                   when Loop_Entry =>
                      Append (Name, "'Loop_Entry");
-                  when Result =>
+                  when CE_Values.Result =>
                      Append (Name, "'Result");
                end case;
 
@@ -366,6 +370,65 @@ package body CE_Display is
 
    end Create_Pretty_Cntexmp;
 
+   --------------------------
+   -- Get_Cntexmp_Line_Str --
+   --------------------------
+
+   function Get_Cntexmp_Line_Str
+     (Cntexmp_Line : Cntexample_Elt_Lists.List) return String
+   is
+
+      Cntexmp_Line_Str : Unbounded_String;
+
+   begin
+      for Elt of Cntexmp_Line loop
+         if Elt.Kind /= CEE_Error_Msg then
+            declare
+               Num_Elems : Natural := Elt.Val_Str.Count;
+               Cur_Elems : S_String_List.Cursor := Elt.Val_Str.Elems.First;
+
+               --  Maximum number of elements to print for a single
+               --  variable, whose value can be set arbitrarily. It should
+               --  be small enough that even with multiple variables being
+               --  printed, the output remains small enough that (1) it can
+               --  be output by Errout without truncation, and (2) it is not
+               --  so long as to be confusing to users.
+               Max_Elems : constant := 5;
+
+               use S_String_List;
+            begin
+               --  If the normal display of counterexample values
+               --  would include more than Max_Elems for this variable,
+               --  then display at most Max_Elems values of individual
+               --  subcomponents of the variable. In such a case, simply
+               --  prepend Elt.Name to the string in Cur_Elems, as Cur_Elems
+               --  already contains the rest of the path to the subcomponent
+               --  if any, the equality symbol and the value.
+
+               if Num_Elems > Max_Elems then
+                  Num_Elems := Max_Elems;
+                  while Num_Elems > 0
+                    and then Has_Element (Cur_Elems)
+                  loop
+                     Before_Next_Element (Cntexmp_Line_Str);
+                     Append (Cntexmp_Line_Str, Elt.Name);
+                     Append (Cntexmp_Line_Str, Element (Cur_Elems));
+                     Num_Elems := Num_Elems - 1;
+                     Next (Cur_Elems);
+                  end loop;
+
+               else
+                  Before_Next_Element (Cntexmp_Line_Str);
+                  Append (Cntexmp_Line_Str, Elt.Name);
+                  Append (Cntexmp_Line_Str, " = ");
+                  Append (Cntexmp_Line_Str, Elt.Val_Str.Str);
+               end if;
+            end;
+         end if;
+      end loop;
+      return To_String (Cntexmp_Line_Str);
+   end Get_Cntexmp_Line_Str;
+
    ---------------------------
    -- Get_Cntexmp_One_Liner --
    ---------------------------
@@ -375,68 +438,6 @@ package body CE_Display is
       VC_Loc  : Source_Ptr)
       return String
    is
-      function Get_Cntexmp_Line_Str
-        (Cntexmp_Line : Cntexample_Elt_Lists.List) return String;
-
-      --------------------------
-      -- Get_Cntexmp_Line_Str --
-      --------------------------
-
-      function Get_Cntexmp_Line_Str
-        (Cntexmp_Line : Cntexample_Elt_Lists.List) return String
-      is
-
-         Cntexmp_Line_Str : Unbounded_String;
-
-      begin
-         for Elt of Cntexmp_Line loop
-            if Elt.Kind /= CEE_Error_Msg then
-               declare
-                  Num_Elems : Natural := Elt.Val_Str.Count;
-                  Cur_Elems : S_String_List.Cursor := Elt.Val_Str.Elems.First;
-
-                  --  Maximum number of elements to print for a single
-                  --  variable, whose value can be set arbitrarily. It should
-                  --  be small enough that even with multiple variables being
-                  --  printed, the output remains small enough that (1) it can
-                  --  be output by Errout without truncation, and (2) it is not
-                  --  so long as to be confusing to users.
-                  Max_Elems : constant := 5;
-
-                  use S_String_List;
-               begin
-                  --  If the normal display of counterexample values
-                  --  would include more than Max_Elems for this variable,
-                  --  then display at most Max_Elems values of individual
-                  --  subcomponents of the variable. In such a case, simply
-                  --  prepend Elt.Name to the string in Cur_Elems, as Cur_Elems
-                  --  already contains the rest of the path to the subcomponent
-                  --  if any, the equality symbol and the value.
-
-                  if Num_Elems > Max_Elems then
-                     Num_Elems := Max_Elems;
-                     while Num_Elems > 0
-                       and then Has_Element (Cur_Elems)
-                     loop
-                        Before_Next_Element (Cntexmp_Line_Str);
-                        Append (Cntexmp_Line_Str, Elt.Name);
-                        Append (Cntexmp_Line_Str, Element (Cur_Elems));
-                        Num_Elems := Num_Elems - 1;
-                        Next (Cur_Elems);
-                     end loop;
-
-                  else
-                     Before_Next_Element (Cntexmp_Line_Str);
-                     Append (Cntexmp_Line_Str, Elt.Name);
-                     Append (Cntexmp_Line_Str, " = ");
-                     Append (Cntexmp_Line_Str, Elt.Val_Str.Str);
-                  end if;
-               end;
-            end if;
-         end loop;
-         return To_String (Cntexmp_Line_Str);
-      end Get_Cntexmp_Line_Str;
-
       File : constant String := File_Name (VC_Loc);
       Line : constant Logical_Line_Number := Get_Logical_Line_Number (VC_Loc);
       File_Cur : constant Cntexample_File_Maps.Cursor := Cntexmp.Find (File);
@@ -465,49 +466,248 @@ package body CE_Display is
    -- Get_Environment_One_Liner --
    -------------------------------
 
-   function Get_Environment_One_Liner (N : Node_Id) return String
+   function Get_Environment_One_Liner (N : Node_Id; K : VC_Kind) return String
    is
-      Flow_Variables : constant Flow_Id_Sets.Set :=
-        (if Nkind (N) in N_Subexpr
-         then Get_Filtered_Variables_For_Proof (N, N)
-         else Flow_Id_Sets.Empty_Set);
+      Expl : Entity_To_Extended_Value_Maps.Map;
 
-      Ada_Variables : Node_Sets.Set;
-      Env_Line_Str  : Unbounded_String;
+      procedure Insert_Expl
+        (E    : Entity_Id;
+         V    : Value_Type;
+         Mode : Modifier);
+      --  Insert a single value in Expl
 
-      --  Start of processing for Get_Environment_One_Liner
+      function Accumulate_Expl (N : Node_Id) return Atree.Traverse_Result;
+      --  Insert all relevant values in an expression N in Expl. Use the
+      --  environment of the RAC to get the values. We do not assume that all
+      --  queried objects necessarily have a value.
 
-   begin
-      --  Retrieve the nodes corresponding to variable uses in N
+      ---------------------
+      -- Accumulate_Expl --
+      ---------------------
 
-      for Flow_Id of Flow_Variables loop
-         Ada_Variables.Insert (Get_Direct_Mapping_Id (Flow_Id));
-      end loop;
+      function Accumulate_Expl (N : Node_Id) return Atree.Traverse_Result is
+      begin
+         case Nkind (N) is
+            when N_Subprogram_Call =>
 
-      --  Get the value associated to each entity. Append to the final string
-      --  the name of the entity and the string representation of the value.
+               --  Manually add global reads, as they will not be traversed.
+               --  Discard global writes, only preconditions are located at
+               --  subprogram calls.
 
-      for E of Ada_Variables loop
-         declare
-            V        : constant Value_Type := CE_RAC.Find_Binding (E).all;
-            V_String : constant CNT_Unbounded_String := Print_Value (V);
-         begin
-            if V_String /= Dont_Display then
                declare
-                  Elt_Name : constant String     := Source_Name (E);
-                  Elt_Val  : constant String     :=
-                    To_String (Print_Value (V).Str);
+                  Read_Ids  : Flow_Types.Flow_Id_Sets.Set;
+                  Write_Ids : Flow_Types.Flow_Id_Sets.Set;
+
                begin
-                  Before_Next_Element (Env_Line_Str);
-                  Append (Env_Line_Str, Elt_Name);
-                  Append (Env_Line_Str, " = ");
-                  Append (Env_Line_Str, Elt_Val);
+                  --  Collect global variables potentially read and written
+
+                  Flow_Utility.Get_Proof_Globals
+                    (Subprogram      => Get_Called_Entity_For_Proof (N),
+                     Reads           => Read_Ids,
+                     Writes          => Write_Ids,
+                     Erase_Constants => False);
+
+                  for V of Read_Ids loop
+                     if V.Kind = Direct_Mapping then
+                        declare
+                           E   : constant Entity_Id :=
+                             Get_Direct_Mapping_Id (V);
+                           Val : constant Value_Access :=
+                             Find_Binding (E, False);
+                        begin
+                           if Val /= null then
+                              Insert_Expl (E, Val.all, None);
+                           end if;
+                        end;
+                     end if;
+                  end loop;
                end;
+
+            when N_Identifier | N_Expanded_Name =>
+
+               --  Add values for referenced objects in Expl
+
+               declare
+                  E   : constant Entity_Id := SPARK_Atree.Entity (N);
+                  Val : Value_Access;
+               begin
+                  if Present (E)
+                    and then Ekind (E) in E_Variable
+                                        | E_Constant
+                                        | E_Loop_Parameter
+                                        | Formal_Kind
+                    and then not Is_Discriminal (E)
+                    and then not Is_Protected_Component_Or_Discr_Or_Part_Of (E)
+                  then
+                     Val := Find_Binding (E, False);
+                     if Val /= null then
+                        Insert_Expl (E, Val.all, None);
+                     end if;
+                  end if;
+               end;
+               return Atree.Skip;
+
+            when N_Attribute_Reference =>
+
+               --  For 'Old and 'Loop_Entry, print the old value of referenced
+               --  variables. Stop the search to avoid pulling useless values.
+               --  Do not assume that we necessarily have values for these
+               --  references in the map. It might not be the case if parts of
+               --  the prefix is not evaluated.
+
+               case Attribute_Name (N) is
+                  when Snames.Name_Old =>
+                     declare
+                        Variables : constant Flow_Id_Sets.Set :=
+                          Get_Variables_For_Proof (Prefix (N), Prefix (N));
+                        Var       : Entity_Id;
+                        Val       : Opt_Value_Type;
+                     begin
+                        for V of Variables loop
+                           if V.Kind = Direct_Mapping then
+                              Var := Get_Direct_Mapping_Id (V);
+                              Val := Find_Old_Value (Var);
+                              if Val.Present then
+                                 Insert_Expl (Var, Val.Content, Old);
+                              end if;
+                           end if;
+                        end loop;
+                     end;
+                     return Atree.Skip;
+
+                  when Snames.Name_Loop_Entry =>
+                     declare
+                        Variables : constant Flow_Id_Sets.Set :=
+                          Get_Variables_For_Proof (Prefix (N), Prefix (N));
+                        Loop_Id   : constant Entity_Id :=
+                          Name_For_Loop_Entry (N);
+                        Var       : Entity_Id;
+                        Val       : Opt_Value_Type;
+                     begin
+                        for V of Variables loop
+                           if V.Kind = Direct_Mapping then
+                              Var := Get_Direct_Mapping_Id (V);
+                              Val := Find_Loop_Entry_Value (Var, Loop_Id);
+                              if Val.Present then
+                                 Insert_Expl (Var, Val.Content, Loop_Entry);
+                              end if;
+                           end if;
+                        end loop;
+                     end;
+                     return Atree.Skip;
+
+                  when Snames.Name_Result =>
+                     declare
+                        E   : constant Entity_Id :=
+                          SPARK_Atree.Entity (Prefix (N));
+                        Val : constant Value_Access := Find_Binding (E, False);
+                     begin
+                        Insert_Expl (E, Val.all, CE_Values.Result);
+                     end;
+                     return Atree.Skip;
+
+                  when others =>
+                     null;
+               end case;
+            when others => null;
+         end case;
+         return Atree.OK;
+      end Accumulate_Expl;
+
+      -----------------
+      -- Insert_Expl --
+      -----------------
+
+      procedure Insert_Expl
+        (E    : Entity_Id;
+         V    : Value_Type;
+         Mode : Modifier)
+      is
+         Position : Entity_To_Extended_Value_Maps.Cursor;
+         Inserted : Boolean;
+
+      begin
+         if not Comes_From_Source (E) then
+            return;
+         end if;
+
+         Expl.Insert (E, (others => null), Position, Inserted);
+
+         declare
+            Arr : Extended_Value_Access renames Expl (Position);
+         begin
+            if Arr (Mode) = null then
+               Arr (Mode) := new Value_Type'(V);
             end if;
          end;
-      end loop;
+      end Insert_Expl;
 
-      return To_String (Env_Line_Str);
+      procedure Accumulate_All_Expl is new Traverse_More_Proc
+        (Accumulate_Expl);
+
+      VC_Loc       : constant Source_Ptr  := Sloc (N);
+      File         : constant String := File_Name (VC_Loc);
+      Line         : constant Natural :=
+        Natural (Get_Logical_Line_Number (VC_Loc));
+      Cntexmp_Line : Cntexample_Elt_Lists.List;
+
+   --  Start of processing for Get_Environment_One_Liner
+
+   begin
+      --  Find the relevant expression and accumulate information about used
+      --  objects.
+
+      case Nkind (N) is
+         when N_Subexpr =>
+
+            --  For index checks, we want to include the array object to get
+            --  the bounds.
+
+            if K = VC_Index_Check
+              and then Nkind (Atree.Parent (N)) = N_Indexed_Component
+              and then not
+                Is_Static_Array_Type (Etype (Prefix (Atree.Parent (N))))
+            then
+               Accumulate_All_Expl (Atree.Parent (N));
+
+            --  For division checks, we only consider the right operand
+
+            elsif K = VC_Division_Check
+              and then Nkind (N) in N_Binary_Op
+            then
+               Accumulate_All_Expl (Right_Opnd (N));
+            else
+               Accumulate_All_Expl (N);
+            end if;
+
+         when N_Pragma =>
+
+            --  It would be useful if we could retrieve and use the information
+            --  about the part of the assertion which is unproved.
+
+            if Get_Pragma_Id (N) in Pragma_Check then
+               Accumulate_All_Expl
+                 (Next (First (Pragma_Argument_Associations (N))));
+            end if;
+
+         when N_Assignment_Statement =>
+            Accumulate_All_Expl (Expression (N));
+
+            --  Add the left-hand side for discriminant checks
+
+            if K = VC_Discriminant_Check then
+               Accumulate_All_Expl (SPARK_Atree.Name (N));
+            end if;
+
+         when others =>
+            null;
+      end case;
+
+      --  Create a pretty one liner from Expl
+
+      Build_Pretty_Line (Expl, File, Line, Cntexmp_Line);
+
+      return Get_Cntexmp_Line_Str (Cntexmp_Line);
    end Get_Environment_One_Liner;
 
    ----------------------
