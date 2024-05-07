@@ -35,6 +35,8 @@ test_interval.adb:59:13: info: implicit aspect Always_Terminates on "Find_Interv
 test_interval.adb:61:14: info: postcondition proved (CVC5: 3 VC)
 test_interval.adb:65:07: info: initialization of "R" proved
 test_interval.adb:67:07: info: only expected exception raised (CVC5: 1 VC)
+test_interval.adb:67:28: info: in value of subprogram parameter after the call at test_interval.adb:67
+test_interval.adb:67:28: info: in value of subprogram parameter after the call at test_interval.adb:67
 test_interval.adb:67:28: info: initialization check proved (CVC5: 2 VC)
 test_interval.adb:67:28: info: predicate check proved (CVC5: 1 VC)
 test_list_search.adb:13:13: info: implicit aspect Always_Terminates on "Contains" has been proved, subprogram will terminate

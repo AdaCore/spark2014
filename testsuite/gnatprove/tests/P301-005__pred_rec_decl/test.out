@@ -1,27 +1,41 @@
+main.adb:8:04: medium: in default value at main.adb:8
 main.adb:8:04: medium: predicate check might fail on default value
+preds.adb:4:07: info: in default value at preds.adb:4
 preds.adb:4:07: info: initialization of "Tmp" proved
 preds.adb:4:07: info: predicate check proved on default value (CVC5: 1 VC)
 preds.adb:10:07: info: initialization of "Tmp" proved
+preds.adb:10:07: medium: in default value at preds.adb:10
 preds.adb:10:07: medium: predicate check might fail on default value
+preds.adb:16:07: info: in default value at preds.adb:16
 preds.adb:16:07: info: initialization of "Tmp" proved
 preds.adb:16:07: info: predicate check proved on default value (CVC5: 1 VC)
 preds.adb:22:07: info: initialization of "Tmp" proved
+preds.adb:22:07: medium: in default value at preds.adb:22
 preds.adb:22:07: medium: predicate check might fail on default value
 preds.adb:28:07: info: for inherited predicate at preds.ads:30
+preds.adb:28:07: info: in default value at preds.adb:28
+preds.adb:28:07: info: in default value at preds.adb:28
 preds.adb:28:07: info: initialization of "Tmp" proved
 preds.adb:28:07: info: predicate check proved on default value (CVC5: 1 VC)
+preds.adb:28:07: info: predicate check proved on default value (CVC5: 1 VC)
+preds.adb:34:07: info: in default value at preds.adb:34
 preds.adb:34:07: info: initialization of "Tmp" proved
 preds.adb:34:07: info: predicate check proved on default value (CVC5: 1 VC)
 preds.adb:34:07: medium: for inherited predicate at preds.ads:30
+preds.adb:34:07: medium: in default value at preds.adb:34
 preds.adb:34:07: medium: predicate check might fail on default value
+preds.adb:40:07: info: in default value at preds.adb:40
 preds.adb:40:07: info: initialization of "Tmp" proved
 preds.adb:40:07: info: predicate check proved on default value (CVC5: 1 VC)
 preds.adb:46:07: info: initialization of "Tmp" proved
+preds.adb:46:07: medium: in default value at preds.adb:46
 preds.adb:46:07: medium: in inlined predicate at preds.ads:47
 preds.adb:46:07: medium: predicate check might fail on default value, cannot prove Arr_Bad (K) /= 0
+preds.adb:52:07: info: in default value at preds.adb:52
 preds.adb:52:07: info: initialization of "Tmp" proved
 preds.adb:52:07: info: predicate check proved on default value (CVC5: 3 VC)
 preds.adb:58:07: info: initialization of "Tmp" proved
+preds.adb:58:07: medium: in default value at preds.adb:58
 preds.adb:58:07: medium: in inlined predicate at preds.ads:64
 preds.adb:58:07: medium: predicate check might fail on default value, cannot prove Rec_Bad.I /= 0
 preds.adb:63:04: warning: analyzing unreferenced procedure "Create_Rec_Wrap_OK"
@@ -56,12 +70,16 @@ preds.ads:38:34: info: initialization of "X" proved
 preds.ads:39:35: info: initialization of "X" proved
 preds.ads:49:29: info: initialization of "X" proved
 preds.ads:50:30: info: initialization of "X" proved
+preds.ads:54:07: info: in default initialization of component "X" at preds.ads:54
 preds.ads:54:07: info: in default value at preds.adb:52
 preds.ads:54:07: info: predicate check proved on default value (CVC5: 1 VC)
+preds.ads:55:07: info: in default initialization of component "A" at preds.ads:55
 preds.ads:55:07: info: in default value at preds.adb:52
 preds.ads:55:07: info: predicate check proved on default value (CVC5: 1 VC)
+preds.ads:61:07: medium: in default initialization of component "X" at preds.ads:61
 preds.ads:61:07: medium: in default value at preds.adb:58
 preds.ads:61:07: medium: predicate check might fail on default value
+preds.ads:62:07: medium: in default initialization of component "A" at preds.ads:62
 preds.ads:62:07: medium: in default value at preds.adb:58
 preds.ads:62:07: medium: in inlined predicate at preds.ads:47
 preds.ads:62:07: medium: predicate check might fail on default value, cannot prove Arr_Bad (K) /= 0
@@ -73,7 +91,9 @@ preds.ads:70:23: info: range check proved (CVC5: 2 VC)
 preds.ads:74:23: info: in default initialization of component "X" at preds.ads:82
 preds.ads:74:23: info: in default value at preds.adb:70
 preds.ads:74:23: info: range check proved (CVC5: 2 VC)
+preds.ads:78:07: info: in default initialization of component "X" at preds.ads:78
 preds.ads:78:07: info: in default value at preds.adb:64
 preds.ads:78:07: info: predicate check proved on default value (CVC5: 1 VC)
+preds.ads:82:07: medium: in default initialization of component "X" at preds.ads:82
 preds.ads:82:07: medium: in default value at preds.adb:70
 preds.ads:82:07: medium: predicate check might fail on default value

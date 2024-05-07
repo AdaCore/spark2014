@@ -33,6 +33,8 @@ spark-containers-formal-ordered_sets.ads:94:06: info: after a call to Insert at 
 spark-containers-formal-ordered_sets.ads:94:06: info: after a call to Insert at spark-containers-formal-ordered_sets.ads:728, in instantiation at test_osets.ads:8
 spark-containers-formal-ordered_sets.ads:94:06: info: after a call to Insert at spark-containers-formal-ordered_sets.ads:728, in instantiation at test_osets.ads:8
 spark-containers-formal-ordered_sets.ads:94:06: info: after a call to Insert at spark-containers-formal-ordered_sets.ads:728, in instantiation at test_osets.ads:8
+spark-containers-formal-ordered_sets.ads:94:06: info: during checks for container aggregates at spark-containers-formal-ordered_sets.ads:94, in instantiation at test_osets.ads:10
+spark-containers-formal-ordered_sets.ads:94:06: info: during checks for container aggregates at spark-containers-formal-ordered_sets.ads:94, in instantiation at test_osets.ads:8
 spark-containers-formal-ordered_sets.ads:94:06: info: when establishing invariant on Aggr_Capacity at spark-containers-formal-ordered_sets.ads:1923, in instantiation at test_osets.ads:10
 spark-containers-formal-ordered_sets.ads:94:06: info: when establishing invariant on Aggr_Capacity at spark-containers-formal-ordered_sets.ads:1923, in instantiation at test_osets.ads:8
 spark-containers-formal-ordered_sets.ads:94:06: info: when establishing invariant on Contains at spark-containers-functional-sets.ads:94, in instantiation at spark-containers-formal-ordered_sets.ads:167, in instantiation at test_osets.ads:10

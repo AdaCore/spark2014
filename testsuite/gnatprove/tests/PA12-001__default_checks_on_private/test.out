@@ -1,9 +1,11 @@
 dic_and_predicate_checks.ads:7:13: info: implicit aspect Always_Terminates on "Is_Valid" has been proved, subprogram will terminate
 dic_and_predicate_checks.ads:10:12: info: default initial condition proved (CVC5: 1 VC)
+dic_and_predicate_checks.ads:10:12: medium: in default value of private type at dic_and_predicate_checks.ads:10
 dic_and_predicate_checks.ads:10:12: medium: predicate check might fail on default value
 dic_and_predicate_checks.ads:12:16: info: implicit aspect Always_Terminates on "Is_Valid" has been proved, subprogram will terminate
 dic_and_predicate_checks.ads:14:07: medium: type "T" is not fully initialized
 dic_and_predicate_checks.ads:24:12: info: default initial condition proved (CVC5: 1 VC)
+dic_and_predicate_checks.ads:24:12: medium: in default value of private type at dic_and_predicate_checks.ads:24
 dic_and_predicate_checks.ads:24:12: medium: predicate check might fail on default value
 dic_and_predicate_checks.ads:26:16: info: implicit aspect Always_Terminates on "Is_Valid" has been proved, subprogram will terminate
 dic_and_predicate_checks.ads:28:07: medium: type "T" is not fully initialized
@@ -12,6 +14,7 @@ dic_and_predicate_checks.ads:35:16: info: implicit aspect Always_Terminates on "
 dic_and_predicate_checks.ads:37:07: medium: type "P" is not fully initialized
 dic_and_predicate_checks.ads:53:04: info: initialization of "X1" proved
 dic_and_predicate_checks.ads:54:04: info: initialization of "X2" proved
+dic_and_predicate_checks.ads:55:04: info: in default value at dic_and_predicate_checks.ads:55
 dic_and_predicate_checks.ads:55:04: info: initialization of "X3" proved
 dic_and_predicate_checks.ads:55:04: info: predicate check proved on default value (CVC5: 1 VC)
 private_types.ads:2:13: info: implicit aspect Always_Terminates on "Id" has been proved, subprogram will terminate

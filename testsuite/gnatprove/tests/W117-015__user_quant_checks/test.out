@@ -6,6 +6,7 @@ iterable_invariant.ads:10:20: warning: unused variable "C"
 iterable_invariant.ads:11:13: info: during checks for quantification at iterable_invariant.ads:28
 iterable_invariant.ads:11:13: info: implicit aspect Always_Terminates on "Next" has been proved, subprogram will terminate
 iterable_invariant.ads:11:13: info: precondition proved (CVC5: 1 VC)
+iterable_invariant.ads:12:18: info: for C before the call at iterable_invariant.ads:13
 iterable_invariant.ads:12:18: info: invariant check proved (CVC5: 1 VC)
 iterable_invariant.ads:13:13: info: during checks for quantification at iterable_invariant.ads:28
 iterable_invariant.ads:13:13: info: implicit aspect Always_Terminates on "Has_Element" has been proved, subprogram will terminate
@@ -16,18 +17,28 @@ iterable_invariant.ads:14:13: info: implicit aspect Always_Terminates on "Elemen
 iterable_invariant.ads:14:13: info: precondition proved (Trivial: 1 VC)
 iterable_invariant.ads:14:22: warning: unused variable "C"
 iterable_invariant.ads:16:14: warning: subprogram "Allowed_Quantification" has no effect
+iterable_invariant.ads:18:08: info: for C before the call at iterable_invariant.ads:13
 iterable_invariant.ads:18:08: info: invariant check proved (CVC5: 1 VC)
 iterable_invariant.ads:18:08: info: postcondition proved (CVC5: 5 VC)
+iterable_invariant.ads:18:24: info: for C before the call at iterable_invariant.ads:10
 iterable_invariant.ads:18:24: info: invariant check proved (CVC5: 1 VC)
+iterable_invariant.ads:19:21: info: for C before the call at iterable_invariant.ads:14
 iterable_invariant.ads:19:21: info: invariant check proved (CVC5: 1 VC)
+iterable_invariant.ads:19:33: info: for C before the call at iterable_invariant.ads:10
 iterable_invariant.ads:19:33: info: invariant check proved (CVC5: 1 VC)
+iterable_invariant.ads:20:17: info: for C before the call at iterable_invariant.ads:13
 iterable_invariant.ads:20:17: info: invariant check proved (CVC5: 1 VC)
+iterable_invariant.ads:20:33: info: for C before the call at iterable_invariant.ads:11
 iterable_invariant.ads:20:33: info: invariant check proved (CVC5: 1 VC)
 iterable_invariant.ads:20:33: info: precondition proved (CVC5: 1 VC)
+iterable_invariant.ads:20:42: info: for C before the call at iterable_invariant.ads:10
 iterable_invariant.ads:20:42: info: invariant check proved (CVC5: 1 VC)
+iterable_invariant.ads:21:17: info: for C before the call at iterable_invariant.ads:14
 iterable_invariant.ads:21:17: info: invariant check proved (CVC5: 1 VC)
+iterable_invariant.ads:21:29: info: for C before the call at iterable_invariant.ads:11
 iterable_invariant.ads:21:29: info: invariant check proved (CVC5: 1 VC)
 iterable_invariant.ads:21:29: info: precondition proved (CVC5: 1 VC)
+iterable_invariant.ads:21:38: info: for C before the call at iterable_invariant.ads:10
 iterable_invariant.ads:21:38: info: invariant check proved (CVC5: 1 VC)
 iterable_invariant.ads:23:09: info: invariant check proved (CVC5: 1 VC)
 iterable_invariant.ads:23:09: warning: conjunct in postcondition does not check the outcome of calling "Allowed_Quantification"

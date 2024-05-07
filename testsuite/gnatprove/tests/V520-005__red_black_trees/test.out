@@ -63,6 +63,7 @@ infinite_sequences.adb:58:23: info: predicate check proved (CVC5: 1 VC; Trivial:
 infinite_sequences.adb:58:25: info: predicate check proved (Trivial: 1 VC)
 infinite_sequences.adb:62:14: medium: in inlined expression function body at infinite_sequences.adb:15
 infinite_sequences.adb:62:14: medium: predicate check might fail, cannot prove In_Range (I, Fst, Lst)
+infinite_sequences.ads:7:09: info: in default value of private type at infinite_sequences.ads:7
 infinite_sequences.ads:7:09: info: predicate check proved on default value (CVC5: 3 VC)
 infinite_sequences.ads:8:13: info: implicit aspect Always_Terminates on "First" has been proved, subprogram will terminate
 infinite_sequences.ads:9:13: info: implicit aspect Always_Terminates on "Last" has been proved, subprogram will terminate

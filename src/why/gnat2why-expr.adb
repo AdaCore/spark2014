@@ -230,6 +230,11 @@ package body Gnat2Why.Expr is
    --  is a specialized call. It is used to get the specialized variant
    --  check procedure.
 
+   function Check_Type_Invariants_For_Call
+     (Call   : Node_Id;
+      Params : Transformation_Params) return W_Prog_Id;
+   --  Perform all necessary invariant checks for Call
+
    function Check_Type_With_Invariants
      (Params : Transformation_Params;
       N      : Type_Kind_Id)
@@ -5278,36 +5283,37 @@ package body Gnat2Why.Expr is
 
                --  Create an array with the same element at all indexes
 
-               Def := +New_Const_Call
-                 (Domain => EW_Term,
-                  Elt    => +Comp_Default,
-                  Typ    => W_Ty);
+               declare
+                  Dim    : constant Positive :=
+                    Positive (Number_Dimensions (Ty));
+                  Bounds : W_Expr_Array (1 .. 2 * Dim);
+                  Count  : Positive := 1;
+               begin
+                  for D in 1 .. Dim loop
+                     Add_Attr_Arg
+                       (EW_Term, Bounds, Ty, Attribute_First, D, Count,
+                        Params);
+                     Add_Attr_Arg
+                       (EW_Term, Bounds, Ty, Attribute_Last, D, Count,
+                        Params);
+                  end loop;
 
-               --  For unconstrained arrays, reconstruct the array
+                  Def := +New_Const_Call
+                    (Domain => EW_Term,
+                     Elt    => +Comp_Default,
+                     Bounds => Bounds,
+                     Typ    => W_Ty);
 
-               if not Is_Static_Array_Type (Ty) then
-                  declare
-                     Dim    : constant Positive :=
-                       Positive (Number_Dimensions (Ty));
-                     Bounds : W_Expr_Array (1 .. 2 * Dim);
-                     Count  : Positive := 1;
-                  begin
-                     for D in 1 .. Dim loop
-                        Add_Attr_Arg
-                          (EW_Term, Bounds, Ty, Attribute_First, D, Count,
-                           Params);
-                        Add_Attr_Arg
-                          (EW_Term, Bounds, Ty, Attribute_Last, D, Count,
-                           Params);
-                     end loop;
+                  --  For unconstrained arrays, reconstruct the array
 
+                  if not Is_Static_Array_Type (Ty) then
                      Def := +Array_Convert_From_Base
                        (Domain => EW_Term,
                         Ty     => Ty,
                         Ar     => +Def,
                         Bounds => Bounds);
-                  end;
-               end if;
+                  end if;
+               end;
             end;
 
          elsif Is_Access_Type (Ty) then
@@ -6121,6 +6127,11 @@ package body Gnat2Why.Expr is
       if Is_Array_Type (Ty_Ext)
         and then Ekind (Ty_Ext) /= E_String_Literal_Subtype
       then
+         --  Add the well_formed property of the array type
+
+         T := New_And_Pred
+           (Left   => T,
+            Right  => New_Well_Formed_Pred (Expr));
 
          --  Generates:
          --  forall i1 .. in : int. in_range i1 /\ .. /\ in_range in ->
@@ -11941,6 +11952,303 @@ package body Gnat2Why.Expr is
       return Result;
    end One_Level_Update;
 
+   -------------------------------------
+   --  Check_Type_Invariants_For_Call --
+   -------------------------------------
+
+   function Check_Type_Invariants_For_Call
+     (Call   : Node_Id;
+      Params : Transformation_Params) return W_Prog_Id
+   is
+      E     : constant Entity_Id := Get_Called_Entity_For_Proof (Call);
+      Ids   : W_Identifier_Array (1 .. Number_Formals (E));
+      Exprs : W_Expr_Array (1 .. Number_Formals (E));
+      Top   : Natural := 0;
+
+      procedure One_Param (Formal : Entity_Id; Actual : Node_Id);
+      --  Introduce a let binding for parameters which need invariant checks
+      --  and insert them in the symbol table.
+
+      ---------------
+      -- One_Param --
+      ---------------
+
+      procedure One_Param (Formal : Entity_Id; Actual : Node_Id) is
+      begin
+         if Ekind (Formal) /= E_Out_Parameter
+           and then Invariant_Check_Needed (Etype (Formal))
+         then
+            Top := Top + 1;
+            Exprs (Top) := Transform_Expr (Actual, EW_Pterm, Params);
+            Ids (Top) := New_Temp_Identifier (Typ => Get_Type (Exprs (Top)));
+            Insert_Tmp_Item_For_Entity (Formal, Ids (Top));
+         end if;
+      end One_Param;
+
+      procedure Iterate_Call is new Iterate_Call_Parameters (One_Param);
+
+      Res : W_Prog_Id;
+
+   begin
+      Ada_Ent_To_Why.Push_Scope (Symbol_Table);
+      Iterate_Call (Call);
+      Res := Check_Type_Invariants_For_Subprogram
+        (E, Call, Params, For_Input => True);
+      Ada_Ent_To_Why.Pop_Scope (Symbol_Table);
+
+      for I in reverse 1 .. Top loop
+         Res :=
+           New_Typed_Binding
+             (Name     => Ids (I),
+              Def      => +Exprs (I),
+              Context  => Res);
+      end loop;
+
+      return Res;
+   end Check_Type_Invariants_For_Call;
+
+   -------------------------------------------
+   --  Check_Type_Invariants_For_Subprogram --
+   -------------------------------------------
+
+   function Check_Type_Invariants_For_Subprogram
+     (E           : Entity_Id;
+      Ada_Node    : Node_Id;
+      Params      : Transformation_Params;
+      For_Input   : Boolean;
+      Exceptional : Boolean := False)
+      return W_Prog_Id
+   is
+      Res : W_Prog_Id := +Void;
+
+      procedure Add_To_Res (Obj : Node_Id; Inv : W_Pred_Id);
+      --  Append assert { Inv } to Res
+
+      ----------------
+      -- Add_To_Res --
+      ----------------
+
+      procedure Add_To_Res (Obj : Node_Id; Inv : W_Pred_Id) is
+         Loc        : constant String :=
+           (if For_Input then " before the call"
+            else " at the end of " & Source_Name (E));
+         Check_Info : Check_Info_Type := New_Check_Info;
+      begin
+         if not Is_True_Boolean (+Inv) then
+            if Obj = E then
+               Check_Info.Continuation.Append
+                 (Continuation_Type'
+                    (Ada_Node => E,
+                     Message  => To_Unbounded_String
+                       ("for the result of " & Source_Name (E))));
+            elsif Is_Concurrent_Type (Obj) then
+
+               --  Type invariant are not supported on protected objects
+
+               pragma Assert (False);
+            else
+               Check_Info.Continuation.Append
+                 (Continuation_Type'
+                    (Ada_Node => Obj,
+                     Message  => To_Unbounded_String
+                       ("for " & Source_Name (Obj) & Loc)));
+            end if;
+
+            Res := Sequence
+              (Res,
+               New_Assert
+                 (Pred        => New_VC_Pred
+                      (Ada_Node   => (if For_Input then Ada_Node else E),
+                       Expr       => Inv,
+                       Reason     => VC_Invariant_Check,
+                       Check_Info => Check_Info),
+                  Assert_Kind => EW_Assert));
+         end if;
+      end Add_To_Res;
+
+      procedure Compute_Type_Invariants is new
+        Process_Type_Invariants_For_Subprogram (Add_To_Res);
+   begin
+      Compute_Type_Invariants (E, Params, For_Input, Exceptional);
+
+      return Res;
+   end Check_Type_Invariants_For_Subprogram;
+
+   --------------------------------------------
+   -- Process_Type_Invariants_For_Subprogram --
+   --------------------------------------------
+
+   procedure Process_Type_Invariants_For_Subprogram
+     (E           : Entity_Id;
+      Params      : Transformation_Params;
+      For_Input   : Boolean;
+      Exceptional : Boolean := False)
+   is
+
+      procedure Process_Type_Invariants_For_Globals
+        (Ids : Flow_Types.Flow_Id_Sets.Set);
+      --  Process the type invariants of elements of Ids
+      --  @param Ids the set of read / write effects for the subprogram
+
+      procedure Process_Type_Invariants_For_Params
+        (Subp      : Entity_Id;
+         For_Input : Boolean);
+      --  Process the type invariants of Subp's parameters
+      --  @param Subp the entity of the subprogram
+      --  @param For_Input True if we should consider inputs of Subp, False if
+      --         we should consider outputs.
+
+      function Compute_Type_Invariant_For_Entity
+        (E : Entity_Id) return W_Pred_Id
+      with Pre => Ada_Ent_To_Why.Has_Element (Symbol_Table, E);
+      --  @param E Entity of an object stored in the Symbol_Table
+      --  @return a predicate containing the invariants of all parts of E
+      --          which have an external invariant.
+
+      -----------------------------------------
+      -- Process_Type_Invariants_For_Globals --
+      -----------------------------------------
+
+      procedure Process_Type_Invariants_For_Globals
+        (Ids : Flow_Types.Flow_Id_Sets.Set)
+      is
+      begin
+         for F of Ids loop
+            pragma Assert (F.Kind in Direct_Mapping | Magic_String);
+
+            --  Magic_String are global state with no attached entities. As
+            --  such state is translated as private in Why3, we do not need
+            --  to consider any type invariant for it.
+
+            if F.Kind = Direct_Mapping then
+               declare
+                  Obj : constant Entity_Id := Get_Direct_Mapping_Id (F);
+               begin
+                  --  Global variables accessed by the subprogram. Abstract
+                  --  states and private variables are not considered here,
+                  --  as they cannot have visible type invariants.
+
+                  if Is_Object (Obj) then
+                     Process (Obj, Compute_Type_Invariant_For_Entity (Obj));
+
+                  --  Self reference of protected subprograms
+
+                  else
+                     pragma Assert (Is_Concurrent_Type (Obj));
+
+                     Process
+                       (Obj,
+                        Compute_Type_Invariant
+                          (Expr        =>
+                               +Concurrent_Self_Binder (Obj).B_Name,
+                           Ty          => Obj,
+                           Params      => Params,
+                           On_Internal => True));
+                  end if;
+               end;
+            end if;
+         end loop;
+      end Process_Type_Invariants_For_Globals;
+
+      ----------------------------------------
+      -- Process_Type_Invariants_For_Params --
+      ----------------------------------------
+
+      procedure Process_Type_Invariants_For_Params
+        (Subp      : Entity_Id;
+         For_Input : Boolean)
+      is
+         Formal : Entity_Id := First_Formal (Subp);
+
+      begin
+         while Present (Formal) loop
+            if (if For_Input then Ekind (Formal) /= E_Out_Parameter
+                else Ekind (Formal) /= E_In_Parameter
+                  or else Is_Access_Variable (Etype (Formal)))
+              and then (not Exceptional or else By_Reference (Formal))
+            then
+               Process
+                 (Formal, Compute_Type_Invariant_For_Entity (Formal));
+            end if;
+
+            Next_Formal (Formal);
+         end loop;
+      end Process_Type_Invariants_For_Params;
+
+      ---------------------------------------
+      -- Compute_Type_Invariant_For_Entity --
+      ---------------------------------------
+
+      function Compute_Type_Invariant_For_Entity
+        (E : Entity_Id) return W_Pred_Id
+      is
+         Binder : constant Item_Type :=
+           Ada_Ent_To_Why.Element (Symbol_Table, E);
+         Expr   : constant W_Term_Id :=
+           Reconstruct_Item (Binder, Ref_Allowed => Params.Ref_Allowed);
+      begin
+         return Compute_Type_Invariant
+           (Expr        => Expr,
+            Ty          => Etype (E),
+            Params      => Params,
+            On_Internal => True);
+      end Compute_Type_Invariant_For_Entity;
+
+      Read_Ids    : Flow_Types.Flow_Id_Sets.Set;
+      Write_Ids   : Flow_Types.Flow_Id_Sets.Set;
+
+      Is_External : constant Boolean := Is_Globally_Visible (E);
+      --  The subprogram is an external or a boundary subprogram if it is
+      --  visible from outside the current compilation unit.
+
+   begin
+      --  If the subprogram is boundary or external, we should assume/check the
+      --  type invariants of its parameters.
+
+      if Is_External then
+         Process_Type_Invariants_For_Params (E, For_Input);
+      end if;
+
+      Flow_Utility.Get_Proof_Globals (Subprogram      => E,
+                                      Reads           => Read_Ids,
+                                      Writes          => Write_Ids,
+                                      Erase_Constants => True);
+
+      --  If For_Input is True, add the invariants of the variables read by E,
+      --  otherwise add the invariants of the variables written by E.
+
+      if For_Input then
+         Process_Type_Invariants_For_Globals (Read_Ids);
+      else
+         Process_Type_Invariants_For_Globals (Write_Ids);
+      end if;
+
+      --  If For_Input is false and E is a function, add the invariants of its
+      --  result.
+
+      if Is_External
+        and then not For_Input
+        and then Ekind (E) = E_Function
+      then
+         declare
+            Result : constant W_Term_Id :=
+              (if not Result_Is_Mutable
+               then +Result_Name
+               else New_Deref
+                 (Right => Result_Name,
+                  Typ   => Get_Typ (+Result_Name)));
+         begin
+            Process
+              (E,
+               Compute_Type_Invariant
+                 (Expr        => Result,
+                  Ty          => Etype (E),
+                  Params      => Params,
+                  On_Internal => True));
+         end;
+      end if;
+   end Process_Type_Invariants_For_Subprogram;
+
    ----------------
    -- Range_Expr --
    ----------------
@@ -16557,26 +16865,34 @@ package body Gnat2Why.Expr is
          =>
             --  'Succ and 'Pred on floating-point types are modelled as calls
             --  to logic functions next_representable and prev_representable
-            --  for the corresponding type. The value of these functions should
-            --  only be specified for values of the argument that do not lead
-            --  to an overflow, so that a possible overflow check failure
-            --  may be detected when computing Float'Succ(Float'Last) or
-            --  Float'Pred(Float'First).
+            --  for the corresponding type.
 
             if Is_Floating_Point_Type (Etype (Var)) then
                declare
+                  Opnd   : constant Node_Id := First (Expressions (Expr));
                   W_Type : constant W_Type_Id := Base_Why_Type (Etype (Var));
-                  Oper : constant W_Identifier_Id :=
+                  Oper   : constant W_Identifier_Id :=
                     (if Attr_Id = Attribute_Pred then
                         MF_Floats (W_Type).Prev_Rep
                      else
                         MF_Floats (W_Type).Next_Rep);
-                  Arg : constant W_Expr_Id :=
-                    Transform_Expr (First (Expressions (Expr)),
+                  Arg    : W_Expr_Id :=
+                    Transform_Expr (Opnd,
                                     W_Type,
                                     Domain,
                                     Params);
                begin
+                  if Domain = EW_Prog and then Do_Range_Check (Opnd) then
+                     Arg := +Do_Range_Check
+                       (Ada_Node   => Opnd,
+                        Ty         => Base_Retysp (Etype (Var)),
+                        W_Expr     => Arg,
+                        Check_Kind =>
+                          (if Attr_Id = Attribute_Succ
+                           then RCK_FP_Overflow_Not_Last
+                           else RCK_FP_Overflow_Not_First));
+                  end if;
+
                   T := New_Call (Ada_Node => Expr,
                                  Domain   => Domain,
                                  Name     => Oper,
@@ -16590,6 +16906,7 @@ package body Gnat2Why.Expr is
 
             elsif Is_Modular_Integer_Type (Etype (Var)) then
                declare
+                  Opnd   : constant Node_Id := First (Expressions (Expr));
                   W_Type : constant W_Type_Id := Base_Why_Type (Etype (Var));
                   Op     : constant N_Op :=
                     (if Attr_Id = Attribute_Succ then
@@ -16602,10 +16919,12 @@ package body Gnat2Why.Expr is
                                           Value => Uint_1);
                   NType : constant Entity_Id := Etype (Expr);
                begin
-                  Old := Transform_Expr (First (Expressions (Expr)),
+                  Old := Transform_Expr (Opnd,
                                          W_Type,
                                          Domain,
                                          Params);
+
+                  pragma Assert (not Do_Range_Check (Opnd));
 
                   T := New_Binary_Op_Expr (Op          => Op,
                                            Left        => Old,
@@ -16619,6 +16938,7 @@ package body Gnat2Why.Expr is
 
             else
                declare
+                  Opnd   : constant Node_Id := First (Expressions (Expr));
                   Op     : constant W_Identifier_Id :=
                     (if Attr_Id = Attribute_Succ then Int_Infix_Add
                      else Int_Infix_Subtr);
@@ -16638,10 +16958,25 @@ package body Gnat2Why.Expr is
                        (Value => Uint_1, Typ => W_Type);
                   end if;
 
-                  Old := Transform_Expr (First (Expressions (Expr)),
+                  Old := Transform_Expr (Opnd,
                                          W_Type,
                                          Domain,
                                          Params);
+
+                  if Domain = EW_Prog and then Do_Range_Check (Opnd) then
+                     Old := +Do_Range_Check
+                       (Ada_Node   => Opnd,
+                        Ty         => Base_Retysp (Etype (Var)),
+                        W_Expr     => Old,
+                        Check_Kind =>
+                          (if Is_Enumeration_Type (Etype (Var)) then
+                               (if Attr_Id = Attribute_Succ
+                                then RCK_Range_Not_Last
+                                else RCK_Range_Not_First)
+                           elsif Attr_Id = Attribute_Succ
+                           then RCK_Overflow_Not_Last
+                           else RCK_Overflow_Not_First));
+                  end if;
 
                   T :=
                     New_Call
@@ -17795,13 +18130,7 @@ package body Gnat2Why.Expr is
 
       if Subp_Needs_Invariant_Checks (Subp) then
          Prepend
-           (New_VC_Call
-              (Ada_Node => Call,
-               Name     =>
-                 E_Symb (Subp, WNE_Check_Invariants_On_Call),
-               Progs    => Args,
-               Reason   => VC_Invariant_Check,
-               Typ      => EW_Unit_Type),
+           (Check_Type_Invariants_For_Call (Call, Params),
             Result);
       end if;
 
@@ -20619,7 +20948,7 @@ package body Gnat2Why.Expr is
                Right     : constant N_Subexpr_Id := Right_Opnd (Expr);
                W_Right   : constant W_Expr_Id :=
                  Transform_Expr (Right,
-                                 EW_Int_Type,
+                                 Type_Of_Node (Standard_Natural),
                                  Domain,
                                  Local_Params);
                Base_Type : constant W_Type_Id := Base_Why_Type (Left);
@@ -21154,88 +21483,57 @@ package body Gnat2Why.Expr is
             end;
 
          when N_Type_Conversion =>
+            --  For array conversions, if target and source types have
+            --  different component type, we may need to generate an
+            --  appropriate conversion theory.
+            --  Also generate the theory for the reverse conversion as it
+            --  may be needed if Expr is a left value.
 
-            --  When converting between scalar types, only require that the
-            --  converted expression is translated into a value of the expected
-            --  base type. Necessary checks, rounding and conversions will
-            --  be introduced at the end of Transform_Expr below. Fixed-point
-            --  types are special, because the base type __fixed really
-            --  represents a different base for every fixed-point type, so use
-            --  full conversion to the expected type in that case. Types with
-            --  predicates are also treated specially, so that the type with
-            --  predicate is explicitly the target of the conversion, to avoid
-            --  having it being skipped.
+            if Has_Array_Type (Etype (Expr)) then
+               declare
+                  Target_Typ      : constant Entity_Id :=
+                    Retysp (Etype (Expr));
+                  Target_Comp_Typ : constant Entity_Id :=
+                    Retysp (Component_Type (Target_Typ));
+                  Source_Typ      : constant Entity_Id :=
+                    Retysp (Etype (Expression (Expr)));
+                  Source_Comp_Typ : constant Entity_Id :=
+                    Retysp (Component_Type (Source_Typ));
+               begin
+                  if Target_Comp_Typ /= Source_Comp_Typ then
+                     Create_Array_Conversion_Theory_If_Needed
+                       (From         => Source_Typ,
+                        To           => Target_Typ);
+                     Create_Array_Conversion_Theory_If_Needed
+                       (From         => Target_Typ,
+                        To           => Source_Typ);
+                  end if;
+               end;
 
-            if Is_Scalar_Type (Expr_Type)
-              and then not Has_Fixed_Point_Type (Expr_Type)
-              and then not Has_Predicates (Expr_Type)
+            elsif Has_Fixed_Point_Type (Expr_Type)
+              and then Has_Fixed_Point_Type (Etype (Expression (Expr)))
             then
-               T := Transform_Expr (Expression (Expr),
-                                    Base_Why_Type (Expr_Type),
-                                    Domain,
-                                    Local_Params,
-                                    No_Read);
-
-            --  In other cases, require that the converted expression
-            --  is translated into a value of the type of the conversion.
-
-            --  When converting to a discriminant record or an array, this
-            --  ensures that the proper target type can be retrieved from
-            --  the current node, to call the right checking function.
-
-            else
-               --  For array conversions, if target and source types have
-               --  different component type, we may need to generate an
-               --  appropriate conversion theory.
-               --  Also generate the theory for the reverse conversion as it
-               --  may be needed if Expr is a left value.
-
-               if Has_Array_Type (Etype (Expr)) then
-                  declare
-                     Target_Typ      : constant Entity_Id :=
-                       Retysp (Etype (Expr));
-                     Target_Comp_Typ : constant Entity_Id :=
-                       Retysp (Component_Type (Target_Typ));
-                     Source_Typ      : constant Entity_Id :=
-                       Retysp (Etype (Expression (Expr)));
-                     Source_Comp_Typ : constant Entity_Id :=
-                       Retysp (Component_Type (Source_Typ));
-                  begin
-                     if Target_Comp_Typ /= Source_Comp_Typ then
-                        Create_Array_Conversion_Theory_If_Needed
-                          (From         => Source_Typ,
-                           To           => Target_Typ);
-                        Create_Array_Conversion_Theory_If_Needed
-                          (From         => Target_Typ,
-                           To           => Source_Typ);
-                     end if;
-                  end;
-
-               elsif Has_Fixed_Point_Type (Expr_Type)
-                 and then Has_Fixed_Point_Type (Etype (Expression (Expr)))
-               then
-                  declare
-                     From_Small : constant Ureal :=
-                       Small_Value (Retysp (Etype (Expression (Expr))));
-                     To_Small   : constant Ureal :=
-                       Small_Value (Expr_Type);
-                  begin
-                     if From_Small /= To_Small then
-                        Create_Fixed_Point_Mult_Div_Theory_If_Needed
-                          (Typ_Left     => Etype (Expression (Expr)),
-                           Typ_Right    => Standard_Integer,
-                           Typ_Result   => Expr_Type,
-                           Expr         => Expr);
-                     end if;
-                  end;
-               end if;
-
-               T := Transform_Expr (Expression (Expr),
-                                    Type_Of_Node (Expr),
-                                    Domain,
-                                    Local_Params,
-                                    No_Read);
+               declare
+                  From_Small : constant Ureal :=
+                    Small_Value (Retysp (Etype (Expression (Expr))));
+                  To_Small   : constant Ureal :=
+                    Small_Value (Expr_Type);
+               begin
+                  if From_Small /= To_Small then
+                     Create_Fixed_Point_Mult_Div_Theory_If_Needed
+                       (Typ_Left     => Etype (Expression (Expr)),
+                        Typ_Right    => Standard_Integer,
+                        Typ_Result   => Expr_Type,
+                        Expr         => Expr);
+                  end if;
+               end;
             end if;
+
+            T := Transform_Expr (Expression (Expr),
+                                 Type_Of_Node (Expr),
+                                 Domain,
+                                 Local_Params,
+                                 No_Read);
 
             --  Insert static resource leak if the conversion is a move of a
             --  pool specific access type.
@@ -22807,14 +23105,7 @@ package body Gnat2Why.Expr is
          --  Insert invariant check if needed
 
          if Subp_Needs_Invariant_Checks (Subp) then
-            Prepend
-              (New_VC_Call
-                 (Ada_Node => Expr,
-                  Name     => E_Symb (Subp, WNE_Check_Invariants_On_Call),
-                  Progs    => Args,
-                  Reason   => VC_Invariant_Check,
-                  Typ      => EW_Unit_Type),
-               T);
+            Prepend (Check_Type_Invariants_For_Call (Expr, Params), T);
          end if;
 
          --  Insert tag check if needed
@@ -25132,14 +25423,20 @@ package body Gnat2Why.Expr is
 
       --  if needed, we convert the arrray to a simple base type
 
-      if not Is_Static_Array_Type (Etype (Expr))
-        and then
-          not Is_Static_Array_Type (Get_Ada_Node (+Get_Type (+Pref_Term)))
-      then
+      if not Is_Static_Array_Type (Get_Ada_Node (+Get_Type (+Pref_Term))) then
          T := Array_Convert_To_Base (Domain, T);
       end if;
 
-      --  if needed, we insert a check that the slice bounds are in the bounds
+      --  Call the slice function
+
+      T := New_Slice_Call
+        (Domain => Domain,
+         Arr    => T,
+         Typ    => Get_Type (+Pref_Term),
+         Low    => +Low_Expr,
+         High   => +High_Expr);
+
+      --  If needed, we insert a check that the slice bounds are in the bounds
       --  of the prefix
 
       if Domain = EW_Prog then
@@ -25190,16 +25487,14 @@ package body Gnat2Why.Expr is
 
       if Is_Static_Array_Type (Etype (Expr)) then
 
-         --  a conversion may be needed to the target type
+         --  Fix the type of the Why3 AST
 
-         T :=
-           Insert_Array_Conversion
-             (Domain         => Domain,
-              Expr           => T,
-              To             => Target_Ty,
-              Force_No_Slide => True);
+         T :=  New_Label (Labels => Symbol_Sets.Empty_Set,
+                          Def    => T,
+                          Domain => Domain,
+                          Typ    => Target_Ty);
 
-      --  when the slice bounds are not static, we produce a compound object
+      --  When the slice bounds are not static, we produce a compound object
       --  contents + bounds.
 
       else

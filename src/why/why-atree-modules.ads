@@ -409,6 +409,7 @@ package Why.Atree.Modules is
       Module    : W_Module_Id;
       Concat    : Concat_Ids;
       Singleton : W_Identifier_Id;
+      Slice     : W_Identifier_Id;
    end record;
 
    --  Symbols which only exist for one-dimensional arrays of discrete types

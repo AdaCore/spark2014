@@ -1834,6 +1834,8 @@ module Array__1
   val map__havoc (x : map__ref) : unit
      writes { x }
 
+  predicate has_bounds (a : map) (f : I1.t) (l : I1.t) = true
+
   function get (a : map) (i : I1.t) : component_type = Map.get a i
   function set (a : map) (i : I1.t) (v : component_type) : map = Map.set a i v
 
@@ -1864,13 +1866,13 @@ module Array__1
   (* An array containing the value v at all indexes. It is used for the value
      of aggregate associations with a box. *)
 
-   function const component_type : map
+   function const component_type I1.t I1.t : map
    meta "encoding:lskept" function const
 
    axiom const_def :
     forall v : component_type.
-    forall i : I1.t  [get (const v) i].
-      get (const v) i = v
+    forall first last i : I1.t  [get (const v first last) i].
+      (I1.le first i /\ I1.le i last) -> get (const v first last) i = v
    meta "remove_unused:dependency" axiom const_def, function const
 end
 
@@ -1883,6 +1885,9 @@ module Array__1__Concat
   type map
 
   function get (a : map) (i : Index.t) : component_type
+
+  let function slice (a : map) (first : Index.t) (last : Index.t) : map =
+    a
 
   (* Concatenation is only defined for one-dimensional arrays; it appends a
      map to another. We do not really care about the valid ranges of the
@@ -1948,7 +1953,8 @@ module Array__1__Concat
     forall b : component_type.
     forall a_first a_last : Index.t
     [concat_singleton_right a a_first a_last b].
-    get (concat_singleton_right a a_first a_last b) (Index.add a_last Index.one) = b
+    (Index.lt a_last (Index.add a_last Index.one) ->
+     get (concat_singleton_right a a_first a_last b) (Index.add a_last Index.one) = b)
   /\
     forall i : Index.t [get (concat_singleton_right a a_first a_last b) i | get a i].
       ((Index.le a_first i /\ Index.le i a_last) ->
@@ -1996,6 +2002,10 @@ module Array__2
   val map__havoc (x : map__ref) : unit
      writes { x }
 
+  predicate has_bounds (a : map)
+    (f1 : I1.t) (l1 : I1.t) (f2 : I2.t) (l2 : I2.t)
+  = true
+
   val function get map I1.t I2.t : component_type
   meta "encoding:lskept" function get
   val function set map I1.t I2.t component_type : map
@@ -2033,14 +2043,17 @@ module Array__2
   (* An array containing the value v at all indexes. It is used for the value
      of aggregate associations with a box. *)
 
-   val function const component_type : map
+   val function const component_type I1.t I1.t I2.t I2.t : map
    meta "encoding:lskept" function const
 
    axiom const_def :
     forall v : component_type.
-    forall i : I1.t.
-    forall j : I2.t  [get (const v) i j].
-      get (const v) i j = v
+    forall first_1 last_1 i : I1.t.
+    forall first_2 last_2 j : I2.t
+    [get (const v first_1 last_1 first_2 last_2) i j].
+    (I1.le first_1 i /\ I1.le i last_1) ->
+    (I2.le first_2 j /\ I2.le j last_2) ->
+      get (const v first_1 last_1 first_2 last_2) i j = v
    meta "remove_unused:dependency" axiom const_def, function const
 end
 
@@ -2057,6 +2070,10 @@ module Array__3
   type map__ref = { mutable map__content [@model_trace:] : map }
   val map__havoc (x : map__ref) : unit
      writes { x }
+
+  predicate has_bounds (a : map)
+    (f1 : I1.t) (l1 : I1.t) (f2 : I2.t) (l2 : I2.t) (f3 : I3.t) (l3 : I3.t)
+  = true
 
   val function get map I1.t I2.t I3.t : component_type
   meta "encoding:lskept" function get
@@ -2104,15 +2121,19 @@ module Array__3
   (* An array containing the value v at all indexes. It is used for the value
      of aggregate associations with a box. *)
 
-   val function const component_type : map
+   val function const component_type I1.t I1.t I2.t I2.t I3.t I3.t : map
    meta "encoding:lskept" function const
 
    axiom const_def :
     forall v : component_type.
-    forall i : I1.t.
-    forall j : I2.t.
-    forall k : I3.t  [get (const v) i j k].
-      get (const v) i j k = v
+    forall first_1 last_1 i : I1.t.
+    forall first_2 last_2 j : I2.t.
+    forall first_3 last_3 k : I3.t
+    [get (const v first_1 last_1 first_2 last_2 first_3 last_3) i j k].
+    (I1.le first_1 i /\ I1.le i last_1) ->
+    (I2.le first_2 j /\ I2.le j last_2) ->
+    (I3.le first_3 k /\ I3.le k last_3) ->
+      get (const v first_1 last_1 first_2 last_2 first_3 last_3) i j k = v
    meta "remove_unused:dependency" axiom const_def, function const
 end
 
@@ -2130,6 +2151,11 @@ module Array__4
   type map__ref = { mutable map__content [@model_trace:] : map }
   val map__havoc (x : map__ref) : unit
      writes { x }
+
+  predicate has_bounds (a : map)
+    (f1 : I1.t) (l1 : I1.t) (f2 : I2.t) (l2 : I2.t)
+    (f3 : I3.t) (l3 : I3.t) (f4 : I4.t) (l4 : I4.t)
+  = true
 
   val function get map I1.t I2.t I3.t I4.t : component_type
   meta "encoding:lskept" function get
@@ -2184,16 +2210,24 @@ module Array__4
   (* An array containing the value v at all indexes. It is used for the value
      of aggregate associations with a box. *)
 
-   val function const component_type : map
+   val function const
+     component_type I1.t I1.t I2.t I2.t I3.t I3.t I4.t I4.t : map
    meta "encoding:lskept" function const
 
    axiom const_def :
     forall v : component_type.
-    forall i : I1.t.
-    forall j : I2.t.
-    forall k : I3.t.
-    forall l : I4.t  [get (const v) i j k l].
-      get (const v) i j k l = v
+    forall first_1 last_1 i : I1.t.
+    forall first_2 last_2 j : I2.t.
+    forall first_3 last_3 k : I3.t.
+    forall first_4 last_4 l : I4.t
+    [get (const v first_1 last_1 first_2 last_2 first_3 last_3 first_4 last_4)
+      i j k l].
+    (I1.le first_1 i /\ I1.le i last_1) ->
+    (I2.le first_2 j /\ I2.le j last_2) ->
+    (I3.le first_3 k /\ I3.le k last_3) ->
+    (I4.le first_4 l /\ I4.le l last_4) ->
+      get (const v first_1 last_1 first_2 last_2 first_3 last_3 first_4 last_4)
+        i j k l = v
    meta "remove_unused:dependency" axiom const_def, function const
 end
 

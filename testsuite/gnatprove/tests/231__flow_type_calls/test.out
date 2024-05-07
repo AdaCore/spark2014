@@ -12,6 +12,7 @@ p.ads:4:04: info: function contract feasibility proved (Trivial: 1 VC)
 p.ads:4:09: medium: invariant check might fail on default value
 p.ads:4:70: high: call via access-to-subprogram in the invariant of "T" might not terminate (SPARK RM 7.3.2(11))
 p.ads:4:70: medium: pointer dereference check might fail
+q.ads:2:09: medium: in default value of private type at q.ads:2
 q.ads:2:09: medium: predicate check might fail on default value
 q.ads:4:04: info: function contract feasibility proved (Trivial: 1 VC)
 q.ads:4:65: high: call via access-to-subprogram in the predicate of "T" might not terminate (SPARK RM 3.2.4(4))

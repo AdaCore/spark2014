@@ -53,11 +53,13 @@ gen_access.adb:26:04: info: absence of resource or memory leak at end of scope p
 gen_access.adb:26:24: warning: assuming "Mk" has no effect on global items
 gen_access.adb:26:24: warning: no Global contract available for "Mk"
 gen_access.adb:35:13: info: implicit aspect Always_Terminates on "F" has been proved, subprogram will terminate
+gen_access.adb:36:13: info: implicit function contract might not be available on calls from enclosing unit
 gen_access.adb:37:19: info: assertion proved (CVC5: 1 VC)
 gen_access.adb:37:22: medium: resource or memory leak might occur [possible explanation: call to allocating function inside an assertion leaks some resource or memory]
 gen_access.adb:37:22: warning: assuming "Mk_Arr_1" has no effect on global items
 gen_access.adb:37:22: warning: no Global contract available for "Mk_Arr_1"
 gen_access.adb:47:13: info: implicit aspect Always_Terminates on "F" has been proved, subprogram will terminate
+gen_access.adb:48:13: info: implicit function contract might not be available on calls from enclosing unit
 gen_access.adb:49:19: info: assertion proved (CVC5: 1 VC)
 gen_access.adb:49:22: warning: assuming "Mk_Arr_2" has no effect on global items
 gen_access.adb:49:22: warning: no Global contract available for "Mk_Arr_2"

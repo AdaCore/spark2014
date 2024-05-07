@@ -1223,13 +1223,11 @@ package body Gnat2Why.Util is
             then
                return True;
 
-            --  An owning access type provides a read/write access to procedure
-            --  and entry parameters.
+            --  An owning access type provides a read/write access to
+            --  subprograms with side effects.
 
             else
-               return not Is_Constant_In_SPARK (E)
-                 and then
-                 not Is_Function_Or_Function_Type (Enclosing_Unit (E));
+               return not Is_Constant_In_SPARK (E);
             end if;
 
          when others =>
@@ -1674,11 +1672,10 @@ package body Gnat2Why.Util is
 
            or else (Top_Level and then Use_Split_Form_For_Type (Ty_Ext))
 
-           --  For non static array types, we need an invariant to state the
-           --  ranges of bounds.
+           --  For array types, we need an invariant to link the content and
+           --  the bounds.
 
-           or else (Is_Array_Type (Ty_Ext)
-                     and then not Is_Static_Array_Type (Ty_Ext))
+           or else Is_Array_Type (Ty_Ext)
 
            --  For constrained types with discriminants, we supply the value
            --  of the discriminants.
@@ -1718,14 +1715,7 @@ package body Gnat2Why.Util is
 
          --  For composite types, check for dynamic invariants on components
 
-         if Is_Array_Type (Ty_Ext)
-           and then Ekind (Ty_Ext) /= E_String_Literal_Subtype
-         then
-            return
-              Type_Needs_Dynamic_Invariant (Component_Type (Ty_Ext), False)
-              or else Is_Tagged_Type (Retysp (Component_Type (Ty_Ext)));
-
-         elsif Is_Record_Type (Ty_Ext)
+         if Is_Record_Type (Ty_Ext)
            or else Is_Incomplete_Or_Private_Type (Ty_Ext)
            or else Is_Concurrent_Type (Ty_Ext)
          then

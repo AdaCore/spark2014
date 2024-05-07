@@ -10,6 +10,7 @@ bounded_stacks.adb:58:24: info: index check proved (CVC5: 2 VC), in instantiatio
 bounded_stacks.adb:70:29: info: index check proved (CVC5: 2 VC), in instantiation at integer_stacks.ads:4
 bounded_stacks.adb:70:49: info: index check proved (CVC5: 2 VC), in instantiation at integer_stacks.ads:4
 bounded_stacks.ads:6:09: info: default initial condition proved (CVC5: 1 VC), in instantiation at integer_stacks.ads:4
+bounded_stacks.ads:6:09: info: in default value of private type at bounded_stacks.ads:6, in instantiation at integer_stacks.ads:4
 bounded_stacks.ads:6:09: info: predicate check proved on default value (CVC5: 1 VC), in instantiation at integer_stacks.ads:4
 bounded_stacks.ads:9:13: info: implicit aspect Always_Terminates on overriding operator "=" has been proved, subprogram will terminate, in instantiation at integer_stacks.ads:4
 bounded_stacks.ads:11:13: info: implicit aspect Always_Terminates on "Extent" has been proved, subprogram will terminate, in instantiation at integer_stacks.ads:4

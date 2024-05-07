@@ -19,12 +19,14 @@ multiset.adb:60:14: info: precondition proved (CVC5: 1 VC)
 multiset.adb:60:14: info: predicate check proved (CVC5: 1 VC; Trivial: 1 VC)
 multiset.adb:61:13: info: predicate check proved (CVC5: 1 VC; Trivial: 1 VC)
 multiset.ads:17:09: info: default initial condition proved (CVC5: 1 VC)
+multiset.ads:18:35: info: for Container before the call at multiset.ads:25
 multiset.ads:18:35: info: invariant check proved (CVC5: 1 VC)
 multiset.ads:25:13: info: implicit aspect Always_Terminates on "Is_Empty" has been proved, subprogram will terminate
 multiset.ads:29:06: info: data dependencies proved
 multiset.ads:30:35: info: invariant check proved (CVC5: 1 VC)
 multiset.ads:30:43: warning: unused variable "Element"
 multiset.ads:31:27: medium: postcondition might fail, cannot prove Is_Empty'Result = (Cardinality (Container) = 2)
+multiset.ads:31:46: info: for Container before the call at multiset.ads:33
 multiset.ads:31:46: info: invariant check proved (CVC5: 1 VC)
 multiset.ads:31:46: info: predicate check proved (Trivial: 1 VC)
 multiset.ads:31:72: info: predicate check proved (Trivial: 1 VC)
@@ -37,13 +39,16 @@ multiset.ads:47:13: info: implicit aspect Always_Terminates on "Contains" has be
 multiset.ads:47:13: info: precondition proved (Trivial: 1 VC)
 multiset.ads:52:06: info: data dependencies proved
 multiset.ads:53:16: info: postcondition proved (CVC5: 2 VC)
+multiset.ads:53:35: info: for Container before the call at multiset.ads:41
 multiset.ads:53:35: info: invariant check proved (CVC5: 1 VC)
 multiset.ads:53:35: info: predicate check proved (Trivial: 1 VC)
 multiset.ads:53:71: info: predicate check proved (Trivial: 1 VC)
 multiset.ads:54:06: info: Inline_For_Proof or Logical_Equal annotation proved (CVC5: 1 VC)
 multiset.ads:57:13: info: implicit aspect Always_Terminates on "Choose" has been proved, subprogram will terminate
 multiset.ads:58:06: info: data dependencies proved
+multiset.ads:59:20: info: for Container before the call at multiset.ads:25
 multiset.ads:59:20: info: invariant check proved (CVC5: 1 VC)
+multiset.ads:60:16: info: for Container before the call at multiset.ads:48
 multiset.ads:60:16: info: invariant check proved (CVC5: 1 VC)
 multiset.ads:60:16: info: postcondition proved (CVC5: 1 VC)
 multiset.ads:64:13: info: during checks for quantification at multiset.ads:107
@@ -58,11 +63,13 @@ multiset.ads:73:13: info: during checks for quantification at multiset.ads:107
 multiset.ads:73:13: info: implicit aspect Always_Terminates on "Iter_Next" has been proved, subprogram will terminate
 multiset.ads:73:13: info: precondition proved (CVC5: 1 VC)
 multiset.ads:76:06: info: data dependencies proved
+multiset.ads:77:16: info: for Container before the call at multiset.ads:68
 multiset.ads:77:16: info: invariant check proved (CVC5: 1 VC)
 multiset.ads:79:13: info: during checks for quantification at multiset.ads:107
 multiset.ads:79:13: info: implicit aspect Always_Terminates on "Iter_Element" has been proved, subprogram will terminate
 multiset.ads:79:13: info: precondition proved (CVC5: 1 VC)
 multiset.ads:83:06: info: data dependencies proved
+multiset.ads:84:16: info: for Container before the call at multiset.ads:68
 multiset.ads:84:16: info: invariant check proved (CVC5: 1 VC)
 multiset.ads:103:13: info: expression function body of subprograms with a numeric variant might not be available on recursive calls
 multiset.ads:103:13: info: implicit aspect Always_Terminates on "Cardinality_Rec" has been proved, subprogram will terminate

@@ -751,6 +751,7 @@ initializer_demo.ads:12:28: info: range check proved (CVC5: 2 VC)
 initializer_demo.ads:14:13: info: implicit aspect Always_Terminates on "Add_Elements2" has been proved, subprogram will terminate
 initializer_demo.ads:22:13: info: implicit aspect Always_Terminates on "Adjust_Pair" has been proved, subprogram will terminate
 interval.ads:6:13: info: implicit aspect Always_Terminates on "Make" has been proved, subprogram will terminate
+interval.ads:6:13: medium: for the result of Make at interval.ads:6
 interval.ads:6:13: medium: invariant check might fail
 interval.ads:9:09: info: invariant check proved on default value (CVC5: 1 VC)
 interval.ads:17:13: info: implicit aspect Always_Terminates on "Has_Valid_Order" has been proved, subprogram will terminate
@@ -1003,6 +1004,7 @@ shapes4.adb:12:72: info: range check proved (CVC5: 2 VC)
 shapes4.adb:13:53: info: range check proved (CVC5: 2 VC)
 shapes4.adb:22:07: info: initialization of "Delta_X" proved
 shapes4.adb:23:07: info: initialization of "Delta_Y" proved
+shapes4.ads:8:13: info: for the result of Make_Circle at shapes4.ads:8
 shapes4.ads:8:13: info: implicit aspect Always_Terminates on "Make_Circle" has been proved, subprogram will terminate
 shapes4.ads:8:13: info: invariant check proved (CVC5: 1 VC)
 shapes4.ads:12:13: info: implicit aspect Always_Terminates on "Inside_Circle" has been proved, subprogram will terminate

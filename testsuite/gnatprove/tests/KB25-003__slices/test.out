@@ -10,7 +10,7 @@ pack.adb:27:22: info: range check proved (CVC5: 4 VC)
 pack.adb:27:39: info: range check proved (CVC5: 4 VC)
 pack.adb:28:22: info: assertion proved (CVC5: 1 VC)
 pack.adb:28:29: info: range check proved (CVC5: 4 VC)
-pack.adb:29:22: high: assertion might fail (e.g. when Glob = (others => 'SOH') and My_S2 = (others => 'SOH')) [possible fix: subprogram at pack.ads:5 should mention Glob in a precondition]
+pack.adb:29:22: high: assertion might fail (e.g. when Glob = (others => 'NUL') and My_S2 = (others => 'NUL')) [possible fix: subprogram at pack.ads:5 should mention Glob in a precondition]
 pack.adb:29:22: info: range check proved (CVC5: 4 VC)
 pack.adb:29:40: info: range check proved (CVC5: 4 VC)
 pack.adb:33:04: warning: analyzing unreferenced procedure "AN21"
@@ -20,7 +20,7 @@ pack.adb:36:41: info: range check proved (CVC5: 4 VC)
 pack.adb:38:22: info: assertion proved (CVC5: 1 VC)
 pack.adb:38:22: info: range check proved (CVC5: 4 VC)
 pack.adb:38:39: info: range check proved (CVC5: 4 VC)
-pack.adb:39:22: high: assertion might fail (e.g. when Glob = (others => 'SOH') and My_S2 = (others => 'SOH')) [possible fix: subprogram at line 33 should mention Glob in a precondition]
+pack.adb:39:22: high: assertion might fail (e.g. when Glob = (others => 'NUL') and My_S2 = (others => 'NUL')) [possible fix: subprogram at line 33 should mention Glob in a precondition]
 pack.adb:39:22: info: range check proved (CVC5: 4 VC)
 pack.adb:39:40: info: range check proved (CVC5: 4 VC)
 pack.adb:43:04: warning: analyzing unreferenced procedure "AN22"
@@ -30,7 +30,7 @@ pack.adb:46:41: info: range check proved (CVC5: 4 VC)
 pack.adb:48:22: info: assertion proved (CVC5: 1 VC)
 pack.adb:48:22: info: range check proved (CVC5: 4 VC)
 pack.adb:48:39: info: range check proved (CVC5: 4 VC)
-pack.adb:49:22: high: assertion might fail (e.g. when Glob = (others => 'SOH') and My_S2 = (others => 'SOH')) [possible fix: subprogram at line 43 should mention Glob in a precondition]
+pack.adb:49:22: high: assertion might fail (e.g. when Glob = (others => 'NUL') and My_S2 = (others => 'NUL')) [possible fix: subprogram at line 43 should mention Glob in a precondition]
 pack.adb:49:22: info: range check proved (CVC5: 4 VC)
 pack.adb:49:40: info: range check proved (CVC5: 4 VC)
 pack.adb:53:04: warning: analyzing unreferenced procedure "A3"

@@ -2278,7 +2278,24 @@ package body Why.Gen.Expr is
       --  Retrieve range check information
 
       if Do_Check then
-         Get_Range_Check_Info (Ada_Node, Lvalue, Range_Type, Check_Kind);
+         Check_Kind := Get_Range_Check_Info (Ada_Node);
+
+         Range_Type := Get_Ada_Node (+To);
+
+         --  Builtin scalar types might not have an Ada node. For standard
+         --  booleans, we can use Standard_Boolean. Mathematical integers do
+         --  not have a bound, so not having a range type is fine. For other
+         --  types, check that no range checks are necessary.
+
+         if No (Range_Type) then
+            if To = EW_Bool_Type then
+               Range_Type := Standard_Boolean;
+            elsif To = EW_Int_Type then
+               null;
+            else
+               pragma Assert (Base_Why_Type (+From) = To);
+            end if;
+         end if;
       end if;
 
       return Insert_Scalar_Conversion
@@ -3689,7 +3706,7 @@ package body Why.Gen.Expr is
                     (Ada_Node => Ada_Node,
                      Domain   => Domain,
                      Expr     => T,
-                     To       => Base_Why_Type (Return_Type));
+                     To       => Type_Of_Node (Base_Type (Return_Type)));
                end if;
             end;
 
@@ -3781,7 +3798,7 @@ package body Why.Gen.Expr is
                     (Ada_Node => Ada_Node,
                      Domain   => Domain,
                      Expr     => T,
-                     To       => Base_Why_Type (Return_Type));
+                     To       => Type_Of_Node (Base_Type (Return_Type)));
                end if;
             end;
 

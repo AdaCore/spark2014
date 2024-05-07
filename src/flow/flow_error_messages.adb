@@ -205,6 +205,11 @@ package body Flow_Error_Messages is
      (Msg           : String;
       Span          : Source_Span;
       Severity      : Msg_Severity;
+      Details       : String := "";
+      Explanation   : String := "";
+      Fix           : String := "";
+      CE            : String := "";
+      User_Message  : String := "";
       Continuations : String_Lists.List := String_Lists.Empty)
       return Message_Id
    with Post => Print_Regular_Msg'Result /= No_Message_Id;
@@ -638,77 +643,20 @@ package body Flow_Error_Messages is
             --  either as part of automatic testing or inside an IDE, to
             --  avoid long unreadable messages for command-line use.
 
-            case Gnat2Why_Args.Output_Mode is
-
-               --  In brief mode, just print the check message
-
-               when GPO_Brief =>
-                  Msg_Id :=
-                    Print_Regular_Msg (Msg3, Span, Severity, My_Conts);
-
-               --  In oneline mode, append all the extra information to the
-               --  main message and print it.
-
-               when GPO_Oneline =>
-
-                  declare
-                     Details_Msg : constant String :=
-                       (if Details /= ""
-                        then " [reason for check: " & Details & "]"
-                        else "");
-                     Explanation_Msg : constant String :=
-                       (if Explanation /= ""
-                        then " [possible explanation: " & Explanation & "]"
-                        else "");
-                     Fix_Msg     : constant String :=
-                       (if Fix /= ""
-                        then " [possible fix: "
-                               & Compute_Message (Fix, Attach_Node, FF1, FF2,
-                                                  With_Location => False)
-                               & "]"
-                        else "");
-                     Msg4        : constant String :=
-                       Msg3 & Details_Msg & Explanation_Msg & Fix_Msg;
-                  begin
-                     Msg_Id :=
-                       Print_Regular_Msg (Msg4, Span, Severity, My_Conts);
-                  end;
-
-               --  In pretty mode, print the message, then print all the extra
-               --  information as continuation messages. The mechanism to
-               --  display messages in Errout is adapted in that case to
-               --  display continuation messages on newlines, with a suitable
-               --  indentation and no repetion of the  file:line:column: prefix
-               --  and info/warning/error information.
-
-               when GPO_Pretty =>
-                  if Details /= "" then
-                     My_Conts.Append
-                       (SGR_Note & "reason for check: " & SGR_Reset & Details);
-                  end if;
-
-                  if Explanation /= "" then
-                     My_Conts.Append
-                       (SGR_Note & "possible explanation: " & SGR_Reset
-                        & Explanation);
-                  end if;
-
-                  declare
-                     Fix_Str : constant String :=
-                       Compute_Message (Fix, Attach_Node, FF1, FF2,
-                                        With_Location => False);
-                  begin
-                     if Fix /= "" then
-                        My_Conts.Append
-                          (SGR_Note & "possible fix: " & SGR_Reset & Fix_Str);
-                     end if;
-                  end;
-
-                  Msg_Id :=
-                    Print_Regular_Msg (Msg3, Span, Severity, My_Conts);
-
-            end case;
-
+            declare
+               Fix_Msg     : constant String :=
+                 (if Fix /= "" then
+                     Compute_Message
+                       (Fix, Attach_Node, FF1, FF2, With_Location => False)
+                  else "");
+            begin
+               Msg_Id :=
+                 Print_Regular_Msg (Msg3, Span, Severity,
+                                    Details       => Details,
+                                    Explanation   => Explanation,
+                                    Fix           => Fix_Msg,
+                                    Continuations => My_Conts);
+            end;
          else
             Msg_Id := No_Message_Id;
          end if;
@@ -1052,9 +1000,8 @@ package body Flow_Error_Messages is
          & (if CWE then CWE_Message (Tag) else ""))
         & Extra_Msg
         & (if VC_File /= "" then ", vc file: " & VC_File else "");
-      Message : Unbounded_String     :=
-        To_Unbounded_String (Compute_Message (Msg, N));
-      Place_First : constant Boolean := Locate_On_First_Token (Tag);
+      Message     : constant String      := Compute_Message (Msg, N);
+      Place_First : constant Boolean     := Locate_On_First_Token (Tag);
       Span        : constant Source_Span := Compute_Sloc (N, Place_First);
       Slc         : constant Source_Ptr  := Span.Ptr;
       VC_Span     : constant Source_Span := Compute_Sloc (VC_Loc, Place_First);
@@ -1092,25 +1039,19 @@ package body Flow_Error_Messages is
       end if;
 
       for Cont of reverse Check_Info.Continuation loop
+         declare
+            Loc  : constant Source_Ptr := Sloc
+              (First_Node (Cont.Ada_Node));
+            File : constant String := File_Name (Loc);
+            Line : constant Physical_Line_Number :=
+              Get_Physical_Line_Number (Loc);
+            Msg  : constant String :=
+              To_String (Cont.Message)
+              & " at " & File & ":" & Image (Integer (Line), 1);
 
-         --  No need to emit the continuation if it is located on the same
-         --  node as the check message.
-
-         if Cont.Ada_Node /= N then
-            declare
-               Loc  : constant Source_Ptr := Sloc
-                 (First_Node (Cont.Ada_Node));
-               File : constant String := File_Name (Loc);
-               Line : constant Physical_Line_Number :=
-                 Get_Physical_Line_Number (Loc);
-               Msg  : constant String :=
-                 To_String (Cont.Message)
-                 & " at " & File & ":" & Image (Integer (Line), 1);
-
-            begin
-               Cont_Msgs.Append (Compute_Message (Msg, Cont.Ada_Node));
-            end;
-         end if;
+         begin
+            Cont_Msgs.Append (Compute_Message (Msg, Cont.Ada_Node));
+         end;
       end loop;
 
       --  The call to Check_Is_Annotated needs to happen on all paths, even
@@ -1161,114 +1102,21 @@ package body Flow_Error_Messages is
                   Details : constant String :=
                     (if Gnat2Why_Args.Output_Mode = GPO_Brief then ""
                      else Get_Details (N, E, Tag));
-
+                  User_Msg : constant String :=
+                    (if Check_Info.User_Message /= No_String
+                     then To_String (Check_Info.User_Message)
+                     else "");
                begin
-                  --  Only display message details when outputting on one line,
-                  --  either as part of automatic testing or inside an IDE, to
-                  --  avoid long unreadable messages for command-line use.
 
-                  case Gnat2Why_Args.Output_Mode is
-
-                  --  In brief mode, just print the check message
-
-                  when GPO_Brief =>
-                     Msg_Id :=
-                       Print_Regular_Msg
-                         (To_String (Message), Span, Severity, Cont_Msgs);
-
-                  --  In oneline mode, append all the extra information to the
-                  --  main message and print it.
-
-                  when GPO_Oneline =>
-                     if Check_Info.User_Message /= No_String then
-                        Append (Message, " [user message: "
-                                & To_String (Check_Info.User_Message) & "]");
-                     end if;
-
-                     if One_Liner /= "" then
-                        Append (Message, " (e.g. when " & One_Liner & ")");
-                     end if;
-
-                     if Details /= "" then
-                        Append
-                          (Message, " [reason for check: " & Details & "]");
-                     end if;
-
-                     declare
-                        Expl : constant String :=
-                          Get_Explanation (N, E, Tag, Explanation);
-                     begin
-                        if Expl /= "" then
-                           Append
-                             (Message,
-                              " [possible explanation: " & Expl & "]");
-                        end if;
-                     end;
-
-                     declare
-                        Fix : constant String :=
-                          Get_Fix_Or_Verdict (N, Tag, How_Proved, Verdict);
-                     begin
-                        if Fix /= "" then
-                           Append (Message, " [possible fix: " & Fix & "]");
-                        end if;
-                     end;
-
-                     Msg_Id :=
-                       Print_Regular_Msg
-                         (To_String (Message), Span, Severity, Cont_Msgs);
-
-                  --  In pretty mode, print the message, then print all the
-                  --  extra information as continuation messages. The mechanism
-                  --  to display messages in Errout is adapted in that
-                  --  case to display continuation messages on newlines,
-                  --  with a suitable indentation and no repetion of the
-                  --  file:line:column: prefix and info/warning/error
-                  --  information.
-
-                  when GPO_Pretty =>
-                     if Check_Info.User_Message /= No_String then
-                        Cont_Msgs.Append
-                          (SGR_Note & "user message: " & SGR_Reset
-                           & To_String (Check_Info.User_Message));
-                     end if;
-
-                     if One_Liner /= "" then
-                        Cont_Msgs.Append
-                          (SGR_Note & "e.g. when " & SGR_Reset & One_Liner);
-                     end if;
-
-                     if Details /= "" then
-                        Cont_Msgs.Append
-                          (SGR_Note & "reason for check: " & SGR_Reset
-                           & Details);
-                     end if;
-
-                     declare
-                        Expl : constant String :=
-                          Get_Explanation (N, E, Tag, Explanation);
-                     begin
-                        if Expl /= "" then
-                           Cont_Msgs.Append
-                             (SGR_Note & "possible explanation: "
-                              & SGR_Reset & Expl);
-                        end if;
-                     end;
-
-                     declare
-                        Fix : constant String :=
-                          Get_Fix_Or_Verdict (N, Tag, How_Proved, Verdict);
-                     begin
-                        if Fix /= "" then
-                           Cont_Msgs.Append
-                             (SGR_Note & "possible fix: " & SGR_Reset & Fix);
-                        end if;
-                     end;
-
-                     Msg_Id :=
-                       Print_Regular_Msg
-                         (To_String (Message), Span, Severity, Cont_Msgs);
-                  end case;
+                  Msg_Id := Print_Regular_Msg
+                    (Message, Span, Severity,
+                     Details       => Details,
+                     Explanation   => Get_Explanation (N, E, Tag, Explanation),
+                     Fix           =>
+                       Get_Fix_Or_Verdict (N, Tag, How_Proved, Verdict),
+                     CE            => One_Liner,
+                     User_Message  => User_Msg,
+                     Continuations => Cont_Msgs);
                end;
             end if;
 
@@ -1276,13 +1124,15 @@ package body Flow_Error_Messages is
             if Report_Mode /= GPR_Fail then
                Msg_Id :=
                  Print_Regular_Msg
-                   (To_String (Message), Span, Severity, Cont_Msgs);
+                   (Message, Span, Severity,
+                    Continuations => Cont_Msgs);
             end if;
 
          when Warning_Kind =>
             Msg_Id :=
               Print_Regular_Msg
-                (To_String (Message), Span, Severity, Cont_Msgs);
+                (Message, Span, Severity,
+                 Continuations => Cont_Msgs);
 
          when Error_Kind =>
             --  cannot happen
@@ -4013,10 +3863,37 @@ package body Flow_Error_Messages is
      (Msg           : String;
       Span          : Source_Span;
       Severity      : Msg_Severity;
+      Details       : String := "";
+      Explanation   : String := "";
+      Fix           : String := "";
+      CE            : String := "";
+      User_Message  : String := "";
       Continuations : String_Lists.List := String_Lists.Empty)
       return Message_Id
    is
+
       Id            : constant Message_Id := Message_Id_Counter;
+
+      procedure Wrap_Error_Msg (Severity : String;
+                                Msg      : String;
+                                Span     : Source_Span);
+
+      --------------------
+      -- Wrap_Error_Msg --
+      --------------------
+
+      procedure Wrap_Error_Msg (Severity : String;
+                                Msg      : String;
+                                Span     : Source_Span)
+      is
+         Actual_Msg : constant String :=
+           Severity & Escape (Msg) & "!!" &
+         (if Ide_Mode
+          then "'['#" & Image (Integer (Id), 1) & "']"
+          else "");
+      begin
+         Error_Msg (Actual_Msg, Span);
+      end Wrap_Error_Msg;
 
       --  Errout.Error_Msg will add "info:" (on continuation messages
       --  only) and "warning:" prefix when needed, so we only have to do
@@ -4030,14 +3907,86 @@ package body Flow_Error_Messages is
             when High_Check_Kind   => "high: ",
             when Warning_Kind      => "?",
             when Error_Kind        => "");
-      Actual_Msg    : constant String :=
-        Severity_Text & Escape (Msg) & "!!" &
-        (if Ide_Mode
-         then "'['#" & Image (Integer (Id), 1) & "']"
-         else "");
+
+      My_Conts : String_Lists.List := Continuations;
+   --  Beginning of processing for Print_Regular_Msg
+
    begin
       Message_Id_Counter := Message_Id_Counter + 1;
-      Error_Msg (Actual_Msg, Span);
+      case Gnat2Why_Args.Output_Mode is
+         --  In brief mode, just print the check message
+
+         when GPO_Brief =>
+            Wrap_Error_Msg (Severity_Text, Msg, Span);
+
+         --  In oneline mode, append all the extra information to the
+         --  main message and print it.
+
+         when GPO_Oneline =>
+            declare
+               User_Msg        : constant String :=
+                 (if User_Message /= ""
+                  then " [user message: " & User_Message & "]"
+                  else "");
+               CE_Msg          : constant String :=
+                 (if CE /= ""
+                  then " (e.g. when " & CE & ")"
+                  else "");
+               Details_Msg     : constant String :=
+                 (if Details /= ""
+                  then " [reason for check: " & Details & "]"
+                  else "");
+               Explanation_Msg : constant String :=
+                 (if Explanation /= ""
+                  then " [possible explanation: " & Explanation & "]"
+                  else "");
+               Fix_Msg         : constant String :=
+                 (if Fix /= "" then " [possible fix: " & Fix & "]"
+                  else "");
+               Msg4            : constant String :=
+                 Msg & User_Msg & CE_Msg
+                 & Details_Msg & Explanation_Msg & Fix_Msg;
+            begin
+               Wrap_Error_Msg (Severity_Text, Msg4, Span);
+            end;
+
+         --  In pretty mode, print the message, then print all the extra
+         --  information as continuation messages. The mechanism to
+         --  display messages in Errout is adapted in that case to
+         --  display continuation messages on newlines, with a suitable
+         --  indentation and no repetion of the  file:line:column: prefix
+         --  and info/warning/error information.
+
+         when GPO_Pretty =>
+
+            if User_Message /= "" then
+               My_Conts.Append
+                 (SGR_Note & "user message: " & SGR_Reset & User_Message);
+            end if;
+
+            if CE /= "" then
+               My_Conts.Append
+                 (SGR_Note & "e.g. when " & SGR_Reset & CE);
+            end if;
+
+            if Details /= "" then
+               My_Conts.Append
+                 (SGR_Note & "reason for check: " & SGR_Reset & Details);
+            end if;
+
+            if Explanation /= "" then
+               My_Conts.Append
+                 (SGR_Note & "possible explanation: " & SGR_Reset
+                  & Explanation);
+            end if;
+
+            if Fix /= "" then
+               My_Conts.Append
+                 (SGR_Note & "possible fix: " & SGR_Reset & Fix);
+            end if;
+
+            Wrap_Error_Msg (Severity_Text, Msg, Span);
+      end case;
       declare
          Sev_Text_Cont : constant String :=
            (if Gnat2Why_Args.Output_Mode in GPO_Pretty
@@ -4045,8 +3994,8 @@ package body Flow_Error_Messages is
             then ""
             else Severity_Text);
       begin
-         for Elt of Continuations loop
-            Error_Msg ("\" & Sev_Text_Cont & Escape (Elt), Span);
+         for Elt of My_Conts loop
+            Wrap_Error_Msg ("\" & Sev_Text_Cont, Elt, Span);
          end loop;
       end;
       return Id;

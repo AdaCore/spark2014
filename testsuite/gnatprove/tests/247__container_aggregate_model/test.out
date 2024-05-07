@@ -22,6 +22,7 @@ main.adb:66:09: info: after a call to Empty at main.adb:76
 main.adb:66:09: info: after a call to Insert at main.adb:83
 main.adb:66:09: info: after a call to Insert at main.adb:83
 main.adb:66:09: info: after a call to Insert at main.adb:83
+main.adb:66:09: info: during checks for container aggregates at main.adb:66
 main.adb:66:09: info: when establishing invariant on Capacity at main.adb:68
 main.adb:66:09: info: when establishing invariant on Contains at spark-containers-functional-sets.ads:94, in instantiation at main.adb:59
 main.adb:66:09: info: when establishing invariant on Length at spark-containers-functional-sets.ads:119, in instantiation at main.adb:59

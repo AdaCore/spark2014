@@ -1154,7 +1154,7 @@ package body Why.Gen.Arrays is
             Array_Theory  : constant W_Module_Id :=
               Get_Array_Theory (E, Relaxed_Init).Module;
             Nb_Subst      : constant Positive :=
-              (if Relaxed_Init then 1 else 2);
+              (if Relaxed_Init then 2 else 3);
             Subst         : W_Clone_Substitution_Array (1 .. Nb_Subst);
          begin
             Emit (Th,
@@ -1168,10 +1168,17 @@ package body Why.Gen.Arrays is
                  Image     => New_Name (Symb   => NID ("map"),
                                         Module => Array_Theory));
 
+            Subst (2) :=
+              New_Clone_Substitution
+                (Kind      => EW_Predicate,
+                 Orig_Name => New_Name (Symb => NID ("has_bounds")),
+                 Image     => New_Name (Symb   => NID ("has_bounds"),
+                                        Module => Array_Theory));
+
             --  We do not have an equality on wrapper types
 
             if not Relaxed_Init then
-               Subst (2) :=
+               Subst (3) :=
                  New_Clone_Substitution
                    (Kind      => EW_Function,
                     Orig_Name => New_Name (Symb => NID ("array_bool_eq")),
@@ -2718,6 +2725,7 @@ package body Why.Gen.Arrays is
    function New_Const_Call
      (Domain : EW_Domain;
       Elt    : W_Expr_Id;
+      Bounds : W_Expr_Array;
       Typ    : W_Type_Id) return W_Expr_Id
    is
       Relaxed_Init : constant Boolean := Is_Init_Wrapper_Type (Typ);
@@ -2727,7 +2735,7 @@ package body Why.Gen.Arrays is
         New_Call
           (Domain => Domain,
            Name   => Get_Array_Theory (E, Relaxed_Init).Const,
-           Args   => (1 => Elt),
+           Args   => Elt & Bounds,
            Typ    => EW_Split (E, Relaxed_Init => Relaxed_Init));
    end New_Const_Call;
 
@@ -3036,6 +3044,42 @@ package body Why.Gen.Arrays is
            Args   => (1 => Elt, 2 => Pos),
            Typ    => EW_Split (E, Relaxed_Init => Relaxed_Init));
    end New_Singleton_Call;
+
+   --------------------
+   -- New_Slice_Call --
+   --------------------
+
+   function New_Slice_Call
+     (Domain : EW_Domain;
+      Arr    : W_Expr_Id;
+      Typ    : W_Type_Id;
+      Low    : W_Expr_Id;
+      High   : W_Expr_Id) return W_Expr_Id
+   is
+      Relaxed_Init : constant Boolean := Is_Init_Wrapper_Type (Typ);
+      E            : constant Entity_Id := Get_Ada_Node (+Typ);
+   begin
+      return
+        New_Call
+          (Domain => Domain,
+           Name   => Get_Array_Theory_1 (E, Relaxed_Init).Slice,
+           Args   => (1 => Arr, 2 => Low, 3 => High),
+           Typ    => EW_Split (E, Relaxed_Init => Relaxed_Init));
+   end New_Slice_Call;
+
+   --------------------------
+   -- New_Well_Formed_Pred --
+   --------------------------
+
+   function New_Well_Formed_Pred (Arr : W_Term_Id) return W_Pred_Id is
+      Typ          : constant W_Type_Id := Get_Type (+Arr);
+      Relaxed_Init : constant Boolean := Is_Init_Wrapper_Type (Typ);
+      E            : constant Entity_Id := Get_Ada_Node (+Typ);
+   begin
+      return New_Call
+        (Name => E_Symb (E, WNE_Array_Well_Formed, Relaxed_Init),
+         Args => (1 => +Arr));
+   end New_Well_Formed_Pred;
 
    -----------------------------------
    -- Prepare_Indexes_Substitutions --
