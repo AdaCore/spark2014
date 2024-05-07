@@ -5,8 +5,6 @@ workflow:
       when: always
 
 variables:
-   # The common part of the URL for cloning from within a CI
-   GIT_CLONE_BASE: https://gitlab-ci-token:${CI_JOB_TOKEN}@${CI_SERVER_HOST}:${CI_SERVER_PORT}/
    PACKAGE_BASE_NAME: spark2014.tar.gz
    PACKAGE_ABSOLUTE_NAME: $CI_PROJECT_DIR/$PACKAGE_BASE_NAME
 
@@ -147,11 +145,7 @@ precommit_checks:
   services:
     - image:e3
   script:
-    - git config --global --add
-        url."${GIT_CLONE_BASE}".insteadOf "git@ssh.gitlab.adacore-it.com:"
-    - git config --global --add
-        url."${GIT_CLONE_BASE}".insteadOf "ssh://git@ssh.gitlab.adacore-it.com/"
-
+    - /it/bin/set_git_config.sh
     - python -mvenv /tmp/venv
     - . /tmp/venv/bin/activate
     - python -mpip install pre-commit
