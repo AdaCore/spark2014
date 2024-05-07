@@ -48,7 +48,7 @@ stages:
 
 .spark2014_test:
   services:
-     - image:e3
+     - image:pe-base
      - cpu:16
   stage: test
   script:
@@ -109,7 +109,7 @@ stages:
 
 build:
   services:
-     - image:e3
+     - image:pe-base
      - cpu:8
   stage: build
   script:
@@ -134,7 +134,7 @@ build:
 
 issue_present:
   services:
-     - image:e3
+     - image:pe-base
   rules:
     - if: $CI_PIPELINE_SOURCE == 'merge_request_event'
   stage: check
@@ -172,7 +172,7 @@ spark2014_nocache:
 
 acats:
   services:
-     - image:e3
+     - image:pe-base
      - cpu:16
   stage: test
   script:
@@ -204,7 +204,7 @@ acats:
 build_docs:
   stage: build
   services:
-     - image:e3
+     - image:pe-base
   rules:
     - changes:
       - docs/**/*
