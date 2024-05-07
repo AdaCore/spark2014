@@ -59,7 +59,7 @@ binary_trees.adb:185:46: info: index check proved (CVC5: 4 VC)
 binary_trees.adb:191:13: info: loop invariant initialization proved (CVC5: 1 VC; Trivial: 1 VC)
 binary_trees.adb:192:50: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove not ToDo (F.C (J).Parent)
 binary_trees.adb:192:67: medium: array index check might fail [reason for check: value must be a valid index into the array]
-binary_trees.adb:196:13: info: loop invariant initialization proved (CVC5: 1 VC; Trivial: 2 VC)
+binary_trees.adb:200:24: medium: loop invariant might fail in first iteration, cannot prove J = K
 binary_trees.adb:200:24: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove J = K
 binary_trees.adb:204:33: info: loop invariant initialization proved (CVC5: 2 VC)
 binary_trees.adb:204:33: info: loop invariant preservation proved (CVC5: 2 VC)
@@ -1116,8 +1116,8 @@ red_black_trees.adb:71:13: info: loop invariant initialization proved (CVC5: 1 V
 red_black_trees.adb:71:40: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove Res (I).Count <= Res (I).Depth
 red_black_trees.adb:75:13: info: loop invariant initialization proved (CVC5: 1 VC)
 red_black_trees.adb:76:15: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove Res (I).Depth = Max or Res (I).Depth <= N
-red_black_trees.adb:84:21: medium: loop invariant might fail in first iteration, cannot prove Last (M (I).A) < Max - N [possible fix: you should consider adding a postcondition to function Last or turning it into an expression function in its unit spec]
 red_black_trees.adb:84:21: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove Last (M (I).A) < Max - N [possible fix: you should consider adding a postcondition to function Last or turning it into an expression function in its unit spec]
+red_black_trees.adb:87:20: medium: loop invariant might fail in first iteration, cannot prove Res (I).Status = (Res (Peek (T.Struct, I, Left)).Count = Res (Peek (T.Struct, I, Right)).Count)
 red_black_trees.adb:88:26: info: precondition proved (CVC5: 4 VC)
 red_black_trees.adb:89:26: info: precondition proved (CVC5: 4 VC)
 red_black_trees.adb:91:26: info: precondition proved (CVC5: 4 VC)

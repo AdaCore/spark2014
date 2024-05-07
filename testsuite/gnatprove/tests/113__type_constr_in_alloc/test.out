@@ -1,0 +1,2 @@
+main.adb:6:54: error: uninitialized allocator with type constraints is not yet supported
+gnatprove: error during flow analysis and proof

@@ -106,8 +106,8 @@ a-strbou.ads:2575:31: info: discriminant check proved (CVC5: 1 VC), in instantia
 a-strbou.ads:2575:31: info: predicate check proved (CVC5: 2 VC; Trivial: 1 VC), in instantiation at test.ads:6
 spark-containers-parameter_checks.ads:242:19: medium: postcondition might fail, in instantiation at spark-containers-formal-hashed_maps.ads:168, in instantiation at test.ads:12 [possible fix: you should consider adding a postcondition to function SBHash or turning it into an expression function]
 test.ads:6:04: info: implicit function contract might not be available on calls from enclosing unit
-test.ads:6:04: info: in instantiation at a-strbou.ads:88
-test.ads:6:04: warning: in instantiation at a-strbou.ads:2571
+test.ads:6:04: info: in instantiation at a-strbou.ads
+test.ads:6:04: warning: in instantiation at a-strbou.ads
 test.ads:6:04: warning: pragma "Stream_Convert" ignored (not yet supported)
 test.ads:9:13: info: implicit function contract might not be available on calls from enclosing unit
 test.ads:12:04: info: function contract might not be available on implicit recursive calls

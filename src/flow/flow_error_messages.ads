@@ -29,6 +29,7 @@ with Flow_Types;                use Flow_Types;
 with GNATCOLL.JSON;             use GNATCOLL.JSON;
 with SPARK_Definition.Annotate; use SPARK_Definition.Annotate;
 with SPARK_Util;                use SPARK_Util;
+with String_Utils;              use String_Utils;
 with Types;                     use Types;
 with VC_Kinds;                  use VC_Kinds;
 
@@ -107,15 +108,10 @@ package Flow_Error_Messages is
 
    type Suppressed_Message (Suppression_Kind : Suppression := None) is record
       case Suppression_Kind is
-         when Warning | Check =>
-            Msg : String_Id;
-            case Suppression_Kind is
-               when Check =>
-                  Annot_Kind    : Annotate_Kind;
-                  Justification : Unbounded_String;
-               when others =>
-                  null;
-            end case;
+         when Check =>
+            Msg           : String_Id;
+            Annot_Kind    : Annotate_Kind;
+            Justification : Unbounded_String;
          when others =>
             null;
       end case;
@@ -124,9 +120,8 @@ package Flow_Error_Messages is
    --  suppressed, we can store its message, annotation kind and justification.
 
    Suppressed_Warning : constant Suppressed_Message :=
-     Suppressed_Message'(Suppression_Kind => Warning, Msg => First_String_Id);
-   --  This represents a suppressed warning. We don't care about its content,
-   --  because suppressed warnings are not reported.
+     Suppressed_Message'(Suppression_Kind => Warning);
+   --  This represents a suppressed warning
 
    No_Suppressed_Message : constant Suppressed_Message :=
      Suppressed_Message'(Suppression_Kind => None);
@@ -155,29 +150,27 @@ package Flow_Error_Messages is
    --  Find a good place to raise an error for vertex V
 
    procedure Error_Msg_Flow
-     (E            : Entity_Id;
-      Msg          : String;
-      Details      : String        := "";
-      Explanation  : String        := "";
-      Fix          : String        := "";
-      Severity     : Msg_Severity;
-      N            : Node_Id;
-      Suppressed   : out Boolean;
-      F1           : Flow_Id       := Null_Flow_Id;
-      F2           : Flow_Id       := Null_Flow_Id;
-      F3           : Flow_Id       := Null_Flow_Id;
-      FF1          : Flow_Id       := Null_Flow_Id;
-      FF2          : Flow_Id       := Null_Flow_Id;
-      Tag          : Flow_Tag_Kind := Empty_Tag;
-      Explain_Code : Natural       := 0;
-      SRM_Ref      : String        := "";
-      Tracefile    : String        := "";
-      Continuation : Boolean       := False)
+     (E             : Entity_Id;
+      Msg           : String;
+      Details       : String             := "";
+      Explanation   : String             := "";
+      Fix           : String             := "";
+      Severity      : Msg_Severity;
+      N             : Node_Id;
+      Suppressed    : out Boolean;
+      F1            : Flow_Id            := Null_Flow_Id;
+      F2            : Flow_Id            := Null_Flow_Id;
+      F3            : Flow_Id            := Null_Flow_Id;
+      FF1           : Flow_Id            := Null_Flow_Id;
+      FF2           : Flow_Id            := Null_Flow_Id;
+      Tag           : Flow_Tag_Kind      := Empty_Tag;
+      Explain_Code  : Natural            := 0;
+      SRM_Ref       : String             := "";
+      Tracefile     : String             := "";
+      Continuations : String_Lists.List  := String_Lists.Empty)
    with Pre => (if Present (F2) then Present (F1))
      and then (if Present (F3) then Present (F2))
      and then (if Present (FF2) then Present (FF1))
-     and then (if Continuation
-               then Tracefile = "" and then Details = "" and then Fix = "")
      and then (if Severity in Check_Kind then Tag in Valid_Flow_Tag_Kind)
      and then (case Tag is
                  when Empty_Tag =>
@@ -209,29 +202,27 @@ package Flow_Error_Messages is
    --     "1.2.3(4)"
 
    procedure Error_Msg_Flow
-     (FA           : in out Flow_Analysis_Graphs;
-      Msg          : String;
-      Details      : String                := "";
-      Explanation  : String                := "";
-      Fix          : String                := "";
-      Severity     : Msg_Severity;
-      N            : Node_Id;
-      F1           : Flow_Id               := Null_Flow_Id;
-      F2           : Flow_Id               := Null_Flow_Id;
-      F3           : Flow_Id               := Null_Flow_Id;
-      FF1          : Flow_Id               := Null_Flow_Id;
-      FF2          : Flow_Id               := Null_Flow_Id;
-      Tag          : Flow_Tag_Kind         := Empty_Tag;
-      Explain_Code : Natural               := 0;
-      SRM_Ref      : String                := "";
-      Path         : Vertex_Sets.Set       := Vertex_Sets.Empty_Set;
-      Vertex       : Flow_Graphs.Vertex_Id := Flow_Graphs.Null_Vertex;
-      Continuation : Boolean               := False)
+     (FA            : in out Flow_Analysis_Graphs;
+      Msg           : String;
+      Details       : String                := "";
+      Explanation   : String                := "";
+      Fix           : String                := "";
+      Severity      : Msg_Severity;
+      N             : Node_Id;
+      F1            : Flow_Id               := Null_Flow_Id;
+      F2            : Flow_Id               := Null_Flow_Id;
+      F3            : Flow_Id               := Null_Flow_Id;
+      FF1           : Flow_Id               := Null_Flow_Id;
+      FF2           : Flow_Id               := Null_Flow_Id;
+      Tag           : Flow_Tag_Kind         := Empty_Tag;
+      Explain_Code  : Natural               := 0;
+      SRM_Ref       : String                := "";
+      Path          : Vertex_Sets.Set       := Vertex_Sets.Empty_Set;
+      Vertex        : Flow_Graphs.Vertex_Id := Flow_Graphs.Null_Vertex;
+      Continuations : String_Lists.List     := String_Lists.Empty)
    with Pre => (if Present (F2) then Present (F1))
      and then (if Present (F3) then Present (F2))
      and then (if Present (FF2) then Present (FF1))
-     and then (if Continuation
-               then Path.Is_Empty and then Details = "" and then Fix = "")
      and then (if Severity in Check_Kind then Tag in Valid_Flow_Tag_Kind)
      and then (case Tag is
                  when Empty_Tag =>
@@ -255,9 +246,22 @@ package Flow_Error_Messages is
    --  Finally, for debug purposes, Vertex should be set to the vertex
    --  where the error was detected. This is printed in debug mode.
 
+   function Substitute_Message (Text : String;
+                                N    : Node_Id;
+                                F1   : Flow_Id;
+                                F2   : Flow_Id := Null_Flow_Id;
+                                F3   : Flow_Id := Null_Flow_Id) return String;
+   --  Does the same substitution as Error_Msg_Flow would do, but just returns
+   --  the string.
+
+   function Not_Proved_Message
+     (Node : Node_Id;
+      Kind : VC_Kind) return String;
+   --  Return the message string for an unproved VC
+
    procedure Error_Msg_Proof
      (N             : Node_Id;
-      Msg           : String;
+      Extra_Msg     : String;
       Is_Proved     : Boolean;
       Tag           : VC_Kind;
       Cntexmp       : JSON_Value;

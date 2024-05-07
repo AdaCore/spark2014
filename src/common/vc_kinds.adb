@@ -634,6 +634,9 @@ package body VC_Kinds is
            "a reference to the ""Address"" attribute occuring within a "
           & "subtype indication, a range constraint, or a quantified"
           & " expression",
+         when Lim_Alloc_With_Type_Constraints =>
+           "an uninitialized allocator whose subtype indication has a type "
+          & "constraint",
          when Lim_Array_Conv_Different_Size_Modular_Index =>
            "a conversion between array types if some matching index types"
           & " are modular types of different sizes",

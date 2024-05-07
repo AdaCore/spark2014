@@ -1180,7 +1180,61 @@ package body SPARK_Definition is
 
    procedure Check_Source_Of_Move
      (Expr        : N_Subexpr_Id;
-      To_Constant : Boolean := False) is
+      To_Constant : Boolean := False)
+   is
+      procedure Check_Associations (Assocs : List_Id);
+      --  Check all associations of an aggregate
+
+      procedure Check_Expressions (Expressions : List_Id);
+      --  Check all expressions of an aggregate
+
+      procedure Check_Subobject (Expr : Node_Id);
+      --  Check a subobject
+
+      ------------------------
+      -- Check_Associations --
+      ------------------------
+
+      procedure Check_Associations (Assocs : List_Id) is
+         Assoc  : Node_Id := Nlists.First (Assocs);
+      begin
+         while Present (Assoc) loop
+            if not Box_Present (Assoc) then
+               Check_Subobject (Expression (Assoc));
+            end if;
+            Next (Assoc);
+         end loop;
+      end Check_Associations;
+
+      -----------------------
+      -- Check_Expressions --
+      -----------------------
+
+      procedure Check_Expressions (Expressions : List_Id) is
+         Positional : Node_Id := Nlists.First (Expressions);
+      begin
+         while Present (Positional) loop
+            Check_Subobject (Positional);
+            Next (Positional);
+         end loop;
+      end Check_Expressions;
+
+      ---------------------
+      -- Check_Subobject --
+      ---------------------
+
+      procedure Check_Subobject (Expr : Node_Id) is
+      begin
+         --  The subexpression is a subobject only if it contains deep
+         --  components. Otherwise, everything is copied to the target.
+
+         if Is_Deep (Etype (Expr)) then
+            Check_Source_Of_Move (Expr, To_Constant => To_Constant);
+         end if;
+      end Check_Subobject;
+
+   --  Start of processing for Check_Source_Of_Move
+
    begin
       if not Is_Path_Expression (Expr) then
          Mark_Violation ("expression as source of move", Expr);
@@ -1192,13 +1246,55 @@ package body SPARK_Definition is
            ("call to a traversal function as source of move", Expr);
       else
          declare
-            Root : constant Opt_Object_Kind_Id := Get_Root_Object (Expr);
+            Root : constant N_Subexpr_Id := Get_Root_Expr (Expr);
          begin
-            if Present (Root)
-              and then Is_Effectively_Volatile (Root)
-            then
-               Mark_Violation ("move of a volatile object", Expr);
-            end if;
+            case Nkind (Root) is
+               when N_Null
+                  | N_Function_Call
+               =>
+                  null;
+
+               when N_Expanded_Name
+                  | N_Identifier
+               =>
+                  if Is_Object (Entity (Root))
+                    and then Is_Effectively_Volatile (Entity (Root))
+                  then
+                     Mark_Violation ("move of a volatile object", Expr);
+                  end if;
+
+               when N_Allocator =>
+                  Check_Subobject (Expression (Root));
+
+               when N_Aggregate =>
+                  --  Container aggregates do not move their components since
+                  --  they reduce to procedure calls.
+
+                  if not SPARK_Util.Is_Container_Aggregate (Root) then
+                     Check_Expressions (Expressions (Root));
+                     Check_Associations (Component_Associations (Root));
+                  end if;
+
+               when N_Delta_Aggregate =>
+                  Check_Subobject (Expression (Root));
+                  Check_Associations (Component_Associations (Root));
+
+               when N_Extension_Aggregate =>
+                  Check_Subobject (Ancestor_Part (Root));
+                  Check_Expressions (Expressions (Root));
+                  Check_Associations (Component_Associations (Root));
+
+               when N_Attribute_Reference =>
+                  if Get_Attribute_Id (Attribute_Name (Root))
+                    = Attribute_Update
+                  then
+                     Check_Subobject (Prefix (Root));
+                     Check_Expressions (Expressions (Root));
+                  end if;
+
+               when others =>
+                  raise Program_Error;
+            end case;
          end;
       end if;
    end Check_Source_Of_Move;
@@ -1421,13 +1517,20 @@ package body SPARK_Definition is
                return True;
 
             --  The allocating expression corresponds to a component value in
-            --  an aggregate occurring in an allocating context.
+            --  an aggregate occurring in an allocating context. Container
+            --  aggregates are really subprogram calls, they are never
+            --  allocating contexts.
 
             when N_Aggregate
-               | N_Component_Association
-               | N_Iterated_Component_Association
                | N_Delta_Aggregate
                | N_Extension_Aggregate
+            =>
+               if SPARK_Util.Is_Container_Aggregate (Context) then
+                  return False;
+               end if;
+
+            when N_Component_Association
+               | N_Iterated_Component_Association
             =>
                null;
 
@@ -1910,15 +2013,22 @@ package body SPARK_Definition is
 
                else
                   declare
-                     --  In non-interfering contexts the subtype indicator
-                     --  is always a subtype name, because frontend creates
-                     --  an itype for each constrained subtype indicator.
                      Expr : constant Node_Id := Expression (N);
-                     pragma Assert (Is_Entity_Name (Expr));
-
-                     Typ  : constant Type_Kind_Id := Entity (Expr);
+                     Typ  : constant Type_Kind_Id :=
+                       (if Nkind (Expr) = N_Subtype_Indication
+                        then Entity (Subtype_Mark (Expr))
+                        else Entity (Expr));
                   begin
-                     if not In_SPARK (Typ) then
+                     --  In general, the subtype indicator is a subtype name,
+                     --  because frontend creates an itype for each constrained
+                     --  subtype indicator. When it is not possible (when the
+                     --  allocator occurs in contracts for example) reject the
+                     --  code.
+
+                     if Nkind (Expr) = N_Subtype_Indication then
+                        Mark_Unsupported
+                          (Lim_Alloc_With_Type_Constraints, Expr);
+                     elsif not In_SPARK (Typ) then
                         Mark_Violation (Expr, Typ);
 
                      elsif Default_Initialization (Typ)

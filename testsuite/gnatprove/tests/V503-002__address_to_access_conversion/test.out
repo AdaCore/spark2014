@@ -1,4 +1,4 @@
-main.adb:5:04: warning: in instantiation at s-atacco.ads:50
+main.adb:5:04: warning: in instantiation at s-atacco.ads
 main.adb:5:04: warning: pragma "No_Strict_Aliasing" ignored (not yet supported)
 main.adb:8:36: warning: call to "To_Pointer" is assumed to return a valid access designating a valid value
 main.adb:8:36: warning: the value returned by a call to "To_Pointer" is assumed to have no aliases
