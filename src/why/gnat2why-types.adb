@@ -860,25 +860,28 @@ package body Gnat2Why.Types is
       -----------------------------------
 
       procedure Generate_Axioms_For_Equality (E : Type_Kind_Id) is
-         Eq             : constant Entity_Id :=
+         Eq                      : constant Entity_Id :=
            Get_User_Defined_Eq (Base_Type (E));
-         Ty             : constant W_Type_Id := EW_Abstract (E);
-         Is_Tagged_Root : constant Boolean :=
-           Is_Tagged_Type (E) and then Root_Retysp (E) = E;
-         Var_A          : constant W_Identifier_Id :=
+         Ty                      : constant W_Type_Id := EW_Abstract (E);
+         Declares_Dispatching_Eq : constant Boolean :=
+           Is_Tagged_Type (E)
+           and then Root_Retysp (E) = E
+           and then
+             (if Present (Eq) then not Is_Hidden_Dispatching_Operation (Eq));
+         Var_A                   : constant W_Identifier_Id :=
            New_Identifier (Ada_Node => E,
                            Name     => "a",
                            Typ      => Ty);
-         Var_B          : constant W_Identifier_Id :=
+         Var_B                   : constant W_Identifier_Id :=
            New_Identifier (Ada_Node => E,
                            Name     => "b",
                            Typ      => Ty);
 
-         User_Th     : Theory_UC;
-         Dispatch_Th : Theory_UC;
+         User_Th                 : Theory_UC;
+         Dispatch_Th             : Theory_UC;
 
       begin
-         if Is_Tagged_Root then
+         if Declares_Dispatching_Eq then
             Dispatch_Th :=
               Open_Theory
                 (WF_Context, E_Module (E, Dispatch_Equality_Axiom),
@@ -966,7 +969,7 @@ package body Gnat2Why.Types is
                --  If E is the root of a tagged hierarchy, also generate a
                --  definition for the dispatching equality symbol.
 
-               if Is_Tagged_Root then
+               if Declares_Dispatching_Eq then
 
                   --  We don't handle hardcoded dispatching equality yet
 
@@ -1015,7 +1018,7 @@ package body Gnat2Why.Types is
          --  equality on the root type was redefined, because in this case we
          --  already have a defining axiom for the dispatching equality.
 
-         elsif Is_Tagged_Root and then not Is_Concurrent_Type (E) then
+         elsif Declares_Dispatching_Eq and then not Is_Concurrent_Type (E) then
             declare
                Descendants : Node_Sets.Set := Get_Descendant_Set (E);
                Dispatch_Eq : constant W_Identifier_Id :=
@@ -1097,7 +1100,7 @@ package body Gnat2Why.Types is
             end;
          end if;
 
-         if Is_Tagged_Root then
+         if Declares_Dispatching_Eq then
             Close_Theory (Dispatch_Th,
                           Kind => Definition_Theory);
             Record_Extra_Dependency
