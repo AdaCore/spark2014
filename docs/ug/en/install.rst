@@ -116,7 +116,11 @@ do this, follow the installation instructions of Alire, then you can add the
 
     alr with gnatprove
 
-Alire will download gnatprove if necessary.
+Alire will download gnatprove if necessary. You can then call ``gnatprove``
+from the command line or in your editor after setting the environment for your
+Alire project using::
+
+    eval `alr printenv`
 
 The older GNAT Community version
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
