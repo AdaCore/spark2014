@@ -15,7 +15,6 @@ termination_explanations_and_fixes.adb:76:22: info: range check proved (CVC5: 2 
 termination_explanations_and_fixes.adb:84:07: medium: implicit aspect Always_Terminates on "F_Caller" could be incorrect, call to "P_Callee" might be nonterminating [possible fix: annotate "P_Callee" with aspect Always_Terminates]
 termination_explanations_and_fixes.ads:7:04: info: function contract feasibility proved (CVC5: 1 VC)
 termination_explanations_and_fixes.ads:8:13: info: implicit aspect Always_Terminates on "F" has been proved, subprogram will terminate
-termination_explanations_and_fixes.ads:17:14: warning: subprogram "P" has no effect
 termination_explanations_and_fixes.ads:18:14: warning: subprogram "Use_Acc_To_P" has no effect
 termination_explanations_and_fixes.ads:26:13: info: implicit aspect Always_Terminates on "Dispatching_F" has been proved, subprogram will terminate
 termination_explanations_and_fixes.ads:27:29: info: initialization of "X" proved

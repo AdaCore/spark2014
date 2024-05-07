@@ -3,7 +3,6 @@ q-child-child.ads:2:13: info: initialization of "C" constituent of "State2" prov
 q-child-child.ads:3:10: info: data dependencies proved
 q-child-child.ads:3:32: high: "Q.State1" is not initialized
 q-child-child.ads:3:40: high: "Q.State2" is not initialized
-q-child.ads:2:14: warning: subprogram "Dummy" has no effect
 q.adb:5:41: info: initialization of "B" constituent of "State1" proved
 q.adb:5:44: info: initialization of "C" constituent of "State2" proved
 q.ads:4:11: info: data dependencies proved

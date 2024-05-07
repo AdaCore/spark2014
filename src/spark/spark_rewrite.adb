@@ -32,6 +32,7 @@ with Exp_Attr;               use Exp_Attr;
 with Flow_Error_Messages;
 with Gnat2Why_Args;
 with Namet;                  use Namet;
+with Nlists;
 with Nmake;
 with Sem_Aux;                use Sem_Aux;
 with Sem_Eval;               use Sem_Eval;
@@ -50,6 +51,16 @@ package body SPARK_Rewrite is
    --  Rewrite the type conversion introduced on multiplication/division
    --  between fixed-point values, to avoid the use of the universal-fixed
    --  type used by the compiler as an overload resolution trick.
+
+   procedure Rewrite_Null_Procedure (N : N_Subprogram_Declaration_Id);
+   --  Rewrite a null procedure into an equivalent procedure body. We are doing
+   --  it here to avoid interfering with freezing in the frontend, as a null
+   --  procedure declaration does not cause freezing, while a procedure body
+   --  does.
+   --
+   --  Note that Sem_Ch6.Analyze_Null_Procedure already rewrites null procedure
+   --  declarations as procedure bodies when they act as completion, so N here
+   --  cannot be a completion.
 
    procedure Rewrite_Subprogram_Instantiation (N : Node_Id)
    with Pre => Nkind (N) in N_Subprogram_Instantiation;
@@ -86,6 +97,62 @@ package body SPARK_Rewrite is
    begin
       Set_Etype (Expr, Typ);
    end Rewrite_Fixed_Point_Mult_Div;
+
+   ----------------------------
+   -- Rewrite_Null_Procedure --
+   ----------------------------
+
+   procedure Rewrite_Null_Procedure (N : N_Subprogram_Declaration_Id) is
+      Loc  : constant Source_Ptr := Sloc (N);
+      Spec : constant Node_Id    := Specification (N);
+      Subp : constant Entity_Id  := Defining_Entity (Spec);
+
+      Form      : Node_Id;
+      Subp_Body : Entity_Id;
+      Null_Stmt : constant Node_Id := Nmake.Make_Null_Statement (Loc);
+      Null_Body : constant Node_Id :=
+        Nmake.Make_Subprogram_Body (Loc,
+          Specification              => New_Copy_Tree (Spec),
+          Declarations               => Nlists.New_List,
+          Handled_Statement_Sequence =>
+            Nmake.Make_Handled_Sequence_Of_Statements (Loc,
+              Statements => Nlists.New_List (Null_Stmt)));
+   begin
+      Set_Corresponding_Spec (Null_Body, Subp);
+
+      --  Create new entities for body and formals
+
+      Subp_Body := Nmake.Make_Defining_Identifier
+        (Sloc (Subp), Chars (Subp));
+      Mutate_Ekind (Subp_Body, E_Subprogram_Body);
+      Set_Etype (Subp_Body, Etype (Defining_Entity (N)));
+      Set_Defining_Unit_Name
+        (Specification (Null_Body), Subp_Body);
+      Set_Scope (Subp_Body, Scope (Subp));
+      Set_SPARK_Pragma (Subp_Body, SPARK_Pragma (Subp));
+
+      Form := Nlists.First (Parameter_Specifications
+                     (Specification (Null_Body)));
+      while Present (Form) loop
+         declare
+            Param     : constant Entity_Id :=
+              Defining_Identifier (Form);
+            New_Param : constant Entity_Id :=
+              Nmake.Make_Defining_Identifier
+                (Sloc (Param), Chars (Param));
+         begin
+            Mutate_Ekind (New_Param, Ekind (Param));
+            Set_Etype (New_Param, Etype (Param));
+            Set_Defining_Identifier (Form, New_Param);
+            Set_Scope (New_Param, Subp);
+            Nlists.Next (Form);
+         end;
+      end loop;
+
+      Set_Corresponding_Body (N, Subp_Body);
+      Set_Null_Present (Specification (N), False);
+      Nlists.Insert_After (N, Null_Body);
+   end Rewrite_Null_Procedure;
 
    --------------------------
    -- Rewrite_Real_Literal --
@@ -464,6 +531,18 @@ package body SPARK_Rewrite is
                         end if;
                      end if;
                   end;
+               end if;
+
+            when N_Subprogram_Declaration =>
+
+               --  We always unconditionally complete the null procedure with a
+               --  null body in GNATprove, because some checks in GNATprove are
+               --  applied to this body when it is analyzed.
+
+               if Nkind (Specification (N)) = N_Procedure_Specification
+                 and then Null_Present (Specification (N))
+               then
+                  Rewrite_Null_Procedure (N);
                end if;
 
             when others =>

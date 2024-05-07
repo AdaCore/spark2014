@@ -1,4 +1,3 @@
-early_init.ads:3:14: warning: subprogram "Dummy" has no effect
 early_init.ads:6:09: info: flow dependencies proved
 early_init.ads:7:09: medium: initial condition might fail
 early_init.ads:9:07: info: initialization of "V1" proved

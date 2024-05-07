@@ -681,6 +681,18 @@ package SPARK_Util.Subprograms is
    --  Ada.Synchronous_Task_Control.Suspend_Until_True or
    --  Ada.Synchronous_Task_Control.EDF.Suspend_Until_True_And_Set_Deadline.
 
+   function Was_Null_Procedure (N : Node_Id) return Boolean is
+     (declare
+        HSS : constant List_Id :=
+          Statements (Handled_Statement_Sequence (N));
+      begin
+        Nkind (N) = N_Subprogram_Body
+          and then List_Length (HSS) = 1
+          and then Nkind (First (HSS)) = N_Null_Statement
+          and then not Comes_From_Source (N));
+   --  Return whether procedure body N was originally a null procedure, by
+   --  recognizing a null body which does not come from source.
+
    ------------------------------------------------
    --  Queries related to dispatching operations --
    ------------------------------------------------

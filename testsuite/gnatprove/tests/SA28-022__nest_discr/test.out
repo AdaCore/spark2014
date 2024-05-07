@@ -1,2 +1,1 @@
 repro.ads:18:47: info: range check proved (CVC5: 2 VC)
-repro.ads:22:14: warning: subprogram "Foo" has no effect

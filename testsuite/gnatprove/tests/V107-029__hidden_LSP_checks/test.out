@@ -13,7 +13,5 @@ fl1.ads:20:13: info: precondition is weaker than class-wide precondition (CVC5: 
 fl1.ads:24:13: info: implicit aspect Always_Terminates on "Get_F" has been proved, subprogram will terminate
 fl1.ads:26:13: medium: precondition might be stronger than class-wide precondition
 fl1.ads:29:13: medium: precondition is stronger than the default class-wide precondition of True
-fl1.ads:33:22: warning: "X" is not modified, could be IN
-fl1.ads:37:22: warning: "X" is not modified, could be IN
 fl1.ads:38:14: info: postcondition proved (CVC5: 1 VC)
 fl1.ads:38:14: medium: postcondition might be weaker than class-wide postcondition

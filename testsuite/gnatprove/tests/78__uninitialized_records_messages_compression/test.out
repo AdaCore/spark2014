@@ -267,14 +267,12 @@ p.ads:46:33: info: initialization of "R" proved
 p.ads:48:14: info: aspect Always_Terminates on "Initialize_Normal_Class" has been proved, subprogram will terminate
 p.ads:48:39: high: "R.A" is not initialized in "Initialize_Normal_Class" [reason for check: OUT parameter should be fully initialized on return] [possible fix: initialize "R.A" on all paths, make "R" an IN OUT parameter or annotate it with aspect Relaxed_Initialization]
 p.ads:48:39: high: extension of "R" is not initialized in "Initialize_Normal_Class" [reason for check: OUT parameter should be initialized on return] [possible fix: initialize extension of "R" on all paths or make "R" an IN OUT parameter]
-p.ads:48:39: warning: unused variable "R"
 p.ads:51:49: info: initialization of "R" proved
 p.ads:53:41: info: initialization of "R" proved
 p.ads:55:34: info: initialization of "R" proved
 p.ads:57:14: info: aspect Always_Terminates on "Initialize_Rec_Class" has been proved, subprogram will terminate
 p.ads:57:36: high: "R.A" is not initialized in "Initialize_Rec_Class" [reason for check: OUT parameter should be fully initialized on return] [possible fix: initialize "R.A" on all paths, make "R" an IN OUT parameter or annotate it with aspect Relaxed_Initialization]
 p.ads:57:36: high: extension of "R" is not initialized in "Initialize_Rec_Class" [reason for check: OUT parameter should be initialized on return] [possible fix: initialize extension of "R" on all paths or make "R" an IN OUT parameter]
-p.ads:57:36: warning: unused variable "R"
 p.ads:59:31: warning: unused initial value of "T"
 p.ads:60:52: info: exceptional case proved (Trivial: 1 VC)
 p.ads:62:31: warning: unused initial value of "T"

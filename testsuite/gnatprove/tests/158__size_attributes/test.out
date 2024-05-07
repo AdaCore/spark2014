@@ -34,4 +34,3 @@ r.ads:27:19: info: assertion proved (Trivial: 1 VC)
 r.ads:28:19: info: assertion proved (Trivial: 1 VC)
 r.ads:40:19: info: assertion proved (Trivial: 1 VC)
 r.ads:41:19: info: assertion proved (Trivial: 1 VC)
-r.ads:43:14: warning: subprogram "Test" has no effect
