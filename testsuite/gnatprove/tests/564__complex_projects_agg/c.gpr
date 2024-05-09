@@ -14,8 +14,8 @@ project C is
       for Implementation ("Bar") use "found_body.ada";
    end Naming;
 
-   package Builder is
-      for Global_Configuration_Pragmas use "spark.adc";
-   end Builder;
+   package Compiler is
+      for Local_Configuration_Pragmas use "spark.adc";
+   end Compiler;
 
 end C;
