@@ -14,4 +14,4 @@ for filename in sorted(glob("gnatprove/*.gg")):
     data = json.load(file)
     file.close()
     print("contents:")
-    print(json.dumps(data, sort_keys=True, indent=4))
+    print(json.dumps(data, sort_keys=True, indent=2))
