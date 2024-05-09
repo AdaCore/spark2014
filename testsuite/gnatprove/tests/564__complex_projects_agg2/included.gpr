@@ -3,8 +3,8 @@ project Included is
    for Source_Dirs use ("inc");
    for Object_Dir use "objinc";
 
-   package Builder is
-      for Global_Configuration_Pragmas use "spark.adc";
-   end Builder;
+   package Compiler is
+      for Local_Configuration_Pragmas use "spark.adc";
+   end Compiler;
 
 end Included;

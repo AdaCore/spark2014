@@ -1,0 +1,10 @@
+main.adb:5:11: high: overflow check might fail, cannot prove upper bound for X + 1 (e.g. when X = Integer'Last) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at line 3 should mention X in a precondition]
+main.adb:5:11: high: overflow check might fail, cannot prove upper bound for X + 1 (e.g. when X = Integer'Last) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at line 3 should mention X in a precondition]
+pkg.ads:4:13: info: implicit aspect Always_Terminates on "Func" has been proved, subprogram will terminate
+pkg.ads:4:13: info: implicit aspect Always_Terminates on "Func" has been proved, subprogram will terminate
+pkg.ads:4:53: medium: overflow check might fail, cannot prove upper bound for X + 1 (e.g. when X = Integer'Last) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: add precondition (X <= Integer'Last - 1) to subprogram at line 4]
+pkg.ads:4:53: medium: overflow check might fail, cannot prove upper bound for X + 1 (e.g. when X = Integer'Last) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: add precondition (X <= Integer'Last - 1) to subprogram at line 4]
+shared.ads:3:17: warning: "X" is not modified, could be IN
+shared.ads:3:17: warning: "X" is not modified, could be IN
+shared.ads:3:17: warning: unused variable "X"
+shared.ads:3:17: warning: unused variable "X"
