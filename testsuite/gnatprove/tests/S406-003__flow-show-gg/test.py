@@ -1,5 +1,6 @@
-from test_support import cat, do_flow
+from test_support import do_flow
 from glob import glob
+import json
 
 do_flow(
     opt=["--flow-show-gg", "--no-inlining"] + sorted(glob("*.ad[sb]")),
@@ -7,7 +8,10 @@ do_flow(
 )
 
 print("Generated global .gg contents:")
-for file in sorted(glob("gnatprove/*.gg")):
-    print("filename:", file)
+for filename in sorted(glob("gnatprove/*.gg")):
+    print("filename:", filename)
+    file = open(filename)
+    data = json.load(file)
+    file.close()
     print("contents:")
-    cat(file)
+    print(json.dumps(data, sort_keys=True, indent=4))
