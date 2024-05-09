@@ -139,9 +139,9 @@ pragma:
 .. code-block:: gpr
 
   project My_Project is
-     package Builder is
-        for Global_Configuration_Pragmas use "spark.adc";
-     end Builder;
+     package Compiler is
+        for Local_Configuration_Pragmas use "spark.adc";
+     end Compiler;
   end My_Project;
 
 where ``spark.adc`` is a configuration file containing at least the following
@@ -211,9 +211,9 @@ For example:
 .. code-block:: gpr
 
   project My_Project is
-     package Builder is
-        for Global_Configuration_Pragmas use "spark.adc";
-     end Builder;
+     package Compiler is
+        for Local_Configuration_Pragmas use "spark.adc";
+     end Compiler;
 
     Mode := External ("GPR_TOOL", "");
 
