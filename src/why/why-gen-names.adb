@@ -997,6 +997,7 @@ package body Why.Gen.Names is
             | WNE_Array_Base_Range_Pred_3
             | WNE_Array_Base_Range_Pred_4
             | WNE_Array_Elts
+            | WNE_Array_Well_Formed
             | WNE_Assign_Null_Check
             | WNE_Attr_Alignment
             | WNE_Attr_Component_Size
@@ -1019,7 +1020,6 @@ package body Why.Gen.Names is
             | WNE_Attr_Value
             | WNE_Attr_Value_Size
             | WNE_Bool_Eq
-            | WNE_Check_Invariants_On_Call
             | WNE_Check_Not_First
             | WNE_Check_Not_Last
             | WNE_Check_Subprogram_Variants

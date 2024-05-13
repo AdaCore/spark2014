@@ -171,9 +171,12 @@ test_invariants.adb:5:18: info: overflow check proved (CVC5: 2 VC)
 test_invariants.adb:9:18: info: overflow check proved (CVC5: 2 VC)
 test_invariants.adb:14:18: info: overflow check proved (CVC5: 2 VC)
 test_invariants.adb:18:18: info: overflow check proved (CVC5: 2 VC)
+test_invariants.ads:9:14: info: for X at the end of P at test_invariants.ads:9
 test_invariants.ads:9:14: info: invariant check proved (CVC5: 1 VC)
 test_invariants.ads:10:33: info: exceptional case proved (Trivial: 1 VC)
+test_invariants.ads:14:14: info: for X at the end of Q at test_invariants.ads:14
 test_invariants.ads:14:14: info: invariant check proved (CVC5: 1 VC)
+test_invariants.ads:14:14: medium: for X at the end of Q at test_invariants.ads:14
 test_invariants.ads:14:14: medium: invariant check might fail (e.g. when B = True and X = (F => 0, G => 1))
 test_invariants.ads:14:14: medium: on exceptional exit at test_invariants.adb:12
 test_invariants.ads:15:33: info: exceptional case proved (Trivial: 1 VC)
@@ -202,13 +205,24 @@ test_relaxed_parameters.adb:16:33: info: exceptional case proved (Trivial: 1 VC)
 test_relaxed_parameters.adb:23:22: info: initialization of "X" proved
 test_relaxed_parameters.adb:25:33: info: exceptional case proved (Trivial: 1 VC)
 test_relaxed_parameters.adb:29:07: info: only expected exception raised (CVC5: 1 VC)
+test_relaxed_parameters.adb:29:10: info: in value of subprogram parameter after the call at test_relaxed_parameters.adb:29
+test_relaxed_parameters.adb:29:10: info: in value of subprogram parameter after the call at test_relaxed_parameters.adb:29
+test_relaxed_parameters.adb:29:10: info: in value of subprogram parameter after the call when an exception is raised at test_relaxed_parameters.adb:29
 test_relaxed_parameters.adb:29:10: info: initialization check proved (CVC5: 2 VC)
 test_relaxed_parameters.adb:29:10: info: predicate check proved (CVC5: 1 VC)
+test_relaxed_parameters.adb:29:10: info: predicate check proved (CVC5: 1 VC)
+test_relaxed_parameters.adb:29:10: medium: in value of subprogram parameter after the call when an exception is raised at test_relaxed_parameters.adb:29
 test_relaxed_parameters.adb:29:10: medium: initialization check might fail [possible fix: call at line 29 should mention X'Initialized (for argument X) in a postcondition]
 test_relaxed_parameters.adb:35:33: info: exceptional case proved (CVC5: 2 VC)
 test_relaxed_parameters.adb:39:12: info: predicate check proved (CVC5: 1 VC)
 test_relaxed_parameters.adb:43:22: info: initialization of "X" proved
 test_relaxed_parameters.adb:45:33: info: exceptional case proved (Trivial: 1 VC)
 test_relaxed_parameters.adb:49:07: info: only expected exception raised (CVC5: 1 VC)
+test_relaxed_parameters.adb:49:10: info: in value of subprogram parameter after the call at test_relaxed_parameters.adb:49
+test_relaxed_parameters.adb:49:10: info: in value of subprogram parameter after the call at test_relaxed_parameters.adb:49
+test_relaxed_parameters.adb:49:10: info: in value of subprogram parameter after the call when an exception is raised at test_relaxed_parameters.adb:49
+test_relaxed_parameters.adb:49:10: info: in value of subprogram parameter after the call when an exception is raised at test_relaxed_parameters.adb:49
 test_relaxed_parameters.adb:49:10: info: initialization check proved (CVC5: 2 VC)
+test_relaxed_parameters.adb:49:10: info: initialization check proved (CVC5: 2 VC)
+test_relaxed_parameters.adb:49:10: info: predicate check proved (CVC5: 1 VC)
 test_relaxed_parameters.adb:49:10: info: predicate check proved (CVC5: 1 VC)

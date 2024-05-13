@@ -1,18 +1,26 @@
+root-child-grand_child.ads:3:13: info: for the result of OK at root-child-grand_child.ads:3
 root-child-grand_child.ads:3:13: info: implicit aspect Always_Terminates on "OK" has been proved, subprogram will terminate
 root-child-grand_child.ads:3:13: info: invariant check proved (CVC5: 1 VC)
+root-child-grand_child.ads:4:13: info: for the result of OK2 at root-child-grand_child.ads:4
 root-child-grand_child.ads:4:13: info: implicit aspect Always_Terminates on "OK2" has been proved, subprogram will terminate
 root-child-grand_child.ads:4:13: info: invariant check proved (CVC5: 1 VC)
+root-child-grand_child.ads:5:13: info: for the result of OK3 at root-child-grand_child.ads:5
 root-child-grand_child.ads:5:13: info: implicit aspect Always_Terminates on "OK3" has been proved, subprogram will terminate
 root-child-grand_child.ads:5:13: info: invariant check proved (CVC5: 1 VC)
 root-child-grand_child.ads:6:13: info: implicit aspect Always_Terminates on "Bad" has been proved, subprogram will terminate
+root-child-grand_child.ads:6:13: medium: for the result of Bad at root-child-grand_child.ads:6
 root-child-grand_child.ads:6:13: medium: invariant check might fail (e.g. when Bad'Result = -1) [possible fix: add or complete related loop invariants or postconditions]
 root-child-grand_child.ads:7:13: info: implicit aspect Always_Terminates on "Bad2" has been proved, subprogram will terminate
+root-child-grand_child.ads:7:13: medium: for the result of Bad2 at root-child-grand_child.ads:7
 root-child-grand_child.ads:7:13: medium: invariant check might fail (e.g. when Bad2'Result = -1) [possible fix: add or complete related loop invariants or postconditions]
 root-child-grand_child.ads:8:13: info: implicit aspect Always_Terminates on "Bad3" has been proved, subprogram will terminate
+root-child-grand_child.ads:8:13: medium: for the result of Bad3 at root-child-grand_child.ads:8
 root-child-grand_child.ads:8:13: medium: invariant check might fail (e.g. when Bad3'Result = -1) [possible fix: add or complete related loop invariants or postconditions]
 root-child-grand_child.ads:9:13: info: implicit aspect Always_Terminates on "Bad4" has been proved, subprogram will terminate
+root-child-grand_child.ads:9:13: medium: for the result of Bad4 at root-child-grand_child.ads:9
 root-child-grand_child.ads:9:13: medium: invariant check might fail (e.g. when Bad4'Result = -1) [possible fix: add or complete related loop invariants or postconditions]
 root-child-grand_child.ads:10:13: info: implicit aspect Always_Terminates on "Bad5" has been proved, subprogram will terminate
+root-child-grand_child.ads:10:13: medium: for the result of Bad5 at root-child-grand_child.ads:10
 root-child-grand_child.ads:10:13: medium: invariant check might fail (e.g. when Bad5'Result = -1) [possible fix: add or complete related loop invariants or postconditions]
 root-child-grand_child.ads:12:09: info: invariant check proved on default value (CVC5: 1 VC)
 root-child-grand_child.ads:13:23: info: in default value of private type at root-child-grand_child.ads:2
@@ -23,15 +31,20 @@ root-child-grand_child.ads:17:13: info: implicit aspect Always_Terminates on "Pr
 root-child-grand_child.ads:18:41: info: overflow check proved (CVC5: 2 VC)
 root-child-grand_child.ads:19:13: info: implicit aspect Always_Terminates on "Priv3" has been proved, subprogram will terminate
 root-child-grand_child.ads:20:40: info: overflow check proved (CVC5: 2 VC)
+root-child.ads:3:13: info: for the result of OK at root-child.ads:3
 root-child.ads:3:13: info: implicit aspect Always_Terminates on "OK" has been proved, subprogram will terminate
 root-child.ads:3:13: info: invariant check proved (CVC5: 1 VC)
+root-child.ads:4:13: info: for the result of OK2 at root-child.ads:4
 root-child.ads:4:13: info: implicit aspect Always_Terminates on "OK2" has been proved, subprogram will terminate
 root-child.ads:4:13: info: invariant check proved (CVC5: 1 VC)
 root-child.ads:5:13: info: implicit aspect Always_Terminates on "Bad" has been proved, subprogram will terminate
+root-child.ads:5:13: medium: for the result of Bad at root-child.ads:5
 root-child.ads:5:13: medium: invariant check might fail (e.g. when Bad'Result = -1) [possible fix: add or complete related loop invariants or postconditions]
 root-child.ads:6:13: info: implicit aspect Always_Terminates on "Bad2" has been proved, subprogram will terminate
+root-child.ads:6:13: medium: for the result of Bad2 at root-child.ads:6
 root-child.ads:6:13: medium: invariant check might fail (e.g. when Bad2'Result = -1) [possible fix: add or complete related loop invariants or postconditions]
 root-child.ads:7:13: info: implicit aspect Always_Terminates on "Bad3" has been proved, subprogram will terminate
+root-child.ads:7:13: medium: for the result of Bad3 at root-child.ads:7
 root-child.ads:7:13: medium: invariant check might fail (e.g. when Bad3'Result = -1) [possible fix: add or complete related loop invariants or postconditions]
 root-child.ads:9:09: info: invariant check proved on default value (CVC5: 1 VC)
 root-child.ads:10:23: info: in default value of private type at root-child.ads:2
@@ -44,10 +57,13 @@ root-sibling.ads:4:13: info: implicit aspect Always_Terminates on "OK1" has been
 root-sibling.ads:5:13: info: implicit aspect Always_Terminates on "OK1" has been proved, subprogram will terminate
 root.adb:6:04: info: at the end of the elaboration of package at root.ads:1
 root.adb:6:04: info: invariant check proved (CVC5: 1 VC)
+root.ads:3:13: info: for the result of OK at root.ads:3
 root.ads:3:13: info: implicit aspect Always_Terminates on "OK" has been proved, subprogram will terminate
 root.ads:3:13: info: invariant check proved (CVC5: 1 VC)
 root.ads:4:13: info: implicit aspect Always_Terminates on "Bad" has been proved, subprogram will terminate
+root.ads:4:13: medium: for the result of Bad at root.ads:4
 root.ads:4:13: medium: invariant check might fail (e.g. when Bad'Result = -1) [possible fix: add or complete related loop invariants or postconditions]
+root.ads:6:14: info: for Z at the end of Q at root.adb:6
 root.ads:6:14: info: invariant check proved (CVC5: 1 VC)
 root.ads:8:09: info: invariant check proved on default value (CVC5: 1 VC)
 root.ads:9:23: info: in default value of private type at root.ads:2

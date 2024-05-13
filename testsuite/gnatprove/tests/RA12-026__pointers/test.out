@@ -4,10 +4,13 @@ pointers.adb:6:18: info: pointer dereference check proved (CVC5: 1 VC)
 pointers.adb:7:09: info: pointer dereference check proved (CVC5: 1 VC)
 pointers.adb:11:07: medium: resource or memory leak might occur at end of scope
 pointers.adb:13:07: info: precondition proved (CVC5: 2 VC)
+pointers.adb:13:13: info: in value of subprogram parameter after the call at pointers.adb:13
 pointers.adb:13:13: info: predicate check proved (CVC5: 1 VC)
 pointers.adb:14:07: info: precondition proved (CVC5: 2 VC)
+pointers.adb:14:13: info: in value of subprogram parameter after the call at pointers.adb:14
 pointers.adb:14:13: info: predicate check proved (CVC5: 1 VC)
 pointers.adb:15:07: info: precondition proved (CVC5: 2 VC)
+pointers.adb:15:13: info: in value of subprogram parameter after the call at pointers.adb:15
 pointers.adb:15:13: info: predicate check proved (CVC5: 1 VC)
 pointers.ads:9:14: info: postcondition proved (CVC5: 2 VC)
 pointers.ads:9:16: info: pointer dereference check proved (CVC5: 1 VC)

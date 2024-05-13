@@ -1,4 +1,5 @@
 a-strbou.ads:61:06: medium: initial condition might fail, in instantiation at test.ads:6
+a-strbou.ads:78:12: info: in default value of private type at a-strbou.ads:78, in instantiation at test.ads:6
 a-strbou.ads:78:12: info: predicate check proved on default value (CVC5: 2 VC; Trivial: 1 VC), in instantiation at test.ads:6
 a-strbou.ads:101:37: info: range check proved (CVC5: 2 VC), in instantiation at test.ads:6
 a-strbou.ads:102:09: info: disjoint contract cases proved (CVC5: 1 VC), in instantiation at test.ads:6
@@ -104,6 +105,9 @@ a-strbou.ads:2561:61: info: range check proved (CVC5: 2 VC), in instantiation at
 a-strbou.ads:2568:25: info: range check proved (CVC5: 2 VC), in instantiation at test.ads:6
 a-strbou.ads:2575:31: info: discriminant check proved (CVC5: 1 VC), in instantiation at test.ads:6
 a-strbou.ads:2575:31: info: predicate check proved (CVC5: 2 VC; Trivial: 1 VC), in instantiation at test.ads:6
+spark-containers-formal-hashed_maps.ads:94:06: medium: Container_Aggregates annotation might be incorrect, in instantiation at test.ads:12
+spark-containers-formal-hashed_maps.ads:94:06: medium: after a call to Insert at spark-containers-formal-hashed_maps.ads:665, in instantiation at test.ads:12
+spark-containers-formal-hashed_maps.ads:94:06: medium: when reestablishing invariant on Has_Key at spark-containers-functional-maps.ads:120, in instantiation at spark-containers-formal-hashed_maps.ads:183, in instantiation at test.ads:12
 spark-containers-parameter_checks.ads:242:19: medium: postcondition might fail, in instantiation at spark-containers-formal-hashed_maps.ads:168, in instantiation at test.ads:12 [possible fix: you should consider adding a postcondition to function SBHash or turning it into an expression function]
 test.ads:6:04: info: implicit function contract might not be available on calls from enclosing unit
 test.ads:6:04: info: in instantiation at a-strbou.ads

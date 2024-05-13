@@ -25,6 +25,8 @@ spark-containers-formal-doubly_linked_lists.ads:52:06: info: after a call to Emp
 spark-containers-formal-doubly_linked_lists.ads:52:06: info: after a call to Empty_List at spark-containers-formal-doubly_linked_lists.ads:63, in instantiation at test_lists.ads:10
 spark-containers-formal-doubly_linked_lists.ads:52:06: info: after a call to Empty_List at spark-containers-formal-doubly_linked_lists.ads:63, in instantiation at test_lists.ads:8
 spark-containers-formal-doubly_linked_lists.ads:52:06: info: after a call to Empty_List at spark-containers-formal-doubly_linked_lists.ads:63, in instantiation at test_lists.ads:8
+spark-containers-formal-doubly_linked_lists.ads:52:06: info: during checks for container aggregates at spark-containers-formal-doubly_linked_lists.ads:52, in instantiation at test_lists.ads:10
+spark-containers-formal-doubly_linked_lists.ads:52:06: info: during checks for container aggregates at spark-containers-formal-doubly_linked_lists.ads:52, in instantiation at test_lists.ads:8
 spark-containers-formal-doubly_linked_lists.ads:52:06: info: when establishing invariant on Aggr_Capacity at spark-containers-formal-doubly_linked_lists.ads:1748, in instantiation at test_lists.ads:10
 spark-containers-formal-doubly_linked_lists.ads:52:06: info: when establishing invariant on Aggr_Capacity at spark-containers-formal-doubly_linked_lists.ads:1748, in instantiation at test_lists.ads:8
 spark-containers-formal-doubly_linked_lists.ads:52:06: info: when establishing invariant on Last at spark-containers-functional-vectors.ads:94, in instantiation at spark-containers-formal-doubly_linked_lists.ads:111, in instantiation at test_lists.ads:10

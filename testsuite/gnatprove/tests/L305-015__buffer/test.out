@@ -1,4 +1,5 @@
 buf_read.adb:26:29: info: index check proved (CVC5: 2 VC)
+buf_read.adb:47:24: info: in value of subprogram parameter after the call at buf_read.adb:47
 buf_read.adb:47:24: info: range check proved (CVC5: 2 VC)
 buf_read.adb:50:29: info: range check proved (CVC5: 2 VC)
 buf_read.ads:5:13: info: implicit aspect Always_Terminates on "Valid_State" has been proved, subprogram will terminate

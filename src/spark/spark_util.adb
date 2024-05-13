@@ -2888,7 +2888,8 @@ package body SPARK_Util is
    begin
       case Ekind (E) is
          when E_In_Parameter =>
-            return Ekind (Scope (E)) = E_Function
+            return (Is_Function_Or_Function_Type (Scope (E))
+                      and then not Is_Function_With_Side_Effects (Scope (E)))
               or else not Is_Access_Variable (Etype (E));
          when E_Loop_Parameter =>
             return True;

@@ -3637,9 +3637,11 @@ package body Gnat2Why.Borrow_Checker is
       case Kind is
          when E_In_Parameter =>
 
-            --  Inputs of functions have R permission only
+            --  Inputs of functions without side effects have R permission only
 
-            if Ekind (Subp) = E_Function then
+            if Ekind (Subp) = E_Function
+              and then not Is_Function_With_Side_Effects (Subp)
+            then
                Mode := Read;
 
             --  Input global variables have R permission only
@@ -6728,9 +6730,11 @@ package body Gnat2Why.Borrow_Checker is
             elsif Global_Var then
                Perm := (if Is_Read_Only (Id) then Read_Only else Read_Write);
 
-            --  Inputs of functions have R permission only
+            --  Inputs of functions without side effects have R permission only
 
-            elsif Ekind (Subp) = E_Function then
+            elsif Ekind (Subp) = E_Function
+              and then not Is_Function_With_Side_Effects (Subp)
+            then
                Perm := Read_Only;
 
             --  Anonymous access to constant is an observe
@@ -6759,9 +6763,11 @@ package body Gnat2Why.Borrow_Checker is
             if not Is_Deep (Typ) then
                Perm := None;
 
-            --  Functions cannot have outputs in SPARK
+            --  Functions without side effects cannot have outputs in SPARK
 
-            elsif Ekind (Subp) = E_Function then
+            elsif Ekind (Subp) = E_Function
+              and then not Is_Function_With_Side_Effects (Subp)
+            then
                return;
 
             --  Deep types define a borrow or a move

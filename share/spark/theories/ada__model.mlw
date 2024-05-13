@@ -1483,6 +1483,8 @@ module Unconstr_Array
   predicate index_dynamic_property index_rep_type index_rep_type index_rep_type
   predicate index_rep_le index_rep_type index_rep_type
 
+  predicate has_bounds map index_rep_type index_rep_type
+
   function array_bool_eq map index_rep_type index_rep_type map index_rep_type index_rep_type : bool
 
   clone Index_Type as I1 with
@@ -1550,6 +1552,9 @@ module Unconstr_Array
       x.elts (to_rep (I1.first x.rt)) (to_rep (I1.last x.rt))
       y.elts (to_rep (I1.first y.rt)) (to_rep (I1.last y.rt))
 
+  predicate well_formed (a : __t) =
+    has_bounds a.elts (to_rep (I1.first a.rt)) (to_rep (I1.last a.rt))
+
   val bool_eq (x : __t) (y : __t) : bool
   ensures { result =  bool_eq x y }
 
@@ -1587,6 +1592,8 @@ module Unconstr_Array_2
   predicate in_range_base_2 index_rep_type_2
   predicate index_dynamic_property_2 index_rep_type_2 index_rep_type_2 index_rep_type_2
   predicate index_rep_le_2 index_rep_type_2 index_rep_type_2
+
+  predicate has_bounds map index_rep_type index_rep_type index_rep_type_2 index_rep_type_2
 
   function array_bool_eq map index_rep_type index_rep_type index_rep_type_2 index_rep_type_2 map index_rep_type index_rep_type index_rep_type_2 index_rep_type_2 : bool
 
@@ -1679,6 +1686,10 @@ module Unconstr_Array_2
     alignment >= 0
   meta "remove_unused:dependency" axiom alignment_axiom, function alignment
 
+  predicate well_formed (a : __t) =
+    has_bounds a.elts (to_rep (I1.first a.rt)) (to_rep (I1.last a.rt))
+                      (to_rep_2 (I2.first a.rt_2)) (to_rep_2 (I2.last a.rt_2))
+
   function bool_eq (x : __t) (y : __t) : bool =
     array_bool_eq
       x.elts (to_rep (I1.first x.rt)) (to_rep (I1.last x.rt))
@@ -1735,6 +1746,8 @@ module Unconstr_Array_3
   predicate in_range_base_3 index_rep_type_3
   predicate index_dynamic_property_3 index_rep_type_3 index_rep_type_3 index_rep_type_3
   predicate index_rep_le_3 index_rep_type_3 index_rep_type_3
+
+  predicate has_bounds map index_rep_type index_rep_type index_rep_type_2 index_rep_type_2 index_rep_type_3 index_rep_type_3
 
   function array_bool_eq map index_rep_type index_rep_type index_rep_type_2 index_rep_type_2 index_rep_type_3 index_rep_type_3 map index_rep_type index_rep_type index_rep_type_2 index_rep_type_2 index_rep_type_3 index_rep_type_3 : bool
 
@@ -1855,6 +1868,11 @@ module Unconstr_Array_3
     alignment >= 0
   meta "remove_unused:dependency" axiom alignment_axiom, function alignment
 
+  predicate well_formed (a : __t) =
+    has_bounds a.elts (to_rep (I1.first a.rt)) (to_rep (I1.last a.rt))
+                      (to_rep_2 (I2.first a.rt_2)) (to_rep_2 (I2.last a.rt_2))
+                      (to_rep_3 (I3.first a.rt_3)) (to_rep_3 (I3.last a.rt_3))
+
   function bool_eq (x : __t) (y : __t) : bool =
     array_bool_eq
       x.elts (to_rep (I1.first x.rt))   (to_rep (I1.last x.rt))
@@ -1925,6 +1943,8 @@ module Unconstr_Array_4
   predicate in_range_base_4 index_rep_type_4
   predicate index_dynamic_property_4 index_rep_type_4 index_rep_type_4 index_rep_type_4
   predicate index_rep_le_4 index_rep_type_4 index_rep_type_4
+
+  predicate has_bounds map index_rep_type index_rep_type index_rep_type_2 index_rep_type_2 index_rep_type_3 index_rep_type_3 index_rep_type_4 index_rep_type_4
 
   function array_bool_eq map index_rep_type index_rep_type index_rep_type_2 index_rep_type_2 index_rep_type_3 index_rep_type_3 index_rep_type_4 index_rep_type_4 map index_rep_type index_rep_type index_rep_type_2 index_rep_type_2 index_rep_type_3 index_rep_type_3 index_rep_type_4 index_rep_type_4 : bool
 
@@ -2074,6 +2094,12 @@ module Unconstr_Array_4
     alignment >= 0
   meta "remove_unused:dependency" axiom alignment_axiom, function alignment
 
+  predicate well_formed (a : __t) =
+    has_bounds a.elts (to_rep (I1.first a.rt)) (to_rep (I1.last a.rt))
+                      (to_rep_2 (I2.first a.rt_2)) (to_rep_2 (I2.last a.rt_2))
+                      (to_rep_3 (I3.first a.rt_3)) (to_rep_3 (I3.last a.rt_3))
+                      (to_rep_4 (I4.first a.rt_4)) (to_rep_4 (I4.last a.rt_4))
+
   function bool_eq (x : __t) (y : __t) : bool =
     array_bool_eq
       x.elts (to_rep (I1.first x.rt))   (to_rep (I1.last x.rt))
@@ -2103,6 +2129,8 @@ module Constr_Array
 
   function array_bool_eq map index_rep_type index_rep_type map index_rep_type index_rep_type : bool
 
+  predicate has_bounds map index_rep_type index_rep_type
+
   type __t = map
 
   val constant dummy : __t
@@ -2133,6 +2161,9 @@ module Constr_Array
   axiom alignment_axiom :
     alignment >= 0
   meta "remove_unused:dependency" axiom alignment_axiom, function alignment
+
+  predicate well_formed (a : __t) =
+    has_bounds a first last
 
   function bool_eq (x : __t) (y : __t) : bool =
     array_bool_eq x first last
@@ -2157,6 +2188,8 @@ module Constr_Array_2
 
   function array_bool_eq map index_rep_type index_rep_type index_rep_type_2 index_rep_type_2 map index_rep_type index_rep_type index_rep_type_2 index_rep_type_2 : bool
 
+  predicate has_bounds map index_rep_type index_rep_type index_rep_type_2 index_rep_type_2
+
   type __t = map
 
   val constant dummy : __t
@@ -2187,6 +2220,9 @@ module Constr_Array_2
   axiom alignment_axiom :
     alignment >= 0
   meta "remove_unused:dependency" axiom alignment_axiom, function alignment
+
+  predicate well_formed (a : __t) =
+    has_bounds a first last first_2 last_2
 
   function bool_eq (x : __t) (y : __t) : bool =
     array_bool_eq x first last first_2 last_2
@@ -2215,6 +2251,8 @@ module Constr_Array_3
 
   function array_bool_eq map index_rep_type index_rep_type index_rep_type_2 index_rep_type_2 index_rep_type_3 index_rep_type_3 map index_rep_type index_rep_type index_rep_type_2 index_rep_type_2 index_rep_type_3 index_rep_type_3 : bool
 
+  predicate has_bounds map index_rep_type index_rep_type index_rep_type_2 index_rep_type_2 index_rep_type_3 index_rep_type_3
+
   type __t = map
 
   val constant dummy : __t
@@ -2245,6 +2283,9 @@ module Constr_Array_3
   axiom alignment_axiom :
     alignment >= 0
   meta "remove_unused:dependency" axiom alignment_axiom, function alignment
+
+  predicate well_formed (a : __t) =
+    has_bounds a first last first_2 last_2 first_3 last_3
 
   function bool_eq (x : __t) (y : __t) : bool =
     array_bool_eq x first last first_2 last_2 first_3 last_3
@@ -2274,6 +2315,8 @@ module Constr_Array_4
 
   function first_4 : index_rep_type_4
   function last_4  : index_rep_type_4
+
+  predicate has_bounds map index_rep_type index_rep_type index_rep_type_2 index_rep_type_2 index_rep_type_3 index_rep_type_3 index_rep_type_4 index_rep_type_4
 
   function array_bool_eq map index_rep_type index_rep_type index_rep_type_2 index_rep_type_2 index_rep_type_3 index_rep_type_3 index_rep_type_4 index_rep_type_4 map index_rep_type index_rep_type index_rep_type_2 index_rep_type_2 index_rep_type_3 index_rep_type_3 index_rep_type_4 index_rep_type_4 : bool
 
@@ -2307,6 +2350,9 @@ module Constr_Array_4
   axiom alignment_axiom :
     alignment >= 0
   meta "remove_unused:dependency" axiom alignment_axiom, function alignment
+
+  predicate well_formed (a : __t) =
+    has_bounds a first last first_2 last_2 first_3 last_3 first_4 last_4
 
   function bool_eq (x : __t) (y : __t) : bool =
     array_bool_eq x first last first_2 last_2 first_3 last_3 first_4 last_4

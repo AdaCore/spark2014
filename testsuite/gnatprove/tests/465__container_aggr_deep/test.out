@@ -1,3 +1,4 @@
+deep_vectors.ads:8:09: info: in default value of private type at deep_vectors.ads:8
 deep_vectors.ads:8:09: info: predicate check proved on default value (CVC5: 3 VC)
 deep_vectors.ads:10:06: info: Container_Aggregates annotation proved (CVC5: 1 VC)
 deep_vectors.ads:10:06: info: Container_Aggregates annotation proved (CVC5: 1 VC)
@@ -7,6 +8,7 @@ deep_vectors.ads:10:06: info: after a call to Add at deep_vectors.ads:13
 deep_vectors.ads:10:06: info: after a call to Add at deep_vectors.ads:13
 deep_vectors.ads:10:06: info: after a call to Empty at deep_vectors.ads:12
 deep_vectors.ads:10:06: info: after a call to Empty at deep_vectors.ads:12
+deep_vectors.ads:10:06: info: during checks for container aggregates at deep_vectors.ads:10
 deep_vectors.ads:10:06: info: when establishing invariant on Capacity at deep_vectors.ads:30
 deep_vectors.ads:10:06: info: when establishing invariant on Length at deep_vectors.ads:23
 deep_vectors.ads:10:06: info: when reestablishing invariant on Capacity at deep_vectors.ads:30

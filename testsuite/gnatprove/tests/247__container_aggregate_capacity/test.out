@@ -14,6 +14,7 @@ test_capacity.adb:21:09: info: after a call to Append at test_capacity.adb:25
 test_capacity.adb:21:09: info: after a call to Empty at test_capacity.adb:23
 test_capacity.adb:21:09: info: after a call to Empty at test_capacity.adb:23
 test_capacity.adb:21:09: info: after a call to Empty at test_capacity.adb:23
+test_capacity.adb:21:09: info: during checks for container aggregates at test_capacity.adb:21
 test_capacity.adb:21:09: info: when establishing invariant on Capacity at test_capacity.adb:39
 test_capacity.adb:21:09: info: when establishing invariant on Contains at test_capacity.adb:42
 test_capacity.adb:21:09: info: when establishing invariant on Length at test_capacity.adb:35
@@ -96,6 +97,7 @@ test_capacity.adb:149:09: info: after a call to Append at test_capacity.adb:153
 test_capacity.adb:149:09: info: after a call to Empty at test_capacity.adb:151
 test_capacity.adb:149:09: info: after a call to Empty at test_capacity.adb:151
 test_capacity.adb:149:09: info: after a call to Empty at test_capacity.adb:151
+test_capacity.adb:149:09: info: during checks for container aggregates at test_capacity.adb:149
 test_capacity.adb:149:09: info: when establishing invariant on Capacity at test_capacity.adb:169
 test_capacity.adb:149:09: info: when establishing invariant on Has_Key at test_capacity.adb:172
 test_capacity.adb:149:09: info: when establishing invariant on Length at test_capacity.adb:165
@@ -245,6 +247,7 @@ test_capacity.adb:356:09: info: after a call to Append at test_capacity.adb:360
 test_capacity.adb:356:09: info: after a call to Append at test_capacity.adb:360
 test_capacity.adb:356:09: info: after a call to Empty at test_capacity.adb:358
 test_capacity.adb:356:09: info: after a call to Empty at test_capacity.adb:358
+test_capacity.adb:356:09: info: during checks for container aggregates at test_capacity.adb:356
 test_capacity.adb:356:09: info: when establishing invariant on Capacity at test_capacity.adb:369
 test_capacity.adb:356:09: info: when establishing invariant on Last at test_capacity.adb:375
 test_capacity.adb:356:09: info: when reestablishing invariant on Capacity at test_capacity.adb:369

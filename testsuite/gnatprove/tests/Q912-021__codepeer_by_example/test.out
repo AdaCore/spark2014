@@ -75,6 +75,7 @@ call_unknown_pos.adb:4:04: warning: assuming "Unknown" always terminates
 call_unknown_pos.adb:4:04: warning: assuming "Unknown" has no effect on global items
 call_unknown_pos.adb:4:04: warning: no Always_Terminates aspect available for "Unknown"
 call_unknown_pos.adb:4:04: warning: no Global contract available for "Unknown"
+call_unknown_pos.adb:4:13: medium: in value of subprogram parameter after the call at call_unknown_pos.adb:4
 call_unknown_pos.adb:4:13: medium: range check might fail [CWE 682], cannot prove lower bound for X [reason for check: output value must fit in argument type] [possible fix: call at line 4 should mention X (for argument X) in a postcondition]
 call_unknown_rel.adb:2:29: info: initialization of "X" proved
 call_unknown_rel.adb:4:04: warning: assuming "Unknown" always terminates

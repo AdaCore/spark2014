@@ -246,6 +246,7 @@ package Why.Gen.Names is
       WNE_Array_Component_Type,
       WNE_Array_Elts,
       WNE_Array_Type,
+      WNE_Array_Well_Formed,
 
       --  Prefixes and Suffixes used to compose representative array theory
       --  names.
@@ -307,10 +308,6 @@ package Why.Gen.Names is
       WNE_Dynamic_Invariant,       --  dynamic invariant of a type
 
       WNE_Type_Invariant,          --  toplevel invariant checking function
-
-      --  Name of the program function for type invariant checks on subprogram
-      --  calls.
-      WNE_Check_Invariants_On_Call,
 
       --  Name of the program function for variant checks on subprogram calls
       WNE_Check_Subprogram_Variants,

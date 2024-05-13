@@ -1,3 +1,4 @@
+foo_relaxed.ads:17:13: info: implicit function contract might not be available on calls from enclosing unit
 foo_relaxed.ads:21:29: warning: assuming "F" has no effect on global items
 foo_relaxed.ads:21:29: warning: no Global contract available for "F"
 foo_relaxed.ads:22:35: medium: initialization check might fail

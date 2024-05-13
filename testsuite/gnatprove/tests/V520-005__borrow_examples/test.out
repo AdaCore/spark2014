@@ -350,6 +350,7 @@ my_map.ads:56:14: info: precondition proved
 my_map.ads:56:52: info: pointer dereference check proved
 my_map.ads:58:08: info: precondition proved
 my_map.ads:58:64: info: pointer dereference check proved
+my_map.ads:67:07: info: in default initialization of component "Value" at my_map.ads:67
 my_map.ads:67:07: info: in default value of private type at my_map.ads:4
 my_map.ads:67:07: info: null exclusion check proved
 my_map.ads:74:28: info: pointer dereference check proved

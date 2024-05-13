@@ -212,11 +212,13 @@ Volatile functions can read effectively volatile objects for reading; nonvolatil
 cannot [but they can read other effectively volatile objects].
 However note that the rule that a function must not have any
 output other than its result still applies; in effect this bans
-a volatile function from reading an object with Effective_Reads => True.
+a volatile function from reading an object with Effective_Reads => True,
+unless it is a function with side effects (see section :ref:`Functions With Side Effects`).
 As a result, calling a volatile function is considered as having an effect,
 and such calls are only allowed in certain contexts
 (see :ref:`External State - Variables and Types`).
 A protected function is also defined to be a *volatile function*, as is
+a function with side effects (see section :ref:`Functions With Side Effects`) and
 an instance of Unchecked_Conversion where one or both of the actual
 Source and Target types are effectively volatile types for reading.
 [Unlike nonvolatile functions, two calls to a volatile function with all

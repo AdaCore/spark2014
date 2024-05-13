@@ -159,6 +159,38 @@ package Gnat2Why.Expr is
    --  @return a program that checks that no error can occur
    --          when executing a quantified expression in any context.
 
+   generic
+      with procedure Process
+        (Ada_Node : Node_Id;
+         Inv      : W_Pred_Id);
+   procedure Process_Type_Invariants_For_Subprogram
+     (E           : Entity_Id;
+      Params      : Transformation_Params;
+      For_Input   : Boolean;
+      Exceptional : Boolean := False)
+   with
+     Pre  => (Is_Subprogram_Or_Entry (E) or Ekind (E) = E_Subprogram_Type)
+       and then (if Exceptional then not For_Input);
+   --  Call Process on all invariant that should be checked for the subprogram
+   --  E. Ada_Node is used to localize the check. It can be a formal, a global,
+   --  or E itself to model the result of the call.
+   --  @param E Entity of a subprogram or entry.
+   --  @param Params the transformation parameters
+   --  @param For_Input True if we are interested in inputs of E, False if we
+   --         are interested in its outputs.
+   --  @param Exceptional True if we are interested in outputs of E on
+   --         exceptional paths.
+
+   function Check_Type_Invariants_For_Subprogram
+     (E           : Entity_Id;
+      Ada_Node    : Node_Id;
+      Params      : Transformation_Params;
+      For_Input   : Boolean;
+      Exceptional : Boolean := False)
+      return W_Prog_Id;
+   --  Checks all invariants produced by
+   --  Process_Type_Invariants_For_Subprogram. Localize the checks on Ada_Node.
+
    procedure Compute_Borrow_At_End_Value
      (Check_Node    : Entity_Id := Empty;
       W_Brower      : W_Term_Id;
