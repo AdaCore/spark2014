@@ -1,0 +1,4 @@
+test.adb:6:07: info: absence of resource or memory leak at end of scope proved (CVC5: 1 VC)
+test.adb:20:07: info: absence of resource or memory leak at end of scope proved (CVC5: 1 VC)
+test.adb:24:04: info: absence of resource or memory leak at end of scope proved (CVC5: 1 VC)
+test.adb:25:04: info: absence of resource or memory leak at end of scope proved (CVC5: 1 VC)

@@ -36,8 +36,8 @@ patris.adb:131:57: info: index check proved (CVC5: 2 VC)
 patris.adb:134:34: info: unrolling loop
 patris.adb:135:37: info: unrolling loop
 patris.adb:136:54: info: index check proved (CVC5: 18 VC)
-patris.adb:137:45: info: index check proved (CVC5: 10 VC; altergo: 8 VC)
-patris.adb:137:63: info: index check proved (CVC5: 10 VC; Z3: 3 VC; altergo: 5 VC)
+patris.adb:137:45: info: index check proved (CVC5: 10 VC; Z3: 3 VC; altergo: 5 VC)
+patris.adb:137:63: info: index check proved (CVC5: 10 VC; Z3: 4 VC; altergo: 4 VC)
 patris.adb:166:28: info: assertion proved (CVC5: 2 VC)
 patris.adb:169:13: info: loop invariant initialization proved (CVC5: 1 VC)
 patris.adb:169:13: info: loop invariant preservation proved (CVC5: 1 VC)
@@ -80,6 +80,7 @@ patris.adb:432:64: info: range check proved (CVC5: 2 VC)
 patris.adb:434:41: info: division check proved (CVC5: 1 VC)
 patris.ads:33:03: info: flow dependencies proved
 patris.ads:58:13: info: implicit aspect Always_Terminates on "Get_Board" has been proved, subprogram will terminate
+patris.ads:58:13: info: implicit function contract might not be available on calls from enclosing unit
 patris.ads:59:11: info: data dependencies proved
 patris.ads:79:13: info: implicit aspect Always_Terminates on "Get_Piece" has been proved, subprogram will terminate
 patris.ads:80:11: info: data dependencies proved
@@ -204,7 +205,7 @@ patris.ads:249:16: info: postcondition proved (CVC5: 2 VC)
 patris.ads:255:06: info: data dependencies proved
 patris.ads:258:16: info: postcondition proved (CVC5: 2 VC)
 patris.ads:263:06: info: data dependencies proved
-patris.ads:266:14: medium: postcondition might fail, cannot prove Valid_Configuration
+patris.ads:264:14: info: postcondition proved (CVC5: 2 VC; Z3: 1 VC)
 patris.ads:271:06: info: data dependencies proved
 patris.ads:273:14: info: postcondition proved (CVC5: 1 VC)
 patris.ads:276:07: info: initialization of "Redraw_Board" proved

@@ -25,7 +25,7 @@ start of files:
    pragma Profile (Ravenscar);
    pragma Partition_Elaboration_Policy (Sequential);
 
-GNATprove also supports the Jorvik profile, as defined in Ada 202X RM, D.13. To
+GNATprove also supports the Jorvik profile, as defined in Ada 2022 RM, D.13. To
 use this profile simply replace ``Ravenscar`` with ``Jorvik`` in the pragma
 ``Profile`` in the above code. The extended profile is intended for hard
 real-time/embedded systems that may require schedulability analysis but not the

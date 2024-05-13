@@ -1,17 +1,9 @@
 test.ads:9:13: info: implicit aspect Always_Terminates on "Check_Array_Ptr" has been proved, subprogram will terminate
-test.ads:10:07: info: pointer dereference check proved (CVC5: 1 VC)
-test.ads:11:16: info: pointer dereference check proved (CVC5: 1 VC)
-test.ads:12:23: info: pointer dereference check proved (CVC5: 1 VC)
 test.ads:12:23: info: range check proved (CVC5: 4 VC)
-test.ads:12:28: info: pointer dereference check proved (CVC5: 1 VC)
 test.ads:12:41: info: overflow check proved (CVC5: 2 VC)
-test.ads:12:49: info: pointer dereference check proved (CVC5: 1 VC)
 test.ads:12:62: info: overflow check proved (CVC5: 2 VC)
-test.ads:13:23: info: pointer dereference check proved (CVC5: 1 VC)
 test.ads:13:23: info: range check proved (CVC5: 4 VC)
-test.ads:13:28: info: pointer dereference check proved (CVC5: 1 VC)
 test.ads:13:41: info: overflow check proved (CVC5: 2 VC)
-test.ads:13:49: info: pointer dereference check proved (CVC5: 1 VC)
 test.ads:13:62: info: overflow check proved (CVC5: 2 VC)
 test.ads:15:13: info: implicit aspect Always_Terminates on "Check_Array" has been proved, subprogram will terminate
 test.ads:18:16: info: range check proved (CVC5: 4 VC)

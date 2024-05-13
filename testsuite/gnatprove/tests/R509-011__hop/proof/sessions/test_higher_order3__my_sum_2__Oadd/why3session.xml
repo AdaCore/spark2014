@@ -33,13 +33,13 @@
   <proof prover="3"><result status="valid" steps="1"/></proof>
   </goal>
   <goal name="def&#39;vc.6">
-  <proof prover="0"><result status="unknown"/></proof>
-  <proof prover="1"><result status="unknown" steps="309"/></proof>
+  <proof prover="0"><result status="unknown" steps="22"/></proof>
+  <proof prover="1"><result status="unknown" steps="294"/></proof>
   <proof prover="2"><result status="unknown" steps="484"/></proof>
   <proof prover="5"><result status="unknown" steps="57"/></proof>
   <transf name="introduce_premises" >
    <goal name="def&#39;vc.6.0">
-   <proof prover="4"><result status="unknown" steps="371"/></proof>
+   <proof prover="4"><result status="unknown" steps="356"/></proof>
    </goal>
   </transf>
   </goal>

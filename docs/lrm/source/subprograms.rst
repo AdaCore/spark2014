@@ -1458,7 +1458,7 @@ Exceptional Cases
 ~~~~~~~~~~~~~~~~~
 
 The aspect Exceptional_Cases may be specified for procedures and functions with
-side effects; it can be used to list exceptions that might be raised by the
+side effects; it can be used to list exceptions that might be propagated by the
 subprogram with side effects in the context of its precondition, and associate
 them with a specific postcondition. The Exceptional_Cases aspect is specified
 with an aspect_specification where the aspect_mark is Exceptional_Cases and the
@@ -2130,7 +2130,8 @@ body (see Ada RM 7.2(4))].
 
 15. If the Ghost assertion policy in effect at the point of the declaration
     of a ghost entity is Ignore, then the Ghost assertion policy in effect
-    at the point of any reference to that entity shall be Ignore.
+    at the point of any reference to that entity outside of
+    an assertion expression shall be Ignore.
     If the Ghost assertion policy in effect at the point of the declaration
     of a ghost variable is Check, then the Ghost assertion policy in effect
     at the point of any assignment to a part of that variable shall be Check.
@@ -2167,9 +2168,10 @@ body (see Ada RM 7.2(4))].
     is a disabled ghost subprogram.
 
 
-20. If the Ghost assertion policy in effect at the point of an
-    a reference to a Ghost entity which occurs within an assertion expression
-    is Ignore, then the assertion policy which governs the assertion
+20. If the Ghost assertion policy in effect at the point of the declaration
+    of a ghost entity is Ignore,
+    and this ghost entity occurs within an assertion expression,
+    then the assertion policy which governs the assertion
     expression (e.g., Pre for a precondition expression, Assert for the
     argument of an Assert pragma) shall [also] be Ignore.
 

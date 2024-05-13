@@ -1,22 +1,14 @@
 binary_search_trees.adb:15:34: info: pointer dereference check proved (CVC5: 1 VC)
 binary_search_trees.adb:16:34: info: pointer dereference check proved (CVC5: 1 VC)
 binary_search_trees.adb:17:13: medium: resource or memory leak might occur
-binary_search_trees.adb:35:31: info: pointer dereference check proved (CVC5: 1 VC)
-binary_search_trees.adb:39:31: info: pointer dereference check proved (CVC5: 1 VC)
-binary_search_trees.adb:40:27: info: pointer dereference check proved (CVC5: 1 VC)
-binary_search_trees.adb:41:27: info: pointer dereference check proved (CVC5: 1 VC)
 binary_search_trees.adb:41:33: info: absence of resource or memory leak proved (CVC5: 1 VC)
 binary_search_trees.adb:42:29: info: overflow check proved (CVC5: 2 VC)
 binary_search_trees.adb:44:16: info: precondition proved (CVC5: 1 VC)
 binary_search_trees.adb:44:39: info: null exclusion check proved (CVC5: 1 VC)
-binary_search_trees.adb:44:39: info: pointer dereference check proved (CVC5: 1 VC)
-binary_search_trees.adb:48:27: info: pointer dereference check proved (CVC5: 1 VC)
-binary_search_trees.adb:49:27: info: pointer dereference check proved (CVC5: 1 VC)
 binary_search_trees.adb:49:34: info: absence of resource or memory leak proved (CVC5: 1 VC)
 binary_search_trees.adb:50:29: info: overflow check proved (CVC5: 2 VC)
 binary_search_trees.adb:52:16: info: precondition proved (CVC5: 1 VC)
 binary_search_trees.adb:52:39: info: null exclusion check proved (CVC5: 1 VC)
-binary_search_trees.adb:52:39: info: pointer dereference check proved (CVC5: 1 VC)
 binary_search_trees.adb:60:20: info: absence of resource or memory leak proved (CVC5: 1 VC)
 binary_search_trees.adb:61:33: info: overflow check proved (CVC5: 2 VC)
 binary_search_trees.adb:63:10: info: precondition proved (CVC5: 1 VC)
@@ -29,15 +21,10 @@ binary_search_trees.adb:79:23: medium: implicit aspect Always_Terminates on "Loo
 binary_search_trees.adb:79:49: info: pointer dereference check proved (CVC5: 1 VC)
 binary_search_trees.adb:81:23: medium: implicit aspect Always_Terminates on "Lookup_Node" could be incorrect, subprogram is recursive [possible fix: annotate "Lookup_Node" with a Subprogram_Variant aspect]
 binary_search_trees.adb:81:49: info: pointer dereference check proved (CVC5: 1 VC)
-binary_search_trees.adb:95:55: info: null exclusion check proved (CVC5: 1 VC)
-binary_search_trees.adb:97:20: info: pointer dereference check proved (CVC5: 2 VC)
 binary_search_trees.adb:97:34: medium: implicit aspect Always_Terminates on "Minimum_Node" could be incorrect, loop might be nonterminating [possible fix: add loop variant in the loop body]
 binary_search_trees.adb:98:28: info: null exclusion check proved (CVC5: 1 VC)
-binary_search_trees.adb:98:28: info: pointer dereference check proved (CVC5: 1 VC)
 binary_search_trees.adb:100:14: info: dynamic accessibility check proved (Trivial)
-binary_search_trees.adb:100:14: info: null exclusion check proved (CVC5: 1 VC)
 binary_search_trees.adb:106:31: medium: null exclusion check might fail
-binary_search_trees.adb:106:37: info: pointer dereference check proved (CVC5: 1 VC)
 binary_search_trees.ads:16:13: info: implicit aspect Always_Terminates on "Lookup" has been proved, subprogram will terminate
 binary_search_trees.ads:19:13: info: implicit aspect Always_Terminates on "Minimum" has been proved, subprogram will terminate
 binary_search_trees.ads:27:13: info: implicit aspect Always_Terminates on "Size" has been proved, subprogram will terminate

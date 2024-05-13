@@ -120,7 +120,7 @@ Annotation for Simplifying Iteration for Proof
 
 .. index:: Annotate; Iterable_For_Proof
 
-The translation presented in :ref:``Aspect and Pragma Iterable`
+The translation presented in :ref:`Aspect and Pragma Iterable`
 may produce complicated proofs,
 especially when verifying complex properties over sets. The |GNATprove|
 annotation ``Iterable_For_Proof`` can be used to change the way ``for ... of``
@@ -796,15 +796,23 @@ designated by ``X`` has been moved by the assignment to ``Y``.
 In addition, it is possible to state that a type needs reclamation with a
 ``pragma Annotate (GNATprove, Onwership, "Needs_Reclamation", ...)``. In
 this case, |GNATprove| emits checks to ensure that the resource is not leaked.
-For these checks to be handled precisely, the user should annotate a function
-taking a value of this type as a parameter and returning a boolean
-with a ``pragma Annotate (GNATprove, Onwership, "Needs_Reclamation", ...)`` or
+For these checks to be handled precisely, the user should provide a way for
+the tool to check that an object has been reclaimed. This can be done by
+annotating a function which takes a value of this type as a parameter and
+returns a boolean with a
+``pragma Annotate (GNATprove, Onwership, "Needs_Reclamation", ...)`` or
 ``pragma Annotate (GNATprove, Onwership, "Is_Reclaimed", ...)``. This
-function will be used to check that the resource cannot be leaked. A function
+function is used to check that the resource cannot be leaked. A function
 annotated with ``"Needs_Reclamation"`` shall return True when its input holds
 some resource while a function annotated with ``"Is_Reclaimed"`` shall return
-True when its input has already been reclaimed. Only one such function shall
-be provided for a given type. Two examples of use are given below.
+True when its input has already been reclaimed. Another possibility is to
+annotate a constant of the type with a
+``pragma Annotate (GNATprove, Onwership, "Reclaimed_Value", ...)``. Objects are
+considered to be reclaimed if they are equal to the provided constant. Note
+that constants annotated with ``"Reclaimed_Value"`` are not considered to hold
+resources themselves, so they can be duplicated. Only one such function or
+constant shall be provided for a given type. Three examples of use are given
+below.
 
 .. literalinclude:: /examples/ug__ownership_annotations/hidden_pointers.ads
    :language: ada
@@ -827,6 +835,24 @@ verify that all file descriptors are closed before being finalized.
 .. literalinclude:: /examples/ug__ownership_annotations/text_io.ads
    :language: ada
    :linenos:
+
+In our last example, the ownership annotation is used to enforce the
+:ref:`Memory Ownership Policy` of |SPARK| on pointers used to represent
+strings compatible with C. Note that the ``New_String`` function has to be
+volatile as the predefined equality can be used on ``Chars_Ptr`` (it is not
+visibly a pointer), so ``New_String`` will return visibly different values
+each time it is called.
+
+.. literalinclude:: /examples/ug__ownership_annotations/c_strings.ads
+   :language: ada
+   :linenos:
+
+.. note::
+   The equality used to check whether an object is equal to a reclaimed value
+   is the same as the equality used by membership tests and equality of
+   composite types: it uses the predefined equality even if it has been
+   redefined by the user, unless the type of the operands is ultimately a
+   record type in which case it uses the primitive equality.
 
 Annotation for Instantiating Lemma Procedures Automatically
 -----------------------------------------------------------

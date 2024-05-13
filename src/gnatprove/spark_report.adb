@@ -6,7 +6,7 @@
 --                                                                          --
 --                                 B o d y                                  --
 --                                                                          --
---                     Copyright (C) 2010-2023, AdaCore                     --
+--                     Copyright (C) 2010-2024, AdaCore                     --
 --                                                                          --
 -- gnatprove is  free  software;  you can redistribute it and/or  modify it --
 -- under terms of the  GNU General Public License as published  by the Free --
@@ -1176,7 +1176,6 @@ procedure SPARK_Report is
             | VC_Ceiling_Priority_Protocol
             | VC_Task_Termination
             | VC_Raise
-            | VC_Initialization_Check
             | VC_UC_Source
             | VC_UC_Target
             | VC_UC_Same_Size
@@ -1185,6 +1184,9 @@ procedure SPARK_Report is
             | VC_UC_Volatile
          =>
             return Runtime_Checks;
+
+         when VC_Initialization_Check =>
+            return Init;
 
          when VC_Assert
             | VC_Assert_Premise

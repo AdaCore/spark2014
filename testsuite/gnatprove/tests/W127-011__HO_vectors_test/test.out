@@ -6,10 +6,8 @@ spark-containers-functional-vectors-higher_order.ads:79:25: info: function contr
 spark-containers-functional-vectors-higher_order.ads:88:17: info: precondition proved (CVC5: 2 VC), in instantiation at use_sequence_ho.adb:14
 spark-containers-functional-vectors-higher_order.ads:94:23: info: function contract feasibility proved (Trivial: 1 VC), in instantiation at use_sequence_ho.adb:14
 spark-containers-functional-vectors-higher_order.ads:110:23: info: function contract feasibility proved (Trivial: 1 VC), in instantiation at use_sequence_ho.adb:14
-spark-containers-functional-vectors-higher_order.ads:118:59: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at use_sequence_ho.adb:14
 spark-containers-functional-vectors-higher_order.ads:118:65: info: precondition proved (CVC5: 2 VC), in instantiation at use_sequence_ho.adb:14
 spark-containers-functional-vectors-higher_order.ads:125:23: info: function contract feasibility proved (Trivial: 1 VC), in instantiation at use_sequence_ho.adb:14
-spark-containers-functional-vectors-higher_order.ads:134:56: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at use_sequence_ho.adb:14
 spark-containers-functional-vectors-higher_order.ads:134:62: info: precondition proved (CVC5: 2 VC), in instantiation at use_sequence_ho.adb:14
 spark-containers-functional-vectors-higher_order.ads:139:23: info: function contract feasibility proved (Trivial: 1 VC), in instantiation at use_sequence_ho.adb:14
 spark-containers-functional-vectors-higher_order.ads:153:23: info: function contract feasibility proved (Trivial: 1 VC), in instantiation at use_sequence_ho.adb:14
@@ -17,10 +15,8 @@ spark-containers-functional-vectors-higher_order.ads:168:25: info: function cont
 spark-containers-functional-vectors-higher_order.ads:178:41: info: precondition proved (CVC5: 2 VC), in instantiation at use_sequence_ho.adb:14
 spark-containers-functional-vectors-higher_order.ads:178:54: info: precondition proved (CVC5: 2 VC), in instantiation at use_sequence_ho.adb:14
 spark-containers-functional-vectors-higher_order.ads:187:23: info: function contract feasibility proved (Trivial: 1 VC), in instantiation at use_sequence_ho.adb:14
-spark-containers-functional-vectors-higher_order.ads:201:09: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at use_sequence_ho.adb:14
 spark-containers-functional-vectors-higher_order.ads:201:15: info: precondition proved (CVC5: 2 VC), in instantiation at use_sequence_ho.adb:14
 spark-containers-functional-vectors-higher_order.ads:215:23: info: function contract feasibility proved (Trivial: 1 VC), in instantiation at use_sequence_ho.adb:14
-spark-containers-functional-vectors-higher_order.ads:224:59: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at use_sequence_ho.adb:14
 spark-containers-functional-vectors-higher_order.ads:224:65: info: precondition proved (CVC5: 2 VC), in instantiation at use_sequence_ho.adb:14
 spark-containers-functional-vectors-higher_order.ads:230:24: info: function contract feasibility proved (CVC5: 1 VC), in instantiation at use_sequence_ho.adb:14
 spark-containers-functional-vectors-higher_order.ads:243:24: info: function contract feasibility proved (CVC5: 1 VC), in instantiation at use_sequence_ho.adb:14
@@ -101,9 +97,9 @@ use_sequence_ho.adb:42:19: medium: postcondition might fail
 use_sequence_ho.adb:43:13: info: precondition proved (CVC5: 1 VC)
 use_sequence_ho.adb:45:16: info: implicit aspect Always_Terminates on "Add_One" has been proved, subprogram will terminate
 use_sequence_ho.adb:46:10: info: precondition proved (CVC5: 1 VC)
-use_sequence_ho.adb:49:19: info: postcondition proved (Z3: 1 VC)
+use_sequence_ho.adb:49:19: medium: postcondition might fail
 use_sequence_ho.adb:56:37: info: precondition proved (CVC5: 1 VC)
-use_sequence_ho.adb:58:25: info: assertion proved (Z3: 1 VC)
+use_sequence_ho.adb:58:25: medium: assertion might fail
 use_sequence_ho.adb:58:60: info: precondition proved (CVC5: 1 VC)
 use_sequence_ho.adb:64:16: info: implicit aspect Always_Terminates on "Value" has been proved, subprogram will terminate
 use_sequence_ho.adb:65:36: info: range check proved (CVC5: 2 VC)

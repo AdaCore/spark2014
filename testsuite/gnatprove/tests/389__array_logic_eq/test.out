@@ -1,0 +1,23 @@
+main.adb:5:13: info: implicit aspect Always_Terminates on "Eq" has been proved, subprogram will terminate
+main.adb:6:06: info: data dependencies proved
+main.adb:7:06: medium: Inline_For_Proof or Logical_Equal annotation might be incorrect
+main.adb:15:14: info: postcondition proved (CVC5: 1 VC)
+main.adb:18:07: info: initialization of "Tmp" proved
+main.adb:21:20: info: index check proved (CVC5: 2 VC)
+main.adb:22:13: info: index check proved (CVC5: 2 VC)
+main.adb:23:13: info: index check proved (CVC5: 2 VC)
+main.adb:31:14: warning: subprogram "Check_Congruence" has no effect
+main.adb:33:14: info: postcondition proved (CVC5: 1 VC)
+main.adb:39:13: info: implicit aspect Always_Terminates on "Eq" has been proved, subprogram will terminate
+main.adb:40:06: info: data dependencies proved
+main.adb:41:06: medium: Inline_For_Proof or Logical_Equal annotation might be incorrect
+main.adb:50:14: info: postcondition proved (CVC5: 1 VC)
+main.adb:53:07: info: initialization of "Tmp" proved
+main.adb:56:20: info: index check proved (CVC5: 2 VC)
+main.adb:56:23: info: index check proved (CVC5: 2 VC)
+main.adb:57:13: info: index check proved (CVC5: 2 VC)
+main.adb:57:16: info: index check proved (CVC5: 2 VC)
+main.adb:58:13: info: index check proved (CVC5: 2 VC)
+main.adb:58:16: info: index check proved (CVC5: 2 VC)
+main.adb:66:14: warning: subprogram "Check_Congruence" has no effect
+main.adb:68:14: info: postcondition proved (altergo: 1 VC)

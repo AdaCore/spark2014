@@ -28,6 +28,7 @@ list_borrows.adb:25:38: info: pointer dereference check proved
 list_borrows.adb:25:46: info: pointer dereference check proved
 list_borrows.adb:26:20: info: pointer dereference check proved
 list_borrows.adb:27:36: info: pointer dereference check proved
+list_borrows.adb:37:18: info: dynamic accessibility check proved
 list_borrows.adb:37:18: info: pointer dereference check proved
 list_borrows.adb:42:14: info: predicate check proved
 list_borrows.adb:42:14: info: postcondition proved
@@ -36,8 +37,8 @@ list_borrows.adb:43:57: info: precondition proved
 list_borrows.adb:43:65: info: predicate check proved
 list_borrows.adb:47:26: info: predicate check proved
 list_borrows.adb:52:33: info: predicate check proved
-list_borrows.adb:52:33: info: loop invariant preservation proved
 list_borrows.adb:52:33: info: loop invariant initialization proved
+list_borrows.adb:52:33: info: loop invariant preservation proved
 list_borrows.adb:52:47: info: predicate check proved
 list_borrows.adb:52:61: info: predicate check proved
 list_borrows.adb:55:13: info: predicate check proved
@@ -45,8 +46,8 @@ list_borrows.adb:55:13: info: loop invariant initialization proved
 list_borrows.adb:55:13: info: loop invariant preservation proved
 list_borrows.adb:55:42: info: predicate check proved
 list_borrows.adb:55:46: info: predicate check proved
-list_borrows.adb:58:13: info: loop invariant initialization proved
 list_borrows.adb:58:13: info: loop invariant preservation proved
+list_borrows.adb:58:13: info: loop invariant initialization proved
 list_borrows.adb:59:21: info: predicate check proved
 list_borrows.adb:59:26: info: predicate check proved
 list_borrows.adb:60:23: info: precondition proved

@@ -6,7 +6,7 @@
 --                                                                          --
 --                                 B o d y                                  --
 --                                                                          --
---                     Copyright (C) 2018-2023, AdaCore                     --
+--                     Copyright (C) 2018-2024, AdaCore                     --
 --                                                                          --
 -- gnat2why is  free  software;  you can redistribute  it and/or  modify it --
 -- under terms of the  GNU General Public License as published  by the Free --
@@ -1786,7 +1786,7 @@ package body Why.Gen.Pointers is
          Field :=  To_Local (Field);
       end if;
 
-      if Domain = EW_Prog then
+      if Domain = EW_Prog and then not Can_Never_Be_Null (E) then
          return
            +New_VC_Call
            (Ada_Node => Ada_Node,

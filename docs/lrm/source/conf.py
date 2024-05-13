@@ -141,9 +141,9 @@ html_theme = "sphinx_rtd_theme"
 # documentation.
 # https://sphinx-rtd-theme.readthedocs.io/en/stable/configuring.html#theme-options
 html_theme_options = {
-     # Use AdaCore blue in the Table Of Content
-     "style_nav_header_background": "#12284c",
- }
+    # Use AdaCore blue in the Table Of Content
+    "style_nav_header_background": "#12284c",
+}
 
 # Add any paths that contain custom themes here, relative to this directory.
 # html_theme_path = []

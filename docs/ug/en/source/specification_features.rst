@@ -1424,6 +1424,13 @@ compilation. So-called `ghost code` in |SPARK| are these parts of the code that
 are only meant for specification and verification, and have no effect on the
 functional behavior of the program.
 
+Note that assertions (including contracts) are not necessarily ghost code. A
+contract on a ghost entity is considered as ghost code, while a contract on a
+non-ghost entity is not. Depending on the corresponding value of
+``Assertion_Policy`` (of kind ``Ghost`` for ghost code, of kind ``Assertions``
+for all assertions, or of more specific assertion kinds like ``Pre`` and
+``Post``), ghost code and assertions are executed or ignored at runtime.
+
 Various kinds of ghost code are useful in different situations:
 
 * `Ghost functions` are typically used to express properties used in contracts.

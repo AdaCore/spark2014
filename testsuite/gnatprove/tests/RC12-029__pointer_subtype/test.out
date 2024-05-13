@@ -2,9 +2,9 @@ constr_ty.adb:1:11: warning: subprogram "Constr_Ty" has no effect
 constr_ty.adb:8:04: info: absence of resource or memory leak at end of scope proved (CVC5: 1 VC)
 constr_ty.adb:8:23: info: range check proved (CVC5: 2 VC)
 constr_ty.adb:8:26: info: range check proved (CVC5: 2 VC)
-constr_ty.adb:9:04: info: absence of resource or memory leak at end of scope proved (CVC5: 1 VC)
+constr_ty.adb:9:04: medium: resource or memory leak might occur at end of scope
 constr_ty.adb:9:19: medium: range check might fail [reason for check: default component value must fit in the type] [possible fix: subprogram at line 1 should mention C in a precondition]
-constr_ty.adb:16:04: info: absence of resource or memory leak at end of scope proved (CVC5: 1 VC)
+constr_ty.adb:16:04: medium: resource or memory leak might occur at end of scope
 constr_ty.adb:20:20: info: cannot unroll loop (too many loop iterations)
 constr_ty.adb:23:10: info: absence of resource or memory leak at end of scope proved (CVC5: 1 VC)
 constr_ty.adb:23:29: info: range check proved (CVC5: 2 VC)

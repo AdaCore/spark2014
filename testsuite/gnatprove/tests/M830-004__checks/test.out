@@ -3,7 +3,7 @@ do_checks.adb:6:14: warning: subprogram "Do_Length_Check" has no effect
 do_checks.adb:7:14: warning: subprogram "Do_Discriminant_Check" has no effect
 do_checks.adb:17:24: medium: range check might fail
 do_checks.adb:23:24: info: range check proved (CVC5: 2 VC)
-do_checks.adb:23:57: medium: overflow check might fail, cannot prove lower bound for Zero - 1 [reason for check: result of subtraction must fit in a 32-bits machine integer] [possible fix: add precondition (Zero >= Integer'First + 1) to subprogram at line 5]
+do_checks.adb:23:57: high: overflow check might fail, cannot prove lower bound for Zero - 1 (e.g. when Zero = Integer'First) [reason for check: result of subtraction must fit in a 32-bits machine integer] [possible fix: add precondition (Zero >= Integer'First + 1) to subprogram at line 5]
 do_checks.adb:31:16: medium: range check might fail
 do_checks.adb:38:16: info: range check proved (CVC5: 2 VC)
 do_checks.adb:38:48: high: overflow check might fail, cannot prove lower bound for Zero - 1 (e.g. when Zero = Integer'First) [reason for check: result of subtraction must fit in a 32-bits machine integer] [possible fix: add precondition (Zero >= Integer'First + 1) to subprogram at line 5]
@@ -33,8 +33,8 @@ do_checks.adb:125:60: medium: overflow check might fail, cannot prove lower boun
 do_checks.adb:136:25: medium: range check might fail
 do_checks.adb:149:25: info: range check proved (CVC5: 2 VC)
 do_checks.adb:149:57: medium: overflow check might fail, cannot prove lower bound for Zero - 1 [reason for check: result of subtraction must fit in a 32-bits machine integer] [possible fix: add precondition (Zero >= Integer'First + 1) to subprogram at line 5]
+do_checks.adb:161:39: high: range check might fail (e.g. when Zero = 0)
 do_checks.adb:161:39: medium: length check might fail [reason for check: array must be of the appropriate length] [possible fix: precondition of subprogram at line 5 should mention Zero]
-do_checks.adb:161:39: medium: range check might fail
 do_checks.adb:161:40: info: range check proved (CVC5: 2 VC)
 do_checks.adb:161:60: medium: range check might fail [possible fix: add precondition (Zero .. 1 in Positive) to subprogram at line 5]
 do_checks.adb:167:38: info: length check proved (CVC5: 3 VC; Trivial: 1 VC)

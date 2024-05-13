@@ -6,7 +6,7 @@
 --                                                                          --
 --                                 B o d Y                                  --
 --                                                                          --
---                     Copyright (C) 2010-2023, AdaCore                     --
+--                     Copyright (C) 2010-2024, AdaCore                     --
 --                                                                          --
 -- gnat2why is  free  software;  you can redistribute  it and/or  modify it --
 -- under terms of the  GNU General Public License as published  by the Free --
@@ -641,11 +641,6 @@ package body Why.Atree.Modules is
                           Name => "Unconstr_Array_3"),
          4 => New_Module (File => Ada_Model_File,
                           Name => "Unconstr_Array_4"));
-
-      Array_Concat_Axioms :=
-        New_Module
-          (File => Gnatprove_Standard_File,
-           Name => "Array__1__Concat");
 
       Array_Int_Rep_Comparison_Ax :=
         New_Module
@@ -3031,6 +3026,13 @@ package body Why.Atree.Modules is
                  (E, WNE_Array_Well_Formed,
                   New_Identifier
                     (Symb   => NID ("well_formed"),
+                     Module => M,
+                     Domain => EW_Pred),
+                  Relaxed_Init);
+               Insert_Symbol
+                 (E, WNE_Array_Logic_Eq,
+                  New_Identifier
+                    (Symb   => NID ("logic_eq"),
                      Module => M,
                      Domain => EW_Pred),
                   Relaxed_Init);

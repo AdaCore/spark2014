@@ -6,8 +6,8 @@
 --                                                                          --
 --                                 B o d y                                  --
 --                                                                          --
---              Copyright (C) 2013-2023, Capgemini Engineering              --
---                     Copyright (C) 2013-2023, AdaCore                     --
+--              Copyright (C) 2013-2024, Capgemini Engineering              --
+--                     Copyright (C) 2013-2024, AdaCore                     --
 --                                                                          --
 -- gnat2why is  free  software;  you can redistribute  it and/or  modify it --
 -- under terms of the  GNU General Public License as published  by the Free --
@@ -846,10 +846,19 @@ package body Flow_Error_Messages is
          Verdict    : Cntexmp_Verdict)
          return String
       is
-         Fix : constant String := Get_Fix
-           (N, Tag, How_Proved, Check_Info.Fix_Info);
+         Fix            : constant String :=
+           Get_Fix (N, Tag, How_Proved, Check_Info.Fix_Info);
+         Enclosing_Subp : constant Entity_Id :=
+           Lib.Xref.SPARK_Specific.Enclosing_Subprogram_Or_Library_Package (N);
+         --  Approximate search for the enclosing subprogram or library
+         --  package. It is fine to use this function here even if not always
+         --  correct, as it's only used for adding or not an explanation.
+
       begin
-         if Fix = "" then
+         if Fix = ""
+           and then Present (Enclosing_Subp)
+           and then Is_Subprogram (Unique_Entity (Enclosing_Subp))
+         then
             case Verdict.Verdict_Category is
                when Subcontract_Weakness =>
                   return "add or complete related loop invariants "

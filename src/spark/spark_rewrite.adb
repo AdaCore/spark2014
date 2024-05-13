@@ -6,7 +6,7 @@
 --                                                                          --
 --                                  B o d y                                 --
 --                                                                          --
---                     Copyright (C) 2013-2023, AdaCore                     --
+--                     Copyright (C) 2013-2024, AdaCore                     --
 --                                                                          --
 -- gnat2why is  free  software;  you can redistribute  it and/or  modify it --
 -- under terms of the  GNU General Public License as published  by the Free --
@@ -406,7 +406,11 @@ package body SPARK_Rewrite is
             --  Traverse expressions for DIC procedures
 
             when N_Full_Type_Declaration =>
-               if Comes_From_Source (N) then
+
+               --  Frontend rewrites declarations of derived types, so only
+               --  their original node comes from source.
+
+               if Comes_From_Source (Original_Node (N)) then
                   declare
                      Ty       : constant Entity_Id := Defining_Entity (N);
                      Inv_Proc : constant Entity_Id := Invariant_Procedure (Ty);

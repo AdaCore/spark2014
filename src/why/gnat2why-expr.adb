@@ -6,7 +6,7 @@
 --                                                                          --
 --                                 B o d y                                  --
 --                                                                          --
---                     Copyright (C) 2010-2023, AdaCore                     --
+--                     Copyright (C) 2010-2024, AdaCore                     --
 --                                                                          --
 -- gnat2why is  free  software;  you can redistribute  it and/or  modify it --
 -- under terms of the  GNU General Public License as published  by the Free --
@@ -3121,7 +3121,7 @@ package body Gnat2Why.Expr is
 
    function Check_Scalar_Range
      (Params : Transformation_Params;
-      N      : Entity_Id;
+      N      : Node_Id;
       Base   : Type_Kind_Id)
       return W_Prog_Id
    is
@@ -4079,6 +4079,7 @@ package body Gnat2Why.Expr is
          if Call_Through_Access then
             Why_Args (Arg_Cnt) := New_Subprogram_Value_Access
               (Ada_Node => Name (Call),
+               Ty       => Retysp (Etype (Prefix (Name (Call)))),
                Expr     => Transform_Expr
                  (Expr   => Prefix (Name (Call)),
                   Domain => Domain,
@@ -6688,25 +6689,45 @@ package body Gnat2Why.Expr is
             --  Get the check function for Ty if any
 
             declare
-               Check_Function : Entity_Id;
-               Check_Param    : Item_Type;
-               Is_Reclaimed   : Boolean;
+               Reclamation_Entity : Entity_Id;
+               Check_Param        : Item_Type;
+               Kind               : Reclamation_Kind;
 
             begin
-               Get_Reclamation_Check_Function
-                 (Retysp (Ty), Check_Function, Is_Reclaimed);
+               Get_Reclamation_Entity
+                 (Retysp (Ty), Reclamation_Entity, Kind);
 
-               --  If no check functions are supplied, consider the value is
-               --  never reclaimed. It can still have been moved.
+               --  If no check functions or constants are supplied, consider
+               --  the value is never reclaimed. It can still have been moved.
 
-               if No (Check_Function) then
+               if No (Reclamation_Entity) then
                   return Pred_Of_Boolean_Term
                     (+New_Record_Is_Moved_Access (Ty, +Expr));
+
+               elsif Kind = Reclaimed_Value then
+                  pragma Assert (Ekind (Reclamation_Entity) = E_Constant);
+                  return New_Or_Pred
+                    (Left   => Pred_Of_Boolean_Term
+                       (+New_Record_Is_Moved_Access (Ty, +Expr)),
+                     Right  => +New_Ada_Equality
+                       (Typ    => Retysp (Ty),
+                        Domain => EW_Pred,
+                        Left   => Insert_Simple_Conversion
+                          (Expr   => +Expr,
+                           Domain => EW_Term,
+                           To     => Type_Of_Node (Reclamation_Entity)),
+                        Right  => Transform_Identifier
+                          (Params => Logic_Params,
+                           Expr   => Reclamation_Entity,
+                           Ent    => Reclamation_Entity,
+                           Domain => EW_Term)));
+
                else
+                  pragma Assert (Ekind (Reclamation_Entity) = E_Function);
                   declare
                      Check_Params : constant Item_Array :=
                        Compute_Subprogram_Parameters
-                         (Check_Function, EW_Term);
+                         (Reclamation_Entity, EW_Term);
                   begin
                      pragma Assert (Check_Params'Length = 1);
                      Check_Param := Check_Params (Check_Params'First);
@@ -6718,12 +6739,13 @@ package body Gnat2Why.Expr is
                      Right  => New_Comparison
                        (Symbol => Why_Eq,
                         Left   =>
-                          (if Is_Reclaimed then True_Term else False_Term),
+                          (if Kind = Is_Reclaimed then True_Term
+                           else False_Term),
                         Right  => New_Call
                           (Name => +Transform_Identifier
                                (Params => Logic_Params,
-                                Expr   => Check_Function,
-                                Ent    => Check_Function,
+                                Expr   => Reclamation_Entity,
+                                Ent    => Reclamation_Entity,
                                 Domain => EW_Term),
                            Args =>
                              (1 => Insert_Simple_Conversion
@@ -7047,6 +7069,7 @@ package body Gnat2Why.Expr is
                  and then Can_Never_Be_Null (Retysp (Etype (Actual)))
                  and then not
                    Can_Never_Be_Null (Get_Ada_Type_From_Item (Pattern))
+                 and then Pattern.Mutable
                then
                   Append
                     (Store,
@@ -7529,17 +7552,22 @@ package body Gnat2Why.Expr is
      (Returned_Expr : N_Subexpr_Id;
       Subp          : E_Function_Id)
    is
-      Param       : constant Entity_Id := First_Formal (Subp);
-      Path        : Node_Id := Returned_Expr;
-      Access_Seen : Boolean := False;
+      Param : constant Entity_Id := First_Formal (Subp);
 
-   begin
+      Seen  : Node_Sets.Set;
+      --  Remember already processed locally declared objects.
+
+      function Compute_Check
+        (Path         : N_Subexpr_Id;
+         Under_Access : Boolean)
+         return Boolean;
       --  Approximate the accessibility level check on the return statement in
       --  the following way:
       --    * If we are in a part of a named access type, then no checks are
       --      necessary.
-      --    * If we have a call to traversal function inside the declaration
-      --      of a local object, then the accessibility check will fail.
+      --    * If we have a call to traversal function inside the declaration of
+      --      a local object on the path to the ultimate root of E, then the
+      --      accessibility check will fail.
       --    * If we have a call to traversal function inside the return
       --      expression, the accessibility of the result will be the result
       --      accessibility. It is still possible that a failed accessibility
@@ -7555,70 +7583,74 @@ package body Gnat2Why.Expr is
       --      directly at the traversed parameter and this parameter is
       --      aliased.
 
-      loop
+      -------------------
+      -- Compute_Check --
+      -------------------
+
+      function Compute_Check
+        (Path         : N_Subexpr_Id;
+         Under_Access : Boolean)
+         return Boolean is
+      begin
+         --  We are in a part of a named access type. This type is necessarily
+         --  declared above the scope of the caller, since it can be found from
+         --  the type of the first parameter, so the accessibility check is
+         --  guaranteed to succeed.
+
+         if Is_Access_Type (Retysp (Etype (Path)))
+           and then not Is_Anonymous_Access_Type (Etype (Path))
+         then
+            return True;
+         end if;
+
          case Nkind (Path) is
             when N_Expanded_Name
                | N_Identifier
-               =>
-               declare
-                  Root : constant Entity_Id := Entity (Path);
+            =>
+               --  If we take the address of a local object, which returns
+               --  something with local accessibility, the overall check might
+               --  fail.
 
-               begin
-                  --  We have reached the traversed parameter. Check that we
-                  --  have not encountered any 'Access attribute without a
-                  --  dereference in its prefix.
+               if Under_Access then
+                  return False;
+               else
+                  declare
+                     Root : constant Entity_Id := Get_Root_Object (Path);
+                  begin
+                     --  If we have reached the traversed parameter (or
+                     --  something which was already checked), this is fine.
 
-                  if Root = Param then
+                     if Root = Param or else Seen.Contains (Root) then
+                        return True;
 
-                     --  Do not generate a check if the returned expression
-                     --  is a part of the traversed parameter and this
-                     --  parameter is aliased. In this case the accessibility
-                     --  check is deferred to the call site.
+                     --  Otherwise, continue verification on the initialization
+                     --  expression of the root object.
 
-                     if Get_Root_Object
-                       (Returned_Expr, Through_Traversal => False) /= Param
-                       or else not Is_Aliased (Param)
-                     then
-                        Emit_Static_Proof_Result
-                          (Node   => Returned_Expr,
-                           Kind   => VC_Dynamic_Accessibility_Check,
-                           Proved => not Access_Seen,
-                           E      => Subp);
+                     else
+                        Seen.Insert (Root);
+                        return Compute_Check
+                          (Expression (Enclosing_Declaration (Root)),
+                           Under_Access => False);
                      end if;
-                     exit;
-
-                  --  Root is a local borrower/observer, continue the traversal
-                  --  in its initial value. We ignore reborrows here. As they
-                  --  can only go deeper in the structure, it can be imprecise
-                  --  but safe.
-
-                  else
-                     declare
-                        Decl : constant Node_Id :=
-                          Enclosing_Declaration (Root);
-                     begin
-                        Path := Expression (Decl);
-                     end;
-                  end if;
-               end;
+                  end;
+               end if;
 
             when N_Attribute_Reference =>
                pragma Assert (Attribute_Name (Path) = Name_Access);
+               pragma Assert (not Under_Access);
 
-               --  Use Access_Seen to record that we are in the prefix of a
+               --  Use Under_Access to record that we are in the prefix of a
                --  reference to the 'Access attribute and we should check for a
                --  dereference.
 
-               Access_Seen := True;
-               Path := Prefix (Path);
+               return Compute_Check (Prefix (Path), Under_Access => True);
 
             when N_Explicit_Dereference =>
 
                --  We have found a dereference. The previously encountered
-               --  accesses are fine.
+               --  accesses (if any) are fine.
 
-               Access_Seen := False;
-               Path := Prefix (Path);
+               return Compute_Check (Prefix (Path), Under_Access => False);
 
             when N_Function_Call =>
 
@@ -7629,51 +7661,59 @@ package body Gnat2Why.Expr is
                pragma Assert (Is_Traversal_Function_Call (Path));
                if Get_Root_Object (Returned_Expr) /= Get_Root_Object (Path)
                then
-                  Emit_Static_Proof_Result
-                    (Node   => Returned_Expr,
-                     Kind   => VC_Dynamic_Accessibility_Check,
-                     Proved => False,
-                     E      => Subp);
-                  exit;
+                  return False;
                end if;
 
-               --  If the first formal is aliased, an accessibility check
-               --  might have been deferred to the call site. We need to check
-               --  that it is OK to call Actual'Access in this context.
+               --  If the first formal is aliased, an accessibility check might
+               --  have been deferred to the call site. We need to check that
+               --  it is OK to call Actual'Access in this context.
 
-               if Is_Aliased
-                 (First_Formal (Get_Called_Entity_For_Proof (Path)))
-               then
-                  Access_Seen := True;
-               end if;
-
-               Path := First_Actual (Path);
+               pragma Assert (not Under_Access);
+               return Compute_Check
+                 (First_Actual (Path),
+                  Under_Access => Is_Aliased
+                    (First_Formal (Get_Called_Entity_For_Proof (Path))));
 
             when N_Indexed_Component
                | N_Selected_Component
                | N_Slice
-               =>
-               Path := Prefix (Path);
+            =>
+               return Compute_Check (Prefix (Path), Under_Access);
 
             when N_Qualified_Expression
                | N_Type_Conversion
                | N_Unchecked_Type_Conversion
-               =>
-               Path := Expression (Path);
+            =>
+               return Compute_Check (Expression (Path), Under_Access);
+
+            when N_If_Expression
+               | N_Case_Expression
+            =>
+               return (for all P of Terminal_Alternatives (Path) =>
+                          Compute_Check (P, Under_Access));
 
             when others =>
                raise Program_Error;
          end case;
+      end Compute_Check;
 
-         --  We are in a part of a named access type. The accessibility check
-         --  is guaranteed to succeed.
+   begin
 
-         if Is_Access_Type (Retysp (Etype (Path)))
-           and then not Is_Anonymous_Access_Type (Etype (Path))
-         then
-            exit;
-         end if;
-      end loop;
+      --  Do not generate a check if the returned expression is a part of the
+      --  traversed parameter and this parameter is aliased. In this case the
+      --  accessibility check is deferred to the call site.
+
+      if Get_Root_Object (Returned_Expr, Through_Traversal => False) = Param
+        and then Is_Aliased (Param)
+      then
+         return;
+      end if;
+
+      Emit_Static_Proof_Result
+        (Node   => Returned_Expr,
+         Kind   => VC_Dynamic_Accessibility_Check,
+         Proved => Compute_Check (Returned_Expr, Under_Access => False),
+         E      => Subp);
    end Emit_Dynamic_Accessibility_Check;
 
    -----------------------------
@@ -11182,7 +11222,7 @@ package body Gnat2Why.Expr is
       Result_Id       : constant W_Identifier_Id :=
         New_Result_Ident (Typ => Get_Typ (Brower_At_End));
       Brower_Relaxed  : constant Boolean :=
-        Ekind (Brower) in Object_Kind  and then Obj_Has_Relaxed_Init (Brower);
+        Is_Object (Brower) and then Obj_Has_Relaxed_Init (Brower);
       pragma Assert
         (if Ekind (Brower) = E_Function
          then not Fun_Has_Relaxed_Init (Brower));
@@ -12163,8 +12203,7 @@ package body Gnat2Why.Expr is
       begin
          while Present (Formal) loop
             if (if For_Input then Ekind (Formal) /= E_Out_Parameter
-                else Ekind (Formal) /= E_In_Parameter
-                  or else Is_Access_Variable (Etype (Formal)))
+                else not Is_Constant_In_SPARK (Formal))
               and then (not Exceptional or else By_Reference (Formal))
             then
                Process
@@ -14786,9 +14825,10 @@ package body Gnat2Why.Expr is
          end if;
 
          Result := New_And_Pred
-           (Result,
-            Transform_Array_Component_Associations
-              (Arr, Elements_From_Nodes, Bounds, Params));
+           ((1 => Result,
+             2 => New_Well_Formed_Pred (Arr),
+             3 => Transform_Array_Component_Associations
+               (Arr, Elements_From_Nodes, Bounds, Params)));
 
          return Result;
       end Make_Defining_Proposition;
@@ -15574,7 +15614,12 @@ package body Gnat2Why.Expr is
                     (V    => V_Other_Assocs,
                      Pred => New_Conditional
                        (Condition => New_And_Pred
-                            (Pre & To_Array (Condition)),
+                            (Pre & To_Array (Condition) & New_Range_Expr
+                             (Low  => Get_Array_Attr
+                              (Arr, Attribute_First, Dim),
+                              High => Get_Array_Attr
+                                (Arr, Attribute_Last, Dim),
+                              Expr => +Indexes (Dim))),
                         Then_Part => Transform_Complex_Association
                           (Dim, Association)));
                end if;
@@ -15609,7 +15654,13 @@ package body Gnat2Why.Expr is
                   then Constrain_Value_At_Index (Update_Prefix, Indexes)
                   elsif Has_Others
                     and then (Assocs_Len > 1 or else Present (Positional))
-                  then Transform_Complex_Association (Dim, Association)
+                  then New_Conditional
+                    (Condition => New_Range_Expr
+                         (Low  => Get_Array_Attr (Arr, Attribute_First, Dim),
+                          High => Get_Array_Attr (Arr, Attribute_Last, Dim),
+                          Expr => +Indexes (Dim)),
+                     Then_Part => Transform_Complex_Association
+                       (Dim, Association))
                   else True_Pred);
 
             begin
@@ -15782,7 +15833,7 @@ package body Gnat2Why.Expr is
                                  (1 => +New_Array_Access
                                     (Ar    => Arr,
                                      Index => Indexes))))),
-                  Pred    => Other_Assocs);
+                  Pred     => Other_Assocs);
                return New_And_Pred
                  (Left  => Simple_Assocs,
                   Right => Other_Assocs);
@@ -17264,23 +17315,15 @@ package body Gnat2Why.Expr is
                                                    EW_Int_Type,
                                                    Domain,
                                                    Params),
-                              2 =>
-                                (if Get_EW_Type (Var) = EW_Builtin then
-                                 --  if we're builtin, i.e., not abstract,
-                                 --  we use standard modulus from why theory
-                                   +MF_BVs (Base_Why_Type (Var)).Two_Power_Size
-
-                                 else
-                                 --  else we refer to the attribute modulus
-                                   Insert_Simple_Conversion
+                              2 => Insert_Simple_Conversion
                                      (Domain => EW_Term,
                                       Expr   =>
                                         New_Attribute_Expr
                                           (Etype (Var),
                                            Domain,
                                            Attribute_Modulus),
-                                       To     => EW_Int_Type))),
-                                 Typ   => EW_Int_Type),
+                                       To     => EW_Int_Type)),
+                           Typ    => EW_Int_Type),
                      To     => Target_Type);
                end if;
             end;
@@ -21689,11 +21732,16 @@ package body Gnat2Why.Expr is
                      Right_Expr : constant W_Expr_Id :=
                        Transform_Expr (Right, BT, EW_Term, Params);
                   begin
-                     T := New_Comparison
-                       (Symbol => Why_Eq,
-                        Left   => Left_Expr,
-                        Right  => Right_Expr,
-                        Domain => Domain);
+                     if Has_Array_Type (Etype (Left)) then
+                        T := New_Logic_Eq_Call
+                          (+Left_Expr, +Right_Expr, Domain);
+                     else
+                        T := New_Comparison
+                          (Symbol => Why_Eq,
+                           Left   => Left_Expr,
+                           Right  => Right_Expr,
+                           Domain => Domain);
+                     end if;
                   end;
 
                elsif Is_Function_With_Side_Effects (Subp) then

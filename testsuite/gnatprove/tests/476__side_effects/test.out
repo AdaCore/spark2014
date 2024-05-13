@@ -3,14 +3,10 @@ eff.adb:10:09: medium: pointer dereference check might fail (e.g. when X = null)
 eff.adb:10:18: medium: pointer dereference check might fail (e.g. when Y = null) [possible fix: precondition of subprogram at line 5 should mention Y]
 eff.adb:11:09: medium: pointer dereference check might fail (e.g. when Y = null) [possible fix: precondition of subprogram at line 5 should mention Y]
 eff.adb:11:18: medium: pointer dereference check might fail (e.g. when X = null) [possible fix: precondition of subprogram at line 5 should mention X]
-eff.adb:14:19: warning: unused initial value of "X"
-eff.adb:14:22: warning: unused initial value of "Y"
 eff.adb:17:35: medium: pointer dereference check might fail (e.g. when Tmp = False and X = null) [possible fix: precondition of subprogram at line 14 should mention X]
 eff.adb:19:09: medium: pointer dereference check might fail (e.g. when X = null) [possible fix: precondition of subprogram at line 14 should mention X]
-eff.adb:19:13: warning: unused assignment
 eff.adb:19:18: medium: pointer dereference check might fail (e.g. when Y = null) [possible fix: precondition of subprogram at line 14 should mention Y]
 eff.adb:20:09: medium: pointer dereference check might fail (e.g. when Y = null) [possible fix: precondition of subprogram at line 14 should mention Y]
-eff.adb:20:13: warning: unused assignment
 eff.adb:20:18: medium: pointer dereference check might fail (e.g. when X = null) [possible fix: precondition of subprogram at line 14 should mention X]
 eff.adb:24:04: medium: resource or memory leak might occur at end of scope
 eff.adb:25:04: medium: resource or memory leak might occur at end of scope

@@ -6,7 +6,7 @@
 --                                                                          --
 --                                 B o d y                                  --
 --                                                                          --
---                     Copyright (C) 2020-2023, AdaCore                     --
+--                     Copyright (C) 2020-2024, AdaCore                     --
 --                                                                          --
 -- gnat2why is  free  software;  you can redistribute  it and/or  modify it --
 -- under terms of the  GNU General Public License as published  by the Free --
@@ -364,6 +364,7 @@ package body Gnat2Why.Subprograms.Pointers is
               (if not From_Access then (1 .. 0 => <>)
                else (1 => New_Subprogram_Value_Access
                      (Ada_Node => Ada_Node,
+                      Ty       => From,
                       Expr     => Expr,
                       Domain   => EW_Pterm)));
             --  We compute the access in the Pterm domain as we don't want to
@@ -1234,19 +1235,21 @@ package body Gnat2Why.Subprograms.Pointers is
 
    function New_Subprogram_Value_Access
      (Ada_Node : Entity_Id := Empty;
+      Ty       : Access_Kind_Id;
       Expr     : W_Expr_Id;
       Domain   : EW_Domain) return W_Expr_Id
-   is (if Domain = EW_Prog
-       then +New_VC_Call (Ada_Node => Ada_Node,
-                          Name     => M_Subprogram_Access.Rec_Value_Prog,
-                          Progs    => (1 => Expr),
-                          Reason   => VC_Null_Pointer_Dereference,
-                          Typ      => M_Subprogram_Access.Subprogram_Type)
-       else New_Record_Access
-         (Ada_Node => Ada_Node,
-          Name     => Expr,
-          Field    => M_Subprogram_Access.Rec_Value,
-          Typ      => M_Subprogram_Access.Subprogram_Type));
+   is
+     (if Domain = EW_Prog and then not Can_Never_Be_Null (Ty)
+      then +New_VC_Call (Ada_Node => Ada_Node,
+                         Name     => M_Subprogram_Access.Rec_Value_Prog,
+                         Progs    => (1 => Expr),
+                         Reason   => VC_Null_Pointer_Dereference,
+                         Typ      => M_Subprogram_Access.Subprogram_Type)
+      else New_Record_Access
+        (Ada_Node => Ada_Node,
+         Name     => Expr,
+         Field    => M_Subprogram_Access.Rec_Value,
+         Typ      => M_Subprogram_Access.Subprogram_Type));
 
    ----------------------------------------------
    -- Transform_Access_Attribute_Of_Subprogram --

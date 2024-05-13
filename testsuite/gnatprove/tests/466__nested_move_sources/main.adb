@@ -23,14 +23,14 @@ procedure Main with SPARK_Mode is
    begin
       null;
    end Through_Allocator;
-   
+
    procedure Through_Aggregate is
       X : Int_Acc_Const := new Int_Acc'(new Integer'(0));
       Y : R := (F => X.all, G => X.all);
    begin
       null;
    end Through_Aggregate;
-   
+
    procedure Through_Array_Aggregate is
       X : Int_Acc_Const := new Int_Acc'(new Integer'(0));
       Y : Ref_Matrix (1 .. 3, 1 .. 3) :=
@@ -62,7 +62,7 @@ procedure Main with SPARK_Mode is
    begin
       null;
    end Through_Extension_Aggregate;
-   
+
    procedure Through_Multidimensional_Update is
       X : Int_Acc_Const := new Int_Acc'(new Integer'(0));
       Y : Ref_Matrix (1 .. 3, 1 .. 3) :=
@@ -71,7 +71,7 @@ procedure Main with SPARK_Mode is
    begin
       null;
    end Through_Multidimensional_Update;
-   
+
 begin
    Through_Allocator;
    Through_Aggregate;

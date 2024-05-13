@@ -2,7 +2,7 @@ signed.adb:1:11: high: all paths in "Signed" raise exceptions or do not terminat
 signed.adb:10:09: info: no contextual analysis of "Shift_Left" (body not seen yet)
 signed.adb:10:09: warning: assuming "Shift_Left" has no effect on global items
 signed.adb:10:09: warning: no Global contract available for "Shift_Left"
-signed.adb:11:19: info: assertion proved (altergo: 1 VC)
+signed.adb:11:19: info: assertion proved (CVC5: 1 VC)
 signed.adb:11:25: info: overflow check proved (CVC5: 2 VC)
 signed.adb:13:09: info: no contextual analysis of "Shift_Left" (body not seen yet)
 signed.adb:13:09: warning: assuming "Shift_Left" has no effect on global items

@@ -105,7 +105,7 @@ class Altergo(Prover):
             result.append("--timelimit")
             result.append(str(timeout))
         if rlimit:
-            result.append("--teps-bound")
+            result.append("--steps-bound")
             result.append(str(rlimit))
         return result
 

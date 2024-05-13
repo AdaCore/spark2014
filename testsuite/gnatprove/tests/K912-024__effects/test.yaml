@@ -1,2 +1,2 @@
 prove_all:
-  opt: ["--proof-warnings"]
+  opt: ["--proof-warnings=on"]

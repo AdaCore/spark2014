@@ -1,4 +1,5 @@
 traversal.adb:11:13: info: implicit aspect Always_Terminates on "Get_Fst" has been proved, subprogram will terminate
+traversal.adb:11:69: info: dynamic accessibility check proved (Trivial)
 traversal.adb:11:69: info: pointer dereference check proved (CVC5: 1 VC)
 traversal.adb:14:13: info: implicit aspect Always_Terminates on "Id" has been proved, subprogram will terminate
 traversal.adb:14:63: info: dynamic accessibility check proved (Trivial)

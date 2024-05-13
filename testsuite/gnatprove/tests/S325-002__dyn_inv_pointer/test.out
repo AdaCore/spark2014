@@ -14,7 +14,7 @@ p.adb:20:19: info: implicit aspect Always_Terminates on "H" has been proved, sub
 p.adb:21:14: info: pointer dereference check proved (CVC5: 1 VC)
 p.adb:21:19: info: pointer dereference check proved (CVC5: 1 VC)
 p.adb:22:44: info: pointer dereference check proved (CVC5: 1 VC)
-p.adb:23:20: medium: postcondition might fail
+p.adb:23:20: medium: postcondition might fail (e.g. when H'Result = 0 and I = 1)
 rec_inv.adb:12:13: info: implicit aspect Always_Terminates on "F" has been proved, subprogram will terminate
 rec_inv.adb:13:08: info: pointer dereference check proved (CVC5: 1 VC)
 rec_inv.adb:15:14: info: postcondition proved (CVC5: 1 VC; Trivial: 1 VC)
@@ -30,7 +30,7 @@ rec_inv.adb:22:13: info: implicit aspect Always_Terminates on "H" has been prove
 rec_inv.adb:23:08: info: pointer dereference check proved (CVC5: 1 VC)
 rec_inv.adb:23:13: info: pointer dereference check proved (CVC5: 1 VC)
 rec_inv.adb:24:38: info: pointer dereference check proved (CVC5: 1 VC)
-rec_inv.adb:25:14: medium: postcondition might fail
+rec_inv.adb:25:14: medium: postcondition might fail (e.g. when H'Result = 0)
 rec_inv.adb:27:13: info: implicit aspect Always_Terminates on "I" has been proved, subprogram will terminate
 rec_inv.adb:28:08: info: pointer dereference check proved (CVC5: 1 VC)
 rec_inv.adb:28:13: info: pointer dereference check proved (CVC5: 1 VC)
