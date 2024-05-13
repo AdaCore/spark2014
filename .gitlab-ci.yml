@@ -132,8 +132,6 @@ build:
 issue_present:
   services:
      - image:pe-base
-  rules:
-    - if: $CI_PIPELINE_SOURCE == 'merge_request_event'
   stage: check
   needs: [] # Execute regardless of the other stages
   script:
@@ -150,8 +148,6 @@ precommit_checks:
     - . /tmp/venv/bin/activate
     - python -mpip install pre-commit
     - cd $CI_PROJECT_DIR
-    - pre-commit install
-    - pre-commit install-hooks
     - pre-commit run -a --show-diff-on-failure
 
 ########
