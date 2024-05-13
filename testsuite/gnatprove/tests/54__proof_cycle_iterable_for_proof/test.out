@@ -78,7 +78,7 @@ element_through_model.ads:19:16: info: precondition proved (CVC5: 1 VC)
 element_through_model.ads:21:16: info: implicit aspect Always_Terminates on "From_Array" has been proved, subprogram will terminate
 element_through_model.ads:27:10: info: range check proved (CVC5: 2 VC)
 element_through_model.ads:31:51: info: overflow check proved (CVC5: 2 VC)
-element_through_model.ads:35:21: medium: array index check might fail (e.g. when X = (F => 1, L => 1, Content => (1 => 1)) and X.Content'First = 1 and X.Content'Last = 1 and Y = 1) [reason for check: value must be a valid index into the array] [possible fix: add precondition (Element_Through_Model_Id (Integer (Y)) in F .. L) to subprogram at line 19]
+element_through_model.ads:35:21: medium: array index check might fail [reason for check: value must be a valid index into the array] [possible fix: add precondition (Element_Through_Model_Id (Integer (Y)) in F .. L) to subprogram at line 19]
 element_through_model.ads:39:22: info: range check proved (CVC5: 2 VC)
 element_through_model.ads:39:36: info: range check proved (CVC5: 2 VC)
 element_through_model.ads:39:54: info: length check proved (CVC5: 2 VC; Trivial: 2 VC)

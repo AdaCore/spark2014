@@ -18,11 +18,11 @@ package body C_Strings with SPARK_Mode is
 
    procedure Lemma_Is_Find_Nul (Chars : Char_Array; P : size_t) with
      Ghost,
-     Pre => Is_Nul_Terminated (Chars)
-     and then P in Chars'Range
+     Pre => P in Chars'Range
      and then Chars (P) = nul
      and then (for all I in Chars'First .. P => (if I < P then Chars (I) /= nul)),
-     Post => P = Find_Nul (Chars);
+     Post => Is_Nul_Terminated (Chars)
+     and then P = Find_Nul (Chars);
 
    --------------------
    -- C_Length_Ghost --
@@ -291,8 +291,8 @@ package body C_Strings with SPARK_Mode is
                             By (Old_Val (I) /= Nul, I < Old_Len))
                          else By
                            (Item (I) /= Nul,
-                            I - Offset + Chars'First < Chars'First + C_Length_Ghost (Chars)
-                            and Chars (I - Offset + Chars'First) /= Nul)))));
+                            So (I - Offset + Chars'First < Chars'First + C_Length_Ghost (Chars),
+                                Chars (I - Offset + Chars'First) /= Nul))))));
                Lemma_Is_Find_Nul (Item.all, New_Last);
                pragma Assert (Strlen (Item) = New_Last);
             end;
@@ -309,6 +309,7 @@ package body C_Strings with SPARK_Mode is
                      else By
                        (Item (I) /= Nul,
                         Chars (I - Offset + Chars'First) /= Nul))));
+            Lemma_Is_Find_Nul (Item.all, Old_Len);
             pragma Assert (Strlen (Item) = Old_Len);
          end if;
       end if;
@@ -401,7 +402,7 @@ package body C_Strings with SPARK_Mode is
                                   Item (Size_T (I - 1)) = Char_Array'(Value (Item)) (Size_T (I - 1)))
                                and By
                                  (Old_Val_Str (I) = To_Ada (Old_Val (Size_T (I - 1))),
-                                  Old_Val (Size_T (I - 1)) = Old_Val (Size_T (I - 1))))))));
+                                  Old_Val (Size_T (I - 1)) = Value (Item) (Size_T (I - 1))))))));
          end;
       end if;
    end Update;

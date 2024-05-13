@@ -10,4 +10,4 @@ predicates.ads:13:65: info: predicate check proved (CVC5: 1 VC)
 predicates.ads:13:65: info: range check proved (CVC5: 1 VC)
 predicates.ads:18:13: info: implicit aspect Always_Terminates on "Test2" has been proved, subprogram will terminate
 predicates.ads:20:19: info: assertion proved (CVC5: 1 VC)
-predicates.ads:21:19: info: assertion proved (Z3: 1 VC)
+predicates.ads:21:19: info: assertion proved (CVC5: 1 VC)

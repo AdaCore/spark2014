@@ -1,4 +1,4 @@
 main.adb:6:07: info: range check proved (CVC5: 2 VC)
 main.adb:13:09: info: range check proved (CVC5: 2 VC)
-main.adb:13:13: medium: discriminant check might fail (e.g. when X.all = (D => 0, F => ?) and X.all.F'First = 1 and X.all.F'Last = 0 and Y = (D => -1, F => ?) and Y.F'First = 1 and Y.F'Last = -1) [possible fix: precondition of subprogram at line 11 should mention X]
-main.adb:13:16: medium: discriminant check might fail (e.g. when Y = (D => 0, F => ?) and Y.F'First = 1 and Y.F'Last = 0) [possible fix: precondition of subprogram at line 11 should mention Y]
+main.adb:13:13: medium: discriminant check might fail [possible fix: precondition of subprogram at line 11 should mention X]
+main.adb:13:16: medium: discriminant check might fail [possible fix: precondition of subprogram at line 11 should mention Y]

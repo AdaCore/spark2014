@@ -1294,6 +1294,15 @@ package body Why.Gen.Arrays is
                                        Dim  => 1),
                      Right  => +Size_Ident),
                   Dep       => Dep));
+         Emit (Th,
+               New_Guarded_Axiom
+                 (Name     => NID ("to_string__wf"),
+                  Binders  => To_String_Binders,
+                  Triggers => New_Triggers
+                    (Triggers =>
+                         (1 => New_Trigger (Terms => (1 => +Call_Expr)))),
+                  Def      => New_Well_Formed_Pred (Arr => Call_Expr),
+                  Dep       => Dep));
       end;
    end Declare_Additional_Symbols_For_String;
 
@@ -3004,9 +3013,45 @@ package body Why.Gen.Arrays is
       return
         New_Call
           (Domain => Domain,
-           Name   => Get_Array_Theory_1 (E, Relaxed_Init).Slice,
+           Name   => Get_Array_Theory (E, Relaxed_Init).Slice,
            Args   => (1 => Arr, 2 => Low, 3 => High),
            Typ    => EW_Split (E, Relaxed_Init => Relaxed_Init));
+   end New_Slice_Call;
+
+   function New_Slice_Call
+     (Domain : EW_Domain;
+      Arr    : W_Expr_Id;
+      Typ    : W_Type_Id) return W_Expr_Id
+   is
+      Relaxed_Init : constant Boolean := Is_Init_Wrapper_Type (Typ);
+      E            : constant Entity_Id := Get_Ada_Node (+Typ);
+      Dim          : constant Positive := Positive (Number_Dimensions (E));
+      Args         : W_Expr_Array (1 .. Dim * 2 + 1);
+      Arg_Ind      : Positive := 1;
+      Expr         : constant W_Expr_Id := New_Temp_For_Expr (Arr);
+      R            : W_Expr_Id;
+   begin
+      Add_Array_Arg (Domain, Args, Expr, Arg_Ind);
+      Args (1) :=
+        New_Call
+          (Domain => Domain,
+           Name   => Get_Array_Theory (E, Relaxed_Init).Slice,
+           Args   => Args,
+           Typ    => EW_Split (E, Relaxed_Init => Relaxed_Init));
+      if Is_Static_Array_Type (Retysp (E)) then
+         R := New_Label
+           (Domain => Domain,
+            Labels => Symbol_Sets.Empty_Set,
+            Def    => Args (1),
+            Typ    => Typ);
+      else
+         R := Array_Convert_From_Base
+           (Domain       => Domain,
+            Args         => Args,
+            Ty           => E,
+            Relaxed_Init => Relaxed_Init);
+      end if;
+      return Binding_For_Temp (Domain => Domain, Tmp => Expr, Context => R);
    end New_Slice_Call;
 
    --------------------------

@@ -152,14 +152,14 @@ package body Recursive_Mergesort with SPARK_Mode is
          pragma Loop_Invariant (A (A'First .. L - 1) = A_copy (A'First .. L - 1));
          pragma Loop_Invariant (A (R + 1 .. A'Last) = A_copy (R + 1 .. A'Last));
 
-         pragma Loop_Invariant (Is_Sorted (A (L .. L + aii - 1)));
+         pragma Loop_Invariant (Is_Sorted (A, L, L + aii - 1));
          pragma Loop_Invariant (if lii < n1 then A (L + aii - 1) <= A_copy (L + lii));
          pragma Loop_Invariant (if rii < n2 then A (L + aii - 1) <= A_copy (M + 1 + rii));
 
          pragma Loop_Invariant(aii = lii + rii);
          pragma Loop_Invariant(lii <= n1 and rii <= n2);
       end loop;
-      pragma Assert (Is_Sorted (A (L .. R)));
+      pragma Assert (Is_Sorted (A, L, R));
 
       --  Prove that A (L .. M) and A_copy (L .. M) have the same occurrences
 

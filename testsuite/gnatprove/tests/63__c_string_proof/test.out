@@ -164,10 +164,10 @@ c_strings.adb:15:13: info: implicit aspect Always_Terminates on "Find_Nul" has b
 c_strings.adb:17:14: info: postcondition proved
 c_strings.adb:17:46: info: precondition proved
 c_strings.adb:19:14: info: aspect Always_Terminates on "Lemma_Is_Find_Nul" has been proved, subprogram will terminate
-c_strings.adb:23:22: info: index check proved
-c_strings.adb:24:71: info: index check proved
-c_strings.adb:25:14: info: postcondition proved
-c_strings.adb:25:18: info: precondition proved
+c_strings.adb:22:22: info: index check proved
+c_strings.adb:23:71: info: index check proved
+c_strings.adb:24:14: info: postcondition proved
+c_strings.adb:25:19: info: precondition proved
 c_strings.adb:39:13: info: loop invariant initialization proved
 c_strings.adb:39:13: info: loop invariant preservation proved
 c_strings.adb:39:51: info: index check proved
@@ -329,7 +329,8 @@ c_strings.adb:291:42: info: index check proved
 c_strings.adb:293:29: info: assertion step proved
 c_strings.adb:293:29: info: pointer dereference check proved
 c_strings.adb:293:35: info: index check proved
-c_strings.adb:294:70: info: precondition proved
+c_strings.adb:294:74: info: precondition proved
+c_strings.adb:295:33: info: assertion step proved
 c_strings.adb:295:51: info: index check proved
 c_strings.adb:296:16: info: precondition proved
 c_strings.adb:296:40: info: pointer dereference check proved
@@ -352,225 +353,228 @@ c_strings.adb:310:25: info: assertion step proved
 c_strings.adb:310:25: info: pointer dereference check proved
 c_strings.adb:310:31: info: index check proved
 c_strings.adb:311:43: info: index check proved
-c_strings.adb:312:28: info: assertion proved
-c_strings.adb:312:28: info: precondition proved
-c_strings.adb:326:17: info: postcondition proved
-c_strings.adb:326:37: info: precondition proved
-c_strings.adb:329:19: info: precondition proved
-c_strings.adb:329:35: info: precondition proved
-c_strings.adb:330:26: info: precondition proved
-c_strings.adb:336:16: info: assertion proved
-c_strings.adb:336:45: info: range check proved
-c_strings.adb:337:18: info: precondition proved
-c_strings.adb:337:51: info: index check proved
-c_strings.adb:337:76: info: range check proved
-c_strings.adb:337:79: info: index check proved
-c_strings.adb:337:79: info: overflow check proved
-c_strings.adb:339:31: info: assertion proved
-c_strings.adb:339:31: info: precondition proved
-c_strings.adb:339:64: info: index check proved
-c_strings.adb:339:72: info: precondition proved
-c_strings.adb:341:19: info: assertion proved
-c_strings.adb:341:45: info: precondition proved
-c_strings.adb:342:37: info: precondition proved
-c_strings.adb:342:64: info: precondition proved
-c_strings.adb:342:97: info: index check proved
-c_strings.adb:345:19: info: assertion proved
-c_strings.adb:345:48: info: range check proved
-c_strings.adb:346:23: info: precondition proved
-c_strings.adb:346:56: info: index check proved
-c_strings.adb:351:40: info: precondition proved
-c_strings.adb:352:49: info: pointer dereference check proved
-c_strings.adb:354:51: info: precondition proved
-c_strings.adb:358:44: info: precondition proved
-c_strings.adb:360:13: info: precondition proved
+c_strings.adb:312:13: info: precondition proved
+c_strings.adb:312:37: info: pointer dereference check proved
+c_strings.adb:313:28: info: assertion proved
+c_strings.adb:313:28: info: precondition proved
+c_strings.adb:327:17: info: postcondition proved
+c_strings.adb:327:37: info: precondition proved
+c_strings.adb:330:19: info: precondition proved
+c_strings.adb:330:35: info: precondition proved
+c_strings.adb:331:26: info: precondition proved
+c_strings.adb:337:16: info: assertion proved
+c_strings.adb:337:45: info: range check proved
+c_strings.adb:338:18: info: precondition proved
+c_strings.adb:338:51: info: index check proved
+c_strings.adb:338:76: info: range check proved
+c_strings.adb:338:79: info: index check proved
+c_strings.adb:338:79: info: overflow check proved
+c_strings.adb:340:31: info: assertion proved
+c_strings.adb:340:31: info: precondition proved
+c_strings.adb:340:64: info: index check proved
+c_strings.adb:340:72: info: precondition proved
+c_strings.adb:342:19: info: assertion proved
+c_strings.adb:342:45: info: precondition proved
+c_strings.adb:343:37: info: precondition proved
+c_strings.adb:343:64: info: precondition proved
+c_strings.adb:343:97: info: index check proved
+c_strings.adb:346:19: info: assertion proved
+c_strings.adb:346:48: info: range check proved
+c_strings.adb:347:23: info: precondition proved
+c_strings.adb:347:56: info: index check proved
+c_strings.adb:352:40: info: precondition proved
+c_strings.adb:353:49: info: pointer dereference check proved
+c_strings.adb:355:51: info: precondition proved
+c_strings.adb:359:44: info: precondition proved
 c_strings.adb:361:13: info: precondition proved
-c_strings.adb:363:16: info: assertion premise proved
-c_strings.adb:363:34: info: precondition proved
-c_strings.adb:364:53: info: range check proved
-c_strings.adb:365:37: info: range check proved
-c_strings.adb:365:54: info: range check proved
-c_strings.adb:367:24: info: assertion step proved
-c_strings.adb:367:24: info: pointer dereference check proved
-c_strings.adb:367:30: info: index check proved
-c_strings.adb:367:57: info: range check proved
-c_strings.adb:367:67: info: index check proved
-c_strings.adb:367:67: info: overflow check proved
+c_strings.adb:362:13: info: precondition proved
+c_strings.adb:364:16: info: assertion premise proved
+c_strings.adb:364:34: info: precondition proved
+c_strings.adb:365:53: info: range check proved
+c_strings.adb:366:37: info: range check proved
+c_strings.adb:366:54: info: range check proved
+c_strings.adb:368:24: info: assertion step proved
 c_strings.adb:368:24: info: pointer dereference check proved
 c_strings.adb:368:30: info: index check proved
-c_strings.adb:368:53: info: index check proved
-c_strings.adb:369:26: info: pointer dereference check proved
-c_strings.adb:369:32: info: index check proved
-c_strings.adb:369:46: info: index check proved
-c_strings.adb:371:16: info: assertion premise proved
-c_strings.adb:372:48: info: precondition proved
-c_strings.adb:372:48: info: range check proved
-c_strings.adb:374:56: info: range check proved
-c_strings.adb:374:80: info: range check proved
-c_strings.adb:374:85: info: range check proved
-c_strings.adb:376:29: info: assertion step proved
-c_strings.adb:376:37: info: precondition proved
-c_strings.adb:376:52: info: index check proved
-c_strings.adb:376:64: info: overflow check proved
-c_strings.adb:376:82: info: range check proved
-c_strings.adb:376:87: info: index check proved
-c_strings.adb:376:87: info: overflow check proved
-c_strings.adb:378:34: info: overflow check proved
-c_strings.adb:378:52: info: range check proved
-c_strings.adb:378:62: info: range check proved
-c_strings.adb:379:32: info: assertion step proved
-c_strings.adb:380:35: info: assertion step proved
-c_strings.adb:380:43: info: pointer dereference check proved
-c_strings.adb:380:49: info: index check proved
-c_strings.adb:380:59: info: range check proved
-c_strings.adb:380:75: info: overflow check proved
-c_strings.adb:380:93: info: range check proved
-c_strings.adb:380:98: info: index check proved
-c_strings.adb:380:98: info: overflow check proved
-c_strings.adb:382:48: info: range check proved
-c_strings.adb:382:78: info: range check proved
-c_strings.adb:383:52: info: range check proved
-c_strings.adb:383:65: info: precondition proved
-c_strings.adb:384:61: info: range check proved
-c_strings.adb:384:66: info: range check proved
-c_strings.adb:384:81: info: range check proved
-c_strings.adb:385:38: info: assertion step proved
-c_strings.adb:385:38: info: pointer dereference check proved
-c_strings.adb:385:44: info: index check proved
-c_strings.adb:385:54: info: range check proved
-c_strings.adb:385:92: info: range check proved
-c_strings.adb:385:97: info: range check proved
-c_strings.adb:385:107: info: index check proved
-c_strings.adb:385:107: info: overflow check proved
-c_strings.adb:387:32: info: assertion step proved
-c_strings.adb:387:40: info: precondition proved
-c_strings.adb:387:55: info: index check proved
-c_strings.adb:387:68: info: pointer dereference check proved
-c_strings.adb:387:74: info: index check proved
-c_strings.adb:387:84: info: range check proved
-c_strings.adb:388:32: info: pointer dereference check proved
-c_strings.adb:388:38: info: index check proved
-c_strings.adb:388:48: info: range check proved
-c_strings.adb:388:68: info: precondition proved
-c_strings.adb:388:83: info: index check proved
-c_strings.adb:388:93: info: range check proved
-c_strings.adb:390:29: info: assertion step proved
-c_strings.adb:390:37: info: precondition proved
-c_strings.adb:390:52: info: index check proved
-c_strings.adb:390:70: info: index check proved
-c_strings.adb:392:42: info: range check proved
-c_strings.adb:392:55: info: precondition proved
-c_strings.adb:393:32: info: assertion step proved
-c_strings.adb:394:35: info: assertion step proved
-c_strings.adb:394:43: info: pointer dereference check proved
-c_strings.adb:394:49: info: index check proved
-c_strings.adb:394:59: info: range check proved
-c_strings.adb:394:85: info: index check proved
-c_strings.adb:394:95: info: range check proved
-c_strings.adb:396:38: info: assertion step proved
-c_strings.adb:396:38: info: pointer dereference check proved
-c_strings.adb:396:44: info: index check proved
-c_strings.adb:396:54: info: range check proved
-c_strings.adb:396:71: info: index check proved
-c_strings.adb:396:81: info: range check proved
-c_strings.adb:397:48: info: range check proved
-c_strings.adb:397:82: info: range check proved
-c_strings.adb:398:52: info: range check proved
-c_strings.adb:400:35: info: assertion step proved
-c_strings.adb:400:43: info: precondition proved
-c_strings.adb:400:58: info: index check proved
-c_strings.adb:400:71: info: pointer dereference check proved
-c_strings.adb:400:77: info: index check proved
-c_strings.adb:400:87: info: range check proved
-c_strings.adb:401:35: info: pointer dereference check proved
-c_strings.adb:401:41: info: index check proved
-c_strings.adb:401:51: info: range check proved
-c_strings.adb:401:71: info: precondition proved
-c_strings.adb:401:86: info: index check proved
-c_strings.adb:401:96: info: range check proved
-c_strings.adb:403:35: info: assertion step proved
-c_strings.adb:403:48: info: index check proved
-c_strings.adb:403:70: info: index check proved
-c_strings.adb:403:80: info: range check proved
-c_strings.adb:404:44: info: index check proved
-c_strings.adb:404:54: info: range check proved
-c_strings.adb:404:71: info: index check proved
-c_strings.adb:404:81: info: range check proved
-c_strings.adb:414:12: info: pointer dereference check proved
-c_strings.adb:414:12: info: range check proved
-c_strings.adb:414:22: info: precondition proved
-c_strings.adb:414:37: info: pointer dereference check proved
-c_strings.adb:420:38: info: precondition proved
-c_strings.adb:425:17: info: range check proved
-c_strings.adb:431:14: info: precondition proved
-c_strings.adb:431:22: info: precondition proved
-c_strings.adb:438:38: info: precondition proved
-c_strings.adb:441:25: info: assertion proved
-c_strings.adb:441:34: info: precondition proved
+c_strings.adb:368:57: info: range check proved
+c_strings.adb:368:67: info: index check proved
+c_strings.adb:368:67: info: overflow check proved
+c_strings.adb:369:24: info: pointer dereference check proved
+c_strings.adb:369:30: info: index check proved
+c_strings.adb:369:53: info: index check proved
+c_strings.adb:370:26: info: pointer dereference check proved
+c_strings.adb:370:32: info: index check proved
+c_strings.adb:370:46: info: index check proved
+c_strings.adb:372:16: info: assertion premise proved
+c_strings.adb:373:48: info: precondition proved
+c_strings.adb:373:48: info: range check proved
+c_strings.adb:375:56: info: range check proved
+c_strings.adb:375:80: info: range check proved
+c_strings.adb:375:85: info: range check proved
+c_strings.adb:377:29: info: assertion step proved
+c_strings.adb:377:37: info: precondition proved
+c_strings.adb:377:52: info: index check proved
+c_strings.adb:377:64: info: overflow check proved
+c_strings.adb:377:82: info: range check proved
+c_strings.adb:377:87: info: index check proved
+c_strings.adb:377:87: info: overflow check proved
+c_strings.adb:379:34: info: overflow check proved
+c_strings.adb:379:52: info: range check proved
+c_strings.adb:379:62: info: range check proved
+c_strings.adb:380:32: info: assertion step proved
+c_strings.adb:381:35: info: assertion step proved
+c_strings.adb:381:43: info: pointer dereference check proved
+c_strings.adb:381:49: info: index check proved
+c_strings.adb:381:59: info: range check proved
+c_strings.adb:381:75: info: overflow check proved
+c_strings.adb:381:93: info: range check proved
+c_strings.adb:381:98: info: index check proved
+c_strings.adb:381:98: info: overflow check proved
+c_strings.adb:383:48: info: range check proved
+c_strings.adb:383:78: info: range check proved
+c_strings.adb:384:52: info: range check proved
+c_strings.adb:384:65: info: precondition proved
+c_strings.adb:385:61: info: range check proved
+c_strings.adb:385:66: info: range check proved
+c_strings.adb:385:81: info: range check proved
+c_strings.adb:386:38: info: assertion step proved
+c_strings.adb:386:38: info: pointer dereference check proved
+c_strings.adb:386:44: info: index check proved
+c_strings.adb:386:54: info: range check proved
+c_strings.adb:386:92: info: range check proved
+c_strings.adb:386:97: info: range check proved
+c_strings.adb:386:107: info: index check proved
+c_strings.adb:386:107: info: overflow check proved
+c_strings.adb:388:32: info: assertion step proved
+c_strings.adb:388:40: info: precondition proved
+c_strings.adb:388:55: info: index check proved
+c_strings.adb:388:68: info: pointer dereference check proved
+c_strings.adb:388:74: info: index check proved
+c_strings.adb:388:84: info: range check proved
+c_strings.adb:389:32: info: pointer dereference check proved
+c_strings.adb:389:38: info: index check proved
+c_strings.adb:389:48: info: range check proved
+c_strings.adb:389:68: info: precondition proved
+c_strings.adb:389:83: info: index check proved
+c_strings.adb:389:93: info: range check proved
+c_strings.adb:391:29: info: assertion step proved
+c_strings.adb:391:37: info: precondition proved
+c_strings.adb:391:52: info: index check proved
+c_strings.adb:391:70: info: index check proved
+c_strings.adb:393:42: info: range check proved
+c_strings.adb:393:55: info: precondition proved
+c_strings.adb:394:32: info: assertion step proved
+c_strings.adb:395:35: info: assertion step proved
+c_strings.adb:395:43: info: pointer dereference check proved
+c_strings.adb:395:49: info: index check proved
+c_strings.adb:395:59: info: range check proved
+c_strings.adb:395:85: info: index check proved
+c_strings.adb:395:95: info: range check proved
+c_strings.adb:397:38: info: assertion step proved
+c_strings.adb:397:38: info: pointer dereference check proved
+c_strings.adb:397:44: info: index check proved
+c_strings.adb:397:54: info: range check proved
+c_strings.adb:397:71: info: index check proved
+c_strings.adb:397:81: info: range check proved
+c_strings.adb:398:48: info: range check proved
+c_strings.adb:398:82: info: range check proved
+c_strings.adb:399:52: info: range check proved
+c_strings.adb:401:35: info: assertion step proved
+c_strings.adb:401:43: info: precondition proved
+c_strings.adb:401:58: info: index check proved
+c_strings.adb:401:71: info: pointer dereference check proved
+c_strings.adb:401:77: info: index check proved
+c_strings.adb:401:87: info: range check proved
+c_strings.adb:402:35: info: pointer dereference check proved
+c_strings.adb:402:41: info: index check proved
+c_strings.adb:402:51: info: range check proved
+c_strings.adb:402:71: info: precondition proved
+c_strings.adb:402:86: info: index check proved
+c_strings.adb:402:96: info: range check proved
+c_strings.adb:404:35: info: assertion step proved
+c_strings.adb:404:48: info: index check proved
+c_strings.adb:404:70: info: index check proved
+c_strings.adb:404:80: info: range check proved
+c_strings.adb:405:44: info: index check proved
+c_strings.adb:405:54: info: range check proved
+c_strings.adb:405:62: info: precondition proved
+c_strings.adb:405:76: info: index check proved
+c_strings.adb:405:86: info: range check proved
+c_strings.adb:415:12: info: pointer dereference check proved
+c_strings.adb:415:12: info: range check proved
+c_strings.adb:415:22: info: precondition proved
+c_strings.adb:415:37: info: pointer dereference check proved
+c_strings.adb:421:38: info: precondition proved
+c_strings.adb:426:17: info: range check proved
+c_strings.adb:432:14: info: precondition proved
+c_strings.adb:432:22: info: precondition proved
+c_strings.adb:439:38: info: precondition proved
 c_strings.adb:442:25: info: assertion proved
-c_strings.adb:443:59: info: index check proved
-c_strings.adb:445:38: info: precondition proved
-c_strings.adb:447:28: info: assertion proved
-c_strings.adb:447:31: info: range check proved
-c_strings.adb:447:41: info: precondition proved
-c_strings.adb:448:28: info: assertion premise proved
-c_strings.adb:450:33: info: assertion step proved
-c_strings.adb:450:38: info: index check proved
-c_strings.adb:450:51: info: precondition proved
-c_strings.adb:450:65: info: index check proved
-c_strings.adb:450:75: info: overflow check proved
-c_strings.adb:450:75: info: range check proved
+c_strings.adb:442:34: info: precondition proved
+c_strings.adb:443:25: info: assertion proved
+c_strings.adb:444:59: info: index check proved
+c_strings.adb:446:38: info: precondition proved
+c_strings.adb:448:28: info: assertion proved
+c_strings.adb:448:31: info: range check proved
+c_strings.adb:448:41: info: precondition proved
+c_strings.adb:449:28: info: assertion premise proved
+c_strings.adb:451:33: info: assertion step proved
 c_strings.adb:451:38: info: index check proved
-c_strings.adb:451:66: info: range check proved
-c_strings.adb:451:73: info: index check proved
-c_strings.adb:452:28: info: assertion premise proved
-c_strings.adb:452:31: info: precondition proved
-c_strings.adb:455:39: info: assertion step proved
-c_strings.adb:455:44: info: index check proved
-c_strings.adb:455:49: info: precondition proved
-c_strings.adb:455:63: info: index check proved
-c_strings.adb:456:39: info: precondition proved
-c_strings.adb:456:53: info: index check proved
-c_strings.adb:456:66: info: precondition proved
-c_strings.adb:456:80: info: index check proved
-c_strings.adb:456:90: info: overflow check proved
-c_strings.adb:456:90: info: range check proved
-c_strings.adb:460:25: info: assertion proved
-c_strings.adb:460:53: info: precondition proved
-c_strings.adb:460:67: info: index check proved
+c_strings.adb:451:51: info: precondition proved
+c_strings.adb:451:65: info: index check proved
+c_strings.adb:451:75: info: overflow check proved
+c_strings.adb:451:75: info: range check proved
+c_strings.adb:452:38: info: index check proved
+c_strings.adb:452:66: info: range check proved
+c_strings.adb:452:73: info: index check proved
+c_strings.adb:453:28: info: assertion premise proved
+c_strings.adb:453:31: info: precondition proved
+c_strings.adb:456:39: info: assertion step proved
+c_strings.adb:456:44: info: index check proved
+c_strings.adb:456:49: info: precondition proved
+c_strings.adb:456:63: info: index check proved
+c_strings.adb:457:39: info: precondition proved
+c_strings.adb:457:53: info: index check proved
+c_strings.adb:457:66: info: precondition proved
+c_strings.adb:457:80: info: index check proved
+c_strings.adb:457:90: info: overflow check proved
+c_strings.adb:457:90: info: range check proved
 c_strings.adb:461:25: info: assertion proved
-c_strings.adb:461:25: info: precondition proved
-c_strings.adb:463:50: info: range check proved
-c_strings.adb:464:28: info: assertion proved
-c_strings.adb:464:40: info: index check proved
-c_strings.adb:465:40: info: precondition proved
-c_strings.adb:468:16: info: assertion premise proved
-c_strings.adb:468:20: info: assertion step proved
-c_strings.adb:468:38: info: overflow check proved
-c_strings.adb:468:47: info: precondition proved
-c_strings.adb:468:77: info: range check proved
-c_strings.adb:469:28: info: assertion premise proved
-c_strings.adb:471:33: info: assertion step proved
-c_strings.adb:471:38: info: index check proved
-c_strings.adb:471:51: info: precondition proved
-c_strings.adb:471:65: info: index check proved
-c_strings.adb:471:75: info: overflow check proved
-c_strings.adb:471:75: info: range check proved
+c_strings.adb:461:53: info: precondition proved
+c_strings.adb:461:67: info: index check proved
+c_strings.adb:462:25: info: assertion proved
+c_strings.adb:462:25: info: precondition proved
+c_strings.adb:464:50: info: range check proved
+c_strings.adb:465:28: info: assertion proved
+c_strings.adb:465:40: info: index check proved
+c_strings.adb:466:40: info: precondition proved
+c_strings.adb:469:16: info: assertion premise proved
+c_strings.adb:469:20: info: assertion step proved
+c_strings.adb:469:38: info: overflow check proved
+c_strings.adb:469:47: info: precondition proved
+c_strings.adb:469:77: info: range check proved
+c_strings.adb:470:28: info: assertion premise proved
+c_strings.adb:472:33: info: assertion step proved
 c_strings.adb:472:38: info: index check proved
-c_strings.adb:472:66: info: range check proved
-c_strings.adb:472:73: info: index check proved
-c_strings.adb:473:28: info: assertion premise proved
-c_strings.adb:473:31: info: precondition proved
-c_strings.adb:476:39: info: assertion step proved
-c_strings.adb:476:44: info: index check proved
-c_strings.adb:476:49: info: precondition proved
-c_strings.adb:476:63: info: index check proved
-c_strings.adb:477:39: info: precondition proved
-c_strings.adb:477:53: info: index check proved
-c_strings.adb:477:66: info: precondition proved
-c_strings.adb:477:80: info: index check proved
-c_strings.adb:477:90: info: overflow check proved
-c_strings.adb:477:90: info: range check proved
+c_strings.adb:472:51: info: precondition proved
+c_strings.adb:472:65: info: index check proved
+c_strings.adb:472:75: info: overflow check proved
+c_strings.adb:472:75: info: range check proved
+c_strings.adb:473:38: info: index check proved
+c_strings.adb:473:66: info: range check proved
+c_strings.adb:473:73: info: index check proved
+c_strings.adb:474:28: info: assertion premise proved
+c_strings.adb:474:31: info: precondition proved
+c_strings.adb:477:39: info: assertion step proved
+c_strings.adb:477:44: info: index check proved
+c_strings.adb:477:49: info: precondition proved
+c_strings.adb:477:63: info: index check proved
+c_strings.adb:478:39: info: precondition proved
+c_strings.adb:478:53: info: index check proved
+c_strings.adb:478:66: info: precondition proved
+c_strings.adb:478:80: info: index check proved
+c_strings.adb:478:90: info: overflow check proved
+c_strings.adb:478:90: info: range check proved
 c_strings.ads:9:09: info: default initial condition proved
 c_strings.ads:9:09: info: in default value of private type at c_strings.ads:9
 c_strings.ads:9:09: info: predicate check proved on default value

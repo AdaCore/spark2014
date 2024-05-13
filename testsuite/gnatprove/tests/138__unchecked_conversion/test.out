@@ -152,7 +152,7 @@ modular.adb:149:13: info: types in unchecked conversion have the same size (Triv
 modular.adb:149:69: info: type is suitable as source for unchecked conversion (Trivial)
 modular.adb:149:83: info: type is suitable for unchecked conversion (Trivial)
 modular.adb:152:11: info: data dependencies proved
-modular.adb:157:22: info: assertion proved (CVC5: 1 VC)
+modular.adb:157:22: info: assertion proved (Z3: 1 VC)
 modular.adb:158:22: info: assertion proved (Z3: 1 VC)
 modular.adb:196:13: info: implicit function contract might not be available on calls from enclosing unit
 modular.adb:196:13: info: types in unchecked conversion have the same size (Trivial)
@@ -162,7 +162,7 @@ modular.adb:197:13: info: types in unchecked conversion have the same size (Triv
 modular.adb:197:65: info: type is suitable as source for unchecked conversion (Trivial)
 modular.adb:197:79: info: type is suitable for unchecked conversion (Trivial)
 modular.adb:200:11: info: data dependencies proved
-modular.adb:205:22: info: assertion proved (CVC5: 1 VC)
+modular.adb:205:22: info: assertion proved (Z3: 1 VC)
 modular.adb:206:22: info: assertion proved (Z3: 1 VC)
 modular.adb:213:16: info: implicit aspect Always_Terminates on "Of_U32" has been proved, subprogram will terminate
 modular.adb:227:13: info: types in unchecked conversion have the same size (Trivial)

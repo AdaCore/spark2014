@@ -153,8 +153,8 @@ recursive_mergesort.adb:153:55: info: range check proved
 recursive_mergesort.adb:153:65: info: overflow check proved
 recursive_mergesort.adb:155:33: info: loop invariant initialization proved
 recursive_mergesort.adb:155:33: info: loop invariant preservation proved
-recursive_mergesort.adb:155:44: info: range check proved
-recursive_mergesort.adb:155:54: info: overflow check proved
+recursive_mergesort.adb:155:33: info: precondition proved
+recursive_mergesort.adb:155:52: info: overflow check proved
 recursive_mergesort.adb:156:33: info: loop invariant initialization proved
 recursive_mergesort.adb:156:33: info: loop invariant preservation proved
 recursive_mergesort.adb:156:55: info: overflow check proved
@@ -174,7 +174,7 @@ recursive_mergesort.adb:159:42: info: overflow check proved
 recursive_mergesort.adb:160:32: info: loop invariant initialization proved
 recursive_mergesort.adb:160:32: info: loop invariant preservation proved
 recursive_mergesort.adb:162:22: info: assertion proved
-recursive_mergesort.adb:162:33: info: range check proved
+recursive_mergesort.adb:162:22: info: precondition proved
 recursive_mergesort.adb:166:22: info: assertion proved
 recursive_mergesort.adb:166:32: info: precondition proved
 recursive_mergesort.adb:166:60: info: precondition proved
@@ -225,26 +225,26 @@ recursive_mergesort.ads:80:57: info: index check proved
 recursive_mergesort.ads:85:13: info: implicit aspect Always_Terminates on "Is_Sorted" has been proved, subprogram will terminate
 recursive_mergesort.ads:88:32: info: index check proved
 recursive_mergesort.ads:88:40: info: index check proved
-recursive_mergesort.ads:96:28: info: range check proved
-recursive_mergesort.ads:97:28: info: range check proved
-recursive_mergesort.ads:97:33: info: overflow check proved
-recursive_mergesort.ads:98:14: info: postcondition proved
-recursive_mergesort.ads:98:14: info: precondition proved
-recursive_mergesort.ads:98:38: info: precondition proved
-recursive_mergesort.ads:99:21: info: range check proved
-recursive_mergesort.ads:100:10: info: range check proved
-recursive_mergesort.ads:100:34: info: range check proved
+recursive_mergesort.ads:97:17: info: precondition proved
+recursive_mergesort.ads:98:17: info: precondition proved
+recursive_mergesort.ads:98:33: info: overflow check proved
+recursive_mergesort.ads:99:14: info: postcondition proved
+recursive_mergesort.ads:99:14: info: precondition proved
+recursive_mergesort.ads:99:38: info: precondition proved
+recursive_mergesort.ads:100:10: info: precondition proved
 recursive_mergesort.ads:101:10: info: range check proved
-recursive_mergesort.ads:101:15: info: overflow check proved
-recursive_mergesort.ads:101:33: info: range check proved
-recursive_mergesort.ads:101:41: info: overflow check proved
-recursive_mergesort.ads:107:14: info: postcondition proved
-recursive_mergesort.ads:107:14: info: precondition proved
-recursive_mergesort.ads:107:38: info: precondition proved
-recursive_mergesort.ads:108:21: info: range check proved
-recursive_mergesort.ads:109:10: info: range check proved
-recursive_mergesort.ads:109:34: info: range check proved
+recursive_mergesort.ads:101:34: info: range check proved
+recursive_mergesort.ads:102:10: info: range check proved
+recursive_mergesort.ads:102:15: info: overflow check proved
+recursive_mergesort.ads:102:33: info: range check proved
+recursive_mergesort.ads:102:41: info: overflow check proved
+recursive_mergesort.ads:108:14: info: postcondition proved
+recursive_mergesort.ads:108:14: info: precondition proved
+recursive_mergesort.ads:108:38: info: precondition proved
+recursive_mergesort.ads:109:10: info: precondition proved
 recursive_mergesort.ads:110:10: info: range check proved
-recursive_mergesort.ads:110:15: info: overflow check proved
-recursive_mergesort.ads:110:33: info: range check proved
-recursive_mergesort.ads:110:41: info: overflow check proved
+recursive_mergesort.ads:110:34: info: range check proved
+recursive_mergesort.ads:111:10: info: range check proved
+recursive_mergesort.ads:111:15: info: overflow check proved
+recursive_mergesort.ads:111:33: info: range check proved
+recursive_mergesort.ads:111:41: info: overflow check proved

@@ -17,7 +17,7 @@ counter.adb:45:25: info: assertion proved (CVC5: 1 VC; Trivial: 1 VC)
 counter.adb:46:76: info: index check proved (CVC5: 2 VC)
 counter.adb:47:25: info: assertion proved (CVC5: 1 VC; Trivial: 1 VC)
 counter.adb:48:60: info: index check proved (CVC5: 2 VC)
-counter.adb:50:28: medium: assertion might fail, cannot prove Model.Current_Chain_Length = Count
+counter.adb:49:25: info: assertion proved (Trivial: 1 VC; Z3: 1 VC)
 counter.ads:19:16: info: implicit aspect Always_Terminates on "Current_Chain_Length" has been proved, subprogram will terminate
 counter.ads:21:10: info: postcondition proved (CVC5: 3 VC)
 counter.ads:24:25: info: index check proved (CVC5: 2 VC)

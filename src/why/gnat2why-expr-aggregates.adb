@@ -5201,6 +5201,12 @@ package body Gnat2Why.Expr.Aggregates is
                               Dim       => 1),
                            Right => Result);
                      end if;
+
+                     --  Assume that the array is well-formed
+
+                     Result := New_And_Pred
+                       (Left  => New_Well_Formed_Pred (New_Name),
+                        Right => Result);
                   end;
 
                   --  Generate the top-level conditional if necessary (see

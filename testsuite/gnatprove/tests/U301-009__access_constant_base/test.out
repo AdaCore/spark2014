@@ -34,7 +34,7 @@ test_annotate.adb:79:79: info: pointer dereference check proved (CVC5: 1 VC)
 test_annotate.adb:83:16: info: index check proved (CVC5: 4 VC)
 test_annotate.adb:84:23: info: index check proved (CVC5: 4 VC)
 test_annotate.adb:86:33: info: loop invariant initialization proved (CVC5: 1 VC)
-test_annotate.adb:86:33: info: loop invariant preservation proved (altergo: 1 VC)
+test_annotate.adb:86:33: info: loop invariant preservation proved (CVC5: 1 VC)
 test_annotate.adb:86:65: info: index check proved (CVC5: 4 VC)
 test_annotate.adb:94:04: info: initialization of "X" proved
 test_annotate.adb:94:04: medium: resource or memory leak might occur at end of scope
