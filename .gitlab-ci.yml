@@ -5,9 +5,6 @@ workflow:
       when: always
 
 variables:
-   # The common part of the URL for cloning from within a CI
-   GIT_CLONE_BASE: https://gitlab-ci-token:${CI_JOB_TOKEN}@${CI_SERVER_HOST}:${CI_SERVER_PORT}
-
    PACKAGE_BASE_NAME: spark2014.tar.gz
    PACKAGE_ABSOLUTE_NAME: $CI_PROJECT_DIR/$PACKAGE_BASE_NAME
 
@@ -135,12 +132,23 @@ build:
 issue_present:
   services:
      - image:pe-base
-  rules:
-    - if: $CI_PIPELINE_SOURCE == 'merge_request_event'
   stage: check
   needs: [] # Execute regardless of the other stages
   script:
     - require_issue
+
+precommit_checks:
+  stage: check
+  needs: [] # Execute regardless of the other stages
+  services:
+    - image:e3
+  script:
+    - /it/bin/set_git_config.sh
+    - python -mvenv /tmp/venv
+    - . /tmp/venv/bin/activate
+    - python -mpip install pre-commit
+    - cd $CI_PROJECT_DIR
+    - pre-commit run -a --show-diff-on-failure
 
 ########
 # Test #
