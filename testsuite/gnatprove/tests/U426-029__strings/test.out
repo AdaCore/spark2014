@@ -1,7 +1,6 @@
 test_str.adb:5:56: info: overflow check proved (CVC5: 2 VC)
 test_str.adb:22:13: info: implicit aspect Always_Terminates on "Get_String" has been proved, subprogram will terminate
 test_str.adb:24:30: info: discriminant check proved (CVC5: 1 VC)
-test_str.adb:24:41: info: pointer dereference check proved (CVC5: 1 VC)
 test_str.adb:25:29: info: for inherited predicate at test_str.adb:4
 test_str.adb:25:29: info: predicate check proved (CVC5: 1 VC)
 test_str.adb:25:29: info: predicate check proved (CVC5: 4 VC)

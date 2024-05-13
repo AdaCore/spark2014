@@ -1,5 +1,5 @@
 prove_all:
-  opt: ["--function-sandboxing=off", "--proof-warnings"]
+  opt: ["--function-sandboxing=off", "--proof-warnings=on"]
   prover: ["cvc5", "z3"]
   steps: 3000
 timeout: 1500

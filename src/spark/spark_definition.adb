@@ -6,8 +6,8 @@
 --                                                                          --
 --                                 B o d y                                  --
 --                                                                          --
---                     Copyright (C) 2011-2023, AdaCore                     --
---              Copyright (C) 2016-2023, Capgemini Engineering              --
+--                     Copyright (C) 2011-2024, AdaCore                     --
+--              Copyright (C) 2016-2024, Capgemini Engineering              --
 --                                                                          --
 -- gnat2why is  free  software;  you can redistribute  it and/or  modify it --
 -- under terms of the  GNU General Public License as published  by the Free --
@@ -287,7 +287,10 @@ package body SPARK_Definition is
       In_Observe : Boolean)
    with
      Post => (if not Violation_Detected
-              then Is_Path_Expression (Expr)
+                then
+                  (if In_Observe
+                   then Is_Conditional_Path_Selection (Expr)
+                   else Is_Path_Expression (Expr))
                 and then Present (Get_Root_Object (Expr)));
    --  Check that a borrow or observe has a valid source (stand-alone object
    --  or call to a traversal function, that does not go through a slice in
@@ -974,18 +977,21 @@ package body SPARK_Definition is
 
       function Can_Be_Duplicated (N : Node_Id) return Boolean is
       begin
-         --  If the type is not deep, then no aliases can occur
+         --  If the type is not deep, or if N does not own resources, then no
+         --  aliases can occur.
 
-         if not Is_Deep (Etype (N)) then
+         if not Is_Deep (Etype (N))
+           or else Is_Statically_Reclaimed_Expr (N)
+         then
             return True;
          end if;
 
          case Nkind (N) is
 
-            --  Null can always be safely duplicated
+            --  Null is statically reclaimed
 
             when N_Null =>
-               return True;
+               raise Program_Error;
 
             --  Allocators are fine as long as the allocated value itself
             --  can be duplicated.
@@ -1075,42 +1081,17 @@ package body SPARK_Definition is
      (Expr       : N_Subexpr_Id;
       In_Observe : Boolean)
    is
-      function Path_Goes_Through_Slice (Expr : Node_Id) return Boolean;
-      --  Determine if borrowed path Expr goes through a slice
-
-      -----------------------------
-      -- Path_Goes_Through_Slice --
-      -----------------------------
-
-      function Path_Goes_Through_Slice (Expr : Node_Id) return Boolean is
-      begin
-         case Nkind (Expr) is
-            when N_Slice =>
-               return True;
-
-            when N_Attribute_Reference
-               | N_Explicit_Dereference
-               | N_Indexed_Component
-               | N_Selected_Component
-            =>
-               return Path_Goes_Through_Slice (Prefix (Expr));
-
-            when N_Qualified_Expression
-               | N_Type_Conversion
-               | N_Unchecked_Type_Conversion
-            =>
-               return Path_Goes_Through_Slice (Expression (Expr));
-
-            when others =>
-               return False;
-         end case;
-      end Path_Goes_Through_Slice;
+      function Is_Slice (Expr : Node_Id) return Boolean is
+         (Nkind (Expr) = N_Slice);
 
       --  Local variables
 
-      Root : constant Opt_Object_Kind_Id :=
-        (if Is_Path_Expression (Expr) then Get_Root_Object (Expr)
-         else Empty);
+      Is_Path : constant Boolean :=
+        (if In_Observe
+         then Is_Conditional_Path_Selection (Expr)
+         else Is_Path_Expression (Expr));
+      Root    : constant Opt_Object_Kind_Id :=
+        (if Is_Path then Get_Root_Object (Expr) else Types.Empty);
 
    --  Start of processing for Check_Source_Of_Borrow_Or_Observe
 
@@ -1122,13 +1103,61 @@ package body SPARK_Definition is
       --  function.
 
       if No (Root) then
-         Mark_Violation
-           ((if Nkind (Expr) = N_Function_Call
-             then "borrow or observe of a non-traversal function call"
-             else "borrow or observe of an expression which is not part of "
-                  & "stand-alone object or parameter"),
-            Expr,
-            SRM_Reference => "SPARK RM 3.10(4))");
+
+         --  There can be no root object if:
+         --  * There is a conditional expression at head of a borrowed
+         --    expression
+         --  * Some alternative expressions are not path
+         --  * Some alternative paths have no root
+         --  * Alternatives do not agree on root
+
+         declare
+            First_Root           : Node_Id := Types.Empty;
+            Root_Expr            : Node_Id;
+            Distinct_Not_Emitted : Boolean := True;
+            Alternatives         : Node_Vectors.Vector;
+         begin
+            --  Only skip head conditionals for observe. This way, top
+            --  conditionals in borrow are treated like nested ones.
+
+            if In_Observe then
+               Alternatives := Terminal_Alternatives (Expr);
+            else
+               Alternatives.Append (Expr);
+            end if;
+
+            for Alt_Expr of Alternatives loop
+               Root_Expr := (if Is_Path_Expression (Alt_Expr)
+                             then Get_Root_Expr (Alt_Expr)
+                             else Types.Empty);
+               if Nkind (Root_Expr) = N_Function_Call
+                 and then not Is_Traversal_Function_Call (Root_Expr)
+               then
+                  Mark_Violation
+                    ("borrow or observe of a non-traversal function call",
+                     Root_Expr,
+                     SRM_Reference => "SPARK RM 3.10(4)");
+               elsif No (Root_Expr) or else No (Get_Root_Object (Root_Expr))
+               then
+                  Mark_Violation
+                    ("borrow or observe of an expression which is not part "
+                     & "of stand-alone object or parameter",
+                     Alt_Expr,
+                     SRM_Reference => "SPARK RM 3.10(4)");
+               elsif No (First_Root) then
+                  First_Root := Get_Root_Object (Root_Expr);
+               elsif Distinct_Not_Emitted
+                 and then First_Root /= Get_Root_Object (Root_Expr)
+               then
+                  Distinct_Not_Emitted := False;
+                  Mark_Violation
+                    ("observe of a conditional or case expression with "
+                     & "branches rooted in different objects",
+                     Expr);
+               end if;
+            end loop;
+            pragma Assert (Violation_Detected);
+         end;
 
       --  The root object should not be effectively volatile
 
@@ -1157,6 +1186,15 @@ package body SPARK_Definition is
          Mark_Violation
            ("borrow of an access-to-constant part of an object", Expr);
 
+      --  In case of a borrow, all traversal function calls should be borrowing
+      --  traversal functions.
+
+      elsif not In_Observe
+        and then Path_Contains_Traversal_Calls (Expr, Only_Observe => True)
+      then
+         Mark_Violation
+           ("borrow through an observing traversal function", Expr);
+
       --  Qualified expressions are considered to provide a constant view of
       --  the object.
 
@@ -1168,7 +1206,7 @@ package body SPARK_Definition is
       --  indexed_component.
 
       elsif not In_Observe
-        and then Path_Goes_Through_Slice (Expr)
+        and then Path_Contains_Witness (Expr, Is_Slice'Access)
       then
          Mark_Violation ("borrow through a slice", Expr);
       end if;
@@ -2378,10 +2416,10 @@ package body SPARK_Definition is
                Eq_On_Access : constant Boolean :=
                  not Is_Concurrent_Type (Retysp (Etype (Left_Opnd (N))))
                  and then Predefined_Eq_Uses_Pointer_Eq (Etype (Left_Opnd (N)))
-                 and then Nkind (Left_Opnd (N)) /= N_Null;
+                 and then not Is_Statically_Reclaimed_Expr (Left_Opnd (N));
                --  Disallow membership tests if they involved the use of the
                --  predefined equality on access types (except if one of the
-               --  operands is syntactically null).
+               --  operands is statically null).
 
                function Alternative_Uses_Eq (Alt : Node_Id) return Boolean
                is
@@ -2406,7 +2444,7 @@ package body SPARK_Definition is
 
                         pragma Assert (Eq_On_Access);
 
-                        if Nkind (Alt) /= N_Null then
+                        if not Is_Statically_Reclaimed_Expr (Alt) then
                            Mark_Violation
                              ("equality on access types", Alt);
                            exit;
@@ -2420,7 +2458,8 @@ package body SPARK_Definition is
                   Check_User_Defined_Eq
                     (Etype (Left_Opnd (N)), N, "membership test on type");
 
-                  if Eq_On_Access and then Nkind (Right_Opnd (N)) /= N_Null
+                  if Eq_On_Access
+                    and then not Is_Statically_Reclaimed_Expr (Right_Opnd (N))
                   then
                      Mark_Violation ("equality on access types", N);
                   end if;
@@ -4600,8 +4639,8 @@ package body SPARK_Definition is
       if Nkind (N) in N_Op_Eq | N_Op_Ne
         and then Retysp_In_SPARK (Etype (Left_Opnd (N)))
         and then Predefined_Eq_Uses_Pointer_Eq (Etype (Left_Opnd (N)))
-        and then Nkind (Left_Opnd (N)) /= N_Null
-        and then Nkind (Right_Opnd (N)) /= N_Null
+        and then not Is_Statically_Reclaimed_Expr (Left_Opnd (N))
+        and then not Is_Statically_Reclaimed_Expr (Right_Opnd (N))
       then
          Mark_Violation ("equality on access types", N);
 
@@ -4860,12 +4899,7 @@ package body SPARK_Definition is
          --  OUT or IN OUT, or if its mode is IN, it has an access-to-variable
          --  type, and the called subprogram is not a function.
 
-         if Ekind (Formal) in E_In_Out_Parameter | E_Out_Parameter
-           or else
-             (not Is_Function_Or_Function_Type (E)
-              and then Ekind (Formal) = E_In_Parameter
-              and then Is_Access_Variable (Etype (Formal)))
-         then
+         if not Is_Constant_In_SPARK (Formal) then
             declare
                Mode : constant String :=
                  (case Ekind (Formal) is

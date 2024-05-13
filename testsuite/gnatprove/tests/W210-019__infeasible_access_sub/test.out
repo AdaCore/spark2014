@@ -1,7 +1,6 @@
 infeasible_access_subp.adb:2:04: medium: contract of function might not be feasible
 infeasible_access_subp.adb:6:14: info: postcondition proved (CVC5: 1 VC)
 infeasible_access_subp.adb:9:07: medium: implicit aspect Always_Terminates on "F" could be incorrect, call via access-to-subprogram might be nonterminating [possible explanation: call could hide recursive calls]
-infeasible_access_subp.adb:9:33: info: pointer dereference check proved (CVC5: 1 VC)
 infeasible_access_subp.adb:14:13: info: function contract might not be available on implicit recursive calls
 infeasible_access_subp.adb:14:13: info: implicit aspect Always_Terminates on "G1" has been proved, subprogram will terminate
 infeasible_access_subp.adb:14:58: info: postcondition proved (CVC5: 1 VC)

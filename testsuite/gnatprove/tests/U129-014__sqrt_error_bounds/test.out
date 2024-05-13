@@ -64,7 +64,7 @@ norm-reals-errors.adb:99:39: info: predicate check proved (Trivial: 1 VC)
 norm-reals-errors.adb:100:35: info: float overflow check proved (CVC5: 1 VC)
 norm-reals-errors.adb:101:14: info: predicate check proved (Trivial: 1 VC)
 norm-reals-errors.adb:101:24: info: predicate check proved (Trivial: 1 VC)
-norm-reals-errors.adb:102:17: medium: postcondition might fail
+norm-reals-errors.adb:102:17: medium: postcondition might fail (e.g. when I = 1 and Sum_F = 1.0978994E-7)
 norm-reals-errors.adb:103:14: info: predicate check proved (Trivial: 1 VC)
 norm-reals-errors.adb:103:39: info: predicate check proved (Trivial: 1 VC)
 norm-reals-errors.adb:103:48: info: predicate check proved (Trivial: 1 VC)
@@ -145,7 +145,7 @@ norm-reals-errors.adb:212:07: warning: assuming "Bound_Error_Sqrt" always termin
 norm-reals-errors.adb:212:07: warning: assuming "Bound_Error_Sqrt" has no effect on global items
 norm-reals-errors.adb:212:07: warning: no Always_Terminates aspect available for "Bound_Error_Sqrt"
 norm-reals-errors.adb:212:07: warning: no Global contract available for "Bound_Error_Sqrt"
-norm-reals-errors.adb:213:07: medium: precondition might fail, cannot prove Norm_F >= 0.0
+norm-reals-errors.adb:213:07: medium: precondition might fail, cannot prove Norm_F >= 0.0 (e.g. when Values = (others => -1.7123742E-22))
 norm-reals-errors.adb:214:33: info: precondition proved (CVC5: 1 VC)
 norm-reals-errors.adb:215:20: info: precondition proved (colibri: 1 VC)
 norm-reals-errors.adb:215:20: info: predicate check proved (Trivial: 1 VC)

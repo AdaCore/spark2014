@@ -1,0 +1,49 @@
+main.adb:10:13: info: implicit aspect Always_Terminates on "Left_N" has been proved, subprogram will terminate
+main.adb:12:08: info: dynamic accessibility check proved (Trivial)
+main.adb:12:46: info: subprogram variant proved (Trivial)
+main.adb:12:55: info: pointer dereference check proved (CVC5: 1 VC)
+main.adb:12:64: info: range check proved (CVC5: 2 VC)
+main.adb:15:39: info: data dependencies proved
+main.adb:16:40: info: data dependencies proved
+main.adb:21:18: info: pointer dereference check proved (CVC5: 1 VC)
+main.adb:22:18: info: pointer dereference check proved (CVC5: 1 VC)
+main.adb:22:23: info: pointer dereference check proved (CVC5: 1 VC)
+main.adb:23:18: info: pointer dereference check proved (CVC5: 1 VC)
+main.adb:23:23: info: pointer dereference check proved (CVC5: 1 VC)
+main.adb:29:17: info: pointer dereference check proved (CVC5: 1 VC)
+main.adb:30:27: info: pointer dereference check proved (CVC5: 1 VC)
+main.adb:30:32: info: pointer dereference check proved (CVC5: 1 VC)
+main.adb:30:43: medium: pointer dereference check might fail [possible fix: subprogram at line 15 should mention T in a precondition]
+main.adb:31:19: info: pointer dereference check proved (CVC5: 1 VC)
+main.adb:31:24: info: pointer dereference check proved (CVC5: 1 VC)
+main.adb:33:11: info: pointer dereference check proved (CVC5: 1 VC)
+main.adb:33:17: medium: pointer dereference check might fail [possible fix: subprogram at line 15 should mention T in a precondition]
+main.adb:33:41: medium: pointer dereference check might fail
+main.adb:40:18: info: pointer dereference check proved (CVC5: 1 VC)
+main.adb:41:18: info: pointer dereference check proved (CVC5: 1 VC)
+main.adb:41:24: info: pointer dereference check proved (CVC5: 1 VC)
+main.adb:42:18: info: pointer dereference check proved (CVC5: 1 VC)
+main.adb:42:24: info: pointer dereference check proved (CVC5: 1 VC)
+main.adb:42:30: info: pointer dereference check proved (CVC5: 1 VC)
+main.adb:43:18: info: pointer dereference check proved (CVC5: 1 VC)
+main.adb:43:24: info: pointer dereference check proved (CVC5: 1 VC)
+main.adb:43:30: info: pointer dereference check proved (CVC5: 1 VC)
+main.adb:43:35: info: pointer dereference check proved (CVC5: 1 VC)
+main.adb:49:19: info: pointer dereference check proved (CVC5: 1 VC)
+main.adb:50:35: info: pointer dereference check proved (CVC5: 1 VC)
+main.adb:50:41: info: pointer dereference check proved (CVC5: 1 VC)
+main.adb:50:52: medium: pointer dereference check might fail [possible fix: subprogram at line 16 should mention T in a precondition]
+main.adb:51:27: info: pointer dereference check proved (CVC5: 1 VC)
+main.adb:51:33: info: pointer dereference check proved (CVC5: 1 VC)
+main.adb:51:39: info: pointer dereference check proved (CVC5: 1 VC)
+main.adb:52:32: info: pointer dereference check proved (CVC5: 1 VC)
+main.adb:52:38: info: pointer dereference check proved (CVC5: 1 VC)
+main.adb:52:44: info: pointer dereference check proved (CVC5: 1 VC)
+main.adb:52:49: info: pointer dereference check proved (CVC5: 1 VC)
+main.adb:54:11: info: pointer dereference check proved (CVC5: 1 VC)
+main.adb:54:17: info: pointer dereference check proved (CVC5: 1 VC)
+main.adb:54:22: medium: pointer dereference check might fail [possible fix: subprogram at line 16 should mention T in a precondition]
+main.adb:54:46: medium: pointer dereference check might fail
+main.adb:55:11: info: pointer dereference check proved (CVC5: 1 VC)
+main.adb:55:16: medium: pointer dereference check might fail [possible fix: subprogram at line 16 should mention T in a precondition]
+main.adb:55:40: medium: pointer dereference check might fail

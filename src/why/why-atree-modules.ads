@@ -6,7 +6,7 @@
 --                                                                          --
 --                                 S p e c                                  --
 --                                                                          --
---                     Copyright (C) 2010-2023, AdaCore                     --
+--                     Copyright (C) 2010-2024, AdaCore                     --
 --                                                                          --
 -- gnat2why is  free  software;  you can redistribute  it and/or  modify it --
 -- under terms of the  GNU General Public License as published  by the Free --
@@ -118,7 +118,6 @@ package Why.Atree.Modules is
 
    Constr_Arrays                 : W_Module_Array (1 .. Max_Array_Dimensions);
    Unconstr_Arrays               : W_Module_Array (1 .. Max_Array_Dimensions);
-   Array_Concat_Axioms           : W_Module_Id;
    Array_Int_Rep_Comparison_Ax   : W_Module_Id;
    Array_BV8_Rep_Comparison_Ax   : W_Module_Id;
    Array_BV16_Rep_Comparison_Ax  : W_Module_Id;

@@ -1,5 +1,5 @@
 factorial.adb:9:14: info: initialization of "Result" proved
-factorial.adb:12:30: info: overflow check proved (CVC5: 3 VC; Z3: 1 VC)
+factorial.adb:12:30: info: overflow check proved (CVC5: 2 VC; Z3: 2 VC)
 factorial.adb:13:36: info: loop invariant initialization proved (CVC5: 1 VC)
 factorial.adb:13:36: info: loop invariant preservation proved (CVC5: 1 VC)
 factorial.adb:13:45: info: precondition proved (CVC5: 4 VC)

@@ -6,7 +6,7 @@
 --                                                                          --
 --                                 B o d y                                  --
 --                                                                          --
---                     Copyright (C) 2010-2023, AdaCore                     --
+--                     Copyright (C) 2010-2024, AdaCore                     --
 --                                                                          --
 -- gnat2why is  free  software;  you can redistribute  it and/or  modify it --
 -- under terms of the  GNU General Public License as published  by the Free --
@@ -2403,15 +2403,21 @@ package body Gnat2Why.Subprograms is
 
       if Has_Logical_Eq_Annotation (Function_Entity) then
          declare
-            Left  : constant Entity_Id := First_Formal (Function_Entity);
-            Right : constant Entity_Id := Next_Formal (Left);
+            Left       : constant Entity_Id := First_Formal (Function_Entity);
+            Right      : constant Entity_Id := Next_Formal (Left);
+            Left_Expr  : constant W_Expr_Id := Transform_Identifier
+              (Params, Left, Left, EW_Term);
+            Right_Expr : constant W_Expr_Id := Transform_Identifier
+              (Params, Right, Right, EW_Term);
          begin
-            W_Def := New_Comparison
-              (Symbol => Why_Eq,
-               Left   => +Transform_Identifier
-                 (Params, Left, Left, EW_Term),
-               Right  => +Transform_Identifier
-                 (Params, Right, Right, EW_Term));
+            if Has_Array_Type (Etype (Left)) then
+               W_Def := +New_Logic_Eq_Call (+Left_Expr, +Right_Expr, EW_Term);
+            else
+               W_Def := New_Comparison
+                 (Symbol => Why_Eq,
+                  Left   => +Left_Expr,
+                  Right  => +Right_Expr);
+            end if;
          end;
 
       elsif No (Value) then

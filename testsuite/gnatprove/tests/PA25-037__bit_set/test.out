@@ -8,7 +8,7 @@ test.ads:13:13: info: implicit aspect Always_Terminates on "Bit_Set" has been pr
 test.ads:21:12: info: division check proved (CVC5: 1 VC)
 test.ads:21:51: info: overflow check proved (CVC5: 2 VC)
 test.ads:21:51: info: range check proved (CVC5: 1 VC)
-test.ads:23:10: info: postcondition proved (altergo: 2 VC)
+test.ads:23:10: info: postcondition proved (CVC5: 2 VC)
 test.ads:24:23: info: index check proved (CVC5: 2 VC)
 test.ads:24:23: info: overflow check proved (CVC5: 2 VC)
 test.ads:24:36: info: division check proved (CVC5: 1 VC)

@@ -122,7 +122,7 @@ sec_3_13_8_targets_decel_curves.ads:70:32: info: initialization of "Braking_Curv
 section_3_5_3.adb:41:54: info: overflow check proved (CVC5: 2 VC)
 section_3_5_3.ads:49:04: info: initialization of "Connections" proved
 section_3_5_3.ads:49:49: info: range check proved (CVC5: 2 VC)
-section_3_5_3.ads:51:53: info: range check proved (CVC5: 1 VC)
+section_3_5_3.ads:51:53: info: range check proved (CVC5: 2 VC)
 section_3_5_3.ads:53:13: info: implicit aspect Always_Terminates on "Authorize_New_Communication_Session" has been proved, subprogram will terminate
 section_3_5_3.ads:68:14: warning: subprogram "Initiate_Communication_Session" has no effect
 section_3_5_3.ads:75:14: medium: in inlined expression function body at com_map.ads:38
@@ -251,7 +251,7 @@ step_function.ads:48:13: info: implicit aspect Always_Terminates on "Has_Same_De
 step_function.ads:52:23: info: index check proved (CVC5: 2 VC)
 step_function.ads:52:49: info: index check proved (CVC5: 2 VC)
 step_function.ads:54:13: info: implicit aspect Always_Terminates on "Get_Value" has been proved, subprogram will terminate
-step_function.ads:56:12: info: postcondition proved (Z3: 1 VC)
+step_function.ads:56:12: info: postcondition proved (CVC5: 1 VC)
 step_function.ads:58:27: info: index check proved (CVC5: 2 VC)
 step_function.ads:59:36: info: index check proved (CVC5: 2 VC)
 step_function.ads:60:50: info: index check proved (CVC5: 2 VC)

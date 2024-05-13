@@ -5,7 +5,7 @@ automation_request_validation-spark.ads:14:13: info: implicit aspect Always_Term
 automation_request_validation-spark.ads:25:38: info: precondition proved (CVC5: 1 VC)
 automation_request_validation-spark.ads:29:38: info: precondition proved (CVC5: 1 VC)
 automation_request_validation.ads:16:07: info: range check proved (CVC5: 2 VC)
-automation_request_validation.ads:17:34: info: range check proved (CVC5: 1 VC)
+automation_request_validation.ads:17:34: info: range check proved (CVC5: 2 VC)
 common_formal_containers.ads:15:46: info: range check proved (CVC5: 2 VC)
 common_formal_containers.ads:17:13: info: implicit aspect Always_Terminates on "Int64_Hash" has been proved, subprogram will terminate
 common_formal_containers.ads:33:07: info: range check proved (CVC5: 2 VC)

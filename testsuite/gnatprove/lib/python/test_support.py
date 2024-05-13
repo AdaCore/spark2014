@@ -823,11 +823,18 @@ def gnatprove(
     # If the tests uses SPARKlib, do not prove them again
     if sparklib:
         cmd += ["--no-subprojects"]
-    if benchmark_mode() is not None:
-        cmd += ["--benchmark", "--debug-save-vcs", "--why3-debug", "gnat_ast"]
     if cache_allowed and cache_mode():
         cmd += [cache_option()]
     cmd += to_list(opt)
+    # Add benchmark switches last to override existing ones
+    if benchmark_mode() is not None:
+        cmd += [
+            "--benchmark",
+            "--debug-save-vcs",
+            "--proof-warnings=off",
+            "--why3-debug",
+            "gnat_ast",
+        ]
     # When not interested in output, force --output=brief to get simpler diffs
     if no_output:
         cmd += ["--output=brief"]

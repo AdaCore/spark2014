@@ -91,7 +91,6 @@ test_relaxed_access_params.adb:60:12: info: null exclusion check proved (CVC5: 1
 test_relaxed_access_params.adb:65:49: info: initialization of "Y" proved
 test_relaxed_access_params.adb:66:06: warning: "Globals" is not a valid aspect identifier
 test_relaxed_access_params.adb:66:06: warning: possible misspelling of "Global"
-test_relaxed_access_params.adb:70:13: info: pointer dereference check proved (CVC5: 1 VC)
 test_relaxed_access_params.adb:70:13: medium: initialization check might fail [possible fix: subprogram at line 65 should mention X in a precondition]
 test_relaxed_access_params.adb:71:09: info: discriminant check proved (Trivial: 1 VC)
 test_relaxed_access_params.adb:71:09: medium: resource or memory leak might occur [possible fix: subprogram at line 65 should mention X in a precondition]
@@ -123,7 +122,6 @@ test_relaxed_access_params.adb:140:24: info: cannot unroll loop (too many loop i
 test_relaxed_access_params.adb:141:10: medium: for pointer allocation at test_relaxed_access_params.adb:132
 test_relaxed_access_params.adb:141:10: medium: initialization check might fail [possible fix: loop at line 140 should mention X'Initialized in a loop invariant]
 test_relaxed_access_params.adb:141:16: info: range check proved (CVC5: 2 VC)
-test_relaxed_access_params.adb:141:16: medium: pointer dereference check might fail [possible fix: loop at line 140 should mention X in a loop invariant]
 test_relaxed_access_params.adb:141:20: medium: discriminant check might fail [possible fix: subprogram at line 134 should mention X'Length or X'First or X'Last in a precondition]
 test_relaxed_access_params.adb:141:23: medium: discriminant check might fail
 test_relaxed_access_params.adb:152:31: info: initialization of "Y" proved

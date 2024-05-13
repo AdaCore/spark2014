@@ -32,7 +32,6 @@ main.adb:141:29: info: division check proved (CVC5: 1 VC)
 main.adb:141:29: info: overflow check proved (CVC5: 2 VC)
 main.adb:149:53: info: function contract feasibility proved (CVC5: 1 VC)
 main.adb:152:22: medium: call might not terminate [reason for check: procedure "Call_Access" has an Always_Terminates aspect] [possible explanation: calls through access-to-subprograms might hide recursive calls]
-main.adb:152:24: info: pointer dereference check proved (CVC5: 1 VC)
 main.adb:155:10: info: conditional loop termination proved (CVC5: 1 VC)
 main.adb:163:16: info: implicit aspect Always_Terminates on "Disp" has been proved, subprogram will terminate
 main.adb:169:22: medium: call might not terminate [reason for check: procedure "Call_Disp" has an Always_Terminates aspect] [possible explanation: dispatching calls might hide recursive calls]

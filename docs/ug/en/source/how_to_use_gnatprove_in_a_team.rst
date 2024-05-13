@@ -155,7 +155,7 @@ branches in complex Boolean expressions (typically in assertions and
 contracts), dead code at branching points in the program. These warnings are
 not enabled by default, as they require calling a prover for each potential
 warning, which incurs a small cost (1 sec for each property thus checked). They
-can be enabled with switch ``--proof-warnings``, and their effect is controlled
+can be enabled with switch ``--proof-warnings=on``, and their effect is controlled
 by switch ``--warnings`` and pragma ``Warnings`` as described previously.
 
 There are two benefits of activating these warnings:

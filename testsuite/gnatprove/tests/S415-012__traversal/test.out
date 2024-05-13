@@ -1,10 +1,11 @@
 borrow.adb:9:13: info: implicit aspect Always_Terminates on "Next" has been proved, subprogram will terminate
+borrow.adb:11:15: info: dynamic accessibility check proved (Trivial)
 borrow.adb:11:15: medium: pointer dereference check might fail [possible fix: precondition of subprogram at line 9 should mention X]
 borrow.adb:16:13: info: implicit aspect Always_Terminates on "Next_Next" has been proved, subprogram will terminate
 borrow.adb:17:33: info: pointer dereference check proved (CVC5: 1 VC)
 borrow.adb:20:48: info: null exclusion check proved (CVC5: 1 VC)
 borrow.adb:20:48: info: pointer dereference check proved (CVC5: 1 VC)
-borrow.adb:20:51: info: pointer dereference check proved (CVC5: 1 VC)
+borrow.adb:22:14: info: dynamic accessibility check proved (Trivial)
 borrow.adb:27:16: info: implicit aspect Always_Terminates on "Get" has been proved, subprogram will terminate
 borrow.adb:28:38: info: precondition proved (Trivial: 1 VC)
 borrow.adb:28:44: info: precondition proved (Trivial: 1 VC)
@@ -19,6 +20,7 @@ borrow.adb:40:26: info: precondition proved (Trivial: 1 VC)
 borrow.adb:40:32: info: precondition proved (Trivial: 1 VC)
 borrow.adb:42:08: medium: pointer dereference check might fail
 traversal_funcs.adb:9:13: info: implicit aspect Always_Terminates on "Next" has been proved, subprogram will terminate
+traversal_funcs.adb:12:18: info: dynamic accessibility check proved (Trivial)
 traversal_funcs.adb:12:18: info: pointer dereference check proved (CVC5: 1 VC)
 traversal_funcs.adb:14:14: info: dynamic accessibility check proved (Trivial)
 traversal_funcs.adb:18:26: info: precondition proved (Trivial: 1 VC)

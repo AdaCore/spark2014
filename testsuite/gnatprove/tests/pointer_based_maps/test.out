@@ -1,7 +1,6 @@
 my_map.adb:14:36: info: pointer dereference check proved
 my_map.adb:15:35: info: null exclusion check proved
 my_map.adb:15:49: info: pointer dereference check proved
-my_map.adb:15:56: info: pointer dereference check proved
 my_map.adb:16:35: info: subprogram variant proved
 my_map.adb:16:47: info: pointer dereference check proved
 my_map.adb:26:13: info: absence of resource or memory leak at end of scope proved
@@ -28,7 +27,6 @@ my_map.adb:67:22: info: precondition proved
 my_map.adb:67:59: info: precondition proved
 my_map.adb:69:14: info: pointer dereference check proved
 my_map.adb:70:14: info: pointer dereference check proved
-my_map.adb:70:21: info: pointer dereference check proved
 my_map.adb:73:16: info: pointer dereference check proved
 my_map.adb:83:17: info: postcondition proved
 my_map.adb:83:37: info: pointer dereference check proved
@@ -47,12 +45,10 @@ my_map.adb:93:53: info: pointer dereference check proved
 my_map.adb:94:24: info: precondition proved
 my_map.adb:94:41: info: pointer dereference check proved
 my_map.adb:94:50: info: pointer dereference check proved
-my_map.adb:94:57: info: pointer dereference check proved
 my_map.adb:97:37: info: pointer dereference check proved
 my_map.adb:99:16: info: absence of resource or memory leak at end of scope proved
 my_map.adb:99:40: info: null exclusion check proved
 my_map.adb:99:54: info: pointer dereference check proved
-my_map.adb:99:61: info: pointer dereference check proved
 my_map.adb:101:18: info: absence of resource or memory leak proved
 my_map.adb:101:40: info: pointer dereference check proved
 my_map.adb:108:07: medium: resource or memory leak might occur at end of scope
@@ -115,7 +111,6 @@ my_map.adb:144:63: info: range check proved
 my_map.adb:146:10: info: precondition proved
 my_map.adb:148:14: info: pointer dereference check proved
 my_map.adb:149:14: info: pointer dereference check proved
-my_map.adb:149:21: info: pointer dereference check proved
 my_map.adb:152:16: info: pointer dereference check proved
 my_map.adb:154:07: info: assertion proved
 my_map.adb:161:10: info: loop variant proved
@@ -126,7 +121,7 @@ my_map.adb:163:33: info: loop invariant preservation proved
 my_map.adb:163:33: info: precondition proved
 my_map.adb:163:54: info: precondition proved
 my_map.adb:164:14: info: pointer dereference check proved
-my_map.adb:165:21: info: null exclusion check proved
+my_map.adb:165:21: info: dynamic accessibility check proved
 my_map.adb:165:21: info: pointer dereference check proved
 my_map.adb:167:16: info: pointer dereference check proved
 my_map.adb:169:07: info: only expected exception raised
@@ -142,7 +137,7 @@ my_map.adb:180:13: info: loop invariant preservation proved
 my_map.adb:182:22: info: precondition proved
 my_map.adb:182:59: info: precondition proved
 my_map.adb:184:14: info: pointer dereference check proved
-my_map.adb:185:21: info: null exclusion check proved
+my_map.adb:185:21: info: dynamic accessibility check proved
 my_map.adb:185:21: info: pointer dereference check proved
 my_map.adb:187:16: info: pointer dereference check proved
 my_map.adb:189:07: info: only expected exception raised
@@ -176,11 +171,9 @@ my_map.ads:55:81: info: range check proved
 my_map.ads:57:13: info: implicit aspect Always_Terminates on "Constant_Access" has been proved, subprogram will terminate
 my_map.ads:59:14: info: postcondition proved
 my_map.ads:59:14: info: precondition proved
-my_map.ads:59:58: info: pointer dereference check proved
 my_map.ads:61:13: info: implicit aspect Always_Terminates on "Reference" has been proved, subprogram will terminate
 my_map.ads:63:14: info: postcondition proved
 my_map.ads:63:14: info: precondition proved
-my_map.ads:63:52: info: pointer dereference check proved
 my_map.ads:65:12: info: precondition proved
 my_map.ads:65:82: info: pointer dereference check proved
 my_map.ads:69:13: info: during checks for quantification at my_map.ads:108
@@ -218,7 +211,6 @@ my_map.ads:115:26: info: subprogram variant justified
 my_map.ads:115:41: info: pointer dereference check proved
 my_map.ads:121:11: info: pointer dereference check proved
 my_map.ads:121:26: info: pointer dereference check proved
-my_map.ads:121:33: info: pointer dereference check proved
 my_map.ads:121:42: info: precondition proved
 my_map.ads:121:42: info: subprogram variant proved
 my_map.ads:121:56: info: pointer dereference check proved
@@ -228,7 +220,6 @@ my_map.ads:129:26: info: precondition proved
 my_map.ads:129:26: info: subprogram variant proved
 my_map.ads:129:39: info: pointer dereference check proved
 my_map.ads:131:18: info: pointer dereference check proved
-my_map.ads:133:33: info: pointer dereference check proved
 my_map.ads:133:42: info: precondition proved
 my_map.ads:133:63: info: range check proved
 use_my_map.adb:5:14: info: postcondition proved

@@ -40,7 +40,7 @@ hermes-der-decode.adb:135:16: info: loop invariant preservation proved (CVC5: 2 
 hermes-der-decode.adb:135:99: info: overflow check proved (CVC5: 3 VC; colibri: 1 VC)
 hermes-der-decode.adb:135:103: info: overflow check proved (CVC5: 3 VC; colibri: 1 VC)
 hermes-der-decode.adb:135:108: info: range check proved (CVC5: 4 VC)
-hermes-der-decode.adb:137:31: info: overflow check proved (CVC5: 2 VC)
+hermes-der-decode.adb:137:31: medium: overflow check might fail, cannot prove upper bound for (Result * 256) [reason for check: result of multiplication must fit in a 32-bits machine integer]
 hermes-der-decode.adb:137:38: info: overflow check proved (CVC5: 2 VC)
 hermes-der-decode.adb:137:65: info: index check proved (CVC5: 2 VC)
 hermes-der-decode.adb:137:65: info: overflow check proved (CVC5: 2 VC)

@@ -6,7 +6,7 @@
 --                                                                          --
 --                                 S p e c                                  --
 --                                                                          --
---                     Copyright (C) 2020-2023, AdaCore                     --
+--                     Copyright (C) 2020-2024, AdaCore                     --
 --                                                                          --
 -- gnat2why is  free  software;  you can redistribute  it and/or  modify it --
 -- under terms of the  GNU General Public License as published  by the Free --
@@ -70,6 +70,7 @@ package Gnat2Why.Subprograms.Pointers is
 
    function New_Subprogram_Value_Access
      (Ada_Node : Entity_Id := Empty;
+      Ty       : Access_Kind_Id;
       Expr     : W_Expr_Id;
       Domain   : EW_Domain)
       return W_Expr_Id;

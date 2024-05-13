@@ -4,7 +4,6 @@ main.adb:3:13: info: implicit aspect Always_Terminates on "Z" has been proved, s
 main.adb:4:14: info: postcondition proved (CVC5: 1 VC)
 main.adb:6:23: info: null exclusion check proved (Trivial: 1 VC)
 main.adb:11:08: high: call via access-to-subprogram in the predicate of "G" might not terminate (SPARK RM 3.2.4(4))
-main.adb:11:13: info: pointer dereference check proved (CVC5: 1 VC)
 main.adb:14:16: medium: predicate check might fail
 main.adb:16:18: info: overflow check proved (CVC5: 2 VC)
 main.adb:21:19: info: assertion proved (CVC5: 1 VC)

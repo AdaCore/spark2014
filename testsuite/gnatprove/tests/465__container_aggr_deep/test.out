@@ -23,7 +23,6 @@ deep_vectors.ads:19:23: info: range check proved (CVC5: 2 VC)
 deep_vectors.ads:19:35: info: range check proved (CVC5: 2 VC)
 deep_vectors.ads:19:52: info: precondition proved (CVC5: 1 VC)
 deep_vectors.ads:19:52: medium: resource or memory leak might occur [possible explanation: call to allocating function inside an assertion leaks some resource or memory]
-deep_vectors.ads:19:65: info: pointer dereference check proved (CVC5: 1 VC)
 deep_vectors.ads:23:13: info: implicit aspect Always_Terminates on "Length" has been proved, subprogram will terminate
 deep_vectors.ads:25:13: info: implicit aspect Always_Terminates on "Get" has been proved, subprogram will terminate
 deep_vectors.ads:28:13: info: implicit aspect Always_Terminates on "First" has been proved, subprogram will terminate
@@ -32,12 +31,10 @@ deep_vectors.ads:42:07: info: range check proved (CVC5: 2 VC)
 deep_vectors.ads:45:53: info: index check proved (CVC5: 2 VC)
 deep_vectors.ads:47:13: info: implicit aspect Always_Terminates on "Copy" has been proved, subprogram will terminate
 deep_vectors.ads:48:07: info: null exclusion check proved (CVC5: 1 VC)
-deep_vectors.ads:48:22: info: pointer dereference check proved (CVC5: 1 VC)
 deep_vectors.ads:51:07: info: predicate check proved (CVC5: 3 VC)
 deep_vectors.ads:51:29: info: length check proved (CVC5: 3 VC; Trivial: 1 VC)
 deep_vectors.ads:51:29: info: range check proved (CVC5: 2 VC)
 deep_vectors.ads:51:32: info: range check proved (CVC5: 2 VC)
-deep_vectors.ads:54:12: info: null exclusion check proved (CVC5: 1 VC)
 deep_vectors.ads:54:19: info: null exclusion check proved (CVC5: 1 VC)
 deep_vectors.ads:54:23: info: index check proved (CVC5: 2 VC)
 main.adb:3:04: error: "X" is not allowed in SPARK (due to allocator not stored in object as part of assignment, declaration or return)

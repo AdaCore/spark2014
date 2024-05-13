@@ -1844,6 +1844,10 @@ module Array__1
   val set (a : map) (i : I1.t) (v : component_type) : map
     ensures { result = Map.set a i v }
 
+  predicate eq_ext (a1 a2: map) (f l: I1.t) = a1 = a2
+  (* No need to add an extensionality axiom, equality on Map.map is already
+     extensional. *)
+
   val function slide map I1.t I1.t : map
   meta "encoding:lskept" function slide
 
@@ -1874,20 +1878,8 @@ module Array__1
     forall first last i : I1.t  [get (const v first last) i].
       (I1.le first i /\ I1.le i last) -> get (const v first last) i = v
    meta "remove_unused:dependency" axiom const_def, function const
-end
 
-module Array__1__Concat
-
-  clone Array__Index as Index
-
-  type component_type
-
-  type map
-
-  function get (a : map) (i : Index.t) : component_type
-
-  let function slice (a : map) (first : Index.t) (last : Index.t) : map =
-    a
+  let function slice (a : map) (first : I1.t) (last : I1.t) : map = a
 
   (* Concatenation is only defined for one-dimensional arrays; it appends a
      map to another. We do not really care about the valid ranges of the
@@ -1896,31 +1888,31 @@ module Array__1__Concat
      interested in the second argument, a shift must be made depending on the
      original "first" value. *)
 
-  val function concat map Index.t Index.t map Index.t Index.t : map
+  val function concat map I1.t I1.t map I1.t I1.t : map
   meta "encoding:lskept" function concat
 
   axiom concat_def :
     forall a b : map.
-    forall a_first a_last b_first b_last : Index.t.
-    forall i : Index.t [get (concat a a_first a_last b b_first b_last) i].
-      ((Index.le a_first i /\ Index.le i a_last) ->
+    forall a_first a_last b_first b_last : I1.t.
+    forall i : I1.t [get (concat a a_first a_last b b_first b_last) i].
+      ((I1.le a_first i /\ I1.le i a_last) ->
           get (concat a a_first a_last b b_first b_last) i = get a i)
          /\
-      ((Index.gt i a_last) ->
-        get (concat a a_first a_last b b_first b_last) i = get b (Index.add (Index.sub i a_last) (Index.sub b_first Index.one)))
+      ((I1.gt i a_last) ->
+        get (concat a a_first a_last b b_first b_last) i = get b (I1.add (I1.sub i a_last) (I1.sub b_first I1.one)))
   meta "remove_unused:dependency" axiom concat_def, function concat
 
   (* Special case of concatenation when the left operand is a component. a_first
      is the first index of the new array. The right operand is slided so that it
      starts at a_first + 1. *)
 
-  val function concat_singleton_left component_type Index.t map Index.t Index.t : map
+  val function concat_singleton_left component_type I1.t map I1.t I1.t : map
   meta "encoding:lskept" function concat_singleton_left
 
   axiom concat_singleton_left_val :
     forall a : component_type.
     forall b : map.
-    forall a_first b_first b_last : Index.t
+    forall a_first b_first b_last : I1.t
     [concat_singleton_left a a_first b b_first b_last].
     get (concat_singleton_left a a_first b b_first b_last) a_first = a
   meta "remove_unused:dependency" axiom concat_singleton_left_val, function concat_singleton_left
@@ -1928,63 +1920,63 @@ module Array__1__Concat
   axiom concat_singleton_left_def_eq :
     forall a : component_type.
     forall b : map.
-    forall a_first b_last : Index.t.
-    forall i : Index.t [get (concat_singleton_left a a_first b a_first b_last) i].
-      ((Index.gt i a_first) ->
-        get (concat_singleton_left a a_first b a_first b_last) i = get b (Index.sub i Index.one))
+    forall a_first b_last : I1.t.
+    forall i : I1.t [get (concat_singleton_left a a_first b a_first b_last) i].
+      ((I1.gt i a_first) ->
+        get (concat_singleton_left a a_first b a_first b_last) i = get b (I1.sub i I1.one))
   meta "remove_unused:dependency" axiom concat_singleton_left_def_eq, function concat_singleton_left
 
   axiom concat_singleton_left_def :
     forall a : component_type.
     forall b : map.
-    forall a_first b_first b_last : Index.t.
-    forall i : Index.t [get (concat_singleton_left a a_first b b_first b_last) i].
-      ((Index.gt i a_first) ->
-        get (concat_singleton_left a a_first b b_first b_last) i = get b (Index.add (Index.sub i a_first) (Index.sub b_first Index.one)))
+    forall a_first b_first b_last : I1.t.
+    forall i : I1.t [get (concat_singleton_left a a_first b b_first b_last) i].
+      ((I1.gt i a_first) ->
+        get (concat_singleton_left a a_first b b_first b_last) i = get b (I1.add (I1.sub i a_first) (I1.sub b_first I1.one)))
   meta "remove_unused:dependency" axiom concat_singleton_left_def, function concat_singleton_left
 
   (* Special case of concatenation when the right operand is a component. *)
 
-  val function concat_singleton_right map Index.t Index.t component_type : map
+  val function concat_singleton_right map I1.t I1.t component_type : map
   meta "encoding:lskept" function concat_singleton_right
 
   axiom concat_singleton_right_def :
     forall a : map.
     forall b : component_type.
-    forall a_first a_last : Index.t
+    forall a_first a_last : I1.t
     [concat_singleton_right a a_first a_last b].
-    (Index.lt a_last (Index.add a_last Index.one) ->
-     get (concat_singleton_right a a_first a_last b) (Index.add a_last Index.one) = b)
+    (I1.lt a_last (I1.add a_last I1.one) ->
+     get (concat_singleton_right a a_first a_last b) (I1.add a_last I1.one) = b)
   /\
-    forall i : Index.t [get (concat_singleton_right a a_first a_last b) i | get a i].
-      ((Index.le a_first i /\ Index.le i a_last) ->
+    forall i : I1.t [get (concat_singleton_right a a_first a_last b) i | get a i].
+      ((I1.le a_first i /\ I1.le i a_last) ->
           get (concat_singleton_right a a_first a_last b) i = get a i)
   meta "remove_unused:dependency" axiom concat_singleton_right_def, function concat_singleton_right
 
   (* Special case of concatenation when both operands are components. a_first
      is the first index of the resulting array. *)
 
-  val function concat_singletons component_type Index.t component_type : map
+  val function concat_singletons component_type I1.t component_type : map
   meta "encoding:lskept" function concat_singletons
 
   axiom concat_singletons_def :
     forall a b : component_type.
-    forall a_first : Index.t
+    forall a_first : I1.t
     [concat_singletons a a_first b].
     get (concat_singletons a a_first b) a_first = a
   /\
-    get (concat_singletons a a_first b) (Index.add a_first Index.one) = b
+    get (concat_singletons a a_first b) (I1.add a_first I1.one) = b
   meta "remove_unused:dependency" axiom concat_singletons_def, function concat_singletons
 
   (* An array containing the value v at index i. It is used for the result of
      the concatenation of an empty array with a component. *)
 
-   val function singleton component_type Index.t : map
+   val function singleton component_type I1.t : map
    meta "encoding:lskept" function singleton
 
    axiom singleton_def :
     forall v : component_type.
-    forall i : Index.t  [get (singleton v i) i].
+    forall i : I1.t  [get (singleton v i) i].
       get (singleton v i) i = v
   meta "remove_unused:dependency" axiom singleton_def, function singleton
 end
@@ -2025,6 +2017,21 @@ module Array__2
     forall a : component_type [get (set m i j a) i2 j2| set m i j a, get m i2 j2].
     not (i = i2 /\ j = j2) -> get (set m i j a) i2 j2 = get m i2 j2
   meta "remove_unused:dependency" axiom Select_neq, function set
+
+  predicate eq_ext (a1 a2: map) (f1 l1: I1.t) (f2 l2: I2.t) =
+    forall i : I1.t.
+    forall j : I2.t.
+    get a1 i j = get a2 i j
+  meta "encoding:lskept" predicate eq_ext
+
+  axiom extensionality:
+    forall a1 a2: map.
+    forall l1 f1 : I1.t.
+    forall l2 f2 : I2.t.
+    has_bounds a1 l1 f1 l2 f2->
+    has_bounds a2 l1 f1 l2 f2 ->
+    eq_ext a1 a2 l1 f1 l2 f2 -> a1 = a2
+  meta "remove_unused:dependency" axiom extensionality, predicate eq_ext
 
   val function slide map I1.t I1.t I2.t I2.t : map
   meta "encoding:lskept" function slide
@@ -2097,6 +2104,23 @@ module Array__3
     not (i = i2 /\ j = j2 /\ k = k2) ->
       get (set m i j k a) i2 j2 k2 = get m i2 j2 k2
   meta "remove_unused:dependency" axiom Select_neq, function set
+
+  predicate eq_ext (a1 a2: map) (f1 l1: I1.t) (f2 l2: I2.t) (f3 l3: I3.t) =
+    forall i : I1.t.
+    forall j : I2.t.
+    forall k : I3.t.
+    get a1 i j k = get a2 i j k
+  meta "encoding:lskept" predicate eq_ext
+
+  axiom extensionality:
+    forall a1 a2: map.
+    forall l1 f1 : I1.t.
+    forall l2 f2 : I2.t.
+    forall l3 f3 : I3.t.
+    has_bounds a1 l1 f1 l2 f2 l3 f3 ->
+    has_bounds a2 l1 f1 l2 f2 l3 f3 ->
+    eq_ext a1 a2 l1 f1 l2 f2 l3 f3 -> a1 = a2
+  meta "remove_unused:dependency" axiom extensionality, predicate eq_ext
 
   val function slide map I1.t I1.t I2.t I2.t I3.t I3.t : map
   meta "encoding:lskept" function slide
@@ -2183,6 +2207,25 @@ module Array__4
     not (i = i2 /\ j = j2 /\ k = k2 /\ l = l2) ->
       get (set m i j k l a) i2 j2 k2 l2 = get m i2 j2 k2 l2
   meta "remove_unused:dependency" axiom Select_neq, function set
+
+  predicate eq_ext (a1 a2: map) (f1 l1: I1.t) (f2 l2: I2.t) (f3 l3: I3.t) (f4 l4: I4.t) =
+    forall i : I1.t.
+    forall j : I2.t.
+    forall k : I3.t.
+    forall l : I4.t.
+    get a1 i j k l = get a2 i j k l
+  meta "encoding:lskept" predicate eq_ext
+
+  axiom extensionality:
+    forall a1 a2: map.
+    forall l1 f1 : I1.t.
+    forall l2 f2 : I2.t.
+    forall l3 f3 : I3.t.
+    forall l4 f4 : I4.t.
+    has_bounds a1 l1 f1 l2 f2 l3 f3 l4 f4 ->
+    has_bounds a2 l1 f1 l2 f2 l3 f3 l4 f4 ->
+    eq_ext a1 a2 l1 f1 l2 f2 l3 f3 l4 f4 -> a1 = a2
+  meta "remove_unused:dependency" axiom extensionality, predicate eq_ext
 
   val function slide map I1.t I1.t I2.t I2.t I3.t I3.t I4.t I4.t : map
   meta "encoding:lskept" function slide

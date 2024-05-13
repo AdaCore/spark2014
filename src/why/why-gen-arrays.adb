@@ -6,7 +6,7 @@
 --                                                                          --
 --                                 B o d y                                  --
 --                                                                          --
---                     Copyright (C) 2010-2023, AdaCore                     --
+--                     Copyright (C) 2010-2024, AdaCore                     --
 --                                                                          --
 -- gnat2why is  free  software;  you can redistribute  it and/or  modify it --
 -- under terms of the  GNU General Public License as published  by the Free --
@@ -134,12 +134,6 @@ package body Why.Gen.Arrays is
    --  @return The name of the theory for the comparison operators on these
    --          arrays.
 
-   function Get_Concat_Theory_Name (Name : Symbol) return Symbol is
-     (NID (Img (Name) & To_String (WNE_Array_Concatenation_Suffix)));
-   --  @param Name name of an array representative theory
-   --  @return The name of the theory for the concatenation operators on these
-   --          arrays.
-
    function Get_Logical_Op_Theory_Name (Name : Symbol) return Symbol is
      (NID (Img (Name) & To_String (WNE_Array_Logical_Op_Suffix)));
    --  @param Name name of an array representative theory
@@ -198,16 +192,6 @@ package body Why.Gen.Arrays is
    --  @param E Entity of an array type.
    --  @param Symbols the symbols for the array theory.
    --  Declare the predefined equality for E
-
-   procedure Declare_Concatenation_Symbols
-     (E       : Entity_Id;
-      Module  : W_Module_Id;
-      Symbols : M_Array_Type);
-   --  @param E Entity of the one dimensional array type
-   --  @param File The section in which the declaration should be added
-   --  @param Module The module for these declarations
-   --  @param Symbols the symbols for the array theory
-   --  Clone module for concatenation functions (see M_Array_1_Type)
 
    procedure Declare_Logical_Operation_Symbols
      (E       : Entity_Id;
@@ -1019,23 +1003,13 @@ package body Why.Gen.Arrays is
                         New_Item => Symbols);
 
       --  For arrays of dimension 1, we may need to clone additional modules
-      --  containing definition for concatenation, the comparison function (if
-      --  the component type is discrete) or of boolean operators (if the
-      --  component type is boolean).
+      --  containing definition for the comparison function (if the component
+      --  type is discrete) or of boolean operators (if the component type is
+      --  boolean).
 
       if Number_Dimensions (Retysp (Etype (E))) = 1 then
-         declare
-            Array_1_Module : constant W_Module_Id :=
-              New_Module (File => No_Symbol,
-                          Name =>
-                            Img (Get_Concat_Theory_Name (Name)));
-         begin
-            Declare_Concatenation_Symbols (E, Array_1_Module, Symbols);
-
-            M_Arrays_1.Include (Key      => Name,
-                                New_Item =>
-                                  Init_Array_1_Module (Array_1_Module));
-         end;
+         M_Arrays_1.Include (Key      => Name,
+                             New_Item => Init_Array_1_Module (Module));
 
          --  For arrays of boolean types of dimension 1 we need to define the
          --  logical operators.
@@ -1154,7 +1128,7 @@ package body Why.Gen.Arrays is
             Array_Theory  : constant W_Module_Id :=
               Get_Array_Theory (E, Relaxed_Init).Module;
             Nb_Subst      : constant Positive :=
-              (if Relaxed_Init then 2 else 3);
+              (if Relaxed_Init then 3 else 4);
             Subst         : W_Clone_Substitution_Array (1 .. Nb_Subst);
          begin
             Emit (Th,
@@ -1175,10 +1149,17 @@ package body Why.Gen.Arrays is
                  Image     => New_Name (Symb   => NID ("has_bounds"),
                                         Module => Array_Theory));
 
+            Subst (3) :=
+              New_Clone_Substitution
+                (Kind      => EW_Predicate,
+                 Orig_Name => New_Name (Symb => NID ("eq_ext")),
+                 Image     => New_Name (Symb   => NID ("eq_ext"),
+                                        Module => Array_Theory));
+
             --  We do not have an equality on wrapper types
 
             if not Relaxed_Init then
-               Subst (3) :=
+               Subst (4) :=
                  New_Clone_Substitution
                    (Kind      => EW_Function,
                     Orig_Name => New_Name (Symb => NID ("array_bool_eq")),
@@ -1450,71 +1431,6 @@ package body Why.Gen.Arrays is
 
       Close_Theory (Th, Kind => Definition_Theory);
    end Declare_Comparison_Symbols;
-
-   -----------------------------------
-   -- Declare_Concatenation_Symbols --
-   -----------------------------------
-
-   procedure Declare_Concatenation_Symbols
-     (E       : Entity_Id;
-      Module  : W_Module_Id;
-      Symbols : M_Array_Type)
-   is
-      Fst_Idx : constant Node_Id :=
-        First_Index (if Ekind (E) = E_String_Literal_Subtype
-                     then Retysp (Etype (E))
-                     else E);
-      Th : Theory_UC;
-   begin
-      Th :=
-        Open_Theory
-          (WF_Context, Module,
-           Comment =>
-             "Module for axiomatizing concatenation for the array theory"
-           & " associated to type "
-           & """" & Get_Name_String (Chars (E)) & """"
-           & (if Sloc (E) > 0 then
-                " defined at " & Build_Location_String (Sloc (E))
-             else "")
-           & ", created in " & GNAT.Source_Info.Enclosing_Entity);
-
-      declare
-         Sbst : constant W_Clone_Substitution_Array :=
-           (1 =>
-              New_Clone_Substitution
-                (Kind      => EW_Type_Subst,
-                 Orig_Name => To_Name (WNE_Array_Component_Type),
-                 Image     => Get_Name (Symbols.Comp_Ty)),
-            2 =>
-              New_Clone_Substitution
-                (Kind      => EW_Type_Subst,
-                 Orig_Name => New_Name (Symb => NID ("map")),
-                 Image     => Get_Name (Symbols.Ty)))
-         &
-           Prepare_Indexes_Substitutions
-           (Th, Base_Type (Etype (Fst_Idx)), "Index")
-         &
-           (1 =>
-              New_Clone_Substitution
-                (Kind      => EW_Function,
-                 Orig_Name => New_Name (Symb => NID ("get")),
-                 Image     => Get_Name (Symbols.Get)));
-      begin
-
-         --  Clone concatenation module
-
-         Emit (Th,
-               New_Clone_Declaration
-                 (Theory_Kind   => EW_Module,
-                  Clone_Kind    => EW_Export,
-                  Origin        => Array_Concat_Axioms,
-                  As_Name       => No_Symbol,
-                  Substitutions => Sbst));
-
-         Close_Theory (Th, Kind => Definition_Theory);
-      end;
-
-   end Declare_Concatenation_Symbols;
 
    -------------------------------
    -- Declare_Equality_Function --
@@ -3023,6 +2939,24 @@ package body Why.Gen.Arrays is
 
       return +Result;
    end New_Length_Equality;
+
+   -----------------------
+   -- New_Logic_Eq_Call --
+   -----------------------
+
+   function New_Logic_Eq_Call
+     (Left, Right : W_Term_Id;
+      Domain      : EW_Domain)
+      return W_Expr_Id
+   is
+      Typ : constant W_Type_Id := Get_Type (+Left);
+      E   : constant Entity_Id := Get_Ada_Node (+Typ);
+      P   : constant W_Pred_Id := New_Call
+        (Name => E_Symb (E, WNE_Array_Logic_Eq),
+         Args => (1 => +Left, 2 => +Right));
+   begin
+      return Boolean_Expr_Of_Pred (P, Domain);
+   end New_Logic_Eq_Call;
 
    ------------------------
    -- New_Singleton_Call --

@@ -6,7 +6,7 @@
 --                                                                          --
 --                                 B o d y                                  --
 --                                                                          --
---                     Copyright (C) 2010-2023, AdaCore                     --
+--                     Copyright (C) 2010-2024, AdaCore                     --
 --                                                                          --
 -- gnat2why is  free  software;  you can redistribute  it and/or  modify it --
 -- under terms of the  GNU General Public License as published  by the Free --
@@ -997,6 +997,7 @@ package body Why.Gen.Names is
             | WNE_Array_Base_Range_Pred_3
             | WNE_Array_Base_Range_Pred_4
             | WNE_Array_Elts
+            | WNE_Array_Logic_Eq
             | WNE_Array_Well_Formed
             | WNE_Assign_Null_Check
             | WNE_Attr_Alignment

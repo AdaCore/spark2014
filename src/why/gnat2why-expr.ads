@@ -6,7 +6,7 @@
 --                                                                          --
 --                                 S p e c                                  --
 --                                                                          --
---                     Copyright (C) 2010-2023, AdaCore                     --
+--                     Copyright (C) 2010-2024, AdaCore                     --
 --                                                                          --
 -- gnat2why is  free  software;  you can redistribute  it and/or  modify it --
 -- under terms of the  GNU General Public License as published  by the Free --
@@ -110,7 +110,7 @@ package Gnat2Why.Expr is
 
    function Check_Scalar_Range
      (Params : Transformation_Params;
-      N      : Entity_Id;
+      N      : Node_Id;
       Base   : Type_Kind_Id)
       return W_Prog_Id;
    --  Generate checks for the bounds of a range as well as a
