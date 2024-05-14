@@ -1,0 +1,18 @@
+bad_borrow.adb:1:47: medium: postcondition might fail
+bad_borrow.adb:5:06: warning: postcondition does not mention function result
+bad_borrow.adb:5:14: info: postcondition proved (CVC5: 1 VC)
+bad_borrow.adb:5:42: info: overflow check proved (CVC5: 2 VC)
+bad_borrow.adb:8:22: info: overflow check proved (CVC5: 2 VC)
+bad_borrow.adb:16:12: info: precondition proved (CVC5: 1 VC)
+crash_in_loop.adb:4:25: info: data dependencies proved
+crash_in_loop.adb:8:14: high: overflow check might fail, cannot prove upper bound for X + 1 (e.g. when X = Integer'Last) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at line 3 should mention X in a precondition]
+crash_in_loop.adb:14:10: info: initialization of "Val" proved
+structural_variant.adb:1:11: info: aspect Always_Terminates on "Structural_Variant" has been proved, subprogram will terminate
+structural_variant.adb:9:33: info: postcondition proved (CVC5: 1 VC)
+structural_variant.adb:14:20: info: absence of resource or memory leak proved (CVC5: 1 VC)
+structural_variant.adb:19:14: info: aspect Always_Terminates on "Terminating" has been proved, subprogram will terminate
+structural_variant.adb:22:14: info: postcondition proved (CVC5: 1 VC)
+structural_variant.adb:26:07: warning: "B" is set by "Extend" but not used after the call
+structural_variant.adb:27:07: medium: subprogram variant might fail [possible explanation: the call to "Extend" might update the value designated by "X"]
+structural_variant.adb:27:27: info: pointer dereference check proved (CVC5: 1 VC)
+structural_variant.adb:30:04: info: absence of resource or memory leak at end of scope proved (CVC5: 1 VC)
