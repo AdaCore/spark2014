@@ -42,7 +42,6 @@ with Common_Iterators;                use Common_Iterators;
 with Gnat2Why_Args;
 with Gnat2Why.Util;
 with SPARK_Definition;                use SPARK_Definition;
-with SPARK_Definition.Annotate;       use SPARK_Definition.Annotate;
 with SPARK_Frame_Conditions;          use SPARK_Frame_Conditions;
 with SPARK_Util.Subprograms;          use SPARK_Util.Subprograms;
 with SPARK_Util.Types;                use SPARK_Util.Types;
@@ -53,6 +52,7 @@ with Flow_Debug;                      use Flow_Debug;
 with Flow_Generated_Globals.Phase_2;  use Flow_Generated_Globals.Phase_2;
 with Flow_Refinement;                 use Flow_Refinement;
 with Flow_Utility.Initialization;     use Flow_Utility.Initialization;
+with Flow_Utility.Proof_Dependencies; use Flow_Utility.Proof_Dependencies;
 
 package body Flow_Utility is
 
@@ -136,18 +136,6 @@ package body Flow_Utility is
       Generating_Globals : Boolean)
    with Post => Proof_Dependencies'Old.Is_Subset (Proof_Dependencies);
    --  Like Pick_Generated_Info, with an additional parameter Types_Seen that
-   --  allows to track which type predicates we already traversed to pick
-   --  proof dependencies.
-
-   procedure Process_Predicate_And_Invariant_Internal
-     (N                  : Node_Or_Entity_Id;
-      Scop               : Flow_Scope;
-      Include_Invariant  : Boolean;
-      Proof_Dependencies : in out Node_Sets.Set;
-      Types_Seen         : in out Node_Sets.Set)
-   with Pre  => N in N_Has_Etype_Id,
-        Post => Proof_Dependencies'Old.Is_Subset (Proof_Dependencies);
-   --  Like Process_Predicate, with an additional parameter Types_Seen that
    --  allows to track which type predicates we already traversed to pick
    --  proof dependencies.
 
@@ -308,6 +296,12 @@ package body Flow_Utility is
                   Function_Calls.Include
                     (Subprogram_Call'(N => N, E => Called_Func));
 
+                  if Generating_Globals
+                    and then Flow_Classwide.Is_Dispatching_Call (N)
+                  then
+                     Process_Dispatching_Call (N, Proof_Dependencies);
+                  end if;
+
                   --  Only external calls to protected functions trigger
                   --  priority ceiling protocol checks; internal calls do not.
 
@@ -372,9 +366,7 @@ package body Flow_Utility is
 
             when N_Iterator_Specification =>
                declare
-                  Typ           : Entity_Id := Etype (Name (N));
-                  Found         : Boolean;
-                  Iterable_Info : Iterable_Annotation;
+                  Typ : constant Entity_Id := Etype (Name (N));
 
                   procedure Process_Iterable_Primitive (Nam : Name_Id);
                   --  Process implicit call to iterable primitive function Nam
@@ -420,45 +412,9 @@ package body Flow_Utility is
                         Process_Iterable_Primitive (Name_Next);
                      end if;
 
-                     --  Proof might transform the quantified expression using
-                     --  the chain of Model functions associated to the types
-                     --  using Iterable_For_Proof.
-                     if Nkind (Parent (Parent (N))) /= N_Loop_Statement then
+                     Process_Iterable_For_Proof_Annotation
+                       (N, Proof_Dependencies);
 
-                        loop
-                           Retrieve_Iterable_Annotation (Typ,
-                                                         Found,
-                                                         Iterable_Info);
-
-                           if Found
-                             and then
-                               Iterable_Info.Kind
-                               = SPARK_Definition.Annotate.Model
-                           then
-                              Proof_Dependencies.Include
-                                (Iterable_Info.Entity);
-
-                              Typ := Etype (Iterable_Info.Entity);
-                           else
-                              exit;
-                           end if;
-                        end loop;
-
-                        --  Finally, proof transforms the quantification using
-                        --  either the Contains function on the type, if it
-                        --  exists, or the Has_Element and Element functions
-                        --  otherwise.
-                        if Found then
-                           Proof_Dependencies.Include (Iterable_Info.Entity);
-
-                        elsif Typ /= Etype (Name (N)) then
-                           Proof_Dependencies.Include
-                             (Get_Iterable_Type_Primitive
-                                (Typ, Name_Has_Element));
-                           Proof_Dependencies.Include
-                             (Get_Iterable_Type_Primitive (Typ, Name_Element));
-                        end if;
-                     end if;
                   else
                      pragma Assert
                        (Of_Present (N)
@@ -507,18 +463,7 @@ package body Flow_Utility is
 
             when N_Attribute_Reference =>
                if Attribute_Name (N) = Name_Access then
-                  declare
-                     P : constant Node_Id := Prefix (N);
-                     E : constant Entity_Id :=
-                       (if Is_Entity_Name (P) then Entity (P)
-                        else Empty);
-                  begin
-                     if Present (E)
-                       and then Ekind (E) in E_Function | E_Procedure
-                     then
-                        Proof_Dependencies.Include (E);
-                     end if;
-                  end;
+                  Process_Access_Attribute (N, Proof_Dependencies);
                end if;
 
             when others =>
@@ -702,26 +647,6 @@ package body Flow_Utility is
          Discard := Traverse (Typ);
       end if;
    end Process_Predicate_And_Invariant_Internal;
-
-   -------------------------------------
-   -- Process_Predicate_And_Invariant --
-   -------------------------------------
-
-   procedure Process_Predicate_And_Invariant
-     (N                  : Node_Or_Entity_Id;
-      Scop               : Flow_Scope;
-      Include_Invariant  : Boolean;
-      Proof_Dependencies : in out Node_Sets.Set)
-   is
-      Discard : Node_Sets.Set;
-   begin
-      Process_Predicate_And_Invariant_Internal
-        (N                  => N,
-         Scop               => Scop,
-         Include_Invariant  => Include_Invariant,
-         Proof_Dependencies => Proof_Dependencies,
-         Types_Seen         => Discard);
-   end Process_Predicate_And_Invariant;
 
    -----------------------
    -- Unique_Components --
@@ -1069,6 +994,16 @@ package body Flow_Utility is
                      Debug ("processing access or array or scalar type");
 
                      Results := Flow_Id_Sets.To_Set (F);
+
+                     --  For top-level unconstrained array objects the
+                     --  flattened view also includes their bounds.
+
+                     if F.Kind = Direct_Mapping
+                       and then Is_Array_Type (T)
+                       and then not Is_Constrained (T)
+                     then
+                        Results.Insert ((F with delta Facet => The_Bounds));
+                     end if;
 
                   when E_Exception_Type
                      | E_Subprogram_Type
@@ -3536,13 +3471,52 @@ package body Flow_Utility is
                | Attribute_Range
             =>
                declare
-                  T : constant Entity_Id := Get_Type (Prefix (N), Ctx.Scope);
+                  T : Entity_Id;
+                  --  Type of the attribute prefix
 
                   LB : Node_Id;
                   HB : Node_Id;
                   --  Low and high bounds, respectively
 
                begin
+                  --  ??? We don't use Get_Type, because currently for a record
+                  --  component with per-object constraints it returns its
+                  --  ultimate constrained type. Instead, when the Etype is
+                  --  private, we just take its full view, because we know that
+                  --  the attribute wouldn't be legal on a private type so its
+                  --  full view must have been visible.
+
+                  T := Etype (Prefix (N));
+
+                  if Is_Private_Type (T) then
+                     T := Full_View (T);
+                  end if;
+
+                  pragma Assert (Is_Array_Type (T) or else Is_Scalar_Type (T));
+                  pragma Assert (Entity_In_SPARK (T));
+
+                  --  Explicitly handle references to components with
+                  --  per-object constraints.
+
+                  if Is_Constrained (T)
+                    and then Is_Itype (T)
+                    and then Nkind
+                               (Associated_Node_For_Itype (T)) =
+                                  N_Component_Declaration
+                  then
+                     pragma Assert
+                       (Nkind (Prefix (N)) in N_Explicit_Dereference
+                                            | N_Selected_Component);
+                     declare
+                        Comp : constant Entity_Id :=
+                          Defining_Identifier (Associated_Node_For_Itype (T));
+                     begin
+                        if Has_Per_Object_Constraint (Comp) then
+                           return Recurse (Prefix (N));
+                        end if;
+                     end;
+                  end if;
+
                   if Is_Constrained (T) then
                      if Is_Array_Type (T) then
                         LB := Type_Low_Bound  (Get_Index_Subtype (N));
@@ -5256,23 +5230,14 @@ package body Flow_Utility is
    is
       T : Entity_Id;
    begin
-      case F.Kind is
-         when Null_Value | Synthetic_Null_Export | Magic_String =>
-            return False;
+      if F.Kind = Direct_Mapping then
+         T := Get_Type (F.Node, Scope);
 
-         when Direct_Mapping =>
-            T := Get_Type (F.Node, Scope);
-
-         when Record_Field =>
-            if F.Facet = Normal_Part then
-               T := Get_Type (F.Component.Last_Element, Scope);
-            else
-               return False;
-            end if;
-      end case;
-
-      return Is_Array_Type (T)
-        and then not Is_Constrained (T);
+         return Is_Array_Type (T)
+           and then not Is_Constrained (T);
+      else
+         return False;
+      end if;
    end Has_Bounds;
 
    --------------------------------------
@@ -6764,6 +6729,10 @@ package body Flow_Utility is
 
       Vars_Defined := Flatten_Variable (Base_Node, Scope);
       Vars_Used    := Flow_Id_Sets.Empty_Set;
+
+      --  Assignment to an unconstrained record doesn't modify its bounds
+
+      Vars_Defined.Exclude ((Base_Node with delta Facet => The_Bounds));
 
       pragma Annotate (Xcov, Exempt_On, "Debugging code");
       if Debug_Trace_Untangle then

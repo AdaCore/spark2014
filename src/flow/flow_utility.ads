@@ -61,18 +61,6 @@ package Flow_Utility is
    --  use in phase 1; in phase 2 this should not be set as we add the
    --  global effects directly.
 
-   procedure Process_Predicate_And_Invariant
-     (N                  : Node_Or_Entity_Id;
-      Scop               : Flow_Scope;
-      Include_Invariant  : Boolean;
-      Proof_Dependencies : in out Node_Sets.Set)
-     with Pre  => N in N_Has_Etype_Id,
-          Post => Proof_Dependencies'Old.Is_Subset
-                    (Of_Set => Proof_Dependencies);
-   --  Fills Proof_Dependencies by analyzing predicate and invariant
-   --  expressions that apply to the type of N. Include_Invariant is used to
-   --  determine whether a type invariant is pulled.
-
    procedure Remove_Constants
      (Objects : in out Flow_Id_Sets.Set)
    with Post => Flow_Id_Sets.Is_Subset (Subset => Objects,
@@ -837,5 +825,19 @@ package Flow_Utility is
 
    function To_Subprograms (Calls : Call_Sets.Set) return Node_Sets.Set;
    --  Convert calls to called entities
+
+private
+
+   procedure Process_Predicate_And_Invariant_Internal
+     (N                  : Node_Or_Entity_Id;
+      Scop               : Flow_Scope;
+      Include_Invariant  : Boolean;
+      Proof_Dependencies : in out Node_Sets.Set;
+      Types_Seen         : in out Node_Sets.Set)
+   with Pre  => N in N_Has_Etype_Id,
+        Post => Proof_Dependencies'Old.Is_Subset (Proof_Dependencies);
+   --  Like Process_Predicate, with an additional parameter Types_Seen that
+   --  allows to track which type predicates we already traversed to pick
+   --  proof dependencies.
 
 end Flow_Utility;

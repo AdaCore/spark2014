@@ -11,20 +11,9 @@ test_loops.adb:48:49: info: index check proved (CVC5: 2 VC)
 test_loops.adb:49:30: info: index check proved (CVC5: 2 VC)
 test_loops.adb:49:57: info: index check proved (CVC5: 2 VC)
 test_loops.adb:52:10: info: index check proved (CVC5: 2 VC)
-test_loops.adb:55:14: info: add a contract to analyze it separately from calling contexts
-test_loops.adb:55:14: info: local subprogram "Init_First" only analyzed in the context of calls
-test_loops.adb:57:07: info: range check proved (CVC5: 2 VC), in call inlined at test_loops.adb:101
-test_loops.adb:57:07: info: range check proved (CVC5: 2 VC), in call inlined at test_loops.adb:74
-test_loops.adb:57:24: info: range check proved (CVC5: 1 VC), in call inlined at test_loops.adb:101
-test_loops.adb:57:24: info: range check proved (CVC5: 1 VC), in call inlined at test_loops.adb:74
-test_loops.adb:57:35: info: range check proved (CVC5: 1 VC), in call inlined at test_loops.adb:101
-test_loops.adb:57:35: info: range check proved (CVC5: 1 VC), in call inlined at test_loops.adb:74
-test_loops.adb:60:07: info: range check proved (CVC5: 1 VC), in call inlined at test_loops.adb:101
-test_loops.adb:60:07: info: range check proved (CVC5: 1 VC), in call inlined at test_loops.adb:74
-test_loops.adb:60:09: info: length check proved (CVC5: 3 VC; Trivial: 1 VC), in call inlined at test_loops.adb:101
-test_loops.adb:60:09: info: length check proved (CVC5: 3 VC; Trivial: 1 VC), in call inlined at test_loops.adb:74
-test_loops.adb:60:12: info: range check proved (CVC5: 1 VC), in call inlined at test_loops.adb:74
-test_loops.adb:60:12: medium: initialization check might fail, in call inlined at test_loops.adb:74
+test_loops.adb:57:07: info: range check proved (CVC5: 2 VC)
+test_loops.adb:59:32: info: index check proved (CVC5: 2 VC)
+test_loops.adb:60:09: info: length check proved (CVC5: 3 VC; Trivial: 1 VC)
 test_loops.adb:63:28: info: initialization of "X" proved
 test_loops.adb:67:16: medium: in value of subprogram parameter after the call at test_loops.adb:67
 test_loops.adb:67:16: medium: initialization check might fail
@@ -37,8 +26,10 @@ test_loops.adb:71:35: info: cannot unroll loop (too many loop iterations)
 test_loops.adb:71:35: warning: statement has no effect
 test_loops.adb:72:16: info: index check proved (CVC5: 2 VC)
 test_loops.adb:72:22: warning: unused assignment
-test_loops.adb:74:07: info: analyzing call to "Init_First" in context
-test_loops.adb:74:39: info: index check proved (CVC5: 2 VC)
+test_loops.adb:74:07: info: precondition proved (CVC5: 2 VC)
+test_loops.adb:74:19: medium: in value of subprogram parameter after the call at test_loops.adb:74
+test_loops.adb:74:19: medium: initialization check might fail [possible fix: call at line 74 should mention X (for argument X) in a postcondition]
+test_loops.adb:74:33: info: range check proved (CVC5: 1 VC)
 test_loops.adb:75:27: info: cannot unroll loop (too many loop iterations)
 test_loops.adb:76:10: info: precondition proved (CVC5: 2 VC)
 test_loops.adb:76:20: info: in value of subprogram parameter after the call at test_loops.adb:76
@@ -55,16 +46,16 @@ test_loops.adb:87:24: info: initialization of "X" proved
 test_loops.adb:91:41: info: range check proved (CVC5: 2 VC)
 test_loops.adb:94:17: info: postcondition proved (Z3: 1 VC)
 test_loops.adb:99:10: info: precondition proved (CVC5: 2 VC)
-test_loops.adb:101:10: info: analyzing call to "Init_First" in context
-test_loops.adb:101:42: info: index check proved (CVC5: 2 VC)
+test_loops.adb:101:10: info: precondition proved (CVC5: 2 VC)
+test_loops.adb:101:36: info: range check proved (CVC5: 1 VC)
 test_loops.adb:103:13: info: precondition proved (CVC5: 4 VC)
 test_loops.adb:103:37: info: range check proved (CVC5: 2 VC)
-test_loops.adb:104:36: info: loop invariant initialization proved (CVC5: 1 VC)
 test_loops.adb:104:36: info: loop invariant preservation proved (Z3: 1 VC)
+test_loops.adb:104:59: medium: loop invariant might fail in first iteration, cannot prove X.G1 (K).F1'Initialized
 test_loops.adb:104:65: info: index check proved (CVC5: 4 VC)
 test_loops.adb:107:19: info: index check proved (CVC5: 4 VC)
 test_loops.adb:108:36: info: loop invariant initialization proved (CVC5: 1 VC)
-test_loops.adb:108:36: info: loop invariant preservation proved (Z3: 1 VC)
+test_loops.adb:108:36: info: loop invariant preservation proved (CVC5: 1 VC)
 test_loops.adb:108:69: info: index check proved (CVC5: 4 VC)
 test_loops.adb:109:36: info: loop invariant initialization proved (CVC5: 1 VC)
 test_loops.adb:109:36: info: loop invariant preservation proved (CVC5: 1 VC)
@@ -72,11 +63,11 @@ test_loops.adb:109:69: info: index check proved (CVC5: 4 VC)
 test_loops.adb:112:13: info: precondition proved (CVC5: 4 VC)
 test_loops.adb:112:41: info: index check proved (CVC5: 4 VC)
 test_loops.adb:113:36: info: loop invariant initialization proved (CVC5: 2 VC)
-test_loops.adb:113:36: info: loop invariant preservation proved (Z3: 2 VC)
+test_loops.adb:113:36: info: loop invariant preservation proved (CVC5: 2 VC)
 test_loops.adb:113:69: info: index check proved (CVC5: 4 VC)
 test_loops.adb:113:97: info: index check proved (CVC5: 4 VC)
 test_loops.adb:114:36: info: loop invariant initialization proved (CVC5: 1 VC)
-test_loops.adb:114:36: info: loop invariant preservation proved (Z3: 1 VC)
+test_loops.adb:114:36: info: loop invariant preservation proved (CVC5: 1 VC)
 test_loops.adb:114:65: info: index check proved (CVC5: 4 VC)
 test_loops.adb:118:07: info: precondition proved (CVC5: 1 VC)
 test_loops.adb:118:15: info: in value of subprogram parameter after the call at test_loops.adb:118

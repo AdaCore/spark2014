@@ -1,0 +1,19 @@
+dispatching_call_contr.adb:6:16: info: implicit aspect Always_Terminates on "F" has been proved, subprogram will terminate
+dispatching_call_contr.adb:14:14: warning: subprogram "Foo" has no effect
+dispatching_call_contr.adb:14:50: medium: postcondition might fail
+dispatching_call_contr.adb:20:16: info: function contract might not be available on implicit recursive calls
+dispatching_call_contr.adb:20:19: warning: unused variable "V"
+dispatching_call_contr.adb:20:58: medium: postcondition might fail
+dispatching_call_contr.adb:27:10: medium: implicit aspect Always_Terminates on "F" could be incorrect, call to "Foo" might be nonterminating [possible fix: annotate "Foo" with aspect Always_Terminates]
+dispatching_call_func.adb:6:16: info: implicit aspect Always_Terminates on "F" has been proved, subprogram will terminate
+dispatching_call_func.adb:14:14: warning: subprogram "Foo" has no effect
+dispatching_call_func.adb:14:50: medium: postcondition might fail
+dispatching_call_func.adb:20:16: info: function contract might not be available on implicit recursive calls
+dispatching_call_func.adb:20:19: warning: unused variable "V"
+dispatching_call_func.adb:20:58: info: postcondition proved (CVC5: 1 VC)
+dispatching_call_func.adb:27:10: medium: implicit aspect Always_Terminates on "F" could be incorrect, call to "Foo" might be nonterminating [possible fix: annotate "Foo" with aspect Always_Terminates]
+dispatching_call_proc.adb:6:17: warning: subprogram "F" has no effect
+dispatching_call_proc.adb:14:13: info: function contract might not be available on implicit recursive calls
+dispatching_call_proc.adb:14:64: medium: postcondition might fail
+dispatching_call_proc.adb:20:17: warning: subprogram "F" has no effect
+dispatching_call_proc.adb:35:07: medium: implicit aspect Always_Terminates on "Foo" could be incorrect, dispatching call to "F" might be nonterminating

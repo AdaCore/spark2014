@@ -44,7 +44,7 @@
   <proof prover="0"><result status="highfailure"/></proof>
   <proof prover="1" timelimit="20"><result status="valid" steps="330"/></proof>
   <proof prover="2"><result status="highfailure"/></proof>
-  <proof prover="4"><result status="valid" steps="55"/></proof>
+  <proof prover="4"><result status="valid" steps="53"/></proof>
   </goal>
  </transf>
  </goal>
