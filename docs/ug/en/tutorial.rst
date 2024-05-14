@@ -40,7 +40,7 @@ User's Guide. Documentation and examples for the |SPARK| language and tools are
 also available via the :menuselection:`Help --> SPARK` menu in GNAT Studio.
 
 The obvious specification of ``Linear_Search`` is given
-in file ``linear_search.ads``, where
+in file ``linear_search.ads`` that follows, where
 we specify that the spec is in |SPARK| by using aspect ``SPARK_Mode``.
 
 .. literalinclude:: /examples/ug__linear_search_ada/linear_search.ads
