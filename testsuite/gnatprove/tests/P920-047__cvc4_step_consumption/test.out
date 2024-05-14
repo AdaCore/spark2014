@@ -62,11 +62,11 @@ memcpy.ads:24:43: warning: assuming "InMemoryRange" has no effect on global item
 memcpy.ads:24:43: warning: no Global contract available for "InMemoryRange"
 memcpy.ads:25:42: warning: assuming "InSafeRegion64" has no effect on global items
 memcpy.ads:25:42: warning: no Global contract available for "InSafeRegion64"
-memcpy.ads:36:08: medium: postcondition might fail, cannot prove (X86.RBP = X86.RBP'Old)
 memcpy.ads:37:45: warning: assuming "InMemoryRange" has no effect on global items
 memcpy.ads:37:45: warning: no Global contract available for "InMemoryRange"
 memcpy.ads:38:42: warning: assuming "InSafeRegion64" has no effect on global items
 memcpy.ads:38:42: warning: no Global contract available for "InSafeRegion64"
+memcpy.ads:39:37: medium: postcondition might fail, cannot prove (X86.Memory(i) = X86.Memory'Old(i))
 x86.ads:87:40: warning: assuming "InRange64" has no effect on global items
 x86.ads:87:40: warning: no Global contract available for "InRange64"
 x86.ads:112:15: warning: assuming "writeRegLow8Post" has no effect on global items

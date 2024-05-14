@@ -376,7 +376,8 @@ package Flow_Types is
 
    function Is_Bound (F : Flow_Id) return Boolean
    is (F.Kind in Direct_Mapping | Record_Field
-         and then F.Facet = The_Bounds);
+         and then F.Facet = The_Bounds)
+     with Post => (if Is_Bound'Result then F.Kind = Direct_Mapping);
    --  Returns True if the given Flow_Id represents a bound
 
    function Is_Volatile (F : Flow_Id) return Boolean;
@@ -438,6 +439,9 @@ package Flow_Types is
         Post => Parent_Record'Result.Kind in Direct_Mapping | Record_Field
                 and then Parent_Record'Result.Facet = Normal_Part
                 and then Parent_Record'Result.Variant = F.Variant;
+   pragma Annotate
+      (GNATSAS, Intentional, "condition predetermined",
+       "Preconditionn always true is expected.");
    --  Return the parent record for the given record field. If given the
    --  hidden fields of a record, returns the visible part (i.e. clears the
    --  hidden_part flag before moving up the component list). If given a

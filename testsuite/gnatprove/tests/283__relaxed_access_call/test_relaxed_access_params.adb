@@ -121,7 +121,7 @@ procedure Test_Relaxed_Access_Params with SPARK_Mode is
 
    procedure P9 (X : out A; Y : out Boolean) with
      Relaxed_Initialization => X,
-     Depends => (X => X, Y => null);
+     Depends => (X => X, Y => X);
 
    procedure P9 (X : out A; Y : out Boolean) is
    begin

@@ -5712,8 +5712,9 @@ package body SPARK_Definition is
                      --  N_Identifier or N_Others_Choice, but the latter
                      --  is expanded by the frontend.
 
-                     if Default_Initialization (Choice_Typ) /=
-                         Full_Default_Initialization
+                     if Default_Initialization (Choice_Typ) not in
+                           Full_Default_Initialization
+                         | No_Possible_Initialization
                        and then not Has_Relaxed_Init (Choice_Typ)
                      then
                         Mark_Violation
@@ -5732,8 +5733,9 @@ package body SPARK_Definition is
                --  initialization of the array, so we only check the latter.
 
                when Array_Kind =>
-                  if Default_Initialization (Typ) /=
-                      Full_Default_Initialization
+                  if Default_Initialization (Typ) not in
+                        Full_Default_Initialization
+                      | No_Possible_Initialization
                     and then not Has_Relaxed_Init (Typ)
                   then
                      Mark_Violation

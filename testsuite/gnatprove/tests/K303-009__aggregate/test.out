@@ -26,7 +26,7 @@ arr_aggregate.ads:28:67: high: postcondition might fail, cannot prove A (J) (One
 arr_aggregate.ads:28:77: info: index check proved (CVC5: 2 VC)
 arr_aggregate.ads:32:14: info: postcondition proved (CVC5: 2 VC)
 arr_aggregate.ads:37:14: info: postcondition proved (CVC5: 5 VC)
-arr_aggregate.ads:45:14: info: postcondition proved (CVC5: 3 VC; Z3: 2 VC)
+arr_aggregate.ads:45:14: info: postcondition proved (CVC5: 3 VC; altergo: 2 VC)
 rec_aggregate.ads:24:18: warning: unused initial value of "R"
 rec_aggregate.ads:26:14: info: postcondition proved (CVC5: 2 VC)
 rec_aggregate.ads:29:13: info: implicit aspect Always_Terminates on "F1" has been proved, subprogram will terminate

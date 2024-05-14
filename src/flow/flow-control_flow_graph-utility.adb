@@ -24,9 +24,7 @@
 with Atree;                     use Atree;
 with Flow_Utility;              use Flow_Utility;
 with Sem_Aux;                   use Sem_Aux;
-with SPARK_Definition.Annotate; use SPARK_Definition.Annotate;
 with SPARK_Util.Subprograms;    use SPARK_Util.Subprograms;
-with SPARK_Util.Types;          use SPARK_Util.Types;
 
 package body Flow.Control_Flow_Graph.Utility is
 
@@ -77,30 +75,6 @@ package body Flow.Control_Flow_Graph.Utility is
          end if;
       end loop;
    end Add_Volatile_Effects;
-
-   -------------------------------
-   -- Get_Reclamation_Functions --
-   -------------------------------
-
-   function Get_Reclamation_Functions
-     (Typ : Type_Kind_Id)
-      return Node_Sets.Set
-   is
-      Result : Node_Sets.Set;
-   begin
-      for Part of Get_Reclaimed_Parts (Typ) loop
-         declare
-            Ent : constant Entity_Id := Get_Reclamation_Entity (Part);
-         begin
-            --  For now, only collect functions
-
-            if Present (Ent) and then Ekind (Ent) = E_Function then
-               Result.Include (Ent);
-            end if;
-         end;
-      end loop;
-      return Result;
-   end Get_Reclamation_Functions;
 
    ---------------------------
    -- Process_Discriminants --
