@@ -9667,7 +9667,7 @@ package body Gnat2Why.Expr is
       --  Empty node is allowed and ignored.
 
       procedure Update_Call_Variables (Call : Node_Id);
-      --  For N an entry/procedure call, call Update_Variable on every
+      --  For N an entry/function/procedure call, call Update_Variable on every
       --  variable it modifies.
 
       ---------------------------
@@ -9774,7 +9774,9 @@ package body Gnat2Why.Expr is
                            case Nkind (U.Node) is
                               when N_Assignment_Statement =>
                                  declare
-                                    Nm : constant Node_Id := Name (U.Node);
+                                    Nm  : constant Node_Id := Name (U.Node);
+                                    Src : constant Node_Id :=
+                                      Expression (U.Node);
                                  begin
                                     --  Direct assignments to borrowers must
                                     --  be re-borrows, which do not update
@@ -9782,6 +9784,9 @@ package body Gnat2Why.Expr is
 
                                     if Nkind (Nm) /= N_Identifier then
                                        Update_Variable (Get_Root_Object (Nm));
+                                    end if;
+                                    if Nkind (Src) = N_Function_Call then
+                                       Update_Call_Variables (Src);
                                     end if;
                                  end;
                               when N_Entry_Call_Statement

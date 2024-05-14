@@ -4970,6 +4970,14 @@ package body SPARK_Util is
       --  Check if V is a borrower of Variable through which deep updates
       --  are possible, use Is_Borrower cache to memoize results.
 
+      function Call_Explanation (Call : Node_Id) return Unbounded_String is
+        (To_Unbounded_String
+           ("the call to """)
+         & Source_Name (Get_Called_Entity (Call))
+         & """ might update the value designated by """
+         & Source_Name (Variable) & '"');
+      --  Explanation for calls.
+
       -----------------------
       -- Call_Updates_Deep --
       -----------------------
@@ -5088,6 +5096,7 @@ package body SPARK_Util is
             when N_Assignment_Statement =>
                declare
                   Lvalue : constant Node_Id := Name (V.Node);
+                  Rvalue : constant Node_Id := Expression (V.Node);
                   Root   : constant Entity_Id :=
                     Get_Root_Object (Lvalue);
                begin
@@ -5111,15 +5120,17 @@ package body SPARK_Util is
                         return False;
                      end;
                   end if;
+                  if Nkind (Rvalue) = N_Function_Call
+                    and then Call_Updates_Deep (Rvalue)
+                  then
+                     Explanation := Call_Explanation (Rvalue);
+                     return False;
+                  end if;
                end;
             when N_Entry_Call_Statement
                | N_Procedure_Call_Statement =>
                if Call_Updates_Deep (V.Node) then
-                  Explanation := To_Unbounded_String
-                    ("the call to """)
-                    & Source_Name (Get_Called_Entity (V.Node))
-                    & """ might update the value designated by """
-                    & Source_Name (Variable) & '"';
+                  Explanation := Call_Explanation (V.Node);
                   return False;
                end if;
             when others =>
