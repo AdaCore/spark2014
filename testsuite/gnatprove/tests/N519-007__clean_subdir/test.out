@@ -5,6 +5,7 @@ sub.adb:4:20: info: initialization of "X" proved
 sub.adb:6:07: warning: statement has no effect
 sub.adb:6:07: warning: statement has no effect, in call inlined at sub.adb:15
 sub.adb:10:12: warning: this statement is never reached
+sub.adb:15:04: info: analyzing call to "Doit" in context
 sub.adb:1:16: warning: unused initial value of "X"
 sub.adb:4:14: info: add a contract to analyze it separately from calling contexts
 sub.adb:4:14: info: local subprogram "Doit" only analyzed in the context of calls
@@ -12,3 +13,4 @@ sub.adb:4:20: info: initialization of "X" proved
 sub.adb:6:07: warning: statement has no effect
 sub.adb:6:07: warning: statement has no effect, in call inlined at sub.adb:15
 sub.adb:10:12: warning: this statement is never reached
+sub.adb:15:04: info: analyzing call to "Doit" in context
