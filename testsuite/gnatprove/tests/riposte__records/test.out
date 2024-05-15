@@ -41,7 +41,7 @@ records.adb:130:11: info: flow dependencies proved
 records.adb:132:22: info: postcondition proved (CVC5: 2 VC)
 records.adb:139:25: info: initialization of "Dst" proved
 records.adb:140:11: info: flow dependencies proved
-records.adb:142:22: high: postcondition might fail, cannot prove Is_Valid (Dst) (e.g. when Dst = (Exists => False, The_Pair => (A => 1, B => 0)))
+records.adb:142:22: high: postcondition might fail (e.g. when Dst = (Exists => False, The_Pair => (A => 1, B => 0)) and Src = (Exists => True, The_Pair => (A => 1, B => 0)))
 records.adb:150:32: info: justified that "Dst.The_Pair.A" might not be initialized in "Optimised_Copy_A"
 records.adb:150:32: info: justified that "Dst.The_Pair.B" might not be initialized in "Optimised_Copy_A"
 records.adb:151:11: info: flow dependencies proved
@@ -78,7 +78,7 @@ records.adb:275:07: info: initialization of "Tmp" proved
 records.adb:285:11: info: flow dependencies proved
 records.adb:286:22: info: postcondition proved (CVC5: 4 VC; Trivial: 1 VC)
 records.adb:296:11: info: flow dependencies proved
-records.adb:300:44: high: postcondition might fail, cannot prove X.The_Pair.B = X'Old.The_Pair.A (e.g. when X = (Exists => True, The_Pair => (A => 0, B => 5)) and X'Old = (Exists => True, The_Pair => (A => 0, B => 0)))
+records.adb:300:44: high: postcondition might fail (e.g. when X = (Exists => True, The_Pair => (A => 0, B => 5)) and X'Old = (Exists => True, The_Pair => (A => 0, B => 0)))
 records.adb:306:13: info: implicit aspect Always_Terminates on "Update_A" has been proved, subprogram will terminate
 records.adb:309:19: info: postcondition proved (CVC5: 1 VC)
 records.adb:312:07: info: initialization of "Tmp" proved

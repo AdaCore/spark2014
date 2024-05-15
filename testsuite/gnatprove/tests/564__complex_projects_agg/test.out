@@ -1,9 +1,9 @@
-found_body.ada:3:11: high: overflow check might fail, cannot prove upper bound for X + 1 [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at found.ada:1 should mention X in a precondition]
+found_body.ada:3:11: high: overflow check might fail, cannot prove upper bound for X + 1 (e.g. when X = Integer'Last) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at found.ada:1 should mention X in a precondition]
 notfound.ada:2:13: info: implicit aspect Always_Terminates on "Func" has been proved, subprogram will terminate
 notfound.ada:2:53: medium: overflow check might fail, cannot prove upper bound for X + 1 [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: add precondition (X <= Integer'Last - 1) to subprogram at line 2]
 pkg.ads:2:13: info: implicit aspect Always_Terminates on "Func" has been proved, subprogram will terminate
 pkg.ads:2:13: info: implicit aspect Always_Terminates on "Func" has been proved, subprogram will terminate
 pkg.ads:2:53: medium: overflow check might fail, cannot prove upper bound for X + 1 (e.g. when X = Integer'Last) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: add precondition (X <= Integer'Last - 1) to subprogram at line 2]
 pkg.ads:2:53: medium: overflow check might fail, cannot prove upper bound for X + 1 (e.g. when X = Integer'Last) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: add precondition (X <= Integer'Last - 1) to subprogram at line 2]
-pkg__p.s.2.ada:4:11: high: overflow check might fail, cannot prove upper bound for X + 1 [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at pkg.1.ada:3 should mention X in a precondition]
+pkg__p.s.2.ada:4:11: high: overflow check might fail, cannot prove upper bound for X + 1 (e.g. when X = Integer'Last) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at pkg.1.ada:3 should mention X in a precondition]
 pkg__proc.2.ada:3:11: high: overflow check might fail, cannot prove upper bound for X + 1 [reason for check: result of addition must fit in a 32-bits machine integer]

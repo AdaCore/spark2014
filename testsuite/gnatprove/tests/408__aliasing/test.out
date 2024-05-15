@@ -39,7 +39,7 @@ sideeffects.adb:77:10: high: formal parameter "X" and global "H" are aliased (SP
 sideeffects.adb:78:32: high: formal parameter "X" and global "H" are aliased (SPARK RM 6.4.2)
 sideeffects.adb:79:04: high: result of "Increment_And_Return" and formal parameter "X" are aliased (SPARK RM 6.4.2)
 sideeffects.adb:80:04: high: result of "Increment_And_Return" and formal parameter "X" are aliased (SPARK RM 6.4.2)
-sideeffects.adb:80:06: high: array index check might fail (e.g. when V1 = 0 and V2 = 0) [reason for check: value must be a valid index into the array]
+sideeffects.adb:80:06: high: array index check might fail (e.g. when V1 = 15) [reason for check: value must be a valid index into the array]
 sideeffects.adb:81:04: high: result of "Increment_And_Return" and formal parameter "X" are aliased (SPARK RM 6.4.2)
 sideeffects.adb:81:04: high: result of "Increment_And_Return" and formal parameter "Y" are aliased (SPARK RM 6.4.2)
 sideeffects.adb:81:06: info: index check proved (CVC5: 2 VC)

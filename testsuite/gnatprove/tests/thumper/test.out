@@ -199,7 +199,7 @@ hermes-der-encode.adb:124:60: info: range check proved (CVC5: 2 VC)
 hermes-der-encode.adb:133:07: medium: unexpected exception might be raised
 hermes-der-encode.adb:134:07: warning: this statement is never reached
 hermes-der-encode.adb:142:47: info: range check proved (CVC5: 2 VC)
-hermes-der-encode.adb:142:71: high: range check might fail, cannot prove upper bound for Value'Length (e.g. when Value = (others => 0) and Value'First = 0 and Value'Last = Integer'Last) [reason for check: input value must fit in parameter type]
+hermes-der-encode.adb:142:71: high: range check might fail, cannot prove upper bound for Value'Length (e.g. when Value = (others => 0) and Value'First = 0 and Value'Last = Natural'Last) [reason for check: input value must fit in parameter type]
 hermes-der-encode.adb:142:80: medium: range check might fail, cannot prove upper bound for Make_Leading_Identifier (Tag_Class => Class_Universal, Structured_Flag => Primitive, Tag => Tag_Octet_String) & Put_Length_Value(Value'Length) & Value [reason for check: returned value must fit in the result type of the function] [possible fix: subprogram at hermes-der-encode.ads:34 should mention Value in a precondition]
 hermes-der-encode.adb:149:39: info: range check proved (CVC5: 2 VC)
 hermes-der-encode.adb:155:07: medium: unexpected exception might be raised

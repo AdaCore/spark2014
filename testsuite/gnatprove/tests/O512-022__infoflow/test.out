@@ -62,7 +62,7 @@ infoflow.adb:145:10: info: initialization of "M" proved
 infoflow.adb:147:22: info: division check proved (CVC5: 1 VC)
 infoflow.adb:150:48: info: index check proved (CVC5: 4 VC)
 infoflow.adb:150:69: info: index check proved (CVC5: 4 VC)
-infoflow.adb:152:34: high: loop invariant might fail in first iteration, cannot prove H (K) = H'Loop_Entry (K - M) (e.g. when H = (2 => 0, others => -1) and H'First = 1 and H'Last = 3 and K = 3 and M = 1 and Q = 1)
+infoflow.adb:152:34: high: loop invariant might fail in first iteration, cannot prove H (K) = H'Loop_Entry (K - M) (e.g. when H = (2 => 0, others => -1) and H'First = 1 and H'Last = 3 and H'Loop_Entry = (2 => 0, others => -1) and H'Loop_Entry'First = 1 and H'Loop_Entry'Last = 3 and K = 3 and M = 1)
 infoflow.adb:152:37: info: index check proved (CVC5: 4 VC)
 infoflow.adb:152:58: info: index check proved (CVC5: 4 VC)
 infoflow.adb:153:36: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove H (K) = H'Loop_Entry (K)
