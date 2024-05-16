@@ -30,8 +30,7 @@ basics.ads:44:19: info: postcondition proved (CVC5: 1 VC; Trivial: 1 VC)
 basics.ads:50:24: info: initialization of "R" proved
 basics.ads:51:17: info: postcondition proved (CVC5: 1 VC)
 basics.ads:53:26: info: initialization of "T" proved
-basics.ads:56:08: info: postcondition proved (CVC5: 3 VC)
-basics.ads:57:33: info: index check proved (CVC5: 2 VC)
-basics.ads:57:66: info: index check proved (CVC5: 2 VC)
-basics.ads:57:81: info: index check proved (CVC5: 2 VC)
-basics.ads:60:17: info: postcondition proved (CVC5: 1 VC)
+basics.ads:55:14: info: postcondition proved (CVC5: 1 VC)
+basics.ads:56:08: info: range check proved (CVC5: 2 VC)
+basics.ads:56:19: info: range check proved (CVC5: 2 VC)
+basics.ads:62:17: info: postcondition proved (CVC5: 1 VC)
