@@ -90,7 +90,7 @@ stable_marriage.adb:291:10: info: initialization of "G2" proved
 stable_marriage.adb:292:10: info: initialization of "Accepted" proved
 stable_marriage.adb:294:10: info: initialization of "Already_Asked" proved
 stable_marriage.adb:297:10: info: analyzing call to "Select_And_Remove_An_Unmatched_G1" in context
-stable_marriage.adb:298:25: medium: assertion might fail (e.g. when G1 = 1 and Proposals_Made = (1 => Count'Last, others => 0))
+stable_marriage.adb:298:25: medium: assertion might fail
 stable_marriage.adb:302:30: info: range check proved (CVC5: 2 VC)
 stable_marriage.adb:302:45: info: range check proved (CVC5: 2 VC)
 stable_marriage.adb:304:16: info: assertion proved (altergo: 1 VC)
