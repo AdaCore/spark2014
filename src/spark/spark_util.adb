@@ -229,11 +229,23 @@ package body SPARK_Util is
    -- Local Subprograms --
    -----------------------
 
+   function Can_Be_Deeply_Updated (Variable : Entity_Id) return Boolean is
+     (declare
+         Ty : constant Node_Id := Retysp (Etype (Variable));
+      begin
+         Is_Deep (Ty)
+         and then not Is_Constant_In_SPARK (Variable)
+         and then
+           (if Is_Anonymous_Access_Type (Ty)
+            then not Is_Access_Constant (Ty)));
+   --  Return true if the declaration of Variable allow for deep update
+
    function No_Deep_Updates
      (Stmts       :     Local_CFG.Vertex_Sets.Set;
       Variable    :     Entity_Id;
       Explanation : out Unbounded_String)
-      return Boolean;
+      return Boolean
+     with Pre => Can_Be_Deeply_Updated (Variable);
    --  Return True if Stmts contains no assignment to a deep part of Variable,
    --  either directly or through a borrower.
    --  If a deep update is found, Explanation is set.
@@ -4697,6 +4709,9 @@ package body SPARK_Util is
 
       function Is_Borrower_Of_Variable (V : Entity_Id) return Boolean is
       begin
+         if V = Variable then
+            return True;
+         end if;
          declare
             C : constant Node_To_Bool_Maps.Cursor := Is_Borrower.Find (V);
          begin
@@ -4712,11 +4727,9 @@ package body SPARK_Util is
               and then Is_Anonymous_Access_Object_Type (T)
               and then not Is_Access_Constant (T)
               and then not Is_Constant_In_SPARK (V)
-              and then
-                (V = Variable
-                 or else (Ekind (V) in E_Variable | E_Constant
-                          and then Is_Borrower_Of_Variable
-                            (Get_Root_Object (Expression (Parent (V))))))
+              and then Ekind (V) in E_Variable | E_Constant
+              and then Is_Borrower_Of_Variable
+                (Get_Root_Object (Expression (Parent (V))))
             do
                Is_Borrower.Insert (V, Result);
             end return;
@@ -5843,9 +5856,7 @@ package body SPARK_Util is
             --  We check that the parameter is not updated in a deep way by
             --  the subprogram.
 
-            elsif Is_Constant_In_SPARK (Param)
-              or else not Is_Deep (Etype (Param))
-            then
+            elsif not Can_Be_Deeply_Updated (Param) then
                Result := True; --  Trivial case
 
             else
@@ -5953,11 +5964,7 @@ package body SPARK_Util is
 
             --  Check absence of deep updates.
 
-            if Is_Constant_In_SPARK (Param)
-              or else not Is_Deep (Etype (Param))
-            then
-               Result := True;
-            else
+            if Can_Be_Deeply_Updated (Param) then
                declare
                   use Local_CFG;
                   Vertices : Vertex_Sets.Set := Vertex_Sets.Empty;
@@ -5971,6 +5978,8 @@ package body SPARK_Util is
                     (Caller, Vertices, Empty_Paths => False);
                   Result := No_Deep_Updates (Vertices, Param, Explanation);
                end;
+            else
+               Result := True;   --  Trivial result
             end if;
          end if;
       end;
@@ -6034,11 +6043,15 @@ package body SPARK_Util is
 
       --  Absence of deep updates on paths leading to loop vertex.
 
-      Vertices.Clear;
-      Vertices.Insert (Loop_Vertex);
-      Collect_Vertices_Leading_To
-        (Loop_Stmt, Vertices, Empty_Paths => False);
-      Result := No_Deep_Updates (Vertices, Brower, Explanation);
+      if Can_Be_Deeply_Updated (Brower) then
+         Vertices.Clear;
+         Vertices.Insert (Loop_Vertex);
+         Collect_Vertices_Leading_To
+           (Loop_Stmt, Vertices, Empty_Paths => False);
+         Result := No_Deep_Updates (Vertices, Brower, Explanation);
+      else
+         Result := True;   --  Trivial result
+      end if;
    end Structurally_Decreases_In_Loop;
 
    ---------------------------------
