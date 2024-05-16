@@ -24,7 +24,6 @@
 ------------------------------------------------------------------------------
 
 with Ada.Containers;          use Ada.Containers;
-with Ada.Containers.Hashed_Maps;
 with Ada.Containers.Indefinite_Ordered_Sets;
 with Ada.Containers.Vectors;
 with Ada.Environment_Variables;
@@ -32,7 +31,6 @@ with Ada.Text_IO;             use Ada.Text_IO;
 with CE_Fuzzer;               use CE_Fuzzer;
 with CE_Parsing;              use CE_Parsing;
 with CE_Utils;                use CE_Utils;
-with Common_Containers;       use Common_Containers;
 with Elists;                  use Elists;
 with Flow_Refinement;         use Flow_Refinement;
 with Flow_Types;              use Flow_Types;
@@ -52,6 +50,7 @@ with Sinput;                  use Sinput;
 with Snames;                  use Snames;
 with SPARK_Atree;             use SPARK_Atree;
 with SPARK_Definition;
+with SPARK_Util;              use SPARK_Util;
 with SPARK_Util.Subprograms;  use SPARK_Util.Subprograms;
 with SPARK_Util.Types;        use SPARK_Util.Types;
 with Stand;                   use Stand;
@@ -290,7 +289,7 @@ package body CE_RAC is
    procedure RAC_Failure
      (N  : Node_Id;
       K  : VC_Kind;
-      EI : Extra_Info := (others => <>))
+      EI : Prover_Extra_Info := (others => <>))
    with No_Return;
    --  Raise Exn_RAC_Failure and set result, i.e. the RAC execution failed
    --  due to a false check.
@@ -309,12 +308,6 @@ package body CE_RAC is
    --------------------------------------------
    -- The evaluation environment and context --
    --------------------------------------------
-
-   package Node_To_Value is new Ada.Containers.Hashed_Maps
-     (Key_Type        => Node_Id,
-      Element_Type    => Value_Type,
-      Hash            => Node_Hash,
-      Equivalent_Keys => "=");
 
    package Entity_Bindings is new Ada.Containers.Hashed_Maps
      (Key_Type        => Entity_Id,
@@ -357,6 +350,9 @@ package body CE_RAC is
    --  it is assumed to be a global constant without variable input and set.
 
    type Context is record
+      Initial_Values   : Node_To_Value.Map;
+      --  Map for the initial values used for the main subprogram. They are
+      --  used to print counterexample traces.
       Env              : Environments.Vector;
       --  The variable environment
       Cntexmp          : Cntexample_File_Maps.Map;
@@ -607,6 +603,13 @@ package body CE_RAC is
       return True;
    end "=";
 
+   ------------------------
+   -- All_Initial_Values --
+   ------------------------
+
+   function All_Initial_Values return Node_To_Value.Map is
+     (Ctx.Initial_Values);
+
    -------------------
    -- Boolean_Value --
    -------------------
@@ -713,10 +716,10 @@ package body CE_RAC is
 
       if I < Fst then
          RAC_Info (Desc, "has failed as " & VC_Kind'Image (Kind), N);
-         RAC_Failure (N, Kind, (Bound_Info => Low_Bound, others => <>));
+         RAC_Failure (N, Kind, (Info => Low_Bound_Id, others => <>));
       elsif I > Lst then
          RAC_Info (Desc, "has failed as " & VC_Kind'Image (Kind), N);
-         RAC_Failure (N, Kind, (Bound_Info => High_Bound, others => <>));
+         RAC_Failure (N, Kind, (Info => High_Bound_Id, others => <>));
       end if;
    end Check_Integer;
 
@@ -919,7 +922,7 @@ package body CE_RAC is
                RAC_Info (Capitalize (Desc), "failed", Expr);
                RAC_Failure
                  (N, K,
-                  EI => (Node => New_Expl, others => <>));
+                  EI => (Info => Integer (New_Expl), others => <>));
             end if;
          end;
       end Check_Node_Early_Fail;
@@ -1676,6 +1679,8 @@ package body CE_RAC is
          end if;
       end if;
 
+      Ctx.Initial_Values.Include (N, Copy (Res));
+
       RAC_Info
         ("Get " & Get_Name_String (Chars (N)) &
            " (" & Value_Origin'Image (Origin) & ")" &
@@ -1705,6 +1710,8 @@ package body CE_RAC is
         (Get_Value (N, Expr, Default_Value, Use_Fuzzing, Origin));
 
       Ctx.Env (Ctx.Env.Last).Bindings.Insert (N, Val);
+
+      Ctx.Initial_Values.Include (N, Copy (Val.all));
 
       RAC_Trace ("Initialize global " & Descr & " "
                  & Get_Name_String (Chars (N)) & " to "
@@ -2611,7 +2618,8 @@ package body CE_RAC is
          Fuel             => Fuel,
          Rem_Stack_Height => Stack_Height,
          Do_Sideeffects   => Do_Sideeffects,
-         First_Loop_Iter  => False);
+         First_Loop_Iter  => False,
+         Initial_Values   => Node_To_Value.Empty_Map);
 
       RAC_Trace ("cntexmp: " & Write (To_JSON (Cntexmp), False));
       RAC_Trace ("entry: " & Full_Name (E));
@@ -2824,8 +2832,16 @@ package body CE_RAC is
                   declare
                      Component : constant Entity_Id :=
                        Search_Component_In_Type (Ty, Entity (Choice));
-                  begin
                      pragma Assert (Present (Component));
+
+                  begin
+                     if Nkind (N) = N_Delta_Aggregate
+                       and then not Res.Record_Fields.Contains (Component)
+                     then
+                        pragma Assert
+                          (Has_Discriminants (Ty));
+                        RAC_Failure (Choice, VC_Discriminant_Check);
+                     end if;
                      Res.Record_Fields.Include (Component, Val);
                   end;
                   Next (Choice);
@@ -4179,7 +4195,7 @@ package body CE_RAC is
    procedure RAC_Failure
      (N  : Node_Id;
       K  : VC_Kind;
-      EI : Extra_Info := (others => <>))
+      EI : Prover_Extra_Info := (others => <>))
    is
    begin
       Exn_RAC_Result := Some_Result

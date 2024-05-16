@@ -47,9 +47,14 @@ package CE_Display is
    --  Get the part of the counterexample corresponding to the location of
    --  the construct that triggers VC.
 
-   function Get_Environment_One_Liner (N : Node_Id; K : VC_Kind) return String;
+   function Get_Environment_CE
+     (N    : Node_Id;
+      K    : VC_Kind;
+      Subp : Node_Id)
+      return Cntexample_File_Maps.Map;
    --  Get the elements of the evaluation environment used in the construct
-   --  that triggers VC, with N the AST node corresponding to that construct.
+   --  that triggers a VC, with N the AST node corresponding to that construct
+   --  and Subp the enclosing subprogram.
 
    function JSON_Get_Opt
      (Val        : JSON_Value;
@@ -59,5 +64,14 @@ package CE_Display is
    is
      (if Has_Field (Val, Field) then Get (Val, Field)
       else Opt_Result);
+
+   function Remap_VC_Info
+     (Cntexmp : Cntexample_File_Maps.Map;
+      VC_Loc  : Source_Ptr)
+      return Cntexample_File_Maps.Map;
+   --  Map counterexample information related to the current VC to the
+   --  location of the check in the Ada file.
+   --  In Cntexmp, this information is mapped to the field "vc_line" of the
+   --  JSON object representing the file where the construct is located.
 
 end CE_Display;
