@@ -222,6 +222,7 @@ private
    procedure Generate_Axiom_For_Post
      (Th                    : Theory_UC;
       Dispatch_Th           : Theory_UC := Empty_Theory;
+      Refined_Th            : Theory_UC := Empty_Theory;
       E                     : Callable_Kind_Id;
       Spec_Binders          : Binder_Array := (1 .. 0 => <>);
       Spec_Guard            : W_Pred_Id := True_Pred;
@@ -231,7 +232,9 @@ private
      or else (Is_True_Boolean (+Spec_Guard) and Spec_Binders'Length = 0);
    --  @param Th theory in which the axioms should be generated
    --  @param Dispatch_Th if E is a dispatching operation, specific theory for
-   --    its dispatch axioms.
+   --    its dispatch post axiom.
+   --  @param Refined_Th if E is has a refined postcondition, specific theory
+   --    for its refined post axiom.
    --  @param E entry or subprogram or subprogram type entity
    --  @param Spec_Binders specialized binders to be used in addition to normal
    --    binders for the subprogram.

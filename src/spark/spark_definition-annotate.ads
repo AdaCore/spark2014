@@ -379,6 +379,16 @@ package SPARK_Definition.Annotate is
    function Has_Logical_Eq_Annotation (E : Entity_Id) return Boolean;
    --  Return True if a pragma Annotate Logical_Equal applies to entity E
 
+   function Has_No_Bitwise_Operations_Annotation
+     (E : Entity_Id) return Boolean;
+   --  Return True if a pragma Annotate No_Bitwise_Operations applies to the
+   --  type E.
+
+   procedure Set_Has_No_Bitwise_Operations_Annotation (E : Entity_Id);
+   --  Register entity E has having the No_Bitwise_Operations annotation,
+   --  either directly or inherited through a parent type (for derived
+   --  types) or base type (for subtypes).
+
    function Has_No_Wrap_Around_Annotation (E : Entity_Id) return Boolean
    with Pre => Is_Type (E);
    --  Return True if a pragma Annotate No_Wrap_Around applies to the type E
@@ -564,7 +574,8 @@ package SPARK_Definition.Annotate is
 
    function Has_Handler_Annotation (E : Type_Kind_Id) return Boolean;
 
-   type Hide_Annotation_Kind is (Hide_Expr_Fun, Unhide_Expr_Fun);
+   type Hide_Annotation_Kind is
+     (Hide_Expr_Fun, Unhide_Expr_Fun, Unhide_Package_Body);
 
    package Node_To_Hide_Annotation_Kind_Maps is new Ada.Containers.Hashed_Maps
      (Key_Type        => Node_Id,
@@ -581,6 +592,9 @@ package SPARK_Definition.Annotate is
 
    function Expr_Fun_Hidden_By_Default (E : Entity_Id) return Boolean;
    --  Return True if the body of an expression function E is hidden by default
+
+   function Has_Visible_Package_Body (E : Entity_Id) return Boolean;
+   --  Return True if the body of a nested package E is unhidden
 
    function Has_Mutable_In_Param_Annotation (E : Entity_Id) return Boolean;
    --  Return True if E is a IN parameter annotated as mutable

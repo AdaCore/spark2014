@@ -86,6 +86,37 @@ this entity (and enclosed entities).
 Note that the ``Skip_Proof`` annotation cannot be used if an enclosing
 subprogram already has the ``Skip_Flow_And_Proof`` annotation.
 
+.. index:: Annotate; No_Bitwise_Operations
+
+Annotation for Handling Modular Types as Integers in All Provers
+----------------------------------------------------------------
+
+Modular types are handled as a special `bitvector` type in some provers, which
+may lead to more difficult automatic proofs when such values are combined with
+integers that come from signed integers in SPARK or ``Big_Integers`` from the
+:ref:`SPARK Library`.
+
+In such a case, it is possible to request that a modular type is handled like
+an integer in all provers, by using annotations of the form:
+
+.. code-block:: ada
+
+   type T is mod 2**32
+     with Annotate => (GNATprove, No_Bitwise_Operations);
+
+or on a derived type:
+
+.. code-block:: ada
+
+   type T is new U
+     with Annotate => (GNATprove, No_Bitwise_Operations);
+
+This annotation is inherited by derived types. It must be specified on a type
+declaration (and cannot be specified on a subtype declaration). The following
+bitwise operations are not allowed on such a type: ``or``, ``and``, ``xor``,
+``not``, ``Shift_Left``, ``Shift_Right``, ``Shift_Right_Arithmetic``,
+``Rotate_Left``, ``Rotate_Right``.
+
 .. index:: Annotate; No_Wrap_Around
 
 Annotation for Overflow Checking on Modular Types

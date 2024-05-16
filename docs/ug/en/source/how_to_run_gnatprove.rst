@@ -179,14 +179,21 @@ and ``gold``, you can choose which analysis is performed:
 .. index::
    single: --limit-line; command-line usage
    single: --limit-region
+   single: --limit-lines
 
 Using the option ``--limit-line`` one can limit proofs to a particular file
 and line of an Ada file. For example, if you want to prove only line 12 of
 file ``example.adb``, you can add the option ``--limit-line=example.adb:12`` to
-the call to |GNATprove|. Using ``--limit-region`` one can limit proofs to a
-range of lines in a particular file. For example,
-``--limit-region=example.adb:12:14`` will limit analysis to lines 12 to 14 in
-``example.adb``.
+the call to |GNATprove|. Using the option ``--limit-lines=file``, one can
+provide a file to |GNATprove| where each line indicates a line to analyze. For
+example, such a file could look like this::
+
+   example.adb:12
+   example.adb:15
+
+Using ``--limit-region`` one can limit proofs to a range of lines in a
+particular file. For example, ``--limit-region=example.adb:12:14`` will limit
+analysis to lines 12 to 14 in ``example.adb``.
 
 .. index::
     single: --limit-subp

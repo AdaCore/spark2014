@@ -1,0 +1,6 @@
+a.adb:2:12: info: function contract might not be available on calls from enclosing unit
+a.adb:5:10: info: overflow check proved (CVC5: 2 VC)
+a.adb:7:10: info: overflow check proved (CVC5: 2 VC)
+main.adb:2:12: info: function contract might not be available on calls from enclosing unit
+main.adb:5:10: info: overflow check proved (CVC5: 2 VC)
+main.adb:7:10: info: overflow check proved (CVC5: 2 VC)

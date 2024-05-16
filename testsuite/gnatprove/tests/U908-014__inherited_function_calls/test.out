@@ -1,12 +1,14 @@
 inherited.adb:5:16: info: implicit aspect Always_Terminates on "F" has been proved, subprogram will terminate
-inherited.adb:15:12: info: implicit aspect Always_Terminates on "F" has been proved, subprogram will terminate
-inherited.adb:23:16: info: implicit aspect Always_Terminates on "F" has been proved, subprogram will terminate
-inherited.adb:33:12: info: implicit aspect Always_Terminates on "F" has been proved, subprogram will terminate
-inherited.adb:33:12: medium: in implicit overriding of primitive function with dispatching result "F" at inherited.adb:23
-inherited.adb:33:12: medium: predicate check might fail
-inherited.adb:34:26: info: predicate check proved (CVC5: 1 VC)
-inherited.adb:37:14: warning: subprogram "Bad1" has no effect
-inherited.adb:39:22: medium: assertion might fail
-inherited.adb:42:14: warning: subprogram "Bad2" has no effect
-inherited.adb:44:22: info: assertion proved (CVC5: 1 VC)
-inherited.adb:47:04: info: precondition proved (Trivial: 1 VC)
+inherited.adb:6:17: info: postcondition proved (CVC5: 1 VC)
+inherited.adb:16:12: info: implicit aspect Always_Terminates on "F" has been proved, subprogram will terminate
+inherited.adb:24:16: info: implicit aspect Always_Terminates on "F" has been proved, subprogram will terminate
+inherited.adb:25:17: info: postcondition proved (CVC5: 1 VC)
+inherited.adb:35:12: info: implicit aspect Always_Terminates on "F" has been proved, subprogram will terminate
+inherited.adb:35:12: medium: in implicit overriding of primitive function with dispatching result "F" at inherited.adb:24
+inherited.adb:35:12: medium: predicate check might fail
+inherited.adb:36:26: info: predicate check proved (CVC5: 1 VC)
+inherited.adb:39:14: warning: subprogram "Bad1" has no effect
+inherited.adb:41:22: medium: assertion might fail
+inherited.adb:44:14: warning: subprogram "Bad2" has no effect
+inherited.adb:46:22: info: assertion proved (CVC5: 1 VC)
+inherited.adb:49:04: info: precondition proved (Trivial: 1 VC)

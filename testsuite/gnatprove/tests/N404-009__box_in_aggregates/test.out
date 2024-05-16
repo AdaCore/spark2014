@@ -11,9 +11,7 @@ aggs.ads:32:11: info: flow dependencies proved
 aggs.ads:34:21: info: initialization of "X" proved
 aggs.ads:35:11: info: flow dependencies proved
 aggs.ads:36:22: info: postcondition proved (CVC5: 1 VC)
-aggs.ads:40:28: info: in default value of box association at aggs.adb:19
 aggs.ads:40:28: info: in default value of private type at aggs.ads:10
-aggs.ads:40:28: info: range check proved (CVC5: 2 VC)
 aggs.ads:40:28: info: range check proved (CVC5: 2 VC)
 dynval.adb:1:11: warning: subprogram "Dynval" has no effect
 dynval.adb:4:12: info: range check proved (CVC5: 2 VC)

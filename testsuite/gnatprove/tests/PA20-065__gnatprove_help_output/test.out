@@ -76,6 +76,7 @@ gnatprove advanced switches:
  --limit-line=f:l     Limit analysis to given file and line
  --limit-line=f:l:c:k Limit analysis to given file, line, column and kind of
                       check
+ --limit-lines=file   Limit analysis to lines specified in file (one per line)
  --limit-name=s       Limit analysis to subprogram with the specified name
  --limit-region=f:l:l Limit analysis to given file and range of lines
  --limit-subp=f:l     Limit analysis to subprogram declared at the specified

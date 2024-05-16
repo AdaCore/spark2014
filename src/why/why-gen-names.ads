@@ -401,7 +401,6 @@ package Why.Gen.Names is
 
       --  Names of predicates for functions guards
       WNE_Func_Guard,
-      WNE_Refined_Func_Guard,
       WNE_Dispatch_Func_Guard,
 
       --  Name of predicate for specific post

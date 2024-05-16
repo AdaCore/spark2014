@@ -36,37 +36,21 @@ tagged_component_check.ads:122:28: medium: in default value of private type at t
 tagged_component_check.ads:122:28: medium: range check might fail, cannot prove lower bound for Hide (20) [reason for check: default component value must fit in the type]
 tagged_component_check.ads:128:28: medium: in default value at tagged_component_check.ads:186
 tagged_component_check.ads:128:28: medium: range check might fail, cannot prove lower bound for Hide (21) [reason for check: default component value must fit in the type]
-tagged_component_check.ads:163:25: medium: in default value at tagged_component_check.ads:183
 tagged_component_check.ads:163:25: medium: in default value of private type at tagged_component_check.ads:150
 tagged_component_check.ads:163:25: medium: range check might fail, cannot prove lower bound for Hide (25) [reason for check: default component value must fit in the type]
-tagged_component_check.ads:163:25: medium: range check might fail, cannot prove lower bound for Hide (25) [reason for check: default component value must fit in the type]
-tagged_component_check.ads:167:25: medium: in default value at tagged_component_check.ads:184
 tagged_component_check.ads:167:25: medium: in default value of private type at tagged_component_check.ads:152
 tagged_component_check.ads:167:25: medium: range check might fail, cannot prove lower bound for Hide (26) [reason for check: default component value must fit in the type]
-tagged_component_check.ads:167:25: medium: range check might fail, cannot prove lower bound for Hide (26) [reason for check: default component value must fit in the type]
-tagged_component_check.ads:171:25: medium: in default value at tagged_component_check.ads:185
 tagged_component_check.ads:171:25: medium: in default value of private type at tagged_component_check.ads:154
 tagged_component_check.ads:171:25: medium: range check might fail, cannot prove lower bound for Hide (27) [reason for check: default component value must fit in the type]
-tagged_component_check.ads:171:25: medium: range check might fail, cannot prove lower bound for Hide (27) [reason for check: default component value must fit in the type]
-tagged_component_check.ads:175:25: medium: in default value at tagged_component_check.ads:186
 tagged_component_check.ads:175:25: medium: in default value of private type at tagged_component_check.ads:156
 tagged_component_check.ads:175:25: medium: range check might fail, cannot prove lower bound for Hide (28) [reason for check: default component value must fit in the type]
-tagged_component_check.ads:175:25: medium: range check might fail, cannot prove lower bound for Hide (28) [reason for check: default component value must fit in the type]
-tagged_component_check.ads:179:25: medium: in default value at tagged_component_check.ads:187
 tagged_component_check.ads:179:25: medium: in default value of private type at tagged_component_check.ads:158
 tagged_component_check.ads:179:25: medium: range check might fail, cannot prove lower bound for Hide (29) [reason for check: default component value must fit in the type]
-tagged_component_check.ads:179:25: medium: range check might fail, cannot prove lower bound for Hide (29) [reason for check: default component value must fit in the type]
-tagged_component_check.ads:192:28: medium: in default value at tagged_component_check.ads:278
 tagged_component_check.ads:192:28: medium: in default value of private type at tagged_component_check.ads:245
 tagged_component_check.ads:192:28: medium: range check might fail, cannot prove lower bound for Hide (30) [reason for check: default component value must fit in the type]
-tagged_component_check.ads:192:28: medium: range check might fail, cannot prove lower bound for Hide (30) [reason for check: default component value must fit in the type]
-tagged_component_check.ads:195:28: medium: in default value at tagged_component_check.ads:278
 tagged_component_check.ads:195:28: medium: in default value of private type at tagged_component_check.ads:245
 tagged_component_check.ads:195:28: medium: range check might fail, cannot prove lower bound for Hide (31) [reason for check: default component value must fit in the type]
-tagged_component_check.ads:195:28: medium: range check might fail, cannot prove lower bound for Hide (31) [reason for check: default component value must fit in the type]
-tagged_component_check.ads:201:28: medium: in default value at tagged_component_check.ads:279
 tagged_component_check.ads:201:28: medium: in default value of private type at tagged_component_check.ads:247
-tagged_component_check.ads:201:28: medium: range check might fail, cannot prove lower bound for Hide (32) [reason for check: default component value must fit in the type]
 tagged_component_check.ads:201:28: medium: range check might fail, cannot prove lower bound for Hide (32) [reason for check: default component value must fit in the type]
 tagged_component_check.ads:206:28: medium: in default value of private type at tagged_component_check.ads:203
 tagged_component_check.ads:206:28: medium: range check might fail, cannot prove lower bound for Hide (33) [reason for check: default component value must fit in the type]
@@ -74,27 +58,15 @@ tagged_component_check.ads:212:28: medium: in default value of private type at t
 tagged_component_check.ads:212:28: medium: range check might fail, cannot prove lower bound for Hide (34) [reason for check: default component value must fit in the type]
 tagged_component_check.ads:217:28: medium: in default value of private type at tagged_component_check.ads:214
 tagged_component_check.ads:217:28: medium: range check might fail, cannot prove lower bound for Hide (35) [reason for check: default component value must fit in the type]
-tagged_component_check.ads:223:28: medium: in default value at tagged_component_check.ads:281
 tagged_component_check.ads:223:28: medium: in default value of private type at tagged_component_check.ads:251
 tagged_component_check.ads:223:28: medium: range check might fail, cannot prove lower bound for Hide (36) [reason for check: default component value must fit in the type]
-tagged_component_check.ads:223:28: medium: range check might fail, cannot prove lower bound for Hide (36) [reason for check: default component value must fit in the type]
-tagged_component_check.ads:258:25: medium: in default value at tagged_component_check.ads:278
 tagged_component_check.ads:258:25: medium: in default value of private type at tagged_component_check.ads:245
 tagged_component_check.ads:258:25: medium: range check might fail, cannot prove lower bound for Hide (40) [reason for check: default component value must fit in the type]
-tagged_component_check.ads:258:25: medium: range check might fail, cannot prove lower bound for Hide (40) [reason for check: default component value must fit in the type]
-tagged_component_check.ads:262:25: medium: in default value at tagged_component_check.ads:279
 tagged_component_check.ads:262:25: medium: in default value of private type at tagged_component_check.ads:247
 tagged_component_check.ads:262:25: medium: range check might fail, cannot prove lower bound for Hide (41) [reason for check: default component value must fit in the type]
-tagged_component_check.ads:262:25: medium: range check might fail, cannot prove lower bound for Hide (41) [reason for check: default component value must fit in the type]
-tagged_component_check.ads:266:25: medium: in default value at tagged_component_check.ads:280
 tagged_component_check.ads:266:25: medium: in default value of private type at tagged_component_check.ads:249
 tagged_component_check.ads:266:25: medium: range check might fail, cannot prove lower bound for Hide (42) [reason for check: default component value must fit in the type]
-tagged_component_check.ads:266:25: medium: range check might fail, cannot prove lower bound for Hide (42) [reason for check: default component value must fit in the type]
-tagged_component_check.ads:270:25: medium: in default value at tagged_component_check.ads:281
 tagged_component_check.ads:270:25: medium: in default value of private type at tagged_component_check.ads:251
 tagged_component_check.ads:270:25: medium: range check might fail, cannot prove lower bound for Hide (43) [reason for check: default component value must fit in the type]
-tagged_component_check.ads:270:25: medium: range check might fail, cannot prove lower bound for Hide (43) [reason for check: default component value must fit in the type]
-tagged_component_check.ads:274:25: medium: in default value at tagged_component_check.ads:282
 tagged_component_check.ads:274:25: medium: in default value of private type at tagged_component_check.ads:253
-tagged_component_check.ads:274:25: medium: range check might fail, cannot prove lower bound for Hide (44) [reason for check: default component value must fit in the type]
 tagged_component_check.ads:274:25: medium: range check might fail, cannot prove lower bound for Hide (44) [reason for check: default component value must fit in the type]

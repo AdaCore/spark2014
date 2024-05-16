@@ -1,6 +1,15 @@
-p.adb:3:16: info: implicit aspect Always_Terminates on "F" has been proved, subprogram will terminate
-p.adb:3:46: info: postcondition proved (CVC5: 1 VC)
-p.adb:7:16: info: implicit aspect Always_Terminates on "Zero" has been proved, subprogram will terminate
-p.adb:10:37: info: precondition proved (Trivial: 1 VC)
-p.adb:10:64: info: refined post proved (CVC5: 1 VC)
-p.adb:13:19: medium: assertion might fail
+p.adb:3:16: info: implicit aspect Always_Terminates on "F1" has been proved, subprogram will terminate
+p.adb:3:47: info: postcondition proved (CVC5: 1 VC)
+p.adb:4:16: info: implicit aspect Always_Terminates on "F2" has been proved, subprogram will terminate
+p.adb:4:47: info: postcondition proved (CVC5: 1 VC)
+p.adb:5:16: info: implicit aspect Always_Terminates on "F3" has been proved, subprogram will terminate
+p.adb:5:47: info: postcondition proved (CVC5: 1 VC)
+p.adb:9:16: info: implicit aspect Always_Terminates on "Zero" has been proved, subprogram will terminate
+p.adb:12:55: info: refined post proved (CVC5: 1 VC)
+p.adb:14:17: info: precondition proved (Trivial: 1 VC)
+p.adb:17:38: info: precondition proved (Trivial: 1 VC)
+p.adb:19:38: info: precondition proved (Trivial: 1 VC)
+p.adb:19:65: info: refined post proved (CVC5: 1 VC)
+p.adb:22:19: medium: assertion might fail
+p.adb:24:19: medium: assertion might fail
+p.adb:26:19: medium: assertion might fail

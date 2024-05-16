@@ -1,7 +1,9 @@
 package body Stack is
    pragma SPARK_Mode (On);
 
-   package body Model is
+   package body Model with
+      Annotate => (GNATprove, Unhide_Info, "Package_Body")
+   is
       function To (S : Stack) return M is (M(S.Content (1 .. S.Top)));
    end Model;
 

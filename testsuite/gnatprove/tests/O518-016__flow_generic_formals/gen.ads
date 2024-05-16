@@ -6,7 +6,8 @@ is
    Y : Boolean;
 
    function Get_Bounded return Boolean
-     with Global => Bounded;
+     with Global => Bounded,
+     Post => Get_Bounded'Result = Bounded;
 
    procedure P
      with Global => (Input  => Bounded,

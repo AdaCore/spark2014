@@ -785,6 +785,7 @@ package Why.Atree.Modules is
       Dispatch_Axiom,            --  Compatibility axioms and dispatch program
                                  --  function.
       Dispatch_Post_Axiom,       --  Post'Class axiom for dispatching functions
+      Refined_Post_Axiom,        --  Refined post axiom
       Lemma_Axiom,               --  Post axiom of a lemma procedure annotated
                                  --  with Automatic_Instantiation.
       Type_Completion,           --  Type completion
@@ -854,9 +855,18 @@ package Why.Atree.Modules is
    --  given entity. Those are the modules which should not be included in the
    --  VC module for E.
 
+   function Get_Refinement_Mask (E : Entity_Id) return Why_Node_Maps.Map;
+   --  Generate a map that can be used to replace dependencies between
+   --  functions and their axiom modules by the refined axiom module depending
+   --  on the visibility of the function from E.
+
    procedure Register_Proof_Cyclic_Function (E : Entity_Id);
    procedure Register_Automatically_Instanciated_Lemma (E : Entity_Id);
    --  Register recursive functions and autmatically instanciated lemmas. They
    --  are used by Mutually_Recursive_Modules.
+
+   procedure Register_Function_With_Refinement (E : Entity_Id);
+   --  Register functions with refinements, they need special handling for
+   --  visibility.
 
 end Why.Atree.Modules;

@@ -665,7 +665,8 @@ package Gnat2Why.Util is
    function Get_Graph_Closure
      (Map    : Why_Node_Graphs.Map;
       From   : Why_Node_Sets.Set;
-      Filter : Why_Node_Sets.Set := Why_Node_Sets.Empty)
+      Filter : Why_Node_Sets.Set := Why_Node_Sets.Empty;
+      Mask   : Why_Node_Maps.Map := Why_Node_Maps.Empty)
       return Why_Node_Sets.Set
      with Post => Why_Node_Sets.Is_Subset (Subset => From,
                                            Of_Set => Get_Graph_Closure'Result)
@@ -674,8 +675,9 @@ package Gnat2Why.Util is
    --  @param Map the graph
    --  @param From the set of nodes to start from
    --  @param Filter nodes to be filtered from the closure
+   --  @param Mask mapping to be applied to Map while computing the closure
    --  @return the set of nodes reachable from the node From in the graph Map
-   --     which are not in Filter.
+   --     on which Mask was applied which are not in Filter.
 
    function Avoid_Why3_Keyword (S : String) return String;
    --  @param S any string

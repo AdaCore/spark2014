@@ -1,6 +1,8 @@
 package body Stack is
 
-   package body Model is
+   package body Model with
+     Annotate => (GNATprove, Unhide_Info, "Package_Body")
+   is
       function To (S : Stack) return M is (M(S.Content (1 .. S.Top)));
       function To_But_Top (S : Stack) return M is (M(S.Content (1 .. S.Top - 1)));
 

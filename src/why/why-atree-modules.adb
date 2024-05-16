@@ -119,11 +119,12 @@ package body Why.Atree.Modules is
    --  there is already a module associated to E in Modules, in which case the
    --  existing module is returned.
 
-   Why_Symb_Map           : Why_Symb_Maps.Map := Why_Symb_Maps.Empty_Map;
-   Why_Relaxed_Symb_Map   : Why_Symb_Maps.Map := Why_Symb_Maps.Empty_Map;
-   Entity_Modules         : Ada_Node_To_Module.Map;
-   Proof_Cyclic_Functions : Node_Sets.Set;
-   Lemmas                 : Node_Sets.Set;
+   Why_Symb_Map              : Why_Symb_Maps.Map := Why_Symb_Maps.Empty_Map;
+   Why_Relaxed_Symb_Map      : Why_Symb_Maps.Map := Why_Symb_Maps.Empty_Map;
+   Entity_Modules            : Ada_Node_To_Module.Map;
+   Functions_With_Refinement : Node_Sets.Set;
+   Proof_Cyclic_Functions    : Node_Sets.Set;
+   Lemmas                    : Node_Sets.Set;
 
    --------------
    -- E_Module --
@@ -146,6 +147,7 @@ package body Why.Atree.Modules is
               when Dispatch                  => "___dispatch",
               when Dispatch_Axiom            => "___dispatch__axiom",
               when Dispatch_Post_Axiom       => "___dispatch__post__axiom",
+              when Refined_Post_Axiom        => "___refined__post__axiom",
               when Lemma_Axiom               => "___post_axiom",
               when Type_Completion           => "___compl",
               when Type_Representative       => "___rep",
@@ -200,6 +202,12 @@ package body Why.Atree.Modules is
               (E in Callable_Kind_Id
                and then Is_Dispatching_Operation (E)
                and then not Is_Hidden_Dispatching_Operation (E));
+
+         when Refined_Post_Axiom =>
+            pragma Assert
+              (E in Callable_Kind_Id
+               and then Entity_Body_In_SPARK (E)
+               and then Has_Contracts (E, Pragma_Refined_Post));
 
          when Lemma_Axiom =>
             pragma Assert
@@ -358,6 +366,42 @@ package body Why.Atree.Modules is
 
       return NID (To_String (Name));
    end Get_Profile_Theory_Name;
+
+   -------------------------
+   -- Get_Refinement_Mask --
+   -------------------------
+
+   function Get_Refinement_Mask (E : Entity_Id) return Why_Node_Maps.Map is
+   begin
+      return Res : Why_Node_Maps.Map do
+         for F of Functions_With_Refinement loop
+            declare
+               Visible : constant Boolean :=
+                 Has_Visibility_On_Refined (E, F);
+            begin
+               --  If the refinement of F is visible from E, replace its post
+               --  axiom by its refined post axiom.
+
+               if Entity_Modules (F).Contains (Refined_Post_Axiom)
+                 and then Visible
+               then
+                  Res.Insert
+                    (+E_Module (F, Fun_Post_Axiom),
+                     +E_Module (F, Refined_Post_Axiom));
+               end if;
+
+               --  If the refinement of an expression function F is not visible
+               --  from E, remove its defining axiom.
+
+               if Entity_Modules (F).Contains (Expr_Fun_Axiom)
+                 and then not Visible
+               then
+                  Res.Insert (+E_Module (F, Expr_Fun_Axiom), Why_Empty);
+               end if;
+            end;
+         end loop;
+      end return;
+   end Get_Refinement_Mask;
 
    ------------------------------
    -- Hashconsed_Entity_Module --
@@ -2806,19 +2850,6 @@ package body Why.Atree.Modules is
                      Domain => EW_Pred,
                      Typ    => EW_Unit_Type));
 
-               if Entity_Body_In_SPARK (E)
-                 and then Has_Contracts (E, Pragma_Refined_Post)
-               then
-                  Insert_Symbol
-                    (E, WNE_Refined_Func_Guard,
-                     New_Identifier
-                       (Symb      => NID (Name & "__" & Function_Guard),
-                        Module    => E_Module (E, Logic_Function_Decl),
-                        Namespace => NID (To_String (WNE_Refine_Module)),
-                        Domain    => EW_Pred,
-                        Typ       => EW_Unit_Type));
-               end if;
-
                if Is_Dispatching_Operation (E)
                  and then not Is_Hidden_Dispatching_Operation (E)
                then
@@ -3529,29 +3560,7 @@ package body Why.Atree.Modules is
                   declare
                      RM : constant W_Module_Id :=
                        E_Module (E, Type_Representative);
-
-                     To_Int : constant W_Identifier_Id :=
-                       New_Identifier
-                         (Symb   => NID ("to_int"),
-                          Module => RM,
-                          Domain => EW_Term,
-                          Typ    => EW_Int_Type);
                   begin
-                     Insert_Symbol (E, WNE_To_Int, To_Int);
-                     Insert_Symbol
-                       (E, WNE_Of_BitVector,
-                        New_Identifier
-                          (Symb   => NID ("of_int"),
-                           Module => M,
-                           Domain => EW_Term,
-                           Typ    => Base));
-                     Insert_Symbol
-                       (E, WNE_Dynamic_Property_BV_Int,
-                        New_Identifier
-                          (Symb   => NID ("dynamic_property_int"),
-                           Module => M,
-                           Domain => EW_Term,
-                           Typ    => EW_Bool_Type));
                      Insert_Symbol
                        (E, WNE_Attr_Modulus,
                         New_Identifier
@@ -3559,19 +3568,44 @@ package body Why.Atree.Modules is
                            Module => M,
                            Domain => EW_Term,
                            Typ    => Base));
-                     Insert_Symbol
-                       (E, WNE_Range_Check_Fun_BV_Int,
-                        New_Identifier
-                          (Symb   => NID ("range_check_int_"),
-                           Module => M,
-                           Domain => EW_Term,
-                           Typ    => EW_Int_Type));
+
+                     if not Has_No_Bitwise_Operations_Annotation (E) then
+                        Insert_Symbol
+                          (E, WNE_To_Int,
+                           New_Identifier
+                             (Symb   => NID ("to_int"),
+                              Module => RM,
+                              Domain => EW_Term,
+                              Typ    => EW_Int_Type));
+                        Insert_Symbol
+                          (E, WNE_Of_BitVector,
+                           New_Identifier
+                             (Symb   => NID ("of_int"),
+                              Module => M,
+                              Domain => EW_Term,
+                              Typ    => Base));
+                        Insert_Symbol
+                          (E, WNE_Dynamic_Property_BV_Int,
+                           New_Identifier
+                             (Symb   => NID ("dynamic_property_int"),
+                              Module => M,
+                              Domain => EW_Term,
+                              Typ    => EW_Bool_Type));
+                        Insert_Symbol
+                          (E, WNE_Range_Check_Fun_BV_Int,
+                           New_Identifier
+                             (Symb   => NID ("range_check_int_"),
+                              Module => M,
+                              Domain => EW_Term,
+                              Typ    => EW_Int_Type));
+                     end if;
                   end;
                end if;
 
                --  Symbols for modular static types
 
                if Has_Modular_Integer_Type (E)
+                 and then not Has_No_Bitwise_Operations_Annotation (E)
                  and then not Type_Is_Modeled_As_Base (E)
                then
                   Insert_Symbol
@@ -4069,6 +4103,12 @@ package body Why.Atree.Modules is
                then
                   S.Insert (+Entity_Modules (F) (Dispatch_Post_Axiom));
                end if;
+
+               if Entity_Body_In_SPARK (F)
+                 and then Has_Contracts (F, Pragma_Refined_Post)
+               then
+                  S.Insert (+Entity_Modules (F) (Refined_Post_Axiom));
+               end if;
             end if;
          end loop;
       end if;
@@ -4109,6 +4149,15 @@ package body Why.Atree.Modules is
    begin
       Lemmas.Include (E);
    end Register_Automatically_Instanciated_Lemma;
+
+   ---------------------------------------
+   -- Register_Function_With_Refinement --
+   ---------------------------------------
+
+   procedure Register_Function_With_Refinement (E : Entity_Id) is
+   begin
+      Functions_With_Refinement.Include (E);
+   end Register_Function_With_Refinement;
 
    ------------------------------------
    -- Register_Proof_Cyclic_Function --

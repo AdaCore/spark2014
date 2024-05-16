@@ -429,6 +429,12 @@ package SPARK_Util.Types is
    --  return Empty. This also takes into account subtypes, and only considers
    --  derivations visible from SPARK code (using Retysp).
 
+   function Partial_Base_Type (Ty : Type_Kind_Id) return Type_Kind_Id;
+   --  Return the base type of the partial view of Ty if any. This is not the
+   --  same as the partial view if Ty's Base_Retysp as the full view of a
+   --  private type might be a subtype (typically for scalar types and
+   --  constrained array types).
+
    generic
       with procedure Process_DIC_Expression
         (Type_Instance  : Formal_Kind_Id;

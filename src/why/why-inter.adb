@@ -607,11 +607,19 @@ package body Why.Inter is
 
       procedure Add_Axiom_Imports is
          Filter  : Why_Node_Sets.Set;
-         Closure : Why_Node_Sets.Set;
+         Mask    : constant Why_Node_Maps.Map :=
+           Get_Refinement_Mask (Defined_Entity);
+         --  Get a mask used to update the Module_Dependencies map in order to
+         --  take into account visibility of refined posts and expression
+         --  function definitions.
 
+         Closure : Why_Node_Sets.Set;
       begin
-         if Present (Defined_Entity)
-           and then Ekind (Defined_Entity) in
+         pragma Assert (Present (Defined_Entity));
+
+         --  Filter out the axiom modules of mutually dependent entities
+
+         if Ekind (Defined_Entity) in
              E_Function | E_Entry | E_Procedure | E_Package
          then
             Filter := Mutually_Recursive_Modules (Defined_Entity);
@@ -620,11 +628,10 @@ package body Why.Inter is
          Closure := Get_Graph_Closure
            (Map    => Module_Dependencies,
             From   => S,
-            Filter => Filter);
+            Filter => Filter,
+            Mask   => Mask);
 
-         if Present (Defined_Entity)
-           and then not Safe_Guard_Graph.Contains (Defined_Entity)
-         then
+         if not Safe_Guard_Graph.Contains (Defined_Entity) then
             Safe_Guard_Graph.Include (Defined_Entity, Node_Sets.Empty_Set);
          end if;
 
@@ -632,7 +639,6 @@ package body Why.Inter is
             declare
                Node : constant Node_Id := Get_Ada_Node (M);
             begin
-
                --  Special case for local constants. The closure contains the
                --  axiom module for local constants, but we don't need these
                --  axioms in the subprogram/package that directly contains the
@@ -995,7 +1001,9 @@ package body Why.Inter is
                return EW_Bool_Type;
             elsif Ty = Universal_Fixed then
                return EW_Real_Type;
-            elsif Is_Modular_Integer_Type (Ty) then
+            elsif Is_Modular_Integer_Type (Ty)
+              and then not Has_No_Bitwise_Operations_Annotation (Ty)
+            then
                declare
                   Size : Uintp.Uint;
                begin
@@ -1320,6 +1328,8 @@ package body Why.Inter is
                when Unhide_Expr_Fun =>
                   Module_Dependencies (+E_Module (Ent)).Insert
                     (+E_Module (Ent, Expr_Fun_Axiom));
+               when Unhide_Package_Body =>
+                  raise Program_Error;
             end case;
          end;
       end loop;
@@ -1341,6 +1351,8 @@ package body Why.Inter is
                   Ada_Ent_To_Why.Insert
                     (Symbol_Table, Ent,
                      Mk_Item_Of_Entity (Ent, Hide_Info => False));
+               when Unhide_Package_Body =>
+                  raise Program_Error;
             end case;
          end;
       end loop;
@@ -1390,6 +1402,8 @@ package body Why.Inter is
                when Unhide_Expr_Fun =>
                   Module_Dependencies (+E_Module (Ent)).Delete
                     (+E_Module (Ent, Expr_Fun_Axiom));
+               when Unhide_Package_Body =>
+                  raise Program_Error;
             end case;
          end;
       end loop;
@@ -1497,7 +1511,8 @@ package body Why.Inter is
             Module    : constant W_Module_Id := E_Module (E, Kind);
             Namespace : constant Symbol :=
               (if Hide_Info then NID (To_String (WNE_Hidden_Module))
-               elsif Selector = Refine then NID (To_String (WNE_Refine_Module))
+               elsif Selector = Refine and then Domain = EW_Prog
+               then NID (To_String (WNE_Refine_Module))
                else No_Symbol);
          begin
             return

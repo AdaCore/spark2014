@@ -1125,14 +1125,6 @@ package body Gnat2Why.Expr is
    --  Returns the Why program for raise statement Stat if the exception is not
    --  handled.
 
-   function Has_Visibility_On_Refined
-     (Expr : Node_Id;
-      E    : Callable_Kind_Id)
-      return Boolean
-   with Pre => Ekind (E) in E_Function | E_Procedure | E_Entry
-               and then Entity_Body_In_SPARK (E);
-   --  Return True if node Expr can "see" the Refined_Post of entity E
-
    ---------------------------------
    -- Handling of Local Borrowers --
    ---------------------------------
@@ -1621,7 +1613,7 @@ package body Gnat2Why.Expr is
                   end if;
                end;
 
-            when Func =>
+            when Subp =>
                raise Program_Error;
             end case;
 
@@ -4194,8 +4186,7 @@ package body Gnat2Why.Expr is
       Ty               : Type_Kind_Id;
       Params           : Transformation_Params;
       At_Declaration   : Boolean := False;
-      Include_Subtypes : Boolean := False;
-      Decl_Node        : Opt_N_Declaration_Id := Empty)
+      Include_Subtypes : Boolean := False)
       return W_Prog_Id
    is
 
@@ -4203,8 +4194,7 @@ package body Gnat2Why.Expr is
         (Ada_Node         : Node_Id;
          Ty               : Type_Kind_Id;
          Include_Subtypes : Boolean := False;
-         At_Declaration   : Boolean := False;
-         Decl_Node        : Opt_N_Declaration_Id := Empty)
+         At_Declaration   : Boolean := False)
          return W_Prog_Id;
       --  Recursively traverse the type to generate the checks
 
@@ -4216,23 +4206,24 @@ package body Gnat2Why.Expr is
         (Ada_Node         : Node_Id;
          Ty               : Type_Kind_Id;
          Include_Subtypes : Boolean := False;
-         At_Declaration   : Boolean := False;
-         Decl_Node        : Opt_N_Declaration_Id := Empty)
+         At_Declaration   : Boolean := False)
          return W_Prog_Id
       is
          --  If Ty's fullview is in SPARK, go to its underlying type to check
          --  its kind.
-         Ty_Ext  : constant Entity_Id := Retysp (Ty);
-         Checks  : W_Prog_Id := +Void;
-         Tmp_Exp : W_Identifier_Id := Why_Empty;
+         Ty_Ext    : constant Entity_Id := Retysp (Ty);
+         Priv_Base : constant Entity_Id := Partial_Base_Type (Ty);
+
+         Checks    : W_Prog_Id := +Void;
+         Tmp_Exp   : W_Identifier_Id := Why_Empty;
          --  Temporary variable for the type instance of Ty_Ext
 
-         Post    : W_Pred_Id := True_Pred;
+         Post      : W_Pred_Id := True_Pred;
          --  Post used for the assignment of tmp_exp
 
-         Discrs  : constant Natural := Count_Discriminants (Ty_Ext);
-         Tmps    : W_Identifier_Array (1 .. Discrs);
-         Binds   : W_Prog_Array (1 .. Discrs);
+         Discrs    : constant Natural := Count_Discriminants (Ty_Ext);
+         Tmps      : W_Identifier_Array (1 .. Discrs);
+         Binds     : W_Prog_Array (1 .. Discrs);
          --  Arrays to store the bindings for discriminants
 
       begin
@@ -4321,9 +4312,10 @@ package body Gnat2Why.Expr is
          --  If Ty is checked at declaration, do not recheck its predicate
          --  at use.
 
-         if (At_Declaration or else not Needs_Default_Checks_At_Decl (Ty))
-           and then Has_Predicates (Ty)
-           and then Default_Initialization (Ty) /= No_Default_Initialization
+         if (At_Declaration or else not Needs_Default_Checks_At_Decl (Ty_Ext))
+           and then Has_Predicates (Ty_Ext)
+           and then Default_Initialization (Ty_Ext) /=
+           No_Default_Initialization
          then
             declare
                W_Typ   : constant W_Type_Id := EW_Abstract
@@ -4377,7 +4369,7 @@ package body Gnat2Why.Expr is
                Pred_Check : constant W_Prog_Id :=
                  New_Predicate_Check
                    (Ada_Node         => Ada_Node,
-                    Ty               => Ty,
+                    Ty               => Ty_Ext,
                     W_Expr           => +Tmp_Exp,
                     On_Default_Value => True);
 
@@ -4392,7 +4384,16 @@ package body Gnat2Why.Expr is
             end;
          end if;
 
-         if Is_Scalar_Type (Ty) then
+         --  Default checks for private types are done at declaration
+
+         if not At_Declaration
+           and then Ekind (Priv_Base) in
+           E_Private_Type | E_Limited_Private_Type
+           and then not Has_Unknown_Discriminants (Priv_Base)
+         then
+            null;
+
+         elsif Is_Scalar_Type (Ty_Ext) then
             if Has_Default_Aspect (Ty_Ext) then
                declare
                   Default_Expr : constant W_Expr_Id :=
@@ -4419,8 +4420,8 @@ package body Gnat2Why.Expr is
                end;
             end if;
 
-         elsif Is_Array_Type (Ty)
-           and then Ekind (Ty) /= E_String_Literal_Subtype
+         elsif Is_Array_Type (Ty_Ext)
+           and then Ekind (Ty_Ext) /= E_String_Literal_Subtype
          then
             pragma Assert (Is_Constrained (Ty_Ext) or else Include_Subtypes);
 
@@ -4482,7 +4483,7 @@ package body Gnat2Why.Expr is
 
                if T_Comp /= +Void then
                   T_Comp := New_Conditional
-                    (Ada_Node    => Ty,
+                    (Ada_Node    => Ty_Ext,
                      Condition   => Range_Expr,
                      Then_Part   => New_Ignore
                        (Component_Type (Ty_Ext), T_Comp));
@@ -4491,7 +4492,7 @@ package body Gnat2Why.Expr is
                end if;
             end;
 
-         elsif Is_Record_Type_In_Why (Ty) then
+         elsif Is_Record_Type_In_Why (Ty_Ext) then
 
             --  Go through other fields to create the expression
             --  (check_for_f1 expr ->
@@ -4501,28 +4502,45 @@ package body Gnat2Why.Expr is
             --  Components of protected types are checked when generating VCs
             --  for the protected type.
             --  If At_Declaration is False, do not generate checks for
-            --  components of private types.
-            --  If Decl_Node is a private extension, do not generate checks for
+            --  components of private types (if they can be default
+            --  initialized). For private extension, do not generate checks for
             --  visibly inherited components.
             --  Do not generate checks for hidden components, they will be
             --  checked at the place where they are hidden.
 
-            if not Is_Concurrent_Type (Ty_Ext)
-              and then (Is_Record_Type (Ty) or else At_Declaration)
-            then
-               declare
-                  Checks_Seq : W_Statement_Sequence_Id := Void_Sequence;
-                  T_Comp     : W_Prog_Id;
-               begin
+            declare
+               Is_Priv_Ext : constant Boolean :=
+                 Ekind (Priv_Base) = E_Record_Type_With_Private
+                 and then not Has_Unknown_Discriminants (Priv_Base);
+               --  True if Priv_Base is a private type extension whose hidden
+               --  components are checked at declaration.
+
+               Comp_In_Ext : Boolean;
+               Checks_Seq  : W_Statement_Sequence_Id := Void_Sequence;
+               T_Comp      : W_Prog_Id;
+
+            begin
+               if not Is_Concurrent_Type (Ty_Ext) then
                   for Field of Get_Component_Set (Ty_Ext) loop
-                     if Component_Is_Visible_In_Type (Ty, Field)
-                       and then
-                         (Nkind (Decl_Node) /=
-                                N_Private_Extension_Declaration
-                          or else No
-                            (Search_Component_In_Type
-                               (Etype (Partial_View (Ty_Ext)),
-                                Field)))
+
+                     --  Field is hidden in the extension if either Priv_Base
+                     --  does not visibly derive from anything or Field is
+                     --  not present in Priv_Base's parent.
+
+                     Comp_In_Ext :=
+                       Base_Retysp (Parent_Type (Priv_Base)) =
+                         Base_Retysp (Priv_Base)
+                       or else No
+                         (Search_Component_In_Type
+                            (Parent_Type (Priv_Base), Field));
+
+                     --  In private extension, if At_Declaration is True
+                     --  consider fields hidden in the extension, otherwise
+                     --  consider visible fields.
+
+                     if Component_Is_Visible_In_Type (Ty_Ext, Field)
+                       and then (not Is_Priv_Ext
+                                 or else Comp_In_Ext = At_Declaration)
                      then
                         if Present
                           (Expression (Enclosing_Declaration (Field)))
@@ -4588,8 +4606,8 @@ package body Gnat2Why.Expr is
                   end loop;
 
                   Append (Checks, +Checks_Seq);
-               end;
-            end if;
+               end if;
+            end;
          elsif Is_Access_Type (Ty_Ext) and then Can_Never_Be_Null (Ty_Ext) then
             Append
               (Checks,
@@ -4605,9 +4623,9 @@ package body Gnat2Why.Expr is
          --  no runtime error in the DIC and that the DIC holds. The checks
          --  are inserted before Checks.
 
-         if Has_DIC (Ty) then
+         if Has_DIC (Ty_Ext) then
             Check_Or_Assume_All_DICs_At_Use
-              (Ada_Node, Ty, +Tmp_Exp, Params, Checks,
+              (Ada_Node, Ty_Ext, +Tmp_Exp, Params, Checks,
                Check => not At_Declaration);
          end if;
 
@@ -4637,7 +4655,7 @@ package body Gnat2Why.Expr is
             --  Generate the bindings if we have some fields to check or if
             --  we need to check the bindings themselves.
 
-            if Checks /= +Void or else not Is_Constrained (Ty) then
+            if Checks /= +Void or else not Is_Constrained (Ty_Ext) then
                for I in 1 .. Discrs loop
                   Checks := New_Typed_Binding
                     (Name     => Tmps (I),
@@ -4653,11 +4671,11 @@ package body Gnat2Why.Expr is
       end Compute_Default_Check_Rec;
 
       Msg    : constant String := "in default value"
-        & (if Present (Decl_Node) then " of private type"
+        & (if At_Declaration then " of private type"
            elsif Nkind (Ada_Node) = N_Component_Association
            then " of box association"
            else "");
-      --  If Decl_Node is present, we are checking the default initialization
+      --  If At_Declaration is True, we are checking the default initialization
       --  of a private type. If the Ada node is a component association, then
       --  we are checking a box association.
       Checks : W_Prog_Id;
@@ -4673,8 +4691,7 @@ package body Gnat2Why.Expr is
         (Ada_Node         => Ada_Node,
          Ty               => Ty,
          Include_Subtypes => Include_Subtypes,
-         At_Declaration   => At_Declaration,
-         Decl_Node        => Decl_Node);
+         At_Declaration   => At_Declaration);
       Continuation_Stack.Delete_Last;
       return Checks;
    end Compute_Default_Check;
@@ -8979,7 +8996,7 @@ package body Gnat2Why.Expr is
             Args (Count) := +Pattern.Is_Moved;
             Count := Count + 1;
 
-         when Func    =>
+         when Subp    =>
             raise Program_Error;
       end case;
    end Get_Item_From_Expr;
@@ -9272,7 +9289,7 @@ package body Gnat2Why.Expr is
                   Need_Store => Need_Store);
                return;
             end if;
-         when Func    =>
+         when Subp    =>
             raise Program_Error;
       end case;
    end Get_Item_From_Var;
@@ -9396,17 +9413,6 @@ package body Gnat2Why.Expr is
       end if;
       return Exprs;
    end Get_Variants_Ids;
-
-   -------------------------------
-   -- Has_Visibility_On_Refined --
-   -------------------------------
-
-   function Has_Visibility_On_Refined
-     (Expr : Node_Id;
-      E    : Callable_Kind_Id)
-      return Boolean
-   is
-    (Subprogram_Refinement_Is_Visible (E, Get_Flow_Scope (Expr)));
 
    -----------------------------------------------
    -- Havoc_Borrowed_And_Check_No_Leaks_On_Goto --
@@ -10805,7 +10811,7 @@ package body Gnat2Why.Expr is
                                               Context  => Result);
                end;
 
-            when Func
+            when Subp
                | Concurrent_Self
             =>
                raise Program_Error;
@@ -12470,7 +12476,7 @@ package body Gnat2Why.Expr is
                   To     => EW_Abstract
                     (Etype (Actual), Relaxed_Init => Relaxed_Init));
             end;
-         when Func => raise Program_Error;
+         when Subp => raise Program_Error;
       end case;
 
       --  T has the relaxed initialization status of the formal. We need to
@@ -12688,7 +12694,7 @@ package body Gnat2Why.Expr is
                   Ty           => Formal_Typ,
                   Relaxed_Init => Relaxed_Init);
             end;
-         when Func => raise Program_Error;
+         when Subp => raise Program_Error;
       end case;
    end Reconstruct_Formal_From_Item;
 
@@ -13353,53 +13359,6 @@ package body Gnat2Why.Expr is
                      Params => Params),
                   Context => R);
             end loop;
-         end if;
-
-         --  If the aggregate has known bounds, we use this information if it
-         --  is not contained in the type.
-
-         if Domain = EW_Prog
-           and then (Nkind (Expr) = N_Aggregate
-                     and then Present (Aggregate_Bounds (Expr)))
-           and then not Is_Static_Array_Type (Expr_Typ)
-         then
-            declare
-               Temp   : constant W_Term_Id := New_Temp_For_Expr (R);
-               A1, A2 : W_Prog_Id;
-               W_Typ  : constant W_Type_Id :=
-                 Base_Why_Type_No_Bool (Index_Types (1));
-            begin
-               A1 :=
-                 New_Assume_Statement
-                   (Pred =>
-                      New_Call
-                        (Name => Why_Eq,
-                         Typ  => EW_Bool_Type,
-                         Args =>
-                           (1 => +Get_Array_Attr (Temp, Attribute_First, 1),
-                            2 =>
-                              Transform_Expr
-                                (Low_Bound (Aggregate_Bounds (Expr)),
-                                 W_Typ,
-                                 EW_Term,
-                                 Params))));
-               A2 :=
-                 New_Assume_Statement
-                   (Pred =>
-                      New_Call
-                        (Name => Why_Eq,
-                         Typ  => EW_Bool_Type,
-                         Args =>
-                           (1 => +Get_Array_Attr (Temp, Attribute_Last, 1),
-                            2 =>
-                              Transform_Expr
-                                (High_Bound (Aggregate_Bounds (Expr)),
-                                 W_Typ,
-                                 EW_Term,
-                                 Params))));
-               R := +Sequence ((1 => A1, 2 => A2, 3 => +Temp));
-               R := Binding_For_Temp (Expr, EW_Prog, +Temp, R);
-            end;
          end if;
 
          --  Possibly check the predicate on the aggregate
@@ -15541,23 +15500,13 @@ package body Gnat2Why.Expr is
                               end;
 
                               if Dim = Nb_Dim then
-                                 if Box_Present (Association) then
-                                    Append
-                                      (V    => V_Simple_Assocs,
-                                       Pred => Compute_Default_Init
-                                         (Expr   => New_Array_Access
-                                              (Ada_Node => Subexpr,
-                                               Ar       => Arr,
-                                               Index    => Values),
-                                          Ty     => Comp_Type,
-                                          Params => Params));
-                                 else
-                                    Append
-                                      (V    => V_Simple_Assocs,
-                                       Pred => Constrain_Value_At_Index
-                                         (Expression (Association),
-                                          Values));
-                                 end if;
+                                 Append
+                                   (V    => V_Simple_Assocs,
+                                    Pred => Constrain_Value_At_Index
+                                      ((if Box_Present (Association)
+                                        then Association
+                                        else Expression (Association)),
+                                       Values));
                               else
                                  Transform_Rec_Aggregate
                                    (Dim     => Dim + 1,
@@ -16969,8 +16918,11 @@ package body Gnat2Why.Expr is
                         N_Op_Subtract);
                   Old    : W_Expr_Id;
                   Offset : constant W_Expr_Id :=
-                    New_Modular_Constant (Typ => W_Type,
-                                          Value => Uint_1);
+                    (if Has_No_Bitwise_Operations_Annotation (Etype (Var)) then
+                        New_Integer_Constant (Value => Uint_1)
+                     else
+                        New_Modular_Constant (Typ => W_Type,
+                                              Value => Uint_1));
                   NType : constant Entity_Id := Etype (Expr);
                begin
                   Old := Transform_Expr (Opnd,
@@ -17665,7 +17617,10 @@ package body Gnat2Why.Expr is
                  (if Is_Discrete_Type (Ada_Ty)
                     or else Is_Fixed_Point_Type (Ada_Ty)
                   then
-                      (if Is_Modular_Integer_Type (Ada_Ty) then
+                      (if Is_Modular_Integer_Type (Ada_Ty)
+                         and then
+                           not Has_No_Bitwise_Operations_Annotation (Ada_Ty)
+                       then
                          (if Attr_Id = Attribute_Min
                           then MF_BVs (Base).BV_Min
                           else MF_BVs (Base).BV_Max)
@@ -18049,13 +18004,14 @@ package body Gnat2Why.Expr is
          then
             Dispatch
 
-         --  When the call has visibility over the refined postcondition of the
+         --  In the program domain, if the call has visibility over the refined
+         --  postcondition or the expression function completion of the
          --  subprogram, use the Refine variant of the program function, which
          --  has the appropriate refined contract.
 
          elsif Entity_Body_In_SPARK (Subp)
-           and then Has_Contracts (Subp, Pragma_Refined_Post)
-           and then Has_Visibility_On_Refined (Call, Subp)
+           and then Has_Refinement (Subp)
+           and then Has_Visibility_On_Refined_Expr (Call, Subp)
          then
             Refine
 
@@ -20789,9 +20745,14 @@ package body Gnat2Why.Expr is
                Right_Rep : constant W_Expr_Id :=
                  Transform_Expr (Right, Typ, Domain, Local_Params);
 
+               Check_No_Wrap_Around : constant Boolean :=
+                 Domain = EW_Prog
+                 and then Has_No_Wrap_Around_Annotation (Expr_Type);
+
             begin
                if Has_Modular_Integer_Type (Expr_Type)
                  and then Non_Binary_Modulus (Expr_Type)
+                 and then not Has_No_Bitwise_Operations_Annotation (Expr_Type)
                then
                   T := Transform_Non_Binary_Modular_Operation
                     (Ada_Node   => Expr,
@@ -20810,24 +20771,43 @@ package body Gnat2Why.Expr is
                        Args     =>
                          (1 => Right_Rep),
                        Typ       => Typ);
-                  T := Apply_Modulus (N_Op_Minus, Expr_Type, T, Domain);
+
+                  if not Check_No_Wrap_Around then
+                     T := Apply_Modulus (N_Op_Minus, Expr_Type, T, Domain);
+                  end if;
                end if;
 
-               if Domain = EW_Prog
-                 and then Has_No_Wrap_Around_Annotation (Expr_Type)
-               then
-                  declare
-                     Check : constant W_Prog_Id :=
-                       Check_No_Wrap_Around_Modular_Operation
-                         (Ada_Node   => Expr,
-                          Ada_Type   => Expr_Type,
-                          Op         => N_Op_Minus,
-                          Right_Opnd => Right_Rep,
-                          Rep_Type   => Typ,
-                          Modulus    => Modulus (Expr_Type));
-                  begin
-                     Prepend (Check, T);
-                  end;
+               --  If the type is subject to No_Wrap_Around annotation and we
+               --  need to insert a check, there are two cases:
+               --
+               --  . The type is also subject to No_Bitwise_Operations
+               --    annotation, hence its base type in Why is "int" and we can
+               --    check the absence of wrap around on the result of the
+               --    operation, provided we did not apply modulo on the result.
+               --
+               --  . Otherwise, we need to check the absence of wrap around
+               --    before evaluating the operation in bitvectors.
+
+               if Check_No_Wrap_Around then
+                  if Has_No_Bitwise_Operations_Annotation (Expr_Type) then
+                     T := +Do_Range_Check (Ada_Node   => Expr,
+                                           Ty         => Expr_Type,
+                                           W_Expr     => T,
+                                           Check_Kind => RCK_Overflow);
+                  else
+                     declare
+                        Check : constant W_Prog_Id :=
+                          Check_No_Wrap_Around_Modular_Operation
+                            (Ada_Node   => Expr,
+                             Ada_Type   => Expr_Type,
+                             Op         => N_Op_Minus,
+                             Right_Opnd => Right_Rep,
+                             Rep_Type   => Typ,
+                             Modulus    => Modulus (Expr_Type));
+                     begin
+                        Prepend (Check, T);
+                     end;
+                  end if;
                end if;
             end;
 
@@ -21007,9 +20987,13 @@ package body Gnat2Why.Expr is
 
                One : constant W_Expr_Id :=
                  (if Has_Modular_Integer_Type (Left_Type) then
+                    (if Has_No_Bitwise_Operations_Annotation (Left_Type) then
+                       New_Integer_Constant (Ada_Node => Expr,
+                                             Value => Uint_1)
+                     else
                        New_Modular_Constant (Ada_Node => Expr,
                                              Value    => Uint_1,
-                                             Typ      => Base_Type)
+                                             Typ      => Base_Type))
                   elsif Has_Signed_Integer_Type (Left_Type) then
                        New_Integer_Constant (Ada_Node => Expr,
                                              Value => Uint_1)
@@ -21093,6 +21077,10 @@ package body Gnat2Why.Expr is
                                            Context  => E);
                end Inv;
 
+               Check_No_Wrap_Around : constant Boolean :=
+                 Domain = EW_Prog
+                 and then Has_No_Wrap_Around_Annotation (Expr_Type);
+
             --  Start of processing for N_Op_Expon_Case
 
             begin
@@ -21102,6 +21090,7 @@ package body Gnat2Why.Expr is
                --  type.
 
                if Has_Modular_Integer_Type (Left_Type)
+                 and then not Has_No_Bitwise_Operations_Annotation (Left_Type)
                  and then not Non_Binary_Modulus (Left_Type)
                  and then Compile_Time_Known_Value (Left)
                  and then Expr_Value (Left) = Uint_2
@@ -21153,9 +21142,7 @@ package body Gnat2Why.Expr is
                      --  this case, as New_Binary_Op_Expr is not called, yet
                      --  there could be an overflow.
 
-                     if Domain = EW_Prog
-                       and then Has_No_Wrap_Around_Annotation (Expr_Type)
-                     then
+                     if Check_No_Wrap_Around then
                         declare
                            Check : constant W_Prog_Id :=
                              Check_No_Wrap_Around_Modular_Operation
@@ -22955,13 +22942,15 @@ package body Gnat2Why.Expr is
          and then Present (Controlling_Argument (Expr))
          then Dispatch
 
-         --  When the call has visibility over the refined postcondition of the
+         --  In the program domain, if the call has visibility over the refined
+         --  postcondition or the expression function completion of the
          --  subprogram, use the Refine variant of the program function, which
          --  has the appropriate refined contract.
 
-         elsif Entity_Body_In_SPARK (Subp)
-           and then Has_Contracts (Subp, Pragma_Refined_Post)
-           and then Has_Visibility_On_Refined (Expr, Subp)
+         elsif Domain = EW_Prog
+           and then Entity_Body_In_SPARK (Subp)
+           and then Has_Refinement (Subp)
+           and then Has_Visibility_On_Refined_Expr (Expr, Subp)
          then
             Refine
 
@@ -23394,25 +23383,35 @@ package body Gnat2Why.Expr is
             E : constant Item_Type := Ada_Ent_To_Why.Element (C);
 
          begin
-            if Selector /= Why.Inter.Standard then
-               pragma Assert (Is_Subprogram_Or_Entry (Ent));
-               declare
-                  Ty : constant W_Type_Id := Get_Why_Type_From_Item (E);
-               begin
-                  T := +To_Why_Id (Ent, Domain,
-                                   Selector => Selector,
-                                   Typ      => Ty);
-               end;
+            pragma Assert
+              (if Selector /= Why.Inter.Standard then E.Kind = Subp);
 
-            --  If E is a function and Domain is Prog, use the program specific
-            --  identifier instead.
+            --  If E is a subprogram, use tha appropriate symbol depending on
+            --  the domain and the selector.
 
-            elsif E.Kind = Func then
-               if Domain = EW_Prog then
-                  T := +E.For_Prog.B_Name;
-               else
-                  T := +E.For_Logic.B_Name;
-               end if;
+            if E.Kind = Subp then
+               case Selector is
+                  when Why.Inter.Standard =>
+                     if Domain = EW_Prog then
+                        T := +E.For_Prog;
+                     else
+                        T := +E.For_Logic.Id;
+                     end if;
+
+                  when Why.Inter.Dispatch =>
+                     if Domain = EW_Prog then
+                        T := +E.Dispatch_Prog.Id;
+                     else
+                        T := +E.Dispatch_Logic.Id;
+                     end if;
+
+                  when Why.Inter.Refine =>
+                     if Domain = EW_Prog then
+                        T := +E.Refine_Prog.Id;
+                     else
+                        T := +E.For_Logic.Id;
+                     end if;
+               end case;
             else
                declare
                   Var : constant W_Expr_Id :=
@@ -23513,7 +23512,7 @@ package body Gnat2Why.Expr is
                         Havoc    : W_Prog_Id := +Void;
                      begin
                         case E.Kind is
-                           when Func =>
+                           when Subp =>
                               raise Program_Error;
                            when Regular | Concurrent_Self =>
                               if E.Main.Mutable then

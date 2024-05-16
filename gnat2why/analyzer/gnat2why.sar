@@ -1,0 +1,15 @@
+{
+  "info": {
+    "sar_version": 1,
+    "review_statuses": {
+      "Uncategorized": "Uncategorized",
+      "Pending": "Pending",
+      "Not A Bug": "Not_a_bug",
+      "Intentional": "Not_a_bug",
+      "False Positive": "Not_a_bug",
+      "Bug": "Bug"
+    }
+  },
+  "prjs": {
+  }
+}

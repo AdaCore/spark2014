@@ -24,6 +24,13 @@ main.adb:70:57: info: subprogram variant proved (CVC5: 1 VC)
 main.adb:73:21: info: postcondition proved (CVC5: 2 VC; Trivial: 1 VC)
 main.adb:79:16: info: implicit aspect Always_Terminates on "Use_Rec_And_2" has been proved, subprogram will terminate
 main.adb:80:17: medium: postcondition might fail (e.g. when Use_Rec_And_2'Result = True and X = False) [possible fix: add or complete related loop invariants or postconditions]
+main.adb:84:16: info: expression function body of subprograms with a numeric variant might not be available on recursive calls
+main.adb:84:16: info: function contract might not be available on recursive calls
+main.adb:84:16: info: implicit aspect Always_Terminates on "Rec_And_3" has been proved, subprogram will terminate
+main.adb:85:57: info: subprogram variant proved (CVC5: 1 VC)
+main.adb:88:21: info: postcondition proved (CVC5: 2 VC; Trivial: 1 VC)
+main.adb:92:16: info: implicit aspect Always_Terminates on "Use_Rec_And_3" has been proved, subprogram will terminate
+main.adb:93:17: medium: postcondition might fail (e.g. when Use_Rec_And_3'Result = True and X = False) [possible fix: add or complete related loop invariants or postconditions]
 test_dispatch.adb:8:16: info: implicit aspect Always_Terminates on "Get_F" has been proved, subprogram will terminate
 test_dispatch.adb:13:06: info: data dependencies proved
 test_dispatch.adb:17:22: info: assertion proved (CVC5: 1 VC)

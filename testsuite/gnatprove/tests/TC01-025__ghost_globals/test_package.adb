@@ -26,7 +26,9 @@ is
       Global_Ghost_new := True;
    end test_func_new;
 
-   package body spec is
+   package body spec with
+     Annotate => (GNATprove, Unhide_Info, "Package_Body")
+   is
 
       function test_func_pre_success_state
         return Boolean

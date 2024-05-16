@@ -1,21 +1,21 @@
 allocator.adb:12:39: info: index check proved (CVC5: 2 VC)
 allocator.adb:14:39: info: index check proved (CVC5: 2 VC)
-allocator.adb:31:10: info: initialization of "Avail" proved
-allocator.adb:32:10: info: initialization of "Alloc" proved
-allocator.adb:36:43: info: precondition proved (CVC5: 4 VC)
-allocator.adb:37:43: info: precondition proved (CVC5: 4 VC)
-allocator.adb:40:16: info: loop invariant initialization proved (CVC5: 8 VC)
-allocator.adb:40:16: info: loop invariant preservation proved (CVC5: 8 VC)
-allocator.adb:45:30: info: index check proved (CVC5: 4 VC)
-allocator.adb:46:51: info: range check proved (CVC5: 4 VC)
-allocator.adb:46:75: info: range check proved (CVC5: 4 VC)
-allocator.adb:47:55: info: range check proved (CVC5: 4 VC)
-allocator.adb:47:75: info: range check proved (CVC5: 4 VC)
-allocator.adb:63:13: info: loop invariant initialization proved (CVC5: 2 VC)
-allocator.adb:63:13: info: loop invariant preservation proved (CVC5: 2 VC)
-allocator.adb:64:53: info: index check proved (CVC5: 4 VC)
-allocator.adb:71:44: info: index check proved (CVC5: 2 VC)
-allocator.adb:72:16: info: index check proved (CVC5: 2 VC)
+allocator.adb:33:10: info: initialization of "Avail" proved
+allocator.adb:34:10: info: initialization of "Alloc" proved
+allocator.adb:38:43: info: precondition proved (CVC5: 4 VC)
+allocator.adb:39:43: info: precondition proved (CVC5: 4 VC)
+allocator.adb:42:16: info: loop invariant initialization proved (CVC5: 8 VC)
+allocator.adb:42:16: info: loop invariant preservation proved (CVC5: 8 VC)
+allocator.adb:47:30: info: index check proved (CVC5: 4 VC)
+allocator.adb:48:51: info: range check proved (CVC5: 4 VC)
+allocator.adb:48:75: info: range check proved (CVC5: 4 VC)
+allocator.adb:49:55: info: range check proved (CVC5: 4 VC)
+allocator.adb:49:75: info: range check proved (CVC5: 4 VC)
+allocator.adb:65:13: info: loop invariant initialization proved (CVC5: 2 VC)
+allocator.adb:65:13: info: loop invariant preservation proved (CVC5: 2 VC)
+allocator.adb:66:53: info: index check proved (CVC5: 4 VC)
+allocator.adb:73:44: info: index check proved (CVC5: 2 VC)
+allocator.adb:74:16: info: index check proved (CVC5: 2 VC)
 allocator.ads:8:03: info: flow dependencies proved
 allocator.ads:9:03: info: initial condition proved (CVC5: 1 VC)
 allocator.ads:18:13: info: implicit aspect Always_Terminates on "Is_Available" has been proved, subprogram will terminate
