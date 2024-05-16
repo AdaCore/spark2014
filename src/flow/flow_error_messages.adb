@@ -1075,10 +1075,6 @@ package body Flow_Error_Messages is
                   One_Liner : constant String :=
                     (if Gnat2Why_Args.Output_Mode = GPO_Brief then ""
 
-                     elsif Pretty_Cntexmp.Is_Empty
-                     and then not Fuzzing_Used
-                     then ""
-
                      --  Do not include a one-liner in the message for resource
                      --  leak checks, as the exact values of variables seldom
                      --  plays a role in that case. Keep the counterexample
@@ -1089,13 +1085,26 @@ package body Flow_Error_Messages is
                      then ""
 
                      else
-                       (if Fuzzing_Used
+                       (if Verdict.Verdict_Category = Not_Checked
+                        then Get_Cntexmp_One_Liner (Pretty_Cntexmp, Slc)
+
+                        --  When counterexample checking is enabled, only
+                        --  print the counterexample if it is confirmed.
+                        --  Try to retrieve the one liner from the RAC.
+
+                        elsif Verdict.Verdict_Category in
+                            Cntexmp_Confirmed_Verdict_Category
+                        and then (not Fuzzing_Used or else Print_Fuzzing)
                         then
-                          (if Verdict.Verdict_Category /= Bad_Counterexample
-                           and then Print_Fuzzing
-                           then Get_Environment_One_Liner (N)
-                           else "")
-                        else Get_Cntexmp_One_Liner (Pretty_Cntexmp, Slc)));
+                          (if Verdict.One_Liner /= Null_Unbounded_String
+                           then To_String (Verdict.One_Liner)
+
+                           --  For counterexamples coming from the giant step
+                           --  RAC, we do not have a one liner yet. Compute it
+                           --  from the counterexample returned by Why3.
+
+                           else Get_Cntexmp_One_Liner (Pretty_Cntexmp, Slc))
+                        else ""));
 
                   Details : constant String :=
                     (if Gnat2Why_Args.Output_Mode = GPO_Brief then ""

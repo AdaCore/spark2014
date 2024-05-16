@@ -1214,9 +1214,11 @@ package VC_Kinds is
             | Not_Checked
          =>
             Verdict_Reason : Unbounded_String :=
-                               To_Unbounded_String ("Unknown");
+              To_Unbounded_String ("Unknown");
          when Cntexmp_Confirmed_Verdict_Category =>
-            null;
+            One_Liner : Unbounded_String :=
+              Null_Unbounded_String;
+            Info      : Unbounded_String;
          end case;
       end record;
    --  The result when checking the counterexample for a check, based on Why3

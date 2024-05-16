@@ -142,10 +142,10 @@ simple_arrays.adb:491:11: info: flow dependencies proved
 simple_arrays.adb:493:22: high: postcondition might fail (e.g. when A = (others => Elem_0) and A'Old = (others => Elem_0))
 simple_arrays.adb:495:07: info: initialization of "Tmp" proved
 simple_arrays.adb:504:11: info: flow dependencies proved
-simple_arrays.adb:505:22: high: postcondition might fail, cannot prove A /= A'Old (e.g. when A = (others => Elem_0) and A'Old = (others => Elem_0))
+simple_arrays.adb:505:22: high: postcondition might fail (e.g. when A = (others => Elem_0) and A'Old = (others => Elem_0) and B = (others => Elem_0) and B'Old = (others => Elem_0))
 simple_arrays.adb:507:07: info: initialization of "Tmp" proved
 simple_arrays.adb:517:11: info: flow dependencies proved
-simple_arrays.adb:518:22: high: postcondition might fail, cannot prove A /= A'Old (e.g. when A = (others => Elem_0) and A'Old = (others => Elem_0))
+simple_arrays.adb:518:22: high: postcondition might fail (e.g. when A = (others => Elem_0) and A'Old = (others => Elem_0) and B = (others => Elem_0) and B'Old = (others => Elem_0))
 simple_arrays.adb:520:07: info: initialization of "Tmp" proved
 simple_arrays.adb:532:11: info: flow dependencies proved
 simple_arrays.adb:535:22: high: assertion might fail (e.g. when A = (others => Elem_1)) [possible fix: subprogram at line 531 should mention A in a precondition]
@@ -170,10 +170,10 @@ simple_arrays.adb:622:11: info: flow dependencies proved
 simple_arrays.adb:624:22: high: postcondition might fail (e.g. when A = (others => Elem_0) and A'Old = (others => Elem_0))
 simple_arrays.adb:626:07: info: initialization of "Tmp" proved
 simple_arrays.adb:635:11: info: flow dependencies proved
-simple_arrays.adb:636:22: high: postcondition might fail, cannot prove A /= A'Old (e.g. when A = (others => Elem_0) and A'Old = (others => Elem_0))
+simple_arrays.adb:636:22: high: postcondition might fail (e.g. when A = (others => Elem_0) and A'Old = (others => Elem_0) and B = (others => Elem_0) and B'Old = (others => Elem_0))
 simple_arrays.adb:638:07: info: initialization of "Tmp" proved
 simple_arrays.adb:648:11: info: flow dependencies proved
-simple_arrays.adb:649:22: high: postcondition might fail, cannot prove A /= A'Old (e.g. when A = (others => Elem_0) and A'Old = (others => Elem_0))
+simple_arrays.adb:649:22: high: postcondition might fail (e.g. when A = (others => Elem_0) and A'Old = (others => Elem_0) and B = (others => Elem_0) and B'Old = (others => Elem_0))
 simple_arrays.adb:651:07: info: initialization of "Tmp" proved
 simple_arrays.adb:663:11: info: flow dependencies proved
 simple_arrays.adb:666:22: high: assertion might fail (e.g. when A = (others => 0)) [possible fix: subprogram at line 662 should mention A in a precondition]
@@ -184,9 +184,9 @@ simple_arrays.adb:680:22: high: postcondition might fail (e.g. when A = (others 
 simple_arrays.adb:688:11: info: flow dependencies proved
 simple_arrays.adb:689:22: high: postcondition might fail (e.g. when A = (others => 1337) and I = Elem_0)
 simple_arrays.adb:697:11: info: flow dependencies proved
-simple_arrays.adb:698:22: high: postcondition might fail (e.g. when A = (Elem_0 => 69, others => 1337))
+simple_arrays.adb:698:22: high: postcondition might fail (e.g. when A = (others => 69))
 simple_arrays.adb:707:11: info: flow dependencies proved
-simple_arrays.adb:708:22: high: postcondition might fail (e.g. when A = (Elem_0 => 69, others => 1337) and I = Elem_0)
+simple_arrays.adb:708:22: high: postcondition might fail (e.g. when A = (others => 69) and I = Elem_0)
 simple_arrays.adb:717:11: info: flow dependencies proved
 simple_arrays.adb:718:22: high: postcondition might fail (e.g. when A = (Elem_0 => 69, others => 1337))
 simple_arrays.adb:728:11: info: flow dependencies proved
@@ -198,10 +198,10 @@ simple_arrays.adb:752:11: info: flow dependencies proved
 simple_arrays.adb:754:22: high: postcondition might fail (e.g. when A = (others => 0) and A'Old = (others => 0))
 simple_arrays.adb:756:07: info: initialization of "Tmp" proved
 simple_arrays.adb:765:11: info: flow dependencies proved
-simple_arrays.adb:766:22: high: postcondition might fail, cannot prove A /= A'Old (e.g. when A = (others => 0) and A'Old = (others => 0))
+simple_arrays.adb:766:22: high: postcondition might fail (e.g. when A = (others => 0) and A'Old = (others => 0) and B = (others => 0) and B'Old = (others => 0))
 simple_arrays.adb:768:07: info: initialization of "Tmp" proved
 simple_arrays.adb:778:11: info: flow dependencies proved
-simple_arrays.adb:779:22: high: postcondition might fail, cannot prove A /= A'Old (e.g. when A = (others => 0) and A'Old = (others => 0))
+simple_arrays.adb:779:22: high: postcondition might fail (e.g. when A = (others => 0) and A'Old = (others => 0) and B = (others => 0) and B'Old = (others => 0))
 simple_arrays.adb:781:07: info: initialization of "Tmp" proved
 simple_arrays.adb:793:11: info: flow dependencies proved
 simple_arrays.adb:796:22: high: assertion might fail (e.g. when A = (others => 0)) [possible fix: subprogram at line 792 should mention A in a precondition]
@@ -212,9 +212,9 @@ simple_arrays.adb:810:22: high: postcondition might fail (e.g. when A = (others 
 simple_arrays.adb:819:11: info: flow dependencies proved
 simple_arrays.adb:820:22: high: postcondition might fail (e.g. when A = (others => 1337) and I = 0)
 simple_arrays.adb:828:11: info: flow dependencies proved
-simple_arrays.adb:829:22: high: postcondition might fail (e.g. when A = (42 => 69, others => 1337))
+simple_arrays.adb:829:22: high: postcondition might fail (e.g. when A = (others => 69))
 simple_arrays.adb:838:11: info: flow dependencies proved
-simple_arrays.adb:839:22: high: postcondition might fail (e.g. when A = (0 => 69, others => 1337) and I = 0)
+simple_arrays.adb:839:22: high: postcondition might fail (e.g. when A = (others => 69) and I = 0)
 simple_arrays.adb:848:11: info: flow dependencies proved
 simple_arrays.adb:849:22: high: postcondition might fail (e.g. when A = (42 => 69, others => 1337))
 simple_arrays.adb:859:11: info: flow dependencies proved
@@ -226,8 +226,8 @@ simple_arrays.adb:883:11: info: flow dependencies proved
 simple_arrays.adb:885:22: high: postcondition might fail (e.g. when A = (others => 0) and A'Old = (others => 0))
 simple_arrays.adb:887:07: info: initialization of "Tmp" proved
 simple_arrays.adb:896:11: info: flow dependencies proved
-simple_arrays.adb:897:22: high: postcondition might fail, cannot prove A /= A'Old (e.g. when A = (others => 0) and A'Old = (others => 0))
+simple_arrays.adb:897:22: high: postcondition might fail (e.g. when A = (others => 0) and A'Old = (others => 0) and B = (others => 0) and B'Old = (others => 0))
 simple_arrays.adb:899:07: info: initialization of "Tmp" proved
 simple_arrays.adb:909:11: info: flow dependencies proved
-simple_arrays.adb:910:22: high: postcondition might fail, cannot prove A /= A'Old (e.g. when A = (others => 0) and A'Old = (others => 0))
+simple_arrays.adb:910:22: high: postcondition might fail (e.g. when A = (others => 0) and A'Old = (others => 0) and B = (others => 0) and B'Old = (others => 0))
 simple_arrays.adb:912:07: info: initialization of "Tmp" proved

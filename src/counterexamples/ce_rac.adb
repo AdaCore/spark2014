@@ -52,7 +52,6 @@ with Sinput;                  use Sinput;
 with Snames;                  use Snames;
 with SPARK_Atree;             use SPARK_Atree;
 with SPARK_Definition;
-with SPARK_Util;              use SPARK_Util;
 with SPARK_Util.Subprograms;  use SPARK_Util.Subprograms;
 with SPARK_Util.Types;        use SPARK_Util.Types;
 with Stand;                   use Stand;
@@ -288,7 +287,11 @@ package body CE_RAC is
    --  The result of a assertion or assumption failure, set by RAC_Failure,
    --  RAC_Stuck, or RAC_Stuck_For_Failure, retrieved by Flush_RAC_Result.
 
-   procedure RAC_Failure (N : Node_Id; K : VC_Kind) with No_Return;
+   procedure RAC_Failure
+     (N  : Node_Id;
+      K  : VC_Kind;
+      EI : Extra_Info := (others => <>))
+   with No_Return;
    --  Raise Exn_RAC_Failure and set result, i.e. the RAC execution failed
    --  due to a false check.
 
@@ -323,6 +326,7 @@ package body CE_RAC is
    type Scopes is record
       Bindings         : Entity_Bindings.Map;
       Old_Attrs        : Node_To_Value.Map;
+      Loop_Id          : Entity_Id := Empty;
       Loop_Entry_Attrs : Node_To_Value.Map;
    end record;
    --  A scope is a flat mapping of variable (defining identifiers) to bindings
@@ -368,6 +372,10 @@ package body CE_RAC is
       --  as incomplete.
       Do_Sideeffects   : Boolean;
       --  Really do side-effects when interpreting built-ins such as Put_Line
+      First_Loop_Iter  : Boolean;
+      --  Whether the current iteration of the first enclosing loop is the
+      --  first iteration. It is used to choose the VC kind for loop
+      --  invariants.
    end record;
    --  The execution context
 
@@ -703,9 +711,12 @@ package body CE_RAC is
       Kind :=
         (if Is_Base_Type (Ty) then VC_Overflow_Check else VC_Range_Check);
 
-      if not In_Range (I, Fst, Lst) then
+      if I < Fst then
          RAC_Info (Desc, "has failed as " & VC_Kind'Image (Kind), N);
-         RAC_Failure (N, Kind);
+         RAC_Failure (N, Kind, (Bound_Info => Low_Bound, others => <>));
+      elsif I > Lst then
+         RAC_Info (Desc, "has failed as " & VC_Kind'Image (Kind), N);
+         RAC_Failure (N, Kind, (Bound_Info => High_Bound, others => <>));
       end if;
    end Check_Integer;
 
@@ -773,17 +784,147 @@ package body CE_RAC is
       Desc : String;
       K    : VC_Kind)
    is
-      V : Value_Type;
-   begin
-      RAC_Trace ("check node " & Node_Kind'Image (Nkind (N)));
-      V := RAC_Expr (N);
 
-      if Value_Boolean (V) then
-         RAC_Info (Capitalize (Desc), "is OK", N);
-      else
-         RAC_Info (Capitalize (Desc), "failed", N);
-         RAC_Failure (N, K);
-      end if;
+      procedure Check_Node_Early_Fail
+        (Expr         : N_Subexpr_Id;
+         Expected_Val : Boolean;
+         Expl         : N_Subexpr_Id);
+      --  Check that Expr evaluates to Expected_Val and raise RAC_Failure
+      --  (N, K) if it does not. This is used to split assertions to get values
+      --  for top-level quantified variables and to pinpoint the part of the
+      --  assertion which is failing and filter counterexample values.
+
+      ---------------------------
+      -- Check_Node_Early_Fail --
+      ---------------------------
+
+      procedure Check_Node_Early_Fail
+        (Expr         : N_Subexpr_Id;
+         Expected_Val : Boolean;
+         Expl         : N_Subexpr_Id)
+      is
+         New_Expl : constant N_Subexpr_Id :=
+           (if Expected_Val then Expr else Expl);
+         --  To explain the failure, we need an unproved sub-expression. We can
+         --  use Expr if Expected_Val is True. Otherwise, use the preexisting
+         --  explanation.
+      begin
+         RAC_Trace ("check node " & Node_Kind'Image (Nkind (Expr)));
+         case Nkind (Expr) is
+            when N_Op_Not =>
+               Check_Node_Early_Fail
+                 (Right_Opnd (Expr), not Expected_Val, New_Expl);
+
+            when N_And_Then =>
+               if Expected_Val then
+                  Check_Node_Early_Fail (Left_Opnd (Expr), True, New_Expl);
+                  Check_Node_Early_Fail (Right_Opnd (Expr), True, New_Expl);
+                  RAC_Info (Capitalize (Desc), "is OK", Expr);
+                  return;
+               end if;
+
+            when N_Or_Else =>
+               if not Expected_Val then
+                  Check_Node_Early_Fail (Left_Opnd (Expr), False, New_Expl);
+                  Check_Node_Early_Fail (Right_Opnd (Expr), False, New_Expl);
+                  RAC_Info (Capitalize (Desc), "is OK", Expr);
+                  return;
+               end if;
+
+            --  For regular boolean operators, it is not possible to fail early
+            --  as both operands need to be evaluated prior to evaluating the
+            --  operation.
+
+            when N_Op_And | N_Op_Or =>
+               null;
+
+            when N_If_Expression =>
+               declare
+                  Cond_Expr : constant Node_Id := First (Expressions (Expr));
+                  Then_Expr : constant Node_Id := Next (Cond_Expr);
+                  Else_Expr : constant Node_Id := Next (Then_Expr);
+               begin
+                  if Value_Boolean (RAC_Expr (Cond_Expr)) then
+                     Check_Node_Early_Fail (Then_Expr, Expected_Val, New_Expl);
+                  else
+                     Check_Node_Early_Fail (Else_Expr, Expected_Val, New_Expl);
+                  end if;
+                  RAC_Info (Capitalize (Desc), "is OK", Expr);
+                  return;
+               end;
+
+            when N_Case_Expression =>
+               declare
+                  Alternative : Node_Id;
+               begin
+                  Match_Case_Alternative (Expr, Alternative);
+                  Check_Node_Early_Fail
+                    (Expression (Alternative), Expected_Val, New_Expl);
+                  RAC_Info (Capitalize (Desc), "is OK", Expr);
+                  return;
+               end;
+
+            when N_Quantified_Expression =>
+               if All_Present (Expr) = Expected_Val then
+                  declare
+                     procedure Iteration;
+
+                     ---------------
+                     -- Iteration --
+                     ---------------
+
+                     procedure Iteration is
+                     begin
+                        Check_Node_Early_Fail
+                          (Condition (Expr), Expected_Val, New_Expl);
+                     end Iteration;
+
+                     Over_Range : constant Boolean :=
+                       Present (Loop_Parameter_Specification (Expr));
+
+                     Over_Array : constant Boolean :=
+                       Present (Iterator_Specification (Expr))
+                       and then Is_Iterator_Over_Array
+                         (Iterator_Specification (Expr));
+
+                  begin
+                     if Over_Range or Over_Array then
+                        Iterate_Scheme_Spec
+                          (Expr,
+                           Over_Range,
+                           Iteration'Access);
+                        RAC_Info (Capitalize (Desc), "is OK", Expr);
+                        return;
+                     else
+                        pragma Assert
+                          (Present (Iterator_Specification (Expr)));
+                        RAC_Unsupported
+                          ("Check_Node quantified expression", Expr);
+                     end if;
+                  end;
+               end if;
+
+            when others =>
+               null;
+         end case;
+
+         declare
+            V : Value_Type;
+         begin
+            V := RAC_Expr (Expr);
+
+            if Value_Boolean (V) = Expected_Val then
+               RAC_Info (Capitalize (Desc), "is OK", Expr);
+            else
+               RAC_Info (Capitalize (Desc), "failed", Expr);
+               RAC_Failure
+                 (N, K,
+                  EI => (Node => New_Expl, others => <>));
+            end if;
+         end;
+      end Check_Node_Early_Fail;
+   begin
+      Check_Node_Early_Fail (N, True, N);
    end Check_Node;
 
    ----------------------------------
@@ -1241,9 +1382,49 @@ package body CE_RAC is
                Ctx.Env (Ctx.Env.First).Old_Attrs.Insert
                  (P, Val, Position, Inserted);
 
+               --  Also include values for referenced variables if any, they
+               --  will be used when printing counterexample values.
+
+               declare
+                  Variables : constant Flow_Id_Sets.Set :=
+                    Get_Variables_For_Proof (P, P);
+                  Var       : Entity_Id;
+                  Val       : Value_Access;
+               begin
+                  for V of Variables loop
+                     Var := Get_Direct_Mapping_Id (V);
+                     Val := Find_Binding (Var, False);
+                     if Val /= null then
+                        Ctx.Env (Ctx.Env.First).Old_Attrs.Insert
+                          (Var, Val.all, Position, Inserted);
+                     end if;
+                  end loop;
+               end;
+
             else pragma Assert (Attr_Name = Name_Loop_Entry);
                Ctx.Env (Ctx.Env.First).Loop_Entry_Attrs.Insert
                  (P, Val, Position, Inserted);
+
+               --  Also include values for referenced variables if any, they
+               --  will be used when printing counterexample values.
+
+               declare
+                  Variables : constant Flow_Id_Sets.Set :=
+                    Get_Variables_For_Proof (P, P);
+                  Var       : Entity_Id;
+                  Val       : Value_Access;
+               begin
+                  for V of Variables loop
+                     if V.Kind = Direct_Mapping then
+                        Var := Get_Direct_Mapping_Id (V);
+                        Val := Find_Binding (Var, False);
+                        if Val /= null then
+                           Ctx.Env (Ctx.Env.First).Loop_Entry_Attrs.Insert
+                             (Var, Val.all, Position, Inserted);
+                        end if;
+                     end if;
+                  end loop;
+               end;
 
             end if;
          end;
@@ -1254,7 +1435,10 @@ package body CE_RAC is
    -- Find_Binding --
    ------------------
 
-   function Find_Binding (E : Entity_Id) return Value_Access
+   function Find_Binding
+     (E       : Entity_Id;
+      Do_Init : Boolean := True)
+      return Value_Access
    is
       C : Entity_Bindings.Cursor;
       B : Value_Access;
@@ -1268,15 +1452,66 @@ package body CE_RAC is
       end loop;
 
       --  Lazily initialize globals that were not initialized by Global_Scope
-      Init_Global (N             => E,
-                   Use_Expr      => True,
-                   Use_Fuzzing   => False,
-                   Default_Value => False,
-                   Val           => B,
-                   Descr         => "constant without variable input");
+
+      if Do_Init then
+         Init_Global (N             => E,
+                      Use_Expr      => True,
+                      Use_Fuzzing   => False,
+                      Default_Value => False,
+                      Val           => B,
+                      Descr         => "constant without variable input");
+      end if;
 
       return B;
    end Find_Binding;
+
+   ---------------------------
+   -- Find_Loop_Entry_Value --
+   ---------------------------
+
+   function Find_Loop_Entry_Value
+     (N       : Node_Id;
+      Loop_Id : Entity_Id)
+      return Opt_Value_Type
+   is
+      use Node_To_Value;
+      Pos : Node_To_Value.Cursor;
+
+   begin
+      --  For each expression P'Loop_Entry, the value of the prefix P has been
+      --  stored in the scope for the corresponding loop. This might not be the
+      --  first scope of the environment, in case of local declare blocks
+      --  inside the loop.
+
+      for Scop of Ctx.Env loop
+         if Scop.Loop_Id = Loop_Id then
+            Pos := Scop.Loop_Entry_Attrs.Find (N);
+            if Has_Element (Pos) then
+               return (True, Element (Pos));
+            else
+               return (Present => False);
+            end if;
+         end if;
+      end loop;
+
+      raise Program_Error;
+   end Find_Loop_Entry_Value;
+
+   --------------------
+   -- Find_Old_Value --
+   --------------------
+
+   function Find_Old_Value (N : Node_Id) return Opt_Value_Type is
+      use Node_To_Value;
+      Pos : constant Node_To_Value.Cursor :=
+        Ctx.Env (Ctx.Env.First).Old_Attrs.Find (N);
+   begin
+      if Has_Element (Pos) then
+         return (True, Element (Pos));
+      else
+         return (Present => False);
+      end if;
+   end Find_Old_Value;
 
    -----------------------
    -- Flush_RAC_Failure --
@@ -1567,7 +1802,7 @@ package body CE_RAC is
         not null access function (L, R : Valid_Big_Integer) return Boolean :=
           "<="'Access;
       Reverse_Mode : Boolean;
-      Array_Val  : Value_Type;
+      Array_Val    : Value_Type;
 
    begin
       if Over_Range then
@@ -1659,8 +1894,7 @@ package body CE_RAC is
             Ctx.Env (Ctx.Env.First).Bindings.Exclude (Id);
 
          --  Do not remove the loop parameter from the context in case of RAC
-         --  failure, as the value will be needed for counterexample display,
-         --  in case this RAC was triggered by fuzzing.
+         --  failure, as the value will be needed for counterexample display.
          when Exn_RAC_Failure =>
             raise;
 
@@ -2376,7 +2610,8 @@ package body CE_RAC is
          Cntexmp          => Cntexmp,
          Fuel             => Fuel,
          Rem_Stack_Height => Stack_Height,
-         Do_Sideeffects   => Do_Sideeffects);
+         Do_Sideeffects   => Do_Sideeffects,
+         First_Loop_Iter  => False);
 
       RAC_Trace ("cntexmp: " & Write (To_JSON (Cntexmp), False));
       RAC_Trace ("entry: " & Full_Name (E));
@@ -2724,24 +2959,18 @@ package body CE_RAC is
                declare
                   P : constant Node_Id := Prefix (N);
                begin
-                  return Ctx.Env (Ctx.Env.First).Old_Attrs (P);
+                  pragma Assert (Find_Old_Value (P).Present);
+                  return Find_Old_Value (P).Content;
                end;
 
-            --  For each expression P'Loop_Entry, the value of the prefix P has
-            --  been stored in the scope for the corresponding loop. This might
-            --  not be the first scope of the environment, in case of local
-            --  declare blocks inside the loop.
-
             when Snames.Name_Loop_Entry =>
+               --  E'Loop_Entry
                declare
-                  P : constant Node_Id := Prefix (N);
+                  P       : constant Node_Id := Prefix (N);
+                  Loop_Id : constant Entity_Id := Name_For_Loop_Entry (N);
                begin
-                  for Scop of Ctx.Env loop
-                     if Scop.Loop_Entry_Attrs.Contains (P) then
-                        return Scop.Loop_Entry_Attrs (P);
-                     end if;
-                  end loop;
-                  raise Program_Error;
+                  pragma Assert (Find_Loop_Entry_Value (P, Loop_Id).Present);
+                  return Find_Loop_Entry_Value (P, Loop_Id).Content;
                end;
 
             when Snames.Name_Result =>
@@ -2877,30 +3106,30 @@ package body CE_RAC is
                      E   : constant Entity_Id :=
                        RAC_Expr (Ex).Scalar_Content.Enum_Entity;
                      Ty  : constant Entity_Id := Etype (N);
-                     Res : Entity_Id := Empty; -- the resulting enum literal
+                     Val : Uint :=
+                       (if Nkind (E) = N_Character_Literal
+                        then Char_Literal_Value (E) else Enumeration_Pos (E));
+                     Res : Node_Id;
                   begin
                      case Attribute_Name (N) is
                         when Snames.Name_Succ =>
-                           Res := Next_Literal (E);
+                           Val := Val + 1;
                         when Snames.Name_Pred =>
-                           declare
-                              Next : Entity_Id := First_Literal (Ty);
-                           begin
-                              while Next /= E loop
-                                 Res := Next;
-                                 exit when No (Res);
-                                 Next := Next_Literal (Next);
-                              end loop;
-                           end;
+                           Val := Val - 1;
                         when others =>
                            raise Program_Error;
                      end case;
 
-                     if No (Res) then
-                        RAC_Failure (Ex, VC_Range_Check);
+                     Res := Get_Enum_Lit_From_Pos (Ty, Val);
+
+                     if Nkind (Res) /= N_Character_Literal then
+                        Res := Entity (Res);
                      end if;
 
-                     return Enum_Value (Res, Etype (N));
+                     return Enum_Value (Res, Ty);
+                  exception
+                     when Constraint_Error =>
+                        RAC_Failure (Ex, VC_Range_Check);
                   end;
 
                else
@@ -3113,7 +3342,7 @@ package body CE_RAC is
                end if;
 
             when N_Op_Compare =>
-               return Boolean_Value (RAC_Op_Compare (Left, Right), Left_Type);
+               return Boolean_Value (RAC_Op_Compare (Left, Right), Etype (N));
 
             when N_Op_And | N_Op_Or | N_Op_Xor =>
                if Is_Boolean_Type (Left_Type) then
@@ -3824,7 +4053,17 @@ package body CE_RAC is
                  Value_Enum_Integer (RAC_Expr (Low_Bound (Idx_Range)));
                High       : constant Big_Integer :=
                  Value_Enum_Integer (RAC_Expr (High_Bound (Idx_Range)));
+
             begin
+               --  Introduce range check for the slice if it is not empty
+
+               if Low <= High
+                 and then (Low < Base_Array.First_Attr.Content
+                           or else High > Base_Array.Last_Attr.Content)
+               then
+                  RAC_Failure (N, VC_Range_Check);
+               end if;
+
                Res := (K            => Array_K,
                        AST_Ty       => Ty,
                        First_Attr   => (Present => True, Content => Low),
@@ -3937,13 +4176,18 @@ package body CE_RAC is
    -- RAC_Failure --
    -----------------
 
-   procedure RAC_Failure (N : Node_Id; K : VC_Kind) is
+   procedure RAC_Failure
+     (N  : Node_Id;
+      K  : VC_Kind;
+      EI : Extra_Info := (others => <>))
+   is
    begin
       Exn_RAC_Result := Some_Result
         ((Res_Kind    => Res_Failure,
           Res_Node    => N,
           Res_VC_Kind => K,
-          Res_VC_Id   => <>));
+          Res_VC_Id   => <>,
+          Res_EI      => EI));
       raise Exn_RAC_Failure;
    end RAC_Failure;
 
@@ -4035,7 +4279,19 @@ package body CE_RAC is
    begin
       case Get_Pragma_Id (N) is
          when Pragma_Check =>
-            Check_Node (Expression (Next (Arg1)), Desc, VC_Assert);
+            if Is_Pragma_Check (N, Name_Loop_Invariant) then
+               if Ctx.First_Loop_Iter then
+                  Check_Node
+                    (Expression (Next (Arg1)), Desc, VC_Loop_Invariant_Init);
+               else
+                  Check_Node
+                    (Expression (Next (Arg1)),
+                     Desc,
+                     VC_Loop_Invariant_Preserv);
+               end if;
+            else
+               Check_Node (Expression (Next (Arg1)), Desc, VC_Assert);
+            end if;
          when others =>
             RAC_Unsupported ("RAC_Pragma", N);
       end case;
@@ -4312,9 +4568,16 @@ package body CE_RAC is
 
          when N_Loop_Statement =>
             declare
+               First_Iter_Save  : constant Boolean := Ctx.First_Loop_Iter;
                Scheme           : constant Node_Id := Iteration_Scheme (N);
                Loop_Entry_Nodes : Node_Sets.Set;
             begin
+               --  Add a new scope for the loop in order to store Loop_Entry
+               --  attributes.
+
+               Ctx.Env.Prepend
+                 (Scopes'(Loop_Id => Entity (Identifier (N)), others => <>));
+
                --  Collect prefixes of all 'Loop_Entry attribute uses and store
                --  the result of their evaluation.
 
@@ -4324,6 +4587,8 @@ package body CE_RAC is
                Evaluate_Attribute_Prefix_Values (Snames.Name_Loop_Entry,
                                                  Loop_Entry_Nodes);
 
+               Ctx.First_Loop_Iter := True;
+
                if No (Scheme) then
                   begin
                      loop
@@ -4332,6 +4597,7 @@ package body CE_RAC is
                           (CodePeer, Intentional,
                            "loop does not complete normally",
                            "RAC signals loop exit through Exn_RAC_Exit");
+                        Ctx.First_Loop_Iter := False;
                      end loop;
                   exception
                      when Exn_RAC_Exit =>
@@ -4345,6 +4611,7 @@ package body CE_RAC is
                        Value_Boolean (RAC_Expr (Condition (Scheme)))
                      loop
                         RAC_List (Statements (N));
+                        Ctx.First_Loop_Iter := False;
                      end loop;
                   exception
                      when Exn_RAC_Exit =>
@@ -4357,6 +4624,7 @@ package body CE_RAC is
                      procedure Iteration is
                      begin
                         RAC_List (Statements (N));
+                        Ctx.First_Loop_Iter := False;
                      end Iteration;
 
                      --  We distinguish between 4 types of FOR loops:
@@ -4391,6 +4659,8 @@ package body CE_RAC is
                for N of Loop_Entry_Nodes loop
                   Ctx.Env (Ctx.Env.First).Loop_Entry_Attrs.Delete (N);
                end loop;
+               Ctx.First_Loop_Iter := First_Iter_Save;
+               Ctx.Env.Delete_First;
             end;
 
          when N_Exit_Statement =>

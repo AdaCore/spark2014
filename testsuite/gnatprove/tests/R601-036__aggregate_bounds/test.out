@@ -2,5 +2,5 @@ test.ads:8:13: info: implicit aspect Always_Terminates on "Get_Pos" has been pro
 test.ads:10:33: high: "D" is not initialized in "Set" [reason for check: OUT parameter should be fully initialized on return] [possible fix: initialize "D" on all paths, make "D" an IN OUT parameter or annotate it with aspect Relaxed_Initialization]
 test.ads:12:15: high: "D" is not initialized
 test.ads:12:15: medium: postcondition might fail
-test.ads:12:19: high: range check might fail (e.g. when D'Last = 0 and P = (First => 0))
+test.ads:12:19: high: range check might fail (e.g. when P = (First => 0))
 test.ads:12:32: info: range check proved (CVC5: 2 VC)

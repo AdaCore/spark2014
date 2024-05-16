@@ -1,2 +1,2 @@
-rng.ads:12:19: high: range check might fail (e.g. when buf = (others => 0) and buf'First = 0 and buf'Last = U32'Last)
+rng.ads:12:19: high: range check might fail, cannot prove upper bound for buf'Length (e.g. when buf = (others => 0) and buf'First = 0 and buf'Last = U32'Last)
 rng.ads:12:19: info: range check proved

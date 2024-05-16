@@ -1,5 +1,5 @@
 base-ext.ads:10:13: info: implicit aspect Always_Terminates on "Sum" has been proved, subprogram will terminate
-base-ext.ads:10:48: high: overflow check might fail, cannot prove bounds for X.C + X.D (e.g. when X = (C => Integer'First, D => -1)) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: add precondition (if X.D >= 0 then X.C <= Integer'Last - X.D else X.C >= Integer'First - X.D) to subprogram at line 10]
+base-ext.ads:10:48: high: overflow check might fail, cannot prove lower bound for X.C + X.D (e.g. when X = (C => Integer'First, D => -1) and X'Constrained = False) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: add precondition (if X.D >= 0 then X.C <= Integer'Last - X.D else X.C >= Integer'First - X.D) to subprogram at line 10]
 base-ext.ads:12:13: info: implicit aspect Always_Terminates on "Create" has been proved, subprogram will terminate
 base.ads:6:13: info: implicit aspect Always_Terminates on "Sum" has been proved, subprogram will terminate
 base.ads:8:13: info: implicit aspect Always_Terminates on "Create" has been proved, subprogram will terminate

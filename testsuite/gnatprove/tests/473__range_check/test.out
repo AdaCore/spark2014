@@ -1,6 +1,6 @@
 main.adb:3:11: warning: subprogram "Main" has no effect
 main.adb:8:52: info: data dependencies proved
-main.adb:18:34: high: range check might fail (e.g. when Value128 = Unsigned_128'Last) [reason for check: value must be convertible to the target type of the conversion]
+main.adb:18:34: high: range check might fail, cannot prove upper bound for Value128 (e.g. when Value128 = Unsigned_128'Last) [reason for check: value must be convertible to the target type of the conversion]
 main.adb:18:34: info: in value of subprogram parameter after the call at main.adb:18
 main.adb:18:34: info: range check proved (CVC5: 1 VC)
 main.adb:20:34: info: range check proved (CVC5: 1 VC)

@@ -3,7 +3,7 @@ repr.adb:6:31: warning: unused variable "Unsorted"
 repr.adb:10:30: warning: "Values" is not modified, could be IN
 repr.adb:12:07: info: data dependencies proved
 repr.adb:16:16: warning: unused assignment
-repr.adb:16:37: medium: range check might fail [reason for check: slice bounds must fit in the underlying array] [possible fix: subprogram at line 10 should mention Values in a precondition]
+repr.adb:16:37: high: range check might fail (e.g. when Values'First = 6 and Values'Last = 5) [reason for check: slice bounds must fit in the underlying array] [possible fix: subprogram at line 10 should mention Values in a precondition]
 sorters.adb:9:08: info: flow dependencies proved
 sorters.adb:15:12: info: postcondition proved (CVC5: 3 VC; Trivial: 1 VC)
 sorters.adb:15:20: info: index check proved (CVC5: 2 VC)
@@ -36,7 +36,7 @@ sorters.adb:48:42: info: index check proved (CVC5: 2 VC)
 sorters.adb:49:20: info: range check proved (CVC5: 2 VC)
 sorters.adb:57:07: info: initialization of "Smallest" proved
 sorters.adb:59:50: info: overflow check proved (CVC5: 2 VC)
-sorters.adb:60:22: high: precondition might fail, cannot prove Unsorted'Last < Positive'Last (e.g. when Current = 1 and Values = (others => 1) and Values'First = 1 and Values'Last = Integer'Last)
+sorters.adb:60:22: high: precondition might fail (e.g. when Current = 1 and Values = (others => 1) and Values'First = 1 and Values'Last = Positive'Last)
 sorters.adb:60:40: info: range check proved (CVC5: 8 VC)
 sorters.adb:62:13: info: precondition proved (CVC5: 10 VC)
 sorters.adb:62:26: info: range check proved (CVC5: 4 VC)

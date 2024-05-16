@@ -4,7 +4,7 @@ logic.adb:17:22: info: assertion proved (CVC5: 1 VC; Trivial: 1 VC)
 logic.adb:17:33: warning: unreachable branch (CVC5: 1 VC)
 logic.adb:18:22: info: assertion proved (CVC5: 1 VC)
 logic.adb:19:22: info: assertion proved (CVC5: 1 VC; Trivial: 1 VC)
-logic.adb:23:22: high: assertion might fail
+logic.adb:23:22: high: assertion might fail (e.g. when F = False)
 logic.adb:23:37: warning: unreachable branch (CVC5: 1 VC)
 logic.adb:25:30: info: assertion proved (Trivial: 1 VC)
 logic.adb:26:22: medium: assertion might fail
@@ -27,7 +27,7 @@ logic.adb:62:22: info: assertion proved (CVC5: 3 VC)
 logic.adb:64:30: info: assertion proved (Trivial: 1 VC)
 logic.adb:65:22: info: assertion proved (CVC5: 2 VC)
 logic.adb:69:30: info: assertion proved (Trivial: 1 VC)
-logic.adb:70:22: high: assertion might fail (e.g. when A = True) [possible fix: subprogram at line 58 should mention A and B in a precondition]
+logic.adb:70:22: high: assertion might fail (e.g. when A = True and B = False) [possible fix: subprogram at line 58 should mention A and B in a precondition]
 logic.adb:72:30: info: assertion proved (Trivial: 1 VC)
 logic.adb:73:22: medium: assertion might fail [possible fix: subprogram at line 58 should mention A and B in a precondition]
 logic.adb:75:30: info: assertion proved (Trivial: 1 VC)
@@ -50,4 +50,4 @@ logic.adb:120:22: info: postcondition proved (CVC5: 2 VC)
 logic.adb:126:13: info: implicit aspect Always_Terminates on "Equivalence_Test_3" has been proved, subprogram will terminate
 logic.adb:127:19: info: postcondition proved (CVC5: 4 VC)
 logic.adb:134:04: warning: analyzing unreferenced procedure "Implies_Test_1"
-logic.adb:137:22: high: assertion might fail (e.g. when C = False) [possible fix: subprogram at line 134 should mention A and B and C in a precondition]
+logic.adb:137:22: high: assertion might fail (e.g. when A = False and B = False and C = False) [possible fix: subprogram at line 134 should mention A and B and C in a precondition]
