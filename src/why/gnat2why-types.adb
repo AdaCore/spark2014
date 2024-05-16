@@ -1317,9 +1317,7 @@ package body Gnat2Why.Types is
                     Ty               => Retysp (E),
                     Params           => Params,
                     At_Declaration   => True,
-                    Include_Subtypes => True,
-                    Decl_Node        =>
-                      Enclosing_Declaration (Priv_View))));
+                    Include_Subtypes => True)));
 
          --  If the type has a DIC and this DIC should be checked at
          --  declaration, check that there can be no runtime error

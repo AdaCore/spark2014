@@ -67,8 +67,9 @@ SPARK User's Guide
    C. Project Attributes <en/appendix/project_attributes>
    D. Implementation Defined Pragmas <en/appendix/implementation_defined_pragmas>
    E. Additional Annotate Pragmas <en/appendix/additional_annotate_pragmas>
-   F. GNATprove Limitations <en/appendix/gnatprove_limitations>
-   G. Portability Issues <en/appendix/portability_issues>
-   H. Semantics of Floating Point Operations <en/appendix/semantics_of_floating_point_operations>
-   I. SPARK Architecture, Quality Assurance and Maturity <en/appendix/quality_assurance>
-   J. GNU Free Documentation License <gfdl>
+   F. Environment Variable <en/appendix/env_vars>
+   G. GNATprove Limitations <en/appendix/gnatprove_limitations>
+   H. Portability Issues <en/appendix/portability_issues>
+   I. Semantics of Floating Point Operations <en/appendix/semantics_of_floating_point_operations>
+   J. SPARK Architecture, Quality Assurance and Maturity <en/appendix/quality_assurance>
+   K. GNU Free Documentation License <gfdl>

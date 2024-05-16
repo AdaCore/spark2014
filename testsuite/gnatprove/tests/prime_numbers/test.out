@@ -1,167 +1,166 @@
 prime_and_coprime_numbers.adb:12:07: info: initialization of "Set.Is_Prime" constituent of "P.Prime_Data" proved, in instantiation at test_prime_and_coprime_numbers.adb:6
-prime_and_coprime_numbers.adb:19:46: info: range check proved, in instantiation at test_prime_and_coprime_numbers.adb:6
-prime_and_coprime_numbers.adb:29:16: info: implicit aspect Always_Terminates on "Euclid" has been proved, subprogram will terminate, in instantiation at test_prime_and_coprime_numbers.adb:6
-prime_and_coprime_numbers.adb:36:38: info: contract case proved, in instantiation at test_prime_and_coprime_numbers.adb:6
-prime_and_coprime_numbers.adb:37:38: info: contract case proved, in instantiation at test_prime_and_coprime_numbers.adb:6
-prime_and_coprime_numbers.adb:39:10: info: initialization of "A" proved, in instantiation at test_prime_and_coprime_numbers.adb:6
-prime_and_coprime_numbers.adb:40:10: info: initialization of "B" proved, in instantiation at test_prime_and_coprime_numbers.adb:6
-prime_and_coprime_numbers.adb:41:10: info: initialization of "R" proved, in instantiation at test_prime_and_coprime_numbers.adb:6
-prime_and_coprime_numbers.adb:52:15: info: range check proved, in instantiation at test_prime_and_coprime_numbers.adb:6
-prime_and_coprime_numbers.adb:53:15: info: range check proved, in instantiation at test_prime_and_coprime_numbers.adb:6
-prime_and_coprime_numbers.adb:56:34: info: loop variant proved, in instantiation at test_prime_and_coprime_numbers.adb:6
-prime_and_coprime_numbers.adb:57:36: info: loop invariant initialization proved, in instantiation at test_prime_and_coprime_numbers.adb:6
-prime_and_coprime_numbers.adb:57:36: info: loop invariant preservation proved, in instantiation at test_prime_and_coprime_numbers.adb:6
-prime_and_coprime_numbers.adb:58:36: info: loop invariant initialization proved, in instantiation at test_prime_and_coprime_numbers.adb:6
-prime_and_coprime_numbers.adb:58:36: info: loop invariant preservation proved, in instantiation at test_prime_and_coprime_numbers.adb:6
-prime_and_coprime_numbers.adb:60:16: info: loop invariant initialization proved, in instantiation at test_prime_and_coprime_numbers.adb:6
-prime_and_coprime_numbers.adb:60:16: info: loop invariant preservation proved, in instantiation at test_prime_and_coprime_numbers.adb:6
-prime_and_coprime_numbers.adb:62:20: info: division check proved, in instantiation at test_prime_and_coprime_numbers.adb:6
-prime_and_coprime_numbers.adb:69:18: info: range check proved, in instantiation at test_prime_and_coprime_numbers.adb:6
-prime_and_coprime_numbers.adb:72:25: info: assertion proved, in instantiation at test_prime_and_coprime_numbers.adb:6
-prime_and_coprime_numbers.adb:80:28: info: precondition proved, in instantiation at test_prime_and_coprime_numbers.adb:6
-prime_and_coprime_numbers.adb:82:13: info: loop invariant initialization proved, in instantiation at test_prime_and_coprime_numbers.adb:6
-prime_and_coprime_numbers.adb:82:13: info: loop invariant preservation proved, in instantiation at test_prime_and_coprime_numbers.adb:6
-prime_and_coprime_numbers.adb:83:15: info: justified that "Result" might not be initialized, in instantiation at test_prime_and_coprime_numbers.adb:6
-prime_and_coprime_numbers.adb:83:23: info: index check proved, in instantiation at test_prime_and_coprime_numbers.adb:6
-prime_and_coprime_numbers.adb:88:14: info: justified that "Result" might not be initialized, in instantiation at test_prime_and_coprime_numbers.adb:6
-prime_and_coprime_numbers.adb:103:07: info: initialization of "Right_Is_Out" proved, in instantiation at test_prime_and_coprime_numbers.adb:6
-prime_and_coprime_numbers.adb:104:07: info: initialization of "Left_Is_Out" proved, in instantiation at test_prime_and_coprime_numbers.adb:6
-prime_and_coprime_numbers.adb:106:23: info: index check proved, in instantiation at test_prime_and_coprime_numbers.adb:6
-prime_and_coprime_numbers.adb:115:36: info: overflow check proved, in instantiation at test_prime_and_coprime_numbers.adb:6
-prime_and_coprime_numbers.adb:122:37: info: index check proved, in instantiation at test_prime_and_coprime_numbers.adb:6
-prime_and_coprime_numbers.adb:123:36: info: loop invariant initialization proved, in instantiation at test_prime_and_coprime_numbers.adb:6
-prime_and_coprime_numbers.adb:123:36: info: loop invariant preservation proved, in instantiation at test_prime_and_coprime_numbers.adb:6
-prime_and_coprime_numbers.adb:123:51: info: overflow check proved, in instantiation at test_prime_and_coprime_numbers.adb:6
-prime_and_coprime_numbers.adb:125:16: info: loop invariant initialization proved, in instantiation at test_prime_and_coprime_numbers.adb:6
-prime_and_coprime_numbers.adb:125:16: info: loop invariant preservation proved, in instantiation at test_prime_and_coprime_numbers.adb:6
-prime_and_coprime_numbers.adb:125:60: info: index check proved, in instantiation at test_prime_and_coprime_numbers.adb:6
-prime_and_coprime_numbers.adb:126:34: info: loop variant proved, in instantiation at test_prime_and_coprime_numbers.adb:6
-prime_and_coprime_numbers.adb:128:39: info: overflow check proved, in instantiation at test_prime_and_coprime_numbers.adb:6
-prime_and_coprime_numbers.adb:139:35: info: overflow check proved, in instantiation at test_prime_and_coprime_numbers.adb:6
-prime_and_coprime_numbers.adb:146:37: info: index check proved, in instantiation at test_prime_and_coprime_numbers.adb:6
-prime_and_coprime_numbers.adb:147:36: info: loop invariant initialization proved, in instantiation at test_prime_and_coprime_numbers.adb:6
-prime_and_coprime_numbers.adb:147:36: info: loop invariant preservation proved, in instantiation at test_prime_and_coprime_numbers.adb:6
-prime_and_coprime_numbers.adb:149:16: info: loop invariant initialization proved, in instantiation at test_prime_and_coprime_numbers.adb:6
-prime_and_coprime_numbers.adb:149:16: info: loop invariant preservation proved, in instantiation at test_prime_and_coprime_numbers.adb:6
-prime_and_coprime_numbers.adb:149:59: info: index check proved, in instantiation at test_prime_and_coprime_numbers.adb:6
-prime_and_coprime_numbers.adb:150:34: info: loop variant proved, in instantiation at test_prime_and_coprime_numbers.adb:6
-prime_and_coprime_numbers.adb:152:38: info: overflow check proved, in instantiation at test_prime_and_coprime_numbers.adb:6
-prime_and_coprime_numbers.adb:165:16: info: overflow check proved, in instantiation at test_prime_and_coprime_numbers.adb:6
-prime_and_coprime_numbers.adb:165:26: info: overflow check proved, in instantiation at test_prime_and_coprime_numbers.adb:6
-prime_and_coprime_numbers.adb:165:38: info: overflow check proved, in instantiation at test_prime_and_coprime_numbers.adb:6
-prime_and_coprime_numbers.adb:165:49: info: overflow check proved, in instantiation at test_prime_and_coprime_numbers.adb:6
+prime_and_coprime_numbers.adb:26:16: info: implicit aspect Always_Terminates on "Euclid" has been proved, subprogram will terminate, in instantiation at test_prime_and_coprime_numbers.adb:6
+prime_and_coprime_numbers.adb:33:38: info: contract case proved, in instantiation at test_prime_and_coprime_numbers.adb:6
+prime_and_coprime_numbers.adb:34:38: info: contract case proved, in instantiation at test_prime_and_coprime_numbers.adb:6
+prime_and_coprime_numbers.adb:36:10: info: initialization of "A" proved, in instantiation at test_prime_and_coprime_numbers.adb:6
+prime_and_coprime_numbers.adb:37:10: info: initialization of "B" proved, in instantiation at test_prime_and_coprime_numbers.adb:6
+prime_and_coprime_numbers.adb:38:10: info: initialization of "R" proved, in instantiation at test_prime_and_coprime_numbers.adb:6
+prime_and_coprime_numbers.adb:49:15: info: range check proved, in instantiation at test_prime_and_coprime_numbers.adb:6
+prime_and_coprime_numbers.adb:50:15: info: range check proved, in instantiation at test_prime_and_coprime_numbers.adb:6
+prime_and_coprime_numbers.adb:53:34: info: loop variant proved, in instantiation at test_prime_and_coprime_numbers.adb:6
+prime_and_coprime_numbers.adb:54:36: info: loop invariant initialization proved, in instantiation at test_prime_and_coprime_numbers.adb:6
+prime_and_coprime_numbers.adb:54:36: info: loop invariant preservation proved, in instantiation at test_prime_and_coprime_numbers.adb:6
+prime_and_coprime_numbers.adb:55:36: info: loop invariant initialization proved, in instantiation at test_prime_and_coprime_numbers.adb:6
+prime_and_coprime_numbers.adb:55:36: info: loop invariant preservation proved, in instantiation at test_prime_and_coprime_numbers.adb:6
+prime_and_coprime_numbers.adb:57:16: info: loop invariant initialization proved, in instantiation at test_prime_and_coprime_numbers.adb:6
+prime_and_coprime_numbers.adb:57:16: info: loop invariant preservation proved, in instantiation at test_prime_and_coprime_numbers.adb:6
+prime_and_coprime_numbers.adb:59:20: info: division check proved, in instantiation at test_prime_and_coprime_numbers.adb:6
+prime_and_coprime_numbers.adb:66:18: info: range check proved, in instantiation at test_prime_and_coprime_numbers.adb:6
+prime_and_coprime_numbers.adb:69:25: info: assertion proved, in instantiation at test_prime_and_coprime_numbers.adb:6
+prime_and_coprime_numbers.adb:77:28: info: precondition proved, in instantiation at test_prime_and_coprime_numbers.adb:6
+prime_and_coprime_numbers.adb:79:13: info: loop invariant initialization proved, in instantiation at test_prime_and_coprime_numbers.adb:6
+prime_and_coprime_numbers.adb:79:13: info: loop invariant preservation proved, in instantiation at test_prime_and_coprime_numbers.adb:6
+prime_and_coprime_numbers.adb:80:15: info: justified that "Result" might not be initialized, in instantiation at test_prime_and_coprime_numbers.adb:6
+prime_and_coprime_numbers.adb:80:23: info: index check proved, in instantiation at test_prime_and_coprime_numbers.adb:6
+prime_and_coprime_numbers.adb:85:14: info: justified that "Result" might not be initialized, in instantiation at test_prime_and_coprime_numbers.adb:6
+prime_and_coprime_numbers.adb:100:07: info: initialization of "Right_Is_Out" proved, in instantiation at test_prime_and_coprime_numbers.adb:6
+prime_and_coprime_numbers.adb:101:07: info: initialization of "Left_Is_Out" proved, in instantiation at test_prime_and_coprime_numbers.adb:6
+prime_and_coprime_numbers.adb:103:23: info: index check proved, in instantiation at test_prime_and_coprime_numbers.adb:6
+prime_and_coprime_numbers.adb:112:36: info: overflow check proved, in instantiation at test_prime_and_coprime_numbers.adb:6
+prime_and_coprime_numbers.adb:119:37: info: index check proved, in instantiation at test_prime_and_coprime_numbers.adb:6
+prime_and_coprime_numbers.adb:120:36: info: loop invariant initialization proved, in instantiation at test_prime_and_coprime_numbers.adb:6
+prime_and_coprime_numbers.adb:120:36: info: loop invariant preservation proved, in instantiation at test_prime_and_coprime_numbers.adb:6
+prime_and_coprime_numbers.adb:120:51: info: overflow check proved, in instantiation at test_prime_and_coprime_numbers.adb:6
+prime_and_coprime_numbers.adb:122:16: info: loop invariant initialization proved, in instantiation at test_prime_and_coprime_numbers.adb:6
+prime_and_coprime_numbers.adb:122:16: info: loop invariant preservation proved, in instantiation at test_prime_and_coprime_numbers.adb:6
+prime_and_coprime_numbers.adb:122:60: info: index check proved, in instantiation at test_prime_and_coprime_numbers.adb:6
+prime_and_coprime_numbers.adb:123:34: info: loop variant proved, in instantiation at test_prime_and_coprime_numbers.adb:6
+prime_and_coprime_numbers.adb:125:39: info: overflow check proved, in instantiation at test_prime_and_coprime_numbers.adb:6
+prime_and_coprime_numbers.adb:136:35: info: overflow check proved, in instantiation at test_prime_and_coprime_numbers.adb:6
+prime_and_coprime_numbers.adb:143:37: info: index check proved, in instantiation at test_prime_and_coprime_numbers.adb:6
+prime_and_coprime_numbers.adb:144:36: info: loop invariant initialization proved, in instantiation at test_prime_and_coprime_numbers.adb:6
+prime_and_coprime_numbers.adb:144:36: info: loop invariant preservation proved, in instantiation at test_prime_and_coprime_numbers.adb:6
+prime_and_coprime_numbers.adb:146:16: info: loop invariant initialization proved, in instantiation at test_prime_and_coprime_numbers.adb:6
+prime_and_coprime_numbers.adb:146:16: info: loop invariant preservation proved, in instantiation at test_prime_and_coprime_numbers.adb:6
+prime_and_coprime_numbers.adb:146:59: info: index check proved, in instantiation at test_prime_and_coprime_numbers.adb:6
+prime_and_coprime_numbers.adb:147:34: info: loop variant proved, in instantiation at test_prime_and_coprime_numbers.adb:6
+prime_and_coprime_numbers.adb:149:38: info: overflow check proved, in instantiation at test_prime_and_coprime_numbers.adb:6
+prime_and_coprime_numbers.adb:162:16: info: overflow check proved, in instantiation at test_prime_and_coprime_numbers.adb:6
+prime_and_coprime_numbers.adb:162:26: info: overflow check proved, in instantiation at test_prime_and_coprime_numbers.adb:6
+prime_and_coprime_numbers.adb:162:38: info: overflow check proved, in instantiation at test_prime_and_coprime_numbers.adb:6
+prime_and_coprime_numbers.adb:162:49: info: overflow check proved, in instantiation at test_prime_and_coprime_numbers.adb:6
+prime_and_coprime_numbers.adb:164:23: info: range check proved, in instantiation at test_prime_and_coprime_numbers.adb:6
 prime_and_coprime_numbers.adb:167:23: info: range check proved, in instantiation at test_prime_and_coprime_numbers.adb:6
-prime_and_coprime_numbers.adb:170:23: info: range check proved, in instantiation at test_prime_and_coprime_numbers.adb:6
-prime_and_coprime_numbers.adb:174:20: info: range check proved, in instantiation at test_prime_and_coprime_numbers.adb:6
-prime_and_coprime_numbers.adb:180:20: info: range check proved, in instantiation at test_prime_and_coprime_numbers.adb:6
-prime_and_coprime_numbers.adb:183:13: info: only expected exception raised, in instantiation at test_prime_and_coprime_numbers.adb:6
-prime_and_coprime_numbers.adb:196:14: info: precondition proved, in instantiation at test_prime_and_coprime_numbers.adb:6
-prime_and_coprime_numbers.adb:202:06: info: data dependencies proved, in instantiation at test_prime_and_coprime_numbers.adb:6
-prime_and_coprime_numbers.adb:202:30: info: initialization of "Set.Is_Prime" constituent of "P.Prime_Data" proved, in instantiation at test_prime_and_coprime_numbers.adb:6
-prime_and_coprime_numbers.adb:203:16: info: postcondition proved, in instantiation at test_prime_and_coprime_numbers.adb:6
-prime_and_coprime_numbers.adb:205:07: info: initialization of "Index_1" proved, in instantiation at test_prime_and_coprime_numbers.adb:6
-prime_and_coprime_numbers.adb:206:07: info: initialization of "Index_3" proved, in instantiation at test_prime_and_coprime_numbers.adb:6
-prime_and_coprime_numbers.adb:209:16: info: implicit aspect Always_Terminates on "Smallest_Divisor" has been proved, subprogram will terminate, in instantiation at test_prime_and_coprime_numbers.adb:6
-prime_and_coprime_numbers.adb:214:11: info: postcondition proved, in instantiation at test_prime_and_coprime_numbers.adb:6
-prime_and_coprime_numbers.adb:215:48: info: overflow check proved, in instantiation at test_prime_and_coprime_numbers.adb:6
-prime_and_coprime_numbers.adb:215:53: info: division check proved, in instantiation at test_prime_and_coprime_numbers.adb:6
-prime_and_coprime_numbers.adb:220:16: info: loop invariant initialization proved, in instantiation at test_prime_and_coprime_numbers.adb:6
-prime_and_coprime_numbers.adb:220:16: info: loop invariant preservation proved, in instantiation at test_prime_and_coprime_numbers.adb:6
-prime_and_coprime_numbers.adb:220:50: info: division check proved, in instantiation at test_prime_and_coprime_numbers.adb:6
-prime_and_coprime_numbers.adb:221:18: info: division check proved, in instantiation at test_prime_and_coprime_numbers.adb:6
-prime_and_coprime_numbers.adb:225:10: info: only expected exception raised, in instantiation at test_prime_and_coprime_numbers.adb:6
-prime_and_coprime_numbers.adb:232:26: info: overflow check proved, in call inlined at prime_and_coprime_numbers.adb:329, in instantiation at test_prime_and_coprime_numbers.adb:6
-prime_and_coprime_numbers.adb:233:18: info: division check proved, in call inlined at prime_and_coprime_numbers.adb:329, in instantiation at test_prime_and_coprime_numbers.adb:6
-prime_and_coprime_numbers.adb:235:46: info: precondition proved, in call inlined at prime_and_coprime_numbers.adb:329, in instantiation at test_prime_and_coprime_numbers.adb:6
-prime_and_coprime_numbers.adb:236:48: info: division check proved, in call inlined at prime_and_coprime_numbers.adb:329, in instantiation at test_prime_and_coprime_numbers.adb:6
-prime_and_coprime_numbers.adb:236:48: info: range check proved, in call inlined at prime_and_coprime_numbers.adb:329, in instantiation at test_prime_and_coprime_numbers.adb:6
-prime_and_coprime_numbers.adb:237:48: info: division check proved, in call inlined at prime_and_coprime_numbers.adb:329, in instantiation at test_prime_and_coprime_numbers.adb:6
-prime_and_coprime_numbers.adb:237:48: info: range check proved, in call inlined at prime_and_coprime_numbers.adb:329, in instantiation at test_prime_and_coprime_numbers.adb:6
-prime_and_coprime_numbers.adb:238:49: info: division check proved, in call inlined at prime_and_coprime_numbers.adb:329, in instantiation at test_prime_and_coprime_numbers.adb:6
-prime_and_coprime_numbers.adb:238:49: info: range check proved, in call inlined at prime_and_coprime_numbers.adb:329, in instantiation at test_prime_and_coprime_numbers.adb:6
-prime_and_coprime_numbers.adb:239:55: info: division check proved, in call inlined at prime_and_coprime_numbers.adb:329, in instantiation at test_prime_and_coprime_numbers.adb:6
-prime_and_coprime_numbers.adb:239:55: info: range check proved, in call inlined at prime_and_coprime_numbers.adb:329, in instantiation at test_prime_and_coprime_numbers.adb:6
-prime_and_coprime_numbers.adb:241:34: info: assertion proved, in call inlined at prime_and_coprime_numbers.adb:329, in instantiation at test_prime_and_coprime_numbers.adb:6
-prime_and_coprime_numbers.adb:241:40: info: overflow check proved, in call inlined at prime_and_coprime_numbers.adb:329, in instantiation at test_prime_and_coprime_numbers.adb:6
-prime_and_coprime_numbers.adb:241:44: info: overflow check proved, in call inlined at prime_and_coprime_numbers.adb:329, in instantiation at test_prime_and_coprime_numbers.adb:6
-prime_and_coprime_numbers.adb:242:34: info: assertion proved, in call inlined at prime_and_coprime_numbers.adb:329, in instantiation at test_prime_and_coprime_numbers.adb:6
-prime_and_coprime_numbers.adb:242:41: info: overflow check proved, in call inlined at prime_and_coprime_numbers.adb:329, in instantiation at test_prime_and_coprime_numbers.adb:6
-prime_and_coprime_numbers.adb:243:34: info: assertion proved, in call inlined at prime_and_coprime_numbers.adb:329, in instantiation at test_prime_and_coprime_numbers.adb:6
-prime_and_coprime_numbers.adb:243:46: info: overflow check proved, in call inlined at prime_and_coprime_numbers.adb:329, in instantiation at test_prime_and_coprime_numbers.adb:6
-prime_and_coprime_numbers.adb:244:34: info: assertion proved, in call inlined at prime_and_coprime_numbers.adb:329, in instantiation at test_prime_and_coprime_numbers.adb:6
-prime_and_coprime_numbers.adb:244:40: info: overflow check proved, in call inlined at prime_and_coprime_numbers.adb:329, in instantiation at test_prime_and_coprime_numbers.adb:6
-prime_and_coprime_numbers.adb:244:46: info: overflow check proved, in call inlined at prime_and_coprime_numbers.adb:329, in instantiation at test_prime_and_coprime_numbers.adb:6
-prime_and_coprime_numbers.adb:244:51: info: overflow check proved, in call inlined at prime_and_coprime_numbers.adb:329, in instantiation at test_prime_and_coprime_numbers.adb:6
-prime_and_coprime_numbers.adb:245:34: info: assertion proved, in call inlined at prime_and_coprime_numbers.adb:329, in instantiation at test_prime_and_coprime_numbers.adb:6
-prime_and_coprime_numbers.adb:246:34: info: assertion proved, in call inlined at prime_and_coprime_numbers.adb:329, in instantiation at test_prime_and_coprime_numbers.adb:6
-prime_and_coprime_numbers.adb:250:16: info: assertion proved, in call inlined at prime_and_coprime_numbers.adb:329, in instantiation at test_prime_and_coprime_numbers.adb:6
-prime_and_coprime_numbers.adb:250:21: info: division check proved, in call inlined at prime_and_coprime_numbers.adb:329, in instantiation at test_prime_and_coprime_numbers.adb:6
-prime_and_coprime_numbers.adb:250:44: info: division check proved, in call inlined at prime_and_coprime_numbers.adb:329, in instantiation at test_prime_and_coprime_numbers.adb:6
-prime_and_coprime_numbers.adb:250:48: info: precondition proved, in call inlined at prime_and_coprime_numbers.adb:329, in instantiation at test_prime_and_coprime_numbers.adb:6
-prime_and_coprime_numbers.adb:252:16: info: loop invariant initialization proved, in call inlined at prime_and_coprime_numbers.adb:329, in instantiation at test_prime_and_coprime_numbers.adb:6
-prime_and_coprime_numbers.adb:252:16: info: loop invariant preservation proved, in call inlined at prime_and_coprime_numbers.adb:329, in instantiation at test_prime_and_coprime_numbers.adb:6
-prime_and_coprime_numbers.adb:252:36: info: overflow check proved, in call inlined at prime_and_coprime_numbers.adb:329, in instantiation at test_prime_and_coprime_numbers.adb:6
-prime_and_coprime_numbers.adb:253:24: info: division check proved, in call inlined at prime_and_coprime_numbers.adb:329, in instantiation at test_prime_and_coprime_numbers.adb:6
-prime_and_coprime_numbers.adb:253:47: info: division check proved, in call inlined at prime_and_coprime_numbers.adb:329, in instantiation at test_prime_and_coprime_numbers.adb:6
-prime_and_coprime_numbers.adb:253:51: info: precondition proved, in call inlined at prime_and_coprime_numbers.adb:329, in instantiation at test_prime_and_coprime_numbers.adb:6
-prime_and_coprime_numbers.adb:257:13: info: assertion proved, in call inlined at prime_and_coprime_numbers.adb:329, in instantiation at test_prime_and_coprime_numbers.adb:6
-prime_and_coprime_numbers.adb:257:33: info: overflow check proved, in call inlined at prime_and_coprime_numbers.adb:329, in instantiation at test_prime_and_coprime_numbers.adb:6
-prime_and_coprime_numbers.adb:258:21: info: division check proved, in call inlined at prime_and_coprime_numbers.adb:329, in instantiation at test_prime_and_coprime_numbers.adb:6
-prime_and_coprime_numbers.adb:258:44: info: division check proved, in call inlined at prime_and_coprime_numbers.adb:329, in instantiation at test_prime_and_coprime_numbers.adb:6
-prime_and_coprime_numbers.adb:258:48: info: precondition proved, in call inlined at prime_and_coprime_numbers.adb:329, in instantiation at test_prime_and_coprime_numbers.adb:6
-prime_and_coprime_numbers.adb:259:26: info: overflow check proved, in call inlined at prime_and_coprime_numbers.adb:329, in instantiation at test_prime_and_coprime_numbers.adb:6
-prime_and_coprime_numbers.adb:260:52: info: division check proved, in call inlined at prime_and_coprime_numbers.adb:329, in instantiation at test_prime_and_coprime_numbers.adb:6
-prime_and_coprime_numbers.adb:262:46: info: precondition proved, in call inlined at prime_and_coprime_numbers.adb:329, in instantiation at test_prime_and_coprime_numbers.adb:6
-prime_and_coprime_numbers.adb:264:34: info: assertion proved, in call inlined at prime_and_coprime_numbers.adb:329, in instantiation at test_prime_and_coprime_numbers.adb:6
-prime_and_coprime_numbers.adb:265:34: info: assertion proved, in call inlined at prime_and_coprime_numbers.adb:329, in instantiation at test_prime_and_coprime_numbers.adb:6
-prime_and_coprime_numbers.adb:265:36: info: division check proved, in call inlined at prime_and_coprime_numbers.adb:329, in instantiation at test_prime_and_coprime_numbers.adb:6
-prime_and_coprime_numbers.adb:266:34: info: assertion proved, in call inlined at prime_and_coprime_numbers.adb:329, in instantiation at test_prime_and_coprime_numbers.adb:6
-prime_and_coprime_numbers.adb:266:36: info: division check proved, in call inlined at prime_and_coprime_numbers.adb:329, in instantiation at test_prime_and_coprime_numbers.adb:6
-prime_and_coprime_numbers.adb:270:16: info: assertion proved, in call inlined at prime_and_coprime_numbers.adb:329, in instantiation at test_prime_and_coprime_numbers.adb:6
-prime_and_coprime_numbers.adb:270:55: info: division check proved, in call inlined at prime_and_coprime_numbers.adb:329, in instantiation at test_prime_and_coprime_numbers.adb:6
-prime_and_coprime_numbers.adb:271:23: info: division check proved, in call inlined at prime_and_coprime_numbers.adb:329, in instantiation at test_prime_and_coprime_numbers.adb:6
-prime_and_coprime_numbers.adb:273:16: info: loop invariant initialization proved, in call inlined at prime_and_coprime_numbers.adb:329, in instantiation at test_prime_and_coprime_numbers.adb:6
-prime_and_coprime_numbers.adb:273:16: info: loop invariant preservation proved, in call inlined at prime_and_coprime_numbers.adb:329, in instantiation at test_prime_and_coprime_numbers.adb:6
-prime_and_coprime_numbers.adb:273:36: info: overflow check proved, in call inlined at prime_and_coprime_numbers.adb:329, in instantiation at test_prime_and_coprime_numbers.adb:6
-prime_and_coprime_numbers.adb:274:58: info: division check proved, in call inlined at prime_and_coprime_numbers.adb:329, in instantiation at test_prime_and_coprime_numbers.adb:6
-prime_and_coprime_numbers.adb:275:26: info: division check proved, in call inlined at prime_and_coprime_numbers.adb:329, in instantiation at test_prime_and_coprime_numbers.adb:6
-prime_and_coprime_numbers.adb:278:13: info: assertion proved, in call inlined at prime_and_coprime_numbers.adb:329, in instantiation at test_prime_and_coprime_numbers.adb:6
-prime_and_coprime_numbers.adb:278:33: info: overflow check proved, in call inlined at prime_and_coprime_numbers.adb:329, in instantiation at test_prime_and_coprime_numbers.adb:6
-prime_and_coprime_numbers.adb:279:29: info: index check proved, in call inlined at prime_and_coprime_numbers.adb:329, in instantiation at test_prime_and_coprime_numbers.adb:6
-prime_and_coprime_numbers.adb:280:50: info: division check proved, in call inlined at prime_and_coprime_numbers.adb:329, in instantiation at test_prime_and_coprime_numbers.adb:6
-prime_and_coprime_numbers.adb:282:20: info: division check proved, in call inlined at prime_and_coprime_numbers.adb:329, in instantiation at test_prime_and_coprime_numbers.adb:6
-prime_and_coprime_numbers.adb:292:13: info: loop invariant initialization proved, in instantiation at test_prime_and_coprime_numbers.adb:6
-prime_and_coprime_numbers.adb:292:13: info: loop invariant preservation proved, in instantiation at test_prime_and_coprime_numbers.adb:6
-prime_and_coprime_numbers.adb:292:60: info: index check proved, in instantiation at test_prime_and_coprime_numbers.adb:6
-prime_and_coprime_numbers.adb:294:13: info: loop invariant initialization proved, in instantiation at test_prime_and_coprime_numbers.adb:6
-prime_and_coprime_numbers.adb:294:13: info: loop invariant preservation proved, in instantiation at test_prime_and_coprime_numbers.adb:6
-prime_and_coprime_numbers.adb:295:29: info: index check proved, in instantiation at test_prime_and_coprime_numbers.adb:6
-prime_and_coprime_numbers.adb:296:55: info: division check proved, in instantiation at test_prime_and_coprime_numbers.adb:6
-prime_and_coprime_numbers.adb:301:26: info: overflow check proved, in instantiation at test_prime_and_coprime_numbers.adb:6
-prime_and_coprime_numbers.adb:305:30: info: index check proved, in instantiation at test_prime_and_coprime_numbers.adb:6
-prime_and_coprime_numbers.adb:308:19: info: loop invariant initialization proved, in instantiation at test_prime_and_coprime_numbers.adb:6
-prime_and_coprime_numbers.adb:308:19: info: loop invariant preservation proved, in instantiation at test_prime_and_coprime_numbers.adb:6
-prime_and_coprime_numbers.adb:308:62: info: index check proved, in instantiation at test_prime_and_coprime_numbers.adb:6
-prime_and_coprime_numbers.adb:310:19: info: loop invariant initialization proved, in instantiation at test_prime_and_coprime_numbers.adb:6
-prime_and_coprime_numbers.adb:310:19: info: loop invariant preservation proved, in instantiation at test_prime_and_coprime_numbers.adb:6
-prime_and_coprime_numbers.adb:311:35: info: index check proved, in instantiation at test_prime_and_coprime_numbers.adb:6
-prime_and_coprime_numbers.adb:312:62: info: division check proved, in instantiation at test_prime_and_coprime_numbers.adb:6
-prime_and_coprime_numbers.adb:314:65: info: division check proved, in instantiation at test_prime_and_coprime_numbers.adb:6
-prime_and_coprime_numbers.adb:315:39: info: loop invariant initialization proved, in instantiation at test_prime_and_coprime_numbers.adb:6
-prime_and_coprime_numbers.adb:315:39: info: loop invariant preservation proved, in instantiation at test_prime_and_coprime_numbers.adb:6
-prime_and_coprime_numbers.adb:316:39: info: loop invariant initialization proved, in instantiation at test_prime_and_coprime_numbers.adb:6
-prime_and_coprime_numbers.adb:316:39: info: loop invariant preservation proved, in instantiation at test_prime_and_coprime_numbers.adb:6
-prime_and_coprime_numbers.adb:316:47: info: division check proved, in instantiation at test_prime_and_coprime_numbers.adb:6
-prime_and_coprime_numbers.adb:317:37: info: loop variant proved, in instantiation at test_prime_and_coprime_numbers.adb:6
-prime_and_coprime_numbers.adb:318:35: info: overflow check proved, in instantiation at test_prime_and_coprime_numbers.adb:6
-prime_and_coprime_numbers.adb:319:31: info: assertion proved, in instantiation at test_prime_and_coprime_numbers.adb:6
-prime_and_coprime_numbers.adb:319:39: info: division check proved, in instantiation at test_prime_and_coprime_numbers.adb:6
-prime_and_coprime_numbers.adb:319:62: info: overflow check proved, in instantiation at test_prime_and_coprime_numbers.adb:6
-prime_and_coprime_numbers.adb:319:73: info: division check proved, in instantiation at test_prime_and_coprime_numbers.adb:6
-prime_and_coprime_numbers.adb:323:16: info: assertion proved, in instantiation at test_prime_and_coprime_numbers.adb:6
-prime_and_coprime_numbers.adb:324:32: info: index check proved, in instantiation at test_prime_and_coprime_numbers.adb:6
-prime_and_coprime_numbers.adb:325:57: info: division check proved, in instantiation at test_prime_and_coprime_numbers.adb:6
-prime_and_coprime_numbers.adb:327:23: info: division check proved, in instantiation at test_prime_and_coprime_numbers.adb:6
+prime_and_coprime_numbers.adb:171:20: info: range check proved, in instantiation at test_prime_and_coprime_numbers.adb:6
+prime_and_coprime_numbers.adb:177:20: info: range check proved, in instantiation at test_prime_and_coprime_numbers.adb:6
+prime_and_coprime_numbers.adb:180:13: info: only expected exception raised, in instantiation at test_prime_and_coprime_numbers.adb:6
+prime_and_coprime_numbers.adb:193:14: info: precondition proved, in instantiation at test_prime_and_coprime_numbers.adb:6
+prime_and_coprime_numbers.adb:199:06: info: data dependencies proved, in instantiation at test_prime_and_coprime_numbers.adb:6
+prime_and_coprime_numbers.adb:199:30: info: initialization of "Set.Is_Prime" constituent of "P.Prime_Data" proved, in instantiation at test_prime_and_coprime_numbers.adb:6
+prime_and_coprime_numbers.adb:200:16: info: postcondition proved, in instantiation at test_prime_and_coprime_numbers.adb:6
+prime_and_coprime_numbers.adb:202:07: info: initialization of "Index_1" proved, in instantiation at test_prime_and_coprime_numbers.adb:6
+prime_and_coprime_numbers.adb:203:07: info: initialization of "Index_3" proved, in instantiation at test_prime_and_coprime_numbers.adb:6
+prime_and_coprime_numbers.adb:206:16: info: implicit aspect Always_Terminates on "Smallest_Divisor" has been proved, subprogram will terminate, in instantiation at test_prime_and_coprime_numbers.adb:6
+prime_and_coprime_numbers.adb:211:11: info: postcondition proved, in instantiation at test_prime_and_coprime_numbers.adb:6
+prime_and_coprime_numbers.adb:212:48: info: overflow check proved, in instantiation at test_prime_and_coprime_numbers.adb:6
+prime_and_coprime_numbers.adb:212:53: info: division check proved, in instantiation at test_prime_and_coprime_numbers.adb:6
+prime_and_coprime_numbers.adb:217:16: info: loop invariant initialization proved, in instantiation at test_prime_and_coprime_numbers.adb:6
+prime_and_coprime_numbers.adb:217:16: info: loop invariant preservation proved, in instantiation at test_prime_and_coprime_numbers.adb:6
+prime_and_coprime_numbers.adb:217:50: info: division check proved, in instantiation at test_prime_and_coprime_numbers.adb:6
+prime_and_coprime_numbers.adb:218:18: info: division check proved, in instantiation at test_prime_and_coprime_numbers.adb:6
+prime_and_coprime_numbers.adb:222:10: info: only expected exception raised, in instantiation at test_prime_and_coprime_numbers.adb:6
+prime_and_coprime_numbers.adb:229:26: info: overflow check proved, in call inlined at prime_and_coprime_numbers.adb:326, in instantiation at test_prime_and_coprime_numbers.adb:6
+prime_and_coprime_numbers.adb:230:18: info: division check proved, in call inlined at prime_and_coprime_numbers.adb:326, in instantiation at test_prime_and_coprime_numbers.adb:6
+prime_and_coprime_numbers.adb:232:46: info: precondition proved, in call inlined at prime_and_coprime_numbers.adb:326, in instantiation at test_prime_and_coprime_numbers.adb:6
+prime_and_coprime_numbers.adb:233:48: info: division check proved, in call inlined at prime_and_coprime_numbers.adb:326, in instantiation at test_prime_and_coprime_numbers.adb:6
+prime_and_coprime_numbers.adb:233:48: info: range check proved, in call inlined at prime_and_coprime_numbers.adb:326, in instantiation at test_prime_and_coprime_numbers.adb:6
+prime_and_coprime_numbers.adb:234:48: info: division check proved, in call inlined at prime_and_coprime_numbers.adb:326, in instantiation at test_prime_and_coprime_numbers.adb:6
+prime_and_coprime_numbers.adb:234:48: info: range check proved, in call inlined at prime_and_coprime_numbers.adb:326, in instantiation at test_prime_and_coprime_numbers.adb:6
+prime_and_coprime_numbers.adb:235:49: info: division check proved, in call inlined at prime_and_coprime_numbers.adb:326, in instantiation at test_prime_and_coprime_numbers.adb:6
+prime_and_coprime_numbers.adb:235:49: info: range check proved, in call inlined at prime_and_coprime_numbers.adb:326, in instantiation at test_prime_and_coprime_numbers.adb:6
+prime_and_coprime_numbers.adb:236:55: info: division check proved, in call inlined at prime_and_coprime_numbers.adb:326, in instantiation at test_prime_and_coprime_numbers.adb:6
+prime_and_coprime_numbers.adb:236:55: info: range check proved, in call inlined at prime_and_coprime_numbers.adb:326, in instantiation at test_prime_and_coprime_numbers.adb:6
+prime_and_coprime_numbers.adb:238:34: info: assertion proved, in call inlined at prime_and_coprime_numbers.adb:326, in instantiation at test_prime_and_coprime_numbers.adb:6
+prime_and_coprime_numbers.adb:238:40: info: overflow check proved, in call inlined at prime_and_coprime_numbers.adb:326, in instantiation at test_prime_and_coprime_numbers.adb:6
+prime_and_coprime_numbers.adb:238:44: info: overflow check proved, in call inlined at prime_and_coprime_numbers.adb:326, in instantiation at test_prime_and_coprime_numbers.adb:6
+prime_and_coprime_numbers.adb:239:34: info: assertion proved, in call inlined at prime_and_coprime_numbers.adb:326, in instantiation at test_prime_and_coprime_numbers.adb:6
+prime_and_coprime_numbers.adb:239:41: info: overflow check proved, in call inlined at prime_and_coprime_numbers.adb:326, in instantiation at test_prime_and_coprime_numbers.adb:6
+prime_and_coprime_numbers.adb:240:34: info: assertion proved, in call inlined at prime_and_coprime_numbers.adb:326, in instantiation at test_prime_and_coprime_numbers.adb:6
+prime_and_coprime_numbers.adb:240:46: info: overflow check proved, in call inlined at prime_and_coprime_numbers.adb:326, in instantiation at test_prime_and_coprime_numbers.adb:6
+prime_and_coprime_numbers.adb:241:34: info: assertion proved, in call inlined at prime_and_coprime_numbers.adb:326, in instantiation at test_prime_and_coprime_numbers.adb:6
+prime_and_coprime_numbers.adb:241:40: info: overflow check proved, in call inlined at prime_and_coprime_numbers.adb:326, in instantiation at test_prime_and_coprime_numbers.adb:6
+prime_and_coprime_numbers.adb:241:46: info: overflow check proved, in call inlined at prime_and_coprime_numbers.adb:326, in instantiation at test_prime_and_coprime_numbers.adb:6
+prime_and_coprime_numbers.adb:241:51: info: overflow check proved, in call inlined at prime_and_coprime_numbers.adb:326, in instantiation at test_prime_and_coprime_numbers.adb:6
+prime_and_coprime_numbers.adb:242:34: info: assertion proved, in call inlined at prime_and_coprime_numbers.adb:326, in instantiation at test_prime_and_coprime_numbers.adb:6
+prime_and_coprime_numbers.adb:243:34: info: assertion proved, in call inlined at prime_and_coprime_numbers.adb:326, in instantiation at test_prime_and_coprime_numbers.adb:6
+prime_and_coprime_numbers.adb:247:16: info: assertion proved, in call inlined at prime_and_coprime_numbers.adb:326, in instantiation at test_prime_and_coprime_numbers.adb:6
+prime_and_coprime_numbers.adb:247:21: info: division check proved, in call inlined at prime_and_coprime_numbers.adb:326, in instantiation at test_prime_and_coprime_numbers.adb:6
+prime_and_coprime_numbers.adb:247:44: info: division check proved, in call inlined at prime_and_coprime_numbers.adb:326, in instantiation at test_prime_and_coprime_numbers.adb:6
+prime_and_coprime_numbers.adb:247:48: info: precondition proved, in call inlined at prime_and_coprime_numbers.adb:326, in instantiation at test_prime_and_coprime_numbers.adb:6
+prime_and_coprime_numbers.adb:249:16: info: loop invariant initialization proved, in call inlined at prime_and_coprime_numbers.adb:326, in instantiation at test_prime_and_coprime_numbers.adb:6
+prime_and_coprime_numbers.adb:249:16: info: loop invariant preservation proved, in call inlined at prime_and_coprime_numbers.adb:326, in instantiation at test_prime_and_coprime_numbers.adb:6
+prime_and_coprime_numbers.adb:249:36: info: overflow check proved, in call inlined at prime_and_coprime_numbers.adb:326, in instantiation at test_prime_and_coprime_numbers.adb:6
+prime_and_coprime_numbers.adb:250:24: info: division check proved, in call inlined at prime_and_coprime_numbers.adb:326, in instantiation at test_prime_and_coprime_numbers.adb:6
+prime_and_coprime_numbers.adb:250:47: info: division check proved, in call inlined at prime_and_coprime_numbers.adb:326, in instantiation at test_prime_and_coprime_numbers.adb:6
+prime_and_coprime_numbers.adb:250:51: info: precondition proved, in call inlined at prime_and_coprime_numbers.adb:326, in instantiation at test_prime_and_coprime_numbers.adb:6
+prime_and_coprime_numbers.adb:254:13: info: assertion proved, in call inlined at prime_and_coprime_numbers.adb:326, in instantiation at test_prime_and_coprime_numbers.adb:6
+prime_and_coprime_numbers.adb:254:33: info: overflow check proved, in call inlined at prime_and_coprime_numbers.adb:326, in instantiation at test_prime_and_coprime_numbers.adb:6
+prime_and_coprime_numbers.adb:255:21: info: division check proved, in call inlined at prime_and_coprime_numbers.adb:326, in instantiation at test_prime_and_coprime_numbers.adb:6
+prime_and_coprime_numbers.adb:255:44: info: division check proved, in call inlined at prime_and_coprime_numbers.adb:326, in instantiation at test_prime_and_coprime_numbers.adb:6
+prime_and_coprime_numbers.adb:255:48: info: precondition proved, in call inlined at prime_and_coprime_numbers.adb:326, in instantiation at test_prime_and_coprime_numbers.adb:6
+prime_and_coprime_numbers.adb:256:26: info: overflow check proved, in call inlined at prime_and_coprime_numbers.adb:326, in instantiation at test_prime_and_coprime_numbers.adb:6
+prime_and_coprime_numbers.adb:257:52: info: division check proved, in call inlined at prime_and_coprime_numbers.adb:326, in instantiation at test_prime_and_coprime_numbers.adb:6
+prime_and_coprime_numbers.adb:259:46: info: precondition proved, in call inlined at prime_and_coprime_numbers.adb:326, in instantiation at test_prime_and_coprime_numbers.adb:6
+prime_and_coprime_numbers.adb:261:34: info: assertion proved, in call inlined at prime_and_coprime_numbers.adb:326, in instantiation at test_prime_and_coprime_numbers.adb:6
+prime_and_coprime_numbers.adb:262:34: info: assertion proved, in call inlined at prime_and_coprime_numbers.adb:326, in instantiation at test_prime_and_coprime_numbers.adb:6
+prime_and_coprime_numbers.adb:262:36: info: division check proved, in call inlined at prime_and_coprime_numbers.adb:326, in instantiation at test_prime_and_coprime_numbers.adb:6
+prime_and_coprime_numbers.adb:263:34: info: assertion proved, in call inlined at prime_and_coprime_numbers.adb:326, in instantiation at test_prime_and_coprime_numbers.adb:6
+prime_and_coprime_numbers.adb:263:36: info: division check proved, in call inlined at prime_and_coprime_numbers.adb:326, in instantiation at test_prime_and_coprime_numbers.adb:6
+prime_and_coprime_numbers.adb:267:16: info: assertion proved, in call inlined at prime_and_coprime_numbers.adb:326, in instantiation at test_prime_and_coprime_numbers.adb:6
+prime_and_coprime_numbers.adb:267:55: info: division check proved, in call inlined at prime_and_coprime_numbers.adb:326, in instantiation at test_prime_and_coprime_numbers.adb:6
+prime_and_coprime_numbers.adb:268:23: info: division check proved, in call inlined at prime_and_coprime_numbers.adb:326, in instantiation at test_prime_and_coprime_numbers.adb:6
+prime_and_coprime_numbers.adb:270:16: info: loop invariant initialization proved, in call inlined at prime_and_coprime_numbers.adb:326, in instantiation at test_prime_and_coprime_numbers.adb:6
+prime_and_coprime_numbers.adb:270:16: info: loop invariant preservation proved, in call inlined at prime_and_coprime_numbers.adb:326, in instantiation at test_prime_and_coprime_numbers.adb:6
+prime_and_coprime_numbers.adb:270:36: info: overflow check proved, in call inlined at prime_and_coprime_numbers.adb:326, in instantiation at test_prime_and_coprime_numbers.adb:6
+prime_and_coprime_numbers.adb:271:58: info: division check proved, in call inlined at prime_and_coprime_numbers.adb:326, in instantiation at test_prime_and_coprime_numbers.adb:6
+prime_and_coprime_numbers.adb:272:26: info: division check proved, in call inlined at prime_and_coprime_numbers.adb:326, in instantiation at test_prime_and_coprime_numbers.adb:6
+prime_and_coprime_numbers.adb:275:13: info: assertion proved, in call inlined at prime_and_coprime_numbers.adb:326, in instantiation at test_prime_and_coprime_numbers.adb:6
+prime_and_coprime_numbers.adb:275:33: info: overflow check proved, in call inlined at prime_and_coprime_numbers.adb:326, in instantiation at test_prime_and_coprime_numbers.adb:6
+prime_and_coprime_numbers.adb:276:29: info: index check proved, in call inlined at prime_and_coprime_numbers.adb:326, in instantiation at test_prime_and_coprime_numbers.adb:6
+prime_and_coprime_numbers.adb:277:50: info: division check proved, in call inlined at prime_and_coprime_numbers.adb:326, in instantiation at test_prime_and_coprime_numbers.adb:6
+prime_and_coprime_numbers.adb:279:20: info: division check proved, in call inlined at prime_and_coprime_numbers.adb:326, in instantiation at test_prime_and_coprime_numbers.adb:6
+prime_and_coprime_numbers.adb:289:13: info: loop invariant initialization proved, in instantiation at test_prime_and_coprime_numbers.adb:6
+prime_and_coprime_numbers.adb:289:13: info: loop invariant preservation proved, in instantiation at test_prime_and_coprime_numbers.adb:6
+prime_and_coprime_numbers.adb:289:60: info: index check proved, in instantiation at test_prime_and_coprime_numbers.adb:6
+prime_and_coprime_numbers.adb:291:13: info: loop invariant initialization proved, in instantiation at test_prime_and_coprime_numbers.adb:6
+prime_and_coprime_numbers.adb:291:13: info: loop invariant preservation proved, in instantiation at test_prime_and_coprime_numbers.adb:6
+prime_and_coprime_numbers.adb:292:29: info: index check proved, in instantiation at test_prime_and_coprime_numbers.adb:6
+prime_and_coprime_numbers.adb:293:55: info: division check proved, in instantiation at test_prime_and_coprime_numbers.adb:6
+prime_and_coprime_numbers.adb:298:26: info: overflow check proved, in instantiation at test_prime_and_coprime_numbers.adb:6
+prime_and_coprime_numbers.adb:302:30: info: index check proved, in instantiation at test_prime_and_coprime_numbers.adb:6
+prime_and_coprime_numbers.adb:305:19: info: loop invariant initialization proved, in instantiation at test_prime_and_coprime_numbers.adb:6
+prime_and_coprime_numbers.adb:305:19: info: loop invariant preservation proved, in instantiation at test_prime_and_coprime_numbers.adb:6
+prime_and_coprime_numbers.adb:305:62: info: index check proved, in instantiation at test_prime_and_coprime_numbers.adb:6
+prime_and_coprime_numbers.adb:307:19: info: loop invariant initialization proved, in instantiation at test_prime_and_coprime_numbers.adb:6
+prime_and_coprime_numbers.adb:307:19: info: loop invariant preservation proved, in instantiation at test_prime_and_coprime_numbers.adb:6
+prime_and_coprime_numbers.adb:308:35: info: index check proved, in instantiation at test_prime_and_coprime_numbers.adb:6
+prime_and_coprime_numbers.adb:309:62: info: division check proved, in instantiation at test_prime_and_coprime_numbers.adb:6
+prime_and_coprime_numbers.adb:311:65: info: division check proved, in instantiation at test_prime_and_coprime_numbers.adb:6
+prime_and_coprime_numbers.adb:312:39: info: loop invariant initialization proved, in instantiation at test_prime_and_coprime_numbers.adb:6
+prime_and_coprime_numbers.adb:312:39: info: loop invariant preservation proved, in instantiation at test_prime_and_coprime_numbers.adb:6
+prime_and_coprime_numbers.adb:313:39: info: loop invariant initialization proved, in instantiation at test_prime_and_coprime_numbers.adb:6
+prime_and_coprime_numbers.adb:313:39: info: loop invariant preservation proved, in instantiation at test_prime_and_coprime_numbers.adb:6
+prime_and_coprime_numbers.adb:313:47: info: division check proved, in instantiation at test_prime_and_coprime_numbers.adb:6
+prime_and_coprime_numbers.adb:314:37: info: loop variant proved, in instantiation at test_prime_and_coprime_numbers.adb:6
+prime_and_coprime_numbers.adb:315:35: info: overflow check proved, in instantiation at test_prime_and_coprime_numbers.adb:6
+prime_and_coprime_numbers.adb:316:31: info: assertion proved, in instantiation at test_prime_and_coprime_numbers.adb:6
+prime_and_coprime_numbers.adb:316:39: info: division check proved, in instantiation at test_prime_and_coprime_numbers.adb:6
+prime_and_coprime_numbers.adb:316:62: info: overflow check proved, in instantiation at test_prime_and_coprime_numbers.adb:6
+prime_and_coprime_numbers.adb:316:73: info: division check proved, in instantiation at test_prime_and_coprime_numbers.adb:6
+prime_and_coprime_numbers.adb:320:16: info: assertion proved, in instantiation at test_prime_and_coprime_numbers.adb:6
+prime_and_coprime_numbers.adb:321:32: info: index check proved, in instantiation at test_prime_and_coprime_numbers.adb:6
+prime_and_coprime_numbers.adb:322:57: info: division check proved, in instantiation at test_prime_and_coprime_numbers.adb:6
+prime_and_coprime_numbers.adb:324:23: info: division check proved, in instantiation at test_prime_and_coprime_numbers.adb:6
 prime_and_coprime_numbers.ads:8:24: info: initialization of "P.Prime_Data" proved, in instantiation at test_prime_and_coprime_numbers.adb:6
 prime_and_coprime_numbers.ads:9:03: info: flow dependencies proved, in instantiation at test_prime_and_coprime_numbers.adb:6
 prime_and_coprime_numbers.ads:10:03: info: initial condition proved, in instantiation at test_prime_and_coprime_numbers.adb:6
@@ -174,63 +173,64 @@ prime_and_coprime_numbers.ads:34:35: info: division check proved, in instantiati
 prime_and_coprime_numbers.ads:37:13: info: implicit aspect Always_Terminates on "Has_True" has been proved, subprogram will terminate, in instantiation at test_prime_and_coprime_numbers.adb:6
 prime_and_coprime_numbers.ads:40:50: info: index check proved, in instantiation at test_prime_and_coprime_numbers.adb:6
 prime_and_coprime_numbers.ads:45:13: info: implicit aspect Always_Terminates on "Has_Prime" has been proved, subprogram will terminate, in instantiation at test_prime_and_coprime_numbers.adb:6
-prime_and_coprime_numbers.ads:51:13: info: implicit aspect Always_Terminates on "Initialize_Coprime_List" has been proved, subprogram will terminate, in instantiation at test_prime_and_coprime_numbers.adb:6
-prime_and_coprime_numbers.ads:57:09: info: postcondition proved, in instantiation at test_prime_and_coprime_numbers.adb:6
-prime_and_coprime_numbers.ads:60:13: info: implicit aspect Always_Terminates on "Nearest_Number" has been proved, subprogram will terminate, in instantiation at test_prime_and_coprime_numbers.adb:6
-prime_and_coprime_numbers.ads:68:37: info: precondition proved, in instantiation at test_prime_and_coprime_numbers.adb:6
-prime_and_coprime_numbers.ads:69:37: info: precondition proved, in instantiation at test_prime_and_coprime_numbers.adb:6
+prime_and_coprime_numbers.ads:46:46: info: range check proved, in instantiation at test_prime_and_coprime_numbers.adb:6
+prime_and_coprime_numbers.ads:53:13: info: implicit aspect Always_Terminates on "Initialize_Coprime_List" has been proved, subprogram will terminate, in instantiation at test_prime_and_coprime_numbers.adb:6
+prime_and_coprime_numbers.ads:59:09: info: postcondition proved, in instantiation at test_prime_and_coprime_numbers.adb:6
+prime_and_coprime_numbers.ads:62:13: info: implicit aspect Always_Terminates on "Nearest_Number" has been proved, subprogram will terminate, in instantiation at test_prime_and_coprime_numbers.adb:6
 prime_and_coprime_numbers.ads:70:37: info: precondition proved, in instantiation at test_prime_and_coprime_numbers.adb:6
-prime_and_coprime_numbers.ads:71:14: info: postcondition proved, in instantiation at test_prime_and_coprime_numbers.adb:6
-prime_and_coprime_numbers.ads:72:44: info: index check proved, in instantiation at test_prime_and_coprime_numbers.adb:6
-prime_and_coprime_numbers.ads:73:06: info: complete contract cases proved, in instantiation at test_prime_and_coprime_numbers.adb:6
-prime_and_coprime_numbers.ads:73:06: info: disjoint contract cases proved, in instantiation at test_prime_and_coprime_numbers.adb:6
-prime_and_coprime_numbers.ads:77:22: info: index check proved, in instantiation at test_prime_and_coprime_numbers.adb:6
-prime_and_coprime_numbers.ads:77:36: info: contract case proved, in instantiation at test_prime_and_coprime_numbers.adb:6
-prime_and_coprime_numbers.ads:82:22: info: index check proved, in instantiation at test_prime_and_coprime_numbers.adb:6
-prime_and_coprime_numbers.ads:82:51: info: contract case proved, in instantiation at test_prime_and_coprime_numbers.adb:6
-prime_and_coprime_numbers.ads:85:36: info: index check proved, in instantiation at test_prime_and_coprime_numbers.adb:6
-prime_and_coprime_numbers.ads:90:22: info: index check proved, in instantiation at test_prime_and_coprime_numbers.adb:6
-prime_and_coprime_numbers.ads:90:53: info: contract case proved, in instantiation at test_prime_and_coprime_numbers.adb:6
-prime_and_coprime_numbers.ads:92:56: info: overflow check proved, in instantiation at test_prime_and_coprime_numbers.adb:6
-prime_and_coprime_numbers.ads:93:36: info: index check proved, in instantiation at test_prime_and_coprime_numbers.adb:6
-prime_and_coprime_numbers.ads:98:22: info: index check proved, in instantiation at test_prime_and_coprime_numbers.adb:6
-prime_and_coprime_numbers.ads:98:57: info: contract case proved, in instantiation at test_prime_and_coprime_numbers.adb:6
-prime_and_coprime_numbers.ads:99:66: info: overflow check proved, in instantiation at test_prime_and_coprime_numbers.adb:6
-prime_and_coprime_numbers.ads:99:79: info: overflow check proved, in instantiation at test_prime_and_coprime_numbers.adb:6
-prime_and_coprime_numbers.ads:99:104: info: overflow check proved, in instantiation at test_prime_and_coprime_numbers.adb:6
-prime_and_coprime_numbers.ads:100:27: info: index check proved, in instantiation at test_prime_and_coprime_numbers.adb:6
-prime_and_coprime_numbers.ads:102:74: info: overflow check proved, in instantiation at test_prime_and_coprime_numbers.adb:6
-prime_and_coprime_numbers.ads:102:87: info: overflow check proved, in instantiation at test_prime_and_coprime_numbers.adb:6
-prime_and_coprime_numbers.ads:103:27: info: index check proved, in instantiation at test_prime_and_coprime_numbers.adb:6
-prime_and_coprime_numbers.ads:105:13: info: implicit aspect Always_Terminates on "Nearest_Prime_Number" has been proved, subprogram will terminate, in instantiation at test_prime_and_coprime_numbers.adb:6
-prime_and_coprime_numbers.ads:110:06: info: data dependencies proved, in instantiation at test_prime_and_coprime_numbers.adb:6
-prime_and_coprime_numbers.ads:117:16: info: postcondition proved, in instantiation at test_prime_and_coprime_numbers.adb:6
-prime_and_coprime_numbers.ads:119:06: info: complete contract cases proved, in instantiation at test_prime_and_coprime_numbers.adb:6
-prime_and_coprime_numbers.ads:119:06: info: disjoint contract cases proved, in instantiation at test_prime_and_coprime_numbers.adb:6
-prime_and_coprime_numbers.ads:123:26: info: contract case proved, in instantiation at test_prime_and_coprime_numbers.adb:6
-prime_and_coprime_numbers.ads:128:44: info: contract case proved, in instantiation at test_prime_and_coprime_numbers.adb:6
-prime_and_coprime_numbers.ads:131:37: info: range check proved, in instantiation at test_prime_and_coprime_numbers.adb:6
-prime_and_coprime_numbers.ads:136:46: info: contract case proved, in instantiation at test_prime_and_coprime_numbers.adb:6
-prime_and_coprime_numbers.ads:138:62: info: overflow check proved, in instantiation at test_prime_and_coprime_numbers.adb:6
-prime_and_coprime_numbers.ads:139:37: info: range check proved, in instantiation at test_prime_and_coprime_numbers.adb:6
-prime_and_coprime_numbers.ads:144:50: info: contract case proved, in instantiation at test_prime_and_coprime_numbers.adb:6
-prime_and_coprime_numbers.ads:145:71: info: overflow check proved, in instantiation at test_prime_and_coprime_numbers.adb:6
-prime_and_coprime_numbers.ads:145:84: info: overflow check proved, in instantiation at test_prime_and_coprime_numbers.adb:6
-prime_and_coprime_numbers.ads:145:115: info: overflow check proved, in instantiation at test_prime_and_coprime_numbers.adb:6
-prime_and_coprime_numbers.ads:146:28: info: range check proved, in instantiation at test_prime_and_coprime_numbers.adb:6
-prime_and_coprime_numbers.ads:148:79: info: overflow check proved, in instantiation at test_prime_and_coprime_numbers.adb:6
-prime_and_coprime_numbers.ads:148:92: info: overflow check proved, in instantiation at test_prime_and_coprime_numbers.adb:6
-prime_and_coprime_numbers.ads:149:28: info: range check proved, in instantiation at test_prime_and_coprime_numbers.adb:6
+prime_and_coprime_numbers.ads:71:37: info: precondition proved, in instantiation at test_prime_and_coprime_numbers.adb:6
+prime_and_coprime_numbers.ads:72:37: info: precondition proved, in instantiation at test_prime_and_coprime_numbers.adb:6
+prime_and_coprime_numbers.ads:73:14: info: postcondition proved, in instantiation at test_prime_and_coprime_numbers.adb:6
+prime_and_coprime_numbers.ads:74:44: info: index check proved, in instantiation at test_prime_and_coprime_numbers.adb:6
+prime_and_coprime_numbers.ads:75:06: info: complete contract cases proved, in instantiation at test_prime_and_coprime_numbers.adb:6
+prime_and_coprime_numbers.ads:75:06: info: disjoint contract cases proved, in instantiation at test_prime_and_coprime_numbers.adb:6
+prime_and_coprime_numbers.ads:79:22: info: index check proved, in instantiation at test_prime_and_coprime_numbers.adb:6
+prime_and_coprime_numbers.ads:79:36: info: contract case proved, in instantiation at test_prime_and_coprime_numbers.adb:6
+prime_and_coprime_numbers.ads:84:22: info: index check proved, in instantiation at test_prime_and_coprime_numbers.adb:6
+prime_and_coprime_numbers.ads:84:51: info: contract case proved, in instantiation at test_prime_and_coprime_numbers.adb:6
+prime_and_coprime_numbers.ads:87:36: info: index check proved, in instantiation at test_prime_and_coprime_numbers.adb:6
+prime_and_coprime_numbers.ads:92:22: info: index check proved, in instantiation at test_prime_and_coprime_numbers.adb:6
+prime_and_coprime_numbers.ads:92:53: info: contract case proved, in instantiation at test_prime_and_coprime_numbers.adb:6
+prime_and_coprime_numbers.ads:94:56: info: overflow check proved, in instantiation at test_prime_and_coprime_numbers.adb:6
+prime_and_coprime_numbers.ads:95:36: info: index check proved, in instantiation at test_prime_and_coprime_numbers.adb:6
+prime_and_coprime_numbers.ads:100:22: info: index check proved, in instantiation at test_prime_and_coprime_numbers.adb:6
+prime_and_coprime_numbers.ads:100:57: info: contract case proved, in instantiation at test_prime_and_coprime_numbers.adb:6
+prime_and_coprime_numbers.ads:101:66: info: overflow check proved, in instantiation at test_prime_and_coprime_numbers.adb:6
+prime_and_coprime_numbers.ads:101:79: info: overflow check proved, in instantiation at test_prime_and_coprime_numbers.adb:6
+prime_and_coprime_numbers.ads:101:104: info: overflow check proved, in instantiation at test_prime_and_coprime_numbers.adb:6
+prime_and_coprime_numbers.ads:102:27: info: index check proved, in instantiation at test_prime_and_coprime_numbers.adb:6
+prime_and_coprime_numbers.ads:104:74: info: overflow check proved, in instantiation at test_prime_and_coprime_numbers.adb:6
+prime_and_coprime_numbers.ads:104:87: info: overflow check proved, in instantiation at test_prime_and_coprime_numbers.adb:6
+prime_and_coprime_numbers.ads:105:27: info: index check proved, in instantiation at test_prime_and_coprime_numbers.adb:6
+prime_and_coprime_numbers.ads:107:13: info: implicit aspect Always_Terminates on "Nearest_Prime_Number" has been proved, subprogram will terminate, in instantiation at test_prime_and_coprime_numbers.adb:6
+prime_and_coprime_numbers.ads:112:06: info: data dependencies proved, in instantiation at test_prime_and_coprime_numbers.adb:6
+prime_and_coprime_numbers.ads:119:16: info: postcondition proved, in instantiation at test_prime_and_coprime_numbers.adb:6
+prime_and_coprime_numbers.ads:121:06: info: complete contract cases proved, in instantiation at test_prime_and_coprime_numbers.adb:6
+prime_and_coprime_numbers.ads:121:06: info: disjoint contract cases proved, in instantiation at test_prime_and_coprime_numbers.adb:6
+prime_and_coprime_numbers.ads:125:26: info: contract case proved, in instantiation at test_prime_and_coprime_numbers.adb:6
+prime_and_coprime_numbers.ads:130:44: info: contract case proved, in instantiation at test_prime_and_coprime_numbers.adb:6
+prime_and_coprime_numbers.ads:133:37: info: range check proved, in instantiation at test_prime_and_coprime_numbers.adb:6
+prime_and_coprime_numbers.ads:138:46: info: contract case proved, in instantiation at test_prime_and_coprime_numbers.adb:6
+prime_and_coprime_numbers.ads:140:62: info: overflow check proved, in instantiation at test_prime_and_coprime_numbers.adb:6
+prime_and_coprime_numbers.ads:141:37: info: range check proved, in instantiation at test_prime_and_coprime_numbers.adb:6
+prime_and_coprime_numbers.ads:146:50: info: contract case proved, in instantiation at test_prime_and_coprime_numbers.adb:6
+prime_and_coprime_numbers.ads:147:71: info: overflow check proved, in instantiation at test_prime_and_coprime_numbers.adb:6
+prime_and_coprime_numbers.ads:147:84: info: overflow check proved, in instantiation at test_prime_and_coprime_numbers.adb:6
+prime_and_coprime_numbers.ads:147:115: info: overflow check proved, in instantiation at test_prime_and_coprime_numbers.adb:6
+prime_and_coprime_numbers.ads:148:28: info: range check proved, in instantiation at test_prime_and_coprime_numbers.adb:6
+prime_and_coprime_numbers.ads:150:79: info: overflow check proved, in instantiation at test_prime_and_coprime_numbers.adb:6
+prime_and_coprime_numbers.ads:150:92: info: overflow check proved, in instantiation at test_prime_and_coprime_numbers.adb:6
+prime_and_coprime_numbers.ads:151:28: info: range check proved, in instantiation at test_prime_and_coprime_numbers.adb:6
 test_prime_and_coprime_numbers.adb:6:04: info: add a contract to analyze it separately from calling contexts
 test_prime_and_coprime_numbers.adb:6:04: info: analyzing call to "Prove_Index_2_Not_Prime" in context
 test_prime_and_coprime_numbers.adb:6:04: info: function contract might not be available on calls from enclosing unit
 test_prime_and_coprime_numbers.adb:6:04: info: function contract might not be available on calls from enclosing unit
 test_prime_and_coprime_numbers.adb:6:04: info: function contract might not be available on implicit recursive calls
-test_prime_and_coprime_numbers.adb:6:04: info: in instantiation at prime_and_coprime_numbers.adb:209
-test_prime_and_coprime_numbers.adb:6:04: info: in instantiation at prime_and_coprime_numbers.adb:228
-test_prime_and_coprime_numbers.adb:6:04: info: in instantiation at prime_and_coprime_numbers.adb:29
-test_prime_and_coprime_numbers.adb:6:04: info: in instantiation at prime_and_coprime_numbers.adb:329
-test_prime_and_coprime_numbers.adb:6:04: info: in instantiation at prime_and_coprime_numbers.ads:51
+test_prime_and_coprime_numbers.adb:6:04: info: in instantiation at prime_and_coprime_numbers.adb:206
+test_prime_and_coprime_numbers.adb:6:04: info: in instantiation at prime_and_coprime_numbers.adb:225
+test_prime_and_coprime_numbers.adb:6:04: info: in instantiation at prime_and_coprime_numbers.adb:26
+test_prime_and_coprime_numbers.adb:6:04: info: in instantiation at prime_and_coprime_numbers.adb:326
+test_prime_and_coprime_numbers.adb:6:04: info: in instantiation at prime_and_coprime_numbers.ads:53
 test_prime_and_coprime_numbers.adb:6:04: info: local subprogram "Prove_Index_2_Not_Prime" only analyzed in the context of calls
 test_prime_and_coprime_numbers.adb:9:04: info: initialization of "Coprimes" proved
 test_prime_and_coprime_numbers.adb:12:15: info: precondition proved

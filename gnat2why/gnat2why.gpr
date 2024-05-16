@@ -26,7 +26,7 @@ project GNAT2Why is
       for Switches ("analyze") use ("-j0", "--no-gnatcheck");
       for Switches ("infer") use ("--disable-issue-type", "MEMORY_LEAK_ADA");
       for Switches ("inspector") use ("--legacy-level", "1", "-gnatws");
-      for Switches ("report text") use ("--show=kind=check+warning-suspicious_constant_operation");
+      for Switches ("report text") use ("--show=kind=check+warning-suspicious_constant_operation", "--show-backtraces");
 
       for Excluded_Source_Dirs use ("gnat_src");
 
@@ -44,6 +44,8 @@ project GNAT2Why is
          --  Exclude generated frontend files
          "obj/einfo-entities.adb",
          "obj/sinfo-nodes.adb");
+
+      for Review_File use "analyzer/gnat2why.sar";
 
    end Analyzer;
 

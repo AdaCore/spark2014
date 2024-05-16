@@ -899,7 +899,8 @@ package body Gnat2Why.Util is
    function Get_Graph_Closure
      (Map    : Why_Node_Graphs.Map;
       From   : Why_Node_Sets.Set;
-      Filter : Why_Node_Sets.Set := Why_Node_Sets.Empty)
+      Filter : Why_Node_Sets.Set := Why_Node_Sets.Empty;
+      Mask   : Why_Node_Maps.Map := Why_Node_Maps.Empty)
       return Why_Node_Sets.Set
    is
       use Why_Node_Sets;
@@ -922,15 +923,26 @@ package body Gnat2Why.Util is
 
          if Why_Node_Graphs.Has_Element (Cur_Ptr) then
             for N of Map (Cur_Ptr) loop
-               if not Filter.Contains (N) then
-                  Result.Insert (New_Item => N,
-                                 Position => Ignored,
-                                 Inserted => Inserted);
+               declare
+                  use Why_Node_Maps;
+                  Mask_Cu : constant Why_Node_Maps.Cursor :=
+                    Mask.Find (N);
+                  Mask_N  : constant Why_Node_Id :=
+                    (if Has_Element (Mask_Cu) then Element (Mask_Cu)
+                     else N);
+               begin
+                  if Mask_N /= Why_Empty
+                    and then not Filter.Contains (Mask_N)
+                  then
+                     Result.Insert (New_Item => Mask_N,
+                                    Position => Ignored,
+                                    Inserted => Inserted);
 
-                  if Inserted then
-                     Work_Set.Include (N);
+                     if Inserted then
+                        Work_Set.Include (Mask_N);
+                     end if;
                   end if;
-               end if;
+               end;
             end loop;
          end if;
 
@@ -1266,7 +1278,10 @@ package body Gnat2Why.Util is
    function Is_Range_Type_In_Why (T : Type_Kind_Id) return Boolean is
       Ty : constant Type_Kind_Id := Retysp (T);
    begin
-      return Is_Signed_Integer_Type (Ty)
+      return (Is_Signed_Integer_Type (Ty)
+                or else
+             (Is_Modular_Integer_Type (Ty)
+                and then Has_No_Bitwise_Operations_Annotation (Ty)))
         and then not Type_Is_Modeled_As_Base (Ty);
    end Is_Range_Type_In_Why;
 

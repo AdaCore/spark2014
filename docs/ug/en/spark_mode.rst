@@ -171,23 +171,26 @@ For example:
 
   project My_Project is
 
-    type Modes is ("Compile", "Analyze");
-    Mode : Modes := External ("MODE", "Compile");
+    Mode := External ("GPR_TOOL", "");
 
     case Mode is
-       when "Compile" =>
-          for Source_Dirs use (...);
-       when "Analyze" =>
+       when "gnatprove" =>
           for Source_Dirs use ("dir1", "dir2");
           for Source_Files use ("file1.ads", "file2.ads", "file1.adb", "file2.adb");
+       when others =>
+          for Source_Dirs use (...);
     end case;
 
+    package Compiler is
+       case Mode is
+          when "gnatprove" =>
+             for Switches ("Ada") use ...
+          when others =>
+             for Switches ("Ada") use ...
+       end case;
+    end Compiler;
+
   end My_Project;
-
-Then, |GNATprove| should be called by specifying the value of the ``MODE``
-external variable as follows::
-
-  gnatprove -P my_project -XMODE=Analyze
 
 Excluding Files From Analysis
 -----------------------------
@@ -212,22 +215,16 @@ For example:
         for Global_Configuration_Pragmas use "spark.adc";
      end Builder;
 
-    type Modes is ("Compile", "Analyze");
-    Mode : Modes := External ("MODE", "Compile");
+    Mode := External ("GPR_TOOL", "");
 
     case Mode is
-       when "Compile" =>
-          null;
-       when "Analyze" =>
+       when "gnatprove" =>
           for Excluded_Source_Files use ("file1.ads", "file1.adb", "file2.adb");
+       when others =>
+          null;
     end case;
 
   end My_Project;
-
-Then, |GNATprove| should be called by specifying the value of the ``MODE``
-external variable as follows::
-
-  gnatprove -P my_project -XMODE=Analyze
 
 Using Multiple Projects
 -----------------------

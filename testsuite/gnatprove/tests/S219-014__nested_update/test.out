@@ -1,22 +1,22 @@
-generic_ring_buffer.adb:27:24: info: range check proved (CVC5: 2 VC), in instantiation at tester.adb:10
-generic_ring_buffer.adb:33:28: info: index check proved (CVC5: 2 VC), in instantiation at tester.adb:10
-generic_ring_buffer.adb:39:28: info: index check proved (CVC5: 2 VC), in instantiation at tester.adb:10
-generic_ring_buffer.adb:48:38: info: index check proved (CVC5: 2 VC), in instantiation at tester.adb:10
-generic_ring_buffer.adb:50:14: info: discriminant check proved (CVC5: 1 VC), in instantiation at tester.adb:10
-generic_ring_buffer.adb:50:23: info: predicate check proved (CVC5: 5 VC), in instantiation at tester.adb:10
-generic_ring_buffer.adb:51:76: info: range check proved (CVC5: 2 VC), in instantiation at tester.adb:10
-generic_ring_buffer.adb:52:33: info: range check proved (CVC5: 2 VC), in instantiation at tester.adb:10
-generic_ring_buffer.adb:61:14: info: discriminant check proved (CVC5: 1 VC), in instantiation at tester.adb:10
-generic_ring_buffer.adb:61:23: info: predicate check proved (CVC5: 5 VC), in instantiation at tester.adb:10
-generic_ring_buffer.adb:62:76: info: range check proved (CVC5: 2 VC), in instantiation at tester.adb:10
-generic_ring_buffer.adb:63:32: info: range check proved (CVC5: 2 VC), in instantiation at tester.adb:10
-generic_ring_buffer.adb:64:25: info: length check proved (CVC5: 3 VC; Trivial: 1 VC), in instantiation at tester.adb:10
-generic_ring_buffer.adb:64:31: info: length check proved (CVC5: 3 VC; Trivial: 1 VC), in instantiation at tester.adb:10
-generic_ring_buffer.adb:65:14: info: index check proved (CVC5: 2 VC), in instantiation at tester.adb:10
-generic_ring_buffer.adb:65:52: info: range check proved (CVC5: 2 VC), in instantiation at tester.adb:10
-generic_ring_buffer.adb:65:71: info: range check proved (CVC5: 2 VC), in instantiation at tester.adb:10
-generic_ring_buffer.adb:73:14: info: discriminant check proved (CVC5: 1 VC), in instantiation at tester.adb:10
-generic_ring_buffer.adb:73:23: info: predicate check proved (CVC5: 5 VC), in instantiation at tester.adb:10
+generic_ring_buffer.adb:10:24: info: range check proved (CVC5: 2 VC), in instantiation at tester.adb:10
+generic_ring_buffer.adb:16:28: info: index check proved (CVC5: 2 VC), in instantiation at tester.adb:10
+generic_ring_buffer.adb:22:28: info: index check proved (CVC5: 2 VC), in instantiation at tester.adb:10
+generic_ring_buffer.adb:31:38: info: index check proved (CVC5: 2 VC), in instantiation at tester.adb:10
+generic_ring_buffer.adb:33:14: info: discriminant check proved (CVC5: 1 VC), in instantiation at tester.adb:10
+generic_ring_buffer.adb:33:23: info: predicate check proved (CVC5: 5 VC), in instantiation at tester.adb:10
+generic_ring_buffer.adb:34:76: info: range check proved (CVC5: 2 VC), in instantiation at tester.adb:10
+generic_ring_buffer.adb:35:33: info: range check proved (CVC5: 2 VC), in instantiation at tester.adb:10
+generic_ring_buffer.adb:44:14: info: discriminant check proved (CVC5: 1 VC), in instantiation at tester.adb:10
+generic_ring_buffer.adb:44:23: info: predicate check proved (CVC5: 5 VC), in instantiation at tester.adb:10
+generic_ring_buffer.adb:45:76: info: range check proved (CVC5: 2 VC), in instantiation at tester.adb:10
+generic_ring_buffer.adb:46:32: info: range check proved (CVC5: 2 VC), in instantiation at tester.adb:10
+generic_ring_buffer.adb:47:25: info: length check proved (CVC5: 3 VC; Trivial: 1 VC), in instantiation at tester.adb:10
+generic_ring_buffer.adb:47:31: info: length check proved (CVC5: 3 VC; Trivial: 1 VC), in instantiation at tester.adb:10
+generic_ring_buffer.adb:48:14: info: index check proved (CVC5: 2 VC), in instantiation at tester.adb:10
+generic_ring_buffer.adb:48:52: info: range check proved (CVC5: 2 VC), in instantiation at tester.adb:10
+generic_ring_buffer.adb:48:71: info: range check proved (CVC5: 2 VC), in instantiation at tester.adb:10
+generic_ring_buffer.adb:56:14: info: discriminant check proved (CVC5: 1 VC), in instantiation at tester.adb:10
+generic_ring_buffer.adb:56:23: info: predicate check proved (CVC5: 5 VC), in instantiation at tester.adb:10
 generic_ring_buffer.ads:23:07: info: range check proved (CVC5: 2 VC), in instantiation at tester.adb:10
 generic_ring_buffer.ads:39:15: info: implicit aspect Always_Terminates on "Empty" has been proved, subprogram will terminate, in instantiation at tester.adb:10
 generic_ring_buffer.ads:44:15: info: implicit aspect Always_Terminates on "Full" has been proved, subprogram will terminate, in instantiation at tester.adb:10

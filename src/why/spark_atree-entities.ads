@@ -196,6 +196,8 @@ package SPARK_Atree.Entities is
      EE.E_Incomplete_Type;
    E_Label                       : Entity_Kind renames
      EE.E_Label;
+   E_Limited_Private_Type        : Entity_Kind renames
+     EE.E_Limited_Private_Type;
    E_Loop_Parameter              : Entity_Kind renames
      EE.E_Loop_Parameter;
    E_Loop                        : Entity_Kind renames
@@ -226,6 +228,8 @@ package SPARK_Atree.Entities is
      EE.E_Record_Subtype_With_Private;
    E_Record_Type                 : Entity_Kind renames
      EE.E_Record_Type;
+   E_Record_Type_With_Private    : Entity_Kind renames
+     EE.E_Record_Type_With_Private;
    E_String_Literal_Subtype      : Entity_Kind renames
      EE.E_String_Literal_Subtype;
    E_Subprogram_Body             : Entity_Kind renames
@@ -438,6 +442,9 @@ package SPARK_Atree.Entities is
    function Has_DIC (Typ : Type_Kind_Id) return Boolean;
 
    function Has_Predicates (Typ : Type_Kind_Id) return Boolean;
+
+   function Has_Unknown_Discriminants (Typ : Type_Kind_Id) return Boolean
+     renames Einfo.Entities.Has_Unknown_Discriminants;
 
    function Invariant_Procedure (Typ : Type_Kind_Id) return Opt_E_Procedure_Id
      with Post =>

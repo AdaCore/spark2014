@@ -102,6 +102,24 @@ is
 
      ----------------------------------------------------------------------------
 
+private
+
+   function Empty
+     (Buffer : in Ring_Buffer_Type)
+     return Boolean
+   is (Size (Buffer) = 0);
+
+
+   function Full
+     (Buffer : in Ring_Buffer_Type)
+     return Boolean
+   is (Size (Buffer) = Buffer.Max_Size);
+
+
+   function Size
+     (Buffer : in Ring_Buffer_Type)
+     return Natural
+   is (Buffer.Count);
 
 
 end Generic_Ring_Buffer;

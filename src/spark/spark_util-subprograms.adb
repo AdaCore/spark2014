@@ -198,6 +198,21 @@ package body SPARK_Util.Subprograms is
       end if;
    end Compatible_Variants;
 
+   ---------------------------------
+   -- Completion_Deferred_To_Body --
+   ---------------------------------
+
+   function Completion_Deferred_To_Body
+     (E : Subprogram_Kind_Id) return Boolean
+   is
+     ((Ekind (Scope (E)) = E_Package
+      and then Present (Subprogram_Body (E))
+      and then Nkind (Parent (Subprogram_Body (E))) = N_Package_Body)
+      or else
+        (Ekind (Scope (E)) = E_Protected_Type
+         and then Present (Subprogram_Body (E))
+         and then Nkind (Parent (Subprogram_Body (E))) = N_Protected_Body));
+
    -------------------------------
    -- Containing_Protected_Type --
    -------------------------------
@@ -913,6 +928,16 @@ package body SPARK_Util.Subprograms is
    function Has_Extensions_Visible (E : Entity_Id) return Boolean is
      (Present (Get_Pragma (E, Pragma_Extensions_Visible)));
 
+   --------------------
+   -- Has_Refinement --
+   --------------------
+
+   function Has_Refinement (E : Callable_Kind_Id) return Boolean is
+     ((Entity_Body_In_SPARK (E)
+      and then Has_Contracts (E, Pragma_Refined_Post))
+      or else (Is_Expression_Function_Or_Completion (E)
+        and then Completion_Deferred_To_Body (E)));
+
    ----------------------------
    -- Has_Subprogram_Variant --
    ----------------------------
@@ -933,6 +958,53 @@ package body SPARK_Util.Subprograms is
         or else
       Is_Null_Procedure (E)
      );
+
+   -------------------------------
+   -- Has_Visibility_On_Refined --
+   -------------------------------
+
+   function Has_Visibility_On_Refined
+     (From : Entity_Id;
+      Subp : Callable_Kind_Id)
+      return Boolean
+   is
+      Subp_Scop : Entity_Id := Enclosing_Unit (Subp);
+      Curr      : Entity_Id := From;
+   begin
+      pragma Assert (Present (Subp_Scop));
+
+      --  For visible package bodies, go to the enclosing unit, as it has
+      --  visibility.
+
+      while Ekind (Subp_Scop) = E_Package
+        and then Has_Visible_Package_Body (Subp_Scop)
+      loop
+         Subp_Scop := Enclosing_Unit (Subp_Scop);
+      end loop;
+
+      --  Return True if From is inside Subp_Scop
+
+      while Present (Curr) loop
+         if Curr = Subp_Scop then
+            return True;
+         end if;
+
+         Curr := Scope (Curr);
+      end loop;
+
+      return False;
+   end Has_Visibility_On_Refined;
+
+   ------------------------------------
+   -- Has_Visibility_On_Refined_Expr --
+   ------------------------------------
+
+   function Has_Visibility_On_Refined_Expr
+     (Expr : Node_Id;
+      Subp : Callable_Kind_Id)
+      return Boolean
+   is
+    (Has_Visibility_On_Refined (Get_Flow_Scope (Expr).Ent, Subp));
 
    ----------------------------
    -- Is_Allocating_Function --

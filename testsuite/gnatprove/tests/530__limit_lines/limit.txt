@@ -1,0 +1,4 @@
+main.adb:5
+ main.adb:7
+a.adb:5:10:VC_OVERFLOW_CHECK
+a.adb:7:10:VC_OVERFLOW_CHECK

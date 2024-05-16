@@ -3793,45 +3793,53 @@ package body Flow_Error_Messages is
    -----------------------
 
    function Is_Specified_Line (Slc : Source_Ptr) return Boolean is
-      Result : Boolean := True;
    begin
-      if Gnat2Why_Args.Limit_Line /= Null_Unbounded_String then
-         declare
-            File : constant String := File_Name (Slc);
-            Line : constant Physical_Line_Number :=
-              Get_Physical_Line_Number (Slc);
-         begin
-            Result := To_String (Gnat2Why_Args.Limit_Line) =
-              File & ":" & Image (Value => Positive (Line), Min_Width => 1);
-         end;
+      if Gnat2Why_Args.Limit_Lines.Is_Empty
+        and then Gnat2Why_Args.Limit_Region = Null_Unbounded_String
+      then
+         return True;
       end if;
 
-      if Gnat2Why_Args.Limit_Region /= Null_Unbounded_String then
-         declare
-            File            : constant String := File_Name (Slc);
-            Line            : constant Physical_Line_Number :=
-              Get_Physical_Line_Number (Slc);
-            Fst_Colon_Index : constant Natural :=
-              Index (Source  => Limit_Region,
-                     Pattern => ":");
-            Snd_Colon_Index : constant Natural :=
-              Index (Source  => Limit_Region,
-                     Pattern => ":",
-                     From => Fst_Colon_Index + 1);
-         begin
-            Result := Result
-              and then File = Slice (Limit_Region, 1, Fst_Colon_Index - 1)
-              and then Positive (Line) in
-                  Integer'Value (Slice (Limit_Region,
-                                        Fst_Colon_Index + 1,
-                                        Snd_Colon_Index - 1))
-                  .. Integer'Value (Slice (Limit_Region,
-                                           Snd_Colon_Index + 1,
-                                           Length (Limit_Region)));
-         end;
-      end if;
+      declare
+         File : constant String := File_Name (Slc);
+         Line : constant Physical_Line_Number :=
+           Get_Physical_Line_Number (Slc);
+      begin
 
-      return Result;
+         for Line_Spec of Gnat2Why_Args.Limit_Lines loop
+            if Line_Spec =
+              File & ":" & Image (Value => Positive (Line), Min_Width => 1)
+            then
+               return True;
+            end if;
+         end loop;
+
+         if Gnat2Why_Args.Limit_Region /= Null_Unbounded_String then
+            declare
+               Fst_Colon_Index : constant Natural :=
+                 Index (Source  => Limit_Region,
+                        Pattern => ":");
+               Snd_Colon_Index : constant Natural :=
+                 Index (Source  => Limit_Region,
+                        Pattern => ":",
+                        From => Fst_Colon_Index + 1);
+            begin
+               if File = Slice (Limit_Region, 1, Fst_Colon_Index - 1)
+                 and then Positive (Line) in
+                 Integer'Value (Slice (Limit_Region,
+                                Fst_Colon_Index + 1,
+                                Snd_Colon_Index - 1))
+                 .. Integer'Value (Slice (Limit_Region,
+                                   Snd_Colon_Index + 1,
+                                   Length (Limit_Region)))
+               then
+                  return True;
+               end if;
+            end;
+         end if;
+      end;
+
+      return False;
    end Is_Specified_Line;
 
    -----------------------

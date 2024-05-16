@@ -79,7 +79,7 @@ Concurrency . . . . .
 Total 28 7 (25%) 15 (54%) . 6 (21%)
 
 
-max steps used for successful proof: 378
+max steps used for successful proof: 376
 
 Analyzed 1 unit
 in unit skein, 8 subprograms and packages out of 8 analyzed
@@ -101,3 +101,4 @@ effects on parameters and Global variables of Skein.Skein_Start_New_Type fully e
  Skein.Zero_Pad at skein.adb:60 flow analyzed (0 errors, 0 checks, 0 warnings and 0 pragma Assume statements) and proved (1 checks)
 effects on parameters and Global variables of Skein.Zero_Pad fully established
 absence of run-time errors of Skein.Zero_Pad fully established
+
