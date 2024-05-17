@@ -976,15 +976,24 @@ package VC_Kinds is
    Model_Proj_Meta : constant String := "model_projection";
    --  A meta that is used in Why3 to mark a function as projection.
 
+   --------------------
+   --  Data Exchange --
+   --------------------
+
    --  Constants that are used in the extra_info returned from gnatwhy3, to
    --  identify lower and upper bound of a range check.
 
    Low_Bound_Id  : constant Integer := -1;
    High_Bound_Id : constant Integer := -2;
 
-   --------------------
-   --  Data Exchange --
-   --------------------
+   --  Type for the extra_info returned from gnatwhy3
+   type Prover_Extra_Info is record
+      Info   : Integer := 0;
+      --  Either a node ID or one of the bound id constants
+      Inline : Integer := 0;
+      --  Either 0 if no inlining, a node ID, or a negative value if there is
+      --  no such node.
+   end record;
 
    --  This section defines various types that are used to communicate between
    --  the various gnatprove processes (most notably between gnat2why/gnatwhy3
@@ -1216,13 +1225,13 @@ package VC_Kinds is
             Verdict_Reason : Unbounded_String :=
               To_Unbounded_String ("Unknown");
          when Cntexmp_Confirmed_Verdict_Category =>
-            One_Liner : Unbounded_String :=
-              Null_Unbounded_String;
-            Info      : Unbounded_String;
+            CE             : Cntexample_File_Maps.Map;
+            Extra_Info     : Prover_Extra_Info;
          end case;
       end record;
    --  The result when checking the counterexample for a check, based on Why3
-   --  giant-step RAC and SPARK small-step RAC.
+   --  giant-step RAC and SPARK small-step RAC. Store a counterexample value
+   --  and extra information for the check location.
 
    function Reason (Verdict : Cntexmp_Verdict) return String is
      (case Verdict.Verdict_Category is

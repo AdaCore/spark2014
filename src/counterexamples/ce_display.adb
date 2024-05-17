@@ -40,6 +40,7 @@ with Flow_Utility.Initialization; use Flow_Utility.Initialization;
 with Gnat2Why_Args;
 with Gnat2Why_Opts;               use Gnat2Why_Opts;
 with Gnat2Why.Util;               use Gnat2Why.Util;
+with Namet;
 with Nlists;                      use Nlists;
 with Sinput;                      use Sinput;
 with Snames;                      use Snames;
@@ -462,11 +463,15 @@ package body CE_Display is
       return Get_Cntexmp_Line_Str (Cntexmp_Line);
    end Get_Cntexmp_One_Liner;
 
-   -------------------------------
-   -- Get_Environment_One_Liner --
-   -------------------------------
+   ------------------------
+   -- Get_Environment_CE --
+   ------------------------
 
-   function Get_Environment_One_Liner (N : Node_Id; K : VC_Kind) return String
+   function Get_Environment_CE
+     (N    : Node_Id;
+      K    : VC_Kind;
+      Subp : Node_Id)
+      return Cntexample_File_Maps.Map
    is
       Expl : Entity_To_Extended_Value_Maps.Map;
 
@@ -480,6 +485,43 @@ package body CE_Display is
       --  Insert all relevant values in an expression N in Expl. Use the
       --  environment of the RAC to get the values. We do not assume that all
       --  queried objects necessarily have a value.
+
+      procedure Accumulate_Entity (E : Entity_Id);
+      --  Insert relevant value for an entity
+
+      procedure Accumulate_All_Expl (N : Node_Id);
+      --  Traverse all nodes accessible from N to accumulate relevant values
+
+      function Is_Internal_Entity (E : Entity_Id) return Boolean is
+        (Is_Internal (E) or else
+             (Nkind (E) in N_Has_Chars
+              and then Namet.Is_Internal_Name (Chars (E))));
+
+      -----------------------
+      -- Accumulate_Entity --
+      -----------------------
+
+      procedure Accumulate_Entity (E : Entity_Id) is
+         Val : Value_Access;
+      begin
+         if Ekind (E) in E_Variable
+                       | E_Constant
+                       | E_Loop_Parameter
+                       | Formal_Kind
+           and then not Is_Discriminal (E)
+           and then not Is_Protected_Component_Or_Discr_Or_Part_Of (E)
+         then
+            Val := Find_Binding (E, False);
+            if Val /= null then
+               Insert_Expl (E, Val.all, None);
+            end if;
+
+         --  For types, traverse the bounds
+
+         elsif Is_Scalar_Type (E) then
+            Accumulate_All_Expl (Get_Range (E));
+         end if;
+      end Accumulate_Entity;
 
       ---------------------
       -- Accumulate_Expl --
@@ -509,16 +551,7 @@ package body CE_Display is
 
                   for V of Read_Ids loop
                      if V.Kind = Direct_Mapping then
-                        declare
-                           E   : constant Entity_Id :=
-                             Get_Direct_Mapping_Id (V);
-                           Val : constant Value_Access :=
-                             Find_Binding (E, False);
-                        begin
-                           if Val /= null then
-                              Insert_Expl (E, Val.all, None);
-                           end if;
-                        end;
+                        Accumulate_Entity (Get_Direct_Mapping_Id (V));
                      end if;
                   end loop;
                end;
@@ -528,21 +561,10 @@ package body CE_Display is
                --  Add values for referenced objects in Expl
 
                declare
-                  E   : constant Entity_Id := SPARK_Atree.Entity (N);
-                  Val : Value_Access;
+                  E : constant Entity_Id := SPARK_Atree.Entity (N);
                begin
-                  if Present (E)
-                    and then Ekind (E) in E_Variable
-                                        | E_Constant
-                                        | E_Loop_Parameter
-                                        | Formal_Kind
-                    and then not Is_Discriminal (E)
-                    and then not Is_Protected_Component_Or_Discr_Or_Part_Of (E)
-                  then
-                     Val := Find_Binding (E, False);
-                     if Val /= null then
-                        Insert_Expl (E, Val.all, None);
-                     end if;
+                  if Present (E) then
+                     Accumulate_Entity (E);
                   end if;
                end;
                return Atree.Skip;
@@ -627,7 +649,7 @@ package body CE_Display is
          Inserted : Boolean;
 
       begin
-         if not Comes_From_Source (E) then
+         if Is_Internal_Entity (E) then
             return;
          end if;
 
@@ -642,14 +664,13 @@ package body CE_Display is
          end;
       end Insert_Expl;
 
-      procedure Accumulate_All_Expl is new Traverse_More_Proc
+      procedure Accumulate_All_Expl_Ann is new Traverse_More_Proc
         (Accumulate_Expl);
 
-      VC_Loc       : constant Source_Ptr  := Sloc (N);
-      File         : constant String := File_Name (VC_Loc);
-      Line         : constant Natural :=
-        Natural (Get_Logical_Line_Number (VC_Loc));
-      Cntexmp_Line : Cntexample_Elt_Lists.List;
+      procedure Accumulate_All_Expl (N : Node_Id) renames
+        Accumulate_All_Expl_Ann;
+
+      Cntexmp     : Cntexample_File_Maps.Map;
 
    --  Start of processing for Get_Environment_One_Liner
 
@@ -658,6 +679,9 @@ package body CE_Display is
       --  objects.
 
       case Nkind (N) is
+         when N_Defining_Identifier =>
+            Accumulate_Entity (N);
+
          when N_Subexpr =>
 
             --  For index checks, we want to include the array object to get
@@ -668,7 +692,30 @@ package body CE_Display is
               and then not
                 Is_Static_Array_Type (Etype (Prefix (Atree.Parent (N))))
             then
-               Accumulate_All_Expl (Atree.Parent (N));
+               Accumulate_All_Expl (N);
+               Accumulate_All_Expl (Prefix (Atree.Parent (N)));
+
+            --  Discriminant checks might occur in delta aggregates. Include
+            --  the expression.
+
+            elsif K = VC_Discriminant_Check
+              and then Nkind (N) in N_Identifier | N_Expanded_Name
+              and then Ekind (Entity (N)) = E_Component
+              and then Nkind (Atree.Parent (N)) = N_Component_Association
+            then
+               Accumulate_All_Expl (N);
+               declare
+                  use Namet;
+                  P : constant Node_Id := Atree.Parent (Atree.Parent (N));
+               begin
+                  if Nkind (P) = N_Delta_Aggregate then
+                     Accumulate_All_Expl (Expression (P));
+                  elsif Nkind (Atree.Parent (P)) = N_Attribute_Reference
+                    and then Attribute_Name (Atree.Parent (P)) = Name_Update
+                  then
+                     Accumulate_All_Expl (Prefix (Atree.Parent (P)));
+                  end if;
+               end;
 
             --  For division checks, we only consider the right operand
 
@@ -676,9 +723,38 @@ package body CE_Display is
               and then Nkind (N) in N_Binary_Op
             then
                Accumulate_All_Expl (Right_Opnd (N));
+
+            --  For scalar range checks, include the bounds
+
+            elsif K = VC_Range_Check
+              and then Is_Scalar_Type (Etype (N))
+            then
+               Accumulate_Entity (Etype (N));
+               Accumulate_All_Expl (N);
             else
                Accumulate_All_Expl (N);
             end if;
+
+            --  Force the value of all quantified variables above N
+
+            declare
+               P : Node_Id := N;
+            begin
+               loop
+                  P := Atree.Parent (P);
+                  exit when Nkind (P) not in N_Subexpr;
+                  if Nkind (P) = N_Quantified_Expression then
+                     declare
+                        Over_Range : constant Boolean :=
+                          Present (Loop_Parameter_Specification (P));
+                        Id         : constant Entity_Id :=
+                          Get_Quantified_Variable (P, Over_Range);
+                     begin
+                        Accumulate_Entity (Id);
+                     end;
+                  end if;
+               end loop;
+            end;
 
          when N_Pragma =>
 
@@ -705,10 +781,140 @@ package body CE_Display is
 
       --  Create a pretty one liner from Expl
 
-      Build_Pretty_Line (Expl, File, Line, Cntexmp_Line);
+      declare
+         VC_Loc          : constant Source_Ptr  := Sloc (N);
+         VC_File         : constant String := File_Name (VC_Loc);
+         VC_Line         : constant Natural :=
+           Natural (Get_Logical_Line_Number (VC_Loc));
+         VC_Cntexmp_Line : Cntexample_Elt_Lists.List;
 
-      return Get_Cntexmp_Line_Str (Cntexmp_Line);
-   end Get_Environment_One_Liner;
+      begin
+         Build_Pretty_Line (Expl, VC_File, VC_Line, VC_Cntexmp_Line);
+
+         if not VC_Cntexmp_Line.Is_Empty then
+            declare
+               Position : Cntexample_File_Maps.Cursor;
+               Inserted : Boolean;
+            begin
+               Cntexmp.Insert
+                 (VC_File, (others => <>), Position, Inserted);
+               Cntexmp (Position).VC_Line := VC_Cntexmp_Line;
+            end;
+         end if;
+      end;
+
+      --  Query the input values of the RAC
+
+      declare
+         Inputs            : Entity_To_Extended_Value_Maps.Map;
+         Init_Loc          : constant Source_Ptr  := Sloc (Subp);
+         Init_File         : constant String := File_Name (Init_Loc);
+         Init_Line         : constant Natural :=
+           Natural (Get_Logical_Line_Number (Init_Loc));
+         Init_Cntexmp_Line : Cntexample_Elt_Lists.List;
+
+      begin
+         for Cu in All_Initial_Values.Iterate loop
+            declare
+               use Node_To_Value;
+               Position : Entity_To_Extended_Value_Maps.Cursor;
+               Inserted : Boolean;
+            begin
+               Inputs.Insert (Key (Cu), (others => null), Position, Inserted);
+
+               declare
+                  Arr : Extended_Value_Access renames Inputs (Position);
+               begin
+                  if Arr (None) = null then
+                     Arr (None) := new Value_Type'(Element (Cu));
+                  end if;
+               end;
+            end;
+         end loop;
+
+         Build_Pretty_Line (Inputs, Init_File, Init_Line, Init_Cntexmp_Line);
+
+         --  Insert the pretty printed values in a counterexample
+
+         if not Init_Cntexmp_Line.Is_Empty then
+            declare
+               Position : Cntexample_File_Maps.Cursor;
+               Inserted : Boolean;
+            begin
+               Cntexmp.Insert
+                 (Init_File, (others => <>), Position, Inserted);
+               Cntexmp (Position).Other_Lines.Insert
+                 (Init_Line, Init_Cntexmp_Line);
+            end;
+         end if;
+      end;
+
+      --  Add values of the loop id for all enclosing loops up to the enclosing
+      --  unit.
+
+      declare
+         function Is_Body_Or_Loop (N : Node_Id) return Boolean is
+           (Nkind (N) in N_Loop_Statement | N_Entity_Body);
+
+         function Enclosing_Loop_Stmt is new
+           First_Parent_With_Property (Is_Body_Or_Loop);
+
+         P : Node_Id := N;
+      begin
+         loop
+            P := Enclosing_Loop_Stmt (P);
+            exit when No (P) or else Nkind (P) /= N_Loop_Statement;
+            declare
+               Scheme : constant Node_Id := Iteration_Scheme (P);
+            begin
+               if Present (Scheme) and then No (Condition (Scheme)) then
+                  declare
+                     Over_Range        : constant Boolean :=
+                       Present (Loop_Parameter_Specification (Scheme));
+                     Id                : constant Entity_Id :=
+                       Get_Quantified_Variable (Scheme, Over_Range);
+                     Val               : constant Value_Access :=
+                       Find_Binding (Id, False);
+                     Loop_Map          : Entity_To_Extended_Value_Maps.Map;
+                     Loop_Loc          : constant Source_Ptr  := Sloc (P);
+                     Loop_File         : constant String :=
+                       File_Name (Loop_Loc);
+                     Loop_Line         : constant Natural :=
+                       Natural (Get_Logical_Line_Number (Loop_Loc));
+                     Loop_Cntexmp_Line : Cntexample_Elt_Lists.List;
+
+                  begin
+                     if Val /= null and then not Is_Internal_Entity (Id) then
+                        Loop_Map.Insert (Id, (None => Val, others => null));
+                        Build_Pretty_Line
+                          (Loop_Map, Loop_File, Loop_Line, Loop_Cntexmp_Line);
+
+                        --  Insert the pretty printed values in a
+                        --  counterexample
+
+                        if not Loop_Cntexmp_Line.Is_Empty then
+                           declare
+                              File_Pos : Cntexample_File_Maps.Cursor;
+                              Line_Pos : Cntexample_Line_Maps.Cursor;
+                              Inserted : Boolean;
+                           begin
+                              Cntexmp.Insert
+                                (Loop_File, (others => <>), File_Pos,
+                                 Inserted);
+                              Cntexmp (File_Pos).Other_Lines.Insert
+                                (Loop_Line, Loop_Cntexmp_Line, Line_Pos,
+                                 Inserted);
+                           end;
+                        end if;
+                     end if;
+                  end;
+               end if;
+            end;
+         end loop;
+      end;
+
+      return Cntexmp;
+   end Get_Environment_CE;
 
    ----------------------
    -- Is_Ada_File_Name --
@@ -1249,6 +1455,10 @@ package body CE_Display is
          end if;
       end loop;
 
+      if VC.Is_Empty then
+         return Remapped_Cntexmp;
+      end if;
+
       --  Insert it at the appropriate location in Remapped_Cntexmp, possibly
       --  deleting other information in the process.
 
@@ -1262,7 +1472,18 @@ package body CE_Display is
 
       Remapped_Cntexmp (C).Other_Lines.Include (VC_Line, VC);
 
-      return (Remapped_Cntexmp);
+      return Remapped_Cntexmp;
+   end Remap_VC_Info;
+
+   function Remap_VC_Info
+     (Cntexmp : Cntexample_File_Maps.Map;
+      VC_Loc  : Source_Ptr)
+      return Cntexample_File_Maps.Map
+   is
+      File : constant String := File_Name (VC_Loc);
+      Line : constant Logical_Line_Number := Get_Logical_Line_Number (VC_Loc);
+   begin
+      return Remap_VC_Info (Cntexmp, File, Integer (Line));
    end Remap_VC_Info;
 
 end CE_Display;

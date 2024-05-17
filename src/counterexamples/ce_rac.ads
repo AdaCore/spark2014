@@ -26,14 +26,15 @@
 --  This package implements small-step (normal) runtime-assertion checking
 --  (RAC) for SPARK to check counterexamples.
 
+with Ada.Containers.Hashed_Maps;
 with Ada.Numerics.Big_Numbers.Big_Integers;
 use  Ada.Numerics.Big_Numbers.Big_Integers;
 with Ada.Numerics.Big_Numbers.Big_Reals;
 use Ada.Numerics.Big_Numbers.Big_Reals;
 with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 with CE_Values;             use CE_Values;
+with Common_Containers;     use Common_Containers;
 with SPARK_Atree.Entities;  use SPARK_Atree.Entities;
-with SPARK_Util;            use SPARK_Util;
 with Types;                 use Types;
 with VC_Kinds;              use VC_Kinds;
 
@@ -71,6 +72,15 @@ package CE_RAC is
       Loop_Id : Entity_Id)
       return Opt_Value_Type;
    --  Look into the context for the reference to a 'Loop_Entry attribute
+
+   package Node_To_Value is new Ada.Containers.Hashed_Maps
+     (Key_Type        => Node_Id,
+      Element_Type    => Value_Type,
+      Hash            => Node_Hash,
+      Equivalent_Keys => "=");
+
+   function All_Initial_Values return Node_To_Value.Map;
+   --  Get all input values used by the RAC instance
 
    procedure Get_Integer_Type_Bounds
      (Ty       :     Entity_Id;
@@ -145,7 +155,7 @@ package CE_RAC is
             --  The VC kind that triggered the failure
             Res_VC_Id   : Natural := Natural'Last;
             --  The ID of the check that failed (not set by RAC)
-            Res_EI      : Extra_Info;
+            Res_EI      : Prover_Extra_Info;
             --  Extra information about the failing part of the check if any
          when Res_Incomplete
             | Res_Stuck

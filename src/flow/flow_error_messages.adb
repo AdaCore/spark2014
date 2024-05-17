@@ -800,8 +800,7 @@ package body Flow_Error_Messages is
       How_Proved    : Prover_Category;
       Stats         : Prover_Stat_Maps.Map;
       Check_Info    : Check_Info_Type;
-      Fuzzing_Used  : Boolean := False;
-      Print_Fuzzing : Boolean := False)
+      CE_From_RAC   : Boolean := False)
    is
       function Get_Fix_Or_Verdict
         (N          : Node_Id;
@@ -1006,9 +1005,9 @@ package body Flow_Error_Messages is
       VC_Slc      : constant Source_Ptr  := VC_Span.Ptr;
 
       Pretty_Cntexmp  : constant Cntexample_File_Maps.Map :=
-        (if Verdict.Verdict_Category in
-           Not_Checked | Cntexmp_Confirmed_Verdict_Category
-         and then not Fuzzing_Used
+        (if CE_From_RAC then Remap_VC_Info (Verdict.CE, Slc)
+         elsif Verdict.Verdict_Category in
+              Not_Checked | Cntexmp_Confirmed_Verdict_Category
          then
             Create_Pretty_Cntexmp (From_JSON (Cntexmp), Slc)
          else
@@ -1084,27 +1083,14 @@ package body Flow_Error_Messages is
                                 | VC_Resource_Leak_At_End_Of_Scope
                      then ""
 
-                     else
-                       (if Verdict.Verdict_Category = Not_Checked
-                        then Get_Cntexmp_One_Liner (Pretty_Cntexmp, Slc)
+                     --  When counterexample checking is enabled, only
+                     --  print the counterexample if it is confirmed.
 
-                        --  When counterexample checking is enabled, only
-                        --  print the counterexample if it is confirmed.
-                        --  Try to retrieve the one liner from the RAC.
-
-                        elsif Verdict.Verdict_Category in
-                            Cntexmp_Confirmed_Verdict_Category
-                        and then (not Fuzzing_Used or else Print_Fuzzing)
-                        then
-                          (if Verdict.One_Liner /= Null_Unbounded_String
-                           then To_String (Verdict.One_Liner)
-
-                           --  For counterexamples coming from the giant step
-                           --  RAC, we do not have a one liner yet. Compute it
-                           --  from the counterexample returned by Why3.
-
-                           else Get_Cntexmp_One_Liner (Pretty_Cntexmp, Slc))
-                        else ""));
+                     elsif Verdict.Verdict_Category in
+                       Not_Checked | Cntexmp_Confirmed_Verdict_Category
+                     then
+                        Get_Cntexmp_One_Liner (Pretty_Cntexmp, Slc)
+                     else "");
 
                   Details : constant String :=
                     (if Gnat2Why_Args.Output_Mode = GPO_Brief then ""

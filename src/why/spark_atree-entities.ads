@@ -345,6 +345,9 @@ package SPARK_Atree.Entities is
    function Is_Imported (E : Entity_Id) return Boolean renames
      EE.Is_Imported;
 
+   function Is_Internal (E : Entity_Id) return Boolean renames
+     EE.Is_Internal;
+
    function Is_Itype (E : Type_Kind_Id) return Boolean renames
      EE.Is_Itype;
 

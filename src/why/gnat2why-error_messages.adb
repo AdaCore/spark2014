@@ -121,7 +121,8 @@ package body Gnat2Why.Error_Messages is
      (Small_Step : CE_RAC.Result;
       Giant_Step : CE_RAC.Result;
       VC         : VC_Id;
-      Info       : VC_Info)
+      Info       : VC_Info;
+      Subp       : Node_Id)
       return Cntexmp_Verdict;
    --  Categorise a proof failure based on the results from the normal and
    --  giant-step runtime-assertion checking (RAC) with the counterexample
@@ -166,6 +167,9 @@ package body Gnat2Why.Error_Messages is
 
    VC_Set_Table : Ent_Id_Set_Maps.Map := Ent_Id_Set_Maps.Empty_Map;
    --  This table maps entities to the set of unproved VCs
+
+   function Parse_Extra_Info (EI : Prover_Extra_Info) return Extra_Info;
+   --  Retrieve extra information for a check as encoded in the Why3 results
 
    ----------------------
    -- Add_Id_To_Entity --
@@ -215,7 +219,8 @@ package body Gnat2Why.Error_Messages is
      (Small_Step : CE_RAC.Result;
       Giant_Step : CE_RAC.Result;
       VC         : VC_Id;
-      Info       : VC_Info)
+      Info       : VC_Info;
+      Subp       : Node_Id)
       return Cntexmp_Verdict
    is
    begin
@@ -224,29 +229,32 @@ package body Gnat2Why.Error_Messages is
             if VC_Id (Small_Step.Res_VC_Id) = VC
               and then VC_Kinds_Match (Info.Kind, Small_Step.Res_VC_Kind)
             then
-               return (Verdict_Category => Non_Conformity,
-                       One_Liner        => To_Unbounded_String
-                         (Get_Environment_One_Liner
-                            ((if Present (Small_Step.Res_EI.Node)
-                             then Small_Step.Res_EI.Node else Info.Node),
-                             Info.Kind)),
-                       Info             => To_Unbounded_String
-                         (Compute_Cannot_Prove_Message
-                            (Small_Step.Res_EI, Info)));
+               declare
+                  RAC_Info : constant Extra_Info :=
+                    Parse_Extra_Info (Small_Step.Res_EI);
+                  VC_Node  : constant Node_Id :=
+                    (if Present (RAC_Info.Node)
+                     then RAC_Info.Node else Info.Node);
+               begin
+                  return (Verdict_Category => Non_Conformity,
+                          CE               => Get_Environment_CE
+                            (VC_Node, Info.Kind, Subp),
+                          Extra_Info       => Small_Step.Res_EI);
+               end;
             else
                return
                  (Verdict_Category => Bad_Counterexample,
                   Verdict_Reason   => To_Unbounded_String
                     ("normal RAC: failure at a different check "
-                     & To_String (Small_Step.Res_VC_Kind, Small_Step.Res_Node)
+                     & To_String
+                       (Small_Step.Res_VC_Kind, Small_Step.Res_Node)
                      & " instead of " & To_String (Info.Kind, Info.Node)));
             end if;
 
          when Res_Stuck   =>
-            return
-              (Verdict_Category => Bad_Counterexample,
-               Verdict_Reason   =>
-                 "normal RAC stuck: " & Small_Step.Res_Reason);
+            return (Verdict_Category => Bad_Counterexample,
+                    Verdict_Reason   =>
+                       "normal RAC stuck: " & Small_Step.Res_Reason);
 
          when Res_Normal  =>
             case Giant_Step.Res_Kind is
@@ -303,7 +311,7 @@ package body Gnat2Why.Error_Messages is
                     (Verdict_Category => Incomplete,
                      Verdict_Reason   =>
                         "giant-step RAC not executed: "
-                        & Giant_Step.Res_Reason);
+                     & Giant_Step.Res_Reason);
             end case;
 
          when Res_Not_Executed =>
@@ -335,8 +343,7 @@ package body Gnat2Why.Error_Messages is
       VC_Loc        : Node_Id := Empty;
       Stats         : Prover_Stat_Maps.Map := Prover_Stat_Maps.Empty_Map;
       Editor_Cmd    : String := "";
-      Fuzzing_Used  : Boolean := False;
-      Print_Fuzzing : Boolean := False)
+      CE_From_RAC   : Boolean := False)
    is
    begin
       if Kind in VC_Warning_Kind then
@@ -366,8 +373,7 @@ package body Gnat2Why.Error_Messages is
          How_Proved    => How_Proved,
          E             => E,
          Check_Info    => Check_Info,
-         Fuzzing_Used  => Fuzzing_Used,
-         Print_Fuzzing => Print_Fuzzing);
+         CE_From_RAC   => CE_From_RAC);
    end Emit_Proof_Result;
 
    ------------------------------
@@ -491,6 +497,32 @@ package body Gnat2Why.Error_Messages is
          Register_Proof_Claims (E);
       end if;
    end Mark_VC_As_Proved_For_Entity;
+
+   ----------------------
+   -- Parse_Extra_Info --
+   ----------------------
+
+   function Parse_Extra_Info (EI : Prover_Extra_Info) return Extra_Info is
+      E : Extra_Info := (0, Inline_Info'(Inline => False), No_Bound);
+   begin
+      if EI.Info = Low_Bound_Id then
+         E.Bound_Info := Low_Bound;
+      elsif EI.Info = High_Bound_Id then
+         E.Bound_Info := High_Bound;
+      else
+         E.Node := Node_Id (EI.Info);
+      end if;
+
+      if EI.Inline < 0 then
+         E.Inline := Inline_Info'(True, 0);
+      elsif EI.Inline = 0 then
+         E.Inline := Inline_Info'(Inline => False);
+      else
+         E.Inline := Inline_Info'(True, Node_Id (EI.Inline));
+      end if;
+
+      return E;
+   end Parse_Extra_Info;
 
    ------------------------
    -- Parse_Why3_Results --
@@ -675,7 +707,7 @@ package body Gnat2Why.Error_Messages is
             end if;
 
             Verdict := Decide_Cntexmp_Verdict
-              (Small_Step_Res, Giant_Step_Res, Id, VC);
+              (Small_Step_Res, Giant_Step_Res, Id, VC, Subp);
          exception
             when E : others =>
                if Debug_Flag_K
@@ -693,7 +725,7 @@ package body Gnat2Why.Error_Messages is
                      Res_Reason => To_Unbounded_String
                        (Exception_Name (E) & ": " & Exception_Message (E)));
                   Verdict := Decide_Cntexmp_Verdict
-                    (Small_Step_Res, Giant_Step_Res, Id, VC);
+                    (Small_Step_Res, Giant_Step_Res, Id, VC, Subp);
                end if;
          end Check_Counterexample;
 
@@ -768,36 +800,16 @@ package body Gnat2Why.Error_Messages is
 
          --  Local variables
 
-         Rec            : constant Why3_Prove_Result :=
+         Rec                : constant Why3_Prove_Result :=
            Parse_Why3_Prove_Result (V);
-         VC             : VC_Info renames VC_Table (Rec.Id);
-         Can_Relocate : constant Boolean :=
+         EI                 : Extra_Info := Rec.EI;
+         VC                 : VC_Info renames VC_Table (Rec.Id);
+         Can_Relocate       : constant Boolean :=
            Rec.Kind not in VC_Precondition
                          | VC_LSP_Kind
                          | VC_Predicate_Check
                          | VC_Predicate_Check_On_Default_Value;
-         Node       : constant Node_Id :=
-           (if Present (Rec.EI.Node)
-            and then not Rec.EI.Inline.Inline
-            and then Can_Relocate
-            then
-               Rec.EI.Node
-            elsif Rec.EI.Inline.Inline
-            and then Present (Rec.EI.Inline.Inline_Node)
-            and then Can_Relocate
-            then
-               Rec.EI.Inline.Inline_Node
-            else VC.Node);
-         --  VC_Sloc contains the location of the check (required in messages
-         --  for manual provers). The extra info data ("EI") may contain a more
-         --  precise location which is used to place the error message.
-         --  If the inline flag is set, we don't use the EI node, but we
-         --  may use the EI.Inline node, which contains the context before
-         --  inlining.
-         --  We do not any of those extra nodes if the node may switch the
-         --  context, (negation of the Can_Relocate flag) this can happen for
-         --  the pre (the node will be in the callee context instead of the
-         --  caller context) and LSP VCs as well as predicate checks.
+         Node               : Node_Id;
          VC_Sloc            : constant Node_Id := VC.Node;
          Small_Step_Res     : CE_RAC.Result;
          Verdict            : Cntexmp_Verdict;
@@ -818,6 +830,7 @@ package body Gnat2Why.Error_Messages is
            not Last_Cnt.Cntexample.Is_Empty;
          Fuzzing_Used       : Boolean := False;
          Print_Fuzzing      : Boolean := False;
+         Use_RAC_Cntexmp    : Boolean;
 
       --  Start of processing for Handle_Result
 
@@ -948,11 +961,47 @@ package body Gnat2Why.Error_Messages is
            and then Small_Step_Res.Res_Kind = Res_Failure
            and then Small_Step_Res.Res_Node = VC.Node;
 
+         --  For now, there is only a meaningful counterexample in case of
+         --  nonconformity. This should change when the giant step RAC returns
+         --  a counterexample.
+
+         Use_RAC_Cntexmp := Verdict.Verdict_Category = Non_Conformity
+           and then (not Fuzzing_Used or else Print_Fuzzing);
+
+         --  If a counterexample was produced by the RAC, use the location from
+         --  the verdict to relocate the check.
+
+         if Use_RAC_Cntexmp then
+            EI := Parse_Extra_Info (Verdict.Extra_Info);
+         end if;
+
+         --  VC_Sloc contains the location of the check (required in messages
+         --  for manual provers). The extra info data ("EI") may contain a more
+         --  precise location which is used to place the error message.
+         --  If the inline flag is set, we don't use the EI node, but we
+         --  may use the EI.Inline node, which contains the context before
+         --  inlining.
+         --  We do not use any of those extra nodes if the node may switch the
+         --  context (negation of the Can_Relocate flag), this can happen for
+         --  the pre (the node will be in the callee context instead of the
+         --  caller context) and LSP VCs as well as predicate checks.
+
+         Node :=
+           (if Present (EI.Node)
+              and then not EI.Inline.Inline
+              and then Can_Relocate
+            then EI.Node
+            elsif EI.Inline.Inline
+              and then Present (EI.Inline.Inline_Node)
+              and then Can_Relocate
+            then EI.Inline.Inline_Node
+            else VC.Node);
+
          --  If the VC comes from an inlined predicate or expression function
          --  body, then add a continuation referencing the unproved node in
          --  the inlined expression.
 
-         if Rec.EI.Inline.Inline
+         if EI.Inline.Inline
            and then Present (Rec.EI.Node)
          then
             declare
@@ -985,25 +1034,14 @@ package body Gnat2Why.Error_Messages is
          --  Update the information to get better fix messages with the bound
          --  information retrieved from the proof attempt.
 
-         Check_Info.Fix_Info.Bound_Info := Rec.EI.Bound_Info;
+         Check_Info.Fix_Info.Bound_Info := EI.Bound_Info;
 
          declare
-            --  If the RAC has found a valid counterexample, it might not be
-            --  compatible with the extra information present in the prover
-            --  result. Use information computed by the RAC instead.
-
-            CP_Msg : constant String :=
+            CP_Msg   : constant String :=
               (if Rec.Result then ""
-               elsif Verdict.Verdict_Category in
-                 Cntexmp_Confirmed_Verdict_Category
-               and then (not Fuzzing_Used or else Print_Fuzzing)
-               and then Verdict.One_Liner /= Null_Unbounded_String
-               then To_String (Verdict.Info)
-               else Compute_Cannot_Prove_Message
-                 (EI => Rec.EI,
-                  VC => VC));
-            Cex_Ar : constant JSON_Array := Get (Rec.Cntexmps);
-            Last_Cex  : constant JSON_Value :=
+               else Compute_Cannot_Prove_Message (EI => EI, VC => VC));
+            Cex_Ar   : constant JSON_Array := Get (Rec.Cntexmps);
+            Last_Cex : constant JSON_Value :=
                 (if Is_Empty (Cex_Ar) then Create_Object else
                  Get (Get (Cex_Ar, Length (Cex_Ar)), "cntexmp"));
          begin
@@ -1023,8 +1061,7 @@ package body Gnat2Why.Error_Messages is
                Stats         => Rec.Stats,
                Extra_Msg     => CP_Msg,
                Check_Info    => Check_Info,
-               Fuzzing_Used  => Fuzzing_Used,
-               Print_Fuzzing => Print_Fuzzing);
+               CE_From_RAC   => Use_RAC_Cntexmp);
          end;
 
          Free (Fuel);
@@ -1122,28 +1159,12 @@ package body Gnat2Why.Error_Messages is
       begin
          if Has_Field (V, "extra_info") then
             declare
-               I : constant Integer :=
+               Info : constant Integer :=
                  Integer'(Get (Get (V, "extra_info"), "node"));
-            begin
-               if I = Low_Bound_Id then
-                  E.Bound_Info := Low_Bound;
-               elsif I = High_Bound_Id then
-                  E.Bound_Info := High_Bound;
-               else
-                  E.Node := Node_Id (I);
-               end if;
-            end;
-            declare
-               I : constant Integer :=
+               Inline : constant Integer :=
                  Integer'(Get (Get (V, "extra_info"), "inline"));
             begin
-               if I < 0 then
-                  E.Inline := Inline_Info'(True, 0);
-               elsif I = 0 then
-                  E.Inline := Inline_Info'(Inline => False);
-               else
-                  E.Inline := Inline_Info'(True, Node_Id (I));
-               end if;
+               E := Parse_Extra_Info ((Info, Inline));
             end;
          end if;
          return Why3_Prove_Result'

@@ -295,9 +295,9 @@ is
    procedure Swap_Fields_D (X : in out Optional_Pair)
      with Depends => (X =>+ null),
           Post    => (X.Exists = X'Old.Exists)
-                        and (if X.Exists
+                        and then (if X.Exists
                                then (X.The_Pair.A = X'Old.The_Pair.B
-                                       and X.The_Pair.B = X'Old.The_Pair.A))  --  @POSTCONDITION:FAIL @ COUNTEREXAMPLE
+                                       and then X.The_Pair.B = X'Old.The_Pair.A))  --  @POSTCONDITION:FAIL @ COUNTEREXAMPLE
    is
    begin
       X.The_Pair := Pair'(X.The_Pair.B, 5);
