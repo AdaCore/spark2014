@@ -30,6 +30,7 @@ with Ada.Strings.Fixed;      use Ada.Strings.Fixed;
 with Ada.Containers.Vectors;
 with Ada.Containers.Hashed_Maps;
 with Ada.Containers.Hashed_Sets;
+with Ada.Containers.Doubly_Linked_Lists;
 with Ada.Strings.Unbounded;  use Ada.Strings.Unbounded;
 with Ada.Text_IO;
 with Ada.Unchecked_Deallocation;
@@ -465,6 +466,14 @@ package body Gnat2Why.Error_Messages is
          Bound_Info : Bound_Info_Type;
       end record;
 
+      type Cntexample_Info is record
+         Cntexample        : Cntexample_File_Maps.Map;
+         Giant_Step_Result : CE_RAC.Result;
+      end record;
+
+      package Cntexamples_List is new
+        Ada.Containers.Doubly_Linked_Lists (Element_Type => Cntexample_Info);
+
       type Why3_Prove_Result is record
          Id             : VC_Id;
          Kind           : VC_Kind;
@@ -473,8 +482,7 @@ package body Gnat2Why.Error_Messages is
          VC_File        : Unbounded_String;
          Editor_Cmd     : Unbounded_String;
          Stats          : Prover_Stat_Maps.Map;
-         Cntexmp        : JSON_Value;
-         Giant_Step_Res : CE_RAC.Result;
+         Cntexmps       : JSON_Value;
          Check_Tree     : JSON_Value;
       end record;
 
@@ -501,12 +509,51 @@ package body Gnat2Why.Error_Messages is
         (V : JSON_Value) return CE_RAC.Result;
       --  Parse the JSON produced by Why3 for the results of the giant-step RAC
 
+      function Parse_Cntexamples_List
+        (V : JSON_Value) return Cntexamples_List.List;
+
       procedure Handle_Result (V : JSON_Value);
       --  Parse a single result entry. The entry comes from the session dir
       --  identified by [SD_Id].
 
       procedure Handle_Error (Msg : String; Internal : Boolean) with No_Return;
       procedure Handle_Timings (V : JSON_Value);
+
+      ----------------------------
+      -- Parse_Cntexamples_List --
+      ----------------------------
+
+      function Parse_Cntexamples_List
+        (V : JSON_Value)
+         return Cntexamples_List.List
+      is
+
+         S : Cntexamples_List.List;
+         Ar : constant JSON_Array :=
+           (if Is_Empty (V) then Empty_Array else Get (V));
+
+      begin
+         for Var_Index in Positive range 1 .. Length (Ar) loop
+            declare
+               Cex  : constant JSON_Value :=
+                 Get (Ar, Var_Index);
+               Cex_Val_Map : constant Cntexample_File_Maps.Map :=
+                 From_JSON (Get (Cex, "cntexmp"));
+               Cex_RAC_Result : constant CE_RAC.Result :=
+                 (if Has_Field (Cex, "giant_step_rac_result")
+                  then Parse_Giant_Step_RAC_Result
+                    (Get (Cex, "giant_step_rac_result"))
+                  else
+                    (Res_Kind   => Res_Not_Executed,
+                     Res_Reason =>
+                       To_Unbounded_String ("No giant-step result")));
+            begin
+               S.Append ((Cntexample => Cex_Val_Map,
+                          Giant_Step_Result => Cex_RAC_Result));
+            end;
+         end loop;
+         return S;
+      end Parse_Cntexamples_List;
 
       ----------------------------------
       -- Compute_Cannot_Prove_Message --
@@ -575,9 +622,10 @@ package body Gnat2Why.Error_Messages is
       procedure Handle_Result (V : JSON_Value) is
 
          procedure Check_Counterexample
-           (Rec            :     Why3_Prove_Result;
+           (Id             :     VC_Id;
             VC             :     VC_Info;
             Cntexmp        :     Cntexample_File_Maps.Map;
+            Giant_Step_Res :     CE_RAC.Result;
             Fuel           :     Fuel_Access;
             Small_Step_Res : out CE_RAC.Result;
             Verdict        : out Cntexmp_Verdict;
@@ -607,9 +655,10 @@ package body Gnat2Why.Error_Messages is
          --------------------------
 
          procedure Check_Counterexample
-           (Rec            :     Why3_Prove_Result;
+           (Id             :     VC_Id;
             VC             :     VC_Info;
             Cntexmp        :     Cntexample_File_Maps.Map;
+            Giant_Step_Res :     CE_RAC.Result;
             Fuel           :     Fuel_Access;
             Small_Step_Res : out CE_RAC.Result;
             Verdict        : out Cntexmp_Verdict;
@@ -638,7 +687,7 @@ package body Gnat2Why.Error_Messages is
             end if;
 
             Verdict := Decide_Cntexmp_Verdict
-              (Small_Step_Res, Rec.Giant_Step_Res, Rec.Id, VC);
+              (Small_Step_Res, Giant_Step_Res, Id, VC);
          exception
             when E : others =>
                if Debug_Flag_K
@@ -656,7 +705,7 @@ package body Gnat2Why.Error_Messages is
                      Res_Reason => To_Unbounded_String
                        (Exception_Name (E) & ": " & Exception_Message (E)));
                   Verdict := Decide_Cntexmp_Verdict
-                    (Small_Step_Res, Rec.Giant_Step_Res, Rec.Id, VC);
+                    (Small_Step_Res, Giant_Step_Res, Id, VC);
                end if;
          end Check_Counterexample;
 
@@ -766,11 +815,19 @@ package body Gnat2Why.Error_Messages is
          Verdict            : Cntexmp_Verdict;
          Small_Step_Res_Tmp : CE_RAC.Result;
          Verdict_Tmp        : Cntexmp_Verdict;
-         Cntexmp            : constant Cntexample_File_Maps.Map :=
-           From_JSON (Rec.Cntexmp);
+         Cntexmps           : constant Cntexamples_List.List :=
+           Parse_Cntexamples_List (Rec.Cntexmps);
          Check_Info         : Check_Info_Type := VC.Check_Info;
          Fuel               : Fuel_Access := new Fuel_Type'(250_000);
-         Cntexmp_Present    : constant Boolean := not Cntexmp.Is_Empty;
+         Last_Cnt           : constant Cntexample_Info :=
+           (if not Cntexmps.Is_Empty then Cntexmps.Last_Element else
+              (Cntexample        => Cntexample_File_Maps.Empty_Map,
+               Giant_Step_Result =>
+                 (Res_Kind   => Res_Not_Executed,
+                  Res_Reason => To_Unbounded_String
+                    ("No giant-step result"))));
+         Cntexmp_Present    : constant Boolean :=
+           not Last_Cnt.Cntexample.Is_Empty;
          Fuzzing_Used       : Boolean := False;
          Print_Fuzzing      : Boolean := False;
 
@@ -783,8 +840,8 @@ package body Gnat2Why.Error_Messages is
             if Cntexmp_Present then
                --  Check the counterexample like normal
 
-               Check_Counterexample
-                 (Rec, VC, Cntexmp, Fuel, Small_Step_Res, Verdict);
+               Check_Counterexample (Rec.Id, VC, Last_Cnt.Cntexample,
+                 Last_Cnt.Giant_Step_Result, Fuel, Small_Step_Res, Verdict);
             else
                Small_Step_Res :=
                  (Res_Kind   => Res_Not_Executed,
@@ -804,7 +861,7 @@ package body Gnat2Why.Error_Messages is
             --  shouldn't be used.
 
             if VC.Kind not in VC_Warning_Kind
-              and then Rec.Giant_Step_Res.Res_Kind not in Res_Failure
+              and then Last_Cnt.Giant_Step_Result.Res_Kind not in Res_Failure
               and then Ekind (Subp) in E_Function | E_Procedure
               and then To_Initialize_Present (Subp)
             then
@@ -845,9 +902,10 @@ package body Gnat2Why.Error_Messages is
                   Fuzzing_Used := True;
 
                   Check_Counterexample
-                    (Rec            => Rec,
+                    (Id             => Rec.Id,
                      VC             => VC,
-                     Cntexmp        => Cntexmp,
+                     Cntexmp        => Last_Cnt.Cntexample,
+                     Giant_Step_Res => Last_Cnt.Giant_Step_Result,
                      Fuel           => Fuel,
                      Small_Step_Res => Small_Step_Res_Tmp,
                      Verdict        => Verdict_Tmp,
@@ -883,8 +941,8 @@ package body Gnat2Why.Error_Messages is
                & ", Reason: "      & Reason (Verdict)
                & " | Small-step: " & Small_Step_Res.Res_Kind'Image
                & ", Reason: "      & Reason (Small_Step_Res)
-               & " | Giant-step: " & Rec.Giant_Step_Res.Res_Kind'Image
-               & ", Reason: "      & Reason (Rec.Giant_Step_Res)
+               & " | Giant-step: " & Last_Cnt.Giant_Step_Result.Res_Kind'Image
+               & ", Reason: "      & Reason (Last_Cnt.Giant_Step_Result)
                & LF & "----------"
                & LF);
             Write_Location (Sloc (VC.Node));
@@ -953,6 +1011,10 @@ package body Gnat2Why.Error_Messages is
                   VC              => VC,
                   Show_Bound_Info => not Print_Fuzzing)
                else "");
+            Cex_Ar : constant JSON_Array := Get (Rec.Cntexmps);
+            Last_Cex  : constant JSON_Value :=
+                (if Is_Empty (Cex_Ar) then Create_Object else
+                 Get (Get (Cex_Ar, Length (Cex_Ar)), "cntexmp"));
          begin
             Emit_Proof_Result
               (Node          => Node,
@@ -961,7 +1023,7 @@ package body Gnat2Why.Error_Messages is
                Proved        => Rec.Result,
                E             => Subp,
                How_Proved    => PC_Prover,
-               Cntexmp       => Rec.Cntexmp,
+               Cntexmp       => Last_Cex,
                Verdict       => Verdict,
                Check_Tree    => Rec.Check_Tree,
                VC_File       => To_String (Rec.VC_File),
@@ -1106,16 +1168,7 @@ package body Gnat2Why.Error_Messages is
             Stats      =>
               (if Has_Field (V, "stats") then From_JSON (Get (V, "stats"))
                else Prover_Stat_Maps.Empty_Map),
-            Cntexmp    =>
-              (if Has_Field (V, "cntexmp") then Get (V, "cntexmp")
-               else Create_Object),
-            Giant_Step_Res =>
-              (if Has_Field (V, "giant_step_rac_result")
-               then Parse_Giant_Step_RAC_Result
-                 (Get (V, "giant_step_rac_result"))
-               else
-                 (Res_Kind   => Res_Not_Executed,
-                  Res_Reason => To_Unbounded_String ("No giant-step result"))),
+            Cntexmps    => Get (V, "cntexmps"),
             Check_Tree =>
               (if Has_Field (V, "check_tree") then Get (V, "check_tree")
                else Create_Object));

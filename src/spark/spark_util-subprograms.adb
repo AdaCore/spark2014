@@ -28,6 +28,7 @@ with Ada.Strings.Fixed.Equal_Case_Insensitive;
 with Common_Iterators;               use Common_Iterators;
 with Debug;
 with Gnat2Why_Args;
+with Gnat2Why.Data_Decomposition;    use Gnat2Why.Data_Decomposition;
 with Flow_Dependency_Maps;           use Flow_Dependency_Maps;
 with Flow_Generated_Globals.Phase_2; use Flow_Generated_Globals.Phase_2;
 with Flow_Refinement;                use Flow_Refinement;
@@ -873,6 +874,29 @@ package body SPARK_Util.Subprograms is
       end if;
    end Get_Termination_Condition;
 
+   -----------------------------------
+   -- Get_Unchecked_Conversion_Args --
+   -----------------------------------
+
+   procedure Get_Unchecked_Conversion_Args (E              : Entity_Id;
+                                            Source, Target : out Node_Id)
+   is
+      Wrapper_Pkg : constant Node_Id :=
+        Sinfo.Nodes.Defining_Unit_Name
+          (Atree.Parent (Sem_Aux.Subprogram_Spec (E)));
+      pragma Assert (Einfo.Utils.Is_Wrapper_Package (Wrapper_Pkg));
+
+      First_Assoc  : constant Node_Id :=
+        First
+          (Sinfo.Nodes.Generic_Associations
+             (Sem_Ch12.Get_Unit_Instantiation_Node (Wrapper_Pkg)));
+      Second_Accoc : constant Node_Id := Next (First_Assoc);
+
+   begin
+      Source := Sinfo.Nodes.Explicit_Generic_Actual_Parameter (First_Assoc);
+      Target := Sinfo.Nodes.Explicit_Generic_Actual_Parameter (Second_Accoc);
+   end Get_Unchecked_Conversion_Args;
+
    ------------------------------------
    -- Has_Implicit_Always_Terminates --
    ------------------------------------
@@ -968,31 +992,77 @@ package body SPARK_Util.Subprograms is
       Subp : Callable_Kind_Id)
       return Boolean
    is
-      Subp_Scop : Entity_Id := Enclosing_Unit (Subp);
-      Curr      : Entity_Id := From;
-   begin
-      pragma Assert (Present (Subp_Scop));
 
-      --  For visible package bodies, go to the enclosing unit, as it has
-      --  visibility.
+      function Get_Generic_Unit (Inst : Entity_Id) return Entity_Id with
+        Pre => Is_Generic_Instance (Inst);
+      --  Return the generic entity associated to Inst
 
-      while Ekind (Subp_Scop) = E_Package
-        and then Has_Visible_Package_Body (Subp_Scop)
-      loop
-         Subp_Scop := Enclosing_Unit (Subp_Scop);
-      end loop;
+      function Has_Visibility
+        (From : Entity_Id;
+         Scop : Entity_Id)
+         return Boolean;
+      --  Return True if entities declared in the body of Scop are visible from
+      --  From.
 
-      --  Return True if From is inside Subp_Scop
+      ----------------------
+      -- Get_Generic_Unit --
+      ----------------------
 
-      while Present (Curr) loop
-         if Curr = Subp_Scop then
-            return True;
+      function Get_Generic_Unit (Inst : Entity_Id) return Entity_Id is
+         Act_Inst : Entity_Id := Inst;
+      begin
+         if Is_Wrapper_Package (Act_Inst) then
+            Act_Inst := Related_Instance (Act_Inst);
          end if;
 
-         Curr := Scope (Curr);
-      end loop;
+         return
+           Generic_Parent
+             (Specification (Unit_Declaration_Node (Act_Inst)));
+      end Get_Generic_Unit;
 
-      return False;
+      --------------------
+      -- Has_Visibility --
+      --------------------
+
+      function Has_Visibility
+        (From : Entity_Id;
+         Scop : Entity_Id)
+         return Boolean
+      is
+         Curr_From : Entity_Id := From;
+         Curr_Scop : Entity_Id := Scop;
+      begin
+         --  For visible package bodies, go to the enclosing unit, as it has
+         --  visibility.
+
+         while Ekind (Curr_Scop) = E_Package
+           and then Has_Visible_Package_Body (Curr_Scop)
+         loop
+            Curr_Scop := Enclosing_Unit (Curr_Scop);
+         end loop;
+
+         --  Return True if From is inside Curr_Scop. If From is inside a
+         --  generic instance, also consider the scope of the generic.
+
+         while Present (Curr_From) loop
+            if Curr_From = Curr_Scop
+              or else (Is_Generic_Instance (Curr_From)
+                       and then Has_Visibility
+                         (Get_Generic_Unit (Curr_From), Curr_Scop))
+            then
+               return True;
+            end if;
+
+            Curr_From := Scope (Curr_From);
+         end loop;
+
+         return False;
+      end Has_Visibility;
+
+      Subp_Scop : constant Entity_Id := Enclosing_Unit (Subp);
+      pragma Assert (Present (Subp_Scop));
+   begin
+      return Has_Visibility (From, Subp_Scop);
    end Has_Visibility_On_Refined;
 
    ------------------------------------
@@ -1610,6 +1680,74 @@ package body SPARK_Util.Subprograms is
 
         and then Present (First_Formal (E));
    end Is_Traversal_Function;
+
+   -----------------------------------
+   -- Is_UC_With_Precise_Definition --
+   -----------------------------------
+
+   function Is_UC_With_Precise_Definition
+     (E : Entity_Id)
+      return True_Or_Explain
+   is
+      Source, Target                         : Node_Id;
+      Source_Type, Target_Type               : Entity_Id;
+      Valid_Source, Valid_Target, Valid_Size : Boolean;
+      Explanation                            : Unbounded_String;
+      Check                                  : True_Or_Explain;
+
+   begin
+      Get_Unchecked_Conversion_Args (E, Source, Target);
+      Source_Type := Retysp (Entity (Source));
+      Target_Type := Retysp (Entity (Target));
+
+      --  Check that types are suitable for UC.
+
+      Suitable_For_UC (Source_Type, False, Valid_Source, Explanation);
+      if not Valid_Source then
+         --  Override explanation to avoid special characters
+         return False_With_Explain
+           ("type is unsuitable as source for unchecked conversion");
+      end if;
+
+      Suitable_For_UC_Target
+        (Target_Type, False, Valid_Target, Explanation);
+      if not Valid_Target then
+         --  Override explanation to avoid special characters
+         return False_With_Explain
+           ("type is unsuitable as target for unchecked conversion");
+      end if;
+
+      Have_Same_Known_RM_Size
+        (Source_Type, Target_Type, Valid_Size, Explanation);
+      if not Valid_Size then
+         --  Override explanation to avoid special characters
+         return False_With_Explain
+           ("types in unchecked conversion do not have the same size");
+      end if;
+
+      --  Only support types with size up to 128 bits, to use one of the
+      --  available bitvector types with conversions from other bitvector
+      --  sizes.
+
+      if Get_Attribute_Value (Source_Type, Attribute_Size) > 128 then
+         return False_With_Explain ("type size larger than 128 bits");
+      end if;
+
+      --  Only generate a definition for UC between integer types, and
+      --  composites of integer types.
+
+      Check := Suitable_For_Precise_UC (Source_Type);
+      if not Check.Ok then
+         return Check;
+      end if;
+
+      Check := Suitable_For_Precise_UC (Target_Type);
+      if not Check.Ok then
+         return Check;
+      end if;
+
+      return (Ok => True);
+   end Is_UC_With_Precise_Definition;
 
    -------------------------------
    -- Is_Unary_Text_IO_Put_Line --

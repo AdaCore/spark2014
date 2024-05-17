@@ -1,3 +1,11 @@
+
+main.adb:4:04: medium: resource or memory leak might occur at end of scope
+    4 |   L : constant List := [1, 2, 3, 4, 5, 6];
+      |   ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+main.adb:4:25: info: precondition proved
+  all elements shall fit in index type for sequence aggregates at through_model.ads:9
+main.adb:6:19: info: assertion proved
+main.adb:6:26: info: precondition proved
 through_model.adb:5:09: info: absence of resource or memory leak proved
 through_model.ads:9:06: info: Container_Aggregates annotation proved
   when establishing invariant on Length at spark-containers-functional-infinite_sequences.ads:77, in instantiation at through_model.ads:4
@@ -8,6 +16,7 @@ through_model.ads:9:06: info: Container_Aggregates annotation proved
 through_model.ads:9:06: info: Container_Aggregates annotation proved
   when reestablishing invariant on Length at spark-containers-functional-infinite_sequences.ads:77, in instantiation at through_model.ads:4
   after a call to Add at through_model.ads:17
+through_model.ads:11:13: info: implicit aspect Always_Terminates on "Empty_List" has been proved, subprogram will terminate
 through_model.ads:13:13: info: implicit aspect Always_Terminates on "Model" has been proved, subprogram will terminate
 through_model.ads:17:14: info: aspect Always_Terminates on "Add" has been proved, subprogram will terminate
 through_model.ads:19:14: info: postcondition proved
@@ -95,11 +104,3 @@ spark-containers-parameter_checks.ads:79:17: info: aspect Always_Terminates on "
 spark-containers-parameter_checks.ads:80:09: info: data dependencies proved, in instantiation at spark-containers-functional-infinite_sequences.ads:308, in instantiation at through_model.ads:4
 spark-containers-parameter_checks.ads:82:19: info: postcondition proved, in instantiation at spark-containers-functional-infinite_sequences.ads:308, in instantiation at through_model.ads:4
 spark-containers-parameter_checks.adb:58:10: info: precondition proved, in instantiation at spark-containers-functional-infinite_sequences.ads:308, in instantiation at through_model.ads:4
-
-main.adb:4:04: medium: resource or memory leak might occur at end of scope
-    4 |   L : constant List := [1, 2, 3, 4, 5, 6];
-      |   ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-main.adb:4:25: info: precondition proved
-  all elements shall fit in index type for sequence aggregates at through_model.ads:9
-main.adb:6:19: info: assertion proved
-main.adb:6:26: info: precondition proved

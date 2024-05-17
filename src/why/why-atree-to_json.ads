@@ -23,11 +23,13 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with GNATCOLL.JSON;    use GNATCOLL.JSON;
-with Why.Atree.Tables; use Why.Atree.Tables;
+with Outputs; use Outputs;
 
 package Why.Atree.To_Json is
-   function Why_Node_To_Json (Node : Why_Node) return JSON_Value;
-   function Why_Node_Lists_List_To_Json (L : Why_Node_Lists.List)
-      return JSON_Value;
+
+   procedure Why_Node_To_Json (O : Output_Id; Node : Why_Node)
+     with Pre => Node.Checked;
+
+   procedure Why_Node_Lists_List_To_Json (O : Output_Id;
+                                          L : Why_Node_Lists.List);
 end Why.Atree.To_Json;

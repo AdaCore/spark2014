@@ -84,7 +84,7 @@ procedure Test_Capacity with SPARK_Mode is
                       Add_Unnamed => Append),
         Annotate => (GNATprove, Container_Aggregates, "Predefined_Sets");
 
-      Empty : constant T;
+      function Empty return T;
       procedure Append (X : in out T; E : Element_Type) with
         Global => null,
         Pre => Length (X) < Max,
@@ -123,7 +123,7 @@ procedure Test_Capacity with SPARK_Mode is
         (for some I in 1 .. X.Top => X.Content (I) = E);
       function Length (X : T) return Natural is (X.Top);
 
-      Empty : constant T :=
+      function Empty return T is
         ((Content => (others => <>), Top => 0));
    end Sets_With_Global_Capacity;
 
@@ -252,7 +252,7 @@ procedure Test_Capacity with SPARK_Mode is
                       Add_Named => Append),
         Annotate => (GNATprove, Container_Aggregates, "Predefined_Maps");
 
-      Empty : constant T;
+      function Empty return T;
       procedure Append (X : in out T; K : Key_Type; E : Element_Type) with
         Global => null,
         Pre  => Length (X) < Max and then not Has_Key (X, K),
@@ -313,7 +313,7 @@ procedure Test_Capacity with SPARK_Mode is
       function Get (X : T; K : Key_Type) return Element_Type is
         (Get (X.Content, K, X.Top));
 
-      Empty : constant T :=
+      function Empty return T is
         (Content => (others => <>), Top => 0);
    end Partial_Maps_With_Global_Capacity;
 
@@ -420,7 +420,7 @@ procedure Test_Capacity with SPARK_Mode is
                       Add_Unnamed => Append),
         Annotate => (GNATprove, Container_Aggregates, "Predefined_Sequences");
 
-      Empty : constant T;
+      function Empty return T;
       procedure Append (X : in out T; E : Element_Type) with
         Global => null,
         Pre  => Integer (Last (X)) < Capacity and then Last (X) < Max_Index,
@@ -462,7 +462,7 @@ procedure Test_Capacity with SPARK_Mode is
       function Get (X : T; I : Index_Type) return Element_Type is
         (X.Content (Positive (I)));
 
-      Empty : constant T := ((Content => (others => <>), Top => 0));
+      function Empty return T is ((Content => (others => <>), Top => 0));
 
       function Capacity return Natural is (Max);
    end Sequences_With_Global_Capacity;

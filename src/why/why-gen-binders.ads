@@ -437,7 +437,7 @@ package Why.Gen.Binders is
    with Pre => Nkind (Expr) in N_Subexpr;
    --  Compute an array of items representing the variables of E in Why.
    --  @param Expr Ada node for an expression
-   --  @result An array of items used to represent these variales in Why
+   --  @result An array of items used to represent these variables in Why
 
    procedure Localize_Binders
      (Binders        : in out Item_Array;
@@ -448,6 +448,17 @@ package Why.Gen.Binders is
    --  @param Suffix a string to add as a suffix of local names of Binders.
    --  @param Only_Variables True if we only need local names for variable
    --     parts of Binders.
+
+   function Get_Localized_Binders_From_Variables
+     (Variables      : Flow_Id_Sets.Set;
+      Ignore_Self    : Boolean := False;
+      Suffix         : String := "";
+      Only_Variables : Boolean := True)
+      return Item_Array;
+   --  From a set of names returned by flow analysis, computes an array of
+   --  items representing variables by fresh parameters.
+   --  The parameters are those of a call to Get_Binders_From_Variables
+   --  followed by Localize_Binders.
 
    procedure Push_Binders_To_Symbol_Table (Binders : Item_Array);
    --  Modifies Symbol_Table to store bindings from Binders.

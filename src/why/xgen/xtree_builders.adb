@@ -29,8 +29,10 @@ with Xkind_Tables;  use Xkind_Tables;
 
 package body Xtree_Builders is
 
-   New_Node      : constant String := "New_Node";
-   New_Node_Id   : constant String := "New_Id";
+   New_Node    : constant String := "New_Node";
+   New_Node_Id : constant String := "New_Node_Id";
+
+   Empty_Nodes : constant String := "Empty_Nodes";
 
    procedure Print_Builder_Declaration
      (O           : in out Output_Record;
@@ -48,12 +50,6 @@ package body Xtree_Builders is
    --  default one.
 
    procedure Print_Builder_Body
-     (O    : in out Output_Record;
-      Kind : Why_Node_Kind;
-      IK   : Id_Kind);
-   --  Print builder body for the given node kind
-
-   procedure Print_Builder_Body
      (O           : in out Output_Record;
       Kind        : Why_Node_Kind;
       IK          : Id_Kind;
@@ -69,22 +65,13 @@ package body Xtree_Builders is
    --  Print the handled sequence of statements that implements this builder
 
    procedure Print_Builder_Local_Declarations
-     (O    : in out Output_Record;
-      Kind : Why_Node_Kind;
-      IK   : Id_Kind);
+     (O  : in out Output_Record;
+      IK : Id_Kind);
    --  Print the local declarations in builder body
 
    ------------------------
    -- Print_Builder_Body --
    ------------------------
-
-   procedure Print_Builder_Body
-     (O    : in out Output_Record;
-      Kind : Why_Node_Kind;
-      IK   : Id_Kind) is
-   begin
-      Print_Builder_Body (O, Kind, IK, Id_Subtype (Kind, IK));
-   end Print_Builder_Body;
 
    procedure Print_Builder_Body
      (O           : in out Output_Record;
@@ -100,9 +87,6 @@ package body Xtree_Builders is
       Print_Builder_Specification (O, Kind, IK, Return_Type);
       NL (O);
       PL (O, "is");
-      Relative_Indent (O, 3);
-      Print_Builder_Local_Declarations (O, Kind, IK);
-      Relative_Indent (O, -3);
       PL (O, "begin");
       Relative_Indent (O, 3);
       Print_Builder_Implementation (O, Kind, IK, Return_Type);
@@ -247,19 +231,24 @@ package body Xtree_Builders is
             end if;
          end if;
 
-         if Is_Why_Id (FI) then
-            PL (O, "Set_Link (" & New_Node & "." & FN
-                & ", " & New_Node_Id & ");");
-         end if;
       end Print_Record_Initialization;
 
    --  Start of processing for Print_Builder_Implementation
 
    begin
+      PL (O, "Node_Table.Append (" &
+             Empty_Nodes & "." & Mixed_Case_Name (Kind) & "_Node);");
+      PL (O, "declare");
+      Relative_Indent (O, 3);
+      Print_Builder_Local_Declarations (O, IK);
+      Relative_Indent (O, -3);
+      PL (O, "begin");
+      Relative_Indent (O, 3);
       Common_Fields.Fields.Iterate (Print_Record_Initialization'Access);
       Variant_Part.Fields.Iterate (Print_Record_Initialization'Access);
-      PL (O, "Set_Node (" & New_Node_Id & ", " & New_Node & ");");
       PL (O, "return " & K (New_Node_Id) & ";");
+      Relative_Indent (O, -3);
+      PL (O, "end;");
    end Print_Builder_Implementation;
 
    --------------------------------------
@@ -267,13 +256,14 @@ package body Xtree_Builders is
    --------------------------------------
 
    procedure Print_Builder_Local_Declarations
-     (O    : in out Output_Record;
-      Kind : Why_Node_Kind;
-      IK   : Id_Kind) is
+     (O  : in out Output_Record;
+      IK : Id_Kind)
+   is
    begin
-      PL (O, New_Node & " : Why_Node (" & Mixed_Case_Name (Kind)  & ");");
-      PL (O, New_Node_Id & " : constant Why_Node_Id :=");
-      PL (O, "  New_Why_Node_Id (" & Mixed_Case_Name (Kind)  & ");");
+      PL (O, New_Node_Id & " : constant Why_Node_Id := " &
+             "Node_Table.Last_Index;");
+      PL (O, New_Node & " : Why_Node renames " &
+             "Node_Table (" & New_Node_Id & ");");
       PL (O, Checked_Default_Value & " : constant Boolean :=");
 
       if IK = Unchecked then
@@ -471,12 +461,53 @@ package body Xtree_Builders is
       end loop;
    end Print_Class_Wide_Builder_Declarations;
 
+   procedure Print_Class_Wide_Empty_Nodes (O : in out Output_Record);
+   --  Print persistent empty nodes of each kind
+   --
+   --  As Why_Node is a controlled type and it is stored an instance of
+   --  Ada.Containers.Indefinite_Vectors, it is relatively expensive to create
+   --  nodes locally, copying them into Node_Table and then destroying.
+   --
+   --  Instead, we declare persistent empty nodes for each node kind, which are
+   --  never destroyed, insert them into Node_Tables when needed and populate
+   --  the newly created node in the Node_Table itself.
+
+   -----------------------------------
+   -- Print_Class_Wide_Empty_Nodes --
+   -----------------------------------
+
+   procedure Print_Class_Wide_Empty_Nodes (O : in out Output_Record) is
+   begin
+      PL (O, "package " & Empty_Nodes & " is");
+      NL (O);
+
+      Relative_Indent (O, 3);
+
+      for Kind in Valid_Kind'Range loop
+         declare
+            Mixed_Kind_Name : constant String := Mixed_Case_Name (Kind);
+         begin
+            PL (O, Mixed_Kind_Name & "_Node : constant Why_Node :=");
+            PL (O, "  (Kind => " & Mixed_Kind_Name & ", others => <>);");
+         end;
+      end loop;
+
+      Relative_Indent (O, -3);
+
+      NL (O);
+      PL (O, "end " & Empty_Nodes & ";");
+
+      NL (O);
+   end Print_Class_Wide_Empty_Nodes;
+
    -------------------------------------
    -- Print_Class_Wide_Builder_Bodies --
    -------------------------------------
 
    procedure Print_Class_Wide_Builder_Bodies (O : in out Output_Record) is
    begin
+      Print_Class_Wide_Empty_Nodes (O);
+
       for Kind in Valid_Kind'Range loop
          Print_Builder_Body (O, Kind, Derived,
                              Id_Subtype (Kind, Derived));
@@ -496,48 +527,5 @@ package body Xtree_Builders is
          end if;
       end loop;
    end Print_Class_Wide_Builder_Bodies;
-
-   ------------------------------------
-   -- Print_Unchecked_Builder_Bodies --
-   ------------------------------------
-
-   procedure Print_Unchecked_Builder_Bodies (O : in out Output_Record) is
-      First : Boolean := True;
-   begin
-      for J in Valid_Kind'Range loop
-         if Is_Mutable (J) then
-            if First then
-               First := False;
-            else
-               NL (O);
-            end if;
-
-            Print_Builder_Body (O, J, Unchecked);
-         end if;
-      end loop;
-   end Print_Unchecked_Builder_Bodies;
-
-   ------------------------------------------
-   -- Print_Unchecked_Builder_Declarations --
-   ------------------------------------------
-
-   procedure Print_Unchecked_Builder_Declarations
-     (O  : in out Output_Record)
-   is
-      First : Boolean := True;
-   begin
-      for J in Valid_Kind'Range loop
-         if Is_Mutable (J) then
-            if First then
-               First := False;
-            else
-               NL (O);
-            end if;
-
-            Print_Builder_Declaration (O, J, Unchecked,
-                                       Id_Subtype (J, Unchecked));
-         end if;
-      end loop;
-   end Print_Unchecked_Builder_Declarations;
 
 end Xtree_Builders;

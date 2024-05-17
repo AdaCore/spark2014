@@ -876,7 +876,7 @@ procedure Test_Partial_Maps with SPARK_Mode is
                       Add_Named => Append),
         Annotate => (GNATprove, Container_Aggregates, "Predefined_Maps"); --@CONTAINER_AGGR_ANNOTATION:PASS
 
-      Empty : constant T;
+      function Empty return T;
       procedure Append (X : in out T; K : Key_Type; E : Element_Type) with
         Global => null,
         Pre  => Length (X) < Capacity and then not Has_Key (X, K),
@@ -940,8 +940,8 @@ procedure Test_Partial_Maps with SPARK_Mode is
       function Get (X : T; K : Key_Type) return Element_Type is
         (Get (X.Content, K, X.Top));
 
-      Empty : constant T :=
-        (Content => (others => <>), Top => 0);
+      function Empty return T is
+        ((Content => (others => <>), Top => 0));
    end P15;
 begin
    null;

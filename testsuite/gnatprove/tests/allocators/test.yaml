@@ -3,4 +3,4 @@ replay: True
 prove_all:
   sparklib: True
 session_opt:
-  level: 4
+  level: 3

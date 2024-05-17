@@ -1,6 +1,12 @@
-spark-containers-parameter_checks.ads:242:19: medium: postcondition might fail, in instantiation at spark-containers-formal-unbounded_hashed_sets.ads:142, in instantiation at test.adb:5
-test.adb:9:04: info: initialization of "S" proved
-test.adb:12:04: info: precondition proved (CVC5: 2 VC)
-test.adb:13:04: info: precondition proved (CVC5: 2 VC)
+test.adb:7:04: warning: in instantiation at spark-containers-functional-maps.ads:134 [-gnatw.a]
+test.adb:7:04: warning: in instantiation at spark-containers-formal-unbounded_hashed_sets.ads:278 [-gnatw.a]
+test.adb:7:04: warning: check will fail at run time [-gnatw.a]
+test.adb:7:04: warning: in instantiation at spark-containers-functional-maps.ads:153 [-gnatw.a]
+test.adb:7:04: warning: in instantiation at spark-containers-formal-unbounded_hashed_sets.ads:278 [-gnatw.a]
+test.adb:7:04: warning: check will fail at run time [-gnatw.a]
+spark-containers-parameter_checks.ads:242:19: medium: postcondition might fail, in instantiation at spark-containers-formal-unbounded_hashed_sets.ads:140, in instantiation at test.adb:7
+test.adb:11:04: info: initialization of "S" proved
 test.adb:14:04: info: precondition proved (CVC5: 2 VC)
-test.adb:16:19: info: assertion proved (CVC5: 1 VC)
+test.adb:15:04: info: precondition proved (CVC5: 2 VC)
+test.adb:16:04: info: precondition proved (CVC5: 2 VC)
+test.adb:18:19: info: assertion proved (CVC5: 1 VC)

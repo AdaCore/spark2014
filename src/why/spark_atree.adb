@@ -25,7 +25,6 @@
 
 with Einfo.Utils;
 with Nlists;             use Nlists;
-with Sem_Ch12;
 with Sem_Disp;
 with SPARK_Util.Types;
 with Stringt;            use Stringt;
@@ -506,29 +505,6 @@ package body SPARK_Atree is
 
    function Get_Return_Object (N : Node_Id) return Entity_Id renames
      Sem_Util.Get_Return_Object;
-
-   -----------------------------------
-   -- Get_Unchecked_Conversion_Args --
-   -----------------------------------
-
-   procedure Get_Unchecked_Conversion_Args (E              : Entity_Id;
-                                            Source, Target : out Node_Id)
-   is
-      Wrapper_Pkg : constant Node_Id :=
-        Sinfo.Nodes.Defining_Unit_Name
-          (Atree.Parent (Sem_Aux.Subprogram_Spec (E)));
-      pragma Assert (Einfo.Utils.Is_Wrapper_Package (Wrapper_Pkg));
-
-      First_Assoc  : constant Node_Id :=
-        First
-          (Sinfo.Nodes.Generic_Associations
-             (Sem_Ch12.Get_Unit_Instantiation_Node (Wrapper_Pkg)));
-      Second_Accoc : constant Node_Id := Next (First_Assoc);
-
-   begin
-      Source := Sinfo.Nodes.Explicit_Generic_Actual_Parameter (First_Assoc);
-      Target := Sinfo.Nodes.Explicit_Generic_Actual_Parameter (Second_Accoc);
-   end Get_Unchecked_Conversion_Args;
 
    --------------------------------
    -- Handled_Statement_Sequence --

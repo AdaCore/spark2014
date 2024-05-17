@@ -189,13 +189,14 @@ package body Xtree_Accessors is
                       else
                         Id_Lone));
          begin
-            P (O,
-               "(" & Id_Subtype (Node_Kind (FI), IK, M)
-               & " (Get_Node (+" & Node_Id_Param & ")."
+            PL (O, "(" & Id_Subtype (Node_Kind (FI), IK, M));
+            Relative_Indent (O, 2);
+            PL (O, "(Node_Table (+" & Node_Id_Param & ")."
                & Field_Name (FI) & "))");
+            Relative_Indent (O, -2);
          end;
       else
-         P (O, "(Get_Node (+" & Node_Id_Param & ")."
+         P (O, "(Node_Table (+" & Node_Id_Param & ")."
             & Field_Name (FI) & ")");
       end if;
    end Print_Accessor_Expression;

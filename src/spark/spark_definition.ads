@@ -178,6 +178,9 @@ package SPARK_Definition is
    --  Returns True iff entity E is defined in loop before the invariants and
    --  thus may require a special translation. See gnat2why.ads for details.
 
+   function Is_Unused_Record (E : Type_Kind_Id) return Boolean;
+   --  Return True if E is an unused record type
+
    procedure Mark_Standard_Package;
    --  Put marks on package Standard
 

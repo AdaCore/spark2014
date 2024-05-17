@@ -479,7 +479,7 @@ marked with ``SPARK_Mode => On`` and the body with ``SPARK_Mode => Off``. This
 allows client code in |SPARK| to use this unit. If ``SPARK_Mode`` is On by
 default, then it need not be repeated on the unit spec.
 
-.. literalinclude:: /examples/ug__exclude_unit_body/exclude_unit_body.ads
+.. literalinclude:: /examples/ug__exclude_unit_body/exclude_unit_body.adb
    :language: ada
    :linenos:
 
@@ -487,7 +487,7 @@ Note that the private part of the spec (which is physically in the spec file,
 but is logically part of the implementation) can be excluded as well, by using
 a pragma ``SPARK_Mode (Off)`` at the start of the private part.
 
-.. literalinclude:: /examples/ug__exclude_unit_body/exclude_unit_body.adb
+.. literalinclude:: /examples/ug__exclude_unit_body/exclude_unit_body.ads
    :language: ada
    :linenos:
 

@@ -57,30 +57,30 @@ package Xtree_Tables is
    type Field_Info is record
       --  Structural information about a field of a node
 
-      Field_Name     : String_Access;
+      Field_Name : String_Access;
       --  Field name
 
-      Field_Type     : String_Access;
+      Field_Type : String_Access;
       --  Field type
 
-      Default        : String_Access;
+      Default    : String_Access;
       --  Default field value ("" if none)
 
-      Id_Type        : String_Access;
+      Id_Type    : String_Access;
       --  Checked id subtype, if any
 
-      Field_Kind     : Field_Kind_Type;
+      Field_Kind : Field_Kind_Type;
       --  Field kind: whether the field is in any node or not,
       --  whether it is special or regular...
 
-      Is_Why_Id      : Boolean;
+      Is_Why_Id  : Boolean;
       --  Whether or not the type of this field is a subtype of Why_Node_Id
       --  or a subtype of Why_Node_List.
 
-      Is_List        : Boolean;
+      Is_List    : Boolean;
       --  Whether or not the type of this field is a subtype of Why_Node_List
 
-      Maybe_Null     : Boolean;
+      Maybe_Null : Boolean;
       --  Whether or not this field is optional for its node
       --  (i.e. if it can be Empty).
    end record;

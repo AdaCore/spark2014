@@ -2238,27 +2238,22 @@ package body Gnat2Why.Expr.Aggregates is
          --  Optional Capacity parameter for the empty function
 
          Pre_Empty    : constant Node_Lists.List :=
-           (if Ekind (Annot.Empty_Function) = E_Constant
-            then Node_Lists.Empty_List
-            else Find_Contracts (Annot.Empty_Function, Pragma_Precondition));
+           Find_Contracts (Annot.Empty_Function, Pragma_Precondition);
          Empty_Name   : constant W_Prog_Id :=
            +Transform_Identifier (Params => Body_Params,
                                   Expr   => Annot.Empty_Function,
                                   Ent    => Annot.Empty_Function,
                                   Domain => EW_Prog);
-         Empty_Call   : constant W_Prog_Id :=
-           (if Ekind (Annot.Empty_Function) = E_Constant
-            then Empty_Name
-            else +New_Function_Call
-              (Ada_Node =>
-                   (if Pre_Empty.Is_Empty then Annot.Empty_Function
-                    else Pre_Empty.First_Element),
-               Domain   => EW_Prog,
-               Name     => +Empty_Name,
-               Subp     => Annot.Empty_Function,
-               Args     => (1 => +Opt_Capacity),
-               Check    => Why_Subp_Has_Precondition (Annot.Empty_Function),
-               Typ      => Get_Typ (W_Identifier_Id'(+Empty_Name))));
+         Empty_Call   : constant W_Prog_Id := +New_Function_Call
+           (Ada_Node =>
+              (if Pre_Empty.Is_Empty then Annot.Empty_Function
+               else Pre_Empty.First_Element),
+            Domain   => EW_Prog,
+            Name     => +Empty_Name,
+            Subp     => Annot.Empty_Function,
+            Args     => (1 => +Opt_Capacity),
+            Check    => Why_Subp_Has_Precondition (Annot.Empty_Function),
+            Typ      => Get_Typ (W_Identifier_Id'(+Empty_Name)));
 
       begin
          --  If the empty function has a capacity parameter and a capacity

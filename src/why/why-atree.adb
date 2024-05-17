@@ -1,29 +1,4 @@
-------------------------------------------------------------------------------
---                                                                          --
---                            GNAT2WHY COMPONENTS                           --
---                                                                          --
---                     W H Y - A T R E E - T A B L E S                      --
---                                                                          --
---                                 B o d y                                  --
---                                                                          --
---                     Copyright (C) 2010-2024, AdaCore                     --
---                                                                          --
--- gnat2why is  free  software;  you can redistribute  it and/or  modify it --
--- under terms of the  GNU General Public License as published  by the Free --
--- Software  Foundation;  either version 3,  or (at your option)  any later --
--- version.  gnat2why is distributed  in the hope that  it will be  useful, --
--- but WITHOUT ANY WARRANTY; without even the implied warranty of  MERCHAN- --
--- TABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public --
--- License for  more details.  You should have  received  a copy of the GNU --
--- General  Public License  distributed with  gnat2why;  see file COPYING3. --
--- If not,  go to  http://www.gnu.org/licenses  for a complete  copy of the --
--- license.                                                                 --
---                                                                          --
--- gnat2why is maintained by AdaCore (http://www.adacore.com)               --
---                                                                          --
-------------------------------------------------------------------------------
-
-package body Why.Atree.Tables is
+package body Why.Atree is
 
    procedure Initialize;
    --  Initialize this package
@@ -36,7 +11,6 @@ package body Why.Atree.Tables is
       LI : List_Info renames List_Table (List_Id);
    begin
       LI.Content.Append (New_Item);
-      Set_Link (New_Item, Why_Node_Set (List_Id));
 
       --  Assuming that the list is kind-valid (which should have been checked
       --  at this point), it is now valid, as it contains at least one element.
@@ -51,7 +25,6 @@ package body Why.Atree.Tables is
       LI : List_Info renames List_Table (List_Id);
    begin
       LI.Content.Prepend (New_Item);
-      Set_Link (New_Item, Why_Node_Set (List_Id));
 
       --  Assuming that the list is kind-valid (which should have been checked
       --  at this point), it is now valid, as it contains at least one element.
@@ -88,7 +61,6 @@ package body Why.Atree.Tables is
                      (Kind     => W_Unused_At_Start,
                       Ada_Node => Empty,
                       Domain   => EW_Prog,
-                      Link     => Why_Empty,
                       Checked  => True);
    begin
       Node_Table.Append (Empty_Node);
@@ -102,7 +74,6 @@ package body Why.Atree.Tables is
    function New_List return Why_Node_List is
       New_Item : constant List_Info :=
         (Checked => False,
-         Link    => Why_Empty,
          Content => Why_Node_Lists.Empty_List);
    begin
       List_Table.Append (New_Item);
@@ -126,61 +97,9 @@ package body Why.Atree.Tables is
       New_Node : Why_Node (Kind);
    begin
       New_Node.Ada_Node := Empty;
-      New_Node.Link := Why_Empty;
       New_Node.Checked := False;
       return New_Why_Node_Id (New_Node);
    end New_Why_Node_Id;
-
-   --------------
-   -- Set_Link --
-   --------------
-
-   procedure Set_Link
-     (Node_Id : Why_Node_Id;
-      Link    : Why_Node_Set) is
-   begin
-      if Node_Id = Why_Empty then
-         null;
-      else
-         Node_Table (Node_Id).Link := Link;
-      end if;
-   end Set_Link;
-
-   procedure Set_Link
-     (Node_Id : Why_Node_Id;
-      Link    : Why_Node_Id) is
-   begin
-      Set_Link (Node_Id, Why_Node_Set (Link));
-   end Set_Link;
-
-   procedure Set_Link
-     (Node_Id : Why_Node_Id;
-      Link    : Why_Node_List) is
-   begin
-      Set_Link (Node_Id, Why_Node_Set (Link));
-   end Set_Link;
-
-   procedure Set_Link
-     (List_Id : Why_Node_List;
-      Link    : Why_Node_Set)
-   is
-   begin
-      List_Table (List_Id).Link := Link;
-   end Set_Link;
-
-   procedure Set_Link
-     (List_Id : Why_Node_List;
-      Link    : Why_Node_Id) is
-   begin
-      Set_Link (List_Id, Why_Node_Set (Link));
-   end Set_Link;
-
-   procedure Set_Link
-     (List_Id : Why_Node_List;
-      Link    : Why_Node_List) is
-   begin
-      Set_Link (List_Id, Why_Node_Set (Link));
-   end Set_Link;
 
    --------------
    -- Set_Node --
@@ -213,4 +132,5 @@ package body Why.Atree.Tables is
 
 begin
    Initialize;
-end Why.Atree.Tables;
+
+end Why.Atree;

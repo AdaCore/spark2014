@@ -477,14 +477,6 @@ package Flow_Utility is
    --  cases and the initial condition; or an empty list of none of these
    --  exist.
 
-   function Contains_Discriminants
-     (F : Flow_Id;
-      S : Flow_Scope)
-      return Boolean
-   with Pre => F.Kind in Direct_Mapping | Magic_String;
-   --  Returns true if the flattened variable for F contains at least one
-   --  discriminant.
-
    function Is_Initialized_At_Elaboration
      (F : Flow_Id;
       S : Flow_Scope)

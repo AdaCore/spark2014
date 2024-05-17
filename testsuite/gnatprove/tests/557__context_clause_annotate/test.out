@@ -1,0 +1,2 @@
+main.adb:2:01: error: pragma Annotate (GNATprove, ...) cannot occur within context clauses
+gnatprove: error during flow analysis and proof

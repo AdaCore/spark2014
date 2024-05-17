@@ -7,7 +7,7 @@ package Predefined with SPARK_Mode is
      Aggregate => (Empty => Empty_List, Add_Unnamed => Add),
      Annotate  => (GNATprove, Container_Aggregates, "Predefined_Sequences");
 
-   Empty_List : constant List;
+   function Empty_List return List;
 
    function First return Big_Positive is (1) with
      Annotate => (GNATprove, Container_Aggregates, "First");
@@ -52,5 +52,5 @@ private
    function Get (L : List; P : Big_Positive) return Integer is
      (if P = Length (L) then L.Data else Get (L.Next, P));
 
-   Empty_List : constant List := null;
+   function Empty_List return List is (null);
 end Predefined;

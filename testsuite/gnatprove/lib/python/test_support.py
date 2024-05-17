@@ -445,7 +445,7 @@ def check_marks(strlist):
             return "DEPENDS"
         elif "global" in text:
             return "GLOBAL"
-        elif "initialized" in text:
+        elif "initialized" in text or "set" in text:
             return "INITIALIZED"
         elif "initializes" in text:
             return "INITIALIZES"

@@ -357,14 +357,14 @@ package body Xtree_Tables is
       Default    : String)
    is
       FI           : Field_Info :=
-                       (Field_Name     => new String'(Field_Name),
-                        Field_Type     => new String'(Field_Type),
-                        Default        => new String'(Default),
-                        Id_Type        => null,
-                        Field_Kind     => Field_Kind,
-                        Is_Why_Id      => False,
-                        Is_List        => False,
-                        Maybe_Null     => False);
+                       (Field_Name => new String'(Field_Name),
+                        Field_Type => new String'(Field_Type),
+                        Default    => new String'(Default),
+                        Id_Type    => null,
+                        Field_Kind => Field_Kind,
+                        Is_Why_Id  => False,
+                        Is_List    => False,
+                        Maybe_Null => False);
       Multiplicity : constant String := Suffix (FI.Field_Type.all);
    begin
       if Multiplicity = "Id"

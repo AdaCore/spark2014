@@ -125,20 +125,6 @@ package body Xkind_Tables is
       return CI.Name.all;
    end Class_Name;
 
-   ------------------
-   -- Default_Kind --
-   ------------------
-
-   function Default_Kind return Why_Node_Kind is
-   begin
-      return Why_Node_Kind'First;
-   end Default_Kind;
-
-   function Default_Kind return String is
-   begin
-      return Mixed_Case_Name (Default_Kind);
-   end Default_Kind;
-
    ---------------------
    -- Display_Domains --
    ---------------------

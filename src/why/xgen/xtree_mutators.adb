@@ -67,13 +67,6 @@ package body Xtree_Mutators is
    pragma Precondition (not Is_List (FI));
    --  Print setter specification for the given node child
 
-   procedure Print_Mutator_Precondition (O : in out Output_Record);
-   --  Print mutator precondition for the given node child.
-   --  Note that this precondition can be replaced nicely
-   --  replaced by a subtype predicate on ids; when subtype
-   --  predicates are supported by GNAT, it will be a good time
-   --  to do the substitution.
-
    procedure Print_Mutator_Specification
      (O           : in out Output_Record;
       Name        : String;
@@ -129,8 +122,8 @@ package body Xtree_Mutators is
       List_Op : List_Op_Kind) is
    begin
       Relative_Indent (O, 3);
-      PL (O, "Node : constant Why_Node :=");
-      PL (O, "         Get_Node (+" & Node_Id_Param & ");");
+      PL (O, "Node : Why_Node renames");
+      PL (O, "         Node_Table (+" & Node_Id_Param & ");");
       Relative_Indent (O, -3);
       PL (O, "begin");
       Relative_Indent (O, 3);
@@ -311,18 +304,10 @@ package body Xtree_Mutators is
       begin
          if not Is_List (FI) then
             Print_Setter_Specification (O, Kind, FI, IK);
-            PL (O, " with");
-            Relative_Indent (O, 2);
-            Print_Mutator_Precondition (O);
-            Relative_Indent (O, -2);
             PL (O, ";");
          else
             for List_Op in List_Op_Kind'Range loop
                Print_List_Op_Specification (O, Kind, FI, IK, List_Op);
-               PL (O, " with");
-               Relative_Indent (O, 2);
-               Print_Mutator_Precondition (O);
-               Relative_Indent (O, -2);
                PL (O, ";");
 
                if List_Op /= List_Op_Kind'Last then
@@ -351,15 +336,6 @@ package body Xtree_Mutators is
          end loop;
       end if;
    end Print_Mutator_Kind_Declarations;
-
-   --------------------------------
-   -- Print_Mutator_Precondition --
-   --------------------------------
-
-   procedure Print_Mutator_Precondition (O : in out Output_Record) is
-   begin
-      P (O, "Pre => (Is_Root (+" & Node_Id_Param & "))");
-   end Print_Mutator_Precondition;
 
    ---------------------------------
    -- Print_Mutator_Specification --
@@ -399,7 +375,7 @@ package body Xtree_Mutators is
       FI   : Field_Info) is
    begin
       Relative_Indent (O, 3);
-      PL (O, "Node : Why_Node := Get_Node (+" & Node_Id_Param & ");");
+      PL (O, "Node : Why_Node renames Node_Table (+" & Node_Id_Param & ");");
       Relative_Indent (O, -3);
       PL (O, "begin");
       Relative_Indent (O, 3);

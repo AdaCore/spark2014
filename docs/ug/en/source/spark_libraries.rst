@@ -1160,12 +1160,16 @@ parameters are consistent, when parameter ``Drop`` is set to ``Error`` and the
 C Strings Interface
 -------------------
 
+The Ada Standard Library
+^^^^^^^^^^^^^^^^^^^^^^^^
+
 ``Interfaces.C.Strings`` is a library that provides an Ada interface to
 allocate, reference, update and free C strings.
 
 The provided preconditions protect users from getting
 ``Dereference_Error`` and ``Update_Error``. However, those
-preconditions do not protect against ``Storage_Error``.
+preconditions do not protect against ``Storage_Error`` and in general against
+leaking memory allocated by ``New_String`` and ``New_Char_Array``.
 
 All subprograms are annotated with Global contracts. To model the
 effects of the subprograms on the allocated memory, an abstract state
@@ -1191,6 +1195,49 @@ Finally, the two functions used to allocate memory to create
 ``chars_ptr`` objects are annotated with the ``Volatile_Function``
 attribute. Indeed, calling those functions twice in a row with the
 same parameters would return different objects.
+
+Precise C Strings Interface
+^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+The annotations on ``Interfaces.C.Strings`` do not allow for a precise handling
+of the content of strings as it cannot reason about potential aliases between
+strings. As an alternative, when precision is required, two wrappers over
+``Interfaces.C.Strings`` are provided in the |SPARK| library (see
+:ref:`SPARK Library`).
+
+In the package ``SPARK.C.Strings``, C strings are handled as |SPARK| pointers.
+Absence of aliasing and memory safety is ensured through ownership (see
+:ref:`Memory Ownership Policy`). This handling allows for safe allocation and
+reclamation of memory as well as precise contracts on the content of strings.
+However, like for regular pointers, ``Storage_Error`` might occur due to
+memory shortage.
+
+Like for ``Interfaces.C.Strings``, the ``To_Chars_Ptr`` function is disallowed
+but ``Free`` is retained. It is left as an assumption for the user to make sure
+that it is only called on a pointer allocated through ``New_String`` or
+``New_Char_Array`` and not on a value created in C code. Two additional
+conversion functions are provided to convert to and from C strings coming from
+``Interfaces.C.Strings`` but they cannot be used safely in |SPARK| and are
+annotated with ``SPARK_Mode => Off``.
+
+As opposed to ``Interfaces.C.Strings``, the content of each string is modeled
+separately instead of collapsed together in a single abstract state and all
+subprograms are annotated with postconditions modeling the content of
+the string. This allows for a precise handling of C strings in |SPARK|.
+
+The package ``SPARK.C.Constant_Strings`` offers an alternative to
+``SPARK.C.Strings`` which does not enforce ownership at the cost of
+immutability. Aliasing between C strings is allowed but the designated values
+cannot be modified. The ``New_String`` and ``New_Char_Array`` are annotated with
+``SPARK_Mode => Off`` as they can cause memory leaks. Instead, a version of
+``To_Chars_Ptr`` taking as input an access to a constant ``char_array`` is
+provided. The ``Update`` procedures are removed. It is left as an assumption
+for the user to make sure that values of this type are never mutated by the
+C code.
+
+Here again, the content of each string is modeled separately and all
+functions are annotated with postconditions modeling the content of
+the string to allow for a precise handling of C strings in |SPARK|.
 
 .. index:: address-to-access-conversion
 

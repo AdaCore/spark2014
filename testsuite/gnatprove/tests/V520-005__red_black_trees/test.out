@@ -691,8 +691,7 @@ red_black_trees.adb:515:81: medium: pointer dereference check might fail
 red_black_trees.adb:515:86: medium: pointer dereference check might fail
 red_black_trees.adb:515:94: info: predicate check proved (Trivial: 1 VC)
 red_black_trees.adb:515:100: info: predicate check proved (Trivial: 1 VC)
-red_black_trees.adb:515:102: medium: in inlined predicate at a-nbnbin.ads:55
-red_black_trees.adb:515:102: medium: predicate check might fail, cannot prove Big_Positive > To_Big_Integer (0) [possible fix: precondition of subprogram at line 451 should mention Pos]
+red_black_trees.adb:515:102: info: predicate check proved (CVC5: 1 VC; Trivial: 1 VC)
 red_black_trees.adb:515:104: info: predicate check proved (Trivial: 1 VC)
 red_black_trees.adb:515:111: medium: pointer dereference check might fail
 red_black_trees.adb:515:116: medium: pointer dereference check might fail
@@ -723,7 +722,7 @@ red_black_trees.adb:530:56: info: pointer dereference check proved (CVC5: 1 VC)
 red_black_trees.adb:532:16: medium: precondition might fail, cannot prove T.Right /= null
 red_black_trees.adb:532:30: info: pointer dereference check proved (CVC5: 1 VC)
 red_black_trees.adb:536:16: medium: in inlined expression function body at infinite_sequences.ads:31
-red_black_trees.adb:536:16: medium: precondition might fail, cannot prove First (R) = First (S1) [possible fix: precondition of subprogram at line 451 should mention Pos]
+red_black_trees.adb:536:16: medium: precondition might fail, cannot prove Last (R) = Last (S3) [possible fix: precondition of subprogram at line 451 should mention Pos]
 red_black_trees.adb:536:51: info: pointer dereference check proved (CVC5: 1 VC)
 red_black_trees.adb:536:65: info: pointer dereference check proved (CVC5: 1 VC)
 red_black_trees.adb:536:81: info: pointer dereference check proved (CVC5: 1 VC)

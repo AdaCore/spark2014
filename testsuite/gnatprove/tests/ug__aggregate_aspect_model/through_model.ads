@@ -8,7 +8,7 @@ package Through_Model with SPARK_Mode is
      Aggregate => (Empty => Empty_List, Add_Unnamed => Add),
      Annotate  => (GNATprove, Container_Aggregates, "From_Model");
 
-   Empty_List : constant List;
+   function Empty_List return List;
 
    function Model (L : List) return Sequence with
      Subprogram_Variant => (Structural => L),
@@ -31,5 +31,5 @@ private
      (if L = null then Empty_Sequence
       else Add (Model (L.Next), L.Data));
 
-   Empty_List : constant List := null;
+   function Empty_List return List is (null);
 end Through_Model;
