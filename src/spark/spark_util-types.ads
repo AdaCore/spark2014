@@ -28,20 +28,6 @@ with Stand;    use Stand;
 
 package SPARK_Util.Types is
 
-   type True_Or_Explain (Ok : Boolean := True) is record
-      case Ok is
-         when True  =>
-            null;
-         when False =>
-            Explanation : Unbounded_String;
-      end case;
-   end record;
-   --  Type to store a check result along with an explanation in case of
-   --  failure.
-
-   function False_With_Explain (S : String) return True_Or_Explain is
-     (True_Or_Explain'(Ok => False, Explanation => To_Unbounded_String (S)));
-
    ---------------------------------------------
    -- Queries related to representative types --
    ---------------------------------------------
@@ -182,6 +168,7 @@ package SPARK_Util.Types is
 
    function Use_Real_Eq_For_Private_Type (E : Type_Kind_Id) return Boolean
    with Pre => Is_Incomplete_Or_Private_Type (E)
+     or else Is_Record_Type (E)
      or else Is_Concurrent_Type (E);
    --  Return True if the predefined equality on a private type opaque for
    --  SPARK can be represented using Why3 equality.
@@ -302,6 +289,11 @@ package SPARK_Util.Types is
    --  @return True if E needs a specific module to check its default
    --     expression at declaration
 
+   function Needs_Default_Predicate_Checks (E : Type_Kind_Id) return Boolean;
+   --  @param E type
+   --  @return True if E has predicates that need to be check on the default
+   --  value.
+
    function Needs_Check_For_Aggregate_Annotation
      (E : Type_Kind_Id)
       return Boolean;
@@ -339,6 +331,12 @@ package SPARK_Util.Types is
       Explanation : out Unbounded_String);
    --  This procedure implements the notion of "suitable as a target of an
    --  unchecked conversion" of SPARK RM 13.9.
+
+   function Suitable_For_Precise_UC
+     (Arg_Typ : Type_Kind_Id)
+      return True_Or_Explain;
+   --  Check if Typ is only made of integers. When returning False,
+   --  return also the Explanation.
 
    procedure Have_Same_Known_Esize
      (A, B        :     Type_Kind_Id;
@@ -535,6 +533,14 @@ package SPARK_Util.Types is
    --  @param E A tagged type (which may or not be class-wide).
    --  @return True if Anc is one of the ancestors of type E.
 
+   function Has_Empty_Variants (Typ : Type_Kind_Id) return Boolean with
+     Pre => Is_Record_Type (Typ);
+   --  Return True if Typ has variants which do not have any components
+
+   function Has_Shallow_Variants (Typ : Type_Kind_Id) return Boolean with
+     Pre => Is_Record_Type (Typ) and then Is_Deep (Typ);
+   --  Return True if Typ has variants which do not have any deep components
+
    --------------------------------
    -- Queries related to arrays --
    --------------------------------
@@ -644,8 +650,9 @@ package SPARK_Util.Types is
    generic
       with function Test (Typ : Type_Kind_Id) return Test_Result;
    function Traverse_Subcomponents
-     (Typ        : Type_Kind_Id;
-      Skip_Discr : Boolean := False)
+     (Typ                : Type_Kind_Id;
+      Skip_Discr         : Boolean := False;
+      Traverse_Ancestors : Boolean := False)
       return Boolean;
    --  Generic function which applies test to all subcomponents of Typ
    --  until one is found on which Test returns Pass. If Test returns
@@ -653,5 +660,7 @@ package SPARK_Util.Types is
    --  or designated type is also searched for subcomponents with the given
    --  property.
    --  If Skip_Discr is True, discriminants are not traversed.
+   --  If Traverse_Ancestors is True, also call Test on ancestors of tagged
+   --  types.
 
 end SPARK_Util.Types;

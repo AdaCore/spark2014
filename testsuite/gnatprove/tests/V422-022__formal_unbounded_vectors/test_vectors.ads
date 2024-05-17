@@ -1,3 +1,5 @@
+pragma Ignore_Pragma (Assertion_Policy);
+
 with SPARK.Containers.Formal.Unbounded_Vectors;
 
 package Test_Vectors with SPARK_Mode is

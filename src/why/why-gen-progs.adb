@@ -26,9 +26,9 @@
 with Common_Containers;       use Common_Containers;
 with Gnat2Why.Error_Messages; use Gnat2Why.Error_Messages;
 with Gnat2Why.Subprograms;    use Gnat2Why.Subprograms;
+with Why.Atree;               use Why.Atree;
 with Why.Atree.Accessors;     use Why.Atree.Accessors;
 with Why.Atree.Mutators;      use Why.Atree.Mutators;
-with Why.Atree.Tables;        use Why.Atree.Tables;
 with Why.Gen.Names;           use Why.Gen.Names;
 with Why.Gen.Terms;           use Why.Gen.Terms;
 

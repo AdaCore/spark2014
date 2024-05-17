@@ -24,6 +24,7 @@
 with Flow_Classwide; use Flow_Classwide;
 with Flow_Utility;   use Flow_Utility;
 with Sem_Aux;        use Sem_Aux;
+with Sem_Util;       use Sem_Util;
 with Sinfo.Nodes;    use Sinfo.Nodes;
 with SPARK_Util;     use SPARK_Util;
 
@@ -235,25 +236,19 @@ package body Flow.Interprocedural is
             Ghost_Subprogram : constant Boolean :=
               Is_Ghost_Entity (Called_Thing);
 
-            function Is_Implicit_Input (F : Flow_Id) return Boolean;
+            function Is_Implicit_Input (F : Flow_Id) return Boolean
+              with Pre => F.Kind in Direct_Mapping | Magic_String;
             --  Returns True iff F should augument the explicit input set of
-            --  a subprogram, as described in SPARK RM 6.1.5(5): "[is of] an
-            --  unconstrained array subtype, an unconstrained discriminated
-            --  subtype, a tagged type (with one exception), or a type having
-            --  a subcomponent of an unconstrained discriminated subtype".
-            --
-            --  ??? the tagged type part of the above rule is not yet detected
+            --  a subprogram, as described in SPARK RM 6.1.5(5).
 
             -----------------------
             -- Is_Implicit_Input --
             -----------------------
 
             function Is_Implicit_Input (F : Flow_Id) return Boolean is
-              (Has_Bounds (F, FA.B_Scope)
-                 or else
-               (Contains_Discriminants (F, FA.B_Scope)
-                  and then
-                not Is_Constrained (Get_Type (F, FA.B_Scope))));
+              (F.Kind = Direct_Mapping
+                 and then Ekind (F.Node) /= E_Abstract_State
+                 and then Is_Unconstrained_Or_Tagged_Item (F.Node));
 
          begin
             --  Collect all the globals first

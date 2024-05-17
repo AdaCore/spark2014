@@ -726,10 +726,9 @@ package body SPARK_Definition.Annotate is
                   Assign_Indexed_Subp => Assign_Indexed_Subp);
 
                Annot.Empty_Function := Entity (Empty_Subp);
+               pragma Assert (Ekind (Annot.Empty_Function) = E_Function);
 
-               if Ekind (Annot.Empty_Function) = E_Function
-                 and then Present (First_Formal (Annot.Empty_Function))
-               then
+               if Present (First_Formal (Annot.Empty_Function)) then
                   Annot.Spec_Capacity := Etype
                     (First_Formal (Annot.Empty_Function));
                   pragma Assert
@@ -2536,10 +2535,15 @@ package body SPARK_Definition.Annotate is
             return;
 
          elsif Is_Compilation_Unit (Ent) then
-            Error_Msg_N_If
-              ("the entity of a pragma Annotate " & Annot & " for "
-               & "package bodies shall not be a compilation unit",
-               Prag);
+            --  Special case: ignore such annotation pragma on package bodies
+            --  of generic units.
+
+            if not Is_Generic_Instance (Get_Renamed_Entity (Ent)) then
+               Error_Msg_N_If
+                 ("the entity of a pragma Annotate " & Annot & " for "
+                  & "package bodies shall not be a compilation unit",
+                  Prag);
+            end if;
             return;
          end if;
 
@@ -4807,33 +4811,31 @@ package body SPARK_Definition.Annotate is
          Globals : Global_Flow_Ids;
 
       begin
-         if Ekind (Annot.Empty_Function) /= E_Constant then
-            Get_Globals
-              (Subprogram          => Annot.Empty_Function,
-               Scope               =>
-                 (Ent  => Annot.Empty_Function,
-                  Part => Visible_Part),
-               Classwide           => False,
-               Globals             => Globals,
-               Use_Deduced_Globals =>
-                  not Gnat2Why_Args.Global_Gen_Mode,
-               Ignore_Depends      => False);
+         Get_Globals
+           (Subprogram          => Annot.Empty_Function,
+            Scope               =>
+              (Ent  => Annot.Empty_Function,
+               Part => Visible_Part),
+            Classwide           => False,
+            Globals             => Globals,
+            Use_Deduced_Globals =>
+               not Gnat2Why_Args.Global_Gen_Mode,
+            Ignore_Depends      => False);
 
-            if Is_Function_With_Side_Effects (Annot.Empty_Function) then
-               Error_Msg_NE_If
-                 ("& function shall not have side effects",
-                  Typ, Annot.Empty_Function);
-            elsif not Globals.Proof_Ins.Is_Empty
-              or else not Globals.Inputs.Is_Empty
-            then
-               Error_Msg_NE_If
-                 ("& function shall not access global data",
-                  Typ, Annot.Empty_Function);
-            elsif Is_Volatile_Function (Annot.Empty_Function) then
-               Error_Msg_NE_If
-                 ("& function shall not be volatile",
-                  Typ, Annot.Empty_Function);
-            end if;
+         if Is_Function_With_Side_Effects (Annot.Empty_Function) then
+            Error_Msg_NE_If
+              ("& function shall not have side effects",
+               Typ, Annot.Empty_Function);
+         elsif not Globals.Proof_Ins.Is_Empty
+           or else not Globals.Inputs.Is_Empty
+         then
+            Error_Msg_NE_If
+              ("& function shall not access global data",
+               Typ, Annot.Empty_Function);
+         elsif Is_Volatile_Function (Annot.Empty_Function) then
+            Error_Msg_NE_If
+              ("& function shall not be volatile",
+               Typ, Annot.Empty_Function);
          end if;
 
          Get_Globals
@@ -5381,6 +5383,28 @@ package body SPARK_Definition.Annotate is
       end if;
    end Infer_Inline_Annotation;
 
+   --------------------------------
+   -- Infer_Ownership_Annotation --
+   --------------------------------
+
+   procedure Infer_Ownership_Annotation (E : Type_Kind_Id) is
+      pragma Assert (E = Root_Retysp (E));
+   begin
+      if Is_Deep (E) and then not Ownership_Annotations.Contains (E) then
+         if Contains_Allocated_Parts (E) then
+            Ownership_Annotations.Insert
+              (Key      => E,
+               New_Item =>
+                 Ownership_Annotation'
+                   (Needs_Reclamation => True, others => <>));
+         else
+            Ownership_Annotations.Insert
+              (Key      => E,
+               New_Item => Ownership_Annotation'(Needs_Reclamation => False));
+         end if;
+      end if;
+   end Infer_Ownership_Annotation;
+
    ---------------------------
    -- Insert_Annotate_Range --
    ---------------------------
@@ -5756,11 +5780,13 @@ package body SPARK_Definition.Annotate is
             Subp_Scop := Enclosing_Unit (Subp_Scop);
          end loop;
 
-         --  If Subp_Scop is not a nested package or protected type, then
-         --  refinement is always visible.
+         --  If Subp_Scop is not a nested package or protected type, or if it
+         --  is the analyzed unit, then the refinement of Subp is always
+         --  visible.
 
          return Ekind (Subp_Scop) not in E_Package | E_Protected_Type
-           or else Is_Compilation_Unit (Subp_Scop);
+           or else (Is_Compilation_Unit (Subp_Scop)
+                    and then Is_In_Analyzed_Files (Subp_Scop));
       end Refinement_Is_Always_Visible;
 
       Position : Common_Containers.Node_Maps.Cursor :=

@@ -1,0 +1,13 @@
+with "my_sparklib";
+
+project Test is
+
+   for Main use ("test.adb");
+
+   for Object_Dir use "obj";
+
+   package Builder is
+      for Switches ("ada") use ("-gnata", "-gnat2022", "-gnateDSPARK_BODY_MODE=On");
+   end Builder;
+
+end Test;

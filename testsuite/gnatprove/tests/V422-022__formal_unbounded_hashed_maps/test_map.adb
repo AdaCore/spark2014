@@ -1,6 +1,11 @@
 with SPARK.Containers; use SPARK.Containers;
 
 package body Test_Map with SPARK_Mode is
+
+   --  Do not execute ghost procedures from the model, as the container
+   --  instance is compiled without assertions.
+   pragma Assertion_Policy (Ghost => Ignore);
+
    procedure Test_Map_Pos with Pre => True is
       use Test_Map.M;
       L, K : Map;

@@ -25,6 +25,7 @@
 
 with Aspects;                     use Aspects;
 with Elists;                      use Elists;
+with Flow_Utility.Initialization; use Flow_Utility.Initialization;
 with Gnat2Why.Data_Decomposition; use Gnat2Why.Data_Decomposition;
 with Rtsfind;                     use Rtsfind;
 with Sem_Eval;                    use Sem_Eval;
@@ -84,6 +85,15 @@ package body SPARK_Util.Types is
       Esize       : out Uint;
       Explanation : out Unbounded_String);
    --  same as Check_Known_RM_Size, but for Esize
+
+   function Has_Default_Initialized_Component
+     (Typ : Entity_Id)
+      return Boolean
+   with Pre => Is_Type (Typ);
+   --  Returns True if Typ has at least a component which has default values
+   --  (not including the default initialization of a pointer to null).
+   --  This is used to determine whether a predicate check is needed at
+   --  default. Look through SPARK boundaries.
 
    generic
       with function Test (Typ : Type_Kind_Id) return Test_Result;
@@ -994,6 +1004,143 @@ package body SPARK_Util.Types is
       return Eq;
    end Get_User_Defined_Eq;
 
+   ---------------------------------------
+   -- Has_Default_Initialized_Component --
+   ---------------------------------------
+
+   function Has_Default_Initialized_Component
+     (Typ : Entity_Id)
+      return Boolean
+   is
+      F_Typ : constant Entity_Id := Unchecked_Full_Type (Typ);
+   begin
+      if Is_Access_Type (F_Typ) then
+         return False;
+
+      elsif Is_Array_Type (F_Typ) then
+         return Has_Default_Aspect (F_Typ)
+           or else Has_Default_Initialized_Component (Component_Type (F_Typ));
+
+      elsif Is_Record_Type (F_Typ)
+        or else Is_Concurrent_Type (F_Typ)
+      then
+         declare
+            Parent_Ty : constant Opt_Type_Kind_Id :=
+              Unchecked_Full_Type (Parent_Type (F_Typ));
+
+         begin
+            --  For tagged types, consider inherited components
+
+            if Is_Tagged_Type (F_Typ)
+              and then Present (Parent_Ty)
+              and then Parent_Ty /= F_Typ
+              and then Has_Default_Initialized_Component (Parent_Ty)
+            then
+               return True;
+            end if;
+
+            --  Go over F_Typ's own components
+
+            if Ekind (F_Typ) in Record_Kind | E_Protected_Type then
+               declare
+                  Comp : Opt_E_Component_Id := First_Component (F_Typ);
+               begin
+                  while Present (Comp) loop
+                     if not Is_Tagged_Type (F_Typ)
+                       or else Unchecked_Full_Type
+                         (Scope (Original_Record_Component (Comp))) = F_Typ
+                     then
+                        if Present
+                          (Expression (Enclosing_Declaration (Comp)))
+                        or else Has_Default_Initialized_Component
+                            (Etype (Comp))
+                        then
+                           return True;
+                        end if;
+
+                     end if;
+                     Next_Component (Comp);
+                  end loop;
+               end;
+            end if;
+
+            return False;
+         end;
+
+      elsif Is_Incomplete_Type (F_Typ) then
+         raise Program_Error;
+
+      else
+         pragma Assert (Is_Scalar_Type (F_Typ));
+
+         return Has_Default_Aspect (F_Typ);
+      end if;
+   end Has_Default_Initialized_Component;
+
+   ------------------------
+   -- Has_Empty_Variants --
+   ------------------------
+
+   function Has_Empty_Variants (Typ : Type_Kind_Id) return Boolean is
+
+      function Has_Empty_Variants_Rec (N : Node_Id) return Boolean;
+      --  Traverse the record declaration to search for empty variants
+
+      ----------------------------
+      -- Has_Empty_Variants_Rec --
+      ----------------------------
+
+      function Has_Empty_Variants_Rec (N : Node_Id) return Boolean is
+         Field : Node_Id := First (Component_Items (N));
+      begin
+         while Present (Field) loop
+            if Nkind (Field) /= N_Pragma then
+               return False;
+            end if;
+            Next (Field);
+         end loop;
+         if Present (Variant_Part (N)) then
+            declare
+               Var : Node_Id := First (Variants (Variant_Part (N)));
+            begin
+               while Present (Var) loop
+                  if Has_Empty_Variants_Rec (Component_List (Var)) then
+                     return True;
+                  end if;
+                  Next (Var);
+               end loop;
+               return False;
+            end;
+         end if;
+         return True;
+      end Has_Empty_Variants_Rec;
+
+      Decl_Node : constant Node_Id := Parent (Typ);
+      Def_Node  : constant Node_Id :=
+        (if Nkind (Decl_Node) = N_Full_Type_Declaration
+         then Type_Definition (Decl_Node)
+         else Empty);
+
+      Components : constant Node_Id :=
+        (if Present (Def_Node) then
+             (case Nkind (Def_Node) is
+                 when N_Record_Definition =>
+                    Component_List (Def_Node),
+                 when N_Derived_Type_Definition =>
+                   (if Present (Record_Extension_Part (Def_Node)) then
+                      Component_List (Record_Extension_Part (Def_Node))
+                    else Empty),
+                 when others =>
+                    raise Program_Error)
+         else Empty);
+   begin
+      if Present (Components) then
+         return Has_Empty_Variants_Rec (Components);
+      else
+         return True;
+      end if;
+   end Has_Empty_Variants;
+
    -----------------------------
    -- Has_Invariants_In_SPARK --
    -----------------------------
@@ -1071,9 +1218,6 @@ package body SPARK_Util.Types is
    function Has_Private_Fields (E : Type_Kind_Id) return Boolean is
       Ty : constant Type_Kind_Id := Retysp (E);
    begin
-      if not Full_View_Not_In_SPARK (Ty) then
-         return False;
-      end if;
 
       --  Only base types have private fields of their own; subtypes do not
 
@@ -1089,10 +1233,88 @@ package body SPARK_Util.Types is
          return False;
       end if;
 
+      --  For unused records, replace the components by a private part
+
+      if Is_Unused_Record (Ty) then
+         return True;
+      end if;
+
+      if not Full_View_Not_In_SPARK (Ty) then
+         return False;
+      end if;
+
       --  Return True if Ty is a private type
 
       return Is_Incomplete_Or_Private_Type (Ty);
    end Has_Private_Fields;
+
+   --------------------------
+   -- Has_Shallow_Variants --
+   --------------------------
+
+   function Has_Shallow_Variants (Typ : Type_Kind_Id) return Boolean is
+
+      function Has_Shallow_Variants_Rec (N : Node_Id) return Boolean;
+      --  Traverse the record declaration to search for shallow variants
+
+      ------------------------------
+      -- Has_Shallow_Variants_Rec --
+      ------------------------------
+
+      function Has_Shallow_Variants_Rec (N : Node_Id) return Boolean is
+         Field : Node_Id := First (Component_Items (N));
+      begin
+         while Present (Field) loop
+            if Nkind (Field) /= N_Pragma
+              and then Is_Deep (Etype (Defining_Identifier (Field)))
+            then
+               return False;
+            end if;
+            Next (Field);
+         end loop;
+         if Present (Variant_Part (N)) then
+            declare
+               Var : Node_Id := First (Variants (Variant_Part (N)));
+            begin
+               while Present (Var) loop
+                  if Has_Shallow_Variants_Rec (Component_List (Var)) then
+                     return True;
+                  end if;
+                  Next (Var);
+               end loop;
+               return False;
+            end;
+         end if;
+         return True;
+      end Has_Shallow_Variants_Rec;
+
+      Decl_Node : constant Node_Id := Parent (Typ);
+      Def_Node  : constant Node_Id :=
+        (if Nkind (Decl_Node) = N_Full_Type_Declaration
+         then Type_Definition (Decl_Node)
+         else Empty);
+
+      Components : constant Node_Id :=
+        (if Present (Def_Node) then
+             (case Nkind (Def_Node) is
+                 when N_Record_Definition =>
+                    Component_List (Def_Node),
+                 when N_Derived_Type_Definition =>
+                   (if Present (Record_Extension_Part (Def_Node)) then
+                      Component_List (Record_Extension_Part (Def_Node))
+                    else Empty),
+                 when others =>
+                    raise Program_Error)
+         else Empty);
+   begin
+      pragma Assert (Present (Components));
+
+      if No (Variant_Part (Components)) then
+         return False;
+      else
+         return Has_Shallow_Variants_Rec (Components);
+      end if;
+   end Has_Shallow_Variants;
 
    -------------------------------
    -- Has_Subcomponents_Of_Type --
@@ -1560,6 +1782,20 @@ package body SPARK_Util.Types is
            Entity_In_SPARK (Annot.Add_Procedure)
          and then Entity_In_SPARK (Annot.Empty_Function)));
 
+   ------------------------------------
+   -- Needs_Default_Predicate_Checks --
+   ------------------------------------
+
+   function Needs_Default_Predicate_Checks (E : Type_Kind_Id) return Boolean is
+     (Has_Predicates (E)
+      and then (Has_Default_Initialized_Component (E)
+        or else Default_Initialization (E) in
+          Full_Default_Initialization | No_Possible_Initialization));
+   --  Check the predicate if it is mandated by Ada (E has default initialized
+   --  components) or flow analysis considers the object to be fully
+   --  initialized (in this case, the object can be read as is so we need to
+   --  check the predicate).
+
    --------------------
    -- Nth_Index_Type --
    --------------------
@@ -1669,87 +1905,37 @@ package body SPARK_Util.Types is
 
    function Predefined_Eq_Uses_Pointer_Eq (Ty : Type_Kind_Id) return Boolean is
 
-      function Uses_Pointer_Eq_Comp (Ty : Type_Kind_Id) return Boolean is
-        (not (Is_Record_Type (Unchecked_Full_Type (Ty))
-              and then Present (Get_User_Defined_Eq (Base_Type (Ty))))
-         and then Predefined_Eq_Uses_Pointer_Eq (Ty));
-      --  The predefined equality on pointer is used for a component of type Ty
-      --  if the predefined equality is used for components of this type and
-      --  this equality uses predefined equality on pointers.
+      function Check_Comp (Comp_Ty : Node_Id) return Test_Result;
+      --  Return Pass if an access type is found. Stop the search when a
+      --  primitive equality is used.
 
-      Spec_Ty : constant Entity_Id :=
-        (if Is_Class_Wide_Type (Retysp (Ty))
-         then Get_Specific_Type_From_Classwide (Retysp (Ty))
-         else Ty);
-      Rep_Ty  : constant Type_Kind_Id := Retysp (Spec_Ty);
+      ----------------
+      -- Check_Comp --
+      ----------------
 
+      function Check_Comp (Comp_Ty : Node_Id) return Test_Result is
+      begin
+         if Is_Access_Type (Comp_Ty) then
+            return Pass;
+
+         --  Check_Comp will be called on Retysp (Ty) as part of the traversal.
+         --  Force the predefined equality here.
+
+         elsif not Use_Predefined_Equality_For_Type (Comp_Ty)
+           and then Comp_Ty /= Retysp (Ty)
+         then
+            return Fail;
+         else
+            return Continue;
+         end if;
+      end Check_Comp;
+
+      function Uses_Pointer_Eq is new Traverse_Subcomponents (Check_Comp);
    begin
-      --  The predefined equality on a class-wide type uses the primitive
-      --  equality on its specific view.
+      --  No need to traverse discriminants, they cannot contain access types
 
-      if Is_Class_Wide_Type (Retysp (Ty))
-        and then Present (Get_User_Defined_Eq (Spec_Ty))
-      then
-         return False;
-      elsif Is_Access_Type (Rep_Ty) then
-         return True;
-      elsif Is_Array_Type (Rep_Ty) then
-         return Uses_Pointer_Eq_Comp (Component_Type (Rep_Ty));
-      elsif Is_Record_Type (Rep_Ty) then
-         declare
-            Is_Tagged : constant Boolean := Is_Tagged_Type (Rep_Ty);
-            Base      : constant Type_Kind_Id := Base_Retysp (Rep_Ty);
-            Parent    : constant Type_Kind_Id := Retysp (Etype (Base));
-
-         begin
-            --  Check if a pointer equality is used for one of the visible
-            --  components of Ty. For tagged types, only consider components
-            --  which are not in the parent type as the primitive equality of
-            --  the parent type will be used for its components.
-
-            if not Is_Incomplete_Or_Private_Type (Base) then
-               declare
-                  Comp : Entity_Id := First_Component (Rep_Ty);
-               begin
-                  while Present (Comp) loop
-                     if Component_Is_Visible_In_SPARK (Comp)
-                       and then
-                         (not Is_Tagged
-                          or else Retysp
-                            (Scope (Original_Record_Component (Comp))) = Base)
-                       and then Uses_Pointer_Eq_Comp (Etype (Comp))
-                     then
-                        return True;
-                     end if;
-
-                     pragma Assert
-                       (if Component_Is_Visible_In_SPARK (Comp)
-                          and then Is_Tagged
-                          and then Retysp
-                            (Scope (Original_Record_Component (Comp))) /= Base
-                        then Present
-                          (Search_Component_By_Name (Parent, Comp)));
-                     Next_Component (Comp);
-                  end loop;
-               end;
-            end if;
-
-            --  If the type is tagged, we need to check components inherited
-            --  from the ancestor.
-
-            if Is_Tagged then
-               return Parent /= Base
-                 and then No (Get_User_Defined_Eq (Parent))
-                 and then Predefined_Eq_Uses_Pointer_Eq (Parent);
-            else
-               return False;
-            end if;
-         end;
-      else
-         pragma Assert
-           (Ekind (Rep_Ty) in Incomplete_Or_Private_Kind | Scalar_Kind);
-         return False;
-      end if;
+      return Uses_Pointer_Eq
+        (Ty, Skip_Discr => True, Traverse_Ancestors => True);
    end Predefined_Eq_Uses_Pointer_Eq;
 
    ---------------------------------------
@@ -2124,6 +2310,96 @@ package body SPARK_Util.Types is
       end if;
    end Suitable_For_UC_Gen;
 
+   -----------------------------
+   -- Suitable_For_Precise_UC --
+   -----------------------------
+
+   function Suitable_For_Precise_UC
+     (Arg_Typ : Type_Kind_Id)
+      return True_Or_Explain
+   is
+      Typ : constant Type_Kind_Id := Retysp (Arg_Typ);
+   begin
+      case Ekind (Typ) is
+         when Integer_Kind =>
+            if Has_Biased_Representation (Typ) then
+               return False_With_Explain
+                 ("type with biased representation");
+
+            elsif Has_Modular_Integer_Type (Typ)
+              and then Has_No_Bitwise_Operations_Annotation (Typ)
+            then
+               return False_With_Explain
+                 ("type with No_Bitwise_Operations annotation");
+            end if;
+
+         when Enumeration_Kind =>
+            if Has_Enumeration_Rep_Clause (Typ)
+              and then Enumeration_Rep (First_Literal (Typ)) /= Uint_0
+            then
+               return False_With_Explain
+                 ("enumeration with non-default representation");
+            end if;
+
+         when Record_Kind =>
+            if Is_Tagged_Type (Typ) then
+               return False_With_Explain ("type is tagged");
+
+            elsif Has_Discriminants (Typ) then
+               return False_With_Explain ("type has discriminants");
+
+            elsif Reverse_Storage_Order (Base_Retysp (Typ)) then
+               return False_With_Explain
+                 ("type has reverse storage order");
+            end if;
+
+            declare
+               Comp : Entity_Id := First_Component (Typ);
+            begin
+               while Present (Comp) loop
+                  if No (Component_Bit_Offset (Comp)) then
+                     return False_With_Explain
+                       ("component offset not known");
+                  end if;
+
+                  declare
+                     Check : constant True_Or_Explain :=
+                       Suitable_For_Precise_UC (Etype (Comp));
+                  begin
+                     if not Check.Ok then
+                        return Check;
+                     end if;
+                  end;
+                  Next_Component (Comp);
+               end loop;
+            end;
+
+         when Array_Kind =>
+            declare
+               Check : constant True_Or_Explain :=
+                 Suitable_For_Precise_UC (Component_Type (Typ));
+            begin
+               if not Check.Ok then
+                  return Check;
+               end if;
+            end;
+
+            if Number_Dimensions (Typ) > Uint_1 then
+               return False_With_Explain
+                 ("array has multiple dimensions");
+
+            elsif Reverse_Storage_Order (Base_Retysp (Typ)) then
+               return False_With_Explain
+                 ("type has reverse storage order");
+            end if;
+
+         when others =>
+            return False_With_Explain ("elementary non-integer type");
+      end case;
+
+      return True_Or_Explain'(Ok => True);
+   end Suitable_For_Precise_UC;
+
    ----------------------------
    -- Suitable_For_UC_Target --
    ----------------------------
@@ -2194,8 +2470,9 @@ package body SPARK_Util.Types is
    ----------------------------
 
    function Traverse_Subcomponents
-     (Typ        : Type_Kind_Id;
-      Skip_Discr : Boolean := False) return Boolean
+     (Typ                : Type_Kind_Id;
+      Skip_Discr         : Boolean := False;
+      Traverse_Ancestors : Boolean := False) return Boolean
    is
 
       Seen : Node_Sets.Set;
@@ -2227,14 +2504,22 @@ package body SPARK_Util.Types is
             --  For tagged records, also look at inherited subcomponents
 
             declare
-               Base_Ty : constant Type_Kind_Id := Base_Retysp (Rep_Ty);
+               Base_Ty   : constant Type_Kind_Id := Base_Retysp (Rep_Ty);
+               Parent_Ty : constant Opt_Type_Kind_Id :=
+                 Parent_Retysp (Base_Ty);
             begin
                if Is_Tagged_Type (Base_Ty)
-                 and then Present (Parent_Retysp (Base_Ty))
-                 and then Parent_Retysp (Base_Ty) /= Base_Ty
+                 and then Present (Parent_Ty)
+                 and then Parent_Ty /= Base_Ty
                then
-                  if Traverse_Subcomponents_Only (Parent_Retysp (Base_Ty)) then
-                     return True;
+                  if Traverse_Ancestors then
+                     if Traverse_Type (Parent_Ty) then
+                        return True;
+                     end if;
+                  else
+                     if Traverse_Subcomponents_Only (Parent_Ty) then
+                        return True;
+                     end if;
                   end if;
 
                --  Traverse the discriminants of Base_Ty if any

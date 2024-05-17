@@ -94,9 +94,9 @@ with Switch;                          use Switch;
 with Tempdir;                         use Tempdir;
 with VC_Kinds;                        use VC_Kinds;
 with Why;                             use Why;
+with Why.Atree;                       use Why.Atree;
 with Why.Atree.Modules;               use Why.Atree.Modules;
 with Why.Atree.To_Json;               use Why.Atree.To_Json;
-with Why.Atree.Tables;                use Why.Atree.Tables;
 with Why.Gen.Binders;                 use Why.Gen.Binders;
 with Why.Gen.Expr;                    use Why.Gen.Expr;
 with Why.Gen.Names;
@@ -892,6 +892,7 @@ package body Gnat2Why.Driver is
          --  Start the translation to Why
 
          if Gnat2Why_Args.Mode not in GPM_Check_All | GPM_Flow then
+
             Why.Gen.Names.Initialize;
             Why.Atree.Modules.Initialize;
             Init_Why_Sections;
@@ -1010,7 +1011,8 @@ package body Gnat2Why.Driver is
       Result : JSON_Array := Empty_Array;
    begin
       for Elt of Skipped_Flow_And_Proof loop
-         Append (Result, To_JSON (Entity_To_Subp_Assumption (Elt)));
+         Append (Result,
+                 Assumption_Types.To_JSON (Entity_To_Subp_Assumption (Elt)));
       end loop;
       return Result;
    end Get_Skip_Flow_And_Proof_JSON;
@@ -1023,7 +1025,8 @@ package body Gnat2Why.Driver is
       Result : JSON_Array := Empty_Array;
    begin
       for Elt of Skipped_Proof loop
-         Append (Result, To_JSON (Entity_To_Subp_Assumption (Elt)));
+         Append (Result,
+                 Assumption_Types.To_JSON (Entity_To_Subp_Assumption (Elt)));
       end loop;
       return Result;
    end Get_Skip_Proof_JSON;
@@ -1082,16 +1085,12 @@ package body Gnat2Why.Driver is
    --------------------------
 
    procedure Print_GNAT_Json_File (Filename : String) is
-      Modules    : constant Why_Node_Lists.List := Build_Printing_Plan;
-      Json_File  : constant JSON_Value := Create_Object;
-      Json_Decls : constant JSON_Value :=
-        Why_Node_Lists_List_To_Json (Modules);
+      Modules : constant Why_Node_Lists.List := Build_Printing_Plan;
    begin
-      Set_Field (Json_File, "theory_declarations", Json_Decls);
-
-      --  Output to file
       Open_Current_File (Filename);
-      P (Current_File, Write (Json_File, Compact => True));
+      P (Current_File, "{ ""theory_declarations"" : ");
+      Why_Node_Lists_List_To_Json (Current_File, Modules);
+      P (Current_File, "}");
       Close_Current_File;
    end Print_GNAT_Json_File;
 
@@ -1330,7 +1329,7 @@ package body Gnat2Why.Driver is
       Translated_Object_Names.Reserve_Capacity (0);
 
       Why.Gen.Names.Free;
-      Why.Atree.Tables.Free;
+      Why.Atree.Free;
    end Translate_CUnit;
 
    ----------------------

@@ -1,6 +1,7 @@
+pragma Ignore_Pragma (Assertion_Policy);
+
 with SPARK.Containers.Formal.Unbounded_Hashed_Maps;
 with Ada.Strings.Hash;
-
 
 procedure Test with SPARK_Mode is
    package Maps is new SPARK.Containers.Formal.Unbounded_Hashed_Maps

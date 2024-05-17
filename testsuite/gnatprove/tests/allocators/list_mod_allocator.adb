@@ -30,7 +30,9 @@ is
    function All_Available return Boolean is
      (for all R in Valid_Resource => Data (R).Stat = Available);
 
-   package body M is
+   package body M with
+     Annotate => (GNATprove, Unhide_Info, "Package_Body")
+   is
 
       function Is_Well_Formed return Boolean is
         ((if First_Available /= No_Resource then
@@ -200,15 +202,15 @@ is
       MA : constant Sequence := Model.Available with Ghost;
    begin
       if First_Available /= No_Resource then
+         pragma Assert
+           (for all R in Valid_Resource =>
+              (if Data (R).Stat = Available and then Data (R).Next /= No_Resource
+               then Data (R).Next /= First_Available));
+
          Res := First_Available;
          Next_Avail := Data (First_Available).Next;
          Data (Res) := Cell'(Stat => Allocated, Next => No_Resource);
          First_Available := Next_Avail;
-
-         pragma Assert
-           (for all R in Valid_Resource =>
-              (if Data (R).Stat = Available and then Data (R).Next /= No_Resource
-               then Data (Data (R).Next).Stat = Available));
          Prove_Is_Preprend (Model.Available, MA);
       else
          Res := No_Resource;

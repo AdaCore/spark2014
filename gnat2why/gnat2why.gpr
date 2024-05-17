@@ -39,7 +39,6 @@ project GNAT2Why is
          "flow-analysis-sanity.adb",
          "flow-control_flow_graph.adb",
          "flow-data_dependence_graph.adb",
-         "why-atree-tables.adb",
 
          --  Exclude generated frontend files
          "obj/einfo-entities.adb",

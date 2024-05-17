@@ -246,7 +246,7 @@ package body Xtree_Traversal is
          PL (O, "declare");
          Relative_Indent (O, 3);
          PL (O, Node_Renaming & " : Why_Node " &
-                "renames Get_Node (" & Node_Param & ");");
+                "renames Node_Table (" & Node_Param & ");");
          Relative_Indent (O, -3);
          PL (O, "begin");
          Relative_Indent (O, 3);
@@ -494,7 +494,7 @@ package body Xtree_Traversal is
       procedure Print_Sub_Traversal (Position : Cursor) is
          FI    : constant Field_Info := Element (Position);
          Field : constant String :=
-                   "Get_Node (+" & Node_Param & ")." & Field_Name (FI);
+                   "Node_Table (+" & Node_Param & ")." & Field_Name (FI);
       begin
          if Is_Why_Id (FI) and then Maybe_Null (FI) then
             if Is_List (FI) then

@@ -12,7 +12,6 @@ type ureal = Ureal of { numerator : uint ; denominator : uint; base : int; negat
 type source_ptr =
   | No_location
   | Source_ptr of { filename: string; line: int }
-type node_id = Node_id
 
 (* GNATCOLL.Symbols *)
 type symbol = No_symbol | Symbol of string
@@ -92,10 +91,6 @@ module From_json = struct
     | `List [`String filename; `Int line] ->
       Source_ptr {filename; line}
     | json -> unexpected_json "source_ptr" json
-
-  let node_id_from_json : node_id from_json = function
-    | `String "<Node_Id>" -> Node_id
-    | json -> unexpected_json "node_id" json
 
   let why_node_set_from_json : why_node_set from_json = function
     | `String "<Why_Node_Set>" -> ()

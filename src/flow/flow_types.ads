@@ -348,6 +348,11 @@ package Flow_Types is
    --  @return True iff the given Flow_Id is discriminant (this includes
    --    discriminants for protected types and tasks).
 
+   function Is_Input_Discriminant (F : Flow_Id) return Boolean;
+   --  @param F is the Flow_Id which will be checked
+   --  @return True iff the given Flow_Id is discriminant of the object F
+   --     itself and not of its subcomponents
+
    function Is_Private_Part (F : Flow_Id) return Boolean
    is (F.Kind in Direct_Mapping | Record_Field
          and then F.Facet = Private_Part);

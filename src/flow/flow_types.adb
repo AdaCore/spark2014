@@ -393,6 +393,36 @@ package body Flow_Types is
       and then F.Facet = Normal_Part
       and then Ekind (F.Component.Last_Element) = E_Discriminant);
 
+   ---------------------------
+   -- Is_Input_Discriminant --
+   ---------------------------
+
+   function Is_Input_Discriminant (F : Flow_Id) return Boolean is
+   begin
+      if Is_Discriminant (F) then
+
+         --  Top-level discrminants always acts as inputs, both when the object
+         --  is of constrained type (and then the discriminants are immutable)
+         --  and when it is of an unconstrained type (because of the SPARK RM
+         --  6.1.5(5)).
+
+         if F.Component.Length = 1 then
+            return True;
+
+         --  Deeper discriminants only act as inputs if they belong to
+         --  constrained component.
+
+         else
+            return
+              Is_Constrained
+                (Etype
+                   (F.Component (Entity_Vectors.Previous (F.Component.Last))));
+         end if;
+      else
+         return False;
+      end if;
+   end Is_Input_Discriminant;
+
    -----------------
    -- Is_Volatile --
    -----------------

@@ -39,8 +39,8 @@ with SPARK_Definition.Annotate;     use SPARK_Definition.Annotate;
 with SPARK_Util.Types;              use SPARK_Util.Types;
 with Stand;                         use Stand;
 with Urealp;                        use Urealp;
+with Why.Atree;                     use Why.Atree;
 with Why.Atree.Accessors;           use Why.Atree.Accessors;
-with Why.Atree.Tables;              use Why.Atree.Tables;
 with Why.Gen.Arrays;                use Why.Gen.Arrays;
 with Why.Gen.Binders;               use Why.Gen.Binders;
 with Why.Gen.Names;                 use Why.Gen.Names;
@@ -3115,7 +3115,7 @@ package body Why.Gen.Expr is
       ------------------------------
 
       function First_Constrained_Parent (Ty : Entity_Id) return Entity_Id is
-         Parent : Entity_Id := Retysp (Ty);
+         Parent : Entity_Id := Ty;
       begin
          loop
             declare
@@ -3132,10 +3132,12 @@ package body Why.Gen.Expr is
          end loop;
       end First_Constrained_Parent;
 
+      From_Rep         : constant Entity_Id := Retysp (From_Ent);
+      To_Rep           : constant Entity_Id := Retysp (To_Ent);
       Dim              : constant Positive :=
-        Positive (Number_Dimensions (To_Ent));
-      To_Constrained   : constant Boolean := Is_Constrained (To_Ent);
-      From_Constrained : constant Boolean := Is_Constrained (From_Ent);
+        Positive (Number_Dimensions (To_Rep));
+      To_Constrained   : constant Boolean := Is_Constrained (To_Rep);
+      From_Constrained : constant Boolean := Is_Constrained (From_Rep);
    begin
       --  Sliding is needed when we convert to a constrained type and the
       --  'First of the From type is not known to be equal to the 'First
@@ -3145,7 +3147,7 @@ package body Why.Gen.Expr is
       --  to a type with fixed lower bounds.
 
       if not To_Constrained
-        and then not Is_Fixed_Lower_Bound_Array_Subtype (To_Ent)
+        and then not Is_Fixed_Lower_Bound_Array_Subtype (To_Rep)
       then
          return False;
       end if;
@@ -3154,7 +3156,7 @@ package body Why.Gen.Expr is
       --  converting from an unconstrained array without fixed lower bounds
 
       if not From_Constrained
-        and then not Is_Fixed_Lower_Bound_Array_Subtype (From_Ent)
+        and then not Is_Fixed_Lower_Bound_Array_Subtype (From_Rep)
       then
          return True;
       end if;
@@ -3164,8 +3166,8 @@ package body Why.Gen.Expr is
 
       if From_Constrained
         and then To_Constrained
-        and then First_Constrained_Parent (From_Ent) =
-        First_Constrained_Parent (To_Ent)
+        and then First_Constrained_Parent (From_Rep) =
+        First_Constrained_Parent (To_Rep)
       then
          return False;
       end if;
@@ -3174,8 +3176,8 @@ package body Why.Gen.Expr is
 
       for I in 1 .. Dim loop
          declare
-            Typ_From : constant Entity_Id := Nth_Index_Type (From_Ent, I);
-            Typ_To   : constant Entity_Id := Nth_Index_Type (To_Ent, I);
+            Typ_From : constant Entity_Id := Nth_Index_Type (From_Rep, I);
+            Typ_To   : constant Entity_Id := Nth_Index_Type (To_Rep, I);
             Low_From : Node_Id;
             Low_To   : Node_Id;
 

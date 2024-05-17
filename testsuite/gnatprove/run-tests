@@ -481,9 +481,7 @@ class SPARKTestFinder(TestFinder):
                 test_env[args_entry] = (
                     test_env["no_crash"]
                     if "no_crash" in test_env
-                    else test_env["prove_all"]
-                    if "prove_all" in test_env
-                    else {}
+                    else test_env["prove_all"] if "prove_all" in test_env else {}
                 )
         # copy replay info into test_env[args_entry] if not already present:
         if "replay" in test_env and "replay" not in test_env[args_entry]:

@@ -68,11 +68,11 @@ with Uintp;                          use Uintp;
 with Urealp;                         use Urealp;
 with VC_Kinds;                       use VC_Kinds;
 with Why;                            use Why;
+with Why.Atree;                      use Why.Atree;
 with Why.Atree.Builders;             use Why.Atree.Builders;
 with Why.Atree.Accessors;            use Why.Atree.Accessors;
 with Why.Atree.Mutators;             use Why.Atree.Mutators;
 with Why.Atree.Modules;              use Why.Atree.Modules;
-with Why.Atree.Tables;               use Why.Atree.Tables;
 with Why.Gen.Arrays;                 use Why.Gen.Arrays;
 with Why.Gen.Decl;                   use Why.Gen.Decl;
 with Why.Gen.Hardcoded;              use Why.Gen.Hardcoded;
@@ -1693,13 +1693,13 @@ package body Gnat2Why.Expr is
                                      else False_Term))));
             end if;
 
-            --  L has its top-level initialization flag True iff its type
-            --  has some initialized component.
+            --  For entirely private types, L has its top-level initialization
+            --  flag True iff its type is entirely initialized.
 
             if Binder.Init.Present
               and then
-                (Default_Initialization (Constrained_Ty) /=
-                       No_Default_Initialization
+                (Default_Initialization (Constrained_Ty) =
+                       Full_Default_Initialization
                  or else Has_Mutable_Discriminants (Constrained_Ty)
                  or else Has_Access_Type (Constrained_Ty))
             then
@@ -4313,9 +4313,7 @@ package body Gnat2Why.Expr is
          --  at use.
 
          if (At_Declaration or else not Needs_Default_Checks_At_Decl (Ty_Ext))
-           and then Has_Predicates (Ty_Ext)
-           and then Default_Initialization (Ty_Ext) /=
-           No_Default_Initialization
+           and then Needs_Default_Predicate_Checks (Ty_Ext)
          then
             declare
                W_Typ   : constant W_Type_Id := EW_Abstract
@@ -6096,7 +6094,7 @@ package body Gnat2Why.Expr is
             Typ_Pred              : constant W_Pred_Id :=
               Compute_Dynamic_Predicate (Expr, Ty_Ext, Params, Top_Predicate);
             Pred_Check_At_Default : constant Boolean :=
-              Default_Initialization (Ty_Ext) /= No_Default_Initialization;
+              Needs_Default_Predicate_Checks (Ty_Ext);
             Init_Flag             : constant W_Pred_Id :=
               Pred_Of_Boolean_Term
                 (if Relaxed_Init
@@ -13208,11 +13206,8 @@ package body Gnat2Why.Expr is
                Cnt          : Positive;
                Args         : W_Expr_Array (1 .. Natural (Values.Length));
                Bnd_Args     : W_Expr_Array (1 .. Bound_Count);
-               Var_Args     : constant W_Expr_Array := Get_Args_From_Binders
-                 (To_Binder_Array
-                    (Get_Binders_From_Variables (Variables),
-                     Keep_Const => Keep),
-                  Ref_Allowed => Params.Ref_Allowed);
+               Var_Args     : constant W_Expr_Array := Get_Args_From_Variables
+                 (Variables, Ref_Allowed => Params.Ref_Allowed);
             begin
                --  Compute the arguments for the function call. The values are
                --  given directly as parameters.
@@ -13440,11 +13435,13 @@ package body Gnat2Why.Expr is
          --  Additional arguments for variables occurring in dynamic invariant/
          --  default init.
 
-         Var_Items      : Item_Array :=
-           Get_Binders_From_Variables (Variables);
-         Var_Params     : Binder_Array
-           (1 .. Item_Array_Length (Var_Items, Keep_Const => Keep));
-         Var_Args       : W_Expr_Array (Var_Params'Range);
+         Var_Items      : constant Item_Array :=
+           Get_Localized_Binders_From_Variables
+             (Variables, Only_Variables => False);
+         Var_Params     : constant Binder_Array :=
+           To_Binder_Array (Var_Items);
+         Var_Args       : constant W_Expr_Array :=
+           Get_Args_From_Binders (Var_Params, Ref_Allowed => False);
 
          --  Counter
 
@@ -13512,19 +13509,12 @@ package body Gnat2Why.Expr is
            (Call_Params, Ref_Allowed => False);
          pragma Assert (Cnt = Call_Params'Last + 1);
 
-         --  Localize binders for variables and push them to the symbol
-         --  table. This is important so that the translation of the
-         --  aggregate can be reused even if the mappings in the symbol
-         --  table are updated (typically, for formal parameters in
-         --  postconditions).
+         --  Push localized binders for variables to the symbol table. This is
+         --  important so that the translation of the aggregate can be reused
+         --  even if the mappings in the symbol table are updated (typically,
+         --  for formal parameters in postconditions).
 
          Ada_Ent_To_Why.Push_Scope (Symbol_Table);
-
-         Localize_Binders (Binders        => Var_Items,
-                           Only_Variables => False);
-         Var_Params := To_Binder_Array (Var_Items);
-         Var_Args := Get_Args_From_Binders
-           (Var_Params, Ref_Allowed => False);
          Push_Binders_To_Symbol_Table (Var_Items);
 
          --  Compute the call, guard and proposition for the axiom

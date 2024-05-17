@@ -48,8 +48,8 @@ skein.adb:110:07: warning: statement has no effect
 skein.adb:111:10: info: analyzing call to "Zero_Pad_B" in context
 skein.adb:111:10: info: cannot unroll loop (too many loop iterations)
 skein.adb:111:10: info: in inlined body at line 87
+skein.adb:115:52: high: range check might fail, cannot prove lower bound for (Local_Ctx.H.Hash_Bit_Len + 7) / 8 (e.g. when Local_Ctx.H.Tweak_Words.Byte_Count_LSB = 63 and Local_Ctx.H.Tweak_Words.Byte_Count_MSB = 0 and Local_Ctx.H.Tweak_Words.Reserved = 0 and Local_Ctx.H.Tweak_Words.Tree_Level = 0 and Local_Ctx.H.Tweak_Words.Bit_Pad = True) [reason for check: result of division must fit in the target type of the assignment]
 skein.adb:115:52: info: division check proved (CVC5: 1 VC)
-skein.adb:115:52: medium: range check might fail, cannot prove lower bound for (Local_Ctx.H.Hash_Bit_Len + 7) / 8 [reason for check: result of division must fit in the target type of the assignment]
 skein.adb:118:19: warning: unused assignment
 skein.adb:121:44: info: division check proved (CVC5: 1 VC)
 skein.adb:125:10: info: analyzing call to "Set_B_Counter" in context
@@ -101,4 +101,3 @@ effects on parameters and Global variables of Skein.Skein_Start_New_Type fully e
  Skein.Zero_Pad at skein.adb:60 flow analyzed (0 errors, 0 checks, 0 warnings and 0 pragma Assume statements) and proved (1 checks)
 effects on parameters and Global variables of Skein.Zero_Pad fully established
 absence of run-time errors of Skein.Zero_Pad fully established
-

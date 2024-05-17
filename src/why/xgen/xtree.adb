@@ -73,12 +73,8 @@ begin
 
    Add ("Declare_Class_Wide_Builders",
         Print_Class_Wide_Builder_Declarations'Access);
-   Add ("Declare_Unchecked_Builders",
-        Print_Unchecked_Builder_Declarations'Access);
    Add ("Implement_Class_Wide_Builders",
         Print_Class_Wide_Builder_Bodies'Access);
-   Add ("Implement_Unchecked_Builders",
-        Print_Unchecked_Builder_Bodies'Access);
    Add ("Declare_Accessors", Print_Accessor_Declarations'Access);
    Add ("Implement_Accessors", Print_Accessor_Bodies'Access);
    Add ("Declare_Mutators", Print_Mutator_Declarations'Access);

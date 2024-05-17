@@ -789,7 +789,7 @@ Depends, Pre, Post, Contract_Cases), and respect the following conditions:
  * without an annotation to skip part of the analysis (see :ref:`Annotation for
    Skipping Parts of the Analysis for an Entity`)
  * without an annotation to hide or unhide information on another entity (see
-   :ref:`Annotation for Hiding Information`)
+   :ref:`Pruning the Proof Context on a Case by Case Basis`)
 
 Subprograms that respects all of the above conditions are candidates for
 contextual analysis, and calls to such subprograms are inlined provided the

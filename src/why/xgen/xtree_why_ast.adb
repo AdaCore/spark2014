@@ -51,9 +51,9 @@ package body Xtree_Why_AST is
    function Clean_Identifier (Str : String) return String is
       Res : String := Str;
    begin
-      for Ix in Res'Range loop
-         if Res (Ix) = '.' then
-            Res (Ix) := '_';
+      for C of Res loop
+         if C = '.' then
+            C := '_';
          end if;
       end loop;
       return Res;
@@ -90,13 +90,11 @@ package body Xtree_Why_AST is
    -- Print Ada conversions to Json --
    -----------------------------------
 
-   generic
-      type T is (<>);
-      Name : String;
-   procedure Print_Ada_Enum_To_Json (O : in out Output_Record);
-   --  This procedure, when instantiated, will print to O a serialization
-   --  routine for an enumeration type T called Name. It assumes that
-   --  individual enumeration literals are of the form "EW_Literal_Name".
+   procedure Print_Ada_Enum_To_Json
+     (O : in out Output_Record; Name : String);
+   --  This procedure will print to O a serialization routine for an
+   --  enumeration type T called Name. It assumes that individual enumeration
+   --  literals are of the form "EW_Literal_Name".
 
    procedure Print_Ada_Why_Sinfo_Types_To_Json (O : in out Output_Record);
 
@@ -115,51 +113,31 @@ package body Xtree_Why_AST is
    -- Print_Ada_Enum_To_Json --
    ----------------------------
 
-   procedure Print_Ada_Enum_To_Json (O : in out Output_Record) is
-
-      function EW_Mixed_Image (Val : T) return String;
-      --  Given an enumeration value Val of the form "EW_Enum_Val" it returns
-      --  its wide string representation with the "EW" prefix in upper case and
-      --  the rest of the string in mixed case, so exactly as it would appear
-      --  in gnat2why code.
-
-      --------------------
-      -- EW_Mixed_Image --
-      --------------------
-
-      function EW_Mixed_Image (Val : T) return String is
-         Result : String := Val'Img;
-      begin
-         pragma Assert (Result (1 .. 3) = "EW_");
-         To_Mixed (Result (4 .. Result'Last));
-         return Result;
-      end EW_Mixed_Image;
-
-   --  Start of processing for Print_Ada_Enum_To_Json
-
+   procedure Print_Ada_Enum_To_Json
+     (O : in out Output_Record; Name : String)
+   is
    begin
-      PL (O, "function " & Name & "_To_Json (Arg : " & Name & ")");
-      PL (O, "   return JSON_Value;");
+      PL (O, "procedure " & Name & "_To_Json");
+      Relative_Indent (O, 2);
+      PL (O, "(O : Output_Id;");
+      Relative_Indent (O, 1);
+      PL (O, "Arg : " & Name & ");");
+      Relative_Indent (O, -3);
       NL (O);
-      PL (O, "function " & Name & "_To_Json (Arg : " & Name & ")");
-      PL (O, "return JSON_Value");
+      PL (O, "procedure " & Name & "_To_Json");
+      Relative_Indent (O, 2);
+      PL (O, "(O : Output_Id;");
+      Relative_Indent (O, 1);
+      PL (O, "Arg : " & Name & ") is");
+      Relative_Indent (O, -3);
       begin
+         PL (O, "begin");
          Relative_Indent (O, 3);
-         PL (O, "is (Create (Integer (case Arg is");
-         begin
-            Relative_Indent (O, 3);
-            for E in T'Range loop
-               P (O, "when " & EW_Mixed_Image (E) & " =>");
-               P (O, Integer'Image (E'Enum_Rep));
-               if E /= T'Last then
-                  PL (O, ",");
-               end if;
-            end loop;
-            Relative_Indent (O, -3);
-         end;
-         PL (O, ")));");
+         PL (O, "P (O, Integer'Image (" & Name & "'Enum_Rep (Arg)));");
          Relative_Indent (O, -3);
       end;
+      PL (O, "end " & Name & "_To_Json;");
+
       NL (O);
    end Print_Ada_Enum_To_Json;
 
@@ -168,47 +146,20 @@ package body Xtree_Why_AST is
    ---------------------------------------
 
    procedure Print_Ada_Why_Sinfo_Types_To_Json (O : in out Output_Record) is
-      procedure Print_EW_Domain is new
-        Print_Ada_Enum_To_Json (EW_Domain,      "EW_Domain");
-
-      procedure Print_EW_Type is new
-        Print_Ada_Enum_To_Json (EW_Type,        "EW_Type");
-
-      procedure Print_EW_Literal is new
-        Print_Ada_Enum_To_Json (EW_Literal,     "EW_Literal");
-
-      procedure Print_EW_Theory_Type is new
-        Print_Ada_Enum_To_Json (EW_Theory_Type, "EW_Theory_Type");
-
-      procedure Print_EW_Clone_Type is new
-        Print_Ada_Enum_To_Json (EW_Clone_Type,  "EW_Clone_Type");
-
-      procedure Print_EW_Subst_Type is new
-        Print_Ada_Enum_To_Json (EW_Subst_Type,  "EW_Subst_Type");
-
-      procedure Print_EW_Connector is new
-        Print_Ada_Enum_To_Json (EW_Connector,   "EW_Connector");
-
-      procedure Print_EW_Assert_Kind is new
-        Print_Ada_Enum_To_Json (EW_Assert_Kind, "EW_Assert_Kind");
-
-      procedure Print_EW_Axiom_Dep_Kind is new
-        Print_Ada_Enum_To_Json (EW_Axiom_Dep_Kind, "EW_Axiom_Dep_Kind");
-
    begin
       PL (O, "--  Why.Sinfo");
 
       NL (O);
 
-      Print_EW_Domain         (O);
-      Print_EW_Type           (O);
-      Print_EW_Literal        (O);
-      Print_EW_Theory_Type    (O);
-      Print_EW_Clone_Type     (O);
-      Print_EW_Subst_Type     (O);
-      Print_EW_Connector      (O);
-      Print_EW_Assert_Kind    (O);
-      Print_EW_Axiom_Dep_Kind (O);
+      Print_Ada_Enum_To_Json (O, "EW_Domain");
+      Print_Ada_Enum_To_Json (O, "EW_Type");
+      Print_Ada_Enum_To_Json (O, "EW_Literal");
+      Print_Ada_Enum_To_Json (O, "EW_Theory_Type");
+      Print_Ada_Enum_To_Json (O, "EW_Clone_Type");
+      Print_Ada_Enum_To_Json (O, "EW_Subst_Type");
+      Print_Ada_Enum_To_Json (O, "EW_Connector");
+      Print_Ada_Enum_To_Json (O, "EW_Assert_Kind");
+      Print_Ada_Enum_To_Json (O, "EW_Axiom_Dep_Kind");
 
    end Print_Ada_Why_Sinfo_Types_To_Json;
 
@@ -218,29 +169,31 @@ package body Xtree_Why_AST is
 
    procedure Print_Ada_Why_Node_To_Json (O : in out Output_Record) is
    begin
-      PL (O, "Why_Node_Counter : Integer := 0;");
+      PL (O, "Why_Node_Counter : Natural := 0;");
       NL (O);
-      PL (O, "function Why_Node_To_Json (Node : Why_Node) " &
-            "return JSON_Value is");
-      begin
-         Relative_Indent (O, 3);
-         PL (O, "Res : constant JSON_Value := Create (Empty_Array);");
-         Relative_Indent (O, -3);
-      end;
+      PL (O, "procedure Why_Node_To_Json (O : Output_Id; Node : Why_Node) is");
       PL (O, "begin");
       begin
          Relative_Indent (O, 3);
+         PL (O, "P (O, '[');");
          PL (O, "Why_Node_Counter := Why_Node_Counter + 1;");
-         PL (O, "Append (Res, Create (Why_Node_Kind'Image (Node.Kind)));");
-         PL (O, "Append (Res, Create (Why_Node_Counter));");
+         PL (O, "P (O, '""' & Why_Node_Kind'Image (Node.Kind) & '""');");
+         PL (O, "P (O, ',');");
+         PL (O, "P (O, Integer'Image (Why_Node_Counter));");
          for FI of Common_Fields.Fields loop
             declare
-               Typ_Name : constant String :=
-                 Clean_Identifier (Type_Name (FI, Opaque));
+               FN : constant String := Field_Name (FI);
             begin
-               PL (O, "Append (Res, " &
-                     Typ_Name & "_To_Json (Node." & Field_Name (FI) &
-                     "));");
+               if FN not in "Checked" | "Ada_Node" then
+                  declare
+                     Typ_Name : constant String :=
+                       Clean_Identifier (Type_Name (FI, Opaque));
+                  begin
+                     PL (O, "P (O, ',');");
+                     PL (O,
+                         Typ_Name & "_To_Json (O, Node." & FN & ");");
+                  end;
+               end if;
             end;
          end loop;
          PL (O, "case Node.Kind is");
@@ -257,8 +210,13 @@ package body Xtree_Why_AST is
                         Field_Type : constant String :=
                           Clean_Identifier (Type_Name (FI, Opaque));
                      begin
-                        PL (O, "Append (Res, " & Field_Type & "_To_Json");
-                        PL (O, "   (Node." & Field_Name (FI) & "));");
+                        PL (O, "P (O, ',');");
+                        PL (O, Field_Type & "_To_Json");
+                        Relative_Indent (O, 2);
+                        PL (O, "(O,");
+                        Relative_Indent (O, 1);
+                        PL (O, "Node." & Field_Name (FI) & ");");
+                        Relative_Indent (O, -3);
                      end;
                   end loop;
                end if;
@@ -267,7 +225,7 @@ package body Xtree_Why_AST is
             Relative_Indent (O, -3);
          end;
          PL (O, "end case;");
-         PL (O, "return Res;");
+         PL (O, "P (O, ']');");
          Relative_Indent (O, -3);
       end;
       PL (O, "end Why_Node_To_Json;");
@@ -319,21 +277,24 @@ package body Xtree_Why_AST is
                Why_Node_Name : constant String :=
                  Id_Subtype ("Why_Node", Derived, Multiplicity);
             begin
-               PL (O, "function " & Name & "_To_Json");
+               PL (O, "procedure " & Name & "_To_Json");
                begin
-                  Relative_Indent (O, 3);
-                  PL (O, "(Arg : " & Name & ")");
-                  PL (O, "return JSON_Value;");
-                  Relative_Indent (O, -3);
+                  Relative_Indent (O, 2);
+                  PL (O, "(O : Output_Id; Arg : " & Name & ");");
+                  Relative_Indent (O, -2);
                end;
                NL (O);
-               PL (O, "function " & Name & "_To_Json");
+               PL (O, "procedure " & Name & "_To_Json");
                begin
+                  Relative_Indent (O, 2);
+                  PL (O, "(O : Output_Id; Arg : " & Name & ")");
+                  Relative_Indent (O, -2);
+                  PL (O, "is");
+                  PL (O, "begin");
                   Relative_Indent (O, 3);
-                  PL (O, "(Arg : " & Name & ")");
-                  PL (O, "return JSON_Value");
-                  PL (O, "is (" & Why_Node_Name & "_To_Json (Arg));");
+                  PL (O, Why_Node_Name & "_To_Json (O, Arg);");
                   Relative_Indent (O, -3);
+                  PL (O, "end " & Name & "_To_Json;");
                end;
                NL (O);
             end;
@@ -662,11 +623,13 @@ package body Xtree_Why_AST is
                  OCaml_Lower_Identifier
                    (Strip_Prefix (Type_Name (FI, Opaque)));
             begin
-               if not First then
-                  P (O, "; ");
+               if Field not in "checked" | "node" then
+                  if not First then
+                     P (O, "; ");
+                  end if;
+                  P (O, Field & ": " & Typ);
+                  First := False;
                end if;
-               P (O, Field & ": " & Typ);
-               First := False;
             end;
          end loop;
       end;
@@ -804,7 +767,14 @@ package body Xtree_Why_AST is
                   P (O, "`String """ & Kind_Str & """");
                   P (O, "; id");
                   for I in Common_Field_Names'Range loop
-                     P (O, "; " & To_String (Common_Field_Names (I)));
+                     declare
+                        S : constant String :=
+                          To_String (Common_Field_Names (I));
+                     begin
+                        if S not in "checked" | "node" then
+                           P (O, "; " & S);
+                        end if;
+                     end;
                   end loop;
                   for I in Variant_Field_Names'Range loop
                      P (O, "; " & To_String (Variant_Field_Names (I)));
@@ -818,12 +788,20 @@ package body Xtree_Why_AST is
                         Relative_Indent (O, 2);
                         PL (O, "id = int_from_json id;");
                         for I in Common_Field_Names'Range loop
-                           P (O, To_String (Common_Field_Names (I)));
-                           P (O, " = ");
-                           P (O, To_String (Common_Field_Converters (I)));
-                           P (O, " ");
-                           P (O, To_String (Common_Field_Names (I)));
-                           PL (O, ";");
+                           declare
+                              S : constant String :=
+                                To_String (Common_Field_Names (I));
+                           begin
+                              if S not in "checked" | "node" then
+                                 P (O, S);
+                                 P (O, " = ");
+                                 P (O,
+                                    To_String (Common_Field_Converters (I)));
+                                 P (O, " ");
+                                 P (O, To_String (Common_Field_Names (I)));
+                                 PL (O, ";");
+                              end if;
+                           end;
                         end loop;
                         Relative_Indent (O, -2);
                      end;
