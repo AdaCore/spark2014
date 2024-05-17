@@ -1,0 +1,45 @@
+p.adb:3:14: info: add a contract to analyze it separately from calling contexts
+p.adb:3:14: info: local subprogram "Local_Proc" only analyzed in the context of calls
+p.adb:9:13: info: loop invariant initialization proved (CVC5: 2 VC; Trivial: 2 VC), in call inlined at p.adb:19
+p.adb:9:13: info: loop invariant preservation proved (Trivial: 2 VC; altergo: 2 VC), in call inlined at p.adb:19
+p.adb:10:33: info: index check proved (CVC5: 8 VC), in call inlined at p.adb:19
+p.adb:10:41: info: index check proved (CVC5: 8 VC), in call inlined at p.adb:19
+p.adb:19:10: info: analyzing call to "Local_Proc" in context
+p.adb:21:13: info: loop invariant initialization proved (CVC5: 1 VC; Trivial: 1 VC)
+p.adb:21:13: info: loop invariant preservation proved (Trivial: 1 VC; altergo: 1 VC)
+p.adb:23:36: info: index check proved (CVC5: 4 VC)
+p.adb:23:44: info: index check proved (CVC5: 4 VC)
+p.ads:6:13: info: implicit aspect Always_Terminates on "Is_Sorted" has been proved, subprogram will terminate
+p.ads:8:32: info: index check proved (CVC5: 2 VC)
+p.ads:8:41: info: index check proved (CVC5: 2 VC)
+p.ads:8:41: info: overflow check proved (CVC5: 2 VC)
+p.ads:11:14: info: implicit aspect Always_Terminates on "Lemma_Prove_Sorted_Alt" has been proved, subprogram will terminate
+p.ads:16:14: info: postcondition proved (CVC5: 1 VC; Trivial: 1 VC)
+p.ads:18:13: info: implicit aspect Always_Terminates on "Is_Sorted_Alt" has been proved, subprogram will terminate
+p.ads:21:30: info: index check proved (CVC5: 2 VC)
+p.ads:21:38: info: index check proved (CVC5: 2 VC)
+p_initial.ads:6:13: info: implicit aspect Always_Terminates on "Is_Sorted" has been proved, subprogram will terminate
+p_initial.ads:8:32: info: index check proved (CVC5: 2 VC)
+p_initial.ads:8:41: info: index check proved (CVC5: 2 VC)
+p_initial.ads:8:41: info: overflow check proved (CVC5: 2 VC)
+p_initial.ads:10:13: info: implicit aspect Always_Terminates on "Is_Sorted_Alt" has been proved, subprogram will terminate
+p_initial.ads:13:30: info: index check proved (CVC5: 2 VC)
+p_initial.ads:13:38: info: index check proved (CVC5: 2 VC)
+q.adb:6:03: info: data dependencies proved
+q.adb:14:07: info: precondition proved (CVC5: 1 VC)
+q.adb:15:30: info: assertion proved (CVC5: 1 VC)
+q.adb:16:22: info: assertion premise proved (CVC5: 1 VC; Trivial: 1 VC)
+q.adb:16:26: info: assertion step proved (altergo: 1 VC)
+q.adb:16:28: info: index check proved (CVC5: 2 VC)
+q.adb:16:36: info: index check proved (CVC5: 2 VC)
+q.adb:17:22: info: assertion premise proved (CVC5: 1 VC; Trivial: 1 VC)
+q.adb:17:44: info: assertion step proved (CVC5: 1 VC)
+q.adb:17:46: info: index check proved (CVC5: 2 VC)
+q.adb:17:54: info: index check proved (CVC5: 2 VC)
+q.adb:18:22: info: assertion proved (CVC5: 1 VC)
+q.adb:18:24: info: index check proved (CVC5: 2 VC)
+q.adb:18:32: info: index check proved (CVC5: 2 VC)
+q_initial.adb:5:03: info: data dependencies proved
+q_initial.adb:12:22: info: assertion proved (Z3: 1 VC)
+q_initial.adb:12:24: info: index check proved (CVC5: 2 VC)
+q_initial.adb:12:32: info: index check proved (CVC5: 2 VC)
