@@ -145,9 +145,11 @@ package body Why.Gen.Init is
         (Is_Initialized_For_Comp, Is_Initialized_For_Comp,
          Ignore_Private_State => False);
 
-      P   : W_Pred_Id;
-      R   : W_Expr_Id;
-      Tmp : constant W_Expr_Id := New_Temp_For_Expr (+Name);
+      Rep_Ty : constant Opt_Type_Kind_Id :=
+        (if Present (E) then Retysp (E) else Empty);
+      P      : W_Pred_Id;
+      R      : W_Expr_Id;
+      Tmp    : constant W_Expr_Id := New_Temp_For_Expr (+Name);
 
    --  Start of processing for Compute_Is_Initialized
 
@@ -158,10 +160,11 @@ package body Why.Gen.Init is
       --  initialization.
 
       if not Get_Relaxed_Init (Get_Type (+Name))
-        and then (Has_Scalar_Type (E)
-                  or else Is_Simple_Private_Type (E)
+        and then Present (Rep_Ty)
+        and then (Has_Scalar_Type (Rep_Ty)
+                  or else Is_Simple_Private_Type (Rep_Ty)
                   or else Is_True_Boolean (+Exclude_Relaxed)
-                  or else not Contains_Relaxed_Init_Parts (E))
+                  or else not Contains_Relaxed_Init_Parts (Rep_Ty))
       then
          return Bool_True (Domain);
 
@@ -170,10 +173,10 @@ package body Why.Gen.Init is
          --  Initialization of types with a top level initialization flag
 
          if Get_Type (+Name) = M_Boolean_Init_Wrapper.Wrapper_Ty
-           or else Has_Scalar_Type (E)
-           or else Is_Simple_Private_Type (E)
+           or else Has_Scalar_Type (Rep_Ty)
+           or else Is_Simple_Private_Type (Rep_Ty)
          then
-            R := +New_Init_Attribute_Access (E, +Name);
+            R := +New_Init_Attribute_Access (Rep_Ty, +Name);
 
             if Domain = EW_Pred then
                R := +Pred_Of_Boolean_Term (+R);
@@ -185,31 +188,31 @@ package body Why.Gen.Init is
          --  possible.
 
          elsif Use_Pred
-           and then not Is_Itype (E)
+           and then not Is_Itype (Rep_Ty)
            and then Get_Relaxed_Init (Get_Type (+Name))
            and then Get_Type_Kind (Get_Type (+Name)) = EW_Abstract
            and then not No_Predicate_Check
            and then not For_Eq
          then
-            P := New_Call (Name => E_Symb (E => E,
+            P := New_Call (Name => E_Symb (E => Rep_Ty,
                                            S => WNE_Is_Initialized_Pred),
                            Args => (1 => +Tmp, 2 => +Exclude_Relaxed),
                            Typ  => EW_Bool_Type);
 
          --  Initialization of composite types
 
-         elsif Has_Array_Type (E) then
-            P := Is_Initialized_For_Array (+Tmp, Retysp (E));
-         elsif Is_Record_Type_In_Why (Retysp (E)) then
-            P := Is_Initialized_For_Record (+Tmp, Retysp (E));
+         elsif Has_Array_Type (Rep_Ty) then
+            P := Is_Initialized_For_Array (+Tmp, Rep_Ty);
+         elsif Is_Record_Type_In_Why (Rep_Ty) then
+            P := Is_Initialized_For_Record (+Tmp, Rep_Ty);
 
-            if Has_Defaulted_Discriminants (Retysp (E))
-              and then not Is_Constrained (Retysp (E))
+            if Has_Defaulted_Discriminants (Rep_Ty)
+              and then not Is_Constrained (Rep_Ty)
             then
                P := New_And_Pred
                  (Left  => P,
                   Right => Pred_Of_Boolean_Term
-                    (New_Init_Attribute_Access (Retysp (E), +Tmp)));
+                    (New_Init_Attribute_Access (Rep_Ty, +Tmp)));
             end if;
          else
             raise Program_Error;
@@ -224,8 +227,8 @@ package body Why.Gen.Init is
                Typ_Pred     : constant W_Pred_Id :=
                  Compute_Dynamic_Predicate
                    (Insert_Simple_Conversion
-                      (Expr => +Tmp, To => EW_Abstract (Retysp (E))),
-                    Retysp (E), Params);
+                      (Expr => +Tmp, To => EW_Abstract (Rep_Ty)),
+                    Rep_Ty, Params);
                --  Don't use the wrapper type to avoid duplicating the
                --  initialization checks already performed.
 
