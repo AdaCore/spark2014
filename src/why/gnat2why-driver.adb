@@ -640,7 +640,7 @@ package body Gnat2Why.Driver is
                Error_Msg_N
                  ("generic compilation unit is not analyzed",
                   GNAT_Root,
-                  Kind => MK_Warning,
+                  Kind => Warning_Kind,
                   Continuations =>
                     ["only instantiations of the generic will be analyzed"]);
             end if;
@@ -747,7 +747,7 @@ package body Gnat2Why.Driver is
                Error_Msg_N
                  ("SPARK_Mode not applied to this compilation unit",
                   GNAT_Root,
-                  MK_Info,
+                  Info_Kind,
                   Continuations =>
                     ["only enclosed declarations with SPARK_Mode"
                      & " will be analyzed"]);
@@ -1246,7 +1246,7 @@ package body Gnat2Why.Driver is
                        ("local subprogram &" &
                           " only analyzed in the context of calls",
                         E,
-                        Kind => MK_Info,
+                        Kind => Info_Kind,
                         Continuations =>
                           ["add a contract to"
                            & " analyze it separately from calling contexts"]);

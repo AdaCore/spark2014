@@ -5512,7 +5512,7 @@ package body Gnat2Why.Expr is
               ("default initial condition on type & not available for"
                & " proof in an assertion context", Ada_Node,
                Names => [Ty],
-               Kind => MK_Info);
+               Kind => Info_Kind);
          end if;
          return Def;
       end Compute_Default_Value_Rec;
@@ -17591,7 +17591,7 @@ package body Gnat2Why.Expr is
                         & " imprecise way as it is not specified for type &",
                         Expr,
                         Names => [Entity (Var)],
-                        Kind => MK_Info);
+                        Kind => Info_Kind);
 
                   --  If the object is not a complete object, only Object_Size
                   --  could be set on its type, if not a standard one.
@@ -17606,7 +17606,7 @@ package body Gnat2Why.Expr is
                         & " for type &",
                         Expr,
                         Names => [Var_Type],
-                        Kind => MK_Info);
+                        Kind => Info_Kind);
 
                   --  If this is a complete object, the attribute could be set
                   --  on the object, or possibly Object_Size could be set on
@@ -17622,7 +17622,7 @@ package body Gnat2Why.Expr is
                            else ""),
                         Expr,
                         Names => [Entity (Var), Var_Type],
-                        Kind => MK_Info);
+                        Kind => Info_Kind);
 
                   --  In the default case, just report the imprecision
 
@@ -17633,7 +17633,7 @@ package body Gnat2Why.Expr is
                         & " imprecise way",
                         Expr,
                         Names => [Entity (Var)],
-                        Kind => MK_Info);
+                        Kind => Info_Kind);
                   end if;
                end if;
             end Size_Attributes;
@@ -17675,7 +17675,7 @@ package body Gnat2Why.Expr is
                         & " handled in an imprecise way, so the precondition"
                         & " might be impossible to prove.",
                      Expr,
-                     Kind => MK_Info);
+                     Kind => Info_Kind);
                end if;
             end;
 
@@ -23224,7 +23224,7 @@ package body Gnat2Why.Expr is
             elsif Debug.Debug_Flag_Underscore_F then
                Error_Msg_N
                  ("call to & is not handled precisely",
-                  Expr, Names => [Subp], Kind => MK_Info);
+                  Expr, Names => [Subp], Kind => Info_Kind);
             end if;
          end if;
 

@@ -46,6 +46,7 @@ with SPARK_Util;                  use SPARK_Util;
 with String_Utils;                use String_Utils;
 with VC_Kinds;                    use VC_Kinds;
 
+with Errout_Wrapper;              use Errout_Wrapper;
 with Flow.Analysis.Antialiasing;
 with Flow.Analysis.Sanity;
 with Flow_Classwide;

@@ -29,6 +29,7 @@ with Ada.Strings.Fixed;
 with Ada.Text_IO;
 with Assumptions;                      use Assumptions;
 with Atree;                            use Atree;
+with Errout_Wrapper;                   use Errout_Wrapper;
 with Flow.Analysis;
 with Flow.Control_Dependence_Graph;
 with Flow.Control_Flow_Graph;

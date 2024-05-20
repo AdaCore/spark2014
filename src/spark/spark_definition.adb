@@ -3854,7 +3854,7 @@ package body SPARK_Definition is
                        ("address specification on & is imprecisely supported:"
                         & " assuming " & To_String (Msg),
                         E,
-                        Kind => MK_Warning,
+                        Kind => Warning_Kind,
                         Explain_Code => EC_Address_Spec_Imprecise_Warn,
                         Continuations => Cont);
                   end;
@@ -3958,7 +3958,7 @@ package body SPARK_Definition is
                      Error_Msg_N
                        (Warning_Message (Warn_Alias_Different_Volatility),
                         Address,
-                        Kind => MK_Warning,
+                        Kind => Warning_Kind,
                         Names => [E],
                         Continuations =>
                           ["values for property " & To_String (Buf)
@@ -3979,7 +3979,7 @@ package body SPARK_Definition is
                Error_Msg_N
                  (Warning_Message (Warn_Alias_Atomic_Vol),
                   Address,
-                  Kind => MK_Warning,
+                  Kind => Warning_Kind,
                   Names => [E]);
             end if;
 
@@ -4020,7 +4020,7 @@ package body SPARK_Definition is
                        (Warning_Message (Warn_Initialization_To_Alias),
                         Names => [E]),
                      Address,
-                     Kind => MK_Warning,
+                     Kind => Warning_Kind,
                      Continuations =>
                        [Create
                             ("consider annotating & with Import",
@@ -4349,7 +4349,7 @@ package body SPARK_Definition is
                             N => N,
                             Names => [Aname]),
                   N,
-                  Kind => MK_Warning);
+                  Kind => Warning_Kind);
             end if;
 
          --  These attributes are supported, but generate a warning in
@@ -4420,7 +4420,7 @@ package body SPARK_Definition is
                      N     => N,
                      Names => [Aname]),
                   N,
-                  Kind => MK_Warning);
+                  Kind => Warning_Kind);
             end if;
 
          when Attribute_Valid =>
@@ -4429,7 +4429,7 @@ package body SPARK_Definition is
             then
                Error_Msg_N (Warning_Message (Warn_Attribute_Valid),
                             N,
-                            Kind => MK_Warning,
+                            Kind => Warning_Kind,
                             First => True);
             end if;
 
@@ -4922,7 +4922,7 @@ package body SPARK_Definition is
                   Error_Msg_N
                     (Warning_Message (Warn_Operator_Reassociation),
                      Left_Opnd (N),
-                     Kind => MK_Warning,
+                     Kind => Warning_Kind,
                      First => True);
                end if;
 
@@ -4934,7 +4934,7 @@ package body SPARK_Definition is
                   Error_Msg_N
                     (Warning_Message (Warn_Operator_Reassociation),
                      Right_Opnd (N),
-                     Kind => MK_Warning,
+                     Kind => Warning_Kind,
                      First => True);
                   pragma Annotate (Xcov, Exempt_Off);
                end if;
@@ -4946,7 +4946,7 @@ package body SPARK_Definition is
                   Error_Msg_N
                     (Warning_Message (Warn_Operator_Reassociation),
                      Left_Opnd (N),
-                     Kind => MK_Warning,
+                     Kind => Warning_Kind,
                      First => True);
                end if;
 
@@ -4958,7 +4958,7 @@ package body SPARK_Definition is
                   Error_Msg_N
                     (Warning_Message (Warn_Operator_Reassociation),
                      Right_Opnd (N),
-                     Kind => MK_Warning,
+                     Kind => Warning_Kind,
                      First => True);
                   pragma Annotate (Xcov, Exempt_Off);
                end if;
@@ -5391,7 +5391,7 @@ package body SPARK_Definition is
                     (Create (Warning_Message (Warn_Assumed_Global_Null),
                              Names => [E]),
                      N,
-                     Kind => MK_Warning,
+                     Kind => Warning_Kind,
                      Continuations =>
                        [Create ("assuming & has no effect on global items",
                                 Names => [E])]);
@@ -5404,7 +5404,7 @@ package body SPARK_Definition is
                     (Create (Warning_Message (Warn_Assumed_Always_Terminates),
                              Names => [E]),
                      N,
-                     Kind => MK_Warning,
+                     Kind => Warning_Kind,
                      Continuations =>
                        [Create ("assuming & always terminates",
                                 Names => [E])]);
@@ -5435,7 +5435,7 @@ package body SPARK_Definition is
                  (Create (Warning_Message (Warn_Address_To_Access),
                           Names => [E]),
                   N,
-                  Kind => MK_Warning,
+                  Kind => Warning_Kind,
                   Continuations =>
                     [Create (Cont, Names => [E])]);
             end;
@@ -6281,7 +6281,7 @@ package body SPARK_Definition is
                if Emit_Warning_Info_Messages then
                   Error_Msg_N
                     (Warning_Message (Warn_Useless_Relaxed_Init_Obj), E,
-                     Kind => MK_Warning,
+                     Kind => Warning_Kind,
                      Continuations =>
                        ["Relaxed_Initialization annotation is useless"]);
                end if;
@@ -6338,7 +6338,7 @@ package body SPARK_Definition is
                if Emit_Warning_Info_Messages then
                   Error_Msg_N
                     (Warning_Message (Warn_Useless_Relaxed_Init_Obj), E,
-                     Kind => MK_Warning,
+                     Kind => Warning_Kind,
                      Continuations =>
                        ["Relaxed_Initialization annotation is useless"]);
                end if;
@@ -6941,7 +6941,7 @@ package body SPARK_Definition is
                   Error_Msg_N
                     (Warning_Message (Warn_No_Possible_Termination),
                      E,
-                     Kind => MK_Warning,
+                     Kind => Warning_Kind,
                      Explain_Code => EC_Always_Terminates_Warn);
                end if;
             end if;
@@ -7427,7 +7427,7 @@ package body SPARK_Definition is
                if Emit_Warning_Info_Messages then
                   Error_Msg_N
                     (Warning_Message (Warn_Useless_Relaxed_Init_Fun), E,
-                     Kind => MK_Warning,
+                     Kind => Warning_Kind,
                      Continuations =>
                        ["Relaxed_Initialization annotation is useless"]);
                end if;
@@ -9248,7 +9248,7 @@ package body SPARK_Definition is
                            & " are annotated that way",
                            Names => [E]),
                         E,
-                        Kind => MK_Info,
+                        Kind => Info_Kind,
                         Continuations =>
                           [Create
                                ("consider annotating & with"
@@ -10565,7 +10565,7 @@ package body SPARK_Definition is
             then
                Error_Msg_N (Warning_Message (Warn_Pragma_Overflow_Mode),
                             N,
-                            Kind => MK_Warning,
+                            Kind => Warning_Kind,
                             First => True);
             end if;
 
@@ -10884,7 +10884,7 @@ package body SPARK_Definition is
                Error_Msg_N
                  (Warning_Message (Warn_Pragma_Ignored),
                   N,
-                  Kind => MK_Warning);
+                  Kind => Warning_Kind);
             end if;
 
          --  Unknown_Pragma is treated here. We use an OTHERS case in order to
@@ -11302,14 +11302,14 @@ package body SPARK_Definition is
                      Error_Msg_N
                        (Warning_Message (Warn_Unreferenced_Function),
                         N,
-                        Kind => MK_Warning,
+                        Kind => Warning_Kind,
                         Names => [E]);
 
                   when E_Procedure =>
                      Error_Msg_N
                        (Warning_Message (Warn_Unreferenced_Procedure),
                         N,
-                        Kind => MK_Warning,
+                        Kind => Warning_Kind,
                         Names => [E]);
 
                   when others =>

@@ -23,6 +23,7 @@
 
 with Atree;               use Atree;
 with Ada.Containers;      use Ada.Containers;
+with Errout_Wrapper;      use Errout_Wrapper;
 with Flow_Classwide;      use Flow_Classwide;
 with Flow_Error_Messages; use Flow_Error_Messages;
 with Flow_Utility;        use Flow_Utility;

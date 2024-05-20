@@ -24,6 +24,7 @@
 --  This package provides mechanisms for emitting errors and warnings.
 
 with Ada.Strings.Unbounded;     use Ada.Strings.Unbounded;
+with Errout_Wrapper;            use Errout_Wrapper;
 with Flow;                      use Flow;
 with Flow_Types;                use Flow_Types;
 with GNATCOLL.JSON;             use GNATCOLL.JSON;
@@ -34,25 +35,6 @@ with Types;                     use Types;
 with VC_Kinds;                  use VC_Kinds;
 
 package Flow_Error_Messages is
-
-   type Msg_Severity is
-     (Error_Kind,
-      High_Check_Kind,
-      Medium_Check_Kind,
-      Low_Check_Kind,
-      Warning_Kind,
-      Info_Kind);
-
-   subtype Check_Kind is Msg_Severity range High_Check_Kind .. Low_Check_Kind;
-
-   --  describes the kinds of messages issued by gnat2why.
-   --  * Errors may be issued whenever a SPARK legality issue is encountered.
-   --    This will happen only in SPARK checking mode and flow analysis.
-   --  * Warnings may be issued for suspicious situations (e.g. unused
-   --    statement), or where the tool makes assumptions.
-   --  * Info messages are mainly for proved checks
-   --  * Check messages are for unproved VCs, and soundness-related flow
-   --    analysis messages. Checks come with a priority low, medium or high.
 
    Found_Flow_Error : Boolean := False;
 

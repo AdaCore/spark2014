@@ -444,7 +444,7 @@ package body Gnat2Why.Subprograms is
                           ("Initial_Condition of package & is ignored",
                            Names => [Withed]),
                         Main,
-                        Kind => MK_Info,
+                        Kind => Info_Kind,
                         Continuations =>
                           [Create
                                ("the elaboration of & is not known to precede"
@@ -2436,7 +2436,7 @@ package body Gnat2Why.Subprograms is
          Error_Msg_N
            ("recursive function cannot be inlined for proof",
             Function_Entity,
-            Kind => MK_Info);
+            Kind => Info_Kind);
 
          W_Def := Why_Empty;
 
@@ -2451,7 +2451,7 @@ package body Gnat2Why.Subprograms is
          Error_Msg_N
            ("function cannot be inlined for proof",
             Function_Entity,
-            Kind => MK_Info,
+            Kind => Info_Kind,
             Continuations =>
               ["inlining might cause circularity in the verification process"]
            );
@@ -2708,7 +2708,7 @@ package body Gnat2Why.Subprograms is
                     ("imprecise handling of Unchecked_Conversion ("
                      & To_String (Precise_UC.Explanation) & ")",
                      E,
-                     Kind => MK_Info);
+                     Kind => Info_Kind);
                end if;
 
                Def := Why_Empty;
@@ -5395,7 +5395,7 @@ package body Gnat2Why.Subprograms is
                Error_Msg_N
                  (Warning_Message (Warn_Precondition_Statically_False),
                   Expr,
-                  Kind => MK_Warning);
+                  Kind => Warning_Kind);
             end if;
          end if;
       end loop;
@@ -5491,7 +5491,7 @@ package body Gnat2Why.Subprograms is
          Error_Msg_N (Warning_Message (Warn_Variant_Not_Recursive),
                       Get_Pragma (E, Pragma_Subprogram_Variant),
                       First => True,
-                      Kind => MK_Warning);
+                      Kind => Warning_Kind);
       end if;
 
       --  For expression functions, the body is not marked. Retrieve the
@@ -6217,7 +6217,7 @@ package body Gnat2Why.Subprograms is
                      & "function contract might not be available on "
                      & String_For_Rec & String_For_Scope,
                      E,
-                     Kind => MK_Info);
+                     Kind => Info_Kind);
                end;
             end if;
          end;
@@ -8298,7 +8298,7 @@ package body Gnat2Why.Subprograms is
                   & "variant might not be available on recursive calls"
                   & String_For_Scope,
                   E,
-                  Kind => MK_Info);
+                  Kind => Info_Kind);
             end;
          end if;
 
