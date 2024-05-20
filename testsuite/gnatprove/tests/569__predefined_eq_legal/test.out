@@ -1,0 +1,2 @@
+test_eq_handling.adb:24:06: info: data dependencies proved
+test_eq_handling.adb:25:14: info: postcondition proved (CVC5: 2 VC; Trivial: 1 VC)

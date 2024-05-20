@@ -54,7 +54,7 @@ package Call is
    --  set, the command-line is displayed.
 
    function Read_File_Into_String (Fn : String) return String;
-   --  Return a string with the contents of the file in argument
+   --  Return a string with the contents of the file in argument.
 
    function Read_File_Into_JSON (Fn : String) return JSON_Value;
    --  Same as Read_File_Into_String, but directly parse the file into a JSON

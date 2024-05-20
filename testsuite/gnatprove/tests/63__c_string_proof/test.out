@@ -92,7 +92,6 @@ c_constant_strings.adb:181:66: info: precondition proved
 c_constant_strings.adb:181:80: info: index check proved
 c_constant_strings.adb:181:90: info: overflow check proved
 c_constant_strings.adb:181:90: info: range check proved
-c_constant_strings.ads:14:04: warning: pragma "No_Strict_Aliasing" ignored (not yet supported)
 c_constant_strings.ads:19:09: info: default initial condition proved
 c_constant_strings.ads:19:09: info: in default value of private type at c_constant_strings.ads:19
 c_constant_strings.ads:19:09: info: predicate check proved on default value

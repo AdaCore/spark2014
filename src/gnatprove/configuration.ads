@@ -172,6 +172,8 @@ package Configuration is
    --  They are either defined in the Postprocess procedure or are simple
    --  renamings of the command line switches (for them we still prefer to
    --  use a clearer name, e.g. Continue_On_Error vs K).
+   --  Mode - is the maximum analysis mode, taking into account the global
+   --         and file-specific modes
 
    Checks_As_Errors : Boolean;
    Debug            : Boolean;

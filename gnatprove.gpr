@@ -80,6 +80,8 @@ project GNATprove is
       for Switches ("infer") use ("--disable-issue-type", "MEMORY_LEAK_ADA");
       for Switches ("inspector") use ("--legacy-level", "1", "-gnatws");
 
+      for Review_File use "gnatprove.sar";
+
    end Analyzer;
 
 end GNATprove;

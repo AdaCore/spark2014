@@ -23,8 +23,6 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with Ada.Directories;
-with Ada.Direct_IO;
 with Ada.Text_IO;
 with GNATCOLL.Mmap;
 with GNATCOLL.Utils;
@@ -171,26 +169,27 @@ package body Call is
    pragma Annotate (Xcov, Exempt_On, "Not called from gnat2why");
    function Read_File_Into_String (Fn : String) return String
    is
-      File_Size : constant Natural := Natural (Ada.Directories.Size (Fn));
+      use GNATCOLL.Mmap;
+      File   : Mapped_File;
+      Region : Mapped_Region;
 
-      subtype File_String    is String (1 .. File_Size);
-      package File_String_IO is new Ada.Direct_IO (File_String);
-
-      File     : File_String_IO.File_Type;
-      Contents : File_String;
    begin
 
-      --  The read operation below will crash with an empty buffer
+      File := Open_Read (Fn);
 
-      if File_Size = 0 then
-         return "";
-      end if;
+      Read (File, Region);
 
-      File_String_IO.Open  (File, Mode => File_String_IO.In_File, Name => Fn);
-      File_String_IO.Read  (File, Item => Contents);
-      File_String_IO.Close (File);
+      declare
+         S : String (1 .. Integer (Length (File)));
+         for S'Address use Data (Region).all'Address;
+         --  A fake string directly mapped onto the file contents
 
-      return Contents;
+      begin
+         return Result : constant String := S do
+            Free (Region);
+            Close (File);
+         end return;
+      end;
    end Read_File_Into_String;
    pragma Annotate (Xcov, Exempt_Off);
 

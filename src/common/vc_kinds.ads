@@ -438,6 +438,7 @@ package VC_Kinds is
       Lim_Exceptional_Cases_Dispatch,
       Lim_Exceptional_Cases_Ownership,
       Lim_Ext_Aggregate_With_Type_Ancestor,
+      Lim_Generic_In_Type_Inv,
       Lim_Goto_Cross_Inv,
       Lim_Img_On_Non_Scalar,
       Lim_Interpolated_String_Literal,
@@ -763,7 +764,10 @@ package VC_Kinds is
          when Lim_Refined_Post_On_Entry =>
            "Refined_Post aspect on a protected entry",
          when Lim_Entry_Family =>
-           "entry family"
+           "entry family",
+         when Lim_Generic_In_Type_Inv =>
+            "instance of a generic unit declared in a package containing a "
+          & "type with an invariant outside of this package"
      );
 
    function CWE_ID (Kind : VC_Kind) return String;
@@ -835,6 +839,16 @@ package VC_Kinds is
      (All_In_SPARK,       --  Spec (and if applicable, body) are in SPARK
       Spec_Only_In_SPARK, --  Only spec is in SPARK, body is not in SPARK
       Not_In_SPARK);      --  Not in SPARK
+
+   type GP_Mode is (GPM_Check, GPM_Check_All, GPM_Flow, GPM_Prove, GPM_All);
+   --  The feature modes of GNATprove are:
+   --  * GPM_Check     : Check SPARK rules
+   --  * GPM_Check_All : Check all SPARK rules, including the ones checked
+   --                    during flow analysis.
+   --  * GPM_Prove     : Check validity of contracts, proof of subprogram
+   --                    bodies.
+   --  * GPM_Flow      : Check validity of Globals, Depends
+   --  * GPM_All       : Union of GPM_Prove and GPM_Flow
 
    ------------
    -- Labels --
@@ -1128,6 +1142,7 @@ package VC_Kinds is
    function From_JSON (V : JSON_Value) return Prover_Category;
    function From_JSON (V : JSON_Value) return Cntexample_File_Maps.Map;
    function From_JSON (V : JSON_Value) return SPARK_Mode_Status;
+   function From_JSON (V : JSON_Value) return GP_Mode;
 
    function From_JSON_Labels (Ar : JSON_Array) return S_String_List.List;
 
@@ -1136,4 +1151,5 @@ package VC_Kinds is
    function To_JSON (F : Cntexample_File_Maps.Map) return JSON_Value;
    function To_JSON (V : Cntexmp_Value) return JSON_Value;
    function To_JSON (Status : SPARK_Mode_Status) return JSON_Value;
+   function To_JSON (M : GP_Mode) return JSON_Value;
 end VC_Kinds;

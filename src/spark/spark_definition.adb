@@ -283,6 +283,10 @@ package body SPARK_Definition is
    procedure Discard_Underlying_Type (T : Type_Kind_Id);
    --  Mark T's underlying type as seen and store T as its partial view
 
+   function Contains_Type_With_Invariant (P : E_Package_Id) return Boolean;
+   --  Return True if there is a type with a type invariant visible in SPARK
+   --  declared directly in P.
+
    procedure Queue_For_Marking (E : Entity_Id);
    --  Register E for marking at a later stage
 
@@ -595,6 +599,12 @@ package body SPARK_Definition is
    procedure Mark_Exception_Handler (N : N_Exception_Handler_Id);
    --  Mark an exception handler
 
+   procedure Mark_Generic_Instance (E : Entity_Id) with
+     Pre => Is_Generic_Instance (E);
+   --  Perform specific checks required on instances of generics. This checks
+   --  are related to visibility so they are only required on subprogram bodies
+   --  and package declarations (as they might have a private part).
+
    procedure Mark_Iterable_Aspect
      (Iterable_Aspect : N_Aspect_Specification_Id);
    --  Mark functions mentioned in the Iterable aspect of a type
@@ -673,8 +683,15 @@ package body SPARK_Definition is
       Actual_Type     : constant Type_Kind_Id := Etype (Expression);
       Actual_Des_Ty   : Type_Kind_Id;
       Expected_Des_Ty : Type_Kind_Id;
+
    begin
-      if Is_Access_Object_Type (Root_Retysp (Expected_Type)) then
+      if not Is_Access_Type (Root_Retysp (Expected_Type)) then
+         return;
+
+      elsif not Most_Underlying_Type_In_SPARK (Actual_Type) then
+         Mark_Violation (Expression, From => Actual_Type);
+
+      elsif Is_Access_Object_Type (Root_Retysp (Expected_Type)) then
 
          --  Get the designated types of the root type of the actual and
          --  expected types.
@@ -1003,7 +1020,7 @@ package body SPARK_Definition is
          --  aliases can occur.
 
          if not Is_Deep (Etype (N))
-           or else Is_Statically_Reclaimed_Expr (N)
+           or else Is_Null_Or_Reclaimed_Expr (N, Reclaimed => True)
          then
             return True;
          end if;
@@ -1383,6 +1400,26 @@ package body SPARK_Definition is
          end if;
       end if;
    end Check_User_Defined_Eq;
+
+   ----------------------------------
+   -- Contains_Type_With_Invariant --
+   ----------------------------------
+
+   function Contains_Type_With_Invariant (P : E_Package_Id) return Boolean is
+      Decl : Node_Id := First
+        (Visible_Declarations (Package_Specification (P)));
+   begin
+      while Present (Decl) loop
+         if Nkind (Decl) = N_Private_Type_Declaration
+           and then In_SPARK (Defining_Identifier (Decl))
+           and then Has_Invariants_In_SPARK (Defining_Identifier (Decl))
+         then
+            return True;
+         end if;
+         Next (Decl);
+      end loop;
+      return False;
+   end Contains_Type_With_Invariant;
 
    -----------------------------
    -- Discard_Underlying_Type --
@@ -2455,10 +2492,13 @@ package body SPARK_Definition is
             --  use of the Ada equality.
 
             declare
+               Exp          : Unbounded_String;
                Eq_On_Access : constant Boolean :=
                  not Is_Concurrent_Type (Retysp (Etype (Left_Opnd (N))))
-                 and then Predefined_Eq_Uses_Pointer_Eq (Etype (Left_Opnd (N)))
-                 and then not Is_Statically_Reclaimed_Expr (Left_Opnd (N));
+                 and then Predefined_Eq_Uses_Pointer_Eq
+                   (Etype (Left_Opnd (N)), Exp)
+                 and then not Is_Null_Or_Reclaimed_Expr
+                   (Left_Opnd (N), Null_Value => True);
                --  Disallow membership tests if they involved the use of the
                --  predefined equality on access types (except if one of the
                --  operands is statically null).
@@ -2488,9 +2528,11 @@ package body SPARK_Definition is
 
                         pragma Assert (Eq_On_Access);
 
-                        if not Is_Statically_Reclaimed_Expr (Alt) then
+                        if not Is_Null_Or_Reclaimed_Expr
+                          (Alt, Null_Value => True)
+                        then
                            Mark_Violation
-                             ("equality on access types", Alt);
+                             ("equality on " & To_String (Exp), Alt);
                            exit;
                         end if;
                      end if;
@@ -2504,9 +2546,11 @@ package body SPARK_Definition is
                   Touch_Record_Fields_For_Eq (Etype (Left_Opnd (N)));
 
                   if Eq_On_Access
-                    and then not Is_Statically_Reclaimed_Expr (Right_Opnd (N))
+                    and then not Is_Null_Or_Reclaimed_Expr
+                      (Right_Opnd (N), Null_Value => True)
                   then
-                     Mark_Violation ("equality on access types", N);
+                     Mark_Violation
+                       ("equality on " & To_String (Exp), N);
                   end if;
                   pragma Annotate (Xcov, Exempt_Off);
                end if;
@@ -4682,7 +4726,8 @@ package body SPARK_Definition is
    --------------------
 
    procedure Mark_Binary_Op (N : N_Binary_Op_Id) is
-      E : constant Subprogram_Kind_Id := Entity (N);
+      E   : constant Subprogram_Kind_Id := Entity (N);
+      Exp : Unbounded_String;
 
    begin
       --  Call is in SPARK only if the subprogram called is in SPARK.
@@ -4713,11 +4758,13 @@ package body SPARK_Definition is
 
       if Nkind (N) in N_Op_Eq | N_Op_Ne
         and then Retysp_In_SPARK (Etype (Left_Opnd (N)))
-        and then Predefined_Eq_Uses_Pointer_Eq (Etype (Left_Opnd (N)))
-        and then not Is_Statically_Reclaimed_Expr (Left_Opnd (N))
-        and then not Is_Statically_Reclaimed_Expr (Right_Opnd (N))
+        and then Predefined_Eq_Uses_Pointer_Eq (Etype (Left_Opnd (N)), Exp)
+        and then not Is_Null_Or_Reclaimed_Expr
+          (Left_Opnd (N), Null_Value => True)
+        and then not Is_Null_Or_Reclaimed_Expr
+            (Right_Opnd (N), Null_Value => True)
       then
-         Mark_Violation ("equality on access types", N);
+         Mark_Violation ("equality on " & To_String (Exp),  N);
 
       elsif Nkind (N) in N_Op_And | N_Op_Or | N_Op_Xor
         and then Has_Modular_Integer_Type (Etype (N))
@@ -5083,10 +5130,16 @@ package body SPARK_Definition is
          declare
             Left  : constant Node_Id := First_Actual (N);
             Right : constant Node_Id := Next_Actual (Left);
+            Exp   : Unbounded_String;
             pragma Assert (No (Next_Actual (Right)));
          begin
-            if Predefined_Eq_Uses_Pointer_Eq (Etype (Left)) then
-               Mark_Violation ("equality on access types", N);
+            if Predefined_Eq_Uses_Pointer_Eq (Etype (Left), Exp)
+              and then not Is_Null_Or_Reclaimed_Expr
+                (Left, Null_Value => True)
+              and then not Is_Null_Or_Reclaimed_Expr
+                (Right, Null_Value => True)
+            then
+               Mark_Violation ("equality on " & To_String (Exp), N);
             end if;
 
             Touch_Record_Fields_For_Eq (Etype (Left), Force_Predef => True);
@@ -8620,7 +8673,14 @@ package body SPARK_Definition is
 
                --  Use the base type as some subtypes of access to incomplete
                --  types introduced by the frontend designate record subtypes
-               --  instead (see CA11019).
+               --  instead (see CA11019). Make sure that the base type is
+               --  visibly access type - it could be a private type whose
+               --  full view is not in SPARK.
+
+               elsif Ekind (E) in E_Access_Subtype
+                 and then not Most_Underlying_Type_In_SPARK (Base_Retysp (E))
+               then
+                  Mark_Violation (E, From => Base_Retysp (E));
 
                elsif Ekind (E) in E_Access_Subtype
                  and then Acts_As_Incomplete_Type
@@ -9404,10 +9464,50 @@ package body SPARK_Definition is
       end if;
 
       --  If Subp has an anonymous access type, it can happen that the return
-      --  object and Sup have incompatible designated types. Reject this case.
+      --  object and Subp have incompatible designated types. Reject this case.
 
       Check_Compatible_Access_Types (Etype (Subp), Ret_Obj);
    end Mark_Extended_Return_Statement;
+
+   ---------------------------
+   -- Mark_Generic_Instance --
+   ---------------------------
+
+   procedure Mark_Generic_Instance (E : Entity_Id) is
+      Spec : constant Node_Id :=
+        (if Ekind (E) = E_Package then Package_Specification (E)
+         else Subprogram_Specification (E));
+      Scop : Entity_Id;
+   begin
+      if No (Generic_Parent (Spec)) then
+         pragma Assert (Is_Wrapper_Package (E));
+         return;
+      end if;
+
+      Scop := Scope (Generic_Parent (Spec));
+
+      if Ekind (Scop) = E_Generic_Package then
+         pragma Assert
+           (Is_Child_Unit (Generic_Parent (Spec)));
+         Scop := Parent_Instance_From_Child_Unit (E);
+      end if;
+
+      --  Reject instances of generic units if their scopes declare types with
+      --  invariants unless they are instantiated directly in their scope. This
+      --  ensures that we only need to handle a single chain of visibility.
+
+      while Present (Scop) and then Ekind (Scop) = E_Package loop
+         if Contains_Type_With_Invariant (Scop)
+           and then not Is_Declared_In_Unit (E, Scop)
+         then
+            Mark_Unsupported
+              (Lim_Generic_In_Type_Inv, E,
+               Cont_Msg => "package " & Source_Name (Scop)
+               & " declares a type with an invariant");
+         end if;
+         Scop := Scope (Scop);
+      end loop;
+   end Mark_Generic_Instance;
 
    -----------------------------
    -- Mark_Handled_Statements --
@@ -9859,6 +9959,12 @@ package body SPARK_Definition is
 
       Violation_Detected := False;
 
+      --  Perform specific checks for generic instances
+
+      if Is_Generic_Instance (Id) then
+         Mark_Generic_Instance (Id);
+      end if;
+
       --  Mark abstract state entities, since they may be referenced from
       --  the outside. Iff SPARK_Mode is On | None then they will be in
       --  SPARK; if SPARK_Mode is Off then they will be not. Same for
@@ -10211,6 +10317,7 @@ package body SPARK_Definition is
             | Pragma_No_Elaboration_Code_All
             | Pragma_No_Heap_Finalization
             | Pragma_No_Inline
+            | Pragma_No_Strict_Aliasing
             | Pragma_No_Tagged_Streams
             --  Pragma_Overflow_Mode is handled specially above
             | Pragma_Post
@@ -10324,7 +10431,6 @@ package body SPARK_Definition is
             | Pragma_Memory_Size
             | Pragma_No_Body
             | Pragma_No_Run_Time
-            | Pragma_No_Strict_Aliasing
             | Pragma_Obsolescent
             | Pragma_Optimize_Alignment
             | Pragma_Ordered
@@ -10815,6 +10921,12 @@ package body SPARK_Definition is
                      raise Program_Error;
 
                   end case;
+               end if;
+
+               --  Perform specific checks for generic instances
+
+               if Is_Generic_Instance (E) then
+                  Mark_Generic_Instance (E);
                end if;
 
                --  Mark Actual_Subtypes of body formal parameters, if any
@@ -11349,46 +11461,10 @@ package body SPARK_Definition is
 
       if Ekind (E) = E_Function and then Is_Predicate_Function (E) then
 
-         --  The predicate function has the SPARK_Mode of the associated type.
-         --  If this type has a full view, search the rep item list to know the
-         --  correct SPARK_Mode.
+         --  The predicate function has the SPARK_Mode of the associated type
 
-         declare
-            Ty  : constant Type_Kind_Id := Etype (First_Formal (E));
-            Rep : Node_Id;
-         begin
-            if No (Full_View (Ty)) then
-               return SPARK_Pragma_Of_Entity (Ty);
-            else
-               Rep := First_Rep_Item
-                 (if Present (Full_View (Ty)) then Full_View (Ty) else Ty);
-
-               Find_Predicate_Item (Ty, Rep);
-               if No (Rep) then
-
-                  --  The type only has inherited predicates. The predicate
-                  --  function is empty, we can choose any SPARK_Mode.
-
-                  return SPARK_Pragma_Of_Entity (Ty);
-               elsif Nkind (Rep) = N_Pragma then
-
-                  --  Search for the SPARK_Mode applying to the predicate
-
-                  return SPARK_Pragma_Of_Decl (Rep);
-               else
-                  pragma Assert (Nkind (Rep) = N_Aspect_Specification);
-
-                  --  Use the SPARK_Mode of the partial or full view of the
-                  --  type, depending on Aspect_On_Partial_View.
-
-                  if Aspect_On_Partial_View (Rep) then
-                     return SPARK_Pragma_Of_Entity (Ty);
-                  else
-                     return SPARK_Pragma_Of_Entity (Full_View (Ty));
-                  end if;
-               end if;
-            end if;
-         end;
+         return SPARK_Pragma_Of_Entity
+           (Get_View_For_Predicate (Etype (First_Formal (E))));
 
       --  For the wrapper for a function with dispatching result type pick the
       --  SPARK_Pragma of its type, because the wrapper could be inserted at

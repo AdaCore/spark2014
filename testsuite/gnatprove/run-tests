@@ -349,13 +349,16 @@ class SPARKTestFinder(TestFinder):
     some settings, such as the "call_entry" and "args_entry" fields of the test
     environment."""
 
-    def __init__(self, root_dir, testlist=None, pattern="", only_large=False):
+    def __init__(
+        self, root_dir, testlist=None, pattern="", only_large=False, only_replay=False
+    ):
         """
         Initialize a SPARKTestFinder instance.
         """
         self.testlist = [] if testlist is None else testlist
         self.root_dir = root_dir
         self.only_large = only_large
+        self.only_replay = only_replay
         if pattern:
             self.pattern = re.compile(pattern.encode("utf-8"))
         else:
@@ -438,6 +441,9 @@ class SPARKTestFinder(TestFinder):
         ):
             return None
 
+        if self.only_replay and ("replay" not in test_env or not test_env["replay"]):
+            return None
+
         if testname.startswith("ug__"):
             return ParsedTest(testname, UGTestDriver, {}, dirpath)
 
@@ -501,6 +507,7 @@ class SPARKTestsuite(Testsuite):
                 testlist=self.testlist,
                 pattern=self.main.args.pattern,
                 only_large=self.env.only_large,
+                only_replay=self.env.only_replay,
             )
         ]
 
@@ -543,6 +550,11 @@ class SPARKTestsuite(Testsuite):
             "--only-large",
             action="store_true",
             help="Run only large tests; implies --disc=large",
+        )
+        parser.add_argument(
+            "--only-replay",
+            action="store_true",
+            help="Run only replay tests",
         )
         parser.add_argument(
             "--share-why3server",
@@ -597,6 +609,7 @@ class SPARKTestsuite(Testsuite):
             self.env.discs += ["large"]
         else:
             self.env.only_large = False
+        self.env.only_replay = self.main.args.only_replay
         self.env.rewrite_baselines = self.main.args.rewrite
         self.why3_process = None
         self.env.test_environ = self.compute_environ()

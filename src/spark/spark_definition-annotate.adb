@@ -284,6 +284,33 @@ package body SPARK_Definition.Annotate is
    --  on an object which was reclaimed (to accomodate both Is_Reclaimed and
    --  Needs_Reclamation functions).
 
+   type Predefined_Eq_Annotation
+     (Kind : Predefined_Eq_Kind := No_Equality)
+   is record
+      case Kind is
+         when Only_Null =>
+            Null_Value : Entity_Id := Empty;
+         when others =>
+            null;
+      end case;
+   end record;
+
+   package Node_To_Predefined_Eq_Maps is new Ada.Containers.Hashed_Maps
+     (Key_Type        => Node_Id,
+      Element_Type    => Predefined_Eq_Annotation,
+      Hash            => Common_Containers.Node_Hash,
+      Equivalent_Keys => "=");
+
+   Predefined_Eq_Annotations : Node_To_Predefined_Eq_Maps.Map :=
+     Node_To_Predefined_Eq_Maps.Empty_Map;
+   --  Maps all type entities E with a pragma Annotate
+   --  (GNATprove, Predefined_Equality, ..., E) to a record whose discriminant
+   --  is an annotation kind. It can be either No_Equality if the predefined
+   --  equality on E is entirely disallowed or Only_Null if it is still allowed
+   --  if one of the operands is a special constant. In the second cased, an
+   --  the component Null_Value stores the entity on which the predefined
+   --  equality can be used.
+
    procedure Insert_Annotate_Range
      (Prgma           : Node_Id;
       Kind            : Annotate_Kind;
@@ -501,6 +528,14 @@ package body SPARK_Definition.Annotate is
    --  Check validity of a pragma Annotate (GNATprove, Ownership, ???, E)
    --  and update the Ownership_Annotations map.
 
+   procedure Check_Predefined_Eq_Annotation
+     (Aspect_Or_Pragma : String;
+      Arg3_Exp         : Node_Id;
+      Arg4_Exp         : Node_Id;
+      Prag             : Node_Id);
+   --  Check validity of a pragma Annotate (GNATprove, Predefined_Equality,
+   --  ???, E) and update the Predefined_Eq_Annotations map.
+
    procedure Check_Skip_Annotations
      (Name     : String;
       Arg3_Exp : Node_Id;
@@ -531,6 +566,22 @@ package body SPARK_Definition.Annotate is
    --  Return the function F such that N is a pragma Annotate
    --  (GNATprove, Container_Aggregates, ..., F) or a pragma Annotate
    --  (GNATprove, Iterable_For_Proof, ..., F).
+
+   function Get_Ownership_Entity_From_Pragma
+     (N  : Node_Id;
+      Ty : Entity_Id) return Entity_Id
+   with Pre => Is_Pragma_Annotate_GNATprove (N);
+   --  Return the function or constant F such that N is a pragma Annotate
+   --  (GNATprove,  Ownership, ..., F) and F and Ty have the same root type if
+   --  any.
+
+   function Get_Predefined_Eq_Entity_From_Pragma
+     (N  : Node_Id;
+      Ty : Entity_Id) return Entity_Id
+   with Pre => Is_Pragma_Annotate_GNATprove (N);
+   --  Return the constant C such that N is a pragma Annotate
+   --  (GNATprove,  Ownership, ..., C) and C and Ty have the same root type if
+   --  any.
 
    ---------
    -- "<" --
@@ -4438,6 +4489,202 @@ package body SPARK_Definition.Annotate is
       end;
    end Check_Ownership_Annotation;
 
+   ------------------------------------
+   -- Check_Predefined_Eq_Annotation --
+   ------------------------------------
+
+   procedure Check_Predefined_Eq_Annotation
+     (Aspect_Or_Pragma : String;
+      Arg3_Exp         : Node_Id;
+      Arg4_Exp         : Node_Id;
+      Prag             : Node_Id)
+   is
+      Ok : Boolean;
+
+   begin
+      --  The last argument must be an entity
+
+      Check_Annotate_Entity_Argument
+        (Arg4_Exp, "last", Prag, "Predefined_Equality", Ok,
+         Ignore_SPARK_Status => True);
+
+      --  Annotation for a type or constant that is not in SPARK is
+      --  irrelevant.
+
+      if not Ok or else not In_SPARK (Entity (Arg4_Exp)) then
+         return;
+      end if;
+
+      --  The extra argument if any must be a string literal
+
+      if Present (Arg3_Exp) and then Nkind (Arg3_Exp) not in N_String_Literal
+      then
+         Error_Msg_N_If
+           ("third argument of " & Aspect_Or_Pragma
+            & " Annotate Predefined_Equality must be a string",
+            Arg3_Exp);
+         return;
+      end if;
+
+      declare
+         Ent  : constant Entity_Id := Entity (Arg4_Exp);
+         Kind : constant String := To_Lower (To_String (Strval (Arg3_Exp)));
+
+      begin
+         if Ekind (Ent) in Type_Kind then
+
+            --  Check that the entity is a private type whose whose full view
+            --  has SPARK_Mode => Off.
+
+            if Ekind (Ent) not in E_Private_Type
+                                | E_Record_Type_With_Private
+                                | E_Limited_Private_Type
+              or else Retysp (Ent) /= Ent
+              or else Parent_Type (Ent) /= Ent
+            then
+               Error_Msg_N_If
+                 ("a type annotated with Predefined_Equality must be"
+                  & " a private type whose full view is not in SPARK",
+                  Ent);
+
+            --  For now, we only support:
+            --
+            --  pragma Annotate
+            --    (GNATprove, Predefined_Equality, "Only_Null", Ent);
+            --  pragma Annotate
+            --    (GNATprove, Predefined_Equality, "No_Equality", Ent);
+
+            elsif Kind not in "only_null" | "no_equality" then
+
+               Error_Msg_N_If
+                 ("third argument of " & Aspect_Or_Pragma
+                  & " Annotate Predefined_Equality on a type must be"
+                  & " either ""Only_Null"" or ""No_Equality""",
+                  Arg3_Exp);
+
+            --  Only null is not supported on tagged types as contants are
+            --  not well suited for inheritance.
+
+            elsif Kind = "only_null" and then Is_Tagged_Type (Ent) then
+               Error_Msg_N_If
+                 ("a tagged type cannot be annotated with ""Only_Null""", Ent);
+
+            else
+               Check_Annotate_Placement
+                 (Ent,
+                  Placed_At_Private_View,
+                  Prag,
+                  "Predefined_Equality",
+                  " private declaration of type " & Source_Name (Ent),
+                  Ok);
+
+               if not Ok then
+                  return;
+               end if;
+
+               declare
+                  Position  : Node_To_Predefined_Eq_Maps.Cursor;
+                  New_Value : constant Predefined_Eq_Annotation :=
+                    (if Kind = "only_null"
+                     then (Kind => Only_Null, others => <>)
+                     else (Kind => No_Equality));
+               begin
+                  Predefined_Eq_Annotations.Insert
+                    (Ent,
+                     New_Value,
+                     Position,
+                     Ok
+                    );
+                  if not Ok then
+                     Error_Msg_N_If ("type shall not have multiple "
+                                     & "Predefined_Equality annotations", Ent);
+                  end if;
+               end;
+            end if;
+
+         elsif Ekind (Ent) = E_Constant then
+
+            declare
+               Typ : constant Entity_Id := Retysp (Etype (Ent));
+
+            begin
+               --  pragma Annotate
+               --   (GNATprove, Predefined_Equality, "Null_Value", Ent);
+
+               if Kind /= "null_value" then
+                  Error_Msg_N_If
+                    ("third argument of " & Aspect_Or_Pragma
+                     & " Annotate Predefined_Equality on a"
+                     & " constant must be ""Null_Value""",
+                     Arg3_Exp);
+
+               elsif not Predefined_Eq_Annotations.Contains (Typ) then
+                  Error_Msg_N_If
+                    ("the type of a constant annotated with"
+                     & " Predefined_Equality must be annotated with "
+                     & "Predefined_Equality",
+                     Ent);
+                  Error_Msg_N_If
+                    ("\consider annotating it with a pragma Annotate "
+                     & "('G'N'A'Tprove, Predefined_Equality, ""Only_Null"""
+                     & ", ...)",
+                     Ent);
+
+               elsif Predefined_Eq_Annotations (Typ).Kind /= Only_Null then
+                  Error_Msg_N_If
+                    ("the type of a constant annotated with"
+                     & " Predefined_Equality must be annotated with "
+                     & """Only_Null""",
+                     Ent);
+                  Error_Msg_N_If
+                    ("\consider annotating it with a pragma Annotate "
+                     & "('G'N'A'Tprove, Predefined_Equality, ""Only_Null"""
+                     & ", ...)",
+                     Ent);
+
+               elsif Predefined_Eq_Annotations (Typ).Null_Value = Ent then
+                  Error_Msg_N_If ("constant shall not have multiple "
+                                  & "Predefined_Equality annotations", Ent);
+
+               elsif Present (Predefined_Eq_Annotations (Typ).Null_Value) then
+                  Error_Msg_N_If
+                    ("a single null value shall be supplied for a given type "
+                     & "annotated with Predefined_Equality",
+                     Ent);
+                  Error_Msg_NE_If
+                    ("\& conflicts with the current annotation",
+                     Ent, Predefined_Eq_Annotations (Typ).Null_Value);
+
+               elsif List_Containing (Parent (Typ)) /=
+                 List_Containing (Prag)
+               then
+                  Error_Msg_N_If
+                    ("constant annotated with Predefined_Equality shall be "
+                     & "declared in same declaration list as its type",
+                     Ent);
+
+               else
+                  --  Check placement
+
+                  Check_Annotate_Placement
+                    (Ent, Prag, "Predefined_Equality", Ok);
+
+                  if not Ok then
+                     return;
+                  end if;
+
+                  Predefined_Eq_Annotations (Typ).Null_Value := Ent;
+               end if;
+            end;
+         else
+            Error_Msg_N_If
+              ("the entity of a pragma Annotate Predefined_Equality "
+               & "shall be either a type or a constant",
+               Ent);
+         end if;
+      end;
+   end Check_Predefined_Eq_Annotation;
+
    ---------------------------------------
    -- Decl_Starts_Pragma_Annotate_Range --
    ---------------------------------------
@@ -5101,6 +5348,13 @@ package body SPARK_Definition.Annotate is
    function Get_Lemmas_To_Specialize (E : Entity_Id) return Node_Sets.Set is
       (Higher_Order_Spec_Annotations.Element (E));
 
+   --------------------
+   -- Get_Null_Value --
+   --------------------
+
+   function Get_Null_Value (E : Entity_Id) return Entity_Id is
+     (Predefined_Eq_Annotations (Root_Retysp (E)).Null_Value);
+
    ----------------------------------------
    -- Get_Ownership_Entity_From_Pragma --
    ----------------------------------------
@@ -5149,6 +5403,57 @@ package body SPARK_Definition.Annotate is
          end;
       end;
    end Get_Ownership_Entity_From_Pragma;
+
+   ------------------------------------------
+   -- Get_Predefined_Eq_Entity_From_Pragma --
+   ------------------------------------------
+
+   function Get_Predefined_Eq_Entity_From_Pragma
+     (N  : Node_Id;
+      Ty : Entity_Id) return Entity_Id
+   is
+      Number_Of_Pragma_Args : constant Nat :=
+        List_Length (Pragma_Argument_Associations (N));
+   begin
+      if Number_Of_Pragma_Args /= 4 then
+         return Empty;
+      end if;
+
+      declare
+         Arg2 : constant Node_Id :=
+           Next (First (Pragma_Argument_Associations (N)));
+         Arg4 : constant Node_Id := Next (Next (Arg2));
+         Name : constant String :=
+           Get_Name_String (Chars (Get_Pragma_Arg (Arg2)));
+         Exp  : constant Node_Id := Expression (Arg4);
+
+      begin
+         if Name /= "predefined_equality"
+           or else Nkind (Exp) not in N_Has_Entity
+         then
+            return Empty;
+         end if;
+
+         declare
+            Ent : constant Entity_Id := Entity (Exp);
+         begin
+            if Ekind (Ent) = E_Constant
+              and then Root_Type (Etype (Ent)) = Root_Type (Ty)
+            then
+               return Ent;
+            else
+               return Empty;
+            end if;
+         end;
+      end;
+   end Get_Predefined_Eq_Entity_From_Pragma;
+
+   ----------------------------
+   -- Get_Predefined_Eq_Kind --
+   ----------------------------
+
+   function Get_Predefined_Eq_Kind (E : Entity_Id) return Predefined_Eq_Kind is
+     (Predefined_Eq_Annotations (Root_Retysp (E)).Kind);
 
    ------------------------------------
    -- Get_Reclamation_Check_Function --
@@ -5251,6 +5556,18 @@ package body SPARK_Definition.Annotate is
 
    function Has_Ownership_Annotation (E : Entity_Id) return Boolean is
      (Ownership_Annotations.Contains (Root_Retysp (E)));
+
+   ----------------------------------
+   -- Has_Predefined_Eq_Annotation --
+   ----------------------------------
+
+   function Has_Predefined_Eq_Annotation (E : Entity_Id) return Boolean is
+     (if Is_Tagged_Type (Retysp (E))
+      then Predefined_Eq_Annotations.Contains (Base_Retysp (E))
+      else Predefined_Eq_Annotations.Contains (Root_Retysp (E)));
+   --  On tagged types, the predefined equality annotation is not inherited.
+   --  The primitive equality function can be used to override the handling
+   --  on the inherited part.
 
    ----------------------------------------
    -- Has_Skip_Flow_And_Proof_Annotation --
@@ -5618,6 +5935,48 @@ package body SPARK_Definition.Annotate is
                Error_Msg_N
                  ("\checks for ressource or memory reclamation will be"
                   & " unprovable", E);
+            end if;
+         end;
+
+      --  If E is a private type with predefined equality of kind "Only_Null",
+      --  go over the following declarations to try and find its null value.
+
+      elsif Is_Type (E)
+        and then Is_Nouveau_Type (E)
+        and then Has_Predefined_Eq_Annotation (E)
+        and then Get_Predefined_Eq_Kind (E) = Only_Null
+        and then No (Get_Null_Value (E))
+      then
+         declare
+            Decl_Node : constant Node_Id := Declaration_Node (E);
+            Cur       : Node_Id;
+            Ent       : Entity_Id := Empty;
+         begin
+            if Is_List_Member (Decl_Node) then
+               Cur := Next (Decl_Node);
+               while Present (Cur) loop
+                  if Is_Pragma_Annotate_GNATprove (Cur) then
+                     Ent := Get_Predefined_Eq_Entity_From_Pragma (Cur, E);
+                     if Present (Ent) then
+                        Queue_For_Marking (Ent);
+                        exit;
+                     end if;
+                  end if;
+                  Next (Cur);
+               end loop;
+            end if;
+
+            if No (Ent)
+              and then Emit_Warning_Info_Messages
+              and then Debug.Debug_Flag_Underscore_F
+            then
+               Error_Msg_NE
+                 ("info: ?no null value found for type with predefined "
+                  & "equality &",
+                  E, E);
+               Error_Msg_N
+                 ("\""No_Equality"" could be used instead of ""Only_Null""",
+                  E);
             end if;
          end;
       end if;
@@ -5990,6 +6349,7 @@ package body SPARK_Definition.Annotate is
         or else Name = "container_aggregates"
         or else Name = "hide_info"
         or else Name = "unhide_info"
+        or else Name = "predefined_equality"
         or else (not From_Aspect
                  and then (Name = "false_positive"
                            or else Name = "intentional"))
@@ -6079,8 +6439,13 @@ package body SPARK_Definition.Annotate is
 
       elsif Name = "iterable_for_proof" then
          Check_Iterable_Annotation (Arg3_Exp, Arg4_Exp, Prag);
+
       elsif Name = "skip_proof" or else Name = "skip_flow_and_proof" then
          Check_Skip_Annotations (Name, Arg3_Exp, Prag);
+
+      elsif Name = "predefined_equality" then
+         Check_Predefined_Eq_Annotation
+           (Aspect_Or_Pragma, Arg3_Exp, Arg4_Exp, Prag);
 
       --  Annotation for justifying check messages. This is where we set
       --  Result.Present to True and fill in values for components Kind,

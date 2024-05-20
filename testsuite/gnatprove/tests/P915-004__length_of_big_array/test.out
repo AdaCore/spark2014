@@ -4,6 +4,7 @@ fail.adb:5:14: info: postcondition proved (CVC5: 2 VC)
 fail.adb:7:07: info: range check proved (CVC5: 2 VC)
 fail.adb:7:28: info: length check proved (CVC5: 3 VC; Trivial: 1 VC)
 fail.adb:17:11: high: range check might fail (e.g. when C = (others => False) and C'First = 0 and C'Last = My_Index'Last)
+fail.adb:17:11: info: range check proved (CVC5: 1 VC)
 fail.adb:19:14: info: range check proved (CVC5: 1 VC)
 fail.adb:27:21: info: index check proved (CVC5: 2 VC)
 fail.adb:27:35: info: index check proved (CVC5: 2 VC)
@@ -17,4 +18,5 @@ fail.adb:49:04: info: precondition proved (CVC5: 2 VC)
 fail.adb:50:04: info: precondition proved (CVC5: 2 VC)
 fail.adb:51:04: info: precondition proved (CVC5: 2 VC)
 mod_array.ads:6:13: info: implicit aspect Always_Terminates on "My_Length" has been proved, subprogram will terminate
-mod_array.ads:6:52: medium: range check might fail [reason for check: returned value must fit in the result type of the function]
+mod_array.ads:6:52: info: range check proved (CVC5: 1 VC)
+mod_array.ads:6:52: medium: range check might fail (e.g. when X = (others => False) and X'First = 0 and X'Last = My_Index'Last) [reason for check: returned value must fit in the result type of the function]

@@ -696,6 +696,9 @@ package body VC_Kinds is
           & "passed by reference",
          when Lim_Ext_Aggregate_With_Type_Ancestor =>
            "an extension aggregate whose ancestor part is a subtype mark",
+         when Lim_Generic_In_Type_Inv =>
+            "instance of a generic unit declared in a package containing a "
+          & "type with an invariant outside of this package",
          when Lim_Goto_Cross_Inv =>
            "a goto statement occuring in a loop before the invariant which"
           & " refers to a label occuring inside the loop but after the "
@@ -1037,6 +1040,9 @@ package body VC_Kinds is
          elsif S = "no" then Not_In_SPARK
          else raise Program_Error);
    end From_JSON;
+
+   function From_JSON (V : JSON_Value) return GP_Mode is
+     (GP_Mode'Value (Get (V)));
 
    ----------------------
    -- From_JSON_Labels --
@@ -1694,6 +1700,11 @@ package body VC_Kinds is
             when Not_In_SPARK => "no");
    begin
       return Create (S);
+   end To_JSON;
+
+   function To_JSON (M : GP_Mode) return JSON_Value is
+   begin
+      return Create (GP_Mode'Image (M));
    end To_JSON;
 
    ---------------

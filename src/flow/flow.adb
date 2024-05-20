@@ -48,7 +48,6 @@ with Flow_Refinement;                  use Flow_Refinement;
 with Flow_Utility;                     use Flow_Utility;
 with Gnat2Why.Assumptions;             use Gnat2Why.Assumptions;
 with Gnat2Why_Args;
-with Gnat2Why_Opts;                    use Gnat2Why_Opts;
 with GNATCOLL.JSON;                    use GNATCOLL.JSON;
 with Namet;                            use Namet;
 with Output;                           use Output;

@@ -61,7 +61,6 @@ with Gnat2Why.Borrow_Checker;         use Gnat2Why.Borrow_Checker;
 with Gnat2Why.Data_Decomposition;     use Gnat2Why.Data_Decomposition;
 with Gnat2Why.Decls;                  use Gnat2Why.Decls;
 with Gnat2Why.Error_Messages;         use Gnat2Why.Error_Messages;
-with Gnat2Why_Opts;                   use Gnat2Why_Opts;
 with Gnat2Why.Subprograms;            use Gnat2Why.Subprograms;
 with Gnat2Why.Tables;                 use Gnat2Why.Tables;
 with Gnat2Why.Types;                  use Gnat2Why.Types;

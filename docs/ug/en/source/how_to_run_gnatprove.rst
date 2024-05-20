@@ -388,6 +388,10 @@ can specify the target and runtime as follows:
    for Target use "c";
    for Runtime ("Ada") use "ccg";
 
+As an alternative to these project file settings, you can also use the
+command-line switches ``--RTS`` and ``--target`` to specify the target
+and runtime.
+
 .. index:: --pedantic
 
 Specifying the Target Architecture and Implementation-Defined Behavior

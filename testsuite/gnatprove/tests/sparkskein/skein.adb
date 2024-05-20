@@ -363,7 +363,7 @@ is
                             (S512, Ctx.H, Trace.Skein_Rnd_Key_Inject, X));
          end Inject_Key;
 
-         procedure Round_1 is
+         procedure Round_1 with Post => True is
          begin
             X (0) := X (0) + X (1);
             X (1) := Rotate_Left (X (1), R_512_0_0);
@@ -382,7 +382,7 @@ is
             X (7) := X (7) xor X (6);
          end Round_1;
 
-         procedure Round_2 is
+         procedure Round_2 with Post => True is
          begin
             X (2) := X (2) + X (1);
             X (1) := Rotate_Left (X (1), R_512_1_0);
@@ -401,7 +401,7 @@ is
             X (3) := X (3) xor X (0);
          end Round_2;
 
-         procedure Round_3 is
+         procedure Round_3 with Post => True is
          begin
             X (4) := X (4) + X (1);
             X (1) := Rotate_Left (X (1), R_512_2_0);
@@ -420,7 +420,7 @@ is
             X (7) := X (7) xor X (2);
          end Round_3;
 
-         procedure Round_4 is
+         procedure Round_4 with Post => True is
          begin
             X (6) := X (6) + X (1);
             X (1) := Rotate_Left (X (1), R_512_3_0);
@@ -439,7 +439,7 @@ is
             X (3) := X (3) xor X (4);
          end Round_4;
 
-         procedure Round_5 is
+         procedure Round_5 with Post => True is
          begin
             X (0) := X (0) + X (1);
             X (1) := Rotate_Left (X (1), R_512_4_0);
@@ -458,7 +458,7 @@ is
             X (7) := X (7) xor X (6);
          end Round_5;
 
-         procedure Round_6 is
+         procedure Round_6 with Post => True is
          begin
             X (2) := X (2) + X (1);
             X (1) := Rotate_Left (X (1), R_512_5_0);
@@ -477,7 +477,7 @@ is
             X (3) := X (3) xor X (0);
          end Round_6;
 
-         procedure Round_7 is
+         procedure Round_7 with Post => True is
          begin
             X (4) := X (4) + X (1);
             X (1) := Rotate_Left (X (1), R_512_6_0);
@@ -496,7 +496,7 @@ is
             X (7) := X (7) xor X (2);
          end Round_7;
 
-         procedure Round_8 is
+         procedure Round_8 with Post => True is
          begin
             X (6) := X (6) + X (1);
             X (1) := Rotate_Left (X (1), R_512_7_0);
@@ -517,6 +517,7 @@ is
 
       begin
          for R in U64 range 1 .. (Skein_512_Rounds_Total / 8) loop
+            pragma Loop_Invariant (True);
             Round_1;
             pragma Debug (Trace.Show_Round (S512, Ctx.H, 8*R-7, X));
             Round_2;

@@ -33,7 +33,10 @@ package Cache_Client is
 
    function Get (Conn : Cache; Key : String) return String is abstract;
    --  Function to retrieve the value of "Key". If the key wasn't set
-   --  previously, this function is intended to return the empty string.
+   --  previously, this function returns the empty string. Note that this means
+   --  the interface can't distinguish between a key set to an empty string,
+   --  and an absent key. This seems to be the case for the memcached
+   --  implementation, so we can't be more precise here.
 
    procedure Close (Conn : in out Cache) is abstract;
    --  Procedure to release any resources associated with the cache
