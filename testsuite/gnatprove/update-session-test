@@ -131,7 +131,9 @@ def main():
     args = parse_options()
     testnames = args.testnames
     if args.failed_replay_tests:
-        resultspath = args.resultspath if args.resultspath else os.join("out", "new")
+        resultspath = (
+            args.resultspath if args.resultspath else os.path.join("out", "new")
+        )
         testnames += failed_replay_tests(resultspath)
     if len(testnames) == 0:
         print("no tests to replay")
