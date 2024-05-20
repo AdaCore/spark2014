@@ -284,6 +284,7 @@ auditlog.adb:984:12: info: initialization of "TimeCount" proved
 auditlog.adb:990:37: info: predicate check proved
 auditlog.adb:990:37: info: range check proved
 auditlog.adb:1014:55: info: range check proved
+auditlog.adb:1045:32: info: unrolling loop
 auditlog.adb:1070:33: info: loop invariant initialization proved
 auditlog.adb:1070:33: info: loop invariant preservation proved
 auditlog.adb:1071:33: info: loop invariant initialization proved
@@ -1470,6 +1471,7 @@ keystore.adb:90:13: info: implicit aspect Always_Terminates on "ConvertRetValToT
 keystore.adb:97:35: info: range check proved
 keystore.adb:97:39: info: range check proved
 keystore.adb:98:09: info: range check proved
+keystore.adb:98:19: info: no contextual analysis of "ConvertRetValToText" (call returns unconstrained type)
 keystore.adb:101:19: info: range check proved
 keystore.adb:102:10: info: range check proved
 keystore.adb:102:18: info: index check proved
@@ -1692,6 +1694,7 @@ screen.adb:410:07: info: initialization of "MaxFAR" proved
 screen.adb:412:07: info: initialization of "NewConfig" proved
 screen.adb:436:16: info: implicit aspect Always_Terminates on "SecondsString" has been proved, subprogram will terminate
 screen.adb:436:16: info: implicit function contract might not be available on calls from enclosing unit
+screen.adb:440:41: info: no contextual analysis of "SecondsString" (call returns unconstrained type)
 screen.adb:442:37: info: index check proved
 screen.adb:446:13: info: range check proved
 screen.adb:446:19: info: index check proved
@@ -1730,6 +1733,7 @@ screen.adb:485:40: info: range check proved, in call inlined at screen.adb:659
 screen.adb:485:40: info: range check proved, in call inlined at screen.adb:665
 screen.adb:499:16: info: implicit aspect Always_Terminates on "AccessPolicyString" has been proved, subprogram will terminate
 screen.adb:499:16: info: implicit function contract might not be available on calls from enclosing unit
+screen.adb:502:39: info: no contextual analysis of "AccessPolicyString" (call returns unconstrained type)
 screen.adb:505:10: info: range check proved
 screen.adb:505:17: info: index check proved
 screen.adb:505:26: info: index check proved
@@ -1737,6 +1741,7 @@ screen.adb:505:33: info: length check proved
 screen.adb:505:36: info: length check proved
 screen.adb:519:16: info: implicit aspect Always_Terminates on "ClassString" has been proved, subprogram will terminate
 screen.adb:519:16: info: implicit function contract might not be available on calls from enclosing unit
+screen.adb:521:38: info: no contextual analysis of "ClassString" (call returns unconstrained type)
 screen.adb:524:10: info: range check proved
 screen.adb:524:17: info: index check proved
 screen.adb:524:26: info: index check proved
@@ -1744,6 +1749,7 @@ screen.adb:524:33: info: length check proved
 screen.adb:524:36: info: length check proved
 screen.adb:538:16: info: implicit aspect Always_Terminates on "FARString" has been proved, subprogram will terminate
 screen.adb:538:16: info: implicit function contract might not be available on calls from enclosing unit
+screen.adb:541:39: info: no contextual analysis of "FARString" (call returns unconstrained type)
 screen.adb:545:10: info: range check proved
 screen.adb:545:17: info: index check proved
 screen.adb:545:32: info: index check proved
@@ -1779,6 +1785,7 @@ screen.adb:774:09: info: initialization of "SuccessBio" proved
 screen.adb:775:09: info: initialization of "FailBio" proved
 screen.adb:787:16: info: implicit aspect Always_Terminates on "StatsCountString" has been proved, subprogram will terminate
 screen.adb:787:16: info: implicit function contract might not be available on calls from enclosing unit
+screen.adb:790:32: info: no contextual analysis of "StatsCountString" (call returns unconstrained type)
 screen.adb:794:10: info: range check proved
 screen.adb:794:17: info: index check proved
 screen.adb:794:32: info: index check proved
