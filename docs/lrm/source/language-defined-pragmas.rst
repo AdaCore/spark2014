@@ -137,6 +137,7 @@ Max_Queue_Length              Yes                    Extended Ravenscar
 No_Elaboration_Code_All       Yes
 No_Heap_Finalization          Yes
 No_Inline                     Yes                    No effect on contextual analysis of subprograms
+No_Strict_Aliasing            Yes
 No_Tagged_Streams             Yes
 Overflow_Mode                 Yes
 Post		  	      Yes

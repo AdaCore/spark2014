@@ -26,6 +26,7 @@
 
 with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 with String_Utils;          use String_Utils;
+with VC_Kinds;              use VC_Kinds;
 
 package Gnat2Why_Opts.Reading is
 

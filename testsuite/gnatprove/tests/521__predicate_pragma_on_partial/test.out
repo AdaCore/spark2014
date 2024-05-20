@@ -1,0 +1,2 @@
+test.adb:4:12: medium: in default value of private type at test.adb:4
+test.adb:4:12: medium: predicate check might fail on default value

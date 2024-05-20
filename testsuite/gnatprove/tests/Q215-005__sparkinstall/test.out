@@ -6,6 +6,7 @@ alt-ergo.hash
 colibri
 colibri.hash
 cvc5
+cvc5.hash
 gcc
 gnat2why
 gnatbind
