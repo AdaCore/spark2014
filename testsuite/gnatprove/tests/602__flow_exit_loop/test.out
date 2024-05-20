@@ -1,0 +1,9 @@
+translate.adb:35:13: info: precondition proved (CVC5: 1 VC)
+translate.adb:35:13: info: precondition proved (CVC5: 2 VC)
+translate.adb:35:13: info: precondition proved (Trivial: 1 VC)
+translate.adb:37:17: info: initialization of "Output_Element" proved
+translate.adb:45:46: info: precondition proved (CVC5: 1 VC)
+translate.ads:26:26: info: initialization of "Output" proved
+translate.ads:26:49: info: initialization of "Success" proved
+translate.ads:30:09: info: initialization of "Output_Vector" proved
+translate.ads:31:09: info: initialization of "Success" proved
