@@ -59,7 +59,7 @@ package body Errout_Wrapper is
    procedure Error_Msg_N
      (Msg           : Message;
       N             : Node_Id;
-      Kind          : Msg_Kind := MK_Error;
+      Kind          : Msg_Severity := Error_Kind;
       First         : Boolean := False;
       Continuations : Message_Lists.List := Message_Lists.Empty)
    is
@@ -95,13 +95,16 @@ package body Errout_Wrapper is
       procedure Print_Msg (Msg : Message; Cont : Boolean) is
          Prefix : constant String :=
            (case Kind is
-               when MK_Error   => "",
-               when MK_Warning => "?",
-               when MK_Info    => "info: ?");
+               when Error_Kind        => "",
+               when Warning_Kind      => "?",
+               when Info_Kind         => "info: ?",
+               when Low_Check_Kind    => "low: ",
+               when Medium_Check_Kind => "medium: ",
+               when High_Check_Kind   => "high: ");
          Cont_Prefix : constant String :=
            (case Kind is
-               when MK_Error             => "\",
-               when MK_Warning | MK_Info => "\?");
+               when Error_Kind | Check_Kind  => "\",
+               when Warning_Kind | Info_Kind => "\?");
          use Node_Lists;
          Expl_Code : constant String :=
            (if Msg.Explain_Code = EC_None then ""
@@ -163,7 +166,7 @@ package body Errout_Wrapper is
    procedure Error_Msg_N
      (Msg           : String;
       N             : Node_Id;
-      Kind          : Msg_Kind := MK_Error;
+      Kind          : Msg_Severity := Error_Kind;
       Names         : Node_Lists.List := Node_Lists.Empty;
       Secondary_Loc : Source_Ptr := No_Location;
       Explain_Code  : Explain_Code_Kind := EC_None;
@@ -181,5 +184,22 @@ package body Errout_Wrapper is
                    First => First,
                    Continuations => Conts);
    end Error_Msg_N;
+
+   -------------
+   -- To_JSON --
+   -------------
+
+   function To_JSON (Kind : Msg_Severity) return GNATCOLL.JSON.JSON_Value is
+      S : constant String :=
+        (case Kind is
+         when Error_Kind        => "error",
+         when Warning_Kind      => "warning",
+         when Info_Kind         => "info",
+         when High_Check_Kind   => "high",
+         when Medium_Check_Kind => "medium",
+         when Low_Check_Kind    => "low");
+   begin
+      return GNATCOLL.JSON.Create (S);
+   end To_JSON;
 
 end Errout_Wrapper;

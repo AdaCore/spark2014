@@ -386,7 +386,7 @@ package body Why.Gen.Hardcoded is
                  (Warning_Message (Warn_Function_Is_Valid),
                   Ada_Node,
                   First => True,
-                  Kind => MK_Warning);
+                  Kind => Warning_Kind);
 
                if Domain = EW_Prog then
                   T := +Sequence (Ada_Node => Ada_Node,
@@ -675,7 +675,7 @@ package body Why.Gen.Hardcoded is
                Error_Msg_N (Warning_Message (Warn_Function_Is_Valid),
                             Ada_Node,
                             First => True,
-                            Kind => MK_Warning);
+                            Kind => Warning_Kind);
 
                if Domain = EW_Prog then
                   T := +Sequence (Ada_Node => Ada_Node,

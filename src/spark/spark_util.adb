@@ -886,7 +886,7 @@ package body SPARK_Util is
             if Result /= No_Unrolling then
                Error_Msg_N ("unrolling loop",
                             Loop_Stmt,
-                            Kind => MK_Info);
+                            Kind => Info_Kind);
 
             else
                pragma Assert (Reason /= "");
@@ -894,7 +894,7 @@ package body SPARK_Util is
                  ("cannot unroll loop (" & To_String (Reason) & ")",
                   Loop_Stmt,
                   Secondary_Loc => Secondary_Loc,
-                  Kind          => MK_Info);
+                  Kind          => Info_Kind);
             end if;
          end if;
       end if;

@@ -22,47 +22,47 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with Ada.Characters.Handling;   use Ada.Characters.Handling;
+with Ada.Characters.Handling; use Ada.Characters.Handling;
 with Ada.Containers;
 with Ada.Float_Text_IO;
 with Ada.Strings.Fixed;
-with Ada.Text_IO;               use Ada.Text_IO;
-with Aspects;                   use Aspects;
-with Assumption_Types;          use Assumption_Types;
-with Atree;                     use Atree;
-with CE_Display;                use CE_Display;
-with Checked_Types;             use Checked_Types;
-with Common_Containers;         use Common_Containers;
-with Einfo;                     use Einfo;
-with Einfo.Entities;            use Einfo.Entities;
-with Einfo.Utils;               use Einfo.Utils;
-with Errout;                    use Errout;
-with Erroutc;                   use Erroutc;
+with Ada.Text_IO;             use Ada.Text_IO;
+with Aspects;                 use Aspects;
+with Assumption_Types;        use Assumption_Types;
+with Atree;                   use Atree;
+with CE_Display;              use CE_Display;
+with Checked_Types;           use Checked_Types;
+with Common_Containers;       use Common_Containers;
+with Einfo;                   use Einfo;
+with Einfo.Entities;          use Einfo.Entities;
+with Einfo.Utils;             use Einfo.Utils;
+with Errout;
+with Erroutc;
 with Flow_Generated_Globals.Phase_2;
-with Flow_Refinement;           use Flow_Refinement;
-with Flow_Utility;              use Flow_Utility;
+with Flow_Refinement;         use Flow_Refinement;
+with Flow_Utility;            use Flow_Utility;
 with Gnat2Why.Expr.Loops;
-with Gnat2Why.Util;             use Gnat2Why.Util;
-with Gnat2Why_Args;             use Gnat2Why_Args;
-with Gnat2Why_Opts;             use Gnat2Why_Opts;
-with GNATCOLL.Utils;            use GNATCOLL.Utils;
+with Gnat2Why.Util;           use Gnat2Why.Util;
+with Gnat2Why_Args;           use Gnat2Why_Args;
+with Gnat2Why_Opts;           use Gnat2Why_Opts;
+with GNATCOLL.Utils;          use GNATCOLL.Utils;
 with Lib.Xref;
-with Namet;                     use Namet;
-with Nlists;                    use Nlists;
-with Sem_Aggr;                  use Sem_Aggr;
-with Sem_Aux;                   use Sem_Aux;
-with Sem_Util;                  use Sem_Util;
-with Sinfo.Nodes;               use Sinfo.Nodes;
-with Sinfo.Utils;               use Sinfo.Utils;
-with Sinput;                    use Sinput;
-with Snames;                    use Snames;
+with Namet;                   use Namet;
+with Nlists;                  use Nlists;
+with Sem_Aggr;                use Sem_Aggr;
+with Sem_Aux;                 use Sem_Aux;
+with Sem_Util;                use Sem_Util;
+with Sinfo.Nodes;             use Sinfo.Nodes;
+with Sinfo.Utils;             use Sinfo.Utils;
+with Sinput;                  use Sinput;
+with Snames;                  use Snames;
 with SPARK_Atree;
-with SPARK_Util.Hardcoded;      use SPARK_Util.Hardcoded;
-with SPARK_Util.Subprograms;    use SPARK_Util.Subprograms;
-with SPARK_Util.Types;          use SPARK_Util.Types;
-with SPARK_Xrefs;               use SPARK_Xrefs;
-with Stringt;                   use Stringt;
-with Uintp;                     use Uintp;
+with SPARK_Util.Hardcoded;    use SPARK_Util.Hardcoded;
+with SPARK_Util.Subprograms;  use SPARK_Util.Subprograms;
+with SPARK_Util.Types;        use SPARK_Util.Types;
+with SPARK_Xrefs;             use SPARK_Xrefs;
+with Stringt;                 use Stringt;
+with Uintp;                   use Uintp;
 
 -------------------------
 -- Flow_Error_Messages --
@@ -127,9 +127,6 @@ package body Flow_Error_Messages is
    --  Return the message string for a justified VC
 
    function Justified_Message (Flow_Check_Message : String) return String;
-
-   function Msg_Severity_To_String (Severity : Msg_Severity) return String;
-   --  Transform the msg kind into a string, for the JSON output
 
    type Message_Id is new Integer range -1 .. Integer'Last;
    --  type used to identify a message issued by gnat2why
@@ -303,7 +300,7 @@ package body Flow_Error_Messages is
       end if;
 
       Set_Field (Value, "rule", Tag);
-      Set_Field (Value, "severity", Msg_Severity_To_String (Severity));
+      Set_Field (Value, "severity", To_JSON (Severity));
       Set_Field (Value, "entity", To_JSON (Entity_To_Subp_Assumption (E)));
       Set_Field (Value, "check_tree", Check_Tree);
 
@@ -385,7 +382,7 @@ package body Flow_Error_Messages is
          --  mention where the generic is instantiated.
 
          declare
-            Loc     : Source_Ptr := Sloc (First_Node (N));
+            Loc     : Source_Ptr := Sloc (Errout.First_Node (N));
             File    : Unbounded_String;
             Line    : Physical_Line_Number;
             Context : Unbounded_String;
@@ -738,7 +735,7 @@ package body Flow_Error_Messages is
       end Write_Tracefile;
 
       Tracefile : constant String :=
-        (if Continuation or else Path.Is_Empty
+        (if Erroutc.Continuation or else Path.Is_Empty
          then ""
          else Write_Tracefile (Path));
 
@@ -1038,7 +1035,7 @@ package body Flow_Error_Messages is
       for Cont of reverse Check_Info.Continuation loop
          declare
             Loc  : constant Source_Ptr := Sloc
-              (First_Node (Cont.Ada_Node));
+              (Errout.First_Node (Cont.Ada_Node));
             File : constant String := File_Name (Loc);
             Line : constant Physical_Line_Number :=
               Get_Physical_Line_Number (Loc);
@@ -2156,7 +2153,7 @@ package body Flow_Error_Messages is
 
       begin
          if Gnat2Why_Args.Output_Mode in GPO_Pretty then
-            Error_Msg_Sloc := Flag;
+            Errout.Error_Msg_Sloc := Flag;
             return At_Line_Placeholder;
 
          --  Use "at file-name:line-num" if reference is to other than the
@@ -3843,19 +3840,6 @@ package body Flow_Error_Messages is
      ("justified that " & Flow_Check_Message);
    --  Return the message string for a justified flow check message
 
-   ----------------------------
-   -- Msg_Severity_To_String --
-   ----------------------------
-
-   function Msg_Severity_To_String (Severity : Msg_Severity) return String is
-     (case Severity is
-         when Error_Kind        => "error",
-         when Warning_Kind      => "warning",
-         when Info_Kind         => "info",
-         when High_Check_Kind   => "high",
-         when Medium_Check_Kind => "medium",
-         when Low_Check_Kind    => "low");
-
    -----------------------
    -- Print_Regular_Msg --
    -----------------------
@@ -3893,7 +3877,7 @@ package body Flow_Error_Messages is
           then "'['#" & Image (Integer (Id), 1) & "']"
           else "");
       begin
-         Error_Msg (Actual_Msg, Span);
+         Errout.Error_Msg (Actual_Msg, Span);
       end Wrap_Error_Msg;
 
       --  Errout.Error_Msg will add "info:" (on continuation messages
@@ -3910,6 +3894,7 @@ package body Flow_Error_Messages is
             when Error_Kind        => "");
 
       My_Conts : String_Lists.List := Continuations;
+
    --  Beginning of processing for Print_Regular_Msg
 
    begin
@@ -3962,32 +3947,36 @@ package body Flow_Error_Messages is
 
             if User_Message /= "" then
                My_Conts.Append
-                 (SGR_Note & "user message: " & SGR_Reset & User_Message);
+                 (Erroutc.SGR_Note & "user message: "
+                  & Erroutc.SGR_Reset & User_Message);
             end if;
 
             if CE /= "" then
                My_Conts.Append
-                 (SGR_Note & "e.g. when " & SGR_Reset & CE);
+                 (Erroutc.SGR_Note & "e.g. when "
+                  & Erroutc.SGR_Reset & CE);
             end if;
 
             if Details /= "" then
                My_Conts.Append
-                 (SGR_Note & "reason for check: " & SGR_Reset & Details);
+                 (Erroutc.SGR_Note & "reason for check: "
+                  & Erroutc.SGR_Reset & Details);
             end if;
 
             if Explanation /= "" then
                My_Conts.Append
-                 (SGR_Note & "possible explanation: " & SGR_Reset
-                  & Explanation);
+                 (Erroutc.SGR_Note & "possible explanation: "
+                  & Erroutc.SGR_Reset & Explanation);
             end if;
 
             if Fix /= "" then
                My_Conts.Append
-                 (SGR_Note & "possible fix: " & SGR_Reset & Fix);
+                 (Erroutc.SGR_Note & "possible fix: "
+                  & Erroutc.SGR_Reset & Fix);
             end if;
-
             Wrap_Error_Msg (Severity_Text, Msg, Span);
       end case;
+
       declare
          Sev_Text_Cont : constant String :=
            (if Gnat2Why_Args.Output_Mode in GPO_Pretty
@@ -3999,6 +3988,7 @@ package body Flow_Error_Messages is
             Wrap_Error_Msg ("\" & Sev_Text_Cont, Elt, Span);
          end loop;
       end;
+
       return Id;
    end Print_Regular_Msg;
 
@@ -4377,7 +4367,7 @@ package body Flow_Error_Messages is
 
                         if State_Scope /= Constituent_Scope then
                            Append (Buf, Chars (State_Scope));
-                           Adjust_Name_Case (Buf, Sloc (State_Scope));
+                           Errout.Adjust_Name_Case (Buf, Sloc (State_Scope));
                            Append (R, To_String (Buf) & ".");
                            Buf.Length := 0;
                         end if;
@@ -4389,7 +4379,7 @@ package body Flow_Error_Messages is
                         --  than the immediate scope of the abstract state.
 
                         Append (Buf, Chars (State_Id));
-                        Adjust_Name_Case (Buf, Sloc (State_Id));
+                        Errout.Adjust_Name_Case (Buf, Sloc (State_Id));
                         Append (R, To_String (Buf));
                      end;
                   else
@@ -4446,10 +4436,10 @@ package body Flow_Error_Messages is
                         N : constant Node_Id := Get_Direct_Mapping_Id (F);
 
                      begin
-                        Msglen := 0;
-                        Set_Msg_Insertion_Line_Number (Sloc (N), Flag);
+                        Erroutc.Msglen := 0;
+                        Erroutc.Set_Msg_Insertion_Line_Number (Sloc (N), Flag);
                         Append (R, ' ');
-                        Append (R, Msg_Buffer (1 .. Msglen));
+                        Append (R, Erroutc.Msg_Buffer (1 .. Erroutc.Msglen));
                      end;
                   when others =>
                      --  Can't really add source information for stuff that
@@ -4465,9 +4455,9 @@ package body Flow_Error_Messages is
                   N : constant Node_Id := Get_Direct_Mapping_Id (F);
 
                begin
-                  Msglen := 0;
-                  Set_Msg_Insertion_Line_Number (Sloc (N), Flag);
-                  Append (R, Msg_Buffer (1 .. Msglen));
+                  Erroutc.Msglen := 0;
+                  Erroutc.Set_Msg_Insertion_Line_Number (Sloc (N), Flag);
+                  Append (R, Erroutc.Msg_Buffer (1 .. Erroutc.Msglen));
                end;
 
             when others =>
@@ -4767,14 +4757,14 @@ package body Flow_Error_Messages is
            or else Is_Entity_And_Has_Warnings_Off (F3);
       end Warning_Disabled_For_Entity;
 
-      Suppr_Reason : String_Id := Warnings_Suppressed (Sloc (N));
+      Suppr_Reason : String_Id := Erroutc.Warnings_Suppressed (Sloc (N));
 
    --  Start of processing for Warning_Is_Suppressed
 
    begin
       if Suppr_Reason = No_String then
          Suppr_Reason :=
-           Warning_Specifically_Suppressed
+           Erroutc.Warning_Specifically_Suppressed
              (Loc => Sloc (N),
               Msg => Msg'Unrestricted_Access);
 

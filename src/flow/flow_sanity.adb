@@ -25,6 +25,7 @@ with Atree;                  use Atree;
 with Common_Containers;      use Common_Containers;
 with Einfo.Entities;         use Einfo.Entities;
 with Einfo.Utils;            use Einfo.Utils;
+with Errout_Wrapper;         use Errout_Wrapper;
 with Flow_Error_Messages;    use Flow_Error_Messages;
 with Flow_Refinement;        use Flow_Refinement;
 with Flow_Generated_Globals.Phase_2;
