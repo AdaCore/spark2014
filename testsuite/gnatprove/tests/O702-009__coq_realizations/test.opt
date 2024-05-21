@@ -1,2 +1,1 @@
 coq REQUIRED
-ALL XFAIL disabled during changes in the array theories eng/spark/spark2014#389

@@ -3,26 +3,154 @@ Compiling coq stdlib
 Coq stdlib compiled
 Launch why3realize
 Generate realization for Integer
+Warning, file "./_gnatprove_standard.mlw", line 1303, characters 8-18: axiom one_is_int does not contain any local abstract symbol (contains: t, is_int, one)
+Warning, file "./_gnatprove_standard.mlw", line 1305, characters 8-18: axiom one_of_int does not contain any local abstract symbol (contains: int, (=), mode, RNA, t, of_int, one)
+Warning, file "./_gnatprove_standard.mlw", line 1330, characters 8-18: axiom one_is_int does not contain any local abstract symbol (contains: t, is_int, one)
+Warning, file "./_gnatprove_standard.mlw", line 1332, characters 8-18: axiom one_of_int does not contain any local abstract symbol (contains: int, (=), mode, RNA, t, of_int, one)
+Warning, file "./_gnatprove_standard.mlw", line 1357, characters 8-18: axiom one_is_int does not contain any local abstract symbol (contains: t, is_int, one)
+Warning, file "./_gnatprove_standard.mlw", line 1359, characters 8-18: axiom one_of_int does not contain any local abstract symbol (contains: int, (=), mode, RNA, t, of_int, one)
+Warning, file "./_gnatprove_standard.mlw", line 1756, characters 30-31: unused variable f
+Warning, file "./_gnatprove_standard.mlw", line 1756, characters 32-33: unused variable l
+Warning, file "./_gnatprove_standard.mlw", line 1993, characters 31-32: unused variable l
 
 Generate realization for Int_Power
+Warning, file "./_gnatprove_standard.mlw", line 1303, characters 8-18: axiom one_is_int does not contain any local abstract symbol (contains: t, is_int, one)
+Warning, file "./_gnatprove_standard.mlw", line 1305, characters 8-18: axiom one_of_int does not contain any local abstract symbol (contains: int, (=), mode, RNA, t, of_int, one)
+Warning, file "./_gnatprove_standard.mlw", line 1330, characters 8-18: axiom one_is_int does not contain any local abstract symbol (contains: t, is_int, one)
+Warning, file "./_gnatprove_standard.mlw", line 1332, characters 8-18: axiom one_of_int does not contain any local abstract symbol (contains: int, (=), mode, RNA, t, of_int, one)
+Warning, file "./_gnatprove_standard.mlw", line 1357, characters 8-18: axiom one_is_int does not contain any local abstract symbol (contains: t, is_int, one)
+Warning, file "./_gnatprove_standard.mlw", line 1359, characters 8-18: axiom one_of_int does not contain any local abstract symbol (contains: int, (=), mode, RNA, t, of_int, one)
+Warning, file "./_gnatprove_standard.mlw", line 1756, characters 30-31: unused variable f
+Warning, file "./_gnatprove_standard.mlw", line 1756, characters 32-33: unused variable l
+Warning, file "./_gnatprove_standard.mlw", line 1993, characters 31-32: unused variable l
 
 Generate realization for Int_Minmax
+Warning, file "./_gnatprove_standard.mlw", line 1303, characters 8-18: axiom one_is_int does not contain any local abstract symbol (contains: t, is_int, one)
+Warning, file "./_gnatprove_standard.mlw", line 1305, characters 8-18: axiom one_of_int does not contain any local abstract symbol (contains: int, (=), mode, RNA, t, of_int, one)
+Warning, file "./_gnatprove_standard.mlw", line 1330, characters 8-18: axiom one_is_int does not contain any local abstract symbol (contains: t, is_int, one)
+Warning, file "./_gnatprove_standard.mlw", line 1332, characters 8-18: axiom one_of_int does not contain any local abstract symbol (contains: int, (=), mode, RNA, t, of_int, one)
+Warning, file "./_gnatprove_standard.mlw", line 1357, characters 8-18: axiom one_is_int does not contain any local abstract symbol (contains: t, is_int, one)
+Warning, file "./_gnatprove_standard.mlw", line 1359, characters 8-18: axiom one_of_int does not contain any local abstract symbol (contains: int, (=), mode, RNA, t, of_int, one)
+Warning, file "./_gnatprove_standard.mlw", line 1756, characters 30-31: unused variable f
+Warning, file "./_gnatprove_standard.mlw", line 1756, characters 32-33: unused variable l
+Warning, file "./_gnatprove_standard.mlw", line 1993, characters 31-32: unused variable l
 
 Generate realization for Int_Abs
+Warning, file "./_gnatprove_standard.mlw", line 1303, characters 8-18: axiom one_is_int does not contain any local abstract symbol (contains: t, is_int, one)
+Warning, file "./_gnatprove_standard.mlw", line 1305, characters 8-18: axiom one_of_int does not contain any local abstract symbol (contains: int, (=), mode, RNA, t, of_int, one)
+Warning, file "./_gnatprove_standard.mlw", line 1330, characters 8-18: axiom one_is_int does not contain any local abstract symbol (contains: t, is_int, one)
+Warning, file "./_gnatprove_standard.mlw", line 1332, characters 8-18: axiom one_of_int does not contain any local abstract symbol (contains: int, (=), mode, RNA, t, of_int, one)
+Warning, file "./_gnatprove_standard.mlw", line 1357, characters 8-18: axiom one_is_int does not contain any local abstract symbol (contains: t, is_int, one)
+Warning, file "./_gnatprove_standard.mlw", line 1359, characters 8-18: axiom one_of_int does not contain any local abstract symbol (contains: int, (=), mode, RNA, t, of_int, one)
+Warning, file "./_gnatprove_standard.mlw", line 1756, characters 30-31: unused variable f
+Warning, file "./_gnatprove_standard.mlw", line 1756, characters 32-33: unused variable l
+Warning, file "./_gnatprove_standard.mlw", line 1993, characters 31-32: unused variable l
 
 Generate realization for Array__1
-
-Generate realization for Array__1__Concat
+Warning, file "./_gnatprove_standard.mlw", line 1303, characters 8-18: axiom one_is_int does not contain any local abstract symbol (contains: t, is_int, one)
+Warning, file "./_gnatprove_standard.mlw", line 1305, characters 8-18: axiom one_of_int does not contain any local abstract symbol (contains: int, (=), mode, RNA, t, of_int, one)
+Warning, file "./_gnatprove_standard.mlw", line 1330, characters 8-18: axiom one_is_int does not contain any local abstract symbol (contains: t, is_int, one)
+Warning, file "./_gnatprove_standard.mlw", line 1332, characters 8-18: axiom one_of_int does not contain any local abstract symbol (contains: int, (=), mode, RNA, t, of_int, one)
+Warning, file "./_gnatprove_standard.mlw", line 1357, characters 8-18: axiom one_is_int does not contain any local abstract symbol (contains: t, is_int, one)
+Warning, file "./_gnatprove_standard.mlw", line 1359, characters 8-18: axiom one_of_int does not contain any local abstract symbol (contains: int, (=), mode, RNA, t, of_int, one)
+Warning, file "./_gnatprove_standard.mlw", line 1756, characters 30-31: unused variable f
+Warning, file "./_gnatprove_standard.mlw", line 1756, characters 32-33: unused variable l
+Warning, file "./_gnatprove_standard.mlw", line 1993, characters 31-32: unused variable l
 
 Generate realization for Rep_Proj_Base
+Warning, file "./_gnatprove_standard.mlw", line 1303, characters 8-18: axiom one_is_int does not contain any local abstract symbol (contains: t, is_int, one)
+Warning, file "./_gnatprove_standard.mlw", line 1305, characters 8-18: axiom one_of_int does not contain any local abstract symbol (contains: int, (=), mode, RNA, t, of_int, one)
+Warning, file "./_gnatprove_standard.mlw", line 1330, characters 8-18: axiom one_is_int does not contain any local abstract symbol (contains: t, is_int, one)
+Warning, file "./_gnatprove_standard.mlw", line 1332, characters 8-18: axiom one_of_int does not contain any local abstract symbol (contains: int, (=), mode, RNA, t, of_int, one)
+Warning, file "./_gnatprove_standard.mlw", line 1357, characters 8-18: axiom one_is_int does not contain any local abstract symbol (contains: t, is_int, one)
+Warning, file "./_gnatprove_standard.mlw", line 1359, characters 8-18: axiom one_of_int does not contain any local abstract symbol (contains: int, (=), mode, RNA, t, of_int, one)
+Warning, file "./_gnatprove_standard.mlw", line 1756, characters 30-31: unused variable f
+Warning, file "./_gnatprove_standard.mlw", line 1756, characters 32-33: unused variable l
+Warning, file "./_gnatprove_standard.mlw", line 1993, characters 31-32: unused variable l
+Warning, file "./ada__model.mlw", line 91, characters 30-31: unused variable f
+Warning, file "./ada__model.mlw", line 91, characters 32-33: unused variable l
+Warning, file "./ada__model.mlw", line 128, characters 34-35: unused variable f
+Warning, file "./ada__model.mlw", line 128, characters 36-37: unused variable l
+Warning, file "./ada__model.mlw", line 884, characters 30-31: unused variable f
+Warning, file "./ada__model.mlw", line 884, characters 32-33: unused variable l
+Warning, file "./ada__model.mlw", line 993, characters 30-31: unused variable f
+Warning, file "./ada__model.mlw", line 993, characters 32-33: unused variable l
 
 Generate realization for Rep_Proj_BVGen
+Warning, file "./_gnatprove_standard.mlw", line 1303, characters 8-18: axiom one_is_int does not contain any local abstract symbol (contains: t, is_int, one)
+Warning, file "./_gnatprove_standard.mlw", line 1305, characters 8-18: axiom one_of_int does not contain any local abstract symbol (contains: int, (=), mode, RNA, t, of_int, one)
+Warning, file "./_gnatprove_standard.mlw", line 1330, characters 8-18: axiom one_is_int does not contain any local abstract symbol (contains: t, is_int, one)
+Warning, file "./_gnatprove_standard.mlw", line 1332, characters 8-18: axiom one_of_int does not contain any local abstract symbol (contains: int, (=), mode, RNA, t, of_int, one)
+Warning, file "./_gnatprove_standard.mlw", line 1357, characters 8-18: axiom one_is_int does not contain any local abstract symbol (contains: t, is_int, one)
+Warning, file "./_gnatprove_standard.mlw", line 1359, characters 8-18: axiom one_of_int does not contain any local abstract symbol (contains: int, (=), mode, RNA, t, of_int, one)
+Warning, file "./_gnatprove_standard.mlw", line 1756, characters 30-31: unused variable f
+Warning, file "./_gnatprove_standard.mlw", line 1756, characters 32-33: unused variable l
+Warning, file "./_gnatprove_standard.mlw", line 1993, characters 31-32: unused variable l
+Warning, file "./ada__model.mlw", line 91, characters 30-31: unused variable f
+Warning, file "./ada__model.mlw", line 91, characters 32-33: unused variable l
+Warning, file "./ada__model.mlw", line 128, characters 34-35: unused variable f
+Warning, file "./ada__model.mlw", line 128, characters 36-37: unused variable l
+Warning, file "./ada__model.mlw", line 884, characters 30-31: unused variable f
+Warning, file "./ada__model.mlw", line 884, characters 32-33: unused variable l
+Warning, file "./ada__model.mlw", line 993, characters 30-31: unused variable f
+Warning, file "./ada__model.mlw", line 993, characters 32-33: unused variable l
 
 Generate realization for Rep_Proj_Int
+Warning, file "./_gnatprove_standard.mlw", line 1303, characters 8-18: axiom one_is_int does not contain any local abstract symbol (contains: t, is_int, one)
+Warning, file "./_gnatprove_standard.mlw", line 1305, characters 8-18: axiom one_of_int does not contain any local abstract symbol (contains: int, (=), mode, RNA, t, of_int, one)
+Warning, file "./_gnatprove_standard.mlw", line 1330, characters 8-18: axiom one_is_int does not contain any local abstract symbol (contains: t, is_int, one)
+Warning, file "./_gnatprove_standard.mlw", line 1332, characters 8-18: axiom one_of_int does not contain any local abstract symbol (contains: int, (=), mode, RNA, t, of_int, one)
+Warning, file "./_gnatprove_standard.mlw", line 1357, characters 8-18: axiom one_is_int does not contain any local abstract symbol (contains: t, is_int, one)
+Warning, file "./_gnatprove_standard.mlw", line 1359, characters 8-18: axiom one_of_int does not contain any local abstract symbol (contains: int, (=), mode, RNA, t, of_int, one)
+Warning, file "./_gnatprove_standard.mlw", line 1756, characters 30-31: unused variable f
+Warning, file "./_gnatprove_standard.mlw", line 1756, characters 32-33: unused variable l
+Warning, file "./_gnatprove_standard.mlw", line 1993, characters 31-32: unused variable l
+Warning, file "./ada__model.mlw", line 91, characters 30-31: unused variable f
+Warning, file "./ada__model.mlw", line 91, characters 32-33: unused variable l
+Warning, file "./ada__model.mlw", line 128, characters 34-35: unused variable f
+Warning, file "./ada__model.mlw", line 128, characters 36-37: unused variable l
+Warning, file "./ada__model.mlw", line 884, characters 30-31: unused variable f
+Warning, file "./ada__model.mlw", line 884, characters 32-33: unused variable l
+Warning, file "./ada__model.mlw", line 993, characters 30-31: unused variable f
+Warning, file "./ada__model.mlw", line 993, characters 32-33: unused variable l
 
 Generate realization for Rep_Proj_ltBVGen
+Warning, file "./_gnatprove_standard.mlw", line 1303, characters 8-18: axiom one_is_int does not contain any local abstract symbol (contains: t, is_int, one)
+Warning, file "./_gnatprove_standard.mlw", line 1305, characters 8-18: axiom one_of_int does not contain any local abstract symbol (contains: int, (=), mode, RNA, t, of_int, one)
+Warning, file "./_gnatprove_standard.mlw", line 1330, characters 8-18: axiom one_is_int does not contain any local abstract symbol (contains: t, is_int, one)
+Warning, file "./_gnatprove_standard.mlw", line 1332, characters 8-18: axiom one_of_int does not contain any local abstract symbol (contains: int, (=), mode, RNA, t, of_int, one)
+Warning, file "./_gnatprove_standard.mlw", line 1357, characters 8-18: axiom one_is_int does not contain any local abstract symbol (contains: t, is_int, one)
+Warning, file "./_gnatprove_standard.mlw", line 1359, characters 8-18: axiom one_of_int does not contain any local abstract symbol (contains: int, (=), mode, RNA, t, of_int, one)
+Warning, file "./_gnatprove_standard.mlw", line 1756, characters 30-31: unused variable f
+Warning, file "./_gnatprove_standard.mlw", line 1756, characters 32-33: unused variable l
+Warning, file "./_gnatprove_standard.mlw", line 1993, characters 31-32: unused variable l
+Warning, file "./ada__model.mlw", line 91, characters 30-31: unused variable f
+Warning, file "./ada__model.mlw", line 91, characters 32-33: unused variable l
+Warning, file "./ada__model.mlw", line 128, characters 34-35: unused variable f
+Warning, file "./ada__model.mlw", line 128, characters 36-37: unused variable l
+Warning, file "./ada__model.mlw", line 884, characters 30-31: unused variable f
+Warning, file "./ada__model.mlw", line 884, characters 32-33: unused variable l
+Warning, file "./ada__model.mlw", line 993, characters 30-31: unused variable f
+Warning, file "./ada__model.mlw", line 993, characters 32-33: unused variable l
 
 Generate realization for Array_Comparison_Axiom
+Warning, file "./_gnatprove_standard.mlw", line 1303, characters 8-18: axiom one_is_int does not contain any local abstract symbol (contains: t, is_int, one)
+Warning, file "./_gnatprove_standard.mlw", line 1305, characters 8-18: axiom one_of_int does not contain any local abstract symbol (contains: int, (=), mode, RNA, t, of_int, one)
+Warning, file "./_gnatprove_standard.mlw", line 1330, characters 8-18: axiom one_is_int does not contain any local abstract symbol (contains: t, is_int, one)
+Warning, file "./_gnatprove_standard.mlw", line 1332, characters 8-18: axiom one_of_int does not contain any local abstract symbol (contains: int, (=), mode, RNA, t, of_int, one)
+Warning, file "./_gnatprove_standard.mlw", line 1357, characters 8-18: axiom one_is_int does not contain any local abstract symbol (contains: t, is_int, one)
+Warning, file "./_gnatprove_standard.mlw", line 1359, characters 8-18: axiom one_of_int does not contain any local abstract symbol (contains: int, (=), mode, RNA, t, of_int, one)
+Warning, file "./_gnatprove_standard.mlw", line 1756, characters 30-31: unused variable f
+Warning, file "./_gnatprove_standard.mlw", line 1756, characters 32-33: unused variable l
+Warning, file "./_gnatprove_standard.mlw", line 1993, characters 31-32: unused variable l
+Warning, file "./ada__model.mlw", line 91, characters 30-31: unused variable f
+Warning, file "./ada__model.mlw", line 91, characters 32-33: unused variable l
+Warning, file "./ada__model.mlw", line 128, characters 34-35: unused variable f
+Warning, file "./ada__model.mlw", line 128, characters 36-37: unused variable l
+Warning, file "./ada__model.mlw", line 884, characters 30-31: unused variable f
+Warning, file "./ada__model.mlw", line 884, characters 32-33: unused variable l
+Warning, file "./ada__model.mlw", line 993, characters 30-31: unused variable f
+Warning, file "./ada__model.mlw", line 993, characters 32-33: unused variable l
 
 Check realizations
 Run Coqc on realization file: Integer
@@ -30,7 +158,10 @@ Run Coqc on realization file: Int_Power
 Run Coqc on realization file: Int_Minmax
 Run Coqc on realization file: Int_Abs
 Run Coqc on realization file: Array__1
-Run Coqc on realization file: Array__1__Concat
+File "./Array__1.v", line 15, characters 0-63:
+Warning: Interpreting this declaration as if a global declaration prefixed by
+"Local", i.e. as a global declaration which shall not be available without
+qualification when imported. [local-declaration,scope]
 Run Coqc on realization file: Rep_Proj_Base
 Run Coqc on realization file: Rep_Proj_BVGen
 Run Coqc on realization file: Rep_Proj_Int
