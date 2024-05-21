@@ -1,6 +1,6 @@
 decl1.adb:2:04: info: data dependencies proved
 decl1.adb:7:07: info: data dependencies proved
-decl1.adb:10:07: info: alignment of overlaid objects is compatible (Trivial)
+decl1.adb:10:07: info: address in address clause is compatible with object alignment (Trivial)
 decl1.adb:10:07: info: object is suitable for aliasing via address clause (Trivial)
 decl1.adb:11:21: info: object is suitable for aliasing via address clause (Trivial)
 decl1.adb:11:21: info: types of aliased objects have the same size (Trivial)
@@ -10,7 +10,7 @@ decl2.adb:2:04: info: data dependencies proved
 decl2.adb:6:50: info: in default value at decl2.adb:13
 decl2.adb:6:50: info: range check proved (CVC5: 2 VC)
 decl2.adb:10:07: info: data dependencies proved
-decl2.adb:13:07: info: alignment of overlaid objects is compatible (Trivial)
+decl2.adb:13:07: info: address in address clause is compatible with object alignment (Trivial)
 decl2.adb:13:07: info: object is suitable for aliasing via address clause (Trivial)
 decl2.adb:14:21: info: object is suitable for aliasing via address clause (Trivial)
 decl2.adb:14:21: info: types of aliased objects have the same size (Trivial)

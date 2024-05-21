@@ -1,17 +1,17 @@
 bytes.adb:7:07: info: range check proved (CVC5: 2 VC), in instantiation at use_bytes_gen.adb:11
-bytes.adb:8:07: info: alignment of overlaid objects is compatible (Trivial), in instantiation at use_bytes_gen.adb:11
+bytes.adb:8:07: info: address in address clause is compatible with object alignment (Trivial), in instantiation at use_bytes_gen.adb:11
 bytes.adb:8:07: info: object is suitable for aliasing via address clause (Trivial), in instantiation at use_bytes_gen.adb:11
 bytes.adb:9:25: info: object is suitable for aliasing via address clause (Trivial), in instantiation at use_bytes_gen.adb:11
 bytes.adb:9:25: info: types of aliased objects have the same size (Trivial), in instantiation at use_bytes_gen.adb:11
 bytes.adb:19:07: info: range check proved (CVC5: 2 VC), in instantiation at use_bytes_gen.adb:12
-bytes.adb:20:07: info: alignment of overlaid objects is compatible (Trivial), in instantiation at use_bytes_gen.adb:12
+bytes.adb:20:07: info: address in address clause is compatible with object alignment (Trivial), in instantiation at use_bytes_gen.adb:12
 bytes.adb:20:07: info: object is suitable for aliasing via address clause (Trivial), in instantiation at use_bytes_gen.adb:12
 bytes.adb:21:25: info: object is suitable for aliasing via address clause (Trivial), in instantiation at use_bytes_gen.adb:12
 bytes.adb:21:25: info: types of aliased objects have the same size (Trivial), in instantiation at use_bytes_gen.adb:12
 bytes.adb:24:16: high: "Data" is not initialized, in instantiation at use_bytes_gen.adb:12
 use_bytes.adb:12:13: info: implicit aspect Always_Terminates on "Extract" has been proved, subprogram will terminate
 use_bytes.adb:12:13: info: implicit function contract might not be available on calls from enclosing unit
-use_bytes.adb:15:07: info: alignment of overlaid objects is compatible (Trivial)
+use_bytes.adb:15:07: info: address in address clause is compatible with object alignment (Trivial)
 use_bytes.adb:15:07: info: object is suitable for aliasing via address clause (Trivial)
 use_bytes.adb:16:25: info: object is suitable for aliasing via address clause (Trivial)
 use_bytes.adb:16:25: info: types of aliased objects have the same size (Trivial)
@@ -20,7 +20,7 @@ use_bytes.adb:26:19: high: assertion might fail (e.g. when R = (A => 0, B => 1, 
 use_bytes2.adb:15:13: info: implicit aspect Always_Terminates on "Extract" has been proved, subprogram will terminate
 use_bytes2.adb:15:13: info: implicit function contract might not be available on calls from enclosing unit
 use_bytes2.adb:16:07: info: range check proved (CVC5: 2 VC)
-use_bytes2.adb:17:07: info: alignment of overlaid objects is compatible (Trivial)
+use_bytes2.adb:17:07: info: address in address clause is compatible with object alignment (Trivial)
 use_bytes2.adb:17:07: info: object is suitable for aliasing via address clause (Trivial)
 use_bytes2.adb:18:25: info: object is suitable for aliasing via address clause (Trivial)
 use_bytes2.adb:18:25: info: types of aliased objects have the same size (Trivial)

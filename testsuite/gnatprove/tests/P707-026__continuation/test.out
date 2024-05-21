@@ -1,3 +1,4 @@
+pkg.adb:8:04: info: address in address clause is compatible with object alignment (CVC5: 1 VC)
 pkg.adb:8:04: info: justified that "Descriptors" constituent of "State" is not initialized in "Pkg"
 pkg.adb:8:04: warning: address specification on "Descriptors" is imprecisely supported: assuming no concurrent accesses to non-atomic object and no writes to or through a potential alias [E0012]
 pkg.adb:8:04: warning: consider making "Descriptors" volatile and annotating it with Async_Writers and make sure that all overlapping objects have Async_Writers set to True
@@ -6,29 +7,31 @@ pkg.ads:5:04: info: flow dependencies proved
 Summary of SPARK analysis
 =========================
 
--------------------------------------------------------------------------------
-SPARK Analysis results        Total       Flow   Provers   Justified   Unproved
--------------------------------------------------------------------------------
-Data Dependencies                 .          .         .           .          .
-Flow Dependencies                 1          1         .           .          .
-Initialization                    1          .         .           1          .
-Non-Aliasing                      .          .         .           .          .
-Run-time Checks                   .          .         .           .          .
-Assertions                        .          .         .           .          .
-Functional Contracts              .          .         .           .          .
-LSP Verification                  .          .         .           .          .
-Termination                       .          .         .           .          .
-Concurrency                       .          .         .           .          .
--------------------------------------------------------------------------------
-Total                             2    1 (50%)         .     1 (50%)          .
+---------------------------------------------------------------------------------
+SPARK Analysis results        Total       Flow     Provers   Justified   Unproved
+---------------------------------------------------------------------------------
+Data Dependencies                 .          .           .           .          .
+Flow Dependencies                 1          1           .           .          .
+Initialization                    1          .           .           1          .
+Non-Aliasing                      .          .           .           .          .
+Run-time Checks                   1          .    1 (CVC5)           .          .
+Assertions                        .          .           .           .          .
+Functional Contracts              .          .           .           .          .
+LSP Verification                  .          .           .           .          .
+Termination                       .          .           .           .          .
+Concurrency                       .          .           .           .          .
+---------------------------------------------------------------------------------
+Total                             3    1 (33%)     1 (33%)     1 (33%)          .
 
 
-max steps used for successful proof: 0
+max steps used for successful proof: 1
 
 Analyzed 1 unit
 in unit pkg, 2 subprograms and packages out of 2 analyzed
-  Pkg at pkg.ads:1 flow analyzed (0 errors, 0 checks, 0 warnings and 0 pragma Assume statements) and proved (0 checks)
+  Pkg at pkg.ads:1 flow analyzed (0 errors, 0 checks, 0 warnings and 0 pragma Assume statements) and proved (1 checks)
    Justified check messages:
     pkg.adb:8:4: justified that "Descriptors" constituent of "State" is not initialized in "Pkg" (marked as: intentional, reason: "Suppressing main message should suppress cont line, too")
+absence of run-time errors of Pkg fully established
   Pkg.Foo at pkg.ads:7 flow analyzed (0 errors, 0 checks, 0 warnings and 0 pragma Assume statements) and proved (0 checks)
 effects on parameters and Global variables of Pkg.Foo fully established
+absence of run-time errors of Pkg.Foo fully established

@@ -3,6 +3,7 @@ foo.ads:14:13: info: implicit aspect Always_Terminates on "Get" has been proved,
 foo.ads:16:07: info: data dependencies proved
 foo.ads:20:07: info: data dependencies proved
 foo.ads:21:07: info: flow dependencies proved
+foo.ads:25:04: info: address in address clause is compatible with object alignment (CVC5: 1 VC)
 foo.ads:25:04: info: initialization of "Instance" constituent of "State" proved
 foo.ads:25:04: warning: address specification on "Instance" is imprecisely supported: assuming no concurrent accesses to non-atomic object, correct volatile properties, and no writes to a potential alias [E0012]
 foo.ads:25:04: warning: launch "gnatprove --explain=E0012" for more information
