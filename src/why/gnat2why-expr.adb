@@ -17815,9 +17815,10 @@ package body Gnat2Why.Expr is
 
          when Attribute_Address =>
             --  Attribute 'Address can only appear in address clauses. We are
-            --  not interested in the value of the expression, only run-time
-            --  errors. So we skip the attribute and just translate the prefix
-            --  to get the RTE.
+            --  not interested in the concrete value of the expression, only
+            --  run-time errors and alignment. So we translate the prefix to
+            --  get the RTE and return an arbitrary value compatible with the
+            --  alignment.
 
             --  ??? If an address clause uses complex features such as
             --  quantified expressions or slices, we might end up outside of
@@ -17826,13 +17827,62 @@ package body Gnat2Why.Expr is
 
             pragma Assert (Domain = EW_Prog);
 
-            T :=
-              +Sequence
-              (New_Ignore (Prog => Transform_Prog (Var, Params)),
-               New_Any_Expr (Ada_Node    => Expr,
-                             Post        => True_Pred,
-                             Labels      => Symbol_Sets.Empty_Set,
-                             Return_Type => Type_Of_Node (Expr)));
+            declare
+               Post  : W_Pred_Id := True_Pred;
+               Align : Uint := No_Uint;
+               W_Typ : W_Type_Id;
+            begin
+               --  For now we do not try to obtain alignment information for
+               --  components.
+
+               if Nkind (Var) in N_Expanded_Name | N_Identifier
+                 and then Ekind (Entity (Var)) in
+                     E_Constant
+                   | E_Loop_Parameter
+                   | E_Variable
+                   | Formal_Kind
+               then
+                  Align := Get_Attribute_Value
+                    (Entity (Var), Attribute_Alignment);
+               else
+                  Error_Msg_N
+                    ("alignment of attribute address is not precisely known",
+                     Expr, Kind => Info_Kind);
+               end if;
+
+               --  Generate
+               --
+               --  ignore { Address }; (* RTE *)
+               --  any { Post }
+               --
+               --  With Post being (result mod Alignment = 0) when alignment is
+               --  known, and true otherwise.
+
+               if Present (Align) then
+                  W_Typ := Base_Why_Type_No_Bool (Etype (Expr));
+                  Post := New_Comparison
+                    (Symbol => Why_Eq,
+                     Left   => New_Call
+                       (Name =>
+                            (if W_Typ = EW_Int_Type
+                             then M_Int_Div.Mod_Id
+                             else MF_BVs (W_Typ).Urem),
+                        Args =>
+                          (1 => +New_Result_Ident (Typ => W_Typ),
+                           2 => New_Discrete_Constant
+                             (Value => Align, Typ => W_Typ)),
+                        Typ  => W_Typ),
+                     Right  => New_Discrete_Constant
+                       (Value => Uint_0, Typ => W_Typ));
+               end if;
+
+               T := +Sequence
+                 (New_Ignore (Prog => Transform_Prog (Var, Params)),
+                  New_Any_Expr (Ada_Node    => Expr,
+                                Post        => Post,
+                                Labels      => Symbol_Sets.Empty_Set,
+                                Return_Type => Type_Of_Node (Expr)));
+            end;
 
          when Attribute_Callable =>
             T := +True_Term;
@@ -19685,6 +19735,8 @@ package body Gnat2Why.Expr is
                   declare
                      Address         : constant Node_Id :=
                        Get_Address_Expr (Decl);
+                     Address_Why     : W_Prog_Id :=
+                       +Transform_Expr (Address, EW_Prog, Params);
                      Aliased_Object  : constant Entity_Id :=
                        Supported_Alias (Address);
                      Supported_Alias : constant Boolean :=
@@ -19780,7 +19832,50 @@ package body Gnat2Why.Expr is
                               Explanation => To_String (Explanation));
                         end;
 
+                     --  For imprecisely supported address clauses, we have an
+                     --  explicit alignment check.
+
+                     else
+                        declare
+                           Tmp   : constant W_Term_Id :=
+                             New_Temp_For_Expr (W_Expr_Id'(+Address_Why));
+                           Align : constant Uint := Get_Attribute_Value
+                             (Obj, Attribute_Alignment);
+                           Pred  : W_Pred_Id := False_Pred;
+                           W_Typ : constant W_Type_Id :=
+                             Base_Why_Type_No_Bool (Get_Type (+Tmp));
+
+                        begin
+                           if Present (Align) then
+                              Pred := New_Comparison
+                                (Symbol => Why_Eq,
+                                 Left   => New_Call
+                                   (Name =>
+                                      (if W_Typ = EW_Int_Type
+                                       then M_Int_Div.Mod_Id
+                                       else MF_BVs (W_Typ).Urem),
+                                    Args =>
+                                      (1 => +Tmp,
+                                       2 => New_Discrete_Constant
+                                         (Value => Align, Typ => W_Typ)),
+                                    Typ  => W_Typ),
+                                 Right  => New_Discrete_Constant
+                                   (Value => Uint_0, Typ => W_Typ));
+                           end if;
+                           Address_Why := New_Located_Assert
+                             (Ada_Node => Decl,
+                              Pred     => Pred,
+                              Reason   => VC_UC_Alignment,
+                              Kind     => EW_Assert);
+                           Address_Why := Binding_For_Temp
+                             (Tmp     => Tmp,
+                              Context => Address_Why);
+                        end;
                      end if;
+
+                     --  RTE checks for the address clause.
+
+                     R := +Sequence (New_Ignore (Prog => +Address_Why), R);
                   end;
                end if;
             end;
@@ -20122,8 +20217,7 @@ package body Gnat2Why.Expr is
       --  that could lead to a RTE. Thus we need to check absence of RTE in
       --  the corresponding expression.
 
-      if Nkind (Decl) in N_Object_Declaration
-                       | N_Subprogram_Declaration
+      if Nkind (Decl) = N_Subprogram_Declaration
       then
          declare
             Expr : constant Node_Id := Get_Address_Expr (Decl);

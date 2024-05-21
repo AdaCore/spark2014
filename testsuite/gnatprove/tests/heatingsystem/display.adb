@@ -7,7 +7,7 @@ is
    Output_Ext : Displays
      with Volatile,
           Async_Readers,
-          Address => System.Storage_Elements.To_Address (16#FFFF_FFFF#);
+          Address => System.Storage_Elements.To_Address (16#FFFF_FFF0#);
 
    procedure Write (Content : in Displays)
      with Refined_Global  => (Output => Output_Ext),

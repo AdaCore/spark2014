@@ -1,6 +1,8 @@
+actuator.adb:7:04: info: address in address clause is compatible with object alignment (CVC5: 1 VC)
 actuator.adb:7:04: warning: address specification on "Output_Ext" is imprecisely supported: assuming no concurrent accesses to non-atomic object, correct volatile properties, no writes to a potential alias, and valid reads [E0012]
 actuator.adb:7:04: warning: launch "gnatprove --explain=E0012" for more information
 actuator.adb:7:04: warning: make sure that all overlapping objects have Async_Writers set to True
+advancebutton-raw.adb:7:04: info: address in address clause is compatible with object alignment (CVC5: 1 VC)
 advancebutton-raw.adb:7:04: warning: address specification on "Input_Ext" is imprecisely supported: assuming no concurrent accesses to non-atomic object, correct volatile properties, and valid reads [E0012]
 advancebutton-raw.adb:7:04: warning: launch "gnatprove --explain=E0012" for more information
 advancebutton-raw.ads:5:20: info: initialization of "Pressed" proved
@@ -15,9 +17,11 @@ advancebutton.ads:23:13: info: implicit aspect Always_Terminates on "CurrentMode
 advancebutton.ads:29:27: info: initialization of "Result" proved
 advancebutton.ads:33:26: info: initialization of "Result" proved
 advancebutton.ads:37:26: info: initialization of "Result" proved
+clock.adb:6:04: medium: address in address clause might not be an integral multiple of alignment of object [possible fix: overlaying object should have an Alignment representation clause]
 clock.adb:6:04: warning: address specification on "Tick_Ext" is imprecisely supported: assuming no concurrent accesses to non-atomic object, correct volatile properties, and valid reads [E0012]
 clock.adb:6:04: warning: launch "gnatprove --explain=E0012" for more information
 clock.ads:6:19: info: initialization of "Time" proved
+display.adb:6:04: medium: address in address clause might not be an integral multiple of alignment of object [possible fix: overlaying object should have an Alignment representation clause]
 display.adb:6:04: warning: address specification on "Output_Ext" is imprecisely supported: assuming no concurrent accesses to non-atomic object, correct volatile properties, no writes to a potential alias, and valid reads [E0012]
 display.adb:6:04: warning: launch "gnatprove --explain=E0012" for more information
 display.adb:6:04: warning: make sure that all overlapping objects have Async_Writers set to True
@@ -114,15 +118,19 @@ heatingsystem_dfa.adb:162:13: info: analyzing call to "TurnOff" in context
 heatingsystem_dfa.adb:169:07: info: analyzing call to "AddOffset" in context
 heatingsystem_dfa.adb:185:07: info: analyzing call to "OperateIfNeeded" in context
 heatingsystem_dfa.adb:200:07: info: analyzing call to "CheckProgramSwitch" in context
+indicator.adb:7:04: info: address in address clause is compatible with object alignment (CVC5: 1 VC)
 indicator.adb:7:04: warning: address specification on "Output_Ext" is imprecisely supported: assuming no concurrent accesses to non-atomic object, correct volatile properties, no writes to a potential alias, and valid reads [E0012]
 indicator.adb:7:04: warning: launch "gnatprove --explain=E0012" for more information
 indicator.adb:7:04: warning: make sure that all overlapping objects have Async_Writers set to True
+modeswitch.adb:5:04: info: address in address clause is compatible with object alignment (CVC5: 1 VC)
 modeswitch.adb:5:04: warning: address specification on "Input_Ext" is imprecisely supported: assuming no concurrent accesses to non-atomic object, correct volatile properties, and valid reads [E0012]
 modeswitch.adb:5:04: warning: launch "gnatprove --explain=E0012" for more information
 modeswitch.ads:5:20: info: initialization of "Value" proved
+programswitch.adb:5:04: info: address in address clause is compatible with object alignment (CVC5: 1 VC)
 programswitch.adb:5:04: warning: address specification on "Input_Ext" is imprecisely supported: assuming no concurrent accesses to non-atomic object, correct volatile properties, and valid reads [E0012]
 programswitch.adb:5:04: warning: launch "gnatprove --explain=E0012" for more information
 programswitch.ads:5:20: info: initialization of "Value" proved
+thermostat.adb:17:04: info: address in address clause is compatible with object alignment (CVC5: 1 VC)
 thermostat.adb:17:04: warning: address specification on "Input_Ext" is imprecisely supported: assuming no concurrent accesses to non-atomic object, correct volatile properties, and valid reads [E0012]
 thermostat.adb:17:04: warning: launch "gnatprove --explain=E0012" for more information
 thermostat.ads:15:25: info: initialization of "Result" proved

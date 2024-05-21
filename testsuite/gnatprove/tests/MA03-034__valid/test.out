@@ -1,3 +1,4 @@
+data.ads:7:04: info: address in address clause is compatible with object alignment (CVC5: 1 VC)
 data.ads:7:04: warning: address specification on "Sensor" is imprecisely supported: assuming no concurrent accesses to non-atomic object, no writes to a potential alias, and valid reads [E0012]
 data.ads:7:04: warning: launch "gnatprove --explain=E0012" for more information
 data.ads:7:04: warning: make sure that all overlapping objects have Async_Writers set to True

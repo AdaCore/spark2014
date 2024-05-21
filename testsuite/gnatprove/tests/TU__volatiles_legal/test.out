@@ -1,22 +1,30 @@
+external_variables_legal.ads:11:04: info: address in address clause is compatible with object alignment (CVC5: 1 VC)
 external_variables_legal.ads:11:04: warning: address specification on "Var1" is imprecisely supported: assuming no concurrent accesses to non-atomic object, correct volatile properties, and no writes to a potential alias [E0012]
 external_variables_legal.ads:11:04: warning: launch "gnatprove --explain=E0012" for more information
 external_variables_legal.ads:11:04: warning: make sure that all overlapping objects have Async_Writers set to True
+external_variables_legal.ads:16:04: info: address in address clause is compatible with object alignment (CVC5: 1 VC)
 external_variables_legal.ads:16:04: warning: address specification on "Var2" is imprecisely supported: assuming no concurrent accesses to non-atomic object and correct volatile properties [E0012]
 external_variables_legal.ads:16:04: warning: launch "gnatprove --explain=E0012" for more information
+external_variables_legal.ads:21:04: info: address in address clause is compatible with object alignment (CVC5: 1 VC)
 external_variables_legal.ads:21:04: warning: address specification on "Var3" is imprecisely supported: assuming no concurrent accesses to non-atomic object, correct volatile properties, and no writes to a potential alias [E0012]
 external_variables_legal.ads:21:04: warning: launch "gnatprove --explain=E0012" for more information
 external_variables_legal.ads:21:04: warning: make sure that all overlapping objects have Async_Writers set to True
+external_variables_legal.ads:25:04: info: address in address clause is compatible with object alignment (CVC5: 1 VC)
 external_variables_legal.ads:25:04: warning: address specification on "Var4" is imprecisely supported: assuming no concurrent accesses to non-atomic object and correct volatile properties [E0012]
 external_variables_legal.ads:25:04: warning: launch "gnatprove --explain=E0012" for more information
+external_variables_legal.ads:29:04: info: address in address clause is compatible with object alignment (CVC5: 1 VC)
 external_variables_legal.ads:29:04: warning: address specification on "Var5" is imprecisely supported: assuming no concurrent accesses to non-atomic object, correct volatile properties, and no writes to a potential alias [E0012]
 external_variables_legal.ads:29:04: warning: launch "gnatprove --explain=E0012" for more information
 external_variables_legal.ads:29:04: warning: make sure that all overlapping objects have Async_Writers set to True
+external_variables_legal.ads:35:04: info: address in address clause is compatible with object alignment (CVC5: 1 VC)
 external_variables_legal.ads:35:04: warning: address specification on "Var6" is imprecisely supported: assuming no concurrent accesses to non-atomic object, correct volatile properties, and no writes to a potential alias [E0012]
 external_variables_legal.ads:35:04: warning: launch "gnatprove --explain=E0012" for more information
 external_variables_legal.ads:35:04: warning: make sure that all overlapping objects have Async_Writers set to True
+external_variables_legal.ads:41:04: info: address in address clause is compatible with object alignment (CVC5: 1 VC)
 external_variables_legal.ads:41:04: warning: address specification on "Var7" is imprecisely supported: assuming no concurrent accesses to non-atomic object, correct volatile properties, and no writes to a potential alias [E0012]
 external_variables_legal.ads:41:04: warning: launch "gnatprove --explain=E0012" for more information
 external_variables_legal.ads:41:04: warning: make sure that all overlapping objects have Async_Writers set to True
+external_variables_legal.ads:46:04: info: address in address clause is compatible with object alignment (CVC5: 1 VC)
 external_variables_legal.ads:46:04: warning: address specification on "Var8" is imprecisely supported: assuming no concurrent accesses to non-atomic object and no writes to a potential alias [E0012]
 external_variables_legal.ads:46:04: warning: launch "gnatprove --explain=E0012" for more information
 external_variables_legal.ads:46:04: warning: make sure that all overlapping objects have Async_Writers set to True
@@ -26,9 +34,11 @@ volatiles_legal.adb:8:13: info: initialization of "Tmp2" proved
 volatiles_legal.adb:17:22: medium: assertion might fail
 volatiles_legal.adb:29:22: info: assertion proved (CVC5: 1 VC; Trivial: 1 VC)
 volatiles_legal.adb:34:14: warning: unused assignment
+volatiles_legal.ads:40:04: medium: address in address clause might not be an integral multiple of alignment of object [possible fix: overlaying object should have an Alignment representation clause]
 volatiles_legal.ads:40:04: warning: address specification on "Vol" is imprecisely supported: assuming no concurrent accesses to non-atomic object, correct volatile properties, and no writes to a potential alias [E0012]
 volatiles_legal.ads:40:04: warning: launch "gnatprove --explain=E0012" for more information
 volatiles_legal.ads:40:04: warning: make sure that all overlapping objects have Async_Writers set to True
+volatiles_legal.ads:45:04: medium: address in address clause might not be an integral multiple of alignment of object [possible fix: overlaying object should have an Alignment representation clause]
 volatiles_legal.ads:45:04: warning: address specification on "Vol2" is imprecisely supported: assuming no concurrent accesses to non-atomic object and correct volatile properties [E0012]
 volatiles_legal.ads:45:04: warning: launch "gnatprove --explain=E0012" for more information
 volatiles_legal.ads:50:11: info: data dependencies proved

@@ -9,11 +9,12 @@ low_level.adb:22:14: info: imprecise handling of Unchecked_Conversion (component
 low_level.adb:22:14: info: types in unchecked conversion have the same size (Trivial)
 low_level.adb:22:65: info: type is suitable as source for unchecked conversion (Trivial)
 low_level.adb:22:83: info: type is suitable for unchecked conversion (Trivial)
-low_level.adb:25:09: info: alignment of overlaid objects is compatible (Trivial)
+low_level.adb:25:09: info: address in address clause is compatible with object alignment (Trivial)
 low_level.adb:25:09: info: object is suitable for aliasing via address clause (Trivial)
 low_level.adb:26:33: info: object is suitable for aliasing via address clause (Trivial)
 low_level.adb:26:33: info: types of aliased objects have the same size (Trivial)
 low_level.adb:28:31: info: unrolling loop
+low_level.adb:36:05: info: address in address clause is compatible with object alignment (CVC5: 1 VC)
 low_level.adb:69:14: info: implicit aspect Always_Terminates on "Read_C_Struct" has been proved, subprogram will terminate
 rich_data.ads:36:30: info: predicate check proved (CVC5: 1 VC)
 rich_data.ads:41:24: info: predicate check proved (CVC5: 2 VC)
