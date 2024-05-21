@@ -27,6 +27,7 @@ with Ada.Strings.Unbounded;          use Ada.Strings.Unbounded;
 with Ada.Strings;
 with Einfo.Utils;                    use Einfo.Utils;
 with Errout;                         use Errout;
+with Errout_Wrapper;                 use Errout_Wrapper;
 with Flow_Generated_Globals.Phase_2; use Flow_Generated_Globals.Phase_2;
 with Flow_Utility;                   use Flow_Utility;
 with GNATCOLL.Utils;
@@ -958,7 +959,7 @@ package body Flow_Types is
                and then Ekind (Get_Direct_Mapping_Id (F)) = E_Function
                and then Is_Operator_Symbol_Name (Chars (F.Node))
             then
-               Append (R, Get_Operator_Symbol (F.Node));
+               Append (R, Escape (Get_Operator_Symbol (F.Node)));
             else
                Append (R, Get_Unmangled_Name (F.Node));
             end if;

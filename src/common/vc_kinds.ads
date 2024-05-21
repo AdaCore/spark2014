@@ -654,7 +654,7 @@ package VC_Kinds is
          when Lim_Ext_Aggregate_With_Type_Ancestor =>
            "extension aggregate with subtype ancestor part",
          when Lim_Extension_Case_Pattern_Matching =>
-           "'G'N'A'T extension for case pattern matching",
+           "GNAT extension for case pattern matching",
          when Lim_Iterated_Element_Association =>
            "iterated element association",
          when Lim_Multidim_Iterator =>
@@ -682,9 +682,9 @@ package VC_Kinds is
          when Lim_Conv_Float_Modular_128 =>
            "conversion between floating-point and 128-bits modular types",
          when Lim_Target_Name_In_Borrow =>
-           "'@ inside a reborrow",
+           "@ inside a reborrow",
          when Lim_Target_Name_In_Move =>
-           "'@ inside a move assignment",
+           "@ inside a move assignment",
          when Lim_Deep_Object_With_Addr =>
            "address clause on an object of an ownership type",
          when Lim_Deep_Value_In_Delta_Aggregate =>
@@ -712,7 +712,7 @@ package VC_Kinds is
            "tagged type with primitive subprograms inherited from a type"
            & " declared in a private part with SPARK_Mode Off",
          when Lim_Interpolated_String_Literal =>
-           "'G'N'A'T extension for interpolated string literal",
+           "GNAT extension for interpolated string literal",
          when Lim_Unknown_Alignment =>
            "unknown value of object alignment",
          when Lim_Op_Fixed_Float =>

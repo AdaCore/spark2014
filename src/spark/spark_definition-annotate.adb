@@ -2262,7 +2262,8 @@ package body SPARK_Definition.Annotate is
       elsif Mutable_In_Params_Annotations.Contains (E) then
          Error_Msg_N_If
            ("procedure annotated with the " & Aspect_Or_Pragma
-            & " Automatic_Instantiation shall not have mutable IN parameters",
+            & " Automatic_Instantiation shall not have"
+            & " mutable ""in"" parameters",
             E);
          return;
       end if;
@@ -3363,7 +3364,8 @@ package body SPARK_Definition.Annotate is
          else
             Error_Msg_NE_If
               ("function with Inline_For_Proof must"
-               & " have a postcondition of the form `&''Result = Expr`", E, E);
+               & " have a postcondition of the form ""&'Result = Expr""",
+               E, E);
             return;
          end if;
       end if;
@@ -4304,7 +4306,7 @@ package body SPARK_Definition.Annotate is
          Needs_Reclamation_Cont : constant Message :=
            Create
              ("consider annotating it with a pragma Annotate "
-              & "('G'N'A'Tprove, Ownership,"
+              & "(GNATprove, Ownership,"
               & " ""Needs_Reclamation"", ...)");
       begin
          if Ekind (Ent) in Type_Kind then
@@ -4865,7 +4867,7 @@ package body SPARK_Definition.Annotate is
                Only_Null_Cont : constant Message :=
                  Create
                    ("consider annotating it with a pragma Annotate "
-                    & "('G'N'A'Tprove, Predefined_Equality, ""Only_Null"""
+                    & "(GNATprove, Predefined_Equality, ""Only_Null"""
                     & ", ...)");
             begin
                --  pragma Annotate
@@ -6397,7 +6399,7 @@ package body SPARK_Definition.Annotate is
                   Kind => Info_Kind,
                   Continuations =>
                     ["consider annotating a constant with a pragma Annotate "
-                     & "('G'N'A'Tprove, Predefined_Equality, ""Null_Value"""
+                     & "(GNATprove, Predefined_Equality, ""Null_Value"""
                      & ", ...)"]);
             end if;
          end;
@@ -6663,7 +6665,7 @@ package body SPARK_Definition.Annotate is
          if not Ok then
             Error_Msg_N_If
               ("wrong number of arguments in " & Aspect_Or_Pragma
-               & " Annotate ('G'N'A'Tprove, " & Standard_Ada_Case (Name)
+               & " Annotate (GNATprove, " & Standard_Ada_Case (Name)
                & (if Num > 2 then ", ...)" else ")")
                & ", expected" & Num'Image, Prag);
          end if;
@@ -6678,7 +6680,7 @@ package body SPARK_Definition.Annotate is
          if No (Arg) then
             Error_Msg_N_If
               ("missing name in Annotate " & Aspect_Or_Pragma
-               & " for 'G'N'A'Tprove", Prag);
+               & " for GNATprove", Prag);
             return "";
          else
             pragma Assert (Nkind (Get_Pragma_Arg (Arg)) = N_Identifier);
@@ -6738,12 +6740,13 @@ package body SPARK_Definition.Annotate is
                declare
                   Deprecated : constant String :=
                     (if From_Aspect
-                     then "`with Annotate '='> (GNATprove, " & Name & ")`"
-                     else "`pragma Annotate (GNATprove, " & Name & ", ...)`");
+                     then """with Annotate => (GNATprove, " & Name & ")"""
+                     else
+                        """pragma Annotate (GNATprove, " & Name & ", ...)""");
                   New_Syntax : constant String :=
                     (if Name in "always_return" | "terminating"
-                     then "`with Always_Terminates`"
-                     else "`with Always_Terminates '='> False` or use an" &
+                     then """with Always_Terminates"""
+                     else """with Always_Terminates => False"" or use an" &
                        " exceptional contract") &
                   (if not From_Aspect
                    then " on the corresponding entity"
@@ -6811,7 +6814,7 @@ package body SPARK_Definition.Annotate is
       else
          Error_Msg_N_If
            ("invalid name """ & Standard_Ada_Case (Name) & """ in "
-            & Aspect_Or_Pragma & " Annotate ('G'N'A'Tprove, name)", Arg2);
+            & Aspect_Or_Pragma & " Annotate (GNATprove, name)", Arg2);
          Ok := False;
       end if;
 
@@ -6907,7 +6910,7 @@ package body SPARK_Definition.Annotate is
                Pattern := Strval (Arg3_Exp);
             else
                Error_Msg_N_If
-                 ("third argument PATTERN for 'G'N'A'Tprove Annotate "
+                 ("third argument ""Pattern"" for GNATprove Annotate "
                   & Aspect_Or_Pragma & " must be a string literal",
                   Prag);
                return;
@@ -6917,7 +6920,7 @@ package body SPARK_Definition.Annotate is
                Reason := Strval (Arg4_Exp);
             else
                Error_Msg_N_If
-                 ("fourth argument REASON for 'G'N'A'Tprove Annotate "
+                 ("fourth argument ""Reason"" for GNATprove Annotate "
                   & Aspect_Or_Pragma & " must be a string literal",
                   Prag);
                return;

@@ -22,58 +22,53 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with Ada.Characters.Handling; use Ada.Characters.Handling;
 with Ada.Containers;
 with Ada.Float_Text_IO;
 with Ada.Strings.Fixed;
-with Ada.Text_IO;             use Ada.Text_IO;
-with Aspects;                 use Aspects;
-with Assumption_Types;        use Assumption_Types;
-with Atree;                   use Atree;
-with CE_Display;              use CE_Display;
-with Checked_Types;           use Checked_Types;
-with Common_Containers;       use Common_Containers;
-with Einfo;                   use Einfo;
-with Einfo.Entities;          use Einfo.Entities;
-with Einfo.Utils;             use Einfo.Utils;
+with Ada.Text_IO;            use Ada.Text_IO;
+with Aspects;                use Aspects;
+with Assumption_Types;       use Assumption_Types;
+with Atree;                  use Atree;
+with CE_Display;             use CE_Display;
+with Checked_Types;          use Checked_Types;
+with Common_Containers;      use Common_Containers;
+with Einfo;                  use Einfo;
+with Einfo.Entities;         use Einfo.Entities;
+with Einfo.Utils;            use Einfo.Utils;
 with Errout;
 with Erroutc;
 with Flow_Generated_Globals.Phase_2;
-with Flow_Refinement;         use Flow_Refinement;
-with Flow_Utility;            use Flow_Utility;
+with Flow_Refinement;        use Flow_Refinement;
+with Flow_Utility;           use Flow_Utility;
 with Gnat2Why.Expr.Loops;
-with Gnat2Why.Util;           use Gnat2Why.Util;
-with Gnat2Why_Args;           use Gnat2Why_Args;
-with Gnat2Why_Opts;           use Gnat2Why_Opts;
-with GNATCOLL.Utils;          use GNATCOLL.Utils;
+with Gnat2Why.Util;          use Gnat2Why.Util;
+with Gnat2Why_Args;          use Gnat2Why_Args;
+with Gnat2Why_Opts;          use Gnat2Why_Opts;
+with GNATCOLL.Utils;         use GNATCOLL.Utils;
 with Lib.Xref;
-with Namet;                   use Namet;
-with Nlists;                  use Nlists;
-with Sem_Aggr;                use Sem_Aggr;
-with Sem_Aux;                 use Sem_Aux;
-with Sem_Util;                use Sem_Util;
-with Sinfo.Nodes;             use Sinfo.Nodes;
-with Sinfo.Utils;             use Sinfo.Utils;
-with Sinput;                  use Sinput;
-with Snames;                  use Snames;
+with Namet;                  use Namet;
+with Nlists;                 use Nlists;
+with Sem_Aggr;               use Sem_Aggr;
+with Sem_Aux;                use Sem_Aux;
+with Sem_Util;               use Sem_Util;
+with Sinfo.Nodes;            use Sinfo.Nodes;
+with Sinfo.Utils;            use Sinfo.Utils;
+with Sinput;                 use Sinput;
+with Snames;                 use Snames;
 with SPARK_Atree;
-with SPARK_Util.Hardcoded;    use SPARK_Util.Hardcoded;
-with SPARK_Util.Subprograms;  use SPARK_Util.Subprograms;
-with SPARK_Util.Types;        use SPARK_Util.Types;
-with SPARK_Xrefs;             use SPARK_Xrefs;
-with Stringt;                 use Stringt;
-with Uintp;                   use Uintp;
+with SPARK_Util.Hardcoded;   use SPARK_Util.Hardcoded;
+with SPARK_Util.Subprograms; use SPARK_Util.Subprograms;
+with SPARK_Util.Types;       use SPARK_Util.Types;
+with SPARK_Xrefs;            use SPARK_Xrefs;
+with Stringt;                use Stringt;
+with String_Utils;
+with Uintp;                  use Uintp;
 
 -------------------------
 -- Flow_Error_Messages --
 -------------------------
 
 package body Flow_Error_Messages is
-
-   At_Line_Placeholder : constant String := "###AT_LINE_PLACEHOLDER###";
-   --  Placeholder for the line insertion character # for Errout. It is used so
-   --  that other occurrences of character # are properly escaped in function
-   --  Escape, while the placeholder is turned into # at the same time.
 
    Flow_Msgs_Set : String_Sets.Set;
    --  Container with flow-related messages; used to prevent duplicate messages
@@ -103,7 +98,7 @@ package body Flow_Error_Messages is
      (N          : Node_Id;
       Tag        : VC_Kind;
       How_Proved : Prover_Category;
-      Info       : Fix_Info_Type) return String;
+      Info       : Fix_Info_Type) return Message;
    --  @param N node associated to an unproved check
    --  @param Tag associated unproved check
    --  @param How_Proved should be PC_Trivial if the check is static
@@ -208,10 +203,11 @@ package body Flow_Error_Messages is
       Severity      : Msg_Severity;
       Details       : String := "";
       Explanation   : String := "";
-      Fix           : String := "";
+      Fix           : Message := No_Message;
       CE            : String := "";
       User_Message  : String := "";
-      Continuations : String_Lists.List := String_Lists.Empty)
+      Explain_Code  : Explain_Code_Kind := EC_None;
+      Continuations : Message_Lists.List := Message_Lists.Empty)
       return Message_Id
    with Post => Print_Regular_Msg'Result /= No_Message_Id;
    --  Print a regular error, warning or info message using the frontend
@@ -230,12 +226,6 @@ package body Flow_Error_Messages is
    Proof_Msgs : GNATCOLL.JSON.JSON_Array;
 
    use type Flow_Graphs.Vertex_Id;
-
-   function Escape (S : String) return String;
-   --  Escape any special characters used in the error message (for example
-   --  transforms "=>" into "='>" as > is a special insertion character.
-   --  We also escape capital letters. Also turn the placeholder for line
-   --  insertion character # into the character itself.
 
    function Substitute
      (S    : Unbounded_String;
@@ -485,15 +475,13 @@ package body Flow_Error_Messages is
       Explain_Code  : Explain_Code_Kind  := EC_None;
       SRM_Ref       : String             := "";
       Tracefile     : String             := "";
-      Continuations : String_Lists.List  := String_Lists.Empty)
+      Continuations : Message_Lists.List := Message_Lists.Empty)
    is
 
       Msg2 : constant String :=
         Msg &
         (if CWE and Severity /= Info_Kind then CWE_Message (Tag) else "") &
-        (if SRM_Ref'Length > 0 then " (SPARK RM " & SRM_Ref & ")" else "") &
-        (if Explain_Code /= EC_None then " [" & To_String (Explain_Code) & "]"
-         else "");
+        (if SRM_Ref'Length > 0 then " (SPARK RM " & SRM_Ref & ")" else "");
 
       Attach_Node : constant Node_Id :=
         (if Instantiation_Location (Sloc (Original_Node (N))) = No_Location
@@ -534,7 +522,6 @@ package body Flow_Error_Messages is
       --  True when we are only reporting legiality errors that require flow
       --  analysis.
 
-      My_Conts    : String_Lists.List := Continuations;
       Suppression : Suppressed_Message := No_Suppressed_Message;
 
    --  Start of processing for Error_Msg_Flow
@@ -582,7 +569,10 @@ package body Flow_Error_Messages is
 
                      if Report_Mode /= GPR_Fail then
                         Msg_Id := Print_Regular_Msg
-                          (Justified_Message (Msg3), Span, Info_Kind);
+                          (Justified_Message (Msg3),
+                           Span,
+                           Info_Kind,
+                           Explain_Code => Explain_Code);
                      end if;
                   end if;
 
@@ -616,32 +606,25 @@ package body Flow_Error_Messages is
 
          if not Suppressed and then Is_Specified_Line (Slc) then
 
-            --  If an explain code was used in the message, output a
-            --  continuation message to indicate how to get more
-            --  information, using the same message as in Errout.
-            if Explain_Code /= EC_None then
-               My_Conts.Append
-                  ("launch ""gnatprove --explain="
-                   & To_String (Explain_Code) & """ for more information");
-            end if;
-
             --  Only display message details when outputting on one line,
             --  either as part of automatic testing or inside an IDE, to
             --  avoid long unreadable messages for command-line use.
 
             declare
-               Fix_Msg     : constant String :=
+               Fix_Msg     : constant Message :=
                  (if Fix /= "" then
-                     Compute_Message
-                       (Fix, Attach_Node, FF1, FF2, With_Location => False)
-                  else "");
+                     Create
+                       (Compute_Message
+                         (Fix, Attach_Node, FF1, FF2, With_Location => False))
+                  else No_Message);
             begin
                Msg_Id :=
                  Print_Regular_Msg (Msg3, Span, Severity,
                                     Details       => Details,
                                     Explanation   => Explanation,
                                     Fix           => Fix_Msg,
-                                    Continuations => My_Conts);
+                                    Explain_Code  => Explain_Code,
+                                    Continuations => Continuations);
             end;
          else
             Msg_Id := No_Message_Id;
@@ -689,7 +672,7 @@ package body Flow_Error_Messages is
       SRM_Ref       : String                := "";
       Path          : Vertex_Sets.Set       := Vertex_Sets.Empty_Set;
       Vertex        : Flow_Graphs.Vertex_Id := Flow_Graphs.Null_Vertex;
-      Continuations : String_Lists.List     := String_Lists.Empty)
+      Continuations : Message_Lists.List := Message_Lists.Empty)
    is
       Vertex_Img : constant String :=
         Image (FA.CFG.Vertex_To_Natural (Vertex), 1);
@@ -804,7 +787,7 @@ package body Flow_Error_Messages is
          Tag        : VC_Kind;
          How_Proved : Prover_Category;
          Verdict    : Cntexmp_Verdict)
-         return String;
+         return Message;
       --  Return a fix, or the verdict if the fix was not found and the
       --  verdict is a subcontract weakness
 
@@ -829,9 +812,9 @@ package body Flow_Error_Messages is
          Tag        : VC_Kind;
          How_Proved : Prover_Category;
          Verdict    : Cntexmp_Verdict)
-         return String
+         return Message
       is
-         Fix            : constant String :=
+         Fix            : constant Message :=
            Get_Fix (N, Tag, How_Proved, Check_Info.Fix_Info);
          Enclosing_Subp : constant Entity_Id :=
            Lib.Xref.SPARK_Specific.Enclosing_Subprogram_Or_Library_Package (N);
@@ -840,14 +823,15 @@ package body Flow_Error_Messages is
          --  correct, as it's only used for adding or not an explanation.
 
       begin
-         if Fix = ""
+         if Fix = No_Message
            and then Present (Enclosing_Subp)
            and then Is_Subprogram (Unique_Entity (Enclosing_Subp))
          then
             case Verdict.Verdict_Category is
                when Subcontract_Weakness =>
-                  return "add or complete related loop invariants "
-                    & "or postconditions";
+                  return
+                    Create ("add or complete related loop invariants "
+                            & "or postconditions");
                when others => null;
             end case;
          end if;
@@ -1026,7 +1010,7 @@ package body Flow_Error_Messages is
       Info      : Annotated_Range;
       Ignore_Id : Message_Id;
 
-      Cont_Msgs : String_Lists.List;
+      Cont_Msgs : Message_Lists.List;
 
    --  Start of processing for Error_Msg_Proof
 
@@ -1053,7 +1037,7 @@ package body Flow_Error_Messages is
               & " at " & File & ":" & Image (Integer (Line), 1);
 
          begin
-            Cont_Msgs.Append (Compute_Message (Msg, Cont.Ada_Node));
+            Cont_Msgs.Append (Create (Compute_Message (Msg, Cont.Ada_Node)));
          end;
       end loop;
 
@@ -1165,44 +1149,6 @@ package body Flow_Error_Messages is
          Editor_Cmd => Editor_Cmd);
 
    end Error_Msg_Proof;
-
-   ------------
-   -- Escape --
-   ------------
-
-   function Escape (S : String) return String is
-      R : Unbounded_String := Null_Unbounded_String;
-      J : Integer := S'First;
-      C : Character;
-   begin
-      while J <= S'Last loop
-         C := S (J);
-
-         if C = '#'
-           and then S'Length - J + 1 >= At_Line_Placeholder'Length
-           and then S (J .. J + At_Line_Placeholder'Length - 1) =
-                    At_Line_Placeholder
-         then
-            J := J + At_Line_Placeholder'Length;
-
-         else
-            if C in '%' | '$' | '{' | '*' | '&' | '#'
-                  | '}' | '@' | '^' | '>' | '!' | '?'
-                  | '<' | '`' | ''' | '\' | '|' | '['
-                  | ']'
-              or else Is_Upper (C)
-            then
-               Append (R, ''');
-            end if;
-
-            J := J + 1;
-         end if;
-
-         Append (R, C);
-      end loop;
-
-      return To_String (R);
-   end Escape;
 
    ----------------------
    -- Fresh_Trace_File --
@@ -1692,8 +1638,12 @@ package body Flow_Error_Messages is
      (N          : Node_Id;
       Tag        : VC_Kind;
       How_Proved : Prover_Category;
-      Info       : Fix_Info_Type) return String
+      Info       : Fix_Info_Type) return Message
    is
+
+      Secondary_Loc : Source_Ptr := No_Location;
+      --  This variable is set by Get_Line_Number when it uses the # special
+      --  character.
 
       -----------------------
       -- Local subprograms --
@@ -2162,8 +2112,8 @@ package body Flow_Error_Messages is
 
       begin
          if Gnat2Why_Args.Output_Mode in GPO_Pretty then
-            Errout.Error_Msg_Sloc := Flag;
-            return At_Line_Placeholder;
+            Secondary_Loc := Flag;
+            return "#";
 
          --  Use "at file-name:line-num" if reference is to other than the
          --  source file in which the unproved check message is placed.
@@ -2563,23 +2513,23 @@ package body Flow_Error_Messages is
             --  Alignment VC is only issued when there is an address clause
             pragma Assert (Present (Expr));
             if not Known_Alignment (Obj) then
-               return "overlaying object " & Common;
+               return Create ("overlaying object " & Common);
             elsif Nkind (Expr) = N_Attribute_Reference
               and then
                 Get_Attribute_Id (Attribute_Name (Expr)) = Attribute_Address
               and then (Nkind (Prefix (Expr)) not in N_Has_Entity
                         or else not Known_Alignment (Entity (Prefix (Expr))))
             then
-               return "overlaid object " & Common;
+               return Create ("overlaid object " & Common);
             end if;
-            return "";
+            return No_Message;
          end;
 
       --  Do not try to generate a fix message for termination checks. This
       --  is not properly handled and leads to erroneous messages.
 
       elsif Tag in VC_Termination_Check then
-         return "";
+         return No_Message;
 
       --  Do not try to generate a fix message for static checks on validity of
       --  Unchecked_Conversion, as these already have a sufficient explanation
@@ -2587,19 +2537,19 @@ package body Flow_Error_Messages is
       --  nodes (through Get_Filtered_Variables_For_Proof).
 
       elsif Tag in VC_UC_Source | VC_UC_Target | VC_UC_Same_Size then
-         return "";
+         return No_Message;
 
       --  Do not try to generate a fix message for static checks on specific
       --  restrictions for Unchecked_Union.
 
       elsif Tag = VC_Unchecked_Union_Restriction then
-         return "";
+         return No_Message;
 
       --  Do not try to generate a fix message for static checks on subprogram
       --  variants.
 
       elsif Tag = VC_Subprogram_Variant and then How_Proved = PC_Trivial then
-         return "";
+         return No_Message;
 
       --  Do not try to generate a fix message for resource leaks statically
       --  known, as the value of variables involved in the
@@ -2608,7 +2558,7 @@ package body Flow_Error_Messages is
       elsif Tag in VC_Resource_Leak | VC_Resource_Leak_At_End_Of_Scope
         and then How_Proved = PC_Trivial
       then
-         return "";
+         return No_Message;
       end if;
 
       --  Adjust the enclosing subprogram entity
@@ -2626,7 +2576,7 @@ package body Flow_Error_Messages is
         and then (if Nkind (N) = N_Procedure_Call_Statement
                   then Tag = VC_Precondition)
       then
-         return "";
+         return No_Message;
 
       --  Do not attempt to generate an explanation for a check inside a
       --  DIC procedure or an invariant procedure, as these are generated
@@ -2637,14 +2587,14 @@ package body Flow_Error_Messages is
         and then (Is_DIC_Procedure (Enclosing_Subp)
                    or else Is_Invariant_Procedure (Enclosing_Subp))
       then
-         return "";
+         return No_Message;
 
       --  We do not relate the expression in return statements and the
       --  pseudo-variable Func'Result, hence it is better not to try to find
       --  an explanation for a check involving Func'Result.
 
       elsif Has_Attribute_Result (N) then
-         return "";
+         return No_Message;
 
       else
          declare
@@ -2980,8 +2930,9 @@ package body Flow_Error_Messages is
                      Check_Vars.Intersection (Vars);
 
                      if not Check_Vars.Is_Empty then
-                        return "use ""and then"" instead of ""and"""
-                          & " in precondition";
+                        return Create
+                          ("use ""and then"" instead of ""and"""
+                           & " in precondition");
                      end if;
                   end if;
                end;
@@ -2993,8 +2944,9 @@ package body Flow_Error_Messages is
             if Check_Inside_Assertion
               and then Tag = VC_Overflow_Check
             then
-               return "use pragma Overflow_Mode or switch -gnato13 or "
-                 & "unit SPARK.Big_Integers";
+               return Create
+                 ("use pragma Overflow_Mode or switch -gnato13 or "
+                  & "unit SPARK.Big_Integers");
             end if;
 
             --  Filter out variables which are generated by the compiler
@@ -3191,10 +3143,14 @@ package body Flow_Error_Messages is
                               & Constraint
                            else
                               String_Of_Node (N) & Constraint);
+                        Line_Num : constant String :=
+                          Get_Line_Number (N, Sloc (Enclosing_Subp));
                      begin
-                        return "add precondition (" & Pre
-                          & ") to subprogram "
-                          & Get_Line_Number (N, Sloc (Enclosing_Subp));
+                        return
+                          Create ("add precondition (" & Pre
+                                  & ") to subprogram "
+                                  & Line_Num,
+                                  Secondary_Loc => Secondary_Loc);
                      end;
 
                   elsif Tag in VC_Division_Check then
@@ -3211,12 +3167,15 @@ package body Flow_Error_Messages is
                                 (if Nkind (Opnd) in N_Defining_Identifier then
                                    Source_Name (Opnd)
                                  else
-                                   String_Of_Node (Opnd));
+                                    String_Of_Node (Opnd));
+                              Line_Num : constant String :=
+                                Get_Line_Number (N, Sloc (Enclosing_Subp));
                            begin
-                              return "add precondition ("
-                                & Name & " /= 0"
-                                & ") to subprogram "
-                                & Get_Line_Number (N, Sloc (Enclosing_Subp));
+                              return
+                                Create
+                                  ("add precondition (" & Name & " /= 0"
+                                   & ") to subprogram " & Line_Num,
+                                   Secondary_Loc => Secondary_Loc);
                            end;
                         end if;
                      end;
@@ -3428,7 +3387,8 @@ package body Flow_Error_Messages is
                              & " should mention " & Expl;
                         end if;
 
-                        return To_String (Expl);
+                        return Create (To_String (Expl),
+                                       Secondary_Loc => Secondary_Loc);
 
                      --  Otherwise, continue the search only for the variables
                      --  that are not modified in the call.
@@ -3520,7 +3480,8 @@ package body Flow_Error_Messages is
                              & " should mention " & Expl;
                         end if;
 
-                        return To_String (Expl);
+                        return Create (To_String (Expl),
+                                       Secondary_Loc => Secondary_Loc);
 
                      --  Otherwise, continue the search only if all the
                      --  variables involved in the check are not modified in
@@ -3687,7 +3648,8 @@ package body Flow_Error_Messages is
                              & " should mention " & Expl;
                         end if;
 
-                        return To_String (Expl);
+                        return Create (To_String (Expl),
+                                       Secondary_Loc => Secondary_Loc);
 
                      elsif not Out_Vars.Is_Empty then
                         Expl := Explain_Output_Variables (Out_Vars);
@@ -3703,7 +3665,8 @@ package body Flow_Error_Messages is
                              & " should mention " & Expl;
                         end if;
 
-                        return To_String (Expl);
+                        return Create (To_String (Expl),
+                                       Secondary_Loc => Secondary_Loc);
 
                      --  Stop the search for an explanation at the first
                      --  subprogram body, as proof is done modularly on
@@ -3735,10 +3698,11 @@ package body Flow_Error_Messages is
                         | VC_Precondition_Main
                         | VC_Raise
             then
-               return To_String (Explain_Calls (Get_Calls_From_Node (N)));
+               return
+                 Create (To_String (Explain_Calls (Get_Calls_From_Node (N))));
 
             else
-               return "";
+               return No_Message;
             end if;
          end;
       end if;
@@ -3858,50 +3822,42 @@ package body Flow_Error_Messages is
       Severity      : Msg_Severity;
       Details       : String := "";
       Explanation   : String := "";
-      Fix           : String := "";
+      Fix           : Message := No_Message;
       CE            : String := "";
       User_Message  : String := "";
-      Continuations : String_Lists.List := String_Lists.Empty)
+      Explain_Code  : Explain_Code_Kind := EC_None;
+      Continuations : Message_Lists.List := Message_Lists.Empty)
       return Message_Id
    is
 
-      Id            : constant Message_Id := Message_Id_Counter;
+      Id       : constant Message_Id := Message_Id_Counter;
+      My_Conts : Message_Lists.List := Continuations;
 
-      procedure Wrap_Error_Msg (Severity : String;
-                                Msg      : String;
-                                Span     : Source_Span);
+      procedure Wrap_Error_Msg (Msg : String;
+                                Secondary_Loc : Source_Ptr := No_Location);
 
       --------------------
       -- Wrap_Error_Msg --
       --------------------
 
-      procedure Wrap_Error_Msg (Severity : String;
-                                Msg      : String;
-                                Span     : Source_Span)
+      procedure Wrap_Error_Msg (Msg : String;
+                                Secondary_Loc : Source_Ptr := No_Location)
       is
          Actual_Msg : constant String :=
-           Severity & Escape (Msg) & "!!" &
+           Msg &
          (if Ide_Mode
-          then "'['#" & Image (Integer (Id), 1) & "']"
+          then "['#" & Image (Integer (Id), 1) & "]"
           else "");
+
       begin
-         Errout.Error_Msg (Actual_Msg, Span);
+         Error_Msg (Create
+                    (Actual_Msg,
+                       Explain_Code  => Explain_Code,
+                       Secondary_Loc => Secondary_Loc),
+                    Span,
+                    Severity,
+                    My_Conts);
       end Wrap_Error_Msg;
-
-      --  Errout.Error_Msg will add "info:" (on continuation messages
-      --  only) and "warning:" prefix when needed, so we only have to do
-      --  it in other cases, for prefixes on check messages in particular.
-
-      Severity_Text : constant String :=
-        (case Severity is
-            when Info_Kind         => "info: ",
-            when Low_Check_Kind    => "low: ",
-            when Medium_Check_Kind => "medium: ",
-            when High_Check_Kind   => "high: ",
-            when Warning_Kind      => "?",
-            when Error_Kind        => "");
-
-      My_Conts : String_Lists.List := Continuations;
 
    --  Beginning of processing for Print_Regular_Msg
 
@@ -3911,7 +3867,7 @@ package body Flow_Error_Messages is
          --  In brief mode, just print the check message
 
          when GPO_Brief =>
-            Wrap_Error_Msg (Severity_Text, Msg, Span);
+            Wrap_Error_Msg (Msg);
 
          --  In oneline mode, append all the extra information to the
          --  main message and print it.
@@ -3935,13 +3891,14 @@ package body Flow_Error_Messages is
                   then " [possible explanation: " & Explanation & "]"
                   else "");
                Fix_Msg         : constant String :=
-                 (if Fix /= "" then " [possible fix: " & Fix & "]"
+                 (if Fix /= No_Message then " [possible fix: " & Fix.Msg & "]"
                   else "");
                Msg4            : constant String :=
                  Msg & User_Msg & CE_Msg
                  & Details_Msg & Explanation_Msg & Fix_Msg;
             begin
-               Wrap_Error_Msg (Severity_Text, Msg4, Span);
+               pragma Assert (Fix.Names.Is_Empty);
+               Wrap_Error_Msg (Msg4, Fix.Secondary_Loc);
             end;
 
          --  In pretty mode, print the message, then print all the extra
@@ -3955,47 +3912,41 @@ package body Flow_Error_Messages is
 
             if User_Message /= "" then
                My_Conts.Append
-                 (Erroutc.SGR_Note & "user message: "
-                  & Erroutc.SGR_Reset & User_Message);
+                 (Create
+                    (Erroutc.SGR_Note & "user message: "
+                     & Erroutc.SGR_Reset & User_Message));
             end if;
 
             if CE /= "" then
                My_Conts.Append
-                 (Erroutc.SGR_Note & "e.g. when "
-                  & Erroutc.SGR_Reset & CE);
+                 (Create
+                    (Erroutc.SGR_Note & "e.g. when "
+                     & Erroutc.SGR_Reset & CE));
             end if;
 
             if Details /= "" then
                My_Conts.Append
-                 (Erroutc.SGR_Note & "reason for check: "
-                  & Erroutc.SGR_Reset & Details);
+                 (Create
+                    (Erroutc.SGR_Note & "reason for check: "
+                     & Erroutc.SGR_Reset & Details));
             end if;
 
             if Explanation /= "" then
                My_Conts.Append
-                 (Erroutc.SGR_Note & "possible explanation: "
-                  & Erroutc.SGR_Reset & Explanation);
+                 (Create
+                    (Erroutc.SGR_Note & "possible explanation: "
+                     & Erroutc.SGR_Reset & Explanation));
             end if;
 
-            if Fix /= "" then
+            if Fix /= No_Message then
                My_Conts.Append
-                 (Erroutc.SGR_Note & "possible fix: "
-                  & Erroutc.SGR_Reset & Fix);
+                 (Create
+                    (Erroutc.SGR_Note & "possible fix: "
+                     & Erroutc.SGR_Reset & Fix.Msg,
+                     Secondary_Loc => Fix.Secondary_Loc));
             end if;
-            Wrap_Error_Msg (Severity_Text, Msg, Span);
+            Wrap_Error_Msg (Msg);
       end case;
-
-      declare
-         Sev_Text_Cont : constant String :=
-           (if Gnat2Why_Args.Output_Mode in GPO_Pretty
-              or else Severity = Info_Kind
-            then ""
-            else Severity_Text);
-      begin
-         for Elt of My_Conts loop
-            Wrap_Error_Msg ("\" & Sev_Text_Cont, Elt, Span);
-         end loop;
-      end;
 
       return Id;
    end Print_Regular_Msg;
