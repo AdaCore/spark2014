@@ -7205,7 +7205,8 @@ package body SPARK_Definition is
          --  We mark bodies of predicate functions, and of expression functions
          --  when they are referenced (including those from other compilation
          --  units), because proof wants to use their bodies as an implicit
-         --  contract.
+         --  contract. Do not pull bodies of expression functions if they are
+         --  in hidden private parts.
 
          --  ??? It would be simpler to use
          --  Is_Expression_Function_Or_Completion, but in
@@ -7214,11 +7215,27 @@ package body SPARK_Definition is
 
          if Ekind (E) = E_Function then
             declare
+               function Has_Separate_Declaration (E : Entity_Id) return Boolean
+               is
+                 (Comes_From_Source (Parent (Parent (E))));
+               --  See whether the declaration of the expression function comes
+               --  from source to decide whether E is directly an expression
+               --  function in the source code or if it has a separate
+               --  declaration. This is used to avoid looking at the location
+               --  of the completion of an expression function if it was
+               --  introduced by the frontend as in that case, it will be
+               --  located in the private part even if in the source code the
+               --  function is in the public part of a package.
+
                My_Body : constant Node_Id := Subprogram_Body (E);
             begin
                if Present (My_Body)
                  and then
-                   (Was_Expression_Function (My_Body)
+                   ((Was_Expression_Function (My_Body)
+                     and then
+                       (not Has_Separate_Declaration (E)
+                        or else not Is_In_Hidden_Private
+                          (Subprogram_Body_Entity (E))))
                     or else Is_Predicate_Function (E))
                then
                   Mark_Subprogram_Body (My_Body);
@@ -7351,7 +7368,7 @@ package body SPARK_Definition is
 
          function Is_Private_Entity_Mode_Off (E : Type_Kind_Id) return Boolean;
          --  Return True iff E is declared in a private part with
-         --  SPARK_Mode => Off.
+         --  SPARK_Mode => Off or in the hidden private part of a withed unit.
 
          function Is_Controlled (E : Entity_Id) return Boolean;
          --  Return True if E is in Ada.Finalization
@@ -7484,9 +7501,11 @@ package body SPARK_Definition is
             pragma Assert (Nkind (Pack_Decl) = N_Package_Declaration);
 
             return
-              Present (SPARK_Aux_Pragma (Defining_Entity (Pack_Decl)))
-              and then Get_SPARK_Mode_From_Annotation
-                (SPARK_Aux_Pragma (Defining_Entity (Pack_Decl))) = Off;
+              (Present (SPARK_Aux_Pragma (Defining_Entity (Pack_Decl)))
+               and then Get_SPARK_Mode_From_Annotation
+                 (SPARK_Aux_Pragma (Defining_Entity (Pack_Decl))) = Off)
+              or else (Has_Hidden_Private_Part (Defining_Entity (Pack_Decl))
+                       and then Hide_For_Current_Analysis (Decl));
          end Is_Private_Entity_Mode_Off;
 
       --  Start of processing for Mark_Type_Entity
@@ -7618,6 +7637,10 @@ package body SPARK_Definition is
            and then not Is_Class_Wide_Type (E)
            and then Unique_Entity (Etype (E)) /= Unique_Entity (E)
            and then Present (Discriminant_Specifications (Parent (E)))
+           and then
+             Comes_From_Source
+               (First
+                 (Discriminant_Specifications (Original_Node (Parent (E)))))
            and then Entity_Comes_From_Source (E)
          then
             Mark_Violation
@@ -8275,14 +8298,16 @@ package body SPARK_Definition is
                begin
                   --  Only look for duplicate predicates if the full view
                   --  of E and its partial view do not have the same
-                  --  SPARK_Mode.
+                  --  SPARK_Mode or if the private part of the enclosing
+                  --  package is hidden.
 
                   pragma Assert (if No (Aux_Prag) then No (Prag));
 
-                  if Present (Prag)
-                    and then Aux_Prag /= Prag
-                    and then Get_SPARK_Mode_From_Annotation (Prag) /=
-                    Get_SPARK_Mode_From_Annotation (Aux_Prag)
+                  if (Present (Prag)
+                      and then Aux_Prag /= Prag
+                      and then Get_SPARK_Mode_From_Annotation (Prag) /=
+                        Get_SPARK_Mode_From_Annotation (Aux_Prag))
+                    or else Has_Hidden_Private_Part (Scop)
                   then
 
                      --  Loop over the Rep_Item list to search for predicates.
@@ -8310,8 +8335,15 @@ package body SPARK_Definition is
 
                         begin
                            if Found and then Full /= N_Full then
-                              Mark_Unsupported
-                                (Lim_Predicate_With_Different_SPARK_Mode, E);
+                              if Has_Hidden_Private_Part (Scop) then
+                                 Mark_Unsupported
+                                   (Lim_Predicate_With_Different_Visibility,
+                                    E);
+                              else
+                                 Mark_Unsupported
+                                   (Lim_Predicate_With_Different_SPARK_Mode,
+                                    E);
+                              end if;
                               exit;
                            end if;
                            Found := True;
@@ -8916,6 +8948,24 @@ package body SPARK_Definition is
             raise Program_Error;
          end if;
 
+         --  Owning types and types whose predefined equality is restricted
+         --  cannot be hidden for now. They would need an Ownership or
+         --  Predefined_Equality annotation.
+
+         if Is_In_Potentially_Hidden_Private (E) then
+            declare
+               Exp : Unbounded_String;
+            begin
+               if Is_Deep (E) then
+                  Mark_Unsupported (Lim_Hidden_Private_Ownership, E);
+               elsif not Is_Limited_Type (E)
+                 and then Predefined_Eq_Uses_Pointer_Eq (E, Exp)
+               then
+                  Mark_Unsupported (Lim_Hidden_Private_Predefined_Eq, E);
+               end if;
+            end;
+         end if;
+
          --  Check the user defined equality of record types if any, as they
          --  can be used silently as part of the classwide equality.
 
@@ -8958,6 +9008,16 @@ package body SPARK_Definition is
                     (Lim_Relaxed_Init_Variant_Part, E, Base_Type (E),
                      Cont_Msg =>
                        "consider annotating & with Relaxed_Initialization");
+
+               --  Reject types containing only relaxed components in hidden
+               --  private part as they would not be handled in the same way
+               --  if their full view is visible and if it is not.
+
+               elsif Is_In_Potentially_Hidden_Private (E) then
+                  Mark_Unsupported
+                    (Lim_Hidden_Private_Relaxed_Init, E,
+                     Cont_Msg =>
+                       "consider annotating it with Relaxed_Initialization");
 
                --  Emit an info message with --info when a type is considered
                --  to be annotated with Relaxed_Initialization and it has a
@@ -9085,6 +9145,12 @@ package body SPARK_Definition is
          if Ekind (E) /= E_Abstract_State then
             goto Restore;
          end if;
+
+      --  Do not mark entities declared in the private part of packages if
+      --  the private part of the package is hidden.
+
+      elsif Is_In_Hidden_Private (E) then
+         goto Restore;
       end if;
 
       --  For recursive references, start with marking the entity in SPARK
@@ -9477,36 +9543,60 @@ package body SPARK_Definition is
       Spec : constant Node_Id :=
         (if Ekind (E) = E_Package then Package_Specification (E)
          else Subprogram_Specification (E));
-      Scop : Entity_Id;
+      Par  : Entity_Id;
    begin
       if No (Generic_Parent (Spec)) then
          pragma Assert (Is_Wrapper_Package (E));
          return;
       end if;
 
-      Scop := Scope (Generic_Parent (Spec));
+      Par := Scope (Generic_Parent (Spec));
 
-      if Ekind (Scop) = E_Generic_Package then
+      if Ekind (Par) = E_Generic_Package then
          pragma Assert
            (Is_Child_Unit (Generic_Parent (Spec)));
-         Scop := Parent_Instance_From_Child_Unit (E);
+         Par := Parent_Instance_From_Child_Unit (E);
       end if;
 
       --  Reject instances of generic units if their scopes declare types with
       --  invariants unless they are instantiated directly in their scope. This
       --  ensures that we only need to handle a single chain of visibility.
 
-      while Present (Scop) and then Ekind (Scop) = E_Package loop
-         if Contains_Type_With_Invariant (Scop)
-           and then not Is_Declared_In_Unit (E, Scop)
-         then
-            Mark_Unsupported
-              (Lim_Generic_In_Type_Inv, E,
-               Cont_Msg => "package " & Source_Name (Scop)
-               & " declares a type with an invariant");
-         end if;
-         Scop := Scope (Scop);
-      end loop;
+      declare
+         Scop : Entity_Id := Par;
+      begin
+         while Present (Scop) and then Ekind (Scop) = E_Package loop
+            if Contains_Type_With_Invariant (Scop)
+              and then not Is_Declared_In_Unit (E, Scop)
+            then
+               Mark_Unsupported
+                 (Lim_Generic_In_Type_Inv, E,
+                  Cont_Msg => "package " & Source_Name (Scop)
+                  & " declares a type with an invariant");
+            end if;
+            Scop := Scope (Scop);
+         end loop;
+      end;
+
+      --  Reject instances of generic subprograms declared in a package whose
+      --  private part is hidden. They cannot be handled correctly as their
+      --  bodies should have visibility over the hidden private part.
+
+      if not Is_Declared_In_Main_Unit_Or_Parent (Generic_Parent (Spec)) then
+         declare
+            Scop : Entity_Id := Par;
+         begin
+            while Present (Scop) and then Ekind (Scop) = E_Package loop
+               if Has_Hidden_Private_Part (Scop) then
+                  Mark_Unsupported
+                    (Lim_Generic_In_Hidden_Private, E,
+                     Cont_Msg => "the private part of package "
+                     & Source_Name (Scop) & " is hidden for proof");
+               end if;
+               Scop := Scope (Scop);
+            end loop;
+         end;
+      end if;
    end Mark_Generic_Instance;
 
    -----------------------------
@@ -9963,6 +10053,33 @@ package body SPARK_Definition is
 
       if Is_Generic_Instance (Id) then
          Mark_Generic_Instance (Id);
+      end if;
+
+      --  On child units, check consistency of the Hide_Info annotations on
+      --  private parts. Only do the check on public descendants as the
+      --  annotation is only allowed on packages visible from the outside.
+
+      if Is_Child_Unit (Id)
+        and then not Is_Private_Descendant (Id)
+        and then not Is_Empty_List
+          (Private_Declarations (Package_Specification (Id)))
+        and then not Has_Hidden_Private_Part (Id)
+      then
+         declare
+            Scop : Entity_Id := Scope (Id);
+         begin
+            while Present (Scop) loop
+               if Has_Hidden_Private_Part (Scop) then
+                  Mark_Violation
+                    ("child of a package whose private part is hidden with a "
+                     & "visible private part", N,
+                     Cont_Msg => "annotate the private part of "
+                     & Source_Name (Id) & " with Hide_Info");
+                  exit;
+               end if;
+               Scop := Scope (Scop);
+            end loop;
+         end;
       end if;
 
       --  Mark abstract state entities, since they may be referenced from
@@ -11471,17 +11588,7 @@ package body SPARK_Definition is
       --  the freeze node.
 
       elsif Is_Wrapper_For_Dispatching_Result (E) then
-         declare
-            Typ : constant Entity_Id := Etype (E);
-         begin
-            if Is_Incomplete_Or_Private_Type (Typ)
-              and then Present (Full_View (Typ))
-            then
-               return SPARK_Pragma_Of_Entity (Full_View (Typ));
-            else
-               return SPARK_Pragma_Of_Entity (Typ);
-            end if;
-         end;
+         return SPARK_Pragma_Of_Entity (Get_View_For_Dispatching_Result (E));
       end if;
 
       --  For entities that can carry a SPARK_Mode Pragma and that have one, we

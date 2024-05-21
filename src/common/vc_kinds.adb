@@ -696,6 +696,9 @@ package body VC_Kinds is
           & "passed by reference",
          when Lim_Ext_Aggregate_With_Type_Ancestor =>
            "an extension aggregate whose ancestor part is a subtype mark",
+         when Lim_Generic_In_Hidden_Private =>
+            "instance of a generic unit declared in a package whose private "
+          & "part is hidden outside of this package",
          when Lim_Generic_In_Type_Inv =>
             "instance of a generic unit declared in a package containing a "
           & "type with an invariant outside of this package",
@@ -703,6 +706,21 @@ package body VC_Kinds is
            "a goto statement occuring in a loop before the invariant which"
           & " refers to a label occuring inside the loop but after the "
           & "invariant",
+         when Lim_Hidden_Private_Ownership =>
+            "private type whose full view contains parts of an "
+          & "access-to-variable type or whose type is annotated with the "
+          & "Ownership annotation in a package whose private part is hidden "
+          & "for proof",
+         when Lim_Hidden_Private_Predefined_Eq =>
+            "private type whose predefined equality cannot be used in all "
+          & "contexts either because it contains access parts or because "
+          & "the predefined equality of some of its parts is restricted using "
+          & "the Predefined_Equality annotation in a package whose private "
+          & "part is hidden for proof",
+         when Lim_Hidden_Private_Relaxed_Init =>
+            "private type whose full view contains only subcomponents whose "
+          & "type is annotated with Relaxed_Initialization in a package whose "
+          & "private part is hidden for proof",
          when Lim_Img_On_Non_Scalar =>
            "a reference to the ""Image"" or ""Img"" attribute on a type or "
           & "an object of a type which is not a scalar type",
@@ -764,6 +782,10 @@ package body VC_Kinds is
            "a private type whose full view is not in SPARK annotated with two"
           & " subtype predicates, one on the full view and one on the private"
           & " view",
+         when Lim_Predicate_With_Different_Visibility =>
+           "a private type declared in a package whose private part is hidden"
+          & " for proof annotated with two subtype predicates, one on the full"
+          & " view and one on the private view",
          when Lim_Primitive_Call_In_DIC =>
            "a call to a primitive operation of a tagged type T occurring in "
           & "the default initial condition of T with the type instance as a "

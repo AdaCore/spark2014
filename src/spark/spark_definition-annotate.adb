@@ -33,6 +33,7 @@ with Common_Containers;
 with Debug;
 with Errout;                       use Errout;
 with Erroutc;
+with Flow_Refinement;              use Flow_Refinement;
 with Flow_Types;                   use Flow_Types;
 with Flow_Utility;                 use Flow_Utility;
 with Gnat2Why_Args;
@@ -247,6 +248,11 @@ package body SPARK_Definition.Annotate is
    Potentially_Hidden_Entities : Node_To_Hide_Annotation_Kind_Maps.Map :=
      Node_To_Hide_Annotation_Kind_Maps.Empty_Map;
    --  Map potentially hidden entities to their default
+
+   Potentially_Hidden_Private_Parts : Node_To_Bool_Maps.Map :=
+     Node_To_Bool_Maps.Empty_Map;
+   --  Map package entities to a boolean stating whether or not their private
+   --  part is hidden.
 
    Skip_Proof_Annotations : Common_Containers.Node_Sets.Set :=
      Common_Containers.Node_Sets.Empty_Set;
@@ -2599,6 +2605,73 @@ package body SPARK_Definition.Annotate is
          end if;
 
          Potentially_Hidden_Entities.Include (Ent, Unhide_Package_Body);
+
+      elsif To_Lower (To_String (Strval (Arg3_Exp))) = "private_part" then
+
+         --  Ent should be a package. We could allow omitting this entity for
+         --  private parts.
+
+         if Ekind (Ent) /= E_Package then
+            Error_Msg_N_If
+              ("the entity of a pragma Annotate " & Annot & " for "
+               & "private part shall be a package",
+               Prag);
+            return;
+
+         --  Check that the pragma is located at the beginning of Ent's
+         --  private declarations.
+
+         elsif not Is_List_Member (Prag)
+           or else List_Containing (Prag) /=
+           Private_Declarations (Package_Specification (Ent))
+         then
+            Ok := False;
+         else
+            Ok := True;
+            declare
+               Decl : Node_Id := First (List_Containing (Prag));
+            begin
+               while Decl /= Prag loop
+                  if Decl_Starts_Pragma_Annotate_Range (Decl)
+                    and then not
+                      (Nkind (Decl) in N_Pragma | N_Null_Statement)
+                  then
+                     Ok := False;
+                     exit;
+                  end if;
+                  Next (Decl);
+               end loop;
+            end;
+         end if;
+
+         if not Ok then
+            Error_Msg_N_If
+              ("pragma Annotate " & Annot & " shall be located at the top "
+               & "of the private declarations of package " & Source_Name (Ent),
+               Prag);
+            return;
+
+         elsif Unhide then
+            Error_Msg_N_If
+              ("pragma Annotate " & Annot & " cannot be applied to private "
+               & "part",
+               Prag);
+            return;
+
+         elsif not Is_Globally_Visible (Ent) then
+            --  Special case: ignore such annotation pragma on private parts of
+            --  generic units.
+
+            if not Is_Generic_Instance (Get_Renamed_Entity (Ent)) then
+               Error_Msg_N_If
+                 ("pragma Annotate " & Annot & " for "
+                  & "private parts shall be in a visible package",
+                  Prag);
+            end if;
+            return;
+         end if;
+
+         Potentially_Hidden_Private_Parts.Include (Ent, True);
 
       elsif To_Lower (To_String (Strval (Arg3_Exp))) =
         "expression_function_body"
@@ -5507,6 +5580,72 @@ package body SPARK_Definition.Annotate is
 
    function Has_Handler_Annotation (E : Type_Kind_Id) return Boolean is
      (Handler_Annotations.Contains (Base_Retysp (E)));
+
+   -----------------------------
+   -- Has_Hidden_Private_Part --
+   -----------------------------
+
+   function Has_Hidden_Private_Part (E : Entity_Id) return Boolean is
+      use Node_To_Bool_Maps;
+      Pos : Node_To_Bool_Maps.Cursor :=
+        Potentially_Hidden_Private_Parts.Find (E);
+   begin
+      --  If there is no association for E in Potentially_Hidden_Private_Parts,
+      --  look at pragma Annotate at the beginning of E's private part.
+
+      if not Has_Element (Pos) then
+         declare
+            Spec : constant Node_Id := Package_Specification (E);
+            Cur  : Node_Id := First (Private_Declarations (Spec));
+
+         begin
+            --  Handle GNATprove annotations at the beginning of the package
+            --  private part.
+
+            while Present (Cur) loop
+               if Is_Pragma_Annotate_GNATprove (Cur) then
+                  if List_Length (Pragma_Argument_Associations (Cur)) = 4 then
+                     declare
+                        Arg2 : constant Node_Id :=
+                          Next (First (Pragma_Argument_Associations (Cur)));
+                        Arg3 : constant Node_Id := Next (Arg2);
+                        Name : constant String :=
+                          Get_Name_String (Chars (Get_Pragma_Arg (Arg2)));
+                        Exp  : constant Node_Id := Expression (Arg3);
+
+                     begin
+                        if Name = "hide_info"
+                          and then Nkind (Exp) in N_String_Literal
+                          and then To_Lower (To_String (Strval (Exp))) =
+                          "private_part"
+                        then
+                           Mark_Pragma_Annotate
+                             (Cur, Spec, Consider_Next => True);
+                        end if;
+                     end;
+                  end if;
+               elsif Decl_Starts_Pragma_Annotate_Range (Cur)
+                 and then Nkind (Cur) not in N_Pragma | N_Null_Statement
+               then
+                  exit;
+               end if;
+               Next (Cur);
+            end loop;
+         end;
+
+         --  If we have found an applicable pragma, the map will have been
+         --  updated. Otherwise, update the map to register that there are no
+         --  such pragmas.
+
+         declare
+            Inserted : Boolean;
+         begin
+            Potentially_Hidden_Private_Parts.Insert (E, False, Pos, Inserted);
+         end;
+      end if;
+
+      return Element (Pos);
+   end Has_Hidden_Private_Part;
 
    ------------------------------------------------
    -- Has_Higher_Order_Specialization_Annotation --

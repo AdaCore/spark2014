@@ -2811,6 +2811,16 @@ package body SPARK_Util is
       end case;
    end Has_Volatile_Property;
 
+   -------------------------------
+   -- Hide_For_Current_Analysis --
+   -------------------------------
+
+   function Hide_For_Current_Analysis (N : Node_Id) return Boolean is
+     (not Is_Declared_In_Main_Unit_Or_Parent (N)
+      and then not Gnat2Why_Args.Global_Gen_Mode);
+   --  Do not hide private parts in global generation mode. It is necessary
+   --  to properly compute proof dependencies.
+
    ------------------------------------
    -- In_Loop_Entry_Or_Old_Attribute --
    ------------------------------------
@@ -3305,6 +3315,41 @@ package body SPARK_Util is
 
       return Encl_Unit in Main_Unit_Node | Library_Unit (Main_Unit_Node);
    end Is_In_Analyzed_Files;
+
+   --------------------------
+   -- Is_In_Hidden_Private --
+   --------------------------
+
+   function Is_In_Hidden_Private (E : Entity_Id) return Boolean is
+     (Is_In_Potentially_Hidden_Private (E)
+      and then Hide_For_Current_Analysis
+        (if Is_Itype (E) then Associated_Node_For_Itype (E) else E));
+
+   --------------------------------------
+   -- Is_In_Potentially_Hidden_Private --
+   --------------------------------------
+
+   function Is_In_Potentially_Hidden_Private (E : Entity_Id) return Boolean is
+      Scop : constant Entity_Id := Scope (E);
+   begin
+      --  Get correct type for predicate functions and wrappers for dispatching
+      --  results.
+
+      if Ekind (E) = E_Function and then Is_Predicate_Function (E) then
+
+         return Is_In_Potentially_Hidden_Private
+           (Get_View_For_Predicate (Etype (First_Formal (E))));
+
+      elsif Is_Wrapper_For_Dispatching_Result (E) then
+
+         return Is_In_Potentially_Hidden_Private
+           (Get_View_For_Dispatching_Result (E));
+      end if;
+
+      return Ekind (Scop) = E_Package
+        and then Is_Declared_In_Private (E)
+        and then Has_Hidden_Private_Part (Scop);
+   end Is_In_Potentially_Hidden_Private;
 
    ----------------------------------
    -- Is_In_Statically_Dead_Branch --

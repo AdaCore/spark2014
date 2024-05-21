@@ -1,0 +1,25 @@
+hidden_private_part-child.ads:8:13: info: implicit aspect Always_Terminates on "F" has been proved, subprogram will terminate
+hidden_private_part-child.ads:8:43: info: postcondition proved (CVC5: 1 VC; Trivial: 1 VC)
+hidden_private_part-child_no_priv.ads:7:13: info: implicit aspect Always_Terminates on "F" has been proved, subprogram will terminate
+hidden_private_part-p_child.ads:7:13: info: implicit aspect Always_Terminates on "F" has been proved, subprogram will terminate
+hidden_private_part-p_child.ads:7:43: info: postcondition proved (CVC5: 1 VC; Trivial: 1 VC)
+hidden_private_part.ads:4:13: info: implicit aspect Always_Terminates on "Id" has been proved, subprogram will terminate
+hidden_private_part.ads:4:13: info: implicit function contract might not be available on calls from enclosing unit
+hidden_private_part.ads:8:13: info: implicit aspect Always_Terminates on "Return_0" has been proved, subprogram will terminate
+hidden_private_part.ads:10:13: info: implicit aspect Always_Terminates on "Return_1" has been proved, subprogram will terminate
+hidden_private_part.ads:12:13: info: implicit aspect Always_Terminates on "Return_2" has been proved, subprogram will terminate
+hidden_private_part.ads:20:09: info: in default value of private type at hidden_private_part.ads:20
+hidden_private_part.ads:20:09: info: predicate check proved on default value (CVC5: 1 VC)
+hidden_private_part.ads:24:09: info: in default value of private type at hidden_private_part.ads:24
+hidden_private_part.ads:24:09: info: predicate check proved on default value (CVC5: 1 VC)
+hidden_private_part.ads:35:13: info: implicit aspect Always_Terminates on overriding operator "=" has been proved, subprogram will terminate
+hidden_private_part.ads:45:13: info: implicit aspect Always_Terminates on "F_Hidden" has been proved, subprogram will terminate
+test_hidden_private.adb:2:11: warning: subprogram "Test_Hidden_Private" has no effect
+test_hidden_private.adb:5:19: medium: assertion might fail [possible fix: subprogram at line 2 should mention X in a precondition]
+test_hidden_private.adb:8:19: medium: assertion might fail
+test_hidden_private.adb:11:19: medium: assertion might fail
+test_hidden_private.adb:14:19: medium: assertion might fail [possible fix: subprogram at line 2 should mention Y2 in a precondition]
+test_hidden_private.adb:17:19: info: assertion proved (CVC5: 1 VC)
+test_hidden_private.adb:18:19: info: assertion proved (CVC5: 1 VC)
+test_hidden_private.adb:21:19: info: assertion proved (CVC5: 1 VC)
+test_hidden_private.adb:24:19: info: assertion proved (CVC5: 1 VC)
