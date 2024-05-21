@@ -1795,9 +1795,19 @@ package body Configuration is
                     " - missing ':' followed by operand",
                   With_Help => False);
             end if;
-            CL_Switches.File_List.Append
-              (Limit_String
-                 (Limit_String'First .. Colon_Index - 1));
+
+         --  Unless -U is specified, use of --limit-[line,region,subp] leads
+         --  to only the file with the given line or subprogram to be analyzed.
+         --  Specifying -U with --limit-[line,region,subp] is useful to
+         --  force analysis of all files, when the line or subprogram is
+         --  inside a generic or itself a generic, so that all instances of
+         --  the line/subprogram are analyzed.
+
+            if not All_Projects then
+               CL_Switches.File_List.Append
+                 (Limit_String
+                    (Limit_String'First .. Colon_Index - 1));
+            end if;
          end Process_Limit_Directive;
 
          procedure Process_Limit_Directive
@@ -1837,46 +1847,37 @@ package body Configuration is
             end if;
          end if;
 
-         --  Unless -U is specified, use of --limit-[line,region,subp] leads
-         --  to only the file with the given line or subprogram to be analyzed.
-         --  Specifying -U with --limit-[line,region,subp] is useful to
-         --  force analysis of all files, when the line or subprogram is
-         --  inside a generic or itself a generic, so that all instances of
-         --  the line/subprogram are analyzed.
-
-         if not All_Projects then
-            Process_Limit_Directive ("limit-subp", CL_Switches.Limit_Subp);
-            Process_Limit_Directive
-              ("limit-region", CL_Switches.Limit_Region);
-            Process_Limit_Directive ("limit-line", CL_Switches.Limit_Line);
-            if not Null_Or_Empty_String (CL_Switches.Limit_Line) then
-               Limit_Lines.Append (CL_Switches.Limit_Line.all);
-            end if;
-            if not Null_Or_Empty_String (CL_Switches.Limit_Lines) then
-               declare
-                  File_Handle : File_Type;
-                  Line_Count : Integer := 1;
-               begin
-                  Open (File_Handle, In_File, CL_Switches.Limit_Lines.all);
-                  while True loop
-                     declare
-                        Line : constant String :=
-                          Trim (Get_Line (File_Handle), Ada.Strings.Both);
-                     begin
-                        if Line /= "" then
-                           Process_Limit_Directive
-                             ("limit-lines: line" & Integer'Image (Line_Count),
-                              Line);
-                           Limit_Lines.Append (Line);
-                        end if;
-                        Line_Count := Line_Count + 1;
-                     end;
-                  end loop;
-               exception
-                  when Ada.IO_Exceptions.End_Error =>
-                     Close (File_Handle);
-               end;
-            end if;
+         Process_Limit_Directive ("limit-subp", CL_Switches.Limit_Subp);
+         Process_Limit_Directive
+           ("limit-region", CL_Switches.Limit_Region);
+         Process_Limit_Directive ("limit-line", CL_Switches.Limit_Line);
+         if not Null_Or_Empty_String (CL_Switches.Limit_Line) then
+            Limit_Lines.Append (CL_Switches.Limit_Line.all);
+         end if;
+         if not Null_Or_Empty_String (CL_Switches.Limit_Lines) then
+            declare
+               File_Handle : File_Type;
+               Line_Count : Integer := 1;
+            begin
+               Open (File_Handle, In_File, CL_Switches.Limit_Lines.all);
+               while True loop
+                  declare
+                     Line : constant String :=
+                       Trim (Get_Line (File_Handle), Ada.Strings.Both);
+                  begin
+                     if Line /= "" then
+                        Process_Limit_Directive
+                          ("limit-lines: line" & Integer'Image (Line_Count),
+                           Line);
+                        Limit_Lines.Append (Line);
+                     end if;
+                     Line_Count := Line_Count + 1;
+                  end;
+               end loop;
+            exception
+               when Ada.IO_Exceptions.End_Error =>
+                  Close (File_Handle);
+            end;
          end if;
       end Process_Limit_Switches;
 

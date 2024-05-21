@@ -257,17 +257,22 @@ package SPARK_Definition.Annotate is
    --  where
    --    GNATprove                 is a fixed identifier
    --    Hide_Info and Unhide_Info are fixed identifiers
-   --    Info_Kind                 is a string that can only be
-   --                              Expression_Function_Body for now.
+   --    Info_Kind                 is a string that can be either Package_Body,
+   --                              Private_Part or Expression_Function_Body for
+   --                              now.
    --    E                         is the entity whose information should be
    --                              hidden or disclosed.
 
-   --  The location of this pragma gives the verification context on which
-   --  information should be hidden or disclosed. It can only occur at the
-   --  beginning of a package, subprogram, or entry body or right after a
-   --  package, subprogram, or entry body or specification. The information is
-   --  then hidden or disclosed (if it is hidden by default) for the
-   --  verification of the package, subprogram, or entry.
+   --  The annotation for package bodies and private part are not context
+   --  dependent. They should be located either on the package body or at the
+   --  top of the package body or private part.
+   --  For expression function bodies, the location of the pragma gives the
+   --  verification context on which information should be hidden or disclosed.
+   --  It can only occur at the beginning of a package, subprogram, or entry
+   --  body or right after a package, subprogram, or entry body or
+   --  specification. The information is then hidden or disclosed (if it is
+   --  hidden by default) for the verification of the package, subprogram, or
+   --  entry.
 
    --  A pragma Annotate for private types with mutable IN parameters has the
    --  following form:
@@ -648,5 +653,8 @@ package SPARK_Definition.Annotate is
 
    function Has_Mutable_In_Param_Annotation (E : Entity_Id) return Boolean;
    --  Return True if E is a IN parameter annotated as mutable
+
+   function Has_Hidden_Private_Part (E : Entity_Id) return Boolean;
+   --  Return True if the private of the package E is hidden
 
 end SPARK_Definition.Annotate;

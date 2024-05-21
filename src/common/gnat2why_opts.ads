@@ -98,7 +98,6 @@ private
    Global_Gen_Mode_Name         : constant String := "global_gen_mode";
    Ide_Mode_Name                : constant String := "ide_mode";
    Info_Messages_Name           : constant String := "info_messages";
-   Limit_Line_Name              : constant String := "limit_line";
    Limit_Lines_Name             : constant String := "limit_lines";
    Limit_Name_Name              : constant String := "limit_name";
    Limit_Region_Name            : constant String := "limit_region";
