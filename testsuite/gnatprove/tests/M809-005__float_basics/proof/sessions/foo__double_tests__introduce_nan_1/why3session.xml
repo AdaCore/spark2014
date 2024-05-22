@@ -17,13 +17,13 @@
   <proof prover="3"><result status="valid" steps="1"/></proof>
   </goal>
   <goal name="def&#39;vc.1">
-  <proof prover="0"><result status="steplimitexceeded" steps="3622"/></proof>
+  <proof prover="0"><result status="steplimitexceeded" steps="3445"/></proof>
   <proof prover="1"><result status="unknown" steps="33948"/></proof>
   <proof prover="2"><result status="unknown" steps="1317"/></proof>
   <proof prover="4"><result status="unknown" steps="207"/></proof>
   </goal>
   <goal name="def&#39;vc.2">
-  <proof prover="0"><result status="steplimitexceeded" steps="3766"/></proof>
+  <proof prover="0"><result status="steplimitexceeded" steps="3520"/></proof>
   <proof prover="1"><result status="steplimitexceeded" steps="608410"/></proof>
   <proof prover="2"><result status="unknown" steps="2084733"/></proof>
   <proof prover="4"><result status="unknown" steps="236"/></proof>
