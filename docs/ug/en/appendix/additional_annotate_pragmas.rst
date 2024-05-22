@@ -763,15 +763,26 @@ equality function applies:
 It might happen that the underlying model of values of an Ada type contain
 components which are not present in the Ada value. This makes it impossible to
 implement a comparison function in Ada which would compute logical equality on
-such types. This is the case in particular for arrays and discriminated
+such types. This is the case in particular for pointers and discriminated
 records with variant parts. More precisely, logical equality can be implemented
 using the regular Ada equality for discrete types and fixed point types.
 For floating point types, both the value and the sign need to be compared
-(to tell the difference between +0.0 and -0.0). For pointers, as the address
-is not modeled in SPARK, it is enough to check for nullity and compare the
-designated value. Logical equality on untagged record with no variant parts can
-be achieved by comparing the components. For other composite types, it cannot
-be implemented and has to remain non-executable as in the example above.
+(to tell the difference between +0.0 and -0.0). Logical equality on constrained
+arrays or untagged records with no variant parts can be achieved by
+comparing the components. In addition, it is necessary to compare the bounds
+of unconstrained arrays. For other composite types (variant or tagged records or
+pointers), it cannot be implemented and has to remain non-executable as in the* example of ``Real_Eq`` above. This is examplified below:
+
+.. literalinclude:: /examples/ug__logical_eq_implementation/logical_equality_implementation.ads
+   :language: ada
+   :linenos:
+
+All logical equality annotations are proved on this example:
+
+.. literalinclude:: /examples/ug__logical_eq_implementation/test.out
+   :language: none
+   :linenos:
+
 Additionally, a user can safely annotate a comparison function on private types
 whose full view is not in |SPARK| using the ``Logical_Equal`` annotation if it
 behaves as expected, namely, it is an equivalence relation, and there is no way,
@@ -787,27 +798,36 @@ the difference between two values on which this function returns True.
 Note that, for types on which implementing the logical equality in Ada is
 impossible, |GNATprove| might not be able to prove that two Ada values are
 logically equal even if there is no way to tell the difference in |SPARK|.
-For example, it might not be able to prove that two arrays
-are logically equal even if they have the same bounds and the same value. It
-is because it is not necessarily true in the underlying model, where values
-outside of the array bounds are represented. Therefore, using an
-assumption to state that two objects which are equal-in-Ada are logically equal
-might introduce an unsoundness, in particular in the presence of slices. It is
-demonstrated in the example below where |GNATprove| can prove that two strings
-are not logically equal even though they have the same bounds and the same
-elements. However, logical equality can be used safely as long as everything is
-proved correct (no assumption is used).
+For example, it might not be possible to prove that two variant records
+are logically equal even if they have the same fields. It
+is because it is not necessarily true in the underlying model, where fields
+from all variants are present at once. Therefore, justifying an unproved
+``Logical_Equal`` annotation or using an assumption to force a concrete
+definition of logical equality on such an Ada type might introduce an
+unsoundness. It is demonstrated in the example below where |GNATprove| can prove
+``False`` using an automatically instantiated lemma which gives a value to
+logical equality on variant records. However, logical equality can be used
+safely as long as everything is proved correct (no assumption is used).
 
-.. code-block:: ada
+.. literalinclude:: /examples/ug__bad_logical_eq_1/incorrect_logical_equality_1.adb
+   :language: ada
+   :linenos:
 
-   procedure Test is
-      S1 : constant String := "foo1";
-      S2 : constant String := "foo2";
+.. literalinclude:: /examples/ug__bad_logical_eq_1/test.out
+   :language: none
+   :linenos:
 
-   begin
-      pragma Assert (S1 (1 .. 3) = S2 (1 .. 3));
-      pragma Assert (not Real_Eq (S1 (1 .. 3), S2 (1 .. 3)));
-   end Test;
+Note that the unsound lemma ``Lemma_Int_Option_Eq`` can be proven correct if
+``Eq`` is given a definition. In this case however, the ``Annotate`` aspect on
+``Eq`` is unproved.
+
+.. literalinclude:: /examples/ug__bad_logical_eq_2/incorrect_logical_equality_2.adb
+   :language: ada
+   :linenos:
+
+.. literalinclude:: /examples/ug__bad_logical_eq_2/test.out
+   :language: none
+   :linenos:
 
 Annotation for the Predefined Equality of Private Types
 -------------------------------------------------------
