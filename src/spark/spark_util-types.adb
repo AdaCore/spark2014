@@ -384,7 +384,8 @@ package body SPARK_Util.Types is
          and then not From_Limited_With (Ty)
          and then Nkind (Atree.Parent (Ty)) in
            N_Incomplete_Type_Declaration
-         | N_Private_Type_Declaration));
+         | N_Private_Type_Declaration
+         | N_Private_Extension_Declaration));
 
    ------------------------------
    -- Check_DIC_At_Declaration --
