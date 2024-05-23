@@ -836,10 +836,7 @@ package body Gnat2Why.Util is
          Conjuncts_List := Find_Contracts (E, Kind, Inherited => True);
       end if;
 
-      for Expr of Conjuncts_List loop
-         Expr := Dispatching_Contract (Expr);
-         pragma Assert (Present (Expr));
-      end loop;
+      Conjuncts_List := Dispatching_Contract (Conjuncts_List);
 
       return +Compute_Spec (Params, Conjuncts_List, Domain);
    end Get_Dispatching_Call_Contract;

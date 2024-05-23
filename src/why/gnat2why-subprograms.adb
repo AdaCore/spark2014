@@ -3354,36 +3354,38 @@ package body Gnat2Why.Subprograms is
 
       Inherited_Pre_List  : Node_Lists.List;
       Classwide_Pre_List  : Node_Lists.List;
+      Dispatch_Pre_List   : Node_Lists.List;
       Pre_List            : Node_Lists.List;
       Inherited_Post_List : Node_Lists.List;
       Classwide_Post_List : Node_Lists.List;
+      Dispatch_Post_List  : Node_Lists.List;
       Post_List           : Node_Lists.List;
 
       Inherited_Pre_Spec   : W_Pred_Id;
-      Classwide_Pre_Spec   : W_Pred_Id;
+      Dispatch_Pre_Spec    : W_Pred_Id;
       Pre_Spec             : W_Pred_Id;
       Inherited_Post_Spec  : W_Pred_Id;
-      Classwide_Post_Spec  : W_Pred_Id;
+      Dispatch_Post_Spec   : W_Pred_Id;
       Post_Spec            : W_Pred_Id;
 
       Inherited_Pre_Assume  : W_Prog_Id;
-      Classwide_Pre_Check   : W_Prog_Id;
+      Dispatch_Pre_Check    : W_Prog_Id;
       Classwide_Pre_Assume  : W_Prog_Id;
       Pre_Check             : W_Prog_Id;
       Pre_Assume            : W_Prog_Id;
       Call_Effects          : W_Prog_Id;
       Post_Assume           : W_Prog_Id;
       Classwide_Post_Check  : W_Prog_Id;
-      Classwide_Post_Assume : W_Prog_Id;
+      Dispatch_Post_Assume  : W_Prog_Id;
       Inherited_Post_Check  : W_Prog_Id;
 
       Why_Body                : W_Prog_Id := +Void;
-      Classwide_Pre_RTE       : W_Prog_Id := +Void;
-      Classwide_Weaker_Pre    : W_Prog_Id := +Void;
+      Dispatch_Pre_RTE        : W_Prog_Id := +Void;
+      Dispatch_Weaker_Pre     : W_Prog_Id := +Void;
       Weaker_Pre              : W_Prog_Id := +Void;
       Stronger_Post           : W_Prog_Id := +Void;
-      Classwide_Post_RTE      : W_Prog_Id := +Void;
-      Stronger_Classwide_Post : W_Prog_Id := +Void;
+      Dispatch_Post_RTE       : W_Prog_Id := +Void;
+      Stronger_Dispatch_Post  : W_Prog_Id := +Void;
 
       Old_Parts               : Node_Sets.Set;
 
@@ -3419,31 +3421,38 @@ package body Gnat2Why.Subprograms is
       --  First retrieve contracts specified on the subprogram and the
       --  subprograms it overrides.
 
-      Inherited_Pre_List := Find_Contracts
-        (E, Pragma_Precondition, Inherited => True);
       Classwide_Pre_List := Find_Contracts
         (E, Pragma_Precondition, Classwide => True);
       Pre_List := Find_Contracts (E, Pragma_Precondition);
 
-      Inherited_Post_List := Find_Contracts
-        (E, Pragma_Postcondition, Inherited => True);
       Classwide_Post_List := Find_Contracts
         (E, Pragma_Postcondition, Classwide => True);
       Post_List := Find_Contracts (E, Pragma_Postcondition);
+
+      --  Querry dispatching versions of classwide and inherited pre- or
+      --  postcondition to perform checks for all descendants.
+
+      Dispatch_Pre_List := Dispatching_Contract (Classwide_Pre_List);
+      Inherited_Pre_List := Dispatching_Contract
+        (Find_Contracts (E, Pragma_Precondition, Inherited => True));
+
+      Dispatch_Post_List := Dispatching_Contract (Classwide_Post_List);
+      Inherited_Post_List := Dispatching_Contract
+        (Find_Contracts (E, Pragma_Postcondition, Inherited => True));
 
       --  Then, generate suitable predicates based on the specified contracts,
       --  with appropriate True defaults.
 
       Inherited_Pre_Spec :=
         +Compute_Spec (Params, Inherited_Pre_List, EW_Pred);
-      Classwide_Pre_Spec :=
-        +Compute_Spec (Params, Classwide_Pre_List, EW_Pred);
+      Dispatch_Pre_Spec :=
+        +Compute_Spec (Params, Dispatch_Pre_List, EW_Pred);
       Pre_Spec := +Compute_Spec (Params, Pre_List, EW_Pred);
 
       Inherited_Post_Spec :=
         +Compute_Spec (Params, Inherited_Post_List, EW_Pred);
-      Classwide_Post_Spec :=
-        +Compute_Spec (Params, Classwide_Post_List, EW_Pred);
+      Dispatch_Post_Spec :=
+        +Compute_Spec (Params, Dispatch_Post_List, EW_Pred);
       Post_Spec :=
         +New_And_Expr
         (Left   =>
@@ -3457,41 +3466,47 @@ package body Gnat2Why.Subprograms is
 
       --  If E has a class-wide precondition, check that it cannot raise a
       --  run-time error in an empty context.
+      --  This check is done using dispatching operations so it is verified
+      --  for all possible descendants.
 
-      if not Classwide_Pre_List.Is_Empty then
-         Classwide_Pre_RTE :=
-           +Compute_Spec (Params, Classwide_Pre_List, EW_Prog);
-         Classwide_Pre_RTE := New_Ignore (Prog => Classwide_Pre_RTE);
+      if not Dispatch_Pre_List.Is_Empty then
+         Dispatch_Pre_RTE :=
+           +Compute_Spec (Params, Dispatch_Pre_List, EW_Prog);
+         Dispatch_Pre_RTE := New_Ignore (Prog => Dispatch_Pre_RTE);
       end if;
 
       --  If E is overriding another subprogram, check that its specified
       --  classwide precondition is weaker than the inherited one.
+      --  This check is done using dispatching operations so it is verified
+      --  for all possible descendants.
 
       if Is_Overriding_Subprogram (E)
-        and then not Classwide_Pre_List.Is_Empty
+        and then not Dispatch_Pre_List.Is_Empty
       then
          Inherited_Pre_Assume :=
            New_Assume_Statement (Pred => Inherited_Pre_Spec);
 
-         Classwide_Pre_Check := New_Located_Assert
-           (Ada_Node => Get_Location_For_Aspect (E, Pragma_Precondition,
-                                                 Classwide => True),
-            Pred     => Classwide_Pre_Spec,
+         Dispatch_Pre_Check := New_Located_Assert
+           (Ada_Node => Get_Location_For_Aspect
+              (E, Pragma_Precondition, Classwide => True),
+            Pred     => Dispatch_Pre_Spec,
             Reason   => VC_Weaker_Classwide_Pre,
             Kind     => EW_Assert);
 
-         Classwide_Weaker_Pre := Sequence
+         Dispatch_Weaker_Pre := Sequence
            ((1 => New_Comment (Comment =>
                                NID ("Checking that class-wide precondition is"
                                   & " implied by inherited precondition")),
              2 => Inherited_Pre_Assume,
-             3 => Classwide_Pre_Check));
+             3 => Dispatch_Pre_Check));
 
-         Classwide_Weaker_Pre := New_Ignore (Prog => Classwide_Weaker_Pre);
+         Dispatch_Weaker_Pre := New_Ignore (Prog => Dispatch_Weaker_Pre);
       end if;
 
       --  If E has a specific precondition, check that it is weaker than the
-      --  dispatching one.
+      --  classwide one.
+      --  This check is done using specific operations as it only applies to
+      --  the current operation.
 
       if not Pre_List.Is_Empty then
 
@@ -3533,10 +3548,12 @@ package body Gnat2Why.Subprograms is
       end if;
 
       --  If E has a specific postcondition, check that it is stronger than the
-      --  dispatching one. To that end, perform equivalent effects of call in
+      --  classwide one. To that end, perform equivalent effects of call in
       --  context of precondition for static call.
       --  Skip this check if the dispatching postcondition is the default True
       --  postcondition.
+      --  This check is done using specific operations as it only applies to
+      --  the current operation.
 
       if not (Post_List.Is_Empty
                and then No (Get_Pragma (E, Pragma_Contract_Cases)))
@@ -3586,7 +3603,9 @@ package body Gnat2Why.Subprograms is
          Collect_Old_For_Subprogram (E, Old_Parts);
          Collect_Old_Parts (Classwide_Post_List, Old_Parts);
          if Classwide_Post_List.Is_Empty then
-            Collect_Old_Parts (Inherited_Post_List, Old_Parts);
+            Collect_Old_Parts
+              (Find_Contracts
+                 (E, Pragma_Postcondition, Inherited => True), Old_Parts);
          end if;
       end if;
 
@@ -3594,45 +3613,47 @@ package body Gnat2Why.Subprograms is
       --  classwide postcondition is stronger than the inherited one.
       --  Note that we should *not* assume the dispatching precondition for
       --  this check, as this would not be transitive.
+      --  This check is done using dispatching operations so it is verified
+      --  for all possible descendants.
 
-      if not Classwide_Post_List.Is_Empty
+      if not Dispatch_Post_List.Is_Empty
         and then Is_Overriding_Subprogram (E)
       then
 
-         Classwide_Post_Assume :=
-           New_Assume_Statement (Pred => Classwide_Post_Spec);
+         Dispatch_Post_Assume :=
+           New_Assume_Statement (Pred => Dispatch_Post_Spec);
 
          Inherited_Post_Check := New_Located_Assert
-           (Ada_Node  => Get_Location_For_Aspect (E, Pragma_Postcondition,
-            Classwide => True),
+           (Ada_Node  => Get_Location_For_Aspect
+              (E, Pragma_Postcondition, Classwide => True),
             Pred      => Inherited_Post_Spec,
             Reason    => VC_Stronger_Classwide_Post,
             Kind      => EW_Assert);
 
-         Stronger_Classwide_Post := Sequence
+         Stronger_Dispatch_Post := Sequence
            ((1 => New_Comment
              (Comment =>
                 NID ("Checking that inherited postcondition is"
                   & " implied by class-wide postcondition")),
              2 => Call_Effects,
-             3 => Classwide_Post_Assume,
+             3 => Dispatch_Post_Assume,
              4 => Inherited_Post_Check));
 
-         Stronger_Classwide_Post :=
-           New_Ignore (Prog => Stronger_Classwide_Post);
+         Stronger_Dispatch_Post :=
+           New_Ignore (Prog => Stronger_Dispatch_Post);
 
          --  Collect old attributes referenced by the checks
 
          Collect_Old_Parts (Inherited_Post_List, Old_Parts);
-         Collect_Old_Parts (Classwide_Post_List, Old_Parts);
+         Collect_Old_Parts (Dispatch_Post_List, Old_Parts);
       end if;
 
       Why_Body := Sequence
-        ((1 => Classwide_Pre_RTE,
-          2 => Classwide_Weaker_Pre,
+        ((1 => Dispatch_Pre_RTE,
+          2 => Dispatch_Weaker_Pre,
           3 => Weaker_Pre,
           4 => Stronger_Post,
-          5 => Stronger_Classwide_Post));
+          5 => Stronger_Dispatch_Post));
 
       --  Add declarations for 'Old variables
 
@@ -3649,33 +3670,35 @@ package body Gnat2Why.Subprograms is
       --  the empty context. Here again, we should *not* assume the dispatching
       --  precondition for this check, as this postcondition can be inherited
       --  in overridings weakening the precondition.
+      --  This check is done using dispatching operations so it is verified
+      --  for all possible descendants.
 
-      if not Classwide_Post_List.Is_Empty then
-         Classwide_Post_RTE :=
-           +Compute_Spec (Params, Classwide_Post_List, EW_Prog);
-         Classwide_Post_RTE :=
-           New_Ignore (Prog => Classwide_Post_RTE);
-         Classwide_Post_RTE := Sequence
+      if not Dispatch_Post_List.Is_Empty then
+         Dispatch_Post_RTE :=
+           +Compute_Spec (Params, Dispatch_Post_List, EW_Prog);
+         Dispatch_Post_RTE :=
+           New_Ignore (Prog => Dispatch_Post_RTE);
+         Dispatch_Post_RTE := Sequence
            ((1 => New_Comment (Comment =>
                                NID ("Checking absence of RTE in"
                                   & " class-wide postcondition")),
              2 => Call_Effects,
-             3 => Classwide_Post_RTE));
+             3 => Dispatch_Post_RTE));
 
          --  Add declarations for 'Old variables with RTE
 
          Old_Parts.Clear;
-         Collect_Old_Parts (Classwide_Post_List, Old_Parts);
+         Collect_Old_Parts (Dispatch_Post_List, Old_Parts);
 
-         Classwide_Post_RTE := +Bind_From_Mapping_In_Expr
+         Dispatch_Post_RTE := +Bind_From_Mapping_In_Expr
            (Params => Params,
             Map    => Map_For_Old,
-            Expr   => +Classwide_Post_RTE,
+            Expr   => +Dispatch_Post_RTE,
             Domain => EW_Prog,
             Subset => Old_Parts);
       end if;
 
-      Append (Why_Body, Classwide_Post_RTE);
+      Append (Why_Body, Dispatch_Post_RTE);
 
       --  Insert bindings for variants, they may be needed to check recursive
       --  calls in the classwide post. We use EW_Pterm as a domain here as RTE
