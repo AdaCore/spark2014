@@ -663,7 +663,11 @@ package body SPARK_Util is
    function Attr_Constrained_Statically_Known (N : Node_Id) return Boolean is
      (Nkind (N) not in N_Expanded_Name | N_Identifier
       or else Ekind (Entity (N)) not in
-        E_Variable | E_Out_Parameter | E_In_Out_Parameter);
+        E_Variable | E_Out_Parameter | E_In_Out_Parameter
+      --  As an extension to Ada, GNAT allows Constrained on any object of a
+      --  generic formal type. Unless the object has a type with discriminants,
+      --  the result is statically True.
+      or else not Has_Discriminants (Retysp (Etype (N))));
 
    -------------
    -- By_Copy --
