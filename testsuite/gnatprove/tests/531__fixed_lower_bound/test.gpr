@@ -8,4 +8,7 @@ project Test is
       for Default_Switches ("Ada") use ("-gnatX0");
    end Compiler;
 
+   for Excluded_Source_Files use
+     ("fixed_lower_bound_subtypes_and_objects.adb"); -- GNAT issue eng/toolchain/gnat#903
+
 end Test;
