@@ -34,7 +34,7 @@ unit2.ads:23:59: info: overflow check proved (CVC5: 2 VC)
 unit3.adb:13:12: info: precondition proved (CVC5: 1 VC)
 unit3.adb:14:20: medium: overflow check might fail, cannot prove upper bound for X.C3 + 1 [reason for check: result of addition must fit in a 32-bits machine integer]
 unit3.ads:11:22: info: initialization of "X" proved
-unit3.ads:12:20: info: class-wide postcondition is stronger than overridden one (CVC5: 2 VC)
+unit3.ads:12:20: medium: class-wide postcondition might be weaker than overridden one
 unit3.ads:13:20: info: postcondition is stronger than class-wide postcondition (CVC5: 3 VC)
 unit3.ads:13:20: info: postcondition proved (CVC5: 3 VC)
 unit3.ads:15:13: info: implicit aspect Always_Terminates on "Is_Max" has been proved, subprogram will terminate
