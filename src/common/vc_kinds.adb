@@ -784,6 +784,9 @@ package body VC_Kinds is
          when Lim_Overlay_With_Deep_Object =>
            "a reference to the ""Address"" attribute in an address clause"
           & " whose prefix has subcomponents of an access-to-variable type",
+         when Lim_Deep_Object_Declaration_Outside_Block =>
+           "a declaration of an object of an ownership type outside a block "
+          & "for declarations",
          when Lim_Package_Before_Inv =>
            "a package declaration occurring in a loop before the loop "
           & "invariant",
