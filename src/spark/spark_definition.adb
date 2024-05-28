@@ -10208,6 +10208,17 @@ package body SPARK_Definition is
       else
          Mark_Violation (N, From => E);
       end if;
+
+      --  As a GNAT extension, declarations can appear in sequence of
+      --  statements. Do not support these currently for objects of a
+      --  deep type.
+
+      if In_SPARK (E)
+        and then Nkind (Parent (N)) = N_Handled_Sequence_Of_Statements
+        and then Is_Deep (Etype (E))
+      then
+         Mark_Unsupported (Lim_Deep_Object_Declaration_Outside_Block, N);
+      end if;
    end Mark_Object_Declaration;
 
    -----------------------

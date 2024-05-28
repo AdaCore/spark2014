@@ -481,6 +481,7 @@ package VC_Kinds is
       Lim_Op_Fixed_Float,
       Lim_Op_Incompatible_Fixed,
       Lim_Overlay_With_Deep_Object,
+      Lim_Deep_Object_Declaration_Outside_Block,
       Lim_Package_Before_Inv,
       Lim_Predicate_With_Different_SPARK_Mode,
       Lim_Predicate_With_Different_Visibility,
@@ -693,6 +694,9 @@ package VC_Kinds is
            & "ownership type",
          when Lim_Overlay_With_Deep_Object =>
            "overlay with an object of an ownership type",
+         when Lim_Deep_Object_Declaration_Outside_Block =>
+           "declaration of an object of an ownership type outside a block "
+           & "for declarations",
          when Lim_Non_Static_Attribute =>
            "non-static attribute """ & Standard_Ada_Case (Name) & """",
          when Lim_Img_On_Non_Scalar =>
