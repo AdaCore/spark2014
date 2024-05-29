@@ -12,6 +12,7 @@ codepeer-run:
 
 codepeer:
 	@gnatsas report text -P gnatprove.gpr --quiet
+	@gnatsas report code-climate -P gnatprove.gpr --quiet -o obj/gnatsas/gnatprove.json
 
 clean:
 	gprclean -P gnatprove.gpr -r

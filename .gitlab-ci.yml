@@ -1,3 +1,7 @@
+include:
+  - project: eng/codepeer/ci-registry
+    file: /gnatsas-on-spark.yml
+
 # In this CI, we should only work in reaction to a Merge Request
 workflow:
   rules:
