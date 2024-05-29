@@ -1,0 +1,2 @@
+ghostarr.ads:4:09: error: ghost type "ZZ" cannot be concurrent
+gnatprove: error during generation of Global contracts
