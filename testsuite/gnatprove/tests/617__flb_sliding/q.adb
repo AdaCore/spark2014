@@ -1,4 +1,4 @@
-pragma Extensions_Allowed (All);
+pragma Extensions_Allowed (All_Extensions);
 procedure Q
   with SPARK_Mode
 is
