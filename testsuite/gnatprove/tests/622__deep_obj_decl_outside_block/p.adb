@@ -1,4 +1,4 @@
-pragma Extensions_Allowed (All);
+pragma Extensions_Allowed (All_Extensions);
 procedure P is
    type T is access Integer;
    type TA is access all Integer;
