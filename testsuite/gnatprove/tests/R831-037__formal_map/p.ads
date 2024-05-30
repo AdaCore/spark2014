@@ -1,6 +1,6 @@
 with SPARK.Containers.Formal.Hashed_Maps;
 with Ada.Containers;
-with Ada.Strings.Hash;
+with SPARK.Containers.Hash;
 
 package P
 is
@@ -20,8 +20,9 @@ private
    package My_Hash is new SPARK.Containers.Formal.Hashed_Maps
      (Key_Type        => My_String,
       Element_Type    => My_Id,
-      Hash            => Ada.Strings.Hash,
-      Equivalent_Keys => "=");
+      Hash            => SPARK.Containers.Hash.String_Hash,
+      Equivalent_Keys => "=",
+      Hash_Equivalent => SPARK.Containers.Hash.String_Hash_Equivalent);
 
    Capacity : constant Ada.Containers.Count_Type :=
      Ada.Containers.Count_Type (My_Id'Last);
