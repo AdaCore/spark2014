@@ -112,264 +112,6 @@ package body SPARK_Util.Types is
    --  Declares_Iterable_Aspect: whether specific Aspect of E is
    --  declared by an anscestor. This ignores SPARK_Mode boundary.
 
-   ---------------------------------------------
-   -- Queries related to representative types --
-   ---------------------------------------------
-
-   function Base_Retysp (T : Type_Kind_Id) return Type_Kind_Id is
-      E : Type_Kind_Id := Retysp (T);
-   begin
-      while not Is_Base_Type (E) loop
-         E := Retysp (Base_Type (E));
-      end loop;
-      return E;
-   end Base_Retysp;
-
-   --  This function is similar to Sem_Eval.Is_Static_Subtype, except it only
-   --  considers scalar subtypes (otherwise returns False), and looks past
-   --  private types.
-
-   ----------------------------------
-   -- Has_OK_Static_Scalar_Subtype --
-   ----------------------------------
-
-   function Has_OK_Static_Scalar_Subtype (T : Type_Kind_Id) return Boolean is
-      Under_T  : constant Type_Kind_Id := Underlying_Type (T);
-      Base_T   : constant Type_Kind_Id := Base_Type (Under_T);
-      Anc_Subt : Opt_Type_Kind_Id;
-
-   begin
-      if Base_T = Under_T then
-         return True;
-
-      else
-         Anc_Subt := Ancestor_Subtype (Under_T);
-
-         if Anc_Subt = Empty then
-            Anc_Subt := Base_T;
-         end if;
-
-         return Has_OK_Static_Scalar_Subtype (Anc_Subt)
-           and then Is_OK_Static_Expression (Type_Low_Bound (Under_T))
-           and then Is_OK_Static_Expression (Type_High_Bound (Under_T));
-      end if;
-   end Has_OK_Static_Scalar_Subtype;
-
-   ------------
-   -- Retysp --
-   ------------
-
-   function Retysp (T : Type_Kind_Id) return Type_Kind_Id is
-      Typ : Type_Kind_Id := T;
-
-   begin
-      --  Itypes may not be marked. Use their Etype.
-
-      if Is_Itype (Typ) and then not Entity_Marked (Typ) then
-         Typ := Etype (Typ);
-      end if;
-
-      --  Type should be marked here
-
-      if not Entity_Marked (Typ) then
-         raise Program_Error;
-      end if;
-
-      --  Incomplete types are only marked if their full view is not visible
-
-      pragma Assert
-        (not Is_Incomplete_Type (Typ) or else No (Full_View (Typ)));
-
-      --  If T is not in SPARK, go through the Partial_View chain to find its
-      --  first view in SPARK if any.
-
-      if not Entity_In_SPARK (Typ) then
-         loop
-            --  If we find a partial view in SPARK, we return it
-
-            if Entity_In_SPARK (Typ) then
-               pragma Assert (Full_View_Not_In_SPARK (Typ));
-               goto Returning;
-
-            --  No partial view in SPARK, return T
-
-            elsif not Entity_Marked (Typ)
-              or else not Is_Full_View (Typ)
-            then
-               Typ := T;
-               goto Returning;
-
-            else
-               Typ := Partial_View (Typ);
-            end if;
-         end loop;
-
-      --  If T is in SPARK but not its most underlying type, then go through
-      --  the Full_View chain until the last type in SPARK is found. This code
-      --  is largely inspired from the body of Einfo.Underlying_Type.
-
-      elsif Full_View_Not_In_SPARK (Typ) then
-         loop
-            --  If Full_View (Typ) is in SPARK, use it. Otherwise, we have
-            --  found the last type in SPARK in T's chain of Full_View.
-
-            if Present (Full_View (Typ)) then
-               if Entity_In_SPARK (Full_View (Typ)) then
-                  Typ := Full_View (Typ);
-                  pragma Assert (Full_View_Not_In_SPARK (Typ));
-               else
-                  goto Returning;
-               end if;
-
-            --  If we have a private type with an underlying full view, either
-            --  it is in SPARK and we reach it, or it is not in SPARK and we
-            --  return at this point.
-
-            elsif Is_Private_Type (Typ)
-              and then Present (Underlying_Full_View (Typ))
-            then
-               if Entity_In_SPARK (Underlying_Full_View (Typ)) then
-                  Typ := Underlying_Full_View (Typ);
-                  pragma Assert (Full_View_Not_In_SPARK (Typ));
-               else
-                  goto Returning;
-               end if;
-
-            --  Derived types without additional constraints might not have
-            --  Full_View defined; search the on the Etype instead.
-
-            elsif Is_Private_Type (Typ) then
-               pragma Assert (Etype (Typ) /= Typ);
-               if Entity_In_SPARK (Etype (Typ)) then
-                  Typ := Etype (Typ);
-                  pragma Assert (Full_View_Not_In_SPARK (Typ));
-               else
-                  goto Returning;
-               end if;
-            else
-               goto Returning;
-            end if;
-         end loop;
-
-      --  Otherwise, Typ's most underlying type is in SPARK, return it.
-
-      else
-         pragma Assert (Entity_In_SPARK (Unchecked_Full_Type (Typ)));
-         Typ := Unchecked_Full_Type (Typ);
-      end if;
-
-      <<Returning>>
-
-      --  Do not return the subtype introduced for a formal type in a generic
-      --  instantiation, if we can return the actual itself. We recognize here
-      --  cases where the formal in the instance is defined as a simple subtype
-      --  of the actual:
-      --
-      --    subtype Formal is Actual;
-      --
-      --  It is important to skip the intermediate subtype generated by the
-      --  frontend, in the case where this type is used as the designated type
-      --  of some access types, because the frontend then generates an AST with
-      --  conversions between access types that would not be allowed in source
-      --  code, because the designated types are not exactly the same (they are
-      --  similar subtypes of the same base type). And our translation to Why3
-      --  depends on being able to unify all such access types.
-
-      if Entity_In_SPARK (Typ) and then Is_Generic_Actual_Type (Typ) then
-         declare
-            P_Typ   : constant Entity_Id :=
-              (if Is_Full_View (Typ) then Partial_View (Typ) else Typ);
-            Decl    : constant Node_Id := Parent (P_Typ);
-            Sub_Ind : Node_Id;
-         begin
-            if Present (Decl)
-              and then Nkind (Decl) = N_Subtype_Declaration
-            then
-               Sub_Ind := Subtype_Indication (Decl);
-               if Nkind (Sub_Ind) in N_Has_Entity
-                 and then Present (Entity (Sub_Ind))
-               then
-                  Typ := Retysp (Entity (Sub_Ind));
-               end if;
-            end if;
-         end;
-      end if;
-
-      return Typ;
-
-   end Retysp;
-
-   -----------------
-   -- Retysp_Kind --
-   -----------------
-
-   function Retysp_Kind (T : Type_Kind_Id) return Type_Kind is
-     (Ekind (Retysp (T)));
-
-   --------------------------
-   -- Has_Scalar_Full_View --
-   --------------------------
-
-   function Has_Scalar_Full_View (Typ : Type_Kind_Id) return Boolean is
-      Full_View : constant Type_Kind_Id := Unchecked_Full_Type (Typ);
-   begin
-      return Is_Scalar_Type (Full_View)
-        or else (Full_View_Not_In_SPARK (Typ) and then Has_Predicates (Typ));
-   end Has_Scalar_Full_View;
-
-   ------------------------------------
-   -- Has_Unconstrained_UU_Component --
-   ------------------------------------
-
-   function Has_Unconstrained_UU_Component (Typ : Type_Kind_Id) return Boolean
-   is
-      Rep_Ty : constant Type_Kind_Id := Root_Retysp (Typ);
-      --  For tagged types, go to the root type. UU_Components cannot be
-      --  contained in derivations, as this would be rejected in marking.
-
-   begin
-      if Is_Record_Type (Rep_Ty) then
-         declare
-            Comp : Node_Id := First_Component (Rep_Ty);
-         begin
-            while Present (Comp) loop
-               if Component_Is_Visible_In_SPARK (Comp)
-                 and then
-                   ((Is_Unchecked_Union (Retysp (Etype (Comp)))
-                     and then not Is_Constrained (Retysp (Etype (Comp))))
-                    or else Has_Unconstrained_UU_Component (Etype (Comp)))
-               then
-                  return True;
-               end if;
-               Next_Component (Comp);
-            end loop;
-         end;
-         return False;
-      elsif Is_Array_Type (Rep_Ty) then
-         return (Is_Unchecked_Union (Retysp (Component_Type (Rep_Ty)))
-                 and then
-                   not Is_Constrained (Retysp (Component_Type (Rep_Ty))))
-           or else Has_Unconstrained_UU_Component (Component_Type (Rep_Ty));
-      else
-         return False;
-      end if;
-   end Has_Unconstrained_UU_Component;
-
-   ---------------------------------
-   -- Has_Visible_Type_Invariants --
-   ---------------------------------
-
-   function Has_Visible_Type_Invariants (Ty : Type_Kind_Id) return Boolean is
-      Real_Node : constant Node_Id :=
-        (if Is_Itype (Ty)
-         then Associated_Node_For_Itype (Ty)
-         else Ty);
-
-   begin
-      return Has_Invariants_In_SPARK (Ty)
-        and then Is_Declared_In_Main_Unit_Or_Parent (Real_Node);
-   end Has_Visible_Type_Invariants;
-
    -----------------------------
    -- Acts_As_Incomplete_Type --
    -----------------------------
@@ -386,6 +128,41 @@ package body SPARK_Util.Types is
            N_Incomplete_Type_Declaration
          | N_Private_Type_Declaration
          | N_Private_Extension_Declaration));
+
+   ---------------------------------------
+   -- Ancestor_Declares_Iterable_Aspect --
+   ---------------------------------------
+
+   function Ancestor_Declares_Iterable_Aspect
+     (E      : Type_Kind_Id;
+      Aspect : Node_Id)
+      return Boolean
+   is
+      Cursor : Type_Kind_Id := E;
+   begin
+      while Is_Partial_View (Cursor) loop
+         Cursor := Full_View (Cursor);
+      end loop;
+      if Is_First_Subtype (Cursor) then
+         Cursor := Base_Type (Cursor);
+      end if;
+      return not Is_Nouveau_Type (Cursor)
+        and then Underlying_Type (Etype (Cursor)) /= Cursor
+        and then Find_Aspect (Etype (Cursor), Aspect_Iterable) = Aspect;
+   end Ancestor_Declares_Iterable_Aspect;
+
+   -----------------
+   -- Base_Retysp --
+   -----------------
+
+   function Base_Retysp (T : Type_Kind_Id) return Type_Kind_Id is
+      E : Type_Kind_Id := Retysp (T);
+   begin
+      while not Is_Base_Type (E) loop
+         E := Retysp (Base_Type (E));
+      end loop;
+      return E;
+   end Base_Retysp;
 
    ------------------------------
    -- Check_DIC_At_Declaration --
@@ -612,47 +389,6 @@ package body SPARK_Util.Types is
       return Contains_Allocated_Parts (Typ);
    end Contains_Allocated_Parts;
 
-   ---------------------------------
-   -- Contains_Relaxed_Init_Parts --
-   ---------------------------------
-
-   function Contains_Relaxed_Init_Parts
-     (Typ        : Type_Kind_Id;
-      Ignore_Top : Boolean := False)
-      return Boolean
-   is
-      function Contains_Relaxed_Init (C_Typ : Type_Kind_Id) return Test_Result;
-      --  Function traversing a given subcomponent to check whether it has
-      --  at least a subcomponent with relaxed initialization.
-
-      ---------------------------
-      -- Contains_Relaxed_Init --
-      ---------------------------
-
-      function Contains_Relaxed_Init (C_Typ : Type_Kind_Id) return Test_Result
-      is
-      begin
-         if not (C_Typ = Retysp (Typ) and then Ignore_Top)
-           and then Has_Relaxed_Init (C_Typ)
-         then
-            return Pass;
-
-         --  Protected components cannot have relaxed initialization
-
-         elsif Ekind (C_Typ) in Concurrent_Kind then
-            return Fail;
-
-         else
-            return Continue;
-         end if;
-      end Contains_Relaxed_Init;
-
-      function Contains_Relaxed_Init_Subcomps is new Traverse_Subcomponents
-        (Contains_Relaxed_Init);
-   begin
-      return Contains_Relaxed_Init_Subcomps (Typ);
-   end Contains_Relaxed_Init_Parts;
-
    --------------------------------
    -- Contains_Only_Relaxed_Init --
    --------------------------------
@@ -734,6 +470,47 @@ package body SPARK_Util.Types is
       return not Contains_Non_Relaxed_Subcomps (Typ, Skip_Discr => True);
    end Contains_Only_Relaxed_Init;
 
+   ---------------------------------
+   -- Contains_Relaxed_Init_Parts --
+   ---------------------------------
+
+   function Contains_Relaxed_Init_Parts
+     (Typ        : Type_Kind_Id;
+      Ignore_Top : Boolean := False)
+      return Boolean
+   is
+      function Contains_Relaxed_Init (C_Typ : Type_Kind_Id) return Test_Result;
+      --  Function traversing a given subcomponent to check whether it has
+      --  at least a subcomponent with relaxed initialization.
+
+      ---------------------------
+      -- Contains_Relaxed_Init --
+      ---------------------------
+
+      function Contains_Relaxed_Init (C_Typ : Type_Kind_Id) return Test_Result
+      is
+      begin
+         if not (C_Typ = Retysp (Typ) and then Ignore_Top)
+           and then Has_Relaxed_Init (C_Typ)
+         then
+            return Pass;
+
+         --  Protected components cannot have relaxed initialization
+
+         elsif Ekind (C_Typ) in Concurrent_Kind then
+            return Fail;
+
+         else
+            return Continue;
+         end if;
+      end Contains_Relaxed_Init;
+
+      function Contains_Relaxed_Init_Subcomps is new Traverse_Subcomponents
+        (Contains_Relaxed_Init);
+   begin
+      return Contains_Relaxed_Init_Subcomps (Typ);
+   end Contains_Relaxed_Init_Parts;
+
    ------------------------
    -- Copy_Requires_Init --
    ------------------------
@@ -784,49 +561,19 @@ package body SPARK_Util.Types is
       return Count;
    end Count_Non_Inherited_Discriminants;
 
-   ----------------------------------
-   -- Find_View_For_Default_Checks --
-   ----------------------------------
+   ------------------------------
+   -- Declares_Iterable_Aspect --
+   ------------------------------
 
-   function Find_View_For_Default_Checks
-     (E : Type_Kind_Id)
-      return Opt_Type_Kind_Id
+   function Declares_Iterable_Aspect (E : Type_Kind_Id) return Boolean
    is
-      Typ  : Entity_Id := Retysp (E);
+      Top_Aspect : constant Node_Id := Find_Aspect (E, Aspect_Iterable);
    begin
-
-      --  Types whose full view is not in Spark do not need specific checks
-      if Nkind (Parent (Typ)) in N_Private_Extension_Declaration
-                               | N_Private_Type_Declaration
-      then
-         return Empty;
-      end if;
-
-      loop
-         Typ := Partial_View (Typ);
-
-         --  Types with no private view do not need specific checks
-         if No (Typ) then
-            return Empty;
-         end if;
-
-         if Nkind (Parent (Typ)) in N_Private_Extension_Declaration
-                                  | N_Private_Type_Declaration
-         then
-            --  Types whose private view has unknown discriminants,
-            --  including the implicit tag for class-wide type,
-            --  cannot be default initialized.
-
-            if Has_Unknown_Discriminants (Typ) then
-               return Empty;
-            else
-               pragma Assert (not Is_Class_Wide_Type (Typ));
-               return Typ;
-            end if;
-         end if;
-      end loop;
-
-   end Find_View_For_Default_Checks;
+      return Present (Top_Aspect)
+        and then not Is_Itype (E)
+        and then not Is_Class_Wide_Type (E)
+        and then not Ancestor_Declares_Iterable_Aspect (E, Top_Aspect);
+   end Declares_Iterable_Aspect;
 
    -------------------------
    -- Find_Predicate_Item --
@@ -871,6 +618,69 @@ package body SPARK_Util.Types is
       end loop;
    end Find_Predicate_Item;
 
+   ----------------------------------
+   -- Find_View_For_Default_Checks --
+   ----------------------------------
+
+   function Find_View_For_Default_Checks
+     (E : Type_Kind_Id)
+      return Opt_Type_Kind_Id
+   is
+      Typ  : Entity_Id := Retysp (E);
+   begin
+
+      --  Types whose full view is not in Spark do not need specific checks
+      if Nkind (Parent (Typ)) in N_Private_Extension_Declaration
+                               | N_Private_Type_Declaration
+      then
+         return Empty;
+      end if;
+
+      loop
+         Typ := Partial_View (Typ);
+
+         --  Types with no private view do not need specific checks
+         if No (Typ) then
+            return Empty;
+         end if;
+
+         if Nkind (Parent (Typ)) in N_Private_Extension_Declaration
+                                  | N_Private_Type_Declaration
+         then
+            --  Types whose private view has unknown discriminants,
+            --  including the implicit tag for class-wide type,
+            --  cannot be default initialized.
+
+            if Has_Unknown_Discriminants (Typ) then
+               return Empty;
+            else
+               pragma Assert (not Is_Class_Wide_Type (Typ));
+               return Typ;
+            end if;
+         end if;
+      end loop;
+
+   end Find_View_For_Default_Checks;
+
+   ------------------------------
+   -- Get_Constraint_For_Discr --
+   ------------------------------
+
+   function Get_Constraint_For_Discr
+     (Ty    : Type_Kind_Id;
+      Discr : E_Discriminant_Id)
+      return N_Subexpr_Id
+   is
+      Current : E_Discriminant_Id := First_Discriminant (Ty);
+      Elmt    : Elmt_Id := First_Elmt (Discriminant_Constraint (Ty));
+   begin
+      while Current /= Discr loop
+         Next_Discriminant (Current);
+         Next_Elmt (Elmt);
+      end loop;
+      return Node (Elmt);
+   end Get_Constraint_For_Discr;
+
    -------------------------------------
    -- Get_Parent_Type_If_Check_Needed --
    -------------------------------------
@@ -912,42 +722,6 @@ package body SPARK_Util.Types is
       end if;
    end Get_Parent_Type_If_Check_Needed;
 
-   --------------------------------------
-   -- Get_Specific_Type_From_Classwide --
-   --------------------------------------
-
-   function Get_Specific_Type_From_Classwide (E : Class_Wide_Kind_Id)
-                                              return Type_Kind_Id
-   is
-      Specific_Type : constant Type_Kind_Id := Etype (Base_Type (E));
-
-   begin
-      if Is_Full_View (Specific_Type) then
-         return Partial_View (Specific_Type);
-      else
-         return Specific_Type;
-      end if;
-   end Get_Specific_Type_From_Classwide;
-
-   ------------------------------
-   -- Get_Constraint_For_Discr --
-   ------------------------------
-
-   function Get_Constraint_For_Discr
-     (Ty    : Type_Kind_Id;
-      Discr : E_Discriminant_Id)
-      return N_Subexpr_Id
-   is
-      Current : E_Discriminant_Id := First_Discriminant (Ty);
-      Elmt    : Elmt_Id := First_Elmt (Discriminant_Constraint (Ty));
-   begin
-      while Current /= Discr loop
-         Next_Discriminant (Current);
-         Next_Elmt (Elmt);
-      end loop;
-      return Node (Elmt);
-   end Get_Constraint_For_Discr;
-
    -------------------------
    -- Get_Reclaimed_Parts --
    -------------------------
@@ -982,6 +756,23 @@ package body SPARK_Util.Types is
    begin
       return Result;
    end Get_Reclaimed_Parts;
+
+   --------------------------------------
+   -- Get_Specific_Type_From_Classwide --
+   --------------------------------------
+
+   function Get_Specific_Type_From_Classwide (E : Class_Wide_Kind_Id)
+                                              return Type_Kind_Id
+   is
+      Specific_Type : constant Type_Kind_Id := Etype (Base_Type (E));
+
+   begin
+      if Is_Full_View (Specific_Type) then
+         return Partial_View (Specific_Type);
+      else
+         return Specific_Type;
+      end if;
+   end Get_Specific_Type_From_Classwide;
 
    -------------------------
    -- Get_User_Defined_Eq --
@@ -1196,28 +987,6 @@ package body SPARK_Util.Types is
       and then Is_Base_Type (E)
       and then (if Is_Partial_View (E) then Entity_In_SPARK (Full_View (E))));
 
-   ---------------------------------------
-   -- Ancestor_Declares_Iterable_Aspect --
-   ---------------------------------------
-
-   function Ancestor_Declares_Iterable_Aspect
-     (E      : Type_Kind_Id;
-      Aspect : Node_Id)
-      return Boolean
-   is
-      Cursor : Type_Kind_Id := E;
-   begin
-      while Is_Partial_View (Cursor) loop
-         Cursor := Full_View (Cursor);
-      end loop;
-      if Is_First_Subtype (Cursor) then
-         Cursor := Base_Type (Cursor);
-      end if;
-      return not Is_Nouveau_Type (Cursor)
-        and then Underlying_Type (Etype (Cursor)) /= Cursor
-        and then Find_Aspect (Etype (Cursor), Aspect_Iterable) = Aspect;
-   end Ancestor_Declares_Iterable_Aspect;
-
    ----------------------------------
    -- Has_Iterable_Aspect_In_SPARK --
    ----------------------------------
@@ -1243,19 +1012,35 @@ package body SPARK_Util.Types is
       return not Ancestor_Declares_Iterable_Aspect (Cursor, Top_Aspect);
    end Has_Iterable_Aspect_In_SPARK;
 
-   ------------------------------
-   -- Declares_Iterable_Aspect --
-   ------------------------------
+   --  This function is similar to Sem_Eval.Is_Static_Subtype, except it only
+   --  considers scalar subtypes (otherwise returns False), and looks past
+   --  private types.
 
-   function Declares_Iterable_Aspect (E : Type_Kind_Id) return Boolean
-   is
-      Top_Aspect : constant Node_Id := Find_Aspect (E, Aspect_Iterable);
+   ----------------------------------
+   -- Has_OK_Static_Scalar_Subtype --
+   ----------------------------------
+
+   function Has_OK_Static_Scalar_Subtype (T : Type_Kind_Id) return Boolean is
+      Under_T  : constant Type_Kind_Id := Underlying_Type (T);
+      Base_T   : constant Type_Kind_Id := Base_Type (Under_T);
+      Anc_Subt : Opt_Type_Kind_Id;
+
    begin
-      return Present (Top_Aspect)
-        and then not Is_Itype (E)
-        and then not Is_Class_Wide_Type (E)
-        and then not Ancestor_Declares_Iterable_Aspect (E, Top_Aspect);
-   end Declares_Iterable_Aspect;
+      if Base_T = Under_T then
+         return True;
+
+      else
+         Anc_Subt := Ancestor_Subtype (Under_T);
+
+         if Anc_Subt = Empty then
+            Anc_Subt := Base_T;
+         end if;
+
+         return Has_OK_Static_Scalar_Subtype (Anc_Subt)
+           and then Is_OK_Static_Expression (Type_Low_Bound (Under_T))
+           and then Is_OK_Static_Expression (Type_High_Bound (Under_T));
+      end if;
+   end Has_OK_Static_Scalar_Subtype;
 
    ------------------------
    -- Has_Private_Fields --
@@ -1293,6 +1078,17 @@ package body SPARK_Util.Types is
 
       return Is_Incomplete_Or_Private_Type (Ty);
    end Has_Private_Fields;
+
+   --------------------------
+   -- Has_Scalar_Full_View --
+   --------------------------
+
+   function Has_Scalar_Full_View (Typ : Type_Kind_Id) return Boolean is
+      Full_View : constant Type_Kind_Id := Unchecked_Full_Type (Typ);
+   begin
+      return Is_Scalar_Type (Full_View)
+        or else (Full_View_Not_In_SPARK (Typ) and then Has_Predicates (Typ));
+   end Has_Scalar_Full_View;
 
    --------------------------
    -- Has_Shallow_Variants --
@@ -1410,6 +1206,126 @@ package body SPARK_Util.Types is
    begin
       return Search_Sub_Typ (Typ);
    end Has_Subcomponents_Of_Type;
+
+   ------------------------------------
+   -- Has_Unconstrained_UU_Component --
+   ------------------------------------
+
+   function Has_Unconstrained_UU_Component (Typ : Type_Kind_Id) return Boolean
+   is
+      Rep_Ty : constant Type_Kind_Id := Root_Retysp (Typ);
+      --  For tagged types, go to the root type. UU_Components cannot be
+      --  contained in derivations, as this would be rejected in marking.
+
+   begin
+      if Is_Record_Type (Rep_Ty) then
+         declare
+            Comp : Node_Id := First_Component (Rep_Ty);
+         begin
+            while Present (Comp) loop
+               if Component_Is_Visible_In_SPARK (Comp)
+                 and then
+                   ((Is_Unchecked_Union (Retysp (Etype (Comp)))
+                     and then not Is_Constrained (Retysp (Etype (Comp))))
+                    or else Has_Unconstrained_UU_Component (Etype (Comp)))
+               then
+                  return True;
+               end if;
+               Next_Component (Comp);
+            end loop;
+         end;
+         return False;
+      elsif Is_Array_Type (Rep_Ty) then
+         return (Is_Unchecked_Union (Retysp (Component_Type (Rep_Ty)))
+                 and then
+                   not Is_Constrained (Retysp (Component_Type (Rep_Ty))))
+           or else Has_Unconstrained_UU_Component (Component_Type (Rep_Ty));
+      else
+         return False;
+      end if;
+   end Has_Unconstrained_UU_Component;
+
+   ---------------------------------
+   -- Has_Visible_Type_Invariants --
+   ---------------------------------
+
+   function Has_Visible_Type_Invariants (Ty : Type_Kind_Id) return Boolean is
+      Real_Node : constant Node_Id :=
+        (if Is_Itype (Ty)
+         then Associated_Node_For_Itype (Ty)
+         else Ty);
+
+   begin
+      return Has_Invariants_In_SPARK (Ty)
+        and then Is_Declared_In_Main_Unit_Or_Parent (Real_Node);
+   end Has_Visible_Type_Invariants;
+
+   ---------------------------
+   -- Have_Same_Known_Esize --
+   ---------------------------
+
+   procedure Have_Same_Known_Esize
+     (A, B        :     Type_Kind_Id;
+      Result      : out Boolean;
+      Explanation : out Unbounded_String)
+   is
+      A_Esize, B_Esize : Uint;
+   begin
+      Check_Known_Esize (A, A_Esize, Explanation);
+      if No (A_Esize) then
+         Result := False;
+         return;
+      end if;
+      Check_Known_Esize (B, B_Esize, Explanation);
+      if No (B_Esize) then
+         Result := False;
+         return;
+      end if;
+      if A_Esize /= B_Esize then
+         Result := False;
+         Explanation :=
+           To_Unbounded_String ("Object_Sizes of "
+                                & Type_Name_For_Explanation (A)
+                                & " and " & Type_Name_For_Explanation (B)
+                                & " differ");
+         return;
+      end if;
+      Result := True;
+      Explanation := Null_Unbounded_String;
+   end Have_Same_Known_Esize;
+
+   -----------------------------
+   -- Have_Same_Known_RM_Size --
+   -----------------------------
+
+   procedure Have_Same_Known_RM_Size
+     (A, B        :     Type_Kind_Id;
+      Result      : out Boolean;
+      Explanation : out Unbounded_String)
+   is
+      A_RM_Size, B_RM_Size : Uint;
+   begin
+      Check_Known_RM_Size (A, A_RM_Size, Explanation);
+      if No (A_RM_Size) then
+         Result := False;
+         return;
+      end if;
+      Check_Known_RM_Size (B, B_RM_Size, Explanation);
+      if No (B_RM_Size) then
+         Result := False;
+         return;
+      end if;
+      if A_RM_Size /= B_RM_Size then
+         Result := False;
+         Explanation :=
+           To_Unbounded_String ("Size of " & Type_Name_For_Explanation (A)
+                                & " and " & Type_Name_For_Explanation (B)
+                                & " differ");
+         return;
+      end if;
+      Result := True;
+      Explanation := Null_Unbounded_String;
+   end Have_Same_Known_RM_Size;
 
    ----------------------------
    -- Invariant_Check_Needed --
@@ -1565,16 +1481,6 @@ package body SPARK_Util.Types is
       and then Expr_Value (Type_Low_Bound (T)) >
           Expr_Value (Type_High_Bound (T)));
 
-   ----------------------
-   -- Is_Standard_Type --
-   ----------------------
-
-   --  E might be a standard type or the implicit base type of such a standard
-   --  type.
-   function Is_Standard_Type (E : Type_Kind_Id) return Boolean is
-     (for some S_Type in S_Types =>
-         E = Standard_Entity (S_Type) or E = Etype (Standard_Entity (S_Type)));
-
    ------------------------------
    -- Is_Standard_Boolean_Type --
    ------------------------------
@@ -1586,6 +1492,16 @@ package body SPARK_Util.Types is
          and then Etype (E) = Standard_Boolean
          and then Scalar_Range (E) = Scalar_Range (Standard_Boolean)
          and then not Has_Predicates (E)));
+
+   ----------------------
+   -- Is_Standard_Type --
+   ----------------------
+
+   --  E might be a standard type or the implicit base type of such a standard
+   --  type.
+   function Is_Standard_Type (E : Type_Kind_Id) return Boolean is
+     (for some S_Type in S_Types =>
+         E = Standard_Entity (S_Type) or E = Etype (Standard_Entity (S_Type)));
 
    --------------------------
    -- Is_Static_Array_Type --
@@ -1884,13 +1800,6 @@ package body SPARK_Util.Types is
       return Count;
    end Num_Literals;
 
-   -----------------------
-   -- Partial_Base_Type --
-   -----------------------
-
-   function Partial_Base_Type (Ty : Type_Kind_Id) return Type_Kind_Id is
-     (Base_Type (if Is_Full_View (Ty) then Partial_View (Ty) else Ty));
-
    -------------------
    -- Parent_Retysp --
    -------------------
@@ -1936,14 +1845,12 @@ package body SPARK_Util.Types is
               else Etype (Ty));
    end Parent_Type;
 
-   ---------------------------------------
-   -- Private_Declarations_Of_Prot_Type --
-   ---------------------------------------
+   -----------------------
+   -- Partial_Base_Type --
+   -----------------------
 
-   function Private_Declarations_Of_Prot_Type
-     (E : Protected_Kind_Id)
-      return List_Id
-   is (Private_Declarations (Protected_Type_Definition (Base_Type (E))));
+   function Partial_Base_Type (Ty : Type_Kind_Id) return Type_Kind_Id is
+     (Base_Type (if Is_Full_View (Ty) then Partial_View (Ty) else Ty));
 
    -----------------------------------
    -- Predefined_Eq_Uses_Pointer_Eq --
@@ -2042,6 +1949,15 @@ package body SPARK_Util.Types is
    end Predicate_Requires_Initialization;
 
    ---------------------------------------
+   -- Private_Declarations_Of_Prot_Type --
+   ---------------------------------------
+
+   function Private_Declarations_Of_Prot_Type
+     (E : Protected_Kind_Id)
+      return List_Id
+   is (Private_Declarations (Protected_Type_Definition (Base_Type (E))));
+
+   ---------------------------------------
    -- Private_Declarations_Of_Task_Type --
    ---------------------------------------
 
@@ -2137,6 +2053,157 @@ package body SPARK_Util.Types is
       return False;
    end Requires_Interrupt_Priority;
 
+   ------------
+   -- Retysp --
+   ------------
+
+   function Retysp (T : Type_Kind_Id) return Type_Kind_Id is
+      Typ : Type_Kind_Id := T;
+
+   begin
+      --  Itypes may not be marked. Use their Etype.
+
+      if Is_Itype (Typ) and then not Entity_Marked (Typ) then
+         Typ := Etype (Typ);
+      end if;
+
+      --  Type should be marked here
+
+      if not Entity_Marked (Typ) then
+         raise Program_Error;
+      end if;
+
+      --  Incomplete types are only marked if their full view is not visible
+
+      pragma Assert
+        (not Is_Incomplete_Type (Typ) or else No (Full_View (Typ)));
+
+      --  If T is not in SPARK, go through the Partial_View chain to find its
+      --  first view in SPARK if any.
+
+      if not Entity_In_SPARK (Typ) then
+         loop
+            --  If we find a partial view in SPARK, we return it
+
+            if Entity_In_SPARK (Typ) then
+               pragma Assert (Full_View_Not_In_SPARK (Typ));
+               goto Returning;
+
+            --  No partial view in SPARK, return T
+
+            elsif not Entity_Marked (Typ)
+              or else not Is_Full_View (Typ)
+            then
+               Typ := T;
+               goto Returning;
+
+            else
+               Typ := Partial_View (Typ);
+            end if;
+         end loop;
+
+      --  If T is in SPARK but not its most underlying type, then go through
+      --  the Full_View chain until the last type in SPARK is found. This code
+      --  is largely inspired from the body of Einfo.Underlying_Type.
+
+      elsif Full_View_Not_In_SPARK (Typ) then
+         loop
+            --  If Full_View (Typ) is in SPARK, use it. Otherwise, we have
+            --  found the last type in SPARK in T's chain of Full_View.
+
+            if Present (Full_View (Typ)) then
+               if Entity_In_SPARK (Full_View (Typ)) then
+                  Typ := Full_View (Typ);
+                  pragma Assert (Full_View_Not_In_SPARK (Typ));
+               else
+                  goto Returning;
+               end if;
+
+            --  If we have a private type with an underlying full view, either
+            --  it is in SPARK and we reach it, or it is not in SPARK and we
+            --  return at this point.
+
+            elsif Is_Private_Type (Typ)
+              and then Present (Underlying_Full_View (Typ))
+            then
+               if Entity_In_SPARK (Underlying_Full_View (Typ)) then
+                  Typ := Underlying_Full_View (Typ);
+                  pragma Assert (Full_View_Not_In_SPARK (Typ));
+               else
+                  goto Returning;
+               end if;
+
+            --  Derived types without additional constraints might not have
+            --  Full_View defined; search the on the Etype instead.
+
+            elsif Is_Private_Type (Typ) then
+               pragma Assert (Etype (Typ) /= Typ);
+               if Entity_In_SPARK (Etype (Typ)) then
+                  Typ := Etype (Typ);
+                  pragma Assert (Full_View_Not_In_SPARK (Typ));
+               else
+                  goto Returning;
+               end if;
+            else
+               goto Returning;
+            end if;
+         end loop;
+
+      --  Otherwise, Typ's most underlying type is in SPARK, return it.
+
+      else
+         pragma Assert (Entity_In_SPARK (Unchecked_Full_Type (Typ)));
+         Typ := Unchecked_Full_Type (Typ);
+      end if;
+
+      <<Returning>>
+
+      --  Do not return the subtype introduced for a formal type in a generic
+      --  instantiation, if we can return the actual itself. We recognize here
+      --  cases where the formal in the instance is defined as a simple subtype
+      --  of the actual:
+      --
+      --    subtype Formal is Actual;
+      --
+      --  It is important to skip the intermediate subtype generated by the
+      --  frontend, in the case where this type is used as the designated type
+      --  of some access types, because the frontend then generates an AST with
+      --  conversions between access types that would not be allowed in source
+      --  code, because the designated types are not exactly the same (they are
+      --  similar subtypes of the same base type). And our translation to Why3
+      --  depends on being able to unify all such access types.
+
+      if Entity_In_SPARK (Typ) and then Is_Generic_Actual_Type (Typ) then
+         declare
+            P_Typ   : constant Entity_Id :=
+              (if Is_Full_View (Typ) then Partial_View (Typ) else Typ);
+            Decl    : constant Node_Id := Parent (P_Typ);
+            Sub_Ind : Node_Id;
+         begin
+            if Present (Decl)
+              and then Nkind (Decl) = N_Subtype_Declaration
+            then
+               Sub_Ind := Subtype_Indication (Decl);
+               if Nkind (Sub_Ind) in N_Has_Entity
+                 and then Present (Entity (Sub_Ind))
+               then
+                  Typ := Retysp (Entity (Sub_Ind));
+               end if;
+            end if;
+         end;
+      end if;
+
+      return Typ;
+
+   end Retysp;
+
+   -----------------
+   -- Retysp_Kind --
+   -----------------
+
+   function Retysp_Kind (T : Type_Kind_Id) return Type_Kind is
+     (Ekind (Retysp (T)));
+
    -----------------
    -- Root_Retysp --
    -----------------
@@ -2183,6 +2250,96 @@ package body SPARK_Util.Types is
          end;
       end if;
    end Static_Array_Length;
+
+   -----------------------------
+   -- Suitable_For_Precise_UC --
+   -----------------------------
+
+   function Suitable_For_Precise_UC
+     (Arg_Typ : Type_Kind_Id)
+      return True_Or_Explain
+   is
+      Typ : constant Type_Kind_Id := Retysp (Arg_Typ);
+   begin
+      case Ekind (Typ) is
+         when Integer_Kind =>
+            if Has_Biased_Representation (Typ) then
+               return False_With_Explain
+                 ("type with biased representation");
+
+            elsif Has_Modular_Integer_Type (Typ)
+              and then Has_No_Bitwise_Operations_Annotation (Typ)
+            then
+               return False_With_Explain
+                 ("type with No_Bitwise_Operations annotation");
+            end if;
+
+         when Enumeration_Kind =>
+            if Has_Enumeration_Rep_Clause (Typ)
+              and then Enumeration_Rep (First_Literal (Typ)) /= Uint_0
+            then
+               return False_With_Explain
+                 ("enumeration with non-default representation");
+            end if;
+
+         when Record_Kind =>
+            if Is_Tagged_Type (Typ) then
+               return False_With_Explain ("type is tagged");
+
+            elsif Has_Discriminants (Typ) then
+               return False_With_Explain ("type has discriminants");
+
+            elsif Reverse_Storage_Order (Base_Retysp (Typ)) then
+               return False_With_Explain
+                 ("type has reverse storage order");
+            end if;
+
+            declare
+               Comp : Entity_Id := First_Component (Typ);
+            begin
+               while Present (Comp) loop
+                  if No (Component_Bit_Offset (Comp)) then
+                     return False_With_Explain
+                       ("component offset not known");
+                  end if;
+
+                  declare
+                     Check : constant True_Or_Explain :=
+                       Suitable_For_Precise_UC (Etype (Comp));
+                  begin
+                     if not Check.Ok then
+                        return Check;
+                     end if;
+                  end;
+                  Next_Component (Comp);
+               end loop;
+            end;
+
+         when Array_Kind =>
+            declare
+               Check : constant True_Or_Explain :=
+                 Suitable_For_Precise_UC (Component_Type (Typ));
+            begin
+               if not Check.Ok then
+                  return Check;
+               end if;
+            end;
+
+            if Number_Dimensions (Typ) > Uint_1 then
+               return False_With_Explain
+                 ("array has multiple dimensions");
+
+            elsif Reverse_Storage_Order (Base_Retysp (Typ)) then
+               return False_With_Explain
+                 ("type has reverse storage order");
+            end if;
+
+         when others =>
+            return False_With_Explain ("elementary non-integer type");
+      end case;
+
+      return True_Or_Explain'(Ok => True);
+   end Suitable_For_Precise_UC;
 
    ---------------------
    -- Suitable_For_UC --
@@ -2370,96 +2527,6 @@ package body SPARK_Util.Types is
          end if;
       end if;
    end Suitable_For_UC_Gen;
-
-   -----------------------------
-   -- Suitable_For_Precise_UC --
-   -----------------------------
-
-   function Suitable_For_Precise_UC
-     (Arg_Typ : Type_Kind_Id)
-      return True_Or_Explain
-   is
-      Typ : constant Type_Kind_Id := Retysp (Arg_Typ);
-   begin
-      case Ekind (Typ) is
-         when Integer_Kind =>
-            if Has_Biased_Representation (Typ) then
-               return False_With_Explain
-                 ("type with biased representation");
-
-            elsif Has_Modular_Integer_Type (Typ)
-              and then Has_No_Bitwise_Operations_Annotation (Typ)
-            then
-               return False_With_Explain
-                 ("type with No_Bitwise_Operations annotation");
-            end if;
-
-         when Enumeration_Kind =>
-            if Has_Enumeration_Rep_Clause (Typ)
-              and then Enumeration_Rep (First_Literal (Typ)) /= Uint_0
-            then
-               return False_With_Explain
-                 ("enumeration with non-default representation");
-            end if;
-
-         when Record_Kind =>
-            if Is_Tagged_Type (Typ) then
-               return False_With_Explain ("type is tagged");
-
-            elsif Has_Discriminants (Typ) then
-               return False_With_Explain ("type has discriminants");
-
-            elsif Reverse_Storage_Order (Base_Retysp (Typ)) then
-               return False_With_Explain
-                 ("type has reverse storage order");
-            end if;
-
-            declare
-               Comp : Entity_Id := First_Component (Typ);
-            begin
-               while Present (Comp) loop
-                  if No (Component_Bit_Offset (Comp)) then
-                     return False_With_Explain
-                       ("component offset not known");
-                  end if;
-
-                  declare
-                     Check : constant True_Or_Explain :=
-                       Suitable_For_Precise_UC (Etype (Comp));
-                  begin
-                     if not Check.Ok then
-                        return Check;
-                     end if;
-                  end;
-                  Next_Component (Comp);
-               end loop;
-            end;
-
-         when Array_Kind =>
-            declare
-               Check : constant True_Or_Explain :=
-                 Suitable_For_Precise_UC (Component_Type (Typ));
-            begin
-               if not Check.Ok then
-                  return Check;
-               end if;
-            end;
-
-            if Number_Dimensions (Typ) > Uint_1 then
-               return False_With_Explain
-                 ("array has multiple dimensions");
-
-            elsif Reverse_Storage_Order (Base_Retysp (Typ)) then
-               return False_With_Explain
-                 ("type has reverse storage order");
-            end if;
-
-         when others =>
-            return False_With_Explain ("elementary non-integer type");
-      end case;
-
-      return True_Or_Explain'(Ok => True);
-   end Suitable_For_Precise_UC;
 
    ----------------------------
    -- Suitable_For_UC_Target --
@@ -2687,73 +2754,6 @@ package body SPARK_Util.Types is
    begin
       return Traverse_Type (Typ);
    end Traverse_Subcomponents;
-
-   ---------------------------
-   -- Have_Same_Known_Esize --
-   ---------------------------
-
-   procedure Have_Same_Known_Esize
-     (A, B        :     Type_Kind_Id;
-      Result      : out Boolean;
-      Explanation : out Unbounded_String)
-   is
-      A_Esize, B_Esize : Uint;
-   begin
-      Check_Known_Esize (A, A_Esize, Explanation);
-      if No (A_Esize) then
-         Result := False;
-         return;
-      end if;
-      Check_Known_Esize (B, B_Esize, Explanation);
-      if No (B_Esize) then
-         Result := False;
-         return;
-      end if;
-      if A_Esize /= B_Esize then
-         Result := False;
-         Explanation :=
-           To_Unbounded_String ("Object_Sizes of "
-                                & Type_Name_For_Explanation (A)
-                                & " and " & Type_Name_For_Explanation (B)
-                                & " differ");
-         return;
-      end if;
-      Result := True;
-      Explanation := Null_Unbounded_String;
-   end Have_Same_Known_Esize;
-
-   -----------------------------
-   -- Have_Same_Known_RM_Size --
-   -----------------------------
-
-   procedure Have_Same_Known_RM_Size
-     (A, B        :     Type_Kind_Id;
-      Result      : out Boolean;
-      Explanation : out Unbounded_String)
-   is
-      A_RM_Size, B_RM_Size : Uint;
-   begin
-      Check_Known_RM_Size (A, A_RM_Size, Explanation);
-      if No (A_RM_Size) then
-         Result := False;
-         return;
-      end if;
-      Check_Known_RM_Size (B, B_RM_Size, Explanation);
-      if No (B_RM_Size) then
-         Result := False;
-         return;
-      end if;
-      if A_RM_Size /= B_RM_Size then
-         Result := False;
-         Explanation :=
-           To_Unbounded_String ("Size of " & Type_Name_For_Explanation (A)
-                                & " and " & Type_Name_For_Explanation (B)
-                                & " differ");
-         return;
-      end if;
-      Result := True;
-      Explanation := Null_Unbounded_String;
-   end Have_Same_Known_RM_Size;
 
    -----------------------------
    -- Type_Is_Suitable_For_UC --
