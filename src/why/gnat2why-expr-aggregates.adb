@@ -947,10 +947,11 @@ package body Gnat2Why.Expr.Aggregates is
                          Params   => Body_Params,
                          Only_Var => False_Term),
                     Right => Compute_Type_Invariant
-                      (Expr        => +New_Result_Ident (Get_Typ (Name)),
-                       Ty          => Ty,
-                       Params      => Body_Params,
-                       On_Internal => True)),
+                      (Expr   => +New_Result_Ident (Get_Typ (Name)),
+                       Ty     => Ty,
+                       Params => Body_Params,
+                       Kind   => For_Check,
+                       Scop   => Current_Subp)),
                Return_Type => Get_Typ (Name),
                Labels      => Symbol_Sets.Empty_Set),
             Context => Context);
@@ -2723,11 +2724,12 @@ package body Gnat2Why.Expr.Aggregates is
                           Params   => Logic_Params,
                           Only_Var => False_Term),
                      Right => Compute_Type_Invariant
-                       (Expr        => +Var_Id,
-                        Ty          => Ty,
-                        Params      => Logic_Params,
-                        On_Internal => True)),
-                     Right => Pred)));
+                       (Expr   => +Var_Id,
+                        Ty     => Ty,
+                        Kind   => For_Check,
+                        Params => Logic_Params,
+                        Scop   => Current_Subp)),
+                  Right => Pred)));
 
          Assocs   : constant List_Id := Component_Associations (Expr);
          Exprs    : constant List_Id := Expressions (Expr);
@@ -3511,10 +3513,11 @@ package body Gnat2Why.Expr.Aggregates is
                      Params   => Params,
                      Only_Var => False_Term),
                   Right => Compute_Type_Invariant
-                    (Expr        => +Why_Id,
-                     Ty          => Get_Ada_Node (+Get_Typ (Why_Id)),
-                     Params      => Params,
-                     On_Internal => True));
+                    (Expr   => +Why_Id,
+                     Ty     => Get_Ada_Node (+Get_Typ (Why_Id)),
+                     Kind   => For_Check,
+                     Params => Params,
+                     Scop   => Current_Subp));
             end;
          end loop;
 
