@@ -75,7 +75,7 @@ with Ada.Calendar;
 with Ada.Containers;
 with Ada.Command_Line;
 with Ada.Directories;
-with Ada.Strings.Unbounded;
+with Ada.Strings.Unbounded;               use Ada.Strings.Unbounded;
 with Ada.Text_IO;
 with Assumptions;                         use Assumptions;
 with Assumptions.Search;                  use Assumptions.Search;
@@ -141,6 +141,10 @@ procedure SPARK_Report is
    procedure Print_Max_Steps (Handle : Ada.Text_IO.File_Type);
    --  Print a line that summarizes the maximum required steps
 
+   procedure Print_Most_Difficult_Proved_Checks
+     (Handle : Ada.Text_IO.File_Type);
+   --  Print the set of most difficult checks to prove
+
    procedure Compute_Assumptions;
    --  Compute remaining assumptions for all subprograms and store them in
    --  database.
@@ -174,10 +178,16 @@ procedure SPARK_Report is
    --  @return a string that concatenates all strings in the array, with spaces
    --    as separators.
 
-   procedure Process_Stats (C : Summary_Entries; Stats : JSON_Value);
+   procedure Process_Stats
+     (C         : Summary_Entries;
+      Stats     : Prover_Stat_Maps.Map;
+      Max_Steps : out Natural;
+      Max_Time  : out Float);
    --  process the stats record for the VC and update the proof information
    --  @param C the category of the VC
    --  @param Stats the stats record
+   --  @param Max_Steps maximum value of steps in Stats
+   --  @param Max_Time maximum value of time in Stats
 
    procedure Show_Header (Handle : Ada.Text_IO.File_Type; Info : JSON_Value);
    --  Print header at start of generated file "gnatprove.out"
@@ -187,7 +197,6 @@ procedure SPARK_Report is
    ---------------------------
 
    function Build_Switches_String (A : JSON_Array) return String is
-      use Ada.Strings.Unbounded;
       Buffer : Unbounded_String;
       First  : Boolean := True;
    begin
@@ -353,7 +362,6 @@ procedure SPARK_Report is
       ----------------------
 
       procedure Put_Provers_Cell (Stats : in out All_Prover_Stat) is
-         use Ada.Strings.Unbounded;
          use Prover_Stat_Maps;
          use Ada.Containers;
          Check_Total : constant Natural := Stats.Total;
@@ -413,6 +421,7 @@ procedure SPARK_Report is
 
    begin
       Compute_Total_Summary_Line;
+      Ada.Text_IO.Put_Line (Handle, "=========================");
       Ada.Text_IO.Put_Line (Handle, "Summary of SPARK analysis");
       Ada.Text_IO.Put_Line (Handle, "=========================");
       Ada.Text_IO.New_Line (Handle);
@@ -619,6 +628,9 @@ procedure SPARK_Report is
             Category : constant Possible_Entries :=
               VC_Kind_To_Summary (Kind);
             Proved   : constant Boolean := Severe = "info";
+            File     : constant String := Get (Get (Result, "file"));
+            Line     : constant Positive := Get (Get (Result, "line"));
+            Column   : constant Positive := Get (Get (Result, "col"));
          begin
             if Category = Warnings then
                null;
@@ -630,9 +642,9 @@ procedure SPARK_Report is
                   Justif_Msg => Get (Get (Result, "justif_msg")),
                   Kind       => Get (Get (Result, "annot_kind")),
                   Reason     => Get (Get (Result, "suppressed")),
-                  File       => Get (Get (Result, "file")),
-                  Line       => Get (Get (Result, "line")),
-                  Column     => Get (Get (Result, "col")));
+                  File       => File,
+                  Line       => Line,
+                  Column     => Column);
             else
                Add_Proof_Result
                  (Unit   => Unit,
@@ -664,7 +676,26 @@ procedure SPARK_Report is
                            end;
                         when PC_Prover =>
                            if Has_Field (Result, "stats") then
-                              Process_Stats (Category, Get (Result, "stats"));
+                              declare
+                                 Stats : constant Prover_Stat_Maps.Map :=
+                                   From_JSON (Get (Result, "stats"));
+                                 Max_Steps : Natural;
+                                 Max_Time  : Float;
+                              begin
+                                 Process_Stats
+                                   (Category, Stats, Max_Steps, Max_Time);
+
+                                 Update_Most_Difficult_Proved_Checks
+                                   (Proved_Check'
+                                      (Unit      => Unit,
+                                       Subp      => Subp,
+                                       Kind      => Kind,
+                                       File      => To_Unbounded_String (File),
+                                       Line      => Line,
+                                       Column    => Column,
+                                       Max_Steps => Max_Steps,
+                                       Max_Time  => Max_Time));
+                              end;
                            end if;
                            Increment (Summary (Category).Provers.Total);
                         when PC_Flow =>
@@ -918,8 +949,6 @@ procedure SPARK_Report is
                      Put_Line (Handle, "   Justified check messages:");
                      for Msg of Stat.Suppr_Checks loop
                         declare
-                           use Ada.Strings.Unbounded;
-
                            Marked_As : constant Unbounded_String :=
                              " (marked as: " & Msg.Kind;
 
@@ -1046,6 +1075,11 @@ procedure SPARK_Report is
    --  Start of processing for Print_Analysis_Report
 
    begin
+      Ada.Text_IO.Put_Line (Handle, "========================");
+      Ada.Text_IO.Put_Line (Handle, "Detailed analysis report");
+      Ada.Text_IO.Put_Line (Handle, "========================");
+      Ada.Text_IO.New_Line (Handle);
+
       if N_Un > 0 then
          Put_Line (Handle, "Analyzed" & N_Un'Img & " " & Unit_Str);
          Iter_Units (For_Each_Unit'Access, Ordered => True);
@@ -1075,15 +1109,62 @@ procedure SPARK_Report is
       Ada.Text_IO.New_Line (Handle);
    end Print_Max_Steps;
 
+   ----------------------------------------
+   -- Print_Most_Difficult_Proved_Checks --
+   ----------------------------------------
+
+   procedure Print_Most_Difficult_Proved_Checks
+     (Handle : Ada.Text_IO.File_Type)
+   is
+      Found_One : Boolean := False;
+   begin
+      Ada.Text_IO.Put_Line (Handle, "============================");
+      Ada.Text_IO.Put_Line (Handle, "Most difficult proved checks");
+      Ada.Text_IO.Put_Line (Handle, "============================");
+      Ada.Text_IO.New_Line (Handle);
+
+      for PC of reverse Most_Difficult_Proved_Checks loop
+         declare
+            Max_Time : constant Natural := Integer (PC.Max_Time);
+         begin
+            if Max_Time > 0 then
+               Found_One := True;
+               Ada.Text_IO.Put_Line
+                 (Handle,
+                  f"{To_String (PC.File)}:{PC.Line}:{PC.Column}: "
+                  & f"{Kind_Name (PC.Kind)} proved in max {Max_Time} seconds");
+            end if;
+         end;
+      end loop;
+
+      if not Found_One then
+         Ada.Text_IO.Put_Line
+           (Handle, "No check found with max time greater than 1 second");
+      end if;
+
+      Ada.Text_IO.New_Line (Handle);
+   end Print_Most_Difficult_Proved_Checks;
+
    -------------------
    -- Process_Stats --
    -------------------
 
-   procedure Process_Stats (C : Summary_Entries; Stats : JSON_Value) is
-      Map : constant Prover_Stat_Maps.Map := From_JSON (Stats);
-
+   procedure Process_Stats
+     (C         : Summary_Entries;
+      Stats     : Prover_Stat_Maps.Map;
+      Max_Steps : out Natural;
+      Max_Time  : out Float)
+   is
    begin
-      Merge_Stat_Maps (Summary (C).Provers.Provers, Map);
+      Merge_Stat_Maps (Summary (C).Provers.Provers, Stats);
+
+      Max_Steps := 0;
+      Max_Time := 0.0;
+
+      for PS of Stats loop
+         Max_Steps := Natural'Max (Max_Steps, PS.Max_Steps);
+         Max_Time := Float'Max (Max_Time, PS.Max_Time);
+      end loop;
    end Process_Stats;
 
    -----------------
@@ -1253,8 +1334,6 @@ procedure SPARK_Report is
    ---------------
 
    function To_String (Sloc : My_Sloc) return String is
-      use Ada.Strings.Unbounded;
-
       First : Boolean := True;
       UB    : Unbounded_String;
 
@@ -1393,6 +1472,7 @@ begin
       end if;
    end if;
 
+   Print_Most_Difficult_Proved_Checks (Handle);
    Print_Analysis_Report (Handle);
    Close (Handle);
 
