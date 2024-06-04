@@ -10,6 +10,7 @@ p.ads:2:13: info: implicit aspect Always_Terminates on "F1" has been proved, sub
 p.ads:3:13: info: implicit aspect Always_Terminates on "F2" has been proved, subprogram will terminate
 p.ads:4:13: info: implicit aspect Always_Terminates on "F3" has been proved, subprogram will terminate
 p.ads:5:13: info: implicit aspect Always_Terminates on "F4" has been proved, subprogram will terminate
+=========================
 Summary of SPARK analysis
 =========================
 
@@ -31,6 +32,16 @@ Total                             8    8 (100%)         .           .          .
 
 
 max steps used for successful proof: 0
+
+============================
+Most difficult proved checks
+============================
+
+No check found with max time greater than 1 second
+
+========================
+Detailed analysis report
+========================
 
 Analyzed 1 unit
 in unit p, 13 subprograms and packages out of 13 analyzed

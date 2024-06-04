@@ -13,6 +13,7 @@ depends_exercise.ads:19:11: info: data dependencies proved
 depends_exercise.ads:20:11: info: flow dependencies proved
 depends_exercise.ads:22:13: info: implicit aspect Always_Terminates on "Wait_X_Return_True" has been proved, subprogram will terminate
 depends_exercise.ads:23:11: info: flow dependencies proved
+=========================
 Summary of SPARK analysis
 =========================
 
@@ -34,6 +35,16 @@ Total                            14    11 (79%)     2 (14%)           .     1 (7
 
 
 max steps used for successful proof: 1
+
+============================
+Most difficult proved checks
+============================
+
+No check found with max time greater than 1 second
+
+========================
+Detailed analysis report
+========================
 
 Analyzed 1 unit
 in unit depends_exercise, 5 subprograms and packages out of 5 analyzed

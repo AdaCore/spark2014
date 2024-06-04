@@ -11,6 +11,9 @@ max steps used for successful proof: 1
 
 
 
+
+
+
  Assume_Call at assume_call.ads:1 flow analyzed (0 errors, 0 checks, 0 warnings and 0 pragma Assume statements) and proved (0 checks)
  Assume_Call.Caller at assume_call.adb:14 flow analyzed (0 errors, 0 checks, 1 warnings and 0 pragma Assume statements) and proved (1 checks)
  Assume_Call.Wrong_Pre at assume_call.adb:7 flow analyzed (0 errors, 0 checks, 1 warnings and 0 pragma Assume statements) and proved (0 checks)
@@ -22,15 +25,23 @@ max steps used for successful proof: 1
 -
 -
 -
+========================
+========================
 =========================
+=========================
+============================
+============================
 Analyzed 1 unit
 Assertions . . . . .
 Concurrency . . . . .
 Data Dependencies . . . . .
+Detailed analysis report
 Flow Dependencies . . . . .
 Functional Contracts 2 . 2 . .
 Initialization . . . . .
 LSP Verification . . . . .
+Most difficult proved checks
+No check found with max time greater than 1 second
 Non-Aliasing . . . . .
 Run-time Checks 2 . 1 . 1
 SPARK Analysis results Total Flow Provers Justified Unproved
