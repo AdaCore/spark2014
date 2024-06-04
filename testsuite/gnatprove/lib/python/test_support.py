@@ -1155,13 +1155,16 @@ def check_output_file(sort=False):
     The goal is to make this output independent from the order of provers
     used. In particular, the summary table may contain different percentages
     for the provers used to prove the VCs, and the columns of the table may
-    be aligned differently due to that.
+    be aligned differently due to that. Likewise, the log file may contain
+    different timings for the most difficult checks to prove.
 
     To avoid such differences:
     - replace all sequences of spaces by a single space
     - replace all sequences of '-' characters by a single one
     - filter out substrings starting with '(<provername>', up
       to the following closing parenthesis.
+    - replace substring 'proved in max nnn seconds' to hide the actual number
+      nnn under the fixed string 'nnn'
 
     This ensures a common output whatever the order of provers used.
     """
@@ -1170,13 +1173,17 @@ def check_output_file(sort=False):
     prover_tag = re.compile(
         r"(^.*)(\((CVC4|altergo|Z3|colibri|Trivial|Interval|CVC5)[^\)]*\))(.*$\n)"
     )
+    max_time = re.compile(r"(^.*proved in max )[1-9]+( seconds.*$\n)")
     output = ""
 
     with open(filename, "r") as f:
         for line in f:
             m = re.match(prover_tag, line)
+            mt = re.match(max_time, line)
             if m:
                 newline = m.group(1) + " " + m.group(4)
+            elif mt:
+                newline = mt.group(1) + "nnn" + mt.group(2)
             else:
                 newline = line
             # Replace multiple white spaces by a single one, and multiple
