@@ -836,11 +836,14 @@ package body Flow.Analysis.Sanity is
                      --  We call Get_Variables with Expand_Internal_Objects
                      --  parameter set. The only times we should get
                      --  an internal object here are for type discriminant
-                     --  constructs.
-                     pragma Assert (if Is_Internal (Var) then
-                                       Is_Type (Var)
-                                    and then
-                                    Is_Discriminant (F));
+                     --  constructs and deferred constants.
+                     pragma Assert
+                       (if Is_Internal (Var)
+                        then
+                          (Is_Type (Var) and then Is_Discriminant (F))
+                            or else
+                          (Ekind (Var) = E_Constant
+                             and then Has_Completion (Var)));
 
                      --  We emit an error if F is considered a variable, in
                      --  particular, when it is not:
