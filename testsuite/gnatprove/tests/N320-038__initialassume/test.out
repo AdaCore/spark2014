@@ -12,6 +12,9 @@ max steps used for successful proof: 1
 
 
 
+
+
+
  Full at full.ads:1 flow analyzed (0 errors, 0 checks, 0 warnings and 0 pragma Assume statements) and proved (0 checks)
  Full.Bump at full.ads:7 flow analyzed (0 errors, 0 checks, 0 warnings and 0 pragma Assume statements) and proved (3 checks)
  Full.Use_Bump at full.ads:11 flow analyzed (0 errors, 0 checks, 0 warnings and 0 pragma Assume statements) and proved (2 checks)
@@ -28,15 +31,23 @@ max steps used for successful proof: 1
 -
 -
 -
+========================
+========================
 =========================
+=========================
+============================
+============================
 Analyzed 2 units
 Assertions . . . . .
 Concurrency . . . . .
 Data Dependencies 2 2 . . .
+Detailed analysis report
 Flow Dependencies . . . . .
 Functional Contracts 5 . 5 . .
 Initialization . . . . .
 LSP Verification . . . . .
+Most difficult proved checks
+No check found with max time greater than 1 second
 Non-Aliasing . . . . .
 Run-time Checks 2 . 2 . .
 SPARK Analysis results Total Flow Provers Justified Unproved

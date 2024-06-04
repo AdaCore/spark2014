@@ -8,6 +8,7 @@ p.ads:5:13: info: implicit aspect Always_Terminates on "Add_Or_Subtract" has bee
 p.ads:7:20: info: postcondition proved (CVC5: 2 VC)
 p.ads:9:13: info: implicit aspect Always_Terminates on "Assume_Natural" has been proved, subprogram will terminate
 p.ads:12:14: warning: subprogram "Annotate_Intentional" has no effect
+=========================
 Summary of SPARK analysis
 =========================
 
@@ -29,6 +30,16 @@ Total                             9    2 (22%)     5 (56%)     2 (22%)          
 
 
 max steps used for successful proof: 1
+
+============================
+Most difficult proved checks
+============================
+
+No check found with max time greater than 1 second
+
+========================
+Detailed analysis report
+========================
 
 Analyzed 5 units
 in unit main, 1 subprograms and packages out of 1 analyzed
