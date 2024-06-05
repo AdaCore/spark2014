@@ -232,5 +232,5 @@ partition_refinement.ads:62:50: info: range check proved (CVC5: 2 VC)
 partition_refinement.ads:62:69: info: precondition proved (CVC5: 2 VC)
 partition_refinement.ads:62:81: info: range check proved (CVC5: 2 VC)
 partition_refinement.ads:64:15: info: postcondition proved (CVC5: 4 VC)
-partition_refinement.ads:65:43: medium: precondition might fail
-partition_refinement.ads:65:70: medium: precondition might fail
+partition_refinement.ads:65:43: info: precondition proved (CVC5: 2 VC)
+partition_refinement.ads:65:70: info: precondition proved (CVC5: 2 VC)
