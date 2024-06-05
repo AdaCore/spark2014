@@ -557,13 +557,15 @@ package body Gnat2Why.Expr is
      (Ada_Node         : Node_Id;
       Ty               : Type_Kind_Id;
       W_Expr           : W_Term_Id;
-      On_Default_Value : Boolean := False)
+      On_Default_Value : Boolean := False;
+      Check_Info       : Check_Info_Type := New_Check_Info)
       return W_Prog_Id;
    --  @param Ada_Node node to which the check is attached
    --  @param Ty type whose invariant needs to be checked
    --  @param W_Expr Why3 expression on which to check the invariant
    --  @param On_Default_Value True iff this invariant check applies to the
    --    default value for a type
+   --  @param Check_Info check information
    --  @return Why3 program that performs the check
 
    function New_Raise_Or_Absurd
@@ -2834,11 +2836,13 @@ package body Gnat2Why.Expr is
       Cont_Ty_Spk : constant Entity_Id := Retysp (Ty);
 
       procedure Add_Check
-        (Fn   : Entity_Id;
-         Args : W_Expr_Array;
-         Typ  : W_Type_Id);
+        (Fn        : Entity_Id;
+         Args      : W_Expr_Array;
+         Typ       : W_Type_Id;
+         Check_Inv : Boolean := False);
       --  Add pre-condition check for Fn (Args) : Typ
-      --  at the beginning of Checks.
+      --  at the beginning of Checks. If Check_Inv is True, also check the
+      --  invariant after the call if any.
 
       procedure Add_Unknown_Binding
         (Ty_Spk : Entity_Id;
@@ -2871,9 +2875,10 @@ package body Gnat2Why.Expr is
       ---------------
 
       procedure Add_Check
-        (Fn   : Entity_Id;
-         Args : W_Expr_Array;
-         Typ  : W_Type_Id)
+        (Fn        : Entity_Id;
+         Args      : W_Expr_Array;
+         Typ       : W_Type_Id;
+         Check_Inv : Boolean := False)
       is
          Name    : constant W_Identifier_Id := Fetch_Name (Fn);
 
@@ -2887,16 +2892,25 @@ package body Gnat2Why.Expr is
               Insert_Simple_Conversion (Domain => EW_Pterm,
                                         Expr   => Args (1),
                                         To     => Arg_Ty));
+         Call    : constant W_Prog_Id := New_VC_Call
+           (Ada_Node   => Fn,
+            Name       => Name,
+            Progs      => Args_Cv,
+            Reason     => VC_Precondition,
+            Typ        => Typ,
+            Check_Info => Check_Info);
+         Check   : W_Prog_Id := Call;
       begin
+         if Check_Inv then
+            Check := Insert_Invariant_Check
+              (Ada_Node   => Fn,
+               Check_Ty   => Etype (Fn),
+               W_Expr     => Check,
+               Check_Info => Check_Info);
+         end if;
+
          Checks := Sequence
-           (New_Ignore
-              (Prog => New_VC_Call
-                   (Ada_Node   => Fn,
-                    Name       => Name,
-                    Progs      => Args_Cv,
-                    Reason     => VC_Precondition,
-                    Typ        => Typ,
-                    Check_Info => Check_Info)),
+           (New_Ignore (Prog => Check),
             Checks);
       end Add_Check;
 
@@ -2911,16 +2925,11 @@ package body Gnat2Why.Expr is
       is
          Res_Id : constant W_Identifier_Id :=
            New_Result_Ident (Ty_Why);
-         Post   : W_Pred_Id :=
-           Compute_Dynamic_Invariant (+Res_Id, Ty_Spk, Params);
+         Post   : constant W_Pred_Id := New_And_Pred
+           (Left   => Compute_Dynamic_Invariant (+Res_Id, Ty_Spk, Params),
+            Right  => Compute_Type_Invariant
+              (+Res_Id, Ty_Spk, Params, On_Internal  => True));
       begin
-         if Has_Visible_Type_Invariants (Ty_Spk) then
-            Post := +New_And_Expr
-              (Left => +Post,
-               Right => +Compute_Type_Invariant
-                 (+Res_Id, Ty_Spk, Params, On_Internal  => True),
-               Domain => EW_Pred);
-         end if;
          Checks := New_Typed_Binding
            (Name    => V_Name,
             Def     => New_Any_Expr
@@ -3041,11 +3050,20 @@ package body Gnat2Why.Expr is
          --    ignore (Element-Check (Cont, Curs))
 
          if Present (Fn_Element) then
+
+            --  Check the invariant for elements if quantification can be
+            --  done on elements.
+
             Add_Check (Fn_Element,
                        Args_Both,
-                       To_Why_Ty (Retysp (Etype (Fn_Element))));
+                       To_Why_Ty (Retysp (Etype (Fn_Element))),
+                       Check_Inv => Annot_Present
+                       and then Annot.Kind = Contains);
          end if;
-         Add_Check (Fn_Next, Args_Both, Curs_Ty_Why);
+
+         --  Always check the invariant for cursors
+
+         Add_Check (Fn_Next, Args_Both, Curs_Ty_Why, Check_Inv => True);
 
          declare
             Name : constant W_Identifier_Id :=
@@ -3100,7 +3118,7 @@ package body Gnat2Why.Expr is
             end case;
          end if;
 
-         Add_Check (Fn_First, Args_One, Curs_Ty_Why);
+         Add_Check (Fn_First, Args_One, Curs_Ty_Why, Check_Inv => True);
          Add_Unknown_Binding (Cont_Ty_Spk, Cont_Ty_Why, Cont_Id);
       end;
 
@@ -8603,16 +8621,21 @@ package body Gnat2Why.Expr is
             Domain       => Domain,
             Params       => Params);
 
-         --  Add the dynamic predicate of the index type
-         --  It will be needed to use Has_Element definition.
+         --  Add the dynamic predicate and invariant of the index type
 
          declare
-            Inv : constant W_Pred_Id := Compute_Dynamic_Inv_And_Initialization
-              (Expr          => +W_Index_Var,
-               Ty            => Index_Type,
-               Initialized   => True_Term,
-               Only_Var      => False_Term,
-               Params        => Params);
+            Inv : constant W_Pred_Id := New_And_Pred
+              (Compute_Dynamic_Inv_And_Initialization
+                 (Expr          => +W_Index_Var,
+                  Ty            => Index_Type,
+                  Initialized   => True_Term,
+                  Only_Var      => False_Term,
+                  Params        => Params),
+               Compute_Type_Invariant
+                 (Expr         => +W_Index_Var,
+                  Ty           => Index_Type,
+                  Params       => Params,
+                  On_Internal  => True));
          begin
             W_Bound_Expr :=
               New_And_Expr
@@ -9880,10 +9903,11 @@ package body Gnat2Why.Expr is
    ----------------------------
 
    function Insert_Invariant_Check
-     (Ada_Node : Node_Id;
-      Check_Ty : Type_Kind_Id;
-      W_Expr   : W_Prog_Id;
-      Var_Ent  : Opt_Object_Kind_Id := Empty)
+     (Ada_Node   : Node_Id;
+      Check_Ty   : Type_Kind_Id;
+      W_Expr     : W_Prog_Id;
+      Var_Ent    : Opt_Object_Kind_Id := Empty;
+      Check_Info : Check_Info_Type := New_Check_Info)
       return W_Prog_Id
    is
       W_Tmp : constant W_Identifier_Id :=
@@ -9893,7 +9917,10 @@ package body Gnat2Why.Expr is
       --  so that the proper bounds can be retrieved.
 
       W_Seq : constant W_Prog_Id :=
-        Sequence (New_Invariant_Check (Ada_Node, Check_Ty, +W_Tmp), +W_Tmp);
+        Sequence
+          (New_Invariant_Check
+             (Ada_Node, Check_Ty, +W_Tmp, Check_Info => Check_Info),
+           +W_Tmp);
    begin
       return New_Binding (Ada_Node => Ada_Node,
                           Name     => +W_Tmp,
@@ -11174,7 +11201,8 @@ package body Gnat2Why.Expr is
      (Ada_Node         : Node_Id;
       Ty               : Type_Kind_Id;
       W_Expr           : W_Term_Id;
-      On_Default_Value : Boolean := False)
+      On_Default_Value : Boolean := False;
+      Check_Info       : Check_Info_Type := New_Check_Info)
       return W_Prog_Id
    is
       Check : constant W_Pred_Id :=
@@ -11192,7 +11220,7 @@ package body Gnat2Why.Expr is
          return +Void;
       else
          return New_Assert
-           (Pred        => New_VC_Pred (Ada_Node, Check, Kind),
+           (Pred        => New_VC_Pred (Ada_Node, Check, Kind, Check_Info),
             Assert_Kind => EW_Assert);
       end if;
    end New_Invariant_Check;

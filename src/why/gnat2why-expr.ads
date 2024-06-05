@@ -515,16 +515,18 @@ package Gnat2Why.Expr is
    --  @result Why3 program that performs the check and returns [W_Expr]
 
    function Insert_Invariant_Check
-     (Ada_Node : Node_Id;
-      Check_Ty : Type_Kind_Id;
-      W_Expr   : W_Prog_Id;
-      Var_Ent  : Opt_Object_Kind_Id := Empty)
+     (Ada_Node   : Node_Id;
+      Check_Ty   : Type_Kind_Id;
+      W_Expr     : W_Prog_Id;
+      Var_Ent    : Opt_Object_Kind_Id := Empty;
+      Check_Info : Check_Info_Type := New_Check_Info)
       return W_Prog_Id;
    --  @param Ada_Node node to which the check is attached
    --  @param Check_Ty type whose invariant needs to be checked
    --  @param W_Expr Why3 expression on which to check the invariant
    --  @param Var_Ent entity of the corresponding variable if W_Expr is an
    --         array in split form.
+   --  @param Check_Info information for the check
    --  @result Why3 program that performs the check and returns [W_Expr]
 
    function New_Equality_Of_Preserved_Parts
