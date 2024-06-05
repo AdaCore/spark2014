@@ -1451,7 +1451,7 @@ package body Why.Gen.Pointers is
             Name     => E_Symb (Check_Ty, WNE_Range_Check_Fun, Relaxed_Init),
             Progs    =>
               Prepare_Args_For_Access_Subtype_Check
-                (Check_Ty, +Ptr_Expr, EW_Pterm),
+                (Check_Ty, +Ptr_Expr, EW_Pterm, Body_Params),
             Reason   => (if Has_Array_Type (Des_Ty) then VC_Range_Check
                          else VC_Discriminant_Check),
             Typ      => Get_Type (+Ptr_Expr));
@@ -1815,7 +1815,8 @@ package body Why.Gen.Pointers is
    function Prepare_Args_For_Access_Subtype_Check
      (Check_Ty : Entity_Id;
       Expr     : W_Expr_Id;
-      Domain   : EW_Domain)
+      Domain   : EW_Domain;
+      Params   : Transformation_Params)
       return W_Expr_Array
    is
       Des_Ty : constant Entity_Id :=
@@ -1852,7 +1853,7 @@ package body Why.Gen.Pointers is
       else
          pragma Assert (Has_Discriminants (Des_Ty));
          return Get_Discriminants_Of_Subtype
-           (Des_Ty, Term_Domain (Domain)) & Expr;
+           (Des_Ty, Term_Domain (Domain), Params) & Expr;
       end if;
    end Prepare_Args_For_Access_Subtype_Check;
 
