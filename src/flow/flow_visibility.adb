@@ -632,7 +632,7 @@ package body Flow_Visibility is
       --  is easier to know which one.
       -------------------------------------------------------------------------
 
-      pragma Assert (Present (Container) or else Present (Parent));
+      pragma Assert (Present (Container) xor Present (Parent));
       --  Everything is nested or else has a parent
 
       pragma Assert (not (Is_Private and Present (Container)));
@@ -642,7 +642,7 @@ package body Flow_Visibility is
       --  Template, if present, is a generic unit
 
       pragma Assert (if Present (Parent)
-                     then Ekind (Parent) in E_Package | E_Generic_Package);
+                     then Is_Package_Or_Generic_Package (Parent));
       --  Parent, if present, must be a package or a generic package
 
       -------------------------------------------------------------------------
