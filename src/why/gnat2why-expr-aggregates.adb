@@ -932,14 +932,25 @@ package body Gnat2Why.Expr.Aggregates is
          return W_Prog_Id
       is
       begin
+         --  Assume the type invariant of key and element types so the checks
+         --  are done independently of the scope in which the aggregate is
+         --  used. Invariant checks are perfomed on values of aggregates and
+         --  on the result of Empty and Add.
+
          return New_Typed_Binding
            (Name    => Name,
             Def     => New_Any_Expr
-              (Post        => Compute_Dynamic_Inv_And_Initialization
-                   (Expr     => +New_Result_Ident (Get_Typ (Name)),
-                    Ty       => Ty,
-                    Params   => Body_Params,
-                    Only_Var => False_Term),
+              (Post        => New_And_Pred
+                   (Left => Compute_Dynamic_Inv_And_Initialization
+                        (Expr     => +New_Result_Ident (Get_Typ (Name)),
+                         Ty       => Ty,
+                         Params   => Body_Params,
+                         Only_Var => False_Term),
+                    Right => Compute_Type_Invariant
+                      (Expr        => +New_Result_Ident (Get_Typ (Name)),
+                       Ty          => Ty,
+                       Params      => Body_Params,
+                       On_Internal => True)),
                Return_Type => Get_Typ (Name),
                Labels      => Symbol_Sets.Empty_Set),
             Context => Context);
@@ -1114,6 +1125,17 @@ package body Gnat2Why.Expr.Aggregates is
 
          pragma Assert
            (Cont_Store and then not Snd_Store and then not Thd_Store);
+
+         --  Check type invariant on Add so aggregates can be used in any
+         --  scope.
+
+         Preserv_Checks := Sequence
+           (Left  => New_Ignore
+              (Prog => Insert_Invariant_Check
+                   (Ada_Node => Add_Procedure,
+                    Check_Ty => E,
+                    W_Expr   => +New_Cont_Id)),
+            Right => Preserv_Checks);
 
          --  Reconstruct the container parameter
 
@@ -2022,18 +2044,9 @@ package body Gnat2Why.Expr.Aggregates is
                   end;
                end if;
 
-               Preserv_Checks := New_Typed_Binding
+               Preserv_Checks := New_Binding_To_Any
                  (Name    => Other_Id,
-                  Def     => New_Any_Expr
-                    (Post        =>
-                         Compute_Dynamic_Inv_And_Initialization
-                       (Expr     => +New_Result_Ident
-                            (Get_Typ (Other_Id)),
-                        Ty       => Model_Annot.Key_Type,
-                        Params   => Body_Params,
-                        Only_Var => False_Term),
-                     Return_Type => Get_Typ (Other_Id),
-                     Labels      => Symbol_Sets.Empty_Set),
+                  Ty      => Model_Annot.Key_Type,
                   Context => Preserv_Checks);
 
                --  For Init_Checks, define key_id:
@@ -2268,6 +2281,17 @@ package body Gnat2Why.Expr.Aggregates is
                   Right  => Capacity_Call),
                Associated_Fun => Capacity_Fun);
          end if;
+
+         --  Check type invariant on the result of Empty so aggregates can be
+         --  used in any scope.
+
+         Init_Checks := Sequence
+           (Left  => New_Ignore
+              (Prog => Insert_Invariant_Check
+                   (Ada_Node => Annot.Empty_Function,
+                    Check_Ty => E,
+                    W_Expr   => +Cont_Id)),
+            Right => Init_Checks);
 
          --  Introduce a binding for Cont_Id
 
@@ -2525,6 +2549,16 @@ package body Gnat2Why.Expr.Aggregates is
                   Domain        => Domain,
                   Params        => Params,
                   Expected_Type => Get_Typ (Why_Id));
+
+               --  The handling of container aggregates assumes type invariants
+               --  on keys and elements. Check them here.
+
+               if Domain = EW_Prog then
+                  Call_Args (Top) := +Insert_Invariant_Check
+                    (Ada_Node => Value,
+                     Check_Ty => Etype (Value),
+                     W_Expr   => +Call_Args (Top));
+               end if;
             end;
          end loop;
 
@@ -2682,12 +2716,18 @@ package body Gnat2Why.Expr.Aggregates is
                            (Terms => (1 => +Trigger)))),
                Pred      => New_Connection
                  (Op    => EW_Imply,
-                  Left  => Compute_Dynamic_Inv_And_Initialization
-                    (Expr     => +Var_Id,
-                     Ty       => Ty,
-                     Params   => Logic_Params,
-                     Only_Var => False_Term),
-                  Right => Pred)));
+                  Left  => New_And_Pred
+                    (Left  => Compute_Dynamic_Inv_And_Initialization
+                         (Expr     => +Var_Id,
+                          Ty       => Ty,
+                          Params   => Logic_Params,
+                          Only_Var => False_Term),
+                     Right => Compute_Type_Invariant
+                       (Expr        => +Var_Id,
+                        Ty          => Ty,
+                        Params      => Logic_Params,
+                        On_Internal => True)),
+                     Right => Pred)));
 
          Assocs   : constant List_Id := Component_Associations (Expr);
          Exprs    : constant List_Id := Expressions (Expr);
@@ -3464,11 +3504,17 @@ package body Gnat2Why.Expr.Aggregates is
                   B_Ent    => Null_Entity_Name,
                   Mutable  => False,
                   Labels   => Symbol_Sets.Empty_Set);
-               Guards (Top) := Compute_Dynamic_Inv_And_Initialization
-                 (Expr     => +Why_Id,
-                  Ty       => Get_Ada_Node (+Get_Typ (Why_Id)),
-                  Params   => Params,
-                  Only_Var => False_Term);
+               Guards (Top) := New_And_Pred
+                 (Left  => Compute_Dynamic_Inv_And_Initialization
+                    (Expr     => +Why_Id,
+                     Ty       => Get_Ada_Node (+Get_Typ (Why_Id)),
+                     Params   => Params,
+                     Only_Var => False_Term),
+                  Right => Compute_Type_Invariant
+                    (Expr        => +Why_Id,
+                     Ty          => Get_Ada_Node (+Get_Typ (Why_Id)),
+                     Params      => Params,
+                     On_Internal => True));
             end;
          end loop;
 
