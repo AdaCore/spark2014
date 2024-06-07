@@ -538,6 +538,9 @@ package body Flow_Visibility is
          Is_Private :=
            Is_Compilation_Unit (E)
              and then
+           (Is_Generic_Subprogram (E)
+             or else not Is_Generic_Instance (E))
+             and then
            Private_Present (Enclosing_Comp_Unit_Node (E));
 
          if Is_Compilation_Unit (E) then
