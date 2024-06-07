@@ -6728,6 +6728,9 @@ package body Flow_Utility is
                                               or not Extensions_Irrelevant));
                   end;
 
+               when Name_Old =>
+                  M := Recurse_On (Prefix (N), Map_Root);
+
                when others =>
                   Error_Msg_N ("cannot untangle attribute", N);
                   raise Program_Error;
