@@ -394,7 +394,9 @@ package body Flow.Analysis is
 
       function Search_Expr (N : Node_Id) return Traverse_Result is
       begin
-         --  HACK: skip deep choices for now until they are supported in flow
+         --  Ignore deep delta choices, because they are too complicated and
+         --  this routine merely determines location for the error message.
+
          if Nkind (N) in N_Selected_Component | N_Indexed_Component
            and then Nkind (Parent (N)) = N_Component_Association
            and then Is_List_Member (N)
@@ -402,14 +404,13 @@ package body Flow.Analysis is
            and then Sem_Aggr.Is_Deep_Choice (N, Etype (Parent (Parent (N))))
          then
             return Skip;
-         end if;
 
          --  Identifier appearing as a choice in a component association is not
          --  really an expression (except when used as an index of an array
          --  component association). We process such identifiers while
          --  recursively traversing record aggregates.
 
-         if Nkind (N) = N_Identifier
+         elsif Nkind (N) = N_Identifier
            and then Nkind (Parent (N)) = N_Component_Association
            and then Is_List_Member (N)
            and then List_Containing (N) = Choices (Parent (N))

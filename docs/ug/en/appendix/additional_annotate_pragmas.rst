@@ -1054,6 +1054,75 @@ specificaly for the analysis of a given unit, using the dual annotations
 Overriding the Default Handling of Visibility
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+The private part of withed units is visible by |GNATprove| by default if it is
+in |SPARK|. This is useful in particular for units which declare private types
+as it makes it optional for users to introduce a proper abstraction for these
+types. As an example, consider the following package:
+
+.. literalinclude:: /examples/ug__hide_private_no_annot/geometry.ads
+   :language: ada
+   :linenos:
+
+The package ``Geometry`` is not annotated with any contract. However, as its
+private part is visible, it is still possible to prove programs using this
+library:
+
+.. literalinclude:: /examples/ug__hide_private_no_annot/use_geometry.adb
+   :language: ada
+   :linenos:
+
+.. literalinclude:: /examples/ug__hide_private_no_annot/test.out
+   :language: none
+   :linenos:
+
+This behavior is useful in general. However, when designing complex libraries,
+it might be interesting to enforce abstraction in order to reduce the
+proof context in user code. It can be done by using a ``Hide_Info`` annotation
+at the top of the private part of a package:
+
+.. literalinclude:: /examples/ug__hide_private_annot/geometry.ads
+   :language: ada
+   :linenos:
+
+Such an annotation is only allowed on library-level packages that are visible
+from outside the library unit. This excludes in particular nested packages in
+a package body or in a private child package. They cause the private
+parts of annotated packages to no longer be visible when verifying
+user code. However, they remain visible when analysing enclosing units and
+child packages. Note that using this annotation generally requires users to
+write additional contracts for user code to remain provable. In particular,
+this might include getter or model functions as well as a user-defined
+primitive equality with a contract. As an example, with this annotation and
+no other changes, ``Use_Geometry`` becomes impossible to prove:
+
+.. literalinclude:: /examples/ug__hide_private_annot/test.out
+   :language: none
+   :linenos:
+
+Retaining provability can be done for example by introducing ghost functions
+returning the width and the heigth of a rectangle and using them in the
+contracts of other functions. The obvious duplication here is the reason why
+abstraction is not enforced on private parts by default:
+
+.. literalinclude:: /examples/ug__hide_private_abstraction/geometry.ads
+   :language: ada
+   :linenos:
+
+.. literalinclude:: /examples/ug__hide_private_abstraction/test.out
+   :language: none
+   :linenos:
+
+.. note::
+
+   Private types declared in packages with hidden private parts should be
+   annotated with ``Ownership`` and ``Predefined_Equality`` annotations if
+   their full view is subject to ownership or if its predefined equality is
+   restricted (in particular if they have access parts). Otherwise, |GNATprove|
+   rejects the code with an error. See
+   :ref:`Annotation for Enforcing Ownership Checking on a Private Type`
+   and :ref:`Annotation for the Predefined Equality of Private Types` for more
+   information.
+
 By default, refined postconditions and bodies of expression functions declared
 in the body of a package are not visible from outside of this package. This
 enforces abstraction and prevents the proof context from growing too much, in

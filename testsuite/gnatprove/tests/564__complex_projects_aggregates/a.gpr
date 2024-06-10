@@ -1,0 +1,12 @@
+project A is
+
+   for Source_Dirs use ("srca");
+   for Object_Dir use "obja";
+
+   for Main use ("main.adb");
+
+   package Builder is
+      for Global_Configuration_Pragmas use "spark.adc";
+   end Builder;
+
+end A;

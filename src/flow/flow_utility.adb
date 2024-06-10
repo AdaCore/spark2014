@@ -31,7 +31,7 @@ with Namet;                           use Namet;
 with Nlists;                          use Nlists;
 with Output;                          use Output;
 with Rtsfind;                         use Rtsfind;
-with Sem_Aggr;
+with Sem_Aggr;                        use Sem_Aggr;
 with Sem_Prag;                        use Sem_Prag;
 with Sem_Type;                        use Sem_Type;
 with Sinfo.Utils;                     use Sinfo.Utils;
@@ -1078,6 +1078,9 @@ package body Flow_Utility is
       Root_Entity : Entity_Id;
       --  To avoid repeated calls to Entity on the Root_Node
 
+      Root_Overlaid : Boolean;
+      --  If the root entity is overlaid, we handle it as a partial assignemt
+
    begin
       --  First we turn the tree into a more useful sequence. We also determine
       --  the root node which should be an entire variable.
@@ -1098,7 +1101,8 @@ package body Flow_Utility is
 
       pragma Assert (Nkind (Root_Node) in N_Identifier | N_Expanded_Name);
 
-      Root_Entity := Entity (Root_Node);
+      Root_Entity   := Entity (Root_Node);
+      Root_Overlaid := False;
 
       if Is_Protected_Component (Root_Entity) then
          Map_Root :=
@@ -1119,6 +1123,8 @@ package body Flow_Utility is
          Map_Root :=
            Direct_Mapping_Id (Ultimate_Overlaid_Entity (Root_Entity));
 
+         Root_Overlaid := True;
+
       else
          Map_Root := Direct_Mapping_Id (Root_Entity);
       end if;
@@ -1134,10 +1140,15 @@ package body Flow_Utility is
       for N of Seq loop
          case Interesting_Nodes (Nkind (N)) is
             when N_Selected_Component =>
-               Map_Root :=
-                 Add_Component
-                   (Map_Root,
-                    Unique_Component (Entity (Selector_Name (N))));
+               if Root_Overlaid then
+                  Partial_Definition := True;
+                  exit;
+               else
+                  Map_Root :=
+                    Add_Component
+                      (Map_Root,
+                       Unique_Component (Entity (Selector_Name (N))));
+               end if;
 
             when N_Type_Conversion =>
                View_Conversion := True;
@@ -1154,7 +1165,7 @@ package body Flow_Utility is
       --  Sanity-check: the Map_Root part of the results should be the same as
       --  what would be returned by Path_To_Flow_Id.
 
-      pragma Assert (Map_Root = Path_To_Flow_Id (N));
+      pragma Assert (Root_Overlaid or else Map_Root = Path_To_Flow_Id (N));
    end Get_Assignment_Target_Properties;
 
    -----------------
@@ -4389,10 +4400,58 @@ package body Flow_Utility is
                   else
                      pragma Assert (Is_Array_Type (T));
 
-                     --  ??? Deep delta aggregates are not handled yet, just
-                     --  skip them.
-
                      if Is_Deep_Delta_Aggregate (N) then
+
+                        --  Pick variables from the base expression
+
+                        Variables.Union (Recurse (Expression (N)));
+
+                        --  Pick variables from the array component association
+                        --  list.
+
+                        declare
+                           Assoc  : Node_Id;
+                           Choice : Node_Id;
+                           Expr   : Node_Id;
+                           Pref   : Node_Id;
+                        begin
+                           Assoc := First (Component_Associations (N));
+                           while Present (Assoc) loop
+
+                              Choice := First (Choices (Assoc));
+                              while Present (Choice) loop
+                                 pragma Assert (Is_Deep_Choice (Choice, T));
+                                 Pref := Choice;
+                                 while not Is_Root_Prefix_Of_Deep_Choice (Pref)
+                                 loop
+                                    --  Pick variables from the index
+                                    --  expressions.
+
+                                    if Nkind (Pref) = N_Indexed_Component then
+                                       Expr := First (Expressions (Pref));
+                                       while Present (Expr) loop
+                                          Variables.Union (Recurse (Expr));
+                                          Next (Expr);
+                                       end loop;
+
+                                    else
+                                       pragma Assert
+                                         (Nkind (Pref) = N_Selected_Component);
+                                    end if;
+                                    Pref := Prefix (Pref);
+                                 end loop;
+
+                                 Variables.Union (Recurse (Pref));
+
+                                 Next (Choice);
+                              end loop;
+
+                              Variables.Union
+                                (Recurse (Expression (Assoc)));
+
+                              Next (Assoc);
+                           end loop;
+                        end;
                         return Skip;
                      end if;
                   end if;
@@ -6165,6 +6224,12 @@ package body Flow_Utility is
          Input  : Node_Id;
          F      : Flow_Id;
 
+         Deep_Choice_Partial : Boolean;
+         Deep_Choice_Root    : Node_Id;
+         Deep_Choice_Seq     : Node_Lists.List;
+         Deep_Choice_Vars    : Flow_Id_Sets.Set;
+         --  For handling deep delta aggregates
+
          Class_Wide_Conversion : constant Boolean :=
            not Is_Class_Wide_Type (Get_Type (N, Scope))
            and then Is_Class_Wide_Type (Map_Type);
@@ -6182,23 +6247,96 @@ package body Flow_Utility is
          while Present (Assoc) loop
             pragma Assert (Nkind (Assoc) = N_Component_Association);
 
+            Deep_Choice_Partial := False;
+
             Input  := Expression (Assoc);
             Output := First (Choices (Assoc));
 
-            --  HACK: skip deep choices for now until they are supported in
-            --  flow.
-            if not Sem_Aggr.Is_Deep_Choice (Output, Etype (Pref)) then
+            if Sem_Aggr.Is_Deep_Choice (Output, Etype (Pref)) then
+
+               --  Determine the root node and the sequence of its selected
+               --  and indexed components.
+
+               Deep_Choice_Root := Output;
+               Deep_Choice_Seq  := Node_Lists.Empty_List;
+               while not Is_Root_Prefix_Of_Deep_Choice (Deep_Choice_Root) loop
+                  Deep_Choice_Seq.Prepend (Deep_Choice_Root);
+                  Deep_Choice_Root := Prefix (Deep_Choice_Root);
+               end loop;
+
+               --  Build the assigned target Flow_Id and determine whether this
+               --  is a partial update (like partially assigned arrays).
+
+               F :=
+                 Add_Component
+                   (Map_Root,
+                    Unique_Component (Entity (Deep_Choice_Root)));
+
+               for N of Deep_Choice_Seq loop
+                  case Nkind (N) is
+                     when N_Selected_Component =>
+                        F :=
+                          Add_Component
+                            (F,
+                             Unique_Component (Entity (Selector_Name (N))));
+
+                     when N_Indexed_Component =>
+                        Deep_Choice_Partial := True;
+                        exit;
+
+                     when others =>
+                        raise Program_Error;
+                  end case;
+               end loop;
+
+            else
                F :=
                  Add_Component (Map_Root, Unique_Component (Entity (Output)));
+            end if;
 
-               if Is_Record_Type (Get_Type (Entity (Output), Scope)) then
-                  for C in Recurse_On (Input, F).Iterate loop
-                     M.Replace (Flow_Id_Maps.Key (C),
-                                Flow_Id_Maps.Element (C));
-                  end loop;
-               else
-                  M.Replace (F, Get_Vars_Wrapper (Input));
-               end if;
+            --  Partial update is handled like a self-assignment, i.e. it uses
+            --  the current value, variables from the index expressions and
+            --  from the input expression.
+
+            if Deep_Choice_Partial then
+
+               --  For a partial update collect variables from its index
+               --  expressions.
+
+               Deep_Choice_Vars := Flow_Id_Sets.Empty_Set;
+
+               for N of Deep_Choice_Seq loop
+                  case Nkind (N) is
+                     when N_Selected_Component =>
+                        null;
+
+                     when N_Indexed_Component =>
+                        declare
+                           Expr : Node_Id;
+                        begin
+                           Expr := First (Expressions (N));
+                           while Present (Expr) loop
+                              Deep_Choice_Vars.Union (Get_Vars_Wrapper (Expr));
+                              Next (Expr);
+                           end loop;
+                        end;
+
+                     when others =>
+                        raise Program_Error;
+                  end case;
+               end loop;
+
+               Deep_Choice_Vars.Union (M (F));
+               Deep_Choice_Vars.Union (Get_Vars_Wrapper (Input));
+               M.Replace (F, Deep_Choice_Vars);
+
+            elsif Is_Record_Type (Get_Type (F, Scope)) then
+               for C in Recurse_On (Input, F).Iterate loop
+                  M.Replace (Flow_Id_Maps.Key (C),
+                             Flow_Id_Maps.Element (C));
+               end loop;
+            else
+               M.Replace (F, Get_Vars_Wrapper (Input));
             end if;
 
             --  Multiple component choices have been rewritten into individual

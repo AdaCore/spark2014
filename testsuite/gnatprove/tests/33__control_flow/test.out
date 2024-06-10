@@ -1,4 +1,3 @@
-large_control_flow_frame_condition.adb:6:04: info: no contextual analysis of "Nested" (multiple returns)
 large_control_flow_frame_condition.adb:13:16: info: implicit function contract might not be available on calls from enclosing unit
 large_control_flow_frame_condition.adb:56:27: medium: implicit aspect Always_Terminates on "Nested" could be incorrect, loop might be nonterminating [possible fix: add loop variant in the loop body]
 large_control_flow_frame_condition.adb:59:21: medium: overflow check might fail, cannot prove upper bound for MD9 + 1 (e.g. when MD9 = Integer'Last) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: loop invariant at line 72 should mention MD9]
@@ -147,6 +146,7 @@ large_control_flow_frame_condition.adb:325:21: info: overflow check proved (CVC5
 large_control_flow_frame_condition.adb:327:10: warning: this statement is never reached
 large_control_flow_frame_condition.adb:327:10: warning: unreachable code
 large_control_flow_frame_condition.adb:329:21: medium: overflow check might fail, cannot prove upper bound for MD0 + 1 (e.g. when MD0 = Integer'Last) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: loop invariant at line 72 should mention MD0]
+large_control_flow_frame_condition.adb:376:07: info: no contextual analysis of "Nested" (exception handler)
 nested_loops_frame_condition.adb:14:30: info: loop invariant initialization proved (Trivial: 1 VC)
 nested_loops_frame_condition.adb:14:30: info: loop invariant preservation proved (Trivial: 1 VC)
 nested_loops_frame_condition.adb:17:33: info: loop invariant initialization proved (Trivial: 1 VC)

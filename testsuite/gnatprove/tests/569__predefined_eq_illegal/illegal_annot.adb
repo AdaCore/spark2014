@@ -15,6 +15,8 @@ procedure Illegal_Annot with SPARK_Mode is
    package P2 is
       procedure P with
         Annotate => (GNATprove, Predefined_Equality, "No_Equality");
+      type T is new Integer with
+        Annotate => (GNATprove, Predefined_Equality, "No_Equality");
    private
       pragma SPARK_Mode (Off);
       procedure P is null;

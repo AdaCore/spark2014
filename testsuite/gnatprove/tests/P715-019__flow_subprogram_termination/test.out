@@ -34,7 +34,6 @@ container.adb:61:39: info: loop invariant preservation proved (CVC5: 1 VC)
 container.adb:62:37: info: loop variant proved (CVC5: 1 VC)
 container.adb:70:11: info: precondition proved (CVC5: 1 VC)
 container.adb:70:11: info: precondition proved (Trivial: 1 VC)
-container.adb:72:10: warning: statement has no effect
 container.adb:73:17: info: range check proved (CVC5: 4 VC)
 container.adb:74:33: info: loop invariant initialization proved (CVC5: 1 VC)
 container.adb:74:33: info: loop invariant preservation proved (CVC5: 1 VC)

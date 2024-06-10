@@ -2694,15 +2694,30 @@ package body Why.Gen.Expr is
       --     bitvector_? or real), convert from one to the other.
       --     Note that for checks, the base type of Boolean is "int".
 
-      if Cur /= Base_Why_Type_No_Bool (To) then
-         Result := Insert_Single_Conversion (Ada_Node => Ada_Node,
-                                             Domain   => Domain,
-                                             From     => Cur,
-                                             To       =>
-                                               Base_Why_Type_No_Bool (To),
-                                             Expr     => Result);
-         Cur := Base_Why_Type_No_Bool (To);
-      end if;
+      declare
+         To_Ty : W_Type_Id := Base_Why_Type (To);
+      begin
+         --  Avoid converting Booleans to integers when there is no check
+
+         if To_Ty = EW_Bool_Type
+           and then
+             (Cur /= EW_Bool_Type
+              or else (Present (Range_Type) and then not Range_Check_Applied)
+              or else (Domain = EW_Prog and then Do_Predicate_Check))
+         then
+            To_Ty := EW_Int_Type;
+         end if;
+
+         if Cur /= To_Ty then
+            Result := Insert_Single_Conversion
+              (Ada_Node => Ada_Node,
+               Domain   => Domain,
+               From     => Cur,
+               To       => To_Ty,
+               Expr     => Result);
+            Cur := To_Ty;
+         end if;
+      end;
 
       --  5. Possibly perform the range check, if not already applied
 
@@ -2745,14 +2760,6 @@ package body Why.Gen.Expr is
                                              To       => To_Conc,
                                              Expr     => Result);
 
-      --  If the type is in split form, no conversion is needed. Change the
-      --  Ada_Node to the expected type. We do that by adding a dummy node.
-
-      elsif Get_Type_Kind (To_Conc) = EW_Split then
-         Result := New_Label (Labels => Symbol_Sets.Empty_Set,
-                              Def    => Result,
-                              Domain => Domain,
-                              Typ    => To_Conc);
       end if;
 
       --  8. Perform a predicate check if needed, after the final conversion
@@ -2788,6 +2795,18 @@ package body Why.Gen.Expr is
                Args     => (1 => Result),
                Typ      => To);
          end if;
+      end if;
+
+      --  10. Change type to the expected one by adding a dummy node if needed.
+      --  This may be required because some of the conversions are no-ops in
+      --  Why.
+
+      if Get_Type (Result) /= To then
+         Result := New_Label (Ada_Node => Ada_Node,
+                              Labels   => Symbol_Sets.Empty_Set,
+                              Def      => Result,
+                              Domain   => Domain,
+                              Typ      => To);
       end if;
 
       return Result;
@@ -3234,8 +3253,7 @@ package body Why.Gen.Expr is
       Use_Predef : constant Boolean :=
         Use_Predefined_Equality_For_Type (Typ);
       Eq_Id      : constant W_Identifier_Id :=
-        (if Is_Boolean_Type (Typ) then M_Boolean.Bool_Eq
-         elsif Use_Predef then E_Symb (Typ, WNE_Bool_Eq)
+        (if Use_Predef then E_Symb (Typ, WNE_Bool_Eq)
          else E_Symb (Typ, WNE_User_Eq));
       T          : W_Expr_Id;
 
@@ -3299,7 +3317,7 @@ package body Why.Gen.Expr is
          end;
       elsif Is_Scalar_Type (Typ) then
          declare
-            BT       : constant W_Type_Id := Base_Why_Type_No_Bool (Why_Type);
+            BT       : constant W_Type_Id := Base_Why_Type (Why_Type);
             Left_Int : constant W_Expr_Id :=
               Insert_Simple_Conversion
                 (Domain => EW_Term,
@@ -3330,6 +3348,14 @@ package body Why.Gen.Expr is
                     Domain => Domain,
                     Typ    => EW_Bool_Type,
                     Args   => (Left_Int, Right_Int));
+            elsif BT = EW_Bool_Type then
+               T := New_Call
+                 (Name   => (if Domain in EW_Prog | EW_Pterm
+                             then M_Boolean.Bool_Eq
+                             else Why_Eq),
+                  Domain => Domain,
+                  Typ    => EW_Bool_Type,
+                  Args   => (Left_Int, Right_Int));
             else
                T :=
                  New_Call
@@ -4102,37 +4128,44 @@ package body Why.Gen.Expr is
       return W_Expr_Id
    is
       Operator : W_Identifier_Id := Symbol;
-      Left1    : W_Expr_Id;
-      Right1   : W_Expr_Id;
+      Left1    : W_Expr_Id := Left;
+      Right1   : W_Expr_Id := Right;
       Arg_Type : constant W_Type_Id := Get_Type (Left);
    begin
-
       --  The only comparisons between Boolean operands that we translate in
-      --  Why without going throught integers are the equality and inequality
-      --  in a predicate context, translated as equivalence or inequivalence.
+      --  Why without going through integer are the equality and inequality.
+      --  In a predicate context, those are translated as equivalence or
+      --  inequivalence.
 
-      if Arg_Type = EW_Bool_Type
-        and then
-          ((Symbol /= Why_Eq and then Symbol /= Why_Neq)
-           or else Domain /= EW_Pred)
-      then
-         Left1  :=
-           Insert_Simple_Conversion
-             (Domain => Domain,
-              Expr   => Left,
-              To     => EW_Int_Type);
-         Right1 :=
-           Insert_Simple_Conversion
-             (Domain => Domain,
-              Expr   => Right,
-              To     => EW_Int_Type);
-      else
-         Left1  := Left;
-         Right1 := Right;
+      if Arg_Type = EW_Bool_Type then
+         if Symbol /= Why_Eq and then Symbol /= Why_Neq then
+            Left1  :=
+              Insert_Simple_Conversion
+                (Domain => Domain,
+                 Expr   => Left,
+                 To     => EW_Int_Type);
+            Right1 :=
+              Insert_Simple_Conversion
+                (Domain => Domain,
+                 Expr   => Right,
+                 To     => EW_Int_Type);
+
+         --  Why3 equality operator do not apply to Booleans in program domain
+         --  (only to integers). We call the Boolean's module equality operator
+         --  instead.
+
+         elsif Domain in EW_Prog | EW_Pterm then
+            if Symbol = Why_Eq then
+               Operator := M_Boolean.Bool_Eq;
+            else
+               Operator := M_Boolean.Bool_Ne;
+            end if;
+         end if;
       end if;
 
       --  We enforce float equality, instead of why3 equality,
       --  when comparing floats.
+
       if Why_Type_Is_Float (Arg_Type) then
          if Symbol = Why_Eq then
             Operator := MF_Floats (Arg_Type).Eq;
@@ -4317,7 +4350,14 @@ package body Why.Gen.Expr is
       Typ      : W_Type_Id)
       return W_Expr_Id
    is
-     (if Why_Type_Is_BitVector (Typ)
+     (if Typ = EW_Bool_Type
+      then
+        (if Value = Uint_0
+         then Bool_False (EW_Term)
+         elsif Value = Uint_1
+         then Bool_True (EW_Term)
+         else raise Program_Error)
+      elsif Why_Type_Is_BitVector (Typ)
       then New_Modular_Constant (Ada_Node, Value, Typ)
       else New_Integer_Constant (Ada_Node, Value));
 

@@ -2,8 +2,7 @@ foo.adb:4:04: warning: analyzing unreferenced procedure "Floats_And_Double"
 foo.adb:4:14: warning: subprogram "Floats_And_Double" has no effect
 foo.adb:7:22: medium: assertion might fail [possible fix: subprogram at line 4 should mention X and Y in a precondition]
 foo.adb:7:30: medium: range check might fail [reason for check: value must be convertible to the target type of the conversion] [possible fix: subprogram at line 4 should mention Y in a precondition]
-foo.ads:10:04: info: in instantiation at generic_float_tests.adb:229
-foo.ads:10:04: info: no contextual analysis of "Exhaustive" (multiple returns)
+foo.ads:10:04: warning: analyzing unreferenced function "Exhaustive"
 foo.ads:10:04: warning: analyzing unreferenced procedure "A_Minimum_Of_Care_Is_Needed"
 foo.ads:10:04: warning: analyzing unreferenced procedure "Distributed_Fun"
 foo.ads:10:04: warning: analyzing unreferenced procedure "Equality"
@@ -20,14 +19,14 @@ foo.ads:10:04: warning: in instantiation at generic_float_tests.adb:163
 foo.ads:10:04: warning: in instantiation at generic_float_tests.adb:169
 foo.ads:10:04: warning: in instantiation at generic_float_tests.adb:175
 foo.ads:10:04: warning: in instantiation at generic_float_tests.adb:188
+foo.ads:10:04: warning: in instantiation at generic_float_tests.adb:229
 foo.ads:10:04: warning: in instantiation at generic_float_tests.adb:26
 foo.ads:10:04: warning: in instantiation at generic_float_tests.adb:268
 foo.ads:10:04: warning: in instantiation at generic_float_tests.adb:278
 foo.ads:10:04: warning: in instantiation at generic_float_tests.adb:294
 foo.ads:10:04: warning: in instantiation at generic_float_tests.adb:346
 foo.ads:10:04: warning: in instantiation at generic_float_tests.adb:352
-foo.ads:15:04: info: in instantiation at generic_float_tests.adb:229
-foo.ads:15:04: info: no contextual analysis of "Exhaustive" (multiple returns)
+foo.ads:15:04: warning: analyzing unreferenced function "Exhaustive"
 foo.ads:15:04: warning: analyzing unreferenced procedure "A_Minimum_Of_Care_Is_Needed"
 foo.ads:15:04: warning: analyzing unreferenced procedure "Distributed_Fun"
 foo.ads:15:04: warning: analyzing unreferenced procedure "Equality"
@@ -44,6 +43,7 @@ foo.ads:15:04: warning: in instantiation at generic_float_tests.adb:163
 foo.ads:15:04: warning: in instantiation at generic_float_tests.adb:169
 foo.ads:15:04: warning: in instantiation at generic_float_tests.adb:175
 foo.ads:15:04: warning: in instantiation at generic_float_tests.adb:188
+foo.ads:15:04: warning: in instantiation at generic_float_tests.adb:229
 foo.ads:15:04: warning: in instantiation at generic_float_tests.adb:26
 foo.ads:15:04: warning: in instantiation at generic_float_tests.adb:268
 foo.ads:15:04: warning: in instantiation at generic_float_tests.adb:278

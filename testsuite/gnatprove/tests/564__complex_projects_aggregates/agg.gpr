@@ -1,0 +1,5 @@
+aggregate project Agg is
+
+   for Project_Files use ("a.gpr", "b.gpr");
+
+end Agg;

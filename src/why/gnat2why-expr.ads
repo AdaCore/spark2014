@@ -369,6 +369,15 @@ package Gnat2Why.Expr is
    --  @param Use_Pred True iff the predicate __is_moved should be called
    --  @result predicate expressing that all pointers in [Expr] are moved
 
+   function Compute_Is_Reclaimed_For_Ownership
+     (Expr      : W_Term_Id;
+      Ty        : Type_Kind_Id;
+      For_Check : Boolean)
+      return W_Pred_Id;
+   --  Check reclamation on a type annotated with ownership. If For_Check is
+   --  True, consider the confirming annotation. Otherwise confirming
+   --  annotations are ignored.
+
    function Compute_Moved_Relation
      (Expr1    : W_Term_Id;
       Expr2    : W_Term_Id;

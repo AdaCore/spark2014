@@ -1106,6 +1106,13 @@ package body Gnat2Why.Driver is
       Command   : GNAT.OS_Lib.String_Access :=
         GNAT.OS_Lib.Locate_Exec_On_Path (Why3_Args.First_Element);
    begin
+      --  Exit gently if gnat2why3 can't be located, for whatever reason,
+      --  e.g. when the PATH is wrong in developer setup.
+
+      if Command = null then
+         raise Program_Error with "can't locate gnatwhy3";
+      end if;
+
       --  If the maximum is reached, or we are not allowed to run gnatwhy3 in
       --  parallel, we wait for one process to finish first.
 

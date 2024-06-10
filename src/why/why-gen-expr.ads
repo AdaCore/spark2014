@@ -393,7 +393,8 @@ package Why.Gen.Expr is
       return W_Expr_Id;
    --  @param Value the value of the constant
    --  @param Typ the type of the constant
-   --  @return a modular constant if Typ satisfies Why_Type_Is_BitVector
+   --  @return a modular constant if Typ satisfies Why_Type_Is_BitVector,
+   --          a boolean constant if Typ = EW_Bool_Type,
    --          or an integer constant in all other cases.
 
    function New_Discrete_Constant

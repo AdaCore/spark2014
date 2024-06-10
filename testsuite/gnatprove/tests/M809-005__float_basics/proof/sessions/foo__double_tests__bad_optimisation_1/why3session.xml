@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE why3session PUBLIC "-//Why3//proof session v5//EN"
-"http://why3.lri.fr/why3session.dtd">
+"https://www.why3.org/why3session.dtd">
 <why3session shape_version="6">
 <prover id="0" name="altergo" version="1.30-gnatprove" timelimit="120" steplimit="10000" memlimit="0"/>
 <prover id="1" name="CVC5" version="0.0.7-gnatprove" timelimit="120" steplimit="365000" memlimit="0"/>
@@ -17,7 +17,7 @@
   <proof prover="3"><result status="valid" steps="1"/></proof>
   </goal>
   <goal name="def&#39;vc.1" proved="true">
-  <proof prover="0"><result status="failure" steps="0"/></proof>
+  <proof prover="0"><result status="highfailure"/></proof>
   <proof prover="1"><result status="valid" steps="153"/></proof>
   <proof prover="2"><result status="failure" steps="0"/></proof>
   <proof prover="4"><result status="failure" steps="0"/></proof>
@@ -26,13 +26,13 @@
   <proof prover="0"><result status="steplimitexceeded" steps="3294"/></proof>
   <proof prover="1"><result status="steplimitexceeded" steps="592969"/></proof>
   <proof prover="2"><result status="unknown" steps="3932376"/></proof>
-  <proof prover="4"><result status="unknown" steps="169"/></proof>
+  <proof prover="4"><result status="unknown" steps="167"/></proof>
   </goal>
   <goal name="def&#39;vc.3">
   <proof prover="0"><result status="steplimitexceeded" steps="3209"/></proof>
   <proof prover="1"><result status="steplimitexceeded" steps="740561"/></proof>
   <proof prover="2"><result status="steplimitexceeded" steps="8450170"/></proof>
-  <proof prover="4"><result status="unknown" steps="201"/></proof>
+  <proof prover="4"><result status="unknown" steps="199"/></proof>
   </goal>
   <goal name="def&#39;vc.4" proved="true">
   <proof prover="0"><result status="valid" steps="608"/></proof>
@@ -44,7 +44,7 @@
   <proof prover="0"><result status="steplimitexceeded" steps="2807"/></proof>
   <proof prover="1"><result status="steplimitexceeded" steps="1377078"/></proof>
   <proof prover="2"><result status="steplimitexceeded" steps="8450192"/></proof>
-  <proof prover="4"><result status="unknown" steps="242"/></proof>
+  <proof prover="4"><result status="unknown" steps="240"/></proof>
   </goal>
   <goal name="def&#39;vc.6" proved="true">
   <proof prover="3"><result status="valid" steps="1"/></proof>
@@ -53,7 +53,7 @@
   <proof prover="0"><result status="steplimitexceeded" steps="2787"/></proof>
   <proof prover="1"><result status="steplimitexceeded" steps="1378148"/></proof>
   <proof prover="2"><result status="steplimitexceeded" steps="8450178"/></proof>
-  <proof prover="4"><result status="unknown" steps="242"/></proof>
+  <proof prover="4"><result status="unknown" steps="240"/></proof>
   </goal>
  </transf>
  </goal>

@@ -369,6 +369,7 @@ def is_other_proof_tag(tag):
         "ASSERT_STEP",
         "INLINE_ANNOTATION",
         "CONTAINER_AGGR_ANNOTATION",
+        "RECLAMATION_ENTITY",
         "FEASIBLE_POST",
     )
 
@@ -582,6 +583,8 @@ def check_marks(strlist):
             return "INLINE_ANNOTATION"
         elif "Container_Aggregates annotation" in text:
             return "CONTAINER_AGGR_ANNOTATION"
+        elif "reclamation entity" in text:
+            return "RECLAMATION_ENTITY"
         elif "feasible" in text or "feasibility" in text:
             return "FEASIBLE_POST"
         elif "exceptional case" in text:
