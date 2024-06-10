@@ -23,7 +23,8 @@ project GNAT2Why is
 
    package Analyzer is
 
-      for Switches ("analyze") use ("-j0", "--no-gnatcheck");
+      for Switches ("analyze") use ("-j0", "--incrementality-method=minimal",
+         "--no-gnatcheck");
       for Switches ("infer") use ("--disable-issue-type", "MEMORY_LEAK_ADA");
       for Switches ("inspector") use ("--legacy-level", "1", "-gnatws");
 
