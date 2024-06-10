@@ -3695,10 +3695,18 @@ package body Gnat2Why.Borrow_Checker is
       case Kind is
          when E_In_Parameter =>
 
-            --  Inputs of functions without side effects have R permission only
+            --  Inputs of functions without side effects have R permission
+            --  only. Protected functions are never allowed to modify protected
+            --  components.
 
             if Ekind (Subp) = E_Function
-              and then not Is_Function_With_Side_Effects (Subp)
+              and then
+                (not Is_Function_With_Side_Effects (Subp)
+                 or else
+                   (Within_Protected_Type (Subp)
+                    and then Expr.Is_Ent
+                    and then Is_Protected_Component_Or_Discr_Or_Part_Of
+                      (Expr.Ent)))
             then
                Mode := Read;
 
@@ -6856,10 +6864,16 @@ package body Gnat2Why.Borrow_Checker is
             elsif Global_Var then
                Perm := (if Is_Read_Only (Id) then Read_Only else Read_Write);
 
-            --  Inputs of functions without side effects have R permission only
+            --  Inputs of functions without side effects have R permission
+            --  only. Protected functions are never allowed to modify protected
+            --  components.
 
             elsif Ekind (Subp) = E_Function
-              and then not Is_Function_With_Side_Effects (Subp)
+              and then
+                (not Is_Function_With_Side_Effects (Subp)
+                 or else
+                   (Within_Protected_Type (Subp)
+                    and then Is_Protected_Component_Or_Discr_Or_Part_Of (Id)))
             then
                Perm := Read_Only;
 
