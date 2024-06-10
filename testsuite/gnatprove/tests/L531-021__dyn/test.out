@@ -1,5 +1,5 @@
 proc.adb:7:07: info: range check proved (CVC5: 2 VC)
-proc.adb:10:04: info: no contextual analysis of "F" (multiple returns)
+proc.adb:10:04: info: no contextual analysis of "F" (unconstrained return type)
 proc.adb:10:13: info: implicit aspect Always_Terminates on "F" has been proved, subprogram will terminate
 proc.adb:19:14: warning: subprogram "P" has no effect
 proc.adb:20:19: info: no contextual analysis of "P" (call returns unconstrained type)

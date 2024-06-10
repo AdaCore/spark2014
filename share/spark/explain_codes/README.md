@@ -36,3 +36,5 @@
 - E0017: `aspect "Exceptional_Cases" cannot apply to function`
 
 - E0018: `call to a procedural function outside of assignment is not allowed in SPARK`
+
+- E0019: `uninitialized allocator without default initialization is not allowed in SPARK`

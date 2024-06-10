@@ -824,7 +824,8 @@ package body Gnat2Why.Expr is
       Expr        : W_Expr_Id;
       Domain      : EW_Domain;
       Params      : Transformation_Params)
-      return W_Expr_Id;
+      return W_Expr_Id
+     with Pre => Get_Type (Expr) = Base_Why_Type (Get_Type (Expr));
    --  For an expression Expr of a discrete type and a discrete Choice, build
    --  the expression that Expr belongs to the range expressed by Choice. In
    --  programs, also generate a check that dynamic choices are in the subtype
@@ -6703,77 +6704,13 @@ package body Gnat2Why.Expr is
 
          if Has_Ownership_Annotation (Ty) then
             pragma Assert (Needs_Reclamation (Ty));
-
-            --  Get the check function for Ty if any
-
-            declare
-               Reclamation_Entity : Entity_Id;
-               Check_Param        : Item_Type;
-               Kind               : Reclamation_Kind;
-
-            begin
-               Get_Reclamation_Entity
-                 (Retysp (Ty), Reclamation_Entity, Kind);
-
-               --  If no check functions or constants are supplied, consider
-               --  the value is never reclaimed. It can still have been moved.
-
-               if No (Reclamation_Entity) then
-                  return Pred_Of_Boolean_Term
-                    (+New_Record_Is_Moved_Access (Ty, +Expr));
-
-               elsif Kind = Reclaimed_Value then
-                  pragma Assert (Ekind (Reclamation_Entity) = E_Constant);
-                  return New_Or_Pred
-                    (Left   => Pred_Of_Boolean_Term
-                       (+New_Record_Is_Moved_Access (Ty, +Expr)),
-                     Right  => +New_Ada_Equality
-                       (Typ    => Retysp (Ty),
-                        Domain => EW_Pred,
-                        Left   => Insert_Simple_Conversion
-                          (Expr   => +Expr,
-                           Domain => EW_Term,
-                           To     => Type_Of_Node (Reclamation_Entity)),
-                        Right  => Transform_Identifier
-                          (Params => Logic_Params,
-                           Expr   => Reclamation_Entity,
-                           Ent    => Reclamation_Entity,
-                           Domain => EW_Term)));
-
-               else
-                  pragma Assert (Ekind (Reclamation_Entity) = E_Function);
-                  declare
-                     Check_Params : constant Item_Array :=
-                       Compute_Subprogram_Parameters
-                         (Reclamation_Entity, EW_Term);
-                  begin
-                     pragma Assert (Check_Params'Length = 1);
-                     Check_Param := Check_Params (Check_Params'First);
-                  end;
-
-                  return New_Or_Pred
-                    (Left   => Pred_Of_Boolean_Term
-                       (+New_Record_Is_Moved_Access (Ty, +Expr)),
-                     Right  => New_Comparison
-                       (Symbol => Why_Eq,
-                        Left   =>
-                          (if Kind = Is_Reclaimed then True_Term
-                           else False_Term),
-                        Right  => New_Call
-                          (Name => +Transform_Identifier
-                               (Params => Logic_Params,
-                                Expr   => Reclamation_Entity,
-                                Ent    => Reclamation_Entity,
-                                Domain => EW_Term),
-                           Args =>
-                             (1 => Insert_Simple_Conversion
-                                  (Expr   => +Expr,
-                                   Domain => EW_Term,
-                                   To     => Get_Why_Type_From_Item
-                                     (Check_Param))),
-                           Typ  => EW_Bool_Type)));
-               end if;
-            end;
+            return New_Or_Pred
+              (Left  => Pred_Of_Boolean_Term
+                 (+New_Record_Is_Moved_Access (Ty, +Expr)),
+               Right => Compute_Is_Reclaimed_For_Ownership
+                 (Expr      => Expr,
+                  Ty        => Ty,
+                  For_Check => False));
          else
             return Is_Moved_For_Record (Expr, Ty);
          end if;
@@ -6783,6 +6720,79 @@ package body Gnat2Why.Expr is
          return Is_Moved_For_Array (Expr, Ty);
       end if;
    end Compute_Is_Moved_Property;
+
+   ----------------------------------------
+   -- Compute_Is_Reclaimed_For_Ownership --
+   ----------------------------------------
+
+   function Compute_Is_Reclaimed_For_Ownership
+     (Expr      : W_Term_Id;
+      Ty        : Type_Kind_Id;
+      For_Check : Boolean)
+      return W_Pred_Id
+   is
+      Reclamation_Entity : Entity_Id;
+      Kind               : Reclamation_Kind;
+      Check_Param        : Item_Type;
+
+   begin
+      --  Get the check function for Ty if any
+
+      Get_Reclamation_Entity
+        (Retysp (Ty), Reclamation_Entity, Kind, For_Check);
+
+      --  If no check functions or constants are supplied, consider
+      --  the value is never reclaimed. It can still have been moved.
+
+      if No (Reclamation_Entity) then
+         return False_Pred;
+
+      elsif Kind = Reclaimed_Value then
+         pragma Assert (Ekind (Reclamation_Entity) = E_Constant);
+         return +New_Ada_Equality
+           (Typ    => Retysp (Ty),
+            Domain => EW_Pred,
+            Left   => Insert_Simple_Conversion
+              (Expr   => +Expr,
+               Domain => EW_Term,
+               To     => Type_Of_Node (Reclamation_Entity)),
+            Right  => Transform_Identifier
+              (Params => Logic_Params,
+               Expr   => Reclamation_Entity,
+               Ent    => Reclamation_Entity,
+               Domain => EW_Term));
+
+      else
+         pragma Assert (Ekind (Reclamation_Entity) = E_Function);
+         declare
+            Check_Params : constant Item_Array :=
+              Compute_Subprogram_Parameters
+                (Reclamation_Entity, EW_Term);
+         begin
+            pragma Assert (Check_Params'Length = 1);
+            Check_Param := Check_Params (Check_Params'First);
+         end;
+
+         return New_Comparison
+           (Symbol => Why_Eq,
+            Left   =>
+              (if Kind = Is_Reclaimed then True_Term
+               else False_Term),
+            Right  => New_Call
+              (Name => +Transform_Identifier
+                   (Params => Logic_Params,
+                    Expr   => Reclamation_Entity,
+                    Ent    => Reclamation_Entity,
+                    Domain => EW_Term),
+               Args =>
+                 (1 => Insert_Simple_Conversion
+                      (Expr   => +Expr,
+                       Domain => EW_Term,
+                       To     => Get_Why_Type_From_Item
+                         (Check_Param))),
+               Typ  => EW_Bool_Type));
+      end if;
+   end Compute_Is_Reclaimed_For_Ownership;
 
    ----------------------------
    -- Compute_Moved_Relation --
@@ -7907,8 +7917,7 @@ package body Gnat2Why.Expr is
       Matched_Expr : constant W_Expr_Id :=
         New_Temp_For_Expr
           (Transform_Expr (Expr,
-           Base_Why_Type_No_Bool
-             (Entity_Id'(Type_Of_Node (Expr))),
+           Base_Why_Type (Entity_Id'(Type_Of_Node (Expr))),
            Match_Domain,
            Params));
       Then_Expr    : constant W_Expr_Id := Generate_Branch_Expr
@@ -18562,14 +18571,12 @@ package body Gnat2Why.Expr is
                                 (Expr          => Low_Bound (Rng),
                                  Domain        => Subdomain,
                                  Params        => Params,
-                                 Expected_Type => Get_Typ
-                                   (W_Identifier_Id'(+Vars (1)))),
+                                 Expected_Type => Get_Type (Vars (1))),
                               High   => Transform_Expr
                                 (Expr          => High_Bound (Rng),
                                  Domain        => Subdomain,
                                  Params        => Params,
-                                 Expected_Type => Get_Typ
-                                   (W_Identifier_Id'(+Vars (1)))),
+                                 Expected_Type => Get_Type (Vars (1))),
                               Expr   => Vars (1));
                         when N_Aggregate =>
                            declare
@@ -20359,39 +20366,55 @@ package body Gnat2Why.Expr is
          end if;
 
       else
-         R := New_Comparison
-           (Symbol => Transform_Compare_Op
-              (N_Op_Eq, Base_Why_Type_No_Bool (Choice), Domain),
-            Left   => Expr,
-            Right  => Transform_Expr
+         declare
+            Base_Ty    : constant W_Type_Id := Get_Type (Expr);
+            --  We need to get the base Why type from Expr (not Choice) as the
+            --  context (typically index choice in array aggregates) may impose
+            --  EW_Int_Type for Boolean-Valued choices.
+
+            Need_Check : constant Boolean :=
+              Domain = EW_Prog
+              and then
+                (not Is_OK_Static_Expression (Choice)
+                 or else not Has_OK_Static_Scalar_Subtype (Choice_Type));
+            W_Choice   : W_Expr_Id := Transform_Expr
               (Expr          => Choice,
-               Expected_Type => Base_Why_Type_No_Bool (Choice),
+               Expected_Type => Base_Ty,
                Domain        => Subdomain,
-               Params        => Params),
-            Domain => Domain);
+               Params        => Params);
+         begin
+            if Need_Check then
+               W_Choice := New_Temp_For_Expr (W_Choice);
+            end if;
 
-         --  In programs, we generate a check that the non-static value of a
-         --  choice belongs to the given subtype.
+            R := New_Comparison
+              (Symbol => Transform_Compare_Op (N_Op_Eq, Base_Ty, Domain),
+               Left   => Expr,
+               Right  => W_Choice,
+               Domain => Domain);
 
-         if Domain = EW_Prog
-           and then (not Is_OK_Static_Expression (Choice)
-                     or else not Has_OK_Static_Scalar_Subtype (Choice_Type))
-         then
-            pragma Assert (Present (Choice_Type));
-            Prepend
-              (New_Ignore
-                 (Prog => Do_Range_Check
-                      (Ada_Node => Choice,
-                       Ty       => Choice_Type,
-                       W_Expr   =>
-                         Transform_Expr (Expr          => Choice,
-                                         Expected_Type =>
-                                           Base_Why_Type_No_Bool (Choice),
-                                         Domain        => Subdomain,
-                                         Params        => Params),
-                       Check_Kind => RCK_Range)),
-               R);
-         end if;
+            --  In programs, we generate a check that the non-static value of a
+            --  choice belongs to the given subtype.
+
+            if Need_Check then
+               pragma Assert (Present (Choice_Type));
+               Prepend
+                 (New_Ignore
+                    (Prog => Do_Range_Check
+                       (Ada_Node   => Choice,
+                        Ty         => Choice_Type,
+                        W_Expr     => Insert_Simple_Conversion
+                          (Domain => Domain,
+                           Expr   => W_Choice,
+                           To     => Base_Why_Type_No_Bool (Base_Ty)),
+                        Check_Kind => RCK_Range)),
+                  R);
+               R := Binding_For_Temp
+                 (Domain  => Domain,
+                  Tmp     => W_Choice,
+                  Context => R);
+            end if;
+         end;
       end if;
 
       return R;
@@ -20546,7 +20569,7 @@ package body Gnat2Why.Expr is
       then
          T := New_Discrete_Constant
            (Value => Expr_Value (Expr),
-            Typ   => Base_Why_Type_No_Bool (Expr_Type));
+            Typ   => Base_Why_Type (Expr_Type));
 
        --  Intrinsic operators should be translated as function calls in SPARK
        --  if the intrinsic pragma is located in a part with SPARK_Mode Off.

@@ -6,15 +6,15 @@ test_ownership_illegal.adb:3:04: error: wrong number of arguments in pragma Anno
 test_ownership_illegal.adb:4:48: error: last argument of pragma Annotate Ownership must be an entity
 test_ownership_illegal.adb:8:41: error: third argument of aspect Annotate Ownership must be a string
 test_ownership_illegal.adb:10:14: error: the entity of a pragma Annotate Ownership shall be either a type, a constant, or a function
-test_ownership_illegal.adb:14:09: error: a type annotated with Ownership must be a private type whose full view is not in SPARK
-test_ownership_illegal.adb:18:12: error: a type annotated with Ownership must be a private type whose full view is not in SPARK
+test_ownership_illegal.adb:14:09: error: a type annotated with Ownership must be a private type
+test_ownership_illegal.adb:18:12: error: the private part of the scope of a private type annotated with Ownership must have either a pragma SPARK_Mode (Off) or a Hide_Info annotation
 test_ownership_illegal.adb:25:12: info: checks for ressource or memory reclamation will be unprovable
 test_ownership_illegal.adb:25:12: info: no reclamation function nor reclaimed value found for type with ownership "T1"
 test_ownership_illegal.adb:29:16: error: function annotated with Ownership on a tagged type expects a classwide type
-test_ownership_illegal.adb:46:15: error: a type annotated with Ownership must be a private type whose full view is not in SPARK
+test_ownership_illegal.adb:46:15: error: a type annotated with Ownership must be a private type
 test_ownership_illegal.adb:49:44: error: third argument of aspect Annotate Ownership on a type must be "Needs_Reclamation"
-test_ownership_illegal.adb:50:12: error: a type annotated with Ownership must be a private type whose full view is not in SPARK
-test_ownership_illegal.adb:54:12: error: a type annotated with Ownership must be a private type whose full view is not in SPARK
+test_ownership_illegal.adb:50:12: error: a type annotated with Ownership must be a private type
+test_ownership_illegal.adb:54:12: error: a type annotated with Ownership must be a private type
 test_ownership_illegal.adb:62:13: error: ownership function shall be declared in same declaration list as input type
 test_ownership_illegal.adb:72:19: error: ownership function shall be declared in same declaration list as input type
 test_ownership_illegal.adb:79:09: error: third argument of aspect Annotate Ownership on a function must be either "Needs_Reclamation" or "Is_Reclaimed"

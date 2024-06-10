@@ -17,7 +17,7 @@ counterexample expected for check at test.adb:5
 counterexample expected for check at test.adb:20
   trace at test.adb:19 --> A = 3
   trace at test.adb:20 --> Test_Case'Result = 5
-  trace at test.adb:25 --> A = 3
+  trace at test.adb:24 --> A = 3
   trace at test.adb:26 --> B = 5
   trace at test.adb:34 --> Test_Case'Result = 5
 counterexample expected for check at test.adb:39

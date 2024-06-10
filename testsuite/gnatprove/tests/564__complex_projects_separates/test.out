@@ -1,0 +1,4 @@
+pkg-child.ads:3:14: warning: subprogram "P" has no effect
+pkg-p.adb:4:11: high: overflow check might fail, cannot prove upper bound for X + 1 (e.g. when X = Integer'Last) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at pkg.ads:2 should mention X in a precondition]
+pkg-pack-sub.adb:6:14: high: overflow check might fail, cannot prove upper bound for X + 1 (e.g. when X = Integer'Last) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at pkg-pack.adb:5 should mention X in a precondition]
+pkg-pack.adb:10:14: high: overflow check might fail, cannot prove upper bound for X + 1 (e.g. when X = Integer'Last) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at pkg.adb:4 should mention X in a precondition]

@@ -1,0 +1,10 @@
+project Included is
+
+   for Source_Dirs use ("inc");
+   for Object_Dir use "objinc";
+
+   package Builder is
+      for Global_Configuration_Pragmas use "spark.adc";
+   end Builder;
+
+end Included;

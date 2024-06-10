@@ -1,8 +1,10 @@
-pack.adb:4:07: info: no contextual analysis of "P3" (multiple returns)
+pack.adb:4:17: info: add a contract to analyze it separately from calling contexts
+pack.adb:4:17: info: local subprogram "P3" only analyzed in the context of calls
 pack.adb:4:17: warning: subprogram "P3" has no effect
-pack.adb:6:15: medium: pointer dereference check might fail (e.g. when Y = null) [possible fix: subprogram at line 4 should mention Y in a precondition]
+pack.adb:6:15: medium: pointer dereference check might fail, in call inlined at pack.adb:15 (e.g. when Y = null) [possible fix: precondition of subprogram at pack.ads:13 should mention Y]
 pack.adb:10:07: warning: analyzing unreferenced procedure "P0_Ok"
 pack.adb:10:17: warning: subprogram "P0_Ok" has no effect
+pack.adb:15:07: info: analyzing call to "P3" in context
 pack.adb:19:07: warning: analyzing unreferenced procedure "P4"
 pack.adb:19:17: warning: subprogram "P4" has no effect
 pack.adb:25:07: warning: analyzing unreferenced procedure "P1_Ok"

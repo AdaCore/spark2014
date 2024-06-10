@@ -1227,6 +1227,7 @@ procedure SPARK_Report is
             | VC_Exceptional_Case
             | VC_Inline_Check
             | VC_Container_Aggr_Check
+            | VC_Reclamation_Check
             | VC_Feasible_Post
          =>
             return Functional_Contracts;

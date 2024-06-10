@@ -1,3 +1,4 @@
+auto_hide_private.ads:8:04: error: package annotated with a pragma Annotate Hide_Info for private parts shall be in SPARK
 illegal_hide_private-child.ads:1:01: error: annotate the private part of Child with Hide_Info
 illegal_hide_private-child.ads:1:01: error: child of a package whose private part is hidden with a visible private part is not allowed in SPARK
 illegal_hide_private-child.ads:1:01: error: violation of aspect SPARK_Mode at line 2
@@ -9,6 +10,14 @@ illegal_hide_private.ads:19:19: error: "T_Preds" is not allowed in SPARK (due to
 illegal_hide_private.ads:19:19: error: violation of aspect SPARK_Mode at line 2
 illegal_hide_private.ads:19:24: error: "T_Preds" is not allowed in SPARK (due to type with predicates with different visibility)
 illegal_hide_private.ads:19:24: error: violation of aspect SPARK_Mode at line 2
+illegal_hide_private.ads:23:09: error: consider annotating it with Relaxed_Initialization
+illegal_hide_private.ads:23:09: error: hidden private type containing only subcomponents whose type is annotated with Relaxed_Initialization is not yet supported
+illegal_hide_private.ads:27:09: error: consider annotating it with a pragma Annotate (GNATprove, Ownership, "Needs_Reclamation", ...)
+illegal_hide_private.ads:27:09: error: owning type in a hidden private part without an Ownership annotation is not allowed in SPARK
+illegal_hide_private.ads:27:09: error: violation of aspect SPARK_Mode at line 2
+illegal_hide_private.ads:31:09: error: consider annotating it with a pragma Annotate (GNATprove, Predefined_Equality, Only_Null, ...)
+illegal_hide_private.ads:31:09: error: hidden type whose predefined equality is restricted is not allowed in SPARK
+illegal_hide_private.ads:31:09: error: violation of aspect SPARK_Mode at line 2
 illegal_hide_private.ads:36:04: error: the entity of a pragma Annotate Hide_Info for private part shall be a package
 illegal_hide_private.ads:41:07: error: pragma Annotate Hide_Info shall be located at the top of the private declarations of package Nested_No_Priv
 illegal_hide_private.ads:49:07: error: pragma Annotate Hide_Info shall be located at the top of the private declarations of package Nested_Too_Late
@@ -21,15 +30,6 @@ illegal_hide_private.ads:67:38: error: "T_Preds" is not allowed in SPARK (due to
 illegal_hide_private.ads:67:38: error: violation of aspect SPARK_Mode at line 2
 illegal_hide_private.ads:67:43: error: "T_Preds" is not allowed in SPARK (due to type with predicates with different visibility)
 illegal_hide_private.ads:67:43: error: violation of aspect SPARK_Mode at line 2
-illegal_hide_private.ads:71:09: error: consider annotating it with Relaxed_Initialization
-illegal_hide_private.ads:71:09: error: hidden private type containing only subcomponents whose type is annotated with Relaxed_Initialization is not yet supported
-illegal_hide_private.ads:75:09: error: owning type in a hidden private part is not yet supported
-illegal_hide_private.ads:77:09: error: owning type in a hidden private part is not yet supported
-illegal_hide_private.ads:83:33: error: "Int_Acc" is not allowed in SPARK (due to owning type in a hidden private part)
-illegal_hide_private.ads:83:33: error: violation of aspect SPARK_Mode at line 2
-illegal_hide_private.ads:83:43: error: "Int_Acc" is not allowed in SPARK (due to owning type in a hidden private part)
-illegal_hide_private.ads:83:43: error: violation of aspect SPARK_Mode at line 2
-illegal_hide_private.ads:89:09: error: hidden type whose predefined equality is restricted is not yet supported
 illegal_hide_private.ads:101:07: error: pragma Annotate Hide_Info for private parts shall be in a visible package
 use_generics.adb:5:12: error: instance of a generic unit declared in a package whose private part is hidden outside of this package is not yet supported
 use_generics.adb:5:12: error: the private part of package Illegal_Hide_Private is hidden for proof

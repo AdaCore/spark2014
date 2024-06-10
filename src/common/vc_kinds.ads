@@ -123,6 +123,10 @@ package VC_Kinds is
                                      --  annotation provided for a container
                                      --  type is correct.
 
+      VC_Reclamation_Check,          --  Check that confirming annotations on
+                                     --  hidden types which need reclamation
+                                     --  are correct.
+
       VC_Termination_Check,          --  Check conditional termination
 
       VC_UC_Source,                  --  Check that this type is suitable as a
@@ -441,8 +445,6 @@ package VC_Kinds is
       Lim_Generic_In_Hidden_Private,
       Lim_Generic_In_Type_Inv,
       Lim_Goto_Cross_Inv,
-      Lim_Hidden_Private_Ownership,
-      Lim_Hidden_Private_Predefined_Eq,
       Lim_Hidden_Private_Relaxed_Init,
       Lim_Img_On_Non_Scalar,
       Lim_Interpolated_String_Literal,
@@ -778,10 +780,6 @@ package VC_Kinds is
          when Lim_Generic_In_Type_Inv =>
             "instance of a generic unit declared in a package containing a "
           & "type with an invariant outside of this package",
-         when Lim_Hidden_Private_Ownership =>
-            "owning type in a hidden private part",
-         when Lim_Hidden_Private_Predefined_Eq =>
-            "hidden type whose predefined equality is restricted",
          when Lim_Hidden_Private_Relaxed_Init =>
             "hidden private type containing only subcomponents whose type is"
           & " annotated with Relaxed_Initialization"

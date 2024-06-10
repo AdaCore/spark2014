@@ -471,12 +471,23 @@ package SPARK_Definition.Annotate is
    --  These sets contain all entities for which flow or proof (or both) was
    --  actually skipped.
 
-   function Has_Ownership_Annotation (E : Entity_Id) return Boolean
+   function Has_Own_Ownership_Annotation (E : Entity_Id) return Boolean
      with Pre => Is_Type (E);
    --  Return True if E is annotated with ownership
 
+   function Has_Ownership_Annotation (E : Entity_Id) return Boolean
+     with Pre => Is_Type (E);
+   --  Return True if E has a possibly inherited ownership annotation and its
+   --  full view is not in SPARK.
+
+   function Needs_Ownership_Check (E : Entity_Id) return Boolean
+     with Pre => Is_Type (E);
+   --  Return True if E is annotated with ownership, it needs reclamation, and
+   --  its full view is in SPARK.
+
    function Needs_Reclamation (E : Entity_Id) return Boolean
-     with Pre => Is_Type (E) and then Has_Ownership_Annotation (E);
+     with Pre => Is_Type (E)
+     and then Has_Ownership_Annotation (E);
    --  Return True if E needs checks to ensure that the memory is reclaimed
 
    type Reclamation_Kind is
@@ -485,12 +496,15 @@ package SPARK_Definition.Annotate is
    procedure Get_Reclamation_Entity
      (E                  : Entity_Id;
       Reclamation_Entity : out Entity_Id;
-      Kind               : out Reclamation_Kind)
+      Kind               : out Reclamation_Kind;
+      For_Check          : Boolean := False)
    with Pre => Is_Type (E)
-     and then Has_Ownership_Annotation (E)
-     and then Needs_Reclamation (E);
+     and then
+       (if For_Check then Needs_Ownership_Check (E)
+        else Has_Ownership_Annotation (E) and then Needs_Reclamation (E));
    --  Retrieve the check function or constant for a type which needs
-   --  reclamation if any.
+   --  reclamation if any. If For_Check is True, return the confirming
+   --  annotation. Otherwise confirming annotations are ignored.
 
    function Get_Reclamation_Entity (E : Entity_Id) return Entity_Id
    with Pre => Is_Type (E)
@@ -502,9 +516,14 @@ package SPARK_Definition.Annotate is
    --  Infer ownership annotation for E. This is used when abstracting away
    --  unused record components. E should be a root retysp here.
 
-   function Has_Predefined_Eq_Annotation (E : Entity_Id) return Boolean
+   function Has_Own_Predefined_Eq_Annotation (E : Entity_Id) return Boolean
      with Pre => Is_Type (E);
    --  Return True if E is annotated with predefined equality
+
+   function Has_Predefined_Eq_Annotation (E : Entity_Id) return Boolean
+     with Pre => Is_Type (E);
+   --  Return True if E has a potentially inherited predefined equality
+   --  annotation and its full view is not in SPARK.
 
    type Predefined_Eq_Kind is (Only_Null, No_Equality);
 

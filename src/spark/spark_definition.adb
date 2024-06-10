@@ -1496,7 +1496,8 @@ package body SPARK_Definition is
               or else Declares_Iterable_Aspect (E)
               or else (Is_Base_Type (E)
                        and then not Use_Predefined_Equality_For_Type (E))
-              or else Needs_Check_For_Aggregate_Annotation (E))
+              or else Needs_Check_For_Aggregate_Annotation (E)
+              or else Needs_Ownership_Check (E))
          then
 
             declare
@@ -2147,7 +2148,8 @@ package body SPARK_Definition is
                        | No_Possible_Initialization
                      then
                         Mark_Violation ("uninitialized allocator without"
-                                        & " default initialization", N);
+                                        & " default initialization", N,
+                                        Code => EC_Uninitialized_Allocator);
 
                      --  Record components might be used during default
                      --  initialization. Update the Unused_Records set.
@@ -8948,24 +8950,6 @@ package body SPARK_Definition is
             raise Program_Error;
          end if;
 
-         --  Owning types and types whose predefined equality is restricted
-         --  cannot be hidden for now. They would need an Ownership or
-         --  Predefined_Equality annotation.
-
-         if Is_In_Potentially_Hidden_Private (E) then
-            declare
-               Exp : Unbounded_String;
-            begin
-               if Is_Deep (E) then
-                  Mark_Unsupported (Lim_Hidden_Private_Ownership, E);
-               elsif not Is_Limited_Type (E)
-                 and then Predefined_Eq_Uses_Pointer_Eq (E, Exp)
-               then
-                  Mark_Unsupported (Lim_Hidden_Private_Predefined_Eq, E);
-               end if;
-            end;
-         end if;
-
          --  Check the user defined equality of record types if any, as they
          --  can be used silently as part of the classwide equality.
 
@@ -9013,7 +8997,11 @@ package body SPARK_Definition is
                --  private part as they would not be handled in the same way
                --  if their full view is visible and if it is not.
 
-               elsif Is_In_Potentially_Hidden_Private (E) then
+               elsif Is_Partial_View (E)
+                 and then Entity_In_SPARK (Full_View (E))
+                 and then not Is_In_Potentially_Hidden_Private (E)
+                 and then Is_In_Potentially_Hidden_Private (Full_View (E))
+               then
                   Mark_Unsupported
                     (Lim_Hidden_Private_Relaxed_Init, E,
                      Cont_Msg =>
@@ -9346,6 +9334,54 @@ package body SPARK_Definition is
                      end if;
                   end;
                end if;
+            end if;
+         end;
+      end if;
+
+      --  Owning types and types whose predefined equality is restricted need
+      --  an Ownership or Predefined_Equality annotation. This checking is
+      --  done late as it needs potential annotations for E to be traversed.
+
+      if Is_Type (E)
+        and then Is_Partial_View (E)
+        and then Entity_In_SPARK (Full_View (E))
+        and then not Is_In_Potentially_Hidden_Private (E)
+        and then Is_In_Potentially_Hidden_Private (Full_View (E))
+      then
+         declare
+            Exp : Unbounded_String;
+         begin
+            if Is_Deep (E)
+              and then not Has_Own_Ownership_Annotation (E)
+            then
+               Mark_Violation
+                 ("owning type in a hidden private part without an Ownership "
+                  & "annotation",
+                  E,
+                  Cont_Msg =>
+                    "consider annotating it with a pragma Annotate "
+                  & "('G'N'A'Tprove, Ownership"
+                  & (if Contains_Allocated_Parts (E)
+                     then ", ""Needs_Reclamation""" else "")
+                  & ", ...)");
+            end if;
+
+            if not Is_Limited_Type (E)
+              and then Predefined_Eq_Uses_Pointer_Eq (E, Exp)
+              and then not Has_Own_Predefined_Eq_Annotation (E)
+            then
+               Mark_Violation
+                 ("hidden type whose predefined equality is restricted",
+                  E,
+                  Cont_Msg =>
+                    "consider annotating it with a pragma Annotate "
+                  & "('G'N'A'Tprove, Predefined_Equality, "
+                  & (if Has_Access_Type (E)
+                      or else (Has_Predefined_Eq_Annotation (Full_View (E))
+                        and then Get_Predefined_Eq_Kind (Full_View (E)) =
+                          Only_Null)
+                      then "Only_Null" else "No_Equality")
+                  & ", ...)");
             end if;
          end;
       end if;

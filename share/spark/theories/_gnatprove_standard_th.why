@@ -137,6 +137,9 @@ module Boolean_Func
   function bool_eq (x : bool) (y : bool) : bool =
     if x = y then True else False
 
+  function bool_ne (x : bool) (y : bool) : bool =
+    if x = y then False else True
+
   function to_int (b : bool) : int =
    if b then 1 else 0
 

@@ -3756,7 +3756,8 @@ package body Flow.Control_Flow_Graph is
          Ctx.Folded_Function_Checks.Append (Cont);
 
          --  Pretty normal flow (see while loops)
-         CM (Union_Id (N)) := Trivial_Connection (V);
+         CM (Union_Id (N)).Standard_Entry := V;
+         CM (Union_Id (N)).Standard_Exits.Insert (V);
 
          --  Loop the loop: V -> body -> V
          Linkup (FA, V, CM (Union_Id (Statements (N))).Standard_Entry);
@@ -6881,9 +6882,23 @@ package body Flow.Control_Flow_Graph is
 
       T : constant Entity_Id := Get_Type (LHS, Scope);
 
+      LHS_Root : constant Entity_Id :=
+        (if Nkind (LHS) in N_Subexpr
+         then Get_Root_Object (LHS)
+         else LHS);
+
    --  Start of processing for RHS_Split_Useful
 
    begin
+      --  If LHS denotes an overlaid entity, there is no point in splitting the
+      --  RHS into components.
+
+      if Ekind (LHS_Root) in E_Constant | E_Variable
+        and then Present (Ultimate_Overlaid_Entity (LHS_Root))
+      then
+         return False;
+      end if;
+
       return not Is_Class_Wide_Type (T)
         and then not Is_Tagged_Type (T)
         and then Is_Split_Useful (RHS);

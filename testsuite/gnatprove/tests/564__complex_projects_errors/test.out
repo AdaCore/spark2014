@@ -1,0 +1,30 @@
+###########
+analyze Prj
+###########
+foo..bar.ads:1:01: warning: invalid file name, contains dot
+foo._bar.ads:1:01: warning: invalid file name, contains dot
+foo.ads:1:09: warning: file name does not match unit name, should be "bar.ads"
+foo.ads:2:13: info: implicit aspect Always_Terminates on "Func" has been proved, subprogram will terminate
+foo.ads:2:53: medium: overflow check might fail, cannot prove upper bound for X + 1 (e.g. when X = Integer'Last) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: add precondition (X <= Integer'Last - 1) to subprogram at line 2]
+foo_.bor.ads:1:01: warning: invalid file name, contains dot
+0foo-bar.ads: error: invalid name for unit '0FOO.BAR', should start with a letter or an underscore
+foo--bar.ads: error: invalid name for unit 'FOO..BAR', two consecutive dots not permitted
+foo-_bar.ads: error: invalid name for unit 'FOO._BAR', cannot contain underscore after dot
+foo.ads: warning: unit name "BAR" does not match source name
+foo__bar.ads: error: invalid name for unit 'FOO__BAR', two consecutive underscores not permitted
+############
+analyze Prj2
+############
+foo.ads:1:09: warning: file name does not match unit name, should be "bar.ads"
+foo.ads:2:13: info: implicit aspect Always_Terminates on "Func" has been proved, subprogram will terminate
+foo.ads:2:53: medium: overflow check might fail, cannot prove upper bound for X + 1 (e.g. when X = Integer'Last) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: add precondition (X <= Integer'Last - 1) to subprogram at line 2]
+0foo-bar.ads: error: invalid name for unit '0FOO-BAR', should start with a letter or an underscore
+Foo-Bar.ads: error: invalid name for unit 'FOO-BAR', should have only alpha numeric characters
+foo--bar.ads: error: invalid name for unit 'FOO--BAR', should have only alpha numeric characters
+foo-0bar.ads: error: invalid name for unit 'FOO-0BAR', should have only alpha numeric characters
+foo-_bar.ads: error: invalid name for unit 'FOO-_BAR', should have only alpha numeric characters
+foo..bar.ads: error: invalid name for unit 'FOO..BAR', two consecutive dots not permitted
+foo._bar.ads: error: invalid name for unit 'FOO._BAR', cannot contain underscore after dot
+foo.ads: warning: unit name "BAR" does not match source name
+foo_.bor.ads: error: invalid name for unit 'FOO_.BOR', cannot contain dot after underscore
+foo__bar.ads: error: invalid name for unit 'FOO__BAR', two consecutive underscores not permitted

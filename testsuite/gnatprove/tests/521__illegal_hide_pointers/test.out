@@ -1,0 +1,56 @@
+illegal_hidden_ownership.ads:34:12: error: consider annotating it with a pragma Annotate (GNATprove, Ownership, "Needs_Reclamation", ...)
+illegal_hidden_ownership.ads:34:12: error: owning type in a hidden private part without an Ownership annotation is not allowed in SPARK
+illegal_hidden_ownership.ads:34:12: error: violation of aspect SPARK_Mode at line 1
+illegal_hidden_ownership.ads:40:12: error: consider annotating it with a pragma Annotate (GNATprove, Ownership, ...)
+illegal_hidden_ownership.ads:40:12: error: owning type in a hidden private part without an Ownership annotation is not allowed in SPARK
+illegal_hidden_ownership.ads:40:12: error: violation of aspect SPARK_Mode at line 1
+illegal_hidden_ownership.ads:46:12: error: consider annotating it with a pragma Annotate (GNATprove, Ownership, "Needs_Reclamation", ...)
+illegal_hidden_ownership.ads:46:12: error: owning type in a hidden private part without an Ownership annotation is not allowed in SPARK
+illegal_hidden_ownership.ads:46:12: error: violation of aspect SPARK_Mode at line 1
+illegal_hidden_ownership.ads:49:12: error: consider annotating it with a pragma Annotate (GNATprove, Ownership, ...)
+illegal_hidden_ownership.ads:49:12: error: owning type in a hidden private part without an Ownership annotation is not allowed in SPARK
+illegal_hidden_ownership.ads:49:12: error: violation of aspect SPARK_Mode at line 1
+illegal_hidden_ownership.ads:52:12: error: consider annotating it with a pragma Annotate (GNATprove, Ownership, ...)
+illegal_hidden_ownership.ads:52:12: error: owning type in a hidden private part without an Ownership annotation is not allowed in SPARK
+illegal_hidden_ownership.ads:52:12: error: violation of aspect SPARK_Mode at line 1
+illegal_hidden_ownership.ads:54:12: error: consider annotating it with a pragma Annotate (GNATprove, Ownership, "Needs_Reclamation", ...)
+illegal_hidden_ownership.ads:54:12: error: owning type in a hidden private part without an Ownership annotation is not allowed in SPARK
+illegal_hidden_ownership.ads:54:12: error: violation of aspect SPARK_Mode at line 1
+illegal_hidden_ownership.ads:97:12: error: full view of type annotated with an Ownership annotation shall be subject to ownership
+illegal_hidden_ownership.ads:101:12: error: full view of type annotated with an Ownership annotation shall be subject to ownership
+illegal_hidden_ownership.ads:118:12: info: checks for ressource or memory reclamation will be unprovable
+illegal_hidden_ownership.ads:118:12: info: no reclamation function nor reclaimed value found for type with ownership "T_Gen_Acc"
+illegal_hidden_ownership.ads:129:12: info: checks for ressource or memory reclamation will be unprovable
+illegal_hidden_ownership.ads:129:12: info: no reclamation function nor reclaimed value found for type with ownership "T_Gen_Acc_Holder"
+illegal_hidden_ownership.ads:133:12: info: checks for ressource or memory reclamation will be unprovable
+illegal_hidden_ownership.ads:133:12: info: no reclamation function nor reclaimed value found for type with ownership "T_Priv_No_Reclaim"
+illegal_hidden_ownership.ads:142:12: error: full view of type annotated with an Ownership annotation without "Needs_Reclamation" shall not need reclamation
+illegal_hidden_ownership.ads:146:12: error: full view of type annotated with "Needs_Reclamation" shall need reclamation
+illegal_hidden_ownership.ads:150:12: error: full view of type annotated with an Ownership annotation without "Needs_Reclamation" shall not need reclamation
+illegal_hidden_ownership.ads:154:12: error: full view of type annotated with "Needs_Reclamation" shall need reclamation
+illegal_hidden_ownership.ads:158:12: error: full view of type annotated with an Ownership annotation shall have a matching annotation
+illegal_hidden_ownership.ads:160:12: error: full view of type annotated with an Ownership annotation shall have a matching annotation
+illegal_hidden_predefined_eq.ads:27:12: error: consider annotating it with a pragma Annotate (GNATprove, Predefined_Equality, Only_Null, ...)
+illegal_hidden_predefined_eq.ads:27:12: error: hidden type whose predefined equality is restricted is not allowed in SPARK
+illegal_hidden_predefined_eq.ads:27:12: error: violation of aspect SPARK_Mode at line 1
+illegal_hidden_predefined_eq.ads:29:12: error: consider annotating it with a pragma Annotate (GNATprove, Predefined_Equality, No_Equality, ...)
+illegal_hidden_predefined_eq.ads:29:12: error: hidden type whose predefined equality is restricted is not allowed in SPARK
+illegal_hidden_predefined_eq.ads:29:12: error: violation of aspect SPARK_Mode at line 1
+illegal_hidden_predefined_eq.ads:31:12: error: consider annotating it with a pragma Annotate (GNATprove, Predefined_Equality, No_Equality, ...)
+illegal_hidden_predefined_eq.ads:31:12: error: hidden type whose predefined equality is restricted is not allowed in SPARK
+illegal_hidden_predefined_eq.ads:31:12: error: violation of aspect SPARK_Mode at line 1
+illegal_hidden_predefined_eq.ads:33:12: error: consider annotating it with a pragma Annotate (GNATprove, Predefined_Equality, Only_Null, ...)
+illegal_hidden_predefined_eq.ads:33:12: error: hidden type whose predefined equality is restricted is not allowed in SPARK
+illegal_hidden_predefined_eq.ads:33:12: error: violation of aspect SPARK_Mode at line 1
+illegal_hidden_predefined_eq.ads:68:12: error: full view of type annotated with a Predefined_Equality "Only_Null" annotation shall be an access type
+illegal_hidden_predefined_eq.ads:70:07: error: the value of C_Float shall be a null value
+illegal_hidden_predefined_eq.ads:72:12: error: full view of type annotated with a Predefined_Equality "No_Equality" annotation shall be a composite type whose components have a restricted equality
+illegal_hidden_predefined_eq.ads:84:12: info: consider annotating a constant with a pragma Annotate (GNATprove, Predefined_Equality, "Null_Value", ...)
+illegal_hidden_predefined_eq.ads:84:12: info: no null value found for type with predefined equality "T_Cst_Acc_Holder"
+illegal_hidden_predefined_eq.ads:87:12: info: consider annotating a constant with a pragma Annotate (GNATprove, Predefined_Equality, "Null_Value", ...)
+illegal_hidden_predefined_eq.ads:87:12: info: no null value found for type with predefined equality "T_Priv_No_Eq"
+illegal_hidden_predefined_eq.ads:96:12: error: full view of type annotated with a Predefined_Equality "No_Equality" annotation shall be a composite type whose components have a restricted equality
+illegal_hidden_predefined_eq.ads:100:12: error: full view of type annotated with a Predefined_Equality "Only_Null" annotation shall be an access type
+illegal_hidden_predefined_eq.ads:104:12: error: full view of type annotated with a Predefined_Equality annotation shall have a matching annotation
+illegal_hidden_predefined_eq.ads:106:12: error: full view of type annotated with a Predefined_Equality annotation shall have a matching annotation
+gnatprove: error during flow analysis and proof

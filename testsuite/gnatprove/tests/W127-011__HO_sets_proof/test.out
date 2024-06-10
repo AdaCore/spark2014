@@ -1,349 +1,347 @@
-spark-containers-functional-sets-higher_order.adb:26:29: info: function contract feasibility proved, in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.adb:30:07: medium: implicit aspect Always_Terminates on "All_Distinct" could be incorrect, call via access-to-subprogram might be nonterminating, in instantiation at test_set_ho.adb:49 [possible explanation: call could hide recursive calls]
-spark-containers-functional-sets-higher_order.adb:32:47: info: predicate check proved, in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.adb:32:62: info: predicate check proved, in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.adb:33:18: info: predicate check proved, in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.adb:33:23: info: predicate check proved, in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.adb:39:33: info: function contract feasibility proved, in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.adb:43:07: medium: implicit aspect Always_Terminates on "All_Distinct" could be incorrect, call via access-to-subprogram might be nonterminating, in instantiation at test_set_ho.adb:49 [possible explanation: call could hide recursive calls]
-spark-containers-functional-sets-higher_order.adb:52:23: info: function contract feasibility proved, in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.adb:57:42: info: range check proved, in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.adb:58:28: info: postcondition proved, in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.adb:58:37: info: predicate check proved, in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.adb:58:48: info: predicate check proved, in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.adb:60:14: info: aspect Always_Terminates on "Lemma_Count_Rec_Eq" has been proved, subprogram will terminate, in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.adb:62:25: info: function contract feasibility proved, in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.adb:67:64: info: null exclusion check proved, in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.adb:68:28: info: postcondition proved, in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.adb:68:28: info: predicate check proved, in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.adb:68:43: info: null exclusion check proved, in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.adb:68:51: info: predicate check proved, in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.adb:68:66: info: null exclusion check proved, in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.adb:69:42: info: range check proved, in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.adb:74:23: info: function contract feasibility proved, in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.adb:79:42: info: range check proved, in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.adb:80:71: info: null exclusion check proved, in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.adb:82:08: info: postcondition proved, in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.adb:82:08: info: predicate check proved, in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.adb:82:22: info: null exclusion check proved, in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.adb:82:28: medium: aspect Always_Terminates on "Lemma_Count_Rec_Remove" could be incorrect, call via access-to-subprogram might be nonterminating, in instantiation at test_set_ho.adb:49 [possible explanation: call could hide recursive calls]
-spark-containers-functional-sets-higher_order.adb:82:30: info: predicate check proved, in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.adb:82:41: info: precondition proved, in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.adb:82:56: info: null exclusion check proved, in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.adb:83:29: info: predicate check proved, in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.adb:83:47: info: predicate check proved, in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.adb:83:49: info: predicate check proved, in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.adb:87:24: info: function contract feasibility proved, in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.adb:92:42: info: range check proved, in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.adb:94:14: info: aspect Always_Terminates on "Lemma_Sum_Rec_Eq" has been proved, subprogram will terminate, in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.adb:96:25: info: function contract feasibility proved, in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.adb:101:64: info: null exclusion check proved, in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.adb:102:28: info: postcondition proved, in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.adb:102:28: info: precondition proved, in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.adb:102:28: info: predicate check proved, in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.adb:102:37: info: null exclusion check proved, in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.adb:102:46: info: precondition proved, in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.adb:102:46: info: predicate check proved, in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.adb:102:55: info: null exclusion check proved, in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.adb:103:42: info: range check proved, in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.adb:108:24: info: function contract feasibility proved, in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.adb:113:42: info: range check proved, in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.adb:114:71: info: null exclusion check proved, in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.adb:116:08: info: postcondition proved, in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.adb:116:08: info: predicate check proved, in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.adb:116:20: info: null exclusion check proved, in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.adb:116:27: medium: aspect Always_Terminates on "Lemma_Sum_Rec_Remove" could be incorrect, call via access-to-subprogram might be nonterminating, in instantiation at test_set_ho.adb:49 [possible explanation: call could hide recursive calls]
-spark-containers-functional-sets-higher_order.adb:116:29: info: predicate check proved, in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.adb:116:38: info: precondition proved, in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.adb:116:53: info: null exclusion check proved, in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.adb:116:62: info: predicate check proved, in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.adb:126:25: info: refined post proved, in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.adb:126:30: info: predicate check proved, in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.adb:126:40: info: predicate check proved, in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.adb:126:54: info: null exclusion check proved, in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.adb:129:35: info: predicate check proved, in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.adb:130:14: info: precondition proved, in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.adb:132:16: info: loop invariant initialization proved, in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.adb:132:16: info: loop invariant preservation proved, in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.adb:132:16: info: predicate check proved, in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.adb:132:30: info: null exclusion check proved, in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.adb:132:38: info: predicate check proved, in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.adb:132:44: info: predicate check proved, in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.adb:132:63: info: null exclusion check proved, in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.adb:133:13: medium: implicit aspect Always_Terminates on "Count" could be incorrect, call via access-to-subprogram might be nonterminating, in instantiation at test_set_ho.adb:49 [possible explanation: call could hide recursive calls]
-spark-containers-functional-sets-higher_order.adb:133:22: info: precondition proved, in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.adb:134:23: info: predicate check proved, in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.adb:134:27: info: predicate check proved, in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.adb:134:29: info: predicate check proved, in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.adb:149:07: medium: implicit aspect Always_Terminates on "Count_Rec" could be incorrect, call via access-to-subprogram might be nonterminating, in instantiation at test_set_ho.adb:49 [possible explanation: call could hide recursive calls]
-spark-containers-functional-sets-higher_order.adb:149:28: info: predicate check proved, in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.adb:150:12: info: predicate check proved, in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.adb:150:12: info: subprogram variant proved, in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.adb:150:23: info: precondition proved, in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.adb:150:34: info: precondition proved, in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.adb:150:53: info: predicate check proved, in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.adb:151:19: info: precondition proved, in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.adb:151:47: info: predicate check proved, in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.adb:151:49: info: predicate check proved, in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.adb:151:57: info: predicate check proved, in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.adb:162:27: info: predicate check proved, in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.adb:162:27: info: refined post proved, in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.adb:162:53: info: predicate check proved, in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.adb:164:40: info: null exclusion check proved, in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.adb:165:16: info: predicate check proved, in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.adb:165:41: info: predicate check proved, in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.adb:168:48: info: predicate check proved, in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.adb:169:08: medium: implicit aspect Always_Terminates on "Create" could be incorrect, call via access-to-subprogram might be nonterminating, in instantiation at test_set_ho.adb:49 [possible explanation: call could hide recursive calls]
-spark-containers-functional-sets-higher_order.adb:172:50: info: predicate check proved, in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.adb:174:26: info: predicate check proved, in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.adb:176:14: info: initialization of "Res" proved, in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.adb:177:16: info: predicate check proved, in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.adb:177:20: info: predicate check proved, in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.adb:178:34: info: loop variant proved, in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.adb:178:47: info: predicate check proved, in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.adb:178:58: info: range check proved, in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.adb:178:60: info: predicate check proved, in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.adb:179:36: info: loop invariant initialization proved, in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.adb:179:36: info: loop invariant preservation proved, in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.adb:179:36: info: predicate check proved, in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.adb:179:40: info: predicate check proved, in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.adb:180:36: info: loop invariant initialization proved, in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.adb:180:36: info: loop invariant preservation proved, in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.adb:180:36: info: predicate check proved, in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.adb:180:52: info: predicate check proved, in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.adb:182:16: info: loop invariant initialization proved, in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.adb:182:16: info: loop invariant preservation proved, in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.adb:182:45: info: null exclusion check proved, in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.adb:182:60: info: predicate check proved, in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.adb:182:75: info: predicate check proved, in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.adb:183:13: medium: implicit aspect Always_Terminates on "Create" could be incorrect, call via access-to-subprogram might be nonterminating, in instantiation at test_set_ho.adb:49 [possible explanation: call could hide recursive calls]
+spark-containers-functional-sets-higher_order.adb:28:29: info: function contract feasibility proved, in instantiation at test_set_ho.adb:49
+spark-containers-functional-sets-higher_order.adb:32:07: medium: implicit aspect Always_Terminates on "All_Distinct" could be incorrect, call via access-to-subprogram might be nonterminating, in instantiation at test_set_ho.adb:49 [possible explanation: call could hide recursive calls]
+spark-containers-functional-sets-higher_order.adb:34:47: info: predicate check proved, in instantiation at test_set_ho.adb:49
+spark-containers-functional-sets-higher_order.adb:34:62: info: predicate check proved, in instantiation at test_set_ho.adb:49
+spark-containers-functional-sets-higher_order.adb:35:18: info: predicate check proved, in instantiation at test_set_ho.adb:49
+spark-containers-functional-sets-higher_order.adb:35:23: info: predicate check proved, in instantiation at test_set_ho.adb:49
+spark-containers-functional-sets-higher_order.adb:41:33: info: function contract feasibility proved, in instantiation at test_set_ho.adb:49
+spark-containers-functional-sets-higher_order.adb:45:07: medium: implicit aspect Always_Terminates on "All_Distinct" could be incorrect, call via access-to-subprogram might be nonterminating, in instantiation at test_set_ho.adb:49 [possible explanation: call could hide recursive calls]
+spark-containers-functional-sets-higher_order.adb:54:23: info: function contract feasibility proved, in instantiation at test_set_ho.adb:49
+spark-containers-functional-sets-higher_order.adb:59:42: info: range check proved, in instantiation at test_set_ho.adb:49
+spark-containers-functional-sets-higher_order.adb:60:28: info: postcondition proved, in instantiation at test_set_ho.adb:49
+spark-containers-functional-sets-higher_order.adb:60:37: info: predicate check proved, in instantiation at test_set_ho.adb:49
+spark-containers-functional-sets-higher_order.adb:60:48: info: predicate check proved, in instantiation at test_set_ho.adb:49
+spark-containers-functional-sets-higher_order.adb:62:14: info: aspect Always_Terminates on "Lemma_Count_Rec_Eq" has been proved, subprogram will terminate, in instantiation at test_set_ho.adb:49
+spark-containers-functional-sets-higher_order.adb:64:25: info: function contract feasibility proved, in instantiation at test_set_ho.adb:49
+spark-containers-functional-sets-higher_order.adb:69:64: info: null exclusion check proved, in instantiation at test_set_ho.adb:49
+spark-containers-functional-sets-higher_order.adb:70:28: info: postcondition proved, in instantiation at test_set_ho.adb:49
+spark-containers-functional-sets-higher_order.adb:70:28: info: predicate check proved, in instantiation at test_set_ho.adb:49
+spark-containers-functional-sets-higher_order.adb:70:43: info: null exclusion check proved, in instantiation at test_set_ho.adb:49
+spark-containers-functional-sets-higher_order.adb:70:51: info: predicate check proved, in instantiation at test_set_ho.adb:49
+spark-containers-functional-sets-higher_order.adb:70:66: info: null exclusion check proved, in instantiation at test_set_ho.adb:49
+spark-containers-functional-sets-higher_order.adb:71:42: info: range check proved, in instantiation at test_set_ho.adb:49
+spark-containers-functional-sets-higher_order.adb:76:23: info: function contract feasibility proved, in instantiation at test_set_ho.adb:49
+spark-containers-functional-sets-higher_order.adb:81:42: info: range check proved, in instantiation at test_set_ho.adb:49
+spark-containers-functional-sets-higher_order.adb:82:71: info: null exclusion check proved, in instantiation at test_set_ho.adb:49
+spark-containers-functional-sets-higher_order.adb:84:08: info: postcondition proved, in instantiation at test_set_ho.adb:49
+spark-containers-functional-sets-higher_order.adb:84:08: info: predicate check proved, in instantiation at test_set_ho.adb:49
+spark-containers-functional-sets-higher_order.adb:84:22: info: null exclusion check proved, in instantiation at test_set_ho.adb:49
+spark-containers-functional-sets-higher_order.adb:84:28: medium: aspect Always_Terminates on "Lemma_Count_Rec_Remove" could be incorrect, call via access-to-subprogram might be nonterminating, in instantiation at test_set_ho.adb:49 [possible explanation: call could hide recursive calls]
+spark-containers-functional-sets-higher_order.adb:84:30: info: predicate check proved, in instantiation at test_set_ho.adb:49
+spark-containers-functional-sets-higher_order.adb:84:41: info: precondition proved, in instantiation at test_set_ho.adb:49
+spark-containers-functional-sets-higher_order.adb:84:56: info: null exclusion check proved, in instantiation at test_set_ho.adb:49
+spark-containers-functional-sets-higher_order.adb:85:29: info: predicate check proved, in instantiation at test_set_ho.adb:49
+spark-containers-functional-sets-higher_order.adb:85:47: info: predicate check proved, in instantiation at test_set_ho.adb:49
+spark-containers-functional-sets-higher_order.adb:85:49: info: predicate check proved, in instantiation at test_set_ho.adb:49
+spark-containers-functional-sets-higher_order.adb:89:24: info: function contract feasibility proved, in instantiation at test_set_ho.adb:49
+spark-containers-functional-sets-higher_order.adb:94:42: info: range check proved, in instantiation at test_set_ho.adb:49
+spark-containers-functional-sets-higher_order.adb:96:14: info: aspect Always_Terminates on "Lemma_Sum_Rec_Eq" has been proved, subprogram will terminate, in instantiation at test_set_ho.adb:49
+spark-containers-functional-sets-higher_order.adb:98:25: info: function contract feasibility proved, in instantiation at test_set_ho.adb:49
+spark-containers-functional-sets-higher_order.adb:103:64: info: null exclusion check proved, in instantiation at test_set_ho.adb:49
+spark-containers-functional-sets-higher_order.adb:104:28: info: postcondition proved, in instantiation at test_set_ho.adb:49
+spark-containers-functional-sets-higher_order.adb:104:28: info: precondition proved, in instantiation at test_set_ho.adb:49
+spark-containers-functional-sets-higher_order.adb:104:28: info: predicate check proved, in instantiation at test_set_ho.adb:49
+spark-containers-functional-sets-higher_order.adb:104:37: info: null exclusion check proved, in instantiation at test_set_ho.adb:49
+spark-containers-functional-sets-higher_order.adb:104:46: info: precondition proved, in instantiation at test_set_ho.adb:49
+spark-containers-functional-sets-higher_order.adb:104:46: info: predicate check proved, in instantiation at test_set_ho.adb:49
+spark-containers-functional-sets-higher_order.adb:104:55: info: null exclusion check proved, in instantiation at test_set_ho.adb:49
+spark-containers-functional-sets-higher_order.adb:105:42: info: range check proved, in instantiation at test_set_ho.adb:49
+spark-containers-functional-sets-higher_order.adb:110:24: info: function contract feasibility proved, in instantiation at test_set_ho.adb:49
+spark-containers-functional-sets-higher_order.adb:115:42: info: range check proved, in instantiation at test_set_ho.adb:49
+spark-containers-functional-sets-higher_order.adb:116:71: info: null exclusion check proved, in instantiation at test_set_ho.adb:49
+spark-containers-functional-sets-higher_order.adb:118:08: info: postcondition proved, in instantiation at test_set_ho.adb:49
+spark-containers-functional-sets-higher_order.adb:118:08: info: predicate check proved, in instantiation at test_set_ho.adb:49
+spark-containers-functional-sets-higher_order.adb:118:20: info: null exclusion check proved, in instantiation at test_set_ho.adb:49
+spark-containers-functional-sets-higher_order.adb:118:27: medium: aspect Always_Terminates on "Lemma_Sum_Rec_Remove" could be incorrect, call via access-to-subprogram might be nonterminating, in instantiation at test_set_ho.adb:49 [possible explanation: call could hide recursive calls]
+spark-containers-functional-sets-higher_order.adb:118:29: info: predicate check proved, in instantiation at test_set_ho.adb:49
+spark-containers-functional-sets-higher_order.adb:118:38: info: precondition proved, in instantiation at test_set_ho.adb:49
+spark-containers-functional-sets-higher_order.adb:118:53: info: null exclusion check proved, in instantiation at test_set_ho.adb:49
+spark-containers-functional-sets-higher_order.adb:118:62: info: predicate check proved, in instantiation at test_set_ho.adb:49
+spark-containers-functional-sets-higher_order.adb:128:25: info: refined post proved, in instantiation at test_set_ho.adb:49
+spark-containers-functional-sets-higher_order.adb:128:30: info: predicate check proved, in instantiation at test_set_ho.adb:49
+spark-containers-functional-sets-higher_order.adb:128:40: info: predicate check proved, in instantiation at test_set_ho.adb:49
+spark-containers-functional-sets-higher_order.adb:128:54: info: null exclusion check proved, in instantiation at test_set_ho.adb:49
+spark-containers-functional-sets-higher_order.adb:131:35: info: predicate check proved, in instantiation at test_set_ho.adb:49
+spark-containers-functional-sets-higher_order.adb:132:14: info: precondition proved, in instantiation at test_set_ho.adb:49
+spark-containers-functional-sets-higher_order.adb:134:16: info: loop invariant initialization proved, in instantiation at test_set_ho.adb:49
+spark-containers-functional-sets-higher_order.adb:134:16: info: loop invariant preservation proved, in instantiation at test_set_ho.adb:49
+spark-containers-functional-sets-higher_order.adb:134:16: info: predicate check proved, in instantiation at test_set_ho.adb:49
+spark-containers-functional-sets-higher_order.adb:134:30: info: null exclusion check proved, in instantiation at test_set_ho.adb:49
+spark-containers-functional-sets-higher_order.adb:134:38: info: predicate check proved, in instantiation at test_set_ho.adb:49
+spark-containers-functional-sets-higher_order.adb:134:44: info: predicate check proved, in instantiation at test_set_ho.adb:49
+spark-containers-functional-sets-higher_order.adb:134:63: info: null exclusion check proved, in instantiation at test_set_ho.adb:49
+spark-containers-functional-sets-higher_order.adb:135:13: medium: implicit aspect Always_Terminates on "Count" could be incorrect, call via access-to-subprogram might be nonterminating, in instantiation at test_set_ho.adb:49 [possible explanation: call could hide recursive calls]
+spark-containers-functional-sets-higher_order.adb:135:22: info: precondition proved, in instantiation at test_set_ho.adb:49
+spark-containers-functional-sets-higher_order.adb:136:23: info: predicate check proved, in instantiation at test_set_ho.adb:49
+spark-containers-functional-sets-higher_order.adb:136:27: info: predicate check proved, in instantiation at test_set_ho.adb:49
+spark-containers-functional-sets-higher_order.adb:136:29: info: predicate check proved, in instantiation at test_set_ho.adb:49
+spark-containers-functional-sets-higher_order.adb:151:07: medium: implicit aspect Always_Terminates on "Count_Rec" could be incorrect, call via access-to-subprogram might be nonterminating, in instantiation at test_set_ho.adb:49 [possible explanation: call could hide recursive calls]
+spark-containers-functional-sets-higher_order.adb:151:28: info: predicate check proved, in instantiation at test_set_ho.adb:49
+spark-containers-functional-sets-higher_order.adb:152:12: info: predicate check proved, in instantiation at test_set_ho.adb:49
+spark-containers-functional-sets-higher_order.adb:152:12: info: subprogram variant proved, in instantiation at test_set_ho.adb:49
+spark-containers-functional-sets-higher_order.adb:152:23: info: precondition proved, in instantiation at test_set_ho.adb:49
+spark-containers-functional-sets-higher_order.adb:152:34: info: precondition proved, in instantiation at test_set_ho.adb:49
+spark-containers-functional-sets-higher_order.adb:152:53: info: predicate check proved, in instantiation at test_set_ho.adb:49
+spark-containers-functional-sets-higher_order.adb:153:19: info: precondition proved, in instantiation at test_set_ho.adb:49
+spark-containers-functional-sets-higher_order.adb:153:47: info: predicate check proved, in instantiation at test_set_ho.adb:49
+spark-containers-functional-sets-higher_order.adb:153:49: info: predicate check proved, in instantiation at test_set_ho.adb:49
+spark-containers-functional-sets-higher_order.adb:153:57: info: predicate check proved, in instantiation at test_set_ho.adb:49
+spark-containers-functional-sets-higher_order.adb:164:27: info: predicate check proved, in instantiation at test_set_ho.adb:49
+spark-containers-functional-sets-higher_order.adb:164:27: info: refined post proved, in instantiation at test_set_ho.adb:49
+spark-containers-functional-sets-higher_order.adb:164:53: info: predicate check proved, in instantiation at test_set_ho.adb:49
+spark-containers-functional-sets-higher_order.adb:166:40: info: null exclusion check proved, in instantiation at test_set_ho.adb:49
+spark-containers-functional-sets-higher_order.adb:167:16: info: predicate check proved, in instantiation at test_set_ho.adb:49
+spark-containers-functional-sets-higher_order.adb:167:41: info: predicate check proved, in instantiation at test_set_ho.adb:49
+spark-containers-functional-sets-higher_order.adb:170:48: info: predicate check proved, in instantiation at test_set_ho.adb:49
+spark-containers-functional-sets-higher_order.adb:171:08: medium: implicit aspect Always_Terminates on "Create" could be incorrect, call via access-to-subprogram might be nonterminating, in instantiation at test_set_ho.adb:49 [possible explanation: call could hide recursive calls]
+spark-containers-functional-sets-higher_order.adb:174:50: info: predicate check proved, in instantiation at test_set_ho.adb:49
+spark-containers-functional-sets-higher_order.adb:176:26: info: predicate check proved, in instantiation at test_set_ho.adb:49
+spark-containers-functional-sets-higher_order.adb:178:14: info: initialization of "Res" proved, in instantiation at test_set_ho.adb:49
+spark-containers-functional-sets-higher_order.adb:179:16: info: predicate check proved, in instantiation at test_set_ho.adb:49
+spark-containers-functional-sets-higher_order.adb:179:20: info: predicate check proved, in instantiation at test_set_ho.adb:49
+spark-containers-functional-sets-higher_order.adb:180:34: info: loop variant proved, in instantiation at test_set_ho.adb:49
+spark-containers-functional-sets-higher_order.adb:180:47: info: predicate check proved, in instantiation at test_set_ho.adb:49
+spark-containers-functional-sets-higher_order.adb:180:58: info: range check proved, in instantiation at test_set_ho.adb:49
+spark-containers-functional-sets-higher_order.adb:180:60: info: predicate check proved, in instantiation at test_set_ho.adb:49
+spark-containers-functional-sets-higher_order.adb:181:36: info: loop invariant initialization proved, in instantiation at test_set_ho.adb:49
+spark-containers-functional-sets-higher_order.adb:181:36: info: loop invariant preservation proved, in instantiation at test_set_ho.adb:49
+spark-containers-functional-sets-higher_order.adb:181:36: info: predicate check proved, in instantiation at test_set_ho.adb:49
+spark-containers-functional-sets-higher_order.adb:181:40: info: predicate check proved, in instantiation at test_set_ho.adb:49
+spark-containers-functional-sets-higher_order.adb:182:36: info: loop invariant initialization proved, in instantiation at test_set_ho.adb:49
+spark-containers-functional-sets-higher_order.adb:182:36: info: loop invariant preservation proved, in instantiation at test_set_ho.adb:49
+spark-containers-functional-sets-higher_order.adb:182:36: info: predicate check proved, in instantiation at test_set_ho.adb:49
+spark-containers-functional-sets-higher_order.adb:182:52: info: predicate check proved, in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.adb:184:16: info: loop invariant initialization proved, in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.adb:184:16: info: loop invariant preservation proved, in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.adb:184:73: info: predicate check proved, in instantiation at test_set_ho.adb:49
+spark-containers-functional-sets-higher_order.adb:184:45: info: null exclusion check proved, in instantiation at test_set_ho.adb:49
+spark-containers-functional-sets-higher_order.adb:184:60: info: predicate check proved, in instantiation at test_set_ho.adb:49
+spark-containers-functional-sets-higher_order.adb:184:75: info: predicate check proved, in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.adb:185:13: medium: implicit aspect Always_Terminates on "Create" could be incorrect, call via access-to-subprogram might be nonterminating, in instantiation at test_set_ho.adb:49 [possible explanation: call could hide recursive calls]
 spark-containers-functional-sets-higher_order.adb:186:16: info: loop invariant initialization proved, in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.adb:186:16: info: loop invariant preservation proved, in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.adb:188:57: info: predicate check proved, in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.adb:189:18: info: predicate check proved, in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.adb:189:20: info: predicate check proved, in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.adb:189:22: info: predicate check proved, in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.adb:191:16: medium: implicit aspect Always_Terminates on "Create" could be incorrect, call via access-to-subprogram might be nonterminating, in instantiation at test_set_ho.adb:49 [possible explanation: call could hide recursive calls]
-spark-containers-functional-sets-higher_order.adb:191:51: info: predicate check proved, in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.adb:193:16: medium: implicit aspect Always_Terminates on "Create" could be incorrect, call via access-to-subprogram might be nonterminating, in instantiation at test_set_ho.adb:49 [possible explanation: call could hide recursive calls]
-spark-containers-functional-sets-higher_order.adb:193:48: info: predicate check proved, in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.adb:194:23: medium: implicit aspect Always_Terminates on "Create" could be incorrect, call via access-to-subprogram might be nonterminating, in instantiation at test_set_ho.adb:49 [possible explanation: call could hide recursive calls]
-spark-containers-functional-sets-higher_order.adb:194:26: info: precondition proved, in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.adb:194:46: info: predicate check proved, in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.adb:211:27: info: predicate check proved, in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.adb:213:14: info: initialization of "Res" proved, in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.adb:214:16: info: predicate check proved, in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.adb:214:21: info: predicate check proved, in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.adb:215:17: medium: implicit aspect Always_Terminates on "Create_Distinct" could be incorrect, call via access-to-subprogram might be nonterminating, in instantiation at test_set_ho.adb:49 [possible explanation: call could hide recursive calls]
-spark-containers-functional-sets-higher_order.adb:215:20: info: precondition proved, in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.adb:217:34: info: loop variant proved, in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.adb:217:47: info: predicate check proved, in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.adb:217:60: info: predicate check proved, in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.adb:217:62: info: range check proved, in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.adb:217:64: info: predicate check proved, in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.adb:218:36: info: loop invariant initialization proved, in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.adb:218:36: info: loop invariant preservation proved, in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.adb:218:36: info: predicate check proved, in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.adb:218:41: info: predicate check proved, in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.adb:219:36: info: loop invariant initialization proved, in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.adb:219:36: info: loop invariant preservation proved, in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.adb:219:36: info: predicate check proved, in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.adb:219:51: info: predicate check proved, in instantiation at test_set_ho.adb:49
+spark-containers-functional-sets-higher_order.adb:186:73: info: predicate check proved, in instantiation at test_set_ho.adb:49
+spark-containers-functional-sets-higher_order.adb:187:13: medium: implicit aspect Always_Terminates on "Create" could be incorrect, call via access-to-subprogram might be nonterminating, in instantiation at test_set_ho.adb:49 [possible explanation: call could hide recursive calls]
+spark-containers-functional-sets-higher_order.adb:188:16: info: loop invariant initialization proved, in instantiation at test_set_ho.adb:49
+spark-containers-functional-sets-higher_order.adb:188:16: info: loop invariant preservation proved, in instantiation at test_set_ho.adb:49
+spark-containers-functional-sets-higher_order.adb:190:57: info: predicate check proved, in instantiation at test_set_ho.adb:49
+spark-containers-functional-sets-higher_order.adb:191:18: info: predicate check proved, in instantiation at test_set_ho.adb:49
+spark-containers-functional-sets-higher_order.adb:191:20: info: predicate check proved, in instantiation at test_set_ho.adb:49
+spark-containers-functional-sets-higher_order.adb:191:22: info: predicate check proved, in instantiation at test_set_ho.adb:49
+spark-containers-functional-sets-higher_order.adb:192:13: medium: implicit aspect Always_Terminates on "Create" could be incorrect, call via access-to-subprogram might be nonterminating, in instantiation at test_set_ho.adb:49 [possible explanation: call could hide recursive calls]
+spark-containers-functional-sets-higher_order.adb:192:45: info: predicate check proved, in instantiation at test_set_ho.adb:49
+spark-containers-functional-sets-higher_order.adb:193:20: medium: implicit aspect Always_Terminates on "Create" could be incorrect, call via access-to-subprogram might be nonterminating, in instantiation at test_set_ho.adb:49 [possible explanation: call could hide recursive calls]
+spark-containers-functional-sets-higher_order.adb:193:23: info: precondition proved, in instantiation at test_set_ho.adb:49
+spark-containers-functional-sets-higher_order.adb:193:43: info: predicate check proved, in instantiation at test_set_ho.adb:49
+spark-containers-functional-sets-higher_order.adb:209:27: info: predicate check proved, in instantiation at test_set_ho.adb:49
+spark-containers-functional-sets-higher_order.adb:211:14: info: initialization of "Res" proved, in instantiation at test_set_ho.adb:49
+spark-containers-functional-sets-higher_order.adb:212:16: info: predicate check proved, in instantiation at test_set_ho.adb:49
+spark-containers-functional-sets-higher_order.adb:212:21: info: predicate check proved, in instantiation at test_set_ho.adb:49
+spark-containers-functional-sets-higher_order.adb:213:17: medium: implicit aspect Always_Terminates on "Create_Distinct" could be incorrect, call via access-to-subprogram might be nonterminating, in instantiation at test_set_ho.adb:49 [possible explanation: call could hide recursive calls]
+spark-containers-functional-sets-higher_order.adb:213:20: info: precondition proved, in instantiation at test_set_ho.adb:49
+spark-containers-functional-sets-higher_order.adb:215:34: info: loop variant proved, in instantiation at test_set_ho.adb:49
+spark-containers-functional-sets-higher_order.adb:215:47: info: predicate check proved, in instantiation at test_set_ho.adb:49
+spark-containers-functional-sets-higher_order.adb:215:60: info: predicate check proved, in instantiation at test_set_ho.adb:49
+spark-containers-functional-sets-higher_order.adb:215:62: info: range check proved, in instantiation at test_set_ho.adb:49
+spark-containers-functional-sets-higher_order.adb:215:64: info: predicate check proved, in instantiation at test_set_ho.adb:49
+spark-containers-functional-sets-higher_order.adb:216:36: info: loop invariant initialization proved, in instantiation at test_set_ho.adb:49
+spark-containers-functional-sets-higher_order.adb:216:36: info: loop invariant preservation proved, in instantiation at test_set_ho.adb:49
+spark-containers-functional-sets-higher_order.adb:216:36: info: predicate check proved, in instantiation at test_set_ho.adb:49
+spark-containers-functional-sets-higher_order.adb:216:41: info: predicate check proved, in instantiation at test_set_ho.adb:49
+spark-containers-functional-sets-higher_order.adb:217:36: info: loop invariant initialization proved, in instantiation at test_set_ho.adb:49
+spark-containers-functional-sets-higher_order.adb:217:36: info: loop invariant preservation proved, in instantiation at test_set_ho.adb:49
+spark-containers-functional-sets-higher_order.adb:217:36: info: predicate check proved, in instantiation at test_set_ho.adb:49
+spark-containers-functional-sets-higher_order.adb:217:51: info: predicate check proved, in instantiation at test_set_ho.adb:49
+spark-containers-functional-sets-higher_order.adb:218:13: medium: implicit aspect Always_Terminates on "Create_Distinct" could be incorrect, call via access-to-subprogram might be nonterminating, in instantiation at test_set_ho.adb:49 [possible explanation: call could hide recursive calls]
+spark-containers-functional-sets-higher_order.adb:219:16: info: loop invariant initialization proved, in instantiation at test_set_ho.adb:49
+spark-containers-functional-sets-higher_order.adb:219:16: info: loop invariant preservation proved, in instantiation at test_set_ho.adb:49
+spark-containers-functional-sets-higher_order.adb:219:73: info: predicate check proved, in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.adb:220:13: medium: implicit aspect Always_Terminates on "Create_Distinct" could be incorrect, call via access-to-subprogram might be nonterminating, in instantiation at test_set_ho.adb:49 [possible explanation: call could hide recursive calls]
 spark-containers-functional-sets-higher_order.adb:221:16: info: loop invariant initialization proved, in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.adb:221:16: info: loop invariant preservation proved, in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.adb:221:73: info: predicate check proved, in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.adb:222:13: medium: implicit aspect Always_Terminates on "Create_Distinct" could be incorrect, call via access-to-subprogram might be nonterminating, in instantiation at test_set_ho.adb:49 [possible explanation: call could hide recursive calls]
-spark-containers-functional-sets-higher_order.adb:223:16: info: loop invariant initialization proved, in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.adb:223:16: info: loop invariant preservation proved, in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.adb:225:57: info: predicate check proved, in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.adb:226:18: info: predicate check proved, in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.adb:226:20: info: predicate check proved, in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.adb:226:22: info: predicate check proved, in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.adb:240:07: medium: implicit aspect Always_Terminates on "Eq_Compatible" could be incorrect, call via access-to-subprogram might be nonterminating, in instantiation at test_set_ho.adb:49 [possible explanation: call could hide recursive calls]
-spark-containers-functional-sets-higher_order.adb:249:07: medium: implicit aspect Always_Terminates on "Eq_Compatible" could be incorrect, call via access-to-subprogram might be nonterminating, in instantiation at test_set_ho.adb:49 [possible explanation: call could hide recursive calls]
-spark-containers-functional-sets-higher_order.adb:252:20: info: predicate check proved, in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.adb:252:33: info: predicate check proved, in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.adb:264:14: info: initialization of "Res" proved, in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.adb:265:14: info: precondition proved, in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.adb:267:16: info: loop invariant initialization proved, in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.adb:267:16: info: loop invariant preservation proved, in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.adb:267:16: info: predicate check proved, in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.adb:267:31: info: precondition proved, in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.adb:267:31: info: predicate check proved, in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.adb:267:46: info: null exclusion check proved, in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.adb:267:54: info: precondition proved, in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.adb:267:54: info: predicate check proved, in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.adb:267:64: info: null exclusion check proved, in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.adb:268:36: info: loop invariant initialization proved, in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.adb:268:36: info: loop invariant preservation proved, in instantiation at test_set_ho.adb:49
+spark-containers-functional-sets-higher_order.adb:223:57: info: predicate check proved, in instantiation at test_set_ho.adb:49
+spark-containers-functional-sets-higher_order.adb:224:18: info: predicate check proved, in instantiation at test_set_ho.adb:49
+spark-containers-functional-sets-higher_order.adb:224:20: info: predicate check proved, in instantiation at test_set_ho.adb:49
+spark-containers-functional-sets-higher_order.adb:224:22: info: predicate check proved, in instantiation at test_set_ho.adb:49
+spark-containers-functional-sets-higher_order.adb:238:07: medium: implicit aspect Always_Terminates on "Eq_Compatible" could be incorrect, call via access-to-subprogram might be nonterminating, in instantiation at test_set_ho.adb:49 [possible explanation: call could hide recursive calls]
+spark-containers-functional-sets-higher_order.adb:247:07: medium: implicit aspect Always_Terminates on "Eq_Compatible" could be incorrect, call via access-to-subprogram might be nonterminating, in instantiation at test_set_ho.adb:49 [possible explanation: call could hide recursive calls]
+spark-containers-functional-sets-higher_order.adb:250:20: info: predicate check proved, in instantiation at test_set_ho.adb:49
+spark-containers-functional-sets-higher_order.adb:250:33: info: predicate check proved, in instantiation at test_set_ho.adb:49
+spark-containers-functional-sets-higher_order.adb:262:14: info: initialization of "Res" proved, in instantiation at test_set_ho.adb:49
+spark-containers-functional-sets-higher_order.adb:263:14: info: precondition proved, in instantiation at test_set_ho.adb:49
+spark-containers-functional-sets-higher_order.adb:265:16: info: loop invariant initialization proved, in instantiation at test_set_ho.adb:49
+spark-containers-functional-sets-higher_order.adb:265:16: info: loop invariant preservation proved, in instantiation at test_set_ho.adb:49
+spark-containers-functional-sets-higher_order.adb:265:16: info: predicate check proved, in instantiation at test_set_ho.adb:49
+spark-containers-functional-sets-higher_order.adb:265:31: info: precondition proved, in instantiation at test_set_ho.adb:49
+spark-containers-functional-sets-higher_order.adb:265:31: info: predicate check proved, in instantiation at test_set_ho.adb:49
+spark-containers-functional-sets-higher_order.adb:265:46: info: null exclusion check proved, in instantiation at test_set_ho.adb:49
+spark-containers-functional-sets-higher_order.adb:265:54: info: precondition proved, in instantiation at test_set_ho.adb:49
+spark-containers-functional-sets-higher_order.adb:265:54: info: predicate check proved, in instantiation at test_set_ho.adb:49
+spark-containers-functional-sets-higher_order.adb:265:64: info: null exclusion check proved, in instantiation at test_set_ho.adb:49
+spark-containers-functional-sets-higher_order.adb:266:36: info: loop invariant initialization proved, in instantiation at test_set_ho.adb:49
+spark-containers-functional-sets-higher_order.adb:266:36: info: loop invariant preservation proved, in instantiation at test_set_ho.adb:49
+spark-containers-functional-sets-higher_order.adb:268:16: info: loop invariant initialization proved, in instantiation at test_set_ho.adb:49
+spark-containers-functional-sets-higher_order.adb:268:16: info: loop invariant preservation proved, in instantiation at test_set_ho.adb:49
+spark-containers-functional-sets-higher_order.adb:269:13: medium: implicit aspect Always_Terminates on "Filter" could be incorrect, call via access-to-subprogram might be nonterminating, in instantiation at test_set_ho.adb:49 [possible explanation: call could hide recursive calls]
 spark-containers-functional-sets-higher_order.adb:270:16: info: loop invariant initialization proved, in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.adb:270:16: info: loop invariant preservation proved, in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.adb:271:13: medium: implicit aspect Always_Terminates on "Filter" could be incorrect, call via access-to-subprogram might be nonterminating, in instantiation at test_set_ho.adb:49 [possible explanation: call could hide recursive calls]
-spark-containers-functional-sets-higher_order.adb:272:16: info: loop invariant initialization proved, in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.adb:272:16: info: loop invariant preservation proved, in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.adb:275:13: medium: implicit aspect Always_Terminates on "Filter" could be incorrect, call via access-to-subprogram might be nonterminating, in instantiation at test_set_ho.adb:49 [possible explanation: call could hide recursive calls]
-spark-containers-functional-sets-higher_order.adb:275:36: info: loop invariant initialization proved, in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.adb:275:36: info: loop invariant preservation proved, in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.adb:278:41: info: precondition proved, in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.adb:280:16: medium: implicit aspect Always_Terminates on "Filter" could be incorrect, call via access-to-subprogram might be nonterminating, in instantiation at test_set_ho.adb:49 [possible explanation: call could hide recursive calls]
-spark-containers-functional-sets-higher_order.adb:281:26: info: precondition proved, in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.adb:297:11: info: precondition proved, in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.adb:299:13: info: loop invariant initialization proved, in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.adb:299:13: info: loop invariant preservation proved, in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.adb:299:16: info: predicate check proved, in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.adb:299:35: info: null exclusion check proved, in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.adb:299:43: info: predicate check proved, in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.adb:300:18: info: predicate check proved, in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.adb:300:32: info: null exclusion check proved, in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.adb:300:40: info: predicate check proved, in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.adb:313:07: info: precondition proved, in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.adb:313:35: info: null exclusion check proved, in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.adb:325:11: info: precondition proved, in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.adb:327:13: info: loop invariant initialization proved, in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.adb:327:13: info: loop invariant preservation proved, in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.adb:327:16: info: predicate check proved, in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.adb:327:35: info: null exclusion check proved, in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.adb:327:43: info: predicate check proved, in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.adb:327:50: info: predicate check proved, in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.adb:327:64: info: null exclusion check proved, in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.adb:327:72: info: predicate check proved, in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.adb:340:10: info: predicate check proved, in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.adb:340:25: info: predicate check proved, in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.adb:342:42: info: precondition proved, in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.adb:344:13: info: precondition proved, in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.adb:344:13: info: subprogram variant proved, in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.adb:344:44: info: null exclusion check proved, in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.adb:345:13: info: precondition proved, in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.adb:345:13: info: subprogram variant proved, in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.adb:345:33: info: precondition proved, in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.adb:345:49: info: precondition proved, in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.adb:359:36: info: precondition proved, in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.adb:362:10: info: precondition proved, in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.adb:362:10: info: subprogram variant proved, in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.adb:362:34: info: precondition proved, in instantiation at test_set_ho.adb:49
+spark-containers-functional-sets-higher_order.adb:273:13: medium: implicit aspect Always_Terminates on "Filter" could be incorrect, call via access-to-subprogram might be nonterminating, in instantiation at test_set_ho.adb:49 [possible explanation: call could hide recursive calls]
+spark-containers-functional-sets-higher_order.adb:273:36: info: loop invariant initialization proved, in instantiation at test_set_ho.adb:49
+spark-containers-functional-sets-higher_order.adb:273:36: info: loop invariant preservation proved, in instantiation at test_set_ho.adb:49
+spark-containers-functional-sets-higher_order.adb:276:41: info: precondition proved, in instantiation at test_set_ho.adb:49
+spark-containers-functional-sets-higher_order.adb:278:16: medium: implicit aspect Always_Terminates on "Filter" could be incorrect, call via access-to-subprogram might be nonterminating, in instantiation at test_set_ho.adb:49 [possible explanation: call could hide recursive calls]
+spark-containers-functional-sets-higher_order.adb:279:26: info: precondition proved, in instantiation at test_set_ho.adb:49
+spark-containers-functional-sets-higher_order.adb:295:11: info: precondition proved, in instantiation at test_set_ho.adb:49
+spark-containers-functional-sets-higher_order.adb:297:13: info: loop invariant initialization proved, in instantiation at test_set_ho.adb:49
+spark-containers-functional-sets-higher_order.adb:297:13: info: loop invariant preservation proved, in instantiation at test_set_ho.adb:49
+spark-containers-functional-sets-higher_order.adb:297:16: info: predicate check proved, in instantiation at test_set_ho.adb:49
+spark-containers-functional-sets-higher_order.adb:297:35: info: null exclusion check proved, in instantiation at test_set_ho.adb:49
+spark-containers-functional-sets-higher_order.adb:297:43: info: predicate check proved, in instantiation at test_set_ho.adb:49
+spark-containers-functional-sets-higher_order.adb:298:18: info: predicate check proved, in instantiation at test_set_ho.adb:49
+spark-containers-functional-sets-higher_order.adb:298:32: info: null exclusion check proved, in instantiation at test_set_ho.adb:49
+spark-containers-functional-sets-higher_order.adb:298:40: info: predicate check proved, in instantiation at test_set_ho.adb:49
+spark-containers-functional-sets-higher_order.adb:311:07: info: precondition proved, in instantiation at test_set_ho.adb:49
+spark-containers-functional-sets-higher_order.adb:311:35: info: null exclusion check proved, in instantiation at test_set_ho.adb:49
+spark-containers-functional-sets-higher_order.adb:323:11: info: precondition proved, in instantiation at test_set_ho.adb:49
+spark-containers-functional-sets-higher_order.adb:325:13: info: loop invariant initialization proved, in instantiation at test_set_ho.adb:49
+spark-containers-functional-sets-higher_order.adb:325:13: info: loop invariant preservation proved, in instantiation at test_set_ho.adb:49
+spark-containers-functional-sets-higher_order.adb:325:16: info: predicate check proved, in instantiation at test_set_ho.adb:49
+spark-containers-functional-sets-higher_order.adb:325:35: info: null exclusion check proved, in instantiation at test_set_ho.adb:49
+spark-containers-functional-sets-higher_order.adb:325:43: info: predicate check proved, in instantiation at test_set_ho.adb:49
+spark-containers-functional-sets-higher_order.adb:325:50: info: predicate check proved, in instantiation at test_set_ho.adb:49
+spark-containers-functional-sets-higher_order.adb:325:64: info: null exclusion check proved, in instantiation at test_set_ho.adb:49
+spark-containers-functional-sets-higher_order.adb:325:72: info: predicate check proved, in instantiation at test_set_ho.adb:49
+spark-containers-functional-sets-higher_order.adb:338:10: info: predicate check proved, in instantiation at test_set_ho.adb:49
+spark-containers-functional-sets-higher_order.adb:338:25: info: predicate check proved, in instantiation at test_set_ho.adb:49
+spark-containers-functional-sets-higher_order.adb:340:42: info: precondition proved, in instantiation at test_set_ho.adb:49
+spark-containers-functional-sets-higher_order.adb:342:13: info: precondition proved, in instantiation at test_set_ho.adb:49
+spark-containers-functional-sets-higher_order.adb:342:13: info: subprogram variant proved, in instantiation at test_set_ho.adb:49
+spark-containers-functional-sets-higher_order.adb:342:44: info: null exclusion check proved, in instantiation at test_set_ho.adb:49
+spark-containers-functional-sets-higher_order.adb:343:13: info: precondition proved, in instantiation at test_set_ho.adb:49
+spark-containers-functional-sets-higher_order.adb:343:13: info: subprogram variant proved, in instantiation at test_set_ho.adb:49
+spark-containers-functional-sets-higher_order.adb:343:33: info: precondition proved, in instantiation at test_set_ho.adb:49
+spark-containers-functional-sets-higher_order.adb:343:49: info: precondition proved, in instantiation at test_set_ho.adb:49
+spark-containers-functional-sets-higher_order.adb:357:36: info: precondition proved, in instantiation at test_set_ho.adb:49
+spark-containers-functional-sets-higher_order.adb:360:10: info: precondition proved, in instantiation at test_set_ho.adb:49
+spark-containers-functional-sets-higher_order.adb:360:10: info: subprogram variant proved, in instantiation at test_set_ho.adb:49
+spark-containers-functional-sets-higher_order.adb:360:34: info: precondition proved, in instantiation at test_set_ho.adb:49
+spark-containers-functional-sets-higher_order.adb:361:10: info: precondition proved, in instantiation at test_set_ho.adb:49
+spark-containers-functional-sets-higher_order.adb:361:10: info: subprogram variant proved, in instantiation at test_set_ho.adb:49
+spark-containers-functional-sets-higher_order.adb:362:13: info: precondition proved, in instantiation at test_set_ho.adb:49
+spark-containers-functional-sets-higher_order.adb:362:21: info: precondition proved, in instantiation at test_set_ho.adb:49
+spark-containers-functional-sets-higher_order.adb:362:40: info: precondition proved, in instantiation at test_set_ho.adb:49
+spark-containers-functional-sets-higher_order.adb:362:48: info: precondition proved, in instantiation at test_set_ho.adb:49
+spark-containers-functional-sets-higher_order.adb:362:67: info: null exclusion check proved, in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.adb:363:10: info: precondition proved, in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.adb:363:10: info: subprogram variant proved, in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.adb:364:13: info: precondition proved, in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.adb:364:21: info: precondition proved, in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.adb:364:40: info: precondition proved, in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.adb:364:48: info: precondition proved, in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.adb:364:67: info: null exclusion check proved, in instantiation at test_set_ho.adb:49
+spark-containers-functional-sets-higher_order.adb:363:34: info: precondition proved, in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.adb:365:10: info: precondition proved, in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.adb:365:10: info: subprogram variant proved, in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.adb:365:34: info: precondition proved, in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.adb:367:10: info: precondition proved, in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.adb:367:10: info: subprogram variant proved, in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.adb:367:30: info: precondition proved, in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.adb:367:45: info: precondition proved, in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.adb:367:60: info: null exclusion check proved, in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.adb:381:07: info: precondition proved, in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.adb:381:37: info: null exclusion check proved, in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.adb:403:07: info: precondition proved, in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.adb:403:33: info: null exclusion check proved, in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.adb:415:10: info: predicate check proved, in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.adb:415:25: info: predicate check proved, in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.adb:417:42: info: precondition proved, in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.adb:419:13: info: precondition proved, in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.adb:419:13: info: subprogram variant proved, in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.adb:419:42: info: null exclusion check proved, in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.adb:420:13: info: precondition proved, in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.adb:420:13: info: subprogram variant proved, in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.adb:420:31: info: precondition proved, in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.adb:420:47: info: precondition proved, in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.adb:434:36: info: precondition proved, in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.adb:437:10: info: precondition proved, in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.adb:437:10: info: subprogram variant proved, in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.adb:437:32: info: precondition proved, in instantiation at test_set_ho.adb:49
+spark-containers-functional-sets-higher_order.adb:365:30: info: precondition proved, in instantiation at test_set_ho.adb:49
+spark-containers-functional-sets-higher_order.adb:365:45: info: precondition proved, in instantiation at test_set_ho.adb:49
+spark-containers-functional-sets-higher_order.adb:365:60: info: null exclusion check proved, in instantiation at test_set_ho.adb:49
+spark-containers-functional-sets-higher_order.adb:379:07: info: precondition proved, in instantiation at test_set_ho.adb:49
+spark-containers-functional-sets-higher_order.adb:379:37: info: null exclusion check proved, in instantiation at test_set_ho.adb:49
+spark-containers-functional-sets-higher_order.adb:401:07: info: precondition proved, in instantiation at test_set_ho.adb:49
+spark-containers-functional-sets-higher_order.adb:401:33: info: null exclusion check proved, in instantiation at test_set_ho.adb:49
+spark-containers-functional-sets-higher_order.adb:413:10: info: predicate check proved, in instantiation at test_set_ho.adb:49
+spark-containers-functional-sets-higher_order.adb:413:25: info: predicate check proved, in instantiation at test_set_ho.adb:49
+spark-containers-functional-sets-higher_order.adb:415:42: info: precondition proved, in instantiation at test_set_ho.adb:49
+spark-containers-functional-sets-higher_order.adb:417:13: info: precondition proved, in instantiation at test_set_ho.adb:49
+spark-containers-functional-sets-higher_order.adb:417:13: info: subprogram variant proved, in instantiation at test_set_ho.adb:49
+spark-containers-functional-sets-higher_order.adb:417:42: info: null exclusion check proved, in instantiation at test_set_ho.adb:49
+spark-containers-functional-sets-higher_order.adb:418:13: info: precondition proved, in instantiation at test_set_ho.adb:49
+spark-containers-functional-sets-higher_order.adb:418:13: info: subprogram variant proved, in instantiation at test_set_ho.adb:49
+spark-containers-functional-sets-higher_order.adb:418:31: info: precondition proved, in instantiation at test_set_ho.adb:49
+spark-containers-functional-sets-higher_order.adb:418:47: info: precondition proved, in instantiation at test_set_ho.adb:49
+spark-containers-functional-sets-higher_order.adb:432:36: info: precondition proved, in instantiation at test_set_ho.adb:49
+spark-containers-functional-sets-higher_order.adb:435:10: info: precondition proved, in instantiation at test_set_ho.adb:49
+spark-containers-functional-sets-higher_order.adb:435:10: info: subprogram variant proved, in instantiation at test_set_ho.adb:49
+spark-containers-functional-sets-higher_order.adb:435:32: info: precondition proved, in instantiation at test_set_ho.adb:49
+spark-containers-functional-sets-higher_order.adb:436:10: info: precondition proved, in instantiation at test_set_ho.adb:49
+spark-containers-functional-sets-higher_order.adb:436:10: info: subprogram variant proved, in instantiation at test_set_ho.adb:49
+spark-containers-functional-sets-higher_order.adb:437:13: info: precondition proved, in instantiation at test_set_ho.adb:49
+spark-containers-functional-sets-higher_order.adb:437:21: info: precondition proved, in instantiation at test_set_ho.adb:49
+spark-containers-functional-sets-higher_order.adb:437:40: info: precondition proved, in instantiation at test_set_ho.adb:49
+spark-containers-functional-sets-higher_order.adb:437:48: info: precondition proved, in instantiation at test_set_ho.adb:49
+spark-containers-functional-sets-higher_order.adb:437:67: info: null exclusion check proved, in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.adb:438:10: info: precondition proved, in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.adb:438:10: info: subprogram variant proved, in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.adb:439:13: info: precondition proved, in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.adb:439:21: info: precondition proved, in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.adb:439:40: info: precondition proved, in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.adb:439:48: info: precondition proved, in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.adb:439:67: info: null exclusion check proved, in instantiation at test_set_ho.adb:49
+spark-containers-functional-sets-higher_order.adb:438:32: info: precondition proved, in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.adb:440:10: info: precondition proved, in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.adb:440:10: info: subprogram variant proved, in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.adb:440:32: info: precondition proved, in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.adb:442:10: info: precondition proved, in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.adb:442:10: info: subprogram variant proved, in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.adb:442:28: info: precondition proved, in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.adb:442:43: info: precondition proved, in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.adb:442:58: info: null exclusion check proved, in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.adb:456:07: info: precondition proved, in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.adb:456:35: info: null exclusion check proved, in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.adb:477:25: info: refined post proved, in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.adb:477:28: info: predicate check proved, in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.adb:477:38: info: predicate check proved, in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.adb:477:50: info: null exclusion check proved, in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.adb:481:14: info: precondition proved, in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.adb:483:16: info: loop invariant initialization proved, in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.adb:483:16: info: loop invariant preservation proved, in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.adb:483:16: info: predicate check proved, in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.adb:483:28: info: null exclusion check proved, in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.adb:483:37: info: predicate check proved, in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.adb:483:43: info: predicate check proved, in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.adb:483:60: info: null exclusion check proved, in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.adb:484:17: medium: implicit aspect Always_Terminates on "Sum" could be incorrect, call via access-to-subprogram might be nonterminating, in instantiation at test_set_ho.adb:49 [possible explanation: call could hide recursive calls]
-spark-containers-functional-sets-higher_order.adb:484:20: info: predicate check proved, in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.adb:484:26: info: predicate check proved, in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.adb:484:33: info: precondition proved, in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.adb:498:07: medium: implicit aspect Always_Terminates on "Sum_Rec" could be incorrect, call via access-to-subprogram might be nonterminating, in instantiation at test_set_ho.adb:49 [possible explanation: call could hide recursive calls]
-spark-containers-functional-sets-higher_order.adb:499:12: info: predicate check proved, in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.adb:499:12: info: subprogram variant proved, in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.adb:499:21: info: precondition proved, in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.adb:499:32: info: precondition proved, in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.adb:499:54: info: predicate check proved, in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.adb:499:61: info: precondition proved, in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.adb:511:22: info: predicate check proved, in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.adb:511:22: info: refined post proved, in instantiation at test_set_ho.adb:49
+spark-containers-functional-sets-higher_order.adb:440:28: info: precondition proved, in instantiation at test_set_ho.adb:49
+spark-containers-functional-sets-higher_order.adb:440:43: info: precondition proved, in instantiation at test_set_ho.adb:49
+spark-containers-functional-sets-higher_order.adb:440:58: info: null exclusion check proved, in instantiation at test_set_ho.adb:49
+spark-containers-functional-sets-higher_order.adb:454:07: info: precondition proved, in instantiation at test_set_ho.adb:49
+spark-containers-functional-sets-higher_order.adb:454:35: info: null exclusion check proved, in instantiation at test_set_ho.adb:49
+spark-containers-functional-sets-higher_order.adb:475:25: info: refined post proved, in instantiation at test_set_ho.adb:49
+spark-containers-functional-sets-higher_order.adb:475:28: info: predicate check proved, in instantiation at test_set_ho.adb:49
+spark-containers-functional-sets-higher_order.adb:475:38: info: predicate check proved, in instantiation at test_set_ho.adb:49
+spark-containers-functional-sets-higher_order.adb:475:50: info: null exclusion check proved, in instantiation at test_set_ho.adb:49
+spark-containers-functional-sets-higher_order.adb:479:14: info: precondition proved, in instantiation at test_set_ho.adb:49
+spark-containers-functional-sets-higher_order.adb:481:16: info: loop invariant initialization proved, in instantiation at test_set_ho.adb:49
+spark-containers-functional-sets-higher_order.adb:481:16: info: loop invariant preservation proved, in instantiation at test_set_ho.adb:49
+spark-containers-functional-sets-higher_order.adb:481:16: info: predicate check proved, in instantiation at test_set_ho.adb:49
+spark-containers-functional-sets-higher_order.adb:481:28: info: null exclusion check proved, in instantiation at test_set_ho.adb:49
+spark-containers-functional-sets-higher_order.adb:481:37: info: predicate check proved, in instantiation at test_set_ho.adb:49
+spark-containers-functional-sets-higher_order.adb:481:43: info: predicate check proved, in instantiation at test_set_ho.adb:49
+spark-containers-functional-sets-higher_order.adb:481:60: info: null exclusion check proved, in instantiation at test_set_ho.adb:49
+spark-containers-functional-sets-higher_order.adb:482:17: medium: implicit aspect Always_Terminates on "Sum" could be incorrect, call via access-to-subprogram might be nonterminating, in instantiation at test_set_ho.adb:49 [possible explanation: call could hide recursive calls]
+spark-containers-functional-sets-higher_order.adb:482:20: info: predicate check proved, in instantiation at test_set_ho.adb:49
+spark-containers-functional-sets-higher_order.adb:482:26: info: predicate check proved, in instantiation at test_set_ho.adb:49
+spark-containers-functional-sets-higher_order.adb:482:33: info: precondition proved, in instantiation at test_set_ho.adb:49
+spark-containers-functional-sets-higher_order.adb:496:07: medium: implicit aspect Always_Terminates on "Sum_Rec" could be incorrect, call via access-to-subprogram might be nonterminating, in instantiation at test_set_ho.adb:49 [possible explanation: call could hide recursive calls]
+spark-containers-functional-sets-higher_order.adb:497:12: info: predicate check proved, in instantiation at test_set_ho.adb:49
+spark-containers-functional-sets-higher_order.adb:497:12: info: subprogram variant proved, in instantiation at test_set_ho.adb:49
+spark-containers-functional-sets-higher_order.adb:497:21: info: precondition proved, in instantiation at test_set_ho.adb:49
+spark-containers-functional-sets-higher_order.adb:497:32: info: precondition proved, in instantiation at test_set_ho.adb:49
+spark-containers-functional-sets-higher_order.adb:497:54: info: predicate check proved, in instantiation at test_set_ho.adb:49
+spark-containers-functional-sets-higher_order.adb:497:61: info: precondition proved, in instantiation at test_set_ho.adb:49
+spark-containers-functional-sets-higher_order.adb:509:22: info: predicate check proved, in instantiation at test_set_ho.adb:49
+spark-containers-functional-sets-higher_order.adb:509:22: info: refined post proved, in instantiation at test_set_ho.adb:49
+spark-containers-functional-sets-higher_order.adb:509:51: info: predicate check proved, in instantiation at test_set_ho.adb:49
+spark-containers-functional-sets-higher_order.adb:510:38: info: null exclusion check proved, in instantiation at test_set_ho.adb:49
+spark-containers-functional-sets-higher_order.adb:511:23: info: predicate check proved, in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.adb:511:51: info: predicate check proved, in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.adb:512:38: info: null exclusion check proved, in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.adb:513:23: info: predicate check proved, in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.adb:513:51: info: predicate check proved, in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.adb:516:08: medium: implicit aspect Always_Terminates on "Transform" could be incorrect, call via access-to-subprogram might be nonterminating, in instantiation at test_set_ho.adb:49 [possible explanation: call could hide recursive calls]
-spark-containers-functional-sets-higher_order.adb:522:14: info: initialization of "Res" proved, in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.adb:523:14: info: precondition proved, in instantiation at test_set_ho.adb:49
+spark-containers-functional-sets-higher_order.adb:514:08: medium: implicit aspect Always_Terminates on "Transform" could be incorrect, call via access-to-subprogram might be nonterminating, in instantiation at test_set_ho.adb:49 [possible explanation: call could hide recursive calls]
+spark-containers-functional-sets-higher_order.adb:520:14: info: initialization of "Res" proved, in instantiation at test_set_ho.adb:49
+spark-containers-functional-sets-higher_order.adb:521:14: info: precondition proved, in instantiation at test_set_ho.adb:49
+spark-containers-functional-sets-higher_order.adb:523:16: info: loop invariant initialization proved, in instantiation at test_set_ho.adb:49
+spark-containers-functional-sets-higher_order.adb:523:16: info: loop invariant preservation proved, in instantiation at test_set_ho.adb:49
+spark-containers-functional-sets-higher_order.adb:523:16: info: predicate check proved, in instantiation at test_set_ho.adb:49
+spark-containers-functional-sets-higher_order.adb:523:31: info: predicate check proved, in instantiation at test_set_ho.adb:49
+spark-containers-functional-sets-higher_order.adb:523:50: info: predicate check proved, in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.adb:525:16: info: loop invariant initialization proved, in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.adb:525:16: info: loop invariant preservation proved, in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.adb:525:16: info: predicate check proved, in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.adb:525:31: info: predicate check proved, in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.adb:525:50: info: predicate check proved, in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.adb:527:16: info: loop invariant initialization proved, in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.adb:527:16: info: loop invariant preservation proved, in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.adb:527:36: info: null exclusion check proved, in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.adb:528:21: info: predicate check proved, in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.adb:528:36: info: predicate check proved, in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.adb:528:54: info: predicate check proved, in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.adb:529:13: medium: implicit aspect Always_Terminates on "Transform" could be incorrect, call via access-to-subprogram might be nonterminating, in instantiation at test_set_ho.adb:49 [possible explanation: call could hide recursive calls]
-spark-containers-functional-sets-higher_order.adb:530:16: info: loop invariant initialization proved, in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.adb:530:16: info: loop invariant preservation proved, in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.adb:533:13: medium: implicit aspect Always_Terminates on "Transform" could be incorrect, call via access-to-subprogram might be nonterminating, in instantiation at test_set_ho.adb:49 [possible explanation: call could hide recursive calls]
-spark-containers-functional-sets-higher_order.adb:534:16: info: loop invariant initialization proved, in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.adb:534:16: info: loop invariant preservation proved, in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.adb:539:16: medium: implicit aspect Always_Terminates on "Transform" could be incorrect, call via access-to-subprogram might be nonterminating, in instantiation at test_set_ho.adb:49 [possible explanation: call could hide recursive calls]
-spark-containers-functional-sets-higher_order.adb:539:61: info: precondition proved, in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.adb:542:26: info: precondition proved, in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.adb:560:14: info: initialization of "Res" proved, in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.adb:561:14: info: precondition proved, in instantiation at test_set_ho.adb:49
+spark-containers-functional-sets-higher_order.adb:525:36: info: null exclusion check proved, in instantiation at test_set_ho.adb:49
+spark-containers-functional-sets-higher_order.adb:526:21: info: predicate check proved, in instantiation at test_set_ho.adb:49
+spark-containers-functional-sets-higher_order.adb:526:36: info: predicate check proved, in instantiation at test_set_ho.adb:49
+spark-containers-functional-sets-higher_order.adb:526:54: info: predicate check proved, in instantiation at test_set_ho.adb:49
+spark-containers-functional-sets-higher_order.adb:527:13: medium: implicit aspect Always_Terminates on "Transform" could be incorrect, call via access-to-subprogram might be nonterminating, in instantiation at test_set_ho.adb:49 [possible explanation: call could hide recursive calls]
+spark-containers-functional-sets-higher_order.adb:528:16: info: loop invariant initialization proved, in instantiation at test_set_ho.adb:49
+spark-containers-functional-sets-higher_order.adb:528:16: info: loop invariant preservation proved, in instantiation at test_set_ho.adb:49
+spark-containers-functional-sets-higher_order.adb:531:13: medium: implicit aspect Always_Terminates on "Transform" could be incorrect, call via access-to-subprogram might be nonterminating, in instantiation at test_set_ho.adb:49 [possible explanation: call could hide recursive calls]
+spark-containers-functional-sets-higher_order.adb:532:16: info: loop invariant initialization proved, in instantiation at test_set_ho.adb:49
+spark-containers-functional-sets-higher_order.adb:532:16: info: loop invariant preservation proved, in instantiation at test_set_ho.adb:49
+spark-containers-functional-sets-higher_order.adb:537:16: medium: implicit aspect Always_Terminates on "Transform" could be incorrect, call via access-to-subprogram might be nonterminating, in instantiation at test_set_ho.adb:49 [possible explanation: call could hide recursive calls]
+spark-containers-functional-sets-higher_order.adb:537:61: info: precondition proved, in instantiation at test_set_ho.adb:49
+spark-containers-functional-sets-higher_order.adb:540:26: info: precondition proved, in instantiation at test_set_ho.adb:49
+spark-containers-functional-sets-higher_order.adb:558:14: info: initialization of "Res" proved, in instantiation at test_set_ho.adb:49
+spark-containers-functional-sets-higher_order.adb:559:14: info: precondition proved, in instantiation at test_set_ho.adb:49
+spark-containers-functional-sets-higher_order.adb:561:16: info: loop invariant initialization proved, in instantiation at test_set_ho.adb:49
+spark-containers-functional-sets-higher_order.adb:561:16: info: loop invariant preservation proved, in instantiation at test_set_ho.adb:49
+spark-containers-functional-sets-higher_order.adb:561:16: info: predicate check proved, in instantiation at test_set_ho.adb:49
+spark-containers-functional-sets-higher_order.adb:561:31: info: predicate check proved, in instantiation at test_set_ho.adb:49
+spark-containers-functional-sets-higher_order.adb:561:49: info: predicate check proved, in instantiation at test_set_ho.adb:49
+spark-containers-functional-sets-higher_order.adb:562:13: medium: implicit aspect Always_Terminates on "Transform_Distinct" could be incorrect, call via access-to-subprogram might be nonterminating, in instantiation at test_set_ho.adb:49 [possible explanation: call could hide recursive calls]
 spark-containers-functional-sets-higher_order.adb:563:16: info: loop invariant initialization proved, in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.adb:563:16: info: loop invariant preservation proved, in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.adb:563:16: info: predicate check proved, in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.adb:563:31: info: predicate check proved, in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.adb:563:49: info: predicate check proved, in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.adb:564:13: medium: implicit aspect Always_Terminates on "Transform_Distinct" could be incorrect, call via access-to-subprogram might be nonterminating, in instantiation at test_set_ho.adb:49 [possible explanation: call could hide recursive calls]
-spark-containers-functional-sets-higher_order.adb:565:16: info: loop invariant initialization proved, in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.adb:565:16: info: loop invariant preservation proved, in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.adb:568:13: medium: implicit aspect Always_Terminates on "Transform_Distinct" could be incorrect, call via access-to-subprogram might be nonterminating, in instantiation at test_set_ho.adb:49 [possible explanation: call could hide recursive calls]
-spark-containers-functional-sets-higher_order.adb:569:16: info: loop invariant initialization proved, in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.adb:569:16: info: loop invariant preservation proved, in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.adb:573:17: medium: implicit aspect Always_Terminates on "Transform_Distinct" could be incorrect, call via access-to-subprogram might be nonterminating, in instantiation at test_set_ho.adb:49 [possible explanation: call could hide recursive calls]
-spark-containers-functional-sets-higher_order.adb:573:20: info: precondition proved, in instantiation at test_set_ho.adb:49
-spark-containers-functional-sets-higher_order.adb:573:46: info: precondition proved, in instantiation at test_set_ho.adb:49
+spark-containers-functional-sets-higher_order.adb:566:13: medium: implicit aspect Always_Terminates on "Transform_Distinct" could be incorrect, call via access-to-subprogram might be nonterminating, in instantiation at test_set_ho.adb:49 [possible explanation: call could hide recursive calls]
+spark-containers-functional-sets-higher_order.adb:567:16: info: loop invariant initialization proved, in instantiation at test_set_ho.adb:49
+spark-containers-functional-sets-higher_order.adb:567:16: info: loop invariant preservation proved, in instantiation at test_set_ho.adb:49
+spark-containers-functional-sets-higher_order.adb:571:17: medium: implicit aspect Always_Terminates on "Transform_Distinct" could be incorrect, call via access-to-subprogram might be nonterminating, in instantiation at test_set_ho.adb:49 [possible explanation: call could hide recursive calls]
+spark-containers-functional-sets-higher_order.adb:571:20: info: precondition proved, in instantiation at test_set_ho.adb:49
+spark-containers-functional-sets-higher_order.adb:571:46: info: precondition proved, in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.ads:20:23: info: function contract feasibility proved, in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.ads:25:08: info: data dependencies proved, in instantiation at test_set_ho.adb:49
 spark-containers-functional-sets-higher_order.ads:26:20: info: postcondition proved, in instantiation at test_set_ho.adb:49
@@ -543,6 +541,6 @@ spark-containers-parameter_checks.ads:42:19: info: postcondition proved, in inst
 test_set_ho.adb:49:04: info: expression function body of subprograms with a numeric variant might not be available on recursive calls
 test_set_ho.adb:49:04: info: expression function body of subprograms with a numeric variant might not be available on recursive calls
 test_set_ho.adb:49:04: info: function contract might not be available on recursive calls
-test_set_ho.adb:49:04: info: in instantiation at spark-containers-functional-sets-higher_order.adb:50
-test_set_ho.adb:49:04: info: in instantiation at spark-containers-functional-sets-higher_order.adb:50
-test_set_ho.adb:49:04: info: in instantiation at spark-containers-functional-sets-higher_order.adb:85
+test_set_ho.adb:49:04: info: in instantiation at spark-containers-functional-sets-higher_order.adb:52
+test_set_ho.adb:49:04: info: in instantiation at spark-containers-functional-sets-higher_order.adb:52
+test_set_ho.adb:49:04: info: in instantiation at spark-containers-functional-sets-higher_order.adb:87

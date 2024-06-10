@@ -149,6 +149,7 @@ package body VC_Kinds is
             | VC_Assert_Premise
             | VC_Assert_Step
             | VC_Raise
+            | VC_Reclamation_Check
             | VC_Feasible_Post
             | VC_Inline_Check
             | VC_Container_Aggr_Check
@@ -391,6 +392,9 @@ package body VC_Kinds is
             return "Check the invariants used to translate container "
               & "aggregates using the primitives provided by the Aggregate "
               & "aspect and the Container_Aggregates annotation.";
+         when VC_Reclamation_Check                =>
+            return "Check that confirming annotations on hidden types which "
+              & "need reclamation are consistent with their full view.";
          when VC_UC_Source                        =>
             return "Check that a source type in an unchecked conversion can " &
               "safely be used for such conversions. This means that the " &
@@ -706,17 +710,6 @@ package body VC_Kinds is
            "a goto statement occuring in a loop before the invariant which"
           & " refers to a label occuring inside the loop but after the "
           & "invariant",
-         when Lim_Hidden_Private_Ownership =>
-            "private type whose full view contains parts of an "
-          & "access-to-variable type or whose type is annotated with the "
-          & "Ownership annotation in a package whose private part is hidden "
-          & "for proof",
-         when Lim_Hidden_Private_Predefined_Eq =>
-            "private type whose predefined equality cannot be used in all "
-          & "contexts either because it contains access parts or because "
-          & "the predefined equality of some of its parts is restricted using "
-          & "the Predefined_Equality annotation in a package whose private "
-          & "part is hidden for proof",
          when Lim_Hidden_Private_Relaxed_Init =>
             "private type whose full view contains only subcomponents whose "
           & "type is annotated with Relaxed_Initialization in a package whose "
@@ -1341,6 +1334,8 @@ package body VC_Kinds is
                "Inline_For_Proof or Logical_Equal annotation",
              when VC_Container_Aggr_Check =>
                "Container_Aggregates annotation",
+             when VC_Reclamation_Check =>
+               "reclamation annotation",
              when VC_UC_Source => "unchecked conversion source check",
              when VC_UC_Target => "unchecked conversion target check",
              when VC_UC_Same_Size => "unchecked conversion size check",

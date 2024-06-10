@@ -23,3 +23,4 @@ test_enum.adb:67:14: info: postcondition proved (CVC5: 1 VC)
 test_enum.adb:71:54: info: range check proved (CVC5: 2 VC)
 test_enum.adb:74:13: info: implicit aspect Always_Terminates on "Id" has been proved, subprogram will terminate
 test_enum.adb:75:14: info: postcondition proved (CVC5: 1 VC)
+test_enum.adb:79:43: info: range check proved (CVC5: 2 VC)
