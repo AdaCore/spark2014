@@ -1,0 +1,3 @@
+main.adb:4:16: info: implicit aspect Always_Terminates on "Create" has been proved, subprogram will terminate
+main.adb:12:12: info: implicit aspect Always_Terminates on "Create" has been proved, subprogram will terminate
+main.adb:13:12: info: implicit aspect Always_Terminates on "Create" has been proved, subprogram will terminate

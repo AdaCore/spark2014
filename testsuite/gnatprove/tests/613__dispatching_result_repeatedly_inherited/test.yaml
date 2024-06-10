@@ -1,0 +1,2 @@
+# test is a reproducer for infinite recursion in GNATprove
+timeout: 20
