@@ -1373,8 +1373,10 @@ spark-containers-functional-multisets.ads:181:22: info: predicate check proved, 
 spark-containers-functional-multisets.ads:181:47: info: for Container before the call at spark-containers-functional-multisets.ads:74, in instantiation at my_multiset.ads:6
 spark-containers-functional-multisets.ads:181:47: info: invariant check proved, in instantiation at my_multiset.ads:6
 spark-containers-functional-multisets.ads:181:47: info: predicate check proved, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.ads:190:13: info: during checks for container aggregates at spark-containers-functional-multisets.ads:54, in instantiation at my_multiset.ads:6
 spark-containers-functional-multisets.ads:190:13: info: for the result of Empty_Multiset at spark-containers-functional-multisets.ads:190, in instantiation at my_multiset.ads:6
 spark-containers-functional-multisets.ads:190:13: info: implicit aspect Always_Terminates on "Empty_Multiset" has been proved, subprogram will terminate, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.ads:190:13: info: invariant check proved, in instantiation at my_multiset.ads:6
 spark-containers-functional-multisets.ads:190:13: info: invariant check proved, in instantiation at my_multiset.ads:6
 spark-containers-functional-multisets.ads:193:06: info: data dependencies proved, in instantiation at my_multiset.ads:6
 spark-containers-functional-multisets.ads:194:16: info: for Container before the call at spark-containers-functional-multisets.ads:152, in instantiation at my_multiset.ads:6
@@ -1662,8 +1664,10 @@ spark-containers-functional-multisets.ads:411:35: info: for Container before the
 spark-containers-functional-multisets.ads:411:35: info: invariant check proved, in instantiation at my_multiset.ads:6
 spark-containers-functional-multisets.ads:411:35: info: precondition proved, in instantiation at my_multiset.ads:6
 spark-containers-functional-multisets.ads:416:13: info: during checks for quantification at spark-containers-functional-multisets.ads:561, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.ads:416:13: info: during checks for quantification at spark-containers-functional-multisets.ads:561, in instantiation at my_multiset.ads:6
 spark-containers-functional-multisets.ads:416:13: info: for the result of First at spark-containers-functional-multisets.ads:416, in instantiation at my_multiset.ads:6
 spark-containers-functional-multisets.ads:416:13: info: implicit aspect Always_Terminates on "First" has been proved, subprogram will terminate, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.ads:416:13: info: invariant check proved, in instantiation at my_multiset.ads:6
 spark-containers-functional-multisets.ads:416:13: info: invariant check proved, in instantiation at my_multiset.ads:6
 spark-containers-functional-multisets.ads:416:13: info: precondition proved, in instantiation at my_multiset.ads:6
 spark-containers-functional-multisets.ads:417:06: info: data dependencies proved, in instantiation at my_multiset.ads:6
@@ -1679,8 +1683,10 @@ spark-containers-functional-multisets.ads:419:17: info: for Iterator before the 
 spark-containers-functional-multisets.ads:419:17: info: invariant check proved, in instantiation at my_multiset.ads:6
 spark-containers-functional-multisets.ads:419:17: info: invariant check proved, in instantiation at my_multiset.ads:6
 spark-containers-functional-multisets.ads:423:13: info: during checks for quantification at spark-containers-functional-multisets.ads:561, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.ads:423:13: info: during checks for quantification at spark-containers-functional-multisets.ads:561, in instantiation at my_multiset.ads:6
 spark-containers-functional-multisets.ads:423:13: info: for the result of Next at spark-containers-functional-multisets.ads:423, in instantiation at my_multiset.ads:6
 spark-containers-functional-multisets.ads:423:13: info: implicit aspect Always_Terminates on "Next" has been proved, subprogram will terminate, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.ads:423:13: info: invariant check proved, in instantiation at my_multiset.ads:6
 spark-containers-functional-multisets.ads:423:13: info: invariant check proved, in instantiation at my_multiset.ads:6
 spark-containers-functional-multisets.ads:423:13: info: precondition proved, in instantiation at my_multiset.ads:6
 spark-containers-functional-multisets.ads:426:06: info: data dependencies proved, in instantiation at my_multiset.ads:6
@@ -1742,7 +1748,9 @@ spark-containers-functional-multisets.ads:502:06: info: data dependencies proved
 spark-containers-functional-multisets.ads:506:13: info: implicit aspect Always_Terminates on "Default_Count" has been proved, subprogram will terminate, in instantiation at my_multiset.ads:6
 spark-containers-functional-multisets.ads:507:07: info: predicate check proved, in instantiation at my_multiset.ads:6
 spark-containers-functional-multisets.ads:512:14: info: aspect Always_Terminates on "Aggr_Include" has been proved, subprogram will terminate, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.ads:512:14: info: during checks for container aggregates at spark-containers-functional-multisets.ads:54, in instantiation at my_multiset.ads:6
 spark-containers-functional-multisets.ads:512:14: info: for Container at the end of Aggr_Include at spark-containers-functional-multisets.ads:513, in instantiation at my_multiset.ads:6
+spark-containers-functional-multisets.ads:512:14: info: invariant check proved, in instantiation at my_multiset.ads:6
 spark-containers-functional-multisets.ads:512:14: info: invariant check proved, in instantiation at my_multiset.ads:6
 spark-containers-functional-multisets.ads:517:06: info: data dependencies proved, in instantiation at my_multiset.ads:6
 spark-containers-functional-multisets.ads:518:16: info: for Container before the call at spark-containers-functional-multisets.ads:74, in instantiation at my_multiset.ads:6
