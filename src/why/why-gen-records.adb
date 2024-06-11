@@ -49,7 +49,6 @@ with Why.Gen.Hardcoded;           use Why.Gen.Hardcoded;
 with Why.Gen.Init;                use Why.Gen.Init;
 with Why.Gen.Names;               use Why.Gen.Names;
 with Why.Gen.Progs;               use Why.Gen.Progs;
-with Why.Gen.Terms;               use Why.Gen.Terms;
 with Why.Images;                  use Why.Images;
 with Why.Inter;                   use Why.Inter;
 
@@ -365,6 +364,7 @@ package body Why.Gen.Records is
             Conjuncts : W_Pred_Array (1 .. Natural (Fields.Length));
             Count     : Natural := 0;
             T_Guard   : W_Pred_Id;
+            T_Abs     : W_Pred_Id;
          begin
             for Field of Fields loop
 
@@ -394,19 +394,29 @@ package body Why.Gen.Records is
                                    else Etype (Field)),
                        E       => Field);
 
-                  --  If Field is in a variant part, add a conditional to make
-                  --  sure it is present.
+                  --  If Field is in a variant part, check whether it is
+                  --  present.
 
-                  if T_Comp /= True_Pred
+                  if Ekind (Field) = E_Component
                     and then not Is_Concurrent_Type (Ty_Ext)
-                    and then Ekind (Field) = E_Component
                     and then Has_Variant_Info (Ty_Ext, Field)
                   then
-                     T_Guard := New_Ada_Record_Check_For_Field
-                       (Empty, R_Expr1, Field, Ty_Ext);
-                     T_Comp := New_Conditional
-                       (Condition => T_Guard,
-                        Then_Part => T_Comp);
+                     T_Abs :=
+                       Build_Predicate_For_Absent_Field
+                         (F_Expr1 => R_Acc1,
+                          F_Expr2 => R_Acc2,
+                          F_Ty    => (if Is_Type (Field) then Field
+                                      else Etype (Field)),
+                          E       => Field);
+
+                     if T_Comp /= True_Pred or else T_Abs /= True_Pred then
+                        T_Guard := New_Ada_Record_Check_For_Field
+                          (Empty, R_Expr1, Field, Ty_Ext);
+                        T_Comp := New_Conditional
+                          (Condition => T_Guard,
+                           Then_Part => T_Comp,
+                           Else_Part => T_Abs);
+                     end if;
                   end if;
 
                   if T_Comp /= True_Pred then
@@ -453,9 +463,15 @@ package body Why.Gen.Records is
          return W_Pred_Id
       is (Build_Predicate_For_Field (F_Expr1, F_Ty, E));
 
+      function Build_Predicate_For_Absent_Field
+        (F_Expr1, Dummy_Expr2 : W_Term_Id; F_Ty : Entity_Id; E : Entity_Id)
+         return W_Pred_Id
+      is (Build_Predicate_For_Absent_Field (F_Expr1, F_Ty, E));
+
       function Build_Predicate is new Build_Binary_Predicate_For_Record
         (Build_Predicate_For_Discr,
          Build_Predicate_For_Field,
+         Build_Predicate_For_Absent_Field,
          Ignore_Private_State);
 
    begin

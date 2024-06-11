@@ -4778,6 +4778,14 @@ package body Gnat2Why.Expr is
       --   F_Expr = E.def               <if Field1 has a default>
       --   default_init (F_Expr, F_Ty)) <otherwise>
 
+      function Default_Init_Absent_Field
+        (F_Expr : W_Term_Id;
+         F_Ty   : Entity_Id;
+         E      : Entity_Id)
+         return W_Pred_Id;
+      --  Assume that components not present in discriminated records have a
+      --  dummy value.
+
       function Default_Init_For_Discr
         (D_Expr : W_Term_Id;
          D_Ty   : Entity_Id;
@@ -4790,6 +4798,32 @@ package body Gnat2Why.Expr is
       --  @return predicate for individual discrimiant
       --  D_Expr = E.default             <if Ty_Ext is unconstrained>
       --  D_Expr = stored_constraint (E) <otherwise>
+
+      -------------------------------
+      -- Default_Init_Absent_Field --
+      -------------------------------
+
+      function Default_Init_Absent_Field
+        (F_Expr : W_Term_Id;
+         F_Ty   : Entity_Id;
+         E      : Entity_Id)
+         return W_Pred_Id
+      is
+         pragma Unreferenced (E);
+         Dummy_Expr : W_Term_Id := +Why_Default_Value (EW_Term, F_Ty);
+
+      begin
+         if Is_Init_Wrapper_Type (Get_Type (+F_Expr)) then
+            Dummy_Expr := Insert_Simple_Conversion
+              (Expr => Dummy_Expr,
+               To   => Get_Type (+F_Expr));
+         end if;
+
+         return New_Comparison
+           (Symbol => Why_Eq,
+            Left   => F_Expr,
+            Right  => Dummy_Expr);
+      end Default_Init_Absent_Field;
 
       ---------------------------
       -- Default_Init_For_Comp --
@@ -4983,6 +5017,7 @@ package body Gnat2Why.Expr is
       function Default_Init_For_Record is new Build_Predicate_For_Record
         (Default_Init_For_Discr,
          Default_Init_For_Field,
+         Default_Init_Absent_Field,
          Ignore_Private_State => False);
 
       Tmp        : constant W_Term_Id := New_Temp_For_Expr (Expr);
@@ -5746,11 +5781,45 @@ package body Gnat2Why.Expr is
       --          Dynamic_Invariant <C_Expr>
       --              /\ C_Expr.rec__constrained = <Is_Constrained (C_Ty)>
 
+      function Invariant_For_Absent_Comp
+        (C_Expr : W_Term_Id;
+         C_Ty   : Entity_Id;
+         E      : Entity_Id)
+         return W_Pred_Id;
+      --  Assume that components not present in discriminated records have a
+      --  dummy value.
+
       function Invariant_For_Comp
         (C_Expr : W_Term_Id;
          C_Ty   : Entity_Id)
          return W_Pred_Id
       is (Invariant_For_Comp (C_Expr, C_Ty, Empty));
+
+      -------------------------------
+      -- Invariant_For_Absent_Comp --
+      -------------------------------
+
+      function Invariant_For_Absent_Comp
+        (C_Expr : W_Term_Id;
+         C_Ty   : Entity_Id;
+         E      : Entity_Id)
+         return W_Pred_Id
+      is
+         pragma Unreferenced (E);
+         Dummy_Expr : W_Term_Id := +Why_Default_Value (EW_Term, C_Ty);
+
+      begin
+         if Is_Init_Wrapper_Type (Get_Type (+C_Expr)) then
+            Dummy_Expr := Insert_Simple_Conversion
+              (Expr => Dummy_Expr,
+               To   => Get_Type (+C_Expr));
+         end if;
+
+         return New_Comparison
+           (Symbol => Why_Eq,
+            Left   => C_Expr,
+            Right  => Dummy_Expr);
+      end Invariant_For_Absent_Comp;
 
       --------------------------
       -- Invariant_For_Access --
@@ -5862,7 +5931,7 @@ package body Gnat2Why.Expr is
         (Invariant_For_Comp);
 
       function Invariant_For_Record is new Build_Predicate_For_Record
-        (Invariant_For_Comp, Invariant_For_Comp);
+        (Invariant_For_Comp, Invariant_For_Comp, Invariant_For_Absent_Comp);
 
       --  If Ty's fullview is in SPARK, go to its underlying type to check its
       --  kind.
@@ -6232,13 +6301,33 @@ package body Gnat2Why.Expr is
 
       if Present (Inv_Scop) then
          T := New_And_Pred
-           (Left   => T,
-            Right  => Compute_Type_Invariant
+           (Left  => T,
+            Right => Compute_Type_Invariant
               (Expr, Ty_Ext, Locally_Assumed, Params,
                Include_Comp => False,
                Use_Pred     => Use_Pred,
                Scop         => Inv_Scop,
                Subp         => Inv_Subp));
+      end if;
+
+      --  If Ty_Ext is tagged, assume that objects of dynamic type Ty_Ext have
+      --  an empty extension.
+
+      if Is_Tagged_Type (Ty_Ext) then
+         T := New_And_Pred
+           (Left  => T,
+            Right => New_Conditional
+              (Condition => New_Comparison
+                   (Symbol => Why_Eq,
+                    Left   => +New_Tag_Access
+                      (Domain => EW_Term, Name => +Expr, Ty => Ty_Ext),
+                    Right  => +E_Symb (Ty_Ext, WNE_Tag)),
+               Then_Part => New_Comparison
+                 (Symbol => Why_Eq,
+                  Left   => +New_Ext_Access
+                    (Name => New_Fields_Access (Name => +Expr, Ty => Ty_Ext),
+                     Ty   => Ty_Ext),
+                  Right  => +E_Symb (Ty_Ext, WNE_Null_Extension))));
       end if;
 
       --  Compute dynamic invariant for its components
@@ -6421,16 +6510,20 @@ package body Gnat2Why.Expr is
                                     Typ    => EW_Bool_Type));
                   end;
 
-                  --  In general, predicates for incomplete types should only
-                  --  occur when defining the predicate for Ty. In this case,
-                  --  Inv_Scop is empty, so no need to worry about invariants.
-                  --  Theoretically, it could happen that we are in a context
-                  --  where Inv_Scop is set, typically for Itypes. We have
-                  --  never seen a case where this happens in practice though,
-                  --  so for now we assert that this never happens.
+                  --  If Inv_Scop is set, add possible locally assumed type
+                  --  invariants. If Inv_Subp is also set, add globally assumed
+                  --  type invariants as they won't be included in the
+                  --  predicate (as All_Global_Inv is False). Include
+                  --  components as the traversal stops here.
 
                   if Present (Inv_Scop) then
-                     raise Program_Error;
+                     T := New_And_Pred
+                       (Left   => T,
+                        Right  => Compute_Type_Invariant
+                          (Expr, Ty_Ext, Locally_Assumed, Params,
+                           Use_Pred => Use_Pred,
+                           Scop     => Inv_Scop,
+                           Subp     => Inv_Subp));
                   end if;
 
                --  Theoretically, it could happen that we are in a context

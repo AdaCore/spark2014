@@ -1,4 +1,0 @@
-
-incorrect_logical_equality_2.adb:13:09: medium: Inline_For_Proof or Logical_Equal annotation might be incorrect
-   13 |   with Annotate => (GNATprove, Logical_Equal);
-      |        ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

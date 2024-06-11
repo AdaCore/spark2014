@@ -6,6 +6,7 @@ member_alt.adb:14:22: info: assertion proved (CVC5: 1 VC), in call inlined at me
 member_alt.adb:15:22: high: assertion might fail, in call inlined at member_alt.adb:28 (e.g. when X = (D => True, F => 0) and Y = (D => True, F => 1) and Z = (D => True, F => 2))
 member_alt.adb:18:14: warning: subprogram "Bad2" has no effect
 member_alt.adb:21:16: info: implicit aspect Always_Terminates on "F" has been proved, subprogram will terminate
+member_alt.adb:21:16: info: implicit function contract might not be available on calls from enclosing unit
 member_alt.adb:25:22: info: assertion proved (CVC5: 1 VC)
 member_alt.adb:25:27: info: no contextual analysis of "Bad2" (call returns unconstrained type)
 member_alt.adb:25:27: medium: precondition might fail

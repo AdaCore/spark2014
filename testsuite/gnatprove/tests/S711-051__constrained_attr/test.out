@@ -2,6 +2,7 @@ test_constrained.adb:8:13: info: function contract might not be available on cal
 test_constrained.adb:8:13: info: implicit aspect Always_Terminates on "Get_Constr" has been proved, subprogram will terminate
 test_constrained.adb:10:19: info: postcondition proved (CVC5: 1 VC)
 test_constrained.adb:12:13: info: implicit aspect Always_Terminates on "F" has been proved, subprogram will terminate
+test_constrained.adb:12:13: info: implicit function contract might not be available on calls from enclosing unit
 test_constrained.adb:15:22: info: assertion proved (CVC5: 1 VC)
 test_constrained.adb:16:22: info: assertion proved (CVC5: 1 VC)
 test_constrained.adb:19:13: info: function contract might not be available on calls from enclosing unit

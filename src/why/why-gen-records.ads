@@ -30,6 +30,7 @@ with SPARK_Atree.Entities; use SPARK_Atree.Entities;
 with SPARK_Util.Types;     use SPARK_Util.Types;
 with Types;                use Types;
 with Why.Gen.Binders;      use Why.Gen.Binders;
+with Why.Gen.Terms;        use Why.Gen.Terms;
 with Why.Ids;              use Why.Ids;
 with Why.Conversions;      use Why.Conversions;
 with Why.Sinfo;            use Why.Sinfo;
@@ -417,6 +418,23 @@ package Why.Gen.Records is
 
    function Oldest_Parent_With_Same_Fields (E : Entity_Id) return Entity_Id;
 
+   --  Default values for predicates for fields which are not present in a
+   --  variant record.
+
+   function Build_Predicate_For_Absent_Field
+     (Unused_F_Expr1, Unused_F_Expr2 : W_Term_Id;
+      Unused_F_Ty                    : Entity_Id;
+      Unused_E                       : Entity_Id)
+      return W_Pred_Id
+   is (True_Pred);
+
+   function Build_Predicate_For_Absent_Field
+     (Unused_F_Expr1 : W_Term_Id;
+      Unused_F_Ty    : Entity_Id;
+      Unused_E       : Entity_Id)
+      return W_Pred_Id
+   is (True_Pred);
+
    generic
       with function Build_Predicate_For_Discr
         (D_Expr : W_Term_Id; D_Ty : Entity_Id; E : Entity_Id)
@@ -424,14 +442,19 @@ package Why.Gen.Records is
       with function Build_Predicate_For_Field
         (F_Expr : W_Term_Id; F_Ty : Entity_Id; E : Entity_Id)
          return W_Pred_Id;
+      with function Build_Predicate_For_Absent_Field
+        (F_Expr : W_Term_Id; F_Ty : Entity_Id; E : Entity_Id)
+         return W_Pred_Id is <>;
       Ignore_Private_State : Boolean := True;
    function Build_Predicate_For_Record
      (Expr : W_Term_Id; Ty : Entity_Id) return W_Pred_Id;
    --  Construct a predicate:
    --  Build_Predicate_For_Discr <Expr>.rec__d1 /\ ...
-   --  /\ (check_for_f1 <Expr> -> Build_Predicate_For_Field <Expr>.rec__f1)
+   --  /\ (if check_for_f1 <Expr> then Build_Predicate_For_Field <Expr>.rec__f1
+   --      else Build_Predicate_For_Absent_Field <Expr>.rec__f1)
    --  /\ ..
-   --  /\ (check_for_fn <Expr> -> Build_Predicate_For_Field <Expr>.rec__fn)
+   --  /\ (if check_for_fn <Expr> then Build_Predicate_For_Field <Expr>.rec__fn
+   --      else Build_Predicate_For_Absent_Field <Expr>.rec__fn)
    --
    --  The parameters of the subprogram formal parameters are:
    --    * *_Expr the Why expression for the component/discriminant access
@@ -450,21 +473,27 @@ package Why.Gen.Records is
       with function Build_Predicate_For_Field
         (F_Expr1, F_Expr2 : W_Term_Id; F_Ty : Entity_Id; E : Entity_Id)
          return W_Pred_Id;
+      with function Build_Predicate_For_Absent_Field
+        (F_Expr1, F_Expr2 : W_Term_Id; F_Ty : Entity_Id; E : Entity_Id)
+         return W_Pred_Id is <>;
       Ignore_Private_State : Boolean := True;
    function Build_Binary_Predicate_For_Record
      (Expr1, Expr2 : W_Term_Id; Ty : Entity_Id) return W_Pred_Id;
    --  Construct a predicate:
    --  Build_Predicate_For_Discr <Expr1>.rec__d1 <Expr2>.rec__d1 /\ ...
-   --  (check_for_f1 <Expr1> ->
-   --      Build_Predicate_For_Field <Expr1>.rec__f1 <Expr2>.rec__f1)
-   --  /\ ..
-   --  /\ (check_for_fn <Expr1> ->
-   --      Build_Predicate_For_Field <Expr1>.rec__fn <Expr2>.rec__fn)
+   --  (if check_for_f1 <Expr1> ->
+   --   then Build_Predicate_For_Field <Expr1>.rec__f1 <Expr2>.rec__f1
+   --   else Build_Predicate_For_Absent_Field <Expr1>.rec__f1 <Expr2>.rec__f1)
+   --  /\ .. /\
+   --  (if check_for_fn <Expr1>
+   --   then Build_Predicate_For_Field <Expr1>.rec__fn <Expr2>.rec__fn
+   --   else Build_Predicate_For_Absent_Field <Expr1>.rec__fn <Expr2>.rec__fn)
    --  As visible above, this only makes sense if the discriminants for
    --  Expr1 and Expr2 are equal.
    --
    --  The parameters of the subprogram formal parameters are:
-   --    * *_Expr the Why expression for the component/discriminant access
+   --    * *_Expr1, *_Expr2 the Why expressions for the component/discriminant
+   --      accesses
    --    * *_Ty the Ada type of the component/discriminant
    --    * E the Ada entity for the component or discriminant. It can be a type
    --      entity to model the private part of the type.
