@@ -167,7 +167,8 @@ package Gnat2Why.Expr is
      (E           : Entity_Id;
       Params      : Transformation_Params;
       For_Input   : Boolean;
-      Exceptional : Boolean := False)
+      Exceptional : Boolean := False;
+      Scop        : Entity_Id)
    with
      Pre  => (Is_Subprogram_Or_Entry (E) or Ekind (E) = E_Subprogram_Type)
        and then (if Exceptional then not For_Input);
@@ -180,6 +181,8 @@ package Gnat2Why.Expr is
    --         are interested in its outputs.
    --  @param Exceptional True if we are interested in outputs of E on
    --         exceptional paths.
+   --  @param Scop local scope used to exclude checks on locally assumed
+   --         invariants.
 
    function Check_Type_Invariants_For_Subprogram
      (E           : Entity_Id;
@@ -190,6 +193,7 @@ package Gnat2Why.Expr is
       return W_Prog_Id;
    --  Checks all invariants produced by
    --  Process_Type_Invariants_For_Subprogram. Localize the checks on Ada_Node.
+   --  Use Current_Subp as a scope.
 
    procedure Compute_Borrow_At_End_Value
      (Check_Node    : Entity_Id := Empty;
@@ -284,14 +288,14 @@ package Gnat2Why.Expr is
    --     over [Expr].
 
    function Compute_Dynamic_Invariant
-     (Expr             : W_Term_Id;
-      Ty               : Type_Kind_Id;
-      Params           : Transformation_Params;
-      Initialized      : W_Term_Id := True_Term;
-      Only_Var         : W_Term_Id := True_Term;
-      Top_Predicate    : W_Term_Id := True_Term;
-      Include_Type_Inv : W_Term_Id := True_Term;
-      Use_Pred         : Boolean := True)
+     (Expr           : W_Term_Id;
+      Ty             : Type_Kind_Id;
+      Params         : Transformation_Params;
+      Initialized    : W_Term_Id := True_Term;
+      Only_Var       : W_Term_Id := True_Term;
+      Top_Predicate  : W_Term_Id := True_Term;
+      All_Global_Inv : Boolean := True;
+      Use_Pred       : Boolean := True)
       return W_Pred_Id;
    --  @param Expr Why3 expression on which to express the dynamic invariant
    --  @param Ty type of expression [Expr]
@@ -302,12 +306,15 @@ package Gnat2Why.Expr is
    --     the variable parts of [Expr].
    --  @param Top_Predicate true term iff the dynamic invariant should consider
    --     the toplevel type predicate possibly associated with [Ty].
-   --  @param Include_Type_Inv true term iff the dynamic invariant should
-   --     consider the non-local type invariants possibly associated with [Ty].
-   --  @param Params transformation parameters
+   --  @param All_Global_Inv true if the dynamic invariant should consider all
+   --     the non-local type invariants possibly associated with [Ty]. If it is
+   --     False, non-local invariants relaxed for parameters of Current_Subp
+   --     are excluded.
    --  @param Use_Pred True iff the named predicate should be used
    --  @result Why3 predicate expressing the dynamic invariant of type [Ty]
-   --     over [Expr].
+   --     over [Expr]. Current_Subp is used as a scope for the type invariants.
+   --     It is used to assume local type invariants which are always True in a
+   --     given scope.
 
    procedure Compute_Dynamic_Invariant
      (Expr             :        W_Term_Id;
@@ -316,17 +323,34 @@ package Gnat2Why.Expr is
       Initialized      :        W_Term_Id;
       Only_Var         :        W_Term_Id;
       Top_Predicate    :        W_Term_Id;
-      Include_Type_Inv :        W_Term_Id;
+      All_Global_Inv   :        W_Term_Id;
+      Inv_Scop         :        Node_Id;
+      Inv_Subp         :        Node_Id;
       Use_Pred         :        Boolean;
       New_Preds_Module :        W_Module_Id;
       T                :    out W_Pred_Id;
       Loc_Incompl_Acc  :        Ada_To_Why_Ident.Map;
       New_Incompl_Acc  : in out Ada_To_Why_Ident.Map;
       Expand_Incompl   :        Boolean)
-     with Post => (if not Use_Pred and T /= True_Pred then
-                   Type_Needs_Dynamic_Invariant (Ty));
+   with
+     Pre  =>
+       (if Present (Inv_Subp)
+        then Inv_Scop = Inv_Subp and then Is_False_Boolean (+All_Global_Inv)),
+     Post => (if not Use_Pred and T /= True_Pred then
+                Type_Needs_Dynamic_Invariant (Ty));
    --  Same as above except that the result is stored inside the out parameter
-   --  T. Additional parameters are:
+   --  T. The boolean flag All_Global_Inv is replaced by a boolean term so
+   --  the function can be used to generate the dynamic invariant predicate.
+   --  Additional parameters are:
+   --  @param Inv_Scop scope for the type invariants. It is used to assume
+   --    local type invariants which are always True in a given scope. It
+   --    might be empty when generating the dynamic invariant predicate for
+   --    Ty. In this case, no local invariant is assumed.
+   --  @param Inv_Subp optional subprogram parameter. It is set to Inv_Scop
+   --    when non local type invariants should be assumed on a case-by-case
+   --    basis depending on whether or not they are relaxed for parameters in
+   --    the current scope. When it is set, non-local invariants should not be
+   --    assumed globally (All_Global_Inv should be False).
    --  @param New_Preds_Module the module that should be used to store new
    --    predicate symbols if there is one.
    --  @param Loc_Incompl_Acc the set of predicate names from the local scope.
@@ -336,13 +360,13 @@ package Gnat2Why.Expr is
    --    incomplete types should be expanded.
 
    function Compute_Dynamic_Inv_And_Initialization
-     (Expr             : W_Term_Id;
-      Ty               : Type_Kind_Id;
-      Params           : Transformation_Params;
-      Initialized      : W_Term_Id := True_Term;
-      Only_Var         : W_Term_Id := True_Term;
-      Top_Predicate    : Boolean := True;
-      Include_Type_Inv : W_Term_Id := True_Term)
+     (Expr           : W_Term_Id;
+      Ty             : Type_Kind_Id;
+      Params         : Transformation_Params;
+      Initialized    : W_Term_Id := True_Term;
+      Only_Var       : W_Term_Id := True_Term;
+      Top_Predicate  : Boolean := True;
+      All_Global_Inv : Boolean := True)
       return W_Pred_Id;
    --  Same as Compute_Dynamic_Invariant but also add the initialization if
    --  Expr is an initialization wrapper type and Initialized is true.
@@ -407,30 +431,43 @@ package Gnat2Why.Expr is
    --  @result Why3 predicate expressing the type invariant of type [Ty] over
    --          [Expr].
 
+   type Invariant_Kind is (Globally_Assumed, Locally_Assumed, For_Check);
+
    function Compute_Type_Invariant
      (Expr         : W_Term_Id;
       Ty           : Type_Kind_Id;
+      Kind         : Invariant_Kind;
       Params       : Transformation_Params := Body_Params;
-      On_External  : Boolean := False;
-      On_Internal  : Boolean := False;
+      Scop         : Entity_Id := Empty;
+      Subp         : Entity_Id := Empty;
       Include_Comp : Boolean := True;
       Use_Pred     : Boolean := True)
       return W_Pred_Id
-   with Pre => (On_Internal or On_External)
-     and then (if On_External then not Include_Comp);
+   with Pre =>
+       (case Kind is
+          when Globally_Assumed => No (Scop) and then No (Subp),
+          when Locally_Assumed  => Present (Scop),
+          when For_Check        => Present (Scop) and then Include_Comp),
+     Post =>
+       (if Kind = For_Check
+        then Is_True_Boolean (+Compute_Type_Invariant'Result) /=
+            Invariant_Check_Needed (Ty, Subp, Scop));
    --  @param Expr Why3 term expression on which to express the type invariant
    --  @param Ty type with the type invariant
+   --  @param Kind can be Globally_Assumed for invariants assumed globally in
+   --         the main unit, Locally_Assumed for invariants assumed in Scop
+   --         and For_Check for invariants that need to be checked in Scop or
+   --         globally in the unit if Scop is Empty.
    --  @param Params transformation parameters
-   --  @param On_External True if invariants of types declared outside the
-   --         current compilation unit should be considered. In this case,
-   --         there might be type invariants inside access-to-incomplete types
-   --         that would be ignored in Compute_Type_Invariant, so Include_Comp
-   --         should be False (there is no tool restriction for external
-   --         types).
-   --  @param On_Internal True if invariants of types declared in the current
-   --         compilation unit should be considered.
+   --  @param Scop scope of the invariant. Shall be set for Locally_Assumed and
+   --         For_Check.
+   --  @param Subp optional subprogram. If supplied, it is used to exclude
+   --         invariants that are relaxed for For_Checks and to include
+   --         globally assumed invariants that are not relaxed for
+   --         Locally_Assumed.
    --  @param Include_Comp False if we do not care about the invariants of
-   --         composite types. Invariants of parents of Ty are still included.
+   --         components of composite types. Invariants of parents of Ty are
+   --         still included.
    --  @param Use_Pred False if the predicate function introduced for Ty's
    --         top-level invariant should not be used.
    --  @result Why3 predicate expressing the type invariant of type [Ty] and
@@ -807,9 +844,11 @@ package Gnat2Why.Expr is
 
    procedure Variables_In_Dynamic_Invariant
      (Ty        :        Type_Kind_Id;
-      Variables : in out Flow_Id_Sets.Set)
+      Variables : in out Flow_Id_Sets.Set;
+      Scop      : Entity_Id)
    with Post => Variables'Old.Is_Subset (Of_Set => Variables);
    --  @param Ty a type
+   --  @param Scop scope in which the dynamic invariant is computed.
    --  @param Variables used in the expression for Ty's dynamic invariant
 
    procedure Variables_In_Type_Invariant

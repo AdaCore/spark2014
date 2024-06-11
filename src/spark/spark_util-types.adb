@@ -1245,21 +1245,6 @@ package body SPARK_Util.Types is
       end if;
    end Has_Unconstrained_UU_Component;
 
-   ---------------------------------
-   -- Has_Visible_Type_Invariants --
-   ---------------------------------
-
-   function Has_Visible_Type_Invariants (Ty : Type_Kind_Id) return Boolean is
-      Real_Node : constant Node_Id :=
-        (if Is_Itype (Ty)
-         then Associated_Node_For_Itype (Ty)
-         else Ty);
-
-   begin
-      return Has_Invariants_In_SPARK (Ty)
-        and then Is_Declared_In_Main_Unit_Or_Parent (Real_Node);
-   end Has_Visible_Type_Invariants;
-
    ---------------------------
    -- Have_Same_Known_Esize --
    ---------------------------
@@ -1327,20 +1312,76 @@ package body SPARK_Util.Types is
       Explanation := Null_Unbounded_String;
    end Have_Same_Known_RM_Size;
 
+   -------------------------------
+   -- Invariant_Assumed_In_Main --
+   -------------------------------
+
+   function Invariant_Assumed_In_Main (Ty : Type_Kind_Id) return Boolean is
+      Real_Node : constant Node_Id :=
+        (if Is_Itype (Ty)
+         then Associated_Node_For_Itype (Ty)
+         else Ty);
+
+   begin
+      return not Is_Declared_In_Main_Unit_Or_Parent (Real_Node);
+   end Invariant_Assumed_In_Main;
+
+   --------------------------------
+   -- Invariant_Assumed_In_Scope --
+   --------------------------------
+
+   function Invariant_Assumed_In_Scope
+     (Ty   : Type_Kind_Id;
+      Scop : Entity_Id)
+      return Boolean
+   is
+      Ty_Scop : constant Entity_Id := Scope (Ty);
+      pragma Assert (Ekind (Ty_Scop) = E_Package);
+
+      Curr_Scop : Entity_Id := Scop;
+   begin
+      --  Go up the chain of scopes of Scop to see if the scope of Ty is
+      --  encountered.
+
+      loop
+         if Curr_Scop = Ty_Scop then
+            return False;
+         end if;
+         Curr_Scop := Scope (Curr_Scop);
+
+         exit when No (Curr_Scop);
+      end loop;
+      return True;
+   end Invariant_Assumed_In_Scope;
+
    ----------------------------
    -- Invariant_Check_Needed --
    ----------------------------
 
-   function Invariant_Check_Needed (Ty : Type_Kind_Id) return Boolean is
+   function Invariant_Check_Needed
+     (Ty   : Type_Kind_Id;
+      Subp : Entity_Id := Empty;
+      Scop : Entity_Id := Empty)
+      return Boolean
+   is
       Rep_Ty  : constant Type_Kind_Id := Retysp (Ty);
       Current : Type_Kind_Id := Rep_Ty;
       Parent  : Type_Kind_Id;
 
    begin
-      --  Check for invariants on the type and its ancestors
+      --  Check for invariants on the type and its ancestors. Do not consider
+      --  invariants which are assumed, globally or in Scop, and invariant
+      --  relaxed for Subp.
 
       loop
-         if Has_Visible_Type_Invariants (Current) then
+         if Has_Invariants_In_SPARK (Current)
+           and then not Invariant_Assumed_In_Main (Current)
+           and then
+             (No (Scop) or else not Invariant_Assumed_In_Scope (Current, Scop))
+           and then
+             (No (Subp)
+              or else not Invariant_Relaxed_For_Subprogram (Current, Subp))
+         then
             return True;
          end if;
 
@@ -1352,7 +1393,8 @@ package body SPARK_Util.Types is
       --  Check for invariants on components
 
       if Is_Array_Type (Rep_Ty) then
-         return Invariant_Check_Needed (Component_Type (Rep_Ty));
+         return Invariant_Check_Needed
+           (Component_Type (Rep_Ty), Subp => Subp, Scop => Scop);
 
       elsif Is_Incomplete_Or_Private_Type (Rep_Ty)
         or else Is_Record_Type (Rep_Ty)
@@ -1363,7 +1405,9 @@ package body SPARK_Util.Types is
                Discr : Opt_E_Discriminant_Id := First_Discriminant (Rep_Ty);
             begin
                while Present (Discr) loop
-                  if Invariant_Check_Needed (Etype (Discr)) then
+                  if Invariant_Check_Needed
+                    (Etype (Discr), Subp => Subp, Scop => Scop)
+                  then
                      return True;
                   end if;
 
@@ -1378,7 +1422,8 @@ package body SPARK_Util.Types is
             while Present (Comp) loop
                if Ekind (Comp) = E_Component
                  and then Entity_In_SPARK (Etype (Comp))
-                 and then Invariant_Check_Needed (Etype (Comp))
+                 and then Invariant_Check_Needed
+                   (Etype (Comp), Subp => Subp, Scop => Scop)
                then
                   return True;
                end if;
@@ -1402,11 +1447,76 @@ package body SPARK_Util.Types is
             --  instead.
          begin
             return not Acts_As_Incomplete_Type (Des_Ty)
-              and then Invariant_Check_Needed (Des_Ty);
+              and then Invariant_Check_Needed
+                (Des_Ty, Subp => Subp, Scop => Scop);
          end;
       end if;
       return False;
    end Invariant_Check_Needed;
+
+   ---------------------------------------
+   --  Invariant_Relaxed_For_Subprogram --
+   ---------------------------------------
+
+   function Invariant_Relaxed_For_Subprogram
+     (Ty   : Type_Kind_Id;
+      Subp : Entity_Id)
+      return Boolean
+   is
+      Ty_Scop : constant Entity_Id := Scope (Ty);
+      pragma Assert (Ekind (Ty_Scop) = E_Package);
+
+      Priv    : Boolean := False;
+      Prev    : Entity_Id := Subp;
+      Scop    : Entity_Id;
+
+   begin
+      --  Go up the chain of scopes of Scop to see if the scope of Ty is
+      --  encountered. Along the way, set Priv to True if a private scope is
+      --  encountered.
+
+      loop
+         Scop := Scope (Prev);
+
+         if No (Scop) then
+            return False;
+         end if;
+
+         --  If Prev is not visible in Scop, set Priv to True
+
+         if Is_Child_Unit (Prev) then
+            Priv := Priv or else Is_Private_Child_Unit (Prev);
+
+         elsif Ekind (Scop) = E_Protected_Type then
+            declare
+               Decl : constant Node_Id := Enclosing_Declaration (Prev);
+               Par  : constant Node_Id := Parent (Decl);
+            begin
+               Priv := Priv
+                 or else
+                   (not Is_List_Member (Decl)
+                    or else Nkind (Par) /= N_Protected_Definition
+                    or else List_Containing (Decl) /=
+                          Visible_Declarations (Par));
+            end;
+
+         elsif Ekind (Scop) = E_Package then
+            Priv := Priv or else not In_Visible_Declarations
+              (Enclosing_Declaration (Prev));
+
+         else
+            Priv := True;
+         end if;
+
+         --  Ty_Scop has been reached, return Priv
+
+         if Scop = Ty_Scop then
+            return Priv;
+         end if;
+
+         Prev := Scop;
+      end loop;
+   end Invariant_Relaxed_For_Subprogram;
 
    -------------
    -- Is_Deep --

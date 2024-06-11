@@ -280,13 +280,10 @@ package body Gnat2Why.Subprograms is
       Exceptional : Boolean := False) return W_Pred_Id
    with
      Pre  => (Is_Subprogram_Or_Entry (E) or Ekind (E) = E_Subprogram_Type)
-       and then (if Exceptional then not For_Input),
-     Post => (if For_Input then
-                Is_True_Boolean
-                  (+Compute_Type_Invariants_For_Subprogram'Result)
-                /= Subp_Needs_Invariant_Checks (E));
+       and then (if Exceptional then not For_Input);
    --  Conjuncts all invariants produced by
-   --  Process_Type_Invariants_For_Subprogram.
+   --  Process_Type_Invariants_For_Subprogram. E is used as a scope for
+   --  invariants.
 
    procedure Declare_Exceptions (Th : Theory_UC);
    --  Declare exceptions needed for translation of the current unit. Those
@@ -313,18 +310,16 @@ package body Gnat2Why.Subprograms is
    --  Return a node with a proper location for the pre- or postcondition of E,
    --  if any.
 
-   function Include_Non_Local_Type_Inv_For_Subp
-     (E : Entity_Id) return W_Term_Id
+   function Include_All_Global_Invariants_For_Subp
+     (E : Entity_Id) return Boolean
    is
-     (if not Is_Globally_Visible (E)
-      and then not Is_Declared_In_Main_Unit_Or_Parent (E)
-      then False_Term
-      else True_Term);
+     (Is_Globally_Visible (E)
+      or else Is_Declared_In_Main_Unit_Or_Parent (E));
    --  If E is a private subprogram, type invariants of its enclosing units may
    --  be broken for its parameters and result. Ignore type invariants for
    --  private subprograms declared in other library units (for those declared
-   --  in the current unit, it is OK, as local subprograms are already not part
-   --  of the dynamic invariant).
+   --  in the current unit, it is OK, as local type invariants are already not
+   --  part of the dynamic invariant). This is an over approximation.
 
    function Insert_Bindings_For_Variants
      (E      : Entity_Id;
@@ -754,10 +749,11 @@ package body Gnat2Why.Subprograms is
                                          Ref_Allowed => Params.Ref_Allowed);
                                     Dyn_Inv : constant W_Pred_Id :=
                                       Compute_Type_Invariant
-                                        (Expr        => Expr,
-                                         Ty          => Etype (Obj),
-                                         Params      => Params,
-                                         On_Internal => True);
+                                        (Expr   => Expr,
+                                         Ty     => Etype (Obj),
+                                         Kind   => For_Check,
+                                         Params => Params,
+                                         Scop   => E);
                                  begin
                                     if not Is_True_Boolean (+Dyn_Inv) then
                                        Append
@@ -1143,6 +1139,8 @@ package body Gnat2Why.Subprograms is
       Params      : Transformation_Params;
       Exceptional : Boolean := False) return W_Pred_Id
    is
+      All_Global_Inv       : constant Boolean :=
+        Include_All_Global_Invariants_For_Subp (E);
       Func_Why_Binders     : constant Item_Array :=
         Compute_Binders (E, EW_Prog);
       Dynamic_Prop_Effects : W_Pred_Id := True_Pred;
@@ -1172,11 +1170,10 @@ package body Gnat2Why.Subprograms is
                         else +Self_Name);
                      Dyn_Prop  : constant W_Pred_Id :=
                        Compute_Dynamic_Inv_And_Initialization
-                         (Expr             => +Self_Expr,
-                          Ty               => Ada_Type,
-                          Params           => Params,
-                          Include_Type_Inv =>
-                            Include_Non_Local_Type_Inv_For_Subp (E));
+                         (Expr           => +Self_Expr,
+                          Ty             => Ada_Type,
+                          Params         => Params,
+                          All_Global_Inv => All_Global_Inv);
                   begin
                      Dynamic_Prop_Effects := +New_And_Expr
                        (Left   => +Dynamic_Prop_Effects,
@@ -1203,19 +1200,18 @@ package body Gnat2Why.Subprograms is
                            Typ   => Get_Typ (Func_Why_Binders (I).Init.Id))
                         else True_Term);
 
-                     Dyn_Prop   : constant W_Pred_Id :=
+                     Dyn_Prop  : constant W_Pred_Id :=
                        Compute_Dynamic_Invariant
-                         (Expr             =>
+                         (Expr           =>
                             +Transform_Identifier
                             (Params => Params,
                              Expr   => Formal,
                              Ent    => Formal,
                              Domain => EW_Term),
-                          Ty               => Ada_Type,
-                          Params           => Params,
-                          Initialized      => Init_Expr,
-                          Include_Type_Inv =>
-                            Include_Non_Local_Type_Inv_For_Subp (E));
+                          Ty             => Ada_Type,
+                          Params         => Params,
+                          Initialized    => Init_Expr,
+                          All_Global_Inv => All_Global_Inv);
                   begin
                      Dynamic_Prop_Effects := +New_And_Expr
                        (Left   => +Dynamic_Prop_Effects,
@@ -1233,16 +1229,15 @@ package body Gnat2Why.Subprograms is
                     Get_Ada_Type_From_Item (Func_Why_Binders (I));
                   Dyn_Prop : constant W_Pred_Id :=
                     Compute_Dynamic_Inv_And_Initialization
-                      (Expr             =>
+                      (Expr           =>
                          +Transform_Identifier
                          (Params => Params,
                           Expr   => Formal,
                           Ent    => Formal,
                           Domain => EW_Term),
-                       Ty               => Ada_Type,
-                       Params           => Params,
-                       Include_Type_Inv =>
-                         Include_Non_Local_Type_Inv_For_Subp (E));
+                       Ty             => Ada_Type,
+                       Params         => Params,
+                       All_Global_Inv => All_Global_Inv);
                begin
                   Dynamic_Prop_Effects := +New_And_Expr
                     (Left   => +Dynamic_Prop_Effects,
@@ -1511,14 +1506,16 @@ package body Gnat2Why.Subprograms is
 
    function Compute_Guard_Formula
      (Binders : Item_Array;
-      Params  : Transformation_Params) return W_Pred_Id is
-      Pred : W_Pred_Id := True_Pred;
+      Params  : Transformation_Params) return W_Pred_Id
+   is
+      All_Global_Inv : constant Boolean :=
+        Include_All_Global_Invariants_For_Subp (Current_Subp);
+      Pred           : W_Pred_Id := True_Pred;
 
    begin
       --  Add to guard the dynamic property of logic parameters.
 
       for B of Binders loop
-
          declare
             Ada_Node : constant Node_Id :=
               Get_Ada_Node_From_Item (B);
@@ -1538,7 +1535,12 @@ package body Gnat2Why.Subprograms is
                  (Expr     => +Expr,
                   Ty       => Ty_Node,
                   Params   => Params,
-                  Only_Var => False_Term)
+                  Only_Var => False_Term,
+                  All_Global_Inv => All_Global_Inv
+                    or else Ekind (Ada_Node) not in Formal_Kind
+                    or else Enclosing_Unit (Ada_Node) /= Current_Subp)
+                 --  For parameters of Current_Subp, type invariants might be
+                 --  broken.
                else True_Pred);
          begin
             if No (Ada_Node) then
@@ -1721,7 +1723,7 @@ package body Gnat2Why.Subprograms is
       procedure Compute_Type_Invariants is new
         Process_Type_Invariants_For_Subprogram (Add_To_Res);
    begin
-      Compute_Type_Invariants (E, Params, For_Input, Exceptional);
+      Compute_Type_Invariants (E, Params, For_Input, Exceptional, Scop => E);
 
       return Res;
    end Compute_Type_Invariants_For_Subprogram;
@@ -3404,8 +3406,6 @@ package body Gnat2Why.Subprograms is
                        else "")
                      & ", created in " & GNAT.Source_Info.Enclosing_Entity);
 
-      Current_Subp := E;
-
       --  First create a new identifier for F'Result
 
       if Ekind (E) = E_Function then
@@ -3792,8 +3792,6 @@ package body Gnat2Why.Subprograms is
                        else "")
                      & ", created in " & GNAT.Source_Info.Enclosing_Entity);
 
-      Current_Subp := E;
-
       Register_VC_Entity (E);
 
       Params := Body_Params;
@@ -4132,7 +4130,6 @@ package body Gnat2Why.Subprograms is
                 " defined at " & Build_Location_String (Sloc (E))
              else "")
            & ", created in " & GNAT.Source_Info.Enclosing_Entity);
-      Current_Subp := E;
 
       Register_VC_Entity (E);
 
@@ -4319,8 +4316,6 @@ package body Gnat2Why.Subprograms is
                 " defined at " & Build_Location_String (Sloc (E))
              else "")
            & ", created in " & GNAT.Source_Info.Enclosing_Entity);
-
-      Current_Subp := E;
 
       Register_VC_Entity (E);
 
@@ -4691,11 +4686,11 @@ package body Gnat2Why.Subprograms is
          Save_Result_Is_Mutable : constant Boolean := Result_Is_Mutable;
          Save_Result_Name       : constant W_Identifier_Id := Result_Name;
 
-         Local_Params           : constant Transformation_Params :=
+         Local_Params : constant Transformation_Params :=
            (Body_Params with delta Old_Policy => Ignore);
          --  Old can safely be ignored in postconditions of functions
-         Why_Type               : constant W_Type_Id := Type_Of_Node (E);
-         Result_Id              : W_Identifier_Id :=
+         Why_Type     : constant W_Type_Id := Type_Of_Node (E);
+         Result_Id    : W_Identifier_Id :=
            New_Temp_Identifier (Typ => Why_Type, Base_Name => "result");
 
       begin
@@ -4706,17 +4701,16 @@ package body Gnat2Why.Subprograms is
          Result_Name := Result_Id;
 
          declare
+            pragma Assert (Include_All_Global_Invariants_For_Subp (E));
             Dynamic_Prop_Result : constant W_Pred_Id :=
               +New_And_Then_Expr
               (Left   => +Compute_Dynamic_Inv_And_Initialization
-                 (Expr             => +Result_Name,
-                  Ty               => Etype (E),
-                  Only_Var         => False_Term,
-                  Include_Type_Inv =>
-                    Include_Non_Local_Type_Inv_For_Subp (E),
-                  Params           => Local_Params),
+                 (Expr     => +Result_Name,
+                  Ty       => Etype (E),
+                  Only_Var => False_Term,
+                  Params   => Local_Params),
                Right  => +Compute_Type_Invariants_For_Subprogram
-                 (E, Local_Params, False),
+                 (E, Local_Params, For_Input => False),
                Domain => EW_Pred);
             Post                : W_Pred_Id :=
               New_And_Pred
@@ -4925,16 +4919,14 @@ package body Gnat2Why.Subprograms is
 
             if Ekind (E) = E_Function then
                declare
-                  Include_Type_Inv : constant W_Term_Id :=
-                    Include_Non_Local_Type_Inv_For_Subp (E);
-                  Dyn_Prop         : W_Pred_Id :=
+                  pragma Assert (Include_All_Global_Invariants_For_Subp (E));
+                  Dyn_Prop : W_Pred_Id :=
                     Compute_Dynamic_Inv_And_Initialization
-                      (Expr             => New_Deref
+                      (Expr   => New_Deref
                          (Right => Result_Name,
                           Typ   => Get_Typ (Result_Name)),
-                       Ty               => Etype (E),
-                       Params           => Params,
-                       Include_Type_Inv => Include_Type_Inv);
+                       Ty     => Etype (E),
+                       Params => Params);
 
                begin
                   --  For borrowing traversal functions, add the dynamic
@@ -4953,18 +4945,16 @@ package body Gnat2Why.Subprograms is
                             (Conjuncts =>
                                (1 => Dyn_Prop,
                                 2 => Compute_Dynamic_Inv_And_Initialization
-                                  (Expr             => New_Deref
+                                  (Expr    => New_Deref
                                        (Right => Brower_At_End,
                                         Typ   => Get_Typ (Brower_At_End)),
-                                   Ty               => Etype (E),
-                                   Params           => Params,
-                                   Include_Type_Inv => Include_Type_Inv),
+                                   Ty     => Etype (E),
+                                   Params => Params),
                                 3 => Compute_Dynamic_Inv_And_Initialization
-                                  (Expr             => +Borrowed_At_End,
-                                   Ty               => Etype
+                                  (Expr   => +Borrowed_At_End,
+                                   Ty     => Etype
                                      (First_Formal (E)),
-                                   Params           => Params,
-                                   Include_Type_Inv => Include_Type_Inv)));
+                                   Params => Params)));
                      end;
                   end if;
 
@@ -5882,7 +5872,6 @@ package body Gnat2Why.Subprograms is
                 " defined at " & Build_Location_String (Sloc (E))
              else "")
            & ", created in " & GNAT.Source_Info.Enclosing_Entity);
-      Current_Subp := E;
 
       Register_VC_Entity (E);
 
@@ -6317,12 +6306,12 @@ package body Gnat2Why.Subprograms is
          Dynamic_Prop_Result : constant W_Pred_Id :=
            +New_And_Then_Expr
            (Left   => +Compute_Dynamic_Inv_And_Initialization
-              (Expr             => +New_Result_Ident (Why_Type),
-               Ty               => Etype (E),
-               Only_Var         => False_Term,
-               Include_Type_Inv =>
-                 Include_Non_Local_Type_Inv_For_Subp (E),
-               Params           => Params),
+              (Expr           => +New_Result_Ident (Why_Type),
+               Ty             => Etype (E),
+               Only_Var       => False_Term,
+               All_Global_Inv =>
+                 Include_All_Global_Invariants_For_Subp (E),
+               Params         => Params),
             Right  => +Compute_Type_Invariants_For_Subprogram
               (E, Params, False),
             Domain => EW_Pred);
@@ -7205,11 +7194,12 @@ package body Gnat2Why.Subprograms is
             Dynamic_Prop_Result : constant W_Pred_Id :=
               +New_And_Then_Expr
               (Left   => +Compute_Dynamic_Inv_And_Initialization
-                 (Expr             => +New_Result_Ident (Why_Type),
-                  Ty               => Etype (E),
-                  Only_Var         => False_Term,
-                  Include_Type_Inv => Include_Non_Local_Type_Inv_For_Subp (E),
-                  Params           => Params),
+                 (Expr           => +New_Result_Ident (Why_Type),
+                  Ty             => Etype (E),
+                  Only_Var       => False_Term,
+                  All_Global_Inv =>
+                    Include_All_Global_Invariants_For_Subp (E),
+                  Params         => Params),
                Right  => +Compute_Type_Invariants_For_Subprogram
                  (E, Params, False),
                Domain => EW_Pred);
@@ -8217,8 +8207,7 @@ package body Gnat2Why.Subprograms is
          declare
             Guard                : constant W_Pred_Id :=
               +New_And_Then_Expr
-              (Left   => +Compute_Guard_Formula
-                 (Logic_Func_Binders, Params),
+              (Left   => +Compute_Guard_Formula (Logic_Func_Binders, Params),
                Right  => +Func_Guard,
                Domain => EW_Pred);
             Params               : constant Binder_Array := Flat_Binders

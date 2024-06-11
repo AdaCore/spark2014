@@ -2060,7 +2060,8 @@ package body Gnat2Why.Expr is
                --  Add all the variable inputs of the dynamic invariant
                --  to the set of variables to consider.
 
-               Variables_In_Dynamic_Invariant (Etype (Obj), Variables);
+               Variables_In_Dynamic_Invariant
+                 (Etype (Obj), Variables, Current_Subp);
             end if;
          end loop;
 
@@ -2928,7 +2929,7 @@ package body Gnat2Why.Expr is
          Post   : constant W_Pred_Id := New_And_Pred
            (Left   => Compute_Dynamic_Invariant (+Res_Id, Ty_Spk, Params),
             Right  => Compute_Type_Invariant
-              (+Res_Id, Ty_Spk, Params, On_Internal  => True));
+              (+Res_Id, Ty_Spk, For_Check, Params, Scop => Current_Subp));
       begin
          Checks := New_Typed_Binding
            (Name    => V_Name,
@@ -4858,8 +4859,10 @@ package body Gnat2Why.Expr is
 
          else
             return Compute_Dynamic_Invariant
-              (D_Expr, D_Ty, Initialized => True_Term,
-               Params => Params, Use_Pred => Use_Pred);
+              (D_Expr, D_Ty,
+               Initialized => True_Term,
+               Params      => Params,
+               Use_Pred    => Use_Pred);
          end if;
       end Default_Init_For_Discr;
 
@@ -5579,23 +5582,23 @@ package body Gnat2Why.Expr is
    --------------------------------------------
 
    function Compute_Dynamic_Inv_And_Initialization
-     (Expr             : W_Term_Id;
-      Ty               : Type_Kind_Id;
-      Params           : Transformation_Params;
-      Initialized      : W_Term_Id := True_Term;
-      Only_Var         : W_Term_Id := True_Term;
-      Top_Predicate    : Boolean := True;
-      Include_Type_Inv : W_Term_Id := True_Term)
+     (Expr           : W_Term_Id;
+      Ty             : Type_Kind_Id;
+      Params         : Transformation_Params;
+      Initialized    : W_Term_Id := True_Term;
+      Only_Var       : W_Term_Id := True_Term;
+      Top_Predicate  : Boolean := True;
+      All_Global_Inv : Boolean := True)
       return W_Pred_Id
    is
       Dyn_Pred : W_Pred_Id := Compute_Dynamic_Invariant
-        (Expr             => Expr,
-         Ty               => Ty,
-         Initialized      => Initialized,
-         Params           => Params,
-         Only_Var         => Only_Var,
-         Top_Predicate    => (if Top_Predicate then True_Term else False_Term),
-         Include_Type_Inv => Include_Type_Inv);
+        (Expr           => Expr,
+         Ty             => Ty,
+         Initialized    => Initialized,
+         Params         => Params,
+         Only_Var       => Only_Var,
+         Top_Predicate  => (if Top_Predicate then True_Term else False_Term),
+         All_Global_Inv => All_Global_Inv);
 
    begin
       --  If Expr has relaxed initialization and Initialized is True, assume
@@ -5645,19 +5648,24 @@ package body Gnat2Why.Expr is
    -------------------------------
 
    function Compute_Dynamic_Invariant
-     (Expr             : W_Term_Id;
-      Ty               : Type_Kind_Id;
-      Params           : Transformation_Params;
-      Initialized      : W_Term_Id := True_Term;
-      Only_Var         : W_Term_Id := True_Term;
-      Top_Predicate    : W_Term_Id := True_Term;
-      Include_Type_Inv : W_Term_Id := True_Term;
-      Use_Pred         : Boolean := True)
+     (Expr           : W_Term_Id;
+      Ty             : Type_Kind_Id;
+      Params         : Transformation_Params;
+      Initialized    : W_Term_Id := True_Term;
+      Only_Var       : W_Term_Id := True_Term;
+      Top_Predicate  : W_Term_Id := True_Term;
+      All_Global_Inv : Boolean := True;
+      Use_Pred       : Boolean := True)
       return W_Pred_Id
    is
       T               : W_Pred_Id;
       New_Incompl_Acc : Ada_To_Why_Ident.Map;
    begin
+      --  Current_Subp is used as a scope to determine which local invariants
+      --  should be included in the dynamic invariant. It should be set.
+
+      pragma Assert (Present (Current_Subp));
+
       Compute_Dynamic_Invariant
         (Expr             => Expr,
          Ty               => Ty,
@@ -5665,7 +5673,11 @@ package body Gnat2Why.Expr is
          Initialized      => Initialized,
          Only_Var         => Only_Var,
          Top_Predicate    => Top_Predicate,
-         Include_Type_Inv => Include_Type_Inv,
+         All_Global_Inv   =>
+           (if All_Global_Inv then True_Term else False_Term),
+         Inv_Scop         => Current_Subp,
+         Inv_Subp         =>
+           (if All_Global_Inv then Empty else Current_Subp),
          Use_Pred         => Use_Pred,
          New_Preds_Module => Why_Empty,
          T                => T,
@@ -5684,7 +5696,9 @@ package body Gnat2Why.Expr is
       Initialized      :        W_Term_Id;
       Only_Var         :        W_Term_Id;
       Top_Predicate    :        W_Term_Id;
-      Include_Type_Inv :        W_Term_Id;
+      All_Global_Inv   :        W_Term_Id;
+      Inv_Scop         :        Node_Id;
+      Inv_Subp         :        Node_Id;
       Use_Pred         :        Boolean;
       New_Preds_Module :        W_Module_Id;
       T                :    out W_Pred_Id;
@@ -5739,7 +5753,9 @@ package body Gnat2Why.Expr is
             Ty               => Directly_Designated_Type (Ty),
             Only_Var         => False_Term,
             Top_Predicate    => True_Term,
-            Include_Type_Inv => Include_Type_Inv,
+            All_Global_Inv   => All_Global_Inv,
+            Inv_Scop         => Inv_Scop,
+            Inv_Subp         => Inv_Subp,
             Initialized      => True_Term,
             Params           => Params,
             Use_Pred         => Use_Pred,
@@ -5795,7 +5811,9 @@ package body Gnat2Why.Expr is
                else Initialized),
             Only_Var         => False_Term,
             Top_Predicate    => True_Term,
-            Include_Type_Inv => Include_Type_Inv,
+            All_Global_Inv   => All_Global_Inv,
+            Inv_Scop         => Inv_Scop,
+            Inv_Subp         => Inv_Subp,
             Params           => Params,
             Use_Pred         => Use_Pred,
             New_Preds_Module => New_Preds_Module,
@@ -5850,7 +5868,10 @@ package body Gnat2Why.Expr is
         and then not Is_Standard_Boolean_Type (Ty_Ext)
         and then Eq_Base (Type_Of_Node (Ty_Ext), Get_Type (+Expr))
       then
-         Variables_In_Dynamic_Invariant (Ty_Ext, Variables);
+
+         --  The generated predicate uses an empty scope for type invariants
+
+         Variables_In_Dynamic_Invariant (Ty_Ext, Variables, Scop => Empty);
 
          declare
             Vars  : constant W_Expr_Array :=
@@ -5863,13 +5884,30 @@ package body Gnat2Why.Expr is
             Args (2) := +Initialized;
             Args (3) := +Only_Var;
             Args (4) := +Top_Predicate;
-            Args (5) := +Include_Type_Inv;
+            Args (5) := +All_Global_Inv;
             Args (6 .. Num_B) := Vars;
 
             T := New_Call (Name => E_Symb (E => Ty_Ext,
-                                             S => WNE_Dynamic_Invariant),
-                             Args => Args,
-                             Typ  => EW_Bool_Type);
+                                           S => WNE_Dynamic_Invariant),
+                           Args => Args,
+                           Typ  => EW_Bool_Type);
+
+            --  If Inv_Scop is set, add possible locally assumed type
+            --  invariants. If Inv_Subp is also set, add globally assumed type
+            --  invariants as they won't be included in the predicate (as
+            --  All_Global_Inv is False). Include components as the traversal
+            --  stops here.
+
+            if Present (Inv_Scop) then
+               T := New_And_Pred
+                 (Left   => T,
+                  Right  => Compute_Type_Invariant
+                    (Expr, Ty_Ext, Locally_Assumed, Params,
+                     Use_Pred => Use_Pred,
+                     Scop     => Inv_Scop,
+                     Subp     => Inv_Subp));
+            end if;
+
             return;
          end;
       end if;
@@ -6139,28 +6177,49 @@ package body Gnat2Why.Expr is
          end;
       end if;
 
-      --  Add possible type invariant. Only include type invariants that are
-      --  defined outside the current compilation unit. Only deal with the
+      --  Add possible globally assumed type invariant. Only deal with the
       --  top-level invariants as invariants of components will be added in
       --  recursive calls.
 
-      declare
-         Type_Inv : constant W_Pred_Id :=
-           Compute_Type_Invariant
-             (Expr, Ty_Ext, Params,
-              On_External  => True,
-              Include_Comp => False,
-              Use_Pred     => Use_Pred);
-      begin
-         if not Is_True_Boolean (+Type_Inv) then
-            T := New_And_Pred
-              (Left   => T,
-               Right  => New_Conditional
-                 (Condition => Pred_Of_Boolean_Term (Include_Type_Inv),
-                  Then_Part => Type_Inv,
-                  Typ       => EW_Bool_Type));
-         end if;
-      end;
+      if not Is_False_Boolean (+All_Global_Inv) then
+         declare
+            Type_Inv : W_Pred_Id :=
+              Compute_Type_Invariant
+                (Expr, Ty_Ext, Globally_Assumed, Params,
+                 Include_Comp => False,
+                 Use_Pred     => Use_Pred);
+         begin
+            if not Is_True_Boolean (+Type_Inv) then
+               if not Is_True_Boolean (+All_Global_Inv) then
+                  Type_Inv := New_Conditional
+                    (Condition => Pred_Of_Boolean_Term (All_Global_Inv),
+                     Then_Part => Type_Inv,
+                     Typ       => EW_Bool_Type);
+               end if;
+
+               T := New_And_Pred
+                 (Left   => T,
+                  Right  => Type_Inv);
+            end if;
+         end;
+      end if;
+
+      --  If Inv_Scop is set, add possible locally assumed type invariants. If
+      --  Inv_Subp is also set, add globally assumed type invariants as they
+      --  won't be included in the predicate (as All_Global_Inv is False).
+      --  Only deal with the top-level invariants as invariants of components
+      --  will be added in recursive calls.
+
+      if Present (Inv_Scop) then
+         T := New_And_Pred
+           (Left   => T,
+            Right  => Compute_Type_Invariant
+              (Expr, Ty_Ext, Locally_Assumed, Params,
+               Include_Comp => False,
+               Use_Pred     => Use_Pred,
+               Scop         => Inv_Scop,
+               Subp         => Inv_Subp));
+      end if;
 
       --  Compute dynamic invariant for its components
 
@@ -6310,7 +6369,12 @@ package body Gnat2Why.Expr is
                --  If we have a predicate, call it
 
                if Has_Element (Dyn_Inv_Pos) then
-                  Variables_In_Dynamic_Invariant (Des_Ty, Variables);
+
+                  --  The generated predicate uses an empty scope for type
+                  --  invariants.
+
+                  Variables_In_Dynamic_Invariant
+                    (Des_Ty, Variables, Scop => Types.Empty);
 
                   declare
                      Vars  : constant W_Expr_Array :=
@@ -6326,7 +6390,7 @@ package body Gnat2Why.Expr is
                      Args (2) := +Initialized;
                      Args (3) := +Only_Var;
                      Args (4) := +Top_Predicate;
-                     Args (5) := +Include_Type_Inv;
+                     Args (5) := +All_Global_Inv;
                      Args (6 .. Num_B) := Vars;
 
                      T := New_And_Pred
@@ -6336,6 +6400,18 @@ package body Gnat2Why.Expr is
                                     Args   => Args,
                                     Typ    => EW_Bool_Type));
                   end;
+
+                  --  In general, predicates for incomplete types should only
+                  --  occur when defining the predicate for Ty. In this case,
+                  --  Inv_Scop is empty, so no need to worry about invariants.
+                  --  Theoretically, it could happen that we are in a context
+                  --  where Inv_Scop is set, typically for Itypes. We have
+                  --  never seen a case where this happens in practice though,
+                  --  so for now we assert that this never happens.
+
+                  if Present (Inv_Scop) then
+                     raise Program_Error;
+                  end if;
 
                --  Theoretically, it could happen that we are in a context
                --  where we were not able to generate the separate predicate,
@@ -7296,13 +7372,18 @@ package body Gnat2Why.Expr is
    function Compute_Type_Invariant
      (Expr         : W_Term_Id;
       Ty           : Type_Kind_Id;
+      Kind         : Invariant_Kind;
       Params       : Transformation_Params := Body_Params;
-      On_External  : Boolean := False;
-      On_Internal  : Boolean := False;
+      Scop         : Entity_Id := Empty;
+      Subp         : Entity_Id := Empty;
       Include_Comp : Boolean := True;
       Use_Pred     : Boolean := True)
       return W_Pred_Id
    is
+      function Include_Inv (Ty : Type_Kind_Id) return Boolean with
+        Pre => Has_Invariants_In_SPARK (Ty);
+      --  Return True if the top-level invariant of Ty shall be considered
+
       function Invariant_For_Comp
         (C_Expr : W_Term_Id;
          C_Ty   : Entity_Id;
@@ -7319,6 +7400,23 @@ package body Gnat2Why.Expr is
          return W_Pred_Id
       is (Invariant_For_Comp (C_Expr, C_Ty, Empty));
 
+      -----------------
+      -- Include_Inv --
+      -----------------
+
+      function Include_Inv (Ty : Type_Kind_Id) return Boolean is
+        (if Invariant_Assumed_In_Main (Ty)
+         then Kind = Globally_Assumed
+           or else (Present (Subp)
+             and then Kind = Locally_Assumed
+             and then not Invariant_Relaxed_For_Subprogram (Ty, Subp))
+         elsif Present (Scop) and then Invariant_Assumed_In_Scope (Ty, Scop)
+         then Kind = Locally_Assumed
+         else Kind = For_Check
+           and then
+             (No (Subp)
+              or else not Invariant_Relaxed_For_Subprogram (Ty, Subp)));
+
       ------------------------
       -- Invariant_For_Comp --
       ------------------------
@@ -7330,8 +7428,7 @@ package body Gnat2Why.Expr is
          return W_Pred_Id
       is
         (Compute_Type_Invariant
-           (C_Expr, C_Ty, Params, On_External => On_External,
-            On_Internal => On_Internal));
+           (C_Expr, C_Ty, Kind, Params, Scop => Scop, Subp => Subp));
 
       function Invariant_For_Array is new Build_Predicate_For_Array
         (Invariant_For_Comp);
@@ -7356,9 +7453,7 @@ package body Gnat2Why.Expr is
       begin
          loop
             if Has_Invariants_In_SPARK (Current)
-              and then (if Has_Visible_Type_Invariants (Current)
-                        then On_Internal
-                        else On_External)
+              and then Include_Inv (Current)
             then
                Pred := New_And_Pred
                  (Left   => Pred,
@@ -8327,7 +8422,7 @@ package body Gnat2Why.Expr is
          --  So for the early checks at Iterable to be valid, we need to
          --  insert a check for the container invariants.
 
-         if Has_Visible_Type_Invariants (Over_Type)
+         if Invariant_Check_Needed (Over_Type, Scop => Current_Subp)
            and then Domain = EW_Prog
          then
             W_Over_E :=
@@ -8626,16 +8721,17 @@ package body Gnat2Why.Expr is
          declare
             Inv : constant W_Pred_Id := New_And_Pred
               (Compute_Dynamic_Inv_And_Initialization
-                 (Expr          => +W_Index_Var,
-                  Ty            => Index_Type,
-                  Initialized   => True_Term,
-                  Only_Var      => False_Term,
-                  Params        => Params),
+                 (Expr        => +W_Index_Var,
+                  Ty          => Index_Type,
+                  Initialized => True_Term,
+                  Only_Var    => False_Term,
+                  Params      => Params),
                Compute_Type_Invariant
-                 (Expr         => +W_Index_Var,
-                  Ty           => Index_Type,
-                  Params       => Params,
-                  On_Internal  => True));
+                 (Expr   => +W_Index_Var,
+                  Ty     => Index_Type,
+                  Kind   => For_Check,
+                  Params => Params,
+                  Scop   => Current_Subp));
          begin
             W_Bound_Expr :=
               New_And_Expr
@@ -11206,10 +11302,11 @@ package body Gnat2Why.Expr is
       return W_Prog_Id
    is
       Check : constant W_Pred_Id :=
-        Compute_Type_Invariant (Expr         => W_Expr,
-                                Ty           => Ty,
-                                Params       => Body_Params,
-                                On_Internal  => True);
+        Compute_Type_Invariant (Expr   => W_Expr,
+                                Ty     => Ty,
+                                Params => Body_Params,
+                                Kind   => For_Check,
+                                Scop   => Current_Subp);
       Kind : constant VC_Kind :=
         (if On_Default_Value then
            VC_Invariant_Check_On_Default_Value
@@ -12160,7 +12257,8 @@ package body Gnat2Why.Expr is
       procedure Compute_Type_Invariants is new
         Process_Type_Invariants_For_Subprogram (Add_To_Res);
    begin
-      Compute_Type_Invariants (E, Params, For_Input, Exceptional);
+      Compute_Type_Invariants
+        (E, Params, For_Input, Exceptional, Scop => Current_Subp);
 
       return Res;
    end Check_Type_Invariants_For_Subprogram;
@@ -12173,7 +12271,8 @@ package body Gnat2Why.Expr is
      (E           : Entity_Id;
       Params      : Transformation_Params;
       For_Input   : Boolean;
-      Exceptional : Boolean := False)
+      Exceptional : Boolean := False;
+      Scop        : Entity_Id)
    is
 
       procedure Process_Type_Invariants_For_Globals
@@ -12181,19 +12280,15 @@ package body Gnat2Why.Expr is
       --  Process the type invariants of elements of Ids
       --  @param Ids the set of read / write effects for the subprogram
 
-      procedure Process_Type_Invariants_For_Params
-        (Subp      : Entity_Id;
-         For_Input : Boolean);
-      --  Process the type invariants of Subp's parameters
-      --  @param Subp the entity of the subprogram
-      --  @param For_Input True if we should consider inputs of Subp, False if
-      --         we should consider outputs.
+      procedure Process_Type_Invariants_For_Params;
+      --  Process the type invariants of E's parameters
 
       function Compute_Type_Invariant_For_Entity
-        (E : Entity_Id) return W_Pred_Id
-      with Pre => Ada_Ent_To_Why.Has_Element (Symbol_Table, E);
-      --  @param E Entity of an object stored in the Symbol_Table
-      --  @return a predicate containing the invariants of all parts of E
+        (Obj : Entity_Id; Is_Param : Boolean) return W_Pred_Id
+      with Pre => Ada_Ent_To_Why.Has_Element (Symbol_Table, Obj);
+      --  @param Obj Entity of an object stored in the Symbol_Table
+      --  @param Is_Param True if Obj is a parameter and not a global of E
+      --  @return a predicate containing the invariants of all parts of Obj
       --          which have an external invariant.
 
       -----------------------------------------
@@ -12220,7 +12315,10 @@ package body Gnat2Why.Expr is
                   --  as they cannot have visible type invariants.
 
                   if Is_Object (Obj) then
-                     Process (Obj, Compute_Type_Invariant_For_Entity (Obj));
+                     Process
+                       (Obj,
+                        Compute_Type_Invariant_For_Entity
+                          (Obj, Is_Param => False));
 
                   --  Self reference of protected subprograms
 
@@ -12230,11 +12328,12 @@ package body Gnat2Why.Expr is
                      Process
                        (Obj,
                         Compute_Type_Invariant
-                          (Expr        =>
+                          (Expr   =>
                                +Concurrent_Self_Binder (Obj).B_Name,
                            Ty          => Obj,
-                           Params      => Params,
-                           On_Internal => True));
+                           Params => Params,
+                           Kind   => For_Check,
+                           Scop   => Scop));
                   end if;
                end;
             end if;
@@ -12245,11 +12344,8 @@ package body Gnat2Why.Expr is
       -- Process_Type_Invariants_For_Params --
       ----------------------------------------
 
-      procedure Process_Type_Invariants_For_Params
-        (Subp      : Entity_Id;
-         For_Input : Boolean)
-      is
-         Formal : Entity_Id := First_Formal (Subp);
+      procedure Process_Type_Invariants_For_Params is
+         Formal : Entity_Id := First_Formal (E);
 
       begin
          while Present (Formal) loop
@@ -12258,7 +12354,9 @@ package body Gnat2Why.Expr is
               and then (not Exceptional or else By_Reference (Formal))
             then
                Process
-                 (Formal, Compute_Type_Invariant_For_Entity (Formal));
+                 (Formal,
+                  Compute_Type_Invariant_For_Entity
+                    (Formal, Is_Param => True));
             end if;
 
             Next_Formal (Formal);
@@ -12270,34 +12368,33 @@ package body Gnat2Why.Expr is
       ---------------------------------------
 
       function Compute_Type_Invariant_For_Entity
-        (E : Entity_Id) return W_Pred_Id
+        (Obj      : Entity_Id;
+         Is_Param : Boolean)
+         return W_Pred_Id
       is
          Binder : constant Item_Type :=
-           Ada_Ent_To_Why.Element (Symbol_Table, E);
+           Ada_Ent_To_Why.Element (Symbol_Table, Obj);
          Expr   : constant W_Term_Id :=
            Reconstruct_Item (Binder, Ref_Allowed => Params.Ref_Allowed);
       begin
+         --  If Is_Param is True, exclude invariants relaxed for parameters of
+         --  E.
+
          return Compute_Type_Invariant
-           (Expr        => Expr,
-            Ty          => Etype (E),
-            Params      => Params,
-            On_Internal => True);
+           (Expr   => Expr,
+            Ty     => Etype (Obj),
+            Kind   => For_Check,
+            Params => Params,
+            Subp   => (if Is_Param then E else Empty),
+            Scop   => Scop);
       end Compute_Type_Invariant_For_Entity;
 
       Read_Ids    : Flow_Types.Flow_Id_Sets.Set;
       Write_Ids   : Flow_Types.Flow_Id_Sets.Set;
-
-      Is_External : constant Boolean := Is_Globally_Visible (E);
-      --  The subprogram is an external or a boundary subprogram if it is
-      --  visible from outside the current compilation unit.
-
    begin
-      --  If the subprogram is boundary or external, we should assume/check the
-      --  type invariants of its parameters.
+      --  Assume/check the type invariants of the parameters
 
-      if Is_External then
-         Process_Type_Invariants_For_Params (E, For_Input);
-      end if;
+      Process_Type_Invariants_For_Params;
 
       Flow_Utility.Get_Proof_Globals (Subprogram      => E,
                                       Reads           => Read_Ids,
@@ -12316,8 +12413,7 @@ package body Gnat2Why.Expr is
       --  If For_Input is false and E is a function, add the invariants of its
       --  result.
 
-      if Is_External
-        and then not For_Input
+      if not For_Input
         and then Ekind (E) = E_Function
       then
          declare
@@ -12331,10 +12427,12 @@ package body Gnat2Why.Expr is
             Process
               (E,
                Compute_Type_Invariant
-                 (Expr        => Result,
-                  Ty          => Etype (E),
-                  Params      => Params,
-                  On_Internal => True));
+                 (Expr   => Result,
+                  Ty     => Etype (E),
+                  Kind   => For_Check,
+                  Params => Params,
+                  Subp   => E,
+                  Scop   => Scop));
          end;
       end if;
    end Process_Type_Invariants_For_Subprogram;
@@ -14027,7 +14125,8 @@ package body Gnat2Why.Expr is
          --  We call the dynamic invariant of Comp_Type in the logic
          --  function to compute the guards. Add its variable to Variables.
 
-         Variables_In_Dynamic_Invariant (Comp_Type, Variables);
+         Variables_In_Dynamic_Invariant
+           (Comp_Type, Variables, Scop => Current_Subp);
 
          --  In the case of a delta aggregate, add the prefix to be
          --  a parameter to the logic function.
@@ -18275,7 +18374,7 @@ package body Gnat2Why.Expr is
            Exc_Exit  => not Handled_Exc.Is_Empty,
            Exc_Store => Exc_Store,
            Params    => Params,
-           Use_Tmps  => Subp_Needs_Invariant_Checks (Subp)
+           Use_Tmps  => Subp_Needs_Invariant_Checks (Subp, Current_Subp)
              or else Call_Needs_Variant_Check (Call, Current_Subp));
       --  If we need to perform invariant or variant checks for this call, Args
       --  will be reused for the call to the checking procedure. Force the use
@@ -18356,7 +18455,7 @@ package body Gnat2Why.Expr is
 
       --  Insert invariant check if needed
 
-      if Subp_Needs_Invariant_Checks (Subp) then
+      if Subp_Needs_Invariant_Checks (Subp, Current_Subp) then
          Prepend
            (Check_Type_Invariants_For_Call (Call, Params),
             Result);
@@ -19742,7 +19841,8 @@ package body Gnat2Why.Expr is
                        and then not Is_Access_Variable (Etype (Obj))
                        and then not Has_Variable_Input (Obj)
                        and then Is_Library_Level_Entity (Obj)
-                       and then Invariant_Check_Needed (Obj_Type)
+                       and then Invariant_Check_Needed
+                         (Obj_Type, Scop => Current_Subp)
                      then
                         pragma Assert (not Is_Mutable_In_Why (Obj));
                         Append
@@ -20155,7 +20255,7 @@ package body Gnat2Why.Expr is
                --  the invariant.
 
                if Nkind (Decl) = N_Full_Type_Declaration
-                 and then Invariant_Check_Needed (Ent)
+                 and then Invariant_Check_Needed (Ent, Scop => Current_Subp)
                then
                   Append
                     (R,
@@ -21908,7 +22008,7 @@ package body Gnat2Why.Expr is
             --  conversions).
 
             if Domain = EW_Prog
-              and then Invariant_Check_Needed (Expr_Type)
+              and then Invariant_Check_Needed (Expr_Type, Scop => Current_Subp)
             then
                T := +Insert_Invariant_Check (Expr, Expr_Type, +T);
             end if;
@@ -23298,7 +23398,7 @@ package body Gnat2Why.Expr is
       --  additional argument.
 
       Use_Tmps : constant Boolean := Domain = EW_Prog
-        and then (Subp_Needs_Invariant_Checks (Subp)
+        and then (Subp_Needs_Invariant_Checks (Subp, Current_Subp)
                   or else Call_Needs_Variant_Check (Expr, Current_Subp));
       --  If we need to introduce an invariant or variant check on call,
       --  arguments of the call will be used twice (once for the actual code
@@ -23464,7 +23564,7 @@ package body Gnat2Why.Expr is
 
          --  Insert invariant check if needed
 
-         if Subp_Needs_Invariant_Checks (Subp) then
+         if Subp_Needs_Invariant_Checks (Subp, Current_Subp) then
             Prepend (Check_Type_Invariants_For_Call (Expr, Params), T);
          end if;
 
@@ -26981,7 +27081,8 @@ package body Gnat2Why.Expr is
 
    procedure Variables_In_Dynamic_Invariant
      (Ty        :        Type_Kind_Id;
-      Variables : in out Flow_Id_Sets.Set)
+      Variables : in out Flow_Id_Sets.Set;
+      Scop      : Entity_Id)
    is
 
       procedure Variables_In_Dynamic_Invariant
@@ -27133,7 +27234,7 @@ package body Gnat2Why.Expr is
               (Directly_Designated_Type (Ty_Ext), Variables, Incompl_Acc);
          end if;
 
-         --  External type invariant of Ty_Ext and its parents if any
+         --  Assumed type invariant of Ty_Ext and its parents if any
 
          declare
             Current : Entity_Id := Ty_Ext;
@@ -27141,7 +27242,11 @@ package body Gnat2Why.Expr is
          begin
             loop
                if Has_Invariants_In_SPARK (Current)
-                 and then not Has_Visible_Type_Invariants (Current)
+                 and then
+                   (Invariant_Assumed_In_Main (Current)
+                    or else
+                      (Present (Scop)
+                       and then Invariant_Assumed_In_Scope (Current, Scop)))
                then
                   Variables_In_Type_Invariant (Current, Variables);
                end if;
