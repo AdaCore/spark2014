@@ -2,11 +2,13 @@ include:
   - project: eng/codepeer/ci-registry
     file: /gnatsas-on-spark.yml
 
-# In this CI, we should only work in reaction to a Merge Request
+# In this CI, pipelines are triggered when pushing to a Merge Request and when
+# merging a MR to a protected branch (only for the gnatsas job).
 workflow:
   rules:
-    - if: $CI_PIPELINE_SOURCE == "merge_request_event"
+    - if: $CI_PIPELINE_SOURCE == "merge_request_event" || ($CI_PIPELINE_SOURCE == "push" && $CI_COMMIT_REF_PROTECTED == "true")
       when: always
+    - when: never
 
 variables:
    PACKAGE_BASE_NAME: spark2014.tar.gz
@@ -52,6 +54,10 @@ stages:
      - image:pe-base
      - cpu:16
   stage: test
+  rules:
+    - if: $CI_PIPELINE_SOURCE == "merge_request_event"
+      when: always
+    - when: never
   script:
     # Move the package out of the way, so it does not influence "anod vcs"
     - mv $PACKAGE_ABSOLUTE_NAME /tmp
@@ -113,6 +119,10 @@ build:
      - image:pe-base
      - cpu:8
   stage: build
+  rules:
+    - if: $CI_PIPELINE_SOURCE == "merge_request_event"
+      when: always
+    - when: never
   script:
     - GENERIC_ANOD_CI_OPTIONS="--add-dep eng/spark/sparklib
                                --add-dep eng/spark/spark-internal-testsuite
@@ -138,6 +148,10 @@ issue_present:
      - image:pe-base
   stage: check
   needs: [] # Execute regardless of the other stages
+  rules:
+    - if: $CI_PIPELINE_SOURCE == "merge_request_event"
+      when: always
+    - when: never
   script:
     - require_issue
 
@@ -146,6 +160,10 @@ precommit_checks:
   needs: [] # Execute regardless of the other stages
   services:
     - image:e3
+  rules:
+    - if: $CI_PIPELINE_SOURCE == "merge_request_event"
+      when: always
+    - when: never
   script:
     - /it/bin/set_git_config.sh
     - python -mvenv /tmp/venv
@@ -187,6 +205,10 @@ acats:
      - image:pe-base
      - cpu:16
   stage: test
+  rules:
+    - if: $CI_PIPELINE_SOURCE == "merge_request_event"
+      when: always
+    - when: never
   script:
     # Setup the sanbox
     # Add acats explicitly for this build.
@@ -221,6 +243,7 @@ build_docs:
     - changes:
       - docs/**/*
       when: always
+    - when: never
   artifacts:
     when:
       always
