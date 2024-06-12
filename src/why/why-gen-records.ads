@@ -306,7 +306,7 @@ package Why.Gen.Records is
    --  Generate a Why3 expression that corresponds to an access to the
    --  additional field introduced for records' tag.
 
-   function New_Tag_Update
+   function New_Tag_And_Ext_Update
      (Ada_Node  : Node_Id := Empty;
       Domain    : EW_Domain;
       Name      : W_Expr_Id;
@@ -314,31 +314,32 @@ package Why.Gen.Records is
       Ty        : Entity_Id)
       return W_Expr_Id;
    --  Generate a Why3 expression that corresponds to an update to the
-   --  additional field introduced in records for the 'Tag attribute.
+   --  additional fields introduced in records for the 'Tag attribute and
+   --  extension.
    --  @param Ada_Node Ada node associated to the object
    --  @param Domain domain of the expression
    --  @param Name name of the record object to update
-   --  @param From_Expr expression from which the attribute should be taken
-   --  if present. Otherwise, tag attribute is initialized to the default value
-   --  of Ty, that is, 'Tag is the Ty's tag for specific tagged types.
-   --  @result Name updated with values of From_Expr attribute if present and
-   --     default one otherwise.
+   --  @param From_Expr expression from which the tag and extension should be
+   --  taken if present. Otherwise, the tag attribute is initialized to the
+   --  Ty.__tag and Ty.__null_extension for specific tagged types.
+   --  @result Name updated with values of From_Expr if present and those of
+   --     Ty otherwise.
 
-   function New_Tag_Update
+   function New_Tag_And_Ext_Update
      (Ada_Node  : Node_Id := Empty;
       Name      : W_Prog_Id;
       From_Expr : W_Prog_Id := Why_Empty;
       Ty        : Entity_Id)
       return W_Prog_Id
-   is (+New_Tag_Update (Ada_Node, EW_Prog, +Name, +From_Expr, Ty));
+   is (+New_Tag_And_Ext_Update (Ada_Node, EW_Prog, +Name, +From_Expr, Ty));
 
-   function New_Tag_Update
+   function New_Tag_And_Ext_Update
      (Ada_Node  : Node_Id := Empty;
       Name      : W_Term_Id;
       From_Expr : W_Term_Id := Why_Empty;
       Ty        : Entity_Id)
       return W_Term_Id
-   is (+New_Tag_Update (Ada_Node, EW_Term, +Name, +From_Expr, Ty));
+   is (+New_Tag_And_Ext_Update (Ada_Node, EW_Term, +Name, +From_Expr, Ty));
 
    function Insert_Subtype_Discriminant_Check
      (Ada_Node : Node_Id;

@@ -1547,7 +1547,7 @@ package body Gnat2Why.Expr is
                            Value    =>
                              (if Has_Record_Type (Etype (Lvalue))
                               or else Full_View_Not_In_SPARK (Etype (Lvalue))
-                              then New_Tag_Update
+                              then New_Tag_And_Ext_Update
                                 (Ada_Node => N,
                                  Name     => Why_Expr,
                                  Ty       => Etype (Lvalue))
@@ -1563,7 +1563,7 @@ package body Gnat2Why.Expr is
                           New_Call
                             (Name => Why_Eq,
                              Typ  => EW_Bool_Type,
-                             Args => (New_Tag_Update
+                             Args => (New_Tag_And_Ext_Update
                                         (Ada_Node => N,
                                          Domain   => EW_Prog,
                                          Name     => +Tmp_Var,
@@ -1824,7 +1824,7 @@ package body Gnat2Why.Expr is
                          ((if Has_Record_Type (Etype (E))
                              or else Full_View_Not_In_SPARK (Etype (E))
                            then
-                              New_Tag_Update
+                              New_Tag_And_Ext_Update
                                 (Domain => EW_Prog,
                                  Name   => +Tmp_Var,
                                  Ty     => Etype (E))
@@ -4824,7 +4824,7 @@ package body Gnat2Why.Expr is
                   Left   => Insert_Simple_Conversion
                     (Expr   => F_Expr,
                      To     => Exp_Ty),
-                  Right  => New_Tag_Update
+                  Right  => New_Tag_And_Ext_Update
                     (Name   => Transform_Term
                        (Expr          => Expression
                           (Enclosing_Declaration (E)),
@@ -5364,7 +5364,7 @@ package body Gnat2Why.Expr is
                            if Present
                              (Expression (Enclosing_Declaration (Comp)))
                            then
-                              Comp_Default := New_Tag_Update
+                              Comp_Default := New_Tag_And_Ext_Update
                                 (Name   => Transform_Term
                                    (Expr          => Expression
                                       (Enclosing_Declaration (Comp)),
@@ -10447,15 +10447,18 @@ package body Gnat2Why.Expr is
    --  Start of processing for New_Assignment
 
    begin
-      --  Assignments cannot change the tag of the object
+      --  Assignments to objects of a specific type cannot change the tag nor
+      --  the extension of the object.
 
-      if Is_Tagged_Type (Etype (Left_Side)) then
+      if Is_Tagged_Type (Etype (Left_Side))
+        and then not Is_Class_Wide_Type (Etype (Left_Side))
+      then
          declare
             Typ      : constant Entity_Id := Etype (Left_Side);
             Old_Left : constant W_Expr_Id :=
               Transform_Expr (Left_Side, EW_Pterm, Body_Params);
          begin
-            Right_Side := New_Tag_Update
+            Right_Side := New_Tag_And_Ext_Update
               (Ada_Node  => Ada_Node,
                Domain    => Domain,
                Name      => Right_Side,
@@ -14393,7 +14396,7 @@ package body Gnat2Why.Expr is
             --  Array components have the tag of their types
 
             if Is_Record_Type_In_Why (C_Typ) then
-               Arg_Val := New_Tag_Update
+               Arg_Val := New_Tag_And_Ext_Update
                  (Name => Arg_Val,
                   Ty   => C_Typ);
             end if;
@@ -20911,7 +20914,7 @@ package body Gnat2Why.Expr is
                      --  Update the tag attribute if Des_Ty is a specific type
 
                      if Is_Tagged_Type (Des_Ty) then
-                        Value_Expr := New_Tag_Update
+                        Value_Expr := New_Tag_And_Ext_Update
                           (Domain => EW_Term,
                            Name   => Value_Expr,
                            Ty     => Des_Ty);
@@ -23864,7 +23867,7 @@ package body Gnat2Why.Expr is
                if Has_Record_Type (Etype (Component))
                  or else Full_View_Not_In_SPARK (Etype (Component))
                then
-                  Expr := New_Tag_Update
+                  Expr := New_Tag_And_Ext_Update
                     (Domain   => Domain,
                      Name     => Expr,
                      Ty       => Etype (Component));
@@ -24203,7 +24206,7 @@ package body Gnat2Why.Expr is
       --  Returned objects have exactly the expected tag
 
       if Is_Tagged_Type (Retysp (Etype (Subp))) then
-         Result_Stmt := New_Tag_Update
+         Result_Stmt := New_Tag_And_Ext_Update
            (Ada_Node => Expr,
             Name     => Result_Stmt,
             Ty       => Etype (Subp));
