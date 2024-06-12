@@ -2071,7 +2071,8 @@ language definition and what is not.]
 
 1. For a given type-invariant bearing type T, a *boundary subprogram* is a
    subprogram which is declared inside the immediate scope of type T, and
-   visible outside the immediate scope of T.
+   either visible outside the immediate scope of T or a primitive of a tagged
+   type.
 
    The point at which a generic is declared plays no role in determining
    whether a subprogram declared as or within an instantiation of that generic

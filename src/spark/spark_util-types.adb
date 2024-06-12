@@ -1471,6 +1471,13 @@ package body SPARK_Util.Types is
       Scop    : Entity_Id;
 
    begin
+      --  Dispatching operations are always boundary, even hidden dispatching
+      --  ones.
+
+      if Is_Dispatching_Operation (Subp) then
+         return False;
+      end if;
+
       --  Go up the chain of scopes of Scop to see if the scope of Ty is
       --  encountered. Along the way, set Priv to True if a private scope is
       --  encountered.
