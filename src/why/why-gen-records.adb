@@ -394,14 +394,24 @@ package body Why.Gen.Records is
                                    else Etype (Field)),
                        E       => Field);
 
-                  if T_Comp /= True_Pred then
+                  --  If Field is in a variant part, add a conditional to make
+                  --  sure it is present.
+
+                  if T_Comp /= True_Pred
+                    and then not Is_Concurrent_Type (Ty_Ext)
+                    and then Ekind (Field) = E_Component
+                    and then Has_Variant_Info (Ty_Ext, Field)
+                  then
                      T_Guard := New_Ada_Record_Check_For_Field
                        (Empty, R_Expr1, Field, Ty_Ext);
-
-                     Count := Count + 1;
-                     Conjuncts (Count) := New_Conditional
+                     T_Comp := New_Conditional
                        (Condition => T_Guard,
                         Then_Part => T_Comp);
+                  end if;
+
+                  if T_Comp /= True_Pred then
+                     Count := Count + 1;
+                     Conjuncts (Count) := T_Comp;
                   end if;
                end if;
             end loop;
