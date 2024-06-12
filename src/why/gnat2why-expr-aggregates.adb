@@ -1671,7 +1671,7 @@ package body Gnat2Why.Expr.Aggregates is
                   Elt_Expr           : constant W_Term_Id :=
                     (if Is_Tagged_Type (Retysp (Model_Annot.Element_Type))
                      and then not Is_Class_Wide_Type (Model_Annot.Element_Type)
-                     then New_Tag_Update
+                     then New_Tag_And_Ext_Update
                        (Name => +Elt_Id, Ty => Model_Annot.Element_Type)
                      else +Elt_Id);
 
@@ -1935,7 +1935,7 @@ package body Gnat2Why.Expr.Aggregates is
                   Elt_Expr           : constant W_Term_Id :=
                     (if Is_Tagged_Type (Retysp (Model_Annot.Element_Type))
                      and then not Is_Class_Wide_Type (Model_Annot.Element_Type)
-                     then New_Tag_Update
+                     then New_Tag_And_Ext_Update
                        (Name => +Elt_Id, Ty => Model_Annot.Element_Type)
                      else +Elt_Id);
 
@@ -3111,7 +3111,7 @@ package body Gnat2Why.Expr.Aggregates is
                                 and then not Is_Class_Wide_Type
                                   (Model_Annot.Element_Type)
                               then
-                                 Elt_Id := New_Tag_Update
+                                 Elt_Id := New_Tag_And_Ext_Update
                                    (Name => Elt_Id,
                                     Ty   => Retysp (Model_Annot.Element_Type));
                               end if;
@@ -3378,7 +3378,7 @@ package body Gnat2Why.Expr.Aggregates is
                                 and then not Is_Class_Wide_Type
                                   (Model_Annot.Element_Type)
                               then
-                                 Elt_Id := New_Tag_Update
+                                 Elt_Id := New_Tag_And_Ext_Update
                                    (Name => Elt_Id,
                                     Ty   => Retysp (Model_Annot.Element_Type));
                               end if;
@@ -5030,7 +5030,7 @@ package body Gnat2Why.Expr.Aggregates is
                                  --  Update the tag if present
 
                                  if Is_Record_Type_In_Why (Writes.Ty) then
-                                    Term := New_Tag_Update
+                                    Term := New_Tag_And_Ext_Update
                                       (Name => Term, Ty => Writes.Ty);
                                  end if;
 

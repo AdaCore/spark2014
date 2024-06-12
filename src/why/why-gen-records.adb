@@ -4548,11 +4548,11 @@ package body Why.Gen.Records is
          Typ      => EW_Int_Type);
    end New_Tag_Access;
 
-   --------------------
-   -- New_Tag_Update --
-   --------------------
+   ----------------------------
+   -- New_Tag_And_Ext_Update --
+   ----------------------------
 
-   function New_Tag_Update
+   function New_Tag_And_Ext_Update
      (Ada_Node  : Node_Id := Empty;
       Domain    : EW_Domain;
       Name      : W_Expr_Id;
@@ -4570,7 +4570,14 @@ package body Why.Gen.Records is
    begin
       if Has_Tag then
          declare
-            Value : constant W_Expr_Id :=
+            Tmp_Name : constant W_Expr_Id := New_Temp_For_Expr (Name);
+            Ext_Value : constant W_Expr_Id :=
+              (if From_Expr = Why_Empty then
+                  +E_Symb (Ty, WNE_Null_Extension)
+               else New_Record_Access
+                 (Field => E_Symb (Ty, WNE_Rec_Extension),
+                  Name  => New_Fields_Access (Name => From_Expr, Ty => Ty)));
+            Tag_Value : constant W_Expr_Id :=
               (if From_Expr = Why_Empty then
                   +E_Symb (E => Ty, S => WNE_Tag)
                else New_Tag_Access
@@ -4578,10 +4585,12 @@ package body Why.Gen.Records is
                   Name   => From_Expr,
                   Ty     => Get_Ada_Node (+Get_Type (From_Expr))));
          begin
-            return
-              (New_Record_Update
+            return Binding_For_Temp
+              (Domain  => Domain,
+               Tmp     => Tmp_Name,
+               Context => New_Record_Update
                  (Ada_Node => Ada_Node,
-                  Name     => Name,
+                  Name     => Tmp_Name,
                   Updates  =>
                     (1 => New_Field_Association
                          (Domain => Domain,
@@ -4589,13 +4598,25 @@ package body Why.Gen.Records is
                             (Ty     => Ty,
                              Domain => Domain,
                              Attr   => Attribute_Tag),
-                          Value  => Value)),
+                          Value  => Tag_Value),
+                     2 => New_Field_Association
+                       (Domain   => Domain,
+                        Field    => E_Symb (Ty, WNE_Rec_Split_Fields),
+                        Value    => New_Record_Update
+                          (Ada_Node => Ada_Node,
+                           Name     => New_Fields_Access
+                             (Name => Tmp_Name, Ty => Ty),
+                           Updates  =>
+                             (1 => New_Field_Association
+                                  (Domain => Domain,
+                                   Field  => E_Symb (Ty, WNE_Rec_Extension),
+                                   Value  => Ext_Value))))),
                   Typ      => Get_Type (Name)));
          end;
       else
          return Name;
       end if;
-   end New_Tag_Update;
+   end New_Tag_And_Ext_Update;
 
    ------------------------------------
    -- Oldest_Parent_With_Same_Fields --
