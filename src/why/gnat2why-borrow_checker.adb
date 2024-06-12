@@ -937,10 +937,10 @@ package body Gnat2Why.Borrow_Checker is
    --  subprogram indeed have Read_Write permission at the end of the
    --  subprogram execution.
 
-   procedure Set_Environment_For_Exceptions (Stmt : Node_Id);
-   --  If Stmt raises handled exceptions, merge the environment into the
-   --  appropriate handlers accumulators and/or exit the enclosing procedure.
-   --  Also reset the current environment if necessary.
+   procedure Set_Environment_For_Exceptions (Call_Or_Stmt : Node_Id);
+   --  If Call_Or_Stmt raises handled exceptions, merge the environment
+   --  into the appropriate handlers accumulators and/or exit the enclosing
+   --  procedure. Also reset the current environment if necessary.
 
    procedure Set_Perm_Extensions
      (T    : Perm_Tree_Access;
@@ -3282,7 +3282,7 @@ package body Gnat2Why.Borrow_Checker is
 
             --  If N might raise some exceptions, handle the exceptional paths
 
-            if Has_Exceptional_Contract (Get_Called_Entity (N)) then
+            if Might_Raise_Handled_Exceptions (N) then
                Set_Environment_For_Exceptions (N);
             end if;
 
@@ -3950,16 +3950,27 @@ package body Gnat2Why.Borrow_Checker is
          when N_Assignment_Statement =>
             declare
                Target : constant Node_Id := Name (Stmt);
+               Expr   : constant Node_Id := Expression (Stmt);
 
             begin
+               --  If Stmt might raise some exceptions, handle the exceptional
+               --  paths.
+
+               if Nkind (Expr) = N_Function_Call
+                 and then
+                   Is_Function_With_Side_Effects (Get_Called_Entity (Expr))
+                 and then Might_Raise_Handled_Exceptions (Expr)
+               then
+                  Set_Environment_For_Exceptions (Expr);
+               end if;
+
                --  Start with checking that the subexpressions of the target
                --  path are readable, before possibly updating the permission
                --  of these subexpressions in Check_Assignment.
 
                Check_Expression (Target, Read_Subexpr);
 
-               Check_Assignment (Target => Target,
-                                 Expr   => Expression (Stmt));
+               Check_Assignment (Target => Target, Expr => Expr);
 
                --  Local observers and borrowers can always be assigned, unless
                --  they are themselves borrowed (for borrowers only). Indeed,
@@ -4250,7 +4261,9 @@ package body Gnat2Why.Borrow_Checker is
             --  appropriate handlers accumulators and/or exit the enclosing
             --  procedure.
 
-            Set_Environment_For_Exceptions (Stmt);
+            if Might_Raise_Handled_Exceptions (Stmt) then
+               Set_Environment_For_Exceptions (Stmt);
+            end if;
 
          when N_Null_Statement =>
             null;
@@ -5068,6 +5081,12 @@ package body Gnat2Why.Borrow_Checker is
            Glb (Permission (Target), Permission (Source));
 
       begin
+         --  If permission of Target is about to change, then use the
+         --  explanation from Source as the reason for the reduced permission.
+         if Perm /= Permission (Target) then
+            Target.all.Tree.Explanation := Explanation (Source);
+         end if;
+
          pragma Assert (Is_Node_Deep (Target) = Is_Node_Deep (Source));
          Target.all.Tree.Permission := Perm;
 
@@ -6015,24 +6034,33 @@ package body Gnat2Why.Borrow_Checker is
    -- Set_Environment_For_Exceptions --
    -------------------------------------
 
-   procedure Set_Environment_For_Exceptions (Stmt : Node_Id) is
+   procedure Set_Environment_For_Exceptions (Call_Or_Stmt : Node_Id) is
       Handlers       : Node_Lists.List;
       Proc_Body      : Node_Id := Empty;
       Might_Continue : Boolean;
+      Stmt   : constant Node_Id :=
+        (if Nkind (Call_Or_Stmt) = N_Function_Call then
+           Enclosing_Statement_Of_Call_To_Function_With_Side_Effects
+             (Call_Or_Stmt)
+         else Call_Or_Stmt);
 
    begin
       --  Set Might_Continue to True iff the Stmt does not cut the execution
       --  path completely.
 
-      case Nkind (Stmt) is
+      case Nkind (Call_Or_Stmt) is
          when N_Raise_Statement =>
             Might_Continue := False;
          when N_Procedure_Call_Statement =>
             declare
-               Subp : constant Entity_Id := Get_Called_Entity (Stmt);
+               Subp : constant Entity_Id := Get_Called_Entity (Call_Or_Stmt);
             begin
                Might_Continue := not No_Return (Subp);
             end;
+         when N_Function_Call =>
+            pragma Assert (Is_Function_With_Side_Effects
+                           (Get_Called_Entity (Call_Or_Stmt)));
+            Might_Continue := True;
          when others =>
             raise Program_Error;
       end case;
@@ -6040,7 +6068,7 @@ package body Gnat2Why.Borrow_Checker is
       --  Retrieve the handlers associated to Stmt. Separate the unit body
       --  from the list if any.
 
-      Handlers := Reachable_Handlers (Stmt);
+      Handlers := Reachable_Handlers (Call_Or_Stmt);
       if not Handlers.Is_Empty
         and then Nkind (Handlers.Last_Element) in N_Entity_Body
       then
