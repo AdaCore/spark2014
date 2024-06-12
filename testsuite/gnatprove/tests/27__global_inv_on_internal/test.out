@@ -17,7 +17,7 @@ p.ads:22:13: info: implicit aspect Always_Terminates on "Decr" has been proved, 
 p.ads:22:43: info: overflow check proved (CVC5: 2 VC)
 p.ads:23:39: info: precondition proved (CVC5: 1 VC)
 p.ads:23:45: info: precondition proved (CVC5: 1 VC)
-p.ads:25:09: info: invariant check proved on default value (CVC5: 1 VC; Trivial: 2 VC)
+p.ads:25:09: info: invariant check proved on default value (CVC5: 1 VC; Trivial: 1 VC)
 test.adb:9:11: warning: subprogram "Test" has no effect
 test.adb:11:19: info: assertion proved (CVC5: 1 VC)
 test.adb:12:19: info: assertion proved (CVC5: 1 VC)
