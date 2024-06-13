@@ -277,7 +277,7 @@ package body Gnat2Why.Expr is
    --  parameters. The mappings are then stored in Context, and the post
    --  processing is stored in Store. If Call requires an exception handler for
    --  Ada exceptions, then Exc_Exit shall be set to True. Store for the
-   --  handler is stored in Exc_Store in thus case. If Use_Tmps is True, then
+   --  handler is stored in Exc_Store in this case. If Use_Tmps is True, then
    --  temporaries are introduced in Context for parameters so that checks are
    --  not duplicated if the returned array is used several times.
 
@@ -4056,7 +4056,7 @@ package body Gnat2Why.Expr is
                            Need_Store     => Need_Store,
                            No_Pred_Checks => No_Pred_Checks,
                            Pre_Expr       => +Actual_Tmp,
-                           Store          => Store,
+                           Store          => Exc_Store,
                            Params         => Params,
                            Index_Map      => Index_Map);
                      else
