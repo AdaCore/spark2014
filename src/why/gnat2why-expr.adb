@@ -313,17 +313,23 @@ package body Gnat2Why.Expr is
       Store          : in out W_Statement_Sequence_Id;
       Params         :        Transformation_Params;
       Index_Map      :        Ada_Node_To_Why_Id.Map;
-      Exceptional    : Boolean := False);
+      Ext_Visible    :        Boolean;
+      Exceptional    :        Boolean := False);
    --  Compute in Store the sequence of statements necessary to store back
    --  local identifiers of Pattern inside Actual, which is Empty in the case
-   --  of the special "self" parameter of protected subprograms. If Need_Store
-   --  is True, at least one new identifier was used for the call. Note
-   --  that postprocessing may be needed even if Need_Store is False, to
-   --  set the init wrapper flag if any, or to perform predicate checks. If
-   --  No_Pred_Checks is True, do not check the predicate of the actual after
-   --  the call. Index_Map is a mapping from index nodes in Actual to
-   --  identifiers that should be used to refer to these indices. Exceptional
-   --  should be True when Compute_Store is called for exceptional cases.
+   --  of the special "self" parameter of protected subprograms.
+   --  If Need_Store is True, at least one new identifier was used for the
+   --  call. Note that postprocessing may be needed even if Need_Store is
+   --  False, to set the init wrapper flag if any, or to perform predicate
+   --  checks.
+   --  If No_Pred_Checks is True, do not check the predicate of the actual
+   --  after the call.
+   --  Index_Map is a mapping from index nodes in Actual to identifiers that
+   --  should be used to refer to these indices.
+   --  For tagged records, Ext_Visible shall be True iff the tagged extension
+   --  of Actual is visible by the callee.
+   --  Exceptional should be True when Compute_Store is called for exceptional
+   --  cases.
 
    procedure Compute_Exceptional_Store
      (Formal         :        Formal_Kind_Id;
@@ -334,7 +340,8 @@ package body Gnat2Why.Expr is
       Pre_Expr       :        W_Expr_Id;
       Store          : in out W_Statement_Sequence_Id;
       Params         :        Transformation_Params;
-      Index_Map      :        Ada_Node_To_Why_Id.Map);
+      Index_Map      :        Ada_Node_To_Why_Id.Map;
+      Ext_Visible    :        Boolean);
    --  Same as above but for parameters whose type is neither "by copy" nor
    --  "by reference", the actual is simply havoc'ed.
 
@@ -543,11 +550,12 @@ package body Gnat2Why.Expr is
    type Do_Check_Kind is (All_Checks, Only_Vars, No_Checks);
 
    function New_Assignment
-     (Ada_Node  : Node_Id := Empty;
-      Lvalue    : N_Subexpr_Id;
-      Expr      : W_Prog_Id;
-      Do_Check  : Do_Check_Kind := All_Checks;
-      Index_Map : Ada_Node_To_Why_Id.Map := Ada_Node_To_Why_Id.Empty_Map)
+     (Ada_Node    : Node_Id := Empty;
+      Lvalue      : N_Subexpr_Id;
+      Expr        : W_Prog_Id;
+      Do_Check    : Do_Check_Kind := All_Checks;
+      Preserv_Tag : Boolean := True;
+      Index_Map   : Ada_Node_To_Why_Id.Map := Ada_Node_To_Why_Id.Empty_Map)
       return W_Prog_Id
    with
 
@@ -558,14 +566,18 @@ package body Gnat2Why.Expr is
      and then (Do_Check /= All_Checks or else Index_Map.Is_Empty);
 
    --  Translate an assignment of the form "Lvalue := Expr" (using Ada_Node
-   --  for its source location). If Do_Check is set to No_Checks, then no check
-   --  should be introduced. This is used for generating code moving an owning
-   --  object, that does not correspond to a source code assignment and only
-   --  updates the internal is_moved fields, and as such should not lead to the
-   --  generation of checks. If Do_Checks is set to Only_Vars, it is not
-   --  necessary to check the well-formedness of the prefix (discriminant,
-   --  bounds...). This occurs when the new value already contains an
-   --  evaluation of the prefix.
+   --  for its source location).
+   --  If Do_Check is set to No_Checks, then no check should be introduced.
+   --  This is used for generating code moving an owning object, that does not
+   --  correspond to a source code assignment and only updates the internal
+   --  is_moved fields, and as such should not lead to the generation of
+   --  checks. If Do_Checks is set to Only_Vars, it is not necessary to check
+   --  the well-formedness of the prefix (discriminant, bounds...). This occurs
+   --  when the new value already contains an evaluation of the prefix.
+   --  If Preserv_Tag is set to False, the tag and extension of Lvalue are not
+   --  preserved. This is used for actual parameters of mode OUT and IN OUT on
+   --  calls. The preservation of the tag is ensured by splitting the record
+   --  and the extension might be updated.
    --  Index_Map is a mapping from index nodes in Lvalue to identifiers that
    --  should be used to refer to these indices. It is supplied when the
    --  indices should be evaluated in a different context (typically before a
@@ -3959,6 +3971,11 @@ package body Gnat2Why.Expr is
                   No_Pred_Checks : constant Boolean :=
                     Is_Self or else Eq_Base
                     (Type_Of_Node (Actual), Type_Of_Node (Formal));
+                  Ext_Visible    : constant Boolean :=
+                    Has_Extensions_Visible (Subp)
+                    or else
+                      (not Is_Self
+                       and then Is_Class_Wide_Type (Etype (Formal)));
 
                begin
                   Compute_Store
@@ -3969,7 +3986,8 @@ package body Gnat2Why.Expr is
                      Pre_Expr       => +Actual_Tmp,
                      Store          => Store,
                      Params         => Params,
-                     Index_Map      => Index_Map);
+                     Index_Map      => Index_Map,
+                     Ext_Visible    => Ext_Visible);
 
                   --  Also append the store to the exception handler if any
 
@@ -3987,7 +4005,8 @@ package body Gnat2Why.Expr is
                            Pre_Expr       => +Actual_Tmp,
                            Store          => Store,
                            Params         => Params,
-                           Index_Map      => Index_Map);
+                           Index_Map      => Index_Map,
+                           Ext_Visible    => Ext_Visible);
                      else
                         Compute_Exceptional_Store
                           (Formal         => Formal,
@@ -3998,7 +4017,8 @@ package body Gnat2Why.Expr is
                            Pre_Expr       => +Actual_Tmp,
                            Store          => Exc_Store,
                            Params         => Params,
-                           Index_Map      => Index_Map);
+                           Index_Map      => Index_Map,
+                           Ext_Visible    => Ext_Visible);
                      end if;
                   end if;
                end;
@@ -6349,7 +6369,8 @@ package body Gnat2Why.Expr is
       Pre_Expr       :        W_Expr_Id;
       Store          : in out W_Statement_Sequence_Id;
       Params         :        Transformation_Params;
-      Index_Map      :        Ada_Node_To_Why_Id.Map)
+      Index_Map      :        Ada_Node_To_Why_Id.Map;
+      Ext_Visible    :        Boolean)
    is
    begin
       --  Parameters of a "by reference" type are handled like in normal return
@@ -6364,6 +6385,7 @@ package body Gnat2Why.Expr is
             Store          => Store,
             Params         => Params,
             Index_Map      => Index_Map,
+            Ext_Visible    => Ext_Visible,
             Exceptional    => True);
          return;
 
@@ -6809,7 +6831,8 @@ package body Gnat2Why.Expr is
       Store          : in out W_Statement_Sequence_Id;
       Params         :        Transformation_Params;
       Index_Map      :        Ada_Node_To_Why_Id.Map;
-      Exceptional    : Boolean := False)
+      Ext_Visible    :        Boolean;
+      Exceptional    :        Boolean := False)
    is
    begin
       --  Add a continuation locating the potential checks on the copy-back
@@ -6824,7 +6847,10 @@ package body Gnat2Why.Expr is
                   else "")));
       end if;
 
-      --  If needed, recompute the actual expression and store it in Actual
+      --  If needed, recompute the actual expression and store it in Actual.
+      --  No need to preserve the tag as it cannot have been modified by the
+      --  call (as the formal is split). The extension might have been
+      --  modified if Ext_Visible is True.
 
       if Need_Store then
          declare
@@ -6838,11 +6864,12 @@ package body Gnat2Why.Expr is
          begin
             Append
               (Store, New_Assignment
-                 (Ada_Node  => Actual,
-                  Lvalue    => Actual,
-                  Expr      => Reconstructed_Arg,
-                  Do_Check  => Only_Vars,
-                  Index_Map => Index_Map));
+                 (Ada_Node    => Actual,
+                  Lvalue      => Actual,
+                  Expr        => Reconstructed_Arg,
+                  Do_Check    => Only_Vars,
+                  Preserv_Tag => False,
+                  Index_Map   => Index_Map));
          end;
       end if;
 
@@ -6928,6 +6955,34 @@ package body Gnat2Why.Expr is
                  Then_Part   => Assumption);
 
             Append (Store, New_Assume_Statement (Pred => Assumption));
+         end;
+      end if;
+
+      --  If the parameter has a tagged type and its extension is not visible
+      --  in the callee, assume that it is preserved.
+
+      if not Ext_Visible
+        and then Pattern.Kind = DRecord
+        and then Is_Tagged_Type (Pattern.Typ)
+      then
+         declare
+            Fields_Name : constant W_Identifier_Id :=
+              Pattern.Fields.Binder.B_Name;
+         begin
+            Append
+              (Store,
+               New_Assume_Statement
+                 (Pred => New_Comparison
+                      (Symbol => Why_Eq,
+                       Left   => +New_Ext_Access
+                         (Name => New_Fields_Access
+                            (Name => Pre_Expr, Ty => Pattern.Typ),
+                          Ty   => Pattern.Typ),
+                       Right  => +New_Ext_Access
+                         (Name => New_Deref
+                            (Right => Fields_Name,
+                             Typ   => Get_Typ (Fields_Name)),
+                          Ty   => Pattern.Typ))));
          end;
       end if;
 
@@ -10410,11 +10465,12 @@ package body Gnat2Why.Expr is
    --------------------
 
    function New_Assignment
-     (Ada_Node  : Node_Id := Empty;
-      Lvalue    : N_Subexpr_Id;
-      Expr      : W_Prog_Id;
-      Do_Check  : Do_Check_Kind := All_Checks;
-      Index_Map : Ada_Node_To_Why_Id.Map := Ada_Node_To_Why_Id.Empty_Map)
+     (Ada_Node    : Node_Id := Empty;
+      Lvalue      : N_Subexpr_Id;
+      Expr        : W_Prog_Id;
+      Do_Check    : Do_Check_Kind := All_Checks;
+      Preserv_Tag : Boolean := True;
+      Index_Map   : Ada_Node_To_Why_Id.Map := Ada_Node_To_Why_Id.Empty_Map)
       return W_Prog_Id
    is
       --  Here, we deal with assignment statements. In SPARK, the general form
@@ -10447,10 +10503,11 @@ package body Gnat2Why.Expr is
    --  Start of processing for New_Assignment
 
    begin
-      --  Assignments to objects of a specific type cannot change the tag nor
-      --  the extension of the object.
+      --  If Preserv_Tag is set, preserve the tag and extension of objects if
+      --  they have a specific tagged type.
 
-      if Is_Tagged_Type (Etype (Left_Side))
+      if Preserv_Tag
+        and then Is_Tagged_Type (Etype (Left_Side))
         and then not Is_Class_Wide_Type (Etype (Left_Side))
       then
          declare

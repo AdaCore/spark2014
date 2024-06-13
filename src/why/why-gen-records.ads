@@ -306,6 +306,15 @@ package Why.Gen.Records is
    --  Generate a Why3 expression that corresponds to an access to the
    --  additional field introduced for records' tag.
 
+   function New_Ext_Access
+     (Ada_Node : Node_Id := Empty;
+      Name     : W_Expr_Id;
+      Ty       : Entity_Id)
+      return W_Expr_Id;
+   --  Generate a Why3 expression that corresponds to an access to the
+   --  additional field introduced for records' tagged extension. It should be
+   --  applied to the fields component of records.
+
    function New_Tag_And_Ext_Update
      (Ada_Node  : Node_Id := Empty;
       Domain    : EW_Domain;
