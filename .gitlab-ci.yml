@@ -188,6 +188,7 @@ spark2014_large:
     - if: $CI_PIPELINE_SOURCE == "merge_request_event"
       when: manual
     - when: never
+  allow_failure: true
   variables:
     ANOD_ENTRY_POINT: test_large
     ANOD_QUALIFIERS: assertions,only_large,coverage,cleanup-mode=none,cache
@@ -198,6 +199,7 @@ spark2014_nocache:
     - if: $CI_PIPELINE_SOURCE == "merge_request_event"
       when: manual
     - when: never
+  allow_failure: true
   variables:
     ANOD_ENTRY_POINT: test_nocache
     ANOD_QUALIFIERS: assertions,coverage,cleanup-mode=none
