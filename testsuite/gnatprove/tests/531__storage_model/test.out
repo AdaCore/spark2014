@@ -1,0 +1,33 @@
+logging_storage_models.adb:15:07: error: consider marking it as imported
+logging_storage_models.adb:15:07: error: object with an address clause which is not fully initialized at declaration is not allowed in SPARK
+logging_storage_models.adb:15:07: error: violation of pragma SPARK_Mode at spark.adc:1
+logging_storage_models.adb:15:30: error: address clause for a mutable object referencing a constant part of an object is not allowed in SPARK
+logging_storage_models.adb:15:30: error: violation of pragma SPARK_Mode at spark.adc:1
+logging_storage_models.adb:33:07: error: consider marking it as imported
+logging_storage_models.adb:33:07: error: object with an address clause which is not fully initialized at declaration is not allowed in SPARK
+logging_storage_models.adb:33:07: error: violation of pragma SPARK_Mode at spark.adc:1
+logging_storage_models.adb:36:43: warning: assuming "malloc" has no effect on global items
+logging_storage_models.adb:36:43: warning: no Global contract available for "malloc"
+logging_storage_models.adb:62:07: warning: assuming "free" always terminates
+logging_storage_models.adb:62:07: warning: assuming "free" has no effect on global items
+logging_storage_models.adb:62:07: warning: no Always_Terminates aspect available for "free"
+logging_storage_models.adb:62:07: warning: no Global contract available for "free"
+logging_storage_models.adb:82:07: warning: assuming "memcpy" always terminates
+logging_storage_models.adb:82:07: warning: assuming "memcpy" has no effect on global items
+logging_storage_models.adb:82:07: warning: no Always_Terminates aspect available for "memcpy"
+logging_storage_models.adb:82:07: warning: no Global contract available for "memcpy"
+logging_storage_models.adb:99:07: warning: assuming "memcpy" always terminates
+logging_storage_models.adb:99:07: warning: assuming "memcpy" has no effect on global items
+logging_storage_models.adb:99:07: warning: no Always_Terminates aspect available for "memcpy"
+logging_storage_models.adb:99:07: warning: no Global contract available for "memcpy"
+main.adb:8:09: error: access type with Storage_Pool is not allowed in SPARK
+main.adb:8:09: error: violation of pragma SPARK_Mode at spark.adc:1
+main.adb:28:04: error: "Device_Array_Access" is not allowed in SPARK (due to access type with Storage_Pool)
+main.adb:28:04: error: violation of pragma SPARK_Mode at spark.adc:1
+main.adb:28:17: error: subtype of "Integer" is not allowed in SPARK (due to access type with Storage_Pool)
+main.adb:28:17: error: violation of pragma SPARK_Mode at spark.adc:1
+main.adb:36:22: error: "Device_Array_Access" is not allowed in SPARK (due to access type with Storage_Pool)
+main.adb:36:22: error: violation of pragma SPARK_Mode at spark.adc:1
+main.adb:36:35: error: subtype of "Integer" is not allowed in SPARK (due to access type with Storage_Pool)
+main.adb:36:35: error: violation of pragma SPARK_Mode at spark.adc:1
+gnatprove: error during flow analysis and proof

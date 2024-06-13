@@ -1208,7 +1208,7 @@ package body CE_RAC is
       Check_Supported_Type (Ty);
       Lit := Get_Enum_Lit_From_Pos (Ty, I);
       return Scalar_Value
-        ((K          => Enum_K,
+        ((K           => Enum_K,
           Enum_Entity =>
             (if Nkind (Lit) = N_Character_Literal then Lit else Entity (Lit))),
          Ty);

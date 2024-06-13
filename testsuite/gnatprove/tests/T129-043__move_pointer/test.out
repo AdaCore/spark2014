@@ -1,4 +1,5 @@
 notnull.adb:4:04: info: initialization of "X" proved
+notnull.adb:7:21: error: launch "gnatprove --explain=E0010" for more information
 notnull.adb:7:21: error: loop iteration terminates with moved value for "X"
 notnull.adb:7:21: error: object was moved at line 8 [E0010]
 gnatprove: error during flow analysis and proof

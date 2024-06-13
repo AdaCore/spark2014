@@ -25,31 +25,32 @@
 
 with Ada.Containers;
 with Ada.Unchecked_Deallocation;
-with Atree;                       use Atree;
-with Checked_Types;               use Checked_Types;
-with Common_Containers;           use Common_Containers;
-with Einfo.Entities;              use Einfo.Entities;
-with Einfo.Utils;                 use Einfo.Utils;
-with Errout;                      use Errout;
-with Flow_Error_Messages;         use Flow_Error_Messages;
-with Flow_Types;                  use Flow_Types;
-with Flow_Utility;                use Flow_Utility;
-with GNAT.Dynamic_HTables;        use GNAT.Dynamic_HTables;
-with Gnat2Why.Util;               use Gnat2Why.Util;
-with Namet;                       use Namet;
-with Nlists;                      use Nlists;
-with Sem_Util;                    use Sem_Util;
-with Sem_Aggr;                    use Sem_Aggr;
-with Sem_Aux;                     use Sem_Aux;
-with Sinfo.Nodes;                 use Sinfo.Nodes;
-with Sinfo.Utils;                 use Sinfo.Utils;
-with Snames;                      use Snames;
-with SPARK_Definition;            use SPARK_Definition;
-with SPARK_Definition.Annotate;   use SPARK_Definition.Annotate;
-with SPARK_Util;                  use SPARK_Util;
-with SPARK_Util.Subprograms;      use SPARK_Util.Subprograms;
-with SPARK_Util.Types;            use SPARK_Util.Types;
-with Treepr;                      use Treepr;
+with Atree;                     use Atree;
+with Checked_Types;             use Checked_Types;
+with Common_Containers;         use Common_Containers;
+with Einfo.Entities;            use Einfo.Entities;
+with Einfo.Utils;               use Einfo.Utils;
+with Errout_Wrapper;            use Errout_Wrapper;
+with Flow_Types;                use Flow_Types;
+with Flow_Utility;              use Flow_Utility;
+with GNAT.Dynamic_HTables;      use GNAT.Dynamic_HTables;
+with Gnat2Why.Util;             use Gnat2Why.Util;
+with Namet;                     use Namet;
+with Nlists;                    use Nlists;
+with Sem_Util;                  use Sem_Util;
+with Sem_Aggr;                  use Sem_Aggr;
+with Sem_Aux;                   use Sem_Aux;
+with Sinfo.Nodes;               use Sinfo.Nodes;
+with Sinfo.Utils;               use Sinfo.Utils;
+with Snames;                    use Snames;
+with SPARK_Definition;          use SPARK_Definition;
+with SPARK_Definition.Annotate; use SPARK_Definition.Annotate;
+with SPARK_Util;                use SPARK_Util;
+with SPARK_Util.Subprograms;    use SPARK_Util.Subprograms;
+with SPARK_Util.Types;          use SPARK_Util.Types;
+with Treepr;                    use Treepr;
+with VC_Kinds;                  use VC_Kinds;
+
 use all type Ada.Containers.Count_Type;
 
 package body Gnat2Why.Borrow_Checker is
@@ -898,17 +899,15 @@ package body Gnat2Why.Borrow_Checker is
    --  the borrower, the node for error location, and adds an error message
    --  with the appropriate values.
 
-   procedure Perm_Mismatch
-     (Loc            : Node_Id;
-      N              : Expr_Or_Ent;
+   function Perm_Mismatch
+     (N              : Expr_Or_Ent;
       Exp_Perm       : Perm_Kind;
       Act_Perm       : Perm_Kind;
       Expl           : Node_Id;
-      Forbidden_Perm : Boolean := False);
-   --  Issues a continuation error message about a mismatch between a desired
-   --  permission Exp_Perm and a permission obtained Act_Perm. Loc is the node
-   --  on which the error is reported. N is the root of the path leading to the
-   --  error.
+      Forbidden_Perm : Boolean := False) return Message;
+   --  Return a continuation error message about a mismatch between a desired
+   --  permission Exp_Perm and a permission obtained Act_Perm. N is the root
+   --  of the path leading to the error.
 
    procedure Process_Path (Expr : Expr_Or_Ent; Mode : Checking_Mode);
    pragma Precondition (Expr.Is_Ent or else Is_Path_Expression (Expr.Expr));
@@ -1200,15 +1199,15 @@ package body Gnat2Why.Borrow_Checker is
            and then Present (Expr_Root)
            and then not Is_Ghost_Entity (Expr_Root)
          then
-            Error_Msg_Node_2 := Target_Root;
-            Error_Msg_NE
+            Error_Msg_N
               ("non-ghost object & cannot be " &
                (case Mode is
                   when Borrow => "borrowed",
                   when Move   => "moved",
                   when others => raise Program_Error) &
-               " in an assignment to ghost object &",
-               Expr, Expr_Root);
+                  " in an assignment to ghost object &",
+               Expr,
+               Names => [Expr_Root, Target_Root]);
             Permission_Error := True;
          end if;
       end Check_Assignment_To_Ghost;
@@ -3124,13 +3123,15 @@ package body Gnat2Why.Borrow_Checker is
          Ent : constant Expr_Or_Ent :=
            (Is_Ent => True, Ent => E, Loc => Loop_Stmt);
       begin
-         Error_Msg_NE ("loop iteration terminates with moved value for &",
-                       Loop_Stmt, E);
-         Perm_Mismatch (Loc      => Loop_Stmt,
-                        N        => Ent,
-                        Exp_Perm => Perm,
-                        Act_Perm => Found_Perm,
-                        Expl     => Expl);
+         Error_Msg_N
+           (Create ("loop iteration terminates with moved value for &",
+                    Names => [E]),
+            Loop_Stmt,
+            Continuations =>
+              [Perm_Mismatch (N        => Ent,
+                             Exp_Perm => Perm,
+                             Act_Perm => Found_Perm,
+                             Expl     => Expl)]);
          Permission_Error := True;
       end Perm_Error_Loop_Exit;
 
@@ -3446,11 +3447,15 @@ package body Gnat2Why.Borrow_Checker is
          Borrowed : constant Node_Id := Check_On_Borrowed (Expr);
       begin
          if Present (Borrowed) then
-            Error_Msg_Sloc := Sloc (Borrowed);
             if Expr.Is_Ent then
-               Error_Msg_NE ("& was borrowed #", Expr.Loc, Expr.Ent);
+               Error_Msg_N ("& was borrowed #",
+                            Expr.Loc,
+                            Names => [Expr.Ent],
+                            Secondary_Loc => Sloc (Borrowed));
             else
-               Error_Msg_N ("object was borrowed #", Expr.Expr);
+               Error_Msg_N ("object was borrowed #",
+                            Expr.Expr,
+                            Secondary_Loc => Sloc (Borrowed));
             end if;
             Permission_Error := True;
          end if;
@@ -3474,13 +3479,15 @@ package body Gnat2Why.Borrow_Checker is
              (if Expr.Is_Ent then Get_Root_Object (Moved) = Expr.Ent
               else Is_Prefix_Or_Almost (Expr.Expr, +Moved))
          then
-            Error_Msg_Code :=
-              Explain_Code'Enum_Rep (EC_Ownership_Moved_Object);
-            Error_Msg_Sloc := Sloc (Moved);
             if Expr.Is_Ent then
-               Error_Msg_NE ("& was moved # '[[]']", Expr.Loc, Expr.Ent);
+               Error_Msg_N ("& was moved #",
+                            Expr.Loc,
+                            Names         => [Expr.Ent],
+                            Secondary_Loc => Sloc (Moved));
             else
-               Error_Msg_N ("object was moved # '[[]']", Expr.Expr);
+               Error_Msg_N ("object was moved #", Expr.Expr,
+                            Secondary_Loc => Sloc (Moved),
+                            Explain_Code  => EC_Ownership_Moved_Object);
             end if;
             Permission_Error := True;
             return;
@@ -3507,11 +3514,15 @@ package body Gnat2Why.Borrow_Checker is
          Observed : constant Node_Id := Check_On_Observed (Expr);
       begin
          if Present (Observed) then
-            Error_Msg_Sloc := Sloc (Observed);
             if Expr.Is_Ent then
-               Error_Msg_NE ("& was observed #", Expr.Loc, Expr.Ent);
+               Error_Msg_N ("& was observed #",
+                            Expr.Loc,
+                            Names         => [Expr.Ent],
+                            Secondary_Loc => Sloc (Observed));
             else
-               Error_Msg_N ("object was observed #", Expr.Expr);
+               Error_Msg_N ("object was observed #",
+                            Expr.Expr,
+                            Secondary_Loc => Sloc (Observed));
             end if;
             Permission_Error := True;
          end if;
@@ -3765,8 +3776,7 @@ package body Gnat2Why.Borrow_Checker is
             if Present (Root)
               and then not Is_Ghost_Entity (Root)
             then
-               Error_Msg_Node_2 := Subp;
-               Error_Msg_NE
+               Error_Msg_N
                  ("non-ghost object & cannot be " &
                   (case Mode is
                       when Borrow => "borrowed",
@@ -3774,7 +3784,7 @@ package body Gnat2Why.Borrow_Checker is
                       when Move   => "moved",
                       when others => raise Program_Error) &
                   " in a call to ghost subprogram &",
-                  Expr.Expr, Root);
+                  Expr.Expr, Names => [Root, Subp]);
                Permission_Error := True;
             end if;
          end;
@@ -3900,9 +3910,9 @@ package body Gnat2Why.Borrow_Checker is
                      --  ultimate root was Param, then the anonymous access
                      --  object would have been classified as an observer.
 
-                     Error_Msg_NE
+                     Error_Msg_N
                        ("return value of a traversal function "
-                        & "should be rooted at &", Expr, Param);
+                        & "should be rooted at &", Expr, Names => [Param]);
                      Permission_Error := True;
                      exit;
                   end if;
@@ -4457,10 +4467,10 @@ package body Gnat2Why.Borrow_Checker is
               or else Has_Variable_Input (E)
             then
                pragma Assert (Present (Current_Subp));
-               Error_Msg_NE
+               Error_Msg_N
                  ("owning or observing object should occur in the global" &
                     " contract of &",
-                  E, Current_Subp);
+                  E, Names => [Current_Subp]);
                Permission_Error := True;
             end if;
 
@@ -5343,19 +5353,22 @@ package body Gnat2Why.Borrow_Checker is
          Set_Root_Object (N.Expr, Root, Part, Is_Deref);
       end if;
 
-      Error_Msg_NE
-        ((if Part then "part of " else "")
-         & (if Is_Deref then "dereference from " else "")
-         & "& is not "
-         & (if (Perm in Read_Perm and then Found_Perm not in Read_Perm)
-             or else Forbidden_Perm
-           then
-              "readable"
-           else
-              "writable"), Loc, Root);
-
+      Error_Msg_N
+        (Create
+           ((if Part then "part of " else "")
+            & (if Is_Deref then "dereference from " else "")
+            & "& is not "
+            & (if (Perm in Read_Perm and then Found_Perm not in Read_Perm)
+              or else Forbidden_Perm
+              then
+                 "readable"
+              else
+                 "writable"),
+            Names => [Root]),
+         Loc,
+         Continuations =>
+           [Perm_Mismatch (N, Perm, Found_Perm, Expl, Forbidden_Perm)]);
       Permission_Error := True;
-      Perm_Mismatch (Loc, N, Perm, Found_Perm, Expl, Forbidden_Perm);
    end Perm_Error;
 
    ---------------------------
@@ -5370,10 +5383,12 @@ package body Gnat2Why.Borrow_Checker is
    is
       Ent : constant Expr_Or_Ent := (Is_Ent => True, Ent => E, Loc => E);
    begin
-      Error_Msg_Node_2 := E;
-      Error_Msg_NE ("borrower & exits its scope with moved value", N, E);
+      Error_Msg_N
+        (Create ("borrower & exits its scope with moved value", Names => [E]),
+         N,
+         Continuations => [Perm_Mismatch (Ent, Read_Write, Found_Perm, Expl)]);
       Permission_Error := True;
-      Perm_Mismatch (N, Ent, Read_Write, Found_Perm, Expl);
+
    end Perm_Error_Borrow_End;
 
    -------------------------------
@@ -5388,16 +5403,17 @@ package body Gnat2Why.Borrow_Checker is
       Exceptional : Boolean)
    is
       Ent : constant Expr_Or_Ent := (Is_Ent => True, Ent => E, Loc => Subp);
+      Conts : constant Message_Lists.List :=
+        [Perm_Mismatch (Ent, Read_Write, Found_Perm, Expl)];
+      Msg_String : constant String :=
+        (if Exceptional then "exceptional exit from & with moved value for &"
+           else "return from & with moved value for &");
    begin
-      Error_Msg_Node_2 := E;
-      if Exceptional then
-         Error_Msg_NE
-           ("exceptional exit from & with moved value for &", Subp, Subp);
-      else
-         Error_Msg_NE ("return from & with moved value for &", Subp, Subp);
-      end if;
+      Error_Msg_N
+        (Create (Msg_String, Names => [Subp, E]),
+         Subp,
+         Continuations => Conts);
       Permission_Error := True;
-      Perm_Mismatch (Subp, Ent, Read_Write, Found_Perm, Expl);
    end Perm_Error_Subprogram_End;
 
    -------------------------
@@ -5412,38 +5428,42 @@ package body Gnat2Why.Borrow_Checker is
    is
       Ent : constant Expr_Or_Ent := (Is_Ent => True, Ent => E, Loc => E);
    begin
-      Error_Msg_Node_2 := E;
-      Error_Msg_NE ("borrower & is reborrowed with moved value", N, E);
+      Error_Msg_N (Create ("borrower & is reborrowed with moved value",
+                           Names => [E]),
+                   N,
+                   Continuations =>
+                     [Perm_Mismatch (Ent, Read_Write, Found_Perm, Expl)]);
       Permission_Error := True;
-      Perm_Mismatch (N, Ent, Read_Write, Found_Perm, Expl);
+
    end Perm_Error_Reborrow;
 
    -------------------
    -- Perm_Mismatch --
    -------------------
 
-   procedure Perm_Mismatch
-     (Loc            : Node_Id;
-      N              : Expr_Or_Ent;
+   function Perm_Mismatch
+     (N              : Expr_Or_Ent;
       Exp_Perm       : Perm_Kind;
       Act_Perm       : Perm_Kind;
       Expl           : Node_Id;
-      Forbidden_Perm : Boolean := False)
+      Forbidden_Perm : Boolean := False) return Message
    is
       Borrowed : constant Node_Id := Check_On_Borrowed (N);
       Observed : constant Node_Id := Check_On_Observed (N);
       Reason   : constant String :=
         (if Present (Observed) then "observed #"
          elsif Present (Borrowed) then "borrowed #"
-         else "moved # '[[]']");
-
+         else "moved #");
+      Code     : constant Explain_Code_Kind :=
+        (if Present (Observed) or else Present (Borrowed) then EC_None
+         else EC_Ownership_Moved_Object);
+      Sec_Sloc : constant Source_Ptr := Sloc (Expl);
    begin
-      Error_Msg_Code := Explain_Code'Enum_Rep (EC_Ownership_Moved_Object);
-      Error_Msg_Sloc := Sloc (Expl);
-
       if Forbidden_Perm then
          if Exp_Perm = No_Access then
-            Error_Msg_N ("\object was " & Reason, Loc);
+            return Create ("object was " & Reason,
+                           Explain_Code => Code,
+                           Secondary_Loc => Sec_Sloc);
          else
             raise Program_Error;
          end if;
@@ -5451,14 +5471,19 @@ package body Gnat2Why.Borrow_Checker is
          case Exp_Perm is
             when Write_Perm =>
                if Act_Perm = Read_Only then
-                  Error_Msg_N
-                    ("\object was declared as not writable #", Loc);
+                  return
+                    Create ("object was declared as not writable #",
+                            Secondary_Loc => Sec_Sloc);
                else
-                  Error_Msg_N ("\object was " & Reason, Loc);
+                  return Create ("object was " & Reason,
+                                 Explain_Code => Code,
+                                 Secondary_Loc => Sec_Sloc);
                end if;
 
             when Read_Only =>
-               Error_Msg_N ("\object was " & Reason, Loc);
+               return Create ("object was " & Reason,
+                              Explain_Code => Code,
+                              Secondary_Loc => Sec_Sloc);
 
             when No_Access =>
                raise Program_Error;
@@ -5626,10 +5651,10 @@ package body Gnat2Why.Borrow_Checker is
            or else Has_Variable_Input (Root)
          then
             pragma Assert (Present (Current_Subp));
-            Error_Msg_NE
+            Error_Msg_N
               ("owning or observing object should occur in the global" &
                  " contract of &",
-               Root, Current_Subp);
+               Root, Names => [Current_Subp]);
             Permission_Error := True;
          end if;
 

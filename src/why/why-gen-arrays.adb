@@ -1961,7 +1961,7 @@ package body Why.Gen.Arrays is
          begin
             Declare_Attribute (WNE_Attr_First (1), Low, R_Ty);
             Declare_Attribute (WNE_Attr_Last (1),
-                               String_Literal_Length (Und_Ent) - Low + 1,
+                               String_Literal_Length (Und_Ent) + Low - 1,
                                R_Ty);
 
             Subst (Cursor) :=

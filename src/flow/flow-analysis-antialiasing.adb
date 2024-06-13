@@ -963,11 +963,11 @@ package body Flow.Analysis.Antialiasing is
          then
            To_Entire_Variables
              (Get_All_Variables
-                (N                    => Name (Parent (N)),
-                 Scope                => FA.B_Scope,
-                 Target_Name          => Null_Flow_Id,
-                 Use_Computed_Globals => True,
-                 Assume_In_Expression => True,
+                (N                       => Name (Parent (N)),
+                 Scope                   => FA.B_Scope,
+                 Target_Name             => Null_Flow_Id,
+                 Use_Computed_Globals    => True,
+                 Assume_In_Expression    => True,
                  Expand_Internal_Objects => False))
          else
            Flow_Id_Sets.Empty_Set);

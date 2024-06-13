@@ -1,0 +1,5 @@
+test.adb:10:13: info: implicit aspect Always_Terminates on overriding operator "=" has been proved, subprogram will terminate
+test.adb:12:13: info: implicit aspect Always_Terminates on "Eq" has been proved, subprogram will terminate
+test.adb:17:37: info: subprogram variant proved (Trivial)
+test.adb:17:45: info: pointer dereference check proved (CVC5: 1 VC)
+test.adb:17:54: info: pointer dereference check proved (CVC5: 1 VC)

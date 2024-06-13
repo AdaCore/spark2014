@@ -24,7 +24,7 @@
 ------------------------------------------------------------------------------
 
 with Common_Containers;   use Common_Containers;
-with Errout;              use Errout;
+with Errout_Wrapper;      use Errout_Wrapper;
 with Namet;               use Namet;
 with Snames;              use Snames;
 with SPARK_Util.Types;    use SPARK_Util.Types;
@@ -382,8 +382,11 @@ package body Why.Gen.Hardcoded is
 
             if Name_String = BIN.Is_Valid and then Args'Length = 1 then
                pragma Assert (Args'Length = 1);
-               Error_Msg_F (Warning_Message (Warn_Function_Is_Valid),
-                            Ada_Node);
+               Error_Msg_N
+                 (Warning_Message (Warn_Function_Is_Valid),
+                  Ada_Node,
+                  First => True,
+                  Kind => MK_Warning);
 
                if Domain = EW_Prog then
                   T := +Sequence (Ada_Node => Ada_Node,
@@ -669,8 +672,10 @@ package body Why.Gen.Hardcoded is
 
             if Name_String = BRN.Is_Valid and then Args'Length = 1 then
                pragma Assert (Args'Length = 1);
-               Error_Msg_F (Warning_Message (Warn_Function_Is_Valid),
-                            Ada_Node);
+               Error_Msg_N (Warning_Message (Warn_Function_Is_Valid),
+                            Ada_Node,
+                            First => True,
+                            Kind => MK_Warning);
 
                if Domain = EW_Prog then
                   T := +Sequence (Ada_Node => Ada_Node,

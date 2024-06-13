@@ -423,7 +423,7 @@ package body CE_Values is
 
    function To_String (V : Value_Type) return String is
      (case V.K is
-         when Scalar_K  =>
+         when Scalar_K   =>
            (if V.Initialized_Attr.Present
             then "('Initialize => " & V.Initialized_Attr.Content'Image
               & ", Value => "

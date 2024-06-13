@@ -1,0 +1,5 @@
+bar.adb:5:44: medium: postcondition might fail, in inherited contract at bar.adb:7
+main.adb:2:17: high: "X" is not initialized in "P" [reason for check: OUT parameter should be initialized on return] [possible fix: initialize "X" on all paths or make "X" an IN OUT parameter]
+main.adb:4:04: info: initialization of "X" proved
+main.adb:6:04: info: no contextual analysis of "P" (body not seen yet)
+main.adb:7:19: info: assertion proved (CVC5: 1 VC)

@@ -292,13 +292,9 @@ hw-gfx-gma-display_probing.adb:47:13: info: implicit aspect Always_Terminates on
 hw-gfx-gma-display_probing.adb:50:13: info: implicit aspect Always_Terminates on "Is_DVI_I" has been proved, subprogram will terminate
 hw-gfx-gma-display_probing.adb:56:07: info: initialization of "Raw_EDID" proved
 hw-gfx-gma-display_probing.adb:58:07: info: initialization of "Success" proved
-hw-gfx-gma-display_probing.adb:73:32: warning: assuming "Power_Up" always terminates
-hw-gfx-gma-display_probing.adb:73:32: warning: no Always_Terminates aspect available for "Power_Up"
 hw-gfx-gma-display_probing.adb:113:07: info: initialization of "Success" proved
 hw-gfx-gma-display_probing.adb:144:16: info: initialization of "Have_Sibling_EDID" proved
 hw-gfx-gma-display_probing.adb:168:07: info: initialization of "Success" proved
-hw-gfx-gma-display_probing.adb:208:26: warning: assuming "Power_Set_To" always terminates
-hw-gfx-gma-display_probing.adb:208:26: warning: no Always_Terminates aspect available for "Power_Set_To"
 hw-gfx-gma-display_probing.ads:24:07: info: initialization of "Configs" proved
 hw-gfx-gma-dp_aux_ch.ads:19:09: warning: assuming "U_Delay" always terminates
 hw-gfx-gma-dp_aux_ch.ads:19:09: warning: assuming "U_Delay" always terminates
@@ -814,14 +810,10 @@ hw-gfx-gma.adb:193:07: info: initialization of "Port_Cfg" proved
 hw-gfx-gma.adb:194:07: info: initialization of "Success" proved
 hw-gfx-gma.adb:214:56: info: initialization of "Detected" proved
 hw-gfx-gma.adb:227:07: info: initialization of "Old_Configs" proved
-hw-gfx-gma.adb:235:29: warning: assuming "Power_Up" always terminates
-hw-gfx-gma.adb:235:29: warning: no Always_Terminates aspect available for "Power_Up"
 hw-gfx-gma.adb:240:16: info: implicit aspect Always_Terminates on "Full_Update" has been proved, subprogram will terminate
 hw-gfx-gma.adb:262:13: info: initialization of "Unplug_Detected" proved
 hw-gfx-gma.adb:281:13: info: initialization of "Success" proved
 hw-gfx-gma.adb:282:13: info: initialization of "Scaler_Available" proved
-hw-gfx-gma.adb:325:26: warning: assuming "Power_Down" always terminates
-hw-gfx-gma.adb:325:26: warning: no Always_Terminates aspect available for "Power_Down"
 hw-gfx-gma.adb:356:16: info: implicit aspect Always_Terminates on "Cap_Add" has been proved, subprogram will terminate
 hw-gfx-gma.adb:382:16: high: "Dev.Address_State" constituent of "GMA.State" is not initialized
 hw-gfx-gma.adb:382:16: low: unused global "Dev.Address_State" constituent of "GMA.State"
@@ -843,13 +835,7 @@ hw-gfx-gma.adb:403:25: warning: this statement is never reached
 hw-gfx-gma.adb:422:37: info: initialization of "Success" proved
 hw-gfx-gma.adb:425:10: info: initialization of "Vendor" proved
 hw-gfx-gma.adb:425:18: info: initialization of "Device" proved
-hw-gfx-gma.adb:491:26: warning: assuming "Pre_All_Off" always terminates
-hw-gfx-gma.adb:491:26: warning: no Always_Terminates aspect available for "Pre_All_Off"
-hw-gfx-gma.adb:496:26: warning: assuming "Post_All_Off" always terminates
-hw-gfx-gma.adb:496:26: warning: no Always_Terminates aspect available for "Post_All_Off"
 hw-gfx-gma.adb:509:07: warning: statement has no effect
-hw-gfx-gma.adb:544:23: warning: assuming "Power_Up" always terminates
-hw-gfx-gma.adb:544:23: warning: no Always_Terminates aspect available for "Power_Up"
 hw-gfx-gma.adb:549:13: info: implicit aspect Always_Terminates on "FB_First_Page" has been proved, subprogram will terminate
 hw-gfx-gma.adb:551:13: info: implicit aspect Always_Terminates on "FB_Pages" has been proved, subprogram will terminate
 hw-gfx-gma.adb:553:13: info: implicit aspect Always_Terminates on "FB_Last_Page" has been proved, subprogram will terminate
@@ -1194,12 +1180,6 @@ hw-mmio_range.ads:30:20: info: initialization of "Value" proved, in instantiatio
 hw-mmio_range.ads:30:20: info: initialization of "Value" proved, in instantiation at hw-pci-mmconf.adb:36, in instantiation at hw-pci-dev.adb:28, in instantiation at hw-gfx-gma.adb:68
 hw-mmio_range.ads:30:20: info: initialization of "Value" proved, in instantiation at hw-pci-mmconf.adb:38, in instantiation at hw-pci-dev.adb:28, in instantiation at hw-gfx-gma.adb:68
 hw-mmio_range.ads:30:20: info: initialization of "Value" proved, in instantiation at hw-pci-mmconf.adb:40, in instantiation at hw-pci-dev.adb:28, in instantiation at hw-gfx-gma.adb:68
-hw-mmio_range.ads:34:14: warning: subprogram "Set_Base_Address" has no effect, in instantiation at hw-gfx-framebuffer_filler.adb:25
-hw-mmio_range.ads:34:14: warning: subprogram "Set_Base_Address" has no effect, in instantiation at hw-gfx-gma-registers.adb:41
-hw-mmio_range.ads:34:14: warning: subprogram "Set_Base_Address" has no effect, in instantiation at hw-gfx-gma-registers.adb:54
-hw-mmio_range.ads:34:14: warning: subprogram "Set_Base_Address" has no effect, in instantiation at hw-pci-mmconf.adb:36, in instantiation at hw-pci-dev.adb:28, in instantiation at hw-gfx-gma.adb:68
-hw-mmio_range.ads:34:14: warning: subprogram "Set_Base_Address" has no effect, in instantiation at hw-pci-mmconf.adb:38, in instantiation at hw-pci-dev.adb:28, in instantiation at hw-gfx-gma.adb:68
-hw-mmio_range.ads:34:14: warning: subprogram "Set_Base_Address" has no effect, in instantiation at hw-pci-mmconf.adb:40, in instantiation at hw-pci-dev.adb:28, in instantiation at hw-gfx-gma.adb:68
 hw-pci-dev.adb:48:07: info: initialization of "Header_Type" proved, in instantiation at hw-gfx-gma.adb:68
 hw-pci-dev.adb:49:07: info: initialization of "Reg32" proved, in instantiation at hw-gfx-gma.adb:68
 hw-pci-dev.adb:84:07: info: initialization of "Cmd" proved, in instantiation at hw-gfx-gma.adb:68

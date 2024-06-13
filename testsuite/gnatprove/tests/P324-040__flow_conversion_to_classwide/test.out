@@ -1,4 +1,0 @@
-dummy.adb:5:04: warning: assuming "Foo" always terminates
-dummy.adb:5:04: warning: no Always_Terminates aspect available for "Foo"
-q.adb:5:04: warning: assuming "Foo" always terminates
-q.adb:5:04: warning: no Always_Terminates aspect available for "Foo"

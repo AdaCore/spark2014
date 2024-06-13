@@ -32,7 +32,7 @@ illegal_hide_private.ads:67:43: error: "T_Preds" is not allowed in SPARK (due to
 illegal_hide_private.ads:67:43: error: violation of aspect SPARK_Mode at line 2
 illegal_hide_private.ads:101:07: error: pragma Annotate Hide_Info for private parts shall be in a visible package
 use_generics.adb:5:12: error: instance of a generic unit declared in a package whose private part is hidden outside of this package is not yet supported
-use_generics.adb:5:12: error: the private part of package Illegal_Hide_Private is hidden for proof
+use_generics.adb:5:12: error: the private part of package "Illegal_Hide_Private" is hidden for proof
 use_generics.adb:7:14: error: instance of a generic unit declared in a package whose private part is hidden outside of this package is not yet supported
-use_generics.adb:7:14: error: the private part of package Illegal_Hide_Private is hidden for proof
+use_generics.adb:7:14: error: the private part of package "Illegal_Hide_Private" is hidden for proof
 gnatprove: error during flow analysis and proof

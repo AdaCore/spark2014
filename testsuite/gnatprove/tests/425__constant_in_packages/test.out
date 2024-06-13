@@ -4,4 +4,3 @@ bar.ads:5:30: info: range check proved (CVC5: 2 VC)
 foo.ads:2:13: info: implicit aspect Always_Terminates on "Id" has been proved, subprogram will terminate
 foo.ads:2:13: info: implicit function contract might not be available on calls from enclosing unit
 foo.ads:4:30: medium: range check might fail, cannot prove upper bound for Id (11) [reason for check: default component value must fit in the type]
-foo.ads:6:14: warning: subprogram "P" has no effect

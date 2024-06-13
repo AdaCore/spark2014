@@ -1041,6 +1041,10 @@ package SPARK_Util is
    -- Misc operations and queries --
    ---------------------------------
 
+   function To_String (N : Name_Id; Sloc : Source_Ptr) return String;
+   --  Similar to Errout.Set_Msg_Insertion_Name, but directly returns a string
+   --  instead of operating on a global buffer.
+
    procedure Append
      (To    : in out Node_Lists.List;
       Elmts : Node_Lists.List);

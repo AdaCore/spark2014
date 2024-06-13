@@ -27,7 +27,7 @@ with Ada.Containers.Doubly_Linked_Lists;
 with Ada.Strings.Unbounded;          use Ada.Strings.Unbounded;
 with Atree;
 with Debug;
-with Errout;                         use Errout;
+with Errout_Wrapper;                 use Errout_Wrapper;
 with Exp_Util;
 with Flow_Dependency_Maps;           use Flow_Dependency_Maps;
 with Flow_Generated_Globals;         use Flow_Generated_Globals;
@@ -439,18 +439,21 @@ package body Gnat2Why.Subprograms is
                     and then (Ekind (Main) /= E_Package_Body
                               or else Withed /= Unique_Entity (Main))
                   then
-                     Error_Msg_NE
-                       ("info: ?"
-                        & "Initial_Condition of package & is ignored",
-                        Main, Withed);
-                     Error_Msg_NE
-                       ("\the elaboration of & is not known to precede the"
-                        & " elaboration of the current unit",
-                        Main, Withed);
-                     Error_Msg_NE
-                       ("\use pragma Elaborate_Body in & or pragma Elaborate"
-                        & " in the current unit",
-                        Main, Withed);
+                     Error_Msg_N
+                       (Create
+                          ("Initial_Condition of package & is ignored",
+                           Names => [Withed]),
+                        Main,
+                        Kind => MK_Info,
+                        Continuations =>
+                          [Create
+                               ("the elaboration of & is not known to precede"
+                                & " the elaboration of the current unit",
+                                Names => [Withed]),
+                           Create
+                             ("use pragma Elaborate_Body in & or pragma"
+                              & " Elaborate in the current unit",
+                              Names => [Withed])]);
                   end if;
                end;
             end if;
@@ -2431,8 +2434,9 @@ package body Gnat2Why.Subprograms is
 
       elsif Is_Recursive (Function_Entity) then
          Error_Msg_N
-           ("info: ?recursive function cannot be inlined for proof",
-            Function_Entity);
+           ("recursive function cannot be inlined for proof",
+            Function_Entity,
+            Kind => MK_Info);
 
          W_Def := Why_Empty;
 
@@ -2445,12 +2449,12 @@ package body Gnat2Why.Subprograms is
             (Function_Entity, Pragma_Postcondition, False, False).Is_Empty
       then
          Error_Msg_N
-           ("info: ?function cannot be inlined for proof",
-            Function_Entity);
-         Error_Msg_N
-           ("\inlining might cause circularity in the verification process",
-            Function_Entity);
-
+           ("function cannot be inlined for proof",
+            Function_Entity,
+            Kind => MK_Info,
+            Continuations =>
+              ["inlining might cause circularity in the verification process"]
+           );
          W_Def := Why_Empty;
 
       --  Translate the Value expression in Why.
@@ -2701,8 +2705,10 @@ package body Gnat2Why.Subprograms is
 
                if Debug.Debug_Flag_Underscore_F then
                   Error_Msg_N
-                    ("info: ?imprecise handling of Unchecked_Conversion ("
-                     & To_String (Precise_UC.Explanation) & ")", E);
+                    ("imprecise handling of Unchecked_Conversion ("
+                     & To_String (Precise_UC.Explanation) & ")",
+                     E,
+                     Kind => MK_Info);
                end if;
 
                Def := Why_Empty;
@@ -5366,7 +5372,9 @@ package body Gnat2Why.Subprograms is
                 (Expr, False, Include_Valid => True)
             then
                Error_Msg_N
-                 (Warning_Message (Warn_Precondition_Statically_False), Expr);
+                 (Warning_Message (Warn_Precondition_Statically_False),
+                  Expr,
+                  Kind => MK_Warning);
             end if;
          end if;
       end loop;
@@ -5459,8 +5467,10 @@ package body Gnat2Why.Subprograms is
         and then Present (Get_Pragma (E, Pragma_Subprogram_Variant))
         and then not Is_Recursive (E)
       then
-         Error_Msg_F (Warning_Message (Warn_Variant_Not_Recursive),
-                      Get_Pragma (E, Pragma_Subprogram_Variant));
+         Error_Msg_N (Warning_Message (Warn_Variant_Not_Recursive),
+                      Get_Pragma (E, Pragma_Subprogram_Variant),
+                      First => True,
+                      Kind => MK_Warning);
       end if;
 
       --  For expression functions, the body is not marked. Retrieve the
@@ -6182,9 +6192,11 @@ package body Gnat2Why.Subprograms is
                        else ""));
                begin
                   Error_Msg_N
-                    ("info: ?" & String_For_Implicit
+                    (String_For_Implicit
                      & "function contract might not be available on "
-                     & String_For_Rec & String_For_Scope, E);
+                     & String_For_Rec & String_For_Scope,
+                     E,
+                     Kind => MK_Info);
                end;
             end if;
          end;
@@ -8261,11 +8273,11 @@ package body Gnat2Why.Subprograms is
                   else "");
             begin
                Error_Msg_N
-                 ("info: ?"
-                  & "expression function body of subprograms with a numeric "
+                 ("expression function body of subprograms with a numeric "
                   & "variant might not be available on recursive calls"
                   & String_For_Scope,
-                  E);
+                  E,
+                  Kind => MK_Info);
             end;
          end if;
 

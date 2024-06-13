@@ -1061,6 +1061,33 @@ limited.
    In |SPARK| versions up to |SPARK| 21, delta aggregates are not supported
    and an equivalent attribute named ``Update`` can be used instead.
 
+[SPARK]
+
+As a GNAT-specific extension for SPARK (which requires the use of switch
+``-gnatX0`` or pragma ``Extensions_Allowed(All)``), it is also possible to use
+subcomponents as choices in a delta aggregate. In the following example, the
+postcondition of procedure ``Zero_Left_Of_Pair_At_Index`` uses a delta
+aggregate to specify that parameter ``P`` is updated by setting the ``Left``
+component of its element at index ``I`` to zero:
+
+.. code-block:: ada
+
+   type Pair is record
+      Left, Right : Integer;
+   end record;
+
+   type Index is range 1 .. 10;
+   type Pairs is array (Index) of Pair;
+
+   procedure Zero_Left_Of_Pair_At_Index (P : in out Pairs; I : Index) with
+     Post => P = (P'Old with delta (I).Left => 0);
+
+The subcomponent should be designated by a chain of indexes in parentheses (for
+indexing into arrays) and component names (for accessing into records, with a
+dot preceding the component name if this not the first subcomponent). Such
+choices can be used together with the usual choices that designate a top-level
+component.
+
 .. index:: Aspect Aggregate
 
 Aspect Aggregate

@@ -1,6 +1,8 @@
 deep_globals.adb:8:04: info: initialization of "Z2" proved
+deep_globals.adb:10:14: error: launch "gnatprove --explain=E0010" for more information
 deep_globals.adb:10:14: error: object was moved at line 12 [E0010]
 deep_globals.adb:10:14: error: return from "P2" with moved value for "X2"
+deep_globals.adb:15:14: error: launch "gnatprove --explain=E0010" for more information
 deep_globals.adb:15:14: error: object was moved at line 17 [E0010]
 deep_globals.adb:15:14: error: return from "Q2" with moved value for "Z2"
 gnatprove: error during flow analysis and proof

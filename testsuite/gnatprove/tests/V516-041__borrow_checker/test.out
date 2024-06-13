@@ -1,6 +1,8 @@
 main.adb:35:04: info: initialization of "X" proved
 main.adb:42:28: error: "X" is not readable
+main.adb:42:28: error: launch "gnatprove --explain=E0010" for more information
 main.adb:42:28: error: object was moved at line 41 [E0010]
 main.adb:46:28: error: "X" is not readable
+main.adb:46:28: error: launch "gnatprove --explain=E0010" for more information
 main.adb:46:28: error: object was moved at unknown location [E0010]
 gnatprove: error during flow analysis and proof

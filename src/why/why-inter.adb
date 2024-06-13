@@ -24,7 +24,7 @@
 ------------------------------------------------------------------------------
 
 with Ada.Containers.Hashed_Maps;
-with Errout;                    use Errout;
+with Errout_Wrapper;            use Errout_Wrapper;
 with Gnat2Why.Tables;           use Gnat2Why.Tables;
 with Namet;                     use Namet;
 with Snames;                    use Snames;
@@ -544,15 +544,17 @@ package body Why.Inter is
                      if not Seen.Contains (Next) then
                         Stack.Append (Next);
                      elsif On_Stack.Contains (Next) then
-                        Error_Msg_F
-                          ("unsupported recursive subprogram", Next);
-                        Error_Msg_NE
-                          ("\& might include a recursive call due to a"
-                           & " type invariant"
-                           & " or subtype predicate, or there might be a"
-                           & " cycle in the"
-                           & " elaboration of the enclosing unit",
-                           Next, Next);
+                        Error_Msg_N
+                          (Create ("unsupported recursive subprogram"),
+                           Next,
+                           First => True,
+                           Continuations =>
+                             [Create
+                                  ("& might include a recursive call due to a"
+                                   & " type invariant or subtype predicate,"
+                                   & " or there might be a cycle in the"
+                                   & " elaboration of the enclosing unit",
+                                   Names => [Next])]);
                      end if;
                   end loop;
                end if;
