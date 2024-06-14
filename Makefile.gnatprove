@@ -8,10 +8,10 @@ build:
 	gprbuild -p -j0 -P gnatprove.gpr $(PROD)
 
 codepeer-run:
-	gnatsas analyze -P gnatprove.gpr --no-gnat
+	gnatsas analyze -P gnatprove.gpr --no-gnat --debug
 
 codepeer:
-	@gnatsas report text -P gnatprove.gpr --quiet
+	@gnatsas report text -P gnatprove.gpr --quiet --debug
 	@gnatsas report code-climate -P gnatprove.gpr --quiet -o obj/gnatsas/gnatprove.json
 
 clean:
