@@ -27,7 +27,6 @@ with Ada.Strings;                   use Ada.Strings;
 with Ada.Strings.Fixed;
 with Checks;                        use Checks;
 with Common_Containers;             use Common_Containers;
-with Errout;                        use Errout;
 with Eval_Fat;
 with Gnat2Why.Error_Messages;       use Gnat2Why.Error_Messages;
 with Gnat2Why.Expr;                 use Gnat2Why.Expr;

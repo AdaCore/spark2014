@@ -35,53 +35,6 @@ with VC_Kinds;                  use VC_Kinds;
 
 package Flow_Error_Messages is
 
-   --  Explain codes are used in GNATprove to provide more information on
-   --  selected error/warning messages. The subset of those codes used in
-   --  the frontend are redefined in Errout.
-
-   type Explain_Code is
-     (EC_None,
-      EC_Volatile_At_Library_Level,
-      EC_Address_In_Expression,
-      EC_Type_Early_Call_Region,
-      EC_Volatile_Non_Interfering_Context,
-      EC_Function_Output_Global,
-      EC_Function_Volatile_Input_Global,
-      EC_Variable_Input_In_Expression,
-      EC_Write_In_Elaboration,
-      EC_Required_Part_Of,
-      EC_Ownership_Moved_Object,
-      EC_SPARK_Mode_On_Not_Library_Level,
-      EC_Address_Spec_Imprecise_Warn,
-      EC_Always_Terminates_Warn,
-      EC_Output_In_Function_Global_Or_Depends,
-      EC_Out_Parameter_In_Function,
-      EC_Always_Terminates_On_Function,
-      EC_Exceptional_Cases_On_Function,
-      EC_Call_To_Function_With_Side_Effects,
-      EC_Uninitialized_Allocator);
-   for Explain_Code use
-     (EC_None                                 => 0,
-      EC_Volatile_At_Library_Level            => 1,
-      EC_Address_In_Expression                => 2,
-      EC_Type_Early_Call_Region               => 3,
-      EC_Volatile_Non_Interfering_Context     => 4,
-      EC_Function_Output_Global               => 5,
-      EC_Function_Volatile_Input_Global       => 6,
-      EC_Variable_Input_In_Expression         => 7,
-      EC_Write_In_Elaboration                 => 8,
-      EC_Required_Part_Of                     => 9,
-      EC_Ownership_Moved_Object               => 10,
-      EC_SPARK_Mode_On_Not_Library_Level      => 11,
-      EC_Address_Spec_Imprecise_Warn          => 12,
-      EC_Always_Terminates_Warn               => 13,
-      EC_Output_In_Function_Global_Or_Depends => 14,
-      EC_Out_Parameter_In_Function            => 15,
-      EC_Always_Terminates_On_Function        => 16,
-      EC_Exceptional_Cases_On_Function        => 17,
-      EC_Call_To_Function_With_Side_Effects   => 18,
-      EC_Uninitialized_Allocator              => 19);
-
    type Msg_Severity is
      (Error_Kind,
       High_Check_Kind,
@@ -166,7 +119,7 @@ package Flow_Error_Messages is
       FF1           : Flow_Id            := Null_Flow_Id;
       FF2           : Flow_Id            := Null_Flow_Id;
       Tag           : Flow_Tag_Kind      := Empty_Tag;
-      Explain_Code  : Natural            := 0;
+      Explain_Code  : Explain_Code_Kind     := EC_None;
       SRM_Ref       : String             := "";
       Tracefile     : String             := "";
       Continuations : String_Lists.List  := String_Lists.Empty)
@@ -175,11 +128,11 @@ package Flow_Error_Messages is
      and then (if Present (FF2) then Present (FF1))
      and then (if Severity in Check_Kind then Tag in Valid_Flow_Tag_Kind)
      and then (case Tag is
-                 when Empty_Tag =>
+                 when Empty_Tag         =>
                    True,
-                 when Flow_Error_Kind =>
+                 when Flow_Error_Kind   =>
                    Severity = Error_Kind,
-                 when Flow_Check_Kind =>
+                 when Flow_Check_Kind   =>
                    Severity in Check_Kind | Info_Kind,
                  when Flow_Warning_Kind =>
                    Severity = Warning_Kind);
@@ -217,7 +170,7 @@ package Flow_Error_Messages is
       FF1           : Flow_Id               := Null_Flow_Id;
       FF2           : Flow_Id               := Null_Flow_Id;
       Tag           : Flow_Tag_Kind         := Empty_Tag;
-      Explain_Code  : Natural               := 0;
+      Explain_Code  : Explain_Code_Kind     := EC_None;
       SRM_Ref       : String                := "";
       Path          : Vertex_Sets.Set       := Vertex_Sets.Empty_Set;
       Vertex        : Flow_Graphs.Vertex_Id := Flow_Graphs.Null_Vertex;
@@ -227,11 +180,11 @@ package Flow_Error_Messages is
      and then (if Present (FF2) then Present (FF1))
      and then (if Severity in Check_Kind then Tag in Valid_Flow_Tag_Kind)
      and then (case Tag is
-                 when Empty_Tag =>
+                 when Empty_Tag         =>
                    True,
-                 when Flow_Error_Kind =>
+                 when Flow_Error_Kind   =>
                    Severity = Error_Kind,
-                 when Flow_Check_Kind =>
+                 when Flow_Check_Kind   =>
                    Severity in Check_Kind | Info_Kind,
                  when Flow_Warning_Kind =>
                    Severity = Warning_Kind);

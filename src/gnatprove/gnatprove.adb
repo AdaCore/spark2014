@@ -1243,7 +1243,7 @@ begin
    Create_Dir_And_Parents (Artifact_Dir (Tree));
 
    for Cursor in Tree.Iterate
-     (Kind  =>
+     (Kind   =>
         [Project.I_Project       => True,
          Project.I_Runtime       => False,
          Project.I_Configuration => False,

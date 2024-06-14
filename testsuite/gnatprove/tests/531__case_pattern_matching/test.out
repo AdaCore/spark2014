@@ -1,0 +1,10 @@
+bound.adb:18:07: error: GNAT extension for case pattern matching is not yet supported
+bound.adb:33:07: error: GNAT extension for case pattern matching is not yet supported
+bound.adb:50:19: info: no contextual analysis of "Classify" (in assertion expression)
+bound.adb:51:19: info: no contextual analysis of "Classify" (in assertion expression)
+bound.adb:53:19: info: no contextual analysis of "Classify" (in assertion expression)
+bound.adb:54:19: info: no contextual analysis of "Classify" (in assertion expression)
+bound.adb:55:19: info: no contextual analysis of "Classify" (in assertion expression)
+bound.adb:56:19: info: no contextual analysis of "Classify" (in assertion expression)
+bound.adb:57:19: info: no contextual analysis of "Classify" (in assertion expression)
+gnatprove: error during flow analysis and proof

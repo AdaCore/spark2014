@@ -26,7 +26,7 @@ with Ada.Containers.Hashed_Maps;
 
 with Aspects;                         use Aspects;
 with Exp_Util;                        use Exp_Util;
-with Errout;                          use Errout;
+with Errout_Wrapper;                  use Errout_Wrapper;
 with Namet;                           use Namet;
 with Nlists;                          use Nlists;
 with Output;                          use Output;
@@ -1092,7 +1092,9 @@ package body Flow_Utility is
 
          Root_Node :=
            (case Interesting_Nodes (Nkind (Root_Node)) is
-               when N_Type_Conversion | N_Unchecked_Type_Conversion =>
+               when N_Type_Conversion
+                  | N_Unchecked_Type_Conversion
+               =>
                   Expression (Root_Node),
 
                when others =>
@@ -1770,10 +1772,10 @@ package body Flow_Utility is
               (Proof_Ins =>
                  To_Flow_Id_Set (Down_Project (Raw_Globals.Proof_Ins, Scope),
                                  In_View),
-               Inputs =>
+               Inputs    =>
                  To_Flow_Id_Set (Down_Project (Raw_Globals.Inputs, Scope),
                                  In_View),
-               Outputs =>
+               Outputs   =>
                  To_Flow_Id_Set (Down_Project (Raw_Globals.Outputs, Scope),
                                  Out_View));
 
@@ -2949,10 +2951,10 @@ package body Flow_Utility is
            and then not Gnat2Why_Args.Global_Gen_Mode
            and then not Is_Function_With_Side_Effects (Subprogram)
          then
-            Error_Msg_NE
-              (Msg => "side effects of function & are not modeled in SPARK",
-               N   => Callsite,
-               E   => Subprogram);
+            Error_Msg_N
+              (Msg   => "side effects of function & are not modeled in SPARK",
+               N     => Callsite,
+               Names => [Subprogram]);
          end if;
 
          return V;
@@ -6416,7 +6418,7 @@ package body Flow_Utility is
 
                   Target := First (Choices (Component_Association));
                   Merge (M, Component => Unique_Component (Entity (Target)),
-                         Input => Input);
+                         Input        => Input);
 
                   --  Multiple component updates are expanded into individual
                   --  component associations.

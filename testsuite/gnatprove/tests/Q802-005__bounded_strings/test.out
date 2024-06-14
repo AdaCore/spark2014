@@ -108,7 +108,7 @@ a-strbou.ads:2575:31: info: predicate check proved (CVC5: 2 VC; Trivial: 1 VC), 
 sb.ads:2:01: info: implicit function contract might not be available on calls from enclosing unit
 sb.ads:2:01: info: in instantiation at a-strbou.ads
 sb.ads:2:01: warning: in instantiation at a-strbou.ads
-sb.ads:2:01: warning: pragma "STREAM_CONVERT" ignored (not yet supported)
+sb.ads:2:01: warning: pragma "Stream_Convert" ignored (not yet supported)
 spark-containers-formal-hashed_maps.ads:96:06: medium: Container_Aggregates annotation might be incorrect, in instantiation at test.ads:10
 spark-containers-formal-hashed_maps.ads:96:06: medium: after a call to Insert at spark-containers-formal-hashed_maps.ads:667, in instantiation at test.ads:10
 spark-containers-formal-hashed_maps.ads:96:06: medium: when reestablishing invariant on Has_Key at spark-containers-functional-maps.ads:120, in instantiation at spark-containers-formal-hashed_maps.ads:185, in instantiation at test.ads:10

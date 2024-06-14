@@ -64,6 +64,10 @@ with SPARK_Xrefs;               use SPARK_Xrefs;
 with Stringt;                   use Stringt;
 with Uintp;                     use Uintp;
 
+-------------------------
+-- Flow_Error_Messages --
+-------------------------
+
 package body Flow_Error_Messages is
 
    At_Line_Placeholder : constant String := "###AT_LINE_PLACEHOLDER###";
@@ -481,33 +485,18 @@ package body Flow_Error_Messages is
       FF1           : Flow_Id            := Null_Flow_Id;
       FF2           : Flow_Id            := Null_Flow_Id;
       Tag           : Flow_Tag_Kind      := Empty_Tag;
-      Explain_Code  : Natural            := 0;
+      Explain_Code  : Explain_Code_Kind  := EC_None;
       SRM_Ref       : String             := "";
       Tracefile     : String             := "";
       Continuations : String_Lists.List  := String_Lists.Empty)
    is
-      function Get_Explain_Code return String
-        with Pre => Explain_Code /= 0;
-      --  If Explain_Code is not zero, return the error code to include in the
-      --  message, in the same format used by Errout procedures.
-
-      function Get_Explain_Code return String is
-         Code : String := "0000";
-         Rest : Natural := Explain_Code;
-      begin
-         for J in reverse Code'Range loop
-            Code (J) := Character'Val (Character'Pos ('0') + Rest mod 10);
-            Rest := Rest / 10;
-         end loop;
-
-         return "E" & Code;
-      end Get_Explain_Code;
 
       Msg2 : constant String :=
         Msg &
         (if CWE and Severity /= Info_Kind then CWE_Message (Tag) else "") &
         (if SRM_Ref'Length > 0 then " (SPARK RM " & SRM_Ref & ")" else "") &
-        (if Explain_Code /= 0 then " [" & Get_Explain_Code & "]" else "");
+        (if Explain_Code /= EC_None then " [" & To_String (Explain_Code) & "]"
+         else "");
 
       Attach_Node : constant Node_Id :=
         (if Instantiation_Location (Sloc (Original_Node (N))) = No_Location
@@ -633,10 +622,10 @@ package body Flow_Error_Messages is
             --  If an explain code was used in the message, output a
             --  continuation message to indicate how to get more
             --  information, using the same message as in Errout.
-            if Explain_Code /= 0 then
+            if Explain_Code /= EC_None then
                My_Conts.Append
                   ("launch ""gnatprove --explain="
-                   & Get_Explain_Code & """ for more information");
+                   & To_String (Explain_Code) & """ for more information");
             end if;
 
             --  Only display message details when outputting on one line,
@@ -699,7 +688,7 @@ package body Flow_Error_Messages is
       FF1           : Flow_Id               := Null_Flow_Id;
       FF2           : Flow_Id               := Null_Flow_Id;
       Tag           : Flow_Tag_Kind         := Empty_Tag;
-      Explain_Code  : Natural               := 0;
+      Explain_Code  : Explain_Code_Kind     := EC_None;
       SRM_Ref       : String                := "";
       Path          : Vertex_Sets.Set       := Vertex_Sets.Empty_Set;
       Vertex        : Flow_Graphs.Vertex_Id := Flow_Graphs.Null_Vertex;
@@ -756,24 +745,24 @@ package body Flow_Error_Messages is
    --  Start of processing for Error_Msg_Flow
 
    begin
-      Error_Msg_Flow (E            => FA.Spec_Entity,
-                      Msg          => Debug_Msg,
-                      Details      => Details,
-                      Explanation  => Explanation,
-                      Fix          => Fix,
-                      Severity     => Severity,
-                      N            => N,
-                      Suppressed   => Suppressed,
-                      F1           => F1,
-                      F2           => F2,
-                      F3           => F3,
-                      FF1          => FF1,
-                      FF2          => FF2,
-                      Tag          => Tag,
-                      SRM_Ref      => SRM_Ref,
-                      Explain_Code => Explain_Code,
-                      Tracefile    => Tracefile,
-                      Continuations        => Continuations);
+      Error_Msg_Flow (E             => FA.Spec_Entity,
+                      Msg           => Debug_Msg,
+                      Details       => Details,
+                      Explanation   => Explanation,
+                      Fix           => Fix,
+                      Severity      => Severity,
+                      N             => N,
+                      Suppressed    => Suppressed,
+                      F1            => F1,
+                      F2            => F2,
+                      F3            => F3,
+                      FF1           => FF1,
+                      FF2           => FF2,
+                      Tag           => Tag,
+                      SRM_Ref       => SRM_Ref,
+                      Explain_Code  => Explain_Code,
+                      Tracefile     => Tracefile,
+                      Continuations => Continuations);
 
       --  Set the Errors_Or_Warnings flag to True for this entity if we are
       --  with anything but a suppressed warning.
@@ -1153,26 +1142,26 @@ package body Flow_Error_Messages is
                         and then Severity in Check_Kind
                         then
                            Suppressed_Message'(Suppression_Kind => Check,
-                                               Msg           => Suppr,
-                                               Annot_Kind    => Info.Kind,
-                                               Justification =>
+                                               Msg              => Suppr,
+                                               Annot_Kind       => Info.Kind,
+                                               Justification    =>
                                                  To_Unbounded_String
                                                    (Justified_Message
                                                       (N, Tag)))
                         else No_Suppressed_Message),
-         Tag         => VC_Kind'Image (Tag),
-         Severity    => Severity,
-         Slc         => Slc,
-         Msg_List    => Proof_Msgs,
-         Msg_Id      => Msg_Id,
-         E           => E,
-         Cntexmp     => Pretty_Cntexmp,
-         Check_Tree  => Check_Tree,
-         VC_File     => VC_File,
-         VC_Loc      => VC_Slc,
-         How_Proved  => How_Proved,
-         Stats       => Stats,
-         Editor_Cmd  => Editor_Cmd);
+         Tag        => VC_Kind'Image (Tag),
+         Severity   => Severity,
+         Slc        => Slc,
+         Msg_List   => Proof_Msgs,
+         Msg_Id     => Msg_Id,
+         E          => E,
+         Cntexmp    => Pretty_Cntexmp,
+         Check_Tree => Check_Tree,
+         VC_File    => VC_File,
+         VC_Loc     => VC_Slc,
+         How_Proved => How_Proved,
+         Stats      => Stats,
+         Editor_Cmd => Editor_Cmd);
 
    end Error_Msg_Proof;
 
@@ -3084,14 +3073,14 @@ package body Flow_Error_Messages is
                           (if Info.Bound_Info = Low_Bound
                              and then Present (Lo_Value)
                            then
-                              Get_Larger_Type (Source => Etype (N),
-                                               Target => Typ,
+                              Get_Larger_Type (Source       => Etype (N),
+                                               Target       => Typ,
                                                Target_Value => Lo_Value)
                            elsif Info.Bound_Info = High_Bound
                              and then Present (Hi_Value)
                            then
-                              Get_Larger_Type (Source => Etype (N),
-                                               Target => Typ,
+                              Get_Larger_Type (Source       => Etype (N),
+                                               Target       => Typ,
                                                Target_Value => Hi_Value)
                            else
                               Larger_Type'(Kind => Larger_None));
@@ -3158,11 +3147,11 @@ package body Flow_Error_Messages is
                                 (case Sign_Is_Known (Right_Opnd (N)) is
                                    when Positive_Or_Null => Pos_Right,
                                    when Negative_Or_Null => Neg_Right,
-                                   when Unknown =>
+                                   when Unknown          =>
                                      (case Sign_Is_Known (Left_Opnd (N)) is
                                         when Positive_Or_Null => Pos_Left,
                                         when Negative_Or_Null => Neg_Left,
-                                        when Unknown =>
+                                        when Unknown          =>
                                           "if " & Right_Str & " >= 0 then "
                                           & Pos_Right & " else " & Neg_Right)))
 
@@ -3188,11 +3177,11 @@ package body Flow_Error_Messages is
                                 (case Sign_Is_Known (Right_Opnd (N)) is
                                    when Positive_Or_Null => Pos_Right,
                                    when Negative_Or_Null => Neg_Right,
-                                   when Unknown =>
+                                   when Unknown          =>
                                      (case Sign_Is_Known (Left_Opnd (N)) is
                                         when Positive_Or_Null => Pos_Left,
                                         when Negative_Or_Null => Neg_Left,
-                                        when Unknown =>
+                                        when Unknown          =>
                                           "if " & Right_Str & " >= 0 then "
                                           & Pos_Right & " else " & Neg_Right)))
 
@@ -3822,7 +3811,7 @@ package body Flow_Error_Messages is
                Snd_Colon_Index : constant Natural :=
                  Index (Source  => Limit_Region,
                         Pattern => ":",
-                        From => Fst_Colon_Index + 1);
+                        From    => Fst_Colon_Index + 1);
             begin
                if File = Slice (Limit_Region, 1, Fst_Colon_Index - 1)
                  and then Positive (Line) in
@@ -4172,7 +4161,7 @@ package body Flow_Error_Messages is
                         | N_Function_Call
                      => "call",
                      when N_Loop_Statement => "loop",
-                     when others => raise Program_Error);
+                     when others           => raise Program_Error);
             begin
                return Statement & " might not terminate";
             end;
@@ -4638,7 +4627,7 @@ package body Flow_Error_Messages is
                         | N_Function_Call
                      => "call",
                      when N_Loop_Statement => "loop",
-                     when others => raise Program_Error);
+                     when others           => raise Program_Error);
             begin
                return "conditional " & Statement & " termination " & Verb;
             end;

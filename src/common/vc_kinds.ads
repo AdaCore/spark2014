@@ -54,24 +54,24 @@ package VC_Kinds is
       VC_FP_Overflow_Check,
       VC_Range_Check,
       VC_Predicate_Check,
-      VC_Predicate_Check_On_Default_Value,  --  the predicate check on
-                                            --  the default value of a type,
-                                            --  to be used when a value of the
-                                            --  type is default initialized
+
+      VC_Predicate_Check_On_Default_Value,
+      --  The predicate check on the default value of a type, to be used when a
+      --  value of the type is default initialized.
+
       VC_Null_Pointer_Dereference,
-      --  This VC is to be used whenever we try to dereference an object
-      --  with access type. This check should be done on the _is_null_pointer
-      --  field of the why record corresponding to the pointer type.
+      --  This VC is to be used whenever we try to dereference an object with
+      --  access type. This check should be done on the _is_null_pointer field
+      --  of the why record corresponding to the pointer type.
 
       VC_Null_Exclusion,
       VC_Dynamic_Accessibility_Check,
       VC_Resource_Leak,
       VC_Resource_Leak_At_End_Of_Scope,
 
-      VC_Unchecked_Union_Restriction, --  Specific restrictions for types
-                                      --  with Unchecked_Union occuring in
-                                      --  equality, membership tests, and
-                                      --  type conversions
+      VC_Unchecked_Union_Restriction,
+      --  Specific restrictions for types with Unchecked_Union occuring in
+      --  equality, membership tests, and type conversions.
 
       VC_Length_Check,
       VC_Discriminant_Check,
@@ -80,10 +80,11 @@ package VC_Kinds is
       VC_Initialization_Check,
       VC_Interrupt_Reserved,
       VC_Invariant_Check,
-      VC_Invariant_Check_On_Default_Value,  --  the invariant check on
-                                            --  the default value of a type,
-                                            --  it is used once at the type
-                                            --  declaration.
+
+      VC_Invariant_Check_On_Default_Value,
+      --  The invariant check on the default value of a type, it is used once
+      --  at the type declaration.
+
       VC_Ceiling_Priority_Protocol,
       VC_Task_Termination,
 
@@ -99,11 +100,11 @@ package VC_Kinds is
       VC_Disjoint_Contract_Cases,
       VC_Complete_Contract_Cases,
       VC_Exceptional_Case,
-      VC_Loop_Invariant,             --  internal check kind, transformed
-                                     --  by gnatwhy3 into
-                                     --    VC_Loop_Invariant_Init
-                                     --  or
-                                     --    VC_Loop_Invariant_Preserv
+
+      VC_Loop_Invariant,
+      --  Internal check kind, transformed by gnatwhy3 into
+      --  VC_Loop_Invariant_Init or VC_Loop_Invariant_Preserv.
+
       VC_Loop_Invariant_Init,
       VC_Loop_Invariant_Preserv,
       VC_Loop_Variant,
@@ -112,54 +113,63 @@ package VC_Kinds is
       VC_Assert_Step,                --  Side condition for proof cut points
       VC_Assert_Premise,             --  Premise for proof with cut points
       VC_Raise,
-      VC_Feasible_Post,              --  Check that the postcondition of
-                                     --  abstract functions and
-                                     --  access-to-function types are feasible.
-      VC_Inline_Check,               --  Check that the Inline_For_Proof or
-                                     --  Logical_Equal annotation provided for
-                                     --  a function is correct.
 
-      VC_Container_Aggr_Check,       --  Check that the Container_Aggregates
-                                     --  annotation provided for a container
-                                     --  type is correct.
+      VC_Feasible_Post,
+      --  Check that the postcondition of abstract functions and
+      --  access-to-function types are feasible.
 
-      VC_Reclamation_Check,          --  Check that confirming annotations on
-                                     --  hidden types which need reclamation
-                                     --  are correct.
+      VC_Inline_Check,
+      --  Check that the Inline_For_Proof or Logical_Equal annotation provided
+      --  for a function is correct.
 
-      VC_Termination_Check,          --  Check conditional termination
+      VC_Container_Aggr_Check,
+      --  Check that the Container_Aggregates annotation provided for a
+      --  container type is correct.
 
-      VC_UC_Source,                  --  Check that this type is suitable as a
-                                    --  source for an Unchecked_Conversion
-      VC_UC_Target,                  --  Check that this type is suitable as a
-                                    --  target for an Unchecked_Conversion
+      VC_Reclamation_Check,
+      --  Check that confirming annotations on hidden types which need
+      --  reclamation are correct.
 
-      VC_UC_Same_Size,               --  Check that the two types of an
-                                    --  Unchecked_Conversion are of the same
-                                    --  size
+      VC_Termination_Check,
+      --  Check conditional termination.
 
-      VC_UC_Alignment,                --  Check that the two objects
-                                      --  in an overlay have compatible
-                                      --  alignments
+      VC_UC_Source,
+      --  Check that this type is suitable as a source for an
+      --  Unchecked_Conversion.
 
-      VC_UC_Volatile,                 --  Check that we specify the address of
-                                      --  an object only if it is volatile, or
-                                      --  the address clause is "simple"
+      VC_UC_Target,
+      --  Check that this type is suitable as a target for an
+      --  Unchecked_Conversion.
+
+      VC_UC_Same_Size,
+      --  Check that the two types of an Unchecked_Conversion are of the same
+      --  size.
+
+      VC_UC_Alignment,
+      --  Check that the two objects in an overlay have compatible alignments.
+
+      VC_UC_Volatile,
+      --  Check that we specify the address of an object only if it is
+      --  volatile, or the address clause is "simple".
 
       --  VC_LSP_Kind - Liskov Substitution Principle
 
-      VC_Weaker_Pre,                  --  pre weaker than classwide pre
-      VC_Trivial_Weaker_Pre,          --  specialization of VC_Weaker_Pre when
-                                      --  there is no classwide or inherited
-                                      --  precondition
+      VC_Weaker_Pre,
+      --  pre weaker than classwide pre
+
+      VC_Trivial_Weaker_Pre,
+      --  specialization of VC_Weaker_Pre when there is no classwide or
+      --  inherited precondition
+
       VC_Stronger_Post,               --  post stronger than classwide post
       VC_Weaker_Classwide_Pre,        --  classwide pre weaker than inherited
       VC_Stronger_Classwide_Post,     --  classwide post stronger t/ inherited
 
-      VC_Weaker_Pre_Access,           --  pre of source is weaker than pre of
-                                       --  target.
-      VC_Stronger_Post_Access,        --  post of source is stronger than post
-                                       --  of target.
+      VC_Weaker_Pre_Access,
+      --  pre of source is weaker than pre of target.
+
+      VC_Stronger_Post_Access,
+      --  post of source is stronger than post of target.
 
       --  VC_Warning_Kind - warnings
 
@@ -442,11 +452,16 @@ package VC_Kinds is
       Lim_Exceptional_Cases_Dispatch,
       Lim_Exceptional_Cases_Ownership,
       Lim_Ext_Aggregate_With_Type_Ancestor,
+      Lim_Extension_Case_Pattern_Matching,
       Lim_Generic_In_Hidden_Private,
       Lim_Generic_In_Type_Inv,
       Lim_Goto_Cross_Inv,
       Lim_Hidden_Private_Relaxed_Init,
       Lim_Img_On_Non_Scalar,
+      Lim_Inherited_Controlling_Result_From_Hidden_Part,
+      Lim_Inherited_Controlling_Result_From_SPARK_Off,
+      Lim_Inherited_Prim_From_Hidden_Part,
+      Lim_Inherited_Prim_From_SPARK_Off,
       Lim_Interpolated_String_Literal,
       Lim_Iterated_Element_Association,
       Lim_Iterator_In_Component_Assoc,
@@ -517,53 +532,53 @@ package VC_Kinds is
    function Warning_Message (Kind : Misc_Warning_Kind) return String is
      (case Kind is
         when Warn_Address_To_Access =>
-          "?call to & is assumed to return a valid access"
+          "call to & is assumed to return a valid access"
           & " designating a valid value",
         when Warn_Alias_Atomic_Vol =>
-          "?aliased objects must have the same volatility and atomic status",
+          "aliased objects must have the same volatility and atomic status",
         when Warn_Alias_Different_Volatility =>
-          "?aliased objects have different volatile properties",
+          "aliased objects have different volatile properties",
         when Warn_Attribute_Valid =>
-          "?attribute Valid is assumed to return True",
+          "attribute Valid is assumed to return True",
         when Warn_Initialization_To_Alias =>
-          "?initialization of & is assumed to have no effects on"
+          "initialization of & is assumed to have no effects on"
           & " other non-volatile objects",
         when Warn_Function_Is_Valid =>
-          "?function Is_Valid is assumed to return True",
+          "function Is_Valid is assumed to return True",
         when Warn_No_Possible_Termination =>
-          "?procedure which does not return normally nor raises an exception"
+          "procedure which does not return normally nor raises an exception"
           & " cannot always terminate",
         when Warn_Pragma_Annotate_No_Check =>
-          "?no check message justified by this pragma",
+          "no check message justified by this pragma",
         when Warn_Pragma_Annotate_Proved_Check =>
-          "?only proved check messages justified by this pragma",
+          "only proved check messages justified by this pragma",
         when Warn_Pragma_Annotate_Terminating =>
-          "?Terminating, Always_Return, and Might_Not_Return annotations are"
+          "Terminating, Always_Return, and Might_Not_Return annotations are"
           & " deprecated, ignored",
         when Warn_Pragma_External_Axiomatization =>
-          "?External Axiomatizations are not supported anymore, ignored",
+          "External Axiomatizations are not supported anymore, ignored",
         when Warn_Pragma_Ignored =>
-          "?pragma % ignored (not yet supported)",
+          "pragma & ignored (not yet supported)",
         when Warn_Pragma_Overflow_Mode =>
-          "?pragma Overflow_Mode in code is ignored",
+          "pragma Overflow_Mode in code is ignored",
         when Warn_Precondition_Statically_False =>
-          "?precondition is statically False",
+          "precondition is statically False",
         when Warn_Unreferenced_Function =>
-          "?analyzing unreferenced function &",
+          "analyzing unreferenced function &",
         when Warn_Unreferenced_Procedure =>
-          "?analyzing unreferenced procedure &",
+          "analyzing unreferenced procedure &",
         when Warn_Useless_Relaxed_Init_Fun =>
-          "?the result of & cannot be partially initialized",
+          "the result of & cannot be partially initialized",
         when Warn_Useless_Relaxed_Init_Obj =>
-          "?& cannot be partially initialized",
+          "& cannot be partially initialized",
         when Warn_Variant_Not_Recursive =>
-          "?no recursive call visible",
+          "no recursive call visible",
 
         --  Warnings guaranteed to be issued
         when Warn_Assumed_Always_Terminates =>
-          "?no Always_Terminates aspect available for &",
+          "no Always_Terminates aspect available for &",
         when Warn_Assumed_Global_Null =>
-          "?no Global contract available for &",
+          "no Global contract available for &",
         --  The warning message is customized depending on the assumptions that
         --  need to be checked.
         when Warn_Imprecisely_Supported_Address =>
@@ -571,11 +586,11 @@ package VC_Kinds is
 
         --  Warnings only issued when using switch --pedantic
         when Warn_Image_Attribute_Length =>
-          "?attribute % has an implementation-defined length",
+          "attribute & has an implementation-defined length",
         when Warn_Operator_Reassociation =>
-          "?possible reassociation due to missing parentheses",
+          "possible reassociation due to missing parentheses",
         when Warn_Representation_Attribute_Value =>
-          "?attribute % has an implementation-defined value"
+          "attribute & has an implementation-defined value"
      );
 
    function Unsupported_Message
@@ -640,6 +655,8 @@ package VC_Kinds is
           & "passed by reference",
          when Lim_Ext_Aggregate_With_Type_Ancestor =>
            "extension aggregate with subtype ancestor part",
+         when Lim_Extension_Case_Pattern_Matching =>
+           "'G'N'A'T extension for case pattern matching",
          when Lim_Iterated_Element_Association =>
            "iterated element association",
          when Lim_Multidim_Iterator =>
@@ -681,8 +698,20 @@ package VC_Kinds is
            "non-static attribute """ & Standard_Ada_Case (Name) & """",
          when Lim_Img_On_Non_Scalar =>
            "attribute """ & Standard_Ada_Case (Name) & """ on non-scalar type",
+         when Lim_Inherited_Controlling_Result_From_Hidden_Part =>
+           "tagged type with inherited primitive subprograms with controlling"
+           & " result and hidden private extension",
+         when Lim_Inherited_Controlling_Result_From_SPARK_Off =>
+           "tagged type with inherited primitive subprograms with controlling"
+           & " result and private extension outside SPARK",
+         when Lim_Inherited_Prim_From_Hidden_Part =>
+           "tagged type with primitive subprograms inherited from a type"
+           & " declared in a hidden private part",
+         when Lim_Inherited_Prim_From_SPARK_Off =>
+           "tagged type with primitive subprograms inherited from a type"
+           & " declared in a private part with SPARK_Mode Off",
          when Lim_Interpolated_String_Literal =>
-           "interpolated string literal",
+           "'G'N'A'T extension for interpolated string literal",
          when Lim_Unknown_Alignment =>
            "unknown value of object alignment",
          when Lim_Op_Fixed_Float =>
@@ -784,6 +813,58 @@ package VC_Kinds is
             "hidden private type containing only subcomponents whose type is"
           & " annotated with Relaxed_Initialization"
      );
+
+   --  Explain codes are used in GNATprove to provide more information on
+   --  selected error/warning messages. The subset of those codes used in
+   --  the frontend are redefined in Errout.
+
+   type Explain_Code_Kind is
+     (EC_None,
+      EC_Volatile_At_Library_Level,
+      EC_Address_In_Expression,
+      EC_Type_Early_Call_Region,
+      EC_Volatile_Non_Interfering_Context,
+      EC_Function_Output_Global,
+      EC_Function_Volatile_Input_Global,
+      EC_Variable_Input_In_Expression,
+      EC_Write_In_Elaboration,
+      EC_Required_Part_Of,
+      EC_Ownership_Moved_Object,
+      EC_SPARK_Mode_On_Not_Library_Level,
+      EC_Address_Spec_Imprecise_Warn,
+      EC_Always_Terminates_Warn,
+      EC_Output_In_Function_Global_Or_Depends,
+      EC_Out_Parameter_In_Function,
+      EC_Always_Terminates_On_Function,
+      EC_Exceptional_Cases_On_Function,
+      EC_Call_To_Function_With_Side_Effects,
+      EC_Uninitialized_Allocator);
+   for Explain_Code_Kind use
+     (EC_None                                 => 0,
+      EC_Volatile_At_Library_Level            => 1,
+      EC_Address_In_Expression                => 2,
+      EC_Type_Early_Call_Region               => 3,
+      EC_Volatile_Non_Interfering_Context     => 4,
+      EC_Function_Output_Global               => 5,
+      EC_Function_Volatile_Input_Global       => 6,
+      EC_Variable_Input_In_Expression         => 7,
+      EC_Write_In_Elaboration                 => 8,
+      EC_Required_Part_Of                     => 9,
+      EC_Ownership_Moved_Object               => 10,
+      EC_SPARK_Mode_On_Not_Library_Level      => 11,
+      EC_Address_Spec_Imprecise_Warn          => 12,
+      EC_Always_Terminates_Warn               => 13,
+      EC_Output_In_Function_Global_Or_Depends => 14,
+      EC_Out_Parameter_In_Function            => 15,
+      EC_Always_Terminates_On_Function        => 16,
+      EC_Exceptional_Cases_On_Function        => 17,
+      EC_Call_To_Function_With_Side_Effects   => 18,
+      EC_Uninitialized_Allocator              => 19);
+
+   function To_String (Code : Explain_Code_Kind) return String
+     with Pre => Code /= EC_None;
+   --  Return the error code to include in the message, in the same format used
+   --  by Errout procedures.
 
    function CWE_ID (Kind : VC_Kind) return String;
    function CWE_ID (Kind : Valid_Flow_Tag_Kind) return String;

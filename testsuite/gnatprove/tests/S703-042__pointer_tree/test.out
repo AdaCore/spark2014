@@ -1,4 +1,5 @@
 binary_search_trees.adb:29:07: info: initialization of "Node" proved
+binary_search_trees.adb:31:17: error: launch "gnatprove --explain=E0010" for more information
 binary_search_trees.adb:31:17: error: object was moved at line 43 [E0010]
 binary_search_trees.adb:31:17: error: return from "Insert_Node" with moved value for "Node"
 binary_search_trees.adb:33:11: info: data dependencies proved

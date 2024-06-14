@@ -32,8 +32,9 @@ with Aspects;                      use Aspects;
 with Checked_Types;                use Checked_Types;
 with Common_Containers;
 with Debug;
-with Errout;                       use Errout;
+with Errout;
 with Erroutc;
+with Errout_Wrapper;               use Errout_Wrapper;
 with Flow_Refinement;              use Flow_Refinement;
 with Flow_Types;                   use Flow_Types;
 with Flow_Utility;                 use Flow_Utility;
@@ -569,14 +570,21 @@ package body SPARK_Definition.Annotate is
    --  been provided. Also fill the Aggregate_Annotations map to add function
    --  entities which do not take the container as a parameter.
 
-   procedure Error_Msg_N_If (Msg : String; N : Node_Or_Entity_Id);
+   procedure Error_Msg_N_If
+     (Msg   : String;
+      N     : Node_Or_Entity_Id;
+      Names : Node_Lists.List := Node_Lists.Empty;
+      Kind  : Msg_Kind := MK_Error;
+      Continuations : Message_Lists.List := Message_Lists.Empty);
    --  Wrapper for Error_Msg_N that conditionally emit message depending
    --  on phase.
 
    procedure Error_Msg_NE_If
      (Msg : String;
       N   : Node_Or_Entity_Id;
-      E   : Node_Or_Entity_Id);
+      E   : Node_Or_Entity_Id;
+      Kind  : Msg_Kind := MK_Error;
+      Continuations : Message_Lists.List := Message_Lists.Empty);
    --  Wrapper for Error_Msg_NE that conditionally emit message depending
    --  on phase.
 
@@ -1196,10 +1204,10 @@ package body SPARK_Definition.Annotate is
                         Error_Msg_NE_If
                           ("""Capacity"" function for & shall have no "
                            & "parameters",
-                           Ent, Cont_Ty);
-                        Error_Msg_NE_If
-                          ("\& has no parameters",
-                           Ent, Annot.Empty_Function);
+                           Ent, Cont_Ty,
+                           Continuations =>
+                             [Create ("& has no parameters",
+                                      Names => [Annot.Empty_Function])]);
                         return;
 
                      elsif Number_Formals (Ent) /= 1 then
@@ -1986,13 +1994,15 @@ package body SPARK_Definition.Annotate is
 
       if not Has_Higher_Order_Specialization_Annotation (Lemma) then
          Error_Msg_N_If
-           ("?automatically instantiated lemma is not annotated with"
+           ("automatically instantiated lemma is not annotated with"
             & " Higher_Order_Specialization",
-            Lemma);
-         Error_Msg_NE_If
-           ("\it will not be automatically instantiated on specializations"
-            & " of &",
-            Lemma, Fun);
+            Lemma,
+            Kind => MK_Warning,
+            Continuations =>
+              [Create
+                   ("it will not be automatically instantiated on"
+                    & " specializations of &",
+                    Names => [Fun])]);
          return;
       end if;
 
@@ -2057,13 +2067,16 @@ package body SPARK_Definition.Annotate is
 
                   elsif not Totally_Specialized_Call then
                      Error_Msg_NE_If
-                       ("?automatically instantiated lemma contains calls to "
+                       ("automatically instantiated lemma contains calls to "
                         & "& which cannot be arbitrarily specialized",
-                        Lemma, Fun);
-                     Error_Msg_NE_If
-                       ("\it will not be automatically instantiated on"
-                        & " specializations of &",
-                        Lemma, Fun);
+                        Lemma,
+                        Fun,
+                        Kind => MK_Warning,
+                        Continuations =>
+                          [Create
+                             ("it will not be automatically instantiated on"
+                              & " specializations of &",
+                              Names => [Fun])]);
                      Violation := True;
                      return Abandon;
 
@@ -2085,14 +2098,16 @@ package body SPARK_Definition.Annotate is
 
                   else
                      Error_Msg_NE_If
-                       ("?automatically instantiated lemma contains several "
+                       ("automatically instantiated lemma contains several "
                         & "calls to & with different specializations",
-                        Lemma, Fun);
-                     Error_Msg_NE_If
-                       ("\it will not be automatically instantiated on"
-                        & " specializations of &",
-                        Lemma, Fun);
-
+                        Lemma,
+                        Fun,
+                        Kind => MK_Warning,
+                        Continuations =>
+                          [Create
+                            ("it will not be automatically instantiated on"
+                             & " specializations of &",
+                             Names => [Fun])]);
                      Violation := True;
                      return Abandon;
                   end if;
@@ -2171,13 +2186,16 @@ package body SPARK_Definition.Annotate is
 
          elsif Spec_Params.Is_Empty then
             Error_Msg_NE_If
-              ("?automatically instantiated lemma does not contain any "
+              ("automatically instantiated lemma does not contain any "
                & "specializable calls to &",
-               Lemma, Fun);
-            Error_Msg_NE_If
-              ("\it will not be automatically instantiated on"
-               & " specializations of &",
-               Lemma, Fun);
+               Lemma,
+               Fun,
+               Kind => MK_Warning,
+               Continuations =>
+                 [Create
+                    ("it will not be automatically instantiated on"
+                     & " specializations of &",
+                     Names => [Fun])]);
             return;
          end if;
 
@@ -4249,7 +4267,11 @@ package body SPARK_Definition.Annotate is
          Kind : constant String :=
            (if No (Extra_Exp) then ""
             else To_Lower (To_String (Strval (Extra_Exp))));
-
+         Needs_Reclamation_Cont : constant Message :=
+           Create
+             ("consider annotating it with a pragma Annotate "
+              & "('G'N'A'Tprove, Ownership,"
+              & " ""Needs_Reclamation"", ...)");
       begin
          if Ekind (Ent) in Type_Kind then
 
@@ -4456,23 +4478,16 @@ package body SPARK_Definition.Annotate is
                        ("the type of the first parameter of a function "
                         & "annotated with Ownership must be annotated with"
                         & " Ownership",
-                        Ent);
-                     Error_Msg_N_If
-                       ("\consider annotating it with a pragma Annotate "
-                        & "('G'N'A'Tprove, Ownership, ""Needs_Reclamation"""
-                        & ", ...)",
-                        Ent);
+                        Ent,
+                        Continuations => [Needs_Reclamation_Cont]);
 
                   elsif not Ownership_Annotations (Typ).Needs_Reclamation then
                      Error_Msg_N_If
                        ("the type of the first parameter of a function "
                         & "annotated with Ownership shall need reclamation",
-                        Ent);
-                     Error_Msg_N_If
-                       ("\consider annotating it with a pragma Annotate "
-                        & "('G'N'A'Tprove, Ownership, ""Needs_Reclamation"""
-                        & ", ...)",
-                        Ent);
+                        Ent,
+                        Continuations =>
+                          [Needs_Reclamation_Cont]);
 
                   elsif Present
                     (Ownership_Annotations (Typ).Reclamation_Entity)
@@ -4481,10 +4496,13 @@ package body SPARK_Definition.Annotate is
                        ("a single ownership function or constant shall be"
                         & " supplied for a given type annotated with"
                         & " Ownership",
-                        Ent);
-                     Error_Msg_NE_If
-                       ("\& conflicts with the current annotation",
-                        Ent, Ownership_Annotations (Typ).Reclamation_Entity);
+                        Ent,
+                        Continuations =>
+                          [Create
+                               ("& conflicts with the current annotation",
+                                Names =>
+                                  [Ownership_Annotations (Typ).
+                                       Reclamation_Entity])]);
 
                   elsif List_Containing (Parent (P_Typ)) /=
                     List_Containing (Prag)
@@ -4562,30 +4580,22 @@ package body SPARK_Definition.Annotate is
                      Error_Msg_N_If
                        ("the type of a constant annotated with Ownership must"
                         & " be annotated with Ownership",
-                        Ent);
-                     Error_Msg_N_If
-                       ("\consider annotating it with a pragma Annotate "
-                        & "('G'N'A'Tprove, Ownership, ""Needs_Reclamation"""
-                        & ", ...)",
-                        Ent);
+                        Ent,
+                        Continuations => [Needs_Reclamation_Cont]);
 
                   elsif not Ownership_Annotations (Typ).Needs_Reclamation then
                      Error_Msg_N_If
                        ("the type of a constant annotated with Ownership shall"
                         & " need reclamation",
-                        Ent);
-                     Error_Msg_N_If
-                       ("\consider annotating it with a pragma Annotate "
-                        & "('G'N'A'Tprove, Ownership, ""Needs_Reclamation"""
-                        & ", ...)",
-                        Ent);
+                        Ent,
+                        Continuations => [Needs_Reclamation_Cont]);
 
                   elsif Is_Tagged_Type (Typ) then
                      Error_Msg_N_If
                        ("constant annotated with Ownership cannot be used on"
-                        & " a tagged type", Ent);
-                     Error_Msg_N_If
-                       ("\use a reclamation function instead", Ent);
+                        & " a tagged type", Ent,
+                        Continuations =>
+                          [Create ("use a reclamation function instead")]);
 
                   elsif Present
                     (Ownership_Annotations (Typ).Reclamation_Entity)
@@ -4594,10 +4604,12 @@ package body SPARK_Definition.Annotate is
                        ("a single ownership function or constant shall be"
                         & " supplied for a given type annotated with"
                         & " Ownership",
-                        Ent);
-                     Error_Msg_NE_If
-                       ("\& conflicts with the current annotation",
-                        Ent, Ownership_Annotations (Typ).Reclamation_Entity);
+                        Ent,
+                        Continuations =>
+                          [Create
+                             ("& conflicts with the current annotation",
+                              Names => [Ownership_Annotations (Typ).
+                                          Reclamation_Entity])]);
 
                   elsif List_Containing (Parent (Etype (Ent))) /=
                     List_Containing (Prag)
@@ -4816,6 +4828,11 @@ package body SPARK_Definition.Annotate is
 
             declare
                Typ : constant Entity_Id := Retysp (Etype (Ent));
+               Only_Null_Cont : constant Message :=
+                 Create
+                   ("consider annotating it with a pragma Annotate "
+                    & "('G'N'A'Tprove, Predefined_Equality, ""Only_Null"""
+                    & ", ...)");
             begin
                --  pragma Annotate
                --   (GNATprove, Predefined_Equality, "Null_Value", Ent);
@@ -4832,24 +4849,16 @@ package body SPARK_Definition.Annotate is
                     ("the type of a constant annotated with"
                      & " Predefined_Equality must be annotated with "
                      & "Predefined_Equality",
-                     Ent);
-                  Error_Msg_N_If
-                    ("\consider annotating it with a pragma Annotate "
-                     & "('G'N'A'Tprove, Predefined_Equality, ""Only_Null"""
-                     & ", ...)",
-                     Ent);
+                     Ent,
+                     Continuations => [Only_Null_Cont]);
 
                elsif Predefined_Eq_Annotations (Typ).Kind /= Only_Null then
                   Error_Msg_N_If
                     ("the type of a constant annotated with"
                      & " Predefined_Equality must be annotated with "
                      & """Only_Null""",
-                     Ent);
-                  Error_Msg_N_If
-                    ("\consider annotating it with a pragma Annotate "
-                     & "('G'N'A'Tprove, Predefined_Equality, ""Only_Null"""
-                     & ", ...)",
-                     Ent);
+                     Ent,
+                     Continuations => [Only_Null_Cont]);
 
                elsif Predefined_Eq_Annotations (Typ).Null_Value = Ent then
                   Error_Msg_N_If ("constant shall not have multiple "
@@ -4859,11 +4868,12 @@ package body SPARK_Definition.Annotate is
                   Error_Msg_N_If
                     ("a single null value shall be supplied for a given type "
                      & "annotated with Predefined_Equality",
-                     Ent);
-                  Error_Msg_NE_If
-                    ("\& conflicts with the current annotation",
-                     Ent, Predefined_Eq_Annotations (Typ).Null_Value);
-
+                     Ent,
+                     Continuations =>
+                       [Create
+                            ("& conflicts with the current annotation",
+                             Names => [Predefined_Eq_Annotations (Typ).
+                                         Null_Value])]);
                elsif List_Containing (Parent (Etype (Ent))) /=
                  List_Containing (Prag)
                then
@@ -4944,10 +4954,11 @@ package body SPARK_Definition.Annotate is
                Error_Msg_NE_If
                  ("""Capacity"" function for & shall take the container "
                   & "as a parameter",
-                  Element (Position), Typ);
-               Error_Msg_NE_If
-                 ("\& takes the capacity as a parameter",
-                  Element (Position), Annot.Empty_Function);
+                  Element (Position), Typ,
+                  Continuations =>
+                    [Create
+                       ("& takes the capacity as a parameter",
+                        Names => [Annot.Empty_Function])]);
             else
                Annot.Capacity := Element (Position);
             end if;
@@ -4990,11 +5001,14 @@ package body SPARK_Definition.Annotate is
               and then Emit_Warning_Info_Messages
               and then Debug.Debug_Flag_Underscore_F
             then
-               Error_Msg_NE_If
-                 ("info: ?no ""Length"" function found for type with "
-                  & "predefined set aggregates &", Typ, Typ);
                Error_Msg_N_If
-                 ("\the cardinality of aggregates will be unknown", Typ);
+                 ("no ""Length"" function found for type with "
+                  & "predefined set aggregates &",
+                  Typ,
+                  Kind => MK_Info,
+                  Continuations =>
+                    [Create
+                         ("the cardinality of aggregates will be unknown")]);
             end if;
 
          when Maps =>
@@ -5076,11 +5090,14 @@ package body SPARK_Definition.Annotate is
               and then Emit_Warning_Info_Messages
               and then Debug.Debug_Flag_Underscore_F
             then
-               Error_Msg_NE_If
-                 ("info: ?no ""Length"" function found for type with "
-                  & "predefined map aggregates &", Typ, Typ);
                Error_Msg_N_If
-                 ("\the cardinality of aggregates will be unknown", Typ);
+                 ("no ""Length"" function found for type with "
+                  & "predefined map aggregates &",
+                  Typ,
+                  Kind => MK_Info,
+                  Continuations =>
+                    [Create
+                         ("the cardinality of aggregates will be unknown")]);
             end if;
 
          when Seqs =>
@@ -5255,12 +5272,15 @@ package body SPARK_Definition.Annotate is
                         then
                            Error_Msg_NE_If
                              ("incompatible ""Capacity"" function inherited "
-                              & "from model type &", Typ, Model_Type);
-                           Error_Msg_NE_If
-                             ((if Present (Annot.Spec_Capacity)
-                              then "\& takes the capacity as a parameter"
-                              else "\& has no parameters"),
-                              Typ, Annot.Empty_Function);
+                              & "from model type &",
+                              Typ,
+                              Model_Type,
+                              Continuations =>
+                                [Create
+                                   ((if Present (Annot.Spec_Capacity)
+                                     then "& takes the capacity as a parameter"
+                                     else "& has no parameters"),
+                                    Names => [Annot.Empty_Function])]);
                         end if;
                         exit;
                      end if;
@@ -5478,14 +5498,18 @@ package body SPARK_Definition.Annotate is
            and then not Is_In_Statically_Dead_Branch (Prag)
          then
             Error_Msg_N_If
-              (Warning_Message (Warn_Pragma_Annotate_No_Check), Prag);
+              (Warning_Message (Warn_Pragma_Annotate_No_Check),
+               Prag,
+               Kind => MK_Warning);
          end if;
       end loop;
 
       for Prag of Proved_Pragma loop
          if Instantiation_Location (Sloc (Prag)) = No_Location then
             Error_Msg_N_If
-              (Warning_Message (Warn_Pragma_Annotate_Proved_Check), Prag);
+              (Warning_Message (Warn_Pragma_Annotate_Proved_Check),
+               Prag,
+               Kind => MK_Warning);
          end if;
       end loop;
    end Generate_Useless_Pragma_Annotate_Warnings;
@@ -6126,8 +6150,8 @@ package body SPARK_Definition.Annotate is
             end;
          end if;
       else
-         Left_Sloc := First_Sloc (Range_Node);
-         Right_Sloc := First_Sloc (Prgma);
+         Left_Sloc := Errout.First_Sloc (Range_Node);
+         Right_Sloc := Errout.First_Sloc (Prgma);
       end if;
       Insert_Annotate_Range
         (Prgma, Kind, Pattern, Reason, Left_Sloc, Right_Sloc);
@@ -6288,12 +6312,13 @@ package body SPARK_Definition.Annotate is
               and then Emit_Warning_Info_Messages
               and then Debug.Debug_Flag_Underscore_F
             then
-               Error_Msg_NE
-                 ("info: ?no reclamation function nor reclaimed value found "
-                  & "for type with ownership &", E, E);
                Error_Msg_N
-                 ("\checks for ressource or memory reclamation will be"
-                  & " unprovable", E);
+                 ("no reclamation function nor reclaimed value found "
+                  & "for type with ownership &", E,
+                  Kind => MK_Info,
+                  Continuations =>
+                    ["checks for ressource or memory reclamation will be"
+                     & " unprovable"]);
             end if;
          end;
       end if;
@@ -6332,15 +6357,14 @@ package body SPARK_Definition.Annotate is
               and then Emit_Warning_Info_Messages
               and then Debug.Debug_Flag_Underscore_F
             then
-               Error_Msg_NE
-                 ("info: ?no null value found for type with predefined "
-                  & "equality &",
-                  E, E);
                Error_Msg_N
-                 ("\consider annotating a constant with a pragma Annotate "
-                  & "('G'N'A'Tprove, Predefined_Equality, ""Null_Value"""
-                  & ", ...)",
-                  E);
+                 ("no null value found for type with predefined equality &",
+                  E,
+                  Kind => MK_Info,
+                  Continuations =>
+                    ["consider annotating a constant with a pragma Annotate "
+                     & "('G'N'A'Tprove, Predefined_Equality, ""Null_Value"""
+                     & ", ...)"]);
             end if;
          end;
       end if;
@@ -6660,38 +6684,47 @@ package body SPARK_Definition.Annotate is
       --  Check the name and number of arguments
 
       if Name = "external_axiomatization" then
-         Error_Msg_N_If (Warning_Message (Warn_Pragma_External_Axiomatization),
-                      Prag);
+         Error_Msg_N_If
+           (Warning_Message (Warn_Pragma_External_Axiomatization),
+            Prag,
+            Kind => MK_Warning);
          return;
 
       elsif Name in "always_return" | "terminating" | "might_not_return" then
-         Error_Msg_N_If
-           (Warning_Message (Warn_Pragma_Annotate_Terminating), Prag);
-         if Present (Arg3_Exp)
-           and then Nkind (Arg3_Exp) in N_Has_Entity
-           and then Ekind (Entity (Arg3_Exp)) = E_Function
-         then
-            Error_Msg_N_If
-              ("\\terminating annotation is implicit on functions", Prag);
-         else
-            declare
-               Deprecated : constant String :=
-                 (if From_Aspect
-                  then "`with Annotate '='> (GNATprove, " & Name & ")`"
-                  else "`pragma Annotate (GNATprove, " & Name & ", ...)`");
-               New_Syntax : constant String :=
-                 (if Name in "always_return" | "terminating"
-                  then "`with Always_Terminates`"
-                  else "`with Always_Terminates '='> False` or use an" &
-                    " exceptional contract") &
+         declare
+            Conts : Message_Lists.List;
+         begin
+            if Present (Arg3_Exp)
+              and then Nkind (Arg3_Exp) in N_Has_Entity
+              and then Ekind (Entity (Arg3_Exp)) = E_Function
+            then
+               Conts.Append
+                 (Create ("terminating annotation is implicit on functions"));
+            else
+               declare
+                  Deprecated : constant String :=
+                    (if From_Aspect
+                     then "`with Annotate '='> (GNATprove, " & Name & ")`"
+                     else "`pragma Annotate (GNATprove, " & Name & ", ...)`");
+                  New_Syntax : constant String :=
+                    (if Name in "always_return" | "terminating"
+                     then "`with Always_Terminates`"
+                     else "`with Always_Terminates '='> False` or use an" &
+                       " exceptional contract") &
                   (if not From_Aspect
                    then " on the corresponding entity"
                    else "");
-            begin
-               Error_Msg_N_If
-                 ("\\replace " & Deprecated & " by " & New_Syntax, Prag);
-            end;
-         end if;
+               begin
+                  Conts.Append
+                    (Create ("replace " & Deprecated & " by " & New_Syntax));
+               end;
+            end if;
+            Error_Msg_N_If
+              (Warning_Message (Warn_Pragma_Annotate_Terminating),
+               Prag,
+               Kind => MK_Warning,
+               Continuations => Conts);
+         end;
          return;
 
       elsif Name = "at_end_borrow"
@@ -6937,10 +6970,18 @@ package body SPARK_Definition.Annotate is
    -- Error_Msg_N_If --
    --------------------
 
-   procedure Error_Msg_N_If (Msg : String; N : Node_Or_Entity_Id) is
+   procedure Error_Msg_N_If
+     (Msg   : String;
+      N     : Node_Or_Entity_Id;
+      Names : Node_Lists.List := Node_Lists.Empty;
+      Kind  : Msg_Kind := MK_Error;
+      Continuations : Message_Lists.List := Message_Lists.Empty) is
    begin
       if Emit_Messages then
-         Error_Msg_N (Msg, N);
+         Error_Msg_N (Errout_Wrapper.Create (Msg, Names => Names),
+                      N,
+                      Kind => Kind,
+                      Continuations => Continuations);
       end if;
    end Error_Msg_N_If;
 
@@ -6951,12 +6992,15 @@ package body SPARK_Definition.Annotate is
    procedure Error_Msg_NE_If
      (Msg : String;
       N   : Node_Or_Entity_Id;
-      E   : Node_Or_Entity_Id)
-   is
+      E   : Node_Or_Entity_Id;
+      Kind  : Msg_Kind := MK_Error;
+      Continuations : Message_Lists.List := Message_Lists.Empty) is
    begin
-      if Emit_Messages then
-         Error_Msg_NE (Msg, N, E);
-      end if;
+      Error_Msg_N_If (Msg,
+                      N,
+                      Names => [E],
+                      Kind => Kind,
+                      Continuations => Continuations);
    end Error_Msg_NE_If;
 
    ----------------------------------------------

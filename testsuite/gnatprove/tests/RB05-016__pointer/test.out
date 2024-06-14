@@ -1,4 +1,5 @@
 bad_pointer.adb:11:21: error: dereference from "X" is not readable
+bad_pointer.adb:11:21: error: launch "gnatprove --explain=E0010" for more information
 bad_pointer.adb:11:21: error: object was moved at line 6 [E0010]
 bad_pointer.adb:18:09: error: object was observed at line 15
 bad_pointer.adb:36:24: error: object was borrowed at line 32

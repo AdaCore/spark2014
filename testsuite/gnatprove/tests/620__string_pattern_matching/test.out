@@ -1,0 +1,2 @@
+reproducer.adb:6:05: error: GNAT extension for case pattern matching is not yet supported
+gnatprove: error during flow analysis and proof

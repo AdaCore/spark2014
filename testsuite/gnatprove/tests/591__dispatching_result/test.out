@@ -1,4 +1,11 @@
-test.adb:6:27: error: "Create" is not allowed in SPARK (due to entity declared with SPARK_Mode Off)
-test.adb:6:27: error: separate subprogram declaration from subprogram body to allow calling it from SPARK code
-test.adb:6:27: error: violation of aspect SPARK_Mode at line 4
+h.ads:6:09: error: consider overriding the following primitive subprogram: "Create"
+h.ads:6:09: error: consider overriding the following primitive subprogram: "Create"
+h.ads:6:09: error: tagged type with inherited primitive subprograms with controlling result and private extension outside SPARK is not yet supported
+h.ads:6:09: error: tagged type with inherited primitive subprograms with controlling result and private extension outside SPARK is not yet supported
+h_3.ads:6:09: error: consider overriding the following primitive subprogram: "Create"
+h_3.ads:6:09: error: consider overriding the following primitive subprogram: "Create"
+h_3.ads:6:09: error: tagged type with inherited primitive subprograms with controlling result and private extension outside SPARK is not yet supported
+h_3.ads:6:09: error: tagged type with inherited primitive subprograms with controlling result and private extension outside SPARK is not yet supported
+h_4.ads:8:09: error: consider overriding the following primitive subprogram: "Create"
+h_4.ads:8:09: error: tagged type with inherited primitive subprograms with controlling result and private extension outside SPARK is not yet supported
 gnatprove: error during flow analysis and proof

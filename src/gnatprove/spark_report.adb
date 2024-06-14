@@ -655,9 +655,9 @@ procedure SPARK_Report is
                               M : Prover_Stat_Maps.Map;
                            begin
                               M.Insert ("Trivial",
-                                        Prover_Stat'(Count => 1,
+                                        Prover_Stat'(Count     => 1,
                                                      Max_Steps => 1,
-                                                     Max_Time => 0.0));
+                                                     Max_Time  => 0.0));
                               Merge_Stat_Maps
                                 (Summary (Category).Provers.Provers, M);
                               Increment (Summary (Category).Provers.Total);

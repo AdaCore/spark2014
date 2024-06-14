@@ -550,7 +550,7 @@ package body VC_Kinds is
         when Warn_Function_Is_Valid =>
           "function Is_Valid is assumed to return True",
         when Warn_No_Possible_Termination =>
-          "?procedure which does not return normally nor raises an exception"
+          "procedure which does not return normally nor raises an exception"
           & " cannot always terminate",
         when Warn_Pragma_Annotate_No_Check =>
           "no check message justified by this pragma",
@@ -700,6 +700,8 @@ package body VC_Kinds is
           & "passed by reference",
          when Lim_Ext_Aggregate_With_Type_Ancestor =>
            "an extension aggregate whose ancestor part is a subtype mark",
+         when Lim_Extension_Case_Pattern_Matching =>
+           "GNAT extension for case pattern matching",
          when Lim_Generic_In_Hidden_Private =>
             "instance of a generic unit declared in a package whose private "
           & "part is hidden outside of this package",
@@ -717,8 +719,22 @@ package body VC_Kinds is
          when Lim_Img_On_Non_Scalar =>
            "a reference to the ""Image"" or ""Img"" attribute on a type or "
           & "an object of a type which is not a scalar type",
+         when Lim_Inherited_Controlling_Result_From_Hidden_Part =>
+            "a subprogram with dispatching result which is inherited,"
+          & " not overriden, by a private extension completed in a hidden"
+          & " private part",
+         when Lim_Inherited_Controlling_Result_From_SPARK_Off =>
+            "a subprogram with dispatching result which is inherited,"
+          & " not overriden, by a private extension completed in a private"
+          & " part with SPARK_Mode Off",
+         when Lim_Inherited_Prim_From_Hidden_Part =>
+            "a subprogram which is inherited, not overriden, from an ancestor"
+          & " declared in a hidden private part",
+         when Lim_Inherited_Prim_From_SPARK_Off =>
+            "a subprogram which is inherited, not overriden, from an ancestor"
+          & " declared in the private part of a package with SPARK_Mode Off",
          when Lim_Interpolated_String_Literal =>
-           "interpolated string literals",
+           "GNAT extension for interpolated string literals",
          when Lim_Iterated_Element_Association => "container aggregates",
          when Lim_Iterator_In_Component_Assoc =>
            "an iterated component associations with an iterator specification"
@@ -1734,6 +1750,18 @@ package body VC_Kinds is
                  when PC_Prover   => "Automatic provers",
                  when PC_Trivial  => "Trivial",
                  when PC_Flow     => "Flow analysis");
+   end To_String;
+
+   function To_String (Code : Explain_Code_Kind) return String is
+      Result : String := "0000";
+      Rest : Natural := Explain_Code_Kind'Enum_Rep (Code);
+   begin
+      for J in reverse Result'Range loop
+         Result (J) := Character'Val (Character'Pos ('0') + Rest mod 10);
+         Rest := Rest / 10;
+      end loop;
+
+      return 'E' & Result;
    end To_String;
 
    --------------

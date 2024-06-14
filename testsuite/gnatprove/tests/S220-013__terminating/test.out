@@ -1,2 +1,1 @@
 repro.ads:5:14: info: aspect Always_Terminates on "Foo" has been proved, subprogram will terminate
-repro.ads:5:14: warning: subprogram "Foo" has no effect

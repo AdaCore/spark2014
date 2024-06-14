@@ -42,6 +42,7 @@ with GPR2.Build.Source;
 with GPR2.Build.View_Db;
 with GPR2.KB;
 with GPR2.Log;
+with GPR2.Message;
 with GPR2.Options;
 with GPR2.Path_Name;
 with GPR2.Project.Attribute;
@@ -146,7 +147,11 @@ package body Configuration is
 
    procedure Check_File_Part_Of_Project (View : Project.View.Object;
                                          Fn   : String);
-   --  raise an error if the file FN is not part of the project
+   --  Raise an error if the file FN is not part of the project
+
+   procedure Check_Duplicate_Bodies (Msgs : GPR2.Log.Object);
+   --  Raise an error if the log object contains a message about duplicate
+   --  bodies.
 
    function Is_Coq_Prover (FS : File_Specific) return Boolean;
    --  @return True iff one alternate prover is "coq"
@@ -229,6 +234,23 @@ package body Configuration is
          return Tree.Root_Project.Dir_Name.Virtual_File / "gnatprove";
       end if;
    end Artifact_Dir;
+
+   ----------------------------
+   -- Check_Duplicate_Bodies --
+   ----------------------------
+
+   procedure Check_Duplicate_Bodies (Msgs : GPR2.Log.Object) is
+      use type GPR2.Message.Level_Value;
+   begin
+      for Msg of Msgs loop
+         if Msg.Level = GPR2.Message.Warning
+           and then Contains (Msg.Message, "duplicated body")
+         then
+            Abort_Msg ("Stopping analysis due to duplicate bodies",
+                       With_Help => False);
+         end if;
+      end loop;
+   end Check_Duplicate_Bodies;
 
    --------------------------------
    -- Check_File_Part_Of_Project --
@@ -348,7 +370,7 @@ package body Configuration is
 
    begin
       for Cursor in Tree.Iterate
-        (Kind  =>
+        (Kind   =>
            [Project.I_Project       => True,
             Project.I_Runtime       => False,
             Project.I_Configuration => False,
@@ -750,7 +772,7 @@ package body Configuration is
          Define_Switch
            (Config, CL_Switches.J'Access,
             Long_Switch => "-j:",
-            Initial => 1);
+            Initial     => 1);
          Define_Switch
            (Config,
             CL_Switches.K'Access,
@@ -870,7 +892,7 @@ package body Configuration is
          Define_Switch
            (Config, CL_Switches.Level'Access,
             Long_Switch => "--level=",
-            Initial => Invalid_Level);
+            Initial     => Invalid_Level);
          Define_Switch
            (Config,
             CL_Switches.Memlimit'Access,
@@ -916,11 +938,11 @@ package body Configuration is
          Define_Switch
            (Config, CL_Switches.Steps'Access,
             Long_Switch => "--steps=",
-            Initial => Invalid_Steps);
+            Initial     => Invalid_Steps);
          Define_Switch
            (Config, CL_Switches.CE_Steps'Access,
             Long_Switch => "--ce-steps=",
-            Initial => Invalid_Steps);
+            Initial     => Invalid_Steps);
          Define_Switch
            (Config,
             CL_Switches.Timeout'Access,
@@ -1533,6 +1555,7 @@ package body Configuration is
                begin
                   Tree.Update_Sources (Messages => Msgs);
                   GPR2.Log.Output_Messages (Msgs, Information => False);
+                  Check_Duplicate_Bodies (Msgs);
                end;
             end if;
          end;

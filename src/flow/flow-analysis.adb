@@ -117,6 +117,10 @@ package body Flow.Analysis is
                    Initial_Value | Initial_Grouping;
    --  Returns the vertex id which represents the initial value for F
 
+   function Is_Param_Of_Null_Procedure (E : Entity_Id) return Boolean
+   with Pre => Nkind (E) in N_Entity;
+   --  Returns True iff E is a parameter of a null procedure
+
    function Is_Param_Of_Null_Subp_Of_Generic (E : Entity_Id)
                                               return Boolean
    with Pre => Nkind (E) in N_Entity;
@@ -350,12 +354,16 @@ package body Flow.Analysis is
       --  * raise exception, because that is a kind of effect as well
       --  * have explicit Global => null, because the lack of effects is clear
       --  * are ghost, because they often only check assertions
+      --  * null procedures
 
       if not FA.Is_Main
         and then not Is_Possibly_Nonreturning_Procedure (FA.Spec_Entity)
         and then not Has_Exceptional_Contract (FA.Spec_Entity)
         and then not Has_User_Supplied_Globals (FA.Spec_Entity)
         and then not Is_Ghost_Entity (FA.Spec_Entity)
+        and then not
+          (Present (Subprogram_Body (FA.Spec_Entity))
+            and then Was_Null_Procedure (Subprogram_Body (FA.Spec_Entity)))
       then
          Error_Msg_Flow
            (FA       => FA,
@@ -718,6 +726,25 @@ package body Flow.Analysis is
       end if;
    end Is_Dummy_Call;
 
+   --------------------------------
+   -- Is_Param_Of_Null_Procedure --
+   --------------------------------
+
+   function Is_Param_Of_Null_Procedure (E : Entity_Id) return Boolean is
+   begin
+      if Is_Formal (E) then
+         declare
+            Subp : constant Entity_Id := Scope (E);
+         begin
+            return Ekind (Subp) = E_Procedure
+              and then Present (Subprogram_Body (Subp))
+              and then Was_Null_Procedure (Subprogram_Body (Subp));
+         end;
+      else
+         return False;
+      end if;
+   end Is_Param_Of_Null_Procedure;
+
    --------------------------------------
    -- Is_Param_Of_Null_Subp_Of_Generic --
    --------------------------------------
@@ -945,13 +972,14 @@ package body Flow.Analysis is
                   --   * are/belong to a concurrent object
                   --   * are formal parameters of a subprogram with null
                   --     default defined in the formal part of a generic unit
+                  --   * are formal parameters of a null procedure
                   --   * are instantiations of a generic procedure's 'IN'
                   --     parameter with an access type.
                   if Has_Pragma_Un (Var)
                     or else
                       Is_Or_Belongs_To_Concurrent_Object (F_Final)
-                    or else
-                      Is_Param_Of_Null_Subp_Of_Generic (Var)
+                    or else Is_Param_Of_Null_Subp_Of_Generic (Var)
+                    or else Is_Param_Of_Null_Procedure (Var)
                     or else
                       (Is_In_Access_Parameter
                        and then Is_Generic_Actual_Type (Etype (Var)))
@@ -1301,7 +1329,8 @@ package body Flow.Analysis is
                   --  * the variable has been marked either as Unreferenced or
                   --    Unmodified or Unused
                   --  * the variable is a formal parameter of a null subprogram
-                  --    of a generic unit.
+                  --    of a generic unit
+                  --  * the variable is a formal parameter of a null procedure
                   declare
                      E     : constant Entity_Id := Get_Direct_Mapping_Id (F);
                      E_Typ : constant Entity_Id := Etype (E);
@@ -1312,6 +1341,7 @@ package body Flow.Analysis is
                        or else Has_Pragma_Un (E)
                        or else Has_Junk_Name (E)
                        or else Is_Param_Of_Null_Subp_Of_Generic (E)
+                       or else Is_Param_Of_Null_Procedure (E)
                      then
                         null;
 
@@ -2465,9 +2495,9 @@ package body Flow.Analysis is
                           (case FA.Kind is
                               when Kind_Subprogram =>
                                 " after elaboration of main program &",
-                              when Kind_Task =>
+                              when Kind_Task       =>
                                 " before start of tasks of type &",
-                              when others =>
+                              when others          =>
                                  raise Program_Error));
                   --  ??? this message should be tuned for interrupt handlers
                end if;
@@ -5793,7 +5823,7 @@ package body Flow.Analysis is
       is
          Msg : constant String :=
            (case Owning_Kind is
-               when Suspends_On =>
+               when Suspends_On      =>
                   "multiple tasks might suspend on suspension object &",
                when Unsynch_Accesses =>
                   "possible data race when accessing variable &");

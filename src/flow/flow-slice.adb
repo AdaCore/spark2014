@@ -391,7 +391,7 @@ package body Flow.Slice is
 
          function Is_Empty (E : Entity_Id) return Boolean is
            (case Ekind (E) is
-               when E_Abstract_State =>
+               when E_Abstract_State        =>
                   Has_Null_Refinement (E),
                --  ??? The intention is to check the Refined_State of the
                --  currently analysed package, but see what happens here:
@@ -406,7 +406,7 @@ package body Flow.Slice is
                when E_Constant | E_Variable =>
                   Is_Empty_Record_Type (Get_Type (E, FA.B_Scope)),
 
-               when others =>
+               when others                  =>
                   raise Program_Error);
 
          ----------------

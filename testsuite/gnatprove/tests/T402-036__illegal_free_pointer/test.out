@@ -1,3 +1,4 @@
 free_pointer.adb:9:10: error: "X" is not readable
+free_pointer.adb:9:10: error: launch "gnatprove --explain=E0010" for more information
 free_pointer.adb:9:10: error: object was moved at line 7 [E0010]
 gnatprove: error during flow analysis and proof

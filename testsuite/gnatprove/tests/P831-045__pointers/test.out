@@ -8,11 +8,14 @@ n01.adb:33:39: error: launch "gnatprove --explain=E0010" for more information
 n01.adb:33:39: error: object was moved at line 19 [E0010]
 n011.adb:21:12: error: launch "gnatprove --explain=E0010" for more information
 n011.adb:21:12: error: object was moved at line 19 [E0010]
+n02.adb:21:47: error: launch "gnatprove --explain=E0010" for more information
 n02.adb:21:47: error: object was moved at line 19 [E0010]
 n02.adb:21:47: error: part of dereference from "X" is not readable
+n02.adb:27:47: error: launch "gnatprove --explain=E0010" for more information
 n02.adb:27:47: error: object was moved at line 19 [E0010]
 n02.adb:27:47: error: part of dereference from "X" is not readable
 n04.adb:18:18: high: "var1" is not initialized
+n04.adb:20:13: error: launch "gnatprove --explain=E0010" for more information
 n04.adb:20:13: error: object was moved at line 28 [E0010]
 n04.adb:20:13: error: return from "Z_In" with moved value for "YY"
 n04.adb:24:12: high: "Z" must be a global output of "Z_In" (SPARK RM 6.1.4(18))
@@ -91,23 +94,29 @@ pointers.adb:131:07: error: violation of aspect SPARK_Mode at line 2
 pointers.adb:131:23: error: "Tmp" is not allowed in SPARK (due to access-to-constant part of an object as source of move)
 pointers.adb:131:23: error: violation of aspect SPARK_Mode at line 2
 pointers2.adb:31:16: error: "Y" is not readable
+pointers2.adb:31:16: error: launch "gnatprove --explain=E0010" for more information
 pointers2.adb:31:16: error: object was moved at line 30 [E0010]
 pointers2.adb:36:09: warning: unused assignment
 pointers2.adb:37:12: error: "Y" is not readable
+pointers2.adb:37:12: error: launch "gnatprove --explain=E0010" for more information
 pointers2.adb:37:12: error: object was moved at line 36 [E0010]
+pointers2.ads:6:14: error: launch "gnatprove --explain=E0010" for more information
 pointers2.ads:6:14: error: object was moved at pointers2.adb:6 [E0010]
 pointers2.ads:6:14: error: return from "Bad_Swap" with moved value for "Y"
 pointers2.ads:6:24: warning: unused initial value of "X"
 pointers2.ads:6:27: warning: "Y" is not modified, could be IN
+pointers2.ads:12:14: error: launch "gnatprove --explain=E0010" for more information
 pointers2.ads:12:14: error: object was moved at pointers2.adb:18 [E0010]
 pointers2.ads:12:14: error: return from "Bad_Swap_Global" with moved value for "Y"
 pointers2.ads:13:06: info: data dependencies proved
 pointers2.ads:13:28: warning: unused initial value of "X"
 pointers2.ads:13:31: warning: "Y" is not modified, could be INPUT
 pointers2.ads:16:06: info: data dependencies proved
+pointers2.ads:18:14: error: launch "gnatprove --explain=E0010" for more information
 pointers2.ads:18:14: error: object was moved at pointers2.adb:30 [E0010]
 pointers2.ads:18:14: error: return from "Bad_Borrow" with moved value for "Y"
 pointers2.ads:18:26: warning: unused initial value of "X"
+pointers2.ads:20:14: error: launch "gnatprove --explain=E0010" for more information
 pointers2.ads:20:14: error: object was moved at pointers2.adb:36 [E0010]
 pointers2.ads:20:14: error: return from "Bad_Move" with moved value for "Y"
 pointers2.ads:20:24: warning: unused initial value of "X"
