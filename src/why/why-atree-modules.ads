@@ -393,6 +393,7 @@ package Why.Atree.Modules is
       Bool_Eq : W_Identifier_Id;
       Slide   : W_Identifier_Id;
       Const   : W_Identifier_Id;
+      Slice   : W_Identifier_Id;
    end record;
 
    --  Symbols for concatenation of one-dimensional arrays. There are four
@@ -408,7 +409,6 @@ package Why.Atree.Modules is
       Module    : W_Module_Id;
       Concat    : Concat_Ids;
       Singleton : W_Identifier_Id;
-      Slice     : W_Identifier_Id;
    end record;
 
    --  Symbols which only exist for one-dimensional arrays of discrete types

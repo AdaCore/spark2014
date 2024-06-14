@@ -15,4 +15,9 @@ project Chapter07 is
 
    for Languages use ("Ada", "C");
 
+   --  Remove counterexample as they lead to a constraint_error in gnatcoll-json
+   package Prove is
+      for Proof_Switches ("Ada") use ("--counterexamples=off");
+   end Prove;
+
 end Chapter07;

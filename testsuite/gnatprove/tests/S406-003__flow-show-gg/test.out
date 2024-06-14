@@ -123,9 +123,8 @@ contents:
 {
   "contracts": [
     {
-      "file": "bar.adb",
-      "line": 8,
       "col": 4,
+      "file": "bar.adb",
       "globals": {
         "Global": {
           "Input": [
@@ -137,12 +136,12 @@ contents:
             "Bar.B"
           ]
         }
-      }
+      },
+      "line": 8
     },
     {
-      "file": "bar.adb",
-      "line": 18,
       "col": 4,
+      "file": "bar.adb",
       "globals": {
         "Global": {
           "Input": [
@@ -156,12 +155,12 @@ contents:
             "Bar.G2"
           ]
         }
-      }
+      },
+      "line": 18
     },
     {
-      "file": "bar.adb",
-      "line": 27,
       "col": 4,
+      "file": "bar.adb",
       "globals": {
         "Global": {
           "Input": [
@@ -173,12 +172,12 @@ contents:
             "Bar.G1"
           ]
         }
-      }
+      },
+      "line": 27
     },
     {
-      "file": "bar.adb",
-      "line": 29,
       "col": 4,
+      "file": "bar.adb",
       "globals": {
         "Global": {
           "In_Out": [
@@ -190,12 +189,12 @@ contents:
             "Bar.B"
           ]
         }
-      }
+      },
+      "line": 29
     },
     {
-      "file": "bar.adb",
-      "line": 39,
       "col": 4,
+      "file": "bar.adb",
       "globals": {
         "Global": {
           "Input": [
@@ -215,30 +214,27 @@ contents:
             "Bar.G2"
           ]
         }
-      }
+      },
+      "line": 39
     },
     {
-      "file": "bar.adb",
-      "line": 49,
       "col": 4,
+      "file": "bar.adb",
       "globals": {
-        "Global": {
-        },
-        "Refined_Global": {
-        }
-      }
+        "Global": {},
+        "Refined_Global": {}
+      },
+      "line": 49
     }
   ]
 }
-
 filename: gnatprove/entity_name.gg
 contents:
 {
   "contracts": [
     {
-      "file": "entity_name.ads",
-      "line": 2,
       "col": 4,
+      "file": "entity_name.ads",
       "globals": {
         "Global": {
           "Input": [
@@ -250,19 +246,18 @@ contents:
             "Entity_Name.Hidden"
           ]
         }
-      }
+      },
+      "line": 2
     }
   ]
 }
-
 filename: gnatprove/foo.gg
 contents:
 {
   "contracts": [
     {
-      "file": "foo.ads",
-      "line": 6,
       "col": 7,
+      "file": "foo.ads",
       "globals": {
         "Global": {
           "Input": [
@@ -274,12 +269,12 @@ contents:
             "Foo.Inner.X"
           ]
         }
-      }
+      },
+      "line": 6
     },
     {
-      "file": "foo.ads",
-      "line": 7,
       "col": 7,
+      "file": "foo.ads",
       "globals": {
         "Global": {
           "Input": [
@@ -293,19 +288,18 @@ contents:
             "Foo.Y"
           ]
         }
-      }
+      },
+      "line": 7
     }
   ]
 }
-
 filename: gnatprove/main.gg
 contents:
 {
   "contracts": [
     {
-      "file": "main.adb",
-      "line": 3,
       "col": 1,
+      "file": "main.adb",
       "globals": {
         "Global": {
           "Input": [
@@ -317,19 +311,18 @@ contents:
             "Entity_Name.Hidden"
           ]
         }
-      }
+      },
+      "line": 3
     }
   ]
 }
-
 filename: gnatprove/outer.gg
 contents:
 {
   "contracts": [
     {
-      "file": "outer.ads",
-      "line": 6,
       "col": 7,
+      "file": "outer.ads",
       "globals": {
         "Global": {
           "Input": [
@@ -341,12 +334,12 @@ contents:
             "Outer.Inner.X"
           ]
         }
-      }
+      },
+      "line": 6
     },
     {
-      "file": "outer.ads",
-      "line": 12,
       "col": 7,
+      "file": "outer.ads",
       "globals": {
         "Global": {
           "Input": [
@@ -360,7 +353,8 @@ contents:
             "Outer.Y"
           ]
         }
-      }
+      },
+      "line": 12
     }
   ]
 }

@@ -73,9 +73,9 @@ Ada ユニットないしは，その構成要素を考えたときに， |SPARK
 .. code-block:: ada
 
   project My_Project is
-     package Builder is
-        for Global_Configuration_Pragmas use "spark.adc";
-     end Builder;
+     package Compiler is
+        for Local_Configuration_Pragmas use "spark.adc";
+     end Compiler;
   end My_Project;
 
 ここで， ``spark.adc`` が構成ファイルであり，少なくとも次の行を含んでいるとします．
@@ -138,9 +138,9 @@ Ada ユニットないしは，その構成要素を考えたときに， |SPARK
 .. code-block:: gpr
 
   project My_Project is
-     package Builder is
-        for Global_Configuration_Pragmas use "spark.adc";
-     end Builder;
+     package Compiler is
+        for Local_Configuration_Pragmas use "spark.adc";
+     end Compiler;
 
     type Modes is ("Compile", "Analyze");
     Mode : Modes := External ("MODE", "Compile");

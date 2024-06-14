@@ -31,7 +31,7 @@ relaxed_initialization.adb:41:25: info: discriminant check proved (CVC5: 2 VC)
 relaxed_initialization.adb:41:44: info: for mutable discriminants at relaxed_initialization.adb:5
 relaxed_initialization.adb:41:44: info: initialization check proved (CVC5: 2 VC)
 relaxed_initialization.adb:41:48: info: discriminant check proved (CVC5: 2 VC)
-relaxed_initialization.adb:41:48: info: initialization check proved (CVC5: 1 VC; Z3: 1 VC)
+relaxed_initialization.adb:41:48: info: initialization check proved (Z3: 2 VC)
 relaxed_initialization.adb:46:21: info: postcondition proved (CVC5: 1 VC; Z3: 1 VC)
 relaxed_initialization.adb:47:29: info: index check proved (CVC5: 2 VC)
 relaxed_initialization.adb:48:24: info: for mutable discriminants at relaxed_initialization.adb:5
@@ -58,7 +58,6 @@ relaxed_initialization.adb:59:15: info: loop invariant preservation proved (Z3: 
 relaxed_initialization.adb:60:23: info: index check proved (CVC5: 4 VC)
 relaxed_initialization.adb:61:18: info: for mutable discriminants at relaxed_initialization.adb:5
 relaxed_initialization.adb:61:18: info: initialization check proved (CVC5: 1 VC; Z3: 1 VC)
-relaxed_initialization.adb:61:18: info: initialization check proved (CVC5: 2 VC)
 relaxed_initialization.adb:61:23: info: index check proved (CVC5: 4 VC)
 relaxed_initialization.adb:61:34: info: for mutable discriminants at relaxed_initialization.adb:5
 relaxed_initialization.adb:61:34: info: initialization check proved (CVC5: 2 VC)

@@ -80,7 +80,7 @@ formal_vectors.adb:111:34: info: pointer dereference check proved (CVC5: 2 VC), 
 formal_vectors.adb:111:42: info: range check proved (CVC5: 4 VC), in instantiation at use_formal_vectors.ads:11
 formal_vectors.adb:111:59: info: overflow check proved (CVC5: 4 VC), in instantiation at use_formal_vectors.ads:11
 formal_vectors.adb:113:13: info: loop invariant initialization proved (CVC5: 2 VC), in instantiation at use_formal_vectors.ads:11
-formal_vectors.adb:113:13: info: loop invariant preservation proved (CVC5: 2 VC), in instantiation at use_formal_vectors.ads:11
+formal_vectors.adb:113:13: info: loop invariant preservation proved (Z3: 2 VC), in instantiation at use_formal_vectors.ads:11
 formal_vectors.adb:113:32: info: overflow check proved (CVC5: 4 VC), in instantiation at use_formal_vectors.ads:11
 formal_vectors.adb:113:45: info: overflow check proved (CVC5: 4 VC), in instantiation at use_formal_vectors.ads:11
 formal_vectors.adb:113:57: info: pointer dereference check proved (CVC5: 2 VC), in instantiation at use_formal_vectors.ads:11
@@ -133,7 +133,7 @@ formal_vectors.adb:136:104: info: overflow check proved (CVC5: 4 VC), in instant
 formal_vectors.adb:136:104: info: range check proved (CVC5: 4 VC), in instantiation at use_formal_vectors.ads:11
 formal_vectors.adb:137:20: info: pointer dereference check proved (CVC5: 2 VC), in instantiation at use_formal_vectors.ads:11
 formal_vectors.adb:139:13: info: loop invariant initialization proved (CVC5: 1 VC), in instantiation at use_formal_vectors.ads:11
-formal_vectors.adb:139:13: info: loop invariant preservation proved (CVC5: 1 VC), in instantiation at use_formal_vectors.ads:11
+formal_vectors.adb:139:13: info: loop invariant preservation proved (Z3: 1 VC), in instantiation at use_formal_vectors.ads:11
 formal_vectors.adb:139:28: info: overflow check proved (CVC5: 4 VC), in instantiation at use_formal_vectors.ads:11
 formal_vectors.adb:139:37: info: overflow check proved (CVC5: 4 VC), in instantiation at use_formal_vectors.ads:11
 formal_vectors.adb:140:23: info: pointer dereference check proved (CVC5: 2 VC), in instantiation at use_formal_vectors.ads:11
@@ -155,7 +155,7 @@ formal_vectors.adb:144:17: info: pointer dereference check proved (CVC5: 1 VC), 
 formal_vectors.adb:144:17: info: predicate check proved (CVC5: 1 VC), in instantiation at use_formal_vectors.ads:11
 formal_vectors.adb:144:27: medium: array index check might fail, in instantiation at use_formal_vectors.ads:11 [reason for check: value must be a valid index into the array]
 formal_vectors.adb:146:08: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at use_formal_vectors.ads:11
-formal_vectors.adb:146:08: info: predicate check proved (CVC5: 1 VC), in instantiation at use_formal_vectors.ads:11
+formal_vectors.adb:146:08: info: predicate check proved (Z3: 1 VC), in instantiation at use_formal_vectors.ads:11
 formal_vectors.adb:146:24: info: overflow check proved (CVC5: 2 VC), in instantiation at use_formal_vectors.ads:11
 formal_vectors.adb:146:24: medium: array index check might fail, in instantiation at use_formal_vectors.ads:11 [reason for check: result of addition must be a valid index into the array]
 formal_vectors.adb:146:29: medium: resource or memory leak might occur, in instantiation at use_formal_vectors.ads:11
@@ -163,7 +163,7 @@ formal_vectors.adb:147:08: info: predicate check proved (CVC5: 1 VC), in instant
 formal_vectors.adb:147:22: info: overflow check proved (CVC5: 2 VC), in instantiation at use_formal_vectors.ads:11
 formal_vectors.adb:152:08: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at use_formal_vectors.ads:11
 formal_vectors.adb:152:08: info: predicate check proved (CVC5: 1 VC), in instantiation at use_formal_vectors.ads:11
-formal_vectors.adb:152:18: medium: array index check might fail, in instantiation at use_formal_vectors.ads:11 (e.g. when I = 1 and V = (Top => 1, Content => ?) and V.Content.all'First = 2 and V.Content.all'Last = 1) [reason for check: value must be a valid index into the array] [possible fix: add precondition (I in Positive) to subprogram at formal_vectors.ads:41]
+formal_vectors.adb:152:18: medium: array index check might fail, in instantiation at use_formal_vectors.ads:11 [reason for check: value must be a valid index into the array] [possible fix: add precondition (I in Positive) to subprogram at formal_vectors.ads:41]
 formal_vectors.adb:152:21: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at use_formal_vectors.ads:11
 formal_vectors.adb:152:25: medium: resource or memory leak might occur, in instantiation at use_formal_vectors.ads:11
 formal_vectors.adb:158:11: info: predicate check proved (CVC5: 1 VC), in instantiation at use_formal_vectors.ads:11
@@ -223,7 +223,7 @@ formal_vectors.adb:184:17: info: predicate check proved (Z3: 1 VC), in instantia
 formal_vectors.adb:184:33: info: overflow check proved (CVC5: 2 VC), in instantiation at use_formal_vectors.ads:11
 formal_vectors.adb:184:33: medium: array index check might fail, in instantiation at use_formal_vectors.ads:11 [reason for check: result of addition must be a valid index into the array]
 formal_vectors.adb:189:14: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at use_formal_vectors.ads:11
-formal_vectors.adb:189:24: medium: array index check might fail, in instantiation at use_formal_vectors.ads:11 (e.g. when I = 1 and V = (Top => 1, Content => ?) and V.Content.all'First = 2 and V.Content.all'Last = 1) [reason for check: value must be a valid index into the array] [possible fix: add precondition (I in Positive) to subprogram at formal_vectors.ads:53]
+formal_vectors.adb:189:24: medium: array index check might fail, in instantiation at use_formal_vectors.ads:11 [reason for check: value must be a valid index into the array] [possible fix: add precondition (I in Positive) to subprogram at formal_vectors.ads:53]
 formal_vectors.adb:189:27: info: pointer dereference check proved (CVC5: 1 VC), in instantiation at use_formal_vectors.ads:11
 formal_vectors.adb:195:22: info: refined post proved (CVC5: 2 VC), in instantiation at use_formal_vectors.ads:11
 formal_vectors.adb:196:43: info: precondition proved (CVC5: 2 VC), in instantiation at use_formal_vectors.ads:11
@@ -252,9 +252,9 @@ formal_vectors.ads:30:19: info: precondition proved (CVC5: 2 VC), in instantiati
 formal_vectors.ads:30:19: medium: resource or memory leak might occur, in instantiation at use_formal_vectors.ads:11 [possible explanation: call to allocating function inside an assertion leaks some resource or memory]
 formal_vectors.ads:30:31: info: range check proved (CVC5: 2 VC), in instantiation at use_formal_vectors.ads:11
 formal_vectors.ads:33:41: info: overflow check proved (CVC5: 2 VC), in instantiation at use_formal_vectors.ads:11
+formal_vectors.ads:34:15: info: postcondition proved (CVC5: 2 VC; Z3: 2 VC), in instantiation at use_formal_vectors.ads:11
 formal_vectors.ads:34:43: info: overflow check proved (CVC5: 2 VC), in instantiation at use_formal_vectors.ads:11
 formal_vectors.ads:37:19: info: precondition proved (CVC5: 3 VC), in instantiation at use_formal_vectors.ads:11
-formal_vectors.ads:37:19: medium: postcondition might fail, cannot prove Range_Shifted (Model (E)'Old, Model (V), 1, Length (E)'Old, Big (Length (V)'Old)), in instantiation at use_formal_vectors.ads:11
 formal_vectors.ads:39:71: info: overflow check proved (CVC5: 2 VC), in instantiation at use_formal_vectors.ads:11
 formal_vectors.ads:53:13: info: implicit aspect Always_Terminates on "Element" has been proved, subprogram will terminate, in instantiation at use_formal_vectors.ads:11
 formal_vectors.ads:55:14: info: postcondition proved (CVC5: 1 VC), in instantiation at use_formal_vectors.ads:11

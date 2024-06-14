@@ -468,6 +468,12 @@ package Why.Gen.Arrays is
       High   : W_Expr_Id) return W_Expr_Id;
    --  Return a call to the slice function in Why array theory
 
+   function New_Slice_Call
+     (Domain : EW_Domain;
+      Arr    : W_Expr_Id;
+      Typ    : W_Type_Id) return W_Expr_Id;
+   --  Return a call to the slice function in Why array theory
+
    function New_Well_Formed_Pred (Arr : W_Term_Id) return W_Pred_Id;
    --  Return a call to the well_formed predicate
 

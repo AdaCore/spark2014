@@ -1,6 +1,6 @@
 natural_set.adb:17:31: info: range check proved (CVC5: 2 VC)
 natural_set.adb:18:16: info: index check proved (CVC5: 2 VC)
-natural_set.adb:19:25: info: assertion proved (altergo: 1 VC)
+natural_set.adb:19:25: info: assertion proved (CVC5: 1 VC)
 natural_set.ads:19:13: info: implicit aspect Always_Terminates on "Valid" has been proved, subprogram will terminate
 natural_set.ads:21:13: info: implicit aspect Always_Terminates on "Members" has been proved, subprogram will terminate
 natural_set.ads:22:19: info: postcondition proved (CVC5: 2 VC)

@@ -9,6 +9,6 @@ foo.ads:33:38: info: range check proved (CVC5: 2 VC)
 foo.ads:35:13: info: implicit aspect Always_Terminates on "Get_Element" has been proved, subprogram will terminate
 foo.ads:36:23: info: index check proved (CVC5: 2 VC)
 foo.ads:38:13: info: implicit aspect Always_Terminates on "Get_Elem_1" has been proved, subprogram will terminate
-foo.ads:38:62: medium: predicate check might fail (e.g. when CPU_ID = 0)
+foo.ads:38:62: medium: predicate check might fail
 foo.ads:44:13: info: implicit aspect Always_Terminates on "Get_Elem_2" has been proved, subprogram will terminate
-foo.ads:44:58: medium: array index check might fail (e.g. when States = (Max_ID => ?, States => (others => 0)) and States.States'First = 0 and States.States'Last = 3) [reason for check: value must be a valid index into the array]
+foo.ads:44:58: medium: array index check might fail [reason for check: value must be a valid index into the array]

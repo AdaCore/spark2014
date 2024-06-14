@@ -265,18 +265,18 @@ package body Gnat2Why.Expr.Loops.Inv is
    --  @param Inv_Objects the set of constants declared just before the
    --         invariant if any.
 
-   procedure Process_Call_Statement
+   procedure Process_Call
      (Call          :        Node_Id;
       Loop_Writes   : in out Write_Status_Maps.Map;
       Relevant_Path :        Boolean;
       After_Inv     :        Boolean);
-   --  Update a status map for every variable written by a call statement.
-   --  @param Call considered call statement.
+   --  Update a status map for every variable written by a call.
+   --  @param Call considered call
    --  @param Loop_Writes a map between written entities and their write
    --         status.
    --  @param Relevant_Path whether the call lies on an execution path
    --         possibly leading back to the invariant.
-   --  @param After_Inv True if the statement occurs after the loop invariant
+   --  @param After_Inv True if the call occurs after the loop invariant
    --         in the top level loop.
 
    procedure Process_Statement
@@ -1340,11 +1340,11 @@ package body Gnat2Why.Expr.Loops.Inv is
       end loop;
    end Get_Loop_Writes;
 
-   ----------------------------
-   -- Process_Call_Statement --
-   ----------------------------
+   ------------------
+   -- Process_Call --
+   ------------------
 
-   procedure Process_Call_Statement
+   procedure Process_Call
      (Call          : Node_Id;
       Loop_Writes   : in out Write_Status_Maps.Map;
       Relevant_Path : Boolean;
@@ -1444,7 +1444,7 @@ package body Gnat2Why.Expr.Loops.Inv is
          --  ??? for internal calls we currently do not handle the implicit
          --  self reference.
       end if;
-   end Process_Call_Statement;
+   end Process_Call;
 
    -----------------------
    -- Process_Statement --
@@ -1462,6 +1462,7 @@ package body Gnat2Why.Expr.Loops.Inv is
          when N_Assignment_Statement =>
             declare
                Lvalue   : constant Entity_Id := SPARK_Atree.Name (N);
+               Rvalue   : constant Node_Id   := SPARK_Atree.Expression (N);
                Relevant : constant Boolean :=
                  Relevant_Vertices.Contains (Local_CFG.Starting_Vertex (N));
             begin
@@ -1475,6 +1476,12 @@ package body Gnat2Why.Expr.Loops.Inv is
 
                Write_Aliases
                  (Get_Root_Object (Lvalue), Loop_Writes, Relevant);
+
+               if Nkind (Rvalue) = N_Function_Call then
+                  Process_Call
+                    (Rvalue, Loop_Writes, Relevant, After_Inv);
+               end if;
+
             end;
 
          --  Discard writes to variables local to a case statement
@@ -1567,10 +1574,10 @@ package body Gnat2Why.Expr.Loops.Inv is
          when N_Entry_Call_Statement
             | N_Procedure_Call_Statement
          =>
-            Process_Call_Statement (N, Loop_Writes,
-                                    Relevant_Vertices.Contains
-                                      (Local_CFG.Starting_Vertex (N)),
-                                    After_Inv);
+            Process_Call (N, Loop_Writes,
+                          Relevant_Vertices.Contains
+                            (Local_CFG.Starting_Vertex (N)),
+                          After_Inv);
 
          --  Discard writes to variables local to a return statement
 

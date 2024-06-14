@@ -178,7 +178,7 @@ conversion.ads:30:13: info: implicit aspect Always_Terminates on "To_Integer_255
 conversion.ads:31:07: info: precondition proved (CVC5: 3 VC)
 curve25519.adb:39:27: info: overflow check proved (CVC5: 4 VC)
 curve25519.adb:41:33: info: loop invariant initialization proved (CVC5: 1 VC)
-curve25519.adb:41:33: info: loop invariant preservation proved (CVC5: 1 VC)
+curve25519.adb:42:35: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove Sum (K) = X (K) + Y (K)
 curve25519.adb:42:40: info: index check proved (CVC5: 4 VC)
 curve25519.adb:42:48: info: index check proved (CVC5: 4 VC)
 curve25519.adb:42:51: info: overflow check proved (CVC5: 4 VC)
@@ -205,14 +205,14 @@ curve25519.adb:59:33: info: loop invariant preservation proved (CVC5: 1 VC)
 curve25519.adb:59:33: info: predicate check proved (Trivial: 2 VC)
 curve25519.adb:59:41: info: precondition proved (CVC5: 6 VC)
 curve25519.adb:59:41: info: predicate check proved (Trivial: 2 VC)
+curve25519.adb:60:33: info: loop invariant initialization proved (CVC5: 1 VC)
+curve25519.adb:60:33: info: loop invariant preservation proved (CVC5: 1 VC)
 curve25519.adb:60:33: info: predicate check proved (Trivial: 2 VC)
-curve25519.adb:60:33: medium: loop invariant might fail in first iteration
-curve25519.adb:60:33: medium: loop invariant might not be preserved by an arbitrary iteration
 curve25519.adb:60:41: info: precondition proved (CVC5: 6 VC)
 curve25519.adb:60:41: info: predicate check proved (Trivial: 2 VC)
+curve25519.adb:61:33: info: loop invariant initialization proved (CVC5: 1 VC)
+curve25519.adb:61:33: info: loop invariant preservation proved (CVC5: 1 VC)
 curve25519.adb:61:33: info: predicate check proved (Trivial: 2 VC)
-curve25519.adb:61:33: medium: loop invariant might fail in first iteration
-curve25519.adb:61:33: medium: loop invariant might not be preserved by an arbitrary iteration
 curve25519.adb:61:43: info: precondition proved (CVC5: 6 VC)
 curve25519.adb:61:43: info: predicate check proved (Trivial: 2 VC)
 curve25519.adb:62:33: info: loop invariant initialization proved (CVC5: 1 VC)
