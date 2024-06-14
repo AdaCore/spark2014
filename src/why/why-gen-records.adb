@@ -4448,6 +4448,24 @@ package body Why.Gen.Records is
          Name     => Name);
    end New_Discriminants_Access;
 
+   --------------------
+   -- New_Ext_Access --
+   --------------------
+
+   function New_Ext_Access
+     (Ada_Node : Node_Id := Empty;
+      Name     : W_Expr_Id;
+      Ty       : Entity_Id)
+      return W_Expr_Id
+   is
+   begin
+      pragma Assert (Is_Tagged_Type (Ty));
+      return New_Record_Access
+        (Ada_Node => Ada_Node,
+         Field    => E_Symb (Ty, WNE_Rec_Extension),
+         Name     => Name);
+   end New_Ext_Access;
+
    -----------------------
    -- New_Fields_Access --
    -----------------------
@@ -4580,20 +4598,21 @@ package body Why.Gen.Records is
    begin
       if Has_Tag then
          declare
+            Pre_Ty : constant Node_Id := Get_Ada_Node (+Get_Type (From_Expr));
             Tmp_Name : constant W_Expr_Id := New_Temp_For_Expr (Name);
             Ext_Value : constant W_Expr_Id :=
               (if From_Expr = Why_Empty then
                   +E_Symb (Ty, WNE_Null_Extension)
-               else New_Record_Access
-                 (Field => E_Symb (Ty, WNE_Rec_Extension),
-                  Name  => New_Fields_Access (Name => From_Expr, Ty => Ty)));
+               else New_Ext_Access
+                 (Name => New_Fields_Access (Name => From_Expr, Ty => Pre_Ty),
+                  Ty   => Pre_Ty));
             Tag_Value : constant W_Expr_Id :=
               (if From_Expr = Why_Empty then
                   +E_Symb (E => Ty, S => WNE_Tag)
                else New_Tag_Access
                  (Domain => Domain,
                   Name   => From_Expr,
-                  Ty     => Get_Ada_Node (+Get_Type (From_Expr))));
+                  Ty     => Pre_Ty));
          begin
             return Binding_For_Temp
               (Domain  => Domain,
