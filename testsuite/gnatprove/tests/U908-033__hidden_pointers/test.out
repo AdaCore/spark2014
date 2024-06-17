@@ -218,7 +218,7 @@ example_recursive.adb:339:07: info: precondition proved
 example_recursive.adb:340:07: info: precondition proved
 example_recursive.adb:341:07: info: precondition proved
 example_recursive.adb:342:07: info: precondition proved
-example_recursive.adb:343:07: info: precondition proved
+example_recursive.adb:343:07: medium: precondition might fail, cannot prove ( Get (M1, A) = Get (M2, A))
 example_recursive.adb:345:10: info: no contextual analysis of "Rand" (body not seen yet)
 example_recursive.adb:345:10: warning: assuming "Rand" has no effect on global items
 example_recursive.adb:345:10: warning: no Global contract available for "Rand"

@@ -1825,64 +1825,131 @@ module Array__Index
 end
 
 module Array__1
-  use map.Map
   use bool.Bool
 
   clone Array__Index as I1
 
   type component_type
 
-  type map = Map.map I1.t component_type
+  type map
+  function projection_to_array map : I1.t -> component_type
+  meta "model_projection" function projection_to_array
+
   type map__ref = { mutable map__content [@model_trace:] : map }
   val map__havoc (x : map__ref) : unit
      writes { x }
 
-  predicate has_bounds (a : map) (f : I1.t) (l : I1.t) = true
+  predicate has_bounds map I1.t I1.t
 
-  function get (a : map) (i : I1.t) : component_type = Map.get a i
-  function set (a : map) (i : I1.t) (v : component_type) : map = Map.set a i v
+  val function get map I1.t : component_type
 
-  val get (a : map) (i : I1.t) : component_type
-    ensures { result = Map.get a i }
-  val set (a : map) (i : I1.t) (v : component_type) : map
-    ensures { result = Map.set a i v }
+  axiom get_proj : forall m i. get m i = projection_to_array m i
 
-  predicate eq_ext (a1 a2: map) (f l: I1.t) = a1 = a2
-  (* No need to add an extensionality axiom, equality on Map.map is already
-     extensional. *)
+  predicate eq_ext map map I1.t I1.t
+
+  axiom eq_ext_def :
+    forall a1 a2 : map, f l : I1.t [eq_ext a1 a2 f l].
+      eq_ext a1 a2 f l <-> a1 = a2
+  meta "remove_unused:dependency" axiom eq_ext_def, predicate eq_ext
+
+  axiom extensionality :
+    forall a1 a2 : map, f l : I1.t [eq_ext a1 a2 f l].
+      a1 <> a2 -> has_bounds a1 f l -> has_bounds a2 f l ->
+      exists i : I1.t. I1.le f i /\ I1.le i l /\ get a1 i <> get a2 i
+  meta "remove_unused:dependency" axiom extensionality, predicate eq_ext
+
+  (* Writing into an array *)
+
+  val function set map I1.t component_type : map
+  axiom set_eq :
+    forall a : map, i : I1.t, v : component_type [set a i v].
+      (* value at index i *)
+      get (set a i v) i = v
+  meta "remove_unused:dependency" axiom set_eq, function set
+  axiom set_neq :
+    forall a : map, i : I1.t, v : component_type
+      [set a i v].
+    forall j : I1.t
+      [get a j | get (set a i v) j].
+      (* value at index j /= i *)
+      i <> j -> get (set a i v) j = get a j
+  meta "remove_unused:dependency" axiom set_neq, function set
+  axiom set_has_bounds :
+    forall a : map, i f l : I1.t, v : component_type
+      [has_bounds (set a i v) f l].
+      (* bounds *)
+      I1.le f i /\ I1.le i l ->
+      has_bounds a f l -> has_bounds (set a i v) f l
+  meta "remove_unused:dependency" axiom set_has_bounds, function set
+
+  (* Sliding an array from old_first to new_first *)
 
   val function slide map I1.t I1.t : map
-  meta "encoding:lskept" function slide
 
+  (* Special case of an array not slided *)
   axiom slide_eq :
-    forall a : map.
-    forall first : I1.t
-      [slide a first first].
+    forall a : map, first : I1.t [slide a first first].
       slide a first first = a
   meta "remove_unused:dependency" axiom slide_eq, function slide
 
   axiom slide_def :
-    forall a : map.
-    forall old_first : I1.t.
-    forall new_first : I1.t.
-    forall i : I1.t
-      [get (slide a old_first new_first) i].
-      get (slide a old_first new_first) i = get a (I1.sub i (I1.sub new_first old_first))
+    forall a : map, old_first new_first : I1.t [slide a old_first new_first].
+      (* slided values *)
+      (forall i : I1.t [get (slide a old_first new_first) i].
+         get (slide a old_first new_first) i =
+	 get a (I1.sub i (I1.sub new_first old_first)))
+    /\
+      (* bounds *)
+      (forall new_last : I1.t [has_bounds (slide a old_first new_first) new_first new_last].
+         has_bounds a old_first
+	   (I1.sub new_last (I1.sub new_first old_first)) ->
+         has_bounds (slide a old_first new_first) new_first new_last)
   meta "remove_unused:dependency" axiom slide_def, function slide
 
   (* An array containing the value v at all indexes. It is used for the value
      of aggregate associations with a box. *)
 
    function const component_type I1.t I1.t : map
-   meta "encoding:lskept" function const
 
    axiom const_def :
-    forall v : component_type.
-    forall first last i : I1.t  [get (const v first last) i].
-      (I1.le first i /\ I1.le i last) -> get (const v first last) i = v
+    forall v : component_type, first last : I1.t [const v first last].
+      (* values *)
+      (forall i : I1.t  [get (const v first last) i].
+         (I1.le first i /\ I1.le i last) -> get (const v first last) i = v)
+    /\
+      (* bounds *)
+      has_bounds (const v first last) first last
    meta "remove_unused:dependency" axiom const_def, function const
 
-  let function slice (a : map) (first : I1.t) (last : I1.t) : map = a
+  (* A slice of a array *)
+
+  val function slice map I1.t I1.t : map
+
+  (* Special case of an array not sliced *)
+  axiom slice_eq :
+    forall a : map, f l : I1.t [slice a f l, has_bounds a f l].
+      has_bounds a f l -> slice a f l = a
+  meta "remove_unused:dependency" axiom slice_eq, function slice
+
+  (* Special case of a slice of a slice *)
+  axiom slice_slice :
+    forall a : map, f1 l1 f2 l2 : I1.t [slice (slice a f1 l1) f2 l2].
+      (I1.le f1 f2 /\ I1.le l2 l1) ->
+      slice (slice a f1 l1) f2 l2 = slice a f2 l2
+  meta "remove_unused:dependency" axiom slice_slice, function slice
+
+  axiom slice_def :
+    forall a : map, f l : I1.t [slice a f l].
+      (* values *)
+      (forall i : I1.t [get (slice a f l) i | get a i].
+         (I1.le f i /\ I1.le i l) -> get (slice a f l) i = get a i)
+  meta "remove_unused:dependency" axiom slice_def, function slice
+
+  axiom slice_has_bounds :
+    forall a : map, f l : I1.t [has_bounds (slice a f l) f l].
+      (* bounds *)
+      has_bounds (slice a f l) f l
+  meta "remove_unused:dependency" axiom slice_has_bounds, function slice
 
   (* Concatenation is only defined for one-dimensional arrays; it appends a
      map to another. We do not really care about the valid ranges of the
@@ -1891,84 +1958,108 @@ module Array__1
      interested in the second argument, a shift must be made depending on the
      original "first" value. *)
 
-  val function concat map I1.t I1.t map I1.t I1.t : map
+  val function concat map I1.t I1.t map I1.t I1.t I1.t : map
   meta "encoding:lskept" function concat
 
   axiom concat_def :
-    forall a b : map.
-    forall a_first a_last b_first b_last : I1.t.
-    forall i : I1.t [get (concat a a_first a_last b b_first b_last) i].
-      ((I1.le a_first i /\ I1.le i a_last) ->
-          get (concat a a_first a_last b b_first b_last) i = get a i)
-         /\
-      ((I1.gt i a_last) ->
-        get (concat a a_first a_last b b_first b_last) i = get b (I1.add (I1.sub i a_last) (I1.sub b_first I1.one)))
+    forall a b : map, a_first a_last b_first b_last new_last : I1.t
+      [concat a a_first a_last b b_first b_last new_last].
+      (* bounds *)
+      (I1.le a_first a_last -> I1.le a_last new_last ->
+       has_bounds (concat a a_first a_last b b_first b_last new_last) a_first new_last)
+    /\
+      (* values *)
+      (forall i : I1.t
+        [get (concat a a_first a_last b b_first b_last new_last) i].
+         (* a *)
+         ((I1.le a_first i /\ I1.le i a_last) ->
+             get (concat a a_first a_last b b_first b_last new_last) i =
+	     get a i)
+       /\
+         (* b *)
+         ((I1.gt i a_last /\ I1.le i new_last) ->
+             get (concat a a_first a_last b b_first b_last new_last) i =
+	     get b (I1.add (I1.sub i a_last) (I1.sub b_first I1.one))))
   meta "remove_unused:dependency" axiom concat_def, function concat
 
   (* Special case of concatenation when the left operand is a component. a_first
      is the first index of the new array. The right operand is slided so that it
      starts at a_first + 1. *)
 
-  val function concat_singleton_left component_type I1.t map I1.t I1.t : map
+  val function concat_singleton_left component_type I1.t map I1.t I1.t I1.t : map
   meta "encoding:lskept" function concat_singleton_left
 
-  axiom concat_singleton_left_val :
-    forall a : component_type.
-    forall b : map.
-    forall a_first b_first b_last : I1.t
-    [concat_singleton_left a a_first b b_first b_last].
-    get (concat_singleton_left a a_first b b_first b_last) a_first = a
-  meta "remove_unused:dependency" axiom concat_singleton_left_val, function concat_singleton_left
-
-  axiom concat_singleton_left_def_eq :
-    forall a : component_type.
-    forall b : map.
-    forall a_first b_last : I1.t.
-    forall i : I1.t [get (concat_singleton_left a a_first b a_first b_last) i].
-      ((I1.gt i a_first) ->
-        get (concat_singleton_left a a_first b a_first b_last) i = get b (I1.sub i I1.one))
-  meta "remove_unused:dependency" axiom concat_singleton_left_def_eq, function concat_singleton_left
-
   axiom concat_singleton_left_def :
-    forall a : component_type.
-    forall b : map.
-    forall a_first b_first b_last : I1.t.
-    forall i : I1.t [get (concat_singleton_left a a_first b b_first b_last) i].
-      ((I1.gt i a_first) ->
-        get (concat_singleton_left a a_first b b_first b_last) i = get b (I1.add (I1.sub i a_first) (I1.sub b_first I1.one)))
+    forall a : component_type, l b : map, a_first b_first b_last new_last : I1.t
+      [concat_singleton_left a a_first b b_first b_last new_last].
+      (* bounds *)
+      (I1.le a_first new_last ->
+         has_bounds (concat_singleton_left a a_first b b_first b_last new_last) a_first new_last)
+    /\
+      (* a *)
+      get (concat_singleton_left a a_first b b_first b_last new_last) a_first =
+      a
+    /\
+      (* b *)
+      (forall i : I1.t
+        [get (concat_singleton_left a a_first b b_first b_last new_last) i].
+        ((I1.gt i a_first /\ I1.le i new_last) ->
+           get (concat_singleton_left a a_first b b_first b_last new_last) i =
+	   get b (I1.add (I1.sub i a_first) (I1.sub b_first I1.one))))
   meta "remove_unused:dependency" axiom concat_singleton_left_def, function concat_singleton_left
+
+  (* Special case of concatenation on constrained array *)
+  axiom concat_singleton_left_def_eq :
+    forall a : component_type, b : map, a_first b_last new_last, i : I1.t
+      [get (concat_singleton_left a a_first b a_first b_last new_last) i].
+      (* b *)
+      ((I1.gt i a_first /\ I1.le i new_last) ->
+        get (concat_singleton_left a a_first b a_first b_last new_last) i = get b (I1.sub i I1.one))
+  meta "remove_unused:dependency" axiom concat_singleton_left_def_eq, function concat_singleton_left
 
   (* Special case of concatenation when the right operand is a component. *)
 
-  val function concat_singleton_right map I1.t I1.t component_type : map
+  val function concat_singleton_right map I1.t I1.t component_type I1.t : map
   meta "encoding:lskept" function concat_singleton_right
 
   axiom concat_singleton_right_def :
-    forall a : map.
-    forall b : component_type.
-    forall a_first a_last : I1.t
-    [concat_singleton_right a a_first a_last b].
-    (I1.lt a_last (I1.add a_last I1.one) ->
-     get (concat_singleton_right a a_first a_last b) (I1.add a_last I1.one) = b)
-  /\
-    forall i : I1.t [get (concat_singleton_right a a_first a_last b) i | get a i].
-      ((I1.le a_first i /\ I1.le i a_last) ->
-          get (concat_singleton_right a a_first a_last b) i = get a i)
+    forall a : map, b : component_type, a_first a_last new_last : I1.t
+      [concat_singleton_right a a_first a_last b new_last].
+      (* bounds *)
+      ((I1.le a_first a_last /\ I1.lt a_last new_last) ->
+        has_bounds a a_first a_last ->
+        has_bounds (concat_singleton_right a a_first a_last b new_last) a_first new_last)
+    /\
+      (* b *)
+      (I1.lt a_last (I1.add a_last I1.one) ->
+       get (concat_singleton_right a a_first a_last b new_last) (I1.add a_last I1.one) = b)
+    /\
+      (* a *)
+      (forall i : I1.t
+         [get (concat_singleton_right a a_first a_last b new_last) i | get a i].
+         ((I1.le a_first i /\ I1.le i a_last) ->
+             get (concat_singleton_right a a_first a_last b new_last) i =
+	     get a i))
   meta "remove_unused:dependency" axiom concat_singleton_right_def, function concat_singleton_right
 
   (* Special case of concatenation when both operands are components. a_first
      is the first index of the resulting array. *)
 
-  val function concat_singletons component_type I1.t component_type : map
+  val function concat_singletons component_type I1.t component_type I1.t : map
   meta "encoding:lskept" function concat_singletons
 
   axiom concat_singletons_def :
-    forall a b : component_type.
-    forall a_first : I1.t
-    [concat_singletons a a_first b].
-    get (concat_singletons a a_first b) a_first = a
-  /\
-    get (concat_singletons a a_first b) (I1.add a_first I1.one) = b
+    forall a b : component_type, a_first new_last : I1.t
+      [concat_singletons a a_first b new_last].
+      (* bounds *)
+      (I1.lt a_first new_last ->
+       has_bounds (concat_singletons a a_first b new_last) a_first new_last)
+    /\
+      (* a *)
+      get (concat_singletons a a_first b new_last) a_first = a
+    /\
+      (* b *)
+      get (concat_singletons a a_first b new_last) (I1.add a_first I1.one) = b
   meta "remove_unused:dependency" axiom concat_singletons_def, function concat_singletons
 
   (* An array containing the value v at index i. It is used for the result of
@@ -1977,11 +2068,13 @@ module Array__1
    val function singleton component_type I1.t : map
    meta "encoding:lskept" function singleton
 
-   axiom singleton_def :
-    forall v : component_type.
-    forall i : I1.t  [get (singleton v i) i].
-      get (singleton v i) i = v
-  meta "remove_unused:dependency" axiom singleton_def, function singleton
+   axiom singleton_bounds :
+    forall v : component_type, i : I1.t [singleton v i].
+      (* bounds *)
+      has_bounds (singleton v i) i i
+      (* value *)
+      /\ get (singleton v i) i = v
+  meta "remove_unused:dependency" axiom singleton_bounds, function singleton
 end
 
 module Array__2
@@ -1997,74 +2090,129 @@ module Array__2
   val map__havoc (x : map__ref) : unit
      writes { x }
 
-  predicate has_bounds (a : map)
-    (f1 : I1.t) (l1 : I1.t) (f2 : I2.t) (l2 : I2.t)
-  = true
+  predicate has_bounds map I1.t I1.t I2.t I2.t
 
   val function get map I1.t I2.t : component_type
-  meta "encoding:lskept" function get
-  val function set map I1.t I2.t component_type : map
-  meta "encoding:lskept" function set
 
-  axiom Select_eq :
-    forall m : map.
-    forall i : I1.t.
-    forall j : I2.t.
-    forall a : component_type [set m i j a].  get (set m i j a) i j = a
-  meta "remove_unused:dependency" axiom Select_eq, function set
+  predicate eq_ext map map I1.t I1.t I2.t I2.t
 
-  axiom Select_neq :
-    forall m : map.
-    forall i i2 : I1.t.
-    forall j j2 : I2.t.
-    forall a : component_type [get (set m i j a) i2 j2| set m i j a, get m i2 j2].
-    not (i = i2 /\ j = j2) -> get (set m i j a) i2 j2 = get m i2 j2
-  meta "remove_unused:dependency" axiom Select_neq, function set
+  axiom eq_ext_def :
+    forall a1 a2 : map, f1 l1 : I1.t, f2 l2 : I2.t
+      [eq_ext a1 a2 f1 l1 f2 l2].
+      eq_ext a1 a2 f1 l1 f2 l2 <-> a1 = a2
+  meta "remove_unused:dependency" axiom eq_ext_def, predicate eq_ext
 
-  predicate eq_ext (a1 a2: map) (f1 l1: I1.t) (f2 l2: I2.t) =
-    forall i : I1.t.
-    forall j : I2.t.
-    get a1 i j = get a2 i j
-  meta "encoding:lskept" predicate eq_ext
-
-  axiom extensionality:
-    forall a1 a2: map.
-    forall l1 f1 : I1.t.
-    forall l2 f2 : I2.t.
-    has_bounds a1 l1 f1 l2 f2->
-    has_bounds a2 l1 f1 l2 f2 ->
-    eq_ext a1 a2 l1 f1 l2 f2 -> a1 = a2
+  axiom extensionality :
+    forall a1 a2 : map, f1 l1 : I1.t, f2 l2 : I2.t
+      [eq_ext a1 a2 f1 l1 f2 l2].
+      a1 <> a2 ->
+      has_bounds a1 f1 l1 f2 l2 ->
+      has_bounds a2 f1 l1 f2 l2 ->
+      exists i1 : I1.t, i2 : I2.t.
+        I1.le f1 i1 /\ I1.le i1 l1 /\
+        I2.le f2 i2 /\ I2.le i2 l2 /\ get a1 i1 i2 <> get a2 i1 i2
   meta "remove_unused:dependency" axiom extensionality, predicate eq_ext
 
+  (* Writing into an array *)
+
+  val function set map I1.t I2.t component_type : map
+  axiom set_def :
+    forall a : map, i1 : I1.t, i2 : I2.t, v : component_type [set a i1 i2 v].
+      (* value at index i1 i2 *)
+      get (set a i1 i2 v) i1 i2 = v
+    /\
+      (* value at index j1, j2 /= i1, i2 *)
+      (forall j1 : I1.t, j2 : I2.t
+         [get a j1 j2 | get (set a i1 i2 v) j1 j2].
+         (i1 <> j1 \/ i2 <> j2) -> get (set a i1 i2 v) j1 j2 = get a j1 j2)
+    /\
+      (* bounds *)
+      (forall f1 l1 : I1.t, f2 l2 : I2.t
+         [has_bounds (set a i1 i2 v) f1 l1 f2 l2].
+         I1.le f1 i1 /\ I1.le i1 l1 ->
+         I2.le f2 i2 /\ I2.le i2 l2 ->
+         has_bounds a f1 l1 f2 l2 -> has_bounds (set a i1 i2 v) f1 l1 f2 l2)
+  meta "remove_unused:dependency" axiom set_def, function set
+
+  (* Sliding an array from old_first to new_first *)
+
   val function slide map I1.t I1.t I2.t I2.t : map
-  meta "encoding:lskept" function slide
+
+  (* Special case of an array not slided *)
+  axiom slide_eq :
+    forall a : map, first_1 : I1.t, first_2 : I2.t
+      [slide a first_1 first_1 first_2 first_2].
+      slide a first_1 first_1 first_2 first_2 = a
+  meta "remove_unused:dependency" axiom slide_eq, function slide
 
   axiom slide_def :
-    forall a : map.
-    forall new_first    old_first   : I1.t.
-    forall new_first_2  old_first_2 : I2.t.
-    forall i : I1.t.
-    forall j : I2.t
-      [get (slide a old_first new_first old_first_2 new_first_2) i j].
-      get (slide a old_first new_first old_first_2 new_first_2) i j =
-        get a (I1.sub i (I1.sub new_first old_first)) (I2.sub j (I2.sub new_first_2 old_first_2))
+    forall a : map,
+           old_first_1 new_first_1 : I1.t,
+	   old_first_2 new_first_2 : I2.t
+      [slide a old_first_1 new_first_1 old_first_2 new_first_2].
+      (* slided values *)
+      (forall i1 : I1.t, i2 : I2.t
+         [get (slide a old_first_1 new_first_1 old_first_2 new_first_2) i1 i2].
+         get (slide a old_first_1 new_first_1 old_first_2 new_first_2) i1 i2 =
+	 get a (I1.sub i1 (I1.sub new_first_1 old_first_1)) (I2.sub i2 (I2.sub old_first_2 new_first_2)))
+    /\
+      (* bounds *)
+      (forall new_last_1 : I1.t, new_last_2 : I2.t
+         [has_bounds (slide a old_first_1 new_first_1 old_first_2 new_first_2) new_first_1 new_last_1 new_first_2 new_last_2].
+         has_bounds a
+	   old_first_1 (I1.sub new_last_1 (I1.sub new_first_1 old_first_1))
+	   old_first_2 (I2.sub new_last_2 (I2.sub new_first_2 old_first_2)) ->
+         has_bounds (slide a old_first_1 new_first_1 old_first_2 new_first_2) new_first_1 new_last_1 new_first_2 new_last_2)
   meta "remove_unused:dependency" axiom slide_def, function slide
 
   (* An array containing the value v at all indexes. It is used for the value
      of aggregate associations with a box. *)
 
-   val function const component_type I1.t I1.t I2.t I2.t : map
-   meta "encoding:lskept" function const
+   function const component_type I1.t I1.t I2.t I2.t : map
 
    axiom const_def :
-    forall v : component_type.
-    forall first_1 last_1 i : I1.t.
-    forall first_2 last_2 j : I2.t
-    [get (const v first_1 last_1 first_2 last_2) i j].
-    (I1.le first_1 i /\ I1.le i last_1) ->
-    (I2.le first_2 j /\ I2.le j last_2) ->
-      get (const v first_1 last_1 first_2 last_2) i j = v
+    forall v : component_type,
+           first_1 last_1 : I1.t,
+	   first_2 last_2 : I2.t [const v first_1 last_1 first_2 last_2].
+      (* values *)
+      (forall i1 : I1.t, i2 : I2.t
+         [get (const v first_1 last_1 first_2 last_2) i1 i2].
+         (I1.le first_1 i1 /\ I1.le i1 last_1) ->
+         (I2.le first_2 i2 /\ I2.le i2 last_2) ->
+	 get (const v first_1 last_1 first_2 last_2) i1 i2 = v)
+    /\
+      (* bounds *)
+      has_bounds (const v first_1 last_1 first_2 last_2) first_1 last_1 first_2 last_2
    meta "remove_unused:dependency" axiom const_def, function const
+
+  (* A slice of a array *)
+
+  val function slice map I1.t I1.t I2.t I2.t : map
+
+  (* Special case of an array not sliced *)
+  axiom slice_eq :
+    forall a : map, f1 l1 : I1.t, f2 l2 : I2.t
+      [slice a f1 l1 f2 l2, has_bounds a f1 l1 f2 l2].
+      has_bounds a f1 l1 f2 l2 -> slice a f1 l1 f2 l2 = a
+  meta "remove_unused:dependency" axiom slice_eq, function slice
+
+  axiom slice_def :
+    forall a : map, f1 l1 : I1.t, f2 l2 : I2.t
+      [slice a f1 l1 f2 l2].
+      (* values *)
+      forall i1 : I1.t, i2 : I2.t
+        [get (slice a f1 l1 f2 l2) i1 i2 | get a i1 i2].
+        (I1.le f1 i1 /\ I1.le i1 l1) ->
+        (I2.le f2 i2 /\ I2.le i2 l2) ->
+	get (slice a f1 l1 f2 l2) i1 i2 = get a i1 i2
+  meta "remove_unused:dependency" axiom slice_def, function slice
+
+  axiom slice_has_bounds :
+    forall a : map, f1 l1 : I1.t, f2 l2 : I2.t
+      [has_bounds (slice a f1 l1 f2 l2) f1 l1 f2 l2].
+      (* bounds *)
+      has_bounds (slice a f1 l1 f2 l2) f1 l1 f2 l2
+  meta "remove_unused:dependency" axiom slice_has_bounds, function slice
 end
 
 module Array__3
@@ -2081,87 +2229,140 @@ module Array__3
   val map__havoc (x : map__ref) : unit
      writes { x }
 
-  predicate has_bounds (a : map)
-    (f1 : I1.t) (l1 : I1.t) (f2 : I2.t) (l2 : I2.t) (f3 : I3.t) (l3 : I3.t)
-  = true
+  predicate has_bounds map I1.t I1.t I2.t I2.t I3.t I3.t
 
   val function get map I1.t I2.t I3.t : component_type
-  meta "encoding:lskept" function get
-  val function set map I1.t I2.t I3.t component_type : map
-  meta "encoding:lskept" function set
 
-  axiom Select_eq :
-    forall m : map.
-    forall i : I1.t.
-    forall j : I2.t.
-    forall k : I3.t.
-    forall a : component_type [set m i j k a].  get (set m i j k a) i j k = a
-  meta "remove_unused:dependency" axiom Select_eq, function set
+  predicate eq_ext map map I1.t I1.t I2.t I2.t I3.t I3.t
 
-  axiom Select_neq :
-    forall m : map.
-    forall i i2 : I1.t.
-    forall j j2 : I2.t.
-    forall k k2 : I3.t.
-    forall a : component_type [get (set m i j k a) i2 j2 k2| set m i j k a, get m i2 j2 k2].
-    not (i = i2 /\ j = j2 /\ k = k2) ->
-      get (set m i j k a) i2 j2 k2 = get m i2 j2 k2
-  meta "remove_unused:dependency" axiom Select_neq, function set
+  axiom eq_ext_def :
+    forall a1 a2 : map, f1 l1 : I1.t, f2 l2 : I2.t, f3 l3 : I3.t
+      [eq_ext a1 a2 f1 l1 f2 l2 f3 l3].
+      eq_ext a1 a2 f1 l1 f2 l2 f3 l3 <-> a1 = a2
+  meta "remove_unused:dependency" axiom eq_ext_def, predicate eq_ext
 
-  predicate eq_ext (a1 a2: map) (f1 l1: I1.t) (f2 l2: I2.t) (f3 l3: I3.t) =
-    forall i : I1.t.
-    forall j : I2.t.
-    forall k : I3.t.
-    get a1 i j k = get a2 i j k
-  meta "encoding:lskept" predicate eq_ext
-
-  axiom extensionality:
-    forall a1 a2: map.
-    forall l1 f1 : I1.t.
-    forall l2 f2 : I2.t.
-    forall l3 f3 : I3.t.
-    has_bounds a1 l1 f1 l2 f2 l3 f3 ->
-    has_bounds a2 l1 f1 l2 f2 l3 f3 ->
-    eq_ext a1 a2 l1 f1 l2 f2 l3 f3 -> a1 = a2
+  axiom extensionality :
+    forall a1 a2 : map, f1 l1 : I1.t, f2 l2 : I2.t, f3 l3 : I3.t
+      [eq_ext a1 a2 f1 l1 f2 l2 f3 l3].
+      a1 <> a2 ->
+      has_bounds a1 f1 l1 f2 l2 f3 l3 ->
+      has_bounds a2 f1 l1 f2 l2 f3 l3 ->
+      exists i1 : I1.t, i2 : I2.t, i3 : I3.t.
+        I1.le f1 i1 /\ I1.le i1 l1 /\
+        I2.le f2 i2 /\ I2.le i2 l2 /\
+        I3.le f3 i3 /\ I3.le i3 l3 /\ get a1 i1 i2 i3 <> get a2 i1 i2 i3
   meta "remove_unused:dependency" axiom extensionality, predicate eq_ext
 
+  (* Writing into an array *)
+
+  val function set map I1.t I2.t I3.t component_type : map
+  axiom set_def :
+    forall a : map, i1 : I1.t, i2 : I2.t, i3 : I3.t, v : component_type
+      [set a i1 i2 i3 v].
+      (* value at index i1 i2 i3 *)
+      get (set a i1 i2 i3 v) i1 i2 i3 = v
+    /\
+      (* value at index j1, j2, j3 /= i1, i2, i3 *)
+      (forall j1 : I1.t, j2 : I2.t, j3 : I3.t
+         [get a j1 j2 j3 | get (set a i1 i2 i3 v) j1 j2 j3].
+         (i1 <> j1 \/ i2 <> j2 \/ i3 <> j3) ->
+	 get (set a i1 i2 i3 v) j1 j2 j3 = get a j1 j2 j3)
+    /\
+      (* bounds *)
+      (forall f1 l1 : I1.t, f2 l2 : I2.t, f3 l3 : I3.t
+         [has_bounds (set a i1 i2 i3 v) f1 l1 f2 l2 f3 l3].
+         I1.le f1 i1 /\ I1.le i1 l1 ->
+         I2.le f2 i2 /\ I2.le i2 l2 ->
+         I3.le f3 i3 /\ I3.le i3 l3 ->
+         has_bounds a f1 l1 f2 l2 f3 l3 ->
+	 has_bounds (set a i1 i2 i3 v) f1 l1 f2 l2 f3 l3)
+  meta "remove_unused:dependency" axiom set_def, function set
+
+  (* Sliding an array from old_first to new_first *)
+
   val function slide map I1.t I1.t I2.t I2.t I3.t I3.t : map
-  meta "encoding:lskept" function slide
+
+  (* Special case of an array not slided *)
+  axiom slide_eq :
+    forall a : map, first_1 : I1.t, first_2 : I2.t, first_3 : I3.t
+      [slide a first_1 first_1 first_2 first_2 first_3 first_3].
+      slide a first_1 first_1 first_2 first_2 first_3 first_3 = a
+  meta "remove_unused:dependency" axiom slide_eq, function slide
 
   axiom slide_def :
-    forall a : map.
-    forall old_first   new_first   : I1.t.
-    forall old_first_2 new_first_2 : I2.t.
-    forall old_first_3 new_first_3 : I3.t.
-    forall i : I1.t.
-    forall j : I2.t.
-    forall k : I3.t
-      [get (slide a old_first new_first old_first_2 new_first_2
-                    old_first_3 new_first_3) i j k].
-      get (slide a old_first new_first old_first_2 new_first_2
-                   old_first_3 new_first_3) i j k =
-        get a (I1.sub i (I1.sub new_first old_first))
-              (I2.sub j (I2.sub new_first_2 old_first_2))
-              (I3.sub k (I3.sub new_first_3 old_first_3))
+    forall a : map,
+           old_first_1 new_first_1 : I1.t,
+	   old_first_2 new_first_2 : I2.t,
+	   old_first_3 new_first_3 : I3.t
+      [slide a old_first_1 new_first_1 old_first_2 new_first_2 old_first_3 new_first_3].
+      (* slided values *)
+      (forall i1 : I1.t, i2 : I2.t, i3 : I3.t
+         [get (slide a old_first_1 new_first_1 old_first_2 new_first_2 old_first_3 new_first_3) i1 i2 i3].
+         get (slide a old_first_1 new_first_1 old_first_2 new_first_2 old_first_3 new_first_3) i1 i2 i3 =
+	 get a (I1.sub i1 (I1.sub new_first_1 old_first_1)) (I2.sub i2 (I2.sub old_first_2 new_first_2)) (I3.sub i3 (I3.sub old_first_3 new_first_3)))
+    /\
+      (* bounds *)
+      (forall new_last_1 : I1.t, new_last_2 : I2.t, new_last_3 : I3.t
+         [has_bounds (slide a old_first_1 new_first_1 old_first_2 new_first_2 old_first_3 new_first_3) new_first_1 new_last_1 new_first_2 new_last_2 new_first_3 new_last_3].
+         has_bounds a
+	   old_first_1 (I1.sub new_last_1 (I1.sub new_first_1 old_first_1))
+	   old_first_2 (I2.sub new_last_2 (I2.sub new_first_2 old_first_2))
+	   old_first_3 (I3.sub new_last_3 (I3.sub new_first_3 old_first_3)) ->
+         has_bounds (slide a old_first_1 new_first_1 old_first_2 new_first_2 old_first_3 new_first_3) new_first_1 new_last_1 new_first_2 new_last_2 new_first_3 new_last_3)
   meta "remove_unused:dependency" axiom slide_def, function slide
 
   (* An array containing the value v at all indexes. It is used for the value
      of aggregate associations with a box. *)
 
-   val function const component_type I1.t I1.t I2.t I2.t I3.t I3.t : map
-   meta "encoding:lskept" function const
+   function const component_type I1.t I1.t I2.t I2.t I3.t I3.t : map
 
    axiom const_def :
-    forall v : component_type.
-    forall first_1 last_1 i : I1.t.
-    forall first_2 last_2 j : I2.t.
-    forall first_3 last_3 k : I3.t
-    [get (const v first_1 last_1 first_2 last_2 first_3 last_3) i j k].
-    (I1.le first_1 i /\ I1.le i last_1) ->
-    (I2.le first_2 j /\ I2.le j last_2) ->
-    (I3.le first_3 k /\ I3.le k last_3) ->
-      get (const v first_1 last_1 first_2 last_2 first_3 last_3) i j k = v
+    forall v : component_type,
+           first_1 last_1 : I1.t,
+	   first_2 last_2 : I2.t,
+	   first_3 last_3 : I3.t
+      [const v first_1 last_1 first_2 last_2 first_3 last_3].
+      (* values *)
+      (forall i1 : I1.t, i2 : I2.t, i3 : I3.t
+         [get (const v first_1 last_1 first_2 last_2 first_3 last_3) i1 i2 i3].
+         (I1.le first_1 i1 /\ I1.le i1 last_1) ->
+         (I2.le first_2 i2 /\ I2.le i2 last_2) ->
+         (I3.le first_3 i3 /\ I3.le i3 last_3) ->
+	 get (const v first_1 last_1 first_2 last_2 first_3 last_3) i1 i2 i3 = v)
+    /\
+      (* bounds *)
+      has_bounds (const v first_1 last_1 first_2 last_2 first_3 last_3) first_1 last_1 first_2 last_2 first_3 last_3
    meta "remove_unused:dependency" axiom const_def, function const
+
+  (* A slice of a array *)
+
+  val function slice map I1.t I1.t I2.t I2.t I3.t I3.t : map
+
+  (* Special case of an array not sliced *)
+  axiom slice_eq :
+    forall a : map, f1 l1 : I1.t, f2 l2 : I2.t, f3 l3 : I3.t
+      [slice a f1 l1 f2 l2 f3 l3, has_bounds a f1 l1 f2 l2 f3 l3].
+      has_bounds a f1 l1 f2 l2 f3 l3 -> slice a f1 l1 f2 l2 f3 l3 = a
+  meta "remove_unused:dependency" axiom slice_eq, function slice
+
+  axiom slice_def :
+    forall a : map, f1 l1 : I1.t, f2 l2 : I2.t, f3 l3 : I3.t
+      [slice a f1 l1 f2 l2 f3 l3].
+      (* values *)
+      forall i1 : I1.t, i2 : I2.t, i3 : I3.t
+        [get (slice a f1 l1 f2 l2 f3 l3) i1 i2 i3 | get a i1 i2 i3].
+        (I1.le f1 i1 /\ I1.le i1 l1) ->
+        (I2.le f2 i2 /\ I2.le i2 l2) ->
+        (I3.le f3 i3 /\ I3.le i3 l3) ->
+	get (slice a f1 l1 f2 l2 f3 l3) i1 i2 i3 = get a i1 i2 i3
+  meta "remove_unused:dependency" axiom slice_def, function slice
+
+  axiom slice_has_bounds :
+    forall a : map, f1 l1 : I1.t, f2 l2 : I2.t, f3 l3 : I3.t
+      [has_bounds (slice a f1 l1 f2 l2 f3 l3) f1 l1 f2 l2 f3 l3].
+      (* bounds *)
+      has_bounds (slice a f1 l1 f2 l2 f3 l3) f1 l1 f2 l2 f3 l3
+  meta "remove_unused:dependency" axiom slice_has_bounds, function slice
 end
 
 module Array__4
@@ -2179,102 +2380,147 @@ module Array__4
   val map__havoc (x : map__ref) : unit
      writes { x }
 
-  predicate has_bounds (a : map)
-    (f1 : I1.t) (l1 : I1.t) (f2 : I2.t) (l2 : I2.t)
-    (f3 : I3.t) (l3 : I3.t) (f4 : I4.t) (l4 : I4.t)
-  = true
+  predicate has_bounds map I1.t I1.t I2.t I2.t I3.t I3.t I4.t I4.t
 
   val function get map I1.t I2.t I3.t I4.t : component_type
-  meta "encoding:lskept" function get
-  val function set map I1.t I2.t I3.t I4.t component_type : map
-  meta "encoding:lskept" function set
 
-  axiom Select_eq :
-    forall m : map.
-    forall i : I1.t.
-    forall j : I2.t.
-    forall k : I3.t.
-    forall l : I4.t.
-    forall a : component_type [set m i j k l a].  get (set m i j k l a) i j k l = a
-  meta "remove_unused:dependency" axiom Select_eq, function set
+  predicate eq_ext map map I1.t I1.t I2.t I2.t I3.t I3.t I4.t I4.t
 
-  axiom Select_neq :
-    forall m : map.
-    forall i i2 : I1.t.
-    forall j j2 : I2.t.
-    forall k k2 : I3.t.
-    forall l l2 : I4.t.
-    forall a : component_type
-      [get (set m i j k l a) i2 j2 k2 l2|
-       set m i j k l a, get m i2 j2 k2 l2].
-    not (i = i2 /\ j = j2 /\ k = k2 /\ l = l2) ->
-      get (set m i j k l a) i2 j2 k2 l2 = get m i2 j2 k2 l2
-  meta "remove_unused:dependency" axiom Select_neq, function set
+  axiom eq_ext_def :
+    forall a1 a2 : map, f1 l1 : I1.t, f2 l2 : I2.t, f3 l3 : I3.t, f4 l4 : I4.t
+      [eq_ext a1 a2 f1 l1 f2 l2 f3 l3 f4 l4].
+      eq_ext a1 a2 f1 l1 f2 l2 f3 l3 f4 l4 <-> a1 = a2
+  meta "remove_unused:dependency" axiom eq_ext_def, predicate eq_ext
 
-  predicate eq_ext (a1 a2: map) (f1 l1: I1.t) (f2 l2: I2.t) (f3 l3: I3.t) (f4 l4: I4.t) =
-    forall i : I1.t.
-    forall j : I2.t.
-    forall k : I3.t.
-    forall l : I4.t.
-    get a1 i j k l = get a2 i j k l
-  meta "encoding:lskept" predicate eq_ext
-
-  axiom extensionality:
-    forall a1 a2: map.
-    forall l1 f1 : I1.t.
-    forall l2 f2 : I2.t.
-    forall l3 f3 : I3.t.
-    forall l4 f4 : I4.t.
-    has_bounds a1 l1 f1 l2 f2 l3 f3 l4 f4 ->
-    has_bounds a2 l1 f1 l2 f2 l3 f3 l4 f4 ->
-    eq_ext a1 a2 l1 f1 l2 f2 l3 f3 l4 f4 -> a1 = a2
+  axiom extensionality :
+    forall a1 a2 : map, f1 l1 : I1.t, f2 l2 : I2.t, f3 l3 : I3.t, f4 l4 : I4.t
+      [eq_ext a1 a2 f1 l1 f2 l2 f3 l3 f4 l4].
+      a1 <> a2 ->
+      has_bounds a1 f1 l1 f2 l2 f3 l3 f4 l4 ->
+      has_bounds a2 f1 l1 f2 l2 f3 l3 f4 l4 ->
+      exists i1 : I1.t, i2 : I2.t, i3 : I3.t, i4 : I4.t.
+        I1.le f1 i1 /\ I1.le i1 l1 /\
+        I2.le f2 i2 /\ I2.le i2 l2 /\
+        I3.le f3 i3 /\ I3.le i3 l3 /\
+        I4.le f4 i4 /\ I4.le i4 l4 /\ get a1 i1 i2 i3 i4 <> get a2 i1 i2 i3 i4
   meta "remove_unused:dependency" axiom extensionality, predicate eq_ext
 
+  (* Writing into an array *)
+
+  val function set map I1.t I2.t I3.t I4.t component_type : map
+  axiom set_def :
+    forall a : map, i1 : I1.t, i2 : I2.t, i3 : I3.t, i4 : I4.t, v : component_type
+      [set a i1 i2 i3 i4 v].
+      (* value at index i1 i2 i3 i4 *)
+      get (set a i1 i2 i3 i4 v) i1 i2 i3 i4 = v
+    /\
+      (* value at index j1, j2, j3, j4 /= i1, i2, i3, i4 *)
+      (forall j1 : I1.t, j2 : I2.t, j3 : I3.t, j4 : I4.t
+         [get a j1 j2 j3 j4 | get (set a i1 i2 i3 i4 v) j1 j2 j3 j4].
+         (i1 <> j1 \/ i2 <> j2 \/ i3 <> j3 \/ i4 <> j4) ->
+	 get (set a i1 i2 i3 i4 v) j1 j2 j3 j4 = get a j1 j2 j3 j4)
+    /\
+      (* bounds *)
+      (forall f1 l1 : I1.t, f2 l2 : I2.t, f3 l3 : I3.t, f4 l4 : I4.t
+         [has_bounds (set a i1 i2 i3 i4 v) f1 l1 f2 l2 f3 l3 f4 l4].
+         I1.le f1 i1 /\ I1.le i1 l1 ->
+         I2.le f2 i2 /\ I2.le i2 l2 ->
+         I3.le f3 i3 /\ I3.le i3 l3 ->
+         I4.le f4 i4 /\ I4.le i4 l4 ->
+         has_bounds a f1 l1 f2 l2 f3 l3 f4 l4 ->
+	 has_bounds (set a i1 i2 i3 i4 v) f1 l1 f2 l2 f3 l3 f4 l4)
+  meta "remove_unused:dependency" axiom set_def, function set
+
+  (* Sliding an array from old_first to new_first *)
+
   val function slide map I1.t I1.t I2.t I2.t I3.t I3.t I4.t I4.t : map
-  meta "encoding:lskept" function slide
+
+  (* Special case of an array not slided *)
+  axiom slide_eq :
+    forall a : map, first_1 : I1.t, first_2 : I2.t, first_3 : I3.t, first_4 : I4.t
+      [slide a first_1 first_1 first_2 first_2 first_3 first_3 first_4 first_4].
+      slide a first_1 first_1 first_2 first_2 first_3 first_3 first_4 first_4 = a
+  meta "remove_unused:dependency" axiom slide_eq, function slide
 
   axiom slide_def :
-    forall a : map.
-    forall old_first   new_first   : I1.t.
-    forall old_first_2 new_first_2 : I2.t.
-    forall old_first_3 new_first_3 : I3.t.
-    forall old_first_4 new_first_4 : I4.t.
-    forall i : I1.t.
-    forall j : I2.t.
-    forall k : I3.t.
-    forall l : I4.t
-      [get (slide a old_first new_first old_first_2 new_first_2
-                    old_first_3 new_first_3 old_first_4 new_first_4) i j k l].
-      get (slide a old_first new_first old_first_2 new_first_2
-                   old_first_3 new_first_3 old_first_4 new_first_4) i j k l =
-        get a (I1.sub i (I1.sub new_first old_first))
-              (I2.sub j (I2.sub new_first_2 old_first_2))
-              (I3.sub k (I3.sub new_first_3 old_first_3))
-              (I4.sub l (I4.sub new_first_4 old_first_4))
+    forall a : map,
+           old_first_1 new_first_1 : I1.t,
+	   old_first_2 new_first_2 : I2.t,
+	   old_first_3 new_first_3 : I3.t,
+	   old_first_4 new_first_4 : I4.t
+      [slide a old_first_1 new_first_1 old_first_2 new_first_2 old_first_3 new_first_3 old_first_4 new_first_4].
+      (* slided values *)
+      (forall i1 : I1.t, i2 : I2.t, i3 : I3.t, i4 : I4.t
+         [get (slide a old_first_1 new_first_1 old_first_2 new_first_2 old_first_3 new_first_3 old_first_4 new_first_4) i1 i2 i3 i4].
+         get (slide a old_first_1 new_first_1 old_first_2 new_first_2 old_first_3 new_first_3 old_first_4 new_first_4) i1 i2 i3 i4 =
+	 get a (I1.sub i1 (I1.sub new_first_1 old_first_1)) (I2.sub i2 (I2.sub old_first_2 new_first_2)) (I3.sub i3 (I3.sub old_first_3 new_first_3)) (I4.sub i4 (I4.sub old_first_4 new_first_4)))
+    /\
+      (* bounds *)
+      (forall new_last_1 : I1.t, new_last_2 : I2.t, new_last_3 : I3.t, new_last_4 : I4.t
+         [has_bounds (slide a old_first_1 new_first_1 old_first_2 new_first_2 old_first_3 new_first_3 old_first_4 new_first_4) new_first_1 new_last_1 new_first_2 new_last_2 new_first_3 new_last_3 new_last_4].
+         has_bounds a
+	   old_first_1 (I1.sub new_last_1 (I1.sub new_first_1 old_first_1))
+	   old_first_2 (I2.sub new_last_2 (I2.sub new_first_2 old_first_2))
+	   old_first_3 (I3.sub new_last_3 (I3.sub new_first_3 old_first_3))
+	   old_first_4 (I4.sub new_last_4 (I4.sub new_first_4 old_first_4)) ->
+         has_bounds (slide a old_first_1 new_first_1 old_first_2 new_first_2 old_first_3 new_first_3 old_first_4 new_first_4) new_first_1 new_last_1 new_first_2 new_last_2 new_first_3 new_last_3 new_first_4 new_last_4)
   meta "remove_unused:dependency" axiom slide_def, function slide
 
   (* An array containing the value v at all indexes. It is used for the value
      of aggregate associations with a box. *)
 
-   val function const
-     component_type I1.t I1.t I2.t I2.t I3.t I3.t I4.t I4.t : map
-   meta "encoding:lskept" function const
+   function const component_type I1.t I1.t I2.t I2.t I3.t I3.t I4.t I4.t : map
 
    axiom const_def :
-    forall v : component_type.
-    forall first_1 last_1 i : I1.t.
-    forall first_2 last_2 j : I2.t.
-    forall first_3 last_3 k : I3.t.
-    forall first_4 last_4 l : I4.t
-    [get (const v first_1 last_1 first_2 last_2 first_3 last_3 first_4 last_4)
-      i j k l].
-    (I1.le first_1 i /\ I1.le i last_1) ->
-    (I2.le first_2 j /\ I2.le j last_2) ->
-    (I3.le first_3 k /\ I3.le k last_3) ->
-    (I4.le first_4 l /\ I4.le l last_4) ->
-      get (const v first_1 last_1 first_2 last_2 first_3 last_3 first_4 last_4)
-        i j k l = v
+    forall v : component_type,
+           first_1 last_1 : I1.t,
+	   first_2 last_2 : I2.t,
+	   first_3 last_3 : I3.t,
+	   first_4 last_4 : I4.t
+      [const v first_1 last_1 first_2 last_2 first_3 last_3 first_4 last_4].
+      (* values *)
+      (forall i1 : I1.t, i2 : I2.t, i3 : I3.t, i4 : I4.t
+         [get (const v first_1 last_1 first_2 last_2 first_3 last_3 first_4 last_4) i1 i2 i3 i4].
+         (I1.le first_1 i1 /\ I1.le i1 last_1) ->
+         (I2.le first_2 i2 /\ I2.le i2 last_2) ->
+         (I3.le first_3 i3 /\ I3.le i3 last_3) ->
+         (I4.le first_4 i4 /\ I4.le i4 last_4) ->
+	 get (const v first_1 last_1 first_2 last_2 first_3 last_3 first_4 last_4) i1 i2 i3 i4 = v)
+    /\
+      (* bounds *)
+      has_bounds (const v first_1 last_1 first_2 last_2 first_3 last_3 first_4 last_4) first_1 last_1 first_2 last_2 first_3 last_3 first_4 last_4
    meta "remove_unused:dependency" axiom const_def, function const
+
+  (* A slice of a array *)
+
+  val function slice map I1.t I1.t I2.t I2.t I3.t I3.t I4.t I4.t : map
+
+  (* Special case of an array not sliced *)
+  axiom slice_eq :
+    forall a : map, f1 l1 : I1.t, f2 l2 : I2.t, f3 l3 : I3.t, f4 l4 : I4.t
+      [slice a f1 l1 f2 l2 f3 l3 f4 l4, has_bounds a f1 l1 f2 l2 f3 l3 f4 l4].
+      has_bounds a f1 l1 f2 l2 f3 l3 f4 l4 -> slice a f1 l1 f2 l2 f3 l3 f4 l4 = a
+  meta "remove_unused:dependency" axiom slice_eq, function slice
+
+  axiom slice_def :
+    forall a : map, f1 l1 : I1.t, f2 l2 : I2.t, f3 l3 : I3.t, f4 l4 : I4.t
+      [slice a f1 l1 f2 l2 f3 l3 f4 l4].
+      (* values *)
+      forall i1 : I1.t, i2 : I2.t, i3 : I3.t, i4 : I4.t
+        [get (slice a f1 l1 f2 l2 f3 l3 f4 l4) i1 i2 i3 i4 | get a i1 i2 i3 i4].
+        (I1.le f1 i1 /\ I1.le i1 l1) ->
+        (I2.le f2 i2 /\ I2.le i2 l2) ->
+        (I3.le f3 i3 /\ I3.le i3 l3) ->
+        (I4.le f4 i4 /\ I4.le i4 l4) ->
+	get (slice a f1 l1 f2 l2 f3 l3 f4 l4) i1 i2 i3 i4 = get a i1 i2 i3 i4
+  meta "remove_unused:dependency" axiom slice_def, function slice
+
+  axiom slice_has_bounds :
+    forall a : map, f1 l1 : I1.t, f2 l2 : I2.t, f3 l3 : I3.t, f4 l4 : I4.t
+      [has_bounds (slice a f1 l1 f2 l2 f3 l3 f4 l4) f1 l1 f2 l2 f3 l3 f4 l4].
+      (* bounds *)
+      has_bounds (slice a f1 l1 f2 l2 f3 l3 f4 l4) f1 l1 f2 l2 f3 l3 f4 l4
+  meta "remove_unused:dependency" axiom slice_has_bounds, function slice
 end
 
 module BVAda

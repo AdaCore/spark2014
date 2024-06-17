@@ -109,9 +109,6 @@ sb.ads:2:01: info: implicit function contract might not be available on calls fr
 sb.ads:2:01: info: in instantiation at a-strbou.ads
 sb.ads:2:01: warning: in instantiation at a-strbou.ads
 sb.ads:2:01: warning: pragma "Stream_Convert" ignored (not yet supported)
-spark-containers-formal-hashed_maps.ads:96:06: medium: Container_Aggregates annotation might be incorrect, in instantiation at test.ads:10
-spark-containers-formal-hashed_maps.ads:96:06: medium: after a call to Insert at spark-containers-formal-hashed_maps.ads:667, in instantiation at test.ads:10
-spark-containers-formal-hashed_maps.ads:96:06: medium: when reestablishing invariant on Has_Key at spark-containers-functional-maps.ads:120, in instantiation at spark-containers-formal-hashed_maps.ads:185, in instantiation at test.ads:10
 spark-containers-parameter_checks.ads:246:19: medium: postcondition might fail, in instantiation at spark-containers-formal-hashed_maps.ads:170, in instantiation at test.ads:10 [possible fix: you should consider adding a postcondition to function SBHash or turning it into an expression function]
 test.ads:5:09: info: Initial_Condition of package "SB" is ignored
 test.ads:5:09: info: the elaboration of "SB" is not known to precede the elaboration of the current unit

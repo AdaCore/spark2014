@@ -2,11 +2,11 @@ arrays.adb:48:13: info: implicit aspect Always_Terminates on "Contains_A" has be
 arrays.adb:51:18: info: postcondition proved (CVC5: 2 VC)
 arrays.adb:57:13: info: implicit aspect Always_Terminates on "Contains_B" has been proved, subprogram will terminate
 arrays.adb:60:11: info: flow dependencies proved
-arrays.adb:62:22: high: postcondition might fail (e.g. when C = 'NUL' and Contains_B'Result = True and S = ('NUL' => False, 'a' => True, others => True))
+arrays.adb:62:22: high: postcondition might fail (e.g. when C = ''' and Contains_B'Result = True and S = (''' => False, 'a' => True, others => True))
 arrays.adb:68:13: info: implicit aspect Always_Terminates on "Is_Id_1" has been proved, subprogram will terminate
 arrays.adb:71:19: info: postcondition proved (CVC5: 2 VC)
 arrays.adb:77:13: info: implicit aspect Always_Terminates on "Is_Id_2" has been proved, subprogram will terminate
-arrays.adb:80:19: high: postcondition might fail (e.g. when C = 'NUL' and Is_Id_2'Result = True and M = ('NUL' => 'a', others => 'a'))
+arrays.adb:80:19: high: postcondition might fail (e.g. when C = 'FS' and Is_Id_2'Result = True and M = ('FS' => 'a', others => 'a'))
 arrays.adb:88:11: info: flow dependencies proved
 arrays.adb:94:22: info: assertion proved (CVC5: 1 VC)
 arrays.adb:99:11: info: flow dependencies proved
@@ -16,14 +16,14 @@ arrays.adb:112:22: high: assertion might fail (e.g. when M = ('a' => 'A', others
 arrays.adb:116:11: info: flow dependencies proved
 arrays.adb:120:22: high: assertion might fail (e.g. when M = (Elem_0 => Elem_2, others => Elem_2)) [possible fix: subprogram at line 115 should mention M in a precondition]
 arrays.adb:124:11: info: flow dependencies proved
-arrays.adb:128:22: high: assertion might fail (e.g. when MM = ('a' => (Elem_0 => Elem_0, others => Elem_0), others => (others => Elem_0))) [possible fix: subprogram at line 123 should mention MM in a precondition]
+arrays.adb:128:22: high: assertion might fail (e.g. when MM = ('a' => (Elem_0 => Elem_0, others => Elem_0), others => (Elem_0 => Elem_0, others => Elem_0))) [possible fix: subprogram at line 123 should mention MM in a precondition]
 arrays.adb:131:22: info: initialization of "M" proved
 arrays.adb:132:11: info: flow dependencies proved
 arrays.adb:136:22: info: assertion proved (CVC5: 1 VC)
 arrays.adb:140:11: info: flow dependencies proved
 arrays.adb:144:22: high: assertion might fail (e.g. when R = (A => (3 => 5, others => 5), Exists => False)) [possible fix: subprogram at line 139 should mention R in a precondition]
 arrays.adb:146:22: info: assertion proved (CVC5: 1 VC)
-arrays.adb:148:22: high: assertion might fail (e.g. when R = (A => (1 => 0, 3 => 5, others => 5), Exists => True)) [possible fix: subprogram at line 139 should mention R in a precondition]
+arrays.adb:148:22: high: assertion might fail (e.g. when R = (A => (1 => 0, 3 => 5, others => 0), Exists => True)) [possible fix: subprogram at line 139 should mention R in a precondition]
 arrays.adb:152:11: info: flow dependencies proved
 arrays.adb:153:31: info: range check proved (CVC5: 2 VC)
 arrays.adb:154:33: info: index check proved (CVC5: 2 VC)

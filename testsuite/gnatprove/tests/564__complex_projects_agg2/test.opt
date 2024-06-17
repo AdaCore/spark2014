@@ -1,1 +1,1 @@
-ALL XFAIL aggregate project ignored, see eng/spark/spark2014#601
+ALL XFAIL Problem with units that have identical names (eng/spark/spark2014#402)

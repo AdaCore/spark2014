@@ -4672,8 +4672,8 @@ package body Gnat2Why.Subprograms is
            (Body_Params with delta Old_Policy => Ignore);
          --  Old can safely be ignored in postconditions of functions
          Why_Type               : constant W_Type_Id := Type_Of_Node (E);
-         Result_Id              : constant W_Identifier_Id :=
-           New_Result_Ident (Why_Type);
+         Result_Id              : W_Identifier_Id :=
+           New_Temp_Identifier (Typ => Why_Type, Base_Name => "result");
 
       begin
          --  Store an immutable local name for the result that can be
@@ -4695,22 +4695,43 @@ package body Gnat2Why.Subprograms is
                Right  => +Compute_Type_Invariants_For_Subprogram
                  (E, Local_Params, False),
                Domain => EW_Pred);
-            Post                : constant W_Pred_Id :=
+            Post                : W_Pred_Id :=
               New_And_Pred
-                (Left  => Get_Static_Call_Contract
-                   (Local_Params, E, Pragma_Postcondition),
-                 Right => Compute_Contract_Cases_Postcondition
-                   (Local_Params, E));
+                (Left  => Dynamic_Prop_Result,
+                 Right => New_And_Pred
+                   (Left  => Get_Static_Call_Contract
+                      (Local_Params, E, Pragma_Postcondition),
+                    Right => Compute_Contract_Cases_Postcondition
+                      (Local_Params, E)));
 
          begin
+            --  For arrays, the has_bounds predicate is impossible to prove as
+            --  it is abstract. Introduce a call to slice.
+            --    let result = slice new_result in post result
+
+            if Has_Array_Type (Etype (E)) then
+               declare
+                  New_Res_Id : constant W_Identifier_Id :=
+                    New_Temp_Identifier
+                      (Typ => Why_Type, Base_Name => "result");
+               begin
+                  Post := New_Binding
+                    (Name    => Result_Id,
+                     Def     => +New_Slice_Call
+                       (EW_Term, +New_Res_Id, Why_Type),
+                     Context => Post);
+
+                  Result_Id := New_Res_Id;
+               end;
+            end if;
+
             --  Restore the previous state
 
             Result_Is_Mutable := Save_Result_Is_Mutable;
             Result_Name := Save_Result_Name;
 
             --  Generate:
-            --    exists result : why_type.
-            --      dyn_prop result /\ post result
+            --    exists result : why_type. post result
 
             return New_Located_Assert
               (Ada_Node => E,
@@ -4718,7 +4739,7 @@ package body Gnat2Why.Subprograms is
                  (Variables => (1 => Result_Id),
                   Labels    => Symbol_Sets.Empty_Set,
                   Var_Type  => Why_Type,
-                  Pred      => New_And_Pred (Dynamic_Prop_Result, Post)),
+                  Pred      => Post),
                Reason   => VC_Feasible_Post,
                Kind     => EW_Assert);
          end;

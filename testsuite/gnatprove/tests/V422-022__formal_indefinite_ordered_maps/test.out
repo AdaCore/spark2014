@@ -12,5 +12,5 @@ test.adb:20:04: info: precondition proved (CVC5: 2 VC)
 test.adb:21:04: info: precondition proved (CVC5: 2 VC)
 test.adb:22:04: info: precondition proved (CVC5: 2 VC)
 test.adb:26:22: info: assertion proved (CVC5: 1 VC)
+test.adb:27:22: info: assertion proved (Z3: 1 VC)
 test.adb:27:22: info: precondition proved (CVC5: 1 VC)
-test.adb:27:22: medium: assertion might fail

@@ -82,21 +82,22 @@ package Recursive_Mergesort with SPARK_Mode is
 
    --  Construct a multiset containing the occurrences of each element in an array
 
-   function Is_Sorted (A : Arr) return Boolean is
-     (for all I in A'Range =>
-        (for all J in A'Range =>
+   function Is_Sorted (A : Arr; F, L : Integer) return Boolean is
+     (for all I in F .. L =>
+        (for all J in F .. L =>
              (if I <= J then A(I) <= A(J))))
-   with Ghost;
-   --  The array is sorted in ascending order
+   with Ghost,
+       Pre => (if F <= L then F in A'Range and L in A'Range);
+   --  A (F .. L) is sorted in ascending order
 
    procedure Merge(A : in out Arr; L, M, R : in Positive) with
      Pre => (L in A'Range and R in A'Range)
        and then L <= R
        and then M in L..R
-       and then Is_Sorted (A (L .. M))
-       and then Is_Sorted (A (M + 1 .. R)),
+       and then Is_Sorted (A, L, M)
+       and then Is_Sorted (A, M + 1, R),
      Post => Occurrences (A, L, R) = Occurrences (A'Old, L, R)
-     and Is_Sorted (A (L .. R))
+     and Is_Sorted (A, L, R)
      and A (A'First .. L - 1) = A'Old (A'First .. L - 1)
      and A (R + 1 .. A'Last) = A'Old (R + 1 .. A'Last);
 
@@ -105,7 +106,7 @@ package Recursive_Mergesort with SPARK_Mode is
      and then (L in A'Range and R in A'Range)
      and then L <= R,
      Post => Occurrences (A, L, R) = Occurrences (A'Old, L, R)
-     and Is_Sorted (A (L .. R))
+     and Is_Sorted (A, L, R)
      and A (A'First .. L - 1) = A'Old (A'First .. L - 1)
      and A (R + 1 .. A'Last) = A'Old (R + 1 .. A'Last),
      Subprogram_Variant => (Increases => L, Decreases => R);
