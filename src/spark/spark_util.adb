@@ -47,6 +47,7 @@ with Output;
 with Pprint;                      use Pprint;
 with SPARK_Definition;            use SPARK_Definition;
 with SPARK_Definition.Annotate;   use SPARK_Definition.Annotate;
+with SPARK_Util;
 with SPARK_Util.Hardcoded;        use SPARK_Util.Hardcoded;
 with SPARK_Util.Subprograms;      use SPARK_Util.Subprograms;
 with SPARK_Util.Types;            use SPARK_Util.Types;
@@ -4601,33 +4602,60 @@ package body SPARK_Util is
                      end loop;
                   end;
 
-               when N_Entry_Call_Statement
+               when N_Assignment_Statement
+                  | N_Entry_Call_Statement
                   | N_Procedure_Call_Statement
                   | N_Raise_Statement
                =>
-                  if Nkind (Stmt) /= N_Entry_Call_Statement then
-                     --  Connect exceptional exits
+                  declare
+                     Exc_Node : Node_Id := Stmt;
+                  begin
+                     --  Assignment statements need special treatment for
+                     --  exception-raising/No_Return only if the RHS is a call
+                     --  to a function with side effects. Identify that case
+                     --  and put function call in Exc_Node (or empty if regular
+                     --  assignment).
 
-                     for Handler in Reachable_Handlers (Stmt).Iterate loop
-                        declare
-                           H_Node  : constant Node_Id :=
-                             Node_Lists.Element (Handler);
-                        begin
-                           Add_Edge (Start,
-                                     (if Nkind (H_Node) = N_Subprogram_Body
-                                      then Body_Exit_Vertex
-                                      else Starting_Vertex
-                                        (First (Statements (H_Node)))));
-                        end;
-                     end loop;
-                  end if;
-                  if Nkind (Stmt) /= N_Raise_Statement
-                    and then not No_Return (Get_Called_Entity (Stmt))
-                  then
-                     --  Connect normal return
+                     if Nkind (Stmt) = N_Assignment_Statement then
+                        Exc_Node := Expression (Stmt);
+                        if Nkind (Exc_Node) /= N_Function_Call
+                          or else not Is_Function_With_Side_Effects
+                            (Get_Called_Entity (Exc_Node))
+                        then
+                           Exc_Node := Empty;
+                        end if;
+                     end if;
 
-                     Add_Edge (Start, Exit_Vertex);
-                  end if;
+                     if Nkind (Stmt) /= N_Entry_Call_Statement
+                       and then Present (Exc_Node)
+                     then
+                        --  Connect exceptional exits
+
+                        for Handler in Reachable_Handlers (Exc_Node).Iterate
+                        loop
+                           declare
+                              H_Node  : constant Node_Id :=
+                                Node_Lists.Element (Handler);
+                           begin
+                              Add_Edge (Start,
+                                        (if Nkind (H_Node) = N_Subprogram_Body
+                                         then Body_Exit_Vertex
+                                         else Starting_Vertex
+                                           (First (Statements (H_Node)))));
+                           end;
+                        end loop;
+                     end if;
+
+                     if Nkind (Stmt) /= N_Raise_Statement
+                       and then not
+                         (Present (Exc_Node)
+                          and then No_Return (Get_Called_Entity (Exc_Node)))
+                     then
+                        --  Connect normal return
+
+                        Add_Edge (Start, Exit_Vertex);
+                     end if;
+                  end;
 
                when N_Exit_Statement =>
                   Add_Edge (Start,
@@ -4743,8 +4771,7 @@ package body SPARK_Util is
 
                   Add_Edge (Start, Body_Exit_Vertex);
 
-               when N_Assignment_Statement
-                  | N_Object_Declaration
+               when N_Object_Declaration
                   | N_Ignored_In_SPARK
                   | N_Itype_Reference
                   | N_Object_Renaming_Declaration
