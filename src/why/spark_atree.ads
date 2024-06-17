@@ -486,14 +486,10 @@ package SPARK_Atree is
    function Enclosing_Statement (N : Node_Id) return Node_Id with
      Pre  => Nkind (N) in N_Elsif_Part
                         | N_Case_Statement_Alternative
-                        | N_Exception_Handler,
-     Post => (if Nkind (N) = N_Elsif_Part
-              then Nkind (Enclosing_Statement'Result) = N_If_Statement
-              elsif  Nkind (N) = N_Case_Statement_Alternative
-              then Nkind (Enclosing_Statement'Result) = N_Case_Statement
-              else Nkind (Enclosing_Statement'Result) =
-                N_Handled_Sequence_Of_Statements);
-   --  Renaming of Parent for parts of conditional statements and handlers
+                        | N_Exception_Handler
+                        | N_Function_Call;
+   --  Renaming of Parent for parts of conditional statements, handlers and
+   --  calls to functions with side-effects.
 
    function Entity (N : Node_Id) return Entity_Id with
      Pre => Nkind (N) in N_Has_Entity

@@ -9684,6 +9684,13 @@ package body Gnat2Why.Expr is
          when N_Procedure_Call_Statement | N_Raise_Statement =>
             Res := +Havoc_Borrowed_And_Check_No_Leaks_From_Scopes
               (Scopes, Starting_Vertex (Stmt_Or_Decl));
+
+         when N_Function_Call =>
+            pragma Assert (Is_Function_With_Side_Effects
+                           (Get_Called_Entity (Stmt_Or_Decl)));
+            Res := +Havoc_Borrowed_And_Check_No_Leaks_From_Scopes
+              (Scopes, Starting_Vertex (Enclosing_Statement (Stmt_Or_Decl)));
+
          when N_Handled_Sequence_Of_Statements =>
             --  This happens because exceptions not handled by sequence of
             --  statements are treated as if handled and re-raised.
@@ -9692,6 +9699,7 @@ package body Gnat2Why.Expr is
 
             Res := +Havoc_Borrowed_And_Check_No_Leaks_From_Scopes
               (Scopes, Vertex_Sets.Empty_Set);
+
          when others =>
             pragma Assert (False);
       end case;
@@ -11283,8 +11291,7 @@ package body Gnat2Why.Expr is
               New_Raise
                 (Ada_Node => Ada_Node,
                  Name     => M_Main.Ada_Exc,
-                 Arg      => +Ex_Name,
-                 Typ      => EW_Unit_Type));
+                 Arg      => +Ex_Name));
 
          --  Create a condition from the elements in Handled_Exc
 

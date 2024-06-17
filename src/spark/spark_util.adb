@@ -36,6 +36,7 @@ with Flow_Refinement;             use Flow_Refinement;
 with Flow_Types;                  use Flow_Types;
 with Flow_Utility;                use Flow_Utility;
 with Flow_Utility.Initialization; use Flow_Utility.Initialization;
+with Ghost;                       use Ghost;
 with GNATCOLL.Utils;              use GNATCOLL.Utils;
 with Gnat2Why.Data_Decomposition; use Gnat2Why.Data_Decomposition;
 with Gnat2Why_Args;
@@ -288,8 +289,8 @@ package body SPARK_Util is
       "="             => Node_Lists."=");
 
    Raise_To_Handlers_Map : Node_To_List_Maps.Map;
-   --  Map from statements that might raise exceptions to a list of handlers
-   --  that are reachable from this statement.
+   --  Map from calls or statements that might raise exceptions to a list of
+   --  handlers that are reachable from this statement.
 
    type Exceptions_And_Flag is record
       Exceptions : Exception_Sets.Set;
@@ -1115,7 +1116,7 @@ package body SPARK_Util is
    -- Collect_Reachable_Handlers --
    --------------------------------
 
-   procedure Collect_Reachable_Handlers (Stmt : Node_Id) is
+   procedure Collect_Reachable_Handlers (Call_Or_Stmt : Node_Id) is
 
       function Is_Body (N : Node_Id) return Boolean is
         (Nkind (N) in N_Entity_Body);
@@ -1123,24 +1124,31 @@ package body SPARK_Util is
       function Enclosing_Body is
         new First_Parent_With_Property (Is_Body);
 
+      Stmt     : constant Node_Id :=
+        (if Nkind (Call_Or_Stmt) = N_Function_Call then
+           Enclosing_Statement_Of_Call_To_Function_With_Side_Effects
+             (Call_Or_Stmt)
+         else Call_Or_Stmt);
       Scop     : Node_Id := Stmt;
       Exc_Set  : Exception_Sets.Set := Get_Raised_Exceptions
-        (Stmt, Only_Handled => False);
+        (Call_Or_Stmt, Only_Handled => False);
+
       Handlers : Node_Lists.List;
 
    begin
-      --  Ghost procedure calls shall never propagate exceptions to non-ghost
-      --  code.
+      --  Ghost function and procedure calls shall never propagate exceptions
+      --  to non-ghost code.
 
-      if Nkind (Stmt) = N_Procedure_Call_Statement then
+      if Is_Ghost_Assignment (Stmt)
+        or else Is_Ghost_Procedure_Call (Stmt)
+      then
          declare
-            Callee : constant Entity_Id := Get_Called_Entity (Stmt);
-            Caller : constant Entity_Id := Unique_Defining_Entity
-              (Enclosing_Body (Stmt));
+            Caller : constant Entity_Id :=
+              Unique_Defining_Entity (Enclosing_Body (Stmt));
          begin
-            if Is_Ghost_Entity (Callee) and then not Is_Ghost_Entity (Caller)
-            then
-               Raise_To_Handlers_Map.Insert (Stmt, Node_Lists.Empty_List);
+            if not Is_Ghost_Entity (Caller) then
+               Raise_To_Handlers_Map.Insert
+                 (Call_Or_Stmt, Node_Lists.Empty_List);
                return;
             end if;
          end;
@@ -1241,7 +1249,7 @@ package body SPARK_Util is
          end loop Outer;
       end if;
 
-      Raise_To_Handlers_Map.Insert (Stmt, Handlers);
+      Raise_To_Handlers_Map.Insert (Call_Or_Stmt, Handlers);
    end Collect_Reachable_Handlers;
 
    -----------------------------
@@ -1561,6 +1569,22 @@ package body SPARK_Util is
          end if;
       end loop;
    end Enclosing_Generic_Instance;
+
+   ---------------------------------------------------------------
+   -- Enclosing_Statement_Of_Call_To_Function_With_Side_Effects --
+   ---------------------------------------------------------------
+
+   function Enclosing_Statement_Of_Call_To_Function_With_Side_Effects
+     (Call : Node_Id)
+      return Node_Id
+   is
+      Par : constant Node_Id := Parent (Call);
+   begin
+      --  For now calls to functions with side effects can only occur in
+      --  assignments.
+      pragma Assert (Nkind (Par) = N_Assignment_Statement);
+      return Par;
+   end Enclosing_Statement_Of_Call_To_Function_With_Side_Effects;
 
    --------------------
    -- Enclosing_Unit --
@@ -2268,9 +2292,10 @@ package body SPARK_Util is
    -- Get_Handled_Exceptions --
    ----------------------------
 
-   function Get_Handled_Exceptions (Stmt : Node_Id) return Exception_Sets.Set
+   function Get_Handled_Exceptions
+     (Call_Or_Stmt : Node_Id)
+      return Exception_Sets.Set
    is
-
       function Is_Body (N : Node_Id) return Boolean is
         (Nkind (N) in N_Entity_Body);
 
@@ -2285,21 +2310,26 @@ package body SPARK_Util is
       function Enclosing_Handler is new
         First_Parent_With_Property (Is_Body_Or_Handler);
 
+      Stmt   : constant Node_Id :=
+        (if Nkind (Call_Or_Stmt) = N_Function_Call then
+           Enclosing_Statement_Of_Call_To_Function_With_Side_Effects
+             (Call_Or_Stmt)
+         else Call_Or_Stmt);
       Scop   : Node_Id := Stmt;
       Result : Exception_Sets.Set := Exception_Sets.Empty_Set;
 
    begin
-      --  Ghost procedure calls shall never propagate exceptions to non-ghost
-      --  code.
+      --  Ghost function and procedure calls shall never propagate exceptions
+      --  to non-ghost code.
 
-      if Nkind (Stmt) = N_Procedure_Call_Statement then
+      if Is_Ghost_Assignment (Stmt)
+        or else Is_Ghost_Procedure_Call (Stmt)
+      then
          declare
-            Callee : constant Entity_Id := Get_Called_Entity (Stmt);
-            Caller : constant Entity_Id := Unique_Defining_Entity
-              (Enclosing_Body (Stmt));
+            Caller : constant Entity_Id :=
+              Unique_Defining_Entity (Enclosing_Body (Stmt));
          begin
-            if Is_Ghost_Entity (Callee) and then not Is_Ghost_Entity (Caller)
-            then
+            if not Is_Ghost_Entity (Caller) then
                return Result;
             end if;
          end;
@@ -2475,7 +2505,7 @@ package body SPARK_Util is
    ---------------------------
 
    function Get_Raised_Exceptions
-     (Stmt         : Node_Id;
+     (Call_Or_Stmt : Node_Id;
       Only_Handled : Boolean)
       return Exception_Sets.Set
    is
@@ -2488,19 +2518,16 @@ package body SPARK_Util is
       Result : Exception_Sets.Set;
 
    begin
-      case Nkind (Stmt) is
-         when N_Procedure_Call_Statement
-            | N_Function_Call
+      case Nkind (Call_Or_Stmt) is
+         when N_Function_Call
+            | N_Procedure_Call_Statement
          =>
-            declare
-               Callee : constant Entity_Id := Get_Called_Entity (Stmt);
-            begin
-               Result := Get_Exceptions_For_Subp (Callee);
-            end;
+            Result :=
+              Get_Exceptions_For_Subp (Get_Called_Entity (Call_Or_Stmt));
 
          when N_Raise_Statement =>
-            if Present (Name (Stmt)) then
-               Result := Exception_Sets.Exactly (Entity (Name (Stmt)));
+            if Present (Name (Call_Or_Stmt)) then
+               Result := Exception_Sets.Exactly (Entity (Name (Call_Or_Stmt)));
 
             --  For reraise statements, get the set of raised exceptions from
             --  the Raised_Exceptions map. Also set the associated Is_Blocked
@@ -2509,7 +2536,8 @@ package body SPARK_Util is
 
             else
                declare
-                  Handler  : constant Node_Id := Enclosing_Handler (Stmt);
+                  Handler  : constant Node_Id :=
+                    Enclosing_Handler (Call_Or_Stmt);
                   Position : Node_To_Exceptions.Cursor;
                   Inserted : Boolean;
 
@@ -2533,7 +2561,7 @@ package body SPARK_Util is
       end case;
 
       if Only_Handled then
-         Result.Intersection (Get_Handled_Exceptions (Stmt));
+         Result.Intersection (Get_Handled_Exceptions (Call_Or_Stmt));
       end if;
 
       return Result;
@@ -5533,8 +5561,11 @@ package body SPARK_Util is
    -- Reachable_Handlers --
    ------------------------
 
-   function Reachable_Handlers (Stmt : Node_Id) return Node_Lists.List is
-      (Raise_To_Handlers_Map (Stmt));
+   function Reachable_Handlers
+     (Call_Or_Stmt : Node_Id)
+      return Node_Lists.List
+   is
+      (Raise_To_Handlers_Map (Call_Or_Stmt));
 
    ----------------
    -- Real_Image --
