@@ -2,6 +2,11 @@ package Logical_Equality_Implementation with SPARK_Mode is
 
    --  Scalar types
 
+   type My_Bool is new Boolean;
+   function Eq (X, Y : My_Bool) return Boolean is
+     (X = Y)
+   with Annotate => (GNATprove, Logical_Equal);
+
    type My_Int is range 1 .. 100;
    function Eq (X, Y : My_Int) return Boolean is
      (X = Y)
@@ -29,17 +34,20 @@ package Logical_Equality_Implementation with SPARK_Mode is
      (X = Y and then X'First = Y'First and then X'Last = Y'Last)
    with Annotate => (GNATprove, Logical_Equal);
 
-   type My_Rec is record
-      F : My_Int;
-      G : My_Mod;
-      H : My_Float;
-      A : Constr_Arr;
+   type My_Rec (D : My_Bool) is record
+      case D is
+	 when True =>
+           F : My_Int;
+           G : My_Mod;
+	 when False =>
+           H : My_Float;
+           A : Constr_Arr;
+      end case;
    end record;
    function Eq (X, Y : My_Rec) return Boolean is
-     (Eq (X.F, Y.F)
-      and then Eq (X.G, Y.G)
-      and then Eq (X.H, Y.H)
-      and then Eq (X.A, Y.A))
+     (Eq (X.D, Y.D) and then
+       (if X.D then Eq (X.F, Y.F) and then Eq (X.G, Y.G)
+        else Eq (X.H, Y.H) and then Eq (X.A, Y.A)))
    with Annotate => (GNATprove, Logical_Equal);
 
 end Logical_Equality_Implementation;

@@ -4,9 +4,19 @@ logical_equality_implementation.ads:11:13: info: implicit aspect Always_Terminat
 logical_equality_implementation.ads:13:09: info: Inline_For_Proof or Logical_Equal annotation proved
 logical_equality_implementation.ads:16:13: info: implicit aspect Always_Terminates on "Eq" has been proved, subprogram will terminate
 logical_equality_implementation.ads:18:09: info: Inline_For_Proof or Logical_Equal annotation proved
-logical_equality_implementation.ads:23:13: info: implicit aspect Always_Terminates on "Eq" has been proved, subprogram will terminate
-logical_equality_implementation.ads:25:09: info: Inline_For_Proof or Logical_Equal annotation proved
+logical_equality_implementation.ads:21:13: info: implicit aspect Always_Terminates on "Eq" has been proved, subprogram will terminate
+logical_equality_implementation.ads:23:09: info: Inline_For_Proof or Logical_Equal annotation proved
 logical_equality_implementation.ads:28:13: info: implicit aspect Always_Terminates on "Eq" has been proved, subprogram will terminate
 logical_equality_implementation.ads:30:09: info: Inline_For_Proof or Logical_Equal annotation proved
-logical_equality_implementation.ads:38:13: info: implicit aspect Always_Terminates on "Eq" has been proved, subprogram will terminate
-logical_equality_implementation.ads:43:09: info: Inline_For_Proof or Logical_Equal annotation proved
+logical_equality_implementation.ads:33:13: info: implicit aspect Always_Terminates on "Eq" has been proved, subprogram will terminate
+logical_equality_implementation.ads:35:09: info: Inline_For_Proof or Logical_Equal annotation proved
+logical_equality_implementation.ads:47:13: info: implicit aspect Always_Terminates on "Eq" has been proved, subprogram will terminate
+logical_equality_implementation.ads:49:26: info: discriminant check proved
+logical_equality_implementation.ads:49:31: info: discriminant check proved
+logical_equality_implementation.ads:49:49: info: discriminant check proved
+logical_equality_implementation.ads:49:54: info: discriminant check proved
+logical_equality_implementation.ads:50:19: info: discriminant check proved
+logical_equality_implementation.ads:50:24: info: discriminant check proved
+logical_equality_implementation.ads:50:42: info: discriminant check proved
+logical_equality_implementation.ads:50:47: info: discriminant check proved
+logical_equality_implementation.ads:51:09: info: Inline_For_Proof or Logical_Equal annotation proved
