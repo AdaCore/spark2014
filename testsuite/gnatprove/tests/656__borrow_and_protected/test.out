@@ -1,0 +1,77 @@
+p.adb:8:16: info: implicit aspect Always_Terminates on "F2" has been proved, subprogram will terminate
+p.adb:26:10: error: "X" is not readable
+p.adb:26:10: error: launch "gnatprove --explain=E0010" for more information
+p.adb:26:10: error: object was moved at line 24 [E0010]
+p.adb:26:10: warning: statement has no effect
+p.adb:30:17: error: launch "gnatprove --explain=E0010" for more information
+p.adb:30:17: error: object was moved at line 31 [E0010]
+p.adb:30:17: error: return from "P3" with moved value for "X"
+p.adb:34:12: warning: unused assignment
+p.adb:34:15: error: "X" is not readable
+p.adb:34:15: error: launch "gnatprove --explain=E0010" for more information
+p.adb:34:15: error: object was moved at line 31 [E0010]
+p.adb:35:12: warning: unused assignment
+p.adb:35:15: error: "X" is not readable
+p.adb:35:15: error: launch "gnatprove --explain=E0010" for more information
+p.adb:35:15: error: object was moved at line 31 [E0010]
+p.adb:38:17: error: launch "gnatprove --explain=E0010" for more information
+p.adb:38:17: error: object was moved at line 39 [E0010]
+p.adb:38:17: error: return from "IP1" with moved value for "X"
+p.adb:47:10: error: "X" is not readable
+p.adb:47:10: error: launch "gnatprove --explain=E0010" for more information
+p.adb:47:10: error: object was moved at line 45 [E0010]
+p.adb:47:10: warning: statement has no effect
+p.adb:51:17: error: launch "gnatprove --explain=E0010" for more information
+p.adb:51:17: error: object was moved at line 52 [E0010]
+p.adb:51:17: error: return from "IP3" with moved value for "X"
+p.adb:55:12: warning: unused assignment
+p.adb:55:15: error: "X" is not readable
+p.adb:55:15: error: launch "gnatprove --explain=E0010" for more information
+p.adb:55:15: error: object was moved at line 52 [E0010]
+p.adb:56:12: warning: unused assignment
+p.adb:56:15: error: "X" is not readable
+p.adb:56:15: error: launch "gnatprove --explain=E0010" for more information
+p.adb:56:15: error: object was moved at line 52 [E0010]
+p.ads:8:16: info: implicit aspect Always_Terminates on "F1" has been proved, subprogram will terminate
+p.ads:9:17: error: launch "gnatprove --explain=E0010" for more information
+p.ads:9:17: error: object was moved at p.adb:18 [E0010]
+p.ads:9:17: error: return from "P1" with moved value for "X"
+p2.adb:8:16: info: implicit aspect Always_Terminates on "F2" has been proved, subprogram will terminate
+p2.adb:26:10: error: "X" is not readable
+p2.adb:26:10: error: launch "gnatprove --explain=E0010" for more information
+p2.adb:26:10: error: object was moved at line 24 [E0010]
+p2.adb:26:10: warning: statement has no effect
+p2.adb:30:17: error: launch "gnatprove --explain=E0010" for more information
+p2.adb:30:17: error: object was moved at line 31 [E0010]
+p2.adb:30:17: error: return from "P3" with moved value for "X"
+p2.adb:34:12: warning: unused assignment
+p2.adb:34:15: error: "X" is not readable
+p2.adb:34:15: error: launch "gnatprove --explain=E0010" for more information
+p2.adb:34:15: error: object was moved at line 31 [E0010]
+p2.adb:35:12: warning: unused assignment
+p2.adb:35:15: error: "X" is not readable
+p2.adb:35:15: error: launch "gnatprove --explain=E0010" for more information
+p2.adb:35:15: error: object was moved at line 31 [E0010]
+p2.adb:38:17: error: launch "gnatprove --explain=E0010" for more information
+p2.adb:38:17: error: object was moved at line 39 [E0010]
+p2.adb:38:17: error: return from "IP1" with moved value for "X"
+p2.adb:47:10: error: "X" is not readable
+p2.adb:47:10: error: launch "gnatprove --explain=E0010" for more information
+p2.adb:47:10: error: object was moved at line 45 [E0010]
+p2.adb:47:10: warning: statement has no effect
+p2.adb:51:17: error: launch "gnatprove --explain=E0010" for more information
+p2.adb:51:17: error: object was moved at line 52 [E0010]
+p2.adb:51:17: error: return from "IP3" with moved value for "X"
+p2.adb:55:12: warning: unused assignment
+p2.adb:55:15: error: "X" is not readable
+p2.adb:55:15: error: launch "gnatprove --explain=E0010" for more information
+p2.adb:55:15: error: object was moved at line 52 [E0010]
+p2.adb:56:12: warning: unused assignment
+p2.adb:56:15: error: "X" is not readable
+p2.adb:56:15: error: launch "gnatprove --explain=E0010" for more information
+p2.adb:56:15: error: object was moved at line 52 [E0010]
+p2.ads:8:16: info: implicit aspect Always_Terminates on "F1" has been proved, subprogram will terminate
+p2.ads:9:17: error: launch "gnatprove --explain=E0010" for more information
+p2.ads:9:17: error: object was moved at p2.adb:18 [E0010]
+p2.ads:9:17: error: return from "P1" with moved value for "X"
+gnatprove: error during flow analysis and proof
