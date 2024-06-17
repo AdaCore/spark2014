@@ -68,6 +68,12 @@ project GNATprove is
 
    package Analyzer is
 
+      for Review_File use "analyzer/gnatprove.sar";
+
+      --  Relocate outputs outside of object directory because that one is
+      --  cached in CIs and we do not want to store baselines in the cache.
+      for Output_Dir use "analyzer";
+
       --  Exclude source files leading to false positives
       for Excluded_Source_Files use
         ("assumptions.ads",
@@ -80,8 +86,6 @@ project GNATprove is
        "--no-gnatcheck");
       for Switches ("infer") use ("--disable-issue-type", "MEMORY_LEAK_ADA");
       for Switches ("inspector") use ("--legacy-level", "1", "-gnatws");
-
-      for Review_File use "gnatprove.sar";
 
    end Analyzer;
 
