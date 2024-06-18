@@ -6,7 +6,7 @@ procedure Empty is
 
    procedure Signed with Pre => True is
       type T is array (Integer range <>) of Integer;
-      X : T := [];  --  @RANGE_CHECK:FAIL
+      X : T := [];
    begin
       null;
    end;
@@ -14,7 +14,7 @@ procedure Empty is
    procedure Unsigned with Pre => True is
       type Index is mod 4;
       type T is array (Index range <>) of Integer;
-      X : T := [];  --  @RANGE_CHECK:FAIL
+      X : T := [];
    begin
       null;
    end;
@@ -22,7 +22,7 @@ procedure Empty is
    procedure Enum with Pre => True is
       type Index is (A,B,C);
       type T is array (Index range <>) of Integer;
-      X : T := [];  --  @RANGE_CHECK:FAIL
+      X : T := [];
    begin
       null;
    end;
@@ -33,7 +33,7 @@ procedure Empty is
 
    procedure Signed2 with Pre => True is
       type T is array (Natural range <>, Integer range <>) of Integer;
-      X : T := [];  --  @RANGE_CHECK:FAIL
+      X : T := [];
    begin
       null;
    end;
@@ -41,7 +41,7 @@ procedure Empty is
    procedure Unsigned2 with Pre => True is
       type Index is mod 4;
       type T is array (Natural range <>, Index range <>) of Integer;
-      X : T := [];  --  @RANGE_CHECK:FAIL
+      X : T := [];
    begin
       null;
    end;
@@ -49,7 +49,7 @@ procedure Empty is
    procedure Enum2 with Pre => True is
       type Index is (A,B,C);
       type T is array (Natural range <>, Index range <>) of Integer;
-      X : T := [];  --  @RANGE_CHECK:FAIL
+      X : T := [];
    begin
       null;
    end;
