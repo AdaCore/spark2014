@@ -239,6 +239,9 @@ spark03b.ads:4:13: error: object was moved at spark03b.adb:6 [E0010]
 spark03b.ads:4:13: error: return from "Insert" with moved value for "An_Item"
 spark03b.ads:4:21: warning: "An_Item" is not modified, could be IN
 spark03b.ads:5:07: info: flow dependencies proved
+spark03b.ads:6:13: error: launch "gnatprove --explain=E0010" for more information
+spark03b.ads:6:13: error: object was moved at spark03b.adb:10 [E0010]
+spark03b.ads:6:13: error: return from "Remove" with moved value for "S"
 spark03b.ads:6:21: info: initialization of "An_Item" proved
 spark03b.ads:17:24: info: data dependencies proved
 spark03b.ads:17:63: info: initialization of "Z" proved
@@ -247,6 +250,9 @@ spark03c.ads:7:13: error: launch "gnatprove --explain=E0010" for more informatio
 spark03c.ads:7:13: error: object was moved at spark03c.adb:6 [E0010]
 spark03c.ads:7:13: error: return from "Insert" with moved value for "An_Item"
 spark03c.ads:7:21: warning: "An_Item" is not modified, parameter type could be rewritten as 'access constant Integer'
+spark03c.ads:8:13: error: launch "gnatprove --explain=E0010" for more information
+spark03c.ads:8:13: error: object was moved at spark03c.adb:10 [E0010]
+spark03c.ads:8:13: error: return from "Remove" with moved value for "S"
 spark03c.ads:8:21: info: initialization of "An_Item" proved
 spark03c.ads:19:24: info: data dependencies proved
 spark03c.ads:19:63: info: initialization of "Z" proved

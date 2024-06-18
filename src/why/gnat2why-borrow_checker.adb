@@ -28,6 +28,7 @@ with Ada.Unchecked_Deallocation;
 with Atree;                     use Atree;
 with Checked_Types;             use Checked_Types;
 with Common_Containers;         use Common_Containers;
+with Common_Iterators;          use Common_Iterators;
 with Einfo.Entities;            use Einfo.Entities;
 with Einfo.Utils;               use Einfo.Utils;
 with Errout_Wrapper;            use Errout_Wrapper;
@@ -937,6 +938,11 @@ package body Gnat2Why.Borrow_Checker is
    --  subprogram indeed have Read_Write permission at the end of the
    --  subprogram execution.
 
+   procedure Return_Protected_Components (Subp : Entity_Id);
+   --  Takes a protecture procedure or entry as input, and checks that all
+   --  protected components of the corresponding implicit parameter indeed
+   --  have Read_Write permission at the end of the subprogram execution.
+
    procedure Set_Environment_For_Exceptions (Call_Or_Stmt : Node_Id);
    --  If Call_Or_Stmt raises handled exceptions, merge the environment
    --  into the appropriate handlers accumulators and/or exit the enclosing
@@ -1504,6 +1510,10 @@ package body Gnat2Why.Borrow_Checker is
       procedure Check_Param (Formal : Entity_Id; Actual : Node_Id);
       --  Check the permission of every actual parameter
 
+      procedure Check_Protected_Components (Subp : Entity_Id);
+      --  Check the permission of the implicit parameter of an internal call to
+      --  a protected procedure or entry.
+
       procedure Update_Param (Formal : Entity_Id; Actual : Node_Id);
       --  Update the permission of OUT actual parameters
 
@@ -1520,6 +1530,57 @@ package body Gnat2Why.Borrow_Checker is
             Subp       => Subp,
             Global_Var => False);
       end Check_Param;
+
+      --------------------------------
+      -- Check_Protected_Components --
+      --------------------------------
+
+      procedure Check_Protected_Components (Subp : Entity_Id) is
+
+         procedure Check_Component (Comp : Entity_Id);
+         --  Apply check to component of protected object
+
+         ---------------------
+         -- Check_Component --
+         ---------------------
+
+         procedure Check_Component (Comp : Entity_Id) is
+         begin
+            Check_Parameter_Or_Global
+              (Expr       => (Is_Ent => True, Ent => Comp, Loc => Call),
+               Typ        => Retysp (Etype (Comp)),
+               Kind       => E_In_Out_Parameter,
+               Subp       => Subp,
+               Global_Var => False);
+         end Check_Component;
+
+         --  Local variables
+
+         Typ : constant Entity_Id := Scope (Subp);
+      begin
+         --  The protected object is an implicit input-output of protected
+         --  procedures and entries.
+         pragma Assert (Ekind (Subp) in E_Procedure | E_Entry);
+
+         declare
+            Comp : Entity_Id := First_Component_Or_Discriminant (Typ);
+         begin
+            while Present (Comp) loop
+               Check_Component (Comp);
+               Next_Component_Or_Discriminant (Comp);
+            end loop;
+         end;
+
+         declare
+            Anon_Obj : constant Entity_Id := Anonymous_Object (Scope (Subp));
+         begin
+            if Present (Anon_Obj) then
+               for Comp of Iter (Part_Of_Constituents (Anon_Obj)) loop
+                  Check_Component (Comp);
+               end loop;
+            end if;
+         end;
+      end Check_Protected_Components;
 
       ------------------
       -- Update_Param --
@@ -1550,6 +1611,15 @@ package body Gnat2Why.Borrow_Checker is
       Inside_Procedure_Call := True;
       Check_Params (Call);
       Check_Globals (Get_Called_Entity (Call), Call);
+
+      --  For operations directly inside protected objects, check the
+      --  permission of protected components on internal calls.
+
+      if Ekind (Scope (Subp)) = E_Protected_Type
+        and then not Is_External_Call (Call)
+      then
+         Check_Protected_Components (Subp);
+      end if;
 
       Inside_Procedure_Call := False;
       Update_Params (Call);
@@ -1626,6 +1696,13 @@ package body Gnat2Why.Borrow_Checker is
       then
          Return_Parameters (Id);
          Return_Globals (Id);
+
+         --  For operations directly inside protected objects, check the
+         --  permission of protected components on return.
+
+         if Ekind (Scope (Id)) = E_Protected_Type then
+            Return_Protected_Components (Id);
+         end if;
       end if;
 
       --  Restore the saved environment and free the current one
@@ -2237,6 +2314,12 @@ package body Gnat2Why.Borrow_Checker is
          procedure Read_Param (Formal : Entity_Id; Actual : Node_Id);
          --  Call Read_Expression on the actual
 
+         procedure Read_Protected_Components
+           (Subp : Entity_Id;
+            Call : Node_Id);
+         --  Read the implicit parameter of an internal call to a protected
+         --  function.
+
          ----------------
          -- Read_Param --
          ----------------
@@ -2246,6 +2329,59 @@ package body Gnat2Why.Borrow_Checker is
          begin
             Read_Expression (Actual);
          end Read_Param;
+
+         -------------------------------
+         -- Read_Protected_Components --
+         -------------------------------
+
+         procedure Read_Protected_Components
+           (Subp : Entity_Id;
+            Call : Node_Id)
+         is
+            procedure Read_Component (Comp : Entity_Id);
+            --  Read component of protected object
+
+            --------------------
+            -- Read_Component --
+            --------------------
+
+            procedure Read_Component (Comp : Entity_Id) is
+            begin
+               Check_Parameter_Or_Global
+                 (Expr       => (Is_Ent => True, Ent => Comp, Loc => Call),
+                  Typ        => Retysp (Etype (Comp)),
+                  Kind       => E_In_Parameter,
+                  Subp       => Subp,
+                  Global_Var => False);
+            end Read_Component;
+
+            --  Local variables
+            Typ : constant Entity_Id := Scope (Subp);
+         begin
+            --  The protected object is an implicit input of protected
+            --  functions.
+            pragma Assert (Ekind (Subp) = E_Function);
+
+            declare
+               Comp : Entity_Id := First_Component_Or_Discriminant (Typ);
+            begin
+               while Present (Comp) loop
+                  Read_Component (Comp);
+                  Next_Component_Or_Discriminant (Comp);
+               end loop;
+            end;
+
+            declare
+               Anon_Obj : constant Entity_Id :=
+                 Anonymous_Object (Scope (Subp));
+            begin
+               if Present (Anon_Obj) then
+                  for Comp of Iter (Part_Of_Constituents (Anon_Obj)) loop
+                     Read_Component (Comp);
+                  end loop;
+               end if;
+            end;
+         end Read_Protected_Components;
 
          procedure Read_Params is new Iterate_Call_Parameters (Read_Param);
 
@@ -2306,6 +2442,15 @@ package body Gnat2Why.Borrow_Checker is
 
                   Read_Params (Expr);
                   Check_Globals (Fun, Expr);
+
+                  --  For operations directly inside protected objects, check
+                  --  the permission of protected components on internal calls.
+
+                  if Ekind (Scope (Fun)) = E_Protected_Type
+                    and then not Is_External_Call (Expr)
+                  then
+                     Read_Protected_Components (Fun, Expr);
+                  end if;
                end;
 
             when N_Qualified_Expression
@@ -6038,6 +6183,58 @@ package body Gnat2Why.Borrow_Checker is
       end loop;
    end Return_Parameters;
 
+   ---------------------------------
+   -- Return_Protected_Components --
+   ---------------------------------
+
+   procedure Return_Protected_Components (Subp : Entity_Id) is
+
+      procedure Return_Component (Comp : Entity_Id);
+      --  Return component of protected object
+
+      ----------------------
+      -- Return_Component --
+      ----------------------
+
+      procedure Return_Component (Comp : Entity_Id) is
+      begin
+         Return_Parameter_Or_Global
+           (Id          => Comp,
+            Typ         => Retysp (Etype (Comp)),
+            Kind        => E_In_Out_Parameter,
+            Subp        => Subp,
+            Global_Var  => False,
+            Exceptional => False);
+      end Return_Component;
+
+      --  Local variables
+
+      Typ : constant Entity_Id := Scope (Subp);
+   begin
+      --  The protected object is an implicit input of protected functions, and
+      --  an implicit input-output of protected procedures and entries.
+      pragma Assert (Ekind (Subp) in E_Procedure | E_Entry);
+
+      declare
+         Comp : Entity_Id := First_Component_Or_Discriminant (Typ);
+      begin
+         while Present (Comp) loop
+            Return_Component (Comp);
+            Next_Component_Or_Discriminant (Comp);
+         end loop;
+      end;
+
+      declare
+         Anon_Obj : constant Entity_Id := Anonymous_Object (Scope (Subp));
+      begin
+         if Present (Anon_Obj) then
+            for Comp of Iter (Part_Of_Constituents (Anon_Obj)) loop
+               Return_Component (Comp);
+            end loop;
+         end if;
+      end;
+   end Return_Protected_Components;
+
    -------------------------------------
    -- Set_Environment_For_Exceptions --
    -------------------------------------
@@ -6958,13 +7155,31 @@ package body Gnat2Why.Borrow_Checker is
    --------------------------------
 
    procedure Setup_Protected_Components (Subp : Entity_Id) is
+
+      procedure Setup_Component (Comp : Entity_Id; Kind : Formal_Kind);
+      --  Setup for component of protected object
+
+      ---------------------
+      -- Setup_Component --
+      ---------------------
+
+      procedure Setup_Component (Comp : Entity_Id; Kind : Formal_Kind) is
+      begin
+         Setup_Parameter_Or_Global
+           (Id         => Comp,
+            Typ        => Retysp (Etype (Comp)),
+            Kind       => Kind,
+            Subp       => Subp,
+            Global_Var => False,
+            Expl       => Comp);
+      end Setup_Component;
+
+      --  Local variables
+
       Typ  : constant Entity_Id := Scope (Subp);
-      Comp : Entity_Id;
       Kind : Formal_Kind;
 
    begin
-      Comp := First_Component_Or_Discriminant (Typ);
-
       --  The protected object is an implicit input of protected functions, and
       --  an implicit input-output of protected procedures and entries.
 
@@ -6974,17 +7189,24 @@ package body Gnat2Why.Borrow_Checker is
          Kind := E_In_Out_Parameter;
       end if;
 
-      while Present (Comp) loop
-         Setup_Parameter_Or_Global
-           (Id         => Comp,
-            Typ        => Retysp (Etype (Comp)),
-            Kind       => Kind,
-            Subp       => Subp,
-            Global_Var => False,
-            Expl       => Comp);
+      declare
+         Comp : Entity_Id := First_Component_Or_Discriminant (Typ);
+      begin
+         while Present (Comp) loop
+            Setup_Component (Comp, Kind);
+            Next_Component_Or_Discriminant (Comp);
+         end loop;
+      end;
 
-         Next_Component_Or_Discriminant (Comp);
-      end loop;
+      declare
+         Anon_Obj : constant Entity_Id := Anonymous_Object (Scope (Subp));
+      begin
+         if Present (Anon_Obj) then
+            for Comp of Iter (Part_Of_Constituents (Anon_Obj)) loop
+               Setup_Component (Comp, Kind);
+            end loop;
+         end if;
+      end;
    end Setup_Protected_Components;
 
 end Gnat2Why.Borrow_Checker;
