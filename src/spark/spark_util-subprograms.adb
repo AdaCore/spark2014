@@ -35,6 +35,7 @@ with Flow_Refinement;                use Flow_Refinement;
 with Flow_Types;                     use Flow_Types;
 with Flow_Utility;                   use Flow_Utility;
 with Rtsfind;                        use Rtsfind;
+with Sem_Aux;
 with Sem_Ch12;                       use Sem_Ch12;
 with Sem_Eval;                       use Sem_Eval;
 with Sem_Prag;                       use Sem_Prag;
@@ -915,25 +916,34 @@ package body SPARK_Util.Subprograms is
       else
 
          --  Look at the type from which the partial view of Ty is derived. If
-         --  its the type of the overridden primitive, the partial view can be
-         --  used. Otherwise, use the full view.
-         --  ??? This is not ideal as we might reject calls to the wrapper
-         --  if E is available in Par but Ty's full view derives from something
-         --  else. However, E cannot be accepted in this case as it would
-         --  break the translation later. Also, this is consistent with what
-         --  we do with other inherited primitives in that case.
+         --  there is such a type, and it declares an ancestor subprogram of
+         --  E, then we consider the function to be declared along with the
+         --  partial view. Otherwise, consider it to be declared along with the
+         --  full view.
 
          declare
-            Par : constant Entity_Id := Parent_Type (Ty);
+            Par      : constant Entity_Id := Parent_Type (Ty);
+            Inh_Subp : Entity_Id := E;
          begin
-            if No (Par)
-              or else Unique_Entity
-                (Etype (Ultimate_Alias (Overridden_Operation (E))))
-              /= Unique_Entity (Par)
-            then
+            pragma Assert (Present (Par));
+            if Par = Ty then
                return F_Ty;
             else
-               return Ty;
+
+               --  Walk the chain of ancestors subprogram to look for one at
+               --  the parent level. If we find one, return partial view.
+
+               loop
+                  Inh_Subp := Overridden_Operation (Inh_Subp);
+                  exit when No (Inh_Subp);
+                  Inh_Subp := Ultimate_Alias (Inh_Subp);
+                  exit when No (Inh_Subp);
+                  if Unique_Entity (Par) = Unique_Entity (Etype (Inh_Subp))
+                  then
+                     return Ty;
+                  end if;
+               end loop;
+               return F_Ty;
             end if;
          end;
       end if;
