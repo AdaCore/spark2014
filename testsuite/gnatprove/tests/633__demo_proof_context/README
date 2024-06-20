@@ -1,0 +1,16 @@
+Steps to go from initial to final version, illustrating SPARK features for
+managing proof context:
+
+- remove "range 1 .. 10" from definition of Index subtype. As a result,
+  assertion in Q does not prove anymore.
+- add lemma Lemma_Prove_Sorted_Alt and call it from Q. Assertion is proved.
+- extract first loop in lemma into local ghost procedure Local_Proc that
+  gets inlined. Show message with --info.
+- add Hide_Info on Is_Sorted. Show effect on proof of P and Q.
+- add Unhide_Info for Is_Sorted where needed. All is proved.
+- add Hide_Info on Is_Sorted_Alt. Show effect on proof of P and Q.
+- add Unhide_Info for Is_Sorted_Alt where needed. All is proved.
+- add dependency on SPARK.Cut_Operations in Q and assertions with By or So.
+  Show proved check messages for premise and step.
+- add Assert_And_Cut in Q. Assertion is not proved anymore.
+- add Automatic_Instantiation on lemma. All is proved.

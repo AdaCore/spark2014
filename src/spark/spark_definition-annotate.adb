@@ -574,7 +574,7 @@ package body SPARK_Definition.Annotate is
      (Msg   : String;
       N     : Node_Or_Entity_Id;
       Names : Node_Lists.List := Node_Lists.Empty;
-      Kind  : Msg_Kind := MK_Error;
+      Kind  : Msg_Severity := Error_Kind;
       Continuations : Message_Lists.List := Message_Lists.Empty);
    --  Wrapper for Error_Msg_N that conditionally emit message depending
    --  on phase.
@@ -583,7 +583,7 @@ package body SPARK_Definition.Annotate is
      (Msg : String;
       N   : Node_Or_Entity_Id;
       E   : Node_Or_Entity_Id;
-      Kind  : Msg_Kind := MK_Error;
+      Kind  : Msg_Severity := Error_Kind;
       Continuations : Message_Lists.List := Message_Lists.Empty);
    --  Wrapper for Error_Msg_NE that conditionally emit message depending
    --  on phase.
@@ -1997,7 +1997,7 @@ package body SPARK_Definition.Annotate is
            ("automatically instantiated lemma is not annotated with"
             & " Higher_Order_Specialization",
             Lemma,
-            Kind => MK_Warning,
+            Kind => Warning_Kind,
             Continuations =>
               [Create
                    ("it will not be automatically instantiated on"
@@ -2071,7 +2071,7 @@ package body SPARK_Definition.Annotate is
                         & "& which cannot be arbitrarily specialized",
                         Lemma,
                         Fun,
-                        Kind => MK_Warning,
+                        Kind => Warning_Kind,
                         Continuations =>
                           [Create
                              ("it will not be automatically instantiated on"
@@ -2102,7 +2102,7 @@ package body SPARK_Definition.Annotate is
                         & "calls to & with different specializations",
                         Lemma,
                         Fun,
-                        Kind => MK_Warning,
+                        Kind => Warning_Kind,
                         Continuations =>
                           [Create
                             ("it will not be automatically instantiated on"
@@ -2190,7 +2190,7 @@ package body SPARK_Definition.Annotate is
                & "specializable calls to &",
                Lemma,
                Fun,
-               Kind => MK_Warning,
+               Kind => Warning_Kind,
                Continuations =>
                  [Create
                     ("it will not be automatically instantiated on"
@@ -5005,7 +5005,7 @@ package body SPARK_Definition.Annotate is
                  ("no ""Length"" function found for type with "
                   & "predefined set aggregates &",
                   Typ,
-                  Kind => MK_Info,
+                  Kind => Info_Kind,
                   Continuations =>
                     [Create
                          ("the cardinality of aggregates will be unknown")]);
@@ -5094,7 +5094,7 @@ package body SPARK_Definition.Annotate is
                  ("no ""Length"" function found for type with "
                   & "predefined map aggregates &",
                   Typ,
-                  Kind => MK_Info,
+                  Kind => Info_Kind,
                   Continuations =>
                     [Create
                          ("the cardinality of aggregates will be unknown")]);
@@ -5500,7 +5500,7 @@ package body SPARK_Definition.Annotate is
             Error_Msg_N_If
               (Warning_Message (Warn_Pragma_Annotate_No_Check),
                Prag,
-               Kind => MK_Warning);
+               Kind => Warning_Kind);
          end if;
       end loop;
 
@@ -5509,7 +5509,7 @@ package body SPARK_Definition.Annotate is
             Error_Msg_N_If
               (Warning_Message (Warn_Pragma_Annotate_Proved_Check),
                Prag,
-               Kind => MK_Warning);
+               Kind => Warning_Kind);
          end if;
       end loop;
    end Generate_Useless_Pragma_Annotate_Warnings;
@@ -6315,7 +6315,7 @@ package body SPARK_Definition.Annotate is
                Error_Msg_N
                  ("no reclamation function nor reclaimed value found "
                   & "for type with ownership &", E,
-                  Kind => MK_Info,
+                  Kind => Info_Kind,
                   Continuations =>
                     ["checks for ressource or memory reclamation will be"
                      & " unprovable"]);
@@ -6360,7 +6360,7 @@ package body SPARK_Definition.Annotate is
                Error_Msg_N
                  ("no null value found for type with predefined equality &",
                   E,
-                  Kind => MK_Info,
+                  Kind => Info_Kind,
                   Continuations =>
                     ["consider annotating a constant with a pragma Annotate "
                      & "('G'N'A'Tprove, Predefined_Equality, ""Null_Value"""
@@ -6687,7 +6687,7 @@ package body SPARK_Definition.Annotate is
          Error_Msg_N_If
            (Warning_Message (Warn_Pragma_External_Axiomatization),
             Prag,
-            Kind => MK_Warning);
+            Kind => Warning_Kind);
          return;
 
       elsif Name in "always_return" | "terminating" | "might_not_return" then
@@ -6722,7 +6722,7 @@ package body SPARK_Definition.Annotate is
             Error_Msg_N_If
               (Warning_Message (Warn_Pragma_Annotate_Terminating),
                Prag,
-               Kind => MK_Warning,
+               Kind => Warning_Kind,
                Continuations => Conts);
          end;
          return;
@@ -6974,7 +6974,7 @@ package body SPARK_Definition.Annotate is
      (Msg   : String;
       N     : Node_Or_Entity_Id;
       Names : Node_Lists.List := Node_Lists.Empty;
-      Kind  : Msg_Kind := MK_Error;
+      Kind  : Msg_Severity := Error_Kind;
       Continuations : Message_Lists.List := Message_Lists.Empty) is
    begin
       if Emit_Messages then
@@ -6993,7 +6993,7 @@ package body SPARK_Definition.Annotate is
      (Msg : String;
       N   : Node_Or_Entity_Id;
       E   : Node_Or_Entity_Id;
-      Kind  : Msg_Kind := MK_Error;
+      Kind  : Msg_Severity := Error_Kind;
       Continuations : Message_Lists.List := Message_Lists.Empty) is
    begin
       Error_Msg_N_If (Msg,

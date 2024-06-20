@@ -17,7 +17,7 @@ ring_buf.ads:38:13: info: implicit aspect Always_Terminates on "To_Model" has be
 ring_buf.ads:41:11: info: range check proved (CVC5: 4 VC)
 ring_buf.ads:41:42: medium: range check might fail [reason for check: value must fit in the type of the expression] [possible fix: subprogram at line 38 should mention R in a precondition]
 ring_buf.ads:42:10: info: range check proved (CVC5: 4 VC)
-ring_buf.ads:43:47: high: range check might fail (e.g. when R = (Data => (others => 16), First => Ar_Index'Last, Length => Length_Type'Last)) [reason for check: value must be convertible to the target type of the conversion] [possible fix: add precondition (R.Length in Ar_Index) to subprogram at line 38]
+ring_buf.ads:43:47: high: range check might fail, cannot prove upper bound for R.Length (e.g. when R = (Data => (others => 16), First => Ar_Index'Last, Length => Length_Type'Last)) [reason for check: value must be convertible to the target type of the conversion] [possible fix: add precondition (R.Length <= Length_Type(Ar_Index'Last)) to subprogram at line 38]
 ring_buf.ads:45:13: info: range check proved (CVC5: 4 VC)
 ring_buf.ads:45:52: medium: range check might fail [reason for check: value must be convertible to the target type of the conversion] [possible fix: add precondition (R.Length in Ar_Index) to subprogram at line 38]
 ring_buf.ads:47:13: info: implicit aspect Always_Terminates on "Func_Head" has been proved, subprogram will terminate

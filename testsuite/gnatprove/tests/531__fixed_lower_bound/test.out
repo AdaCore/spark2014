@@ -1,0 +1,304 @@
+fixed_lower_bound_types_and_objects.adb:9:04: info: range check proved (CVC5: 1 VC)
+fixed_lower_bound_types_and_objects.adb:9:04: warning: unused variable "Arr_FLB_0_1D"
+fixed_lower_bound_types_and_objects.adb:10:04: info: range check proved (CVC5: 1 VC)
+fixed_lower_bound_types_and_objects.adb:10:04: warning: unused variable "Arr_FLB_1_1D"
+fixed_lower_bound_types_and_objects.adb:17:04: info: range check proved (CVC5: 1 VC)
+fixed_lower_bound_types_and_objects.adb:29:04: info: range check proved (CVC5: 1 VC)
+fixed_lower_bound_types_and_objects.adb:29:04: warning: unused variable "Arr_FLB_0_1_2D"
+fixed_lower_bound_types_and_objects.adb:30:04: info: range check proved (CVC5: 1 VC)
+fixed_lower_bound_types_and_objects.adb:30:04: warning: unused variable "Arr_Mixed_FLB_0_2D"
+fixed_lower_bound_types_and_objects.adb:31:04: info: range check proved (CVC5: 1 VC)
+fixed_lower_bound_types_and_objects.adb:31:04: warning: unused variable "Arr_Mixed_FLB_1_2D"
+fixed_lower_bound_types_and_objects.adb:34:14: info: add a contract to analyze it separately from calling contexts
+fixed_lower_bound_types_and_objects.adb:34:14: info: local subprogram "Proc_FLB_0" only analyzed in the context of calls
+fixed_lower_bound_types_and_objects.adb:36:22: high: "A_0_7" is not initialized, in call inlined at fixed_lower_bound_types_and_objects.adb:78
+fixed_lower_bound_types_and_objects.adb:36:22: info: assertion proved (CVC5: 1 VC), in call inlined at fixed_lower_bound_types_and_objects.adb:78
+fixed_lower_bound_types_and_objects.adb:36:22: info: assertion proved (CVC5: 1 VC), in call inlined at fixed_lower_bound_types_and_objects.adb:79
+fixed_lower_bound_types_and_objects.adb:36:22: info: range check proved (CVC5: 4 VC), in call inlined at fixed_lower_bound_types_and_objects.adb:79
+fixed_lower_bound_types_and_objects.adb:38:29: info: range check proved (CVC5: 2 VC), in call inlined at fixed_lower_bound_types_and_objects.adb:78
+fixed_lower_bound_types_and_objects.adb:38:29: info: range check proved (CVC5: 2 VC), in call inlined at fixed_lower_bound_types_and_objects.adb:79
+fixed_lower_bound_types_and_objects.adb:38:31: high: "A_0_7" is not initialized, in call inlined at fixed_lower_bound_types_and_objects.adb:78
+fixed_lower_bound_types_and_objects.adb:38:31: info: range check proved (CVC5: 4 VC), in call inlined at fixed_lower_bound_types_and_objects.adb:79
+fixed_lower_bound_types_and_objects.adb:39:29: info: range check proved (CVC5: 2 VC), in call inlined at fixed_lower_bound_types_and_objects.adb:78
+fixed_lower_bound_types_and_objects.adb:39:29: info: range check proved (CVC5: 2 VC), in call inlined at fixed_lower_bound_types_and_objects.adb:79
+fixed_lower_bound_types_and_objects.adb:39:31: high: "A_0_7" is not initialized, in call inlined at fixed_lower_bound_types_and_objects.adb:78
+fixed_lower_bound_types_and_objects.adb:39:31: info: range check proved (CVC5: 4 VC), in call inlined at fixed_lower_bound_types_and_objects.adb:79
+fixed_lower_bound_types_and_objects.adb:41:09: info: index check proved (CVC5: 2 VC), in call inlined at fixed_lower_bound_types_and_objects.adb:78
+fixed_lower_bound_types_and_objects.adb:41:09: medium: array index check might fail, in call inlined at fixed_lower_bound_types_and_objects.adb:79 [reason for check: value must be a valid index into the array]
+fixed_lower_bound_types_and_objects.adb:41:12: warning: unused assignment, in call inlined at fixed_lower_bound_types_and_objects.adb:79
+fixed_lower_bound_types_and_objects.adb:41:15: info: range check proved (CVC5: 4 VC), in call inlined at fixed_lower_bound_types_and_objects.adb:79
+fixed_lower_bound_types_and_objects.adb:41:17: high: "A_0_7" is not initialized, in call inlined at fixed_lower_bound_types_and_objects.adb:78
+fixed_lower_bound_types_and_objects.adb:41:17: info: range check proved (CVC5: 4 VC), in call inlined at fixed_lower_bound_types_and_objects.adb:79
+fixed_lower_bound_types_and_objects.adb:41:18: info: index check proved (CVC5: 2 VC), in call inlined at fixed_lower_bound_types_and_objects.adb:78
+fixed_lower_bound_types_and_objects.adb:41:18: info: index check proved (CVC5: 2 VC), in call inlined at fixed_lower_bound_types_and_objects.adb:79
+fixed_lower_bound_types_and_objects.adb:44:14: info: add a contract to analyze it separately from calling contexts
+fixed_lower_bound_types_and_objects.adb:44:14: info: local subprogram "Proc_FLB_1" only analyzed in the context of calls
+fixed_lower_bound_types_and_objects.adb:46:22: info: assertion proved (CVC5: 1 VC), in call inlined at fixed_lower_bound_types_and_objects.adb:81
+fixed_lower_bound_types_and_objects.adb:46:22: info: assertion proved (CVC5: 1 VC), in call inlined at fixed_lower_bound_types_and_objects.adb:82
+fixed_lower_bound_types_and_objects.adb:46:22: info: assertion proved (CVC5: 1 VC), in call inlined at fixed_lower_bound_types_and_objects.adb:83
+fixed_lower_bound_types_and_objects.adb:46:22: info: assertion proved (CVC5: 1 VC), in call inlined at fixed_lower_bound_types_and_objects.adb:84
+fixed_lower_bound_types_and_objects.adb:46:22: info: range check proved (CVC5: 4 VC), in call inlined at fixed_lower_bound_types_and_objects.adb:83
+fixed_lower_bound_types_and_objects.adb:48:29: info: range check proved (CVC5: 2 VC), in call inlined at fixed_lower_bound_types_and_objects.adb:81
+fixed_lower_bound_types_and_objects.adb:48:29: info: range check proved (CVC5: 2 VC), in call inlined at fixed_lower_bound_types_and_objects.adb:82
+fixed_lower_bound_types_and_objects.adb:48:29: info: range check proved (CVC5: 2 VC), in call inlined at fixed_lower_bound_types_and_objects.adb:83
+fixed_lower_bound_types_and_objects.adb:48:29: info: range check proved (CVC5: 2 VC), in call inlined at fixed_lower_bound_types_and_objects.adb:84
+fixed_lower_bound_types_and_objects.adb:48:31: info: range check proved (CVC5: 4 VC), in call inlined at fixed_lower_bound_types_and_objects.adb:83
+fixed_lower_bound_types_and_objects.adb:49:29: info: range check proved (CVC5: 2 VC), in call inlined at fixed_lower_bound_types_and_objects.adb:81
+fixed_lower_bound_types_and_objects.adb:49:29: info: range check proved (CVC5: 2 VC), in call inlined at fixed_lower_bound_types_and_objects.adb:82
+fixed_lower_bound_types_and_objects.adb:49:29: info: range check proved (CVC5: 2 VC), in call inlined at fixed_lower_bound_types_and_objects.adb:83
+fixed_lower_bound_types_and_objects.adb:49:29: info: range check proved (CVC5: 2 VC), in call inlined at fixed_lower_bound_types_and_objects.adb:84
+fixed_lower_bound_types_and_objects.adb:49:31: info: range check proved (CVC5: 4 VC), in call inlined at fixed_lower_bound_types_and_objects.adb:83
+fixed_lower_bound_types_and_objects.adb:52:04: info: no contextual analysis of "Func_FLB_1" (unconstrained return type)
+fixed_lower_bound_types_and_objects.adb:52:13: info: implicit aspect Always_Terminates on "Func_FLB_1" has been proved, subprogram will terminate
+fixed_lower_bound_types_and_objects.adb:52:13: info: implicit function contract might not be available on calls from enclosing unit
+fixed_lower_bound_types_and_objects.adb:54:14: high: range check might fail (e.g. when A'First = 1 and A'Last = 0) [reason for check: slice bounds must fit in the underlying array] [possible fix: subprogram at line 52 should mention A in a precondition]
+fixed_lower_bound_types_and_objects.adb:57:14: info: add a contract to analyze it separately from calling contexts
+fixed_lower_bound_types_and_objects.adb:57:14: info: local subprogram "Proc_Colors" only analyzed in the context of calls
+fixed_lower_bound_types_and_objects.adb:59:22: high: "A_Red_Blue" is not initialized, in call inlined at fixed_lower_bound_types_and_objects.adb:91
+fixed_lower_bound_types_and_objects.adb:59:22: high: "All_Colors" is not initialized, in call inlined at fixed_lower_bound_types_and_objects.adb:86
+fixed_lower_bound_types_and_objects.adb:59:22: info: assertion proved (CVC5: 1 VC), in call inlined at fixed_lower_bound_types_and_objects.adb:86
+fixed_lower_bound_types_and_objects.adb:59:22: info: assertion proved (CVC5: 1 VC), in call inlined at fixed_lower_bound_types_and_objects.adb:87
+fixed_lower_bound_types_and_objects.adb:59:22: info: assertion proved (CVC5: 1 VC), in call inlined at fixed_lower_bound_types_and_objects.adb:88
+fixed_lower_bound_types_and_objects.adb:59:22: info: assertion proved (CVC5: 1 VC), in call inlined at fixed_lower_bound_types_and_objects.adb:89
+fixed_lower_bound_types_and_objects.adb:59:22: info: assertion proved (CVC5: 1 VC), in call inlined at fixed_lower_bound_types_and_objects.adb:90
+fixed_lower_bound_types_and_objects.adb:59:22: info: assertion proved (CVC5: 1 VC), in call inlined at fixed_lower_bound_types_and_objects.adb:91
+fixed_lower_bound_types_and_objects.adb:59:22: info: assertion proved (CVC5: 1 VC), in call inlined at fixed_lower_bound_types_and_objects.adb:92
+fixed_lower_bound_types_and_objects.adb:59:22: info: range check proved (CVC5: 4 VC), in call inlined at fixed_lower_bound_types_and_objects.adb:89
+fixed_lower_bound_types_and_objects.adb:59:22: info: range check proved (CVC5: 4 VC), in call inlined at fixed_lower_bound_types_and_objects.adb:90
+fixed_lower_bound_types_and_objects.adb:59:22: info: range check proved (CVC5: 4 VC), in call inlined at fixed_lower_bound_types_and_objects.adb:92
+fixed_lower_bound_types_and_objects.adb:61:29: info: range check proved (CVC5: 2 VC), in call inlined at fixed_lower_bound_types_and_objects.adb:86
+fixed_lower_bound_types_and_objects.adb:61:29: info: range check proved (CVC5: 2 VC), in call inlined at fixed_lower_bound_types_and_objects.adb:87
+fixed_lower_bound_types_and_objects.adb:61:29: info: range check proved (CVC5: 2 VC), in call inlined at fixed_lower_bound_types_and_objects.adb:88
+fixed_lower_bound_types_and_objects.adb:61:29: info: range check proved (CVC5: 2 VC), in call inlined at fixed_lower_bound_types_and_objects.adb:89
+fixed_lower_bound_types_and_objects.adb:61:29: info: range check proved (CVC5: 2 VC), in call inlined at fixed_lower_bound_types_and_objects.adb:90
+fixed_lower_bound_types_and_objects.adb:61:29: info: range check proved (CVC5: 2 VC), in call inlined at fixed_lower_bound_types_and_objects.adb:91
+fixed_lower_bound_types_and_objects.adb:61:29: info: range check proved (CVC5: 2 VC), in call inlined at fixed_lower_bound_types_and_objects.adb:92
+fixed_lower_bound_types_and_objects.adb:61:31: high: "A_Red_Blue" is not initialized, in call inlined at fixed_lower_bound_types_and_objects.adb:91
+fixed_lower_bound_types_and_objects.adb:61:31: high: "All_Colors" is not initialized, in call inlined at fixed_lower_bound_types_and_objects.adb:86
+fixed_lower_bound_types_and_objects.adb:61:31: info: range check proved (CVC5: 4 VC), in call inlined at fixed_lower_bound_types_and_objects.adb:89
+fixed_lower_bound_types_and_objects.adb:61:31: info: range check proved (CVC5: 4 VC), in call inlined at fixed_lower_bound_types_and_objects.adb:90
+fixed_lower_bound_types_and_objects.adb:61:31: info: range check proved (CVC5: 4 VC), in call inlined at fixed_lower_bound_types_and_objects.adb:92
+fixed_lower_bound_types_and_objects.adb:62:29: info: range check proved (CVC5: 2 VC), in call inlined at fixed_lower_bound_types_and_objects.adb:86
+fixed_lower_bound_types_and_objects.adb:62:29: info: range check proved (CVC5: 2 VC), in call inlined at fixed_lower_bound_types_and_objects.adb:87
+fixed_lower_bound_types_and_objects.adb:62:29: info: range check proved (CVC5: 2 VC), in call inlined at fixed_lower_bound_types_and_objects.adb:88
+fixed_lower_bound_types_and_objects.adb:62:29: info: range check proved (CVC5: 2 VC), in call inlined at fixed_lower_bound_types_and_objects.adb:89
+fixed_lower_bound_types_and_objects.adb:62:29: info: range check proved (CVC5: 2 VC), in call inlined at fixed_lower_bound_types_and_objects.adb:90
+fixed_lower_bound_types_and_objects.adb:62:29: info: range check proved (CVC5: 2 VC), in call inlined at fixed_lower_bound_types_and_objects.adb:91
+fixed_lower_bound_types_and_objects.adb:62:29: info: range check proved (CVC5: 2 VC), in call inlined at fixed_lower_bound_types_and_objects.adb:92
+fixed_lower_bound_types_and_objects.adb:62:31: high: "A_Red_Blue" is not initialized, in call inlined at fixed_lower_bound_types_and_objects.adb:91
+fixed_lower_bound_types_and_objects.adb:62:31: high: "All_Colors" is not initialized, in call inlined at fixed_lower_bound_types_and_objects.adb:86
+fixed_lower_bound_types_and_objects.adb:62:31: info: range check proved (CVC5: 4 VC), in call inlined at fixed_lower_bound_types_and_objects.adb:89
+fixed_lower_bound_types_and_objects.adb:62:31: info: range check proved (CVC5: 4 VC), in call inlined at fixed_lower_bound_types_and_objects.adb:90
+fixed_lower_bound_types_and_objects.adb:62:31: info: range check proved (CVC5: 4 VC), in call inlined at fixed_lower_bound_types_and_objects.adb:92
+fixed_lower_bound_types_and_objects.adb:64:07: info: index check proved (CVC5: 2 VC), in call inlined at fixed_lower_bound_types_and_objects.adb:89
+fixed_lower_bound_types_and_objects.adb:64:09: info: range check proved (CVC5: 4 VC), in call inlined at fixed_lower_bound_types_and_objects.adb:89
+fixed_lower_bound_types_and_objects.adb:64:09: info: range check proved (CVC5: 4 VC), in call inlined at fixed_lower_bound_types_and_objects.adb:90
+fixed_lower_bound_types_and_objects.adb:64:09: info: range check proved (CVC5: 4 VC), in call inlined at fixed_lower_bound_types_and_objects.adb:92
+fixed_lower_bound_types_and_objects.adb:64:10: info: index check proved (CVC5: 2 VC), in call inlined at fixed_lower_bound_types_and_objects.adb:86
+fixed_lower_bound_types_and_objects.adb:64:10: info: index check proved (CVC5: 2 VC), in call inlined at fixed_lower_bound_types_and_objects.adb:87
+fixed_lower_bound_types_and_objects.adb:64:10: info: index check proved (CVC5: 2 VC), in call inlined at fixed_lower_bound_types_and_objects.adb:88
+fixed_lower_bound_types_and_objects.adb:64:10: info: index check proved (CVC5: 2 VC), in call inlined at fixed_lower_bound_types_and_objects.adb:89
+fixed_lower_bound_types_and_objects.adb:64:10: info: index check proved (CVC5: 2 VC), in call inlined at fixed_lower_bound_types_and_objects.adb:90
+fixed_lower_bound_types_and_objects.adb:64:10: info: index check proved (CVC5: 2 VC), in call inlined at fixed_lower_bound_types_and_objects.adb:91
+fixed_lower_bound_types_and_objects.adb:64:10: info: index check proved (CVC5: 2 VC), in call inlined at fixed_lower_bound_types_and_objects.adb:92
+fixed_lower_bound_types_and_objects.adb:64:18: warning: unused assignment, in call inlined at fixed_lower_bound_types_and_objects.adb:86
+fixed_lower_bound_types_and_objects.adb:64:18: warning: unused assignment, in call inlined at fixed_lower_bound_types_and_objects.adb:87
+fixed_lower_bound_types_and_objects.adb:64:18: warning: unused assignment, in call inlined at fixed_lower_bound_types_and_objects.adb:89
+fixed_lower_bound_types_and_objects.adb:64:18: warning: unused assignment, in call inlined at fixed_lower_bound_types_and_objects.adb:90
+fixed_lower_bound_types_and_objects.adb:64:18: warning: unused assignment, in call inlined at fixed_lower_bound_types_and_objects.adb:92
+fixed_lower_bound_types_and_objects.adb:64:21: info: range check proved (CVC5: 4 VC), in call inlined at fixed_lower_bound_types_and_objects.adb:89
+fixed_lower_bound_types_and_objects.adb:64:21: info: range check proved (CVC5: 4 VC), in call inlined at fixed_lower_bound_types_and_objects.adb:90
+fixed_lower_bound_types_and_objects.adb:64:21: info: range check proved (CVC5: 4 VC), in call inlined at fixed_lower_bound_types_and_objects.adb:92
+fixed_lower_bound_types_and_objects.adb:64:23: high: "A_Red_Blue" is not initialized, in call inlined at fixed_lower_bound_types_and_objects.adb:91
+fixed_lower_bound_types_and_objects.adb:64:23: high: "All_Colors" is not initialized, in call inlined at fixed_lower_bound_types_and_objects.adb:86
+fixed_lower_bound_types_and_objects.adb:64:23: info: range check proved (CVC5: 4 VC), in call inlined at fixed_lower_bound_types_and_objects.adb:89
+fixed_lower_bound_types_and_objects.adb:64:23: info: range check proved (CVC5: 4 VC), in call inlined at fixed_lower_bound_types_and_objects.adb:90
+fixed_lower_bound_types_and_objects.adb:64:23: info: range check proved (CVC5: 4 VC), in call inlined at fixed_lower_bound_types_and_objects.adb:92
+fixed_lower_bound_types_and_objects.adb:64:24: info: index check proved (CVC5: 2 VC), in call inlined at fixed_lower_bound_types_and_objects.adb:86
+fixed_lower_bound_types_and_objects.adb:64:24: info: index check proved (CVC5: 2 VC), in call inlined at fixed_lower_bound_types_and_objects.adb:87
+fixed_lower_bound_types_and_objects.adb:64:24: info: index check proved (CVC5: 2 VC), in call inlined at fixed_lower_bound_types_and_objects.adb:88
+fixed_lower_bound_types_and_objects.adb:64:24: info: index check proved (CVC5: 2 VC), in call inlined at fixed_lower_bound_types_and_objects.adb:89
+fixed_lower_bound_types_and_objects.adb:64:24: info: index check proved (CVC5: 2 VC), in call inlined at fixed_lower_bound_types_and_objects.adb:90
+fixed_lower_bound_types_and_objects.adb:64:24: info: index check proved (CVC5: 2 VC), in call inlined at fixed_lower_bound_types_and_objects.adb:91
+fixed_lower_bound_types_and_objects.adb:64:24: info: index check proved (CVC5: 2 VC), in call inlined at fixed_lower_bound_types_and_objects.adb:92
+fixed_lower_bound_types_and_objects.adb:67:04: info: range check proved (CVC5: 1 VC)
+fixed_lower_bound_types_and_objects.adb:68:04: info: range check proved (CVC5: 1 VC)
+fixed_lower_bound_types_and_objects.adb:69:29: info: range check proved (CVC5: 4 VC)
+fixed_lower_bound_types_and_objects.adb:71:04: info: range check proved (CVC5: 1 VC)
+fixed_lower_bound_types_and_objects.adb:72:04: info: range check proved (CVC5: 1 VC)
+fixed_lower_bound_types_and_objects.adb:74:35: high: "All_Colors" is not initialized
+fixed_lower_bound_types_and_objects.adb:74:35: info: range check proved (CVC5: 4 VC)
+fixed_lower_bound_types_and_objects.adb:75:35: high: "All_Colors" is not initialized
+fixed_lower_bound_types_and_objects.adb:75:35: info: range check proved (CVC5: 4 VC)
+fixed_lower_bound_types_and_objects.adb:78:04: info: analyzing call to "Proc_FLB_0" in context
+fixed_lower_bound_types_and_objects.adb:78:16: high: "A_0_7" is not initialized
+fixed_lower_bound_types_and_objects.adb:79:04: info: analyzing call to "Proc_FLB_0" in context
+fixed_lower_bound_types_and_objects.adb:79:16: info: range check proved (CVC5: 4 VC)
+fixed_lower_bound_types_and_objects.adb:81:04: info: analyzing call to "Proc_FLB_1" in context
+fixed_lower_bound_types_and_objects.adb:82:04: info: analyzing call to "Proc_FLB_1" in context
+fixed_lower_bound_types_and_objects.adb:83:04: info: analyzing call to "Proc_FLB_1" in context
+fixed_lower_bound_types_and_objects.adb:83:16: info: range check proved (CVC5: 4 VC)
+fixed_lower_bound_types_and_objects.adb:84:04: info: analyzing call to "Proc_FLB_1" in context
+fixed_lower_bound_types_and_objects.adb:86:04: info: analyzing call to "Proc_Colors" in context
+fixed_lower_bound_types_and_objects.adb:86:17: high: "All_Colors" is not initialized
+fixed_lower_bound_types_and_objects.adb:87:04: info: analyzing call to "Proc_Colors" in context
+fixed_lower_bound_types_and_objects.adb:88:04: info: analyzing call to "Proc_Colors" in context
+fixed_lower_bound_types_and_objects.adb:89:04: info: analyzing call to "Proc_Colors" in context
+fixed_lower_bound_types_and_objects.adb:89:17: info: range check proved (CVC5: 4 VC)
+fixed_lower_bound_types_and_objects.adb:90:04: info: analyzing call to "Proc_Colors" in context
+fixed_lower_bound_types_and_objects.adb:90:17: info: range check proved (CVC5: 4 VC)
+fixed_lower_bound_types_and_objects.adb:91:04: info: analyzing call to "Proc_Colors" in context
+fixed_lower_bound_types_and_objects.adb:91:17: high: "A_Red_Blue" is not initialized
+fixed_lower_bound_types_and_objects.adb:92:04: info: analyzing call to "Proc_Colors" in context
+fixed_lower_bound_types_and_objects.adb:92:17: info: range check proved (CVC5: 4 VC)
+flb_multidimensional_subtypes.adb:11:14: info: add a contract to analyze it separately from calling contexts
+flb_multidimensional_subtypes.adb:11:14: info: local subprogram "Proc_FLB_0" only analyzed in the context of calls
+flb_multidimensional_subtypes.adb:13:22: high: "A10_x_20" is not initialized, in call inlined at flb_multidimensional_subtypes.adb:46
+flb_multidimensional_subtypes.adb:13:22: high: "A_2_7_x_0_11" is not initialized, in call inlined at flb_multidimensional_subtypes.adb:47
+flb_multidimensional_subtypes.adb:13:22: high: "A_FLB_0_7_x_0_12" is not initialized, in call inlined at flb_multidimensional_subtypes.adb:45
+flb_multidimensional_subtypes.adb:13:22: info: assertion proved (CVC5: 2 VC), in call inlined at flb_multidimensional_subtypes.adb:45
+flb_multidimensional_subtypes.adb:13:22: info: assertion proved (CVC5: 2 VC), in call inlined at flb_multidimensional_subtypes.adb:46
+flb_multidimensional_subtypes.adb:13:22: info: assertion proved (CVC5: 2 VC), in call inlined at flb_multidimensional_subtypes.adb:47
+flb_multidimensional_subtypes.adb:13:22: info: range check proved (CVC5: 1 VC), in call inlined at flb_multidimensional_subtypes.adb:45
+flb_multidimensional_subtypes.adb:13:22: info: range check proved (CVC5: 2 VC), in call inlined at flb_multidimensional_subtypes.adb:46
+flb_multidimensional_subtypes.adb:13:22: info: range check proved (CVC5: 2 VC), in call inlined at flb_multidimensional_subtypes.adb:47
+flb_multidimensional_subtypes.adb:13:41: info: range check proved (CVC5: 1 VC), in call inlined at flb_multidimensional_subtypes.adb:45
+flb_multidimensional_subtypes.adb:13:41: info: range check proved (CVC5: 2 VC), in call inlined at flb_multidimensional_subtypes.adb:46
+flb_multidimensional_subtypes.adb:13:41: info: range check proved (CVC5: 2 VC), in call inlined at flb_multidimensional_subtypes.adb:47
+flb_multidimensional_subtypes.adb:15:32: info: range check proved (CVC5: 2 VC), in call inlined at flb_multidimensional_subtypes.adb:45
+flb_multidimensional_subtypes.adb:15:32: info: range check proved (CVC5: 2 VC), in call inlined at flb_multidimensional_subtypes.adb:46
+flb_multidimensional_subtypes.adb:15:32: info: range check proved (CVC5: 2 VC), in call inlined at flb_multidimensional_subtypes.adb:47
+flb_multidimensional_subtypes.adb:15:34: high: "A10_x_20" is not initialized, in call inlined at flb_multidimensional_subtypes.adb:46
+flb_multidimensional_subtypes.adb:15:34: high: "A_2_7_x_0_11" is not initialized, in call inlined at flb_multidimensional_subtypes.adb:47
+flb_multidimensional_subtypes.adb:15:34: high: "A_FLB_0_7_x_0_12" is not initialized, in call inlined at flb_multidimensional_subtypes.adb:45
+flb_multidimensional_subtypes.adb:15:34: info: range check proved (CVC5: 1 VC), in call inlined at flb_multidimensional_subtypes.adb:45
+flb_multidimensional_subtypes.adb:15:34: info: range check proved (CVC5: 2 VC), in call inlined at flb_multidimensional_subtypes.adb:46
+flb_multidimensional_subtypes.adb:15:34: info: range check proved (CVC5: 2 VC), in call inlined at flb_multidimensional_subtypes.adb:47
+flb_multidimensional_subtypes.adb:16:32: info: range check proved (CVC5: 2 VC), in call inlined at flb_multidimensional_subtypes.adb:45
+flb_multidimensional_subtypes.adb:16:32: info: range check proved (CVC5: 2 VC), in call inlined at flb_multidimensional_subtypes.adb:46
+flb_multidimensional_subtypes.adb:16:32: info: range check proved (CVC5: 2 VC), in call inlined at flb_multidimensional_subtypes.adb:47
+flb_multidimensional_subtypes.adb:16:34: high: "A10_x_20" is not initialized, in call inlined at flb_multidimensional_subtypes.adb:46
+flb_multidimensional_subtypes.adb:16:34: high: "A_2_7_x_0_11" is not initialized, in call inlined at flb_multidimensional_subtypes.adb:47
+flb_multidimensional_subtypes.adb:16:34: high: "A_FLB_0_7_x_0_12" is not initialized, in call inlined at flb_multidimensional_subtypes.adb:45
+flb_multidimensional_subtypes.adb:16:34: info: range check proved (CVC5: 1 VC), in call inlined at flb_multidimensional_subtypes.adb:45
+flb_multidimensional_subtypes.adb:16:34: info: range check proved (CVC5: 2 VC), in call inlined at flb_multidimensional_subtypes.adb:46
+flb_multidimensional_subtypes.adb:16:34: info: range check proved (CVC5: 2 VC), in call inlined at flb_multidimensional_subtypes.adb:47
+flb_multidimensional_subtypes.adb:17:32: info: range check proved (CVC5: 2 VC), in call inlined at flb_multidimensional_subtypes.adb:45
+flb_multidimensional_subtypes.adb:17:32: info: range check proved (CVC5: 2 VC), in call inlined at flb_multidimensional_subtypes.adb:46
+flb_multidimensional_subtypes.adb:17:32: info: range check proved (CVC5: 2 VC), in call inlined at flb_multidimensional_subtypes.adb:47
+flb_multidimensional_subtypes.adb:17:34: high: "A10_x_20" is not initialized, in call inlined at flb_multidimensional_subtypes.adb:46
+flb_multidimensional_subtypes.adb:17:34: high: "A_2_7_x_0_11" is not initialized, in call inlined at flb_multidimensional_subtypes.adb:47
+flb_multidimensional_subtypes.adb:17:34: high: "A_FLB_0_7_x_0_12" is not initialized, in call inlined at flb_multidimensional_subtypes.adb:45
+flb_multidimensional_subtypes.adb:17:34: info: range check proved (CVC5: 1 VC), in call inlined at flb_multidimensional_subtypes.adb:45
+flb_multidimensional_subtypes.adb:17:34: info: range check proved (CVC5: 2 VC), in call inlined at flb_multidimensional_subtypes.adb:46
+flb_multidimensional_subtypes.adb:17:34: info: range check proved (CVC5: 2 VC), in call inlined at flb_multidimensional_subtypes.adb:47
+flb_multidimensional_subtypes.adb:18:32: info: range check proved (CVC5: 2 VC), in call inlined at flb_multidimensional_subtypes.adb:45
+flb_multidimensional_subtypes.adb:18:32: info: range check proved (CVC5: 2 VC), in call inlined at flb_multidimensional_subtypes.adb:46
+flb_multidimensional_subtypes.adb:18:32: info: range check proved (CVC5: 2 VC), in call inlined at flb_multidimensional_subtypes.adb:47
+flb_multidimensional_subtypes.adb:18:34: high: "A10_x_20" is not initialized, in call inlined at flb_multidimensional_subtypes.adb:46
+flb_multidimensional_subtypes.adb:18:34: high: "A_2_7_x_0_11" is not initialized, in call inlined at flb_multidimensional_subtypes.adb:47
+flb_multidimensional_subtypes.adb:18:34: high: "A_FLB_0_7_x_0_12" is not initialized, in call inlined at flb_multidimensional_subtypes.adb:45
+flb_multidimensional_subtypes.adb:18:34: info: range check proved (CVC5: 1 VC), in call inlined at flb_multidimensional_subtypes.adb:45
+flb_multidimensional_subtypes.adb:18:34: info: range check proved (CVC5: 2 VC), in call inlined at flb_multidimensional_subtypes.adb:46
+flb_multidimensional_subtypes.adb:18:34: info: range check proved (CVC5: 2 VC), in call inlined at flb_multidimensional_subtypes.adb:47
+flb_multidimensional_subtypes.adb:20:07: info: range check proved (CVC5: 1 VC), in call inlined at flb_multidimensional_subtypes.adb:45
+flb_multidimensional_subtypes.adb:20:07: info: range check proved (CVC5: 2 VC), in call inlined at flb_multidimensional_subtypes.adb:46
+flb_multidimensional_subtypes.adb:20:07: info: range check proved (CVC5: 2 VC), in call inlined at flb_multidimensional_subtypes.adb:47
+flb_multidimensional_subtypes.adb:20:09: info: index check proved (CVC5: 2 VC), in call inlined at flb_multidimensional_subtypes.adb:45
+flb_multidimensional_subtypes.adb:20:09: info: index check proved (CVC5: 2 VC), in call inlined at flb_multidimensional_subtypes.adb:46
+flb_multidimensional_subtypes.adb:20:09: info: index check proved (CVC5: 2 VC), in call inlined at flb_multidimensional_subtypes.adb:47
+flb_multidimensional_subtypes.adb:20:12: info: range check proved (CVC5: 1 VC), in call inlined at flb_multidimensional_subtypes.adb:45
+flb_multidimensional_subtypes.adb:20:12: info: range check proved (CVC5: 2 VC), in call inlined at flb_multidimensional_subtypes.adb:46
+flb_multidimensional_subtypes.adb:20:12: info: range check proved (CVC5: 2 VC), in call inlined at flb_multidimensional_subtypes.adb:47
+flb_multidimensional_subtypes.adb:20:13: info: index check proved (CVC5: 2 VC), in call inlined at flb_multidimensional_subtypes.adb:45
+flb_multidimensional_subtypes.adb:20:13: info: index check proved (CVC5: 2 VC), in call inlined at flb_multidimensional_subtypes.adb:47
+flb_multidimensional_subtypes.adb:20:13: medium: array index check might fail, in call inlined at flb_multidimensional_subtypes.adb:46 [reason for check: value must be a valid index into the array]
+flb_multidimensional_subtypes.adb:20:23: warning: unused assignment, in call inlined at flb_multidimensional_subtypes.adb:45
+flb_multidimensional_subtypes.adb:20:23: warning: unused assignment, in call inlined at flb_multidimensional_subtypes.adb:47
+flb_multidimensional_subtypes.adb:20:26: info: range check proved (CVC5: 1 VC), in call inlined at flb_multidimensional_subtypes.adb:45
+flb_multidimensional_subtypes.adb:20:26: info: range check proved (CVC5: 2 VC), in call inlined at flb_multidimensional_subtypes.adb:46
+flb_multidimensional_subtypes.adb:20:26: info: range check proved (CVC5: 2 VC), in call inlined at flb_multidimensional_subtypes.adb:47
+flb_multidimensional_subtypes.adb:20:28: info: index check proved (CVC5: 2 VC), in call inlined at flb_multidimensional_subtypes.adb:45
+flb_multidimensional_subtypes.adb:20:28: info: index check proved (CVC5: 2 VC), in call inlined at flb_multidimensional_subtypes.adb:46
+flb_multidimensional_subtypes.adb:20:28: info: index check proved (CVC5: 2 VC), in call inlined at flb_multidimensional_subtypes.adb:47
+flb_multidimensional_subtypes.adb:20:31: high: "A10_x_20" is not initialized, in call inlined at flb_multidimensional_subtypes.adb:46
+flb_multidimensional_subtypes.adb:20:31: high: "A_2_7_x_0_11" is not initialized, in call inlined at flb_multidimensional_subtypes.adb:47
+flb_multidimensional_subtypes.adb:20:31: high: "A_FLB_0_7_x_0_12" is not initialized, in call inlined at flb_multidimensional_subtypes.adb:45
+flb_multidimensional_subtypes.adb:20:31: info: range check proved (CVC5: 1 VC), in call inlined at flb_multidimensional_subtypes.adb:45
+flb_multidimensional_subtypes.adb:20:31: info: range check proved (CVC5: 2 VC), in call inlined at flb_multidimensional_subtypes.adb:46
+flb_multidimensional_subtypes.adb:20:31: info: range check proved (CVC5: 2 VC), in call inlined at flb_multidimensional_subtypes.adb:47
+flb_multidimensional_subtypes.adb:20:32: info: index check proved (CVC5: 2 VC), in call inlined at flb_multidimensional_subtypes.adb:45
+flb_multidimensional_subtypes.adb:20:32: info: index check proved (CVC5: 2 VC), in call inlined at flb_multidimensional_subtypes.adb:46
+flb_multidimensional_subtypes.adb:20:32: info: index check proved (CVC5: 2 VC), in call inlined at flb_multidimensional_subtypes.adb:47
+flb_multidimensional_subtypes.adb:23:14: info: add a contract to analyze it separately from calling contexts
+flb_multidimensional_subtypes.adb:23:14: info: local subprogram "Proc_FLB_1" only analyzed in the context of calls
+flb_multidimensional_subtypes.adb:25:22: high: "A_1_5_x_3_16" is not initialized, in call inlined at flb_multidimensional_subtypes.adb:51
+flb_multidimensional_subtypes.adb:25:22: info: assertion proved (CVC5: 2 VC), in call inlined at flb_multidimensional_subtypes.adb:49
+flb_multidimensional_subtypes.adb:25:22: info: assertion proved (CVC5: 2 VC), in call inlined at flb_multidimensional_subtypes.adb:50
+flb_multidimensional_subtypes.adb:25:22: info: assertion proved (CVC5: 2 VC), in call inlined at flb_multidimensional_subtypes.adb:51
+flb_multidimensional_subtypes.adb:25:22: info: range check proved (CVC5: 2 VC), in call inlined at flb_multidimensional_subtypes.adb:50
+flb_multidimensional_subtypes.adb:25:22: info: range check proved (CVC5: 2 VC), in call inlined at flb_multidimensional_subtypes.adb:51
+flb_multidimensional_subtypes.adb:25:41: info: range check proved (CVC5: 2 VC), in call inlined at flb_multidimensional_subtypes.adb:50
+flb_multidimensional_subtypes.adb:25:41: info: range check proved (CVC5: 2 VC), in call inlined at flb_multidimensional_subtypes.adb:51
+flb_multidimensional_subtypes.adb:27:32: info: range check proved (CVC5: 2 VC), in call inlined at flb_multidimensional_subtypes.adb:49
+flb_multidimensional_subtypes.adb:27:32: info: range check proved (CVC5: 2 VC), in call inlined at flb_multidimensional_subtypes.adb:50
+flb_multidimensional_subtypes.adb:27:32: info: range check proved (CVC5: 2 VC), in call inlined at flb_multidimensional_subtypes.adb:51
+flb_multidimensional_subtypes.adb:27:34: high: "A_1_5_x_3_16" is not initialized, in call inlined at flb_multidimensional_subtypes.adb:51
+flb_multidimensional_subtypes.adb:27:34: info: range check proved (CVC5: 2 VC), in call inlined at flb_multidimensional_subtypes.adb:50
+flb_multidimensional_subtypes.adb:27:34: info: range check proved (CVC5: 2 VC), in call inlined at flb_multidimensional_subtypes.adb:51
+flb_multidimensional_subtypes.adb:28:32: info: range check proved (CVC5: 2 VC), in call inlined at flb_multidimensional_subtypes.adb:49
+flb_multidimensional_subtypes.adb:28:32: info: range check proved (CVC5: 2 VC), in call inlined at flb_multidimensional_subtypes.adb:50
+flb_multidimensional_subtypes.adb:28:32: info: range check proved (CVC5: 2 VC), in call inlined at flb_multidimensional_subtypes.adb:51
+flb_multidimensional_subtypes.adb:28:34: high: "A_1_5_x_3_16" is not initialized, in call inlined at flb_multidimensional_subtypes.adb:51
+flb_multidimensional_subtypes.adb:28:34: info: range check proved (CVC5: 2 VC), in call inlined at flb_multidimensional_subtypes.adb:50
+flb_multidimensional_subtypes.adb:28:34: info: range check proved (CVC5: 2 VC), in call inlined at flb_multidimensional_subtypes.adb:51
+flb_multidimensional_subtypes.adb:29:32: info: range check proved (CVC5: 2 VC), in call inlined at flb_multidimensional_subtypes.adb:49
+flb_multidimensional_subtypes.adb:29:32: info: range check proved (CVC5: 2 VC), in call inlined at flb_multidimensional_subtypes.adb:50
+flb_multidimensional_subtypes.adb:29:32: info: range check proved (CVC5: 2 VC), in call inlined at flb_multidimensional_subtypes.adb:51
+flb_multidimensional_subtypes.adb:29:34: high: "A_1_5_x_3_16" is not initialized, in call inlined at flb_multidimensional_subtypes.adb:51
+flb_multidimensional_subtypes.adb:29:34: info: range check proved (CVC5: 2 VC), in call inlined at flb_multidimensional_subtypes.adb:50
+flb_multidimensional_subtypes.adb:29:34: info: range check proved (CVC5: 2 VC), in call inlined at flb_multidimensional_subtypes.adb:51
+flb_multidimensional_subtypes.adb:30:32: info: range check proved (CVC5: 2 VC), in call inlined at flb_multidimensional_subtypes.adb:49
+flb_multidimensional_subtypes.adb:30:32: info: range check proved (CVC5: 2 VC), in call inlined at flb_multidimensional_subtypes.adb:50
+flb_multidimensional_subtypes.adb:30:32: info: range check proved (CVC5: 2 VC), in call inlined at flb_multidimensional_subtypes.adb:51
+flb_multidimensional_subtypes.adb:30:34: high: "A_1_5_x_3_16" is not initialized, in call inlined at flb_multidimensional_subtypes.adb:51
+flb_multidimensional_subtypes.adb:30:34: info: range check proved (CVC5: 2 VC), in call inlined at flb_multidimensional_subtypes.adb:50
+flb_multidimensional_subtypes.adb:30:34: info: range check proved (CVC5: 2 VC), in call inlined at flb_multidimensional_subtypes.adb:51
+flb_multidimensional_subtypes.adb:32:07: info: range check proved (CVC5: 2 VC), in call inlined at flb_multidimensional_subtypes.adb:50
+flb_multidimensional_subtypes.adb:32:07: info: range check proved (CVC5: 2 VC), in call inlined at flb_multidimensional_subtypes.adb:51
+flb_multidimensional_subtypes.adb:32:09: info: index check proved (CVC5: 2 VC), in call inlined at flb_multidimensional_subtypes.adb:49
+flb_multidimensional_subtypes.adb:32:09: info: index check proved (CVC5: 2 VC), in call inlined at flb_multidimensional_subtypes.adb:50
+flb_multidimensional_subtypes.adb:32:09: info: index check proved (CVC5: 2 VC), in call inlined at flb_multidimensional_subtypes.adb:51
+flb_multidimensional_subtypes.adb:32:11: info: index check proved (CVC5: 2 VC), in call inlined at flb_multidimensional_subtypes.adb:49
+flb_multidimensional_subtypes.adb:32:11: info: index check proved (CVC5: 2 VC), in call inlined at flb_multidimensional_subtypes.adb:50
+flb_multidimensional_subtypes.adb:32:11: info: index check proved (CVC5: 2 VC), in call inlined at flb_multidimensional_subtypes.adb:51
+flb_multidimensional_subtypes.adb:32:14: warning: unused assignment, in call inlined at flb_multidimensional_subtypes.adb:49
+flb_multidimensional_subtypes.adb:32:14: warning: unused assignment, in call inlined at flb_multidimensional_subtypes.adb:50
+flb_multidimensional_subtypes.adb:32:14: warning: unused assignment, in call inlined at flb_multidimensional_subtypes.adb:51
+flb_multidimensional_subtypes.adb:32:17: high: "A_1_5_x_3_16" is not initialized, in call inlined at flb_multidimensional_subtypes.adb:51
+flb_multidimensional_subtypes.adb:32:17: info: range check proved (CVC5: 2 VC), in call inlined at flb_multidimensional_subtypes.adb:50
+flb_multidimensional_subtypes.adb:32:17: info: range check proved (CVC5: 2 VC), in call inlined at flb_multidimensional_subtypes.adb:51
+flb_multidimensional_subtypes.adb:32:19: info: index check proved (CVC5: 2 VC), in call inlined at flb_multidimensional_subtypes.adb:49
+flb_multidimensional_subtypes.adb:32:19: info: index check proved (CVC5: 2 VC), in call inlined at flb_multidimensional_subtypes.adb:50
+flb_multidimensional_subtypes.adb:32:19: info: index check proved (CVC5: 2 VC), in call inlined at flb_multidimensional_subtypes.adb:51
+flb_multidimensional_subtypes.adb:32:21: info: index check proved (CVC5: 2 VC), in call inlined at flb_multidimensional_subtypes.adb:49
+flb_multidimensional_subtypes.adb:32:21: info: index check proved (CVC5: 2 VC), in call inlined at flb_multidimensional_subtypes.adb:50
+flb_multidimensional_subtypes.adb:32:21: info: index check proved (CVC5: 2 VC), in call inlined at flb_multidimensional_subtypes.adb:51
+flb_multidimensional_subtypes.adb:37:04: info: range check proved (CVC5: 1 VC)
+flb_multidimensional_subtypes.adb:39:38: high: "A10_x_20" is not initialized
+flb_multidimensional_subtypes.adb:39:38: info: range check proved (CVC5: 2 VC)
+flb_multidimensional_subtypes.adb:45:04: info: analyzing call to "Proc_FLB_0" in context
+flb_multidimensional_subtypes.adb:45:16: high: "A_FLB_0_7_x_0_12" is not initialized
+flb_multidimensional_subtypes.adb:45:16: info: range check proved (CVC5: 1 VC)
+flb_multidimensional_subtypes.adb:46:04: info: analyzing call to "Proc_FLB_0" in context
+flb_multidimensional_subtypes.adb:46:16: high: "A10_x_20" is not initialized
+flb_multidimensional_subtypes.adb:46:16: info: range check proved (CVC5: 2 VC)
+flb_multidimensional_subtypes.adb:47:04: info: analyzing call to "Proc_FLB_0" in context
+flb_multidimensional_subtypes.adb:47:16: high: "A_2_7_x_0_11" is not initialized
+flb_multidimensional_subtypes.adb:47:16: info: range check proved (CVC5: 2 VC)
+flb_multidimensional_subtypes.adb:49:04: info: analyzing call to "Proc_FLB_1" in context
+flb_multidimensional_subtypes.adb:50:04: info: analyzing call to "Proc_FLB_1" in context
+flb_multidimensional_subtypes.adb:50:16: info: range check proved (CVC5: 2 VC)
+flb_multidimensional_subtypes.adb:51:04: info: analyzing call to "Proc_FLB_1" in context
+flb_multidimensional_subtypes.adb:51:16: high: "A_1_5_x_3_16" is not initialized
+flb_multidimensional_subtypes.adb:51:16: info: range check proved (CVC5: 2 VC)

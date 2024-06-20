@@ -166,6 +166,22 @@ package SPARK_Util is
    --  Extra information for checks that is useful for generating better
    --  messages.
 
+   type Inline_Info (Inline : Boolean := False) is record
+      case Inline is
+         when False =>
+            null;
+         when True =>
+            Inline_Node : Node_Id;
+      end case;
+   end record;
+
+   type Extra_Info is record
+      Node       : Node_Id := Empty;
+      Inline     : Inline_Info;
+      Bound_Info : Bound_Info_Type := No_Bound;
+   end record;
+   --  Extra information to describe which part of a check is unproved
+
    subtype Volatile_Pragma_Id is Pragma_Id with Static_Predicate =>
      Volatile_Pragma_Id in Pragma_Async_Readers
                          | Pragma_Async_Writers
@@ -267,6 +283,9 @@ package SPARK_Util is
    --  @param C expression of a classwide pre- or postcondition
    --  @return the dispatching expression previously stored for C, or Empty if
    --    no such expression was stored for C.
+
+   function Dispatching_Contract (L : Node_Lists.List) return Node_Lists.List;
+   --  Same as above but with a list of classwide pre- or postconditions
 
    -----------------------------------------
    -- General queries related to entities --

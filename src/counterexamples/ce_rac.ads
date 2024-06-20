@@ -26,12 +26,14 @@
 --  This package implements small-step (normal) runtime-assertion checking
 --  (RAC) for SPARK to check counterexamples.
 
+with Ada.Containers.Hashed_Maps;
 with Ada.Numerics.Big_Numbers.Big_Integers;
 use  Ada.Numerics.Big_Numbers.Big_Integers;
 with Ada.Numerics.Big_Numbers.Big_Reals;
 use Ada.Numerics.Big_Numbers.Big_Reals;
 with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 with CE_Values;             use CE_Values;
+with Common_Containers;     use Common_Containers;
 with SPARK_Atree.Entities;  use SPARK_Atree.Entities;
 with Types;                 use Types;
 with VC_Kinds;              use VC_Kinds;
@@ -53,9 +55,32 @@ package CE_RAC is
    --  Check fuel and decrease by Amount. Raise RAC_Incomplete when fuel
    --  becomes zero. Do nothing for negative values of Fuel.
 
-   function Find_Binding (E : Entity_Id) return Value_Access;
-   --  Find the binding of a variable in the context environment. If not found,
-   --  it is assumed to be a global constant and initialised as it.
+   function Find_Binding
+     (E       : Entity_Id;
+      Do_Init : Boolean := True)
+      return Value_Access
+   with Post => (if Do_Init then Find_Binding'Result /= null);
+   --  Find the binding of a variable in the context environment. If not found
+   --  and Do_Init is True, it is assumed to be a global constant and
+   --  initialised as it. If Do_Init is False, then null is returned instead.
+
+   function Find_Old_Value (N : Node_Id) return Opt_Value_Type;
+   --  Look into the context for the reference to a 'Old attribute
+
+   function Find_Loop_Entry_Value
+     (N       : Node_Id;
+      Loop_Id : Entity_Id)
+      return Opt_Value_Type;
+   --  Look into the context for the reference to a 'Loop_Entry attribute
+
+   package Node_To_Value is new Ada.Containers.Hashed_Maps
+     (Key_Type        => Node_Id,
+      Element_Type    => Value_Type,
+      Hash            => Node_Hash,
+      Equivalent_Keys => "=");
+
+   function All_Initial_Values return Node_To_Value.Map;
+   --  Get all input values used by the RAC instance
 
    procedure Get_Integer_Type_Bounds
      (Ty       :     Entity_Id;
@@ -130,6 +155,8 @@ package CE_RAC is
             --  The VC kind that triggered the failure
             Res_VC_Id   : Natural := Natural'Last;
             --  The ID of the check that failed (not set by RAC)
+            Res_EI      : Prover_Extra_Info;
+            --  Extra information about the failing part of the check if any
          when Res_Incomplete
             | Res_Stuck
             | Res_Not_Executed

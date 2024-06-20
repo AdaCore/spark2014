@@ -1,0 +1,6 @@
+
+incorrect_logical_equality_1.adb:24:14: high: all paths in "Test" raise exceptions or do not terminate normally
+   24 |   procedure Test with Global => null is
+      |             ^~~~
+incorrect_logical_equality_1.adb:24:24: info: data dependencies proved
+incorrect_logical_equality_1.adb:28:07: info: assertion proved

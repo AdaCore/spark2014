@@ -1,13 +1,34 @@
 with Ada.Containers.Indefinite_Doubly_Linked_Lists;
 with Common_Containers;   use Common_Containers;
 with Errout;
+with GNATCOLL.JSON;
 with String_Utils;        use String_Utils;
 with Types;               use Types;
 with VC_Kinds;            use VC_Kinds;
 
 package Errout_Wrapper is
 
-   type Msg_Kind is (MK_Error, MK_Warning, MK_Info);
+   type Msg_Severity is
+     (Error_Kind,
+      Warning_Kind,
+      Info_Kind,
+      Low_Check_Kind,
+      Medium_Check_Kind,
+      High_Check_Kind);
+
+   subtype Check_Kind is Msg_Severity range Low_Check_Kind .. High_Check_Kind;
+
+   --  describes the kinds of messages issued by gnat2why.
+   --  * Errors may be issued whenever a SPARK legality issue is encountered.
+   --    This will happen only in SPARK checking mode and flow analysis.
+   --  * Warnings may be issued for suspicious situations (e.g. unused
+   --    statement), or where the tool makes assumptions.
+   --  * Info messages are mainly for proved checks
+   --  * Check messages are for unproved VCs, and soundness-related flow
+   --    analysis messages. Checks come with a priority low, medium or high.
+
+   function To_JSON (Kind : Msg_Severity) return GNATCOLL.JSON.JSON_Value;
+   --  Return a JSON object (string) for the message kind
 
    type Message (Len : Natural) is record
       Names         : Node_Lists.List;
@@ -46,7 +67,7 @@ package Errout_Wrapper is
    procedure Error_Msg_N
      (Msg           : Message;
       N             : Node_Id;
-      Kind          : Msg_Kind := MK_Error;
+      Kind          : Msg_Severity := Error_Kind;
       First         : Boolean := False;
       Continuations : Message_Lists.List := Message_Lists.Empty);
    --  Issue a message using Kind as the message type. If First is True, locate
@@ -56,7 +77,7 @@ package Errout_Wrapper is
    procedure Error_Msg_N
      (Msg           : String;
       N             : Node_Id;
-      Kind          : Msg_Kind := MK_Error;
+      Kind          : Msg_Severity := Error_Kind;
       Names         : Node_Lists.List := Node_Lists.Empty;
       Secondary_Loc : Source_Ptr := No_Location;
       Explain_Code  : Explain_Code_Kind := EC_None;

@@ -538,16 +538,19 @@ dates.ads:67:13: info: implicit aspect Always_Terminates on "Maximum_Datetime" h
 dates.ads:71:13: info: implicit aspect Always_Terminates on "Minimum_Datetime" has been proved, subprogram will terminate
 dates.ads:76:13: info: implicit aspect Always_Terminates on "Is_Before" has been proved, subprogram will terminate
 dates.ads:78:14: info: postcondition proved (CVC5: 2 VC; Trivial: 1 VC)
+density_altitude-humidity_unit.adb:6:04: info: address in address clause is compatible with object alignment (CVC5: 1 VC)
 density_altitude-humidity_unit.adb:6:04: warning: address specification on "Humid_Sensor" is imprecisely supported: assuming no concurrent accesses to non-atomic object, correct volatile properties, and valid reads [E0012]
 density_altitude-humidity_unit.adb:6:04: warning: launch "gnatprove --explain=E0012" for more information
 density_altitude-humidity_unit.ads:9:20: info: initialization of "Value" proved
 density_altitude-humidity_unit.ads:10:11: info: data dependencies proved
 density_altitude-humidity_unit.ads:11:11: info: flow dependencies proved
+density_altitude-pressure_unit.adb:6:04: info: address in address clause is compatible with object alignment (CVC5: 1 VC)
 density_altitude-pressure_unit.adb:6:04: warning: address specification on "Press_Sensor" is imprecisely supported: assuming no concurrent accesses to non-atomic object, correct volatile properties, and valid reads [E0012]
 density_altitude-pressure_unit.adb:6:04: warning: launch "gnatprove --explain=E0012" for more information
 density_altitude-pressure_unit.ads:9:20: info: initialization of "Value" proved
 density_altitude-pressure_unit.ads:10:11: info: data dependencies proved
 density_altitude-pressure_unit.ads:11:11: info: flow dependencies proved
+density_altitude-temperature_unit.adb:6:04: info: address in address clause is compatible with object alignment (CVC5: 1 VC)
 density_altitude-temperature_unit.adb:6:04: warning: address specification on "Temp_Sensor" is imprecisely supported: assuming no concurrent accesses to non-atomic object, correct volatile properties, and valid reads [E0012]
 density_altitude-temperature_unit.adb:6:04: warning: launch "gnatprove --explain=E0012" for more information
 density_altitude-temperature_unit.ads:9:20: info: initialization of "Value" proved
@@ -616,6 +619,7 @@ example.adb:24:04: info: initialization of "Modified" proved
 example.adb:28:23: info: only expected exception raised (CVC5: 1 VC)
 example.adb:29:04: info: analyzing call to "Bounded_Increment" in context
 example.adb:34:26: info: only expected exception raised (CVC5: 1 VC)
+external_test.adb:6:04: info: address in address clause is compatible with object alignment (CVC5: 1 VC)
 external_test.adb:6:04: warning: address specification on "Value" is imprecisely supported: assuming no concurrent accesses to non-atomic object, correct volatile properties, and no writes to a potential alias [E0012]
 external_test.adb:6:04: warning: launch "gnatprove --explain=E0012" for more information
 external_test.adb:6:04: warning: make sure that all overlapping objects have Async_Writers set to True
@@ -758,6 +762,7 @@ interval.ads:9:09: info: invariant check proved on default value (CVC5: 1 VC)
 interval.ads:17:13: info: implicit aspect Always_Terminates on "Has_Valid_Order" has been proved, subprogram will terminate
 interval_tree.ads:5:05: info: flow dependencies proved
 interval_tree_wrapper.ads:6:07: info: flow dependencies proved
+led_display.adb:8:04: info: address in address clause is compatible with object alignment (CVC5: 1 VC)
 led_display.adb:8:04: warning: address specification on "Value" is imprecisely supported: assuming no concurrent accesses to non-atomic object, correct volatile properties, and no writes to a potential alias [E0012]
 led_display.adb:8:04: warning: launch "gnatprove --explain=E0012" for more information
 led_display.adb:8:04: warning: make sure that all overlapping objects have Async_Writers set to True
@@ -789,6 +794,7 @@ no_overflow.adb:7:14: info: range check proved (CVC5: 2 VC)
 no_overflow.adb:7:19: info: overflow check proved (CVC5: 2 VC)
 no_overflow.adb:7:24: info: division check proved (CVC5: 1 VC)
 no_overflow.ads:5:19: info: initialization of "C" proved
+numeric_display.ads:7:04: info: address in address clause is compatible with object alignment (CVC5: 1 VC)
 numeric_display.ads:7:04: warning: address specification on "Value" is imprecisely supported: assuming no concurrent accesses to non-atomic object, correct volatile properties, and no writes to a potential alias [E0012]
 numeric_display.ads:7:04: warning: launch "gnatprove --explain=E0012" for more information
 numeric_display.ads:7:04: warning: make sure that all overlapping objects have Async_Writers set to True

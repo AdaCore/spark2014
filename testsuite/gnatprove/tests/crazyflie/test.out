@@ -143,6 +143,7 @@ sensfusion6_pack.adb:204:07: info: initialization of "Az_Lifted" proved, in call
 sensfusion6_pack.adb:205:07: info: initialization of "Square_Sum" proved
 sensfusion6_pack.adb:205:07: info: initialization of "Square_Sum" proved, in call inlined at sensfusion6_pack.adb:320
 sensfusion6_pack.adb:320:25: info: analyzing call to "Mahony_Update_Q" in context
+sensfusion6_pack.adb:327:25: info: analyzing call to "Madgwick_Update_Q" in context
 sensfusion6_pack.adb:327:25: warning: this statement is never reached
 sensfusion6_pack.adb:341:07: info: initialization of "Grav_X" proved
 sensfusion6_pack.adb:342:07: info: initialization of "Grav_Y" proved

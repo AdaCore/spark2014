@@ -4162,17 +4162,6 @@ package body Why.Gen.Expr is
          end if;
       end if;
 
-      --  We enforce float equality, instead of why3 equality,
-      --  when comparing floats.
-
-      if Why_Type_Is_Float (Arg_Type) then
-         if Symbol = Why_Eq then
-            Operator := MF_Floats (Arg_Type).Eq;
-         elsif Symbol = Why_Neq then
-            Operator := MF_Floats (Arg_Type).Neq;
-         end if;
-      end if;
-
       return
         New_Call
           (Domain => Domain,

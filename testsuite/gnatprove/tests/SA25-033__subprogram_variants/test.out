@@ -16,7 +16,7 @@ test_bad_variant.adb:10:13: info: implicit aspect Always_Terminates on "Bad_2" h
 test_bad_variant.adb:12:14: info: postcondition proved (CVC5: 1 VC; Trivial: 1 VC)
 test_bad_variant.adb:29:13: info: implicit aspect Always_Terminates on "Bad_3" has been proved, subprogram will terminate
 test_bad_variant.adb:40:37: medium: subprogram variant might fail [possible explanation: mutually recursive call should be located directly inside a subprogram]
-test_bad_variant.adb:40:46: high: range check might fail, cannot prove lower bound for X - 1 (e.g. when B = False and X = 0) [reason for check: input value must fit in parameter type] [possible fix: add precondition (X >= Natural'First + 1) to subprogram at line 29]
+test_bad_variant.adb:40:46: high: range check might fail, cannot prove lower bound for X - 1 (e.g. when X = 0) [reason for check: input value must fit in parameter type] [possible fix: add precondition (X >= Natural'First + 1) to subprogram at line 29]
 test_bad_variant.adb:47:13: info: implicit aspect Always_Terminates on "Ok" has been proved, subprogram will terminate
 test_bad_variant.adb:52:59: info: subprogram variant proved (CVC5: 1 VC)
 test_bad_variant.adb:52:65: info: range check proved (CVC5: 2 VC)
@@ -54,19 +54,19 @@ test_bad_variant.adb:162:13: info: expression function body of subprograms with 
 test_bad_variant.adb:162:13: info: implicit aspect Always_Terminates on "Bad_4" has been proved, subprogram will terminate
 test_bad_variant.adb:163:17: medium: subprogram variant might fail (e.g. when X = 0 and Y = 0) [possible fix: subprogram at line 162 should mention B and X and Y in a precondition]
 test_bad_variant.adb:163:26: high: overflow check might fail, cannot prove upper bound for X + 1 (e.g. when X = Integer'Last) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: add precondition (X <= Integer'Last - 1) to subprogram at line 162]
-test_bad_variant.adb:163:33: high: overflow check might fail, cannot prove lower bound for Y - 6 (e.g. when X = -1 and Y = -2147483643) [reason for check: result of subtraction must fit in a 32-bits machine integer] [possible fix: add precondition (Y >= Integer'First + 6) to subprogram at line 162]
+test_bad_variant.adb:163:33: high: overflow check might fail, cannot prove lower bound for Y - 6 (e.g. when Y = -2147483643) [reason for check: result of subtraction must fit in a 32-bits machine integer] [possible fix: add precondition (Y >= Integer'First + 6) to subprogram at line 162]
 test_bad_variant.adb:164:12: info: subprogram variant proved (CVC5: 1 VC)
 test_bad_variant.adb:164:24: high: overflow check might fail, cannot prove upper bound for Y + 1 (e.g. when Y = Integer'Last) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: add precondition (Y <= Integer'Last - 1) to subprogram at line 162]
 test_bad_variant.adb:167:13: info: expression function body of subprograms with a numeric variant might not be available on recursive calls
 test_bad_variant.adb:167:13: info: implicit aspect Always_Terminates on "OK_2" has been proved, subprogram will terminate
 test_bad_variant.adb:168:17: info: subprogram variant proved (CVC5: 1 VC)
 test_bad_variant.adb:168:25: high: overflow check might fail, cannot prove upper bound for X + 1 (e.g. when X = Integer'Last) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: add precondition (X <= Integer'Last - 1) to subprogram at line 167]
-test_bad_variant.adb:168:32: high: overflow check might fail, cannot prove lower bound for Y - 6 (e.g. when X = -1 and Y = -2147483643) [reason for check: result of subtraction must fit in a 32-bits machine integer] [possible fix: add precondition (Y >= Integer'First + 6) to subprogram at line 167]
+test_bad_variant.adb:168:32: high: overflow check might fail, cannot prove lower bound for Y - 6 (e.g. when Y = -2147483643) [reason for check: result of subtraction must fit in a 32-bits machine integer] [possible fix: add precondition (Y >= Integer'First + 6) to subprogram at line 167]
 test_bad_variant.adb:169:12: info: subprogram variant proved (CVC5: 1 VC)
 test_bad_variant.adb:169:23: high: overflow check might fail, cannot prove upper bound for Y + 1 (e.g. when Y = Integer'Last) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: add precondition (Y <= Integer'Last - 1) to subprogram at line 167]
 test_bad_variant.adb:172:13: info: expression function body of subprograms with a numeric variant might not be available on recursive calls
 test_bad_variant.adb:172:13: info: implicit aspect Always_Terminates on "OK_3" has been proved, subprogram will terminate
-test_bad_variant.adb:173:25: high: overflow check might fail, cannot prove upper bound for X + 1 (e.g. when X = Integer'Last and Y = 6) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: add precondition (X <= Integer'Last - 1) to subprogram at line 172]
+test_bad_variant.adb:173:25: high: overflow check might fail, cannot prove upper bound for X + 1 (e.g. when X = Integer'Last) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: add precondition (X <= Integer'Last - 1) to subprogram at line 172]
 test_bad_variant.adb:173:32: high: overflow check might fail, cannot prove lower bound for Y - 6 (e.g. when Y = -2147483643) [reason for check: result of subtraction must fit in a 32-bits machine integer] [possible fix: add precondition (Y >= Integer'First + 6) to subprogram at line 172]
 test_bad_variant.adb:174:12: info: subprogram variant proved (CVC5: 1 VC)
 test_bad_variant.adb:174:23: high: overflow check might fail, cannot prove upper bound for Y + 1 (e.g. when Y = Integer'Last) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: add precondition (Y <= Integer'Last - 1) to subprogram at line 172]

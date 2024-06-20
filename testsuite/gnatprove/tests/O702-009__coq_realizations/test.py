@@ -18,7 +18,6 @@ gp_realized = [
     "Int_Minmax",
     "Int_Abs",
     "Array__1",
-    "Array__1__Concat",
 ]
 am_realized = [
     "Rep_Proj_Base",

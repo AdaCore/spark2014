@@ -409,8 +409,8 @@ package body VC_Kinds is
             return "Check that the two types in an unchecked conversion " &
               "instance are of the same size.";
          when VC_UC_Alignment                     =>
-            return "Check that the first object's alignment is an integral " &
-              "multiple of the second object's alignment.";
+            return "Check that the address within address clause is " &
+              "a multiple of the object's alignment.";
          when VC_UC_Volatile                      =>
             return "Check that, if an object has an address clause that is " &
               "not simply the address of another object, it is volatile";
@@ -784,6 +784,9 @@ package body VC_Kinds is
          when Lim_Overlay_With_Deep_Object =>
            "a reference to the ""Address"" attribute in an address clause"
           & " whose prefix has subcomponents of an access-to-variable type",
+         when Lim_Deep_Object_Declaration_Outside_Block =>
+           "a declaration of an object of an ownership type outside a block "
+          & "for declarations",
          when Lim_Package_Before_Inv =>
            "a package declaration occurring in a loop before the loop "
           & "invariant",

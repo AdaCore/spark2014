@@ -146,7 +146,7 @@ package VC_Kinds is
       --  size.
 
       VC_UC_Alignment,
-      --  Check that the two objects in an overlay have compatible alignments.
+      --  Check that the address in an address clause respect object alignment
 
       VC_UC_Volatile,
       --  Check that we specify the address of an object only if it is
@@ -208,7 +208,6 @@ package VC_Kinds is
          VC_UC_Source
        | VC_UC_Target
        | VC_UC_Same_Size
-       | VC_UC_Alignment
        | VC_UC_Volatile
        | VC_Unchecked_Union_Restriction;
    --  Subtype used to indicate VC kinds that have high severity if unproved.
@@ -482,6 +481,7 @@ package VC_Kinds is
       Lim_Op_Fixed_Float,
       Lim_Op_Incompatible_Fixed,
       Lim_Overlay_With_Deep_Object,
+      Lim_Deep_Object_Declaration_Outside_Block,
       Lim_Package_Before_Inv,
       Lim_Predicate_With_Different_SPARK_Mode,
       Lim_Predicate_With_Different_Visibility,
@@ -694,6 +694,9 @@ package VC_Kinds is
            & "ownership type",
          when Lim_Overlay_With_Deep_Object =>
            "overlay with an object of an ownership type",
+         when Lim_Deep_Object_Declaration_Outside_Block =>
+           "declaration of an object of an ownership type outside a block "
+           & "for declarations",
          when Lim_Non_Static_Attribute =>
            "non-static attribute """ & Standard_Ada_Case (Name) & """",
          when Lim_Img_On_Non_Scalar =>
@@ -976,15 +979,24 @@ package VC_Kinds is
    Model_Proj_Meta : constant String := "model_projection";
    --  A meta that is used in Why3 to mark a function as projection.
 
+   --------------------
+   --  Data Exchange --
+   --------------------
+
    --  Constants that are used in the extra_info returned from gnatwhy3, to
    --  identify lower and upper bound of a range check.
 
    Low_Bound_Id  : constant Integer := -1;
    High_Bound_Id : constant Integer := -2;
 
-   --------------------
-   --  Data Exchange --
-   --------------------
+   --  Type for the extra_info returned from gnatwhy3
+   type Prover_Extra_Info is record
+      Info   : Integer := 0;
+      --  Either a node ID or one of the bound id constants
+      Inline : Integer := 0;
+      --  Either 0 if no inlining, a node ID, or a negative value if there is
+      --  no such node.
+   end record;
 
    --  This section defines various types that are used to communicate between
    --  the various gnatprove processes (most notably between gnat2why/gnatwhy3
@@ -1214,13 +1226,15 @@ package VC_Kinds is
             | Not_Checked
          =>
             Verdict_Reason : Unbounded_String :=
-                               To_Unbounded_String ("Unknown");
+              To_Unbounded_String ("Unknown");
          when Cntexmp_Confirmed_Verdict_Category =>
-            null;
+            CE             : Cntexample_File_Maps.Map;
+            Extra_Info     : Prover_Extra_Info;
          end case;
       end record;
    --  The result when checking the counterexample for a check, based on Why3
-   --  giant-step RAC and SPARK small-step RAC.
+   --  giant-step RAC and SPARK small-step RAC. Store a counterexample value
+   --  and extra information for the check location.
 
    function Reason (Verdict : Cntexmp_Verdict) return String is
      (case Verdict.Verdict_Category is

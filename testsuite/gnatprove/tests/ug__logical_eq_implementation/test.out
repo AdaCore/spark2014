@@ -1,0 +1,12 @@
+logical_equality_implementation.ads:6:13: info: implicit aspect Always_Terminates on "Eq" has been proved, subprogram will terminate
+logical_equality_implementation.ads:8:09: info: Inline_For_Proof or Logical_Equal annotation proved
+logical_equality_implementation.ads:11:13: info: implicit aspect Always_Terminates on "Eq" has been proved, subprogram will terminate
+logical_equality_implementation.ads:13:09: info: Inline_For_Proof or Logical_Equal annotation proved
+logical_equality_implementation.ads:16:13: info: implicit aspect Always_Terminates on "Eq" has been proved, subprogram will terminate
+logical_equality_implementation.ads:18:09: info: Inline_For_Proof or Logical_Equal annotation proved
+logical_equality_implementation.ads:23:13: info: implicit aspect Always_Terminates on "Eq" has been proved, subprogram will terminate
+logical_equality_implementation.ads:25:09: info: Inline_For_Proof or Logical_Equal annotation proved
+logical_equality_implementation.ads:28:13: info: implicit aspect Always_Terminates on "Eq" has been proved, subprogram will terminate
+logical_equality_implementation.ads:30:09: info: Inline_For_Proof or Logical_Equal annotation proved
+logical_equality_implementation.ads:38:13: info: implicit aspect Always_Terminates on "Eq" has been proved, subprogram will terminate
+logical_equality_implementation.ads:43:09: info: Inline_For_Proof or Logical_Equal annotation proved

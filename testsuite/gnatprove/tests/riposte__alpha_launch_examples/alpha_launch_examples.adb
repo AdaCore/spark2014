@@ -24,7 +24,7 @@ is
      with Depends => (R => R),
           Post    => R = R'Old'Update (A => R'Old.C,
                                        C => R'Old.A)
-                       and R /= R'Old   --  @POSTCONDITION:FAIL
+                       and then R /= R'Old   --  @POSTCONDITION:FAIL
    is
       Tmp : Integer;
    begin

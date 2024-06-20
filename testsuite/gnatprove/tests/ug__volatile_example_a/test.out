@@ -1,3 +1,15 @@
+
+volatile_example_a.adb:9:04: medium: address in address clause might not be an integral multiple of alignment of object
+    9>|   V : Integer
+  ... | ...
+   12 |          Warnings => Off;
+  possible fix: overlaying object should have an Alignment representation clause
+
+volatile_example_a.adb:14:04: medium: address in address clause might not be an integral multiple of alignment of object
+   14>|   W : Pair
+  ... | ...
+   17 |          Warnings => Off;
+  possible fix: overlaying object should have an Alignment representation clause
 volatile_example_a.adb:20:11: info: data dependencies proved
 volatile_example_a.adb:23:07: info: initialization of "Tmp" proved
 
