@@ -12,6 +12,8 @@ project GNATprove is
 
    Build : Build_Type := External ("Build", "Debug");
 
+   Tool := External ("GPR_TOOL", "");
+
    Target := project'Target;
    Sources := (".", "src/gnatprove", "src/common");
 
@@ -34,7 +36,14 @@ project GNATprove is
 
       case Build is
          when "Debug" =>
-            for Global_Configuration_Pragmas use "gnatprove.adc";
+            case Tool is
+               when "gnatsas" =>
+                  --  disable use of pragma configuration files when running
+                  --  GNAT SAS
+                  null;
+               when Others =>
+                  for Global_Configuration_Pragmas use "gnatprove.adc";
+            end case;
          when "Production" =>
             null;
          when "Coverage" =>
@@ -68,6 +77,12 @@ project GNATprove is
 
    package Analyzer is
 
+      for Review_File use "analyzer/gnatprove.sar";
+
+      --  Relocate outputs outside of object directory because that one is
+      --  cached in CIs and we do not want to store baselines in the cache.
+      for Output_Dir use "analyzer";
+
       --  Exclude source files leading to false positives
       for Excluded_Source_Files use
         ("assumptions.ads",
@@ -80,8 +95,6 @@ project GNATprove is
        "--no-gnatcheck");
       for Switches ("infer") use ("--disable-issue-type", "MEMORY_LEAK_ADA");
       for Switches ("inspector") use ("--legacy-level", "1", "-gnatws");
-
-      for Review_File use "gnatprove.sar";
 
    end Analyzer;
 
