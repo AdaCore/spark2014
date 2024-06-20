@@ -9,7 +9,7 @@ cursor_location.adb:33:10: warning: unreachable code (CVC5: 1 VC)
 cursor_location.ads:8:13: info: implicit aspect Always_Terminates on "Change_Side" has been proved, subprogram will terminate
 cursor_location.ads:13:13: info: implicit aspect Always_Terminates on "Fulfill_Condition" has been proved, subprogram will terminate
 cursor_location.ads:17:12: warning: postcondition does not mention function result
-cursor_location.ads:18:10: high: postcondition might fail, cannot prove DU_Available (Side) (e.g. when DU_Available = (Left => False, Right => True) and Side = Left)
+cursor_location.ads:18:09: high: postcondition might fail (e.g. when DU_Available = (Left => False, Right => True) and Request = (others => True) and Side = Left)
 cursor_location.ads:18:10: warning: conjunct in postcondition does not check the outcome of calling "Fulfill_Condition"
 cursor_location.ads:27:09: info: postcondition proved (CVC5: 2 VC; Trivial: 2 VC)
 cursor_location.ads:27:43: warning: unreachable branch (CVC5: 1 VC)

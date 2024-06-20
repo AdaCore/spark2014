@@ -32,7 +32,7 @@ sqrt_non_conformity.adb:9:23: info: overflow check proved (CVC5: 2 VC)
 sqrt_non_conformity.adb:11:16: medium: implicit aspect Always_Terminates on "Sqrt_Non_Conformity" could be incorrect, loop might be nonterminating [possible fix: add loop variant in the loop body]
 sqrt_non_conformity.adb:12:30: info: loop invariant initialization proved (CVC5: 1 VC)
 sqrt_non_conformity.adb:12:30: info: loop invariant preservation proved (CVC5: 1 VC)
-sqrt_non_conformity.adb:13:30: high: loop invariant might not be preserved by an arbitrary iteration (e.g. when R = 1 and Y = 7)
+sqrt_non_conformity.adb:13:30: high: loop invariant might not be preserved by an arbitrary iteration (e.g. when R = 2 and Y = 14)
 sqrt_non_conformity.adb:13:30: info: loop invariant initialization proved (CVC5: 1 VC)
 sqrt_non_conformity.adb:13:35: info: overflow check proved (CVC5: 4 VC)
 sqrt_non_conformity.adb:14:30: info: loop invariant initialization proved (CVC5: 1 VC)

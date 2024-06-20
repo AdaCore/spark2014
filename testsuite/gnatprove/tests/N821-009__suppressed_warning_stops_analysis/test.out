@@ -1,3 +1,4 @@
+water_high.adb:11:04: medium: address in address clause might not be an integral multiple of alignment of object [possible fix: overlaying object should have an Alignment representation clause]
 water_high.adb:11:04: warning: address specification on "High_Sensor_Port" is imprecisely supported: assuming no concurrent accesses to non-atomic object, correct volatile properties, and valid reads [E0012]
 water_high.adb:11:04: warning: launch "gnatprove --explain=E0012" for more information
 water_high.adb:19:07: info: initialization of "Raw_Value" proved

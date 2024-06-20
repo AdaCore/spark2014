@@ -20,7 +20,7 @@ is
    Port : Integer := 0 with
      Volatile,
      Async_Readers,
-     Address => System.Storage_Elements.To_Address (16#FFFF_FFFF#),
+     Address => System.Storage_Elements.To_Address (16#FFFF_FFF0#),
      Part_Of => Control;
 
    protected body Control is

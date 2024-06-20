@@ -83,20 +83,17 @@ package Gnat2Why.Error_Messages is
       VC_Loc        : Node_Id := Empty;
       Stats         : Prover_Stat_Maps.Map := Prover_Stat_Maps.Empty_Map;
       Editor_Cmd    : String := "";
-      Fuzzing_Used  : Boolean := False;
-      Print_Fuzzing : Boolean := False);
+      CE_From_RAC   : Boolean := False);
    --  Register the VC identified by node and kind as proved. This will emit
-   --  a message if needed and register the result in JSON output. @parameter
-   --  How_Proved identifies the prover type (possible values currently are
-   --  "interval" and "", the empty string meaning "some prover used by why3
-   --  backend".
-   --  @parameter VC_Loc is the location of the verification check as opposed
-   --  to @parameter Node which contains the location of the first failing part
-   --  of a VC (raised as location for messages).
-   --  @parameter Fuzzing_Used indicates wether the counterexample used to
-   --  reach Verdict comes for the fuzzer
-   --  @parameter Print_Fuzzing marks if the counterexample found by the fuzzer
-   --  should be printed
+   --  a message if needed and register the result in JSON output.
+   --  @parameter How_Proved identifies the prover type (possible values
+   --    currently are "interval" and "", the empty string meaning "some prover
+   --    used by why3 backend".
+   --  @parameter VC_Loc is the location of the verification check
+   --  @parameter Node contains the location of the first failing part of a VC
+   --    (raised as location for messages).
+   --  @parameter CE_From_RAC indicates whether there is a counterexample from
+   --    the RAC that should be used for the check.
 
    procedure Emit_Static_Proof_Result
      (Node        : Node_Id;

@@ -226,6 +226,8 @@ compiler.adb:1157:24: info: in inlined body at line 858
 compiler.adb:1159:24: info: analyzing call to "Process_For" in context
 compiler.adb:1161:24: info: analyzing call to "Process_Case" in context
 compiler.adb:1163:24: info: analyzing call to "Process_Cobegin" in context
+compiler.adb:1197:07: info: analyzing call to "Enter" in context
+compiler.adb:1200:09: info: analyzing call to "Enter" in context
 compiler.adb:1202:32: info: analyzing call to "Error" in context
 compiler.adb:1207:07: info: analyzing call to "Enter" in context
 compiler.adb:1210:09: info: analyzing call to "Enter" in context

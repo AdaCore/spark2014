@@ -732,43 +732,47 @@ of 5 or more dimensions. We would need to add new abstract theories in
 __gnatprove_standard.mlw to lift this restriction should the need
 arise.
 
-As background solvers of GNATprove have theories for one dimensional
-abstract maps (this theory is called theory of arrays), we have chosen
-to directly translate maps for arrays of dimension 1 to the built-in
+Background solvers of GNATprove have theories for one dimensional
+abstract maps (this theory is called theory of arrays). However, we have chosen
+not to directly translate maps for arrays of dimension 1 to the built-in
 Map type in Why to benefit from this support.
-
-As an example, let us consider the following 1 dimensional array type:
-
-.. code-block:: ada
-
-     type My_Array is array (Positive range <>) of Natural;
-
-Here is the map theory introduced for it:
-
-.. code-block:: whyml
-
-    module Array__Int__Standard__natural
-      use map.Map
-
-      type map = Map.map int Standard__natural.natural
-
-      function get (a : map) (i : int) : Standard__natural.natural = Map.get a i
-      function set (a : map) (i : int) (v : Standard__natural.natural) : map = Map.set a i v
-      ...
-    end
-
-Remark that this is a trade-off, as, on the one hand, solvers are
+This is a trade-off, as, on the one hand, solvers are
 usually more efficient on multiple consecutive updates of arrays when
 using the theory, while, on the other hand, the built-in support may
 hinder quantifier instantiation of universally quantified axioms
-involving arrays. Tests were done to decide which choice was the most
-relevant for us, but as solvers are improving all the time, it may
-have to be revisited at some point.
+involving arrays.  Experiments showed that the additional complexity introduced
+by having interpreted symbols in quantified axioms over arrays was not made up
+for by the benefits of the encoding. As solvers are improving all the time, it
+may have to be revisited at some point.
 
-NB: We could have chosen to also translate multiple dimension arrays
-using the theory (by nesting maps, or by indexing them with records).
-We did not even try it, as there was already not so much benefits in
-using the theory for one dimensional arrays.
+As a result of our encoding of arrays, Why3 values for Ada arrays contain
+elements for out-of-bounds indexes. So that Why3 can determine that 2 arrays are
+logically equal if they contain logically equal elements at the same indexes,
+a predicate has_bounds is introduced and maintained over arrays. It is used to
+state that a given infinite map has some specific bounds. Intuitively, it
+enforces that out-of-bounds values are necessarily equal to an unspecified
+value. An extensionality axiom allows Why3 to prove that two arrays with the
+same bounds are logically equal if they agree on the value of elements within
+the bounds:
+
+.. code-block:: whyml
+
+  predicate has_bounds map int int
+
+  predicate eq_ext map map int int
+
+  axiom eq_ext_def :
+    forall a1 a2 : map, f l : int [eq_ext a1 a2 f l].
+      eq_ext a1 a2 f l <-> a1 = a2
+
+  axiom extensionality :
+    forall a1 a2 : map, f l : int [eq_ext a1 a2 f l].
+      a1 <> a2 -> has_bounds a1 f l -> has_bounds a2 f l ->
+      exists i : int. f <= i <= l /\ get a1 i <> get a2 i
+
+The predicate eq_ext here is only used to provide SMT solvers with a trigger
+to apply the extensionality axiom. It is used to translate calls to functions
+annotated with Logical_Equal over arrays.
 
 Operators on Maps
 """""""""""""""""

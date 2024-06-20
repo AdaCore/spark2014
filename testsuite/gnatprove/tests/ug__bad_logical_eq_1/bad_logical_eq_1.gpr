@@ -1,0 +1,11 @@
+project Bad_Logical_Eq_1 is
+
+   package Compiler is
+      for Switches ("Ada") use ("-gnat2020");
+   end Compiler;
+
+   package Prove is
+      for Proof_Switches ("Ada") use ("--report=all");
+   end Prove;
+
+end Bad_Logical_Eq_1;

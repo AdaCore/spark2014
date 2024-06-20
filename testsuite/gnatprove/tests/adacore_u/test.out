@@ -1,6 +1,6 @@
 aliasing.adb:21:14: info: non-aliasing of formal parameters "X" and "Y" proved
 aliasing.adb:26:13: medium: formal parameters "X" and "Y" might be aliased (SPARK RM 6.4.2)
-aliasing.adb:26:16: high: array index check might fail (e.g. when A'First = 1 and I = 0) [reason for check: value must be a valid index into the array] [possible fix: add precondition (I in A'First .. A'Last) to subprogram at aliasing.ads:17]
+aliasing.adb:26:16: high: array index check might fail (e.g. when A'First = 1 and A'Last = 0 and I = 0) [reason for check: value must be a valid index into the array] [possible fix: add precondition (I in A'First .. A'Last) to subprogram at aliasing.ads:17]
 aliasing.adb:26:23: medium: array index check might fail [reason for check: value must be a valid index into the array] [possible fix: add precondition (J in A'First .. A'Last) to subprogram at aliasing.ads:17]
 global_stack.ads:4:12: error: function "Pop" with output global "Top" is not allowed in SPARK [E0005]
 global_stack.ads:4:12: error: launch "gnatprove --explain=E0005" for more information
@@ -114,7 +114,7 @@ communication.adb:19:25: high: array index check might fail (e.g. when B = (Cont
 communication.adb:20:32: high: overflow check might fail, cannot prove upper bound for B.First + 1 (e.g. when B = (Content => (others => 0), First => Positive'Last, Length => Natural'Last) and B.Content'First = 1 and B.Content'Last = Integer'Last) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at communication.ads:17 should mention B in a precondition]
 communication.adb:21:24: high: overflow check might fail, cannot prove upper bound for B.First + B.Length (e.g. when B = (Content => (others => Data'Last), First => Positive'Last, Length => 1) and B.Content'First = 1 and B.Content'Last = 2) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at communication.ads:17 should mention B in a precondition]
 communication.adb:22:32: info: overflow check proved (CVC5: 2 VC)
-communication.adb:22:43: high: array index check might fail (e.g. when B = (Content => (1 => 0), First => 1, Length => 0) and B.Content'First = 1 and B.Content'Last = 1 and Max = 1) [reason for check: result of subtraction must be a valid index into the array] [possible fix: subprogram at communication.ads:17 should mention B in a precondition]
+communication.adb:22:43: high: array index check might fail (e.g. when B = (Content => (1 => 0), First => 1, Length => 0) and Max = 1) [reason for check: result of subtraction must be a valid index into the array] [possible fix: subprogram at communication.ads:17 should mention B in a precondition]
 communication.adb:22:43: info: overflow check proved (CVC5: 2 VC)
 communication.adb:23:34: info: overflow check proved (CVC5: 2 VC)
 communication.adb:25:32: info: index check proved (CVC5: 2 VC)
@@ -409,6 +409,7 @@ diff_pair.ads:15:13: info: implicit aspect Always_Terminates on "Max2" has been 
 diff_pair.ads:17:14: info: postcondition proved (CVC5: 1 VC)
 external_abstract_state.adb:9:04: high: "AR" constituent of "AR_State" is not written in "External_Abstract_State" [reason for check: variable is mentioned in the generated Initializes contract] [possible fix: initialize "AR" constituent of "AR_State" at declaration or in the package body statements]
 external_abstract_state.adb:11:04: high: "EW" constituent of "AR_State" is not written in "External_Abstract_State" [reason for check: variable is mentioned in the generated Initializes contract] [possible fix: initialize "EW" constituent of "AR_State" at declaration or in the package body statements]
+trivial.ads:10:04: medium: address in address clause might not be an integral multiple of alignment of object [possible fix: overlaying object should have an Alignment representation clause]
 trivial.ads:10:04: warning: address specification on "X" is imprecisely supported: assuming no concurrent accesses to non-atomic object and no writes to a potential alias [E0012]
 trivial.ads:10:04: warning: launch "gnatprove --explain=E0012" for more information
 trivial.ads:10:04: warning: make sure that all overlapping objects have Async_Writers set to True
@@ -416,20 +417,25 @@ trivial.ads:12:19: info: initialization of "Val" proved
 trivial.ads:13:06: info: data dependencies proved
 trivial.ads:14:06: info: flow dependencies proved
 trivial_async_properties.adb:7:22: medium: assertion might fail
+trivial_async_properties.ads:10:04: medium: address in address clause might not be an integral multiple of alignment of object [possible fix: overlaying object should have an Alignment representation clause]
 trivial_async_properties.ads:10:04: warning: address specification on "X" is imprecisely supported: assuming no concurrent accesses to non-atomic object, correct volatile properties, and no writes to a potential alias [E0012]
 trivial_async_properties.ads:10:04: warning: launch "gnatprove --explain=E0012" for more information
 trivial_async_properties.ads:10:04: warning: make sure that all overlapping objects have Async_Writers set to True
+trivial_async_properties.ads:11:04: medium: address in address clause might not be an integral multiple of alignment of object [possible fix: overlaying object should have an Alignment representation clause]
 trivial_async_properties.ads:11:04: warning: address specification on "Y" is imprecisely supported: assuming no concurrent accesses to non-atomic object and correct volatile properties [E0012]
 trivial_async_properties.ads:11:04: warning: launch "gnatprove --explain=E0012" for more information
 trivial_async_properties.ads:13:14: info: initialization of "X" proved
 trivial_async_properties.ads:14:06: info: flow dependencies proved
+trivial_effective_properties.ads:10:04: medium: address in address clause might not be an integral multiple of alignment of object [possible fix: overlaying object should have an Alignment representation clause]
 trivial_effective_properties.ads:10:04: warning: address specification on "X" is imprecisely supported: assuming no concurrent accesses to non-atomic object, correct volatile properties, and no writes to a potential alias [E0012]
 trivial_effective_properties.ads:10:04: warning: launch "gnatprove --explain=E0012" for more information
 trivial_effective_properties.ads:10:04: warning: make sure that all overlapping objects have Async_Writers set to True
+trivial_effective_properties.ads:12:04: medium: address in address clause might not be an integral multiple of alignment of object [possible fix: overlaying object should have an Alignment representation clause]
 trivial_effective_properties.ads:12:04: warning: address specification on "Y" is imprecisely supported: assuming no concurrent accesses to non-atomic object and correct volatile properties [E0012]
 trivial_effective_properties.ads:12:04: warning: launch "gnatprove --explain=E0012" for more information
 trivial_effective_properties.ads:15:14: info: initialization of "X" proved
 trivial_effective_properties.ads:16:06: info: flow dependencies proved
+trivial_no_output.ads:10:04: medium: address in address clause might not be an integral multiple of alignment of object [possible fix: overlaying object should have an Alignment representation clause]
 trivial_no_output.ads:10:04: warning: address specification on "X" is imprecisely supported: assuming no concurrent accesses to non-atomic object, correct volatile properties, and no writes to a potential alias [E0012]
 trivial_no_output.ads:10:04: warning: launch "gnatprove --explain=E0012" for more information
 trivial_no_output.ads:10:04: warning: make sure that all overlapping objects have Async_Writers set to True

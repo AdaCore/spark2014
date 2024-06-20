@@ -1,0 +1,6 @@
+p.adb:3:19: info: assertion proved (Trivial: 1 VC), in instantiation at main.adb:6
+p.adb:3:19: info: assertion proved (Trivial: 1 VC), in instantiation at main.adb:7
+p.ads:3:14: warning: "X" is not modified, could be IN, in instantiation at main.adb:6
+p.ads:3:14: warning: "X" is not modified, could be IN, in instantiation at main.adb:7
+p.ads:3:14: warning: unused variable "X", in instantiation at main.adb:6
+p.ads:3:14: warning: unused variable "X", in instantiation at main.adb:7

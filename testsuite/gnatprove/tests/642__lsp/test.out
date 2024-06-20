@@ -1,0 +1,19 @@
+evil.adb:1:11: high: all paths in "Evil" raise exceptions or do not terminate normally
+evil.adb:4:16: info: implicit aspect Always_Terminates on "Ok" has been proved, subprogram will terminate
+evil.adb:5:54: info: postcondition proved (CVC5: 1 VC)
+evil.adb:7:16: info: implicit aspect Always_Terminates on "Ok2" has been proved, subprogram will terminate
+evil.adb:8:65: info: postcondition proved (CVC5: 1 VC)
+evil.adb:8:65: info: postcondition proved (CVC5: 1 VC), in inherited contract at evil.adb:11
+evil.adb:8:65: medium: class-wide postcondition might be weaker than overridden one
+evil.adb:10:27: info: implicit aspect Always_Terminates on "Ok" has been proved, subprogram will terminate
+evil.adb:16:16: info: implicit aspect Always_Terminates on "Ok" has been proved, subprogram will terminate
+evil.adb:17:54: info: postcondition proved (CVC5: 1 VC)
+evil.adb:19:16: info: implicit aspect Always_Terminates on "Ok2" has been proved, subprogram will terminate
+evil.adb:20:23: info: postcondition proved (CVC5: 1 VC; Trivial: 1 VC)
+evil.adb:20:43: medium: postcondition might fail, cannot prove Ok (X), in inherited contract at evil.adb:24 (e.g. when Ok2'Result = True)
+evil.adb:21:65: info: class-wide postcondition is stronger than overridden one (CVC5: 1 VC)
+evil.adb:21:65: info: postcondition proved (CVC5: 1 VC)
+evil.adb:21:65: info: postcondition proved (CVC5: 1 VC), in inherited contract at evil.adb:25
+evil.adb:23:27: info: implicit aspect Always_Terminates on "Ok" has been proved, subprogram will terminate
+evil.adb:24:27: info: implicit aspect Always_Terminates on "Ok2" has been proved, subprogram will terminate
+evil.adb:31:04: info: assertion proved (CVC5: 1 VC)

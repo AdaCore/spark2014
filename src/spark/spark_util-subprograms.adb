@@ -341,6 +341,7 @@ package body SPARK_Util.Subprograms is
                                          | N_Compilation_Unit
                                          | N_Entry_Body
                                          | N_Freeze_Entity
+                                         | N_Handled_Sequence_Of_Statements
                                          | N_Protected_Body
                                          | N_Package_Body
                                          | N_Package_Specification

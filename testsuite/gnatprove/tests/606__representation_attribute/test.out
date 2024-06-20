@@ -1,4 +1,4 @@
-bar.adb:9:07: info: alignment of overlaid objects is compatible (Trivial)
+bar.adb:9:07: info: address in address clause is compatible with object alignment (Trivial)
 bar.adb:9:07: info: object is suitable for aliasing via address clause (Trivial)
 bar.adb:9:56: info: object is suitable for aliasing via address clause (Trivial)
 bar.adb:9:56: info: types of aliased objects have the same size (Trivial)
@@ -8,7 +8,7 @@ bar.ads:5:13: info: implicit aspect Always_Terminates on "Baz" has been proved, 
 bar.ads:5:18: warning: unused variable "Data"
 foo.adb:7:13: info: implicit aspect Always_Terminates on "Bar" has been proved, subprogram will terminate
 foo.adb:7:18: warning: unused variable "Data"
-foo.adb:15:07: info: alignment of overlaid objects is compatible (Trivial)
+foo.adb:15:07: info: address in address clause is compatible with object alignment (Trivial)
 foo.adb:15:07: info: object is suitable for aliasing via address clause (Trivial)
 foo.adb:15:56: info: object is suitable for aliasing via address clause (Trivial)
 foo.adb:15:56: info: types of aliased objects have the same size (Trivial)
@@ -16,7 +16,7 @@ foo.adb:17:22: info: assertion proved (Trivial: 1 VC)
 foo.adb:18:22: info: assertion proved (Trivial)
 foo.adb:23:15: info: implicit aspect Always_Terminates on "P" has been proved, subprogram will terminate
 foo.adb:23:18: warning: unused variable "Data"
-foo.adb:33:10: info: alignment of overlaid objects is compatible (Trivial)
+foo.adb:33:10: info: address in address clause is compatible with object alignment (Trivial)
 foo.adb:33:10: info: object is suitable for aliasing via address clause (Trivial)
 foo.adb:33:59: info: object is suitable for aliasing via address clause (Trivial)
 foo.adb:33:59: info: types of aliased objects have the same size (Trivial)

@@ -1,6 +1,6 @@
 procedure Swap_Bad_Post (X, Y : in out Integer) with
   SPARK_Mode,
-  Post => X = Y'Old and Y = X'Old
+  Post => X = Y'Old and then Y = X'Old
 is
 begin
    X := Y;

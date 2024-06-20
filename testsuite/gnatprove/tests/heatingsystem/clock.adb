@@ -7,7 +7,7 @@ is
    Tick_Ext : Times
      with Volatile,
           Async_Writers,
-          Address => System.Storage_Elements.To_Address (16#FFFF_FFFF#);
+          Address => System.Storage_Elements.To_Address (16#FFFF_FFF0#);
 
    procedure Read (Time : out Times)
      with Refined_Global  => Tick_Ext,

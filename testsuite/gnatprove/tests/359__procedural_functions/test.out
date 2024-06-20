@@ -58,6 +58,7 @@ ok_call.adb:32:10: medium: call might not terminate [reason for check: procedure
 ok_call.adb:36:19: medium: assertion might fail (e.g. when G = 0)
 ok_call.adb:40:19: medium: assertion might fail (e.g. when G = 0)
 ok_call_with_post.adb:5:11: info: aspect Always_Terminates on "OK_Call_With_Post" has been proved, subprogram will terminate
+ok_call_with_post.adb:11:13: info: implicit function contract might not be available on calls from enclosing unit
 ok_call_with_post.adb:15:19: info: assertion proved (CVC5: 1 VC)
 ok_call_with_post.adb:16:19: info: assertion proved (CVC5: 1 VC)
 ok_call_with_post.adb:20:19: info: assertion proved (CVC5: 1 VC)
@@ -69,10 +70,12 @@ ok_call_with_post.adb:31:19: info: assertion proved (CVC5: 1 VC)
 ok_call_with_post.adb:33:10: info: only expected exception raised (CVC5: 1 VC)
 ok_call_with_post.adb:34:19: info: assertion proved (CVC5: 1 VC)
 ok_call_with_post.adb:37:19: info: assertion proved (CVC5: 1 VC)
+ok_call_with_post.adb:39:07: info: no contextual analysis of "Rand" (body not seen yet)
 ok_call_with_post.adb:41:07: info: assertion proved (CVC5: 1 VC)
 ok_call_with_post.adb:45:19: info: assertion proved (CVC5: 1 VC)
 ok_call_with_post.adb:47:10: info: conditional call termination proved (CVC5: 1 VC)
 ok_call_with_post.adb:48:19: info: assertion proved (CVC5: 1 VC)
+ok_call_with_post.adb:50:07: info: no contextual analysis of "Rand" (body not seen yet)
 ok_call_with_post.adb:51:13: medium: call might not terminate [reason for check: procedure "OK_Call_With_Post" has an Always_Terminates aspect]
 ok_call_with_post.adb:52:07: info: assertion proved (CVC5: 1 VC)
 ok_call_with_post.adb:57:19: info: assertion proved (CVC5: 1 VC)

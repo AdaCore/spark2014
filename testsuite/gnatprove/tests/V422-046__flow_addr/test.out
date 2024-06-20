@@ -1,5 +1,6 @@
 main.adb:7:07: info: initialization of "Variable_To_Set" proved
 main.adb:8:43: info: flow dependencies proved
+main.adb:10:07: info: address in address clause is compatible with object alignment (CVC5: 1 VC)
 main.adb:10:07: info: initialization of "Value_In_Spark" proved
 main.adb:10:07: warning: address specification on "Value_In_Spark" is imprecisely supported: assuming no concurrent accesses to non-atomic object, no writes to or through a potential alias, and valid reads [E0012]
 main.adb:10:07: warning: launch "gnatprove --explain=E0012" for more information

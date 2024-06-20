@@ -19,12 +19,12 @@ attempt_1.adb:34:31: medium: float overflow check might fail [reason for check: 
 attempt_1.adb:34:44: info: division check proved (CVC5: 1 VC)
 attempt_1.adb:34:44: info: float overflow check proved (Trivial)
 attempt_2.adb:15:13: info: implicit aspect Always_Terminates on "Low_Bound" has been proved, subprogram will terminate
-attempt_2.adb:16:18: high: overflow check might fail, cannot prove bounds for N*N (e.g. when N = 25000) [reason for check: result of multiplication must fit in a 16-bits machine integer] [possible fix: add precondition (N*N <= 32767) to subprogram at line 15]
+attempt_2.adb:16:18: high: overflow check might fail, cannot prove upper bound for N*N (e.g. when N = Frame'Last) [reason for check: result of multiplication must fit in a 16-bits machine integer] [possible fix: add precondition (N*N <= 32767) to subprogram at line 15]
 attempt_2.adb:16:18: info: range check proved (Trivial)
 attempt_2.adb:16:22: info: float overflow check proved (Trivial)
 attempt_2.adb:16:37: info: float overflow check proved (Trivial)
 attempt_2.adb:18:13: info: implicit aspect Always_Terminates on "High_Bound" has been proved, subprogram will terminate
-attempt_2.adb:19:18: high: overflow check might fail, cannot prove bounds for N*N (e.g. when N = 25000) [reason for check: result of multiplication must fit in a 16-bits machine integer] [possible fix: add precondition (N*N <= 32767) to subprogram at line 18]
+attempt_2.adb:19:18: high: overflow check might fail, cannot prove upper bound for N*N (e.g. when N = Frame'Last) [reason for check: result of multiplication must fit in a 16-bits machine integer] [possible fix: add precondition (N*N <= 32767) to subprogram at line 18]
 attempt_2.adb:19:18: info: range check proved (Trivial)
 attempt_2.adb:19:22: info: float overflow check proved (Trivial)
 attempt_2.adb:19:36: info: float overflow check proved (Trivial)

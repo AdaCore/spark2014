@@ -280,6 +280,9 @@ package body Perm with SPARK_Mode is
                        (Is_Perm (Remove (A, Ia), Remove (B, Ib)));
                   end if;
                end if;
+               pragma Assert
+                 (A (Ia) = B (Ib) and then
+                  Is_Perm (Remove (A, Ia), Remove (B, Ib)));
                pragma Assert_And_Cut
                  (for some Ib in B'Range => A (Ia) = B (Ib) and then
                   Is_Perm (Remove (A, Ia), Remove (B, Ib)));

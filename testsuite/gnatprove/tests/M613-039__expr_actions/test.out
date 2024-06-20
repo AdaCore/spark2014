@@ -52,6 +52,6 @@ stack.ads:7:16: info: implicit aspect Always_Terminates on "To_But_Top" has been
 stack.ads:9:16: info: implicit aspect Always_Terminates on "Is_Full" has been proved, subprogram will terminate
 stack.ads:10:16: info: implicit aspect Always_Terminates on "Is_Empty" has been proved, subprogram will terminate
 stack.ads:14:13: info: implicit aspect Always_Terminates on "Top" has been proved, subprogram will terminate
-stack.ads:19:14: high: postcondition might fail, cannot prove Top (S) = X (e.g. when S = (Top => 1, Content => (others => 0)) and X = 0)
+stack.ads:19:14: high: postcondition might fail (e.g. when S = (Top => 1, Content => (others => 0)) and S'Old = (Top => 0, Content => (others => 0)) and X = 0)
 stack.ads:19:14: info: precondition proved (CVC5: 1 VC)
 stack.ads:23:14: info: postcondition proved (CVC5: 1 VC)

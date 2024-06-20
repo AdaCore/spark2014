@@ -10,4 +10,7 @@ body_test.adb:28:14: info: overflow check proved (CVC5: 2 VC)
 dup_name.adb:4:13: info: add a contract to analyze it separately from calling contexts
 dup_name.adb:4:13: info: implicit aspect Always_Terminates on "F" has been proved, subprogram will terminate
 dup_name.adb:4:13: info: local subprogram "F" only analyzed in the context of calls
+dup_name.adb:20:28: info: analyzing call to "F" in context
+dup_name.adb:23:28: info: analyzing call to "F" in context
+dup_name.adb:25:28: info: analyzing call to "F" in context
 little_test.adb:7:15: info: cannot unroll loop (too many loop iterations)

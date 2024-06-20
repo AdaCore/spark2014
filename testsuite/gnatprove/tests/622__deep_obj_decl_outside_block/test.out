@@ -1,0 +1,9 @@
+p.adb:7:04: error: declaration of an object of an ownership type outside a block for declarations is not yet supported
+p.adb:10:07: error: declaration of an object of an ownership type outside a block for declarations is not yet supported
+p.adb:13:07: error: declaration of an object of an ownership type outside a block for declarations is not yet supported
+p.adb:15:07: error: declaration of an object of an ownership type outside a block for declarations is not yet supported
+p.adb:18:04: error: declaration of an object of an ownership type outside a block for declarations is not yet supported
+p.adb:21:07: error: declaration of an object of an ownership type outside a block for declarations is not yet supported
+p.adb:25:10: error: declaration of an object of an ownership type outside a block for declarations is not yet supported
+p.adb:27:10: error: declaration of an object of an ownership type outside a block for declarations is not yet supported
+gnatprove: error during flow analysis and proof

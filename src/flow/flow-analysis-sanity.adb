@@ -26,6 +26,7 @@
 
 with Atree;                          use Atree;
 with Checked_Types;                  use Checked_Types;
+with Errout_Wrapper;                 use Errout_Wrapper;
 with Flow_Classwide;
 with Flow_Error_Messages;            use Flow_Error_Messages;
 with Flow_Utility;                   use Flow_Utility;

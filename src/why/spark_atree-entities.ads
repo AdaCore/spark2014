@@ -345,6 +345,9 @@ package SPARK_Atree.Entities is
    function Is_Imported (E : Entity_Id) return Boolean renames
      EE.Is_Imported;
 
+   function Is_Internal (E : Entity_Id) return Boolean renames
+     EE.Is_Internal;
+
    function Is_Itype (E : Type_Kind_Id) return Boolean renames
      EE.Is_Itype;
 
@@ -734,7 +737,7 @@ package SPARK_Atree.Entities is
    function Full_View (Obj : E_Constant_Id) return E_Constant_Id
      with Pre => SPARK_Util.Is_Partial_View (Obj);
 
-   function Is_Aliased (Obj : Formal_Kind_Id) return Boolean;
+   function Is_Aliased (Obj : Entity_Id) return Boolean;
 
    function Known_Component_First_Bit
      (Obj : Record_Field_Kind_Id)

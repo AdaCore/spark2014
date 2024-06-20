@@ -71,6 +71,7 @@ package SPARK_Atree is
    subtype N_Component_Association_Id is SN.N_Component_Association_Id;
    subtype N_Exit_Statement_Id        is SN.N_Exit_Statement_Id;
    subtype N_Function_Call_Id         is SN.N_Function_Call_Id;
+   subtype N_Has_Chars                is SN.N_Has_Chars;
    subtype N_Iteration_Scheme_Id      is SN.N_Iteration_Scheme_Id;
    subtype N_Loop_Statement_Id        is SN.N_Loop_Statement_Id;
    subtype N_Membership_Test_Id       is SN.N_Membership_Test_Id;

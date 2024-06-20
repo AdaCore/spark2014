@@ -100,6 +100,8 @@ spark-containers-functional-maps.ads:97:06: info: Container_Aggregates annotatio
 spark-containers-functional-maps.ads:97:06: info: Container_Aggregates annotation proved (CVC5: 1 VC), in instantiation at use_map_ho.adb:9
 spark-containers-functional-maps.ads:97:06: info: Container_Aggregates annotation proved (CVC5: 3 VC), in instantiation at check_ho_pre.adb:10
 spark-containers-functional-maps.ads:97:06: info: Container_Aggregates annotation proved (CVC5: 3 VC), in instantiation at use_map_ho.adb:9
+spark-containers-functional-maps.ads:97:06: info: Container_Aggregates annotation proved (Z3: 1 VC), in instantiation at check_ho_pre.adb:10
+spark-containers-functional-maps.ads:97:06: info: after a call to Aggr_Include at spark-containers-functional-maps.ads:574, in instantiation at check_ho_pre.adb:10
 spark-containers-functional-maps.ads:97:06: info: after a call to Aggr_Include at spark-containers-functional-maps.ads:574, in instantiation at check_ho_pre.adb:10
 spark-containers-functional-maps.ads:97:06: info: after a call to Aggr_Include at spark-containers-functional-maps.ads:574, in instantiation at check_ho_pre.adb:10
 spark-containers-functional-maps.ads:97:06: info: after a call to Aggr_Include at spark-containers-functional-maps.ads:574, in instantiation at check_ho_pre.adb:10
@@ -114,6 +116,7 @@ spark-containers-functional-maps.ads:97:06: info: when establishing invariant on
 spark-containers-functional-maps.ads:97:06: info: when establishing invariant on Has_Key at spark-containers-functional-maps.ads:120, in instantiation at use_map_ho.adb:9
 spark-containers-functional-maps.ads:97:06: info: when establishing invariant on Length at spark-containers-functional-maps.ads:167, in instantiation at check_ho_pre.adb:10
 spark-containers-functional-maps.ads:97:06: info: when establishing invariant on Length at spark-containers-functional-maps.ads:167, in instantiation at use_map_ho.adb:9
+spark-containers-functional-maps.ads:97:06: info: when reestablishing invariant on Get at spark-containers-functional-maps.ads:138, in instantiation at check_ho_pre.adb:10
 spark-containers-functional-maps.ads:97:06: info: when reestablishing invariant on Get at spark-containers-functional-maps.ads:138, in instantiation at check_ho_pre.adb:10
 spark-containers-functional-maps.ads:97:06: info: when reestablishing invariant on Get at spark-containers-functional-maps.ads:138, in instantiation at use_map_ho.adb:9
 spark-containers-functional-maps.ads:97:06: info: when reestablishing invariant on Has_Key at spark-containers-functional-maps.ads:120, in instantiation at check_ho_pre.adb:10
