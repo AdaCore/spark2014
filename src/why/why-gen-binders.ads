@@ -99,12 +99,15 @@ package Why.Gen.Binders is
    --  An item is like a generalized binder. It is used to represent the
    --  mapping (Ada object -> Why variables) which is not always 1 to 1.
    type Item_Type (Kind : Item_Enum := Regular) is record
-      Local : Boolean;
+      Local    : Boolean;
       --  True if the names of constant parts of the binder are local objects
       --  in Why3.
 
-      Init  : Opt_Id;
+      Init     : Opt_Id;
       --  Optional init flag for scalar objects which have Init_By_Proof
+
+      Is_Moved : Opt_Id;
+      --  Optional move tree for objects containing allocated parts
 
       case Kind is
          --  Common case where mapping from Ada object to Why object is 1 to 1
@@ -128,30 +131,27 @@ package Why.Gen.Binders is
             Dim       : Positive;
             Bounds    : Array_Bounds;
 
-         --  Case of pointers, with disjoint parts for their value, is_null and
-         --  is_moved components, as well as a Mutable boolean registering
-         --  whether the pointer itself is mutable (as opposed to its
-         --  designated value only).
+         --  Case of pointers, with disjoint parts for their value and is_null
+         --  components, as well as a Mutable boolean registering whether the
+         --  pointer itself is mutable (as opposed to its designated value
+         --  only).
 
          when Pointer =>
-            P_Typ     : Entity_Id;
-            Value     : Binder_Type;
-            Is_Null   : W_Identifier_Id;
-            Is_Moved  : W_Identifier_Id;
-            Mutable   : Boolean;
+            P_Typ   : Entity_Id;
+            Value   : Binder_Type;
+            Is_Null : W_Identifier_Id;
+            Mutable : Boolean;
 
          --  Case of records where we can have up to four objects, a set of
-         --  fields, a set of discriminants, a 'Constrained attribute, a
-         --  'Tag attribute, and an is_moved component if the type has an
-         --  ownership annotation.
+         --  fields, a set of discriminants, a 'Constrained attribute, and a
+         --  'Tag attribute.
 
          when DRecord =>
-            Typ        : Entity_Id;
-            Fields     : Opt_Binder;
-            Discrs     : Opt_Binder;
-            Constr     : Opt_Id;
-            Tag        : Opt_Id;
-            Is_Moved_R : Opt_Id;
+            Typ    : Entity_Id;
+            Fields : Opt_Binder;
+            Discrs : Opt_Binder;
+            Constr : Opt_Id;
+            Tag    : Opt_Id;
 
          --  Case of subprograms where we need different translations when used
          --  in programs or in assertions, plus possibly refined and dispatch
@@ -313,6 +313,14 @@ package Why.Gen.Binders is
    --  @return an identifier which corresponds to the "self" object of that
    --    concurrent type
 
+   function Concurrent_Self_Move_Tree_Id
+     (Ty : Entity_Id)
+      return W_Identifier_Id
+     with Pre => Ekind (Ty) in E_Protected_Type;
+   --  @param Ty a concurrent type entity which contains allocated parts
+   --  @return an identifier which corresponds to the move tree of the "self"
+   --    object of that concurrent type.
+
    function Concurrent_Self_Binder
      (Ty      : Entity_Id;
       Mutable : Boolean := True) return Binder_Type
@@ -328,13 +336,14 @@ package Why.Gen.Binders is
       Mutable : Boolean) return Item_Type
    is
      ((Regular,
-       Local => Get_Module (Get_Name (Id)) = Why_Empty,
-       Init  => <>,
-       Main  => (Ada_Node => E,
-                 B_Name   => Id,
-                 B_Ent    => Null_Entity_Name,
-                 Mutable  => Mutable,
-                 Labels   => <>)));
+       Local    => Get_Module (Get_Name (Id)) = Why_Empty,
+       Init     => <>,
+       Is_Moved => <>,
+       Main     => (Ada_Node => E,
+                    B_Name   => Id,
+                    B_Ent    => Null_Entity_Name,
+                    Mutable  => Mutable,
+                    Labels   => <>)));
    --  @param E entity
    --  @param Id identifier
    --  @param Mutable True iff the item is mutable

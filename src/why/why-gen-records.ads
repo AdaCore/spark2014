@@ -79,6 +79,14 @@ package Why.Gen.Records is
    --  contains a why record type named WNE_Rec_Rep and all the needed
    --  functions and attributes except for the tag of tagged types.
 
+   procedure Create_Move_Tree_Theory_For_Record
+     (Th : Theory_UC;
+      E  : Entity_Id)
+   with
+     Pre => Contains_Allocated_Parts (E);
+   --  Create a module declaring a type for the move trees for objects
+   --  of type E.
+
    function New_Ada_Record_Access
      (Ada_Node : Node_Id := Empty;
       Domain   : EW_Domain;
@@ -210,6 +218,24 @@ package Why.Gen.Records is
    --  Same as above except that discriminant associations are given as a
    --  whole.
 
+   function New_Move_Tree_Record_Access
+     (Name  : W_Expr_Id;
+      Field : Entity_Id;
+      Ty    : Entity_Id;
+      Local : Boolean := False)
+      return W_Expr_Id
+   with Pre => Contains_Allocated_Parts (Etype (Field));
+   --  Access to the move tree for Field in Name
+
+   function New_Move_Tree_Record_Update
+     (Name  : W_Prog_Id;
+      Field : Entity_Id;
+      Value : W_Prog_Id;
+      Ty    : Entity_Id)
+      return W_Prog_Id
+   with Pre => Contains_Allocated_Parts (Etype (Field));
+   --  Update to the move tree for Field in Name
+
    procedure Generate_Associations_From_Ancestor
      (Ada_Node       : Node_Id := Empty;
       Domain         : EW_Domain;
@@ -282,21 +308,6 @@ package Why.Gen.Records is
       return W_Expr_Id;
    --  Generate a Why3 expression that corresponds to an update of the
    --  top-level field for fields.
-
-   function New_Record_Is_Moved_Access
-     (E    : Entity_Id;
-      Name : W_Expr_Id)
-      return W_Expr_Id;
-   --  Generate a Why3 expression that corresponds to an access to the
-   --  is_moved flag of types annotated with ownership.
-
-   function New_Record_Is_Moved_Update
-     (E     : Entity_Id;
-      Name  : W_Prog_Id;
-      Value : W_Prog_Id)
-      return W_Prog_Id;
-   --  Generate a Why3 expression that corresponds to an update to the
-   --  is_moved flag of types annotated with ownership.
 
    function New_Tag_Access
      (Ada_Node : Node_Id := Empty;

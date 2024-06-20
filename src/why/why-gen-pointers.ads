@@ -26,6 +26,7 @@
 with Gnat2Why.Util;          use Gnat2Why.Util;
 with SPARK_Atree;            use SPARK_Atree;
 with SPARK_Atree.Entities;   use SPARK_Atree.Entities;
+with SPARK_Definition;       use SPARK_Definition;
 with SPARK_Util;             use SPARK_Util;
 with SPARK_Util.Subprograms; use SPARK_Util.Subprograms;
 with SPARK_Util.Types;       use SPARK_Util.Types;
@@ -56,23 +57,45 @@ package Why.Gen.Pointers is
    --  fields: pointer_value, is_null_pointer, and is_moved.
    --  It also defines the needed functions to manipulate this type.
 
+   procedure Create_Move_Tree_Theory_For_Pointer
+     (Th : Theory_UC;
+      E  : Entity_Id)
+   with Pre => Is_Access_Type (E)
+     and then Contains_Allocated_Parts (E)
+     and then not Is_Anonymous_Access_Type (E);
+   --  Create a module declaring a type for the move trees for objects of type
+   --  E.
+
+   procedure Create_Move_Tree_For_Incomplete_Access (E : Entity_Id) with
+     Pre => Has_Incomplete_Access (E) and then Contains_Allocated_Parts (E);
+   --  Declare abstract move tree for a type with an incomplete access
+
+   procedure Complete_Move_Tree_For_Incomplete_Access
+     (Th : Theory_UC;
+      E  : Entity_Id)
+   with Pre => Has_Incomplete_Access (E) and then Contains_Allocated_Parts (E);
+   --  Complete the abstract move tree for a type with an incomplete access
+
    procedure Declare_Init_Wrapper_For_Pointer
      (Th : Theory_UC;
       E  : Entity_Id) with
      Pre => Is_Access_Type (E) and then Has_Init_Wrapper (E);
 
-   function Move_Param_Item
-     (Typ : Entity_Id) return Item_Type
-   with Pre => Contains_Allocated_Parts (Typ)
-     and then (not Is_Access_Type (Typ) or else Is_General_Access_Type (Typ));
-   --  Create an item for the parameter of the __move function for deep
-   --  composite types.
+   function New_Move_Tree_Pointer_Value_Access
+     (Ty     : Entity_Id;
+      Name   : W_Expr_Id;
+      Domain : EW_Domain)
+      return W_Expr_Id
+   with Pre => Contains_Allocated_Parts (Directly_Designated_Type (Ty));
+   --  Access to the move tree of the designated value
 
-   function Has_Predeclared_Move_Predicates (E : Entity_Id) return Boolean with
-     Pre => Is_Type (E);
-   --  Return True if the is_moved and moved_relation predicates need to be
-   --  declared separately from their definition to avoid circularity (E is the
-   --  completion of an incomplete type designated by a general access type).
+   function New_Move_Tree_Pointer_Value_Update
+     (Ty    : Entity_Id;
+      Name  : W_Prog_Id;
+      Value : W_Prog_Id)
+      return W_Prog_Id
+   with Pre => Contains_Allocated_Parts (Directly_Designated_Type (Ty));
+   --  Update to the move tree of the designated value
 
    function Has_Predeclared_Init_Predicate (E : Entity_Id) return Boolean with
      Pre => Is_Type (E) and then Has_Init_Wrapper (E);
@@ -117,39 +140,6 @@ package Why.Gen.Pointers is
       Local : Boolean := False)
       return W_Term_Id
    is (+W_Expr_Id'(New_Pointer_Is_Null_Access (E, +Name, Local)));
-
-   function New_Pointer_Is_Moved_Access
-     (E     : Entity_Id;
-      Name  : W_Expr_Id;
-      Local : Boolean := False)
-      return W_Expr_Id;
-   --  Return an access to the Is_Moved field of the pointer why record.
-   --  @param E the Ada type entity
-   --  @param Name name of the pointer to access
-   --  @param Local whether we want the local or the global access
-
-   function New_Pointer_Is_Moved_Access
-     (E     : Entity_Id;
-      Name  : W_Term_Id;
-      Local : Boolean := False)
-      return W_Term_Id
-   is (+W_Expr_Id'(New_Pointer_Is_Moved_Access (E, +Name, Local)));
-
-   function New_Pointer_Is_Moved_Access
-     (E     : Entity_Id;
-      Name  : W_Prog_Id;
-      Local : Boolean := False)
-      return W_Prog_Id
-   is (+W_Expr_Id'(New_Pointer_Is_Moved_Access (E, +Name, Local)));
-
-   function New_Pointer_Is_Moved_Update
-     (E      : Entity_Id;
-      Name   : W_Prog_Id;
-      Value  : W_Prog_Id;
-      Local  : Boolean := False)
-      return W_Prog_Id;
-   --  Return an update of the Is_Moved field of the pointer why record Name
-   --  with value Value.
 
    function New_Pointer_Value_Access
      (Ada_Node : Node_Id := Empty;
@@ -205,7 +195,7 @@ package Why.Gen.Pointers is
       return W_Term_Id;
    --  Reconstructs a complete pointer of type Ty from an array of expressions
    --  representing a split form. A should contain first the value, then
-   --  is_null, is_moved and the initialization flag if Relaxed_Init is True.
+   --  is_null and the initialization flag if Relaxed_Init is True.
 
    function Prepare_Args_For_Access_Subtype_Check
      (Check_Ty : Entity_Id;

@@ -26,7 +26,6 @@
 with Flow_Utility;                use Flow_Utility;
 with Gnat2Why.Util;               use Gnat2Why.Util;
 with Namet;                       use Namet;
-with SPARK_Definition.Annotate;   use SPARK_Definition.Annotate;
 with SPARK_Util.Subprograms;      use SPARK_Util.Subprograms;
 with SPARK_Util.Types;            use SPARK_Util.Types;
 with Why.Atree.Modules;           use Why.Atree.Modules;
@@ -79,6 +78,19 @@ package body Why.Gen.Binders is
       return New_Identifier (Name => "self__", Typ => Typ);
    end Concurrent_Self_Ident;
 
+   ----------------------------------
+   -- Concurrent_Self_Move_Tree_Id --
+   ----------------------------------
+
+   function Concurrent_Self_Move_Tree_Id
+     (Ty : Entity_Id)
+      return W_Identifier_Id
+   is
+      Typ : constant W_Type_Id := Get_Move_Tree_Type (Ty);
+   begin
+      return New_Identifier (Name => "self__move_tree__", Typ => Typ);
+   end Concurrent_Self_Move_Tree_Id;
+
    ---------------------------
    -- Effects_Append_Binder --
    ---------------------------
@@ -95,10 +107,6 @@ package body Why.Gen.Binders is
 
          when UCArray =>
             Effects_Append (Eff, Binder.Content.B_Name);
-
-         --  The is_moved field is never included in the effects, as a call
-         --  cannot leave any output, whether parameter or global, in a moved
-         --  state.
 
          when Pointer =>
             if Binder.Mutable then
@@ -314,10 +322,12 @@ package body Why.Gen.Binders is
                         else Enclosing_Concurrent_Type (Entity));
                   begin
                      Binders (I) :=
-                       Item_Type'(Kind  => Concurrent_Self,
-                                  Local => True,
-                                  Init  => <>,
-                                  Main  => Concurrent_Self_Binder (Prot_Ty));
+                       Item_Type'(Kind     => Concurrent_Self,
+                                  Local    => True,
+                                  Init     => <>,
+                                  Is_Moved => <>,
+                                  Main     =>
+                                    Concurrent_Self_Binder (Prot_Ty));
                      I := I + 1;
                   end;
                end if;
@@ -336,13 +346,14 @@ package body Why.Gen.Binders is
 
                Binders (I) :=
                  (Regular,
-                  Local => False,
-                  Init  => <>,
-                  Main  => (Ada_Node => Empty,
-                            B_Name   => To_Why_Id (V, Local => False),
-                            B_Ent    => V,
-                            Mutable  => True,
-                            Labels   => <>));
+                  Local    => False,
+                  Init     => <>,
+                  Is_Moved => <>,
+                  Main     => (Ada_Node => Empty,
+                               B_Name   => To_Why_Id (V, Local => False),
+                               B_Ent    => V,
+                               Mutable  => True,
+                               Labels   => <>));
                I := I + 1;
             end if;
          end;
@@ -467,9 +478,9 @@ package body Why.Gen.Binders is
                when Pointer =>
                   pragma Assert (B.Value.Mutable);
                   if B.Mutable or else Keep_Local (B.Local) then
-                     Count := Count + 3;
-                  else
                      Count := Count + 2;
+                  else
+                     Count := Count + 1;
                   end if;
 
                when UCArray =>
@@ -501,10 +512,6 @@ package body Why.Gen.Binders is
                   end if;
 
                   if Keep_Local (B.Local) and then B.Tag.Present then
-                     Count := Count + 1;
-                  end if;
-
-                  if B.Is_Moved_R.Present then
                      Count := Count + 1;
                   end if;
 
@@ -623,8 +630,6 @@ package body Why.Gen.Binders is
                   B.Is_Null := Local_Name (B.Is_Null);
                end if;
 
-               B.Is_Moved := Local_Name (B.Is_Moved);
-
             when DRecord =>
                if B.Discrs.Present
                  and then (B.Discrs.Binder.Mutable
@@ -648,10 +653,6 @@ package body Why.Gen.Binders is
 
                if not Only_Variables and then B.Tag.Present then
                   B.Tag.Id := Local_Name (B.Tag.Id);
-               end if;
-
-               if B.Is_Moved_R.Present then
-                  B.Is_Moved_R.Id := Local_Name (B.Is_Moved_R.Id);
                end if;
 
                when Subp => raise Program_Error;
@@ -693,10 +694,10 @@ package body Why.Gen.Binders is
         (if Is_Type (Spec_Ty) then Retysp (Spec_Ty) else Spec_Ty);
       Needs_Init_Flag : constant Boolean :=
         Is_Object (E)
-         and then Is_Mutable_In_Why (E)
-         and then Is_Elementary_Type (Ty)
-         and then Obj_Has_Relaxed_Init (E)
-         and then Ekind (E) in E_Variable | E_Out_Parameter;
+        and then Is_Mutable_In_Why (E)
+        and then Is_Elementary_Type (Ty)
+        and then Obj_Has_Relaxed_Init (E)
+        and then Ekind (E) in E_Variable | E_Out_Parameter;
       --  We only need an initialization flag for variables and out parameters
       --  of elementary types.
 
@@ -704,6 +705,27 @@ package body Why.Gen.Binders is
         (if Needs_Init_Flag
          then (Present => True, Id => Init_Append (Name))
          else (Present => False));
+
+      function New_Is_Moved_Id (Name : W_Identifier_Id) return Opt_Id is
+        (if In_Fun_Decl
+         or else Ekind (E) not in E_Constant | E_Variable | Formal_Kind
+         or else not Is_Mutable_In_Why (E)
+         or else not Contains_Allocated_Parts (Ty)
+         or else (Is_Anonymous_Access_Type (Ty)
+           and then (Is_Access_Constant (Ty)
+             or else not Contains_Allocated_Parts
+               (Directly_Designated_Type (Ty))))
+         then (Present => False)
+         elsif Is_Anonymous_Access_Type (Ty)
+         then (Present => True,
+               Id      => Is_Moved_Append
+                 (Name, Get_Move_Tree_Type
+                    (Directly_Designated_Type (Ty))))
+         else (Present => True,
+               Id      => Is_Moved_Append
+                 (Name, Get_Move_Tree_Type (Ty))));
+      --  Create an identifier for the move tree of E if it can be moved. No
+      --  need for move trees in function declarations.
 
    begin
       --  For procedures, use a regular binder
@@ -757,6 +779,7 @@ package body Why.Gen.Binders is
             return (Subp,
                     False,
                     Init           => <>,
+                    Is_Moved       => <>,
                     For_Logic      => For_Logic,
                     For_Prog       => For_Prog,
                     Refine_Prog    => Refine_Prog,
@@ -813,12 +836,13 @@ package body Why.Gen.Binders is
                end;
             end loop;
 
-            return (Kind    => UCArray,
-                    Local   => Local,
-                    Init    => New_Init_Id (Name),
-                    Content => Binder,
-                    Dim     => Dim,
-                    Bounds  => Bounds);
+            return (Kind     => UCArray,
+                    Local    => Local,
+                    Init     => New_Init_Id (Name),
+                    Is_Moved => New_Is_Moved_Id (Name),
+                    Content  => Binder,
+                    Dim      => Dim,
+                    Bounds   => Bounds);
          end;
 
       elsif Entity_In_SPARK (Ty)
@@ -838,11 +862,12 @@ package body Why.Gen.Binders is
             --  of elements of the record.
 
             Result   : Item_Type :=
-              (Kind   => DRecord,
-               Local  => Local,
-               Init   => New_Init_Id (Name),
-               Typ    => Ty,
-               others => <>);
+              (Kind     => DRecord,
+               Local    => Local,
+               Init     => New_Init_Id (Name),
+               Is_Moved => New_Is_Moved_Id (Name),
+               Typ      => Ty,
+               others   => <>);
             Unconstr : constant Boolean := Has_Mutable_Discriminants (Ty);
          begin
             if Count_Why_Regular_Fields (Ty) > 0 then
@@ -900,15 +925,6 @@ package body Why.Gen.Binders is
                                  Typ   => EW_Int_Type));
             end if;
 
-            if Has_Ownership_Annotation (Ty) and then Needs_Reclamation (Ty)
-            then
-               Result.Is_Moved_R :=
-                 (Present => True,
-                  Id      => Is_Moved_Append
-                    (Base => Name,
-                     Typ  => EW_Bool_Type));
-            end if;
-
             return Result;
          end;
 
@@ -936,12 +952,13 @@ package body Why.Gen.Binders is
          begin
             return
               Item_Type'
-                (Kind    => Pointer,
-                 Local   => Local,
-                 Init    => New_Init_Id (Name),
-                 P_Typ   => Ty,
-                 Mutable => not Is_Constant_Object (E),
-                 Value   =>
+                (Kind     => Pointer,
+                 Local    => Local,
+                 Init     => New_Init_Id (Name),
+                 Is_Moved => New_Is_Moved_Id (Name),
+                 P_Typ    => Ty,
+                 Mutable  => not Is_Constant_Object (E),
+                 Value    =>
                    Binder_Type'(Ada_Node => E,
                                 B_Name   =>
                                   Value_Append
@@ -950,12 +967,8 @@ package body Why.Gen.Binders is
                                 B_Ent    => Null_Entity_Name,
                                 Mutable  => True,
                                 Labels   => <>),
-                 Is_Null  =>
+                 Is_Null   =>
                    Is_Null_Append
-                     (Base => Name,
-                      Typ  => EW_Bool_Type),
-                 Is_Moved =>
-                   Is_Moved_Append
                      (Base => Name,
                       Typ  => EW_Bool_Type));
          end;
@@ -992,7 +1005,9 @@ package body Why.Gen.Binders is
                            Mutable  => Is_Mutable_In_Why (E),
                            Labels   => <>);
          begin
-            return (Regular, Local, New_Init_Id (Name), Binder);
+            return (Regular, Local,
+                    New_Init_Id (Name), New_Is_Moved_Id (Name),
+                    Binder);
          end;
       end if;
    end Mk_Item_Of_Entity;
@@ -1512,12 +1527,6 @@ package body Why.Gen.Binders is
                      Count := Count + 1;
                   end if;
 
-                  Result (Count) :=
-                    (B_Name  => Cur.Is_Moved,
-                     Mutable => True,
-                     others  => <>);
-                  Count := Count + 1;
-
                when DRecord =>
                   if Cur.Fields.Present
                     and then (Keep_Local (Cur.Local)
@@ -1543,13 +1552,6 @@ package body Why.Gen.Binders is
                      Result (Count) :=
                        (B_Name => Cur.Tag.Id,
                         others => <>);
-                     Count := Count + 1;
-                  end if;
-                  if Cur.Is_Moved_R.Present then
-                     Result (Count) :=
-                       (B_Name  => Cur.Is_Moved_R.Id,
-                        Mutable => True,
-                        others  => <>);
                      Count := Count + 1;
                   end if;
 

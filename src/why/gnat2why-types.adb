@@ -54,7 +54,6 @@ with Why;                           use Why;
 with Why.Atree.Accessors;           use Why.Atree.Accessors;
 with Why.Atree.Builders;            use Why.Atree.Builders;
 with Why.Atree.Modules;             use Why.Atree.Modules;
-with Why.Atree.Mutators;            use Why.Atree.Mutators;
 with Why.Conversions;               use Why.Conversions;
 with Why.Gen.Arrays;                use Why.Gen.Arrays;
 with Why.Gen.Binders;               use Why.Gen.Binders;
@@ -82,19 +81,6 @@ package body Gnat2Why.Types is
    --  Create a function to state that objects of type E are initialized.
    --  If Predeclare is True, only emit a declaration and use a local name for
    --  the type associated to E.
-
-   procedure Create_Predicates_For_Move
-     (Th         : Theory_UC;
-      E          : Type_Kind_Id;
-      Predeclare : Boolean := False)
-   with Pre => Contains_Allocated_Parts (E)
-     and then (Is_Record_Type (E)
-               or else Is_Array_Type (E)
-               or else Is_General_Access_Type (E)
-               or else Has_Ownership_Annotation (E));
-   --  Create a function to express that all pointers in E are null or moved
-   --  and a relation stating that all non pointer parts are preserved.
-   --  If Predeclare is True, only emit a declaration.
 
    -------------------------------------
    -- Create_Initialization_Predicate --
@@ -147,76 +133,6 @@ package body Gnat2Why.Types is
                Binders  => Binders));
    end Create_Initialization_Predicate;
 
-   --------------------------------
-   -- Create_Predicates_For_Move --
-   --------------------------------
-
-   procedure Create_Predicates_For_Move
-     (Th         : Theory_UC;
-      E          : Type_Kind_Id;
-      Predeclare : Boolean := False)
-   is
-      Typ      : constant W_Type_Id :=
-        (if Has_Init_Wrapper (E)
-         then EW_Init_Wrapper (Type_Of_Node (E))
-         else Type_Of_Node (E));
-      A_Ident  : constant W_Identifier_Id :=
-        New_Identifier (Name => "a", Typ  => Typ);
-      B_Ident  : constant W_Identifier_Id :=
-        New_Identifier (Name => "b", Typ  => Typ);
-
-   begin
-      --  Function to express that all pool-specific access types in E are null
-      --  or moved.
-
-      declare
-         R_Binder : constant Binder_Array :=
-           (1 => (B_Name => A_Ident,
-                  others => <>));
-      begin
-         Emit
-           (Th,
-            New_Function_Decl
-              (Domain      => EW_Pred,
-               Name        => To_Local (E_Symb (E, WNE_Is_Moved)),
-               Binders     => R_Binder,
-               Location    => No_Location,
-               Labels      => Symbol_Sets.Empty_Set,
-               Def         =>
-                 (if Predeclare then Why_Empty
-                  else +Compute_Is_Moved_Property (Expr     => +A_Ident,
-                                                   Ty       => E,
-                                                   Use_Pred => False))));
-      end;
-
-      --  Relation stating that all non pool-specific access types parts are
-      --  preserved.
-
-      declare
-         R_Binder : constant Binder_Array :=
-           (1 => (B_Name => A_Ident,
-                  others => <>),
-            2 => (B_Name => B_Ident,
-                  others => <>));
-      begin
-         Emit
-           (Th,
-            New_Function_Decl
-              (Domain      => EW_Pred,
-               Name        =>
-                 To_Local (E_Symb (E, WNE_Moved_Relation)),
-               Binders     => R_Binder,
-               Location    => No_Location,
-               Labels      => Symbol_Sets.Empty_Set,
-               Def         =>
-                 (if Predeclare then Why_Empty
-                  else  +Compute_Moved_Relation (Expr1    => +A_Ident,
-                                                 Expr2    => +B_Ident,
-                                                 Ty       => E,
-                                                 Use_Pred => False))));
-      end;
-   end Create_Predicates_For_Move;
-
    ------------------------------
    -- Generate_Type_Completion --
    ------------------------------
@@ -231,16 +147,6 @@ package body Gnat2Why.Types is
       with Pre => Has_Init_Wrapper (E);
       --  Generate axioms to complete the definitions of Is_Initializes if it
       --  has been predeclared.
-
-      procedure Complete_Predicates_For_Move
-        (Th : Theory_UC;
-         E  : Type_Kind_Id)
-      with Pre => Contains_Allocated_Parts (E)
-        and then (Is_Record_Type (E)
-                  or else Is_Array_Type (E)
-                  or else Is_General_Access_Type (E));
-      --  Generate axioms to complete the definitions of Is_Moved and
-      --  Moved_Relation if they were predeclared.
 
       procedure Create_Axioms_For_Scalar_Bounds
         (Th : Theory_UC;
@@ -259,30 +165,6 @@ package body Gnat2Why.Types is
       --  Create a function to express type E's dynamic invariant. Module is
       --  the module in which dynamic invariants for access to incomplete
       --  types will be created if any.
-
-      procedure Create_Move_Function
-        (Th : Theory_UC;
-         E  : Type_Kind_Id)
-      with Pre => Contains_Allocated_Parts (E)
-        and then (Is_Record_Type (E)
-                  or else Is_Array_Type (E)
-                  or else Is_General_Access_Type (E)
-                  or else Has_Ownership_Annotation (E));
-      --  Create a function to express the relation between a value of type E
-      --  and a previous value of the same object, when moving all pointers
-      --  in the object:
-      --
-      --    predicate __moved_relation (a : t) (b : t) =
-      --      a.pointer_field.__is_moved = True
-      --      /\ a.normal_field = b.normal_field
-      --
-      --  Also create a program function that takes a reference of type E and
-      --  sets all its pointer fields to null:
-      --
-      --    val __move (a : t ref) : unit
-      --      writes { a }
-      --      ensures { let b = old !a in
-      --                  __moved_relation !a b }
 
       procedure Create_Type_Invariant
         (Th : Theory_UC;
@@ -330,92 +212,6 @@ package body Gnat2Why.Types is
                Dep_Kind => EW_Axdep_Pred,
                Def      => Def));
       end Complete_Initialization_Predicate;
-
-      ----------------------------------
-      -- Complete_Predicates_For_Move --
-      ----------------------------------
-
-      procedure Complete_Predicates_For_Move
-        (Th : Theory_UC;
-         E  : Type_Kind_Id)
-      is
-         Typ      : constant W_Type_Id :=
-           (if Has_Init_Wrapper (E)
-            then EW_Init_Wrapper (Type_Of_Node (E))
-            else Type_Of_Node (E));
-         A_Ident  : constant W_Identifier_Id :=
-           New_Identifier (Name => "a", Typ => Typ);
-         B_Ident  : constant W_Identifier_Id :=
-           New_Identifier (Name => "b", Typ => Typ);
-
-      begin
-         --  Complete the moved relation
-
-         declare
-            R_Binder : constant Binder_Array :=
-              (1 => (B_Name => A_Ident,
-                     others => <>),
-               2 => (B_Name => B_Ident,
-                     others => <>));
-         begin
-            Emit
-              (Th,
-               New_Defining_Bool_Axiom
-                 (Name     => E_Symb (E, WNE_Moved_Relation),
-                  Fun_Name => To_String (WNE_Moved_Relation),
-                  Binders  => R_Binder,
-                  Dep_Kind => EW_Axdep_Pred,
-                  Def      => Compute_Moved_Relation (Expr1    => +A_Ident,
-                                                      Expr2    => +B_Ident,
-                                                      Ty       => E,
-                                                      Use_Pred => False)));
-         end;
-
-         --  Complete the is_moved predicate
-
-         declare
-            R_Binder : constant Binder_Array :=
-              (1 => (B_Name => A_Ident,
-                     others => <>));
-         begin
-            Emit
-              (Th,
-               New_Defining_Bool_Axiom
-                 (Name     => E_Symb (E, WNE_Is_Moved),
-                  Fun_Name => To_String (WNE_Is_Moved),
-                  Binders  => R_Binder,
-                  Dep_Kind => EW_Axdep_Pred,
-                  Def      => Compute_Is_Moved_Property (Expr     => +A_Ident,
-                                                         Ty       => E,
-                                                         Use_Pred => False)));
-         end;
-
-         --  Relate both predicates. If the datastructure is recursive, showing
-         --  that moved_relation exp1 exp2 -> is_moved exp1 might not be
-         --  trivial.
-
-         declare
-            R_Binder : constant Binder_Array :=
-              (1 => (B_Name => A_Ident,
-                     others => <>),
-               2 => (B_Name => B_Ident,
-                     others => <>));
-         begin
-            Emit
-              (Th,
-               New_Guarded_Axiom
-                 (Name    => NID (To_String (WNE_Moved_Relation)
-                  & To_String (WNE_Is_Moved)),
-                  Binders => R_Binder,
-                  Pre     => +New_Call
-                    (Domain  => EW_Pred,
-                     Name    => E_Symb (E, WNE_Moved_Relation),
-                     Binders => R_Binder),
-                  Def     => New_Call
-                    (Name => E_Symb (E, WNE_Is_Moved),
-                     Args => (1 => +A_Ident))));
-         end;
-      end Complete_Predicates_For_Move;
 
       -------------------------------------
       -- Create_Axioms_For_Scalar_Bounds --
@@ -744,66 +540,6 @@ package body Gnat2Why.Types is
             Emit (Th, Ax);
          end loop;
       end Create_Dynamic_Invariant;
-
-      --------------------------
-      -- Create_Move_Function --
-      --------------------------
-
-      procedure Create_Move_Function
-        (Th : Theory_UC;
-         E  : Type_Kind_Id)
-      is
-         Param          : constant Item_Type := Move_Param_Item (Retysp (E));
-         Binders        : constant Binder_Array :=
-           To_Binder_Array ((1 => Param));
-         Relation       : W_Pred_Id;
-         Eff            : constant W_Effects_Id := New_Effects;
-         Moved_Relation : constant W_Identifier_Id :=
-           E_Symb (E, WNE_Moved_Relation);
-         Rec_Param      : constant W_Expr_Id :=
-           (if Param.Kind = UCArray
-            then Array_Convert_From_Base
-              (Domain => EW_Term,
-               Ty     => Retysp (E),
-               Ar     => New_Deref
-                 (Right => Param.Content.B_Name,
-                  Typ   => Get_Typ (Param.Content.B_Name)),
-               Bounds => Get_Args_From_Binders
-                 (Binders (Binders'First + 1 .. Binders'Last),
-                  Ref_Allowed => True))
-            else +Reconstruct_Item (Param));
-         --  Reconstructed parameter. If the parameter is a split array,
-         --  reconstruct it to be able to query the bounds since Param
-         --  is not tied to a real Ada objects.
-
-         procedure Effects_Append_Binder_To_Writes is
-           new Effects_Append_Binder (Effects_Append_To_Writes);
-
-      begin
-         Effects_Append_Binder_To_Writes (Eff, Param);
-
-         Relation :=
-           New_Call (Name =>
-                       (if Has_Predeclared_Move_Predicates (E)
-                        then Moved_Relation
-                        else To_Local (Moved_Relation)),
-                     Args => (1 => Rec_Param,
-                              2 => New_Old
-                                (Rec_Param, Domain => EW_Term)),
-                     Typ  => EW_Bool_Type);
-
-         Emit
-           (Th,
-            New_Function_Decl
-              (Domain      => EW_Prog,
-               Name        => To_Local (E_Symb (E, WNE_Move)),
-               Binders     => To_Binder_Array ((1 => Param)),
-               Return_Type => EW_Unit_Type,
-               Labels      => Symbol_Sets.Empty_Set,
-               Location    => No_Location,
-               Effects     => Eff,
-               Post        => Relation));
-      end Create_Move_Function;
 
       ---------------------------
       -- Create_Type_Invariant --
@@ -1215,49 +951,90 @@ package body Gnat2Why.Types is
                        Kind => Definition_Theory);
       end if;
 
-      --  Declare a Move function and possibly move predicates for E
+      --  For types which need reclamation, generate a move tree theory.
 
-      if Contains_Allocated_Parts (E)
-        and then (not Has_Access_Type (E)
-                  or else Is_General_Access_Type (E))
-        and then not Is_Inherently_Limited_Type (E)
-      then
-         declare
-            In_Axiom_Module : constant Boolean :=
-              Has_Predeclared_Move_Predicates (E);
-         begin
-            Th :=
-              Open_Theory
-                (WF_Context,
-                 E_Module
-                   (E,
-                    (if In_Axiom_Module then Ownership_Move_Axiom
-                     else Ownership_Move)),
-                 Comment =>
-                   "Module declaring a move function and possibly move"
-                 & " predicates for type """ & Get_Name_String (Chars (E))
-                 & """"
-                 & (if Sloc (E) > 0 then
-                      " defined at " & Build_Location_String (Sloc (E))
-                   else "")
-                 & ", created in " & GNAT.Source_Info.Enclosing_Entity);
+      if Contains_Allocated_Parts (E) then
+         Th := Open_Theory
+           (WF_Context,
+            E_Module (E, Move_Tree),
+            Comment =>
+              "Module for move trees for objects of type "
+            & """" & Get_Name_String (Chars (E)) & """"
+            & (if Sloc (E) > 0 then
+                 " defined at " & Build_Location_String (Sloc (E))
+              else "")
+            & ", created in " & GNAT.Source_Info.Enclosing_Entity);
 
-            if In_Axiom_Module then
-               Complete_Predicates_For_Move (Th, E);
-            else
-               Create_Predicates_For_Move (Th, E);
-            end if;
+         if Is_Record_Type_In_Why (E) then
+            Create_Move_Tree_Theory_For_Record (Th, E);
+         elsif Has_Array_Type (E) then
+            Create_Move_Tree_Theory_For_Array (Th, E);
 
-            Create_Move_Function (Th, E);
-            Close_Theory (Th,
-                          Kind => Definition_Theory);
+         --  No need to generate move tree theories for anonymous access types
+         --  as objects of these types do not need to be reclaimed themselves.
+         --  The tree of their designated type will be used instead if it
+         --  contains allocated parts.
 
-            if In_Axiom_Module then
-               Record_Extra_Dependency
-                 (Defining_Module => E_Module (E, Ownership_Move),
-                  Axiom_Module    => Th.Module);
-            end if;
-         end;
+         elsif not Is_Anonymous_Access_Type (E) then
+            pragma Assert (Has_Access_Type (E));
+            Create_Move_Tree_Theory_For_Pointer (Th, E);
+         end if;
+
+         --  After generating the move tree theory of an incomplete
+         --  type, complete its early declarations.
+
+         if Has_Incomplete_Access (E) then
+            Complete_Move_Tree_For_Incomplete_Access (Th, E);
+         end if;
+
+         --  Create a __moved_tree function returning a moved tree. Generate:
+         --
+         --    val moved_tree (obj : ty) : move_tree
+         --      ensures { is_moved_or_reclaimed result obj }
+
+         if not Is_Anonymous_Access_Type (E)
+           and then (not Is_Record_Type_In_Why (E)
+                     or else not Record_Type_Is_Clone (E))
+         then
+            declare
+               Typ           : constant W_Type_Id :=
+                 (if Has_Init_Wrapper (E)
+                  then EW_Init_Wrapper (Type_Of_Node (E))
+                  else Type_Of_Node (E));
+               Obj_Binder    : constant Binder_Type :=
+                 (B_Name => New_Identifier (Name => "obj", Typ  => Typ),
+                  others => <>);
+               Moved_Tree_Id : constant W_Identifier_Id := New_Identifier
+                 (Domain => EW_Term, --  factor out
+                  Symb   => NID (To_String (WNE_Moved_Tree)),
+                  Typ    => New_Named_Type (To_Name (WNE_Move_Tree)));
+
+            begin
+               Emit
+                 (Th,
+                  New_Function_Decl
+                    (Domain      => EW_Prog,
+                     Name        => Moved_Tree_Id,
+                     Binders     => Binder_Array'(1 => Obj_Binder),
+                     Location    => No_Location,
+                     Labels      => Symbol_Sets.Empty_Set,
+                     Return_Type => Get_Typ (Moved_Tree_Id),
+                     Post        => New_Call
+                       (Name =>
+                            To_Local (E_Symb (E, WNE_Is_Moved_Or_Reclaimed)),
+                        Args =>
+                          (1 => +New_Result_Ident (Get_Typ (Moved_Tree_Id)),
+                           2 => +Obj_Binder.B_Name))));
+            end;
+         end if;
+
+         Close_Theory (Th, Kind => Definition_Theory);
+
+         if Has_Incomplete_Access (E) then
+            Record_Extra_Dependency
+              (Defining_Module => E_Module (E, Incomp_Move_Tree),
+               Axiom_Module    => Th.Module);
+         end if;
       end if;
 
       if (Is_Tagged_Type (E) and then E = Root_Retysp (E))
@@ -1480,8 +1257,8 @@ package body Gnat2Why.Types is
 
       if Check_Ownership then
          declare
-            W_Ty    : constant W_Type_Id := Type_Of_Node (S_Ty);
-            W_Post  : constant W_Pred_Id :=
+            W_Ty               : constant W_Type_Id := Type_Of_Node (S_Ty);
+            W_Post             : constant W_Pred_Id :=
               Compute_Dynamic_Inv_And_Initialization
                 (Expr        => +New_Result_Ident (W_Ty),
                  Ty          => Retysp (E),
@@ -1490,6 +1267,10 @@ package body Gnat2Why.Types is
                  Params      => Params);
             Value_Id           : constant W_Identifier_Id :=
               New_Temp_Identifier (Typ => W_Ty, Base_Name => "reclaimed");
+            Tree_Id            : constant W_Identifier_Id :=
+              New_Temp_Identifier
+                (Typ       => Get_Move_Tree_Type (S_Ty),
+                 Base_Name => "move_tree");
             Check              : W_Prog_Id;
             Reclamation_Entity : Entity_Id;
             Kind               : Reclamation_Kind;
@@ -1501,8 +1282,8 @@ package body Gnat2Why.Types is
                Pred     => New_Conditional
                  (Condition => Compute_Is_Reclaimed_For_Ownership
                       (Expr => +Value_Id, Ty => E, For_Check => True),
-                  Then_Part => Compute_Is_Moved_Property
-                    (Expr => +Value_Id, Ty => E)),
+                  Then_Part => Compute_Is_Moved_Or_Reclaimed
+                    (Expr => +Value_Id, Tree => +Tree_Id, Ty => S_Ty)),
                Reason   => VC_Reclamation_Check,
                Kind     => EW_Assert);
             Check := New_Typed_Binding
@@ -1512,6 +1293,13 @@ package body Gnat2Why.Types is
                                Post        => W_Post,
                                Labels      => Symbol_Sets.Empty_Set,
                                Return_Type => W_Ty),
+               Context => Check);
+            Check := New_Typed_Binding
+              (Name    => Tree_Id,
+               Def     =>
+                 New_Any_Expr (Ada_Node    => E,
+                               Labels      => Symbol_Sets.Empty_Set,
+                               Return_Type => Get_Typ (Tree_Id)),
                Context => Check);
             Why_Body := Sequence
               (Why_Body,
@@ -1909,28 +1697,6 @@ package body Gnat2Why.Types is
          Close_Theory (Th, Kind => Definition_Theory);
       end if;
 
-      --  If needed, predeclare the move predicates. Use their own module to
-      --  avoid introducing a dependency on the reclamation function of
-      --  private types with ownership in the type module.
-
-      if Has_Predeclared_Move_Predicates (E)
-        and then Contains_Allocated_Parts (E)
-      then
-         Th := Open_Theory
-           (WF_Context, E_Module (E, Ownership_Move),
-            Comment =>
-              "Module for the move predicates for the type "
-            & """" & Get_Name_String (Chars (E)) & """"
-            & (if Sloc (E) > 0 then
-                 " defined at " & Build_Location_String (Sloc (E))
-              else "")
-            & ", created in " & GNAT.Source_Info.Enclosing_Entity);
-
-         Create_Predicates_For_Move (Th, E, Predeclare => True);
-
-         Close_Theory (Th, Kind => Definition_Theory);
-      end if;
-
       --  After translating the full view of an incomplete type, complete the
       --  representation of the corresponding access type representative
       --  theory.
@@ -1939,6 +1705,13 @@ package body Gnat2Why.Types is
          Create_Rep_Pointer_Theory_If_Needed (Get_Incomplete_Access (E));
          Declare_Rep_Pointer_Compl_If_Needed
            (Repr_Pointer_Type (Get_Incomplete_Access (E)));
+
+         --  Declare an incomplete version of the move tree type and of the
+         --  is_moved_or_reclaimed predicate.
+
+         if Contains_Allocated_Parts (E) then
+            Create_Move_Tree_For_Incomplete_Access (E);
+         end if;
       end if;
 
       --  For record types, potentially declare theories for the __user_eq

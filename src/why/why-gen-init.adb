@@ -68,7 +68,7 @@ package body Why.Gen.Init is
       --  Call Compute_Is_Initialized recursively
 
       function Is_Initialized_For_Comp
-        (C_Expr : W_Term_Id; C_Ty : Entity_Id)
+        (C_Expr : W_Term_Id; C_Ty : Entity_Id; Dummy : W_Expr_Array)
          return W_Pred_Id
       is (Is_Initialized_For_Comp (C_Expr, C_Ty, Empty));
 

@@ -614,7 +614,8 @@ package body Why.Gen.Names is
       return
         Append_Num
           (S        =>
-             Img (Get_Symb (Name)) & "__" & To_String (WNE_Is_Moved_Field),
+             Img (Get_Symb (Name)) & "__" &
+             To_String (WNE_Move_Tree_Ptr_Is_Moved),
            Count    => 1,
            Typ      => Typ,
            Module   => Get_Module (Name),
@@ -982,13 +983,18 @@ package body Why.Gen.Names is
          when WNE_Null_Pointer                => "__null_pointer",
          when WNE_Is_Initialized_Pred         => "__is_initialized",
          when WNE_Is_Null_Pointer             => "__is_null_pointer",
-         when WNE_Is_Moved_Field              => "rec__is_moved__",
          when WNE_Pointer_Value               => "__pointer_value",
-         when WNE_Is_Moved                    => "__is_moved",
-         when WNE_Move                        => "__move",
-         when WNE_Moved_Relation              => "__moved_relation",
          when WNE_Close                       => "__close",
          when WNE_Open                        => "__open",
+         when WNE_Move_Tree                   => "__move_tree",
+         when WNE_Move_Tree_Ptr_Is_Moved      => "rec__is_moved__",
+         when WNE_Move_Tree_Ptr_Value         => "rec__value__",
+         when WNE_Move_Tree_Array_Get         => "__get",
+         when WNE_Move_Tree_Array_Set         => "__set",
+         when WNE_Move_Tree_Open              => "__open",
+         when WNE_Move_Tree_Close             => "__close",
+         when WNE_Is_Moved_Or_Reclaimed       => "__is_moved_or_reclaimed",
+         when WNE_Moved_Tree                  => "__moved_tree",
 
          --  please use these only in conjunction with E_Symb function
 

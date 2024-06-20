@@ -631,6 +631,166 @@ package body Why.Gen.Records is
       Close_Theory (Th, Kind => Definition_Theory);
    end Create_Compatible_Tags_Theory;
 
+   ----------------------------------------
+   -- Create_Move_Tree_Theory_For_Record --
+   ----------------------------------------
+
+   procedure Create_Move_Tree_Theory_For_Record
+     (Th : Theory_UC;
+      E  : Entity_Id)
+   is
+      Ty_Name : constant W_Name_Id := To_Name (WNE_Move_Tree);
+
+   begin
+      if Record_Type_Is_Clone (E) then
+
+         --  This type is simply a copy of an existing type, we re-export the
+         --  corresponding module.
+
+         declare
+            Clone : constant Entity_Id := Record_Type_Cloned_Subtype (E);
+         begin
+            Add_With_Clause
+              (Th, E_Module (Clone, Move_Tree), EW_Export);
+            return;
+         end;
+
+      --  If E has an ownership declaration, introduce a single toplevel
+      --  boolean flag.
+
+      elsif Has_Ownership_Annotation (E) then
+         pragma Assert (Needs_Reclamation (E));
+         Emit (Th,
+               New_Type_Decl
+                 (Name  => Ty_Name,
+                  Alias => EW_Bool_Type));
+
+      --  Otherwise, create a record type with a flag per component which needs
+      --  reclamation. No need to consider discriminants nor record extensions,
+      --  they cannot contain deep types.
+
+      else
+         declare
+            Num_Fields : constant Natural := Count_Why_Regular_Fields (E);
+            Binders_F  : Binder_Array (1 .. Num_Fields);
+            Index      : Natural := 0;
+
+         begin
+            for Field of Get_Component_Set (E) loop
+               if Ekind (Field) = E_Component
+                 and then Contains_Allocated_Parts (Etype (Field))
+               then
+                  Index := Index + 1;
+                  Binders_F (Index) :=
+                    (B_Name   =>
+                       To_Why_Id
+                         (Field,
+                          Rec   => E,
+                          Local => True,
+                          Typ   => Get_Move_Tree_Type (Etype (Field))),
+                     Labels   => Symbol_Sets.Empty_Set,
+                     Ada_Node => Field,
+                     others   => <>);
+               end if;
+            end loop;
+
+            pragma Assert (Index > 0);
+
+            Emit_Record_Declaration (Th      => Th,
+                                     Name    => Ty_Name,
+                                     Binders => Binders_F (1 .. Index));
+         end;
+      end if;
+
+      Emit_Ref_Type_Definition (Th   => Th,
+                                Name => Ty_Name);
+
+      --  Create __is_moved_or_reclaimed predicate
+
+      declare
+         Tree_Ident : constant W_Identifier_Id :=
+           New_Identifier
+             (Name => "tree",
+              Typ  => New_Named_Type (Name => Ty_Name));
+         Typ        : constant W_Type_Id :=
+           (if Has_Init_Wrapper (E)
+            then EW_Init_Wrapper (Type_Of_Node (E))
+            else Type_Of_Node (E));
+         Obj_Ident  : constant W_Identifier_Id :=
+           New_Identifier (Name => "obj", Typ  => Typ);
+
+         function Is_Moved_For_Comp
+           (C_Expr : W_Term_Id;
+            C_Ty   : Entity_Id;
+            Field  : Entity_Id)
+            return W_Pred_Id;
+
+         ----------------------
+         -- Is_Moved_For_Comp --
+         ----------------------
+
+         function Is_Moved_For_Comp
+           (C_Expr : W_Term_Id;
+            C_Ty   : Entity_Id;
+            Field  : Entity_Id)
+            return W_Pred_Id
+         is
+         begin
+            if Contains_Allocated_Parts (C_Ty) then
+               return New_Call
+                 (Name => E_Symb (C_Ty, WNE_Is_Moved_Or_Reclaimed),
+                  Args =>
+                    (1 => New_Move_Tree_Record_Access
+                         (Field => Field,
+                          Ty    => E,
+                          Local => True,
+                          Name  => +Tree_Ident),
+                     2 => +C_Expr));
+            else
+               return True_Pred;
+            end if;
+         end Is_Moved_For_Comp;
+
+         function Is_Moved_For_Record is new Build_Predicate_For_Record
+           (Is_Moved_For_Comp, Is_Moved_For_Comp);
+
+         Def : W_Pred_Id;
+
+      begin
+         --  Check the is_moved flag and the reclamation on the type if it is
+         --  annotated with ownership.
+
+         if Has_Ownership_Annotation (E) then
+            pragma Assert (Needs_Reclamation (E));
+            Def := New_Or_Pred
+              (Left  => +Tree_Ident,
+               Right => Compute_Is_Reclaimed_For_Ownership
+                 (Expr      => +Obj_Ident,
+                  Ty        => E,
+                  For_Check => False));
+
+         --  Otherwise, check each field which needs reclamation
+
+         else
+            Def := Is_Moved_For_Record (+Obj_Ident, E);
+         end if;
+
+         Emit
+           (Th,
+            New_Function_Decl
+              (Domain   => EW_Pred,
+               Name     => To_Local (E_Symb (E, WNE_Is_Moved_Or_Reclaimed)),
+               Binders  => Binder_Array'
+                 (1 => (B_Name => Tree_Ident,
+                        others => <>),
+                  2 => (B_Name => Obj_Ident,
+                        others => <>)),
+               Location => No_Location,
+               Labels   => Symbol_Sets.Empty_Set,
+               Def      => +Def));
+      end;
+   end Create_Move_Tree_Theory_For_Record;
+
    --------------------------------------------
    -- Create_Rep_Record_Completion_If_Needed --
    --------------------------------------------
@@ -1969,30 +2129,6 @@ package body Why.Gen.Records is
                    Typ   => EW_Int_Type));
       end if;
 
-      --  Step 4. Copy the is_moved field if the type has ownership
-
-      if Has_Ownership_Annotation (E) and then Needs_Reclamation (E) then
-         From_Index := From_Index + 1;
-         From_Root_Aggr (From_Index) :=
-           New_Field_Association
-             (Domain => EW_Term,
-              Field  => To_Local (E_Symb (E, WNE_Is_Moved_Field)),
-              Value  => New_Record_Access
-                (Name  => +R_Ident,
-                 Field => +E_Symb (Root, WNE_Is_Moved_Field),
-                 Typ   => EW_Bool_Type));
-
-         To_Index := To_Index + 1;
-         To_Root_Aggr (To_Index) :=
-           New_Field_Association
-             (Domain => EW_Term,
-              Field  => +E_Symb (Root, WNE_Is_Moved_Field),
-              Value  => New_Record_Access
-                (Name  => +A_Ident,
-                 Field => To_Local (E_Symb (E, WNE_Is_Moved_Field)),
-                 Typ   => EW_Bool_Type));
-      end if;
-
       pragma Assert (To_Root_Aggr'Last = To_Index);
       pragma Assert (From_Root_Aggr'Last = From_Index);
 
@@ -2245,35 +2381,6 @@ package body Why.Gen.Records is
                     Field  => To_Ident (WNE_Rec_Split_Fields),
                     Value  => New_Record_Aggregate
                       (Associations => To_Wrapper_Field));
-            end;
-         end if;
-
-         --  Step 3. Copy the is_moved field if the type has ownership
-
-         if Has_Ownership_Annotation (E) and then Needs_Reclamation (E) then
-            declare
-               Moved_Comp    : constant W_Identifier_Id :=
-                 E_Symb (E, WNE_Is_Moved_Field);
-               A_Moved_Access : constant W_Expr_Id :=
-                 New_Record_Access (Name  => +A_Ident,
-                                    Field => To_Ident (WNE_Is_Moved_Field));
-               X_Moved_Access : constant W_Expr_Id :=
-                 New_Record_Access (Name  => +X_Ident,
-                                    Field => Moved_Comp);
-            begin
-               Index_Wrapper := Index_Wrapper + 1;
-               To_Wrapper_Aggr (Index_Wrapper) :=
-                 New_Field_Association
-                   (Domain => EW_Term,
-                    Field  => To_Ident (WNE_Is_Moved_Field),
-                    Value  => X_Moved_Access);
-
-               Index := Index + 1;
-               From_Wrapper_Aggr (Index) :=
-                 New_Field_Association
-                   (Domain => EW_Term,
-                    Field  => Moved_Comp,
-                    Value  => A_Moved_Access);
             end;
          end if;
 
@@ -2904,15 +3011,6 @@ package body Why.Gen.Records is
          if Is_Tagged_Type (E) then
             Binders_A (Index_All) :=
               (B_Name => To_Local (E_Symb (E, WNE_Attr_Tag)),
-               others => <>);
-            Index_All := Index_All + 1;
-         end if;
-
-         --  For private types with ownership, add a boolean is_moved flag
-
-         if Has_Ownership_Annotation (E) and then Needs_Reclamation (E) then
-            Binders_A (Index_All) :=
-              (B_Name => To_Local (E_Symb (E, WNE_Is_Moved_Field)),
                others => <>);
             Index_All := Index_All + 1;
          end if;
@@ -4527,46 +4625,56 @@ package body Why.Gen.Records is
          Typ      => Get_Type (+Name));
    end New_Fields_Update;
 
-   --------------------------------
-   -- New_Record_Is_Moved_Access --
-   --------------------------------
+   ---------------------------------
+   -- New_Move_Tree_Record_Access --
+   ---------------------------------
 
-   function New_Record_Is_Moved_Access
-     (E    : Entity_Id;
-      Name : W_Expr_Id)
+   function New_Move_Tree_Record_Access
+     (Name  : W_Expr_Id;
+      Field : Entity_Id;
+      Ty    : Entity_Id;
+      Local : Boolean := False)
       return W_Expr_Id
    is
-      Relaxed_Init : constant Boolean := Get_Relaxed_Init (Get_Type (+Name));
-      --  Use the init wrapper type if needed
+      W_Field : constant W_Identifier_Id := To_Why_Id
+        (Field,
+         Rec        => Ty,
+         Local      => Local,
+         Move_Trees => True,
+         Typ        => Get_Move_Tree_Type (Etype (Field)));
    begin
       return New_Record_Access
-        (Name  => +Name,
-         Field => E_Symb (E, WNE_Is_Moved_Field, Relaxed_Init),
-         Typ   => EW_Bool_Type);
-   end New_Record_Is_Moved_Access;
+        (Field => W_Field,
+         Name  => Name,
+         Typ   => Get_Typ (W_Field));
+   end New_Move_Tree_Record_Access;
 
-   --------------------------------
-   -- New_Record_Is_Moved_Update --
-   --------------------------------
+   ---------------------------------
+   -- New_Move_Tree_Record_Update --
+   ---------------------------------
 
-   function New_Record_Is_Moved_Update
-     (E     : Entity_Id;
-      Name  : W_Prog_Id;
-      Value : W_Prog_Id)
+   function New_Move_Tree_Record_Update
+     (Name  : W_Prog_Id;
+      Field : Entity_Id;
+      Value : W_Prog_Id;
+      Ty    : Entity_Id)
       return W_Prog_Id
    is
-      Relaxed_Init : constant Boolean := Get_Relaxed_Init (Get_Type (+Name));
-      --  Use the init wrapper type if needed
+      W_Field : constant W_Identifier_Id := To_Why_Id
+        (Field,
+         Rec        => Ty,
+         Move_Trees => True,
+         Typ        => Get_Move_Tree_Type (Etype (Field)));
    begin
       return New_Record_Update
         (Name    => Name,
          Updates =>
            (1 => New_Field_Association
                 (Domain => EW_Prog,
-                 Field  => E_Symb (E, WNE_Is_Moved_Field, Relaxed_Init),
+                 Field  => W_Field,
                  Value  => +Value)),
          Typ     => Get_Type (+Name));
-   end New_Record_Is_Moved_Update;
+   end New_Move_Tree_Record_Update;
 
    --------------------
    -- New_Tag_Access --
@@ -4831,16 +4939,6 @@ package body Why.Gen.Records is
          Index := Index + 1;
       end if;
 
-      --  Store association for the is_moved flag
-
-      if Has_Ownership_Annotation (Ty) and then Needs_Reclamation (Ty) then
-         Associations (Index) := New_Field_Association
-           (Domain => EW_Term,
-            Field  => E_Symb (Ty, WNE_Is_Moved_Field, Relaxed_Init),
-            Value  => A (Index));
-         Index := Index + 1;
-      end if;
-
       pragma Assert (Index - 1 = Associations'Last);
 
       return New_Record_Aggregate
@@ -4904,17 +5002,6 @@ package body Why.Gen.Records is
 
       if I.Tag.Present then
          Values (Index) := +I.Tag.Id;
-         Index := Index + 1;
-      end if;
-
-      --  Store association for the Is_Moved flag
-
-      if I.Is_Moved_R.Present then
-         if Ref_Allowed then
-            Values (Index) := New_Deref (E, +I.Is_Moved_R.Id, EW_Bool_Type);
-         else
-            Values (Index) := +I.Is_Moved_R.Id;
-         end if;
          Index := Index + 1;
       end if;
 

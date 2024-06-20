@@ -1,0 +1,6 @@
+test.adb:12:21: info: initialization of "R" proved
+test.adb:14:11: info: absence of resource or memory leak proved (CVC5: 1 VC)
+test.adb:17:21: info: initialization of "C" proved
+test.adb:19:14: info: absence of resource or memory leak proved (CVC5: 1 VC)
+test.adb:23:25: warning: unused initial value of "C"
+test.adb:25:14: medium: resource or memory leak might occur [possible fix: subprogram at line 23 should mention C in a precondition]

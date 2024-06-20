@@ -326,6 +326,34 @@ package Why.Gen.Arrays is
    --
    --    <left_arr>[<index>] = <right_arr>[<index>]
 
+   function New_Move_Tree_Array_Access
+     (Name   : W_Expr_Id;
+      Index  : W_Expr_Array;
+      Ty     : Entity_Id;
+      Domain : EW_Domain)
+      return W_Expr_Id
+   with Pre => Is_Array_Type (Ty)
+     and then Contains_Allocated_Parts (Component_Type (Ty));
+   --  Access to the reclamation tree of Name at Index
+
+   function New_Move_Tree_Array_Update
+     (Name  : W_Prog_Id;
+      Index : W_Expr_Array;
+      Value : W_Prog_Id;
+      Ty    : Entity_Id)
+      return W_Prog_Id
+   with Pre => Is_Array_Type (Ty)
+     and then Contains_Allocated_Parts (Component_Type (Ty));
+   --  Update to the reclamation tree of Name at Index with Value
+
+   function New_Move_Tree_Element_Equality
+     (Left_Arr  : W_Expr_Id;
+      Right_Arr : W_Expr_Id;
+      Index     : W_Expr_Array;
+      Ty        : Entity_Id) return W_Pred_Id;
+   --  Return a predicate stating that move trees at Index in Left_Arr and
+   --  Right_Arr are equal.
+
    procedure Add_Map_Arg
      (Domain  : EW_Domain;
       Args    : in out W_Expr_Array;
@@ -511,6 +539,14 @@ package Why.Gen.Arrays is
    --  @param Relaxed_Init True to convert partially initialized expressions.
    --  ??? Relaxed_Init is always False, is it expected?
 
+   procedure Create_Move_Tree_Theory_For_Array
+     (Th : Theory_UC;
+      E  : Entity_Id)
+   with
+     Pre => Has_Array_Type (E) and then Contains_Allocated_Parts (E);
+   --  Create a module declaring a type for the reclamation trees for objects
+   --  of type E.
+
    function Get_Array_Theory
      (E            : Entity_Id;
       Relaxed_Init : Boolean := False) return M_Array_Type;
@@ -555,21 +591,29 @@ package Why.Gen.Arrays is
 
    generic
       with function Build_Predicate_For_Comp
-        (C_Expr : W_Term_Id; C_Ty : Entity_Id) return W_Pred_Id;
+        (C_Expr : W_Term_Id;
+         C_Ty   : Entity_Id;
+         Idx    : W_Expr_Array)
+         return W_Pred_Id;
    function Build_Predicate_For_Array
      (Expr : W_Term_Id; Ty : Entity_Id) return W_Pred_Id;
    --  Construct a predicate:
    --  forall i1 .. in : int. in_range i1 /\ .. /\ in_range in ->
-   --    Build_Predicate_For_Comp (get <Expr> i1 .. in)
+   --    ...
+   --    Build_Predicate_For_Comp (get <Expr> i1 .. in, [i1 .. in])
 
    generic
       with function Build_Predicate_For_Comp
-        (C_Expr1, C_Expr2 : W_Term_Id; C_Ty : Entity_Id) return W_Pred_Id;
+        (C_Expr1, C_Expr2 : W_Term_Id;
+         C_Ty             : Entity_Id;
+         Idx              : W_Expr_Array) return W_Pred_Id;
    function Build_Binary_Predicate_For_Array
      (Expr1, Expr2 : W_Term_Id; Ty : Entity_Id) return W_Pred_Id;
    --  Construct a predicate:
    --  forall i1 .. in : int. in_range i1 /\ .. /\ in_range in ->
-   --    Build_Predicate_For_Comp (get <Expr1> i1 .. in, get <Expr2> i1 .. in)
+   --    ...
+   --    Build_Predicate_For_Comp
+   --       (get <Expr1> i1 .. in, get <Expr2> i1 .. in, [i1 .. in])
 
    function Array_Type_Is_Clone (E : Entity_Id) return Boolean;
    --  Return True if we do not produce a new type declaration for E but rather
