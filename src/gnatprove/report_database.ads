@@ -27,6 +27,7 @@
 --  gnatprove.
 
 with Ada.Containers.Doubly_Linked_Lists;
+with Ada.Containers.Ordered_Sets;
 with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 with Assumptions;           use Assumptions;
 with Assumption_Types;      use Assumption_Types;
@@ -43,6 +44,30 @@ package Report_Database is
       Column     : Positive;
    end record;
 
+   type Proved_Check is record
+      Unit      : Unit_Type;
+      Subp      : Subp_Type;
+      Kind      : VC_Kind;
+      File      : Unbounded_String;
+      Line      : Positive;
+      Column    : Positive;
+      Max_Steps : Natural;
+      Max_Time  : Float;
+   end record;
+
+   function "<" (X, Y : Proved_Check) return Boolean is
+     (X.Max_Time < Y.Max_Time
+      or else (X.Max_Time = Y.Max_Time
+        and then (X.Max_Steps < Y.Max_Steps
+          or else (X.Max_Steps = Y.Max_Steps
+            and then (X.File < Y.File
+              or else (X.File = Y.File
+                and then (X.Line < Y.Line
+                  or else (X.Line = Y.Line
+                    and then (X.Column < Y.Column
+                      or else (X.Column = Y.Column
+                          and then X.Kind < Y.Kind))))))))));
+
    type Pragma_Assume is record
       File   : Unbounded_String;
       Line   : Positive;
@@ -53,8 +78,14 @@ package Report_Database is
    package Check_Lists is new
      Ada.Containers.Doubly_Linked_Lists (Suppressed_Check, "=");
 
+   package Proved_Check_Sets is new
+     Ada.Containers.Ordered_Sets (Proved_Check);
+
    package Pragma_Assume_Lists is new
      Ada.Containers.Doubly_Linked_Lists (Pragma_Assume, "=");
+
+   Most_Difficult_Proved_Checks : Proved_Check_Sets.Set :=
+     Proved_Check_Sets.Empty_Set;
 
    --  Record of results obtained for a given subprogram or package
    type Stat_Rec is record
@@ -227,5 +258,9 @@ package Report_Database is
                               B : Prover_Stat_Maps.Map);
    --  "Add" the second map of prover stats to the first, so that count and
    --  maximum values area taken into acount
+
+   procedure Update_Most_Difficult_Proved_Checks
+     (Check : Proved_Check);
+   --  Update the set of most difficult checks, to later report to the user
 
 end Report_Database;

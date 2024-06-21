@@ -2,6 +2,7 @@ p.adb:7:21: info: range check proved (CVC5: 2 VC)
 p.adb:17:21: info: range check proved (CVC5: 2 VC)
 p.ads:4:37: info: initialization of "Z" proved
 p.ads:5:10: info: flow dependencies proved
+=========================
 Summary of SPARK analysis
 =========================
 
@@ -23,6 +24,16 @@ Total 4 2 (50%) 2 (50%) . .
 
 
 max steps used for successful proof: 1
+
+============================
+Most difficult proved checks
+============================
+
+No check found with max time greater than 1 second
+
+========================
+Detailed analysis report
+========================
 
 Analyzed 1 unit
 in unit p, 2 subprograms and packages out of 2 analyzed
@@ -31,6 +42,7 @@ absence of run-time errors of P fully established
  P.Op at p.ads:4 flow analyzed (0 errors, 0 checks, 0 warnings and 0 pragma Assume statements) and proved (2 checks)
 absence of run-time errors of P.Op fully established
 
+=========================
 Summary of SPARK analysis
 =========================
 
@@ -52,6 +64,16 @@ Total 4 2 (50%) 2 (50%) . .
 
 
 max steps used for successful proof: 1
+
+============================
+Most difficult proved checks
+============================
+
+No check found with max time greater than 1 second
+
+========================
+Detailed analysis report
+========================
 
 Analyzed 1 unit
 in unit p, 2 subprograms and packages out of 2 analyzed
@@ -61,6 +83,7 @@ absence of run-time errors of P fully established
 effects on parameters and Global variables of P.Op fully established
 absence of run-time errors of P.Op fully established
 
+=========================
 Summary of SPARK analysis
 =========================
 
@@ -82,6 +105,16 @@ Total 4 2 (50%) 2 (50%) . .
 
 
 max steps used for successful proof: 1
+
+============================
+Most difficult proved checks
+============================
+
+No check found with max time greater than 1 second
+
+========================
+Detailed analysis report
+========================
 
 Analyzed 1 unit
 in unit p, 2 subprograms and packages out of 2 analyzed
@@ -95,6 +128,7 @@ p.adb:7:21: info: range check proved (CVC5: 2 VC)
 p.adb:17:21: info: range check proved (CVC5: 2 VC)
 p.ads:4:37: info: initialization of "Z" proved
 p.ads:5:10: info: flow dependencies proved
+=========================
 Summary of SPARK analysis
 =========================
 
@@ -116,6 +150,16 @@ Total 4 2 (50%) 2 (50%) . .
 
 
 max steps used for successful proof: 1
+
+============================
+Most difficult proved checks
+============================
+
+No check found with max time greater than 1 second
+
+========================
+Detailed analysis report
+========================
 
 Analyzed 1 unit
 in unit p, 2 subprograms and packages out of 2 analyzed

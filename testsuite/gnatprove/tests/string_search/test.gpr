@@ -1,4 +1,4 @@
-project Strings is
+project Test is
 
    package Compiler is
       for Switches ("ada") use ("-gnata");
@@ -6,4 +6,4 @@ project Strings is
 
    for Main use ("test_search.adb");
 
-end Strings;
+end Test;

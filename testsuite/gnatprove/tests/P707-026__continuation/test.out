@@ -4,6 +4,7 @@ pkg.adb:8:04: warning: address specification on "Descriptors" is imprecisely sup
 pkg.adb:8:04: warning: consider making "Descriptors" volatile and annotating it with Async_Writers and make sure that all overlapping objects have Async_Writers set to True
 pkg.adb:8:04: warning: launch "gnatprove --explain=E0012" for more information
 pkg.ads:5:04: info: flow dependencies proved
+=========================
 Summary of SPARK analysis
 =========================
 
@@ -25,6 +26,16 @@ Total                             3    1 (33%)     1 (33%)     1 (33%)          
 
 
 max steps used for successful proof: 1
+
+============================
+Most difficult proved checks
+============================
+
+No check found with max time greater than 1 second
+
+========================
+Detailed analysis report
+========================
 
 Analyzed 1 unit
 in unit pkg, 2 subprograms and packages out of 2 analyzed

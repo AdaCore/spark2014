@@ -147,6 +147,7 @@ p.adb:14:04: warning: statement has no effect
 p.adb:15:09: warning: unused assignment
 p.adb:18:19: info: assertion proved (CVC5: 1 VC)
 
+=========================
 Summary of SPARK analysis
 =========================
 
@@ -168,6 +169,16 @@ Total 2 1 (50%) 1 (50%) . .
 
 
 max steps used for successful proof: 1
+
+============================
+Most difficult proved checks
+============================
+
+No check found with max time greater than 1 second
+
+========================
+Detailed analysis report
+========================
 
 Analyzed 1 unit
 in unit p, 1 subprograms and packages out of 1 analyzed

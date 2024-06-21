@@ -1,4 +1,5 @@
 empty.ads:4:14: warning: subprogram "P" has no effect
+=========================
 Summary of SPARK analysis
 =========================
 
@@ -20,6 +21,16 @@ Total                             .         .         .           .          .
 
 
 max steps used for successful proof: 0
+
+============================
+Most difficult proved checks
+============================
+
+No check found with max time greater than 1 second
+
+========================
+Detailed analysis report
+========================
 
 Analyzed 1 unit
 in unit empty, 2 subprograms and packages out of 3 analyzed

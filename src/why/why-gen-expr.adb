@@ -4238,7 +4238,7 @@ package body Why.Gen.Expr is
             return New_Call
               (Name   => Range_Pred_Name (Root_Retysp (Ty)),
                Args   => Prepare_Args_For_Subtype_Check
-                 (Ty, Base_Expr, Term_Domain (Domain)),
+                 (Ty, Base_Expr, Term_Domain (Domain), Params),
                Domain => Domain,
                Typ    => EW_Bool_Type);
          end;

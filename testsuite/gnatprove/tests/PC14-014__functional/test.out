@@ -1,4 +1,4 @@
-spark-containers-formal-unbounded_vectors.ads:664:57: medium: overflow check might fail, cannot prove upper bound for Index - Index_Type'First, in instantiation at use_vectors.ads:23 [reason for check: result of subtraction must fit in a 32-bits machine integer] [possible fix: use pragma Overflow_Mode or switch -gnato13 or unit SPARK.Big_Integers]
+spark-containers-formal-unbounded_vectors.ads:665:57: medium: overflow check might fail, cannot prove upper bound for Index - Index_Type'First, in instantiation at use_vectors.ads:23 [reason for check: result of subtraction must fit in a 32-bits machine integer] [possible fix: use pragma Overflow_Mode or switch -gnato13 or unit SPARK.Big_Integers]
 use_lists.adb:8:33: medium: implicit aspect Always_Terminates on "My_Find" could be incorrect, loop might be nonterminating [possible fix: add loop variant in the loop body]
 use_lists.adb:10:13: info: loop invariant initialization proved
 use_lists.adb:10:13: info: loop invariant preservation proved
@@ -894,7 +894,7 @@ use_sets.ads:131:39: info: precondition proved
 use_sets.ads:132:16: info: postcondition proved
 use_vectors.adb:11:33: info: loop invariant initialization proved
 use_vectors.adb:11:33: info: loop invariant preservation proved
-use_vectors.adb:11:59: medium: overflow check might fail, cannot prove upper bound for I - Index_Type'First [reason for check: result of subtraction must fit in a 32-bits machine integer] [possible fix: use pragma Overflow_Mode or switch -gnato13 or unit SPARK.Big_Integers]
+use_vectors.adb:11:59: info: overflow check proved
 use_vectors.adb:13:13: info: loop invariant initialization proved
 use_vectors.adb:13:13: info: loop invariant preservation proved
 use_vectors.adb:14:26: info: precondition proved
@@ -903,11 +903,11 @@ use_vectors.adb:14:43: info: precondition proved
 use_vectors.adb:14:56: info: range check proved
 use_vectors.adb:15:13: info: precondition proved
 use_vectors.adb:15:26: info: range check proved
-use_vectors.adb:16:13: medium: precondition might fail
+use_vectors.adb:16:13: info: precondition proved
 use_vectors.adb:16:25: info: precondition proved
 use_vectors.adb:16:38: info: range check proved
 use_vectors.adb:16:41: info: overflow check proved
-use_vectors.adb:18:13: medium: precondition might fail
+use_vectors.adb:18:13: info: precondition proved
 use_vectors.adb:18:25: info: precondition proved
 use_vectors.adb:18:38: info: range check proved
 use_vectors.adb:27:33: info: loop invariant initialization proved

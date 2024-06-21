@@ -6,6 +6,7 @@ pack.adb:24:20: warning: subprogram "AAC" has no effect
 pack.adb:37:17: warning: subprogram "AB" has no effect
 pack.adb:41:10: info: no contextual analysis of "AB" (nested subprogram)
 pack.ads:4:14: warning: subprogram "A" has no effect
+=========================
 Summary of SPARK analysis
 =========================
 
@@ -27,6 +28,16 @@ Total . . . . .
 
 
 max steps used for successful proof: 0
+
+============================
+Most difficult proved checks
+============================
+
+No check found with max time greater than 1 second
+
+========================
+Detailed analysis report
+========================
 
 Analyzed 1 unit
 in unit pack, 16 subprograms and packages out of 16 analyzed
