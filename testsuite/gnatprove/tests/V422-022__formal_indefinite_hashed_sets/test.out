@@ -4,7 +4,6 @@ test.adb:7:04: warning: check will fail at run time [-gnatw.a]
 test.adb:7:04: warning: in instantiation at spark-containers-functional-maps.ads:153 [-gnatw.a]
 test.adb:7:04: warning: in instantiation at spark-containers-formal-unbounded_hashed_sets.ads:278 [-gnatw.a]
 test.adb:7:04: warning: check will fail at run time [-gnatw.a]
-spark-containers-parameter_checks.ads:246:19: medium: postcondition might fail, in instantiation at spark-containers-formal-unbounded_hashed_sets.ads:140, in instantiation at test.adb:7
 test.adb:11:04: info: initialization of "S" proved
 test.adb:14:04: info: precondition proved (CVC5: 2 VC)
 test.adb:15:04: info: precondition proved (CVC5: 2 VC)

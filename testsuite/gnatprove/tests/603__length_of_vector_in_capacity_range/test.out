@@ -1,0 +1,6 @@
+vector_length.adb:9:39: info: data dependencies proved
+vector_length.adb:9:63: info: postcondition proved (Trivial: 1 VC)
+vector_length.adb:13:22: info: assertion proved (CVC5: 1 VC)
+vector_unbounded_length.adb:9:39: info: data dependencies proved
+vector_unbounded_length.adb:9:63: info: postcondition proved (Trivial: 1 VC)
+vector_unbounded_length.adb:13:22: info: assertion proved (CVC5: 1 VC)

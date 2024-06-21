@@ -1,6 +1,7 @@
 nested.ads:3:14: warning: subprogram "P" has no effect
 pack.adb:6:12: high: "Z" must be listed in the Global aspect of "Incr_Glob" (SPARK RM 6.1.4(15))
 pack.adb:16:14: high: overflow check might fail, cannot prove upper bound for X + 1 (e.g. when X = Integer'Last) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at pack.ads:8 should mention X in a precondition]
+=========================
 Summary of SPARK analysis
 =========================
 
@@ -22,6 +23,16 @@ Total 2 . . . 2 (100%)
 
 
 max steps used for successful proof: 0
+
+============================
+Most difficult proved checks
+============================
+
+No check found with max time greater than 1 second
+
+========================
+Detailed analysis report
+========================
 
 Analyzed 2 units
 in unit nested, 3 subprograms and packages out of 3 analyzed

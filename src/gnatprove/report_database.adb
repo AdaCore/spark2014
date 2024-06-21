@@ -25,7 +25,6 @@
 
 with Ada.Containers;
 with Ada.Containers.Hashed_Maps;
-with Ada.Containers.Ordered_Sets;
 
 package body Report_Database is
 
@@ -570,6 +569,22 @@ package body Report_Database is
    begin
       return Unit_Map (Unit).Stop_Reason;
    end Unit_Stop_Reason;
+
+   -----------------------------------------
+   -- Update_Most_Difficult_Proved_Checks --
+   -----------------------------------------
+
+   procedure Update_Most_Difficult_Proved_Checks
+     (Check : Proved_Check)
+   is
+      use type Ada.Containers.Count_Type;
+   begin
+      Most_Difficult_Proved_Checks.Include (Check);
+
+      if Most_Difficult_Proved_Checks.Length > 10 then
+         Most_Difficult_Proved_Checks.Delete_First;
+      end if;
+   end Update_Most_Difficult_Proved_Checks;
 
    -----------------------
    -- Update_Subp_Entry --

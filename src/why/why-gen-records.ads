@@ -352,7 +352,8 @@ package Why.Gen.Records is
    function Prepare_Args_For_Subtype_Check
      (Check_Ty : Entity_Id;
       Expr     : W_Expr_Id;
-      Domain   : EW_Domain)
+      Domain   : EW_Domain;
+      Params   : Transformation_Params)
       return W_Expr_Array;
    --  Given a record type, compute the argument array that can be used
    --  together with its subtype check predicate of program function. The
@@ -464,7 +465,8 @@ package Why.Gen.Records is
 
    function Get_Discriminants_Of_Subtype
      (Ty     : Entity_Id;
-      Domain : EW_Terms)
+      Domain : EW_Terms;
+      Params : Transformation_Params)
       return W_Expr_Array
    with
      Pre  => Has_Discriminants (Ty) and Is_Constrained (Ty),

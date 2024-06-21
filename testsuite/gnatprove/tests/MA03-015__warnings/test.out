@@ -2,6 +2,7 @@ warn_suppr.adb:6:14: info: overflow check justified
 warn_suppr.adb:8:14: medium: overflow check might fail, cannot prove lower bound for X * Y (e.g. when X = -1073741825 and Y = 2) [reason for check: result of multiplication must fit in a 32-bits machine integer] [possible fix: add precondition (X * Y >= Integer'First) to subprogram at warn_suppr.ads:3]
 warn_suppr.adb:9:14: medium: overflow check might fail, cannot prove lower bound for Z + K (e.g. when K = Integer'First and Z = -1073741822) [reason for check: result of addition must fit in a 32-bits machine integer]
 warn_suppr.ads:3:14: warning: subprogram "P" has no effect
+=========================
 Summary of SPARK analysis
 =========================
 
@@ -23,6 +24,16 @@ Total                             3         .         .     1 (33%)    2 (67%)
 
 
 max steps used for successful proof: 0
+
+============================
+Most difficult proved checks
+============================
+
+No check found with max time greater than 1 second
+
+========================
+Detailed analysis report
+========================
 
 Analyzed 1 unit
 in unit warn_suppr, 2 subprograms and packages out of 2 analyzed

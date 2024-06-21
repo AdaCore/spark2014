@@ -1537,11 +1537,14 @@ package body Configuration is
             Status : Boolean;
          begin
             Proj_Opt.Add_Switch (Options.P, Project_File);
-            Proj_Opt.Finalize;
-            Status := Proj_Opt.Load_Project (Tree);
+
+            --  Do not display warnings, as those messages will be duplicated
+            --  during the call to gprbuild.
+            GPR2.Project.Tree.Verbosity := GPR2.Project.Tree.Errors;
+
+            Status := Tree.Load (Proj_Opt, Absent_Dir_Error => GPR2.No_Error);
+
             if not Status then
-               GPR2.Log.Output_Messages
-                 (Tree.Log_Messages.all, Information => False);
                Fail ("");
             end if;
 
@@ -1553,8 +1556,13 @@ package body Configuration is
                declare
                   Msgs : GPR2.Log.Object;
                begin
-                  Tree.Update_Sources (Messages => Msgs);
-                  GPR2.Log.Output_Messages (Msgs, Information => False);
+                  --  When updating the sources we now need both warnings and
+                  --  errors, in particular since duplicated body situation is
+                  --  a warning.
+
+                  GPR2.Project.Tree.Verbosity :=
+                    GPR2.Project.Tree.Warnings_And_Errors;
+                  Tree.Update_Sources (Msgs);
                   Check_Duplicate_Bodies (Msgs);
                end;
             end if;

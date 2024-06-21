@@ -70,46 +70,58 @@ def get_lexer_tokens(tag_highlighting=False, project_support=False):
                 + r"function\s+|end\s+|procedure\s+)([\w\.]+)",
                 bygroups(Keyword, Name.Function),
             ),
-            # Ada 2012 standard attributes, GNAT specific ones and
-            # Spark 2014 ones ('Update and 'Loop_Entry)
+            # Ada standard attributes, GNAT specific ones and
+            # SPARK ones ('Update, 'Loop_Entry, 'Initialized)
             # (reversed order to avoid having for
             #  example Max before Max_Alignment_For_Allocation).
             (
-                r"\'(Write|Width|Wide_Width|Wide_Wide_Width|Wide_Wide_Value|"
-                r"Wide_Wide_Image|Wide_Value|Wide_Image|Word_Size|Wchar_T_Size|"
-                r"Version|Value_Size|Value|Valid_Scalars|VADS_Size|Valid|Val|"
+                r"\'(Write|Word_Size|Width|Wide_Width|Wide_Wide_Width|"
+                r"Wide_Wide_Value|Wide_Wide_Image|Wide_Value|Wide_Image|"
+                r"Word_Size|Wchar_T_Size|Version|Variable_Indexing|Value_Size|"
+                r"Value|Valid_Value|Valid_Scalars|VADS_Size|Valid|Val|"
                 r"Update|Unrestricted_Access|Universal_Literal_String|"
                 r"Unconstrained_Array|Unchecked_Access|Unbiased_Rounding|"
-                r"UET_Address|Truncation|Type_Class|To_Address|Tick|Terminated|"
-                r"Target_Name|Tag|System_Allocator_Alignment|Succ|Stub_Type|"
-                r"Stream_Size|Storage_Unit|Storage_Size|Storage_Pool|Small|Size|"
+                r"UET_Address|TypeCode|Truncation|Type_Key|Type_Class|To_Any|"
+                r"To_Address|Tick|Terminated|Target_Name|Tag|"
+                r"System_Allocator_Alignment|Succ|Super|"
+                r"Stub_Type|Stream_Size|Storage_Unit|Storage_Size|Storage_Pool|"
+                r"Small_Numerator|Small_Denominator|Small|Size|"
                 r"Simple_Storage_Pool|Signed_Zeros|Scaling|Scale|"
-                r"Scalar_Storage_Order|Safe_Last|Safe_Large|Safe_First|"
-                r"Safe_Emax|Rounding|Round|Result|Remainder|Ref|Read|"
-                r"Range_Length|Range|Priority|Pred|"
+                r"Scalar_Storage_Order|Safe_Small|Safe_Last|Safe_Large|"
+                r"Safe_First|Safe_Emax|Rounding|Round|Result|Restriction_Set|"
+                r"Remainder|Ref|Reduce|Read|Range_Length|Range|"
+                r"Put_Image|Priority|Pred|Preelaborable_Initialization|"
                 r"Position|Pos|Pool_Address|Passed_By_Reference|Partition_Id|"
                 r"Overlaps_Storage|Output|Old|Object_Size|Null_Parameter|Modulus|"
                 r"Model_Small|Model_Mantissa|Model_Epsilon|Model_Emin|Model|Mod|"
                 r"Min|Mechanism_Code|Maximum_Alignment|"
                 r"Max_Size_In_Storage_Elements|Max_Priority|"
-                r"Max_Interrupt_Priority|Max_Alignment_For_Allocation|"
+                r"Max_Interrupt_Priority|"
+                r"Max_Integer_Size|Max_Alignment_For_Allocation|"
                 r"Max|Mantissa|Machine_Size|Machine_Rounds|Machine_Rounding|"
                 r"Machine_Radix|Machine_Overflows|Machine_Mantissa|Machine_Emin|"
-                r"Machine_Emax|Machine|Loop_Entry|Length|Length|Leading_Part|"
-                r"Last_Valid|Last_Bit|Last|Large|Invalid_Value|Integer_Value|"
-                r"Input|Image|Img|Identity|Has_Same_Storage|Has_Discriminants|"
-                r"Has_Access_Values|Fraction|Fore|Floor|Fixed_Value|First_Valid|"
-                r"First_Bit|First|External_Tag|Exponent|Epsilon|Enum_Val|"
+                r"Machine_Emax|Machine|Loop_Entry|Library_Level|Length|"
+                r"Leading_Part|Last_Valid|Last_Bit|"
+                r"Last|Large|Iterator_Element|Iterable|Invalid_Value|"
+                r"Integer_Value|Input|Initialized|Implicit_Dereference|Img|Image|"
+                r"Identity|Has_Tagged_Values|Has_Same_Storage|Has_Discriminants|"
+                r"Has_Access_Values|From_Any|Fraction|Fore|Floor|Fixed_Value|"
+                r"First_Valid|"
+                r"First_Bit|First|Finalization_Size|Fast_Math|External_Tag|"
+                r"Exponent|Epsilon|Enum_Val|"
                 r"Enum_Rep|Enabled|Emax|Elaborated|Elab_Subp_Body|Elab_Spec|"
-                r"Elab_Body|Descriptor_Size|Digits|Denorm|Delta|Definite|"
+                r"Elab_Body|Digits|Descriptor_Size|Digits|Deref|Denorm|Delta|"
+                r"Definite|Default_Scalar_Storage_Order|Default_Iterator|"
                 r"Default_Bit_Order|Count|Copy_Sign|Constrained|"
+                r"Constant_Indexing|"
                 r"Compose|Component_Size|Compiler_Version|Code_Address|Class|"
                 r"Ceiling|Caller|Callable|Body_Version|Bit_Order|Bit_Position|"
-                r"Bit|Base|Asm_Output|Asm_Input|Alignment|Aft|Adjacent|"
+                r"Bit|Base|Atomic_Always_Lock_Free|"
+                r"Asm_Output|Asm_Input|Alignment|Aft|Adjacent|"
                 r"Address_Size|Address|Access|Abort_Signal|AST_Entry)",
                 Name.Attribute,
             ),
-            # All Ada2012 reserved words
+            # All Ada reserved words
             (
                 r"(abort|abstract|abs|accept|access|aliased|all|and|array|at|"
                 r"begin|body|case|constant|declare|delay|delta|digits|do|"
@@ -165,7 +177,7 @@ class AdaLexer(RegexLexer):
     """
 
     name = "Ada"
-    aliases = ["ada", "ada83", "ada95", "ada2005", "ada2012"]
+    aliases = ["ada", "ada83", "ada95", "ada2005", "ada2012", "ada2022"]
     filenames = ["*.adb", "*.ads", "*.ada"]
     mimetypes = ["text/x-ada"]
 
