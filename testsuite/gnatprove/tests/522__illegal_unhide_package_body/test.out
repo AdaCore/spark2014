@@ -1,8 +1,8 @@
 bad_compil.adb:2:04: error: the entity of a pragma Annotate Unhide_Info for package bodies shall not be a compilation unit
 test.adb:6:07: error: aspect Annotate Unhide_Info for package bodies shall be specified on a package body
-test.adb:18:07: error: the entity of a pragma Annotate Unhide_Info for package bodies shall be a package
-test.adb:25:07: error: pragma Annotate Unhide_Info shall be located at the top of the declarations of package Bad_3
-test.adb:39:07: error: pragma Annotate Unhide_Info shall be located at the top of the declarations of package Bad_4
-test.adb:47:07: error: pragma Annotate Unhide_Info shall be located at the top of the declarations of package Bad_4
-test.adb:58:07: error: pragma Annotate Hide_Info cannot be applied to package bodies
+test.adb:18:07: error: a pragma Annotate Unhide_Info for package body shall have 3 parameters
+test.adb:25:07: error: pragma Annotate Unhide_Info shall be located at the top of the declarations of a package body
+test.adb:39:07: error: pragma Annotate Unhide_Info shall be located at the top of the declarations of a package body
+test.adb:49:09: error: pragma Annotate Unhide_Info shall be located at the top of the declarations of a package body
+test.adb:61:07: error: pragma Annotate Hide_Info cannot be applied to package bodies
 gnatprove: error during flow analysis and proof

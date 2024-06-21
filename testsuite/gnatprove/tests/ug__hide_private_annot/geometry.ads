@@ -7,7 +7,7 @@ package Geometry with SPARK_Mode is
 
    function Is_Square (X : Rectangle) return Boolean;
 private
-   pragma Annotate (GNATprove, Hide_Info, "Private_Part", Geometry);
+   pragma Annotate (GNATprove, Hide_Info, "Private_Part");
 
    subtype Small_Positive is Positive range 1 .. 100;
 
