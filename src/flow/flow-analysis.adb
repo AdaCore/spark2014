@@ -1276,8 +1276,10 @@ package body Flow.Analysis is
       begin
          for F of Unused loop
             declare
-               V : constant Flow_Graphs.Vertex_Id :=
+               V      : constant Flow_Graphs.Vertex_Id :=
                  Get_Initial_Vertex (FA.PDG, F);
+               Is_Var : constant Boolean := Is_Variable (F);
+               --  Issue different messages for variables and constants
 
             begin
                if FA.Atr (V).Is_Global then
@@ -1288,10 +1290,6 @@ package body Flow.Analysis is
                           Find_In (Unused_Globals, Get_Direct_Mapping_Id (F));
                         --  An entity that represents F in unused, user-written
                         --  Global/Depends items.
-
-                        Is_Var : constant Boolean := Is_Variable (F);
-                        --  Issue a different errors for variables and
-                        --  constants
 
                         Msg : constant String :=
                           (if Is_Var
@@ -1349,7 +1347,9 @@ package body Flow.Analysis is
                      else
                         Error_Msg_Flow
                           (FA       => FA,
-                           Msg      => "unused variable &",
+                           Msg      =>
+                             (if Is_Var then "unused variable &"
+                              else "unused &"),
                            N        => Error_Location (FA.PDG, FA.Atr, V),
                            F1       => F,
                            Tag      => Unused_Variable,
