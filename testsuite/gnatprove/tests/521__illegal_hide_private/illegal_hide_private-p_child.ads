@@ -6,7 +6,7 @@ is
 
 private
    --  Hide annotation is illegal in a private child package
-   pragma Annotate (GNATprove, Hide_Info, "Private_Part", Illegal_Hide_Private.P_Child);
+   pragma Annotate (GNATprove, Hide_Info, "Private_Part");
 
    type T is new Integer;
 

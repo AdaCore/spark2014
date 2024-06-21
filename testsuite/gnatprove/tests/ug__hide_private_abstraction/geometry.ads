@@ -22,7 +22,7 @@ package Geometry with SPARK_Mode is
      Post => "="'Result =
        (Get_Height (X) = Get_Height (Y) and Get_Width (X) = Get_Width (Y));
 private
-   pragma Annotate (GNATprove, Hide_Info, "Private_Part", Geometry);
+   pragma Annotate (GNATprove, Hide_Info, "Private_Part");
 
    subtype Small_Positive is Positive range 1 .. 100;
 

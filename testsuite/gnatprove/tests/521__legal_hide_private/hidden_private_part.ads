@@ -25,7 +25,7 @@ is
      Default_Initial_Condition => D /= 0;
 
 private
-   pragma Annotate (GNATprove, Hide_Info, "Private_Part", Hidden_Private_Part);
+   pragma Annotate (GNATprove, Hide_Info, "Private_Part");
 
    type R is record
       F     : Integer;

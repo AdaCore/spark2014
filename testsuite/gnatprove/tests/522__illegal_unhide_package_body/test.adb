@@ -8,21 +8,21 @@ procedure Test with SPARK_Mode is
       function Id (X : Integer) return Integer is (X);
    end Bad_1;
 
-   --  Pragma Unhide_Info for package bodies shall be on a package
+   --  Pragma Unhide_Info for package bodies shall have 3 parameters
 
    package Bad_2 is
       function Id (X : Integer) return Integer;
    end Bad_2;
 
    package body Bad_2 is
-      pragma Annotate (GNATprove, Unhide_Info, "Package_Body", Id);
+      pragma Annotate (GNATprove, Unhide_Info, "Package_Body", Bad_2);
       function Id (X : Integer) return Integer is (X);
    end Bad_2;
 
    --  Pragma Unhide_Info for package bodies shall be located at the top of the package body
 
    package Bad_3 is
-      pragma Annotate (GNATprove, Unhide_Info, "Package_Body", Bad_3);
+      pragma Annotate (GNATprove, Unhide_Info, "Package_Body");
       function Id (X : Integer) return Integer;
    end Bad_3;
 
@@ -36,7 +36,7 @@ procedure Test with SPARK_Mode is
 
    package body Bad_4 is
       function Id (X : Integer) return Integer is (X);
-      pragma Annotate (GNATprove, Unhide_Info, "Package_Body", Bad_4);
+      pragma Annotate (GNATprove, Unhide_Info, "Package_Body");
    end Bad_4;
 
    package Bad_5 is
@@ -44,11 +44,14 @@ procedure Test with SPARK_Mode is
    end Bad_5;
 
    package body Bad_5 is
-      pragma Annotate (GNATprove, Unhide_Info, "Package_Body", Bad_4);
-      function Id (X : Integer) return Integer is (X);
+      function Id (X : Integer) return Integer is
+      begin
+        pragma Annotate (GNATprove, Unhide_Info, "Package_Body");
+	return X;
+      end Id;
    end Bad_5;
 
-   --  Pragma Hide_Info cannot be applied to package bodies
+   --  Hide_Info cannot be applied to package bodies
 
    package Bad_6 is
       function Id (X : Integer) return Integer;
@@ -77,7 +80,7 @@ procedure Test with SPARK_Mode is
    end OK_2;
 
    package body OK_2 is
-      pragma Annotate (GNATprove, Unhide_Info, "Package_Body", OK_2);
+      pragma Annotate (GNATprove, Unhide_Info, "Package_Body");
       function Id (X : Integer) return Integer is (X);
    end OK_2;
 

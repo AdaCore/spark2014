@@ -19,7 +19,7 @@ package Hidden_Predefined_Eq with SPARK_Mode is
    pragma Annotate (GNATprove, Predefined_Equality, "Null_Value", C_Priv_Only_Null);
 
 private
-   pragma Annotate (GNATprove, Hide_Info, "Private_Part", Hidden_Predefined_Eq);
+   pragma Annotate (GNATprove, Hide_Info, "Private_Part");
 
    type T_Cst_Acc is access constant Integer;
 
