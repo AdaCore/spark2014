@@ -1,9 +1,9 @@
 bad_pledge_calls.adb:19:09: warning: postcondition does not check the outcome of calling "Next"
-bad_pledge_calls.adb:19:17: error: call to a function annotated with At_End_Borrow occurring inside a reference to the Old or Loop_Entry attributes is not allowed in SPARK
+bad_pledge_calls.adb:19:17: error: call to a function annotated with At_End_Borrow occurring inside a reference to the 'Old or 'Loop_Entry attributes is not allowed in SPARK
 bad_pledge_calls.adb:19:17: error: violation of aspect SPARK_Mode at line 1
 bad_pledge_calls.adb:24:32: error: actual parameter of a function annotated with At_End_Borrow in a contract which is not a local borrower or the borrowed parameter of a traversal function is not allowed in SPARK
 bad_pledge_calls.adb:24:32: error: violation of aspect SPARK_Mode at line 1
-bad_pledge_calls.adb:33:59: error: call to a function annotated with At_End_Borrow occurring inside a reference to the Old or Loop_Entry attributes is not allowed in SPARK
+bad_pledge_calls.adb:33:59: error: call to a function annotated with At_End_Borrow occurring inside a reference to the 'Old or 'Loop_Entry attributes is not allowed in SPARK
 bad_pledge_calls.adb:33:59: error: violation of aspect SPARK_Mode at line 1
 bad_pledge_calls.adb:42:29: error: actual parameter of a function annotated with At_End_Borrow in a contract which is not a local borrower or the borrowed parameter of a traversal function is not allowed in SPARK
 bad_pledge_calls.adb:42:29: error: violation of aspect SPARK_Mode at line 1
