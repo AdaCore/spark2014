@@ -163,12 +163,12 @@ package body Why.Gen.Binders is
             raise Program_Error;
          when Regular | UCArray
             =>
-            if Present (Get_Ada_Node_From_Item (B)) then
-               return Etype (Get_Ada_Node_From_Item (B));
-            elsif Get_Type_Kind (Get_Why_Type_From_Item (B))
-                in EW_Split | EW_Abstract
+            if Get_Type_Kind (Get_Why_Type_From_Item (B)) in EW_Split
+                                                           | EW_Abstract
             then
                return Get_Ada_Node (+Get_Why_Type_From_Item (B));
+            elsif Present (Get_Ada_Node_From_Item (B)) then
+               return Etype (Get_Ada_Node_From_Item (B));
             else
                return Empty;
             end if;
