@@ -752,12 +752,12 @@ def strip_provers_output_from_testout():
 def create_sparklib():
     """Create local project file sparklib.gpr as the user would"""
     with open("sparklib.gpr", "w") as f_prj:
-        f_prj.write('project SPARKlib extends "sparklib_external" is\n')
+        f_prj.write('project SPARKlib extends "sparklib_internal" is\n')
         f_prj.write('   for Object_Dir use "sparklib_obj";\n')
-        f_prj.write("   for Source_Dirs use SPARKlib_External'Source_Dirs;\n")
+        f_prj.write("   for Source_Dirs use SPARKlib_Internal'Source_Dirs;\n")
         f_prj.write(
             "   for Excluded_Source_Files use "
-            + "SPARKlib_External'Excluded_Source_Files;\n"
+            + "SPARKlib_Internal'Excluded_Source_Files;\n"
         )
         f_prj.write("end SPARKlib;\n")
 
