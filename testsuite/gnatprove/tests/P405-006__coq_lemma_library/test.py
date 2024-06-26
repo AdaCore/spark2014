@@ -7,9 +7,9 @@ import shutil
 
 def copy_project_file():
     libraries_gpr = os.path.join(
-        spark_install_path(), "lib", "gnat", "sparklib_external.gpr"
+        spark_install_path(), "lib", "gnat", "sparklib_internal.gpr"
     )
-    shutil.copyfile(libraries_gpr, "sparklib_external.gpr")
+    shutil.copyfile(libraries_gpr, "sparklib_internal.gpr")
 
 
 def copy_lemma_files():
