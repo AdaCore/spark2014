@@ -8,6 +8,9 @@ workflow:
   rules:
     - if: $CI_PIPELINE_SOURCE == "merge_request_event" || ($CI_PIPELINE_SOURCE == "push" && $CI_COMMIT_REF_PROTECTED == "true")
       when: always
+    # Run on pipelines created by selecting "Run pipeline" in the GitLab UI,
+    # from the project’s "Build > Pipelines" section.
+    - if: $CI_PIPELINE_SOURCE == "web"
     - when: never
 
 variables:
