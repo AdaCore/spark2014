@@ -1347,7 +1347,7 @@ package body SPARK_Definition is
                   --  Container aggregates do not move their components since
                   --  they reduce to procedure calls.
 
-                  if not SPARK_Util.Is_Container_Aggregate (Root) then
+                  if not Is_Container_Aggregate (Root) then
                      Check_Expressions (Expressions (Root));
                      Check_Associations (Component_Associations (Root));
                   end if;
@@ -1637,7 +1637,7 @@ package body SPARK_Definition is
                | N_Delta_Aggregate
                | N_Extension_Aggregate
             =>
-               if SPARK_Util.Is_Container_Aggregate (Context) then
+               if Is_Container_Aggregate (Context) then
                   return False;
                end if;
 
@@ -2028,7 +2028,7 @@ package body SPARK_Definition is
             pragma Assert (Present (Etype (N)));
             --  In particular, aggregate node must have a type.
 
-            if SPARK_Util.Is_Container_Aggregate (N) then
+            if Is_Container_Aggregate (N) then
 
                --  For now we voluntarily do not look at parent types of
                --  derived types to find the aggregate annotation. Indeed,
