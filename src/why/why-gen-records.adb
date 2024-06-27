@@ -394,14 +394,24 @@ package body Why.Gen.Records is
                                    else Etype (Field)),
                        E       => Field);
 
-                  if T_Comp /= True_Pred then
+                  --  If Field is in a variant part, add a conditional to make
+                  --  sure it is present.
+
+                  if T_Comp /= True_Pred
+                    and then not Is_Concurrent_Type (Ty_Ext)
+                    and then Ekind (Field) = E_Component
+                    and then Has_Variant_Info (Ty_Ext, Field)
+                  then
                      T_Guard := New_Ada_Record_Check_For_Field
                        (Empty, R_Expr1, Field, Ty_Ext);
-
-                     Count := Count + 1;
-                     Conjuncts (Count) := New_Conditional
+                     T_Comp := New_Conditional
                        (Condition => T_Guard,
                         Then_Part => T_Comp);
+                  end if;
+
+                  if T_Comp /= True_Pred then
+                     Count := Count + 1;
+                     Conjuncts (Count) := T_Comp;
                   end if;
                end if;
             end loop;
@@ -4548,11 +4558,11 @@ package body Why.Gen.Records is
          Typ      => EW_Int_Type);
    end New_Tag_Access;
 
-   --------------------
-   -- New_Tag_Update --
-   --------------------
+   ----------------------------
+   -- New_Tag_And_Ext_Update --
+   ----------------------------
 
-   function New_Tag_Update
+   function New_Tag_And_Ext_Update
      (Ada_Node  : Node_Id := Empty;
       Domain    : EW_Domain;
       Name      : W_Expr_Id;
@@ -4570,7 +4580,14 @@ package body Why.Gen.Records is
    begin
       if Has_Tag then
          declare
-            Value : constant W_Expr_Id :=
+            Tmp_Name : constant W_Expr_Id := New_Temp_For_Expr (Name);
+            Ext_Value : constant W_Expr_Id :=
+              (if From_Expr = Why_Empty then
+                  +E_Symb (Ty, WNE_Null_Extension)
+               else New_Record_Access
+                 (Field => E_Symb (Ty, WNE_Rec_Extension),
+                  Name  => New_Fields_Access (Name => From_Expr, Ty => Ty)));
+            Tag_Value : constant W_Expr_Id :=
               (if From_Expr = Why_Empty then
                   +E_Symb (E => Ty, S => WNE_Tag)
                else New_Tag_Access
@@ -4578,10 +4595,12 @@ package body Why.Gen.Records is
                   Name   => From_Expr,
                   Ty     => Get_Ada_Node (+Get_Type (From_Expr))));
          begin
-            return
-              (New_Record_Update
+            return Binding_For_Temp
+              (Domain  => Domain,
+               Tmp     => Tmp_Name,
+               Context => New_Record_Update
                  (Ada_Node => Ada_Node,
-                  Name     => Name,
+                  Name     => Tmp_Name,
                   Updates  =>
                     (1 => New_Field_Association
                          (Domain => Domain,
@@ -4589,13 +4608,25 @@ package body Why.Gen.Records is
                             (Ty     => Ty,
                              Domain => Domain,
                              Attr   => Attribute_Tag),
-                          Value  => Value)),
+                          Value  => Tag_Value),
+                     2 => New_Field_Association
+                       (Domain   => Domain,
+                        Field    => E_Symb (Ty, WNE_Rec_Split_Fields),
+                        Value    => New_Record_Update
+                          (Ada_Node => Ada_Node,
+                           Name     => New_Fields_Access
+                             (Name => Tmp_Name, Ty => Ty),
+                           Updates  =>
+                             (1 => New_Field_Association
+                                  (Domain => Domain,
+                                   Field  => E_Symb (Ty, WNE_Rec_Extension),
+                                   Value  => Ext_Value))))),
                   Typ      => Get_Type (Name)));
          end;
       else
          return Name;
       end if;
-   end New_Tag_Update;
+   end New_Tag_And_Ext_Update;
 
    ------------------------------------
    -- Oldest_Parent_With_Same_Fields --

@@ -203,17 +203,47 @@ package SPARK_Util.Types is
    --  Predefined_Eq_Uses_Pointer_Eq).
    --  Should be called on marked types.
 
-   function Has_Visible_Type_Invariants (Ty : Type_Kind_Id) return Boolean;
-   --  @param Ty type entity
-   --  @return True if Ty has a top level invariant which needs to be checked
-   --          in the current compilation unit and False if it can be assumed
-   --          to hold.
-   --  Since invariants can only be declared directly in compilation units, it
-   --  is enough to check if the type is declared in the main compilation unit
-   --  to decide whether or not it should be checked in this unit.
+   function Invariant_Assumed_In_Main (Ty : Type_Kind_Id) return Boolean with
+     Pre => Has_Invariants_In_SPARK (Ty);
+   --  @param Ty type entity with an invariant
+   --  @return True if Ty has a top level invariant which always holds in the
+   --          current compilation unit and False if it might need to be
+   --          checked.
 
-   function Invariant_Check_Needed (Ty : Type_Kind_Id) return Boolean;
+   function Invariant_Assumed_In_Scope
+     (Ty   : Type_Kind_Id;
+      Scop : Entity_Id)
+      return Boolean
+   with
+     Pre => Has_Invariants_In_SPARK (Ty)
+       and then not Invariant_Assumed_In_Main (Ty);
+   --  @param Ty type entity with an invariant which is not assumed in Main
+   --  @return True if Ty has a top level invariant which always holds in Scop.
+
+   function Invariant_Relaxed_For_Subprogram
+     (Ty   : Type_Kind_Id;
+      Subp : Entity_Id)
+      return Boolean
+   with
+     Pre  => Has_Invariants_In_SPARK (Ty),
+     Post =>
+       (if Invariant_Relaxed_For_Subprogram'Result
+        then Invariant_Assumed_In_Main (Ty)
+        or else not Invariant_Assumed_In_Scope (Ty, Subp));
+   --  Return True if the invariant of Ty does not need to be checked for
+   --  parameters on calls to Subp.
+
+   function Invariant_Check_Needed
+     (Ty   : Type_Kind_Id;
+      Subp : Entity_Id := Empty;
+      Scop : Entity_Id := Empty)
+      return Boolean;
    --  @param Ty type entity
+   --  @param Subp optional subprogram. If provided, invariants relaxed for
+   --         parameters of Subp are not considered.
+   --  @param Scop scope in which the check occurs. Do not check invariants
+   --         which are assumed in Scop. If Scop is empty, consider the whole
+   --         analyzed unit.
    --  @return True if there is an invariant that needs to be checked for type
    --          Ty. It can come from Ty itself, from one of its ancestors, or
    --          from one of its components.

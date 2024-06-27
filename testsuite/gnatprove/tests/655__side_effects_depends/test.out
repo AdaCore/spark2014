@@ -1,0 +1,7 @@
+foo.adb:10:10: info: initialization of "Z" proved
+foo.adb:17:10: info: initialization of "A" proved
+foo.adb:17:13: info: initialization of "B" proved
+foo.ads:3:21: info: initialization of "Y" proved
+foo.ads:4:28: info: flow dependencies proved
+foo.ads:5:23: info: initialization of "Y" proved
+foo.ads:6:16: info: implicit aspect Always_Terminates on "Simple" has been proved, subprogram will terminate

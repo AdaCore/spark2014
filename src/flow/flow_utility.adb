@@ -611,13 +611,13 @@ package body Flow_Utility is
          Parent  : Entity_Id;
       begin
          loop
+            --  Include invariants which are assumed globally or locally in
+            --  Scop plus local invariant if Include_Invariant is set.
 
-            --  If the type has invariants in the enclosing unit, and
-            --  Include_Invariant, then pull the proof dependencies from the
-            --  invariant.
             if Has_Invariants_In_SPARK (Current)
-              and then (if Has_Visible_Type_Invariants (Current)
-                        then Include_Invariant)
+              and then (Invariant_Assumed_In_Main (Current)
+                        or else Invariant_Assumed_In_Scope (Current, Scop.Ent)
+                        or else Include_Invariant)
             then
                Extract_Proof_Dependencies
                  (Get_Expr_From_Check_Only_Proc
@@ -6727,6 +6727,9 @@ package body Flow_Utility is
                                          not (Class_Wide_Conversion
                                               or not Extensions_Irrelevant));
                   end;
+
+               when Name_Old =>
+                  M := Recurse_On (Prefix (N), Map_Root);
 
                when others =>
                   Error_Msg_N ("cannot untangle attribute", N);

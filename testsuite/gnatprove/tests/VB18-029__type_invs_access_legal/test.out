@@ -4,12 +4,12 @@ pred.ads:7:13: medium: for the result of Bad_New_T at pred.ads:7
 pred.ads:7:13: medium: invariant check might fail (e.g. when Bad_New_T'Result.all = (Content => -1))
 pred.ads:8:13: info: for the result of Ok_New_T at pred.ads:8
 pred.ads:8:13: info: implicit aspect Always_Terminates on "Ok_New_T" has been proved, subprogram will terminate
-pred.ads:8:13: info: invariant check proved (CVC5: 1 VC; Trivial: 3 VC)
+pred.ads:8:13: info: invariant check proved (CVC5: 1 VC; Trivial: 2 VC)
 pred.ads:10:09: info: invariant check proved on default value (CVC5: 1 VC)
 pred.ads:10:74: info: in default value of private type at pred.ads:3
 pred.ads:10:74: info: range check proved (CVC5: 2 VC)
-pred.ads:11:09: info: invariant check proved on default value (CVC5: 1 VC; Trivial: 2 VC)
-pred.ads:14:09: info: invariant check proved on default value (CVC5: 1 VC; Trivial: 3 VC)
+pred.ads:11:09: info: invariant check proved on default value (CVC5: 1 VC; Trivial: 1 VC)
+pred.ads:14:09: info: invariant check proved on default value (CVC5: 1 VC; Trivial: 2 VC)
 pred.ads:16:13: info: implicit aspect Always_Terminates on "Priv_New_T" has been proved, subprogram will terminate
 use_preds.ads:7:13: info: function contract might not be available on recursive calls
 use_preds.ads:7:13: info: implicit aspect Always_Terminates on "All_Pos" has been proved, subprogram will terminate

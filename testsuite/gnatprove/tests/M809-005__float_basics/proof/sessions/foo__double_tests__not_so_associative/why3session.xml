@@ -14,25 +14,25 @@
  <goal name="def&#39;vc">
  <transf name="split_goal_wp_conj" >
   <goal name="def&#39;vc.0">
-  <proof prover="0"><result status="steplimitexceeded" steps="3777"/></proof>
+  <proof prover="0"><result status="steplimitexceeded" steps="3462"/></proof>
   <proof prover="1"><result status="unknown" steps="69141"/></proof>
   <proof prover="2"><result status="unknown" steps="98255"/></proof>
   <proof prover="4"><result status="unknown" steps="225"/></proof>
   </goal>
   <goal name="def&#39;vc.1">
-  <proof prover="0"><result status="steplimitexceeded" steps="3939"/></proof>
+  <proof prover="0"><result status="steplimitexceeded" steps="3782"/></proof>
   <proof prover="1"><result status="unknown" steps="104755"/></proof>
   <proof prover="2"><result status="unknown" steps="921266"/></proof>
   <proof prover="4"><result status="unknown" steps="254"/></proof>
   </goal>
   <goal name="def&#39;vc.2">
-  <proof prover="0"><result status="steplimitexceeded" steps="3247"/></proof>
+  <proof prover="0"><result status="steplimitexceeded" steps="3548"/></proof>
   <proof prover="1"><result status="unknown" steps="140476"/></proof>
   <proof prover="2"><result status="unknown" steps="884403"/></proof>
   <proof prover="4"><result status="unknown" steps="281"/></proof>
   </goal>
   <goal name="def&#39;vc.3">
-  <proof prover="0"><result status="steplimitexceeded" steps="4498"/></proof>
+  <proof prover="0"><result status="steplimitexceeded" steps="3510"/></proof>
   <proof prover="1"><result status="unknown" steps="204333"/></proof>
   <proof prover="2"><result status="unknown" steps="1626794"/></proof>
   <proof prover="4"><result status="unknown" steps="311"/></proof>
@@ -41,7 +41,7 @@
   <proof prover="3"><result status="valid" steps="1"/></proof>
   </goal>
   <goal name="def&#39;vc.5">
-  <proof prover="0"><result status="steplimitexceeded" steps="4095"/></proof>
+  <proof prover="0"><result status="steplimitexceeded" steps="4358"/></proof>
   <proof prover="1"><result status="unknown" steps="197324"/></proof>
   <proof prover="2"><result status="steplimitexceeded" steps="8450159"/></proof>
   <proof prover="4"><result status="unknown" steps="2627"/></proof>

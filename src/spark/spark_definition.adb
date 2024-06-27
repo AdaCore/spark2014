@@ -7910,7 +7910,6 @@ package body SPARK_Definition is
                      else Empty);
                   --  Partial view of E. Do not use the Partial_Views from
                   --  SPARK_Util as it may not have been constructed yet.
-                  Enclosing_U    : constant Unit_Kind_Id := Enclosing_Unit (E);
 
                begin
                   if Present (E_Partial_View)
@@ -7922,21 +7921,6 @@ package body SPARK_Definition is
                        ("type invariant on completion of "
                         & "private_type_extension", E,
                         SRM_Reference => "SPARK RM 7.3.2(2)");
-
-                  --  We currently do not support invariants on type
-                  --  declared in a nested package. This restriction results
-                  --  in simplifications in invariant checks on subprogram
-                  --  parameters/global variables, as well as in determining
-                  --  which are the type invariants which are visible at a
-                  --  given program point.
-
-                  elsif not Is_Compilation_Unit (Enclosing_U) then
-                     Mark_Unsupported (Lim_Type_Inv_Nested_Package, E);
-
-                  elsif Is_Child_Unit (Enclosing_U)
-                    and then Is_Private_Descendant (Enclosing_U)
-                  then
-                     Mark_Unsupported (Lim_Type_Inv_Private_Child, E);
 
                   --  We currently do not support invariants on protected
                   --  types. To support them, we would probably need some

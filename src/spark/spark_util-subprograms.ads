@@ -670,11 +670,13 @@ package SPARK_Util.Subprograms is
    --    --limit-subp switch of GNATprove.
 
    function Subp_Needs_Invariant_Checks
-     (E : Callable_Kind_Id)
+     (E    : Callable_Kind_Id;
+      Scop : Entity_Id)
       return Boolean;
    --  @param E subprogram or entry
+   --  @param Scop the scope in which the checks are performed
    --  @return True whenever an invariant check may be needed when calling E
-   --          from inside the current compilation unit.
+   --          from inside Scop.
 
    function Suspends_On_Suspension_Object (E : Entity_Id) return Boolean;
    --  Return True iff E suspends on a suspension object, i.e. it is either

@@ -269,6 +269,13 @@ package body Gnat2Why.Driver is
 
    procedure Complete_Declaration (E : Entity_Id) is
    begin
+      --  Check that the global variables are cleared before and after this
+      --  routine; this is an assertion rather than a pre/post condition,
+      --  because the caller shouldn't really care about it.
+
+      pragma Assert (No (Current_Subp));
+      Current_Subp := E;
+
       case Ekind (E) is
          when E_Entry
             | E_Function
@@ -297,6 +304,8 @@ package body Gnat2Why.Driver is
          when others =>
             null;
       end case;
+
+      Current_Subp := Empty;
    end Complete_Declaration;
 
    ----------------------------
@@ -409,21 +418,22 @@ package body Gnat2Why.Driver is
    procedure Do_Generate_VCs (E : Entity_Id) is
       Old_Num : constant Natural := Num_Registered_VCs_In_Why3;
    begin
+      if Has_Skip_Proof_Annotation (E) then
+         Skipped_Proof.Insert (E);
+         return;
+      end if;
+
       --  Check that the global variables are cleared before and after this
       --  routine; this is an assertion rather than a pre/post condition,
       --  because the caller shouldn't really care about it.
 
       pragma Assert (No (Current_Subp));
+      Current_Subp := E;
 
       --  Delete all theories in main so that we start this file with no other
       --  VCs.
 
       Why_Sections (WF_Main).Clear;
-
-      if Has_Skip_Proof_Annotation (E) then
-         Skipped_Proof.Insert (E);
-         return;
-      end if;
 
       --  Process Hide_Info and Unhide_Info annotations for E
 
@@ -1376,6 +1386,13 @@ package body Gnat2Why.Driver is
    --  Start of processing for Translate_Entity
 
    begin
+      --  Check that the global variables are cleared before and after this
+      --  routine; this is an assertion rather than a pre/post condition,
+      --  because the caller shouldn't really care about it.
+
+      pragma Assert (No (Current_Subp));
+      Current_Subp := E;
+
       case Ekind (E) is
          when Type_Kind =>
 
@@ -1398,6 +1415,7 @@ package body Gnat2Why.Driver is
             --  of record types, protected types, and task types.
 
             if Is_Discriminal (E) then
+               Current_Subp := Empty;
                return;
             end if;
 
@@ -1462,6 +1480,8 @@ package body Gnat2Why.Driver is
          when others =>
             raise Program_Error;
       end case;
+
+      Current_Subp := Empty;
    end Translate_Entity;
 
    ------------------------------

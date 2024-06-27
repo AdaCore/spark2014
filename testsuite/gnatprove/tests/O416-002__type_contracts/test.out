@@ -19,7 +19,7 @@ communications.ads:21:69: info: index check proved (CVC5: 2 VC)
 communications.ads:21:69: info: overflow check proved (CVC5: 2 VC)
 days.adb:9:25: info: range check proved (CVC5: 1 VC)
 days.adb:20:12: info: predicate check proved (CVC5: 1 VC)
-main.adb:5:07: medium: predicate check might fail
+main.adb:5:07: info: predicate check proved (Z3: 1 VC)
 main.adb:6:07: info: predicate check proved (CVC5: 1 VC)
 main.adb:7:26: info: range check proved (CVC5: 2 VC)
 messages.adb:6:12: medium: predicate check might fail [possible fix: subprogram at messages.ads:12 should mention M in a precondition]

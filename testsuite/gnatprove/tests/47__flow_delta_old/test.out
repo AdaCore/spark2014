@@ -1,0 +1,4 @@
+bar.ads:11:13: info: implicit aspect Always_Terminates on "GetX" has been proved, subprogram will terminate
+bar.ads:14:14: info: postcondition proved (CVC5: 1 VC)
+foo.ads:9:13: info: implicit aspect Always_Terminates on "GetX" has been proved, subprogram will terminate
+foo.ads:12:14: info: postcondition proved (CVC5: 1 VC)

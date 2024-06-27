@@ -17,19 +17,19 @@
   <proof prover="3"><result status="valid" steps="1"/></proof>
   </goal>
   <goal name="def&#39;vc.1" proved="true">
-  <proof prover="0"><result status="highfailure"/></proof>
+  <proof prover="0"><result status="failure" steps="0"/></proof>
   <proof prover="1"><result status="valid" steps="153"/></proof>
   <proof prover="2"><result status="failure" steps="0"/></proof>
   <proof prover="4"><result status="failure" steps="0"/></proof>
   </goal>
   <goal name="def&#39;vc.2">
-  <proof prover="0"><result status="steplimitexceeded" steps="3294"/></proof>
+  <proof prover="0"><result status="steplimitexceeded" steps="2814"/></proof>
   <proof prover="1"><result status="unknown" steps="138584"/></proof>
   <proof prover="2"><result status="unknown" steps="354489"/></proof>
   <proof prover="4"><result status="unknown" steps="167"/></proof>
   </goal>
   <goal name="def&#39;vc.3">
-  <proof prover="0"><result status="steplimitexceeded" steps="3257"/></proof>
+  <proof prover="0"><result status="steplimitexceeded" steps="1575"/></proof>
   <proof prover="1"><result status="unknown" steps="173969"/></proof>
   <proof prover="2"><result status="unknown" steps="2521616"/></proof>
   <proof prover="4"><result status="unknown" steps="199"/></proof>
@@ -41,7 +41,7 @@
   <proof prover="4"><result status="failure" steps="0"/></proof>
   </goal>
   <goal name="def&#39;vc.5">
-  <proof prover="0"><result status="steplimitexceeded" steps="1802"/></proof>
+  <proof prover="0"><result status="steplimitexceeded" steps="1718"/></proof>
   <proof prover="1"><result status="unknown" steps="361439"/></proof>
   <proof prover="2"><result status="steplimitexceeded" steps="8450192"/></proof>
   <proof prover="4"><result status="unknown" steps="243"/></proof>
@@ -50,7 +50,7 @@
   <proof prover="3"><result status="valid" steps="1"/></proof>
   </goal>
   <goal name="def&#39;vc.7">
-  <proof prover="0"><result status="steplimitexceeded" steps="2140"/></proof>
+  <proof prover="0"><result status="steplimitexceeded" steps="1660"/></proof>
   <proof prover="1"><result status="unknown" steps="318790"/></proof>
   <proof prover="2"><result status="unknown" steps="2675535"/></proof>
   <proof prover="4"><result status="unknown" steps="240"/></proof>
