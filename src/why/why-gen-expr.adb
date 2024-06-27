@@ -4683,7 +4683,7 @@ package body Why.Gen.Expr is
 
    function New_Function_Call
      (Ada_Node              : Node_Id := Empty;
-      Subp                  : Node_Id;
+      Subp                  : Entity_Id;
       Selector              : Selection_Kind := Why.Inter.Standard;
       Name                  : W_Identifier_Id;
       Args                  : W_Expr_Array;

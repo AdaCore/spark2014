@@ -2119,7 +2119,7 @@ package body Gnat2Why.Borrow_Checker is
 
                --  Container aggregates should be treated as function calls
 
-               if not SPARK_Util.Is_Container_Aggregate (Expr) then
+               if not Is_Container_Aggregate (Expr) then
                   Check_Expressions (Expressions (Expr));
                   Check_Associations (Component_Associations (Expr));
                end if;
