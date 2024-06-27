@@ -595,9 +595,10 @@ package body Gnat2Why.Types is
             Variables : Flow_Id_Sets.Set;
 
          begin
-            --  Get the set of variables used in E's dynamic property
+            --  Get the set of variables used in E's dynamic property. Locally
+            --  assumed predicates are not included.
 
-            Variables_In_Dynamic_Invariant (E, Variables);
+            Variables_In_Dynamic_Invariant (E, Variables, Scop => Empty);
 
             declare
                Items    : constant Item_Array :=
@@ -632,7 +633,6 @@ package body Gnat2Why.Types is
 
                Def             : W_Pred_Id;
                New_Incompl_Acc : Ada_To_Why_Ident.Map;
-               use Ada_To_Why_Ident;
 
             begin
                --  Push variable names to Symbol_Table
@@ -640,7 +640,9 @@ package body Gnat2Why.Types is
                Ada_Ent_To_Why.Push_Scope (Symbol_Table);
                Push_Binders_To_Symbol_Table (Items);
 
-               --  Compute the predicate for E
+               --  Compute the predicate for E. Do not include any locally
+               --  assumed predicate, they will be added separately depending
+               --  on the scope when the dynamic invariant is used.
 
                Compute_Dynamic_Invariant
                  (Expr             => +Main_Arg,
@@ -648,7 +650,9 @@ package body Gnat2Why.Types is
                   Initialized      => +Init_Arg,
                   Only_Var         => +Ovar_Arg,
                   Top_Predicate    => +Top_Arg,
-                  Include_Type_Inv => +Inv_Arg,
+                  All_Global_Inv   => +Inv_Arg,
+                  Inv_Scop         => Empty,
+                  Inv_Subp         => Empty,
                   Params           => Logic_Params,
                   Use_Pred         => False,
                   New_Preds_Module => Module,
@@ -660,7 +664,8 @@ package body Gnat2Why.Types is
                --  Copy new predicate symbols to the map of local symbols
 
                for C in New_Incompl_Acc.Iterate loop
-                  Loc_Incompl_Acc.Insert (Key (C), Element (C));
+                  Loc_Incompl_Acc.Insert
+                    (Ada_To_Why_Ident.Key (C), Ada_To_Why_Ident.Element (C));
                end loop;
 
                --  Introduce function symbols (with no definitions) for
@@ -668,8 +673,8 @@ package body Gnat2Why.Types is
 
                for C in New_Incompl_Acc.Iterate loop
                   Create_Dynamic_Invariant
-                    (E       => Key (C),
-                     Name    => Element (C),
+                    (E       => Ada_To_Why_Ident.Key (C),
+                     Name    => Ada_To_Why_Ident.Element (C),
                      For_Acc => True);
                end loop;
 
@@ -1311,8 +1316,6 @@ package body Gnat2Why.Types is
                           " defined at " & Build_Location_String (Sloc (E))
                        else "")
                      & ", created in " & GNAT.Source_Info.Enclosing_Entity);
-
-      Current_Subp := E;
 
       Register_VC_Entity (E);
 

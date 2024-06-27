@@ -99,9 +99,9 @@ def update_sessions_from_gaia(gaia_id):
                 print(f"updated {fn}")
     except Exception as e:
         print(
-            "failed to update sessions, possibly GAIA event doesn't have session files"
+            "warning: failed to update sessions, "
+            f"possibly GAIA event doesn't have session files: {str(e)}"
         )
-        print(e)
 
 
 def main():

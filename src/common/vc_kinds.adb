@@ -848,12 +848,6 @@ package body VC_Kinds is
          when Lim_Type_Inv_Access_Type =>
            "an access type designating an incomplete or private type with a"
           & " subcomponent annotated with a type invariant",
-         when Lim_Type_Inv_Nested_Package =>
-           "a private type declared in a nested package annotated with a "
-          & "type invariant",
-         when Lim_Type_Inv_Private_Child =>
-           "a private type declared in a private child package annotated with"
-          & " a type invariant",
          when Lim_Type_Inv_Protected_Type =>
            "a protected type annotated with a type invariant",
          when Lim_Type_Inv_Tagged_Comp =>

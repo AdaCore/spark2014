@@ -367,6 +367,10 @@ package SPARK_Util is
    --  @return True iff N is declared in the analysed unit or any of its
    --     parents.
 
+   function Is_Private_Child_Unit (E : Entity_Id) return Boolean with
+     Pre => Is_Child_Unit (E);
+   --  Return True if E is a private child unit
+
    function Is_Declared_In_Private (E : Entity_Id) return Boolean;
    --  @param E any entity
    --  @return True iff E is declared in the private part of a package

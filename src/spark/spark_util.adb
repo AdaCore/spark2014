@@ -3867,6 +3867,44 @@ package body SPARK_Util is
       end if;
    end Is_Predefined_Initialized_Entity;
 
+   ---------------------------
+   -- Is_Private_Child_Unit --
+   ---------------------------
+
+   function Is_Private_Child_Unit (E : Entity_Id) return Boolean is
+      Spec : Node_Id;
+
+   begin
+      --  Get E's specification
+
+      case Ekind (E) is
+         when E_Package =>
+            Spec := Package_Spec (E);
+         when Subprogram_Kind =>
+            Spec := Subprogram_Spec (E);
+         when others =>
+            raise Program_Error;
+      end case;
+
+      --  If E is a generic subprogram, it might be included in a wrapper
+      --  package. Get the specification of this package instead.
+
+      if Nkind (Parent (Spec)) = N_Package_Specification then
+         declare
+            Pack : constant Entity_Id := Defining_Unit_Name (Parent (Spec));
+         begin
+            pragma Assert (Is_Wrapper_Package (Pack));
+            Spec := Package_Spec (Pack);
+         end;
+      end if;
+
+      --  Query Private_Present on the compilation unit
+
+      pragma Assert (Nkind (Parent (Spec)) = N_Compilation_Unit);
+
+      return Private_Present (Parent (Spec));
+   end Is_Private_Child_Unit;
+
    ----------------------
    -- Is_Prophecy_Save --
    ----------------------

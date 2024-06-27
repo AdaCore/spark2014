@@ -23,10 +23,15 @@ project GNAT2Why is
 
    package Analyzer is
 
-      for Switches ("analyze") use ("-j0", "--no-gnatcheck");
+      for Switches ("analyze") use ("-j0", "--incrementality-method=minimal",
+         "--no-gnatcheck");
       for Switches ("infer") use ("--disable-issue-type", "MEMORY_LEAK_ADA");
       for Switches ("inspector") use ("--legacy-level", "1", "-gnatws");
-      for Switches ("report text") use ("--show=kind=check+warning-suspicious_constant_operation", "--show-backtraces");
+
+      Filter := "--show=kind=check+warning-suspicious_constant_operation";
+      for Switches ("report text") use (Filter, "--show-backtraces");
+      for Switches ("report exit-code") use (Filter);
+      for Switches ("report code-climate") use (Filter);
 
       for Excluded_Source_Dirs use ("gnat_src");
 

@@ -79,9 +79,9 @@ c392004.adb:10:03: info: initialization of "Your_Car" proved
 c392004.adb:12:13: info: add a contract to analyze it separately from calling contexts
 c392004.adb:12:13: info: local subprogram "TC_Assert" only analyzed in the context of calls
 c392004.adb:12:13: warning: subprogram "TC_Assert" has no effect
-c392004.adb:15:13: medium: precondition might fail, in call inlined at c392004.adb:26
+c392004.adb:15:13: info: precondition proved (CVC5: 1 VC), in call inlined at c392004.adb:26
+c392004.adb:15:13: info: precondition proved (CVC5: 1 VC), in call inlined at c392004.adb:33
 c392004.adb:15:13: medium: precondition might fail, in call inlined at c392004.adb:29
-c392004.adb:15:13: medium: precondition might fail, in call inlined at c392004.adb:33
 c392004.adb:15:13: medium: precondition might fail, in call inlined at c392004.adb:36
 c392004.adb:15:13: medium: precondition might fail, in call inlined at c392004.adb:40
 c392004.adb:15:13: medium: precondition might fail, in call inlined at c392004.adb:43

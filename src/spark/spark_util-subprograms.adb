@@ -2151,42 +2151,38 @@ package body SPARK_Util.Subprograms is
    ---------------------------------
 
    function Subp_Needs_Invariant_Checks
-     (E : Callable_Kind_Id)
+     (E    : Callable_Kind_Id;
+      Scop : Entity_Id)
       return Boolean
    is
-      Read_Ids    : Flow_Types.Flow_Id_Sets.Set;
-      Write_Ids   : Flow_Types.Flow_Id_Sets.Set;
-
-      Is_External : constant Boolean := Is_Globally_Visible (E);
-      --  The subprogram is an external or a boundary subprogram if it is
-      --  visible from outside the current compilation unit.
-
+      Read_Ids  : Flow_Types.Flow_Id_Sets.Set;
+      Write_Ids : Flow_Types.Flow_Id_Sets.Set;
    begin
-      --  If the subprogram is boundary or external, we should check the type
-      --  invariants of its parameters.
+      --  Check the type invariants of parameters. Relax invariants which are
+      --  internal for E.
 
-      if Is_External then
-         declare
-            Formal : Entity_Id := First_Formal (E);
-         begin
-            while Present (Formal) loop
-               if Ekind (Formal) /= E_Out_Parameter
-                 and then Invariant_Check_Needed (Etype (Formal))
-               then
-                  return True;
-               end if;
+      declare
+         Formal : Entity_Id := First_Formal (E);
+      begin
+         while Present (Formal) loop
+            if Ekind (Formal) /= E_Out_Parameter
+              and then Invariant_Check_Needed
+                (Etype (Formal), Subp => E, Scop => Scop)
+            then
+               return True;
+            end if;
 
-               Next_Formal (Formal);
-            end loop;
-         end;
-      end if;
+            Next_Formal (Formal);
+         end loop;
+      end;
 
       Flow_Utility.Get_Proof_Globals (Subprogram      => E,
                                       Reads           => Read_Ids,
                                       Writes          => Write_Ids,
                                       Erase_Constants => True);
 
-      --  Consider invariants of the variables read by E
+      --  Consider invariants of the variables read by E. Do not relax
+      --  invariants which are internal for E.
 
       for F of Read_Ids loop
          pragma Assert (F.Kind in Direct_Mapping | Magic_String);
@@ -2197,15 +2193,14 @@ package body SPARK_Util.Subprograms is
 
          if F.Kind = Direct_Mapping then
             declare
-               E : constant Entity_Id := Get_Direct_Mapping_Id (F);
+               Obj : constant Entity_Id := Get_Direct_Mapping_Id (F);
 
             begin
                --  Global variables accessed by the subprogram are either
                --  objects or concurrent types.
 
-               if Invariant_Check_Needed (if Is_Type (E)
-                                          then E
-                                          else Etype (E))
+               if Invariant_Check_Needed
+                 ((if Is_Type (Obj) then Obj else Etype (Obj)), Scop => Scop)
                then
                   return True;
                end if;
