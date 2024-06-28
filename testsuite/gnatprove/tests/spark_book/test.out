@@ -256,7 +256,7 @@ console_io.ads:15:03: info: flow dependencies proved
 contains.adb:2:10: info: implicit aspect Always_Terminates on "Contains" has been proved, subprogram will terminate
 contains.adb:7:04: info: initialization of "Result_Index" proved
 contains.adb:9:37: info: precondition proved (CVC5: 3 VC; Trivial: 1 VC)
-contains.adb:11:57: medium: range check might fail, cannot prove lower bound for S'First [reason for check: input value must fit in parameter type]
+contains.adb:11:57: high: range check might fail, cannot prove lower bound for S'First (e.g. when S'First = 0 and S'Last = -1) [reason for check: input value must fit in parameter type]
 contains2.adb:2:10: info: implicit aspect Always_Terminates on "Contains2" has been proved, subprogram will terminate
 contains2.adb:9:04: info: initialization of "Result_Index" proved
 contains2.adb:11:37: info: precondition proved (CVC5: 3 VC; Trivial: 1 VC)
@@ -538,16 +538,19 @@ dates.ads:67:13: info: implicit aspect Always_Terminates on "Maximum_Datetime" h
 dates.ads:71:13: info: implicit aspect Always_Terminates on "Minimum_Datetime" has been proved, subprogram will terminate
 dates.ads:76:13: info: implicit aspect Always_Terminates on "Is_Before" has been proved, subprogram will terminate
 dates.ads:78:14: info: postcondition proved (CVC5: 2 VC; Trivial: 1 VC)
+density_altitude-humidity_unit.adb:6:04: info: address in address clause is compatible with object alignment (CVC5: 1 VC)
 density_altitude-humidity_unit.adb:6:04: warning: address specification on "Humid_Sensor" is imprecisely supported: assuming no concurrent accesses to non-atomic object, correct volatile properties, and valid reads [E0012]
 density_altitude-humidity_unit.adb:6:04: warning: launch "gnatprove --explain=E0012" for more information
 density_altitude-humidity_unit.ads:9:20: info: initialization of "Value" proved
 density_altitude-humidity_unit.ads:10:11: info: data dependencies proved
 density_altitude-humidity_unit.ads:11:11: info: flow dependencies proved
+density_altitude-pressure_unit.adb:6:04: info: address in address clause is compatible with object alignment (CVC5: 1 VC)
 density_altitude-pressure_unit.adb:6:04: warning: address specification on "Press_Sensor" is imprecisely supported: assuming no concurrent accesses to non-atomic object, correct volatile properties, and valid reads [E0012]
 density_altitude-pressure_unit.adb:6:04: warning: launch "gnatprove --explain=E0012" for more information
 density_altitude-pressure_unit.ads:9:20: info: initialization of "Value" proved
 density_altitude-pressure_unit.ads:10:11: info: data dependencies proved
 density_altitude-pressure_unit.ads:11:11: info: flow dependencies proved
+density_altitude-temperature_unit.adb:6:04: info: address in address clause is compatible with object alignment (CVC5: 1 VC)
 density_altitude-temperature_unit.adb:6:04: warning: address specification on "Temp_Sensor" is imprecisely supported: assuming no concurrent accesses to non-atomic object, correct volatile properties, and valid reads [E0012]
 density_altitude-temperature_unit.adb:6:04: warning: launch "gnatprove --explain=E0012" for more information
 density_altitude-temperature_unit.ads:9:20: info: initialization of "Value" proved
@@ -615,6 +618,7 @@ example.adb:24:04: info: initialization of "Modified" proved
 example.adb:28:23: info: only expected exception raised (CVC5: 1 VC)
 example.adb:29:04: info: analyzing call to "Bounded_Increment" in context
 example.adb:34:26: info: only expected exception raised (CVC5: 1 VC)
+external_test.adb:6:04: info: address in address clause is compatible with object alignment (CVC5: 1 VC)
 external_test.adb:6:04: warning: address specification on "Value" is imprecisely supported: assuming no concurrent accesses to non-atomic object, correct volatile properties, and no writes to a potential alias [E0012]
 external_test.adb:6:04: warning: launch "gnatprove --explain=E0012" for more information
 external_test.adb:6:04: warning: make sure that all overlapping objects have Async_Writers set to True
@@ -625,9 +629,9 @@ generic_examples.adb:7:13: info: implicit aspect Always_Terminates on "Count" ha
 generic_examples.adb:7:13: info: implicit function contract might not be available on calls from enclosing unit
 generic_examples.adb:8:64: info: data dependencies proved
 generic_examples.adb:12:33: info: cannot unroll loop (too many loop iterations)
-generic_examples.adb:14:30: medium: overflow check might fail, cannot prove upper bound for Result + 1 (e.g. when Result = Natural'Last) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: loop at line 12 should mention Result in a loop invariant]
-generic_examples.adb:35:30: medium: overflow check might fail, cannot prove upper bound for Result + 1, in instantiation at generic_examples.adb:41 (e.g. when Result = Natural'Last) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: loop at line 33 should mention Result in a loop invariant]
-generic_examples.adb:35:30: medium: overflow check might fail, cannot prove upper bound for Result + 1, in instantiation at generic_examples.adb:48 (e.g. when Result = Natural'Last) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: loop at line 33 should mention Result in a loop invariant]
+generic_examples.adb:14:30: medium: overflow check might fail, cannot prove upper bound for Result + 1 [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: loop at line 12 should mention Result in a loop invariant]
+generic_examples.adb:35:30: medium: overflow check might fail, cannot prove upper bound for Result + 1, in instantiation at generic_examples.adb:41 [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: loop at line 33 should mention Result in a loop invariant]
+generic_examples.adb:35:30: medium: overflow check might fail, cannot prove upper bound for Result + 1, in instantiation at generic_examples.adb:48 [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: loop at line 33 should mention Result in a loop invariant]
 generic_examples.adb:41:04: info: cannot unroll loop (too many loop iterations)
 generic_examples.adb:41:04: info: in instantiation at line 33
 generic_examples.adb:41:13: info: implicit aspect Always_Terminates on "Char_Count" has been proved, subprogram will terminate
@@ -637,7 +641,7 @@ generic_examples.adb:48:04: info: in instantiation at line 33
 generic_examples.adb:48:13: info: implicit aspect Always_Terminates on "Percent_Count" has been proved, subprogram will terminate
 generic_examples.adb:48:13: info: implicit function contract might not be available on calls from enclosing unit
 generic_examples.adb:61:21: info: initialization of "Result" proved, in instantiation at generic_examples.adb:79
-generic_examples.adb:72:30: medium: overflow check might fail, cannot prove upper bound for Result + 1, in instantiation at generic_examples.adb:79 (e.g. when Result = Natural'Last) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: loop at line 70 should mention Result in a loop invariant]
+generic_examples.adb:72:30: medium: overflow check might fail, cannot prove upper bound for Result + 1, in instantiation at generic_examples.adb:79 [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: loop at line 70 should mention Result in a loop invariant]
 generic_examples.adb:79:04: info: cannot unroll loop (too many loop iterations)
 generic_examples.adb:79:04: info: in instantiation at line 70
 generic_examples.adb:86:04: info: initialization of "The_Count" proved
@@ -751,11 +755,13 @@ initializer_demo.ads:12:28: info: range check proved (CVC5: 2 VC)
 initializer_demo.ads:14:13: info: implicit aspect Always_Terminates on "Add_Elements2" has been proved, subprogram will terminate
 initializer_demo.ads:22:13: info: implicit aspect Always_Terminates on "Adjust_Pair" has been proved, subprogram will terminate
 interval.ads:6:13: info: implicit aspect Always_Terminates on "Make" has been proved, subprogram will terminate
+interval.ads:6:13: medium: for the result of Make at interval.ads:6
 interval.ads:6:13: medium: invariant check might fail
 interval.ads:9:09: info: invariant check proved on default value (CVC5: 1 VC)
 interval.ads:17:13: info: implicit aspect Always_Terminates on "Has_Valid_Order" has been proved, subprogram will terminate
 interval_tree.ads:5:05: info: flow dependencies proved
 interval_tree_wrapper.ads:6:07: info: flow dependencies proved
+led_display.adb:8:04: info: address in address clause is compatible with object alignment (CVC5: 1 VC)
 led_display.adb:8:04: warning: address specification on "Value" is imprecisely supported: assuming no concurrent accesses to non-atomic object, correct volatile properties, and no writes to a potential alias [E0012]
 led_display.adb:8:04: warning: launch "gnatprove --explain=E0012" for more information
 led_display.adb:8:04: warning: make sure that all overlapping objects have Async_Writers set to True
@@ -772,7 +778,8 @@ list_handler.adb:26:29: info: overflow check proved (CVC5: 2 VC)
 list_handler.ads:5:07: info: flow dependencies proved
 list_handler.ads:9:10: info: data dependencies proved
 list_handler.ads:10:10: info: flow dependencies proved
-messages.ads:17:28: medium: range check might fail
+messages.ads:17:28: high: range check might fail, cannot prove upper bound for Buffer'Length (e.g. when Buffer = (others => 'SOH') and Buffer'First = 0 and Buffer'Last = size_t'Last)
+messages.ads:17:28: info: range check proved (CVC5: 1 VC)
 network-helpers.ads:5:23: info: initialization of "MSB" proved
 network-helpers.ads:6:23: info: initialization of "LSB" proved
 network-helpers.ads:8:08: info: data dependencies proved
@@ -786,6 +793,7 @@ no_overflow.adb:7:14: info: range check proved (CVC5: 2 VC)
 no_overflow.adb:7:19: info: overflow check proved (CVC5: 2 VC)
 no_overflow.adb:7:24: info: division check proved (CVC5: 1 VC)
 no_overflow.ads:5:19: info: initialization of "C" proved
+numeric_display.ads:7:04: info: address in address clause is compatible with object alignment (CVC5: 1 VC)
 numeric_display.ads:7:04: warning: address specification on "Value" is imprecisely supported: assuming no concurrent accesses to non-atomic object, correct volatile properties, and no writes to a potential alias [E0012]
 numeric_display.ads:7:04: warning: launch "gnatprove --explain=E0012" for more information
 numeric_display.ads:7:04: warning: make sure that all overlapping objects have Async_Writers set to True
@@ -845,7 +853,7 @@ palindrome.adb:36:07: info: length check proved (CVC5: 3 VC; Trivial: 1 VC)
 palindrome.adb:36:07: info: range check proved (CVC5: 4 VC)
 parent-private1.ads:6:13: info: implicit aspect Always_Terminates on "Convert" has been proved, subprogram will terminate
 parent-public1.adb:7:07: info: initialization of "Temp" proved
-parent.adb:6:22: high: overflow check might fail, cannot prove bounds for Value ** 2 (e.g. when Value = 2147483647) [reason for check: result of exponentiation must fit in a 32-bits machine integer] [possible fix: subprogram at parent.ads:3 should mention Value in a precondition]
+parent.adb:6:22: medium: overflow check might fail, cannot prove upper bound for Value ** 2 [reason for check: result of exponentiation must fit in a 32-bits machine integer] [possible fix: subprogram at parent.ads:3 should mention Value in a precondition]
 populate_tree.adb:7:05: info: data dependencies proved
 populate_tree.adb:8:05: info: flow dependencies proved
 populate_tree.adb:10:24: info: cannot unroll loop (too many loop iterations)
@@ -1071,11 +1079,11 @@ sorters.adb:74:29: info: range check proved (CVC5: 4 VC)
 sorters.adb:80:33: info: loop invariant initialization proved (CVC5: 1 VC)
 sorters.adb:80:33: info: loop invariant preservation proved (CVC5: 1 VC)
 sorters.adb:82:13: info: loop invariant initialization proved (CVC5: 1 VC)
-sorters.adb:83:18: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove Values (Current) <= Values (J)
+sorters.adb:82:13: info: loop invariant preservation proved (CVC5: 1 VC)
 sorters.adb:83:26: info: index check proved (CVC5: 4 VC)
 sorters.adb:83:46: info: index check proved (CVC5: 4 VC)
 sorters.adb:85:13: info: loop invariant initialization proved (CVC5: 1 VC)
-sorters.adb:86:16: medium: loop invariant might not be preserved by an arbitrary iteration, cannot prove Values (J) <= Values (J + 1)
+sorters.adb:85:13: info: loop invariant preservation proved (CVC5: 1 VC)
 sorters.adb:86:24: info: index check proved (CVC5: 4 VC)
 sorters.adb:86:40: info: index check proved (CVC5: 4 VC)
 sorters.adb:86:40: info: overflow check proved (CVC5: 4 VC)
@@ -1132,7 +1140,7 @@ strings.adb:20:21: info: index check proved (CVC5: 2 VC)
 strings.adb:33:07: info: initialization of "Equals_Found" proved
 strings.adb:34:07: info: initialization of "Equals_Position" proved
 strings.adb:39:34: info: range check proved (CVC5: 2 VC)
-strings.adb:44:23: medium: range check might fail (e.g. when Equals_Position = 3 and Text'First = 1 and Text'Last = 1) [reason for check: slice bounds must fit in the underlying array] [possible fix: call at line 37 should mention Position (for argument Equals_Position) in a postcondition]
+strings.adb:44:23: medium: range check might fail [reason for check: slice bounds must fit in the underlying array] [possible fix: call at line 37 should mention Position (for argument Equals_Position) in a postcondition]
 strings.adb:45:32: info: references to the "Value" attribute are handled in an imprecise way, so the precondition might be impossible to prove.
 strings.adb:45:32: medium: precondition might fail [possible fix: call at line 37 should mention Position (for argument Equals_Position) in a postcondition]
 strings.adb:45:40: medium: range check might fail [reason for check: slice bounds must fit in the underlying array] [possible fix: call at line 37 should mention Position (for argument Equals_Position) in a postcondition]
@@ -1599,7 +1607,7 @@ workspaces.adb:5:48: info: length check proved (CVC5: 3 VC; Trivial: 1 VC)
 workspaces.adb:7:26: info: division check proved (CVC5: 1 VC)
 workspaces.adb:7:30: info: cannot unroll loop (too many loop iterations)
 workspaces.adb:8:21: info: index check proved (CVC5: 2 VC)
-workspaces.adb:9:27: medium: overflow check might fail, cannot prove upper bound for (Size + 1) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: add precondition (Size <= Integer'Last - 1) to subprogram at workspaces.ads:4]
+workspaces.adb:9:27: high: overflow check might fail, cannot prove upper bound for (Size + 1) (e.g. when Size = Positive'Last) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: add precondition (Size <= Integer'Last - 1) to subprogram at workspaces.ads:4]
 workspaces.adb:9:32: info: index check proved (CVC5: 2 VC)
 workspaces.ads:4:13: info: implicit aspect Always_Terminates on "Generate_Workspace" has been proved, subprogram will terminate
 test.gpr: warning: there are no sources of language "Ada" in this project
