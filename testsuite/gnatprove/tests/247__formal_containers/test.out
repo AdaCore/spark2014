@@ -14,19 +14,19 @@ main.adb:25:22: info: precondition proved (CVC5: 1 VC)
 main.adb:25:34: info: precondition proved (CVC5: 1 VC)
 main.adb:25:43: info: precondition proved (CVC5: 1 VC)
 main.adb:28:50: info: data dependencies proved
-main.adb:31:26: info: keys shall be distinct and all elements shall fit in "Count_Type" for maps aggregates at spark-containers-formal-hashed_maps.ads:96, in instantiation at main.adb:29
+main.adb:31:26: info: keys shall be distinct and all elements shall fit in "Count_Type" for maps aggregates at spark-containers-formal-hashed_maps.ads:87, in instantiation at main.adb:29
 main.adb:31:26: info: precondition proved (CVC5: 4 VC)
 main.adb:33:22: info: assertion proved (CVC5: 1 VC)
 main.adb:34:22: info: assertion proved (CVC5: 3 VC)
 main.adb:35:22: info: assertion proved (CVC5: 1 VC; Trivial: 1 VC)
 main.adb:35:46: info: precondition proved (CVC5: 1 VC)
 main.adb:38:50: info: data dependencies proved
-main.adb:41:26: info: elements shall be distinct and shall fit in "Count_Type" for set aggregates at spark-containers-formal-hashed_sets.ads:97, in instantiation at main.adb:39
+main.adb:41:26: info: elements shall be distinct and shall fit in "Count_Type" for set aggregates at spark-containers-formal-hashed_sets.ads:87, in instantiation at main.adb:39
 main.adb:41:26: info: precondition proved (CVC5: 4 VC)
 main.adb:43:22: info: assertion proved (CVC5: 1 VC)
 main.adb:44:22: info: assertion proved (CVC5: 3 VC)
 main.adb:47:37: info: data dependencies proved
-main.adb:50:26: info: keys shall be distinct and all elements shall fit in "Count_Type" for maps aggregates at spark-containers-formal-ordered_maps.ads:95, in instantiation at main.adb:48
+main.adb:50:26: info: keys shall be distinct and all elements shall fit in "Count_Type" for maps aggregates at spark-containers-formal-ordered_maps.ads:84, in instantiation at main.adb:48
 main.adb:50:26: info: precondition proved (CVC5: 4 VC)
 main.adb:52:22: info: assertion proved (CVC5: 1 VC)
 main.adb:53:22: info: assertion proved (CVC5: 1 VC)
@@ -48,7 +48,7 @@ main.adb:58:22: info: precondition proved (CVC5: 1 VC)
 main.adb:58:34: info: precondition proved (CVC5: 1 VC)
 main.adb:58:43: info: precondition proved (CVC5: 1 VC)
 main.adb:61:37: info: data dependencies proved
-main.adb:64:26: info: elements shall be distinct and shall fit in "Count_Type" for set aggregates at spark-containers-formal-ordered_sets.ads:94, in instantiation at main.adb:62
+main.adb:64:26: info: elements shall be distinct and shall fit in "Count_Type" for set aggregates at spark-containers-formal-ordered_sets.ads:83, in instantiation at main.adb:62
 main.adb:64:26: info: precondition proved (CVC5: 4 VC)
 main.adb:66:22: info: assertion proved (CVC5: 1 VC)
 main.adb:67:22: info: assertion proved (CVC5: 1 VC)
