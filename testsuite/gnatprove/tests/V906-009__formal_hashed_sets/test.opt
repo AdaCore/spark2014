@@ -1,3 +1,1 @@
 ALL XFAIL crash following frontend patch (eng/toolchain/gnat#939)
-NT SKIP minor proof diff
-
