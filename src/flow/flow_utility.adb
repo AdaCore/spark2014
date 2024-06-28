@@ -42,6 +42,7 @@ with Common_Iterators;                use Common_Iterators;
 with Gnat2Why_Args;
 with Gnat2Why.Util;
 with SPARK_Definition;                use SPARK_Definition;
+with SPARK_Definition.Annotate;       use SPARK_Definition.Annotate;
 with SPARK_Frame_Conditions;          use SPARK_Frame_Conditions;
 with SPARK_Util.Subprograms;          use SPARK_Util.Subprograms;
 with SPARK_Util.Types;                use SPARK_Util.Types;
@@ -464,6 +465,73 @@ package body Flow_Utility is
             when N_Attribute_Reference =>
                if Attribute_Name (N) = Name_Access then
                   Process_Access_Attribute (N, Proof_Dependencies);
+               end if;
+
+            --  Pull implicit calls and proof dependencies from container
+            --  aggregates.
+
+            when N_Aggregate =>
+               --  Ignore aggregates that are not really subexpressions, e.g.
+               --  those occurring inside 'Update attribute reference.
+
+               if Present (Etype (N))
+                 and then Sem_Util.Is_Container_Aggregate (N)
+               then
+                  declare
+                     Annot : constant Aggregate_Annotation :=
+                       Get_Aggregate_Annotation (Etype (N));
+
+                     procedure Add_Proof_Dependency (E : Entity_Id)
+                       with Pre => (if Present (E)
+                                    then Ekind (E) = E_Function);
+                     --  Add proof dependency on E, if it is specified for
+                     --  the container type.
+
+                     --------------------------
+                     -- Add_Proof_Dependency --
+                     --------------------------
+
+                     procedure Add_Proof_Dependency (E : Entity_Id) is
+                     begin
+                        if Present (E) then
+                           Proof_Dependencies.Include (E);
+                        end if;
+                     end Add_Proof_Dependency;
+
+                  begin
+                     if Present (Annot.Empty_Function) then
+                        Function_Calls.Include
+                          (Subprogram_Call'(N => N,
+                                            E => Annot.Empty_Function));
+                     end if;
+
+                     if Present (Annot.Add_Procedure) then
+                        Function_Calls.Include
+                          (Subprogram_Call'(N => N,
+                                            E => Annot.Add_Procedure));
+                     end if;
+
+                     Add_Proof_Dependency (Annot.Capacity);
+
+                     case Annot.Kind is
+                        when Sets =>
+                           Add_Proof_Dependency (Annot.Contains);
+                           Add_Proof_Dependency (Annot.Equivalent_Elements);
+                           Add_Proof_Dependency (Annot.Sets_Length);
+                        when Maps =>
+                           Add_Proof_Dependency (Annot.Has_Key);
+                           Add_Proof_Dependency (Annot.Default_Item);
+                           Add_Proof_Dependency (Annot.Equivalent_Keys);
+                           Add_Proof_Dependency (Annot.Maps_Length);
+                           Add_Proof_Dependency (Annot.Maps_Length);
+                        when Seqs =>
+                           Add_Proof_Dependency (Annot.Seqs_Get);
+                           Add_Proof_Dependency (Annot.First);
+                           Add_Proof_Dependency (Annot.Last);
+                        when Model =>
+                           Add_Proof_Dependency (Annot.Model);
+                     end case;
+                  end;
                end if;
 
             when others =>

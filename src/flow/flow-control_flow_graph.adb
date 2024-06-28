@@ -6856,8 +6856,10 @@ package body Flow.Control_Flow_Graph is
          end if;
 
          case Nkind (N) is
-            when N_Aggregate
-               | N_Delta_Aggregate
+            when N_Aggregate =>
+               return not Is_Container_Aggregate (N);
+
+            when N_Delta_Aggregate
                | N_Identifier
                | N_Expanded_Name
             =>

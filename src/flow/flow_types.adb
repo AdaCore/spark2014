@@ -246,9 +246,10 @@ package body Flow_Types is
       --  A single occurrence of an iterator_specification corresponds to
       --  implicit calls of several subprograms, so we hash both the call node
       --  and the subprogram entity (even though we could hash just the call
-      --  node and have collisions for the subprograms).
+      --  node and have collisions for the subprograms). Same for container
+      --  aggregates.
 
-      if Nkind (SC.N) = N_Iterator_Specification then
+      if Nkind (SC.N) in N_Aggregate | N_Iterator_Specification then
          return Node_Hash (SC.N) + Node_Hash (SC.E);
 
       --  For subprogram and entry calls it is enough to hash the call node,
