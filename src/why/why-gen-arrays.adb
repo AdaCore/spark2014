@@ -515,7 +515,8 @@ package body Why.Gen.Arrays is
         +Build_Predicate_For_Comp
         (C_Expr1 => +New_Array_Access (Empty, +Expr1, Indexes, EW_Term),
          C_Expr2 => +New_Array_Access (Empty, +Expr2, Indexes, EW_Term),
-         C_Ty    => Component_Type (Ty_Ext));
+         C_Ty    => Component_Type (Ty_Ext),
+         Idx     => Indexes);
 
       if T_Comp /= +True_Pred then
          T_Comp := New_Conditional
@@ -625,8 +626,11 @@ package body Why.Gen.Arrays is
      (Expr : W_Term_Id; Ty : Entity_Id) return W_Pred_Id
    is
       function Build_Predicate_For_Comp
-        (C_Expr1, Dummy_Expr2 : W_Term_Id; C_Ty : Entity_Id) return W_Pred_Id
-      is (Build_Predicate_For_Comp (C_Expr1, C_Ty));
+        (C_Expr1, Dummy_Expr2 : W_Term_Id;
+         C_Ty                 : Entity_Id;
+         Idx                  : W_Expr_Array)
+         return W_Pred_Id
+      is (Build_Predicate_For_Comp (C_Expr1, C_Ty, Idx));
 
       function Build_Predicate is new Build_Binary_Predicate_For_Array
         (Build_Predicate_For_Comp);
@@ -893,6 +897,191 @@ package body Why.Gen.Arrays is
 
       M_Arrays_Conversion (C).Insert (To_Name, Convert_Id);
    end Create_Array_Conversion_Theory_If_Needed;
+
+   ---------------------------------------
+   -- Create_Move_Tree_Theory_For_Array --
+   ---------------------------------------
+
+   procedure Create_Move_Tree_Theory_For_Array
+     (Th : Theory_UC;
+      E  : Entity_Id)
+   is
+      Ty_Name     : constant W_Name_Id := To_Name (WNE_Move_Tree);
+      Tree_Ident  : constant W_Identifier_Id :=
+        New_Identifier
+          (Name => "tree",
+           Typ  => New_Named_Type (Name => Ty_Name));
+      Tree_Binder : constant Binder_Type :=
+        (B_Name => Tree_Ident, others => <>);
+      Comp_Tree   : constant W_Type_Id := Get_Move_Tree_Type
+        (Component_Type (E));
+
+   begin
+      Emit (Th, New_Type_Decl (To_String (WNE_Move_Tree)));
+
+      Emit_Ref_Type_Definition (Th   => Th,
+                                Name => Ty_Name);
+
+      --  Emit definitions for get and set as for infinite maps. Set is only
+      --  defined in programs, it is defined using a postcondition. Generate:
+      --
+      --   function get (tree : move_tree) (i_1 : index_1) ... : comp_move_tree
+      --   val set (tree : move_tree) ... (comp : comp_move_tree) : move_tree
+      --      ensures
+      --       { get result i_1 ... = comp /\
+      --         (forall j_1 : index_1, .... (j_1 <> i_1 \/ ...) ->
+      --             get result i_1 ... = get tree i_1 ...) }
+
+      declare
+         Comp_Binder : constant Binder_Type :=
+           (B_Name => New_Identifier
+              (Name => "comp",
+               Typ  => Comp_Tree),
+            others => <>);
+         Nb_Dim      : constant Positive := Positive (Number_Dimensions (E));
+         I_Binders   : Binder_Array (1 .. Nb_Dim);
+
+      begin
+         for I in I_Binders'Range loop
+            I_Binders (I) :=
+              (B_Name => New_Identifier
+                 (Name => Append_Num ("i", I),
+                  Typ  => Nth_Index_Rep_Type_No_Bool (E, I)),
+               others => <>);
+         end loop;
+
+         Emit
+           (Th,
+            New_Function_Decl
+              (Domain      => EW_Pterm,
+               Name        => To_Local (E_Symb (E, WNE_Move_Tree_Array_Get)),
+               Binders     => Binder_Array'
+                 (Tree_Binder & I_Binders),
+               Location    => No_Location,
+               Labels      => Symbol_Sets.Empty_Set,
+               Return_Type => Comp_Tree));
+
+         declare
+            J_Binders : Binder_Array (1 .. Nb_Dim);
+            Distinct  : W_Pred_Array (1 .. Nb_Dim);
+            Result_Id : constant W_Identifier_Id :=
+              New_Result_Ident (Get_Typ (Tree_Ident));
+            R_Binder  : constant Binder_Type :=
+              (B_Name => Result_Id, others => <>);
+
+         begin
+            for I in J_Binders'Range loop
+               J_Binders (I) :=
+                 (B_Name => New_Identifier
+                    (Name => Append_Num ("j", I),
+                     Typ  => Nth_Index_Rep_Type_No_Bool (E, I)),
+                  others => <>);
+               Distinct (I) := New_Comparison
+                 (Symbol => Why_Neq,
+                  Left   => +J_Binders (I).B_Name,
+                  Right  => +I_Binders (I).B_Name);
+            end loop;
+
+            Emit
+              (Th,
+               New_Function_Decl
+                 (Domain      => EW_Prog,
+                  Name        => To_Local
+                    (E_Symb (E, WNE_Move_Tree_Array_Set)),
+                  Binders     => Binder_Array'
+                    (Tree_Binder & I_Binders & Comp_Binder),
+                  Location    => No_Location,
+                  Labels      => Symbol_Sets.Empty_Set,
+                  Post        => New_And_Pred
+                    (Left  => New_Comparison
+                         (Symbol => Why_Eq,
+                          Left   => New_Call
+                            (Name    => To_Local
+                               (E_Symb (E, WNE_Move_Tree_Array_Get)),
+                             Binders => R_Binder & I_Binders),
+                          Right  => +Comp_Binder.B_Name),
+                     Right => New_Universal_Quantif
+                       (Binders => J_Binders,
+                        Pred    => New_Conditional
+                          (Condition => New_Or_Pred (Distinct),
+                           Then_Part => New_Comparison
+                             (Symbol => Why_Eq,
+                              Left   => New_Call
+                                (Name    => To_Local
+                                     (E_Symb (E, WNE_Move_Tree_Array_Get)),
+                                 Binders => R_Binder & J_Binders),
+                              Right  => New_Call
+                                (Name    => To_Local
+                                     (E_Symb (E, WNE_Move_Tree_Array_Get)),
+                                 Binders => Tree_Binder & J_Binders))))),
+                  Return_Type => Get_Typ (Tree_Ident)));
+         end;
+      end;
+
+      --  Create __is_moved_or_reclaimed predicate. Generate:
+      --
+      --    predicate __is_moved_or_reclaimed (tree : move_tree) (obj : ty) =
+      --      (forall i_1 : index_1, ....
+      --          obj.first <= i_1 <= obj.last /\ ... ->
+      --          __is_moved_or_reclaimed (get tree i_1 ...) (get obj i_1 ...))
+
+      declare
+         Typ        : constant W_Type_Id :=
+           (if Has_Init_Wrapper (E)
+            then EW_Init_Wrapper (Type_Of_Node (E))
+            else Type_Of_Node (E));
+         Obj_Ident  : constant W_Identifier_Id :=
+           New_Identifier (Name => "obj", Typ  => Typ);
+
+         function Is_Moved_For_Comp
+           (C_Expr : W_Term_Id;
+            C_Ty   : Entity_Id;
+            Idx    : W_Expr_Array)
+            return W_Pred_Id;
+
+         ----------------------
+         -- Is_Moved_For_Comp --
+         ----------------------
+
+         function Is_Moved_For_Comp
+           (C_Expr : W_Term_Id;
+            C_Ty   : Entity_Id;
+            Idx    : W_Expr_Array)
+            return W_Pred_Id
+         is
+         begin
+            return New_Call
+              (Name => E_Symb (C_Ty, WNE_Is_Moved_Or_Reclaimed),
+               Args =>
+                 (1 => New_Call
+                      (Name   => To_Local
+                           (E_Symb (E, WNE_Move_Tree_Array_Get)),
+                       Args   => +Tree_Ident & Idx,
+                       Domain => EW_Term),
+                  2 => +C_Expr));
+         end Is_Moved_For_Comp;
+
+         function Is_Moved_For_Array is new Build_Predicate_For_Array
+           (Is_Moved_For_Comp);
+
+         Def : constant W_Pred_Id := Is_Moved_For_Array (+Obj_Ident, E);
+
+      begin
+         Emit
+           (Th,
+            New_Function_Decl
+              (Domain   => EW_Pred,
+               Name     => To_Local (E_Symb (E, WNE_Is_Moved_Or_Reclaimed)),
+               Binders  => Binder_Array'
+                 (1 => (B_Name => Tree_Ident,
+                        others => <>),
+                  2 => (B_Name => Obj_Ident,
+                        others => <>)),
+               Location => No_Location,
+               Labels   => Symbol_Sets.Empty_Set,
+               Def      => +Def));
+      end;
+   end Create_Move_Tree_Theory_For_Array;
 
    -----------------------------
    -- Create_Rep_Array_Theory --
@@ -2974,6 +3163,73 @@ package body Why.Gen.Arrays is
    begin
       return Boolean_Expr_Of_Pred (P, Domain);
    end New_Logic_Eq_Call;
+
+   --------------------------------
+   -- New_Move_Tree_Array_Access --
+   --------------------------------
+
+   function New_Move_Tree_Array_Access
+     (Name   : W_Expr_Id;
+      Index  : W_Expr_Array;
+      Ty     : Entity_Id;
+      Domain : EW_Domain)
+      return W_Expr_Id
+   is
+   begin
+      return New_Call
+        (Name   => E_Symb (Ty, WNE_Move_Tree_Array_Get),
+         Domain => Domain,
+         Args   => Name & Index);
+   end New_Move_Tree_Array_Access;
+
+   --------------------------------
+   -- New_Move_Tree_Array_Update --
+   --------------------------------
+
+   function New_Move_Tree_Array_Update
+     (Name  : W_Prog_Id;
+      Index : W_Expr_Array;
+      Value : W_Prog_Id;
+      Ty    : Entity_Id)
+      return W_Prog_Id
+   is
+   begin
+      return New_Call
+        (Name => E_Symb (Ty, WNE_Move_Tree_Array_Set),
+         Args => +Name & Index & W_Expr_Id'(+Value));
+   end New_Move_Tree_Array_Update;
+
+   -------------------------------------
+   --  New_Move_Tree_Element_Equality --
+   -------------------------------------
+
+   function New_Move_Tree_Element_Equality
+     (Left_Arr  : W_Expr_Id;
+      Right_Arr : W_Expr_Id;
+      Index     : W_Expr_Array;
+      Ty        : Entity_Id) return W_Pred_Id
+   is
+      Left   : constant W_Expr_Id :=
+        New_Move_Tree_Array_Access
+          (Name   => Left_Arr,
+           Index  => Index,
+           Ty     => Ty,
+           Domain => EW_Term);
+      Right  : constant W_Expr_Id :=
+        New_Move_Tree_Array_Access
+          (Name   => Right_Arr,
+           Index  => Index,
+           Ty     => Ty,
+           Domain => EW_Term);
+      Result : constant W_Pred_Id :=
+        +New_Comparison
+          (Domain => EW_Pred,
+           Symbol => Why_Eq,
+           Left   => Left,
+           Right  => Right);
+   begin
+      return Result;
+   end New_Move_Tree_Element_Equality;
 
    ------------------------
    -- New_Singleton_Call --

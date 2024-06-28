@@ -1426,6 +1426,7 @@ package body Why.Inter is
       Rec          : Entity_Id := Empty;
       Init_Decl    : Boolean := False;
       Hide_Info    : Boolean := False;
+      Move_Trees   : Boolean := False;
       Typ          : W_Type_Id := Why_Empty;
       Relaxed_Init : Boolean := False) return W_Identifier_Id
    is
@@ -1444,7 +1445,9 @@ package body Why.Inter is
          declare
             Ada_N  : constant Entity_Id := Retysp (Rec);
             Kind   : constant Module_Kind :=
-              (if Relaxed_Init then Init_Wrapper else Regular);
+              (if Relaxed_Init then Init_Wrapper
+               elsif Move_Trees then Move_Tree
+               else Regular);
             Module : constant W_Module_Id := E_Module (Ada_N, Kind);
             Orig   : constant Entity_Id :=
               (if Ekind (E) in E_Component | E_Discriminant | Type_Kind

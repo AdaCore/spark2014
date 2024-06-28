@@ -299,6 +299,13 @@ package body Gnat2Why.Subprograms is
    --  Emit compatibility axioms between the dispatching version of E and each
    --  visible overriding / inherited versions of E.
 
+   procedure Generate_Ref_For_Concurrent_Self
+     (Th       : Theory_UC;
+      Prot_Ty  : Entity_Id;
+      Location : Source_Ptr)
+   with Pre => Is_Protected_Type (Prot_Ty);
+   --  Generate the self reference for Prot_Ty in Th
+
    function Get_Location_For_Aspect
      (E         : Entity_Id;
       Kind      : Pragma_Id;
@@ -1021,7 +1028,11 @@ package body Gnat2Why.Subprograms is
 
       if Binders'Length = 0 then
          return (1 =>
-                   (Regular, Local => True, Init => <>, Main => Unit_Param));
+                   (Regular,
+                    Local    => True,
+                    Init     => <>,
+                    Is_Moved => <>,
+                    Main     => Unit_Param));
       else
          return Binders;
       end if;
@@ -1592,18 +1603,17 @@ package body Gnat2Why.Subprograms is
            Compute_Outputs_With_Allocated_Parts (E);
       begin
          for Obj of Outputs loop
-            declare
-               Typ : constant Entity_Id := Retysp (Etype (Obj));
-            begin
-               Append
-                 (Assume,
-                  New_Assume_Statement
-                    (Pred => Compute_Is_Moved_Property
-                       (+Transform_Identifier (Params => Params,
-                                               Expr   => Obj,
-                                               Ent    => Obj,
-                                               Domain => EW_Term), Typ)));
-            end;
+            Append
+              (Assume,
+               New_Assume_Statement
+                 (Pred => Compute_Is_Moved_Or_Reclaimed
+                      (Expr => +Transform_Identifier
+                           (Params => Params,
+                            Expr   => Obj,
+                            Ent    => Obj,
+                            Domain => EW_Term),
+                       Tree => +New_Move_Tree_Access_For_Identitier (Obj),
+                       Ty   => Expected_Type_For_Move_Tree (Obj))));
          end loop;
       end;
 
@@ -1794,8 +1804,11 @@ package body Gnat2Why.Subprograms is
             Prot : constant Entity_Id := Containing_Protected_Type (E);
          begin
             Result (1) :=
-              (Concurrent_Self, Local => True, Init => <>,
-               Main => Concurrent_Self_Binder
+              (Concurrent_Self,
+               Local    => True,
+               Init     => <>,
+               Is_Moved => <>,
+               Main     => Concurrent_Self_Binder
                  (Prot, Mutable => Ekind (E) /= E_Function));
             Count := 2;
          end;
@@ -1811,9 +1824,11 @@ package body Gnat2Why.Subprograms is
 
          if Specialized_Call_Params.Contains (Formal) then
             Result (Count) :=
-              (Regular, Local => True,
-               Init           => <>,
-               Main           => Unit_Param (Short_Name (Formal), Formal));
+              (Regular,
+               Local    => True,
+               Init     => <>,
+               Is_Moved => <>,
+               Main     => Unit_Param (Short_Name (Formal), Formal));
          else
             Result (Count) := Mk_Item_Of_Entity
               (E           => Formal,
@@ -3346,6 +3361,38 @@ package body Gnat2Why.Subprograms is
       end if;
    end Declare_Logic_Functions;
 
+   --------------------------------------
+   -- Generate_Ref_For_Concurrent_Self --
+   --------------------------------------
+
+   procedure Generate_Ref_For_Concurrent_Self
+     (Th       : Theory_UC;
+      Prot_Ty  : Entity_Id;
+      Location : Source_Ptr)
+   is
+   begin
+      Emit
+        (Th,
+         New_Global_Ref_Declaration
+           (Ada_Node => Prot_Ty,
+            Name     => Self_Name,
+            Labels   => Symbol_Sets.Empty_Set,
+            Location => Location,
+            Ref_Type => Type_Of_Node (Prot_Ty)));
+
+      --  Generate a variable for the move tree
+
+      if Contains_Allocated_Parts (Prot_Ty) then
+         Emit
+           (Th,
+            New_Global_Ref_Declaration
+              (Name     => Concurrent_Self_Move_Tree_Id (Prot_Ty),
+               Location => Location,
+               Labels   => Symbol_Sets.Empty_Set,
+               Ref_Type => Get_Move_Tree_Type (Prot_Ty)));
+      end if;
+   end Generate_Ref_For_Concurrent_Self;
+
    --------------------------
    -- Generate_VCs_For_LSP --
    --------------------------
@@ -3813,15 +3860,8 @@ package body Gnat2Why.Subprograms is
 
          --  Declare global variable to hold the state of a protected object
 
-         Emit
-           (Th,
-            New_Global_Ref_Declaration
-              (Ada_Node => Containing_Protected_Type (E),
-               Name     => Self_Name,
-               Labels   => Symbol_Sets.Empty_Set,
-               Location => Safe_First_Sloc (E),
-               Ref_Type =>
-                 Type_Of_Node (Containing_Protected_Type (E))));
+         Generate_Ref_For_Concurrent_Self
+           (Th, Containing_Protected_Type (E), Safe_First_Sloc (E));
       end if;
 
       --  Translate initial condition of E
@@ -5441,15 +5481,8 @@ package body Gnat2Why.Subprograms is
       if Within_Protected_Type (E)
         and then Ekind (E) /= E_Subprogram_Type
       then
-         Emit
-           (Th,
-            New_Global_Ref_Declaration
-              (Ada_Node => Containing_Protected_Type (E),
-               Name     => Self_Name,
-               Labels   => Symbol_Sets.Empty_Set,
-               Location => Safe_First_Sloc (E),
-               Ref_Type =>
-                 Type_Of_Node (Containing_Protected_Type (E))));
+         Generate_Ref_For_Concurrent_Self
+           (Th, Containing_Protected_Type (E), Safe_First_Sloc (E));
       end if;
 
       --  Declare a global variable to hold the result of a function. This is
@@ -6717,9 +6750,10 @@ package body Gnat2Why.Subprograms is
                            if Get_Ada_Node (+Typ) = Descendant then
                               Desc_Params (I) :=
                                 (Regular,
-                                 Local => True,
-                                 Init  => <>,
-                                 Main  =>
+                                 Local    => True,
+                                 Init     => <>,
+                                 Is_Moved => <>,
+                                 Main     =>
                                    (B_Name   =>
                                         New_Temp_Identifier
                                       (Base_Name => Short_Name (Ada_Node),

@@ -305,30 +305,39 @@ procedure Example_Recursive with SPARK_Mode is
       pragma Assert (Valid_Memory (+L1.M));
       pragma Assert (L_Cell (Get (+L1.M, Address (L2.F))).N = F1_Next);
 
-      --  The list segments starting at F1_Next and F2_Next are preserved
+      --  Prove that the list segment starting at F2_Next covers the whole memory L1.M but L1.F
 
-      if L2.L > 1 then
-         Prove_Valid_Preserved (Address (L2.F), Address (F2_Next), L2.L - 1, M_Old, +L1.M);
-         Prove_Reach_Preserved (Address (L2.F), Address (F2_Next), L2.L - 1, M_Old, +L1.M);
-      end if;
-      if L1.L > 1 then
-         Prove_Valid_Preserved (Address (L1.F), Address (F1_Next), L1.L - 1, M_Old, +L1.M);
-         Prove_Reach_Preserved (Address (L1.F), Address (F1_Next), L1.L - 1, M_Old, +L1.M);
-      end if;
+      begin
+         --  The list segments starting at F1_Next and F2_Next are preserved
 
-      --  They are concatenated to each other
+         if L2.L > 1 then
+            Prove_Valid_Preserved (Address (L2.F), Address (F2_Next), L2.L - 1, M_Old, +L1.M);
+            Prove_Reach_Preserved (Address (L2.F), Address (F2_Next), L2.L - 1, M_Old, +L1.M);
+         end if;
+         if L1.L > 1 then
+            Prove_Valid_Preserved (Address (L1.F), Address (F1_Next), L1.L - 1, M_Old, +L1.M);
+            Prove_Reach_Preserved (Address (L1.F), Address (F1_Next), L1.L - 1, M_Old, +L1.M);
+         end if;
 
-      if L2.L > 1 then
-         Prove_Valid_Concat (Address (L2.F), Address (F2_Next), L2.L - 1, Address (L1.F), Address (F1_Next), L1.L - 1, +L1.M);
-         Prove_Reach_Concat (Address (L2.F), Address (F2_Next), L2.L - 1, Address (L1.F), Address (F1_Next), L1.L - 1, +L1.M);
-      end if;
+         --  They are concatenated to each other
 
-      --  The list segment starting at F2_Next covers the whole memory L1.M but L1.F
+         if L2.L > 1 then
+            Prove_Valid_Concat (Address (L2.F), Address (F2_Next), L2.L - 1, Address (L1.F), Address (F1_Next), L1.L - 1, +L1.M);
+            Prove_Reach_Concat (Address (L2.F), Address (F2_Next), L2.L - 1, Address (L1.F), Address (F1_Next), L1.L - 1, +L1.M);
 
-      pragma Assert
-        (for all A in +L1.M =>
-           Reachable (Address (L1.F), Address (F2_Next), L1.L + L2.L - 1, A, +L1.M)
-         or A = Address (L1.F));
+            pragma Assert
+              (for all A in +L1.M =>
+                 Reachable (Address (L1.F), Address (F2_Next), L1.L + L2.L - 1, A, +L1.M)
+               or A = Address (L1.F));
+         end if;
+
+         pragma Assert_And_Cut
+           (Valid_List (Address (L1.F), Address (F2_Next), L1.L + L2.L - 1, +L1.M)
+            and
+              (for all A in +L1.M =>
+                   Reachable (Address (L1.F), Address (F2_Next), L1.L + L2.L - 1, A, +L1.M)
+               or A = Address (L1.F)));
+      end;
 
       M_Old := +L1.M;
 
