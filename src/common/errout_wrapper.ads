@@ -87,6 +87,16 @@ package Errout_Wrapper is
    --  Instead, the various arguments to Create are provided here along
    --  with the string.
 
+   procedure Error_Msg
+     (Msg           : Message;
+      Span          : Source_Span;
+      Kind          : Msg_Severity := Error_Kind;
+      Continuations : Message_Lists.List := Message_Lists.Empty);
+   --  Same as Error_Msg_N but accepts a Source_Span as location
+
+   function Escape (S : String) return String;
+   --  Escape the special characters # and & in the error message
+
    function Compilation_Errors return Boolean
      renames Errout.Compilation_Errors;
 

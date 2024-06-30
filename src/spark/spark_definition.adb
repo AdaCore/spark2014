@@ -905,7 +905,7 @@ package body SPARK_Definition is
                        (Msg_Prefix
                         & " occurring inside the initialization expression of"
                         & " an object at a position other than the top or as"
-                        & " the root of a subcomponent 'Access reference",
+                        & " the root of a subcomponent Access reference",
                         Proph);
                      return;
                   end;
@@ -3300,11 +3300,11 @@ package body SPARK_Definition is
          --  Unsupported GNAT extensions
 
          when N_Goto_When_Statement =>
-            Mark_Violation ("'G'N'A'T extension for conditional goto", N);
+            Mark_Violation ("GNAT extension for conditional goto", N);
          when N_Raise_When_Statement =>
-            Mark_Violation ("'G'N'A'T extension for conditional raise", N);
+            Mark_Violation ("GNAT extension for conditional raise", N);
          when N_Return_When_Statement =>
-            Mark_Violation ("'G'N'A'T extension for conditional return", N);
+            Mark_Violation ("GNAT extension for conditional return", N);
 
          --  The following kinds can be safely ignored by marking
 
@@ -3502,7 +3502,7 @@ package body SPARK_Definition is
                    Is_Function_With_Side_Effects (Get_Called_Entity (Expr))
                then
                   Mark_Violation
-                    ("use of ""'@"" inside a call to a function"
+                    ("use of ""@"" inside a call to a function"
                      & " with side effects",
                      N);
                end if;
@@ -5124,11 +5124,11 @@ package body SPARK_Definition is
                Mode : constant String :=
                  (case Ekind (Formal) is
                      when E_In_Parameter     =>
-                       "`IN` parameter of an access-to-variable type",
+                       """in"" parameter of an access-to-variable type",
                      when E_In_Out_Parameter =>
-                       "`IN OUT` parameter",
+                       """in out"" parameter",
                      when E_Out_Parameter    =>
-                       "`OUT` parameter",
+                       """out"" parameter",
                      when others             =>
                         raise Program_Error);
             begin
@@ -5682,7 +5682,7 @@ package body SPARK_Definition is
          if Is_Pragma_Annotate_GNATprove (Context_N) then
             if Emit_Messages then
                Error_Msg_N
-                 ("pragma Annotate ('G'N'A'Tprove, ...) cannot occur"
+                 ("pragma Annotate (GNATprove, ...) cannot occur"
                   & " within context clauses", Context_N);
             end if;
          else
@@ -6566,11 +6566,11 @@ package body SPARK_Definition is
                if not Is_Function_With_Side_Effects (Id) then
                   case Ekind (Formal) is
                      when E_Out_Parameter =>
-                        Mark_Violation ("function with OUT parameter", Id);
+                        Mark_Violation ("function with ""out"" parameter", Id);
 
                      when E_In_Out_Parameter =>
                         Mark_Violation
-                          ("function with `IN OUT` parameter", Id);
+                          ("function with ""in out"" parameter", Id);
 
                      when E_In_Parameter =>
                         null;
@@ -6751,12 +6751,12 @@ package body SPARK_Definition is
                         then
                            declare
                               Mode : constant String :=
-                                (if Ekind (Id) = E_Out_Parameter then "OUT"
-                                 else "IN OUT");
+                                (if Ekind (Id) = E_Out_Parameter then "out"
+                                 else "in out");
                            begin
                               Mark_Violation
-                                ("formal parameter of mode `" & Mode
-                                 & "` in consequence of Exceptional_Cases", N,
+                                ("formal parameter of mode """ & Mode
+                                 & """ in consequence of Exceptional_Cases", N,
                                  Cont_Msg =>
                                    "only parameters passed by reference "
                                    & "are allowed");
@@ -7402,7 +7402,7 @@ package body SPARK_Definition is
                        ("plain precondition on dispatching subprogram",
                         Pre,
                         SRM_Reference => "SPARK RM 6.1.1(2)",
-                        Cont_Msg => "use classwide precondition Pre''Class"
+                        Cont_Msg => "use classwide precondition Pre'Class"
                                     & " instead of Pre");
                   end if;
                end if;
@@ -9660,7 +9660,7 @@ package body SPARK_Definition is
                   E,
                   Cont_Msg =>
                     "consider annotating it with a pragma Annotate "
-                  & "('G'N'A'Tprove, Ownership"
+                  & "(GNATprove, Ownership"
                   & (if Contains_Allocated_Parts (E)
                      then ", ""Needs_Reclamation""" else "")
                   & ", ...)");
@@ -9675,7 +9675,7 @@ package body SPARK_Definition is
                   E,
                   Cont_Msg =>
                     "consider annotating it with a pragma Annotate "
-                  & "('G'N'A'Tprove, Predefined_Equality, "
+                  & "(GNATprove, Predefined_Equality, "
                   & (if Has_Access_Type (E)
                       or else (Has_Predefined_Eq_Annotation (Full_View (E))
                         and then Get_Predefined_Eq_Kind (Full_View (E)) =
@@ -11809,7 +11809,7 @@ package body SPARK_Definition is
          N              => Marked_Entity,
          Names          => [Limited_View, Limited_View],
          Cont_Msg       =>
-           Create ("consider restructuring code to avoid `LIMITED WITH`"),
+           Create ("consider restructuring code to avoid ""limited with"""),
          Root_Cause_Msg => "limited view coming from limited with");
    end Reject_Incomplete_Type_From_Limited_With;
 

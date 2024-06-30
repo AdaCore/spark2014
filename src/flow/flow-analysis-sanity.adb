@@ -43,7 +43,6 @@ with SPARK_Definition;               use SPARK_Definition;
 with SPARK_Util.Subprograms;         use SPARK_Util.Subprograms;
 with SPARK_Util.Types;               use SPARK_Util.Types;
 with SPARK_Util;                     use SPARK_Util;
-with String_Utils;                   use String_Utils;
 with VC_Kinds;                       use VC_Kinds;
 
 package body Flow.Analysis.Sanity is
@@ -779,13 +778,8 @@ package body Flow.Analysis.Sanity is
          -- Emit_Error --
          ----------------
 
-         procedure Emit_Error (F : Flow_Id)
-         is
-            Conts : String_Lists.List;
+         procedure Emit_Error (F : Flow_Id) is
          begin
-            Conts.Append
-              ("use instead a constant initialized to the "
-               & "expression with variable input");
             Error_Msg_Flow
               (FA            => FA,
                Msg           =>
@@ -794,7 +788,10 @@ package body Flow.Analysis.Sanity is
                N             => N,
                Severity      => Error_Kind,
                F1            => Entire_Variable (F),
-               Continuations => Conts);
+               Continuations =>
+                 [Create
+                      ("use instead a constant initialized to the "
+                       & "expression with variable input")]);
             Sane := False;
          end Emit_Error;
 
@@ -1707,7 +1704,7 @@ package body Flow.Analysis.Sanity is
                            Subprogram : constant Flow_Id :=
                              Direct_Mapping_Id (FA.Spec_Entity);
 
-                           Conts      : String_Lists.List;
+                           Conts      : Message_Lists.List;
 
                         begin
 
@@ -1731,13 +1728,15 @@ package body Flow.Analysis.Sanity is
 
                               begin
                                  Conts.Append
-                                    (Substitute_Message
-                                       ("as a result & must be "
-                                        & "listed in the " & Next_Aspect_To_Fix
-                                        & " of &",
-                                        N  => First_Var_Use,
-                                        F1 => Missing,
-                                        F2 => Subprogram));
+                                   (Create
+                                      (Substitute_Message
+                                         ("as a result & must be "
+                                          & "listed in the "
+                                          & Next_Aspect_To_Fix
+                                          & " of &",
+                                          N  => First_Var_Use,
+                                          F1 => Missing,
+                                          F2 => Subprogram)));
                               end;
                            end if;
 

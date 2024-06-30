@@ -28,7 +28,7 @@ pragma_placement.ads:20:04: error: pragma Annotate Skip_Proof must immediately f
 pragma_placement.ads:43:04: error: pragma Annotate No_Wrap_Around must immediately follow the full type declaration of T
 pragma_placement.ads:52:07: error: pragma Annotate Ownership must immediately follow the  private declaration of type A
 pragma_placement.ads:59:07: error: pragma Annotate Ownership must immediately follow the specification of subprogram Is_Reclaimed_B
-pragma_placement.ads:78:04: error: pragma Annotate At_End_Borrow must immediately follow the specification of subprogram "aeb"_1
+pragma_placement.ads:78:04: error: pragma Annotate At_End_Borrow must immediately follow the specification of subprogram AEB_1
 pragma_placement.ads:89:14: error: procedure annotated with the pragma Automatic_Instantiation shall not be declared after a procedure
 pragma_placement.ads:96:04: error: pragma Annotate Automatic_Instantiation must immediately follow the specification of subprogram F91_Low
 pragma_placement.ads:109:04: error: pragma Annotate Higher_Order_Specialization must immediately follow the specification of subprogram Specialized_1

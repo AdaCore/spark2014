@@ -1,7 +1,7 @@
 example.adb:6:44: error: launch "gnatprove --explain=E0007" for more information
 example.adb:6:44: error: launch "gnatprove --explain=E0007" for more information
 example.adb:6:44: error: subtype constraint cannot depend on variable input "X" [E0007]
-example.adb:6:44: error: subtype constraint cannot depend on variable input "X" [E0007], in call inlined at example.adb:14
+example.adb:6:44: error: subtype constraint cannot depend on variable input "X", in call inlined at example.adb:14 [E0007]
 example.adb:6:44: error: use instead a constant initialized to the expression with variable input
 example.adb:6:44: error: use instead a constant initialized to the expression with variable input
 example.adb:14:04: info: analyzing call to "Try_It" in context
