@@ -1151,7 +1151,7 @@ package body SPARK_Util.Subprograms is
 
    function Is_Possibly_Nonreturning_Procedure (E : Entity_Id) return Boolean
    is
-     (No_Return (E)
+     ((Is_Subprogram (E) and then No_Return (E))
       or else Get_Termination_Condition (E) not in
           (Kind => Unspecified) | (Static, True));
 
