@@ -588,6 +588,9 @@ package body SPARK_Definition.Annotate is
    --  Wrapper for Error_Msg_NE that conditionally emit message depending
    --  on phase.
 
+   function Find_Aggregate_Aspect (Typ : Type_Kind_Id) return Node_Id;
+   --  Find the Aggregate aspect associated to Typ
+
    function Get_Container_Function_From_Pragma (N  : Node_Id) return Entity_Id
    with Pre => Is_Pragma_Annotate_GNATprove (N);
    --  Return the function F such that N is a pragma Annotate
@@ -716,7 +719,7 @@ package body SPARK_Definition.Annotate is
          if Ekind (Ent) in Type_Kind then
             declare
                Asp                 : constant Node_Id :=
-                 Find_Value_Of_Aspect (Ent, Aspect_Aggregate);
+                 Find_Aggregate_Aspect (Ent);
 
                Empty_Subp          : Node_Id := Empty;
                Add_Named_Subp      : Node_Id := Empty;
@@ -5193,7 +5196,7 @@ package body SPARK_Definition.Annotate is
 
                declare
                   Source_Asp            : constant Node_Id :=
-                    Find_Value_Of_Aspect (Typ, Aspect_Aggregate);
+                    Find_Aggregate_Aspect (Typ);
                   Source_Empty          : Node_Id := Empty;
                   Source_Add_Named      : Node_Id := Empty;
                   Source_Add_Unnamed    : Node_Id := Empty;
@@ -5201,8 +5204,7 @@ package body SPARK_Definition.Annotate is
                   Source_Assign_Indexed : Node_Id := Empty;
 
                   Target_Asp            : constant Node_Id :=
-                    Find_Value_Of_Aspect
-                      (Etype (Annot.Model), Aspect_Aggregate);
+                    Find_Aggregate_Aspect (Etype (Annot.Model));
                   Target_Empty          : Node_Id := Empty;
                   Target_Add_Named      : Node_Id := Empty;
                   Target_Add_Unnamed    : Node_Id := Empty;
@@ -5513,6 +5515,24 @@ package body SPARK_Definition.Annotate is
       end loop;
       Delayed_Null_Values.Clear;
    end Do_Delayed_Checks_On_Pragma_Annotate;
+
+   ---------------------------
+   -- Find_Aggregate_Aspect --
+   ---------------------------
+
+   function Find_Aggregate_Aspect (Typ : Type_Kind_Id) return Node_Id is
+      Typ_With_Aspect : constant Type_Kind_Id :=
+        (if Is_Scalar_Type (Typ)
+         and then Present (First_Subtype (Typ))
+         then First_Subtype (Typ)
+         else Typ);
+      --  If Typ is a scalar base type, it might not have the
+      --  aggregate aspect. Look for it on the first subtype
+      --  instead.
+   begin
+      return Find_Value_Of_Aspect
+        (Typ_With_Aspect, Aspect_Aggregate);
+   end Find_Aggregate_Aspect;
 
    ------------------------
    -- Find_Inline_Pragma --

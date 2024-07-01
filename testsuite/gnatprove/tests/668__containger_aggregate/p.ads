@@ -15,7 +15,7 @@ package P is
    function Model (S : Set_Type) return Sequence with
      Annotate => (GNATprove, Container_Aggregates, "Model"), Import;
 
-   procedure Include (S : in out Set_Type; N : in Integer);
+   procedure Include (S : in out Set_Type; N : in Integer) with Always_Terminates;
 private
    type Set_Type is new Integer;
 end;
