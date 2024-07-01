@@ -5815,7 +5815,8 @@ package body Flow.Control_Flow_Graph is
          --  Abnormal execution is when the callee has No_Return, but the
          --  caller is an ordinary unit (i.e. without No_Return).
 
-         if No_Return (Called_Thing)
+         if Is_Subprogram (Called_Thing)
+           and then No_Return (Called_Thing)
            and then not Is_Possibly_Nonreturning_Procedure (FA.Spec_Entity)
          then
             CM.Insert
@@ -8366,6 +8367,7 @@ package body Flow.Control_Flow_Graph is
                             Ekind (SC.E) = E_Subprogram_Type
                           or else
                             (Is_Ignored_Internal (SC.E)
+                               and then Is_Subprogram (SC.E)
                                and then No_Return (SC.E))
                         then
                            FA.Has_Only_Terminating_Constructs := False;

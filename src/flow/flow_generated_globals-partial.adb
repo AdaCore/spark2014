@@ -545,7 +545,7 @@ package body Flow_Generated_Globals.Partial is
           and then
         (not FA.Has_Only_Terminating_Constructs
            or else
-         No_Return (E));
+         (Is_Subprogram (E) and then No_Return (E)));
 
       Contr.No_Body := False;
 

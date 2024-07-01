@@ -1691,8 +1691,8 @@ package body Gnat2Why.Borrow_Checker is
 
       --  Check the read-write permissions of borrowed parameters/globals
 
-      if Ekind (Id) in E_Procedure | E_Entry
-        and then not No_Return (Id)
+      if Is_Entry (Id)
+        or else (Ekind (Id) = E_Procedure and then not No_Return (Id))
       then
          Return_Parameters (Id);
          Return_Globals (Id);

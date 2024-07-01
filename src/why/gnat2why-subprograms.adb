@@ -5161,7 +5161,9 @@ package body Gnat2Why.Subprograms is
             --  inside, has postcondition true as non-termination verification
             --  is done by the frontend, but the precondition is unchanged.
 
-            if No_Return (E) or else No (Post_N) then
+            if (Is_Subprogram (E) and then No_Return (E))
+              or else No (Post_N)
+            then
                pragma Assert (if No (Post_N) then
                                  Is_True_Boolean
                                 (+Get_Static_Call_Contract
@@ -6013,6 +6015,7 @@ package body Gnat2Why.Subprograms is
       --  the postcondition; simply return the subprogram entity node.
 
       if Kind = Pragma_Postcondition
+        and then Is_Subprogram (E)
         and then No_Return (E)
       then
          return E;
@@ -7158,7 +7161,9 @@ package body Gnat2Why.Subprograms is
       --  site should be "False", so that it is known in the caller that the
       --  call does not return.
 
-      if No_Return (E) then
+      if Is_Subprogram (E)
+        and then No_Return (E)
+      then
          Post := False_Pred;
 
          if Is_Dispatching_Operation (E)

@@ -6537,7 +6537,9 @@ package body SPARK_Definition is
             --  handling for such function calls inside preconditions (see
             --  handling of raise expressions).
 
-            if No_Return (Id) then
+            if Ekind (Id) = E_Function
+              and then No_Return (Id)
+            then
                Mark_Unsupported (Lim_No_Return_Function, Id);
             end if;
 

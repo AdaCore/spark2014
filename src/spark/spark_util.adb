@@ -4634,6 +4634,7 @@ package body SPARK_Util is
                      if Nkind (Stmt) /= N_Raise_Statement
                        and then not
                          (Present (Exc_Node)
+                          and then Is_Subprogram (Get_Called_Entity (Exc_Node))
                           and then No_Return (Get_Called_Entity (Exc_Node)))
                      then
                         --  Connect normal return
