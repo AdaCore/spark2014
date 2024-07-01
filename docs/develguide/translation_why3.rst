@@ -1836,8 +1836,9 @@ Ownership to state that copying them might create aliases. In addition, it
 is possible to state that they need some kind of reclamation when they
 are finalized. In this case, it is necessary to generate WhyMl code to
 track whether a value of this type has been moved to another object
-before the finalization. This is done by adding a ``rec__is_moved__``
-field to objects of these type. For example, let us consider the
+before the finalization. This is done by declaring a ``__move_tree`` type
+and a ``__is_moved_or_reclaimed`` predicate like for
+:ref:`Access-To-Object Types`. For example, let us consider the
 following package:
 
 .. code-block:: ada
@@ -1847,24 +1848,29 @@ following package:
         Default_Initial_Condition,
         Annotate => (GNATprove, Ownership, "Needs_Reclamation");
 
+      function Is_Reclaimed (X : T) return Boolean with
+        Annotate => (GNATprove, Ownership, "Is_Reclaimed");
+
       ...
    private
       pragma SPARK_Mode (Off);
       ...
    end P;
 
-Since ``T`` needs reclamation, an additional ``rec__is_moved__`` flag
-is added to its representative type. It is used when checking for
-leaks when an object of this type is finalized.
+Since ``T`` needs reclamation, a ``__move_tree`` type and a
+``__is_moved_or_reclaimed`` predicate are declared for it. They are used when
+checking for leaks when an object of this type is finalized:
 
 .. code-block:: whyml
 
-  type __main_type
+  module Test__p__t___move_tree
 
-  type __split_fields = { rec__p__t: __main_type }
+    type __move_tree = bool
 
-  type __rep = { __split_fields  : __split_fields;
-                 rec__is_moved__ : bool }
+    predicate __is_moved_or_reclaimed (tree: __move_tree) (obj: Test__p__t.t) =
+      tree \/ Test__p__is_reclaimed.is_reclaimed obj = True
+
+  end
 
 Record Attributes and Component Attributes
 """"""""""""""""""""""""""""""""""""""""""
@@ -2056,6 +2062,162 @@ discriminants in range predicates for records).
 The range predicate is used both for checking that a value is in the expected
 type, when translating conversions, qualifications, and allocators, and to
 translate explicit membership test in the user code.
+
+Move Trees
+""""""""""
+
+For objects containing parts which need to be reclaimed (typically of a
+pool-specific access type), it is necessary to generate WhyMl code to track
+whether a value of this type has been moved to another object before the
+finalization. This is done by storing a boolean flag per component which needs
+reclamation in variables and subprogram parameters. These flags are stored in
+a separate structure which mimics the form of the object. It does not duplicate
+information coming from the object (whether a pointer is null, discriminants,
+bounds of arrays). The type ``__move_tree`` for this structure is declared in a
+specific module, see ``Create_Move_Tree_Theory_For_{Array/Record/Access)``.
+This module also defines a predicate ``__is_moved_or_reclaimed`` which takes a
+move tree and an object of the type and returns true if the object does not hold
+memory as per the information stored in the move tree. As an example, consider
+the following data-structure. To know whether ``V`` is entirely reclaimed, we
+need to decide, depending on the value of the discriminant ``L``, whether the
+component ``F`` or all components of ``A`` have been either moved or set to
+null:
+
+.. code-block:: ada
+
+   type Int_Acc is access Integer;
+   type Int_Acc_Array is array (Positive range <>) of Int_Acc;
+   type Rec (L : Natural) is record
+      case L is
+         when 0 =>
+            F : Int_Acc;
+         when others =>
+            A : Int_Acc_Array (1 .. L);
+      end case;
+      G : Integer;
+   end record;
+
+   V : Rec (...);
+
+
+For this, a type ``__move_tree`` to store the flags and a predicate
+``__is_moved_or_reclaimed`` are declared for each type used in the structure.
+Here is the module declared for the move trees of subcomponents of type
+``Int_Acc``. The move tree holds a single flag for the pointer itself, and the
+``__is_moved_or_reclaimed`` predicate returns true if either the object has
+been moved as per the move tree, or it is null, as per the object value:
+
+
+.. code-block:: whyml
+
+  module Test__int_acc___move_tree
+
+    type __move_tree = { rec__is_moved__ : bool }
+
+    predicate __is_moved_or_reclaimed (tree: __move_tree) (obj: int_acc) =
+      tree.rec__is_moved__ = True \/ obj.rec__is_null_pointer = True
+
+  end
+
+For arrays, we need a flag per component. Similarly to theories used for array
+values, we declare a logic type with two functions ``__get`` and ``__set`` to
+represent these values. Note that we do not attempt to represent bounds here,
+the arrays of flag are always total (they map all indices to boolean flags). The
+``__is_moved_or_reclaimed`` predicate gets the bounds either from the type (if
+its bounds are static) or from the object and only considers elements which
+are in bounds:
+
+
+.. code-block:: whyml
+
+  module Test__int_acc_array___move_tree
+
+    type __move_tree
+
+    val function __get (tree: __move_tree) (i: int) :
+       Test__int_acc___move_tree.__move_tree
+
+    val __set (tree: __move_tree) (i: int)
+       (comp: Test__int_acc___move_tree.__move_tree) : __move_tree
+      ensures { __get result i = comp /\
+                (forall j : int.  j <> i -> __get result j = __get tree j) }
+
+    predicate __is_moved_or_reclaimed (tree: __move_tree) (obj: int_acc_array) =
+      forall i : int. first obj <= i <= last obj ->
+           Test__int_acc___move_tree.__is_moved_or_reclaimed
+              (__get tree i)
+              (Test__int_acc_array.get obj.elts i)
+  end
+
+Move trees for records are Why3 records with a field per component which needs
+reclamation. Discriminants are not present. The ``__is_moved_or_reclaimed``
+predicate gets them from the value of the object and only considers components
+which are present in the type. Note that ``G`` is not present
+as it does not need reclamation:
+
+.. code-block:: whyml
+
+  (* The predicates for the presence of components in discriminated records
+     are defined in the representative module for the type. They are recalled
+     here for convenience. *)
+
+  module Test__rec___rep
+    ...
+
+    predicate test__rec__f__pred (a: __rep) =
+      to_rep a.__split_discr.rec__l = 0
+
+    predicate test__rec__a__pred (a: __rep) =
+      to_rep a.__split_discr.rec__l <> 0
+  end
+
+  module Test__rec___move_tree
+
+    type __move_tree =
+      { rec__test__rec__f : Test__int_acc___move_tree.__move_tree;
+        rec__test__rec__a : Test__int_acc_array___move_tree.__move_tree }
+
+    type __move_tree__ref = { mutable __move_tree__content : __move_tree }
+
+    predicate __is_moved_or_reclaimed (tree: __move_tree) (obj: rec) =
+        (if test__rec__f__pred obj then
+             Test__int_acc___move_tree.__is_moved_or_reclaimed
+                 tree.rec__test__rec__f
+                 obj.__split_fields.rec__test__rec__f)
+         /\
+         (if test__rec__a__pred obj then
+             Test__int_acc_array___move_tree.__is_moved_or_reclaimed
+                tree.rec__test__rec__a
+                obj.__split_fields.rec__test__rec__a)
+
+  end
+
+Using these definitions, it is possible to declare a move tree in the module
+for ``V`` as follows:
+
+.. code-block:: whyml
+
+  module Test__v
+
+    val v__split_fields : Test__rec.__split_fields__ref
+
+    val function v__split_discrs : Test__rec.__split_discrs
+
+    val v__rec__is_moved__ : Test__rec___move_tree.__move_tree__ref
+
+  end
+
+To check whether ``V`` is reclaimed, the ``__is_moved_or_reclaimed`` is called
+on these objects:
+
+.. code-block:: whyml
+
+  assert
+    { [@GP_Check:2:VC_RESOURCE_LEAK_AT_END_OF_SCOPE:test.adb:13:4]
+      Test__rec___move_tree.__is_moved_or_reclaimed
+      Test__v.v__rec__is_moved__.__move_tree__content Test__v.v__rec__is_moved__
+      { __split_fields = Test__v.v__split_fields.__split_fields__content;
+        __split_discrs = Test__v.v__split_discrs } }
 
 Access-To-Subprogram Types
 ^^^^^^^^^^^^^^^^^^^^^^^^^^
