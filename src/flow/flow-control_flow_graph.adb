@@ -8297,10 +8297,6 @@ package body Flow.Control_Flow_Graph is
             end;
       end case;
 
-      --  Copy the CFG before any treatment in CFG_With_Dead_Code
-      FA.CFG_With_Dead_Code := FA.CFG.Create;
-      FA.CFG_With_Dead_Code.Copy_Edges (FA.CFG);
-
       --  Label all vertices that are part of exceptional execution paths
       Mark_Exceptional_Paths (FA);
       Prune_Exceptional_Paths (FA);
@@ -8436,7 +8432,8 @@ package body Flow.Control_Flow_Graph is
          --  that we model such outputs as read-writes).
 
          for E of FA.Direct_Calls loop
-            if Ekind (E) in E_Procedure | E_Entry
+            if (Ekind (E) in E_Procedure | E_Entry
+                  or else Is_Function_With_Side_Effects (E))
               and then (not Has_User_Supplied_Globals (E)
                         or else Rely_On_Generated_Global (E, FA.B_Scope))
             then
@@ -8471,6 +8468,12 @@ package body Flow.Control_Flow_Graph is
                end;
             end if;
          end loop;
+
+      --  Copy the CFG before any treatment in CFG_With_Dead_Code
+
+      else
+         FA.CFG_With_Dead_Code := FA.CFG.Create;
+         FA.CFG_With_Dead_Code.Copy_Edges (FA.CFG);
       end if;
 
       --  Finally, make sure that all extra checks for folded functions have
