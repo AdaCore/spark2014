@@ -1016,13 +1016,27 @@ package body CE_Parsing is
             --  Decision: we don't handle infinities or Nan
             raise Parse_Error;
 
-         when Float_Plus_Zero | Float_Minus_Zero =>
+         when Float_Plus_Zero =>
             if Is_Single_Precision_Floating_Point_Type (Ty) then
-               return (Float_K, (Float_32_K, 0.0));
+               return (Float_K, (Float_32_K, Float'Copy_Sign (0.0, 1.0)));
             elsif Is_Double_Precision_Floating_Point_Type (Ty) then
-               return (Float_K, (Float_64_K, 0.0));
+               return (Float_K, (Float_64_K, Long_Float'Copy_Sign (0.0, 1.0)));
             elsif Is_Extended_Precision_Floating_Point_Type (Ty) then
-               return (Float_K, (Extended_K, 0.0));
+               return (Float_K,
+                       (Extended_K, Long_Long_Float'Copy_Sign (0.0, 1.0)));
+            else
+               raise Program_Error;
+            end if;
+
+         when Float_Minus_Zero =>
+            if Is_Single_Precision_Floating_Point_Type (Ty) then
+               return (Float_K, (Float_32_K, Float'Copy_Sign (0.0, -1.0)));
+            elsif Is_Double_Precision_Floating_Point_Type (Ty) then
+               return (Float_K,
+                       (Float_64_K, Long_Float'Copy_Sign (0.0, -1.0)));
+            elsif Is_Extended_Precision_Floating_Point_Type (Ty) then
+               return (Float_K,
+                       (Extended_K, Long_Long_Float'Copy_Sign (0.0, -1.0)));
             else
                raise Program_Error;
             end if;
