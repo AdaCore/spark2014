@@ -488,7 +488,7 @@ red_black_trees.adb:369:118: info: predicate check proved (CVC5: 1 VC; Trivial: 
 red_black_trees.adb:369:120: info: predicate check proved (Trivial: 1 VC)
 red_black_trees.adb:369:127: info: pointer dereference check proved (CVC5: 1 VC)
 red_black_trees.adb:369:133: info: pointer dereference check proved (CVC5: 1 VC)
-red_black_trees.adb:373:10: info: absence of resource or memory leak at end of scope proved (CVC5: 1 VC)
+red_black_trees.adb:373:10: medium: resource or memory leak might occur at end of scope
 red_black_trees.adb:373:26: info: pointer dereference check proved (CVC5: 1 VC)
 red_black_trees.adb:375:11: info: pointer dereference check proved (CVC5: 1 VC)
 red_black_trees.adb:375:18: medium: resource or memory leak might occur
@@ -584,7 +584,7 @@ red_black_trees.adb:423:63: info: pointer dereference check proved (CVC5: 1 VC)
 red_black_trees.adb:423:72: info: predicate check proved (Trivial: 1 VC)
 red_black_trees.adb:423:76: info: predicate check proved (CVC5: 1 VC; Trivial: 1 VC)
 red_black_trees.adb:423:78: info: predicate check proved (Trivial: 1 VC)
-red_black_trees.adb:427:10: info: absence of resource or memory leak at end of scope proved (CVC5: 1 VC)
+red_black_trees.adb:427:10: medium: resource or memory leak might occur at end of scope
 red_black_trees.adb:427:26: info: pointer dereference check proved (CVC5: 1 VC)
 red_black_trees.adb:429:11: info: pointer dereference check proved (CVC5: 1 VC)
 red_black_trees.adb:429:17: medium: resource or memory leak might occur
@@ -722,7 +722,7 @@ red_black_trees.adb:530:56: info: pointer dereference check proved (CVC5: 1 VC)
 red_black_trees.adb:532:16: medium: precondition might fail, cannot prove T.Right /= null
 red_black_trees.adb:532:30: info: pointer dereference check proved (CVC5: 1 VC)
 red_black_trees.adb:536:16: medium: in inlined expression function body at infinite_sequences.ads:31
-red_black_trees.adb:536:16: medium: precondition might fail, cannot prove Last (R) = Last (S3) [possible fix: precondition of subprogram at line 451 should mention Pos]
+red_black_trees.adb:536:16: medium: precondition might fail, cannot prove First (R) = First (S1) [possible fix: precondition of subprogram at line 451 should mention Pos]
 red_black_trees.adb:536:51: info: pointer dereference check proved (CVC5: 1 VC)
 red_black_trees.adb:536:65: info: pointer dereference check proved (CVC5: 1 VC)
 red_black_trees.adb:536:81: info: pointer dereference check proved (CVC5: 1 VC)
