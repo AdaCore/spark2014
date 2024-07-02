@@ -109,7 +109,7 @@ sb.ads:2:01: info: implicit function contract might not be available on calls fr
 sb.ads:2:01: info: in instantiation at a-strbou.ads
 sb.ads:2:01: warning: in instantiation at a-strbou.ads
 sb.ads:2:01: warning: pragma "Stream_Convert" ignored (not yet supported)
-spark-containers-parameter_checks.ads:246:19: medium: postcondition might fail, in instantiation at spark-containers-formal-hashed_maps.ads:170, in instantiation at test.ads:14 [possible fix: you should consider adding a postcondition to function SBHash or turning it into an expression function]
+spark-containers-parameter_checks.ads:246:19: medium: postcondition might fail, in instantiation at spark-containers-formal-hashed_maps.ads:162, in instantiation at test.ads:14 [possible fix: you should consider adding a postcondition to function SBHash or turning it into an expression function]
 test.ads:9:09: info: Initial_Condition of package "SB" is ignored
 test.ads:9:09: info: the elaboration of "SB" is not known to precede the elaboration of the current unit
 test.ads:9:09: info: use pragma Elaborate_Body in "SB" or pragma Elaborate in the current unit
@@ -117,6 +117,6 @@ test.ads:11:13: info: implicit function contract might not be available on calls
 test.ads:14:04: info: function contract might not be available on implicit recursive calls
 test.ads:14:04: info: function contract might not be available on implicit recursive calls
 test.ads:14:04: info: function contract might not be available on implicit recursive calls
-test.ads:14:04: info: in instantiation at spark-containers-formal-hashed_maps.ads:101
-test.ads:14:04: info: in instantiation at spark-containers-formal-hashed_maps.ads:292
-test.ads:14:04: info: in instantiation at spark-containers-formal-hashed_maps.ads:415
+test.ads:14:04: info: in instantiation at spark-containers-formal-hashed_maps.ads:284
+test.ads:14:04: info: in instantiation at spark-containers-formal-hashed_maps.ads:407
+test.ads:14:04: info: in instantiation at spark-containers-formal-hashed_maps.ads:92
