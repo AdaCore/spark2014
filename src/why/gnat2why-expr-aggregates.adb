@@ -1066,7 +1066,7 @@ package body Gnat2Why.Expr.Aggregates is
          Add_Binders      : Item_Array := Compute_Subprogram_Parameters
            (Add_Procedure, EW_Prog);
          pragma Assert (Add_Binders'Length = Params_Ids'Length);
-         Is_Named         : constant Boolean := Add_Binders'Length = 3;
+         Is_Named         : constant Boolean := Params_Ids'Length = 3;
          Add_Name         : constant W_Identifier_Id :=
            +Transform_Identifier (Params => Body_Params,
                                   Expr   => Add_Procedure,

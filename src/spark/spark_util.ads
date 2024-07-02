@@ -741,6 +741,12 @@ package SPARK_Util is
    --  @param Low_Val the loop bound for loop unrolling
    --  @param High_Val the high bound for loop unrolling
 
+   function Enclosing_Statement_Of_Call_To_Function_With_Side_Effects
+     (Call : Node_Id)
+      return Node_Id;
+   --  Return the statement enclosing Call which is a call to a function with
+   --  side-effects.
+
    function Full_Entry_Name (N : Node_Id) return String
      with Pre => Nkind (N) in N_Expanded_Name
                             | N_Identifier
@@ -1208,24 +1214,31 @@ package SPARK_Util is
    function All_Exceptions return Node_Sets.Set;
    --  Get all the exceptions visible from analyzed code
 
-   procedure Collect_Reachable_Handlers (Stmt : Node_Id) with
-     Pre => Nkind (Stmt) in N_Procedure_Call_Statement | N_Raise_Statement;
-   --  Stmt shall be a call which might raise exceptions or a raise
+   procedure Collect_Reachable_Handlers (Call_Or_Stmt : Node_Id) with
+     Pre => Nkind (Call_Or_Stmt) in N_Function_Call
+                                  | N_Procedure_Call_Statement
+                                  | N_Raise_Statement;
+   --  Call_Or_Stmt shall be a call which might raise exceptions or a raise
    --  statement. Collect all the exception handlers which might be reached
    --  when jumping from Stmt and store them in a map. Also collect exceptions
    --  which might be raised by reraise statements.
 
-   function Reachable_Handlers (Stmt : Node_Id) return Node_Lists.List with
-     Pre  => Nkind (Stmt) in N_Procedure_Call_Statement | N_Raise_Statement,
-     Post => Might_Raise_Handled_Exceptions (Stmt) /=
+   function Reachable_Handlers
+     (Call_Or_Stmt : Node_Id)
+      return Node_Lists.List
+   with
+     Pre  => Nkind (Call_Or_Stmt) in N_Function_Call
+                                   | N_Procedure_Call_Statement
+                                   | N_Raise_Statement,
+     Post => Might_Raise_Handled_Exceptions (Call_Or_Stmt) /=
        Reachable_Handlers'Result.Is_Empty;
-   --  Stmt shall be a call which might raise exceptions or a raise
+   --  Call_Or_Stmt shall be a call which might raise exceptions or a raise
    --  statement. Return all exception handlers which might be reached when
    --  jumping from Stmt. If the enclosing body might be exited, it will be the
    --  last elements of the list. If the statement does not raise any handled
-   --  exception, the list is empty. If Stmt is a ghost procedure call
-   --  occurring in non-ghost code, no exception can be handled, so the list is
-   --  empty.
+   --  exception, the list is empty. If Call_Or_Stmt is a function called in
+   --  a ghost assignment or a ghost procedure call, that occurs in non-ghost
+   --  code, no exception can be handled, so the list is empty.
 
    function By_Copy (Obj : Formal_Kind_Id) return Boolean;
    --  Return True if Obj is known to be passed by copy. In parameters of an
@@ -1309,28 +1322,35 @@ package SPARK_Util is
       return Exception_Sets.Set;
    --  Retrieve all exceptions handled in a sequence of statements
 
-   function Get_Handled_Exceptions (Stmt : Node_Id) return Exception_Sets.Set;
-   --  Retrieve all exceptions either handled by a handler above Stmt or
-   --  expected by the enclosing unit. If Stmt is a ghost procedure call
-   --  occurring in non-ghost code, no exception can be handled.
+   function Get_Handled_Exceptions
+     (Call_Or_Stmt : Node_Id)
+      return Exception_Sets.Set;
+   --  Retrieve all exceptions either handled by a handler above Call_Or_Stmt
+   --  or expected by the enclosing unit. If Call_Or_Stmt is a ghost function
+   --  or procedure call occurring in non-ghost code, no exception can be
+   --  handled.
 
    function Get_Raised_Exceptions
-     (Stmt         : Node_Id;
+     (Call_Or_Stmt : Node_Id;
       Only_Handled : Boolean)
       return Exception_Sets.Set
    with
-     Pre  => Nkind (Stmt) in N_Procedure_Call_Statement
-                           | N_Function_Call
-                           | N_Entry_Call_Statement
-                           | N_Raise_Statement
+     Pre  => Nkind (Call_Or_Stmt) in N_Function_Call
+                                   | N_Procedure_Call_Statement
+                                   | N_Entry_Call_Statement
+                                   | N_Raise_Statement
              and then
-               (if Nkind (Stmt) = N_Function_Call
-                then Is_Function_With_Side_Effects (Get_Called_Entity (Stmt)));
-   --  Retrieve all exceptions raised by Stmt. If Only_Handled is True, only
-   --  consider exception which are handled above Stmt.
+               (if Nkind (Call_Or_Stmt) = N_Function_Call
+                then Is_Function_With_Side_Effects
+                  (Get_Called_Entity (Call_Or_Stmt)));
+   --  Retrieve all exceptions raised by Call_Or_Stmt. If Only_Handled is True,
+   --  only consider exception which are handled above Call_Or_Stmt.
 
-   function Might_Raise_Handled_Exceptions (Stmt : Node_Id) return Boolean is
-     (not Get_Raised_Exceptions (Stmt, True).Is_Empty);
+   function Might_Raise_Handled_Exceptions
+     (Call_Or_Stmt : Node_Id)
+      return Boolean
+   is
+     (not Get_Raised_Exceptions (Call_Or_Stmt, True).Is_Empty);
 
    -----------------------------------------------
    --  Control-flow graph of statements/bodies  --

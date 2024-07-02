@@ -277,7 +277,7 @@ package body Gnat2Why.Expr is
    --  parameters. The mappings are then stored in Context, and the post
    --  processing is stored in Store. If Call requires an exception handler for
    --  Ada exceptions, then Exc_Exit shall be set to True. Store for the
-   --  handler is stored in Exc_Store in thus case. If Use_Tmps is True, then
+   --  handler is stored in Exc_Store in this case. If Use_Tmps is True, then
    --  temporaries are introduced in Context for parameters so that checks are
    --  not duplicated if the returned array is used several times.
 
@@ -305,17 +305,23 @@ package body Gnat2Why.Expr is
       Store          : in out W_Statement_Sequence_Id;
       Params         :        Transformation_Params;
       Index_Map      :        Ada_Node_To_Why_Id.Map;
+      Ext_Visible    :        Boolean;
       Exceptional    :        Boolean := False);
    --  Compute in Store the sequence of statements necessary to store back
    --  local identifiers of Pattern inside Actual, which is Empty in the case
-   --  of the special "self" parameter of protected subprograms. If Need_Store
-   --  is True, at least one new identifier was used for the call. Note
-   --  that postprocessing may be needed even if Need_Store is False, to
-   --  set the init wrapper flag if any, or to perform predicate checks. If
-   --  No_Pred_Checks is True, do not check the predicate of the actual after
-   --  the call. Index_Map is a mapping from index nodes in Actual to
-   --  identifiers that should be used to refer to these indices. Exceptional
-   --  should be True when Compute_Store is called for exceptional cases.
+   --  of the special "self" parameter of protected subprograms.
+   --  If Need_Store is True, at least one new identifier was used for the
+   --  call. Note that postprocessing may be needed even if Need_Store is
+   --  False, to set the init wrapper flag if any, or to perform predicate
+   --  checks.
+   --  If No_Pred_Checks is True, do not check the predicate of the actual
+   --  after the call.
+   --  Index_Map is a mapping from index nodes in Actual to identifiers that
+   --  should be used to refer to these indices.
+   --  For tagged records, Ext_Visible shall be True iff the tagged extension
+   --  of Actual is visible by the callee.
+   --  Exceptional should be True when Compute_Store is called for exceptional
+   --  cases.
 
    procedure Compute_Exceptional_Store
      (Formal         :        Formal_Kind_Id;
@@ -326,7 +332,8 @@ package body Gnat2Why.Expr is
       Pre_Expr       :        W_Expr_Id;
       Store          : in out W_Statement_Sequence_Id;
       Params         :        Transformation_Params;
-      Index_Map      :        Ada_Node_To_Why_Id.Map);
+      Index_Map      :        Ada_Node_To_Why_Id.Map;
+      Ext_Visible    :        Boolean);
    --  Same as above but for parameters whose type is neither "by copy" nor
    --  "by reference", the actual is simply havoc'ed.
 
@@ -507,11 +514,12 @@ package body Gnat2Why.Expr is
    type Do_Check_Kind is (All_Checks, Only_Vars, No_Checks);
 
    function New_Assignment
-     (Ada_Node  : Node_Id := Empty;
-      Lvalue    : N_Subexpr_Id;
-      Expr      : W_Prog_Id;
-      Do_Check  : Do_Check_Kind := All_Checks;
-      Index_Map : Ada_Node_To_Why_Id.Map := Ada_Node_To_Why_Id.Empty_Map)
+     (Ada_Node    : Node_Id := Empty;
+      Lvalue      : N_Subexpr_Id;
+      Expr        : W_Prog_Id;
+      Do_Check    : Do_Check_Kind := All_Checks;
+      Preserv_Tag : Boolean := True;
+      Index_Map   : Ada_Node_To_Why_Id.Map := Ada_Node_To_Why_Id.Empty_Map)
       return W_Prog_Id
    with
 
@@ -522,14 +530,18 @@ package body Gnat2Why.Expr is
      and then (Do_Check /= All_Checks or else Index_Map.Is_Empty);
 
    --  Translate an assignment of the form "Lvalue := Expr" (using Ada_Node
-   --  for its source location). If Do_Check is set to No_Checks, then no check
-   --  should be introduced. This is used for generating code moving an owning
-   --  object, that does not correspond to a source code assignment and only
-   --  updates the internal is_moved fields, and as such should not lead to the
-   --  generation of checks. If Do_Checks is set to Only_Vars, it is not
-   --  necessary to check the well-formedness of the prefix (discriminant,
-   --  bounds...). This occurs when the new value already contains an
-   --  evaluation of the prefix.
+   --  for its source location).
+   --  If Do_Check is set to No_Checks, then no check should be introduced.
+   --  This is used for generating code moving an owning object, that does not
+   --  correspond to a source code assignment and only updates the internal
+   --  is_moved fields, and as such should not lead to the generation of
+   --  checks. If Do_Checks is set to Only_Vars, it is not necessary to check
+   --  the well-formedness of the prefix (discriminant, bounds...). This occurs
+   --  when the new value already contains an evaluation of the prefix.
+   --  If Preserv_Tag is set to False, the tag and extension of Lvalue are not
+   --  preserved. This is used for actual parameters of mode OUT and IN OUT on
+   --  calls. The preservation of the tag is ensured by splitting the record
+   --  and the extension might be updated.
    --  Index_Map is a mapping from index nodes in Lvalue to identifiers that
    --  should be used to refer to these indices. It is supplied when the
    --  indices should be evaluated in a different context (typically before a
@@ -4030,6 +4042,11 @@ package body Gnat2Why.Expr is
                   No_Pred_Checks : constant Boolean :=
                     Is_Self or else Eq_Base
                     (Type_Of_Node (Actual), Type_Of_Node (Formal));
+                  Ext_Visible    : constant Boolean :=
+                    Has_Extensions_Visible (Subp)
+                    or else
+                      (not Is_Self
+                       and then Is_Class_Wide_Type (Etype (Formal)));
 
                begin
                   Compute_Store
@@ -4040,7 +4057,8 @@ package body Gnat2Why.Expr is
                      Pre_Expr       => +Actual_Tmp,
                      Store          => Store,
                      Params         => Params,
-                     Index_Map      => Index_Map);
+                     Index_Map      => Index_Map,
+                     Ext_Visible    => Ext_Visible);
 
                   --  Also append the store to the exception handler if any
 
@@ -4056,9 +4074,10 @@ package body Gnat2Why.Expr is
                            Need_Store     => Need_Store,
                            No_Pred_Checks => No_Pred_Checks,
                            Pre_Expr       => +Actual_Tmp,
-                           Store          => Store,
+                           Store          => Exc_Store,
                            Params         => Params,
-                           Index_Map      => Index_Map);
+                           Index_Map      => Index_Map,
+                           Ext_Visible    => Ext_Visible);
                      else
                         Compute_Exceptional_Store
                           (Formal         => Formal,
@@ -4069,7 +4088,8 @@ package body Gnat2Why.Expr is
                            Pre_Expr       => +Actual_Tmp,
                            Store          => Exc_Store,
                            Params         => Params,
-                           Index_Map      => Index_Map);
+                           Index_Map      => Index_Map,
+                           Ext_Visible    => Ext_Visible);
                      end if;
                   end if;
                end;
@@ -4758,6 +4778,14 @@ package body Gnat2Why.Expr is
       --   F_Expr = E.def               <if Field1 has a default>
       --   default_init (F_Expr, F_Ty)) <otherwise>
 
+      function Default_Init_Absent_Field
+        (F_Expr : W_Term_Id;
+         F_Ty   : Entity_Id;
+         E      : Entity_Id)
+         return W_Pred_Id;
+      --  Assume that components not present in discriminated records have a
+      --  dummy value.
+
       function Default_Init_For_Discr
         (D_Expr : W_Term_Id;
          D_Ty   : Entity_Id;
@@ -4770,6 +4798,32 @@ package body Gnat2Why.Expr is
       --  @return predicate for individual discrimiant
       --  D_Expr = E.default             <if Ty_Ext is unconstrained>
       --  D_Expr = stored_constraint (E) <otherwise>
+
+      -------------------------------
+      -- Default_Init_Absent_Field --
+      -------------------------------
+
+      function Default_Init_Absent_Field
+        (F_Expr : W_Term_Id;
+         F_Ty   : Entity_Id;
+         E      : Entity_Id)
+         return W_Pred_Id
+      is
+         pragma Unreferenced (E);
+         Dummy_Expr : W_Term_Id := +Why_Default_Value (EW_Term, F_Ty);
+
+      begin
+         if Is_Init_Wrapper_Type (Get_Type (+F_Expr)) then
+            Dummy_Expr := Insert_Simple_Conversion
+              (Expr => Dummy_Expr,
+               To   => Get_Type (+F_Expr));
+         end if;
+
+         return New_Comparison
+           (Symbol => Why_Eq,
+            Left   => F_Expr,
+            Right  => Dummy_Expr);
+      end Default_Init_Absent_Field;
 
       ---------------------------
       -- Default_Init_For_Comp --
@@ -4963,6 +5017,7 @@ package body Gnat2Why.Expr is
       function Default_Init_For_Record is new Build_Predicate_For_Record
         (Default_Init_For_Discr,
          Default_Init_For_Field,
+         Default_Init_Absent_Field,
          Ignore_Private_State => False);
 
       Tmp        : constant W_Term_Id := New_Temp_For_Expr (Expr);
@@ -5726,11 +5781,45 @@ package body Gnat2Why.Expr is
       --          Dynamic_Invariant <C_Expr>
       --              /\ C_Expr.rec__constrained = <Is_Constrained (C_Ty)>
 
+      function Invariant_For_Absent_Comp
+        (C_Expr : W_Term_Id;
+         C_Ty   : Entity_Id;
+         E      : Entity_Id)
+         return W_Pred_Id;
+      --  Assume that components not present in discriminated records have a
+      --  dummy value.
+
       function Invariant_For_Comp
         (C_Expr : W_Term_Id;
          C_Ty   : Entity_Id)
          return W_Pred_Id
       is (Invariant_For_Comp (C_Expr, C_Ty, Empty));
+
+      -------------------------------
+      -- Invariant_For_Absent_Comp --
+      -------------------------------
+
+      function Invariant_For_Absent_Comp
+        (C_Expr : W_Term_Id;
+         C_Ty   : Entity_Id;
+         E      : Entity_Id)
+         return W_Pred_Id
+      is
+         pragma Unreferenced (E);
+         Dummy_Expr : W_Term_Id := +Why_Default_Value (EW_Term, C_Ty);
+
+      begin
+         if Is_Init_Wrapper_Type (Get_Type (+C_Expr)) then
+            Dummy_Expr := Insert_Simple_Conversion
+              (Expr => Dummy_Expr,
+               To   => Get_Type (+C_Expr));
+         end if;
+
+         return New_Comparison
+           (Symbol => Why_Eq,
+            Left   => C_Expr,
+            Right  => Dummy_Expr);
+      end Invariant_For_Absent_Comp;
 
       --------------------------
       -- Invariant_For_Access --
@@ -5842,7 +5931,7 @@ package body Gnat2Why.Expr is
         (Invariant_For_Comp);
 
       function Invariant_For_Record is new Build_Predicate_For_Record
-        (Invariant_For_Comp, Invariant_For_Comp);
+        (Invariant_For_Comp, Invariant_For_Comp, Invariant_For_Absent_Comp);
 
       --  If Ty's fullview is in SPARK, go to its underlying type to check its
       --  kind.
@@ -6212,13 +6301,33 @@ package body Gnat2Why.Expr is
 
       if Present (Inv_Scop) then
          T := New_And_Pred
-           (Left   => T,
-            Right  => Compute_Type_Invariant
+           (Left  => T,
+            Right => Compute_Type_Invariant
               (Expr, Ty_Ext, Locally_Assumed, Params,
                Include_Comp => False,
                Use_Pred     => Use_Pred,
                Scop         => Inv_Scop,
                Subp         => Inv_Subp));
+      end if;
+
+      --  If Ty_Ext is tagged, assume that objects of dynamic type Ty_Ext have
+      --  an empty extension.
+
+      if Is_Tagged_Type (Ty_Ext) then
+         T := New_And_Pred
+           (Left  => T,
+            Right => New_Conditional
+              (Condition => New_Comparison
+                   (Symbol => Why_Eq,
+                    Left   => +New_Tag_Access
+                      (Domain => EW_Term, Name => +Expr, Ty => Ty_Ext),
+                    Right  => +E_Symb (Ty_Ext, WNE_Tag)),
+               Then_Part => New_Comparison
+                 (Symbol => Why_Eq,
+                  Left   => +New_Ext_Access
+                    (Name => New_Fields_Access (Name => +Expr, Ty => Ty_Ext),
+                     Ty   => Ty_Ext),
+                  Right  => +E_Symb (Ty_Ext, WNE_Null_Extension))));
       end if;
 
       --  Compute dynamic invariant for its components
@@ -6401,16 +6510,20 @@ package body Gnat2Why.Expr is
                                     Typ    => EW_Bool_Type));
                   end;
 
-                  --  In general, predicates for incomplete types should only
-                  --  occur when defining the predicate for Ty. In this case,
-                  --  Inv_Scop is empty, so no need to worry about invariants.
-                  --  Theoretically, it could happen that we are in a context
-                  --  where Inv_Scop is set, typically for Itypes. We have
-                  --  never seen a case where this happens in practice though,
-                  --  so for now we assert that this never happens.
+                  --  If Inv_Scop is set, add possible locally assumed type
+                  --  invariants. If Inv_Subp is also set, add globally assumed
+                  --  type invariants as they won't be included in the
+                  --  predicate (as All_Global_Inv is False). Include
+                  --  components as the traversal stops here.
 
                   if Present (Inv_Scop) then
-                     raise Program_Error;
+                     T := New_And_Pred
+                       (Left   => T,
+                        Right  => Compute_Type_Invariant
+                          (Expr, Ty_Ext, Locally_Assumed, Params,
+                           Use_Pred => Use_Pred,
+                           Scop     => Inv_Scop,
+                           Subp     => Inv_Subp));
                   end if;
 
                --  Theoretically, it could happen that we are in a context
@@ -6537,7 +6650,8 @@ package body Gnat2Why.Expr is
       Pre_Expr       :        W_Expr_Id;
       Store          : in out W_Statement_Sequence_Id;
       Params         :        Transformation_Params;
-      Index_Map      :        Ada_Node_To_Why_Id.Map)
+      Index_Map      :        Ada_Node_To_Why_Id.Map;
+      Ext_Visible    :        Boolean)
    is
    begin
       --  Parameters of a "by reference" type are handled like in normal return
@@ -6552,6 +6666,7 @@ package body Gnat2Why.Expr is
             Store          => Store,
             Params         => Params,
             Index_Map      => Index_Map,
+            Ext_Visible    => Ext_Visible,
             Exceptional    => True);
          return;
 
@@ -7027,6 +7142,7 @@ package body Gnat2Why.Expr is
       Store          : in out W_Statement_Sequence_Id;
       Params         :        Transformation_Params;
       Index_Map      :        Ada_Node_To_Why_Id.Map;
+      Ext_Visible    :        Boolean;
       Exceptional    :        Boolean := False)
    is
    begin
@@ -7042,7 +7158,10 @@ package body Gnat2Why.Expr is
                   else "")));
       end if;
 
-      --  If needed, recompute the actual expression and store it in Actual
+      --  If needed, recompute the actual expression and store it in Actual.
+      --  No need to preserve the tag as it cannot have been modified by the
+      --  call (as the formal is split). The extension might have been
+      --  modified if Ext_Visible is True.
 
       if Need_Store then
          declare
@@ -7056,11 +7175,12 @@ package body Gnat2Why.Expr is
          begin
             Append
               (Store, New_Assignment
-                 (Ada_Node  => Actual,
-                  Lvalue    => Actual,
-                  Expr      => Reconstructed_Arg,
-                  Do_Check  => Only_Vars,
-                  Index_Map => Index_Map));
+                 (Ada_Node    => Actual,
+                  Lvalue      => Actual,
+                  Expr        => Reconstructed_Arg,
+                  Do_Check    => Only_Vars,
+                  Preserv_Tag => False,
+                  Index_Map   => Index_Map));
          end;
       end if;
 
@@ -7146,6 +7266,34 @@ package body Gnat2Why.Expr is
                  Then_Part   => Assumption);
 
             Append (Store, New_Assume_Statement (Pred => Assumption));
+         end;
+      end if;
+
+      --  If the parameter has a tagged type and its extension is not visible
+      --  in the callee, assume that it is preserved.
+
+      if not Ext_Visible
+        and then Pattern.Kind = DRecord
+        and then Is_Tagged_Type (Pattern.Typ)
+      then
+         declare
+            Fields_Name : constant W_Identifier_Id :=
+              Pattern.Fields.Binder.B_Name;
+         begin
+            Append
+              (Store,
+               New_Assume_Statement
+                 (Pred => New_Comparison
+                      (Symbol => Why_Eq,
+                       Left   => +New_Ext_Access
+                         (Name => New_Fields_Access
+                            (Name => Pre_Expr, Ty => Pattern.Typ),
+                          Ty   => Pattern.Typ),
+                       Right  => +New_Ext_Access
+                         (Name => New_Deref
+                            (Right => Fields_Name,
+                             Typ   => Get_Typ (Fields_Name)),
+                          Ty   => Pattern.Typ))));
          end;
       end if;
 
@@ -9629,6 +9777,13 @@ package body Gnat2Why.Expr is
          when N_Procedure_Call_Statement | N_Raise_Statement =>
             Res := +Havoc_Borrowed_And_Check_No_Leaks_From_Scopes
               (Scopes, Starting_Vertex (Stmt_Or_Decl));
+
+         when N_Function_Call =>
+            pragma Assert (Is_Function_With_Side_Effects
+                           (Get_Called_Entity (Stmt_Or_Decl)));
+            Res := +Havoc_Borrowed_And_Check_No_Leaks_From_Scopes
+              (Scopes, Starting_Vertex (Enclosing_Statement (Stmt_Or_Decl)));
+
          when N_Handled_Sequence_Of_Statements =>
             --  This happens because exceptions not handled by sequence of
             --  statements are treated as if handled and re-raised.
@@ -9637,6 +9792,7 @@ package body Gnat2Why.Expr is
 
             Res := +Havoc_Borrowed_And_Check_No_Leaks_From_Scopes
               (Scopes, Vertex_Sets.Empty_Set);
+
          when others =>
             pragma Assert (False);
       end case;
@@ -10686,11 +10842,12 @@ package body Gnat2Why.Expr is
    --------------------
 
    function New_Assignment
-     (Ada_Node  : Node_Id := Empty;
-      Lvalue    : N_Subexpr_Id;
-      Expr      : W_Prog_Id;
-      Do_Check  : Do_Check_Kind := All_Checks;
-      Index_Map : Ada_Node_To_Why_Id.Map := Ada_Node_To_Why_Id.Empty_Map)
+     (Ada_Node    : Node_Id := Empty;
+      Lvalue      : N_Subexpr_Id;
+      Expr        : W_Prog_Id;
+      Do_Check    : Do_Check_Kind := All_Checks;
+      Preserv_Tag : Boolean := True;
+      Index_Map   : Ada_Node_To_Why_Id.Map := Ada_Node_To_Why_Id.Empty_Map)
       return W_Prog_Id
    is
       --  Here, we deal with assignment statements. In SPARK, the general form
@@ -10723,10 +10880,11 @@ package body Gnat2Why.Expr is
    --  Start of processing for New_Assignment
 
    begin
-      --  Assignments to objects of a specific type cannot change the tag nor
-      --  the extension of the object.
+      --  If Preserv_Tag is set, preserve the tag and extension of objects if
+      --  they have a specific tagged type.
 
-      if Is_Tagged_Type (Etype (Left_Side))
+      if Preserv_Tag
+        and then Is_Tagged_Type (Etype (Left_Side))
         and then not Is_Class_Wide_Type (Etype (Left_Side))
       then
          declare
@@ -11226,8 +11384,7 @@ package body Gnat2Why.Expr is
               New_Raise
                 (Ada_Node => Ada_Node,
                  Name     => M_Main.Ada_Exc,
-                 Arg      => +Ex_Name,
-                 Typ      => EW_Unit_Type));
+                 Arg      => +Ex_Name));
 
          --  Create a condition from the elements in Handled_Exc
 

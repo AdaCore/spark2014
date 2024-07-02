@@ -1689,18 +1689,16 @@ package body Gnat2Why.Util is
 
            or else Is_Array_Type (Ty_Ext)
 
-           --  For constrained types with discriminants, we supply the value
-           --  of the discriminants.
+           --  Types with discriminants might have variant parts. Components
+           --  which are not present in an object are fixed by the dynamic
+           --  invariant.
 
-           or else (Has_Discriminants (Ty_Ext)
-                     and then Is_Constrained (Ty_Ext))
+           or else Has_Discriminants (Ty_Ext)
 
-           --  For component types with defaulted discriminants, we know the
-           --  discriminants have their default value.
+           --  Tagged types have an invariant providing the value of the
+           --  extension when the tag is the tag of Ty_Ext.
 
-           or else (not Top_Level
-                     and then Has_Discriminants (Ty_Ext)
-                     and then Has_Defaulted_Discriminants (Ty_Ext))
+           or else Is_Tagged_Type (Ty_Ext)
 
            --  For access-to-subprogram types, we know that they abide by
            --  their contracts.

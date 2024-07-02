@@ -2362,6 +2362,13 @@ package body SPARK_Definition is
          when N_Function_Call =>
             Mark_Call (N);
 
+            --  Collect handlers reachable from N if it might raise exceptions
+            if not Violation_Detected
+              and then Is_Function_With_Side_Effects (Get_Called_Entity (N))
+            then
+               Collect_Reachable_Handlers (N);
+            end if;
+
          when N_Goto_Statement =>
             --  If the goto label was encountered before the goto statement,
             --  it is a backward goto. Reject it.
@@ -2592,7 +2599,6 @@ package body SPARK_Definition is
             Mark_Call (N);
 
             --  Collect handlers reachable from N if it might raise exceptions
-
             Collect_Reachable_Handlers (N);
 
          when N_Qualified_Expression =>

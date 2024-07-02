@@ -1,0 +1,27 @@
+test.adb:12:04: info: initialization of "Y" proved
+test.adb:23:09: error: "X" is not readable
+test.adb:23:09: error: launch "gnatprove --explain=E0010" for more information
+test.adb:23:09: error: object was moved at line 16 [E0010]
+test_ghost.adb:18:04: info: absence of resource or memory leak at end of scope proved (CVC5: 1 VC)
+test_ghost.adb:19:04: info: initialization of "Y" proved
+test_ghost.adb:19:04: medium: resource or memory leak might occur at end of scope
+test_ghost.adb:23:09: info: absence of resource or memory leak proved (CVC5: 1 VC)
+test_ghost.adb:24:09: info: absence of resource or memory leak proved (CVC5: 1 VC)
+test_ghost.adb:25:12: medium: unexpected exception might be raised
+test_ghost.adb:26:07: medium: unexpected exception might be raised [reason for check: ghost procedure calls should not propagate exceptions to non-ghost code]
+test_ghost.adb:31:06: info: absence of resource or memory leak proved (CVC5: 1 VC)
+test_loop.adb:13:10: info: initialization of "Local" proved
+test_loop.adb:15:17: medium: overflow check might fail, cannot prove upper bound for X + 1 (e.g. when X = Integer'Last) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: loop at line 11 should mention X in a loop invariant]
+test_loop.adb:16:19: info: only expected exception raised (CVC5: 1 VC)
+test_loop.adb:17:17: medium: overflow check might fail, cannot prove lower bound for Y + Local (e.g. when Local = -1 and Y = Integer'First) [reason for check: result of addition must fit in a 32-bits machine integer]
+test_loop.adb:21:15: warning: this statement is never reached
+test_loop.adb:21:20: info: overflow check proved (CVC5: 2 VC)
+test_loop.adb:24:19: medium: assertion might fail [possible fix: loop at line 11 should mention X in a loop invariant]
+test_ok.adb:11:04: info: absence of resource or memory leak at end of scope proved (CVC5: 1 VC)
+test_ok.adb:12:04: info: initialization of "Y" proved
+test_ok.adb:12:04: medium: resource or memory leak might occur at end of scope
+test_ok.adb:16:09: info: absence of resource or memory leak proved (CVC5: 1 VC)
+test_ok.adb:17:09: info: absence of resource or memory leak proved (CVC5: 1 VC)
+test_ok.adb:18:12: info: only expected exception raised (CVC5: 1 VC)
+test_ok.adb:23:06: info: absence of resource or memory leak proved (CVC5: 1 VC)
+gnatprove: error during flow analysis and proof

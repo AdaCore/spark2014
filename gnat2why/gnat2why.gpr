@@ -23,6 +23,12 @@ project GNAT2Why is
 
    package Analyzer is
 
+      for Review_File use "analyzer/gnat2why.sar";
+
+      --  Relocate outputs outside of object directory because that one is
+      --  cached in CIs and we do not want to store baselines in the cache.
+      for Output_Dir use "analyzer";
+
       for Switches ("analyze") use ("-j0", "--incrementality-method=minimal",
          "--no-gnatcheck");
       for Switches ("infer") use ("--disable-issue-type", "MEMORY_LEAK_ADA");
@@ -48,8 +54,6 @@ project GNAT2Why is
          --  Exclude generated frontend files
          "obj/einfo-entities.adb",
          "obj/sinfo-nodes.adb");
-
-      for Review_File use "analyzer/gnat2why.sar";
 
    end Analyzer;
 

@@ -14,6 +14,8 @@ project GNAT2Why_GNAT is
    Build : Build_Type := External ("Build", "Devel");
    Coverage := External ("Coverage", "");
 
+   Tool := External ("GPR_TOOL", "");
+
    Common_Switches := ("-g", "-gnat2022");
    --  These are appended after other switches, in particular, after -gnatg,
    --  which sets the Ada version to 2012.
@@ -26,7 +28,14 @@ project GNAT2Why_GNAT is
    end case;
 
    package Compiler is
-      for Local_Configuration_Pragmas use "gnat.adc";
+      case Tool is
+         when "gnatsas" =>
+            --  disable use of pragma configuration files when running
+            --  GNAT SAS
+            null;
+         when Others =>
+            for Local_Configuration_Pragmas use "gnat.adc";
+      end case;
 
       case Build is
          when "Debug" | "Devel" =>
@@ -43,9 +52,23 @@ project GNAT2Why_GNAT is
 
       case Build is
          when "Debug" =>
-            for Global_Configuration_Pragmas use "debug.adc";
+            case Tool is
+               when "gnatsas" =>
+                  --  disable use of pragma configuration files when running
+                  --  GNAT SAS
+                  null;
+               when Others =>
+                  for Global_Configuration_Pragmas use "debug.adc";
+            end case;
          when "Devel" =>
-            for Global_Configuration_Pragmas use "devel.adc";
+            case Tool is
+               when "gnatsas" =>
+                  --  disable use of pragma configuration files when running
+                  --  GNAT SAS
+                  null;
+               when Others =>
+                  for Global_Configuration_Pragmas use "devel.adc";
+            end case;
          when "Production" =>
             null;
       end case;

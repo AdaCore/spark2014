@@ -93,10 +93,10 @@ profile: LDFLAGS += -pg
 profile: build
 
 codepeer-run: setup force
-	gnatsas analyze -P gnat2why.gpr --no-gnat --debug
+	gnatsas analyze -P gnat2why.gpr --no-gnat
 
 codepeer:
-	@gnatsas report text -P gnat2why.gpr --quiet --debug
+	@gnatsas report text -P gnat2why.gpr --quiet
 	@gnatsas report code-climate -P gnat2why.gpr --quiet -o obj/gnatsas/gnat2why.json
 
 force:

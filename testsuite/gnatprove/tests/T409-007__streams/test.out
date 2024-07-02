@@ -7,7 +7,7 @@ streamable_types.adb:16:07: info: initialization of "Buffer" proved
 streamable_types.adb:16:07: info: range check proved (CVC5: 2 VC)
 streamable_types.adb:19:29: info: cannot unroll loop (too many loop iterations)
 streamable_types.adb:20:18: info: index check proved (CVC5: 2 VC)
-streamable_types.adb:20:65: info: index check proved (CVC5: 2 VC)
+streamable_types.adb:20:65: info: index check proved (CVC5: 1 VC; Z3: 1 VC)
 streamable_types.adb:20:74: info: range check proved (CVC5: 1 VC; Z3: 1 VC)
 streamable_types.adb:23:13: warning: assuming "Write" always terminates
 streamable_types.adb:23:13: warning: no Always_Terminates aspect available for "Write"
