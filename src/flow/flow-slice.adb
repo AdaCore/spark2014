@@ -360,7 +360,9 @@ package body Flow.Slice is
          pragma Assert (Calls.Is_Empty);
 
          for G of Unresolved loop
-            if Ekind (G) in E_Procedure | E_Entry then
+            if Ekind (G) in E_Procedure | E_Entry
+              or else Is_Function_With_Side_Effects (G)
+            then
                declare
                   V_Initial : Flow_Graphs.Vertex_Id renames
                     FA.PDG.Get_Vertex (Direct_Mapping_Id (G, Initial_Value));

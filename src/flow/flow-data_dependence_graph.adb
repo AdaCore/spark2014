@@ -21,6 +21,7 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
+with Sem_Util;               use Sem_Util;
 with SPARK_Util.Subprograms; use SPARK_Util.Subprograms;
 with Flow_Utility;           use Flow_Utility;
 
@@ -73,7 +74,8 @@ package body Flow.Data_Dependence_Graph is
            and then FA.Is_Generative
          then
             for E of Calls loop
-               if Ekind (E) in E_Procedure | E_Entry
+               if (Ekind (E) in E_Procedure | E_Entry
+                    or else Is_Function_With_Side_Effects (E))
                  and then (not Has_User_Supplied_Globals (E)
                            or else Rely_On_Generated_Global (E, FA.B_Scope))
                then
@@ -172,8 +174,14 @@ package body Flow.Data_Dependence_Graph is
                   elsif FA.Generating_Globals
                     and then FA.Is_Generative
                     and then Var.Kind = Direct_Mapping
-                    and then Ekind (Get_Direct_Mapping_Id (Var)) in
-                               E_Procedure | E_Entry
+                    and then
+                      (declare
+                         E : constant Entity_Id := Get_Direct_Mapping_Id (Var);
+                       begin
+                         Ekind (E) in E_Procedure | E_Entry
+                           or else
+                         (Ekind (E) = E_Function
+                           and then Is_Function_With_Side_Effects (E)))
                     and then
                       (for some SC of Atr.Subprogram_Calls =>
                          SC.E = Get_Direct_Mapping_Id (Var))

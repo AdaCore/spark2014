@@ -8432,7 +8432,8 @@ package body Flow.Control_Flow_Graph is
          --  that we model such outputs as read-writes).
 
          for E of FA.Direct_Calls loop
-            if Ekind (E) in E_Procedure | E_Entry
+            if (Ekind (E) in E_Procedure | E_Entry
+                  or else Is_Function_With_Side_Effects (E))
               and then (not Has_User_Supplied_Globals (E)
                         or else Rely_On_Generated_Global (E, FA.B_Scope))
             then

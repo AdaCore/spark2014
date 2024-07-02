@@ -7,10 +7,10 @@ Generated contracts for P.Set
          X
 Generated contracts for P.Proc1
    Global =>
-      In_Out =>
+      Output =>
          X
    Refined_Global =>
-      In_Out =>
+      Output =>
          X
 Generated contracts for P.Proc2
    Global =>
