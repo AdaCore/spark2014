@@ -1,0 +1,5 @@
+test.adb:4:04: warning: analyzing unreferenced procedure "Add"
+test.adb:7:22: info: assertion proved (CVC5: 2 VC)
+test.adb:7:46: info: division check proved (CVC5: 1 VC)
+test.adb:23:25: info: assertion proved (CVC5: 2 VC)
+test.adb:23:49: info: division check proved (CVC5: 1 VC)

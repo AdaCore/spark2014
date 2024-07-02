@@ -17250,7 +17250,7 @@ package body Gnat2Why.Expr is
             --  to logic functions next_representable and prev_representable
             --  for the corresponding type.
 
-            if Is_Floating_Point_Type (Etype (Var)) then
+            if Has_Floating_Point_Type (Etype (Var)) then
                declare
                   Opnd   : constant Node_Id := First (Expressions (Expr));
                   W_Type : constant W_Type_Id := Base_Why_Type (Etype (Var));
@@ -17287,7 +17287,7 @@ package body Gnat2Why.Expr is
             --  adding 1 to the representation value, and 'Pred is modelled
             --  as subtracting 1 to the representation value.
 
-            elsif Is_Modular_Integer_Type (Etype (Var)) then
+            elsif Has_Modular_Integer_Type (Etype (Var)) then
                declare
                   Opnd   : constant Node_Id := First (Expressions (Expr));
                   W_Type : constant W_Type_Id := Base_Why_Type (Etype (Var));
@@ -25853,7 +25853,7 @@ package body Gnat2Why.Expr is
       --  ??? it is assumed that rotate calls are only valid on actual
       --  unsigned_8/16/32/64/128 types with the corresponding 'Size
 
-      if Is_Modular_Integer_Type (Etype (Expr)) then
+      if Has_Modular_Integer_Type (Etype (Expr)) then
          declare
             Modulus_Val : constant Uint := Modulus (Etype (Subp));
             Nb_Of_Bits  : constant Pos :=
