@@ -3246,6 +3246,32 @@ package body CE_RAC is
                   end if;
                end;
 
+            when Snames.Name_Valid =>
+               pragma Assert (No (Expressions (N)));
+               return Boolean_Value (True, Etype (N));
+
+            when Snames.Name_Copy_Sign =>
+
+               if No (Expressions (N)) then
+                  RAC_Unsupported
+                    ("RAC_Attribute_Reference 'Copy_Sign without arguments",
+                     N);
+               else
+                  declare
+                     First_Arg  : constant Node_Id := First (Expressions (N));
+                     Second_Arg : constant Node_Id := Next (First_Arg);
+
+                     pragma Assert (Present (Second_Arg));
+
+                     First_Val  : constant CE_Values.Float_Value :=
+                       Value_Real (RAC_Expr (First_Arg));
+                     Second_Val : constant CE_Values.Float_Value :=
+                       Value_Real (RAC_Expr (Second_Arg));
+                  begin
+                     return Real_Value (Copy_Sign (First_Val, Second_Val), N);
+                  end;
+               end if;
+
             when others =>
                RAC_Unsupported
                  ("RAC_Attribute_Reference",
