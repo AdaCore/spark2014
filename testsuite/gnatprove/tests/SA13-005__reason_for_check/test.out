@@ -31,7 +31,7 @@ reason_for_check.adb:55:64: info: initialization of "U" proved
 reason_for_check.adb:60:32: high: float overflow check might fail (e.g. when X = -2.5521175E+38 and Y = -2.5521173E+38) [reason for check: result of floating-point addition must be bounded] [possible fix: subprogram at line 55 should mention X and Y in a precondition]
 reason_for_check.adb:61:32: high: float overflow check might fail (e.g. when X = -2.5521175E+38 and Y = 2.5521173E+38) [reason for check: result of floating-point subtraction must be bounded] [possible fix: subprogram at line 55 should mention X and Y in a precondition]
 reason_for_check.adb:62:32: high: float overflow check might fail (e.g. when X = 2.7222588E+38 and Y = -5.0781757E+9) [reason for check: result of floating-point multiplication must be bounded] [possible fix: subprogram at line 55 should mention X and Y in a precondition]
-reason_for_check.adb:63:32: high: divide by zero might fail (e.g. when Y = 0.0) [possible fix: add precondition (Y /= 0) to subprogram at line 55]
+reason_for_check.adb:63:32: high: divide by zero might fail (e.g. when Y = -0.0) [possible fix: add precondition (Y /= 0) to subprogram at line 55]
 reason_for_check.adb:63:32: high: float overflow check might fail (e.g. when X = 1.6814281E+1 and Y = -6.4652170E-39) [reason for check: result of floating-point division must be bounded] [possible fix: subprogram at line 55 should mention X and Y in a precondition]
 reason_for_check.adb:64:32: info: division check proved (CVC5: 1 VC; Trivial: 1 VC)
 reason_for_check.adb:64:32: medium: float overflow check might fail [reason for check: result of floating-point exponentiation must be bounded] [possible fix: subprogram at line 55 should mention E and X in a precondition]
