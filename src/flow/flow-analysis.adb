@@ -2044,12 +2044,12 @@ package body Flow.Analysis is
 
    begin
       --  Discover live code
-      FA.CFG_With_Dead_Code.DFS (Start         => FA.Start_Vertex,
-                                 Include_Start => True,
-                                 Visitor       => Flag_Live'Access);
+      FA.CFG.DFS (Start         => FA.Start_Vertex,
+                  Include_Start => True,
+                  Visitor       => Flag_Live'Access);
 
       --  Anything remaining is dead
-      for V of FA.CFG_With_Dead_Code.Get_Collection (Flow_Graphs.All_Vertices)
+      for V of FA.CFG.Get_Collection (Flow_Graphs.All_Vertices)
       loop
          declare
             Atr : V_Attributes renames FA.Atr (V);

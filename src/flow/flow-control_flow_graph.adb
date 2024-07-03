@@ -8468,12 +8468,6 @@ package body Flow.Control_Flow_Graph is
                end;
             end if;
          end loop;
-
-      --  Copy the CFG before any treatment in CFG_With_Dead_Code
-
-      else
-         FA.CFG_With_Dead_Code := FA.CFG.Create;
-         FA.CFG_With_Dead_Code.Copy_Edges (FA.CFG);
       end if;
 
       --  Finally, make sure that all extra checks for folded functions have
