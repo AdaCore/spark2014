@@ -37,7 +37,7 @@ project GNAT2Why is
       Filter := "--show=kind=check+warning-suspicious_constant_operation";
       for Switches ("report text") use (Filter, "--show-backtraces");
       for Switches ("report exit-code") use (Filter);
-      for Switches ("report code-climate") use (Filter);
+      for Switches ("report code-climate") use (Filter, "--long-desc");
 
       for Excluded_Source_Dirs use ("gnat_src");
 
