@@ -6530,6 +6530,10 @@ package body Gnat2Why.Expr is
                      Args  : W_Expr_Array (1 .. Num_B);
 
                   begin
+                     --  All_Global_Inv should not matter here as no part of
+                     --  SPARK code should see a pointer to an incomplete type
+                     --  with a type invariant which might be relaxed.
+
                      Args (1) := Insert_Simple_Conversion
                        (Domain => EW_Term,
                         Expr   => +Expr,
@@ -7394,6 +7398,9 @@ package body Gnat2Why.Expr is
         Pre => Has_Invariants_In_SPARK (Ty);
       --  Return True if the top-level invariant of Ty shall be considered
 
+      function Comp_Has_Included_Inv (Ty : Type_Kind_Id) return Test_Result;
+      --  Return Pass if Ty or one of its ancestors has a considered invariant
+
       function Invariant_For_Comp
         (C_Expr : W_Term_Id;
          C_Ty   : Entity_Id;
@@ -7410,6 +7417,28 @@ package body Gnat2Why.Expr is
          Dummy  : W_Expr_Array)
          return W_Pred_Id
       is (Invariant_For_Comp (C_Expr, C_Ty, Empty));
+
+      ---------------------------
+      -- Comp_Has_Included_Inv --
+      ---------------------------
+
+      function Comp_Has_Included_Inv (Ty : Type_Kind_Id) return Test_Result is
+         Current : Entity_Id := Ty;
+         Parent  : Entity_Id;
+      begin
+         loop
+            if Has_Invariants_In_SPARK (Current)
+              and then Include_Inv (Current)
+            then
+               return Pass;
+            end if;
+
+            Parent := Retysp (Etype (Current));
+            exit when Current = Parent;
+            Current := Parent;
+         end loop;
+         return Continue;
+      end Comp_Has_Included_Inv;
 
       -----------------
       -- Include_Inv --
@@ -7446,6 +7475,9 @@ package body Gnat2Why.Expr is
 
       function Invariant_For_Record is new Build_Predicate_For_Record
         (Invariant_For_Comp, Invariant_For_Comp);
+
+      function Type_Contains_Included_Inv is new Traverse_Subcomponents
+        (Comp_Has_Included_Inv);
 
       Rep_Ty : constant Entity_Id := Retysp (Ty);
       --  If Ty's fullview is in SPARK, go to its underlying type to check its
@@ -7520,28 +7552,50 @@ package body Gnat2Why.Expr is
 
          elsif Is_Access_Type (Rep_Ty)
            and then not Is_Access_Subprogram_Type (Rep_Ty)
-           and then not Designates_Incomplete_Type (Rep_Ty)
          then
-            declare
-               C_Expr   : constant W_Term_Id := New_Pointer_Value_Access
-                 (Ada_Node => Empty,
-                  E        => Rep_Ty,
-                  Name     => Expr);
-               Comp_Inv : constant W_Pred_Id := Invariant_For_Comp
-                 (C_Expr, Directly_Designated_Type (Rep_Ty), Empty);
-            begin
-               if Comp_Inv /= True_Pred then
-                  Pred := New_And_Pred
-                    (Left  => Pred,
-                     Right => New_Conditional
-                       (Condition =>
-                            New_Not (Right => Pred_Of_Boolean_Term
-                                     (New_Pointer_Is_Null_Access
-                                          (E    => Rep_Ty,
-                                           Name => +Expr))),
-                        Then_Part => Comp_Inv));
+
+            --  Introduce a sanity checking to make sure that we are not
+            --  missing any invariant on access-to-incomplete types.
+
+            if Designates_Incomplete_Type (Rep_Ty) then
+
+               if Type_Contains_Included_Inv
+                 (Directly_Designated_Type (Rep_Ty))
+               then
+                  pragma Assert
+                    (Kind = Locally_Assumed and then Present (Subp));
+                  Error_Msg_N
+                    ("& cannot be used in SPARK",
+                     Subp,
+                     Names         => [Rep_Ty],
+                     Kind          => Error_Kind,
+                     Continuations =>
+                       ["access to incomplete or private type which needs"
+                        & " an invariant check is not yet supported"]);
                end if;
-            end;
+
+            else
+               declare
+                  C_Expr   : constant W_Term_Id := New_Pointer_Value_Access
+                    (Ada_Node => Empty,
+                     E        => Rep_Ty,
+                     Name     => Expr);
+                  Comp_Inv : constant W_Pred_Id := Invariant_For_Comp
+                    (C_Expr, Directly_Designated_Type (Rep_Ty), Empty);
+               begin
+                  if Comp_Inv /= True_Pred then
+                     Pred := New_And_Pred
+                       (Left  => Pred,
+                        Right => New_Conditional
+                          (Condition =>
+                               New_Not (Right => Pred_Of_Boolean_Term
+                                        (New_Pointer_Is_Null_Access
+                                             (E    => Rep_Ty,
+                                              Name => +Expr))),
+                           Then_Part => Comp_Inv));
+                  end if;
+               end;
+            end if;
          end if;
       end if;
 
