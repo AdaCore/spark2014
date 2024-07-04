@@ -427,7 +427,8 @@ package Gnat2Why.Expr is
       return W_Pred_Id
    with Pre =>
        (case Kind is
-          when Globally_Assumed => No (Scop) and then No (Subp),
+          when Globally_Assumed => No (Scop) and then No (Subp)
+            and then not Include_Comp,
           when Locally_Assumed  => Present (Scop),
           when For_Check        => Present (Scop) and then Include_Comp),
      Post =>
