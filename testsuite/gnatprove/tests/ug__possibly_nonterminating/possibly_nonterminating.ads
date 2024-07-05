@@ -2,7 +2,7 @@ package Possibly_Nonterminating with
   SPARK_Mode
 is
 
-   procedure Loop_Forver with
+   procedure Loop_Forever with
      No_Return,
      Always_Terminates => False,
      Exceptional_Cases => (others => False);
