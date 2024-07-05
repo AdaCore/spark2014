@@ -317,22 +317,24 @@ package Gnat2Why.Expr is
    --     given scope.
 
    procedure Compute_Dynamic_Invariant
-     (Expr             :        W_Term_Id;
-      Ty               :        Type_Kind_Id;
-      Params           :        Transformation_Params;
-      Initialized      :        W_Term_Id;
-      Only_Var         :        W_Term_Id;
-      Top_Predicate    :        W_Term_Id;
-      All_Global_Inv   :        W_Term_Id;
-      Inv_Scop         :        Node_Id;
-      Inv_Subp         :        Node_Id;
-      Use_Pred         :        Boolean;
-      New_Preds_Module :        W_Module_Id;
-      T                :    out W_Pred_Id;
-      Loc_Incompl_Acc  :        Ada_To_Why_Ident.Map;
-      New_Incompl_Acc  : in out Ada_To_Why_Ident.Map;
-      Expand_Incompl   :        Boolean)
-   with
+     (Expr              :        W_Term_Id;
+      Ty                :        Type_Kind_Id;
+      Params            :        Transformation_Params;
+      Initialized       :        W_Term_Id;
+      Only_Var          :        W_Term_Id;
+      Top_Predicate     :        W_Term_Id;
+      All_Global_Inv    :        W_Term_Id;
+      Inv_Scop          :        Node_Id;
+      Inv_Subp          :        Node_Id;
+      Use_Pred          :        Boolean;
+      New_Preds_Module  :        W_Module_Id;
+      T                 :    out W_Pred_Id;
+      Loc_Incompl_Acc   :        Ada_To_Why_Ident.Map;
+      New_Incompl_Acc   : in out Ada_To_Why_Ident.Map;
+      Loc_Incompl_Acc_R :        Ada_To_Why_Ident.Map;
+      New_Incompl_Acc_R : in out Ada_To_Why_Ident.Map;
+      Expand_Incompl    :        Boolean)
+     with
      Pre  =>
        (if Present (Inv_Subp)
         then Inv_Scop = Inv_Subp and then Is_False_Boolean (+All_Global_Inv)),
@@ -356,6 +358,8 @@ package Gnat2Why.Expr is
    --  @param Loc_Incompl_Acc the set of predicate names from the local scope.
    --  @param New_Incompl_Acc new predicate symbols introduced for the type,
    --    they are also in the local scope.
+   --  @param Loc_Incompl_Acc_R same as Loc_Incompl_Acc but for init wrappers
+   --  @param New_Incompl_Acc_R same as New_Incompl_Acc but for init wrappers
    --  @param Expand_Incompl true if dynamic predicates for values of
    --    incomplete types should be expanded.
 
@@ -938,6 +942,9 @@ private
 
    Incompl_Access_Dyn_Inv_Map : Ada_To_Why_Ident.Map;
    --  Map storing predicates for invariants of access to incomplete types
+
+   Incompl_Access_Dyn_Inv_Map_R : Ada_To_Why_Ident.Map;
+   --  Same but for predicates of init wrappers
 
    type Ref_Type is record
       Mutable : Boolean;
