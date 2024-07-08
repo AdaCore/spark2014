@@ -529,13 +529,39 @@ package body Gnat2Why.Types is
                               Binders  => Binders,
                               Location => No_Location));
 
-                     Axioms.Append
-                       (New_Defining_Bool_Axiom
-                          (Fun_Name => Get (Get_Symb (Get_Name (Name))).all,
-                           Name     => Name,
-                           Binders  => Binders,
-                           Dep_Kind => EW_Axdep_Pred,
-                           Def      => +Def));
+                     --  Do not use New_Defining_Bool_Axiom to add the access
+                     --  to the designated value as an additional trigger.
+
+                     declare
+                        Left       : constant W_Term_Id := New_Call
+                          (Name    => Name,
+                           Binders => Binders);
+                        Equality   : constant W_Pred_Id :=
+                          New_Call
+                            (Name => Why_Eq,
+                             Args => (+Left, +Def),
+                             Typ  => EW_Bool_Type);
+                        Axiom_Name : constant String :=
+                          Get (Get_Symb (Get_Name (Name))).all
+                          & "__" & Def_Axiom;
+                     begin
+                        Axioms.Append
+                          (New_Guarded_Axiom
+                             (Name     => NID (Axiom_Name),
+                              Binders  => Binders,
+                              Triggers => New_Triggers
+                                (Triggers =>
+                                     (1 => New_Trigger
+                                          (Terms =>
+                                             (1 => +Left,
+                                              2 => New_Pointer_Value_Access
+                                                (E      => E,
+                                                 Name   => +Main_Arg,
+                                                 Domain => EW_Term))))),
+                              Def      => Equality,
+                              Dep      => New_Axiom_Dep
+                                (Name => Name, Kind => EW_Axdep_Pred)));
+                     end;
 
                   --  Otherwise, define the symbol at declaration
 

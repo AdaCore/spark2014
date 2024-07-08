@@ -1722,11 +1722,11 @@ package body Gnat2Why.Util is
            or else Is_Access_Subprogram_Type (Ty_Ext)
 
            --  For access types with null exclusion, we know that they are not
-           --  null.
+           --  null. For other access types, the value is fixed by the dynamic
+           --  invariant when the pointer is null.
 
            or else (Include_Static
-                    and then Is_Access_Type (Ty_Ext)
-                    and then Can_Never_Be_Null (Ty_Ext))
+                    and then Is_Access_Type (Ty_Ext))
 
            --  We need an invariant for type predicates
 

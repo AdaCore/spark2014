@@ -2,45 +2,51 @@ a.adb:11:21: medium: implicit aspect Always_Terminates on overriding operator "=
 a.adb:14:07: medium: implicit aspect Always_Terminates on "Eq" could be incorrect, "Eq" and overriding operator "=" are mutually recursive [possible fix: annotate "Eq" and overriding operator "=" with Subprogram_Variant aspects]
 a.adb:14:37: info: pointer dereference check proved (CVC5: 1 VC)
 a.adb:14:45: info: pointer dereference check proved (CVC5: 1 VC)
-a.adb:16:04: info: absence of resource or memory leak at end of scope proved (CVC5: 1 VC)
-a.adb:17:04: info: absence of resource or memory leak at end of scope proved (CVC5: 1 VC)
-a.adb:18:04: medium: resource or memory leak might occur at end of scope
-a.adb:20:13: info: implicit function contract might not be available on recursive calls or calls from enclosing unit
-a.adb:21:07: medium: implicit aspect Always_Terminates on "Length" could be incorrect, subprogram is recursive [possible fix: annotate "Length" with a Subprogram_Variant aspect]
-a.adb:22:22: info: pointer dereference check proved (CVC5: 1 VC)
-a.adb:23:14: info: overflow check proved (CVC5: 2 VC)
-a.adb:23:25: info: pointer dereference check proved (CVC5: 1 VC)
-a.adb:26:07: info: dynamic accessibility check proved (Trivial)
-a.adb:26:07: medium: implicit aspect Always_Terminates on "Get_Next" could be incorrect, subprogram is recursive [possible fix: annotate "Get_Next" with a Subprogram_Variant aspect]
-a.adb:26:28: info: precondition proved (CVC5: 2 VC)
-a.adb:26:39: info: pointer dereference check proved (CVC5: 1 VC)
-a.adb:26:48: info: range check proved (CVC5: 2 VC)
-a.adb:35:13: info: loop invariant preservation proved (Z3: 1 VC)
-a.adb:35:13: medium: loop invariant might fail in first iteration
-a.adb:35:50: info: precondition proved (CVC5: 4 VC)
-a.adb:36:25: info: assertion proved (CVC5: 1 VC)
-a.adb:36:26: info: pointer dereference check proved (CVC5: 1 VC)
-a.adb:37:16: info: pointer dereference check proved (CVC5: 1 VC)
+a.adb:16:13: info: implicit function contract might not be available on recursive calls
+a.adb:17:07: medium: implicit aspect Always_Terminates on "Length" could be incorrect, subprogram is recursive [possible fix: annotate "Length" with a Subprogram_Variant aspect]
+a.adb:18:22: info: pointer dereference check proved (CVC5: 1 VC)
+a.adb:19:14: info: overflow check proved (CVC5: 2 VC)
+a.adb:19:25: info: pointer dereference check proved (CVC5: 1 VC)
+a.adb:21:13: info: implicit function contract might not be available on recursive calls
+a.adb:22:07: info: dynamic accessibility check proved (Trivial)
+a.adb:22:07: medium: implicit aspect Always_Terminates on "Get_Next" could be incorrect, subprogram is recursive [possible fix: annotate "Get_Next" with a Subprogram_Variant aspect]
+a.adb:22:28: info: precondition proved (CVC5: 2 VC)
+a.adb:22:39: info: pointer dereference check proved (CVC5: 1 VC)
+a.adb:22:48: info: range check proved (CVC5: 2 VC)
+a.adb:25:04: warning: analyzing unreferenced procedure "Test"
+a.adb:25:14: warning: subprogram "Test" has no effect
+a.adb:26:07: info: absence of resource or memory leak at end of scope proved (CVC5: 1 VC)
+a.adb:27:07: info: absence of resource or memory leak at end of scope proved (CVC5: 1 VC)
+a.adb:28:07: medium: resource or memory leak might occur at end of scope
+a.adb:33:13: info: loop invariant initialization proved (Z3: 1 VC)
+a.adb:33:13: medium: loop invariant might not be preserved by an arbitrary iteration
+a.adb:33:50: info: precondition proved (CVC5: 4 VC)
+a.adb:34:25: info: assertion proved (Z3: 1 VC)
+a.adb:34:26: info: pointer dereference check proved (CVC5: 1 VC)
+a.adb:35:16: info: pointer dereference check proved (CVC5: 1 VC)
 b.adb:11:21: medium: implicit aspect Always_Terminates on overriding operator "=" could be incorrect, overriding operator "=" and "Eq" are mutually recursive [possible fix: annotate overriding operator "=" and "Eq" with Subprogram_Variant aspects]
 b.adb:14:07: medium: implicit aspect Always_Terminates on "Eq" could be incorrect, "Eq" and overriding operator "=" are mutually recursive [possible fix: annotate "Eq" and overriding operator "=" with Subprogram_Variant aspects]
 b.adb:14:37: info: pointer dereference check proved (CVC5: 1 VC)
 b.adb:14:45: info: pointer dereference check proved (CVC5: 1 VC)
-b.adb:16:04: info: absence of resource or memory leak at end of scope proved (CVC5: 1 VC)
-b.adb:17:04: info: absence of resource or memory leak at end of scope proved (CVC5: 1 VC)
-b.adb:18:04: medium: resource or memory leak might occur at end of scope
-b.adb:20:13: info: implicit function contract might not be available on recursive calls or calls from enclosing unit
-b.adb:21:07: medium: implicit aspect Always_Terminates on "Length" could be incorrect, subprogram is recursive [possible fix: annotate "Length" with a Subprogram_Variant aspect]
-b.adb:22:22: info: pointer dereference check proved (CVC5: 1 VC)
-b.adb:23:14: info: overflow check proved (CVC5: 2 VC)
-b.adb:23:25: info: pointer dereference check proved (CVC5: 1 VC)
-b.adb:26:07: info: dynamic accessibility check proved (Trivial)
-b.adb:26:07: medium: implicit aspect Always_Terminates on "Get_Next" could be incorrect, subprogram is recursive [possible fix: annotate "Get_Next" with a Subprogram_Variant aspect]
-b.adb:26:45: info: precondition proved (CVC5: 2 VC)
-b.adb:26:56: info: pointer dereference check proved (CVC5: 1 VC)
-b.adb:26:65: info: range check proved (CVC5: 2 VC)
-b.adb:35:13: info: loop invariant preservation proved (Z3: 1 VC)
-b.adb:35:13: medium: loop invariant might fail in first iteration
-b.adb:35:50: info: precondition proved (CVC5: 4 VC)
-b.adb:36:25: info: assertion proved (CVC5: 1 VC)
-b.adb:36:26: info: pointer dereference check proved (CVC5: 1 VC)
-b.adb:37:16: info: pointer dereference check proved (CVC5: 1 VC)
+b.adb:16:13: info: implicit function contract might not be available on recursive calls
+b.adb:17:07: medium: implicit aspect Always_Terminates on "Length" could be incorrect, subprogram is recursive [possible fix: annotate "Length" with a Subprogram_Variant aspect]
+b.adb:18:22: info: pointer dereference check proved (CVC5: 1 VC)
+b.adb:19:14: info: overflow check proved (CVC5: 2 VC)
+b.adb:19:25: info: pointer dereference check proved (CVC5: 1 VC)
+b.adb:21:13: info: implicit function contract might not be available on recursive calls
+b.adb:22:07: info: dynamic accessibility check proved (Trivial)
+b.adb:22:07: medium: implicit aspect Always_Terminates on "Get_Next" could be incorrect, subprogram is recursive [possible fix: annotate "Get_Next" with a Subprogram_Variant aspect]
+b.adb:22:45: info: precondition proved (CVC5: 2 VC)
+b.adb:22:56: info: pointer dereference check proved (CVC5: 1 VC)
+b.adb:22:65: info: range check proved (CVC5: 2 VC)
+b.adb:25:04: warning: analyzing unreferenced procedure "Test"
+b.adb:25:14: warning: subprogram "Test" has no effect
+b.adb:26:07: info: absence of resource or memory leak at end of scope proved (CVC5: 1 VC)
+b.adb:27:07: info: absence of resource or memory leak at end of scope proved (CVC5: 1 VC)
+b.adb:28:07: medium: resource or memory leak might occur at end of scope
+b.adb:33:13: info: loop invariant initialization proved (Z3: 1 VC)
+b.adb:33:13: medium: loop invariant might not be preserved by an arbitrary iteration
+b.adb:33:50: info: precondition proved (CVC5: 4 VC)
+b.adb:34:25: info: assertion proved (Z3: 1 VC)
+b.adb:34:26: info: pointer dereference check proved (CVC5: 1 VC)
+b.adb:35:16: info: pointer dereference check proved (CVC5: 1 VC)

@@ -6139,7 +6139,7 @@ package body Gnat2Why.Expr is
 
          if Can_Never_Be_Null (Ty_Ext) then
             T := New_And_Pred
-              (Left   => New_Conditional
+              (Left  => New_Conditional
                  (Condition => Pred_Of_Boolean_Term (Initialized),
                   Then_Part => New_Not
                     (Right  => Pred_Of_Boolean_Term
@@ -6148,23 +6148,31 @@ package body Gnat2Why.Expr is
                            Field => M_Subprogram_Access.Rec_Is_Null,
                            Typ   => EW_Bool_Type))),
                   Typ       => EW_Bool_Type),
-               Right  => T);
+               Right => T);
          end if;
 
-      elsif Is_Access_Type (Ty_Ext) and then Can_Never_Be_Null (Ty_Ext) then
+      elsif Is_Access_Type (Ty_Ext) then
 
          --  Only assume that an object with null exclusion is not null if it
          --  is initialized. This is the case in most cases, since access types
          --  are initialized by default. However, out parameters might not be
          --  valid values of the type.
 
-         T := New_Conditional
-           (Condition => Pred_Of_Boolean_Term (Initialized),
-            Then_Part => New_Not
-              (Right  => Pred_Of_Boolean_Term
-                   (New_Pointer_Is_Null_Access (E    => Ty_Ext,
-                                                Name => Expr))),
-            Typ       => EW_Bool_Type);
+         if Can_Never_Be_Null (Ty_Ext) then
+            T := New_Conditional
+              (Condition => Pred_Of_Boolean_Term (Initialized),
+               Then_Part => New_Not
+                 (Right  => Pred_Of_Boolean_Term
+                      (New_Pointer_Is_Null_Access (E    => Ty_Ext,
+                                                   Name => Expr))),
+               Typ       => EW_Bool_Type);
+         else
+            T := New_Call
+              (Name => E_Symb
+                 (Ty_Ext, WNE_Dynamic_Property,
+                  Relaxed_Init => Get_Relaxed_Init (Get_Type (+Expr))),
+               Args => (1 => +Expr));
+         end if;
 
       --  Do not assume bounds of arrays and discriminants if Only_Var is
       --  statically True.
@@ -6588,9 +6596,9 @@ package body Gnat2Why.Expr is
                      T := New_And_Pred
                        (Left        => T,
                         Right       =>
-                          New_Call (Name   => Element (Dyn_Inv_Pos),
-                                    Args   => Args,
-                                    Typ    => EW_Bool_Type));
+                          New_Call (Name => Element (Dyn_Inv_Pos),
+                                    Args => Args,
+                                    Typ  => EW_Bool_Type));
                   end;
 
                   --  If Inv_Scop is set, add possible locally assumed type

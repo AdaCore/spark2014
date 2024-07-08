@@ -82,6 +82,12 @@ package body Why.Gen.Pointers is
    --  pointer_value, is_null_pointer, and attr_init if Relaxed_Init is True.
    --  It also defines the needed functions to manipulate this type.
 
+   function Dummy_Designated_Value
+     (E            : Type_Kind_Id;
+      Relaxed_Init : Boolean)
+      return W_Expr_Id;
+   --  Compute the dummy value to be used for values designated by E
+
    package Pointer_Typ_To_Roots is new Ada.Containers.Hashed_Maps
      (Key_Type        => Entity_Id,
       Element_Type    => Node_Id,
@@ -273,10 +279,10 @@ package body Why.Gen.Pointers is
          --  type Typ is [null_exclusion] access [subtype_indication]
          --  X : Typ := new [subtype_indication]
 
-         Ty        : constant Entity_Id := Etype (E);
-
          Assign_Pointer : constant W_Identifier_Id :=
            To_Local (E_Symb (E, WNE_Assign_Null_Check, Relaxed_Init));
+         Dummy_Expr     : constant W_Expr_Id :=
+           Dummy_Designated_Value (E, Relaxed_Init);
 
       begin
          --  If the designated type is incomplete, declare a function to access
@@ -313,6 +319,43 @@ package body Why.Gen.Pointers is
                         Typ    => Get_Typ (Value_Id))));
          end if;
 
+         --  Declare a symbol for the dynamic property of E. It fixes the value
+         --  of value if the pointer is null.
+
+         declare
+            Value_Access : constant W_Term_Id :=
+              (if Designates_Incomplete_Type (E)
+               then New_Record_Access
+                 (Name  => +A_Ident,
+                  Field => To_Local
+                    (E_Symb
+                         (E            => E,
+                          S            => WNE_Pointer_Value_Abstr,
+                          Relaxed_Init => Relaxed_Init)))
+               else New_Pointer_Value_Access
+                 (E, E, +A_Ident, Local => True));
+
+         begin
+            Emit (Th,
+                  New_Function_Decl
+                    (Domain   => EW_Pred,
+                     Name     => To_Local
+                       (E_Symb (E, WNE_Dynamic_Property, Relaxed_Init)),
+                     Binders  => A_Binder,
+                     Location => No_Location,
+                     Labels   => Symbol_Sets.Empty_Set,
+                     Def      => New_Conditional
+                       (Domain    => EW_Pred,
+                        Condition => +Pred_Of_Boolean_Term
+                          (New_Pointer_Is_Null_Access
+                               (E, +A_Ident, Local => True)),
+                        Then_Part => New_Comparison
+                          (Symbol => Why_Eq,
+                           Left   => +Value_Access,
+                           Right  => +Dummy_Expr,
+                           Domain => EW_Pred))));
+         end;
+
          Emit (Th,
                New_Function_Decl
                  (Domain   => EW_Pred,
@@ -329,16 +372,28 @@ package body Why.Gen.Pointers is
 
          if not Relaxed_Init then
             declare
-               Null_Ptr   : constant W_Identifier_Id :=
-                 To_Local (E_Symb (Ty, WNE_Null_Pointer));
-               Top_Field  : constant W_Expr_Id := New_Pointer_Is_Null_Access
-                 (E, +Null_Ptr, Local => True);
-               Condition  : constant W_Pred_Id          := New_Call
-                 (Name => Why_Eq,
-                  Args => (1 => +Top_Field, 2 => +True_Term),
-                  Typ  => EW_Bool_Type);
-               Axiom_Name : constant String :=
-                 To_String (WNE_Null_Pointer) & "__" & Def_Axiom;
+               Null_Ptr : constant W_Identifier_Id :=
+                 To_Local (E_Symb (E, WNE_Null_Pointer));
+               Def      : constant W_Term_Id := New_Record_Aggregate
+                 (Associations =>
+                    (1 => New_Field_Association
+                         (Domain => EW_Term,
+                          Field  => To_Local
+                            (E_Symb
+                               (E => E,
+                                S =>
+                                  (if Designates_Incomplete_Type (E)
+                                   then WNE_Pointer_Value_Abstr
+                                   else WNE_Pointer_Value))),
+                             Value  => +Dummy_Expr),
+                     2 => New_Field_Association
+                       (Domain => EW_Term,
+                        Field  => To_Local
+                          (E_Symb
+                               (E => E,
+                                S => WNE_Is_Null_Pointer)),
+                        Value  => +True_Term)),
+                  Typ          => Abstr_Ty);
             begin
                Emit (Th,
                      Why.Atree.Builders.New_Function_Decl
@@ -347,17 +402,8 @@ package body Why.Gen.Pointers is
                         Binders     => (1 .. 0 => <>),
                         Location    => No_Location,
                         Labels      => Symbol_Sets.Empty_Set,
-                        Return_Type => Abstr_Ty));
-
-               Emit (Th,
-                     New_Axiom
-                       (Ada_Node => E,
-                        Name     => NID (Axiom_Name),
-                        Def      => Condition,
-                        Dep      =>
-                          New_Axiom_Dep (
-                            Name => Null_Ptr,
-                            Kind => EW_Axdep_Func)));
+                        Return_Type => Abstr_Ty,
+                        Def         => +Def));
             end;
          end if;
 
@@ -597,9 +643,10 @@ package body Why.Gen.Pointers is
                           (Name   => +A_Ident,
                            Field  => To_Local (E_Symb (E, WNE_Attr_Init)),
                            Typ    => EW_Bool_Type))
-                    else (1 .. 0 => <>)),
+                   else (1 .. 0 => <>)),
                  Ty           => Root,
-                 Relaxed_Init => Relaxed_Init);
+                 Relaxed_Init => Relaxed_Init,
+                 Force_Dummy  => True);
             --  (value   = to_root a.value,
             --   addr    = a.addr,
             --   is_null = a.is_null)
@@ -657,7 +704,8 @@ package body Why.Gen.Pointers is
                     else (1 .. 0 => <>)),
                  Ty           => E,
                  Local        => True,
-                 Relaxed_Init => Relaxed_Init);
+                 Relaxed_Init => Relaxed_Init,
+                 Force_Dummy  => True);
             --  (value   = to_e r.value,
             --   addr    = r.addr,
             --   is_null = r.is_null)
@@ -720,7 +768,8 @@ package body Why.Gen.Pointers is
                       (E     => E,
                        Name  => +A_Ident,
                        Local => True)),
-                 Ty => E);
+                 Ty => E,
+                 Force_Dummy  => True);
             --  (value   = of_wrapper a.value,
             --   addr    = a.addr,
             --   is_null = a.is_null)
@@ -768,7 +817,8 @@ package body Why.Gen.Pointers is
                     3 => +True_Term),
                  Ty           => E,
                  Local        => True,
-                 Relaxed_Init => True);
+                 Relaxed_Init => True,
+                 Force_Dummy  => True);
             --  (value       = to_wrapper r.value,
             --   addr        = r.addr,
             --   is_null     = r.is_null,
@@ -1547,14 +1597,22 @@ package body Why.Gen.Pointers is
 
    begin
       --  For types designating incomplete types, declare a new uninterpreted
-      --  type for the value component.
+      --  type for the value component and a dummy value.
 
       if Designates_Incomplete_Type (E) then
          Emit (Th,
                New_Type_Decl
                  (Name => Img
-                    (Get_Symb (To_Local (E_Symb (E, WNE_Private_Type)))))
-              );
+                    (Get_Symb (To_Local (E_Symb (E, WNE_Private_Type))))));
+         Emit (Th,
+               New_Function_Decl
+                 (Domain      => EW_Pterm,
+                  Name        => To_Local (E_Symb (E, WNE_Dummy_Abstr)),
+                  Items       => Item_Array'(1 .. 0 => <>),
+                  Return_Type =>
+                    New_Named_Type (To_Local (E_Symb (E, WNE_Private_Type))),
+                  Location    => No_Location,
+                  Labels      => Symbol_Sets.Empty_Set));
       end if;
 
       Declare_Pointer_Type;
@@ -1636,6 +1694,29 @@ package body Why.Gen.Pointers is
          end if;
       end if;
    end Declare_Rep_Pointer_Type;
+
+   ----------------------------
+   -- Dummy_Designated_Value --
+   ----------------------------
+
+   function Dummy_Designated_Value
+     (E            : Type_Kind_Id;
+      Relaxed_Init : Boolean)
+      return W_Expr_Id
+   is
+      Des_Ty : constant Entity_Id := Directly_Designated_Type (E);
+   begin
+      if Designates_Incomplete_Type (Repr_Pointer_Type (E)) then
+         return +E_Symb (E, WNE_Dummy_Abstr, Relaxed_Init);
+      elsif Has_Relaxed_Init (Des_Ty) or else Relaxed_Init then
+         return Insert_Simple_Conversion
+           (Expr   => Why_Default_Value (EW_Term, Des_Ty),
+            To     => EW_Abstract (Des_Ty, Relaxed_Init => True),
+            Domain => EW_Term);
+      else
+         return Why_Default_Value (EW_Term, Des_Ty);
+      end if;
+   end Dummy_Designated_Value;
 
    -------------------------
    -- Get_Borrowed_At_End --
@@ -2055,7 +2136,8 @@ package body Why.Gen.Pointers is
       A            : W_Expr_Array;
       Ty           : Entity_Id;
       Local        : Boolean := False;
-      Relaxed_Init : Boolean := False)
+      Relaxed_Init : Boolean := False;
+      Force_Dummy  : Boolean := False)
       return W_Term_Id
    is
       Ty_Ext     : constant Entity_Id := Retysp (Ty);
@@ -2091,6 +2173,17 @@ package body Why.Gen.Pointers is
                then To_Local (E_Symb (Ty_Ext, WNE_Close, Relaxed_Init))
                else E_Symb (Ty_Ext, WNE_Close, Relaxed_Init)),
             Args   => (1 => Value));
+      end if;
+
+      --  To construct valid values, set the designated value to dummy when the
+      --  pointer is null.
+
+      if Force_Dummy then
+         Value := New_Conditional
+           (Domain    => EW_Term,
+            Condition => +Is_Null,
+            Then_Part => Dummy_Designated_Value (Ty_Ext, Relaxed_Init),
+            Else_Part => Value);
       end if;
 
       return New_Record_Aggregate
