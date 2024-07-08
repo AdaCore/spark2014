@@ -6423,6 +6423,17 @@ package body Gnat2Why.Expr is
         and then Type_Needs_Dynamic_Invariant
           (Directly_Designated_Type (Ty_Ext))
       then
+
+         --  If the designated type is incomplete and its dynamic invariant is
+         --  entirely static, it will be assumed as part of the incomplete type
+         --  declaration. Ignore it here.
+
+         if Designates_Incomplete_Type (Repr_Pointer_Type (Ty_Ext))
+           and then Type_Has_Static_Constraints
+             (Directly_Designated_Type (Ty_Ext))
+         then
+            null;
+
          --  For types designating an incomplete type, we cannot always assume
          --  the dynamic property of the designated type as they may be
          --  recursive. If Expand_Incompl is false, we use specific dynamic
@@ -6436,7 +6447,7 @@ package body Gnat2Why.Expr is
          --  these predicates for Itypes which do not have a preliminary
          --  declaration. We have never seen a case where this happens though.
 
-         if Designates_Incomplete_Type (Repr_Pointer_Type (Ty_Ext))
+         elsif Designates_Incomplete_Type (Repr_Pointer_Type (Ty_Ext))
            and then not Expand_Incompl
          then
 

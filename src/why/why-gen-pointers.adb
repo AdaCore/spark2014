@@ -1319,6 +1319,34 @@ package body Why.Gen.Pointers is
              else Type_Representative)),
          EW_Import);
 
+      --  If Des_Ty does not have static constraints, its static constraint
+      --  predicate is statically True. Give a direct definition in the clone
+      --  for it. Otherwise, an axiom will be generated in the completion
+      --  module.
+
+      declare
+         Abstr_Binder : constant Binder_Type :=
+           (B_Name => New_Identifier
+              (Domain => EW_Term,
+               Name   => New_Name (Symb => NID ("x")),
+               Typ    => EW_Abstract
+                 (Des_Ty,
+                  (if Relaxed_Init then Has_Init_Wrapper (Des_Ty)
+                   else Has_Relaxed_Init (Des_Ty)))),
+            others => <>);
+      begin
+         Emit (Th,
+               New_Function_Decl
+                 (Domain   => EW_Pred,
+                  Name     => To_Local
+                    (E_Symb (E, WNE_Static_Constraint, Relaxed_Init)),
+                  Binders  => Binder_Array'(1 => Abstr_Binder),
+                  Def      => (if Type_Has_Static_Constraints (Des_Ty)
+                                  then Why_Empty else +True_Pred),
+                  Location => No_Location,
+                  Labels   => Symbol_Sets.Empty_Set));
+      end;
+
       Emit (Th,
             New_Clone_Declaration
               (Theory_Kind   => EW_Module,
@@ -1340,7 +1368,13 @@ package body Why.Gen.Pointers is
                        (EW_Abstract
                             (Des_Ty,
                              (if Relaxed_Init then Has_Init_Wrapper (Des_Ty)
-                              else Has_Relaxed_Init (Des_Ty))))))));
+                              else Has_Relaxed_Init (Des_Ty))))),
+                  3 => New_Clone_Substitution
+                    (Kind      => EW_Predicate,
+                     Orig_Name => New_Name
+                       (Symb => NID ("comp_valid")),
+                     Image     => To_Local
+                       (E_Symb (E, WNE_Static_Constraint, Relaxed_Init))))));
 
       Complete_Rep_Pointer_Type
         (Th, E, Separated => True, Relaxed_Init => Relaxed_Init);

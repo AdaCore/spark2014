@@ -321,6 +321,7 @@ package Why.Gen.Names is
       --  completion.
       WNE_Open,
       WNE_Close,
+      WNE_Static_Constraint,
 
       --  Prefix for Why3 field names corresponding to record components
       WNE_Rec_Comp_Prefix,

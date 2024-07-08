@@ -546,16 +546,22 @@ package Gnat2Why.Util is
    --  @return True if Ty has a non empty DIC which does not mention the
    --     current type instance.
 
-   function Type_Needs_Dynamic_Invariant (T : Type_Kind_Id) return Boolean;
+   function Type_Needs_Dynamic_Invariant
+     (T              : Type_Kind_Id;
+      Include_Static : Boolean := True) return Boolean;
    --  @param T type entity
+   --  @param Include_Static set to False if entirely static invariants of T
+   --     should be ignored.
    --  @return True if T has a non-trivially True dynamic invariant
+
+   function Type_Has_Static_Constraints (E : Type_Kind_Id) return Boolean;
+   --  Return True if E has an entirely static dynamic invariant
 
    function Type_Is_Modeled_As_Base (T : Type_Kind_Id) return Boolean;
    --  Returns True if T is a scalar type that should be translated into Why
    --  as a renaming of its base type. This is currently done for dynamic
-   --  discrete types and dynamic types defined inside loops, which should not
-   --  be treated as having constants bounds, because translation of the loop
-   --  in Why may lead to having two coexisting versions of the type.
+   --  discrete types and discrete types with empty ranges to avoid having
+   --  types with no valid values.
 
    function Get_Base_Of_Type (T : Type_Kind_Id) return Type_Kind_Id
      with Post => not Type_Is_Modeled_As_Base (Get_Base_Of_Type'Result);

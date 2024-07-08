@@ -3244,6 +3244,13 @@ package body Why.Atree.Modules is
                                 Module => M),
                            Relaxed_Init => Relaxed_Init)),
                      Relaxed_Init);
+                  Insert_Symbol
+                    (E, WNE_Static_Constraint,
+                     New_Identifier
+                       (Symb   => NID (To_String (WNE_Static_Constraint)),
+                        Module => M_C,
+                        Domain => EW_Pred),
+                     Relaxed_Init);
                end if;
             end;
          end if;
