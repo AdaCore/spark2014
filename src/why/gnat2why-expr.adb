@@ -5750,8 +5750,9 @@ package body Gnat2Why.Expr is
       Use_Pred       : Boolean := True)
       return W_Pred_Id
    is
-      T               : W_Pred_Id;
-      New_Incompl_Acc : Ada_To_Why_Ident.Map;
+      T                 : W_Pred_Id;
+      New_Incompl_Acc   : Ada_To_Why_Ident.Map;
+      New_Incompl_Acc_R : Ada_To_Why_Ident.Map;
    begin
       --  Current_Subp is used as a scope to determine which local invariants
       --  should be included in the dynamic invariant. It should be set.
@@ -5759,44 +5760,49 @@ package body Gnat2Why.Expr is
       pragma Assert (Present (Current_Subp));
 
       Compute_Dynamic_Invariant
-        (Expr             => Expr,
-         Ty               => Ty,
-         Params           => Params,
-         Initialized      => Initialized,
-         Only_Var         => Only_Var,
-         Top_Predicate    => Top_Predicate,
-         All_Global_Inv   =>
+        (Expr              => Expr,
+         Ty                => Ty,
+         Params            => Params,
+         Initialized       => Initialized,
+         Only_Var          => Only_Var,
+         Top_Predicate     => Top_Predicate,
+         All_Global_Inv    =>
            (if All_Global_Inv then True_Term else False_Term),
-         Inv_Scop         => Current_Subp,
-         Inv_Subp         =>
+         Inv_Scop          => Current_Subp,
+         Inv_Subp          =>
            (if All_Global_Inv then Empty else Current_Subp),
-         Use_Pred         => Use_Pred,
-         New_Preds_Module => Why_Empty,
-         T                => T,
-         Loc_Incompl_Acc  => Ada_To_Why_Ident.Empty_Map,
-         New_Incompl_Acc  => New_Incompl_Acc,
-         Expand_Incompl   => True);
+         Use_Pred          => Use_Pred,
+         New_Preds_Module  => Why_Empty,
+         T                 => T,
+         Loc_Incompl_Acc   => Ada_To_Why_Ident.Empty_Map,
+         New_Incompl_Acc   => New_Incompl_Acc,
+         Loc_Incompl_Acc_R => Ada_To_Why_Ident.Empty_Map,
+         New_Incompl_Acc_R => New_Incompl_Acc_R,
+         Expand_Incompl    => True);
 
       pragma Assert (New_Incompl_Acc.Is_Empty);
+      pragma Assert (New_Incompl_Acc_R.Is_Empty);
       return T;
    end Compute_Dynamic_Invariant;
 
    procedure Compute_Dynamic_Invariant
-     (Expr             :        W_Term_Id;
-      Ty               :        Type_Kind_Id;
-      Params           :        Transformation_Params;
-      Initialized      :        W_Term_Id;
-      Only_Var         :        W_Term_Id;
-      Top_Predicate    :        W_Term_Id;
-      All_Global_Inv   :        W_Term_Id;
-      Inv_Scop         :        Node_Id;
-      Inv_Subp         :        Node_Id;
-      Use_Pred         :        Boolean;
-      New_Preds_Module :        W_Module_Id;
-      T                :    out W_Pred_Id;
-      Loc_Incompl_Acc  :        Ada_To_Why_Ident.Map;
-      New_Incompl_Acc  : in out Ada_To_Why_Ident.Map;
-      Expand_Incompl   :        Boolean)
+     (Expr              :        W_Term_Id;
+      Ty                :        Type_Kind_Id;
+      Params            :        Transformation_Params;
+      Initialized       :        W_Term_Id;
+      Only_Var          :        W_Term_Id;
+      Top_Predicate     :        W_Term_Id;
+      All_Global_Inv    :        W_Term_Id;
+      Inv_Scop          :        Node_Id;
+      Inv_Subp          :        Node_Id;
+      Use_Pred          :        Boolean;
+      New_Preds_Module  :        W_Module_Id;
+      T                 :    out W_Pred_Id;
+      Loc_Incompl_Acc   :        Ada_To_Why_Ident.Map;
+      New_Incompl_Acc   : in out Ada_To_Why_Ident.Map;
+      Loc_Incompl_Acc_R :        Ada_To_Why_Ident.Map;
+      New_Incompl_Acc_R : in out Ada_To_Why_Ident.Map;
+      Expand_Incompl    :        Boolean)
    is
 
       function Invariant_For_Access
@@ -5873,24 +5879,26 @@ package body Gnat2Why.Expr is
          --  ??? we can assume the value of constrained attribute if any
 
          Compute_Dynamic_Invariant
-           (Expr             => New_Pointer_Value_Access
+           (Expr              => New_Pointer_Value_Access
               (Ada_Node => Empty,
                E        => Ty,
                Name     => Expr),
-            Ty               => Directly_Designated_Type (Ty),
-            Only_Var         => False_Term,
-            Top_Predicate    => True_Term,
-            All_Global_Inv   => All_Global_Inv,
-            Inv_Scop         => Inv_Scop,
-            Inv_Subp         => Inv_Subp,
-            Initialized      => True_Term,
-            Params           => Params,
-            Use_Pred         => Use_Pred,
-            New_Preds_Module => New_Preds_Module,
-            T                => Value_Dyn_Inv,
-            Loc_Incompl_Acc  => Loc_Incompl_Acc,
-            New_Incompl_Acc  => New_Incompl_Acc,
-            Expand_Incompl   => False);
+            Ty                => Directly_Designated_Type (Ty),
+            Only_Var          => False_Term,
+            Top_Predicate     => True_Term,
+            All_Global_Inv    => All_Global_Inv,
+            Inv_Scop          => Inv_Scop,
+            Inv_Subp          => Inv_Subp,
+            Initialized       => True_Term,
+            Params            => Params,
+            Use_Pred          => Use_Pred,
+            New_Preds_Module  => New_Preds_Module,
+            T                 => Value_Dyn_Inv,
+            Loc_Incompl_Acc   => Loc_Incompl_Acc,
+            New_Incompl_Acc   => New_Incompl_Acc,
+            Loc_Incompl_Acc_R => Loc_Incompl_Acc_R,
+            New_Incompl_Acc_R => New_Incompl_Acc_R,
+            Expand_Incompl    => False);
          --  Do not expand incomplete types inside access types to avoid
          --  hitting circularity.
 
@@ -5929,25 +5937,27 @@ package body Gnat2Why.Expr is
          --  initialized.
 
          Compute_Dynamic_Invariant
-           (Expr             => C_Expr,
-            Ty               => C_Ty,
-            Initialized      =>
+           (Expr              => C_Expr,
+            Ty                => C_Ty,
+            Initialized       =>
               (if (Present (E) and then Ekind (E) = E_Discriminant)
                or else Is_Protected_Type (Retysp (Ty))
                then True_Term
                else Initialized),
-            Only_Var         => False_Term,
-            Top_Predicate    => True_Term,
-            All_Global_Inv   => All_Global_Inv,
-            Inv_Scop         => Inv_Scop,
-            Inv_Subp         => Inv_Subp,
-            Params           => Params,
-            Use_Pred         => Use_Pred,
-            New_Preds_Module => New_Preds_Module,
-            T                => T_Comp,
-            Loc_Incompl_Acc  => Loc_Incompl_Acc,
-            New_Incompl_Acc  => New_Incompl_Acc,
-            Expand_Incompl   => Expand_Incompl);
+            Only_Var          => False_Term,
+            Top_Predicate     => True_Term,
+            All_Global_Inv    => All_Global_Inv,
+            Inv_Scop          => Inv_Scop,
+            Inv_Subp          => Inv_Subp,
+            Params            => Params,
+            Use_Pred          => Use_Pred,
+            New_Preds_Module  => New_Preds_Module,
+            T                 => T_Comp,
+            Loc_Incompl_Acc   => Loc_Incompl_Acc,
+            New_Incompl_Acc   => New_Incompl_Acc,
+            Loc_Incompl_Acc_R => Loc_Incompl_Acc_R,
+            New_Incompl_Acc_R => New_Incompl_Acc_R,
+            Expand_Incompl    => Expand_Incompl);
 
          --  Components necessarily have the tag of their type
 
@@ -5974,10 +5984,14 @@ package body Gnat2Why.Expr is
       --  If Ty's fullview is in SPARK, go to its underlying type to check its
       --  kind.
 
-      Ty_Spec   : constant Entity_Id :=
+      Ty_Spec      : constant Entity_Id :=
         (if Is_Class_Wide_Type (Ty) then Get_Specific_Type_From_Classwide (Ty)
          else Ty);
-      Ty_Ext    : constant Entity_Id := Retysp (Ty_Spec);
+      Ty_Ext       : constant Entity_Id := Retysp (Ty_Spec);
+      Relaxed_Init : constant Boolean := Get_Relaxed_Init (Get_Type (+Expr));
+      Pred_Main_Ty : constant W_Type_Id :=
+        (if Relaxed_Init then EW_Abstract (Ty_Ext, Relaxed_Init => True)
+         else Type_Of_Node (Ty_Ext));
 
       Variables : Flow_Id_Sets.Set;
 
@@ -5993,7 +6007,7 @@ package body Gnat2Why.Expr is
       if Use_Pred
         and then not Is_Itype (Ty_Ext)
         and then not Is_Standard_Boolean_Type (Ty_Ext)
-        and then Eq_Base (Type_Of_Node (Ty_Ext), Get_Type (+Expr))
+        and then Eq_Base (Pred_Main_Ty, Get_Type (+Expr))
       then
 
          --  The generated predicate uses an empty scope for type invariants
@@ -6014,8 +6028,10 @@ package body Gnat2Why.Expr is
             Args (5) := +All_Global_Inv;
             Args (6 .. Num_B) := Vars;
 
-            T := New_Call (Name => E_Symb (E => Ty_Ext,
-                                           S => WNE_Dynamic_Invariant),
+            T := New_Call (Name => E_Symb
+                           (E            => Ty_Ext,
+                            S            => WNE_Dynamic_Invariant,
+                            Relaxed_Init => Relaxed_Init),
                            Args => Args,
                            Typ  => EW_Bool_Type);
 
@@ -6433,8 +6449,7 @@ package body Gnat2Why.Expr is
                  Repr_Pointer_Type (Ty_Ext);
                Des_Ty      : Type_Kind_Id :=
                  Retysp (Directly_Designated_Type (Ty_Ext));
-               Dyn_Inv_Pos : Ada_To_Why_Ident.Cursor :=
-                 Loc_Incompl_Acc.Find (Rep_Ty_Ext);
+               Dyn_Inv_Pos : Ada_To_Why_Ident.Cursor;
                Inserted    : Boolean;
 
             begin
@@ -6471,21 +6486,24 @@ package body Gnat2Why.Expr is
                            Params => Params)));
                   Rep_Ty_Ext := Etype (Rep_Ty_Ext);
                   Des_Ty := Retysp (Directly_Designated_Type (Rep_Ty_Ext));
-                  Dyn_Inv_Pos := Loc_Incompl_Acc.Find (Rep_Ty_Ext);
                end if;
 
-               pragma Assert
-                 (not (Has_Element (Dyn_Inv_Pos)
-                  and then New_Incompl_Acc.Contains (Rep_Ty_Ext)));
+               Dyn_Inv_Pos :=
+                 (if Relaxed_Init then Loc_Incompl_Acc_R.Find (Rep_Ty_Ext)
+                  else Loc_Incompl_Acc.Find (Rep_Ty_Ext));
 
                if not Has_Element (Dyn_Inv_Pos) then
-                  Dyn_Inv_Pos := New_Incompl_Acc.Find (Rep_Ty_Ext);
+                  Dyn_Inv_Pos :=
+                    (if Relaxed_Init then New_Incompl_Acc_R.Find (Rep_Ty_Ext)
+                     else New_Incompl_Acc.Find (Rep_Ty_Ext));
 
                   --  Search in the global map
 
                   if not Has_Element (Dyn_Inv_Pos) then
-                     Dyn_Inv_Pos := Incompl_Access_Dyn_Inv_Map.Find
-                       (Rep_Ty_Ext);
+                     Dyn_Inv_Pos :=
+                       (if Relaxed_Init
+                        then Incompl_Access_Dyn_Inv_Map_R.Find (Rep_Ty_Ext)
+                        else Incompl_Access_Dyn_Inv_Map.Find (Rep_Ty_Ext));
 
                      --  If it was not found and we are allowed to introduce
                      --  new declarations (New_Preds_Module is set), introduce
@@ -6503,11 +6521,19 @@ package body Gnat2Why.Expr is
                                 Module    => New_Preds_Module,
                                 Typ       => EW_Bool_Type);
                         begin
-                           Incompl_Access_Dyn_Inv_Map.Insert
-                             (Rep_Ty_Ext, Pred_Name);
-                           New_Incompl_Acc.Insert
-                             (Rep_Ty_Ext, To_Local (Pred_Name),
-                              Dyn_Inv_Pos, Inserted);
+                           if Relaxed_Init then
+                              Incompl_Access_Dyn_Inv_Map_R.Insert
+                                (Rep_Ty_Ext, Pred_Name);
+                              New_Incompl_Acc_R.Insert
+                                (Rep_Ty_Ext, To_Local (Pred_Name),
+                                 Dyn_Inv_Pos, Inserted);
+                           else
+                              Incompl_Access_Dyn_Inv_Map.Insert
+                                (Rep_Ty_Ext, Pred_Name);
+                              New_Incompl_Acc.Insert
+                                (Rep_Ty_Ext, To_Local (Pred_Name),
+                                 Dyn_Inv_Pos, Inserted);
+                           end if;
                         end;
                      end if;
                   end if;
@@ -6524,10 +6550,14 @@ package body Gnat2Why.Expr is
                     (Des_Ty, Variables, Scop => Types.Empty);
 
                   declare
-                     Vars  : constant W_Expr_Array :=
+                     Vars    : constant W_Expr_Array :=
                        Get_Args_From_Variables (Variables, Params.Ref_Allowed);
-                     Num_B : constant Positive := 5 + Vars'Length;
-                     Args  : W_Expr_Array (1 .. Num_B);
+                     Num_B   : constant Positive := 5 + Vars'Length;
+                     Args    : W_Expr_Array (1 .. Num_B);
+                     Main_Ty : constant W_Type_Id :=
+                       (if Relaxed_Init
+                        then EW_Abstract (Rep_Ty_Ext, Relaxed_Init => True)
+                        else Type_Of_Node (Rep_Ty_Ext));
 
                   begin
                      --  All_Global_Inv should not matter here as no part of
@@ -6537,7 +6567,7 @@ package body Gnat2Why.Expr is
                      Args (1) := Insert_Simple_Conversion
                        (Domain => EW_Term,
                         Expr   => +Expr,
-                        To     => Type_Of_Node (Rep_Ty_Ext));
+                        To     => Main_Ty);
                      Args (2) := +Initialized;
                      Args (3) := +Only_Var;
                      Args (4) := +Top_Predicate;
