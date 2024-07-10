@@ -1,3 +1,5 @@
+
+abnormal_terminations.adb:10:10: high: "G2" must be listed in the Global aspect of "Check_OK" (SPARK RM 6.1.4(15))
+   10 |         G2 := 1;
+      |         ^~
 abnormal_terminations.adb:11:10: info: only expected exception raised
-abnormal_terminations.ads:8:06: info: data dependencies proved
-abnormal_terminations.ads:8:27: info: initialization of "G1" proved
