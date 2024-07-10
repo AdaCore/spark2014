@@ -5,110 +5,113 @@ a-strbou.ads:101:37: info: range check proved (CVC5: 2 VC), in instantiation at 
 a-strbou.ads:102:09: info: disjoint contract cases proved (CVC5: 1 VC), in instantiation at sb.ads:2
 a-strbou.ads:103:18: info: range check proved (CVC5: 2 VC), in instantiation at sb.ads:2
 a-strbou.ads:107:18: info: range check proved (CVC5: 2 VC), in instantiation at sb.ads:2
-a-strbou.ads:140:37: info: range check proved (CVC5: 2 VC), in instantiation at sb.ads:2
-a-strbou.ads:141:09: info: disjoint contract cases proved (CVC5: 1 VC), in instantiation at sb.ads:2
-a-strbou.ads:142:18: info: range check proved (CVC5: 2 VC), in instantiation at sb.ads:2
-a-strbou.ads:146:18: info: range check proved (CVC5: 2 VC), in instantiation at sb.ads:2
-a-strbou.ads:173:09: info: disjoint contract cases proved (CVC5: 1 VC), in instantiation at sb.ads:2
-a-strbou.ads:216:20: info: range check proved (CVC5: 2 VC), in instantiation at sb.ads:2
-a-strbou.ads:218:09: info: disjoint contract cases proved (CVC5: 1 VC), in instantiation at sb.ads:2
-a-strbou.ads:219:47: info: range check proved (CVC5: 2 VC), in instantiation at sb.ads:2
-a-strbou.ads:230:46: info: range check proved (CVC5: 2 VC), in instantiation at sb.ads:2
-a-strbou.ads:269:19: info: range check proved (CVC5: 2 VC), in instantiation at sb.ads:2
-a-strbou.ads:271:09: info: disjoint contract cases proved (CVC5: 1 VC), in instantiation at sb.ads:2
-a-strbou.ads:272:16: info: range check proved (CVC5: 2 VC), in instantiation at sb.ads:2
-a-strbou.ads:282:16: info: range check proved (CVC5: 2 VC), in instantiation at sb.ads:2
-a-strbou.ads:320:09: info: disjoint contract cases proved (CVC5: 1 VC), in instantiation at sb.ads:2
-a-strbou.ads:347:09: info: disjoint contract cases proved (CVC5: 1 VC), in instantiation at sb.ads:2
-a-strbou.ads:381:09: info: disjoint contract cases proved (CVC5: 1 VC), in instantiation at sb.ads:2
-a-strbou.ads:425:23: info: range check proved (CVC5: 2 VC), in instantiation at sb.ads:2
-a-strbou.ads:427:09: info: disjoint contract cases proved (CVC5: 1 VC), in instantiation at sb.ads:2
-a-strbou.ads:428:52: info: range check proved (CVC5: 2 VC), in instantiation at sb.ads:2
-a-strbou.ads:439:51: info: range check proved (CVC5: 2 VC), in instantiation at sb.ads:2
-a-strbou.ads:482:09: info: disjoint contract cases proved (CVC5: 1 VC), in instantiation at sb.ads:2
-a-strbou.ads:523:22: info: range check proved (CVC5: 2 VC), in instantiation at sb.ads:2
-a-strbou.ads:535:21: info: range check proved (CVC5: 2 VC), in instantiation at sb.ads:2
-a-strbou.ads:749:09: info: disjoint contract cases proved (CVC5: 1 VC), in instantiation at sb.ads:2
-a-strbou.ads:762:62: info: range check proved (CVC5: 2 VC), in instantiation at sb.ads:2
-a-strbou.ads:763:25: medium: precondition might fail, cannot prove Source'Length > 0, in instantiation at sb.ads:2
-a-strbou.ads:802:09: info: disjoint contract cases proved (CVC5: 1 VC), in instantiation at sb.ads:2
-a-strbou.ads:815:62: info: range check proved (CVC5: 2 VC), in instantiation at sb.ads:2
-a-strbou.ads:816:25: medium: precondition might fail, cannot prove Source'Length > 0, in instantiation at sb.ads:2
-a-strbou.ads:902:09: info: disjoint contract cases proved (CVC5: 1 VC), in instantiation at sb.ads:2
-a-strbou.ads:918:20: info: overflow check proved (CVC5: 2 VC), in instantiation at sb.ads:2
-a-strbou.ads:918:30: info: range check proved (CVC5: 2 VC), in instantiation at sb.ads:2
-a-strbou.ads:919:24: medium: precondition might fail, cannot prove Source'Length > 0, in instantiation at sb.ads:2
-a-strbou.ads:966:09: info: disjoint contract cases proved (CVC5: 1 VC), in instantiation at sb.ads:2
-a-strbou.ads:982:20: info: overflow check proved (CVC5: 2 VC), in instantiation at sb.ads:2
-a-strbou.ads:982:30: info: range check proved (CVC5: 2 VC), in instantiation at sb.ads:2
-a-strbou.ads:983:24: medium: precondition might fail, cannot prove Source'Length > 0, in instantiation at sb.ads:2
-a-strbou.ads:1038:53: info: precondition proved (CVC5: 1 VC), in instantiation at sb.ads:2
-a-strbou.ads:1132:22: info: precondition proved (CVC5: 1 VC), in instantiation at sb.ads:2
-a-strbou.ads:1209:50: info: precondition proved (CVC5: 1 VC), in instantiation at sb.ads:2
-a-strbou.ads:1209:67: info: range check proved (CVC5: 2 VC), in instantiation at sb.ads:2
-a-strbou.ads:1263:50: info: precondition proved (CVC5: 1 VC), in instantiation at sb.ads:2
-a-strbou.ads:1394:46: info: range check proved (CVC5: 2 VC), in instantiation at sb.ads:2
-a-strbou.ads:1395:29: info: overflow check proved (CVC5: 2 VC), in instantiation at sb.ads:2
-a-strbou.ads:1396:65: info: range check proved (CVC5: 2 VC), in instantiation at sb.ads:2
-a-strbou.ads:1397:09: info: disjoint contract cases proved (CVC5: 1 VC), in instantiation at sb.ads:2
-a-strbou.ads:1398:38: info: range check proved (CVC5: 2 VC), in instantiation at sb.ads:2
-a-strbou.ads:1399:14: info: overflow check proved (CVC5: 2 VC), in instantiation at sb.ads:2
-a-strbou.ads:1422:37: info: range check proved (CVC5: 2 VC), in instantiation at sb.ads:2
-a-strbou.ads:1423:14: info: overflow check proved (CVC5: 2 VC), in instantiation at sb.ads:2
-a-strbou.ads:1526:46: info: range check proved (CVC5: 2 VC), in instantiation at sb.ads:2
-a-strbou.ads:1527:29: info: overflow check proved (CVC5: 2 VC), in instantiation at sb.ads:2
-a-strbou.ads:1528:65: info: range check proved (CVC5: 2 VC), in instantiation at sb.ads:2
-a-strbou.ads:1529:09: info: disjoint contract cases proved (CVC5: 1 VC), in instantiation at sb.ads:2
-a-strbou.ads:1530:38: info: range check proved (CVC5: 2 VC), in instantiation at sb.ads:2
-a-strbou.ads:1531:14: info: overflow check proved (CVC5: 2 VC), in instantiation at sb.ads:2
-a-strbou.ads:1551:37: info: range check proved (CVC5: 2 VC), in instantiation at sb.ads:2
-a-strbou.ads:1552:14: info: overflow check proved (CVC5: 2 VC), in instantiation at sb.ads:2
-a-strbou.ads:1645:34: info: range check proved (CVC5: 2 VC), in instantiation at sb.ads:2
-a-strbou.ads:1647:09: info: disjoint contract cases proved (CVC5: 1 VC), in instantiation at sb.ads:2
-a-strbou.ads:1648:52: info: range check proved (CVC5: 2 VC), in instantiation at sb.ads:2
-a-strbou.ads:1665:51: info: range check proved (CVC5: 2 VC), in instantiation at sb.ads:2
-a-strbou.ads:1759:34: info: range check proved (CVC5: 2 VC), in instantiation at sb.ads:2
-a-strbou.ads:1761:09: info: disjoint contract cases proved (CVC5: 1 VC), in instantiation at sb.ads:2
-a-strbou.ads:1762:52: info: range check proved (CVC5: 2 VC), in instantiation at sb.ads:2
-a-strbou.ads:1778:51: info: range check proved (CVC5: 2 VC), in instantiation at sb.ads:2
-a-strbou.ads:1872:34: info: range check proved (CVC5: 2 VC), in instantiation at sb.ads:2
-a-strbou.ads:1874:09: info: disjoint contract cases proved (CVC5: 1 VC), in instantiation at sb.ads:2
-a-strbou.ads:1875:49: info: range check proved (CVC5: 2 VC), in instantiation at sb.ads:2
-a-strbou.ads:1900:48: info: range check proved (CVC5: 2 VC), in instantiation at sb.ads:2
-a-strbou.ads:1958:34: info: range check proved (CVC5: 2 VC), in instantiation at sb.ads:2
-a-strbou.ads:1960:09: info: disjoint contract cases proved (CVC5: 1 VC), in instantiation at sb.ads:2
-a-strbou.ads:1961:49: info: range check proved (CVC5: 2 VC), in instantiation at sb.ads:2
-a-strbou.ads:1986:48: info: range check proved (CVC5: 2 VC), in instantiation at sb.ads:2
-a-strbou.ads:2199:09: info: disjoint contract cases proved (CVC5: 1 VC), in instantiation at sb.ads:2
-a-strbou.ads:2228:18: info: overflow check proved (CVC5: 2 VC), in instantiation at sb.ads:2
-a-strbou.ads:2254:09: info: disjoint contract cases proved (CVC5: 1 VC), in instantiation at sb.ads:2
-a-strbou.ads:2285:18: info: overflow check proved (CVC5: 2 VC), in instantiation at sb.ads:2
-a-strbou.ads:2312:09: info: disjoint contract cases proved (CVC5: 1 VC), in instantiation at sb.ads:2
-a-strbou.ads:2348:18: info: overflow check proved (CVC5: 2 VC), in instantiation at sb.ads:2
-a-strbou.ads:2373:09: info: disjoint contract cases proved (CVC5: 1 VC), in instantiation at sb.ads:2
-a-strbou.ads:2410:18: info: overflow check proved (CVC5: 2 VC), in instantiation at sb.ads:2
-a-strbou.ads:2444:41: info: range check proved (CVC5: 2 VC), in instantiation at sb.ads:2
-a-strbou.ads:2444:63: info: division check proved (CVC5: 1 VC), in instantiation at sb.ads:2
-a-strbou.ads:2457:65: info: division check proved (CVC5: 1 VC), in instantiation at sb.ads:2
-a-strbou.ads:2482:39: info: range check proved (CVC5: 2 VC), in instantiation at sb.ads:2
-a-strbou.ads:2482:60: info: division check proved (CVC5: 1 VC), in instantiation at sb.ads:2
-a-strbou.ads:2484:09: info: disjoint contract cases proved (CVC5: 1 VC), in instantiation at sb.ads:2
-a-strbou.ads:2485:34: info: range check proved (CVC5: 2 VC), in instantiation at sb.ads:2
-a-strbou.ads:2485:56: info: division check proved (CVC5: 1 VC), in instantiation at sb.ads:2
-a-strbou.ads:2494:27: info: range check proved (CVC5: 2 VC), in instantiation at sb.ads:2
-a-strbou.ads:2494:48: info: division check proved (CVC5: 1 VC), in instantiation at sb.ads:2
-a-strbou.ads:2516:62: info: division check proved (CVC5: 1 VC), in instantiation at sb.ads:2
-a-strbou.ads:2518:09: info: disjoint contract cases proved (CVC5: 1 VC), in instantiation at sb.ads:2
-a-strbou.ads:2519:60: info: division check proved (CVC5: 1 VC), in instantiation at sb.ads:2
-a-strbou.ads:2528:50: info: division check proved (CVC5: 1 VC), in instantiation at sb.ads:2
-a-strbou.ads:2561:61: info: range check proved (CVC5: 2 VC), in instantiation at sb.ads:2
-a-strbou.ads:2568:25: info: range check proved (CVC5: 2 VC), in instantiation at sb.ads:2
-a-strbou.ads:2575:31: info: discriminant check proved (CVC5: 1 VC), in instantiation at sb.ads:2
-a-strbou.ads:2575:31: info: predicate check proved (CVC5: 2 VC; Trivial: 1 VC), in instantiation at sb.ads:2
+a-strbou.ads:143:37: info: range check proved (CVC5: 2 VC), in instantiation at sb.ads:2
+a-strbou.ads:144:09: info: disjoint contract cases proved (CVC5: 1 VC), in instantiation at sb.ads:2
+a-strbou.ads:145:18: info: range check proved (CVC5: 2 VC), in instantiation at sb.ads:2
+a-strbou.ads:149:18: info: range check proved (CVC5: 2 VC), in instantiation at sb.ads:2
+a-strbou.ads:176:09: info: disjoint contract cases proved (CVC5: 1 VC), in instantiation at sb.ads:2
+a-strbou.ads:219:20: info: range check proved (CVC5: 2 VC), in instantiation at sb.ads:2
+a-strbou.ads:221:09: info: disjoint contract cases proved (CVC5: 1 VC), in instantiation at sb.ads:2
+a-strbou.ads:222:47: info: range check proved (CVC5: 2 VC), in instantiation at sb.ads:2
+a-strbou.ads:233:46: info: range check proved (CVC5: 2 VC), in instantiation at sb.ads:2
+a-strbou.ads:272:19: info: range check proved (CVC5: 2 VC), in instantiation at sb.ads:2
+a-strbou.ads:274:09: info: disjoint contract cases proved (CVC5: 1 VC), in instantiation at sb.ads:2
+a-strbou.ads:275:16: info: range check proved (CVC5: 2 VC), in instantiation at sb.ads:2
+a-strbou.ads:285:16: info: range check proved (CVC5: 2 VC), in instantiation at sb.ads:2
+a-strbou.ads:323:09: info: disjoint contract cases proved (CVC5: 1 VC), in instantiation at sb.ads:2
+a-strbou.ads:350:09: info: disjoint contract cases proved (CVC5: 1 VC), in instantiation at sb.ads:2
+a-strbou.ads:384:09: info: disjoint contract cases proved (CVC5: 1 VC), in instantiation at sb.ads:2
+a-strbou.ads:428:23: info: range check proved (CVC5: 2 VC), in instantiation at sb.ads:2
+a-strbou.ads:430:09: info: disjoint contract cases proved (CVC5: 1 VC), in instantiation at sb.ads:2
+a-strbou.ads:431:52: info: range check proved (CVC5: 2 VC), in instantiation at sb.ads:2
+a-strbou.ads:442:51: info: range check proved (CVC5: 2 VC), in instantiation at sb.ads:2
+a-strbou.ads:485:09: info: disjoint contract cases proved (CVC5: 1 VC), in instantiation at sb.ads:2
+a-strbou.ads:526:22: info: range check proved (CVC5: 2 VC), in instantiation at sb.ads:2
+a-strbou.ads:538:21: info: range check proved (CVC5: 2 VC), in instantiation at sb.ads:2
+a-strbou.ads:752:09: info: disjoint contract cases proved (CVC5: 1 VC), in instantiation at sb.ads:2
+a-strbou.ads:765:62: info: range check proved (CVC5: 2 VC), in instantiation at sb.ads:2
+a-strbou.ads:766:25: info: precondition proved (CVC5: 4 VC), in instantiation at sb.ads:2
+a-strbou.ads:805:09: info: disjoint contract cases proved (CVC5: 1 VC), in instantiation at sb.ads:2
+a-strbou.ads:818:62: info: range check proved (CVC5: 2 VC), in instantiation at sb.ads:2
+a-strbou.ads:819:25: info: precondition proved (CVC5: 5 VC), in instantiation at sb.ads:2
+a-strbou.ads:905:09: info: disjoint contract cases proved (CVC5: 1 VC), in instantiation at sb.ads:2
+a-strbou.ads:921:20: info: overflow check proved (CVC5: 2 VC), in instantiation at sb.ads:2
+a-strbou.ads:921:30: info: range check proved (CVC5: 2 VC), in instantiation at sb.ads:2
+a-strbou.ads:922:24: info: precondition proved (CVC5: 4 VC), in instantiation at sb.ads:2
+a-strbou.ads:969:09: info: disjoint contract cases proved (CVC5: 1 VC), in instantiation at sb.ads:2
+a-strbou.ads:985:20: info: overflow check proved (CVC5: 2 VC), in instantiation at sb.ads:2
+a-strbou.ads:985:30: info: range check proved (CVC5: 2 VC), in instantiation at sb.ads:2
+a-strbou.ads:986:24: info: precondition proved (CVC5: 5 VC), in instantiation at sb.ads:2
+a-strbou.ads:1041:53: info: precondition proved (CVC5: 1 VC), in instantiation at sb.ads:2
+a-strbou.ads:1135:22: info: precondition proved (CVC5: 1 VC), in instantiation at sb.ads:2
+a-strbou.ads:1212:50: info: precondition proved (CVC5: 1 VC), in instantiation at sb.ads:2
+a-strbou.ads:1212:67: info: range check proved (CVC5: 2 VC), in instantiation at sb.ads:2
+a-strbou.ads:1266:50: info: precondition proved (CVC5: 1 VC), in instantiation at sb.ads:2
+a-strbou.ads:1397:46: info: range check proved (CVC5: 2 VC), in instantiation at sb.ads:2
+a-strbou.ads:1398:29: info: overflow check proved (CVC5: 2 VC), in instantiation at sb.ads:2
+a-strbou.ads:1399:65: info: range check proved (CVC5: 2 VC), in instantiation at sb.ads:2
+a-strbou.ads:1400:09: info: disjoint contract cases proved (CVC5: 1 VC), in instantiation at sb.ads:2
+a-strbou.ads:1401:38: info: range check proved (CVC5: 2 VC), in instantiation at sb.ads:2
+a-strbou.ads:1402:14: info: overflow check proved (CVC5: 2 VC), in instantiation at sb.ads:2
+a-strbou.ads:1425:37: info: range check proved (CVC5: 2 VC), in instantiation at sb.ads:2
+a-strbou.ads:1426:14: info: overflow check proved (CVC5: 2 VC), in instantiation at sb.ads:2
+a-strbou.ads:1529:46: info: range check proved (CVC5: 2 VC), in instantiation at sb.ads:2
+a-strbou.ads:1530:29: info: overflow check proved (CVC5: 2 VC), in instantiation at sb.ads:2
+a-strbou.ads:1531:65: info: range check proved (CVC5: 2 VC), in instantiation at sb.ads:2
+a-strbou.ads:1532:09: info: disjoint contract cases proved (CVC5: 1 VC), in instantiation at sb.ads:2
+a-strbou.ads:1533:38: info: range check proved (CVC5: 2 VC), in instantiation at sb.ads:2
+a-strbou.ads:1534:14: info: overflow check proved (CVC5: 2 VC), in instantiation at sb.ads:2
+a-strbou.ads:1554:37: info: range check proved (CVC5: 2 VC), in instantiation at sb.ads:2
+a-strbou.ads:1555:14: info: overflow check proved (CVC5: 2 VC), in instantiation at sb.ads:2
+a-strbou.ads:1648:34: info: range check proved (CVC5: 2 VC), in instantiation at sb.ads:2
+a-strbou.ads:1650:09: info: disjoint contract cases proved (CVC5: 1 VC), in instantiation at sb.ads:2
+a-strbou.ads:1651:52: info: range check proved (CVC5: 2 VC), in instantiation at sb.ads:2
+a-strbou.ads:1668:51: info: range check proved (CVC5: 2 VC), in instantiation at sb.ads:2
+a-strbou.ads:1762:34: info: range check proved (CVC5: 2 VC), in instantiation at sb.ads:2
+a-strbou.ads:1764:09: info: disjoint contract cases proved (CVC5: 1 VC), in instantiation at sb.ads:2
+a-strbou.ads:1765:52: info: range check proved (CVC5: 2 VC), in instantiation at sb.ads:2
+a-strbou.ads:1781:51: info: range check proved (CVC5: 2 VC), in instantiation at sb.ads:2
+a-strbou.ads:1875:34: info: range check proved (CVC5: 2 VC), in instantiation at sb.ads:2
+a-strbou.ads:1877:09: info: disjoint contract cases proved (CVC5: 1 VC), in instantiation at sb.ads:2
+a-strbou.ads:1878:49: info: range check proved (CVC5: 2 VC), in instantiation at sb.ads:2
+a-strbou.ads:1903:48: info: range check proved (CVC5: 2 VC), in instantiation at sb.ads:2
+a-strbou.ads:1961:34: info: range check proved (CVC5: 2 VC), in instantiation at sb.ads:2
+a-strbou.ads:1963:09: info: disjoint contract cases proved (CVC5: 1 VC), in instantiation at sb.ads:2
+a-strbou.ads:1964:49: info: range check proved (CVC5: 2 VC), in instantiation at sb.ads:2
+a-strbou.ads:1989:48: info: range check proved (CVC5: 2 VC), in instantiation at sb.ads:2
+a-strbou.ads:2202:09: info: disjoint contract cases proved (CVC5: 1 VC), in instantiation at sb.ads:2
+a-strbou.ads:2231:18: info: overflow check proved (CVC5: 2 VC), in instantiation at sb.ads:2
+a-strbou.ads:2257:09: info: disjoint contract cases proved (CVC5: 1 VC), in instantiation at sb.ads:2
+a-strbou.ads:2288:18: info: overflow check proved (CVC5: 2 VC), in instantiation at sb.ads:2
+a-strbou.ads:2315:09: info: disjoint contract cases proved (CVC5: 1 VC), in instantiation at sb.ads:2
+a-strbou.ads:2351:18: info: overflow check proved (CVC5: 2 VC), in instantiation at sb.ads:2
+a-strbou.ads:2376:09: info: disjoint contract cases proved (CVC5: 1 VC), in instantiation at sb.ads:2
+a-strbou.ads:2413:18: info: overflow check proved (CVC5: 2 VC), in instantiation at sb.ads:2
+a-strbou.ads:2447:41: info: range check proved (CVC5: 2 VC), in instantiation at sb.ads:2
+a-strbou.ads:2447:63: info: division check proved (CVC5: 1 VC), in instantiation at sb.ads:2
+a-strbou.ads:2460:65: info: division check proved (CVC5: 1 VC), in instantiation at sb.ads:2
+a-strbou.ads:2485:39: info: range check proved (CVC5: 2 VC), in instantiation at sb.ads:2
+a-strbou.ads:2485:60: info: division check proved (CVC5: 1 VC), in instantiation at sb.ads:2
+a-strbou.ads:2487:09: info: disjoint contract cases proved (CVC5: 1 VC), in instantiation at sb.ads:2
+a-strbou.ads:2488:34: info: range check proved (CVC5: 2 VC), in instantiation at sb.ads:2
+a-strbou.ads:2488:56: info: division check proved (CVC5: 1 VC), in instantiation at sb.ads:2
+a-strbou.ads:2497:27: info: range check proved (CVC5: 2 VC), in instantiation at sb.ads:2
+a-strbou.ads:2497:48: info: division check proved (CVC5: 1 VC), in instantiation at sb.ads:2
+a-strbou.ads:2519:62: info: division check proved (CVC5: 1 VC), in instantiation at sb.ads:2
+a-strbou.ads:2521:09: info: disjoint contract cases proved (CVC5: 1 VC), in instantiation at sb.ads:2
+a-strbou.ads:2522:60: info: division check proved (CVC5: 1 VC), in instantiation at sb.ads:2
+a-strbou.ads:2531:50: info: division check proved (CVC5: 1 VC), in instantiation at sb.ads:2
+a-strbou.ads:2564:61: info: range check proved (CVC5: 2 VC), in instantiation at sb.ads:2
+a-strbou.ads:2571:25: info: range check proved (CVC5: 2 VC), in instantiation at sb.ads:2
+a-strbou.ads:2578:31: info: discriminant check proved (CVC5: 1 VC), in instantiation at sb.ads:2
+a-strbou.ads:2578:31: info: predicate check proved (CVC5: 2 VC; Trivial: 1 VC), in instantiation at sb.ads:2
 sb.ads:2:01: info: implicit function contract might not be available on calls from enclosing unit
 sb.ads:2:01: info: in instantiation at a-strbou.ads
 sb.ads:2:01: warning: in instantiation at a-strbou.ads
 sb.ads:2:01: warning: pragma "Stream_Convert" ignored (not yet supported)
+spark-containers-formal-hashed_maps.ads:87:06: medium: Container_Aggregates annotation might be incorrect, in instantiation at test.ads:10
+spark-containers-formal-hashed_maps.ads:87:06: medium: after a call to Insert at spark-containers-formal-hashed_maps.ads:660, in instantiation at test.ads:10
+spark-containers-formal-hashed_maps.ads:87:06: medium: when reestablishing invariant on Has_Key at spark-containers-functional-maps.ads:120, in instantiation at spark-containers-formal-hashed_maps.ads:177, in instantiation at test.ads:10
 spark-containers-parameter_checks.ads:246:19: medium: postcondition might fail, in instantiation at spark-containers-formal-hashed_maps.ads:162, in instantiation at test.ads:10 [possible fix: you should consider adding a postcondition to function SBHash or turning it into an expression function]
 test.ads:5:09: info: Initial_Condition of package "SB" is ignored
 test.ads:5:09: info: the elaboration of "SB" is not known to precede the elaboration of the current unit
