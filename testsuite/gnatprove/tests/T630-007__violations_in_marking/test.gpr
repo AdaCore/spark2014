@@ -2,7 +2,7 @@ with "sparklib";
 
 project Test is
    package Compiler is
-      for Switches ("ada") use ("-gnata", "-gnat2020");
+      for Switches ("ada") use ("-gnata", "-gnat2022");
    end Compiler;
 
 end Test;
