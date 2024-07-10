@@ -372,28 +372,19 @@ package body Why.Gen.Pointers is
 
          if not Relaxed_Init then
             declare
-               Null_Ptr : constant W_Identifier_Id :=
+               Null_Ptr    : constant W_Identifier_Id :=
                  To_Local (E_Symb (E, WNE_Null_Pointer));
-               Def      : constant W_Term_Id := New_Record_Aggregate
-                 (Associations =>
-                    (1 => New_Field_Association
-                         (Domain => EW_Term,
-                          Field  => To_Local
-                            (E_Symb
-                               (E => E,
-                                S =>
-                                  (if Designates_Incomplete_Type (E)
-                                   then WNE_Pointer_Value_Abstr
-                                   else WNE_Pointer_Value))),
-                             Value  => +Dummy_Expr),
-                     2 => New_Field_Association
-                       (Domain => EW_Term,
-                        Field  => To_Local
-                          (E_Symb
-                               (E => E,
-                                S => WNE_Is_Null_Pointer)),
-                        Value  => +True_Term)),
-                  Typ          => Abstr_Ty);
+               Is_Nul_Cond : constant W_Pred_Id := New_Comparison
+                 (Symbol => Why_Eq,
+                  Left   => New_Pointer_Is_Null_Access
+                    (E, +Null_Ptr, Local => True),
+                  Right  => True_Term);
+               Val_Cond    : constant W_Pred_Id := New_Call
+                 (Name => To_Local
+                    (E_Symb (E, WNE_Dynamic_Property, Relaxed_Init)),
+                  Args => (1 => +Null_Ptr));
+               Axiom_Name  : constant String :=
+                 To_String (WNE_Null_Pointer) & "__" & Def_Axiom;
             begin
                Emit (Th,
                      Why.Atree.Builders.New_Function_Decl
@@ -402,8 +393,16 @@ package body Why.Gen.Pointers is
                         Binders     => (1 .. 0 => <>),
                         Location    => No_Location,
                         Labels      => Symbol_Sets.Empty_Set,
-                        Return_Type => Abstr_Ty,
-                        Def         => +Def));
+                        Return_Type => Abstr_Ty));
+               Emit (Th,
+                     New_Axiom
+                       (Ada_Node => E,
+                        Name     => NID (Axiom_Name),
+                        Def      => New_And_Pred (Is_Nul_Cond, Val_Cond),
+                        Dep      =>
+                          New_Axiom_Dep (
+                            Name => Null_Ptr,
+                            Kind => EW_Axdep_Func)));
             end;
          end if;
 
