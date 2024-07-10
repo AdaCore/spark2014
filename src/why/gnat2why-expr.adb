@@ -9467,12 +9467,15 @@ package body Gnat2Why.Expr is
             pragma Assert (Var.Kind = Pointer);
 
             --  We can reuse the reference for the value of split
-            --  pointers, if both pointer types designate the same subtype.
+            --  pointers, if both pointer types designate the same subtype and
+            --  have the same Relaxed_Initialization status.
 
             if Repr_Pointer_Type
                 (Get_Ada_Node (+Get_Why_Type_From_Item (Pattern)))
               = Repr_Pointer_Type
                 (Get_Ada_Node (+Get_Why_Type_From_Item (Var)))
+              and then Get_Relaxed_Init (Get_Why_Type_From_Item (Pattern)) =
+                Get_Relaxed_Init (Get_Why_Type_From_Item (Var))
             then
 
                Args (Count) := +Var.Value.B_Name;
@@ -13081,11 +13084,11 @@ package body Gnat2Why.Expr is
 
          when Pointer =>
             declare
-               Formal_Typ        : constant Entity_Id := Pattern.P_Typ;
-               Relaxed_Init      : constant Boolean :=
-                 Is_Init_Wrapper_Type (Get_Typ (Pattern.Value.B_Name));
+               Formal_Typ   : constant Entity_Id := Pattern.P_Typ;
+               Relaxed_Init : constant Boolean :=
+                 Is_Init_Wrapper_Type (Get_Why_Type_From_Item (Pattern));
 
-               Arg_Array         :
+               Arg_Array    :
                W_Expr_Array (1 .. (if Relaxed_Init then 3 else 2));
 
             begin
