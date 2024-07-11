@@ -1,6 +1,6 @@
 red_black_trees.adb:4:07: info: absence of resource or memory leak at end of scope proved (CVC5: 1 VC)
 red_black_trees.adb:4:23: medium: pointer dereference check might fail (e.g. when T = null) [possible fix: subprogram at line 3 should mention T in a precondition]
-red_black_trees.adb:6:08: medium: pointer dereference check might fail (e.g. when T = null) [possible fix: subprogram at line 3 should mention T in a precondition]
+red_black_trees.adb:6:08: medium: pointer dereference check might fail (e.g. when T = null and Tnew = null) [possible fix: subprogram at line 3 should mention T in a precondition]
 red_black_trees.adb:6:15: info: absence of resource or memory leak proved (CVC5: 1 VC)
 red_black_trees.adb:6:22: medium: pointer dereference check might fail
 red_black_trees.adb:7:11: medium: pointer dereference check might fail
@@ -8,7 +8,7 @@ red_black_trees.adb:7:17: info: absence of resource or memory leak proved (CVC5:
 red_black_trees.adb:8:09: info: absence of resource or memory leak proved (CVC5: 1 VC)
 red_black_trees.adb:12:07: info: absence of resource or memory leak at end of scope proved (CVC5: 1 VC)
 red_black_trees.adb:12:23: medium: pointer dereference check might fail (e.g. when T = null) [possible fix: subprogram at line 11 should mention T in a precondition]
-red_black_trees.adb:14:08: medium: pointer dereference check might fail (e.g. when T = null) [possible fix: subprogram at line 11 should mention T in a precondition]
+red_black_trees.adb:14:08: medium: pointer dereference check might fail (e.g. when T = null and Tnew = null) [possible fix: subprogram at line 11 should mention T in a precondition]
 red_black_trees.adb:14:14: info: absence of resource or memory leak proved (CVC5: 1 VC)
 red_black_trees.adb:14:21: medium: pointer dereference check might fail
 red_black_trees.adb:15:11: medium: pointer dereference check might fail
