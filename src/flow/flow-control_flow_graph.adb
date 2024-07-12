@@ -8472,7 +8472,7 @@ package body Flow.Control_Flow_Graph is
       FA.Full_Atr := FA.Atr;
 
       --  Remove exceptional paths, because they would crash the post-dominance
-      --  fronteir calculation.
+      --  frontier calculation.
       Prune_Exceptional_Paths (FA);
 
       --  Make sure we will be able to produce the post-dominance frontier
