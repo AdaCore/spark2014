@@ -50,12 +50,57 @@ package body Flow.Interprocedural is
      (FA        : Flow_Analysis_Graphs;
       Callsite  : Flow_Graphs.Vertex_Id;
       Parameter : Flow_Id)
-      return Flow_Graphs.Vertex_Id is
+      return Flow_Graphs.Vertex_Id
+   is
+      Atr : V_Attributes renames FA.Atr (Callsite);
+
+      Params : Vertex_Sets.Set;
+      --  Vertices where the parameters can be found
+
    begin
+      --  If the call is part of an exceptional path, it will appear as
+      --  constructed in the CFG, i.e. the call vertex will followed by
+      --  'In and 'Out vertices for its formal and global parameters.
+
+      if Atr.Is_Exceptional_Path then
+         declare
+            Call_Cluster : constant Flow_Graphs.Cluster_Id :=
+              FA.CFG.Get_Cluster (Callsite);
+            V : Flow_Graphs.Vertex_Id := Callsite;
+            use Flow_Graphs;
+         begin
+            loop
+               --  The call might be part of a dead code that has been already
+               --  isolated while building the CFG, e.g. when it is in a
+               --  statically dead IF branch or CASE alternative.
+
+               if FA.CFG.Out_Neighbour_Count (V) = 0 then
+                  exit;
+               end if;
+
+               V := FA.CFG.Child (V);
+
+               if FA.CFG.Get_Cluster (V) = Call_Cluster then
+                  Params.Insert (V);
+               else
+                  exit;
+               end if;
+            end loop;
+         end;
+
+      --  Otherwise, the call has been processed while building the CDG, i.e.
+      --  the call vertex will be directly connected with the 'In and 'Out
+      --  vertices for its formal and global parameters.
+
+      else
+         for V of FA.CDG.Get_Collection (Callsite, Flow_Graphs.Out_Neighbours)
+         loop
+            Params.Insert (V);
+         end loop;
+      end if;
+
       --   ??? why do we scan all out-neigbhour, can't we just find it in O(1)?
-      for V of FA.CDG.Get_Collection (Callsite,
-                                      Flow_Graphs.Out_Neighbours)
-      loop
+      for V of Params loop
          declare
             F : Flow_Id      renames FA.CDG.Get_Key (V);
             A : V_Attributes renames FA.Atr (V);

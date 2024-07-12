@@ -28,6 +28,10 @@
 package Flow.Control_Flow_Graph is
 
    procedure Create (FA : in out Flow_Analysis_Graphs);
-   --  Produce the control flow graph for the given subprogram body.
+   --  Produce the control flow graph for the given subprogram body
+   --
+   --  This will actually produce two graphs: FA.Full_CFG with the original CFG
+   --  and FA.CFG where exceptional paths have been pruned and dead code has
+   --  been separated (for computing control dependency graph).
 
 end Flow.Control_Flow_Graph;
