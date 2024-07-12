@@ -35,11 +35,13 @@ GNAT-*
 /include
 /spark2014vsn.ads.stderr
 /spark2014vsn.ads.stdout
-/analyzer/*.annots
-/analyzer/*.backup
-/analyzer/*.json
-/analyzer/*.sam
-/gnat2why/analyzer/*.annots
-/gnat2why/analyzer/*.backup
-/gnat2why/analyzer/*.json
-/gnat2why/analyzer/*.sam
+
+# Artifacts generated when running GNAT SAS on SPARK sources or reviewing GNAT
+# SAS messages
+**/analyzer/**/*.annots
+**/analyzer/**/*.backup
+**/analyzer/**/*.json
+**/analyzer/**/*.sam
+.gnatsas*
+**/obj/**/gnatsas
+*spark*check*.log
