@@ -50,4 +50,24 @@ package Logical_Equality_Implementation with SPARK_Mode is
         else Eq (X.H, Y.H) and then Eq (X.A, Y.A)))
    with Annotate => (GNATprove, Logical_Equal);
 
+   --  Access types
+
+   type My_Float_Acc is access My_Float;
+   function Eq (X, Y : My_Float_Acc) return Boolean is
+     ((X = null) = (Y = null)
+      and then (if X /= null then Eq (X.all, Y.all)))
+   with Annotate => (GNATprove, Logical_Equal);
+
+   type My_Float_List_Cell;
+   type My_Float_List is access My_Float_List_Cell;
+   type My_Float_List_Cell is record
+      V : My_Float;
+      N : My_Float_List;
+   end record;
+   function Eq (X, Y : My_Float_List) return Boolean is
+     ((X = null) = (Y = null)
+      and then (if X /= null then Eq (X.V, Y.V) and then Eq (X.N, Y.N)))
+   with Subprogram_Variant => (Structural => X),
+       Annotate => (GNATprove, Logical_Equal);
+
 end Logical_Equality_Implementation;
