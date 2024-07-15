@@ -1,0 +1,6 @@
+repro.adb:8:45: error: default initialization cannot depend on variable input "Null_String_Access" [E0007]
+repro.adb:8:45: error: launch "gnatprove --explain=E0007" for more information
+repro.adb:8:45: error: use instead a constant initialized to the expression with variable input
+repro.adb:12:13: info: implicit aspect Always_Terminates on "Get" has been proved, subprogram will terminate
+repro.adb:15:07: info: initialization of "Result" proved
+gnatprove: error during flow analysis and proof

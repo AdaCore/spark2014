@@ -853,7 +853,13 @@ package body Flow.Analysis.Sanity is
 
                      if not (Is_Bound (F)
                                or else
-                             Is_Constant_Object (Var)
+                             (Is_Constant_Object (Var)
+                              and then
+                                (not Is_Access_Variable (Etype (Var))
+                                 --  The frontend introduces a variable for
+                                 --  the current instance in a predicate,
+                                 --  which should not lead to an error here.
+                                 or else not Comes_From_Source (Var)))
                                or else
                              Is_Record_Discriminant (F)
                                or else
