@@ -1,0 +1,1302 @@
+strunb.adb:41:13: info: implicit aspect Always_Terminates on "Sum" has been proved, subprogram will terminate
+strunb.adb:42:35: info: overflow check proved
+strunb.adb:45:13: info: implicit aspect Always_Terminates on "Mul" has been proved, subprogram will terminate
+strunb.adb:50:13: info: implicit aspect Always_Terminates on "Saturated_Sum" has been proved, subprogram will terminate
+strunb.adb:51:19: info: postcondition proved
+strunb.adb:54:13: info: implicit aspect Always_Terminates on "Saturated_Mul" has been proved, subprogram will terminate
+strunb.adb:55:19: info: postcondition proved
+strunb.adb:69:37: info: precondition proved
+strunb.adb:70:07: info: range check proved
+strunb.adb:71:07: info: absence of resource or memory leak at end of scope proved
+strunb.adb:72:09: info: predicate check proved
+strunb.adb:72:30: info: length check proved
+strunb.adb:75:13: info: pointer dereference check proved
+strunb.adb:75:13: info: predicate check proved
+strunb.adb:75:13: info: range check proved
+strunb.adb:75:25: info: index check proved
+strunb.adb:75:30: info: index check proved
+strunb.adb:75:40: info: length check proved
+strunb.adb:76:13: info: length check proved
+strunb.adb:76:13: info: pointer dereference check proved
+strunb.adb:76:13: info: range check proved
+strunb.adb:79:16: info: pointer dereference check proved
+strunb.adb:79:16: info: predicate check proved
+strunb.adb:79:16: info: range check proved
+strunb.adb:79:37: info: index check proved
+strunb.adb:79:37: info: overflow check proved
+strunb.adb:79:50: info: index check proved
+strunb.adb:79:57: info: length check proved
+strunb.adb:80:17: info: length check proved
+strunb.adb:80:17: info: pointer dereference check proved
+strunb.adb:80:17: info: range check proved
+strunb.adb:91:38: info: precondition proved
+strunb.adb:91:58: info: range check proved
+strunb.adb:92:07: info: range check proved
+strunb.adb:93:07: info: absence of resource or memory leak at end of scope proved
+strunb.adb:94:09: info: predicate check proved
+strunb.adb:94:30: info: length check proved
+strunb.adb:97:13: info: pointer dereference check proved
+strunb.adb:97:13: info: predicate check proved
+strunb.adb:97:13: info: range check proved
+strunb.adb:97:25: info: index check proved
+strunb.adb:97:30: info: index check proved
+strunb.adb:97:40: info: length check proved
+strunb.adb:97:47: info: length check proved
+strunb.adb:97:47: info: pointer dereference check proved
+strunb.adb:97:47: info: range check proved
+strunb.adb:100:16: info: pointer dereference check proved
+strunb.adb:100:16: info: predicate check proved
+strunb.adb:100:16: info: range check proved
+strunb.adb:100:37: info: index check proved
+strunb.adb:100:37: info: overflow check proved
+strunb.adb:100:50: info: index check proved
+strunb.adb:100:57: info: length check proved
+strunb.adb:101:12: info: length check proved
+strunb.adb:101:27: info: range check proved
+strunb.adb:112:38: info: precondition proved
+strunb.adb:112:47: info: range check proved
+strunb.adb:113:07: info: range check proved
+strunb.adb:114:07: info: absence of resource or memory leak at end of scope proved
+strunb.adb:115:09: info: predicate check proved
+strunb.adb:115:30: info: length check proved
+strunb.adb:118:13: info: pointer dereference check proved
+strunb.adb:118:13: info: predicate check proved
+strunb.adb:118:13: info: range check proved
+strunb.adb:118:25: info: index check proved
+strunb.adb:118:34: info: index check proved
+strunb.adb:118:34: info: range check proved
+strunb.adb:118:43: info: length check proved
+strunb.adb:118:46: info: length check proved
+strunb.adb:118:61: info: range check proved
+strunb.adb:120:14: info: range check proved
+strunb.adb:121:16: info: pointer dereference check proved
+strunb.adb:121:16: info: predicate check proved
+strunb.adb:121:16: info: range check proved
+strunb.adb:121:32: info: range check proved
+strunb.adb:121:40: info: index check proved
+strunb.adb:121:40: info: overflow check proved
+strunb.adb:121:53: info: index check proved
+strunb.adb:121:60: info: length check proved
+strunb.adb:122:17: info: length check proved
+strunb.adb:122:17: info: pointer dereference check proved
+strunb.adb:122:17: info: range check proved
+strunb.adb:132:37: info: precondition proved
+strunb.adb:133:07: info: range check proved
+strunb.adb:134:07: info: absence of resource or memory leak at end of scope proved
+strunb.adb:135:09: info: predicate check proved
+strunb.adb:135:30: info: length check proved
+strunb.adb:138:13: info: pointer dereference check proved
+strunb.adb:138:13: info: predicate check proved
+strunb.adb:138:13: info: range check proved
+strunb.adb:138:25: info: index check proved
+strunb.adb:138:42: info: index check proved
+strunb.adb:138:47: info: length check proved
+strunb.adb:139:13: info: length check proved
+strunb.adb:139:13: info: pointer dereference check proved
+strunb.adb:139:13: info: range check proved
+strunb.adb:140:13: info: pointer dereference check proved
+strunb.adb:140:13: info: predicate check proved
+strunb.adb:140:31: info: index check proved
+strunb.adb:149:37: info: precondition proved
+strunb.adb:150:07: info: range check proved
+strunb.adb:151:07: info: absence of resource or memory leak at end of scope proved
+strunb.adb:152:09: info: predicate check proved
+strunb.adb:152:30: info: length check proved
+strunb.adb:155:13: info: pointer dereference check proved
+strunb.adb:155:13: info: predicate check proved
+strunb.adb:155:25: info: index check proved
+strunb.adb:156:13: info: pointer dereference check proved
+strunb.adb:156:13: info: predicate check proved
+strunb.adb:156:13: info: range check proved
+strunb.adb:156:25: info: index check proved
+strunb.adb:156:36: info: index check proved
+strunb.adb:156:43: info: length check proved
+strunb.adb:157:14: info: length check proved
+strunb.adb:157:14: info: pointer dereference check proved
+strunb.adb:157:14: info: range check proved
+strunb.adb:170:14: info: aspect Always_Terminates on "Lemma_Mod" has been proved, subprogram will terminate
+strunb.adb:174:21: info: division check proved
+strunb.adb:174:30: info: range check proved
+strunb.adb:175:42: info: overflow check proved
+strunb.adb:175:49: info: range check proved
+strunb.adb:176:33: info: overflow check proved
+strunb.adb:176:40: info: range check proved
+strunb.adb:177:14: info: postcondition proved
+strunb.adb:177:16: info: division check proved
+strunb.adb:177:25: info: range check proved
+strunb.adb:177:37: info: overflow check proved
+strunb.adb:181:14: info: aspect Always_Terminates on "Lemma_Split" has been proved, subprogram will terminate
+strunb.adb:188:23: info: division check proved
+strunb.adb:188:32: info: range check proved
+strunb.adb:189:43: info: overflow check proved
+strunb.adb:189:50: info: range check proved
+strunb.adb:190:19: info: range check proved
+strunb.adb:190:47: info: overflow check proved
+strunb.adb:190:54: info: range check proved
+strunb.adb:191:19: info: initialization check proved
+strunb.adb:191:19: info: range check proved
+strunb.adb:191:31: info: overflow check proved
+strunb.adb:191:42: info: overflow check proved
+strunb.adb:191:49: info: range check proved
+strunb.adb:193:08: info: postcondition proved
+strunb.adb:193:26: info: overflow check proved
+strunb.adb:193:37: info: overflow check proved
+strunb.adb:193:44: info: range check proved
+strunb.adb:194:10: info: initialization check proved
+strunb.adb:194:18: info: index check proved
+strunb.adb:194:42: info: index check proved
+strunb.adb:194:42: info: overflow check proved
+strunb.adb:194:47: info: overflow check proved
+strunb.adb:194:52: info: division check proved
+strunb.adb:194:61: info: range check proved
+strunb.adb:213:20: info: overflow check proved
+strunb.adb:213:31: info: overflow check proved
+strunb.adb:213:38: info: range check proved
+strunb.adb:214:10: info: precondition proved
+strunb.adb:214:30: info: overflow check proved
+strunb.adb:216:13: info: loop invariant initialization proved
+strunb.adb:216:13: info: loop invariant preservation proved
+strunb.adb:216:30: info: overflow check proved
+strunb.adb:217:15: info: initialization check proved
+strunb.adb:217:23: info: index check proved
+strunb.adb:217:47: info: index check proved
+strunb.adb:217:47: info: overflow check proved
+strunb.adb:217:52: info: overflow check proved
+strunb.adb:217:57: info: division check proved
+strunb.adb:217:66: info: range check proved
+strunb.adb:225:07: info: range check proved
+strunb.adb:226:07: info: absence of resource or memory leak at end of scope proved
+strunb.adb:227:09: info: predicate check proved
+strunb.adb:227:30: info: length check proved
+strunb.adb:230:22: info: pointer dereference check proved
+strunb.adb:231:16: info: pointer dereference check proved
+strunb.adb:231:16: info: predicate check proved
+strunb.adb:231:28: info: index check proved
+strunb.adb:233:13: info: loop invariant initialization proved
+strunb.adb:233:13: info: loop invariant preservation proved
+strunb.adb:234:21: info: pointer dereference check proved
+strunb.adb:234:33: info: index check proved
+strunb.adb:234:63: info: initialization check proved
+strunb.adb:234:63: info: pointer dereference check proved
+strunb.adb:234:75: info: index check proved
+strunb.adb:244:41: info: range check proved
+strunb.adb:245:07: info: initialization of "K" proved
+strunb.adb:247:37: info: precondition proved
+strunb.adb:248:07: info: range check proved
+strunb.adb:249:07: info: absence of resource or memory leak at end of scope proved
+strunb.adb:250:09: info: predicate check proved
+strunb.adb:250:30: info: length check proved
+strunb.adb:259:16: info: pointer dereference check proved
+strunb.adb:259:16: info: predicate check proved
+strunb.adb:259:16: info: range check proved
+strunb.adb:259:30: info: index check proved
+strunb.adb:259:30: info: overflow check proved
+strunb.adb:259:39: info: index check proved
+strunb.adb:259:39: info: overflow check proved
+strunb.adb:259:46: info: length check proved
+strunb.adb:259:49: info: length check proved
+strunb.adb:259:64: info: range check proved
+strunb.adb:260:10: info: precondition proved
+strunb.adb:260:55: info: pointer dereference check proved
+strunb.adb:261:17: info: overflow check proved
+strunb.adb:262:33: info: loop invariant initialization proved
+strunb.adb:262:33: info: loop invariant preservation proved
+strunb.adb:262:39: info: overflow check proved
+strunb.adb:263:33: info: loop invariant initialization proved
+strunb.adb:263:33: info: loop invariant preservation proved
+strunb.adb:263:39: info: pointer dereference check proved
+strunb.adb:263:39: info: range check proved
+strunb.adb:265:13: info: loop invariant initialization proved
+strunb.adb:265:13: info: loop invariant preservation proved
+strunb.adb:266:21: info: initialization check proved
+strunb.adb:266:21: info: pointer dereference check proved
+strunb.adb:266:33: info: index check proved
+strunb.adb:266:58: info: index check proved
+strunb.adb:266:58: info: overflow check proved
+strunb.adb:266:69: info: division check proved
+strunb.adb:277:07: info: initialization of "K" proved
+strunb.adb:279:37: info: precondition proved
+strunb.adb:280:07: info: range check proved
+strunb.adb:281:07: info: absence of resource or memory leak at end of scope proved
+strunb.adb:282:09: info: predicate check proved
+strunb.adb:282:30: info: length check proved
+strunb.adb:289:22: info: assertion proved
+strunb.adb:289:27: info: overflow check proved
+strunb.adb:289:41: info: pointer dereference check proved
+strunb.adb:289:51: info: range check proved
+strunb.adb:293:41: info: precondition proved
+strunb.adb:294:16: info: pointer dereference check proved
+strunb.adb:294:16: info: predicate check proved
+strunb.adb:294:16: info: range check proved
+strunb.adb:294:30: info: index check proved
+strunb.adb:294:30: info: overflow check proved
+strunb.adb:294:39: info: index check proved
+strunb.adb:294:39: info: overflow check proved
+strunb.adb:294:46: info: length check proved
+strunb.adb:295:17: info: length check proved
+strunb.adb:295:17: info: pointer dereference check proved
+strunb.adb:295:17: info: range check proved
+strunb.adb:296:10: info: precondition proved
+strunb.adb:296:67: info: pointer dereference check proved
+strunb.adb:297:17: info: overflow check proved
+strunb.adb:298:33: info: loop invariant initialization proved
+strunb.adb:298:33: info: loop invariant preservation proved
+strunb.adb:298:39: info: overflow check proved
+strunb.adb:299:33: info: loop invariant initialization proved
+strunb.adb:299:33: info: loop invariant preservation proved
+strunb.adb:299:39: info: pointer dereference check proved
+strunb.adb:299:39: info: range check proved
+strunb.adb:301:13: info: loop invariant initialization proved
+strunb.adb:301:13: info: loop invariant preservation proved
+strunb.adb:302:21: info: initialization check proved
+strunb.adb:302:21: info: pointer dereference check proved
+strunb.adb:302:33: info: index check proved
+strunb.adb:302:60: info: index check proved
+strunb.adb:302:60: info: overflow check proved
+strunb.adb:302:71: info: division check proved
+strunb.adb:318:13: info: initialization check proved
+strunb.adb:318:13: info: pointer dereference check proved
+strunb.adb:318:13: info: range check proved
+strunb.adb:318:48: info: initialization check proved
+strunb.adb:318:48: info: pointer dereference check proved
+strunb.adb:318:48: info: range check proved
+strunb.adb:326:14: info: initialization check proved
+strunb.adb:326:26: info: pointer dereference check proved
+strunb.adb:326:26: info: range check proved
+strunb.adb:334:21: info: initialization check proved
+strunb.adb:334:34: info: pointer dereference check proved
+strunb.adb:334:34: info: range check proved
+strunb.adb:347:13: info: initialization check proved
+strunb.adb:347:13: info: pointer dereference check proved
+strunb.adb:347:13: info: range check proved
+strunb.adb:347:49: info: initialization check proved
+strunb.adb:347:49: info: pointer dereference check proved
+strunb.adb:347:49: info: range check proved
+strunb.adb:355:14: info: initialization check proved
+strunb.adb:355:26: info: pointer dereference check proved
+strunb.adb:355:26: info: range check proved
+strunb.adb:363:22: info: initialization check proved
+strunb.adb:363:35: info: pointer dereference check proved
+strunb.adb:363:35: info: range check proved
+strunb.adb:376:13: info: initialization check proved
+strunb.adb:376:13: info: pointer dereference check proved
+strunb.adb:376:13: info: range check proved
+strunb.adb:376:48: info: initialization check proved
+strunb.adb:376:48: info: pointer dereference check proved
+strunb.adb:376:48: info: range check proved
+strunb.adb:384:14: info: initialization check proved
+strunb.adb:384:26: info: pointer dereference check proved
+strunb.adb:384:26: info: range check proved
+strunb.adb:392:21: info: initialization check proved
+strunb.adb:392:34: info: pointer dereference check proved
+strunb.adb:392:34: info: range check proved
+strunb.adb:405:09: info: initialization check proved
+strunb.adb:405:21: info: pointer dereference check proved
+strunb.adb:405:21: info: range check proved
+strunb.adb:405:52: info: initialization check proved
+strunb.adb:405:65: info: pointer dereference check proved
+strunb.adb:405:65: info: range check proved
+strunb.adb:413:14: info: initialization check proved
+strunb.adb:413:26: info: pointer dereference check proved
+strunb.adb:413:26: info: range check proved
+strunb.adb:421:21: info: initialization check proved
+strunb.adb:421:34: info: pointer dereference check proved
+strunb.adb:421:34: info: range check proved
+strunb.adb:434:13: info: initialization check proved
+strunb.adb:434:13: info: pointer dereference check proved
+strunb.adb:434:13: info: range check proved
+strunb.adb:434:49: info: initialization check proved
+strunb.adb:434:49: info: pointer dereference check proved
+strunb.adb:434:49: info: range check proved
+strunb.adb:442:14: info: initialization check proved
+strunb.adb:442:26: info: pointer dereference check proved
+strunb.adb:442:26: info: range check proved
+strunb.adb:450:22: info: initialization check proved
+strunb.adb:450:35: info: pointer dereference check proved
+strunb.adb:450:35: info: range check proved
+strunb.adb:479:07: info: precondition proved
+strunb.adb:482:16: info: pointer dereference check proved
+strunb.adb:482:16: info: predicate check proved
+strunb.adb:482:16: info: range check proved
+strunb.adb:482:40: info: index check proved
+strunb.adb:482:40: info: overflow check proved
+strunb.adb:482:59: info: index check proved
+strunb.adb:482:59: info: overflow check proved
+strunb.adb:482:76: info: length check proved
+strunb.adb:483:20: info: length check proved
+strunb.adb:483:20: info: pointer dereference check proved
+strunb.adb:483:20: info: range check proved
+strunb.adb:486:13: info: predicate check proved
+strunb.adb:486:34: info: overflow check proved
+strunb.adb:494:07: info: precondition proved
+strunb.adb:494:42: info: range check proved
+strunb.adb:497:16: info: pointer dereference check proved
+strunb.adb:497:16: info: predicate check proved
+strunb.adb:497:16: info: range check proved
+strunb.adb:497:40: info: index check proved
+strunb.adb:497:40: info: overflow check proved
+strunb.adb:497:59: info: index check proved
+strunb.adb:497:59: info: overflow check proved
+strunb.adb:497:69: info: range check proved
+strunb.adb:497:78: info: length check proved
+strunb.adb:498:12: info: length check proved
+strunb.adb:498:27: info: range check proved
+strunb.adb:501:13: info: predicate check proved
+strunb.adb:501:34: info: overflow check proved
+strunb.adb:501:44: info: range check proved
+strunb.adb:509:07: info: precondition proved
+strunb.adb:510:13: info: pointer dereference check proved
+strunb.adb:510:13: info: predicate check proved
+strunb.adb:510:37: info: index check proved
+strunb.adb:510:37: info: overflow check proved
+strunb.adb:511:13: info: predicate check proved
+strunb.adb:511:34: info: overflow check proved
+strunb.adb:525:15: info: precondition proved
+strunb.adb:525:23: info: initialization check proved
+strunb.adb:525:23: info: range check proved
+strunb.adb:525:37: info: pointer dereference check proved
+strunb.adb:525:37: info: range check proved
+strunb.adb:535:15: info: precondition proved
+strunb.adb:535:23: info: initialization check proved
+strunb.adb:535:23: info: range check proved
+strunb.adb:535:37: info: pointer dereference check proved
+strunb.adb:535:37: info: range check proved
+strunb.adb:543:28: info: initialization check proved
+strunb.adb:543:28: info: range check proved
+strunb.adb:543:42: info: pointer dereference check proved
+strunb.adb:543:42: info: range check proved
+strunb.adb:558:17: info: precondition proved
+strunb.adb:558:26: info: initialization check proved
+strunb.adb:558:26: info: range check proved
+strunb.adb:558:40: info: pointer dereference check proved
+strunb.adb:558:40: info: range check proved
+strunb.adb:571:10: info: only expected exception raised
+strunb.adb:576:57: info: overflow check proved
+strunb.adb:576:57: info: range check proved
+strunb.adb:580:22: info: pointer dereference check proved
+strunb.adb:580:22: info: predicate check proved
+strunb.adb:580:22: info: range check proved
+strunb.adb:580:34: info: index check proved
+strunb.adb:580:54: info: index check proved
+strunb.adb:580:54: info: overflow check proved
+strunb.adb:580:61: info: length check proved
+strunb.adb:581:24: info: length check proved
+strunb.adb:581:24: info: pointer dereference check proved
+strunb.adb:581:24: info: range check proved
+strunb.adb:581:44: info: overflow check proved
+strunb.adb:584:19: info: predicate check proved
+strunb.adb:584:40: info: overflow check proved
+strunb.adb:584:40: info: range check proved
+strunb.adb:598:16: info: initialization check proved
+strunb.adb:598:16: info: pointer dereference check proved
+strunb.adb:598:28: info: index check proved
+strunb.adb:600:10: info: only expected exception raised
+strunb.adb:641:13: info: precondition proved
+strunb.adb:642:10: info: initialization check proved
+strunb.adb:642:10: info: range check proved
+strunb.adb:642:24: info: pointer dereference check proved
+strunb.adb:642:24: info: range check proved
+strunb.adb:653:13: info: precondition proved
+strunb.adb:654:10: info: initialization check proved
+strunb.adb:654:10: info: range check proved
+strunb.adb:654:24: info: pointer dereference check proved
+strunb.adb:654:24: info: range check proved
+strunb.adb:684:30: info: initialization check proved
+strunb.adb:684:30: info: range check proved
+strunb.adb:684:44: info: pointer dereference check proved
+strunb.adb:684:44: info: range check proved
+strunb.adb:693:07: info: absence of resource or memory leak at end of scope proved
+strunb.adb:694:48: info: range check proved
+strunb.adb:694:55: info: initialization check proved
+strunb.adb:694:55: info: range check proved
+strunb.adb:694:69: info: pointer dereference check proved
+strunb.adb:694:69: info: range check proved
+strunb.adb:696:33: info: pointer dereference check proved
+strunb.adb:696:36: info: range check proved
+strunb.adb:697:07: info: absence of resource or memory leak at end of scope proved
+strunb.adb:699:14: info: absence of resource or memory leak proved
+strunb.adb:699:34: info: predicate check proved
+strunb.adb:714:20: info: precondition proved
+strunb.adb:715:10: info: initialization check proved
+strunb.adb:715:10: info: range check proved
+strunb.adb:715:24: info: pointer dereference check proved
+strunb.adb:715:24: info: range check proved
+strunb.adb:725:20: info: precondition proved
+strunb.adb:726:10: info: initialization check proved
+strunb.adb:726:10: info: range check proved
+strunb.adb:726:24: info: pointer dereference check proved
+strunb.adb:726:24: info: range check proved
+strunb.adb:737:10: info: initialization check proved
+strunb.adb:737:10: info: range check proved
+strunb.adb:737:24: info: pointer dereference check proved
+strunb.adb:737:24: info: range check proved
+strunb.adb:748:20: info: precondition proved
+strunb.adb:749:10: info: initialization check proved
+strunb.adb:749:10: info: range check proved
+strunb.adb:749:24: info: pointer dereference check proved
+strunb.adb:749:24: info: range check proved
+strunb.adb:760:20: info: precondition proved
+strunb.adb:761:10: info: initialization check proved
+strunb.adb:761:10: info: range check proved
+strunb.adb:761:24: info: pointer dereference check proved
+strunb.adb:761:24: info: range check proved
+strunb.adb:772:20: info: precondition proved
+strunb.adb:773:10: info: initialization check proved
+strunb.adb:773:10: info: range check proved
+strunb.adb:773:24: info: pointer dereference check proved
+strunb.adb:773:24: info: range check proved
+strunb.adb:783:12: info: initialization check proved
+strunb.adb:783:12: info: range check proved
+strunb.adb:783:26: info: pointer dereference check proved
+strunb.adb:783:26: info: range check proved
+strunb.adb:793:15: info: precondition proved
+strunb.adb:794:12: info: initialization check proved
+strunb.adb:794:12: info: range check proved
+strunb.adb:794:26: info: pointer dereference check proved
+strunb.adb:794:26: info: range check proved
+strunb.adb:820:23: info: precondition proved
+strunb.adb:820:32: info: initialization check proved
+strunb.adb:820:32: info: range check proved
+strunb.adb:820:46: info: pointer dereference check proved
+strunb.adb:820:46: info: range check proved
+strunb.adb:830:10: info: only expected exception raised
+strunb.adb:833:07: info: precondition proved
+strunb.adb:833:42: info: range check proved
+strunb.adb:836:16: info: pointer dereference check proved
+strunb.adb:836:16: info: predicate check proved
+strunb.adb:836:16: info: range check proved
+strunb.adb:837:20: info: index check proved
+strunb.adb:837:20: info: overflow check proved
+strunb.adb:837:30: info: range check proved
+strunb.adb:837:53: info: index check proved
+strunb.adb:837:53: info: overflow check proved
+strunb.adb:837:63: info: range check proved
+strunb.adb:837:72: info: length check proved
+strunb.adb:838:20: info: length check proved
+strunb.adb:838:20: info: pointer dereference check proved
+strunb.adb:838:20: info: range check proved
+strunb.adb:841:13: info: pointer dereference check proved
+strunb.adb:841:13: info: predicate check proved
+strunb.adb:841:13: info: range check proved
+strunb.adb:841:25: info: index check proved
+strunb.adb:841:46: info: index check proved
+strunb.adb:841:46: info: overflow check proved
+strunb.adb:841:56: info: range check proved
+strunb.adb:841:65: info: length check proved
+strunb.adb:841:68: info: length check proved
+strunb.adb:841:83: info: range check proved
+strunb.adb:842:13: info: predicate check proved
+strunb.adb:842:34: info: overflow check proved
+strunb.adb:842:44: info: range check proved
+strunb.adb:857:12: info: overflow check proved
+strunb.adb:870:23: info: precondition proved
+strunb.adb:871:12: info: initialization check proved
+strunb.adb:871:12: info: range check proved
+strunb.adb:871:26: info: pointer dereference check proved
+strunb.adb:871:26: info: range check proved
+strunb.adb:879:40: info: range check proved
+strunb.adb:881:38: info: overflow check proved
+strunb.adb:882:16: info: pointer dereference check proved
+strunb.adb:882:16: info: predicate check proved
+strunb.adb:882:16: info: range check proved
+strunb.adb:882:28: info: index check proved
+strunb.adb:882:53: info: index check proved
+strunb.adb:882:53: info: overflow check proved
+strunb.adb:882:59: info: length check proved
+strunb.adb:882:62: info: length check proved
+strunb.adb:882:77: info: range check proved
+strunb.adb:885:13: info: absence of resource or memory leak at end of scope proved
+strunb.adb:886:36: info: precondition proved
+strunb.adb:886:36: info: range check proved
+strunb.adb:887:18: info: initialization check proved
+strunb.adb:887:18: info: range check proved
+strunb.adb:887:32: info: pointer dereference check proved
+strunb.adb:887:32: info: range check proved
+strunb.adb:888:13: info: absence of resource or memory leak at end of scope proved
+strunb.adb:890:19: info: predicate check proved
+strunb.adb:890:30: info: absence of resource or memory leak proved
+strunb.adb:891:19: info: predicate check proved
+strunb.adb:891:34: info: pointer dereference check proved
+strunb.adb:891:44: info: range check proved
+strunb.adb:932:44: info: pointer dereference check proved
+strunb.adb:932:54: info: range check proved
+strunb.adb:935:32: info: overflow check proved
+strunb.adb:938:15: info: range check proved
+strunb.adb:939:18: info: precondition proved
+strunb.adb:939:58: info: division check proved
+strunb.adb:943:33: info: division check proved
+strunb.adb:945:13: info: range check proved
+strunb.adb:946:13: info: absence of resource or memory leak at end of scope proved
+strunb.adb:946:52: info: length check proved
+strunb.adb:948:13: info: pointer dereference check proved
+strunb.adb:948:13: info: range check proved
+strunb.adb:948:18: info: index check proved
+strunb.adb:948:29: info: index check proved
+strunb.adb:948:36: info: length check proved
+strunb.adb:948:45: info: length check proved
+strunb.adb:948:45: info: pointer dereference check proved
+strunb.adb:948:45: info: range check proved
+strunb.adb:951:16: info: absence of resource or memory leak at end of scope proved
+strunb.adb:958:19: info: predicate check proved
+strunb.adb:958:30: info: absence of resource or memory leak proved
+strunb.adb:974:16: info: pointer dereference check proved
+strunb.adb:974:16: info: predicate check proved
+strunb.adb:974:28: info: index check proved
+strunb.adb:976:10: info: only expected exception raised
+strunb.adb:992:23: info: precondition proved
+strunb.adb:993:13: info: initialization check proved
+strunb.adb:993:13: info: range check proved
+strunb.adb:993:27: info: pointer dereference check proved
+strunb.adb:993:27: info: range check proved
+strunb.adb:1002:07: info: absence of resource or memory leak at end of scope proved
+strunb.adb:1003:30: info: precondition proved
+strunb.adb:1003:30: info: range check proved
+strunb.adb:1004:13: info: initialization check proved
+strunb.adb:1004:13: info: range check proved
+strunb.adb:1004:27: info: pointer dereference check proved
+strunb.adb:1004:27: info: range check proved
+strunb.adb:1005:33: info: pointer dereference check proved
+strunb.adb:1005:36: info: range check proved
+strunb.adb:1006:07: info: absence of resource or memory leak at end of scope proved
+strunb.adb:1008:14: info: absence of resource or memory leak proved
+strunb.adb:1008:34: info: predicate check proved
+strunb.adb:1020:10: info: precondition proved
+strunb.adb:1020:10: info: range check proved
+strunb.adb:1029:32: info: overflow check proved
+strunb.adb:1030:10: info: precondition proved
+strunb.adb:1042:07: info: absence of resource or memory leak at end of scope proved
+strunb.adb:1043:07: info: range check proved
+strunb.adb:1043:48: info: range check proved
+strunb.adb:1045:14: info: absence of resource or memory leak proved
+strunb.adb:1046:26: info: predicate check proved
+strunb.adb:1046:54: info: length check proved
+strunb.adb:1047:46: info: range check proved
+strunb.adb:1063:10: info: only expected exception raised
+strunb.adb:1065:10: info: initialization check proved
+strunb.adb:1065:10: info: range check proved
+strunb.adb:1065:24: info: pointer dereference check proved
+strunb.adb:1065:24: info: range check proved
+strunb.adb:1072:12: info: overflow check proved
+strunb.adb:1084:30: info: initialization check proved
+strunb.adb:1084:30: info: range check proved
+strunb.adb:1084:44: info: pointer dereference check proved
+strunb.adb:1084:44: info: range check proved
+strunb.adb:1092:07: info: absence of resource or memory leak at end of scope proved
+strunb.adb:1093:30: info: range check proved
+strunb.adb:1093:37: info: initialization check proved
+strunb.adb:1093:37: info: range check proved
+strunb.adb:1093:51: info: pointer dereference check proved
+strunb.adb:1093:51: info: range check proved
+strunb.adb:1094:33: info: pointer dereference check proved
+strunb.adb:1094:36: info: range check proved
+strunb.adb:1095:07: info: absence of resource or memory leak at end of scope proved
+strunb.adb:1097:14: info: absence of resource or memory leak proved
+strunb.adb:1097:34: info: predicate check proved
+strunb.adb:1106:07: info: initialization check proved
+strunb.adb:1106:07: info: range check proved
+strunb.adb:1106:21: info: pointer dereference check proved
+strunb.adb:1106:21: info: range check proved
+strunb.adb:1115:07: info: range check proved
+strunb.adb:1115:48: info: range check proved
+strunb.adb:1116:07: info: absence of resource or memory leak at end of scope proved
+strunb.adb:1117:09: info: predicate check proved
+strunb.adb:1117:30: info: length check proved
+strunb.adb:1118:29: info: range check proved
+strunb.adb:1120:13: info: predicate check proved
+strunb.adb:1120:24: info: length check proved
+strunb.adb:1120:24: info: pointer dereference check proved
+strunb.adb:1120:28: info: length check proved
+strunb.adb:1120:31: info: length check proved
+strunb.adb:1120:46: info: range check proved
+strunb.adb:1152:35: info: initialization check proved
+strunb.adb:1152:35: info: range check proved
+strunb.adb:1152:49: info: pointer dereference check proved
+strunb.adb:1152:49: info: range check proved
+strunb.adb:1160:24: info: initialization check proved
+strunb.adb:1160:24: info: range check proved
+strunb.adb:1160:38: info: in value of subprogram parameter after the call at strunb.adb:1160
+strunb.adb:1160:38: info: pointer dereference check proved
+strunb.adb:1160:38: info: predicate check proved
+strunb.adb:1160:38: info: range check proved
+strunb.adb:1169:23: info: precondition proved
+strunb.adb:1169:35: info: initialization check proved
+strunb.adb:1169:35: info: range check proved
+strunb.adb:1169:49: info: pointer dereference check proved
+strunb.adb:1169:49: info: range check proved
+strunb.adb:1177:12: info: precondition proved
+strunb.adb:1177:24: info: initialization check proved
+strunb.adb:1177:24: info: range check proved
+strunb.adb:1177:38: info: in value of subprogram parameter after the call at strunb.adb:1177
+strunb.adb:1177:38: info: pointer dereference check proved
+strunb.adb:1177:38: info: predicate check proved
+strunb.adb:1177:38: info: range check proved
+strunb.adb:1189:22: info: assertion proved
+strunb.adb:1190:47: info: initialization check proved
+strunb.adb:1190:47: info: range check proved
+strunb.adb:1190:61: info: pointer dereference check proved
+strunb.adb:1190:61: info: range check proved
+strunb.adb:1191:22: info: assertion proved
+strunb.adb:1192:47: info: initialization check proved
+strunb.adb:1192:47: info: range check proved
+strunb.adb:1192:61: info: pointer dereference check proved
+strunb.adb:1192:61: info: range check proved
+strunb.adb:1194:22: info: initialization check proved
+strunb.adb:1194:22: info: range check proved
+strunb.adb:1194:36: info: pointer dereference check proved
+strunb.adb:1194:36: info: range check proved
+strunb.adb:1201:22: info: assertion proved
+strunb.adb:1202:47: info: initialization check proved
+strunb.adb:1202:47: info: range check proved
+strunb.adb:1202:61: info: pointer dereference check proved
+strunb.adb:1202:61: info: range check proved
+strunb.adb:1203:22: info: assertion proved
+strunb.adb:1204:47: info: initialization check proved
+strunb.adb:1204:47: info: range check proved
+strunb.adb:1204:61: info: pointer dereference check proved
+strunb.adb:1204:61: info: range check proved
+strunb.adb:1205:07: info: absence of resource or memory leak at end of scope proved
+strunb.adb:1206:30: info: range check proved
+strunb.adb:1206:37: info: initialization check proved
+strunb.adb:1206:37: info: range check proved
+strunb.adb:1206:51: info: pointer dereference check proved
+strunb.adb:1206:51: info: range check proved
+strunb.adb:1207:33: info: pointer dereference check proved
+strunb.adb:1207:36: info: range check proved
+strunb.adb:1208:07: info: absence of resource or memory leak at end of scope proved
+strunb.adb:1210:14: info: absence of resource or memory leak proved
+strunb.adb:1210:34: info: predicate check proved
+strunb.adb:1220:22: info: assertion proved
+strunb.adb:1221:37: info: initialization check proved
+strunb.adb:1221:37: info: range check proved
+strunb.adb:1221:51: info: pointer dereference check proved
+strunb.adb:1221:51: info: range check proved
+strunb.adb:1222:22: info: assertion proved
+strunb.adb:1223:37: info: initialization check proved
+strunb.adb:1223:37: info: range check proved
+strunb.adb:1223:51: info: pointer dereference check proved
+strunb.adb:1223:51: info: range check proved
+strunb.adb:1225:30: info: initialization check proved
+strunb.adb:1225:30: info: range check proved
+strunb.adb:1225:44: info: pointer dereference check proved
+strunb.adb:1225:44: info: range check proved
+strunb.adb:1233:22: info: assertion proved
+strunb.adb:1234:37: info: initialization check proved
+strunb.adb:1234:37: info: range check proved
+strunb.adb:1234:51: info: pointer dereference check proved
+strunb.adb:1234:51: info: range check proved
+strunb.adb:1235:22: info: assertion proved
+strunb.adb:1236:37: info: initialization check proved
+strunb.adb:1236:37: info: range check proved
+strunb.adb:1236:51: info: pointer dereference check proved
+strunb.adb:1236:51: info: range check proved
+strunb.adb:1237:07: info: absence of resource or memory leak at end of scope proved
+strunb.adb:1238:30: info: range check proved
+strunb.adb:1238:37: info: initialization check proved
+strunb.adb:1238:37: info: range check proved
+strunb.adb:1238:51: info: pointer dereference check proved
+strunb.adb:1238:51: info: range check proved
+strunb.adb:1239:33: info: pointer dereference check proved
+strunb.adb:1239:36: info: range check proved
+strunb.adb:1240:07: info: absence of resource or memory leak at end of scope proved
+strunb.adb:1242:14: info: absence of resource or memory leak proved
+strunb.adb:1242:34: info: predicate check proved
+strunb.adb:1257:10: info: only expected exception raised
+strunb.adb:1259:38: info: initialization check proved
+strunb.adb:1259:38: info: range check proved
+strunb.adb:1259:63: info: pointer dereference check proved
+strunb.adb:1259:63: info: range check proved
+strunb.adb:1271:10: info: only expected exception raised
+strunb.adb:1273:17: info: absence of resource or memory leak proved
+strunb.adb:1273:41: info: initialization check proved
+strunb.adb:1273:41: info: range check proved
+strunb.adb:1273:66: info: pointer dereference check proved
+strunb.adb:1273:66: info: range check proved
+strunb.ads:64:03: info: initial condition proved
+strunb.ads:74:09: info: default initial condition proved
+strunb.ads:74:09: info: predicate check justified on default value
+strunb.ads:88:13: info: implicit aspect Always_Terminates on "Length" has been proved, subprogram will terminate
+strunb.ads:88:13: info: implicit function contract might not be available on calls from enclosing unit
+strunb.ads:89:06: info: data dependencies proved
+strunb.ads:108:13: info: implicit aspect Always_Terminates on "To_Unbounded_String" has been proved, subprogram will terminate
+strunb.ads:111:16: info: postcondition proved
+strunb.ads:112:61: info: range check proved
+strunb.ads:113:06: info: data dependencies proved
+strunb.ads:124:13: info: implicit aspect Always_Terminates on "To_String" has been proved, subprogram will terminate
+strunb.ads:126:08: info: postcondition proved
+strunb.ads:127:35: info: range check proved
+strunb.ads:128:06: info: data dependencies proved
+strunb.ads:138:14: info: aspect Always_Terminates on "Set_Unbounded_String" has been proved, subprogram will terminate
+strunb.ads:142:17: info: postcondition proved
+strunb.ads:143:06: info: data dependencies proved
+strunb.ads:144:06: info: flow dependencies proved
+strunb.ads:148:14: info: aspect Always_Terminates on "Append" has been proved, subprogram will terminate
+strunb.ads:152:50: info: overflow check proved
+strunb.ads:154:08: info: postcondition proved
+strunb.ads:154:52: info: range check proved
+strunb.ads:155:06: info: data dependencies proved
+strunb.ads:157:14: info: aspect Always_Terminates on "Append" has been proved, subprogram will terminate
+strunb.ads:161:24: info: range check proved
+strunb.ads:161:48: info: overflow check proved
+strunb.ads:162:16: info: postcondition proved
+strunb.ads:162:60: info: range check proved
+strunb.ads:163:06: info: data dependencies proved
+strunb.ads:165:14: info: aspect Always_Terminates on "Append" has been proved, subprogram will terminate
+strunb.ads:170:16: info: postcondition proved
+strunb.ads:170:60: info: range check proved
+strunb.ads:171:06: info: data dependencies proved
+strunb.ads:177:13: info: implicit aspect Always_Terminates on overriding operator "&" has been proved, subprogram will terminate
+strunb.ads:181:47: info: overflow check proved
+strunb.ads:182:16: info: postcondition proved
+strunb.ads:182:58: info: range check proved
+strunb.ads:183:06: info: data dependencies proved
+strunb.ads:185:13: info: implicit aspect Always_Terminates on overriding operator "&" has been proved, subprogram will terminate
+strunb.ads:189:21: info: range check proved
+strunb.ads:189:45: info: overflow check proved
+strunb.ads:190:16: info: postcondition proved
+strunb.ads:190:58: info: range check proved
+strunb.ads:191:06: info: data dependencies proved
+strunb.ads:193:13: info: implicit aspect Always_Terminates on overriding operator "&" has been proved, subprogram will terminate
+strunb.ads:197:20: info: range check proved
+strunb.ads:197:44: info: overflow check proved
+strunb.ads:198:16: info: postcondition proved
+strunb.ads:198:51: info: range check proved
+strunb.ads:198:57: info: range check proved
+strunb.ads:199:06: info: data dependencies proved
+strunb.ads:201:13: info: implicit aspect Always_Terminates on overriding operator "&" has been proved, subprogram will terminate
+strunb.ads:206:16: info: postcondition proved
+strunb.ads:206:58: info: range check proved
+strunb.ads:207:06: info: data dependencies proved
+strunb.ads:209:13: info: implicit aspect Always_Terminates on overriding operator "&" has been proved, subprogram will terminate
+strunb.ads:214:16: info: postcondition proved
+strunb.ads:214:46: info: range check proved
+strunb.ads:215:06: info: data dependencies proved
+strunb.ads:223:13: info: implicit aspect Always_Terminates on "Element" has been proved, subprogram will terminate
+strunb.ads:228:16: info: postcondition proved
+strunb.ads:228:53: info: index check proved
+strunb.ads:229:06: info: data dependencies proved
+strunb.ads:233:14: info: aspect Always_Terminates on "Replace_Element" has been proved, subprogram will terminate
+strunb.ads:240:08: info: postcondition proved
+strunb.ads:240:64: info: index check proved
+strunb.ads:241:06: info: data dependencies proved
+strunb.ads:246:13: info: implicit aspect Always_Terminates on "Slice" has been proved, subprogram will terminate
+strunb.ads:252:16: info: postcondition proved
+strunb.ads:254:32: info: range check proved
+strunb.ads:255:06: info: data dependencies proved
+strunb.ads:261:13: info: implicit aspect Always_Terminates on "Unbounded_Slice" has been proved, subprogram will terminate
+strunb.ads:268:08: info: postcondition proved
+strunb.ads:268:45: info: range check proved
+strunb.ads:269:06: info: data dependencies proved
+strunb.ads:275:14: info: aspect Always_Terminates on "Unbounded_Slice" has been proved, subprogram will terminate
+strunb.ads:277:07: info: initialization of parts of "Target" without Relaxed_Initialization proved
+strunb.ads:282:16: info: postcondition proved
+strunb.ads:282:37: info: range check proved
+strunb.ads:283:06: info: data dependencies proved
+strunb.ads:289:13: info: implicit aspect Always_Terminates on overriding operator "=" has been proved, subprogram will terminate
+strunb.ads:293:16: info: postcondition proved
+strunb.ads:294:06: info: data dependencies proved
+strunb.ads:296:13: info: implicit aspect Always_Terminates on overriding operator "=" has been proved, subprogram will terminate
+strunb.ads:300:16: info: postcondition proved
+strunb.ads:301:06: info: data dependencies proved
+strunb.ads:303:13: info: implicit aspect Always_Terminates on overriding operator "=" has been proved, subprogram will terminate
+strunb.ads:307:16: info: postcondition proved
+strunb.ads:308:06: info: data dependencies proved
+strunb.ads:310:13: info: implicit aspect Always_Terminates on overriding operator "<" has been proved, subprogram will terminate
+strunb.ads:314:16: info: postcondition proved
+strunb.ads:315:06: info: data dependencies proved
+strunb.ads:317:13: info: implicit aspect Always_Terminates on overriding operator "<" has been proved, subprogram will terminate
+strunb.ads:321:16: info: postcondition proved
+strunb.ads:322:06: info: data dependencies proved
+strunb.ads:324:13: info: implicit aspect Always_Terminates on overriding operator "<" has been proved, subprogram will terminate
+strunb.ads:328:16: info: postcondition proved
+strunb.ads:329:06: info: data dependencies proved
+strunb.ads:331:13: info: implicit aspect Always_Terminates on overriding operator "<=" has been proved, subprogram will terminate
+strunb.ads:335:16: info: postcondition proved
+strunb.ads:336:06: info: data dependencies proved
+strunb.ads:338:13: info: implicit aspect Always_Terminates on overriding operator "<=" has been proved, subprogram will terminate
+strunb.ads:342:16: info: postcondition proved
+strunb.ads:343:06: info: data dependencies proved
+strunb.ads:345:13: info: implicit aspect Always_Terminates on overriding operator "<=" has been proved, subprogram will terminate
+strunb.ads:349:16: info: postcondition proved
+strunb.ads:350:06: info: data dependencies proved
+strunb.ads:352:13: info: implicit aspect Always_Terminates on overriding operator ">" has been proved, subprogram will terminate
+strunb.ads:356:16: info: postcondition proved
+strunb.ads:357:06: info: data dependencies proved
+strunb.ads:359:13: info: implicit aspect Always_Terminates on overriding operator ">" has been proved, subprogram will terminate
+strunb.ads:363:16: info: postcondition proved
+strunb.ads:364:06: info: data dependencies proved
+strunb.ads:366:13: info: implicit aspect Always_Terminates on overriding operator ">" has been proved, subprogram will terminate
+strunb.ads:370:16: info: postcondition proved
+strunb.ads:371:06: info: data dependencies proved
+strunb.ads:373:13: info: implicit aspect Always_Terminates on overriding operator ">=" has been proved, subprogram will terminate
+strunb.ads:377:16: info: postcondition proved
+strunb.ads:378:06: info: data dependencies proved
+strunb.ads:380:13: info: implicit aspect Always_Terminates on overriding operator ">=" has been proved, subprogram will terminate
+strunb.ads:384:16: info: postcondition proved
+strunb.ads:385:06: info: data dependencies proved
+strunb.ads:387:13: info: implicit aspect Always_Terminates on overriding operator ">=" has been proved, subprogram will terminate
+strunb.ads:391:16: info: postcondition proved
+strunb.ads:392:06: info: data dependencies proved
+strunb.ads:402:13: info: implicit aspect Always_Terminates on "Index" has been proved, subprogram will terminate
+strunb.ads:409:24: info: postcondition proved
+strunb.ads:410:06: info: disjoint contract cases proved
+strunb.ads:415:09: info: contract case proved
+strunb.ads:423:49: info: overflow check proved
+strunb.ads:423:59: info: range check proved
+strunb.ads:424:22: info: precondition proved
+strunb.ads:425:09: info: contract case proved
+strunb.ads:428:48: info: overflow check proved
+strunb.ads:428:58: info: range check proved
+strunb.ads:432:28: info: precondition proved
+strunb.ads:444:56: info: overflow check proved
+strunb.ads:444:65: info: range check proved
+strunb.ads:445:35: info: precondition proved
+strunb.ads:451:09: info: contract case proved
+strunb.ads:453:06: info: data dependencies proved
+strunb.ads:455:13: info: implicit aspect Always_Terminates on "Index" has been proved, subprogram will terminate
+strunb.ads:462:24: info: postcondition proved
+strunb.ads:463:06: info: disjoint contract cases proved
+strunb.ads:468:09: info: contract case proved
+strunb.ads:476:49: info: overflow check proved
+strunb.ads:476:59: info: range check proved
+strunb.ads:477:22: info: precondition proved
+strunb.ads:478:09: info: contract case proved
+strunb.ads:481:48: info: overflow check proved
+strunb.ads:481:58: info: range check proved
+strunb.ads:485:28: info: precondition proved
+strunb.ads:497:56: info: overflow check proved
+strunb.ads:497:65: info: range check proved
+strunb.ads:498:35: info: precondition proved
+strunb.ads:504:09: info: contract case proved
+strunb.ads:506:06: info: data dependencies proved
+strunb.ads:508:13: info: implicit aspect Always_Terminates on "Index" has been proved, subprogram will terminate
+strunb.ads:514:24: info: postcondition proved
+strunb.ads:522:09: info: contract case proved
+strunb.ads:528:09: info: contract case proved
+strunb.ads:538:29: info: precondition proved
+strunb.ads:538:51: info: range check proved
+strunb.ads:549:39: info: precondition proved
+strunb.ads:550:06: info: data dependencies proved
+strunb.ads:552:13: info: implicit aspect Always_Terminates on "Index" has been proved, subprogram will terminate
+strunb.ads:562:24: info: postcondition proved
+strunb.ads:563:06: info: disjoint contract cases proved
+strunb.ads:568:09: info: contract case proved
+strunb.ads:579:17: info: overflow check proved
+strunb.ads:579:27: info: range check proved
+strunb.ads:580:21: info: precondition proved
+strunb.ads:581:09: info: contract case proved
+strunb.ads:587:14: info: overflow check proved
+strunb.ads:587:24: info: range check proved
+strunb.ads:591:28: info: precondition proved
+strunb.ads:603:45: info: overflow check proved
+strunb.ads:603:54: info: range check proved
+strunb.ads:604:35: info: precondition proved
+strunb.ads:610:09: info: contract case proved
+strunb.ads:612:06: info: data dependencies proved
+strunb.ads:615:13: info: implicit aspect Always_Terminates on "Index" has been proved, subprogram will terminate
+strunb.ads:626:24: info: postcondition proved
+strunb.ads:627:06: info: disjoint contract cases proved
+strunb.ads:632:09: info: contract case proved
+strunb.ads:643:17: info: overflow check proved
+strunb.ads:643:27: info: range check proved
+strunb.ads:644:21: info: precondition proved
+strunb.ads:645:09: info: contract case proved
+strunb.ads:651:14: info: overflow check proved
+strunb.ads:651:24: info: range check proved
+strunb.ads:655:28: info: precondition proved
+strunb.ads:667:45: info: overflow check proved
+strunb.ads:667:54: info: range check proved
+strunb.ads:668:35: info: precondition proved
+strunb.ads:674:09: info: contract case proved
+strunb.ads:676:06: info: data dependencies proved
+strunb.ads:679:13: info: implicit aspect Always_Terminates on "Index" has been proved, subprogram will terminate
+strunb.ads:688:24: info: postcondition proved
+strunb.ads:699:50: info: precondition proved
+strunb.ads:700:09: info: contract case proved
+strunb.ads:707:09: info: contract case proved
+strunb.ads:720:29: info: precondition proved
+strunb.ads:720:51: info: range check proved
+strunb.ads:733:39: info: precondition proved
+strunb.ads:734:06: info: data dependencies proved
+strunb.ads:737:13: info: implicit aspect Always_Terminates on "Index_Non_Blank" has been proved, subprogram will terminate
+strunb.ads:741:24: info: postcondition proved
+strunb.ads:748:09: info: contract case proved
+strunb.ads:754:09: info: contract case proved
+strunb.ads:761:22: info: precondition proved
+strunb.ads:761:54: info: range check proved
+strunb.ads:772:24: info: precondition proved
+strunb.ads:773:06: info: data dependencies proved
+strunb.ads:775:13: info: implicit aspect Always_Terminates on "Index_Non_Blank" has been proved, subprogram will terminate
+strunb.ads:782:24: info: postcondition proved
+strunb.ads:793:19: info: precondition proved
+strunb.ads:794:09: info: contract case proved
+strunb.ads:801:09: info: contract case proved
+strunb.ads:812:22: info: precondition proved
+strunb.ads:812:54: info: range check proved
+strunb.ads:825:24: info: precondition proved
+strunb.ads:826:06: info: data dependencies proved
+strunb.ads:829:13: info: implicit aspect Always_Terminates on "Count" has been proved, subprogram will terminate
+strunb.ads:835:06: info: data dependencies proved
+strunb.ads:837:13: info: implicit aspect Always_Terminates on "Count" has been proved, subprogram will terminate
+strunb.ads:843:06: info: data dependencies proved
+strunb.ads:845:13: info: implicit aspect Always_Terminates on "Count" has been proved, subprogram will terminate
+strunb.ads:849:06: info: data dependencies proved
+strunb.ads:851:14: info: aspect Always_Terminates on "Find_Token" has been proved, subprogram will terminate
+strunb.ads:856:07: info: initialization of "First" proved
+strunb.ads:857:07: info: initialization of "Last" proved
+strunb.ads:870:47: info: precondition proved
+strunb.ads:870:64: info: range check proved
+strunb.ads:871:09: info: contract case proved
+strunb.ads:877:09: info: contract case proved
+strunb.ads:888:49: info: precondition proved
+strunb.ads:888:66: info: range check proved
+strunb.ads:895:48: info: precondition proved
+strunb.ads:895:65: info: range check proved
+strunb.ads:904:33: info: precondition proved
+strunb.ads:904:55: info: overflow check proved
+strunb.ads:905:06: info: data dependencies proved
+strunb.ads:908:14: info: aspect Always_Terminates on "Find_Token" has been proved, subprogram will terminate
+strunb.ads:912:07: info: initialization of "First" proved
+strunb.ads:913:07: info: initialization of "Last" proved
+strunb.ads:924:47: info: precondition proved
+strunb.ads:925:09: info: contract case proved
+strunb.ads:931:09: info: contract case proved
+strunb.ads:942:49: info: precondition proved
+strunb.ads:949:48: info: precondition proved
+strunb.ads:949:65: info: range check proved
+strunb.ads:958:33: info: precondition proved
+strunb.ads:958:55: info: overflow check proved
+strunb.ads:959:06: info: data dependencies proved
+strunb.ads:970:13: info: implicit aspect Always_Terminates on "Translate" has been proved, subprogram will terminate
+strunb.ads:974:16: info: postcondition proved
+strunb.ads:977:13: info: precondition proved
+strunb.ads:978:48: info: precondition proved
+strunb.ads:979:06: info: data dependencies proved
+strunb.ads:981:14: info: aspect Always_Terminates on "Translate" has been proved, subprogram will terminate
+strunb.ads:985:16: info: postcondition proved
+strunb.ads:988:13: info: precondition proved
+strunb.ads:989:72: info: index check proved
+strunb.ads:990:06: info: data dependencies proved
+strunb.ads:997:16: info: postcondition proved
+strunb.ads:998:08: info: justified that implicit aspect Always_Terminates on "Translate" could be incorrect, call via access-to-subprogram might be nonterminating
+strunb.ads:1000:13: info: precondition proved
+strunb.ads:1000:45: info: pointer dereference check proved
+strunb.ads:1000:54: info: precondition proved
+strunb.ads:1001:06: info: data dependencies proved
+strunb.ads:1011:16: info: postcondition proved
+strunb.ads:1012:08: info: justified that aspect Always_Terminates on "Translate" could be incorrect, call via access-to-subprogram might be nonterminating
+strunb.ads:1014:13: info: precondition proved
+strunb.ads:1014:35: info: pointer dereference check proved
+strunb.ads:1014:68: info: index check proved
+strunb.ads:1015:06: info: data dependencies proved
+strunb.ads:1029:13: info: implicit aspect Always_Terminates on "Replace_Slice" has been proved, subprogram will terminate
+strunb.ads:1039:38: info: overflow check proved
+strunb.ads:1039:42: info: range check proved
+strunb.ads:1040:23: info: overflow check proved
+strunb.ads:1040:54: info: overflow check proved
+strunb.ads:1041:57: info: overflow check proved
+strunb.ads:1041:61: info: range check proved
+strunb.ads:1049:21: info: contract case proved
+strunb.ads:1054:21: info: overflow check proved
+strunb.ads:1054:25: info: range check proved
+strunb.ads:1054:33: info: overflow check proved
+strunb.ads:1054:64: info: overflow check proved
+strunb.ads:1059:15: info: precondition proved
+strunb.ads:1060:17: info: precondition proved
+strunb.ads:1062:15: info: precondition proved
+strunb.ads:1062:57: info: overflow check proved
+strunb.ads:1062:61: info: range check proved
+strunb.ads:1070:18: info: precondition proved
+strunb.ads:1071:24: info: overflow check proved
+strunb.ads:1071:28: info: range check proved
+strunb.ads:1072:22: info: precondition proved
+strunb.ads:1072:42: info: overflow check proved
+strunb.ads:1077:21: info: contract case proved
+strunb.ads:1081:59: info: overflow check proved
+strunb.ads:1081:63: info: range check proved
+strunb.ads:1086:15: info: precondition proved
+strunb.ads:1087:17: info: precondition proved
+strunb.ads:1089:15: info: precondition proved
+strunb.ads:1089:57: info: overflow check proved
+strunb.ads:1089:61: info: range check proved
+strunb.ads:1097:17: info: precondition proved
+strunb.ads:1098:23: info: overflow check proved
+strunb.ads:1098:27: info: range check proved
+strunb.ads:1099:21: info: precondition proved
+strunb.ads:1100:06: info: data dependencies proved
+strunb.ads:1111:14: info: aspect Always_Terminates on "Replace_Slice" has been proved, subprogram will terminate
+strunb.ads:1121:38: info: overflow check proved
+strunb.ads:1121:42: info: range check proved
+strunb.ads:1122:23: info: overflow check proved
+strunb.ads:1122:54: info: overflow check proved
+strunb.ads:1123:57: info: overflow check proved
+strunb.ads:1123:61: info: range check proved
+strunb.ads:1131:21: info: contract case proved
+strunb.ads:1136:21: info: overflow check proved
+strunb.ads:1136:25: info: range check proved
+strunb.ads:1136:33: info: overflow check proved
+strunb.ads:1136:68: info: overflow check proved
+strunb.ads:1140:22: info: precondition proved
+strunb.ads:1141:15: info: precondition proved
+strunb.ads:1142:22: info: precondition proved
+strunb.ads:1142:50: info: overflow check proved
+strunb.ads:1142:54: info: range check proved
+strunb.ads:1149:21: info: precondition proved
+strunb.ads:1149:40: info: overflow check proved
+strunb.ads:1149:44: info: range check proved
+strunb.ads:1150:18: info: precondition proved
+strunb.ads:1155:57: info: overflow check proved
+strunb.ads:1161:21: info: contract case proved
+strunb.ads:1165:49: info: overflow check proved
+strunb.ads:1165:53: info: range check proved
+strunb.ads:1169:22: info: precondition proved
+strunb.ads:1170:15: info: precondition proved
+strunb.ads:1171:22: info: precondition proved
+strunb.ads:1171:50: info: overflow check proved
+strunb.ads:1171:54: info: range check proved
+strunb.ads:1178:21: info: precondition proved
+strunb.ads:1178:40: info: overflow check proved
+strunb.ads:1178:44: info: range check proved
+strunb.ads:1179:18: info: precondition proved
+strunb.ads:1180:06: info: data dependencies proved
+strunb.ads:1182:13: info: implicit aspect Always_Terminates on "Insert" has been proved, subprogram will terminate
+strunb.ads:1188:35: info: range check proved
+strunb.ads:1188:59: info: overflow check proved
+strunb.ads:1192:08: info: postcondition proved
+strunb.ads:1192:49: info: overflow check proved
+strunb.ads:1192:59: info: range check proved
+strunb.ads:1197:12: info: precondition proved
+strunb.ads:1197:51: info: precondition proved
+strunb.ads:1199:12: info: precondition proved
+strunb.ads:1199:53: info: overflow check proved
+strunb.ads:1199:63: info: range check proved
+strunb.ads:1207:15: info: precondition proved
+strunb.ads:1207:44: info: overflow check proved
+strunb.ads:1207:54: info: range check proved
+strunb.ads:1209:19: info: precondition proved
+strunb.ads:1210:06: info: data dependencies proved
+strunb.ads:1216:14: info: aspect Always_Terminates on "Insert" has been proved, subprogram will terminate
+strunb.ads:1222:35: info: range check proved
+strunb.ads:1222:59: info: overflow check proved
+strunb.ads:1226:08: info: postcondition proved
+strunb.ads:1226:46: info: overflow check proved
+strunb.ads:1226:56: info: range check proved
+strunb.ads:1231:12: info: precondition proved
+strunb.ads:1231:44: info: precondition proved
+strunb.ads:1233:12: info: precondition proved
+strunb.ads:1233:46: info: overflow check proved
+strunb.ads:1233:56: info: range check proved
+strunb.ads:1240:15: info: precondition proved
+strunb.ads:1240:37: info: overflow check proved
+strunb.ads:1240:47: info: range check proved
+strunb.ads:1241:17: info: precondition proved
+strunb.ads:1242:06: info: data dependencies proved
+strunb.ads:1244:13: info: implicit aspect Always_Terminates on "Overwrite" has been proved, subprogram will terminate
+strunb.ads:1250:35: info: range check proved
+strunb.ads:1250:59: info: overflow check proved
+strunb.ads:1254:08: info: postcondition proved
+strunb.ads:1255:53: info: overflow check proved
+strunb.ads:1255:63: info: range check proved
+strunb.ads:1260:12: info: precondition proved
+strunb.ads:1261:14: info: precondition proved
+strunb.ads:1263:12: info: precondition proved
+strunb.ads:1263:60: info: overflow check proved
+strunb.ads:1263:70: info: range check proved
+strunb.ads:1266:29: info: overflow check proved
+strunb.ads:1266:39: info: range check proved
+strunb.ads:1271:15: info: precondition proved
+strunb.ads:1272:26: info: overflow check proved
+strunb.ads:1272:36: info: range check proved
+strunb.ads:1273:19: info: precondition proved
+strunb.ads:1274:30: info: overflow check proved
+strunb.ads:1274:40: info: range check proved
+strunb.ads:1275:06: info: data dependencies proved
+strunb.ads:1277:14: info: aspect Always_Terminates on "Overwrite" has been proved, subprogram will terminate
+strunb.ads:1283:35: info: range check proved
+strunb.ads:1283:59: info: overflow check proved
+strunb.ads:1287:08: info: postcondition proved
+strunb.ads:1288:57: info: overflow check proved
+strunb.ads:1288:67: info: range check proved
+strunb.ads:1293:12: info: precondition proved
+strunb.ads:1293:46: info: precondition proved
+strunb.ads:1295:12: info: precondition proved
+strunb.ads:1295:50: info: overflow check proved
+strunb.ads:1295:60: info: range check proved
+strunb.ads:1297:29: info: overflow check proved
+strunb.ads:1297:39: info: range check proved
+strunb.ads:1302:15: info: precondition proved
+strunb.ads:1303:26: info: overflow check proved
+strunb.ads:1303:36: info: range check proved
+strunb.ads:1304:19: info: precondition proved
+strunb.ads:1309:38: info: overflow check proved
+strunb.ads:1309:48: info: range check proved
+strunb.ads:1310:36: info: overflow check proved
+strunb.ads:1310:46: info: range check proved
+strunb.ads:1313:06: info: data dependencies proved
+strunb.ads:1315:13: info: implicit aspect Always_Terminates on "Delete" has been proved, subprogram will terminate
+strunb.ads:1322:25: info: contract case proved
+strunb.ads:1324:22: info: overflow check proved
+strunb.ads:1324:53: info: overflow check proved
+strunb.ads:1326:15: info: precondition proved
+strunb.ads:1326:52: info: precondition proved
+strunb.ads:1329:18: info: precondition proved
+strunb.ads:1330:20: info: precondition proved
+strunb.ads:1330:43: info: overflow check proved
+strunb.ads:1331:25: info: contract case proved
+strunb.ads:1333:06: info: data dependencies proved
+strunb.ads:1335:14: info: aspect Always_Terminates on "Delete" has been proved, subprogram will terminate
+strunb.ads:1342:25: info: contract case proved
+strunb.ads:1344:22: info: overflow check proved
+strunb.ads:1344:57: info: overflow check proved
+strunb.ads:1346:15: info: precondition proved
+strunb.ads:1347:35: info: range check proved
+strunb.ads:1350:17: info: precondition proved
+strunb.ads:1351:37: info: range check proved
+strunb.ads:1351:51: info: overflow check proved
+strunb.ads:1352:25: info: contract case proved
+strunb.ads:1354:06: info: data dependencies proved
+strunb.ads:1356:13: info: implicit aspect Always_Terminates on "Trim" has been proved, subprogram will terminate
+strunb.ads:1365:09: info: contract case proved
+strunb.ads:1371:09: info: contract case proved
+strunb.ads:1375:22: info: range check proved
+strunb.ads:1377:37: info: range check proved
+strunb.ads:1378:22: info: range check proved
+strunb.ads:1380:40: info: precondition proved
+strunb.ads:1381:06: info: data dependencies proved
+strunb.ads:1383:14: info: aspect Always_Terminates on "Trim" has been proved, subprogram will terminate
+strunb.ads:1392:09: info: contract case proved
+strunb.ads:1398:09: info: contract case proved
+strunb.ads:1402:55: info: range check proved
+strunb.ads:1404:52: info: range check proved
+strunb.ads:1405:56: info: range check proved
+strunb.ads:1407:53: info: range check proved
+strunb.ads:1408:06: info: data dependencies proved
+strunb.ads:1410:13: info: implicit aspect Always_Terminates on "Trim" has been proved, subprogram will terminate
+strunb.ads:1422:09: info: contract case proved
+strunb.ads:1428:09: info: contract case proved
+strunb.ads:1431:16: info: range check proved
+strunb.ads:1433:16: info: range check proved
+strunb.ads:1435:40: info: precondition proved
+strunb.ads:1436:06: info: data dependencies proved
+strunb.ads:1438:14: info: aspect Always_Terminates on "Trim" has been proved, subprogram will terminate
+strunb.ads:1450:09: info: contract case proved
+strunb.ads:1456:09: info: contract case proved
+strunb.ads:1459:54: info: range check proved
+strunb.ads:1461:56: info: range check proved
+strunb.ads:1463:53: info: range check proved
+strunb.ads:1464:06: info: data dependencies proved
+strunb.ads:1466:13: info: implicit aspect Always_Terminates on "Head" has been proved, subprogram will terminate
+strunb.ads:1471:24: info: postcondition proved
+strunb.ads:1474:09: info: contract case proved
+strunb.ads:1477:37: info: precondition proved
+strunb.ads:1480:09: info: contract case proved
+strunb.ads:1483:11: info: precondition proved
+strunb.ads:1485:15: info: precondition proved
+strunb.ads:1485:51: info: overflow check proved
+strunb.ads:1486:17: info: range check proved
+strunb.ads:1486:20: info: range check proved
+strunb.ads:1486:29: info: overflow check proved
+strunb.ads:1487:06: info: data dependencies proved
+strunb.ads:1489:14: info: aspect Always_Terminates on "Head" has been proved, subprogram will terminate
+strunb.ads:1494:24: info: postcondition proved
+strunb.ads:1497:09: info: contract case proved
+strunb.ads:1500:32: info: precondition proved
+strunb.ads:1503:09: info: contract case proved
+strunb.ads:1506:11: info: precondition proved
+strunb.ads:1508:15: info: precondition proved
+strunb.ads:1508:50: info: overflow check proved
+strunb.ads:1509:17: info: range check proved
+strunb.ads:1509:20: info: range check proved
+strunb.ads:1509:29: info: overflow check proved
+strunb.ads:1510:06: info: data dependencies proved
+strunb.ads:1512:13: info: implicit aspect Always_Terminates on "Tail" has been proved, subprogram will terminate
+strunb.ads:1517:24: info: postcondition proved
+strunb.ads:1518:06: info: disjoint contract cases proved
+strunb.ads:1520:09: info: contract case proved
+strunb.ads:1524:09: info: contract case proved
+strunb.ads:1528:13: info: precondition proved
+strunb.ads:1528:44: info: overflow check proved
+strunb.ads:1528:52: info: overflow check proved
+strunb.ads:1528:52: info: range check proved
+strunb.ads:1531:09: info: contract case proved
+strunb.ads:1535:39: info: range check proved
+strunb.ads:1535:42: info: range check proved
+strunb.ads:1537:13: info: precondition proved
+strunb.ads:1537:42: info: overflow check proved
+strunb.ads:1537:42: info: range check proved
+strunb.ads:1538:15: info: range check proved
+strunb.ads:1538:18: info: range check proved
+strunb.ads:1538:27: info: overflow check proved
+strunb.ads:1540:17: info: precondition proved
+strunb.ads:1540:43: info: overflow check proved
+strunb.ads:1540:61: info: overflow check proved
+strunb.ads:1540:61: info: range check proved
+strunb.ads:1542:06: info: data dependencies proved
+strunb.ads:1544:14: info: aspect Always_Terminates on "Tail" has been proved, subprogram will terminate
+strunb.ads:1549:24: info: postcondition proved
+strunb.ads:1550:06: info: disjoint contract cases proved
+strunb.ads:1552:09: info: contract case proved
+strunb.ads:1556:09: info: contract case proved
+strunb.ads:1560:13: info: precondition proved
+strunb.ads:1565:65: info: overflow check proved
+strunb.ads:1565:73: info: overflow check proved
+strunb.ads:1565:73: info: range check proved
+strunb.ads:1570:09: info: contract case proved
+strunb.ads:1574:34: info: range check proved
+strunb.ads:1574:37: info: range check proved
+strunb.ads:1576:13: info: precondition proved
+strunb.ads:1576:37: info: overflow check proved
+strunb.ads:1576:37: info: range check proved
+strunb.ads:1577:15: info: range check proved
+strunb.ads:1577:18: info: range check proved
+strunb.ads:1577:27: info: overflow check proved
+strunb.ads:1579:17: info: precondition proved
+strunb.ads:1579:38: info: overflow check proved
+strunb.ads:1579:60: info: overflow check proved
+strunb.ads:1579:60: info: range check proved
+strunb.ads:1581:06: info: data dependencies proved
+strunb.ads:1583:13: info: implicit aspect Always_Terminates on overriding operator "*" has been proved, subprogram will terminate
+strunb.ads:1588:16: info: postcondition proved
+strunb.ads:1588:41: info: range check proved
+strunb.ads:1588:44: info: range check proved
+strunb.ads:1589:06: info: data dependencies proved
+strunb.ads:1591:13: info: implicit aspect Always_Terminates on overriding operator "*" has been proved, subprogram will terminate
+strunb.ads:1595:40: info: range check proved
+strunb.ads:1595:64: info: division check proved
+strunb.ads:1597:08: info: postcondition proved
+strunb.ads:1597:35: info: overflow check proved
+strunb.ads:1597:42: info: range check proved
+strunb.ads:1600:39: info: overflow check proved
+strunb.ads:1600:46: info: range check proved
+strunb.ads:1601:18: info: precondition proved
+strunb.ads:1602:39: info: index check proved
+strunb.ads:1602:39: info: overflow check proved
+strunb.ads:1602:49: info: division check proved
+strunb.ads:1602:58: info: range check proved
+strunb.ads:1603:06: info: data dependencies proved
+strunb.ads:1605:13: info: implicit aspect Always_Terminates on overriding operator "*" has been proved, subprogram will terminate
+strunb.ads:1609:66: info: division check proved
+strunb.ads:1611:08: info: postcondition proved
+strunb.ads:1611:35: info: overflow check proved
+strunb.ads:1614:39: info: overflow check proved
+strunb.ads:1615:18: info: precondition proved
+strunb.ads:1616:20: info: precondition proved
+strunb.ads:1616:38: info: overflow check proved
+strunb.ads:1616:48: info: division check proved
+strunb.ads:1617:06: info: data dependencies proved
+strunb.ads:1645:17: info: pointer dereference check proved
+strunb.ads:1646:36: info: pointer dereference check proved
+strunb.ads:1647:17: info: pointer dereference check proved
+strunb.ads:1647:17: info: range check proved
+strunb.ads:1670:14: info: aspect Always_Terminates on "Realloc_For_Chunk" has been proved, subprogram will terminate
+strunb.ads:1674:42: info: overflow check proved
+strunb.ads:1675:14: info: postcondition proved
+strunb.ads:1675:20: info: pointer dereference check proved
+strunb.ads:1675:30: info: range check proved
+strunb.ads:1675:57: info: overflow check proved
+strunb.ads:1677:23: info: initialization check proved
+strunb.ads:1677:23: info: pointer dereference check proved
+strunb.ads:1677:23: info: range check proved
+strunb.ads:1678:16: info: pointer dereference check proved
+strunb.ads:1678:16: info: range check proved
+strunb.ads:1678:45: info: initialization check proved
+strunb.ads:1688:30: info: predicate check proved
