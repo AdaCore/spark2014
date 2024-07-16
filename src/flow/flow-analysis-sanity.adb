@@ -1598,6 +1598,10 @@ package body Flow.Analysis.Sanity is
       --  We look for illegal updates
 
       for V of FA.CFG.Get_Collection (Flow_Graphs.All_Vertices) loop
+         if FA.PDG.Get_Key (V).Variant in Initial_Value | Final_Value then
+            goto NEXT_VERTEX;
+         end if;
+
          declare
             A : V_Attributes renames FA.Atr (V);
 
@@ -1626,9 +1630,7 @@ package body Flow.Analysis.Sanity is
                        (Entire_Variable (Var));
                      Sane := False;
                   end if;
-               elsif FA.PDG.Get_Key (V).Variant not in
-                 Initial_Value | Final_Value
-               then
+               else
                   --  We do know about that particular global. Now we
                   --  need to check if the update is OK.
 
@@ -1672,6 +1674,8 @@ package body Flow.Analysis.Sanity is
                end if;
             end loop;
          end;
+
+         <<NEXT_VERTEX>>
       end loop;
 
       --  We look for unknown Flow_Ids
