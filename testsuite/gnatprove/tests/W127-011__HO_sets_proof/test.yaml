@@ -1,7 +1,0 @@
-large: True
-replay: True
-prove_all:
-  sparklib: True
-  filter_sparklib: False
-session_opt:
-  level: 3

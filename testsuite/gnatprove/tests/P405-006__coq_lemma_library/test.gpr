@@ -1,8 +1,0 @@
-with "sparklib_internal";
-
-project Test is
-   for Source_Dirs use ("dummy");
-   package Prove is
-      for Proof_Dir use "proof";
-   end Prove;
-end Test;
