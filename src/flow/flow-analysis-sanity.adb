@@ -1652,27 +1652,27 @@ package body Flow.Analysis.Sanity is
 
                      Sane := False;
                   end if;
-               else
-                  if FA.Kind = Kind_Package then
-                     --  We have a write to a variable a package knows nothing
-                     --  about. This is always an illegal update.
 
-                     Error_Msg_Flow
-                       (FA           => FA,
-                        Msg          => "cannot write & during elaboration" &
-                                        " of &",
-                        Explain_Code => EC_Write_In_Elaboration,
-                        N            => Error_Location (FA.PDG, FA.Atr, V),
-                        Severity     => High_Check_Kind,
-                        Tag          => Illegal_Update,
-                        F1           => Entire_Variable (Var),
-                        F2           => Direct_Mapping_Id (FA.Spec_Entity),
-                        Vertex       => V);
+               --  If we have a write to a variable a package knows nothing
+               --  about, then it is an illegal update.
 
-                     Unknown_Globals_In_Package.Include
-                       (Entire_Variable (Var));
-                     Sane := False;
-                  end if;
+               elsif FA.Kind = Kind_Package then
+
+                  Error_Msg_Flow
+                    (FA           => FA,
+                     Msg          => "cannot write & during elaboration" &
+                                     " of &",
+                     Explain_Code => EC_Write_In_Elaboration,
+                     N            => Error_Location (FA.PDG, FA.Atr, V),
+                     Severity     => High_Check_Kind,
+                     Tag          => Illegal_Update,
+                     F1           => Entire_Variable (Var),
+                     F2           => Direct_Mapping_Id (FA.Spec_Entity),
+                     Vertex       => V);
+
+                  Unknown_Globals_In_Package.Include (Entire_Variable (Var));
+
+                  Sane := False;
                end if;
             end loop;
          end;
