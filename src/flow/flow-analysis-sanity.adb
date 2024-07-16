@@ -1609,30 +1609,11 @@ package body Flow.Analysis.Sanity is
             Final_Atr            : V_Attributes;
          begin
             for Var of A.Variables_Defined loop
-               if not FA.All_Vars.Contains (Var) then
-                  if FA.Kind = Kind_Package then
-                     --  We have a write to a variable a package knows nothing
-                     --  about. This is always an illegal update.
 
-                     Error_Msg_Flow
-                       (FA           => FA,
-                        Msg          => "cannot write & during elaboration" &
-                                        " of &",
-                        Explain_Code => EC_Write_In_Elaboration,
-                        N            => Error_Location (FA.PDG, FA.Atr, V),
-                        Severity     => High_Check_Kind,
-                        Tag          => Illegal_Update,
-                        F1           => Entire_Variable (Var),
-                        F2           => Direct_Mapping_Id (FA.Spec_Entity),
-                        Vertex       => V);
+               --  If we know about that particular global, then we need to
+               --  check if the update is OK.
 
-                     Unknown_Globals_In_Package.Include
-                       (Entire_Variable (Var));
-                     Sane := False;
-                  end if;
-               else
-                  --  We do know about that particular global. Now we
-                  --  need to check if the update is OK.
+               if FA.All_Vars.Contains (Var) then
 
                   Corresp_Final_Vertex :=
                     FA.PDG.Get_Vertex (Change_Variant (Var, Final_Value));
@@ -1669,6 +1650,27 @@ package body Flow.Analysis.Sanity is
                            Vertex   => V);
                      end if;
 
+                     Sane := False;
+                  end if;
+               else
+                  if FA.Kind = Kind_Package then
+                     --  We have a write to a variable a package knows nothing
+                     --  about. This is always an illegal update.
+
+                     Error_Msg_Flow
+                       (FA           => FA,
+                        Msg          => "cannot write & during elaboration" &
+                                        " of &",
+                        Explain_Code => EC_Write_In_Elaboration,
+                        N            => Error_Location (FA.PDG, FA.Atr, V),
+                        Severity     => High_Check_Kind,
+                        Tag          => Illegal_Update,
+                        F1           => Entire_Variable (Var),
+                        F2           => Direct_Mapping_Id (FA.Spec_Entity),
+                        Vertex       => V);
+
+                     Unknown_Globals_In_Package.Include
+                       (Entire_Variable (Var));
                      Sane := False;
                   end if;
                end if;
