@@ -1602,27 +1602,23 @@ package body Flow.Analysis.Sanity is
             goto NEXT_VERTEX;
          end if;
 
-         declare
-            A : V_Attributes renames FA.Atr (V);
+         for Var of FA.Atr (V).Variables_Defined loop
 
-            Corresp_Final_Vertex : Flow_Graphs.Vertex_Id;
-            Final_Atr            : V_Attributes;
-         begin
-            for Var of A.Variables_Defined loop
+            --  If we know about that particular global, then we need to
+            --  check if the update is OK.
 
-               --  If we know about that particular global, then we need to
-               --  check if the update is OK.
+            if FA.All_Vars.Contains (Var) then
 
-               if FA.All_Vars.Contains (Var) then
-
-                  Corresp_Final_Vertex :=
+               declare
+                  Corresp_Final_Vertex : constant Flow_Graphs.Vertex_Id :=
                     FA.PDG.Get_Vertex (Change_Variant (Var, Final_Value));
-                  pragma Assert (Corresp_Final_Vertex /=
-                                   Flow_Graphs.Null_Vertex);
-                  Final_Atr := FA.Atr.Element (Corresp_Final_Vertex);
-
-                  if Final_Atr.Is_Global
-                    and then Final_Atr.Is_Constant
+                  pragma Assert
+                    (Corresp_Final_Vertex /= Flow_Graphs.Null_Vertex);
+                  Var_Atr : V_Attributes renames
+                    FA.Atr (Corresp_Final_Vertex);
+               begin
+                  if Var_Atr.Is_Global
+                    and then Var_Atr.Is_Constant
                   then
                      if FA.Kind = Kind_Package then
                         Error_Msg_Flow
@@ -1652,30 +1648,29 @@ package body Flow.Analysis.Sanity is
 
                      Sane := False;
                   end if;
+               end;
 
-               --  If we have a write to a variable a package knows nothing
-               --  about, then it is an illegal update.
+            --  If we have a write to a variable a package knows nothing
+            --  about, then it is an illegal update.
 
-               elsif FA.Kind = Kind_Package then
+            elsif FA.Kind = Kind_Package then
 
-                  Error_Msg_Flow
-                    (FA           => FA,
-                     Msg          => "cannot write & during elaboration" &
-                                     " of &",
-                     Explain_Code => EC_Write_In_Elaboration,
-                     N            => Error_Location (FA.PDG, FA.Atr, V),
-                     Severity     => High_Check_Kind,
-                     Tag          => Illegal_Update,
-                     F1           => Entire_Variable (Var),
-                     F2           => Direct_Mapping_Id (FA.Spec_Entity),
-                     Vertex       => V);
+               Error_Msg_Flow
+                 (FA           => FA,
+                  Msg          => "cannot write & during elaboration of &",
+                  Explain_Code => EC_Write_In_Elaboration,
+                  N            => Error_Location (FA.PDG, FA.Atr, V),
+                  Severity     => High_Check_Kind,
+                  Tag          => Illegal_Update,
+                  F1           => Entire_Variable (Var),
+                  F2           => Direct_Mapping_Id (FA.Spec_Entity),
+                  Vertex       => V);
 
-                  Unknown_Globals_In_Package.Include (Entire_Variable (Var));
+               Unknown_Globals_In_Package.Include (Entire_Variable (Var));
 
-                  Sane := False;
-               end if;
-            end loop;
-         end;
+               Sane := False;
+            end if;
+         end loop;
 
          <<NEXT_VERTEX>>
       end loop;
