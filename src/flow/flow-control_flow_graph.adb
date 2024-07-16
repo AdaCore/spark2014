@@ -7724,7 +7724,8 @@ package body Flow.Control_Flow_Graph is
       Add_Vertex (FA, Null_Attributes, FA.Exceptional_End_Vertex);
       Add_Vertex (FA, Null_Attributes, FA.End_Vertex);
 
-      --  Create the magic null export vertices: initial and final
+      --  Create the magic null export vertices: initial and final, and
+      --  recognize it as a known variable.
       for Variant in Initial_Value .. Final_Value loop
          declare
             F : constant Flow_Id := Change_Variant (Null_Export_Flow_Id,
@@ -7733,6 +7734,8 @@ package body Flow.Control_Flow_Graph is
             Add_Vertex (FA, F, Make_Null_Export_Attributes (F));
          end;
       end loop;
+
+      FA.All_Vars.Insert (Null_Export_Flow_Id);
 
       --  Create initial and final vertices for the parameters of the analyzed
       --  entity, and pull the proof dependencies from their types. Type
@@ -8386,9 +8389,7 @@ package body Flow.Control_Flow_Graph is
                                          Atr.Variables_Defined);
                begin
                   for Var of Vars loop
-                     if not Synthetic (Var)
-                       and then not Known_Vars.Contains (Var)
-                     then
+                     if not Known_Vars.Contains (Var) then
                         FA.GG.Globals.Include (Get_Direct_Mapping_Id (Var));
                      end if;
                   end loop;

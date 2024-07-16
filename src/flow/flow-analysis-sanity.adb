@@ -1606,9 +1606,7 @@ package body Flow.Analysis.Sanity is
          begin
             for Var of A.Variables_Defined loop
                if not FA.All_Vars.Contains (Var) then
-                  if FA.Kind = Kind_Package
-                    and then not Synthetic (Var)
-                  then
+                  if FA.Kind = Kind_Package then
                      --  We have a write to a variable a package knows nothing
                      --  about. This is always an illegal update.
 
