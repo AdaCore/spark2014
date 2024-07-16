@@ -25,9 +25,10 @@
 
 with Ada.Containers.Indefinite_Hashed_Sets;
 with Ada.Containers.Indefinite_Hashed_Maps;
-with Ada.Directories;   use Ada.Directories;
+with Ada.Directories;
 with Ada.Environment_Variables;
 with Ada.Strings.Hash;
+with Ada.Text_IO;
 with Call;              use Call;
 with GNAT.Strings;
 with GPR2.Project.Tree;
@@ -247,39 +248,42 @@ package Configuration is
       --  prefix/share/spark/theories   - Why3 files for Ada theories
 
       Prefix                   : constant String := Executable_Location;
-      Lib                      : constant String := Compose (Prefix, "lib");
+      Lib                      : constant String :=
+        Ada.Directories.Compose (Prefix, "lib");
       Libexec_Spark            : constant String :=
-        Compose (Compose (Prefix, "libexec"), "spark");
+        Ada.Directories.Compose
+          (Ada.Directories.Compose (Prefix, "libexec"), "spark");
       Libexec_Spark_Bin        : constant String :=
-        Compose (Libexec_Spark, "bin");
+        Ada.Directories.Compose (Libexec_Spark, "bin");
       Share                    : constant String :=
-        Compose (Prefix, "share");
+        Ada.Directories.Compose (Prefix, "share");
       Libexec_Share_Why3       : constant String :=
-        Compose (Compose (Libexec_Spark, "share"), "why3");
+        Ada.Directories.Compose
+          (Ada.Directories.Compose (Libexec_Spark, "share"), "why3");
       Share_Spark              : constant String :=
-        Compose (Share, "spark");
+        Ada.Directories.Compose (Share, "spark");
       Share_Spark_Theories     : constant String :=
-        Compose (Share_Spark, "theories");
+        Ada.Directories.Compose (Share_Spark, "theories");
       Share_Spark_Config       : constant String :=
-        Compose (Share_Spark, "config");
+        Ada.Directories.Compose (Share_Spark, "config");
       Share_Spark_Explain_Codes : constant String :=
-        Compose (Share_Spark, "explain_codes");
+        Ada.Directories.Compose (Share_Spark, "explain_codes");
       Share_Spark_Runtimes     : constant String :=
-        Compose (Share_Spark, "runtimes");
+        Ada.Directories.Compose (Share_Spark, "runtimes");
       Help_Msg_File            : constant String :=
-        Compose (Share_Spark, "help.txt");
+        Ada.Directories.Compose (Share_Spark, "help.txt");
       Gpr_Frames_DB            : constant String :=
-        Compose (Share_Spark_Config, "frames");
+        Ada.Directories.Compose (Share_Spark_Config, "frames");
       Gpr_Translation_DB : constant String :=
-        Compose (Share_Spark_Config, "gnat2why");
+        Ada.Directories.Compose (Share_Spark_Config, "gnat2why");
       Gnatprove_Conf           : constant String :=
-        Compose (Share_Spark_Config, "gnatprove.conf");
+        Ada.Directories.Compose (Share_Spark_Config, "gnatprove.conf");
       GNSA_Dir                 : constant String :=
         (if Ada.Environment_Variables.Exists ("GNSA_ROOT")
          then Ada.Environment_Variables.Value ("GNSA_ROOT")
          else Libexec_Spark);
       GNSA_Dir_Bin             : constant String :=
-        Compose (GNSA_Dir, "bin");
+        Ada.Directories.Compose (GNSA_Dir, "bin");
       Z3_Present               : Boolean;
       CVC5_Present             : Boolean;
       Colibri_Present          : Boolean;
@@ -319,7 +323,24 @@ package Configuration is
    Why3_Semaphore : Semaphore;
    --  The semaphore object used to synchronize spawned gnatwhy3 processes
 
-   function Semaphore_Name return String is (Base_Name (Socket_Name.all));
+   procedure Create_Directory_Or_Exit (New_Directory : String);
+   --  Wrapper on Ada.Directories.Create_Directory that exits with a message
+   --  instead of propagating an exception in case of error.
+
+   procedure Create_File_Or_Exit
+     (File : in out Ada.Text_IO.File_Type;
+      Mode : Ada.Text_IO.File_Mode := Ada.Text_IO.Out_File;
+      Name : String := "";
+      Form : String := "");
+   --  Wrapper on Ada.Text_IO.Create that exits with a message instead of
+   --  propagating an exception in case of error.
+
+   procedure Create_Path_Or_Exit (New_Directory : String);
+   --  Wrapper on Ada.Directories.Create_Path that exits with a message instead
+   --  of propagating an exception in case of error.
+
+   function Semaphore_Name return String is
+     (Ada.Directories.Base_Name (Socket_Name.all));
    --  The name used to create the semaphore object
 
    function SPARK_Report_File (Out_Dir : String) return String;

@@ -29,7 +29,6 @@ with Ada.Containers;    use Ada.Containers;
 with Ada.IO_Exceptions;
 with Ada.Strings.Fixed; use Ada.Strings.Fixed;
 with Ada.Strings.Unbounded;
-with Ada.Text_IO;       use Ada.Text_IO;
 with Ada.Unchecked_Deallocation;
 with GNATCOLL.Tribooleans;
 with Gnat2Why_Opts.Writing;
@@ -297,9 +296,10 @@ package body Configuration is
                if RT_Attr.Is_Defined then
                   declare
                      Targ_Prop_File : constant String :=
-                       Compose (RT_Attr.Value.Text, "ada_target_properties");
+                       Ada.Directories.Compose (RT_Attr.Value.Text,
+                                                "ada_target_properties");
                   begin
-                     if Exists (Targ_Prop_File) then
+                     if Ada.Directories.Exists (Targ_Prop_File) then
                         return "-gnateT=" & Targ_Prop_File;
                      end if;
                   end;
@@ -311,12 +311,12 @@ package body Configuration is
          --  file, but we can't find it and the user didn't add one. Print
          --  a warning.
 
-         Put_Line
-           (Standard_Error,
+         Ada.Text_IO.Put_Line
+           (Ada.Text_IO.Standard_Error,
             "warning: attribute ""Target"" of your project file is " &
               "only used to determine runtime library");
-         Put_Line
-           (Standard_Error,
+         Ada.Text_IO.Put_Line
+           (Ada.Text_IO.Standard_Error,
             "warning: to specify target properties, specify option " &
               """-gnateT"" using ""Builder.Global_Compilation_Switches""");
       end if;
@@ -415,7 +415,7 @@ package body Configuration is
 
       function Exists_And_Is_Writable (Dir : String) return Boolean is
       begin
-         return Exists (Dir)
+         return Ada.Directories.Exists (Dir)
            and then GNAT.OS_Lib.Is_Write_Accessible_File (Dir);
       end Exists_And_Is_Writable;
 
@@ -436,6 +436,59 @@ package body Configuration is
          return Artifact_Dir (Tree).Display_Full_Name;
       end if;
    end Compute_Socket_Dir;
+
+   ------------------------------
+   -- Create_Directory_Or_Exit --
+   ------------------------------
+
+   procedure Create_Directory_Or_Exit (New_Directory : String) is
+   begin
+      Ada.Directories.Create_Directory (New_Directory);
+   exception
+      when others =>
+         Ada.Text_IO.Put_Line
+           (Ada.Text_IO.Standard_Error,
+            "when creating directory " & New_Directory & ": "
+            & GNAT.OS_Lib.Errno_Message);
+         GNAT.OS_Lib.OS_Exit (1);
+   end Create_Directory_Or_Exit;
+
+   -------------------------
+   -- Create_File_Or_Exit --
+   -------------------------
+
+   procedure Create_File_Or_Exit
+     (File : in out Ada.Text_IO.File_Type;
+      Mode : Ada.Text_IO.File_Mode := Ada.Text_IO.Out_File;
+      Name : String := "";
+      Form : String := "")
+   is
+   begin
+      Ada.Text_IO.Create (File, Mode, Name, Form);
+   exception
+      when others =>
+         Ada.Text_IO.Put_Line
+           (Ada.Text_IO.Standard_Error,
+            "when creating file " & Name & ": "
+            & GNAT.OS_Lib.Errno_Message);
+         GNAT.OS_Lib.OS_Exit (1);
+   end Create_File_Or_Exit;
+
+   -------------------------
+   -- Create_Path_Or_Exit --
+   -------------------------
+
+   procedure Create_Path_Or_Exit (New_Directory : String) is
+   begin
+      Ada.Directories.Create_Path (New_Directory);
+   exception
+      when others =>
+         Ada.Text_IO.Put_Line
+           (Ada.Text_IO.Standard_Error,
+            "when creating directory " & New_Directory & ": "
+            & GNAT.OS_Lib.Errno_Message);
+         GNAT.OS_Lib.OS_Exit (1);
+   end Create_Path_Or_Exit;
 
    ------------------
    -- Display_Help --
@@ -584,14 +637,14 @@ package body Configuration is
       ---------------------------------
 
       function Create_Default_Project_File return String is
-         F : File_Type;
+         F : Ada.Text_IO.File_Type;
          Name : constant String := "default.gpr";
       begin
-         Create (F, Out_File, Name);
-         Put_Line (F, "project default is");
-         Put_Line (F, "end default;");
-         Flush (F);
-         Close (F);
+         Create_File_Or_Exit (F, Ada.Text_IO.Out_File, Name);
+         Ada.Text_IO.Put_Line (F, "project default is");
+         Ada.Text_IO.Put_Line (F, "end default;");
+         Ada.Text_IO.Flush (F);
+         Ada.Text_IO.Close (F);
          return Name;
       end Create_Default_Project_File;
 
@@ -600,16 +653,17 @@ package body Configuration is
       ------------------------------
 
       function Find_Project_File_In_CWD return String is
-         S : Search_Type;
-         D : Directory_Entry_Type;
+         S : Ada.Directories.Search_Type;
+         D : Ada.Directories.Directory_Entry_Type;
       begin
-         Start_Search
-           (S, ".", "*.gpr", [Ordinary_File => True, others => False]);
-         if not More_Entries (S) then
+         Ada.Directories.Start_Search
+           (S, ".", "*.gpr", [Ada.Directories.Ordinary_File => True,
+                              others                        => False]);
+         if not Ada.Directories.More_Entries (S) then
             return "";
          end if;
-         Get_Next_Entry (S, D);
-         if More_Entries (S) then
+         Ada.Directories.Get_Next_Entry (S, D);
+         if Ada.Directories.More_Entries (S) then
             Abort_With_Message
               ("No project file given, and current directory contains more "
                & "than one project file. Please specify a project file.");
@@ -994,12 +1048,13 @@ package body Configuration is
       Prover_Name    : constant String :=
         Ada.Characters.Handling.To_Lower (Provers.First_Element);
       Prover_Lib_Dir : constant String :=
-        Compose
-          (Compose (SPARK_Install.Libexec_Share_Why3, "libs"),
+        Ada.Directories.Compose
+          (Ada.Directories.Compose (SPARK_Install.Libexec_Share_Why3, "libs"),
            Name => Prover_Name);
-      Prover_Obj_Dir : constant String := Compose
-        (Compose (Obj_Dir, "why3_libs"),
-         Name => Prover_Name);
+      Prover_Obj_Dir : constant String :=
+        Ada.Directories.Compose
+          (Ada.Directories.Compose (Obj_Dir, "why3_libs"),
+           Name => Prover_Name);
 
       procedure Compile_Lib (Dir, File : String);
       --  compile a Coq library
@@ -1012,24 +1067,27 @@ package body Configuration is
 
       procedure Compile_Lib (Dir, File : String) is
          Target_Dir : constant String :=
-           (if Dir /= "" then Compose (Prover_Obj_Dir, Dir)
+           (if Dir /= "" then Ada.Directories.Compose (Prover_Obj_Dir, Dir)
             else Prover_Obj_Dir);
          Lib_Dir    : constant String :=
-           (if Dir /= "" then Compose (Prover_Lib_Dir, Dir)
+           (if Dir /= "" then Ada.Directories.Compose (Prover_Lib_Dir, Dir)
             else Prover_Lib_Dir);
       begin
-         if not Exists (Compose (Target_Dir, Name => File & ".vo")) then
+         if not Ada.Directories.Exists
+           (Ada.Directories.Compose (Target_Dir, Name => File & ".vo"))
+         then
             declare
                Source_Dest : constant String :=
-                 Compose (Target_Dir, Name => File & ".v");
+                 Ada.Directories.Compose (Target_Dir, Name => File & ".v");
             begin
                --  Copy file
-               Create_Path (Prover_Obj_Dir);
-               if not Exists (Target_Dir) then
-                  Create_Directory (Target_Dir);
+               Create_Path_Or_Exit (Prover_Obj_Dir);
+               if not Ada.Directories.Exists (Target_Dir) then
+                  Create_Directory_Or_Exit (Target_Dir);
                end if;
-               Copy_File (Compose (Lib_Dir, Name => File & ".v"),
-                          Source_Dest);
+               Ada.Directories.Copy_File
+                 (Ada.Directories.Compose (Lib_Dir, Name => File & ".v"),
+                  Source_Dest);
                --  Build it
                declare
                   Coqc_Bin : String_Access :=
@@ -1169,18 +1227,19 @@ package body Configuration is
 
       declare
          Filename : constant String :=
-           Compose (SPARK_Install.Share_Spark_Explain_Codes, C, "md");
-         File     : File_Type;
+           Ada.Directories.Compose
+             (SPARK_Install.Share_Spark_Explain_Codes, C, "md");
+         File     : Ada.Text_IO.File_Type;
       begin
-         if not Exists (Filename) then
+         if not Ada.Directories.Exists (Filename) then
             Abort_Msg ("error: wrong argument for --explain, " &
                          C & " is not a valid explain code",
                        With_Help => False);
          end if;
 
-         Open (File, In_File, Filename);
-         while not End_Of_File (File) loop
-            Put_Line (Get_Line (File));
+         Ada.Text_IO.Open (File, Ada.Text_IO.In_File, Filename);
+         while not Ada.Text_IO.End_Of_File (File) loop
+            Ada.Text_IO.Put_Line (Ada.Text_IO.Get_Line (File));
          end loop;
       end;
    end Produce_Explain_Output;
@@ -1278,7 +1337,7 @@ package body Configuration is
 
    procedure Produce_Version_Output is
       Gnatwhy3 : constant String :=
-        Compose (SPARK_Install.Libexec_Spark_Bin, "gnatwhy3");
+        Ada.Directories.Compose (SPARK_Install.Libexec_Spark_Bin, "gnatwhy3");
       Alt_Ergo : String_Access :=
         GNAT.OS_Lib.Locate_Exec_On_Path ("alt-ergo");
       Colibri : String_Access :=
@@ -1415,12 +1474,12 @@ package body Configuration is
       procedure Check_Obsolete_Prove_Switches (View : Project.View.Object) is
       begin
          if View.Attribute ((+"Prove", +"Switches")).Is_Defined then
-            Put_Line
-              (Standard_Error,
+            Ada.Text_IO.Put_Line
+              (Ada.Text_IO.Standard_Error,
                "warning: attribute ""Switches"" of package ""Prove"" of " &
                  "your project file is deprecated");
-            Put_Line
-              (Standard_Error,
+            Ada.Text_IO.Put_Line
+              (Ada.Text_IO.Standard_Error,
                "warning: use ""Proof_Switches (""Ada"")"" instead");
          end if;
          null;
@@ -1513,7 +1572,8 @@ package body Configuration is
             --  Print registered gpr attributes and exit as requested
             --  This should be done here before any warning/error outputs.
 
-            GPR2.Project.Registry.Exchange.Export (Output => Put'Access);
+            GPR2.Project.Registry.Exchange.Export
+              (Output => Ada.Text_IO.Put'Access);
             Succeed;
          end if;
 
@@ -1760,8 +1820,8 @@ package body Configuration is
            or not Null_Or_Empty_String (CL_Switches.Limit_Lines);
 
          if CL_Switches.U and then CL_Switches.File_List.Is_Empty then
-            Put_Line
-              (Standard_Error,
+            Ada.Text_IO.Put_Line
+              (Ada.Text_IO.Standard_Error,
                "warning: switch -u without a file name is equivalent to "
                  & "switch --no-subproject");
          end if;
@@ -1887,14 +1947,17 @@ package body Configuration is
          end if;
          if not Null_Or_Empty_String (CL_Switches.Limit_Lines) then
             declare
-               File_Handle : File_Type;
-               Line_Count : Integer := 1;
+               File_Handle : Ada.Text_IO.File_Type;
+               Line_Count  : Integer := 1;
             begin
-               Open (File_Handle, In_File, CL_Switches.Limit_Lines.all);
+               Ada.Text_IO.Open (File_Handle,
+                                 Ada.Text_IO.In_File,
+                                 CL_Switches.Limit_Lines.all);
                while True loop
                   declare
                      Line : constant String :=
-                       Trim (Get_Line (File_Handle), Ada.Strings.Both);
+                       Trim (Ada.Text_IO.Get_Line (File_Handle),
+                             Ada.Strings.Both);
                   begin
                      if Line /= "" then
                         Process_Limit_Directive
@@ -1907,7 +1970,7 @@ package body Configuration is
                end loop;
             exception
                when Ada.IO_Exceptions.End_Error =>
-                  Close (File_Handle);
+                  Ada.Text_IO.Close (File_Handle);
             end;
          end if;
       end Process_Limit_Switches;
@@ -2649,7 +2712,7 @@ package body Configuration is
          begin
             Socket_Name := new String'(
                (if Socket_Dir = "" then Socket_Base
-                else Compose (Socket_Dir, Socket_Base)));
+                else Ada.Directories.Compose (Socket_Dir, Socket_Base)));
             if Is_Coq_Prover (File_Specific_Map ("Ada")) then
                Prepare_Prover_Lib
                  (Tree.Root_Project.Object_Directory.
@@ -2681,13 +2744,14 @@ package body Configuration is
             Has_Path : constant Boolean :=
               Filename_Type (File_Entry) not in GPR2.Simple_Name;
             Simple_File_Name : constant String :=
-              (if Has_Path then Base_Name (File_Entry) else File_Entry);
+              (if Has_Path then Ada.Directories.Base_Name (File_Entry)
+               else File_Entry);
             Found : Boolean := False;
          begin
             --  If the provided filename has a path component, we check if the
             --  file exists.
 
-            if Has_Path and then not Exists (File_Entry) then
+            if Has_Path and then not Ada.Directories.Exists (File_Entry) then
                Abort_Msg
                  ("could not locate " & File_Entry,
                   With_Help => False);
@@ -2781,8 +2845,8 @@ package body Configuration is
         (if Why3_VF /= No_File then
            (if Is_Absolute_Path (Why3_VF)
             then CL_Switches.Why3_Conf.all
-            else Compose (+Get_Current_Dir.Full_Name,
-                          CL_Switches.Why3_Conf.all))
+            else Ada.Directories.Compose (+Get_Current_Dir.Full_Name,
+                                          CL_Switches.Why3_Conf.all))
          else "");
 
       -------------------------
@@ -2813,12 +2877,13 @@ package body Configuration is
                4 => new String'("--proof-dir"),
                5 => new String'(Proof_Dir.all)]);
          Res : Boolean;
-         Old_Dir  : constant String := Current_Directory;
+         Old_Dir  : constant String := Ada.Directories.Current_Directory;
          Gnatwhy3 : constant String :=
-           Compose (SPARK_Install.Libexec_Spark_Bin, "gnatwhy3");
+           Ada.Directories.Compose
+             (SPARK_Install.Libexec_Spark_Bin, "gnatwhy3");
       begin
          --  Use the Obj_Dir of gnat2why which already is "/.../gnatprove"
-         Set_Directory (Obj_Dir);
+         Ada.Directories.Set_Directory (Obj_Dir);
          if Verbose then
             Ada.Text_IO.Put
               ("Changing to object directory: """ & Obj_Dir & """");
@@ -2833,7 +2898,7 @@ package body Configuration is
                             Args         => Args,
                             Success      => Res);
          Free (Args);
-         Set_Directory (Old_Dir);
+         Ada.Directories.Set_Directory (Old_Dir);
          if Verbose then
             Ada.Text_IO.Put
               ("Changing back to directory: """ & Old_Dir & """");
@@ -2858,7 +2923,7 @@ package body Configuration is
 
       if Use_Semaphores then
          Args.Append ("spark_semaphore_wrapper");
-         Args.Append (Base_Name (Socket_Name.all));
+         Args.Append (Ada.Directories.Base_Name (Socket_Name.all));
       end if;
 
       if CL_Switches.Memcached_Server /= null
@@ -2941,7 +3006,8 @@ package body Configuration is
 
       if Proof_Dir /= null then
          pragma Assert (Proof_Dir.all /= "");
-         Create_Path (Compose (Proof_Dir.all, "sessions"));
+         Create_Path_Or_Exit
+           (Ada.Directories.Compose (Proof_Dir.all, "sessions"));
          Args.Append ("--proof-dir");
          --  Why3 is executed in the gnatprove directory and does not know
          --  the project directory so we give it an absolute path to the
