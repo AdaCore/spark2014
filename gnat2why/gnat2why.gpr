@@ -1,6 +1,6 @@
 with "gnat2why_gnat";
 with "gnat2why_c";
-with "gnatcoll";
+with "gnatcoll_core";
 
 project GNAT2Why is
 

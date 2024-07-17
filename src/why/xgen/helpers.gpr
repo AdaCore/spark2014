@@ -1,4 +1,4 @@
-with "gnatcoll";
+with "gnatcoll_core";
 
 project Helpers is
 
