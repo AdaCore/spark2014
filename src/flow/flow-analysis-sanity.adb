@@ -38,6 +38,7 @@ with Nlists;                         use Nlists;
 with Sem_Aux;                        use Sem_Aux;
 with Sem_Util;                       use Sem_Util;
 with Sinfo.Utils;                    use Sinfo.Utils;
+with Sinput;                         use Sinput;
 with Snames;                         use Snames;
 with SPARK_Definition;               use SPARK_Definition;
 with SPARK_Util.Subprograms;         use SPARK_Util.Subprograms;
@@ -207,7 +208,12 @@ package body Flow.Analysis.Sanity is
                             Scope                   => FA.B_Scope,
                             Target_Name             => Null_Flow_Id,
                             Use_Computed_Globals    => True,
-                            Expand_Internal_Objects => True));
+                            Expand_Internal_Objects =>
+                              --  Do not expand constants in inlined bodies,
+                              --  as this leads to spurious errors. Any
+                              --  relevant errors related to variable input
+                              --  are reported on the non-inlined code.
+                              not Comes_From_Inlined_Body (Sloc (N))));
       --  Wrapper around Get_Variables
 
       -------------------
