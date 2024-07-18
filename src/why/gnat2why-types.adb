@@ -590,7 +590,7 @@ package body Gnat2Why.Types is
          then
             declare
                Des_Ty            : constant Type_Kind_Id :=
-                 Directly_Designated_Type (E);
+                 Retysp (Directly_Designated_Type (E));
                New_Incompl_Acc   : Ada_To_Why_Ident.Map;
                New_Incompl_Acc_R : Ada_To_Why_Ident.Map;
             begin

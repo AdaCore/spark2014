@@ -550,12 +550,21 @@ package Gnat2Why.Util is
      (T              : Type_Kind_Id;
       Include_Static : Boolean := True) return Boolean;
    --  @param T type entity
-   --  @param Include_Static set to False if entirely static invariants of T
-   --     should be ignored.
+   --  @param Include_Static set to False if invariants coming from the
+   --     statically known structure of T should be ignored. This is used to
+   --     decide whether the dynamic invariant shall be used as a strong
+   --     invariant for abstract views of incomplete types (see
+   --     Type_Has_Static_Constraints). Such "static" invariants shall not
+   --     depend on variables, and shall be safe to assume everywhere (in
+   --     particular, the type shall remain inhabited).
    --  @return True if T has a non-trivially True dynamic invariant
 
    function Type_Has_Static_Constraints (E : Type_Kind_Id) return Boolean;
-   --  Return True if E has an entirely static dynamic invariant
+   --  Return True if E has an entirely static dynamic invariant. This is used
+   --  to decide whether the dynamic invariant shall be used as a strong
+   --  invariant (part of the Why3 type) for abstract views of incomplete
+   --  types instead of a weak invariant (assumed selectively with as part of
+   --  the dynamic invariant of the type).
 
    function Type_Is_Modeled_As_Base (T : Type_Kind_Id) return Boolean;
    --  Returns True if T is a scalar type that should be translated into Why

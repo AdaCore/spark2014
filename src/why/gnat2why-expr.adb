@@ -6166,6 +6166,11 @@ package body Gnat2Why.Expr is
                       (New_Pointer_Is_Null_Access (E    => Ty_Ext,
                                                    Name => Expr))),
                Typ       => EW_Bool_Type);
+
+         --  Access to object types have an invariant which fix the designated
+         --  value when the pointer is null (so null pointers are logically
+         --  equal). Assume it here.
+
          else
             T := New_Call
               (Name => E_Symb
