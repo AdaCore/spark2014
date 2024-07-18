@@ -6342,10 +6342,8 @@ package body Flow.Analysis is
                         --  Subprogram_Variant of its enclosing subprogram.
 
                         if Mutually_Recursive (FA.Spec_Entity, SC.E)
-                          and then
-                            not Has_Subprogram_Variant (SC.E)
-                          and then
-                            not Has_Subprogram_Variant (Enclosing_Subp)
+                          and then not Has_Subprogram_Variant (SC.E)
+                          and then not Has_Subprogram_Variant (Enclosing_Subp)
                         then
 
                            Proved := False;
@@ -6405,8 +6403,7 @@ package body Flow.Analysis is
             end;
          end loop;
 
-         if Proved and then Is_Subprogram_Or_Entry (FA.Spec_Entity)
-         then
+         if Proved and then Is_Subprogram_Or_Entry (FA.Spec_Entity) then
             Error_Msg_Flow (FA       => FA,
                             Msg      =>
                               Aspect & " on & has been proved, "
