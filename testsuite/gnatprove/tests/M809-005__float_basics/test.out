@@ -85,7 +85,7 @@ generic_float_tests.adb:131:32: medium: float overflow check might fail, in inst
 generic_float_tests.adb:134:14: warning: subprogram "Substract_Identity_1" has no effect, in instantiation at foo.ads:10
 generic_float_tests.adb:134:14: warning: subprogram "Substract_Identity_1" has no effect, in instantiation at foo.ads:15
 generic_float_tests.adb:138:23: info: assertion proved (CVC4: 2 VC), in instantiation at foo.ads:10
-generic_float_tests.adb:138:23: info: assertion proved (CVC4: 2 VC), in instantiation at foo.ads:15
+generic_float_tests.adb:138:23: medium: assertion might fail, cannot prove (X - Y = 0.0) = (X = Y), in instantiation at foo.ads:15
 generic_float_tests.adb:138:25: info: float overflow check proved (CVC4: 1 VC), in instantiation at foo.ads:10
 generic_float_tests.adb:138:25: info: float overflow check proved (CVC4: 1 VC), in instantiation at foo.ads:15
 generic_float_tests.adb:141:14: warning: subprogram "Substract_Identity_2" has no effect, in instantiation at foo.ads:10
@@ -178,16 +178,16 @@ generic_float_tests.adb:216:28: medium: float overflow check might fail, in inst
 generic_float_tests.adb:216:28: medium: float overflow check might fail, in instantiation at foo.ads:15 [reason for check: result of floating-point division must be bounded]
 generic_float_tests.adb:221:14: warning: subprogram "Transitive" has no effect, in instantiation at foo.ads:10
 generic_float_tests.adb:221:14: warning: subprogram "Transitive" has no effect, in instantiation at foo.ads:15
-generic_float_tests.adb:225:22: info: assertion proved (CVC4: 1 VC), in instantiation at foo.ads:10
-generic_float_tests.adb:225:22: info: assertion proved (CVC4: 1 VC), in instantiation at foo.ads:15
+generic_float_tests.adb:225:22: medium: assertion might fail, cannot prove X < Z, in instantiation at foo.ads:10
+generic_float_tests.adb:225:22: medium: assertion might fail, cannot prove X < Z, in instantiation at foo.ads:15
 generic_float_tests.adb:236:25: info: assertion proved (CVC4: 1 VC), in instantiation at foo.ads:10
 generic_float_tests.adb:236:25: info: assertion proved (CVC4: 1 VC), in instantiation at foo.ads:15
 generic_float_tests.adb:241:14: warning: subprogram "Negation_1" has no effect, in instantiation at foo.ads:10
 generic_float_tests.adb:241:14: warning: subprogram "Negation_1" has no effect, in instantiation at foo.ads:15
-generic_float_tests.adb:245:22: info: assertion proved (CVC4: 1 VC), in instantiation at foo.ads:10
-generic_float_tests.adb:245:22: info: assertion proved (CVC4: 1 VC), in instantiation at foo.ads:15
+generic_float_tests.adb:245:22: medium: assertion might fail, cannot prove F = 0.0, in instantiation at foo.ads:10
+generic_float_tests.adb:245:22: medium: assertion might fail, cannot prove F = 0.0, in instantiation at foo.ads:15
 generic_float_tests.adb:249:19: info: postcondition proved (CVC4: 1 VC), in instantiation at foo.ads:10
-generic_float_tests.adb:249:19: info: postcondition proved (CVC4: 1 VC), in instantiation at foo.ads:15
+generic_float_tests.adb:249:19: medium: postcondition might fail, cannot prove F = F'old, in instantiation at foo.ads:15
 generic_float_tests.adb:252:14: info: float overflow check proved (CVC4: 1 VC), in instantiation at foo.ads:10
 generic_float_tests.adb:252:14: info: float overflow check proved (CVC4: 1 VC), in instantiation at foo.ads:15
 generic_float_tests.adb:255:14: warning: subprogram "Identity_2" has no effect, in instantiation at foo.ads:10
@@ -215,7 +215,7 @@ generic_float_tests.adb:272:16: medium: float overflow check might fail, in inst
 generic_float_tests.adb:273:16: info: division check proved (CVC4: 1 VC), in instantiation at foo.ads:10
 generic_float_tests.adb:273:16: info: division check proved (CVC4: 1 VC), in instantiation at foo.ads:15
 generic_float_tests.adb:273:16: info: float overflow check proved (CVC4: 1 VC), in instantiation at foo.ads:10
-generic_float_tests.adb:273:16: info: float overflow check proved (CVC4: 1 VC), in instantiation at foo.ads:15
+generic_float_tests.adb:273:16: medium: float overflow check might fail, in instantiation at foo.ads:15 [reason for check: result of floating-point division must be bounded]
 generic_float_tests.adb:274:22: medium: assertion might fail, cannot prove A = C, in instantiation at foo.ads:10
 generic_float_tests.adb:274:22: medium: assertion might fail, cannot prove A = C, in instantiation at foo.ads:15
 generic_float_tests.adb:278:37: info: initialization of "A" proved, in instantiation at foo.ads:10
@@ -235,7 +235,7 @@ generic_float_tests.adb:282:16: medium: float overflow check might fail, in inst
 generic_float_tests.adb:283:16: info: division check proved (CVC4: 1 VC), in instantiation at foo.ads:10
 generic_float_tests.adb:283:16: info: division check proved (CVC4: 1 VC), in instantiation at foo.ads:15
 generic_float_tests.adb:283:16: info: float overflow check proved (CVC4: 1 VC), in instantiation at foo.ads:10
-generic_float_tests.adb:283:16: info: float overflow check proved (CVC4: 1 VC), in instantiation at foo.ads:15
+generic_float_tests.adb:283:16: medium: float overflow check might fail, in instantiation at foo.ads:15 [reason for check: result of floating-point division must be bounded]
 generic_float_tests.adb:284:22: medium: assertion might fail, cannot prove X = B, in instantiation at foo.ads:10 [possible fix: subprogram at line 277 should mention X in a precondition]
 generic_float_tests.adb:284:22: medium: assertion might fail, cannot prove X = B, in instantiation at foo.ads:15 [possible fix: subprogram at line 277 should mention X in a precondition]
 generic_float_tests.adb:293:14: warning: subprogram "Unary_Ops" has no effect, in instantiation at foo.ads:10
@@ -275,7 +275,7 @@ generic_float_tests.adb:342:38: info: float overflow check proved (CVC4: 1 VC), 
 generic_float_tests.adb:345:14: warning: subprogram "Test_Floor_5" has no effect, in instantiation at foo.ads:10
 generic_float_tests.adb:345:14: warning: subprogram "Test_Floor_5" has no effect, in instantiation at foo.ads:15
 generic_float_tests.adb:348:22: info: assertion proved (CVC4: 1 VC), in instantiation at foo.ads:10
-generic_float_tests.adb:348:22: info: assertion proved (CVC4: 1 VC), in instantiation at foo.ads:15
+generic_float_tests.adb:348:22: medium: assertion might fail, cannot prove FT'Floor (X) <= FT'ceiling, in instantiation at foo.ads:15 [possible fix: subprogram at line 345 should mention X in a precondition]
 generic_float_tests.adb:351:14: warning: subprogram "Test_Floor_6" has no effect, in instantiation at foo.ads:10
 generic_float_tests.adb:351:14: warning: subprogram "Test_Floor_6" has no effect, in instantiation at foo.ads:15
 generic_float_tests.adb:357:25: info: assertion proved (CVC4: 1 VC), in instantiation at foo.ads:10
@@ -322,12 +322,12 @@ generic_float_tests.adb:388:34: info: contract case proved (CVC4: 1 VC; Trivial:
 generic_float_tests.adb:388:34: info: contract case proved (CVC4: 1 VC; Trivial: 1 VC), in instantiation at foo.ads:15
 generic_float_tests.adb:389:34: info: contract case proved (CVC4: 1 VC; Trivial: 1 VC), in instantiation at foo.ads:10
 generic_float_tests.adb:389:34: info: contract case proved (CVC4: 1 VC; Trivial: 1 VC), in instantiation at foo.ads:15
-generic_float_tests.adb:392:21: info: range check proved (CVC4: 1 VC), in instantiation at foo.ads:10
 generic_float_tests.adb:392:21: info: range check proved (CVC4: 1 VC), in instantiation at foo.ads:15
+generic_float_tests.adb:392:21: medium: range check might fail, in instantiation at foo.ads:10 [reason for check: value must be convertible to the target type of the conversion]
 generic_float_tests.adb:396:28: info: initialization of "Y" proved, in instantiation at foo.ads:10
 generic_float_tests.adb:396:28: info: initialization of "Y" proved, in instantiation at foo.ads:15
 generic_float_tests.adb:398:19: info: postcondition proved (CVC4: 2 VC), in instantiation at foo.ads:10
-generic_float_tests.adb:398:19: info: postcondition proved (CVC4: 2 VC), in instantiation at foo.ads:15
+generic_float_tests.adb:398:19: medium: postcondition might fail, cannot prove Y in X - 0.5 .. X + 0.5, in instantiation at foo.ads:15
 generic_float_tests.adb:398:26: info: float overflow check proved (CVC4: 1 VC), in instantiation at foo.ads:10
 generic_float_tests.adb:398:26: info: float overflow check proved (CVC4: 1 VC), in instantiation at foo.ads:15
 generic_float_tests.adb:398:37: info: float overflow check proved (CVC4: 1 VC), in instantiation at foo.ads:10
@@ -415,7 +415,7 @@ generic_interval_tests.adb:66:19: medium: postcondition might fail, cannot prove
 generic_interval_tests.adb:66:21: info: division check proved (CVC4: 1 VC), in instantiation at bar.ads:12
 generic_interval_tests.adb:66:21: info: division check proved (CVC4: 1 VC), in instantiation at bar.ads:8
 generic_interval_tests.adb:66:21: info: float overflow check proved (CVC4: 1 VC), in instantiation at bar.ads:12
-generic_interval_tests.adb:66:21: info: float overflow check proved (CVC4: 1 VC), in instantiation at bar.ads:8
+generic_interval_tests.adb:66:21: medium: float overflow check might fail, in instantiation at bar.ads:8 [reason for check: result of floating-point division must be bounded] [possible fix: precondition of subprogram at line 64 should mention X]
 generic_interval_tests.adb:72:14: warning: subprogram "Test_09" has no effect, in instantiation at bar.ads:12
 generic_interval_tests.adb:72:14: warning: subprogram "Test_09" has no effect, in instantiation at bar.ads:8
 generic_interval_tests.adb:77:12: info: float overflow check proved (CVC4: 1 VC), in instantiation at bar.ads:12
@@ -432,8 +432,8 @@ generic_interval_tests.adb:92:14: warning: subprogram "Test_11" has no effect, i
 generic_interval_tests.adb:92:14: warning: subprogram "Test_11" has no effect, in instantiation at bar.ads:8
 generic_interval_tests.adb:97:12: info: float overflow check proved (CVC4: 1 VC), in instantiation at bar.ads:12
 generic_interval_tests.adb:97:12: info: float overflow check proved (CVC4: 1 VC), in instantiation at bar.ads:8
-generic_interval_tests.adb:98:25: info: assertion proved (CVC4: 1 VC), in instantiation at bar.ads:12
 generic_interval_tests.adb:98:25: info: assertion proved (CVC4: 1 VC), in instantiation at bar.ads:8
+generic_interval_tests.adb:98:25: medium: assertion might fail, cannot prove X < 0.0, in instantiation at bar.ads:12
 generic_interval_tests.adb:127:23: info: initialization of "Z" proved, in instantiation at bar.ads:12
 generic_interval_tests.adb:127:23: info: initialization of "Z" proved, in instantiation at bar.ads:8
 generic_interval_tests.adb:129:20: info: postcondition proved (CVC4: 1 VC), in instantiation at bar.ads:12
