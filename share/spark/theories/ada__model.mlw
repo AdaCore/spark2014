@@ -2424,12 +2424,18 @@ module Incomplete_type
   val function __open (x : abstr_ty) : comp_ty
   val function __close (x : comp_ty) : abstr_ty
 
+  predicate comp_valid (x : comp_ty)
+
+  axiom open_valid:
+    forall x : abstr_ty [__open x]. comp_valid (__open x)
+  meta "remove_unused:dependency" axiom open_valid, function __open
+
   axiom close_open:
     forall x : abstr_ty [__open x]. __close (__open x) = x
   meta "remove_unused:dependency" axiom close_open, function __open
 
   axiom open_close:
-    forall x : comp_ty [__close x]. __open (__close x) = x
+    forall x : comp_ty [__close x]. comp_valid x -> __open (__close x) = x
   meta "remove_unused:dependency" axiom open_close, function __close
 end
 
