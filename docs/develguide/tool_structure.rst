@@ -133,18 +133,6 @@ second phase, we copy them from ``<phase3objdir>/phase1`` to
 ``<phase3objdir>``, after having run the second phase phase and before running
 the third phase.
 
-Running the Why3server
-======================
-
-The gnat2why tool (in translation mode) will call the gnatwhy3 tool,
-which will spawn provers. However, the spawning of provers is
-outsourced to the ``why3server`` tool. An instance of gnatwhy3
-connects to the why3server and asks to spawn a prover. Many gnat2why/gnatwhy3
-instances are spawned and can be running at the same time, but only
-one why3server is running per invocation of gnatwhy3. This single
-server instance is spawned here in ``gnatprove`` before running
-``gnat2why`` in translation mode.
-
 Translating to Why
 ==================
 
@@ -227,6 +215,10 @@ command line to run from gnatwhy3, including a timeout. The server
 returns the textual output of the command to gnatwhy3, or information
 that the command has reached the timeout.
 
+The name of the socket (file system path on linux and name in a separate
+namespace on windows) is passed to ``gnatwhy3`` by ``gnatprove`` via the
+environment variable ``GNATPROVE_SOCKET``.
+
 The only thing that gnatwhy3 runs via the server are prover processes.
 Provers process a file in their own syntax or in SMTLib syntax, and
 produce a simple answer (e.g. unsat or unknown). gnatwhy3 knows how to
@@ -236,6 +228,17 @@ interpret the textual answer of the prover and translates it to a
 When all prover processes are finished or have reached the timeout,
 gnatwhy3 terminates and produces a result dictionary in JSON on
 standard output.
+
+``gnat2why`` spawns multiple instances of ``gnatwhy3`` in parallel, however it
+has no knowledge over how many it is allowed to spawn. We use a semaphore for
+this purpose: ``gnatprove`` creates a semaphore upon startup initialized to the
+number of allowed parallel processes, and each ``gnatwhy3`` invocation is
+wrapped by a ``spark_semaphore_wrapper`` binary. This wrapper simply decrements
+the semaphore (potentially waiting until this is possible) on startup and
+increments it on exit, calling gnatwhy3 in between. ``gnatprove`` passes the
+name of the semaphore to the spark_semaphore_wrapper via the environment
+variable ``GNATPROVE_SEMAPHORE``.
+
 
 ************
 spark_report

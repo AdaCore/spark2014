@@ -150,7 +150,8 @@ procedure Gnatprove with SPARK_Mode is
    function Spawn_VC_Server_And_Semaphore (Tree : Project.Tree.Object)
       return GNAT.OS_Lib.Process_Id;
    --  Spawn the VC server of Why3 and create the semaphore used for gnatwhy3
-   --  processes.
+   --  processes. Also set the environment variables used by the binaries that
+   --  access these resources.
 
    function Text_Of_Step (Step : Gnatprove_Step) return String;
 
@@ -927,10 +928,15 @@ procedure Gnatprove with SPARK_Mode is
          end if;
          Id := Non_Blocking_Spawn ("why3server", Args);
          Ada.Directories.Set_Directory (Cur);
+         Ada.Environment_Variables.Set ("GNATPROVE_SOCKET", Socket_Name.all);
+      else
+         Ada.Environment_Variables.Set
+           ("GNATPROVE_SOCKET", CL_Switches.Why3_Server.all);
       end if;
       if Use_Semaphores then
          Delete (Semaphore_Name);
          Create (Semaphore_Name, Parallel, Why3_Semaphore);
+         Ada.Environment_Variables.Set ("GNATPROVE_SEMAPHORE", Semaphore_Name);
       end if;
       return Id;
    end Spawn_VC_Server_And_Semaphore;
