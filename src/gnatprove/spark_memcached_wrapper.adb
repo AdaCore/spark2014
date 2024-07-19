@@ -135,7 +135,7 @@ is
          declare
             Arg : constant String := Ada.Command_Line.Argument (I);
          begin
-            if Arg = "-j" or else Arg = "--socket" then
+            if Arg = "-j" then
                I := I + 2;
             elsif Arg = "--debug"
               or else Arg = "--force"

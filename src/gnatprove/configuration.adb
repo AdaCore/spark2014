@@ -2704,11 +2704,12 @@ package body Configuration is
          --  name (full path).
 
          declare
-            Proj_Name_Hash : constant Hash_Type :=
-              Full_Name_Hash (Tree.Root_Project.Path_Name.Virtual_File);
-            Socket_Dir   : constant String := Compute_Socket_Dir (Tree);
-            Socket_Base  : constant String :=
-               "why3server" & Hash_Image (Proj_Name_Hash) & ".sock";
+            PID_String  : constant String := Integer'Image (Get_Process_Id);
+            Socket_Dir  : constant String := Compute_Socket_Dir (Tree);
+            Socket_Base : constant String :=
+              "why3server_" &
+              PID_String (PID_String'First + 1 .. PID_String'Last)
+              & ".sock";
          begin
             Socket_Name := new String'(
                (if Socket_Dir = "" then Socket_Base
@@ -2923,7 +2924,6 @@ package body Configuration is
 
       if Use_Semaphores then
          Args.Append ("spark_semaphore_wrapper");
-         Args.Append (Ada.Directories.Base_Name (Socket_Name.all));
       end if;
 
       if CL_Switches.Memcached_Server /= null
@@ -2957,15 +2957,6 @@ package body Configuration is
 
       Args.Append ("--proof");
       Args.Append (To_String (FS.Proof));
-
-      Args.Append ("--socket");
-      if CL_Switches.Why3_Server /= null
-        and then CL_Switches.Why3_Server.all /= ""
-      then
-         Args.Append (CL_Switches.Why3_Server.all);
-      else
-         Args.Append (Socket_Name.all);
-      end if;
 
       if Debug then
          Args.Append ("--debug");
