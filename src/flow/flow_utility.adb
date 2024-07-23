@@ -591,26 +591,24 @@ package body Flow_Utility is
       with Pre => Nkind (Pred_Expression) in N_Subexpr;
       --  Analyzes the predicate expression to fill Proof_Dependencies
 
-      function Explore_Subcomponents (Typ : Type_Kind_Id)
-                                      return Test_Result;
-      --  Explore subcomponents of a potential composite type to pull
-      --  proof dependencies from their predicates and invariants.
+      function Pull_Proof_Dependencies (Typ : Type_Kind_Id) return Test_Result;
+      --  Pull proof dependencies from predicates and invariants of type Typ
 
       procedure Get_Invariant_From_Parents (Typ : Type_Kind_Id);
-      --  Explore the subtype chain of a type to pull proof dependencies
+      --  Traverse the subtype chain of a type to pull proof dependencies
       --  from the invariants of its parent types.
 
       procedure Get_Predicate_From_Parents is new
         Iterate_Applicable_Predicates (Add_Predicates_To_Proof_Deps);
-      --  Explore the subtype chain of a type to pull proof dependencies
+      --  Traverse the subtype chain of a type to pull proof dependencies
       --  from the predicates of its parent types.
 
       procedure Extract_Proof_Dependencies (Expr : Node_Id);
       --  Extract proof dependencies and functions calls from Expr and add
       --  them to Proof_Dependencies.
 
-      function Traverse is new Traverse_Subcomponents
-        (Explore_Subcomponents);
+      function Visit_Subcomponents is new
+        Traverse_Subcomponents (Pull_Proof_Dependencies);
       --  Traverse a type to pull all proof dependencies related to predicates
       --  and invariants applying to its subcomponents and their parent types.
 
@@ -626,18 +624,6 @@ package body Flow_Utility is
       begin
          Extract_Proof_Dependencies (Pred_Expression);
       end Add_Predicates_To_Proof_Deps;
-
-      ---------------------------
-      -- Explore_Subcomponents --
-      ---------------------------
-
-      function Explore_Subcomponents (Typ : Type_Kind_Id) return Test_Result
-      is
-      begin
-         Get_Predicate_From_Parents (Typ);
-         Get_Invariant_From_Parents (Typ);
-         return Continue;
-      end Explore_Subcomponents;
 
       --------------------------------
       -- Extract_Proof_Dependencies --
@@ -674,6 +660,10 @@ package body Flow_Utility is
          end loop;
       end Extract_Proof_Dependencies;
 
+      ---------------------------------
+      --  Get_Invariant_From_Parents --
+      ---------------------------------
+
       procedure Get_Invariant_From_Parents (Typ : Type_Kind_Id) is
          Current : Entity_Id := Retysp (Typ);
          Parent  : Entity_Id;
@@ -699,20 +689,37 @@ package body Flow_Utility is
          end loop;
       end Get_Invariant_From_Parents;
 
+      -----------------------------
+      -- Pull_Proof_Dependencies --
+      -----------------------------
+
+      function Pull_Proof_Dependencies (Typ : Type_Kind_Id) return Test_Result
+      is
+      begin
+         Get_Predicate_From_Parents (Typ);
+         Get_Invariant_From_Parents (Typ);
+         return Continue;
+      end Pull_Proof_Dependencies;
+
+      --  Local variables
+
       Typ      : constant Entity_Id := Etype (N);
       Discard  : Boolean;
-      Pos      : Node_Sets.Cursor;
+      Position : Node_Sets.Cursor;
       Inserted : Boolean;
+
+   --  Start of processing for Process_Predicate_And_Invariant_Internal
+
    begin
 
       --  If we didn't analyze type of N yet, and N is not an
       --  access-to-subprogram, then we add the type of N to Types_Seen and
       --  explore it.
 
-      Types_Seen.Insert (Typ, Pos, Inserted);
+      Types_Seen.Insert (Typ, Position, Inserted);
 
       if Inserted then
-         Discard := Traverse (Typ);
+         Discard := Visit_Subcomponents (Typ);
       end if;
    end Process_Predicate_And_Invariant_Internal;
 
