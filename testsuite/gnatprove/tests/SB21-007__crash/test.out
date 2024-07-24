@@ -7,6 +7,6 @@ database.adb:22:04: info: initialization of "DB_Model" proved
 database.adb:28:13: info: implicit aspect Always_Terminates on "Contains" has been proved, subprogram will terminate
 database.ads:18:13: info: implicit aspect Always_Terminates on overriding operator "=" has been proved, subprogram will terminate
 database.ads:23:04: error: "Item" is not writable
-database.ads:23:04: error: instantiation error at spark-containers-functional-sets.ads:383
-database.ads:23:04: error: object was declared as not writable at spark-containers-functional-sets.ads:383, instance at line 23
+database.ads:23:04: error: instantiation error at spark-containers-functional-sets.ads:385
+database.ads:23:04: error: object was declared as not writable at spark-containers-functional-sets.ads:385, instance at line 23
 gnatprove: error during flow analysis and proof
