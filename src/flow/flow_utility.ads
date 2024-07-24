@@ -828,8 +828,8 @@ private
       Types_Seen         : in out Node_Sets.Set)
    with Pre  => N in N_Has_Etype_Id,
         Post => Proof_Dependencies'Old.Is_Subset (Proof_Dependencies);
-   --  Like Process_Predicate, with an additional parameter Types_Seen that
-   --  allows to track which type predicates we already traversed to pick
-   --  proof dependencies.
+   --  Like Process_Predicate_And_Invariant, with an additional parameter
+   --  Types_Seen that allows to track which type predicates we already
+   --  traversed to pick proof dependencies.
 
 end Flow_Utility;
