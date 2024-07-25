@@ -46,10 +46,10 @@ procedure Main with SPARK_Mode is
 
    --  Static range check on empty array indexed by modular integers
    procedure P5 with
-     Global => null
+     Global => null, SPARK_Mode => Off -- compiler issues error for SPARK code
    is
       type T is array (Unsigned_16 range <>) of Integer;
-      X : T := [];  --  @RANGE_CHECK:FAIL
+      X : T := [];
    begin
       null;
    end P5;
@@ -90,10 +90,10 @@ procedure Main with SPARK_Mode is
 
    --  Static range check on empty array indexed by an enumeration
    procedure P9 with
-     Global => null
+     Global => null, SPARK_Mode => Off -- compiler issues error for SPARK code
    is
       type T is array (Index range <>) of Integer;
-      X : T := [];  --  @RANGE_CHECK:FAIL
+      X : T := [];
    begin
       null;
    end P9;

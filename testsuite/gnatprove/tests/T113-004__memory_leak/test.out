@@ -198,7 +198,7 @@ pointers.adb:107:07: info: absence of resource or memory leak at end of scope pr
 pointers.adb:108:15: info: range check proved (CVC5: 2 VC)
 pointers.adb:110:07: info: absence of resource or memory leak at end of scope proved (CVC5: 1 VC)
 pointers.adb:110:07: info: initialization of "H" proved
-pointers.adb:111:07: info: absence of resource or memory leak at end of scope proved (CVC5: 1 VC)
+pointers.adb:111:07: info: absence of resource or memory leak at end of scope proved (Z3: 1 VC)
 pointers.adb:113:07: info: absence of resource or memory leak at end of scope proved (Z3: 1 VC)
 pointers.adb:113:07: info: initialization of "R" proved
 pointers.adb:114:07: medium: resource or memory leak might occur at end of scope

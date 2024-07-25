@@ -1,0 +1,6 @@
+test_logical_eq_tagged_types.adb:11:13: info: implicit aspect Always_Terminates on "Eq" has been proved, subprogram will terminate
+test_logical_eq_tagged_types.adb:13:06: info: Inline_For_Proof or Logical_Equal annotation proved (CVC5: 2 VC)
+test_logical_eq_tagged_types.adb:18:13: info: implicit aspect Always_Terminates on "Eq_Child" has been proved, subprogram will terminate
+test_logical_eq_tagged_types.adb:20:06: info: Inline_For_Proof or Logical_Equal annotation proved (CVC5: 2 VC)
+test_logical_eq_tagged_types.adb:23:50: info: tag check proved (CVC5: 1 VC)
+test_logical_eq_tagged_types.adb:24:50: info: tag check proved (CVC5: 1 VC)

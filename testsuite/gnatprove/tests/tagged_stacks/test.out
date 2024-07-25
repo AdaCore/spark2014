@@ -24,7 +24,6 @@ stacks.ads:36:45: info: range check proved (CVC5: 4 VC)
 stacks.ads:36:98: info: overflow check proved (CVC5: 2 VC)
 stacks.ads:37:75: info: index check proved (CVC5: 2 VC)
 stacks.ads:40:20: info: postcondition proved (CVC5: 1 VC), in inherited contract at stacks.ads:55
-stacks.ads:40:20: info: postcondition proved (Z3: 1 VC), in inherited contract at stacks.ads:55
 stacks.ads:40:50: info: range check proved (CVC5: 2 VC)
 stacks.ads:45:13: info: implicit aspect Always_Terminates on "Get_Model" has been proved, subprogram will terminate
 stacks.ads:51:13: info: implicit aspect Always_Terminates on "Peek" has been proved, subprogram will terminate
@@ -54,5 +53,5 @@ test_stack.adb:7:08: info: precondition proved (CVC5: 5 VC)
 test_stack.adb:9:19: info: assertion proved (Z3: 1 VC)
 test_stack.adb:10:42: info: unrolling loop
 test_stack.adb:11:08: info: precondition proved (CVC5: 5 VC)
-test_stack.adb:12:22: info: assertion proved (CVC5: 4 VC; Z3: 1 VC)
+test_stack.adb:12:22: info: assertion proved (CVC5: 5 VC)
 test_stack.adb:14:19: info: assertion proved (CVC5: 1 VC)
