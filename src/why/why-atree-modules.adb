@@ -3207,7 +3207,7 @@ package body Why.Atree.Modules is
                  (E, WNE_Dynamic_Property,
                   New_Identifier
                     (Symb   => NID ("dynamic_property"),
-                     Module => M_C,
+                     Module => M,
                      Domain => EW_Term,
                      Typ    => EW_Bool_Type),
                   Relaxed_Init);
