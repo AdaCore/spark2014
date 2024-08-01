@@ -764,7 +764,8 @@ package SPARK_Util.Subprograms is
      (E : E_Function_Id) return Entity_Id
      with Pre => Is_Wrapper_For_Dispatching_Result (E);
    --  Return the view of the return type of E which should be used to check
-   --  function E.
+   --  function E. This is the most partial view which inherits some ancestor
+   --  subprogram of E.
 
    function Completion_Deferred_To_Body
      (E : Subprogram_Kind_Id) return Boolean;

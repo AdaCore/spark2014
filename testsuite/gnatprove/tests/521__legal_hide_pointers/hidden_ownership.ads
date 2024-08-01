@@ -36,7 +36,7 @@ package Hidden_Ownership with SPARK_Mode is
    pragma Annotate (GNATprove, Ownership, "Needs_Reclamation", T_Priv_Needs_Reclamation);
 
 private
-   pragma Annotate (GNATprove, Hide_Info, "Private_Part", Hidden_Ownership);
+   pragma Annotate (GNATprove, Hide_Info, "Private_Part");
 
    type T_Acc is access Integer;
 

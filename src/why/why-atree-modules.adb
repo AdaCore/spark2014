@@ -161,8 +161,8 @@ package body Why.Atree.Modules is
               when User_Equality_Axiom       => "___user_eq__axiom",
               when Dispatch_Equality         => "___dispatch_eq",
               when Dispatch_Equality_Axiom   => "___dispatch_eq__axiom",
-              when Ownership_Move            => "___move",
-              when Ownership_Move_Axiom      => "___move__axiom");
+              when Move_Tree                 => "___move_tree",
+              when Incomp_Move_Tree          => "___incomplete_move_tree");
 
    begin
       --  Sanity checking
@@ -256,8 +256,8 @@ package body Why.Atree.Modules is
          =>
             pragma Assert (Is_Tagged_Type (E) and then E = Root_Retysp (E));
 
-         when Ownership_Move
-            | Ownership_Move_Axiom
+         when Move_Tree
+            | Incomp_Move_Tree
          =>
             pragma Assert
               (E in Type_Kind_Id and then Contains_Allocated_Parts (E));
@@ -366,6 +366,18 @@ package body Why.Atree.Modules is
 
       return NID (To_String (Name));
    end Get_Profile_Theory_Name;
+
+   ------------------------
+   -- Get_Move_Tree_Type --
+   ------------------------
+
+   function Get_Move_Tree_Type (E : Entity_Id) return W_Type_Id is
+   begin
+      return New_Named_Type
+        (Name => New_Name
+           (Symb   => NID (To_String (WNE_Move_Tree)),
+            Module => E_Module (Retysp (E), Move_Tree)));
+   end Get_Move_Tree_Type;
 
    -------------------------
    -- Get_Refinement_Mask --
@@ -3017,17 +3029,6 @@ package body Why.Atree.Modules is
                         Relaxed_Init);
                   end;
                end if;
-
-               if Has_Ownership_Annotation (E) then
-                  Insert_Symbol
-                    (E, WNE_Is_Moved_Field,
-                     New_Identifier
-                       (Symb   => NID (To_String (WNE_Is_Moved_Field)),
-                        Module => M,
-                        Domain => EW_Term,
-                        Typ    => EW_Bool_Type),
-                     Relaxed_Init);
-               end if;
             end;
 
          --  Symbols for array types
@@ -3142,16 +3143,6 @@ package body Why.Atree.Modules is
                   New_Identifier
                     (Symb   => NID (To_String (WNE_Rec_Comp_Prefix) &
                              Full_Name_Node & "__is_null_pointer"),
-                     Module => M,
-                     Domain => EW_Term,
-                     Typ    => EW_Bool_Type),
-                  Relaxed_Init);
-
-               Insert_Symbol
-                 (E, WNE_Is_Moved_Field,
-                  New_Identifier
-                    (Symb   => NID (To_String (WNE_Rec_Comp_Prefix) &
-                       Full_Name_Node & To_String (WNE_Is_Moved)),
                      Module => M,
                      Domain => EW_Term,
                      Typ    => EW_Bool_Type),
@@ -3412,38 +3403,100 @@ package body Why.Atree.Modules is
                   Typ    => EW_Bool_Type));
          end if;
 
-         --  Symbols for moves of deep types. The Is_Moved and Moved_Relation
-         --  predicates are in the Move module. The Move function is in the
-         --  axiom module for the move functions if they are predeclared.
+         --  If E needs reclamation, insert symbols for the
+         --  is_moved_or_reclaimed property and moved_tree function.
 
-         if Contains_Allocated_Parts (E)
-           and then (not Has_Access_Type (E)
-                     or else Is_General_Access_Type (E))
-         then
+         if Contains_Allocated_Parts (E) then
             Insert_Symbol
-              (E, WNE_Is_Moved,
+              (E, WNE_Is_Moved_Or_Reclaimed,
                New_Identifier
-                 (Symb   => NID (To_String (WNE_Is_Moved)),
-                  Module => E_Module (E, Ownership_Move),
-                  Domain => EW_Term,
-                  Typ    => EW_Bool_Type));
+                 (Symb   => NID (To_String (WNE_Is_Moved_Or_Reclaimed)),
+                  Module => E_Module (E, Move_Tree),
+                  Domain => EW_Pred));
             Insert_Symbol
-              (E, WNE_Move,
+              (E, WNE_Moved_Tree,
                New_Identifier
-                 (Symb   => NID (To_String (WNE_Move)),
-                  Module => E_Module
-                    (E,
-                     (if Has_Predeclared_Move_Predicates (E)
-                      then Ownership_Move_Axiom
-                      else Ownership_Move)),
-                  Domain => EW_Prog));
-            Insert_Symbol
-              (E, WNE_Moved_Relation,
-               New_Identifier
-                 (Symb   => NID (To_String (WNE_Moved_Relation)),
-                  Module => E_Module (E, Ownership_Move),
-                  Domain => EW_Term,
-                  Typ    => EW_Bool_Type));
+                 (Symb   => NID (To_String (WNE_Moved_Tree)),
+                  Module => E_Module (E, Move_Tree),
+                  Domain => EW_Prog,
+                  Typ    => Get_Move_Tree_Type (E)));
+
+            --  Symbols to construct the move tree
+
+            if Is_Array_Type (E) then
+               Insert_Symbol
+                 (E, WNE_Move_Tree_Array_Get,
+                  New_Identifier
+                    (Domain => EW_Term,
+                     Symb   => NID (To_String (WNE_Move_Tree_Array_Get)),
+                     Typ    => Get_Move_Tree_Type (Component_Type (E)),
+                     Module => E_Module (E, Move_Tree)));
+               Insert_Symbol
+                 (E, WNE_Move_Tree_Array_Set,
+                     New_Identifier
+                       (Domain => EW_Prog,
+                        Symb   => NID (To_String (WNE_Move_Tree_Array_Set)),
+                        Typ    => Get_Move_Tree_Type (E),
+                        Module => E_Module (E, Move_Tree)));
+
+            elsif Is_Access_Type (E)
+              and then not Is_General_Access_Type (E)
+              and then not Is_Anonymous_Access_Type (E)
+            then
+               Insert_Symbol
+                 (E, WNE_Move_Tree_Ptr_Is_Moved,
+                  New_Identifier
+                    (Domain => EW_Term,
+                     Symb   => NID (To_String (WNE_Move_Tree_Ptr_Is_Moved)),
+                     Typ    => EW_Bool_Type,
+                     Module => E_Module (E, Move_Tree)));
+
+               if Contains_Allocated_Parts (Directly_Designated_Type (E)) then
+                  declare
+                     Des_Ty     : constant Entity_Id :=
+                       Retysp (Directly_Designated_Type (E));
+                     Des_Module : constant W_Module_Id :=
+                       (if Designates_Incomplete_Type (E)
+                        then E_Module (Des_Ty, Incomp_Move_Tree)
+                        else E_Module (Des_Ty, Move_Tree));
+                     --  For incomplete designated types, use early declaration
+
+                  begin
+                     Insert_Symbol
+                       (E, WNE_Move_Tree_Ptr_Value,
+                        New_Identifier
+                          (Domain => EW_Term,
+                           Symb   => NID (To_String (WNE_Move_Tree_Ptr_Value)),
+                           Typ    => New_Named_Type
+                             (Name => New_Name
+                                  (Symb   => NID (To_String (WNE_Move_Tree)),
+                                   Module => Des_Module)),
+                           Module => E_Module (E, Move_Tree)));
+                  end;
+               end if;
+            end if;
+
+            --  Open and close functions for move trees of incomplete types
+
+            if Has_Incomplete_Access (E) then
+               Insert_Symbol
+                 (E, WNE_Move_Tree_Open,
+                  New_Identifier
+                    (Domain => EW_Term,
+                     Symb   => NID (To_String (WNE_Move_Tree_Open)),
+                     Typ    => Get_Move_Tree_Type (E),
+                     Module => E_Module (E, Move_Tree)));
+               Insert_Symbol
+                 (E, WNE_Move_Tree_Close,
+                     New_Identifier
+                       (Domain => EW_Prog,
+                        Symb   => NID (To_String (WNE_Move_Tree_Close)),
+                        Typ    => New_Named_Type
+                          (Name => New_Name
+                               (Symb   => NID (To_String (WNE_Move_Tree)),
+                                Module => E_Module (E, Incomp_Move_Tree))),
+                        Module => E_Module (E, Move_Tree)));
+            end if;
          end if;
 
          --  Symbols for scalar types

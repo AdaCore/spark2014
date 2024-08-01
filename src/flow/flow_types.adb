@@ -27,6 +27,7 @@ with Ada.Strings.Unbounded;          use Ada.Strings.Unbounded;
 with Ada.Strings;
 with Einfo.Utils;                    use Einfo.Utils;
 with Errout;                         use Errout;
+with Errout_Wrapper;                 use Errout_Wrapper;
 with Flow_Generated_Globals.Phase_2; use Flow_Generated_Globals.Phase_2;
 with Flow_Utility;                   use Flow_Utility;
 with GNATCOLL.Utils;
@@ -246,9 +247,10 @@ package body Flow_Types is
       --  A single occurrence of an iterator_specification corresponds to
       --  implicit calls of several subprograms, so we hash both the call node
       --  and the subprogram entity (even though we could hash just the call
-      --  node and have collisions for the subprograms).
+      --  node and have collisions for the subprograms). Same for container
+      --  aggregates.
 
-      if Nkind (SC.N) = N_Iterator_Specification then
+      if Nkind (SC.N) in N_Aggregate | N_Iterator_Specification then
          return Node_Hash (SC.N) + Node_Hash (SC.E);
 
       --  For subprogram and entry calls it is enough to hash the call node,
@@ -957,7 +959,7 @@ package body Flow_Types is
                and then Ekind (Get_Direct_Mapping_Id (F)) = E_Function
                and then Is_Operator_Symbol_Name (Chars (F.Node))
             then
-               Append (R, Get_Operator_Symbol (F.Node));
+               Append (R, Escape (Get_Operator_Symbol (F.Node)));
             else
                Append (R, Get_Unmangled_Name (F.Node));
             end if;

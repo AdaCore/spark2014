@@ -31,8 +31,6 @@ with GNATCOLL.Symbols;            use GNATCOLL.Symbols;
 with Namet;                       use Namet;
 with Sinput;                      use Sinput;
 with Snames;                      use Snames;
-with SPARK_Definition;            use SPARK_Definition;
-with SPARK_Definition.Annotate;   use SPARK_Definition.Annotate;
 with VC_Kinds;                    use VC_Kinds;
 with Why.Atree.Accessors;         use Why.Atree.Accessors;
 with Why.Atree.Builders;          use Why.Atree.Builders;
@@ -80,9 +78,9 @@ package body Why.Gen.Pointers is
      (E            : Entity_Id;
       Relaxed_Init : Boolean := False)
    with Pre => Is_Access_Type (E);
-   --  Declare a pointer type as a why record with three or four fields:
-   --  pointer_value, is_null_pointer, is_moved, and attr_init if Relaxed_Init
-   --  is True. It also defines the needed functions to manipulate this type.
+   --  Declare a pointer type as a why record with two or three fields:
+   --  pointer_value, is_null_pointer, and attr_init if Relaxed_Init is True.
+   --  It also defines the needed functions to manipulate this type.
 
    package Pointer_Typ_To_Roots is new Ada.Containers.Hashed_Maps
      (Key_Type        => Entity_Id,
@@ -124,6 +122,94 @@ package body Why.Gen.Pointers is
 
    Borrow_Infos : Borrow_Info_Maps.Map;
    --  Maps borrowers to their borrowed object and their pledge
+
+   -----------------------------------------------------
+   -- Complete_Move_Tree_For_Incomplete_Access --
+   -----------------------------------------------------
+
+   procedure Complete_Move_Tree_For_Incomplete_Access
+     (Th : Theory_UC;
+      E  : Entity_Id)
+   is
+      Typ             : constant W_Type_Id :=
+        (if Has_Init_Wrapper (E)
+         then EW_Init_Wrapper (Type_Of_Node (E))
+         else Type_Of_Node (E));
+      Obj_Binder      : constant Binder_Type :=
+        (B_Name => New_Identifier (Name => "obj", Typ  => Typ),
+         others => <>);
+      Concrete_Binder : constant Binder_Type :=
+        (B_Name => New_Identifier
+           (Name => "x",
+            Typ  => New_Named_Type (To_Name (WNE_Move_Tree))),
+         others => <>);
+      Abstract_Binder : constant Binder_Type :=
+        (B_Name => New_Identifier
+           (Name   => "x",
+            Typ    => New_Named_Type
+              (Name => New_Name
+                   (Symb   => NID (To_String (WNE_Move_Tree)),
+                    Module => E_Module (E, Incomp_Move_Tree)))),
+         others => <>);
+
+   begin
+      --  Generate:
+      --
+      --  function __open (x : Incompl.move_tree) return move_tree
+      --
+      --  val __close (x : move_tree) : Incompl.move_tree
+      --    ensures { __open result = x }
+      --
+      --  axiom __is_moved_or_reclaimed_def:
+      --    forall x : Incompl.move_tree, obj : <E>.
+      --      Incompl.__is_moved_or_reclaimed x obj <->
+      --      __is_moved_or_reclaimed (__open x) obj
+
+      Emit
+        (Th,
+         New_Function_Decl
+           (Domain      => EW_Pterm,
+            Name        => To_Local (E_Symb (E, WNE_Move_Tree_Open)),
+            Binders     => Binder_Array'(1 => Abstract_Binder),
+            Location    => No_Location,
+            Labels      => Symbol_Sets.Empty_Set,
+            Return_Type => Get_Typ (Concrete_Binder.B_Name)));
+      Emit
+        (Th,
+         New_Function_Decl
+           (Domain      => EW_Prog,
+            Name        => To_Local (E_Symb (E, WNE_Move_Tree_Close)),
+            Binders     => Binder_Array'(1 => Concrete_Binder),
+            Location    => No_Location,
+            Labels      => Symbol_Sets.Empty_Set,
+            Return_Type => Get_Typ (Abstract_Binder.B_Name),
+            Post        => New_Comparison
+              (Symbol => Why_Eq,
+               Left   => +Concrete_Binder.B_Name,
+               Right  => New_Call
+                 (Name => To_Local (E_Symb (E, WNE_Move_Tree_Open)),
+                  Args =>
+                    (1 => +New_Result_Ident
+                         (Typ => Get_Typ (Abstract_Binder.B_Name)))))));
+      Emit (Th,
+            New_Defining_Bool_Axiom
+              (Name     => New_Identifier
+                 (Symb   =>
+                      NID (To_String (WNE_Is_Moved_Or_Reclaimed)),
+                  Module => E_Module (E, Incomp_Move_Tree),
+                  Domain => EW_Pred),
+               Fun_Name => To_String (WNE_Is_Moved_Or_Reclaimed),
+               Binders  => (1 => Abstract_Binder, 2 => Obj_Binder),
+               Def      => New_Call
+                 (Name => To_Local (E_Symb (E, WNE_Is_Moved_Or_Reclaimed)),
+                  Args => (1 => New_Call
+                           (Name   => To_Local
+                            (E_Symb (E, WNE_Move_Tree_Open)),
+                            Args   => (1 => +Abstract_Binder.B_Name),
+                            Domain => EW_Term),
+                           2 => +Obj_Binder.B_Name)),
+               Dep_Kind => EW_Axdep_Pred));
+   end Complete_Move_Tree_For_Incomplete_Access;
 
    -------------------------------
    -- Complete_Rep_Pointer_Type --
@@ -505,10 +591,6 @@ package body Why.Gen.Pointers is
                     2 => New_Pointer_Is_Null_Access
                       (E     => E,
                        Name  => +A_Ident,
-                       Local => True),
-                    3 => New_Pointer_Is_Moved_Access
-                      (E     => E,
-                       Name  => +A_Ident,
                        Local => True))
                  & (if Relaxed_Init
                     then (1 => New_Record_Access
@@ -565,9 +647,6 @@ package body Why.Gen.Pointers is
                               else Has_Relaxed_Init (Des_Ty))),
                        Force_No_Slide => True),
                     2 => New_Pointer_Is_Null_Access
-                      (E     => Root,
-                       Name  => +R_Ident),
-                    3 => New_Pointer_Is_Moved_Access
                       (E     => Root,
                        Name  => +R_Ident))
                  & (if Relaxed_Init
@@ -640,10 +719,6 @@ package body Why.Gen.Pointers is
                     2 => New_Pointer_Is_Null_Access
                       (E     => E,
                        Name  => +A_Ident,
-                       Local => True),
-                    3 => New_Pointer_Is_Moved_Access
-                      (E     => E,
-                       Name  => +A_Ident,
                        Local => True)),
                  Ty => E);
             --  (value   = of_wrapper a.value,
@@ -690,10 +765,7 @@ package body Why.Gen.Pointers is
                     2 => New_Pointer_Is_Null_Access
                       (E     => E,
                        Name  => +X_Ident),
-                    3 => New_Pointer_Is_Moved_Access
-                      (E     => E,
-                       Name  => +X_Ident),
-                    4 => +True_Term),
+                    3 => +True_Term),
                  Ty           => E,
                  Local        => True,
                  Relaxed_Init => True);
@@ -765,6 +837,174 @@ package body Why.Gen.Pointers is
          Declare_Wrapper_Conversions (As_Axioms => Separated);
       end if;
    end Complete_Rep_Pointer_Type;
+
+   ---------------------------------------------------
+   -- Create_Move_Tree_Theory_For_Incomplete_Access --
+   ---------------------------------------------------
+
+   procedure Create_Move_Tree_For_Incomplete_Access (E : Entity_Id) is
+      Ty_Name    : constant W_Name_Id := To_Name (WNE_Move_Tree);
+      Tree_Ident : constant W_Identifier_Id :=
+        New_Identifier
+          (Name => "tree",
+           Typ  => New_Named_Type (Name => Ty_Name));
+      Typ        : constant W_Type_Id :=
+        (if Has_Init_Wrapper (E)
+         then EW_Init_Wrapper (Type_Of_Node (E))
+         else Type_Of_Node (E));
+      Obj_Ident  : constant W_Identifier_Id :=
+        New_Identifier (Name => "obj", Typ  => Typ);
+      Th         : Theory_UC;
+
+   begin
+      Th := Open_Theory
+        (WF_Context, E_Module (E, Incomp_Move_Tree),
+         Comment =>
+           "Module for the abstract move tree for the type "
+         & """" & Get_Name_String (Chars (E)) & """"
+         & (if Sloc (E) > 0 then
+              " defined at " & Build_Location_String (Sloc (E))
+           else "")
+         & ", created in " & GNAT.Source_Info.Enclosing_Entity);
+
+      Emit (Th, New_Type_Decl (To_String (WNE_Move_Tree)));
+
+      Emit
+        (Th,
+         New_Function_Decl
+           (Domain   => EW_Pred,
+            Name     => To_Local (E_Symb (E, WNE_Is_Moved_Or_Reclaimed)),
+            Binders  => Binder_Array'
+              (1 => (B_Name => Tree_Ident,
+                     others => <>),
+               2 => (B_Name => Obj_Ident,
+                     others => <>)),
+            Location => No_Location,
+            Labels   => Symbol_Sets.Empty_Set));
+
+      Close_Theory (Th, Kind => Definition_Theory);
+   end Create_Move_Tree_For_Incomplete_Access;
+
+   -----------------------------------------
+   -- Create_Move_Tree_Theory_For_Pointer --
+   -----------------------------------------
+
+   procedure Create_Move_Tree_Theory_For_Pointer
+     (Th : Theory_UC;
+      E  : Entity_Id)
+   is
+      Ty_Name    : constant W_Name_Id := To_Name (WNE_Move_Tree);
+      Tree_Ident : constant W_Identifier_Id :=
+        New_Identifier
+          (Name => "tree",
+           Typ  => New_Named_Type (Name => Ty_Name));
+      Typ        : constant W_Type_Id :=
+        (if Has_Init_Wrapper (E)
+         then EW_Init_Wrapper (Type_Of_Node (E))
+         else Type_Of_Node (E));
+      Obj_Ident  : constant W_Identifier_Id :=
+        New_Identifier (Name => "obj", Typ  => Typ);
+      Des_Ty     : constant Entity_Id := Directly_Designated_Type (E);
+      Def        : W_Pred_Id;
+
+   begin
+      --  For general access types, the pointer itself does not need to be
+      --  reclaimed. Rename the move tree of the designated type.
+
+      if Is_General_Access_Type (E) then
+         declare
+            Des_Module : constant W_Module_Id :=
+              (if Designates_Incomplete_Type (E)
+               then E_Module (Des_Ty, Incomp_Move_Tree)
+               else E_Module (Des_Ty, Move_Tree));
+            --  For incomplete designated types, use early declarations
+
+         begin
+            Emit (Th,
+                  New_Type_Decl
+                    (Name  => Ty_Name,
+                     Alias => New_Named_Type
+                       (Name => New_Name
+                            (Symb   => NID (To_String (WNE_Move_Tree)),
+                             Module => Des_Module))));
+
+            --  In __is_moved_or_reclaimed, check reclamation of the designated
+            --  value if any.
+
+            Def := New_Or_Pred
+              (Left  => Pred_Of_Boolean_Term
+                 (New_Pointer_Is_Null_Access
+                      (Name => +Obj_Ident,
+                       E    => E)),
+               Right => New_Call
+                 (Name => New_Identifier
+                      (Symb   => NID (To_String (WNE_Is_Moved_Or_Reclaimed)),
+                       Module => Des_Module,
+                       Domain => EW_Pred),
+                  Args =>
+                    (1 => +Tree_Ident,
+                     2 => New_Pointer_Value_Access
+                       (E => E, Name => +Obj_Ident, Domain => EW_Term))));
+         end;
+
+      --  If E is a pool-specific access-to-variable type, introduce toplevel
+      --  boolean flag. Flags for the designated values are only necessary if
+      --  the designated type is deep.
+
+      else
+         declare
+            Value_Field_Opt : constant Binder_Array :=
+              (if Contains_Allocated_Parts (Des_Ty)
+               then
+                 (1 => (B_Name =>
+                            To_Local (E_Symb (E, WNE_Move_Tree_Ptr_Value)),
+                        others => <>))
+               else (1 .. 0 => <>));
+
+         begin
+            Emit_Record_Declaration
+              (Th      => Th,
+               Name    => Ty_Name,
+               Binders => Binder_Array'
+                 (Binder_Type'
+                      (B_Name => To_Local
+                           (E_Symb (E, WNE_Move_Tree_Ptr_Is_Moved)),
+                       others => <>)
+                  & Value_Field_Opt));
+         end;
+
+         --  In __is_moved_or_reclaimed predicate, check the is_moved flag and
+         --  the reclamation on the type.
+
+         Def := New_Or_Pred
+           (Left  => Pred_Of_Boolean_Term
+              (New_Record_Access
+                   (Name  => +Tree_Ident,
+                    Field => To_Local (E_Symb (E, WNE_Move_Tree_Ptr_Is_Moved)),
+                    Typ   => EW_Bool_Type)),
+            Right => Pred_Of_Boolean_Term
+              (New_Pointer_Is_Null_Access (Name => +Obj_Ident, E => E)));
+      end if;
+
+      Emit_Ref_Type_Definition (Th   => Th,
+                                Name => Ty_Name);
+
+      --  Create __is_moved_or_reclaimed predicate
+
+      Emit
+        (Th,
+         New_Function_Decl
+           (Domain   => EW_Pred,
+            Name     => To_Local (E_Symb (E, WNE_Is_Moved_Or_Reclaimed)),
+            Binders  => Binder_Array'
+              (1 => (B_Name => Tree_Ident,
+                     others => <>),
+               2 => (B_Name => Obj_Ident,
+                     others => <>)),
+            Location => No_Location,
+            Labels   => Symbol_Sets.Empty_Set,
+            Def      => +Def));
+   end Create_Move_Tree_Theory_For_Pointer;
 
    -------------------------------
    -- Create_Rep_Pointer_Theory --
@@ -1182,7 +1422,7 @@ package body Why.Gen.Pointers is
       --------------------------
 
       procedure Declare_Pointer_Type is
-         Binders_F : Binder_Array (1 .. (if Relaxed_Init then 4 else 3));
+         Binders_F : Binder_Array (1 .. (if Relaxed_Init then 3 else 2));
          Ty_Name   : constant W_Name_Id := To_Name (WNE_Rec_Rep);
 
       begin
@@ -1193,16 +1433,12 @@ package body Why.Gen.Pointers is
             others => <>);
 
          Binders_F (2) :=
-           (B_Name => To_Local (E_Symb (E, WNE_Is_Moved_Field)),
-            others => <>);
-
-         Binders_F (3) :=
            (B_Name => Value_Id,
             Labels => Get_Model_Trace_Label ("'" & All_Label),
             others => <>);
 
          if Relaxed_Init then
-            Binders_F (4) :=
+            Binders_F (3) :=
               (B_Name => To_Local (E_Symb (E, WNE_Attr_Init)),
                Labels => Get_Model_Trace_Label ("'" & Initialized_Label),
                others => <>);
@@ -1410,14 +1646,6 @@ package body Why.Gen.Pointers is
      (Has_Incomplete_Access (E)
       and then Has_Init_Wrapper (Retysp (Get_Incomplete_Access (E))));
 
-   -------------------------------------
-   -- Has_Predeclared_Move_Predicates --
-   -------------------------------------
-
-   function Has_Predeclared_Move_Predicates (E : Entity_Id) return Boolean is
-     (Has_Incomplete_Access (E)
-      and then Is_General_Access_Type (Retysp (Get_Incomplete_Access (E))));
-
    ----------------------------------
    -- Insert_Pointer_Subtype_Check --
    ----------------------------------
@@ -1457,166 +1685,6 @@ package body Why.Gen.Pointers is
             Typ      => Get_Type (+Ptr_Expr));
       end if;
    end Insert_Pointer_Subtype_Check;
-
-   ---------------------
-   -- Move_Param_Item --
-   ---------------------
-
-   function Move_Param_Item (Typ : Entity_Id) return Item_Type is
-      Relaxed_Init : constant Boolean := Has_Init_Wrapper (Typ);
-      --  Use the init wrapper type for types which have one
-
-   begin
-      --  For a general access type, we call the __move function, which only
-      --  takes the value part as a reference.
-      --
-      --  __move expr.pointer_value_ref expr.pointer_is_null
-      --       expr.pointer_is_moved
-      --
-      --  Note that the pointer_is_moved parameter is useless as it is always
-      --  False on general access types.
-
-      if Is_Access_Type (Typ) then
-         declare
-            Des_Ty : constant Entity_Id := Directly_Designated_Type (Typ);
-            P_Value    : constant Binder_Type :=
-              (B_Name  => New_Temp_Identifier
-                 (Base_Name => "pointer_value",
-                  Typ       => EW_Abstract
-                    (Des_Ty,
-                     (if Relaxed_Init then Has_Init_Wrapper (Des_Ty)
-                      else Has_Relaxed_Init (Des_Ty)))),
-               Mutable => True,
-               others  => <>);
-            P_Is_Null  : constant W_Identifier_Id :=
-              New_Temp_Identifier (Base_Name => "is_null",
-                                   Typ       => EW_Bool_Type);
-            P_Is_Moved : constant W_Identifier_Id :=
-              New_Temp_Identifier (Base_Name => "is_moved",
-                                   Typ       => EW_Bool_Type);
-         begin
-            return
-              Item_Type'(Kind     => Pointer,
-                         Local    => True,
-                         Init     => (Present => False),
-                         Value    => P_Value,
-                         Is_Null  => P_Is_Null,
-                         Is_Moved => P_Is_Moved,
-                         P_Typ    => Typ,
-                         Mutable  => False);
-         end;
-
-      --  For a record, we call the __move function, which only takes the
-      --  fields part as a reference.
-      --
-      --  __move expr.fields_ref expr.discr expr.tag
-
-      elsif Is_Record_Type_In_Why (Typ) then
-         pragma Assert (not Is_Simple_Private_Type (Typ));
-
-         declare
-            P_Fields : constant Opt_Binder :=
-              (Present => True,
-               Binder  =>
-                 (B_Name   => New_Temp_Identifier
-                      (Base_Name => "fields",
-                       Typ       => Field_Type_For_Fields (Typ, Relaxed_Init)),
-                  Mutable  => True,
-                  others   => <>));
-            P_Discrs : constant Opt_Binder :=
-              (if Has_Discriminants (Typ) then
-                   (Present => True,
-                    Binder  =>
-                      (B_Name   => New_Temp_Identifier
-                         (Base_Name => "discrs",
-                          Typ       => Field_Type_For_Discriminants (Typ)),
-                       Mutable  => False,
-                       others   => <>))
-               else (Present => False));
-            P_Tag    : constant Opt_Id :=
-              (if Is_Tagged_Type (Typ) then
-                   (Present => True,
-                    Id      => New_Temp_Identifier (Base_Name => "tag",
-                                                    Typ       => EW_Int_Type))
-               else (Present => False));
-            P_Is_Moved : constant Opt_Id :=
-              (if Has_Ownership_Annotation (Typ) then
-                   (Present => True,
-                    Id      => New_Temp_Identifier (Base_Name => "is_moved",
-                                                    Typ       => EW_Bool_Type))
-               else (Present => False));
-         begin
-            return
-              Item_Type'(Kind       => DRecord,
-                         Local      => True,
-                         Init       => (Present => False),
-                         Typ        => Typ,
-                         Fields     => P_Fields,
-                         Discrs     => P_Discrs,
-                         Constr     => (Present => False),
-                         Tag        => P_Tag,
-                         Is_Moved_R => P_Is_Moved);
-         end;
-
-      --  For an array, the __move function takes the underlying map as a
-      --  reference, as well as the bounds for non-static arrays.
-      --
-      --  __move expr.content_ref expr.first1 expr.last1 ...
-
-      elsif Is_Static_Array_Type (Typ) then
-         declare
-            W_Typ : constant W_Type_Id :=
-              EW_Abstract (Typ, Relaxed_Init => Relaxed_Init);
-         begin
-            return
-              Item_Type'(Kind  => Regular,
-                         Local => True,
-                         Init  => (Present => False),
-                         Main  =>
-                           (B_Name   => New_Temp_Identifier
-                                (Base_Name => "array_content",
-                                 Typ       => W_Typ),
-                            Mutable  => True,
-                            others   => <>));
-         end;
-      else
-         pragma Assert (Is_Array_Type (Typ));
-         declare
-            W_Typ  : constant W_Type_Id :=
-              EW_Split (Typ, Relaxed_Init => Relaxed_Init);
-            Dim    : constant Positive :=
-              Positive (Number_Dimensions (Typ));
-            Bounds : Array_Bounds;
-            Index  : Node_Id := First_Index (Typ);
-         begin
-            for D in 1 .. Dim loop
-               declare
-                  Index_Typ : constant W_Type_Id :=
-                    EW_Abstract (Base_Type (Etype (Index)));
-               begin
-                  Bounds (D).First :=
-                    New_Temp_Identifier (Typ => Index_Typ);
-                  Bounds (D).Last :=
-                    New_Temp_Identifier (Typ => Index_Typ);
-                  Next_Index (Index);
-               end;
-            end loop;
-
-            return
-              Item_Type'(Kind    => UCArray,
-                         Local   => True,
-                         Init    => (Present => False),
-                         Content =>
-                           (B_Name   => New_Temp_Identifier
-                                (Base_Name => "array_content",
-                                 Typ       => W_Typ),
-                            Mutable  => True,
-                            others   => <>),
-                         Dim     => Dim,
-                         Bounds  => Bounds);
-         end;
-      end if;
-   end Move_Param_Item;
 
    ----------------------------
    -- New_Ada_Pointer_Update --
@@ -1705,63 +1773,100 @@ package body Why.Gen.Pointers is
                                 Typ   => EW_Bool_Type);
    end New_Pointer_Is_Null_Access;
 
-   ---------------------------------
-   -- New_Pointer_Is_Moved_Access --
-   ---------------------------------
+   ----------------------------------------
+   -- New_Move_Tree_Pointer_Value_Access --
+   ----------------------------------------
 
-   function New_Pointer_Is_Moved_Access
-     (E     : Entity_Id;
-      Name  : W_Expr_Id;
-      Local : Boolean := False)
+   function New_Move_Tree_Pointer_Value_Access
+     (Ty     : Entity_Id;
+      Name   : W_Expr_Id;
+      Domain : EW_Domain)
       return W_Expr_Id
    is
-      Relaxed_Init : constant Boolean := Get_Relaxed_Init (Get_Type (+Name));
-      --  Use the init wrapper type if needed
-
-      Field        : W_Identifier_Id :=
-        E_Symb (E, WNE_Is_Moved_Field, Relaxed_Init);
+      Des_Ty : constant Entity_Id := Directly_Designated_Type (Ty);
+      Value  : W_Expr_Id := Name;
 
    begin
-      if Local then
-         Field :=  To_Local (Field);
+      --  Values of an anonymous access type cannot be moved themselves. Their
+      --  move tree is directly the move tree of the designated value.
+
+      if Is_Anonymous_Access_Type (Ty) then
+         return Name;
       end if;
 
-      return New_Record_Access (Name  => +Name,
-                                Field => Field,
-                                Typ   => EW_Bool_Type);
-   end New_Pointer_Is_Moved_Access;
+      if not Is_General_Access_Type (Ty) then
+         declare
+            Field : constant W_Identifier_Id :=
+              E_Symb (Ty, WNE_Move_Tree_Ptr_Value);
+         begin
+            Value := New_Record_Access
+              (Name  => Value,
+               Field => Field,
+               Typ   => Get_Typ (Field));
+         end;
+      end if;
 
-   ---------------------------------
-   -- New_Pointer_Is_Moved_Update --
-   ---------------------------------
+      if Has_Incomplete_Access (Des_Ty) then
+         declare
+            Open_Id : constant W_Identifier_Id := E_Symb
+              (Des_Ty, WNE_Move_Tree_Open);
+         begin
+            return New_Call
+              (Name   => Open_Id,
+               Args   => (1 => Value),
+               Typ    => Get_Typ (Open_Id),
+               Domain => Domain);
+         end;
+      else
+         return Value;
+      end if;
+   end New_Move_Tree_Pointer_Value_Access;
 
-   function New_Pointer_Is_Moved_Update
-     (E     : Entity_Id;
+   ----------------------------------------
+   -- New_Move_Tree_Pointer_Value_Update --
+   ----------------------------------------
+
+   function New_Move_Tree_Pointer_Value_Update
+     (Ty    : Entity_Id;
       Name  : W_Prog_Id;
-      Value : W_Prog_Id;
-      Local : Boolean := False)
+      Value : W_Prog_Id)
       return W_Prog_Id
    is
-      Relaxed_Init : constant Boolean := Get_Relaxed_Init (Get_Type (+Name));
-      --  Use the init wrapper type if needed
-
-      Field        : W_Identifier_Id :=
-        E_Symb (E, WNE_Is_Moved_Field, Relaxed_Init);
+      Des_Ty : constant Entity_Id := Directly_Designated_Type (Ty);
+      Val    : W_Prog_Id := Value;
 
    begin
-      if Local then
-         Field :=  To_Local (Field);
+      --  Values of an anonymous access type cannot be moved themselves. Their
+      --  move tree is directly the move tree of the designated value.
+
+      if Is_Anonymous_Access_Type (Ty) then
+         return Value;
       end if;
 
-      return New_Record_Update
-        (Name    => Name,
-         Updates =>
-           (1 => New_Field_Association
-                (Domain => EW_Prog,
-                 Field  => Field,
-                 Value  => +Value)),
-         Typ     => Get_Type (+Name));
-   end New_Pointer_Is_Moved_Update;
+      if Has_Incomplete_Access (Des_Ty) then
+         declare
+            Close_Id : constant W_Identifier_Id := E_Symb
+              (Des_Ty, WNE_Move_Tree_Close);
+         begin
+            Val := New_Call
+              (Name => Close_Id,
+               Args => (1 => +Val),
+               Typ  => Get_Typ (Close_Id));
+         end;
+      end if;
+
+      if Is_General_Access_Type (Ty) then
+         return Val;
+      else
+         return New_Record_Update
+           (Name  => +Name,
+            Updates =>
+              (1 => New_Field_Association
+                   (Domain => EW_Prog,
+                    Field  => E_Symb (Ty, WNE_Move_Tree_Ptr_Value),
+                    Value  => +Val)));
+      end if;
+   end New_Move_Tree_Pointer_Value_Update;
 
    ------------------------------
    -- New_Pointer_Value_Access --
@@ -1878,7 +1983,6 @@ package body Why.Gen.Pointers is
       Ty           : constant Entity_Id := I.P_Typ;
       Value        : W_Expr_Id;
       Is_Null      : W_Expr_Id;
-      Is_Moved     : W_Expr_Id;
       Attr_Init    : W_Expr_Array (1 .. (if Relaxed_Init then 1 else 0));
 
    begin
@@ -1894,12 +1998,6 @@ package body Why.Gen.Pointers is
          Is_Null := +I.Is_Null;
       end if;
 
-      if Ref_Allowed then
-         Is_Moved := New_Deref (E, I.Is_Moved, Get_Typ (I.Is_Moved));
-      else
-         Is_Moved := +I.Is_Moved;
-      end if;
-
       if I.Init.Present then
          if Ref_Allowed then
             Attr_Init (1) := New_Deref (E, I.Init.Id, EW_Bool_Type);
@@ -1913,7 +2011,7 @@ package body Why.Gen.Pointers is
       return Pointer_From_Split_Form
         (Ada_Node     => E,
          A            =>
-           (1 => Value, 2 => Is_Null, 3 => Is_Moved) & Attr_Init,
+           (1 => Value, 2 => Is_Null) & Attr_Init,
          Ty           => Ty,
          Relaxed_Init => Relaxed_Init);
    end Pointer_From_Split_Form;
@@ -1929,15 +2027,12 @@ package body Why.Gen.Pointers is
       Ty_Ext     : constant Entity_Id := Retysp (Ty);
       Value      : W_Expr_Id := A (1);
       Is_Null    : constant W_Expr_Id := A (2);
-      Is_Moved   : constant W_Expr_Id := A (3);
       S_Value    : W_Identifier_Id :=
         (if Designates_Incomplete_Type (Repr_Pointer_Type (Ty_Ext))
          then E_Symb (Ty_Ext, WNE_Pointer_Value_Abstr, Relaxed_Init)
          else E_Symb (Ty_Ext, WNE_Pointer_Value, Relaxed_Init));
       S_Is_Null  : W_Identifier_Id :=
         E_Symb (Ty_Ext, WNE_Is_Null_Pointer, Relaxed_Init);
-      S_Is_Moved : W_Identifier_Id :=
-        E_Symb (Ty_Ext, WNE_Is_Moved_Field, Relaxed_Init);
       W_Ty       : W_Type_Id := EW_Abstract (Ty_Ext, Relaxed_Init);
 
    begin
@@ -1947,7 +2042,6 @@ package body Why.Gen.Pointers is
       if Local then
          S_Value := To_Local (S_Value);
          S_Is_Null := To_Local (S_Is_Null);
-         S_Is_Moved := To_Local (S_Is_Moved);
          W_Ty := New_Named_Type
            (New_Name (Symb => Get_Symb (Get_Name (W_Ty))));
       end if;
@@ -1975,11 +2069,7 @@ package body Why.Gen.Pointers is
             2 => New_Field_Association
                 (Domain => EW_Term,
                  Field  => S_Is_Null,
-                 Value  => Is_Null),
-            3 => New_Field_Association
-                (Domain => EW_Term,
-                 Field  => S_Is_Moved,
-                 Value  => Is_Moved))
+                 Value  => Is_Null))
          & (if Relaxed_Init
             then (1 => New_Field_Association
                   (Domain => EW_Term,
@@ -1987,7 +2077,7 @@ package body Why.Gen.Pointers is
                      (if Local
                       then To_Local (E_Symb (Ty_Ext, WNE_Attr_Init))
                       else E_Symb (Ty_Ext, WNE_Attr_Init)),
-                   Value  => A (4)))
+                   Value  => A (3)))
             else (1 .. 0 => <>)),
          Typ          => W_Ty);
    end Pointer_From_Split_Form;

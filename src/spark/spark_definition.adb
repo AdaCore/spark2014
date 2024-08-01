@@ -905,7 +905,7 @@ package body SPARK_Definition is
                        (Msg_Prefix
                         & " occurring inside the initialization expression of"
                         & " an object at a position other than the top or as"
-                        & " the root of a subcomponent 'Access reference",
+                        & " the root of a subcomponent Access reference",
                         Proph);
                      return;
                   end;
@@ -1347,7 +1347,7 @@ package body SPARK_Definition is
                   --  Container aggregates do not move their components since
                   --  they reduce to procedure calls.
 
-                  if not SPARK_Util.Is_Container_Aggregate (Root) then
+                  if not Is_Container_Aggregate (Root) then
                      Check_Expressions (Expressions (Root));
                      Check_Associations (Component_Associations (Root));
                   end if;
@@ -1637,7 +1637,7 @@ package body SPARK_Definition is
                | N_Delta_Aggregate
                | N_Extension_Aggregate
             =>
-               if SPARK_Util.Is_Container_Aggregate (Context) then
+               if Is_Container_Aggregate (Context) then
                   return False;
                end if;
 
@@ -2028,7 +2028,7 @@ package body SPARK_Definition is
             pragma Assert (Present (Etype (N)));
             --  In particular, aggregate node must have a type.
 
-            if SPARK_Util.Is_Container_Aggregate (N) then
+            if Is_Container_Aggregate (N) then
 
                --  For now we voluntarily do not look at parent types of
                --  derived types to find the aggregate annotation. Indeed,
@@ -2842,13 +2842,14 @@ package body SPARK_Definition is
                if Is_Generic_Subprogram (E) then
                   null;
 
-               --  For expression functions that have a unique declaration, the
-               --  body inserted by the frontend may be far from the original
-               --  point of declaration, after the private declarations of the
-               --  package (to avoid premature freezing.) In those cases, mark
-               --  the subprogram body at the same point as the subprogram
-               --  declaration, so that entities declared afterwards have
-               --  access to the axiom defining the expression function.
+               --  For expression functions that have a unique declaration (or
+               --  wrappers for dispatching results) the body inserted by the
+               --  frontend may be far from the original point of declaration,
+               --  after the private declarations of the package (to avoid
+               --  premature freezing.) In those cases, mark the subprogram
+               --  body at the same point as the subprogram declaration, so
+               --  that entities declared afterwards have access to the axiom
+               --  defining the expression function.
 
                elsif Is_Expression_Function_Or_Completion (E)
                  and then not Comes_From_Source (Original_Node (N))
@@ -2898,9 +2899,39 @@ package body SPARK_Definition is
             end if;
 
          when N_Subprogram_Declaration =>
-            if not Is_Predicate_Function (Defining_Entity (N)) then
-               Mark_Subprogram_Declaration (N);
-            end if;
+
+            --  Predicate function declarations should not be marked.
+            --  Additionally, wrappers for inherited function with dispatching
+            --  results may be declared at the freeze node rather that a
+            --  meaningful place, so we ignore the declaration if the
+            --  corresponding tagged view is in a SPARK-invisible section.
+
+            declare
+               Do_Mark : Boolean := True;
+               E       : constant Entity_Id := Defining_Entity (N);
+            begin
+               if Is_Predicate_Function (E) then
+                  Do_Mark := False;
+               elsif Is_Wrapper_For_Dispatching_Result (E) then
+                  declare
+                     View : constant Node_Id :=
+                       Get_View_For_Dispatching_Result (E);
+                     Prag : constant Node_Id :=
+                       SPARK_Pragma_Of_Entity (View);
+                  begin
+                     if Is_In_Hidden_Private (View)
+                       or else
+                         (Present (Prag)
+                          and then Get_SPARK_Mode_From_Annotation (Prag) = Off)
+                     then
+                        Do_Mark := False;
+                     end if;
+                  end;
+               end if;
+               if Do_Mark then
+                  Mark_Subprogram_Declaration (N);
+               end if;
+            end;
 
          when N_Subtype_Indication =>
             Mark_Subtype_Indication (N);
@@ -3269,11 +3300,11 @@ package body SPARK_Definition is
          --  Unsupported GNAT extensions
 
          when N_Goto_When_Statement =>
-            Mark_Violation ("'G'N'A'T extension for conditional goto", N);
+            Mark_Violation ("GNAT extension for conditional goto", N);
          when N_Raise_When_Statement =>
-            Mark_Violation ("'G'N'A'T extension for conditional raise", N);
+            Mark_Violation ("GNAT extension for conditional raise", N);
          when N_Return_When_Statement =>
-            Mark_Violation ("'G'N'A'T extension for conditional return", N);
+            Mark_Violation ("GNAT extension for conditional return", N);
 
          --  The following kinds can be safely ignored by marking
 
@@ -3471,7 +3502,7 @@ package body SPARK_Definition is
                    Is_Function_With_Side_Effects (Get_Called_Entity (Expr))
                then
                   Mark_Violation
-                    ("use of ""'@"" inside a call to a function"
+                    ("use of ""@"" inside a call to a function"
                      & " with side effects",
                      N);
                end if;
@@ -5093,11 +5124,11 @@ package body SPARK_Definition is
                Mode : constant String :=
                  (case Ekind (Formal) is
                      when E_In_Parameter     =>
-                       "`IN` parameter of an access-to-variable type",
+                       """in"" parameter of an access-to-variable type",
                      when E_In_Out_Parameter =>
-                       "`IN OUT` parameter",
+                       """in out"" parameter",
                      when E_Out_Parameter    =>
-                       "`OUT` parameter",
+                       """out"" parameter",
                      when others             =>
                         raise Program_Error);
             begin
@@ -5651,7 +5682,7 @@ package body SPARK_Definition is
          if Is_Pragma_Annotate_GNATprove (Context_N) then
             if Emit_Messages then
                Error_Msg_N
-                 ("pragma Annotate ('G'N'A'Tprove, ...) cannot occur"
+                 ("pragma Annotate (GNATprove, ...) cannot occur"
                   & " within context clauses", Context_N);
             end if;
          else
@@ -6506,7 +6537,9 @@ package body SPARK_Definition is
             --  handling for such function calls inside preconditions (see
             --  handling of raise expressions).
 
-            if No_Return (Id) then
+            if Ekind (Id) = E_Function
+              and then No_Return (Id)
+            then
                Mark_Unsupported (Lim_No_Return_Function, Id);
             end if;
 
@@ -6535,11 +6568,11 @@ package body SPARK_Definition is
                if not Is_Function_With_Side_Effects (Id) then
                   case Ekind (Formal) is
                      when E_Out_Parameter =>
-                        Mark_Violation ("function with OUT parameter", Id);
+                        Mark_Violation ("function with ""out"" parameter", Id);
 
                      when E_In_Out_Parameter =>
                         Mark_Violation
-                          ("function with `IN OUT` parameter", Id);
+                          ("function with ""in out"" parameter", Id);
 
                      when E_In_Parameter =>
                         null;
@@ -6720,12 +6753,12 @@ package body SPARK_Definition is
                         then
                            declare
                               Mode : constant String :=
-                                (if Ekind (Id) = E_Out_Parameter then "OUT"
-                                 else "IN OUT");
+                                (if Ekind (Id) = E_Out_Parameter then "out"
+                                 else "in out");
                            begin
                               Mark_Violation
-                                ("formal parameter of mode `" & Mode
-                                 & "` in consequence of Exceptional_Cases", N,
+                                ("formal parameter of mode """ & Mode
+                                 & """ in consequence of Exceptional_Cases", N,
                                  Cont_Msg =>
                                    "only parameters passed by reference "
                                    & "are allowed");
@@ -7311,6 +7344,14 @@ package body SPARK_Definition is
                --  introduced by the frontend as in that case, it will be
                --  located in the private part even if in the source code the
                --  function is in the public part of a package.
+               --
+               --  Wrappers for dispatching results are also recognized to have
+               --  a single declaration, even though the frontend create a
+               --  separate declaration and body. Treating them as a single
+               --  declaration is fine under current limitations on private
+               --  (mode Off or hidden) inheritance. We need to mark the body
+               --  from the declaration as the body may be at an incoherent
+               --  location.
 
                My_Body : constant Node_Id := Subprogram_Body (E);
             begin
@@ -7363,7 +7404,7 @@ package body SPARK_Definition is
                        ("plain precondition on dispatching subprogram",
                         Pre,
                         SRM_Reference => "SPARK RM 6.1.1(2)",
-                        Cont_Msg => "use classwide precondition Pre''Class"
+                        Cont_Msg => "use classwide precondition Pre'Class"
                                     & " instead of Pre");
                   end if;
                end if;
@@ -7463,6 +7504,176 @@ package body SPARK_Definition is
          --  Mark default expression of component or discriminant and check it
          --  for references to the current instance of a type or subtype (which
          --  is considered to be variable input).
+
+         procedure Check_Not_Inheriting_Overriding_From_SPARK_Off
+           with Pre => Ekind (E) = E_Record_Type_With_Private;
+         --  Check that E does not inherit overriding primitives declared in a
+         --  section with private mode off, from some intermediate private
+         --  parent.
+
+         ----------------------------------------------------
+         -- Check_Not_Inheriting_Overriding_From_SPARK_Off --
+         ----------------------------------------------------
+
+         procedure Check_Not_Inheriting_Overriding_From_SPARK_Off is
+            Full             : constant Entity_Id := Full_View (E);
+            Parent           : constant Entity_Id := Parent_Type (E);
+            Parent_Full      : constant Entity_Id :=
+              (if Present (Full_View (Parent))
+               then Full_View (Parent)
+               else Parent);
+
+            Parent_Primitives : Node_Sets.Set;
+            Bad_Subprograms   : Node_Lists.List;
+            Bad_Intermediate  : Boolean := False;
+            Kind              : Unsupported_Kind;
+
+         begin
+            --  Purely private tagged type (without any public ancestor)
+            --  are also in kind E_Record_Type_With_Private, but should
+            --  not be subject to additional restrictions as all public
+            --  primitives are necessarily declared in the public part,
+            --  hence new or explicitly overriden.
+
+            if Parent /= E
+              and then (Is_In_Potentially_Hidden_Private (Full)
+                        or else Is_Private_Entity_Mode_Off (Full))
+            then
+
+               --  Register all primitives of public ancestors, in order
+               --  to detect which primitives are publicly inherited.
+
+               for Prim of Iter (Direct_Primitive_Operations (Parent_Full))
+               loop
+                  Parent_Primitives.Insert (Ultimate_Alias (Prim));
+               end loop;
+
+               for Prim of Iter (Direct_Primitive_Operations (E)) loop
+                  declare
+                     Inh_Prim : Entity_Id := Ultimate_Alias (Prim);
+                     --  Declaration of dispatching subprograms as renamings
+                     --  are already forbidden by the frontend. This stops at
+                     --  the inherited primitive operation.
+
+                     From_Anc : Boolean := True;
+                     --  Whether the subprogram may be inherited directly from
+                     --  public ancestor.
+
+                  begin
+                     --  Check whether the primitive is an explicit overriding
+                     --  at the level of E by finding the dispatching type. We
+                     --  cannot use Find_Dispatching_Type directly as it uses
+                     --  Retysp to post-process the result. Here, we may be
+                     --  crossing SPARK boundaries arbitrarily, so that is
+                     --  unsuitable.
+
+                     if not Is_Wrapper_For_Dispatching_Result (Prim) then
+                        declare
+                           Inh_Type : Node_Id;
+                           Formal   : Node_Id;
+                        begin
+                           if Ekind (Inh_Prim) = E_Function
+                             and then Has_Controlling_Result (Inh_Prim)
+                           then
+                              Inh_Type := Etype (Inh_Prim);
+                           else
+                              Formal := First_Formal (Inh_Prim);
+                              loop
+                                 pragma Assert (Present (Formal));
+                                 if Is_Controlling_Formal (Formal) then
+                                    Inh_Type := Etype (Formal);
+                                    exit;
+                                 end if;
+                                 Next_Formal (Formal);
+                              end loop;
+                           end if;
+                           Inh_Type :=
+                             (if Present (Full_View (Inh_Type))
+                              then Full_View (Inh_Type)
+                              else Inh_Type);
+
+                           --  We skip the check if primitive is an explicit
+                           --  overriding for the derived type.
+
+                           if Base_Type (Inh_Type) = Base_Type (Full) then
+                              goto Skip_Primitive;
+                           end if;
+                        end;
+                     end if;
+
+                     --  Look in the inheritance chain to find out whether a
+                     --  private ancestor (in the hidden part/part with
+                     --  SPARK_Mode Off) is the last to declare an overriding
+                     --  for it. We cut off when finding the ancestor
+                     --  primitive, or when we reach the end of the chain. In
+                     --  the later case, the subprogram is a private primitive,
+                     --  not subject to the limitation since it is not visible
+                     --  on the partial view.
+
+                     loop
+                        if Parent_Primitives.Contains (Inh_Prim) then
+                           --  When a function with controlling result is
+                           --  inherited and extension is null, the frontend
+                           --  creates a wrapper. Here we cannot handle this
+                           --  wrapper properly in proof, as the null extension
+                           --  is invisible in SPARK.
+
+                           if Is_Wrapper_For_Dispatching_Result (Prim) then
+                              Bad_Subprograms.Append (Prim);
+                           elsif not From_Anc then
+                              Bad_Subprograms.Append (Prim);
+                              Bad_Intermediate := True;
+                           end if;
+                           exit;
+                        end if;
+                        From_Anc := False;
+                        Inh_Prim := Overridden_Operation (Inh_Prim);
+                        exit when No (Inh_Prim);
+                        Inh_Prim := Ultimate_Alias (Inh_Prim);
+                     end loop;
+                  end;
+                  <<Skip_Primitive>>
+               end loop;
+
+               Kind :=
+                 (if Bad_Intermediate then
+                    (if Is_In_Potentially_Hidden_Private (Full)
+                     then Lim_Inherited_Prim_From_Hidden_Part
+                     else Lim_Inherited_Prim_From_SPARK_Off)
+                  elsif Is_In_Potentially_Hidden_Private (Full)
+                  then Lim_Inherited_Controlling_Result_From_Hidden_Part
+                  else Lim_Inherited_Controlling_Result_From_SPARK_Off);
+
+               if not Bad_Subprograms.Is_Empty then
+                  declare
+                     Names : Unbounded_String;
+                     First : Boolean := True;
+                  begin
+                     for Prim of Bad_Subprograms loop
+                        if First then
+                           First := False;
+                        else
+                           Append (Names, ", ");
+                        end if;
+                        Append (Names, "&");
+                     end loop;
+                     Mark_Unsupported
+                       (Kind,
+                        E,
+                        Cont_Msg =>
+                          Errout_Wrapper.Create
+                            (Msg =>
+                                 "consider overriding the following primitive"
+                               & " subprogram"
+                               & (if Natural (Bad_Subprograms.Length) = 1
+                                  then ""
+                                  else "s")
+                               & ": " & To_String (Names),
+                             Names => Bad_Subprograms));
+                  end;
+               end if;
+            end if;
+         end Check_Not_Inheriting_Overriding_From_SPARK_Off;
 
          -----------------------------
          -- Mark_Default_Expression --
@@ -8435,135 +8646,7 @@ package body SPARK_Definition is
             --  parts to avoid looking up hidden stuff from those aliases
 
             if Ekind (E) in E_Record_Type_With_Private then
-               declare
-                  Full             : constant Entity_Id := Full_View (E);
-                  Parent           : constant Entity_Id := Parent_Type (E);
-                  Full_Parent      : constant Entity_Id := Parent_Type (Full);
-                  Parent_Full      : constant Entity_Id :=
-                    (if Present (Full_View (Parent))
-                     then Full_View (Parent)
-                     else Parent);
-
-                  Bad_Subprograms  : Node_Lists.List;
-                  Bad_Intermediate : Boolean := False;
-                  Kind             : Unsupported_Kind;
-
-               begin
-                  --  Purely private tagged type (without any public ancestor)
-                  --  are also in kind E_Record_Type_With_Private, but should
-                  --  not be subject to additional restrictions as all public
-                  --  primitives are necessarily declared in the public part,
-                  --  hence new or explicitly overriden.
-
-                  if Parent /= E
-                    and then (Is_In_Potentially_Hidden_Private (Full)
-                              or else Is_Private_Entity_Mode_Off (Full))
-                  then
-                     for Prim of Iter (Direct_Primitive_Operations (E)) loop
-                        declare
-                           Inh_Prim : constant Entity_Id :=
-                             Ultimate_Alias (Prim);
-                           --  Declaration of dispatching subprograms as
-                           --  renamings are already forbidden by the frontend.
-                           --  This stops at the inherited primitive operation.
-
-                           Inh_Type : Entity_Id;
-                           Formal   : Node_Id;
-                        begin
-                           --  When a function with controlling result is
-                           --  inherited and extension is null, the frontend
-                           --  creates a wrapper. We cannot handle this wrapper
-                           --  properly in proof.
-
-                           if Is_Wrapper_For_Dispatching_Result (Prim) then
-                              Bad_Subprograms.Append (Prim);
-
-                           --  For other primitives, there is no need for check
-                           --  if the parent type is the public ancestor.
-
-                           elsif Full_Parent /= Parent
-                             and then Full_Parent /= Parent_Full
-                           then
-                              --  We look for the dispatching type here. We
-                              --  cannot use Find_Dispatching_Type directly as
-                              --  it uses Retysp to post-process the result.
-                              --  Here, we may be crossing SPARK boundaries
-                              --  arbitrarily, so that is unsuitable.
-
-                              if Ekind (Inh_Prim) = E_Function
-                                and then Has_Controlling_Result (Inh_Prim)
-                              then
-                                 Inh_Type := Etype (E);
-                              else
-                                 Formal := First_Formal (Inh_Prim);
-                                 loop
-                                    pragma Assert (Present (Formal));
-                                    if Is_Controlling_Formal (Formal) then
-                                       Inh_Type := Etype (Formal);
-                                       exit;
-                                    end if;
-                                    Next_Formal (Formal);
-                                 end loop;
-                              end if;
-
-                              Inh_Type :=
-                                (if Present (Full_View (Inh_Type))
-                                 then Full_View (Inh_Type)
-                                 else Inh_Type);
-
-                              if Is_Ancestor (Parent, Inh_Type)
-                                and then
-                                  Base_Type (Inh_Type)
-                                /= Base_Type (Parent_Full)
-                                and then
-                                  Base_Type (Inh_Type) /= Base_Type (Full)
-                              then
-                                 Bad_Subprograms.Append (Prim);
-                                 Bad_Intermediate := True;
-                              end if;
-                           end if;
-                        end;
-                     end loop;
-
-                     Kind :=
-                       (if Bad_Intermediate then
-                          (if Is_In_Potentially_Hidden_Private (Full)
-                           then Lim_Inherited_Prim_From_Hidden_Part
-                           else Lim_Inherited_Prim_From_SPARK_Off)
-                        elsif Is_In_Potentially_Hidden_Private (Full)
-                        then Lim_Inherited_Controlling_Result_From_Hidden_Part
-                        else Lim_Inherited_Controlling_Result_From_SPARK_Off);
-
-                     if not Bad_Subprograms.Is_Empty then
-                        declare
-                           Names : Unbounded_String;
-                           First : Boolean := True;
-                        begin
-                           for Prim of Bad_Subprograms loop
-                              if First then
-                                 First := False;
-                              else
-                                 Append (Names, ", ");
-                              end if;
-                              Append (Names, "&");
-                           end loop;
-                           Mark_Unsupported
-                             (Kind,
-                              E,
-                              Cont_Msg =>
-                                Errout_Wrapper.Create
-                                  (Msg =>
-                                     "consider overriding the following"
-                                   & " primitive subprogram"
-                                   & (if Natural (Bad_Subprograms.Length) = 1
-                                     then ""
-                                     else "s")
-                                   & ": " & To_String (Names),
-                                  Names => Bad_Subprograms));
-                        end;
-                     end if;
-                  end if;
-               end;
+               Check_Not_Inheriting_Overriding_From_SPARK_Off;
             end if;
 
          elsif Is_Record_Type (E) then
@@ -9579,7 +9662,7 @@ package body SPARK_Definition is
                   E,
                   Cont_Msg =>
                     "consider annotating it with a pragma Annotate "
-                  & "('G'N'A'Tprove, Ownership"
+                  & "(GNATprove, Ownership"
                   & (if Contains_Allocated_Parts (E)
                      then ", ""Needs_Reclamation""" else "")
                   & ", ...)");
@@ -9594,7 +9677,7 @@ package body SPARK_Definition is
                   E,
                   Cont_Msg =>
                     "consider annotating it with a pragma Annotate "
-                  & "('G'N'A'Tprove, Predefined_Equality, "
+                  & "(GNATprove, Predefined_Equality, "
                   & (if Has_Access_Type (E)
                       or else (Has_Predefined_Eq_Annotation (Full_View (E))
                         and then Get_Predefined_Eq_Kind (Full_View (E)) =
@@ -11728,7 +11811,7 @@ package body SPARK_Definition is
          N              => Marked_Entity,
          Names          => [Limited_View, Limited_View],
          Cont_Msg       =>
-           Create ("consider restructuring code to avoid `LIMITED WITH`"),
+           Create ("consider restructuring code to avoid ""limited with"""),
          Root_Cause_Msg => "limited view coming from limited with");
    end Reject_Incomplete_Type_From_Limited_With;
 
@@ -11860,12 +11943,42 @@ package body SPARK_Definition is
          return SPARK_Pragma_Of_Entity
            (Get_View_For_Predicate (Etype (First_Formal (E))));
 
-      --  For the wrapper for a function with dispatching result type pick the
-      --  SPARK_Pragma of its type, because the wrapper could be inserted at
-      --  the freeze node.
+      --  For the wrapper for an inherited function with dispatching result,
+      --  find out the pragma of the ultimately inherited subprogram. This is
+      --  similar to what we do for other primitives (except it is automatic
+      --  for other primitives, as they are aliases).
 
       elsif Is_Wrapper_For_Dispatching_Result (E) then
-         return SPARK_Pragma_Of_Entity (Get_View_For_Dispatching_Result (E));
+         declare
+            Inh_Subp : Entity_Id := E;
+         begin
+            loop
+               Inh_Subp := Overridden_Operation (Inh_Subp);
+               pragma Assert (Present (Inh_Subp));
+               Inh_Subp := Ultimate_Alias (Inh_Subp);
+               pragma Assert (Present (Inh_Subp));
+               exit when not Is_Wrapper_For_Dispatching_Result (Inh_Subp);
+            end loop;
+            return SPARK_Pragma_Of_Entity (Inh_Subp);
+         end;
+
+      --  For the body of the wrapper for an inherited function with
+      --  dispatching result, pick the SPARK_Pragma of the full view of the
+      --  dispatching type, because the wrapper body could be inserted at the
+      --  freeze node.
+
+      elsif Is_Wrapper_For_Dispatching_Result (Unique_Entity (E))
+        and then E = Subprogram_Body_Entity (E)
+      then
+         declare
+            Disp_Ty : constant Type_Kind_Id := Etype (Unique_Entity (E));
+            Full_Ty : Opt_Type_Kind_Id := Full_View (Disp_Ty);
+         begin
+            if No (Full_Ty) then
+               Full_Ty := Disp_Ty;
+            end if;
+            return SPARK_Pragma_Of_Entity (Full_Ty);
+         end;
       end if;
 
       --  For entities that can carry a SPARK_Mode Pragma and that have one, we

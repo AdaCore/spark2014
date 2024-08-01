@@ -33,7 +33,7 @@ package Illegal_Hidden_Predefined_Eq with SPARK_Mode is
       type T_Priv_Only_Null (D : Integer) is private;
 
    private
-      pragma Annotate (GNATprove, Hide_Info, "Private_Part", Missing_Annot);
+      pragma Annotate (GNATprove, Hide_Info, "Private_Part");
 
       type T_Cst_Acc is access constant Integer;
 
@@ -63,7 +63,7 @@ package Illegal_Hidden_Predefined_Eq with SPARK_Mode is
         Annotate => (GNATprove, Predefined_Equality, "No_Equality");
 
    private
-      pragma Annotate (GNATprove, Hide_Info, "Private_Part", Unexpected);
+      pragma Annotate (GNATprove, Hide_Info, "Private_Part");
 
       type T_Float is new Float;
 
@@ -91,7 +91,7 @@ package Illegal_Hidden_Predefined_Eq with SPARK_Mode is
         Annotate => (GNATprove, Predefined_Equality, "No_Equality");
 
    private
-      pragma Annotate (GNATprove, Hide_Info, "Private_Part", Bad_Flavor);
+      pragma Annotate (GNATprove, Hide_Info, "Private_Part");
 
       type T_Cst_Acc is access constant Integer;
 

@@ -465,7 +465,6 @@ package Gnat2Why.Util is
    --     - A field __split_fields for regular fields if E has at least one
    --       (use Count_Why_Regular_Fields)
    --     - A field __tag if E is tagged
-   --     - A field __is_moved if E needs reclamation
    --     - A field __init_attr for the init wrapper of types with mutable
    --       discriminants.
 

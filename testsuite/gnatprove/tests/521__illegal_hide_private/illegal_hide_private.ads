@@ -30,7 +30,7 @@ is
 
    type T_Restricted_Eq is private;
 
-   --  Annotation on the wrong entity
+   --  Annotation shall have 3 parameters
 
    function Bad_Ent return Boolean is (True);
    pragma Annotate (GNATprove, Hide_Info, "Private_Part", Bad_Ent);
@@ -38,7 +38,7 @@ is
    --  Annotation at the wrong place
 
    package Nested_No_Priv is
-      pragma Annotate (GNATprove, Hide_Info, "Private_Part", Nested_No_Priv);
+      pragma Annotate (GNATprove, Hide_Info, "Private_Part");
       function F return Boolean is (True);
    end Nested_No_Priv;
 
@@ -46,7 +46,7 @@ is
       function F return Boolean;
    private
       function F return Boolean is (True);
-      pragma Annotate (GNATprove, Hide_Info, "Private_Part", Nested_Too_Late);
+      pragma Annotate (GNATprove, Hide_Info, "Private_Part");
    end Nested_Too_Late;
 
    --  Unhide annotation
@@ -54,12 +54,12 @@ is
    package Nested_Unhide is
       function F return Boolean;
    private
-      pragma Annotate (GNATprove, Unhide_Info, "Private_Part", Nested_Unhide);
+      pragma Annotate (GNATprove, Unhide_Info, "Private_Part");
       function F return Boolean is (True);
    end Nested_Unhide;
 
 private
-   pragma Annotate (GNATprove, Hide_Info, "Private_Part", Illegal_Hide_Private);
+   pragma Annotate (GNATprove, Hide_Info, "Private_Part");
 
    type T_Preds (F, L : Natural) is record
       V : Natural;
@@ -98,7 +98,7 @@ private
       function F return Boolean;
    private
       pragma Inspection_Point;
-      pragma Annotate (GNATprove, Hide_Info, "Private_Part", P_Nested);
+      pragma Annotate (GNATprove, Hide_Info, "Private_Part");
       function F return Boolean is (True);
    end P_Nested;
 

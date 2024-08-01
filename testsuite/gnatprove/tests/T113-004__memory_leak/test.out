@@ -73,7 +73,7 @@ dealloc.adb:91:07: info: absence of resource or memory leak proved (CVC5: 1 VC; 
 dealloc.adb:97:07: info: absence of resource or memory leak at end of scope proved (CVC5: 1 VC)
 dealloc.adb:98:07: info: absence of resource or memory leak at end of scope proved (CVC5: 1 VC)
 dealloc.adb:99:07: info: absence of resource or memory leak at end of scope proved (CVC5: 1 VC)
-dealloc.adb:100:07: info: absence of resource or memory leak at end of scope proved (CVC5: 1 VC)
+dealloc.adb:100:07: info: absence of resource or memory leak at end of scope proved (Z3: 1 VC)
 dealloc.adb:100:07: info: initialization of "D" proved
 dealloc.adb:101:07: info: absence of resource or memory leak at end of scope proved (CVC5: 1 VC)
 dealloc.adb:101:07: info: initialization of "E" proved
@@ -84,7 +84,7 @@ dealloc.adb:103:07: info: initialization of "G" proved
 dealloc.adb:105:09: info: absence of resource or memory leak proved (CVC5: 1 VC)
 dealloc.adb:106:09: info: absence of resource or memory leak proved (CVC5: 1 VC)
 dealloc.adb:107:09: info: absence of resource or memory leak proved (CVC5: 1 VC)
-dealloc.adb:108:09: info: absence of resource or memory leak proved (CVC5: 1 VC)
+dealloc.adb:108:09: info: absence of resource or memory leak proved (Z3: 1 VC)
 dealloc.adb:109:09: info: absence of resource or memory leak proved (CVC5: 1 VC)
 dealloc.adb:110:09: info: absence of resource or memory leak proved (CVC5: 1 VC)
 dealloc.adb:111:09: info: absence of resource or memory leak proved (CVC5: 1 VC)
@@ -154,7 +154,7 @@ pointers.adb:21:04: info: initialization of "Y" proved
 pointers.adb:21:04: medium: resource or memory leak might occur at end of scope
 pointers.adb:22:04: info: absence of resource or memory leak at end of scope proved (CVC5: 1 VC)
 pointers.adb:22:04: info: initialization of "Z" proved
-pointers.adb:26:04: info: absence of resource or memory leak at end of scope proved (Z3: 1 VC)
+pointers.adb:26:04: info: absence of resource or memory leak at end of scope proved (CVC5: 1 VC)
 pointers.adb:26:04: info: initialization of "XX" proved
 pointers.adb:27:04: medium: resource or memory leak might occur at end of scope
 pointers.adb:28:04: medium: resource or memory leak might occur at end of scope
@@ -192,14 +192,14 @@ pointers.adb:101:07: info: initialization of "V" proved
 pointers.adb:101:07: medium: resource or memory leak might occur at end of scope
 pointers.adb:102:07: info: initialization of "W" proved
 pointers.adb:102:07: medium: resource or memory leak might occur at end of scope
-pointers.adb:104:07: info: absence of resource or memory leak at end of scope proved (CVC5: 1 VC)
-pointers.adb:105:07: info: absence of resource or memory leak at end of scope proved (CVC5: 1 VC)
-pointers.adb:107:07: info: absence of resource or memory leak at end of scope proved (CVC5: 1 VC)
+pointers.adb:104:07: info: absence of resource or memory leak at end of scope proved (Z3: 1 VC)
+pointers.adb:105:07: info: absence of resource or memory leak at end of scope proved (Z3: 1 VC)
+pointers.adb:107:07: info: absence of resource or memory leak at end of scope proved (Z3: 1 VC)
 pointers.adb:108:15: info: range check proved (CVC5: 2 VC)
-pointers.adb:110:07: info: absence of resource or memory leak at end of scope proved (CVC5: 1 VC)
+pointers.adb:110:07: info: absence of resource or memory leak at end of scope proved (Z3: 1 VC)
 pointers.adb:110:07: info: initialization of "H" proved
 pointers.adb:111:07: info: absence of resource or memory leak at end of scope proved (Z3: 1 VC)
-pointers.adb:113:07: info: absence of resource or memory leak at end of scope proved (Z3: 1 VC)
+pointers.adb:113:07: info: absence of resource or memory leak at end of scope proved (CVC5: 1 VC)
 pointers.adb:113:07: info: initialization of "R" proved
 pointers.adb:114:07: medium: resource or memory leak might occur at end of scope
 pointers.adb:116:25: info: initialization of "U" proved
@@ -222,18 +222,18 @@ pointers.adb:145:09: medium: resource or memory leak might occur
 pointers.adb:146:22: info: assertion proved (CVC5: 1 VC)
 pointers.adb:147:22: info: assertion proved (CVC5: 1 VC)
 pointers.adb:148:15: info: absence of resource or memory leak proved (CVC5: 1 VC)
-pointers.adb:150:11: info: absence of resource or memory leak proved (CVC5: 1 VC)
+pointers.adb:150:11: info: absence of resource or memory leak proved (Z3: 1 VC)
 pointers.adb:150:14: high: "A.Q.Z" is not initialized
-pointers.adb:151:11: info: absence of resource or memory leak proved (CVC5: 1 VC)
-pointers.adb:152:09: info: absence of resource or memory leak proved (CVC5: 1 VC)
-pointers.adb:154:09: info: absence of resource or memory leak proved (CVC5: 1 VC)
+pointers.adb:151:11: info: absence of resource or memory leak proved (Z3: 1 VC)
+pointers.adb:152:09: info: absence of resource or memory leak proved (Z3: 1 VC)
+pointers.adb:154:09: info: absence of resource or memory leak proved (Z3: 1 VC)
 pointers.adb:154:09: info: discriminant check proved (CVC5: 1 VC; Trivial: 1 VC)
-pointers.adb:155:12: info: discriminant check proved (CVC5: 1 VC)
-pointers.adb:157:11: info: absence of resource or memory leak proved (CVC5: 1 VC)
+pointers.adb:155:12: info: discriminant check proved (Z3: 1 VC)
+pointers.adb:157:11: info: absence of resource or memory leak proved (Z3: 1 VC)
 pointers.adb:157:11: info: discriminant check proved (CVC5: 1 VC; Trivial: 1 VC)
-pointers.adb:158:11: info: absence of resource or memory leak proved (CVC5: 1 VC)
+pointers.adb:158:11: info: absence of resource or memory leak proved (Z3: 1 VC)
 pointers.adb:158:17: info: discriminant check proved (CVC5: 1 VC)
-pointers.adb:159:09: info: absence of resource or memory leak proved (CVC5: 1 VC)
+pointers.adb:159:09: info: absence of resource or memory leak proved (Z3: 1 VC)
 pointers.adb:161:14: info: absence of resource or memory leak proved (Z3: 1 VC)
 pointers.adb:162:11: info: absence of resource or memory leak proved (Z3: 1 VC)
 pointertest3.adb:8:03: info: absence of resource or memory leak at end of scope proved (CVC5: 1 VC)

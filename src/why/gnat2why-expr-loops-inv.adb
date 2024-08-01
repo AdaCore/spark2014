@@ -1152,6 +1152,9 @@ package body Gnat2Why.Expr.Loops.Inv is
                         --  Unmodified fields are preserved. Use
                         --  No_Checks to avoid spurious checks on values with
                         --  Relaxed_Initialization.
+                        --  ??? We could preserve the move tree of preserved
+                        --  components (is_moved_or_reclaimed before the loop
+                        --  should imply is_moved_or_reclaimed in the loop).
 
                         4 => (Equality_Of_Preserved_Components
                                 (Loop_Idx  => Loop_Index,

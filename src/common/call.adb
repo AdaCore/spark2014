@@ -130,35 +130,15 @@ package body Call is
    -- Read_File_Into_JSON --
    -------------------------
 
-   function Read_File_Into_JSON (Fn : String) return JSON_Value
-   is
-      use GNATCOLL.Mmap;
-      File   : Mapped_File;
-      Region : Mapped_Region;
-
-      Result : Read_Result;
+   function Read_File_Into_JSON (Fn : String) return JSON_Value is
+      Result : constant Read_Result := Read_File (Fn);
    begin
-      File := Open_Read (Fn);
+      if not Result.Success then
+         --  ??? We should close the file here, but the subprogram is likely
+         --  to terminate anyway, so this is not cruci.
+         raise Invalid_JSON_Stream with Format_Parsing_Error (Result.Error);
+      end if;
 
-      Read (File, Region);
-
-      declare
-         S : String (1 .. Integer (Length (File)));
-         for S'Address use Data (Region).all'Address;
-         --  A fake string directly mapped onto the file contents
-
-      begin
-         Result := Read (S);
-
-         if not Result.Success then
-            --  ??? We should close the file here, but the subprogram is likely
-            --  to terminate anyway, so this is not crucial.
-            raise Invalid_JSON_Stream with S;
-         end if;
-      end;
-
-      Free (Region);
-      Close (File);
       return Result.Value;
    end Read_File_Into_JSON;
 

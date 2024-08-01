@@ -26,7 +26,6 @@
 with Ada.Characters.Latin_1;      use Ada.Characters.Latin_1;
 with Ada.Containers.Hashed_Maps;
 with Ada.Text_IO;
-with Aspects;                     use Aspects;
 with Casing;                      use Casing;
 with Common_Iterators;            use Common_Iterators;
 with Errout;
@@ -3024,20 +3023,6 @@ package body SPARK_Util is
       end case;
    end Is_Constant_In_SPARK;
 
-   ----------------------------
-   -- Is_Container_Aggregate --
-   ----------------------------
-
-   function Is_Container_Aggregate (Exp : Node_Id) return Boolean is
-   begin
-      --  As the Aggregate aspect connot be specified on arrays, it is enough
-      --  to check whether the aggregate uses () or [].
-
-      return Nkind (Exp) = N_Aggregate
-        and then Has_Aspect (Etype (Exp), Aspect_Aggregate)
-        and then not Is_Parenthesis_Aggregate (Exp);
-   end Is_Container_Aggregate;
-
    ------------------------------------------
    -- Is_Converted_Actual_Output_Parameter --
    ------------------------------------------
@@ -4649,6 +4634,7 @@ package body SPARK_Util is
                      if Nkind (Stmt) /= N_Raise_Statement
                        and then not
                          (Present (Exc_Node)
+                          and then Is_Subprogram (Get_Called_Entity (Exc_Node))
                           and then No_Return (Get_Called_Entity (Exc_Node)))
                      then
                         --  Connect normal return

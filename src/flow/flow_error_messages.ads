@@ -30,7 +30,6 @@ with Flow_Types;                use Flow_Types;
 with GNATCOLL.JSON;             use GNATCOLL.JSON;
 with SPARK_Definition.Annotate; use SPARK_Definition.Annotate;
 with SPARK_Util;                use SPARK_Util;
-with String_Utils;              use String_Utils;
 with Types;                     use Types;
 with VC_Kinds;                  use VC_Kinds;
 
@@ -101,10 +100,10 @@ package Flow_Error_Messages is
       FF1           : Flow_Id            := Null_Flow_Id;
       FF2           : Flow_Id            := Null_Flow_Id;
       Tag           : Flow_Tag_Kind      := Empty_Tag;
-      Explain_Code  : Explain_Code_Kind     := EC_None;
+      Explain_Code  : Explain_Code_Kind  := EC_None;
       SRM_Ref       : String             := "";
       Tracefile     : String             := "";
-      Continuations : String_Lists.List  := String_Lists.Empty)
+      Continuations : Message_Lists.List := Message_Lists.Empty)
    with Pre => (if Present (F2) then Present (F1))
      and then (if Present (F3) then Present (F2))
      and then (if Present (FF2) then Present (FF1))
@@ -156,7 +155,7 @@ package Flow_Error_Messages is
       SRM_Ref       : String                := "";
       Path          : Vertex_Sets.Set       := Vertex_Sets.Empty_Set;
       Vertex        : Flow_Graphs.Vertex_Id := Flow_Graphs.Null_Vertex;
-      Continuations : String_Lists.List     := String_Lists.Empty)
+      Continuations : Message_Lists.List    := Message_Lists.Empty)
    with Pre => (if Present (F2) then Present (F1))
      and then (if Present (F3) then Present (F2))
      and then (if Present (FF2) then Present (FF1))

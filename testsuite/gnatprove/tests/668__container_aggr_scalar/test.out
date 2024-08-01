@@ -1,0 +1,40 @@
+main.adb:4:22: info: all elements shall fit in index type for sequence aggregates at p.ads:13
+main.adb:4:22: info: precondition proved (CVC5: 1 VC)
+p.adb:2:43: info: predicate check proved (CVC5: 2 VC)
+p.adb:6:18: info: predicate check proved (CVC5: 2 VC)
+p.adb:20:14: info: initialization of "M" proved
+p.adb:22:18: info: precondition proved (CVC5: 2 VC)
+p.adb:22:44: info: overflow check proved (CVC5: 8 VC)
+p.adb:22:44: info: range check proved (CVC5: 8 VC)
+p.adb:22:49: info: division check proved (CVC5: 2 VC)
+p.adb:23:36: info: loop invariant initialization proved (CVC5: 1 VC)
+p.adb:23:36: info: loop invariant preservation proved (CVC5: 1 VC)
+p.adb:25:16: info: loop invariant initialization proved (CVC5: 2 VC)
+p.adb:25:16: info: loop invariant preservation proved (Z3: 2 VC)
+p.adb:26:18: info: precondition proved (CVC5: 4 VC)
+p.adb:26:26: info: range check proved (CVC5: 4 VC)
+p.adb:26:50: info: overflow check proved (CVC5: 8 VC)
+p.adb:26:50: info: range check proved (CVC5: 8 VC)
+p.adb:26:55: info: division check proved (CVC5: 2 VC)
+p.ads:13:11: info: Container_Aggregates annotation proved (CVC5: 1 VC)
+p.ads:13:11: info: Container_Aggregates annotation proved (CVC5: 1 VC)
+p.ads:13:11: info: Container_Aggregates annotation proved (CVC5: 1 VC)
+p.ads:13:11: info: after a call to Empty_Seq at p.ads:15
+p.ads:13:11: info: after a call to Include at p.ads:23
+p.ads:13:11: info: after a call to Include at p.ads:23
+p.ads:13:11: info: when establishing invariant on Last at spark-containers-functional-vectors.ads:94, in instantiation at p.ads:6
+p.ads:13:11: info: when reestablishing invariant on Get at spark-containers-functional-vectors.ads:101, in instantiation at p.ads:6
+p.ads:13:11: info: when reestablishing invariant on Last at spark-containers-functional-vectors.ads:94, in instantiation at p.ads:6
+p.ads:15:13: info: implicit aspect Always_Terminates on "Empty_Seq" has been proved, subprogram will terminate
+p.ads:17:13: info: implicit aspect Always_Terminates on "Is_Model" has been proved, subprogram will terminate
+p.ads:19:13: info: implicit aspect Always_Terminates on "Model" has been proved, subprogram will terminate
+p.ads:21:14: info: postcondition proved (CVC5: 3 VC)
+p.ads:23:14: info: aspect Always_Terminates on "Include" has been proved, subprogram will terminate
+p.ads:24:30: info: during checks for container aggregates at p.ads:13
+p.ads:24:30: info: precondition proved (CVC5: 1 VC)
+p.ads:25:14: medium: postcondition might fail
+p.ads:25:26: info: precondition proved (CVC5: 1 VC)
+p.ads:40:12: info: precondition proved (CVC5: 2 VC)
+p.ads:40:20: info: range check proved (CVC5: 2 VC)
+p.ads:40:51: info: range check proved (CVC5: 4 VC)
+p.ads:40:56: info: division check proved (CVC5: 1 VC)

@@ -136,6 +136,7 @@ package Why.Inter is
       Rec          : Entity_Id := Empty;
       Init_Decl    : Boolean := False;
       Hide_Info    : Boolean := False;
+      Move_Trees   : Boolean := False;
       Typ          : W_Type_Id := Why_Empty;
       Relaxed_Init : Boolean := False) return W_Identifier_Id
    with Pre => Ekind (E) in Subprogram_Kind
@@ -164,6 +165,7 @@ package Why.Inter is
    --  @param Init_Decl Use the initial declaration of a function, to avoid
    --         pulling its defining and post axioms.
    --  @param Hide_Info Use the special declarations without hidden information
+   --  @param Move_Trees Use symbol for the components of move trees
    --  @param Typ Expected type of the id.
    --  @param Relaxed_Init True if the identifier should be located in the
    --         module for the init wrapper type.

@@ -15,8 +15,8 @@ a.adb:26:07: medium: implicit aspect Always_Terminates on "Get_Next" could be in
 a.adb:26:28: info: precondition proved (CVC5: 2 VC)
 a.adb:26:39: info: pointer dereference check proved (CVC5: 1 VC)
 a.adb:26:48: info: range check proved (CVC5: 2 VC)
+a.adb:35:13: info: loop invariant preservation proved (Z3: 1 VC)
 a.adb:35:13: medium: loop invariant might fail in first iteration
-a.adb:35:13: medium: loop invariant might not be preserved by an arbitrary iteration
 a.adb:35:50: info: precondition proved (CVC5: 4 VC)
 a.adb:36:25: info: assertion proved (CVC5: 1 VC)
 a.adb:36:26: info: pointer dereference check proved (CVC5: 1 VC)

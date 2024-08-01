@@ -251,8 +251,8 @@ package SPARK_Definition.Annotate is
 
    --  A pragma Annotate to hide or disclose information has one of the
    --  following forms:
-   --    pragma Annotate (GNATprove, Hide_Info,   "Info_Kind", Entity => E);
-   --    pragma Annotate (GNATprove, Unhide_Info, "Info_Kind", Entity => E);
+   --    pragma Annotate (GNATprove, Hide_Info,   "Info_Kind"[, Entity => E]);
+   --    pragma Annotate (GNATprove, Unhide_Info, "Info_Kind"[, Entity => E]);
 
    --  where
    --    GNATprove                 is a fixed identifier
@@ -261,7 +261,10 @@ package SPARK_Definition.Annotate is
    --                              Private_Part or Expression_Function_Body for
    --                              now.
    --    E                         is the entity whose information should be
-   --                              hidden or disclosed.
+   --                              hidden or disclosed. It is mandatory for
+   --                              Expression_Function_Body, can be omitted for
+   --                              Package_Body and cannot be supplied for
+   --                              Private_Part.
 
    --  The annotation for package bodies and private part are not context
    --  dependent. They should be located either on the package body or at the

@@ -367,7 +367,7 @@ package body C_Strings with SPARK_Mode is
                     and then By
                       (Item (I) = To_C (Str (Natural (I - Offset) + Str'First)),
                        Item (I) = Chars (I - Offset + Chars'First))
-                    else Item (I) = Old_Val (I)));
+                    else By (Item (I) = Old_Val (I), Strlen (Item) <= Old_Len)));
             pragma Assert
               (if Old_Len <= Size_T (Natural'Last) then
                    (for all I in 1 .. Natural (Strlen (Item)) =>
@@ -390,7 +390,7 @@ package body C_Strings with SPARK_Mode is
                          else By
                            (String'(Value (Item)) (I) = Old_Val_Str (I),
                             So
-                              (Size_T (I - 1) in 0 .. Strlen (Item),
+                              (Size_T (I - 1) in 0 .. Strlen (Item) and Strlen (Item) <= Old_Len,
                                By
                                  (To_Ada (Item (Size_T (I - 1))) = To_Ada (Old_Val (Size_T (I - 1))),
                                   By

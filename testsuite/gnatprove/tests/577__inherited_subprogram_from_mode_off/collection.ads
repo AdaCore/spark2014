@@ -118,7 +118,7 @@ package Collection with SPARK_Mode is
       --  still be overriden.
 
    private
-      pragma Annotate (GNATprove, Hide_Info, "Private_Part", Bad_Descendants_Hide);
+      pragma Annotate (GNATprove, Hide_Info, "Private_Part");
       type Child is new Root with null record;
       procedure P (X : Child) is null;
       function G (X : Child) return Integer is (3);

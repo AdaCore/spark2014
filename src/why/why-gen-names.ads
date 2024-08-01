@@ -442,14 +442,21 @@ package Why.Gen.Names is
       --  Names related to the pointer type
       WNE_Null_Pointer,           --  "__null_pointer"
       WNE_Is_Null_Pointer,        --  "__is_null_pointer"
-      WNE_Is_Moved_Field,         --  "rec__is_moved__"
       WNE_Pointer_Value,          --  "__pointer_value"
       WNE_Assign_Null_Check,      --  "__assign_null_check"
       WNE_Pointer_Value_Abstr,    --  "__pointer_value_abstr"
-      WNE_Is_Moved,               --  "__is_moved"
-      WNE_Move,                   --  "__move"
-      WNE_Moved_Relation,         --  "__moved_relation"
       WNE_Pointer_Call,           --  "__call_"
+
+      --  Names related to move trees
+      WNE_Move_Tree,              --  "__move_tree"
+      WNE_Move_Tree_Ptr_Is_Moved, --  "rec__is_moved__"
+      WNE_Move_Tree_Ptr_Value,    --  "rec__value__"
+      WNE_Move_Tree_Array_Get,    --  "__get"
+      WNE_Move_Tree_Array_Set,    --  "__set"
+      WNE_Move_Tree_Open,         --  "__open"
+      WNE_Move_Tree_Close,        --  "__close"
+      WNE_Is_Moved_Or_Reclaimed,  --  "__is_moved_or_reclaimed"
+      WNE_Moved_Tree,             --  "__moved_tree"
 
       --  Names related to initialization checks
       WNE_Is_Initialized_Pred,
