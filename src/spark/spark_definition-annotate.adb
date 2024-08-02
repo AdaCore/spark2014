@@ -588,6 +588,9 @@ package body SPARK_Definition.Annotate is
    --  Wrapper for Error_Msg_NE that conditionally emit message depending
    --  on phase.
 
+   function Find_Aggregate_Aspect (Typ : Type_Kind_Id) return Node_Id;
+   --  Find the Aggregate aspect associated to Typ
+
    function Get_Container_Function_From_Pragma (N  : Node_Id) return Entity_Id
    with Pre => Is_Pragma_Annotate_GNATprove (N);
    --  Return the function F such that N is a pragma Annotate
@@ -716,7 +719,7 @@ package body SPARK_Definition.Annotate is
          if Ekind (Ent) in Type_Kind then
             declare
                Asp                 : constant Node_Id :=
-                 Find_Value_Of_Aspect (Ent, Aspect_Aggregate);
+                 Find_Aggregate_Aspect (Ent);
 
                Empty_Subp          : Node_Id := Empty;
                Add_Named_Subp      : Node_Id := Empty;
@@ -2262,7 +2265,8 @@ package body SPARK_Definition.Annotate is
       elsif Mutable_In_Params_Annotations.Contains (E) then
          Error_Msg_N_If
            ("procedure annotated with the " & Aspect_Or_Pragma
-            & " Automatic_Instantiation shall not have mutable IN parameters",
+            & " Automatic_Instantiation shall not have"
+            & " mutable ""in"" parameters",
             E);
          return;
       end if;
@@ -2541,14 +2545,18 @@ package body SPARK_Definition.Annotate is
       Default : Boolean;
       Scope   : Entity_Id;
    begin
-      --  The 4th argument must be an entity
+      --  If provided, the 4th argument must be an entity
 
-      Check_Annotate_Entity_Argument
-        (Arg4_Exp, "fourth", Prag, Annot, Ok, Ignore_SPARK_Status => True);
-      if not Ok then
-         return;
+      if Present (Arg4_Exp) then
+         Check_Annotate_Entity_Argument
+           (Arg4_Exp, "fourth", Prag, Annot, Ok, Ignore_SPARK_Status => True);
+         if not Ok then
+            return;
+         end if;
+         Ent := Entity (Arg4_Exp);
+      else
+         Ent := Empty;
       end if;
-      Ent := Entity (Arg4_Exp);
 
       if Nkind (Arg3_Exp) not in N_String_Literal then
          Error_Msg_N_If
@@ -2574,45 +2582,56 @@ package body SPARK_Definition.Annotate is
             Ent := Unique_Entity (Ent);
             Ok := True;
 
-         --  Otherwise, expect a package
+         --  Otherwise, expect only 3 parameterse
 
-         elsif Ekind (Ent) /= E_Package then
+         elsif Present (Ent) then
             Error_Msg_N_If
-              ("the entity of a pragma Annotate " & Annot & " for "
-               & "package bodies shall be a package",
+              ("a pragma Annotate " & Annot & " for "
+               & "package body shall have 3 parameters",
                Prag);
             return;
 
          --  Check that the pragma is located at the beginning of Ent's
          --  body's declarations.
 
-         elsif not Is_List_Member (Prag)
-           or else List_Containing (Prag) /=
-           Declarations (Package_Body (Ent))
-         then
-            Ok := False;
          else
-            Ok := True;
+            --  Look for an immediately enclosing package if any.
+
             declare
-               Decl : Node_Id := First (List_Containing (Prag));
+               Par : constant Node_Id := Parent (Prag);
             begin
-               while Decl /= Prag loop
-                  if Decl_Starts_Pragma_Annotate_Range (Decl)
-                    and then not
-                      (Nkind (Decl) in N_Pragma | N_Null_Statement)
-                  then
-                     Ok := False;
-                     exit;
-                  end if;
-                  Next (Decl);
-               end loop;
+               if No (Par)
+                 or else not Is_List_Member (Prag)
+                 or else Nkind (Par) /= N_Package_Body
+                 or else List_Containing (Prag) /= Declarations (Par)
+               then
+                  Ok := False;
+               else
+                  Ent := Unique_Defining_Entity (Par);
+                  Ok := True;
+
+                  declare
+                     Decl : Node_Id := First (List_Containing (Prag));
+                  begin
+                     while Decl /= Prag loop
+                        if Decl_Starts_Pragma_Annotate_Range (Decl)
+                          and then not
+                            (Nkind (Decl) in N_Pragma | N_Null_Statement)
+                        then
+                           Ok := False;
+                           exit;
+                        end if;
+                        Next (Decl);
+                     end loop;
+                  end;
+               end if;
             end;
          end if;
 
          if not Ok then
             Error_Msg_N_If
               ("pragma Annotate " & Annot & " shall be located at the top "
-               & "of the declarations of package " & Source_Name (Ent),
+               & "of the declarations of a package body",
                Prag);
             return;
 
@@ -2640,46 +2659,55 @@ package body SPARK_Definition.Annotate is
 
       elsif To_Lower (To_String (Strval (Arg3_Exp))) = "private_part" then
 
-         --  Ent should be a package. We could allow omitting this entity for
-         --  private parts.
+         --  Ent should not be provided
 
-         if Ekind (Ent) /= E_Package then
+         if Present (Ent) then
             Error_Msg_N_If
-              ("the entity of a pragma Annotate " & Annot & " for "
-               & "private part shall be a package",
+              ("a pragma Annotate " & Annot & " for "
+               & "private part shall have 3 parameters",
                Prag);
             return;
-
-         --  Check that the pragma is located at the beginning of Ent's
-         --  private declarations.
-
-         elsif not Is_List_Member (Prag)
-           or else List_Containing (Prag) /=
-           Private_Declarations (Package_Specification (Ent))
-         then
-            Ok := False;
-         else
-            Ok := True;
-            declare
-               Decl : Node_Id := First (List_Containing (Prag));
-            begin
-               while Decl /= Prag loop
-                  if Decl_Starts_Pragma_Annotate_Range (Decl)
-                    and then not
-                      (Nkind (Decl) in N_Pragma | N_Null_Statement)
-                  then
-                     Ok := False;
-                     exit;
-                  end if;
-                  Next (Decl);
-               end loop;
-            end;
          end if;
+
+         --  Look for an enclosing package private part
+
+         declare
+            Par : constant Node_Id := Parent (Prag);
+         begin
+            if No (Par)
+              or else not Is_List_Member (Prag)
+              or else Nkind (Par) /= N_Package_Specification
+              or else List_Containing (Prag) /= Private_Declarations (Par)
+            then
+               Ok := False;
+            else
+               Ent := Unique_Defining_Entity (Parent (Par));
+
+               --  Check that the pragma is located at the beginning of Ent's
+               --  private declarations.
+
+               Ok := True;
+               declare
+                  Decl : Node_Id := First (List_Containing (Prag));
+               begin
+                  while Decl /= Prag loop
+                     if Decl_Starts_Pragma_Annotate_Range (Decl)
+                       and then not
+                         (Nkind (Decl) in N_Pragma | N_Null_Statement)
+                     then
+                        Ok := False;
+                        exit;
+                     end if;
+                     Next (Decl);
+                  end loop;
+               end;
+            end if;
+         end;
 
          if not Ok then
             Error_Msg_N_If
-              ("pragma Annotate " & Annot & " shall be located at the top "
-               & "of the private declarations of package " & Source_Name (Ent),
+              ("pragma Annotate " & Annot & " shall be located at the"
+               & " top of the private declarations of a package",
                Prag);
             return;
 
@@ -2718,6 +2746,16 @@ package body SPARK_Definition.Annotate is
       elsif To_Lower (To_String (Strval (Arg3_Exp))) =
         "expression_function_body"
       then
+
+         --  Ent should be provided
+
+         if No (Ent) then
+            Error_Msg_N_If
+              ("a pragma Annotate " & Annot & " for "
+               & "expression function bodies shall have 4 parameters",
+               Prag);
+            return;
+         end if;
 
          --  Search the node to which the current annotation applies. For
          --  aspects, it is the 4th parameter. For pragmas, look for a
@@ -3329,7 +3367,8 @@ package body SPARK_Definition.Annotate is
          else
             Error_Msg_NE_If
               ("function with Inline_For_Proof must"
-               & " have a postcondition of the form `&''Result = Expr`", E, E);
+               & " have a postcondition of the form ""&'Result = Expr""",
+               E, E);
             return;
          end if;
       end if;
@@ -4270,7 +4309,7 @@ package body SPARK_Definition.Annotate is
          Needs_Reclamation_Cont : constant Message :=
            Create
              ("consider annotating it with a pragma Annotate "
-              & "('G'N'A'Tprove, Ownership,"
+              & "(GNATprove, Ownership,"
               & " ""Needs_Reclamation"", ...)");
       begin
          if Ekind (Ent) in Type_Kind then
@@ -4831,7 +4870,7 @@ package body SPARK_Definition.Annotate is
                Only_Null_Cont : constant Message :=
                  Create
                    ("consider annotating it with a pragma Annotate "
-                    & "('G'N'A'Tprove, Predefined_Equality, ""Only_Null"""
+                    & "(GNATprove, Predefined_Equality, ""Only_Null"""
                     & ", ...)");
             begin
                --  pragma Annotate
@@ -5157,7 +5196,7 @@ package body SPARK_Definition.Annotate is
 
                declare
                   Source_Asp            : constant Node_Id :=
-                    Find_Value_Of_Aspect (Typ, Aspect_Aggregate);
+                    Find_Aggregate_Aspect (Typ);
                   Source_Empty          : Node_Id := Empty;
                   Source_Add_Named      : Node_Id := Empty;
                   Source_Add_Unnamed    : Node_Id := Empty;
@@ -5165,8 +5204,7 @@ package body SPARK_Definition.Annotate is
                   Source_Assign_Indexed : Node_Id := Empty;
 
                   Target_Asp            : constant Node_Id :=
-                    Find_Value_Of_Aspect
-                      (Etype (Annot.Model), Aspect_Aggregate);
+                    Find_Aggregate_Aspect (Etype (Annot.Model));
                   Target_Empty          : Node_Id := Empty;
                   Target_Add_Named      : Node_Id := Empty;
                   Target_Add_Unnamed    : Node_Id := Empty;
@@ -5477,6 +5515,24 @@ package body SPARK_Definition.Annotate is
       end loop;
       Delayed_Null_Values.Clear;
    end Do_Delayed_Checks_On_Pragma_Annotate;
+
+   ---------------------------
+   -- Find_Aggregate_Aspect --
+   ---------------------------
+
+   function Find_Aggregate_Aspect (Typ : Type_Kind_Id) return Node_Id is
+      Typ_With_Aspect : constant Type_Kind_Id :=
+        (if Is_Scalar_Type (Typ)
+         and then Present (First_Subtype (Typ))
+         then First_Subtype (Typ)
+         else Typ);
+      --  If Typ is a scalar base type, it might not have the
+      --  aggregate aspect. Look for it on the first subtype
+      --  instead.
+   begin
+      return Find_Value_Of_Aspect
+        (Typ_With_Aspect, Aspect_Aggregate);
+   end Find_Aggregate_Aspect;
 
    ------------------------
    -- Find_Inline_Pragma --
@@ -5801,7 +5857,7 @@ package body SPARK_Definition.Annotate is
 
             while Present (Cur) loop
                if Is_Pragma_Annotate_GNATprove (Cur) then
-                  if List_Length (Pragma_Argument_Associations (Cur)) = 4 then
+                  if List_Length (Pragma_Argument_Associations (Cur)) = 3 then
                      declare
                         Arg2 : constant Node_Id :=
                           Next (First (Pragma_Argument_Associations (Cur)));
@@ -6363,7 +6419,7 @@ package body SPARK_Definition.Annotate is
                   Kind => Info_Kind,
                   Continuations =>
                     ["consider annotating a constant with a pragma Annotate "
-                     & "('G'N'A'Tprove, Predefined_Equality, ""Null_Value"""
+                     & "(GNATprove, Predefined_Equality, ""Null_Value"""
                      & ", ...)"]);
             end if;
          end;
@@ -6629,7 +6685,7 @@ package body SPARK_Definition.Annotate is
          if not Ok then
             Error_Msg_N_If
               ("wrong number of arguments in " & Aspect_Or_Pragma
-               & " Annotate ('G'N'A'Tprove, " & Standard_Ada_Case (Name)
+               & " Annotate (GNATprove, " & Standard_Ada_Case (Name)
                & (if Num > 2 then ", ...)" else ")")
                & ", expected" & Num'Image, Prag);
          end if;
@@ -6644,7 +6700,7 @@ package body SPARK_Definition.Annotate is
          if No (Arg) then
             Error_Msg_N_If
               ("missing name in Annotate " & Aspect_Or_Pragma
-               & " for 'G'N'A'Tprove", Prag);
+               & " for GNATprove", Prag);
             return "";
          else
             pragma Assert (Nkind (Get_Pragma_Arg (Arg)) = N_Identifier);
@@ -6704,12 +6760,13 @@ package body SPARK_Definition.Annotate is
                declare
                   Deprecated : constant String :=
                     (if From_Aspect
-                     then "`with Annotate '='> (GNATprove, " & Name & ")`"
-                     else "`pragma Annotate (GNATprove, " & Name & ", ...)`");
+                     then """with Annotate => (GNATprove, " & Name & ")"""
+                     else
+                        """pragma Annotate (GNATprove, " & Name & ", ...)""");
                   New_Syntax : constant String :=
                     (if Name in "always_return" | "terminating"
-                     then "`with Always_Terminates`"
-                     else "`with Always_Terminates '='> False` or use an" &
+                     then """with Always_Terminates"""
+                     else """with Always_Terminates => False"" or use an" &
                        " exceptional contract") &
                   (if not From_Aspect
                    then " on the corresponding entity"
@@ -6744,8 +6801,6 @@ package body SPARK_Definition.Annotate is
 
       elsif Name = "iterable_for_proof"
         or else Name = "container_aggregates"
-        or else Name = "hide_info"
-        or else Name = "unhide_info"
         or else Name = "predefined_equality"
         or else (not From_Aspect
                  and then (Name = "false_positive"
@@ -6753,9 +6808,13 @@ package body SPARK_Definition.Annotate is
       then
          Check_Argument_Number (Name, 4, Ok);
 
-      --  Ownership annotations can have 3 or 4 arguments
+      --  Ownership and Hide_Info/Unhide_Info annotations can have 3 or 4
+      --  arguments.
 
-      elsif Name = "ownership" then
+      elsif Name = "ownership"
+        or else Name = "hide_info"
+        or else Name = "unhide_info"
+      then
          if Number_Of_Pragma_Args <= 3 then
             Check_Argument_Number (Name, 3, Ok);
          else
@@ -6775,7 +6834,7 @@ package body SPARK_Definition.Annotate is
       else
          Error_Msg_N_If
            ("invalid name """ & Standard_Ada_Case (Name) & """ in "
-            & Aspect_Or_Pragma & " Annotate ('G'N'A'Tprove, name)", Arg2);
+            & Aspect_Or_Pragma & " Annotate (GNATprove, name)", Arg2);
          Ok := False;
       end if;
 
@@ -6871,7 +6930,7 @@ package body SPARK_Definition.Annotate is
                Pattern := Strval (Arg3_Exp);
             else
                Error_Msg_N_If
-                 ("third argument PATTERN for 'G'N'A'Tprove Annotate "
+                 ("third argument ""Pattern"" for GNATprove Annotate "
                   & Aspect_Or_Pragma & " must be a string literal",
                   Prag);
                return;
@@ -6881,7 +6940,7 @@ package body SPARK_Definition.Annotate is
                Reason := Strval (Arg4_Exp);
             else
                Error_Msg_N_If
-                 ("fourth argument REASON for 'G'N'A'Tprove Annotate "
+                 ("fourth argument ""Reason"" for GNATprove Annotate "
                   & Aspect_Or_Pragma & " must be a string literal",
                   Prag);
                return;

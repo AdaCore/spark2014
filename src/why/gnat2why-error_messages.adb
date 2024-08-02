@@ -40,6 +40,7 @@ with CE_RAC;                 use CE_RAC;
 with Common_Containers;      use Common_Containers;
 with Comperr;                use Comperr;
 with Debug;                  use Debug;
+with Errout_Wrapper;         use Errout_Wrapper;
 with Flow_Error_Messages;    use Flow_Error_Messages;
 with Flow_Refinement;        use Flow_Refinement;
 with Flow_Types;             use Flow_Types;
@@ -205,7 +206,7 @@ package body Gnat2Why.Error_Messages is
         );
    begin
       if Extra_Text /= "" then
-         return ", cannot prove " & Extra_Text;
+         return ", cannot prove " & Escape (Extra_Text);
       else
          return "";
       end if;

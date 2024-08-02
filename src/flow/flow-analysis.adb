@@ -43,7 +43,6 @@ with SPARK_Frame_Conditions;      use SPARK_Frame_Conditions;
 with SPARK_Util.Subprograms;      use SPARK_Util.Subprograms;
 with SPARK_Util.Types;            use SPARK_Util.Types;
 with SPARK_Util;                  use SPARK_Util;
-with String_Utils;                use String_Utils;
 with VC_Kinds;                    use VC_Kinds;
 
 with Errout_Wrapper;              use Errout_Wrapper;
@@ -1276,8 +1275,10 @@ package body Flow.Analysis is
       begin
          for F of Unused loop
             declare
-               V : constant Flow_Graphs.Vertex_Id :=
+               V      : constant Flow_Graphs.Vertex_Id :=
                  Get_Initial_Vertex (FA.PDG, F);
+               Is_Var : constant Boolean := Is_Variable (F);
+               --  Issue different messages for variables and constants
 
             begin
                if FA.Atr (V).Is_Global then
@@ -1288,10 +1289,6 @@ package body Flow.Analysis is
                           Find_In (Unused_Globals, Get_Direct_Mapping_Id (F));
                         --  An entity that represents F in unused, user-written
                         --  Global/Depends items.
-
-                        Is_Var : constant Boolean := Is_Variable (F);
-                        --  Issue a different errors for variables and
-                        --  constants
 
                         Msg : constant String :=
                           (if Is_Var
@@ -1349,7 +1346,9 @@ package body Flow.Analysis is
                      else
                         Error_Msg_Flow
                           (FA       => FA,
-                           Msg      => "unused variable &",
+                           Msg      =>
+                             (if Is_Var then "unused variable &"
+                              else "unused &"),
                            N        => Error_Location (FA.PDG, FA.Atr, V),
                            F1       => F,
                            Tag      => Unused_Variable,
@@ -2361,20 +2360,21 @@ package body Flow.Analysis is
                  (if Has_Async_Readers (Var)
                   then "write to it before use"
                   else "initialize it before use");
-               Conts : String_Lists.List;
             begin
-               Conts.Append (Substitute_Message (Msg, N, Var));
-               Error_Msg_Flow (FA            => FA,
-                               Msg           => "& is not an input in the " &
-                                 "Global contract of subprogram #",
-                               Severity      => High_Check_Kind,
-                               N             => N,
-                               F1            => Var,
-                               F2            =>
-                                 Direct_Mapping_Id (FA.Spec_Entity),
-                               Tag           => Uninitialized,
-                               Continuations => Conts);
+               Error_Msg_Flow
+                 (FA            => FA,
+                  Msg           => "& is not an input in the " &
+                    "Global contract of subprogram #",
+                  Severity      => High_Check_Kind,
+                  N             => N,
+                  F1            => Var,
+                  F2            =>
+                    Direct_Mapping_Id (FA.Spec_Entity),
+                  Tag           => Uninitialized,
+                  Continuations =>
+                    [Create (Substitute_Message (Msg, N, Var))]);
             end;
+
          else
             if Is_Function then
                Msg := To_Unbounded_String ("function & does not return on ");
@@ -2508,7 +2508,7 @@ package body Flow.Analysis is
                Path : constant Vertex_Sets.Set :=
                  Mark_Definition_Free_Path (To  => V_Goal,
                                             Var => Var);
-               Conts : String_Lists.List;
+               Conts : Message_Lists.List;
             begin
 
                --  ??? only when Is_Final_Use ?
@@ -2517,17 +2517,18 @@ package body Flow.Analysis is
                  and then Present (FA.Initializes_N)
                then
                   Conts.Append
-                    (Substitute_Message
-                       ("initialization of & is specified @",
-                        N  => N,
-                        F1 => Direct_Mapping_Id
-                          (Encapsulating_State
-                               (Get_Direct_Mapping_Id (Var))),
-                        F2 =>
-                          Direct_Mapping_Id
-                            (if From_Aspect_Specification (FA.Initializes_N)
-                             then Corresponding_Aspect (FA.Initializes_N)
-                             else FA.Initializes_N)));
+                    (Create
+                       (Substitute_Message
+                          ("initialization of & is specified @",
+                           N  => N,
+                           F1 => Direct_Mapping_Id
+                             (Encapsulating_State
+                                (Get_Direct_Mapping_Id (Var))),
+                           F2 =>
+                             Direct_Mapping_Id
+                               (if From_Aspect_Specification (FA.Initializes_N)
+                                then Corresponding_Aspect (FA.Initializes_N)
+                                else FA.Initializes_N))));
                end if;
 
                Error_Msg_Flow
@@ -6111,7 +6112,7 @@ package body Flow.Analysis is
          Severity : constant Check_Kind := High_Check_Kind;
          --  Severity of the error messages
 
-         Conts : String_Lists.List;
+         Conts : Message_Lists.List;
          Dummy : Boolean;
          --  Dummy variable needed for Error_Msg_Flow
 
@@ -6122,11 +6123,12 @@ package body Flow.Analysis is
          --  (otherwise messages get suppresed giving a confusing output.)
          for Task_Obj of Owners loop
             Conts.Append
-              (Substitute_Message
-                 (Msg_Owner,
-                  Msg_Node,
-                  F1 => Magic_String_Id (Task_Obj.Name),
-                  F2 => Magic_String_Id (Object)));
+              (Create
+                 (Substitute_Message
+                      (Msg_Owner,
+                       Msg_Node,
+                       F1 => Magic_String_Id (Task_Obj.Name),
+                       F2 => Magic_String_Id (Object))));
          end loop;
 
          Error_Msg_Flow

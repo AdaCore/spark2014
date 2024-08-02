@@ -178,50 +178,55 @@ example_recursive.adb:305:22: info: assertion proved
 example_recursive.adb:306:22: info: assertion proved
 example_recursive.adb:306:30: info: precondition proved
 example_recursive.adb:306:30: info: tag check proved
-example_recursive.adb:311:10: info: precondition proved
-example_recursive.adb:311:73: info: range check proved
-example_recursive.adb:312:10: info: precondition proved
-example_recursive.adb:312:73: info: range check proved
-example_recursive.adb:315:10: info: precondition proved
-example_recursive.adb:315:73: info: range check proved
-example_recursive.adb:316:10: info: precondition proved
-example_recursive.adb:316:73: info: range check proved
-example_recursive.adb:322:10: info: precondition proved
-example_recursive.adb:322:70: info: range check proved
-example_recursive.adb:323:10: info: precondition proved
-example_recursive.adb:323:70: info: range check proved
-example_recursive.adb:329:10: info: assertion proved
-example_recursive.adb:330:12: info: precondition proved
-example_recursive.adb:330:63: info: overflow check proved
-example_recursive.adb:341:45: info: precondition proved
-example_recursive.adb:341:56: info: null exclusion check proved
-example_recursive.adb:343:10: info: tag check proved
-example_recursive.adb:343:25: info: pointer dereference check proved
-example_recursive.adb:345:22: info: assertion proved
-example_recursive.adb:346:22: info: assertion proved
-example_recursive.adb:346:30: info: precondition proved
-example_recursive.adb:346:30: info: tag check proved
-example_recursive.adb:348:07: info: precondition proved
-example_recursive.adb:348:70: info: overflow check proved
-example_recursive.adb:349:07: info: precondition proved
-example_recursive.adb:349:70: info: overflow check proved
-example_recursive.adb:351:22: info: assertion proved
-example_recursive.adb:351:22: info: precondition proved
-example_recursive.adb:351:71: info: overflow check proved
-example_recursive.adb:353:20: info: overflow check proved
-example_recursive.adb:356:04: warning: analyzing unreferenced procedure "Do_Test"
-example_recursive.adb:356:23: warning: "L1" is not modified, could be IN
-example_recursive.adb:356:23: warning: unused variable "L1"
-example_recursive.adb:356:27: warning: "L2" is not modified, could be IN
-example_recursive.adb:356:27: warning: unused variable "L2"
-example_recursive.adb:357:07: medium: resource or memory leak might occur at end of scope
-example_recursive.adb:358:07: info: absence of resource or memory leak at end of scope proved
-example_recursive.adb:362:07: info: precondition proved
-example_recursive.adb:363:07: info: precondition proved
-example_recursive.adb:364:07: info: precondition proved
-example_recursive.adb:365:07: info: precondition proved
-example_recursive.adb:366:22: info: assertion proved
-example_recursive.adb:367:22: info: assertion proved
-example_recursive.adb:368:07: info: precondition proved
-example_recursive.adb:368:17: warning: "Y" is set by "Merge" but not used after the call
-example_recursive.adb:369:22: info: assertion proved
+example_recursive.adb:314:13: info: precondition proved
+example_recursive.adb:314:76: info: range check proved
+example_recursive.adb:315:13: info: precondition proved
+example_recursive.adb:315:76: info: range check proved
+example_recursive.adb:318:13: info: precondition proved
+example_recursive.adb:318:76: info: range check proved
+example_recursive.adb:319:13: info: precondition proved
+example_recursive.adb:319:76: info: range check proved
+example_recursive.adb:325:13: info: precondition proved
+example_recursive.adb:325:73: info: range check proved
+example_recursive.adb:326:13: info: precondition proved
+example_recursive.adb:326:73: info: range check proved
+example_recursive.adb:329:16: info: assertion proved
+example_recursive.adb:330:18: info: precondition proved
+example_recursive.adb:330:69: info: overflow check proved
+example_recursive.adb:335:13: info: assertion proved
+example_recursive.adb:335:13: info: precondition proved
+example_recursive.adb:335:65: info: overflow check proved
+example_recursive.adb:338:20: info: precondition proved
+example_recursive.adb:338:71: info: overflow check proved
+example_recursive.adb:350:45: info: precondition proved
+example_recursive.adb:350:56: info: null exclusion check proved
+example_recursive.adb:352:10: info: tag check proved
+example_recursive.adb:352:25: info: pointer dereference check proved
+example_recursive.adb:354:22: info: assertion proved
+example_recursive.adb:355:22: info: assertion proved
+example_recursive.adb:355:30: info: precondition proved
+example_recursive.adb:355:30: info: tag check proved
+example_recursive.adb:357:07: info: precondition proved
+example_recursive.adb:357:70: info: overflow check proved
+example_recursive.adb:358:07: info: precondition proved
+example_recursive.adb:358:70: info: overflow check proved
+example_recursive.adb:360:22: info: assertion proved
+example_recursive.adb:360:22: info: precondition proved
+example_recursive.adb:360:71: info: overflow check proved
+example_recursive.adb:362:20: info: overflow check proved
+example_recursive.adb:365:04: warning: analyzing unreferenced procedure "Do_Test"
+example_recursive.adb:365:23: warning: "L1" is not modified, could be IN
+example_recursive.adb:365:23: warning: unused variable "L1"
+example_recursive.adb:365:27: warning: "L2" is not modified, could be IN
+example_recursive.adb:365:27: warning: unused variable "L2"
+example_recursive.adb:366:07: medium: resource or memory leak might occur at end of scope
+example_recursive.adb:367:07: info: absence of resource or memory leak at end of scope proved
+example_recursive.adb:371:07: info: precondition proved
+example_recursive.adb:372:07: info: precondition proved
+example_recursive.adb:373:07: info: precondition proved
+example_recursive.adb:374:07: info: precondition proved
+example_recursive.adb:375:22: info: assertion proved
+example_recursive.adb:376:22: info: assertion proved
+example_recursive.adb:377:07: info: precondition proved
+example_recursive.adb:377:17: warning: "Y" is set by "Merge" but not used after the call
+example_recursive.adb:378:22: info: assertion proved

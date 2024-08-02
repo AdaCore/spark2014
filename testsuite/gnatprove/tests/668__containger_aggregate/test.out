@@ -1,0 +1,14 @@
+main.adb:4:22: info: all elements shall fit in index type for sequence aggregates at p.ads:11
+main.adb:4:22: info: precondition proved (Trivial: 1 VC)
+p.adb:9:14: high: overflow check might fail, cannot prove lower bound for S + Set_Type (N) (e.g. when N = -1 and S = Set_Type'First) [reason for check: result of addition must fit in a 32-bits machine integer] [possible fix: subprogram at p.ads:18 should mention N and S in a precondition]
+p.ads:11:11: medium: Container_Aggregates annotation might be incorrect
+p.ads:11:11: medium: Container_Aggregates annotation might be incorrect
+p.ads:11:11: medium: Container_Aggregates annotation might be incorrect
+p.ads:11:11: medium: after a call to Empty_Set at p.ads:13
+p.ads:11:11: medium: after a call to Include at p.ads:18
+p.ads:11:11: medium: after a call to Include at p.ads:18
+p.ads:11:11: medium: when establishing invariant on Length at spark-containers-functional-infinite_sequences.ads:77, in instantiation at p.ads:4
+p.ads:11:11: medium: when reestablishing invariant on Get at spark-containers-functional-infinite_sequences.ads:83, in instantiation at p.ads:4
+p.ads:11:11: medium: when reestablishing invariant on Length at spark-containers-functional-infinite_sequences.ads:77, in instantiation at p.ads:4
+p.ads:13:13: info: implicit aspect Always_Terminates on "Empty_Set" has been proved, subprogram will terminate
+p.ads:18:14: info: aspect Always_Terminates on "Include" has been proved, subprogram will terminate

@@ -1,0 +1,26 @@
+Generated contracts for P.Set
+   Global =>
+      Output =>
+         X
+   Refined_Global =>
+      Output =>
+         X
+Generated contracts for P.Proc1
+   Global =>
+      Output =>
+         X
+   Refined_Global =>
+      Output =>
+         X
+Generated contracts for P.Proc2
+   Global =>
+      In_Out =>
+         X
+   Refined_Global =>
+      In_Out =>
+         X
+Generated contracts for P
+   Initializes =>
+      X
+p.adb:11:07: warning: "Y" is set by "Set" but not used after the call
+p.adb:18:10: warning: "Y" is set by "Set" but not used after the call

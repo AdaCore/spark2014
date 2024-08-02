@@ -25,6 +25,7 @@
 
 with Aspects;                     use Aspects;
 with Elists;                      use Elists;
+with Errout_Wrapper;              use Errout_Wrapper;
 with Flow_Utility.Initialization; use Flow_Utility.Initialization;
 with Gnat2Why.Data_Decomposition; use Gnat2Why.Data_Decomposition;
 with Rtsfind;                     use Rtsfind;
@@ -3029,14 +3030,17 @@ package body SPARK_Util.Types is
                if 2 ** Typ_Size = Num_Values then
                   return (Ok => True);
                else
+                  --  We need to escape the string returned by UI_Image because
+                  --  it might contain # (for hex format)
+
                   return
                     (Ok          => False,
                      Explanation => To_Unbounded_String
                        (Typ_Name & " has "
-                        & UI_Image (Num_Values)
+                        & Escape (UI_Image (Num_Values))
                         & " values but has "
                         & (if Use_Esize then "Object_Size " else "Size ")
-                        & UI_Image (Typ_Size)));
+                        & Escape (UI_Image (Typ_Size))));
                end if;
             end;
          end;

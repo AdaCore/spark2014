@@ -28,6 +28,7 @@ with Atree;                  use Atree;
 with Einfo.Entities;         use Einfo.Entities;
 with Einfo.Utils;            use Einfo.Utils;
 with Namet;                  use Namet;
+with Nlists;                 use Nlists;
 with Sem_Util;               use Sem_Util;
 with Sinfo.Nodes;            use Sinfo.Nodes;
 with Sinfo.Utils;            use Sinfo.Utils;
@@ -44,6 +45,9 @@ package body SPARK_Register is
    -------------------------------
 
    procedure Register_Compilation_Unit (N : Node_Id) is
+
+      procedure Register_Aggregate_Aspect (E : Entity_Id);
+      --  Register names of subprograms in the Aggregate aspect
 
       procedure Register_Aspect (E : Entity_Id; A : Aspect_Id);
       --  Register names in the expression of aspect A of E if any
@@ -234,6 +238,8 @@ package body SPARK_Register is
             Register_Aspect (Defining_Entity (N), Aspect_Real_Literal);
             Register_Aspect (Defining_Entity (N), Aspect_Integer_Literal);
             Register_Aspect (Defining_Entity (N), Aspect_String_Literal);
+
+            Register_Aggregate_Aspect (Defining_Entity (N));
          end if;
 
          if Nkind (N) in N_Private_Type_Declaration
@@ -421,6 +427,28 @@ package body SPARK_Register is
 
          return OK;
       end Process_Node;
+
+      -------------------------------
+      -- Register_Aggregate_Aspect --
+      -------------------------------
+
+      procedure Register_Aggregate_Aspect (E : Entity_Id) is
+         ASN   : constant Node_Id := Find_Aspect (E, Aspect_Aggregate);
+         Assoc : Node_Id;
+      begin
+         if Present (ASN) then
+            Assoc := First (Component_Associations (Expression (ASN)));
+            while Present (Assoc) loop
+
+               --  On illegal code the expression will point to empty entity
+
+               if Present (Entity (Expression (Assoc))) then
+                  Register_Entity (Entity (Expression (Assoc)));
+               end if;
+               Next (Assoc);
+            end loop;
+         end if;
+      end Register_Aggregate_Aspect;
 
       ---------------------
       -- Register_Aspect --

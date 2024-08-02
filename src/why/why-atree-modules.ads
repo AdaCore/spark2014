@@ -802,8 +802,8 @@ package Why.Atree.Modules is
       User_Equality_Axiom,       --  Axiom for redefined primitive equality
       Dispatch_Equality,         --  Dispatching equality
       Dispatch_Equality_Axiom,   --  Axiom for dispatching equality
-      Ownership_Move,            --  Move predicates
-      Ownership_Move_Axiom);     --  Axiom for move predicates
+      Move_Tree,                 --  Declarations for the move tree
+      Incomp_Move_Tree);         --  Same as above but uses an abstract type
 
    function E_Module
      (E : Entity_Id;
@@ -828,6 +828,9 @@ package Why.Atree.Modules is
 
    function Get_Profile_Theory_Name (E : Entity_Id) return Symbol;
    --  Compute the name of the theory for a profile
+
+   function Get_Move_Tree_Type (E : Entity_Id) return W_Type_Id;
+   --  Compute the type of the move tree for T
 
    procedure Insert_Extra_Module
      (N    : Node_Id;

@@ -167,6 +167,9 @@ package CE_Values is
    function "=" (V1, V2 : Float_Value) return Boolean;
    --  Equality of floating point values
 
+   function Copy_Sign is new Generic_Binop
+     (Float'Copy_Sign, Long_Float'Copy_Sign, Long_Long_Float'Copy_Sign);
+
    type Scalar_Kind is (Integer_K, Enum_K, Float_K, Fixed_K);
    --  Kind for a counterexample value for a scalar type
 

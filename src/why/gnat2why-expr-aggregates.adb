@@ -880,6 +880,13 @@ package body Gnat2Why.Expr.Aggregates is
    is
       Annot          : constant Aggregate_Annotation :=
         Get_Aggregate_Annotation (E);
+      Cont_Typ       : constant Type_Kind_Id :=
+        (if Present (First_Subtype (E))
+         and then Entity_In_SPARK (First_Subtype (E))
+         then First_Subtype (E)
+         else E);
+      --  Use the first subtype if any, as it can be more constrained than the
+      --  base type introduced by the compiler.
       Init_Checks    : W_Prog_Id := +Void;
       Preserv_Checks : W_Prog_Id := +Void;
 
@@ -1134,7 +1141,7 @@ package body Gnat2Why.Expr.Aggregates is
            (Left  => New_Ignore
               (Prog => Insert_Invariant_Check
                    (Ada_Node => Add_Procedure,
-                    Check_Ty => E,
+                    Check_Ty => Cont_Typ,
                     W_Expr   => +New_Cont_Id)),
             Right => Preserv_Checks);
 
@@ -1192,10 +1199,11 @@ package body Gnat2Why.Expr.Aggregates is
       end Prepend_Call_To_Add;
 
       Cont_Id           : constant W_Identifier_Id :=
-        New_Temp_Identifier (Typ => EW_Abstract (E), Base_Name => "cont");
+        New_Temp_Identifier
+          (Typ => Type_Of_Node (Cont_Typ), Base_Name => "cont");
       New_Cont_Id       : constant W_Identifier_Id :=
         New_Temp_Identifier
-          (Typ => EW_Abstract (E), Base_Name => "new_cont");
+          (Typ => Type_Of_Node (Cont_Typ), Base_Name => "new_cont");
 
       Model_Annot       : Aggregate_Annotation := Annot;
       --  Annotation of the last model type
@@ -2290,7 +2298,7 @@ package body Gnat2Why.Expr.Aggregates is
            (Left  => New_Ignore
               (Prog => Insert_Invariant_Check
                    (Ada_Node => Annot.Empty_Function,
-                    Check_Ty => E,
+                    Check_Ty => Cont_Typ,
                     W_Expr   => +Cont_Id)),
             Right => Init_Checks);
 
@@ -2387,7 +2395,7 @@ package body Gnat2Why.Expr.Aggregates is
 
       Preserv_Checks := New_Binding_To_Any
         (Name    => Cont_Id,
-         Ty      => E,
+         Ty      => Cont_Typ,
          Context => Preserv_Checks);
 
       return Sequence
@@ -3482,7 +3490,7 @@ package body Gnat2Why.Expr.Aggregates is
          Def           : W_Pred_Id;
          Aggr_Temp     : constant W_Identifier_Id :=
            New_Temp_Identifier
-             (Typ       => EW_Abstract (Cont_Ty),
+             (Typ       => Type_Of_Node (Cont_Ty),
               Base_Name => "aggr");
          Aggr          : W_Term_Id;
 
@@ -3506,18 +3514,23 @@ package body Gnat2Why.Expr.Aggregates is
                   B_Ent    => Null_Entity_Name,
                   Mutable  => False,
                   Labels   => Symbol_Sets.Empty_Set);
-               Guards (Top) := New_And_Pred
-                 (Left  => Compute_Dynamic_Inv_And_Initialization
-                    (Expr     => +Why_Id,
-                     Ty       => Get_Ada_Node (+Get_Typ (Why_Id)),
-                     Params   => Params,
-                     Only_Var => False_Term),
-                  Right => Compute_Type_Invariant
-                    (Expr   => +Why_Id,
-                     Ty     => Get_Ada_Node (+Get_Typ (Why_Id)),
-                     Kind   => For_Check,
-                     Params => Params,
-                     Scop   => Current_Subp));
+
+               if Get_Typ (Why_Id) = EW_Bool_Type then
+                  Guards (Top) := True_Pred;
+               else
+                  Guards (Top) := New_And_Pred
+                    (Left  => Compute_Dynamic_Inv_And_Initialization
+                       (Expr     => +Why_Id,
+                        Ty       => Get_Ada_Node (+Get_Typ (Why_Id)),
+                        Params   => Params,
+                        Only_Var => False_Term),
+                     Right => Compute_Type_Invariant
+                       (Expr   => +Why_Id,
+                        Ty     => Get_Ada_Node (+Get_Typ (Why_Id)),
+                        Kind   => For_Check,
+                        Params => Params,
+                        Scop   => Current_Subp));
+               end if;
             end;
          end loop;
 
@@ -3540,7 +3553,7 @@ package body Gnat2Why.Expr.Aggregates is
             Domain   => EW_Pterm,
             Module   => E_Module (Expr, Logic_Function_Decl),
             Symb     => NID (Name),
-            Typ      => EW_Abstract (Cont_Ty));
+            Typ      => Type_Of_Node (Cont_Ty));
 
          Aggr := New_Call (Name => Func,
                            Args => Call_Args,
@@ -3748,7 +3761,14 @@ package body Gnat2Why.Expr.Aggregates is
          end if;
       end Get_Aggregates_Elements;
 
-      Cont_Ty   : constant Entity_Id := Base_Retysp (Etype (Expr));
+      Base_Ty   : constant Entity_Id := Base_Retysp (Etype (Expr));
+      Cont_Ty   : constant Entity_Id :=
+        (if Present (First_Subtype (Base_Ty))
+         and then Entity_In_SPARK (First_Subtype (Base_Ty))
+         then First_Subtype (Base_Ty)
+         else Base_Ty);
+      --  Use the first subtype if any, as it can be more constrained than the
+      --  base type introduced by the compiler.
       Annot     : constant Aggregate_Annotation :=
         Get_Aggregate_Annotation (Cont_Ty);
       Values    : Node_Vectors.Vector;
@@ -3788,7 +3808,7 @@ package body Gnat2Why.Expr.Aggregates is
                   then E_Module (Expr, Program_Function_Decl)
                   else M),
                Symb     => NID (Lower_Case_First (Img (Get_Name (M)))),
-               Typ      => EW_Abstract (Cont_Ty)));
+               Typ      => Type_Of_Node (Cont_Ty)));
       end;
    end Transform_Container_Aggregate;
 

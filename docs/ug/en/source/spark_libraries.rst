@@ -361,19 +361,20 @@ structures.
 The Ada Standard Library defines two kinds of containers:
 
 * The controlled containers using dynamic allocation, for example
-  ``SPARK.Containers.Formal.Unbounded_Sets``. They define containers as
+  ``Ada.Containers.Vectors``. They define containers as
   controlled tagged types, so that memory for the container is automatic
   reallocated during assignment and automatically freed when the container
   object's scope ends.
 * The bounded containers not using dynamic allocation, for example
-  ``SPARK.Containers.Formal.Vectors``. They define containers as discriminated
+  ``Ada.Containers.Bounded_Vectors``. They define containers as discriminated
   tagged types, so that the memory for the container can be reserved at
   initialization.
 
 Although bounded containers are better suited to critical software development,
 neither controlled containers nor bounded containers can be used in |SPARK|,
-because their API does not lend itself to adding suitable contracts (in
-particular preconditions) ensuring correct usage in client code.
+because their API does not lend itself to adding suitable contracts ensuring
+correct usage in client code as per the restrictions of |SPARK| (in particular
+:ref:`Absence of Interferences`).
 
 The formal containers are a variation of the standard containers with API
 changes that allow adding suitable contracts, so that |GNATprove| can prove
@@ -424,32 +425,54 @@ and implementation is not in |SPARK|. Hence, |GNATprove| can be used to prove
 correct usage of formal containers in client code, but not to prove that formal
 containers implement their specification.
 
-Procedures ``Update_Element`` or ``Query_Element`` that iterate over a
-container are not defined on formal containers. The effect of these procedures
-could not be precisely described in their contracts as there is no way to
-refer to the contract of their access-to-procedure parameter.
+Cursors of formal containers do not hold a reference to a specific container,
+as this would otherwise introduce aliasing between container and cursor
+variables, which is not supported in |SPARK|, see :ref:`Absence of
+Interferences`. As a result, the same cursor can be applied to multiple
+container objects. The Ada rules which define when a cursor becomes *invalid*,
+so that using it leads to erroneous execution, are no longer relevant. Instead,
+which cursors remain valid in a container after an operation is specified on
+a case-by-case basis on each operation.
 
-Procedures and functions that query the content of a container take the
-container in parameter. For example, function ``Has_Element`` that queries if a
-container has an element at a given position is declared as follows:
+As a consequence of this difference, only procedures and functions that take
+the container as parameter to query its content are vailable on formal
+containers. For example, the two-parameters ``Has_Element`` function is
+available on formal containers while the single-parameter one is not:
 
 .. code-block:: ada
 
    function Has_Element (Container : T; Position : Cursor) return Boolean;
+   --  This function is part of the SPARK library
 
-This is different from the API of standard containers,
-where it is sufficient to pass a cursor to these subprograms, as the cursor
-holds a reference to the underlying container:
+   function Has_Element (Position : Cursor) return Boolean;
+   --  This function is not as the Cursor does not contain a reference to the container
+
+Procedures like ``Update_Element`` or ``Query_Element`` that iterate over a
+container are not defined on formal containers, nor are functions returning
+iterator objects like ``Iterate``. Instead, formal containers use the
+``Iterable`` aspect to allow iteration and quantification over containers, see
+:ref:`Quantification over Formal Containers`. As a result, the notion of
+tampering checks as defined for standard Ada containers is not relevant on
+formal containers.
+
+Functions used to gain read or write access to an individual component of a
+container such as ``Reference`` or ``Constant_Reference`` have been adapted to
+use the notions of borrowing and observing of the :ref:`Memory Ownership Policy`
+of |SPARK|. They are defined as `traversal functions` which return values of
+an anonymous access type. The fact that the container is not updated while such
+a reference exists is ensured by ownership:
 
 .. code-block:: ada
 
-   function Has_Element (Position : Cursor) return Boolean;
+   function Constant_Reference (Container : aliased T;
+                                Position  : Cursor)
+     return not null access constant Element_Type
+   with Pre => Has_Element (Container, Position);
 
-Cursors of formal containers do not hold a reference to a specific container,
-as this would otherwise introduce aliasing between container and cursor
-variables, which is not supported in |SPARK|. See :ref:`Absence of
-Interferences`. As a result, the same cursor can be applied to multiple
-container objects.
+   function Reference (Container : not null access T;
+                       Position  : Cursor)
+     return not null access Element_Type
+   with Pre => Has_Element (Container.all, Position);
 
 For each container type, the library provides model functions that are used to
 annotate subprograms from the API. The different models supply different levels
@@ -457,10 +480,10 @@ of abstraction of the container’s functionalities. These model functions are
 grouped in :ref:`Ghost Packages` named ``Formal_Model``.
 
 The higher level view of a container is usually the mathematical structure of
-element it represents. We use a sequence for ordered containers such as lists and
-vectors and a mathematical map for imperative maps. This allows us to specify
-the effects of a subprogram in a very high level way, not having to consider
-cursors nor order of elements in a map:
+element it represents. We use a sequence for ordered containers such as lists
+and vectors and a mathematical map for imperative maps. This allows us to
+specify the effects of a subprogram in a very high level way, not having to
+consider cursors nor order of elements in a map:
 
 .. code-block:: ada
 

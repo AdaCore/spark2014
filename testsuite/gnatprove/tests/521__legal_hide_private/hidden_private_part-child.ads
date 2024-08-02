@@ -8,7 +8,7 @@ is
    function F return Boolean with Post => F'Result = True;
 
 private
-   pragma Annotate (GNATprove, Hide_Info, "Private_Part", Hidden_Private_Part.Child);
+   pragma Annotate (GNATprove, Hide_Info, "Private_Part");
 
    function F return Boolean is (F_Hidden);
 

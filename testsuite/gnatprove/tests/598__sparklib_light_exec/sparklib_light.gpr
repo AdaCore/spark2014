@@ -1,7 +1,7 @@
 --  This project file is intended for use with reduced runtimes without
 --  Ada.Numerics.Big_Numbers or Ada.Finalization units.
 
-project SPARKlib_Light extends "sparklib_light_external" is
+project SPARKlib_Light extends "sparklib_light_internal" is
 
    -- This project is not supposed to be used directly. Instead, copy it in
    -- your code and provide appropriate values for the object directory
@@ -12,9 +12,9 @@ project SPARKlib_Light extends "sparklib_light_external" is
 
    for Object_Dir use "obj";
 
-   for Source_Dirs use SPARKlib_Light_External'Source_Dirs;
+   for Source_Dirs use SPARKlib_Light_Internal'Source_Dirs;
 
-   for Excluded_Source_Files use SPARKlib_Light_External'Excluded_Source_Files;
+   for Excluded_Source_Files use SPARKlib_Light_Internal'Excluded_Source_Files;
       -- Uncomment the files you want to exclude from your project
       -- & (
       -- "spark-big_integers__light.ads",
@@ -97,7 +97,7 @@ project SPARKlib_Light extends "sparklib_light_external" is
    package Compiler is
       --  Compile SPARKlib with assertions to be able to execute ghost code
       for Default_Switches ("Ada") use
-         SPARKlib_Light_External.Common_Default_Switches & ("-gnata");
+         SPARKlib_Light_Internal.Common_Default_Switches & ("-gnata");
    end Compiler;
 
 end SPARKlib_Light;

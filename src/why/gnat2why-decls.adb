@@ -376,19 +376,6 @@ package body Gnat2Why.Decls is
                      Return_Type => Get_Typ (Var.Tag.Id)));
             end if;
 
-            if Var.Is_Moved_R.Present then
-
-               --  Generate a variable for Is_Moved flag
-
-               Emit
-                 (Th,
-                  New_Global_Ref_Declaration
-                    (Name     => To_Local (Var.Is_Moved_R.Id),
-                     Location => Safe_First_Sloc (E),
-                     Labels   => Symbol_Sets.Empty_Set,
-                     Ref_Type => Get_Typ (Var.Is_Moved_R.Id)));
-            end if;
-
          when UCArray =>
 
             --  Generate a global ref for the content
@@ -485,14 +472,6 @@ package body Gnat2Why.Decls is
                      Return_Type => Get_Typ (Var.Is_Null)));
             end if;
 
-            Emit
-              (Th,
-               New_Global_Ref_Declaration
-                 (Name     => To_Local (Var.Is_Moved),
-                  Location => Safe_First_Sloc (E),
-                  Labels   => Symbol_Sets.Empty_Set,
-                  Ref_Type => Get_Typ (Var.Is_Moved)));
-
          when Regular =>
             begin
                --  Currently only generate values for scalar variables in
@@ -524,6 +503,18 @@ package body Gnat2Why.Decls is
                  (E, "'" & Initialized_Label),
                Location => Safe_First_Sloc (E),
                Ref_Type => EW_Bool_Type));
+      end if;
+
+      --  Generate a variable for the move tree
+
+      if Var.Is_Moved.Present then
+         Emit
+           (Th,
+            New_Global_Ref_Declaration
+              (Name     => To_Local (Var.Is_Moved.Id),
+               Location => Safe_First_Sloc (E),
+               Labels   => Symbol_Sets.Empty_Set,
+               Ref_Type => Get_Typ (Var.Is_Moved.Id)));
       end if;
 
       --  Declare the variable for the value at end of E

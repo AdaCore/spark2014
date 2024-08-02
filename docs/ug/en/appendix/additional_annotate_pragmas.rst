@@ -32,7 +32,7 @@ or
 .. code-block:: ada
 
     function Func (X : T) return T;
-    pragma Annotate (GNATprove, <annotation name>, Func);
+    pragma Annotate (GNATprove, <annotation name>, Entity => Func);
 
 In the following, we use the aspect form whenever possible.
 
@@ -161,8 +161,8 @@ on our sets, we could write:
 
 .. code-block:: ada
 
-  function Mem (S : Set; E : Element_Type) return Boolean;
-  pragma Annotate (GNATprove, Iterable_For_Proof, "Contains", Mem);
+  function Mem (S : Set; E : Element_Type) return Boolean with
+    Annotate => (GNATprove, Iterable_For_Proof, "Contains");
 
 With this annotation, the postcondition of ``Intersection`` is translated in a
 simpler way, using logic quantification directly over elements:
@@ -263,8 +263,8 @@ lists, we could write:
 
 .. code-block:: ada
 
-   function Model (L : List) return Sequence;
-   pragma Annotate (GNATprove, Iterable_For_Proof, "Model", Entity => Model);
+   function Model (L : List) return Sequence with
+     Annotate => (GNATprove, Iterable_For_Proof, "Model");
 
 With this annotation, the postcondition of ``Init`` is translated directly as a
 quantification on the elements of the result's model:
@@ -327,24 +327,24 @@ behaviors, where an assertion is proven when some calls to expression
 functions are manually inlined but not without this inlining.
 
 If such a case occurs, it is sometimes possible to instruct the tool to inline
-the definition of expression functions using pragma ``Annotate``
+the definition of expression functions using pragma or aspect ``Annotate``
 ``Inline_For_Proof``. When such a pragma is provided for an expression
 function, a direct definition will be used for the function instead of an
 axiom:
 
 .. code-block:: ada
 
-    function Is_Positive (X : Integer) return Boolean is (X > 0);
-    pragma Annotate (GNATprove, Inline_For_Proof, Is_Positive);
+    function Is_Positive (X : Integer) return Boolean is (X > 0) with
+      Annotate => (GNATprove, Inline_For_Proof);
 
-The same pragma will also allow to inline a regular function, if its
+The same annotation will also allow to inline a regular function, if its
 postcondition is simply an equality between its result and an expression:
 
 .. code-block:: ada
 
     function Is_Positive (X : Integer) return Boolean with
-      Post => Is_Positive'Result = (X > 0);
-    pragma Annotate (GNATprove, Inline_For_Proof, Is_Positive);
+      Post => Is_Positive'Result = (X > 0)
+      Annotate => (GNATprove, Inline_For_Proof);
 
 In this case, |GNATprove| will introduce a check when verifying the body of
 ``Is_Positive`` to make sure that the inline annotation is correct, namely, that
@@ -700,7 +700,7 @@ In Ada, the equality is not the logical equality in general. In particular,
 arrays are considered to be equal if they contain the same elements, even with
 different bounds, +0.0 and -0.0 are considered equal...
 
-It is possible to use a ``pragma Annotate (GNATprove, Logical_Equal)`` to ask
+It is possible to use a pragma or aspect ``Annotate`` to ask
 |GNATprove| to interpret a function with an equality profile as the logical
 equality for the type. If the function body is visible in
 |SPARK|, a check will be emitted to ensure that it indeed checks for logical
@@ -913,7 +913,7 @@ Annotation for Enforcing Ownership Checking on a Private Type
 -------------------------------------------------------------
 
 Private types whose full view is not in |SPARK| can be annotated with a
-``pragma Annotate (GNATprove, Ownership, ...)``. Such a type is handled by
+pragma or aspect ``Annotate`` for ownership. Such a type is handled by
 |GNATprove| in accordance to the :ref:`Memory Ownership Policy` of |SPARK|.
 For example, the type ``T`` declared in the procedure ``Simple_Ownership``
 below has an ownership annotation. As a result, |GNATprove| will reject the
@@ -924,21 +924,21 @@ designated by ``X`` has been moved by the assignment to ``Y``.
    :language: ada
    :linenos:
 
-In addition, it is possible to state that a type needs reclamation with a
-``pragma Annotate (GNATprove, Onwership, "Needs_Reclamation", ...)``. In
+In addition, it is possible to state that a such type needs reclamation by
+supplying the ``"Needs_Reclamation"`` string literal as a third parameter to the
+aspect or pragma ``Annotate`` for ownership. In
 this case, |GNATprove| emits checks to ensure that the resource is not leaked.
 For these checks to be handled precisely, the user should provide a way for
 the tool to check that an object has been reclaimed. This can be done by
 annotating a function which takes a value of this type as a parameter and
-returns a boolean with a
-``pragma Annotate (GNATprove, Onwership, "Needs_Reclamation", ...)`` or
-``pragma Annotate (GNATprove, Onwership, "Is_Reclaimed", ...)``. This
+returns a boolean with a pragma or aspect ``Annotate`` for ownership whose
+third parameter is either ``"Needs_Reclamation"`` or ``"Is_Reclaimed"``. This
 function is used to check that the resource cannot be leaked. A function
 annotated with ``"Needs_Reclamation"`` shall return True when its input holds
 some resource while a function annotated with ``"Is_Reclaimed"`` shall return
 True when its input has already been reclaimed. Another possibility is to
-annotate a constant of the type with a
-``pragma Annotate (GNATprove, Onwership, "Reclaimed_Value", ...)``. Objects are
+annotate a constant of the type with a pragma or aspect ``Annotate`` for
+ownership whose third parameter is ``"Reclaimed_Value"``. Objects are
 considered to be reclaimed if they are equal to the provided constant. Note
 that constants annotated with ``"Reclaimed_Value"`` are not considered to hold
 resources themselves, so they can be duplicated. Only one such function or
@@ -992,8 +992,8 @@ As featured in :ref:`Manual Proof Using User Lemmas`, it is possible to write
 lemmas in |SPARK| as ghost procedures. However, actual calls to the procedure
 need to be manually inserted in the program whenever an instance of the
 lemma is necessary.
-It is possible to use a pragma ``Annotate`` to instruct |GNATprove| that an
-axiom should be introduced for a lemma procedure so manual
+It is possible to use an aspect or pragma ``Annotate`` to instruct |GNATprove|
+that an axiom should be introduced for a lemma procedure so manual
 instantiations are no longer necessary. This annotation is called
 ``Automatic_Instantiation``. As an example, the ``Equivalent`` function below
 is an equivalence relation. This is expressed using three lemma procedures

@@ -72,7 +72,7 @@ gen_access.adb:60:04: info: absence of resource or memory leak at end of scope p
 gen_access.adb:60:17: warning: assuming "Mk_List" has no effect on global items
 gen_access.adb:60:17: warning: no Global contract available for "Mk_List"
 gen_access.adb:61:04: medium: resource or memory leak might occur at end of scope
-gen_access.adb:62:04: info: absence of resource or memory leak at end of scope proved (Z3: 1 VC)
+gen_access.adb:62:04: medium: resource or memory leak might occur at end of scope
 gen_access.adb:62:25: warning: assuming "Mk_List" has no effect on global items
 gen_access.adb:62:25: warning: no Global contract available for "Mk_List"
 gen_access.adb:63:04: medium: resource or memory leak might occur at end of scope

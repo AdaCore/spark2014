@@ -382,16 +382,13 @@ package Gnat2Why.Expr is
        Nkind (First (Choices)) /= N_Others_Choice;
    --  Compute the guard corresponding to an exceptional case
 
-   function Compute_Is_Moved_Property
-     (Expr     : W_Term_Id;
-      Ty       : Type_Kind_Id;
-      Use_Pred : Boolean := True)
-      return W_Pred_Id
-   with Pre => Contains_Allocated_Parts (Ty);
-   --  @param Expr term on which to check all pointers are moved
-   --  @param Ty corresponding Ada type
-   --  @param Use_Pred True iff the predicate __is_moved should be called
-   --  @result predicate expressing that all pointers in [Expr] are moved
+   function Compute_Is_Moved_Or_Reclaimed
+     (Expr : W_Term_Id;
+      Tree : W_Term_Id;
+      Ty   : Type_Kind_Id)
+      return W_Pred_Id;
+   --  Predicate expressing that Expr is entirely reclaimed or moved as per the
+   --  move tree Tree. Tree is a move tree for type Ty.
 
    function Compute_Is_Reclaimed_For_Ownership
      (Expr      : W_Term_Id;
@@ -401,21 +398,6 @@ package Gnat2Why.Expr is
    --  Check reclamation on a type annotated with ownership. If For_Check is
    --  True, consider the confirming annotation. Otherwise confirming
    --  annotations are ignored.
-
-   function Compute_Moved_Relation
-     (Expr1    : W_Term_Id;
-      Expr2    : W_Term_Id;
-      Ty       : Type_Kind_Id;
-      Use_Pred : Boolean := True)
-      return W_Pred_Id
-   with Pre => Contains_Allocated_Parts (Ty);
-   --  @param Expr1 term corresponding to the new value of an object
-   --  @param Expr2 term corresponding to the old value of the same object
-   --  @param Ty corresponding Ada type
-   --  @param Use_Pred True iff the predicate __moved_relation should
-   --         be called
-   --  @result predicate expressing that all pointers in [Expr1] are moved,
-   --          while all other subcomponents retain their value from [Expr2]
 
    function Compute_Top_Level_Type_Invariant
      (Expr     : W_Term_Id;
@@ -475,6 +457,12 @@ package Gnat2Why.Expr is
 
    function Count_Numerical_Variants (E : Callable_Kind_Id) return Natural;
    --  Compute the number of numerical variants of a subprogram or entry if any
+
+   function Expected_Type_For_Move_Tree
+     (N : Node_Or_Entity_Id) return Type_Kind_Id;
+   --  N is an expression or object which can be moved. Return the type that
+   --  should be used to querry its move tree. It might not be the type of N
+   --  on case of view conversions or unconstrained formal parameters.
 
    function Get_Pure_Logic_Term_If_Possible
      (Expr          : N_Subexpr_Id;
@@ -565,6 +553,10 @@ package Gnat2Why.Expr is
    --         array in split form.
    --  @param Check_Info information for the check
    --  @result Why3 program that performs the check and returns [W_Expr]
+
+   function New_Move_Tree_Access_For_Identitier
+     (Ent : Entity_Id) return W_Expr_Id;
+   --  Create an access to the move tree for Ent
 
    function New_Equality_Of_Preserved_Parts
      (Ty           : Type_Kind_Id;

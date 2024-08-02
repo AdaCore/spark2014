@@ -402,9 +402,11 @@ c_strings.adb:368:67: info: overflow check proved
 c_strings.adb:369:24: info: pointer dereference check proved
 c_strings.adb:369:30: info: index check proved
 c_strings.adb:369:53: info: index check proved
-c_strings.adb:370:26: info: pointer dereference check proved
-c_strings.adb:370:32: info: index check proved
-c_strings.adb:370:46: info: index check proved
+c_strings.adb:370:30: info: assertion step proved
+c_strings.adb:370:30: info: pointer dereference check proved
+c_strings.adb:370:36: info: index check proved
+c_strings.adb:370:50: info: index check proved
+c_strings.adb:370:54: info: precondition proved
 c_strings.adb:372:16: info: assertion premise proved
 c_strings.adb:373:48: info: precondition proved
 c_strings.adb:373:48: info: range check proved
@@ -463,6 +465,7 @@ c_strings.adb:391:52: info: index check proved
 c_strings.adb:391:70: info: index check proved
 c_strings.adb:393:42: info: range check proved
 c_strings.adb:393:55: info: precondition proved
+c_strings.adb:393:73: info: precondition proved
 c_strings.adb:394:32: info: assertion step proved
 c_strings.adb:395:35: info: assertion step proved
 c_strings.adb:395:43: info: pointer dereference check proved

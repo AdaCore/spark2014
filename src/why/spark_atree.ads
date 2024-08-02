@@ -637,6 +637,11 @@ package SPARK_Atree is
    function Is_Controlling_Actual (N : Node_Id) return Boolean with
      Pre => Nkind (N) in N_Subexpr;
 
+   function Is_Container_Aggregate (Exp : Node_Id) return Boolean
+     renames Sem_Util.Is_Container_Aggregate;
+   --  Make the frontend routine to units that only use SPARK wrappers to
+   --  access the GNAT AST.
+
    function Is_Iterator_Over_Array (N : Node_Id) return Boolean with
      Pre => Nkind (N) = N_Iterator_Specification;
 

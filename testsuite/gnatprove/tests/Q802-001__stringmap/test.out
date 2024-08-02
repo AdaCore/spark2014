@@ -105,10 +105,10 @@ a-strbou.ads:2561:61: info: range check proved (CVC5: 2 VC), in instantiation at
 a-strbou.ads:2568:25: info: range check proved (CVC5: 2 VC), in instantiation at test.ads:6
 a-strbou.ads:2575:31: info: discriminant check proved (CVC5: 1 VC), in instantiation at test.ads:6
 a-strbou.ads:2575:31: info: predicate check proved (CVC5: 2 VC; Trivial: 1 VC), in instantiation at test.ads:6
-spark-containers-formal-hashed_maps.ads:96:06: medium: Container_Aggregates annotation might be incorrect, in instantiation at test.ads:12
-spark-containers-formal-hashed_maps.ads:96:06: medium: after a call to Insert at spark-containers-formal-hashed_maps.ads:667, in instantiation at test.ads:12
-spark-containers-formal-hashed_maps.ads:96:06: medium: when reestablishing invariant on Has_Key at spark-containers-functional-maps.ads:120, in instantiation at spark-containers-formal-hashed_maps.ads:185, in instantiation at test.ads:12
-spark-containers-parameter_checks.ads:246:19: medium: postcondition might fail, in instantiation at spark-containers-formal-hashed_maps.ads:170, in instantiation at test.ads:12 [possible fix: you should consider adding a postcondition to function SBHash or turning it into an expression function]
+spark-containers-formal-hashed_maps.ads:87:06: medium: Container_Aggregates annotation might be incorrect, in instantiation at test.ads:12
+spark-containers-formal-hashed_maps.ads:87:06: medium: after a call to Insert at spark-containers-formal-hashed_maps.ads:660, in instantiation at test.ads:12
+spark-containers-formal-hashed_maps.ads:87:06: medium: when reestablishing invariant on Has_Key at spark-containers-functional-maps.ads:120, in instantiation at spark-containers-formal-hashed_maps.ads:177, in instantiation at test.ads:12
+spark-containers-parameter_checks.ads:246:19: medium: postcondition might fail, in instantiation at spark-containers-formal-hashed_maps.ads:162, in instantiation at test.ads:12 [possible fix: you should consider adding a postcondition to function SBHash or turning it into an expression function]
 test.ads:6:04: info: implicit function contract might not be available on calls from enclosing unit
 test.ads:6:04: info: in instantiation at a-strbou.ads
 test.ads:6:04: warning: in instantiation at a-strbou.ads
@@ -117,6 +117,6 @@ test.ads:9:13: info: implicit function contract might not be available on calls 
 test.ads:12:04: info: function contract might not be available on implicit recursive calls
 test.ads:12:04: info: function contract might not be available on implicit recursive calls
 test.ads:12:04: info: function contract might not be available on implicit recursive calls
-test.ads:12:04: info: in instantiation at spark-containers-formal-hashed_maps.ads:101
-test.ads:12:04: info: in instantiation at spark-containers-formal-hashed_maps.ads:292
-test.ads:12:04: info: in instantiation at spark-containers-formal-hashed_maps.ads:415
+test.ads:12:04: info: in instantiation at spark-containers-formal-hashed_maps.ads:284
+test.ads:12:04: info: in instantiation at spark-containers-formal-hashed_maps.ads:407
+test.ads:12:04: info: in instantiation at spark-containers-formal-hashed_maps.ads:92

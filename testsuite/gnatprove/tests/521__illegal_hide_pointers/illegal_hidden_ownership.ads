@@ -54,7 +54,7 @@ package Illegal_Hidden_Ownership with SPARK_Mode is
       type T_Priv_Reclaim (D : Integer) is private;
 
    private
-      pragma Annotate (GNATprove, Hide_Info, "Private_Part", Missing_Annot);
+      pragma Annotate (GNATprove, Hide_Info, "Private_Part");
 
       type T_Acc is access Integer;
 
@@ -92,7 +92,7 @@ package Illegal_Hidden_Ownership with SPARK_Mode is
         Annotate => (GNATprove, Ownership);
 
    private
-      pragma Annotate (GNATprove, Hide_Info, "Private_Part", Unexpected);
+      pragma Annotate (GNATprove, Hide_Info, "Private_Part");
 
       type T_Float is new Float;
 
@@ -137,7 +137,7 @@ package Illegal_Hidden_Ownership with SPARK_Mode is
         Annotate => (GNATprove, Ownership);
 
    private
-      pragma Annotate (GNATprove, Hide_Info, "Private_Part", Bad_Flavor);
+      pragma Annotate (GNATprove, Hide_Info, "Private_Part");
 
       type T_Acc is access Integer;
 

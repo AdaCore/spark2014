@@ -5815,7 +5815,8 @@ package body Flow.Control_Flow_Graph is
          --  Abnormal execution is when the callee has No_Return, but the
          --  caller is an ordinary unit (i.e. without No_Return).
 
-         if No_Return (Called_Thing)
+         if Is_Subprogram (Called_Thing)
+           and then No_Return (Called_Thing)
            and then not Is_Possibly_Nonreturning_Procedure (FA.Spec_Entity)
          then
             CM.Insert
@@ -6856,8 +6857,10 @@ package body Flow.Control_Flow_Graph is
          end if;
 
          case Nkind (N) is
-            when N_Aggregate
-               | N_Delta_Aggregate
+            when N_Aggregate =>
+               return not Is_Container_Aggregate (N);
+
+            when N_Delta_Aggregate
                | N_Identifier
                | N_Expanded_Name
             =>
@@ -8294,10 +8297,6 @@ package body Flow.Control_Flow_Graph is
             end;
       end case;
 
-      --  Copy the CFG before any treatment in CFG_With_Dead_Code
-      FA.CFG_With_Dead_Code := FA.CFG.Create;
-      FA.CFG_With_Dead_Code.Copy_Edges (FA.CFG);
-
       --  Label all vertices that are part of exceptional execution paths
       Mark_Exceptional_Paths (FA);
       Prune_Exceptional_Paths (FA);
@@ -8364,6 +8363,7 @@ package body Flow.Control_Flow_Graph is
                             Ekind (SC.E) = E_Subprogram_Type
                           or else
                             (Is_Ignored_Internal (SC.E)
+                               and then Is_Subprogram (SC.E)
                                and then No_Return (SC.E))
                         then
                            FA.Has_Only_Terminating_Constructs := False;
@@ -8432,7 +8432,8 @@ package body Flow.Control_Flow_Graph is
          --  that we model such outputs as read-writes).
 
          for E of FA.Direct_Calls loop
-            if Ekind (E) in E_Procedure | E_Entry
+            if (Ekind (E) in E_Procedure | E_Entry
+                  or else Is_Function_With_Side_Effects (E))
               and then (not Has_User_Supplied_Globals (E)
                         or else Rely_On_Generated_Global (E, FA.B_Scope))
             then
@@ -8467,6 +8468,12 @@ package body Flow.Control_Flow_Graph is
                end;
             end if;
          end loop;
+
+      --  Copy the CFG before any treatment in CFG_With_Dead_Code
+
+      else
+         FA.CFG_With_Dead_Code := FA.CFG.Create;
+         FA.CFG_With_Dead_Code.Copy_Edges (FA.CFG);
       end if;
 
       --  Finally, make sure that all extra checks for folded functions have
