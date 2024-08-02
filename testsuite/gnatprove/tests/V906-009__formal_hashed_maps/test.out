@@ -116,11 +116,11 @@ test_map.adb:174:07: info: precondition proved
 test_map.adb:175:22: info: assertion proved
 test_map.adb:179:07: info: precondition proved
 test_map.adb:180:07: info: precondition proved
+test_map.adb:182:12: info: discriminant check proved
 test_map.adb:182:12: info: precondition proved
-test_map.adb:182:12: medium: discriminant check might fail
 test_map.adb:183:22: info: assertion proved
+test_map.adb:184:12: info: discriminant check proved
 test_map.adb:184:12: info: precondition proved
-test_map.adb:184:12: medium: discriminant check might fail
 test_map.adb:185:22: info: assertion proved
 test_map.adb:186:22: info: assertion proved
 test_map.adb:191:22: info: assertion proved
@@ -168,22 +168,22 @@ test_map.ads:21:13: info: implicit aspect Always_Terminates on "My_Eq" has been 
 test_map.ads:22:17: info: postcondition proved
 test_map.ads:25:13: info: implicit aspect Always_Terminates on "Hash" has been proved, subprogram will terminate
 test.adb:10:04: warning: in instantiation at spark-containers-functional-maps.ads:134 [-gnatw.a]
-test.adb:10:04: warning: in instantiation at spark-containers-formal-hashed_maps.ads:252 [-gnatw.a]
+test.adb:10:04: warning: in instantiation at spark-containers-formal-hashed_maps.ads:244 [-gnatw.a]
 test.adb:10:04: warning: check will fail at run time [-gnatw.a]
 test.adb:10:04: warning: in instantiation at spark-containers-functional-maps.ads:153 [-gnatw.a]
-test.adb:10:04: warning: in instantiation at spark-containers-formal-hashed_maps.ads:252 [-gnatw.a]
+test.adb:10:04: warning: in instantiation at spark-containers-formal-hashed_maps.ads:244 [-gnatw.a]
 test.adb:10:04: warning: check will fail at run time [-gnatw.a]
 test_map.ads:10:04: warning: in instantiation at spark-containers-functional-maps.ads:134 [-gnatw.a]
-test_map.ads:10:04: warning: in instantiation at spark-containers-formal-hashed_maps.ads:252 [-gnatw.a]
+test_map.ads:10:04: warning: in instantiation at spark-containers-formal-hashed_maps.ads:244 [-gnatw.a]
 test_map.ads:10:04: warning: check will fail at run time [-gnatw.a]
 test_map.ads:10:04: warning: in instantiation at spark-containers-functional-maps.ads:153 [-gnatw.a]
-test_map.ads:10:04: warning: in instantiation at spark-containers-formal-hashed_maps.ads:252 [-gnatw.a]
+test_map.ads:10:04: warning: in instantiation at spark-containers-formal-hashed_maps.ads:244 [-gnatw.a]
 test_map.ads:10:04: warning: check will fail at run time [-gnatw.a]
 test_map.ads:27:04: warning: in instantiation at spark-containers-functional-maps.ads:134 [-gnatw.a]
-test_map.ads:27:04: warning: in instantiation at spark-containers-formal-hashed_maps.ads:252 [-gnatw.a]
+test_map.ads:27:04: warning: in instantiation at spark-containers-formal-hashed_maps.ads:244 [-gnatw.a]
 test_map.ads:27:04: warning: check will fail at run time [-gnatw.a]
 test_map.ads:27:04: warning: in instantiation at spark-containers-functional-maps.ads:153 [-gnatw.a]
-test_map.ads:27:04: warning: in instantiation at spark-containers-formal-hashed_maps.ads:252 [-gnatw.a]
+test_map.ads:27:04: warning: in instantiation at spark-containers-formal-hashed_maps.ads:244 [-gnatw.a]
 test_map.ads:27:04: warning: check will fail at run time [-gnatw.a]
 test_map.ads:33:14: warning: subprogram "Run_Test" has no effect
 test_map.ads:35:14: warning: subprogram "Large_Test" has no effect

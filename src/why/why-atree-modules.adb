@@ -3367,6 +3367,17 @@ package body Why.Atree.Modules is
                   Module => AM,
                   Domain => EW_Term,
                   Typ    => EW_Bool_Type));
+
+            if Has_Init_Wrapper (E) then
+               Insert_Symbol
+                 (E, WNE_Dynamic_Invariant,
+                  New_Identifier
+                    (Symb   => NID ("dynamic_invariant_r"),
+                     Module => AM,
+                     Domain => EW_Term,
+                     Typ    => EW_Bool_Type),
+                  Relaxed_Init => True);
+            end if;
          end if;
 
          --  Add symbol for the function checking that the invariant of a type

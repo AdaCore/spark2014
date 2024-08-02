@@ -1,4 +1,4 @@
-with "gnatcoll";
+with "gnatcoll_core";
 with "gpr2";
 
 project GNATprove is
@@ -95,6 +95,8 @@ project GNATprove is
        "--no-gnatcheck");
       for Switches ("infer") use ("--disable-issue-type", "MEMORY_LEAK_ADA");
       for Switches ("inspector") use ("--legacy-level", "1", "-gnatws");
+
+      for Switches ("report code-climate") use ("--long-desc");
 
    end Analyzer;
 

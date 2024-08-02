@@ -1,0 +1,5 @@
+p1-child.ads:7:13: error: "List" cannot be used in SPARK
+p1-child.ads:7:13: error: access to incomplete or private type which needs an invariant check is not yet supported
+use_f.adb:4:19: info: assertion proved (CVC5: 1 VC)
+use_f.adb:5:19: medium: assertion might fail
+gnatprove: error during flow analysis and proof

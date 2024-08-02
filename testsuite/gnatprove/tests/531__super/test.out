@@ -1,0 +1,5 @@
+repro.adb:8:46: info: class-wide precondition is weaker than overridden one (Trivial: 1 VC)
+repro.adb:18:04: warning: analyzing unreferenced procedure "Call"
+repro.adb:18:14: warning: subprogram "Call" has no effect
+repro.adb:20:08: info: precondition proved (Trivial: 1 VC)
+repro.adb:21:14: medium: precondition might fail

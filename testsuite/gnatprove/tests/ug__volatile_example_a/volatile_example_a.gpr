@@ -5,7 +5,7 @@ project volatile_example_a is
    end Builder;
 
    package Compiler is
-      for Switches ("Ada") use ("-gnat2020");
+      for Switches ("Ada") use ("-gnat2022");
    end Compiler;
 
    package Prove is
