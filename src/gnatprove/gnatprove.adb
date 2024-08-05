@@ -64,10 +64,9 @@
 --      not done on these units.
 
 with Ada.Command_Line;
-with Ada.Directories;  use Ada.Directories;
+with Ada.Directories;
 with Ada.Environment_Variables;
 with Ada.Exceptions;   use Ada.Exceptions;
-with Ada.IO_Exceptions;
 with Ada.Strings.Unbounded;
 with Ada.Text_IO;      use Ada.Text_IO;
 with Call;             use Call;
@@ -439,20 +438,23 @@ procedure Gnatprove with SPARK_Mode is
 
       procedure Copy_Dir (Source_Dir, Target_Dir : Virtual_File) is
 
-         procedure Copy_File (Directory_Entry : Directory_Entry_Type);
+         procedure Copy_File
+           (Directory_Entry : Ada.Directories.Directory_Entry_Type);
          --  copy the file in Argument to Target_Dir
 
          ---------------
          -- Copy_File --
          ---------------
 
-         procedure Copy_File (Directory_Entry : Directory_Entry_Type) is
+         procedure Copy_File
+           (Directory_Entry : Ada.Directories.Directory_Entry_Type)
+         is
             use GNAT.OS_Lib;
             Success : Boolean;
             pragma Warnings (Off, Success);  --  modified and then unused
 
          begin
-            Copy_File (Full_Name (Directory_Entry),
+            Copy_File (Ada.Directories.Full_Name (Directory_Entry),
                        Target_Dir.Display_Full_Name,
                        Success,
                        Mode     => Overwrite,
@@ -461,10 +463,11 @@ procedure Gnatprove with SPARK_Mode is
 
       begin
          if Is_Directory (Source_Dir) then
-            Search
+            Ada.Directories.Search
               (Source_Dir.Display_Full_Name,
                Pattern => "*.ali",
-               Filter  => [Ordinary_File => True, others => False],
+               Filter  => [Ada.Directories.Ordinary_File => True,
+                           others                        => False],
                Process => Copy_File'Access);
          end if;
       end Copy_Dir;
@@ -520,7 +523,7 @@ procedure Gnatprove with SPARK_Mode is
 
    procedure Create_Dir_And_Parents (Dir : Virtual_File) is
    begin
-      if Exists (Dir.Display_Full_Name) then
+      if Ada.Directories.Exists (Dir.Display_Full_Name) then
          return;
       end if;
       declare
@@ -530,14 +533,7 @@ procedure Gnatprove with SPARK_Mode is
             Create_Dir_And_Parents (Par);
          end if;
       end;
-      Create_Directory (Dir.Display_Full_Name);
-   exception
-      when Ada.IO_Exceptions.Use_Error =>
-         Ada.Text_IO.Put_Line
-           (Ada.Text_IO.Standard_Error,
-            "when creating directory " & Dir.Display_Full_Name & ": "
-            & GNAT.OS_Lib.Errno_Message);
-         GNAT.OS_Lib.OS_Exit (1);
+      Create_Directory_Or_Exit (Dir.Display_Full_Name);
    end Create_Dir_And_Parents;
 
    ------------------
@@ -865,9 +861,9 @@ procedure Gnatprove with SPARK_Mode is
       Gpr_Val  : constant String := Value ("GPR_PROJECT_PATH", "");
       Gpr_Tool : constant String := Value ("GPR_TOOL", "");
       Libgnat  : constant String :=
-        Compose (SPARK_Install.Lib, "gnat");
+        Ada.Directories.Compose (SPARK_Install.Lib, "gnat");
       Sharegpr : constant String :=
-        Compose (SPARK_Install.Share, "gpr");
+        Ada.Directories.Compose (SPARK_Install.Share, "gpr");
    begin
       --  Unset various environmment variables which might confuse the
       --  compiler, gprbuild or why3.
@@ -1211,7 +1207,8 @@ procedure Gnatprove with SPARK_Mode is
 
       Editors  : constant JSON_Array := Get (Get (Config, "editors"));
       Provers  : constant JSON_Array := Get (Get (Config, "provers"));
-      Filename : constant String := Compose (Obj_Dir, "why3.conf");
+      Filename : constant String :=
+        Ada.Directories.Compose (Obj_Dir, "why3.conf");
 
    --  Start of processing for Write_Why3_Conf_File
 

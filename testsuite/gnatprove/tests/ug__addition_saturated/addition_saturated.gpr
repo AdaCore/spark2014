@@ -5,7 +5,7 @@ project addition_saturated is
    end Builder;
 
    package Compiler is
-      for Switches ("Ada") use ("-gnat2020", "-gnato13");
+      for Switches ("Ada") use ("-gnat2022", "-gnato13");
    end Compiler;
 
    package Prove is

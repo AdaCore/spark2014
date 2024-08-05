@@ -5,7 +5,7 @@ project Test is
    end Prove;
 
    package Compiler is
-      for Switches ("ada") use ("-gnat2020");
+      for Switches ("ada") use ("-gnat2022");
    end Compiler;
 
 end Test;

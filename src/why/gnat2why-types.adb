@@ -361,9 +361,10 @@ package body Gnat2Why.Types is
          Module : W_Module_Id)
       is
          procedure Create_Dynamic_Invariant
-           (E       : Type_Kind_Id;
-            Name    : W_Identifier_Id;
-            For_Acc : Boolean);
+           (E            : Type_Kind_Id;
+            Name         : W_Identifier_Id;
+            Relaxed_Init : Boolean;
+            For_Acc      : Boolean);
          --  Emit a declaration for the predicate symbol Name and define it to
          --  be the dynamic invariant for E. If For_Acc is true, split the
          --  definition into a declaration and a separate axiom to handle
@@ -372,11 +373,14 @@ package body Gnat2Why.Types is
          package Decl_Lists is new Ada.Containers.Doubly_Linked_Lists
            (W_Declaration_Id);
 
-         Loc_Incompl_Acc : Ada_To_Why_Ident.Map;
+         Loc_Incompl_Acc   : Ada_To_Why_Ident.Map;
          --  Map of all local symbols introduced for predicates of access to
          --  incomplete access types.
 
-         Axioms          : Decl_Lists.List;
+         Loc_Incompl_Acc_R : Ada_To_Why_Ident.Map;
+         --  Same as above but for init wrappers
+
+         Axioms            : Decl_Lists.List;
          --  Axioms for predicates of access to incomplete access types
 
          ------------------------------
@@ -384,9 +388,10 @@ package body Gnat2Why.Types is
          ------------------------------
 
          procedure Create_Dynamic_Invariant
-           (E       : Type_Kind_Id;
-            Name    : W_Identifier_Id;
-            For_Acc : Boolean)
+           (E            : Type_Kind_Id;
+            Name         : W_Identifier_Id;
+            Relaxed_Init : Boolean;
+            For_Acc      : Boolean)
          is
             Variables : Flow_Id_Sets.Set;
 
@@ -422,13 +427,19 @@ package body Gnat2Why.Types is
                                       Base_Name => "do_typ_inv");
                --  Should we include the non local type invariants
 
+               Main_Ty  : constant W_Type_Id :=
+                 (if Relaxed_Init then EW_Abstract (E, Relaxed_Init => True)
+                  else Type_Of_Node (E));
+
                Main_Arg : constant W_Identifier_Id :=
-                 New_Temp_Identifier (Typ       => Type_Of_Node (E),
-                                      Base_Name => "expr");
+                 New_Temp_Identifier
+                   (Typ       => Main_Ty,
+                    Base_Name => "expr");
                --  Expression on which we want to assume the property
 
-               Def             : W_Pred_Id;
-               New_Incompl_Acc : Ada_To_Why_Ident.Map;
+               Def               : W_Pred_Id;
+               New_Incompl_Acc   : Ada_To_Why_Ident.Map;
+               New_Incompl_Acc_R : Ada_To_Why_Ident.Map;
 
             begin
                --  Push variable names to Symbol_Table
@@ -441,21 +452,23 @@ package body Gnat2Why.Types is
                --  on the scope when the dynamic invariant is used.
 
                Compute_Dynamic_Invariant
-                 (Expr             => +Main_Arg,
-                  Ty               => E,
-                  Initialized      => +Init_Arg,
-                  Only_Var         => +Ovar_Arg,
-                  Top_Predicate    => +Top_Arg,
-                  All_Global_Inv   => +Inv_Arg,
-                  Inv_Scop         => Empty,
-                  Inv_Subp         => Empty,
-                  Params           => Logic_Params,
-                  Use_Pred         => False,
-                  New_Preds_Module => Module,
-                  T                => Def,
-                  Loc_Incompl_Acc  => Loc_Incompl_Acc,
-                  New_Incompl_Acc  => New_Incompl_Acc,
-                  Expand_Incompl   => True);
+                 (Expr              => +Main_Arg,
+                  Ty                => E,
+                  Initialized       => +Init_Arg,
+                  Only_Var          => +Ovar_Arg,
+                  Top_Predicate     => +Top_Arg,
+                  All_Global_Inv    => +Inv_Arg,
+                  Inv_Scop          => Empty,
+                  Inv_Subp          => Empty,
+                  Params            => Logic_Params,
+                  Use_Pred          => False,
+                  New_Preds_Module  => Module,
+                  T                 => Def,
+                  Loc_Incompl_Acc   => Loc_Incompl_Acc,
+                  New_Incompl_Acc   => New_Incompl_Acc,
+                  Loc_Incompl_Acc_R => Loc_Incompl_Acc_R,
+                  New_Incompl_Acc_R => New_Incompl_Acc_R,
+                  Expand_Incompl    => True);
 
                --  Copy new predicate symbols to the map of local symbols
 
@@ -464,14 +477,28 @@ package body Gnat2Why.Types is
                     (Ada_To_Why_Ident.Key (C), Ada_To_Why_Ident.Element (C));
                end loop;
 
+               for C in New_Incompl_Acc_R.Iterate loop
+                  Loc_Incompl_Acc_R.Insert
+                    (Ada_To_Why_Ident.Key (C), Ada_To_Why_Ident.Element (C));
+               end loop;
+
                --  Introduce function symbols (with no definitions) for
                --  new predicate symbols. Store their axioms in Axioms.
 
                for C in New_Incompl_Acc.Iterate loop
                   Create_Dynamic_Invariant
-                    (E       => Ada_To_Why_Ident.Key (C),
-                     Name    => Ada_To_Why_Ident.Element (C),
-                     For_Acc => True);
+                    (E            => Ada_To_Why_Ident.Key (C),
+                     Name         => Ada_To_Why_Ident.Element (C),
+                     Relaxed_Init => False,
+                     For_Acc      => True);
+               end loop;
+
+               for C in New_Incompl_Acc_R.Iterate loop
+                  Create_Dynamic_Invariant
+                    (E            => Ada_To_Why_Ident.Key (C),
+                     Name         => Ada_To_Why_Ident.Element (C),
+                     Relaxed_Init => True,
+                     For_Acc      => True);
                end loop;
 
                declare
@@ -504,7 +531,7 @@ package body Gnat2Why.Types is
 
                      Axioms.Append
                        (New_Defining_Bool_Axiom
-                          (Fun_Name => Full_Name (E),
+                          (Fun_Name => Get (Get_Symb (Get_Name (Name))).all,
                            Name     => Name,
                            Binders  => Binders,
                            Dep_Kind => EW_Axdep_Pred,
@@ -532,7 +559,19 @@ package body Gnat2Why.Types is
 
       begin
          Create_Dynamic_Invariant
-           (E, To_Local (E_Symb (E, WNE_Dynamic_Invariant)), False);
+           (E            => E,
+            Name         => To_Local (E_Symb (E, WNE_Dynamic_Invariant)),
+            Relaxed_Init => False,
+            For_Acc      => False);
+
+         if Has_Init_Wrapper (E) then
+            Create_Dynamic_Invariant
+              (E            => E,
+               Name         => To_Local
+                 (E_Symb (E, WNE_Dynamic_Invariant, Relaxed_Init => True)),
+               Relaxed_Init => True,
+               For_Acc      => False);
+         end if;
 
          --  Emit axioms for local predicate symbols
 
@@ -890,7 +929,10 @@ package body Gnat2Why.Types is
       --  We do not generate the dynamic property for Itypes as they may
       --  depend on locally defined constants such as 'Old.
 
-      if not Is_Itype (E) then
+      if not Is_Itype (E)
+        and then not Is_Standard_Boolean_Type (E)
+        and then E /= Universal_Fixed
+      then
          Create_Dynamic_Invariant (Th, E, E_Module (E, Axiom));
       end if;
 

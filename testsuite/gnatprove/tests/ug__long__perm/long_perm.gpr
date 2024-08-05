@@ -7,7 +7,7 @@ project long_perm is
    end Builder;
 
    package Compiler is
-      for Switches ("Ada") use ("-gnat2020", "-gnateDSPARK_BODY_MODE=Off");
+      for Switches ("Ada") use ("-gnat2022", "-gnateDSPARK_BODY_MODE=Off");
    end Compiler;
 
    package Prove is

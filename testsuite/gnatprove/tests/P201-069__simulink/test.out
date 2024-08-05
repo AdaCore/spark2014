@@ -88,10 +88,10 @@ simulink_functions.adb:54:66: info: type is suitable as source for unchecked con
 simulink_functions.adb:55:67: info: type is suitable for unchecked conversion (Trivial)
 simulink_functions.adb:171:47: medium: overflow check might fail [reason for check: value must fit in a 32-bits machine integer] [possible fix: subprogram at simulink_functions.ads:55 should mention F in a precondition]
 simulink_functions.adb:180:52: medium: overflow check might fail [reason for check: value must fit in a 64-bits machine integer] [possible fix: subprogram at simulink_functions.ads:56 should mention F in a precondition]
-simulink_functions.adb:189:47: high: precondition might fail (e.g. when F = 0.0) [possible fix: subprogram at simulink_functions.ads:58 should mention F in a precondition]
-simulink_functions.adb:199:14: high: precondition might fail (e.g. when F = 0.0) [possible fix: subprogram at simulink_functions.ads:59 should mention F in a precondition]
-simulink_functions.adb:208:47: high: precondition might fail (e.g. when F = 0.0) [possible fix: subprogram at simulink_functions.ads:61 should mention F in a precondition]
-simulink_functions.adb:219:14: high: precondition might fail (e.g. when F = 0.0) [possible fix: subprogram at simulink_functions.ads:62 should mention F in a precondition]
+simulink_functions.adb:189:47: high: precondition might fail (e.g. when F = -0.0) [possible fix: subprogram at simulink_functions.ads:58 should mention F in a precondition]
+simulink_functions.adb:199:14: high: precondition might fail (e.g. when F = -0.0) [possible fix: subprogram at simulink_functions.ads:59 should mention F in a precondition]
+simulink_functions.adb:208:47: high: precondition might fail (e.g. when F = -0.0) [possible fix: subprogram at simulink_functions.ads:61 should mention F in a precondition]
+simulink_functions.adb:219:14: high: precondition might fail (e.g. when F = -0.0) [possible fix: subprogram at simulink_functions.ads:62 should mention F in a precondition]
 simulink_functions.adb:234:40: high: overflow check might fail, cannot prove upper bound for abs (Left) (e.g. when Left = Integer_8'First) [reason for check: result of absolute value must fit in a 8-bits machine integer] [possible fix: add precondition (abs (Left) <= 127) to subprogram at simulink_functions.ads:64]
 simulink_functions.adb:234:51: info: division check proved (CVC5: 1 VC)
 simulink_functions.adb:234:51: info: range check proved (CVC5: 2 VC)

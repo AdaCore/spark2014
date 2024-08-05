@@ -880,7 +880,7 @@ def prove_all(
     steps=None,
     procs=parallel_procs,
     vc_timeout=None,
-    memlimit=None,
+    memlimit=2000,
     mode="all",
     counterexample=True,
     check_counterexamples=True,

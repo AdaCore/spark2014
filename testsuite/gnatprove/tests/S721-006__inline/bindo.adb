@@ -21,10 +21,10 @@ package body Bindo is
      (G    : Library_Graph;
       Kind : Library_Graph_Edge_Kind)
    is
-      Count : Natural renames G.Counts (Kind);
+
 
    begin
-      Count := Count - 1;
+      G.Counts (Kind) := G.Counts (Kind) - 1;
    end Decrement_Library_Graph_Edge_Count;
 
    -----------------

@@ -155,12 +155,11 @@ package Flow is
       --  exception is raised, i.e. Exceptional_Cases are checked, but
       --  not postconditions.
 
-      CFG                : Flow_Graphs.Graph;
-      CFG_With_Dead_Code : Flow_Graphs.Graph;
-      DDG                : Flow_Graphs.Graph;
-      CDG                : Flow_Graphs.Graph;
-      TDG                : Flow_Graphs.Graph;
-      PDG                : Flow_Graphs.Graph;
+      CFG : Flow_Graphs.Graph;
+      DDG : Flow_Graphs.Graph;
+      CDG : Flow_Graphs.Graph;
+      TDG : Flow_Graphs.Graph;
+      PDG : Flow_Graphs.Graph;
       --  The graphs
 
       Atr : Attribute_Maps.Map;
