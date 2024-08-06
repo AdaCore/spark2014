@@ -1,9 +1,3 @@
-test.adb:6:04: warning: in instantiation at spark-containers-functional-maps.ads:134 [-gnatw.a]
-test.adb:6:04: warning: in instantiation at spark-containers-formal-unbounded_ordered_maps.ads:257 [-gnatw.a]
-test.adb:6:04: warning: check will fail at run time [-gnatw.a]
-test.adb:6:04: warning: in instantiation at spark-containers-functional-maps.ads:153 [-gnatw.a]
-test.adb:6:04: warning: in instantiation at spark-containers-formal-unbounded_ordered_maps.ads:257 [-gnatw.a]
-test.adb:6:04: warning: check will fail at run time [-gnatw.a]
 test.adb:10:04: info: initialization of "M" proved
 test.adb:17:19: info: assertion proved (CVC5: 1 VC)
 test.adb:18:19: info: assertion proved (CVC5: 1 VC)
@@ -14,3 +8,9 @@ test.adb:22:04: info: precondition proved (CVC5: 2 VC)
 test.adb:26:22: info: assertion proved (CVC5: 1 VC)
 test.adb:27:22: info: assertion proved (Z3: 1 VC)
 test.adb:27:22: info: precondition proved (CVC5: 1 VC)
+test.adb:6:04: warning: check will fail at run time [-gnatw.a]
+test.adb:6:04: warning: check will fail at run time [-gnatw.a]
+test.adb:6:04: warning: in instantiation at spark-containers-formal-unbounded_ordered_maps.ads:257 [-gnatw.a]
+test.adb:6:04: warning: in instantiation at spark-containers-formal-unbounded_ordered_maps.ads:257 [-gnatw.a]
+test.adb:6:04: warning: in instantiation at spark-containers-functional-maps.ads:134 [-gnatw.a]
+test.adb:6:04: warning: in instantiation at spark-containers-functional-maps.ads:153 [-gnatw.a]

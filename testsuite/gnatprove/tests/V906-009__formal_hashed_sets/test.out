@@ -172,24 +172,6 @@ test_set.adb:275:22: info: assertion proved
 test_set.adb:277:33: info: loop invariant initialization proved
 test_set.adb:277:33: info: loop invariant preservation proved
 test_set.adb:277:75: info: range check proved
-test.adb:9:04: warning: in instantiation at spark-containers-functional-maps.ads:134 [-gnatw.a]
-test.adb:9:04: warning: in instantiation at spark-containers-formal-hashed_sets.ads:291 [-gnatw.a]
-test.adb:9:04: warning: check will fail at run time [-gnatw.a]
-test.adb:9:04: warning: in instantiation at spark-containers-functional-maps.ads:153 [-gnatw.a]
-test.adb:9:04: warning: in instantiation at spark-containers-formal-hashed_sets.ads:291 [-gnatw.a]
-test.adb:9:04: warning: check will fail at run time [-gnatw.a]
-test_set.ads:10:04: warning: in instantiation at spark-containers-functional-maps.ads:134 [-gnatw.a]
-test_set.ads:10:04: warning: in instantiation at spark-containers-formal-hashed_sets.ads:291 [-gnatw.a]
-test_set.ads:10:04: warning: check will fail at run time [-gnatw.a]
-test_set.ads:10:04: warning: in instantiation at spark-containers-functional-maps.ads:153 [-gnatw.a]
-test_set.ads:10:04: warning: in instantiation at spark-containers-formal-hashed_sets.ads:291 [-gnatw.a]
-test_set.ads:10:04: warning: check will fail at run time [-gnatw.a]
-test_set.ads:26:04: warning: in instantiation at spark-containers-functional-maps.ads:134 [-gnatw.a]
-test_set.ads:26:04: warning: in instantiation at spark-containers-formal-hashed_sets.ads:291 [-gnatw.a]
-test_set.ads:26:04: warning: check will fail at run time [-gnatw.a]
-test_set.ads:26:04: warning: in instantiation at spark-containers-functional-maps.ads:153 [-gnatw.a]
-test_set.ads:26:04: warning: in instantiation at spark-containers-formal-hashed_sets.ads:291 [-gnatw.a]
-test_set.ads:26:04: warning: check will fail at run time [-gnatw.a]
 test_set.adb:278:33: info: loop invariant initialization proved
 test_set.adb:278:33: info: loop invariant preservation proved
 test_set.adb:280:10: info: precondition proved
@@ -260,3 +242,21 @@ test_set.ads:31:13: info: implicit aspect Always_Terminates on "Get_F" has been 
 test_set.ads:32:17: info: postcondition proved
 test_set.ads:41:14: warning: subprogram "Run_Test" has no effect
 test_set.ads:43:14: warning: subprogram "Large_Test" has no effect
+test.adb:9:04: warning: check will fail at run time [-gnatw.a]
+test.adb:9:04: warning: check will fail at run time [-gnatw.a]
+test.adb:9:04: warning: in instantiation at spark-containers-formal-hashed_sets.ads:291 [-gnatw.a]
+test.adb:9:04: warning: in instantiation at spark-containers-formal-hashed_sets.ads:291 [-gnatw.a]
+test.adb:9:04: warning: in instantiation at spark-containers-functional-maps.ads:134 [-gnatw.a]
+test.adb:9:04: warning: in instantiation at spark-containers-functional-maps.ads:153 [-gnatw.a]
+test_set.ads:10:04: warning: check will fail at run time [-gnatw.a]
+test_set.ads:10:04: warning: check will fail at run time [-gnatw.a]
+test_set.ads:10:04: warning: in instantiation at spark-containers-formal-hashed_sets.ads:291 [-gnatw.a]
+test_set.ads:10:04: warning: in instantiation at spark-containers-formal-hashed_sets.ads:291 [-gnatw.a]
+test_set.ads:10:04: warning: in instantiation at spark-containers-functional-maps.ads:134 [-gnatw.a]
+test_set.ads:10:04: warning: in instantiation at spark-containers-functional-maps.ads:153 [-gnatw.a]
+test_set.ads:26:04: warning: check will fail at run time [-gnatw.a]
+test_set.ads:26:04: warning: check will fail at run time [-gnatw.a]
+test_set.ads:26:04: warning: in instantiation at spark-containers-formal-hashed_sets.ads:291 [-gnatw.a]
+test_set.ads:26:04: warning: in instantiation at spark-containers-formal-hashed_sets.ads:291 [-gnatw.a]
+test_set.ads:26:04: warning: in instantiation at spark-containers-functional-maps.ads:134 [-gnatw.a]
+test_set.ads:26:04: warning: in instantiation at spark-containers-functional-maps.ads:153 [-gnatw.a]
