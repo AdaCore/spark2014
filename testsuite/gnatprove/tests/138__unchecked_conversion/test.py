@@ -1,8 +1,8 @@
 from subprocess import call
-from test_support import prove_all
+from test_support import gprbuild, prove_all
 
-call(["gnatmake", "-q", "-gnata", "modular.adb"])
+gprbuild(["-q", "-gnata", "modular.adb"])
 call(["./modular"])
-call(["gnatmake", "-q", "-gnata", "signed.adb"])
+gprbuild(["-q", "-gnata", "signed.adb"])
 call(["./signed"])
 prove_all()

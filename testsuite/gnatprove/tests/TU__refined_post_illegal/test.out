@@ -1,10 +1,3 @@
-gcc -c -gnata main.adb
-gcc -c -gnata refined_post_illegal_3.adb
-gnatbind -x main.ali
-gnatlink main.ali
-gcc -c -gnata main2.adb
-gnatbind -x main2.ali
-gnatlink main2.ali
 
 raised ADA.ASSERTIONS.ASSERTION_ERROR : Refined_Post failed at refined_post_illegal_3.adb:5
 

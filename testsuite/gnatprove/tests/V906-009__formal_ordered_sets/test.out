@@ -172,24 +172,6 @@ test_set.adb:282:07: info: precondition proved
 test_set.adb:287:25: info: assertion proved
 test_set.adb:288:25: info: assertion proved
 test_set.adb:291:25: info: assertion proved
-test.adb:5:04: warning: in instantiation at spark-containers-functional-maps.ads:134 [-gnatw.a]
-test.adb:5:04: warning: in instantiation at spark-containers-formal-ordered_sets.ads:325 [-gnatw.a]
-test.adb:5:04: warning: check will fail at run time [-gnatw.a]
-test.adb:5:04: warning: in instantiation at spark-containers-functional-maps.ads:153 [-gnatw.a]
-test.adb:5:04: warning: in instantiation at spark-containers-formal-ordered_sets.ads:325 [-gnatw.a]
-test.adb:5:04: warning: check will fail at run time [-gnatw.a]
-test_set.ads:8:04: warning: in instantiation at spark-containers-functional-maps.ads:134 [-gnatw.a]
-test_set.ads:8:04: warning: in instantiation at spark-containers-formal-ordered_sets.ads:325 [-gnatw.a]
-test_set.ads:8:04: warning: check will fail at run time [-gnatw.a]
-test_set.ads:8:04: warning: in instantiation at spark-containers-functional-maps.ads:153 [-gnatw.a]
-test_set.ads:8:04: warning: in instantiation at spark-containers-formal-ordered_sets.ads:325 [-gnatw.a]
-test_set.ads:8:04: warning: check will fail at run time [-gnatw.a]
-test_set.ads:21:04: warning: in instantiation at spark-containers-functional-maps.ads:134 [-gnatw.a]
-test_set.ads:21:04: warning: in instantiation at spark-containers-formal-ordered_sets.ads:325 [-gnatw.a]
-test_set.ads:21:04: warning: check will fail at run time [-gnatw.a]
-test_set.ads:21:04: warning: in instantiation at spark-containers-functional-maps.ads:153 [-gnatw.a]
-test_set.ads:21:04: warning: in instantiation at spark-containers-formal-ordered_sets.ads:325 [-gnatw.a]
-test_set.ads:21:04: warning: check will fail at run time [-gnatw.a]
 
 raised ADA.ASSERTIONS.ASSERTION_ERROR : failed postcondition from spark-containers-formal-ordered_sets.ads:590 instantiated at test_set.ads:8
 test_set.adb:297:22: info: assertion proved
@@ -266,3 +248,21 @@ test_set.ads:29:17: info: postcondition proved
 test_set.ads:37:36: info: data dependencies proved
 test_set.ads:39:30: info: data dependencies proved
 test_set.ads:41:34: info: data dependencies proved
+test.adb:5:04: warning: check will fail at run time [-gnatw.a]
+test.adb:5:04: warning: check will fail at run time [-gnatw.a]
+test.adb:5:04: warning: in instantiation at spark-containers-formal-ordered_sets.ads:325 [-gnatw.a]
+test.adb:5:04: warning: in instantiation at spark-containers-formal-ordered_sets.ads:325 [-gnatw.a]
+test.adb:5:04: warning: in instantiation at spark-containers-functional-maps.ads:134 [-gnatw.a]
+test.adb:5:04: warning: in instantiation at spark-containers-functional-maps.ads:153 [-gnatw.a]
+test_set.ads:8:04: warning: check will fail at run time [-gnatw.a]
+test_set.ads:8:04: warning: check will fail at run time [-gnatw.a]
+test_set.ads:8:04: warning: in instantiation at spark-containers-formal-ordered_sets.ads:325 [-gnatw.a]
+test_set.ads:8:04: warning: in instantiation at spark-containers-formal-ordered_sets.ads:325 [-gnatw.a]
+test_set.ads:8:04: warning: in instantiation at spark-containers-functional-maps.ads:134 [-gnatw.a]
+test_set.ads:8:04: warning: in instantiation at spark-containers-functional-maps.ads:153 [-gnatw.a]
+test_set.ads:21:04: warning: check will fail at run time [-gnatw.a]
+test_set.ads:21:04: warning: check will fail at run time [-gnatw.a]
+test_set.ads:21:04: warning: in instantiation at spark-containers-formal-ordered_sets.ads:325 [-gnatw.a]
+test_set.ads:21:04: warning: in instantiation at spark-containers-formal-ordered_sets.ads:325 [-gnatw.a]
+test_set.ads:21:04: warning: in instantiation at spark-containers-functional-maps.ads:134 [-gnatw.a]
+test_set.ads:21:04: warning: in instantiation at spark-containers-functional-maps.ads:153 [-gnatw.a]

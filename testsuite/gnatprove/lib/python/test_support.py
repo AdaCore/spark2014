@@ -706,6 +706,13 @@ def gcc(src, opt=None):
     print_sorted(str.splitlines(process.out))
 
 
+def gprbuild(opt=None):
+    if opt is None:
+        opt = []
+    process = Run(["gprbuild", "-q"] + opt)
+    print_sorted(str.splitlines(process.out))
+
+
 def spark_install_path():
     """the location of the SPARK install"""
     exec_loc = which("gnatprove")
@@ -762,31 +769,7 @@ def create_sparklib():
         f_prj.write("end SPARKlib;\n")
 
 
-def gnatprove(
-    opt=None,
-    no_fail=False,
-    no_output=False,
-    filter_output=None,
-    cache_allowed=True,
-    sort_output=True,
-    exit_status=None,
-    ada=default_ada,
-    sparklib=False,
-    filter_sparklib=True,
-    info=True,
-):
-    """Invoke gnatprove, and in case of success return list of output lines
-
-    PARAMETERS
-    opt: options to give to gnatprove
-    no_output: do not display gnatprove output, only of interest for testing
-               exit status
-    filter_output: regex used to remove output from gnatprove
-    no_fail: if set, then we make sure no unproved checks are in the output
-    exit_status: if set, expected value of the exit status from gnatprove
-    """
-    if opt is None:
-        opt = ["-P", default_project]
+def generate_project_file(ada=default_ada, sparklib=False):
     # generate an empty project file if not present already
     if not os.path.isfile(default_project):
         with open(default_project, "w") as f_prj:
@@ -812,6 +795,35 @@ def gnatprove(
             f_adc.write("pragma SPARK_Mode (On);\n")
             f_adc.write("pragma Profile (Ravenscar);\n")
             f_adc.write("pragma Partition_Elaboration_Policy (Sequential);\n")
+
+
+def gnatprove(
+    opt=None,
+    no_fail=False,
+    no_output=False,
+    filter_output=None,
+    cache_allowed=True,
+    sort_output=True,
+    exit_status=None,
+    ada=default_ada,
+    sparklib=False,
+    filter_sparklib=True,
+    info=True,
+):
+    """Invoke gnatprove, and in case of success return list of output lines
+
+    PARAMETERS
+    opt: options to give to gnatprove
+    no_output: do not display gnatprove output, only of interest for testing
+               exit status
+    filter_output: regex used to remove output from gnatprove
+    no_fail: if set, then we make sure no unproved checks are in the output
+    exit_status: if set, expected value of the exit status from gnatprove
+    """
+    if opt is None:
+        opt = ["-P", default_project]
+
+    generate_project_file(ada, sparklib)
 
     # Generate sparklib.gpr if the project depends on SPARKlib
     if sparklib:

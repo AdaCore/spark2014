@@ -1,5 +1,5 @@
 from subprocess import call
-from test_support import prove_all
+from test_support import prove_all, gprbuild
 import os
 
 contains_manual_proof = False
@@ -12,6 +12,5 @@ def replay():
 
 if __name__ == "__main__":
     prove_all(replay=True, sparklib=True)
-
-    call(["gprbuild", "-q", "-P", "test.gpr"])
+    gprbuild(["-q", "-P", "test.gpr"])
     call(["./obj/test"])
