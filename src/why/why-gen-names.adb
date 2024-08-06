@@ -986,6 +986,8 @@ package body Why.Gen.Names is
          when WNE_Pointer_Value               => "__pointer_value",
          when WNE_Close                       => "__close",
          when WNE_Open                        => "__open",
+         when WNE_Static_Constraint           => "__static_constraint",
+         when WNE_Dummy_Abstr                 => "__dummy_abstr",
          when WNE_Move_Tree                   => "__move_tree",
          when WNE_Move_Tree_Ptr_Is_Moved      => "rec__is_moved__",
          when WNE_Move_Tree_Ptr_Value         => "rec__value__",

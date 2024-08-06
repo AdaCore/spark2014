@@ -100,7 +100,8 @@ def replay_test(args, testname):
     try:
         print("switching to", d)
         os.chdir(d)
-        subprocess.run(["../../lib/python/replay.py", "-j", str(args.procs)])
+        cmd = os.path.dirname(__file__) + "/lib/python/replay.py"
+        subprocess.run([cmd, "-j", str(args.procs)])
     finally:
         os.chdir(curdir)
 

@@ -15,4 +15,5 @@ This section describes the environment variables that affect how |GNATprove| ope
 The following environment variables are for internal use, or use by developers,
 and shouldn't be set when |GNATProve| is run:
 
-* ``GNSA_ROOT``, ``GNAT2WHY_RAC_INFO``, ``GNAT2WHY_RAC_TRACE``
+* ``GNSA_ROOT``, ``GNAT2WHY_RAC_INFO``, ``GNAT2WHY_RAC_TRACE``,
+  ``GNATPROVE_SOCKET``, ``GNATPROVE_SEMAPHORE``

@@ -24,7 +24,7 @@ dealloc.adb:61:07: medium: resource or memory leak might occur
 dealloc.adb:67:07: info: absence of resource or memory leak at end of scope proved (CVC5: 1 VC)
 dealloc.adb:68:07: info: absence of resource or memory leak at end of scope proved (CVC5: 1 VC)
 dealloc.adb:69:07: info: absence of resource or memory leak at end of scope proved (CVC5: 1 VC)
-dealloc.adb:70:07: info: absence of resource or memory leak at end of scope proved (CVC5: 1 VC)
+dealloc.adb:70:07: info: absence of resource or memory leak at end of scope proved (Z3: 1 VC)
 dealloc.adb:70:07: info: initialization of "D" proved
 dealloc.adb:71:07: info: absence of resource or memory leak at end of scope proved (CVC5: 1 VC)
 dealloc.adb:71:07: info: initialization of "E" proved
@@ -207,6 +207,7 @@ pointers.adb:117:22: info: postcondition proved (Trivial: 1 VC)
 pointers.adb:120:14: info: absence of resource or memory leak proved (CVC5: 1 VC)
 pointers.adb:121:14: info: absence of resource or memory leak proved (CVC5: 1 VC)
 pointers.adb:125:16: info: implicit aspect Always_Terminates on "Alloc" has been proved, subprogram will terminate
+pointers.adb:125:16: info: implicit function contract might not be available on calls from enclosing unit
 pointers.adb:126:10: info: absence of resource or memory leak at end of scope proved (CVC5: 1 VC)
 pointers.adb:132:11: info: absence of resource or memory leak proved (CVC5: 1 VC)
 pointers.adb:133:11: info: absence of resource or memory leak proved (CVC5: 1 VC)
@@ -221,7 +222,7 @@ pointers.adb:143:16: info: absence of resource or memory leak proved (CVC5: 1 VC
 pointers.adb:145:09: medium: resource or memory leak might occur
 pointers.adb:146:22: info: assertion proved (CVC5: 1 VC)
 pointers.adb:147:22: info: assertion proved (CVC5: 1 VC)
-pointers.adb:148:15: info: absence of resource or memory leak proved (CVC5: 1 VC)
+pointers.adb:148:15: info: absence of resource or memory leak proved (Z3: 1 VC)
 pointers.adb:150:11: info: absence of resource or memory leak proved (Z3: 1 VC)
 pointers.adb:150:14: high: "A.Q.Z" is not initialized
 pointers.adb:151:11: info: absence of resource or memory leak proved (Z3: 1 VC)

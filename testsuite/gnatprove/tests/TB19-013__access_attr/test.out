@@ -10,8 +10,10 @@ test_access.adb:26:13: info: function contract might not be available on calls f
 test_access.adb:26:13: info: implicit aspect Always_Terminates on "F_Obs" has been proved, subprogram will terminate
 test_access.adb:27:14: info: postcondition proved (CVC5: 1 VC)
 test_access.adb:33:13: info: implicit aspect Always_Terminates on "At_End" has been proved, subprogram will terminate
+test_access.adb:33:13: info: implicit function contract might not be available on calls from enclosing unit
 test_access.adb:33:77: info: dynamic accessibility check proved (Trivial)
 test_access.adb:38:13: info: implicit aspect Always_Terminates on "At_End" has been proved, subprogram will terminate
+test_access.adb:38:13: info: implicit function contract might not be available on calls from enclosing unit
 test_access.adb:38:85: info: dynamic accessibility check proved (Trivial)
 test_access.adb:43:13: info: function contract might not be available on calls from enclosing unit
 test_access.adb:43:13: info: implicit aspect Always_Terminates on "F_Bor" has been proved, subprogram will terminate

@@ -6139,7 +6139,7 @@ package body Gnat2Why.Expr is
 
          if Can_Never_Be_Null (Ty_Ext) then
             T := New_And_Pred
-              (Left   => New_Conditional
+              (Left  => New_Conditional
                  (Condition => Pred_Of_Boolean_Term (Initialized),
                   Then_Part => New_Not
                     (Right  => Pred_Of_Boolean_Term
@@ -6148,23 +6148,36 @@ package body Gnat2Why.Expr is
                            Field => M_Subprogram_Access.Rec_Is_Null,
                            Typ   => EW_Bool_Type))),
                   Typ       => EW_Bool_Type),
-               Right  => T);
+               Right => T);
          end if;
 
-      elsif Is_Access_Type (Ty_Ext) and then Can_Never_Be_Null (Ty_Ext) then
+      elsif Is_Access_Type (Ty_Ext) then
 
          --  Only assume that an object with null exclusion is not null if it
          --  is initialized. This is the case in most cases, since access types
          --  are initialized by default. However, out parameters might not be
          --  valid values of the type.
 
-         T := New_Conditional
-           (Condition => Pred_Of_Boolean_Term (Initialized),
-            Then_Part => New_Not
-              (Right  => Pred_Of_Boolean_Term
-                   (New_Pointer_Is_Null_Access (E    => Ty_Ext,
-                                                Name => Expr))),
-            Typ       => EW_Bool_Type);
+         if Can_Never_Be_Null (Ty_Ext) then
+            T := New_Conditional
+              (Condition => Pred_Of_Boolean_Term (Initialized),
+               Then_Part => New_Not
+                 (Right  => Pred_Of_Boolean_Term
+                      (New_Pointer_Is_Null_Access (E    => Ty_Ext,
+                                                   Name => Expr))),
+               Typ       => EW_Bool_Type);
+
+         --  Access to object types have an invariant which fix the designated
+         --  value when the pointer is null (so null pointers are logically
+         --  equal). Assume it here.
+
+         else
+            T := New_Call
+              (Name => E_Symb
+                 (Ty_Ext, WNE_Dynamic_Property,
+                  Relaxed_Init => Get_Relaxed_Init (Get_Type (+Expr))),
+               Args => (1 => +Expr));
+         end if;
 
       --  Do not assume bounds of arrays and discriminants if Only_Var is
       --  statically True.
@@ -6423,6 +6436,17 @@ package body Gnat2Why.Expr is
         and then Type_Needs_Dynamic_Invariant
           (Directly_Designated_Type (Ty_Ext))
       then
+
+         --  If the designated type is incomplete and its dynamic invariant is
+         --  entirely static, it will be assumed as part of the incomplete type
+         --  declaration. Ignore it here.
+
+         if Designates_Incomplete_Type (Repr_Pointer_Type (Ty_Ext))
+           and then Type_Has_Static_Constraints
+             (Directly_Designated_Type (Ty_Ext))
+         then
+            null;
+
          --  For types designating an incomplete type, we cannot always assume
          --  the dynamic property of the designated type as they may be
          --  recursive. If Expand_Incompl is false, we use specific dynamic
@@ -6436,7 +6460,7 @@ package body Gnat2Why.Expr is
          --  these predicates for Itypes which do not have a preliminary
          --  declaration. We have never seen a case where this happens though.
 
-         if Designates_Incomplete_Type (Repr_Pointer_Type (Ty_Ext))
+         elsif Designates_Incomplete_Type (Repr_Pointer_Type (Ty_Ext))
            and then not Expand_Incompl
          then
 
@@ -6489,21 +6513,21 @@ package body Gnat2Why.Expr is
                end if;
 
                Dyn_Inv_Pos :=
-                 (if Relaxed_Init then Loc_Incompl_Acc_R.Find (Rep_Ty_Ext)
-                  else Loc_Incompl_Acc.Find (Rep_Ty_Ext));
+                 (if Relaxed_Init then Loc_Incompl_Acc_R.Find (Des_Ty)
+                  else Loc_Incompl_Acc.Find (Des_Ty));
 
                if not Has_Element (Dyn_Inv_Pos) then
                   Dyn_Inv_Pos :=
-                    (if Relaxed_Init then New_Incompl_Acc_R.Find (Rep_Ty_Ext)
-                     else New_Incompl_Acc.Find (Rep_Ty_Ext));
+                    (if Relaxed_Init then New_Incompl_Acc_R.Find (Des_Ty)
+                     else New_Incompl_Acc.Find (Des_Ty));
 
                   --  Search in the global map
 
                   if not Has_Element (Dyn_Inv_Pos) then
                      Dyn_Inv_Pos :=
                        (if Relaxed_Init
-                        then Incompl_Access_Dyn_Inv_Map_R.Find (Rep_Ty_Ext)
-                        else Incompl_Access_Dyn_Inv_Map.Find (Rep_Ty_Ext));
+                        then Incompl_Access_Dyn_Inv_Map_R.Find (Des_Ty)
+                        else Incompl_Access_Dyn_Inv_Map.Find (Des_Ty));
 
                      --  If it was not found and we are allowed to introduce
                      --  new declarations (New_Preds_Module is set), introduce
@@ -6523,15 +6547,15 @@ package body Gnat2Why.Expr is
                         begin
                            if Relaxed_Init then
                               Incompl_Access_Dyn_Inv_Map_R.Insert
-                                (Rep_Ty_Ext, Pred_Name);
+                                (Des_Ty, Pred_Name);
                               New_Incompl_Acc_R.Insert
-                                (Rep_Ty_Ext, To_Local (Pred_Name),
+                                (Des_Ty, To_Local (Pred_Name),
                                  Dyn_Inv_Pos, Inserted);
                            else
                               Incompl_Access_Dyn_Inv_Map.Insert
-                                (Rep_Ty_Ext, Pred_Name);
+                                (Des_Ty, Pred_Name);
                               New_Incompl_Acc.Insert
-                                (Rep_Ty_Ext, To_Local (Pred_Name),
+                                (Des_Ty, To_Local (Pred_Name),
                                  Dyn_Inv_Pos, Inserted);
                            end if;
                         end;
@@ -6556,47 +6580,59 @@ package body Gnat2Why.Expr is
                      Args    : W_Expr_Array (1 .. Num_B);
                      Main_Ty : constant W_Type_Id :=
                        (if Relaxed_Init
-                        then EW_Abstract (Rep_Ty_Ext, Relaxed_Init => True)
-                        else Type_Of_Node (Rep_Ty_Ext));
+                        then EW_Abstract (Des_Ty, Relaxed_Init => True)
+                        else Type_Of_Node (Des_Ty));
+                     Inv     : W_Pred_Id;
 
                   begin
+                     --  Use the same parameters as for direct translation of
+                     --  designated values.
                      --  All_Global_Inv should not matter here as no part of
                      --  SPARK code should see a pointer to an incomplete type
                      --  with a type invariant which might be relaxed.
 
                      Args (1) := Insert_Simple_Conversion
                        (Domain => EW_Term,
-                        Expr   => +Expr,
+                        Expr   => +New_Pointer_Value_Access
+                          (Name => Expr, E => Ty_Ext),
                         To     => Main_Ty);
-                     Args (2) := +Initialized;
-                     Args (3) := +Only_Var;
-                     Args (4) := +Top_Predicate;
+                     Args (2) := +True_Term;
+                     Args (3) := +False_Term;
+                     Args (4) := +True_Term;
                      Args (5) := +All_Global_Inv;
                      Args (6 .. Num_B) := Vars;
 
+                     Inv := New_Call (Name => Element (Dyn_Inv_Pos),
+                                      Args => Args,
+                                      Typ  => EW_Bool_Type);
+
+                     --  If Inv_Scop is set, add possible locally assumed type
+                     --  invariants. If Inv_Subp is also set, add globally
+                     --  assumed type invariants as they won't be included in
+                     --  the predicate (as All_Global_Inv is False). Include
+                     --  components as the traversal stops here.
+
+                     if Present (Inv_Scop) then
+                        Inv := New_And_Pred
+                          (Left   => Inv,
+                           Right  => Compute_Type_Invariant
+                             (New_Pointer_Value_Access
+                                  (Name => Expr, E => Ty_Ext),
+                              Des_Ty, Locally_Assumed, Params,
+                              Use_Pred => Use_Pred,
+                              Scop     => Inv_Scop,
+                              Subp     => Inv_Subp));
+                     end if;
+
                      T := New_And_Pred
-                       (Left        => T,
-                        Right       =>
-                          New_Call (Name   => Element (Dyn_Inv_Pos),
-                                    Args   => Args,
-                                    Typ    => EW_Bool_Type));
+                       (Left  => T,
+                        Right => New_Conditional
+                          (Condition => New_Not
+                               (Right => Pred_Of_Boolean_Term
+                                    (New_Pointer_Is_Null_Access
+                                       (E => Ty_Ext, Name => Expr))),
+                           Then_Part => Inv));
                   end;
-
-                  --  If Inv_Scop is set, add possible locally assumed type
-                  --  invariants. If Inv_Subp is also set, add globally assumed
-                  --  type invariants as they won't be included in the
-                  --  predicate (as All_Global_Inv is False). Include
-                  --  components as the traversal stops here.
-
-                  if Present (Inv_Scop) then
-                     T := New_And_Pred
-                       (Left   => T,
-                        Right  => Compute_Type_Invariant
-                          (Expr, Ty_Ext, Locally_Assumed, Params,
-                           Use_Pred => Use_Pred,
-                           Scop     => Inv_Scop,
-                           Subp     => Inv_Subp));
-                  end if;
 
                --  Theoretically, it could happen that we are in a context
                --  where we were not able to generate the separate predicate,

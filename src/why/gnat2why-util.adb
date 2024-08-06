@@ -1591,6 +1591,14 @@ package body Gnat2Why.Util is
    function Short_Name (E : Entity_Id) return String is
      (Avoid_Why3_Keyword (Get_Name_String (Chars (E))));
 
+   ---------------------------------
+   -- Type_Has_Static_Constraints --
+   ---------------------------------
+
+   function Type_Has_Static_Constraints (E : Type_Kind_Id) return Boolean is
+     (Type_Needs_Dynamic_Invariant (E, Include_Static => True)
+      and then not Type_Needs_Dynamic_Invariant (E, Include_Static => False));
+
    -----------------------------
    -- Type_Is_Modeled_As_Base --
    -----------------------------
@@ -1606,14 +1614,16 @@ package body Gnat2Why.Util is
    -- Type_Needs_Dynamic_Invariant --
    ----------------------------------
 
-   function Type_Needs_Dynamic_Invariant (T : Type_Kind_Id) return Boolean is
+   function Type_Needs_Dynamic_Invariant
+     (T              : Type_Kind_Id;
+      Include_Static : Boolean := True) return Boolean is
 
       function Has_Potentially_Inherited_Type_Invariants
         (T : Type_Kind_Id)
          return Boolean;
       --  Return True if T or one of its ancestors has a type invariant
 
-      function Type_Needs_Dynamic_Invariant
+      function Type_Needs_Dynamic_Invariant_Ann
         (T         : Type_Kind_Id;
          Top_Level : Boolean)
          return Boolean;
@@ -1648,11 +1658,11 @@ package body Gnat2Why.Util is
          return False;
       end Has_Potentially_Inherited_Type_Invariants;
 
-      ----------------------------------
-      -- Type_Needs_Dynamic_Invariant --
-      ----------------------------------
+      --------------------------------------
+      -- Type_Needs_Dynamic_Invariant_Ann --
+      --------------------------------------
 
-      function Type_Needs_Dynamic_Invariant
+      function Type_Needs_Dynamic_Invariant_Ann
         (T         : Type_Kind_Id;
          Top_Level : Boolean)
          return Boolean
@@ -1674,23 +1684,37 @@ package body Gnat2Why.Util is
            --  but not for components of arrays and records which are never
            --  represented in split form.
 
-           or else (Top_Level and then Use_Split_Form_For_Type (Ty_Ext))
+           or else
+             (Top_Level
+              and then Use_Split_Form_For_Type (Ty_Ext))
 
            --  For array types, we need an invariant to link the content and
-           --  the bounds.
+           --  the bounds and, for non static array types, potentially bound
+           --  constraints.
 
-           or else Is_Array_Type (Ty_Ext)
+           or else
+             (Is_Array_Type (Ty_Ext)
+              and then
+                (Include_Static
+                 or else
+                   (not Is_Static_Array_Type (Ty_Ext)
+                    and then
+                      (Is_Constrained (Ty_Ext)
+                       or else Is_Fixed_Lower_Bound_Array_Subtype (Ty_Ext)))))
 
            --  Types with discriminants might have variant parts. Components
            --  which are not present in an object are fixed by the dynamic
-           --  invariant.
+           --  invariant. For constrained types, also assume discriminant
+           --  constraints.
 
-           or else Has_Discriminants (Ty_Ext)
+           or else
+             (Has_Discriminants (Ty_Ext)
+              and then (Include_Static or else Is_Constrained (Ty_Ext)))
 
            --  Tagged types have an invariant providing the value of the
            --  extension when the tag is the tag of Ty_Ext.
 
-           or else Is_Tagged_Type (Ty_Ext)
+           or else (Include_Static and then Is_Tagged_Type (Ty_Ext))
 
            --  For access-to-subprogram types, we know that they abide by
            --  their contracts.
@@ -1698,10 +1722,11 @@ package body Gnat2Why.Util is
            or else Is_Access_Subprogram_Type (Ty_Ext)
 
            --  For access types with null exclusion, we know that they are not
-           --  null.
+           --  null. For other access types, the value is fixed by the dynamic
+           --  invariant when the pointer is null.
 
-           or else (Is_Access_Type (Ty_Ext)
-                    and then Can_Never_Be_Null (Ty_Ext))
+           or else (Include_Static
+                    and then Is_Access_Type (Ty_Ext))
 
            --  We need an invariant for type predicates
 
@@ -1726,7 +1751,7 @@ package body Gnat2Why.Util is
                   Discr : Opt_E_Discriminant_Id := First_Discriminant (Ty_Ext);
                begin
                   while Present (Discr) loop
-                     if Type_Needs_Dynamic_Invariant (Etype (Discr), False)
+                     if Type_Needs_Dynamic_Invariant_Ann (Etype (Discr), False)
                      then
                         return True;
                      end if;
@@ -1737,38 +1762,52 @@ package body Gnat2Why.Util is
 
             for Comp of Get_Component_Set (Ty_Ext) loop
                if not Is_Type (Comp)
-                 and then (Type_Needs_Dynamic_Invariant (Etype (Comp), False)
-                           or else Is_Tagged_Type (Retysp (Etype (Comp))))
+                 and then
+                   (Type_Needs_Dynamic_Invariant_Ann (Etype (Comp), False)
+                    or else Is_Tagged_Type (Retysp (Etype (Comp))))
                then
                   return True;
                end if;
             end loop;
+
+         elsif Is_Array_Type (Ty_Ext) then
+            return Type_Needs_Dynamic_Invariant_Ann
+              (Component_Type (Ty_Ext), False);
+
          elsif Is_Access_Type (Ty_Ext) then
 
             --  Access types designating incomplete types can lead to recursive
             --  data structures. If the type has already been encountered, we
             --  know that it does not need a dynamic invariant or it would
-            --  have been seen.
+            --  have been seen. If the dynamic invariant of the designated
+            --  incomplete type is entirely static, it will be assumed as
+            --  part of the incomplete type declaration. Ignore it here.
 
             if Designates_Incomplete_Type (Ty_Ext) then
-               if Incompl_Access_Seen.Contains (Ty_Ext) then
+               if Incompl_Access_Seen.Contains (Ty_Ext)
+                 or else
+                   (Include_Static
+                    and then not Type_Needs_Dynamic_Invariant
+                      (Directly_Designated_Type (Ty_Ext),
+                       Include_Static => False))
+               then
                   return False;
                else
                   Incompl_Access_Seen.Insert (Ty_Ext);
                end if;
             end if;
 
-            return Type_Needs_Dynamic_Invariant
+            return Type_Needs_Dynamic_Invariant_Ann
               (Directly_Designated_Type (Ty_Ext), False);
          end if;
 
          return False;
-      end Type_Needs_Dynamic_Invariant;
+      end Type_Needs_Dynamic_Invariant_Ann;
 
    --  Start of processing for Type_Needs_Dynamic_Invariant
 
    begin
-      return Type_Needs_Dynamic_Invariant (T, True);
+      return Type_Needs_Dynamic_Invariant_Ann (T, True);
    end Type_Needs_Dynamic_Invariant;
 
    ------------------

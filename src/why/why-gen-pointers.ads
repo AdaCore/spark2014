@@ -191,11 +191,15 @@ package Why.Gen.Pointers is
       A            : W_Expr_Array;
       Ty           : Entity_Id;
       Local        : Boolean := False;
-      Relaxed_Init : Boolean := False)
+      Relaxed_Init : Boolean := False;
+      Force_Dummy  : Boolean := False)
       return W_Term_Id;
    --  Reconstructs a complete pointer of type Ty from an array of expressions
    --  representing a split form. A should contain first the value, then
-   --  is_null and the initialization flag if Relaxed_Init is True.
+   --  is_null and the initialization flag if Relaxed_Init is True. If
+   --  Force_Dummy is True, explicitly set the value field to dummy when the
+   --  pointer is null. It is useful for conversion functions to create valid
+   --  values with different dummy constants.
 
    function Prepare_Args_For_Access_Subtype_Check
      (Check_Ty : Entity_Id;
