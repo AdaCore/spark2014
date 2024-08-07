@@ -1,5 +1,5 @@
-from test_support import prove_all, TESTDIR
-from subprocess import call, gprbuild
+from test_support import prove_all, TESTDIR, gprbuild
+from subprocess import call
 import os
 
 os.environ["SPARKLIB_OBJECT_DIR"] = TESTDIR
