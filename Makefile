@@ -163,7 +163,8 @@ coverage-report:
 		fi; \
 	done
 
-	gnatcov coverage --level=stmt --annotate=dhtml --annotate=cobertura --sid @sidfiles --source-root $(COVERAGE_ROOT_DIR) --source-rebase $(COVERAGE_ROOT_DIR)=$(COVERAGE_SOURCE_DIR) --output-dir=dhtml-report @tracefiles
+	gnatcov coverage --level=stmt --annotate=cobertura --sid @sidfiles --source-root $(COVERAGE_ROOT_DIR) --output-dir=cobertura-report @tracefiles
+	gnatcov coverage --level=stmt --annotate=dhtml --sid @sidfiles --source-rebase $(COVERAGE_ROOT_DIR)=$(COVERAGE_SOURCE_DIR) --output-dir=html-report @tracefiles
 
 codepeer-run:
 	$(MAKE) --no-print-directory -C gnat2why codepeer-run
