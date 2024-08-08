@@ -3203,6 +3203,15 @@ package body Why.Atree.Modules is
                      Relaxed_Init);
                end if;
 
+               Insert_Symbol
+                 (E, WNE_Dynamic_Property,
+                  New_Identifier
+                    (Symb   => NID ("dynamic_property"),
+                     Module => M_C,
+                     Domain => EW_Term,
+                     Typ    => EW_Bool_Type),
+                  Relaxed_Init);
+
                if Is_Incompl then
                   Insert_Symbol
                     (E, WNE_Private_Type,
@@ -3210,6 +3219,18 @@ package body Why.Atree.Modules is
                        (Symb   => NID ("__main_type"),
                         Module => M,
                         Domain => EW_Term),
+                     Relaxed_Init);
+                  Insert_Symbol
+                    (E, WNE_Dummy_Abstr,
+                     New_Identifier
+                       (Symb   => NID (To_String (WNE_Dummy_Abstr)),
+                        Module => M,
+                        Domain => EW_Term,
+                        Typ    => New_Named_Type
+                          (Name         => New_Name
+                               (Symb   => NID ("__main_type"),
+                                Module => M),
+                           Relaxed_Init => Relaxed_Init)),
                      Relaxed_Init);
                   Insert_Symbol
                     (E, WNE_Pointer_Value_Abstr,
@@ -3243,6 +3264,13 @@ package body Why.Atree.Modules is
                                (Symb   => NID ("__main_type"),
                                 Module => M),
                            Relaxed_Init => Relaxed_Init)),
+                     Relaxed_Init);
+                  Insert_Symbol
+                    (E, WNE_Static_Constraint,
+                     New_Identifier
+                       (Symb   => NID (To_String (WNE_Static_Constraint)),
+                        Module => M_C,
+                        Domain => EW_Pred),
                      Relaxed_Init);
                end if;
             end;

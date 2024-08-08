@@ -13,10 +13,6 @@ procedure B with SPARK_Mode is
      ((X = null) = (Y = null)
       and then (if X /= null then X.all = Y.all));
 
-   LNN : List_Ptr := new List'(Val => 3, Next => null);
-   LN : List_Ptr := new List'(Val => 2, Next => LNN);
-   L : List_Ptr := new List'(Val => 1, Next => LN);
-
    function Length (X : List_Ptr) return Natural is
      (if X = null then 0
       elsif Length (X.Next) = Natural'Last then Natural'Last
@@ -26,15 +22,19 @@ procedure B with SPARK_Mode is
      (case I is when 0 => X, when others => Get_Next (X.Next, I - 1))
    with Pre => I <= Length (X) and I /= Natural'Last;
 
-begin
-   declare
+   procedure Test is
+      LNN : List_Ptr := new List'(Val => 3, Next => null);
+      LN : List_Ptr := new List'(Val => 2, Next => LNN);
+      L : List_Ptr := new List'(Val => 1, Next => LN);
       N : access constant List := L;
    begin
       while N /= null loop
          pragma Loop_Invariant
-           (for some I in 1 .. Length (L) => Eq (Get_Next (L, I), N));
+           (for some I in 0 .. Length (L) => Eq (Get_Next (L, I), N));
          pragma Assert (N.Val > 0);
          N := N.Next;
       end loop;
-   end;
+   end Test;
+begin
+  null;
 end B;

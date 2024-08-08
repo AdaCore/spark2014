@@ -766,7 +766,10 @@ using the regular Ada equality for discrete types and fixed point types.
 For floating point types, both the value and the sign need to be compared
 (to tell the difference between +0.0 and -0.0). Logical equality on constrained
 arrays and untagged records can be achieved by comparing the components. In
-addition, it is necessary to compare the bounds of unconstrained arrays.
+addition, it is necessary to compare the bounds of unconstrained arrays. Since
+the address of access-to-object types is not modeled in SPARK, logical equality
+should return true if either both pointers are null or they designate logically
+equal values.
 This is examplified below:
 
 .. literalinclude:: /examples/ug__logical_eq_implementation/logical_equality_implementation.ads
@@ -781,7 +784,7 @@ All logical equality annotations are proved on this example:
 
 For tagged records, the fact that functions of a specific tagged types might be
 used on any descendent make it impossible to implement the logical equality in
-SPARK in general. However, it can be done if the tag is specifically known by
+|SPARK| in general. However, it can be done if the tag is specifically known by
 comparing the components like for untagged records. In a similar way, logical
 equality cannot be implemented for partially intialized data-structures
 annotated with ``Relaxed_Initialization``.

@@ -1,3 +1,4 @@
+.vscode/* no-precommit-check
 README.md no-precommit-check
 benchmark_script/* no-precommit-check
 benchmark_script/*/* no-precommit-check

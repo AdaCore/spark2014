@@ -1,0 +1,41 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        {
+	    // Adapt the following for each debugging session
+            "cwd": "${workspaceFolder}",
+            "args": [],
+
+	    // The following should remain stable across debugging sessions
+            "type": "cppdbg",
+            "name": "Ada: Debug main - spark2014/src/gnatprove/gnatprove.adb",
+            "request": "launch",
+            "targetArchitecture": "x64",
+            "program": "${workspaceFolder}/install/bin/gnatprove",
+            "stopAtEntry": true,
+            "externalConsole": false,
+            "MIMode": "gdb",
+            "preLaunchTask": "ada: Build current project",
+            "setupCommands": [
+                {
+                    "description": "Catch all Ada exceptions",
+                    "text": "catch exception",
+                    "ignoreFailures": true
+                },
+                {
+                    "description": "Enable pretty-printing for gdb",
+                    "text": "-enable-pretty-printing",
+                    "ignoreFailures": true
+                },
+                {
+                    "description": "Set Disassembly Flavor to Intel",
+                    "text": "-gdb-set disassembly-flavor intel",
+                    "ignoreFailures": true
+                }
+            ]
+        }
+    ]
+}

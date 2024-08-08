@@ -218,7 +218,7 @@ package body Flow_Utility.Proof_Dependencies is
 
    function Subprogram_Proof_Dependencies (E : Entity_Id) return Node_Sets.Set
    is
-      Proofdeps : Node_Sets.Set;
+      Proof_Dependencies : Node_Sets.Set;
 
       procedure Collect_Proof_Dependencies (Expr : Node_Id);
       --  Collect proof dependencies in expression Expr and put them in Deps
@@ -235,7 +235,7 @@ package body Flow_Utility.Proof_Dependencies is
            (Expr,
             Scop               => Get_Flow_Scope (Expr),
             Function_Calls     => Funcalls,
-            Proof_Dependencies => Proofdeps,
+            Proof_Dependencies => Proof_Dependencies,
             Tasking            => Unused,
             Generating_Globals => True);
 
@@ -245,7 +245,7 @@ package body Flow_Utility.Proof_Dependencies is
             --  dependencies.
 
             if Ekind (Call.E) /= E_Subprogram_Type then
-               Proofdeps.Include (Call.E);
+               Proof_Dependencies.Include (Call.E);
             end if;
          end loop;
       end Collect_Proof_Dependencies;
@@ -257,8 +257,7 @@ package body Flow_Utility.Proof_Dependencies is
          Collect_Proof_Dependencies (Expr);
       end loop;
 
-      for Expr of Get_Postcondition_Expressions (E, Refined => False)
-      loop
+      for Expr of Get_Postcondition_Expressions (E, Refined => False) loop
          Collect_Proof_Dependencies (Expr);
       end loop;
 
@@ -269,21 +268,20 @@ package body Flow_Utility.Proof_Dependencies is
            (F,
             Get_Flow_Scope (E),
             Is_Globally_Visible (E),
-            Proofdeps);
+            Proof_Dependencies);
       end loop;
 
-      --  Process predicates that apply to the return type if E is a
-      --  function.
+      --  Process predicates that apply to the return type if E is a function
 
       if Ekind (E) = E_Function then
          Process_Predicate_And_Invariant
            (E,
             Get_Flow_Scope (E),
             Is_Globally_Visible (E),
-            Proofdeps);
+            Proof_Dependencies);
       end if;
 
-      return Proofdeps;
+      return Proof_Dependencies;
    end Subprogram_Proof_Dependencies;
 
 end Flow_Utility.Proof_Dependencies;

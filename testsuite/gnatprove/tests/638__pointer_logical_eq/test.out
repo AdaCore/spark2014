@@ -1,0 +1,9 @@
+test.adb:17:04: info: absence of resource or memory leak at end of scope proved (CVC5: 1 VC)
+test.adb:22:13: info: discriminant check proved (CVC5: 1 VC)
+test.adb:26:13: info: implicit aspect Always_Terminates on "My_Eq" has been proved, subprogram will terminate
+test.adb:28:36: info: pointer dereference check proved (CVC5: 1 VC)
+test.adb:28:42: info: pointer dereference check proved (CVC5: 1 VC)
+test.adb:28:54: info: subprogram variant proved (Trivial)
+test.adb:28:62: info: pointer dereference check proved (CVC5: 1 VC)
+test.adb:28:67: info: pointer dereference check proved (CVC5: 1 VC)
+test.adb:29:11: info: Inline_For_Proof or Logical_Equal annotation proved (CVC5: 2 VC)

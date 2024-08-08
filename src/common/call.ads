@@ -60,4 +60,9 @@ package Call is
    --  Same as Read_File_Into_String, but directly parse the file into a JSON
    --  value. Works for large files as well.
 
+   function Get_Process_Id return Integer;
+   --  Return the process ID of the current process
+   pragma Import (C, Get_Process_Id, "getpid");
+   --  ??? Check if this works on windows
+
 end Call;
