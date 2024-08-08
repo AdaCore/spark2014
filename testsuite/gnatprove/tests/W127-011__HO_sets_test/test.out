@@ -91,10 +91,10 @@ spark-containers-functional-sets.ads:72:06: info: Container_Aggregates annotatio
 spark-containers-functional-sets.ads:72:06: info: Container_Aggregates annotation proved (CVC5: 1 VC), in instantiation at use_set_ho.adb:9
 spark-containers-functional-sets.ads:72:06: info: Container_Aggregates annotation proved (CVC5: 3 VC), in instantiation at check_ho_pre.adb:10
 spark-containers-functional-sets.ads:72:06: info: Container_Aggregates annotation proved (CVC5: 3 VC), in instantiation at use_set_ho.adb:9
-spark-containers-functional-sets.ads:72:06: info: after a call to Aggr_Include at spark-containers-functional-sets.ads:442, in instantiation at check_ho_pre.adb:10
-spark-containers-functional-sets.ads:72:06: info: after a call to Aggr_Include at spark-containers-functional-sets.ads:442, in instantiation at check_ho_pre.adb:10
-spark-containers-functional-sets.ads:72:06: info: after a call to Aggr_Include at spark-containers-functional-sets.ads:442, in instantiation at use_set_ho.adb:9
-spark-containers-functional-sets.ads:72:06: info: after a call to Aggr_Include at spark-containers-functional-sets.ads:442, in instantiation at use_set_ho.adb:9
+spark-containers-functional-sets.ads:72:06: info: after a call to Aggr_Include at spark-containers-functional-sets.ads:446, in instantiation at check_ho_pre.adb:10
+spark-containers-functional-sets.ads:72:06: info: after a call to Aggr_Include at spark-containers-functional-sets.ads:446, in instantiation at check_ho_pre.adb:10
+spark-containers-functional-sets.ads:72:06: info: after a call to Aggr_Include at spark-containers-functional-sets.ads:446, in instantiation at use_set_ho.adb:9
+spark-containers-functional-sets.ads:72:06: info: after a call to Aggr_Include at spark-containers-functional-sets.ads:446, in instantiation at use_set_ho.adb:9
 spark-containers-functional-sets.ads:72:06: info: after a call to Empty_Set at spark-containers-functional-sets.ads:245, in instantiation at check_ho_pre.adb:10
 spark-containers-functional-sets.ads:72:06: info: after a call to Empty_Set at spark-containers-functional-sets.ads:245, in instantiation at check_ho_pre.adb:10
 spark-containers-functional-sets.ads:72:06: info: after a call to Empty_Set at spark-containers-functional-sets.ads:245, in instantiation at use_set_ho.adb:9
@@ -133,26 +133,26 @@ spark-containers-functional-sets.ads:408:13: info: during checks for quantificat
 spark-containers-functional-sets.ads:408:13: info: during checks for quantification at spark-containers-functional-sets.ads:64, in instantiation at use_set_ho.adb:9
 spark-containers-functional-sets.ads:408:13: info: precondition proved (Trivial: 1 VC), in instantiation at check_ho_pre.adb:10
 spark-containers-functional-sets.ads:408:13: info: precondition proved (Trivial: 1 VC), in instantiation at use_set_ho.adb:9
-spark-containers-functional-sets.ads:411:13: info: during checks for quantification at spark-containers-functional-sets.ads:64, in instantiation at check_ho_pre.adb:10
-spark-containers-functional-sets.ads:411:13: info: during checks for quantification at spark-containers-functional-sets.ads:64, in instantiation at use_set_ho.adb:9
-spark-containers-functional-sets.ads:411:13: info: precondition proved (Trivial: 1 VC), in instantiation at check_ho_pre.adb:10
-spark-containers-functional-sets.ads:411:13: info: precondition proved (Trivial: 1 VC), in instantiation at use_set_ho.adb:9
-spark-containers-functional-sets.ads:417:13: info: during checks for quantification at spark-containers-functional-sets.ads:64, in instantiation at check_ho_pre.adb:10
-spark-containers-functional-sets.ads:417:13: info: during checks for quantification at spark-containers-functional-sets.ads:64, in instantiation at use_set_ho.adb:9
-spark-containers-functional-sets.ads:417:13: info: precondition proved (CVC5: 1 VC), in instantiation at check_ho_pre.adb:10
-spark-containers-functional-sets.ads:417:13: info: precondition proved (CVC5: 1 VC), in instantiation at use_set_ho.adb:9
-spark-containers-functional-sets.ads:424:13: info: during checks for quantification at spark-containers-functional-sets.ads:64, in instantiation at check_ho_pre.adb:10
-spark-containers-functional-sets.ads:424:13: info: during checks for quantification at spark-containers-functional-sets.ads:64, in instantiation at use_set_ho.adb:9
-spark-containers-functional-sets.ads:424:13: info: precondition proved (CVC5: 1 VC), in instantiation at check_ho_pre.adb:10
-spark-containers-functional-sets.ads:424:13: info: precondition proved (CVC5: 1 VC), in instantiation at use_set_ho.adb:9
-spark-containers-functional-sets.ads:435:13: info: implicit aspect Always_Terminates on "Aggr_Eq_Elements" has been proved, subprogram will terminate, in instantiation at check_ho_pre.adb:10
-spark-containers-functional-sets.ads:435:13: info: implicit aspect Always_Terminates on "Aggr_Eq_Elements" has been proved, subprogram will terminate, in instantiation at use_set_ho.adb:9
-spark-containers-functional-sets.ads:438:06: info: data dependencies proved, in instantiation at check_ho_pre.adb:10
-spark-containers-functional-sets.ads:438:06: info: data dependencies proved, in instantiation at use_set_ho.adb:9
-spark-containers-functional-sets.ads:444:16: info: during checks for container aggregates at spark-containers-functional-sets.ads:72, in instantiation at check_ho_pre.adb:10
-spark-containers-functional-sets.ads:444:16: info: during checks for container aggregates at spark-containers-functional-sets.ads:72, in instantiation at use_set_ho.adb:9
-spark-containers-functional-sets.ads:444:16: info: precondition proved (CVC5: 1 VC), in instantiation at check_ho_pre.adb:10
-spark-containers-functional-sets.ads:444:16: info: precondition proved (CVC5: 1 VC), in instantiation at use_set_ho.adb:9
+spark-containers-functional-sets.ads:412:13: info: during checks for quantification at spark-containers-functional-sets.ads:64, in instantiation at check_ho_pre.adb:10
+spark-containers-functional-sets.ads:412:13: info: during checks for quantification at spark-containers-functional-sets.ads:64, in instantiation at use_set_ho.adb:9
+spark-containers-functional-sets.ads:412:13: info: precondition proved (Trivial: 1 VC), in instantiation at check_ho_pre.adb:10
+spark-containers-functional-sets.ads:412:13: info: precondition proved (Trivial: 1 VC), in instantiation at use_set_ho.adb:9
+spark-containers-functional-sets.ads:419:13: info: during checks for quantification at spark-containers-functional-sets.ads:64, in instantiation at check_ho_pre.adb:10
+spark-containers-functional-sets.ads:419:13: info: during checks for quantification at spark-containers-functional-sets.ads:64, in instantiation at use_set_ho.adb:9
+spark-containers-functional-sets.ads:419:13: info: precondition proved (CVC5: 1 VC), in instantiation at check_ho_pre.adb:10
+spark-containers-functional-sets.ads:419:13: info: precondition proved (CVC5: 1 VC), in instantiation at use_set_ho.adb:9
+spark-containers-functional-sets.ads:427:13: info: during checks for quantification at spark-containers-functional-sets.ads:64, in instantiation at check_ho_pre.adb:10
+spark-containers-functional-sets.ads:427:13: info: during checks for quantification at spark-containers-functional-sets.ads:64, in instantiation at use_set_ho.adb:9
+spark-containers-functional-sets.ads:427:13: info: precondition proved (CVC5: 1 VC), in instantiation at check_ho_pre.adb:10
+spark-containers-functional-sets.ads:427:13: info: precondition proved (CVC5: 1 VC), in instantiation at use_set_ho.adb:9
+spark-containers-functional-sets.ads:439:13: info: implicit aspect Always_Terminates on "Aggr_Eq_Elements" has been proved, subprogram will terminate, in instantiation at check_ho_pre.adb:10
+spark-containers-functional-sets.ads:439:13: info: implicit aspect Always_Terminates on "Aggr_Eq_Elements" has been proved, subprogram will terminate, in instantiation at use_set_ho.adb:9
+spark-containers-functional-sets.ads:442:06: info: data dependencies proved, in instantiation at check_ho_pre.adb:10
+spark-containers-functional-sets.ads:442:06: info: data dependencies proved, in instantiation at use_set_ho.adb:9
+spark-containers-functional-sets.ads:448:16: info: during checks for container aggregates at spark-containers-functional-sets.ads:72, in instantiation at check_ho_pre.adb:10
+spark-containers-functional-sets.ads:448:16: info: during checks for container aggregates at spark-containers-functional-sets.ads:72, in instantiation at use_set_ho.adb:9
+spark-containers-functional-sets.ads:448:16: info: precondition proved (CVC5: 1 VC), in instantiation at check_ho_pre.adb:10
+spark-containers-functional-sets.ads:448:16: info: precondition proved (CVC5: 1 VC), in instantiation at use_set_ho.adb:9
 spark-containers-parameter_checks.ads:30:17: info: aspect Always_Terminates on "Eq_Reflexive" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-sets.ads:392, in instantiation at check_ho_pre.adb:10
 spark-containers-parameter_checks.ads:30:17: info: aspect Always_Terminates on "Eq_Reflexive" has been proved, subprogram will terminate, in instantiation at spark-containers-functional-sets.ads:392, in instantiation at use_set_ho.adb:9
 spark-containers-parameter_checks.ads:31:09: info: data dependencies proved, in instantiation at spark-containers-functional-sets.ads:392, in instantiation at check_ho_pre.adb:10

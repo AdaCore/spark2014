@@ -2719,33 +2719,12 @@ package body Flow_Error_Messages is
             ------------------------------
 
             function Get_Corresponding_Formal (N : Node_Id) return Entity_Id is
-               This   : Node_Id := N;
-               Par    : Node_Id := Parent (N);
-               Actual : Node_Id;
-
             begin
-               if Nkind (N) not in N_Subexpr then
+               if Is_Actual_Parameter (N) then
+                  return Get_Formal_From_Actual (N);
+               else
                   return Empty;
                end if;
-
-               if Nkind (Par) = N_Parameter_Association then
-                  This := Par;
-                  Par := Parent (Par);
-               end if;
-
-               if Nkind (Par) in N_Subprogram_Call
-                               | N_Entry_Call_Statement
-               then
-                  Actual := First (Parameter_Associations (Par));
-                  while Present (Actual) loop
-                     if Actual = This then
-                        return Get_Formal_From_Actual (N);
-                     end if;
-                     Next (Actual);
-                  end loop;
-               end if;
-
-               return Empty;
             end Get_Corresponding_Formal;
 
             -----------------------------------
