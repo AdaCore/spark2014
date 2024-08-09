@@ -279,3 +279,9 @@ build_docs:
     # Build using anod
     - anod build spark2014-doc
     - cp -r $ANOD_DEFAULT_SANDBOX_DIR/x86_64-linux/spark2014-doc/install/share/doc/spark $CI_PROJECT_DIR
+    - export HTMLTARGETDIR=$CI_COMMIT_BRANCH
+    - if [[ $CI_PIPELINE_SOURCE = "merge_request_event" ]]; then export HTMLTARGETDIR=MRs/$CI_MERGE_REQUEST_IID ; fi
+    - publish-pages $CI_PROJECT_DIR/spark/html/lrm --target-subdir doc/lrm/$HTMLTARGETDIR --expires 30
+    - publish-pages $CI_PROJECT_DIR/spark/html/ug --target-subdir doc/ug/$HTMLTARGETDIR --expires 30
+    - 'echo "SPARK LRM: https://pages.gitlab.adacore-it.com/eng/spark/spark2014/doc/ug/$HTMLTARGETDIR/index.html"'
+    - 'echo "SPARK UG: https://pages.gitlab.adacore-it.com/eng/spark/spark2014/doc/lrm/$HTMLTARGETDIR/index.html"'
