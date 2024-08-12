@@ -1,0 +1,20 @@
+
+/* Search result title for an entire page */
+.pagefind-ui__result-title {
+    font-size: 20px;
+    margin-top: 50px;
+}
+
+/* Search result title for a hit under a header. Indented and less emphasized than for a page  */
+.pagefind-ui__result-nested > .pagefind-ui__result-title {
+    font-size: 18px;
+    margin-top: 20px;
+}
+.pagefind-ui__result-nested {
+    margin-left: 30px;
+}
+
+/* Search result excerpt, further indented from the search result title */
+.pagefind-ui__result-excerpt {
+    margin-left: 10px;
+}
