@@ -66,6 +66,8 @@ stages:
     - GENERIC_ANOD_CI_OPTIONS="--add-dep eng/spark/sparklib
                                --add-dep eng/spark/spark-internal-testsuite"
 
+    - if [[ $CI_PIPELINE_SOURCE == "schedule" ]]; then GENERIC_ANOD_CI_OPTIONS="$GENERIC_ANOD_CI_OPTIONS --continuous-builder-mode"; fi
+
     # Setup the "anod vcs as appropriate"
     - *setup_repos
 
@@ -94,8 +96,8 @@ stages:
     - cp -r $ANOD_DEFAULT_SANDBOX_DIR/x86_64-linux/$ANOD_BUILDSPACE/src/dhtml-report/ $CI_PROJECT_DIR/coverage
 
     - export HTMLTARGETDIR=$CI_COMMIT_BRANCH
-    - if [[ $CI_PIPELINE_SOURCE = "merge_request_event" ]]; then export HTMLTARGETDIR=MRs/$CI_MERGE_REQUEST_IID ; fi
-    - if [[ $CI_PIPELINE_SOURCE = "schedule" ]]; then export HTMLTARGETDIR=weekly ; fi
+    - if [[ $CI_PIPELINE_SOURCE == "merge_request_event" ]]; then export HTMLTARGETDIR=MRs/$CI_MERGE_REQUEST_IID ; fi
+    - if [[ $CI_PIPELINE_SOURCE == "schedule" ]]; then export HTMLTARGETDIR=weekly ; fi
     - publish-pages $ANOD_DEFAULT_SANDBOX_DIR/x86_64-linux/$ANOD_BUILDSPACE/src/dhtml-report/html --target-subdir $HTMLTARGETDIR --expires 30
     - 'echo "Coverage report: https://pages.gitlab.adacore-it.com/eng/spark/spark2014/$HTMLTARGETDIR/index.html"'
     - testsuite_reports
@@ -134,6 +136,7 @@ build:
                                --add-dep eng/spark/spark-internal-testsuite
                                --add-dep eng/toolchain/gnat
                                --add-dep eng/spark/why3"
+    - if [[ $CI_PIPELINE_SOURCE == "schedule" ]]; then GENERIC_ANOD_CI_OPTIONS="$GENERIC_ANOD_CI_OPTIONS --continuous-builder-mode"; fi
     - *setup_repos
 
     # Build using anod
@@ -260,8 +263,9 @@ build_docs:
   services:
      - image:pe-base
   rules:
-    - changes:
-      - docs/**/*
+    - if: $CI_PIPELINE_SOURCE == "merge_request_event"
+      changes:
+        - docs/**/*
       when: always
     - when: never
   artifacts:
