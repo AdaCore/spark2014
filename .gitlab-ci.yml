@@ -6,7 +6,7 @@ include:
 # merging a MR to a protected branch (only for the gnatsas job).
 workflow:
   rules:
-    - if: $CI_PIPELINE_SOURCE == "merge_request_event" || ($CI_PIPELINE_SOURCE == "push" && $CI_COMMIT_REF_PROTECTED == "true") || $CI_PIPELINE_SOURCE = "schedule"
+    - if: $CI_PIPELINE_SOURCE == "merge_request_event" || ($CI_PIPELINE_SOURCE == "push" && $CI_COMMIT_REF_PROTECTED == "true") || $CI_PIPELINE_SOURCE == "schedule"
       when: always
     # Run on pipelines created by selecting "Run pipeline" in the GitLab UI,
     # from the project’s "Build > Pipelines" section.
