@@ -23,7 +23,6 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with GNATCOLL.JSON; use GNATCOLL.JSON;
 with Types;         use Types;
 with VC_Kinds;      use VC_Kinds;
 
@@ -55,15 +54,6 @@ package CE_Display is
    --  Get the elements of the evaluation environment used in the construct
    --  that triggers a VC, with N the AST node corresponding to that construct
    --  and Subp the enclosing subprogram.
-
-   function JSON_Get_Opt
-     (Val        : JSON_Value;
-      Field      : String;
-      Opt_Result : JSON_Value)
-      return JSON_Value
-   is
-     (if Has_Field (Val, Field) then Get (Val, Field)
-      else Opt_Result);
 
    function Remap_VC_Info
      (Cntexmp : Cntexample_File_Maps.Map;
