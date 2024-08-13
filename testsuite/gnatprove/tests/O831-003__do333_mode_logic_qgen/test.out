@@ -748,10 +748,10 @@ mode_logic_props.adb:102:07: info: initialization of "Event_Processing_If_ALTSEL
 mode_logic_props.adb:103:07: info: initialization of "Event_Processing_If_ALTSEL_Track_Cond_Met_Seen" proved
 mode_logic_props.adb:104:07: info: initialization of "Event_Processing_If_VAPPR_Capture_Cond_Met_Seen" proved
 mode_logic_props.adb:105:07: info: initialization of "Bus_Creator_out1" proved
-mode_logic_props.adb:208:1000: (style) this line is too long
-mode_logic_props.adb:208:1000: (style) this line is too long
-mode_logic_props.adb:212:1000: (style) this line is too long
-mode_logic_props.adb:212:1000: (style) this line is too long
+mode_logic_props.adb:208:1000: (style) this line is too long: 1191
+mode_logic_props.adb:208:1000: (style) this line is too long: 1191
+mode_logic_props.adb:212:1000: (style) this line is too long: 1819
+mode_logic_props.adb:212:1000: (style) this line is too long: 1819
 modes_off_at_startup.adb:26:07: info: initialization of "Unit_Delay_out1" proved
 modes_off_at_startup.adb:27:07: info: initialization of "Modes_On_out1" proved
 modes_off_at_startup.adb:28:07: info: initialization of "NOT_out1" proved
