@@ -1,0 +1,76 @@
+dispatching.adb:10:16: error: "F" might include a recursive call due to a type invariant or subtype predicate, or there might be a cycle in the elaboration of the enclosing unit
+dispatching.adb:10:16: error: unsupported recursive subprogram
+dispatching.adb:10:16: info: implicit aspect Always_Terminates on "F" has been proved, subprogram will terminate
+dispatching.adb:10:19: warning: unused variable "X"
+dispatching.adb:10:22: warning: unused variable "Y"
+dispatching.adb:14:16: info: implicit aspect Always_Terminates on overriding operator "=" has been proved, subprogram will terminate
+dispatching.adb:15:34: medium: postcondition might fail
+dispatching.adb:25:39: warning: assuming "N" has no effect on global items
+dispatching.adb:25:39: warning: no Global contract available for "N"
+dispatching_contract.adb:10:16: error: "F" might include a recursive call due to a type invariant or subtype predicate, or there might be a cycle in the elaboration of the enclosing unit
+dispatching_contract.adb:10:16: error: unsupported recursive subprogram
+dispatching_contract.adb:10:16: info: implicit aspect Always_Terminates on "F" has been proved, subprogram will terminate
+dispatching_contract.adb:10:19: warning: unused variable "X"
+dispatching_contract.adb:10:22: warning: unused variable "Y"
+dispatching_contract.adb:14:16: info: implicit aspect Always_Terminates on overriding operator "=" has been proved, subprogram will terminate
+dispatching_contract.adb:15:30: medium: postcondition might fail
+dispatching_contract.adb:25:39: warning: assuming "N" has no effect on global items
+dispatching_contract.adb:25:39: warning: no Global contract available for "N"
+dispatching_contract_import.adb:10:16: error: "F" might include a recursive call due to a type invariant or subtype predicate, or there might be a cycle in the elaboration of the enclosing unit
+dispatching_contract_import.adb:10:16: error: unsupported recursive subprogram
+dispatching_contract_import.adb:10:16: info: implicit aspect Always_Terminates on "F" has been proved, subprogram will terminate
+dispatching_contract_import.adb:10:19: warning: unused variable "X"
+dispatching_contract_import.adb:10:22: warning: unused variable "Y"
+dispatching_contract_import.adb:26:39: warning: assuming "N" has no effect on global items
+dispatching_contract_import.adb:26:39: warning: no Global contract available for "N"
+gen.ads:3:18: info: implicit aspect Always_Terminates on "Oeqr" has been proved, subprogram will terminate, in instantiation at types.adb:8
+gen.ads:5:14: warning: subprogram "Test" has no effect, in instantiation at types.adb:8
+gen.ads:5:55: medium: postcondition might fail, in instantiation at types.adb:8
+main.adb:4:11: info: aspect Always_Terminates on "Main" has been proved, subprogram will terminate
+membership.adb:5:13: info: implicit aspect Always_Terminates on overriding operator "=" has been proved, subprogram will terminate
+membership.adb:11:13: error: "F" might include a recursive call due to a type invariant or subtype predicate, or there might be a cycle in the elaboration of the enclosing unit
+membership.adb:11:13: error: unsupported recursive subprogram
+membership.adb:11:13: info: implicit aspect Always_Terminates on "F" has been proved, subprogram will terminate
+membership.adb:17:47: info: no contextual analysis of "F" (inside expression function)
+membership.adb:19:19: info: analyzing call to "F" in context
+membership_multiple.adb:5:13: info: implicit aspect Always_Terminates on overriding operator "=" has been proved, subprogram will terminate
+membership_multiple.adb:5:18: warning: unused variable "X"
+membership_multiple.adb:5:21: warning: unused variable "Y"
+membership_multiple.adb:13:13: error: "F" might include a recursive call due to a type invariant or subtype predicate, or there might be a cycle in the elaboration of the enclosing unit
+membership_multiple.adb:13:13: error: unsupported recursive subprogram
+membership_multiple.adb:13:13: info: implicit aspect Always_Terminates on "F" has been proved, subprogram will terminate
+membership_multiple.adb:16:07: high: "X" is not initialized
+membership_multiple.adb:16:07: high: "X" is not initialized, in call inlined at membership_multiple.adb:21
+membership_multiple.adb:16:07: high: "Y" is not initialized
+membership_multiple.adb:16:07: high: "Y" is not initialized, in call inlined at membership_multiple.adb:21
+membership_multiple.adb:19:47: info: no contextual analysis of "F" (inside expression function)
+membership_multiple.adb:21:19: info: analyzing call to "F" in context
+primitive_dispatching.adb:10:16: error: "F" might include a recursive call due to a type invariant or subtype predicate, or there might be a cycle in the elaboration of the enclosing unit
+primitive_dispatching.adb:10:16: error: unsupported recursive subprogram
+primitive_dispatching.adb:10:16: info: implicit aspect Always_Terminates on "F" has been proved, subprogram will terminate
+primitive_dispatching.adb:14:16: error: "=" might include a recursive call due to a type invariant or subtype predicate, or there might be a cycle in the elaboration of the enclosing unit
+primitive_dispatching.adb:14:16: error: unsupported recursive subprogram
+primitive_dispatching.adb:14:16: info: implicit aspect Always_Terminates on overriding operator "=" has been proved, subprogram will terminate
+primitive_eq.adb:5:13: info: implicit aspect Always_Terminates on overriding operator "=" has been proved, subprogram will terminate
+primitive_eq.adb:11:13: error: "F" might include a recursive call due to a type invariant or subtype predicate, or there might be a cycle in the elaboration of the enclosing unit
+primitive_eq.adb:11:13: error: unsupported recursive subprogram
+primitive_eq.adb:11:13: info: implicit aspect Always_Terminates on "F" has been proved, subprogram will terminate
+primitive_eq.adb:17:47: info: no contextual analysis of "F" (inside expression function)
+primitive_eq.adb:19:19: info: analyzing call to "F" in context
+recursive_contracts.adb:7:13: info: function contract might not be available on recursive calls
+recursive_contracts.adb:9:17: info: postcondition proved (CVC5: 2 VC)
+recursive_contracts.adb:9:28: medium: implicit aspect Always_Terminates on overriding operator "=" could be incorrect, overriding operator "=" and "F" are mutually recursive [possible fix: annotate overriding operator "=" and "F" with Subprogram_Variant aspects]
+recursive_contracts.adb:11:13: info: function contract might not be available on recursive calls
+recursive_contracts.adb:13:17: info: postcondition proved (CVC5: 1 VC)
+recursive_contracts.adb:13:45: medium: implicit aspect Always_Terminates on "F" could be incorrect, "F" and overriding operator "=" are mutually recursive [possible fix: annotate "F" and overriding operator "=" with Subprogram_Variant aspects]
+recursive_contracts_import.adb:7:13: info: function contract might not be available on recursive calls
+recursive_contracts_import.adb:9:31: warning: assuming "F" has no effect on global items
+recursive_contracts_import.adb:9:31: warning: no Global contract available for "F"
+recursive_contracts_import.adb:9:42: warning: assuming "F" has no effect on global items
+recursive_contracts_import.adb:9:42: warning: no Global contract available for "F"
+recursive_contracts_import.adb:11:13: info: function contract might not be available on recursive calls
+recursive_contracts_import.adb:13:45: warning: assuming "=" has no effect on global items
+recursive_contracts_import.adb:13:45: warning: no Global contract available for "="
+types.ads:9:16: info: implicit aspect Always_Terminates on overriding operator "=" has been proved, subprogram will terminate
+types.ads:9:70: info: postcondition proved (CVC5: 1 VC)
+gnatprove: error during flow analysis and proof
