@@ -2,7 +2,9 @@ main bin/ dir
 gnatprove
 libexec/spark/bin/ dir
 alt-ergo
+alt-ergo.manifest
 alt-ergo.hash
+alt-ergo.zlib
 gcc
 gnat2why
 gnatbind
