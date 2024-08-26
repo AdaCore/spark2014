@@ -162,6 +162,12 @@ package Flow is
       PDG : Flow_Graphs.Graph;
       --  The graphs
 
+      Full_CFG : Flow_Graphs.Graph;
+      Full_Atr : Attribute_Maps.Map;
+      --  Copies of the original CFG and vertex attributes, respectively,
+      --  to be restored after the CFG has been pruned from exceptional paths
+      --  and the CDG has been computed.
+
       Atr : Attribute_Maps.Map;
       --  The vertex attributes for the above graphs.
 

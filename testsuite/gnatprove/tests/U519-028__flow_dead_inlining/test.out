@@ -7,6 +7,7 @@ main.adb:12:18: warning: loop range is null, loop will not execute
 main.adb:12:23: info: cannot unroll loop (value of loop bounds)
 main.adb:13:10: info: analyzing call to "Foo" in context
 main.adb:13:10: warning: this statement is never reached
+main.adb:13:10: warning: unused variable constant with variable input "C2b"
 main_private_rec.adb:5:14: info: add a contract to analyze it separately from calling contexts
 main_private_rec.adb:5:14: info: local subprogram "Foo" only analyzed in the context of calls
 main_private_rec.adb:5:14: warning: subprogram "Foo" has no effect
@@ -16,6 +17,7 @@ main_private_rec.adb:14:18: warning: loop range is null, loop will not execute
 main_private_rec.adb:14:23: info: cannot unroll loop (value of loop bounds)
 main_private_rec.adb:15:10: info: analyzing call to "Foo" in context
 main_private_rec.adb:15:10: warning: this statement is never reached
+main_private_rec.adb:15:10: warning: unused variable constant with variable input "C2b"
 main_rec.adb:7:14: info: add a contract to analyze it separately from calling contexts
 main_rec.adb:7:14: info: local subprogram "Foo" only analyzed in the context of calls
 main_rec.adb:7:14: warning: subprogram "Foo" has no effect
@@ -25,3 +27,4 @@ main_rec.adb:16:18: warning: loop range is null, loop will not execute
 main_rec.adb:16:23: info: cannot unroll loop (value of loop bounds)
 main_rec.adb:17:10: info: analyzing call to "Foo" in context
 main_rec.adb:17:10: warning: this statement is never reached
+main_rec.adb:17:10: warning: unused variable constant with variable input "C2b"

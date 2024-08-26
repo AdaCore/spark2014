@@ -1,4 +1,4 @@
-procedure Main is
+procedure Main with SPARK_Mode is
 
    procedure Foo (X : Integer) is
    begin

@@ -1455,10 +1455,26 @@ package body Flow is
       Control_Flow_Graph.Create (FA);
 
       --  Print this graph now in case the other algorithms barf
-      Debug (Debug_Print_CFG, FA.CFG, "cfg");
+      Debug (Debug_Print_CFG, FA.CFG, "pruned");
 
       if not FA.Generating_Globals or else FA.Is_Generative then
          Control_Dependence_Graph.Create (FA);
+
+         --  Restore the original CFG
+
+         FA.CFG := FA.Full_CFG;  --  ??? we could have Graphs.Move
+         FA.Atr.Move (Source => FA.Full_Atr);
+
+         --  Destroy the temporary copy of a full CFG, as we no longer need it
+
+         FA.Full_CFG := Flow_Graphs.Create;
+         pragma Assert (FA.Full_Atr.Is_Empty);
+
+         --  We can only print the original graph now, after FA.Atr has been
+         --  restored.
+
+         Debug (Debug_Print_CFG, FA.CFG, "cfg");
+
          Data_Dependence_Graph.Create (FA);
          Interprocedural.Create (FA);
          Program_Dependence_Graph.Create (FA);

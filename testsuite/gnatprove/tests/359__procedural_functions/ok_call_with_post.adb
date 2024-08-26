@@ -37,7 +37,7 @@ begin
    pragma Assert (Y6 = 1); -- @ASSERT:PASS
 
    if Rand = 1 then
-      Y7 := F7 (1); -- @ TERMINATION:FAIL TO REACTIVATE AFTER FLOW SUPPORT
+      Y7 := F7 (1); -- @TERMINATION:FAIL
       pragma Assert (False); -- @ASSERT:PASS
    end if;
 

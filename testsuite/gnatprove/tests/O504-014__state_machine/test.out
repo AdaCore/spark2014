@@ -64,7 +64,6 @@ state_machine_with_oop.ads:40:13: high: all paths in "Move_To_A" raise exception
 state_machine_with_oop.ads:41:13: info: implicit aspect Always_Terminates on "Move_To_B" has been proved, subprogram will terminate
 state_machine_with_oop.ads:42:13: info: implicit aspect Always_Terminates on "Move_To_C" has been proved, subprogram will terminate
 state_machine_with_oop.ads:43:14: high: all paths in "Stay_Here" raise exceptions or do not terminate normally
-state_machine_with_oop.ads:43:25: warning: "Current" is not modified, could be IN
 state_machine_with_oop.ads:47:13: info: implicit aspect Always_Terminates on "Can_Move_To_A" has been proved, subprogram will terminate
 state_machine_with_oop.ads:47:28: warning: unused variable "Current"
 state_machine_with_oop.ads:48:13: info: implicit aspect Always_Terminates on "Can_Move_To_B" has been proved, subprogram will terminate

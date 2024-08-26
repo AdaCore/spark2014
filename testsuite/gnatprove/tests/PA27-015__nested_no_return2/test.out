@@ -1,2 +1,3 @@
 nest_in_proc.adb:9:07: warning: assuming "OS_Exit" has no effect on global items
 nest_in_proc.adb:9:07: warning: no Global contract available for "OS_Exit"
+nest_in_proc.adb:21:10: medium: implicit aspect Always_Terminates on "Inner" could be incorrect, call to "Proxy" might be nonterminating [possible fix: annotate "Proxy" with aspect Always_Terminates]
