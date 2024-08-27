@@ -10,7 +10,9 @@ skein.adb:183:13: info: types in unchecked conversion have the same size
 skein.adb:184:32: info: type is suitable as source for unchecked conversion
 skein.adb:184:55: info: type is suitable for unchecked conversion
 skein.adb:190:13: info: implicit aspect Always_Terminates on "To_LittleEndian" has been proved, subprogram will terminate
+skein.adb:190:13: info: implicit function contract might not be available on implicit recursive calls
 skein.adb:191:11: info: data dependencies proved
+skein.adb:193:16: info: implicit function contract might not be available on calls from enclosing unit
 skein.adb:205:14: info: add a contract to analyze it separately from calling contexts
 skein.adb:205:14: info: local subprogram "Put_64_LSB_First" only analyzed in the context of calls
 skein.adb:221:14: info: range check proved, in call inlined at skein.adb:857
