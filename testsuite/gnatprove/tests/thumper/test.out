@@ -387,6 +387,7 @@ server_timestamp_maker.adb:45:13: info: add a contract to analyze it separately 
 server_timestamp_maker.adb:45:13: info: implicit aspect Always_Terminates on "Valid_Request" has been proved, subprogram will terminate
 server_timestamp_maker.adb:45:13: info: local subprogram "Valid_Request" only analyzed in the context of calls
 server_timestamp_maker.adb:47:07: warning: initialization of "Result" has no effect
+server_timestamp_maker.adb:47:07: warning: initialization of "Result" has no effect, in call inlined at server_timestamp_maker.adb:115
 server_timestamp_maker.adb:48:07: info: initialization of "Length_Stop" proved
 server_timestamp_maker.adb:49:07: info: initialization of "Length" proved
 server_timestamp_maker.adb:50:07: info: initialization of "Version_Stop" proved
@@ -394,29 +395,49 @@ server_timestamp_maker.adb:51:07: info: initialization of "Version" proved
 server_timestamp_maker.adb:52:07: warning: unused variable "Imprint_Stop"
 server_timestamp_maker.adb:53:07: warning: unused variable "Message_Imprint"
 server_timestamp_maker.adb:54:07: info: initialization of "Decode_Status" proved
+server_timestamp_maker.adb:60:07: warning: statement has no effect, in call inlined at server_timestamp_maker.adb:115
+server_timestamp_maker.adb:63:17: warning: unused assignment, in call inlined at server_timestamp_maker.adb:115
+server_timestamp_maker.adb:64:07: warning: statement has no effect, in call inlined at server_timestamp_maker.adb:115
+server_timestamp_maker.adb:66:17: warning: unused assignment, in call inlined at server_timestamp_maker.adb:115
 server_timestamp_maker.adb:69:27: info: precondition proved (CVC5: 2 VC), in call inlined at server_timestamp_maker.adb:115
+server_timestamp_maker.adb:69:27: warning: statement has no effect, in call inlined at server_timestamp_maker.adb:115
 server_timestamp_maker.adb:70:67: info: in value of subprogram parameter after the call at server_timestamp_maker.adb:70, in call inlined at server_timestamp_maker.adb:115
 server_timestamp_maker.adb:70:67: info: range check proved (CVC5: 2 VC), in call inlined at server_timestamp_maker.adb:115
+server_timestamp_maker.adb:70:67: warning: "Length_Stop" is set by "Get_Length_Value" but not used after the call, in call inlined at server_timestamp_maker.adb:115
+server_timestamp_maker.adb:70:80: warning: "Length" is set by "Get_Length_Value" but not used after the call, in call inlined at server_timestamp_maker.adb:115
+server_timestamp_maker.adb:70:88: warning: "Decode_Status" is set by "Get_Length_Value" but not used after the call, in call inlined at server_timestamp_maker.adb:115
+server_timestamp_maker.adb:71:10: warning: statement has no effect, in call inlined at server_timestamp_maker.adb:115
+server_timestamp_maker.adb:73:20: warning: unused assignment, in call inlined at server_timestamp_maker.adb:115
+server_timestamp_maker.adb:74:10: warning: statement has no effect, in call inlined at server_timestamp_maker.adb:115
 server_timestamp_maker.adb:74:28: medium: overflow check might fail, cannot prove upper bound for Length_Stop + Length, in call inlined at server_timestamp_maker.adb:115 [reason for check: result of addition must fit in a 32-bits machine integer]
+server_timestamp_maker.adb:76:20: warning: unused assignment, in call inlined at server_timestamp_maker.adb:115
 server_timestamp_maker.adb:79:30: medium: precondition might fail, in call inlined at server_timestamp_maker.adb:115
+server_timestamp_maker.adb:79:30: warning: statement has no effect, in call inlined at server_timestamp_maker.adb:115
 server_timestamp_maker.adb:80:55: info: in value of subprogram parameter after the call at server_timestamp_maker.adb:80, in call inlined at server_timestamp_maker.adb:115
 server_timestamp_maker.adb:80:55: info: range check proved (CVC5: 2 VC), in call inlined at server_timestamp_maker.adb:115
 server_timestamp_maker.adb:80:55: warning: "Version_Stop" is set by "Get_Integer_Value" but not used after the call
+server_timestamp_maker.adb:80:55: warning: "Version_Stop" is set by "Get_Integer_Value" but not used after the call, in call inlined at server_timestamp_maker.adb:115
+server_timestamp_maker.adb:80:69: warning: "Version" is set by "Get_Integer_Value" but not used after the call, in call inlined at server_timestamp_maker.adb:115
+server_timestamp_maker.adb:80:78: warning: "Decode_Status" is set by "Get_Integer_Value" but not used after the call, in call inlined at server_timestamp_maker.adb:115
+server_timestamp_maker.adb:81:13: warning: statement has no effect, in call inlined at server_timestamp_maker.adb:115
+server_timestamp_maker.adb:83:23: warning: unused assignment, in call inlined at server_timestamp_maker.adb:115
+server_timestamp_maker.adb:84:13: warning: statement has no effect, in call inlined at server_timestamp_maker.adb:115
+server_timestamp_maker.adb:86:23: warning: unused assignment, in call inlined at server_timestamp_maker.adb:115
 server_timestamp_maker.adb:89:16: info: analyzing call to "Get_Message_Imprint" in context
 server_timestamp_maker.adb:91:51: medium: range check might fail, cannot prove upper bound for Version_Stop + 1, in call inlined at server_timestamp_maker.adb:115 [reason for check: default component value must fit in the type]
+server_timestamp_maker.adb:96:16: warning: statement has no effect, in call inlined at server_timestamp_maker.adb:115
 server_timestamp_maker.adb:96:19: high: "Imprint_Status" is not initialized
+server_timestamp_maker.adb:98:26: warning: unused assignment, in call inlined at server_timestamp_maker.adb:115
 server_timestamp_maker.adb:100:19: medium: unexpected exception might be raised, in call inlined at server_timestamp_maker.adb:115
+server_timestamp_maker.adb:106:07: warning: unused assignment, in call inlined at server_timestamp_maker.adb:115
+server_timestamp_maker.adb:113:24: warning: unused assignment
+server_timestamp_maker.adb:115:07: warning: statement has no effect
 server_timestamp_maker.adb:115:14: info: analyzing call to "Valid_Request" in context
 server_timestamp_maker.adb:116:10: medium: unexpected exception might be raised
 server_timestamp_maker.adb:119:10: info: only expected exception raised (CVC5: 1 VC)
 server_timestamp_maker.ads:18:14: high: all paths in "Create_Timestamp" raise exceptions or do not terminate normally
 server_timestamp_maker.ads:21:08: info: data dependencies proved
-server_timestamp_maker.ads:22:46: warning: "Serial_Generator.State" is not modified, could be INPUT
-server_timestamp_maker.ads:23:08: medium: missing dependency "null => Cryptographic_Services.Key"
-server_timestamp_maker.ads:23:08: medium: missing dependency "null => Request_Message"
-server_timestamp_maker.ads:24:23: medium: incorrect dependency "Response_Message => Request_Message"
-server_timestamp_maker.ads:24:40: medium: incorrect dependency "Response_Message => Cryptographic_Services.Key"
-server_timestamp_maker.ads:24:68: medium: incorrect dependency "Response_Message => Serial_Generator.State"
+server_timestamp_maker.ads:22:08: info: flow dependencies proved
 timestamp_messages-client.adb:21:07: medium: unexpected exception might be raised
 timestamp_messages-client.adb:28:07: medium: unexpected exception might be raised
 timestamp_messages-client.adb:29:07: warning: this statement is never reached
