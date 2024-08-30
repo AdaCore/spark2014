@@ -8,7 +8,7 @@ is
 
     function H (X : Integer) return Boolean is (X * 2 = Glob(A));
 
-    function G (X : Integer) return Boolean is (H (X));
+    function G (X : Integer) return Boolean is (H (X)) with Post => False;
 
     type IntArr is array (Natural range <>) of Integer;
 

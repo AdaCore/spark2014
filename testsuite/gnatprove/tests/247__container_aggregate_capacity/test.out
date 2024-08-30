@@ -192,6 +192,7 @@ test_capacity.adb:265:46: info: overflow check proved (CVC5: 2 VC)
 test_capacity.adb:268:16: info: implicit aspect Always_Terminates on "Length" has been proved, subprogram will terminate
 test_capacity.adb:269:09: info: data dependencies proved
 test_capacity.adb:272:16: info: implicit aspect Always_Terminates on "Capacity" has been proved, subprogram will terminate
+test_capacity.adb:272:16: info: implicit function contract might not be available on calls from enclosing unit
 test_capacity.adb:275:16: info: implicit aspect Always_Terminates on "Has_Key" has been proved, subprogram will terminate
 test_capacity.adb:278:16: info: implicit aspect Always_Terminates on "Get" has been proved, subprogram will terminate
 test_capacity.adb:282:16: info: implicit aspect Always_Terminates on "Eq_Keys" has been proved, subprogram will terminate

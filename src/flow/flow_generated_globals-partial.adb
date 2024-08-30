@@ -744,7 +744,7 @@ package body Flow_Generated_Globals.Partial is
 
             for F of Get_Explicit_Formals (E) loop
                Process_Predicate_And_Invariant
-                 (F,
+                 (Etype (F),
                   Get_Flow_Scope (E),
                   Is_Globally_Visible (E),
                   Contr.Proof_Dependencies);
@@ -755,7 +755,7 @@ package body Flow_Generated_Globals.Partial is
 
             if Ekind (E) = E_Function then
                Process_Predicate_And_Invariant
-                 (E,
+                 (Etype (E),
                   Get_Flow_Scope (E),
                   Is_Globally_Visible (E),
                   Contr.Proof_Dependencies);

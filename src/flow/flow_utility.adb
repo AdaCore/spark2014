@@ -332,7 +332,7 @@ package body Flow_Utility is
                         --  predicates that apply to P.
 
                         Process_Predicate_And_Invariant_Internal
-                          (N                  => P,
+                          (Typ                => Etype (P),
                            Scop               => Scop,
                            Include_Invariant  => False,
                            Proof_Dependencies => Proof_Dependencies,
@@ -351,7 +351,7 @@ package body Flow_Utility is
                   loop
                      if Is_Entity_Name (P) and then Is_Type (Entity (P)) then
                         Process_Predicate_And_Invariant_Internal
-                          (N                  => P,
+                          (Typ                => Etype (P),
                            Scop               => Scop,
                            Include_Invariant  => False,
                            Proof_Dependencies => Proof_Dependencies,
@@ -451,7 +451,7 @@ package body Flow_Utility is
                     and then Ekind (E) in E_Constant | E_Variable
                   then
                      Process_Predicate_And_Invariant_Internal
-                       (N                  => E,
+                       (Typ                => Etype (E),
                         Scop               => Scop,
                         Include_Invariant  => not Scope_Within_Or_Same
                                                 (Outer => Scop.Ent,
@@ -469,7 +469,7 @@ package body Flow_Utility is
                | N_Qualified_Expression
             =>
                Process_Predicate_And_Invariant_Internal
-                 (N                  => N,
+                 (Typ                => Etype (N),
                   Scop               => Scop,
                   Include_Invariant  => False,
                   Proof_Dependencies => Proof_Dependencies,
@@ -597,7 +597,7 @@ package body Flow_Utility is
    ----------------------------------------------
 
    procedure Process_Predicate_And_Invariant_Internal
-     (N                  : Node_Or_Entity_Id;
+     (Typ                : Type_Kind_Id;
       Scop               : Flow_Scope;
       Include_Invariant  : Boolean;
       Proof_Dependencies : in out Node_Sets.Set;
@@ -723,7 +723,6 @@ package body Flow_Utility is
 
       --  Local variables
 
-      Typ      : constant Entity_Id := Etype (N);
       Discard  : Boolean;
       Position : Node_Sets.Cursor;
       Inserted : Boolean;
@@ -732,9 +731,9 @@ package body Flow_Utility is
 
    begin
 
-      --  If we didn't analyze type of N yet, and N is not an
-      --  access-to-subprogram, then we add the type of N to Types_Seen and
-      --  explore it.
+      --  If we didn't analyze Typ yet, and it is not an
+      --  access-to-subprogram type, then we add Typ to Types_Seen and explore
+      --  it.
 
       Types_Seen.Insert (Typ, Position, Inserted);
 

@@ -79,16 +79,15 @@ package Flow_Utility.Proof_Dependencies is
    --  annotations associated to N.
 
    procedure Process_Predicate_And_Invariant
-     (N                  : Node_Or_Entity_Id;
+     (Typ                : Type_Kind_Id;
       Scop               : Flow_Scope;
       Include_Invariant  : Boolean;
       Proof_Dependencies : in out Node_Sets.Set)
-     with Pre  => N in N_Has_Etype_Id,
-          Post => Proof_Dependencies'Old.Is_Subset
+     with Post => Proof_Dependencies'Old.Is_Subset
                     (Of_Set => Proof_Dependencies);
-   --  Fill Proof_Dependencies by analyzing predicate and invariant
-   --  expressions that apply to the type of N. Include_Invariant is used to
-   --  determine whether a type invariant is pulled.
+   --  Fill Proof_Dependencies by analyzing predicate and invariant expressions
+   --  that apply to Typ. Include_Invariant is used to determine whether a type
+   --  invariant is pulled.
 
    procedure Process_Reclamation_Functions
      (Typ                : Type_Kind_Id;
