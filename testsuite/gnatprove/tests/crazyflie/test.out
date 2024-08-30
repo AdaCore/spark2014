@@ -178,6 +178,13 @@ sensfusion6_pack.adb:205:07: info: initialization of "Square_Sum" proved, in cal
 sensfusion6_pack.adb:320:25: info: analyzing call to "Mahony_Update_Q" in context
 sensfusion6_pack.adb:327:25: info: analyzing call to "Madgwick_Update_Q" in context
 sensfusion6_pack.adb:327:25: warning: this statement is never reached
+sensfusion6_pack.adb:327:25: warning: unused variable constant with variable input "C11b"
+sensfusion6_pack.adb:327:25: warning: unused variable constant with variable input "C12b"
+sensfusion6_pack.adb:327:25: warning: unused variable constant with variable input "C13b"
+sensfusion6_pack.adb:327:25: warning: unused variable constant with variable input "C14b"
+sensfusion6_pack.adb:327:25: warning: unused variable constant with variable input "C15b"
+sensfusion6_pack.adb:327:25: warning: unused variable constant with variable input "C16b"
+sensfusion6_pack.adb:327:25: warning: unused variable constant with variable input "C17b"
 sensfusion6_pack.adb:341:07: info: initialization of "Grav_X" proved
 sensfusion6_pack.adb:342:07: info: initialization of "Grav_Y" proved
 sensfusion6_pack.adb:343:07: info: initialization of "Grav_Z" proved
