@@ -1,7 +1,6 @@
-from subprocess import call
-from test_support import prove_all
+from test_support import prove_all, gprbuild
 
 # use project file compil.gpr for compilation...
-call(["gprbuild", "-q", "-P", "compil.gpr"])
+gprbuild(["-q", "-P", "compil.gpr"])
 # and project file test.gpr for verification
 prove_all()

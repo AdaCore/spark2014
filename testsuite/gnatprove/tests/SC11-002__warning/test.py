@@ -1,5 +1,4 @@
-from subprocess import call
-from test_support import prove_all
+from test_support import prove_all, gprbuild
 
 prove_all(sparklib=True)
-call(["gprbuild", "-P", "test.gpr", "-q", "-c", "cont.ads"])
+gprbuild(["-P", "test.gpr", "-q", "-c", "cont.ads"])

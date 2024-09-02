@@ -1,7 +1,3 @@
-gcc -c -gnata main.adb
-gcc -c -gnata update_legal.adb
-gnatbind -x main.ali
-gnatlink main.ali
 update_legal.adb:6:28: info: index check proved (CVC5: 2 VC)
 update_legal.adb:7:28: info: index check proved (CVC5: 2 VC)
 update_legal.adb:8:28: info: index check proved (CVC5: 2 VC)

@@ -618,7 +618,7 @@ module Fixed_Point_Rep
      ensures { result = fxp_div_int x y }
 
   axiom fxp_div_int_def :
-    forall x : __fixed. forall y : int [fxp_div_int x y].
+    forall x : __fixed, y : int [fxp_div_int x y].
       if x = 0 then
         fxp_div_int x y = 0
       else if x > 0 /\ y > 0 then
@@ -785,7 +785,7 @@ module Fixed_Point_Mult_Div
   val function fxp_mult (x : __fixed) (y : __fixed) : __fixed
 
   axiom fxp_mult_def :
-    forall x : __fixed. forall y : __fixed [fxp_mult x y].
+    forall x y : __fixed [fxp_mult x y].
       if x = 0 \/ y = 0 then
         fxp_mult x y = 0
       else if (x > 0 /\ y > 0) \/ (x < 0 /\ y < 0) then
@@ -828,7 +828,7 @@ module Fixed_Point_Mult_Div
      ensures { result = fxp_div x y }
 
   axiom fxp_div_def :
-    forall x : __fixed. forall y : __fixed [fxp_div x y].
+    forall x y : __fixed [fxp_div x y].
       if x = 0 then
         fxp_div x y = 0
       else if x > 0 /\ y > 0 then
@@ -1169,8 +1169,7 @@ module Array_Comparison_Axiom
   meta "encoding:lskept" function lcp
 
   axiom lcp_def :
-    forall a b : map.
-    forall a_first a_last b_first b_last : Index.t [lcp a a_first a_last b b_first b_last].
+    forall a b : map, a_first a_last b_first b_last : Index.t [lcp a a_first a_last b b_first b_last].
       (* Conditions of applications:
            a and b are non empty, and a (a_first) = b (b_first) *)
       Index.le a_first a_last /\ Index.le b_first b_last /\
@@ -1199,15 +1198,13 @@ module Array_Comparison_Axiom
   meta "encoding:lskept" function compare
 
   axiom compare_def_eq :
-    forall a b : map.
-    forall a_first a_last b_first b_last : Index.t [compare a a_first a_last b b_first b_last].
+    forall a b : map, a_first a_last b_first b_last : Index.t [compare a a_first a_last b b_first b_last].
       (compare a a_first a_last b b_first b_last = 0 <->
           bool_eq a a_first a_last b b_first b_last = True)
   meta "remove_unused:dependency" axiom compare_def_eq, function compare
 
   axiom compare_def_lt :
-    forall a b : map.
-    forall a_first a_last b_first b_last : Index.t [compare a a_first a_last b b_first b_last].
+    forall a b : map, a_first a_last b_first b_last : Index.t [compare a a_first a_last b b_first b_last].
       (compare a a_first a_last b b_first b_last < 0 <->
        (* b is non empty and ... *)
        (Index.le b_first b_last /\
@@ -1235,8 +1232,7 @@ module Array_Comparison_Axiom
   meta "remove_unused:dependency" axiom compare_def_lt, function compare
 
   axiom compare_def_gt :
-    forall a b : map.
-    forall a_first a_last b_first b_last : Index.t [compare a a_first a_last b b_first b_last].
+    forall a b : map, a_first a_last b_first b_last : Index.t [compare a a_first a_last b b_first b_last].
       (compare a a_first a_last b b_first b_last > 0 <->
         (* a is non empty and ... *)
         (Index.le a_first a_last /\
@@ -1333,9 +1329,9 @@ module Array_Generic_Op_Axiom
   function array_op map Index.t Index.t map Index.t Index.t : map
 
   axiom op_def:
-   forall a b : map.
-   forall a_first a_last b_first b_last : Index.t.
-   forall i : Index.t [get (array_op a a_first a_last b b_first b_last) i].
+   forall a b : map,
+          a_first a_last b_first b_last : Index.t,
+          i : Index.t [get (array_op a a_first a_last b b_first b_last) i].
      (Index.le a_first i /\ Index.le i a_last) ->
      get (array_op a a_first a_last b b_first b_last) i =
             of_bool (base_op (to_bool (get a i)) (to_bool (get b (Index.add (Index.sub i a_first) b_first))))
